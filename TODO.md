@@ -11,7 +11,9 @@
 ## Required editor functionality
 
 - paste images / screenshots from clipboard and save as data URL.
+
  - https://stackoverflow.com/questions/28644340/how-do-i-get-base64-encoded-image-from-clipboard-in-internet-explorer
+
  - https://matthewmoisen.com/blog/paste-js-example/
 
  - I can detect the paste, then convert what's pasted to a data URL, then change
