@@ -17,3 +17,7 @@
 
 - Then we can define a key binding for 'paste' that detects if an image is in
   the buffer.
+
+- Must be maintainable. No ugly hacks with SimpleMDE or changes to that code.
+
+- It's probably ok to use internal fields of SimpleMDE.
