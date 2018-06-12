@@ -47,6 +47,8 @@ describe('TextHighlightModel', function() {
                         },
                         "text": "hello world",
                         "notes": {},
+                        "questions": {},
+                        "flashcards": {},
                         "thumbnail": null
                     },
                     "mutationType": "INITIAL"
@@ -96,6 +98,8 @@ describe('TextHighlightModel', function() {
                         },
                         "text": "hello world",
                         "notes": {},
+                        "questions": {},
+                        "flashcards": {},
                         "thumbnail": null
                     },
                     "mutationType": "SET"

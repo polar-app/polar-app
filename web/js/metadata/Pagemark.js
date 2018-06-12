@@ -1,14 +1,21 @@
 
-const {AnnotationWithNote} = require("./AnnotationWithNote");
+const {Annotation} = require("./Annotation");
 const {PagemarkType} = require("./PagemarkType");
 const {MetadataSerializer} = require("./MetadataSerializer");
 const {ISODateTime} = require("./ISODateTime");
 
-module.exports.Pagemark = class extends AnnotationWithNote {
+module.exports.Pagemark = class extends Annotation {
 
     constructor(val) {
 
         super(val);
+
+        /**
+         * The note for this annotation.
+         *
+         * @type Note
+         */
+        this.notes = {};
 
         /**
          * The type of pagemark.
@@ -45,6 +52,10 @@ module.exports.Pagemark = class extends AnnotationWithNote {
     setup() {
 
         super.setup();
+
+        if(!this.notes) {
+            this.notes = {}
+        }
 
         if(!this.type) {
             this.type = PagemarkType.SINGLE_COLUMN;

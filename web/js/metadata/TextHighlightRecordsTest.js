@@ -4,8 +4,9 @@ const {TextHighlight} = require("./TextHighlight");
 const {TextHighlightRecords} = require("./TextHighlightRecords");
 const {assertJSON} = require("../test/Assertions");
 
+require("../test/TestingTime").freeze();
 
-describe('TextHighlights', function() {
+describe('TextHighlightRecords', function() {
 
     describe('create', function() {
 
@@ -38,6 +39,8 @@ describe('TextHighlights', function() {
                     },
                     "text": "hello world",
                     "notes": {},
+                    "questions": {},
+                    "flashcards": {},
                     "thumbnail": null
                 }
             };
