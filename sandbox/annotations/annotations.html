@@ -1,0 +1,117 @@
+<html>
+
+<head>
+    <link rel="stylesheet" href="../../node_modules/jquery-contextmenu/dist/jquery.contextMenu.min.css">
+    <link href="//cdn.rawgit.com/noelboss/featherlight/1.7.13/release/featherlight.min.css" type="text/css" rel="stylesheet" />
+    <link rel="stylesheet" href="../../node_modules/simplemde/dist/simplemde.min.css">
+    <script src="annotations-bundle.js"></script>
+    <style>
+
+
+        .context-menu-list{
+            border: 0px;
+            border-radius: 0px;
+            background-color: #43423E;
+            font-family: 'Ubuntu';
+            font-size: 15px
+        }
+
+
+        .context-menu-item{
+            color: #d8d5cd;
+            background-color: #43423E;
+            margin-left: 5px;
+            padding-right: 20px; /*if you have a drop caret, best to delete this to avoid design problems*/
+
+        }
+
+
+        .context-menu-item-field{
+            margin-left: 8px;
+        }
+
+        .context-menu-item-shortcut{
+            float: right;
+            color: #898579;
+        }
+
+        .context-menu-separator{
+            margin:2px 8px;
+            border-top: 1px solid #3a3a37;
+            border-bottom: 1px solid #494946;
+        }
+
+
+        /** icons colors*/
+        .icon-red::before{
+            color: #ef4343;
+        }
+
+        .icon-green::before{
+            color: #2e9b7c;
+        }
+    </style>
+
+    <style>
+
+        button {
+            background: #ededed;
+            border: 1px solid #ccc;
+            padding: 10px 30px;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+
+        button:active {
+            background: #e5e5e5;
+            -webkit-box-shadow: inset 0px 0px 5px #c1c1c1;
+            -moz-box-shadow: inset 0px 0px 5px #c1c1c1;
+            box-shadow: inset 0px 0px 5px #c1c1c1;
+            outline: none;
+        }
+
+        #editor {
+            /*height: 500px;*/
+            /*height: 80%;*/
+            /*width: 80%;*/
+            max-height: 500px;
+
+        }
+
+        .CodeMirror-scroll {
+            max-height: 65vh;
+
+            min-width: 65vw;
+            max-width: 80vw;
+        }
+
+        .polar-lightbox {
+            /*padding: 5px;*/
+            padding-top: 15px;
+        }
+
+        .modal-header {
+            border-bottom: lightgrey solid 1px;
+            margin-bottom: 1em;
+            font-weight: bold;
+            font-size: 25px;
+            padding-bottom: 5px;
+        }
+
+        .modal-footer {
+            text-align: right;
+        }
+
+    </style>
+</head>
+<body>
+
+<div >
+<span class="text-highlight" style="background-color: yellow; padding: 5px;">
+    this is highlighted text.
+</span>
+</div>
+
+
+</body>
+</html>

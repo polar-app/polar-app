@@ -4,6 +4,16 @@ module.exports = [
     {
         mode: 'development',
         entry: {
+            annotations: './sandbox/annotations/annotations.js',
+        },
+        output: {
+            path: path.resolve(__dirname, 'sandbox/annotations'),
+            filename: '[name]-bundle.js',
+        }
+    },
+    {
+        mode: 'development',
+        entry: {
             simplemd: './sandbox/simplemd/simplemd.js',
         },
         output: {
