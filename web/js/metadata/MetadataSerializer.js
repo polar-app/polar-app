@@ -46,7 +46,7 @@ class MetadataSerializer {
      * @param object
      * @param data
      */
-    static deserialize(obj,data) {
+    static deserialize(obj, data) {
 
         if(!data) {
             throw new Error("No data given!")

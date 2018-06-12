@@ -114,6 +114,10 @@ module.exports.DocMetas = class {
 
     static deserialize(data) {
 
+        if(! (typeof data === "string")) {
+            throw new Error("We can only deserialize strings: " + typeof data);
+        }
+
         let docMeta = MetadataSerializer.deserialize(new DocMeta(), data);
 
         // validate the JSON data and set defaults. In the future we should migrate

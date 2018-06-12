@@ -1,3 +1,5 @@
+const $ = require('jquery');
+
 module.exports.Elements = class {
 
     /**

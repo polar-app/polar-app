@@ -28,6 +28,9 @@ describe('DocMetas', function() {
 
             assertJSON(docMeta, actual);
 
+            assert.equal(actual instanceof DocMeta, true)
+
+
         });
 
         it("Test with default values for serialized data", function () {

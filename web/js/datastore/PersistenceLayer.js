@@ -40,6 +40,10 @@ module.exports.PersistenceLayer = class {
         if(!data)
             return null;
 
+        if(! (typeof data === "string")) {
+            throw new Error("Expected string and received: " + typeof data);
+        }
+
         return DocMetas.deserialize(data);
     }
 
@@ -47,11 +51,17 @@ module.exports.PersistenceLayer = class {
      * Write the datastore to disk.
      */
     async sync(fingerprint, docMeta) {
+
+        if(! docMeta instanceof DocMeta) {
+            throw new Error("Can not sync anything other than DocMeta.")
+        }
+
         // NOTE that we always write the state with JSON pretty printing.
         // Otherwise tools like git diff , etc will be impossible to deal with
         // in practice.
         let data = DocMetas.serialize(docMeta, "  ");
         await this.datastore.sync(fingerprint, data);
+
     }
 
 };

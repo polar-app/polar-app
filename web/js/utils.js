@@ -1,4 +1,5 @@
 const $ = require('jquery');
+
 const {Optional} = require("./Optional");
 const {Preconditions} = require("./Preconditions");
 
