@@ -5,6 +5,7 @@ const {PageInfo} = require("./PageInfo");
 const {PageMeta} = require("./PageMeta");
 const {PagemarkType} = require("./PagemarkType");
 const {ISODateTime} = require("./ISODateTime");
+const {AnnotationInfo} = require("./AnnotationInfo");
 const {MetadataSerializer} = require("./MetadataSerializer");
 const {forDict} = require("../utils");
 
@@ -113,13 +114,13 @@ module.exports.DocMetas = class {
 
     static deserialize(data) {
 
-        let result = MetadataSerializer.deserialize(new DocMeta(), data);
+        let docMeta = MetadataSerializer.deserialize(new DocMeta(), data);
 
         // validate the JSON data and set defaults. In the future we should migrate
         // to using something like AJV to provide these defaults and also perform
         // type assertion.
 
-        forDict(result.pageMetas, function (key, pageMeta) {
+        forDict(docMeta.pageMetas, function (key, pageMeta) {
 
             if(!pageMeta.textHighlights) {
                 console.warn("No textHighlights.  Assigning default.");
@@ -133,7 +134,11 @@ module.exports.DocMetas = class {
 
         } );
 
-        return result;
+        if(!docMeta.annotationInfo) {
+            docMeta.annotationInfo = new AnnotationInfo();
+        }
+
+        return docMeta;
 
     }
 }

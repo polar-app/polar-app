@@ -53,14 +53,19 @@ describe('DocMetas', function() {
             let nrPages = 2;
             let docMeta = DocMetas.createWithinInitialPagemarks(fingerprint, nrPages);
 
-            let json = MetadataSerializer.serialize(docMeta, "  ");
+            let json = DocMetas.serialize(docMeta, "  ");
 
             let expected = {
                 "docInfo": {
                     "title": null,
                     "url": null,
                     "nrPages": 2,
-                    "fingerprint": "0x001"
+                    "fingerprint": "0x001",
+                    "lastOpened": null,
+                    "progress": 0
+                },
+                "annotationInfo": {
+                    "lastAnnotated": null
                 },
                 "pageMetas": {
                     "1": {
@@ -101,9 +106,11 @@ describe('DocMetas', function() {
                 "version": 1
             };
 
+            assert.equal(typeof json, "string");
+
             assertJSON(json, expected);
 
-            docMeta = MetadataSerializer.deserialize(new DocMeta(), json);
+            docMeta = DocMetas.deserialize(json);
 
             // now we have to trace it like it would be in production..
             docMeta = Proxies.create(docMeta).deepTrace();

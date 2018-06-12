@@ -52,6 +52,10 @@ class MetadataSerializer {
             throw new Error("No data given!")
         }
 
+        if(! (typeof data === "string")) {
+            throw new Error("We can only deserialize strings: " + typeof data);
+        }
+
         let parsed = JSON.parse(data);
         Object.assign(obj, parsed);
         return obj;
