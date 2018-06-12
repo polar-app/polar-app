@@ -20,7 +20,7 @@ function createModal() {
         </div>
         
         <div class="modal-footer">
-            <button>Save</button>
+            <button id="markdown-editor-save">Save</button>
         </div>
         
     </div>
@@ -38,9 +38,17 @@ function createModal() {
     console.log("Setting up simplemde");
 
     // TODO: why no spell checker?
-    let simplemde = new SimpleMDE({ editorElement, spellChecker: false, hideIcons: ["side-by-side", "fullscreen"] });
+    let simplemde = new SimpleMDE({
+        editorElement,
+        spellChecker: true,
+        hideIcons: ["side-by-side", "fullscreen"]
+    } );
+
     //simplemde.toggleSideBySide(editor);
-    simplemde.value();
+    // simplemde.value();
+
+    // FIXME: attach code to the button so that when the user hits save then we
+    // can handle it properly.
 
 }
 
@@ -66,8 +74,10 @@ $(document).ready(function() {
             items: {
                 "create-pagemark-here": {name: "Create Pagemark Here"},
                 "sep1": "---------",
+                "view": {name: "View Highlight"},
                 "add-flashcard": {name: "Add Flashcard"},
                 "add-note": {name: "Add Note"},
+                "add-comment": {name: "Add Comment"},
                 "sep2": "---------",
                 "delete":  {name: "Delete"},
             }
