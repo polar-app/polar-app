@@ -37,6 +37,10 @@
             // insert text manually
             document.execCommand("insertHTML", false, text);
 
+            // FIXME: for SimpleMDE I have to adjust the CSS style on some
+            // of the elements to set max-width properly... data:... should be
+            // displayed NOT the full URL.
+
             return true;
 
         }
