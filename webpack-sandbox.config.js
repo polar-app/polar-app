@@ -4,6 +4,16 @@ module.exports = [
     {
         mode: 'development',
         entry: {
+            bootstrap: './sandbox/bootstrap/bootstrap.js',
+        },
+        output: {
+            path: path.resolve(__dirname, 'sandbox/bootstrap'),
+            filename: '[name]-bundle.js',
+        }
+    },
+    {
+        mode: 'development',
+        entry: {
             annotations: './sandbox/annotations/annotations.js',
         },
         output: {
