@@ -4,7 +4,18 @@ module.exports = [
     {
         mode: 'development',
         entry: {
-            chrome: './web/js/apps/chrome.js',
+            chrome: [ "babel-polyfill", "./web/js/apps/chrome.js"]
+        },
+        module: {
+            rules: [
+                {
+                    test: /\.js$/,
+                    exclude: /node_modules/,
+                    use: {
+                        loader: "babel-loader"
+                    }
+                }
+            ],
         },
         output: {
             path: path.resolve(__dirname, 'web/js/apps'),
@@ -21,7 +32,18 @@ module.exports = [
         mode: 'development',
         target: "electron-renderer",
         entry: {
-            electron: './web/js/apps/electron.js',
+            electron: ["babel-polyfill", "./web/js/apps/electron.js"],
+        },
+        module: {
+            rules: [
+                {
+                    test: /\.js$/,
+                    exclude: /node_modules/,
+                    use: {
+                        loader: "babel-loader"
+                    }
+                }
+            ],
         },
         output: {
             path: path.resolve(__dirname, 'web/js/apps'),
@@ -33,7 +55,18 @@ module.exports = [
     {
         mode: 'development',
         entry: {
-            injector: './web/js/apps/injector.js',
+            injector: ["./web/js/apps/injector.js"]
+        },
+        module: {
+            rules: [
+                {
+                    test: /\.js$/,
+                    exclude: /node_modules/,
+                    use: {
+                        loader: "babel-loader"
+                    }
+                }
+            ],
         },
         output: {
             path: path.resolve(__dirname, 'web/js/apps'),

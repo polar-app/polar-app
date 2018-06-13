@@ -1,7 +1,16 @@
 class ImagePasteHandler {
 
-    constructor(element) {
+    constructor(element, mutator) {
+
         this.element = element;
+        this.mutator = mutator;
+
+        if( ! this.mutator) {
+            this.mutator = function (val) {
+                return val;
+            };
+        }
+
     }
 
     start() {
@@ -19,6 +28,7 @@ class ImagePasteHandler {
                 //let text = e.clipboardData.getData("text/plain");
 
                 let text = imagePasted.image;
+                text = this.mutator(text);
 
                 // insert text manually
                 document.execCommand("insertHTML", false, text);

@@ -138,5 +138,14 @@ render((
              onError={log("errors")} />
 ), document.getElementById("app"));
 
-new ImagePasteHandler(document.body).start();
+function pasteMutator(val) {
+    return `[](${val})`;
+}
 
+new ImagePasteHandler(document.body, pasteMutator).start();
+
+function pasteIt() {
+    let element = document.createElement("div");
+    element.innerHTML = `<pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-formatting cm-formatting-strong cm-strong">**</span><span class="cm-strong">this is a test</span><span class="cm-formatting cm-formatting-strong cm-strong">**</span></span></pre>`;
+    document.execCommand("insertHTML", false, element.outerHTML);
+}
