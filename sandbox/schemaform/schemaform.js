@@ -4,6 +4,8 @@ import React, { Component } from "react";
 import { render } from "react-dom";
 
 import Form from "react-jsonschema-form";
+import SimpleMDE from 'react-simplemde-editor';
+
 
 const schema = {
     "title": "A registration form",
@@ -43,10 +45,17 @@ const schema = {
     }
 };
 
+const uiSchema = {
+    firstName: {
+        "ui:widget": SimpleMDE
+    }
+}
+
 const log = (type) => console.log.bind(console, type);
 
 render((
        <Form schema={schema}
+             uiSchema={uiSchema}
              onChange={log("changed")}
              onSubmit={log("submitted")}
              onError={log("errors")} />

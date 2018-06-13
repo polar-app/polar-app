@@ -86,6 +86,7 @@
     "react": "^16.4.1",
     "react-dom": "^16.4.1",
     "react-jsonschema-form": "^1.0.3",
+    "react-simplemde-editor": "^3.6.15",
     "requirejs": "^2.3.5",
     "rimraf": "^2.6.2",
     "rx-collection": "^0.1.0",
