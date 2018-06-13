@@ -6,6 +6,7 @@ const {DiskDatastore} = require("./web/js/datastore/DiskDatastore");
 const app = electron.app;
 const shell = electron.shell;
 const Menu = electron.Menu;
+const MenuItem = electron.MenuItem;
 const Tray = electron.Tray;
 const dialog = electron.dialog;
 const ipcMain = electron.ipcMain;
@@ -17,6 +18,7 @@ const app_icon = nativeImage.createFromPath(fspath.join(__dirname, 'icon.png'));
 const {WebserverConfig} = require("./web/js/backend/WebserverConfig");
 const {Webserver} = require("./web/js/backend/Webserver");
 const {FileRegistry} = require("./web/js/backend/FileRegistry");
+const {Cmdline} = require("./web/js/electron/Cmdline");
 
 let mainWindow, splashwindow;
 let contextMenu = null;
@@ -69,6 +71,8 @@ webserver.start();
 //const DEFAULT_URL = 'file://' + __dirname + '/default.html';
 
 let args = parseArgs();
+
+console.log("Running with process.args: ", JSON.stringify(process.argv));
 
 if (args.enableRemoteDebugging) {
 
@@ -266,6 +270,19 @@ app.on('ready', function() {
 
     mainWindow = createWindow();
 
+
+    const ctxMenu = new Menu();
+    // ctxMenu.append(new MenuItem({
+    //     label: "hello"
+    // }));
+
+    ctxMenu.append(new MenuItem({ label: 'Copy', accelerator: 'CmdOrCtrl+C', role: 'copy' }
+    ))
+
+    mainWindow.webContents.on("context-menu", function (e, params) {
+        ctxMenu.popup(mainWindow, params.x, params.y);
+    });
+
     if(args.enableDevTools) {
         mainWindow.toggleDevTools();
     }
@@ -354,7 +371,7 @@ async function promptPDF() {
  */
 function handleCmdLinePDF(commandLine, createNewWindow) {
 
-    let fileArg = getFileArg(commandLine);
+    let fileArg = Cmdline.getPDFArg(commandLine)
 
     if(fileArg) {
         openFileCmdline(fileArg, createNewWindow);
@@ -434,21 +451,6 @@ function openFileCmdline(path, createNewWindow) {
 
 }
 
-/**
- * Get the file name from the command line, if any.
- *
- * @param cmdline
- */
-function getFileArg(cmdline) {
-
-    let fileArg = cmdline[cmdline.length - 1];
-    if (fileArg && fileArg.endsWith(".pdf")) {
-        return fileArg;
-    }
-
-    return null;
-
-}
 
 /**
  * Process app command line args and return an object to work with them

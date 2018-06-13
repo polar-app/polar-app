@@ -34,7 +34,7 @@ module.exports.WebController = class extends Controller {
     onDocumentLoaded(fingerprint, nrPages, currentlySelectedPageNum) {
 
         super.onDocumentLoaded(fingerprint, nrPages, currentlySelectedPageNum);
-        this.setupContextMenu();
+        //this.setupContextMenu();
 
     }
 
