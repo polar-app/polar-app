@@ -54,7 +54,7 @@
   },
   "dependencies": {
     "base58check": "^2.0.0",
-    "bootstrap": "^4.0.0-alpha.6",
+    "bootstrap": "^4.1.1",
     "codemirror": "^5.38.0",
     "editor.md": "^1.5.0",
     "editor.md.webpack": "^1.5.0",

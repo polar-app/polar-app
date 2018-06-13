@@ -24,6 +24,10 @@
 - ability to right click and 'add flashcard' to an annotation and enter the data
   in markdown.
 
+    - I need the ability to create a context menu when I click on a highlight.
+
+    - then test adding the new flashcard
+
 
 
 - recent files
@@ -40,7 +44,15 @@
 
     https://stackoverflow.com/questions/46949194/new-window-positioning-in-electron
 
+- implement a PROPER context menu!!!
+
+    https://www.youtube.com/watch?v=MkVLaM9JAxM
+        - I'm going to have to add the event listener in the renderer and then
+          use the electron API to popup the context menu for the various
+          modes.
+
 - 'open-file' event for mac and windows?
+
 
 
 - get text extraction working for annotations
@@ -59,6 +71,12 @@
 -  webview.openDevTools();
     - support...
 
+
+# Skin / UI
+
+Use this alternative boostrap skin.
+
+https://bootswatch.com/slate/
 
 # Spectron Testing
 

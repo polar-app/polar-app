@@ -270,18 +270,16 @@ app.on('ready', function() {
 
     mainWindow = createWindow();
 
-
     const ctxMenu = new Menu();
     // ctxMenu.append(new MenuItem({
     //     label: "hello"
     // }));
 
-    ctxMenu.append(new MenuItem({ label: 'Copy', accelerator: 'CmdOrCtrl+C', role: 'copy' }
-    ))
-
-    mainWindow.webContents.on("context-menu", function (e, params) {
-        ctxMenu.popup(mainWindow, params.x, params.y);
-    });
+    // ctxMenu.append(new MenuItem({ label: 'Copy', accelerator: 'CmdOrCtrl+C', role: 'copy' }))
+    //
+    // mainWindow.webContents.on("context-menu", function (e, params) {
+    //     ctxMenu.popup(mainWindow, params.x, params.y);
+    // });
 
     if(args.enableDevTools) {
         mainWindow.toggleDevTools();

@@ -63,4 +63,22 @@ module.exports.Preconditions = class {
         return value;
 
     }
+
+    /**
+     * Use a default value if one is not specified.
+     *
+     * @param currentValue
+     * @param defaultValue
+     * @return {*}
+     */
+    static defaultValue(currentValue, defaultValue) {
+
+        if(! currentValue) {
+            return defaultValue;
+        }
+
+        return currentValue;
+
+    }
+
 };
