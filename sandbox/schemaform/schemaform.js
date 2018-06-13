@@ -12,44 +12,64 @@ const schema = {
     "description": "A simple form example.",
     "type": "object",
     "required": [
-        "firstName",
-        "lastName"
+        "front",
+        "back"
     ],
     "properties": {
-        "firstName": {
+        "front": {
             "type": "string",
-            "title": "First name"
+            "title": "Front"
         },
-        "lastName": {
+        "back": {
             "type": "string",
-            "title": "Last name"
-        },
-        "age": {
-            "type": "integer",
-            "title": "Age"
-        },
-        "bio": {
-            "type": "string",
-            "title": "Bio"
-        },
-        "password": {
-            "type": "string",
-            "title": "Password",
-            "minLength": 3
-        },
-        "telephone": {
-            "type": "string",
-            "title": "Telephone",
-            "minLength": 10
+            "title": "Back"
         }
+        // },
+        // "age": {
+        //     "type": "integer",
+        //     "title": "Age"
+        // },
+        // "bio": {
+        //     "type": "string",
+        //     "title": "Bio"
+        // },
+        // "password": {
+        //     "type": "string",
+        //     "title": "Password",
+        //     "minLength": 3
+        // },
+        // "telephone": {
+        //     "type": "string",
+        //     "title": "Telephone",
+        //     "minLength": 10
+        // }
     }
 };
 
+// spellChecker: true,
+//     hideIcons: ["side-by-side", "fullscreen"]
+
+
 const uiSchema = {
-    firstName: {
-        "ui:widget": SimpleMDE
+    front: {
+        "ui:widget": SimpleMDE,
+        "ui:options": {
+            label: false
+        }
+    },
+    back: {
+        "ui:widget": SimpleMDE,
+        "ui:options": {
+            label: false
+        }
     }
 }
+
+SimpleMDE.defaultProps = {
+    options: {
+        hideIcons: ["side-by-side", "fullscreen"]
+    }
+};
 
 const log = (type) => console.log.bind(console, type);
 
