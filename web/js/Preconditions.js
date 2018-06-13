@@ -1,4 +1,4 @@
-module.exports.Preconditions = class {
+class Preconditions {
 
     static assertInstanceOf(value, name, instance) {
 
@@ -82,3 +82,6 @@ module.exports.Preconditions = class {
     }
 
 };
+
+
+module.exports.Preconditions = Preconditions;
