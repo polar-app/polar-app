@@ -4,7 +4,8 @@ module.exports = [
     {
         mode: 'development',
         entry: {
-            schemaform: './sandbox/schemaform/schemaform.js',
+            // import "babel-polyfill";
+            schemaform: ["babel-polyfill", './sandbox/schemaform/schemaform.js'],
         },
         module: {
             rules: [
