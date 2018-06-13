@@ -4,6 +4,51 @@ module.exports = [
     {
         mode: 'development',
         entry: {
+            schemaform: './sandbox/schemaform/schemaform.js',
+        },
+        module: {
+            rules: [
+                {
+                    test: /\.js$/,
+                    exclude: /node_modules/,
+                    use: {
+                        loader: "babel-loader"
+                    }
+                }
+            ],
+        },
+        output: {
+            path: path.resolve(__dirname, 'sandbox/schemaform'),
+            filename: '[name]-bundle.js',
+        }
+    },
+    // {
+    //     mode: 'development',
+    //     entry: {
+    //         schemaform: './sandbox/schemaform/schemaform.ts',
+    //     },
+    //     devtool: "source-map",
+    //     resolve: {
+    //         // Add '.ts' and '.tsx' as resolvable extensions.
+    //         extensions: [".ts", ".tsx", ".js", ".json"]
+    //     },
+    //     module: {
+    //         rules: [
+    //             // All files with a '.ts' or '.tsx' extension will be handled by 'awesome-typescript-loader'.
+    //             { test: /\.tsx?$/, loader: "awesome-typescript-loader" },
+    //
+    //             // All output '.js' files will have any sourcemaps re-processed by 'source-map-loader'.
+    //             { enforce: "pre", test: /\.js$/, loader: "source-map-loader" }
+    //         ]
+    //     },
+    //     output: {
+    //         path: path.resolve(__dirname, 'sandbox/schemaform'),
+    //         filename: '[name]-bundle.js',
+    //     }
+    // },
+    {
+        mode: 'development',
+        entry: {
             bootstrap: './sandbox/bootstrap/bootstrap.js',
         },
         output: {

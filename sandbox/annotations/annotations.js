@@ -52,6 +52,20 @@ function createModal() {
 
 }
 
+function createIframeModal() {
+
+    let innerHTML = `<div id="mylightbox" class="polar-lightbox">
+
+        <iframe src="iframe.html"></iframe>
+        
+    </div>
+    `;
+
+    let lightbox = Elements.createElementHTML(innerHTML);
+
+    $.featherlight($(lightbox).show());
+
+}
 
 
 $(document).ready(function() {
@@ -66,6 +80,10 @@ $(document).ready(function() {
                         cmdAddFlashcard();
                         break;
 
+                    case "create-iframe":
+                        createIframeModal();
+                        break;
+
                     default:
                         break;
                 }
@@ -73,6 +91,7 @@ $(document).ready(function() {
             },
             items: {
                 "create-pagemark-here": {name: "Create Pagemark Here"},
+                "create-iframe": {name: "Create Iframe"},
                 "sep1": "---------",
                 "view": {name: "View Highlight"},
                 "add-flashcard": {name: "Add Flashcard"},

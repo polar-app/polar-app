@@ -21,3 +21,11 @@ is a shared component we can use.
 
 https://github.com/RIP21/react-simplemde-editor
 https://www.npmjs.com/package/react-simplemde-editor
+
+# Sandbox Apps (PDF.js)
+
+I can sandbox my apps from pdf.js by using the iframe resizer code:
+
+https://github.com/davidjbradshaw/iframe-resizer
+
+This way I could have react and twitter bootstrap in the child...
