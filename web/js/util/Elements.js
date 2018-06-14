@@ -1,6 +1,6 @@
 const $ = require('jquery');
 
-module.exports.Elements = class {
+class Elements {
 
     /**
      * Create a div from the given innerHTML and return it.
@@ -51,7 +51,7 @@ module.exports.Elements = class {
 
     static offsetRelative(element, parentElement) {
 
-        let offset = {left: 0, top: 0, bottom: 0, right: 0};
+        let offsetLeft = 0;
 
         do {
 
@@ -88,7 +88,7 @@ module.exports.Elements = class {
             return null;
         }
 
-        return this.untilRoot(element.parentElement, selector);
+        return Elements.untilRoot(element.parentElement, selector);
 
     }
 
@@ -124,3 +124,5 @@ module.exports.Elements = class {
     }
 
 };
+
+module.exports.Elements = Elements;

@@ -11,6 +11,8 @@ const {Launcher} = require("./Launcher");
 
 async function persistenceLayerFactory() {
 
+    console.log("Using mock persistence layer and memory store");
+
     let datastore = new MemoryDatastore();
     let persistenceLayer = new PersistenceLayer(datastore);
 

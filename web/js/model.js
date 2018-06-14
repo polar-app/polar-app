@@ -10,6 +10,7 @@ const {Reactor} = require("./reactor/Reactor");
 const {Event} = require("./reactor/Event");
 const {forDict} = require("./utils");
 const {Objects} = require("./util/Objects");
+const {Preconditions} = require("./Preconditions");
 
 module.exports.Model = class {
 
@@ -131,6 +132,8 @@ module.exports.Model = class {
     }
 
     erasePagemark(pageNum) {
+
+        Preconditions.assertNumber(pageNum, "pageNum");
 
         console.log("Model sees erasePagemark");
 

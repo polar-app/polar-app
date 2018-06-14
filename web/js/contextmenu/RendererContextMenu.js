@@ -5,7 +5,7 @@ module.exports.RendererContextMenu = class {
 
     constructor() {
 
-        console.log("FIXME: here at least..");
+        //console.log("FIXME: here at least..");
 
     }
 

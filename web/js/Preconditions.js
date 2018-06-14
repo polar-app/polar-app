@@ -1,5 +1,22 @@
 class Preconditions {
 
+    /**
+     * Assert that this value is defined , not-null, and also not NaN and also a number.
+     * @param value
+     * @param name
+     */
+    static assertNumber(value, name) {
+
+        Preconditions.assertNotNull(value, name);
+
+        if(isNaN(value)) {
+            throw new Error(`Precondition failure for ${name}: NaN`);
+        }
+
+        Preconditions.assertTypeOf(value, name, "number");
+
+    }
+
     static assertInstanceOf(value, name, instance) {
 
         if ((value instanceof instance)) {

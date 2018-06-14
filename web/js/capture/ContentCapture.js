@@ -1,21 +1,17 @@
 
 class ContentCapture {
 
-    // FIXME: the base is actually WRONG.. I think it needs to be the CURRENT
-    // URL we're loading from...
-
-    static computeBase(href) {
-        let regexp = new RegExp("https?://[^/]+");
-        let matches = href.match(regexp);
-        return matches[0];
-    }
-
     /**
      * Capture the page as HTML so that we can render it static.
      */
     static captureHTML() {
 
         let result = {
+
+            // TODO: capture HTML metadata including twitter card information
+            // which we could show in the UL.
+
+            title: document.title,
 
             // The document href / location as loaded.
             href: document.location.href,
@@ -25,6 +21,7 @@ class ContentCapture {
             // document.
             scrollHeight: document.documentElement.scrollHeight,
 
+            // The content as an HTML string
             content: null
 
         };
@@ -69,7 +66,7 @@ class ContentCapture {
         // create a NEW base element for this HTML
 
         base = cloneDoc.createElement("base");
-        base.setAttribute("href", ContentCapture.computeBase(result.href));
+        base.setAttribute("href", result.href);
 
         if(cloneDoc.head.firstChild != null) {
             cloneDoc.head.insertBefore(base,cloneDoc.head.firstChild);

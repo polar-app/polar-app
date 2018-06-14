@@ -29,7 +29,7 @@ function createPagemark(pageElement) {
     pagemark.style.zIndex = "0";
 
 
-    let canvasWrapper = pageElement.querySelector(".canvasWrapper");
+    let canvasWrapper = pageElement.querySelector(".canvasWrapper, .iframeWrapper");
     let textLayer = pageElement.querySelector(".textLayer");
 
     // this must be above the pagemark layer or you won't be able to select text

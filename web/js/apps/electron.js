@@ -4,6 +4,8 @@ const {Launcher} = require("./Launcher");
 
 async function persistenceLayerFactory() {
 
+    console.log("Using electron persistence layer and disk store");
+
     const remote = require('electron').remote;
 
     console.log("Accessing datastore...");

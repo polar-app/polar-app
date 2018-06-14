@@ -10581,6 +10581,25 @@ var Preconditions = function () {
     }
 
     _createClass(Preconditions, null, [{
+        key: "assertNumber",
+
+
+        /**
+         * Assert that this value is defined , not-null, and also not NaN and also a number.
+         * @param value
+         * @param name
+         */
+        value: function assertNumber(value, name) {
+
+            Preconditions.assertNotNull(value, name);
+
+            if (isNaN(value)) {
+                throw new Error("Precondition failure for " + name + ": NaN");
+            }
+
+            Preconditions.assertTypeOf(value, name, "number");
+        }
+    }, {
         key: "assertInstanceOf",
         value: function assertInstanceOf(value, name, instance) {
 
@@ -10718,12 +10737,12 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 var $ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
 
-module.exports.Elements = function () {
-    function _class() {
-        _classCallCheck(this, _class);
+var Elements = function () {
+    function Elements() {
+        _classCallCheck(this, Elements);
     }
 
-    _createClass(_class, null, [{
+    _createClass(Elements, null, [{
         key: "createElementHTML",
 
 
@@ -10777,7 +10796,7 @@ module.exports.Elements = function () {
         key: "offsetRelative",
         value: function offsetRelative(element, parentElement) {
 
-            var offset = { left: 0, top: 0, bottom: 0, right: 0 };
+            var offsetLeft = 0;
 
             do {
 
@@ -10813,7 +10832,7 @@ module.exports.Elements = function () {
                 return null;
             }
 
-            return this.untilRoot(element.parentElement, selector);
+            return Elements.untilRoot(element.parentElement, selector);
         }
     }, {
         key: "calculateVisibilityForDiv",
@@ -10847,8 +10866,12 @@ module.exports.Elements = function () {
         }
     }]);
 
-    return _class;
+    return Elements;
 }();
+
+;
+
+module.exports.Elements = Elements;
 
 /***/ }),
 

@@ -1,5 +1,7 @@
 const {Delegator, Styles, Elements, forDict} = require("../utils.js");
 const {DocMetaDescriber} = require("../metadata/DocMetaDescriber");
+const {DocFormatFactory} = require("../docformat/DocFormatFactory");
+
 const {View} = require("./View.js");
 
 module.exports.WebView = class extends View {
@@ -11,6 +13,7 @@ module.exports.WebView = class extends View {
          * The currently defined renderer for pagemarks.
          */
         this.pagemarkRenderer = null;
+        this.docFormat = DocFormatFactory.getInstance();
 
     }
 
@@ -30,7 +33,7 @@ module.exports.WebView = class extends View {
 
         console.log("Percentage is now: " + perc);
 
-        document.querySelector("#pagemark-process").value = perc;
+        document.querySelector("#pagemark-progress").value = perc;
 
         // now update the description of the doc at the bottom.
 
@@ -70,8 +73,13 @@ module.exports.WebView = class extends View {
 
         let pagemarkRendererDelegates = [
             new MainPagemarkRenderer(this),
-            new ThumbnailPagemarkRenderer(this)
         ];
+
+        if (this.docFormat.supportThumbnails()) {
+            // only support rendering thumbnails for documents that have thumbnail
+            // support.
+            pagemarkRendererDelegates.push(new ThumbnailPagemarkRenderer(this));
+        }
 
         this.pagemarkRenderer = new CompositePagemarkRenderer(this, pagemarkRendererDelegates);
         this.pagemarkRenderer.setup();
@@ -204,7 +212,7 @@ module.exports.WebView = class extends View {
 
         if (! options.placementElement) {
             // TODO: move this to the object dealing with pages only.
-            options.placementElement = pageElement.querySelector(".canvasWrapper");
+            options.placementElement = pageElement.querySelector(".canvasWrapper, .iframeWrapper");
         }
 
         if(! options.templateElement) {

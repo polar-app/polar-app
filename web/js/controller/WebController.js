@@ -6,8 +6,10 @@ const {PagemarkCoverageEventListener} = require("../PagemarkCoverageEventListene
 const {KeyEvents} = require("../KeyEvents.js");
 const {Preconditions} = require("../Preconditions.js");
 const {Controller} = require("./Controller.js");
+const {DocFormatFactory} = require("../docformat/DocFormatFactory");
 const {polar} = require("../polar");
 const {RendererContextMenu} = require("../contextmenu/RendererContextMenu");
+
 
 module.exports.WebController = class extends Controller {
 
@@ -23,8 +25,9 @@ module.exports.WebController = class extends Controller {
          */
         this.docFingerprint = null;
 
-    }
+        this.docFormat = DocFormatFactory.getInstance();
 
+    }
 
     start() {
         this.listenForDocumentLoad();
@@ -43,6 +46,7 @@ module.exports.WebController = class extends Controller {
 
         //new RendererContextMenu();
 
+        // FIXME: this needs to be moved into the contextmenu package.
 
         console.log("Registered context listener...");
 
@@ -89,25 +93,24 @@ module.exports.WebController = class extends Controller {
         container.addEventListener('pagesinit', this.detectDocumentLoadedEventListener.bind(this));
         container.addEventListener('updateviewarea', this.detectDocumentLoadedEventListener.bind(this));
 
+        // run manually the first time in case we get lucky of we're running HTML
+        //this.detectDocumentLoadedEventListener();
+
     }
 
     detectDocumentLoadedEventListener(event) {
 
-        if (window.PDFViewerApplication &&
-            window.PDFViewerApplication.pdfDocument &&
-            window.PDFViewerApplication.pdfDocument.pdfInfo &&
-            window.PDFViewerApplication.pdfDocument.pdfInfo.fingerprint != this.docFingerprint) {
+        let currentDocFingerprint = this.docFormat.currentDocFingerprint();
+
+        if (currentDocFingerprint !== this.docFingerprint) {
 
             console.log("controller: New document loaded!")
 
-            let newDocumentFingerprint = window.PDFViewerApplication.pdfDocument.pdfInfo.fingerprint;
-            let nrPages = window.PDFViewerApplication.pagesCount;
-            let currentPageNumber = window.PDFViewerApplication.pdfViewer.currentPageNumber;
+            let newDocumentFingerprint = currentDocFingerprint;
 
-            let pageElement = event.target.parentElement;
-            let pageNum = this.getPageNum(pageElement);
+            let currentDocState = this.docFormat.currentState(event);
 
-            this.onNewDocumentFingerprint(newDocumentFingerprint, nrPages, currentPageNumber);
+            this.onNewDocumentFingerprint(newDocumentFingerprint, currentDocState.nrPages, currentDocState.currentPageNumber);
 
         }
 
@@ -137,10 +140,7 @@ module.exports.WebController = class extends Controller {
         //
         // documentload, pagerendered, textlayerrendered, pagechange, and pagesinit...
 
-        if (window.PDFViewerApplication &&
-            window.PDFViewerApplication.pdfDocument &&
-            window.PDFViewerApplication.pdfDocument.pdfInfo &&
-            window.PDFViewerApplication.pdfDocument.pdfInfo.fingerprint != this.docFingerprint) {
+        if (this.docFormat.currentDocFingerprint() !== this.docFingerprint) {
 
             let newDocumentFingerprint = window.PDFViewerApplication.pdfDocument.pdfInfo.fingerprint;
             let nrPages = window.PDFViewerApplication.pagesCount;
@@ -215,6 +215,7 @@ module.exports.WebController = class extends Controller {
 
     // TODO/REFACTOR migrate this to use PDFRenderer
     getPageNum(pageElement) {
+        Preconditions.assertNotNull(pageElement, "pageElement");
         let dataPageNum = pageElement.getAttribute("data-page-number");
         return parseInt(dataPageNum);
     }
