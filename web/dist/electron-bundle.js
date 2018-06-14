@@ -26210,7 +26210,7 @@ module.exports.WebController = function (_Controller) {
         value: function onDocumentLoaded(fingerprint, nrPages, currentlySelectedPageNum) {
 
             _get(_class.prototype.__proto__ || Object.getPrototypeOf(_class.prototype), "onDocumentLoaded", this).call(this, fingerprint, nrPages, currentlySelectedPageNum);
-            this.setupContextMenu();
+            //this.setupContextMenu();
         }
     }, {
         key: "setupContextMenu",
