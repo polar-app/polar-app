@@ -1,6 +1,9 @@
 const electron = require('electron');
+const remote = electron.remote;
 const Menu = electron.Menu;
 const MenuItem = electron.MenuItem;
+const {ContextMenuType} = require("./ContextMenuType");
+
 module.exports.ElectronContextMenu = class {
 
     constructor() {
@@ -12,9 +15,9 @@ module.exports.ElectronContextMenu = class {
     //
     // }
 
-    popup(window, screenX, screenY) {
+    popup(window, screenX, screenY, contextMenuType) {
 
-        console.log("GOT IT")
+        console.log("GOT IT for: " + ContextMenuType)
 
         const ctxMenu = new Menu();
         // ctxMenu.append(new MenuItem({
@@ -22,12 +25,9 @@ module.exports.ElectronContextMenu = class {
         // }));
 
         ctxMenu.append(new MenuItem({ label: 'Copy', accelerator: 'CmdOrCtrl+C', role: 'copy' }))
-        //
-        // window.webContents.on("context-menu", function (e, params) {
-        //     console.log("FIXME e", params);
-        //     console.log("FIXME params: ", params)
-        //
-        // });
+        ctxMenu.append(new MenuItem({ label: 'Inspect Element', accelerator: 'Ctrl+Shift+I', click: function () {
+                window.inspectElement(screenX, screenY)
+            } }));
 
         ctxMenu.popup(window, screenX, screenY);
     }

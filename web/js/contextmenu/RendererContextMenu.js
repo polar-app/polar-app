@@ -1,4 +1,5 @@
 const remote = require('electron').remote;
+const {ContextMenuType} = require("./ContextMenuType");
 
 module.exports.RendererContextMenu = class {
 
@@ -6,7 +7,19 @@ module.exports.RendererContextMenu = class {
 
         console.log("FIXME: here at least..");
 
-        document.addEventListener("contextmenu", function (event) {
+    }
+
+    static register(element, contextMenuType) {
+
+        console.log("FIXME: here... part 1.")
+
+        element = document.querySelector(".page");
+
+        element.addEventListener("contextmenu", function (event) {
+
+            // FIXME: determine which context menu we should bring up first...
+            //
+            //
 
             let electronContextMenu = remote.getGlobal("electronContextMenu" );
 
@@ -16,9 +29,29 @@ module.exports.RendererContextMenu = class {
 
             //remote.getCurrentWindow(), event.screenX, event.screenY
 
-            electronContextMenu.popup(remote.getCurrentWindow(), event.screenX, event.screenY);
+            console.log(event);
 
-        })
+            console.log("FIXME4: " + contextMenuType)
+
+            electronContextMenu.popup(remote.getCurrentWindow(), event.screenX, event.screenY, contextMenuType);
+
+        }.bind(this));
+
+    }
+
+    determineContextMenuType(element) {
+
+        while(element != null) {
+
+            if(element.classList.contains("text-highlight")) {
+                return ContextMenuType.TEXT_HIGHLIGHT;
+            }
+
+            element = element.parentElement;
+
+        }
+
+        return null;
 
     }
 

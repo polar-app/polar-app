@@ -9,8 +9,8 @@ import SimpleMDE from 'react-simplemde-editor';
 import {ImagePasteHandler} from "../../web/js/paste/ImagePasteHandler";
 
 const schema = {
-    "title": "A registration form",
-    "description": "A simple form example.",
+    "title": "Flashcard",
+    "description": "",
     "type": "object",
     "required": [
         "front",
@@ -136,7 +136,7 @@ render((
              onChange={log("changed")}
              onSubmit={log("submitted")}
              onError={log("errors")} />
-), document.getElementById("app"));
+), document.getElementById("schema-form"));
 
 function pasteMutator(val) {
     return `[](${val})`;

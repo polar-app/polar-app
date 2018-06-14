@@ -22,8 +22,21 @@
             min-height: 100px;
         }
 
-        .field-group {
-            margin-bottom: 0px;
+        .form-group {
+            margin: 0;
+            padding: 0;
+        }
+
+        fieldset .form-group {
+            padding-bottom: 10px;
+        }
+
+        fieldset legend {
+            display: none;
+        }
+
+        #schema-form button {
+            float: right;
         }
 
     </style>
@@ -34,11 +47,13 @@
 <!-- FIXME: the label CSS for bootstrap isn't working -->
 
 <div class="container">
-<div id="app" class="form-group">
+
+    <div id="schema-form" class="form-group">
+
+    </div>
 
 </div>
 
-</div>
 <script src="schemaform-bundle.js"></script>
 
 </body>

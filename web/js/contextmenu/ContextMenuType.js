@@ -17,6 +17,11 @@ module.exports.ContextMenuType = Object.freeze({
     /**
      * An annotation is selected.  We should have "add flashcard", etc.
      */
-    ANNOTATION: "ANNOTATION"
+    ANNOTATION: "ANNOTATION",
+
+    /**
+     *
+     */
+    TEXT_HIGHLIGHT: "TEXT_HIGHLIGHT"
 
 });

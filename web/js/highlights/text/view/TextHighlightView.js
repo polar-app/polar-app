@@ -3,11 +3,14 @@ const {forDict} = require("../../../utils.js");
 const {PageRedrawHandler} = require("../../../PageRedrawHandler");
 const {PDFRenderer} = require("../../../PDFRenderer");
 const {Rects} = require("../../../Rects");
+const {RendererContextMenu} = require("../../../contextmenu/RendererContextMenu");
+const {ContextMenuType} = require("../../../contextmenu/ContextMenuType");
 
 class TextHighlightView {
 
     constructor(model) {
         this.model = model;
+        this.rendererContextMenu = new RendererContextMenu();
     }
 
     start() {
@@ -90,6 +93,8 @@ class TextHighlightView {
         // it might become confusing to debug this issue.  A quick fix is to
         // just reverse the array before we render the elements.
         pageElement.insertBefore(highlightElement, pageElement.firstChild);
+
+        RendererContextMenu.register(highlightElement, ContextMenuType.TEXT_HIGHLIGHT);
 
     }
 
