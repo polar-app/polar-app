@@ -4,8 +4,8 @@
 
         #div0, #div1 {
             position: absolute;
-            top: 0;
-            left: 0;
+            left: 250px;
+            top: 1200px;
         }
 
         #div0 {
@@ -35,11 +35,17 @@
 
     console.log("here");
 
+    function elementsFromEvent(event) {
+        let point = {x: event.pageX, y: event.pageY};
+        console.log("Getting elemetns from event at point: ", point);
+        return document.elementsFromPoint(point.x, point.y);
+    }
+
     document.querySelector("#div1").addEventListener("contextmenu", function (event) {
         console.log("got context menu");
 
         //let elements = document.elementsFromPoint(event.screenX, event.screenY);
-        let elements = document.elementsFromPoint(10,10);
+        let elements = elementsFromEvent(event);
 
         console.log("Found N elementS: " + elements.length);
 
