@@ -77,6 +77,7 @@ describe('DocMetas', function() {
                         },
                         "pagemarks": {
                             "0": {
+                                "id": "12Vf1bAzeo",
                                 "created": "2012-03-02T11:38:49.321Z",
                                 "lastUpdated": "2012-03-02T11:38:49.321Z",
                                 "type": "SINGLE_COLUMN",
@@ -94,6 +95,7 @@ describe('DocMetas', function() {
                         },
                         "pagemarks": {
                             "0": {
+                                "id": "12Vf1bAzeo",
                                 "created": "2012-03-02T11:38:49.321Z",
                                 "lastUpdated": "2012-03-02T11:38:49.321Z",
                                 "type": "SINGLE_COLUMN",

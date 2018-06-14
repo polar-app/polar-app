@@ -11,6 +11,14 @@ module.exports.Annotation = class extends SerializedObject {
         super(val);
 
         /**
+         * The unique ID for this annotation.  Every annotation needs to have
+         * a unique ID so that we can reference it easily.
+         *
+         * @type {null}
+         */
+        this.id = null;
+
+        /**
          * The time this annotation was created
          * @type ISODateTime
          */

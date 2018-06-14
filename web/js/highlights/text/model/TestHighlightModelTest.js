@@ -30,6 +30,7 @@ describe('TextHighlightModel', function() {
                 {
                     "pageNum": 1,
                     "textHighlight": {
+                        "id": "12pNUv1Y9S",
                         "created": "2012-03-02T11:38:49.321Z",
                         "lastUpdated": "2012-03-02T11:38:49.321Z",
                         "rects": {
@@ -81,6 +82,7 @@ describe('TextHighlightModel', function() {
                 {
                     "pageNum": 3,
                     "textHighlight": {
+                        "id": "12pNUv1Y9S",
                         "created": "2012-03-02T11:38:49.321Z",
                         "lastUpdated": "2012-03-02T11:38:49.321Z",
                         "rects": {

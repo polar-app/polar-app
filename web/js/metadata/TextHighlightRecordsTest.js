@@ -20,8 +20,9 @@ describe('TextHighlightRecords', function() {
             let textHighlightRecord = TextHighlightRecords.create(rects, textSelections, text);
 
             let expected = {
-                "id": "12pNUv1Y9S3RjFsgcRBrQuba849iB3xecQLb9tmKv4Ve5mG412j",
+                "id": "12pNUv1Y9S",
                 "value": {
+                    "id": "12pNUv1Y9S",
                     "created": "2012-03-02T11:38:49.321Z",
                     "lastUpdated": "2012-03-02T11:38:49.321Z",
                     "rects": {

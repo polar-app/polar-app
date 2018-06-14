@@ -1,3 +1,4 @@
+const {Pagemarks} = require("./Pagemarks");
 const {Pagemark} = require("./Pagemark");
 const {DocMeta} = require("./DocMeta");
 const {DocInfo} = require("./DocInfo");
@@ -44,10 +45,7 @@ module.exports.DocMetas = class {
         let maxPages = 3;
         for(let pageNum = 1; pageNum <= Math.min(nrPages, maxPages); ++pageNum ) {
 
-            let pagemark = new Pagemark({
-                // TODO: this shouldn't have a hard wired date here but we don't
-                // have a dependency injector yet.
-                created: new ISODateTime(new Date()),
+            let pagemark = Pagemarks.create({
                 type: PagemarkType.SINGLE_COLUMN,
                 percentage: 100,
                 column: 0
@@ -90,12 +88,9 @@ module.exports.DocMetas = class {
 
         for(let pageNum = options.offsetPage; pageNum <= maxPageNum; ++pageNum ) {
 
-            let pagemark = new Pagemark({
-                // TODO: this shouldn't have a hard wired date here but we don't
-                // have a dependency injector yet.
-                created: new ISODateTime(new Date()),
+            let pagemark = Pagemarks.create({
                 type: PagemarkType.SINGLE_COLUMN,
-                percentage: options.percentage,
+                percentage: 100,
                 column: 0
             });
 

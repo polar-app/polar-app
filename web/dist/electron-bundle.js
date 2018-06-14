@@ -27953,11 +27953,19 @@ module.exports.Annotation = function (_SerializedObject) {
         _classCallCheck(this, _class);
 
         /**
-         * The time this annotation was created
-         * @type ISODateTime
+         * The unique ID for this annotation.  Every annotation needs to have
+         * a unique ID so that we can reference it easily.
+         *
+         * @type {null}
          */
         var _this = _possibleConstructorReturn(this, (_class.__proto__ || Object.getPrototypeOf(_class)).call(this, val));
 
+        _this.id = null;
+
+        /**
+         * The time this annotation was created
+         * @type ISODateTime
+         */
         _this.created = null;
 
         /**
@@ -28489,35 +28497,38 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var _require = __webpack_require__(/*! ./Pagemark */ "./web/js/metadata/Pagemark.js"),
-    Pagemark = _require.Pagemark;
+var _require = __webpack_require__(/*! ./Pagemarks */ "./web/js/metadata/Pagemarks.js"),
+    Pagemarks = _require.Pagemarks;
 
-var _require2 = __webpack_require__(/*! ./DocMeta */ "./web/js/metadata/DocMeta.js"),
-    DocMeta = _require2.DocMeta;
+var _require2 = __webpack_require__(/*! ./Pagemark */ "./web/js/metadata/Pagemark.js"),
+    Pagemark = _require2.Pagemark;
 
-var _require3 = __webpack_require__(/*! ./DocInfo */ "./web/js/metadata/DocInfo.js"),
-    DocInfo = _require3.DocInfo;
+var _require3 = __webpack_require__(/*! ./DocMeta */ "./web/js/metadata/DocMeta.js"),
+    DocMeta = _require3.DocMeta;
 
-var _require4 = __webpack_require__(/*! ./PageInfo */ "./web/js/metadata/PageInfo.js"),
-    PageInfo = _require4.PageInfo;
+var _require4 = __webpack_require__(/*! ./DocInfo */ "./web/js/metadata/DocInfo.js"),
+    DocInfo = _require4.DocInfo;
 
-var _require5 = __webpack_require__(/*! ./PageMeta */ "./web/js/metadata/PageMeta.js"),
-    PageMeta = _require5.PageMeta;
+var _require5 = __webpack_require__(/*! ./PageInfo */ "./web/js/metadata/PageInfo.js"),
+    PageInfo = _require5.PageInfo;
 
-var _require6 = __webpack_require__(/*! ./PagemarkType */ "./web/js/metadata/PagemarkType.js"),
-    PagemarkType = _require6.PagemarkType;
+var _require6 = __webpack_require__(/*! ./PageMeta */ "./web/js/metadata/PageMeta.js"),
+    PageMeta = _require6.PageMeta;
 
-var _require7 = __webpack_require__(/*! ./ISODateTime */ "./web/js/metadata/ISODateTime.js"),
-    ISODateTime = _require7.ISODateTime;
+var _require7 = __webpack_require__(/*! ./PagemarkType */ "./web/js/metadata/PagemarkType.js"),
+    PagemarkType = _require7.PagemarkType;
 
-var _require8 = __webpack_require__(/*! ./AnnotationInfo */ "./web/js/metadata/AnnotationInfo.js"),
-    AnnotationInfo = _require8.AnnotationInfo;
+var _require8 = __webpack_require__(/*! ./ISODateTime */ "./web/js/metadata/ISODateTime.js"),
+    ISODateTime = _require8.ISODateTime;
 
-var _require9 = __webpack_require__(/*! ./MetadataSerializer */ "./web/js/metadata/MetadataSerializer.js"),
-    MetadataSerializer = _require9.MetadataSerializer;
+var _require9 = __webpack_require__(/*! ./AnnotationInfo */ "./web/js/metadata/AnnotationInfo.js"),
+    AnnotationInfo = _require9.AnnotationInfo;
 
-var _require10 = __webpack_require__(/*! ../utils */ "./web/js/utils.js"),
-    forDict = _require10.forDict;
+var _require10 = __webpack_require__(/*! ./MetadataSerializer */ "./web/js/metadata/MetadataSerializer.js"),
+    MetadataSerializer = _require10.MetadataSerializer;
+
+var _require11 = __webpack_require__(/*! ../utils */ "./web/js/utils.js"),
+    forDict = _require11.forDict;
 
 module.exports.DocMetas = function () {
     function _class() {
@@ -28563,10 +28574,7 @@ module.exports.DocMetas = function () {
             var maxPages = 3;
             for (var pageNum = 1; pageNum <= Math.min(nrPages, maxPages); ++pageNum) {
 
-                var pagemark = new Pagemark({
-                    // TODO: this shouldn't have a hard wired date here but we don't
-                    // have a dependency injector yet.
-                    created: new ISODateTime(new Date()),
+                var pagemark = Pagemarks.create({
                     type: PagemarkType.SINGLE_COLUMN,
                     percentage: 100,
                     column: 0
@@ -28610,12 +28618,9 @@ module.exports.DocMetas = function () {
 
             for (var pageNum = options.offsetPage; pageNum <= maxPageNum; ++pageNum) {
 
-                var pagemark = new Pagemark({
-                    // TODO: this shouldn't have a hard wired date here but we don't
-                    // have a dependency injector yet.
-                    created: new ISODateTime(new Date()),
+                var pagemark = Pagemarks.create({
                     type: PagemarkType.SINGLE_COLUMN,
-                    percentage: options.percentage,
+                    percentage: 100,
                     column: 0
                 });
 
@@ -29222,6 +29227,85 @@ module.exports.PagemarkType = Object.freeze({
 
 /***/ }),
 
+/***/ "./web/js/metadata/Pagemarks.js":
+/*!**************************************!*\
+  !*** ./web/js/metadata/Pagemarks.js ***!
+  \**************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var _require = __webpack_require__(/*! ../Hashcodes */ "./web/js/Hashcodes.js"),
+    Hashcodes = _require.Hashcodes;
+
+var _require2 = __webpack_require__(/*! ./Pagemark */ "./web/js/metadata/Pagemark.js"),
+    Pagemark = _require2.Pagemark;
+
+var _require3 = __webpack_require__(/*! ./PagemarkType */ "./web/js/metadata/PagemarkType.js"),
+    PagemarkType = _require3.PagemarkType;
+
+var _require4 = __webpack_require__(/*! ./ISODateTime */ "./web/js/metadata/ISODateTime.js"),
+    ISODateTime = _require4.ISODateTime;
+
+var _require5 = __webpack_require__(/*! ../util/Objects */ "./web/js/util/Objects.js"),
+    Objects = _require5.Objects;
+
+var Pagemarks = function () {
+    function Pagemarks() {
+        _classCallCheck(this, Pagemarks);
+    }
+
+    _createClass(Pagemarks, null, [{
+        key: "createID",
+        value: function createID(created) {
+
+            var id = Hashcodes.create(JSON.stringify(created));
+
+            // truncate.  We don't need that much precision against collision.
+            return id.substring(0, 10);
+        }
+    }, {
+        key: "create",
+        value: function create(options) {
+
+            options = Objects.defaults({
+
+                // just set docMeta pageMarkType = PagemarkType.SINGLE_COLUMN by
+                // default for now until we add multiple column types and handle
+                // them properly.
+
+                type: PagemarkType.SINGLE_COLUMN,
+
+                percentage: 100,
+
+                column: 0
+
+            });
+
+            var created = new ISODateTime(new Date());
+            return new Pagemark({
+                id: Pagemarks.createID(created),
+                created: created,
+                type: options.type,
+                percentage: options.percentage,
+                column: options.column
+            });
+        }
+    }]);
+
+    return Pagemarks;
+}();
+
+module.exports.Pagemarks = Pagemarks;
+
+/***/ }),
+
 /***/ "./web/js/metadata/SerializedObject.js":
 /*!*********************************************!*\
   !*** ./web/js/metadata/SerializedObject.js ***!
@@ -29476,14 +29560,20 @@ var _require3 = __webpack_require__(/*! ../Hashcodes */ "./web/js/Hashcodes.js")
 var _require4 = __webpack_require__(/*! ../util/Arrays */ "./web/js/util/Arrays.js"),
     Arrays = _require4.Arrays;
 
-module.exports.TextHighlightRecords = function () {
-    function _class() {
-        _classCallCheck(this, _class);
+var TextHighlightRecords = function () {
+    function TextHighlightRecords() {
+        _classCallCheck(this, TextHighlightRecords);
     }
 
-    _createClass(_class, null, [{
-        key: "create",
+    _createClass(TextHighlightRecords, null, [{
+        key: "createID",
+        value: function createID(rects) {
 
+            var id = Hashcodes.create(JSON.stringify(rects));
+
+            // truncate.  We don't need that much precision against collision.
+            return id.substring(0, 10);
+        }
 
         /**
          * Create a TextHighlight by specifying all required rows.
@@ -29494,16 +29584,18 @@ module.exports.TextHighlightRecords = function () {
          * @return an object with an "id" for a unique hash and a "value" of the
          * TextHighlight to use.
          */
+
+    }, {
+        key: "create",
         value: function create(rects, textSelections, text) {
 
-            var id = Hashcodes.create(JSON.stringify(rects));
-
-            // FIXME: lastUpdated and created times.
+            var id = TextHighlightRecords.createID(rects);
 
             var created = new ISODateTime(new Date());
             var lastUpdated = created.duplicate();
 
             var textHighlight = new TextHighlight({
+                id: id,
                 created: created,
                 lastUpdated: lastUpdated,
                 rects: Arrays.toDict(rects),
@@ -29515,8 +29607,12 @@ module.exports.TextHighlightRecords = function () {
         }
     }]);
 
-    return _class;
+    return TextHighlightRecords;
 }();
+
+;
+
+module.exports.TextHighlightRecords = TextHighlightRecords;
 
 /***/ }),
 
@@ -31838,21 +31934,21 @@ module.exports.WebView = function (_View) {
                 return;
             }
 
-            var pagemark = document.createElement("div");
+            var pagemarkElement = document.createElement("div");
 
             // make sure we have a reliable CSS classname to work with.
-            pagemark.className = "pagemark";
+            pagemarkElement.className = "pagemark";
 
             // set CSS style
 
             //pagemark.style.backgroundColor="rgb(198, 198, 198)";
-            pagemark.style.backgroundColor = "#00CCFF";
-            pagemark.style.opacity = "0.3";
+            pagemarkElement.style.backgroundColor = "#00CCFF";
+            pagemarkElement.style.opacity = "0.3";
 
-            pagemark.style.position = "absolute";
-            pagemark.style.left = options.templateElement.offsetLeft;
-            pagemark.style.top = options.templateElement.offsetTop;
-            pagemark.style.width = options.templateElement.style.width;
+            pagemarkElement.style.position = "absolute";
+            pagemarkElement.style.left = options.templateElement.offsetLeft;
+            pagemarkElement.style.top = options.templateElement.offsetTop;
+            pagemarkElement.style.width = options.templateElement.style.width;
 
             // FIXME: the height should actually be a percentage of the pagemark
             // percentage.
@@ -31863,13 +31959,13 @@ module.exports.WebView = function (_View) {
             // height to reflect the portion we've actually read.
             height = height * (options.pagemark.percentage / 100);
 
-            pagemark.style.height = height + "px";
+            pagemarkElement.style.height = height + "px";
 
-            pagemark.style.zIndex = options.zIndex;
+            pagemarkElement.style.zIndex = options.zIndex;
 
-            if (!pagemark.style.width) throw new Error("Could not determine width");
+            if (!pagemarkElement.style.width) throw new Error("Could not determine width");
 
-            options.placementElement.parentElement.insertBefore(pagemark, options.placementElement);
+            options.placementElement.parentElement.insertBefore(pagemarkElement, options.placementElement);
         }
     }, {
         key: "redrawPagemark",

@@ -3,7 +3,16 @@ const {TextHighlight} = require("./TextHighlight");
 const {Hashcodes} = require("../Hashcodes");
 const {Arrays} = require("../util/Arrays");
 
-module.exports.TextHighlightRecords = class {
+class TextHighlightRecords {
+
+    static createID(rects) {
+
+        let id = Hashcodes.create(JSON.stringify(rects));
+
+        // truncate.  We don't need that much precision against collision.
+        return id.substring(0,10);
+
+    }
 
     /**
      * Create a TextHighlight by specifying all required rows.
@@ -16,14 +25,13 @@ module.exports.TextHighlightRecords = class {
      */
     static create(rects, textSelections, text) {
 
-        let id = Hashcodes.create(JSON.stringify(rects));
-
-        // FIXME: lastUpdated and created times.
+        let id = TextHighlightRecords.createID(rects);
 
         let created = new ISODateTime(new Date());
         let lastUpdated = created.duplicate();
 
         let textHighlight = new TextHighlight({
+            id,
             created,
             lastUpdated,
             rects: Arrays.toDict(rects),
@@ -36,3 +44,5 @@ module.exports.TextHighlightRecords = class {
     }
 
 };
+
+module.exports.TextHighlightRecords = TextHighlightRecords;
