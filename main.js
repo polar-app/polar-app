@@ -19,6 +19,7 @@ const {WebserverConfig} = require("./web/js/backend/WebserverConfig");
 const {Webserver} = require("./web/js/backend/Webserver");
 const {FileRegistry} = require("./web/js/backend/FileRegistry");
 const {Cmdline} = require("./web/js/electron/Cmdline");
+const {ElectronContextMenu} = require("./web/js/contextmenu/ElectronContextMenu");
 
 let mainWindow, splashwindow;
 let contextMenu = null;
@@ -27,6 +28,7 @@ let quitapp, URL;
 
 // share the disk datastore with the remote.
 global.diskDatastore = new DiskDatastore();
+global.electronContextMenu = new ElectronContextMenu();
 
 const BROWSER_WINDOW_OPTIONS = {
     minWidth: 400,
@@ -269,17 +271,6 @@ app.on('ready', function() {
     //appIcon.setContextMenu(contextMenu);
 
     mainWindow = createWindow();
-
-    const ctxMenu = new Menu();
-    // ctxMenu.append(new MenuItem({
-    //     label: "hello"
-    // }));
-
-    // ctxMenu.append(new MenuItem({ label: 'Copy', accelerator: 'CmdOrCtrl+C', role: 'copy' }))
-    //
-    // mainWindow.webContents.on("context-menu", function (e, params) {
-    //     ctxMenu.popup(mainWindow, params.x, params.y);
-    // });
 
     if(args.enableDevTools) {
         mainWindow.toggleDevTools();

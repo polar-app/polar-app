@@ -39,6 +39,11 @@
     - https://www.npmjs.com/package/electron-config
 
 
+- enable right click:
+
+    https://stackoverflow.com/questions/32636750/how-to-add-a-right-click-menu-in-electron-that-has-inspect-element-option-like
+    https://stackoverflow.com/questions/32636750/how-to-add-a-right-click-menu-in-electron-that-has-inspect-element-option-like/32636751
+
 - offset each new window from the previous one. It's not clear that a window
   was actually opened.
 
