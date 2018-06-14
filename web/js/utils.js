@@ -47,27 +47,32 @@ module.exports.Delegator = class {
      */
     apply(functionName) {
 
-        var args = Array.from(arguments);
+        let args = Array.from(arguments);
         args.splice(0,1);
 
         this.delegates.forEach(function (delegate) {
-            var func = delegate[functionName];
+            let func = delegate[functionName];
             func.apply(delegate, args);
         });
     }
 
-}
+};
 
 module.exports.forDict = function(dict, callback) {
 
     Preconditions.assertNotNull(dict, "dict");
     Preconditions.assertNotNull(callback, "callback");
 
-    Object.keys(dict).forEach(function (key) {
+    // get the keys first, that way we can mutate the dictionary while iterating
+    // through it if necessary.
+    let keys = Object.keys(dict);
+
+    keys.forEach(function (key) {
         let value = dict[key];
         callback(key,value);
     })
-}
+
+};
 
 /**
  * Get the bounding box for a list of elements, not just one.  This would be
@@ -75,24 +80,24 @@ module.exports.forDict = function(dict, callback) {
  */
 module.exports.getBoundingClientRectFromElements = function(elements) {
 
-    var boundingClientRects = elements.map(Element.getBoundingClientRect);
+    let boundingClientRects = elements.map(Element.getBoundingClientRect);
     return getBoundingClientRectFromBCRs(boundingClientRects);
 
-}
+};
 
 /**
  * Get the bounding box from a list of BCRs.
  */
 module.exports.getBoundingClientRectFromBCRs = function(boundingClientRects) {
 
-    var left = boundingClientRects.map((brc) => brc.left).reduce((a,b) => Math.min(a,b));
-    var top = boundingClientRects.map((brc) => brc.top).reduce((a,b) => Math.min(a,b));
-    var bottom = boundingClientRects.map((brc) => brc.bottom).reduce((a,b) => Math.max(a,b));
-    var right = boundingClientRects.map((brc) => brc.right).reduce((a,b) => Math.max(a,b));
+    let left = boundingClientRects.map((brc) => brc.left).reduce((a,b) => Math.min(a,b));
+    let top = boundingClientRects.map((brc) => brc.top).reduce((a,b) => Math.min(a,b));
+    let bottom = boundingClientRects.map((brc) => brc.bottom).reduce((a,b) => Math.max(a,b));
+    let right = boundingClientRects.map((brc) => brc.right).reduce((a,b) => Math.max(a,b));
 
     return {left, top, bottom, right};
 
-}
+};
 
 /**
  * Go over the array-like object and return tuples with prev, curr, and next
@@ -104,7 +109,7 @@ module.exports.createSiblingTuples = function(arr) {
 
     let result = [];
 
-    for(var idx = 0; idx < arr.length; ++idx) {
+    for(let idx = 0; idx < arr.length; ++idx) {
 
         result.push( {
             curr: arr[idx],
@@ -160,7 +165,7 @@ module.exports.Elements = class {
      */
     static requireClass(element, clazz) {
 
-        var classValue = element.getAttribute("class");
+        let classValue = element.getAttribute("class");
 
         if( ! classValue || classValue.indexOf(clazz) === -1) {
 
@@ -173,7 +178,7 @@ module.exports.Elements = class {
 
     static offsetRelative(element, parentElement) {
 
-        var offset = {left: 0, top: 0, bottom: 0, right: 0};
+        let offset = {left: 0, top: 0, bottom: 0, right: 0};
 
         do {
 
@@ -181,7 +186,7 @@ module.exports.Elements = class {
                 offsetLeft += elem.offsetLeft;
             }
 
-        } while(element = elem.offsetParent && element != parentElement);
+        } while(element = elem.offsetParent && element !== parentElement);
 
         return offsetLeft;
 
@@ -255,7 +260,7 @@ module.exports.OffsetCalculator = class {
     // https://stackoverflow.com/questions/5598743/finding-elements-position-relative-to-the-document
     static calculate(element, rootElement) {
 
-        var offset = {left: 0, top: 0, width: 0, height: 0};
+        let offset = {left: 0, top: 0, width: 0, height: 0};
 
         while(true) {
 
@@ -301,7 +306,7 @@ module.exports.Styles = class {
 
     static parseTransformScaleX(transform) {
 
-        var result = transform;
+        let result = transform;
 
         if( ! result)
             return null;

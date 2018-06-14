@@ -25158,11 +25158,16 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 var base58check = __webpack_require__(/*! base58check */ "./node_modules/base58check/index.js");
 var createKeccakHash = __webpack_require__(/*! keccak */ "./node_modules/keccak/index.js");
 
+var _require = __webpack_require__(/*! ./Preconditions */ "./web/js/Preconditions.js"),
+    Preconditions = _require.Preconditions;
+
 /**
  * Create hashcodes from string data to be used as identifiers in keys.
  *
  * @type {Hashcodes}
  */
+
+
 module.exports.Hashcodes = function () {
     function _class() {
         _classCallCheck(this, _class);
@@ -25171,6 +25176,7 @@ module.exports.Hashcodes = function () {
     _createClass(_class, null, [{
         key: "create",
         value: function create(data) {
+            Preconditions.assertNotNull(data, "data");
             return base58check.encode(createKeccakHash('keccak256').update(data).digest());
         }
     }]);
@@ -28527,15 +28533,18 @@ var _require9 = __webpack_require__(/*! ./AnnotationInfo */ "./web/js/metadata/A
 var _require10 = __webpack_require__(/*! ./MetadataSerializer */ "./web/js/metadata/MetadataSerializer.js"),
     MetadataSerializer = _require10.MetadataSerializer;
 
-var _require11 = __webpack_require__(/*! ../utils */ "./web/js/utils.js"),
-    forDict = _require11.forDict;
+var _require11 = __webpack_require__(/*! ./TextHighlightRecords */ "./web/js/metadata/TextHighlightRecords.js"),
+    TextHighlightRecords = _require11.TextHighlightRecords;
 
-module.exports.DocMetas = function () {
-    function _class() {
-        _classCallCheck(this, _class);
+var _require12 = __webpack_require__(/*! ../utils */ "./web/js/utils.js"),
+    forDict = _require12.forDict;
+
+var DocMetas = function () {
+    function DocMetas() {
+        _classCallCheck(this, DocMetas);
     }
 
-    _createClass(_class, null, [{
+    _createClass(DocMetas, null, [{
         key: "create",
 
 
@@ -28645,6 +28654,12 @@ module.exports.DocMetas = function () {
 
             var docMeta = MetadataSerializer.deserialize(new DocMeta(), data);
 
+            docMeta = DocMetas.upgrade(docMeta);
+        }
+    }, {
+        key: "upgrade",
+        value: function upgrade(docMeta) {
+
             // validate the JSON data and set defaults. In the future we should migrate
             // to using something like AJV to provide these defaults and also perform
             // type assertion.
@@ -28656,10 +28671,30 @@ module.exports.DocMetas = function () {
                     pageMeta.textHighlights = {};
                 }
 
+                // make sure legacy / old text highlights are given IDs.
+                forDict(pageMeta.textHighlights, function (key, textHighlight) {
+                    if (!textHighlight.id) {
+                        console.warn("Text highlight given ID");
+                        textHighlight.id = TextHighlightRecords.createID(textHighlight.rects);
+                    }
+                });
+
                 if (!pageMeta.areaHighlights) {
                     console.warn("No areaHighlights.  Assigning default.");
                     pageMeta.areaHighlights = {};
                 }
+
+                if (!pageMeta.pagemarks) {
+                    console.warn("No pagemarks.  Assigning default.");
+                    pageMeta.pagemarks = {};
+                }
+
+                forDict(pageMeta.pagemarks, function (key, pagemark) {
+                    if (!pagemark.id) {
+                        console.warn("Pagemark given ID");
+                        pagemark.id = Pagemarks.createID(pagemark.created);
+                    }
+                });
             });
 
             if (!docMeta.annotationInfo) {
@@ -28670,8 +28705,10 @@ module.exports.DocMetas = function () {
         }
     }]);
 
-    return _class;
+    return DocMetas;
 }();
+
+module.exports.DocMetas = DocMetas;
 
 /***/ }),
 
@@ -29609,8 +29646,6 @@ var TextHighlightRecords = function () {
 
     return TextHighlightRecords;
 }();
-
-;
 
 module.exports.TextHighlightRecords = TextHighlightRecords;
 
@@ -31331,7 +31366,11 @@ module.exports.forDict = function (dict, callback) {
     Preconditions.assertNotNull(dict, "dict");
     Preconditions.assertNotNull(callback, "callback");
 
-    Object.keys(dict).forEach(function (key) {
+    // get the keys first, that way we can mutate the dictionary while iterating
+    // through it if necessary.
+    var keys = Object.keys(dict);
+
+    keys.forEach(function (key) {
         var value = dict[key];
         callback(key, value);
     });
@@ -31465,7 +31504,7 @@ module.exports.Elements = function () {
                 if (!isNaN(elem.offsetLeft)) {
                     offsetLeft += elem.offsetLeft;
                 }
-            } while (element = elem.offsetParent && element != parentElement);
+            } while (element = elem.offsetParent && element !== parentElement);
 
             return offsetLeft;
         }

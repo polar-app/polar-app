@@ -11049,7 +11049,11 @@ module.exports.forDict = function (dict, callback) {
     Preconditions.assertNotNull(dict, "dict");
     Preconditions.assertNotNull(callback, "callback");
 
-    Object.keys(dict).forEach(function (key) {
+    // get the keys first, that way we can mutate the dictionary while iterating
+    // through it if necessary.
+    var keys = Object.keys(dict);
+
+    keys.forEach(function (key) {
         var value = dict[key];
         callback(key, value);
     });
@@ -11183,7 +11187,7 @@ module.exports.Elements = function () {
                 if (!isNaN(elem.offsetLeft)) {
                     offsetLeft += elem.offsetLeft;
                 }
-            } while (element = elem.offsetParent && element != parentElement);
+            } while (element = elem.offsetParent && element !== parentElement);
 
             return offsetLeft;
         }

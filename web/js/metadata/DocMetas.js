@@ -8,9 +8,10 @@ const {PagemarkType} = require("./PagemarkType");
 const {ISODateTime} = require("./ISODateTime");
 const {AnnotationInfo} = require("./AnnotationInfo");
 const {MetadataSerializer} = require("./MetadataSerializer");
+const {TextHighlightRecords} = require("./TextHighlightRecords");
 const {forDict} = require("../utils");
 
-module.exports.DocMetas = class {
+class DocMetas {
 
     /**
      * Create the basic DocInfo structure that we can use with required / basic
@@ -115,6 +116,12 @@ module.exports.DocMetas = class {
 
         let docMeta = MetadataSerializer.deserialize(new DocMeta(), data);
 
+        docMeta = DocMetas.upgrade(docMeta);
+
+    }
+
+    static upgrade(docMeta) {
+
         // validate the JSON data and set defaults. In the future we should migrate
         // to using something like AJV to provide these defaults and also perform
         // type assertion.
@@ -126,10 +133,30 @@ module.exports.DocMetas = class {
                 pageMeta.textHighlights = {};
             }
 
+            // make sure legacy / old text highlights are given IDs.
+            forDict(pageMeta.textHighlights, function (key, textHighlight) {
+                if(! textHighlight.id) {
+                    console.warn("Text highlight given ID");
+                    textHighlight.id = TextHighlightRecords.createID(textHighlight.rects);
+                }
+            });
+
             if(!pageMeta.areaHighlights) {
                 console.warn("No areaHighlights.  Assigning default.");
                 pageMeta.areaHighlights = {};
             }
+
+            if(!pageMeta.pagemarks) {
+                console.warn("No pagemarks.  Assigning default.");
+                pageMeta.pagemarks = {};
+            }
+
+            forDict(pageMeta.pagemarks, function (key, pagemark) {
+                if(! pagemark.id) {
+                    console.warn("Pagemark given ID");
+                    pagemark.id = Pagemarks.createID(pagemark.created);
+                }
+            });
 
         } );
 
@@ -140,4 +167,7 @@ module.exports.DocMetas = class {
         return docMeta;
 
     }
+
 }
+
+module.exports.DocMetas = DocMetas;

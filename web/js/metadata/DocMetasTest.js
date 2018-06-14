@@ -6,6 +6,8 @@ const {PageMeta} = require("./PageMeta");
 const {Proxies} = require("../proxies/Proxies");
 
 const {MetadataSerializer} = require("./MetadataSerializer");
+const {TextHighlightRecords} = require("./TextHighlightRecords");
+
 const {assertJSON} = require("../test/Assertions");
 const {TestingTime} = require("../test/TestingTime");
 
@@ -133,4 +135,123 @@ describe('DocMetas', function() {
     });
 
 
+    describe('Upgrade', function() {
+
+        describe("Test upgrading the metadata if it is missing fields.", function () {
+
+            it("No text highlights", function () {
+
+                let docMeta = createUpgradeDoc();
+
+                docMeta.getPageMeta(1).textHighlights = null;
+
+                docMeta = DocMetas.upgrade(docMeta)
+
+                assert.deepEqual(docMeta.getPageMeta(1).textHighlights, {});
+
+            });
+
+            it("No pagemarks", function () {
+
+                let docMeta = createUpgradeDoc();
+
+                docMeta.getPageMeta(1).pagemarks = null;
+
+                docMeta = DocMetas.upgrade(docMeta)
+
+                assert.deepEqual(docMeta.getPageMeta(1).pagemarks, {});
+
+            });
+
+            it("No id on pagemarks", function () {
+
+                let docMeta = createUpgradeDoc();
+
+                docMeta.getPageMeta(1).pagemarks["0"].id = null;
+
+                docMeta = DocMetas.upgrade(docMeta)
+
+                let expected = {
+                    "0": {
+                        "id": "12Vf1bAzeo",
+                        "created": "2012-03-02T11:38:49.321Z",
+                        "lastUpdated": "2012-03-02T11:38:49.321Z",
+                        "type": "SINGLE_COLUMN",
+                        "percentage": 100,
+                        "column": 0,
+                        "notes": {}
+                    }
+                };
+
+                assertJSON(docMeta.getPageMeta(1).pagemarks, expected);
+
+            });
+
+            it("No id on text highlights", function () {
+
+                let docMeta = createUpgradeDoc();
+
+                docMeta.getPageMeta(1).textHighlights["12pNUv1Y9S"].id = null;
+
+                docMeta = DocMetas.upgrade(docMeta)
+
+                let expected = {
+                    "12pNUv1Y9S": {
+                        "id": "1cAbqEAHny",
+                        "created": "2012-03-02T11:38:49.321Z",
+                        "lastUpdated": "2012-03-02T11:38:49.321Z",
+                        "rects": {
+                            "0": {
+                                "top": 100,
+                                "left": 100,
+                                "right": 200,
+                                "bottom": 200,
+                                "width": 100,
+                                "height": 100
+                            }
+                        },
+                        "textSelections": {
+                            "0": "hello world"
+                        },
+                        "text": "hello world",
+                        "notes": {},
+                        "questions": {},
+                        "flashcards": {},
+                        "thumbnail": null
+                    }
+                };
+
+                assertJSON(docMeta.getPageMeta(1).textHighlights, expected);
+
+            });
+
+        });
+
+    });
+
 });
+
+function createUpgradeDoc() {
+
+    let fingerprint = "0x001";
+    let nrPages = 1;
+    let docMeta = DocMetas.createWithinInitialPagemarks(fingerprint, nrPages);
+
+    let textHighlight = createTextHighlight();
+
+    docMeta.getPageMeta(1).textHighlights[textHighlight.id] = textHighlight;
+
+    return docMeta;
+
+}
+
+function createTextHighlight() {
+
+    let rects = [ {top: 100, left: 100, right: 200, bottom: 200, width: 100, height: 100}];
+    let textSelections = ["hello world"];
+    let text = "hello world";
+
+    // create a basic TextHighlight object..
+    return TextHighlightRecords.create(rects, textSelections, text).value;
+
+}
