@@ -17,8 +17,9 @@ module.exports = [
                 }
             ],
         },
+        devtool: "source-map",
         output: {
-            path: path.resolve(__dirname, 'web/js/apps'),
+            path: path.resolve(__dirname, 'web/dist'),
             filename: '[name]-bundle.js',
             publicPath: '/web/js/apps'
         },
@@ -45,8 +46,9 @@ module.exports = [
                 }
             ],
         },
+        devtool: "source-map",
         output: {
-            path: path.resolve(__dirname, 'web/js/apps'),
+            path: path.resolve(__dirname, 'web/dist'),
             filename: '[name]-bundle.js',
             publicPath: '/web/js/apps'
         }
@@ -68,8 +70,9 @@ module.exports = [
                 }
             ],
         },
+        devtool: "source-map",
         output: {
-            path: path.resolve(__dirname, 'web/js/apps'),
+            path: path.resolve(__dirname, 'web/dist'),
             filename: '[name]-bundle.js',
             publicPath: '/web/js/apps'
         }

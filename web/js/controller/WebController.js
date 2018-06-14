@@ -41,37 +41,44 @@ module.exports.WebController = class extends Controller {
 
     setupContextMenu() {
 
-        new RendererContextMenu();
+        //new RendererContextMenu();
 
-        //
-        // console.log("Registered context listener...");
-        //
-        // $(function() {
-        //     $.contextMenu({
-        //         selector: '.page .textLayer',
-        //         callback: function(key, options) {
-        //             let m = "clicked: " + key;
-        //             window.console && console.log(m) || alert(m);
-        //         },
-        //         items: {
-        //             //"new-pagemark": {name: "New pagemark", icon: "edit"},
-        //             "new-pagemark-from-here": {name: "New Pagemark Starting Here", icon: "edit"},
-        //             // "cut": {name: "Cut", icon: "cut"},
-        //             // copy: {name: "Copy", icon: "copy"},
-        //             // "paste": {name: "Paste", icon: "paste"},
-        //             // "delete": {name: "Delete", icon: "delete"},
-        //             // "sep1": "---------",
-        //             // "quit": {name: "Quit", icon: function() {
-        //             //         return 'context-menu-icon context-menu-icon-quit';
-        //             //     }
-        //             // }
-        //         }
-        //     });
-        //
-        //     $('.page .textLayer').on('click', function(e){
-        //         console.log('clicked', this);
-        //     })
-        // });
+
+        console.log("Registered context listener...");
+
+        window.setTimeout( function() {
+
+            console.log("adding listeners!!!")
+
+            $(function() {
+                $.contextMenu({
+                    selector: '.page .text-highlight',
+                    callback: function(key, options) {
+                        let m = "clicked: " + key;
+                        window.console && console.log(m) || alert(m);
+                    },
+                    items: {
+                        //"new-pagemark": {name: "New pagemark", icon: "edit"},
+                        "new-pagemark-from-here": {name: "New Pagemark Starting Here", icon: "edit"},
+                        // "cut": {name: "Cut", icon: "cut"},
+                        // copy: {name: "Copy", icon: "copy"},
+                        // "paste": {name: "Paste", icon: "paste"},
+                        // "delete": {name: "Delete", icon: "delete"},
+                        // "sep1": "---------",
+                        // "quit": {name: "Quit", icon: function() {
+                        //         return 'context-menu-icon context-menu-icon-quit';
+                        //     }
+                        // }
+                    }
+                });
+
+                $('.page .text-highlight').on('click', function(e){
+                    console.log('clicked', this);
+                })
+            });
+
+        }, 2500);
+
 
     }
 
