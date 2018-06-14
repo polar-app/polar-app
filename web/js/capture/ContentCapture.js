@@ -6,6 +6,9 @@ class ContentCapture {
      */
     static captureHTML() {
 
+        // FIXME: include a fingerprint in the output JSON which should probably
+        // be based on the URL.
+
         let result = {
 
             // TODO: capture HTML metadata including twitter card information

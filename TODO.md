@@ -21,6 +21,9 @@
 
 ## Next
 
+- ignore the 'right click' support for now and just write a simple UI in react
+  that is straight forward that I can either inject as a modal or a sidebar...
+
 - ability to right click and 'add flashcard' to an annotation and enter the data
   in markdown.
 

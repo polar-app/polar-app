@@ -1,0 +1,57 @@
+<html>
+<head>
+    <style>
+
+        #div0, #div1 {
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
+        #div0 {
+            width: 100px;
+            height: 100px;
+            background-color: yellow;
+        }
+
+        #div1 {
+            width: 200px;
+            height: 200px;
+            background-color: green;
+            opacity: 0.5;
+        }
+
+    </style>
+</head>
+
+<body>
+
+<div id="parent">
+    <div id="div0"></div>
+    <div id="div1"></div>
+</div>
+
+<script>
+
+    console.log("here");
+
+    document.querySelector("#div1").addEventListener("contextmenu", function (event) {
+        console.log("got context menu");
+
+        //let elements = document.elementsFromPoint(event.screenX, event.screenY);
+        let elements = document.elementsFromPoint(10,10);
+
+        console.log("Found N elementS: " + elements.length);
+
+        elements.forEach(function (element) {
+            console.log("context menu element: ", element);
+        })
+
+    });
+
+
+
+</script>
+
+</body>
+</html>
