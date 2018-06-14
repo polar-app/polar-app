@@ -49615,7 +49615,7 @@ module.exports.Launcher = function () {
 
 var persistenceLayerFactory = function () {
     var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
-        var datastore, persistenceLayer, fingerprint, docMeta;
+        var datastore, persistenceLayer;
         return regeneratorRuntime.wrap(function _callee$(_context) {
             while (1) {
                 switch (_context.prev = _context.next) {
@@ -49629,19 +49629,17 @@ var persistenceLayerFactory = function () {
                         return persistenceLayer.init();
 
                     case 5:
+                        _context.next = 7;
+                        return persistenceLayer.syncDocMeta(createDocMeta0());
 
-                        // create some fake documents for our example PDFs
-                        fingerprint = "110dd61fd57444010b1ab5ff38782f0f";
-                        docMeta = DocMetas.createWithinInitialPagemarks(fingerprint, 14);
+                    case 7:
+                        _context.next = 9;
+                        return persistenceLayer.syncDocMeta(createDocMeta1());
 
-                        DocMetas.addPagemarks(docMeta, { nrPages: 1, offsetPage: 4, percentage: 50 });
-                        _context.next = 10;
-                        return persistenceLayer.sync(fingerprint, docMeta);
-
-                    case 10:
+                    case 9:
                         return _context.abrupt("return", persistenceLayer);
 
-                    case 11:
+                    case 10:
                     case "end":
                         return _context.stop();
                 }
@@ -49680,6 +49678,26 @@ var _require7 = __webpack_require__(/*! ../Electron */ "./web/js/Electron.js"),
 
 var _require8 = __webpack_require__(/*! ./Launcher */ "./web/js/apps/Launcher.js"),
     Launcher = _require8.Launcher;
+
+function createDocMeta0() {
+
+    // create some fake documents for our example PDFs
+    var fingerprint = "110dd61fd57444010b1ab5ff38782f0f";
+
+    var docMeta = DocMetas.createWithinInitialPagemarks(fingerprint, 14);
+    DocMetas.addPagemarks(docMeta, { nrPages: 1, offsetPage: 4, percentage: 50 });
+    return docMeta;
+}
+
+function createDocMeta1() {
+
+    // create some fake documents for our example PDFs
+    var fingerprint = "htmldoc01";
+
+    var docMeta = DocMetas.createWithinInitialPagemarks(fingerprint, 1);
+    DocMetas.addPagemarks(docMeta, { nrPages: 1, offsetPage: 1, percentage: 25 });
+    return docMeta;
+}
 
 new Launcher(persistenceLayerFactory).launch().then(function () {
     console.log("App now loaded.");
@@ -50627,20 +50645,49 @@ module.exports.PersistenceLayer = function () {
         }()
 
         /**
+         * Convenience method to not require the fingerprint.
+         */
+
+    }, {
+        key: "syncDocMeta",
+        value: function () {
+            var _ref3 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee3(docMeta) {
+                return regeneratorRuntime.wrap(function _callee3$(_context3) {
+                    while (1) {
+                        switch (_context3.prev = _context3.next) {
+                            case 0:
+                                return _context3.abrupt("return", this.sync(docMeta.fingerprint, docMeta));
+
+                            case 1:
+                            case "end":
+                                return _context3.stop();
+                        }
+                    }
+                }, _callee3, this);
+            }));
+
+            function syncDocMeta(_x2) {
+                return _ref3.apply(this, arguments);
+            }
+
+            return syncDocMeta;
+        }()
+
+        /**
          * Write the datastore to disk.
          */
 
     }, {
         key: "sync",
         value: function () {
-            var _ref3 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee3(fingerprint, docMeta) {
+            var _ref4 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee4(fingerprint, docMeta) {
                 var data;
-                return regeneratorRuntime.wrap(function _callee3$(_context3) {
+                return regeneratorRuntime.wrap(function _callee4$(_context4) {
                     while (1) {
-                        switch (_context3.prev = _context3.next) {
+                        switch (_context4.prev = _context4.next) {
                             case 0:
                                 if (!(!docMeta instanceof DocMeta)) {
-                                    _context3.next = 2;
+                                    _context4.next = 2;
                                     break;
                                 }
 
@@ -50652,19 +50699,19 @@ module.exports.PersistenceLayer = function () {
                                 // Otherwise tools like git diff , etc will be impossible to deal with
                                 // in practice.
                                 data = DocMetas.serialize(docMeta, "  ");
-                                _context3.next = 5;
+                                _context4.next = 5;
                                 return this.datastore.sync(fingerprint, data);
 
                             case 5:
                             case "end":
-                                return _context3.stop();
+                                return _context4.stop();
                         }
                     }
-                }, _callee3, this);
+                }, _callee4, this);
             }));
 
-            function sync(_x2, _x3) {
-                return _ref3.apply(this, arguments);
+            function sync(_x3, _x4) {
+                return _ref4.apply(this, arguments);
             }
 
             return sync;

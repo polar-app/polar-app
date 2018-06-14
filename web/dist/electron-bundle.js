@@ -26761,20 +26761,49 @@ module.exports.PersistenceLayer = function () {
         }()
 
         /**
+         * Convenience method to not require the fingerprint.
+         */
+
+    }, {
+        key: "syncDocMeta",
+        value: function () {
+            var _ref3 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee3(docMeta) {
+                return regeneratorRuntime.wrap(function _callee3$(_context3) {
+                    while (1) {
+                        switch (_context3.prev = _context3.next) {
+                            case 0:
+                                return _context3.abrupt("return", this.sync(docMeta.fingerprint, docMeta));
+
+                            case 1:
+                            case "end":
+                                return _context3.stop();
+                        }
+                    }
+                }, _callee3, this);
+            }));
+
+            function syncDocMeta(_x2) {
+                return _ref3.apply(this, arguments);
+            }
+
+            return syncDocMeta;
+        }()
+
+        /**
          * Write the datastore to disk.
          */
 
     }, {
         key: "sync",
         value: function () {
-            var _ref3 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee3(fingerprint, docMeta) {
+            var _ref4 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee4(fingerprint, docMeta) {
                 var data;
-                return regeneratorRuntime.wrap(function _callee3$(_context3) {
+                return regeneratorRuntime.wrap(function _callee4$(_context4) {
                     while (1) {
-                        switch (_context3.prev = _context3.next) {
+                        switch (_context4.prev = _context4.next) {
                             case 0:
                                 if (!(!docMeta instanceof DocMeta)) {
-                                    _context3.next = 2;
+                                    _context4.next = 2;
                                     break;
                                 }
 
@@ -26786,19 +26815,19 @@ module.exports.PersistenceLayer = function () {
                                 // Otherwise tools like git diff , etc will be impossible to deal with
                                 // in practice.
                                 data = DocMetas.serialize(docMeta, "  ");
-                                _context3.next = 5;
+                                _context4.next = 5;
                                 return this.datastore.sync(fingerprint, data);
 
                             case 5:
                             case "end":
-                                return _context3.stop();
+                                return _context4.stop();
                         }
                     }
-                }, _callee3, this);
+                }, _callee4, this);
             }));
 
-            function sync(_x2, _x3) {
-                return _ref3.apply(this, arguments);
+            function sync(_x3, _x4) {
+                return _ref4.apply(this, arguments);
             }
 
             return sync;

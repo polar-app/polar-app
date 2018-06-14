@@ -9,6 +9,31 @@ const {MemoryDatastore} = require("../datastore/MemoryDatastore.js");
 const {Electron} = require("../Electron");
 const {Launcher} = require("./Launcher");
 
+
+function createDocMeta0() {
+
+    // create some fake documents for our example PDFs
+    let fingerprint = "110dd61fd57444010b1ab5ff38782f0f";
+
+    let docMeta = DocMetas.createWithinInitialPagemarks(fingerprint, 14);
+    DocMetas.addPagemarks(docMeta, {nrPages: 1, offsetPage: 4, percentage: 50})
+    return docMeta;
+
+}
+
+function createDocMeta1() {
+
+    // create some fake documents for our example PDFs
+    let fingerprint = "htmldoc01";
+
+    let docMeta = DocMetas.createWithinInitialPagemarks(fingerprint, 1);
+    DocMetas.addPagemarks(docMeta, {nrPages: 1, offsetPage: 1, percentage: 25})
+    return docMeta;
+
+}
+
+
+
 async function persistenceLayerFactory() {
 
     console.log("Using mock persistence layer and memory store");
@@ -18,12 +43,8 @@ async function persistenceLayerFactory() {
 
     await persistenceLayer.init();
 
-    // create some fake documents for our example PDFs
-    let fingerprint = "110dd61fd57444010b1ab5ff38782f0f";
-
-    let docMeta = DocMetas.createWithinInitialPagemarks(fingerprint, 14);
-    DocMetas.addPagemarks(docMeta, {nrPages: 1, offsetPage: 4, percentage: 50})
-    await persistenceLayer.sync(fingerprint, docMeta);
+    await persistenceLayer.syncDocMeta(createDocMeta0());
+    await persistenceLayer.syncDocMeta(createDocMeta1());
 
     return persistenceLayer;
 

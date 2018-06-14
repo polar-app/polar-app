@@ -48,6 +48,13 @@ module.exports.PersistenceLayer = class {
     }
 
     /**
+     * Convenience method to not require the fingerprint.
+     */
+    async syncDocMeta(docMeta) {
+        return this.sync(docMeta.fingerprint, docMeta);
+    }
+
+    /**
      * Write the datastore to disk.
      */
     async sync(fingerprint, docMeta) {
