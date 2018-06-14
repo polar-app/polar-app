@@ -27041,14 +27041,9 @@ var HTMLFormat = function (_DocFormat) {
          */
         value: function currentDocFingerprint() {
 
-            console.log("FIXME1: ");
-
             var polarFingerprint = document.querySelector("meta[name='polar-fingerprint']");
 
-            console.log("FIXME2: ", polarFingerprint);
-
             if (polarFingerprint !== null) {
-                console.log("FIXME2: ", polarFingerprint);
                 return polarFingerprint.getAttribute("content");
             }
 

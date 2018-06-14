@@ -112,10 +112,10 @@
 
             console.log("Frame loaded.  Sending pagesinit on .page");
 
-            let event = new Event('pagesinit');
+            let event = new Event('pagesinit', {bubbles: true});
 
             // Dispatch the event.
-            document.querySelector("#viewerContainer").dispatchEvent(event);
+            document.querySelector(".page").dispatchEvent(event);
 
         }
 
