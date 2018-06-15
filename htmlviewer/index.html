@@ -15,7 +15,7 @@
 
         #content-parent {
             margin: 0 auto;
-
+            zoom: 1;
         }
 
 
@@ -23,17 +23,20 @@
             display: block;
         }
 
-        /*body {*/
+        iframe {
 
-            /*-ms-zoom: 1.75;*/
-            /*-moz-transform: scale(1.75);*/
-            /*-o-transform: scale(1.75);*/
-            /*-webkit-transform: scale(1.75);*/
+            /*transform-origin: 150% 0;*/
 
-            /*-moz-transform-origin: 0 0;*/
-            /*-o-transform-origin: 0 0;*/
-            /*-webkit-transform-origin: 0 0;*/
-        /*}*/
+            /*-ms-zoom: 1.5;*/
+            /*-moz-transform: scale(1.5);*/
+            /*-o-transform: scale(1.5);*/
+            /*-webkit-transform: scale(1.5);*/
+
+            /*-moz-transform-origin: center 0;*/
+            /*-o-transform-origin: center 0;*/
+            /*-webkit-transform-origin: center 0;*/
+
+        }
 
     </style>
 
@@ -96,7 +99,7 @@
 								<span id="SPAN_10">Zoom In</span>
 							</button>
 						</div> <span id="SPAN_11">
-						<select id="SELECT_12" tabindex="23">
+						<select id="SELECT_12" class="polar-zoom-select" tabindex="23">
 
 							<option id="OPTION_13" value="auto" selected="selected">
 								Automatic Zoom

@@ -31970,7 +31970,7 @@ module.exports.WebView = function (_View) {
 
             console.log("Percentage is now: " + perc);
 
-            document.querySelector("#pagemark-progress").value = perc;
+            document.querySelector("#polar-progress progress").value = perc;
 
             // now update the description of the doc at the bottom.
 
@@ -32775,6 +32775,13 @@ var $ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js"
  */
 
 var FrameResizer = function () {
+
+    // TODO:
+    //
+    // this may be a better way to do the resizing:
+    //
+    // https://stackoverflow.com/questions/1835219/is-there-an-event-that-fires-on-changes-to-scrollheight-or-scrollwidth-in-jquery
+
     function FrameResizer(parent, iframe) {
         _classCallCheck(this, FrameResizer);
 
@@ -32792,7 +32799,7 @@ var FrameResizer = function () {
         this.completed = false;
 
         // how long between polling should we wait to expand the size.
-        this.timeoutInterval = 125;
+        this.timeoutInterval = 100;
     }
 
     _createClass(FrameResizer, [{
@@ -32806,10 +32813,10 @@ var FrameResizer = function () {
         value: function onReadyStateChange() {
 
             if (this.iframe.contentDocument.readyState === "complete") {
-                console.log("FrameResizer: Document has finished loading");
+                console.log("FrameResizer: Document has finished loading: " + this.iframe.contentDocument.location.href);
                 this.completed = true;
             } else {
-                console.log("FrameResizer: Document has started loading");
+                console.log("FrameResizer: Document has started loading: " + this.iframe.contentDocument.location.href);
                 this.completed = false;
                 this.resizeParentInBackground();
             }
@@ -32818,15 +32825,28 @@ var FrameResizer = function () {
         key: "resizeParentInBackground",
         value: function resizeParentInBackground() {
 
-            if (this.completed) {
-                return;
-            }
+            // do not yield after loading now. CSS can still change on us. Figure
+            // out a cleaner way to listen for size changes.
+            // if(this.completed) {
+            //     return;
+            // }
 
-            var newHeight = this.iframe.contentDocument.documentElement.scrollHeight;
-            console.log("Setting new height to: " + newHeight);
-            this.parent.style.height = newHeight;
+            this.doResize();
 
             setTimeout(this.resizeParentInBackground.bind(this), this.timeoutInterval);
+        }
+
+        /**
+         * Perform the resize now.
+         */
+
+    }, {
+        key: "doResize",
+        value: function doResize() {
+
+            var newHeight = this.iframe.contentDocument.documentElement.scrollHeight;
+            //console.log("Setting new height to: " + newHeight);
+            this.parent.style.height = newHeight;
         }
     }]);
 
@@ -32901,9 +32921,25 @@ var HTMLViewer = function (_Viewer) {
 
                     var frameInitializer = new FrameInitializer(this.content, this.textLayer);
                     frameInitializer.start();
+
+                    this.startHandlingZoom();
                 }.bind(this)).start();
             }.bind(this));
         }
+    }, {
+        key: "startHandlingZoom",
+        value: function startHandlingZoom() {
+
+            $(".polar-zoom-select").change(function () {
+                $("select option:selected").each(function () {
+                    var zoom = $(this).val();
+                    console.log("FIXME: zoom: ", zoom);
+                });
+            });
+        }
+    }, {
+        key: "setZoom",
+        value: function setZoom(zoomFactor) {}
     }, {
         key: "changeScale",
         value: function changeScale() {

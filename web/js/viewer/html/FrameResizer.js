@@ -7,6 +7,12 @@ const $ = require('jquery')
  */
 class FrameResizer {
 
+    // TODO:
+    //
+    // this may be a better way to do the resizing:
+    //
+    // https://stackoverflow.com/questions/1835219/is-there-an-event-that-fires-on-changes-to-scrollheight-or-scrollwidth-in-jquery
+
     constructor(parent, iframe) {
 
         if(!parent) {
@@ -23,7 +29,7 @@ class FrameResizer {
         this.completed = false;
 
         // how long between polling should we wait to expand the size.
-        this.timeoutInterval = 125;
+        this.timeoutInterval = 100;
 
     }
 
@@ -36,10 +42,10 @@ class FrameResizer {
     onReadyStateChange() {
 
         if(this.iframe.contentDocument.readyState === "complete") {
-            console.log("FrameResizer: Document has finished loading");
+            console.log("FrameResizer: Document has finished loading: " + this.iframe.contentDocument.location.href);
             this.completed = true;
         } else {
-            console.log("FrameResizer: Document has started loading");
+            console.log("FrameResizer: Document has started loading: " +  this.iframe.contentDocument.location.href);
             this.completed = false;
             this.resizeParentInBackground();
         }
@@ -48,15 +54,26 @@ class FrameResizer {
 
     resizeParentInBackground() {
 
-        if(this.completed) {
-            return;
-        }
+        // do not yield after loading now. CSS can still change on us. Figure
+        // out a cleaner way to listen for size changes.
+        // if(this.completed) {
+        //     return;
+        // }
 
-        let newHeight = this.iframe.contentDocument.documentElement.scrollHeight;
-        console.log("Setting new height to: " + newHeight);
-        this.parent.style.height = newHeight;
+        this.doResize();
 
         setTimeout(this.resizeParentInBackground.bind(this), this.timeoutInterval);
+
+    }
+
+    /**
+     * Perform the resize now.
+     */
+    doResize() {
+
+        let newHeight = this.iframe.contentDocument.documentElement.scrollHeight;
+        //console.log("Setting new height to: " + newHeight);
+        this.parent.style.height = newHeight;
 
     }
 

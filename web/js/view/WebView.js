@@ -33,7 +33,7 @@ module.exports.WebView = class extends View {
 
         console.log("Percentage is now: " + perc);
 
-        document.querySelector("#pagemark-progress").value = perc;
+        document.querySelector("#polar-progress progress").value = perc;
 
         // now update the description of the doc at the bottom.
 

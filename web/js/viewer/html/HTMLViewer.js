@@ -29,9 +29,26 @@ class HTMLViewer extends Viewer {
                 let frameInitializer = new FrameInitializer(this.content, this.textLayer);
                 frameInitializer.start();
 
+                this.startHandlingZoom();
+
             }.bind(this)).start();
 
         }.bind(this));
+
+    }
+
+    startHandlingZoom() {
+
+        $(".polar-zoom-select")
+            .change(function() {
+                $( "select option:selected" ).each(function() {
+                    let zoom = $( this ).val();
+                    console.log("FIXME: zoom: ", zoom);
+                });
+            })
+    }
+
+    setZoom(zoomFactor) {
 
     }
 
