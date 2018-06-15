@@ -1,4 +1,21 @@
-module.exports.Preconditions = class {
+class Preconditions {
+
+    /**
+     * Assert that this value is defined , not-null, and also not NaN and also a number.
+     * @param value
+     * @param name
+     */
+    static assertNumber(value, name) {
+
+        Preconditions.assertNotNull(value, name);
+
+        if(isNaN(value)) {
+            throw new Error(`Precondition failure for ${name}: NaN`);
+        }
+
+        Preconditions.assertTypeOf(value, name, "number");
+
+    }
 
     static assertInstanceOf(value, name, instance) {
 
@@ -63,4 +80,25 @@ module.exports.Preconditions = class {
         return value;
 
     }
+
+    /**
+     * Use a default value if one is not specified.
+     *
+     * @param currentValue
+     * @param defaultValue
+     * @return {*}
+     */
+    static defaultValue(currentValue, defaultValue) {
+
+        if(! currentValue) {
+            return defaultValue;
+        }
+
+        return currentValue;
+
+    }
+
 };
+
+
+module.exports.Preconditions = Preconditions;

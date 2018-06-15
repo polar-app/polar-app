@@ -1,0 +1,3 @@
+- evernote is using tinymce...
+
+- I can use contenteditable=true in chrome

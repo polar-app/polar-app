@@ -6,6 +6,7 @@ const {DiskDatastore} = require("./web/js/datastore/DiskDatastore");
 const app = electron.app;
 const shell = electron.shell;
 const Menu = electron.Menu;
+const MenuItem = electron.MenuItem;
 const Tray = electron.Tray;
 const dialog = electron.dialog;
 const ipcMain = electron.ipcMain;
@@ -17,6 +18,8 @@ const app_icon = nativeImage.createFromPath(fspath.join(__dirname, 'icon.png'));
 const {WebserverConfig} = require("./web/js/backend/WebserverConfig");
 const {Webserver} = require("./web/js/backend/Webserver");
 const {FileRegistry} = require("./web/js/backend/FileRegistry");
+const {Cmdline} = require("./web/js/electron/Cmdline");
+const {ElectronContextMenu} = require("./web/js/contextmenu/electron/ElectronContextMenu");
 
 let mainWindow, splashwindow;
 let contextMenu = null;
@@ -25,6 +28,7 @@ let quitapp, URL;
 
 // share the disk datastore with the remote.
 global.diskDatastore = new DiskDatastore();
+global.electronContextMenu = new ElectronContextMenu();
 
 const BROWSER_WINDOW_OPTIONS = {
     minWidth: 400,
@@ -68,14 +72,11 @@ webserver.start();
 
 //const DEFAULT_URL = 'file://' + __dirname + '/default.html';
 
-let enableConsoleLogging = false;
+let args = parseArgs();
 
-if (process.argv.includes("--enable-console-logging")) {
-    console.log("Console logging enabled.");
-    enableConsoleLogging = true;
-}
+console.log("Running with process.args: ", JSON.stringify(process.argv));
 
-if (process.argv.includes("--enable-remote-debugging")) {
+if (args.enableRemoteDebugging) {
 
     console.log(`Remote debugging port enabled on port ${REMOTE_DEBUGGING_PORT}.`);
     console.log(`You may connect via http://${DEFAULT_HOST}:${REMOTE_DEBUGGING_PORT}`);
@@ -197,6 +198,12 @@ const template = [{
         ]
     },
     {
+        label: 'Tools',
+        submenu: [
+            { label: 'Toggle Developer Tools', click: cmdToggleDevTools },
+        ]
+    },
+    {
         label: 'Help',
         role: 'help',
         submenu: [{
@@ -264,6 +271,10 @@ app.on('ready', function() {
     //appIcon.setContextMenu(contextMenu);
 
     mainWindow = createWindow();
+
+    if(args.enableDevTools) {
+        mainWindow.toggleDevTools();
+    }
 
     // if there is a PDF file to open, load that, otherwise, load the default URL.
 
@@ -349,7 +360,7 @@ async function promptPDF() {
  */
 function handleCmdLinePDF(commandLine, createNewWindow) {
 
-    let fileArg = getFileArg(commandLine);
+    let fileArg = Cmdline.getPDFArg(commandLine)
 
     if(fileArg) {
         openFileCmdline(fileArg, createNewWindow);
@@ -372,16 +383,21 @@ function loadPDF(path, targetWindow) {
 
     targetWindow.loadURL(`http://${DEFAULT_HOST}:${WEBSERVER_PORT}/pdfviewer/web/viewer.html?file=` + encodeURIComponent(fileMeta.url), options);
 
-    if(enableConsoleLogging) {
+    if(args.enableConsoleLogging) {
+        console.log("Console logging enabled.");
         targetWindow.webContents.on("console-message", consoleListener);
     }
 
     targetWindow.webContents.on('did-finish-load', function() {
         console.log("Finished loading. Now injecting customizations.");
         console.log("Toggling dev tools...");
-        targetWindow.toggleDevTools();
+        //targetWindow.toggleDevTools();
     });
 
+}
+
+function cmdToggleDevTools(item, focusedWindow) {
+    focusedWindow.toggleDevTools();
 }
 
 /**
@@ -424,22 +440,22 @@ function openFileCmdline(path, createNewWindow) {
 
 }
 
+
 /**
- * Get the file name from the command line, if any.
- *
- * @param cmdline
+ * Process app command line args and return an object to work with them
+ * directly.
  */
-function getFileArg(cmdline) {
+function parseArgs() {
 
-    let fileArg = cmdline[cmdline.length - 1];
-    if (fileArg && fileArg.endsWith(".pdf")) {
-        return fileArg;
-    }
+    return {
 
-    return null;
+        enableConsoleLogging: process.argv.includes("--enable-console-logging"),
+        enableRemoteDebugging: process.argv.includes("--enable-remote-debugging"),
+        enableDevTools: process.argv.includes("--enable-dev-tools")
+
+    };
 
 }
-
 
 function createWindow() {
 
@@ -471,10 +487,10 @@ function createWindow() {
     });
 
     // TODO: we need SANE handling of dev tools.  Having it forced on us isn't fun.
-    newWindow.webContents.on('devtools-opened', function(e) {
-       e.preventDefault();
-       this.closeDevTools();
-    });
+    // newWindow.webContents.on('devtools-opened', function(e) {
+    //    e.preventDefault();
+    //    this.closeDevTools();
+    // });
 
     newWindow.webContents.on('will-navigate', function(e, url) {
         e.preventDefault();

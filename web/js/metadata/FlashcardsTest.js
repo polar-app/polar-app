@@ -25,7 +25,8 @@ describe('Flashcards', function() {
                 "created": "2012-03-02T11:38:49.321Z",
                 "author": null,
                 "lastUpdated": "2012-03-02T11:38:49.321Z",
-                "type": "CLOZURE"
+                "type": "CLOZURE",
+                "fields": {}
             };
 
             assertJSON(flashcard, expected);

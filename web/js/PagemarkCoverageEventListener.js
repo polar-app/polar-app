@@ -1,7 +1,8 @@
 const $ = require('jquery');
 
-const {Elements, OffsetCalculator} = require("./utils.js");
+const {OffsetCalculator} = require("./utils.js");
 const {KeyEvents} = require("./KeyEvents.js");
+const {Elements} = require("./util/Elements");
 
 const BORDER_PADDING = 9;
 

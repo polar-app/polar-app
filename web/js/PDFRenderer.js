@@ -1,5 +1,7 @@
 const {Elements} = require("./utils");
 
+// FIXME: this needs to move to DocFormat... as PDFFormat ...
+
 /**
  * Utility for working with the main PDF renderer and dealing with pages, the
  * DOM, etc.

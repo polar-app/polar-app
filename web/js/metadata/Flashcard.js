@@ -16,16 +16,12 @@ module.exports.Flashcard = class extends Note {
         /**
          * The content of this flashcard created by the user.
          *
-         * @type {Text}
+         * @type map<String,Text> for each defined field.
          */
-        this.content = null;
+        this.fields = {};
 
         this.init(val);
 
     };
-
-    onCreateNewFlashcard() {
-
-    }
 
 };

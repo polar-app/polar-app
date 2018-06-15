@@ -1,9 +1,12 @@
-//const $ = require('jquery');
+const $ = require('jquery')
+jQuery = $;
+//const bootstrap = require('bootstrap');
+const featherlight = require('featherlight');
 
 // FIXME: this is not working for soem reason and I ahve NO ideawhy.. module.exports is setup properly.
 
-//const simplemde = require("simplemde");
-const SimpleMDE = require("../../node_modules/simplemde/src/js/simplemde.js");
+const SimpleMDE = require("simplemde");
+//const SimpleMDE = require("../../node_modules/simplemde/src/js/simplemde.js");
 
 // require("marked");
 // require("prettify");
@@ -25,16 +28,128 @@ const SimpleMDE = require("../../node_modules/simplemde/src/js/simplemde.js");
 //     editormd        : "../editormd.amd" // Using Editor.md amd version for Require.js
 
 
-function doLoad() {
+function createElementHTML(innerHTML) {
 
-    console.log("FIXME: SimpleMDE: ", SimpleMDE);
+    let div = document.createElement("div");
+    div.innerHTML = innerHTML;
 
-    let element = document.getElementById("editor");
-    if (! element)
+    return div;
+
+}
+
+function createModal2() {
+
+    let innerHTML = `<div id="mylightbox" class="polar-lightbox" style="">
+        <div id="editor-content">
+            <textarea id="editor" autofocus># this is markdown</textarea>
+        </div>
+    </div>
+    `;
+
+    let element = createElementHTML(innerHTML);
+
+    $(element).show();
+    document.body.appendChild(element);
+
+    let editor = document.getElementById("editor");
+
+    if (! editor)
         throw new Error("No editor element");
 
-    let simplemde = new SimpleMDE({ element, spellChecker: false });
+    console.log("Setting up simplemde");
+
+    // TODO: why no spell checker?
+    let simplemde = new SimpleMDE({ editor, spellChecker: false });
     simplemde.value();
+
+    editor.focus();
+
+};
+
+function createModal() {
+
+    let innerHTML = `<div id="mylightbox" class="polar-lightbox">
+
+        <div id="editor-content">
+            <textarea id="editor" autofocus># this is markdown</textarea>
+        </div>
+        
+        <div class="modal-footer">
+            <button>Save</button>
+        </div>
+        
+    </div>
+    `;
+
+    let lightbox = createElementHTML(innerHTML);
+
+    $.featherlight($(lightbox).show());
+
+    let editor = document.querySelector("#editor");
+
+    if (! editor)
+        throw new Error("No editor element");
+
+    console.log("Setting up simplemde");
+
+    // TODO: why no spell checker?
+    let simplemde = new SimpleMDE({ editor, spellChecker: false, hideIcons: ["side-by-side", "fullscreen"] });
+    //simplemde.toggleSideBySide(editor);
+    simplemde.value();
+
+    attachImagePasteListener($(".CodeMirror"));
+
+    $(".CodeMirror").on('paste', function (e) {
+
+        console.log("Got paste event in editor... ");
+
+    });
+
+
+
+
+}
+
+function attachImagePasteListener(element) {
+
+    $(element).on('paste', function (e) {
+
+        console.log("Got paste event!")
+
+        let orgEvent = e.originalEvent;
+        for (let i = 0; i < orgEvent.clipboardData.items.length; i++) {
+            if (orgEvent.clipboardData.items[i].kind === "file" && orgEvent.clipboardData.items[i].type === "image/png") {
+                let imageFile = orgEvent.clipboardData.items[i].getAsFile();
+                let fileReader = new FileReader();
+
+                fileReader.onloadend = function () {
+
+                    console.log(fileReader.result);
+
+                    //$('#result').html();
+                }
+
+                fileReader.readAsDataURL(imageFile);
+                break;
+            }
+        }
+    });
+
+}
+
+
+function doLoad() {
+
+    console.log("FIXME1");
+    document.getElementById("open-button").addEventListener("click", createModal);
+
+    $("textarea").on('paste', function (e) {
+
+        console.log("Got paste event!");
+
+    });
+
+    attachImagePasteListener(document.querySelector("textarea"));
 
 }
 
@@ -46,8 +161,10 @@ if (document.readyState === "complete" || document.readyState === "loaded" || do
     console.log("Waiting for DOM content to load");
     document.addEventListener('DOMContentLoaded', doLoad, true);
 }
+//
+// window.setTimeout(function () {
+//     console.log("FIXME2: SimpleMDE: ", SimpleMDE);
+//
+// }, 2500);
 
-window.setTimeout(function () {
-    console.log("FIXME2: SimpleMDE: ", SimpleMDE);
 
-}, 2500);

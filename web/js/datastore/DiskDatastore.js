@@ -74,7 +74,8 @@ class DiskDatastore extends Datastore {
             return null;
         }
 
-        return await this.readFileAsync(statePath);
+        let buffer = await this.readFileAsync(statePath);
+        return buffer.toString('utf8');
 
     }
 
@@ -124,6 +125,8 @@ class DiskDatastore extends Datastore {
         let statePath = docDir + "/state.json";
 
         console.log(`Writing data to state file: ${statePath}`);
+
+        // FIXME: is this UTF-8 ??
 
         return await this.writeFileAsync(statePath, data);
 

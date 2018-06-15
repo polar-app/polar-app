@@ -2,6 +2,7 @@
 const {DocInfo} = require("./DocInfo");
 const {PageMeta} = require("./PageMeta");
 const {PageInfo} = require("./PageInfo");
+const {AnnotationInfo} = require("./AnnotationInfo");
 const {SerializedObject} = require("./SerializedObject.js");
 const {Preconditions} = require("../Preconditions.js");
 
@@ -20,6 +21,14 @@ module.exports.DocMeta = class extends SerializedObject {
          * @type DocInfo
          */
         this.docInfo = null;
+
+        /**
+         * The annotation info for this document including the last annotation
+         * time, progress, etc.
+         *
+         * @type {AnnotationInfo}
+         */
+        this.annotationInfo = new AnnotationInfo({});
 
         /**
          * A sparse dictionary of page number to page metadata.

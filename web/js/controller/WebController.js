@@ -1,19 +1,21 @@
 const $ = require('jquery');
+const jcm = require("jquery-contextmenu");
 
 const {TextHighlightController} = require("../highlights/text/controller/TextHighlightController");
 const {PagemarkCoverageEventListener} = require("../PagemarkCoverageEventListener.js");
 const {KeyEvents} = require("../KeyEvents.js");
 const {Preconditions} = require("../Preconditions.js");
 const {Controller} = require("./Controller.js");
+const {DocFormatFactory} = require("../docformat/DocFormatFactory");
 const {polar} = require("../polar");
+const {RendererContextMenu} = require("../contextmenu/electron/RendererContextMenu");
+const {ContextMenuController} = require("../contextmenu/ContextMenuController");
+
 
 module.exports.WebController = class extends Controller {
 
     constructor(model) {
-
-        Preconditions.assertNotNull(model, "model");
-
-        super(model);
+        super(Preconditions.assertNotNull(model, "model"));
 
         /**
          * The document fingerprint that we have loaded to detect when the
@@ -24,13 +26,67 @@ module.exports.WebController = class extends Controller {
          */
         this.docFingerprint = null;
 
+        this.docFormat = DocFormatFactory.getInstance();
+
     }
 
     start() {
         this.listenForDocumentLoad();
         this.listenForKeyBindings();
+    }
 
-        console.log("Controller listeners registered.");
+
+    onDocumentLoaded(fingerprint, nrPages, currentlySelectedPageNum) {
+
+        super.onDocumentLoaded(fingerprint, nrPages, currentlySelectedPageNum);
+        this.setupContextMenu();
+
+    }
+
+    setupContextMenu() {
+
+        let contextMenuController = new ContextMenuController();
+        contextMenuController.start();
+
+        //new RendererContextMenu();
+        //
+        // // FIXME: this needs to be moved into the contextmenu package.
+        //
+        // console.log("Registered context listener...");
+        //
+        // window.setTimeout( function() {
+        //
+        //     console.log("adding listeners!!!")
+        //
+        //     $(function() {
+        //         $.contextMenu({
+        //             selector: '.page .text-highlight',
+        //             callback: function(key, options) {
+        //                 let m = "clicked: " + key;
+        //                 window.console && console.log(m) || alert(m);
+        //             },
+        //             items: {
+        //                 //"new-pagemark": {name: "New pagemark", icon: "edit"},
+        //                 "new-pagemark-from-here": {name: "New Pagemark Starting Here", icon: "edit"},
+        //                 // "cut": {name: "Cut", icon: "cut"},
+        //                 // copy: {name: "Copy", icon: "copy"},
+        //                 // "paste": {name: "Paste", icon: "paste"},
+        //                 // "delete": {name: "Delete", icon: "delete"},
+        //                 // "sep1": "---------",
+        //                 // "quit": {name: "Quit", icon: function() {
+        //                 //         return 'context-menu-icon context-menu-icon-quit';
+        //                 //     }
+        //                 // }
+        //             }
+        //         });
+        //
+        //         $('.page .text-highlight').on('click', function(e){
+        //             console.log('clicked', this);
+        //         })
+        //     });
+        //
+        // }, 2500);
+
     }
 
     listenForDocumentLoad() {
@@ -40,25 +96,24 @@ module.exports.WebController = class extends Controller {
         container.addEventListener('pagesinit', this.detectDocumentLoadedEventListener.bind(this));
         container.addEventListener('updateviewarea', this.detectDocumentLoadedEventListener.bind(this));
 
+        // run manually the first time in case we get lucky of we're running HTML
+        //this.detectDocumentLoadedEventListener();
+
     }
 
     detectDocumentLoadedEventListener(event) {
 
-        if (window.PDFViewerApplication &&
-            window.PDFViewerApplication.pdfDocument &&
-            window.PDFViewerApplication.pdfDocument.pdfInfo &&
-            window.PDFViewerApplication.pdfDocument.pdfInfo.fingerprint != this.docFingerprint) {
+        let currentDocFingerprint = this.docFormat.currentDocFingerprint();
+
+        if (currentDocFingerprint !== this.docFingerprint) {
 
             console.log("controller: New document loaded!")
 
-            let newDocumentFingerprint = window.PDFViewerApplication.pdfDocument.pdfInfo.fingerprint;
-            let nrPages = window.PDFViewerApplication.pagesCount;
-            let currentPageNumber = window.PDFViewerApplication.pdfViewer.currentPageNumber;
+            let newDocumentFingerprint = currentDocFingerprint;
 
-            let pageElement = event.target.parentElement;
-            let pageNum = this.getPageNum(pageElement);
+            let currentDocState = this.docFormat.currentState(event);
 
-            this.onNewDocumentFingerprint(newDocumentFingerprint, nrPages, currentPageNumber);
+            this.onNewDocumentFingerprint(newDocumentFingerprint, currentDocState.nrPages, currentDocState.currentPageNumber);
 
         }
 
@@ -88,10 +143,7 @@ module.exports.WebController = class extends Controller {
         //
         // documentload, pagerendered, textlayerrendered, pagechange, and pagesinit...
 
-        if (window.PDFViewerApplication &&
-            window.PDFViewerApplication.pdfDocument &&
-            window.PDFViewerApplication.pdfDocument.pdfInfo &&
-            window.PDFViewerApplication.pdfDocument.pdfInfo.fingerprint != this.docFingerprint) {
+        if (this.docFormat.currentDocFingerprint() !== this.docFingerprint) {
 
             let newDocumentFingerprint = window.PDFViewerApplication.pdfDocument.pdfInfo.fingerprint;
             let nrPages = window.PDFViewerApplication.pagesCount;
@@ -166,6 +218,7 @@ module.exports.WebController = class extends Controller {
 
     // TODO/REFACTOR migrate this to use PDFRenderer
     getPageNum(pageElement) {
+        Preconditions.assertNotNull(pageElement, "pageElement");
         let dataPageNum = pageElement.getAttribute("data-page-number");
         return parseInt(dataPageNum);
     }

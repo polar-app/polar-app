@@ -46,10 +46,14 @@ class MetadataSerializer {
      * @param object
      * @param data
      */
-    static deserialize(obj,data) {
+    static deserialize(obj, data) {
 
         if(!data) {
             throw new Error("No data given!")
+        }
+
+        if(! (typeof data === "string")) {
+            throw new Error("We can only deserialize strings: " + typeof data);
         }
 
         let parsed = JSON.parse(data);

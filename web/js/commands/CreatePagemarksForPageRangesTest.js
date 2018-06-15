@@ -9,7 +9,7 @@ describe('Create ranges', function() {
 
     describe('with real data', function () {
 
-        it("my bitcoin book.", async function () {
+        xit("my bitcoin book.", async function () {
 
             let datastore = new DiskDatastore();
             let persistenceLayer = new PersistenceLayer(datastore);

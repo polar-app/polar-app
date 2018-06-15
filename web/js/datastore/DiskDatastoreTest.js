@@ -1,7 +1,10 @@
 const fs = require('fs');
 const {DiskDatastore} = require("./DiskDatastore");
-var rimraf = require('rimraf');
-var assert = require('assert');
+const {PersistenceLayer} = require("./PersistenceLayer");
+const {DocMeta} = require("../metadata/DocMeta");
+const {DocMetas} = require("../metadata/DocMetas");
+const rimraf = require('rimraf');
+const assert = require('assert');
 
 const {Objects} = require("../utils");
 const {assertJSON} = require("../test/Assertions");
@@ -53,6 +56,39 @@ describe('DiskDatastore', function() {
         assert.notEqual(DiskDatastore.getDataDir(), null);
 
     });
+
+    it("write and read data to disk", async function () {
+
+        let fingerprint = "0x001";
+
+        let dataDir = "/tmp/test-data-dir";
+
+        let diskDatastore = new DiskDatastore(dataDir);
+        let persistenceLayer = new PersistenceLayer(diskDatastore);
+
+        await persistenceLayer.init();
+
+        let docMeta = DocMetas.createWithinInitialPagemarks(fingerprint, 14);
+
+        await persistenceLayer.sync(fingerprint, docMeta);
+
+        let docMeta0 = await persistenceLayer.getDocMeta(fingerprint);
+
+        assertJSON(docMeta, docMeta0);
+
+    });
+
+
+    //     diskDatastore.init();
+//     diskDatastore.init();
+//     let fingerprint = "0x0000";
+//     diskDatastore.sync(fingerprint, {});
+//     var docMeta = await diskDatastore.getDocMeta(fingerprint)
+//
+//     // test for something that doesn't exits.
+//     docMeta = await diskDatastore.getDocMeta("0xmissing")
+//     assert.equal(docMeta, null)
+
 
 });
 

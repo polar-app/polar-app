@@ -32,9 +32,17 @@ See https://github.com/adobe-type-tools/cmap-resources
     <link rel="stylesheet" href="viewer.css">
 
     <!-- BEGIN polar customization -->
+
+    <meta name="polar-doc-format" content="pdf">
+
     <link rel="stylesheet" href="../../node_modules/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="../../node_modules/jquery-contextmenu/dist/jquery.contextMenu.min.css">
+
+    <!--<link rel="stylesheet" href="../../node_modules/bootstrap/dist/css/bootstrap.min.css">-->
+    <!--<link rel="stylesheet" href="../../web/css/bootswatch-slate.min.css">-->
+
     <link rel="stylesheet" href="../../pdfviewer-custom/polar.css">
-    <script src="../../web/js/apps/injector-bundle.js" ></script>
+    <script src="../../web/dist/injector-bundle.js" ></script>
     <!-- END polar customization -->
 
 
@@ -307,7 +315,7 @@ See https://github.com/adobe-type-tools/cmap-resources
             <!-- BEGIN polar customization -->
             <div id="polar-header">
 
-              <progress id="pagemark-process" value="0.0"></progress>
+              <progress id="pagemark-progress" value="0.0"></progress>
 
             </div>
             <!-- END polar customization -->

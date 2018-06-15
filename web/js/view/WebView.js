@@ -1,5 +1,7 @@
 const {Delegator, Styles, Elements, forDict} = require("../utils.js");
 const {DocMetaDescriber} = require("../metadata/DocMetaDescriber");
+const {DocFormatFactory} = require("../docformat/DocFormatFactory");
+
 const {View} = require("./View.js");
 
 module.exports.WebView = class extends View {
@@ -11,6 +13,7 @@ module.exports.WebView = class extends View {
          * The currently defined renderer for pagemarks.
          */
         this.pagemarkRenderer = null;
+        this.docFormat = DocFormatFactory.getInstance();
 
     }
 
@@ -30,7 +33,7 @@ module.exports.WebView = class extends View {
 
         console.log("Percentage is now: " + perc);
 
-        document.querySelector("#pagemark-process").value = perc;
+        document.querySelector("#pagemark-progress").value = perc;
 
         // now update the description of the doc at the bottom.
 
@@ -66,12 +69,19 @@ module.exports.WebView = class extends View {
      */
     onDocumentLoaded() {
 
-        console.log("WebView.onDocumentLoaded");
+        console.log("WebView.onDocumentLoaded: ", this.model.docMeta);
 
         let pagemarkRendererDelegates = [
             new MainPagemarkRenderer(this),
-            new ThumbnailPagemarkRenderer(this)
         ];
+
+        if (this.docFormat.supportThumbnails()) {
+            // only support rendering thumbnails for documents that have thumbnail
+            // support.
+            pagemarkRendererDelegates.push(new ThumbnailPagemarkRenderer(this));
+        } else {
+            console.warn("Thumbnails not enabled.");
+        }
 
         this.pagemarkRenderer = new CompositePagemarkRenderer(this, pagemarkRendererDelegates);
         this.pagemarkRenderer.setup();
@@ -204,7 +214,7 @@ module.exports.WebView = class extends View {
 
         if (! options.placementElement) {
             // TODO: move this to the object dealing with pages only.
-            options.placementElement = pageElement.querySelector(".canvasWrapper");
+            options.placementElement = pageElement.querySelector(".canvasWrapper, .iframeWrapper");
         }
 
         if(! options.templateElement) {
@@ -221,39 +231,43 @@ module.exports.WebView = class extends View {
             return;
         }
 
-        let pagemark = document.createElement("div");
+        let pagemarkElement = document.createElement("div");
+
+        // set a pagemark-id in the DOM so that we can work with it when we use
+        // the context menu, etc.
+        pagemarkElement.setAttribute("data-pagemark-id", options.pagemark.id);
 
         // make sure we have a reliable CSS classname to work with.
-        pagemark.className="pagemark";
+        pagemarkElement.className="pagemark";
 
         // set CSS style
 
         //pagemark.style.backgroundColor="rgb(198, 198, 198)";
-        pagemark.style.backgroundColor="#00CCFF";
-        pagemark.style.opacity="0.3";
+        pagemarkElement.style.backgroundColor="#00CCFF";
+        pagemarkElement.style.opacity="0.3";
 
-        pagemark.style.position="absolute";
-        pagemark.style.left = options.templateElement.offsetLeft;
-        pagemark.style.top = options.templateElement.offsetTop;
-        pagemark.style.width = options.templateElement.style.width;
+        pagemarkElement.style.position="absolute";
+        pagemarkElement.style.left = options.templateElement.offsetLeft;
+        pagemarkElement.style.top = options.templateElement.offsetTop;
+        pagemarkElement.style.width = options.templateElement.style.width;
 
         // FIXME: the height should actually be a percentage of the pagemark
         // percentage.
 
-        var height = Styles.parsePixels(options.templateElement.style.height);
+        let height = Styles.parsePixels(options.templateElement.style.height);
 
         // FIXME: read the percentate coverage from the pagemark and adjust the
         // height to reflect the portion we've actually read.
         height = height * (options.pagemark.percentage / 100);
 
-        pagemark.style.height = `${height}px`;
+        pagemarkElement.style.height = `${height}px`;
 
-        pagemark.style.zIndex = options.zIndex;
+        pagemarkElement.style.zIndex = options.zIndex;
 
-        if(!pagemark.style.width)
+        if(!pagemarkElement.style.width)
             throw new Error("Could not determine width");
 
-        options.placementElement.parentElement.insertBefore(pagemark, options.placementElement);
+        options.placementElement.parentElement.insertBefore(pagemarkElement, options.placementElement);
 
     }
 

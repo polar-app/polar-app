@@ -35,6 +35,23 @@ module.exports.DocInfo = class extends SerializedObject {
          */
         this.fingerprint = null;
 
+        /**
+         * The last time this document was opened or null if it's never been
+         * opened.
+         *
+         * @type ISODateTime
+         */
+        this.lastOpened = null;
+
+        /**
+         * The progress of this document (until completion) from 0 to 100.
+         *
+         * By default the document is zero percent complete.
+         *
+         * @type {number}
+         */
+        this.progress = 0;
+
         this.init(val);
 
     }

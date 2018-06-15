@@ -1,31 +1,42 @@
 
-const {AnnotationWithNote} = require("./AnnotationWithNote");
+const {Annotation} = require("./Annotation");
 const {PagemarkType} = require("./PagemarkType");
 const {MetadataSerializer} = require("./MetadataSerializer");
 const {ISODateTime} = require("./ISODateTime");
 
-module.exports.Pagemark = class extends AnnotationWithNote {
+module.exports.Pagemark = class extends Annotation {
 
     constructor(val) {
 
         super(val);
 
         /**
+         * The note for this annotation.
+         *
+         * @type Note
+         */
+        this.notes = {};
+
+        /**
          * The type of pagemark.
          *
-         * @type PagemarkType
+         * @type {PagemarkType}
          */
         this.type = null;
 
         /**
-         * The vertical percentage of the page that is covered with the page
-         * mark.  From 0 to 100.
+         * The total percentage of the page that is covered with the page mark.
+         * From 0 to 100.  This factors in the total rows and columns on the
+         * page and is the raw percentage value of the page.
+         *
          * @type number
          */
         this.percentage = null;
 
         /**
-         * The column number we're working on.
+         * The column number on which this pagemark is rendered.  This is mostly
+         * metadata and we should be migrating to PagemarkBox and PagemarkRange
+         * which supports raw rendering of the pagemarks.
          *
          * @type {null}
          */
@@ -41,6 +52,10 @@ module.exports.Pagemark = class extends AnnotationWithNote {
     setup() {
 
         super.setup();
+
+        if(!this.notes) {
+            this.notes = {}
+        }
 
         if(!this.type) {
             this.type = PagemarkType.SINGLE_COLUMN;

@@ -8,12 +8,30 @@
 
 # Release (for myself)
 
+## Required editor functionality
+
+- paste images / screenshots from clipboard and save as data URL.
+
+ - https://stackoverflow.com/questions/28644340/how-do-i-get-base64-encoded-image-from-clipboard-in-internet-explorer
+
+ - https://matthewmoisen.com/blog/paste-js-example/
+
+ - I can detect the paste, then convert what's pasted to a data URL, then change
+   the CSS it so that the user doesn't need to deal with the full thing.
+
 ## Next
 
-- Don't open developer tools by default when in development mode but instead
-  ALWAYS handle it via a menu action.  Even for regular users.
+- ignore the 'right click' support for now and just write a simple UI in react
+  that is straight forward that I can either inject as a modal or a sidebar...
 
-- 'open-file' event for mac and windows.
+- ability to right click and 'add flashcard' to an annotation and enter the data
+  in markdown.
+
+    - I need the ability to create a context menu when I click on a highlight.
+
+    - then test adding the new flashcard
+
+
 
 - recent files
 
@@ -23,11 +41,34 @@
 
     - https://www.npmjs.com/package/electron-config
 
-- ability to right click and 'add flashcard' to an annotation...
 
-- get text extraction working
-    - I sort of need this working since
+- enable right click:
+
+    https://stackoverflow.com/questions/32636750/how-to-add-a-right-click-menu-in-electron-that-has-inspect-element-option-like
+    https://stackoverflow.com/questions/32636750/how-to-add-a-right-click-menu-in-electron-that-has-inspect-element-option-like/32636751
+
+- offset each new window from the previous one. It's not clear that a window
+  was actually opened.
+
+    https://stackoverflow.com/questions/46949194/new-window-positioning-in-electron
+
+- implement a PROPER context menu!!!
+
+    https://www.youtube.com/watch?v=MkVLaM9JAxM
+        - I'm going to have to add the event listener in the renderer and then
+          use the electron API to popup the context menu for the various
+          modes.
+
+- 'open-file' event for mac and windows?
+
+
+
+- get text extraction working for annotations
+    - I sort of need this working since we're capturing the data now but I
+      imagine I could build this into the future.
+
 - get end to end tests working
+
 - get the transaction logs working
 
 - get basic flashcards working so that I can easily create them.  Don't focus
@@ -39,6 +80,12 @@
     - support...
 
 
+# Skin / UI
+
+Use this alternative boostrap skin.
+
+https://bootswatch.com/slate/
+
 # Spectron Testing
 
 ## Test for:
@@ -48,9 +95,6 @@
     - with no app running
     - with existing app running
 
-### Windows Build
-
-- https://github.com/electron-userland/electron-builder/blob/master/docs/multi-platform-build.md#docker
 
 ## Site
 
@@ -90,7 +134,6 @@
 
 # Development productivity
 
-- get node.js testing working
 
 - get webapp testing working
 
@@ -98,14 +141,14 @@
 
 # Marketing
 
-- pdf.js
-- news.ycombinator
+- (pending) pdf.js
 - anki forum
-- anki reddit
 - /r/medicalschool group...
 - electronjs group
-- /r/adhd
 - other spaced repitition groups
+- (done) /r/adhd
+- (done) anki reddit
+- (done) news.ycombinator
 
 # Cleanup
 
@@ -124,3 +167,7 @@
       from chrome to polar.
 
 - change REMOVE to ERASE to avoid confusion with 'read'
+
+
+
+

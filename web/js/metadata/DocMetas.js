@@ -1,3 +1,4 @@
+const {Pagemarks} = require("./Pagemarks");
 const {Pagemark} = require("./Pagemark");
 const {DocMeta} = require("./DocMeta");
 const {DocInfo} = require("./DocInfo");
@@ -5,14 +6,17 @@ const {PageInfo} = require("./PageInfo");
 const {PageMeta} = require("./PageMeta");
 const {PagemarkType} = require("./PagemarkType");
 const {ISODateTime} = require("./ISODateTime");
+const {AnnotationInfo} = require("./AnnotationInfo");
 const {MetadataSerializer} = require("./MetadataSerializer");
+const {TextHighlightRecords} = require("./TextHighlightRecords");
 const {forDict} = require("../utils");
 
-module.exports.DocMetas = class {
+class DocMetas {
 
     /**
      * Create the basic DocInfo structure that we can use with required / basic
      * field structure.
+     * @param fingerprint The fingerprint
      * @param nrPages The number of pages in this document.
      * @returns {DocMeta}
      */
@@ -43,10 +47,7 @@ module.exports.DocMetas = class {
         let maxPages = 3;
         for(let pageNum = 1; pageNum <= Math.min(nrPages, maxPages); ++pageNum ) {
 
-            let pagemark = new Pagemark({
-                // TODO: this shouldn't have a hard wired date here but we don't
-                // have a dependency injector yet.
-                created: new ISODateTime(new Date()),
+            let pagemark = Pagemarks.create({
                 type: PagemarkType.SINGLE_COLUMN,
                 percentage: 100,
                 column: 0
@@ -89,12 +90,9 @@ module.exports.DocMetas = class {
 
         for(let pageNum = options.offsetPage; pageNum <= maxPageNum; ++pageNum ) {
 
-            let pagemark = new Pagemark({
-                // TODO: this shouldn't have a hard wired date here but we don't
-                // have a dependency injector yet.
-                created: new ISODateTime(new Date()),
+            let pagemark = Pagemarks.create({
                 type: PagemarkType.SINGLE_COLUMN,
-                percentage: options.percentage,
+                percentage: 100,
                 column: 0
             });
 
@@ -113,27 +111,65 @@ module.exports.DocMetas = class {
 
     static deserialize(data) {
 
-        let result = MetadataSerializer.deserialize(new DocMeta(), data);
+        if(! (typeof data === "string")) {
+            throw new Error("We can only deserialize strings: " + typeof data);
+        }
+
+        let docMeta = MetadataSerializer.deserialize(new DocMeta(), data);
+
+        return DocMetas.upgrade(docMeta);
+
+    }
+
+    static upgrade(docMeta) {
 
         // validate the JSON data and set defaults. In the future we should migrate
         // to using something like AJV to provide these defaults and also perform
         // type assertion.
 
-        forDict(result.pageMetas, function (key, pageMeta) {
+        forDict(docMeta.pageMetas, function (key, pageMeta) {
 
             if(!pageMeta.textHighlights) {
                 console.warn("No textHighlights.  Assigning default.");
                 pageMeta.textHighlights = {};
             }
 
+            // make sure legacy / old text highlights are given IDs.
+            forDict(pageMeta.textHighlights, function (key, textHighlight) {
+                if(! textHighlight.id) {
+                    console.warn("Text highlight given ID");
+                    textHighlight.id = TextHighlightRecords.createID(textHighlight.rects);
+                }
+            });
+
             if(!pageMeta.areaHighlights) {
                 console.warn("No areaHighlights.  Assigning default.");
                 pageMeta.areaHighlights = {};
             }
 
+            if(!pageMeta.pagemarks) {
+                console.warn("No pagemarks.  Assigning default.");
+                pageMeta.pagemarks = {};
+            }
+
+            forDict(pageMeta.pagemarks, function (key, pagemark) {
+                if(! pagemark.id) {
+                    console.warn("Pagemark given ID");
+                    pagemark.id = Pagemarks.createID(pagemark.created);
+                }
+            });
+
         } );
 
-        return result;
+        if(!docMeta.annotationInfo) {
+            console.log("No annotation info.. Adding default.")
+            docMeta.annotationInfo = new AnnotationInfo();
+        }
+
+        return docMeta;
 
     }
+
 }
+
+module.exports.DocMetas = DocMetas;
