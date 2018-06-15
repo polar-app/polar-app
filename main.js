@@ -493,6 +493,8 @@ function createWindow() {
     // });
 
     newWindow.webContents.on('will-navigate', function(e, url) {
+        // required to force the URLs clicked to open in a new browser.  The
+        // user probably / certainly wants to use their main browser.
         e.preventDefault();
         shell.openExternal(url);
     });

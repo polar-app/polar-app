@@ -7,6 +7,9 @@ const electron = require('electron');
 const app = electron.app;
 const shell = electron.shell;
 const BrowserWindow = electron.BrowserWindow;
+const {ContentCapture} = require("./web/js/capture/ContentCapture");
+const {Preconditions} = require("./web/js/Preconditions");
+
 const options = { extraHeaders: 'pragma: no-cache\n' }
 
 
@@ -15,9 +18,8 @@ const BROWSER_WINDOW_OPTIONS = {
     minHeight: 300,
     width: 1280,
     height: 1024,
-    show: false,
+    //show: false,
     // https://electronjs.org/docs/api/browser-window#new-browserwindowoptions
-    icon: app_icon,
     webPreferences: {
         // TODO:
         // https://github.com/electron/electron/pull/794
@@ -29,7 +31,7 @@ const BROWSER_WINDOW_OPTIONS = {
     }
 };
 
-function createWindow() {
+function createWindow(url) {
 
     // Create the browser window.
     let newWindow = new BrowserWindow(BROWSER_WINDOW_OPTIONS);
@@ -58,24 +60,60 @@ function createWindow() {
         shell.openExternal(url);
     });
 
-    // TODO: we need SANE handling of dev tools.  Having it forced on us isn't fun.
-    // newWindow.webContents.on('devtools-opened', function(e) {
-    //    e.preventDefault();
-    //    this.closeDevTools();
-    // });
-
     newWindow.webContents.on('will-navigate', function(e, url) {
         e.preventDefault();
         shell.openExternal(url);
     });
 
-    newWindow.loadURL(DEFAULT_URL, options);
+    newWindow.loadURL(url, options);
 
     newWindow.once('ready-to-show', () => {
         //newWindow.maximize();
-        newWindow.show();
+        //newWindow.show();
+
+        // we need to mute by default especially if the window is hidden.
+        newWindow.webContents.setAudioMuted(true);
+
+    });
+
+    newWindow.webContents.on('did-fail-load', function(event, errorCode, errorDescription, validateURL, isMainFrame) {
+        console.log("did-fail-load: " , {event, errorCode, errorDescription, validateURL, isMainFrame}, event);
+
+        // FIXME: how do we handle iframes.
+
+        // FIXME: figure out how to fail properly.
+    });
+
+    newWindow.webContents.on('did-finish-load', async function() {
+        console.log("did-finish-load: ");
+        await captureHTML(newWindow);
     });
 
     return newWindow;
 
 }
+
+async function captureHTML(window) {
+
+    Preconditions.assertNotNull(window);
+    Preconditions.assertNotNull(window.webContents);
+
+    console.log("Capturing the HTML...");
+
+    // define the content capture script.
+    console.log("Defining script...");
+    await window.webContents.executeJavaScript(ContentCapture.toString());
+
+    console.log("Retrieving HTML...");
+    let capturedHTML = await window.webContents.executeJavaScript("ContentCapture.captureHTML()");
+
+    console.log(capturedHTML);
+
+    console.log("Capturing the HTML...done");
+}
+
+app.on('ready', function() {
+
+    createWindow("http://thehill.com/homenews/administration/392430-trump-i-want-americans-to-listen-to-me-like-north-koreans-listen-to");
+
+});
