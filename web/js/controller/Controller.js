@@ -24,7 +24,7 @@ module.exports.Controller = class {
      * Mark the given page number as read.
      */
     createPagemark(pageNum, options) {
-        console.log("Controller sees pagemark created: " + pageNum);
+        console.log("Controller sees pagemark created: " + pageNum, options);
         this.model.createPagemark(pageNum, options);
     }
 

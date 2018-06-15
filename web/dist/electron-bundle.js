@@ -26238,7 +26238,7 @@ module.exports.Controller = function () {
     }, {
         key: "createPagemark",
         value: function createPagemark(pageNum, options) {
-            console.log("Controller sees pagemark created: " + pageNum);
+            console.log("Controller sees pagemark created: " + pageNum, options);
             this.model.createPagemark(pageNum, options);
         }
     }, {
@@ -29496,7 +29496,7 @@ var Pagemarks = function () {
         key: "create",
         value: function create(options) {
 
-            options = Objects.defaults({
+            options = Objects.defaults(options, {
 
                 // just set docMeta pageMarkType = PagemarkType.SINGLE_COLUMN by
                 // default for now until we add multiple column types and handle

@@ -17,7 +17,7 @@ class Pagemarks {
 
     static create(options) {
 
-        options = Objects.defaults( {
+        options = Objects.defaults( options, {
 
             // just set docMeta pageMarkType = PagemarkType.SINGLE_COLUMN by
             // default for now until we add multiple column types and handle
