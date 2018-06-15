@@ -1,3 +1,4 @@
+const $ = require('jquery')
 
 /**
  * Frame loader which polls the content iframe until it's loaded.  There's
@@ -27,7 +28,7 @@ class FrameResizer {
     }
 
     start() {
-        this.iframe.addEventListener("load", this.onLoad.bind(this));
+        $(this.iframe).ready(this.onLoad.bind(this));
         this.resizeParent();
     }
 

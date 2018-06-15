@@ -1,4 +1,6 @@
 const {DocFormats} = require("../docformat/DocFormats");
+const {HTMLViewer} = require("./html/HTMLViewer");
+const {PDFViewer} = require("./pdf/PDFViewer");
 
 class ViewerFactory {
 
@@ -6,7 +8,7 @@ class ViewerFactory {
 
         switch(DocFormats.getFormat()) {
             case "html":
-                return new HTMLviewer();
+                return new HTMLViewer();
 
             case "pdf":
                 return new PDFViewer();

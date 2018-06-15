@@ -3,6 +3,7 @@ const {Model} = require("../model.js");
 const {WebController} = require("../controller/WebController.js");
 const {WebView} = require("../view/WebView.js");
 const {TextHighlightView} = require("../highlights/text/view/TextHighlightView");
+const {ViewerFactory} = require("../viewer/ViewerFactory");
 
 /**
  * Basic class for connecting event listeners and then running a launchFunction
@@ -35,6 +36,9 @@ module.exports.Launcher = class {
 
         view.start();
         new TextHighlightView(model).start();
+
+        let viewer = ViewerFactory.create();
+        viewer.start();
 
         await persistenceLayer.init();
 

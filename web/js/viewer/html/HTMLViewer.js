@@ -6,6 +6,8 @@ class HTMLViewer extends Viewer {
 
     start() {
 
+        console.log("Starting HTMLViewer");
+
         let content = document.querySelector("#content");
         let contentParent = document.querySelector("#content-parent");
         let textLayer = document.querySelector(".textLayer");

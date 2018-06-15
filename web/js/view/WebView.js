@@ -80,7 +80,7 @@ module.exports.WebView = class extends View {
             // support.
             pagemarkRendererDelegates.push(new ThumbnailPagemarkRenderer(this));
         } else {
-            log.warn("Thumbnails not enabled.");
+            console.warn("Thumbnails not enabled.");
         }
 
         this.pagemarkRenderer = new CompositePagemarkRenderer(this, pagemarkRendererDelegates);

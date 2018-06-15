@@ -1,3 +1,4 @@
+const $ = require('jquery')
 const {EventBridge} = require("./EventBridge");
 
 /**
@@ -18,9 +19,7 @@ class FrameInitializer {
     }
 
     start() {
-
-        this.iframe.addEventListener("load", this.onLoad.bind(this));
-
+        $(this.iframe).ready(this.onLoad.bind(this));
     }
 
     /**

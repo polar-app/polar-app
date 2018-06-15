@@ -25800,6 +25800,9 @@ var _require4 = __webpack_require__(/*! ../view/WebView.js */ "./web/js/view/Web
 var _require5 = __webpack_require__(/*! ../highlights/text/view/TextHighlightView */ "./web/js/highlights/text/view/TextHighlightView.js"),
     TextHighlightView = _require5.TextHighlightView;
 
+var _require6 = __webpack_require__(/*! ../viewer/ViewerFactory */ "./web/js/viewer/ViewerFactory.js"),
+    ViewerFactory = _require6.ViewerFactory;
+
 /**
  * Basic class for connecting event listeners and then running a launchFunction
  * once the browser is ready.
@@ -25830,7 +25833,7 @@ module.exports.Launcher = function () {
         key: "trigger",
         value: function () {
             var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
-                var persistenceLayer, clock, model, controller, view;
+                var persistenceLayer, clock, model, controller, view, viewer;
                 return regeneratorRuntime.wrap(function _callee$(_context) {
                     while (1) {
                         switch (_context.prev = _context.next) {
@@ -25849,14 +25852,18 @@ module.exports.Launcher = function () {
                                 view.start();
                                 new TextHighlightView(model).start();
 
-                                _context.next = 11;
+                                viewer = ViewerFactory.create();
+
+                                viewer.start();
+
+                                _context.next = 13;
                                 return persistenceLayer.init();
 
-                            case 11:
+                            case 13:
 
                                 controller.start();
 
-                            case 12:
+                            case 14:
                             case "end":
                                 return _context.stop();
                         }
@@ -27147,6 +27154,69 @@ var DocFormatFactory = function () {
 }();
 
 module.exports.DocFormatFactory = DocFormatFactory;
+
+/***/ }),
+
+/***/ "./web/js/docformat/DocFormats.js":
+/*!****************************************!*\
+  !*** ./web/js/docformat/DocFormats.js ***!
+  \****************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var _require = __webpack_require__(/*! ../util/Elements */ "./web/js/util/Elements.js"),
+    Elements = _require.Elements;
+
+var _require2 = __webpack_require__(/*! ./PDFFormat */ "./web/js/docformat/PDFFormat.js"),
+    PDFFormat = _require2.PDFFormat;
+
+var _require3 = __webpack_require__(/*! ./HTMLFormat */ "./web/js/docformat/HTMLFormat.js"),
+    HTMLFormat = _require3.HTMLFormat;
+
+var _require4 = __webpack_require__(/*! ./DocFormat */ "./web/js/docformat/DocFormat.js"),
+    DocFormat = _require4.DocFormat;
+
+/**
+ *
+ */
+
+
+var DocFormats = function () {
+    function DocFormats() {
+        _classCallCheck(this, DocFormats);
+    }
+
+    _createClass(DocFormats, null, [{
+        key: "getFormat",
+
+
+        /**
+         * Get the doc format we're using (html, pdf, etc). Otherwise return null.
+         * @return {*}
+         */
+        value: function getFormat() {
+
+            var polarDocFormat = document.querySelector("meta[name='polar-doc-format']");
+
+            if (polarDocFormat) {
+                return polarDocFormat.getAttribute("content");
+            }
+
+            return null;
+        }
+    }]);
+
+    return DocFormats;
+}();
+
+module.exports.DocFormats = DocFormats;
 
 /***/ }),
 
@@ -31920,7 +31990,7 @@ module.exports.WebView = function (_View) {
                 // support.
                 pagemarkRendererDelegates.push(new ThumbnailPagemarkRenderer(this));
             } else {
-                log.warn("Thumbnails not enabled.");
+                console.warn("Thumbnails not enabled.");
             }
 
             this.pagemarkRenderer = new CompositePagemarkRenderer(this, pagemarkRendererDelegates);
@@ -32421,6 +32491,418 @@ var CompositePagemarkRenderer = function (_PagemarkRenderer3) {
 
     return CompositePagemarkRenderer;
 }(PagemarkRenderer);
+
+/***/ }),
+
+/***/ "./web/js/viewer/Viewer.js":
+/*!*********************************!*\
+  !*** ./web/js/viewer/Viewer.js ***!
+  \*********************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var Viewer = function () {
+    function Viewer() {
+        _classCallCheck(this, Viewer);
+    }
+
+    _createClass(Viewer, [{
+        key: "start",
+        value: function start() {}
+    }]);
+
+    return Viewer;
+}();
+
+module.exports.Viewer = Viewer;
+
+/***/ }),
+
+/***/ "./web/js/viewer/ViewerFactory.js":
+/*!****************************************!*\
+  !*** ./web/js/viewer/ViewerFactory.js ***!
+  \****************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var _require = __webpack_require__(/*! ../docformat/DocFormats */ "./web/js/docformat/DocFormats.js"),
+    DocFormats = _require.DocFormats;
+
+var _require2 = __webpack_require__(/*! ./html/HTMLViewer */ "./web/js/viewer/html/HTMLViewer.js"),
+    HTMLViewer = _require2.HTMLViewer;
+
+var _require3 = __webpack_require__(/*! ./pdf/PDFViewer */ "./web/js/viewer/pdf/PDFViewer.js"),
+    PDFViewer = _require3.PDFViewer;
+
+var ViewerFactory = function () {
+    function ViewerFactory() {
+        _classCallCheck(this, ViewerFactory);
+    }
+
+    _createClass(ViewerFactory, null, [{
+        key: "create",
+        value: function create() {
+
+            switch (DocFormats.getFormat()) {
+                case "html":
+                    return new HTMLViewer();
+
+                case "pdf":
+                    return new PDFViewer();
+
+                default:
+                    return null;
+            }
+        }
+    }]);
+
+    return ViewerFactory;
+}();
+
+module.exports.ViewerFactory = ViewerFactory;
+
+/***/ }),
+
+/***/ "./web/js/viewer/html/EventBridge.js":
+/*!*******************************************!*\
+  !*** ./web/js/viewer/html/EventBridge.js ***!
+  \*******************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+/**
+ * Moves events from the iframe, into the target document. This allows the event
+ * listeners to see the event as if it was called inside the parent .page
+ * in the parent DOM window.
+ */
+var EventBridge = function () {
+    function EventBridge(textLayer, iframe) {
+        _classCallCheck(this, EventBridge);
+
+        this.textLayer = textLayer;
+        this.iframe = iframe;
+    }
+
+    _createClass(EventBridge, [{
+        key: "start",
+        value: function start() {
+
+            this.iframe.contentDocument.body.addEventListener("keyup", this.eventListener.bind(this));
+            this.iframe.contentDocument.body.addEventListener("keydown", this.eventListener.bind(this));
+            this.iframe.contentDocument.body.addEventListener("click", this.eventListener.bind(this));
+
+            console.log("Event bridge started on: ", this.iframe);
+        }
+    }, {
+        key: "eventListener",
+        value: function eventListener(event) {
+            console.log("GOT bridge event", event);
+            var newEvent = new event.constructor(event.type, event);
+
+            this.textLayer.dispatchEvent(newEvent);
+        }
+    }]);
+
+    return EventBridge;
+}();
+
+module.exports.EventBridge = EventBridge;
+
+/***/ }),
+
+/***/ "./web/js/viewer/html/FrameInitializer.js":
+/*!************************************************!*\
+  !*** ./web/js/viewer/html/FrameInitializer.js ***!
+  \************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var $ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
+
+var _require = __webpack_require__(/*! ./EventBridge */ "./web/js/viewer/html/EventBridge.js"),
+    EventBridge = _require.EventBridge;
+
+/**
+ * Listens for the iframe to load and then sends the events so that the
+ * controllers can see.
+ */
+
+
+var FrameInitializer = function () {
+    function FrameInitializer(iframe, textLayer) {
+        _classCallCheck(this, FrameInitializer);
+
+        if (!iframe) {
+            throw new Error("No iframe");
+        }
+
+        this.iframe = iframe;
+        this.textLayer = textLayer;
+    }
+
+    _createClass(FrameInitializer, [{
+        key: "start",
+        value: function start() {
+            $(this.iframe).ready(this.onLoad.bind(this));
+        }
+
+        /**
+         *
+         */
+
+    }, {
+        key: "onLoad",
+        value: function onLoad() {
+
+            console.log("Frame loaded.  Sending pagesinit on .page");
+            this.dispatchPagesInit();
+            this.startEventBridge();
+        }
+    }, {
+        key: "dispatchPagesInit",
+        value: function dispatchPagesInit() {
+
+            var event = new Event('pagesinit', { bubbles: true });
+
+            // Dispatch the event.
+            document.querySelector(".page").dispatchEvent(event);
+        }
+    }, {
+        key: "startEventBridge",
+        value: function startEventBridge() {
+            var eventBridge = new EventBridge(this.textLayer, this.iframe);
+            eventBridge.start();
+        }
+    }]);
+
+    return FrameInitializer;
+}();
+
+module.exports.FrameInitializer = FrameInitializer;
+
+/***/ }),
+
+/***/ "./web/js/viewer/html/FrameResizer.js":
+/*!********************************************!*\
+  !*** ./web/js/viewer/html/FrameResizer.js ***!
+  \********************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var $ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
+
+/**
+ * Frame loader which polls the content iframe until it's loaded.  There's
+ * really no way to get loading 'progress' so the trick is to just poll
+ * fast enough to get the document size so that the user never notices.
+ */
+
+var FrameResizer = function () {
+    function FrameResizer(parent, iframe) {
+        _classCallCheck(this, FrameResizer);
+
+        if (!parent) {
+            throw new Error("No parent");
+        }
+
+        if (!iframe) {
+            throw new Error("No iframe");
+        }
+
+        this.parent = parent;
+        this.iframe = iframe;
+
+        this.completed = false;
+
+        // how long between polling should we wait to expand the size.
+        this.timeoutInterval = 125;
+    }
+
+    _createClass(FrameResizer, [{
+        key: "start",
+        value: function start() {
+            $(this.iframe).ready(this.onLoad.bind(this));
+            this.resizeParent();
+        }
+
+        /**
+         *
+         */
+
+    }, {
+        key: "onLoad",
+        value: function onLoad() {
+            console.log("Document has finished loading");
+            // call once more.
+            this.resizeParent();
+            this.completed = true;
+        }
+    }, {
+        key: "resizeParent",
+        value: function resizeParent() {
+
+            if (this.completed) {
+                console.log("Frame finished loading");
+                return;
+            }
+
+            if (!this.iframe.contentDocument) {
+                console.log("contentDocument not ready yet.");
+                return;
+            }
+
+            var newHeight = this.iframe.contentDocument.documentElement.scrollHeight;
+            console.log("Setting new height to: " + newHeight);
+            this.parent.style.height = newHeight;
+
+            setTimeout(this.resizeParent.bind(this), this.timeoutInterval);
+        }
+    }]);
+
+    return FrameResizer;
+}();
+
+module.exports.FrameResizer = FrameResizer;
+
+/***/ }),
+
+/***/ "./web/js/viewer/html/HTMLViewer.js":
+/*!******************************************!*\
+  !*** ./web/js/viewer/html/HTMLViewer.js ***!
+  \******************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var _require = __webpack_require__(/*! ../Viewer */ "./web/js/viewer/Viewer.js"),
+    Viewer = _require.Viewer;
+
+var _require2 = __webpack_require__(/*! ./FrameResizer */ "./web/js/viewer/html/FrameResizer.js"),
+    FrameResizer = _require2.FrameResizer;
+
+var _require3 = __webpack_require__(/*! ./FrameInitializer */ "./web/js/viewer/html/FrameInitializer.js"),
+    FrameInitializer = _require3.FrameInitializer;
+
+var HTMLViewer = function (_Viewer) {
+    _inherits(HTMLViewer, _Viewer);
+
+    function HTMLViewer() {
+        _classCallCheck(this, HTMLViewer);
+
+        return _possibleConstructorReturn(this, (HTMLViewer.__proto__ || Object.getPrototypeOf(HTMLViewer)).apply(this, arguments));
+    }
+
+    _createClass(HTMLViewer, [{
+        key: "start",
+        value: function start() {
+
+            console.log("Starting HTMLViewer");
+
+            var content = document.querySelector("#content");
+            var contentParent = document.querySelector("#content-parent");
+            var textLayer = document.querySelector(".textLayer");
+
+            var frameResizer = new FrameResizer(contentParent, content);
+            frameResizer.start();
+
+            var frameInitializer = new FrameInitializer(content, textLayer);
+            frameInitializer.start();
+        }
+    }]);
+
+    return HTMLViewer;
+}(Viewer);
+
+module.exports.HTMLViewer = HTMLViewer;
+
+/***/ }),
+
+/***/ "./web/js/viewer/pdf/PDFViewer.js":
+/*!****************************************!*\
+  !*** ./web/js/viewer/pdf/PDFViewer.js ***!
+  \****************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var _require = __webpack_require__(/*! ../Viewer */ "./web/js/viewer/Viewer.js"),
+    Viewer = _require.Viewer;
+
+var PDFViewer = function (_Viewer) {
+    _inherits(PDFViewer, _Viewer);
+
+    function PDFViewer() {
+        _classCallCheck(this, PDFViewer);
+
+        return _possibleConstructorReturn(this, (PDFViewer.__proto__ || Object.getPrototypeOf(PDFViewer)).apply(this, arguments));
+    }
+
+    _createClass(PDFViewer, [{
+        key: "start",
+        value: function start() {
+            console.log("Starting PDFViewer");
+        }
+    }]);
+
+    return PDFViewer;
+}(Viewer);
+
+module.exports.PDFViewer = PDFViewer;
 
 /***/ }),
 
