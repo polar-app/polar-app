@@ -38,3 +38,16 @@
 - when the user zooms the page, we should trap this and zoom the UI ourselves.
 
     - https://stackoverflow.com/questions/27116221/prevent-zoom-cross-browser
+
+# Broken Examples:
+
+- this renders like horribly. ...
+
+http://thehill.com/homenews/administration/392430-trump-i-want-americans-to-listen-to-me-like-north-koreans-listen-to
+
+- I need to figure out why...
+
+    - additionally .. chrome with browser emulation also renders this incorrectly.
+
+    - I think I need to have the device FULLY emulated including APIs that return
+      the viewport size..

@@ -2,6 +2,7 @@
 // be executed in the renderer process for that window.
 // All of the Node.js APIs are available in this process.
 
+const fs = require('fs');
 const electron = require('electron');
 
 const app = electron.app;
@@ -16,7 +17,7 @@ const options = { extraHeaders: 'pragma: no-cache\n' }
 const BROWSER_WINDOW_OPTIONS = {
     minWidth: 400,
     minHeight: 300,
-    width: 1280,
+    width: 850,
     height: 1024,
     //show: false,
     // https://electronjs.org/docs/api/browser-window#new-browserwindowoptions
@@ -29,6 +30,20 @@ const BROWSER_WINDOW_OPTIONS = {
         nodeIntegration: true,
         defaultEncoding: 'UTF-8'
     }
+};
+
+// https://github.com/electron/electron/blob/master/docs/api/web-contents.md#contentsenabledeviceemulationparameters
+const DEVICE_EMULATION = {
+    screenPosition: "mobile",
+    screenSize: {
+        width: 450,
+        height: 450
+    },
+    viewSize: {
+        width: 450,
+        height: 450
+    }
+
 };
 
 function createWindow(url) {
@@ -65,14 +80,9 @@ function createWindow(url) {
         shell.openExternal(url);
     });
 
-    newWindow.loadURL(url, options);
-
     newWindow.once('ready-to-show', () => {
         //newWindow.maximize();
         //newWindow.show();
-
-        // we need to mute by default especially if the window is hidden.
-        newWindow.webContents.setAudioMuted(true);
 
     });
 
@@ -88,6 +98,15 @@ function createWindow(url) {
         console.log("did-finish-load: ");
         await captureHTML(newWindow);
     });
+
+    newWindow.loadURL(url, options);
+
+    // we need to mute by default especially if the window is hidden.
+    console.log("Muting audio...");
+    newWindow.webContents.setAudioMuted(true);
+
+    console.log("Emulating device");
+    newWindow.webContents.enableDeviceEmulation(DEVICE_EMULATION);
 
     return newWindow;
 
@@ -105,11 +124,18 @@ async function captureHTML(window) {
     await window.webContents.executeJavaScript(ContentCapture.toString());
 
     console.log("Retrieving HTML...");
-    let capturedHTML = await window.webContents.executeJavaScript("ContentCapture.captureHTML()");
+    let captured = await window.webContents.executeJavaScript("ContentCapture.captureHTML()");
 
-    console.log(capturedHTML);
+    fs.writeFileSync("captured.json", JSON.stringify(captured, null, "  "));
+    fs.writeFileSync("captured.html", captured.content);
+
+    // write two files.. captured.json and captured.html
+    //console.log(capturedHTML);
 
     console.log("Capturing the HTML...done");
+
+    app.quit();
+
 }
 
 app.on('ready', function() {
