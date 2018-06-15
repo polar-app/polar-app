@@ -43,6 +43,10 @@
 
     <link rel="stylesheet" href="../pdfviewer-custom/polar.css">
 
+    <!-- TODO: would be nice if we can borrow the viewer css but right now it
+         breaks our layout-->
+    <!--<link rel="stylesheet" href="../pdfviewer/web/viewer.css">-->
+
     <!--<link rel="stylesheet" href="../../node_modules/bootstrap/dist/css/bootstrap.min.css">-->
     <!--<link rel="stylesheet" href="../../web/css/bootswatch-slate.min.css">-->
 
@@ -59,6 +63,1654 @@
 <div id="polar-header">
     <progress id="pagemark-progress" value="0.0"></progress>
 </div>
+
+<!-- BEGIN TOOLBAR -->
+
+<style>
+    #DIV_1 {
+        bottom: 0px;
+        cursor: default;
+        height: 32px;
+        left: 0px;
+        position: relative;
+        right: 0px;
+        top: 0px;
+        width: 100%;
+        z-index: 9999;
+        perspective-origin: 290.5px 16px;
+        transform-origin: 290.5px 16px;
+        font: normal normal 400 normal 16px / normal Arial;
+    }/*#DIV_1*/
+
+    #DIV_1:after {
+        cursor: default;
+        font: normal normal 400 normal 16px / normal Arial;
+    }/*#DIV_1:after*/
+
+    #DIV_1:before {
+        cursor: default;
+        font: normal normal 400 normal 16px / normal Arial;
+    }/*#DIV_1:before*/
+
+    #DIV_2 {
+        background-blend-mode: normal, normal;
+        background-position: 0% 0%, 0% 0%;
+        bottom: 0px;
+        box-shadow: rgba(0, 0, 0, 0.15) 0px 1px 1px 0px inset, rgba(255, 255, 255, 0.05) 0px -1px 0px 0px inset, rgba(0, 0, 0, 0.15) 0px 1px 0px 0px, rgba(0, 0, 0, 0.1) 0px 1px 1px 0px;
+        cursor: default;
+        height: 32px;
+        left: 0px;
+        position: relative;
+        right: 0px;
+        top: 0px;
+        width: 100%;
+        perspective-origin: 290.5px 16px;
+        transform-origin: 290.5px 16px;
+        background: url("http://localhost:63342/polar-bookshelf/polar-ebook-reader/pdfviewer/web/images/texture.png") repeat scroll 0% 0% / auto padding-box border-box, rgb(71, 71, 71) linear-gradient(rgba(82, 82, 82, 0.99), rgba(69, 69, 69, 0.95)) repeat scroll 0% 0% / auto padding-box border-box;
+        font: normal normal 400 normal 16px / normal Arial;
+    }/*#DIV_2*/
+
+    #DIV_2:after {
+        cursor: default;
+        font: normal normal 400 normal 16px / normal Arial;
+    }/*#DIV_2:after*/
+
+    #DIV_2:before {
+        cursor: default;
+        font: normal normal 400 normal 16px / normal Arial;
+    }/*#DIV_2:before*/
+
+    #DIV_3 {
+        cursor: default;
+        height: 32px;
+        width: 100%;
+        perspective-origin: 290.5px 16px;
+        transform-origin: 290.5px 16px;
+        font: normal normal 400 normal 16px / normal Arial;
+    }/*#DIV_3*/
+
+    #DIV_3:after {
+        cursor: default;
+        font: normal normal 400 normal 16px / normal Arial;
+    }/*#DIV_3:after*/
+
+    #DIV_3:before {
+        cursor: default;
+        font: normal normal 400 normal 16px / normal Arial;
+    }/*#DIV_3:before*/
+
+    #DIV_4 {
+        cursor: default;
+        float: left;
+        height: 32px;
+        width: 100%;
+        perspective-origin: 83.3438px 16px;
+        transform-origin: 83.3438px 16px;
+        font: normal normal 400 normal 16px / normal Arial;
+    }/*#DIV_4*/
+
+    #DIV_4:after {
+        cursor: default;
+        font: normal normal 400 normal 16px / normal Arial;
+    }/*#DIV_4:after*/
+
+    #DIV_4:before {
+        cursor: default;
+        font: normal normal 400 normal 16px / normal Arial;
+    }/*#DIV_4:before*/
+
+    #BUTTON_5 {
+        bottom: 0px;
+        box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 1px 0px inset, rgba(0, 0, 0, 0.2) 0px 0px 1px 0px inset, rgba(255, 255, 255, 0.05) 0px 1px 0px 0px;
+        color: rgba(255, 255, 255, 0.8);
+        display: block;
+        float: left;
+        height: 25px;
+        left: 0px;
+        min-width: 16px;
+        position: relative;
+        right: 0px;
+        text-decoration: none solid rgba(255, 255, 255, 0.8);
+        top: 0px;
+        width: 32px;
+        column-rule-color: rgba(255, 255, 255, 0.8);
+        perspective-origin: 16px 12.5px;
+        transform-origin: 16px 12.5px;
+        user-select: none;
+        caret-color: rgba(255, 255, 255, 0.8);
+        background: rgba(0, 0, 0, 0.3) linear-gradient(rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0)) repeat scroll 0% 0% / auto padding-box border-box;
+        border-top: 1px solid rgba(0, 0, 0, 0.4);
+        border-right: 1px solid rgba(0, 0, 0, 0.45);
+        border-bottom: 1px solid rgba(0, 0, 0, 0.5);
+        border-left: 1px solid rgba(0, 0, 0, 0.45);
+        border-radius: 2px 2px 2px 2px;
+        font: normal normal 400 normal 12px / 14px Arial;
+        margin: 3px 2px 4px 4px;
+        outline: rgba(255, 255, 255, 0.8) none 0px;
+        padding: 2px 6px 0px;
+        transition: background-color 0.01s linear 0s, border-color 0.01s linear 0s, box-shadow 0.01s linear 0s;
+    }/*#BUTTON_5*/
+
+    #BUTTON_5:after {
+        color: rgba(255, 255, 255, 0.8);
+        text-decoration: none solid rgba(255, 255, 255, 0.8);
+        column-rule-color: rgba(255, 255, 255, 0.8);
+        user-select: none;
+        caret-color: rgba(255, 255, 255, 0.8);
+        border: 0px none rgba(255, 255, 255, 0.8);
+        font: normal normal 400 normal 12px / 14px Arial;
+        outline: rgba(255, 255, 255, 0.8) none 0px;
+    }/*#BUTTON_5:after*/
+
+    #BUTTON_5:before {
+        bottom: -1px;
+        color: rgba(255, 255, 255, 0.8);
+        content: url("http://localhost:63342/polar-bookshelf/polar-ebook-reader/pdfviewer/web/images/toolbarButton-sidebarToggle.png");
+        display: block;
+        height: 20px;
+        left: 7px;
+        position: absolute;
+        right: 7px;
+        text-decoration: none solid rgba(255, 255, 255, 0.8);
+        top: 4px;
+        width: 16px;
+        column-rule-color: rgba(255, 255, 255, 0.8);
+        perspective-origin: 8px 10px;
+        transform-origin: 8px 10px;
+        user-select: none;
+        caret-color: rgba(255, 255, 255, 0.8);
+        border: 0px none rgba(255, 255, 255, 0.8);
+        font: normal normal 400 normal 12px / 14px Arial;
+        outline: rgba(255, 255, 255, 0.8) none 0px;
+    }/*#BUTTON_5:before*/
+
+    #SPAN_6, #SPAN_9, #SPAN_31, #SPAN_35, #SPAN_38 {
+        color: rgba(255, 255, 255, 0.8);
+        cursor: default;
+        display: inline-block;
+        height: 0px;
+        text-align: center;
+        text-decoration: none solid rgba(255, 255, 255, 0.8);
+        width: 0px;
+        column-rule-color: rgba(255, 255, 255, 0.8);
+        perspective-origin: 0px 0px;
+        transform-origin: 0px 0px;
+        user-select: none;
+        caret-color: rgba(255, 255, 255, 0.8);
+        border: 0px none rgba(255, 255, 255, 0.8);
+        font: normal normal 400 normal 12px / 14px Arial;
+        outline: rgba(255, 255, 255, 0.8) none 0px;
+        overflow: hidden;
+    }/*#SPAN_6, #SPAN_9, #SPAN_31, #SPAN_35, #SPAN_38*/
+
+    #SPAN_6:after, #SPAN_9:after, #SPAN_31:after, #SPAN_35:after, #SPAN_38:after {
+        color: rgba(255, 255, 255, 0.8);
+        cursor: default;
+        text-align: center;
+        text-decoration: none solid rgba(255, 255, 255, 0.8);
+        column-rule-color: rgba(255, 255, 255, 0.8);
+        user-select: none;
+        caret-color: rgba(255, 255, 255, 0.8);
+        border: 0px none rgba(255, 255, 255, 0.8);
+        font: normal normal 400 normal 12px / 14px Arial;
+        outline: rgba(255, 255, 255, 0.8) none 0px;
+    }/*#SPAN_6:after, #SPAN_9:after, #SPAN_31:after, #SPAN_35:after, #SPAN_38:after*/
+
+    #SPAN_6:before, #SPAN_9:before, #SPAN_31:before, #SPAN_35:before, #SPAN_38:before {
+        color: rgba(255, 255, 255, 0.8);
+        cursor: default;
+        text-align: center;
+        text-decoration: none solid rgba(255, 255, 255, 0.8);
+        column-rule-color: rgba(255, 255, 255, 0.8);
+        user-select: none;
+        caret-color: rgba(255, 255, 255, 0.8);
+        border: 0px none rgba(255, 255, 255, 0.8);
+        font: normal normal 400 normal 12px / 14px Arial;
+        outline: rgba(255, 255, 255, 0.8) none 0px;
+    }/*#SPAN_6:before, #SPAN_9:before, #SPAN_31:before, #SPAN_35:before, #SPAN_38:before*/
+
+    #DIV_7 {
+        bottom: 0px;
+        cursor: default;
+        float: left;
+        height: 1px;
+        left: 0px;
+        position: relative;
+        right: 0px;
+        top: 0px;
+        width: 0px;
+        perspective-origin: 0px 0.5px;
+        transform-origin: 0px 0.5px;
+        font: normal normal 400 normal 16px / normal Arial;
+    }/*#DIV_7*/
+
+    #DIV_7:after {
+        cursor: default;
+        font: normal normal 400 normal 16px / normal Arial;
+    }/*#DIV_7:after*/
+
+    #DIV_7:before {
+        cursor: default;
+        font: normal normal 400 normal 16px / normal Arial;
+    }/*#DIV_7:before*/
+
+    #BUTTON_8 {
+        bottom: 0px;
+        color: rgba(255, 255, 255, 0.8);
+        display: block;
+        float: left;
+        height: 25px;
+        left: 0px;
+        min-width: 16px;
+        position: relative;
+        right: 0px;
+        text-decoration: none solid rgba(255, 255, 255, 0.8);
+        top: 0px;
+        width: 32px;
+        column-rule-color: rgba(255, 255, 255, 0.8);
+        perspective-origin: 16px 12.5px;
+        transform-origin: 16px 12.5px;
+        user-select: none;
+        caret-color: rgba(255, 255, 255, 0.8);
+        background: rgba(0, 0, 0, 0) none repeat scroll 0% 0% / auto padding-box border-box;
+        border: 1px solid rgba(0, 0, 0, 0);
+        border-radius: 2px 2px 2px 2px;
+        font: normal normal 400 normal 12px / 14px Arial;
+        margin: 3px 2px 4px 0px;
+        outline: rgba(255, 255, 255, 0.8) none 0px;
+        padding: 2px 6px 0px;
+        transition: background-color 0.15s ease 0s, border-color 0.15s ease 0s, box-shadow 0.15s ease 0s;
+    }/*#BUTTON_8*/
+
+    #BUTTON_8:after {
+        color: rgba(255, 255, 255, 0.8);
+        text-decoration: none solid rgba(255, 255, 255, 0.8);
+        column-rule-color: rgba(255, 255, 255, 0.8);
+        user-select: none;
+        caret-color: rgba(255, 255, 255, 0.8);
+        border: 0px none rgba(255, 255, 255, 0.8);
+        font: normal normal 400 normal 12px / 14px Arial;
+        outline: rgba(255, 255, 255, 0.8) none 0px;
+    }/*#BUTTON_8:after*/
+
+    #BUTTON_8:before {
+        bottom: -1px;
+        color: rgba(255, 255, 255, 0.8);
+        content: url("http://localhost:63342/polar-bookshelf/polar-ebook-reader/pdfviewer/web/images/toolbarButton-search.png");
+        display: block;
+        height: 20px;
+        left: 7px;
+        position: absolute;
+        right: 7px;
+        text-decoration: none solid rgba(255, 255, 255, 0.8);
+        top: 4px;
+        width: 16px;
+        column-rule-color: rgba(255, 255, 255, 0.8);
+        perspective-origin: 8px 10px;
+        transform-origin: 8px 10px;
+        user-select: none;
+        caret-color: rgba(255, 255, 255, 0.8);
+        border: 0px none rgba(255, 255, 255, 0.8);
+        font: normal normal 400 normal 12px / 14px Arial;
+        outline: rgba(255, 255, 255, 0.8) none 0px;
+    }/*#BUTTON_8:before*/
+
+    #DIV_10 {
+        bottom: 0px;
+        cursor: default;
+        float: left;
+        height: 0px;
+        left: 0px;
+        position: relative;
+        right: 0px;
+        top: 0px;
+        width: 0px;
+        perspective-origin: 0px 0px;
+        transform-origin: 0px 0px;
+        font: normal normal 400 normal 16px / normal Arial;
+        margin: 3px 2px 4px 0px;
+    }/*#DIV_10*/
+
+    #DIV_10:after {
+        cursor: default;
+        font: normal normal 400 normal 16px / normal Arial;
+    }/*#DIV_10:after*/
+
+    #DIV_10:before {
+        cursor: default;
+        font: normal normal 400 normal 16px / normal Arial;
+    }/*#DIV_10:before*/
+
+    #BUTTON_11 {
+        color: rgba(255, 255, 255, 0.8);
+        display: none;
+        float: left;
+        height: 25px;
+        min-width: 16px;
+        position: relative;
+        text-decoration: none solid rgba(255, 255, 255, 0.8);
+        width: 32px;
+        column-rule-color: rgba(255, 255, 255, 0.8);
+        user-select: none;
+        caret-color: rgba(255, 255, 255, 0.8);
+        background: rgba(0, 0, 0, 0) none repeat scroll 0% 0% / auto padding-box border-box;
+        border: 1px solid rgba(0, 0, 0, 0);
+        border-radius: 2px 0 0 2px;
+        font: normal normal 400 normal 12px / 14px Arial;
+        margin: 0px -1px 0px 0px;
+        outline: rgba(255, 255, 255, 0.8) none 0px;
+        padding: 2px 6px 0px;
+        transition: background-color 0.15s ease 0s, border-color 0.15s ease 0s, box-shadow 0.15s ease 0s;
+    }/*#BUTTON_11*/
+
+    #BUTTON_11:after {
+        color: rgba(255, 255, 255, 0.8);
+        text-decoration: none solid rgba(255, 255, 255, 0.8);
+        column-rule-color: rgba(255, 255, 255, 0.8);
+        user-select: none;
+        caret-color: rgba(255, 255, 255, 0.8);
+        border: 0px none rgba(255, 255, 255, 0.8);
+        font: normal normal 400 normal 12px / 14px Arial;
+        outline: rgba(255, 255, 255, 0.8) none 0px;
+    }/*#BUTTON_11:after*/
+
+    #BUTTON_11:before {
+        color: rgba(255, 255, 255, 0.8);
+        content: url("http://localhost:63342/polar-bookshelf/polar-ebook-reader/pdfviewer/web/images/toolbarButton-pageUp.png");
+        display: block;
+        left: 7px;
+        position: absolute;
+        text-decoration: none solid rgba(255, 255, 255, 0.8);
+        top: 4px;
+        column-rule-color: rgba(255, 255, 255, 0.8);
+        user-select: none;
+        caret-color: rgba(255, 255, 255, 0.8);
+        border: 0px none rgba(255, 255, 255, 0.8);
+        font: normal normal 400 normal 12px / 14px Arial;
+        outline: rgba(255, 255, 255, 0.8) none 0px;
+    }/*#BUTTON_11:before*/
+
+    #SPAN_12, #SPAN_15, #SPAN_20, #SPAN_22, #SPAN_24, #SPAN_26 {
+        color: rgba(255, 255, 255, 0.8);
+        cursor: default;
+        display: inline-block;
+        height: 0px;
+        text-align: center;
+        text-decoration: none solid rgba(255, 255, 255, 0.8);
+        width: 0px;
+        column-rule-color: rgba(255, 255, 255, 0.8);
+        user-select: none;
+        caret-color: rgba(255, 255, 255, 0.8);
+        border: 0px none rgba(255, 255, 255, 0.8);
+        font: normal normal 400 normal 12px / 14px Arial;
+        outline: rgba(255, 255, 255, 0.8) none 0px;
+        overflow: hidden;
+    }/*#SPAN_12, #SPAN_15, #SPAN_20, #SPAN_22, #SPAN_24, #SPAN_26*/
+
+    #SPAN_12:after, #SPAN_15:after, #SPAN_20:after, #SPAN_22:after, #SPAN_24:after, #SPAN_26:after {
+        color: rgba(255, 255, 255, 0.8);
+        cursor: default;
+        text-align: center;
+        text-decoration: none solid rgba(255, 255, 255, 0.8);
+        column-rule-color: rgba(255, 255, 255, 0.8);
+        user-select: none;
+        caret-color: rgba(255, 255, 255, 0.8);
+        border: 0px none rgba(255, 255, 255, 0.8);
+        font: normal normal 400 normal 12px / 14px Arial;
+        outline: rgba(255, 255, 255, 0.8) none 0px;
+    }/*#SPAN_12:after, #SPAN_15:after, #SPAN_20:after, #SPAN_22:after, #SPAN_24:after, #SPAN_26:after*/
+
+    #SPAN_12:before, #SPAN_15:before, #SPAN_20:before, #SPAN_22:before, #SPAN_24:before, #SPAN_26:before {
+        color: rgba(255, 255, 255, 0.8);
+        cursor: default;
+        text-align: center;
+        text-decoration: none solid rgba(255, 255, 255, 0.8);
+        column-rule-color: rgba(255, 255, 255, 0.8);
+        user-select: none;
+        caret-color: rgba(255, 255, 255, 0.8);
+        border: 0px none rgba(255, 255, 255, 0.8);
+        font: normal normal 400 normal 12px / 14px Arial;
+        outline: rgba(255, 255, 255, 0.8) none 0px;
+    }/*#SPAN_12:before, #SPAN_15:before, #SPAN_20:before, #SPAN_22:before, #SPAN_24:before, #SPAN_26:before*/
+
+    #DIV_13 {
+        box-shadow: rgba(255, 255, 255, 0.08) 0px 0px 0px 1px;
+        cursor: default;
+        display: none;
+        float: left;
+        width: 1px;
+        background: rgba(0, 0, 0, 0.5) none repeat scroll 0% 0% / auto padding-box border-box;
+        font: normal normal 400 normal 16px / normal Arial;
+        margin: 5px 0px;
+        padding: 8px 0px;
+    }/*#DIV_13*/
+
+    #DIV_13:after {
+        cursor: default;
+        font: normal normal 400 normal 16px / normal Arial;
+    }/*#DIV_13:after*/
+
+    #DIV_13:before {
+        cursor: default;
+        font: normal normal 400 normal 16px / normal Arial;
+    }/*#DIV_13:before*/
+
+    #BUTTON_14 {
+        color: rgba(255, 255, 255, 0.8);
+        display: none;
+        float: left;
+        height: 25px;
+        min-width: 16px;
+        position: relative;
+        text-decoration: none solid rgba(255, 255, 255, 0.8);
+        width: 32px;
+        column-rule-color: rgba(255, 255, 255, 0.8);
+        user-select: none;
+        caret-color: rgba(255, 255, 255, 0.8);
+        background: rgba(0, 0, 0, 0) none repeat scroll 0% 0% / auto padding-box border-box;
+        border: 1px solid rgba(0, 0, 0, 0);
+        border-radius: 0 2px 2px 0;
+        font: normal normal 400 normal 12px / 14px Arial;
+        margin: 0px 0px 0px -1px;
+        outline: rgba(255, 255, 255, 0.8) none 0px;
+        padding: 2px 6px 0px;
+        transition: background-color 0.15s ease 0s, border-color 0.15s ease 0s, box-shadow 0.15s ease 0s;
+    }/*#BUTTON_14*/
+
+    #BUTTON_14:after {
+        color: rgba(255, 255, 255, 0.8);
+        text-decoration: none solid rgba(255, 255, 255, 0.8);
+        column-rule-color: rgba(255, 255, 255, 0.8);
+        user-select: none;
+        caret-color: rgba(255, 255, 255, 0.8);
+        border: 0px none rgba(255, 255, 255, 0.8);
+        font: normal normal 400 normal 12px / 14px Arial;
+        outline: rgba(255, 255, 255, 0.8) none 0px;
+    }/*#BUTTON_14:after*/
+
+    #BUTTON_14:before {
+        color: rgba(255, 255, 255, 0.8);
+        content: url("http://localhost:63342/polar-bookshelf/polar-ebook-reader/pdfviewer/web/images/toolbarButton-pageDown.png");
+        display: block;
+        left: 7px;
+        position: absolute;
+        text-decoration: none solid rgba(255, 255, 255, 0.8);
+        top: 4px;
+        column-rule-color: rgba(255, 255, 255, 0.8);
+        user-select: none;
+        caret-color: rgba(255, 255, 255, 0.8);
+        border: 0px none rgba(255, 255, 255, 0.8);
+        font: normal normal 400 normal 12px / 14px Arial;
+        outline: rgba(255, 255, 255, 0.8) none 0px;
+    }/*#BUTTON_14:before*/
+
+    #INPUT_16 {
+        bottom: 0px;
+        box-shadow: rgba(0, 0, 0, 0.05) 0px 1px 0px 0px inset, rgba(255, 255, 255, 0.05) 0px 1px 0px 0px;
+        box-sizing: content-box;
+        color: rgb(242, 242, 242);
+        display: block;
+        float: left;
+        height: 14px;
+        left: 0px;
+        min-width: 16px;
+        position: relative;
+        right: 0px;
+        text-align: right;
+        text-decoration: none solid rgb(242, 242, 242);
+        top: 0px;
+        width: 40px;
+        column-rule-color: rgb(242, 242, 242);
+        perspective-origin: 27px 11px;
+        transform-origin: 27px 11px;
+        caret-color: rgb(242, 242, 242);
+        background: rgba(255, 255, 255, 0.09) linear-gradient(rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0)) repeat scroll 0% 0% / auto padding-box padding-box;
+        border-top: 1px solid rgba(0, 0, 0, 0.32);
+        border-right: 1px solid rgba(0, 0, 0, 0.38);
+        border-bottom: 1px solid rgba(0, 0, 0, 0.42);
+        border-left: 1px solid rgba(0, 0, 0, 0.38);
+        border-radius: 2px 2px 2px 2px;
+        font: normal normal 400 normal 12px / 14px Arial;
+        margin: 4px 0px;
+        outline: rgb(242, 242, 242) none 0px;
+        padding: 3px 6px;
+        transition: background-color 0.15s ease 0s, border-color 0.15s ease 0s, box-shadow 0.15s ease 0s;
+    }/*#INPUT_16*/
+
+    #INPUT_16:after {
+        color: rgb(242, 242, 242);
+        text-align: right;
+        text-decoration: none solid rgb(242, 242, 242);
+        column-rule-color: rgb(242, 242, 242);
+        caret-color: rgb(242, 242, 242);
+        border: 0px none rgb(242, 242, 242);
+        font: normal normal 400 normal 12px / 14px Arial;
+        outline: rgb(242, 242, 242) none 0px;
+    }/*#INPUT_16:after*/
+
+    #INPUT_16:before {
+        color: rgb(242, 242, 242);
+        text-align: right;
+        text-decoration: none solid rgb(242, 242, 242);
+        column-rule-color: rgb(242, 242, 242);
+        caret-color: rgb(242, 242, 242);
+        border: 0px none rgb(242, 242, 242);
+        font: normal normal 400 normal 12px / 14px Arial;
+        outline: rgb(242, 242, 242) none 0px;
+    }/*#INPUT_16:before*/
+
+    #SPAN_17 {
+        bottom: 0px;
+        color: rgb(217, 217, 217);
+        cursor: default;
+        display: block;
+        float: left;
+        height: 14px;
+        left: 0px;
+        min-width: 16px;
+        position: relative;
+        right: 0px;
+        text-align: left;
+        text-decoration: none solid rgb(217, 217, 217);
+        top: 0px;
+        width: 26.7031px;
+        column-rule-color: rgb(217, 217, 217);
+        perspective-origin: 18.3438px 11px;
+        transform-origin: 18.3438px 11px;
+        user-select: none;
+        caret-color: rgb(217, 217, 217);
+        border: 1px solid rgba(0, 0, 0, 0);
+        border-radius: 2px 2px 2px 2px;
+        font: normal normal 400 normal 12px / 14px Arial;
+        margin: 4px 2px 4px 0px;
+        outline: rgb(217, 217, 217) none 0px;
+        padding: 3px 6px 3px 2px;
+    }/*#SPAN_17*/
+
+    #SPAN_17:after {
+        color: rgb(217, 217, 217);
+        cursor: default;
+        text-align: left;
+        text-decoration: none solid rgb(217, 217, 217);
+        column-rule-color: rgb(217, 217, 217);
+        user-select: none;
+        caret-color: rgb(217, 217, 217);
+        border: 0px none rgb(217, 217, 217);
+        font: normal normal 400 normal 12px / 14px Arial;
+        outline: rgb(217, 217, 217) none 0px;
+    }/*#SPAN_17:after*/
+
+    #SPAN_17:before {
+        color: rgb(217, 217, 217);
+        cursor: default;
+        text-align: left;
+        text-decoration: none solid rgb(217, 217, 217);
+        column-rule-color: rgb(217, 217, 217);
+        user-select: none;
+        caret-color: rgb(217, 217, 217);
+        border: 0px none rgb(217, 217, 217);
+        font: normal normal 400 normal 12px / 14px Arial;
+        outline: rgb(217, 217, 217) none 0px;
+    }/*#SPAN_17:before*/
+
+    #DIV_18 {
+        cursor: default;
+        float: right;
+        height: 32px;
+        width: 36px;
+        perspective-origin: 18px 16px;
+        transform-origin: 18px 16px;
+        font: normal normal 400 normal 16px / normal Arial;
+    }/*#DIV_18*/
+
+    #DIV_18:after {
+        cursor: default;
+        font: normal normal 400 normal 16px / normal Arial;
+    }/*#DIV_18:after*/
+
+    #DIV_18:before {
+        cursor: default;
+        font: normal normal 400 normal 16px / normal Arial;
+    }/*#DIV_18:before*/
+
+    #BUTTON_19 {
+        color: rgba(255, 255, 255, 0.8);
+        display: none;
+        float: left;
+        height: 25px;
+        min-width: 16px;
+        position: relative;
+        text-decoration: none solid rgba(255, 255, 255, 0.8);
+        width: 32px;
+        column-rule-color: rgba(255, 255, 255, 0.8);
+        user-select: none;
+        caret-color: rgba(255, 255, 255, 0.8);
+        background: rgba(0, 0, 0, 0) none repeat scroll 0% 0% / auto padding-box border-box;
+        border: 1px solid rgba(0, 0, 0, 0);
+        border-radius: 2px 2px 2px 2px;
+        font: normal normal 400 normal 12px / 14px Arial;
+        margin: 3px 2px 4px 4px;
+        outline: rgba(255, 255, 255, 0.8) none 0px;
+        padding: 2px 6px 0px;
+        transition: background-color 0.15s ease 0s, border-color 0.15s ease 0s, box-shadow 0.15s ease 0s;
+    }/*#BUTTON_19*/
+
+    #BUTTON_19:after {
+        color: rgba(255, 255, 255, 0.8);
+        text-decoration: none solid rgba(255, 255, 255, 0.8);
+        column-rule-color: rgba(255, 255, 255, 0.8);
+        user-select: none;
+        caret-color: rgba(255, 255, 255, 0.8);
+        border: 0px none rgba(255, 255, 255, 0.8);
+        font: normal normal 400 normal 12px / 14px Arial;
+        outline: rgba(255, 255, 255, 0.8) none 0px;
+    }/*#BUTTON_19:after*/
+
+    #BUTTON_19:before {
+        color: rgba(255, 255, 255, 0.8);
+        content: url("http://localhost:63342/polar-bookshelf/polar-ebook-reader/pdfviewer/web/images/toolbarButton-presentationMode.png");
+        display: block;
+        left: 7px;
+        position: absolute;
+        text-decoration: none solid rgba(255, 255, 255, 0.8);
+        top: 4px;
+        column-rule-color: rgba(255, 255, 255, 0.8);
+        user-select: none;
+        caret-color: rgba(255, 255, 255, 0.8);
+        border: 0px none rgba(255, 255, 255, 0.8);
+        font: normal normal 400 normal 12px / 14px Arial;
+        outline: rgba(255, 255, 255, 0.8) none 0px;
+    }/*#BUTTON_19:before*/
+
+    #BUTTON_21 {
+        color: rgba(255, 255, 255, 0.8);
+        display: none;
+        float: left;
+        height: 25px;
+        min-width: 16px;
+        position: relative;
+        text-decoration: none solid rgba(255, 255, 255, 0.8);
+        width: 32px;
+        column-rule-color: rgba(255, 255, 255, 0.8);
+        user-select: none;
+        caret-color: rgba(255, 255, 255, 0.8);
+        background: rgba(0, 0, 0, 0) none repeat scroll 0% 0% / auto padding-box border-box;
+        border: 1px solid rgba(0, 0, 0, 0);
+        border-radius: 2px 2px 2px 2px;
+        font: normal normal 400 normal 12px / 14px Arial;
+        margin: 3px 2px 4px 0px;
+        outline: rgba(255, 255, 255, 0.8) none 0px;
+        padding: 2px 6px 0px;
+        transition: background-color 0.15s ease 0s, border-color 0.15s ease 0s, box-shadow 0.15s ease 0s;
+    }/*#BUTTON_21*/
+
+    #BUTTON_21:after {
+        color: rgba(255, 255, 255, 0.8);
+        text-decoration: none solid rgba(255, 255, 255, 0.8);
+        column-rule-color: rgba(255, 255, 255, 0.8);
+        user-select: none;
+        caret-color: rgba(255, 255, 255, 0.8);
+        border: 0px none rgba(255, 255, 255, 0.8);
+        font: normal normal 400 normal 12px / 14px Arial;
+        outline: rgba(255, 255, 255, 0.8) none 0px;
+    }/*#BUTTON_21:after*/
+
+    #BUTTON_21:before {
+        color: rgba(255, 255, 255, 0.8);
+        content: url("http://localhost:63342/polar-bookshelf/polar-ebook-reader/pdfviewer/web/images/toolbarButton-openFile.png");
+        display: block;
+        left: 7px;
+        position: absolute;
+        text-decoration: none solid rgba(255, 255, 255, 0.8);
+        top: 4px;
+        column-rule-color: rgba(255, 255, 255, 0.8);
+        user-select: none;
+        caret-color: rgba(255, 255, 255, 0.8);
+        border: 0px none rgba(255, 255, 255, 0.8);
+        font: normal normal 400 normal 12px / 14px Arial;
+        outline: rgba(255, 255, 255, 0.8) none 0px;
+    }/*#BUTTON_21:before*/
+
+    #BUTTON_23 {
+        color: rgba(255, 255, 255, 0.8);
+        display: none;
+        float: left;
+        height: 25px;
+        min-width: 16px;
+        position: relative;
+        text-decoration: none solid rgba(255, 255, 255, 0.8);
+        width: 32px;
+        column-rule-color: rgba(255, 255, 255, 0.8);
+        user-select: none;
+        caret-color: rgba(255, 255, 255, 0.8);
+        background: rgba(0, 0, 0, 0) none repeat scroll 0% 0% / auto padding-box border-box;
+        border: 1px solid rgba(0, 0, 0, 0);
+        border-radius: 2px 2px 2px 2px;
+        font: normal normal 400 normal 12px / 14px Arial;
+        margin: 3px 2px 4px 0px;
+        outline: rgba(255, 255, 255, 0.8) none 0px;
+        padding: 2px 6px 0px;
+        transition: background-color 0.15s ease 0s, border-color 0.15s ease 0s, box-shadow 0.15s ease 0s;
+    }/*#BUTTON_23*/
+
+    #BUTTON_23:after {
+        color: rgba(255, 255, 255, 0.8);
+        text-decoration: none solid rgba(255, 255, 255, 0.8);
+        column-rule-color: rgba(255, 255, 255, 0.8);
+        user-select: none;
+        caret-color: rgba(255, 255, 255, 0.8);
+        border: 0px none rgba(255, 255, 255, 0.8);
+        font: normal normal 400 normal 12px / 14px Arial;
+        outline: rgba(255, 255, 255, 0.8) none 0px;
+    }/*#BUTTON_23:after*/
+
+    #BUTTON_23:before {
+        color: rgba(255, 255, 255, 0.8);
+        content: url("http://localhost:63342/polar-bookshelf/polar-ebook-reader/pdfviewer/web/images/toolbarButton-print.png");
+        display: block;
+        left: 7px;
+        position: absolute;
+        text-decoration: none solid rgba(255, 255, 255, 0.8);
+        top: 4px;
+        column-rule-color: rgba(255, 255, 255, 0.8);
+        user-select: none;
+        caret-color: rgba(255, 255, 255, 0.8);
+        border: 0px none rgba(255, 255, 255, 0.8);
+        font: normal normal 400 normal 12px / 14px Arial;
+        outline: rgba(255, 255, 255, 0.8) none 0px;
+    }/*#BUTTON_23:before*/
+
+    #BUTTON_25 {
+        color: rgba(255, 255, 255, 0.8);
+        display: none;
+        float: left;
+        height: 25px;
+        min-width: 16px;
+        position: relative;
+        text-decoration: none solid rgba(255, 255, 255, 0.8);
+        width: 32px;
+        column-rule-color: rgba(255, 255, 255, 0.8);
+        user-select: none;
+        caret-color: rgba(255, 255, 255, 0.8);
+        background: rgba(0, 0, 0, 0) none repeat scroll 0% 0% / auto padding-box border-box;
+        border: 1px solid rgba(0, 0, 0, 0);
+        border-radius: 2px 2px 2px 2px;
+        font: normal normal 400 normal 12px / 14px Arial;
+        margin: 3px 2px 4px 0px;
+        outline: rgba(255, 255, 255, 0.8) none 0px;
+        padding: 2px 6px 0px;
+        transition: background-color 0.15s ease 0s, border-color 0.15s ease 0s, box-shadow 0.15s ease 0s;
+    }/*#BUTTON_25*/
+
+    #BUTTON_25:after {
+        color: rgba(255, 255, 255, 0.8);
+        text-decoration: none solid rgba(255, 255, 255, 0.8);
+        column-rule-color: rgba(255, 255, 255, 0.8);
+        user-select: none;
+        caret-color: rgba(255, 255, 255, 0.8);
+        border: 0px none rgba(255, 255, 255, 0.8);
+        font: normal normal 400 normal 12px / 14px Arial;
+        outline: rgba(255, 255, 255, 0.8) none 0px;
+    }/*#BUTTON_25:after*/
+
+    #BUTTON_25:before {
+        color: rgba(255, 255, 255, 0.8);
+        content: url("http://localhost:63342/polar-bookshelf/polar-ebook-reader/pdfviewer/web/images/toolbarButton-download.png");
+        display: block;
+        left: 7px;
+        position: absolute;
+        text-decoration: none solid rgba(255, 255, 255, 0.8);
+        top: 4px;
+        column-rule-color: rgba(255, 255, 255, 0.8);
+        user-select: none;
+        caret-color: rgba(255, 255, 255, 0.8);
+        border: 0px none rgba(255, 255, 255, 0.8);
+        font: normal normal 400 normal 12px / 14px Arial;
+        outline: rgba(255, 255, 255, 0.8) none 0px;
+    }/*#BUTTON_25:before*/
+
+    #A_27 {
+        box-sizing: border-box;
+        color: rgba(255, 255, 255, 0.8);
+        cursor: default;
+        display: none;
+        float: left;
+        height: 25px;
+        min-width: 16px;
+        position: relative;
+        text-decoration: none solid rgba(255, 255, 255, 0.8);
+        width: 32px;
+        column-rule-color: rgba(255, 255, 255, 0.8);
+        user-select: none;
+        caret-color: rgba(255, 255, 255, 0.8);
+        border: 1px solid rgba(0, 0, 0, 0);
+        border-radius: 2px 2px 2px 2px;
+        font: normal normal 400 normal 12px / 14px Arial;
+        margin: 3px 2px 4px 0px;
+        outline: rgba(255, 255, 255, 0.8) none 0px;
+        padding: 4px 6px 0px;
+        transition: background-color 0.15s ease 0s, border-color 0.15s ease 0s, box-shadow 0.15s ease 0s;
+    }/*#A_27*/
+
+    #A_27:after {
+        color: rgba(255, 255, 255, 0.8);
+        cursor: default;
+        text-decoration: none solid rgba(255, 255, 255, 0.8);
+        column-rule-color: rgba(255, 255, 255, 0.8);
+        user-select: none;
+        caret-color: rgba(255, 255, 255, 0.8);
+        border: 0px none rgba(255, 255, 255, 0.8);
+        font: normal normal 400 normal 12px / 14px Arial;
+        outline: rgba(255, 255, 255, 0.8) none 0px;
+    }/*#A_27:after*/
+
+    #A_27:before {
+        color: rgba(255, 255, 255, 0.8);
+        content: url("http://localhost:63342/polar-bookshelf/polar-ebook-reader/pdfviewer/web/images/toolbarButton-bookmark.png");
+        cursor: default;
+        display: block;
+        left: 7px;
+        position: absolute;
+        text-decoration: none solid rgba(255, 255, 255, 0.8);
+        top: 4px;
+        column-rule-color: rgba(255, 255, 255, 0.8);
+        user-select: none;
+        caret-color: rgba(255, 255, 255, 0.8);
+        border: 0px none rgba(255, 255, 255, 0.8);
+        font: normal normal 400 normal 12px / 14px Arial;
+        outline: rgba(255, 255, 255, 0.8) none 0px;
+    }/*#A_27:before*/
+
+    #SPAN_28 {
+        color: rgba(255, 255, 255, 0.8);
+        cursor: default;
+        display: inline-block;
+        height: 0px;
+        text-decoration: none solid rgba(255, 255, 255, 0.8);
+        width: 0px;
+        column-rule-color: rgba(255, 255, 255, 0.8);
+        user-select: none;
+        caret-color: rgba(255, 255, 255, 0.8);
+        border: 0px none rgba(255, 255, 255, 0.8);
+        font: normal normal 400 normal 12px / 14px Arial;
+        outline: rgba(255, 255, 255, 0.8) none 0px;
+        overflow: hidden;
+    }/*#SPAN_28*/
+
+    #SPAN_28:after {
+        color: rgba(255, 255, 255, 0.8);
+        cursor: default;
+        text-decoration: none solid rgba(255, 255, 255, 0.8);
+        column-rule-color: rgba(255, 255, 255, 0.8);
+        user-select: none;
+        caret-color: rgba(255, 255, 255, 0.8);
+        border: 0px none rgba(255, 255, 255, 0.8);
+        font: normal normal 400 normal 12px / 14px Arial;
+        outline: rgba(255, 255, 255, 0.8) none 0px;
+    }/*#SPAN_28:after*/
+
+    #SPAN_28:before {
+        color: rgba(255, 255, 255, 0.8);
+        cursor: default;
+        text-decoration: none solid rgba(255, 255, 255, 0.8);
+        column-rule-color: rgba(255, 255, 255, 0.8);
+        user-select: none;
+        caret-color: rgba(255, 255, 255, 0.8);
+        border: 0px none rgba(255, 255, 255, 0.8);
+        font: normal normal 400 normal 12px / 14px Arial;
+        outline: rgba(255, 255, 255, 0.8) none 0px;
+    }/*#SPAN_28:before*/
+
+    #DIV_29 {
+        box-shadow: rgba(255, 255, 255, 0.08) 0px 0px 0px 1px;
+        cursor: default;
+        display: none;
+        float: left;
+        position: relative;
+        width: 1px;
+        background: rgba(0, 0, 0, 0.5) none repeat scroll 0% 0% / auto padding-box border-box;
+        font: normal normal 400 normal 16px / normal Arial;
+        margin: 8px 4px 8px 2px;
+        padding: 8px 0px;
+    }/*#DIV_29*/
+
+    #DIV_29:after {
+        cursor: default;
+        font: normal normal 400 normal 16px / normal Arial;
+    }/*#DIV_29:after*/
+
+    #DIV_29:before {
+        cursor: default;
+        font: normal normal 400 normal 16px / normal Arial;
+    }/*#DIV_29:before*/
+
+    #BUTTON_30 {
+        bottom: 0px;
+        color: rgba(255, 255, 255, 0.8);
+        display: block;
+        float: left;
+        height: 25px;
+        left: 0px;
+        min-width: 16px;
+        position: relative;
+        right: 0px;
+        text-decoration: none solid rgba(255, 255, 255, 0.8);
+        top: 0px;
+        width: 32px;
+        column-rule-color: rgba(255, 255, 255, 0.8);
+        perspective-origin: 16px 12.5px;
+        transform-origin: 16px 12.5px;
+        user-select: none;
+        caret-color: rgba(255, 255, 255, 0.8);
+        background: rgba(0, 0, 0, 0) none repeat scroll 0% 0% / auto padding-box border-box;
+        border: 1px solid rgba(0, 0, 0, 0);
+        border-radius: 2px 2px 2px 2px;
+        font: normal normal 400 normal 12px / 14px Arial;
+        margin: 3px 4px 4px 0px;
+        outline: rgba(255, 255, 255, 0.8) none 0px;
+        padding: 2px 6px 0px;
+        transition: background-color 0.15s ease 0s, border-color 0.15s ease 0s, box-shadow 0.15s ease 0s;
+    }/*#BUTTON_30*/
+
+    #BUTTON_30:after {
+        color: rgba(255, 255, 255, 0.8);
+        text-decoration: none solid rgba(255, 255, 255, 0.8);
+        column-rule-color: rgba(255, 255, 255, 0.8);
+        user-select: none;
+        caret-color: rgba(255, 255, 255, 0.8);
+        border: 0px none rgba(255, 255, 255, 0.8);
+        font: normal normal 400 normal 12px / 14px Arial;
+        outline: rgba(255, 255, 255, 0.8) none 0px;
+    }/*#BUTTON_30:after*/
+
+    #BUTTON_30:before {
+        bottom: -1px;
+        color: rgba(255, 255, 255, 0.8);
+        content: url("http://localhost:63342/polar-bookshelf/polar-ebook-reader/pdfviewer/web/images/toolbarButton-secondaryToolbarToggle.png");
+        display: block;
+        height: 20px;
+        left: 7px;
+        position: absolute;
+        right: 7px;
+        text-decoration: none solid rgba(255, 255, 255, 0.8);
+        top: 4px;
+        width: 16px;
+        column-rule-color: rgba(255, 255, 255, 0.8);
+        perspective-origin: 8px 10px;
+        transform-origin: 8px 10px;
+        user-select: none;
+        caret-color: rgba(255, 255, 255, 0.8);
+        border: 0px none rgba(255, 255, 255, 0.8);
+        font: normal normal 400 normal 12px / 14px Arial;
+        outline: rgba(255, 255, 255, 0.8) none 0px;
+    }/*#BUTTON_30:before*/
+
+    #DIV_32 {
+        cursor: default;
+        display: table;
+        height: 33px;
+        width: 100%;
+        perspective-origin: 96.5px 16.5px;
+        transform-origin: 96.5px 16.5px;
+        font: normal normal 400 normal 16px / normal Arial;
+        margin: 0px 92.6562px 0px 92.6406px;
+    }/*#DIV_32*/
+
+    #DIV_32:after {
+        cursor: default;
+        font: normal normal 400 normal 16px / normal Arial;
+    }/*#DIV_32:after*/
+
+    #DIV_32:before {
+        cursor: default;
+        font: normal normal 400 normal 16px / normal Arial;
+    }/*#DIV_32:before*/
+
+    #DIV_33 {
+        bottom: 0px;
+        cursor: default;
+        float: left;
+        height: 26px;
+        left: 0px;
+        position: relative;
+        right: 0px;
+        top: 0px;
+        width: 63px;
+        perspective-origin: 31.5px 13px;
+        transform-origin: 31.5px 13px;
+        font: normal normal 400 normal 16px / normal Arial;
+        margin: 3px 2px 4px 4px;
+    }/*#DIV_33*/
+
+    #DIV_33:after {
+        cursor: default;
+        font: normal normal 400 normal 16px / normal Arial;
+    }/*#DIV_33:after*/
+
+    #DIV_33:before {
+        cursor: default;
+        font: normal normal 400 normal 16px / normal Arial;
+    }/*#DIV_33:before*/
+
+    #BUTTON_34 {
+        bottom: 0px;
+        color: rgba(255, 255, 255, 0.8);
+        display: block;
+        float: left;
+        height: 25px;
+        left: 0px;
+        min-width: 16px;
+        position: relative;
+        right: 0px;
+        text-decoration: none solid rgba(255, 255, 255, 0.8);
+        top: 0px;
+        width: 32px;
+        column-rule-color: rgba(255, 255, 255, 0.8);
+        perspective-origin: 16px 12.5px;
+        transform-origin: 16px 12.5px;
+        user-select: none;
+        caret-color: rgba(255, 255, 255, 0.8);
+        background: rgba(0, 0, 0, 0) none repeat scroll 0% 0% / auto padding-box border-box;
+        border: 1px solid rgba(0, 0, 0, 0);
+        border-radius: 2px 0 0 2px;
+        font: normal normal 400 normal 12px / 14px Arial;
+        margin: 0px -1px 0px 0px;
+        outline: rgba(255, 255, 255, 0.8) none 0px;
+        padding: 2px 6px 0px;
+        transition: background-color 0.15s ease 0s, border-color 0.15s ease 0s, box-shadow 0.15s ease 0s;
+    }/*#BUTTON_34*/
+
+    #BUTTON_34:after {
+        color: rgba(255, 255, 255, 0.8);
+        text-decoration: none solid rgba(255, 255, 255, 0.8);
+        column-rule-color: rgba(255, 255, 255, 0.8);
+        user-select: none;
+        caret-color: rgba(255, 255, 255, 0.8);
+        border: 0px none rgba(255, 255, 255, 0.8);
+        font: normal normal 400 normal 12px / 14px Arial;
+        outline: rgba(255, 255, 255, 0.8) none 0px;
+    }/*#BUTTON_34:after*/
+
+    #BUTTON_34:before {
+        bottom: -1px;
+        color: rgba(255, 255, 255, 0.8);
+        content: url("http://localhost:63342/polar-bookshelf/polar-ebook-reader/pdfviewer/web/images/toolbarButton-zoomOut.png");
+        display: block;
+        height: 20px;
+        left: 7px;
+        position: absolute;
+        right: 7px;
+        text-decoration: none solid rgba(255, 255, 255, 0.8);
+        top: 4px;
+        width: 16px;
+        column-rule-color: rgba(255, 255, 255, 0.8);
+        perspective-origin: 8px 10px;
+        transform-origin: 8px 10px;
+        user-select: none;
+        caret-color: rgba(255, 255, 255, 0.8);
+        border: 0px none rgba(255, 255, 255, 0.8);
+        font: normal normal 400 normal 12px / 14px Arial;
+        outline: rgba(255, 255, 255, 0.8) none 0px;
+    }/*#BUTTON_34:before*/
+
+    #DIV_36 {
+        box-shadow: rgba(255, 255, 255, 0.08) 0px 0px 0px 1px;
+        cursor: default;
+        float: left;
+        height: 0px;
+        width: 1px;
+        perspective-origin: 0.5px 8px;
+        transform-origin: 0.5px 8px;
+        background: rgba(0, 0, 0, 0.5) none repeat scroll 0% 0% / auto padding-box border-box;
+        font: normal normal 400 normal 16px / normal Arial;
+        margin: 5px 0px;
+        padding: 8px 0px;
+    }/*#DIV_36*/
+
+    #DIV_36:after {
+        cursor: default;
+        font: normal normal 400 normal 16px / normal Arial;
+    }/*#DIV_36:after*/
+
+    #DIV_36:before {
+        cursor: default;
+        font: normal normal 400 normal 16px / normal Arial;
+    }/*#DIV_36:before*/
+
+    #BUTTON_37 {
+        bottom: 0px;
+        color: rgba(255, 255, 255, 0.8);
+        display: block;
+        float: left;
+        height: 25px;
+        left: 0px;
+        min-width: 16px;
+        position: relative;
+        right: 0px;
+        text-decoration: none solid rgba(255, 255, 255, 0.8);
+        top: 0px;
+        width: 32px;
+        column-rule-color: rgba(255, 255, 255, 0.8);
+        perspective-origin: 16px 12.5px;
+        transform-origin: 16px 12.5px;
+        user-select: none;
+        caret-color: rgba(255, 255, 255, 0.8);
+        background: rgba(0, 0, 0, 0) none repeat scroll 0% 0% / auto padding-box border-box;
+        border: 1px solid rgba(0, 0, 0, 0);
+        border-radius: 0 2px 2px 0;
+        font: normal normal 400 normal 12px / 14px Arial;
+        margin: 0px 0px 0px -1px;
+        outline: rgba(255, 255, 255, 0.8) none 0px;
+        padding: 2px 6px 0px;
+        transition: background-color 0.15s ease 0s, border-color 0.15s ease 0s, box-shadow 0.15s ease 0s;
+    }/*#BUTTON_37*/
+
+    #BUTTON_37:after {
+        color: rgba(255, 255, 255, 0.8);
+        text-decoration: none solid rgba(255, 255, 255, 0.8);
+        column-rule-color: rgba(255, 255, 255, 0.8);
+        user-select: none;
+        caret-color: rgba(255, 255, 255, 0.8);
+        border: 0px none rgba(255, 255, 255, 0.8);
+        font: normal normal 400 normal 12px / 14px Arial;
+        outline: rgba(255, 255, 255, 0.8) none 0px;
+    }/*#BUTTON_37:after*/
+
+    #BUTTON_37:before {
+        bottom: -1px;
+        color: rgba(255, 255, 255, 0.8);
+        content: url("http://localhost:63342/polar-bookshelf/polar-ebook-reader/pdfviewer/web/images/toolbarButton-zoomIn.png");
+        display: block;
+        height: 20px;
+        left: 7px;
+        position: absolute;
+        right: 7px;
+        text-decoration: none solid rgba(255, 255, 255, 0.8);
+        top: 4px;
+        width: 16px;
+        column-rule-color: rgba(255, 255, 255, 0.8);
+        perspective-origin: 8px 10px;
+        transform-origin: 8px 10px;
+        user-select: none;
+        caret-color: rgba(255, 255, 255, 0.8);
+        border: 0px none rgba(255, 255, 255, 0.8);
+        font: normal normal 400 normal 12px / 14px Arial;
+        outline: rgba(255, 255, 255, 0.8) none 0px;
+    }/*#BUTTON_37:before*/
+
+    #SPAN_39 {
+        background-position: 95% 50%;
+        bottom: 0px;
+        box-shadow: rgba(255, 255, 255, 0.05) 0px 1px 0px 0px inset, rgba(255, 255, 255, 0.15) 0px 0px 1px 0px inset, rgba(255, 255, 255, 0.05) 0px 1px 0px 0px;
+        color: rgba(255, 255, 255, 0.8);
+        cursor: default;
+        display: block;
+        float: left;
+        height: 19px;
+        left: 0px;
+        max-width: 120px;
+        min-width: 120px;
+        position: relative;
+        right: 0px;
+        text-decoration: none solid rgba(255, 255, 255, 0.8);
+        top: 0px;
+        width: 120px;
+        column-rule-color: rgba(255, 255, 255, 0.8);
+        perspective-origin: 61px 10.5px;
+        transform-origin: 61px 10.5px;
+        user-select: none;
+        caret-color: rgba(255, 255, 255, 0.8);
+        background: rgba(0, 0, 0, 0) url("http://localhost:63342/polar-bookshelf/polar-ebook-reader/pdfviewer/web/images/toolbarButton-menuArrows.png") no-repeat scroll 95% 50% / auto padding-box border-box;
+        border-top: 1px solid rgba(0, 0, 0, 0.32);
+        border-right: 1px solid rgba(0, 0, 0, 0.38);
+        border-bottom: 1px solid rgba(0, 0, 0, 0.42);
+        border-left: 1px solid rgba(0, 0, 0, 0.38);
+        border-radius: 2px 2px 2px 2px;
+        font: normal normal 400 normal 12px / 14px Arial;
+        margin: 3px 2px 4px 0px;
+        outline: rgba(255, 255, 255, 0.8) none 0px;
+        overflow: hidden;
+        transition: background-color 0.15s ease 0s, border-color 0.15s ease 0s, box-shadow 0.15s ease 0s;
+    }/*#SPAN_39*/
+
+    #SPAN_39:after {
+        color: rgba(255, 255, 255, 0.8);
+        cursor: default;
+        text-decoration: none solid rgba(255, 255, 255, 0.8);
+        column-rule-color: rgba(255, 255, 255, 0.8);
+        user-select: none;
+        caret-color: rgba(255, 255, 255, 0.8);
+        border: 0px none rgba(255, 255, 255, 0.8);
+        font: normal normal 400 normal 12px / 14px Arial;
+        outline: rgba(255, 255, 255, 0.8) none 0px;
+    }/*#SPAN_39:after*/
+
+    #SPAN_39:before {
+        color: rgba(255, 255, 255, 0.8);
+        cursor: default;
+        text-decoration: none solid rgba(255, 255, 255, 0.8);
+        column-rule-color: rgba(255, 255, 255, 0.8);
+        user-select: none;
+        caret-color: rgba(255, 255, 255, 0.8);
+        border: 0px none rgba(255, 255, 255, 0.8);
+        font: normal normal 400 normal 12px / 14px Arial;
+        outline: rgba(255, 255, 255, 0.8) none 0px;
+    }/*#SPAN_39:before*/
+
+    #SELECT_40 {
+        color: rgb(242, 242, 242);
+        height: 19px;
+        min-width: 142px;
+        text-decoration: none solid rgb(242, 242, 242);
+        width: 142px;
+        column-rule-color: rgb(242, 242, 242);
+        perspective-origin: 71px 9.5px;
+        transform-origin: 71px 9.5px;
+        user-select: none;
+        caret-color: rgb(242, 242, 242);
+        background: rgba(0, 0, 0, 0) none repeat scroll 0% 0% / auto padding-box border-box;
+        border: 0px none rgb(242, 242, 242);
+        font: normal normal 400 normal 12px / normal Arial;
+        outline: rgb(242, 242, 242) none 0px;
+        padding: 3px 2px 2px;
+    }/*#SELECT_40*/
+
+    #SELECT_40:after {
+        color: rgb(242, 242, 242);
+        text-decoration: none solid rgb(242, 242, 242);
+        column-rule-color: rgb(242, 242, 242);
+        user-select: none;
+        caret-color: rgb(242, 242, 242);
+        border: 0px none rgb(242, 242, 242);
+        font: normal normal 400 normal 12px / normal Arial;
+        outline: rgb(242, 242, 242) none 0px;
+    }/*#SELECT_40:after*/
+
+    #SELECT_40:before {
+        color: rgb(242, 242, 242);
+        text-decoration: none solid rgb(242, 242, 242);
+        column-rule-color: rgb(242, 242, 242);
+        user-select: none;
+        caret-color: rgb(242, 242, 242);
+        border: 0px none rgb(242, 242, 242);
+        font: normal normal 400 normal 12px / normal Arial;
+        outline: rgb(242, 242, 242) none 0px;
+    }/*#SELECT_40:before*/
+
+    #OPTION_41, #OPTION_42, #OPTION_46, #OPTION_48, #OPTION_50, #OPTION_52 {
+        color: rgb(242, 242, 242);
+        cursor: default;
+        text-decoration: none solid rgb(242, 242, 242);
+        column-rule-color: rgb(242, 242, 242);
+        user-select: none;
+        caret-color: rgb(242, 242, 242);
+        background: rgb(61, 61, 61) none repeat scroll 0% 0% / auto padding-box border-box;
+        border: 0px none rgb(242, 242, 242);
+        font: normal normal 400 normal 12px / normal Arial;
+        outline: rgb(242, 242, 242) none 0px;
+        padding: 0px;
+    }/*#OPTION_41, #OPTION_42, #OPTION_46, #OPTION_48, #OPTION_50, #OPTION_52*/
+
+    #OPTION_41:after, #OPTION_42:after, #OPTION_46:after, #OPTION_48:after, #OPTION_50:after, #OPTION_52:after {
+        color: rgb(242, 242, 242);
+        cursor: default;
+        text-decoration: none solid rgb(242, 242, 242);
+        column-rule-color: rgb(242, 242, 242);
+        user-select: none;
+        caret-color: rgb(242, 242, 242);
+        border: 0px none rgb(242, 242, 242);
+        font: normal normal 400 normal 12px / normal Arial;
+        outline: rgb(242, 242, 242) none 0px;
+    }/*#OPTION_41:after, #OPTION_42:after, #OPTION_46:after, #OPTION_48:after, #OPTION_50:after, #OPTION_52:after*/
+
+    #OPTION_41:before, #OPTION_42:before, #OPTION_46:before, #OPTION_48:before, #OPTION_50:before, #OPTION_52:before {
+        color: rgb(242, 242, 242);
+        cursor: default;
+        text-decoration: none solid rgb(242, 242, 242);
+        column-rule-color: rgb(242, 242, 242);
+        user-select: none;
+        caret-color: rgb(242, 242, 242);
+        border: 0px none rgb(242, 242, 242);
+        font: normal normal 400 normal 12px / normal Arial;
+        outline: rgb(242, 242, 242) none 0px;
+    }/*#OPTION_41:before, #OPTION_42:before, #OPTION_46:before, #OPTION_48:before, #OPTION_50:before, #OPTION_52:before*/
+
+    #OPTION_43, #OPTION_47, #OPTION_51 {
+        color: rgb(242, 242, 242);
+        cursor: default;
+        text-decoration: none solid rgb(242, 242, 242);
+        column-rule-color: rgb(242, 242, 242);
+        user-select: none;
+        caret-color: rgb(242, 242, 242);
+        background: rgb(61, 61, 61) none repeat scroll 0% 0% / auto padding-box border-box;
+        border: 0px none rgb(242, 242, 242);
+        font: normal normal 400 normal 12px / normal Arial;
+        outline: rgb(242, 242, 242) none 0px;
+        padding: 0px;
+    }/*#OPTION_43, #OPTION_47, #OPTION_51*/
+
+    #OPTION_43:after, #OPTION_47:after, #OPTION_51:after {
+        color: rgb(242, 242, 242);
+        cursor: default;
+        text-decoration: none solid rgb(242, 242, 242);
+        column-rule-color: rgb(242, 242, 242);
+        user-select: none;
+        caret-color: rgb(242, 242, 242);
+        border: 0px none rgb(242, 242, 242);
+        font: normal normal 400 normal 12px / normal Arial;
+        outline: rgb(242, 242, 242) none 0px;
+    }/*#OPTION_43:after, #OPTION_47:after, #OPTION_51:after*/
+
+    #OPTION_43:before, #OPTION_47:before, #OPTION_51:before {
+        color: rgb(242, 242, 242);
+        cursor: default;
+        text-decoration: none solid rgb(242, 242, 242);
+        column-rule-color: rgb(242, 242, 242);
+        user-select: none;
+        caret-color: rgb(242, 242, 242);
+        border: 0px none rgb(242, 242, 242);
+        font: normal normal 400 normal 12px / normal Arial;
+        outline: rgb(242, 242, 242) none 0px;
+    }/*#OPTION_43:before, #OPTION_47:before, #OPTION_51:before*/
+
+    #OPTION_44 {
+        color: rgb(242, 242, 242);
+        cursor: default;
+        text-decoration: none solid rgb(242, 242, 242);
+        column-rule-color: rgb(242, 242, 242);
+        user-select: none;
+        caret-color: rgb(242, 242, 242);
+        background: rgb(61, 61, 61) none repeat scroll 0% 0% / auto padding-box border-box;
+        border-top: 0px none rgb(242, 242, 242);
+        border-right: 0px none rgb(242, 242, 242);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+        border-left: 0px none rgb(242, 242, 242);
+        font: normal normal 400 normal 12px / normal Arial;
+        outline: rgb(242, 242, 242) none 0px;
+        padding: 0px;
+    }/*#OPTION_44*/
+
+    #OPTION_44:after {
+        color: rgb(242, 242, 242);
+        cursor: default;
+        text-decoration: none solid rgb(242, 242, 242);
+        column-rule-color: rgb(242, 242, 242);
+        user-select: none;
+        caret-color: rgb(242, 242, 242);
+        border: 0px none rgb(242, 242, 242);
+        font: normal normal 400 normal 12px / normal Arial;
+        outline: rgb(242, 242, 242) none 0px;
+    }/*#OPTION_44:after*/
+
+    #OPTION_44:before {
+        color: rgb(242, 242, 242);
+        cursor: default;
+        text-decoration: none solid rgb(242, 242, 242);
+        column-rule-color: rgb(242, 242, 242);
+        user-select: none;
+        caret-color: rgb(242, 242, 242);
+        border: 0px none rgb(242, 242, 242);
+        font: normal normal 400 normal 12px / normal Arial;
+        outline: rgb(242, 242, 242) none 0px;
+    }/*#OPTION_44:before*/
+
+    #OPTION_45 {
+        color: rgb(128, 128, 128);
+        cursor: default;
+        display: none;
+        text-decoration: none solid rgb(128, 128, 128);
+        column-rule-color: rgb(128, 128, 128);
+        user-select: none;
+        caret-color: rgb(128, 128, 128);
+        background: rgb(61, 61, 61) none repeat scroll 0% 0% / auto padding-box border-box;
+        border: 0px none rgb(128, 128, 128);
+        font: normal normal 400 normal 12px / normal Arial;
+        outline: rgb(128, 128, 128) none 0px;
+        padding: 0px;
+    }/*#OPTION_45*/
+
+    #OPTION_45:after {
+        color: rgb(128, 128, 128);
+        cursor: default;
+        text-decoration: none solid rgb(128, 128, 128);
+        column-rule-color: rgb(128, 128, 128);
+        user-select: none;
+        caret-color: rgb(128, 128, 128);
+        border: 0px none rgb(128, 128, 128);
+        font: normal normal 400 normal 12px / normal Arial;
+        outline: rgb(128, 128, 128) none 0px;
+    }/*#OPTION_45:after*/
+
+    #OPTION_45:before {
+        color: rgb(128, 128, 128);
+        cursor: default;
+        text-decoration: none solid rgb(128, 128, 128);
+        column-rule-color: rgb(128, 128, 128);
+        user-select: none;
+        caret-color: rgb(128, 128, 128);
+        border: 0px none rgb(128, 128, 128);
+        font: normal normal 400 normal 12px / normal Arial;
+        outline: rgb(128, 128, 128) none 0px;
+    }/*#OPTION_45:before*/
+
+    #OPTION_49, #OPTION_53 {
+        color: rgb(242, 242, 242);
+        cursor: default;
+        text-decoration: none solid rgb(242, 242, 242);
+        column-rule-color: rgb(242, 242, 242);
+        user-select: none;
+        caret-color: rgb(242, 242, 242);
+        background: rgb(61, 61, 61) none repeat scroll 0% 0% / auto padding-box border-box;
+        border: 0px none rgb(242, 242, 242);
+        font: normal normal 400 normal 12px / normal Arial;
+        outline: rgb(242, 242, 242) none 0px;
+        padding: 0px;
+    }/*#OPTION_49, #OPTION_53*/
+
+    #OPTION_49:after, #OPTION_53:after {
+        color: rgb(242, 242, 242);
+        cursor: default;
+        text-decoration: none solid rgb(242, 242, 242);
+        column-rule-color: rgb(242, 242, 242);
+        user-select: none;
+        caret-color: rgb(242, 242, 242);
+        border: 0px none rgb(242, 242, 242);
+        font: normal normal 400 normal 12px / normal Arial;
+        outline: rgb(242, 242, 242) none 0px;
+    }/*#OPTION_49:after, #OPTION_53:after*/
+
+    #OPTION_49:before, #OPTION_53:before {
+        color: rgb(242, 242, 242);
+        cursor: default;
+        text-decoration: none solid rgb(242, 242, 242);
+        column-rule-color: rgb(242, 242, 242);
+        user-select: none;
+        caret-color: rgb(242, 242, 242);
+        border: 0px none rgb(242, 242, 242);
+        font: normal normal 400 normal 12px / normal Arial;
+        outline: rgb(242, 242, 242) none 0px;
+    }/*#OPTION_49:before, #OPTION_53:before*/
+
+    #DIV_54 {
+        cursor: default;
+        display: none;
+        height: 4px;
+        position: relative;
+        width: 100%;
+        background: rgb(51, 51, 51) none repeat scroll 0% 0% / auto padding-box border-box;
+        border-bottom: 1px solid rgb(51, 51, 51);
+        font: normal normal 400 normal 16px / normal Arial;
+    }/*#DIV_54*/
+
+    #DIV_54:after {
+        cursor: default;
+        font: normal normal 400 normal 16px / normal Arial;
+    }/*#DIV_54:after*/
+
+    #DIV_54:before {
+        cursor: default;
+        font: normal normal 400 normal 16px / normal Arial;
+    }/*#DIV_54:before*/
+
+    #DIV_55 {
+        cursor: default;
+        height: 100%;
+        left: 0px;
+        position: absolute;
+        top: 0px;
+        width: 100%;
+        background: rgb(153, 153, 153) none repeat scroll 0% 0% / auto padding-box border-box;
+        font: normal normal 400 normal 16px / normal Arial;
+        overflow: hidden;
+        transition: none 0s ease 0s;
+    }/*#DIV_55*/
+
+    #DIV_55:after {
+        cursor: default;
+        font: normal normal 400 normal 16px / normal Arial;
+    }/*#DIV_55:after*/
+
+    #DIV_55:before {
+        cursor: default;
+        font: normal normal 400 normal 16px / normal Arial;
+    }/*#DIV_55:before*/
+
+    #DIV_56 {
+        cursor: default;
+        height: 100%;
+        left: -142px;
+        position: absolute;
+        top: 0px;
+        width: calc(150px + 100%);
+        animation: progressIndeterminate 0.95s linear 0s infinite normal none running;
+        background: rgba(0, 0, 0, 0) repeating-linear-gradient(135deg, rgb(187, 187, 187) 0px, rgb(153, 153, 153) 5px, rgb(153, 153, 153) 45px, rgb(221, 221, 221) 55px, rgb(221, 221, 221) 95px, rgb(187, 187, 187) 100px) repeat scroll 0% 0% / auto padding-box border-box;
+        font: normal normal 400 normal 16px / normal Arial;
+    }/*#DIV_56*/
+
+    #DIV_56:after {
+        cursor: default;
+        font: normal normal 400 normal 16px / normal Arial;
+    }/*#DIV_56:after*/
+
+    #DIV_56:before {
+        cursor: default;
+        font: normal normal 400 normal 16px / normal Arial;
+    }/*#DIV_56:before*/
+
+
+</style>
+
+<div id="DIV_1">
+    <div id="DIV_2">
+        <div id="DIV_3">
+            <div id="DIV_4">
+
+                <button id="BUTTON_5">
+                    <span id="SPAN_6">Toggle Sidebar</span>
+                </button>
+                <div id="DIV_7">
+                </div>
+                <button id="BUTTON_8">
+                    <span id="SPAN_9">Find</span>
+                </button>
+                <div id="DIV_10">
+
+                    <button id="BUTTON_11">
+                        <span id="SPAN_12">Previous</span>
+                    </button>
+                    <div id="DIV_13">
+                    </div>
+                    <button id="BUTTON_14">
+                        <span id="SPAN_15">Next</span>
+                    </button>
+                </div>
+                <input type="number" id="INPUT_16" value="1" size="4" tabindex="15" /> <span id="SPAN_17">of 14</span>
+            </div>
+            <div id="DIV_18">
+
+                <button id="BUTTON_19">
+                    <span id="SPAN_20">Presentation Mode</span>
+                </button>
+                <button id="BUTTON_21">
+                    <span id="SPAN_22">Open</span>
+                </button>
+                <button id="BUTTON_23">
+                    <span id="SPAN_24">Print</span>
+                </button>
+                <button id="BUTTON_25">
+                    <span id="SPAN_26">Download</span>
+                </button> <a href="#page=1&amp;zoom=page-width,-24,421" id="A_27" title="Current view (copy or open in new window)" tabindex="35"> <span id="SPAN_28">Current View</span></a>
+                <div id="DIV_29">
+                </div>
+                <button id="BUTTON_30">
+                    <span id="SPAN_31">Tools</span>
+                </button>
+            </div>
+            <div id="DIV_32">
+                <div id="DIV_33">
+
+                    <button id="BUTTON_34">
+                        <span id="SPAN_35">Zoom Out</span>
+                    </button>
+                    <div id="DIV_36">
+                    </div>
+                    <button id="BUTTON_37">
+                        <span id="SPAN_38">Zoom In</span>
+                    </button>
+                </div> <span id="SPAN_39">
+					<select id="SELECT_40" tabindex="23">
+
+						<option id="OPTION_41" value="auto" selected="selected">
+							Automatic Zoom
+						</option>
+						<option id="OPTION_42" value="page-actual">
+							Actual Size
+						</option>
+						<option id="OPTION_43" value="page-fit">
+							Page Fit
+						</option>
+						<option id="OPTION_44" value="page-width">
+							Page Width
+						</option>
+						<option id="OPTION_45" value="custom" disabled="disabled">
+						</option>
+						<option value="0.5" id="OPTION_46">
+							50%
+						</option>
+						<option value="0.75" id="OPTION_47">
+							75%
+						</option>
+						<option value="1" id="OPTION_48">
+							100%
+						</option>
+						<option value="1.25" id="OPTION_49">
+							125%
+						</option>
+						<option value="1.5" id="OPTION_50">
+							150%
+						</option>
+						<option value="2" id="OPTION_51">
+							200%
+						</option>
+						<option value="3" id="OPTION_52">
+							300%
+						</option>
+						<option value="4" id="OPTION_53">
+							400%
+						</option>
+					</select></span>
+            </div>
+        </div>
+        <div id="DIV_54">
+            <div id="DIV_55">
+                <div id="DIV_56">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- END TOOLBAR -->
+
 
 <div id="viewerContainer">
     <div id="content-parent" class="page" data-page-number="1" style="width: 768px;">

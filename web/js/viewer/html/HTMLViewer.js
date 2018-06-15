@@ -35,6 +35,10 @@ class HTMLViewer extends Viewer {
 
     }
 
+    changeScale() {
+        throw new Error("Not supported by this viewer.")
+    }
+
     loadContentIFrame() {
 
         // *** now setup the iframe

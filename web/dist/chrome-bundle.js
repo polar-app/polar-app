@@ -51324,6 +51324,8 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
+var $ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
+
 var _require = __webpack_require__(/*! ../../../metadata/TextHighlightRecords */ "./web/js/metadata/TextHighlightRecords.js"),
     TextHighlightRecords = _require.TextHighlightRecords;
 
@@ -51341,6 +51343,9 @@ var _require5 = __webpack_require__(/*! ../../../Preconditions */ "./web/js/Prec
 
 var _require6 = __webpack_require__(/*! ../../../KeyEvents.js */ "./web/js/KeyEvents.js"),
     KeyEvents = _require6.KeyEvents;
+
+var _require7 = __webpack_require__(/*! ../../../util/Arrays */ "./web/js/util/Arrays.js"),
+    Arrays = _require7.Arrays;
 
 var TextHighlightController = function () {
     function TextHighlightController(model) {
@@ -51444,8 +51449,10 @@ var TextHighlightController = function () {
                 return current.rect;
             });
 
-            var textSelections = {}; // FIXME: do this later
-            var text = ""; // FIXME: do this later
+            var extractedText = this.extractText(selector);
+
+            var textSelections = Arrays.toDict(extractedText.textSelections);
+            var text = extractedText.text;
 
             var textHighlightRecord = TextHighlightRecords.create(rects, textSelections, text);
 
@@ -51458,6 +51465,25 @@ var TextHighlightController = function () {
             pageMeta.textHighlights[textHighlightRecord.id] = textHighlightRecord.value;
 
             console.log("Added text highlight to model");
+        }
+    }, {
+        key: "extractText",
+        value: function extractText(selector) {
+
+            var result = {
+                textSelections: [],
+                text: ""
+            };
+
+            $(selector).each(function () {
+
+                var text = $(this).text();
+
+                result.textSelections.push(text);
+                result.text += " " + text;
+            });
+
+            return result;
         }
     }]);
 
@@ -56401,6 +56427,11 @@ var Viewer = function () {
     _createClass(Viewer, [{
         key: "start",
         value: function start() {}
+    }, {
+        key: "changeScale",
+        value: function changeScale() {
+            throw new Error("Not supported by this viewer.");
+        }
     }]);
 
     return Viewer;
@@ -56757,6 +56788,11 @@ var HTMLViewer = function (_Viewer) {
                     frameInitializer.start();
                 }.bind(this)).start();
             }.bind(this));
+        }
+    }, {
+        key: "changeScale",
+        value: function changeScale() {
+            throw new Error("Not supported by this viewer.");
         }
     }, {
         key: "loadContentIFrame",
