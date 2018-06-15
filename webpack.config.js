@@ -1,6 +1,35 @@
 var path = require('path');
 
 module.exports = [
+
+    {
+        mode: 'development',
+        entry: {
+            htmlviewer: [ "babel-polyfill", "./web/js/viewer/html/html-viewer.js"]
+        },
+        module: {
+            rules: [
+                {
+                    test: /\.js$/,
+                    exclude: /node_modules/,
+                    use: {
+                        loader: "babel-loader"
+                    }
+                }
+            ],
+        },
+        devtool: "source-map",
+        output: {
+            path: path.resolve(__dirname, 'web/dist'),
+            filename: '[name]-bundle.js',
+        },
+        node: {
+            //needed to make webpack work on chrome
+            fs: 'empty'
+        }
+
+    },
+
     {
         mode: 'development',
         entry: {
