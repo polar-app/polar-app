@@ -54226,7 +54226,7 @@ var MainPagemarkRenderer = function (_PagemarkRenderer) {
     }, {
         key: "__requiresPagemark",
         value: function __requiresPagemark(pageElement) {
-            return pageElement.querySelector("canvas") != null;
+            return pageElement.querySelector("canvas") != null || pageElement.querySelector("iframe");
         }
     }, {
         key: "__registerListener",

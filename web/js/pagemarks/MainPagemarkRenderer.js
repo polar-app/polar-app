@@ -16,7 +16,7 @@ class MainPagemarkRenderer extends PagemarkRenderer {
     }
 
     __requiresPagemark(pageElement) {
-        return pageElement.querySelector("canvas") != null;
+        return pageElement.querySelector("canvas") != null || pageElement.querySelector("iframe");
     }
 
     __registerListener(pageElement) {
