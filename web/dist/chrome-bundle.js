@@ -49713,6 +49713,101 @@ new Launcher(persistenceLayerFactory).launch().then(function () {
 
 /***/ }),
 
+/***/ "./web/js/contextmenu/ContextMenuController.js":
+/*!*****************************************************!*\
+  !*** ./web/js/contextmenu/ContextMenuController.js ***!
+  \*****************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+/**
+ * Handles listening for context menus and then calling back the proper handler.
+ */
+var ContextMenuController = function () {
+    function ContextMenuController() {
+        _classCallCheck(this, ContextMenuController);
+    }
+
+    _createClass(ContextMenuController, [{
+        key: "start",
+        value: function start() {
+
+            console.log("Starting ContextMenuController");
+
+            document.querySelectorAll("body").forEach(function (targetElement) {
+
+                console.log("Adding contextmenu listener on", targetElement);
+
+                targetElement.addEventListener("contextmenu", function (event) {
+
+                    console.log("got context menu");
+
+                    //let elements = document.elementsFromPoint(event.screenX, event.screenY);
+                    var annotationSelectors = [".text-highlight", ".pagemark"];
+
+                    var elementsMatchingSelectors = ContextMenuController.elementFromEventMatchingSelectors(event, annotationSelectors);
+
+                    console.log("FIXME: elementsMatchingSelectors", elementsMatchingSelectors);
+                });
+            });
+        }
+    }], [{
+        key: "elementsFromEvent",
+        value: function elementsFromEvent(event) {
+            var point = { x: event.pageX, y: event.pageY };
+            return document.elementsFromPoint(point.x, point.y);
+        }
+
+        /**
+         * Create a result by looking at all the events, and all the selectors, building
+         * up an index of matching elements at the position.
+         * @param event
+         * @param selectors
+         */
+
+    }, {
+        key: "elementFromEventMatchingSelectors",
+        value: function elementFromEventMatchingSelectors(event, selectors) {
+
+            var result = {};
+
+            // setup the selector result
+            selectors.forEach(function (selector) {
+                result[selector] = {
+                    selector: selector, elements: []
+                };
+            });
+
+            var elements = ContextMenuController.elementsFromEvent(event);
+
+            elements.forEach(function (element) {
+
+                selectors.forEach(function (selector) {
+
+                    if (element.matches(selector)) {
+                        result[selector].elements.push(element);
+                    }
+                });
+            });
+
+            return result;
+        }
+    }]);
+
+    return ContextMenuController;
+}();
+
+module.exports.ContextMenuController = ContextMenuController;
+
+/***/ }),
+
 /***/ "./web/js/contextmenu/electron/ContextMenuType.js":
 /*!********************************************************!*\
   !*** ./web/js/contextmenu/electron/ContextMenuType.js ***!
@@ -49953,6 +50048,9 @@ var _require7 = __webpack_require__(/*! ../polar */ "./web/js/polar.js"),
 var _require8 = __webpack_require__(/*! ../contextmenu/electron/RendererContextMenu */ "./web/js/contextmenu/electron/RendererContextMenu.js"),
     RendererContextMenu = _require8.RendererContextMenu;
 
+var _require9 = __webpack_require__(/*! ../contextmenu/ContextMenuController */ "./web/js/contextmenu/ContextMenuController.js"),
+    ContextMenuController = _require9.ContextMenuController;
+
 module.exports.WebController = function (_Controller) {
     _inherits(_class, _Controller);
 
@@ -49986,49 +50084,53 @@ module.exports.WebController = function (_Controller) {
         value: function onDocumentLoaded(fingerprint, nrPages, currentlySelectedPageNum) {
 
             _get(_class.prototype.__proto__ || Object.getPrototypeOf(_class.prototype), "onDocumentLoaded", this).call(this, fingerprint, nrPages, currentlySelectedPageNum);
-            //this.setupContextMenu();
+            this.setupContextMenu();
         }
     }, {
         key: "setupContextMenu",
         value: function setupContextMenu() {
 
+            var contextMenuController = new ContextMenuController();
+            contextMenuController.start();
+
             //new RendererContextMenu();
-
-            // FIXME: this needs to be moved into the contextmenu package.
-
-            console.log("Registered context listener...");
-
-            window.setTimeout(function () {
-
-                console.log("adding listeners!!!");
-
-                $(function () {
-                    $.contextMenu({
-                        selector: '.page .text-highlight',
-                        callback: function callback(key, options) {
-                            var m = "clicked: " + key;
-                            window.console && console.log(m) || alert(m);
-                        },
-                        items: {
-                            //"new-pagemark": {name: "New pagemark", icon: "edit"},
-                            "new-pagemark-from-here": { name: "New Pagemark Starting Here", icon: "edit" }
-                            // "cut": {name: "Cut", icon: "cut"},
-                            // copy: {name: "Copy", icon: "copy"},
-                            // "paste": {name: "Paste", icon: "paste"},
-                            // "delete": {name: "Delete", icon: "delete"},
-                            // "sep1": "---------",
-                            // "quit": {name: "Quit", icon: function() {
-                            //         return 'context-menu-icon context-menu-icon-quit';
-                            //     }
-                            // }
-                        }
-                    });
-
-                    $('.page .text-highlight').on('click', function (e) {
-                        console.log('clicked', this);
-                    });
-                });
-            }, 2500);
+            //
+            // // FIXME: this needs to be moved into the contextmenu package.
+            //
+            // console.log("Registered context listener...");
+            //
+            // window.setTimeout( function() {
+            //
+            //     console.log("adding listeners!!!")
+            //
+            //     $(function() {
+            //         $.contextMenu({
+            //             selector: '.page .text-highlight',
+            //             callback: function(key, options) {
+            //                 let m = "clicked: " + key;
+            //                 window.console && console.log(m) || alert(m);
+            //             },
+            //             items: {
+            //                 //"new-pagemark": {name: "New pagemark", icon: "edit"},
+            //                 "new-pagemark-from-here": {name: "New Pagemark Starting Here", icon: "edit"},
+            //                 // "cut": {name: "Cut", icon: "cut"},
+            //                 // copy: {name: "Copy", icon: "copy"},
+            //                 // "paste": {name: "Paste", icon: "paste"},
+            //                 // "delete": {name: "Delete", icon: "delete"},
+            //                 // "sep1": "---------",
+            //                 // "quit": {name: "Quit", icon: function() {
+            //                 //         return 'context-menu-icon context-menu-icon-quit';
+            //                 //     }
+            //                 // }
+            //             }
+            //         });
+            //
+            //         $('.page .text-highlight').on('click', function(e){
+            //             console.log('clicked', this);
+            //         })
+            //     });
+            //
+            // }, 2500);
         }
     }, {
         key: "listenForDocumentLoad",
@@ -50494,11 +50596,9 @@ module.exports.MemoryDatastore = function (_Datastore) {
 
                 Preconditions.assertTypeof(data, "data", "string");
 
-                console.log("FIXME: wrote fingerpring: " + fingerprint, data);
-
                 this.docMetas[fingerprint] = data;
 
-              case 3:
+              case 2:
               case "end":
                 return _context3.stop();
             }
