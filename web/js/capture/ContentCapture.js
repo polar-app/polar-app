@@ -1,6 +1,11 @@
 
 class ContentCapture {
 
+    // FIXME: remove javascript: URLs
+
+    // FIXME: children iframes need to be encoded as data URLs recursively or
+    // pre-cached and re-written.
+
     /**
      * Capture the page as HTML so that we can render it static.
      */

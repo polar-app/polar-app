@@ -2,8 +2,9 @@ const $ = require('jquery')
 const {EventBridge} = require("./EventBridge");
 
 /**
- * Listens for the iframe to load and then sends the events so that the
- * controllers can see.
+ * Listens for the iframe to load and then sends the events to target objects
+ * so that that the page started , and then finished loading.  We then
+ * dispatched two callbacks onIFrameLoading and onIFrameLoaded.
  */
 class FrameInitializer {
 
@@ -19,7 +20,18 @@ class FrameInitializer {
     }
 
     start() {
-        $(this.iframe).ready(this.onLoad.bind(this));
+
+        this.iframe.contentDocument.addEventListener("readystatechange", this.onReadyStateChange.bind(this));
+
+    }
+
+    onReadyStateChange() {
+
+        if(this.iframe.contentDocument.readyState === "complete") {
+            console.log("FrameInitializer: Document has finished loading");
+            this.onLoad();
+        }
+
     }
 
     /**

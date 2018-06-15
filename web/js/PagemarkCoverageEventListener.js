@@ -24,7 +24,7 @@ module.exports.PagemarkCoverageEventListener = class {
      */
     keyListener(event) {
 
-        console.log(event);
+        //console.log(event);
 
         if(!event) {
             throw new Error("no event");

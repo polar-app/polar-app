@@ -49201,7 +49201,7 @@ module.exports.PagemarkCoverageEventListener = function () {
         key: "keyListener",
         value: function keyListener(event) {
 
-            console.log(event);
+            //console.log(event);
 
             if (!event) {
                 throw new Error("no event");
@@ -56497,7 +56497,7 @@ var EventBridge = function () {
             this.iframe.contentDocument.body.addEventListener("keydown", this.eventListener.bind(this));
             this.iframe.contentDocument.body.addEventListener("click", this.eventListener.bind(this));
 
-            console.log("Event bridge started on: ", this.iframe);
+            console.log("Event bridge started on: ", this.iframe.contentDocument.location.href);
         }
     }, {
         key: "eventListener",
@@ -56536,8 +56536,9 @@ var _require = __webpack_require__(/*! ./EventBridge */ "./web/js/viewer/html/Ev
     EventBridge = _require.EventBridge;
 
 /**
- * Listens for the iframe to load and then sends the events so that the
- * controllers can see.
+ * Listens for the iframe to load and then sends the events to target objects
+ * so that that the page started , and then finished loading.  We then
+ * dispatched two callbacks onIFrameLoading and onIFrameLoaded.
  */
 
 
@@ -56556,7 +56557,17 @@ var FrameInitializer = function () {
     _createClass(FrameInitializer, [{
         key: "start",
         value: function start() {
-            $(this.iframe).ready(this.onLoad.bind(this));
+
+            this.iframe.contentDocument.addEventListener("readystatechange", this.onReadyStateChange.bind(this));
+        }
+    }, {
+        key: "onReadyStateChange",
+        value: function onReadyStateChange() {
+
+            if (this.iframe.contentDocument.readyState === "complete") {
+                console.log("FrameInitializer: Document has finished loading");
+                this.onLoad();
+            }
         }
 
         /**
@@ -56641,33 +56652,27 @@ var FrameResizer = function () {
     _createClass(FrameResizer, [{
         key: "start",
         value: function start() {
-            $(this.iframe).ready(this.onLoad.bind(this));
-            this.resizeParent();
-        }
 
-        /**
-         *
-         */
-
-    }, {
-        key: "onLoad",
-        value: function onLoad() {
-            console.log("Document has finished loading");
-            // call once more.
-            this.resizeParent();
-            this.completed = true;
+            this.iframe.contentDocument.addEventListener("readystatechange", this.onReadyStateChange.bind(this));
         }
     }, {
-        key: "resizeParent",
-        value: function resizeParent() {
+        key: "onReadyStateChange",
+        value: function onReadyStateChange() {
+
+            if (this.iframe.contentDocument.readyState === "complete") {
+                console.log("FrameResizer: Document has finished loading");
+                this.completed = true;
+            } else {
+                console.log("FrameResizer: Document has started loading");
+                this.completed = false;
+                this.resizeParentInBackground();
+            }
+        }
+    }, {
+        key: "resizeParentInBackground",
+        value: function resizeParentInBackground() {
 
             if (this.completed) {
-                console.log("Frame finished loading");
-                return;
-            }
-
-            if (!this.iframe.contentDocument) {
-                console.log("contentDocument not ready yet.");
                 return;
             }
 
@@ -56675,7 +56680,7 @@ var FrameResizer = function () {
             console.log("Setting new height to: " + newHeight);
             this.parent.style.height = newHeight;
 
-            setTimeout(this.resizeParent.bind(this), this.timeoutInterval);
+            setTimeout(this.resizeParentInBackground.bind(this), this.timeoutInterval);
         }
     }]);
 
@@ -56704,6 +56709,8 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
+var $ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
+
 var _require = __webpack_require__(/*! ../Viewer */ "./web/js/viewer/Viewer.js"),
     Viewer = _require.Viewer;
 
@@ -56712,6 +56719,9 @@ var _require2 = __webpack_require__(/*! ./FrameResizer */ "./web/js/viewer/html/
 
 var _require3 = __webpack_require__(/*! ./FrameInitializer */ "./web/js/viewer/html/FrameInitializer.js"),
     FrameInitializer = _require3.FrameInitializer;
+
+var _require4 = __webpack_require__(/*! ./IFrameWatcher */ "./web/js/viewer/html/IFrameWatcher.js"),
+    IFrameWatcher = _require4.IFrameWatcher;
 
 var HTMLViewer = function (_Viewer) {
     _inherits(HTMLViewer, _Viewer);
@@ -56728,15 +56738,42 @@ var HTMLViewer = function (_Viewer) {
 
             console.log("Starting HTMLViewer");
 
-            var content = document.querySelector("#content");
-            var contentParent = document.querySelector("#content-parent");
-            var textLayer = document.querySelector(".textLayer");
+            this.content = document.querySelector("#content");
+            this.contentParent = document.querySelector("#content-parent");
+            this.textLayer = document.querySelector(".textLayer");
 
-            var frameResizer = new FrameResizer(contentParent, content);
-            frameResizer.start();
+            // *** start the resizer and initializer before setting the iframe
 
-            var frameInitializer = new FrameInitializer(content, textLayer);
-            frameInitializer.start();
+            $(document).ready(function () {
+
+                this.loadContentIFrame();
+
+                new IFrameWatcher(this.content, function () {
+
+                    var frameResizer = new FrameResizer(this.contentParent, this.content);
+                    frameResizer.start();
+
+                    var frameInitializer = new FrameInitializer(this.content, this.textLayer);
+                    frameInitializer.start();
+                }.bind(this)).start();
+            }.bind(this));
+        }
+    }, {
+        key: "loadContentIFrame",
+        value: function loadContentIFrame() {
+
+            // *** now setup the iframe
+
+            var url = new URL(window.location.href);
+
+            // the pdfviewer uses the file URL convention.
+            var file = url.searchParams.get("file");
+
+            if (!file) {
+                file = "example1.html";
+            }
+
+            this.content.src = file;
         }
     }]);
 
@@ -56744,6 +56781,80 @@ var HTMLViewer = function (_Viewer) {
 }(Viewer);
 
 module.exports.HTMLViewer = HTMLViewer;
+
+/***/ }),
+
+/***/ "./web/js/viewer/html/IFrameWatcher.js":
+/*!*********************************************!*\
+  !*** ./web/js/viewer/html/IFrameWatcher.js ***!
+  \*********************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var $ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
+
+var _require = __webpack_require__(/*! ../../Preconditions */ "./web/js/Preconditions.js"),
+    Preconditions = _require.Preconditions;
+
+var _require2 = __webpack_require__(/*! ../../util/Objects */ "./web/js/util/Objects.js"),
+    Objects = _require2.Objects;
+
+/**
+ * Assumes that you have tried to change the URL for an iframe and watches for
+ * it to start loading properly.
+ */
+
+
+var IFrameWatcher = function () {
+
+    // TODO: right now we look for the URL not being about:blank which is kind
+    // of a hack but works for now.  Technically we should listen to the
+    // iframe src attribute changing.
+
+    function IFrameWatcher(iframe, callback, options) {
+        _classCallCheck(this, IFrameWatcher);
+
+        this.iframe = Preconditions.assertNotNull(iframe, "iframe");
+        this.options = Objects.defaults(options, {
+            timeoutInterval: 100,
+            currentURL: "about:blank"
+        });
+        this.callback = Preconditions.assertNotNull(callback, "callback");
+
+        this.completed = false;
+    }
+
+    _createClass(IFrameWatcher, [{
+        key: "start",
+        value: function start() {
+            this.watchInBackground();
+        }
+    }, {
+        key: "watchInBackground",
+        value: function watchInBackground() {
+
+            if (this.iframe.contentDocument && this.iframe.contentDocument.location.href !== this.options.currentURL) {
+
+                console.log("IFrame URL loading: ", this.iframe.contentDocument.location.href);
+                this.callback();
+                return;
+            }
+
+            setTimeout(this.watchInBackground.bind(this), this.options.timeoutInterval);
+        }
+    }]);
+
+    return IFrameWatcher;
+}();
+
+module.exports.IFrameWatcher = IFrameWatcher;
 
 /***/ }),
 

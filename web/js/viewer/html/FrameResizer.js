@@ -28,29 +28,27 @@ class FrameResizer {
     }
 
     start() {
-        $(this.iframe).ready(this.onLoad.bind(this));
-        this.resizeParent();
+
+        this.iframe.contentDocument.addEventListener("readystatechange", this.onReadyStateChange.bind(this));
+
     }
 
-    /**
-     *
-     */
-    onLoad() {
-        console.log("Document has finished loading");
-        // call once more.
-        this.resizeParent();
-        this.completed = true;
-    }
+    onReadyStateChange() {
 
-    resizeParent() {
-
-        if(this.completed) {
-            console.log("Frame finished loading");
-            return;
+        if(this.iframe.contentDocument.readyState === "complete") {
+            console.log("FrameResizer: Document has finished loading");
+            this.completed = true;
+        } else {
+            console.log("FrameResizer: Document has started loading");
+            this.completed = false;
+            this.resizeParentInBackground();
         }
 
-        if(! this.iframe.contentDocument) {
-            console.log("contentDocument not ready yet.");
+    }
+
+    resizeParentInBackground() {
+
+        if(this.completed) {
             return;
         }
 
@@ -58,7 +56,7 @@ class FrameResizer {
         console.log("Setting new height to: " + newHeight);
         this.parent.style.height = newHeight;
 
-        setTimeout(this.resizeParent.bind(this), this.timeoutInterval);
+        setTimeout(this.resizeParentInBackground.bind(this), this.timeoutInterval);
 
     }
 
