@@ -39,21 +39,23 @@ class HTMLViewer extends Viewer {
 
     startHandlingZoom() {
 
+        let htmlViewer = this;
+
         $(".polar-zoom-select")
             .change(function() {
                 $( "select option:selected" ).each(function() {
                     let zoom = $( this ).val();
-                    console.log("FIXME: zoom: ", zoom);
+                    htmlViewer.changeScale(parseFloat(zoom));
                 });
             })
     }
 
-    setZoom(zoomFactor) {
+    changeScale(scale) {
+        console.log("Changing scale to: " + scale);
 
-    }
+        document.querySelector("#content-parent").style.zoom = scale;
 
-    changeScale() {
-        throw new Error("Not supported by this viewer.")
+        //throw new Error("Not supported by this viewer.")
     }
 
     loadContentIFrame() {

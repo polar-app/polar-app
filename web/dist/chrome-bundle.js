@@ -56429,7 +56429,7 @@ var Viewer = function () {
         value: function start() {}
     }, {
         key: "changeScale",
-        value: function changeScale() {
+        value: function changeScale(scale) {
             throw new Error("Not supported by this viewer.");
         }
     }]);
@@ -56815,20 +56815,23 @@ var HTMLViewer = function (_Viewer) {
         key: "startHandlingZoom",
         value: function startHandlingZoom() {
 
+            var htmlViewer = this;
+
             $(".polar-zoom-select").change(function () {
                 $("select option:selected").each(function () {
                     var zoom = $(this).val();
-                    console.log("FIXME: zoom: ", zoom);
+                    htmlViewer.changeScale(parseFloat(zoom));
                 });
             });
         }
     }, {
-        key: "setZoom",
-        value: function setZoom(zoomFactor) {}
-    }, {
         key: "changeScale",
-        value: function changeScale() {
-            throw new Error("Not supported by this viewer.");
+        value: function changeScale(scale) {
+            console.log("Changing scale to: " + scale);
+
+            document.querySelector("#content-parent").style.zoom = scale;
+
+            //throw new Error("Not supported by this viewer.")
         }
     }, {
         key: "loadContentIFrame",

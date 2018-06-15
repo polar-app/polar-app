@@ -2,7 +2,7 @@ class Viewer {
 
     start() {}
 
-    changeScale() {
+    changeScale(scale) {
         throw new Error("Not supported by this viewer.")
     }
 

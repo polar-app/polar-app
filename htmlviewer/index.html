@@ -15,9 +15,7 @@
 
         #content-parent {
             margin: 0 auto;
-            zoom: 1;
         }
-
 
         iframe {
             display: block;
@@ -25,16 +23,18 @@
 
         iframe {
 
+            /*zoom: 2;*/
+
             /*transform-origin: 150% 0;*/
 
-            /*-ms-zoom: 1.5;*/
-            /*-moz-transform: scale(1.5);*/
-            /*-o-transform: scale(1.5);*/
-            /*-webkit-transform: scale(1.5);*/
+            -ms-zoom: 2.0;
+            -moz-transform: scale(2.0);
+            -o-transform: scale(2.0);
+            -webkit-transform: scale(2.0);
 
-            /*-moz-transform-origin: center 0;*/
-            /*-o-transform-origin: center 0;*/
-            /*-webkit-transform-origin: center 0;*/
+            -moz-transform-origin: center 0;
+            -o-transform-origin: center 0;
+            -webkit-transform-origin: center 0;
 
         }
 
@@ -160,7 +160,7 @@
 
 
 <div id="viewerContainer">
-    <div id="content-parent" class="page" data-page-number="1" style="width: 768px;">
+    <div id="content-parent" class="page" data-page-number="1" style="width: 768px; ">
         <!--<div id="click-layer" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-color: orange; opacity: 0.5;">-->
 
         <!-- FIXME: this overlap layer DOES work to find the click position but
