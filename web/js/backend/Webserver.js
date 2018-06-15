@@ -19,6 +19,8 @@ class Webserver {
 
     start() {
 
+        express.static.mime.define({'text/html': ['chtml']});
+
         this.app = express();
 
         this.app.use(serveStatic(this.webserverConfig.dir));

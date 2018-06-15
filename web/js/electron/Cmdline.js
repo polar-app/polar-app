@@ -1,4 +1,4 @@
-module.exports.Cmdline = class {
+class Cmdline {
 
     static getPDFArg(args) {
 
@@ -6,11 +6,17 @@ module.exports.Cmdline = class {
             throw new Error("Args not an array");
         }
 
-        let pdfArg = args.filter((arg) => arg != null && arg.endsWith(".pdf"))
+        let pdfArg = args.filter((arg) => arg != null && Cmdline.isDoc(arg))
                          .reduce((accumulator, currentValue) => accumulator = currentValue != null? currentValue : null, null);
 
         return pdfArg;
 
     }
 
+    static isDoc(arg) {
+        return arg.endsWith(".pdf") || arg.endsWith(".chtml")
+    }
+
 };
+
+module.exports.Cmdline = Cmdline;

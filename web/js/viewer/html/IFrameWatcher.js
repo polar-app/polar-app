@@ -34,7 +34,7 @@ class IFrameWatcher {
         if(this.iframe.contentDocument &&
            this.iframe.contentDocument.location.href !== this.options.currentURL) {
 
-            console.log("IFrame URL loading: ", this.iframe.contentDocument.location.href);
+            console.log("Detected iframe URL loading (calling callback now): ", this.iframe.contentDocument.location.href);
             this.callback();
             return;
 

@@ -15,10 +15,12 @@ const options = { extraHeaders: 'pragma: no-cache\n' }
 
 
 const BROWSER_WINDOW_OPTIONS = {
-    minWidth: 400,
-    minHeight: 300,
-    width: 850,
-    height: 1024,
+    minWidth: 450,
+    minHeight: 450,
+    width: 450,
+    height: 450,
+    maxWidth: 450,
+    maxHeight: 450,
     //show: false,
     // https://electronjs.org/docs/api/browser-window#new-browserwindowoptions
     webPreferences: {
@@ -94,6 +96,27 @@ function createWindow(url) {
         // FIXME: figure out how to fail properly.
     });
 
+    newWindow.webContents.on('did-start-loading', async function() {
+        console.log("did-start-loading: ");
+
+        console.log("Muting audio...");
+        newWindow.webContents.setAudioMuted(true);
+
+        console.log("Emulating device");
+        newWindow.webContents.enableDeviceEmulation(DEVICE_EMULATION);
+
+        let screenDimensionScript = `
+            Object.defineProperty(window.screen, "width", { get: function() { console.log("Returning custom width"); return 450; }});
+            Object.defineProperty(window.screen, "height", { get: function() { console.log("Returning custom height"); return 450; }});
+            Object.defineProperty(window.screen, "availWidth", { get: function() { console.log("Returning custom availWidth"); return 450; }});
+            Object.defineProperty(window.screen, "availHeight", { get: function() { console.log("Returning custom availHeight"); return 450; }});
+        `;
+
+        await newWindow.webContents.executeJavaScript(screenDimensionScript);
+
+    });
+
+
     newWindow.webContents.on('did-finish-load', async function() {
         console.log("did-finish-load: ");
         await captureHTML(newWindow);
@@ -127,7 +150,7 @@ async function captureHTML(window) {
     let captured = await window.webContents.executeJavaScript("ContentCapture.captureHTML()");
 
     fs.writeFileSync("captured.json", JSON.stringify(captured, null, "  "));
-    fs.writeFileSync("captured.html", captured.content);
+    fs.writeFileSync("captured.chtml", captured.content);
 
     // write two files.. captured.json and captured.html
     //console.log(capturedHTML);
@@ -140,6 +163,10 @@ async function captureHTML(window) {
 
 app.on('ready', function() {
 
-    createWindow("http://thehill.com/homenews/administration/392430-trump-i-want-americans-to-listen-to-me-like-north-koreans-listen-to");
+    //let url = "http://thehill.com/homenews/administration/392430-trump-i-want-americans-to-listen-to-me-like-north-koreans-listen-to";
+    //let url = "https://www.whatismyscreenresolution.com/";
+    let url = "https://thinkprogress.org/trump-lied-in-statement-about-russian-meeting-224345b768e3/";
+
+    createWindow(url);
 
 });

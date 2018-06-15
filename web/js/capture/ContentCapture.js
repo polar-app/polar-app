@@ -1,8 +1,6 @@
 
 class ContentCapture {
 
-    // FIXME: remove javascript: URLs
-
     // FIXME: children iframes need to be encoded as data URLs recursively or
     // pre-cached and re-written.
 
@@ -40,7 +38,8 @@ class ContentCapture {
             scriptsRemoved: 0,
             eventAttributesRemoved: 0,
             existingBaseRemoved: false,
-            baseAdded: false
+            baseAdded: false,
+            javascriptAnchorsRemoved: 0
         };
 
         // remove the script elements as these are active.
@@ -71,7 +70,7 @@ class ContentCapture {
 
         }
 
-        // create a NEW base element for this HTML
+        // *** create a NEW base element for this HTML
 
         base = cloneDoc.createElement("base");
         base.setAttribute("href", result.href);
@@ -84,6 +83,8 @@ class ContentCapture {
 
         mutations.baseAdded = true;
 
+        //*** remove javascript html onX elements.
+
         const EVENT_ATTRIBUTES = ContentCapture.createEventAttributes();
 
         cloneDoc.querySelectorAll("*").forEach(function (element) {
@@ -94,6 +95,18 @@ class ContentCapture {
                     ++mutations.eventAttributesRemoved;
                 }
             });
+
+        });
+
+        // *** remove javascript: anchors.
+
+        cloneDoc.querySelectorAll("a").forEach(function (element) {
+
+            let href = element.getAttribute("href");
+            if(href && href.indexOf("javascript:") === 0) {
+                element.removeAttribute("href");
+                ++mutations.javascriptAnchorsRemoved;
+            }
 
         });
 

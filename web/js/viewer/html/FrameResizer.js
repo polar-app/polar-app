@@ -36,18 +36,18 @@ class FrameResizer {
     start() {
 
         this.iframe.contentDocument.addEventListener("readystatechange", this.onReadyStateChange.bind(this));
+        this.resizeParentInBackground();
 
     }
 
     onReadyStateChange() {
 
         if(this.iframe.contentDocument.readyState === "complete") {
-            console.log("FrameResizer: Document has finished loading: " + this.iframe.contentDocument.location.href);
-            this.completed = true;
+            // console.log("FrameResizer: Document has finished loading: " + this.iframe.contentDocument.location.href);
+            // this.completed = true;
         } else {
             console.log("FrameResizer: Document has started loading: " +  this.iframe.contentDocument.location.href);
             this.completed = false;
-            this.resizeParentInBackground();
         }
 
     }

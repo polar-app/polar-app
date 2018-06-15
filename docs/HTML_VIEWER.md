@@ -33,6 +33,9 @@
 
 # TODO:
 
+- resize doesn't also resize the pagemarks properly
+
+
 - when the page is resized, we need to call the iframe resizer...
 
 - when the user zooms the page, we should trap this and zoom the UI ourselves.
@@ -40,6 +43,8 @@
     - https://stackoverflow.com/questions/27116221/prevent-zoom-cross-browser
 
 # Broken Examples:
+
+
 
 - this renders like horribly. ...
 
@@ -51,3 +56,27 @@ http://thehill.com/homenews/administration/392430-trump-i-want-americans-to-list
 
     - I think I need to have the device FULLY emulated including APIs that return
       the viewport size..
+
+    - these are returning incorrect values... which is the problem.
+
+    window.screen.availHeight
+    1573
+    window.screen.availHeight
+    1573
+
+
+    setting:
+        maxWidth: 450,
+        maxHeight: 450,
+
+
+    does nto change availHeight or availWidth
+
+    http://www.digimantra.com/technology/javascript/detect-screen-or-browser-size-in-javascript/
+
+
+    ok.. THIS trick actually works!!!
+
+    https://superuser.com/questions/712461/how-to-customize-screen-resolution-reported-to-a-javascript-application-by-a-web
+
+    so what I need to do is inject some codde BEFORE the page starts executing.. which is totally poossible.

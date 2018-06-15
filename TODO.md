@@ -155,7 +155,6 @@ https://bootswatch.com/slate/
 
 - TODO: don't use the minified version of the app.  It makes it harder to work with.
 
-- take a filename on the command line
 
 - keep a history of recently opened files
 

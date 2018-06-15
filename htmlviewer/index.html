@@ -21,6 +21,7 @@
             display: block;
             /* z-index: -1; */
             margin-bottom: 10px;
+            background-color: #ffffff;
         }
 
         iframe {
@@ -160,7 +161,14 @@
         <!--<div class="overlap-layer" style="position: absolute; left: 113px; top: 45px; width: 768px; height: 19034px; z-index: -1;"></div>-->
         <div class="textLayer iframeWrapper">
             <iframe src="about:blank" style="width: 750px; height: 100%; transform: scale(1.0); transform-origin: center 0;" frameborder="0" id="content"></iframe>
+
+            <!-- TODO: this is a bit of a hack because the pagemarks system
+                 listens to the page being redrawn to redraw the pagemarks and
+                 looks for a new div removed/inserted to detect if a page has
+                 been re-rendered/re-scaled.  -->
+            <div class="endOfContent"></div>
         </div>
+
         <!--</div>-->
     </div>
 </div>

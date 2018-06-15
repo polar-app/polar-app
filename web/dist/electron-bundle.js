@@ -32982,18 +32982,18 @@ var FrameResizer = function () {
         value: function start() {
 
             this.iframe.contentDocument.addEventListener("readystatechange", this.onReadyStateChange.bind(this));
+            this.resizeParentInBackground();
         }
     }, {
         key: "onReadyStateChange",
         value: function onReadyStateChange() {
 
             if (this.iframe.contentDocument.readyState === "complete") {
-                console.log("FrameResizer: Document has finished loading: " + this.iframe.contentDocument.location.href);
-                this.completed = true;
+                // console.log("FrameResizer: Document has finished loading: " + this.iframe.contentDocument.location.href);
+                // this.completed = true;
             } else {
                 console.log("FrameResizer: Document has started loading: " + this.iframe.contentDocument.location.href);
                 this.completed = false;
-                this.resizeParentInBackground();
             }
         }
     }, {
@@ -33125,8 +33125,31 @@ var HTMLViewer = function (_Viewer) {
 
             console.log("Changing scale to: " + scale);
 
+            this._changeIFrameScale(scale);
+            this._signalPageScale();
+        }
+    }, {
+        key: "_changeIFrameScale",
+        value: function _changeIFrameScale(scale) {
             var iframe = document.querySelector("#content-parent iframe");
             iframe.style.transform = "scale(" + scale + ")";
+        }
+
+        // remove and re-inject an endOfContent element to trigger the view to
+        // re-draw pagemarks.
+
+    }, {
+        key: "_signalPageScale",
+        value: function _signalPageScale() {
+
+            var pageElement = document.querySelector(".page");
+            var endOfContent = pageElement.querySelector(".endOfContent");
+            endOfContent.parentElement.removeChild(endOfContent);
+
+            endOfContent = document.createElement("div");
+            endOfContent.setAttribute("class", "endOfContent");
+
+            pageElement.appendChild(endOfContent);
         }
     }, {
         key: "loadContentIFrame",
@@ -33212,7 +33235,7 @@ var IFrameWatcher = function () {
 
             if (this.iframe.contentDocument && this.iframe.contentDocument.location.href !== this.options.currentURL) {
 
-                console.log("IFrame URL loading: ", this.iframe.contentDocument.location.href);
+                console.log("Detected iframe URL loading (calling callback now): ", this.iframe.contentDocument.location.href);
                 this.callback();
                 return;
             }

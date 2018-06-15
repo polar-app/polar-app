@@ -56,9 +56,29 @@ class HTMLViewer extends Viewer {
 
         console.log("Changing scale to: " + scale);
 
+        this._changeIFrameScale(scale);
+        this._signalPageScale();
+
+    }
+
+    _changeIFrameScale(scale) {
         let iframe = document.querySelector("#content-parent iframe");
         iframe.style.transform = `scale(${scale})`;
 
+    }
+
+    // remove and re-inject an endOfContent element to trigger the view to
+    // re-draw pagemarks.
+    _signalPageScale() {
+
+        let pageElement = document.querySelector(".page");
+        let endOfContent = pageElement.querySelector(".endOfContent");
+        endOfContent.parentElement.removeChild(endOfContent);
+
+        endOfContent = document.createElement("div");
+        endOfContent.setAttribute("class", "endOfContent" );
+
+        pageElement.appendChild(endOfContent);
     }
 
     loadContentIFrame() {

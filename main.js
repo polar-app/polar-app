@@ -331,7 +331,7 @@ async function promptPDF() {
 
         dialog.showOpenDialog({
             filters: [
-                { name: 'PDF', extensions: ['pdf'] }
+                { name: 'Docs', extensions: ['pdf', 'chtml'] }
             ],
             properties: ['openFile']
         }, function(path) {
@@ -371,7 +371,7 @@ function handleCmdLinePDF(commandLine, createNewWindow) {
 /**
  * Load the given PDF file in the given target window.
  */
-function loadPDF(path, targetWindow) {
+function loadFile(path, targetWindow) {
 
     if(!targetWindow) {
         throw new Error("No target window given");
@@ -381,7 +381,17 @@ function loadPDF(path, targetWindow) {
 
     console.log("Loading PDF via HTTP server: " + JSON.stringify(fileMeta));
 
-    targetWindow.loadURL(`http://${DEFAULT_HOST}:${WEBSERVER_PORT}/pdfviewer/web/viewer.html?file=` + encodeURIComponent(fileMeta.url), options);
+    let url = null;
+
+    if(path.endsWith(".pdf")) {
+        url = `http://${DEFAULT_HOST}:${WEBSERVER_PORT}/pdfviewer/web/viewer.html?file=` + encodeURIComponent(fileMeta.url);
+    } else if(path.endsWith(".chtml")) {
+        url = `http://${DEFAULT_HOST}:${WEBSERVER_PORT}/htmlviewer/index.html?file=` + encodeURIComponent(fileMeta.url);
+    }
+
+    console.log("Loading URL: " + url);
+
+    targetWindow.loadURL(url, options);
 
     if(args.enableConsoleLogging) {
         console.log("Console logging enabled.");
@@ -409,7 +419,7 @@ async function cmdOpen(item, focusedWindow) {
 
     let path = await promptPDF();
 
-    loadPDF(path, targetWindow);
+    loadFile(path, targetWindow);
 
 }
 
@@ -419,7 +429,7 @@ async function cmdOpenInNewWindow(item, focusedWindow) {
 
     let targetWindow = createWindow();
 
-    loadPDF(path, targetWindow);
+    loadFile(path, targetWindow);
 
 }
 
@@ -433,9 +443,9 @@ function openFileCmdline(path, createNewWindow) {
     console.log("Opening file given on the command line: " + path);
 
     if(createNewWindow) {
-        loadPDF(path, createWindow());
+        loadFile(path, createWindow());
     } else {
-        loadPDF(path, mainWindow);
+        loadFile(path, mainWindow);
     }
 
 }
