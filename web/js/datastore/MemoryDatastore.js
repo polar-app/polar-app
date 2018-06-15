@@ -42,6 +42,8 @@ module.exports.MemoryDatastore = class extends Datastore {
 
         Preconditions.assertTypeof(data, "data", "string");
 
+        console.log("FIXME: wrote fingerpring: " + fingerprint, data);
+
         this.docMetas[fingerprint] = data;
     }
 

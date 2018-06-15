@@ -69,7 +69,7 @@ module.exports.WebView = class extends View {
      */
     onDocumentLoaded() {
 
-        console.log("WebView.onDocumentLoaded");
+        console.log("WebView.onDocumentLoaded: ", this.model.docMeta);
 
         let pagemarkRendererDelegates = [
             new MainPagemarkRenderer(this),
@@ -79,6 +79,8 @@ module.exports.WebView = class extends View {
             // only support rendering thumbnails for documents that have thumbnail
             // support.
             pagemarkRendererDelegates.push(new ThumbnailPagemarkRenderer(this));
+        } else {
+            log.warn("Thumbnails not enabled.");
         }
 
         this.pagemarkRenderer = new CompositePagemarkRenderer(this, pagemarkRendererDelegates);
@@ -230,6 +232,10 @@ module.exports.WebView = class extends View {
         }
 
         let pagemarkElement = document.createElement("div");
+
+        // set a pagemark-id in the DOM so that we can work with it when we use
+        // the context menu, etc.
+        pagemarkElement.setAttribute("data-pagemark-id", options.pagemark.id);
 
         // make sure we have a reliable CSS classname to work with.
         pagemarkElement.className="pagemark";

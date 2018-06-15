@@ -1,6 +1,7 @@
 
 const {Proxies} = require("./proxies/Proxies");
 const {Pagemark} = require("./metadata/Pagemark");
+const {Pagemarks} = require("./metadata/Pagemarks");
 const {PagemarkType} = require("./metadata/PagemarkType");
 const {DocMeta} = require("./metadata/DocMeta");
 const {DocMetas} = require("./metadata/DocMetas");
@@ -42,6 +43,8 @@ module.exports.Model = class {
         this.docMeta = await this.docMetaPromise;
 
         if(this.docMeta == null) {
+
+            console.warn("New document found. Creating initial DocMeta");
 
             // this is a new document...
             //this.docMeta = DocMeta.createWithinInitialPagemarks(fingerprint, nrPages);
@@ -102,13 +105,7 @@ module.exports.Model = class {
 
         this.assertPageNum(pageNum);
 
-        // FIXME: determine the type and the column
-
-        // FIXME: move this to Pagemarks.create() so e can put the date in the
-        // right place and require all pagemarks to have dates and that they
-        // use ISODateTime
-        let pagemark = new Pagemark({
-            created: new ISODateTime(this.clock.getDate()),
+        let pagemark = Pagemarks.create({
 
             // just set docMeta pageMarkType = PagemarkType.SINGLE_COLUMN by
             // default for now until we add multiple column types and handle

@@ -116,7 +116,7 @@ class DocMetas {
 
         let docMeta = MetadataSerializer.deserialize(new DocMeta(), data);
 
-        docMeta = DocMetas.upgrade(docMeta);
+        return DocMetas.upgrade(docMeta);
 
     }
 
@@ -161,6 +161,7 @@ class DocMetas {
         } );
 
         if(!docMeta.annotationInfo) {
+            console.log("No annotation info.. Adding default.")
             docMeta.annotationInfo = new AnnotationInfo();
         }
 

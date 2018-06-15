@@ -49009,6 +49009,8 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 var _require = __webpack_require__(/*! ./utils */ "./web/js/utils.js"),
     Elements = _require.Elements;
 
+// FIXME: this needs to move to DocFormat... as PDFFormat ...
+
 /**
  * Utility for working with the main PDF renderer and dealing with pages, the
  * DOM, etc.
@@ -50492,9 +50494,11 @@ module.exports.MemoryDatastore = function (_Datastore) {
 
                 Preconditions.assertTypeof(data, "data", "string");
 
+                console.log("FIXME: wrote fingerpring: " + fingerprint, data);
+
                 this.docMetas[fingerprint] = data;
 
-              case 2:
+              case 3:
               case "end":
                 return _context3.stop();
             }
@@ -50547,6 +50551,9 @@ var _require4 = __webpack_require__(/*! ../metadata/DocMetas */ "./web/js/metada
 
 var _require5 = __webpack_require__(/*! ../metadata/DocMetaDescriber */ "./web/js/metadata/DocMetaDescriber.js"),
     DocMetaDescriber = _require5.DocMetaDescriber;
+
+var _require6 = __webpack_require__(/*! ../Preconditions */ "./web/js/Preconditions.js"),
+    Preconditions = _require6.Preconditions;
 
 var fs = __webpack_require__(/*! fs */ "./node_modules/node-libs-browser/mock/empty.js");
 var os = __webpack_require__(/*! os */ "./node_modules/os-browserify/browser.js");
@@ -50662,7 +50669,7 @@ module.exports.PersistenceLayer = function () {
                     while (1) {
                         switch (_context3.prev = _context3.next) {
                             case 0:
-                                return _context3.abrupt("return", this.sync(docMeta.fingerprint, docMeta));
+                                return _context3.abrupt("return", this.sync(docMeta.docInfo.fingerprint, docMeta));
 
                             case 1:
                             case "end":
@@ -50692,23 +50699,29 @@ module.exports.PersistenceLayer = function () {
                     while (1) {
                         switch (_context4.prev = _context4.next) {
                             case 0:
+
+                                Preconditions.assertNotNull(fingerprint, "fingerprint");
+                                Preconditions.assertNotNull(docMeta, "docMeta");
+
+                                console.log("Sync of docMeta with fingerprint: ", fingerprint);
+
                                 if (!(!docMeta instanceof DocMeta)) {
-                                    _context4.next = 2;
+                                    _context4.next = 5;
                                     break;
                                 }
 
                                 throw new Error("Can not sync anything other than DocMeta.");
 
-                            case 2:
+                            case 5:
 
                                 // NOTE that we always write the state with JSON pretty printing.
                                 // Otherwise tools like git diff , etc will be impossible to deal with
                                 // in practice.
                                 data = DocMetas.serialize(docMeta, "  ");
-                                _context4.next = 5;
+                                _context4.next = 8;
                                 return this.datastore.sync(fingerprint, data);
 
-                            case 5:
+                            case 8:
                             case "end":
                                 return _context4.stop();
                         }
@@ -52539,7 +52552,7 @@ var DocMetas = function () {
 
             var docMeta = MetadataSerializer.deserialize(new DocMeta(), data);
 
-            docMeta = DocMetas.upgrade(docMeta);
+            return DocMetas.upgrade(docMeta);
         }
     }, {
         key: "upgrade",
@@ -52583,6 +52596,7 @@ var DocMetas = function () {
             });
 
             if (!docMeta.annotationInfo) {
+                console.log("No annotation info.. Adding default.");
                 docMeta.annotationInfo = new AnnotationInfo();
             }
 
@@ -53558,35 +53572,38 @@ var _require = __webpack_require__(/*! ./proxies/Proxies */ "./web/js/proxies/Pr
 var _require2 = __webpack_require__(/*! ./metadata/Pagemark */ "./web/js/metadata/Pagemark.js"),
     Pagemark = _require2.Pagemark;
 
-var _require3 = __webpack_require__(/*! ./metadata/PagemarkType */ "./web/js/metadata/PagemarkType.js"),
-    PagemarkType = _require3.PagemarkType;
+var _require3 = __webpack_require__(/*! ./metadata/Pagemarks */ "./web/js/metadata/Pagemarks.js"),
+    Pagemarks = _require3.Pagemarks;
 
-var _require4 = __webpack_require__(/*! ./metadata/DocMeta */ "./web/js/metadata/DocMeta.js"),
-    DocMeta = _require4.DocMeta;
+var _require4 = __webpack_require__(/*! ./metadata/PagemarkType */ "./web/js/metadata/PagemarkType.js"),
+    PagemarkType = _require4.PagemarkType;
 
-var _require5 = __webpack_require__(/*! ./metadata/DocMetas */ "./web/js/metadata/DocMetas.js"),
-    DocMetas = _require5.DocMetas;
+var _require5 = __webpack_require__(/*! ./metadata/DocMeta */ "./web/js/metadata/DocMeta.js"),
+    DocMeta = _require5.DocMeta;
 
-var _require6 = __webpack_require__(/*! ./metadata/ISODateTime */ "./web/js/metadata/ISODateTime.js"),
-    ISODateTime = _require6.ISODateTime;
+var _require6 = __webpack_require__(/*! ./metadata/DocMetas */ "./web/js/metadata/DocMetas.js"),
+    DocMetas = _require6.DocMetas;
 
-var _require7 = __webpack_require__(/*! ./metadata/DocMetaDescriber */ "./web/js/metadata/DocMetaDescriber.js"),
-    DocMetaDescriber = _require7.DocMetaDescriber;
+var _require7 = __webpack_require__(/*! ./metadata/ISODateTime */ "./web/js/metadata/ISODateTime.js"),
+    ISODateTime = _require7.ISODateTime;
 
-var _require8 = __webpack_require__(/*! ./reactor/Reactor */ "./web/js/reactor/Reactor.js"),
-    Reactor = _require8.Reactor;
+var _require8 = __webpack_require__(/*! ./metadata/DocMetaDescriber */ "./web/js/metadata/DocMetaDescriber.js"),
+    DocMetaDescriber = _require8.DocMetaDescriber;
 
-var _require9 = __webpack_require__(/*! ./reactor/Event */ "./web/js/reactor/Event.js"),
-    Event = _require9.Event;
+var _require9 = __webpack_require__(/*! ./reactor/Reactor */ "./web/js/reactor/Reactor.js"),
+    Reactor = _require9.Reactor;
 
-var _require10 = __webpack_require__(/*! ./utils */ "./web/js/utils.js"),
-    forDict = _require10.forDict;
+var _require10 = __webpack_require__(/*! ./reactor/Event */ "./web/js/reactor/Event.js"),
+    Event = _require10.Event;
 
-var _require11 = __webpack_require__(/*! ./util/Objects */ "./web/js/util/Objects.js"),
-    Objects = _require11.Objects;
+var _require11 = __webpack_require__(/*! ./utils */ "./web/js/utils.js"),
+    forDict = _require11.forDict;
 
-var _require12 = __webpack_require__(/*! ./Preconditions */ "./web/js/Preconditions.js"),
-    Preconditions = _require12.Preconditions;
+var _require12 = __webpack_require__(/*! ./util/Objects */ "./web/js/util/Objects.js"),
+    Objects = _require12.Objects;
+
+var _require13 = __webpack_require__(/*! ./Preconditions */ "./web/js/Preconditions.js"),
+    Preconditions = _require13.Preconditions;
 
 module.exports.Model = function () {
     function _class(persistenceLayer, clock) {
@@ -53632,6 +53649,8 @@ module.exports.Model = function () {
 
 
                                 if (this.docMeta == null) {
+
+                                    console.warn("New document found. Creating initial DocMeta");
 
                                     // this is a new document...
                                     //this.docMeta = DocMeta.createWithinInitialPagemarks(fingerprint, nrPages);
@@ -53714,13 +53733,7 @@ module.exports.Model = function () {
 
                                 this.assertPageNum(pageNum);
 
-                                // FIXME: determine the type and the column
-
-                                // FIXME: move this to Pagemarks.create() so e can put the date in the
-                                // right place and require all pagemarks to have dates and that they
-                                // use ISODateTime
-                                pagemark = new Pagemark({
-                                    created: new ISODateTime(this.clock.getDate()),
+                                pagemark = Pagemarks.create({
 
                                     // just set docMeta pageMarkType = PagemarkType.SINGLE_COLUMN by
                                     // default for now until we add multiple column types and handle
@@ -55682,7 +55695,7 @@ module.exports.WebView = function (_View) {
         key: "onDocumentLoaded",
         value: function onDocumentLoaded() {
 
-            console.log("WebView.onDocumentLoaded");
+            console.log("WebView.onDocumentLoaded: ", this.model.docMeta);
 
             var pagemarkRendererDelegates = [new MainPagemarkRenderer(this)];
 
@@ -55690,6 +55703,8 @@ module.exports.WebView = function (_View) {
                 // only support rendering thumbnails for documents that have thumbnail
                 // support.
                 pagemarkRendererDelegates.push(new ThumbnailPagemarkRenderer(this));
+            } else {
+                log.warn("Thumbnails not enabled.");
             }
 
             this.pagemarkRenderer = new CompositePagemarkRenderer(this, pagemarkRendererDelegates);
@@ -55859,6 +55874,10 @@ module.exports.WebView = function (_View) {
             }
 
             var pagemarkElement = document.createElement("div");
+
+            // set a pagemark-id in the DOM so that we can work with it when we use
+            // the context menu, etc.
+            pagemarkElement.setAttribute("data-pagemark-id", options.pagemark.id);
 
             // make sure we have a reliable CSS classname to work with.
             pagemarkElement.className = "pagemark";

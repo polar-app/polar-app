@@ -32,8 +32,6 @@ function createDocMeta1() {
 
 }
 
-
-
 async function persistenceLayerFactory() {
 
     console.log("Using mock persistence layer and memory store");
