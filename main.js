@@ -19,7 +19,7 @@ const {WebserverConfig} = require("./web/js/backend/WebserverConfig");
 const {Webserver} = require("./web/js/backend/Webserver");
 const {FileRegistry} = require("./web/js/backend/FileRegistry");
 const {Cmdline} = require("./web/js/electron/Cmdline");
-const {ElectronContextMenu} = require("./web/js/contextmenu/ElectronContextMenu");
+const {ElectronContextMenu} = require("./web/js/contextmenu/electron/ElectronContextMenu");
 
 let mainWindow, splashwindow;
 let contextMenu = null;

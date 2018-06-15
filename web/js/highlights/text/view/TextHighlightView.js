@@ -3,8 +3,8 @@ const {forDict} = require("../../../utils.js");
 const {PageRedrawHandler} = require("../../../PageRedrawHandler");
 const {PDFRenderer} = require("../../../PDFRenderer");
 const {Rects} = require("../../../Rects");
-const {RendererContextMenu} = require("../../../contextmenu/RendererContextMenu");
-const {ContextMenuType} = require("../../../contextmenu/ContextMenuType");
+const {RendererContextMenu} = require("../../../contextmenu/electron/RendererContextMenu");
+const {ContextMenuType} = require("../../../contextmenu/electron/ContextMenuType");
 
 class TextHighlightView {
 

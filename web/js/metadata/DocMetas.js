@@ -16,6 +16,7 @@ class DocMetas {
     /**
      * Create the basic DocInfo structure that we can use with required / basic
      * field structure.
+     * @param fingerprint The fingerprint
      * @param nrPages The number of pages in this document.
      * @returns {DocMeta}
      */

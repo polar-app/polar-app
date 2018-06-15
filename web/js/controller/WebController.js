@@ -8,7 +8,7 @@ const {Preconditions} = require("../Preconditions.js");
 const {Controller} = require("./Controller.js");
 const {DocFormatFactory} = require("../docformat/DocFormatFactory");
 const {polar} = require("../polar");
-const {RendererContextMenu} = require("../contextmenu/RendererContextMenu");
+const {RendererContextMenu} = require("../contextmenu/electron/RendererContextMenu");
 
 
 module.exports.WebController = class extends Controller {

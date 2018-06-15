@@ -26,7 +26,7 @@ describe('DocMetas', function() {
 
             let json = MetadataSerializer.serialize(docMeta, "  ");
 
-            let actual = MetadataSerializer.deserialize(new DocMeta(), json);
+            let actual = DocMetas.deserialize(json);
 
             assertJSON(docMeta, actual);
 

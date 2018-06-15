@@ -25973,10 +25973,10 @@ new Launcher(persistenceLayerFactory).launch().then(function () {
 
 /***/ }),
 
-/***/ "./web/js/contextmenu/ContextMenuType.js":
-/*!***********************************************!*\
-  !*** ./web/js/contextmenu/ContextMenuType.js ***!
-  \***********************************************/
+/***/ "./web/js/contextmenu/electron/ContextMenuType.js":
+/*!********************************************************!*\
+  !*** ./web/js/contextmenu/electron/ContextMenuType.js ***!
+  \********************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -26011,10 +26011,10 @@ module.exports.ContextMenuType = Object.freeze({
 
 /***/ }),
 
-/***/ "./web/js/contextmenu/RendererContextMenu.js":
-/*!***************************************************!*\
-  !*** ./web/js/contextmenu/RendererContextMenu.js ***!
-  \***************************************************/
+/***/ "./web/js/contextmenu/electron/RendererContextMenu.js":
+/*!************************************************************!*\
+  !*** ./web/js/contextmenu/electron/RendererContextMenu.js ***!
+  \************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -26210,7 +26210,7 @@ var _require6 = __webpack_require__(/*! ../docformat/DocFormatFactory */ "./web/
 var _require7 = __webpack_require__(/*! ../polar */ "./web/js/polar.js"),
     polar = _require7.polar;
 
-var _require8 = __webpack_require__(/*! ../contextmenu/RendererContextMenu */ "./web/js/contextmenu/RendererContextMenu.js"),
+var _require8 = __webpack_require__(/*! ../contextmenu/electron/RendererContextMenu */ "./web/js/contextmenu/electron/RendererContextMenu.js"),
     RendererContextMenu = _require8.RendererContextMenu;
 
 module.exports.WebController = function (_Controller) {
@@ -27821,10 +27821,10 @@ var _require4 = __webpack_require__(/*! ../../../PDFRenderer */ "./web/js/PDFRen
 var _require5 = __webpack_require__(/*! ../../../Rects */ "./web/js/Rects.js"),
     Rects = _require5.Rects;
 
-var _require6 = __webpack_require__(/*! ../../../contextmenu/RendererContextMenu */ "./web/js/contextmenu/RendererContextMenu.js"),
+var _require6 = __webpack_require__(/*! ../../../contextmenu/electron/RendererContextMenu */ "./web/js/contextmenu/electron/RendererContextMenu.js"),
     RendererContextMenu = _require6.RendererContextMenu;
 
-var _require7 = __webpack_require__(/*! ../../../contextmenu/ContextMenuType */ "./web/js/contextmenu/ContextMenuType.js"),
+var _require7 = __webpack_require__(/*! ../../../contextmenu/electron/ContextMenuType */ "./web/js/contextmenu/electron/ContextMenuType.js"),
     ContextMenuType = _require7.ContextMenuType;
 
 var TextHighlightView = function () {
@@ -28562,6 +28562,7 @@ var DocMetas = function () {
         /**
          * Create the basic DocInfo structure that we can use with required / basic
          * field structure.
+         * @param fingerprint The fingerprint
          * @param nrPages The number of pages in this document.
          * @returns {DocMeta}
          */

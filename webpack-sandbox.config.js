@@ -7,6 +7,11 @@ module.exports = [
             // import "babel-polyfill";
             schemaform: ["babel-polyfill", './sandbox/schemaform/schemaform.js'],
         },
+        devtool: "source-map",
+        resolve: {
+            // Add '.ts' and '.tsx' as resolvable extensions.
+            extensions: [".ts", ".tsx", ".js", ".json"]
+        },
         module: {
             rules: [
                 {
@@ -15,7 +20,11 @@ module.exports = [
                     use: {
                         loader: "babel-loader"
                     }
-                }
+                },
+                {
+                    test: /\.tsx?$/,
+                    loaders: ["babel-loader", "awesome-typescript-loader"]
+                },
             ],
         },
         output: {
