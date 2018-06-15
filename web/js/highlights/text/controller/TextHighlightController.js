@@ -1,9 +1,12 @@
+const $ = require('jquery');
 const {TextHighlightRecords} = require("../../../metadata/TextHighlightRecords");
 const {TextHighlighterFactory} = require("./TextHighlighterFactory");
 const {TextHighlightRows} = require("./TextHighlightRows");
 const {PDFRenderer} = require("../../../PDFRenderer");
 const {Preconditions} = require("../../../Preconditions");
 const {KeyEvents} = require("../../../KeyEvents.js");
+const {Arrays} = require("../../../util/Arrays");
+
 
 class TextHighlightController {
 
@@ -100,8 +103,10 @@ class TextHighlightController {
 
         let rects = textHighlightRows.map(current => current.rect);
 
-        let textSelections = {}; // FIXME: do this later
-        let text = ""; // FIXME: do this later
+        let extractedText = this.extractText(selector);
+
+        let textSelections = Arrays.toDict(extractedText.textSelections)
+        let text = extractedText.text;
 
         let textHighlightRecord = TextHighlightRecords.create(rects, textSelections, text);
 
@@ -114,6 +119,26 @@ class TextHighlightController {
         pageMeta.textHighlights[textHighlightRecord.id] = textHighlightRecord.value;
 
         console.log("Added text highlight to model");
+
+    }
+
+    extractText(selector) {
+
+        let result = {
+            textSelections: [],
+            text: ""
+        };
+
+        $(selector).each(function () {
+
+            let text = $(this).text();
+
+            result.textSelections.push(text);
+            result.text += " " + text;
+
+        });
+
+        return result;
 
     }
 
