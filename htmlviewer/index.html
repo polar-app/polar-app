@@ -23,22 +23,6 @@
 
         iframe {
 
-            /*zoom: 2;*/
-
-            transform: scale(2.0);
-            transform-origin: center 0;
-
-            /*transform-origin: 150% 0;*/
-
-            /*-ms-zoom: 2.0;*/
-            /*-moz-transform: scale(2.0);*/
-            /*-o-transform: scale(2.0);*/
-            /*-webkit-transform: scale(2.0);*/
-
-            /*-moz-transform-origin: center 0;*/
-            /*-o-transform-origin: center 0;*/
-            /*-webkit-transform-origin: center 0;*/
-
         }
 
     </style>
@@ -172,15 +156,17 @@
 
         <!--<div class="overlap-layer" style="position: absolute; left: 113px; top: 45px; width: 768px; height: 19034px; z-index: -1;"></div>-->
         <div class="textLayer iframeWrapper">
-            <iframe src="about:blank" style="width: 768px; height: 100%;" frameborder="0" id="content"></iframe>
+            <iframe src="about:blank" style="width: 768px; height: 100%; transform: scale(1.0); transform-origin: center 0;" frameborder="0" id="content"></iframe>
         </div>
         <!--</div>-->
     </div>
 </div>
 
-<div id="polar-footer">
-    <div id="polar-doc-overview"></div>
-</div>
+<!-- FIXME: the footer right now does not work when I resize the viewer.-->
+
+<!--<div id="polar-footer">-->
+    <!--<div id="polar-doc-overview"></div>-->
+<!--</div>-->
 
 </body>
 </html>

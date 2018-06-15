@@ -51,11 +51,12 @@ class HTMLViewer extends Viewer {
     }
 
     changeScale(scale) {
+
         console.log("Changing scale to: " + scale);
 
-        document.querySelector("#content-parent").style.zoom = scale;
+        let iframe = document.querySelector("#content-parent iframe");
+        iframe.style.transform = `scale(${scale})`;
 
-        //throw new Error("Not supported by this viewer.")
     }
 
     loadContentIFrame() {

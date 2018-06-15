@@ -39,7 +39,11 @@ module.exports.WebView = class extends View {
 
         let description = DocMetaDescriber.describe(this.model.docMeta);
 
-        document.querySelector("#polar-doc-overview").textContent = description;
+        let docOverview = document.querySelector("#polar-doc-overview");
+
+        if(docOverview) {
+            docOverview.textContent = description;
+        }
 
     }
 

@@ -55861,7 +55861,11 @@ module.exports.WebView = function (_View) {
 
             var description = DocMetaDescriber.describe(this.model.docMeta);
 
-            document.querySelector("#polar-doc-overview").textContent = description;
+            var docOverview = document.querySelector("#polar-doc-overview");
+
+            if (docOverview) {
+                docOverview.textContent = description;
+            }
         }
     }, {
         key: "computeProgress",
@@ -56827,11 +56831,11 @@ var HTMLViewer = function (_Viewer) {
     }, {
         key: "changeScale",
         value: function changeScale(scale) {
+
             console.log("Changing scale to: " + scale);
 
-            document.querySelector("#content-parent").style.zoom = scale;
-
-            //throw new Error("Not supported by this viewer.")
+            var iframe = document.querySelector("#content-parent iframe");
+            iframe.style.transform = "scale(" + scale + ")";
         }
     }, {
         key: "loadContentIFrame",
