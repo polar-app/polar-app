@@ -57,6 +57,9 @@ module.exports.Model = class {
 
         }
 
+        console.log("Description of doc loaded: " + DocMetaDescriber.describe(this.docMeta));
+        console.log("Document loaded: ", this.docMeta);
+
         this.docMeta = Proxies.create(this.docMeta).deepTrace(function (traceEvent) {
 
             // right now we just sync the datastore on mutation.  We do not
@@ -156,6 +159,10 @@ module.exports.Model = class {
      * @param pageNum
      */
     async pageLoaded(pageNum) {
+
+        console.log("Page loaded...");
+
+        // FIXME: is this actually called anywhere now??? I don't think it is...
 
         let docMeta = await this.docMetaPromise;
         let pageMeta = this.docMeta.getPageMeta(pageNum);

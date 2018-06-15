@@ -34,3 +34,5 @@
 # TODO:
 
 - when the page is resized, we need to call the iframe resizer...
+
+- when the user zooms the page, we should trap this and zoom the UI ourselves.

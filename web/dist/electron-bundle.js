@@ -30011,6 +30011,9 @@ module.exports.Model = function () {
                                     // asking for a race condition.
                                 }
 
+                                console.log("Description of doc loaded: " + DocMetaDescriber.describe(this.docMeta));
+                                console.log("Document loaded: ", this.docMeta);
+
                                 this.docMeta = Proxies.create(this.docMeta).deepTrace(function (traceEvent) {
 
                                     // right now we just sync the datastore on mutation.  We do not
@@ -30035,7 +30038,7 @@ module.exports.Model = function () {
 
                                 return _context.abrupt("return", this.docMeta);
 
-                            case 10:
+                            case 12:
                             case "end":
                                 return _context.stop();
                         }
@@ -30157,10 +30160,15 @@ module.exports.Model = function () {
                     while (1) {
                         switch (_context3.prev = _context3.next) {
                             case 0:
-                                _context3.next = 2;
+
+                                console.log("Page loaded...");
+
+                                // FIXME: is this actually called anywhere now??? I don't think it is...
+
+                                _context3.next = 3;
                                 return this.docMetaPromise;
 
-                            case 2:
+                            case 3:
                                 docMeta = _context3.sent;
                                 pageMeta = this.docMeta.getPageMeta(pageNum);
 
@@ -30179,7 +30187,7 @@ module.exports.Model = function () {
                                     this.reactor.dispatchEvent('createPagemark', { pageNum: pageNum });
                                 }.bind(this));
 
-                            case 5:
+                            case 6:
                             case "end":
                                 return _context3.stop();
                         }
@@ -30217,6 +30225,372 @@ module.exports.Model = function () {
 
     return _class;
 }();
+
+/***/ }),
+
+/***/ "./web/js/pagemarks/CompositePagemarkRenderer.js":
+/*!*******************************************************!*\
+  !*** ./web/js/pagemarks/CompositePagemarkRenderer.js ***!
+  \*******************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var _require = __webpack_require__(/*! ../utils.js */ "./web/js/utils.js"),
+    Delegator = _require.Delegator;
+
+var _require2 = __webpack_require__(/*! ./PagemarkRenderer */ "./web/js/pagemarks/PagemarkRenderer.js"),
+    PagemarkRenderer = _require2.PagemarkRenderer;
+
+var CompositePagemarkRenderer = function (_PagemarkRenderer) {
+    _inherits(CompositePagemarkRenderer, _PagemarkRenderer);
+
+    function CompositePagemarkRenderer(view, delegates) {
+        _classCallCheck(this, CompositePagemarkRenderer);
+
+        var _this = _possibleConstructorReturn(this, (CompositePagemarkRenderer.__proto__ || Object.getPrototypeOf(CompositePagemarkRenderer)).call(this, view));
+
+        if (!delegates) {
+            throw new Error("No delegates");
+        }
+
+        _this.delegator = new Delegator(delegates);
+        return _this;
+    }
+
+    _createClass(CompositePagemarkRenderer, [{
+        key: "setup",
+        value: function setup() {
+            this.delegator.apply("setup");
+        }
+    }, {
+        key: "create",
+        value: function create(pageNum, pagemark) {
+            this.delegator.apply("create", pageNum, pagemark);
+        }
+    }, {
+        key: "erase",
+        value: function erase(pageNum) {
+            this.delegator.apply("erase", pageNum);
+        }
+    }]);
+
+    return CompositePagemarkRenderer;
+}(PagemarkRenderer);
+
+;
+
+module.exports.CompositePagemarkRenderer = CompositePagemarkRenderer;
+
+/***/ }),
+
+/***/ "./web/js/pagemarks/MainPagemarkRenderer.js":
+/*!**************************************************!*\
+  !*** ./web/js/pagemarks/MainPagemarkRenderer.js ***!
+  \**************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var _require = __webpack_require__(/*! ./PagemarkRenderer */ "./web/js/pagemarks/PagemarkRenderer.js"),
+    PagemarkRenderer = _require.PagemarkRenderer;
+
+/**
+ * Handles attaching pagemarks to the pages (as opposed to thumbnails).
+ */
+
+
+var MainPagemarkRenderer = function (_PagemarkRenderer) {
+    _inherits(MainPagemarkRenderer, _PagemarkRenderer);
+
+    function MainPagemarkRenderer(view) {
+        _classCallCheck(this, MainPagemarkRenderer);
+
+        var _this = _possibleConstructorReturn(this, (MainPagemarkRenderer.__proto__ || Object.getPrototypeOf(MainPagemarkRenderer)).call(this, view));
+
+        _this.pageElementSelector = ".page";
+
+        return _this;
+    }
+
+    _createClass(MainPagemarkRenderer, [{
+        key: "setup",
+        value: function setup() {
+            this.__setup();
+        }
+    }, {
+        key: "__requiresPagemark",
+        value: function __requiresPagemark(pageElement) {
+            return pageElement.querySelector("canvas") != null;
+        }
+    }, {
+        key: "__registerListener",
+        value: function __registerListener(pageElement) {
+
+            // TODO: migrate to using PageRedrawHandler
+
+            pageElement.addEventListener('DOMNodeInserted', function (event) {
+
+                if (event.target && event.target.className === "endOfContent") {
+                    this.__render(pageElement);
+                }
+            }.bind(this), false);
+        }
+    }, {
+        key: "__render",
+        value: function __render(pageElement) {
+            this.view.recreatePagemarksFromPagemarks(pageElement);
+        }
+    }]);
+
+    return MainPagemarkRenderer;
+}(PagemarkRenderer);
+
+module.exports.MainPagemarkRenderer = MainPagemarkRenderer;
+
+/***/ }),
+
+/***/ "./web/js/pagemarks/PagemarkRenderer.js":
+/*!**********************************************!*\
+  !*** ./web/js/pagemarks/PagemarkRenderer.js ***!
+  \**********************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var PagemarkRenderer = function () {
+    function PagemarkRenderer(view) {
+        _classCallCheck(this, PagemarkRenderer);
+
+        this.view = view;
+        this.pageElements = [];
+
+        // the CSS selector for pulling out the right pageElements.
+        this.pageElementSelector = null;
+    }
+
+    _createClass(PagemarkRenderer, [{
+        key: "setup",
+        value: function setup() {}
+    }, {
+        key: "__setup",
+        value: function __setup() {
+            console.log("PagemarkRenderer: setup...");
+
+            // FIXME: now we need a way to clear a given page by keeping a reference
+            // to the page renderer for that page and then call erase on it once it
+            // has been removed.
+
+            this.__updatePageElements();
+
+            console.log("Working with " + this.pageElements.length + " elements for selector " + this.pageElementSelector);
+
+            this.pageElements.forEach(function (pageElement) {
+                this.init(pageElement);
+            }.bind(this));
+        }
+    }, {
+        key: "__updatePageElements",
+        value: function __updatePageElements() {
+            this.pageElements = document.querySelectorAll(this.pageElementSelector);
+        }
+    }, {
+        key: "init",
+        value: function init(pageElement) {
+
+            console.log("Initializing pageElement: ", pageElement);
+
+            if (this.__requiresPagemark(pageElement)) {
+                this.__render(pageElement);
+            }
+
+            this.__registerListener(pageElement);
+        }
+
+        /**
+         * Return true if the target needs a pagemark.
+         */
+
+    }, {
+        key: "__requiresPagemark",
+        value: function __requiresPagemark(pageElement) {}
+
+        /**
+         * Register future listeners to monitor status.
+         */
+
+    }, {
+        key: "__registerListener",
+        value: function __registerListener(pageElement) {}
+    }, {
+        key: "__render",
+        value: function __render(pageElement) {}
+
+        /**
+         * Erase the page elements on the give page number.
+         */
+
+    }, {
+        key: "create",
+        value: function create(pageNum, pagemark) {
+
+            if (typeof pageNum !== "number") {
+                throw new Error("pageNum is not a number");
+            }
+
+            if (!pagemark) {
+                throw new Error("No pagemark.");
+            }
+
+            this.__updatePageElements();
+
+            var pageElement = this.pageElements[pageNum - 1];
+
+            if (!pageElement) {
+                throw new Error("No pageElement for pageNum " + pageNum + " out of " + this.pageElements.length + " pageElements");
+            }
+
+            this.__render(pageElement);
+        }
+
+        /**
+         * Erase the pagemarks on the give page number.
+         */
+
+    }, {
+        key: "erase",
+        value: function erase(pageNum) {
+
+            if (typeof pageNum !== "number") {
+                throw new Error("pageNum is not a number");
+            }
+
+            this.__updatePageElements();
+
+            var pageElement = this.pageElements[pageNum - 1];
+
+            if (!pageElement) {
+                throw new Error("No pageElement for pageNum " + pageNum + " out of " + this.pageElements.length + " pageElements");
+            }
+
+            this.view.erasePagemarks(pageElement);
+        }
+    }]);
+
+    return PagemarkRenderer;
+}();
+
+module.exports.PagemarkRenderer = PagemarkRenderer;
+
+/***/ }),
+
+/***/ "./web/js/pagemarks/ThumbnailPagemarkRenderer.js":
+/*!*******************************************************!*\
+  !*** ./web/js/pagemarks/ThumbnailPagemarkRenderer.js ***!
+  \*******************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var _require = __webpack_require__(/*! ./PagemarkRenderer */ "./web/js/pagemarks/PagemarkRenderer.js"),
+    PagemarkRenderer = _require.PagemarkRenderer;
+
+/**
+ * Handles attaching pagemarks to the pages (as opposed to thumbnails).
+ */
+
+
+var ThumbnailPagemarkRenderer = function (_PagemarkRenderer) {
+    _inherits(ThumbnailPagemarkRenderer, _PagemarkRenderer);
+
+    function ThumbnailPagemarkRenderer(view) {
+        _classCallCheck(this, ThumbnailPagemarkRenderer);
+
+        var _this = _possibleConstructorReturn(this, (ThumbnailPagemarkRenderer.__proto__ || Object.getPrototypeOf(ThumbnailPagemarkRenderer)).call(this, view));
+
+        _this.pageElementSelector = ".thumbnail";
+        return _this;
+    }
+
+    _createClass(ThumbnailPagemarkRenderer, [{
+        key: "setup",
+        value: function setup() {
+            this.__setup();
+        }
+    }, {
+        key: "__requiresPagemark",
+        value: function __requiresPagemark(pageElement) {
+            var thumbnailImage = pageElement.querySelector(".thumbnailImage");
+            return thumbnailImage != null && thumbnailImage.getAttribute("src") != null;
+        }
+    }, {
+        key: "__registerListener",
+        value: function __registerListener(pageElement) {
+
+            pageElement.querySelector(".thumbnailSelectionRing").addEventListener('DOMNodeInserted', function (event) {
+
+                if (event.target && event.target.className === "thumbnailImage") {
+                    this.__render(pageElement);
+                }
+            }.bind(this), false);
+        }
+    }, {
+        key: "__render",
+        value: function __render(pageElement) {
+
+            var templateElement = pageElement.querySelector(".thumbnailImage");
+
+            if (!templateElement) {
+                // the thumbnail tab might not be visible.
+                return;
+            }
+
+            var options = { zIndex: 1, templateElement: templateElement, placementElement: templateElement };
+
+            this.view.recreatePagemarksFromPagemarks(pageElement, options);
+        }
+    }]);
+
+    return ThumbnailPagemarkRenderer;
+}(PagemarkRenderer);
+
+module.exports.ThumbnailPagemarkRenderer = ThumbnailPagemarkRenderer;
 
 /***/ }),
 
@@ -31969,8 +32343,17 @@ var _require2 = __webpack_require__(/*! ../metadata/DocMetaDescriber */ "./web/j
 var _require3 = __webpack_require__(/*! ../docformat/DocFormatFactory */ "./web/js/docformat/DocFormatFactory.js"),
     DocFormatFactory = _require3.DocFormatFactory;
 
-var _require4 = __webpack_require__(/*! ./View.js */ "./web/js/view/View.js"),
-    View = _require4.View;
+var _require4 = __webpack_require__(/*! ../pagemarks/CompositePagemarkRenderer */ "./web/js/pagemarks/CompositePagemarkRenderer.js"),
+    CompositePagemarkRenderer = _require4.CompositePagemarkRenderer;
+
+var _require5 = __webpack_require__(/*! ../pagemarks/MainPagemarkRenderer */ "./web/js/pagemarks/MainPagemarkRenderer.js"),
+    MainPagemarkRenderer = _require5.MainPagemarkRenderer;
+
+var _require6 = __webpack_require__(/*! ../pagemarks/ThumbnailPagemarkRenderer */ "./web/js/pagemarks/ThumbnailPagemarkRenderer.js"),
+    ThumbnailPagemarkRenderer = _require6.ThumbnailPagemarkRenderer;
+
+var _require7 = __webpack_require__(/*! ./View.js */ "./web/js/view/View.js"),
+    View = _require7.View;
 
 module.exports.WebView = function (_View) {
     _inherits(_class, _View);
@@ -32309,275 +32692,6 @@ module.exports.WebView = function (_View) {
 
     return _class;
 }(View);
-
-/**
- *
- */
-
-var PagemarkRenderer = function () {
-    function PagemarkRenderer(view) {
-        _classCallCheck(this, PagemarkRenderer);
-
-        this.view = view;
-        this.pageElements = [];
-
-        // the CSS selector for pulling out the right pageElements.
-        this.pageElementSelector = null;
-    }
-
-    _createClass(PagemarkRenderer, [{
-        key: "setup",
-        value: function setup() {}
-    }, {
-        key: "__setup",
-        value: function __setup() {
-
-            // FIXME: now we need a way to clear a given page by keeping a reference
-            // to the page renderer for that page and then call erase on it once it
-            // has been removed.
-
-            this.__updatePageElements();
-
-            console.log("Working with " + this.pageElements.length + " elements for selector " + this.pageElementSelector);
-
-            this.pageElements.forEach(function (pageElement) {
-                this.init(pageElement);
-            }.bind(this));
-        }
-    }, {
-        key: "__updatePageElements",
-        value: function __updatePageElements() {
-            this.pageElements = document.querySelectorAll(this.pageElementSelector);
-        }
-    }, {
-        key: "init",
-        value: function init(pageElement) {
-
-            if (this.__requiresPagemark(pageElement)) {
-                this.__render(pageElement);
-            }
-
-            this.__registerListener(pageElement);
-        }
-
-        /**
-         * Return true if the target needs a pagemark.
-         */
-
-    }, {
-        key: "__requiresPagemark",
-        value: function __requiresPagemark(pageElement) {}
-
-        /**
-         * Register future listeners to monitor status.
-         */
-
-    }, {
-        key: "__registerListener",
-        value: function __registerListener(pageElement) {}
-    }, {
-        key: "__render",
-        value: function __render(pageElement) {}
-
-        /**
-         * Erase the page elements on the give page number.
-         */
-
-    }, {
-        key: "create",
-        value: function create(pageNum, pagemark) {
-
-            if (typeof pageNum !== "number") {
-                throw new Error("pageNum is not a number");
-            }
-
-            if (!pagemark) {
-                throw new Error("No pagemark.");
-            }
-
-            this.__updatePageElements();
-
-            var pageElement = this.pageElements[pageNum - 1];
-
-            if (!pageElement) {
-                throw new Error("No pageElement for pageNum " + pageNum + " out of " + this.pageElements.length + " pageElements");
-            }
-
-            this.__render(pageElement);
-        }
-
-        /**
-         * Erase the pagemarks on the give page number.
-         */
-
-    }, {
-        key: "erase",
-        value: function erase(pageNum) {
-
-            if (typeof pageNum !== "number") {
-                throw new Error("pageNum is not a number");
-            }
-
-            this.__updatePageElements();
-
-            var pageElement = this.pageElements[pageNum - 1];
-
-            if (!pageElement) {
-                throw new Error("No pageElement for pageNum " + pageNum + " out of " + this.pageElements.length + " pageElements");
-            }
-
-            this.view.erasePagemarks(pageElement);
-        }
-    }]);
-
-    return PagemarkRenderer;
-}();
-
-/**
- * Handles attaching pagemarks to the pages (as opposed to thumbnails).
- */
-
-
-var MainPagemarkRenderer = function (_PagemarkRenderer) {
-    _inherits(MainPagemarkRenderer, _PagemarkRenderer);
-
-    function MainPagemarkRenderer(view) {
-        _classCallCheck(this, MainPagemarkRenderer);
-
-        var _this2 = _possibleConstructorReturn(this, (MainPagemarkRenderer.__proto__ || Object.getPrototypeOf(MainPagemarkRenderer)).call(this, view));
-
-        _this2.pageElementSelector = ".page";
-
-        return _this2;
-    }
-
-    _createClass(MainPagemarkRenderer, [{
-        key: "setup",
-        value: function setup() {
-            this.__setup();
-        }
-    }, {
-        key: "__requiresPagemark",
-        value: function __requiresPagemark(pageElement) {
-            return pageElement.querySelector("canvas") != null;
-        }
-    }, {
-        key: "__registerListener",
-        value: function __registerListener(pageElement) {
-
-            // TODO: migrate to using PageRedrawHandler
-
-            pageElement.addEventListener('DOMNodeInserted', function (event) {
-
-                if (event.target && event.target.className === "endOfContent") {
-                    this.__render(pageElement);
-                }
-            }.bind(this), false);
-        }
-    }, {
-        key: "__render",
-        value: function __render(pageElement) {
-            this.view.recreatePagemarksFromPagemarks(pageElement);
-        }
-    }]);
-
-    return MainPagemarkRenderer;
-}(PagemarkRenderer);
-
-/**
- * Handles attaching pagemarks to the pages (as opposed to thumbnails).
- */
-
-
-var ThumbnailPagemarkRenderer = function (_PagemarkRenderer2) {
-    _inherits(ThumbnailPagemarkRenderer, _PagemarkRenderer2);
-
-    function ThumbnailPagemarkRenderer(view) {
-        _classCallCheck(this, ThumbnailPagemarkRenderer);
-
-        var _this3 = _possibleConstructorReturn(this, (ThumbnailPagemarkRenderer.__proto__ || Object.getPrototypeOf(ThumbnailPagemarkRenderer)).call(this, view));
-
-        _this3.pageElementSelector = ".thumbnail";
-        return _this3;
-    }
-
-    _createClass(ThumbnailPagemarkRenderer, [{
-        key: "setup",
-        value: function setup() {
-            this.__setup();
-        }
-    }, {
-        key: "__requiresPagemark",
-        value: function __requiresPagemark(pageElement) {
-            var thumbnailImage = pageElement.querySelector(".thumbnailImage");
-            return thumbnailImage != null && thumbnailImage.getAttribute("src") != null;
-        }
-    }, {
-        key: "__registerListener",
-        value: function __registerListener(pageElement) {
-
-            pageElement.querySelector(".thumbnailSelectionRing").addEventListener('DOMNodeInserted', function (event) {
-
-                if (event.target && event.target.className === "thumbnailImage") {
-                    this.__render(pageElement);
-                }
-            }.bind(this), false);
-        }
-    }, {
-        key: "__render",
-        value: function __render(pageElement) {
-
-            var templateElement = pageElement.querySelector(".thumbnailImage");
-
-            if (!templateElement) {
-                // the thumbnail tab might not be visible.
-                return;
-            }
-
-            var options = { zIndex: 1, templateElement: templateElement, placementElement: templateElement };
-
-            this.view.recreatePagemarksFromPagemarks(pageElement, options);
-        }
-    }]);
-
-    return ThumbnailPagemarkRenderer;
-}(PagemarkRenderer);
-
-var CompositePagemarkRenderer = function (_PagemarkRenderer3) {
-    _inherits(CompositePagemarkRenderer, _PagemarkRenderer3);
-
-    function CompositePagemarkRenderer(view, delegates) {
-        _classCallCheck(this, CompositePagemarkRenderer);
-
-        var _this4 = _possibleConstructorReturn(this, (CompositePagemarkRenderer.__proto__ || Object.getPrototypeOf(CompositePagemarkRenderer)).call(this, view));
-
-        if (!delegates) {
-            throw new Error("No delegates");
-        }
-
-        _this4.delegator = new Delegator(delegates);
-        return _this4;
-    }
-
-    _createClass(CompositePagemarkRenderer, [{
-        key: "setup",
-        value: function setup() {
-            this.delegator.apply("setup");
-        }
-    }, {
-        key: "create",
-        value: function create(pageNum, pagemark) {
-            this.delegator.apply("create", pageNum, pagemark);
-        }
-    }, {
-        key: "erase",
-        value: function erase(pageNum) {
-            this.delegator.apply("erase", pageNum);
-        }
-    }]);
-
-    return CompositePagemarkRenderer;
-}(PagemarkRenderer);
 
 /***/ }),
 
