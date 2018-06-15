@@ -88,6 +88,15 @@ class DocFormat {
         return false;
     }
 
+    /**
+     * Pagemark options for this viewer.
+     *
+     * @return {{}}
+     */
+    pagemarkOptions() {
+        return {};
+    }
+
 }
 
 module.exports.DocFormat = DocFormat;

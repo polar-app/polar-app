@@ -3,7 +3,7 @@ const {Viewer} = require("../Viewer");
 const {FrameResizer} = require("./FrameResizer");
 const {FrameInitializer} = require("./FrameInitializer");
 const {IFrameWatcher} = require("./IFrameWatcher");
-
+const {HTMLFormat} = require("../../docformat/HTMLFormat");
 
 class HTMLViewer extends Viewer {
 
@@ -14,6 +14,8 @@ class HTMLViewer extends Viewer {
         this.content = document.querySelector("#content");
         this.contentParent = document.querySelector("#content-parent");
         this.textLayer = document.querySelector(".textLayer");
+
+        this.htmlFormat = new HTMLFormat();
 
         // *** start the resizer and initializer before setting the iframe
 

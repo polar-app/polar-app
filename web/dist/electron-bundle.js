@@ -27083,6 +27083,18 @@ var DocFormat = function () {
         value: function supportThumbnails() {
             return false;
         }
+
+        /**
+         * Pagemark options for this viewer.
+         *
+         * @return {{}}
+         */
+
+    }, {
+        key: "pagemarkOptions",
+        value: function pagemarkOptions() {
+            return {};
+        }
     }]);
 
     return DocFormat;
@@ -27238,6 +27250,8 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
+var $ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
+
 var _require = __webpack_require__(/*! ./DocFormat */ "./web/js/docformat/DocFormat.js"),
     DocFormat = _require.DocFormat;
 
@@ -27281,6 +27295,29 @@ var HTMLFormat = function (_DocFormat) {
                 currentPageNumber: 1,
                 pageElement: document.querySelector(".page")
             };
+        }
+
+        /**
+         * Pagemark options for this viewer.
+         *
+         * @return {{}}
+         */
+
+    }, {
+        key: "pagemarkOptions",
+        value: function pagemarkOptions() {
+            return {
+                // I have NO idea why we require 1... CSS zIndex is insane!
+                zIndex: 1,
+                requiresTransformForScale: true
+            };
+        }
+    }, {
+        key: "currentScale",
+        value: function currentScale() {
+
+            var select = document.querySelector("select");
+            return select.options[select.selectedIndex].value;
         }
     }]);
 
@@ -32152,6 +32189,16 @@ module.exports.WebView = function (_View) {
         key: "createPagemark",
         value: function createPagemark(pageElement, options) {
 
+            // TODO: this code is ugly:
+            //
+            // - the options building can't be reliably tested
+            //
+            // - there are too many ways to compute the options
+            //
+            // - we PLACE the element as part of this function.  Have a secondary
+            //   way to just CREATE the element so that we can test the settings
+            //   properly.
+
             if (!options) {
                 throw new Error("Options are required");
             }
@@ -32183,6 +32230,12 @@ module.exports.WebView = function (_View) {
                 throw new Error("No placementElement");
             }
 
+            var pagemarkOptions = this.docFormat.pagemarkOptions();
+
+            if (pagemarkOptions.zIndex) {
+                options.zIndex = pagemarkOptions.zIndex;
+            }
+
             if (pageElement.querySelector(".pagemark")) {
                 // do nothing if the current page already has a pagemark.
                 console.warn("Pagemark already exists");
@@ -32197,8 +32250,6 @@ module.exports.WebView = function (_View) {
 
             // make sure we have a reliable CSS classname to work with.
             pagemarkElement.className = "pagemark";
-
-            // set CSS style
 
             //pagemark.style.backgroundColor="rgb(198, 198, 198)";
             pagemarkElement.style.backgroundColor = "#00CCFF";
@@ -32220,7 +32271,13 @@ module.exports.WebView = function (_View) {
 
             pagemarkElement.style.height = height + "px";
 
-            pagemarkElement.style.zIndex = options.zIndex;
+            pagemarkElement.style.zIndex = "" + options.zIndex;
+
+            if (pagemarkOptions.requiresTransformForScale) {
+                var currentScale = this.docFormat.currentScale();
+                console.log("Adding transform to pagemark: " + currentScale);
+                pagemarkElement.style.transform = "scale(" + currentScale + ")";
+            }
 
             if (!pagemarkElement.style.width) throw new Error("Could not determine width");
 
@@ -32893,6 +32950,9 @@ var _require3 = __webpack_require__(/*! ./FrameInitializer */ "./web/js/viewer/h
 var _require4 = __webpack_require__(/*! ./IFrameWatcher */ "./web/js/viewer/html/IFrameWatcher.js"),
     IFrameWatcher = _require4.IFrameWatcher;
 
+var _require5 = __webpack_require__(/*! ../../docformat/HTMLFormat */ "./web/js/docformat/HTMLFormat.js"),
+    HTMLFormat = _require5.HTMLFormat;
+
 var HTMLViewer = function (_Viewer) {
     _inherits(HTMLViewer, _Viewer);
 
@@ -32911,6 +32971,8 @@ var HTMLViewer = function (_Viewer) {
             this.content = document.querySelector("#content");
             this.contentParent = document.querySelector("#content-parent");
             this.textLayer = document.querySelector(".textLayer");
+
+            this.htmlFormat = new HTMLFormat();
 
             // *** start the resizer and initializer before setting the iframe
 

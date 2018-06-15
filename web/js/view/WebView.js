@@ -197,6 +197,16 @@ module.exports.WebView = class extends View {
      */
     createPagemark(pageElement, options) {
 
+        // TODO: this code is ugly:
+        //
+        // - the options building can't be reliably tested
+        //
+        // - there are too many ways to compute the options
+        //
+        // - we PLACE the element as part of this function.  Have a secondary
+        //   way to just CREATE the element so that we can test the settings
+        //   properly.
+
         if(! options) {
             throw new Error("Options are required");
         }
@@ -229,6 +239,12 @@ module.exports.WebView = class extends View {
             throw new Error("No placementElement");
         }
 
+        let pagemarkOptions = this.docFormat.pagemarkOptions();
+
+        if (pagemarkOptions.zIndex) {
+            options.zIndex = pagemarkOptions.zIndex;
+        }
+
         if (pageElement.querySelector(".pagemark")) {
             // do nothing if the current page already has a pagemark.
             console.warn("Pagemark already exists");
@@ -243,8 +259,6 @@ module.exports.WebView = class extends View {
 
         // make sure we have a reliable CSS classname to work with.
         pagemarkElement.className="pagemark";
-
-        // set CSS style
 
         //pagemark.style.backgroundColor="rgb(198, 198, 198)";
         pagemarkElement.style.backgroundColor="#00CCFF";
@@ -266,7 +280,13 @@ module.exports.WebView = class extends View {
 
         pagemarkElement.style.height = `${height}px`;
 
-        pagemarkElement.style.zIndex = options.zIndex;
+        pagemarkElement.style.zIndex = `${options.zIndex}`;
+
+        if (pagemarkOptions.requiresTransformForScale) {
+            let currentScale = this.docFormat.currentScale();
+            console.log("Adding transform to pagemark: " + currentScale);
+            pagemarkElement.style.transform = `scale(${currentScale})`;
+        }
 
         if(!pagemarkElement.style.width)
             throw new Error("Could not determine width");

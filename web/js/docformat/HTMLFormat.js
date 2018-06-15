@@ -1,3 +1,4 @@
+const $ = require('jquery')
 const {DocFormat} = require("./DocFormat");
 
 class HTMLFormat extends DocFormat {
@@ -27,6 +28,26 @@ class HTMLFormat extends DocFormat {
             currentPageNumber: 1,
             pageElement: document.querySelector(".page")
         }
+
+    }
+
+    /**
+     * Pagemark options for this viewer.
+     *
+     * @return {{}}
+     */
+    pagemarkOptions() {
+        return {
+            // I have NO idea why we require 1... CSS zIndex is insane!
+            zIndex: 1,
+            requiresTransformForScale: true
+        };
+    }
+
+    currentScale() {
+
+        let select = document.querySelector("select");
+        return select.options[select.selectedIndex].value;
 
     }
 
