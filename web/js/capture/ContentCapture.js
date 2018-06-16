@@ -21,6 +21,7 @@ class ContentCapture {
 
             // The document href / location as loaded.
             href: document.location.href,
+            url: document.location.href,
 
             // The scroll height of the document as it is currently rendered.
             // This is used as a hint for loading the static form of the
@@ -83,6 +84,10 @@ class ContentCapture {
 
         mutations.baseAdded = true;
 
+        //***  add metadata into the HTML for polar
+
+        document.head.appendChild(ContentCapture.createMeta("polar-url", result.url));
+
         //*** remove javascript html onX elements.
 
         const EVENT_ATTRIBUTES = ContentCapture.createEventAttributes();
@@ -125,6 +130,13 @@ class ContentCapture {
                + (!doctype.publicId && doctype.systemId ? ' SYSTEM' : '')
                + (doctype.systemId ? ' "' + doctype.systemId + '"' : '')
                + '>';
+    }
+
+    static createMeta(name,content) {
+        let meta = document.createElement("meta");
+        meta.setAttribute("name", name);
+        meta.setAttribute("content", content);
+        return meta;
     }
 
     /**
