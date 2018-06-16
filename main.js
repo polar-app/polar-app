@@ -60,40 +60,6 @@ const WEBSERVER_PORT = 8500;
 const DEFAULT_HOST = "127.0.0.1";
 const DEFAULT_URL = `http://${DEFAULT_HOST}:${WEBSERVER_PORT}/default.html`;
 
-// TODO: I think we need to wait until the webserver port is available before
-// continuing.
-
-console.log("Electron app path is: " + app.getAppPath());
-
-const webserverConfig = new WebserverConfig(app.getAppPath(), WEBSERVER_PORT);
-
-const fileRegistry = new FileRegistry(webserverConfig);
-
-const webserver = new Webserver(webserverConfig, fileRegistry);
-webserver.start();
-
-//const DEFAULT_URL = 'file://' + __dirname + '/default.html';
-
-let args = parseArgs();
-
-console.log("Running with process.args: ", JSON.stringify(process.argv));
-
-if (args.enableRemoteDebugging) {
-
-    console.log(`Remote debugging port enabled on port ${REMOTE_DEBUGGING_PORT}.`);
-    console.log(`You may connect via http://${DEFAULT_HOST}:${REMOTE_DEBUGGING_PORT}`);
-
-    app.commandLine.appendSwitch('remote-debugging-port', REMOTE_DEBUGGING_PORT);
-    app.commandLine.appendSwitch('host-rules', 'MAP * 127.0.0.1');
-
-}
-
-// TODO: enable this again but only when we have a good receiver URL.
-//crashReporter.start({ productName: 'Polar eBook Reader',
-//                      companyName: 'Polar Contributors',
-//                      submitURL: 'https://praharsh.xyz/projects/PDFViewer/crash',
-//                      autoSubmit: false });
-
 //creating menus for menu bar
 const template = [{
         label: 'File',
@@ -279,30 +245,6 @@ function createWindow() {
 
 }
 
-
-let menu = Menu.buildFromTemplate(template);
-
-// Code to determine how we should handle other attempts to open more instances
-//
-
-let shouldQuit = app.makeSingleInstance(function(commandLine, workingDirectory) {
-
-    // Someone tried to run a second instance, we should focus our window.
-    // I'm not sure if this is the right strategy for now.
-
-    console.log("Second instance asked to load.");
-
-    if(! handleCmdLinePDF(commandLine, true)) {
-
-        if (mainWindow) {
-            if (mainWindow.isMinimized()) mainWindow.restore();
-            mainWindow.focus();
-        }
-
-    }
-
-});
-
 /**
  * Listen to messages generated in the console so that we can log them to the
  * main console when --enable-console is used.
@@ -484,9 +426,68 @@ class Main {
 
 }
 
+// TODO: I think we need to wait until the webserver port is available before
+// continuing.
 
+console.log("Electron app path is: " + app.getAppPath());
 
-if (shouldQuit) { app.quit(); return; }
+const webserverConfig = new WebserverConfig(app.getAppPath(), WEBSERVER_PORT);
+
+const fileRegistry = new FileRegistry(webserverConfig);
+
+const webserver = new Webserver(webserverConfig, fileRegistry);
+webserver.start();
+
+//const DEFAULT_URL = 'file://' + __dirname + '/default.html';
+
+let args = parseArgs();
+
+console.log("Running with process.args: ", JSON.stringify(process.argv));
+
+if (args.enableRemoteDebugging) {
+
+    console.log(`Remote debugging port enabled on port ${REMOTE_DEBUGGING_PORT}.`);
+    console.log(`You may connect via http://${DEFAULT_HOST}:${REMOTE_DEBUGGING_PORT}`);
+
+    app.commandLine.appendSwitch('remote-debugging-port', REMOTE_DEBUGGING_PORT);
+    app.commandLine.appendSwitch('host-rules', 'MAP * 127.0.0.1');
+
+}
+
+// TODO: enable this again but only when we have a good receiver URL.
+//crashReporter.start({ productName: 'Polar eBook Reader',
+//                      companyName: 'Polar Contributors',
+//                      submitURL: 'https://praharsh.xyz/projects/PDFViewer/crash',
+//                      autoSubmit: false });
+
+let menu = Menu.buildFromTemplate(template);
+
+// Code to determine how we should handle other attempts to open more instances
+//
+
+let shouldQuit = app.makeSingleInstance(function(commandLine, workingDirectory) {
+
+    // Someone tried to run a second instance, we should focus our window.
+    // I'm not sure if this is the right strategy for now.
+
+    console.log("Second instance asked to load.");
+
+    if(! handleCmdLinePDF(commandLine, true)) {
+
+        if (mainWindow) {
+            if (mainWindow.isMinimized()) mainWindow.restore();
+            mainWindow.focus();
+        }
+
+    }
+
+});
+
+if (shouldQuit) {
+    console.log("Quiting.  App is single instance.");
+    app.quit();
+    return;
+}
 
 app.on('ready', async function() {
 
