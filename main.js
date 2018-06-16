@@ -377,7 +377,7 @@ function handleCmdLinePDF(commandLine, createNewWindow) {
 /**
  * Load the given PDF file in the given target window.
  */
-function loadFile(path, targetWindow) {
+function loadDoc(path, targetWindow) {
 
     if(!targetWindow) {
         throw new Error("No target window given");
@@ -425,7 +425,7 @@ async function cmdOpen(item, focusedWindow) {
 
     let path = await promptDoc();
 
-    loadFile(path, targetWindow);
+    loadDoc(path, targetWindow);
 
 }
 
@@ -435,7 +435,7 @@ async function cmdOpenInNewWindow(item, focusedWindow) {
 
     let targetWindow = createWindow();
 
-    loadFile(path, targetWindow);
+    loadDoc(path, targetWindow);
 
 }
 
@@ -449,9 +449,9 @@ function openFileCmdline(path, createNewWindow) {
     console.log("Opening file given on the command line: " + path);
 
     if(createNewWindow) {
-        loadFile(path, createWindow());
+        loadDoc(path, createWindow());
     } else {
-        loadFile(path, mainWindow);
+        loadDoc(path, mainWindow);
     }
 
 }
