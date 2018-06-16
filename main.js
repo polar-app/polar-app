@@ -19,6 +19,8 @@ const {WebserverConfig} = require("./web/js/backend/WebserverConfig");
 const {Webserver} = require("./web/js/backend/Webserver");
 const {FileRegistry} = require("./web/js/backend/FileRegistry");
 const {Cmdline} = require("./web/js/electron/Cmdline");
+const {Paths} = require("./web/js/util/Paths");
+const {Fingerprints} = require("./web/js/util/Fingerprints");
 const {ElectronContextMenu} = require("./web/js/contextmenu/electron/ElectronContextMenu");
 
 const BROWSER_WINDOW_OPTIONS = {
@@ -321,11 +323,17 @@ function loadDoc(path, targetWindow) {
     console.log("Loading PDF via HTTP server: " + JSON.stringify(fileMeta));
 
     let url = null;
+    let fileParam = encodeURIComponent(fileMeta.url);
 
     if(path.endsWith(".pdf")) {
-        url = `http://${DEFAULT_HOST}:${WEBSERVER_PORT}/pdfviewer/web/viewer.html?file=` + encodeURIComponent(fileMeta.url);
+        url = `http://${DEFAULT_HOST}:${WEBSERVER_PORT}/pdfviewer/web/viewer.html?file=${fileParam}`;
     } else if(path.endsWith(".chtml")) {
-        url = `http://${DEFAULT_HOST}:${WEBSERVER_PORT}/htmlviewer/index.html?file=` + encodeURIComponent(fileMeta.url);
+        let basename = Paths.basename(path);
+
+        // TODO: this is workaround until we enable zip files with embedded metadata.
+        let fingerprint = Fingerprints.create(basename);
+
+        url = `http://${DEFAULT_HOST}:${WEBSERVER_PORT}/htmlviewer/index.html?file=${fileParam}&fingerprint=${fingerprint}`;
     }
 
     console.log("Loading URL: " + url);
