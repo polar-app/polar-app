@@ -25,6 +25,7 @@ describe('TextHighlightRecords', function() {
                     "id": "12pNUv1Y9S",
                     "created": "2012-03-02T11:38:49.321Z",
                     "lastUpdated": "2012-03-02T11:38:49.321Z",
+                    "author": null,
                     "rects": {
                         "0": {
                             "top": 100,

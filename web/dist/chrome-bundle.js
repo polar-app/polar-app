@@ -49121,21 +49121,34 @@ var _require = __webpack_require__(/*! ./Preconditions */ "./web/js/Precondition
  */
 
 
-module.exports.Hashcodes = function () {
-    function _class() {
-        _classCallCheck(this, _class);
+var Hashcodes = function () {
+    function Hashcodes() {
+        _classCallCheck(this, Hashcodes);
     }
 
-    _createClass(_class, null, [{
+    _createClass(Hashcodes, null, [{
         key: "create",
         value: function create(data) {
             Preconditions.assertNotNull(data, "data");
             return base58check.encode(createKeccakHash('keccak256').update(data).digest());
         }
+    }, {
+        key: "createID",
+        value: function createID(obj) {
+
+            var id = Hashcodes.create(JSON.stringify(obj));
+
+            // truncate.  We don't need that much precision against collision.
+            return id.substring(0, 10);
+        }
     }]);
 
-    return _class;
+    return Hashcodes;
 }();
+
+;
+
+module.exports.Hashcodes = Hashcodes;
 
 /***/ }),
 
@@ -53453,16 +53466,16 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var _require = __webpack_require__(/*! ./SerializedObject.js */ "./web/js/metadata/SerializedObject.js"),
-    SerializedObject = _require.SerializedObject;
+var _require = __webpack_require__(/*! ./VersionedObject */ "./web/js/metadata/VersionedObject.js"),
+    VersionedObject = _require.VersionedObject;
 
 /**
  * Private note describing this object.  Meant to last a long time.
  */
 
 
-module.exports.Note = function (_SerializedObject) {
-    _inherits(_class, _SerializedObject);
+module.exports.Note = function (_VersionedObject) {
+    _inherits(_class, _VersionedObject);
 
     function _class(val) {
         _classCallCheck(this, _class);
@@ -53475,17 +53488,6 @@ module.exports.Note = function (_SerializedObject) {
         var _this = _possibleConstructorReturn(this, (_class.__proto__ || Object.getPrototypeOf(_class)).call(this, val));
 
         _this.content = null;
-
-        /**
-         * @type ISODateTime
-         */
-        _this.created = null;
-
-        /**
-         *
-         * @type Author
-         */
-        _this.author = null;
 
         _this.init(val);
 
@@ -53511,7 +53513,7 @@ module.exports.Note = function (_SerializedObject) {
     }]);
 
     return _class;
-}(SerializedObject);
+}(VersionedObject);
 
 /***/ }),
 
@@ -54305,6 +54307,13 @@ module.exports.VersionedObject = function (_SerializedObject) {
          * @type ISODateTime
          */
         _this.lastUpdated = null;
+
+        /**
+         * The author who created this.
+         *
+         * @type Author
+         */
+        _this.author = null;
 
         _this.init(val);
 

@@ -1,6 +1,6 @@
-const {Note} = require("./Note.js");
+const {VersionedObject} = require("./VersionedObject");
 
-module.exports.Flashcard = class extends Note {
+module.exports.Flashcard = class extends VersionedObject {
 
     constructor(val) {
 

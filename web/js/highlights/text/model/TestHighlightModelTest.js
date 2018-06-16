@@ -33,6 +33,7 @@ describe('TextHighlightModel', function() {
                         "id": "12pNUv1Y9S",
                         "created": "2012-03-02T11:38:49.321Z",
                         "lastUpdated": "2012-03-02T11:38:49.321Z",
+                        "author": null,
                         "rects": {
                             "0": {
                                 "top": 100,
@@ -85,6 +86,7 @@ describe('TextHighlightModel', function() {
                         "id": "12pNUv1Y9S",
                         "created": "2012-03-02T11:38:49.321Z",
                         "lastUpdated": "2012-03-02T11:38:49.321Z",
+                        "author": null,
                         "rects": {
                             "0": {
                                 "top": 100,
@@ -117,7 +119,11 @@ describe('TextHighlightModel', function() {
 });
 
 function summarize(textHighlightEvent) {
-    return {pageNum: textHighlightEvent.pageMeta.pageInfo.num, textHighlight: textHighlightEvent.textHighlight, mutationType: textHighlightEvent.mutationType};
+    return {
+        pageNum: textHighlightEvent.pageMeta.pageInfo.num,
+        textHighlight: textHighlightEvent.textHighlight,
+        mutationType: textHighlightEvent.mutationType
+    };
 }
 
 function createDocMeta() {

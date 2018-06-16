@@ -1,9 +1,9 @@
-const {SerializedObject} = require("./SerializedObject.js");
+const {VersionedObject} = require("./VersionedObject");
 
 /**
  * Private note describing this object.  Meant to last a long time.
  */
-module.exports.Note = class extends SerializedObject {
+module.exports.Note = class extends VersionedObject {
 
     constructor(val) {
 
@@ -15,17 +15,6 @@ module.exports.Note = class extends SerializedObject {
          * @type {Text}
          */
         this.content = null;
-
-        /**
-         * @type ISODateTime
-         */
-        this.created = null;
-
-        /**
-         *
-         * @type Author
-         */
-        this.author = null;
 
         this.init(val);
 

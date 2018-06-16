@@ -7,16 +7,16 @@ module.exports.TextType = Object.freeze( {
     /**
      * RAW text. No interpretation.
      */
-    TEXT: new Symbol("TEXT"),
+    TEXT: "TEXT",
 
     /**
      * Markdown content.
      */
-    MARKDOWN: new Symbol("MARKDOWN"),
+    MARKDOWN: "MARKDOWN",
 
     /**
      * Well-formed and safe HTML.
      */
-    HTML: new Symbol("HTML")
+    HTML: "HTML"
 
 });

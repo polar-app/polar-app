@@ -20,15 +20,16 @@ describe('Flashcards', function() {
             let flashcard = Flashcards.create(FlashcardType.CLOZURE, fields);
 
             let expected = {
-                "content": {
-                    "body": "This is the text",
-                    "type": "MARKDOWN"
-                },
+                "id": "1HYhuRQ4tz",
                 "created": "2012-03-02T11:38:49.321Z",
-                "author": null,
                 "lastUpdated": "2012-03-02T11:38:49.321Z",
+                "author": null,
                 "type": "CLOZURE",
-                "fields": {}
+                "fields": {
+                    "text": {
+                        "MARKDOWN": "This is the text"
+                    }
+                }
             };
 
             assertJSON(flashcard, expected);

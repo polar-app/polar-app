@@ -82,6 +82,7 @@ describe('DocMetas', function() {
                                 "id": "12Vf1bAzeo",
                                 "created": "2012-03-02T11:38:49.321Z",
                                 "lastUpdated": "2012-03-02T11:38:49.321Z",
+                                "author": null,
                                 "type": "SINGLE_COLUMN",
                                 "percentage": 100,
                                 "column": 0,
@@ -100,6 +101,7 @@ describe('DocMetas', function() {
                                 "id": "12Vf1bAzeo",
                                 "created": "2012-03-02T11:38:49.321Z",
                                 "lastUpdated": "2012-03-02T11:38:49.321Z",
+                                "author": null,
                                 "type": "SINGLE_COLUMN",
                                 "percentage": 100,
                                 "column": 0,
@@ -176,6 +178,7 @@ describe('DocMetas', function() {
                         "id": "12Vf1bAzeo",
                         "created": "2012-03-02T11:38:49.321Z",
                         "lastUpdated": "2012-03-02T11:38:49.321Z",
+                        "author": null,
                         "type": "SINGLE_COLUMN",
                         "percentage": 100,
                         "column": 0,
@@ -200,6 +203,7 @@ describe('DocMetas', function() {
                         "id": "1cAbqEAHny",
                         "created": "2012-03-02T11:38:49.321Z",
                         "lastUpdated": "2012-03-02T11:38:49.321Z",
+                        "author": null,
                         "rects": {
                             "0": {
                                 "top": 100,

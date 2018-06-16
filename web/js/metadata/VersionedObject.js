@@ -30,6 +30,13 @@ module.exports.VersionedObject = class extends SerializedObject {
          */
         this.lastUpdated = null;
 
+        /**
+         * The author who created this.
+         *
+         * @type Author
+         */
+        this.author = null;
+
         this.init(val);
 
     }

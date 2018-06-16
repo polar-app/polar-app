@@ -8,11 +8,22 @@ const {Preconditions} = require("./Preconditions");
  *
  * @type {Hashcodes}
  */
-module.exports.Hashcodes = class {
+class Hashcodes {
 
     static create(data) {
         Preconditions.assertNotNull(data, "data");
         return base58check.encode(createKeccakHash('keccak256').update(data).digest());
     }
 
+    static createID(obj) {
+
+        let id = Hashcodes.create(JSON.stringify(obj));
+
+        // truncate.  We don't need that much precision against collision.
+        return id.substring(0,10);
+
+    }
+
 };
+
+module.exports.Hashcodes = Hashcodes;
