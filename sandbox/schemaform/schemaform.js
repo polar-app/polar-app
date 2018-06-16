@@ -6,110 +6,57 @@ import { render } from "react-dom";
 import Form from "react-jsonschema-form";
 import SimpleMDE from 'react-simplemde-editor';
 
-import {ImagePasteHandler} from "../../web/js/paste/ImagePasteHandler";
 
-const schema =
-{
-    "title": "Notes",
-    "description": "Create notes",
+const {InputController} = require("../../web/js/input/InputController");
+const {FormHandler} = require("../../web/js/input/FormHandler");
+
+const schema = {
+    "title": "Flashcard",
+    "description": "",
     "type": "object",
     "required": [
         "front",
         "back"
     ],
     "properties": {
-        "flashcards": {
-            "title": "Flashcards",
-            "type": "array",
-            "items": {
-                "$ref": "#/definitions/flashcard"
-            }
+        "front": {
+            "type": "string",
+            "title": "Front"
         },
-    },
-    "definitions": {
-        "flashcard": {
-            "title": "Flashcard",
-            "description": "",
-            "type": "object",
-            "required": [
-                "front",
-                "back"
-            ],
-            "properties": {
-                "front": {
-                    "type": "string",
-                    "title": "Front"
-                },
-                "back": {
-                    "type": "string",
-                    "title": "Back"
-                }
-                // },
-                // "age": {
-                //     "type": "integer",
-                //     "title": "Age"
-                // },
-                // "bio": {
-                //     "type": "string",
-                //     "title": "Bio"
-                // },
-                // "password": {
-                //     "type": "string",
-                //     "title": "Password",
-                //     "minLength": 3
-                // },
-                // "telephone": {
-                //     "type": "string",
-                //     "title": "Telephone",
-                //     "minLength": 10
-                // }
-            },
-
+        "back": {
+            "type": "string",
+            "title": "Back"
         }
+        // },
+        // "age": {
+        //     "type": "integer",
+        //     "title": "Age"
+        // },
+        // "bio": {
+        //     "type": "string",
+        //     "title": "Bio"
+        // },
+        // "password": {
+        //     "type": "string",
+        //     "title": "Password",
+        //     "minLength": 3
+        // },
+        // "telephone": {
+        //     "type": "string",
+        //     "title": "Telephone",
+        //     "minLength": 10
+        // }
     }
 };
 
 
 const uiSchema = {
-    flashcard: {
-        front: {
-            //"ui:widget": "textarea",
-            "ui:widget": "select",
-            // "ui:widget": MySimpleMDE,
-            // "ui:options": {
-            //     label: false
-            // }
-        },
-
-    },
-
-    flashcards: {
-        flashcard: {
-            front: {
-                //"ui:widget": "textarea",
-                "ui:widget": "select",
-                // "ui:widget": MySimpleMDE,
-                // "ui:options": {
-                //     label: false
-                // }
-            },
-
-        },
-    },
 
     front: {
-        //"ui:widget": "textarea",
-        "ui:widget": "select",
-        // "ui:widget": MySimpleMDE,
-        // "ui:options": {
-        //     label: false
-        // }
+        "ui:widget": MarkdownWidget,
     },
     back: {
-        "ui:widget": "select",
-        // "ui:options": {
-        //     label: false
-        // }
+        "ui:widget": MarkdownWidget,
     }
 
 };
@@ -177,6 +124,7 @@ class MySimpleMDE extends SimpleMDE {
 // we work with it.
 
 function MarkdownWidget(props) {
+
     const {id, classNames, label, help, required, description, errors, children} = props;
 
     // FIXME: also onChange is not being sent..
@@ -207,6 +155,7 @@ function MarkdownWidget(props) {
     console.log("FIXME:", result);
 
     return result;
+
 }
 
 
@@ -231,8 +180,15 @@ SimpleMDE.defaultProps = {
 
 console.log(SimpleMDE);
 
-const log = (type) => console.log.bind(console, type);
+//const log = (type) => console.log.bind(console, type);
 
+//console.log("FIXME: ", log);
+
+function log(data) {
+    return function(data) {
+        console.log("This is the data data: ", data)
+    }
+}
 
 function pasteIt() {
     let element = document.createElement("div");
@@ -244,42 +200,65 @@ function pasteMutator(val) {
     return `[](${val})`;
 }
 
-$(document).ready(function () {
+function onSubmit(data) {
+    console.log("FIXME: onSubmit", arguments);
+}
+
+class MyFormHandler extends FormHandler {
+
+    onChange(data) {
+        console.log("onChange: ", data);
+    }
+
+
+    onSubmit(data) {
+        console.log("onSubmit: ", data);
+    }
+
+
+    onError(data) {
+        console.log("onError: ", data);
+    }
+
+}
+
+$(document).ready(function() {
+
+    let inputController = new InputController();
 
     let schemaFormElement = document.getElementById("schema-form");
 
-    if(!schemaFormElement) {
-        throw new Error("No schemaFormElement");
-    }
+    inputController.createNewFlashcard(schemaFormElement, new MyFormHandler());
 
-    render((
-        <Form schema={schema}
-              autocomplete="off"
-              uiSchema={uiSchema}
-              onChange={log("changed")}
-              onSubmit={log("submitted")}
-              onError={log("errors")} />
-    ), schemaFormElement);
-
-    // ok.. this is a bit of a hack but we need to do it to get required text
-    // input areas to work
+    // if(!schemaFormElement) {
+    //     throw new Error("No schemaFormElement");
+    // }
     //
-    document.querySelectorAll(".simplemde-control").forEach(function (controlElement) {
+    // render((
+    //     <Form schema={schema}
+    //           autocomplete="off"
+    //           uiSchema={uiSchema}
+    //           onChange={log("changed")}
+    //           onSubmit={log("submitted")}
+    //           onError={log("errors")} />
+    // ), schemaFormElement);
+    //
+    // // ok.. this is a bit of a hack but we need to do it to get required text
+    // // input areas to work
+    // //
+    // document.querySelectorAll(".simplemde-control").forEach(function (controlElement) {
+    //
+    //     let required = controlElement.getAttribute("data-required");
+    //     let textareaId = controlElement.getAttribute("data-textarea-id");
+    //
+    //     // FIXME: there are multiple elements here to work with..
+    //     controlElement.querySelectorAll("#" + textareaId).forEach(function (textareaElement) {
+    //         //textareaElement.setAttribute("style", "display: inline;  ");
+    //         textareaElement.setAttribute("style", "display: inline; margin: 0; padding: 0; height: 0; resize: none; border: 1px solid transparent; position:absolute; top: 100px; ");
+    //
+    //         // FIXME: fuck it.. required doesn't work properly but I don't care..
+    //         //textareaElement.setAttribute("required", required);
+    //     });
 
-        let required = controlElement.getAttribute("data-required");
-        let textareaId = controlElement.getAttribute("data-textarea-id");
-
-        // FIXME: there are multiple elements here to work with..
-        controlElement.querySelectorAll("#" + textareaId).forEach(function (textareaElement) {
-            //textareaElement.setAttribute("style", "display: inline;  ");
-            textareaElement.setAttribute("style", "display: inline; margin: 0; padding: 0; height: 0; resize: none; border: 1px solid transparent; position:absolute; top: 100px; ");
-
-            // FIXME: fuck it.. required doesn't work properly but I don't care..
-            //textareaElement.setAttribute("required", required);
-        });
-
-    });
-
-    new ImagePasteHandler(document.body, pasteMutator).start();
 
 });
