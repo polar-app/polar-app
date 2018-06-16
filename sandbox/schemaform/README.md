@@ -1,5 +1,8 @@
 - (DONE) the height of the form text area
 
+- SimpleMDE *basically* works but the problem is that it does NOT work properly
+  with react and generates a bad UI ...
+
 - Paste WILL NOT work...  Paste works BUT the problem is that the generated
   content does not work with SimpleMDE .. which fucking sucks.
 

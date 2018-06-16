@@ -87,18 +87,74 @@ class MySimpleMDE extends SimpleMDE {
 
 }
 
+// FIXME: see if I can get simplemde to attach to a textarea
+
+// FIXME: required isn't being set on the SimpleMD and when it IS the problme is
+// that we get:
+//
+// An invalid form control with name='' is not focusable.
+//
+// and then
+//
+// An invalid form control with name='root_front' is not focusable.
+//
+// if the name is set.
+//
+// the issue is that the <textarea> is display:none;
+
+// We have to set it up like:
+//
+// <textarea id="root_front" style="display: inline; margin: 0; padding: 0; height: 0; width: 0; resize: none; border: none;" required=""
+
+// FIXME: see if I can have custom event handlers to adjust the 'textarea' as
+// we work with it.
+
+function CustomFieldTemplate(props) {
+    const {id, classNames, label, help, required, description, errors, children} = props;
+
+    // FIXME: also onChange is not being sent..
+
+    let result = (
+        <div className="simplemde-control" data-required={required}>
+            <div className={classNames}>
+                {/*<textarea id="textarea-{id}"></textarea>*/}
+                {/*<label htmlFor={id}>FIXME: {label}{required ? "*" : null}</label>*/}
+                {description}
+                {children}
+                {errors}
+                {help}
+                <SimpleMDE label="" id={id}/>
+            </div>
+        </div>
+    )
+
+    // let testElement = document.createElement("div");
+    // testElement.innerText = 'asdf';
+    //
+    // let result = render(testElement);
+    //
+    // result.addEventListener("load", function () {
+    //     console.log("FIXME: w eare loaded");
+    // });
+
+    console.log("FIXME:", result);
+
+    return result;
+}
 const uiSchema = {
     front: {
-        "ui:widget": MySimpleMDE,
-        "ui:options": {
-            label: false
-        }
+        //"ui:widget": "textarea",
+         "ui:widget": CustomFieldTemplate,
+        // "ui:widget": MySimpleMDE,
+        // "ui:options": {
+        //     label: false
+        // }
     },
     back: {
-        "ui:widget": SimpleMDE,
-        "ui:options": {
-            label: false
-        }
+        // "ui:widget": SimpleMDE,
+        // "ui:options": {
+        //     label: false
+        // }
     }
 };
 
@@ -146,12 +202,27 @@ $(document).ready(function () {
 
     render((
         <Form schema={schema}
+              autocomplete="off"
               uiSchema={uiSchema}
               onChange={log("changed")}
               onSubmit={log("submitted")}
               onError={log("errors")} />
     ), schemaFormElement);
 
+    // ok.. this is a bit of a hack but we need to do it to get required text
+    // input areas to work
+    //
+    document.querySelectorAll(".simplemde-control").forEach(function (controlElement) {
+
+        let required = controlElement.getAttribute("data-required");
+
+        controlElement.querySelectorAll("textarea").forEach(function (textareaElement) {
+            //textareaElement.setAttribute("style", "display: inline;  ");
+            textareaElement.setAttribute("style", "display: inline; margin: 0; padding: 0; height: 0; width: 0; resize: none; border: 1px solid transparent; position:absolute; top: 100px; ");
+            textareaElement.setAttribute("required", required);
+        });
+
+    });
 
     new ImagePasteHandler(document.body, pasteMutator).start();
 
