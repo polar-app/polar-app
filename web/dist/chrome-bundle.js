@@ -54155,14 +54155,8 @@ var TextHighlightRecords = function () {
     }
 
     _createClass(TextHighlightRecords, null, [{
-        key: "createID",
-        value: function createID(rects) {
+        key: "create",
 
-            var id = Hashcodes.create(JSON.stringify(rects));
-
-            // truncate.  We don't need that much precision against collision.
-            return id.substring(0, 10);
-        }
 
         /**
          * Create a TextHighlight by specifying all required rows.
@@ -54173,12 +54167,9 @@ var TextHighlightRecords = function () {
          * @return an object with an "id" for a unique hash and a "value" of the
          * TextHighlight to use.
          */
-
-    }, {
-        key: "create",
         value: function create(rects, textSelections, text) {
 
-            var id = TextHighlightRecords.createID(rects);
+            var id = Hashcodes.createID(rects);
 
             var created = new ISODateTime(new Date());
             var lastUpdated = created.duplicate();

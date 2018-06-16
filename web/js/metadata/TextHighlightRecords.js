@@ -5,15 +5,6 @@ const {Arrays} = require("../util/Arrays");
 
 class TextHighlightRecords {
 
-    static createID(rects) {
-
-        let id = Hashcodes.create(JSON.stringify(rects));
-
-        // truncate.  We don't need that much precision against collision.
-        return id.substring(0,10);
-
-    }
-
     /**
      * Create a TextHighlight by specifying all required rows.
      *
@@ -25,7 +16,7 @@ class TextHighlightRecords {
      */
     static create(rects, textSelections, text) {
 
-        let id = TextHighlightRecords.createID(rects);
+        let id = Hashcodes.createID(rects);
 
         let created = new ISODateTime(new Date());
         let lastUpdated = created.duplicate();
