@@ -51374,9 +51374,16 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 var $ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
 
+var _require = __webpack_require__(/*! ../../../Preconditions */ "./web/js/Preconditions.js"),
+    Preconditions = _require.Preconditions;
+
+var _require2 = __webpack_require__(/*! ../../../metadata/TextRect */ "./web/js/metadata/TextRect.js"),
+    TextRect = _require2.TextRect;
+
 /**
  * Takes TextHighlightRows and then builds adjacent test runs from the data.
  */
+
 
 var TextExtracter = function () {
     function TextExtracter() {
@@ -51384,19 +51391,21 @@ var TextExtracter = function () {
     }
 
     _createClass(TextExtracter, null, [{
-        key: 'toTextSelections',
+        key: "toTextSelections",
         value: function toTextSelections(textHighlightRows) {
 
             var result = [];
 
             textHighlightRows.forEach(function (textHighlightRow) {
 
+                Preconditions.assertNotNull(textHighlightRow.rectElements, "rectElements");
+
                 textHighlightRow.rectElements.forEach(function (rectElement) {
 
-                    var textSelection = {
+                    var textSelection = new TextRect({
                         rect: rectElement.rect,
                         text: $(rectElement.element).text()
-                    };
+                    });
 
                     result.push(textSelection);
                 });
@@ -51558,10 +51567,8 @@ var TextHighlightController = function () {
                 return current.rect;
             });
 
-            var extractedText = this.extractText(selector);
-
-            var textSelections = Arrays.toDict(extractedText.textSelections);
-            var text = extractedText.text;
+            var text = this.extractText(selector);
+            var textSelections = TextExtracter.toTextSelections(textHighlightRows);
 
             var textHighlightRecord = TextHighlightRecords.create(rects, textSelections, text);
 
@@ -51579,20 +51586,14 @@ var TextHighlightController = function () {
         key: "extractText",
         value: function extractText(selector) {
 
-            var result = {
-                textSelections: [],
-                text: ""
-            };
+            var result = "";
 
             $(selector).each(function () {
 
                 // TODO: we should include the x/y and width + height of every text
                 // selection so that we have where it was placed in the document.
 
-                var text = $(this).text();
-
-                result.textSelections.push(text);
-                result.text += "\n" + text;
+                result += "\n" + $(this).text();
             });
 
             return result;
@@ -53856,6 +53857,51 @@ var TextHighlightRecords = function () {
 }();
 
 module.exports.TextHighlightRecords = TextHighlightRecords;
+
+/***/ }),
+
+/***/ "./web/js/metadata/TextRect.js":
+/*!*************************************!*\
+  !*** ./web/js/metadata/TextRect.js ***!
+  \*************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var _require = __webpack_require__(/*! ./SerializedObject.js */ "./web/js/metadata/SerializedObject.js"),
+    SerializedObject = _require.SerializedObject;
+
+var TextRect = function (_SerializedObject) {
+    _inherits(TextRect, _SerializedObject);
+
+    function TextRect(val) {
+        _classCallCheck(this, TextRect);
+
+        // the actual text in this rect.
+        var _this = _possibleConstructorReturn(this, (TextRect.__proto__ || Object.getPrototypeOf(TextRect)).call(this, val));
+
+        _this.text = null;
+
+        // A rect area that the user has selected text.
+        _this.rect = null;
+
+        _this.init(val);
+
+        return _this;
+    }
+
+    return TextRect;
+}(SerializedObject);
+
+module.exports.TextRect = TextRect;
 
 /***/ }),
 

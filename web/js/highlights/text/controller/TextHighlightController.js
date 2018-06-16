@@ -107,10 +107,8 @@ class TextHighlightController {
 
         let rects = textHighlightRows.map(current => current.rect);
 
-        let extractedText = this.extractText(selector);
-
-        let textSelections = Arrays.toDict(extractedText.textSelections)
-        let text = extractedText.text;
+        let text = this.extractText(selector);
+        let textSelections = TextExtracter.toTextSelections(textHighlightRows);
 
         let textHighlightRecord = TextHighlightRecords.create(rects, textSelections, text);
 
@@ -128,20 +126,14 @@ class TextHighlightController {
 
     extractText(selector) {
 
-        let result = {
-            textSelections: [],
-            text: ""
-        };
+        let result = "";
 
         $(selector).each(function () {
 
             // TODO: we should include the x/y and width + height of every text
             // selection so that we have where it was placed in the document.
 
-            let text = $(this).text();
-
-            result.textSelections.push(text);
-            result.text += "\n" + text;
+            result += "\n" + $(this).text();
 
         });
 
