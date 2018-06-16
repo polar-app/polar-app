@@ -27474,6 +27474,61 @@ module.exports.RectElement = function () {
 
 /***/ }),
 
+/***/ "./web/js/highlights/text/controller/TextExtracter.js":
+/*!************************************************************!*\
+  !*** ./web/js/highlights/text/controller/TextExtracter.js ***!
+  \************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var $ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
+
+/**
+ * Takes TextHighlightRows and then builds adjacent test runs from the data.
+ */
+
+var TextExtracter = function () {
+    function TextExtracter() {
+        _classCallCheck(this, TextExtracter);
+    }
+
+    _createClass(TextExtracter, null, [{
+        key: 'toTextSelections',
+        value: function toTextSelections(textHighlightRows) {
+
+            var result = [];
+
+            textHighlightRows.forEach(function (textHighlightRow) {
+
+                textHighlightRow.rectElements.forEach(function (rectElement) {
+
+                    var textSelection = {
+                        rect: rectElement.rect,
+                        text: $(rectElement.element).text()
+                    };
+
+                    result.push(textSelection);
+                });
+            });
+
+            return result;
+        }
+    }]);
+
+    return TextExtracter;
+}();
+
+module.exports.TextExtracter = TextExtracter;
+
+/***/ }),
+
 /***/ "./web/js/highlights/text/controller/TextHighlightController.js":
 /*!**********************************************************************!*\
   !*** ./web/js/highlights/text/controller/TextHighlightController.js ***!
@@ -27505,11 +27560,14 @@ var _require4 = __webpack_require__(/*! ../../../PDFRenderer */ "./web/js/PDFRen
 var _require5 = __webpack_require__(/*! ../../../Preconditions */ "./web/js/Preconditions.js"),
     Preconditions = _require5.Preconditions;
 
-var _require6 = __webpack_require__(/*! ../../../KeyEvents.js */ "./web/js/KeyEvents.js"),
-    KeyEvents = _require6.KeyEvents;
+var _require6 = __webpack_require__(/*! ./TextExtracter */ "./web/js/highlights/text/controller/TextExtracter.js"),
+    TextExtracter = _require6.TextExtracter;
 
-var _require7 = __webpack_require__(/*! ../../../util/Arrays */ "./web/js/util/Arrays.js"),
-    Arrays = _require7.Arrays;
+var _require7 = __webpack_require__(/*! ../../../KeyEvents.js */ "./web/js/KeyEvents.js"),
+    KeyEvents = _require7.KeyEvents;
+
+var _require8 = __webpack_require__(/*! ../../../util/Arrays */ "./web/js/util/Arrays.js"),
+    Arrays = _require8.Arrays;
 
 var TextHighlightController = function () {
     function TextHighlightController(model) {
@@ -27609,6 +27667,9 @@ var TextHighlightController = function () {
 
             var textHighlightRows = TextHighlightRows.createFromSelector(selector);
 
+            //console.log("FIXME: textHighlightRows: ", textHighlightRows);
+            //console.log("FIXME: new textExtractions is:" , TextExtracter.toTextSelections(textHighlightRows));
+
             var rects = textHighlightRows.map(function (current) {
                 return current.rect;
             });
@@ -27641,10 +27702,13 @@ var TextHighlightController = function () {
 
             $(selector).each(function () {
 
+                // TODO: we should include the x/y and width + height of every text
+                // selection so that we have where it was placed in the document.
+
                 var text = $(this).text();
 
                 result.textSelections.push(text);
-                result.text += " " + text;
+                result.text += "\n" + text;
             });
 
             return result;

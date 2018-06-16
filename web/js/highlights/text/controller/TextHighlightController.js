@@ -4,6 +4,7 @@ const {TextHighlighterFactory} = require("./TextHighlighterFactory");
 const {TextHighlightRows} = require("./TextHighlightRows");
 const {PDFRenderer} = require("../../../PDFRenderer");
 const {Preconditions} = require("../../../Preconditions");
+const {TextExtracter} = require("./TextExtracter");
 const {KeyEvents} = require("../../../KeyEvents.js");
 const {Arrays} = require("../../../util/Arrays");
 
@@ -29,7 +30,7 @@ class TextHighlightController {
         if (KeyEvents.isKeyMetaActive(event)) {
 
             const tCode = 84;
-            
+
             switch (event.which) {
 
                 case tCode:
@@ -101,6 +102,9 @@ class TextHighlightController {
 
         let textHighlightRows = TextHighlightRows.createFromSelector(selector);
 
+        //console.log("FIXME: textHighlightRows: ", textHighlightRows);
+        //console.log("FIXME: new textExtractions is:" , TextExtracter.toTextSelections(textHighlightRows));
+
         let rects = textHighlightRows.map(current => current.rect);
 
         let extractedText = this.extractText(selector);
@@ -131,10 +135,13 @@ class TextHighlightController {
 
         $(selector).each(function () {
 
+            // TODO: we should include the x/y and width + height of every text
+            // selection so that we have where it was placed in the document.
+
             let text = $(this).text();
 
             result.textSelections.push(text);
-            result.text += " " + text;
+            result.text += "\n" + text;
 
         });
 
