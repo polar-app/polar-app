@@ -26222,15 +26222,12 @@ var ElectronContextMenu = function (_ContextMenu) {
         key: "createTextHighlightContextMenu",
         value: function createTextHighlightContextMenu() {
 
-            // console.log("FIXME:3", electron.remote.Menu);
-            // console.log("FIXME:4", new electron.remote.Menu());
-            // console.log("FIXME:0", electron.Menu);
-            // console.log("FIXME:1", Menu);
-            // console.log("FIXME:2", Menu.buildFromTemplate);
-
             var ctxMenu = new electron.remote.Menu();
 
-            ctxMenu.append(new electron.remote.MenuItem({ label: 'Add Flashcard', accelerator: 'CmdOrCtrl+A', click: function click() {
+            ctxMenu.append(new electron.remote.MenuItem({
+                label: 'Add Flashcard',
+                accelerator: 'CmdOrCtrl+A',
+                click: function click() {
                     window.alert("hello world");
                 } }));
 

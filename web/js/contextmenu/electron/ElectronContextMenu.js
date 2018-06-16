@@ -19,15 +19,12 @@ class ElectronContextMenu extends ContextMenu {
 
     static createTextHighlightContextMenu() {
 
-        // console.log("FIXME:3", electron.remote.Menu);
-        // console.log("FIXME:4", new electron.remote.Menu());
-        // console.log("FIXME:0", electron.Menu);
-        // console.log("FIXME:1", Menu);
-        // console.log("FIXME:2", Menu.buildFromTemplate);
-
         const ctxMenu = new electron.remote.Menu();
 
-        ctxMenu.append(new electron.remote.MenuItem({ label: 'Add Flashcard', accelerator: 'CmdOrCtrl+A', click: function () {
+        ctxMenu.append(new electron.remote.MenuItem( {
+            label: 'Add Flashcard',
+            accelerator: 'CmdOrCtrl+A',
+            click: function () {
                 window.alert("hello world");
             } }));
 

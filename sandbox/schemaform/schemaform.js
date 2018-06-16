@@ -1,6 +1,6 @@
-//const {JSONSchemaForm}  = require("react-jsonschema-form");
+const $ = require("jquery");
 
-import {React, Component } from "react";
+import React, {Component } from "react";
 import { render } from "react-dom";
 
 import Form from "react-jsonschema-form";
@@ -123,29 +123,36 @@ SimpleMDE.defaultProps = {
 
 console.log(SimpleMDE);
 
-//const log = (type) => console.log.bind(console, type);
+const log = (type) => console.log.bind(console, type);
 
-
-function log() {
-
-}
-
-render((
-       <Form schema={schema}
-             uiSchema={uiSchema}
-             onChange={log("changed")}
-             onSubmit={log("submitted")}
-             onError={log("errors")} />
-), document.getElementById("schema-form"));
-
-function pasteMutator(val) {
-    return `[](${val})`;
-}
-
-new ImagePasteHandler(document.body, pasteMutator).start();
 
 function pasteIt() {
     let element = document.createElement("div");
     element.innerHTML = `<pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-formatting cm-formatting-strong cm-strong">**</span><span class="cm-strong">this is a test</span><span class="cm-formatting cm-formatting-strong cm-strong">**</span></span></pre>`;
     document.execCommand("insertHTML", false, element.outerHTML);
 }
+
+function pasteMutator(val) {
+    return `[](${val})`;
+}
+
+$(document).ready(function () {
+
+    let schemaFormElement = document.getElementById("schema-form");
+
+    if(!schemaFormElement) {
+        throw new Error("No schemaFormElement");
+    }
+
+    render((
+        <Form schema={schema}
+              uiSchema={uiSchema}
+              onChange={log("changed")}
+              onSubmit={log("submitted")}
+              onError={log("errors")} />
+    ), schemaFormElement);
+
+
+    new ImagePasteHandler(document.body, pasteMutator).start();
+
+});
