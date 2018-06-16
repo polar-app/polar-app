@@ -2,8 +2,7 @@ const {Annotation} = require("./Annotation.js");
 const {Note} = require("./Note.js");
 
 /* abstract */
-// FIXME: make this an ExtendedAnnotation (which has notes, comments, tags, etc).
-module.exports.AnnotationWithNote = class extends Annotation {
+module.exports.ExtendedAnnotation = class extends Annotation {
 
     constructor(val) {
 

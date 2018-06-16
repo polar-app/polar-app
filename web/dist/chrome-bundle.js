@@ -52536,12 +52536,6 @@ module.exports.TextHighlightView = TextHighlightView;
 "use strict";
 
 
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
-
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
@@ -52551,84 +52545,32 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 var _require = __webpack_require__(/*! ./SerializedObject.js */ "./web/js/metadata/SerializedObject.js"),
     SerializedObject = _require.SerializedObject;
 
-var _require2 = __webpack_require__(/*! ./ISODateTime */ "./web/js/metadata/ISODateTime.js"),
-    ISODateTime = _require2.ISODateTime;
+var _require2 = __webpack_require__(/*! ./VersionedObject */ "./web/js/metadata/VersionedObject.js"),
+    VersionedObject = _require2.VersionedObject;
 
-// FIXME: move to extend TemporalObject
+var _require3 = __webpack_require__(/*! ./ISODateTime */ "./web/js/metadata/ISODateTime.js"),
+    ISODateTime = _require3.ISODateTime;
+
+// FIXME: move to extend VersionedObject
 
 /* abstract */
 
 
-module.exports.Annotation = function (_SerializedObject) {
-    _inherits(_class, _SerializedObject);
+module.exports.Annotation = function (_VersionedObject) {
+    _inherits(_class, _VersionedObject);
 
     function _class(val) {
         _classCallCheck(this, _class);
 
-        /**
-         * The unique ID for this annotation.  Every annotation needs to have
-         * a unique ID so that we can reference it easily.
-         *
-         * @type {null}
-         */
         var _this = _possibleConstructorReturn(this, (_class.__proto__ || Object.getPrototypeOf(_class)).call(this, val));
-
-        _this.id = null;
-
-        /**
-         * The time this annotation was created
-         * @type ISODateTime
-         */
-        _this.created = null;
-
-        /**
-         * The last time this annotation was updated (note changed, moved, etc).
-         * @type ISODateTime
-         */
-        _this.lastUpdated = null;
-
-        // FIXME: add support for notes, comments,
-
-        // TODO: add tags for annotations. This might be overkill but it might
-        // be a good way to manage some of these types.
 
         _this.init(val);
 
         return _this;
     }
 
-    _createClass(_class, [{
-        key: "setup",
-        value: function setup() {
-            _get(_class.prototype.__proto__ || Object.getPrototypeOf(_class.prototype), "setup", this).call(this);
-
-            if (!this.lastUpdated && this.created) {
-                this.lastUpdated = this.created;
-            }
-        }
-    }, {
-        key: "validate",
-        value: function validate() {
-
-            _get(_class.prototype.__proto__ || Object.getPrototypeOf(_class.prototype), "validate", this).call(this);
-
-            if (!this.created) {
-                throw new Error("Created is required");
-            }
-
-            // FIXME: move this to validateMembers
-            if (!this.created instanceof ISODateTime) {
-                throw new Error("Member created has wrong type: " + _typeof(this.created));
-            }
-
-            if (!this.lastUpdated instanceof ISODateTime) {
-                throw new Error("Member lastUpdated has wrong type: " + _typeof(this.lastUpdated));
-            }
-        }
-    }]);
-
     return _class;
-}(SerializedObject);
+}(VersionedObject);
 
 /***/ }),
 
@@ -52684,97 +52626,6 @@ module.exports.AnnotationInfo = function (_SerializedObject) {
 
 /***/ }),
 
-/***/ "./web/js/metadata/AnnotationWithNote.js":
-/*!***********************************************!*\
-  !*** ./web/js/metadata/AnnotationWithNote.js ***!
-  \***********************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var _require = __webpack_require__(/*! ./Annotation.js */ "./web/js/metadata/Annotation.js"),
-    Annotation = _require.Annotation;
-
-var _require2 = __webpack_require__(/*! ./Note.js */ "./web/js/metadata/Note.js"),
-    Note = _require2.Note;
-
-/* abstract */
-// FIXME: make this an ExtendedAnnotation (which has notes, comments, tags, etc).
-
-
-module.exports.AnnotationWithNote = function (_Annotation) {
-    _inherits(_class, _Annotation);
-
-    function _class(val) {
-        _classCallCheck(this, _class);
-
-        /**
-         * The note for this annotation.
-         *
-         * @type Note
-         */
-        var _this = _possibleConstructorReturn(this, (_class.__proto__ || Object.getPrototypeOf(_class)).call(this, val));
-
-        _this.notes = {};
-
-        /**
-         *
-         * @type map<string,Question>
-         */
-        _this.questions = {};
-
-        /**
-         *
-         * @type map<string,Flashcard>
-         */
-        _this.flashcards = {};
-
-        // FIXME: the keys of these objects should be the hash of the time
-        // sequenece, the user, and machine that this was generated on.
-
-        // FIXME: should have comments (plural)
-
-        // FIXME: should have tags (plural)
-
-        _this.init(val);
-
-        return _this;
-    }
-
-    _createClass(_class, [{
-        key: "setup",
-        value: function setup() {
-
-            _get(_class.prototype.__proto__ || Object.getPrototypeOf(_class.prototype), "setup", this).call(this);
-
-            if (!this.notes) {
-                this.notes = {};
-            }
-        }
-    }, {
-        key: "validate",
-        value: function validate() {
-            _get(_class.prototype.__proto__ || Object.getPrototypeOf(_class.prototype), "validate", this).call(this);
-        }
-    }]);
-
-    return _class;
-}(Annotation);
-
-/***/ }),
-
 /***/ "./web/js/metadata/BaseHighlight.js":
 /*!******************************************!*\
   !*** ./web/js/metadata/BaseHighlight.js ***!
@@ -52801,11 +52652,11 @@ var _require = __webpack_require__(/*! ./SerializedObject.js */ "./web/js/metada
 var _require2 = __webpack_require__(/*! ../Preconditions */ "./web/js/Preconditions.js"),
     Preconditions = _require2.Preconditions;
 
-var _require3 = __webpack_require__(/*! ./AnnotationWithNote */ "./web/js/metadata/AnnotationWithNote.js"),
-    AnnotationWithNote = _require3.AnnotationWithNote;
+var _require3 = __webpack_require__(/*! ./ExtendedAnnotation */ "./web/js/metadata/ExtendedAnnotation.js"),
+    ExtendedAnnotation = _require3.ExtendedAnnotation;
 
-module.exports.BaseHighlight = function (_AnnotationWithNote) {
-    _inherits(_class, _AnnotationWithNote);
+module.exports.BaseHighlight = function (_ExtendedAnnotation) {
+    _inherits(_class, _ExtendedAnnotation);
 
     function _class(val) {
         _classCallCheck(this, _class);
@@ -52839,7 +52690,7 @@ module.exports.BaseHighlight = function (_AnnotationWithNote) {
     }]);
 
     return _class;
-}(AnnotationWithNote);
+}(ExtendedAnnotation);
 
 /***/ }),
 
@@ -53318,6 +53169,96 @@ var DocMetas = function () {
 }();
 
 module.exports.DocMetas = DocMetas;
+
+/***/ }),
+
+/***/ "./web/js/metadata/ExtendedAnnotation.js":
+/*!***********************************************!*\
+  !*** ./web/js/metadata/ExtendedAnnotation.js ***!
+  \***********************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var _require = __webpack_require__(/*! ./Annotation.js */ "./web/js/metadata/Annotation.js"),
+    Annotation = _require.Annotation;
+
+var _require2 = __webpack_require__(/*! ./Note.js */ "./web/js/metadata/Note.js"),
+    Note = _require2.Note;
+
+/* abstract */
+
+
+module.exports.ExtendedAnnotation = function (_Annotation) {
+    _inherits(_class, _Annotation);
+
+    function _class(val) {
+        _classCallCheck(this, _class);
+
+        /**
+         * The note for this annotation.
+         *
+         * @type Note
+         */
+        var _this = _possibleConstructorReturn(this, (_class.__proto__ || Object.getPrototypeOf(_class)).call(this, val));
+
+        _this.notes = {};
+
+        /**
+         *
+         * @type map<string,Question>
+         */
+        _this.questions = {};
+
+        /**
+         *
+         * @type map<string,Flashcard>
+         */
+        _this.flashcards = {};
+
+        // FIXME: the keys of these objects should be the hash of the time
+        // sequenece, the user, and machine that this was generated on.
+
+        // FIXME: should have comments (plural)
+
+        // FIXME: should have tags (plural)
+
+        _this.init(val);
+
+        return _this;
+    }
+
+    _createClass(_class, [{
+        key: "setup",
+        value: function setup() {
+
+            _get(_class.prototype.__proto__ || Object.getPrototypeOf(_class.prototype), "setup", this).call(this);
+
+            if (!this.notes) {
+                this.notes = {};
+            }
+        }
+    }, {
+        key: "validate",
+        value: function validate() {
+            _get(_class.prototype.__proto__ || Object.getPrototypeOf(_class.prototype), "validate", this).call(this);
+        }
+    }]);
+
+    return _class;
+}(Annotation);
 
 /***/ }),
 
@@ -54302,6 +54243,106 @@ var TextRect = function (_SerializedObject) {
 }(SerializedObject);
 
 module.exports.TextRect = TextRect;
+
+/***/ }),
+
+/***/ "./web/js/metadata/VersionedObject.js":
+/*!********************************************!*\
+  !*** ./web/js/metadata/VersionedObject.js ***!
+  \********************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var _require = __webpack_require__(/*! ./SerializedObject.js */ "./web/js/metadata/SerializedObject.js"),
+    SerializedObject = _require.SerializedObject;
+
+var _require2 = __webpack_require__(/*! ./ISODateTime */ "./web/js/metadata/ISODateTime.js"),
+    ISODateTime = _require2.ISODateTime;
+
+/* abstract */
+
+
+module.exports.VersionedObject = function (_SerializedObject) {
+    _inherits(_class, _SerializedObject);
+
+    function _class(val) {
+        _classCallCheck(this, _class);
+
+        /**
+         * The unique ID for this object.  Every object needs to have a unique
+         * ID so that we can reference it easily.
+         *
+         * @type {null}
+         */
+        var _this = _possibleConstructorReturn(this, (_class.__proto__ || Object.getPrototypeOf(_class)).call(this, val));
+
+        _this.id = null;
+
+        /**
+         * The time this object was created
+         *
+         * @type ISODateTime
+         */
+        _this.created = null;
+
+        /**
+         * The last time this annotation was updated (note changed, moved, etc).
+         * @type ISODateTime
+         */
+        _this.lastUpdated = null;
+
+        _this.init(val);
+
+        return _this;
+    }
+
+    _createClass(_class, [{
+        key: "setup",
+        value: function setup() {
+            _get(_class.prototype.__proto__ || Object.getPrototypeOf(_class.prototype), "setup", this).call(this);
+
+            if (!this.lastUpdated && this.created) {
+                this.lastUpdated = this.created;
+            }
+        }
+    }, {
+        key: "validate",
+        value: function validate() {
+
+            _get(_class.prototype.__proto__ || Object.getPrototypeOf(_class.prototype), "validate", this).call(this);
+
+            if (!this.created) {
+                throw new Error("Created is required");
+            }
+
+            // FIXME: move this to validateMembers
+            if (!this.created instanceof ISODateTime) {
+                throw new Error("Member created has wrong type: " + _typeof(this.created));
+            }
+
+            if (!this.lastUpdated instanceof ISODateTime) {
+                throw new Error("Member lastUpdated has wrong type: " + _typeof(this.lastUpdated));
+            }
+        }
+    }]);
+
+    return _class;
+}(SerializedObject);
 
 /***/ }),
 

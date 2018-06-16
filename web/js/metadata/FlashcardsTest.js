@@ -15,7 +15,9 @@ describe('Flashcards', function() {
 
             let text = Texts.create("This is the text", TextType.MARKDOWN);
 
-            let flashcard = Flashcards.create(FlashcardType.CLOZURE, text);
+            let fields = { text };
+
+            let flashcard = Flashcards.create(FlashcardType.CLOZURE, fields);
 
             let expected = {
                 "content": {

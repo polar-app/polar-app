@@ -5,9 +5,9 @@ const {ISODateTime} = require("./ISODateTime");
 
 module.exports.Flashcards = class {
 
-    static create(type, content) {
+    static create(type, fields) {
 
-        Preconditions.assertInstanceOf(content, "content", Text.constructor);
+        Preconditions.assertNotNull(fields, "fields");
 
         let now = new Date();
 
@@ -15,7 +15,7 @@ module.exports.Flashcards = class {
             created: new ISODateTime(now),
             lastUpdated: new ISODateTime(now),
             type,
-            content
+            fields
         });
 
     }
