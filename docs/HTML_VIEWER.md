@@ -1,3 +1,20 @@
+# TODO:
+
+- the event bridge doesnt' work with Ctrl-Alt-N and Ctrl-Alt-E when the iframe
+  is selected.
+
+- after selecting zoom, in the UI, call focus() on the document. Otherwise, if we
+  try to scroll down we actually zoom the page.
+
+- The pagemark end isn't properly positioned when we run Ctrl-Alt-Click
+
+
+- when the user zooms the page, we should trap this and zoom the UI ourselves.
+
+    - https://stackoverflow.com/questions/27116221/prevent-zoom-cross-browser
+
+
+
 # Design for storing + handling static HTML vs PDF
 
 - New Pulldown
@@ -30,15 +47,6 @@
 # Serving zip files:
 
     https://stackoverflow.com/questions/10359485/how-to-download-and-unzip-a-zip-file-in-memory-in-nodejs
-
-# TODO:
-
-
-
-
-- when the user zooms the page, we should trap this and zoom the UI ourselves.
-
-    - https://stackoverflow.com/questions/27116221/prevent-zoom-cross-browser
 
 # Broken Examples:
 

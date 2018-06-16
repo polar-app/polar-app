@@ -33269,6 +33269,10 @@ var HTMLViewer = function (_Viewer) {
                     var zoom = $(this).val();
                     htmlViewer.changeScale(parseFloat(zoom));
                 });
+
+                // make sure the select doesn't have focus so that we can scroll.
+                console.log("Blurring the select to allow keyboard/mouse nav.");
+                $(this).blur();
             });
         }
     }, {
