@@ -30022,7 +30022,7 @@ var TextHighlightRecords = function () {
          * object as we're working with it.
          *
          * @return an object with an "id" for a unique hash and a "value" of the
-         * TextHighlight to use.
+         * TextHighlight to use.                                                                                                                                                                                                         np
          */
         value: function create(rects, textSelections, text) {
 
@@ -30046,6 +30046,8 @@ var TextHighlightRecords = function () {
 
     return TextHighlightRecords;
 }();
+
+;
 
 module.exports.TextHighlightRecords = TextHighlightRecords;
 

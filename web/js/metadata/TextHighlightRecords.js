@@ -12,7 +12,7 @@ class TextHighlightRecords {
      * object as we're working with it.
      *
      * @return an object with an "id" for a unique hash and a "value" of the
-     * TextHighlight to use.
+     * TextHighlight to use.                                                                                                                                                                                                         np
      */
     static create(rects, textSelections, text) {
 
@@ -34,6 +34,6 @@ class TextHighlightRecords {
 
     }
 
-}
+};
 
 module.exports.TextHighlightRecords = TextHighlightRecords;
