@@ -8,43 +8,110 @@ import SimpleMDE from 'react-simplemde-editor';
 
 import {ImagePasteHandler} from "../../web/js/paste/ImagePasteHandler";
 
-const schema = {
-    "title": "Flashcard",
-    "description": "",
+const schema =
+{
+    "title": "Notes",
+    "description": "Create notes",
     "type": "object",
     "required": [
         "front",
         "back"
     ],
     "properties": {
-        "front": {
-            "type": "string",
-            "title": "Front"
+        "flashcards": {
+            "title": "Flashcards",
+            "type": "array",
+            "items": {
+                "$ref": "#/definitions/flashcard"
+            }
         },
-        "back": {
-            "type": "string",
-            "title": "Back"
+    },
+    "definitions": {
+        "flashcard": {
+            "title": "Flashcard",
+            "description": "",
+            "type": "object",
+            "required": [
+                "front",
+                "back"
+            ],
+            "properties": {
+                "front": {
+                    "type": "string",
+                    "title": "Front"
+                },
+                "back": {
+                    "type": "string",
+                    "title": "Back"
+                }
+                // },
+                // "age": {
+                //     "type": "integer",
+                //     "title": "Age"
+                // },
+                // "bio": {
+                //     "type": "string",
+                //     "title": "Bio"
+                // },
+                // "password": {
+                //     "type": "string",
+                //     "title": "Password",
+                //     "minLength": 3
+                // },
+                // "telephone": {
+                //     "type": "string",
+                //     "title": "Telephone",
+                //     "minLength": 10
+                // }
+            },
+
         }
-        // },
-        // "age": {
-        //     "type": "integer",
-        //     "title": "Age"
-        // },
-        // "bio": {
-        //     "type": "string",
-        //     "title": "Bio"
-        // },
-        // "password": {
-        //     "type": "string",
-        //     "title": "Password",
-        //     "minLength": 3
-        // },
-        // "telephone": {
-        //     "type": "string",
-        //     "title": "Telephone",
-        //     "minLength": 10
+    }
+};
+
+
+const uiSchema = {
+    flashcard: {
+        front: {
+            //"ui:widget": "textarea",
+            "ui:widget": "select",
+            // "ui:widget": MySimpleMDE,
+            // "ui:options": {
+            //     label: false
+            // }
+        },
+
+    },
+
+    flashcards: {
+        flashcard: {
+            front: {
+                //"ui:widget": "textarea",
+                "ui:widget": "select",
+                // "ui:widget": MySimpleMDE,
+                // "ui:options": {
+                //     label: false
+                // }
+            },
+
+        },
+    },
+
+    front: {
+        //"ui:widget": "textarea",
+        "ui:widget": "select",
+        // "ui:widget": MySimpleMDE,
+        // "ui:options": {
+        //     label: false
+        // }
+    },
+    back: {
+        "ui:widget": "select",
+        // "ui:options": {
+        //     label: false
         // }
     }
+
 };
 
 // spellChecker: true,
@@ -141,22 +208,6 @@ function MarkdownWidget(props) {
 
     return result;
 }
-const uiSchema = {
-    front: {
-        //"ui:widget": "textarea",
-         "ui:widget": MarkdownWidget,
-        // "ui:widget": MySimpleMDE,
-        // "ui:options": {
-        //     label: false
-        // }
-    },
-    back: {
-        "ui:widget": MarkdownWidget,
-        // "ui:options": {
-        //     label: false
-        // }
-    }
-};
 
 
 // tab doesn't work properly in forms but it's also needed in markdown
