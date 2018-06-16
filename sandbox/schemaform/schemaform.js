@@ -115,7 +115,7 @@ function MarkdownWidget(props) {
     // FIXME: also onChange is not being sent..
 
     let result = (
-        <div className="simplemde-control" data-required={required}>
+        <div className="simplemde-control" data-required={required} data-textarea-id={id}>
             <div className={classNames}>
                 {/*<textarea id="textarea-{id}"></textarea>*/}
                 {/*<label htmlFor={id}>FIXME: {label}{required ? "*" : null}</label>*/}
@@ -123,7 +123,7 @@ function MarkdownWidget(props) {
                 {children}
                 {errors}
                 {help}
-                <SimpleMDE label="" id={id}/>
+                <SimpleMDE onChange={(newValue) => props.onChange(newValue)} label="" id={id}/>
             </div>
         </div>
     )
@@ -166,6 +166,7 @@ SimpleMDE.defaultProps = {
     options: {
         status: false,
         hideIcons: ["side-by-side", "fullscreen"],
+        forceSync: true,
         extraKeys: {},
         //extraKeys['Tab'] = false,
         //extraKeys['Shift-Tab'] = false;
@@ -215,11 +216,15 @@ $(document).ready(function () {
     document.querySelectorAll(".simplemde-control").forEach(function (controlElement) {
 
         let required = controlElement.getAttribute("data-required");
+        let textareaId = controlElement.getAttribute("data-textarea-id");
 
-        controlElement.querySelectorAll("textarea").forEach(function (textareaElement) {
+        // FIXME: there are multiple elements here to work with..
+        controlElement.querySelectorAll("#" + textareaId).forEach(function (textareaElement) {
             //textareaElement.setAttribute("style", "display: inline;  ");
-            textareaElement.setAttribute("style", "display: inline; margin: 0; padding: 0; height: 0; width: 0; resize: none; border: 1px solid transparent; position:absolute; top: 100px; ");
-            textareaElement.setAttribute("required", required);
+            textareaElement.setAttribute("style", "display: inline; margin: 0; padding: 0; height: 0; resize: none; border: 1px solid transparent; position:absolute; top: 100px; ");
+
+            // FIXME: fuck it.. required doesn't work properly but I don't care..
+            //textareaElement.setAttribute("required", required);
         });
 
     });
