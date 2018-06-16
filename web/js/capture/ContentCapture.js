@@ -59,16 +59,12 @@ class ContentCapture {
             cloneDoc.insertBefore(cloneDoc.createElement("head"), cloneDoc.firstChild);
         }
 
-        // FIXME: remove the current 'base' if one exists...
-
         let base = cloneDoc.querySelector("base");
 
         if(base) {
-            // base must be the first element
+            // remove the current 'base' if one exists...
             base.parentElement.removeChild(base);
-
             mutations.existingBaseRemoved = true;
-
         }
 
         // *** create a NEW base element for this HTML
@@ -77,6 +73,7 @@ class ContentCapture {
         base.setAttribute("href", result.href);
 
         if(cloneDoc.head.firstChild != null) {
+            // base must be the first element
             cloneDoc.head.insertBefore(base,cloneDoc.head.firstChild);
         } else {
             cloneDoc.head.appendChild(base);
