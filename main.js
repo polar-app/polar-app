@@ -303,58 +303,6 @@ let shouldQuit = app.makeSingleInstance(function(commandLine, workingDirectory) 
 
 });
 
-if (shouldQuit) { app.quit(); return; }
-
-app.on('ready', async function() {
-
-    await diskDatastore.init();
-
-    contextMenu = Menu.buildFromTemplate([
-        { label: 'Minimize', type: 'radio', role: 'minimize' },
-        { type: 'separator' },
-        { label: 'Exit', type: 'radio', role: 'close' },
-    ]);
-
-    //for OS-X
-    //if (app.dock) {
-    //    app.dock.setIcon(app_icon);
-    //    app.dock.setMenu(contextMenu);
-    //}
-
-    Menu.setApplicationMenu(menu);
-
-    // NOTE: removing the next three lines removes the colors in the toolbar.
-    //const appIcon = new Tray(app_icon);
-    //appIcon.setToolTip('Polar Bookshelf');
-    //appIcon.setContextMenu(contextMenu);
-
-    mainWindow = createWindow();
-
-    if(args.enableDevTools) {
-        mainWindow.toggleDevTools();
-    }
-
-    // if there is a PDF file to open, load that, otherwise, load the default URL.
-
-    handleCmdLinePDF(process.argv, false);
-
-});
-
-// Quit when all windows are closed.
-app.on('window-all-closed', function() {
-    if (process.platform !== 'darwin') { app.quit(); }
-});
-
-app.on('activate', function() {
-    // On OS X it's common to re-create a window in the app when the
-    // dock icon is clicked and there are no other windows open.
-    if (mainWindow === null) { createWindow(); }
-});
-
-app.on('open-file', function() {
-    console.log("Open file called.");
-});
-
 /**
  * Listen to messages generated in the console so that we can log them to the
  * main console when --enable-console is used.
@@ -535,3 +483,57 @@ class Main {
 
 
 }
+
+
+
+if (shouldQuit) { app.quit(); return; }
+
+app.on('ready', async function() {
+
+    await diskDatastore.init();
+
+    contextMenu = Menu.buildFromTemplate([
+        { label: 'Minimize', type: 'radio', role: 'minimize' },
+        { type: 'separator' },
+        { label: 'Exit', type: 'radio', role: 'close' },
+    ]);
+
+    //for OS-X
+    //if (app.dock) {
+    //    app.dock.setIcon(app_icon);
+    //    app.dock.setMenu(contextMenu);
+    //}
+
+    Menu.setApplicationMenu(menu);
+
+    // NOTE: removing the next three lines removes the colors in the toolbar.
+    //const appIcon = new Tray(app_icon);
+    //appIcon.setToolTip('Polar Bookshelf');
+    //appIcon.setContextMenu(contextMenu);
+
+    mainWindow = createWindow();
+
+    if(args.enableDevTools) {
+        mainWindow.toggleDevTools();
+    }
+
+    // if there is a PDF file to open, load that, otherwise, load the default URL.
+
+    handleCmdLinePDF(process.argv, false);
+
+});
+
+// Quit when all windows are closed.
+app.on('window-all-closed', function() {
+    if (process.platform !== 'darwin') { app.quit(); }
+});
+
+app.on('activate', function() {
+    // On OS X it's common to re-create a window in the app when the
+    // dock icon is clicked and there are no other windows open.
+    if (mainWindow === null) { createWindow(); }
+});
+
+app.on('open-file', function() {
+    console.log("Open file called.");
+});
