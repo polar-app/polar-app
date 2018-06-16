@@ -12,6 +12,23 @@ const {assertJSON} = require("../test/Assertions");
 
 describe('DiskDatastore', function() {
 
+    it("init and test paths", async function () {
+
+        let dataDir = "/tmp/test-paths";
+
+        let diskDatastore = new DiskDatastore(dataDir);
+
+        await diskDatastore.init();
+
+        assert.equal(diskDatastore.dataDir, "/tmp/test-paths");
+
+        assert.equal(diskDatastore.stashDir, "/tmp/test-paths/stash");
+
+        // now create it and
+
+    });
+
+
     it("test async exists function", async function () {
 
         let dataDir = "/tmp/this-file-does-not-exist";
@@ -35,19 +52,31 @@ describe('DiskDatastore', function() {
         assert.equal(await diskDatastore.existsAsync(dataDir), false)
 
         let expected = {
-            dataDir: '/tmp/disk-datastore.test',
-            dataDirCreated: true
+            "dataDir": {
+                "dir": "/tmp/disk-datastore.test",
+                "created": true
+            },
+            "stashDir": {
+                "dir": "/tmp/disk-datastore.test/stash",
+                "created": true
+            }
         };
 
         // test double init...
-        assert.deepEqual(await diskDatastore.init(), expected );
+        assertJSON(await diskDatastore.init(), expected );
 
         expected = {
-            dataDir: '/tmp/disk-datastore.test',
-            exists: true
+            "dataDir": {
+                "dir": "/tmp/disk-datastore.test",
+                "exists": true
+            },
+            "stashDir": {
+                "dir": "/tmp/disk-datastore.test/stash",
+                "exists": true
+            }
         };
 
-        assert.deepEqual(await diskDatastore.init(), expected );
+        assertJSON(await diskDatastore.init(), expected );
 
     });
 

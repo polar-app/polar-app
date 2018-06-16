@@ -1,5 +1,6 @@
 const {Preconditions} = require("../Preconditions");
 const {Datastore} = require("./Datastore.js");
+const {Paths} = require("../util/Paths");
 
 const fs = require("fs");
 const util = require('util');
@@ -17,6 +18,8 @@ class DiskDatastore extends Datastore {
             this.dataDir = DiskDatastore.getDataDir();
         }
 
+        this.stashDir = Paths.create(this.dataDir, "stash");
+
         this.readFileAsync = util.promisify(fs.readFile);
         this.writeFileAsync = util.promisify(fs.writeFile);
         this.mkdirAsync = util.promisify(fs.mkdir);
@@ -30,15 +33,24 @@ class DiskDatastore extends Datastore {
 
     async init() {
 
-        let result = {
-            dataDir: this.dataDir
+        return {
+            dataDir: await this.createDirAsync(this.dataDir),
+            stashDir: await this.createDirAsync(this.stashDir)
         };
 
-        if(await this.existsAsync(this.dataDir)) {
-            result.exists=true;
+    }
+
+    async createDirAsync(dir) {
+
+        let result = {
+            dir
+        };
+
+        if(await this.existsAsync(dir)) {
+            result.exists = true;
         } else {
-            result.dataDirCreated = true;
-            await this.mkdirAsync(this.dataDir);
+            result.created = true;
+            await this.mkdirAsync(dir);
         }
 
         return result;

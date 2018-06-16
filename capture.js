@@ -10,17 +10,22 @@ const shell = electron.shell;
 const BrowserWindow = electron.BrowserWindow;
 const {ContentCapture} = require("./web/js/capture/ContentCapture");
 const {Preconditions} = require("./web/js/Preconditions");
+const {Cmdline} = require("./web/js/electron/Cmdline");
+const {Filenames} = require("./web/js/util/Filenames");
+const {DiskDatastore} = require("./web/js/datastore/DiskDatastore");
 
 const options = { extraHeaders: 'pragma: no-cache\n' }
 
+const WIDTH = 850;
+const HEIGHT = 1100;
 
 const BROWSER_WINDOW_OPTIONS = {
-    minWidth: 450,
-    minHeight: 450,
-    width: 450,
-    height: 450,
-    maxWidth: 450,
-    maxHeight: 450,
+    minWidth: WIDTH,
+    minHeight: HEIGHT,
+    width: WIDTH,
+    height: HEIGHT,
+    maxWidth: WIDTH,
+    maxHeight: HEIGHT,
     //show: false,
     // https://electronjs.org/docs/api/browser-window#new-browserwindowoptions
     webPreferences: {
@@ -38,15 +43,17 @@ const BROWSER_WINDOW_OPTIONS = {
 const DEVICE_EMULATION = {
     screenPosition: "mobile",
     screenSize: {
-        width: 450,
-        height: 450
+        width: WIDTH,
+        height: HEIGHT
     },
     viewSize: {
-        width: 450,
-        height: 450
+        width: WIDTH,
+        height: HEIGHT
     }
 
 };
+
+let diskDatastore = new DiskDatastore();
 
 function createWindow(url) {
 
@@ -149,8 +156,12 @@ async function captureHTML(window) {
     console.log("Retrieving HTML...");
     let captured = await window.webContents.executeJavaScript("ContentCapture.captureHTML()");
 
-    fs.writeFileSync("captured.json", JSON.stringify(captured, null, "  "));
-    fs.writeFileSync("captured.chtml", captured.content);
+    let filename = Filenames.sanitize(captured.title);
+
+    let stashDir = diskDatastore.stashDir;
+
+    fs.writeFileSync(`${stashDir}/${filename}.json`, JSON.stringify(captured, null, "  "));
+    fs.writeFileSync(`${stashDir}/${filename}.chtml`, captured.content);
 
     // write two files.. captured.json and captured.html
     //console.log(capturedHTML);
@@ -161,11 +172,23 @@ async function captureHTML(window) {
 
 }
 
-app.on('ready', function() {
+function escapeFilename() {
+
+}
+
+app.on('ready', async function() {
+
+    await diskDatastore.init();
 
     //let url = "http://thehill.com/homenews/administration/392430-trump-i-want-americans-to-listen-to-me-like-north-koreans-listen-to";
     //let url = "https://www.whatismyscreenresolution.com/";
-    let url = "https://thinkprogress.org/trump-lied-in-statement-about-russian-meeting-224345b768e3/";
+    //let url = "https://thinkprogress.org/trump-lied-in-statement-about-russian-meeting-224345b768e3/";
+
+    let url = Cmdline.getURLArg(process.argv);
+
+    if(! url) {
+        throw new Error("URL required");
+    }
 
     createWindow(url);
 

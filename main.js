@@ -27,7 +27,9 @@ let filepath = null;
 let quitapp, URL;
 
 // share the disk datastore with the remote.
-global.diskDatastore = new DiskDatastore();
+let diskDatastore = new DiskDatastore();
+
+global.diskDatastore = diskDatastore;
 global.electronContextMenu = new ElectronContextMenu();
 
 const BROWSER_WINDOW_OPTIONS = {
@@ -249,7 +251,9 @@ let shouldQuit = app.makeSingleInstance(function(commandLine, workingDirectory) 
 
 if (shouldQuit) { app.quit(); return; }
 
-app.on('ready', function() {
+app.on('ready', async function() {
+
+    await diskDatastore.init();
 
     contextMenu = Menu.buildFromTemplate([
         { label: 'Minimize', type: 'radio', role: 'minimize' },
@@ -325,11 +329,13 @@ function cmdNewWindow(item, focusedWindow) {
 /**
  * Open a dialog box for a PDF file.
  */
-async function promptPDF() {
+async function promptDoc() {
 
     return new Promise(function (resolve) {
 
         dialog.showOpenDialog({
+            title: "Open Document",
+            defaultPath: diskDatastore.stashDir,
             filters: [
                 { name: 'Docs', extensions: ['pdf', 'chtml'] }
             ],
@@ -360,7 +366,7 @@ async function promptPDF() {
  */
 function handleCmdLinePDF(commandLine, createNewWindow) {
 
-    let fileArg = Cmdline.getPDFArg(commandLine)
+    let fileArg = Cmdline.getDocArg(commandLine)
 
     if(fileArg) {
         openFileCmdline(fileArg, createNewWindow);
@@ -417,7 +423,7 @@ async function cmdOpen(item, focusedWindow) {
 
     let targetWindow = focusedWindow;
 
-    let path = await promptPDF();
+    let path = await promptDoc();
 
     loadFile(path, targetWindow);
 
@@ -425,7 +431,7 @@ async function cmdOpen(item, focusedWindow) {
 
 async function cmdOpenInNewWindow(item, focusedWindow) {
 
-    let path = await promptPDF();
+    let path = await promptDoc();
 
     let targetWindow = createWindow();
 
