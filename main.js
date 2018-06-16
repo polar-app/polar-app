@@ -21,17 +21,6 @@ const {FileRegistry} = require("./web/js/backend/FileRegistry");
 const {Cmdline} = require("./web/js/electron/Cmdline");
 const {ElectronContextMenu} = require("./web/js/contextmenu/electron/ElectronContextMenu");
 
-let mainWindow, splashwindow;
-let contextMenu = null;
-let filepath = null;
-let quitapp, URL;
-
-// share the disk datastore with the remote.
-let diskDatastore = new DiskDatastore();
-
-global.diskDatastore = diskDatastore;
-global.electronContextMenu = new ElectronContextMenu();
-
 const BROWSER_WINDOW_OPTIONS = {
     minWidth: 400,
     minHeight: 300,
@@ -61,7 +50,7 @@ const DEFAULT_HOST = "127.0.0.1";
 const DEFAULT_URL = `http://${DEFAULT_HOST}:${WEBSERVER_PORT}/default.html`;
 
 //creating menus for menu bar
-const template = [{
+const MENU_TEMPLATE = [{
         label: 'File',
         submenu: [
 
@@ -426,6 +415,17 @@ class Main {
 
 }
 
+let mainWindow, splashwindow;
+let contextMenu = null;
+let filepath = null;
+let quitapp, URL;
+
+// share the disk datastore with the remote.
+let diskDatastore = new DiskDatastore();
+
+global.diskDatastore = diskDatastore;
+global.electronContextMenu = new ElectronContextMenu();
+
 // TODO: I think we need to wait until the webserver port is available before
 // continuing.
 
@@ -460,7 +460,7 @@ if (args.enableRemoteDebugging) {
 //                      submitURL: 'https://praharsh.xyz/projects/PDFViewer/crash',
 //                      autoSubmit: false });
 
-let menu = Menu.buildFromTemplate(template);
+let menu = Menu.buildFromTemplate(MENU_TEMPLATE);
 
 // Code to determine how we should handle other attempts to open more instances
 //
