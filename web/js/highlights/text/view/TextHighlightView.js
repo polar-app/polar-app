@@ -4,7 +4,7 @@ const {PageRedrawHandler} = require("../../../PageRedrawHandler");
 const {PDFRenderer} = require("../../../PDFRenderer");
 const {Rects} = require("../../../Rects");
 const {RendererContextMenu} = require("../../../contextmenu/electron/RendererContextMenu");
-const {ContextMenuType} = require("../../../contextmenu/electron/ContextMenuType");
+const {ContextMenuType} = require("../../../contextmenu/ContextMenuType");
 
 class TextHighlightView {
 

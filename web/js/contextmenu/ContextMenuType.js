@@ -9,6 +9,12 @@ module.exports.ContextMenuType = Object.freeze({
     DEFAULT: "DEFAULT",
 
     /**
+     * A pagemark is selected.
+     */
+    PAGEMARK: "PAGEMARK",
+
+
+    /**
      * Text is selected so we should have 'copy', 'create highlight', etc.
      */
     TEXT_SELECTED: "TEXT_SELECTED",

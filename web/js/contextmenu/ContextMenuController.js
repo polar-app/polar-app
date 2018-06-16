@@ -1,7 +1,14 @@
+const {ElectronContextMenu} = require("./electron/ElectronContextMenu");
+const {ContextMenuType} = require("./ContextMenuType");
+
 /**
  * Handles listening for context menus and then calling back the proper handler.
  */
 class ContextMenuController {
+
+    constructor() {
+        this.contextMenu = new ElectronContextMenu();
+    }
 
     start() {
 
@@ -23,9 +30,11 @@ class ContextMenuController {
 
                 console.log("FIXME: elementsMatchingSelectors", elementsMatchingSelectors);
 
-            })
+                this.contextMenu.trigger({x: event.pageX, y: event.pageY }, [ContextMenuType.TEXT_HIGHLIGHT])
 
-        });
+            }.bind(this));
+
+        }.bind(this));
 
     }
 

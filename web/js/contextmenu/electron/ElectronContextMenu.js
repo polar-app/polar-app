@@ -1,35 +1,45 @@
 const electron = require('electron');
 const remote = electron.remote;
-const Menu = electron.Menu;
-const MenuItem = electron.MenuItem;
-const {ContextMenuType} = require("./ContextMenuType");
+const {ContextMenuType} = require("../ContextMenuType");
+const {ContextMenu} = require("../ContextMenu");
 
-module.exports.ElectronContextMenu = class {
+class ElectronContextMenu extends ContextMenu {
 
-    constructor() {
+    trigger(point, contextMenuTypes) {
 
+        let window = remote.getCurrentWindow();
+
+        console.log("GOT IT for: " + contextMenuTypes)
+
+        const ctxMenu = ElectronContextMenu.createTextHighlightContextMenu();
+
+        ctxMenu.popup(window, point.x, point.y);
 
     }
 
-    // register(element, type, callback) {
-    //
-    // }
+    static createTextHighlightContextMenu() {
 
-    popup(window, screenX, screenY, contextMenuType) {
+        // console.log("FIXME:3", electron.remote.Menu);
+        // console.log("FIXME:4", new electron.remote.Menu());
+        // console.log("FIXME:0", electron.Menu);
+        // console.log("FIXME:1", Menu);
+        // console.log("FIXME:2", Menu.buildFromTemplate);
 
-        console.log("GOT IT for: " + ContextMenuType)
+        const ctxMenu = new electron.remote.Menu();
 
-        const ctxMenu = new Menu();
-        // ctxMenu.append(new MenuItem({
-        //     label: "hello"
-        // }));
-
-        ctxMenu.append(new MenuItem({ label: 'Copy', accelerator: 'CmdOrCtrl+C', role: 'copy' }))
-        ctxMenu.append(new MenuItem({ label: 'Inspect Element', accelerator: 'Ctrl+Shift+I', click: function () {
-                window.inspectElement(screenX, screenY)
+        ctxMenu.append(new electron.remote.MenuItem({ label: 'Add Flashcard', accelerator: 'CmdOrCtrl+A', click: function () {
+                window.alert("hello world");
             } }));
 
-        ctxMenu.popup(window, screenX, screenY);
+        // ctxMenu.append(new MenuItem({ label: 'Copy', accelerator: 'CmdOrCtrl+C', role: 'copy' }))
+        // ctxMenu.append(new MenuItem({ label: 'Inspect Element', accelerator: 'Ctrl+Shift+I', click: function () {
+        //         window.inspectElement(screenX, screenY)
+        //     } }));
+
+        return ctxMenu;
+
     }
 
 };
+
+module.exports.ElectronContextMenu = ElectronContextMenu;

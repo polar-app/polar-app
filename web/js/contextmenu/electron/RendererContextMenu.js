@@ -1,6 +1,12 @@
 // const remote = require('electron').remote;
 // const {ContextMenuType} = require("./ContextMenuType");
 
+/**
+ * Listens in the renderer for the proper context menu then sends a request
+ * to the electron ElectronContextMenu system to raise the native context menu.
+ *
+ * @type {RendererContextMenu}
+ */
 module.exports.RendererContextMenu = class {
 
     constructor() {

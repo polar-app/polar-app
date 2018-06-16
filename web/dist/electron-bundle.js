@@ -25980,6 +25980,46 @@ new Launcher(persistenceLayerFactory).launch().then(function () {
 
 /***/ }),
 
+/***/ "./web/js/contextmenu/ContextMenu.js":
+/*!*******************************************!*\
+  !*** ./web/js/contextmenu/ContextMenu.js ***!
+  \*******************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var ContextMenu = function () {
+  function ContextMenu() {
+    _classCallCheck(this, ContextMenu);
+  }
+
+  _createClass(ContextMenu, [{
+    key: "trigger",
+
+
+    /**
+     * Raise a context menu, at the given point (x,y), for the given types
+     * (ContextMenuType).
+     *
+     * @param point
+     * @param types
+     */
+    value: function trigger(point, contextMenuTypes) {}
+  }]);
+
+  return ContextMenu;
+}();
+
+module.exports.ContextMenu = ContextMenu;
+
+/***/ }),
+
 /***/ "./web/js/contextmenu/ContextMenuController.js":
 /*!*****************************************************!*\
   !*** ./web/js/contextmenu/ContextMenuController.js ***!
@@ -25994,12 +26034,22 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
+var _require = __webpack_require__(/*! ./electron/ElectronContextMenu */ "./web/js/contextmenu/electron/ElectronContextMenu.js"),
+    ElectronContextMenu = _require.ElectronContextMenu;
+
+var _require2 = __webpack_require__(/*! ./ContextMenuType */ "./web/js/contextmenu/ContextMenuType.js"),
+    ContextMenuType = _require2.ContextMenuType;
+
 /**
  * Handles listening for context menus and then calling back the proper handler.
  */
+
+
 var ContextMenuController = function () {
     function ContextMenuController() {
         _classCallCheck(this, ContextMenuController);
+
+        this.contextMenu = new ElectronContextMenu();
     }
 
     _createClass(ContextMenuController, [{
@@ -26022,8 +26072,10 @@ var ContextMenuController = function () {
                     var elementsMatchingSelectors = ContextMenuController.elementFromEventMatchingSelectors(event, annotationSelectors);
 
                     console.log("FIXME: elementsMatchingSelectors", elementsMatchingSelectors);
-                });
-            });
+
+                    this.contextMenu.trigger({ x: event.pageX, y: event.pageY }, [ContextMenuType.TEXT_HIGHLIGHT]);
+                }.bind(this));
+            }.bind(this));
         }
     }], [{
         key: "elementsFromEvent",
@@ -26075,10 +26127,10 @@ module.exports.ContextMenuController = ContextMenuController;
 
 /***/ }),
 
-/***/ "./web/js/contextmenu/electron/ContextMenuType.js":
-/*!********************************************************!*\
-  !*** ./web/js/contextmenu/electron/ContextMenuType.js ***!
-  \********************************************************/
+/***/ "./web/js/contextmenu/ContextMenuType.js":
+/*!***********************************************!*\
+  !*** ./web/js/contextmenu/ContextMenuType.js ***!
+  \***********************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -26093,6 +26145,11 @@ module.exports.ContextMenuType = Object.freeze({
    * The default context menu.
    */
   DEFAULT: "DEFAULT",
+
+  /**
+   * A pagemark is selected.
+   */
+  PAGEMARK: "PAGEMARK",
 
   /**
    * Text is selected so we should have 'copy', 'create highlight', etc.
@@ -26113,6 +26170,88 @@ module.exports.ContextMenuType = Object.freeze({
 
 /***/ }),
 
+/***/ "./web/js/contextmenu/electron/ElectronContextMenu.js":
+/*!************************************************************!*\
+  !*** ./web/js/contextmenu/electron/ElectronContextMenu.js ***!
+  \************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var electron = __webpack_require__(/*! electron */ "electron");
+var remote = electron.remote;
+
+var _require = __webpack_require__(/*! ../ContextMenuType */ "./web/js/contextmenu/ContextMenuType.js"),
+    ContextMenuType = _require.ContextMenuType;
+
+var _require2 = __webpack_require__(/*! ../ContextMenu */ "./web/js/contextmenu/ContextMenu.js"),
+    ContextMenu = _require2.ContextMenu;
+
+var ElectronContextMenu = function (_ContextMenu) {
+    _inherits(ElectronContextMenu, _ContextMenu);
+
+    function ElectronContextMenu() {
+        _classCallCheck(this, ElectronContextMenu);
+
+        return _possibleConstructorReturn(this, (ElectronContextMenu.__proto__ || Object.getPrototypeOf(ElectronContextMenu)).apply(this, arguments));
+    }
+
+    _createClass(ElectronContextMenu, [{
+        key: "trigger",
+        value: function trigger(point, contextMenuTypes) {
+
+            var window = remote.getCurrentWindow();
+
+            console.log("GOT IT for: " + contextMenuTypes);
+
+            var ctxMenu = ElectronContextMenu.createTextHighlightContextMenu();
+
+            ctxMenu.popup(window, point.x, point.y);
+        }
+    }], [{
+        key: "createTextHighlightContextMenu",
+        value: function createTextHighlightContextMenu() {
+
+            // console.log("FIXME:3", electron.remote.Menu);
+            // console.log("FIXME:4", new electron.remote.Menu());
+            // console.log("FIXME:0", electron.Menu);
+            // console.log("FIXME:1", Menu);
+            // console.log("FIXME:2", Menu.buildFromTemplate);
+
+            var ctxMenu = new electron.remote.Menu();
+
+            ctxMenu.append(new electron.remote.MenuItem({ label: 'Add Flashcard', accelerator: 'CmdOrCtrl+A', click: function click() {
+                    window.alert("hello world");
+                } }));
+
+            // ctxMenu.append(new MenuItem({ label: 'Copy', accelerator: 'CmdOrCtrl+C', role: 'copy' }))
+            // ctxMenu.append(new MenuItem({ label: 'Inspect Element', accelerator: 'Ctrl+Shift+I', click: function () {
+            //         window.inspectElement(screenX, screenY)
+            //     } }));
+
+            return ctxMenu;
+        }
+    }]);
+
+    return ElectronContextMenu;
+}(ContextMenu);
+
+;
+
+module.exports.ElectronContextMenu = ElectronContextMenu;
+
+/***/ }),
+
 /***/ "./web/js/contextmenu/electron/RendererContextMenu.js":
 /*!************************************************************!*\
   !*** ./web/js/contextmenu/electron/RendererContextMenu.js ***!
@@ -26130,6 +26269,12 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 // const remote = require('electron').remote;
 // const {ContextMenuType} = require("./ContextMenuType");
 
+/**
+ * Listens in the renderer for the proper context menu then sends a request
+ * to the electron ElectronContextMenu system to raise the native context menu.
+ *
+ * @type {RendererContextMenu}
+ */
 module.exports.RendererContextMenu = function () {
     function _class() {
 
@@ -28135,7 +28280,7 @@ var _require5 = __webpack_require__(/*! ../../../Rects */ "./web/js/Rects.js"),
 var _require6 = __webpack_require__(/*! ../../../contextmenu/electron/RendererContextMenu */ "./web/js/contextmenu/electron/RendererContextMenu.js"),
     RendererContextMenu = _require6.RendererContextMenu;
 
-var _require7 = __webpack_require__(/*! ../../../contextmenu/electron/ContextMenuType */ "./web/js/contextmenu/electron/ContextMenuType.js"),
+var _require7 = __webpack_require__(/*! ../../../contextmenu/ContextMenuType */ "./web/js/contextmenu/ContextMenuType.js"),
     ContextMenuType = _require7.ContextMenuType;
 
 var TextHighlightView = function () {

@@ -3,11 +3,9 @@
 - the event bridge doesnt' work with Ctrl-Alt-N and Ctrl-Alt-E when the iframe
   is selected.
 
-- after selecting zoom, in the UI, call focus() on the document. Otherwise, if we
-  try to scroll down we actually zoom the page.
-
 - The pagemark end isn't properly positioned when we run Ctrl-Alt-Click
 
+- Text highlights don't work at ALL...
 
 - when the user zooms the page, we should trap this and zoom the UI ourselves.
 
