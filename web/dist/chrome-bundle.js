@@ -56545,6 +56545,7 @@ module.exports.WebView = function (_View) {
                 var currentScale = this.docFormat.currentScale();
                 console.log("Adding transform to pagemark: " + currentScale);
                 pagemarkElement.style.transform = "scale(" + currentScale + ")";
+                pagemarkElement.style.transformOrigin = "center 0";
             }
 
             if (!pagemarkElement.style.width) throw new Error("Could not determine width");

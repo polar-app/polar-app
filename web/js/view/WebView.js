@@ -289,6 +289,7 @@ module.exports.WebView = class extends View {
             let currentScale = this.docFormat.currentScale();
             console.log("Adding transform to pagemark: " + currentScale);
             pagemarkElement.style.transform = `scale(${currentScale})`;
+            pagemarkElement.style.transformOrigin = `center 0`;
         }
 
         if(!pagemarkElement.style.width)
