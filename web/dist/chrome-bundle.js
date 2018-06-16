@@ -56546,6 +56546,10 @@ module.exports.WebView = function (_View) {
                 console.log("Adding transform to pagemark: " + currentScale);
                 pagemarkElement.style.transform = "scale(" + currentScale + ")";
                 pagemarkElement.style.transformOrigin = "center 0";
+
+                // we have to remove left and top...
+                pagemarkElement.style.left = '';
+                pagemarkElement.style.top = '';
             }
 
             if (!pagemarkElement.style.width) throw new Error("Could not determine width");
