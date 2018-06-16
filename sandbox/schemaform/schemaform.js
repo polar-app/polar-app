@@ -109,7 +109,7 @@ class MySimpleMDE extends SimpleMDE {
 // FIXME: see if I can have custom event handlers to adjust the 'textarea' as
 // we work with it.
 
-function CustomFieldTemplate(props) {
+function MarkdownWidget(props) {
     const {id, classNames, label, help, required, description, errors, children} = props;
 
     // FIXME: also onChange is not being sent..
@@ -144,14 +144,14 @@ function CustomFieldTemplate(props) {
 const uiSchema = {
     front: {
         //"ui:widget": "textarea",
-         "ui:widget": CustomFieldTemplate,
+         "ui:widget": MarkdownWidget,
         // "ui:widget": MySimpleMDE,
         // "ui:options": {
         //     label: false
         // }
     },
     back: {
-        // "ui:widget": SimpleMDE,
+        "ui:widget": MarkdownWidget,
         // "ui:options": {
         //     label: false
         // }
