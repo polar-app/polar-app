@@ -54,6 +54,7 @@
     "chai-diff": "^1.0.1",
     "electron": "^2.0.2",
     "electron-builder": "^20.15.1",
+    "jsdom": "^11.11.0",
     "mocha": "^5.2.0",
     "source-map-loader": "^0.2.3",
     "spectron": "^3.8.0",

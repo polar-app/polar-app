@@ -23,7 +23,7 @@ class HTMLViewer extends Viewer {
 
             this._captureBrowserZoom();
 
-            this.loadContentIFrame();
+            this._loadRequestData();
 
             new IFrameWatcher(this.content, function () {
 
@@ -113,7 +113,7 @@ class HTMLViewer extends Viewer {
         pageElement.appendChild(endOfContent);
     }
 
-    loadContentIFrame() {
+    _loadRequestData() {
 
         // *** now setup the iframe
 
@@ -127,6 +127,13 @@ class HTMLViewer extends Viewer {
         }
 
         this.content.src = file;
+
+        let fingerprint = url.searchParams.get("fingerprint");
+        if(!fingerprint) {
+            throw new Error("Fingerprint is required");
+        }
+
+        this.htmlFormat.setCurrentDocFingerprint(fingerprint);
 
     }
 

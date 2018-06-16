@@ -8,7 +8,7 @@ class HTMLFormat extends DocFormat {
      */
     currentDocFingerprint() {
 
-        let polarFingerprint = document.querySelector("meta[name='polar-fingerprint']");
+        let polarFingerprint = this._queryFingerprintElement();
 
         if (polarFingerprint !== null) {
             return polarFingerprint.getAttribute("content");
@@ -16,6 +16,15 @@ class HTMLFormat extends DocFormat {
 
         return null;
 
+    }
+
+    setCurrentDocFingerprint(fingerprint) {
+        let polarFingerprint = this._queryFingerprintElement();
+        polarFingerprint.setAttribute("content", fingerprint);
+    }
+
+    _queryFingerprintElement() {
+        return document.querySelector("meta[name='polar-fingerprint']");
     }
 
     /**

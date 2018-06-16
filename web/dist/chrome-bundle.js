@@ -51157,13 +51157,24 @@ var HTMLFormat = function (_DocFormat) {
          */
         value: function currentDocFingerprint() {
 
-            var polarFingerprint = document.querySelector("meta[name='polar-fingerprint']");
+            var polarFingerprint = this._queryFingerprintElement();
 
             if (polarFingerprint !== null) {
                 return polarFingerprint.getAttribute("content");
             }
 
             return null;
+        }
+    }, {
+        key: "setCurrentDocFingerprint",
+        value: function setCurrentDocFingerprint(fingerprint) {
+            var polarFingerprint = this._queryFingerprintElement();
+            polarFingerprint.setAttribute("content", fingerprint);
+        }
+    }, {
+        key: "_queryFingerprintElement",
+        value: function _queryFingerprintElement() {
+            return document.querySelector("meta[name='polar-fingerprint']");
         }
 
         /**
@@ -56984,7 +56995,7 @@ var HTMLViewer = function (_Viewer) {
 
                 this._captureBrowserZoom();
 
-                this.loadContentIFrame();
+                this._loadRequestData();
 
                 new IFrameWatcher(this.content, function () {
 
@@ -57068,8 +57079,8 @@ var HTMLViewer = function (_Viewer) {
             pageElement.appendChild(endOfContent);
         }
     }, {
-        key: "loadContentIFrame",
-        value: function loadContentIFrame() {
+        key: "_loadRequestData",
+        value: function _loadRequestData() {
 
             // *** now setup the iframe
 
@@ -57083,6 +57094,13 @@ var HTMLViewer = function (_Viewer) {
             }
 
             this.content.src = file;
+
+            var fingerprint = url.searchParams.get("fingerprint");
+            if (!fingerprint) {
+                throw new Error("Fingerprint is required");
+            }
+
+            this.htmlFormat.setCurrentDocFingerprint(fingerprint);
         }
     }]);
 
