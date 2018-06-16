@@ -204,19 +204,22 @@ function onSubmit(data) {
     console.log("FIXME: onSubmit", arguments);
 }
 
-class MyFormHandler extends FormHandler {
+class PostMessageFormHandler extends FormHandler {
 
     onChange(data) {
+        window.postMessage({ type: "onChange", data}, "*");
         console.log("onChange: ", data);
     }
 
 
     onSubmit(data) {
+        window.postMessage({ type: "onSubmit", data}, "*");
         console.log("onSubmit: ", data);
     }
 
 
     onError(data) {
+        window.postMessage({ type: "onError", data}, "*");
         console.log("onError: ", data);
     }
 
@@ -228,7 +231,7 @@ $(document).ready(function() {
 
     let schemaFormElement = document.getElementById("schema-form");
 
-    inputController.createNewFlashcard(schemaFormElement, new MyFormHandler());
+    inputController.createNewFlashcard(schemaFormElement, new PostMessageFormHandler());
 
     // if(!schemaFormElement) {
     //     throw new Error("No schemaFormElement");
