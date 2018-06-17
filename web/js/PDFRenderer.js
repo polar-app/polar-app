@@ -7,9 +7,13 @@ const {Elements} = require("./utils");
  * DOM, etc.
  *
  * @type {PDFRenderer}
+ * @Deprecated
  */
 class PDFRenderer {
 
+    /**
+     * @Deprecated
+     */
     static currentScale() {
         return window.PDFViewerApplication.pdfViewer._currentScale;
     }
@@ -75,6 +79,6 @@ class PDFRenderer {
 
     }
 
-};
+}
 
 module.exports.PDFRenderer = PDFRenderer;

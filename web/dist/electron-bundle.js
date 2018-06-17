@@ -25334,6 +25334,7 @@ var _require = __webpack_require__(/*! ./utils */ "./web/js/utils.js"),
  * DOM, etc.
  *
  * @type {PDFRenderer}
+ * @Deprecated
  */
 
 
@@ -25344,6 +25345,11 @@ var PDFRenderer = function () {
 
     _createClass(PDFRenderer, null, [{
         key: "currentScale",
+
+
+        /**
+         * @Deprecated
+         */
         value: function currentScale() {
             return window.PDFViewerApplication.pdfViewer._currentScale;
         }
@@ -25416,8 +25422,6 @@ var PDFRenderer = function () {
 
     return PDFRenderer;
 }();
-
-;
 
 module.exports.PDFRenderer = PDFRenderer;
 
@@ -27517,6 +27521,11 @@ var PDFFormat = function (_DocFormat) {
         key: "targetDocument",
         value: function targetDocument() {
             return document;
+        }
+    }, {
+        key: "currentScale",
+        value: function currentScale() {
+            return window.PDFViewerApplication.pdfViewer._currentScale;
         }
     }]);
 

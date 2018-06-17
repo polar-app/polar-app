@@ -25,6 +25,10 @@
 
     https://stackoverflow.com/questions/19669786/check-if-element-is-visible-in-dom
 
+- There is a problem with the docMeta not being loaded until the entire iframe
+  is loaded...  This isn't really necessary as some pages fetch fonts and so
+  forth.
+
 # Rendering at small screen resolutions doesn't help too much.
 
     - The 750px screen resolution for the main viewer is actually still being

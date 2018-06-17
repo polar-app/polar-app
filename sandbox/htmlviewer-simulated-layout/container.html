@@ -1,0 +1,191 @@
+<html>
+<head>
+    <style>
+
+        body {
+            background-color: #3f3f3f;
+            margin: 0;
+            padding: 0;
+        }
+
+        #viewerContainer {
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
+
+        #content-parent {
+            margin: 0 auto;
+        }
+
+        iframe {
+            display: block;
+            /* z-index: -1; */
+            margin-bottom: 10px;
+            background-color: #ffffff;
+        }
+
+    </style>
+
+
+    <link rel="stylesheet" href="../../node_modules/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="../../node_modules/jquery-contextmenu/dist/jquery.contextMenu.min.css">
+
+    <link rel="stylesheet" href="../../htmlviewer/pdfjs-toolbar.css">
+    <link rel="stylesheet" href="../../pdfviewer-custom/polar.css">
+
+    <!-- TODO: would be nice if we can borrow the viewer css but right now it
+         breaks our layout-->
+    <!--<link rel="stylesheet" href="../pdfviewer/web/viewer.css">-->
+
+    <!--<link rel="stylesheet" href="../../node_modules/bootstrap/dist/css/bootstrap.min.css">-->
+    <!--<link rel="stylesheet" href="../../web/css/bootswatch-slate.min.css">-->
+
+    <meta name="polar-doc-format" content="html">
+
+    <meta name="polar-fingerprint" content="">
+
+    <style>
+
+        iframe {
+            z-index: -1;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+
+<style>
+
+    /*#polar-header {*/
+    /*padding: 0;*/
+    /*height: 75px;*/
+    /*}*/
+
+    /*#polar-header progress {*/
+    /*position: relative;*/
+
+    /*}*/
+
+</style>
+
+<div id="polar-header">
+    <div id="polar-toolbar">
+
+        <!-- END TOOLBAR -->
+
+        <div id="DIV_1">
+            <div id="DIV_2">
+                <div id="DIV_3">
+                    <div id="DIV_4">
+                        <div id="DIV_5">
+
+                            <button id="BUTTON_6">
+                                <span id="SPAN_7">Zoom Out</span>
+                            </button>
+                            <div id="DIV_8">
+                            </div>
+                            <button id="BUTTON_9">
+                                <span id="SPAN_10">Zoom In</span>
+                            </button>
+                        </div> <span id="SPAN_11">
+						<select id="SELECT_12" class="polar-zoom-select">
+
+							<!--<option id="OPTION_13" value="auto" selected="selected">-->
+                            <!--Automatic Zoom-->
+                            <!--</option>-->
+                            <!--<option id="OPTION_14" value="page-actual">-->
+                            <!--Actual Size-->
+                            <!--</option>-->
+                            <!--<option id="OPTION_15" value="page-fit">-->
+                            <!--Page Fit-->
+                            <!--</option>-->
+                            <!--<option id="OPTION_16" value="page-width">-->
+                            <!--Page Width-->
+                            <!--</option>-->
+
+                            <!--<option id="OPTION_17" value="custom" disabled="disabled">-->
+                            <!--</option>-->
+							<option value="0.5" id="OPTION_18">
+								50%
+							</option>
+							<option value="0.75" id="OPTION_19">
+								75%
+							</option>
+							<option value="1" id="OPTION_20" selected="selected">
+								100%
+							</option>
+							<option value="1.25" id="OPTION_21">
+								125%
+							</option>
+							<option value="1.5" id="OPTION_22">
+								150%
+							</option>
+							<option value="2" id="OPTION_23">
+								200%
+							</option>
+							<option value="3" id="OPTION_24">
+								300%
+							</option>
+							<option value="4" id="OPTION_25">
+								400%
+							</option>
+						</select></span>
+                    </div>
+                </div>
+                <div id="DIV_26">
+                    <div id="DIV_27">
+                        <div id="DIV_28">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- END TOOLBAR -->
+    </div>
+    <div id="polar-progress" class="polar-html-header">
+        <progress value="0.0"></progress>
+    </div>
+
+</div>
+
+<!-- NOTE: 750px seems the minimum we can constrain to emulate a proper ipad -->
+
+<div id="viewerContainer" style="position:absolute; width: 100%;">
+
+    <div id="content-parent" class="page" data-page-number="1" style="width: 750px; transform: scale(2.0); transform-origin: center 0;">
+        <!--<div id="click-layer" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-color: orange; opacity: 0.5;">-->
+
+
+        <!-- FIXME: this is a fake text highlight -->
+        <div class="text-highlight" style="position: absolute; background-color: yellow; opacity: 0.5; left: 100px; top: 500px; width: 91px; height: 19px; z-index: 1;"></div>
+        <!-- FIXME: this overlap layer DOES work to find the click position but
+            it means that I can't click on the links and that the document is
+            not usable -->
+
+        <!--<div class="overlap-layer" style="position: absolute; left: 113px; top: 45px; width: 768px; height: 19034px; z-index: -1;"></div>-->
+        <div class="textLayer iframeWrapper">
+
+            <iframe src="iframe.html" style="width: 750px; min-height: 970px; " frameborder="0" id="content"></iframe>
+
+            <!-- TODO: this is a bit of a hack because the pagemarks system
+                 listens to the page being redrawn to redraw the pagemarks and
+                 looks for a new div removed/inserted to detect if a page has
+                 been re-rendered/re-scaled.  -->
+            <div class="endOfContent"></div>
+
+        </div>
+
+    </div>
+</div>
+
+<!-- FIXME: the footer right now does not work when I resize the viewer.-->
+
+<!--<div id="polar-footer">-->
+<!--<div id="polar-doc-overview"></div>-->
+<!--</div>-->
+
+</body>
+</html>

@@ -42,6 +42,10 @@ class PDFFormat extends DocFormat {
         return document;
     }
 
+    currentScale() {
+        return window.PDFViewerApplication.pdfViewer._currentScale;
+    }
+
 }
 
 module.exports.PDFFormat = PDFFormat;
