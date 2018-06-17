@@ -1,4 +1,5 @@
 var path = require('path');
+var webpack = require('webpack');
 
 module.exports = [
     {
@@ -27,7 +28,15 @@ module.exports = [
         node: {
             //needed to make webpack work on chrome
             fs: 'empty'
-        }
+        },
+        plugins: [
+            new webpack.ProvidePlugin({
+                $: "jquery",
+                jQuery: "jquery",
+                "window.$": "jquery",
+                "window.jQuery": "jquery"
+            })
+        ]
 
     },
     {

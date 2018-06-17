@@ -1,13 +1,22 @@
-const {ElectronContextMenu} = require("./electron/ElectronContextMenu");
+const {ipcRenderer} = require('electron')
 const {ContextMenuType} = require("./ContextMenuType");
 
 /**
  * Handles listening for context menus and then calling back the proper handler.
+ *
+ * IPC messages:
+ *
+ * context-menu-create-flashcard: open the 'create flashcard' modal.
  */
 class ContextMenuController {
 
     constructor() {
-        this.contextMenu = new ElectronContextMenu();
+
+        ipcRenderer.on('context-menu-create-flashcard', (event, arg) => {
+            console.log("GOT MESSAGE!!!", arg) // prints "ping"
+        });
+
+
     }
 
     start() {
@@ -30,7 +39,10 @@ class ContextMenuController {
 
                 console.log("FIXME: elementsMatchingSelectors", elementsMatchingSelectors);
 
-                this.contextMenu.trigger({x: event.pageX, y: event.pageY }, [ContextMenuType.TEXT_HIGHLIGHT])
+                ipcRenderer.send('context-menu-trigger', {
+                    point: {x: event.pageX, y: event.pageY },
+                    contextMenuTypes: [ContextMenuType.TEXT_HIGHLIGHT]
+                })
 
             }.bind(this));
 

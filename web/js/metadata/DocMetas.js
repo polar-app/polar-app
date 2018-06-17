@@ -9,6 +9,7 @@ const {ISODateTime} = require("./ISODateTime");
 const {AnnotationInfo} = require("./AnnotationInfo");
 const {MetadataSerializer} = require("./MetadataSerializer");
 const {TextHighlightRecords} = require("./TextHighlightRecords");
+const {Hashcodes} = require("../Hashcodes");
 const {forDict} = require("../utils");
 
 class DocMetas {
@@ -138,7 +139,7 @@ class DocMetas {
             forDict(pageMeta.textHighlights, function (key, textHighlight) {
                 if(! textHighlight.id) {
                     console.warn("Text highlight given ID");
-                    textHighlight.id = TextHighlightRecords.createID(textHighlight.rects);
+                    textHighlight.id = Hashcodes.createID(textHighlight.rects);
                 }
             });
 

@@ -432,7 +432,6 @@ let quitapp, URL;
 let diskDatastore = new DiskDatastore();
 
 global.diskDatastore = diskDatastore;
-global.electronContextMenu = new ElectronContextMenu();
 
 // TODO: I think we need to wait until the webserver port is available before
 // continuing.
@@ -501,6 +500,8 @@ app.on('ready', async function() {
 
     await diskDatastore.init();
 
+    console.log("FIXME0a: ", electron.ipcMain)
+
     contextMenu = Menu.buildFromTemplate([
         { label: 'Minimize', type: 'radio', role: 'minimize' },
         { type: 'separator' },
@@ -521,6 +522,9 @@ app.on('ready', async function() {
     //appIcon.setContextMenu(contextMenu);
 
     mainWindow = createWindow();
+
+    // start the context menu system.
+    new ElectronContextMenu();
 
     if(args.enableDevTools) {
         mainWindow.toggleDevTools();

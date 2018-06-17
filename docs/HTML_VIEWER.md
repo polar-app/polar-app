@@ -46,6 +46,14 @@
 
     https://stackoverflow.com/questions/10359485/how-to-download-and-unzip-a-zip-file-in-memory-in-nodejs
 
+# Expanding past 850px
+
+  850px is still a bit small but it's what we need to trigger ipad mode.
+
+  What I COULD do is size down to 850... find the hidden CSS nodes, then change
+  the browser style bit FIRST I set display:none manually!  Since there isn't
+  javascript at this point there's that can be done to block it.
+
 # Broken Examples:
 
 

@@ -132,8 +132,6 @@ function MarkdownWidget(props) {
     let result = (
         <div className="simplemde-control" data-required={required} data-textarea-id={id}>
             <div className={classNames}>
-                {/*<textarea id="textarea-{id}"></textarea>*/}
-                {/*<label htmlFor={id}>FIXME: {label}{required ? "*" : null}</label>*/}
                 {description}
                 {children}
                 {errors}
