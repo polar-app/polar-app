@@ -5,9 +5,12 @@ const BrowserWindow = electron.BrowserWindow;
 const ipcMain = electron.ipcMain;
 
 const {ContextMenuType} = require("../ContextMenuType");
+const {DialogWindow} = require("./DialogWindow");
 const {ContextMenu} = require("../ContextMenu");
 const {Preconditions} = require("../../Preconditions");
 
+const WEBSERVER_PORT = 8500;
+const DEFAULT_HOST = "127.0.0.1";
 
 /**
  * Careful here as this is confusing.  We're using the REMOVE interface so the
@@ -49,6 +52,10 @@ class ElectronContextMenu extends ContextMenu {
         sender.send('context-menu-create-flashcard', {
             command: "add-flashcard"
         });
+
+        let url = `http://${DEFAULT_HOST}:${WEBSERVER_PORT}/card-creator/index.html`;
+
+        DialogWindow.create({url});
 
         // // FIXME: it would be BETTER to send an event to the renderer to trigger this..
         //
