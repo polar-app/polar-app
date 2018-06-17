@@ -53,6 +53,14 @@ class HTMLFormat extends DocFormat {
         };
     }
 
+    textHighlightOptions() {
+        return {
+            // I have NO idea why we require 1... CSS zIndex is insane!
+            zIndex: 1,
+            requiresTransformForScale: true
+        };
+    }
+
     currentScale() {
 
         let select = document.querySelector("select");
@@ -66,6 +74,10 @@ class HTMLFormat extends DocFormat {
 
         if(isNaN(result)) {
             throw new Error("Not a number from: " + value);
+        }
+
+        if(result <= 0) {
+            throw new Error("Scale is too small: " + result);
         }
 
         return result;

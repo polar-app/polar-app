@@ -10727,6 +10727,8 @@ var Rects = function () {
          */
         value: function scale(rect, _scale) {
             Preconditions.assertNotNull(rect, "rect");
+            // make sure the input is valid before we work on it.
+            rect = Rects.validate(rect);
 
             rect = Objects.duplicate(rect);
 

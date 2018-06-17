@@ -49,8 +49,6 @@ class TextHighlightView {
 
             // for each rect just call render on that pageElement...
 
-            console.log("Working with N rects: " + textHighlightEvent.textHighlight.rects.length);
-
             forDict(textHighlightEvent.textHighlight.rects, function (id, rect) {
 
                 let callback = function() {
@@ -98,6 +96,28 @@ class TextHighlightView {
 
         highlightElement.style.width = `${highlightRect.width}px`;
         highlightElement.style.height = `${highlightRect.height}px`;
+
+        let textHighlightOptions = docFormat.pagemarkOptions();
+
+        if (textHighlightOptions.zIndex) {
+            highlightElement.style.zIndex = `${textHighlightOptions.zIndex}`;
+        }
+
+        if (textHighlightOptions.requiresTransformForScale) {
+
+            // FIXME: if this is needed, share it with the pagemarks system...
+
+            let currentScale = docFormat.currentScale();
+            console.log("Adding transform to text highlight: " + currentScale);
+            highlightElement.style.transform = `scale(${currentScale})`;
+            highlightElement.style.transformOrigin = `center 0`;
+
+            // we have to remove left and top...
+            highlightElement.style.left = '';
+            highlightElement.style.top = '';
+
+        }
+
 
         // TODO: the problem with this strategy is that it inserts elements in the
         // REVERSE order they are presented visually.  This isn't a problem but

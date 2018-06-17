@@ -25767,6 +25767,8 @@ var Rects = function () {
          */
         value: function scale(rect, _scale) {
             Preconditions.assertNotNull(rect, "rect");
+            // make sure the input is valid before we work on it.
+            rect = Rects.validate(rect);
 
             rect = Objects.duplicate(rect);
 
@@ -27163,6 +27165,11 @@ var DocFormat = function () {
         value: function pagemarkOptions() {
             return {};
         }
+    }, {
+        key: "textHighlightOptions",
+        value: function textHighlightOptions() {
+            return {};
+        }
     }]);
 
     return DocFormat;
@@ -27392,6 +27399,15 @@ var HTMLFormat = function (_DocFormat) {
             };
         }
     }, {
+        key: "textHighlightOptions",
+        value: function textHighlightOptions() {
+            return {
+                // I have NO idea why we require 1... CSS zIndex is insane!
+                zIndex: 1,
+                requiresTransformForScale: true
+            };
+        }
+    }, {
         key: "currentScale",
         value: function currentScale() {
 
@@ -27406,6 +27422,10 @@ var HTMLFormat = function (_DocFormat) {
 
             if (isNaN(result)) {
                 throw new Error("Not a number from: " + value);
+            }
+
+            if (result <= 0) {
+                throw new Error("Scale is too small: " + result);
             }
 
             return result;
@@ -28305,8 +28325,6 @@ var TextHighlightView = function () {
 
                 // for each rect just call render on that pageElement...
 
-                console.log("Working with N rects: " + textHighlightEvent.textHighlight.rects.length);
-
                 forDict(textHighlightEvent.textHighlight.rects, function (id, rect) {
 
                     var callback = function callback() {
@@ -28354,6 +28372,26 @@ var TextHighlightView = function () {
 
             highlightElement.style.width = highlightRect.width + "px";
             highlightElement.style.height = highlightRect.height + "px";
+
+            var textHighlightOptions = docFormat.pagemarkOptions();
+
+            if (textHighlightOptions.zIndex) {
+                highlightElement.style.zIndex = "" + textHighlightOptions.zIndex;
+            }
+
+            if (textHighlightOptions.requiresTransformForScale) {
+
+                // FIXME: if this is needed, share it with the pagemarks system...
+
+                var _currentScale = docFormat.currentScale();
+                console.log("Adding transform to text highlight: " + _currentScale);
+                highlightElement.style.transform = "scale(" + _currentScale + ")";
+                highlightElement.style.transformOrigin = "center 0";
+
+                // we have to remove left and top...
+                highlightElement.style.left = '';
+                highlightElement.style.top = '';
+            }
 
             // TODO: the problem with this strategy is that it inserts elements in the
             // REVERSE order they are presented visually.  This isn't a problem but

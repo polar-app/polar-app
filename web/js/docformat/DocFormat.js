@@ -97,6 +97,9 @@ class DocFormat {
         return {};
     }
 
+    textHighlightOptions() {
+        return {};
+    }
 }
 
 module.exports.DocFormat = DocFormat;

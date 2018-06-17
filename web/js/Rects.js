@@ -8,6 +8,8 @@ class Rects {
      */
     static scale(rect, scale) {
         Preconditions.assertNotNull(rect, "rect");
+        // make sure the input is valid before we work on it.
+        rect = Rects.validate(rect);
 
         rect = Objects.duplicate(rect);
 
