@@ -7,8 +7,8 @@ import Form from "react-jsonschema-form";
 import SimpleMDE from 'react-simplemde-editor';
 
 
-const {InputController} = require("../../web/js/input/InputController");
-const {FormHandler} = require("../../web/js/input/FormHandler");
+const {InputController} = require("../input/InputController");
+const {FormHandler} = require("../input/FormHandler");
 
 const schema = {
     "title": "Flashcard",
@@ -197,23 +197,37 @@ function onSubmit(data) {
     console.log("FIXME: onSubmit", arguments);
 }
 
+/**
+ * Convert the data to an external form. The uiSchema includes functions which
+ * can't be serialized.
+ *
+ * @param data
+ */
+function dataToExternal(data) {
+
+    let result = Object.assign({}, data);
+    delete result.uiSchema;
+    return result;
+
+}
+
 class PostMessageFormHandler extends FormHandler {
 
     onChange(data) {
-        window.postMessage({ type: "onChange", data}, "*");
         console.log("onChange: ", data);
+        window.postMessage({ type: "onChange", data: dataToExternal(data)}, "*");
     }
 
 
     onSubmit(data) {
-        window.postMessage({ type: "onSubmit", data}, "*");
         console.log("onSubmit: ", data);
+        window.postMessage({ type: "onSubmit", data: dataToExternal(data)}, "*");
     }
 
 
     onError(data) {
-        window.postMessage({ type: "onError", data}, "*");
         console.log("onError: ", data);
+        window.postMessage({ type: "onError", data: dataToExternal(data)}, "*");
     }
 
 }

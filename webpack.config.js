@@ -1,11 +1,11 @@
 var path = require('path');
 
 module.exports = [
-
     {
         mode: 'development',
         entry: {
-            chrome: [ "babel-polyfill", "./web/js/apps/chrome.js"]
+            "chrome": [ "babel-polyfill", "./web/js/apps/chrome.js"],
+            "card-creator": [ "babel-polyfill", "./web/js/apps/card-creator.js"]
         },
         module: {
             rules: [
