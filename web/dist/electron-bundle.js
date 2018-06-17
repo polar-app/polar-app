@@ -26613,39 +26613,35 @@ module.exports.WebController = function (_Controller) {
         key: "keyBindingListener",
         value: function keyBindingListener(event) {
 
+            console.log("WebController: Got event: ", event);
+
             if (KeyEvents.isKeyMetaActive(event)) {
 
-                var eCode = 69;
+                console.log("WebController: META KEY ACTIVE");
 
-                var mCode = 77;
-                var nCode = 78;
+                if (event.key) {
 
-                // used for MacOS where it generates an 'N' for some reason.
-                var NCode = 192;
+                    switch (event.key.toLowerCase()) {
 
-                switch (event.which) {
+                        case "e":
+                            this.keyBindingErasePagemark(event);
+                            break;
 
-                    case eCode:
-                        this.keyBindingErasePagemark(event);
-                        break;
+                        case "m":
+                            // FIXME this is no longer used here and has migrated to
+                            // PagemarkCoverageEventListener
+                            this.keyBindingPagemarkUpToMouse(event);
+                            break;
 
-                    case mCode:
-                        // FIXME this is no longer used here and has migrated to
-                        // PagemarkCoverageEventListener
-                        this.keyBindingPagemarkUpToMouse(event);
-                        break;
+                        case "n":
+                            console.log("WebController: ENTIRE PAGE");
+                            this.keyBindingPagemarkEntirePage(event);
+                            break;
 
-                    case nCode:
-                        this.keyBindingPagemarkEntirePage(event);
-                        break;
+                        default:
+                            break;
 
-                    case NCode:
-                        this.keyBindingPagemarkEntirePage(event);
-                        break;
-
-                    default:
-                        break;
-
+                    }
                 }
             }
         }
@@ -27646,17 +27642,18 @@ var TextHighlightController = function () {
 
             if (KeyEvents.isKeyMetaActive(event)) {
 
-                var tCode = 84;
+                if (event.key) {
 
-                switch (event.which) {
+                    switch (event.key.toLowerCase()) {
 
-                    case tCode:
-                        this.textHighlighter.doHighlight();
-                        break;
+                        case "t":
+                            this.textHighlighter.doHighlight();
+                            break;
 
-                    default:
-                        break;
+                        default:
+                            break;
 
+                    }
                 }
             }
         }
@@ -27704,6 +27701,9 @@ var TextHighlightController = function () {
                 }
 
             };
+
+            // FIXME: this is the bug.. we're not creating the highlight in the proper
+            // document.
 
             return TextHighlighterFactory.newInstance(document.body, textHighlighterOptions);
         }
@@ -33007,10 +33007,10 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * in the parent DOM window.
  */
 var EventBridge = function () {
-    function EventBridge(textLayer, iframe) {
+    function EventBridge(targetElement, iframe) {
         _classCallCheck(this, EventBridge);
 
-        this.textLayer = textLayer;
+        this.targetElement = targetElement;
         this.iframe = iframe;
     }
 
@@ -33027,10 +33027,9 @@ var EventBridge = function () {
     }, {
         key: "eventListener",
         value: function eventListener(event) {
-            console.log("GOT bridge event", event);
             var newEvent = new event.constructor(event.type, event);
 
-            this.textLayer.dispatchEvent(newEvent);
+            this.targetElement.dispatchEvent(newEvent);
         }
     }]);
 

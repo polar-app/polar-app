@@ -6,8 +6,8 @@
  */
 class EventBridge {
 
-    constructor(textLayer, iframe) {
-        this.textLayer = textLayer;
+    constructor(targetElement, iframe) {
+        this.targetElement = targetElement;
         this.iframe = iframe;
     }
 
@@ -22,10 +22,9 @@ class EventBridge {
     }
 
     eventListener(event) {
-        console.log("GOT bridge event", event);
         let newEvent = new event.constructor(event.type, event)
 
-        this.textLayer.dispatchEvent(newEvent);
+        this.targetElement.dispatchEvent(newEvent);
     }
 
 }

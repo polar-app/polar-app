@@ -29,16 +29,18 @@ class TextHighlightController {
 
         if (KeyEvents.isKeyMetaActive(event)) {
 
-            const tCode = 84;
+            if(event.key) {
 
-            switch (event.which) {
+                switch (event.key.toLowerCase()) {
 
-                case tCode:
-                    this.textHighlighter.doHighlight();
-                    break;
+                    case "t":
+                        this.textHighlighter.doHighlight();
+                        break;
 
-                default:
-                    break;
+                    default:
+                        break;
+
+                }
 
             }
 
@@ -87,6 +89,9 @@ class TextHighlightController {
             }
 
         };
+
+        // FIXME: this is the bug.. we're not creating the highlight in the proper
+        // document.
 
         return TextHighlighterFactory.newInstance(document.body, textHighlighterOptions);
 

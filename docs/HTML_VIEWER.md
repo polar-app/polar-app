@@ -7,10 +7,8 @@
 
 - Text highlights don't work at ALL...
 
-- when the user zooms the page, we should trap this and zoom the UI ourselves.
-
-    - https://stackoverflow.com/questions/27116221/prevent-zoom-cross-browser
-
+- iframe URLs within the main page are not handled and they can have 'script'
+  there which needs to be resolved.
 
 
 # Design for storing + handling static HTML vs PDF
@@ -77,6 +75,26 @@ We can accomplish this by:
 
   - it seems I can just do this by default now... I might want to play with it
     and see what happens to other page types.
+
+# Packaging and Broken Resources:
+
+- We're going to have to download fonts and other resources I think.
+
+    - Access to Font at
+        'http://www.cbc.ca/a/styles/fonts-css/fonts/Stag-Medium-Web.ttf' from origin
+        'http://127.0.0.1:8500' has been blocked by CORS policy: No
+        'Access-Control-Allow-Origin' header is present on the requested resource.
+        Origin 'http://127.0.0.1:8500' is therefore not allowed access.
+
+    - we can bypass this for now by disabling web security which fixes the
+      font loading problem but does NOT solve the issue where I'm not able to
+      cache the results completely locally.
+
+    - Instead of downloading these and keeping them, can I intercept HTTP requests
+      and replay them?
+
+- It would be BETTER if I can build an HTTP proxy with node to capture/save
+  resources and serve them from packages directly.
 
 # Broken Examples:
 

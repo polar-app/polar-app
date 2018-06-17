@@ -249,38 +249,35 @@ module.exports.WebController = class extends Controller {
 
     keyBindingListener(event) {
 
+        console.log("WebController: Got event: ", event);
+
         if (KeyEvents.isKeyMetaActive(event)) {
 
-            const eCode = 69;
+            console.log("WebController: META KEY ACTIVE");
 
-            const mCode = 77;
-            const nCode = 78;
+            if (event.key) {
 
-            // used for MacOS where it generates an 'N' for some reason.
-            const NCode = 192;
+                switch (event.key.toLowerCase()) {
 
-            switch (event.which) {
+                    case "e":
+                        this.keyBindingErasePagemark(event);
+                        break;
 
-                case eCode:
-                    this.keyBindingErasePagemark(event);
-                    break;
+                    case "m":
+                        // FIXME this is no longer used here and has migrated to
+                        // PagemarkCoverageEventListener
+                        this.keyBindingPagemarkUpToMouse(event);
+                        break;
 
-                case mCode:
-                    // FIXME this is no longer used here and has migrated to
-                    // PagemarkCoverageEventListener
-                    this.keyBindingPagemarkUpToMouse(event);
-                    break;
+                    case "n":
+                        console.log("WebController: ENTIRE PAGE");
+                        this.keyBindingPagemarkEntirePage(event);
+                        break;
 
-                case nCode:
-                    this.keyBindingPagemarkEntirePage(event);
-                    break;
+                    default:
+                        break;
 
-                case NCode:
-                    this.keyBindingPagemarkEntirePage(event);
-                    break;
-
-                default:
-                    break;
+                }
 
             }
 
