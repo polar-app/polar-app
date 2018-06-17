@@ -5,12 +5,15 @@ const {PDFRenderer} = require("../../../PDFRenderer");
 const {Rects} = require("../../../Rects");
 const {RendererContextMenu} = require("../../../contextmenu/electron/RendererContextMenu");
 const {ContextMenuType} = require("../../../contextmenu/ContextMenuType");
+const {DocFormatFactory} = require("../../../docformat/DocFormatFactory");
 
 class TextHighlightView {
 
     constructor(model) {
         this.model = model;
         this.rendererContextMenu = new RendererContextMenu();
+        this.docFormat = DocFormatFactory.getInstance();
+
     }
 
     start() {
@@ -35,14 +38,18 @@ class TextHighlightView {
         // we know it's deleted and that we need to remove the renderer
         // and remove the element
 
+        console.log("TextHighlightView.onTextHighlight: ", textHighlightEvent);
+
         if(textHighlightEvent.textHighlight) {
 
             console.log("TextHighlightView.onTextHighlight");
 
             let pageNum = textHighlightEvent.pageMeta.pageInfo.num;
-            let pageElement = PDFRenderer.getPageElementFromPageNum(pageNum);
+            let pageElement = this.docFormat.getPageElementFromPageNum(pageNum);
 
             // for each rect just call render on that pageElement...
+
+            console.log("Working with N rects: " + textHighlightEvent.textHighlight.rects.length);
 
             forDict(textHighlightEvent.textHighlight.rects, function (id, rect) {
 
@@ -66,7 +73,11 @@ class TextHighlightView {
 
     }
 
+    // TODO: this should probably not be static and instead should just be its
+    // own class which is testable.
     static render(pageElement, highlightRect) {
+
+        let docFormat = DocFormatFactory.getInstance();
 
         console.log("Rendering annotation at: ", highlightRect);
 
@@ -78,7 +89,7 @@ class TextHighlightView {
         highlightElement.style.backgroundColor = `yellow`;
         highlightElement.style.opacity = `0.5`;
 
-        let currentScale = PDFRenderer.currentScale();
+        let currentScale = docFormat.currentScale();
 
         highlightRect = Rects.scale(highlightRect, currentScale);
 

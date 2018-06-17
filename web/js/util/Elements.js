@@ -1,4 +1,6 @@
 const $ = require('jquery');
+const {Preconditions} = require("../Preconditions");
+const {Rects} = require("../Rects");
 
 class Elements {
 
@@ -29,7 +31,7 @@ class Elements {
         result.right = result.left + result.width;
         result.bottom = result.top + result.height;
 
-        return result
+        return Rects.validate(result)
 
     }
 

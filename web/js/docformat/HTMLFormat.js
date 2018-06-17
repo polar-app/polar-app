@@ -56,7 +56,19 @@ class HTMLFormat extends DocFormat {
     currentScale() {
 
         let select = document.querySelector("select");
-        return select.options[select.selectedIndex].value;
+        let value = select.options[select.selectedIndex].value;
+
+        if(!value) {
+            throw new Error("No scale value");
+        }
+
+        let result = parseInt(value);
+
+        if(isNaN(result)) {
+            throw new Error("Not a number from: " + value);
+        }
+
+        return result;
 
     }
 

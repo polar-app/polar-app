@@ -49700,15 +49700,18 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var _require = __webpack_require__(/*! ./utils */ "./web/js/utils.js"),
+var _require = __webpack_require__(/*! ./util/Objects */ "./web/js/util/Objects.js"),
     Objects = _require.Objects;
 
-module.exports.Rects = function () {
-    function _class() {
-        _classCallCheck(this, _class);
+var _require2 = __webpack_require__(/*! ./Preconditions */ "./web/js/Preconditions.js"),
+    Preconditions = _require2.Preconditions;
+
+var Rects = function () {
+    function Rects() {
+        _classCallCheck(this, Rects);
     }
 
-    _createClass(_class, null, [{
+    _createClass(Rects, null, [{
         key: "scale",
 
 
@@ -49716,6 +49719,7 @@ module.exports.Rects = function () {
          * Scale the rect based on the current values and the given scale.
          */
         value: function scale(rect, _scale) {
+            Preconditions.assertNotNull(rect, "rect");
 
             rect = Objects.duplicate(rect);
 
@@ -49726,12 +49730,40 @@ module.exports.Rects = function () {
                 rect[key] = rect[key] * _scale;
             }
 
+            return Rects.validate(rect);
+        }
+    }, {
+        key: "validate",
+
+
+        /**
+         * Make sure the given rect has all the correct properties and then return
+         * the rect.
+         */
+        value: function validate(rect) {
+
+            Preconditions.assertNotNull(rect.left, "left");
+            Preconditions.assertNotNull(rect.top, "top");
+            Preconditions.assertNotNull(rect.width, "width");
+            Preconditions.assertNotNull(rect.height, "height");
+            Preconditions.assertNotNull(rect.bottom, "bottom");
+            Preconditions.assertNotNull(rect.right, "right");
+
+            Preconditions.assertNumber(rect.left, "left");
+            Preconditions.assertNumber(rect.top, "top");
+            Preconditions.assertNumber(rect.width, "width");
+            Preconditions.assertNumber(rect.height, "height");
+            Preconditions.assertNumber(rect.bottom, "bottom");
+            Preconditions.assertNumber(rect.right, "right");
+
             return rect;
         }
     }]);
 
-    return _class;
+    return Rects;
 }();
+
+module.exports.Rects = Rects;
 
 /***/ }),
 
@@ -51506,7 +51538,19 @@ var HTMLFormat = function (_DocFormat) {
         value: function currentScale() {
 
             var select = document.querySelector("select");
-            return select.options[select.selectedIndex].value;
+            var value = select.options[select.selectedIndex].value;
+
+            if (!value) {
+                throw new Error("No scale value");
+            }
+
+            var result = parseInt(value);
+
+            if (isNaN(result)) {
+                throw new Error("Not a number from: " + value);
+            }
+
+            return result;
         }
     }, {
         key: "targetDocument",
@@ -51775,12 +51819,6 @@ var TextHighlightController = function () {
 
         this.model = Preconditions.assertNotNull(model, "model");
         this.docFormat = DocFormatFactory.getInstance();
-
-        // if(!this.textHighlighter) {
-        //     throw new Error("No textHighlighter");
-        // }
-
-        // FIXME: rework this to add the highlighting when documents are loaded...
     }
 
     _createClass(TextHighlightController, [{
@@ -51863,11 +51901,6 @@ var TextHighlightController = function () {
 
             var targetDocument = this.docFormat.targetDocument();
 
-            console.log("STartin highlighter on: ", targetDocument.location.href);
-
-            console.log("FIXME1 ", targetDocument.body.ownerDocument);
-            console.log("FIXME2 ", targetDocument.body.ownerDocument.defaultView);
-
             return TextHighlighterFactory.newInstance(targetDocument.body, textHighlighterOptions);
         }
 
@@ -51884,9 +51917,6 @@ var TextHighlightController = function () {
 
             var textHighlightRows = TextHighlightRows.createFromSelector(selector);
 
-            //console.log("FIXME: textHighlightRows: ", textHighlightRows);
-            //console.log("FIXME: new textExtractions is:" , TextExtracter.toTextSelections(textHighlightRows));
-
             var rects = textHighlightRows.map(function (current) {
                 return current.rect;
             });
@@ -51898,7 +51928,7 @@ var TextHighlightController = function () {
 
             // now update the mode based on the current page metadata
 
-            var currentPageMeta = PDFRenderer.getCurrentPageMeta();
+            var currentPageMeta = this.docFormat.getCurrentPageMeta();
 
             var pageMeta = this.model.docMeta.getPageMeta(currentPageMeta.pageNum);
 
@@ -51980,20 +52010,26 @@ var _require = __webpack_require__(/*! ../../../utils.js */ "./web/js/utils.js")
     createSiblingTuples = _require.createSiblingTuples,
     elementOffset = _require.elementOffset;
 
-var _require2 = __webpack_require__(/*! ./RectElement */ "./web/js/highlights/text/controller/RectElement.js"),
-    RectElement = _require2.RectElement;
+var _require2 = __webpack_require__(/*! ../../../util/Objects */ "./web/js/util/Objects.js"),
+    Objects = _require2.Objects;
 
-var _require3 = __webpack_require__(/*! ./TextHighlightRow */ "./web/js/highlights/text/controller/TextHighlightRow.js"),
-    TextHighlightRow = _require3.TextHighlightRow;
+var _require3 = __webpack_require__(/*! ./RectElement */ "./web/js/highlights/text/controller/RectElement.js"),
+    RectElement = _require3.RectElement;
 
-var _require4 = __webpack_require__(/*! ./IntermediateRow */ "./web/js/highlights/text/controller/IntermediateRow.js"),
-    IntermediateRow = _require4.IntermediateRow;
+var _require4 = __webpack_require__(/*! ./TextHighlightRow */ "./web/js/highlights/text/controller/TextHighlightRow.js"),
+    TextHighlightRow = _require4.TextHighlightRow;
 
-var _require5 = __webpack_require__(/*! ../../../Rects */ "./web/js/Rects.js"),
-    Rects = _require5.Rects;
+var _require5 = __webpack_require__(/*! ./IntermediateRow */ "./web/js/highlights/text/controller/IntermediateRow.js"),
+    IntermediateRow = _require5.IntermediateRow;
 
-var _require6 = __webpack_require__(/*! ../../../PDFRenderer */ "./web/js/PDFRenderer.js"),
-    PDFRenderer = _require6.PDFRenderer;
+var _require6 = __webpack_require__(/*! ../../../Rects */ "./web/js/Rects.js"),
+    Rects = _require6.Rects;
+
+var _require7 = __webpack_require__(/*! ../../../docformat/DocFormatFactory */ "./web/js/docformat/DocFormatFactory.js"),
+    DocFormatFactory = _require7.DocFormatFactory;
+
+var _require8 = __webpack_require__(/*! ../../../Preconditions */ "./web/js/Preconditions.js"),
+    Preconditions = _require8.Preconditions;
 
 /**
  * TODO:
@@ -52029,7 +52065,11 @@ var TextHighlightRows = function () {
         value: function createFromSelector(selector) {
             var _this = this;
 
-            var elements = Array.from(document.querySelectorAll(selector));
+            var docFormat = DocFormatFactory.getInstance();
+
+            var targetDocument = docFormat.targetDocument();
+
+            var elements = Array.from(targetDocument.querySelectorAll(selector));
 
             if (!elements) {
                 throw new Error("No elements");
@@ -52080,11 +52120,20 @@ var TextHighlightRows = function () {
             rect.bottom = rect.top + rect.height;
             rect.right = rect.left + rect.width;
 
+            rect = Rects.validate(rect);
+
+            var docFormat = DocFormatFactory.getInstance();
+
             // the result needs to factor in the current scale vs the reference
             // scale of 1.0.  We always store / reference the highlights in a scale
             // of 1.0 and then adjust them based on the current view.
 
-            rect = Rects.scale(rect, 1.0 / PDFRenderer.currentScale());
+            var currentScale = docFormat.currentScale();
+
+            Preconditions.assertNotNull(currentScale, "currentScale");
+            Preconditions.assertNumber(currentScale, "currentScale");
+
+            rect = Rects.scale(rect, 1.0 / currentScale);
 
             return new RectElement(rect, element);
         }
@@ -52133,10 +52182,10 @@ var TextHighlightRows = function () {
         key: "computeRectForRow",
         value: function computeRectForRow(row) {
 
-            if (row.length == null || row.length == 0) throw new Error("Invalid row data");
+            if (row.length == null || row.length === 0) throw new Error("Invalid row data");
 
             // duplicate the first entry... we will keep maximixing the bounds.
-            var result = JSON.parse(JSON.stringify(row[0].rect));
+            var result = Rects.validate(Objects.duplicate(row[0].rect));
 
             row.forEach(function (rectElement) {
 
@@ -52160,7 +52209,7 @@ var TextHighlightRows = function () {
                 result.height = result.bottom - result.top;
             });
 
-            return result;
+            return Rects.validate(result);
         }
     }, {
         key: "computeIntermediateRows",
@@ -52168,6 +52217,8 @@ var TextHighlightRows = function () {
 
             var rows = TextHighlightRows.computeRows(rectElements);
             var result = [];
+
+            console.log("FIXME: working with rows: ", rows);
 
             rows.forEach(function (rectElementsWithinRow) {
                 var rect = TextHighlightRows.computeRectForRow(rectElementsWithinRow);
@@ -52204,12 +52255,14 @@ var TextHighlightRows = function () {
                 // the same rows.  I might need to have some code to first build
                 // this into ROWS.
 
-                if (page.next && page.next.rect.top != page.curr.rect.top) {
+                if (page.next && page.next.rect.top !== page.curr.rect.top) {
                     adjustedRect.bottom = Math.max(page.next.rect.top, adjustedRect.bottom);
                 }
 
                 adjustedRect.width = adjustedRect.right - adjustedRect.left;
                 adjustedRect.height = adjustedRect.bottom - adjustedRect.top;
+
+                adjustedRect = Rects.validate(adjustedRect);
 
                 var textHighlightRow = new TextHighlightRow(adjustedRect, page.curr.rectElements);
 
@@ -52347,12 +52400,16 @@ var _require6 = __webpack_require__(/*! ../../../contextmenu/electron/RendererCo
 var _require7 = __webpack_require__(/*! ../../../contextmenu/ContextMenuType */ "./web/js/contextmenu/ContextMenuType.js"),
     ContextMenuType = _require7.ContextMenuType;
 
+var _require8 = __webpack_require__(/*! ../../../docformat/DocFormatFactory */ "./web/js/docformat/DocFormatFactory.js"),
+    DocFormatFactory = _require8.DocFormatFactory;
+
 var TextHighlightView = function () {
     function TextHighlightView(model) {
         _classCallCheck(this, TextHighlightView);
 
         this.model = model;
         this.rendererContextMenu = new RendererContextMenu();
+        this.docFormat = DocFormatFactory.getInstance();
     }
 
     _createClass(TextHighlightView, [{
@@ -52380,14 +52437,18 @@ var TextHighlightView = function () {
             // we know it's deleted and that we need to remove the renderer
             // and remove the element
 
+            console.log("TextHighlightView.onTextHighlight: ", textHighlightEvent);
+
             if (textHighlightEvent.textHighlight) {
 
                 console.log("TextHighlightView.onTextHighlight");
 
                 var pageNum = textHighlightEvent.pageMeta.pageInfo.num;
-                var pageElement = PDFRenderer.getPageElementFromPageNum(pageNum);
+                var pageElement = this.docFormat.getPageElementFromPageNum(pageNum);
 
                 // for each rect just call render on that pageElement...
+
+                console.log("Working with N rects: " + textHighlightEvent.textHighlight.rects.length);
 
                 forDict(textHighlightEvent.textHighlight.rects, function (id, rect) {
 
@@ -52407,9 +52468,15 @@ var TextHighlightView = function () {
 
             }
         }
+
+        // TODO: this should probably not be static and instead should just be its
+        // own class which is testable.
+
     }], [{
         key: "render",
         value: function render(pageElement, highlightRect) {
+
+            var docFormat = DocFormatFactory.getInstance();
 
             console.log("Rendering annotation at: ", highlightRect);
 
@@ -52421,7 +52488,7 @@ var TextHighlightView = function () {
             highlightElement.style.backgroundColor = "yellow";
             highlightElement.style.opacity = "0.5";
 
-            var currentScale = PDFRenderer.currentScale();
+            var currentScale = docFormat.currentScale();
 
             highlightRect = Rects.scale(highlightRect, currentScale);
 
@@ -55922,6 +55989,12 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 var $ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
 
+var _require = __webpack_require__(/*! ../Preconditions */ "./web/js/Preconditions.js"),
+    Preconditions = _require.Preconditions;
+
+var _require2 = __webpack_require__(/*! ../Rects */ "./web/js/Rects.js"),
+    Rects = _require2.Rects;
+
 var Elements = function () {
     function Elements() {
         _classCallCheck(this, Elements);
@@ -55958,7 +56031,7 @@ var Elements = function () {
             result.right = result.left + result.width;
             result.bottom = result.top + result.height;
 
-            return result;
+            return Rects.validate(result);
         }
 
         /**
@@ -56286,6 +56359,9 @@ var _require = __webpack_require__(/*! ./Optional */ "./web/js/Optional.js"),
 var _require2 = __webpack_require__(/*! ./Preconditions */ "./web/js/Preconditions.js"),
     Preconditions = _require2.Preconditions;
 
+var _require3 = __webpack_require__(/*! ./Rects */ "./web/js/Rects.js"),
+    Rects = _require3.Rects;
+
 module.exports.injectScript = function (src, type) {
 
     var script = document.createElement('script');
@@ -56436,133 +56512,18 @@ module.exports.elementOffset = function (element) {
     result.right = result.left + result.width;
     result.bottom = result.top + result.height;
 
-    return result;
+    return Rects.validate(result);
 };
-
-module.exports.Elements = function () {
-    function _class2() {
-        _classCallCheck(this, _class2);
-    }
-
-    _createClass(_class2, null, [{
-        key: "offset",
-        value: function offset(element) {
-
-            var result = {
-                left: element.offsetLeft,
-                top: element.offsetTop,
-                width: element.offsetWidth,
-                height: element.offsetHeight
-            };
-
-            result.right = result.left + result.width;
-            result.bottom = result.top + result.height;
-
-            return result;
-        }
-
-        /**
-         * Require that the element have the given classname.
-         */
-
-    }, {
-        key: "requireClass",
-        value: function requireClass(element, clazz) {
-
-            var classValue = element.getAttribute("class");
-
-            if (!classValue || classValue.indexOf(clazz) === -1) {
-
-                // element isn't the proper class we're expecting.
-                throw new Error("Element does not have the proper class: " + clazz);
-            }
-        }
-    }, {
-        key: "offsetRelative",
-        value: function offsetRelative(element, parentElement) {
-
-            var offset = { left: 0, top: 0, bottom: 0, right: 0 };
-
-            do {
-
-                if (!isNaN(elem.offsetLeft)) {
-                    offsetLeft += elem.offsetLeft;
-                }
-            } while (element = elem.offsetParent && element !== parentElement);
-
-            return offsetLeft;
-        }
-
-        /**
-         * Keep searching parent notes until we find an element matching the selector,
-         * or return null when one was not found.
-         *
-         * @param selector
-         */
-
-    }, {
-        key: "untilRoot",
-        value: function untilRoot(element, selector) {
-
-            if (!element) throw new Error("element required");
-
-            if (!selector) throw new Error("selector required");
-
-            if (element.matches(selector)) {
-                return element;
-            }
-
-            if (element.parentElement == null) {
-                // we have hit the root.
-                return null;
-            }
-
-            return this.untilRoot(element.parentElement, selector);
-        }
-    }, {
-        key: "calculateVisibilityForDiv",
-        value: function calculateVisibilityForDiv(div) {
-
-            if (div == null) throw Error("Not given a div");
-
-            var windowHeight = $(window).height(),
-                docScroll = $(document).scrollTop(),
-                divPosition = $(div).offset().top,
-                divHeight = $(div).height();
-
-            var hiddenBefore = docScroll - divPosition,
-                hiddenAfter = divPosition + divHeight - (docScroll + windowHeight);
-
-            if (docScroll > divPosition + divHeight || divPosition > docScroll + windowHeight) {
-                return 0;
-            } else {
-                var result = 100;
-
-                if (hiddenBefore > 0) {
-                    result -= hiddenBefore * 100 / divHeight;
-                }
-
-                if (hiddenAfter > 0) {
-                    result -= hiddenAfter * 100 / divHeight;
-                }
-
-                return result;
-            }
-        }
-    }]);
-
-    return _class2;
-}();
 
 /**
  * Support the ability to calculate an offset relative to another element.
  */
 module.exports.OffsetCalculator = function () {
-    function _class3() {
-        _classCallCheck(this, _class3);
+    function _class2() {
+        _classCallCheck(this, _class2);
     }
 
-    _createClass(_class3, null, [{
+    _createClass(_class2, null, [{
         key: "calculate",
 
 
@@ -56592,7 +56553,7 @@ module.exports.OffsetCalculator = function () {
             offset.right = offset.left + offset.width;
             offset.bottom = offset.top + offset.height;
 
-            return offset;
+            return Rects.validate(offset);
         }
     }, {
         key: "_toInt",
@@ -56606,15 +56567,15 @@ module.exports.OffsetCalculator = function () {
         }
     }]);
 
-    return _class3;
+    return _class2;
 }();
 
 module.exports.Styles = function () {
-    function _class4() {
-        _classCallCheck(this, _class4);
+    function _class3() {
+        _classCallCheck(this, _class3);
     }
 
-    _createClass(_class4, null, [{
+    _createClass(_class3, null, [{
         key: "parseTransformScaleX",
         value: function parseTransformScaleX(transform) {
 
@@ -56641,7 +56602,7 @@ module.exports.Styles = function () {
         }
     }]);
 
-    return _class4;
+    return _class3;
 }();
 
 // @Deprecated.

@@ -109,9 +109,6 @@ class TextHighlightController {
 
         let textHighlightRows = TextHighlightRows.createFromSelector(selector);
 
-        //console.log("FIXME: textHighlightRows: ", textHighlightRows);
-        //console.log("FIXME: new textExtractions is:" , TextExtracter.toTextSelections(textHighlightRows));
-
         let rects = textHighlightRows.map(current => current.rect);
 
         let text = this.extractText(selector);
@@ -121,7 +118,7 @@ class TextHighlightController {
 
         // now update the mode based on the current page metadata
 
-        let currentPageMeta = PDFRenderer.getCurrentPageMeta();
+        let currentPageMeta = this.docFormat.getCurrentPageMeta();
 
         let pageMeta = this.model.docMeta.getPageMeta(currentPageMeta.pageNum);
 

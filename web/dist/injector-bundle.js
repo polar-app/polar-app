@@ -10693,6 +10693,87 @@ module.exports.Preconditions = Preconditions;
 
 /***/ }),
 
+/***/ "./web/js/Rects.js":
+/*!*************************!*\
+  !*** ./web/js/Rects.js ***!
+  \*************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var _require = __webpack_require__(/*! ./util/Objects */ "./web/js/util/Objects.js"),
+    Objects = _require.Objects;
+
+var _require2 = __webpack_require__(/*! ./Preconditions */ "./web/js/Preconditions.js"),
+    Preconditions = _require2.Preconditions;
+
+var Rects = function () {
+    function Rects() {
+        _classCallCheck(this, Rects);
+    }
+
+    _createClass(Rects, null, [{
+        key: "scale",
+
+
+        /**
+         * Scale the rect based on the current values and the given scale.
+         */
+        value: function scale(rect, _scale) {
+            Preconditions.assertNotNull(rect, "rect");
+
+            rect = Objects.duplicate(rect);
+
+            for (var key in rect) {
+
+                if (!rect.hasOwnProperty(key)) continue;
+
+                rect[key] = rect[key] * _scale;
+            }
+
+            return Rects.validate(rect);
+        }
+    }, {
+        key: "validate",
+
+
+        /**
+         * Make sure the given rect has all the correct properties and then return
+         * the rect.
+         */
+        value: function validate(rect) {
+
+            Preconditions.assertNotNull(rect.left, "left");
+            Preconditions.assertNotNull(rect.top, "top");
+            Preconditions.assertNotNull(rect.width, "width");
+            Preconditions.assertNotNull(rect.height, "height");
+            Preconditions.assertNotNull(rect.bottom, "bottom");
+            Preconditions.assertNotNull(rect.right, "right");
+
+            Preconditions.assertNumber(rect.left, "left");
+            Preconditions.assertNumber(rect.top, "top");
+            Preconditions.assertNumber(rect.width, "width");
+            Preconditions.assertNumber(rect.height, "height");
+            Preconditions.assertNumber(rect.bottom, "bottom");
+            Preconditions.assertNumber(rect.right, "right");
+
+            return rect;
+        }
+    }]);
+
+    return Rects;
+}();
+
+module.exports.Rects = Rects;
+
+/***/ }),
+
 /***/ "./web/js/apps/injector.js":
 /*!*********************************!*\
   !*** ./web/js/apps/injector.js ***!
@@ -10737,6 +10818,12 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 var $ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
 
+var _require = __webpack_require__(/*! ../Preconditions */ "./web/js/Preconditions.js"),
+    Preconditions = _require.Preconditions;
+
+var _require2 = __webpack_require__(/*! ../Rects */ "./web/js/Rects.js"),
+    Rects = _require2.Rects;
+
 var Elements = function () {
     function Elements() {
         _classCallCheck(this, Elements);
@@ -10773,7 +10860,7 @@ var Elements = function () {
             result.right = result.left + result.width;
             result.bottom = result.top + result.height;
 
-            return result;
+            return Rects.validate(result);
         }
 
         /**
@@ -10985,6 +11072,9 @@ var _require = __webpack_require__(/*! ./Optional */ "./web/js/Optional.js"),
 var _require2 = __webpack_require__(/*! ./Preconditions */ "./web/js/Preconditions.js"),
     Preconditions = _require2.Preconditions;
 
+var _require3 = __webpack_require__(/*! ./Rects */ "./web/js/Rects.js"),
+    Rects = _require3.Rects;
+
 module.exports.injectScript = function (src, type) {
 
     var script = document.createElement('script');
@@ -11135,133 +11225,18 @@ module.exports.elementOffset = function (element) {
     result.right = result.left + result.width;
     result.bottom = result.top + result.height;
 
-    return result;
+    return Rects.validate(result);
 };
-
-module.exports.Elements = function () {
-    function _class2() {
-        _classCallCheck(this, _class2);
-    }
-
-    _createClass(_class2, null, [{
-        key: "offset",
-        value: function offset(element) {
-
-            var result = {
-                left: element.offsetLeft,
-                top: element.offsetTop,
-                width: element.offsetWidth,
-                height: element.offsetHeight
-            };
-
-            result.right = result.left + result.width;
-            result.bottom = result.top + result.height;
-
-            return result;
-        }
-
-        /**
-         * Require that the element have the given classname.
-         */
-
-    }, {
-        key: "requireClass",
-        value: function requireClass(element, clazz) {
-
-            var classValue = element.getAttribute("class");
-
-            if (!classValue || classValue.indexOf(clazz) === -1) {
-
-                // element isn't the proper class we're expecting.
-                throw new Error("Element does not have the proper class: " + clazz);
-            }
-        }
-    }, {
-        key: "offsetRelative",
-        value: function offsetRelative(element, parentElement) {
-
-            var offset = { left: 0, top: 0, bottom: 0, right: 0 };
-
-            do {
-
-                if (!isNaN(elem.offsetLeft)) {
-                    offsetLeft += elem.offsetLeft;
-                }
-            } while (element = elem.offsetParent && element !== parentElement);
-
-            return offsetLeft;
-        }
-
-        /**
-         * Keep searching parent notes until we find an element matching the selector,
-         * or return null when one was not found.
-         *
-         * @param selector
-         */
-
-    }, {
-        key: "untilRoot",
-        value: function untilRoot(element, selector) {
-
-            if (!element) throw new Error("element required");
-
-            if (!selector) throw new Error("selector required");
-
-            if (element.matches(selector)) {
-                return element;
-            }
-
-            if (element.parentElement == null) {
-                // we have hit the root.
-                return null;
-            }
-
-            return this.untilRoot(element.parentElement, selector);
-        }
-    }, {
-        key: "calculateVisibilityForDiv",
-        value: function calculateVisibilityForDiv(div) {
-
-            if (div == null) throw Error("Not given a div");
-
-            var windowHeight = $(window).height(),
-                docScroll = $(document).scrollTop(),
-                divPosition = $(div).offset().top,
-                divHeight = $(div).height();
-
-            var hiddenBefore = docScroll - divPosition,
-                hiddenAfter = divPosition + divHeight - (docScroll + windowHeight);
-
-            if (docScroll > divPosition + divHeight || divPosition > docScroll + windowHeight) {
-                return 0;
-            } else {
-                var result = 100;
-
-                if (hiddenBefore > 0) {
-                    result -= hiddenBefore * 100 / divHeight;
-                }
-
-                if (hiddenAfter > 0) {
-                    result -= hiddenAfter * 100 / divHeight;
-                }
-
-                return result;
-            }
-        }
-    }]);
-
-    return _class2;
-}();
 
 /**
  * Support the ability to calculate an offset relative to another element.
  */
 module.exports.OffsetCalculator = function () {
-    function _class3() {
-        _classCallCheck(this, _class3);
+    function _class2() {
+        _classCallCheck(this, _class2);
     }
 
-    _createClass(_class3, null, [{
+    _createClass(_class2, null, [{
         key: "calculate",
 
 
@@ -11291,7 +11266,7 @@ module.exports.OffsetCalculator = function () {
             offset.right = offset.left + offset.width;
             offset.bottom = offset.top + offset.height;
 
-            return offset;
+            return Rects.validate(offset);
         }
     }, {
         key: "_toInt",
@@ -11305,15 +11280,15 @@ module.exports.OffsetCalculator = function () {
         }
     }]);
 
-    return _class3;
+    return _class2;
 }();
 
 module.exports.Styles = function () {
-    function _class4() {
-        _classCallCheck(this, _class4);
+    function _class3() {
+        _classCallCheck(this, _class3);
     }
 
-    _createClass(_class4, null, [{
+    _createClass(_class3, null, [{
         key: "parseTransformScaleX",
         value: function parseTransformScaleX(transform) {
 
@@ -11340,7 +11315,7 @@ module.exports.Styles = function () {
         }
     }]);
 
-    return _class4;
+    return _class3;
 }();
 
 // @Deprecated.
