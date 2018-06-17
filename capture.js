@@ -16,7 +16,7 @@ const {DiskDatastore} = require("./web/js/datastore/DiskDatastore");
 
 const options = { extraHeaders: 'pragma: no-cache\n' }
 
-const WIDTH = 1280;
+const WIDTH = 375;
 const HEIGHT = 1100;
 
 const BROWSER_WINDOW_OPTIONS = {
@@ -109,17 +109,17 @@ function createWindow(url) {
         console.log("Muting audio...");
         newWindow.webContents.setAudioMuted(true);
 
-        // console.log("Emulating device");
-        // newWindow.webContents.enableDeviceEmulation(DEVICE_EMULATION);
+        console.log("Emulating device");
+        newWindow.webContents.enableDeviceEmulation(DEVICE_EMULATION);
 
-        // let screenDimensionScript = `
-        //     Object.defineProperty(window.screen, "width", { get: function() { console.log("Returning custom width"); return 450; }});
-        //     Object.defineProperty(window.screen, "height", { get: function() { console.log("Returning custom height"); return 450; }});
-        //     Object.defineProperty(window.screen, "availWidth", { get: function() { console.log("Returning custom availWidth"); return 450; }});
-        //     Object.defineProperty(window.screen, "availHeight", { get: function() { console.log("Returning custom availHeight"); return 450; }});
-        // `;
-        //
-        // await newWindow.webContents.executeJavaScript(screenDimensionScript);
+        let screenDimensionScript = `
+            Object.defineProperty(window.screen, "width", { get: function() { console.log("Returning custom width"); return 450; }});
+            Object.defineProperty(window.screen, "height", { get: function() { console.log("Returning custom height"); return 450; }});
+            Object.defineProperty(window.screen, "availWidth", { get: function() { console.log("Returning custom availWidth"); return 450; }});
+            Object.defineProperty(window.screen, "availHeight", { get: function() { console.log("Returning custom availHeight"); return 450; }});
+        `;
+
+        await newWindow.webContents.executeJavaScript(screenDimensionScript);
 
     });
 
@@ -129,7 +129,7 @@ function createWindow(url) {
 
         setTimeout(async function() {
             await captureHTML(newWindow);
-        }, 500000);
+        }, 1);
 
 
     });

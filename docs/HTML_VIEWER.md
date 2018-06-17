@@ -42,6 +42,27 @@
       is just for html archives.
 
 
+# Locked Reflow
+
+This is an idea where we set the screen resolution much much smaller.  Closer to
+a mobile device like an iPhone.  So say 375px wide.
+
+This will build a more realistic "document" view where the viewport is only
+composed of the text.  The PROBLEM here is that viewing it on a 30" monitor would
+be horrible.
+
+To avoid this problem we can 'lock' down the elements by permanently keeping them
+as display: none... then , in theory, I should be able to hide then once I return
+to the normal size.
+
+We can accomplish this by:
+
+    - setting the viewport smaller
+    - capturing all the elements that are now invisible
+    - when the page is reverted, to a larger size, I can then add a new class
+      of "polar-locked-reflow" which is just "display: none !important;" to
+      hide that content.
+
 # Serving zip files:
 
     https://stackoverflow.com/questions/10359485/how-to-download-and-unzip-a-zip-file-in-memory-in-nodejs
@@ -53,6 +74,9 @@
   What I COULD do is size down to 850... find the hidden CSS nodes, then change
   the browser style bit FIRST I set display:none manually!  Since there isn't
   javascript at this point there's that can be done to block it.
+
+  - it seems I can just do this by default now... I might want to play with it
+    and see what happens to other page types.
 
 # Broken Examples:
 
@@ -92,3 +116,13 @@ http://thehill.com/homenews/administration/392430-trump-i-want-americans-to-list
     https://superuser.com/questions/712461/how-to-customize-screen-resolution-reported-to-a-javascript-application-by-a-web
 
     so what I need to do is inject some codde BEFORE the page starts executing.. which is totally poossible.
+
+# Broken Examples that don't render properly
+
+## https://www.thedailybeast.com/report-north-korea-sought-backchannel-with-jared-kushner
+
+- the sidebar is still present but on my Galaxy S8 the width is appropriate..
+
+    - this is because the viewport just has to be smaller. 850 is too large.
+
+    - I think I'm going to have to go with my Locked Reflow hack.
