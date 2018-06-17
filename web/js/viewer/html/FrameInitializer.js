@@ -16,20 +16,31 @@ class FrameInitializer {
 
         this.iframe = iframe;
         this.textLayer = textLayer;
+        this.loaded = false;
 
     }
 
     start() {
 
         this.iframe.contentDocument.addEventListener("readystatechange", this.onReadyStateChange.bind(this));
+        this._checkLoaded();
+
+    }
+
+    _checkLoaded() {
+
+        if(!this.loaded) {
+            this.loaded = true;
+            this.onLoad();
+            console.log("FrameInitializer: Document has finished loading");
+        }
 
     }
 
     onReadyStateChange() {
 
         if(this.iframe.contentDocument.readyState === "complete") {
-            console.log("FrameInitializer: Document has finished loading");
-            this.onLoad();
+            this._checkLoaded();
         }
 
     }

@@ -107,14 +107,24 @@ class TextHighlightView {
 
             // FIXME: if this is needed, share it with the pagemarks system...
 
+            // FIXME: test this out in a sandbox setup.. specifically placing
+            // and resizing a text highlight.on top of something that is being
+            // scaled
+
             let currentScale = docFormat.currentScale();
             console.log("Adding transform to text highlight: " + currentScale);
             highlightElement.style.transform = `scale(${currentScale})`;
             highlightElement.style.transformOrigin = `center 0`;
 
             // we have to remove left and top...
-            highlightElement.style.left = '';
-            highlightElement.style.top = '';
+
+            // FIXME: we have to remove left and top here but in the pagemarks we
+            // have to strip them.. not sure wny.. probably has to do with the
+            // transform origin... mabye the 'left' and 'top' need to be relative
+            // to the transform origin?
+
+            // highlightElement.style.left = '';
+            // highlightElement.style.top = '';
 
         }
 

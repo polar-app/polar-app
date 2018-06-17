@@ -52526,14 +52526,24 @@ var TextHighlightView = function () {
 
                 // FIXME: if this is needed, share it with the pagemarks system...
 
+                // FIXME: test this out in a sandbox setup.. specifically placing
+                // and resizing a text highlight.on top of something that is being
+                // scaled
+
                 var _currentScale = docFormat.currentScale();
                 console.log("Adding transform to text highlight: " + _currentScale);
                 highlightElement.style.transform = "scale(" + _currentScale + ")";
                 highlightElement.style.transformOrigin = "center 0";
 
                 // we have to remove left and top...
-                highlightElement.style.left = '';
-                highlightElement.style.top = '';
+
+                // FIXME: we have to remove left and top here but in the pagemarks we
+                // have to strip them.. not sure wny.. probably has to do with the
+                // transform origin... mabye the 'left' and 'top' need to be relative
+                // to the transform origin?
+
+                // highlightElement.style.left = '';
+                // highlightElement.style.top = '';
             }
 
             // TODO: the problem with this strategy is that it inserts elements in the
@@ -57239,6 +57249,7 @@ var FrameInitializer = function () {
 
         this.iframe = iframe;
         this.textLayer = textLayer;
+        this.loaded = false;
     }
 
     _createClass(FrameInitializer, [{
@@ -57246,14 +57257,24 @@ var FrameInitializer = function () {
         value: function start() {
 
             this.iframe.contentDocument.addEventListener("readystatechange", this.onReadyStateChange.bind(this));
+            this._checkLoaded();
+        }
+    }, {
+        key: "_checkLoaded",
+        value: function _checkLoaded() {
+
+            if (!this.loaded) {
+                this.loaded = true;
+                this.onLoad();
+                console.log("FrameInitializer: Document has finished loading");
+            }
         }
     }, {
         key: "onReadyStateChange",
         value: function onReadyStateChange() {
 
             if (this.iframe.contentDocument.readyState === "complete") {
-                console.log("FrameInitializer: Document has finished loading");
-                this.onLoad();
+                this._checkLoaded();
             }
         }
 
@@ -57463,6 +57484,8 @@ var HTMLViewer = function (_Viewer) {
                 this._loadRequestData();
 
                 new IFrameWatcher(this.content, function () {
+
+                    console.log("Loading page now...");
 
                     var frameResizer = new FrameResizer(this.contentParent, this.content);
                     frameResizer.start();

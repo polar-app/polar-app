@@ -27,6 +27,8 @@ class HTMLViewer extends Viewer {
 
             new IFrameWatcher(this.content, function () {
 
+                console.log("Loading page now...")
+
                 let frameResizer = new FrameResizer(this.contentParent, this.content);
                 frameResizer.start();
 

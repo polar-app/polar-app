@@ -1,5 +1,15 @@
 # TODO:
 
+- ok.. the .page has to be absolute for the position of its children to NOT be
+  considered from the root.  I think the 'absolute' is relative to the previous
+  absolute position.
+
+    - the problem THEN becomes how to I use center and transform.
+
+      - I can fix this.. I just have to fuck around with some CSS for a bit.
+        I could/should apply these to the other model too.
+
+
 - the event bridge doesnt' work with Ctrl-Alt-N and Ctrl-Alt-E when the iframe
   is selected.
 
@@ -9,6 +19,23 @@
 
 - iframe URLs within the main page are not handled and they can have 'script'
   there which needs to be resolved.
+
+- The Text Highlighter has a bug where an element that is hidden can actually
+  get a highlight created for it if it is 'selected'..
+
+    https://stackoverflow.com/questions/19669786/check-if-element-is-visible-in-dom
+
+# Rendering at small screen resolutions doesn't help too much.
+
+    - The 750px screen resolution for the main viewer is actually still being
+      used by the CSS in many situations. I need a way to KEEP the same CSS but
+      expand the viewport.
+
+        - Try to run the iframe window with the browser restrictions/emulation
+          that I built out in capture.js to see if they work
+
+        - create a basic viewer.js script that just launches a viewer with the
+          options we specify.
 
 
 # Design for storing + handling static HTML vs PDF
