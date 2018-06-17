@@ -60,6 +60,10 @@ class HTMLFormat extends DocFormat {
 
     }
 
+    targetDocument() {
+        return document.querySelector("iframe").contentDocument;
+    }
+
 }
 
 module.exports.HTMLFormat = HTMLFormat;

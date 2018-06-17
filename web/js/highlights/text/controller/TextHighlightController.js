@@ -7,22 +7,25 @@ const {Preconditions} = require("../../../Preconditions");
 const {TextExtracter} = require("./TextExtracter");
 const {KeyEvents} = require("../../../KeyEvents.js");
 const {Arrays} = require("../../../util/Arrays");
+const {DocFormatFactory} = require("../../../docformat/DocFormatFactory");
 
 
 class TextHighlightController {
 
     constructor(model) {
         this.model = Preconditions.assertNotNull(model, "model");
+        this.docFormat = DocFormatFactory.getInstance();
+
+    }
+
+    onDocumentLoaded() {
+        console.log("TextHighlightController.onDocumentLoaded: ", this.model.docMeta);
         this.textHighlighter = this.createTextHighlighter();
-
-        if(!this.textHighlighter) {
-            throw new Error("No textHighlighter");
-        }
-
     }
 
     start() {
         document.addEventListener("keydown", this.keyBindingListener.bind(this));
+        this.model.registerListenerForDocumentLoaded(this.onDocumentLoaded.bind(this));
     }
 
     keyBindingListener(event) {
@@ -90,10 +93,9 @@ class TextHighlightController {
 
         };
 
-        // FIXME: this is the bug.. we're not creating the highlight in the proper
-        // document.
+        let targetDocument = this.docFormat.targetDocument();
 
-        return TextHighlighterFactory.newInstance(document.body, textHighlighterOptions);
+        return TextHighlighterFactory.newInstance(targetDocument.body, textHighlighterOptions);
 
     }
 

@@ -50611,11 +50611,7 @@ module.exports.WebController = function (_Controller) {
         key: "keyBindingListener",
         value: function keyBindingListener(event) {
 
-            console.log("WebController: Got event: ", event);
-
             if (KeyEvents.isKeyMetaActive(event)) {
-
-                console.log("WebController: META KEY ACTIVE");
 
                 if (event.key) {
 
@@ -50632,7 +50628,6 @@ module.exports.WebController = function (_Controller) {
                             break;
 
                         case "n":
-                            console.log("WebController: ENTIRE PAGE");
                             this.keyBindingPagemarkEntirePage(event);
                             break;
 
@@ -51513,6 +51508,11 @@ var HTMLFormat = function (_DocFormat) {
             var select = document.querySelector("select");
             return select.options[select.selectedIndex].value;
         }
+    }, {
+        key: "targetDocument",
+        value: function targetDocument() {
+            return document.querySelector("iframe").contentDocument;
+        }
     }]);
 
     return HTMLFormat;
@@ -51590,6 +51590,11 @@ var PDFFormat = function (_DocFormat) {
         key: "supportThumbnails",
         value: function supportThumbnails() {
             return true;
+        }
+    }, {
+        key: "targetDocument",
+        value: function targetDocument() {
+            return document;
         }
     }]);
 
@@ -51761,22 +51766,34 @@ var _require7 = __webpack_require__(/*! ../../../KeyEvents.js */ "./web/js/KeyEv
 var _require8 = __webpack_require__(/*! ../../../util/Arrays */ "./web/js/util/Arrays.js"),
     Arrays = _require8.Arrays;
 
+var _require9 = __webpack_require__(/*! ../../../docformat/DocFormatFactory */ "./web/js/docformat/DocFormatFactory.js"),
+    DocFormatFactory = _require9.DocFormatFactory;
+
 var TextHighlightController = function () {
     function TextHighlightController(model) {
         _classCallCheck(this, TextHighlightController);
 
         this.model = Preconditions.assertNotNull(model, "model");
-        this.textHighlighter = this.createTextHighlighter();
+        this.docFormat = DocFormatFactory.getInstance();
 
-        if (!this.textHighlighter) {
-            throw new Error("No textHighlighter");
-        }
+        // if(!this.textHighlighter) {
+        //     throw new Error("No textHighlighter");
+        // }
+
+        // FIXME: rework this to add the highlighting when documents are loaded...
     }
 
     _createClass(TextHighlightController, [{
+        key: "onDocumentLoaded",
+        value: function onDocumentLoaded() {
+            console.log("TextHighlightController.onDocumentLoaded: ", this.model.docMeta);
+            this.textHighlighter = this.createTextHighlighter();
+        }
+    }, {
         key: "start",
         value: function start() {
             document.addEventListener("keydown", this.keyBindingListener.bind(this));
+            this.model.registerListenerForDocumentLoaded(this.onDocumentLoaded.bind(this));
         }
     }, {
         key: "keyBindingListener",
@@ -51844,10 +51861,14 @@ var TextHighlightController = function () {
 
             };
 
-            // FIXME: this is the bug.. we're not creating the highlight in the proper
-            // document.
+            var targetDocument = this.docFormat.targetDocument();
 
-            return TextHighlighterFactory.newInstance(document.body, textHighlighterOptions);
+            console.log("STartin highlighter on: ", targetDocument.location.href);
+
+            console.log("FIXME1 ", targetDocument.body.ownerDocument);
+            console.log("FIXME2 ", targetDocument.body.ownerDocument.defaultView);
+
+            return TextHighlighterFactory.newInstance(targetDocument.body, textHighlighterOptions);
         }
 
         /**

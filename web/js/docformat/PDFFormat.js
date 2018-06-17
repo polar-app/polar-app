@@ -38,6 +38,10 @@ class PDFFormat extends DocFormat {
         return true;
     }
 
+    targetDocument() {
+        return document;
+    }
+
 }
 
 module.exports.PDFFormat = PDFFormat;

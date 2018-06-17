@@ -249,11 +249,7 @@ module.exports.WebController = class extends Controller {
 
     keyBindingListener(event) {
 
-        console.log("WebController: Got event: ", event);
-
         if (KeyEvents.isKeyMetaActive(event)) {
-
-            console.log("WebController: META KEY ACTIVE");
 
             if (event.key) {
 
@@ -270,7 +266,6 @@ module.exports.WebController = class extends Controller {
                         break;
 
                     case "n":
-                        console.log("WebController: ENTIRE PAGE");
                         this.keyBindingPagemarkEntirePage(event);
                         break;
 
