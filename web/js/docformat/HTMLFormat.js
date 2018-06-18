@@ -47,17 +47,11 @@ class HTMLFormat extends DocFormat {
      */
     pagemarkOptions() {
         return {
-            // I have NO idea why we require 1... CSS zIndex is insane!
-            zIndex: 1,
-            requiresTransformForScale: true
         };
     }
 
     textHighlightOptions() {
         return {
-            // I have NO idea why we require 1... CSS zIndex is insane!
-            zIndex: 1,
-            requiresTransformForScale: true
         };
     }
 

@@ -27399,20 +27399,12 @@ var HTMLFormat = function (_DocFormat) {
     }, {
         key: "pagemarkOptions",
         value: function pagemarkOptions() {
-            return {
-                // I have NO idea why we require 1... CSS zIndex is insane!
-                zIndex: 1,
-                requiresTransformForScale: true
-            };
+            return {};
         }
     }, {
         key: "textHighlightOptions",
         value: function textHighlightOptions() {
-            return {
-                // I have NO idea why we require 1... CSS zIndex is insane!
-                zIndex: 1,
-                requiresTransformForScale: true
-            };
+            return {};
         }
     }, {
         key: "currentScale",
@@ -32905,31 +32897,23 @@ module.exports.WebView = function (_View) {
             pagemarkElement.style.top = options.templateElement.offsetTop;
             pagemarkElement.style.width = options.templateElement.style.width;
 
-            // FIXME: the height should actually be a percentage of the pagemark
-            // percentage.
-
             var height = Styles.parsePixels(options.templateElement.style.height);
 
-            // FIXME: read the percentate coverage from the pagemark and adjust the
-            // height to reflect the portion we've actually read.
+            if (!height) {
+                height = options.templateElement.offsetHeight;
+            }
+
+            // read the percentage coverage from the pagemark and adjust the height
+            // to reflect the portion we've actually read.
             height = height * (options.pagemark.percentage / 100);
 
             pagemarkElement.style.height = height + "px";
 
             pagemarkElement.style.zIndex = "" + options.zIndex;
 
-            if (pagemarkOptions.requiresTransformForScale) {
-                var currentScale = this.docFormat.currentScale();
-                console.log("Adding transform to pagemark: " + currentScale);
-                pagemarkElement.style.transform = "scale(" + currentScale + ")";
-                pagemarkElement.style.transformOrigin = "center 0";
-
-                // we have to remove left and top...
-                pagemarkElement.style.left = '';
-                pagemarkElement.style.top = '';
+            if (!pagemarkElement.style.width) {
+                throw new Error("Could not determine width");
             }
-
-            if (!pagemarkElement.style.width) throw new Error("Could not determine width");
 
             options.placementElement.parentElement.insertBefore(pagemarkElement, options.placementElement);
         }
