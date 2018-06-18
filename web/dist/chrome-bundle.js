@@ -49306,6 +49306,9 @@ var PDFRenderer = function () {
         value: function currentScale() {
             return window.PDFViewerApplication.pdfViewer._currentScale;
         }
+
+        // FIXME: this should move to the DocFormat
+
     }, {
         key: "getPageNumFromPageElement",
         value: function getPageNumFromPageElement(pageElement) {
@@ -56733,8 +56736,11 @@ var _require5 = __webpack_require__(/*! ../pagemarks/MainPagemarkRenderer */ "./
 var _require6 = __webpack_require__(/*! ../pagemarks/ThumbnailPagemarkRenderer */ "./web/js/pagemarks/ThumbnailPagemarkRenderer.js"),
     ThumbnailPagemarkRenderer = _require6.ThumbnailPagemarkRenderer;
 
-var _require7 = __webpack_require__(/*! ./View.js */ "./web/js/view/View.js"),
-    View = _require7.View;
+var _require7 = __webpack_require__(/*! ../Preconditions */ "./web/js/Preconditions.js"),
+    Preconditions = _require7.Preconditions;
+
+var _require8 = __webpack_require__(/*! ./View.js */ "./web/js/view/View.js"),
+    View = _require8.View;
 
 module.exports.WebView = function (_View) {
     _inherits(_class, _View);
@@ -56879,10 +56885,28 @@ module.exports.WebView = function (_View) {
                     while (1) {
                         switch (_context.prev = _context.next) {
                             case 0:
+
+                                console.warn("FIXME: ", pageElement);
+
                                 pageNum = this.getPageNum(pageElement);
+
+
+                                Preconditions.assertNotNull(pageNum, "pageNum");
+                                Preconditions.assertNumber(pageNum, "pageNum");
+
+                                if (!(pageNum <= 0)) {
+                                    _context.next = 6;
+                                    break;
+                                }
+
+                                throw new Error("Page numbers must be >= 1: " + pageNum);
+
+                            case 6:
                                 docMeta = this.model.docMeta;
                                 pageMeta = docMeta.pageMetas[pageNum];
 
+
+                                Preconditions.assertNotNull(pageMeta, "pageMeta");
 
                                 forDict(pageMeta.pagemarks, function (column, pagemark) {
 
@@ -56897,7 +56921,7 @@ module.exports.WebView = function (_View) {
 
                                 //this.recreatePagemark(pageElement);
 
-                            case 4:
+                            case 10:
                             case "end":
                                 return _context.stop();
                         }
@@ -56911,9 +56935,13 @@ module.exports.WebView = function (_View) {
 
             return recreatePagemarksFromPagemarks;
         }()
+
+        // FIXME: this should move to the DocFormat
+
     }, {
         key: "getPageNum",
         value: function getPageNum(pageElement) {
+            console.log("FIXME2", pageElement);
             var dataPageNum = pageElement.getAttribute("data-page-number");
             return parseInt(dataPageNum);
         }

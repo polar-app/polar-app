@@ -18,6 +18,7 @@ class PDFRenderer {
         return window.PDFViewerApplication.pdfViewer._currentScale;
     }
 
+    // FIXME: this should move to the DocFormat
     static getPageNumFromPageElement(pageElement) {
         let dataPageNum = pageElement.getAttribute("data-page-number");
         return parseInt(dataPageNum);

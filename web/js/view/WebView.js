@@ -4,6 +4,8 @@ const {DocFormatFactory} = require("../docformat/DocFormatFactory");
 const {CompositePagemarkRenderer} = require("../pagemarks/CompositePagemarkRenderer");
 const {MainPagemarkRenderer} = require("../pagemarks/MainPagemarkRenderer");
 const {ThumbnailPagemarkRenderer} = require("../pagemarks/ThumbnailPagemarkRenderer");
+const {Preconditions} = require("../Preconditions");
+
 
 const {View} = require("./View.js");
 
@@ -138,11 +140,22 @@ module.exports.WebView = class extends View {
 
     async recreatePagemarksFromPagemarks(pageElement, options) {
 
+        console.warn("FIXME: ", pageElement);
+
         let pageNum = this.getPageNum(pageElement);
+
+        Preconditions.assertNotNull(pageNum, "pageNum");
+        Preconditions.assertNumber(pageNum, "pageNum");
+
+        if(pageNum <= 0) {
+            throw new Error("Page numbers must be >= 1: " + pageNum);
+        }
 
         let docMeta = this.model.docMeta;
 
         let pageMeta = docMeta.pageMetas[pageNum];
+
+        Preconditions.assertNotNull(pageMeta, "pageMeta");
 
         forDict(pageMeta.pagemarks, function (column, pagemark) {
 
@@ -160,7 +173,9 @@ module.exports.WebView = class extends View {
 
     }
 
+    // FIXME: this should move to the DocFormat
     getPageNum(pageElement) {
+        console.log("FIXME2", pageElement);
         let dataPageNum = pageElement.getAttribute("data-page-number");
         return parseInt(dataPageNum);
     }
