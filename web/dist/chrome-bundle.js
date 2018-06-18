@@ -57483,8 +57483,8 @@ var FrameResizer = function () {
         key: "doResize",
         value: function doResize() {
 
-            var newHeight = this.iframe.contentDocument.documentElement.scrollHeight;
-            //console.log("Setting new height to: " + newHeight);
+            var newHeight = this.iframe.contentDocument.body.scrollHeight;
+            console.log("Setting new height to: " + newHeight);
             this.iframe.style.height = newHeight;
         }
     }]);
