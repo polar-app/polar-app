@@ -30,6 +30,15 @@
           options we specify.
 
 
+# Zip / Archive storage
+
+- We can do a quick proof of concept of zip / archive storage.  The first one
+  with JUST one static file will get us 90% of what we need.  We can just store
+  HTTP headers and then the raw HTML file but also the secondary / associated
+  metadata.  In fact we don't even need the header file now.  Just serve it as
+  index.html but there would also be metadata.json and thumbnail.png as well
+  as other resources there.
+
 # Design for storing + handling static HTML vs PDF
 
 - New Pulldown

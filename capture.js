@@ -179,6 +179,14 @@ async function captureHTML(window) {
 
 }
 
+function expand() {
+
+    var element = document.body;
+
+    console.log(element.offsetWidth);
+
+}
+
 let diskDatastore = new DiskDatastore();
 
 let browser = BROWSERS.MOBILE_GALAXY_S8_WITH_CHROME_61;
