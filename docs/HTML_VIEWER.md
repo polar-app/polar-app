@@ -93,7 +93,17 @@ We can accomplish this by:
 
     https://stackoverflow.com/questions/10359485/how-to-download-and-unzip-a-zip-file-in-memory-in-nodejs
 
+
+# Ad Blocking
+
+https://www.geekwire.com/2018/meet-pulumi-seattle-grown-cloud-startup-wants-development-platform-multicloud-era/
+
+This site has too many ads...  They show up as large white iframes which take up
+a ton of space.
+
 # Expanding past 850px
+
+https://techcrunch.com/2018/06/17/after-twenty-years-of-salesforce-what-marc-benioff-got-right-and-wrong-about-the-cloud/
 
   850px is still a bit small but it's what we need to trigger ipad mode.
 

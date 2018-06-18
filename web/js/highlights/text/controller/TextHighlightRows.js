@@ -43,6 +43,8 @@ class TextHighlightRows {
 
         let rectElements = elements.map(current => this.computeOffset(current));
 
+        //console.log("Working with raw rectElements: ", rectElements);
+
         return TextHighlightRows.computeContiguousRects(rectElements);
 
     }
@@ -56,15 +58,35 @@ class TextHighlightRows {
      */
     static computeOffset(element) {
 
+        let docFormat = DocFormatFactory.getInstance();
+
         // make sure we're working on the right element or our math won't be right.
         Elements.requireClass(element, "text-highlight-span");
 
         let textHighlightSpanOffset = Elements.offset(element);
 
+        if(docFormat.name === "html") {
+            // TODO: sit down and REALLY understand getBoundingClientRect and
+            // getClientRects as well as offsetLeft,offsetTop (and friends).
+            // I think, in retrospect, that I'm computing all of these wrong.
+            // I think I need to use getBoundingClientRect() and not offset
+            // but the PDF viewer uses transforms which is confusing.
+            textHighlightSpanOffset = element.getBoundingClientRect();
+        }
+
         let textLayerDivElement = element.parentElement;
 
         let textLayerDivOffset = elementOffset(textLayerDivElement);
         let rect = textLayerDivOffset;
+
+        if(docFormat.name === "html") {
+            rect = {
+                left: 0,
+                top: 0,
+                width: 0,
+                height: 0
+            };
+        }
 
         let scaleX = Styles.parseTransformScaleX(textLayerDivElement.style.transform);
         if(! scaleX) {
@@ -83,8 +105,6 @@ class TextHighlightRows {
         rect.right = rect.left + rect.width;
 
         rect = Rects.validate(rect);
-
-        let docFormat = DocFormatFactory.getInstance();
 
         // the result needs to factor in the current scale vs the reference
         // scale of 1.0.  We always store / reference the highlights in a scale

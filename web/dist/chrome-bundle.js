@@ -52547,6 +52547,8 @@ var TextHighlightRows = function () {
                 return _this.computeOffset(current);
             });
 
+            //console.log("Working with raw rectElements: ", rectElements);
+
             return TextHighlightRows.computeContiguousRects(rectElements);
         }
 
@@ -52562,15 +52564,35 @@ var TextHighlightRows = function () {
         key: "computeOffset",
         value: function computeOffset(element) {
 
+            var docFormat = DocFormatFactory.getInstance();
+
             // make sure we're working on the right element or our math won't be right.
             Elements.requireClass(element, "text-highlight-span");
 
             var textHighlightSpanOffset = Elements.offset(element);
 
+            if (docFormat.name === "html") {
+                // TODO: sit down and REALLY understand getBoundingClientRect and
+                // getClientRects as well as offsetLeft,offsetTop (and friends).
+                // I think, in retrospect, that I'm computing all of these wrong.
+                // I think I need to use getBoundingClientRect() and not offset
+                // but the PDF viewer uses transforms which is confusing.
+                textHighlightSpanOffset = element.getBoundingClientRect();
+            }
+
             var textLayerDivElement = element.parentElement;
 
             var textLayerDivOffset = elementOffset(textLayerDivElement);
             var rect = textLayerDivOffset;
+
+            if (docFormat.name === "html") {
+                rect = {
+                    left: 0,
+                    top: 0,
+                    width: 0,
+                    height: 0
+                };
+            }
 
             var scaleX = Styles.parseTransformScaleX(textLayerDivElement.style.transform);
             if (!scaleX) {
@@ -52589,8 +52611,6 @@ var TextHighlightRows = function () {
             rect.right = rect.left + rect.width;
 
             rect = Rects.validate(rect);
-
-            var docFormat = DocFormatFactory.getInstance();
 
             // the result needs to factor in the current scale vs the reference
             // scale of 1.0.  We always store / reference the highlights in a scale
@@ -57893,6 +57913,7 @@ var FrameResizer = function () {
         key: "doResize",
         value: function doResize() {
 
+            //let newHeight = this.iframe.contentDocument.documentElement.clientHeight;
             var newHeight = this.iframe.contentDocument.body.scrollHeight;
             //console.log("Setting new height to: " + newHeight);
             this.iframe.style.height = newHeight;
