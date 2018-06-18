@@ -66,6 +66,14 @@ class TextHighlightRows {
         let textHighlightSpanOffset = Elements.offset(element);
 
         if(docFormat.name === "html") {
+
+            // FIXME: getBoundingClientRect doesn't take into consideration
+            // transforms and when scaled we're getting the wrong positions..
+
+            // FIXME: also , this only works for the html version because the
+            // iframe doesn't scroll.  getBoundingClientRect is relative to the
+            // viewport.
+
             // TODO: sit down and REALLY understand getBoundingClientRect and
             // getClientRects as well as offsetLeft,offsetTop (and friends).
             // I think, in retrospect, that I'm computing all of these wrong.
@@ -88,6 +96,13 @@ class TextHighlightRows {
             };
         }
 
+
+        // FIXME: we should also parse scaleY and scale here. Normally scaleY
+        // would be zero which would work with the PDF viewer.
+        //
+        // FIXME: and couldn't another way to deal with this be to place these
+        // into either the textLayerDivElement or my own annotationsDivElement
+        // which has the same transform?
         let scaleX = Styles.parseTransformScaleX(textLayerDivElement.style.transform);
         if(! scaleX) {
             scaleX = 1.0;
