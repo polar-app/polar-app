@@ -58,8 +58,9 @@ class ContextMenuController {
     }
 
     static elementsFromEvent(event) {
-        let point = {x: event.pageX, y: event.pageY};
-        return document.elementsFromPoint(point.x, point.y);
+        // relative to the viewport
+        let point = {x: event.clientX, y: event.clientY};
+        return event.target.ownerDocument.elementsFromPoint(point.x, point.y);
     }
 
     static toContextMenuType(selector) {

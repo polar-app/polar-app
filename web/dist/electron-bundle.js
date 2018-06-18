@@ -26155,8 +26155,9 @@ var ContextMenuController = function () {
     }], [{
         key: "elementsFromEvent",
         value: function elementsFromEvent(event) {
-            var point = { x: event.pageX, y: event.pageY };
-            return document.elementsFromPoint(point.x, point.y);
+            // relative to the viewport
+            var point = { x: event.clientX, y: event.clientY };
+            return event.target.ownerDocument.elementsFromPoint(point.x, point.y);
         }
     }, {
         key: "toContextMenuType",
