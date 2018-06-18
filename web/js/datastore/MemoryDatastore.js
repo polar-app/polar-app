@@ -21,7 +21,7 @@ module.exports.MemoryDatastore = class extends Datastore {
          *
          * @type map<string,string>
          */
-        this.docMetas = {}
+        this.docMetas = {};
 
     }
 

@@ -25464,6 +25464,7 @@ module.exports.PageRedrawHandler = function () {
             this.pageElement.addEventListener('DOMNodeInserted', function (event) {
 
                 if (event.target && event.target.className === "endOfContent") {
+                    console.log("FIXME: got redraw!");
                     callback(this.pageElement);
                 }
             }.bind(this), false);
@@ -27404,16 +27405,19 @@ var HTMLFormat = function (_DocFormat) {
     function HTMLFormat() {
         _classCallCheck(this, HTMLFormat);
 
-        return _possibleConstructorReturn(this, (HTMLFormat.__proto__ || Object.getPrototypeOf(HTMLFormat)).apply(this, arguments));
+        var _this = _possibleConstructorReturn(this, (HTMLFormat.__proto__ || Object.getPrototypeOf(HTMLFormat)).call(this));
+
+        _this.name = "html";
+        return _this;
     }
+
+    /**
+     * Get the current doc fingerprint or null if it hasn't been loaded yet.
+     */
+
 
     _createClass(HTMLFormat, [{
         key: "currentDocFingerprint",
-
-
-        /**
-         * Get the current doc fingerprint or null if it hasn't been loaded yet.
-         */
         value: function currentDocFingerprint() {
 
             var polarFingerprint = this._queryFingerprintElement();
@@ -27471,24 +27475,26 @@ var HTMLFormat = function (_DocFormat) {
         key: "currentScale",
         value: function currentScale() {
 
-            var select = document.querySelector("select");
-            var value = select.options[select.selectedIndex].value;
+            var scale = parseFloat(document.querySelector("meta[name='polar-scale']").getAttribute("content"));
+            console.log("FIXME: scale: " + scale);
 
-            if (!value) {
+            return scale;
+
+            /*
+            let select = document.querySelector("select");
+            let value = select.options[select.selectedIndex].value;
+             if(!value) {
                 throw new Error("No scale value");
             }
-
-            var result = parseInt(value);
-
-            if (isNaN(result)) {
+             let result = parseInt(value);
+             if(isNaN(result)) {
                 throw new Error("Not a number from: " + value);
             }
-
-            if (result <= 0) {
+             if(result <= 0) {
                 throw new Error("Scale is too small: " + result);
             }
-
-            return result;
+             return result;
+            */
         }
     }, {
         key: "targetDocument",
@@ -27534,16 +27540,19 @@ var PDFFormat = function (_DocFormat) {
     function PDFFormat() {
         _classCallCheck(this, PDFFormat);
 
-        return _possibleConstructorReturn(this, (PDFFormat.__proto__ || Object.getPrototypeOf(PDFFormat)).apply(this, arguments));
+        var _this = _possibleConstructorReturn(this, (PDFFormat.__proto__ || Object.getPrototypeOf(PDFFormat)).call(this));
+
+        _this.name = "pdf";
+        return _this;
     }
+
+    /**
+     * Get the current doc fingerprint or null if it hasn't been loaded yet.
+     */
+
 
     _createClass(PDFFormat, [{
         key: "currentDocFingerprint",
-
-
-        /**
-         * Get the current doc fingerprint or null if it hasn't been loaded yet.
-         */
         value: function currentDocFingerprint() {
 
             if (window.PDFViewerApplication && window.PDFViewerApplication.pdfDocument && window.PDFViewerApplication.pdfDocument.pdfInfo && window.PDFViewerApplication.pdfDocument.pdfInfo.fingerprint != null) {
@@ -28422,15 +28431,20 @@ var TextHighlightView = function () {
 
             var highlightElement = document.createElement("div");
 
-            highlightElement.className = "text-highlight";
+            // FIXME: also give it
+
+            highlightElement.className = "text-highlight annotation";
 
             highlightElement.style.position = "absolute";
             highlightElement.style.backgroundColor = "yellow";
             highlightElement.style.opacity = "0.5";
 
-            var currentScale = docFormat.currentScale();
-
-            highlightRect = Rects.scale(highlightRect, currentScale);
+            if (docFormat.name === "pdf") {
+                // this is only needed for PDF and we might be able to use a transform
+                // in the future which would be easier.
+                var currentScale = docFormat.currentScale();
+                highlightRect = Rects.scale(highlightRect, currentScale);
+            }
 
             highlightElement.style.left = highlightRect.left + "px";
             highlightElement.style.top = highlightRect.top + "px";
@@ -28442,30 +28456,6 @@ var TextHighlightView = function () {
 
             if (textHighlightOptions.zIndex) {
                 highlightElement.style.zIndex = "" + textHighlightOptions.zIndex;
-            }
-
-            if (textHighlightOptions.requiresTransformForScale) {
-
-                // FIXME: if this is needed, share it with the pagemarks system...
-
-                // FIXME: test this out in a sandbox setup.. specifically placing
-                // and resizing a text highlight.on top of something that is being
-                // scaled
-
-                var _currentScale = docFormat.currentScale();
-                console.log("Adding transform to text highlight: " + _currentScale);
-                highlightElement.style.transform = "scale(" + _currentScale + ")";
-                highlightElement.style.transformOrigin = "center 0";
-
-                // we have to remove left and top...
-
-                // FIXME: we have to remove left and top here but in the pagemarks we
-                // have to strip them.. not sure wny.. probably has to do with the
-                // transform origin... mabye the 'left' and 'top' need to be relative
-                // to the transform origin?
-
-                // highlightElement.style.left = '';
-                // highlightElement.style.top = '';
             }
 
             // TODO: the problem with this strategy is that it inserts elements in the
@@ -32947,7 +32937,7 @@ module.exports.WebView = function (_View) {
             pagemarkElement.setAttribute("data-pagemark-id", options.pagemark.id);
 
             // make sure we have a reliable CSS classname to work with.
-            pagemarkElement.className = "pagemark";
+            pagemarkElement.className = "pagemark annotation";
 
             //pagemark.style.backgroundColor="rgb(198, 198, 198)";
             pagemarkElement.style.backgroundColor = "#00CCFF";
@@ -33510,6 +33500,7 @@ var HTMLViewer = function (_Viewer) {
             $(".polar-zoom-select").change(function () {
                 $("select option:selected").each(function () {
                     var zoom = $(this).val();
+
                     htmlViewer.changeScale(parseFloat(zoom));
                 });
 
@@ -33524,14 +33515,31 @@ var HTMLViewer = function (_Viewer) {
 
             console.log("Changing scale to: " + scale);
 
+            this._changeScaleMeta(scale);
             this._changeScale(scale);
+            this._removeAnnotations();
             this._signalScale();
+        }
+    }, {
+        key: "_changeScaleMeta",
+        value: function _changeScaleMeta(scale) {
+            document.querySelector("meta[name='polar-scale']").setAttribute("content", scale);
         }
     }, {
         key: "_changeScale",
         value: function _changeScale(scale) {
             var iframe = document.querySelector("#content-parent");
             iframe.style.transform = "scale(" + scale + ")";
+        }
+    }, {
+        key: "_removeAnnotations",
+        value: function _removeAnnotations() {
+            // remove all annotations from the .page. they will be re-created by
+            // all the views. The PDF viewer does this for us automatically.
+
+            document.querySelectorAll(".page .annotation").forEach(function (annotation) {
+                annotation.parentElement.removeChild(annotation);
+            });
         }
 
         // remove and re-inject an endOfContent element to trigger the view to
@@ -33540,6 +33548,8 @@ var HTMLViewer = function (_Viewer) {
     }, {
         key: "_signalScale",
         value: function _signalScale() {
+
+            console.log("HTMLViewer: Signaling rescale.");
 
             var pageElement = document.querySelector(".page");
             var endOfContent = pageElement.querySelector(".endOfContent");

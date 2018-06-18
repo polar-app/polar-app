@@ -3,6 +3,11 @@ const {DocFormat} = require("./DocFormat");
 
 class HTMLFormat extends DocFormat {
 
+    constructor() {
+        super();
+        this.name = "html";
+    }
+
     /**
      * Get the current doc fingerprint or null if it hasn't been loaded yet.
      */
@@ -57,6 +62,12 @@ class HTMLFormat extends DocFormat {
 
     currentScale() {
 
+        let scale = parseFloat(document.querySelector("meta[name='polar-scale']").getAttribute("content"));
+        console.log("FIXME: scale: " + scale);
+
+        return scale;
+
+        /*
         let select = document.querySelector("select");
         let value = select.options[select.selectedIndex].value;
 
@@ -75,6 +86,7 @@ class HTMLFormat extends DocFormat {
         }
 
         return result;
+        */
 
     }
 

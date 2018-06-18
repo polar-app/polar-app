@@ -81,7 +81,9 @@ class HTMLViewer extends Viewer {
             .change(function() {
                 $( "select option:selected" ).each(function() {
                     let zoom = $( this ).val();
+
                     htmlViewer.changeScale(parseFloat(zoom));
+
                 });
 
                 // make sure the select doesn't have focus so that we can scroll.
@@ -95,9 +97,15 @@ class HTMLViewer extends Viewer {
 
         console.log("Changing scale to: " + scale);
 
+        this._changeScaleMeta(scale);
         this._changeScale(scale);
+        this._removeAnnotations();
         this._signalScale();
 
+    }
+
+    _changeScaleMeta(scale) {
+        document.querySelector("meta[name='polar-scale']").setAttribute("content", scale);
     }
 
     _changeScale(scale) {
@@ -106,9 +114,21 @@ class HTMLViewer extends Viewer {
 
     }
 
+    _removeAnnotations() {
+        // remove all annotations from the .page. they will be re-created by
+        // all the views. The PDF viewer does this for us automatically.
+
+        document.querySelectorAll(".page .annotation").forEach(function(annotation) {
+            annotation.parentElement.removeChild(annotation);
+        });
+
+    }
+
     // remove and re-inject an endOfContent element to trigger the view to
     // re-draw pagemarks.
     _signalScale() {
+
+        console.log("HTMLViewer: Signaling rescale.");
 
         let pageElement = document.querySelector(".page");
         let endOfContent = pageElement.querySelector(".endOfContent");

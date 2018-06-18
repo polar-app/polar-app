@@ -3,6 +3,11 @@ const {Preconditions} = require("../Preconditions");
 
 class PDFFormat extends DocFormat {
 
+    constructor() {
+        super();
+        this.name = "pdf";
+    }
+
     /**
      * Get the current doc fingerprint or null if it hasn't been loaded yet.
      */

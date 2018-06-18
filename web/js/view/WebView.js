@@ -273,7 +273,7 @@ module.exports.WebView = class extends View {
         pagemarkElement.setAttribute("data-pagemark-id", options.pagemark.id);
 
         // make sure we have a reliable CSS classname to work with.
-        pagemarkElement.className="pagemark";
+        pagemarkElement.className="pagemark annotation";
 
         //pagemark.style.backgroundColor="rgb(198, 198, 198)";
         pagemarkElement.style.backgroundColor="#00CCFF";
