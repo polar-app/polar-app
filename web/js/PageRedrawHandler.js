@@ -17,7 +17,6 @@ module.exports.PageRedrawHandler = class {
         this.pageElement.addEventListener('DOMNodeInserted', function(event) {
 
             if (event.target && event.target.className === "endOfContent") {
-                console.log("FIXME: got redraw!");
                 callback(this.pageElement);
             }
 
