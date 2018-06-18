@@ -14,10 +14,10 @@ const {Cmdline} = require("./web/js/electron/Cmdline");
 const {Filenames} = require("./web/js/util/Filenames");
 const {DiskDatastore} = require("./web/js/datastore/DiskDatastore");
 
-const options = { extraHeaders: 'pragma: no-cache\n' }
-
 const WIDTH = 375;
 const HEIGHT = 1100;
+
+const BROWSERS = require("./web/js/util/Browsers");
 
 const BROWSER_WINDOW_OPTIONS = {
     minWidth: WIDTH,
@@ -39,21 +39,9 @@ const BROWSER_WINDOW_OPTIONS = {
     }
 };
 
-// https://github.com/electron/electron/blob/master/docs/api/web-contents.md#contentsenabledeviceemulationparameters
-const DEVICE_EMULATION = {
-    screenPosition: "mobile",
-    screenSize: {
-        width: WIDTH,
-        height: HEIGHT
-    },
-    viewSize: {
-        width: WIDTH,
-        height: HEIGHT
-    }
-
-};
-
 let diskDatastore = new DiskDatastore();
+
+let browser = BROWSERS.MOBILE_GALAXY_S8_WITH_CHROME_61;
 
 function createWindow(url) {
 
@@ -106,20 +94,7 @@ function createWindow(url) {
     newWindow.webContents.on('did-start-loading', async function() {
         console.log("did-start-loading: ");
 
-        console.log("Muting audio...");
-        newWindow.webContents.setAudioMuted(true);
-
-        console.log("Emulating device");
-        newWindow.webContents.enableDeviceEmulation(DEVICE_EMULATION);
-
-        let screenDimensionScript = `
-            Object.defineProperty(window.screen, "width", { get: function() { console.log("Returning custom width"); return 450; }});
-            Object.defineProperty(window.screen, "height", { get: function() { console.log("Returning custom height"); return 450; }});
-            Object.defineProperty(window.screen, "availWidth", { get: function() { console.log("Returning custom availWidth"); return 450; }});
-            Object.defineProperty(window.screen, "availHeight", { get: function() { console.log("Returning custom availHeight"); return 450; }});
-        `;
-
-        await newWindow.webContents.executeJavaScript(screenDimensionScript);
+        configureBrowser(newWindow);
 
     });
 
@@ -134,16 +109,38 @@ function createWindow(url) {
 
     });
 
-    newWindow.loadURL(url, options);
+    configureBrowser(newWindow);
+
+    const windowOptions = {
+        extraHeaders: 'pragma: no-cache\n',
+        userAgent: browser.userAgent
+    };
+
+    newWindow.loadURL(url, windowOptions);
+
+    return newWindow;
+
+}
+
+async function configureBrowser(window) {
+
+    console.log("Emulating browser: " + browser);
 
     // we need to mute by default especially if the window is hidden.
     console.log("Muting audio...");
-    newWindow.webContents.setAudioMuted(true);
+    window.webContents.setAudioMuted(true);
 
-    console.log("Emulating device");
-    newWindow.webContents.enableDeviceEmulation(DEVICE_EMULATION);
+    console.log("Emulating device...");
+    window.webContents.enableDeviceEmulation(browser.deviceEmulation);
 
-    return newWindow;
+    let screenDimensionScript = `
+            Object.defineProperty(window.screen, "width", { get: function() { console.log("Returning custom width"); return 450; }});
+            Object.defineProperty(window.screen, "height", { get: function() { console.log("Returning custom height"); return 450; }});
+            Object.defineProperty(window.screen, "availWidth", { get: function() { console.log("Returning custom availWidth"); return 450; }});
+            Object.defineProperty(window.screen, "availHeight", { get: function() { console.log("Returning custom availHeight"); return 450; }});
+        `;
+
+    await window.webContents.executeJavaScript(screenDimensionScript);
 
 }
 

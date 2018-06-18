@@ -36,7 +36,7 @@ class EventBridge {
                 }
 
             } else {
-                this.eventListener.bind(this);
+                this.eventListener(event);
             }
 
         }.bind(this));

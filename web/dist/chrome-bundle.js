@@ -57248,7 +57248,7 @@ var EventBridge = function () {
                         document.location.href = href;
                     }
                 } else {
-                    this.eventListener.bind(this);
+                    this.eventListener(event);
                 }
             }.bind(this));
 
