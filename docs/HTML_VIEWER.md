@@ -1,20 +1,5 @@
 # TODO:
 
-- ok.. the .page has to be absolute for the position of its children to NOT be
-  considered from the root.  I think the 'absolute' is relative to the previous
-  absolute position.
-
-    - the problem THEN becomes how to I use center and transform.
-
-      - I can fix this.. I just have to fuck around with some CSS for a bit.
-        I could/should apply these to the other model too.
-
-
-- the event bridge doesnt' work with Ctrl-Alt-N and Ctrl-Alt-E when the iframe
-  is selected.
-
-- The pagemark end isn't properly positioned when we run Ctrl-Alt-Click
-
 - Text highlights don't work at ALL...
 
 - iframe URLs within the main page are not handled and they can have 'script'
@@ -27,7 +12,10 @@
 
 - There is a problem with the docMeta not being loaded until the entire iframe
   is loaded...  This isn't really necessary as some pages fetch fonts and so
-  forth.
+  forth ... I need to load the docMeta once the page STARTS loading so that I
+  can render pagemarks and initial highlights.
+
+- iframes also need event listeners recursively...
 
 # Rendering at small screen resolutions doesn't help too much.
 

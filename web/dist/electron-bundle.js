@@ -33083,6 +33083,9 @@ var EventBridge = function () {
         key: "start",
         value: function start() {
 
+            // TODO/FIXME: the child iframes within this iframe / recursively /
+            // also need event listeners.
+
             this.iframe.contentDocument.body.addEventListener("keyup", this.eventListener.bind(this));
             this.iframe.contentDocument.body.addEventListener("keydown", this.eventListener.bind(this));
             this.iframe.contentDocument.body.addEventListener("contextmenu", this.eventListener.bind(this));
@@ -33341,7 +33344,7 @@ var FrameResizer = function () {
         value: function doResize() {
 
             var newHeight = this.iframe.contentDocument.body.scrollHeight;
-            console.log("Setting new height to: " + newHeight);
+            //console.log("Setting new height to: " + newHeight);
             this.iframe.style.height = newHeight;
         }
     }]);

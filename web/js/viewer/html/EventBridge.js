@@ -13,6 +13,9 @@ class EventBridge {
 
     start() {
 
+        // TODO/FIXME: the child iframes within this iframe / recursively /
+        // also need event listeners.
+
         this.iframe.contentDocument.body.addEventListener("keyup", this.eventListener.bind(this));
         this.iframe.contentDocument.body.addEventListener("keydown", this.eventListener.bind(this));
         this.iframe.contentDocument.body.addEventListener("contextmenu", this.eventListener.bind(this));
