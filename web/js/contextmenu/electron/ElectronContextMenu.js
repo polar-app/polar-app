@@ -39,7 +39,7 @@ class ElectronContextMenu extends ContextMenu {
 
         console.log("GOT IT for: " + contextMenuTypes)
 
-        const ctxMenu = this.createTextHighlightContextMenu(sender);
+        const ctxMenu = this.createTextHighlightContextMenu(point, contextMenuTypes, sender);
 
         ctxMenu.popup(window, point.x, point.y);
 
@@ -72,18 +72,41 @@ class ElectronContextMenu extends ContextMenu {
 
     }
 
-    createTextHighlightContextMenu(sender) {
+    createTextHighlightContextMenu(point, contextMenuTypes, sender) {
 
         Preconditions.assertNotNull(sender, "sender");
 
         const ctxMenu = new Menu();
 
+        let window = BrowserWindow.getFocusedWindow();
+
         // TODO: move this to a template as the code is cleaner
+
+        if(contextMenuTypes.includes(ContextMenuType.TEXT_HIGHLIGHT)) {
+
+            ctxMenu.append(new MenuItem( {
+                label: 'Add Flashcard',
+                accelerator: 'CmdOrCtrl+A',
+                click: function () {
+                    this.cmdAddFlashcard(sender);
+                }.bind(this)}));
+
+        }
+
         ctxMenu.append(new MenuItem( {
-            label: 'Add Flashcard',
-            accelerator: 'CmdOrCtrl+A',
-            click: function () {
-                this.cmdAddFlashcard(sender);
+            label: 'Inspect Element',
+            id: "inspect",
+            //accelerator: 'CmdOrCtrl+A',
+            click: function (event) {
+
+                // the points are SLIGHTLY off for the iframe version which is
+                // very annoying.
+                window.inspectElement(point.x, point.y);
+
+                if (window.webContents.isDevToolsOpened()) {
+                    window.webContents.devToolsWebContents.focus();
+                }
+
             }.bind(this)}));
 
         // ctxMenu.append(new MenuItem({ label: 'Copy', accelerator: 'CmdOrCtrl+C', role: 'copy' }))

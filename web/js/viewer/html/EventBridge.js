@@ -16,6 +16,7 @@ class EventBridge {
         this.iframe.contentDocument.body.addEventListener("keyup", this.eventListener.bind(this));
         this.iframe.contentDocument.body.addEventListener("keydown", this.eventListener.bind(this));
         this.iframe.contentDocument.body.addEventListener("click", this.eventListener.bind(this));
+        this.iframe.contentDocument.body.addEventListener("contextmenu", this.eventListener.bind(this));
 
         console.log("Event bridge started on: ", this.iframe.contentDocument.location.href);
 

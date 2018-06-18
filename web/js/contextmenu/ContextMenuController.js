@@ -1,5 +1,7 @@
+
 const {ipcRenderer} = require('electron')
 const {ContextMenuType} = require("./ContextMenuType");
+const {forDict} = require("../utils");
 
 /**
  * Handles listening for context menus and then calling back the proper handler.
@@ -16,7 +18,6 @@ class ContextMenuController {
             console.log("GOT MESSAGE!!!", arg) // prints "ping"
         });
 
-
     }
 
     start() {
@@ -32,16 +33,22 @@ class ContextMenuController {
                 console.log("got context menu");
 
                 //let elements = document.elementsFromPoint(event.screenX, event.screenY);
-                let annotationSelectors = [".text-highlight", ".pagemark"];
+                let annotationSelectors = [ ".text-highlight", ".pagemark" ];
 
                 let elementsMatchingSelectors
                     = ContextMenuController.elementFromEventMatchingSelectors(event, annotationSelectors );
 
-                console.log("FIXME: elementsMatchingSelectors", elementsMatchingSelectors);
+                let contextMenuTypes = [];
+
+                forDict(elementsMatchingSelectors, function (key, current) {
+                    if(current.elements.length > 0) {
+                        contextMenuTypes.push(ContextMenuController.toContextMenuType(current.selector));
+                    }
+                });
 
                 ipcRenderer.send('context-menu-trigger', {
                     point: {x: event.pageX, y: event.pageY },
-                    contextMenuTypes: [ContextMenuType.TEXT_HIGHLIGHT]
+                    contextMenuTypes
                 })
 
             }.bind(this));
@@ -55,9 +62,17 @@ class ContextMenuController {
         return document.elementsFromPoint(point.x, point.y);
     }
 
+    static toContextMenuType(selector) {
+        let result = selector.toUpperCase();
+        result = result.replace(".", "");
+        result = result.replace("-", "_");
+        return result;
+    }
+
     /**
-     * Create a result by looking at all the events, and all the selectors, building
-     * up an index of matching elements at the position.
+     * Create a result by looking at all the events, and all the selectors,
+     * building up an index of matching elements at the position.
+     *
      * @param event
      * @param selectors
      */

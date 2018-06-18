@@ -26054,6 +26054,9 @@ var _require = __webpack_require__(/*! electron */ "electron"),
 var _require2 = __webpack_require__(/*! ./ContextMenuType */ "./web/js/contextmenu/ContextMenuType.js"),
     ContextMenuType = _require2.ContextMenuType;
 
+var _require3 = __webpack_require__(/*! ../utils */ "./web/js/utils.js"),
+    forDict = _require3.forDict;
+
 /**
  * Handles listening for context menus and then calling back the proper handler.
  *
@@ -26073,7 +26076,7 @@ var ContextMenuController = function () {
     }
 
     _createClass(ContextMenuController, [{
-        key: 'start',
+        key: "start",
         value: function start() {
 
             console.log("Starting ContextMenuController");
@@ -26091,31 +26094,46 @@ var ContextMenuController = function () {
 
                     var elementsMatchingSelectors = ContextMenuController.elementFromEventMatchingSelectors(event, annotationSelectors);
 
-                    console.log("FIXME: elementsMatchingSelectors", elementsMatchingSelectors);
+                    var contextMenuTypes = [];
+
+                    forDict(elementsMatchingSelectors, function (key, current) {
+                        if (current.elements.length > 0) {
+                            contextMenuTypes.push(ContextMenuController.toContextMenuType(current.selector));
+                        }
+                    });
 
                     ipcRenderer.send('context-menu-trigger', {
                         point: { x: event.pageX, y: event.pageY },
-                        contextMenuTypes: [ContextMenuType.TEXT_HIGHLIGHT]
+                        contextMenuTypes: contextMenuTypes
                     });
                 }.bind(this));
             }.bind(this));
         }
     }], [{
-        key: 'elementsFromEvent',
+        key: "elementsFromEvent",
         value: function elementsFromEvent(event) {
             var point = { x: event.pageX, y: event.pageY };
             return document.elementsFromPoint(point.x, point.y);
         }
+    }, {
+        key: "toContextMenuType",
+        value: function toContextMenuType(selector) {
+            var result = selector.toUpperCase();
+            result = result.replace(".", "");
+            result = result.replace("-", "_");
+            return result;
+        }
 
         /**
-         * Create a result by looking at all the events, and all the selectors, building
-         * up an index of matching elements at the position.
+         * Create a result by looking at all the events, and all the selectors,
+         * building up an index of matching elements at the position.
+         *
          * @param event
          * @param selectors
          */
 
     }, {
-        key: 'elementFromEventMatchingSelectors',
+        key: "elementFromEventMatchingSelectors",
         value: function elementFromEventMatchingSelectors(event, selectors) {
 
             var result = {};
@@ -33068,6 +33086,7 @@ var EventBridge = function () {
             this.iframe.contentDocument.body.addEventListener("keyup", this.eventListener.bind(this));
             this.iframe.contentDocument.body.addEventListener("keydown", this.eventListener.bind(this));
             this.iframe.contentDocument.body.addEventListener("click", this.eventListener.bind(this));
+            this.iframe.contentDocument.body.addEventListener("contextmenu", this.eventListener.bind(this));
 
             console.log("Event bridge started on: ", this.iframe.contentDocument.location.href);
         }
