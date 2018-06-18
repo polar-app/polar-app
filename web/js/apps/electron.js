@@ -9,7 +9,7 @@ async function persistenceLayerFactory() {
     const remote = require('electron').remote;
 
     console.log("Accessing datastore...");
-    let datastore = remote.getGlobal("diskDatastore" );
+    let datastore = remote.getGlobal("datastore" );
     console.log("Accessing datastore...done");
 
     return new PersistenceLayer(datastore);

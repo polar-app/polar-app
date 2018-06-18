@@ -26044,7 +26044,7 @@ var persistenceLayerFactory = function () {
 
 
                         console.log("Accessing datastore...");
-                        datastore = remote.getGlobal("diskDatastore");
+                        datastore = remote.getGlobal("datastore");
 
                         console.log("Accessing datastore...done");
 

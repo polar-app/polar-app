@@ -50878,6 +50878,369 @@ module.exports.Datastore = function () {
 
 /***/ }),
 
+/***/ "./web/js/datastore/DiskDatastore.js":
+/*!*******************************************!*\
+  !*** ./web/js/datastore/DiskDatastore.js ***!
+  \*******************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(process) {
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var _require = __webpack_require__(/*! ../Preconditions */ "./web/js/Preconditions.js"),
+    Preconditions = _require.Preconditions;
+
+var _require2 = __webpack_require__(/*! ./Datastore.js */ "./web/js/datastore/Datastore.js"),
+    Datastore = _require2.Datastore;
+
+var _require3 = __webpack_require__(/*! ../util/Paths */ "./web/js/util/Paths.js"),
+    Paths = _require3.Paths;
+
+var fs = __webpack_require__(/*! fs */ "./node_modules/node-libs-browser/mock/empty.js");
+var util = __webpack_require__(/*! util */ "./node_modules/util/util.js");
+
+var DiskDatastore = function (_Datastore) {
+    _inherits(DiskDatastore, _Datastore);
+
+    function DiskDatastore(dataDir) {
+        _classCallCheck(this, DiskDatastore);
+
+        var _this = _possibleConstructorReturn(this, (DiskDatastore.__proto__ || Object.getPrototypeOf(DiskDatastore)).call(this));
+
+        if (dataDir) {
+            // use a configured dataDir for testing.
+            _this.dataDir = dataDir;
+        } else {
+            _this.dataDir = DiskDatastore.getDataDir();
+        }
+
+        _this.stashDir = Paths.create(_this.dataDir, "stash");
+
+        _this.readFileAsync = util.promisify(fs.readFile);
+        _this.writeFileAsync = util.promisify(fs.writeFile);
+        _this.mkdirAsync = util.promisify(fs.mkdir);
+        _this.accessAsync = util.promisify(fs.access);
+        _this.statAsync = util.promisify(fs.stat);
+        _this.unlinkAsync = util.promisify(fs.unlink);
+        _this.rmdirAsync = util.promisify(fs.rmdir);
+        //this.existsAsync = fileExists;
+
+        return _this;
+    }
+
+    _createClass(DiskDatastore, [{
+        key: "init",
+        value: function () {
+            var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
+                return regeneratorRuntime.wrap(function _callee$(_context) {
+                    while (1) {
+                        switch (_context.prev = _context.next) {
+                            case 0:
+                                _context.next = 2;
+                                return this.createDirAsync(this.dataDir);
+
+                            case 2:
+                                _context.t0 = _context.sent;
+                                _context.next = 5;
+                                return this.createDirAsync(this.stashDir);
+
+                            case 5:
+                                _context.t1 = _context.sent;
+                                return _context.abrupt("return", {
+                                    dataDir: _context.t0,
+                                    stashDir: _context.t1
+                                });
+
+                            case 7:
+                            case "end":
+                                return _context.stop();
+                        }
+                    }
+                }, _callee, this);
+            }));
+
+            function init() {
+                return _ref.apply(this, arguments);
+            }
+
+            return init;
+        }()
+    }, {
+        key: "createDirAsync",
+        value: function () {
+            var _ref2 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2(dir) {
+                var result;
+                return regeneratorRuntime.wrap(function _callee2$(_context2) {
+                    while (1) {
+                        switch (_context2.prev = _context2.next) {
+                            case 0:
+                                result = {
+                                    dir: dir
+                                };
+                                _context2.next = 3;
+                                return this.existsAsync(dir);
+
+                            case 3:
+                                if (!_context2.sent) {
+                                    _context2.next = 7;
+                                    break;
+                                }
+
+                                result.exists = true;
+                                _context2.next = 10;
+                                break;
+
+                            case 7:
+                                result.created = true;
+                                _context2.next = 10;
+                                return this.mkdirAsync(dir);
+
+                            case 10:
+                                return _context2.abrupt("return", result);
+
+                            case 11:
+                            case "end":
+                                return _context2.stop();
+                        }
+                    }
+                }, _callee2, this);
+            }));
+
+            function createDirAsync(_x) {
+                return _ref2.apply(this, arguments);
+            }
+
+            return createDirAsync;
+        }()
+
+        /**
+         * Get the DocMeta object we currently in the datastore for this given
+         * fingerprint or null if it does not exist.
+         */
+
+    }, {
+        key: "getDocMeta",
+        value: function () {
+            var _ref3 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee3(fingerprint) {
+                var docDir, statePath, statePathStat, canAccess, buffer;
+                return regeneratorRuntime.wrap(function _callee3$(_context3) {
+                    while (1) {
+                        switch (_context3.prev = _context3.next) {
+                            case 0:
+                                docDir = this.dataDir + "/" + fingerprint;
+                                _context3.next = 3;
+                                return this.existsAsync(docDir);
+
+                            case 3:
+                                if (_context3.sent) {
+                                    _context3.next = 5;
+                                    break;
+                                }
+
+                                return _context3.abrupt("return", null);
+
+                            case 5:
+                                statePath = docDir + "/state.json";
+                                _context3.next = 8;
+                                return this.statAsync(statePath);
+
+                            case 8:
+                                statePathStat = _context3.sent;
+
+                                if (statePathStat.isFile()) {
+                                    _context3.next = 11;
+                                    break;
+                                }
+
+                                return _context3.abrupt("return", null);
+
+                            case 11:
+                                _context3.next = 13;
+                                return this.accessAsync(statePath, fs.constants.R_OK | fs.constants.W_OK).then(function () {
+                                    return true;
+                                }).catch(function () {
+                                    return false;
+                                });
+
+                            case 13:
+                                canAccess = _context3.sent;
+
+                                if (canAccess) {
+                                    _context3.next = 16;
+                                    break;
+                                }
+
+                                return _context3.abrupt("return", null);
+
+                            case 16:
+                                _context3.next = 18;
+                                return this.readFileAsync(statePath);
+
+                            case 18:
+                                buffer = _context3.sent;
+                                return _context3.abrupt("return", buffer.toString('utf8'));
+
+                            case 20:
+                            case "end":
+                                return _context3.stop();
+                        }
+                    }
+                }, _callee3, this);
+            }));
+
+            function getDocMeta(_x2) {
+                return _ref3.apply(this, arguments);
+            }
+
+            return getDocMeta;
+        }()
+    }, {
+        key: "existsAsync",
+        value: function () {
+            var _ref4 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee4(path) {
+                return regeneratorRuntime.wrap(function _callee4$(_context4) {
+                    while (1) {
+                        switch (_context4.prev = _context4.next) {
+                            case 0:
+                                return _context4.abrupt("return", new Promise(function (resolve, reject) {
+
+                                    this.statAsync(path).then(function () {
+                                        resolve(true);
+                                    }).catch(function (err) {
+                                        if (err.code === 'ENOENT') {
+                                            resolve(false);
+                                        } else {
+                                            // some other error
+                                            reject(err);
+                                        }
+                                    });
+                                }.bind(this)));
+
+                            case 1:
+                            case "end":
+                                return _context4.stop();
+                        }
+                    }
+                }, _callee4, this);
+            }));
+
+            function existsAsync(_x3) {
+                return _ref4.apply(this, arguments);
+            }
+
+            return existsAsync;
+        }()
+
+        /**
+         * Write the datastore to disk.
+         */
+
+    }, {
+        key: "sync",
+        value: function () {
+            var _ref5 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee5(fingerprint, data) {
+                var docDir, dirExists, statePath;
+                return regeneratorRuntime.wrap(function _callee5$(_context5) {
+                    while (1) {
+                        switch (_context5.prev = _context5.next) {
+                            case 0:
+
+                                Preconditions.assertTypeof(data, "data", "string");
+
+                                console.log("Performing sync of content into disk datastore.");
+
+                                docDir = this.dataDir + "/" + fingerprint;
+                                _context5.next = 5;
+                                return this.statAsync(docDir).then(function () {
+                                    return true;
+                                }).catch(function () {
+                                    return false;
+                                });
+
+                            case 5:
+                                dirExists = _context5.sent;
+
+                                if (dirExists) {
+                                    _context5.next = 10;
+                                    break;
+                                }
+
+                                // the directory for this file is missing.
+                                console.log("Doc dir does not exist. Creating " + docDir);
+                                _context5.next = 10;
+                                return this.mkdirAsync(docDir);
+
+                            case 10:
+                                statePath = docDir + "/state.json";
+
+
+                                console.log("Writing data to state file: " + statePath);
+
+                                // FIXME: is this UTF-8 ??
+
+                                _context5.next = 14;
+                                return this.writeFileAsync(statePath, data);
+
+                            case 14:
+                                return _context5.abrupt("return", _context5.sent);
+
+                            case 15:
+                            case "end":
+                                return _context5.stop();
+                        }
+                    }
+                }, _callee5, this);
+            }));
+
+            function sync(_x4, _x5) {
+                return _ref5.apply(this, arguments);
+            }
+
+            return sync;
+        }()
+    }], [{
+        key: "getUserHome",
+        value: function getUserHome() {
+
+            var result = process.env[process.platform === 'win32' ? 'USERPROFILE' : 'HOME'];
+
+            if (!result) {
+                result = os.homedir();
+            }
+
+            return result;
+        }
+    }, {
+        key: "getDataDir",
+        value: function getDataDir() {
+            return DiskDatastore.getUserHome() + "/.polar";
+        }
+    }]);
+
+    return DiskDatastore;
+}(Datastore);
+
+/**
+ * A disk based datastore with long term persistence.
+ */
+
+
+module.exports.DiskDatastore = DiskDatastore;
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../../../node_modules/process/browser.js */ "./node_modules/process/browser.js")))
+
+/***/ }),
+
 /***/ "./web/js/datastore/MemoryDatastore.js":
 /*!*********************************************!*\
   !*** ./web/js/datastore/MemoryDatastore.js ***!
@@ -50901,8 +51264,14 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 var _require = __webpack_require__(/*! ./Datastore.js */ "./web/js/datastore/Datastore.js"),
     Datastore = _require.Datastore;
 
-var _require2 = __webpack_require__(/*! ../Preconditions */ "./web/js/Preconditions.js"),
-    Preconditions = _require2.Preconditions;
+var _require2 = __webpack_require__(/*! ./DiskDatastore */ "./web/js/datastore/DiskDatastore.js"),
+    DiskDatastore = _require2.DiskDatastore;
+
+var _require3 = __webpack_require__(/*! ../Preconditions */ "./web/js/Preconditions.js"),
+    Preconditions = _require3.Preconditions;
+
+var _require4 = __webpack_require__(/*! ../util/Paths */ "./web/js/util/Paths.js"),
+    Paths = _require4.Paths;
 
 /**
  * Datastore just in memory with no on disk persistence.
@@ -50910,114 +51279,119 @@ var _require2 = __webpack_require__(/*! ../Preconditions */ "./web/js/Preconditi
 
 
 module.exports.MemoryDatastore = function (_Datastore) {
-  _inherits(_class, _Datastore);
+    _inherits(_class, _Datastore);
 
-  function _class() {
-    _classCallCheck(this, _class);
+    function _class() {
+        _classCallCheck(this, _class);
 
-    /**
-     *
-     * @type map<string,string>
-     */
-    var _this = _possibleConstructorReturn(this, (_class.__proto__ || Object.getPrototypeOf(_class)).call(this));
+        // these dir values are used in the UI and other places so we need to
+        // actually have values for them.
+        var _this = _possibleConstructorReturn(this, (_class.__proto__ || Object.getPrototypeOf(_class)).call(this));
 
-    _this.docMetas = {};
+        _this.dataDir = DiskDatastore.getDataDir();
+        _this.stashDir = Paths.create(_this.dataDir, "stash");
 
-    return _this;
-  }
+        /**
+         *
+         * @type map<string,string>
+         */
+        _this.docMetas = {};
 
-  _createClass(_class, [{
-    key: "init",
-    value: function () {
-      var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
-        return regeneratorRuntime.wrap(function _callee$(_context) {
-          while (1) {
-            switch (_context.prev = _context.next) {
-              case 0:
-              case "end":
-                return _context.stop();
+        return _this;
+    }
+
+    _createClass(_class, [{
+        key: "init",
+        value: function () {
+            var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
+                return regeneratorRuntime.wrap(function _callee$(_context) {
+                    while (1) {
+                        switch (_context.prev = _context.next) {
+                            case 0:
+                            case "end":
+                                return _context.stop();
+                        }
+                    }
+                }, _callee, this);
+            }));
+
+            function init() {
+                return _ref.apply(this, arguments);
             }
-          }
-        }, _callee, this);
-      }));
 
-      function init() {
-        return _ref.apply(this, arguments);
-      }
+            return init;
+        }()
 
-      return init;
-    }()
+        /**
+         * Get the DocMeta object we currently in the datastore for this given
+         * fingerprint or null if it does not exist.
+         */
 
-    /**
-     * Get the DocMeta object we currently in the datastore for this given
-     * fingerprint or null if it does not exist.
-     */
-
-  }, {
-    key: "getDocMeta",
-    value: function () {
-      var _ref2 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2(fingerprint) {
-        var nrDocs;
-        return regeneratorRuntime.wrap(function _callee2$(_context2) {
-          while (1) {
-            switch (_context2.prev = _context2.next) {
-              case 0:
-                nrDocs = Object.keys(this.docMetas).length;
+    }, {
+        key: "getDocMeta",
+        value: function () {
+            var _ref2 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2(fingerprint) {
+                var nrDocs;
+                return regeneratorRuntime.wrap(function _callee2$(_context2) {
+                    while (1) {
+                        switch (_context2.prev = _context2.next) {
+                            case 0:
+                                nrDocs = Object.keys(this.docMetas).length;
 
 
-                console.log("Fetching document from datastore with fingerprint " + fingerprint + " of " + nrDocs + " docs.");
+                                console.log("Fetching document from datastore with fingerprint " + fingerprint + " of " + nrDocs + " docs.");
 
-                return _context2.abrupt("return", this.docMetas[fingerprint]);
+                                return _context2.abrupt("return", this.docMetas[fingerprint]);
 
-              case 3:
-              case "end":
-                return _context2.stop();
+                            case 3:
+                            case "end":
+                                return _context2.stop();
+                        }
+                    }
+                }, _callee2, this);
+            }));
+
+            function getDocMeta(_x) {
+                return _ref2.apply(this, arguments);
             }
-          }
-        }, _callee2, this);
-      }));
 
-      function getDocMeta(_x) {
-        return _ref2.apply(this, arguments);
-      }
+            return getDocMeta;
+        }()
 
-      return getDocMeta;
-    }()
+        /**
+         * Write the datastore to disk.
+         */
 
-    /**
-     * Write the datastore to disk.
-     */
+    }, {
+        key: "sync",
+        value: function () {
+            var _ref3 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee3(fingerprint, data) {
+                return regeneratorRuntime.wrap(function _callee3$(_context3) {
+                    while (1) {
+                        switch (_context3.prev = _context3.next) {
+                            case 0:
 
-  }, {
-    key: "sync",
-    value: function () {
-      var _ref3 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee3(fingerprint, data) {
-        return regeneratorRuntime.wrap(function _callee3$(_context3) {
-          while (1) {
-            switch (_context3.prev = _context3.next) {
-              case 0:
+                                Preconditions.assertTypeof(data, "data", "string");
 
-                Preconditions.assertTypeof(data, "data", "string");
+                                this.docMetas[fingerprint] = data;
 
-                this.docMetas[fingerprint] = data;
+                            case 2:
+                            case "end":
+                                return _context3.stop();
+                        }
+                    }
+                }, _callee3, this);
+            }));
 
-              case 2:
-              case "end":
-                return _context3.stop();
+            function sync(_x2, _x3) {
+                return _ref3.apply(this, arguments);
             }
-          }
-        }, _callee3, this);
-      }));
 
-      function sync(_x2, _x3) {
-        return _ref3.apply(this, arguments);
-      }
+            return sync;
+        }()
+    }]);
 
-      return sync;
-    }()
-  }]);
-
-  return _class;
+    return _class;
 }(Datastore);
 
 /***/ }),

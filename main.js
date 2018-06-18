@@ -2,6 +2,7 @@ const electron = require('electron');
 const fspath = require('path');
 const url = require('url');
 const {DiskDatastore} = require("./web/js/datastore/DiskDatastore");
+const {MemoryDatastore} = require("./web/js/datastore/MemoryDatastore");
 
 const app = electron.app;
 const shell = electron.shell;
@@ -276,7 +277,7 @@ async function promptDoc() {
 
         dialog.showOpenDialog({
             title: "Open Document",
-            defaultPath: diskDatastore.stashDir,
+            defaultPath: datastore.stashDir,
             filters: [
                 { name: 'Docs', extensions: ['pdf', 'chtml'] }
             ],
@@ -410,11 +411,17 @@ function openFileCmdline(path, createNewWindow) {
  */
 function parseArgs() {
 
+    // FIXME: move this to electron.main.Args
+
     return {
 
         enableConsoleLogging: process.argv.includes("--enable-console-logging"),
         enableRemoteDebugging: process.argv.includes("--enable-remote-debugging"),
-        enableDevTools: process.argv.includes("--enable-dev-tools")
+        enableDevTools: process.argv.includes("--enable-dev-tools"),
+
+        // use this option to write to the MEMORY datastore. not the disk
+        // datastore.. This way we can test without impacting persistence.
+        enableMemoryDatastore: process.argv.includes("--enable-memory-datastore")
 
     };
 
@@ -434,10 +441,19 @@ let contextMenu = null;
 let filepath = null;
 let quitapp, URL;
 
-// share the disk datastore with the remote.
-let diskDatastore = new DiskDatastore();
+let args = parseArgs();
 
-global.diskDatastore = diskDatastore;
+let datastore = null;
+
+if(args.enableMemoryDatastore) {
+    datastore = new MemoryDatastore();
+} else {
+    datastore = new DiskDatastore();
+}
+
+// share the disk datastore with the remote.
+
+global.datastore = datastore;
 
 // TODO: I think we need to wait until the webserver port is available before
 // continuing.
@@ -450,10 +466,6 @@ const fileRegistry = new FileRegistry(webserverConfig);
 
 const webserver = new Webserver(webserverConfig, fileRegistry);
 webserver.start();
-
-//const DEFAULT_URL = 'file://' + __dirname + '/default.html';
-
-let args = parseArgs();
 
 console.log("Running with process.args: ", JSON.stringify(process.argv));
 
@@ -504,9 +516,7 @@ if (shouldQuit) {
 
 app.on('ready', async function() {
 
-    await diskDatastore.init();
-
-    console.log("FIXME0a: ", electron.ipcMain)
+    await datastore.init();
 
     contextMenu = Menu.buildFromTemplate([
         { label: 'Minimize', type: 'radio', role: 'minimize' },

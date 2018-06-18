@@ -9,12 +9,22 @@
             height: 1000px;
         }
 
-        div {
+        #div1 {
             position: absolute;
             top: 0px;
             left: 0px;
             height: 500px;
             background-color: red;
+            width: 100%;
+        }
+
+        #div2 {
+            position: absolute;
+            top: 500px;
+            left: 0px;
+            height: 500px;
+            background-color: blue;
+            width: 100%;
         }
 
     </style>
@@ -22,9 +32,13 @@
 </head>
 <body>
 
-<div>
-    this is a 500px div which fills up 50% of the height in a body with 1000px
+<div id="div1">
+    this is a height=500px div which fills up 50% of the height in a body with 1000px
     height and no padding or margin
+</div>
+
+<div id="div2">
+    this is a height=500px div which fills up remaining 50% of the height
 </div>
 
 </body>
