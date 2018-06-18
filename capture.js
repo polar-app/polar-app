@@ -13,19 +13,21 @@ const {Preconditions} = require("./web/js/Preconditions");
 const {Cmdline} = require("./web/js/electron/Cmdline");
 const {Filenames} = require("./web/js/util/Filenames");
 const {DiskDatastore} = require("./web/js/datastore/DiskDatastore");
+const {Args} = require("./web/js/electron/capture/Args");
 
 const WIDTH = 375;
 const HEIGHT = 1100;
 
 const BROWSERS = require("./web/js/util/Browsers");
 
+// FIXME: move this to BROWSERS
 const BROWSER_WINDOW_OPTIONS = {
     minWidth: WIDTH,
     minHeight: HEIGHT,
     width: WIDTH,
     height: HEIGHT,
-    maxWidth: WIDTH,
-    maxHeight: HEIGHT,
+    //maxWidth: WIDTH,
+    //maxHeight: HEIGHT,
     //show: false,
     // https://electronjs.org/docs/api/browser-window#new-browserwindowoptions
     webPreferences: {
@@ -35,13 +37,11 @@ const BROWSER_WINDOW_OPTIONS = {
         // reconsider using nodeIntegration here as this might be a security
         // issue
         nodeIntegration: true,
-        defaultEncoding: 'UTF-8'
+        defaultEncoding: 'UTF-8',
+        webaudio: false
+
     }
 };
-
-let diskDatastore = new DiskDatastore();
-
-let browser = BROWSERS.MOBILE_GALAXY_S8_WITH_CHROME_61;
 
 function createWindow(url) {
 
@@ -134,10 +134,10 @@ async function configureBrowser(window) {
     window.webContents.enableDeviceEmulation(browser.deviceEmulation);
 
     let screenDimensionScript = `
-            Object.defineProperty(window.screen, "width", { get: function() { console.log("Returning custom width"); return 450; }});
-            Object.defineProperty(window.screen, "height", { get: function() { console.log("Returning custom height"); return 450; }});
-            Object.defineProperty(window.screen, "availWidth", { get: function() { console.log("Returning custom availWidth"); return 450; }});
-            Object.defineProperty(window.screen, "availHeight", { get: function() { console.log("Returning custom availHeight"); return 450; }});
+            Object.defineProperty(window.screen, "width", { get: function() { return 450; }});
+            Object.defineProperty(window.screen, "height", { get: function() { return 450; }});
+            Object.defineProperty(window.screen, "availWidth", { get: function() { return 450; }});
+            Object.defineProperty(window.screen, "availHeight", { get: function() { return 450; }});
         `;
 
     await window.webContents.executeJavaScript(screenDimensionScript);
@@ -171,13 +171,19 @@ async function captureHTML(window) {
 
     console.log("Capturing the HTML...done");
 
-    app.quit();
+    if(args.noQuit) {
+        console.log("Not quitting (yielding to --no-quit=true).")
+    } else {
+        app.quit();
+    }
 
 }
 
-function escapeFilename() {
+let diskDatastore = new DiskDatastore();
 
-}
+let browser = BROWSERS.MOBILE_GALAXY_S8_WITH_CHROME_61;
+
+let args = Args.parse(process.argv);
 
 app.on('ready', async function() {
 

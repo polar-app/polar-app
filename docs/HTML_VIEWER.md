@@ -117,7 +117,38 @@ We can accomplish this by:
 
 # Broken Examples:
 
+## This renders too narrow:
 
+https://techcrunch.com/2018/06/17/after-twenty-years-of-salesforce-what-marc-benioff-got-right-and-wrong-about-the-cloud/
+
+.. I can clean this up by forcing the width the way I way.
+
+I think the algorith would basically be:
+    - for every element:
+    - compute the exact right position.
+    - let elementsByWidthDesc = sort by width , descending.
+    - let desiredWidth = window.width
+    - let buffer = 5px; // this is used so that some reasonable margin is permissable.
+    - for every element in elementsByWidthDesc
+        if element.width - desiredWidth > buffer
+            element.width = desiredWidth - buffer;
+            desiredWidth = element.width
+
+    - this should basically expand every element so that it properly fills up the
+      page on larger devices.
+
+    - I might not want to do this on absolutely positioned elements though.
+
+    - If it is LESS than page with (factoring in some margin), then expand it.
+
+- It actually might be better to do something along the lines of rendering in
+  TWO modes . Super phone width and tablet width.  Then we can use the DOM
+  layout to detect which one rendered better.
+
+    https://stackoverflow.com/questions/6209161/extract-the-current-dom-and-print-it-as-a-string-with-styles-intact
+
+
+###
 
 - this renders like horribly. ...
 
