@@ -175,3 +175,8 @@ http://thehill.com/homenews/administration/392430-trump-i-want-americans-to-list
     - this is because the viewport just has to be smaller. 850 is too large.
 
     - I think I'm going to have to go with my Locked Reflow hack.
+
+## https://www.nytimes.com/2018/06/17/us/immigration-deported-parents.html
+
+- nytimes has a "show full article" toggle
+   - plus I have to scroll down the page to see the images.
