@@ -57228,10 +57228,51 @@ var EventBridge = function () {
 
             this.iframe.contentDocument.body.addEventListener("keyup", this.eventListener.bind(this));
             this.iframe.contentDocument.body.addEventListener("keydown", this.eventListener.bind(this));
-            this.iframe.contentDocument.body.addEventListener("click", this.eventListener.bind(this));
             this.iframe.contentDocument.body.addEventListener("contextmenu", this.eventListener.bind(this));
 
+            this.iframe.contentDocument.body.addEventListener("click", function (event) {
+
+                var anchor = this.getAnchor(event.target);
+
+                if (anchor) {
+                    console.log("Link click prevented.");
+                    event.preventDefault();
+
+                    var href = anchor.href;
+
+                    if (href && (href.startsWith("http:") || href.startsWith("https:"))) {
+                        // this is a bit of a hack but basically we listen for URLs
+                        // in the iframe and change the main page. This triggers our
+                        // electron 'will-navigate' which which prevents it and then
+                        // opens the URL in the native browser.
+                        document.location.href = href;
+                    }
+                } else {
+                    this.eventListener.bind(this);
+                }
+            }.bind(this));
+
             console.log("Event bridge started on: ", this.iframe.contentDocument.location.href);
+        }
+
+        /**
+         * Get the anchor for an element. An event target might be nested in an
+         * anchor.
+         */
+
+    }, {
+        key: "getAnchor",
+        value: function getAnchor(element) {
+
+            if (element == null) {
+                return null;
+            }
+
+            if (element.tagName === "A") {
+                return element;
+            }
+
+            return this.getAnchor(element.parentElement);
         }
     }, {
         key: "eventListener",
