@@ -49453,6 +49453,12 @@ var _require2 = __webpack_require__(/*! ./KeyEvents.js */ "./web/js/KeyEvents.js
 var _require3 = __webpack_require__(/*! ./util/Elements */ "./web/js/util/Elements.js"),
     Elements = _require3.Elements;
 
+var _require4 = __webpack_require__(/*! ./docformat/DocFormatFactory */ "./web/js/docformat/DocFormatFactory.js"),
+    DocFormatFactory = _require4.DocFormatFactory;
+
+var _require5 = __webpack_require__(/*! ./docformat/DocFormats */ "./web/js/docformat/DocFormats.js"),
+    DocFormats = _require5.DocFormats;
+
 var BORDER_PADDING = 9;
 
 module.exports.PagemarkCoverageEventListener = function () {
@@ -49508,49 +49514,86 @@ module.exports.PagemarkCoverageEventListener = function () {
         key: "onActivated",
         value: function onActivated(event) {
 
-            var pageElement = Elements.untilRoot(event.target, ".page");
+            var state = this.getPointerState(event);
 
-            if (!pageElement) {
-                console.log("Not within a pageElement");
+            if (state.error) {
+                console.error(state.error);
                 return;
             }
 
-            var textLayerElement = pageElement.querySelector(".textLayer");
+            console.log("Pointer state: ", JSON.stringify(state, null, "  "));
 
-            if (!textLayerElement) {
-                console.error("No text layer");
-                return;
-            }
-
-            var viewport = document.getElementById("viewerContainer");
-
-            var pageOffset = OffsetCalculator.calculate(textLayerElement, viewport.parentElement);
-
-            // this is lame.. this is for the border padding.  I don't like hard coding it.
-            pageOffset.top += BORDER_PADDING;
-
-            // manually adjust the offsets with correct jquery data.
-            pageOffset.height = $(textLayerElement).height();
-            pageOffset.bottom = pageOffset.top + pageOffset.height;
-
-            var mouseTop = event.pageY + viewport.scrollTop;
-
-            if (mouseTop >= pageOffset.top && mouseTop <= pageOffset.bottom) {
+            if (state.mouseTop >= state.pageOffset.top && state.mouseTop <= state.pageOffset.bottom) {
 
                 // make sure the current mouse position is within a page.
 
-                var mousePageY = mouseTop - pageOffset.top;
-
-                var percentage = mousePageY / pageOffset.height * 100;
+                var percentage = state.mousePageY / state.pageOffset.height * 100;
 
                 console.log("percentage: ", percentage);
 
-                var pageNum = this.controller.getPageNum(pageElement);
+                var pageNum = this.controller.getPageNum(state.pageElement);
                 this.controller.erasePagemark(pageNum);
                 this.controller.createPagemark(pageNum, { percentage: percentage });
             } else {
                 console.log("Mouse click was outside of page.");
             }
+        }
+
+        /**
+         * Get the state of the pointer.
+         */
+
+    }, {
+        key: "getPointerState",
+        value: function getPointerState(event) {
+
+            var state = {
+                error: null,
+                pageElement: null,
+                textLayerElement: null,
+                viewport: null,
+                pageOffset: null,
+                mouseTop: null,
+                mousePageY: null
+
+            };
+
+            state.pageElement = Elements.untilRoot(event.target, ".page");
+
+            if (!state.pageElement) {
+                state.error = "Not within a pageElement";
+                return state;
+            }
+
+            state.textLayerElement = state.pageElement.querySelector(".textLayer");
+
+            if (!state.textLayerElement) {
+                state.error = "No text layer";
+                return state;
+            }
+
+            state.viewport = document.getElementById("viewerContainer");
+
+            state.pageOffset = OffsetCalculator.calculate(state.textLayerElement, state.viewport.parentElement);
+
+            // this is lame.. this is for the border padding.  I don't like hard coding it.
+            state.pageOffset.top += BORDER_PADDING;
+
+            // manually adjust the offsets with correct jquery data.
+            state.pageOffset.height = $(state.textLayerElement).height();
+            state.pageOffset.bottom = state.pageOffset.top + state.pageOffset.height;
+
+            state.mouseTop = event.pageY + state.viewport.scrollTop;
+
+            if (DocFormats.getFormat() === "html") {
+                // the html viewer doesn't need page offset factored in since it
+                // is within an iframe.
+                state.mousePageY = state.mouseTop;
+            } else {
+                state.mousePageY = state.mouseTop - state.pageOffset.top;
+            }
+
+            return state;
         }
     }]);
 

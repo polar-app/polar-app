@@ -1,0 +1,31 @@
+<html>
+
+<head>
+    <style>
+
+        body {
+            padding: 0;
+            margin: 0;
+            height: 1000px;
+        }
+
+        div {
+            position: absolute;
+            top: 0px;
+            left: 0px;
+            height: 500px;
+            background-color: red;
+        }
+
+    </style>
+
+</head>
+<body>
+
+<div>
+    this is a 500px div which fills up 50% of the height in a body with 1000px
+    height and no padding or margin
+</div>
+
+</body>
+</html>

@@ -94,7 +94,9 @@ class DocFormat {
      * @return {{}}
      */
     pagemarkOptions() {
-        return {};
+        return {
+
+        };
     }
 
     textHighlightOptions() {
