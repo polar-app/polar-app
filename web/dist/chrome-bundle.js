@@ -56885,9 +56885,6 @@ module.exports.WebView = function (_View) {
                     while (1) {
                         switch (_context.prev = _context.next) {
                             case 0:
-
-                                console.warn("FIXME: ", pageElement);
-
                                 pageNum = this.getPageNum(pageElement);
 
 
@@ -56895,13 +56892,13 @@ module.exports.WebView = function (_View) {
                                 Preconditions.assertNumber(pageNum, "pageNum");
 
                                 if (!(pageNum <= 0)) {
-                                    _context.next = 6;
+                                    _context.next = 5;
                                     break;
                                 }
 
                                 throw new Error("Page numbers must be >= 1: " + pageNum);
 
-                            case 6:
+                            case 5:
                                 docMeta = this.model.docMeta;
                                 pageMeta = docMeta.pageMetas[pageNum];
 
@@ -56921,7 +56918,7 @@ module.exports.WebView = function (_View) {
 
                                 //this.recreatePagemark(pageElement);
 
-                            case 10:
+                            case 9:
                             case "end":
                                 return _context.stop();
                         }
@@ -56941,7 +56938,6 @@ module.exports.WebView = function (_View) {
     }, {
         key: "getPageNum",
         value: function getPageNum(pageElement) {
-            console.log("FIXME2", pageElement);
             var dataPageNum = pageElement.getAttribute("data-page-number");
             return parseInt(dataPageNum);
         }

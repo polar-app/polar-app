@@ -140,8 +140,6 @@ module.exports.WebView = class extends View {
 
     async recreatePagemarksFromPagemarks(pageElement, options) {
 
-        console.warn("FIXME: ", pageElement);
-
         let pageNum = this.getPageNum(pageElement);
 
         Preconditions.assertNotNull(pageNum, "pageNum");
@@ -175,7 +173,6 @@ module.exports.WebView = class extends View {
 
     // FIXME: this should move to the DocFormat
     getPageNum(pageElement) {
-        console.log("FIXME2", pageElement);
         let dataPageNum = pageElement.getAttribute("data-page-number");
         return parseInt(dataPageNum);
     }
