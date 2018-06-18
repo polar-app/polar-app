@@ -33274,7 +33274,7 @@ var FrameResizer = function () {
 
             var newHeight = this.iframe.contentDocument.documentElement.scrollHeight;
             //console.log("Setting new height to: " + newHeight);
-            this.parent.style.height = newHeight;
+            this.iframe.style.height = newHeight;
         }
     }]);
 
@@ -33410,13 +33410,13 @@ var HTMLViewer = function (_Viewer) {
 
             console.log("Changing scale to: " + scale);
 
-            this._changeIFrameScale(scale);
-            this._signalPageScale();
+            this._changeScale(scale);
+            this._signalScale();
         }
     }, {
-        key: "_changeIFrameScale",
-        value: function _changeIFrameScale(scale) {
-            var iframe = document.querySelector("#content-parent iframe");
+        key: "_changeScale",
+        value: function _changeScale(scale) {
+            var iframe = document.querySelector("#content-parent");
             iframe.style.transform = "scale(" + scale + ")";
         }
 
@@ -33424,8 +33424,8 @@ var HTMLViewer = function (_Viewer) {
         // re-draw pagemarks.
 
     }, {
-        key: "_signalPageScale",
-        value: function _signalPageScale() {
+        key: "_signalScale",
+        value: function _signalScale() {
 
             var pageElement = document.querySelector(".page");
             var endOfContent = pageElement.querySelector(".endOfContent");

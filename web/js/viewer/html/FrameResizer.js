@@ -73,7 +73,7 @@ class FrameResizer {
 
         let newHeight = this.iframe.contentDocument.documentElement.scrollHeight;
         //console.log("Setting new height to: " + newHeight);
-        this.parent.style.height = newHeight;
+        this.iframe.style.height = newHeight;
 
     }
 

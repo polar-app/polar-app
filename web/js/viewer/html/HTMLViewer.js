@@ -95,20 +95,20 @@ class HTMLViewer extends Viewer {
 
         console.log("Changing scale to: " + scale);
 
-        this._changeIFrameScale(scale);
-        this._signalPageScale();
+        this._changeScale(scale);
+        this._signalScale();
 
     }
 
-    _changeIFrameScale(scale) {
-        let iframe = document.querySelector("#content-parent iframe");
+    _changeScale(scale) {
+        let iframe = document.querySelector("#content-parent");
         iframe.style.transform = `scale(${scale})`;
 
     }
 
     // remove and re-inject an endOfContent element to trigger the view to
     // re-draw pagemarks.
-    _signalPageScale() {
+    _signalScale() {
 
         let pageElement = document.querySelector(".page");
         let endOfContent = pageElement.querySelector(".endOfContent");
