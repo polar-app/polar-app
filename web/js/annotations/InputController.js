@@ -67,6 +67,11 @@ class InputController {
 
         SimpleMDE.defaultProps = {
             options: {
+                // enabling
+                spellChecker: false,
+                // setting to true re-downloads font awesome and it's much better
+                // to have this as a dependency inline.
+                autoDownloadFontAwesome: false,
                 status: false,
                 hideIcons: ["side-by-side", "fullscreen"],
                 forceSync: true,

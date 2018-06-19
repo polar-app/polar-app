@@ -2,7 +2,6 @@ const $ = require('jquery');
 const {TextHighlightRecords} = require("../../../metadata/TextHighlightRecords");
 const {TextHighlighterFactory} = require("./TextHighlighterFactory");
 const {TextHighlightRows} = require("./TextHighlightRows");
-const {PDFRenderer} = require("../../../PDFRenderer");
 const {Preconditions} = require("../../../Preconditions");
 const {TextExtracter} = require("./TextExtracter");
 const {KeyEvents} = require("../../../KeyEvents.js");

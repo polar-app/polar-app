@@ -546,6 +546,8 @@ app.on('ready', async function() {
         mainWindow.toggleDevTools();
     }
 
+    console.log("FIXME ", JSON.stringify(mainWindow));
+
     // if there is a PDF file to open, load that, otherwise, load the default URL.
 
     handleCmdLinePDF(process.argv, false);

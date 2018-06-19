@@ -7,8 +7,8 @@ import Form from "react-jsonschema-form";
 import SimpleMDE from 'react-simplemde-editor';
 
 
-const {InputController} = require("../input/InputController");
-const {FormHandler} = require("../input/FormHandler");
+const {InputController} = require("../annotations/InputController");
+const {FormHandler} = require("../annotations/FormHandler");
 
 const schema = {
     "title": "Flashcard",

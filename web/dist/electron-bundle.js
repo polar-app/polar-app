@@ -27747,23 +27747,20 @@ var _require2 = __webpack_require__(/*! ./TextHighlighterFactory */ "./web/js/hi
 var _require3 = __webpack_require__(/*! ./TextHighlightRows */ "./web/js/highlights/text/controller/TextHighlightRows.js"),
     TextHighlightRows = _require3.TextHighlightRows;
 
-var _require4 = __webpack_require__(/*! ../../../PDFRenderer */ "./web/js/PDFRenderer.js"),
-    PDFRenderer = _require4.PDFRenderer;
+var _require4 = __webpack_require__(/*! ../../../Preconditions */ "./web/js/Preconditions.js"),
+    Preconditions = _require4.Preconditions;
 
-var _require5 = __webpack_require__(/*! ../../../Preconditions */ "./web/js/Preconditions.js"),
-    Preconditions = _require5.Preconditions;
+var _require5 = __webpack_require__(/*! ./TextExtracter */ "./web/js/highlights/text/controller/TextExtracter.js"),
+    TextExtracter = _require5.TextExtracter;
 
-var _require6 = __webpack_require__(/*! ./TextExtracter */ "./web/js/highlights/text/controller/TextExtracter.js"),
-    TextExtracter = _require6.TextExtracter;
+var _require6 = __webpack_require__(/*! ../../../KeyEvents.js */ "./web/js/KeyEvents.js"),
+    KeyEvents = _require6.KeyEvents;
 
-var _require7 = __webpack_require__(/*! ../../../KeyEvents.js */ "./web/js/KeyEvents.js"),
-    KeyEvents = _require7.KeyEvents;
+var _require7 = __webpack_require__(/*! ../../../util/Arrays */ "./web/js/util/Arrays.js"),
+    Arrays = _require7.Arrays;
 
-var _require8 = __webpack_require__(/*! ../../../util/Arrays */ "./web/js/util/Arrays.js"),
-    Arrays = _require8.Arrays;
-
-var _require9 = __webpack_require__(/*! ../../../docformat/DocFormatFactory */ "./web/js/docformat/DocFormatFactory.js"),
-    DocFormatFactory = _require9.DocFormatFactory;
+var _require8 = __webpack_require__(/*! ../../../docformat/DocFormatFactory */ "./web/js/docformat/DocFormatFactory.js"),
+    DocFormatFactory = _require8.DocFormatFactory;
 
 var TextHighlightController = function () {
     function TextHighlightController(model) {
