@@ -32,15 +32,9 @@ const BROWSER_WINDOW_OPTIONS = {
     //show: false,
     // https://electronjs.org/docs/api/browser-window#new-browserwindowoptions
     webPreferences: {
-        // TODO:
-        // https://github.com/electron/electron/pull/794
-        //
-        // reconsider using nodeIntegration here as this might be a security
-        // issue
-        nodeIntegration: true,
+        nodeIntegration: false,
         defaultEncoding: 'UTF-8',
         webaudio: false
-
     }
 };
 
@@ -125,6 +119,9 @@ function createWindow(url) {
 
 async function configureBrowser(window) {
 
+    // TODO maybe inject this via a preload script so we know that it's always
+    // running
+
     console.log("Emulating browser: " + browser);
 
     // we need to mute by default especially if the window is hidden.
@@ -178,10 +175,10 @@ async function inlineHTML(url, content) {
                 resolve(html);
             }
         });
-        //
-        // inliner.on('progress', function (event) {
-        //     console.error("progress: ", event);
-        // });
+
+        inliner.on('progress', function (event) {
+            console.error("progress: ", event);
+        });
 
     });
 

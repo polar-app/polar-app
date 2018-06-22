@@ -1,5 +1,6 @@
 # TODO:
 
+- can chrome render content in a hidden tab?
 
 - FIXME: what about 'web page, complete' saves... ???
     - then serve via a .zip file.
@@ -108,6 +109,43 @@ https://github.com/remy/inliner
 
 - how do we specify HTTP timeouts, etc? It would be better to do this ALL in the
   browser, then bundle it up and send it to capture.
+
+## Snapshot all HTML + JS + CSS in browser, perform 'capture' in Electron.
+
+- we would have to re-define document.location.href (if possible)
+- emulate device and screen resolution
+- then capture there
+
+### PROS
+
+- would mean that we can capture pages behind authenticated pages
+- would work with ad block
+
+### CONS
+
+- more complicated
+- what do we do about XHR responses?  Those can require HTTP response headers and
+  are not normal URLs.
+
+## Chrome Extension with Cookies + URL sent to electron
+
+If we send the cookies, we will authenticate as the user.
+
+### TODO
+
+- we could look for blocked elements and/or blocked resources and also block
+  them in electron
+
+- we would have to redefine document.location / etc
+
+### PROS
+
+- most of what we want works
+
+### CONS
+
+- ad blocking and other extensions won't be enabled
+
 
 # Related Projects
 
