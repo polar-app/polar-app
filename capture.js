@@ -152,7 +152,7 @@ async function inlineHTML(url, content) {
     console.log("Inlining HTML...");
 
     let options = {
-        url,
+        //url,
         source: content,
         images: true,
         videos: true,

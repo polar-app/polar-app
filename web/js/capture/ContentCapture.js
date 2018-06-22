@@ -112,10 +112,27 @@ class ContentCapture {
 
         });
 
+        mutations.showAriaHidden = ContentCapture.cleanupShowAriaHidden(cloneDoc);
+
         result.mutations = mutations;
         result.content = ContentCapture.toOuterHTML(cloneDoc);
 
         return result;
+
+    }
+
+    static cleanupShowAriaHidden(cloneDoc) {
+
+        let mutations = 0;
+
+        cloneDoc.querySelectorAll("*").forEach(function (element) {
+            if(element.getAttribute("aria-hidden") === "true") {
+                element.setAttribute("aria-hidden", "false");
+                ++mutations;
+            }
+        });
+
+        return mutations;
 
     }
 

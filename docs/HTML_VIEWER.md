@@ -1,18 +1,7 @@
 # TODO:
 
-- can chrome render content in a hidden tab?
-
-- FIXME: what about 'web page, complete' saves... ???
-    - then serve via a .zip file.
-
-- play with the web request API in electron.
-
-    - https://electronjs.org/docs/api/web-request
-
-    - this can capture ALL the data including headers and responses so I can just
-      re-assemble the data on disk then replay.
-
-
+- annotations are doubling up on top of themselves so we're getting incorrect
+  opacity.
 
 - iframe URLs within the main page are not handled and they can have 'script'
   there which needs to be resolved.
@@ -327,9 +316,17 @@ https://techcrunch.com/2018/06/17/after-twenty-years-of-salesforce-what-marc-ben
 
 # Broken Examples:
 
-## https://old.babeljs.io/learn-es2015/
+## https://www.infoq.com/news/2018/05/service-workers-supported-across
 
-Broken CSS. The URLs refuse to load.
+Broken layout...
+
+## https://developer.mozilla.org/en-US/docs/Web/API/Service_Worker_API/Using_Service_Workers
+
+Collapses vertically and means that certain elements have to be expanded to read.
+
+It makes sense from a mobile document but not from a readable document.
+
+I can set aria-hidden=false
 
 ## This renders too narrow:
 
