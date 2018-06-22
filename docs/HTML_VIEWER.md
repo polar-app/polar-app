@@ -1,6 +1,17 @@
 # TODO:
 
-- Text highlights don't work at ALL...
+
+- FIXME: what about 'web page, complete' saves... ???
+    - then serve via a .zip file.
+
+- play with the web request API in electron.
+
+    - https://electronjs.org/docs/api/web-request
+
+    - this can capture ALL the data including headers and responses so I can just
+      re-assemble the data on disk then replay.
+
+
 
 - iframe URLs within the main page are not handled and they can have 'script'
   there which needs to be resolved.
@@ -17,6 +28,39 @@
 
 - iframes also need event listeners recursively...
 
+# User Requirements
+
+High level requirements for all of our solutions:
+
+- Work with the main browser instance. This way if the user is using ad-block
+  or us logged into a site using user/pass the HTML is preserved
+
+- link rel styles...
+- CSS @import
+- images via "data:" URLs
+
+
+# Dev Requirements
+
+- ideally don't require running within an extension so we can run it from Electron
+
+# Stages
+
+Can I break this down into stages so I can get an initial version working:
+
+## Stage 1
+
+- simple <link> handling. If they use @import, it breaks
+- compressed .zip handling would have to work
+
+## Stage 2
+
+- parse out @import and replace that content
+- I would have to figure out how to serialize the new CSS
+- It breaks the original CSS content (not the end of the world)
+
+
+
 # Rendering at small screen resolutions doesn't help too much.
 
     - The 750px screen resolution for the main viewer is actually still being
@@ -28,6 +72,115 @@
 
         - create a basic viewer.js script that just launches a viewer with the
           options we specify.
+
+# Long Term Strategies
+
+## Capture MHTML in Main Browser , emulate device + capture in Electron.
+
+### PROS
+
+- I get to use saveAsMHTML which is easy to work with.
+
+### CONS
+
+- the URL would not be authoritative and could be blocked via <script> tags
+- I can not load from the filesystem I think because then web security would be
+  an issue
+-
+
+## Use my static capture and then Inliner
+
+https://github.com/remy/inliner
+
+### PROS
+
+### CONS
+
+- It doesn't fetch URLs using the browser. It fetches them using node.
+
+- Won't ever work within chrome
+
+- Won't work for sites that have authentication setup on the dependent resources
+
+- It seems to lock up ...
+
+- it skips google analytics
+
+- how do we specify HTTP timeouts, etc? It would be better to do this ALL in the
+  browser, then bundle it up and send it to capture.
+
+# Related Projects
+
+- https://developer.chrome.com/extensions/pageCapture
+
+    - standard chrome API
+    - this is the BEST way for me to implement it as an extension. My capture
+      script might not be needed.
+
+    - can I serve mhtml over HTTP?
+    - could I make them data URLs?
+    - what about iframes?
+    - CONS:
+        - I'm 99% certain pageCapture isn't implemented by electron
+        - I have to serve the files via file: URL (which might be acceptable)
+
+    - https://stackoverflow.com/questions/24672190/can-we-download-a-webpage-completely-with-chrome-downloads-download-google-chr
+
+- https://github.com/rahiel/archiveror
+
+- pocket's extension is OSS... I can leverage that:
+    https://github.com/Pocket/extension-save-to-pocket
+
+- research HAR (HTML Archive) files
+    - chrome has an API for this feature
+    - a .har file is just JSON though.
+
+- https://github.com/gildas-lormeau/Scrapbook-for-SingleFile
+    - ships as a chrome extension
+    - https://www.npmjs.com/package/chrome-har
+        - this allows building one from:
+            - Chrome DevTools Protocol data
+
+
+- https://chrome.google.com/webstore/detail/save-page-we/dhhpefjklgkmgeafimnjhojgjamoafof?hl=en-US
+
+    - Uses the WebExtensions API and supports FF and Chrome
+    - I would need to port this one to chrome/electron though.
+    - chrome extension ID: dhhpefjklgkmgeafimnjhojgjamoafof
+    - I might be able to install this as a devtools extension if ALL the APIs
+      are implemented.
+        https://github.com/electron/electron/blob/master/docs/tutorial/devtools-extension.md
+
+- https://chrome.google.com/webstore/detail/singlefile/mpiodijhokgodhhofbcjdecpffjipkle?hl=en
+
+# General Design
+    - Capture raw HTML headers and response data
+    - We KEEP the full URL and implement this as a proxy service where we use
+      an HTTP proxy service.
+    - I could do a static HTML and then a 'computed' CSS styles system now with
+      just computed inline rules.
+      - Web fonts and images would be the only other issue at that point.
+        - CSS is going to be the biggest challenge because there are a lot of
+          ways to represent a page using url() and so forth.
+      - IF I can implement this just as raw HTTP that would have a HUGE benefit
+        but I would have to capture and change URLs somehow.
+
+      - This is just a difficult issue I think.. one that I would need to put
+        engineers on to solve.
+
+
+      - AHAH!  I think I CAN do it for a single proxy in Chrome.
+
+      https://stackoverflow.com/questions/15020387/set-proxy-using-google-chrome-extention
+
+      but that would require everyone use chrome.
+
+      If they use the chrome extension it would work well for offline web pages.
+
+## Gotchas
+    - chrome can't set a proxy on a per window or per request basis (pretty sure)
+    - CSS can use @import
+    - HTML imports also complicate issues
 
 
 # Zip / Archive storage
@@ -135,6 +288,10 @@ https://techcrunch.com/2018/06/17/after-twenty-years-of-salesforce-what-marc-ben
   resources and serve them from packages directly.
 
 # Broken Examples:
+
+## https://old.babeljs.io/learn-es2015/
+
+Broken CSS. The URLs refuse to load.
 
 ## This renders too narrow:
 

@@ -30,7 +30,7 @@ class Cmdline {
     }
 
     static isURL(arg) {
-        return arg.startsWith("http:") || arg.startsWith("https:")
+        return arg.startsWith("http:") || arg.startsWith("https:") || arg.startsWith("file:")
     }
 
 };

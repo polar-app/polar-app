@@ -4,6 +4,7 @@
 
 const fs = require('fs');
 const electron = require('electron');
+const Inliner = require('inliner');
 
 const app = electron.app;
 const shell = electron.shell;
@@ -103,7 +104,7 @@ function createWindow(url) {
         console.log("did-finish-load: ");
 
         setTimeout(async function() {
-            await captureHTML(newWindow);
+            await captureHTML(url, newWindow);
         }, 1);
 
 
@@ -133,6 +134,8 @@ async function configureBrowser(window) {
     console.log("Emulating device...");
     window.webContents.enableDeviceEmulation(browser.deviceEmulation);
 
+    // FIXME: see if I have already redefined it.  the second time fails because
+    // I can't redefine a property.
     let screenDimensionScript = `
             Object.defineProperty(window.screen, "width", { get: function() { return 450; }});
             Object.defineProperty(window.screen, "height", { get: function() { return 450; }});
@@ -144,7 +147,47 @@ async function configureBrowser(window) {
 
 }
 
-async function captureHTML(window) {
+/**
+ * Take the given HTML and inline the CSS, SVG, images, etc.
+ */
+async function inlineHTML(url, content) {
+
+    console.log("Inlining HTML...");
+
+    let options = {
+        url,
+        source: content,
+        images: true,
+        videos: true,
+        preserveComments: true,
+        collapseWhitespace: false,
+        compressJS: false,
+        skipAbsoluteUrls: false,
+        compressCSS: false,
+        inlinemin: false,
+        nosvg: false
+    };
+
+    return new Promise((resolve, reject) => {
+
+        let inliner = new Inliner(content, options, function (error, html) {
+            if(error) {
+                reject(error);
+            } else {
+                console.log("Inlining HTML...done");
+                resolve(html);
+            }
+        });
+        //
+        // inliner.on('progress', function (event) {
+        //     console.error("progress: ", event);
+        // });
+
+    });
+
+}
+
+async function captureHTML(url, window) {
 
     Preconditions.assertNotNull(window);
     Preconditions.assertNotNull(window.webContents);
@@ -159,15 +202,17 @@ async function captureHTML(window) {
 
     let captured = await window.webContents.executeJavaScript("ContentCapture.captureHTML()");
 
+    if( ! args.noInline) {
+        let inlined = await inlineHTML(captured.url, captured.content);
+        captured.content = inlined;
+    }
+
     let filename = Filenames.sanitize(captured.title);
 
     let stashDir = diskDatastore.stashDir;
 
     fs.writeFileSync(`${stashDir}/${filename}.json`, JSON.stringify(captured, null, "  "));
     fs.writeFileSync(`${stashDir}/${filename}.chtml`, captured.content);
-
-    // write two files.. captured.json and captured.html
-    //console.log(capturedHTML);
 
     console.log("Capturing the HTML...done");
 

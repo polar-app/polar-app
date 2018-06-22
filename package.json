@@ -79,6 +79,7 @@
     "font-awesome": "^4.7.0",
     "fontawesome": "^4.7.2",
     "glyphicons": "^0.2.0",
+    "inliner": "^1.13.1",
     "jquery": "^3.3.1",
     "jquery-contextmenu": "^2.6.4",
     "jquery.flowchart": "^1.1.0",

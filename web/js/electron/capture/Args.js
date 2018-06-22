@@ -10,7 +10,8 @@ class Args {
         let result = {
 
             // do not quit when we are done.
-            noQuit: argv.includes("--no-quit=true")
+            noQuit: argv.includes("--no-quit=true"),
+            noInline: argv.includes("--no-inline=true")
 
         };
 
