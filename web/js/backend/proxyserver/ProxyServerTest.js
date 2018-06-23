@@ -17,26 +17,42 @@ describe('ProxyServer', function() {
 
     describe('create', function() {
 
-        it("basic", function () {
+        let proxyServer = null;
+
+        beforeEach(function(done) {
+
+            console.log("Starting...");
 
             let proxyServerConfig = new ProxyServerConfig(8090);
             let cacheRegistry = new CacheRegistry(proxyServerConfig);
-
-            let proxyServer = new ProxyServer(proxyServerConfig, cacheRegistry);
+            proxyServer = new ProxyServer(proxyServerConfig, cacheRegistry);
             proxyServer.start();
+
+            console.log("Starting...done");
+
+            done();
+
+        });
+
+        afterEach(function(done) {
+
+            console.log("Stopping...");
+
             proxyServer.stop();
+
+            console.log("Stopping...done");
+
+            done();
+
+        });
+
+        it("basic", function () {
+
+            // this is just basic startup and teardown.
 
         });
 
         it("Proxy HTTP requests", async function () {
-
-            let proxyServerConfig = new ProxyServerConfig(8090);
-            let cacheRegistry = new CacheRegistry(proxyServerConfig);
-
-            let proxyServer = new ProxyServer(proxyServerConfig, cacheRegistry);
-            proxyServer.start();
-
-            // https://nodejs.org/api/http.html#http_http_request_options_callback
 
             let options = url.parse("http://example.com");
             options.method = "GET";
@@ -47,8 +63,6 @@ describe('ProxyServer', function() {
             let content = await Http.fetchContent(options);
 
             assert.equal(content.toString(), "hello world");
-
-            proxyServer.stop();
 
         });
 
