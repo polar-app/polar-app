@@ -121,7 +121,7 @@ class ProxyServer {
         let url = request['url'];
         let httpVersion = request['httpVersion'];
 
-        let hostport = getHostPortFromString( url, 443 );
+        let hostport = getHostPortFromString(url, 443);
 
         debug( '  = will connect to %s:%s', hostport[0], hostport[1] );
 
