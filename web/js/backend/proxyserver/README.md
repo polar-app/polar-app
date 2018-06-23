@@ -18,9 +18,12 @@
 - Request cookies are not factored into the response.  This is necessary because
   if your cookies change over time, the request would be invalidated.
 
-#
-
 # TODO:
+
+- support for gzip storage on disk
+
+- create a metadata / container format:
+    - metadata stored a .zip / json container file.
 
 - How do we want to store cache HTTPS (secure) requests?
 
