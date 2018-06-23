@@ -18,9 +18,21 @@ class CacheRegistry {
      * registered.
      *
      */
-    register(url, cacheEntry) {
+    register(cacheEntry) {
 
-        console.log(`Registered new cache entry at: ${url}`)
+        Preconditions.assertNotNull(cacheEntry, "cacheEntry");
+        Preconditions.assertNotNull(cacheEntry.statusCode, "cacheEntry.statusCode");
+        Preconditions.assertNotNull(cacheEntry.headers, "cacheEntry.headers");
+
+        console.log("FIXME0: ", cacheEntry)
+
+        let url = cacheEntry.url;
+
+        Preconditions.assertNotNull(url, "url");
+
+        console.log(`Registered new cache entry at: ${url}`);
+
+        this.registry[url] = cacheEntry;
 
         return { url };
 
@@ -45,9 +57,7 @@ class CacheRegistry {
             throw new Error("URL not registered: " + url);
         }
 
-        return {
-            url
-        }
+        return this.registry[url];
 
     }
 

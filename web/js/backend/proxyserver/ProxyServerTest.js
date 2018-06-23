@@ -3,6 +3,7 @@ const fs = require('fs');
 const assert = require('assert');
 const url = require('url');
 
+const {BufferedCacheEntry} = require('./BufferedCacheEntry');
 const {CacheRegistry} = require('./CacheRegistry');
 const {ProxyServer} = require('./ProxyServer');
 const {ProxyServerConfig} = require('./ProxyServerConfig');
@@ -15,36 +16,52 @@ const HttpsProxyAgent = require('https-proxy-agent');
 
 describe('ProxyServer', function() {
 
-    describe('create', function() {
 
-        let proxyServer = null;
+    let proxyServer = null;
+    let cacheRegistry = null;
 
-        beforeEach(function(done) {
+    beforeEach(function(done) {
 
-            console.log("Starting...");
+        console.log("Starting...");
 
-            let proxyServerConfig = new ProxyServerConfig(8090);
-            let cacheRegistry = new CacheRegistry(proxyServerConfig);
-            proxyServer = new ProxyServer(proxyServerConfig, cacheRegistry);
-            proxyServer.start();
+        let proxyServerConfig = new ProxyServerConfig(8090);
+        cacheRegistry = new CacheRegistry(proxyServerConfig);
 
-            console.log("Starting...done");
+        proxyServer = new ProxyServer(proxyServerConfig, cacheRegistry);
+        proxyServer.start();
 
-            done();
+        console.log("Starting...done");
 
-        });
+        // add requests to the cache registry
 
-        afterEach(function(done) {
+        cacheRegistry.register(new BufferedCacheEntry({
+            url: "http://foo.com/index.html",
+            method: "GET",
+            headers: {
+                "Content-Type": "text/html"
+            },
+            statusCode: 200,
+            statusMessage: "OK",
+            data: "this is our first cache entry"
+        }));
 
-            console.log("Stopping...");
+        done();
 
-            proxyServer.stop();
+    });
 
-            console.log("Stopping...done");
+    afterEach(function(done) {
 
-            done();
+        console.log("Stopping...");
 
-        });
+        proxyServer.stop();
+
+        console.log("Stopping...done");
+
+        done();
+
+    });
+
+    describe('proxying', function() {
 
         it("basic", function () {
 
@@ -77,8 +94,31 @@ describe('ProxyServer', function() {
 
     });
 
-});
 
+    describe('caching', function() {
+
+        it("hasEntry", async function () {
+
+            let link = "http://foo.com/index.html";
+            assert.equal(cacheRegistry.hasEntry(link), true);
+
+        });
+
+
+        it("basic", async function () {
+
+            let agent = new HttpProxyAgent("http://localhost:8090");
+
+            let link = "http://foo.com/index.html";
+
+            let content = await testWithAgent(link, agent);
+            assert.equal(content.toString(), "this is our first cache entry");
+
+        });
+
+    });
+
+});
 
 async function testWithAgent(link, agent) {
 

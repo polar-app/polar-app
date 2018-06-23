@@ -21,7 +21,28 @@ const {Objects} = require("../../util/Objects");
          */
         this.headers = {};
 
-        Objects.defaults(options, this);
+        /**
+         * The status code for this cache entry.
+         */
+        this.statusCode = null;
+
+        /**
+         * The status message.
+         */
+        this.statusMessage = null;
+
+        Object.assign(this, options);
+
+    }
+
+    /**
+     * Handle data for this request.  The callback is called as a function
+     * with one 'data' parameter which is a buffer of data to write.
+     *
+     * The handleData should return false when there is no more data to handle.
+     *
+     */
+    /* abstract */ async handleData(callback) {
 
     }
 

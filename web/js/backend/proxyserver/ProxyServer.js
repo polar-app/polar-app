@@ -5,8 +5,9 @@ const net = require('net');
 const http = require('http');
 const express = require('express');
 const serveStatic = require('serve-static');
-const {Preconditions} = require("../../Preconditions");
 const httpProxy = require('http-proxy');
+
+const {Preconditions} = require("../../Preconditions");
 const {ProxyServerConfig} = require('./ProxyServerConfig');
 const {CacheRegistry} = require('./CacheRegistry');
 
@@ -50,7 +51,47 @@ class ProxyServer {
      * @param req https://expressjs.com/en/4x/api.html#req
      * @param res https://expressjs.com/en/4x/api.html#res
      */
-    requestHandler(req, res) {
+    async requestHandler(req, res) {
+
+        debug("Handling HTTP request: " + req.url);
+
+        if(this.cacheRegistry.hasEntry(req.url)) {
+
+            // serve from the cache if registered
+
+            debug("Handling cached request: " + req.url);
+
+            // TODO: the downside of this strategy is that we don't benefit
+            // from any advanced HTTP caching semantics or features like
+            // conditional GET requests but since we're local anyway this
+            // does not impact performance.
+
+            let cacheEntry = this.cacheRegistry.get(req.url);
+
+            if(!cacheEntry) {
+                throw new Error("No cache entry for: " + req.url);
+            }
+
+            // FIXME: we should return contentLength too...
+
+            res.writeHead(cacheEntry.statusCode,
+                          cacheEntry.statusMessage,
+                          cacheEntry.headers);
+
+            //FIXME: res.writeHeader("X-polar-cache", "hit");
+
+            while(await cacheEntry.handleData(function (data) {
+                res.write(data);
+            }));
+
+            res.end();
+
+            return;
+
+        }
+
+
+        // then forward to the remote proxy
 
         let options = {
             target: `${req.protocol}://${req.headers.host}`
