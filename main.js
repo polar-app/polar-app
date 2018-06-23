@@ -19,6 +19,10 @@ const app_icon = nativeImage.createFromPath(fspath.join(__dirname, 'icon.png'));
 const {WebserverConfig} = require("./web/js/backend/webserver/WebserverConfig");
 const {Webserver} = require("./web/js/backend/webserver/Webserver");
 const {FileRegistry} = require("./web/js/backend/webserver/FileRegistry");
+const {ProxyServerConfig} = require("./web/js/backend/proxyserver/ProxyServerConfig");
+const {ProxyServer} = require("./web/js/backend/proxyserver/ProxyServer");
+const {CacheRegistry} = require("./web/js/backend/proxyserver/CacheRegistry");
+
 const {Cmdline} = require("./web/js/electron/Cmdline");
 const {Paths} = require("./web/js/util/Paths");
 const {Fingerprints} = require("./web/js/util/Fingerprints");
@@ -55,6 +59,8 @@ const BROWSER_WINDOW_OPTIONS = {
 
 const REMOTE_DEBUGGING_PORT = '8315';
 const WEBSERVER_PORT = 8500;
+const PROXYSERVER_PORT = 8600;
+
 const DEFAULT_HOST = "127.0.0.1";
 const DEFAULT_URL = `http://${DEFAULT_HOST}:${WEBSERVER_PORT}/default.html`;
 
@@ -466,12 +472,20 @@ global.datastore = datastore;
 
 console.log("Electron app path is: " + app.getAppPath());
 
+// *** start the webserver
+
 const webserverConfig = new WebserverConfig(app.getAppPath(), WEBSERVER_PORT);
-
 const fileRegistry = new FileRegistry(webserverConfig);
-
 const webserver = new Webserver(webserverConfig, fileRegistry);
 webserver.start();
+
+// *** start the proxy server
+
+const proxyServerConfig = new ProxyServerConfig(PROXYSERVER_PORT);
+const cacheRegistry = new CacheRegistry(proxyServerConfig);
+const proxyServer = new ProxyServer(proxyServerConfig, cacheRegistry);
+
+proxyServer.start();
 
 console.log("Running with process.args: ", JSON.stringify(process.argv));
 

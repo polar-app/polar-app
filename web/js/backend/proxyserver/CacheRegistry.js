@@ -12,6 +12,11 @@ class CacheRegistry {
 
     }
 
+    registerFile(path) {
+
+
+
+    }
     /**
      * Register a file to be served with the given checksum.  Then return
      * metadata about what we registered including how to fetch the file we
