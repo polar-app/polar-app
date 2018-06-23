@@ -53,6 +53,8 @@ class ProxyServer {
      */
     async requestHandler(req, res) {
 
+        console.log("FIXME1");
+
         debug("Handling HTTP request: " + req.url);
 
         if(this.cacheRegistry.hasEntry(req.url)) {
@@ -118,6 +120,7 @@ class ProxyServer {
      * @param bodyhead
      */
     secureRequestHandler(request, socketRequest, bodyhead) {
+        console.log("FIXME1: "+ request.url);
 
         debug("Handling SSL proxied request: " + request.url);
 

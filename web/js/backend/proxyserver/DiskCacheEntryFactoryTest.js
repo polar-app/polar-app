@@ -39,7 +39,6 @@ describe('DiskCacheEntryFactory', function() {
         it("createFromStaticCHTML", function () {
 
             let diskCacheEntry = DiskCacheEntryFactory.createFromStaticCHTML(path);
-
             assert.equal(diskCacheEntry.url, "http://jakearchibald.com/2016/streams-ftw/");
 
         });

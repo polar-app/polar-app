@@ -32,7 +32,7 @@ class DiskCacheEntry extends CacheEntry {
                 }
 
                 callback(data);
-                resolve(true);
+                resolve(false);
 
             });
 

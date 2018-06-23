@@ -352,6 +352,10 @@ async function loadDoc(path, targetWindow) {
 
         // TODO: this is workaround until we enable zip files with embedded metadata.
         let fingerprint = Fingerprints.create(basename);
+
+        //FIXME: as SOON as we load this from the local proxy server.. we lock up
+        // electron and it goes to 100% cpu.. the thing is, serving the static
+        // file works FINE
         fileParam = encodeURIComponent(cacheMeta.url);
 
         url = `http://${DEFAULT_HOST}:${WEBSERVER_PORT}/htmlviewer/index.html?file=${fileParam}&fingerprint=${fingerprint}`;
@@ -361,6 +365,7 @@ async function loadDoc(path, targetWindow) {
     console.log("Loading URL: " + url);
 
     if(cacheMeta) {
+
         console.log("Using proxy config: ", cacheMeta.proxyConfig);
 
         await new Promise((resolve => {
@@ -372,6 +377,7 @@ async function loadDoc(path, targetWindow) {
 
     }
 
+    //return;
     targetWindow.loadURL(url, options);
 
     if(args.enableConsoleLogging) {
