@@ -79,6 +79,8 @@
     "font-awesome": "^4.7.0",
     "fontawesome": "^4.7.2",
     "glyphicons": "^0.2.0",
+    "http-proxy-agent": "^2.1.0",
+    "https-proxy-agent": "^2.2.1",
     "inliner": "^1.13.1",
     "jquery": "^3.3.1",
     "jquery-contextmenu": "^2.6.4",
