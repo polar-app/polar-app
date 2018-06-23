@@ -45,6 +45,18 @@ describe('ProxyServer', function() {
             data: "this is our first cache entry"
         }));
 
+        cacheRegistry.register(new BufferedCacheEntry({
+            url: "http://foo.com/second.html",
+            method: "GET",
+            headers: {
+                "Content-Type": "text/html"
+            },
+            statusCode: 200,
+            statusMessage: "OK",
+            contentLength: 30,
+            data: "this is our second cache entry"
+        }));
+
         done();
 
     });
@@ -111,8 +123,22 @@ describe('ProxyServer', function() {
 
             let link = "http://foo.com/index.html";
 
-            let content = await testWithAgent(link, agent);
-            assert.equal(content.toString(), "this is our first cache entry");
+            let executed = await executeWithAgent(link, agent);
+            assert.equal(executed.data.toString(), "this is our first cache entry");
+            assert.equal(executed.response.headers["x-polar-cache"], "hit");
+
+        });
+
+        it("second request with content-length", async function () {
+
+            let agent = new HttpProxyAgent("http://localhost:8090");
+
+            let link = "http://foo.com/second.html";
+
+            let executed = await executeWithAgent(link, agent);
+            assert.equal(executed.data.toString(), "this is our second cache entry");
+            assert.equal(executed.response.headers["x-polar-cache"], "hit");
+            assert.equal(executed.response.headers["content-length"], "30");
 
         });
 
@@ -126,10 +152,22 @@ async function testWithAgent(link, agent) {
     options.method = "GET";
     options.agent = agent;
 
-    console.log("options: ", options);
+    //console.log("options: ", options);
 
     let content = await Http.fetchContent(options);
     return content.toString();
 
+
+}
+
+async function executeWithAgent(link, agent) {
+
+    let options = url.parse(link);
+    options.method = "GET";
+    options.agent = agent;
+
+    //console.log("options: ", options);
+
+    return await Http.execute(options);
 
 }

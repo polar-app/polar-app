@@ -72,13 +72,17 @@ class ProxyServer {
                 throw new Error("No cache entry for: " + req.url);
             }
 
-            // FIXME: we should return contentLength too...
+            let headers = Object.assign({}, cacheEntry.headers);
+            headers["X-polar-cache"] = "hit";
+
+            if(cacheEntry.contentLength) {
+                // we should return contentLength too when it is known
+                headers["Content-Length"] = cacheEntry.contentLength;
+            }
 
             res.writeHead(cacheEntry.statusCode,
                           cacheEntry.statusMessage,
-                          cacheEntry.headers);
-
-            //FIXME: res.writeHeader("X-polar-cache", "hit");
+                          headers);
 
             while(await cacheEntry.handleData(function (data) {
                 res.write(data);

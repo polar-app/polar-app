@@ -31,6 +31,12 @@ const {Objects} = require("../../util/Objects");
          */
         this.statusMessage = null;
 
+        /**
+         * The content length of the data, if known. Otherwise, null.
+         * @type {null}
+         */
+        this.contentLength = null;
+
         Object.assign(this, options);
 
     }

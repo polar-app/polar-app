@@ -24,8 +24,6 @@ class CacheRegistry {
         Preconditions.assertNotNull(cacheEntry.statusCode, "cacheEntry.statusCode");
         Preconditions.assertNotNull(cacheEntry.headers, "cacheEntry.headers");
 
-        console.log("FIXME0: ", cacheEntry)
-
         let url = cacheEntry.url;
 
         Preconditions.assertNotNull(url, "url");
