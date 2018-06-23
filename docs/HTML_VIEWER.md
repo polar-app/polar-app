@@ -1,5 +1,8 @@
 # TODO:
 
+- Inliner is just not a very good system.  It's just broken. There are some
+  obvious/initial bugs and I suspect there will be more.
+
 - annotations are doubling up on top of themselves so we're getting incorrect
   opacity.
 
@@ -65,6 +68,34 @@ Can I break this down into stages so I can get an initial version working:
 
 # Long Term Strategies
 
+## Service Workers
+
+- I could use the HAR capture, then implemetn a service worker to serve via HAR.
+
+    - they have precaching , background sync, and more:
+
+        - https://developers.google.com/web/tools/workbox/
+        - https://github.com/GoogleChromeLabs/sw-precache
+            - this supports a whole pre-cache system for resources and might work.
+            - the EASIEST way for me to do this is probably to just map URLs to
+              content and then have the precache service worker just load the
+              URL from the service worker once it matches the content.
+
+### CONS
+
+ - Big one! THIS WILL NOT WORK!  I can't serve other URLs for other domains.
+
+
+## Set referer or "fake" document.location.href
+
+- if we can set a referer we could avoid resources being blocked which would
+  enable us to save page without offline support (for now).
+
+## I could take Save Webpage WE and Pocket and combine them. Hack Save Webpage
+
+    - I can just stub out the UI and replace it with my code without having to
+      understand the complexities.
+
 ## Capture MHTML in Main Browser , emulate device + capture in Electron.
 
 ### PROS
@@ -82,6 +113,23 @@ Can I break this down into stages so I can get an initial version working:
 
 https://github.com/remy/inliner
 
+### TODO
+
+- what is the user agent?
+
+- get.js needs:
+
+      var settings = assign({}, options, {
+        encoding: null,
+        followRedirect: true,
+        headers: inliner.headers,
+        gzip: true
+      });
+
+- links.js needs:
+
+   $(link).replaceWith(`<style data-inliner-style-url="${url}">${css}</style>`);
+
 ### PROS
 
 ### CONS
@@ -98,6 +146,13 @@ https://github.com/remy/inliner
 
 - how do we specify HTTP timeouts, etc? It would be better to do this ALL in the
   browser, then bundle it up and send it to capture.
+
+- what is the user agent?
+
+- inliner doesn't work with CSS properly and we're still missing things rendering properly.
+    - I think this is because we're giving it the source, not the URL and then
+      full URLs can't be expanded and it's not using 'base' to expand the URLs.
+    - it also doesn't respect the BASE URL...
 
 ## Snapshot all HTML + JS + CSS in browser, perform 'capture' in Electron.
 
@@ -135,6 +190,10 @@ If we send the cookies, we will authenticate as the user.
 
 - ad blocking and other extensions won't be enabled
 
+## Chrome Extension + Cookies + HAR + Inliner
+
+This setup would capture most of the content in the brower, send it to electron
+for processing but the HTML+CSS+images,etc would all be in the HAR.
 
 # Related Projects
 

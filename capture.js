@@ -107,7 +107,7 @@ function createWindow(url) {
     configureBrowser(newWindow);
 
     const windowOptions = {
-        extraHeaders: 'pragma: no-cache\n',
+        extraHeaders: `pragma: no-cache\nreferer: ${url}\n`,
         userAgent: browser.userAgent
     };
 
@@ -152,7 +152,7 @@ async function inlineHTML(url, content) {
     console.log("Inlining HTML...");
 
     let options = {
-        //url,
+        url,
         source: content,
         images: true,
         videos: true,
@@ -199,10 +199,10 @@ async function captureHTML(url, window) {
 
     let captured = await window.webContents.executeJavaScript("ContentCapture.captureHTML()");
 
-    if( ! args.noInline) {
-        let inlined = await inlineHTML(captured.url, captured.content);
-        captured.content = inlined;
-    }
+    // if( ! args.noInline) {
+    //     let inlined = await inlineHTML(captured.url, captured.content);
+    //     captured.content = inlined;
+    // }
 
     let filename = Filenames.sanitize(captured.title);
 

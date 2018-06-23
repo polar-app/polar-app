@@ -136,6 +136,23 @@ class ContentCapture {
 
     }
 
+    static cleanupFullStylesheetURLs(cloneDoc) {
+
+        let mutations = 0;
+
+        cloneDoc.querySelectorAll("a").forEach(function (element) {
+
+            let href = element.getAttribute("href");
+            if(href) {
+                element.setAttribute("aria-hidden", "false");
+                ++mutations;
+            }
+        });
+
+        return mutations;
+
+    }
+
     static doctypeToOuterHTML(doctype) {
 
         return "<!DOCTYPE "

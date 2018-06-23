@@ -14,7 +14,7 @@ const ipcMain = electron.ipcMain;
 const crashReporter = electron.crashReporter;
 const BrowserWindow = electron.BrowserWindow;
 const nativeImage = require('electron').nativeImage;
-const options = { extraHeaders: 'pragma: no-cache\n' }
+const options = { extraHeaders: 'pragma: no-cache\nreferer: http://cnn.com\n' }
 const app_icon = nativeImage.createFromPath(fspath.join(__dirname, 'icon.png'));
 const {WebserverConfig} = require("./web/js/backend/WebserverConfig");
 const {Webserver} = require("./web/js/backend/Webserver");
@@ -341,6 +341,7 @@ function loadDoc(path, targetWindow) {
         let fingerprint = Fingerprints.create(basename);
 
         url = `http://${DEFAULT_HOST}:${WEBSERVER_PORT}/htmlviewer/index.html?file=${fileParam}&fingerprint=${fingerprint}`;
+
     }
 
     console.log("Loading URL: " + url);
@@ -356,6 +357,11 @@ function loadDoc(path, targetWindow) {
         console.log("Finished loading. Now injecting customizations.");
         console.log("Toggling dev tools...");
         //targetWindow.toggleDevTools();
+
+
+        // FIXME: call targetWindow.setTitle now
+        targetWindow.setTitle(targetWindow.webContents.getTitle());
+
     });
 
 }

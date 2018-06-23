@@ -53,6 +53,14 @@ class FrameInitializer {
         console.log("Frame loaded.  Sending pagesinit on .page");
         this.dispatchPagesInit();
         this.startEventBridge();
+        this.updateDocTitle();
+
+    }
+
+    updateDocTitle() {
+        let title = this.iframe.contentDocument.title;
+        console.log("Setting title: " + title);
+        document.title = title;
     }
 
     dispatchPagesInit() {
