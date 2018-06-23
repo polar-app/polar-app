@@ -2,8 +2,8 @@
 
 const express = require('express');
 const serveStatic = require('serve-static');
-const {Paths} = require("../util/Paths");
-const {Preconditions} = require("../Preconditions");
+const {Paths} = require("../../util/Paths");
+const {Preconditions} = require("../../Preconditions");
 
 class Webserver {
 

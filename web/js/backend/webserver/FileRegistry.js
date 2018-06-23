@@ -1,6 +1,6 @@
 const path = require('path');
-const {Preconditions} = require("../Preconditions");
-const {Hashcodes} = require('../Hashcodes');
+const {Preconditions} = require("../../Preconditions");
+const {Hashcodes} = require('../../Hashcodes');
 
 class FileRegistry {
 

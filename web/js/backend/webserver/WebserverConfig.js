@@ -1,4 +1,4 @@
-const {Preconditions} = require("../Preconditions");
+const {Preconditions} = require("../../Preconditions");
 
 class WebserverConfig {
 

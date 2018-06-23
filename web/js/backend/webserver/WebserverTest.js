@@ -5,8 +5,8 @@ const assert = require('assert');
 const {Webserver} = require('./Webserver');
 const {FileRegistry} = require('./FileRegistry');
 const {WebserverConfig} = require('./WebserverConfig');
-const {Hashcodes} = require('../Hashcodes');
-const {assertJSON} = require("../test/Assertions");
+const {Hashcodes} = require('../../Hashcodes');
+const {assertJSON} = require("../../test/Assertions");
 
 
 describe('Webserver', function() {
