@@ -10,8 +10,8 @@ const {Hashcodes} = require('../../Hashcodes');
 const {assertJSON} = require("../../test/Assertions");
 const {Http} = require("../../util/Http");
 
-var HttpProxyAgent = require('http-proxy-agent');
-var HttpsProxyAgent = require('https-proxy-agent');
+const HttpProxyAgent = require('http-proxy-agent');
+const HttpsProxyAgent = require('https-proxy-agent');
 
 describe('ProxyServer', function() {
 
@@ -56,14 +56,17 @@ describe('ProxyServer', function() {
 
             let agent = new HttpProxyAgent("http://localhost:8090");
 
-            let content = await testWithAgent("http://example.com", agent);
-            assert.equal(content.toString(), "hello world");
+            let link = "http://httpbin.org/get?message=hello+world";
+            //let link = "http://example.com";
+
+            let content = await testWithAgent(link, agent);
+            assert.equal(content.toString().indexOf("hello world") > -1, true);
 
         });
 
         it("Proxy HTTPS requests", async function () {
 
-            let agent = new HttpProxyAgent("http://localhost:8090");
+            let agent = new HttpsProxyAgent("http://localhost:8090");
 
             let content = await testWithAgent("https://example.com", agent);
             assert.equal(content.toString(), "hello world");
@@ -79,7 +82,7 @@ async function testWithAgent(link, agent) {
 
     let options = url.parse(link);
     options.method = "GET";
-    options.agent = new HttpProxyAgent("http://localhost:8090");
+    options.agent = agent;
 
     console.log("options: ", options);
 

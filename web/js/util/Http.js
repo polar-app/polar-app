@@ -15,8 +15,10 @@ class Http {
         let provider;
 
         if(options.protocol === "http:") {
+            console.log("Using http");
             provider = http;
         } else if (options.protocol === "https:") {
+            console.log("Using https");
             provider = https;
         } else {
             throw new Error("No provider for protocol: " + options.protocol);
