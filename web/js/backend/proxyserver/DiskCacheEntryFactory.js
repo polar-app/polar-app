@@ -49,10 +49,15 @@ class DiskCacheEntryFactory {
 
         let data = JSON.parse(json.toString("UTF-8"));
 
+        let url = data.url;
+
+        // we can't serve this via HTTPS.. only HTTP which is cached locally.
+        url = url.replace(/^https:/, "http:");
+
         // TODO: stat the file so that we can get the Content-Length
 
         return new DiskCacheEntry({
-            url: data.url,
+            url: url,
             method: "GET",
             headers: {
                 "Content-Type": "text/html"

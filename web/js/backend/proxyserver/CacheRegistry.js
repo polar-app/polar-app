@@ -1,6 +1,7 @@
 const path = require('path');
 const {Preconditions} = require("../../Preconditions");
 const {Hashcodes} = require('../../Hashcodes');
+const {DiskCacheEntryFactory} = require('./DiskCacheEntryFactory');
 
 class CacheRegistry {
 
@@ -13,10 +14,11 @@ class CacheRegistry {
     }
 
     registerFile(path) {
-
-
-
+        let diskCacheEntry = DiskCacheEntryFactory.createFromFile(path);
+        return this.register(diskCacheEntry);
     }
+
+
     /**
      * Register a file to be served with the given checksum.  Then return
      * metadata about what we registered including how to fetch the file we
@@ -37,7 +39,12 @@ class CacheRegistry {
 
         this.registry[url] = cacheEntry;
 
-        return { url };
+        let proxyConfig = {
+            proxyRules: `http=localhost:${this.proxyConfig.port}`,
+            proxyBypassRules: "<local>"
+        };
+
+        return { url, proxyConfig };
 
     }
 

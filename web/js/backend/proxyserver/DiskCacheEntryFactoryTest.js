@@ -40,7 +40,7 @@ describe('DiskCacheEntryFactory', function() {
 
             let diskCacheEntry = DiskCacheEntryFactory.createFromStaticCHTML(path);
 
-            assert.equal(diskCacheEntry.url, "https://jakearchibald.com/2016/streams-ftw/");
+            assert.equal(diskCacheEntry.url, "http://jakearchibald.com/2016/streams-ftw/");
 
         });
 
@@ -49,11 +49,9 @@ describe('DiskCacheEntryFactory', function() {
 
             let diskCacheEntry = DiskCacheEntryFactory.createFromFile(path);
 
-            assert.equal(diskCacheEntry.url, "https://jakearchibald.com/2016/streams-ftw/");
+            assert.equal(diskCacheEntry.url, "http://jakearchibald.com/2016/streams-ftw/");
 
         });
-
-
 
     });
 

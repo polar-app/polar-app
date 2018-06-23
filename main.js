@@ -325,32 +325,52 @@ function handleCmdLinePDF(commandLine, createNewWindow) {
 /**
  * Load the given PDF file in the given target window.
  */
-function loadDoc(path, targetWindow) {
+async function loadDoc(path, targetWindow) {
 
     if(!targetWindow) {
         throw new Error("No target window given");
     }
 
     let fileMeta = fileRegistry.registerFile(path);
+    let cacheMeta = null;
 
-    console.log("Loading PDF via HTTP server: " + JSON.stringify(fileMeta));
+    console.log("Loading doc via HTTP server: " + JSON.stringify(fileMeta));
 
     let url = null;
     let fileParam = encodeURIComponent(fileMeta.url);
 
     if(path.endsWith(".pdf")) {
+
         url = `http://${DEFAULT_HOST}:${WEBSERVER_PORT}/pdfviewer/web/viewer.html?file=${fileParam}`;
+
     } else if(path.endsWith(".chtml")) {
+
+        cacheMeta = cacheRegistry.registerFile(path);
+        console.log("Cache meta: " + JSON.stringify(cacheMeta));
+
         let basename = Paths.basename(path);
 
         // TODO: this is workaround until we enable zip files with embedded metadata.
         let fingerprint = Fingerprints.create(basename);
+        fileParam = encodeURIComponent(cacheMeta.url);
 
         url = `http://${DEFAULT_HOST}:${WEBSERVER_PORT}/htmlviewer/index.html?file=${fileParam}&fingerprint=${fingerprint}`;
 
     }
 
     console.log("Loading URL: " + url);
+
+    if(cacheMeta) {
+        console.log("Using proxy config: ", cacheMeta.proxyConfig);
+
+        await new Promise((resolve => {
+            targetWindow.webContents.session.setProxy(cacheMeta.proxyConfig, () => {
+                console.log("Proxy configured: ", arguments);
+                resolve();
+            });
+        }))
+
+    }
 
     targetWindow.loadURL(url, options);
 

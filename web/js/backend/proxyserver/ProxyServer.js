@@ -94,6 +94,7 @@ class ProxyServer {
 
         }
 
+        debug("Handling proxied request: " + req.url);
 
         // then forward to the remote proxy
 
@@ -117,6 +118,8 @@ class ProxyServer {
      * @param bodyhead
      */
     secureRequestHandler(request, socketRequest, bodyhead) {
+
+        debug("Handling SSL proxied request: " + request.url);
 
         let url = request['url'];
         let httpVersion = request['httpVersion'];

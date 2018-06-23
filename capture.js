@@ -21,6 +21,10 @@ const HEIGHT = 1100;
 
 const BROWSERS = require("./web/js/util/Browsers");
 
+// FIXME: remove meta http-equiv Location redirects.
+// FIXME: don't allow meta charset and other ways to set the charset within the
+//        HTML file as we are ALWAYS UTF-8
+
 // FIXME: move this to BROWSERS
 const BROWSER_WINDOW_OPTIONS = {
     minWidth: WIDTH,
