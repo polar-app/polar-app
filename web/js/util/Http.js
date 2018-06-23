@@ -1,4 +1,5 @@
 const http = require("http");
+const https = require("https");
 
 class Http {
 
@@ -11,9 +12,20 @@ class Http {
      */
     static async fetchContent(options) {
 
+        let provider;
+
+        if(options.protocol === "http:") {
+            provider = http;
+        } else if (options.protocol === "https:") {
+            provider = https;
+        } else {
+            throw new Error("No provider for protocol: " + options.protocol);
+        }
+
+
         return new Promise(function (resolve, reject) {
 
-            http.get(options, function (response) {
+            provider.get(options, function (response) {
 
                 if(response.statusCode !== 200) {
                     reject(new Error("Wrong status code: " + response.statusCode));

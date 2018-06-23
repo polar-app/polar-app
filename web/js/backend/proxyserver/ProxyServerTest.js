@@ -54,19 +54,37 @@ describe('ProxyServer', function() {
 
         it("Proxy HTTP requests", async function () {
 
-            let options = url.parse("http://example.com");
-            options.method = "GET";
-            options.agent = new HttpProxyAgent("http://localhost:8090");
+            let agent = new HttpProxyAgent("http://localhost:8090");
 
-            console.log("options: ", options);
-
-            let content = await Http.fetchContent(options);
-
+            let content = await testWithAgent("http://example.com", agent);
             assert.equal(content.toString(), "hello world");
 
         });
 
+        it("Proxy HTTPS requests", async function () {
+
+            let agent = new HttpProxyAgent("http://localhost:8090");
+
+            let content = await testWithAgent("https://example.com", agent);
+            assert.equal(content.toString(), "hello world");
+
+        });
 
     });
 
 });
+
+
+async function testWithAgent(link, agent) {
+
+    let options = url.parse(link);
+    options.method = "GET";
+    options.agent = new HttpProxyAgent("http://localhost:8090");
+
+    console.log("options: ", options);
+
+    let content = await Http.fetchContent(options);
+    return content.toString();
+
+
+}
