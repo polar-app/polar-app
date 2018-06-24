@@ -13,6 +13,7 @@ const {ContentCapture} = require("./web/js/capture/ContentCapture");
 const {Preconditions} = require("./web/js/Preconditions");
 const {Cmdline} = require("./web/js/electron/Cmdline");
 const {Filenames} = require("./web/js/util/Filenames");
+const {Functions} = require("./web/js/util/Functions");
 const {DiskDatastore} = require("./web/js/datastore/DiskDatastore");
 const {Args} = require("./web/js/electron/capture/Args");
 const {ArgsParser} = require("./web/js/util/ArgsParser");
@@ -69,6 +70,7 @@ async function createWindow(url) {
         // FIXME: how do we handle iframes.
 
         // FIXME: figure out how to fail properly.
+
     });
 
     newWindow.webContents.on('did-start-loading', async function() {
@@ -114,19 +116,28 @@ async function configureBrowser(window) {
 
     window.webContents.setUserAgent(browser.userAgent);
 
-    // FIXME: see if I have already redefined it.  the second time fails because
-    // I can't redefine a property.
-
     let windowSize = getWindowSize(window);
 
-    // TODO: clean this up and make it into a function that we inject via toString
-    //
-    let screenDimensionScript = `
-            Object.defineProperty(window.screen, "width", { get: function() { return ${windowSize.width}; }});
-            Object.defineProperty(window.screen, "height", { get: function() { return ${windowSize.height}; }});
-            Object.defineProperty(window.screen, "availWidth", { get: function() { return ${windowSize.width}; }});
-            Object.defineProperty(window.screen, "availHeight", { get: function() { return ${windowSize.height}; }});
-        `;
+    function configureBrowserWindowSize(windowSize) {
+
+        // TODO: see if I have already redefined it.  the second time fails
+        // because I can't redefine a property.
+
+        let definitions = [
+            {key: "width",       value: windowSize.width},
+            {key: "availWidth",  value: windowSize.width},
+            {key: "height",      value: windowSize.height},
+            {key: "availHeight", value: windowSize.height}
+        ];
+
+        definitions.forEach((definition) => {
+            console.log(`Defining ${definition.key} as: ${definition.value}`);
+            Object.defineProperty(window.screen, definition.key, { get: function() { return definition.value }});
+        });
+
+    }
+
+    let screenDimensionScript = Functions.functionToScript(configureBrowserWindowSize, windowSize);
 
     await window.webContents.executeJavaScript(screenDimensionScript);
 

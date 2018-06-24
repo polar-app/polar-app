@@ -1,4 +1,4 @@
-module.exports.FunctionalInterface = class {
+class FunctionalInterface {
 
     /**
      * Create a functional interface for the given object so that a function OR
@@ -18,3 +18,5 @@ module.exports.FunctionalInterface = class {
     }
 
 }
+
+module.exports.FunctionalInterface = FunctionalInterface;

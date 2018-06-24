@@ -46,14 +46,13 @@
 
     // soem moer ideas... set maxHeight
 
-    function createFuncLiteral() {
 
-        let valueToPass = 100;
+    function createFuncLiteral(_function, _opts) {
 
-        return function() {
-            let test = valueToPass;
-            return test;
-        }
+        return  `
+        ${_function.toString()}
+        ${_function.name}(${opts});
+        `;
 
     }
 

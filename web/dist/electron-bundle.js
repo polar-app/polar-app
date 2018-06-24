@@ -32138,12 +32138,12 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-module.exports.FunctionalInterface = function () {
-    function _class() {
-        _classCallCheck(this, _class);
+var FunctionalInterface = function () {
+    function FunctionalInterface() {
+        _classCallCheck(this, FunctionalInterface);
     }
 
-    _createClass(_class, null, [{
+    _createClass(FunctionalInterface, null, [{
         key: "create",
 
 
@@ -32164,8 +32164,10 @@ module.exports.FunctionalInterface = function () {
         }
     }]);
 
-    return _class;
+    return FunctionalInterface;
 }();
+
+module.exports.FunctionalInterface = FunctionalInterface;
 
 /***/ }),
 
