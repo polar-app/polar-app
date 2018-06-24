@@ -1,19 +1,20 @@
+
+const {ArgsParser} = require("../../util/ArgsParser");
+const {Objects} = require("../../util/Objects");
+
 class Args {
 
     /**
-     * Parse..
-     *
-     * @param args
-     */
+     * Parse the command line, providing reasonable arguments.
+     **/
     static parse(argv) {
 
-        let result = {
+        let result = ArgsParser.parse(argv);
 
-            // do not quit when we are done.
-            noQuit: argv.includes("--no-quit=true"),
-            noInline: argv.includes("--no-inline=true")
-
-        };
+        result = Objects.defaults(result, {
+            quit: true,
+            browser: "MOBILE_GALAXY_S8_WITH_CHROME_61"
+        });
 
         return result;
 

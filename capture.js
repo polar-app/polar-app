@@ -4,7 +4,7 @@
 
 const fs = require('fs');
 const electron = require('electron');
-const Inliner = require('inliner');
+const debug = require('debug');
 
 const app = electron.app;
 const shell = electron.shell;
@@ -16,8 +16,8 @@ const {Filenames} = require("./web/js/util/Filenames");
 const {DiskDatastore} = require("./web/js/datastore/DiskDatastore");
 const {Args} = require("./web/js/electron/capture/Args");
 const {ArgsParser} = require("./web/js/util/ArgsParser");
+const {BrowserWindows} = require("./web/js/capture/BrowserWindows");
 const Browsers = require("./web/js/capture/Browsers");
-const BrowserWindows = require("./web/js/capture/BrowserWindows");
 
 const WIDTH = 700;
 const HEIGHT = 1100;
@@ -119,7 +119,7 @@ async function configureBrowser(window) {
     // TODO maybe inject this via a preload script so we know that it's always
     // running
 
-    console.log("Emulating browser: " + browser);
+    console.log("Emulating browser: " + JSON.stringify(browser, null, "  " ));
 
     // we need to mute by default especially if the window is hidden.
     console.log("Muting audio...");
@@ -223,28 +223,54 @@ async function captureHTML(url, window) {
     // record the browser that was used to render this page.
     captured.browser = browser;
 
+    captured = prettifyCaptured(captured);
+
     let filename = Filenames.sanitize(captured.title);
 
     let stashDir = diskDatastore.stashDir;
 
-    fs.writeFileSync(`${stashDir}/${filename}.json`, JSON.stringify(captured, null, "  "));
+    let jsonPath = `${stashDir}/${filename}.json`;
+
+    console.log("Writing JSON data to: " + jsonPath);
+
+    fs.writeFileSync(jsonPath, JSON.stringify(captured, null, "  "));
     fs.writeFileSync(`${stashDir}/${filename}.chtml`, captured.content);
 
     console.log("Capturing the HTML...done");
 
-    if(args.noQuit) {
-        console.log("Not quitting (yielding to --no-quit=true).")
-    } else {
+    if(args.quit) {
         app.quit();
+    } else {
+        console.log("Not quitting (yielding to --no-quit=true).")
     }
+
+}
+
+
+/**
+ * Move the 'content' key to the last entry so that it's more readable when
+ * working with the JSON directly.
+ */
+function prettifyCaptured(captured) {
+
+    let content = captured.content;
+    delete captured.content;
+
+    captured.content = content;
+
+    return captured
 
 }
 
 let diskDatastore = new DiskDatastore();
 
-let args = ArgsParser.parse(process.argv);
+let args = Args.parse(process.argv);
 
-let browser = Browsers.MOBILE_GALAXY_S8_WITH_CHROME_61;
+let browser = Browsers[args.browser];
+
+if(! browser) {
+    throw new Error("No browser defined for: " + args.browser);
+}
 
 app.on('ready', async function() {
 
