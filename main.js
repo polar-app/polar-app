@@ -354,7 +354,7 @@ async function loadDoc(path, targetWindow) {
         let descriptorPath = path.replace(/\.chtml$/, ".json");
         let descriptorJSON = await Files.readFileAsync(descriptorPath);
 
-        descriptor = JSON.parse(descriptorJSON)
+        descriptor = JSON.parse(descriptorJSON);
         delete descriptor.content;
 
         // convert it BACK to a JSON object so that we can keep the content stripped
@@ -398,6 +398,7 @@ async function loadDoc(path, targetWindow) {
     }
 
     targetWindow.webContents.on('did-finish-load', function() {
+
         console.log("Finished loading. Now injecting customizations.");
         console.log("Toggling dev tools...");
         //targetWindow.toggleDevTools();

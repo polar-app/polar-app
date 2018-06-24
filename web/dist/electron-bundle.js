@@ -33475,6 +33475,7 @@ var HTMLViewer = function (_Viewer) {
     _createClass(HTMLViewer, [{
         key: "start",
         value: function start() {
+            var _this2 = this;
 
             console.log("Starting HTMLViewer");
 
@@ -33488,27 +33489,32 @@ var HTMLViewer = function (_Viewer) {
 
             $(document).ready(function () {
 
-                this._captureBrowserZoom();
+                _this2._captureBrowserZoom();
 
-                this._loadRequestData();
+                _this2._loadRequestData();
 
-                new IFrameWatcher(this.content, function () {
+                _this2._configurePageWidth();
+
+                new IFrameWatcher(_this2.content, function () {
 
                     console.log("Loading page now...");
 
-                    var frameResizer = new FrameResizer(this.contentParent, this.content);
+                    var frameResizer = new FrameResizer(_this2.contentParent, _this2.content);
                     frameResizer.start();
 
-                    var frameInitializer = new FrameInitializer(this.content, this.textLayer);
+                    var frameInitializer = new FrameInitializer(_this2.content, _this2.textLayer);
                     frameInitializer.start();
 
-                    this.startHandlingZoom();
-                }.bind(this)).start();
-            }.bind(this));
+                    _this2.startHandlingZoom();
+                }).start();
+            });
         }
     }, {
         key: "_captureBrowserZoom",
         value: function _captureBrowserZoom() {
+
+            // TODO: for now this is used to just capture and disable zoom but
+            // we should enable it in the future so we can handle zoom ourselves.
 
             $(document).keydown(function (event) {
                 if (event.ctrlKey === true && (event.which === '61' || event.which === '107' || event.which === '173' || event.which === '109' || event.which === '187' || event.which === '189')) {
@@ -33546,6 +33552,39 @@ var HTMLViewer = function (_Viewer) {
                 // make sure the select doesn't have focus so that we can scroll.
                 console.log("Blurring the select to allow keyboard/mouse nav.");
                 $(this).blur();
+            });
+        }
+
+        /**
+         * Get the page width from the descriptor if it's present and use that.
+         * Otherwise, use the defaults.
+         */
+
+    }, {
+        key: "_configurePageWidth",
+        value: function _configurePageWidth() {
+
+            var params = this._requestParams();
+
+            // the default width
+            var width = 750;
+
+            if (params.descriptor && params.descriptor.browser) {
+                width = params.descriptor.browser.deviceEmulation.screenSize.width;
+            }
+
+            // page height size should be a function of 8.5x11
+
+            var minHeight = 11 / 8.5 * width;
+
+            console.log("Configuring page with width=" + width + " and minHeight=" + minHeight);
+
+            document.querySelectorAll("#content-parent , .page, iframe").forEach(function (element) {
+                element.style.width = width + "px";
+            });
+
+            document.querySelectorAll(".page, iframe").forEach(function (element) {
+                element.style.minHeight = minHeight + "px";
             });
         }
     }, {
@@ -33599,16 +33638,32 @@ var HTMLViewer = function (_Viewer) {
 
             pageElement.appendChild(endOfContent);
         }
+
+        /**
+         * Get the request params as a dictionary.
+         */
+
+    }, {
+        key: "_requestParams",
+        value: function _requestParams() {
+
+            var url = new URL(window.location.href);
+
+            return {
+                file: url.searchParams.get("file"),
+                descriptor: JSON.parse(url.searchParams.get("descriptor")),
+                fingerprint: url.searchParams.get("fingerprint")
+            };
+        }
     }, {
         key: "_loadRequestData",
         value: function _loadRequestData() {
 
             // *** now setup the iframe
 
-            var url = new URL(window.location.href);
+            var params = this._requestParams();
 
-            // the pdfviewer uses the file URL convention.
-            var file = url.searchParams.get("file");
+            var file = params.file;
 
             if (!file) {
                 file = "example1.html";
@@ -33616,7 +33671,7 @@ var HTMLViewer = function (_Viewer) {
 
             this.content.src = file;
 
-            var fingerprint = url.searchParams.get("fingerprint");
+            var fingerprint = params.fingerprint;
             if (!fingerprint) {
                 throw new Error("Fingerprint is required");
             }

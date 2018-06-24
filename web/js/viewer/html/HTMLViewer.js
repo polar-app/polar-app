@@ -19,15 +19,17 @@ class HTMLViewer extends Viewer {
 
         // *** start the resizer and initializer before setting the iframe
 
-        $(document).ready( function() {
+        $(document).ready(() => {
 
             this._captureBrowserZoom();
 
             this._loadRequestData();
 
-            new IFrameWatcher(this.content, function () {
+            this._configurePageWidth();
 
-                console.log("Loading page now...")
+            new IFrameWatcher(this.content, () => {
+
+                console.log("Loading page now...");
 
                 let frameResizer = new FrameResizer(this.contentParent, this.content);
                 frameResizer.start();
@@ -37,13 +39,16 @@ class HTMLViewer extends Viewer {
 
                 this.startHandlingZoom();
 
-            }.bind(this)).start();
+            }).start();
 
-        }.bind(this));
+        });
 
     }
 
     _captureBrowserZoom() {
+
+        // TODO: for now this is used to just capture and disable zoom but
+        // we should enable it in the future so we can handle zoom ourselves.
 
         $(document).keydown(function(event) {
             if (event.ctrlKey===true && (event.which === '61' ||
@@ -93,6 +98,37 @@ class HTMLViewer extends Viewer {
             })
     }
 
+    /**
+     * Get the page width from the descriptor if it's present and use that.
+     * Otherwise, use the defaults.
+     */
+    _configurePageWidth() {
+
+        let params = this._requestParams();
+
+        // the default width
+        let width = 750;
+
+        if(params.descriptor && params.descriptor.browser) {
+            width = params.descriptor.browser.deviceEmulation.screenSize.width;
+        }
+
+        // page height size should be a function of 8.5x11
+
+        let minHeight = (11/8.5) * width;
+
+        console.log(`Configuring page with width=${width} and minHeight=${minHeight}`);
+
+        document.querySelectorAll("#content-parent , .page, iframe").forEach((element) => {
+            element.style.width = `${width}px`;
+        });
+
+        document.querySelectorAll(".page, iframe").forEach((element) => {
+            element.style.minHeight = `${minHeight}px`;
+        });
+
+    }
+
     changeScale(scale) {
 
         console.log("Changing scale to: " + scale);
@@ -140,14 +176,29 @@ class HTMLViewer extends Viewer {
         pageElement.appendChild(endOfContent);
     }
 
+    /**
+     * Get the request params as a dictionary.
+     */
+    _requestParams() {
+
+        let url = new URL(window.location.href);
+
+        return {
+            file: url.searchParams.get("file"),
+            descriptor: JSON.parse(url.searchParams.get("descriptor")),
+            fingerprint: url.searchParams.get("fingerprint")
+        }
+
+    }
+
+
     _loadRequestData() {
 
         // *** now setup the iframe
 
-        let url = new URL(window.location.href);
+        let params = this._requestParams();
 
-        // the pdfviewer uses the file URL convention.
-        let file = url.searchParams.get("file");
+        let file = params.file;
 
         if(!file) {
             file = "example1.html";
@@ -155,7 +206,7 @@ class HTMLViewer extends Viewer {
 
         this.content.src = file;
 
-        let fingerprint = url.searchParams.get("fingerprint");
+        let fingerprint = params.fingerprint;
         if(!fingerprint) {
             throw new Error("Fingerprint is required");
         }
