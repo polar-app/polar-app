@@ -50,13 +50,23 @@ class ElectronContextMenu extends ContextMenu {
 
     cmdDeleteTextHighlight(matchingSelectors, sender) {
 
-        matchingSelectors[".text-highlight"].annotationDescriptors.forEach(annotationDescriptor => {
+        // send the annotation BACK to the sender with the specific actions.
 
-            console.log("Deleting annotationDescriptor: ", JSON.stringify(annotationDescriptor, null, "  "));
+        let event = {
+            command: "delete-text-highlight",
+            matchingSelectors
+        };
 
-        });
+        sender.send("context-menu-command", event);
 
-        console.log("Deleting text highlight");
+        // // should we just send this event to all the the windows?
+        // matchingSelectors[".text-highlight"].annotationDescriptors.forEach(annotationDescriptor => {
+        //
+        //     console.log("Deleting annotationDescriptor: ", JSON.stringify(annotationDescriptor, null, "  "));
+        //
+        // });
+        //
+        // console.log("Deleting text highlight");
 
     }
 

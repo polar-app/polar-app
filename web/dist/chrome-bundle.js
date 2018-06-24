@@ -49994,8 +49994,8 @@ var ContextMenuController = function () {
     function ContextMenuController() {
         _classCallCheck(this, ContextMenuController);
 
-        ipcRenderer.on('context-menu-create-flashcard', function (event, arg) {
-            console.log("GOT MESSAGE!!!", arg); // prints "ping"
+        ipcRenderer.on('context-menu-command', function (event, arg) {
+            console.log("GOT MESSAGE context-menu-command!!!", arg); // prints "ping"
         });
     }
 

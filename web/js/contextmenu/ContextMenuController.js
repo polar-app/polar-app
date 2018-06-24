@@ -15,8 +15,8 @@ class ContextMenuController {
 
     constructor() {
 
-        ipcRenderer.on('context-menu-create-flashcard', (event, arg) => {
-            console.log("GOT MESSAGE!!!", arg) // prints "ping"
+        ipcRenderer.on('context-menu-command', (event, arg) => {
+            console.log("GOT MESSAGE context-menu-command!!!", arg) // prints "ping"
         });
 
     }
