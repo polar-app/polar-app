@@ -2,6 +2,7 @@
 const {ipcRenderer} = require('electron')
 const {ContextMenuType} = require("./ContextMenuType");
 const {forDict} = require("../utils");
+const {Attributes} = require("../util/Attributes");
 
 /**
  * Handles listening for context menus and then calling back the proper handler.
@@ -22,38 +23,47 @@ class ContextMenuController {
 
     start() {
 
+        // TODO: this should be refactored to make it testable with jsdom once
+        // I get it working.
+
         console.log("Starting ContextMenuController");
 
-        document.querySelectorAll("body").forEach(function(targetElement) {
+        document.querySelectorAll("body").forEach((targetElement) => {
 
             console.log("Adding contextmenu listener on", targetElement);
 
-            targetElement.addEventListener("contextmenu", function (event) {
+            targetElement.addEventListener("contextmenu", (event) => {
 
                 console.log("got context menu");
 
                 //let elements = document.elementsFromPoint(event.screenX, event.screenY);
                 let annotationSelectors = [ ".text-highlight", ".pagemark" ];
 
-                let elementsMatchingSelectors
-                    = ContextMenuController.elementFromEventMatchingSelectors(event, annotationSelectors );
+                let matchingSelectors
+                    = ContextMenuController.elementsFromEventMatchingSelectors(event, annotationSelectors );
 
                 let contextMenuTypes = [];
 
-                forDict(elementsMatchingSelectors, function (key, current) {
+                forDict(matchingSelectors, function (selector, current) {
                     if(current.elements.length > 0) {
                         contextMenuTypes.push(ContextMenuController.toContextMenuType(current.selector));
                     }
                 });
 
+                // FIXME: we have to pass metadata about the highlights that are
+                // being hovered ...
+
+                // FIXME: copy elementsMatchingSelectors but without the elements...
+                // just the annotationDescriptors.
                 ipcRenderer.send('context-menu-trigger', {
                     point: {x: event.pageX, y: event.pageY },
-                    contextMenuTypes
+                    contextMenuTypes,
+                    matchingSelectors
                 })
 
-            }.bind(this));
+            });
 
-        }.bind(this));
+        });
 
     }
 
@@ -77,7 +87,7 @@ class ContextMenuController {
      * @param event
      * @param selectors
      */
-     static elementFromEventMatchingSelectors(event, selectors) {
+     static elementsFromEventMatchingSelectors(event, selectors) {
 
         let result = {
 
@@ -86,7 +96,12 @@ class ContextMenuController {
         // setup the selector result
         selectors.forEach(function (selector) {
             result[selector] = {
-                selector, elements: []
+                selector,
+                elements: [],
+                /**
+                 * Includes metadata about each annotation that is selected.
+                 */
+                annotationDescriptors: []
             }
         });
 
@@ -98,6 +113,7 @@ class ContextMenuController {
 
                 if(element.matches(selector)) {
                     result[selector].elements.push(element);
+                    result[selector].annotationDescriptors.push(Attributes.dataToMap(element));
                 }
 
             });

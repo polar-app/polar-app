@@ -12,7 +12,7 @@ class ArgsParser {
     static _toKey(key) {
 
         key = key.replace(/^--/, "");
-        key = key.replace(/-([a-zA-Z])/, (match) => {
+        key = key.replace(/-([a-zA-Z])/g, (match) => {
             return match.replace("-", "").toUpperCase();
         });
 

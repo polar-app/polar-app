@@ -79,6 +79,7 @@ class TextHighlightView {
 
         let highlightElement = document.createElement("div");
 
+        highlightElement.setAttribute("data-type", "text-highlight");
         highlightElement.setAttribute("data-doc-fingerprint", textHighlightEvent.docMeta.docInfo.fingerprint);
         highlightElement.setAttribute("data-text-highlight-id", textHighlightEvent.textHighlight.id);
         highlightElement.setAttribute("data-page-num", textHighlightEvent.pageMeta.pageInfo.num);

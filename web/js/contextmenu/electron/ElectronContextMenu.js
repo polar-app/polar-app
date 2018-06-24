@@ -22,36 +22,45 @@ class ElectronContextMenu extends ContextMenu {
     constructor() {
         super();
 
-        ipcMain.on('context-menu-trigger', function(event, arg) {
+        ipcMain.on('context-menu-trigger', (event, arg) => {
             console.log("FIXME: we have been triggered: ", event); // prints "ping"
 
-            this.trigger(arg.point, arg.contextMenuTypes, event.sender);
+            // matchingSelectors
 
-        }.bind(this));
+            this.trigger(arg.point, arg.contextMenuTypes, arg.matchingSelectors, event.sender);
+
+        });
 
     }
 
-    trigger(point, contextMenuTypes, sender) {
+    trigger(point, contextMenuTypes, matchingSelectors, sender) {
 
         Preconditions.assertNotNull(sender, "sender");
 
         let window = BrowserWindow.getFocusedWindow();
 
-        console.log("GOT IT for: " + contextMenuTypes)
+        console.log("GOT IT for: contextMenuTypes: " + contextMenuTypes)
+        console.log("GOT IT for: matchingSelectors: " + JSON.stringify(matchingSelectors, null, "  "))
 
-        const ctxMenu = this.createTextHighlightContextMenu(point, contextMenuTypes, sender);
+        const ctxMenu = this.createTextHighlightContextMenu(point, contextMenuTypes, matchingSelectors, sender);
 
         ctxMenu.popup(window, point.x, point.y);
 
     }
 
-    cmdDeleteTextHighlight(sender) {
+    cmdDeleteTextHighlight(matchingSelectors, sender) {
+
+        matchingSelectors[".text-highlight"].annotationDescriptors.forEach(annotationDescriptor => {
+
+            console.log("Deleting annotationDescriptor: ", JSON.stringify(annotationDescriptor, null, "  "));
+
+        });
 
         console.log("Deleting text highlight");
 
     }
 
-    cmdAddFlashcard(sender) {
+    cmdAddFlashcard(matchingSelectors, sender) {
 
         Preconditions.assertNotNull(sender, "sender");
 
@@ -78,7 +87,7 @@ class ElectronContextMenu extends ContextMenu {
 
     }
 
-    createTextHighlightContextMenu(point, contextMenuTypes, sender) {
+    createTextHighlightContextMenu(point, contextMenuTypes, matchingSelectors, sender) {
 
         Preconditions.assertNotNull(sender, "sender");
 
@@ -93,13 +102,13 @@ class ElectronContextMenu extends ContextMenu {
             ctxMenu.append(new MenuItem( {
                 label: 'Add Flashcard',
                 //accelerator: 'CmdOrCtrl+A',
-                click: () => this.cmdAddFlashcard(sender)
+                click: () => this.cmdAddFlashcard(matchingSelectors, sender)
             }));
 
             ctxMenu.append(new MenuItem( {
                 label: 'Delete Text Highlight',
                 //accelerator: 'CmdOrCtrl+A',
-                click: () => this.cmdDeleteTextHighlight(sender)
+                click: () => this.cmdDeleteTextHighlight(matchingSelectors, sender)
             }));
 
         }

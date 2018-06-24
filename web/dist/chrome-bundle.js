@@ -49978,6 +49978,9 @@ var _require2 = __webpack_require__(/*! ./ContextMenuType */ "./web/js/contextme
 var _require3 = __webpack_require__(/*! ../utils */ "./web/js/utils.js"),
     forDict = _require3.forDict;
 
+var _require4 = __webpack_require__(/*! ../util/Attributes */ "./web/js/util/Attributes.js"),
+    Attributes = _require4.Attributes;
+
 /**
  * Handles listening for context menus and then calling back the proper handler.
  *
@@ -50000,6 +50003,9 @@ var ContextMenuController = function () {
         key: "start",
         value: function start() {
 
+            // TODO: this should be refactored to make it testable with jsdom once
+            // I get it working.
+
             console.log("Starting ContextMenuController");
 
             document.querySelectorAll("body").forEach(function (targetElement) {
@@ -50013,22 +50019,28 @@ var ContextMenuController = function () {
                     //let elements = document.elementsFromPoint(event.screenX, event.screenY);
                     var annotationSelectors = [".text-highlight", ".pagemark"];
 
-                    var elementsMatchingSelectors = ContextMenuController.elementFromEventMatchingSelectors(event, annotationSelectors);
+                    var matchingSelectors = ContextMenuController.elementsFromEventMatchingSelectors(event, annotationSelectors);
 
                     var contextMenuTypes = [];
 
-                    forDict(elementsMatchingSelectors, function (key, current) {
+                    forDict(matchingSelectors, function (selector, current) {
                         if (current.elements.length > 0) {
                             contextMenuTypes.push(ContextMenuController.toContextMenuType(current.selector));
                         }
                     });
 
+                    // FIXME: we have to pass metadata about the highlights that are
+                    // being hovered ...
+
+                    // FIXME: copy elementsMatchingSelectors but without the elements...
+                    // just the annotationDescriptors.
                     ipcRenderer.send('context-menu-trigger', {
                         point: { x: event.pageX, y: event.pageY },
-                        contextMenuTypes: contextMenuTypes
+                        contextMenuTypes: contextMenuTypes,
+                        matchingSelectors: matchingSelectors
                     });
-                }.bind(this));
-            }.bind(this));
+                });
+            });
         }
     }], [{
         key: "elementsFromEvent",
@@ -50055,15 +50067,20 @@ var ContextMenuController = function () {
          */
 
     }, {
-        key: "elementFromEventMatchingSelectors",
-        value: function elementFromEventMatchingSelectors(event, selectors) {
+        key: "elementsFromEventMatchingSelectors",
+        value: function elementsFromEventMatchingSelectors(event, selectors) {
 
             var result = {};
 
             // setup the selector result
             selectors.forEach(function (selector) {
                 result[selector] = {
-                    selector: selector, elements: []
+                    selector: selector,
+                    elements: [],
+                    /**
+                     * Includes metadata about each annotation that is selected.
+                     */
+                    annotationDescriptors: []
                 };
             });
 
@@ -50075,6 +50092,7 @@ var ContextMenuController = function () {
 
                     if (element.matches(selector)) {
                         result[selector].elements.push(element);
+                        result[selector].annotationDescriptors.push(Attributes.dataToMap(element));
                     }
                 });
             });
@@ -52857,6 +52875,7 @@ var TextHighlightView = function () {
 
             var highlightElement = document.createElement("div");
 
+            highlightElement.setAttribute("data-type", "text-highlight");
             highlightElement.setAttribute("data-doc-fingerprint", textHighlightEvent.docMeta.docInfo.fingerprint);
             highlightElement.setAttribute("data-text-highlight-id", textHighlightEvent.textHighlight.id);
             highlightElement.setAttribute("data-page-num", textHighlightEvent.pageMeta.pageInfo.num);
@@ -56361,6 +56380,66 @@ module.exports.Arrays = function () {
 
 /***/ }),
 
+/***/ "./web/js/util/Attributes.js":
+/*!***********************************!*\
+  !*** ./web/js/util/Attributes.js ***!
+  \***********************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var _require = __webpack_require__(/*! ./Tokens */ "./web/js/util/Tokens.js"),
+    Tokens = _require.Tokens;
+
+var _require2 = __webpack_require__(/*! ../Preconditions */ "./web/js/Preconditions.js"),
+    Preconditions = _require2.Preconditions;
+
+var Attributes = function () {
+    function Attributes() {
+        _classCallCheck(this, Attributes);
+    }
+
+    _createClass(Attributes, null, [{
+        key: "dataToMap",
+
+
+        /**
+         * Extract data attributes on an element as a map.
+         *
+         */
+        value: function dataToMap(element) {
+
+            var result = {};
+
+            Preconditions.assertNotNull(element, "element");
+
+            Array.from(element.attributes).forEach(function (attr) {
+
+                if (attr.name.startsWith("data-")) {
+                    var key = attr.name;
+                    key = key.replace("data-", "");
+                    key = Tokens.hyphenToCamelCase(key);
+                    result[key] = attr.value;
+                }
+            });
+
+            return result;
+        }
+    }]);
+
+    return Attributes;
+}();
+
+module.exports.Attributes = Attributes;
+
+/***/ }),
+
 /***/ "./web/js/util/Elements.js":
 /*!*********************************!*\
   !*** ./web/js/util/Elements.js ***!
@@ -56724,6 +56803,44 @@ module.exports.Paths = function () {
 
     return _class;
 }();
+
+/***/ }),
+
+/***/ "./web/js/util/Tokens.js":
+/*!*******************************!*\
+  !*** ./web/js/util/Tokens.js ***!
+  \*******************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var Tokens = function () {
+    function Tokens() {
+        _classCallCheck(this, Tokens);
+    }
+
+    _createClass(Tokens, null, [{
+        key: "hyphenToCamelCase",
+        value: function hyphenToCamelCase(key) {
+
+            key = key.replace(/-([a-zA-Z])/g, function (match) {
+                return match.replace("-", "").toUpperCase();
+            });
+
+            return key;
+        }
+    }]);
+
+    return Tokens;
+}();
+
+module.exports.Tokens = Tokens;
 
 /***/ }),
 

@@ -9,7 +9,7 @@ describe('Args', function() {
 
             assert.deepEqual(Args.parse([]), {
                 quit: true,
-                browser: 'MOBILE_GALAXY_S8_WITH_CHROME_61'
+                browser: 'MOBILE_GALAXY_S8_WITH_CHROME_61_WIDTH_750'
             });
 
         });
