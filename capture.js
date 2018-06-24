@@ -15,11 +15,12 @@ const {Cmdline} = require("./web/js/electron/Cmdline");
 const {Filenames} = require("./web/js/util/Filenames");
 const {DiskDatastore} = require("./web/js/datastore/DiskDatastore");
 const {Args} = require("./web/js/electron/capture/Args");
+const Browsers = require("./web/js/capture/Browsers");
+const BrowserWindows = require("./web/js/capture/BrowserWindows");
 
-const WIDTH = 375;
+const WIDTH = 700;
 const HEIGHT = 1100;
 
-const BROWSERS = require("./web/js/util/Browsers");
 
 // FIXME: remove meta http-equiv Location redirects.
 // FIXME: don't allow meta charset and other ways to set the charset within the
@@ -29,27 +30,14 @@ const BROWSERS = require("./web/js/util/Browsers");
 // FIXME: store the width and height used to generate the page in the resulting
 // JSON.  this way we can adjust the iframe if our setting evolve over time.
 
-// FIXME: move this to BROWSERS
-// https://electronjs.org/docs/api/browser-window#new-browserwindowoptions
-const BROWSER_WINDOW_OPTIONS = {
-    minWidth: WIDTH,
-    minHeight: HEIGHT,
-    width: WIDTH,
-    height: HEIGHT,
-    //maxWidth: WIDTH,
-    //maxHeight: HEIGHT,
-    //show: false,
-    webPreferences: {
-        nodeIntegration: false,
-        defaultEncoding: 'UTF-8',
-        webaudio: false
-    }
-};
-
 function createWindow(url) {
 
     // Create the browser window.
-    let newWindow = new BrowserWindow(BROWSER_WINDOW_OPTIONS);
+    let browserWindowOptions = BrowserWindows.toBrowserWindowOptions(browser);
+
+    debug("Using browserWindowOptions: " + browserWindowOptions);
+
+    let newWindow = new BrowserWindow(browserWindowOptions);
 
     newWindow.on('close', function(e) {
         e.preventDefault();
@@ -139,16 +127,34 @@ async function configureBrowser(window) {
     console.log("Emulating device...");
     window.webContents.enableDeviceEmulation(browser.deviceEmulation);
 
+    window.webContents.setUserAgent(browser.userAgent);
+
     // FIXME: see if I have already redefined it.  the second time fails because
     // I can't redefine a property.
+
+    let windowSize = getWindowSize(window);
+
+    // TODO: clean this up and make it into a function that we inject via toString
+    //
     let screenDimensionScript = `
-            Object.defineProperty(window.screen, "width", { get: function() { return 450; }});
-            Object.defineProperty(window.screen, "height", { get: function() { return 450; }});
-            Object.defineProperty(window.screen, "availWidth", { get: function() { return 450; }});
-            Object.defineProperty(window.screen, "availHeight", { get: function() { return 450; }});
+            Object.defineProperty(window.screen, "width", { get: function() { return ${windowSize.width}; }});
+            Object.defineProperty(window.screen, "height", { get: function() { return ${windowSize.height}; }});
+            Object.defineProperty(window.screen, "availWidth", { get: function() { return ${windowSize.width}; }});
+            Object.defineProperty(window.screen, "availHeight", { get: function() { return ${windowSize.height}; }});
         `;
 
     await window.webContents.executeJavaScript(screenDimensionScript);
+
+}
+
+function getWindowSize(window) {
+
+    let size = window.getSize();
+
+    return {
+        width: size[0],
+        height: size[1]
+    }
 
 }
 
@@ -200,7 +206,7 @@ async function captureHTML(url, window) {
     console.log("Capturing the HTML...");
 
     // define the content capture script.
-    console.log("Defining script...");
+    console.log("Defining ContentCapture...");
     await window.webContents.executeJavaScript(ContentCapture.toString());
 
     console.log("Retrieving HTML...");
@@ -229,17 +235,9 @@ async function captureHTML(url, window) {
 
 }
 
-function expand() {
-
-    var element = document.body;
-
-    console.log(element.offsetWidth);
-
-}
-
 let diskDatastore = new DiskDatastore();
 
-let browser = BROWSERS.MOBILE_GALAXY_S8_WITH_CHROME_61;
+let browser = Browsers.MOBILE_GALAXY_S8_WITH_CHROME_61;
 
 let args = Args.parse(process.argv);
 
