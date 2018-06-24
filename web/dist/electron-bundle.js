@@ -33579,7 +33579,7 @@ var HTMLViewer = function (_Viewer) {
 
             console.log("Configuring page with width=" + width + " and minHeight=" + minHeight);
 
-            document.querySelectorAll("#content-parent , .page, iframe").forEach(function (element) {
+            document.querySelectorAll("#content-parent, .page, iframe").forEach(function (element) {
                 element.style.width = width + "px";
             });
 

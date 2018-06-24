@@ -119,7 +119,7 @@ class HTMLViewer extends Viewer {
 
         console.log(`Configuring page with width=${width} and minHeight=${minHeight}`);
 
-        document.querySelectorAll("#content-parent , .page, iframe").forEach((element) => {
+        document.querySelectorAll("#content-parent, .page, iframe").forEach((element) => {
             element.style.width = `${width}px`;
         });
 
