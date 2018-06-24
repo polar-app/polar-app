@@ -26018,7 +26018,6 @@ var ContextMenuController = function () {
 
                     console.log("got context menu");
 
-                    //let elements = document.elementsFromPoint(event.screenX, event.screenY);
                     var annotationSelectors = [".text-highlight", ".pagemark"];
 
                     var matchingSelectors = ContextMenuController.elementsFromEventMatchingSelectors(event, annotationSelectors);
@@ -26031,11 +26030,6 @@ var ContextMenuController = function () {
                         }
                     });
 
-                    // FIXME: we have to pass metadata about the highlights that are
-                    // being hovered ...
-
-                    // FIXME: copy elementsMatchingSelectors but without the elements...
-                    // just the annotationDescriptors.
                     ipcRenderer.send('context-menu-trigger', {
                         point: { x: event.pageX, y: event.pageY },
                         contextMenuTypes: contextMenuTypes,

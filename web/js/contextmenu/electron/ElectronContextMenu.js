@@ -48,28 +48,6 @@ class ElectronContextMenu extends ContextMenu {
 
     }
 
-    cmdDeleteTextHighlight(matchingSelectors, sender) {
-
-        // send the annotation BACK to the sender with the specific actions.
-
-        let event = {
-            command: "delete-text-highlight",
-            matchingSelectors
-        };
-
-        sender.send("context-menu-command", event);
-
-        // // should we just send this event to all the the windows?
-        // matchingSelectors[".text-highlight"].annotationDescriptors.forEach(annotationDescriptor => {
-        //
-        //     console.log("Deleting annotationDescriptor: ", JSON.stringify(annotationDescriptor, null, "  "));
-        //
-        // });
-        //
-        // console.log("Deleting text highlight");
-
-    }
-
     cmdAddFlashcard(matchingSelectors, sender) {
 
         Preconditions.assertNotNull(sender, "sender");
@@ -97,6 +75,16 @@ class ElectronContextMenu extends ContextMenu {
 
     }
 
+    cmdNotify(command, matchingSelectors, sender) {
+
+        // send the annotation BACK to the sender with the specific actions.
+
+        let event = { command, matchingSelectors };
+
+        sender.send("context-menu-command", event);
+
+    }
+
     createTextHighlightContextMenu(point, contextMenuTypes, matchingSelectors, sender) {
 
         Preconditions.assertNotNull(sender, "sender");
@@ -118,7 +106,7 @@ class ElectronContextMenu extends ContextMenu {
             ctxMenu.append(new MenuItem( {
                 label: 'Delete Text Highlight',
                 //accelerator: 'CmdOrCtrl+A',
-                click: () => this.cmdDeleteTextHighlight(matchingSelectors, sender)
+                click: () => this.cmdNotify("delete-text-highlight", matchingSelectors, sender)
             }));
 
         }
