@@ -15,6 +15,7 @@ const {Cmdline} = require("./web/js/electron/Cmdline");
 const {Filenames} = require("./web/js/util/Filenames");
 const {DiskDatastore} = require("./web/js/datastore/DiskDatastore");
 const {Args} = require("./web/js/electron/capture/Args");
+const {ArgsParser} = require("./web/js/util/ArgsParser");
 const Browsers = require("./web/js/capture/Browsers");
 const BrowserWindows = require("./web/js/capture/BrowserWindows");
 
@@ -213,10 +214,14 @@ async function captureHTML(url, window) {
 
     let captured = await window.webContents.executeJavaScript("ContentCapture.captureHTML()");
 
+    // TODO: the inline system just doesn't work for now.
     // if( ! args.noInline) {
     //     let inlined = await inlineHTML(captured.url, captured.content);
     //     captured.content = inlined;
     // }
+
+    // record the browser that was used to render this page.
+    captured.browser = browser;
 
     let filename = Filenames.sanitize(captured.title);
 
@@ -237,9 +242,9 @@ async function captureHTML(url, window) {
 
 let diskDatastore = new DiskDatastore();
 
-let browser = Browsers.MOBILE_GALAXY_S8_WITH_CHROME_61;
+let args = ArgsParser.parse(process.argv);
 
-let args = Args.parse(process.argv);
+let browser = Browsers.MOBILE_GALAXY_S8_WITH_CHROME_61;
 
 app.on('ready', async function() {
 
