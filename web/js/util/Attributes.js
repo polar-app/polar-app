@@ -1,4 +1,5 @@
 const {Tokens} = require("./Tokens");
+const {Strings} = require("./Strings");
 const {Preconditions} = require("../Preconditions");
 
 class Attributes {
@@ -19,7 +20,7 @@ class Attributes {
                 let key = attr.name;
                 key = key.replace("data-", "");
                 key = Tokens.hyphenToCamelCase(key);
-                result[key] = attr.value;
+                result[key] = Strings.toPrimitive(attr.value);
             }
 
         });

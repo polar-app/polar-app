@@ -17,16 +17,8 @@ class ContextMenuController {
 
         ipcRenderer.on('context-menu-command', (event, arg) => {
 
-            switch(arg.command) {
-
-                case "delete-text-highlight":
-                    console.log("Handling text highlight delete");
-                    break;
-
-                default:
-                    console.warn("Unhandled command: " + arg.command);
-                    break;
-            }
+            // I don't think we need to listen to these here but rather in the
+            // specific controllers.
 
         });
 

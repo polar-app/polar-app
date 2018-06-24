@@ -7,13 +7,28 @@ const {TextExtracter} = require("./TextExtracter");
 const {KeyEvents} = require("../../../KeyEvents.js");
 const {Arrays} = require("../../../util/Arrays");
 const {DocFormatFactory} = require("../../../docformat/DocFormatFactory");
-
+const {ipcRenderer} = require('electron')
 
 class TextHighlightController {
 
     constructor(model) {
         this.model = Preconditions.assertNotNull(model, "model");
         this.docFormat = DocFormatFactory.getInstance();
+
+        ipcRenderer.on('context-menu-command', (event, arg) => {
+
+            switch(arg.command) {
+
+                case "delete-text-highlight":
+                    this.onTextHighlightDeleted(arg);
+                    break;
+
+                default:
+                    console.warn("Unhandled command: " + arg.command);
+                    break;
+            }
+
+        });
 
     }
 
@@ -97,6 +112,29 @@ class TextHighlightController {
         return TextHighlighterFactory.newInstance(targetDocument.body, textHighlighterOptions);
 
     }
+
+    /**
+     * A text highlight was deleted so update the model now.
+     * @param event
+     */
+    onTextHighlightDeleted(commandEvent) {
+
+        console.log("Deleting text highlight from model: ", commandEvent);
+
+        // should we just send this event to all the the windows?
+        commandEvent.matchingSelectors[".text-highlight"].annotationDescriptors.forEach(annotationDescriptor => {
+
+            console.log("Deleting annotationDescriptor: ", JSON.stringify(annotationDescriptor, null, "  "));
+
+            let pageMeta = this.model.docMeta.getPageMeta(annotationDescriptor.pageNum);
+            delete pageMeta.textHighlights[annotationDescriptor.textHighlightId];
+
+        });
+
+        console.log("Deleting text highlight");
+
+    }
+
 
     /**
      * Called by the controller when we have a new highlight created so that

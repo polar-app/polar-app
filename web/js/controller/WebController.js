@@ -1,5 +1,4 @@
 const $ = require('jquery');
-const jcm = require("jquery-contextmenu");
 
 const {TextHighlightController} = require("../highlights/text/controller/TextHighlightController");
 const {PagemarkCoverageEventListener} = require("../PagemarkCoverageEventListener.js");
@@ -8,7 +7,6 @@ const {Preconditions} = require("../Preconditions.js");
 const {Controller} = require("./Controller.js");
 const {DocFormatFactory} = require("../docformat/DocFormatFactory");
 const {polar} = require("../polar");
-const {RendererContextMenu} = require("../contextmenu/electron/RendererContextMenu");
 const {ContextMenuController} = require("../contextmenu/ContextMenuController");
 
 
@@ -47,45 +45,6 @@ module.exports.WebController = class extends Controller {
 
         let contextMenuController = new ContextMenuController();
         contextMenuController.start();
-
-        //new RendererContextMenu();
-        //
-        // // FIXME: this needs to be moved into the contextmenu package.
-        //
-        // console.log("Registered context listener...");
-        //
-        // window.setTimeout( function() {
-        //
-        //     console.log("adding listeners!!!")
-        //
-        //     $(function() {
-        //         $.contextMenu({
-        //             selector: '.page .text-highlight',
-        //             callback: function(key, options) {
-        //                 let m = "clicked: " + key;
-        //                 window.console && console.log(m) || alert(m);
-        //             },
-        //             items: {
-        //                 //"new-pagemark": {name: "New pagemark", icon: "edit"},
-        //                 "new-pagemark-from-here": {name: "New Pagemark Starting Here", icon: "edit"},
-        //                 // "cut": {name: "Cut", icon: "cut"},
-        //                 // copy: {name: "Copy", icon: "copy"},
-        //                 // "paste": {name: "Paste", icon: "paste"},
-        //                 // "delete": {name: "Delete", icon: "delete"},
-        //                 // "sep1": "---------",
-        //                 // "quit": {name: "Quit", icon: function() {
-        //                 //         return 'context-menu-icon context-menu-icon-quit';
-        //                 //     }
-        //                 // }
-        //             }
-        //         });
-        //
-        //         $('.page .text-highlight').on('click', function(e){
-        //             console.log('clicked', this);
-        //         })
-        //     });
-        //
-        // }, 2500);
 
     }
 

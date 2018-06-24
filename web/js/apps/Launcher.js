@@ -31,18 +31,13 @@ module.exports.Launcher = class {
 
         let clock = new SystemClock();
         let model = new Model(persistenceLayer, clock);
-        let controller = new WebController(model);
-        let view = new WebView(model);
-
-        view.start();
+        new WebView(model).start();
         new TextHighlightView(model).start();
-
-        let viewer = ViewerFactory.create();
-        viewer.start();
+        ViewerFactory.create().start();
 
         await persistenceLayer.init();
 
-        controller.start();
+        new WebController(model).start();
 
     }
 

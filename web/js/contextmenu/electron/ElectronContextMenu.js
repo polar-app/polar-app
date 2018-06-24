@@ -23,9 +23,6 @@ class ElectronContextMenu extends ContextMenu {
         super();
 
         ipcMain.on('context-menu-trigger', (event, arg) => {
-            console.log("FIXME: we have been triggered: ", event); // prints "ping"
-
-            // matchingSelectors
 
             this.trigger(arg.point, arg.contextMenuTypes, arg.matchingSelectors, event.sender);
 
@@ -39,8 +36,8 @@ class ElectronContextMenu extends ContextMenu {
 
         let window = BrowserWindow.getFocusedWindow();
 
-        console.log("GOT IT for: contextMenuTypes: " + contextMenuTypes)
-        console.log("GOT IT for: matchingSelectors: " + JSON.stringify(matchingSelectors, null, "  "))
+        //console.log("GOT IT for: contextMenuTypes: " + contextMenuTypes)
+        //console.log("GOT IT for: matchingSelectors: " + JSON.stringify(matchingSelectors, null, "  "))
 
         const ctxMenu = this.createTextHighlightContextMenu(point, contextMenuTypes, matchingSelectors, sender);
 

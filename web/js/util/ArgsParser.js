@@ -1,3 +1,5 @@
+const {Strings} = require("./Strings");
+
 /**
  * Simple util that takes command line arguments like --foo=bar and parses them
  * into a map.
@@ -20,19 +22,6 @@ class ArgsParser {
 
     }
 
-    static _toValue(value) {
-
-        if(value === "true" || value === "false") {
-            return value === "true";
-        }
-
-        // TODO: integers and floats
-
-        return value;
-
-    }
-
-
     static parse(argv) {
 
         let result = {};
@@ -42,7 +31,7 @@ class ArgsParser {
             if( /^--[a-zA-Z0-9_-]+=[a-zA-Z0-9_-]+/.test(arg) ) {
                 let _split = arg.split("=");
                 let key = ArgsParser._toKey(_split[0]);
-                let value = ArgsParser._toValue(_split[1]);
+                let value = Strings.toPrimitive(_split[1]);
                 result[key] = value;
             }
 

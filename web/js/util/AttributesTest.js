@@ -7,7 +7,7 @@ describe('Attributes', function() {
     describe('parse', function() {
 
         // must be disabled for now as JSDOM uses 100% cpu during tests.
-        it("get", function () {
+        xit("get", function () {
 
             let dom = new JSDOM("<body><div data-foo='bar' data-cat-dog='dog' data-one-two-three-four='dog'></div></body>");
 
