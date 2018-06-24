@@ -24,8 +24,13 @@ const BROWSERS = require("./web/js/util/Browsers");
 // FIXME: remove meta http-equiv Location redirects.
 // FIXME: don't allow meta charset and other ways to set the charset within the
 //        HTML file as we are ALWAYS UTF-8
+// FIXME: <script> within SVG also needs to be stripped!
+
+// FIXME: store the width and height used to generate the page in the resulting
+// JSON.  this way we can adjust the iframe if our setting evolve over time.
 
 // FIXME: move this to BROWSERS
+// https://electronjs.org/docs/api/browser-window#new-browserwindowoptions
 const BROWSER_WINDOW_OPTIONS = {
     minWidth: WIDTH,
     minHeight: HEIGHT,
@@ -34,7 +39,6 @@ const BROWSER_WINDOW_OPTIONS = {
     //maxWidth: WIDTH,
     //maxHeight: HEIGHT,
     //show: false,
-    // https://electronjs.org/docs/api/browser-window#new-browserwindowoptions
     webPreferences: {
         nodeIntegration: false,
         defaultEncoding: 'UTF-8',

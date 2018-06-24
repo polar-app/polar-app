@@ -1,7 +1,13 @@
 # TODO:
 
-- Inliner is just not a very good system.  It's just broken. There are some
-  obvious/initial bugs and I suspect there will be more.
+- the only real way to handle this is to just resize ONCE .. once the doc has loaded
+
+- now we ahve a problem with the iframe resizer:
+
+    - some documents just keep adapting to their parent size /height no matter
+      WHAT I do.  They always seem to be slightly larger than the iframe.
+
+    -
 
 - annotations are doubling up on top of themselves so we're getting incorrect
   opacity.

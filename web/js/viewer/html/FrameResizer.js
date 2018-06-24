@@ -1,5 +1,7 @@
 const $ = require('jquery')
 
+const LOADING_CUTOFF = 2 * 60 * 1000;
+
 /**
  * Frame loader which polls the content iframe until it's loaded.  There's
  * really no way to get loading 'progress' so the trick is to just poll
@@ -26,39 +28,27 @@ class FrameResizer {
         this.parent = parent;
         this.iframe = iframe;
 
-        this.completed = false;
+        this.completed = null;
 
         // how long between polling should we wait to expand the size.
         this.timeoutInterval = 100;
 
+        // the current height
+        this.height = null;
+
     }
 
     start() {
-
-        this.iframe.contentDocument.addEventListener("readystatechange", this.onReadyStateChange.bind(this));
         this.resizeParentInBackground();
-
-    }
-
-    onReadyStateChange() {
-
-        if(this.iframe.contentDocument.readyState === "complete") {
-            // console.log("FrameResizer: Document has finished loading: " + this.iframe.contentDocument.location.href);
-            // this.completed = true;
-        } else {
-            console.log("FrameResizer: Document has started loading: " +  this.iframe.contentDocument.location.href);
-            this.completed = false;
-        }
-
     }
 
     resizeParentInBackground() {
 
-        // do not yield after loading now. CSS can still change on us. Figure
-        // out a cleaner way to listen for size changes.
-        // if(this.completed) {
-        //     return;
-        // }
+        if(! this.completed && this.iframe.contentDocument.readyState === "complete") {
+            console.log("FrameResizer: Document has finished loading: " + this.iframe.contentDocument.location.href);
+            this.completed = new Date();
+            return;
+        }
 
         this.doResize();
 
@@ -71,10 +61,16 @@ class FrameResizer {
      */
     doResize() {
 
-        //let newHeight = this.iframe.contentDocument.documentElement.clientHeight;
         let newHeight = this.iframe.contentDocument.body.scrollHeight;
+
+        if(this.height) {
+            console.log("HEIGHT DELTA: " +(newHeight - this.height));
+        }
+
+        //let newHeight = this.iframe.contentDocument.documentElement.clientHeight;
         //console.log("Setting new height to: " + newHeight);
         this.iframe.style.height = newHeight;
+        this.height = newHeight;
 
     }
 

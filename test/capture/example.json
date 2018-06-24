@@ -2,7 +2,7 @@
   "examples": [
     {"url": "https://www.infoq.com/news/2018/05/service-workers-supported-across", "errors": []},
     {"url": "https://babeljs.io/docs/en/learn/", "errors": []},
-    {"url": "https://developer.mozilla.org/en-US/docs/Web/Web_Components", "errors": ["BROKEN_LAYOUT", "NO_REFERER"] }
+    {"url": "https://developer.mozilla.org/en-US/docs/Web/Web_Components", "errors": [] }
   ]
 }
 
