@@ -1,5 +1,11 @@
 
+
 class ContentCapture {
+
+    // FIXME: remove meta http-equiv Location redirects.
+    // FIXME: don't allow meta charset and other ways to set the charset within the
+    //        HTML file as we are ALWAYS UTF-8
+    // FIXME: <script> within SVG also needs to be stripped!
 
     // FIXME: children iframes need to be encoded as data URLs recursively or
     // pre-cached and re-written.

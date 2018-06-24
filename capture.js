@@ -19,19 +19,7 @@ const {ArgsParser} = require("./web/js/util/ArgsParser");
 const {BrowserWindows} = require("./web/js/capture/BrowserWindows");
 const Browsers = require("./web/js/capture/Browsers");
 
-const WIDTH = 700;
-const HEIGHT = 1100;
-
-
-// FIXME: remove meta http-equiv Location redirects.
-// FIXME: don't allow meta charset and other ways to set the charset within the
-//        HTML file as we are ALWAYS UTF-8
-// FIXME: <script> within SVG also needs to be stripped!
-
-// FIXME: store the width and height used to generate the page in the resulting
-// JSON.  this way we can adjust the iframe if our setting evolve over time.
-
-function createWindow(url) {
+async function createWindow(url) {
 
     // Create the browser window.
     let browserWindowOptions = BrowserWindows.toBrowserWindowOptions(browser);
@@ -85,9 +73,7 @@ function createWindow(url) {
 
     newWindow.webContents.on('did-start-loading', async function() {
         console.log("did-start-loading: ");
-
-        configureBrowser(newWindow);
-
+        await configureBrowser(newWindow);
     });
 
 
@@ -100,8 +86,6 @@ function createWindow(url) {
 
 
     });
-
-    configureBrowser(newWindow);
 
     const windowOptions = {
         extraHeaders: `pragma: no-cache\nreferer: ${url}\n`,
@@ -286,6 +270,6 @@ app.on('ready', async function() {
         throw new Error("URL required");
     }
 
-    createWindow(url);
+    await createWindow(url);
 
 });
