@@ -45,6 +45,12 @@ class ElectronContextMenu extends ContextMenu {
 
     }
 
+    cmdDeleteTextHighlight(sender) {
+
+        console.log("Deleting text highlight");
+
+    }
+
     cmdAddFlashcard(sender) {
 
         Preconditions.assertNotNull(sender, "sender");
@@ -86,10 +92,15 @@ class ElectronContextMenu extends ContextMenu {
 
             ctxMenu.append(new MenuItem( {
                 label: 'Add Flashcard',
-                accelerator: 'CmdOrCtrl+A',
-                click: function () {
-                    this.cmdAddFlashcard(sender);
-                }.bind(this)}));
+                //accelerator: 'CmdOrCtrl+A',
+                click: () => this.cmdAddFlashcard(sender)
+            }));
+
+            ctxMenu.append(new MenuItem( {
+                label: 'Delete Text Highlight',
+                //accelerator: 'CmdOrCtrl+A',
+                click: () => this.cmdDeleteTextHighlight(sender)
+            }));
 
         }
 

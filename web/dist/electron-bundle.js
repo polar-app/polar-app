@@ -25310,126 +25310,6 @@ module.exports.Optional = Optional;
 
 /***/ }),
 
-/***/ "./web/js/PDFRenderer.js":
-/*!*******************************!*\
-  !*** ./web/js/PDFRenderer.js ***!
-  \*******************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var _require = __webpack_require__(/*! ./utils */ "./web/js/utils.js"),
-    Elements = _require.Elements;
-
-// FIXME: this needs to move to DocFormat... as PDFFormat ...
-
-/**
- * Utility for working with the main PDF renderer and dealing with pages, the
- * DOM, etc.
- *
- * @type {PDFRenderer}
- * @Deprecated
- */
-
-
-var PDFRenderer = function () {
-    function PDFRenderer() {
-        _classCallCheck(this, PDFRenderer);
-    }
-
-    _createClass(PDFRenderer, null, [{
-        key: "currentScale",
-
-
-        /**
-         * @Deprecated
-         */
-        value: function currentScale() {
-            return window.PDFViewerApplication.pdfViewer._currentScale;
-        }
-
-        // FIXME: this should move to the DocFormat
-
-    }, {
-        key: "getPageNumFromPageElement",
-        value: function getPageNumFromPageElement(pageElement) {
-            var dataPageNum = pageElement.getAttribute("data-page-number");
-            return parseInt(dataPageNum);
-        }
-    }, {
-        key: "getPageElementFromPageNum",
-        value: function getPageElementFromPageNum(pageNum) {
-
-            if (!pageNum) {
-                throw new Error("Page number not specified");
-            }
-
-            var pageElements = document.querySelectorAll(".page");
-
-            // note that elements are 0 based indexes but our pages are 1 based
-            // indexes.
-            var pageElement = pageElements[pageNum - 1];
-
-            if (pageElement == null) {
-                throw new Error("Unable to find page element for page num: " + pageNum);
-            }
-
-            return pageElement;
-        }
-
-        /**
-         * Get the current page number based on which page is occupying the largest
-         * percentage of the viewport.
-         */
-
-    }, {
-        key: "getCurrentPageElement",
-        value: function getCurrentPageElement() {
-
-            var pages = document.querySelectorAll(".page");
-
-            var result = { element: null, visibility: 0 };
-
-            pages.forEach(function (page) {
-                var visibility = Elements.calculateVisibilityForDiv(page);
-
-                if (visibility > result.visibility) {
-                    result.element = page;
-                    result.visibility = visibility;
-                }
-            });
-
-            return result.element;
-        }
-
-        /**
-         * Get all the metadata about the current page.
-         */
-
-    }, {
-        key: "getCurrentPageMeta",
-        value: function getCurrentPageMeta() {
-
-            var pageElement = PDFRenderer.getCurrentPageElement();
-            var pageNum = PDFRenderer.getPageNumFromPageElement(pageElement);
-
-            return { pageElement: pageElement, pageNum: pageNum };
-        }
-    }]);
-
-    return PDFRenderer;
-}();
-
-module.exports.PDFRenderer = PDFRenderer;
-
-/***/ }),
-
 /***/ "./web/js/PageRedrawHandler.js":
 /*!*************************************!*\
   !*** ./web/js/PageRedrawHandler.js ***!
@@ -28370,27 +28250,23 @@ var _require2 = __webpack_require__(/*! ../../../utils.js */ "./web/js/utils.js"
 var _require3 = __webpack_require__(/*! ../../../PageRedrawHandler */ "./web/js/PageRedrawHandler.js"),
     PageRedrawHandler = _require3.PageRedrawHandler;
 
-var _require4 = __webpack_require__(/*! ../../../PDFRenderer */ "./web/js/PDFRenderer.js"),
-    PDFRenderer = _require4.PDFRenderer;
+var _require4 = __webpack_require__(/*! ../../../Rects */ "./web/js/Rects.js"),
+    Rects = _require4.Rects;
 
-var _require5 = __webpack_require__(/*! ../../../Rects */ "./web/js/Rects.js"),
-    Rects = _require5.Rects;
+var _require5 = __webpack_require__(/*! ../../../contextmenu/electron/RendererContextMenu */ "./web/js/contextmenu/electron/RendererContextMenu.js"),
+    RendererContextMenu = _require5.RendererContextMenu;
 
-var _require6 = __webpack_require__(/*! ../../../contextmenu/electron/RendererContextMenu */ "./web/js/contextmenu/electron/RendererContextMenu.js"),
-    RendererContextMenu = _require6.RendererContextMenu;
+var _require6 = __webpack_require__(/*! ../../../contextmenu/ContextMenuType */ "./web/js/contextmenu/ContextMenuType.js"),
+    ContextMenuType = _require6.ContextMenuType;
 
-var _require7 = __webpack_require__(/*! ../../../contextmenu/ContextMenuType */ "./web/js/contextmenu/ContextMenuType.js"),
-    ContextMenuType = _require7.ContextMenuType;
-
-var _require8 = __webpack_require__(/*! ../../../docformat/DocFormatFactory */ "./web/js/docformat/DocFormatFactory.js"),
-    DocFormatFactory = _require8.DocFormatFactory;
+var _require7 = __webpack_require__(/*! ../../../docformat/DocFormatFactory */ "./web/js/docformat/DocFormatFactory.js"),
+    DocFormatFactory = _require7.DocFormatFactory;
 
 var TextHighlightView = function () {
     function TextHighlightView(model) {
         _classCallCheck(this, TextHighlightView);
 
         this.model = model;
-        this.rendererContextMenu = new RendererContextMenu();
         this.docFormat = DocFormatFactory.getInstance();
     }
 
@@ -28433,7 +28309,7 @@ var TextHighlightView = function () {
                 forDict(textHighlightEvent.textHighlight.rects, function (id, rect) {
 
                     var callback = function callback() {
-                        TextHighlightView.render(pageElement, rect);
+                        TextHighlightView.render(pageElement, rect, textHighlightEvent);
                     };
 
                     // draw it manually the first time.
@@ -28454,7 +28330,7 @@ var TextHighlightView = function () {
 
     }], [{
         key: "render",
-        value: function render(pageElement, highlightRect) {
+        value: function render(pageElement, highlightRect, textHighlightEvent) {
 
             var docFormat = DocFormatFactory.getInstance();
 
@@ -28462,7 +28338,9 @@ var TextHighlightView = function () {
 
             var highlightElement = document.createElement("div");
 
-            // FIXME: also give it
+            highlightElement.setAttribute("data-doc-fingerprint", textHighlightEvent.docMeta.docInfo.fingerprint);
+            highlightElement.setAttribute("data-text-highlight-id", textHighlightEvent.textHighlight.id);
+            highlightElement.setAttribute("data-page-num", textHighlightEvent.pageMeta.pageInfo.num);
 
             highlightElement.className = "text-highlight annotation";
 

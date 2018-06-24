@@ -1,7 +1,6 @@
 const {TextHighlightModel} = require("../model/TestHighlightModel");
 const {forDict} = require("../../../utils.js");
 const {PageRedrawHandler} = require("../../../PageRedrawHandler");
-const {PDFRenderer} = require("../../../PDFRenderer");
 const {Rects} = require("../../../Rects");
 const {RendererContextMenu} = require("../../../contextmenu/electron/RendererContextMenu");
 const {ContextMenuType} = require("../../../contextmenu/ContextMenuType");
@@ -11,7 +10,6 @@ class TextHighlightView {
 
     constructor(model) {
         this.model = model;
-        this.rendererContextMenu = new RendererContextMenu();
         this.docFormat = DocFormatFactory.getInstance();
 
     }
@@ -52,7 +50,7 @@ class TextHighlightView {
             forDict(textHighlightEvent.textHighlight.rects, function (id, rect) {
 
                 let callback = function() {
-                    TextHighlightView.render(pageElement, rect);
+                    TextHighlightView.render(pageElement, rect, textHighlightEvent);
                 };
 
                 // draw it manually the first time.
@@ -73,7 +71,7 @@ class TextHighlightView {
 
     // TODO: this should probably not be static and instead should just be its
     // own class which is testable.
-    static render(pageElement, highlightRect) {
+    static render(pageElement, highlightRect, textHighlightEvent) {
 
         let docFormat = DocFormatFactory.getInstance();
 
@@ -81,7 +79,9 @@ class TextHighlightView {
 
         let highlightElement = document.createElement("div");
 
-        // FIXME: also give it
+        highlightElement.setAttribute("data-doc-fingerprint", textHighlightEvent.docMeta.docInfo.fingerprint);
+        highlightElement.setAttribute("data-text-highlight-id", textHighlightEvent.textHighlight.id);
+        highlightElement.setAttribute("data-page-num", textHighlightEvent.pageMeta.pageInfo.num);
 
         highlightElement.className = "text-highlight annotation";
 
