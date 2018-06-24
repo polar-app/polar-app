@@ -111,6 +111,9 @@ class ElectronContextMenu extends ContextMenu {
 
         }
 
+        // TODO: add a handler for pagemarks (ability to delete them, or change the type)
+        // also "create pagemark here"
+
         ctxMenu.append(new MenuItem( {
             label: 'Inspect Element',
             id: "inspect",

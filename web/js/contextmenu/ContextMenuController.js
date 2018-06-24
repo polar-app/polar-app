@@ -16,7 +16,18 @@ class ContextMenuController {
     constructor() {
 
         ipcRenderer.on('context-menu-command', (event, arg) => {
-            console.log("GOT MESSAGE context-menu-command!!!", arg) // prints "ping"
+
+            switch(arg.command) {
+
+                case "delete-text-highlight":
+                    console.log("Handling text highlight delete");
+                    break;
+
+                default:
+                    console.warn("Unhandled command: " + arg.command);
+                    break;
+            }
+
         });
 
     }
@@ -36,7 +47,7 @@ class ContextMenuController {
 
                 console.log("got context menu");
 
-                let annotationSelectors = [ ".text-highlight", ".pagemark" ];
+                let annotationSelectors = [ ".text-highlight", ".area-highlight", ".pagemark" ];
 
                 let matchingSelectors
                     = ContextMenuController.elementsFromEventMatchingSelectors(event, annotationSelectors );

@@ -25997,7 +25997,17 @@ var ContextMenuController = function () {
         _classCallCheck(this, ContextMenuController);
 
         ipcRenderer.on('context-menu-command', function (event, arg) {
-            console.log("GOT MESSAGE context-menu-command!!!", arg); // prints "ping"
+
+            switch (arg.command) {
+
+                case "delete-text-highlight":
+                    console.log("Handling text highlight delete");
+                    break;
+
+                default:
+                    console.warn("Unhandled command: " + arg.command);
+                    break;
+            }
         });
     }
 
@@ -26018,7 +26028,7 @@ var ContextMenuController = function () {
 
                     console.log("got context menu");
 
-                    var annotationSelectors = [".text-highlight", ".pagemark"];
+                    var annotationSelectors = [".text-highlight", ".area-highlight", ".pagemark"];
 
                     var matchingSelectors = ContextMenuController.elementsFromEventMatchingSelectors(event, annotationSelectors);
 
