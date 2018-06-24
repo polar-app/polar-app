@@ -26,6 +26,7 @@ const {CacheRegistry} = require("./web/js/backend/proxyserver/CacheRegistry");
 const {Cmdline} = require("./web/js/electron/Cmdline");
 const {Paths} = require("./web/js/util/Paths");
 const {Fingerprints} = require("./web/js/util/Fingerprints");
+const {Files} = require("./web/js/util/Files");
 const {ElectronContextMenu} = require("./web/js/contextmenu/electron/ElectronContextMenu");
 
 const BROWSER_WINDOW_OPTIONS = {
@@ -339,6 +340,8 @@ async function loadDoc(path, targetWindow) {
     let url = null;
     let fileParam = encodeURIComponent(fileMeta.url);
 
+    let descriptor = null;
+
     if(path.endsWith(".pdf")) {
 
         url = `http://${DEFAULT_HOST}:${WEBSERVER_PORT}/pdfviewer/web/viewer.html?file=${fileParam}`;
@@ -348,17 +351,26 @@ async function loadDoc(path, targetWindow) {
         cacheMeta = cacheRegistry.registerFile(path);
         console.log("Cache meta: " + JSON.stringify(cacheMeta));
 
+        let descriptorPath = path.replace(/\.chtml$/, ".json");
+        let descriptorJSON = await Files.readFileAsync(descriptorPath);
+
+        descriptor = JSON.parse(descriptorJSON)
+        delete descriptor.content;
+
+        // convert it BACK to a JSON object so that we can keep the content stripped
+        descriptorJSON = JSON.stringify(descriptor);
+
+        console.log("Loaded descriptor from: " + descriptorPath);
+
+        // we don't need the content represented twice.
+
         let basename = Paths.basename(path);
 
-        // TODO: this is workaround until we enable zip files with embedded metadata.
+        // TODO: this is workaround until we enable zip files with embedded
+        // metadata / descriptors
         let fingerprint = Fingerprints.create(basename);
 
-        //FIXME: as SOON as we load this from the local proxy server.. we lock up
-        // electron and it goes to 100% cpu.. the thing is, serving the static
-        // file works FINE
-        fileParam = encodeURIComponent(cacheMeta.url);
-
-        url = `http://${DEFAULT_HOST}:${WEBSERVER_PORT}/htmlviewer/index.html?file=${fileParam}&fingerprint=${fingerprint}`;
+        url = `http://${DEFAULT_HOST}:${WEBSERVER_PORT}/htmlviewer/index.html?file=${encodeURIComponent(cacheMeta.url)}&fingerprint=${fingerprint}&descriptor=${encodeURIComponent(descriptorJSON)}`;
 
     }
 
@@ -391,8 +403,11 @@ async function loadDoc(path, targetWindow) {
         //targetWindow.toggleDevTools();
 
 
-        // FIXME: call targetWindow.setTitle now
-        targetWindow.setTitle(targetWindow.webContents.getTitle());
+        if(descriptor && descriptor.title) {
+            // TODO: this should be driven from the DocMeta and the DocMeta
+            // should be initialized from the descriptor.
+            targetWindow.setTitle(descriptor.title);
+        }
 
     });
 

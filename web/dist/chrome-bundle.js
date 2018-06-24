@@ -50928,6 +50928,8 @@ var DiskDatastore = function (_Datastore) {
 
         _this.stashDir = Paths.create(_this.dataDir, "stash");
 
+        // TODO: migrate to Files
+
         _this.readFileAsync = util.promisify(fs.readFile);
         _this.writeFileAsync = util.promisify(fs.writeFile);
         _this.mkdirAsync = util.promisify(fs.mkdir);

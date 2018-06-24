@@ -20,6 +20,8 @@ class DiskDatastore extends Datastore {
 
         this.stashDir = Paths.create(this.dataDir, "stash");
 
+        // TODO: migrate to Files
+
         this.readFileAsync = util.promisify(fs.readFile);
         this.writeFileAsync = util.promisify(fs.writeFile);
         this.mkdirAsync = util.promisify(fs.mkdir);

@@ -217,6 +217,8 @@ async function captureHTML(url, window) {
 
     // record the browser that was used to render this page.
     captured.browser = browser;
+    captured.type = "chtml";
+    captured.version = "1.0.0";
 
     captured = prettifyCaptured(captured);
 
