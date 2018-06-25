@@ -9,7 +9,7 @@
  */
 const {ProxyBuilder} = require("./ProxyBuilder");
 
-module.exports.Proxies = class {
+class Proxies {
 
     /**
      * Create a listener for the dictionary and call onSet and onDelete when
@@ -28,10 +28,6 @@ module.exports.Proxies = class {
         return new ProxyBuilder(target);
     }
 
-};
+}
 
-
-
-
-
-
+module.exports.Proxies = Proxies;

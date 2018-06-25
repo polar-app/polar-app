@@ -1,6 +1,6 @@
 const {Event} = require("./Event");
 
-module.exports.Reactor = class {
+class Reactor {
 
     constructor() {
         this.events = {};
@@ -40,3 +40,5 @@ module.exports.Reactor = class {
     }
 
 };
+
+module.exports.Reactor = Reactor;

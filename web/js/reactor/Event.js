@@ -1,7 +1,7 @@
 
 // https://stackoverflow.com/questions/15308371/custom-events-model-without-using-dom-events-in-javascript
 
-module.exports.Event = class {
+class Event {
 
     constructor(name) {
         this.name = name;
@@ -17,3 +17,5 @@ module.exports.Event = class {
     }
 
 };
+
+module.exports.Event = Event;

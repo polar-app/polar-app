@@ -548,6 +548,38 @@ describe('ProxyBuilder', function() {
 
         });
 
+
+        xit("add object to existing traced object and expect mutation events", function () {
+
+            let myDict = {
+                "cat": "dog"
+            };
+
+            let mutations = [];
+
+            myDict = Proxies.create(myDict).deepTrace(function(traceEvent) {
+                mutations.push(Objects.duplicate(traceEvent));
+            });
+
+            myDict.gorilla = {
+                name: "coco",
+            };
+
+            // now add more data to the gorilla.
+
+            myDict.gorilla.color = "red";
+
+            // FIXME: this should have at LEAST two mutations
+
+            assert.equal(mutations.length, 2);
+
+            let expected = [
+            ];
+
+            assertJSON(mutations, expected);
+
+        });
+
     });
 
     describe('mutations', function() {

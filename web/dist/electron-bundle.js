@@ -29758,12 +29758,12 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 var _require = __webpack_require__(/*! ./ProxyBuilder */ "./web/js/proxies/ProxyBuilder.js"),
     ProxyBuilder = _require.ProxyBuilder;
 
-module.exports.Proxies = function () {
-    function _class() {
-        _classCallCheck(this, _class);
+var Proxies = function () {
+    function Proxies() {
+        _classCallCheck(this, Proxies);
     }
 
-    _createClass(_class, null, [{
+    _createClass(Proxies, null, [{
         key: "create",
 
 
@@ -29785,8 +29785,10 @@ module.exports.Proxies = function () {
         }
     }]);
 
-    return _class;
+    return Proxies;
 }();
+
+module.exports.Proxies = Proxies;
 
 /***/ }),
 
@@ -29859,10 +29861,14 @@ var ProxyBuilder = function () {
          *
          *
          */
-        value: function deepTrace(traceListeners) {
+        value: function deepTrace(traceListeners, pathPrefix) {
 
             if (!traceListeners) {
                 traceListeners = [];
+            }
+
+            if (!pathPrefix) {
+                pathPrefix = "";
             }
 
             traceListeners = TraceListeners.asArray(traceListeners);
@@ -29873,7 +29879,7 @@ var ProxyBuilder = function () {
 
             objectPathEntries.forEach(function (objectPathEntry) {
 
-                var proxy = ProxyBuilder.trace(objectPathEntry.path, objectPathEntry.value, traceListeners);
+                var proxy = ProxyBuilder.trace(pathPrefix + objectPathEntry.path, objectPathEntry.value, traceListeners);
 
                 // replace the object key in the parent with a new object that is
                 // traced.
@@ -30035,6 +30041,9 @@ var _require6 = __webpack_require__(/*! ../reactor/Reactor */ "./web/js/reactor/
 var _require7 = __webpack_require__(/*! ./TraceListeners */ "./web/js/proxies/TraceListeners.js"),
     TraceListeners = _require7.TraceListeners;
 
+var _require8 = __webpack_require__(/*! ./Proxies */ "./web/js/proxies/Proxies.js"),
+    Proxies = _require8.Proxies;
+
 var EVENT_NAME = "onMutation";
 
 module.exports.TraceHandler = function () {
@@ -30042,7 +30051,7 @@ module.exports.TraceHandler = function () {
     /**
      *
      * @param path The path to this object.
-     * @param traceListener The main TraceListener to use.
+     * @param traceListeners The main TraceListener
      * @param target The object that is the target of this handler.
      */
     function _class(path, traceListeners, target) {
@@ -30104,6 +30113,14 @@ module.exports.TraceHandler = function () {
 
             // TODO: before we change the value, also trace the new input values
             // if we are given an object.
+
+            var traceListeners = this.reactor.getEventListeners(EVENT_NAME);
+
+            // console.log("FIXME: " + Proxies);
+            //
+            // Proxies.create(value);
+
+            //value = Proxies.create(value).deepTrace(traceListeners, this.path);
 
             var previousValue = target[property];
 
@@ -30266,15 +30283,15 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 // https://stackoverflow.com/questions/15308371/custom-events-model-without-using-dom-events-in-javascript
 
-module.exports.Event = function () {
-    function _class(name) {
-        _classCallCheck(this, _class);
+var Event = function () {
+    function Event(name) {
+        _classCallCheck(this, Event);
 
         this.name = name;
         this.callbacks = [];
     }
 
-    _createClass(_class, [{
+    _createClass(Event, [{
         key: "registerCallback",
         value: function registerCallback(callback) {
             this.callbacks.push(callback);
@@ -30286,8 +30303,12 @@ module.exports.Event = function () {
         }
     }]);
 
-    return _class;
+    return Event;
 }();
+
+;
+
+module.exports.Event = Event;
 
 /***/ }),
 
@@ -30310,14 +30331,14 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 var _require = __webpack_require__(/*! ./Event */ "./web/js/reactor/Event.js"),
     Event = _require.Event;
 
-module.exports.Reactor = function () {
-    function _class() {
-        _classCallCheck(this, _class);
+var Reactor = function () {
+    function Reactor() {
+        _classCallCheck(this, Reactor);
 
         this.events = {};
     }
 
-    _createClass(_class, [{
+    _createClass(Reactor, [{
         key: "registerEvent",
         value: function registerEvent(eventName) {
             if (!eventName) {
@@ -30356,8 +30377,12 @@ module.exports.Reactor = function () {
         }
     }]);
 
-    return _class;
+    return Reactor;
 }();
+
+;
+
+module.exports.Reactor = Reactor;
 
 /***/ }),
 

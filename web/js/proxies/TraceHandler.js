@@ -5,6 +5,7 @@ const {MutationType} = require("./MutationType");
 const {FunctionalInterface} = require("../util/FunctionalInterface");
 const {Reactor} = require("../reactor/Reactor");
 const {TraceListeners} = require("./TraceListeners");
+const {Proxies} = require("./Proxies");
 
 const EVENT_NAME = "onMutation";
 
@@ -13,7 +14,7 @@ module.exports.TraceHandler = class {
     /**
      *
      * @param path The path to this object.
-     * @param traceListener The main TraceListener to use.
+     * @param traceListeners The main TraceListener
      * @param target The object that is the target of this handler.
      */
     constructor(path, traceListeners, target) {
@@ -70,6 +71,14 @@ module.exports.TraceHandler = class {
 
         // TODO: before we change the value, also trace the new input values
         // if we are given an object.
+
+        let traceListeners = this.reactor.getEventListeners(EVENT_NAME);
+
+        // console.log("FIXME: " + Proxies);
+        //
+        // Proxies.create(value);
+
+        //value = Proxies.create(value).deepTrace(traceListeners, this.path);
 
         let previousValue = target[property];
 

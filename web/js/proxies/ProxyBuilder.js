@@ -93,10 +93,14 @@ class ProxyBuilder {
      *
      *
      */
-    deepTrace(traceListeners) {
+    deepTrace(traceListeners, pathPrefix) {
 
         if (!traceListeners) {
             traceListeners = [];
+        }
+
+        if (!pathPrefix) {
+            pathPrefix = "";
         }
 
         traceListeners = TraceListeners.asArray(traceListeners);
@@ -107,7 +111,7 @@ class ProxyBuilder {
 
         objectPathEntries.forEach(function (objectPathEntry) {
 
-            let proxy = ProxyBuilder.trace(objectPathEntry.path, objectPathEntry.value, traceListeners);
+            let proxy = ProxyBuilder.trace(pathPrefix + objectPathEntry.path, objectPathEntry.value, traceListeners);
 
             // replace the object key in the parent with a new object that is
             // traced.
