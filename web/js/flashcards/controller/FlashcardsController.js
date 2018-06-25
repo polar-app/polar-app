@@ -49,11 +49,12 @@ module.exports.FlashcardsController = class {
 
         let flashcard = Flashcards.createFromSchemaFormData(data);
 
-        // FIXME: now create update model with our new flashcard
-
         let textHighlightAnnotationDescriptors =
             data.context.matchingSelectors[".text-highlight"].annotationDescriptors;
 
+        // FIXME: if there are multiple visual annotations, each with the same ID
+        // which is currently a bug, then we need to filter them out to just ONE
+        // annotation.
         textHighlightAnnotationDescriptors.forEach(annotationDescriptor => {
             let pageMeta = this.model.docMeta.getPageMeta(annotationDescriptor.pageNum);
             let textHighlight = pageMeta.textHighlights[annotationDescriptor.textHighlightId];
