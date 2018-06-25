@@ -27,15 +27,6 @@ class ContextMenuController {
 
         });
 
-        ipcRenderer.on('create-annotation', (event, arg) => {
-
-            console.log("FIXME: GOT create-annotation: ", arg);
-
-            // I don't think we need to listen to these here but rather in the
-            // specific controllers.
-
-        });
-
     }
 
     start() {

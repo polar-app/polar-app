@@ -1,22 +1,16 @@
 # TODO:
 
-- the only real way to handle this is to just resize ONCE .. once the doc has loaded
-
-- now we ahve a problem with the iframe resizer:
-
-    - some documents just keep adapting to their parent size /height no matter
-      WHAT I do.  They always seem to be slightly larger than the iframe.
-
-    -
-
 - annotations are doubling up on top of themselves so we're getting incorrect
   opacity.
 
 - iframe URLs within the main page are not handled and they can have 'script'
-  there which needs to be resolved.
+  there which needs to be resolved.  This mostly impacts ads right now so
+  isn't of major importance.
 
 - The Text Highlighter has a bug where an element that is hidden can actually
-  get a highlight created for it if it is 'selected'..
+  get a highlight created for it if it is 'selected'.  I could probably bypass
+  this by making sure each element I'm about to highlight is actually visually
+  present.  And not visibility: hidden or display: none
 
     https://stackoverflow.com/questions/19669786/check-if-element-is-visible-in-dom
 
@@ -24,8 +18,6 @@
   is loaded...  This isn't really necessary as some pages fetch fonts and so
   forth ... I need to load the docMeta once the page STARTS loading so that I
   can render pagemarks and initial highlights.
-
-- iframes also need event listeners recursively...
 
 # User Requirements
 
