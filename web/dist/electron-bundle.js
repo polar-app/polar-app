@@ -29818,6 +29818,9 @@ var _require2 = __webpack_require__(/*! ./MutationHandler */ "./web/js/proxies/M
 var _require3 = __webpack_require__(/*! ./ObjectPaths */ "./web/js/proxies/ObjectPaths.js"),
     ObjectPaths = _require3.ObjectPaths;
 
+var _require4 = __webpack_require__(/*! ./TraceListeners */ "./web/js/proxies/TraceListeners.js"),
+    TraceListeners = _require4.TraceListeners;
+
 /**
  * A sequence identifier generator so that we can assign objects a unique value.
  */
@@ -29856,16 +29859,13 @@ var ProxyBuilder = function () {
          *
          *
          */
-        value: function deepTrace(traceListener) {
+        value: function deepTrace(traceListeners) {
 
-            if (!traceListener) {
-
-                // use a default no-op traceListener as the user probably wants to
-                // register their own per object.
-                traceListener = function traceListener() {
-                    return true;
-                };
+            if (!traceListeners) {
+                traceListeners = [];
             }
+
+            traceListeners = TraceListeners.asArray(traceListeners);
 
             var objectPathEntries = ObjectPaths.recurse(this.target);
 
@@ -29873,7 +29873,7 @@ var ProxyBuilder = function () {
 
             objectPathEntries.forEach(function (objectPathEntry) {
 
-                var proxy = ProxyBuilder.trace(objectPathEntry.path, objectPathEntry.value, traceListener);
+                var proxy = ProxyBuilder.trace(objectPathEntry.path, objectPathEntry.value, traceListeners);
 
                 // replace the object key in the parent with a new object that is
                 // traced.
@@ -29888,11 +29888,13 @@ var ProxyBuilder = function () {
         }
     }], [{
         key: "trace",
-        value: function trace(path, value, traceListener) {
+        value: function trace(path, value, traceListeners) {
 
             if ((typeof value === "undefined" ? "undefined" : _typeof(value)) !== "object") {
                 throw new Error("We can only trace object types.");
             }
+
+            traceListeners = TraceListeners.asArray(traceListeners);
 
             if (Object.isFrozen(value)) {
                 // Do not handle frozen objects but might have to in the future for
@@ -29900,7 +29902,7 @@ var ProxyBuilder = function () {
                 return value;
             }
 
-            var traceHandler = new TraceHandler(path, traceListener, value);
+            var traceHandler = new TraceHandler(path, traceListeners, value);
 
             if (!value.__traceIdentifier) {
 
@@ -29915,21 +29917,21 @@ var ProxyBuilder = function () {
                 });
             }
 
-            if (!value.__traceListener) {
+            if (!value.__traceListeners) {
 
                 // keep the traceListener registers with the object so that I can
                 // verify that the object we're working with is actually being used
                 // with the same trace and not being re-traced by something else.
 
-                Object.defineProperty(value, "__traceListener", {
-                    value: traceListener,
+                Object.defineProperty(value, "__traceListeners", {
+                    value: traceListeners,
                     enumerable: false,
                     writable: false
                 });
             }
 
             if (value.addTraceListener) {
-                value.addTraceListener(traceListener);
+                value.addTraceListener(traceListeners);
             } else {
                 Object.defineProperty(value, "addTraceListener", {
                     value: traceHandler.addTraceListener.bind(traceHandler),
@@ -30030,6 +30032,9 @@ var _require5 = __webpack_require__(/*! ../util/FunctionalInterface */ "./web/js
 var _require6 = __webpack_require__(/*! ../reactor/Reactor */ "./web/js/reactor/Reactor.js"),
     Reactor = _require6.Reactor;
 
+var _require7 = __webpack_require__(/*! ./TraceListeners */ "./web/js/proxies/TraceListeners.js"),
+    TraceListeners = _require7.TraceListeners;
+
 var EVENT_NAME = "onMutation";
 
 module.exports.TraceHandler = function () {
@@ -30040,7 +30045,7 @@ module.exports.TraceHandler = function () {
      * @param traceListener The main TraceListener to use.
      * @param target The object that is the target of this handler.
      */
-    function _class(path, traceListener, target) {
+    function _class(path, traceListeners, target) {
         _classCallCheck(this, _class);
 
         Preconditions.assertNotNull(path, "path");
@@ -30050,7 +30055,7 @@ module.exports.TraceHandler = function () {
 
         this.reactor = new Reactor();
         this.reactor.registerEvent(EVENT_NAME);
-        this.addTraceListener(traceListener);
+        this.addTraceListener(traceListeners);
     }
 
     /**
@@ -30062,11 +30067,14 @@ module.exports.TraceHandler = function () {
 
     _createClass(_class, [{
         key: "addTraceListener",
-        value: function addTraceListener(traceListener, options) {
+        value: function addTraceListener(traceListeners, options) {
+            var _this = this;
 
             if (!options) {
                 options = {};
             }
+
+            traceListeners = TraceListeners.asArray(traceListeners);
 
             var eventName = EVENT_NAME;
 
@@ -30074,13 +30082,16 @@ module.exports.TraceHandler = function () {
                 eventName = eventName + ":" + options.property;
             }
 
-            traceListener = FunctionalInterface.create(EVENT_NAME, traceListener);
+            traceListeners.forEach(function (traceListener) {
 
-            this.reactor.addEventListener(eventName, function (traceEvent) {
-                traceListener.onMutation(traceEvent);
+                traceListener = FunctionalInterface.create(EVENT_NAME, traceListener);
+
+                _this.reactor.addEventListener(eventName, function (traceEvent) {
+                    traceListener.onMutation(traceEvent);
+                });
             });
 
-            return new TraceListenerExecutor(traceListener, this);
+            return new TraceListenerExecutor(traceListeners, this);
         }
     }, {
         key: "getTraceListeners",
@@ -30145,13 +30156,13 @@ var _require3 = __webpack_require__(/*! ./MutationType */ "./web/js/proxies/Muta
 module.exports.TraceListenerExecutor = function () {
 
     /**
-     * @param traceListener The specific traceListener we're working with.
+     * @param traceListeners The specific traceListener we're working with.
      * @param traceHandler The TraceHandler that this traceListener is registered with.
      */
-    function _class(traceListener, traceHandler) {
+    function _class(traceListeners, traceHandler) {
         _classCallCheck(this, _class);
 
-        this.traceListener = traceListener;
+        this.traceListeners = traceListeners;
         this.traceHandler = traceHandler;
     }
 
@@ -30170,20 +30181,72 @@ module.exports.TraceListenerExecutor = function () {
             var path = this.traceHandler.path;
             var target = this.traceHandler.target;
 
-            var traceListener = FunctionalInterface.create("onMutation", this.traceListener);
+            this.traceListeners.forEach(function (traceListener) {
 
-            for (var key in target) {
+                traceListener = FunctionalInterface.create("onMutation", traceListener);
 
-                if (target.hasOwnProperty(key)) {
-                    var val = target[key];
-                    traceListener.onMutation(new TraceEvent(path, MutationType.INITIAL, target, key, val));
+                for (var key in target) {
+
+                    if (target.hasOwnProperty(key)) {
+                        var val = target[key];
+                        traceListener.onMutation(new TraceEvent(path, MutationType.INITIAL, target, key, val));
+                    }
                 }
-            }
+            });
         }
     }]);
 
     return _class;
 }();
+
+/***/ }),
+
+/***/ "./web/js/proxies/TraceListeners.js":
+/*!******************************************!*\
+  !*** ./web/js/proxies/TraceListeners.js ***!
+  \******************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var TraceListeners = function () {
+    function TraceListeners() {
+        _classCallCheck(this, TraceListeners);
+    }
+
+    _createClass(TraceListeners, null, [{
+        key: "asArray",
+
+
+        /**
+         * Convert this to an array so that we're always working with an array.
+         *
+         * @param traceListeners
+         */
+        value: function asArray(traceListeners) {
+
+            if (!traceListeners) {
+                return [];
+            }
+
+            if (!Array.isArray(traceListeners)) {
+                return [traceListeners];
+            }
+
+            return traceListeners;
+        }
+    }]);
+
+    return TraceListeners;
+}();
+
+module.exports.TraceListeners = TraceListeners;
 
 /***/ }),
 

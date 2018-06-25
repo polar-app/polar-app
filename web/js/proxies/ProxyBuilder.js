@@ -4,6 +4,7 @@
 const {TraceHandler} = require("./TraceHandler");
 const {MutationHandler} = require("./MutationHandler");
 const {ObjectPaths} = require("./ObjectPaths");
+const {TraceListeners} = require("./TraceListeners");
 
 /**
  * A sequence identifier generator so that we can assign objects a unique value.
@@ -28,11 +29,13 @@ class ProxyBuilder {
         return new Proxy(this.target, new MutationHandler(mutationListener));
     }
 
-    static trace(path, value, traceListener) {
+    static trace(path, value, traceListeners) {
 
         if(typeof value !== "object") {
             throw new Error("We can only trace object types.");
         }
+
+        traceListeners = TraceListeners.asArray(traceListeners);
 
         if(Object.isFrozen(value)) {
             // Do not handle frozen objects but might have to in the future for
@@ -40,7 +43,7 @@ class ProxyBuilder {
             return value;
         }
 
-        let traceHandler = new TraceHandler(path, traceListener, value);
+        let traceHandler = new TraceHandler(path, traceListeners, value);
 
         if(!value.__traceIdentifier) {
 
@@ -53,16 +56,17 @@ class ProxyBuilder {
                 enumerable: false,
                 writable: false
             });
+
         }
 
-        if(!value.__traceListener) {
+        if(!value.__traceListeners) {
 
             // keep the traceListener registers with the object so that I can
             // verify that the object we're working with is actually being used
             // with the same trace and not being re-traced by something else.
 
-            Object.defineProperty(value, "__traceListener", {
-                value: traceListener,
+            Object.defineProperty(value, "__traceListeners", {
+                value: traceListeners,
                 enumerable: false,
                 writable: false
             });
@@ -70,7 +74,7 @@ class ProxyBuilder {
         }
 
         if(value.addTraceListener) {
-            value.addTraceListener(traceListener);
+            value.addTraceListener(traceListeners);
         } else {
             Object.defineProperty(value, "addTraceListener", {
                 value: traceHandler.addTraceListener.bind(traceHandler),
@@ -89,17 +93,13 @@ class ProxyBuilder {
      *
      *
      */
-    deepTrace(traceListener) {
+    deepTrace(traceListeners) {
 
-        if (!traceListener) {
-
-            // use a default no-op traceListener as the user probably wants to
-            // register their own per object.
-            traceListener = function () {
-                return true;
-            };
-
+        if (!traceListeners) {
+            traceListeners = [];
         }
+
+        traceListeners = TraceListeners.asArray(traceListeners);
 
         let objectPathEntries = ObjectPaths.recurse(this.target);
 
@@ -107,7 +107,7 @@ class ProxyBuilder {
 
         objectPathEntries.forEach(function (objectPathEntry) {
 
-            let proxy = ProxyBuilder.trace(objectPathEntry.path, objectPathEntry.value, traceListener);
+            let proxy = ProxyBuilder.trace(objectPathEntry.path, objectPathEntry.value, traceListeners);
 
             // replace the object key in the parent with a new object that is
             // traced.
