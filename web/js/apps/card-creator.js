@@ -6,7 +6,7 @@ import { render } from "react-dom";
 import Form from "react-jsonschema-form";
 import SimpleMDE from 'react-simplemde-editor';
 
-const {ipcRenderer} = require('electron')
+const {ipcRenderer} = require('electron');
 const {InputController} = require("../annotations/InputController");
 const {FormHandler} = require("../annotations/FormHandler");
 
@@ -33,11 +33,15 @@ class PostMessageFormHandler extends FormHandler {
 
 
     onSubmit(data) {
+
+        // FIXME: include the docMeta fingerprint we're editing.  Use a new
+        // DocDescriptor object which for now just has a fingerprint.
+
         console.log("onSubmit: ", data);
         //window.postMessage({ type: "onSubmit", data: dataToExternal(data)}, "*");
 
         // send this to the main process which then broadcasts it to all the renderers.
-        ipcRenderer.send('create-annotation', {});
+        ipcRenderer.send('create-annotation', data);
 
     }
 

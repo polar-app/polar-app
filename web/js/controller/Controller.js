@@ -1,4 +1,3 @@
-//import $ from 'jquery';
 
 module.exports.Controller = class {
 

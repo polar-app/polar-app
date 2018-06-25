@@ -3,6 +3,9 @@ const {ipcRenderer} = require('electron')
 const {ContextMenuType} = require("./ContextMenuType");
 const {forDict} = require("../utils");
 const {Attributes} = require("../util/Attributes");
+const {TriggerEvent} = require("./TriggerEvent");
+const {DocDescriptor} = require("../metadata/DocDescriptor");
+const {Preconditions} = require("../Preconditions");
 
 /**
  * Handles listening for context menus and then calling back the proper handler.
@@ -13,7 +16,9 @@ const {Attributes} = require("../util/Attributes");
  */
 class ContextMenuController {
 
-    constructor() {
+    constructor(model) {
+
+        this.model = Preconditions.assertNotNull(model, "model");
 
         ipcRenderer.on('context-menu-command', (event, arg) => {
 
@@ -24,7 +29,7 @@ class ContextMenuController {
 
         ipcRenderer.on('create-annotation', (event, arg) => {
 
-            console.log("FIXME: GOT create-annotation");
+            console.log("FIXME: GOT create-annotation: ", arg);
 
             // I don't think we need to listen to these here but rather in the
             // specific controllers.
@@ -61,11 +66,14 @@ class ContextMenuController {
                     }
                 });
 
-                ipcRenderer.send('context-menu-trigger', {
+                let docDescriptor = new DocDescriptor({fingerprint: this.model.docMeta.docInfo.fingerprint})
+
+                ipcRenderer.send('context-menu-trigger', new TriggerEvent({
                     point: {x: event.pageX, y: event.pageY },
                     contextMenuTypes,
-                    matchingSelectors
-                });
+                    matchingSelectors,
+                    docDescriptor
+                }));
 
             });
 

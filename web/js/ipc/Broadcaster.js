@@ -18,7 +18,8 @@ class Broadcaster {
         ipcMain.on(name, (event, arg) => {
 
             BrowserWindow.getAllWindows().forEach(window => {
-                window.webContents.send(name, event, arg);
+                // FIXME: I don't think we can send event' ...
+                window.webContents.send(name, arg);
             });
 
         });

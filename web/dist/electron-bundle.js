@@ -23863,6 +23863,15 @@ var _require3 = __webpack_require__(/*! ../utils */ "./web/js/utils.js"),
 var _require4 = __webpack_require__(/*! ../util/Attributes */ "./web/js/util/Attributes.js"),
     Attributes = _require4.Attributes;
 
+var _require5 = __webpack_require__(/*! ./TriggerEvent */ "./web/js/contextmenu/TriggerEvent.js"),
+    TriggerEvent = _require5.TriggerEvent;
+
+var _require6 = __webpack_require__(/*! ../metadata/DocDescriptor */ "./web/js/metadata/DocDescriptor.js"),
+    DocDescriptor = _require6.DocDescriptor;
+
+var _require7 = __webpack_require__(/*! ../Preconditions */ "./web/js/Preconditions.js"),
+    Preconditions = _require7.Preconditions;
+
 /**
  * Handles listening for context menus and then calling back the proper handler.
  *
@@ -23873,8 +23882,10 @@ var _require4 = __webpack_require__(/*! ../util/Attributes */ "./web/js/util/Att
 
 
 var ContextMenuController = function () {
-    function ContextMenuController() {
+    function ContextMenuController(model) {
         _classCallCheck(this, ContextMenuController);
+
+        this.model = Preconditions.assertNotNull(model, "model");
 
         ipcRenderer.on('context-menu-command', function (event, arg) {
 
@@ -23885,7 +23896,7 @@ var ContextMenuController = function () {
 
         ipcRenderer.on('create-annotation', function (event, arg) {
 
-            console.log("FIXME: GOT create-annotation");
+            console.log("FIXME: GOT create-annotation: ", arg);
 
             // I don't think we need to listen to these here but rather in the
             // specific controllers.
@@ -23895,6 +23906,7 @@ var ContextMenuController = function () {
     _createClass(ContextMenuController, [{
         key: "start",
         value: function start() {
+            var _this = this;
 
             // TODO: this should be refactored to make it testable with jsdom once
             // I get it working.
@@ -23921,11 +23933,14 @@ var ContextMenuController = function () {
                         }
                     });
 
-                    ipcRenderer.send('context-menu-trigger', {
+                    var docDescriptor = new DocDescriptor({ fingerprint: _this.model.docMeta.docInfo.fingerprint });
+
+                    ipcRenderer.send('context-menu-trigger', new TriggerEvent({
                         point: { x: event.pageX, y: event.pageY },
                         contextMenuTypes: contextMenuTypes,
-                        matchingSelectors: matchingSelectors
-                    });
+                        matchingSelectors: matchingSelectors,
+                        docDescriptor: docDescriptor
+                    }));
                 });
             });
         }
@@ -24038,6 +24053,56 @@ module.exports.ContextMenuType = Object.freeze({
 
 /***/ }),
 
+/***/ "./web/js/contextmenu/TriggerEvent.js":
+/*!********************************************!*\
+  !*** ./web/js/contextmenu/TriggerEvent.js ***!
+  \********************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var TriggerEvent = function TriggerEvent(opts) {
+  _classCallCheck(this, TriggerEvent);
+
+  /**
+   * The point on the screen where the context menu was requested.  This
+   * is just a point with x,y positions.
+   *
+   * @type {null}
+   */
+  this.point = null;
+
+  /**
+   * The type of context menus to create based on what the user is clicking.
+   * @type {Object}
+   */
+  this.contextMenuTypes = null;
+
+  /**
+   * A more complex data structure with the selectors and metadata
+   * about the annotations that were selected.
+   * @type {Object}
+   */
+  this.matchingSelectors = null;
+
+  /**
+   * Basic metadata about the document with which we're interacting.
+   *
+   * @type {DocDescriptor}
+   */
+  this.docDescriptor = null;
+
+  Object.assign(this, opts);
+};
+
+module.exports.TriggerEvent = TriggerEvent;
+
+/***/ }),
+
 /***/ "./web/js/contextmenu/electron/RendererContextMenu.js":
 /*!************************************************************!*\
   !*** ./web/js/contextmenu/electron/RendererContextMenu.js ***!
@@ -24136,8 +24201,6 @@ module.exports.RendererContextMenu = function () {
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-//import $ from 'jquery';
 
 module.exports.Controller = function () {
     function _class(model) {
@@ -24284,7 +24347,7 @@ module.exports.WebController = function (_Controller) {
         key: "setupContextMenu",
         value: function setupContextMenu() {
 
-            var contextMenuController = new ContextMenuController();
+            var contextMenuController = new ContextMenuController(this.model);
             contextMenuController.start();
         }
     }, {
@@ -26482,6 +26545,38 @@ module.exports.BaseHighlight = function (_ExtendedAnnotation) {
 
     return _class;
 }(ExtendedAnnotation);
+
+/***/ }),
+
+/***/ "./web/js/metadata/DocDescriptor.js":
+/*!******************************************!*\
+  !*** ./web/js/metadata/DocDescriptor.js ***!
+  \******************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+/**
+ * Lightweight document descriptor representing documents easily without having
+ * to pass around the full document.
+ */
+var DocDescriptor = function DocDescriptor(opts) {
+  _classCallCheck(this, DocDescriptor);
+
+  /**
+   * The fingerprint representing the document we're working with.
+   * @type {null}
+   */
+  this.fingerprint = null;
+
+  Object.assign(this, opts);
+};
+
+module.exports.DocDescriptor = DocDescriptor;
 
 /***/ }),
 

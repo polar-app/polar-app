@@ -23,9 +23,9 @@ class ElectronContextMenu extends ContextMenu {
     constructor() {
         super();
 
-        ipcMain.on('context-menu-trigger', (event, arg) => {
+        ipcMain.on('context-menu-trigger', (event, triggerEvent) => {
 
-            this.trigger(arg.point, arg.contextMenuTypes, arg.matchingSelectors, event.sender);
+            this.trigger(triggerEvent, event.sender);
 
         });
 
@@ -33,7 +33,7 @@ class ElectronContextMenu extends ContextMenu {
 
     }
 
-    trigger(point, contextMenuTypes, matchingSelectors, sender) {
+    trigger(triggerEvent, sender) {
 
         Preconditions.assertNotNull(sender, "sender");
 
@@ -42,13 +42,15 @@ class ElectronContextMenu extends ContextMenu {
         //console.log("GOT IT for: contextMenuTypes: " + contextMenuTypes)
         //console.log("GOT IT for: matchingSelectors: " + JSON.stringify(matchingSelectors, null, "  "))
 
-        const ctxMenu = this.createTextHighlightContextMenu(point, contextMenuTypes, matchingSelectors, sender);
+        const ctxMenu = this.createTextHighlightContextMenu(triggerEvent, sender);
 
-        ctxMenu.popup(window, point.x, point.y);
+        // The documentation for this looks wrong and it actually takes three
+        // arguments not a object
+        ctxMenu.popup(window, triggerEvent.point.x, triggerEvent.point.y);
 
     }
 
-    cmdAddFlashcard(matchingSelectors, sender) {
+    cmdAddFlashcard(triggerEvent, sender) {
 
         Preconditions.assertNotNull(sender, "sender");
 
@@ -56,7 +58,9 @@ class ElectronContextMenu extends ContextMenu {
             command: "add-flashcard"
         });
 
-        let url = `http://${DEFAULT_HOST}:${WEBSERVER_PORT}/card-creator/index.html`;
+        let docDescriptorJSON = JSON.stringify(triggerEvent.docDescriptor);
+
+        let url = `http://${DEFAULT_HOST}:${WEBSERVER_PORT}/card-creator/index.html?docDescriptor=${encodeURIComponent(docDescriptorJSON)}` ;
 
         DialogWindow.create({url});
 
@@ -75,17 +79,23 @@ class ElectronContextMenu extends ContextMenu {
 
     }
 
-    cmdNotify(command, matchingSelectors, sender) {
+    cmdNotify(command, triggerEvent, sender) {
 
         // send the annotation BACK to the sender with the specific actions.
 
-        let event = { command, matchingSelectors };
+        // we're sending back LESS data because I think all of the original data
+        // is probably not needed.
+        let event = {
+            command,
+            matchingSelectors: triggerEvent.matchingSelectors,
+            docDescriptor: triggerEvent.docDescriptor
+        };
 
         sender.send("context-menu-command", event);
 
     }
 
-    createTextHighlightContextMenu(point, contextMenuTypes, matchingSelectors, sender) {
+    createTextHighlightContextMenu(triggerEvent, sender) {
 
         Preconditions.assertNotNull(sender, "sender");
 
@@ -95,18 +105,18 @@ class ElectronContextMenu extends ContextMenu {
 
         // TODO: move this to a template as the code is cleaner
 
-        if(contextMenuTypes.includes(ContextMenuType.TEXT_HIGHLIGHT)) {
+        if(triggerEvent.contextMenuTypes.includes(ContextMenuType.TEXT_HIGHLIGHT)) {
 
             ctxMenu.append(new MenuItem( {
                 label: 'Add Flashcard',
                 //accelerator: 'CmdOrCtrl+A',
-                click: () => this.cmdAddFlashcard(matchingSelectors, sender)
+                click: () => this.cmdAddFlashcard(triggerEvent, sender)
             }));
 
             ctxMenu.append(new MenuItem( {
                 label: 'Delete Text Highlight',
                 //accelerator: 'CmdOrCtrl+A',
-                click: () => this.cmdNotify("delete-text-highlight", matchingSelectors, sender)
+                click: () => this.cmdNotify("delete-text-highlight", triggerEvent, sender)
             }));
 
         }
@@ -122,7 +132,7 @@ class ElectronContextMenu extends ContextMenu {
 
                 // the points are SLIGHTLY off for the iframe version which is
                 // very annoying.
-                window.inspectElement(point.x, point.y);
+                window.inspectElement(triggerEvent.point.x, triggerEvent.point.y);
 
                 if (window.webContents.isDevToolsOpened()) {
                     window.webContents.devToolsWebContents.focus();

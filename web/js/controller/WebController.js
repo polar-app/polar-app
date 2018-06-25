@@ -43,7 +43,7 @@ module.exports.WebController = class extends Controller {
 
     setupContextMenu() {
 
-        let contextMenuController = new ContextMenuController();
+        let contextMenuController = new ContextMenuController(this.model);
         contextMenuController.start();
 
     }
@@ -66,7 +66,7 @@ module.exports.WebController = class extends Controller {
 
         if (currentDocFingerprint !== this.docFingerprint) {
 
-            console.log("controller: New document loaded!")
+            console.log("controller: New document loaded!");
 
             let newDocumentFingerprint = currentDocFingerprint;
 
