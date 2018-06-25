@@ -26880,11 +26880,14 @@ var _require10 = __webpack_require__(/*! ./MetadataSerializer */ "./web/js/metad
 var _require11 = __webpack_require__(/*! ./TextHighlightRecords */ "./web/js/metadata/TextHighlightRecords.js"),
     TextHighlightRecords = _require11.TextHighlightRecords;
 
-var _require12 = __webpack_require__(/*! ../Hashcodes */ "./web/js/Hashcodes.js"),
-    Hashcodes = _require12.Hashcodes;
+var _require12 = __webpack_require__(/*! ./TextHighlights */ "./web/js/metadata/TextHighlights.js"),
+    TextHighlights = _require12.TextHighlights;
 
-var _require13 = __webpack_require__(/*! ../utils */ "./web/js/utils.js"),
-    forDict = _require13.forDict;
+var _require13 = __webpack_require__(/*! ../Hashcodes */ "./web/js/Hashcodes.js"),
+    Hashcodes = _require13.Hashcodes;
+
+var _require14 = __webpack_require__(/*! ../utils */ "./web/js/utils.js"),
+    forDict = _require14.forDict;
 
 var DocMetas = function () {
     function DocMetas() {
@@ -26944,6 +26947,20 @@ var DocMetas = function () {
             }
 
             return result;
+        }
+    }, {
+        key: "createMockDocMeta",
+        value: function createMockDocMeta() {
+
+            var fingerprint = "0x001";
+            var nrPages = 4;
+            var docMeta = DocMetas.createWithinInitialPagemarks(fingerprint, nrPages);
+
+            var textHighlight = TextHighlights.createMockTextHighlight();
+
+            docMeta.getPageMeta(1).textHighlights[textHighlight.id] = textHighlight;
+
+            return docMeta;
         }
 
         /**
@@ -28069,6 +28086,54 @@ var TextHighlightRecords = function () {
 ;
 
 module.exports.TextHighlightRecords = TextHighlightRecords;
+
+/***/ }),
+
+/***/ "./web/js/metadata/TextHighlights.js":
+/*!*******************************************!*\
+  !*** ./web/js/metadata/TextHighlights.js ***!
+  \*******************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var _require = __webpack_require__(/*! ./TextHighlightRecords */ "./web/js/metadata/TextHighlightRecords.js"),
+    TextHighlightRecords = _require.TextHighlightRecords;
+
+var TextHighlights = function () {
+    function TextHighlights() {
+        _classCallCheck(this, TextHighlights);
+    }
+
+    _createClass(TextHighlights, null, [{
+        key: "createMockTextHighlight",
+
+
+        /**
+         * Create a mock text highlight for testing.
+         * @return {*}
+         */
+        value: function createMockTextHighlight() {
+
+            var rects = [{ top: 100, left: 100, right: 200, bottom: 200, width: 100, height: 100 }];
+            var textSelections = ["hello world"];
+            var text = "hello world";
+
+            // create a basic TextHighlight object..
+            return TextHighlightRecords.create(rects, textSelections, text).value;
+        }
+    }]);
+
+    return TextHighlights;
+}();
+
+module.exports.TextHighlights = TextHighlights;
 
 /***/ }),
 

@@ -7,6 +7,7 @@ const {Proxies} = require("../proxies/Proxies");
 
 const {MetadataSerializer} = require("./MetadataSerializer");
 const {TextHighlightRecords} = require("./TextHighlightRecords");
+const {TextHighlights} = require("./TextHighlights");
 
 const {assertJSON} = require("../test/Assertions");
 const {TestingTime} = require("../test/TestingTime");
@@ -241,21 +242,10 @@ function createUpgradeDoc() {
     let nrPages = 1;
     let docMeta = DocMetas.createWithinInitialPagemarks(fingerprint, nrPages);
 
-    let textHighlight = createTextHighlight();
+    let textHighlight = TextHighlights.createMockTextHighlight();
 
     docMeta.getPageMeta(1).textHighlights[textHighlight.id] = textHighlight;
 
     return docMeta;
-
-}
-
-function createTextHighlight() {
-
-    let rects = [ {top: 100, left: 100, right: 200, bottom: 200, width: 100, height: 100}];
-    let textSelections = ["hello world"];
-    let text = "hello world";
-
-    // create a basic TextHighlight object..
-    return TextHighlightRecords.create(rects, textSelections, text).value;
 
 }

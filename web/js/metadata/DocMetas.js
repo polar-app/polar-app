@@ -9,6 +9,7 @@ const {ISODateTime} = require("./ISODateTime");
 const {AnnotationInfo} = require("./AnnotationInfo");
 const {MetadataSerializer} = require("./MetadataSerializer");
 const {TextHighlightRecords} = require("./TextHighlightRecords");
+const {TextHighlights} = require("./TextHighlights");
 const {Hashcodes} = require("../Hashcodes");
 const {forDict} = require("../utils");
 
@@ -62,6 +63,20 @@ class DocMetas {
         }
 
         return result;
+
+    }
+
+    static createMockDocMeta() {
+
+        let fingerprint = "0x001";
+        let nrPages = 4;
+        let docMeta = DocMetas.createWithinInitialPagemarks(fingerprint, nrPages);
+
+        let textHighlight = TextHighlights.createMockTextHighlight();
+
+        docMeta.getPageMeta(1).textHighlights[textHighlight.id] = textHighlight;
+
+        return docMeta;
 
     }
 
