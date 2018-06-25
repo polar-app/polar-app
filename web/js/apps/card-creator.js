@@ -9,6 +9,7 @@ import SimpleMDE from 'react-simplemde-editor';
 const {ipcRenderer} = require('electron');
 const {InputController} = require("../annotations/InputController");
 const {FormHandler} = require("../annotations/FormHandler");
+const {AnnotationType} = require("../metadata/AnnotationType");
 const {Objects} = require("../util/Objects");
 
 /**
@@ -30,12 +31,17 @@ function _requestParams() {
     let url = new URL(window.location.href);
 
     return {
-        docDescriptor: JSON.parse(url.searchParams.get("docDescriptor")),
+        context: JSON.parse(url.searchParams.get("context")),
     }
 
 }
 
 class PostMessageFormHandler extends FormHandler {
+
+    constructor(context) {
+        super();
+        this.context = context;
+    }
 
     onChange(data) {
         console.log("onChange: ", data);
@@ -45,13 +51,21 @@ class PostMessageFormHandler extends FormHandler {
 
     onSubmit(data) {
 
-        let requestParams = _requestParams();
-
         data = Objects.duplicate(data);
 
         // we have to include the docDescriptor for what we're working on so
         // that the recipient can decide if they want to act on this new data.
-        data.docDescriptor = requestParams.docDescriptor;
+        data.context = this.context;
+
+        // for now we (manually) support flashcards
+        data.annotationType = AnnotationType.FLASHCARD;
+
+        // the metadata for creating the flashcard type.  This should probably
+        // move to the schema in the future.  The ID is really just so that
+        // we can compile the schema properly.
+        data.flashcard = {
+            id: "9d146db1-7c31-4bcf-866b-7b485c4e50ea"
+        };
 
         console.log("onSubmit: ", data);
         //window.postMessage({ type: "onSubmit", data: dataToExternal(data)}, "*");
@@ -71,11 +85,15 @@ class PostMessageFormHandler extends FormHandler {
 
 $(document).ready(function() {
 
+    let requestParams = _requestParams();
+
     let inputController = new InputController();
 
     let schemaFormElement = document.getElementById("schema-form");
 
-    inputController.createNewFlashcard(schemaFormElement, new PostMessageFormHandler());
+    let postMessageFormHandler = new PostMessageFormHandler(requestParams.context);
+
+    inputController.createNewFlashcard(schemaFormElement, postMessageFormHandler);
 
     // if(!schemaFormElement) {
     //     throw new Error("No schemaFormElement");

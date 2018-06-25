@@ -55069,6 +55069,7 @@ module.exports.Delegator = function () {
     return _class;
 }();
 
+// @Deprecated use Functions.forDict
 module.exports.forDict = function (dict, callback) {
 
     Preconditions.assertNotNull(dict, "dict");

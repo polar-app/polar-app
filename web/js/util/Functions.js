@@ -1,3 +1,5 @@
+const {Preconditions} = require("../Preconditions");
+
 class Functions {
 
     /**
@@ -18,6 +20,22 @@ class Functions {
         return result;
 
     }
+
+    static forDict(dict, callback) {
+
+        Preconditions.assertNotNull(dict, "dict");
+        Preconditions.assertNotNull(callback, "callback");
+
+        // get the keys first, that way we can mutate the dictionary while iterating
+        // through it if necessary.
+        let keys = Object.keys(dict);
+
+        keys.forEach(function (key) {
+            let value = dict[key];
+            callback(key,value);
+        })
+
+    };
 
 }
 

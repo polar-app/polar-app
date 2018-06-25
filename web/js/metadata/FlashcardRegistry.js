@@ -173,6 +173,7 @@ class FlashcardRegistry {
                     required: false
                 })
             }
+
         }));
 
         return flashcardRegistry;

@@ -58,9 +58,14 @@ class ElectronContextMenu extends ContextMenu {
             command: "add-flashcard"
         });
 
-        let docDescriptorJSON = JSON.stringify(triggerEvent.docDescriptor);
+        let context = {
+            docDescriptor: triggerEvent.docDescriptor,
+            matchingSelectors: triggerEvent.matchingSelectors
+        };
 
-        let url = `http://${DEFAULT_HOST}:${WEBSERVER_PORT}/card-creator/index.html?docDescriptor=${encodeURIComponent(docDescriptorJSON)}` ;
+        let contextJSON = JSON.stringify(context);
+
+        let url = `http://${DEFAULT_HOST}:${WEBSERVER_PORT}/card-creator/index.html?context=${encodeURIComponent(contextJSON)}` ;
 
         DialogWindow.create({url});
 
