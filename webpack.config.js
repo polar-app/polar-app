@@ -6,7 +6,6 @@ module.exports = [
         mode: 'development',
         entry: {
             "chrome": [ "babel-polyfill", "./web/js/apps/chrome.js"],
-            "card-creator": [ "babel-polyfill", "./web/js/apps/card-creator.js"]
         },
         module: {
             rules: [
@@ -43,7 +42,8 @@ module.exports = [
         mode: 'development',
         target: "electron-renderer",
         entry: {
-            electron: ["babel-polyfill", "./web/js/apps/electron.js"],
+            "electron": ["babel-polyfill", "./web/js/apps/electron.js"],
+            "card-creator": [ "babel-polyfill", "./web/js/apps/card-creator.js"]
         },
         module: {
             rules: [

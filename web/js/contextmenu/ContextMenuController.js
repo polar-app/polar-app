@@ -56,7 +56,7 @@ class ContextMenuController {
                     point: {x: event.pageX, y: event.pageY },
                     contextMenuTypes,
                     matchingSelectors
-                })
+                });
 
             });
 

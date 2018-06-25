@@ -50006,14 +50006,11 @@ var _require5 = __webpack_require__(/*! ./TextExtracter */ "./web/js/highlights/
 var _require6 = __webpack_require__(/*! ../../../KeyEvents.js */ "./web/js/KeyEvents.js"),
     KeyEvents = _require6.KeyEvents;
 
-var _require7 = __webpack_require__(/*! ../../../util/Arrays */ "./web/js/util/Arrays.js"),
-    Arrays = _require7.Arrays;
+var _require7 = __webpack_require__(/*! ../../../docformat/DocFormatFactory */ "./web/js/docformat/DocFormatFactory.js"),
+    DocFormatFactory = _require7.DocFormatFactory;
 
-var _require8 = __webpack_require__(/*! ../../../docformat/DocFormatFactory */ "./web/js/docformat/DocFormatFactory.js"),
-    DocFormatFactory = _require8.DocFormatFactory;
-
-var _require9 = __webpack_require__(/*! electron */ "./node_modules/electron/index.js"),
-    ipcRenderer = _require9.ipcRenderer;
+var _require8 = __webpack_require__(/*! electron */ "./node_modules/electron/index.js"),
+    ipcRenderer = _require8.ipcRenderer;
 
 var TextHighlightController = function () {
     function TextHighlightController(model) {
@@ -50720,17 +50717,11 @@ var TextHighlightView = function () {
         key: "onTextHighlight",
         value: function onTextHighlight(textHighlightEvent) {
 
-            // FIXME we need to look at the value and if it's undefined then
-            // we know it's deleted and that we need to remove the renderer
-            // and remove the element
-
             console.log("TextHighlightView.onTextHighlight: ", textHighlightEvent);
 
             if (textHighlightEvent.mutationState === MutationState.PRESENT) {
 
                 console.log("TextHighlightView.onTextHighlight ... present");
-
-                // FIXME: here is the problem.. we're not handling DELETE...
 
                 var pageNum = textHighlightEvent.pageMeta.pageInfo.num;
                 var pageElement = this.docFormat.getPageElementFromPageNum(pageNum);
@@ -50745,6 +50736,10 @@ var TextHighlightView = function () {
                         // TODO: we don't actually remove ourselves form the event
                         // listeners so this is going to end up as a memory leak
                         // unless we fix it in the future.
+                        //
+                        // TODO: one good workaround for this is that we could
+                        // re-emit all the state of the document again and have the
+                        // PRESENT state re-draw everything.
 
                         if (textHighlightEvent.value.id in textHighlightEvent.pageMeta.textHighlights) {
                             TextHighlightView.render(pageElement, rect, textHighlightEvent);

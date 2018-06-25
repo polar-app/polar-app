@@ -33,10 +33,6 @@ class TextHighlightView {
 
     onTextHighlight(textHighlightEvent) {
 
-        // FIXME we need to look at the value and if it's undefined then
-        // we know it's deleted and that we need to remove the renderer
-        // and remove the element
-
         console.log("TextHighlightView.onTextHighlight: ", textHighlightEvent);
 
         if(textHighlightEvent.mutationState === MutationState.PRESENT) {
@@ -56,6 +52,10 @@ class TextHighlightView {
                     // TODO: we don't actually remove ourselves form the event
                     // listeners so this is going to end up as a memory leak
                     // unless we fix it in the future.
+                    //
+                    // TODO: one good workaround for this is that we could
+                    // re-emit all the state of the document again and have the
+                    // PRESENT state re-draw everything.
 
                     if(textHighlightEvent.value.id in textHighlightEvent.pageMeta.textHighlights) {
                         TextHighlightView.render(pageElement, rect, textHighlightEvent);

@@ -5,7 +5,6 @@ const {TextHighlightRows} = require("./TextHighlightRows");
 const {Preconditions} = require("../../../Preconditions");
 const {TextExtracter} = require("./TextExtracter");
 const {KeyEvents} = require("../../../KeyEvents.js");
-const {Arrays} = require("../../../util/Arrays");
 const {DocFormatFactory} = require("../../../docformat/DocFormatFactory");
 const {ipcRenderer} = require('electron')
 
