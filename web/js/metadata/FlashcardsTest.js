@@ -9,7 +9,6 @@ require("../test/TestingTime").freeze();
 
 describe('Flashcards', function() {
 
-
     describe('create', function() {
 
         it("basic", function () {
@@ -47,7 +46,7 @@ describe('Flashcards', function() {
             let flashcard = Flashcards.createFromSchemaFormData(CARD_CREATOR_JSON);
 
             let expected = {
-                "id": "1kGNTb58N1",
+                "id": "12RiVkVhHR",
                 "created": "2012-03-02T11:38:49.321Z",
                 "lastUpdated": "2012-03-02T11:38:49.321Z",
                 "author": null,
@@ -111,7 +110,7 @@ const CARD_CREATOR_JSON = {
     },
     "formData": {
         "back": "This is the back",
-        "front": "Thisis the front"
+        "front": "This is the front"
     },
     "idSchema": {
         "$id": "root",

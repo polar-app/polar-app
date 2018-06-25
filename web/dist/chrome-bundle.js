@@ -52803,7 +52803,6 @@ module.exports.Model = function () {
         _classCallCheck(this, _class);
 
         this.persistenceLayer = persistenceLayer;
-        this.clock = clock;
 
         this.reactor = new Reactor();
         this.reactor.registerEvent('documentLoaded');

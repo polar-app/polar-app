@@ -1,5 +1,6 @@
 const {ipcRenderer} = require('electron')
 const {AnnotationType} = require("../../metadata/AnnotationType");
+const {Flashcards} = require("../../metadata/Flashcards");
 
 module.exports.FlashcardsController = class {
 
@@ -31,11 +32,20 @@ module.exports.FlashcardsController = class {
      */
     onCreateFlashcard(data) {
 
-        // FIXME: create testable code that takes the data and builds a flashcard
-        // that we can add to the model.
-
         console.log("onCreateFlashcard: ", data);
 
+        let flashcard = Flashcards.createFromSchemaFormData(data);
+
+        // FIXME: now create update model with our new flashcard
+
+        let textHighlightAnnotationDescriptors =
+            data.context.matchingSelectors[".text-highlight"].annotationDescriptors;
+
+        textHighlightAnnotationDescriptors.forEach(annotationDescriptor => {
+            let pageMeta = this.model.docMeta.getPageMeta(annotationDescriptor.pageNum);
+            let textHighlight = pageMeta.textHighlights[annotationDescriptor.textHighlightId];
+            textHighlight.flashcards[flashcard.id] = flashcard;
+        });
     }
 
 };

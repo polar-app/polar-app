@@ -18,7 +18,6 @@ module.exports.Model = class {
     constructor(persistenceLayer, clock) {
 
         this.persistenceLayer = persistenceLayer;
-        this.clock = clock;
 
         this.reactor = new Reactor();
         this.reactor.registerEvent('documentLoaded');

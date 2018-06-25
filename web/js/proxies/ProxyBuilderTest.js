@@ -49,7 +49,8 @@ describe('ProxyBuilder', function() {
                     },
                     "property": "borrowed",
                     "value": true,
-                    "previousValue": false
+                    "previousValue": false,
+                    "mutationState": "PRESENT"
                 }
             ];
 
@@ -86,7 +87,8 @@ describe('ProxyBuilder', function() {
                     },
                     "property": "cat",
                     "value": "monster",
-                    "previousValue": "leo"
+                    "previousValue": "leo",
+                    "mutationState": "PRESENT"
                 }
             ];
 
@@ -116,7 +118,8 @@ describe('ProxyBuilder', function() {
                     },
                     "property": "cat",
                     "value": "monster",
-                    "previousValue": "leo"
+                    "previousValue": "leo",
+                    "mutationState": "PRESENT"
                 }
             ];
 
@@ -150,7 +153,8 @@ describe('ProxyBuilder', function() {
                     },
                     "property": "cat",
                     "value": "monster",
-                    "previousValue": "leo"
+                    "previousValue": "leo",
+                    "mutationState": "PRESENT"
                 }
             ];
 
@@ -185,7 +189,8 @@ describe('ProxyBuilder', function() {
                     },
                     "property": "cat",
                     "value": "monster",
-                    "previousValue": "leo"
+                    "previousValue": "leo",
+                    "mutationState": "PRESENT"
                 }
             ];
 
@@ -257,7 +262,8 @@ describe('ProxyBuilder', function() {
                     },
                     "property": "foo",
                     "value": "frog",
-                    "previousValue": "bar"
+                    "previousValue": "bar",
+                    "mutationState": "PRESENT"
                 }
             ];
 
@@ -289,7 +295,8 @@ describe('ProxyBuilder', function() {
                     },
                     "property": "name",
                     "value": "monster",
-                    "previousValue": "leo"
+                    "previousValue": "leo",
+                    "mutationState": "PRESENT"
                 }
             ];
 
@@ -325,7 +332,8 @@ describe('ProxyBuilder', function() {
                     },
                     "property": "foo",
                     "value": "cat",
-                    "previousValue": "bar"
+                    "previousValue": "bar",
+                    "mutationState": "PRESENT"
                 },
                 {
                     "path": "/cat",
@@ -335,7 +343,8 @@ describe('ProxyBuilder', function() {
                     },
                     "property": "name",
                     "value": "monster",
-                    "previousValue": "leo"
+                    "previousValue": "leo",
+                    "mutationState": "PRESENT"
                 }
             ];
 
@@ -364,7 +373,8 @@ describe('ProxyBuilder', function() {
                     },
                     "property": "foo",
                     "value": "frog",
-                    "previousValue": "bar"
+                    "previousValue": "bar",
+                    "mutationState": "PRESENT"
                 }
             ];
 
@@ -402,7 +412,8 @@ describe('ProxyBuilder', function() {
                     },
                     "property": "marked",
                     "value": false,
-                    "previousValue": true
+                    "previousValue": true,
+                    "mutationState": "PRESENT"
                 }
             ];
 
@@ -446,7 +457,8 @@ describe('ProxyBuilder', function() {
                         "asdf": "bar"
                     },
                     "property": "asdf",
-                    "value": "bar"
+                    "value": "bar",
+                    "mutationState": "PRESENT"
                 }
             ];
 
@@ -479,7 +491,8 @@ describe('ProxyBuilder', function() {
                         "cat": "dog"
                     },
                     "property": "cat",
-                    "value": "dog"
+                    "value": "dog",
+                    "mutationState": "PRESENT"
                 }
             ];
 
@@ -507,7 +520,8 @@ describe('ProxyBuilder', function() {
                     "mutationType": "DELETE",
                     "target": {},
                     "property": "cat",
-                    "previousValue": "dog"
+                    "previousValue": "dog",
+                    "mutationState": "ABSENT"
                 }
             ];
 

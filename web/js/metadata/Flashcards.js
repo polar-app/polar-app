@@ -35,6 +35,8 @@ class Flashcards {
      */
     static createFromSchemaFormData(data) {
 
+        // TODO: the markdown needs to be converted to HTML as well.
+
         // require that the annotation type is correct
         if(data.annotationType !== AnnotationType.FLASHCARD) {
             throw new Error("Annotation type is incorrect: " + data.annotationType);

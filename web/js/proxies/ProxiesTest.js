@@ -107,7 +107,8 @@ describe('Proxies', function() {
                             "type": "MAMMAL"
                         }
                     },
-                    "property": "foo"
+                    "property": "foo",
+                    "mutationState": "ABSENT"
                 }
             ];
 
