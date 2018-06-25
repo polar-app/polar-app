@@ -36,7 +36,7 @@ module.exports.Reactor = class {
     }
 
     getEventListeners(eventName){
-        this.events[eventName].getCallbacks();
+        return this.events[eventName].callbacks;
     }
 
 };

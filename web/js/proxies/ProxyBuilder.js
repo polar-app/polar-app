@@ -16,16 +16,13 @@ class ProxyBuilder {
         this.target = target;
     }
 
-    /**
-     * Listen to just a specific property.  This could be done with Observer filters in the future.
-     */
-    forProperty(name) {
-
-    }
 
     /**
      * Listen to the stream of mutations and receive callbacks which you can handle directly.
+     *
+     * @Deprecated we are migrating to trace for everything.
      * @param onMutation
+     *
      */
     forMutations(mutationListener) {
         return new Proxy(this.target, new MutationHandler(mutationListener));
@@ -126,12 +123,6 @@ class ProxyBuilder {
 
     }
 
-    /**
-     * Create a path from two strings
-     */
-    static path(s0, s1) {
-
-    }
 
 }
 

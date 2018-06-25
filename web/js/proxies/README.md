@@ -97,7 +97,7 @@ With these three I think we could implement what we need:
 
 - path would mean apply it to just a specific path (it would default to '*' basically)
 
-- recursive would mean apply it to sub-objects too..
+- recursive would mean apply it to sub-objects too while they are changed.
 
 ### Use case (disk sync)
 

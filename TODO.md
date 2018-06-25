@@ -1,36 +1,16 @@
 
-# Features
-
-- different 'types' of pagemarks including "ignore" and "read" types so that
-  you can mark an entire page as ignore and still have that count towards 100%
-
-- checkpoint journaling so I have confidence that I am not losing data.
-
-# Release (for myself)
-
-## Required editor functionality
-
-- paste images / screenshots from clipboard and save as data URL.
-
- - https://stackoverflow.com/questions/28644340/how-do-i-get-base64-encoded-image-from-clipboard-in-internet-explorer
-
- - https://matthewmoisen.com/blog/paste-js-example/
-
- - I can detect the paste, then convert what's pasted to a data URL, then change
-   the CSS it so that the user doesn't need to deal with the full thing.
 
 ## Next
 
-- ignore the 'right click' support for now and just write a simple UI in react
-  that is straight forward that I can either inject as a modal or a sidebar...
+- If we add a nested object to the proxy system, it's not proxied for new values.
+  this means if we add a highlight, then add a flashcard to the highlight, we get
+  no new events.
 
-- ability to right click and 'add flashcard' to an annotation and enter the data
-  in markdown.
+    - I think I need to have 'listeners' for each object which is a dictionary
+      of the actual listener plus metadata for that listener.
 
-    - I need the ability to create a context menu when I click on a highlight.
-
-    - then test adding the new flashcard
-
+- clean up the input page so that it uses whitespace better
+    - also initial size should be better
 
 
 - recent files
@@ -79,6 +59,27 @@
 -  webview.openDevTools();
     - support...
 
+
+
+# Features
+
+- different 'types' of pagemarks including "ignore" and "read" types so that
+  you can mark an entire page as ignore and still have that count towards 100%
+
+- checkpoint journaling so I have confidence that I am not losing data.
+
+# Release (for myself)
+
+## Required editor functionality
+
+- paste images / screenshots from clipboard and save as data URL.
+
+ - https://stackoverflow.com/questions/28644340/how-do-i-get-base64-encoded-image-from-clipboard-in-internet-explorer
+
+ - https://matthewmoisen.com/blog/paste-js-example/
+
+ - I can detect the paste, then convert what's pasted to a data URL, then change
+   the CSS it so that the user doesn't need to deal with the full thing.
 
 # Skin / UI
 

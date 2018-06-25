@@ -54352,20 +54352,15 @@ var ProxyBuilder = function () {
     }
 
     /**
-     * Listen to just a specific property.  This could be done with Observer filters in the future.
+     * Listen to the stream of mutations and receive callbacks which you can handle directly.
+     *
+     * @Deprecated we are migrating to trace for everything.
+     * @param onMutation
+     *
      */
 
 
     _createClass(ProxyBuilder, [{
-        key: "forProperty",
-        value: function forProperty(name) {}
-
-        /**
-         * Listen to the stream of mutations and receive callbacks which you can handle directly.
-         * @param onMutation
-         */
-
-    }, {
         key: "forMutations",
         value: function forMutations(mutationListener) {
             return new Proxy(this.target, new MutationHandler(mutationListener));
@@ -54410,11 +54405,6 @@ var ProxyBuilder = function () {
 
             return root;
         }
-
-        /**
-         * Create a path from two strings
-         */
-
     }], [{
         key: "trace",
         value: function trace(path, value, traceListener) {
@@ -54469,9 +54459,6 @@ var ProxyBuilder = function () {
 
             return new Proxy(value, traceHandler);
         }
-    }, {
-        key: "path",
-        value: function path(s0, s1) {}
     }]);
 
     return ProxyBuilder;
@@ -54623,19 +54610,25 @@ module.exports.TraceHandler = function () {
         key: "set",
         value: function set(target, property, value, receiver) {
 
+            // TODO: before we change the value, also trace the new input values
+            // if we are given an object.
+
             var previousValue = target[property];
 
             var result = Reflect.set.apply(Reflect, arguments);
-            this.reactor.dispatchEvent(EVENT_NAME, new TraceEvent(this.path, MutationType.SET, target, property, value, previousValue));
+            var traceEvent = new TraceEvent(this.path, MutationType.SET, target, property, value, previousValue);
+            this.reactor.dispatchEvent(EVENT_NAME, traceEvent);
             return result;
         }
     }, {
         key: "deleteProperty",
         value: function deleteProperty(target, property) {
+
             var previousValue = target[property];
 
             var result = Reflect.deleteProperty.apply(Reflect, arguments);
-            this.reactor.dispatchEvent(EVENT_NAME, new TraceEvent(this.path, MutationType.DELETE, target, property, undefined, previousValue));
+            var traceEvent = new TraceEvent(this.path, MutationType.DELETE, target, property, undefined, previousValue);
+            this.reactor.dispatchEvent(EVENT_NAME, traceEvent);
             return result;
         }
     }]);
@@ -54729,8 +54722,6 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 // https://stackoverflow.com/questions/15308371/custom-events-model-without-using-dom-events-in-javascript
 
-// TODO: move this to a util library
-
 module.exports.Event = function () {
     function _class(name) {
         _classCallCheck(this, _class);
@@ -54817,7 +54808,7 @@ module.exports.Reactor = function () {
     }, {
         key: "getEventListeners",
         value: function getEventListeners(eventName) {
-            this.events[eventName].getCallbacks();
+            return this.events[eventName].callbacks;
         }
     }]);
 
