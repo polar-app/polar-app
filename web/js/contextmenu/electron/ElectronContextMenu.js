@@ -8,6 +8,7 @@ const {ContextMenuType} = require("../ContextMenuType");
 const {DialogWindow} = require("./DialogWindow");
 const {ContextMenu} = require("../ContextMenu");
 const {Preconditions} = require("../../Preconditions");
+const {Broadcaster} = require("../../ipc/Broadcaster");
 
 const WEBSERVER_PORT = 8500;
 const DEFAULT_HOST = "127.0.0.1";
@@ -27,6 +28,8 @@ class ElectronContextMenu extends ContextMenu {
             this.trigger(arg.point, arg.contextMenuTypes, arg.matchingSelectors, event.sender);
 
         });
+
+        new Broadcaster('create-annotation');
 
     }
 

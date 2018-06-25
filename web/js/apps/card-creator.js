@@ -35,6 +35,10 @@ class PostMessageFormHandler extends FormHandler {
     onSubmit(data) {
         console.log("onSubmit: ", data);
         //window.postMessage({ type: "onSubmit", data: dataToExternal(data)}, "*");
+
+        // send this to the main process which then broadcasts it to all the renderers.
+        ipcRenderer.send('create-annotation', {});
+
     }
 
 
