@@ -6,8 +6,13 @@ module.exports.FlashcardsController = class {
 
     constructor(model) {
         this.model = model;
+    }
+
+    start() {
 
         if(ipcRenderer) {
+
+            console.log("IPC listener added for create-annotation")
 
             ipcRenderer.on('create-annotation', (event, data) => {
 
@@ -15,9 +20,11 @@ module.exports.FlashcardsController = class {
 
                 if(data.annotationType === AnnotationType.FLASHCARD) {
                     console.log("Working with flashcard");
-                    if(data.context.docDescriptor === this.model.docMeta.docInfo.fingerprint) {
+                    if(data.context.docDescriptor.fingerprint === this.model.docMeta.docInfo.fingerprint) {
                         console.log("Going to add this flashcard to the model");
                         this.onCreateFlashcard(data);
+                    } else {
+                        console.log(`Ignoring flashcard.  ${data.context.docDescriptor.fingerprint} != ${this.model.docMeta.docInfo.fingerprint}`)
                     }
 
                 }

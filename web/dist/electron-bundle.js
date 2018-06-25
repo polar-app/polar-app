@@ -24308,6 +24308,9 @@ var _require7 = __webpack_require__(/*! ../polar */ "./web/js/polar.js"),
 var _require8 = __webpack_require__(/*! ../contextmenu/ContextMenuController */ "./web/js/contextmenu/ContextMenuController.js"),
     ContextMenuController = _require8.ContextMenuController;
 
+var _require9 = __webpack_require__(/*! ../flashcards/controller/FlashcardsController */ "./web/js/flashcards/controller/FlashcardsController.js"),
+    FlashcardsController = _require9.FlashcardsController;
+
 module.exports.WebController = function (_Controller) {
     _inherits(_class, _Controller);
 
@@ -24563,6 +24566,8 @@ module.exports.WebController = function (_Controller) {
             new TextHighlightController(this.model).start();
 
             new PagemarkCoverageEventListener(this).start();
+
+            new FlashcardsController(this.model).start();
         }
     }]);
 
@@ -25401,6 +25406,102 @@ var PDFFormat = function (_DocFormat) {
 }(DocFormat);
 
 module.exports.PDFFormat = PDFFormat;
+
+/***/ }),
+
+/***/ "./web/js/flashcards/controller/FlashcardsController.js":
+/*!**************************************************************!*\
+  !*** ./web/js/flashcards/controller/FlashcardsController.js ***!
+  \**************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var _require = __webpack_require__(/*! electron */ "electron"),
+    ipcRenderer = _require.ipcRenderer;
+
+var _require2 = __webpack_require__(/*! ../../metadata/AnnotationType */ "./web/js/metadata/AnnotationType.js"),
+    AnnotationType = _require2.AnnotationType;
+
+var _require3 = __webpack_require__(/*! ../../metadata/Flashcards */ "./web/js/metadata/Flashcards.js"),
+    Flashcards = _require3.Flashcards;
+
+module.exports.FlashcardsController = function () {
+    function _class(model) {
+        _classCallCheck(this, _class);
+
+        this.model = model;
+    }
+
+    _createClass(_class, [{
+        key: "start",
+        value: function start() {
+            var _this = this;
+
+            if (ipcRenderer) {
+
+                console.log("IPC listener added for create-annotation");
+
+                ipcRenderer.on('create-annotation', function (event, data) {
+
+                    console.log("Received create-annotation event: ", data);
+
+                    if (data.annotationType === AnnotationType.FLASHCARD) {
+                        console.log("Working with flashcard");
+                        if (data.context.docDescriptor.fingerprint === _this.model.docMeta.docInfo.fingerprint) {
+                            console.log("Going to add this flashcard to the model");
+                            _this.onCreateFlashcard(data);
+                        } else {
+                            console.log("Ignoring flashcard.  " + data.context.docDescriptor.fingerprint + " != " + _this.model.docMeta.docInfo.fingerprint);
+                        }
+                    }
+
+                    // I don't think we need to listen to these here but rather in the
+                    // specific controllers.
+                });
+            } else {
+                console.warn("Not running within electron");
+            }
+        }
+
+        /**
+         * Called when we need to create a new flashcard.
+         */
+
+    }, {
+        key: "onCreateFlashcard",
+        value: function onCreateFlashcard(data) {
+            var _this2 = this;
+
+            console.log("onCreateFlashcard: ", data);
+
+            var flashcard = Flashcards.createFromSchemaFormData(data);
+
+            // FIXME: now create update model with our new flashcard
+
+            var textHighlightAnnotationDescriptors = data.context.matchingSelectors[".text-highlight"].annotationDescriptors;
+
+            textHighlightAnnotationDescriptors.forEach(function (annotationDescriptor) {
+                var pageMeta = _this2.model.docMeta.getPageMeta(annotationDescriptor.pageNum);
+                var textHighlight = pageMeta.textHighlights[annotationDescriptor.textHighlightId];
+
+                if (!textHighlight) {
+                    throw new Error("No text highlight for ID " + annotationDescriptor.textHighlightId + " on page " + annotationDescriptor.pageNum);
+                }
+
+                textHighlight.flashcards[flashcard.id] = flashcard;
+            });
+        }
+    }]);
+
+    return _class;
+}();
 
 /***/ }),
 
@@ -26480,6 +26581,24 @@ module.exports.AnnotationInfo = function (_SerializedObject) {
 
 /***/ }),
 
+/***/ "./web/js/metadata/AnnotationType.js":
+/*!*******************************************!*\
+  !*** ./web/js/metadata/AnnotationType.js ***!
+  \*******************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+module.exports.AnnotationType = Object.freeze({
+
+    FLASHCARD: "flashcard"
+
+});
+
+/***/ }),
+
 /***/ "./web/js/metadata/BaseHighlight.js":
 /*!******************************************!*\
   !*** ./web/js/metadata/BaseHighlight.js ***!
@@ -27165,6 +27284,199 @@ module.exports.ExtendedAnnotation = function (_Annotation) {
 
     return _class;
 }(Annotation);
+
+/***/ }),
+
+/***/ "./web/js/metadata/Flashcard.js":
+/*!**************************************!*\
+  !*** ./web/js/metadata/Flashcard.js ***!
+  \**************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var _require = __webpack_require__(/*! ./VersionedObject */ "./web/js/metadata/VersionedObject.js"),
+    VersionedObject = _require.VersionedObject;
+
+module.exports.Flashcard = function (_VersionedObject) {
+  _inherits(_class, _VersionedObject);
+
+  function _class(val) {
+    _classCallCheck(this, _class);
+
+    /**
+     * The type of this flashcard.
+     *
+     * @type FlashcardType
+     */
+    var _this = _possibleConstructorReturn(this, (_class.__proto__ || Object.getPrototypeOf(_class)).call(this, val));
+
+    _this.type = null;
+
+    /**
+     * The content of this flashcard created by the user.
+     *
+     * @type map<String,Text> for each defined field.
+     */
+    _this.fields = {};
+
+    _this.init(val);
+
+    return _this;
+  }
+
+  return _class;
+}(VersionedObject);
+
+/***/ }),
+
+/***/ "./web/js/metadata/FlashcardType.js":
+/*!******************************************!*\
+  !*** ./web/js/metadata/FlashcardType.js ***!
+  \******************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _require = __webpack_require__(/*! ./Symbol.js */ "./web/js/metadata/Symbol.js"),
+    _Symbol = _require.Symbol;
+
+/**
+ * The type of the flashcard.
+ */
+
+
+module.exports.FlashcardType = Object.freeze({
+
+    CLOZURE: new _Symbol("CLOZURE"),
+
+    BASIC_FRONT_BACK: new _Symbol("BASIC_FRONT_BACK"),
+
+    // Create two derived views.  The front and back and then the reverse
+    // (reverse with the back->front)
+    BASIC_FRONT_BACK_AND_REVERSE: new _Symbol("BASIC_FRONT_BACK_AND_REVERSE"),
+
+    // the reverse is optional
+    BASIC_FRONT_BACK_OR_REVERSE: new _Symbol("BASIC_FRONT_BACK_OR_REVERSE")
+
+});
+
+/***/ }),
+
+/***/ "./web/js/metadata/Flashcards.js":
+/*!***************************************!*\
+  !*** ./web/js/metadata/Flashcards.js ***!
+  \***************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var _require = __webpack_require__(/*! ../Preconditions */ "./web/js/Preconditions.js"),
+    Preconditions = _require.Preconditions;
+
+var _require2 = __webpack_require__(/*! ./Flashcard */ "./web/js/metadata/Flashcard.js"),
+    Flashcard = _require2.Flashcard;
+
+var _require3 = __webpack_require__(/*! ./Text */ "./web/js/metadata/Text.js"),
+    Text = _require3.Text;
+
+var _require4 = __webpack_require__(/*! ./ISODateTime */ "./web/js/metadata/ISODateTime.js"),
+    ISODateTime = _require4.ISODateTime;
+
+var _require5 = __webpack_require__(/*! ../Hashcodes */ "./web/js/Hashcodes.js"),
+    Hashcodes = _require5.Hashcodes;
+
+var _require6 = __webpack_require__(/*! ./AnnotationType */ "./web/js/metadata/AnnotationType.js"),
+    AnnotationType = _require6.AnnotationType;
+
+var _require7 = __webpack_require__(/*! ./FlashcardType */ "./web/js/metadata/FlashcardType.js"),
+    FlashcardType = _require7.FlashcardType;
+
+var _require8 = __webpack_require__(/*! ./TextType */ "./web/js/metadata/TextType.js"),
+    TextType = _require8.TextType;
+
+var _require9 = __webpack_require__(/*! ./Texts */ "./web/js/metadata/Texts.js"),
+    Texts = _require9.Texts;
+
+var _require10 = __webpack_require__(/*! ../util/Functions */ "./web/js/util/Functions.js"),
+    Functions = _require10.Functions;
+
+var Flashcards = function () {
+    function Flashcards() {
+        _classCallCheck(this, Flashcards);
+    }
+
+    _createClass(Flashcards, null, [{
+        key: "create",
+        value: function create(type, fields) {
+
+            Preconditions.assertNotNull(fields, "fields");
+
+            var now = new Date();
+            var created = new ISODateTime(now);
+
+            var id = Hashcodes.createID({ created: created, fields: fields });
+            return new Flashcard({
+                id: id,
+                created: created,
+                lastUpdated: new ISODateTime(now),
+                type: type,
+                fields: fields
+            });
+        }
+
+        /**
+         * Create a flashcard from the raw, completed, schema form data.
+         * @param data
+         */
+
+    }, {
+        key: "createFromSchemaFormData",
+        value: function createFromSchemaFormData(data) {
+
+            // TODO: the markdown needs to be converted to HTML as well.  The text
+            // we get from the markdown widget is markdown. Not HTML and I confirmed
+            // this is the case.
+
+            // require that the annotation type is correct
+            if (data.annotationType !== AnnotationType.FLASHCARD) {
+                throw new Error("Annotation type is incorrect: " + data.annotationType);
+            }
+
+            var fields = {};
+
+            // now work with the formData to create the fields.
+            Functions.forDict(data.formData, function (key, value) {
+                var text = Texts.create(value, TextType.MARKDOWN);
+                fields[key] = text;
+            });
+
+            return Flashcards.create(FlashcardType.BASIC_FRONT_BACK, fields);
+        }
+    }]);
+
+    return Flashcards;
+}();
+
+;
+
+module.exports.Flashcards = Flashcards;
 
 /***/ }),
 
@@ -27946,6 +28258,40 @@ module.exports.Symbol = function () {
 
 /***/ }),
 
+/***/ "./web/js/metadata/Text.js":
+/*!*********************************!*\
+  !*** ./web/js/metadata/Text.js ***!
+  \*********************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var _require = __webpack_require__(/*! ./SerializedObject */ "./web/js/metadata/SerializedObject.js"),
+    SerializedObject = _require.SerializedObject;
+
+var _require2 = __webpack_require__(/*! ./TextType */ "./web/js/metadata/TextType.js"),
+    TextType = _require2.TextType;
+
+/**
+ * Text mapping of TextType to string for each type of content generated which
+ * represents this data.
+ */
+
+
+var Text = function Text() {
+  _classCallCheck(this, Text);
+};
+
+;
+
+module.exports.Text = Text;
+
+/***/ }),
+
 /***/ "./web/js/metadata/TextHighlight.js":
 /*!******************************************!*\
   !*** ./web/js/metadata/TextHighlight.js ***!
@@ -28179,6 +28525,84 @@ var TextRect = function (_SerializedObject) {
 }(SerializedObject);
 
 module.exports.TextRect = TextRect;
+
+/***/ }),
+
+/***/ "./web/js/metadata/TextType.js":
+/*!*************************************!*\
+  !*** ./web/js/metadata/TextType.js ***!
+  \*************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _require = __webpack_require__(/*! ./Symbol.js */ "./web/js/metadata/Symbol.js"),
+    _Symbol = _require.Symbol;
+
+// this is I think a better pattern for typesafe enum:
+// http://2ality.com/2016/01/enumify.html
+
+
+module.exports.TextType = Object.freeze({
+
+  /**
+   * RAW text. No interpretation.
+   */
+  TEXT: "TEXT",
+
+  /**
+   * Markdown content.
+   */
+  MARKDOWN: "MARKDOWN",
+
+  /**
+   * Well-formed and safe HTML.
+   */
+  HTML: "HTML"
+
+});
+
+/***/ }),
+
+/***/ "./web/js/metadata/Texts.js":
+/*!**********************************!*\
+  !*** ./web/js/metadata/Texts.js ***!
+  \**********************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var _require = __webpack_require__(/*! ./Text.js */ "./web/js/metadata/Text.js"),
+    Text = _require.Text;
+
+module.exports.Texts = function () {
+    function _class() {
+        _classCallCheck(this, _class);
+    }
+
+    _createClass(_class, null, [{
+        key: "create",
+        value: function create(body, type) {
+
+            // TODO: if this is markdown, and we don't have the HTML version,
+            // we need to add the HTML version by converting the markdown to HTML.
+
+            var result = {};
+            result[type] = body;
+            return result;
+        }
+    }]);
+
+    return _class;
+}();
 
 /***/ }),
 
@@ -30284,6 +30708,74 @@ var FunctionalInterface = function () {
 }();
 
 module.exports.FunctionalInterface = FunctionalInterface;
+
+/***/ }),
+
+/***/ "./web/js/util/Functions.js":
+/*!**********************************!*\
+  !*** ./web/js/util/Functions.js ***!
+  \**********************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var _require = __webpack_require__(/*! ../Preconditions */ "./web/js/Preconditions.js"),
+    Preconditions = _require.Preconditions;
+
+var Functions = function () {
+    function Functions() {
+        _classCallCheck(this, Functions);
+    }
+
+    _createClass(Functions, null, [{
+        key: "functionToScript",
+
+
+        /**
+         * Take a function and make it an external script we can pass to an external
+         * javascript interpreter. This can be used with the electron renderer, chrome
+         * headless, etc.
+         *
+         * @param _function
+         * @param _opts
+         * @return {string}
+         */
+        value: function functionToScript(_function, _opts) {
+
+            var result = "";
+            result += _function.toString();
+            result += "\n";
+            result += _function.name + "(" + JSON.stringify(_opts) + ");";
+            return result;
+        }
+    }, {
+        key: "forDict",
+        value: function forDict(dict, callback) {
+
+            Preconditions.assertNotNull(dict, "dict");
+            Preconditions.assertNotNull(callback, "callback");
+
+            // get the keys first, that way we can mutate the dictionary while iterating
+            // through it if necessary.
+            var keys = Object.keys(dict);
+
+            keys.forEach(function (key) {
+                var value = dict[key];
+                callback(key, value);
+            });
+        }
+    }]);
+
+    return Functions;
+}();
+
+module.exports.Functions = Functions;
 
 /***/ }),
 

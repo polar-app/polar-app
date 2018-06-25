@@ -8,7 +8,7 @@ const {Controller} = require("./Controller.js");
 const {DocFormatFactory} = require("../docformat/DocFormatFactory");
 const {polar} = require("../polar");
 const {ContextMenuController} = require("../contextmenu/ContextMenuController");
-
+const {FlashcardsController} = require("../flashcards/controller/FlashcardsController");
 
 module.exports.WebController = class extends Controller {
 
@@ -254,6 +254,8 @@ module.exports.WebController = class extends Controller {
         new TextHighlightController(this.model).start();
 
         new PagemarkCoverageEventListener(this).start();
+
+        new FlashcardsController(this.model).start();
 
     }
 

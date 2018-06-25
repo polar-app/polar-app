@@ -35,7 +35,9 @@ class Flashcards {
      */
     static createFromSchemaFormData(data) {
 
-        // TODO: the markdown needs to be converted to HTML as well.
+        // TODO: the markdown needs to be converted to HTML as well.  The text
+        // we get from the markdown widget is markdown. Not HTML and I confirmed
+        // this is the case.
 
         // require that the annotation type is correct
         if(data.annotationType !== AnnotationType.FLASHCARD) {
