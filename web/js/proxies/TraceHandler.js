@@ -74,6 +74,7 @@ module.exports.TraceHandler = class {
 
         let traceListeners = this.reactor.getEventListeners(EVENT_NAME);
 
+        // FIXME: only call if value is an object
         // console.log("FIXME: " + Proxies);
         //
         // Proxies.create(value);

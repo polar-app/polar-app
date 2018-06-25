@@ -582,34 +582,4 @@ describe('ProxyBuilder', function() {
 
     });
 
-    describe('mutations', function() {
-
-        it("deep tracing", function () {
-
-            let myDict = {
-                "cat": "leo"
-            };
-
-            class MutationListener {
-
-                onMutation(mutationType, target, property, value) {
-                    return true;
-                }
-
-            }
-
-            myDict = Proxies.create(myDict).forMutations(new MutationListener());
-
-            myDict['cat']="monster";
-
-            assert.equal( myDict['cat'], "monster");
-
-            delete myDict['cat'];
-
-            assert.equal( 'cat' in myDict, false);
-
-        });
-
-    });
-
 });

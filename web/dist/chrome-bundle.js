@@ -54342,6 +54342,9 @@ var _require3 = __webpack_require__(/*! ./ObjectPaths */ "./web/js/proxies/Objec
 var _require4 = __webpack_require__(/*! ./TraceListeners */ "./web/js/proxies/TraceListeners.js"),
     TraceListeners = _require4.TraceListeners;
 
+var _require5 = __webpack_require__(/*! ../util/Objects */ "./web/js/util/Objects.js"),
+    Objects = _require5.Objects;
+
 /**
  * A sequence identifier generator so that we can assign objects a unique value.
  */
@@ -54356,21 +54359,7 @@ var ProxyBuilder = function () {
         this.target = target;
     }
 
-    /**
-     * Listen to the stream of mutations and receive callbacks which you can handle directly.
-     *
-     * @Deprecated we are migrating to trace for everything.
-     * @param onMutation
-     *
-     */
-
-
     _createClass(ProxyBuilder, [{
-        key: "forMutations",
-        value: function forMutations(mutationListener) {
-            return new Proxy(this.target, new MutationHandler(mutationListener));
-        }
-    }, {
         key: "deepTrace",
 
 
@@ -54380,14 +54369,14 @@ var ProxyBuilder = function () {
          *
          *
          */
-        value: function deepTrace(traceListeners, pathPrefix) {
+        value: function deepTrace(traceListeners, opts) {
+
+            opts = Objects.defaults(opts, {
+                pathPrefix: ""
+            });
 
             if (!traceListeners) {
                 traceListeners = [];
-            }
-
-            if (!pathPrefix) {
-                pathPrefix = "";
             }
 
             traceListeners = TraceListeners.asArray(traceListeners);
@@ -54398,7 +54387,7 @@ var ProxyBuilder = function () {
 
             objectPathEntries.forEach(function (objectPathEntry) {
 
-                var proxy = ProxyBuilder.trace(pathPrefix + objectPathEntry.path, objectPathEntry.value, traceListeners);
+                var proxy = ProxyBuilder.trace(opts.pathPrefix + objectPathEntry.path, objectPathEntry.value, traceListeners);
 
                 // replace the object key in the parent with a new object that is
                 // traced.
@@ -54635,6 +54624,7 @@ module.exports.TraceHandler = function () {
 
             var traceListeners = this.reactor.getEventListeners(EVENT_NAME);
 
+            // FIXME: only call if value is an object
             // console.log("FIXME: " + Proxies);
             //
             // Proxies.create(value);

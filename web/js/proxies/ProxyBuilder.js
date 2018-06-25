@@ -5,6 +5,7 @@ const {TraceHandler} = require("./TraceHandler");
 const {MutationHandler} = require("./MutationHandler");
 const {ObjectPaths} = require("./ObjectPaths");
 const {TraceListeners} = require("./TraceListeners");
+const {Objects} = require("../util/Objects");
 
 /**
  * A sequence identifier generator so that we can assign objects a unique value.
@@ -15,18 +16,6 @@ class ProxyBuilder {
 
     constructor(target) {
         this.target = target;
-    }
-
-
-    /**
-     * Listen to the stream of mutations and receive callbacks which you can handle directly.
-     *
-     * @Deprecated we are migrating to trace for everything.
-     * @param onMutation
-     *
-     */
-    forMutations(mutationListener) {
-        return new Proxy(this.target, new MutationHandler(mutationListener));
     }
 
     static trace(path, value, traceListeners) {
@@ -93,14 +82,14 @@ class ProxyBuilder {
      *
      *
      */
-    deepTrace(traceListeners, pathPrefix) {
+    deepTrace(traceListeners, opts) {
+
+        opts = Objects.defaults(opts, {
+            pathPrefix: ""
+        });
 
         if (!traceListeners) {
             traceListeners = [];
-        }
-
-        if (!pathPrefix) {
-            pathPrefix = "";
         }
 
         traceListeners = TraceListeners.asArray(traceListeners);
@@ -111,7 +100,7 @@ class ProxyBuilder {
 
         objectPathEntries.forEach(function (objectPathEntry) {
 
-            let proxy = ProxyBuilder.trace(pathPrefix + objectPathEntry.path, objectPathEntry.value, traceListeners);
+            let proxy = ProxyBuilder.trace(opts.pathPrefix + objectPathEntry.path, objectPathEntry.value, traceListeners);
 
             // replace the object key in the parent with a new object that is
             // traced.

@@ -21,54 +21,6 @@ class MyMutationListener {
 
 describe('Proxies', function() {
 
-    describe('listenForEvents', function() {
-
-        it("test set of new key", function () {
-            let myDict = {'foo': 'bar'};
-
-            let myMutationListener = new MyMutationListener();
-
-            myDict = Proxies.create(myDict).forMutations(myMutationListener);
-
-            myDict.animal = 'frog';
-
-            let expected = [
-                {
-                    "mutationType": "SET",
-                    "target": {
-                        "foo": "bar",
-                        "animal": "frog"
-                    },
-                    "property": "animal",
-                    "value": "frog"
-                }
-            ];
-            assertJSON(myMutationListener.mutations, expected);
-
-        });
-
-        it("test delete", function () {
-            let myDict = {'foo': 'bar'};
-
-            let myMutationListener = new MyMutationListener();
-
-            myDict = Proxies.create(myDict).forMutations(myMutationListener);
-
-            delete myDict.foo;
-
-            assertJSON(myMutationListener.mutations, [
-                {
-                    "mutationType": "DELETE",
-                    "target": {},
-                    "property": "foo"
-                }
-            ]);
-
-        });
-
-
-    });
-
     describe('deepTrace', function() {
 
         it("test with object.Freeze", function () {
