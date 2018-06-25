@@ -73,6 +73,8 @@ class PostMessageFormHandler extends FormHandler {
         // send this to the main process which then broadcasts it to all the renderers.
         ipcRenderer.send('create-annotation', data);
 
+        window.close();
+
     }
 
 

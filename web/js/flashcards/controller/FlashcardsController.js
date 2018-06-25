@@ -19,10 +19,14 @@ module.exports.FlashcardsController = class {
                 console.log("Received create-annotation event: ", data);
 
                 if(data.annotationType === AnnotationType.FLASHCARD) {
+
                     console.log("Working with flashcard");
+
                     if(data.context.docDescriptor.fingerprint === this.model.docMeta.docInfo.fingerprint) {
+
                         console.log("Going to add this flashcard to the model");
                         this.onCreateFlashcard(data);
+
                     } else {
                         console.log(`Ignoring flashcard.  ${data.context.docDescriptor.fingerprint} != ${this.model.docMeta.docInfo.fingerprint}`)
                     }

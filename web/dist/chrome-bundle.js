@@ -49971,8 +49971,11 @@ module.exports.FlashcardsController = function () {
                     console.log("Received create-annotation event: ", data);
 
                     if (data.annotationType === AnnotationType.FLASHCARD) {
+
                         console.log("Working with flashcard");
+
                         if (data.context.docDescriptor.fingerprint === _this.model.docMeta.docInfo.fingerprint) {
+
                             console.log("Going to add this flashcard to the model");
                             _this.onCreateFlashcard(data);
                         } else {
@@ -50001,10 +50004,11 @@ module.exports.FlashcardsController = function () {
 
             var flashcard = Flashcards.createFromSchemaFormData(data);
 
-            // FIXME: now create update model with our new flashcard
-
             var textHighlightAnnotationDescriptors = data.context.matchingSelectors[".text-highlight"].annotationDescriptors;
 
+            // FIXME: if there are multiple visual annotations, each with the same ID
+            // which is currently a bug, then we need to filter them out to just ONE
+            // annotation.
             textHighlightAnnotationDescriptors.forEach(function (annotationDescriptor) {
                 var pageMeta = _this2.model.docMeta.getPageMeta(annotationDescriptor.pageNum);
                 var textHighlight = pageMeta.textHighlights[annotationDescriptor.textHighlightId];
