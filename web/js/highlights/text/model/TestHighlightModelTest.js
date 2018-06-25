@@ -139,7 +139,7 @@ function createDocMeta() {
 
     docMeta.getPageMeta(1).textHighlights[textHighlightRecord.id] = textHighlightRecord.value;
 
-    return Proxies.create(docMeta).deepTrace();
+    return Proxies.create(docMeta);
 
 }
 

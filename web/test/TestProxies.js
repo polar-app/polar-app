@@ -28,7 +28,7 @@ describe('Testing proxies', function() {
 
         var myDict = {'foo': 'bar'};
 
-        myDict = Proxies.create(myDict).trace(myTracingListener);
+        myDict = Proxies.create(myDict, myTracingListener);
 
         myDict.animal = 'cat';
 

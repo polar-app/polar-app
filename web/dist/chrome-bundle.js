@@ -53342,7 +53342,7 @@ module.exports.Model = function () {
                                 console.log("Description of doc loaded: " + DocMetaDescriber.describe(this.docMeta));
                                 console.log("Document loaded: ", this.docMeta);
 
-                                this.docMeta = Proxies.create(this.docMeta).deepTrace(function (traceEvent) {
+                                this.docMeta = Proxies.create(this.docMeta, function (traceEvent) {
 
                                     // right now we just sync the datastore on mutation.  We do not
                                     // attempt to use a journal yet.
@@ -53948,54 +53948,6 @@ var polar = exports.polar = {
 
 /***/ }),
 
-/***/ "./web/js/proxies/MutationHandler.js":
-/*!*******************************************!*\
-  !*** ./web/js/proxies/MutationHandler.js ***!
-  \*******************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var _require = __webpack_require__(/*! ./MutationType */ "./web/js/proxies/MutationType.js"),
-    MutationType = _require.MutationType;
-
-/**
- *
- */
-
-
-module.exports.MutationHandler = function () {
-    function _class(mutationListener) {
-        _classCallCheck(this, _class);
-
-        this.mutationListener = mutationListener;
-    }
-
-    _createClass(_class, [{
-        key: "set",
-        value: function set(target, property, value, receiver) {
-            Reflect.set.apply(Reflect, arguments);
-            return this.mutationListener.onMutation(MutationType.SET, target, property, value);
-        }
-    }, {
-        key: "deleteProperty",
-        value: function deleteProperty(target, property) {
-            Reflect.deleteProperty.apply(Reflect, arguments);
-            return this.mutationListener.onMutation(MutationType.DELETE, target, property, undefined);
-        }
-    }]);
-
-    return _class;
-}();
-
-/***/ }),
-
 /***/ "./web/js/proxies/MutationState.js":
 /*!*****************************************!*\
   !*** ./web/js/proxies/MutationState.js ***!
@@ -54277,6 +54229,26 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 var _require = __webpack_require__(/*! ./ProxyBuilder */ "./web/js/proxies/ProxyBuilder.js"),
     ProxyBuilder = _require.ProxyBuilder;
 
+var _require2 = __webpack_require__(/*! ./TraceListeners */ "./web/js/proxies/TraceListeners.js"),
+    TraceListeners = _require2.TraceListeners;
+
+var _require3 = __webpack_require__(/*! ../util/Objects */ "./web/js/util/Objects.js"),
+    Objects = _require3.Objects;
+
+var _require4 = __webpack_require__(/*! ./TraceHandler */ "./web/js/proxies/TraceHandler.js"),
+    TraceHandler = _require4.TraceHandler;
+
+var _require5 = __webpack_require__(/*! ./ObjectPaths */ "./web/js/proxies/ObjectPaths.js"),
+    ObjectPaths = _require5.ObjectPaths;
+
+/**
+ * A sequence identifier generator so that we can assign objects a unique value
+ * while we're enumerating them.
+ */
+
+
+var sequence = 0;
+
 var Proxies = function () {
     function Proxies() {
         _classCallCheck(this, Proxies);
@@ -54287,89 +54259,16 @@ var Proxies = function () {
 
 
         /**
-         * Create a listener for the dictionary and call onSet and onDelete when
-         * the dictionary has had keys set or deleted.
-         *
-         * @param target
-         * @return ProxyBuilder
-         */
-        value: function create(target) {
-
-            if ((typeof target === "undefined" ? "undefined" : _typeof(target)) !== "object") {
-                throw new Error("Only works on objects: " + (typeof target === "undefined" ? "undefined" : _typeof(target)));
-            }
-
-            //return new Proxy(target, new ProxyHandler(onSet, onDelete));
-            return new ProxyBuilder(target);
-        }
-    }]);
-
-    return Proxies;
-}();
-
-module.exports.Proxies = Proxies;
-
-/***/ }),
-
-/***/ "./web/js/proxies/ProxyBuilder.js":
-/*!****************************************!*\
-  !*** ./web/js/proxies/ProxyBuilder.js ***!
-  \****************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-/**
- * Build a listener
- */
-var _require = __webpack_require__(/*! ./TraceHandler */ "./web/js/proxies/TraceHandler.js"),
-    TraceHandler = _require.TraceHandler;
-
-var _require2 = __webpack_require__(/*! ./MutationHandler */ "./web/js/proxies/MutationHandler.js"),
-    MutationHandler = _require2.MutationHandler;
-
-var _require3 = __webpack_require__(/*! ./ObjectPaths */ "./web/js/proxies/ObjectPaths.js"),
-    ObjectPaths = _require3.ObjectPaths;
-
-var _require4 = __webpack_require__(/*! ./TraceListeners */ "./web/js/proxies/TraceListeners.js"),
-    TraceListeners = _require4.TraceListeners;
-
-var _require5 = __webpack_require__(/*! ../util/Objects */ "./web/js/util/Objects.js"),
-    Objects = _require5.Objects;
-
-/**
- * A sequence identifier generator so that we can assign objects a unique value.
- */
-
-
-var sequence = 0;
-
-var ProxyBuilder = function () {
-    function ProxyBuilder(target) {
-        _classCallCheck(this, ProxyBuilder);
-
-        this.target = target;
-    }
-
-    _createClass(ProxyBuilder, [{
-        key: "deepTrace",
-
-
-        /**
          * Deeply trace the given object and call back on the traceListener every time
          * we notice a mutation.  The trace listener receives the following arguments:
          *
          *
          */
-        value: function deepTrace(traceListeners, opts) {
+        value: function create(target, traceListeners, opts) {
+
+            if ((typeof target === "undefined" ? "undefined" : _typeof(target)) !== "object") {
+                throw new Error("Only works on objects: " + (typeof target === "undefined" ? "undefined" : _typeof(target)));
+            }
 
             opts = Objects.defaults(opts, {
                 pathPrefix: ""
@@ -54381,13 +54280,13 @@ var ProxyBuilder = function () {
 
             traceListeners = TraceListeners.asArray(traceListeners);
 
-            var objectPathEntries = ObjectPaths.recurse(this.target);
+            var objectPathEntries = ObjectPaths.recurse(target);
 
             var root = null;
 
             objectPathEntries.forEach(function (objectPathEntry) {
 
-                var proxy = ProxyBuilder.trace(opts.pathPrefix + objectPathEntry.path, objectPathEntry.value, traceListeners);
+                var proxy = Proxies.trace(opts.pathPrefix + objectPathEntry.path, objectPathEntry.value, traceListeners);
 
                 // replace the object key in the parent with a new object that is
                 // traced.
@@ -54400,7 +54299,7 @@ var ProxyBuilder = function () {
 
             return root;
         }
-    }], [{
+    }, {
         key: "trace",
         value: function trace(path, value, traceListeners) {
 
@@ -54458,8 +54357,32 @@ var ProxyBuilder = function () {
         }
     }]);
 
-    return ProxyBuilder;
+    return Proxies;
 }();
+
+module.exports.Proxies = Proxies;
+
+/***/ }),
+
+/***/ "./web/js/proxies/ProxyBuilder.js":
+/*!****************************************!*\
+  !*** ./web/js/proxies/ProxyBuilder.js ***!
+  \****************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+/**
+ * Build a listener
+ */
+
+var ProxyBuilder = function ProxyBuilder() {
+  _classCallCheck(this, ProxyBuilder);
+};
 
 module.exports.ProxyBuilder = ProxyBuilder;
 

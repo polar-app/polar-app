@@ -59,7 +59,7 @@ module.exports.Model = class {
         console.log("Description of doc loaded: " + DocMetaDescriber.describe(this.docMeta));
         console.log("Document loaded: ", this.docMeta);
 
-        this.docMeta = Proxies.create(this.docMeta).deepTrace(function (traceEvent) {
+        this.docMeta = Proxies.create(this.docMeta, function (traceEvent) {
 
             // right now we just sync the datastore on mutation.  We do not
             // attempt to use a journal yet.

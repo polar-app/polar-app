@@ -123,7 +123,7 @@ describe('DocMetas', function() {
             docMeta = DocMetas.deserialize(json);
 
             // now we have to trace it like it would be in production..
-            docMeta = Proxies.create(docMeta).deepTrace();
+            docMeta = Proxies.create(docMeta);
 
             assertJSON(docMeta, expected);
 
