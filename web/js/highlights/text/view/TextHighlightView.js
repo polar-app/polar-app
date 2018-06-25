@@ -43,8 +43,6 @@ class TextHighlightView {
 
             console.log("TextHighlightView.onTextHighlight ... present");
 
-            // FIXME: here is the problem.. we're not handling DELETE...
-
             let pageNum = textHighlightEvent.pageMeta.pageInfo.num;
             let pageElement = this.docFormat.getPageElementFromPageNum(pageNum);
 
