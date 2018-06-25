@@ -142,6 +142,9 @@ class TextHighlightController {
      */
     onTextHighlightCreated(selector) {
 
+        // FIXME: I have to use the PageRedraw detector here... Actually.. the
+        // VIEW is that needs to update, right
+
         console.log("TextHighlightController.onTextHighlightCreated");
 
         let textHighlightRows = TextHighlightRows.createFromSelector(selector);

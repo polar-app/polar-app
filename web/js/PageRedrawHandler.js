@@ -14,13 +14,13 @@ module.exports.PageRedrawHandler = class {
 
     register(callback) {
 
-        this.pageElement.addEventListener('DOMNodeInserted', function(event) {
+        this.pageElement.addEventListener('DOMNodeInserted', event => {
 
             if (event.target && event.target.className === "endOfContent") {
                 callback(this.pageElement);
             }
 
-        }.bind(this), false );
+        }, false);
 
     };
 

@@ -5,6 +5,7 @@ const {Rects} = require("../../../Rects");
 const {RendererContextMenu} = require("../../../contextmenu/electron/RendererContextMenu");
 const {ContextMenuType} = require("../../../contextmenu/ContextMenuType");
 const {DocFormatFactory} = require("../../../docformat/DocFormatFactory");
+const {MutationState} = require("../../../proxies/MutationState");
 
 class TextHighlightView {
 
@@ -38,9 +39,11 @@ class TextHighlightView {
 
         console.log("TextHighlightView.onTextHighlight: ", textHighlightEvent);
 
-        if(textHighlightEvent.textHighlight) {
+        if(textHighlightEvent.mutationState === MutationState.PRESENT) {
 
-            console.log("TextHighlightView.onTextHighlight");
+            console.log("TextHighlightView.onTextHighlight ... present");
+
+            // FIXME: here is the problem.. we're not handling DELETE...
 
             let pageNum = textHighlightEvent.pageMeta.pageInfo.num;
             let pageElement = this.docFormat.getPageElementFromPageNum(pageNum);
@@ -50,7 +53,16 @@ class TextHighlightView {
             forDict(textHighlightEvent.textHighlight.rects, function (id, rect) {
 
                 let callback = function() {
-                    TextHighlightView.render(pageElement, rect, textHighlightEvent);
+                    // make sure we're still in the model if we need to redraw.
+
+                    // TODO: we don't actually remove ourselves form the event
+                    // listeners so this is going to end up as a memory leak
+                    // unless we fix it in the future.
+
+                    if(textHighlightEvent.value.id in textHighlightEvent.pageMeta.textHighlights) {
+                        TextHighlightView.render(pageElement, rect, textHighlightEvent);
+                    }
+
                 };
 
                 // draw it manually the first time.
@@ -61,9 +73,17 @@ class TextHighlightView {
 
             });
 
-        } else {
+        } else if(textHighlightEvent.mutationState === MutationState.ABSENT) {
 
-            // it was deleted
+            console.log("TextHighlightView.onTextHighlight ... delete time.");
+            let selector = `.text-highlight-${textHighlightEvent.previousValue.id}`;
+            let highlightElements = document.querySelectorAll(selector);
+
+            console.log(`Found N elements for selector ${selector}: ` + highlightElements.length);
+
+            highlightElements.forEach(highlightElement => {
+                highlightElement.parentElement.removeChild(highlightElement);
+            })
 
         }
 
@@ -84,7 +104,7 @@ class TextHighlightView {
         highlightElement.setAttribute("data-text-highlight-id", textHighlightEvent.textHighlight.id);
         highlightElement.setAttribute("data-page-num", textHighlightEvent.pageMeta.pageInfo.num);
 
-        highlightElement.className = "text-highlight annotation";
+        highlightElement.className = `text-highlight annotation text-highlight-${textHighlightEvent.textHighlight.id}`;
 
         highlightElement.style.position = "absolute";
         highlightElement.style.backgroundColor = `yellow`;

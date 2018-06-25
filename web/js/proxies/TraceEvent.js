@@ -1,3 +1,5 @@
+const{MutationTypes} = require("./MutationTypes");
+
 /**
  * Listen to a mutation and we're given a list of names and types.
  */
@@ -20,6 +22,7 @@ module.exports.TraceEvent = class  {
         this.property = property;
         this.value = value;
         this.previousValue = previousValue;
+        this.mutationState = MutationTypes.toMutationState(mutationType);
     }
 
 };

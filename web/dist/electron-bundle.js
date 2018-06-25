@@ -23225,13 +23225,14 @@ module.exports.PageRedrawHandler = function () {
     _createClass(_class, [{
         key: "register",
         value: function register(callback) {
+            var _this = this;
 
             this.pageElement.addEventListener('DOMNodeInserted', function (event) {
 
                 if (event.target && event.target.className === "endOfContent") {
-                    callback(this.pageElement);
+                    callback(_this.pageElement);
                 }
-            }.bind(this), false);
+            }, false);
         }
     }]);
 
@@ -25636,6 +25637,9 @@ var TextHighlightController = function () {
         key: "onTextHighlightCreated",
         value: function onTextHighlightCreated(selector) {
 
+            // FIXME: I have to use the PageRedraw detector here... Actually.. the
+            // VIEW is that needs to update, right
+
             console.log("TextHighlightController.onTextHighlightCreated");
 
             var textHighlightRows = TextHighlightRows.createFromSelector(selector);
@@ -26102,9 +26106,18 @@ module.exports.TextHighlightModel = function () {
                     var event = {
                         docMeta: docMeta,
                         pageMeta: pageMeta,
+
+                        // deprecated: use value and previousValue
                         textHighlight: traceEvent.value,
+                        // deprecated: use value and previousValue
                         previousTextHighlight: traceEvent.previousValue,
+
+                        value: traceEvent.value,
+                        previousValue: traceEvent.previousValue,
+
                         mutationType: traceEvent.mutationType,
+                        mutationState: traceEvent.mutationState,
+                        // and of course the full traceEvent as a raw value.
                         traceEvent: traceEvent
                     };
 
@@ -26156,6 +26169,9 @@ var _require6 = __webpack_require__(/*! ../../../contextmenu/ContextMenuType */ 
 var _require7 = __webpack_require__(/*! ../../../docformat/DocFormatFactory */ "./web/js/docformat/DocFormatFactory.js"),
     DocFormatFactory = _require7.DocFormatFactory;
 
+var _require8 = __webpack_require__(/*! ../../../proxies/MutationState */ "./web/js/proxies/MutationState.js"),
+    MutationState = _require8.MutationState;
+
 var TextHighlightView = function () {
     function TextHighlightView(model) {
         _classCallCheck(this, TextHighlightView);
@@ -26191,9 +26207,11 @@ var TextHighlightView = function () {
 
             console.log("TextHighlightView.onTextHighlight: ", textHighlightEvent);
 
-            if (textHighlightEvent.textHighlight) {
+            if (textHighlightEvent.mutationState === MutationState.PRESENT) {
 
-                console.log("TextHighlightView.onTextHighlight");
+                console.log("TextHighlightView.onTextHighlight ... present");
+
+                // FIXME: here is the problem.. we're not handling DELETE...
 
                 var pageNum = textHighlightEvent.pageMeta.pageInfo.num;
                 var pageElement = this.docFormat.getPageElementFromPageNum(pageNum);
@@ -26203,7 +26221,15 @@ var TextHighlightView = function () {
                 forDict(textHighlightEvent.textHighlight.rects, function (id, rect) {
 
                     var callback = function callback() {
-                        TextHighlightView.render(pageElement, rect, textHighlightEvent);
+                        // make sure we're still in the model if we need to redraw.
+
+                        // TODO: we don't actually remove ourselves form the event
+                        // listeners so this is going to end up as a memory leak
+                        // unless we fix it in the future.
+
+                        if (textHighlightEvent.value.id in textHighlightEvent.pageMeta.textHighlights) {
+                            TextHighlightView.render(pageElement, rect, textHighlightEvent);
+                        }
                     };
 
                     // draw it manually the first time.
@@ -26212,10 +26238,17 @@ var TextHighlightView = function () {
                     // then let the redraw handler do it after this.
                     new PageRedrawHandler(pageElement).register(callback);
                 });
-            } else {
+            } else if (textHighlightEvent.mutationState === MutationState.ABSENT) {
 
-                // it was deleted
+                console.log("TextHighlightView.onTextHighlight ... delete time.");
+                var selector = ".text-highlight-" + textHighlightEvent.previousValue.id;
+                var highlightElements = document.querySelectorAll(selector);
 
+                console.log("Found N elements for selector " + selector + ": " + highlightElements.length);
+
+                highlightElements.forEach(function (highlightElement) {
+                    highlightElement.parentElement.removeChild(highlightElement);
+                });
             }
         }
 
@@ -26237,7 +26270,7 @@ var TextHighlightView = function () {
             highlightElement.setAttribute("data-text-highlight-id", textHighlightEvent.textHighlight.id);
             highlightElement.setAttribute("data-page-num", textHighlightEvent.pageMeta.pageInfo.num);
 
-            highlightElement.className = "text-highlight annotation";
+            highlightElement.className = "text-highlight annotation text-highlight-" + textHighlightEvent.textHighlight.id;
 
             highlightElement.style.position = "absolute";
             highlightElement.style.backgroundColor = "yellow";
@@ -28862,6 +28895,36 @@ module.exports.MutationHandler = function () {
 
 /***/ }),
 
+/***/ "./web/js/proxies/MutationState.js":
+/*!*****************************************!*\
+  !*** ./web/js/proxies/MutationState.js ***!
+  \*****************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+/**
+ * The state of the mutation.  IE whether it is present or absent.  For more detailed
+ * information about the state see MutationType.
+ *
+ * @type {Readonly<{PRESENT: string, ABSENT: string}>}
+ */
+module.exports.MutationState = Object.freeze({
+
+  /**
+   */
+  PRESENT: "PRESENT",
+
+  /**
+   */
+  ABSENT: "ABSENT"
+
+});
+
+/***/ }),
+
 /***/ "./web/js/proxies/MutationType.js":
 /*!****************************************!*\
   !*** ./web/js/proxies/MutationType.js ***!
@@ -28892,6 +28955,55 @@ module.exports.MutationType = Object.freeze({
   DELETE: "DELETE"
 
 });
+
+/***/ }),
+
+/***/ "./web/js/proxies/MutationTypes.js":
+/*!*****************************************!*\
+  !*** ./web/js/proxies/MutationTypes.js ***!
+  \*****************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var _require = __webpack_require__(/*! ./MutationType */ "./web/js/proxies/MutationType.js"),
+    MutationType = _require.MutationType;
+
+var _require2 = __webpack_require__(/*! ./MutationState */ "./web/js/proxies/MutationState.js"),
+    MutationState = _require2.MutationState;
+
+module.exports.MutationTypes = function () {
+    function _class() {
+        _classCallCheck(this, _class);
+    }
+
+    _createClass(_class, null, [{
+        key: "toMutationState",
+        value: function toMutationState(mutationType) {
+
+            switch (mutationType) {
+                case MutationType.INITIAL:
+                    return MutationState.PRESENT;
+                case MutationType.SET:
+                    return MutationState.PRESENT;
+                case MutationType.DELETE:
+                    return MutationState.ABSENT;
+
+                default:
+                    throw new Error("Invalid mutationType: " + mutationType);
+
+            }
+        }
+    }]);
+
+    return _class;
+}();
 
 /***/ }),
 
@@ -29280,9 +29392,14 @@ module.exports.ProxyBuilder = ProxyBuilder;
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
+var _require = __webpack_require__(/*! ./MutationTypes */ "./web/js/proxies/MutationTypes.js"),
+    MutationTypes = _require.MutationTypes;
+
 /**
  * Listen to a mutation and we're given a list of names and types.
  */
+
+
 module.exports.TraceEvent = function () {
 
   /**
@@ -29304,6 +29421,7 @@ module.exports.TraceEvent = function () {
     this.property = property;
     this.value = value;
     this.previousValue = previousValue;
+    this.mutationState = MutationTypes.toMutationState(mutationType);
   }
 
   return _class;
