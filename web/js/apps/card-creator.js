@@ -9,6 +9,7 @@ import SimpleMDE from 'react-simplemde-editor';
 const {ipcRenderer} = require('electron');
 const {InputController} = require("../annotations/InputController");
 const {FormHandler} = require("../annotations/FormHandler");
+const {Objects} = require("../util/Objects");
 
 /**
  * Convert the data to an external form. The uiSchema includes functions which
@@ -24,6 +25,16 @@ function dataToExternal(data) {
 
 }
 
+function _requestParams() {
+
+    let url = new URL(window.location.href);
+
+    return {
+        docDescriptor: JSON.parse(url.searchParams.get("docDescriptor")),
+    }
+
+}
+
 class PostMessageFormHandler extends FormHandler {
 
     onChange(data) {
@@ -34,8 +45,13 @@ class PostMessageFormHandler extends FormHandler {
 
     onSubmit(data) {
 
-        // FIXME: include the docMeta fingerprint we're editing.  Use a new
-        // DocDescriptor object which for now just has a fingerprint.
+        let requestParams = _requestParams();
+
+        data = Objects.duplicate(data);
+
+        // we have to include the docDescriptor for what we're working on so
+        // that the recipient can decide if they want to act on this new data.
+        data.docDescriptor = requestParams.docDescriptor;
 
         console.log("onSubmit: ", data);
         //window.postMessage({ type: "onSubmit", data: dataToExternal(data)}, "*");
