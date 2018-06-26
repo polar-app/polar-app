@@ -1,23 +1,11 @@
-Might be best to use a home app rather than a 'open recent files' menu
-as apparently that can't be done with electron easily.
-
-https://stackoverflow.com/questions/31888566/bootstrap-how-to-sort-table-rows
-https://datatables.net/examples/styling/bootstrap4
 
 
-https://www.dynatable.com/
 
-    - used a dynatablke because it supports a stylized view.
+- use https://react-table.js.org
 
-    - https://www.dynatable.com/#a-stylized-list
+    for the date table presentation
 
-https://fancygrid.com/
+- use a simple flex box layout for the thumbnail view and just show top N for now
+  with a simple order by..
 
-    - supports chart integration for sparklines, etc
 
-- make sure the HTML app can open up new windows...
-
-- TODO: we're going to need a way to update the metadata the books .. we don't
-  have that now.
-
-- I need to show a progress at the bottom too...
