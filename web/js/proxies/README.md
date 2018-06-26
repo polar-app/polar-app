@@ -131,6 +131,8 @@ We might want to add an 'anchorPath' which is where the addListener was
 registered at but if the listener know which page it is triggered on that's
 actually better.
 
+
+
 ## Other
 
 
@@ -144,8 +146,6 @@ NEW value and then the listener is on the old object.. not the new one!
  - so the new API would have to be
 
    parent.addTraceListener(key, traceListener);
-
-
 
 - We HAVE to do the above either way but there's another problem...
 

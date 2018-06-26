@@ -2,16 +2,14 @@
 
 ## Next
 
-- If we add a nested object to the proxy system, it's not proxied for new values.
-  this means if we add a highlight, then add a flashcard to the highlight, we get
-  no new events.
-
-    - I think I need to have 'listeners' for each object which is a dictionary
-      of the actual listener plus metadata for that listener.
+- file a bug about text selecton on chrome vs firefox.
 
 - clean up the input page so that it uses whitespace better
     - also initial size should be better
 
+- json schema validation for all data and a schema for our main .json data
+
+- two column pagemarks.. different type of pagemarks (ignored)
 
 - recent files
 
@@ -21,6 +19,7 @@
 
     - https://www.npmjs.com/package/electron-config
 
+- get thumbnail capture working for extracting the image of a page.
 
 - enable right click:
 
@@ -41,24 +40,9 @@
 
 - 'open-file' event for mac and windows?
 
-
-
-- get text extraction working for annotations
-    - I sort of need this working since we're capturing the data now but I
-      imagine I could build this into the future.
-
-- get end to end tests working
+- get the JSDOM tests working
 
 - get the transaction logs working
-
-- get basic flashcards working so that I can easily create them.  Don't focus
-  on tags or any other functionality. Just notes.
-
-    - work on this as a dedicated app for now.
-
--  webview.openDevTools();
-    - support...
-
 
 
 # Features
@@ -80,12 +64,6 @@
 
  - I can detect the paste, then convert what's pasted to a data URL, then change
    the CSS it so that the user doesn't need to deal with the full thing.
-
-# Skin / UI
-
-Use this alternative boostrap skin.
-
-https://bootswatch.com/slate/
 
 # Spectron Testing
 

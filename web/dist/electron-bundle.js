@@ -29718,23 +29718,20 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * Note that Object.observe and other changes were apparently never ratified
  * so we have to use Proxy objects to implement this functionality.
  */
-var _require = __webpack_require__(/*! ./ProxyBuilder */ "./web/js/proxies/ProxyBuilder.js"),
-    ProxyBuilder = _require.ProxyBuilder;
+var _require = __webpack_require__(/*! ./TraceListeners */ "./web/js/proxies/TraceListeners.js"),
+    TraceListeners = _require.TraceListeners;
 
-var _require2 = __webpack_require__(/*! ./TraceListeners */ "./web/js/proxies/TraceListeners.js"),
-    TraceListeners = _require2.TraceListeners;
+var _require2 = __webpack_require__(/*! ../util/Objects */ "./web/js/util/Objects.js"),
+    Objects = _require2.Objects;
 
-var _require3 = __webpack_require__(/*! ../util/Objects */ "./web/js/util/Objects.js"),
-    Objects = _require3.Objects;
+var _require3 = __webpack_require__(/*! ./TraceHandler */ "./web/js/proxies/TraceHandler.js"),
+    TraceHandler = _require3.TraceHandler;
 
-var _require4 = __webpack_require__(/*! ./TraceHandler */ "./web/js/proxies/TraceHandler.js"),
-    TraceHandler = _require4.TraceHandler;
+var _require4 = __webpack_require__(/*! ./ObjectPaths */ "./web/js/proxies/ObjectPaths.js"),
+    ObjectPaths = _require4.ObjectPaths;
 
-var _require5 = __webpack_require__(/*! ./ObjectPaths */ "./web/js/proxies/ObjectPaths.js"),
-    ObjectPaths = _require5.ObjectPaths;
-
-var _require6 = __webpack_require__(/*! ../util/Paths */ "./web/js/util/Paths.js"),
-    Paths = _require6.Paths;
+var _require5 = __webpack_require__(/*! ../util/Paths */ "./web/js/util/Paths.js"),
+    Paths = _require5.Paths;
 
 /**
  * A sequence identifier generator so that we can assign objects a unique value
@@ -29869,30 +29866,6 @@ var Proxies = function () {
 }();
 
 module.exports.Proxies = Proxies;
-
-/***/ }),
-
-/***/ "./web/js/proxies/ProxyBuilder.js":
-/*!****************************************!*\
-  !*** ./web/js/proxies/ProxyBuilder.js ***!
-  \****************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-/**
- * Build a listener
- */
-
-var ProxyBuilder = function ProxyBuilder() {
-  _classCallCheck(this, ProxyBuilder);
-};
-
-module.exports.ProxyBuilder = ProxyBuilder;
 
 /***/ }),
 
