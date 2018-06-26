@@ -59,6 +59,10 @@ describe('DiskDatastore', function() {
             "stashDir": {
                 "dir": "/tmp/disk-datastore.test/stash",
                 "created": true
+            },
+            "logsDir": {
+                "dir": "/tmp/disk-datastore.test/logs",
+                "created": true
             }
         };
 
@@ -72,6 +76,10 @@ describe('DiskDatastore', function() {
             },
             "stashDir": {
                 "dir": "/tmp/disk-datastore.test/stash",
+                "exists": true
+            },
+            "logsDir": {
+                "dir": "/tmp/disk-datastore.test/logs",
                 "exists": true
             }
         };
