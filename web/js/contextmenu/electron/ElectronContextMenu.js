@@ -23,6 +23,7 @@ class ElectronContextMenu extends ContextMenu {
     constructor() {
         super();
 
+        // TODO: move this to a start method.
         ipcMain.on('context-menu-trigger', (event, triggerEvent) => {
 
             this.trigger(triggerEvent, event.sender);

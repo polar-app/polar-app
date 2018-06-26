@@ -21,6 +21,25 @@ module.exports.PageMeta = class extends SerializedObject {
         this.pagemarks = {};
 
         /**
+         * The note for this annotation.
+         *
+         * @type Note
+         */
+        this.notes = {};
+
+        /**
+         *
+         * @type map<string,Question>
+         */
+        this.questions = {};
+
+        /**
+         *
+         * @type map<string,Flashcard>
+         */
+        this.flashcards = {};
+
+        /**
          * An index of test highlights for the page.
          *
          * @type map<string,TextHighlight>

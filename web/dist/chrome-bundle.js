@@ -52349,6 +52349,25 @@ module.exports.PageMeta = function (_SerializedObject) {
         _this.pagemarks = {};
 
         /**
+         * The note for this annotation.
+         *
+         * @type Note
+         */
+        _this.notes = {};
+
+        /**
+         *
+         * @type map<string,Question>
+         */
+        _this.questions = {};
+
+        /**
+         *
+         * @type map<string,Flashcard>
+         */
+        _this.flashcards = {};
+
+        /**
          * An index of test highlights for the page.
          *
          * @type map<string,TextHighlight>

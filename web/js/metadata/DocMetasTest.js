@@ -90,6 +90,9 @@ describe('DocMetas', function() {
                                 "notes": {}
                             }
                         },
+                        "notes": {},
+                        "questions": {},
+                        "flashcards": {},
                         "textHighlights": {},
                         "areaHighlights": {}
                     },
@@ -109,6 +112,9 @@ describe('DocMetas', function() {
                                 "notes": {}
                             }
                         },
+                        "notes": {},
+                        "questions": {},
+                        "flashcards": {},
                         "textHighlights": {},
                         "areaHighlights": {}
                     }
