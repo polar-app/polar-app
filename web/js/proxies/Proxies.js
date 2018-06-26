@@ -12,6 +12,7 @@ const {TraceListeners} = require("./TraceListeners");
 const {Objects} = require("../util/Objects");
 const {TraceHandler} = require("./TraceHandler");
 const {ObjectPaths} = require("./ObjectPaths");
+const {Paths} = require("../util/Paths");
 
 /**
  * A sequence identifier generator so that we can assign objects a unique value
@@ -49,7 +50,13 @@ class Proxies {
 
         objectPathEntries.forEach(function (objectPathEntry) {
 
-            let proxy = Proxies.trace(opts.pathPrefix + objectPathEntry.path, objectPathEntry.value, traceListeners);
+            let path = objectPathEntry.path;
+
+            if(opts.pathPrefix && opts.pathPrefix !== "") {
+                path = Paths.create(opts.pathPrefix, objectPathEntry.path);
+            }
+
+            let proxy = Proxies.trace(path, objectPathEntry.value, traceListeners);
 
             // replace the object key in the parent with a new object that is
             // traced.
@@ -79,35 +86,44 @@ class Proxies {
             return value;
         }
 
-        let traceHandler = new TraceHandler(path, traceListeners, value);
+        let traceHandler = new TraceHandler(path, traceListeners, value, Proxies);
 
-        if(!value.__traceIdentifier) {
+        let privateMembers = [
 
             // the __traceIdentifier is a unique key for the object which we use
             // to identify which one is being traced.  This way we essentially
             // have a pointer we can use to work with the object directly.
 
-            Object.defineProperty(value, "__traceIdentifier", {
-                value: sequence++,
-                enumerable: false,
-                writable: false
-            });
+            { name: "__traceIdentifier", value: sequence++ },
 
-        }
-
-        if(!value.__traceListeners) {
-
-            // keep the traceListener registers with the object so that I can
+            // keep the traceListener registered with the object so that I can
             // verify that the object we're working with is actually being used
             // with the same trace and not being re-traced by something else.
 
-            Object.defineProperty(value, "__traceListeners", {
-                value: traceListeners,
-                enumerable: false,
-                writable: false
-            });
+            { name: "__traceListeners", value: traceListeners },
 
-        }
+            // keep the path to this object for debug purposes.
+            { name: "__path", value: path }
+
+        ];
+
+        privateMembers.forEach(privateMember => {
+
+            if(! (privateMember.name in value)) {
+
+                // the __traceIdentifier is a unique key for the object which we use
+                // to identify which one is being traced.  This way we essentially
+                // have a pointer we can use to work with the object directly.
+
+                Object.defineProperty(value, privateMember.name, {
+                    value: privateMember.value,
+                    enumerable: false,
+                    writable: false
+                });
+
+            }
+
+        });
 
         if(value.addTraceListener) {
             value.addTraceListener(traceListeners);

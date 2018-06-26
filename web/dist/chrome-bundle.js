@@ -50785,7 +50785,14 @@ module.exports.TextHighlightModel = function () {
 
             forDict(docMeta.pageMetas, function (key, pageMeta) {
 
+                // TODO: this is why recursive by default listeners aren't a not a good
+                // idea because we can get any object at any depth.
                 pageMeta.textHighlights.addTraceListener(function (traceEvent) {
+
+                    if (!traceEvent.path.endsWith("/textHighlights")) {
+                        // not a new highlight.
+                        return;
+                    }
 
                     var event = {
                         docMeta: docMeta,
@@ -50808,7 +50815,7 @@ module.exports.TextHighlightModel = function () {
                     callback(event);
 
                     return true;
-                }.bind(this)).fireInitial();
+                }.bind(this)).sync();
             }.bind(this));
         }
     }]);
@@ -50895,6 +50902,10 @@ var TextHighlightView = function () {
                 var pageElement = this.docFormat.getPageElementFromPageNum(pageNum);
 
                 // for each rect just call render on that pageElement...
+
+                if (!textHighlightEvent.textHighlight.rects) {
+                    throw new Error("No rects with text highlight");
+                }
 
                 forDict(textHighlightEvent.textHighlight.rects, function (id, rect) {
 
@@ -54241,6 +54252,9 @@ var _require4 = __webpack_require__(/*! ./TraceHandler */ "./web/js/proxies/Trac
 var _require5 = __webpack_require__(/*! ./ObjectPaths */ "./web/js/proxies/ObjectPaths.js"),
     ObjectPaths = _require5.ObjectPaths;
 
+var _require6 = __webpack_require__(/*! ../util/Paths */ "./web/js/util/Paths.js"),
+    Paths = _require6.Paths;
+
 /**
  * A sequence identifier generator so that we can assign objects a unique value
  * while we're enumerating them.
@@ -54286,7 +54300,13 @@ var Proxies = function () {
 
             objectPathEntries.forEach(function (objectPathEntry) {
 
-                var proxy = Proxies.trace(opts.pathPrefix + objectPathEntry.path, objectPathEntry.value, traceListeners);
+                var path = objectPathEntry.path;
+
+                if (opts.pathPrefix && opts.pathPrefix !== "") {
+                    path = Paths.create(opts.pathPrefix, objectPathEntry.path);
+                }
+
+                var proxy = Proxies.trace(path, objectPathEntry.value, traceListeners);
 
                 // replace the object key in the parent with a new object that is
                 // traced.
@@ -54315,33 +54335,40 @@ var Proxies = function () {
                 return value;
             }
 
-            var traceHandler = new TraceHandler(path, traceListeners, value);
+            var traceHandler = new TraceHandler(path, traceListeners, value, Proxies);
 
-            if (!value.__traceIdentifier) {
+            var privateMembers = [
 
-                // the __traceIdentifier is a unique key for the object which we use
-                // to identify which one is being traced.  This way we essentially
-                // have a pointer we can use to work with the object directly.
+            // the __traceIdentifier is a unique key for the object which we use
+            // to identify which one is being traced.  This way we essentially
+            // have a pointer we can use to work with the object directly.
 
-                Object.defineProperty(value, "__traceIdentifier", {
-                    value: sequence++,
-                    enumerable: false,
-                    writable: false
-                });
-            }
+            { name: "__traceIdentifier", value: sequence++ },
 
-            if (!value.__traceListeners) {
+            // keep the traceListener registered with the object so that I can
+            // verify that the object we're working with is actually being used
+            // with the same trace and not being re-traced by something else.
 
-                // keep the traceListener registers with the object so that I can
-                // verify that the object we're working with is actually being used
-                // with the same trace and not being re-traced by something else.
+            { name: "__traceListeners", value: traceListeners },
 
-                Object.defineProperty(value, "__traceListeners", {
-                    value: traceListeners,
-                    enumerable: false,
-                    writable: false
-                });
-            }
+            // keep the path to this object for debug purposes.
+            { name: "__path", value: path }];
+
+            privateMembers.forEach(function (privateMember) {
+
+                if (!(privateMember.name in value)) {
+
+                    // the __traceIdentifier is a unique key for the object which we use
+                    // to identify which one is being traced.  This way we essentially
+                    // have a pointer we can use to work with the object directly.
+
+                    Object.defineProperty(value, privateMember.name, {
+                        value: privateMember.value,
+                        enumerable: false,
+                        writable: false
+                    });
+                }
+            });
 
             if (value.addTraceListener) {
                 value.addTraceListener(traceListeners);
@@ -54447,6 +54474,8 @@ module.exports.TraceEvent = function () {
 "use strict";
 
 
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -54472,8 +54501,8 @@ var _require6 = __webpack_require__(/*! ../reactor/Reactor */ "./web/js/reactor/
 var _require7 = __webpack_require__(/*! ./TraceListeners */ "./web/js/proxies/TraceListeners.js"),
     TraceListeners = _require7.TraceListeners;
 
-var _require8 = __webpack_require__(/*! ./Proxies */ "./web/js/proxies/Proxies.js"),
-    Proxies = _require8.Proxies;
+var _require8 = __webpack_require__(/*! ../util/Paths */ "./web/js/util/Paths.js"),
+    Paths = _require8.Paths;
 
 var EVENT_NAME = "onMutation";
 
@@ -54484,14 +54513,14 @@ module.exports.TraceHandler = function () {
      * @param path The path to this object.
      * @param traceListeners The main TraceListener
      * @param target The object that is the target of this handler.
+     * @param proxies class for creating new traced objects.
      */
-    function _class(path, traceListeners, target) {
+    function _class(path, traceListeners, target, proxies) {
         _classCallCheck(this, _class);
 
-        Preconditions.assertNotNull(path, "path");
-        this.path = path;
-
-        this.target = target;
+        this.path = Preconditions.assertNotNull(path, "path");
+        this.target = Preconditions.assertNotNull(target, "target");
+        this.proxies = Preconditions.assertNotNull(proxies, "proxies");;
 
         this.reactor = new Reactor();
         this.reactor.registerEvent(EVENT_NAME);
@@ -54547,16 +54576,19 @@ module.exports.TraceHandler = function () {
 
             var traceListeners = this.reactor.getEventListeners(EVENT_NAME);
 
-            // FIXME: only call if value is an object
-            // console.log("FIXME: " + Proxies);
-            //
-            // Proxies.create(value);
+            if ((typeof value === "undefined" ? "undefined" : _typeof(value)) === "object") {
 
-            //value = Proxies.create(value).deepTrace(traceListeners, this.path);
+                // we have to proxy this object since it would mean adding a new
+                // sub-graph that isn't traced.
+
+                var pathPrefix = Paths.create(this.path, property);
+
+                value = this.proxies.create(value, traceListeners, { pathPrefix: pathPrefix });
+            }
 
             var previousValue = target[property];
 
-            var result = Reflect.set.apply(Reflect, arguments);
+            var result = Reflect.set(target, property, value, receiver);
             var traceEvent = new TraceEvent(this.path, MutationType.SET, target, property, value, previousValue);
             this.reactor.dispatchEvent(EVENT_NAME, traceEvent);
             return result;
@@ -54616,13 +54648,13 @@ module.exports.TraceListenerExecutor = function () {
     }
 
     /**
-     * Fire the initial values on this object.
+     * Synchronize event listeners with the current state of the model.
      */
 
 
     _createClass(_class, [{
-        key: "fireInitial",
-        value: function fireInitial() {
+        key: "sync",
+        value: function sync() {
 
             // REFACTOR: this should not be onMutation because the initial value is
             // not a mutation.
@@ -55314,7 +55346,7 @@ module.exports.Objects = function () {
         /**
          * Take the current object, and use given object as a set of defaults.
          */
-        value: function defaults(current, def) {
+        value: function defaults(current, _defaults) {
 
             var result = current;
 
@@ -55322,9 +55354,9 @@ module.exports.Objects = function () {
                 result = {};
             }
 
-            for (var key in def) {
-                if (def.hasOwnProperty(key) && !result.hasOwnProperty(key)) {
-                    result[key] = def[key];
+            for (var key in _defaults) {
+                if (_defaults.hasOwnProperty(key) && !result.hasOwnProperty(key)) {
+                    result[key] = _defaults[key];
                 }
             }
 

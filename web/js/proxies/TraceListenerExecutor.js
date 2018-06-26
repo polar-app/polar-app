@@ -14,9 +14,9 @@ module.exports.TraceListenerExecutor = class {
     }
 
     /**
-     * Fire the initial values on this object.
+     * Synchronize event listeners with the current state of the model.
      */
-    fireInitial() {
+    sync() {
 
         // REFACTOR: this should not be onMutation because the initial value is
         // not a mutation.

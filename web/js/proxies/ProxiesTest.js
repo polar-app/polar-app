@@ -470,7 +470,7 @@ describe('Proxies', function() {
 
             myDict.addTraceListener(function (traceEvent) {
                 mutations.push(traceEvent);
-            }).fireInitial();
+            }).sync();
 
             let expected = [
                 {
@@ -538,10 +538,10 @@ describe('Proxies', function() {
         });
 
 
-        xit("add object to existing traced object and expect mutation events", function () {
+        it("add object to existing traced object and expect mutation events", function () {
 
             let myDict = {
-                "cat": "dog"
+                "rootPrimitiveValue": "dog"
             };
 
             let mutations = [];
@@ -550,19 +550,82 @@ describe('Proxies', function() {
                 mutations.push(Objects.duplicate(traceEvent));
             });
 
-            myDict.gorilla = {
-                name: "coco",
+            assert.equal( myDict.__path, "/" );
+
+            // this should trigger a new handler to be added
+            myDict.depth0 = {
+
+            };
+
+            myDict.depth0.depth1 = {
+
+            };
+
+            myDict.depth0.depth2 = {
+                deepPrimitiveValue: "cat"
             };
 
             // now add more data to the gorilla.
 
-            myDict.gorilla.color = "red";
+            myDict.depth0.depth2.setPrimitiveValue = "red";
 
-            // FIXME: this should have at LEAST two mutations
+            assert.equal( myDict.__traceListeners.length, 1 );
+            assert.equal( myDict.depth0.__traceListeners.length, 1 );
+            assert.equal( myDict.depth0.depth1.__traceListeners.length, 1 );
 
-            assert.equal(mutations.length, 2);
+            assert.equal( myDict.depth0.__path, "/depth0" );
+            assert.equal( myDict.depth0.depth1.__path, "/depth0/depth1" );
+
+            assert.equal(mutations.length, 4);
 
             let expected = [
+                {
+                    "path": "/",
+                    "mutationType": "SET",
+                    "target": {
+                        "rootPrimitiveValue": "dog",
+                        "depth0": {}
+                    },
+                    "property": "depth0",
+                    "value": {},
+                    "mutationState": "PRESENT"
+                },
+                {
+                    "path": "/depth0",
+                    "mutationType": "SET",
+                    "target": {
+                        "depth1": {}
+                    },
+                    "property": "depth1",
+                    "value": {},
+                    "mutationState": "PRESENT"
+                },
+                {
+                    "path": "/depth0",
+                    "mutationType": "SET",
+                    "target": {
+                        "depth1": {},
+                        "depth2": {
+                            "deepPrimitiveValue": "cat"
+                        }
+                    },
+                    "property": "depth2",
+                    "value": {
+                        "deepPrimitiveValue": "cat"
+                    },
+                    "mutationState": "PRESENT"
+                },
+                {
+                    "path": "/depth0/depth2",
+                    "mutationType": "SET",
+                    "target": {
+                        "deepPrimitiveValue": "cat",
+                        "setPrimitiveValue": "red"
+                    },
+                    "property": "setPrimitiveValue",
+                    "value": "red",
+                    "mutationState": "PRESENT"
+                }
             ];
 
             assertJSON(mutations, expected);

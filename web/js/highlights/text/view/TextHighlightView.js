@@ -44,6 +44,10 @@ class TextHighlightView {
 
             // for each rect just call render on that pageElement...
 
+            if(! textHighlightEvent.textHighlight.rects) {
+                throw new Error("No rects with text highlight");
+            }
+
             forDict(textHighlightEvent.textHighlight.rects, function (id, rect) {
 
                 let callback = function() {

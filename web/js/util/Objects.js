@@ -4,7 +4,7 @@ module.exports.Objects = class {
     /**
      * Take the current object, and use given object as a set of defaults.
      */
-    static defaults(current, def) {
+    static defaults(current, defaults) {
 
         let result = current;
 
@@ -12,9 +12,9 @@ module.exports.Objects = class {
             result = {};
         }
 
-        for(let key in def) {
-            if(def.hasOwnProperty(key) && ! result.hasOwnProperty(key)) {
-                result[key] = def[key];
+        for(let key in defaults) {
+            if(defaults.hasOwnProperty(key) && ! result.hasOwnProperty(key)) {
+                result[key] = defaults[key];
             }
         }
 

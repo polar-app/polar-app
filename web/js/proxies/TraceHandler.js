@@ -5,7 +5,7 @@ const {MutationType} = require("./MutationType");
 const {FunctionalInterface} = require("../util/FunctionalInterface");
 const {Reactor} = require("../reactor/Reactor");
 const {TraceListeners} = require("./TraceListeners");
-const {Proxies} = require("./Proxies");
+const {Paths} = require("../util/Paths");
 
 const EVENT_NAME = "onMutation";
 
@@ -16,13 +16,13 @@ module.exports.TraceHandler = class {
      * @param path The path to this object.
      * @param traceListeners The main TraceListener
      * @param target The object that is the target of this handler.
+     * @param proxies class for creating new traced objects.
      */
-    constructor(path, traceListeners, target) {
+    constructor(path, traceListeners, target, proxies) {
 
-        Preconditions.assertNotNull(path, "path");
-        this.path = path;
-
-        this.target = target;
+        this.path = Preconditions.assertNotNull(path, "path");
+        this.target = Preconditions.assertNotNull(target, "target");
+        this.proxies = Preconditions.assertNotNull(proxies, "proxies");;
 
         this.reactor = new Reactor();
         this.reactor.registerEvent(EVENT_NAME);
@@ -74,16 +74,20 @@ module.exports.TraceHandler = class {
 
         let traceListeners = this.reactor.getEventListeners(EVENT_NAME);
 
-        // FIXME: only call if value is an object
-        // console.log("FIXME: " + Proxies);
-        //
-        // Proxies.create(value);
+        if(typeof value === "object") {
 
-        //value = Proxies.create(value).deepTrace(traceListeners, this.path);
+            // we have to proxy this object since it would mean adding a new
+            // sub-graph that isn't traced.
+
+            let pathPrefix = Paths.create(this.path, property);
+
+            value = this.proxies.create(value, traceListeners, {pathPrefix});
+
+        }
 
         let previousValue = target[property];
 
-        let result = Reflect.set(...arguments);
+        let result = Reflect.set(target, property, value, receiver);
         let traceEvent = new TraceEvent(this.path, MutationType.SET, target, property, value, previousValue);
         this.reactor.dispatchEvent(EVENT_NAME, traceEvent);
         return result;

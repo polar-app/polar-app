@@ -10992,7 +10992,7 @@ module.exports.Objects = function () {
         /**
          * Take the current object, and use given object as a set of defaults.
          */
-        value: function defaults(current, def) {
+        value: function defaults(current, _defaults) {
 
             var result = current;
 
@@ -11000,9 +11000,9 @@ module.exports.Objects = function () {
                 result = {};
             }
 
-            for (var key in def) {
-                if (def.hasOwnProperty(key) && !result.hasOwnProperty(key)) {
-                    result[key] = def[key];
+            for (var key in _defaults) {
+                if (_defaults.hasOwnProperty(key) && !result.hasOwnProperty(key)) {
+                    result[key] = _defaults[key];
                 }
             }
 

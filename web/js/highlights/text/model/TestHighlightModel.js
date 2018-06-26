@@ -6,7 +6,14 @@ module.exports.TextHighlightModel = class {
 
         forDict(docMeta.pageMetas, function (key, pageMeta) {
 
+            // TODO: this is why recursive by default listeners aren't a not a good
+            // idea because we can get any object at any depth.
             pageMeta.textHighlights.addTraceListener(function (traceEvent) {
+
+                if(! traceEvent.path.endsWith("/textHighlights")) {
+                    // not a new highlight.
+                    return;
+                }
 
                 let event = {
                     docMeta,
@@ -30,7 +37,7 @@ module.exports.TextHighlightModel = class {
 
                 return true;
 
-            }.bind(this)).fireInitial();
+            }.bind(this)).sync();
 
         }.bind(this));
 
