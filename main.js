@@ -1,6 +1,7 @@
 const electron = require('electron');
 const fspath = require('path');
 const url = require('url');
+const Directories = require("./web/js/datastore/Directories").Directories;
 const {DiskDatastore} = require("./web/js/datastore/DiskDatastore");
 const {MemoryDatastore} = require("./web/js/datastore/MemoryDatastore");
 
@@ -481,55 +482,51 @@ function parseArgs() {
 
 }
 
-/**
- * The main class for interacting with Polar.
- */
-class Main {
-
-
-
-}
-
 let mainWindow, splashwindow;
 let contextMenu = null;
 let filepath = null;
 let quitapp, URL;
-
 let args = parseArgs();
-
 let datastore = null;
-
-if(args.enableMemoryDatastore) {
-    datastore = new MemoryDatastore();
-} else {
-    datastore = new DiskDatastore();
-}
-
-// share the disk datastore with the remote.
-
-global.datastore = datastore;
-
-// TODO: I think we need to wait until the webserver port is available before
-// continuing.
-
-console.log("Electron app path is: " + app.getAppPath());
-
-// *** start the webserver
 
 const webserverConfig = new WebserverConfig(app.getAppPath(), WEBSERVER_PORT);
 const fileRegistry = new FileRegistry(webserverConfig);
-const webserver = new Webserver(webserverConfig, fileRegistry);
-webserver.start();
-
-// *** start the proxy server
 
 const proxyServerConfig = new ProxyServerConfig(PROXYSERVER_PORT);
 const cacheRegistry = new CacheRegistry(proxyServerConfig);
-const proxyServer = new ProxyServer(proxyServerConfig, cacheRegistry);
 
-proxyServer.start();
+new Directories().init().then(async ()=> {
 
-console.log("Running with process.args: ", JSON.stringify(process.argv));
+    if(args.enableMemoryDatastore) {
+        datastore = new MemoryDatastore();
+    } else {
+        datastore = new DiskDatastore();
+    }
+
+    await datastore.init();
+
+    // share the disk datastore with the remote.
+
+    global.datastore = datastore;
+
+    // TODO: I think we need to wait until the webserver port is available before
+    // continuing.
+
+    console.log("Electron app path is: " + app.getAppPath());
+
+    // *** start the webserver
+
+    const webserver = new Webserver(webserverConfig, fileRegistry);
+    webserver.start();
+
+    // *** start the proxy server
+
+    const proxyServer = new ProxyServer(proxyServerConfig, cacheRegistry);
+    proxyServer.start();
+
+    console.log("Running with process.args: ", JSON.stringify(process.argv));
+
+}).catch((err) => console.log(err));
 
 if (args.enableRemoteDebugging) {
 
@@ -578,8 +575,6 @@ if (shouldQuit) {
 
 app.on('ready', async function() {
 
-    await datastore.init();
-
     contextMenu = Menu.buildFromTemplate([
         { label: 'Minimize', type: 'radio', role: 'minimize' },
         { type: 'separator' },
@@ -607,8 +602,6 @@ app.on('ready', async function() {
     if(args.enableDevTools) {
         mainWindow.toggleDevTools();
     }
-
-    console.log("FIXME ", JSON.stringify(mainWindow));
 
     // if there is a PDF file to open, load that, otherwise, load the default URL.
 

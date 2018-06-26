@@ -48719,6 +48719,8 @@ var DiskDatastore = function (_Datastore) {
 
         var _this = _possibleConstructorReturn(this, (DiskDatastore.__proto__ || Object.getPrototypeOf(DiskDatastore)).call(this));
 
+        // TODO: migrate this to use Directories
+
         if (dataDir) {
             // use a configured dataDir for testing.
             _this.dataDir = dataDir;
@@ -48726,7 +48728,9 @@ var DiskDatastore = function (_Datastore) {
             _this.dataDir = DiskDatastore.getDataDir();
         }
 
+        // the path to the stash directory
         _this.stashDir = Paths.create(_this.dataDir, "stash");
+        _this.logsDir = Paths.create(_this.dataDir, "logs");
 
         // TODO: migrate to Files
 
@@ -48760,12 +48764,18 @@ var DiskDatastore = function (_Datastore) {
 
                             case 5:
                                 _context.t1 = _context.sent;
+                                _context.next = 8;
+                                return this.createDirAsync(this.logsDir);
+
+                            case 8:
+                                _context.t2 = _context.sent;
                                 return _context.abrupt("return", {
                                     dataDir: _context.t0,
-                                    stashDir: _context.t1
+                                    stashDir: _context.t1,
+                                    logsDir: _context.t2
                                 });
 
-                            case 7:
+                            case 10:
                             case "end":
                                 return _context.stop();
                         }
@@ -48779,6 +48789,11 @@ var DiskDatastore = function (_Datastore) {
 
             return init;
         }()
+
+        /**
+         * @Deprecated move to Files.
+         */
+
     }, {
         key: "createDirAsync",
         value: function () {
@@ -48908,6 +48923,11 @@ var DiskDatastore = function (_Datastore) {
 
             return getDocMeta;
         }()
+
+        /**
+         * @Deprecated move to Files.
+         */
+
     }, {
         key: "existsAsync",
         value: function () {

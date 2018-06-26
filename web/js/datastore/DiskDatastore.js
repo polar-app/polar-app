@@ -9,6 +9,8 @@ class DiskDatastore extends Datastore {
 
     constructor(dataDir) {
 
+        // TODO: migrate this to use Directories
+
         super();
 
         if(dataDir) {
@@ -18,7 +20,9 @@ class DiskDatastore extends Datastore {
             this.dataDir = DiskDatastore.getDataDir();
         }
 
+        // the path to the stash directory
         this.stashDir = Paths.create(this.dataDir, "stash");
+        this.logsDir = Paths.create(this.dataDir, "logs");
 
         // TODO: migrate to Files
 
@@ -37,11 +41,15 @@ class DiskDatastore extends Datastore {
 
         return {
             dataDir: await this.createDirAsync(this.dataDir),
-            stashDir: await this.createDirAsync(this.stashDir)
+            stashDir: await this.createDirAsync(this.stashDir),
+            logsDir: await this.createDirAsync(this.logsDir)
         };
 
     }
 
+    /**
+     * @Deprecated move to Files.
+     */
     async createDirAsync(dir) {
 
         let result = {
@@ -93,6 +101,9 @@ class DiskDatastore extends Datastore {
 
     }
 
+    /**
+     * @Deprecated move to Files.
+     */
     async existsAsync(path) {
 
         return new Promise(function(resolve,reject) {

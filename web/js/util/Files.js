@@ -23,6 +23,44 @@ class Files {
 
     }
 
+    async createDirAsync(dir) {
+
+        let result = {
+            dir
+        };
+
+        if(await this.existsAsync(dir)) {
+            result.exists = true;
+        } else {
+            result.created = true;
+            await this.mkdirAsync(dir);
+        }
+
+        return result;
+
+    }
+
+    async existsAsync(path) {
+
+        return new Promise(function(resolve,reject) {
+
+            this.statAsync(path)
+                .then(function() {
+                    resolve(true);
+                })
+                .catch(function(err) {
+                    if(err.code === 'ENOENT') {
+                        resolve(false);
+                    } else {
+                        // some other error
+                        reject(err);
+                    }
+                });
+
+        }.bind(this));
+
+    }
+
     // static readFileAsync = util.promisify(fs.readFile);
     // static writeFileAsync = util.promisify(fs.writeFile);
 
