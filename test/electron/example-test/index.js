@@ -6,7 +6,9 @@ const BrowserWindow = electron.BrowserWindow;
 console.log("hello world");
 
 function createMainWindow() {
-    return new BrowserWindow();
+    let mainWindow = new BrowserWindow();
+    mainWindow.loadFile('index.html')
+    return mainWindow;
 }
 
 app.on('ready', async function() {

@@ -16,7 +16,6 @@ const ipcMain = electron.ipcMain;
 const crashReporter = electron.crashReporter;
 const BrowserWindow = electron.BrowserWindow;
 const nativeImage = require('electron').nativeImage;
-const options = { extraHeaders: 'pragma: no-cache\nreferer: http://cnn.com\n' }
 const app_icon = nativeImage.createFromPath(fspath.join(__dirname, 'icon.png'));
 const {WebserverConfig} = require("./web/js/backend/webserver/WebserverConfig");
 const {Webserver} = require("./web/js/backend/webserver/Webserver");
@@ -30,6 +29,8 @@ const {Paths} = require("./web/js/util/Paths");
 const {Fingerprints} = require("./web/js/util/Fingerprints");
 const {Files} = require("./web/js/util/Files");
 const {ElectronContextMenu} = require("./web/js/contextmenu/electron/ElectronContextMenu");
+
+const options = { extraHeaders: 'pragma: no-cache\nreferer: http://cnn.com\n' };
 
 const log = Logger.create();
 
