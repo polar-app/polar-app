@@ -7,7 +7,6 @@
  * Note that Object.observe and other changes were apparently never ratified
  * so we have to use Proxy objects to implement this functionality.
  */
-const {ProxyBuilder} = require("./ProxyBuilder");
 const {TraceListeners} = require("./TraceListeners");
 const {Objects} = require("../util/Objects");
 const {TraceHandler} = require("./TraceHandler");
