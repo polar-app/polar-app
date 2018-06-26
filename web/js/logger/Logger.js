@@ -11,15 +11,7 @@ class Logger {
      * using.
      */
     static create() {
-
-        if(process && process.type === "main") {
-            if (!initialized) {
-                throw new Error("Not initialized");
-            }
-        }
-
         return log;
-
     }
 
     static init(logsDir) {
@@ -28,17 +20,23 @@ class Logger {
             throw new Error("Already initialized");
         }
 
-        if(process && process.type !== "renderer") {
-            throw new Error("Must initialize from the main electron process.");
+        if(! process) {
+            throw new Error("No process");
+        }
+
+        if(process.type === "renderer") {
+            throw new Error(`Must initialize from the main electron process (process=${process.type})`);
         }
 
         // *** configure console
         log.transports.console.level = "info";
+        log.transports.console.format="[{y}-{m}-{d} {h}:{i}:{s}.{ms}] [{level}] {text}";
 
         // *** configure file
 
         // set the directory name properly
         log.transports.file.file = `${logsDir}/polar.log`;
+        log.transports.file.format="[{y}-{m}-{d} {h}:{i}:{s}.{ms}] [{level}] {text}";
 
         log.transports.file.level = "info";
         log.transports.file.appName = "polar";

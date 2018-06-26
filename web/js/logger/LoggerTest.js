@@ -8,8 +8,6 @@ describe('Logger', function() {
 
     it("", function () {
 
-        let log = new Logger();
-
         assert.equal(log != null, true);
 
     });

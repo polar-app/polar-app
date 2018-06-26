@@ -4,6 +4,7 @@ const url = require('url');
 const Directories = require("./web/js/datastore/Directories").Directories;
 const {DiskDatastore} = require("./web/js/datastore/DiskDatastore");
 const {MemoryDatastore} = require("./web/js/datastore/MemoryDatastore");
+const {Logger} = require("./web/js/logger/Logger");
 
 const app = electron.app;
 const shell = electron.shell;
@@ -29,6 +30,8 @@ const {Paths} = require("./web/js/util/Paths");
 const {Fingerprints} = require("./web/js/util/Fingerprints");
 const {Files} = require("./web/js/util/Files");
 const {ElectronContextMenu} = require("./web/js/contextmenu/electron/ElectronContextMenu");
+
+const log = Logger.create();
 
 const BROWSER_WINDOW_OPTIONS = {
     minWidth: 400,
@@ -215,7 +218,7 @@ function createWindow() {
 
         if(BrowserWindow.getAllWindows().length === 0) {
             // determine if we need to quit:
-            console.log("No windows left. Quitting app.");
+            log.info("No windows left. Quitting app.");
             app.quit();
 
         }
@@ -269,7 +272,7 @@ function createWindow() {
  */
 function consoleListener(event, level, message, line, sourceId) {
 
-    console.log(`level=${level} ${sourceId}:${line}: ${message}`);
+    log.info(`level=${level} ${sourceId}:${line}: ${message}`);
 }
 
 function cmdNewWindow(item, focusedWindow) {
@@ -336,7 +339,7 @@ async function loadDoc(path, targetWindow) {
     let fileMeta = fileRegistry.registerFile(path);
     let cacheMeta = null;
 
-    console.log("Loading doc via HTTP server: " + JSON.stringify(fileMeta));
+    log.info("Loading doc via HTTP server: " + JSON.stringify(fileMeta));
 
     let url = null;
     let fileParam = encodeURIComponent(fileMeta.url);
@@ -350,7 +353,7 @@ async function loadDoc(path, targetWindow) {
     } else if(path.endsWith(".chtml")) {
 
         cacheMeta = cacheRegistry.registerFile(path);
-        console.log("Cache meta: " + JSON.stringify(cacheMeta));
+        log.info("Cache meta: " + JSON.stringify(cacheMeta));
 
         let descriptorPath = path.replace(/\.chtml$/, ".json");
         let descriptorJSON = await Files.readFileAsync(descriptorPath);
@@ -361,7 +364,7 @@ async function loadDoc(path, targetWindow) {
         // convert it BACK to a JSON object so that we can keep the content stripped
         descriptorJSON = JSON.stringify(descriptor);
 
-        console.log("Loaded descriptor from: " + descriptorPath);
+        log.info("Loaded descriptor from: " + descriptorPath);
 
         // we don't need the content represented twice.
 
@@ -375,15 +378,15 @@ async function loadDoc(path, targetWindow) {
 
     }
 
-    console.log("Loading URL: " + url);
+    log.info("Loading URL: " + url);
 
     if(cacheMeta) {
 
-        console.log("Using proxy config: ", cacheMeta.proxyConfig);
+        log.info("Using proxy config: ", cacheMeta.proxyConfig);
 
         await new Promise((resolve => {
             targetWindow.webContents.session.setProxy(cacheMeta.proxyConfig, () => {
-                console.log("Proxy configured: ", arguments);
+                log.info("Proxy configured: ", arguments);
                 resolve();
             });
         }))
@@ -394,14 +397,14 @@ async function loadDoc(path, targetWindow) {
     targetWindow.loadURL(url, options);
 
     if(args.enableConsoleLogging) {
-        console.log("Console logging enabled.");
+        log.info("Console logging enabled.");
         targetWindow.webContents.on("console-message", consoleListener);
     }
 
     targetWindow.webContents.on('did-finish-load', function() {
 
-        console.log("Finished loading. Now injecting customizations.");
-        console.log("Toggling dev tools...");
+        log.info("Finished loading. Now injecting customizations.");
+        log.info("Toggling dev tools...");
         //targetWindow.toggleDevTools();
 
 
@@ -449,7 +452,7 @@ async function cmdOpenInNewWindow(item, focusedWindow) {
  */
 function openFileCmdline(path, createNewWindow) {
 
-    console.log("Opening file given on the command line: " + path);
+    log.info("Opening file given on the command line: " + path);
 
     if(createNewWindow) {
         loadDoc(path, createWindow());
@@ -495,7 +498,11 @@ const fileRegistry = new FileRegistry(webserverConfig);
 const proxyServerConfig = new ProxyServerConfig(PROXYSERVER_PORT);
 const cacheRegistry = new CacheRegistry(proxyServerConfig);
 
-new Directories().init().then(async ()=> {
+const directories = new Directories();
+
+directories.init().then(async () => {
+
+    Logger.init(directories.logsDir);
 
     if(args.enableMemoryDatastore) {
         datastore = new MemoryDatastore();
@@ -509,10 +516,7 @@ new Directories().init().then(async ()=> {
 
     global.datastore = datastore;
 
-    // TODO: I think we need to wait until the webserver port is available before
-    // continuing.
-
-    console.log("Electron app path is: " + app.getAppPath());
+    log.info("Electron app path is: " + app.getAppPath());
 
     // *** start the webserver
 
@@ -524,14 +528,14 @@ new Directories().init().then(async ()=> {
     const proxyServer = new ProxyServer(proxyServerConfig, cacheRegistry);
     proxyServer.start();
 
-    console.log("Running with process.args: ", JSON.stringify(process.argv));
+    log.info("Running with process.args: ", JSON.stringify(process.argv));
 
-}).catch((err) => console.log(err));
+}).catch((err) => log.info(err));
 
 if (args.enableRemoteDebugging) {
 
-    console.log(`Remote debugging port enabled on port ${REMOTE_DEBUGGING_PORT}.`);
-    console.log(`You may connect via http://${DEFAULT_HOST}:${REMOTE_DEBUGGING_PORT}`);
+    log.info(`Remote debugging port enabled on port ${REMOTE_DEBUGGING_PORT}.`);
+    log.info(`You may connect via http://${DEFAULT_HOST}:${REMOTE_DEBUGGING_PORT}`);
 
     app.commandLine.appendSwitch('remote-debugging-port', REMOTE_DEBUGGING_PORT);
     app.commandLine.appendSwitch('host-rules', 'MAP * 127.0.0.1');
@@ -554,7 +558,7 @@ let shouldQuit = app.makeSingleInstance(function(commandLine, workingDirectory) 
     // Someone tried to run a second instance, we should focus our window.
     // I'm not sure if this is the right strategy for now.
 
-    console.log("Second instance asked to load.");
+    log.info("Second instance asked to load.");
 
     if(! handleCmdLinePDF(commandLine, true)) {
 
@@ -568,7 +572,7 @@ let shouldQuit = app.makeSingleInstance(function(commandLine, workingDirectory) 
 });
 
 if (shouldQuit) {
-    console.log("Quiting.  App is single instance.");
+    log.info("Quiting.  App is single instance.");
     app.quit();
     return;
 }
@@ -621,5 +625,5 @@ app.on('activate', function() {
 });
 
 app.on('open-file', function() {
-    console.log("Open file called.");
+    log.info("Open file called.");
 });
