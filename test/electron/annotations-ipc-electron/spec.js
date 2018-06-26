@@ -4,7 +4,7 @@ const electronPath = require('electron');
 const path = require('path');
 
 describe('Test Electron IPC for annotation.', function () {
-    this.timeout(10000)
+    this.timeout(10000);
 
     beforeEach(function () {
 
@@ -17,11 +17,15 @@ describe('Test Electron IPC for annotation.', function () {
 
             // Assuming you have the following directory structure
 
-            args: [path.join(__dirname, "main.js")]
+            args: [path.join(__dirname, "main.js")],
+
+            chromeDriverLogPath: "/tmp/chrome-driver.log",
+
+            webdriverLogPath: "/tmp/webdriver-driver.log"
 
         });
         return this.app.start()
-    })
+    });
 
     afterEach(function () {
         if (this.app && this.app.isRunning()) {

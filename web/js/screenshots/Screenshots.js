@@ -1,6 +1,8 @@
 const electron = require('electron');
 const ipcRenderer = electron.ipcRenderer;
 
+let log = new Logger()
+
 /**
   */
 class Screenshots {

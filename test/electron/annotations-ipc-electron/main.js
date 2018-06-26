@@ -7,7 +7,7 @@ console.log("hello world");
 
 function createMainWindow() {
     let newWindow = new BrowserWindow();
-
+    new Logger()
 }
 
 app.on('ready', async function() {
