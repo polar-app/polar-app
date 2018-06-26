@@ -2,8 +2,11 @@
 
 const express = require('express');
 const serveStatic = require('serve-static');
+const Logger = require("../../logger/Logger").Logger;
 const {Paths} = require("../../util/Paths");
 const {Preconditions} = require("../../Preconditions");
+
+const log = Logger.create();
 
 class Webserver {
 
@@ -30,7 +33,7 @@ class Webserver {
 
             try {
 
-                console.log("Handling data at path: " + req.path);
+                log.info("Handling data at path: " + req.path);
 
                 let hashcode = Paths.basename(req.path);
 
@@ -47,7 +50,7 @@ class Webserver {
                     let keyMeta = this.fileRegistry.get(hashcode);
                     let filename = keyMeta.filename;
 
-                    console.log(`Serving file at ${req.path} from ${filename}`);
+                    log.info(`Serving file at ${req.path} from ${filename}`);
 
                     return res.sendFile(filename);
 
@@ -59,7 +62,7 @@ class Webserver {
 
         }.bind(this));
 
-        console.log(`Webserver up and running on port ${this.webserverConfig.port}`);
+        log.info(`Webserver up and running on port ${this.webserverConfig.port}`);
 
     }
 

@@ -6,10 +6,13 @@ const http = require('http');
 const express = require('express');
 const serveStatic = require('serve-static');
 const httpProxy = require('http-proxy');
+const Logger = require("../../logger/Logger").Logger;
 
 const {Preconditions} = require("../../Preconditions");
 const {ProxyServerConfig} = require('./ProxyServerConfig');
 const {CacheRegistry} = require('./CacheRegistry');
+
+const log = Logger.create();
 
 class ProxyServer {
 
@@ -36,7 +39,7 @@ class ProxyServer {
 
         this.server.on('connect', this.secureRequestHandler.bind(this));
 
-        console.log(`Proxy up and running on port ${this.proxyConfig.port}`);
+        log.info(`Proxy up and running on port ${this.proxyConfig.port}`);
 
     }
 
@@ -208,7 +211,7 @@ function getHostPortFromString( hostString, defaultPort ) {
 module.exports.ProxyServer = ProxyServer;
 
 function main() {
-    console.log("Starting proxy...");
+    log.info("Starting proxy...");
     let proxyServerConfig = new ProxyServerConfig(8090);
     let cacheRegistry = new CacheRegistry(proxyServerConfig);
     let proxyServer = new ProxyServer(proxyServerConfig, cacheRegistry);

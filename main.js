@@ -530,7 +530,7 @@ directories.init().then(async () => {
 
     log.info("Running with process.args: ", JSON.stringify(process.argv));
 
-}).catch((err) => log.info(err));
+}).catch((err) => log.error(err));
 
 if (args.enableRemoteDebugging) {
 

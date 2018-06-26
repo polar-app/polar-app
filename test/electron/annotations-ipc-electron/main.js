@@ -6,12 +6,14 @@ const BrowserWindow = electron.BrowserWindow;
 console.log("hello world");
 
 function createMainWindow() {
-    let newWindow = new BrowserWindow();
-    new Logger()
+    return new BrowserWindow();
 }
 
 app.on('ready', async function() {
-    mainWindow = createMainWindow();
+
+    let mainWindow = createMainWindow();
+
+    console.log("It worked!");
 
 });
 
