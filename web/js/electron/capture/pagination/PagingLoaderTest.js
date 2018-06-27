@@ -2,7 +2,7 @@ const assert = require('assert');
 const url = require('url');
 const MockPagingBrowser = require("./MockPagingBrowser").MockPagingBrowser;
 
-const {PagingLoader} = require('./PaginationLoader');
+const {PagingLoader} = require('./PagingLoader');
 
 describe('PagingLoader', function() {
 

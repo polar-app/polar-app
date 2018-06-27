@@ -1,4 +1,4 @@
-class PaginationState {
+class PagingState {
 
     /**
      *
@@ -14,4 +14,4 @@ class PaginationState {
 
 }
 
-module.exports.PaginationBox = PaginationState;
+module.exports.PaginationBox = PagingState;

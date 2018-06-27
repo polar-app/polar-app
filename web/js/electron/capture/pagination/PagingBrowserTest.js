@@ -10,7 +10,7 @@ const {PagingBrowser} = require('./PagingBrowser');
 
 describe('PagingBrowser', function() {
 
-    describe('Basic functionality', function() {
+    describe('visualScrollPercentage', function() {
 
         it("basic", async function () {
 

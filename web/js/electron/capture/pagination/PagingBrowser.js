@@ -8,6 +8,7 @@ class PagingBrowser {
      */
     async pageDown() {
 
+
     }
 
     /**
@@ -44,9 +45,61 @@ class PagingBrowser {
      * - window.innerWidth
      * - window.innerHeight
      *
-     * @return {Promise<PaginationState>}
+     * @return {Promise<PagingState>}
      */
     async state() {
+        throw new Error("not implemented");
+    }
+
+    /**
+     * Compute the next scroll position as if the user was paging down.
+     *
+     * @return {Point}
+     */
+    computePageDownScrollPosition(state) {
+
+        let maxScrollPositions = {
+            x: state.scrollBox.width - state.viewportBox.width,
+            y: state.scrollBox.height - state.viewportBox.height
+        };
+
+        let result = {
+            // x is always zero as we are not scrolling horizontally for now.
+            x: 0,
+
+            y: Math.min(state.scrollPosition.y + (state.viewportBox.height * 0.9), state.scrollBox.height)
+        }
+
+    }
+
+    /**
+     *
+     * @param state {PagingState}
+     * @return {Point}
+     */
+    computePageDownScrollPosition(state) {
+
+        let maxScrollPositions = this.computeMaxScrollPositions(state);
+
+        let result = {
+            // x is always zero as we are not scrolling horizontally for now.
+            x: 0,
+            y: Math.min(state.scrollPosition.y + (state.viewportBox.height * 0.9), maxScrollPositions.y)
+        }
+
+    }
+
+    /**
+     *
+     * @param state {PagingState}
+     * @return {Point}
+     */
+    computeMaxScrollPositions(state) {
+
+        return {
+            x: state.scrollBox.width - state.viewportBox.width,
+            y: state.scrollBox.height - state.viewportBox.height
+        };
 
     }
 
@@ -55,7 +108,7 @@ class PagingBrowser {
      * the percentage of the page that is scrolled for the width and height
      * dimensions.
      *
-     * @return {Promise<Object>}
+     * @return {Promise<BasicBox>}
      */
     async visualScrollPercentage() {
 

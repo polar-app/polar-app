@@ -37,6 +37,8 @@ class PagingLoader {
      */
     onWebRequestsCompleted() {
 
+        // see if we've paged down properly
+
     }
 
     /**
@@ -63,3 +65,5 @@ class PagingLoader {
     }
 
 }
+
+module.exports.PagingLoader = PagingLoader;
