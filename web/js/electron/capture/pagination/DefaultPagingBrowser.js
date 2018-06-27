@@ -3,6 +3,8 @@
  */
 const PagingBrowser = require("./PagingBrowser").PagingBrowser;
 const {Functions} = require("../../../util/Functions");
+const {Logger} = require("../../../logger/Logger");
+const log = Logger.create();
 
 class DefaultPagingBrowser extends PagingBrowser {
 
@@ -21,9 +23,10 @@ class DefaultPagingBrowser extends PagingBrowser {
      */
     async scrollToPosition(scrollPosition) {
 
+        log.info("Scrolling to position: ", scrollPosition)
+
         function __scrollToPosition(scrollPosition) {
-            window.scrollX = scrollPosition.x;
-            window.scrollY = scrollPosition.y;
+            window.scrollTo(scrollPosition.x, scrollPosition.y);
         }
 
         let javascript = Functions.functionToScript(__scrollToPosition, scrollPosition);

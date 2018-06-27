@@ -1,4 +1,6 @@
 const BaseWebRequestsListener = require("./BaseWebRequestsListener").BaseWebRequestsListener;
+const {Logger} = require("../logger/Logger");
+const log = Logger.create();
 
 /**
  * Tracks the number of pending requests.

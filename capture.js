@@ -18,6 +18,8 @@ const {DiskDatastore} = require("./web/js/datastore/DiskDatastore");
 const {Args} = require("./web/js/electron/capture/Args");
 const {BrowserWindows} = require("./web/js/capture/BrowserWindows");
 const Browsers = require("./web/js/capture/Browsers");
+const DefaultPagingBrowser = require("./web/js/electron/capture/pagination/DefaultPagingBrowser").DefaultPagingBrowser;
+const PagingLoader = require("./web/js/electron/capture/pagination/PagingLoader").PagingLoader;
 const Logger = require("./web/js/logger/Logger").Logger;
 const PendingWebRequestsListener = require("./web/js/webrequests/PendingWebRequestsListener").PendingWebRequestsListener;
 const DebugWebRequestsListener = require("./web/js/webrequests/DebugWebRequestsListener").DebugWebRequestsListener;
@@ -57,7 +59,7 @@ async function configureBrowser(window) {
 
         definitions.forEach((definition) => {
 
-            log.info(`Defining ${definition.key} as: ${definition.value}`);
+            console.log(`Defining ${definition.key} as: ${definition.value}`);
 
             try {
                 Object.defineProperty(window.screen, definition.key, {
@@ -66,7 +68,7 @@ async function configureBrowser(window) {
                     }
                 });
             } catch(e) {
-                log.warn(`Unable to define ${definition.key}`, e);
+                console.warn(`Unable to define ${definition.key}`, e);
             }
 
         });
@@ -213,6 +215,8 @@ class Capture {
          */
         this.window = null;
 
+        this.windowConfigured = false;
+
     }
 
     async execute() {
@@ -244,7 +248,11 @@ class Capture {
      */
     async startCapture() {
 
-        await captureHTML(this.url, this.window);
+        let pagingLoader = new PagingLoader(new DefaultPagingBrowser(this.window.webContents), async () => {
+            await captureHTML(this.url, this.window);
+        } );
+
+        await pagingLoader.onLoad();
 
     }
 
@@ -258,7 +266,6 @@ class Capture {
         let newWindow = new BrowserWindow(browserWindowOptions);
 
         let debugWebRequestsListener = new DebugWebRequestsListener();
-
         debugWebRequestsListener.register(newWindow.webContents.session.webRequest);
 
         newWindow.on('close', function(e) {
@@ -305,17 +312,23 @@ class Capture {
 
         });
 
-        newWindow.webContents.on('did-start-loading', function() {
+        newWindow.webContents.on('did-start-loading', () => {
 
-            log.info("did-start-loading: ");
+            log.info("did-start-loading: ", arguments);
 
-            configureBrowser(newWindow)
-                .catch(err => log.error(err));
+            if(! this.windowConfigured) {
+
+                configureBrowser(newWindow)
+                    .catch(err => log.error(err));
+
+                this.windowConfigured = true;
+
+            }
 
         });
 
         newWindow.webContents.on('did-finish-load', () => {
-            log.info("did-finish-load: ");
+            log.info("did-finish-load: ", arguments);
 
             this.startCapture()
                 .catch(err => log.error(err));

@@ -84,6 +84,8 @@ class PagingLoader {
 
         this.requestsFinished = pendingRequestsEvent.pending === 0;
 
+        log.info("requestsFinished is now: " + this.requestsFinished);
+
         this._handleFinished();
 
     }

@@ -23,6 +23,7 @@ class DebugWebRequestsListener extends BaseWebRequestsListener {
          * @type {number}
          */
         this.pending = 0;
+
     }
 
     /**
