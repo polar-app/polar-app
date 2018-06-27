@@ -262,8 +262,8 @@ class Capture {
 
         let newWindow = new BrowserWindow(browserWindowOptions);
 
-        let debugWebRequestsListener = new DebugWebRequestsListener();
-        debugWebRequestsListener.register(newWindow.webContents.session.webRequest);
+        //let debugWebRequestsListener = new DebugWebRequestsListener();
+        this.debugWebRequestsListener.register(newWindow.webContents.session.webRequest);
         //this.pendingWebRequestsListener.register(newWindow.webContents.session.webRequest);
 
         newWindow.on('close', function(e) {
