@@ -67,8 +67,8 @@ class DebugWebRequestsListener {
         ];
 
         eventRegisterFunctions.forEach((eventRegisterFunction) => {
+            let functionName = eventRegisterFunction.name;
             eventRegisterFunction = eventRegisterFunction.bind(webRequest);
-            let functionName = ("" + eventRegisterFunction.name).replace("bound ", "");
             eventRegisterFunction(this.eventListener.bind(this, functionName));
         });
 
