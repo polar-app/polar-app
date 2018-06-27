@@ -18,104 +18,24 @@ const {DiskDatastore} = require("./web/js/datastore/DiskDatastore");
 const {Args} = require("./web/js/electron/capture/Args");
 const {BrowserWindows} = require("./web/js/capture/BrowserWindows");
 const Browsers = require("./web/js/capture/Browsers");
+const Logger = require("./web/js/logger/Logger").Logger;
+const PendingWebRequestsListener = require("./web/js/webrequests/PendingWebRequestsListener").PendingWebRequestsListener;
 const DebugWebRequestsListener = require("./web/js/webrequests/DebugWebRequestsListener").DebugWebRequestsListener;
 
-async function createWindow(url) {
-
-    // Create the browser window.
-    let browserWindowOptions = BrowserWindows.toBrowserWindowOptions(browser);
-
-    debug("Using browserWindowOptions: " + browserWindowOptions);
-
-    let newWindow = new BrowserWindow(browserWindowOptions);
-
-    let debugWebRequestsListener = new DebugWebRequestsListener();
-
-    debugWebRequestsListener.register(newWindow.webContents.session.webRequest);
-
-    newWindow.on('close', function(e) {
-        e.preventDefault();
-        newWindow.webContents.clearHistory();
-        newWindow.webContents.session.clearCache(function() {
-            newWindow.destroy();
-        });
-    });
-
-    newWindow.on('closed', function() {
-
-        if(BrowserWindow.getAllWindows().length === 0) {
-            // determine if we need to quit:
-            console.log("No windows left. Quitting app.");
-            app.quit();
-
-        }
-
-    });
-
-    newWindow.webContents.on('new-window', function(e, url) {
-        e.preventDefault();
-        shell.openExternal(url);
-    });
-
-    newWindow.webContents.on('will-navigate', function(e, url) {
-        e.preventDefault();
-        shell.openExternal(url);
-    });
-
-    newWindow.once('ready-to-show', () => {
-        //newWindow.maximize();
-        //newWindow.show();
-
-    });
-
-    newWindow.webContents.on('did-fail-load', function(event, errorCode, errorDescription, validateURL, isMainFrame) {
-        console.log("did-fail-load: " , {event, errorCode, errorDescription, validateURL, isMainFrame}, event);
-
-        // FIXME: how do we handle iframes.
-
-        // FIXME: figure out how to fail properly.
-
-    });
-
-    newWindow.webContents.on('did-start-loading', async function() {
-        console.log("did-start-loading: ");
-        await configureBrowser(newWindow);
-    });
-
-
-    newWindow.webContents.on('did-finish-load', async function() {
-        console.log("did-finish-load: ");
-
-        setTimeout(async function() {
-            await captureHTML(url, newWindow);
-        }, 1);
-
-
-    });
-
-    const windowOptions = {
-        extraHeaders: `pragma: no-cache\nreferer: ${url}\n`,
-        userAgent: browser.userAgent
-    };
-
-    newWindow.loadURL(url, windowOptions);
-
-    return newWindow;
-
-}
+const log = Logger.create();
 
 async function configureBrowser(window) {
 
     // TODO maybe inject this via a preload script so we know that it's always
     // running
 
-    console.log("Emulating browser: " + JSON.stringify(browser, null, "  " ));
+    log.info("Emulating browser: " + JSON.stringify(browser, null, "  " ));
 
     // we need to mute by default especially if the window is hidden.
-    console.log("Muting audio...");
+    log.info("Muting audio...");
     window.webContents.setAudioMuted(true);
 
-    console.log("Emulating device...");
+    log.info("Emulating device...");
     window.webContents.enableDeviceEmulation(browser.deviceEmulation);
 
     window.webContents.setUserAgent(browser.userAgent);
@@ -136,7 +56,7 @@ async function configureBrowser(window) {
         ];
 
         definitions.forEach((definition) => {
-            console.log(`Defining ${definition.key} as: ${definition.value}`);
+            log.info(`Defining ${definition.key} as: ${definition.value}`);
             Object.defineProperty(window.screen, definition.key, { get: function() { return definition.value }});
         });
 
@@ -164,7 +84,7 @@ function getWindowSize(window) {
  */
 async function inlineHTML(url, content) {
 
-    console.log("Inlining HTML...");
+    log.info("Inlining HTML...");
 
     let options = {
         url,
@@ -186,7 +106,7 @@ async function inlineHTML(url, content) {
             if(error) {
                 reject(error);
             } else {
-                console.log("Inlining HTML...done");
+                log.info("Inlining HTML...done");
                 resolve(html);
             }
         });
@@ -204,13 +124,13 @@ async function captureHTML(url, window) {
     Preconditions.assertNotNull(window);
     Preconditions.assertNotNull(window.webContents);
 
-    console.log("Capturing the HTML...");
+    log.info("Capturing the HTML...");
 
     // define the content capture script.
-    console.log("Defining ContentCapture...");
+    log.info("Defining ContentCapture...");
     await window.webContents.executeJavaScript(ContentCapture.toString());
 
-    console.log("Retrieving HTML...");
+    log.info("Retrieving HTML...");
 
     let captured = await window.webContents.executeJavaScript("ContentCapture.captureHTML()");
 
@@ -233,17 +153,17 @@ async function captureHTML(url, window) {
 
     let jsonPath = `${stashDir}/${filename}.json`;
 
-    console.log("Writing JSON data to: " + jsonPath);
+    log.info("Writing JSON data to: " + jsonPath);
 
     fs.writeFileSync(jsonPath, JSON.stringify(captured, null, "  "));
     fs.writeFileSync(`${stashDir}/${filename}.chtml`, captured.content);
 
-    console.log("Capturing the HTML...done");
+    log.info("Capturing the HTML...done");
 
     if(args.quit) {
         app.quit();
     } else {
-        console.log("Not quitting (yielding to --no-quit=true).")
+        log.info("Not quitting (yielding to --no-quit=true).")
     }
 
 }
@@ -274,20 +194,142 @@ if(! browser) {
     throw new Error("No browser defined for: " + args.browser);
 }
 
-app.on('ready', async function() {
+class Capture {
 
-    await diskDatastore.init();
-
-    //let url = "http://thehill.com/homenews/administration/392430-trump-i-want-americans-to-listen-to-me-like-north-koreans-listen-to";
-    //let url = "https://www.whatismyscreenresolution.com/";
-    //let url = "https://thinkprogress.org/trump-lied-in-statement-about-russian-meeting-224345b768e3/";
-
-    let url = Cmdline.getURLArg(process.argv);
-
-    if(! url) {
-        throw new Error("URL required");
+    constructor(url) {
+        this.url = url;
+        this.pendingWebRequestsListener = null;
+        this.window = null;
     }
 
-    await createWindow(url);
+    async execute() {
+
+        this.pendingWebRequestsListener = new PendingWebRequestsListener();
+
+        this.window = await this.createWindow(this.url);
+
+        this.pendingWebRequestsListener.register(this.window.webContents.session.webRequest);
+
+        const loadURLOptions = {
+
+            // TODO: I don't think we should use no-cache or at least make it
+            // a command line option. Probably best to not use it by default
+            // but then make it an option later.
+
+            extraHeaders: `pragma: no-cache\nreferer: ${this.url}\n`,
+            userAgent: browser.userAgent
+
+        };
+
+        this.window.loadURL(this.url, loadURLOptions);
+
+    }
+
+    async createWindow(url) {
+
+        // Create the browser window.
+        let browserWindowOptions = BrowserWindows.toBrowserWindowOptions(browser);
+
+        debug("Using browserWindowOptions: " + browserWindowOptions);
+
+        let newWindow = new BrowserWindow(browserWindowOptions);
+
+        let debugWebRequestsListener = new DebugWebRequestsListener();
+
+        debugWebRequestsListener.register(newWindow.webContents.session.webRequest);
+
+        newWindow.on('close', function(e) {
+            e.preventDefault();
+            newWindow.webContents.clearHistory();
+            newWindow.webContents.session.clearCache(function() {
+                newWindow.destroy();
+            });
+        });
+
+        newWindow.on('closed', function() {
+
+            if(BrowserWindow.getAllWindows().length === 0) {
+                // determine if we need to quit:
+                log.info("No windows left. Quitting app.");
+                app.quit();
+
+            }
+
+        });
+
+        newWindow.webContents.on('new-window', function(e, url) {
+            e.preventDefault();
+            shell.openExternal(url);
+        });
+
+        newWindow.webContents.on('will-navigate', function(e, url) {
+            e.preventDefault();
+            shell.openExternal(url);
+        });
+
+        newWindow.once('ready-to-show', () => {
+            //newWindow.maximize();
+            //newWindow.show();
+
+        });
+
+        newWindow.webContents.on('did-fail-load', function(event, errorCode, errorDescription, validateURL, isMainFrame) {
+
+            log.info("did-fail-load: " , {event, errorCode, errorDescription, validateURL, isMainFrame}, event);
+
+            // FIXME: figure out how to fail properly and have unit tests
+            // setup for this situation.
+
+        });
+
+        newWindow.webContents.on('did-start-loading', async function() {
+            log.info("did-start-loading: ");
+            await configureBrowser(newWindow);
+        });
+
+
+        newWindow.webContents.on('did-finish-load', async function() {
+            log.info("did-finish-load: ");
+
+            // TODO: I don't remember why this needs setTimeout but we should
+            // try without it and see if it introduces any problems. If it does
+            // cause a problem we need to document why setTimeout is used.
+            setTimeout(async function() {
+                await captureHTML(url, newWindow);
+            }, 1);
+
+
+        });
+
+        return newWindow;
+
+    }
+
+
+}
+
+app.on('ready', function() {
+
+    (async () => {
+
+        await diskDatastore.init();
+
+        Logger.init(diskDatastore.logsDir);
+
+        //let url = "http://thehill.com/homenews/administration/392430-trump-i-want-americans-to-listen-to-me-like-north-koreans-listen-to";
+        //let url = "https://www.whatismyscreenresolution.com/";
+        //let url = "https://thinkprogress.org/trump-lied-in-statement-about-russian-meeting-224345b768e3/";
+
+        let url = Cmdline.getURLArg(process.argv);
+
+        if(! url) {
+            throw new Error("URL required");
+        }
+
+        let capture = new Capture(url);
+
+        await capture.execute();
+
+    })().catch(err => log.error(err));
 
 });

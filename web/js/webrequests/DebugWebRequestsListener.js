@@ -29,7 +29,7 @@ class DebugWebRequestsListener extends BaseWebRequestsListener {
      * Called when we receive an event.  All the events give us a 'details'
      * object.
      */
-    eventListener(name, details, callback) {
+    onWebRequestEvent(name, details, callback) {
 
         if(name === "onCompleted" || name === "onErrorOccurred") {
             // this request has already completed so is not considered against

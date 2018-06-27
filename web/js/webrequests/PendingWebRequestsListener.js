@@ -15,23 +15,33 @@ class PendingWebRequestsListener extends BaseWebRequestsListener {
          * @type {number}
          */
         this.pending = 0;
+
+        /**
+         * Registered event listeners that we would need to dispatch.
+         *
+         * @type {Array<Function>}
+         */
+        this.eventListeners = [];
+
     }
 
     /**
      * Called when we receive an event.  All the events give us a 'details'
      * object.
      */
-    eventListener(name, details, callback) {
+    onWebRequestEvent(name, details, callback) {
 
         if(name === "onCompleted" || name === "onErrorOccurred") {
             // this request has already completed so is not considered against
             // pending any longer
             --this.pending;
+            this.dispatchEventListeners({pending: this.pending});
         }
 
         if(name === "onBeforeRequest") {
             // after this request the pending will be incremented.
             ++this.pending;
+            this.dispatchEventListeners({pending: this.pending});
         }
 
         if(callback) {
@@ -40,6 +50,20 @@ class PendingWebRequestsListener extends BaseWebRequestsListener {
             callback({cancel: false});
         }
 
+    }
+
+    /**
+     *
+     * @param eventListener {Function}
+     */
+    addEventListener(eventListener) {
+        this.eventListeners.push(eventListener);
+    }
+
+    dispatchEventListeners(event) {
+        this.eventListeners.forEach(eventListener => {
+            eventListener(event);
+        })
     }
 
 }

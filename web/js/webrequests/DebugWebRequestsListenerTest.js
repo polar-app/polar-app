@@ -10,7 +10,7 @@ describe('DebugWebRequestsListener', function() {
     describe('Test method call', function() {
 
         it("basic", function () {
-            new DebugWebRequestsListener().eventListener({ test: "test" })
+            new DebugWebRequestsListener().onWebRequestEvent({ test: "test" })
         });
 
     });

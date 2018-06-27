@@ -9,7 +9,7 @@ class BaseWebRequestsListener {
      * Called when we receive an event.  All the events give us a 'details'
      * object.
      */
-    eventListener(name, details, callback) {
+    onWebRequestEvent(name, details, callback) {
 
     }
 
@@ -33,7 +33,7 @@ class BaseWebRequestsListener {
         eventRegisterFunctions.forEach((eventRegisterFunction) => {
             let functionName = eventRegisterFunction.name;
             eventRegisterFunction = eventRegisterFunction.bind(webRequest);
-            eventRegisterFunction(this.eventListener.bind(this, functionName));
+            eventRegisterFunction(this.onWebRequestEvent.bind(this, functionName));
         });
 
     }
