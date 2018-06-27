@@ -13,13 +13,33 @@ const log = Logger.create();
  */
 class DebugWebRequestsListener {
 
+    constructor() {
+
+        /** The number of pending requests
+         *
+         * @type {number}
+         */
+        this.pending = 0;
+    }
+
     /**
      * Called when we receive an event.  All the events give us a 'details'
      * object.
      */
     eventListener(name, details, callback) {
 
-        log.info(`${name}: `, JSON.stringify(details, null, "  "));
+        if(name === "onCompleted" || name === "onErrorOccurred") {
+            // this request has already completed so is not considered against
+            // pending any longer
+            --this.pending;
+        }
+
+        log.info(`${name} (pending=${this.pending}): `, JSON.stringify(details, null, "  "));
+
+        if(name === "onBeforeRequest") {
+            // after this request the pending will be incremented.
+            ++this.pending;
+        }
 
         if(callback) {
             // the callback always has to be used or the requests will be
@@ -48,7 +68,8 @@ class DebugWebRequestsListener {
 
         eventRegisterFunctions.forEach((eventRegisterFunction) => {
             eventRegisterFunction = eventRegisterFunction.bind(webRequest);
-            eventRegisterFunction(this.eventListener.bind(this, eventRegisterFunction.name));
+            let functionName = ("" + eventRegisterFunction.name).replace("bound ", "");
+            eventRegisterFunction(this.eventListener.bind(this, functionName));
         });
 
         console.log(webRequest);
