@@ -2,6 +2,8 @@
 
 ## Next
 
+- the logger should include the class that's calling it.  I can use argumetns.callee  I think..
+
 - file a bug about text selecton on chrome vs firefox.
 
 - clean up the input page so that it uses whitespace better

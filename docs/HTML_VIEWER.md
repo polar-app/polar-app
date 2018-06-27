@@ -1,6 +1,39 @@
 # TODO:
 
-- Highlights DO NOT work when viewing the document at 150%.
+- iframes have the following problems:
+
+    - some aren't loaded by default.  they are loaded when we scroll to them,
+      not when the page is loaded.  this means we have to paginate BUT the problme
+      is that if we DO paginate , soem sites have infinite scrolling.  So we will
+      be constantly and infinitely paginating.  I would need to detect when this
+      is happening.
+
+        - infinite scrolling can be prevented by not allowing the document to
+          grow more than 2.5x higher than the original scrollHeight.
+
+        - we can use window.scrollBy for this functionality.  What I could do
+          is scroll by say 90% of the viewport.
+
+            - key bindings might be needed though and generating a key event
+              because some scripts might require this to trigger their event
+              handlers
+
+     - I can listen to requets by using webContents.session.webRequest
+
+
+- Highlights DO NOT work when viewing the document at 150%.  The positions are
+  wrong.  It might be CREATING them though.. not updating them.
+
+- A better way to create highlights could be to create my own copy of the underlying
+  element, and then create three layers.
+
+    - the base layer is still there but 100% hidden.
+    - a new layer on top of the original text
+       - this has a background 'highlight layer'
+       - then a new layer on top of this one which is transparent and has just
+         the text.
+
+    - this would enable us to have black text without any opacity.
 
 - I think we should NOT serve X-Frame-Options.  Ever.  It wouldn't actually ever
   yield a positive outcome:

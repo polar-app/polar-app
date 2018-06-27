@@ -56665,6 +56665,7 @@ var Logger = function () {
          * using.
          */
         value: function create() {
+            //console.log("FIXME: : " + new Error().stack);
             return log;
         }
     }, {
@@ -56685,13 +56686,13 @@ var Logger = function () {
 
             // *** configure console
             log.transports.console.level = "info";
-            log.transports.console.format = "[{y}-{m}-{d} {h}:{i}:{s}.{ms}] [{level}] {text}";
+            log.transports.console.format = "[{y}-{m}-{d} {h}:{i}:{s}.{ms} {z}] [{level}] {text}";
 
             // *** configure file
 
             // set the directory name properly
             log.transports.file.file = logsDir + "/polar.log";
-            log.transports.file.format = "[{y}-{m}-{d} {h}:{i}:{s}.{ms}] [{level}] {text}";
+            log.transports.file.format = "[{y}-{m}-{d} {h}:{i}:{s}.{ms} {z}] [{level}] {text}";
 
             log.transports.file.level = "info";
             log.transports.file.appName = "polar";

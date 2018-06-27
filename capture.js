@@ -16,9 +16,9 @@ const {Filenames} = require("./web/js/util/Filenames");
 const {Functions} = require("./web/js/util/Functions");
 const {DiskDatastore} = require("./web/js/datastore/DiskDatastore");
 const {Args} = require("./web/js/electron/capture/Args");
-const {ArgsParser} = require("./web/js/util/ArgsParser");
 const {BrowserWindows} = require("./web/js/capture/BrowserWindows");
 const Browsers = require("./web/js/capture/Browsers");
+const DebugWebRequestsListener = require("./web/js/webrequests/DebugWebRequestsListener").DebugWebRequestsListener;
 
 async function createWindow(url) {
 
@@ -28,6 +28,10 @@ async function createWindow(url) {
     debug("Using browserWindowOptions: " + browserWindowOptions);
 
     let newWindow = new BrowserWindow(browserWindowOptions);
+
+    let debugWebRequestsListener = new DebugWebRequestsListener();
+
+    debugWebRequestsListener.register(newWindow.webContents.session.webRequest);
 
     newWindow.on('close', function(e) {
         e.preventDefault();
@@ -121,7 +125,8 @@ async function configureBrowser(window) {
     function configureBrowserWindowSize(windowSize) {
 
         // TODO: see if I have already redefined it.  the second time fails
-        // because I can't redefine a property.
+        // because I can't redefine a property.  I don't think there is a way
+        // to find out if it's already defined though.
 
         let definitions = [
             {key: "width",       value: windowSize.width},

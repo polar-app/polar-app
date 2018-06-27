@@ -1,5 +1,7 @@
 
 
+
+
 class ContentCapture {
 
     // FIXME: remove meta http-equiv Location redirects.
@@ -13,11 +15,13 @@ class ContentCapture {
     /**
      * Capture the page as HTML so that we can render it static.
      */
-    static captureHTML() {
+    static captureHTML(cloneDoc) {
 
         // FIXME: include a fingerprint in the output JSON which should probably
         // be based on the URL.
 
+        // TODO: store many of these fields in the HTML too because the iframes
+        // need to have the same data
         let result = {
 
             // TODO: capture HTML metadata including twitter card information
@@ -39,7 +43,9 @@ class ContentCapture {
 
         };
 
-        let cloneDoc = document.cloneNode(true);
+        if(! cloneDoc) {
+            cloneDoc = document.cloneNode(true);
+        }
 
         let mutations = {
             scriptsRemoved: 0,
@@ -120,11 +126,48 @@ class ContentCapture {
 
         mutations.showAriaHidden = ContentCapture.cleanupShowAriaHidden(cloneDoc);
 
+        // TODO: this is disabled for now as I need initial tests for this to work
+        //mutations.iframesInlined = ContentCapture.cleanupInlineIframes(cloneDoc);
+
         result.mutations = mutations;
         result.content = ContentCapture.toOuterHTML(cloneDoc);
 
         return result;
 
+    }
+
+    static cleanupInlineIframes(cloneDoc) {
+
+        // TODO: these stats aren't merged across all iframes recursively.  nor
+        // do we have stats for them all.  I could pass one object around with
+        // stats per URL and possibly nest the objects into a tree.
+        let result = {
+
+        };
+
+        // TODO: this code SHOULD work but I need more real world tests and I
+        // need to get pagination to work.
+
+        cloneDoc.querySelectorAll("iframe").forEach(function (iframe) {
+
+            if(iframe.contentDocument) {
+                console.log("Working with: ", iframe);
+                cloneDoc = iframe.contentDocument.cloneNode(true);
+                let capturedFrame = ContentCapture.captureHTML(cloneDoc);
+                iframe.setAttribute("src", ContentCapture.toHTMLDataURL(capturedFrame.content));
+                result[capturedFrame.href] = capturedFrame;
+            } else {
+                console.log("Skipping iframe: ", iframe);
+            }
+
+        });
+
+        return result;
+
+    }
+
+    static toHTMLDataURL(content) {
+        return 'data:text/html,' + encodeURIComponent(content);
     }
 
     static cleanupShowAriaHidden(cloneDoc) {
