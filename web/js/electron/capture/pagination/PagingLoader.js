@@ -5,7 +5,7 @@
  * these though so we should paginate through the page until it's fully
  * rendered.
  */
-class PaginationLoader {
+class PagingLoader {
 
     constructor(pagingBrowser) {
         this.pagingBrowser = pagingBrowser;
@@ -52,6 +52,13 @@ class PaginationLoader {
      * height.
      */
     isFullyPaginated() {
+
+    }
+
+    /**
+     * Called when we're completely finished loading the page.
+     */
+    onPagingFinished() {
 
     }
 

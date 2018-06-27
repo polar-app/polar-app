@@ -7,20 +7,15 @@ class MockPagingBrowser extends PagingBrowser {
 
     constructor() {
         super();
-        this._scrollPosition = null;
-        this._scrollBox = null;
+        this._state = null;
     }
 
-    async pageDown() {
-        return super.pageDown();
+    setState(state) {
+        this._state = state;
     }
 
-    async scrollPosition() {
-        return this._scrollPosition;
-    }
-
-    async scrollBox() {
-        return this._scrollBox;
+    async state() {
+        return this._state;
     }
 
 }
