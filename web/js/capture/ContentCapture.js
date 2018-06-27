@@ -4,9 +4,11 @@
 
 class ContentCapture {
 
-    // FIXME: remove meta http-equiv Location redirects.
+    // FIXME: remove meta http-equiv Location redirects from the raw HTML.
+
     // FIXME: don't allow meta charset and other ways to set the charset within the
     //        HTML file as we are ALWAYS UTF-8
+
     // FIXME: <script> within SVG also needs to be stripped!
 
     // FIXME: children iframes need to be encoded as data URLs recursively or
@@ -25,7 +27,8 @@ class ContentCapture {
         let result = {
 
             // TODO: capture HTML metadata including twitter card information
-            // which we could show in the UL.
+            // which we could show in the UI.  Since we are capturing the whole
+            // HTML though we could do this at any time in the future.
 
             title: document.title,
 

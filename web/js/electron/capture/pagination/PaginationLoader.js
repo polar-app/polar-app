@@ -1,0 +1,58 @@
+/**
+ * Many modern pages need to be paginated to be fully loaded.  They do this
+ * for performance reasons because many people never read past the first page
+ * and this allows them to skip loading iframes that aren't shown.  We need
+ * these though so we should paginate through the page until it's fully
+ * rendered.
+ */
+class PaginationLoader {
+
+    constructor(pagingBrowser) {
+        this.pagingBrowser = pagingBrowser;
+    }
+
+    /**
+     * Called when the page is fully loaded the first time.
+     */
+    onLoad() {
+
+        // TODO: get the initial scroll height.
+
+    }
+
+    /**
+     * Called when the page is fully loaded.
+     *
+     * - we have gone through all necessary pages (or hit the cap)
+     * - all resources have loaded
+     *
+     */
+    onFullyLoaded() {
+
+    }
+
+    /**
+     * Called every time web requests have completed.  This is necessary to
+     * decide if we need to keep paginating forward.
+     */
+    onWebRequestsCompleted() {
+
+    }
+
+    /**
+     * Trigger the browser window to page down.
+     */
+    doPageDown() {
+
+    }
+
+    /**
+     * Return true if the browser window is fully paginated or we have a
+     * document which is now too long when compared to the initial scroll
+     * height.
+     */
+    isFullyPaginated() {
+
+    }
+
+}

@@ -316,10 +316,6 @@ app.on('ready', function() {
 
         Logger.init(diskDatastore.logsDir);
 
-        //let url = "http://thehill.com/homenews/administration/392430-trump-i-want-americans-to-listen-to-me-like-north-koreans-listen-to";
-        //let url = "https://www.whatismyscreenresolution.com/";
-        //let url = "https://thinkprogress.org/trump-lied-in-statement-about-russian-meeting-224345b768e3/";
-
         let url = Cmdline.getURLArg(process.argv);
 
         if(! url) {
