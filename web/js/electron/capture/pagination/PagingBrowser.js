@@ -37,8 +37,8 @@ class PagingBrowser {
      *
      * This corresponds to:
      *
-     * - window.innerWidth
-     * - window.innerHeight
+     * width: window.innerWidth
+     * height: window.innerHeight
      *
      * @return {Promise<PagingState>}
      */
