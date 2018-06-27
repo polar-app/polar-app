@@ -20,6 +20,7 @@ const {WebView} = require("./view/WebView");
 const {SyntheticClock} = require("./time/SyntheticClock");
 const {MemoryDatastore} = require("./datastore/MemoryDatastore");
 const {Model} = require("./model.js");
+const {assertJSON} = require("./test/Assertions")
 
 //import * as utils from "./utils.js";
 
@@ -914,22 +915,6 @@ describe('testing model interaction', function() {
 
 
 });
-
-function assertJSON(actual,expected) {
-
-    // first convert both to JSON if necessary.
-    actual = toJSON(actual);
-    expected = toJSON(expected);
-
-    if ( actual !== expected) {
-        console.log(actual);
-    }
-
-    //assert.equal(actual,expected);
-
-    expect(expected).not.differentFrom(actual);
-
-}
 
 assert.deepJSON = function(actual,expected) {
 
