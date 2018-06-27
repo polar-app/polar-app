@@ -207,7 +207,7 @@ class Capture {
 
         this.url = url;
 
-        //this.pendingWebRequestsListener = new PendingWebRequestsListener();
+        this.pendingWebRequestsListener = new PendingWebRequestsListener();
         this.debugWebRequestsListener = new DebugWebRequestsListener();
 
         /**
@@ -245,9 +245,14 @@ class Capture {
      */
     async startCapture() {
 
+
         let pagingLoader = new PagingLoader(new DefaultPagingBrowser(this.window.webContents), async () => {
             await captureHTML(this.url, this.window);
         } );
+
+        this.pendingWebRequestsListener.addEventListener(pendingRequestEvent => {
+            pagingLoader.onPendingRequestsUpdate(pendingRequestEvent);
+        });
 
         await pagingLoader.onLoad();
 
@@ -262,9 +267,8 @@ class Capture {
 
         let newWindow = new BrowserWindow(browserWindowOptions);
 
-        //let debugWebRequestsListener = new DebugWebRequestsListener();
         this.debugWebRequestsListener.register(newWindow.webContents.session.webRequest);
-        //this.pendingWebRequestsListener.register(newWindow.webContents.session.webRequest);
+        this.pendingWebRequestsListener.register(newWindow.webContents.session.webRequest);
 
         newWindow.on('close', function(e) {
             e.preventDefault();
@@ -318,8 +322,10 @@ class Capture {
 
             // We get one webContents per frame so we have to listen to their
             // events too..
-            this.debugWebRequestsListener.register(event.sender.webContents.session.webRequest);
-            //this.pendingWebRequestsListener.register(event.sender.webContents.session.webRequest);
+
+            // FIXME: we can only have ONE event listener here which is frustrating...
+            //this.debugWebRequestsListener.register(event.sender.webContents.session.webRequest);
+            this.pendingWebRequestsListener.register(event.sender.webContents.session.webRequest);
 
             if(! this.windowConfigured) {
 
