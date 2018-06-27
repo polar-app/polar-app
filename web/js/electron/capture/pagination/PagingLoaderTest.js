@@ -41,8 +41,9 @@ describe('PagingLoader', function() {
 
             // *** pretend the first page is loaded
 
-            assert.equal(pagingLoader.requestsFinished, false);
+            assert.equal(pagingLoader.requestsFinished, true);
             pagingLoader.onPendingRequestsUpdate({pending: 1});
+            assert.equal(pagingLoader.requestsFinished, false);
             pagingLoader.onPendingRequestsUpdate({pending: 0});
             assert.equal(pagingLoader.requestsFinished, true);
 
@@ -100,8 +101,9 @@ describe('PagingLoader', function() {
 
             // *** pretend the first page is loaded
 
-            assert.equal(pagingLoader.requestsFinished, false);
+            assert.equal(pagingLoader.requestsFinished, true);
             pagingLoader.onPendingRequestsUpdate({pending: 1});
+            assert.equal(pagingLoader.requestsFinished, false);
 
             // *** now start loading
 

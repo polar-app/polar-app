@@ -37,7 +37,11 @@ class PagingLoader {
 
         this.pagingFinished = false;
 
-        this.requestsFinished = false;
+        // whether requests have finished. We should call this after the main
+        // page load which means that all requests have been properly loaded.
+        // we might have to re-think think in the future because it might be
+        // more ideal to have it paired with the entire loading lifecycle.
+        this.requestsFinished = true;
 
         this.finished = false;
 

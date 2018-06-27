@@ -56,8 +56,19 @@ async function configureBrowser(window) {
         ];
 
         definitions.forEach((definition) => {
+
             log.info(`Defining ${definition.key} as: ${definition.value}`);
-            Object.defineProperty(window.screen, definition.key, { get: function() { return definition.value }});
+
+            try {
+                Object.defineProperty(window.screen, definition.key, {
+                    get: function () {
+                        return definition.value
+                    }
+                });
+            } catch(e) {
+                log.warn(`Unable to define ${definition.key}`, e);
+            }
+
         });
 
     }
@@ -134,12 +145,6 @@ async function captureHTML(url, window) {
 
     let captured = await window.webContents.executeJavaScript("ContentCapture.captureHTML()");
 
-    // TODO: the inline system just doesn't work for now.
-    // if( ! args.noInline) {
-    //     let inlined = await inlineHTML(captured.url, captured.content);
-    //     captured.content = inlined;
-    // }
-
     // record the browser that was used to render this page.
     captured.browser = browser;
     captured.type = "chtml";
@@ -197,16 +202,24 @@ if(! browser) {
 class Capture {
 
     constructor(url) {
+
         this.url = url;
+
         this.pendingWebRequestsListener = null;
+
+        /**
+         *
+         * @type {Electron.BrowserWindow}
+         */
         this.window = null;
+
     }
 
     async execute() {
 
         this.pendingWebRequestsListener = new PendingWebRequestsListener();
 
-        this.window = await this.createWindow(this.url);
+        this.window = await this.createWindow();
 
         this.pendingWebRequestsListener.register(this.window.webContents.session.webRequest);
 
@@ -225,7 +238,17 @@ class Capture {
 
     }
 
-    async createWindow(url) {
+    /**
+     * Called when the onLoad handler is executed and we're ready to start the
+     * capture.
+     */
+    async startCapture() {
+
+        await captureHTML(this.url, this.window);
+
+    }
+
+    async createWindow() {
 
         // Create the browser window.
         let browserWindowOptions = BrowserWindows.toBrowserWindowOptions(browser);
@@ -282,29 +305,26 @@ class Capture {
 
         });
 
-        newWindow.webContents.on('did-start-loading', async function() {
+        newWindow.webContents.on('did-start-loading', function() {
+
             log.info("did-start-loading: ");
-            await configureBrowser(newWindow);
+
+            configureBrowser(newWindow)
+                .catch(err => log.error(err));
+
         });
 
-
-        newWindow.webContents.on('did-finish-load', async function() {
+        newWindow.webContents.on('did-finish-load', () => {
             log.info("did-finish-load: ");
 
-            // TODO: I don't remember why this needs setTimeout but we should
-            // try without it and see if it introduces any problems. If it does
-            // cause a problem we need to document why setTimeout is used.
-            setTimeout(async function() {
-                await captureHTML(url, newWindow);
-            }, 1);
-
+            this.startCapture()
+                .catch(err => log.error(err));
 
         });
 
         return newWindow;
 
     }
-
 
 }
 
