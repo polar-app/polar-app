@@ -1,7 +1,15 @@
 # TODO:
 
-- annotations are doubling up on top of themselves so we're getting incorrect
-  opacity.
+- I think we should NOT serve X-Frame-Options.  Ever.  It wouldn't actually ever
+  yield a positive outcome:
+
+    https://www.whitehatsec.com/blog/x-frame-options-xfo-detection-from-javascript/
+
+- some text highlights are getting expanded when the second half of the content
+  is being rendered.
+
+- text highlights are doubling up on top of themselves so we're getting
+  incorrect opacity.
 
 - iframe URLs within the main page are not handled and they can have 'script'
   there which needs to be resolved.  This mostly impacts ads right now so
