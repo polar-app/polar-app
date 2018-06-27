@@ -91,7 +91,6 @@ describe('PagingBrowser', function() {
 
         });
 
-
         it("paging", async function () {
 
             let mockPagingBrowser = new MockPagingBrowser();

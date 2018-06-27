@@ -5,13 +5,6 @@ const Point = require("./Point").Point;
 
 class PagingBrowser {
 
-    /**
-     * Trigger the browser window to page down.
-     */
-    async pageDown() {
-
-
-    }
 
     /**
      * Get the current state of the page. This is called as an atomic method
@@ -53,11 +46,36 @@ class PagingBrowser {
         throw new Error("not implemented");
     }
 
+    /**
+     * Tell the browser to scroll to the given scroll position
+     * @param scrollPosition {Point}
+     * @return {Promise<void>}
+     */
+    async scrollToPosition(scrollPosition) {
+        throw new Error("not implemented");
+    }
+
+    /**
+     * Trigger the browser window to page down.
+     *
+     * @return {Promise<void>}
+     */
+    async pageDown() {
+
+        let state = await this.state();
+
+        let newScrollPosition = this.computePageDownScrollPosition(state);
+
+        return this.scrollToPosition(newScrollPosition);
+
+    }
 
     /**
      * Return true if the browser window is fully paginated or we have a
      * document which is now too long when compared to the initial scroll
      * height.
+     *
+     * @return {boolean}
      */
     fullyPaginated(state) {
         let visualScrollPercentage = this.visualScrollPercentage(state);

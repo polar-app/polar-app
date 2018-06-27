@@ -16,31 +16,23 @@ class MockPagingBrowser extends PagingBrowser {
     }
 
     /**
-     * Trigger the browser window to page down.
      * @Override
-     * @return {Promise<void>}
+     * @return {Promise<null|*>}
      */
-    async pageDown() {
+    async state() {
+        return this._state;
+    }
+
+    async scrollToPosition(scrollPosition) {
 
         let state = await this.state();
 
         // don't mutate the existing state by side effect
         state = Objects.duplicate(state);
 
-        let pageDownScrollPosition = this.computePageDownScrollPosition(state);
-
-        state.scrollPosition.y = pageDownScrollPosition.y;
-
+        state.scrollPosition = scrollPosition;
         this.setState(state);
 
-    }
-
-    /**
-     * @Override
-     * @return {Promise<null|*>}
-     */
-    async state() {
-        return this._state;
     }
 
 }
