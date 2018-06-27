@@ -4,15 +4,10 @@ const Logger = require("../logger/Logger").Logger;
 const log = Logger.create();
 
 /**
- * A simple debug web requests listener which just traces the output so that we
- * can better understand the event flow.
- *
- * Main API documentation is here:
- *
- * https://electronjs.org/docs/api/web-request
+ * Tracks the number of pending requests.
  *
  */
-class DebugWebRequestsListener extends BaseWebRequestsListener {
+class PendingWebRequestsListener extends BaseWebRequestsListener {
 
     constructor() {
 
@@ -37,8 +32,6 @@ class DebugWebRequestsListener extends BaseWebRequestsListener {
             --this.pending;
         }
 
-        log.info(`${name} (pending=${this.pending}): `, JSON.stringify(details, null, "  "));
-
         if(name === "onBeforeRequest") {
             // after this request the pending will be incremented.
             ++this.pending;
@@ -54,4 +47,4 @@ class DebugWebRequestsListener extends BaseWebRequestsListener {
 
 }
 
-module.exports.DebugWebRequestsListener = DebugWebRequestsListener;
+module.exports.PendingWebRequestsListener = PendingWebRequestsListener;
