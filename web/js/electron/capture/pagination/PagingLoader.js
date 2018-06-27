@@ -49,15 +49,6 @@ class PagingLoader {
     }
 
     /**
-     * Return true if the browser window is fully paginated or we have a
-     * document which is now too long when compared to the initial scroll
-     * height.
-     */
-    isFullyPaginated() {
-
-    }
-
-    /**
      * Called when we're completely finished loading the page.
      */
     onPagingFinished() {

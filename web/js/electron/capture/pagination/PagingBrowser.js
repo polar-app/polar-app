@@ -1,6 +1,8 @@
 /**
  * A browser that implements paging of the UI.
  */
+const Point = require("./Point").Point;
+
 class PagingBrowser {
 
     /**
@@ -51,6 +53,17 @@ class PagingBrowser {
         throw new Error("not implemented");
     }
 
+
+    /**
+     * Return true if the browser window is fully paginated or we have a
+     * document which is now too long when compared to the initial scroll
+     * height.
+     */
+    fullyPaginated(state) {
+        let visualScrollPercentage = this.visualScrollPercentage(state);
+        return visualScrollPercentage.height >= 100;
+    }
+
     /**
      * Compute the next scroll position as if the user was paging down.
      *
@@ -58,34 +71,14 @@ class PagingBrowser {
      */
     computePageDownScrollPosition(state) {
 
-        let maxScrollPositions = {
-            x: state.scrollBox.width - state.viewportBox.width,
-            y: state.scrollBox.height - state.viewportBox.height
-        };
-
-        let result = {
-            // x is always zero as we are not scrolling horizontally for now.
-            x: 0,
-
-            y: Math.min(state.scrollPosition.y + (state.viewportBox.height * 0.9), state.scrollBox.height)
-        }
-
-    }
-
-    /**
-     *
-     * @param state {PagingState}
-     * @return {Point}
-     */
-    computePageDownScrollPosition(state) {
-
         let maxScrollPositions = this.computeMaxScrollPositions(state);
 
-        let result = {
+        return new Point({
             // x is always zero as we are not scrolling horizontally for now.
             x: 0,
+
             y: Math.min(state.scrollPosition.y + (state.viewportBox.height * 0.9), maxScrollPositions.y)
-        }
+        });
 
     }
 
@@ -108,11 +101,10 @@ class PagingBrowser {
      * the percentage of the page that is scrolled for the width and height
      * dimensions.
      *
-     * @return {Promise<BasicBox>}
+     * @param state {PagingState}
+     * @return {BasicBox}
      */
-    async visualScrollPercentage() {
-
-        let state = await this.state();
+    visualScrollPercentage(state) {
 
         return {
             width: PagingBrowser.perc(state.scrollPosition.x + state.viewportBox.width, state.scrollBox.width),

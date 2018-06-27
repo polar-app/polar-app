@@ -1,13 +1,19 @@
 class Point {
 
-    /**
-     *
-     * @param x number
-     * @param y number
-     */
-    constructor(x, y) {
-        this.x = x;
-        this.y = y;
+    constructor(obj) {
+
+        /**
+         * @type number
+         */
+        this.x = undefined;
+
+        /**
+         * @type number
+         */
+        this.y = undefined;
+
+        Object.assign(this, obj);
+
     }
 
 }
