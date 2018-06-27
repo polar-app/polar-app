@@ -1,4 +1,3 @@
-const $ = require('jquery')
 const {DocFormat} = require("./DocFormat");
 
 class HTMLFormat extends DocFormat {
@@ -63,7 +62,6 @@ class HTMLFormat extends DocFormat {
     currentScale() {
 
         let scale = parseFloat(document.querySelector("meta[name='polar-scale']").getAttribute("content"));
-        console.log("FIXME: scale: " + scale);
 
         return scale;
 

@@ -1,15 +1,23 @@
 # TODO:
 
+- Highlights DO NOT work when viewing the document at 150%.
+
 - I think we should NOT serve X-Frame-Options.  Ever.  It wouldn't actually ever
   yield a positive outcome:
 
     https://www.whitehatsec.com/blog/x-frame-options-xfo-detection-from-javascript/
 
 - some text highlights are getting expanded when the second half of the content
-  is being rendered.
+  is being rendered.  ... as well as overlapped.  The document:
 
-- text highlights are doubling up on top of themselves so we're getting
-  incorrect opacity.
+    "Announcing TypeScript support in Electron"
+
+    That I was reading is a good example of this problem.  I can now test for
+    this I think but I could also pull out the raw rects and write a test
+    for that data.
+
+    - text highlights are doubling up on top of themselves so we're getting
+      incorrect opacity.
 
 - iframe URLs within the main page are not handled and they can have 'script'
   there which needs to be resolved.  This mostly impacts ads right now so

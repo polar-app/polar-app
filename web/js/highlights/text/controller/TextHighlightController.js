@@ -1,4 +1,5 @@
 const $ = require('jquery');
+const Logger = require("../../../logger/Logger").Logger;
 const {TextHighlightRecords} = require("../../../metadata/TextHighlightRecords");
 const {TextHighlighterFactory} = require("./TextHighlighterFactory");
 const {TextHighlightRows} = require("./TextHighlightRows");
@@ -7,6 +8,8 @@ const {TextExtracter} = require("./TextExtracter");
 const {KeyEvents} = require("../../../KeyEvents.js");
 const {DocFormatFactory} = require("../../../docformat/DocFormatFactory");
 const {ipcRenderer} = require('electron')
+
+const log = Logger.create();
 
 class TextHighlightController {
 
@@ -32,7 +35,7 @@ class TextHighlightController {
     }
 
     onDocumentLoaded() {
-        console.log("TextHighlightController.onDocumentLoaded: ", this.model.docMeta);
+        log.info("TextHighlightController.onDocumentLoaded: ", this.model.docMeta);
         this.textHighlighter = this.createTextHighlighter();
     }
 
@@ -80,13 +83,13 @@ class TextHighlightController {
             manual: true,
 
             onBeforeHighlight: function (range) {
-                //console.log("onBeforeHighlight range: ", range);
+                //log.info("onBeforeHighlight range: ", range);
                 return true;
             }.bind(this),
 
             onAfterHighlight: function (range, highlightElements) {
-                // console.log("onAfterHighlight range: ", range);
-                // console.log("onAfterHighlight hlts: ", highlightElements);
+                // log.info("onAfterHighlight range: ", range);
+                // log.info("onAfterHighlight hlts: ", highlightElements);
 
                 let id = sequence++;
                 let highlightClazz = "text-highlight-" + id;
@@ -98,10 +101,16 @@ class TextHighlightController {
 
                 controller.onTextHighlightCreated("." + highlightClazz)
 
+                // the underlying <span> highlights need to be removed now.
+
+                log.info("Removing highlights now");
+                this.textHighlighter.removeHighlights();
+
             }.bind(this),
 
             onRemoveHighlight: function (hlt) {
-                // console.log("onRemoveHighlight hlt: ", hlt);
+                log.info("onRemoveHighlight hlt: ", hlt);
+                return true;
             }
 
         };
@@ -118,19 +127,19 @@ class TextHighlightController {
      */
     onTextHighlightDeleted(commandEvent) {
 
-        console.log("Deleting text highlight from model: ", commandEvent);
+        log.info("Deleting text highlight from model: ", commandEvent);
 
         // should we just send this event to all the the windows?
         commandEvent.matchingSelectors[".text-highlight"].annotationDescriptors.forEach(annotationDescriptor => {
 
-            console.log("Deleting annotationDescriptor: ", JSON.stringify(annotationDescriptor, null, "  "));
+            log.info("Deleting annotationDescriptor: ", JSON.stringify(annotationDescriptor, null, "  "));
 
             let pageMeta = this.model.docMeta.getPageMeta(annotationDescriptor.pageNum);
             delete pageMeta.textHighlights[annotationDescriptor.textHighlightId];
 
         });
 
-        console.log("Deleting text highlight");
+        log.info("Deleting text highlight");
 
     }
 
@@ -144,7 +153,7 @@ class TextHighlightController {
         // FIXME: I have to use the PageRedraw detector here... Actually.. the
         // VIEW is that needs to update, right
 
-        console.log("TextHighlightController.onTextHighlightCreated");
+        log.info("TextHighlightController.onTextHighlightCreated");
 
         let textHighlightRows = TextHighlightRows.createFromSelector(selector);
 
@@ -163,7 +172,7 @@ class TextHighlightController {
 
         pageMeta.textHighlights[textHighlightRecord.id] = textHighlightRecord.value;
 
-        console.log("Added text highlight to model");
+        log.info("Added text highlight to model");
 
     }
 
