@@ -71,3 +71,5 @@ class ScreenshotService {
     }
 
 }
+
+module.exports.ScreenshotService = ScreenshotService;

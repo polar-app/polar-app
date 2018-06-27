@@ -45,6 +45,10 @@
 - get the transaction logs working
 
 
+# Context Menu
+    - right click to download
+    - PDF links should automatically open in Polar.
+
 # Features
 
 - different 'types' of pagemarks including "ignore" and "read" types so that

@@ -1,7 +1,7 @@
 const electron = require('electron');
+const Logger = require("../logger/Logger").Logger;
 const ipcRenderer = electron.ipcRenderer;
-
-let log = new Logger()
+const log = Logger.create();
 
 /**
   */

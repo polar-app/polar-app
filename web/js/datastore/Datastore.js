@@ -5,7 +5,6 @@ module.exports.Datastore = class {
      * Init the datastore, potentially reading files of disk, the network, etc.
      */
     async init() {
-
     }
 
     /**
