@@ -32,8 +32,8 @@ class PagingBrowser {
      *
      * This corresponds to:
      *
-     *  - document.body.scrollWidth
-     *  - document.body.scrollHeight
+     *  width: document.body.scrollWidth
+     *  height: document.body.scrollHeight
      *
      *  viewportBox:
      *
@@ -62,10 +62,17 @@ class PagingBrowser {
         let state = await this.state();
 
         return {
-            width: 100 * (Math.ceil(state.scrollPosition.x + state.viewportBox.width) / state.scrollBox.width),
-            height: 100 * (Math.ceil(state.scrollPosition.y + state.viewportBox.height) / state.scrollBox.height)
+            width: PagingBrowser.perc(state.scrollPosition.x + state.viewportBox.width, state.scrollBox.width),
+            height: PagingBrowser.perc(state.scrollPosition.y + state.viewportBox.height, state.scrollBox.height)
         };
 
+    }
+
+    /**
+     * Percentage with upper bound of 100.
+     */
+    static perc(n, d) {
+        return Math.min(100 * (Math.ceil(n) / d), 100);
     }
 
 }

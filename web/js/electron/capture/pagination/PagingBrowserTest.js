@@ -43,6 +43,39 @@ describe('PagingBrowser', function() {
 
         });
 
+
+        it("real world", async function () {
+
+            let mockPagingBrowser = new MockPagingBrowser();
+
+            mockPagingBrowser.setState({
+
+                // the initial position after the page loads isn't scrolled.
+                scrollPosition: {
+                    x: 0,
+                    y: 10608.181640625,
+                },
+                scrollBox: {
+                    width: 646,
+                    height: 11566,
+                },
+                viewportBox: {
+                    width: 660,
+                    height: 958,
+                }
+
+            });
+
+            let visualScrollPercentage = await mockPagingBrowser.visualScrollPercentage()
+
+            Assertions.assertJSON(visualScrollPercentage, {
+                width: 100,
+                height: 100
+            });
+
+        });
+
+
     });
 
 });
