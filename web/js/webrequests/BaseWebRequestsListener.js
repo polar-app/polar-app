@@ -19,7 +19,6 @@ class BaseWebRequestsListener {
      * @param webRequest {Electron.WebRequest}
      */
     register(webRequest) {
-        console.log("FIXME: 00!!!!");
 
         const eventRegisterFunctions = [
             webRequest.onBeforeRedirect,

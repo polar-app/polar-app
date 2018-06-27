@@ -207,7 +207,8 @@ class Capture {
 
         this.url = url;
 
-        this.pendingWebRequestsListener = null;
+        //this.pendingWebRequestsListener = new PendingWebRequestsListener();
+        this.debugWebRequestsListener = new DebugWebRequestsListener();
 
         /**
          *
@@ -221,11 +222,7 @@ class Capture {
 
     async execute() {
 
-        this.pendingWebRequestsListener = new PendingWebRequestsListener();
-
         this.window = await this.createWindow();
-
-        this.pendingWebRequestsListener.register(this.window.webContents.session.webRequest);
 
         const loadURLOptions = {
 
@@ -267,6 +264,7 @@ class Capture {
 
         let debugWebRequestsListener = new DebugWebRequestsListener();
         debugWebRequestsListener.register(newWindow.webContents.session.webRequest);
+        //this.pendingWebRequestsListener.register(newWindow.webContents.session.webRequest);
 
         newWindow.on('close', function(e) {
             e.preventDefault();
@@ -312,9 +310,16 @@ class Capture {
 
         });
 
-        newWindow.webContents.on('did-start-loading', () => {
+        /**
+         */
+        newWindow.webContents.on('did-start-loading', (event) => {
 
-            log.info("did-start-loading: ", arguments);
+            console.log("Registering new webRequest listeners");
+
+            // We get one webContents per frame so we have to listen to their
+            // events too..
+            this.debugWebRequestsListener.register(event.sender.webContents.session.webRequest);
+            //this.pendingWebRequestsListener.register(event.sender.webContents.session.webRequest);
 
             if(! this.windowConfigured) {
 
