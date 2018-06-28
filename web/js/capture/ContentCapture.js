@@ -7,9 +7,6 @@ class ContentCapture {
 
     // FIXME: <script> within SVG also needs to be stripped!
 
-    // FIXME: children iframes need to be encoded as data URLs recursively or
-    // pre-cached and re-written.
-
     /**
      * Capture the page as HTML so that we can render it static.
      */

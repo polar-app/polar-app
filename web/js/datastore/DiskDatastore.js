@@ -23,6 +23,7 @@ class DiskDatastore extends Datastore {
         // the path to the stash directory
         this.stashDir = Paths.create(this.dataDir, "stash");
         this.logsDir = Paths.create(this.dataDir, "logs");
+        //this.cacheDir = Paths.create(this.dataDir, "cache");
 
         // TODO: migrate to Files
 
@@ -42,7 +43,7 @@ class DiskDatastore extends Datastore {
         return {
             dataDir: await this.createDirAsync(this.dataDir),
             stashDir: await this.createDirAsync(this.stashDir),
-            logsDir: await this.createDirAsync(this.logsDir)
+            logsDir: await this.createDirAsync(this.logsDir),
         };
 
     }

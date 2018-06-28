@@ -66,6 +66,7 @@
   "dependencies": {
     "@types/react": "^16.3.17",
     "@types/react-dom": "^16.0.6",
+    "adm-zip": "^0.4.11",
     "base58check": "^2.0.0",
     "bootstrap": "^4.1.1",
     "codemirror": "^5.38.0",
@@ -88,6 +89,7 @@
     "jquery": "^3.3.1",
     "jquery-contextmenu": "^2.6.4",
     "jquery.flowchart": "^1.1.0",
+    "jszip": "^3.1.5",
     "keccak": "^1.4.0",
     "markdown-plus": "^2.5.2",
     "marked": "^0.4.0",

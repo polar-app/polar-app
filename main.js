@@ -361,6 +361,7 @@ async function loadDoc(path, targetWindow) {
 
         descriptor = JSON.parse(descriptorJSON);
         delete descriptor.content;
+        delete descriptor.capturedDocuments;
 
         // convert it BACK to a JSON object so that we can keep the content stripped
         descriptorJSON = JSON.stringify(descriptor);

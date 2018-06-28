@@ -52615,14 +52615,23 @@ var Hashcodes = function () {
             Preconditions.assertNotNull(data, "data");
             return base58check.encode(createKeccakHash('keccak256').update(data).digest());
         }
+
+        /**
+         * Create a hashcode as a truncated SHA hashcode.
+         */
+
     }, {
         key: "createID",
-        value: function createID(obj) {
+        value: function createID(obj, len) {
+
+            if (!len) {
+                len = 10;
+            }
 
             var id = Hashcodes.create(JSON.stringify(obj));
 
             // truncate.  We don't need that much precision against collision.
-            return id.substring(0, 10);
+            return id.substring(0, len);
         }
     }]);
 
@@ -54329,6 +54338,7 @@ var DiskDatastore = function (_Datastore) {
         // the path to the stash directory
         _this.stashDir = Paths.create(_this.dataDir, "stash");
         _this.logsDir = Paths.create(_this.dataDir, "logs");
+        //this.cacheDir = Paths.create(this.dataDir, "cache");
 
         // TODO: migrate to Files
 
@@ -54367,13 +54377,19 @@ var DiskDatastore = function (_Datastore) {
 
                             case 8:
                                 _context.t2 = _context.sent;
+                                _context.next = 11;
+                                return this.createDirAsync(this.cacheDir);
+
+                            case 11:
+                                _context.t3 = _context.sent;
                                 return _context.abrupt("return", {
                                     dataDir: _context.t0,
                                     stashDir: _context.t1,
-                                    logsDir: _context.t2
+                                    logsDir: _context.t2,
+                                    cacheDir: _context.t3
                                 });
 
-                            case 10:
+                            case 13:
                             case "end":
                                 return _context.stop();
                         }
