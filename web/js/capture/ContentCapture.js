@@ -1,7 +1,3 @@
-
-
-
-
 class ContentCapture {
 
     // FIXME: remove meta http-equiv Location redirects from the raw HTML.
@@ -17,7 +13,40 @@ class ContentCapture {
     /**
      * Capture the page as HTML so that we can render it static.
      */
-    static captureHTML(cloneDoc) {
+    static captureHTML(contentDoc, result) {
+
+        if(! contentDoc) {
+            // this is the first document were working with.
+            contentDoc = document;
+        }
+
+        if(! result) {
+
+            result = {
+                capturedDocuments: [],
+                type: "chtml",
+                version: "2.0.0",
+                title: contentDoc.title,
+                url: contentDoc.location.href,
+            }
+
+        }
+
+        let cloneDoc = contentDoc.cloneNode(true);
+
+        let capturedDocument = ContentCapture.captureDoc(cloneDoc, contentDoc.location.href);
+
+        result.capturedDocuments.push(capturedDocument);
+
+        return result;
+
+    }
+
+    static captureDoc(cloneDoc, url) {
+
+        if(!cloneDoc) {
+            throw new Error("No cloneDoc");
+        }
 
         // FIXME: include a fingerprint in the output JSON which should probably
         // be based on the URL.
@@ -30,38 +59,40 @@ class ContentCapture {
             // which we could show in the UI.  Since we are capturing the whole
             // HTML though we could do this at any time in the future.
 
-            title: document.title,
+            title: cloneDoc.title,
 
             // The document href / location as loaded.
-            href: document.location.href,
-            url: document.location.href,
+            href: url,
+            url: url,
 
             // The scroll height of the document as it is currently rendered.
             // This is used as a hint for loading the static form of the
             // document.
-            scrollHeight: document.documentElement.scrollHeight,
+            scrollHeight: cloneDoc.documentElement.scrollHeight,
+
+            scrollBox: {
+                width: cloneDoc.documentElement.scrollWidth,
+                height: cloneDoc.documentElement.scrollHeight,
+            },
 
             // The content as an HTML string
-            content: null
+            content: null,
+
+            mutations: {
+                scriptsRemoved: 0,
+                eventAttributesRemoved: 0,
+                existingBaseRemoved: false,
+                baseAdded: false,
+                javascriptAnchorsRemoved: 0
+            }
 
         };
 
-        if(! cloneDoc) {
-            cloneDoc = document.cloneNode(true);
-        }
-
-        let mutations = {
-            scriptsRemoved: 0,
-            eventAttributesRemoved: 0,
-            existingBaseRemoved: false,
-            baseAdded: false,
-            javascriptAnchorsRemoved: 0
-        };
-
-        // remove the script elements as these are active.
+        // remove the script elements as these are active and we do not want
+        // them loaded in the future.
         cloneDoc.querySelectorAll("script").forEach(function (scriptElement) {
             scriptElement.parentElement.removeChild(scriptElement);
-            ++mutations.scriptsRemoved;
+            ++result.mutations.scriptsRemoved;
         });
 
         // make sure the script removal worked
@@ -79,7 +110,7 @@ class ContentCapture {
         if(base) {
             // remove the current 'base' if one exists...
             base.parentElement.removeChild(base);
-            mutations.existingBaseRemoved = true;
+            result.mutations.existingBaseRemoved = true;
         }
 
         // *** create a NEW base element for this HTML
@@ -94,7 +125,7 @@ class ContentCapture {
             cloneDoc.head.appendChild(base);
         }
 
-        mutations.baseAdded = true;
+        result.mutations.baseAdded = true;
 
         //***  add metadata into the HTML for polar
 
@@ -109,7 +140,7 @@ class ContentCapture {
             Array.from(element.attributes).forEach(function(attr) {
                 if(EVENT_ATTRIBUTES[attr.name]) {
                     element.removeAttribute(attr.name);
-                    ++mutations.eventAttributesRemoved;
+                    ++result.mutations.eventAttributesRemoved;
                 }
             });
 
@@ -122,18 +153,14 @@ class ContentCapture {
             let href = element.getAttribute("href");
             if(href && href.indexOf("javascript:") === 0) {
                 element.removeAttribute("href");
-                ++mutations.javascriptAnchorsRemoved;
+                ++result.mutations.javascriptAnchorsRemoved;
             }
 
         });
 
-        mutations.showAriaHidden = ContentCapture.cleanupShowAriaHidden(cloneDoc);
+        result.mutations.showAriaHidden = ContentCapture.cleanupShowAriaHidden(cloneDoc);
 
-        // TODO: this is disabled for now as I need initial tests for this to work
-        //mutations.iframesInlined = ContentCapture.cleanupInlineIframes(cloneDoc);
-
-        result.mutations = mutations;
-        result.content = ContentCapture.toOuterHTML(cloneDoc);
+        result.content = ContentCapture.toOuterHTML(cloneDoc)
 
         return result;
 
@@ -151,16 +178,22 @@ class ContentCapture {
         // TODO: this code SHOULD work but I need more real world tests and I
         // need to get pagination to work.
 
+
+        // FUCK !!! ahah1!! the cloneDoc DOES not have a content document
+        // because I imagine it's not cloned!!!
+
         cloneDoc.querySelectorAll("iframe").forEach(function (iframe) {
 
-            if(iframe.contentDocument) {
+            if(iframe.cloneDocument != null) {
+
                 console.log("Working with: ", iframe);
-                cloneDoc = iframe.contentDocument.cloneNode(true);
+                cloneDoc = iframe.cloneDocument.cloneNode(true);
                 let capturedFrame = ContentCapture.captureHTML(cloneDoc);
                 iframe.setAttribute("src", ContentCapture.toHTMLDataURL(capturedFrame.content));
                 result[capturedFrame.href] = capturedFrame;
+
             } else {
-                console.log("Skipping iframe: ", iframe);
+                console.log("Skipping iframe: " + iframe.outerHTML);
             }
 
         });
@@ -213,6 +246,7 @@ class ContentCapture {
                + (!doctype.publicId && doctype.systemId ? ' SYSTEM' : '')
                + (doctype.systemId ? ' "' + doctype.systemId + '"' : '')
                + '>';
+
     }
 
     static createMeta(name,content) {
@@ -238,9 +272,16 @@ class ContentCapture {
 
         // https://stackoverflow.com/questions/6088972/get-doctype-of-an-html-as-string-with-javascript
 
-        return ContentCapture.doctypeToOuterHTML(doc.doctype) +
-               "\n" +
-               doc.documentElement.outerHTML;
+        if(doc.doctype) {
+
+            return ContentCapture.doctypeToOuterHTML(doc.doctype) +
+                   "\n" +
+                   doc.documentElement.outerHTML;
+
+        } else {
+            return doc.documentElement.outerHTML;
+        }
+
 
     }
 

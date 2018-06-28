@@ -78,8 +78,16 @@ class PagingBrowser {
      * @return {boolean}
      */
     fullyPaginated(state) {
+
+        // FIXME: we do not currently take into consideration the current page
+        // and the last page.
+
+        // FIXME: we should pause on each page until the resources are loaded,
+        // then go to the next page but this would require another event.
+
         let visualScrollPercentage = this.visualScrollPercentage(state);
         return visualScrollPercentage.height >= 100;
+
     }
 
     /**

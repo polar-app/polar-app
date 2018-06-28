@@ -1,5 +1,15 @@
 # TODO:
 
+
+Refused to frame  because it violates the following Content Security Policy directive: "frame-src chromenull: https: webviewprogressproxy: medium: 'self'".
+
+- Iframe status:
+
+    - iframes export is harder than I thought:
+        - paging through the document works, and more resources are loaded.
+        - we can't call document.clone() because the iframe aren't cloned
+        - I will have to play around
+
 - iframes have the following problems:
 
     - some aren't loaded by default.  they are loaded when we scroll to them,
@@ -19,6 +29,38 @@
               handlers
 
      - I can listen to requets by using webContents.session.webRequest
+
+    - I need to write down ALL the problems I'm encountering
+
+    - I think the BEST way to do this could be to go through EVERY iframe and
+      include the HTML output in the .json file so that I can serve it via the
+      HTTP proxy. This would be easiest and then I dont' have to fuck around.
+
+      Basically, every sub-iframe would work too! I would rpobably want a way to
+      eventually preserve the HTTP headers but only electron has these for now.
+
+      I could add them back in though...
+
+    - I think I should:
+        - store ALL the html in the .json file with keys for the URL...
+            - redirects might be an issue though
+        - use cloneDoc again but keep a mapping between iframe element IDs in
+          the cloneDoc to the new document.
+
+        - store the same output that we had before...
+
+        - change the src URL in the cloneDoc to the document URL after the redirect
+          so I don't have to mess with redirects in the proxy.  i can just load
+          up the documetns as they are inline.
+
+        - the document can just get data-polar-iframe-src attributes for the mapping and then
+          these are updated in the final cloneDoc.
+
+
+    - research I need to do:
+
+        - does a documetn that is cloned have iframes with src attributes or
+          are these stripped?
 
 
 - Highlights DO NOT work when viewing the document at 150%.  The positions are
@@ -516,3 +558,6 @@ http://thehill.com/homenews/administration/392430-trump-i-want-americans-to-list
 
 - nytimes has a "show full article" toggle
    - plus I have to scroll down the page to see the images.
+
+
+

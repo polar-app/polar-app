@@ -149,8 +149,6 @@ async function captureHTML(url, window) {
 
     // record the browser that was used to render this page.
     captured.browser = browser;
-    captured.type = "chtml";
-    captured.version = "1.0.0";
 
     captured = prettifyCaptured(captured);
 
@@ -245,9 +243,19 @@ class Capture {
      */
     async startCapture() {
 
+        let pagingBrowser = new DefaultPagingBrowser(this.window.webContents);
 
-        let pagingLoader = new PagingLoader(new DefaultPagingBrowser(this.window.webContents), async () => {
-            await captureHTML(this.url, this.window);
+        let pagingLoader = new PagingLoader(pagingBrowser, async () => {
+
+            setTimeout(() => {
+
+                // capture within timeout just for debug purposes.
+                captureHTML(this.url, this.window)
+                    .catch(err => log.error(err));
+
+            }, 1);
+
+
         } );
 
         this.pendingWebRequestsListener.addEventListener(pendingRequestEvent => {
@@ -341,8 +349,14 @@ class Capture {
         newWindow.webContents.on('did-finish-load', () => {
             log.info("did-finish-load: ", arguments);
 
-            this.startCapture()
-                .catch(err => log.error(err));
+            setTimeout(() => {
+
+                // capture within timeout just for debug purposes.
+
+                this.startCapture()
+                    .catch(err => log.error(err));
+
+            }, 1);
 
         });
 
