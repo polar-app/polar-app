@@ -8,7 +8,7 @@
     "dist-linux": "electron-builder --config=electron-builder.yml --linux deb tar.gz snap --publish always --draft=false",
     "dist-macos": "electron-builder --config=electron-builder.yml --macos dmg --publish always --draft=false",
     "dist-win": "electron-builder --config=electron-builder.yml --win nsis portable --publish always --draft=false",
-    "test": "./node_modules/.bin/mocha --exit --recursive \"web/js/**/*Test.js\" test/**/*spec.js",
+    "test": "./node_modules/.bin/mocha-parallel-tests --max-parallel=1 --exit --recursive 'web/js/**/*Test.js' 'test/**/*spec.js'",
     "webpack": "npx webpack --config=webpack.config.js",
     "webpack-watch": "npx webpack --config=webpack.config.js --watch",
     "start-with-console": "./node_modules/.bin/electron --enable-remote-debugging --interactive --enable-console-logging ."
@@ -56,6 +56,8 @@
     "electron-builder": "^20.15.1",
     "jsdom": "^11.11.0",
     "mocha": "^5.2.0",
+    "mocha-isolation": "^0.1.5",
+    "mocha-parallel-tests": "^2.0.3",
     "source-map-loader": "^0.2.3",
     "spectron": "^3.8.0",
     "timekeeper": "^2.1.2",

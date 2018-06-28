@@ -55,7 +55,7 @@ describe('PHZ functionality', function() {
 
         let resource = ResourceFactory.create("http://example.com", "text/html");
 
-        phzWriter.writeResource(resource, "<html></html>");
+        await phzWriter.writeResource(resource, "<html></html>");
 
         await phzWriter.close();
 
@@ -72,11 +72,11 @@ describe('PHZ functionality', function() {
         let phzWriter = new PHZWriter(path);
         let resource = ResourceFactory.create("http://example.com", "text/html");
 
-        phzWriter.writeMetadata({
+        await phzWriter.writeMetadata({
             title: "this is the title"
         });
 
-        phzWriter.writeResource(resource, "<html></html>");
+        await phzWriter.writeResource(resource, "<html></html>");
         await phzWriter.close();
 
         let phzReader = new PHZReader(path);

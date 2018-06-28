@@ -22,7 +22,7 @@ class PHZWriter {
      * @param metadata
      * @return {PHZWriter}
      */
-    writeMetadata(metadata) {
+    async writeMetadata(metadata) {
         this.__write("metadata.json", JSON.stringify(metadata, null, "  "), "metadata");
         return this;
     }
@@ -34,7 +34,7 @@ class PHZWriter {
      * @param comment
      * @return {PHZWriter}
      */
-    writeResource(resource, content, comment) {
+    async writeResource(resource, content, comment) {
 
         // TODO: when writing the content  update the contentLength with the
         // binary storage used to represent the data as UTF-8...
@@ -83,7 +83,7 @@ class PHZWriter {
      * Save the new zip file to disk.
      * @return {Promise<void>}
      */
-    close() {
+    async close() {
 
         this.__writeResources();
 
