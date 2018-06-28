@@ -35,8 +35,19 @@ class ContentCapture {
         let cloneDoc = contentDoc.cloneNode(true);
 
         let capturedDocument = ContentCapture.captureDoc(cloneDoc, contentDoc.location.href);
-
         result.capturedDocuments.push(capturedDocument);
+
+        // now recurse into all the iframes in this doc and capture their HTML too.
+        contentDoc.querySelectorAll("iframe").forEach(function (iframe) {
+
+            if(iframe.contentDocument != null) {
+                console.log("Going to capture iframe: ", iframe.contentDocument.location.href);
+                ContentCapture.captureHTML(iframe.contentDocument, result);
+            } else {
+                console.log("Skipping iframe: " + iframe.outerHTML);
+            }
+
+        });
 
         return result;
 
@@ -184,10 +195,10 @@ class ContentCapture {
 
         cloneDoc.querySelectorAll("iframe").forEach(function (iframe) {
 
-            if(iframe.cloneDocument != null) {
+            if(iframe.contentDocument != null) {
 
                 console.log("Working with: ", iframe);
-                cloneDoc = iframe.cloneDocument.cloneNode(true);
+                cloneDoc = iframe.contentDocument.cloneNode(true);
                 let capturedFrame = ContentCapture.captureHTML(cloneDoc);
                 iframe.setAttribute("src", ContentCapture.toHTMLDataURL(capturedFrame.content));
                 result[capturedFrame.href] = capturedFrame;
