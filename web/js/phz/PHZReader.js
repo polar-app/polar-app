@@ -92,6 +92,11 @@ class PHZReader {
         return await this._readAsBuffer(resourceEntry.path);
     }
 
+    async close() {
+        // we just have to let it GC
+        this.zip = null;
+    }
+
 }
 
 module.exports.PHZReader = PHZReader;

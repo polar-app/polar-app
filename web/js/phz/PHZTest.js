@@ -39,7 +39,7 @@ describe('PHZ functionality', function() {
 
         let phzWriter = new PHZWriter(path);
 
-        await phzWriter.save();
+        await phzWriter.close();
 
         assert.equal( await Files.existsAsync(path), true );
 
@@ -57,7 +57,7 @@ describe('PHZ functionality', function() {
 
         phzWriter.writeResource(resource, "<html></html>");
 
-        await phzWriter.save();
+        await phzWriter.close();
 
         assert.equal( await Files.existsAsync(path), true );
 
@@ -77,7 +77,7 @@ describe('PHZ functionality', function() {
         });
 
         phzWriter.writeResource(resource, "<html></html>");
-        await phzWriter.save();
+        await phzWriter.close();
 
         let phzReader = new PHZReader(path);
         await phzReader.init();
@@ -131,7 +131,7 @@ describe('PHZ functionality', function() {
         await Files.unlinkAsync(path);
 
         let phzWriter = new PHZWriter(path);
-        await phzWriter.save();
+        await phzWriter.close();
 
         let phzReader = new PHZReader(path);
         await phzReader.init();

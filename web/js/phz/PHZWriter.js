@@ -83,7 +83,7 @@ class PHZWriter {
      * Save the new zip file to disk.
      * @return {Promise<void>}
      */
-    save() {
+    close() {
 
         this.__writeResources();
 
