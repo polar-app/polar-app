@@ -79,6 +79,27 @@ describe('PHZ functionality', function() {
 
         let resources = await phzReader.getResources();
 
+        let expected = {
+            "entries": {
+                "1XKZEWhTwbtoPFSkR2TJ": {
+                    "id": "1XKZEWhTwbtoPFSkR2TJ",
+                    "path": "1XKZEWhTwbtoPFSkR2TJ.html",
+                    "resource": {
+                        "id": "1XKZEWhTwbtoPFSkR2TJ",
+                        "created": "2012-03-02T11:38:49.321Z",
+                        "meta": {},
+                        "url": "http://example.com",
+                        "contentType": "text/html",
+                        "headers": {},
+                        "title": null,
+                        "description": null
+                    }
+                }
+            }
+        };
+
+        assertJSON(resources, expected);
+
     });
 
 });
