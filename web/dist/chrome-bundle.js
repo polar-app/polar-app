@@ -54377,19 +54377,13 @@ var DiskDatastore = function (_Datastore) {
 
                             case 8:
                                 _context.t2 = _context.sent;
-                                _context.next = 11;
-                                return this.createDirAsync(this.cacheDir);
-
-                            case 11:
-                                _context.t3 = _context.sent;
                                 return _context.abrupt("return", {
                                     dataDir: _context.t0,
                                     stashDir: _context.t1,
-                                    logsDir: _context.t2,
-                                    cacheDir: _context.t3
+                                    logsDir: _context.t2
                                 });
 
-                            case 13:
+                            case 10:
                             case "end":
                                 return _context.stop();
                         }

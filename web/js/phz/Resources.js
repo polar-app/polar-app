@@ -1,24 +1,14 @@
-const {Resource} = require("./Resource");
-const {Hashcodes} = require("../Hashcodes");
 
 class Resources {
 
-    static create(url, contentType) {
+    constructor() {
 
-        let id = Hashcodes.createID(url, 20);
-        let created = new Date().toISOString();
-        let meta = {};
-        let headers = {};
-        return new Resource({id, url, created, meta, contentType, headers});
+        /**
+         *
+         * @type {Object<String,ResourceEntry>}
+         */
+        this.entries = {};
 
-    }
-
-    static contentTypeToExtension(contentType) {
-        if(contentType === "text/html") {
-            return "html";
-        } else {
-            return "dat";
-        }
     }
 
 }

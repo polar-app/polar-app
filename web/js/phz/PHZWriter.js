@@ -1,6 +1,8 @@
 const JSZip = require("jszip");
 const fs = require("fs");
+const {ResourceEntry} = require("./ResourceEntry");
 const {Resources} = require("./Resources");
+const {ContentTypes} = require("./ContentTypes");
 
 /**
  * Write to a new zip output stream.
@@ -10,14 +12,7 @@ class PHZWriter {
     constructor(path) {
         this.path = path;
         this.zip = new JSZip();
-        this.resources = {
-
-            /**
-             * The list of all resources.
-             */
-            entries: []
-
-        };
+        this.resources = new Resources();
 
     }
 
@@ -28,7 +23,7 @@ class PHZWriter {
      * @return {PHZWriter}
      */
     writeMetadata(metadata) {
-        this.__write("/metadata.json", JSON.stringify(metadata, null, "  "), "metadata");
+        this.__write("metadata.json", JSON.stringify(metadata, null, "  "), "metadata");
         return this;
     }
 
@@ -45,8 +40,13 @@ class PHZWriter {
             comment = "";
         }
 
+        let ext = ContentTypes.contentTypeToExtension(resource.contentType);
+        let path = `${resource.id}.${ext}`;
+
+        const resourceEntry = new ResourceEntry({id: resource.id, path, resource});
+
         // add this to the resources index.
-        this.resources.entries.push(resource);
+        this.resources.entries[resource.id] = resourceEntry;
 
         // *** write the metadata
 
@@ -54,16 +54,14 @@ class PHZWriter {
 
         // *** write the actual data
 
-        let ext = Resources.contentTypeToExtension(resource.contentType);
-        let resourcePath = `${resource.id}.${ext}`;
-        this.__write(resourcePath, content, comment);
+        this.__write(path, content, comment);
 
         return this;
 
     }
 
     __writeResources() {
-        this.__write("/resources.json", JSON.stringify(this.resources, null, "  "), "resources");
+        this.__write("resources.json", JSON.stringify(this.resources, null, "  "), "resources");
         return this;
     }
 
