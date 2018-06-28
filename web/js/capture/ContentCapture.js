@@ -37,6 +37,8 @@ class ContentCapture {
         // now recurse into all the iframes in this doc and capture their HTML too.
         contentDoc.querySelectorAll("iframe").forEach(function (iframe) {
 
+            // TODO: only work with http and https URLs.
+
             if(iframe.contentDocument != null) {
                 console.log("Going to capture iframe: ", iframe.contentDocument.location.href);
                 ContentCapture.captureHTML(iframe.contentDocument, result);

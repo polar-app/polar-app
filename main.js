@@ -388,8 +388,6 @@ async function loadDoc(path, targetWindow) {
 
     } else if(path.endsWith(".phz")) {
 
-        // FIXME: next steps is to load the metaata from the .phz file ...
-
         let cachedRequestsHolder = await cacheRegistry.registerFile(path);
 
         log.info("cachedRequestsHolder: " + JSON.stringify(cachedRequestsHolder));
@@ -399,10 +397,10 @@ async function loadDoc(path, targetWindow) {
 
         let cachedRequest = cachedRequestsHolder.cachedRequests[cachedRequestsHolder.metadata.url];
 
-        // FIXME for phz we should handle this differently and read the metadata
-        // from the PHZ file...
+        console.log("Going to load URL: " + cachedRequest.url);
 
         descriptor = cachedRequestsHolder.metadata;
+        let descriptorJSON = JSON.stringify(descriptor);
 
         // we don't need the content represented twice.
 
@@ -412,7 +410,7 @@ async function loadDoc(path, targetWindow) {
         // metadata / descriptors
         let fingerprint = Fingerprints.create(basename);
 
-        url = `http://${DEFAULT_HOST}:${WEBSERVER_PORT}/htmlviewer/index.html?file=${encodeURIComponent(cacheMeta.url)}&fingerprint=${fingerprint}&descriptor=${encodeURIComponent(descriptorJSON)}`;
+        url = `http://${DEFAULT_HOST}:${WEBSERVER_PORT}/htmlviewer/index.html?file=${encodeURIComponent(cachedRequest.url)}&fingerprint=${fingerprint}&descriptor=${encodeURIComponent(descriptorJSON)}`;
 
     }
 

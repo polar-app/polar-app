@@ -66,6 +66,8 @@ class CacheEntriesFactory {
 
         forDict(resources.entries, (key,resourceEntry) => {
 
+            let resource = resourceEntry.resource;
+
             let url = resourceEntry.resource.url;
 
             if(!url) {
@@ -74,10 +76,10 @@ class CacheEntriesFactory {
 
             let cacheEntry = new PHZCacheEntry({
                 url,
-                method: resourceEntry.method,
-                headers: resourceEntry.headers,
-                statusCode: resourceEntry.statusCode,
-                statusMessage: resourceEntry.statusMessage,
+                method: resource.method,
+                headers: resource.headers,
+                statusCode: resource.statusCode,
+                statusMessage: resource.statusMessage,
                 phzReader: cachingPHZReader,
                 resourceEntry: resourceEntry
             });
