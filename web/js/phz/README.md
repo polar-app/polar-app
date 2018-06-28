@@ -25,6 +25,9 @@ internally
 
 # TODO:
 
+- We can implement a CachedPHZReader that uses setTimeout to automatically close
+  the reader and re-open it if necessary...
+
 - jszip zeems like the better option.
 
 - the main downside of this library is that it does some synchronous IO...
@@ -42,5 +45,6 @@ internally
     way to compute the filename of the underlying data...
 
 - write resource.id-meta.json for the metadata around this specific resource.
+
 
 

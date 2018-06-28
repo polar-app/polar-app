@@ -2,6 +2,7 @@ const assert = require('assert');
 const url = require('url');
 const fs = require('fs');
 const {PHZWriter} = require("./PHZWriter");
+const {PHZReader} = require("./PHZReader");
 const {Resource} = require("./Resource");
 const {ResourceFactory} = require("./ResourceFactory");
 const {Files} = require("../util/Files");
@@ -62,5 +63,22 @@ describe('PHZ functionality', function() {
 
     });
 
+    it("Reading", async function () {
+
+        let path = "/tmp/test.phz";
+
+        await Files.unlinkAsync(path);
+
+        let phzWriter = new PHZWriter(path);
+        let resource = ResourceFactory.create("http://example.com", "text/html");
+        phzWriter.writeResource(resource, "<html></html>");
+        await phzWriter.save();
+
+        let phzReader = new PHZReader(path);
+        await phzReader.init();
+
+        let resources = await phzReader.getResources();
+
+    });
 
 });

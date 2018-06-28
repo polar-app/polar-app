@@ -36,6 +36,11 @@ class PHZWriter {
      */
     writeResource(resource, content, comment) {
 
+        // TODO: when writing the content  update the contentLength with the
+        // binary storage used to represent the data as UTF-8...
+
+        // TODO: verify that we store the data as UTF-8
+
         if (!comment) {
             comment = "";
         }

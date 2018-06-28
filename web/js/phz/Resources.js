@@ -1,4 +1,3 @@
-
 class Resources {
 
     constructor() {
