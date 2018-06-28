@@ -50,7 +50,6 @@ class CapturedPHZWriter {
         delete metadata.content;
         delete metadata.capturedDocuments;
         return metadata;
-
     }
 
 }

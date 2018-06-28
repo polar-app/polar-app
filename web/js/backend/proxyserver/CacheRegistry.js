@@ -1,7 +1,10 @@
 const path = require('path');
+const CachedRequestsHolder = require("./CachedRequestsHolder").CachedRequestsHolder;
 const {Preconditions} = require("../../Preconditions");
 const {Hashcodes} = require('../../Hashcodes');
 const {CacheEntriesFactory} = require('./CacheEntriesFactory');
+const {CacheMeta} = require('./CacheMeta');
+const {CachedRequest} = require('./CachedRequest');
 
 class CacheRegistry {
 
@@ -13,9 +16,26 @@ class CacheRegistry {
 
     }
 
-    registerFile(path) {
-        let diskCacheEntry = CacheEntriesFactory.createEntriesFromFile(path);
-        return this.register(diskCacheEntry);
+    /**
+     *
+     * @param path
+     * @return {Promise<CachedRequestsHolder>}
+     */
+    async registerFile(path) {
+
+        let cacheEntriesHolder = await CacheEntriesFactory.createEntriesFromFile(path);
+
+        let cachedRequestsHolder = new CachedRequestsHolder({
+            metadata: cacheEntriesHolder.metadata
+        });
+
+        cachedRequestsHolder.cacheEntries.forEach(cacheEntry => {
+            let cacheMeta = this.register(cacheEntry);
+            cachedRequestsHolder.cachedRequests[cacheMeta.url] = cacheMeta;
+        });
+
+        return cachedRequestsHolder;
+
     }
 
 
@@ -24,6 +44,7 @@ class CacheRegistry {
      * metadata about what we registered including how to fetch the file we
      * registered.
      *
+     * @return {CachedRequest}
      */
     register(cacheEntry) {
 
@@ -39,12 +60,11 @@ class CacheRegistry {
 
         this.registry[url] = cacheEntry;
 
-        let proxyConfig = {
+        return new CachedRequest({
+            url,
             proxyRules: `http=localhost:${this.proxyConfig.port}`,
             proxyBypassRules: "<local>"
-        };
-
-        return { url, proxyConfig };
+        });
 
     }
 

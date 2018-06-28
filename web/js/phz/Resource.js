@@ -38,6 +38,13 @@ class Resource {
         this.contentType = "text/html";
 
         /**
+         * The HTTP request method.
+         *
+         * @type {String}
+         */
+        this.method = "GET";
+
+        /**
          * The status code for this content.
          *
          * @type {number}

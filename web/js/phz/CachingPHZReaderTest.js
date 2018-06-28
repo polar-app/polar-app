@@ -30,6 +30,7 @@ describe('CachingPHZReader', function() {
                         "meta": {},
                         "url": "http://example.com",
                         "contentType": "text/html",
+                        "method": "GET",
                         "statusCode": 200,
                         "contentLength": null,
                         "headers": {},

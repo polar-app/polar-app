@@ -1,6 +1,11 @@
 
 const fs = require("fs");
 const {DiskCacheEntry} = require("./DiskCacheEntry");
+const {PHZCacheEntry} = require("./PHZCacheEntry");
+const {CachingPHZReader} = require("../../phz/CachingPHZReader");
+const {Promises} = require("../../util/Promises");
+const {CacheEntriesHolder} = require("./CacheEntriesHolder");
+
 /**
  * Cache entry which is just buffered in memory.
  */
@@ -9,19 +14,21 @@ class CacheEntriesFactory {
     /**
      *
      * @param path
-     * @return {Array<DiskCacheEntry>}
+     * @return {Promise<CacheEntriesHolder>}
      */
-    static createEntriesFromFile(path) {
+    static async createEntriesFromFile(path) {
 
         if(path.endsWith(".chtml")) {
-            return [CacheEntriesFactory.createFromStaticCHTML(path)];
+            return CacheEntriesFactory.createFromCHTML(path);
+        } else if(path.endsWith(".phz")) {
+            return CacheEntriesFactory.createFromPHZ(path);
         } else {
             throw new Error("Unable to handle file type for path: " + path);
         }
 
     }
 
-    static createFromStaticHTML(url, path) {
+    static createFromHTML(url, path) {
 
         // TODO: stat the file so that we can get the Content-Length
 
@@ -42,9 +49,48 @@ class CacheEntriesFactory {
      * Read from a static CHTML file which has the URL within the metadata.
      *
      * @param path
-     * @return {DiskCacheEntry}
+     * @return Promise<CacheEntriesHolder>
      */
-    static createFromStaticCHTML(path) {
+    static async createFromPHZ(path) {
+
+        // load the .json data so we have the URL.
+
+        let cachingPHZReader = new CachingPHZReader(path);
+
+        let resources = await cachingPHZReader.getResources();
+
+        let cacheEntriesHolder = new CacheEntriesHolder({});
+
+        cacheEntriesHolder.metadata = cachingPHZReader.getMetadata();
+
+        resources.entries.forEach(resourceEntry => {
+
+            let cacheEntry = new PHZCacheEntry({
+                url: resourceEntry.url,
+                method: resourceEntry.method,
+                headers: resourceEntry.headers,
+                statusCode: resourceEntry.statusCode,
+                statusMessage: resourceEntry.statusMessage,
+                phzReader: cachingPHZReader,
+                resourceEntry: resourceEntry
+            });
+
+            cacheEntriesHolder.cacheEntries.push(cacheEntry);
+
+        });
+
+        return cacheEntriesHolder;
+
+    }
+
+
+    /**
+     * Read from a static CHTML file which has the URL within the metadata.
+     *
+     * @param path
+     * @return Promise<CacheEntriesHolder>
+     */
+    static async createFromCHTML(path) {
 
         // load the .json data so we have the URL.
 
@@ -61,15 +107,22 @@ class CacheEntriesFactory {
 
         // TODO: stat the file so that we can get the Content-Length
 
-        return new DiskCacheEntry({
-            url: url,
-            method: "GET",
-            headers: {
-                "Content-Type": "text/html"
+        return new CacheEntriesHolder({
+            metadata: {
+                url
             },
-            statusCode: 200,
-            statusMessage: "OK",
-            path
+            cacheEntries: {
+                url: new DiskCacheEntry({
+                    url: url,
+                    method: "GET",
+                    headers: {
+                        "Content-Type": "text/html"
+                    },
+                    statusCode: 200,
+                    statusMessage: "OK",
+                    path
+                })
+            }
         });
 
     }
