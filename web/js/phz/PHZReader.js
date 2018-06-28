@@ -44,12 +44,23 @@ class PHZReader {
             return this.resources;
         }
 
-        let arrayBuffer = await this.zip.file("resources.json").async("ArrayBuffer");
-        let buffer = Buffer.from(arrayBuffer);
+        let buffer = await this._readAsBuffer("resources.json");
         this.resources = JSON.parse(buffer.toString("UTF-8"));
 
         return this.resources;
 
+    }
+
+    /**
+     * Return a raw buffer with no encoding.
+     *
+     * @param path
+     * @return {Promise<Buffer>}
+     * @private
+     */
+    async _readAsBuffer(path) {
+        let arrayBuffer = await this.zip.file(path).async("ArrayBuffer");
+        return Buffer.from(arrayBuffer);
     }
 
     /**
