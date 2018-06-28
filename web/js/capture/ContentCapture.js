@@ -10,7 +10,7 @@ class ContentCapture {
     /**
      * Capture the page as HTML so that we can render it static.
      */
-    static captureHTML(contentDoc, result) {
+    static captureHTML(contentDoc, url, result) {
 
         if(! contentDoc) {
             // this is the first document were working with.
@@ -40,8 +40,12 @@ class ContentCapture {
             // TODO: only work with http and https URLs.
 
             if(iframe.contentDocument != null) {
-                console.log("Going to capture iframe: ", iframe.contentDocument.location.href);
+
+                let href = iframe.contentDocument.location.href;
+
+                console.log("Going to capture iframe: ", href);
                 ContentCapture.captureHTML(iframe.contentDocument, result);
+
             } else {
                 console.log("Skipping iframe: " + iframe.outerHTML);
             }

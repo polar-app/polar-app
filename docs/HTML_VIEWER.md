@@ -1,6 +1,21 @@
 # TODO:
 
 
+- NOW the problem is that I can't serve any HTTPS URLs this way...
+    - I could handle these myself!!!
+
+        - https://stackoverflow.com/questions/38986692/how-do-i-trust-a-self-signed-certificate-from-an-electron-app
+        - https://electronjs.org/docs/api/app#event-certificate-error
+
+        - since the URL is sent, and we know we're ok. we don't have to do much
+          SSL work I think.
+
+        - This would basically work.. make ALL HTTP requests go through the
+          localhost... as an origin webserver. NOT as an HTTP proxy.  Then tell
+          electron to respond with the cached content with validated HTTPS
+          certificates.
+
+
 Refused to frame  because it violates the following Content Security Policy directive: "frame-src chromenull: https: webviewprogressproxy: medium: 'self'".
 
 - Iframe status:
