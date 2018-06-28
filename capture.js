@@ -18,6 +18,7 @@ const {DiskDatastore} = require("./web/js/datastore/DiskDatastore");
 const {Args} = require("./web/js/electron/capture/Args");
 const {BrowserWindows} = require("./web/js/capture/BrowserWindows");
 const Browsers = require("./web/js/capture/Browsers");
+const CapturedPHZWriter = require("./web/js/capture/CapturedPHZWriter").CapturedPHZWriter;
 const DefaultPagingBrowser = require("./web/js/electron/capture/pagination/DefaultPagingBrowser").DefaultPagingBrowser;
 const PagingLoader = require("./web/js/electron/capture/pagination/PagingLoader").PagingLoader;
 const Logger = require("./web/js/logger/Logger").Logger;
@@ -134,6 +135,9 @@ async function inlineHTML(url, content) {
 
 async function captureHTML(url, window) {
 
+    // TODO: this function should be cleaned up a bit.. it has too many moving
+    // parts now.
+
     Preconditions.assertNotNull(window);
     Preconditions.assertNotNull(window.webContents);
 
@@ -150,11 +154,16 @@ async function captureHTML(url, window) {
     // record the browser that was used to render this page.
     captured.browser = browser;
 
-    captured = prettifyCaptured(captured);
-
+    let stashDir = diskDatastore.stashDir;
     let filename = Filenames.sanitize(captured.title);
 
-    let stashDir = diskDatastore.stashDir;
+    // TODO convert the captured JSON to a phz file...
+
+    let phzPath = `${stashDir}/${filename}.phz`;
+    let capturedPHZWriter = new CapturedPHZWriter(phzPath);
+    await capturedPHZWriter.convert(captured)
+
+    captured = prettifyCaptured(captured);
 
     let jsonPath = `${stashDir}/${filename}.json`;
 
@@ -172,7 +181,6 @@ async function captureHTML(url, window) {
     }
 
 }
-
 
 /**
  * Move the 'content' key to the last entry so that it's more readable when

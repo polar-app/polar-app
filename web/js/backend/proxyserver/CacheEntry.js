@@ -24,12 +24,12 @@ const {Objects} = require("../../util/Objects");
         /**
          * The status code for this cache entry.
          */
-        this.statusCode = null;
+        this.statusCode = 200;
 
         /**
          * The status message.
          */
-        this.statusMessage = null;
+        this.statusMessage = "OK";
 
         /**
          * The content length of the data, if known. Otherwise, null.

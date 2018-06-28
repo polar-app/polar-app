@@ -4,12 +4,17 @@ const {DiskCacheEntry} = require("./DiskCacheEntry");
 /**
  * Cache entry which is just buffered in memory.
  */
-class DiskCacheEntryFactory {
+class CacheEntriesFactory {
 
-    static createFromFile(path) {
+    /**
+     *
+     * @param path
+     * @return {Array<DiskCacheEntry>}
+     */
+    static createEntriesFromFile(path) {
 
         if(path.endsWith(".chtml")) {
-            return DiskCacheEntryFactory.createFromStaticCHTML(path);
+            return [CacheEntriesFactory.createFromStaticCHTML(path)];
         } else {
             throw new Error("Unable to handle file type for path: " + path);
         }
@@ -71,4 +76,4 @@ class DiskCacheEntryFactory {
 
 }
 
-module.exports.DiskCacheEntryFactory = DiskCacheEntryFactory;
+module.exports.CacheEntriesFactory = CacheEntriesFactory;

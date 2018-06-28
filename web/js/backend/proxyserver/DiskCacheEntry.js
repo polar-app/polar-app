@@ -14,7 +14,11 @@ class DiskCacheEntry extends CacheEntry {
          * The data we should serve.
          * @type {null}
          */
-        this.path = options.path;
+        Object.assign(this, options);
+
+        if(! this.path) {
+            throw new Error("No path");
+        }
 
     }
 

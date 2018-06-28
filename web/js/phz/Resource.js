@@ -38,6 +38,20 @@ class Resource {
         this.contentType = "text/html";
 
         /**
+         * The status code for this content.
+         *
+         * @type {number}
+         */
+        this.statusCode = 200;
+
+        /**
+         * The content length of the content or null when unknown.
+         *
+         * @type {String}
+         */
+        this.contentLength = null;
+
+        /**
          *
          * @type {Object}
          */

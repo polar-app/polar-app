@@ -1,7 +1,7 @@
 const path = require('path');
 const {Preconditions} = require("../../Preconditions");
 const {Hashcodes} = require('../../Hashcodes');
-const {DiskCacheEntryFactory} = require('./DiskCacheEntryFactory');
+const {CacheEntriesFactory} = require('./CacheEntriesFactory');
 
 class CacheRegistry {
 
@@ -14,7 +14,7 @@ class CacheRegistry {
     }
 
     registerFile(path) {
-        let diskCacheEntry = DiskCacheEntryFactory.createFromFile(path);
+        let diskCacheEntry = CacheEntriesFactory.createEntriesFromFile(path);
         return this.register(diskCacheEntry);
     }
 

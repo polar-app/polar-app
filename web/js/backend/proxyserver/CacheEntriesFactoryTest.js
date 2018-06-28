@@ -3,9 +3,9 @@ const fs = require('fs');
 const assert = require('assert');
 const url = require('url');
 
-const {DiskCacheEntryFactory} = require('./DiskCacheEntryFactory');
+const {CacheEntriesFactory} = require('./CacheEntriesFactory');
 
-describe('DiskCacheEntryFactory', function() {
+describe('CacheEntriesFactory', function() {
 
     describe('Load CHTML', function() {
 
@@ -38,17 +38,17 @@ describe('DiskCacheEntryFactory', function() {
 
         it("createFromStaticCHTML", function () {
 
-            let diskCacheEntry = DiskCacheEntryFactory.createFromStaticCHTML(path);
+            let diskCacheEntry = CacheEntriesFactory.createFromStaticCHTML(path);
             assert.equal(diskCacheEntry.url, "http://jakearchibald.com/2016/streams-ftw/");
 
         });
 
 
-        it("createFromFile", function () {
+        it("createEntriesFromFile", function () {
 
-            let diskCacheEntry = DiskCacheEntryFactory.createFromFile(path);
+            let diskCacheEntry = CacheEntriesFactory.createEntriesFromFile(path);
 
-            assert.equal(diskCacheEntry.url, "http://jakearchibald.com/2016/streams-ftw/");
+            assert.equal(diskCacheEntry[0].url, "http://jakearchibald.com/2016/streams-ftw/");
 
         });
 
