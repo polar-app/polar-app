@@ -292,7 +292,7 @@ async function promptDoc() {
             title: "Open Document",
             defaultPath: datastore.stashDir,
             filters: [
-                { name: 'Docs', extensions: ['pdf', 'chtml'] }
+                { name: 'Docs', extensions: ['pdf', 'chtml', "phz"] }
             ],
             properties: ['openFile']
         }, function(path) {
@@ -319,12 +319,12 @@ async function promptDoc() {
 /**
  * Handle a command line PDF by loading it and returning true if one was loaded.
  */
-function handleCmdLinePDF(commandLine, createNewWindow) {
+async function handleCmdLinePDF(commandLine, createNewWindow) {
 
     let fileArg = Cmdline.getDocArg(commandLine)
 
     if(fileArg) {
-        openFileCmdline(fileArg, createNewWindow);
+        await openFileCmdline(fileArg, createNewWindow);
     }
 
 }
@@ -390,28 +390,19 @@ async function loadDoc(path, targetWindow) {
 
         // FIXME: next steps is to load the metaata from the .phz file ...
 
-        let cacheMetas = await cacheRegistry.registerFile(path);
+        let cachedRequestsHolder = await cacheRegistry.registerFile(path);
 
-        log.info("Cache metas: " + JSON.stringify(cacheMetas));
+        log.info("cachedRequestsHolder: " + JSON.stringify(cachedRequestsHolder));
 
-        // we only need the first one because this is really just used for the
-        // proxy configuration and the first / main URL
-        let cacheMeta = cacheMetas[0];
+        // get the cache metadata for the primary URL as it will work for the
+        // subsequent URLs too.
+
+        let cachedRequest = cachedRequestsHolder.cachedRequests[cachedRequestsHolder.metadata.url];
 
         // FIXME for phz we should handle this differently and read the metadata
         // from the PHZ file...
 
-        let descriptorPath = path.replace(/\.chtml$/, ".json");
-        let descriptorJSON = await Files.readFileAsync(descriptorPath);
-
-        descriptor = JSON.parse(descriptorJSON);
-        delete descriptor.content;
-        delete descriptor.capturedDocuments;
-
-        // convert it BACK to a JSON object so that we can keep the content stripped
-        descriptorJSON = JSON.stringify(descriptor);
-
-        log.info("Loaded descriptor from: " + descriptorPath);
+        descriptor = cachedRequestsHolder.metadata;
 
         // we don't need the content represented twice.
 
@@ -478,7 +469,7 @@ async function cmdOpen(item, focusedWindow) {
 
     let path = await promptDoc();
 
-    loadDoc(path, targetWindow);
+    await loadDoc(path, targetWindow);
 
 }
 
@@ -488,7 +479,7 @@ async function cmdOpenInNewWindow(item, focusedWindow) {
 
     let targetWindow = createWindow();
 
-    loadDoc(path, targetWindow);
+    await loadDoc(path, targetWindow);
 
 }
 
@@ -497,14 +488,14 @@ async function cmdOpenInNewWindow(item, focusedWindow) {
  *
  * @return {Promise<void>}
  */
-function openFileCmdline(path, createNewWindow) {
+async function openFileCmdline(path, createNewWindow) {
 
     log.info("Opening file given on the command line: " + path);
 
     if(createNewWindow) {
-        loadDoc(path, createWindow());
+        await loadDoc(path, createWindow());
     } else {
-        loadDoc(path, mainWindow);
+        await loadDoc(path, mainWindow);
     }
 
 }
@@ -656,7 +647,7 @@ app.on('ready', async function() {
 
     // if there is a PDF file to open, load that, otherwise, load the default URL.
 
-    handleCmdLinePDF(process.argv, false);
+    handleCmdLinePDF(process.argv, false).catch((err) => log.error(err));
 
 });
 

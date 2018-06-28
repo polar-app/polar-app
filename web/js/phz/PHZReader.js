@@ -32,12 +32,16 @@ class PHZReader {
 
     }
 
+    /**
+     * @return {Promise<Object>}
+     */
     async getMetadata() {
         return await this.getCached("metadata.json", "metadata");
     }
 
     /**
      * Get just the resources from the metadata.
+     * @return {Promise<Resources>}
      */
     async getResources() {
         return await this.getCached("resources.json", "resources");

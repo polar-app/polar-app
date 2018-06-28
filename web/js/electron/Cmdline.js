@@ -26,7 +26,7 @@ class Cmdline {
     }
 
     static isDoc(arg) {
-        return arg.endsWith(".pdf") || arg.endsWith(".chtml")
+        return arg.endsWith(".pdf") || arg.endsWith(".chtml") || arg.endsWith(".phz")
     }
 
     static isURL(arg) {

@@ -39,4 +39,5 @@ class Functions {
 
 }
 
+module.exports.forDict = Functions.forDict;
 module.exports.Functions = Functions;

@@ -5,6 +5,7 @@ const {PHZCacheEntry} = require("./PHZCacheEntry");
 const {CachingPHZReader} = require("../../phz/CachingPHZReader");
 const {Promises} = require("../../util/Promises");
 const {CacheEntriesHolder} = require("./CacheEntriesHolder");
+const {forDict} = require("../../util/Functions");
 
 /**
  * Cache entry which is just buffered in memory.
@@ -61,12 +62,18 @@ class CacheEntriesFactory {
 
         let cacheEntriesHolder = new CacheEntriesHolder({});
 
-        cacheEntriesHolder.metadata = cachingPHZReader.getMetadata();
+        cacheEntriesHolder.metadata = await cachingPHZReader.getMetadata();
 
-        resources.entries.forEach(resourceEntry => {
+        forDict(resources.entries, (key,resourceEntry) => {
+
+            let url = resourceEntry.resource.url;
+
+            if(!url) {
+                throw new Error("No url");
+            }
 
             let cacheEntry = new PHZCacheEntry({
-                url: resourceEntry.url,
+                url,
                 method: resourceEntry.method,
                 headers: resourceEntry.headers,
                 statusCode: resourceEntry.statusCode,
@@ -75,7 +82,7 @@ class CacheEntriesFactory {
                 resourceEntry: resourceEntry
             });
 
-            cacheEntriesHolder.cacheEntries.push(cacheEntry);
+            cacheEntriesHolder.cacheEntries[url]=cacheEntry;
 
         });
 

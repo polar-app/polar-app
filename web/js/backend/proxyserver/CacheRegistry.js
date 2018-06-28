@@ -5,6 +5,7 @@ const {Hashcodes} = require('../../Hashcodes');
 const {CacheEntriesFactory} = require('./CacheEntriesFactory');
 const {CacheMeta} = require('./CacheMeta');
 const {CachedRequest} = require('./CachedRequest');
+const {forDict} = require('../../util/Functions');
 
 class CacheRegistry {
 
@@ -29,7 +30,11 @@ class CacheRegistry {
             metadata: cacheEntriesHolder.metadata
         });
 
-        cachedRequestsHolder.cacheEntries.forEach(cacheEntry => {
+        if(! cacheEntriesHolder.cacheEntries) {
+            throw new Error("No cache entries!");
+        }
+
+        forDict(cacheEntriesHolder.cacheEntries, (key, cacheEntry) => {
             let cacheMeta = this.register(cacheEntry);
             cachedRequestsHolder.cachedRequests[cacheMeta.url] = cacheMeta;
         });

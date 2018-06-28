@@ -1,4 +1,5 @@
 const {CacheEntry} = require("./CacheEntry");
+const {Preconditions} = require("../../Preconditions");
 
 /**
  * A cache entry backed by a phz file.
@@ -26,6 +27,11 @@ class PHZCacheEntry extends CacheEntry {
         Preconditions.assertNotNull(this.phzReader, "phzReader");
         Preconditions.assertNotNull(this.resourceEntry, "resourceEntry");
 
+        Object.defineProperty(this, 'phzReader', {
+            value: this.phzReader,
+            enumerable: false
+        })
+
     }
 
     async handleData(callback) {
@@ -39,3 +45,5 @@ class PHZCacheEntry extends CacheEntry {
     }
 
 }
+
+module.exports.PHZCacheEntry = PHZCacheEntry;

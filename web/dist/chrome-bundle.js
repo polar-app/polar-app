@@ -61018,6 +61018,7 @@ var Functions = function () {
     return Functions;
 }();
 
+module.exports.forDict = Functions.forDict;
 module.exports.Functions = Functions;
 
 /***/ }),

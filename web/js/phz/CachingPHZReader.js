@@ -62,6 +62,7 @@ class CachingPHZReader {
 
     /**
      * Get just the resources from the metadata.
+     * @return {Promise<Resources>}
      */
     async getResources() {
         await this.openWhenNecessary();
