@@ -71,6 +71,11 @@ describe('PHZ functionality', function() {
 
         let phzWriter = new PHZWriter(path);
         let resource = ResourceFactory.create("http://example.com", "text/html");
+
+        phzWriter.writeMetadata({
+            title: "this is the title"
+        });
+
         phzWriter.writeResource(resource, "<html></html>");
         await phzWriter.save();
 
@@ -100,6 +105,50 @@ describe('PHZ functionality', function() {
 
         assertJSON(resources, expected);
 
+        let resourceEntry = resources.entries["1XKZEWhTwbtoPFSkR2TJ"];
+
+        let buffer = await phzReader.getResource(resourceEntry);
+
+        let content = buffer.toString("UTF-8");
+
+        assert.equal(content, "<html></html>");
+
+        // test getting the metadata (when there isn't any)
+
+        let metadata = await phzReader.getMetadata();
+
+        expected = {
+            "title": "this is the title"
+        };
+        assertJSON(metadata, expected);
+
+    });
+
+    it("Reading with no metadata or resources", async function () {
+
+        let path = "/tmp/test.phz";
+
+        await Files.unlinkAsync(path);
+
+        let phzWriter = new PHZWriter(path);
+        await phzWriter.save();
+
+        let phzReader = new PHZReader(path);
+        await phzReader.init();
+
+        let resources = await phzReader.getResources();
+
+        let expected = {
+            "entries": {
+            }
+        };
+
+        assertJSON(resources, expected);
+
+        let metadata = await phzReader.getMetadata();
+        assert.equal(metadata, null)
+
     });
 
 });
+

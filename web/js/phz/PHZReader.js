@@ -7,6 +7,8 @@ class PHZReader {
         this.path = path;
         this.zip = null;
 
+        this.metadata = null;
+
         /**
          *
          * @type {Resources}
@@ -31,23 +33,31 @@ class PHZReader {
     }
 
     async getMetadata() {
-
+        return await this.getCached("metadata.json", "metadata");
     }
 
     /**
      * Get just the resources from the metadata.
      */
     async getResources() {
+        return await this.getCached("resources.json", "resources");
+    }
 
-        if(this.resources !== null) {
+    async getCached(path, key) {
+
+        if(this[key] !== null) {
             // return the cache version if it's already read properly.
-            return this.resources;
+            return this[key];
         }
 
-        let buffer = await this._readAsBuffer("resources.json");
-        this.resources = JSON.parse(buffer.toString("UTF-8"));
+        let buffer = await this._readAsBuffer(path);
 
-        return this.resources;
+        if(! buffer)
+            return null;
+
+        this[key] = JSON.parse(buffer.toString("UTF-8"));
+
+        return this[key];
 
     }
 
@@ -59,19 +69,27 @@ class PHZReader {
      * @private
      */
     async _readAsBuffer(path) {
-        let arrayBuffer = await this.zip.file(path).async("ArrayBuffer");
+
+        let zipFile = await this.zip.file(path);
+
+        if(!zipFile) {
+            return null;
+        }
+
+        let arrayBuffer = await zipFile.async("ArrayBuffer");
         return Buffer.from(arrayBuffer);
+
     }
 
     /**
      * Read a resource from disk and call the callback with the new content once
      * it's ready for usage.
      *
-     * @param resource
-     * @param callback
+     * @param resourceEntry {ResourceEntry}
+     * @return {Promise<Buffer>}
      */
-    getResource(resource, callback) {
-
+    async getResource(resourceEntry) {
+        return await this._readAsBuffer(resourceEntry.path);
     }
 
 }
