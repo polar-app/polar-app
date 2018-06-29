@@ -15,6 +15,25 @@
           electron to respond with the cached content with validated HTTPS
           certificates.
 
+        - https://github.com/hokein/electron-sample-apps/tree/master/client-certificate
+
+    - I could implement this using:
+
+        https://github.com/electron/electron/blob/master/docs/api/protocol.md
+
+        and use:
+
+        registerHttpProtocol
+
+        ... this would allow me to basically handle ALL HTTP requests and I
+        could push HTTPS requests through the interal 'proxy' server which just
+        forwards handles the original request.  This way I could serve up HTTPS
+        for the original domain so I could serve / store partial results.
+
+        - with this mechanism I wouldn't have to go through my own HTTP Server!!!!
+
+        - I'm going to have to write up a simple/easy custom implementation of this...
+
 
 Refused to frame  because it violates the following Content Security Policy directive: "frame-src chromenull: https: webviewprogressproxy: medium: 'self'".
 
