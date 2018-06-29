@@ -35,6 +35,71 @@
         - I'm going to have to write up a simple/easy custom implementation of this...
 
 
+        - This would mean I don't have to run my own HTTP server... which would be
+          really nice and definhitely a lot less code to work with
+
+        - I could also use the net.* package which uses chrome's native HTTP
+          library BUT I need to figure out what to do about HTTP response data
+          because all of these seems like they wont' work.
+
+        - https://github.com/electron/electron/blob/master/docs/api/structures/stream-protocol-response.md
+
+            THAT is how I would return the headers...
+
+    - documentation URLs:
+        https://github.com/electron/electron/blob/master/docs/api/protocol.md
+        https://github.com/electron/electron/blob/master/docs/api/structures/stream-protocol-response.md
+        https://nodejs.org/api/stream.html
+
+        https://electronjs.org/docs/api/net
+        https://electronjs.org/docs/api/client-request
+
+        https://electronjs.org/docs/api/app#event-certificate-error
+
+    - TODO:
+
+        - how do I handle chunked responses?
+        - what do I do on errors?
+        - what do I do on abort?
+        - use the debug web requests listener to make sure all the webRequests
+          events are being called.
+        - better to use registerServiceWorkerSchemes?
+
+    - NOTES:
+
+        - no abort() method exists on the request
+
+        - I think the best strategy might be to use the debug listener??
+            - like what happens if:
+                - the domain is invalid
+                - the SSL cert is invalid
+            - these errors need to be handled properly.
+
+        - the completion ahndler is whether the interceptX() or registerX()
+          methods worked.  Has nothing to do with per request information.
+
+        - setting session = null in the callback on intersectpHttpProtocol "works"
+          and means I don't get infinite redirects BUT the problem now is that
+          the page never loads for some reason.
+
+        - https://github.com/electron/electron/issues/4008
+            I think these two APIs webRequest and protocol have to be used
+            TOGETHER as partners. I think the protocol intercepts the actual
+            request and then has to drive the webRequest APIs by calling them
+            directly.??
+        - OK.. my code is ALL wrong... I need to call interceptStreamProtocol.
+          interceptHttpProtocol is some weird thing for custom schemes that
+          handle custom URLs then redirect you to soem other site.  I could
+          build an "evernote:" and then have it redirect to a web service like
+          evernote.
+
+            - YES!!! and I confirmed it worked... the URL never changes and
+              we just end up loading the replaced URL in the background.  I
+              could implement this for polar document IDs or something so I
+              could do somethign like polar:12345
+
+            -
+
 Refused to frame  because it violates the following Content Security Policy directive: "frame-src chromenull: https: webviewprogressproxy: medium: 'self'".
 
 - Iframe status:

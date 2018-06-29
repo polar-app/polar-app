@@ -110,6 +110,7 @@
     "rxjs": "^6.2.0",
     "serve-static": "^1.13.2",
     "simplemde": "^1.11.2",
+    "text-encoding": "^0.6.4",
     "texthighlighter": "^1.2.4",
     "underscore": "^1.9.1",
     "webpack": "^4.11.0"
