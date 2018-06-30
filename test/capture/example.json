@@ -2,7 +2,8 @@
   "examples": [
     {"url": "https://www.infoq.com/news/2018/05/service-workers-supported-across", "errors": []},
     {"url": "https://babeljs.io/docs/en/learn/", "errors": []},
-    {"url": "https://developer.mozilla.org/en-US/docs/Web/Web_Components", "errors": [] }
+    {"url": "https://developer.mozilla.org/en-US/docs/Web/Web_Components", "errors": [] },
+    {"url": "https://techcrunch.com/2018/06/29/apple-is-rebuilding-maps-from-the-ground-up/", "errors": ["INFINITE_SCROLLING"]}
   ]
 }
 

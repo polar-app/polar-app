@@ -15,7 +15,8 @@ const BrowserWindow = electron.BrowserWindow;
 function createMainWindow() {
     let mainWindow = new BrowserWindow();
 
-    let url = "https://www.cnn.com";
+    //let url = "https://www.cnn.com";
+    let url = "https://httpbin.org/get";
     mainWindow.loadURL(url)
     return mainWindow;
 
@@ -64,27 +65,43 @@ var interceptCallback = async (request, callback) => {
             console.log(`did not modify response (error, non-200 status code, or no content type)`);
         }
 
-        var s = new stream.PassThrough();
-        s.end(source);
+        console.log("Going to write source...: " + source)
+
+        var myStream = new stream.PassThrough();
+        myStream.end(source);
+        console.log("Writing data here (2): ");
 
         callback({
             statusCode: response ? response.statusCode : undefined,
             headers: response ? response.headers : undefined,
-            data: s,
+            data: myStream,
         });
     })
     .on('response', (response) => {
+
         const contentType = response ? (response.headers['Content-Type'] || response.headers['content-type']) : undefined;
         if (contentType && (contentType.indexOf('text/javascript') >= 0 || contentType.indexOf('application/javascript') >= 0)) {
-            console.log(`ignoring 'on response', will use 'callback'`);
+            console.log(`ignoring 'on response', will use 'callback' below`);
             return;
         }
 
+        // FIXME: this works because the response here is a readable...
+
+        let headers = response ? response.headers : undefined;
+
+        //console.log("FIXME: headers", headers);
+        //console.log("Writing data here (1): " , response);
+
+        // TODO: this works and prints to stdout.
+        //console.log("FIXME: sending to stdout");
+        //response.pipe(process.stdout)
+
         callback({
             statusCode: response ? response.statusCode : undefined,
-            headers: response ? response.headers : undefined,
+            headers: headers,
             data: response,
         });
+
     })
     .on('error', (error) => {
         console.error(`'on error': ${error.message}`);

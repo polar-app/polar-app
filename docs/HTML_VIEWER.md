@@ -98,7 +98,23 @@
               could implement this for polar document IDs or something so I
               could do somethign like polar:12345
 
+        - ok.. this sucks because ALL the IO must be read at once to give me the
+          'response' .. I can't stream it.  This means my pages are going to be
+          more latent.
             -
+
+        - custom erros can be signaled by retyrning and error code:
+
+            When callback is called with nothing, a number, or an object that
+            has an error property, the request will fail with the error number
+            you specified. For the available error numbers you can use, please
+            see the net error list.
+
+
+            - https://code.google.com/p/chromium/codesearch#chromium/src/net/base/net_error_list.h
+
+        - I could call read a FILE as a stream and try to return that... it';s supposed to work!_
+
 
 Refused to frame  because it violates the following Content Security Policy directive: "frame-src chromenull: https: webviewprogressproxy: medium: 'self'".
 

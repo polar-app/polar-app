@@ -24,6 +24,8 @@ class PHZReader {
      */
     async init() {
 
+        // FIXME: migrate this to fs.createReadStream even though this is async it reads all
+        // the data into memory. Make sure this method is completely async though.
         let data = Files.readFileAsync(this.path);
 
         this.zip = new JSZip();
@@ -93,6 +95,10 @@ class PHZReader {
      * @return {Promise<Buffer>}
      */
     async getResource(resourceEntry) {
+
+        // FIXME: I think we can call nodeStream to get this in chunks for less
+        // UI latency.  We should probably move in that directly.
+
         return await this._readAsBuffer(resourceEntry.path);
     }
 

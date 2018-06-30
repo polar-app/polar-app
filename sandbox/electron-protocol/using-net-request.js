@@ -1,13 +1,22 @@
 
-const zlib = require('zlib');
-const text = require('text-encoding');
-const stream = require('stream')
+/**
+ *  This is an implementation of interceptStreamProtocol in Electron.  Documented
+ *  here:
+ *
+ *  https://github.com/electron/electron/blob/master/docs/api/protocol.md#protocolinterceptstreamprotocolscheme-handler-completion
+ *
+ *  I'm building a system to serve locally cached content with Electron and I need
+ *  to forward un-cached documents to the network, but serve cached documents
+ *  locally.
+ *
+ * The API states that that we just have to return
+ *
+ */
 
 const electron = require('electron');
 const app = electron.app;
 const protocol = electron.protocol;
 
-/** @type {Electron.Net} */
 const net = electron.net;
 const BrowserWindow = electron.BrowserWindow;
 
