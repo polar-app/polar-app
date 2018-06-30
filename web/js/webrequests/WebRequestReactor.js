@@ -14,15 +14,7 @@ class WebRequestReactor {
      */
     start() {
 
-        const eventRegisterFunctions = [
-            this.webRequest.onBeforeRedirect,
-            this.webRequest.onBeforeRequest,
-            this.webRequest.onBeforeSendHeaders,
-            this.webRequest.onCompleted,
-            this.webRequest.onErrorOccurred,
-            this.webRequest.onResponseStarted,
-            this.webRequest.onSendHeaders
-        ];
+        const eventRegisterFunctions = this.toEventRegisterFunctions();
 
         eventRegisterFunctions.forEach((eventRegisterFunction) => {
             let functionName = eventRegisterFunction.name;
@@ -54,7 +46,19 @@ class WebRequestReactor {
             throw new Error("Not started!");
         }
 
-        const eventRegisterFunctions = [
+        const eventRegisterFunctions = this.toEventRegisterFunctions();
+
+        // now for each off the events, register a function to call...
+        eventRegisterFunctions.forEach((eventRegisterFunction) => {
+            let functionName = eventRegisterFunction.name;
+            this.reactor.addEventListener(functionName, callback);
+        });
+
+    }
+
+    toEventRegisterFunctions() {
+
+        return [
             this.webRequest.onBeforeRedirect,
             this.webRequest.onBeforeRequest,
             this.webRequest.onBeforeSendHeaders,
@@ -63,12 +67,6 @@ class WebRequestReactor {
             this.webRequest.onResponseStarted,
             this.webRequest.onSendHeaders
         ];
-
-        // now for each off the events, register a function to call...
-        eventRegisterFunctions.forEach((eventRegisterFunction) => {
-            let functionName = eventRegisterFunction.name;
-            this.reactor.addEventListener(functionName, callback);
-        });
 
     }
 

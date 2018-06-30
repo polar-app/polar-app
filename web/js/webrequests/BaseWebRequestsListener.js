@@ -26,61 +26,6 @@ class BaseWebRequestsListener {
         webRequestReactor.register(this.onWebRequestEvent.bind(this));
     }
 
-    //
-    // /**
-    //  * Register self with all callbacks to trace operation.
-    //  *
-    //  * @param webRequest {Electron.WebRequest}
-    //  */
-    // register(webRequest) {
-    //
-    //     //console.log("FIXME1 " + webRequest instanceof EventEmitter);
-    //     console.log("FIXME2: ", webRequest.onBeforeRequest);
-    //     console.log("FIXME5: ", webRequest.prototype);
-    //
-    //     console.log("FIXME4: ", webRequest.on);
-    //     console.log("FIXME3: "  + webRequest.onBeforeRequest.addListener);
-    //
-    //     Preconditions.assertNotNull(webRequest, "webRequest")
-    //
-    //     const eventRegisterFunctions = [
-    //         webRequest.onBeforeRedirect,
-    //         webRequest.onBeforeRequest,
-    //         webRequest.onBeforeSendHeaders,
-    //         webRequest.onCompleted,
-    //         webRequest.onErrorOccurred,
-    //         webRequest.onResponseStarted,
-    //         webRequest.onSendHeaders
-    //     ];
-    //
-    //     // FIXME: refactor these to listen to use addListener which is
-    //     // supported via EventEmitter
-    //
-    //     // eventRegisterFunctions.forEach((eventRegisterFunction) => {
-    //     //     let functionName = eventRegisterFunction.name;
-    //     //     eventRegisterFunction = eventRegisterFunction.bind(webRequest);
-    //     //     eventRegisterFunction(this.onWebRequestEvent.bind(this, functionName));
-    //     // });
-    //
-    //     eventRegisterFunctions.forEach((eventRegisterFunction) => {
-    //         let functionName = eventRegisterFunction.name;
-    //         eventRegisterFunction = eventRegisterFunction.bind(webRequest);
-    //         //eventRegisterFunction(this.onWebRequestEvent.bind(this, functionName));
-    //         //webRequest.addListener(functionName, this.onWebRequestEvent.bind(this, functionName));
-    //
-    //         webRequest.addListener("before-request", function(name, details, callback) {
-    //
-    //             log.info("HERE");
-    //
-    //             if(callback)
-    //                 callback({cancel: false});
-    //
-    //         });
-    //
-    //     });
-    //
-    // }
-
 }
 
 module.exports.BaseWebRequestsListener = BaseWebRequestsListener;
