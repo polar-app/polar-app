@@ -10,7 +10,9 @@ class ContentCapture {
     /**
      * Capture the page as HTML so that we can render it static.
      */
-    static captureHTML(contentDoc, url, result) {
+    static captureHTML(contentDoc, url, result, options) {
+
+        const ENABLE_IFRAMES = false;
 
         if(! contentDoc) {
             // this is the first document were working with.
@@ -34,23 +36,40 @@ class ContentCapture {
         let capturedDocument = ContentCapture.captureDoc(cloneDoc, contentDoc.location.href);
         result.capturedDocuments.push(capturedDocument);
 
-        // now recurse into all the iframes in this doc and capture their HTML too.
-        contentDoc.querySelectorAll("iframe").forEach(function (iframe) {
+        if(ENABLE_IFRAMES) {
 
-            // TODO: only work with http and https URLs.
+            // this doesn't always work and I think we need to fundamentally
+            // re-think our strategy here. I might have to keep track of all the
+            // webContents loaded and work with them directly.
 
-            if(iframe.contentDocument != null) {
+            // VM856:46 Uncaught DOMException: Failed to read the 'contentDocument' property from 'HTMLIFrameElement': Blocked a frame with origin "https://www.cnn.com" from accessing a cross-origin frame.
+            //     at <anonymous>:46:27
+            //     at NodeList.forEach (<anonymous>)
+            //     at Function.captureHTML (<anonymous>:42:51)
+            //     at <anonymous>:1:16
+            //     at EventEmitter.electron.ipcRenderer.on (/home/burton/projects/polar-bookshelf/node_modules/electron/dist/resources/electron.asar/renderer/init.js:75:28)
+            //     at emitMany (events.js:147:13)
+            //     at EventEmitter.emit (events.js:224:7)
 
-                let href = iframe.contentDocument.location.href;
+            // now recurse into all the iframes in this doc and capture their HTML too.
+            contentDoc.querySelectorAll("iframe").forEach(function (iframe) {
 
-                console.log("Going to capture iframe: ", href);
-                ContentCapture.captureHTML(iframe.contentDocument, result);
+                // TODO: only work with http and https URLs.
 
-            } else {
-                console.log("Skipping iframe: " + iframe.outerHTML);
-            }
+                if(iframe.contentDocument != null) {
 
-        });
+                    let href = iframe.contentDocument.location.href;
+
+                    console.log("Going to capture iframe: ", href);
+                    ContentCapture.captureHTML(iframe.contentDocument, result);
+
+                } else {
+                    console.log("Skipping iframe: " + iframe.outerHTML);
+                }
+
+            });
+
+        }
 
         return result;
 

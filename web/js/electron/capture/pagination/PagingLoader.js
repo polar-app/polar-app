@@ -59,7 +59,7 @@ class PagingLoader {
          */
         this.cursor = null;
 
-        this.expired = true;
+        this.expired = false;
 
     }
 
@@ -70,16 +70,14 @@ class PagingLoader {
 
         log.info("Paging loader started... ");
 
-        setTimeout(() => {
+        await this.init();
 
-            console.log("FIXME: within timeout!!!")
+        setTimeout(() => {
 
             this.expired = true;
             this._handleFinished();
 
         }, TIMEOUT);
-
-        this.cursor = await this.pagingBrowser.getCursor({ timeout: TIMEOUT });
 
         while(await this._nextPage()) {
             log.info(`Scrolled to page: ${this.pageIdx}`);
@@ -89,9 +87,13 @@ class PagingLoader {
 
     }
 
+    async init() {
+        this.cursor = await this.pagingBrowser.getCursor({ timeout: TIMEOUT });
+    }
+
     async _nextPage() {
 
-        let scrollState = await this.cursor.scrollToNextPage();
+        let scrollState = await this.cursor.shouldScroll();
 
         if(! scrollState.result) {
             log.info("Pagination is complete. Scroll state was: ", scrollState);
@@ -124,9 +126,6 @@ class PagingLoader {
             log.warn("Page timeout. Finishing up manually.");
             this._finish();
             return;
-        } else {
-            console.log("FIXME2: " + this.expired);
-            console.log("FIXME3: " + this.finished);
         }
 
         if(this.pagingFinished && this.requestsFinished) {

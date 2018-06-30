@@ -1,4 +1,4 @@
-const BaseWebRequestsListener = require("./BaseWebRequestsListener").BaseWebRequestsListener;
+const {BaseWebRequestsListener} = require("./BaseWebRequestsListener");
 const {Logger} = require("../logger/Logger");
 const log = Logger.create();
 
@@ -62,7 +62,7 @@ class PendingWebRequestsListener extends BaseWebRequestsListener {
         }
 
         if(this.pending < 0) {
-            throw new Error("Incorrectly computed pending URL count.");
+            throw new Error("Pending request count is negative: " + this.pending);
         }
 
         this.dispatchEventListeners( {

@@ -56689,6 +56689,10 @@ var Logger = function () {
             // formatter.
 
             return log;
+            // return new class {
+            //     info() {}
+            //     warn() {}
+            // }
         }
     }, {
         key: "init",
@@ -60581,6 +60585,14 @@ var Reactor = function () {
                 return this;
             }
 
+            var event = new Event(eventName);
+            this.events[eventName] = event;
+            return this;
+        }
+    }, {
+        key: "clearEvent",
+        value: function clearEvent(eventName) {
+            // replace it with a new event to clear the previous listeners.
             var event = new Event(eventName);
             this.events[eventName] = event;
             return this;

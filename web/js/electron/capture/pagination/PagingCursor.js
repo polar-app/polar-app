@@ -28,7 +28,7 @@ class PagingCursor {
      * - the page changed the URL on us loading some other content.
      * -
      */
-    async scrollToNextPage() {
+    async shouldScroll() {
 
         let state = await this.pagingBrowser.state();
 

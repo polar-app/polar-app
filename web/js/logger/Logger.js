@@ -19,6 +19,10 @@ class Logger {
         // formatter.
 
         return log;
+        // return new class {
+        //     info() {}
+        //     warn() {}
+        // }
 
     }
 

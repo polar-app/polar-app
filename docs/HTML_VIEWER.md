@@ -1,5 +1,11 @@
 # TODO:
 
+- what's currently broken:
+    - HTTPS URLs don't work still
+    - if an error is found in ContentCapture then the callback isn't invoked.
+    - I have to go through EVERY webContents that we're given.
+
+
 
 - NOW the problem is that I can't serve any HTTPS URLs this way...
     - I could handle these myself!!!

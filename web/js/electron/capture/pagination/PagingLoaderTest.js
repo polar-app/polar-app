@@ -49,7 +49,13 @@ describe('PagingLoader', function() {
 
             // *** now start loading
 
+            await pagingLoader.init();
+
+            assert.equal(pagingLoader.finished, false);
+
+            // move forward a page.
             assert.equal(await pagingLoader._nextPage(), true);
+
             assert.equal(pagingLoader.pageIdx, 1);
             assert.equal(pagingLoader.finished, false);
 
@@ -100,6 +106,8 @@ describe('PagingLoader', function() {
             });
 
             // *** pretend the first page is loaded
+
+            await pagingLoader.init();
 
             assert.equal(pagingLoader.requestsFinished, true);
             pagingLoader.onPendingRequestsUpdate({pending: 1});

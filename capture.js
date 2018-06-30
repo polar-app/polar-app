@@ -94,46 +94,6 @@ function getWindowSize(window) {
 
 }
 
-/**
- * Take the given HTML and inline the CSS, SVG, images, etc.
- */
-async function inlineHTML(url, content) {
-
-    log.info("Inlining HTML...");
-
-    let options = {
-        url,
-        source: content,
-        images: true,
-        videos: true,
-        preserveComments: true,
-        collapseWhitespace: false,
-        compressJS: false,
-        skipAbsoluteUrls: false,
-        compressCSS: false,
-        inlinemin: false,
-        nosvg: false
-    };
-
-    return new Promise((resolve, reject) => {
-
-        let inliner = new Inliner(content, options, function (error, html) {
-            if(error) {
-                reject(error);
-            } else {
-                log.info("Inlining HTML...done");
-                resolve(html);
-            }
-        });
-
-        inliner.on('progress', function (event) {
-            console.error("progress: ", event);
-        });
-
-    });
-
-}
-
 async function captureHTML(url, window) {
 
     // TODO: this function should be cleaned up a bit.. it has too many moving
@@ -149,8 +109,16 @@ async function captureHTML(url, window) {
     await window.webContents.executeJavaScript(ContentCapture.toString());
 
     log.info("Retrieving HTML...");
+    // FIXME: it's locking up here.. not sure why...
 
-    let captured = await window.webContents.executeJavaScript("ContentCapture.captureHTML()");
+    let captured;
+
+    try {
+        captured = await window.webContents.executeJavaScript("ContentCapture.captureHTML()");
+    } catch (e) {
+        console.err(e);
+    }
+    log.info("Retrieving HTML...done");
 
     // record the browser that was used to render this page.
     captured.browser = browser;
@@ -176,6 +144,7 @@ async function captureHTML(url, window) {
     log.info("Capturing the HTML...done");
 
     if(args.quit) {
+        console.log("Capture finished.  Quitting now");
         app.quit();
     } else {
         log.info("Not quitting (yielding to --no-quit=true).")
@@ -214,12 +183,11 @@ class Capture {
 
         this.url = url;
 
-        this.webRequestReactor = null;
+        this.webRequestReactors = [];
         this.pendingWebRequestsListener = new PendingWebRequestsListener();
         this.debugWebRequestsListener = new DebugWebRequestsListener();
 
         /**
-         *
          * @type {Electron.BrowserWindow}
          */
         this.window = null;
@@ -259,6 +227,12 @@ class Capture {
 
             setTimeout(() => {
 
+                this.webRequestReactors.forEach(webRequestReactor => {
+                    log.info("Stopping webRequestReactor...");
+                    webRequestReactor.stop();
+                    log.info("Stopping webRequestReactor...done");
+                });
+
                 // capture within timeout just for debug purposes.
                 captureHTML(this.url, this.window)
                     .catch(err => log.error(err));
@@ -287,11 +261,12 @@ class Capture {
         let webRequestReactor = new WebRequestReactor(webRequest);
         webRequestReactor.start();
 
+        this.webRequestReactors.push(webRequestReactor);
+
         //this.debugWebRequestsListener.register(webRequestReactor);
         this.pendingWebRequestsListener.register(webRequestReactor);
 
     }
-
 
     async createWindow() {
 

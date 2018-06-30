@@ -16,6 +16,8 @@ class WebRequestReactor {
 
         const eventRegisterFunctions = this.toEventRegisterFunctions();
 
+        let webRequestReactor = this;
+
         eventRegisterFunctions.forEach((eventRegisterFunction) => {
             let functionName = eventRegisterFunction.name;
             eventRegisterFunction = eventRegisterFunction.bind(this.webRequest);
@@ -28,13 +30,32 @@ class WebRequestReactor {
                 // the event name and the second is the event name we're giving
                 // to the callback.
 
-                this.reactor.dispatchEvent(functionName, functionName, details, callback);
+                if(webRequestReactor.started) {
+                    this.reactor.dispatchEvent(functionName, functionName, details, callback);
+                }
 
             })
 
         });
 
         this.started = true;
+
+    }
+
+    stop() {
+
+        this.started = false;
+
+        const eventRegisterFunctions = this.toEventRegisterFunctions();
+
+        eventRegisterFunctions.forEach((eventRegisterFunction) => {
+
+            let functionName = eventRegisterFunction.name;
+            this.reactor.clearEvent(functionName);
+
+            eventRegisterFunction = eventRegisterFunction.bind(this.webRequest);
+            eventRegisterFunction(() => {})
+        });
 
     }
 

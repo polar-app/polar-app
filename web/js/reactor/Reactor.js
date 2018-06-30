@@ -23,6 +23,14 @@ class Reactor {
         let event = new Event(eventName);
         this.events[eventName] = event;
         return this;
+
+    }
+
+    clearEvent(eventName) {
+        // replace it with a new event to clear the previous listeners.
+        let event = new Event(eventName);
+        this.events[eventName] = event;
+        return this;
     }
 
     /**
