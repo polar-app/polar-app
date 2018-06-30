@@ -30,10 +30,16 @@ class BaseWebRequestsListener {
             webRequest.onSendHeaders
         ];
 
+        // FIXME: refactor these to listen to use addListener which is
+        // supported via EventEmitter
+
         eventRegisterFunctions.forEach((eventRegisterFunction) => {
             let functionName = eventRegisterFunction.name;
             eventRegisterFunction = eventRegisterFunction.bind(webRequest);
             eventRegisterFunction(this.onWebRequestEvent.bind(this, functionName));
+
+
+
         });
 
     }

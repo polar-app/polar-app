@@ -27281,11 +27281,19 @@ module.exports.TextHighlightView = TextHighlightView;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
+function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 // Simple logger that meets the requirements we have for Polar.
 
 var log = __webpack_require__(/*! electron-log */ "./node_modules/electron-log/index.js");
+
+var _require = __webpack_require__(/*! ../util/Files.js */ "./web/js/util/Files.js"),
+    Files = _require.Files;
+
+var _require2 = __webpack_require__(/*! ../util/Objects.js */ "./web/js/util/Objects.js"),
+    Objects = _require2.Objects;
 
 var initialized = false;
 
@@ -27303,40 +27311,87 @@ var Logger = function () {
          * using.
          */
         value: function create() {
-            //console.log("FIXME: : " + new Error().stack);
+
+            // TODO: include the source of the log but I think to do this we have to
+            // either change the log() function or we have to implement a custom
+            // formatter.
+
             return log;
         }
     }, {
         key: "init",
-        value: function init(logsDir) {
+        value: function () {
+            var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(logsDir, options) {
+                return regeneratorRuntime.wrap(function _callee$(_context) {
+                    while (1) {
+                        switch (_context.prev = _context.next) {
+                            case 0:
+                                if (!initialized) {
+                                    _context.next = 2;
+                                    break;
+                                }
 
-            if (initialized) {
-                throw new Error("Already initialized");
+                                throw new Error("Already initialized");
+
+                            case 2:
+                                if (process) {
+                                    _context.next = 4;
+                                    break;
+                                }
+
+                                throw new Error("No process");
+
+                            case 4:
+                                if (!(process.type === "renderer")) {
+                                    _context.next = 6;
+                                    break;
+                                }
+
+                                throw new Error("Must initialize from the main electron process (process=" + process.type + ")");
+
+                            case 6:
+
+                                options = Objects.defaults(options, { createDir: true });
+
+                                if (!options.createDir) {
+                                    _context.next = 10;
+                                    break;
+                                }
+
+                                _context.next = 10;
+                                return Files.createDirAsync(logsDir);
+
+                            case 10:
+
+                                // *** configure console
+                                log.transports.console.level = "info";
+                                log.transports.console.format = "[{y}-{m}-{d} {h}:{i}:{s}.{ms} {z}] [{level}] {text}";
+
+                                // *** configure file
+
+                                // set the directory name properly
+                                log.transports.file.file = logsDir + "/polar.log";
+                                log.transports.file.format = "[{y}-{m}-{d} {h}:{i}:{s}.{ms} {z}] [{level}] {text}";
+
+                                log.transports.file.level = "info";
+                                log.transports.file.appName = "polar";
+
+                                initialized = true;
+
+                            case 17:
+                            case "end":
+                                return _context.stop();
+                        }
+                    }
+                }, _callee, this);
+            }));
+
+            function init(_x, _x2) {
+                return _ref.apply(this, arguments);
             }
 
-            if (!process) {
-                throw new Error("No process");
-            }
-
-            if (process.type === "renderer") {
-                throw new Error("Must initialize from the main electron process (process=" + process.type + ")");
-            }
-
-            // *** configure console
-            log.transports.console.level = "info";
-            log.transports.console.format = "[{y}-{m}-{d} {h}:{i}:{s}.{ms} {z}] [{level}] {text}";
-
-            // *** configure file
-
-            // set the directory name properly
-            log.transports.file.file = logsDir + "/polar.log";
-            log.transports.file.format = "[{y}-{m}-{d} {h}:{i}:{s}.{ms} {z}] [{level}] {text}";
-
-            log.transports.file.level = "info";
-            log.transports.file.appName = "polar";
-
-            initialized = true;
-        }
+            return init;
+        }()
     }]);
 
     return Logger;
@@ -31531,6 +31586,190 @@ var Elements = function () {
 ;
 
 module.exports.Elements = Elements;
+
+/***/ }),
+
+/***/ "./web/js/util/Files.js":
+/*!******************************!*\
+  !*** ./web/js/util/Files.js ***!
+  \******************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var util = __webpack_require__(/*! util */ "util");
+var fs = __webpack_require__(/*! fs */ "fs");
+
+var Files = function () {
+    function Files() {
+        _classCallCheck(this, Files);
+
+        this.readFileAsync = util.promisify(fs.readFile);
+        this.writeFileAsync = util.promisify(fs.writeFile);
+        this.mkdirAsync = util.promisify(fs.mkdir);
+        this.accessAsync = util.promisify(fs.access);
+        this.statAsync = util.promisify(fs.stat);
+        this.unlinkAsync = util.promisify(fs.unlink);
+        this.rmdirAsync = util.promisify(fs.rmdir);
+    }
+
+    // https://nodejs.org/api/fs.html#fs_fs_readfile_path_options_callback
+
+
+    _createClass(Files, [{
+        key: 'readFileAsync',
+        value: function () {
+            var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(path) {
+                return regeneratorRuntime.wrap(function _callee$(_context) {
+                    while (1) {
+                        switch (_context.prev = _context.next) {
+                            case 0:
+                            case 'end':
+                                return _context.stop();
+                        }
+                    }
+                }, _callee, this);
+            }));
+
+            function readFileAsync(_x) {
+                return _ref.apply(this, arguments);
+            }
+
+            return readFileAsync;
+        }()
+
+        // https://nodejs.org/api/fs.html#fs_fs_writefile_file_data_options_callback
+
+    }, {
+        key: 'writeFileAsync',
+        value: function () {
+            var _ref2 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2(path, data) {
+                return regeneratorRuntime.wrap(function _callee2$(_context2) {
+                    while (1) {
+                        switch (_context2.prev = _context2.next) {
+                            case 0:
+                            case 'end':
+                                return _context2.stop();
+                        }
+                    }
+                }, _callee2, this);
+            }));
+
+            function writeFileAsync(_x2, _x3) {
+                return _ref2.apply(this, arguments);
+            }
+
+            return writeFileAsync;
+        }()
+    }, {
+        key: 'createDirAsync',
+        value: function () {
+            var _ref3 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee3(dir) {
+                var result;
+                return regeneratorRuntime.wrap(function _callee3$(_context3) {
+                    while (1) {
+                        switch (_context3.prev = _context3.next) {
+                            case 0:
+                                result = {
+                                    dir: dir
+                                };
+                                _context3.next = 3;
+                                return this.existsAsync(dir);
+
+                            case 3:
+                                if (!_context3.sent) {
+                                    _context3.next = 7;
+                                    break;
+                                }
+
+                                result.exists = true;
+                                _context3.next = 10;
+                                break;
+
+                            case 7:
+                                result.created = true;
+                                _context3.next = 10;
+                                return this.mkdirAsync(dir);
+
+                            case 10:
+                                return _context3.abrupt('return', result);
+
+                            case 11:
+                            case 'end':
+                                return _context3.stop();
+                        }
+                    }
+                }, _callee3, this);
+            }));
+
+            function createDirAsync(_x4) {
+                return _ref3.apply(this, arguments);
+            }
+
+            return createDirAsync;
+        }()
+    }, {
+        key: 'existsAsync',
+        value: function () {
+            var _ref4 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee4(path) {
+                return regeneratorRuntime.wrap(function _callee4$(_context4) {
+                    while (1) {
+                        switch (_context4.prev = _context4.next) {
+                            case 0:
+                                return _context4.abrupt('return', new Promise(function (resolve, reject) {
+
+                                    this.statAsync(path).then(function () {
+                                        resolve(true);
+                                    }).catch(function (err) {
+                                        if (err.code === 'ENOENT') {
+                                            resolve(false);
+                                        } else {
+                                            // some other error
+                                            reject(err);
+                                        }
+                                    });
+                                }.bind(this)));
+
+                            case 1:
+                            case 'end':
+                                return _context4.stop();
+                        }
+                    }
+                }, _callee4, this);
+            }));
+
+            function existsAsync(_x5) {
+                return _ref4.apply(this, arguments);
+            }
+
+            return existsAsync;
+        }()
+
+        // static readFileAsync = util.promisify(fs.readFile);
+        // static writeFileAsync = util.promisify(fs.writeFile);
+
+        //
+        // this.writeFileAsync = util.promisify(fs.writeFile);
+        // this.mkdirAsync = util.promisify(fs.mkdir);
+        // this.accessAsync = util.promisify(fs.access);
+        // this.statAsync = util.promisify(fs.stat);
+        // this.unlinkAsync = util.promisify(fs.unlink);
+        // this.rmdirAsync = util.promisify(fs.rmdir);
+
+    }]);
+
+    return Files;
+}();
+
+module.exports.Files = new Files();
 
 /***/ }),
 

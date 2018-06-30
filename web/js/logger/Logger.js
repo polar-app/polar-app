@@ -1,6 +1,8 @@
 // Simple logger that meets the requirements we have for Polar.
 
 const log = require('electron-log');
+const {Files} = require("../util/Files.js");
+const {Objects} = require("../util/Objects.js");
 
 let initialized = false;
 
@@ -11,11 +13,16 @@ class Logger {
      * using.
      */
     static create() {
-        //console.log("FIXME: : " + new Error().stack);
+
+        // TODO: include the source of the log but I think to do this we have to
+        // either change the log() function or we have to implement a custom
+        // formatter.
+
         return log;
+
     }
 
-    static init(logsDir) {
+    static async init(logsDir, options) {
 
         if(initialized) {
             throw new Error("Already initialized");
@@ -27,6 +34,12 @@ class Logger {
 
         if(process.type === "renderer") {
             throw new Error(`Must initialize from the main electron process (process=${process.type})`);
+        }
+
+        options = Objects.defaults(options, {createDir: true});
+
+        if(options.createDir) {
+            await Files.createDirAsync(logsDir);
         }
 
         // *** configure console

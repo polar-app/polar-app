@@ -54,6 +54,7 @@
     "chai-diff": "^1.0.1",
     "electron": "^2.0.2",
     "electron-builder": "^20.15.1",
+    "electron-mocha": "^6.0.4",
     "jsdom": "^11.11.0",
     "mocha": "^5.2.0",
     "mocha-isolation": "^0.1.5",
