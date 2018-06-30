@@ -37,10 +37,6 @@ class DebugWebRequestsListener extends BaseWebRequestsListener {
      */
     onWebRequestEvent(name, details, callback) {
 
-        console.log("FIXME3", name )
-        console.log("FIXME4", details)
-
-
         if(name === "onCompleted" || name === "onErrorOccurred") {
             // this request has already completed so is not considered against
             // pending any longer
