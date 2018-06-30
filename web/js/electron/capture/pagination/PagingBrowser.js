@@ -1,10 +1,12 @@
 /**
  * A browser that implements paging of the UI.
  */
-const Point = require("./Point").Point;
+const {PagingCursor} = require("./PagingCursor");
+const {Point} = require("./Point");
+
+const {Preconditions} = require("../../../Preconditions");
 
 class PagingBrowser {
-
 
     /**
      * Get the current state of the page. This is called as an atomic method
@@ -74,20 +76,12 @@ class PagingBrowser {
 
     }
 
-
     /**
-     * Return true if we should scroll to the next page. There may be a number
-     * of reasons we should or should not scroll to the next page including:
-     *
-     * - the page keeps expanding on us, loading too many resources.
-     * - the page is locked up, and not scrolling for some reason.
-     * - the page changed the URL on us loading some other content.
-     * -
+     * Return a cursor for paging that has state.
+     * @return {PagingCursor}
      */
-    scrollToNextPage() {
-
-
-
+    async getCursor() {
+        return new PagingCursor(await this.state(), this);
     }
 
     /**
@@ -98,6 +92,8 @@ class PagingBrowser {
      * @return {boolean}
      */
     fullyPaginated(state) {
+
+        Preconditions.assertNotNull(state, "state");
 
         // FIXME: we do not currently take into consideration the current page
         // and the last page.
@@ -138,10 +134,12 @@ class PagingBrowser {
      */
     computeMaxScrollPositions(state) {
 
-        return {
+        Preconditions.assertNotNull(state, "state");
+
+        return new Point({
             x: state.scrollBox.width - state.viewportBox.width,
             y: state.scrollBox.height - state.viewportBox.height
-        };
+        });
 
     }
 
@@ -154,6 +152,8 @@ class PagingBrowser {
      * @return {BasicBox}
      */
     visualScrollPercentage(state) {
+
+        Preconditions.assertNotNull(state, "state");
 
         return {
             width: PagingBrowser.perc(state.scrollPosition.x + state.viewportBox.width, state.scrollBox.width),

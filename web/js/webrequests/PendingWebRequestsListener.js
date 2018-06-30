@@ -23,7 +23,7 @@ class PendingWebRequestsListener extends BaseWebRequestsListener {
          *
          * @type {Object<String,Object>}
          */
-        this.pendingEvents = {};
+        this.pendingRequests = {};
 
         /**
          * Registered event listeners that we would need to dispatch.
@@ -44,7 +44,7 @@ class PendingWebRequestsListener extends BaseWebRequestsListener {
             // this request has already completed so is not considered against
             // pending any longer
 
-            delete this.pendingEvents[details.url];
+            delete this.pendingRequests[details.url];
 
             --this.pending;
         }
@@ -52,13 +52,13 @@ class PendingWebRequestsListener extends BaseWebRequestsListener {
         if(name === "onBeforeRequest") {
             // after this request the pending will be incremented.
 
-            this.pendingEvents[details.url] = details;
+            this.pendingRequests[details.url] = details;
 
             ++this.pending;
         }
 
         if(this.pending < 5) {
-            console.warn("The following events remain: ", this.pendingEvents);
+            log.warn("The following pending requests remain: ", this.pendingRequests);
         }
 
         if(this.pending < 0) {

@@ -45,6 +45,12 @@ class PagingLoader {
 
         this.finished = false;
 
+        /**
+         *
+         * @type {PagingCursor}
+         */
+        this.cursor = null;
+
     }
 
     /**
@@ -52,7 +58,11 @@ class PagingLoader {
      */
     async onLoad() {
 
+        log.info("Paging loader started... ");
+
         // paginate until the end...
+
+        this.cursor = await this.pagingBrowser.getCursor();
 
         while(await this._nextPage()) {
             log.info(`Scrolled to page: ${this.pageIdx}`);
@@ -64,10 +74,10 @@ class PagingLoader {
 
     async _nextPage() {
 
-        let state = await this.pagingBrowser.state();
+        let scrollState = await this.cursor.scrollToNextPage();
 
-        if(this.pagingBrowser.fullyPaginated(state)) {
-            log.info("Pagination is complete");
+        if(! scrollState.result) {
+            log.info("Pagination is complete. Scroll state was: ", scrollState);
             this.pagingFinished = true;
             return false;
         }
