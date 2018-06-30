@@ -72,16 +72,12 @@ class PagingBrowser {
 
     }
 
-    keepPaginating() {
-
-    }
-
     /**
      * Return a cursor for paging that has state.
      * @return {PagingCursor}
      */
-    async getCursor() {
-        return new PagingCursor(await this.state(), this);
+    async getCursor(opts) {
+        return new PagingCursor(await this.state(), this, opts);
     }
 
     /**

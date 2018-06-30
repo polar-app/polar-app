@@ -58,7 +58,7 @@ class PendingWebRequestsListener extends BaseWebRequestsListener {
         }
 
         if(this.pending < 5) {
-            log.warn("The following pending requests remain: ", this.pendingRequests);
+            log.debug("The following pending requests remain: ", this.pendingRequests);
         }
 
         if(this.pending < 0) {

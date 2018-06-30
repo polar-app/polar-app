@@ -4,6 +4,13 @@ const {Logger} = require("../../../logger/Logger");
 const log = Logger.create();
 
 /**
+ * Max amount of time we should attempt to load this page.
+ *
+ * @type {number}
+ */
+const TIMEOUT = 5000;
+
+/**
  * Many modern pages need to be paginated to be fully loaded.  They do this
  * for performance reasons because many people never read past the first page
  * and this allows them to skip loading iframes that aren't shown.  We need
@@ -46,10 +53,13 @@ class PagingLoader {
         this.finished = false;
 
         /**
+         * The cursor we're going to use to page through results.
          *
          * @type {PagingCursor}
          */
         this.cursor = null;
+
+        this.expired = true;
 
     }
 
@@ -60,9 +70,16 @@ class PagingLoader {
 
         log.info("Paging loader started... ");
 
-        // paginate until the end...
+        setTimeout(() => {
 
-        this.cursor = await this.pagingBrowser.getCursor();
+            console.log("FIXME: within timeout!!!")
+
+            this.expired = true;
+            this._handleFinished();
+
+        }, TIMEOUT);
+
+        this.cursor = await this.pagingBrowser.getCursor({ timeout: TIMEOUT });
 
         while(await this._nextPage()) {
             log.info(`Scrolled to page: ${this.pageIdx}`);
@@ -94,7 +111,8 @@ class PagingLoader {
 
         this.requestsFinished = pendingRequestsEvent.pending === 0;
 
-        log.info(`requestsFinished is now: ${this.requestsFinished}: `, pendingRequestsEvent);
+        log.debug("The following pending requests remain: ", pendingRequestsEvent);
+        log.info(`requestsFinished is now: ${this.requestsFinished}`);
 
         this._handleFinished();
 
@@ -102,9 +120,13 @@ class PagingLoader {
 
     _handleFinished() {
 
-        if(this.expired) {
+        if(this.expired && ! this.finished) {
+            log.warn("Page timeout. Finishing up manually.");
             this._finish();
             return;
+        } else {
+            console.log("FIXME2: " + this.expired);
+            console.log("FIXME3: " + this.finished);
         }
 
         if(this.pagingFinished && this.requestsFinished) {
@@ -132,7 +154,11 @@ class PagingLoader {
      * sub-resources.
      */
     _onFinished() {
+
+        console.log("Page loader is now finished");
+
         this.finishedCallback();
+
     }
 
 }

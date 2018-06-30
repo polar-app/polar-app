@@ -11,10 +11,10 @@ class PagingCursor {
         this.pagingBrowser = pagingBrowser;
 
         opts = Objects.defaults(opts, {
-            expiration: 5 * 1000
+            timeout: 5 * 1000
         });
 
-        this.expires = new Date().getMilliseconds() + opts.expiration;
+        this.expires = new Date().getMilliseconds() + opts.timeout;
 
     }
 
