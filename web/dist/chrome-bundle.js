@@ -60554,6 +60554,9 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 var _require = __webpack_require__(/*! ./Event */ "./web/js/reactor/Event.js"),
     Event = _require.Event;
 
+var _require2 = __webpack_require__(/*! ../Preconditions */ "./web/js/Preconditions.js"),
+    Preconditions = _require2.Preconditions;
+
 var Reactor = function () {
     function Reactor() {
         _classCallCheck(this, Reactor);
@@ -60561,41 +60564,74 @@ var Reactor = function () {
         this.events = {};
     }
 
+    /**
+     * @param eventName {String}
+     * @return {Reactor}
+     */
+
+
     _createClass(Reactor, [{
         key: "registerEvent",
         value: function registerEvent(eventName) {
-            if (!eventName) {
-                throw new Error("No eventName");
-            }
+            Preconditions.assertNotNull(eventName, "eventName");
 
             if (this.events[eventName]) {
                 // already registered so don't double register which would kill
                 // the existing listeners.
-                return;
+                return this;
             }
 
             var event = new Event(eventName);
             this.events[eventName] = event;
+            return this;
         }
+
+        /**
+         *
+         * @param eventName {String}
+         * @param eventArgs {...Object} The list of events that are raised.
+         * @return {Reactor}
+         */
+
     }, {
         key: "dispatchEvent",
-        value: function dispatchEvent(eventName, eventArgs) {
+        value: function dispatchEvent(eventName) {
+            for (var _len = arguments.length, eventArgs = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+                eventArgs[_key - 1] = arguments[_key];
+            }
+
+            Preconditions.assertNotNull(eventName, "eventName");
+
             this.events[eventName].callbacks.forEach(function (callback) {
-                callback(eventArgs);
+                callback.apply(undefined, eventArgs);
             });
+            return this;
         }
+
+        /**
+         *
+         * @param eventName {String}
+         * @param callback {function}
+         * @return {Reactor}
+         */
+
     }, {
         key: "addEventListener",
         value: function addEventListener(eventName, callback) {
+            Preconditions.assertNotNull(eventName, "eventName");
+
             if (typeof callback !== "function") {
                 throw new Error("Callback is not a function: " + (typeof callback === "undefined" ? "undefined" : _typeof(callback)));
             }
 
             this.events[eventName].registerCallback(callback);
+            return this;
         }
     }, {
         key: "getEventListeners",
         value: function getEventListeners(eventName) {
+            Preconditions.assertNotNull(eventName, "eventName");
+
             return this.events[eventName].callbacks;
         }
     }]);
@@ -61124,6 +61160,45 @@ var Files = function () {
             }
 
             return existsAsync;
+        }()
+
+        /**
+         *  Remove a file, whether it is present or not.  Make sure it's not there.
+         */
+
+    }, {
+        key: 'removeAsync',
+        value: function () {
+            var _ref5 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee5(path) {
+                return regeneratorRuntime.wrap(function _callee5$(_context5) {
+                    while (1) {
+                        switch (_context5.prev = _context5.next) {
+                            case 0:
+                                _context5.next = 2;
+                                return this.existsAsync(path);
+
+                            case 2:
+                                if (!_context5.sent) {
+                                    _context5.next = 5;
+                                    break;
+                                }
+
+                                _context5.next = 5;
+                                return this.unlinkAsync(path);
+
+                            case 5:
+                            case 'end':
+                                return _context5.stop();
+                        }
+                    }
+                }, _callee5, this);
+            }));
+
+            function removeAsync(_x6) {
+                return _ref5.apply(this, arguments);
+            }
+
+            return removeAsync;
         }()
 
         // static readFileAsync = util.promisify(fs.readFile);

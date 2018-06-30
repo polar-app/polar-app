@@ -5,14 +5,18 @@ const BrowserWindow = electron.BrowserWindow;
 const {DebugWebRequestsListener} = require("../../../web/js/webrequests/DebugWebRequestsListener.js");
 const {Logger} = require("../../../web/js/logger/Logger.js");
 const {Files} = require("../../../web/js/util/Files.js");
+const {WebRequestReactor} = require("../../../web/js/webrequests/WebRequestReactor");
 require("../../../web/js/test/TestingTime").freeze();
 
 function createMainWindow() {
     let mainWindow = new BrowserWindow();
 
-    let debugWebRequestsListener = new DebugWebRequestsListener();
+    let webRequestReactor = new WebRequestReactor(mainWindow.webContents.session.webRequest);
+    webRequestReactor.start();
 
-    debugWebRequestsListener.register(mainWindow.webContents.session.webRequest);
+    let debugWebRequestsListener = new DebugWebRequestsListener();
+    debugWebRequestsListener.register(webRequestReactor);
+
     mainWindow.loadURL('http://httpbin.org/get')
     return mainWindow;
 

@@ -61,6 +61,15 @@ class Files {
 
     }
 
+    /**
+     *  Remove a file, whether it is present or not.  Make sure it's not there.
+     */
+    async removeAsync(path) {
+        if(await this.existsAsync(path)) {
+            await this.unlinkAsync(path);
+        }
+    }
+
     // static readFileAsync = util.promisify(fs.readFile);
     // static writeFileAsync = util.promisify(fs.writeFile);
 

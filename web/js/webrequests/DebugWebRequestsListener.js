@@ -1,6 +1,6 @@
 
-const BaseWebRequestsListener = require("./BaseWebRequestsListener").BaseWebRequestsListener;
-const Logger = require("../logger/Logger").Logger;
+const {BaseWebRequestsListener} = require("./BaseWebRequestsListener");
+const {Logger} = require("../logger/Logger");
 
 const log = Logger.create();
 
@@ -15,6 +15,10 @@ const log = Logger.create();
  */
 class DebugWebRequestsListener extends BaseWebRequestsListener {
 
+    /**
+     *
+     * @param webRequestReactor {WebRequestReactor}
+     */
     constructor() {
 
         super();
@@ -32,6 +36,10 @@ class DebugWebRequestsListener extends BaseWebRequestsListener {
      * object.
      */
     onWebRequestEvent(name, details, callback) {
+
+        console.log("FIXME3", name )
+        console.log("FIXME4", details)
+
 
         if(name === "onCompleted" || name === "onErrorOccurred") {
             // this request has already completed so is not considered against

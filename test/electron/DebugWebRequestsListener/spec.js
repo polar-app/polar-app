@@ -5,6 +5,15 @@ const path = require('path');
 const {Files} = require("../../../web/js/util/Files.js");
 const {assertJSON} = require("../../../web/js/test/Assertions");
 
+async function handleLogs(app) {
+
+    console.log("Main process logs: ===");
+    (await app.client.getMainProcessLogs()).forEach(console.log);
+    console.log("Render process logs: ===");
+    (await app.client.getRenderProcessLogs()).forEach(console.log);
+
+}
+
 describe('Application launch', function () {
     this.timeout(10000)
 
@@ -12,7 +21,7 @@ describe('Application launch', function () {
 
         let logsDir = "/tmp/DebugWebRequestsListener";
         await Files.createDirAsync(logsDir);
-        await Files.unlinkAsync(logsDir + "/polar.log");
+        await Files.removeAsync(logsDir + "/polar.log");
 
         this.app = new Application({
 
@@ -31,10 +40,13 @@ describe('Application launch', function () {
         return this.app.start()
     });
 
-    afterEach(function () {
+    afterEach(async function () {
+
         if (this.app && this.app.isRunning()) {
+            await handleLogs(this.app);
             return this.app.stop()
         }
+
     });
 
     it('shows an initial window', function () {
