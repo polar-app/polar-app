@@ -18,12 +18,13 @@ const {DiskDatastore} = require("./web/js/datastore/DiskDatastore");
 const {Args} = require("./web/js/electron/capture/Args");
 const {BrowserWindows} = require("./web/js/capture/BrowserWindows");
 const Browsers = require("./web/js/capture/Browsers");
-const CapturedPHZWriter = require("./web/js/capture/CapturedPHZWriter").CapturedPHZWriter;
-const DefaultPagingBrowser = require("./web/js/electron/capture/pagination/DefaultPagingBrowser").DefaultPagingBrowser;
-const PagingLoader = require("./web/js/electron/capture/pagination/PagingLoader").PagingLoader;
+const {WebRequestReactor} = require("./web/js/webrequests/WebRequestReactor");
+const {CapturedPHZWriter} = require("./web/js/capture/CapturedPHZWriter");
+const {DefaultPagingBrowser} = require("./web/js/electron/capture/pagination/DefaultPagingBrowser");
+const {PagingLoader} = require("./web/js/electron/capture/pagination/PagingLoader");
 const Logger = require("./web/js/logger/Logger").Logger;
-const PendingWebRequestsListener = require("./web/js/webrequests/PendingWebRequestsListener").PendingWebRequestsListener;
-const DebugWebRequestsListener = require("./web/js/webrequests/DebugWebRequestsListener").DebugWebRequestsListener;
+const {PendingWebRequestsListener} = require("./web/js/webrequests/PendingWebRequestsListener");
+const {DebugWebRequestsListener} = require("./web/js/webrequests/DebugWebRequestsListener");
 
 const log = Logger.create();
 
@@ -213,6 +214,7 @@ class Capture {
 
         this.url = url;
 
+        this.webRequestReactor = null;
         this.pendingWebRequestsListener = new PendingWebRequestsListener();
         this.debugWebRequestsListener = new DebugWebRequestsListener();
 
@@ -274,6 +276,23 @@ class Capture {
 
     }
 
+    /**
+     * Called when we have a web request to listen to. Either the first one
+     * or subsequent ones from iframes.
+     *
+     * @param webRequest
+     */
+    onWebRequest(webRequest) {
+
+        let webRequestReactor = new WebRequestReactor(webRequest);
+        webRequestReactor.start();
+
+        //this.debugWebRequestsListener.register(webRequestReactor);
+        this.pendingWebRequestsListener.register(webRequestReactor);
+
+    }
+
+
     async createWindow() {
 
         // Create the browser window.
@@ -283,8 +302,7 @@ class Capture {
 
         let newWindow = new BrowserWindow(browserWindowOptions);
 
-        this.debugWebRequestsListener.register(newWindow.webContents.session.webRequest);
-        this.pendingWebRequestsListener.register(newWindow.webContents.session.webRequest);
+        this.onWebRequest(newWindow.webContents.session.webRequest);
 
         newWindow.on('close', function(e) {
             e.preventDefault();
@@ -339,9 +357,7 @@ class Capture {
             // We get one webContents per frame so we have to listen to their
             // events too..
 
-            // FIXME: we can only have ONE event listener here which is frustrating...
-            //this.debugWebRequestsListener.register(event.sender.webContents.session.webRequest);
-            this.pendingWebRequestsListener.register(event.sender.webContents.session.webRequest);
+            this.onWebRequest(event.sender.webContents.session.webRequest);
 
             if(! this.windowConfigured) {
 

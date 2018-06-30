@@ -23,6 +23,12 @@ class DefaultPagingBrowser extends PagingBrowser {
      */
     async scrollToPosition(scrollPosition) {
 
+        // TODO: I could also use:
+        //
+        // https://developer.mozilla.org/en-US/docs/Web/API/Element/scrollIntoView
+        //
+        // el.scrollHeight > el.clientHeight
+
         log.info("Scrolling to position: ", scrollPosition)
 
         function __scrollToPosition(scrollPosition) {

@@ -22,6 +22,10 @@ class BaseWebRequestsListener {
 
     }
 
+    /**
+     *
+     * @param webRequestReactor {WebRequestReactor}
+     */
     register(webRequestReactor) {
         webRequestReactor.register(this.onWebRequestEvent.bind(this));
     }

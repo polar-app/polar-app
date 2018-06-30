@@ -70,6 +70,26 @@ class PagingBrowser {
 
     }
 
+    keepPaginating() {
+
+    }
+
+
+    /**
+     * Return true if we should scroll to the next page. There may be a number
+     * of reasons we should or should not scroll to the next page including:
+     *
+     * - the page keeps expanding on us, loading too many resources.
+     * - the page is locked up, and not scrolling for some reason.
+     * - the page changed the URL on us loading some other content.
+     * -
+     */
+    scrollToNextPage() {
+
+
+
+    }
+
     /**
      * Return true if the browser window is fully paginated or we have a
      * document which is now too long when compared to the initial scroll
@@ -84,6 +104,9 @@ class PagingBrowser {
 
         // FIXME: we should pause on each page until the resources are loaded,
         // then go to the next page but this would require another event.
+
+        // FIXME: we should stop if the page keeps growing or changes URLs on us.
+        // Some pages change URLs.
 
         let visualScrollPercentage = this.visualScrollPercentage(state);
         return visualScrollPercentage.height >= 100;

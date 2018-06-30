@@ -84,7 +84,7 @@ class PagingLoader {
 
         this.requestsFinished = pendingRequestsEvent.pending === 0;
 
-        log.info("requestsFinished is now: " + this.requestsFinished);
+        log.info(`requestsFinished is now: ${this.requestsFinished}: `, pendingRequestsEvent);
 
         this._handleFinished();
 
@@ -92,18 +92,28 @@ class PagingLoader {
 
     _handleFinished() {
 
-        if(this.pagingFinished && this.requestsFinished) {
-
-            if(this.finished) {
-                log.warn("Double finish detected. (race triggering more requests?)");
-                return;
-            }
-
-            this._onFinished();
-
-            this.finished=true;
-
+        if(this.expired) {
+            this._finish();
+            return;
         }
+
+        if(this.pagingFinished && this.requestsFinished) {
+            this._finish();
+            return;
+        }
+
+    }
+
+    _finish() {
+
+        if(this.finished) {
+            log.warn("Double finish detected. (race triggering more requests?)");
+            return;
+        }
+
+        this._onFinished();
+
+        this.finished=true;
 
     }
 
