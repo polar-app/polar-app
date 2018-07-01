@@ -31,13 +31,15 @@ class CacheInterceptorService {
 
         ++this.cacheStats.hits;
 
-        log.debug("Going to handle with cache: ", options);
+        log.debug("Going to handle with cache: ", request.url);
 
         let cacheEntry = this.cacheRegistry.get(request.url);
 
+        let buffer = await cacheEntry.toBuffer()
+
         callback({
             mimeType: cacheEntry.mimeType,
-            data: buffer.toBuffer(),
+            data: buffer,
         });
 
     }
@@ -99,6 +101,8 @@ class CacheInterceptorService {
         log.info(`intercepted ${request.method} ${request.url}`);
 
         if(this.cacheRegistry.hasEntry(request.url)) {
+            console.log("FIXME1")
+
             await this.handleWithCache(request, callback);
         } else {
             await this.handleWithNetRequest(request, callback);

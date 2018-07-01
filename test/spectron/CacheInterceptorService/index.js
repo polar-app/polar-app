@@ -18,9 +18,16 @@ async function start() {
 
     await cacheInterceptorService.start();
 
+    // add our phz file to the cache registry...
+    await cacheRegistry.registerFile("/tmp/cache-interceptor-service.phz");
+    //.catch(err => console.log(err));
+
     console.log("Interceptor service started...");
 
-    mainWindow.loadURL("https://www.example.com");
+    let url = "https://journal.artfuldev.com/unit-testing-node-applications-with-typescript-using-mocha-and-chai-384ef05f32b2";
+    //let url = "https://www.example.com";
+
+    mainWindow.loadURL(url);
 
     console.log("Loaded main URL")
 

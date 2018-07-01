@@ -1,5 +1,31 @@
 # TODO:
 
+- This webContents API might be easier than ContentCapture... holy fuck!  THIS
+  would have saved me a shit load of time!!!  Like a WEEK... FUCK THIS.
+
+    contents.savePage(fullPath, saveType, callback)
+
+    fullPath String - The full file path.
+    saveType String - Specify the save type.
+    HTMLOnly - Save only the HTML of the page.
+    HTMLComplete - Save complete-html page.
+    MHTML - Save complete-html page as MHTML.
+    callback Function - (error) => {}.
+    error Error
+
+    - mhtml DOES support iframes if we page down... The main problem is that
+      it creates a subdir but I could package that I think.
+
+    - it also wouldn't support the work I did on page emulation but that is still
+      something I can work with.
+
+        - It DOES do this... but I think the work I already did gets me 99% of
+          the way there...   It sucks though that I couldn't have leveraged
+          that work.
+
+    - Since I control the file output I can at least implemetn the 'partial'
+      support.  That I wanted.   
+
 - what's currently broken:
     - HTTPS URLs don't work still
     - if an error is found in ContentCapture then the callback isn't invoked.

@@ -43,7 +43,7 @@ describe('CacheEntriesFactory', function() {
 
             let cacheEntriesHolder = await CacheEntriesFactory.createFromCHTML(path);
 
-            assertJSON(cacheEntriesHolder, {
+            let expected = {
                 "cacheEntries": {
                     "url": {
                         "method": "GET",
@@ -53,6 +53,9 @@ describe('CacheEntriesFactory', function() {
                         },
                         "statusCode": 200,
                         "statusMessage": "OK",
+                        "contentType": "text/html",
+                        "mimeType": "text/html",
+                        "encoding": "UTF-8",
                         "contentLength": null,
                         "path": "/tmp/test-load.chtml"
                     }
@@ -60,7 +63,8 @@ describe('CacheEntriesFactory', function() {
                 "metadata": {
                     "url": "http://jakearchibald.com/2016/streams-ftw/"
                 }
-            });
+            };
+            assertJSON(cacheEntriesHolder, expected);
 
             assert.equal(cacheEntriesHolder.metadata.url, "http://jakearchibald.com/2016/streams-ftw/");
 
@@ -71,7 +75,7 @@ describe('CacheEntriesFactory', function() {
 
             let cacheEntriesHolder = await CacheEntriesFactory.createEntriesFromFile(path);
 
-            assertJSON(cacheEntriesHolder, {
+            let expected = {
                 "cacheEntries": {
                     "url": {
                         "method": "GET",
@@ -81,6 +85,9 @@ describe('CacheEntriesFactory', function() {
                         },
                         "statusCode": 200,
                         "statusMessage": "OK",
+                        "contentType": "text/html",
+                        "mimeType": "text/html",
+                        "encoding": "UTF-8",
                         "contentLength": null,
                         "path": "/tmp/test-load.chtml"
                     }
@@ -88,7 +95,8 @@ describe('CacheEntriesFactory', function() {
                 "metadata": {
                     "url": "http://jakearchibald.com/2016/streams-ftw/"
                 }
-            })
+            };
+            assertJSON(cacheEntriesHolder, expected)
 
         });
 
@@ -129,369 +137,91 @@ describe('CacheEntriesFactory', function() {
                 }
             });
 
+            let expected = [
+                "https://journal.artfuldev.com/unit-testing-node-applications-with-typescript-using-mocha-and-chai-384ef05f32b2",
+                "https://journal.artfuldev.com/media/46f0f788c01c4b194cefde2d9ec41eaf?postId=384ef05f32b2",
+                "https://journal.artfuldev.com/media/dac0a6422059288f196c2a0dd83d4f1e?postId=384ef05f32b2",
+                "https://journal.artfuldev.com/media/3250d51ccec4df3da4f3447892218065?postId=384ef05f32b2",
+                "https://journal.artfuldev.com/media/70620a582825b3f69261a46fda6f1a8f?postId=384ef05f32b2",
+                "https://journal.artfuldev.com/media/af8d9ace95e6e79747acd19e5e659169?postId=384ef05f32b2",
+                "https://journal.artfuldev.com/media/1332267fe1665fafdc8c0d9f8c8d5d98?postId=384ef05f32b2",
+                "https://journal.artfuldev.com/media/48a721a0e2b65d851322f94f6bd4d020?postId=384ef05f32b2",
+                "https://journal.artfuldev.com/media/076fa5fbed4eb57c0501fa4cbf5855b3?postId=384ef05f32b2",
+                "https://journal.artfuldev.com/media/cfc3fc50133fc06fb8cee86ac2292ea1?postId=384ef05f32b2",
+                "https://journal.artfuldev.com/media/8d779a252338df599e9ee821cd24e492?postId=384ef05f32b2",
+                "https://journal.artfuldev.com/media/5704b996be3ebc61c4f6788571c2e2ca?postId=384ef05f32b2",
+                "https://journal.artfuldev.com/media/264d5a80d834f9976dbec6e2fd721062?postId=384ef05f32b2",
+                "https://journal.artfuldev.com/media/492bacc690c54aa549a96b849fa572ed?postId=384ef05f32b2",
+                "https://journal.artfuldev.com/media/3bae3235c7b64d8e09ceda4168c033e3?postId=384ef05f32b2"
+            ];
 
-            assertJSON(cacheEntriesHolder.cacheEntries, {
-                "https://journal.artfuldev.com/unit-testing-node-applications-with-typescript-using-mocha-and-chai-384ef05f32b2": {
-                    "method": "GET",
-                    "url": "https://journal.artfuldev.com/unit-testing-node-applications-with-typescript-using-mocha-and-chai-384ef05f32b2",
-                    "headers": {},
-                    "statusCode": 200,
-                    "contentLength": null,
-                    "resourceEntry": {
+            assertJSON(Object.keys(cacheEntriesHolder.cacheEntries), expected)
+
+            expected = {
+                "method": "GET",
+                "url": "https://journal.artfuldev.com/unit-testing-node-applications-with-typescript-using-mocha-and-chai-384ef05f32b2",
+                "headers": {},
+                "statusCode": 200,
+                "contentType": "text/html",
+                "mimeType": "UTF-8",
+                "encoding": "UTF-8",
+                "contentLength": null,
+                "resourceEntry": {
+                    "id": "1nQrNQ9ToKkRc3VtpCrD",
+                    "path": "1nQrNQ9ToKkRc3VtpCrD.html",
+                    "resource": {
                         "id": "1nQrNQ9ToKkRc3VtpCrD",
-                        "path": "1nQrNQ9ToKkRc3VtpCrD.html",
-                        "resource": {
-                            "id": "1nQrNQ9ToKkRc3VtpCrD",
-                            "created": "2012-03-02T11:38:49.321Z",
-                            "meta": {},
-                            "url": "https://journal.artfuldev.com/unit-testing-node-applications-with-typescript-using-mocha-and-chai-384ef05f32b2",
-                            "contentType": "text/html",
-                            "method": "GET",
-                            "statusCode": 200,
-                            "contentLength": null,
-                            "headers": {},
-                            "title": "Unit testing node applications with TypeScript — using mocha and chai",
-                            "description": null
-                        }
-                    }
-                },
-                "https://journal.artfuldev.com/media/46f0f788c01c4b194cefde2d9ec41eaf?postId=384ef05f32b2": {
-                    "method": "GET",
-                    "url": "https://journal.artfuldev.com/media/46f0f788c01c4b194cefde2d9ec41eaf?postId=384ef05f32b2",
-                    "headers": {},
-                    "statusCode": 200,
-                    "contentLength": null,
-                    "resourceEntry": {
-                        "id": "12jxKhQbE2wiaw8CK46d",
-                        "path": "12jxKhQbE2wiaw8CK46d.html",
-                        "resource": {
-                            "id": "12jxKhQbE2wiaw8CK46d",
-                            "created": "2012-03-02T11:38:49.321Z",
-                            "meta": {},
-                            "url": "https://journal.artfuldev.com/media/46f0f788c01c4b194cefde2d9ec41eaf?postId=384ef05f32b2",
-                            "contentType": "text/html",
-                            "method": "GET",
-                            "statusCode": 200,
-                            "contentLength": null,
-                            "headers": {},
-                            "title": "install-mocha-chai-ts.sh – Medium",
-                            "description": null
-                        }
-                    }
-                },
-                "https://journal.artfuldev.com/media/dac0a6422059288f196c2a0dd83d4f1e?postId=384ef05f32b2": {
-                    "method": "GET",
-                    "url": "https://journal.artfuldev.com/media/dac0a6422059288f196c2a0dd83d4f1e?postId=384ef05f32b2",
-                    "headers": {},
-                    "statusCode": 200,
-                    "contentLength": null,
-                    "resourceEntry": {
-                        "id": "12pidJU3xG9ByDHBjuF2",
-                        "path": "12pidJU3xG9ByDHBjuF2.html",
-                        "resource": {
-                            "id": "12pidJU3xG9ByDHBjuF2",
-                            "created": "2012-03-02T11:38:49.321Z",
-                            "meta": {},
-                            "url": "https://journal.artfuldev.com/media/dac0a6422059288f196c2a0dd83d4f1e?postId=384ef05f32b2",
-                            "contentType": "text/html",
-                            "method": "GET",
-                            "statusCode": 200,
-                            "contentLength": null,
-                            "headers": {},
-                            "title": "hello-world.ts – Medium",
-                            "description": null
-                        }
-                    }
-                },
-                "https://journal.artfuldev.com/media/3250d51ccec4df3da4f3447892218065?postId=384ef05f32b2": {
-                    "method": "GET",
-                    "url": "https://journal.artfuldev.com/media/3250d51ccec4df3da4f3447892218065?postId=384ef05f32b2",
-                    "headers": {},
-                    "statusCode": 200,
-                    "contentLength": null,
-                    "resourceEntry": {
-                        "id": "1yvsaXXPE8HFqX8nqHkq",
-                        "path": "1yvsaXXPE8HFqX8nqHkq.html",
-                        "resource": {
-                            "id": "1yvsaXXPE8HFqX8nqHkq",
-                            "created": "2012-03-02T11:38:49.321Z",
-                            "meta": {},
-                            "url": "https://journal.artfuldev.com/media/3250d51ccec4df3da4f3447892218065?postId=384ef05f32b2",
-                            "contentType": "text/html",
-                            "method": "GET",
-                            "statusCode": 200,
-                            "contentLength": null,
-                            "headers": {},
-                            "title": "hello-world.spec.ts – Medium",
-                            "description": null
-                        }
-                    }
-                },
-                "https://journal.artfuldev.com/media/70620a582825b3f69261a46fda6f1a8f?postId=384ef05f32b2": {
-                    "method": "GET",
-                    "url": "https://journal.artfuldev.com/media/70620a582825b3f69261a46fda6f1a8f?postId=384ef05f32b2",
-                    "headers": {},
-                    "statusCode": 200,
-                    "contentLength": null,
-                    "resourceEntry": {
-                        "id": "12biCzaQGWR3TkoJXCqE",
-                        "path": "12biCzaQGWR3TkoJXCqE.html",
-                        "resource": {
-                            "id": "12biCzaQGWR3TkoJXCqE",
-                            "created": "2012-03-02T11:38:49.321Z",
-                            "meta": {},
-                            "url": "https://journal.artfuldev.com/media/70620a582825b3f69261a46fda6f1a8f?postId=384ef05f32b2",
-                            "contentType": "text/html",
-                            "method": "GET",
-                            "statusCode": 200,
-                            "contentLength": null,
-                            "headers": {},
-                            "title": "package.json – Medium",
-                            "description": null
-                        }
-                    }
-                },
-                "https://journal.artfuldev.com/media/af8d9ace95e6e79747acd19e5e659169?postId=384ef05f32b2": {
-                    "method": "GET",
-                    "url": "https://journal.artfuldev.com/media/af8d9ace95e6e79747acd19e5e659169?postId=384ef05f32b2",
-                    "headers": {},
-                    "statusCode": 200,
-                    "contentLength": null,
-                    "resourceEntry": {
-                        "id": "12HuKhYXpMZuiacUdYLE",
-                        "path": "12HuKhYXpMZuiacUdYLE.html",
-                        "resource": {
-                            "id": "12HuKhYXpMZuiacUdYLE",
-                            "created": "2012-03-02T11:38:49.321Z",
-                            "meta": {},
-                            "url": "https://journal.artfuldev.com/media/af8d9ace95e6e79747acd19e5e659169?postId=384ef05f32b2",
-                            "contentType": "text/html",
-                            "method": "GET",
-                            "statusCode": 200,
-                            "contentLength": null,
-                            "headers": {},
-                            "title": "styles.scss – Medium",
-                            "description": null
-                        }
-                    }
-                },
-                "https://journal.artfuldev.com/media/1332267fe1665fafdc8c0d9f8c8d5d98?postId=384ef05f32b2": {
-                    "method": "GET",
-                    "url": "https://journal.artfuldev.com/media/1332267fe1665fafdc8c0d9f8c8d5d98?postId=384ef05f32b2",
-                    "headers": {},
-                    "statusCode": 200,
-                    "contentLength": null,
-                    "resourceEntry": {
-                        "id": "1yGmrFqA5istity7DHxA",
-                        "path": "1yGmrFqA5istity7DHxA.html",
-                        "resource": {
-                            "id": "1yGmrFqA5istity7DHxA",
-                            "created": "2012-03-02T11:38:49.321Z",
-                            "meta": {},
-                            "url": "https://journal.artfuldev.com/media/1332267fe1665fafdc8c0d9f8c8d5d98?postId=384ef05f32b2",
-                            "contentType": "text/html",
-                            "method": "GET",
-                            "statusCode": 200,
-                            "contentLength": null,
-                            "headers": {},
-                            "title": "hello-world.v2.ts – Medium",
-                            "description": null
-                        }
-                    }
-                },
-                "https://journal.artfuldev.com/media/48a721a0e2b65d851322f94f6bd4d020?postId=384ef05f32b2": {
-                    "method": "GET",
-                    "url": "https://journal.artfuldev.com/media/48a721a0e2b65d851322f94f6bd4d020?postId=384ef05f32b2",
-                    "headers": {},
-                    "statusCode": 200,
-                    "contentLength": null,
-                    "resourceEntry": {
-                        "id": "1pcP3LfhvJer2hSozU9q",
-                        "path": "1pcP3LfhvJer2hSozU9q.html",
-                        "resource": {
-                            "id": "1pcP3LfhvJer2hSozU9q",
-                            "created": "2012-03-02T11:38:49.321Z",
-                            "meta": {},
-                            "url": "https://journal.artfuldev.com/media/48a721a0e2b65d851322f94f6bd4d020?postId=384ef05f32b2",
-                            "contentType": "text/html",
-                            "method": "GET",
-                            "statusCode": 200,
-                            "contentLength": null,
-                            "headers": {},
-                            "title": "ignore-styles.sh – Medium",
-                            "description": null
-                        }
-                    }
-                },
-                "https://journal.artfuldev.com/media/076fa5fbed4eb57c0501fa4cbf5855b3?postId=384ef05f32b2": {
-                    "method": "GET",
-                    "url": "https://journal.artfuldev.com/media/076fa5fbed4eb57c0501fa4cbf5855b3?postId=384ef05f32b2",
-                    "headers": {},
-                    "statusCode": 200,
-                    "contentLength": null,
-                    "resourceEntry": {
-                        "id": "127QZ9NF9iYc4SRjY7Af",
-                        "path": "127QZ9NF9iYc4SRjY7Af.html",
-                        "resource": {
-                            "id": "127QZ9NF9iYc4SRjY7Af",
-                            "created": "2012-03-02T11:38:49.321Z",
-                            "meta": {},
-                            "url": "https://journal.artfuldev.com/media/076fa5fbed4eb57c0501fa4cbf5855b3?postId=384ef05f32b2",
-                            "contentType": "text/html",
-                            "method": "GET",
-                            "statusCode": 200,
-                            "contentLength": null,
-                            "headers": {},
-                            "title": "package.v2.json – Medium",
-                            "description": null
-                        }
-                    }
-                },
-                "https://journal.artfuldev.com/media/cfc3fc50133fc06fb8cee86ac2292ea1?postId=384ef05f32b2": {
-                    "method": "GET",
-                    "url": "https://journal.artfuldev.com/media/cfc3fc50133fc06fb8cee86ac2292ea1?postId=384ef05f32b2",
-                    "headers": {},
-                    "statusCode": 200,
-                    "contentLength": null,
-                    "resourceEntry": {
-                        "id": "1CoWEq1J7Ht5XRYCc8kJ",
-                        "path": "1CoWEq1J7Ht5XRYCc8kJ.html",
-                        "resource": {
-                            "id": "1CoWEq1J7Ht5XRYCc8kJ",
-                            "created": "2012-03-02T11:38:49.321Z",
-                            "meta": {},
-                            "url": "https://journal.artfuldev.com/media/cfc3fc50133fc06fb8cee86ac2292ea1?postId=384ef05f32b2",
-                            "contentType": "text/html",
-                            "method": "GET",
-                            "statusCode": 200,
-                            "contentLength": null,
-                            "headers": {},
-                            "title": "hello-world.v3.ts – Medium",
-                            "description": null
-                        }
-                    }
-                },
-                "https://journal.artfuldev.com/media/8d779a252338df599e9ee821cd24e492?postId=384ef05f32b2": {
-                    "method": "GET",
-                    "url": "https://journal.artfuldev.com/media/8d779a252338df599e9ee821cd24e492?postId=384ef05f32b2",
-                    "headers": {},
-                    "statusCode": 200,
-                    "contentLength": null,
-                    "resourceEntry": {
-                        "id": "1e3vmPGgpHm6JW8g3t5T",
-                        "path": "1e3vmPGgpHm6JW8g3t5T.html",
-                        "resource": {
-                            "id": "1e3vmPGgpHm6JW8g3t5T",
-                            "created": "2012-03-02T11:38:49.321Z",
-                            "meta": {},
-                            "url": "https://journal.artfuldev.com/media/8d779a252338df599e9ee821cd24e492?postId=384ef05f32b2",
-                            "contentType": "text/html",
-                            "method": "GET",
-                            "statusCode": 200,
-                            "contentLength": null,
-                            "headers": {},
-                            "title": "js-dom.sh – Medium",
-                            "description": null
-                        }
-                    }
-                },
-                "https://journal.artfuldev.com/media/5704b996be3ebc61c4f6788571c2e2ca?postId=384ef05f32b2": {
-                    "method": "GET",
-                    "url": "https://journal.artfuldev.com/media/5704b996be3ebc61c4f6788571c2e2ca?postId=384ef05f32b2",
-                    "headers": {},
-                    "statusCode": 200,
-                    "contentLength": null,
-                    "resourceEntry": {
-                        "id": "124osN2fpJTxYbwCtN3d",
-                        "path": "124osN2fpJTxYbwCtN3d.html",
-                        "resource": {
-                            "id": "124osN2fpJTxYbwCtN3d",
-                            "created": "2012-03-02T11:38:49.321Z",
-                            "meta": {},
-                            "url": "https://journal.artfuldev.com/media/5704b996be3ebc61c4f6788571c2e2ca?postId=384ef05f32b2",
-                            "contentType": "text/html",
-                            "method": "GET",
-                            "statusCode": 200,
-                            "contentLength": null,
-                            "headers": {},
-                            "title": "package.v3.json – Medium",
-                            "description": null
-                        }
-                    }
-                },
-                "https://journal.artfuldev.com/media/264d5a80d834f9976dbec6e2fd721062?postId=384ef05f32b2": {
-                    "method": "GET",
-                    "url": "https://journal.artfuldev.com/media/264d5a80d834f9976dbec6e2fd721062?postId=384ef05f32b2",
-                    "headers": {},
-                    "statusCode": 200,
-                    "contentLength": null,
-                    "resourceEntry": {
-                        "id": "1DbJTshwbLctQDaHpGCz",
-                        "path": "1DbJTshwbLctQDaHpGCz.html",
-                        "resource": {
-                            "id": "1DbJTshwbLctQDaHpGCz",
-                            "created": "2012-03-02T11:38:49.321Z",
-                            "meta": {},
-                            "url": "https://journal.artfuldev.com/media/264d5a80d834f9976dbec6e2fd721062?postId=384ef05f32b2",
-                            "contentType": "text/html",
-                            "method": "GET",
-                            "statusCode": 200,
-                            "contentLength": null,
-                            "headers": {},
-                            "title": "tsconfig.json – Medium",
-                            "description": null
-                        }
-                    }
-                },
-                "https://journal.artfuldev.com/media/492bacc690c54aa549a96b849fa572ed?postId=384ef05f32b2": {
-                    "method": "GET",
-                    "url": "https://journal.artfuldev.com/media/492bacc690c54aa549a96b849fa572ed?postId=384ef05f32b2",
-                    "headers": {},
-                    "statusCode": 200,
-                    "contentLength": null,
-                    "resourceEntry": {
-                        "id": "12QEXdG5oafn1ee3C1vs",
-                        "path": "12QEXdG5oafn1ee3C1vs.html",
-                        "resource": {
-                            "id": "12QEXdG5oafn1ee3C1vs",
-                            "created": "2012-03-02T11:38:49.321Z",
-                            "meta": {},
-                            "url": "https://journal.artfuldev.com/media/492bacc690c54aa549a96b849fa572ed?postId=384ef05f32b2",
-                            "contentType": "text/html",
-                            "method": "GET",
-                            "statusCode": 200,
-                            "contentLength": null,
-                            "headers": {},
-                            "title": "cross-env.sh – Medium",
-                            "description": null
-                        }
-                    }
-                },
-                "https://journal.artfuldev.com/media/3bae3235c7b64d8e09ceda4168c033e3?postId=384ef05f32b2": {
-                    "method": "GET",
-                    "url": "https://journal.artfuldev.com/media/3bae3235c7b64d8e09ceda4168c033e3?postId=384ef05f32b2",
-                    "headers": {},
-                    "statusCode": 200,
-                    "contentLength": null,
-                    "resourceEntry": {
-                        "id": "1etKzHk77ey2Pgg2n5pc",
-                        "path": "1etKzHk77ey2Pgg2n5pc.html",
-                        "resource": {
-                            "id": "1etKzHk77ey2Pgg2n5pc",
-                            "created": "2012-03-02T11:38:49.321Z",
-                            "meta": {},
-                            "url": "https://journal.artfuldev.com/media/3bae3235c7b64d8e09ceda4168c033e3?postId=384ef05f32b2",
-                            "contentType": "text/html",
-                            "method": "GET",
-                            "statusCode": 200,
-                            "contentLength": null,
-                            "headers": {},
-                            "title": "package.v4.json – Medium",
-                            "description": null
-                        }
+                        "created": "2012-03-02T11:38:49.321Z",
+                        "meta": {},
+                        "url": "https://journal.artfuldev.com/unit-testing-node-applications-with-typescript-using-mocha-and-chai-384ef05f32b2",
+                        "contentType": "text/html",
+                        "mimeType": "text/html",
+                        "encoding": "UTF-8",
+                        "method": "GET",
+                        "statusCode": 200,
+                        "contentLength": null,
+                        "headers": {},
+                        "title": "Unit testing node applications with TypeScript — using mocha and chai",
+                        "description": null
                     }
                 }
-            });
+            }
+
+            assertJSON(cacheEntriesHolder.cacheEntries["https://journal.artfuldev.com/unit-testing-node-applications-with-typescript-using-mocha-and-chai-384ef05f32b2"],
+                       expected)
+
+            expected = {
+                "method": "GET",
+                "url": "https://journal.artfuldev.com/media/46f0f788c01c4b194cefde2d9ec41eaf?postId=384ef05f32b2",
+                "headers": {},
+                "statusCode": 200,
+                "contentType": "text/html",
+                "mimeType": "UTF-8",
+                "encoding": "UTF-8",
+                "contentLength": null,
+                "resourceEntry": {
+                    "id": "12jxKhQbE2wiaw8CK46d",
+                    "path": "12jxKhQbE2wiaw8CK46d.html",
+                    "resource": {
+                        "id": "12jxKhQbE2wiaw8CK46d",
+                        "created": "2012-03-02T11:38:49.321Z",
+                        "meta": {},
+                        "url": "https://journal.artfuldev.com/media/46f0f788c01c4b194cefde2d9ec41eaf?postId=384ef05f32b2",
+                        "contentType": "text/html",
+                        "mimeType": "text/html",
+                        "encoding": "UTF-8",
+                        "method": "GET",
+                        "statusCode": 200,
+                        "contentLength": null,
+                        "headers": {},
+                        "title": "install-mocha-chai-ts.sh – Medium",
+                        "description": null
+                    }
+                }
+            };
+
+            assertJSON(cacheEntriesHolder.cacheEntries["https://journal.artfuldev.com/media/46f0f788c01c4b194cefde2d9ec41eaf?postId=384ef05f32b2"],
+                expected)
 
         });
 
