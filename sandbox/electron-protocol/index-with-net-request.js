@@ -75,6 +75,9 @@ let interceptCallback = async (req, callback) => {
 
         // mimeType
 
+        // FIXME: we're currently handling charset encoding improperly and
+        // stripping the encoding if it's specified in the charset.  This will be
+        // resolved when we migrate to interceptStreamProtocol
         let contentType = parseContentType(headers["content-type"][0]);
 
         console.log(`Using mimeType=${contentType.mimeType} for ${req.url}`)
@@ -130,17 +133,6 @@ function parseContentType(contentType) {
         mimeType,
         charset
     }
-
-}
-
-function toBuffer(stream) {
-
-    return toArray(stream)
-        .then(function (parts) {
-            const buffers = parts
-                .map(part => util.isBuffer(part) ? part : Buffer.from(part));
-            return Buffer.concat(buffers);
-        })
 
 }
 
