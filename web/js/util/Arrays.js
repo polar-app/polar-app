@@ -5,7 +5,7 @@ module.exports.Arrays = class {
      */
     static toDict(arr) {
 
-        if(typeof arr === "object" && ! arr instanceof Array ) {
+        if(typeof arr === "object" && ! arr instanceof Array) {
             // already done.
             return arr;
         }

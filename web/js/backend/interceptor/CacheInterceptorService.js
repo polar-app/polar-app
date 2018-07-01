@@ -65,7 +65,8 @@ class CacheInterceptorService {
                 // FIXME: we're currently handling charset encoding improperly and
                 // stripping the encoding if it's specified in the charset.  This will be
                 // resolved when we migrate to interceptStreamProtocol
-                let contentType = CacheInterceptorService.parseContentType(response.headers["content-type"][0]);
+
+                let contentType = CacheInterceptorService.parseContentType(response.headers["content-type"]);
 
                 log.debug(`Using mimeType=${contentType.mimeType} for ${request.url}`)
 
@@ -152,6 +153,13 @@ class CacheInterceptorService {
         // text/html; charset=utf-8
 
         let mimeType = "text/html";
+
+        if(contentType instanceof Array && contentType.length === 1) {
+            // when given as response headers we're given an array of strings
+            // since headers can have multiple values but there's no reason
+            // contentType should have more than one.
+            contentType = contentType[0];
+        }
 
         if(! contentType) {
             contentType = mimeType;

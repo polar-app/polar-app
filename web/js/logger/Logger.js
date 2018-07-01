@@ -17,8 +17,8 @@ class Logger {
         // TODO: include the source of the log but I think to do this we have to
         // either change the log() function or we have to implement a custom
         // formatter.
-
-        if(process.type === "renderer") {
+        //
+        if(process.type !== "renderer") {
 
             //return log;
             return new class {
