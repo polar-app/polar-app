@@ -44,6 +44,14 @@ class PHZCacheEntry extends CacheEntry {
 
     }
 
+    /**
+     *
+     * @return {Promise<Buffer>}
+     */
+    async toBuffer() {
+        return await this.phzReader.getResource(this.resourceEntry);
+    }
+
 }
 
 module.exports.PHZCacheEntry = PHZCacheEntry;

@@ -27401,6 +27401,7 @@ var Logger = function () {
     return Logger;
 }();
 
+module.exports.create = create;
 module.exports.Logger = Logger;
 
 /***/ }),

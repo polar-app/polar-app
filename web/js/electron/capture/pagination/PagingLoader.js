@@ -1,6 +1,5 @@
 
 const {Logger} = require("../../../logger/Logger");
-
 const log = Logger.create();
 
 /**

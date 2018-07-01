@@ -74,12 +74,18 @@ class CacheEntriesFactory {
                 throw new Error("No url");
             }
 
+            // FIXME: we need a way to keep the CacheEntry and Resource fields
+            // all in sync... Maybe have them all extend from the same base object
+
             let cacheEntry = new PHZCacheEntry({
                 url,
                 method: resource.method,
                 headers: resource.headers,
                 statusCode: resource.statusCode,
                 statusMessage: resource.statusMessage,
+                contentType: resource.contentType,
+                mimeType: resource.encoding,
+                encoding: resource.encoding,
                 phzReader: cachingPHZReader,
                 resourceEntry: resourceEntry
             });

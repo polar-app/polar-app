@@ -26,8 +26,7 @@ class DiskCacheEntry extends CacheEntry {
 
         return new Promise((resolve, reject) => {
 
-            // TODO: in the future migrate to reading in chunks which would be
-            // slightly faster but almost irrelevant now
+            // TODO: in the future migrate to a stream
 
             fs.readFile(this.path, (err, data) => {
 
@@ -43,6 +42,26 @@ class DiskCacheEntry extends CacheEntry {
         });
 
     }
+
+    async toBuffer() {
+
+        // TODO: in the future migrate to a stream
+
+        return new Promise((resolve, reject) => {
+
+           fs.readFile(this.path, (err, data) => {
+
+                if (err) {
+                    reject(err)
+                }
+
+                resolve(data);
+
+            });
+
+        });
+    }
+
 
 }
 

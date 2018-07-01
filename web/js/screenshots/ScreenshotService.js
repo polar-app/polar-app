@@ -1,6 +1,7 @@
 const electron = require('electron');
 const ipcMain = electron.ipcMain;
 const remote = electron.remote;
+
 /**
  * Service that runs in the Electron main context which listens to IPC events
  * and performs screenshots on windows when requested.

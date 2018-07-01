@@ -15,14 +15,17 @@ const BrowserWindow = electron.BrowserWindow;
 function createMainWindow() {
     let mainWindow = new BrowserWindow();
 
-    let url = "https://www.cnn.com";
-    mainWindow.loadURL(url)
+    //let url = "https://www.cnn.com";
+    let url = "http://cnn.com";
+    mainWindow.loadURL(url);
     return mainWindow;
 
 }
 
 let interceptCallback = async (req, callback) => {
     console.log(`intercepted ${req.method} ${req.url}`);
+
+    //console.log("headers: " , req.headers )
 
     //FIXME: I need to call setHeader() for each of the headers...
 

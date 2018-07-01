@@ -37,6 +37,10 @@ class Resource {
          */
         this.contentType = "text/html";
 
+        this.mimeType = "text/html";
+
+        this.encoding = "UTF-8";
+
         /**
          * The HTTP request method.
          *

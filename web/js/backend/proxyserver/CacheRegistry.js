@@ -85,6 +85,7 @@ class CacheRegistry {
     /**
      * Get metadata about the given key.
      *
+     * @return {CacheEntry}
      */
     get(url) {
 

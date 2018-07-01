@@ -32,6 +32,19 @@ const {Objects} = require("../../util/Objects");
         this.statusMessage = "OK";
 
         /**
+         *
+         * The content type of this content.  Default is text/html.  We use
+         * extensions of the files based on the content type.
+         *
+         * @type {string}
+         */
+        this.contentType = "text/html";
+
+        this.mimeType = "text/html";
+
+        this.encoding = "UTF-8";
+
+        /**
          * The content length of the data, if known. Otherwise, null.
          * @type {null}
          */
@@ -49,6 +62,14 @@ const {Objects} = require("../../util/Objects");
      *
      */
     /* abstract */ async handleData(callback) {
+
+    }
+
+    /**
+     *
+     * @return {Promise<Buffer>}
+     */
+    /* abstract */ async toBuffer() {
 
     }
 
