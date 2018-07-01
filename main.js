@@ -512,6 +512,7 @@ function parseArgs() {
     return {
 
         enableConsoleLogging: process.argv.includes("--enable-console-logging"),
+
         enableRemoteDebugging: process.argv.includes("--enable-remote-debugging"),
         enableDevTools: process.argv.includes("--enable-dev-tools"),
 
@@ -575,11 +576,13 @@ directories.init().then(async () => {
 
 if (args.enableRemoteDebugging) {
 
-    log.info(`Remote debugging port enabled on port ${REMOTE_DEBUGGING_PORT}.`);
-    log.info(`You may connect via http://${DEFAULT_HOST}:${REMOTE_DEBUGGING_PORT}`);
+    log.warn("--enable-remote-debugging disabled as it caused bugs with page loading.");
 
-    app.commandLine.appendSwitch('remote-debugging-port', REMOTE_DEBUGGING_PORT);
-    app.commandLine.appendSwitch('host-rules', 'MAP * 127.0.0.1');
+    // log.info(`Remote debugging port enabled on port ${REMOTE_DEBUGGING_PORT}.`);
+    // log.info(`You may connect via http://${DEFAULT_HOST}:${REMOTE_DEBUGGING_PORT}`);
+    //
+    // app.commandLine.appendSwitch('remote-debugging-port', REMOTE_DEBUGGING_PORT);
+    // app.commandLine.appendSwitch('host-rules', 'MAP * 127.0.0.1');
 
 }
 
