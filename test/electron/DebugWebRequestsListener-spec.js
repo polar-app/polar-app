@@ -9,7 +9,6 @@ const {WebRequestReactor} = require("../../web/js/webrequests/WebRequestReactor"
 require("../../web/js/test/TestingTime").freeze();
 
 function createMainWindow() {
-
     let mainWindow = new BrowserWindow();
 
     let webRequestReactor = new WebRequestReactor(mainWindow.webContents.session.webRequest);
@@ -18,28 +17,22 @@ function createMainWindow() {
     let debugWebRequestsListener = new DebugWebRequestsListener();
     debugWebRequestsListener.register(webRequestReactor);
 
-    mainWindow.loadURL('http://httpbin.org/get');
-    mainWindow.show();
-
+    mainWindow.loadURL('http://httpbin.org/get')
     return mainWindow;
 
 }
 
+app.on('ready', async function() {
 
-describe('DebugWebRequestsListener', () => {
+    await Logger.init("/tmp/DebugWebRequestsListener");
 
-    it('Test create', async function () {
+    console.log("hello world");
 
-        await Logger.init("/tmp/DebugWebRequestsListener");
+    let mainWindow = createMainWindow();
 
-        console.log("hello world");
-
-        let mainWindow = createMainWindow();
-
-        console.log("It worked!");
-
-    });
+    console.log("It worked!");
 
 });
+
 
 

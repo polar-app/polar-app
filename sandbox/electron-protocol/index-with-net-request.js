@@ -6,6 +6,7 @@ const stream = require('stream')
 const electron = require('electron');
 const app = electron.app;
 const protocol = electron.protocol;
+const convertStream = require("convert-stream");
 
 /** @type {Electron.Net} */
 const net = electron.net;
@@ -41,7 +42,7 @@ let interceptCallback = async (req, callback) => {
     console.log("Going to net.request: ", options);
 
     let request = net.request(options)
-    .on('response', (response) => {
+    .on('response', async (response) => {
 
 
         // will not work.. resposne is not readable...
@@ -51,22 +52,35 @@ let interceptCallback = async (req, callback) => {
         // key point is that the response is READABLE so we can send it directly
         // and we keep low latency!
 
-        let statusCode = response ? response.statusCode : undefined;
-        let headers = response ? response.headers : undefined;
+        let headers = response ? response.headers : {};
 
         console.log("FIXME: got a response..", response);
-        console.log("FIXME: got a response.. statusCode: ", statusCode);
         console.log("FIXME: got a response.. headers: ", headers);
 
         // FIXME: this confirms that it DOES read the data, that it IS a pipe,
         // and that the data is valid.. just that the callback isn't functioning..
         //response.pipe(process.stdout);
 
+        let buffer = await convertStream.toBuffer(response);
+
+        // callback({
+        //     statusCode,
+        //     headers: headers,
+        //     data: buffer,
+        // });
+
+        // mimeType
+
+        let mimeType = headers["content-type"];
+        if( !mimeType) {
+            mimeType = "text/html";
+        }
+
         callback({
-            statusCode,
-            headers: headers,
-            data: response,
+            mimeType: mimeType,
+            data: buffer,
         });
+
 
     })
     .on('error', (error) => {
@@ -77,12 +91,23 @@ let interceptCallback = async (req, callback) => {
 
 };
 
+function toBuffer(stream) {
+
+    return toArray(stream)
+        .then(function (parts) {
+            const buffers = parts
+                .map(part => util.isBuffer(part) ? part : Buffer.from(part));
+            return Buffer.concat(buffers);
+        })
+
+}
+
 app.on('ready', async function() {
 
-    protocol.interceptStreamProtocol('http', interceptCallback, (error) => {
+    protocol.interceptBufferProtocol('http', interceptCallback, (error) => {
         if (error) console.error('failed to register protocol handler for HTTP');
     });
-    protocol.interceptStreamProtocol('https', interceptCallback, (error) => {
+    protocol.interceptBufferProtocol('https', interceptCallback, (error) => {
         if (error) console.error('failed to register protocol handler for HTTPS');
     });
 
