@@ -41,7 +41,9 @@ class Spectron {
 
             });
 
+            console.log("Starting app...");
             let app = await this.app.start();
+            console.log("Starting app...done");
 
             spectronOutputMonitorService = new SpectronOutputMonitorService(app);
             spectronOutputMonitorService.start();
@@ -52,7 +54,9 @@ class Spectron {
 
         afterEach(function () {
 
-            spectronOutputMonitorService.stop();
+            if(spectronOutputMonitorService) {
+                spectronOutputMonitorService.stop();
+            }
 
             if (this.app && this.app.isRunning()) {
                 return this.app.stop()

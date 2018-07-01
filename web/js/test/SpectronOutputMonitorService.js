@@ -1,5 +1,7 @@
 const {Preconditions} = require("../Preconditions");
 
+const TIMEOUT = 250;
+
 /**
  * Keep a background monitor to read logs and then write them to the main process.
  */
@@ -47,7 +49,7 @@ class SpectronOutputMonitorService {
 
             })
 
-
+        } else {
 
         }
 
@@ -61,7 +63,7 @@ class SpectronOutputMonitorService {
 
         setTimeout(() => {
             this._doLogForwarding();
-        }, 100);
+        }, TIMEOUT);
 
     }
 

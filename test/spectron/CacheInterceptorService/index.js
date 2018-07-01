@@ -18,7 +18,7 @@ async function start() {
 
     await cacheInterceptorService.start();
 
-
+    mainWindow.loadURL("https://www.cnn.com");
 
 }
 

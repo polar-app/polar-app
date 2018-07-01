@@ -61,7 +61,7 @@ class CacheInterceptorService {
                 // FIXME: we're currently handling charset encoding improperly and
                 // stripping the encoding if it's specified in the charset.  This will be
                 // resolved when we migrate to interceptStreamProtocol
-                let contentType = CacheInterceptorService.parseContentType(headers["content-type"][0]);
+                let contentType = CacheInterceptorService.parseContentType(response.headers["content-type"][0]);
 
                 log.debug(`Using mimeType=${contentType.mimeType} for ${request.url}`)
 
