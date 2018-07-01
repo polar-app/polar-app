@@ -420,14 +420,14 @@ async function loadDoc(path, targetWindow) {
 
     if(cacheMeta) {
 
-        log.info("Using proxy config: ", cacheMeta.requestConfig);
-
-        await new Promise((resolve => {
-            targetWindow.webContents.session.setProxy(cacheMeta.requestConfig, () => {
-                log.info("Proxy configured: ", arguments);
-                resolve();
-            });
-        }))
+        // log.info("Using proxy config: ", cacheMeta.requestConfig);
+        //
+        // await new Promise((resolve => {
+        //     targetWindow.webContents.session.setProxy(cacheMeta.requestConfig, () => {
+        //         log.info("Proxy configured: ", arguments);
+        //         resolve();
+        //     });
+        // }))
 
     }
 

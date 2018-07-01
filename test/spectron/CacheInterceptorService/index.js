@@ -27,8 +27,9 @@ async function start() {
 
     console.log("Interceptor service started...");
 
-    //let url = "https://journal.artfuldev.com/unit-testing-node-applications-with-typescript-using-mocha-and-chai-384ef05f32b2";
-    let url = "https://www.cnn.com";
+    let url = "https://journal.artfuldev.com/unit-testing-node-applications-with-typescript-using-mocha-and-chai-384ef05f32b2";
+    //let url = "https://www.cnn.com";
+    //let url = "https://www.cnn.com/us/live-news/immigration-border-separations-protests/h_313485921ffafc2a2ef7b4ca8af8dc44";
 
     mainWindow.loadURL(url);
 

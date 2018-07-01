@@ -55,7 +55,7 @@ class CacheInterceptorService {
             url: request.url,
         };
 
-        log.debug("Going to handle with net.request: ", options);
+        log.debug("Going to handle with net.request: " + request.url);
 
         let netRequest = net.request(options)
             .on('response', async (response) => {
@@ -77,11 +77,13 @@ class CacheInterceptorService {
 
             })
             .on('abort', () => {
-                log.error("Request aborted: ");
+                log.error(`Request aborted: ${request.url}`);
                 callback(-1);
             })
             .on('error', (error) => {
-                log.error("Request error: ", error);
+                // TODO: we are getting: net::ERR_CONNECTION_REFUSED... I think
+                // we could include this in the callback.
+                log.error(`Request error: ${request.url}`, error);
                 callback(-1);
             });
 

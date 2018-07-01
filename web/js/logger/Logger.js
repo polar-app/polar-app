@@ -6,6 +6,32 @@ const {Objects} = require("../util/Objects.js");
 
 let initialized = false;
 
+const USE_CONSOLE_LOG = true;
+
+class ConsoleLogger {
+
+    info(...args) {
+        console.log(...args);
+    }
+
+    warn(...args) {
+        console.warn(...args);
+    }
+
+    debug(...args) {
+        console.debug(...args);
+    }
+
+    error(...args) {
+        console.error(...args);
+    }
+
+    debug(msg) {
+        console.log("DEBUG: " + msg);
+    }
+
+}
+
 class Logger {
 
     /**
@@ -14,29 +40,8 @@ class Logger {
      */
     static create() {
 
-        // TODO: include the source of the log but I think to do this we have to
-        // either change the log() function or we have to implement a custom
-        // formatter.
-        //
-        if(process.type !== "renderer") {
-
-            //return log;
-            return new class {
-
-                info() {
-                }
-
-                warn() {
-                }
-
-                debug() {
-                }
-
-                error() {
-                }
-
-            }
-
+        if(USE_CONSOLE_LOG) {
+            return new ConsoleLogger();
         } else {
             return log;
         }

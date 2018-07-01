@@ -27297,6 +27297,51 @@ var _require2 = __webpack_require__(/*! ../util/Objects.js */ "./web/js/util/Obj
 
 var initialized = false;
 
+var USE_CONSOLE_LOG = true;
+
+var ConsoleLogger = function () {
+    function ConsoleLogger() {
+        _classCallCheck(this, ConsoleLogger);
+    }
+
+    _createClass(ConsoleLogger, [{
+        key: "info",
+        value: function info() {
+            var _console;
+
+            (_console = console).log.apply(_console, arguments);
+        }
+    }, {
+        key: "warn",
+        value: function warn() {
+            var _console2;
+
+            (_console2 = console).warn.apply(_console2, arguments);
+        }
+    }, {
+        key: "debug",
+        value: function debug() {
+            var _console3;
+
+            (_console3 = console).debug.apply(_console3, arguments);
+        }
+    }, {
+        key: "error",
+        value: function error() {
+            var _console4;
+
+            (_console4 = console).error.apply(_console4, arguments);
+        }
+    }, {
+        key: "debug",
+        value: function debug(msg) {
+            console.log("DEBUG: " + msg);
+        }
+    }]);
+
+    return ConsoleLogger;
+}();
+
 var Logger = function () {
     function Logger() {
         _classCallCheck(this, Logger);
@@ -27312,34 +27357,8 @@ var Logger = function () {
          */
         value: function create() {
 
-            // TODO: include the source of the log but I think to do this we have to
-            // either change the log() function or we have to implement a custom
-            // formatter.
-            //
-            if (process.type !== "renderer") {
-
-                //return log;
-                return new (function () {
-                    function _class() {
-                        _classCallCheck(this, _class);
-                    }
-
-                    _createClass(_class, [{
-                        key: "info",
-                        value: function info() {}
-                    }, {
-                        key: "warn",
-                        value: function warn() {}
-                    }, {
-                        key: "debug",
-                        value: function debug() {}
-                    }, {
-                        key: "error",
-                        value: function error() {}
-                    }]);
-
-                    return _class;
-                }())();
+            if (USE_CONSOLE_LOG) {
+                return new ConsoleLogger();
             } else {
                 return log;
             }
