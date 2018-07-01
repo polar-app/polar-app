@@ -1,4 +1,4 @@
-const {SpectronOutputMonitorService} = require("../../../web/js/test/SpectronOutputMonitorService");
+const {SpectronOutputMonitorService} = require("./SpectronOutputMonitorService");
 const {Application} = require('spectron');
 const electronPath = require('electron');
 
@@ -10,7 +10,11 @@ const electronPath = require('electron');
  */
 class Spectron {
 
-    static setup() {
+    /**
+     * The directory to run the specs from. Usually __dirname in your spec.
+     * @param dir
+     */
+    static setup(dir) {
 
         let spectronOutputMonitorService;
 
@@ -27,7 +31,7 @@ class Spectron {
 
                 // The following line tells spectron to look and use the main.js file
                 //args: [path.join(__dirname, '../../..')]
-                args: [__dirname]
+                args: [dir]
 
             });
 

@@ -1,13 +1,11 @@
-const {Application} = require('spectron');
 const assert = require('assert');
-const path = require('path');
-const {Spectron} = require("./Spectron");
+const {Spectron} = require("../../../web/js/test/Spectron");
 
 describe('Application launch', function () {
 
     this.timeout(10000)
 
-    Spectron.setup();
+    Spectron.setup(__dirname);
 
     it('shows an initial window', function () {
 
