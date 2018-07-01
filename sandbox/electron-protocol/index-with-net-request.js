@@ -75,18 +75,12 @@ let interceptCallback = async (req, callback) => {
 
         // mimeType
 
-        let mimeType = headers["content-type"];
+        let contentType = parseContentType(headers["content-type"][0]);
 
-        if( !mimeType) {
-            console.log("No content type for URL " + req.url);
-            mimeType = "text/html";
-        }
-
-        console.log(`Using mimeType=${mimeType} for ${req.url}`)
-
+        console.log(`Using mimeType=${contentType.mimeType} for ${req.url}`)
 
         callback({
-            mimeType: mimeType,
+            mimeType: contentType.mimeType,
             data: buffer,
         });
 
@@ -99,6 +93,45 @@ let interceptCallback = async (req, callback) => {
     request.end();
 
 };
+
+/**
+ * Parse the content-type header and include information about the charset too.
+ */
+function parseContentType(contentType) {
+
+    console.log(typeof contentType, contentType)
+
+    // https://www.w3schools.com/html/html_charset.asp
+
+    // html4 is ISO-8859-1 and HTML5 is UTF-8
+
+    // https://stackoverflow.com/questions/8499930/how-to-identify-html5
+
+    // text/html; charset=utf-8
+
+    let mimeType = "text/html"
+
+    if(! contentType) {
+        contentType = mimeType;
+    }
+
+    let charset;
+    let match;
+
+    if(match = contentType.match("^([a-zA-Z]+/[a-zA-Z+]+)")) {
+        mimeType = match[1];
+    }
+
+    if(match = contentType.match("; charset=([^ ;]+)")) {
+        charset = match[1];
+    }
+
+    return {
+        mimeType,
+        charset
+    }
+
+}
 
 function toBuffer(stream) {
 
