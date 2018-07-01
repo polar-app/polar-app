@@ -61427,6 +61427,45 @@ var Functions = function () {
 
             return withTimeout;
         }()
+
+        /**
+         * A promise based timeout.  This just returns a promise which returns
+         * once the timeout has expired. You can then call .then() or just await
+         * the timeout.
+         *
+         * @param timeout
+         * @return {Promise<void>}
+         */
+
+    }, {
+        key: "waitFor",
+        value: function () {
+            var _ref2 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2(timeout) {
+                return regeneratorRuntime.wrap(function _callee2$(_context2) {
+                    while (1) {
+                        switch (_context2.prev = _context2.next) {
+                            case 0:
+                                return _context2.abrupt("return", new Promise(function (resolve) {
+
+                                    setTimeout(function () {
+                                        resolve();
+                                    }, timeout);
+                                }));
+
+                            case 1:
+                            case "end":
+                                return _context2.stop();
+                        }
+                    }
+                }, _callee2, this);
+            }));
+
+            function waitFor(_x3) {
+                return _ref2.apply(this, arguments);
+            }
+
+            return waitFor;
+        }()
     }]);
 
     return Functions;

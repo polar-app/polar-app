@@ -293,7 +293,7 @@ async function promptDoc() {
             title: "Open Document",
             defaultPath: datastore.stashDir,
             filters: [
-                { name: 'Docs', extensions: ['pdf', 'chtml', "phz"] }
+                { name: 'Docs', extensions: ['pdf', "phz"] }
             ],
             properties: ['openFile']
         }, function(path) {

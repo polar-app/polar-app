@@ -3,7 +3,10 @@ class ContentCapture {
     // FIXME: remove meta http-equiv Location redirects from the raw HTML.
 
     // FIXME: don't allow meta charset and other ways to set the charset within the
-    //        HTML file as we are ALWAYS UTF-8
+    // HTML file as we are ALWAYS UTF-8 since we're sending it to the caller
+    // in JSON.  For example, if the encoding is ISO-8859-4 from teh original
+    // source , and sent to use that way, we would store it that way but
+    // re-represent it as UTF-8 which is then invalid.
 
     // FIXME: <script> within SVG also needs to be stripped!
 

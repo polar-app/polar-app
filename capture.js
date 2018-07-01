@@ -141,17 +141,11 @@ async function captureHTML(url, window) {
     // TODO convert the captured JSON to a phz file...
 
     let phzPath = `${stashDir}/${filename}.phz`;
+
+    log.info("Writing PHZ to: " + phzPath);
+
     let capturedPHZWriter = new CapturedPHZWriter(phzPath);
     await capturedPHZWriter.convert(captured)
-
-    captured = prettifyCaptured(captured);
-
-    let jsonPath = `${stashDir}/${filename}.json`;
-
-    log.info("Writing JSON data to: " + jsonPath);
-
-    fs.writeFileSync(jsonPath, JSON.stringify(captured, null, "  "));
-    fs.writeFileSync(`${stashDir}/${filename}.chtml`, captured.content);
 
     log.info("Capturing the HTML...done");
 

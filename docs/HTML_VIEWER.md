@@ -1,5 +1,19 @@
 # TODO:
 
+
+- AHAH!.. we can NOT use the highligher javascript because it creates a <span>
+  and this span can change the visual presentation of the page.  Instead we have
+  to do this ourselves and then manually compute where the selected region is!!!
+  FUCK!  This is just too too too much work for one person!
+
+    https://stackoverflow.com/questions/6846230/coordinates-of-selected-text-in-browser-page
+
+    - this doesn't actually work the way I want initially.
+
+        - I'm going to need to improve this a bit more.
+
+    -
+
 - This webContents API might be easier than ContentCapture... holy fuck!  THIS
   would have saved me a shit load of time!!!  Like a WEEK... FUCK THIS.
 
@@ -24,7 +38,7 @@
           that work.
 
     - Since I control the file output I can at least implemetn the 'partial'
-      support.  That I wanted.   
+      support.  That I wanted.
 
 - what's currently broken:
     - HTTPS URLs don't work still

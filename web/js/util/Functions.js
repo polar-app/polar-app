@@ -53,6 +53,26 @@ class Functions {
 
     }
 
+    /**
+     * A promise based timeout.  This just returns a promise which returns
+     * once the timeout has expired. You can then call .then() or just await
+     * the timeout.
+     *
+     * @param timeout
+     * @return {Promise<void>}
+     */
+    static async waitFor(timeout) {
+
+        return new Promise(resolve => {
+
+            setTimeout(() => {
+                resolve();
+            }, timeout);
+
+        });
+
+    }
+
 }
 
 module.exports.forDict = Functions.forDict;
