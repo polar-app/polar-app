@@ -28,6 +28,8 @@ const {DebugWebRequestsListener} = require("./web/js/webrequests/DebugWebRequest
 
 const log = Logger.create();
 
+const USE_PAGING_LOADER = true;
+
 async function configureBrowser(window) {
 
     // TODO maybe inject this via a preload script so we know that it's always
@@ -46,6 +48,7 @@ async function configureBrowser(window) {
 
     let windowSize = getWindowSize(window);
 
+    /** @RendererContext */
     function configureBrowserWindowSize(windowSize) {
 
         // TODO: see if I have already redefined it.  the second time fails
@@ -114,10 +117,19 @@ async function captureHTML(url, window) {
     let captured;
 
     try {
+
         captured = await window.webContents.executeJavaScript("ContentCapture.captureHTML()");
+
     } catch (e) {
-        console.err(e);
+
+        // TODO: this isn't actually called because executeJavascript doesn't
+        // handle exceptions. You just block there forever. I need to wrap
+        // this with a closure that is an 'either' err or content.
+
+        log.err("Could not capture HTML: ", e);
+
     }
+
     log.info("Retrieving HTML...done");
 
     // record the browser that was used to render this page.
@@ -144,7 +156,7 @@ async function captureHTML(url, window) {
     log.info("Capturing the HTML...done");
 
     if(args.quit) {
-        console.log("Capture finished.  Quitting now");
+        log.info("Capture finished.  Quitting now");
         app.quit();
     } else {
         log.info("Not quitting (yielding to --no-quit=true).")
@@ -223,30 +235,42 @@ class Capture {
 
         let pagingBrowser = new DefaultPagingBrowser(this.window.webContents);
 
-        let pagingLoader = new PagingLoader(pagingBrowser, async () => {
+        if(USE_PAGING_LOADER) {
 
-            setTimeout(() => {
+            let pagingLoader = new PagingLoader(pagingBrowser, async () => {
 
-                this.webRequestReactors.forEach(webRequestReactor => {
-                    log.info("Stopping webRequestReactor...");
-                    webRequestReactor.stop();
-                    log.info("Stopping webRequestReactor...done");
-                });
+                // TODO: use the promise version of setTimeout in Functions.
 
-                // capture within timeout just for debug purposes.
-                captureHTML(this.url, this.window)
-                    .catch(err => log.error(err));
+                setTimeout(() => {
 
-            }, 1);
+                    // capture within timeout just for debug purposes.  This way
+                    // we can let the page continue loading for some time if
+                    // there are any straggling resources.
 
+                    this.webRequestReactors.forEach(webRequestReactor => {
+                        log.info("Stopping webRequestReactor...");
+                        webRequestReactor.stop();
+                        log.info("Stopping webRequestReactor...done");
+                    });
 
-        } );
+                    captureHTML(this.url, this.window)
+                        .catch(err => log.error(err));
 
-        this.pendingWebRequestsListener.addEventListener(pendingRequestEvent => {
-            pagingLoader.onPendingRequestsUpdate(pendingRequestEvent);
-        });
+                }, 1);
 
-        await pagingLoader.onLoad();
+            } );
+
+            this.pendingWebRequestsListener.addEventListener(pendingRequestEvent => {
+                pagingLoader.onPendingRequestsUpdate(pendingRequestEvent);
+            });
+
+            await pagingLoader.onLoad();
+
+        } else {
+
+            await captureHTML(this.url, this.window)
+
+        }
 
     }
 
@@ -277,10 +301,13 @@ class Capture {
 
         let newWindow = new BrowserWindow(browserWindowOptions);
 
+        // TODO: make this a command line argument
+        //newWindow.toggleDevTools();
+
         this.onWebRequest(newWindow.webContents.session.webRequest);
 
-        newWindow.on('dom-ready', function(e) {
-            console.log("dom-ready: ", e);
+        newWindow.webContents.on('dom-ready', function(e) {
+            log.info("dom-ready: ", e);
         });
 
         newWindow.on('close', function(e) {
@@ -331,14 +358,14 @@ class Capture {
          */
         newWindow.webContents.on('did-start-loading', (event) => {
 
-            console.log("Registering new webRequest listeners");
+            log.info("Registering new webRequest listeners");
 
             // We get one webContents per frame so we have to listen to their
             // events too..
 
             let webContents = event.sender.webContents;
 
-            console.log("Detected new loading page: " + webContents.getURL());
+            log.info("Detected new loading page: " + webContents.getURL());
 
             // FIXME: this might be a bug.  Just because we get a new start loading
             // request doesn't mean it's in a new webContents ...

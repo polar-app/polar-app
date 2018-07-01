@@ -37,6 +37,22 @@ class Functions {
 
     };
 
+    /**
+     * Calls the given callback as a promise which we can await.
+     */
+    static async withTimeout(timeout, callback) {
+
+        return new Promise((resolve,reject) => {
+
+            setTimeout(() => {
+                callback().then(result => resolve(result))
+                          .catch(err => reject(err));
+            }, timeout);
+
+        });
+
+    }
+
 }
 
 module.exports.forDict = Functions.forDict;

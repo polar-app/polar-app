@@ -10,9 +10,9 @@ class ContentCapture {
     /**
      * Capture the page as HTML so that we can render it static.
      */
-    static captureHTML(contentDoc, url, result, options) {
+    static captureHTML(contentDoc, url, result) {
 
-        const ENABLE_IFRAMES = false;
+        const ENABLE_IFRAMES = true;
 
         if(! contentDoc) {
             // this is the first document were working with.
@@ -38,6 +38,8 @@ class ContentCapture {
 
         if(ENABLE_IFRAMES) {
 
+            console.log("Going to export iframes now.");
+
             // this doesn't always work and I think we need to fundamentally
             // re-think our strategy here. I might have to keep track of all the
             // webContents loaded and work with them directly.
@@ -52,7 +54,14 @@ class ContentCapture {
             //     at EventEmitter.emit (events.js:224:7)
 
             // now recurse into all the iframes in this doc and capture their HTML too.
-            contentDoc.querySelectorAll("iframe").forEach(function (iframe) {
+            let iframes = contentDoc.querySelectorAll("iframe");
+
+            console.log("Found N iframes: " + iframes.length);
+
+            let nrHandled = 0;
+            let nrSkipped = 0;
+
+            iframes.forEach(function (iframe) {
 
                 // TODO: only work with http and https URLs.
 
@@ -61,13 +70,18 @@ class ContentCapture {
                     let href = iframe.contentDocument.location.href;
 
                     console.log("Going to capture iframe: ", href);
-                    ContentCapture.captureHTML(iframe.contentDocument, result);
+                    ContentCapture.captureHTML(iframe.contentDocument, href, result);
+
+                    ++nrHandled;
 
                 } else {
                     console.log("Skipping iframe: " + iframe.outerHTML);
+                    ++nrSkipped;
                 }
 
             });
+
+            console.log(`Handled ${nrHandled} and skipped ${nrSkipped} iframes`);
 
         }
 

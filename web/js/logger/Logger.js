@@ -26,8 +26,8 @@ class ConsoleLogger {
         console.error(...args);
     }
 
-    debug(msg) {
-        console.log("DEBUG: " + msg);
+    debug(...args) {
+        console.log("DEBUG: " , ...args);
     }
 
 }
