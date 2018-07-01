@@ -9,9 +9,13 @@ const {forDict} = require('../../util/Functions');
 
 class CacheRegistry {
 
-    constructor(proxyConfig) {
+    /**
+     *
+     * @param proxyServerConfig {ProxyServerConfig}
+     */
+    constructor(proxyServerConfig) {
 
-        this.proxyConfig = Preconditions.assertNotNull(proxyConfig);
+        this.proxyServerConfig = Preconditions.assertNotNull(proxyServerConfig);
 
         this.registry = {};
 
@@ -67,7 +71,7 @@ class CacheRegistry {
 
         return new CachedRequest({
             url,
-            proxyRules: `http=localhost:${this.proxyConfig.port}`,
+            proxyRules: `http=localhost:${this.proxyServerConfig.port}`,
             proxyBypassRules: "<local>"
         });
 

@@ -16,9 +16,15 @@ class Spectron {
      */
     static setup(dir) {
 
+        // TODO: since spectron requires a window to operate, we should ALWAYS
+        // create a window and then return it to the user so that they can
+        // work with it directly.
+
         let spectronOutputMonitorService;
 
         beforeEach(async function () {
+
+            console.log("Starting spectron with dir: " + dir);
 
             this.app = new Application({
 

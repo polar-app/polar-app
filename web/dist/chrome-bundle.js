@@ -56773,7 +56773,7 @@ var Logger = function () {
     return Logger;
 }();
 
-module.exports.create = create;
+module.exports.create = Logger.create;
 module.exports.Logger = Logger;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../../../node_modules/process/browser.js */ "./node_modules/process/browser.js")))
 

@@ -12,6 +12,8 @@ class SpectronOutputMonitorService {
 
     start() {
         this._iter();
+        console.log("SpectronOutputMonitorService started");
+
     }
 
     _iter() {
@@ -35,6 +37,17 @@ class SpectronOutputMonitorService {
                 })
 
             })
+
+            // right now e only forward the main because we can get the renderer
+            // via the javascript console.
+            client.getRenderProcessLogs().then(function (logs) {
+                logs.forEach(function (log) {
+                    console.log("render: " + log);
+                })
+
+            })
+
+
 
         }
 

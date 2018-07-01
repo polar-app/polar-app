@@ -3,7 +3,7 @@ const fs = require('fs');
 const assert = require('assert');
 const url = require('url');
 const CapturedPHZWriter = require("../../capture/CapturedPHZWriter").CapturedPHZWriter;
-const MockCapturedContent = require("../../capture/MockCapturedContent").MockCapturedContent;
+const {MockCapturedContent} = require("../../capture/MockCapturedContent");
 const {assertJSON} = require('../../test/Assertions');
 const {CacheEntriesFactory} = require('./CacheEntriesFactory');
 require("../../test/TestingTime").freeze();

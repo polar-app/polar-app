@@ -173,4 +173,4 @@ class CacheInterceptorService {
 
 }
 
-module.exports.CacheInterceptor = CacheInterceptorService;
+module.exports.CacheInterceptorService = CacheInterceptorService;
