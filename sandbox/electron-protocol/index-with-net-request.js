@@ -55,12 +55,16 @@ let interceptCallback = async (req, callback) => {
         let headers = response ? response.headers : {};
 
         console.log("FIXME: got a response..", response);
-        console.log("FIXME: got a response.. headers: ", headers);
+        //console.log("FIXME: got a response.. headers: ", headers);
 
         // FIXME: this confirms that it DOES read the data, that it IS a pipe,
         // and that the data is valid.. just that the callback isn't functioning..
         //response.pipe(process.stdout);
 
+        // FIXME characterEncoding here...
+
+        // FIXME: this is hard coded as utf8... parse the charset from the
+        // mimeType... and use the proper default when not specified.
         let buffer = await convertStream.toBuffer(response);
 
         // callback({
@@ -72,9 +76,14 @@ let interceptCallback = async (req, callback) => {
         // mimeType
 
         let mimeType = headers["content-type"];
+
         if( !mimeType) {
+            console.log("No content type for URL " + req.url);
             mimeType = "text/html";
         }
+
+        console.log(`Using mimeType=${mimeType} for ${req.url}`)
+
 
         callback({
             mimeType: mimeType,
