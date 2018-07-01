@@ -16,10 +16,21 @@ class CacheInterceptorService {
      * @param cacheRegistry {CacheRegistry}
      */
     constructor(cacheRegistry) {
+
         this.cacheRegistry = cacheRegistry;
+
+        // total number of cache hits
+        this.cacheStats = {
+            hits: 0,
+            misses: 0
+        }
+
     }
 
     async handleWithCache(request, callback) {
+
+        ++this.cacheStats.hits;
+
         log.debug("Going to handle with cache: ", options);
 
         let cacheEntry = this.cacheRegistry.get(request.url);
@@ -32,6 +43,8 @@ class CacheInterceptorService {
     }
 
     async handleWithNetRequest(request, callback) {
+
+        ++this.cacheStats.misses;
 
         let options = {
             method: request.method,

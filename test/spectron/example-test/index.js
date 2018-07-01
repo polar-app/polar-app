@@ -3,7 +3,7 @@ const electron = require('electron');
 const app = electron.app;
 const BrowserWindow = electron.BrowserWindow;
 
-console.log("hello world");
+console.log("Electron app started. Waiting for it to be ready.");
 
 function createMainWindow() {
     let mainWindow = new BrowserWindow();
@@ -13,9 +13,9 @@ function createMainWindow() {
 
 app.on('ready', async function() {
 
-    let mainWindow = createMainWindow();
+    console.log("The main app is now ready.  going to create a window.");
 
-    console.log("It worked!");
+    let mainWindow = createMainWindow();
 
 });
 
