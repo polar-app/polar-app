@@ -1,7 +1,7 @@
 
 const electron = require('electron');
-const ProxyServerConfig = require("../../../web/js/backend/proxyserver/ProxyServerConfig").ProxyServerConfig;
-const CacheRegistry = require("../../../web/js/backend/proxyserver/CacheRegistry").CacheRegistry;
+const {ProxyServerConfig} = require("../../../web/js/backend/proxyserver/ProxyServerConfig");
+const {CacheRegistry} = require("../../../web/js/backend/proxyserver/CacheRegistry");
 const {CacheInterceptorService} = require("../../../web/js/backend/interceptor/CacheInterceptorService");
 const {SpectronRenderer} = require("../../../web/js/test/SpectronRenderer");
 const app = electron.app;
@@ -18,7 +18,11 @@ async function start() {
 
     await cacheInterceptorService.start();
 
-    mainWindow.loadURL("https://www.cnn.com");
+    console.log("Interceptor service started...");
+
+    mainWindow.loadURL("https://www.example.com");
+
+    console.log("Loaded main URL")
 
 }
 

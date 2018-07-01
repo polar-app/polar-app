@@ -5,17 +5,17 @@ const {MockPHZWriter} = require("../../../web/js/phz/MockPHZWriter");
 
 describe("CacheInterceptorService", function () {
 
-    this.timeout(10000)
+    this.timeout(10000);
 
     Spectron.setup(__dirname);
-    //
-    // let path = "/tmp/cache-interceptor-service.phz";
-    //
-    // before(async function () {
-    //     //
-    //     // await MockPHZWriter.write(path)
-    //     //
-    // });
+
+    let path = "/tmp/cache-interceptor-service.phz";
+
+    before(async function () {
+
+        await MockPHZWriter.write(path)
+
+    });
 
     it('Load PHZ file via cache', function () {
 

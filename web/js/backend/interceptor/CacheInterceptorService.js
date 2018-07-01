@@ -44,6 +44,8 @@ class CacheInterceptorService {
 
     async handleWithNetRequest(request, callback) {
 
+        log.info("Handling request: ", request.url);
+
         ++this.cacheStats.misses;
 
         let options = {

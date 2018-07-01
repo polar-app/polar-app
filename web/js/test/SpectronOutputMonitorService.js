@@ -15,7 +15,6 @@ class SpectronOutputMonitorService {
     start() {
         this._iter();
         console.log("SpectronOutputMonitorService started");
-
     }
 
     _iter() {
