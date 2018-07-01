@@ -11,6 +11,7 @@ function getSelectionCoords(win) {
             x = range.boundingLeft;
             y = range.boundingTop;
         }
+
     } else if (win.getSelection) {
         sel = win.getSelection();
         if (sel.rangeCount) {
@@ -24,25 +25,16 @@ function getSelectionCoords(win) {
                 x = rect.left;
                 y = rect.top;
             }
-            // Fall back to inserting a temporary element
-            if (x == 0 && y == 0) {
-                var span = doc.createElement("span");
-                if (span.getClientRects) {
-                    // Ensure span has dimensions and position by
-                    // adding a zero-width space character
-                    span.appendChild( doc.createTextNode("\u200b") );
-                    range.insertNode(span);
-                    rect = span.getClientRects()[0];
-                    x = rect.left;
-                    y = rect.top;
-                    var spanParent = span.parentNode;
-                    spanParent.removeChild(span);
 
-                    // Glue any broken text nodes back together
-                    spanParent.normalize();
-                }
+            // Fall back to inserting a temporary element
+            if (x === 0 && y === 0) {
+                throw new Error("Unable to compute selection.");
             }
+
         }
+
     }
-    return { x: x, y: y };
+
+    return { x, y };
+
 }
