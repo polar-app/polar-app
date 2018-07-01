@@ -279,6 +279,10 @@ class Capture {
 
         this.onWebRequest(newWindow.webContents.session.webRequest);
 
+        newWindow.on('dom-ready', function(e) {
+            console.log("dom-ready: ", e);
+        });
+
         newWindow.on('close', function(e) {
             e.preventDefault();
             newWindow.webContents.clearHistory();
@@ -332,7 +336,13 @@ class Capture {
             // We get one webContents per frame so we have to listen to their
             // events too..
 
-            this.onWebRequest(event.sender.webContents.session.webRequest);
+            let webContents = event.sender.webContents;
+
+            console.log("Detected new loading page: " + webContents.getURL());
+
+            // FIXME: this might be a bug.  Just because we get a new start loading
+            // request doesn't mean it's in a new webContents ...
+            this.onWebRequest(webContents.session.webRequest);
 
             if(! this.windowConfigured) {
 
