@@ -1,4 +1,4 @@
-const {SpectronOutputMonitorService} = require("./SpectronOutputMonitorService");
+const {SpectronOutputMonitorService} = require("../../../web/js/test/SpectronOutputMonitorService");
 const {Application} = require('spectron');
 const electronPath = require('electron');
 

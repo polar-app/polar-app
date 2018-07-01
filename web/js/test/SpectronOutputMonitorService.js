@@ -1,4 +1,4 @@
-const {Preconditions} = require("../../../web/js/Preconditions");
+const {Preconditions} = require("../Preconditions");
 
 /**
  * Keep a background monitor to read logs and then write them to the main process.
