@@ -1,6 +1,7 @@
 const electron = require('electron');
 const fspath = require('path');
 const url = require('url');
+const CacheInterceptorService = require("./web/js/backend/interceptor/CacheInterceptorService").CacheInterceptorService;
 const Directories = require("./web/js/datastore/Directories").Directories;
 const {DiskDatastore} = require("./web/js/datastore/DiskDatastore");
 const {MemoryDatastore} = require("./web/js/datastore/MemoryDatastore");
@@ -388,6 +389,7 @@ async function loadDoc(path, targetWindow) {
 
     } else if(path.endsWith(".phz")) {
 
+        // register the phz.  the cache interceptor should do the rest.
         let cachedRequestsHolder = await cacheRegistry.registerFile(path);
 
         log.info("cachedRequestsHolder: " + JSON.stringify(cachedRequestsHolder));
@@ -538,7 +540,7 @@ const directories = new Directories();
 
 directories.init().then(async () => {
 
-    Logger.init(directories.logsDir);
+    await Logger.init(directories.logsDir);
 
     if(args.enableMemoryDatastore) {
         datastore = new MemoryDatastore();
@@ -563,6 +565,9 @@ directories.init().then(async () => {
 
     const proxyServer = new ProxyServer(proxyServerConfig, cacheRegistry);
     proxyServer.start();
+
+    let cacheInterceptorService = new CacheInterceptorService(cacheRegistry);
+    await cacheInterceptorService.start();
 
     log.info("Running with process.args: ", JSON.stringify(process.argv));
 

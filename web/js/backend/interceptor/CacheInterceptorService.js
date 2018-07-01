@@ -101,8 +101,6 @@ class CacheInterceptorService {
         log.info(`intercepted ${request.method} ${request.url}`);
 
         if(this.cacheRegistry.hasEntry(request.url)) {
-            console.log("FIXME1")
-
             await this.handleWithCache(request, callback);
         } else {
             await this.handleWithNetRequest(request, callback);

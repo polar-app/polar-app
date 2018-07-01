@@ -27316,11 +27316,33 @@ var Logger = function () {
             // either change the log() function or we have to implement a custom
             // formatter.
 
-            return log;
-            // return new class {
-            //     info() {}
-            //     warn() {}
-            // }
+            if (process.type === "renderer") {
+
+                //return log;
+                return new (function () {
+                    function _class() {
+                        _classCallCheck(this, _class);
+                    }
+
+                    _createClass(_class, [{
+                        key: "info",
+                        value: function info() {}
+                    }, {
+                        key: "warn",
+                        value: function warn() {}
+                    }, {
+                        key: "debug",
+                        value: function debug() {}
+                    }, {
+                        key: "error",
+                        value: function error() {}
+                    }]);
+
+                    return _class;
+                }())();
+            } else {
+                return log;
+            }
         }
     }, {
         key: "init",

@@ -18,11 +18,28 @@ class Logger {
         // either change the log() function or we have to implement a custom
         // formatter.
 
-        return log;
-        // return new class {
-        //     info() {}
-        //     warn() {}
-        // }
+        if(process.type === "renderer") {
+
+            //return log;
+            return new class {
+
+                info() {
+                }
+
+                warn() {
+                }
+
+                debug() {
+                }
+
+                error() {
+                }
+
+            }
+
+        } else {
+            return log;
+        }
 
     }
 

@@ -4,11 +4,14 @@ const {ProxyServerConfig} = require("../../../web/js/backend/proxyserver/ProxySe
 const {CacheRegistry} = require("../../../web/js/backend/proxyserver/CacheRegistry");
 const {CacheInterceptorService} = require("../../../web/js/backend/interceptor/CacheInterceptorService");
 const {SpectronRenderer} = require("../../../web/js/test/SpectronRenderer");
+const {Logger} = require("../../../web/js/logger/Logger");
 const app = electron.app;
 
 async function start() {
 
     let mainWindow = await SpectronRenderer.start();
+
+    await Logger.init("/tmp/cache-interceptor-service-logs");
 
     let proxyServerConfig = new ProxyServerConfig(1234);
 
