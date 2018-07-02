@@ -2,7 +2,7 @@
  * A browser that implements paging of the UI.
  */
 const {PagingCursor} = require("./PagingCursor");
-const {Point} = require("./Point");
+const {Point} = require("../../../Point");
 
 const {Preconditions} = require("../../../Preconditions");
 

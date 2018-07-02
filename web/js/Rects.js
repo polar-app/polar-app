@@ -50,6 +50,26 @@ class Rects {
 
     }
 
+    /**
+     * Assume that the given rect is relative to the point and return the new
+     * rect.
+     *
+     * @param point {Point}
+     */
+    static relativeTo(point, rect) {
+
+        rect = Objects.duplicate(rect);
+
+        rect.left = rect.left + point.x;
+        rect.top = rect.top + point.y;
+
+        rect.right = rect.right + point.x;
+        rect.bottom = rect.bottom + point.y;
+
+        return Rects.validate(rect);
+
+    }
+
 }
 
 module.exports.Rects = Rects;

@@ -1,4 +1,12 @@
 <html>
+
+<script>
+
+    const {Selections} = require("../../web/js/highlights/text/controller/Selections.js");
+    const {SimpleHighlightRenderer} = require("../../web/js/highlights/text/view/SimpleHighlightRenderer.js");
+
+</script>
+
 <body>
 
     <h1>
@@ -6,19 +14,44 @@
     </h1>
 
     <p>
-        This is a body <em>with</em> so <b>interesting</b> text.
+        This is a body <em>with</em> so <b class="s1">interesting</b> text.
     </p>
 
-    <p>
-        Paragraph two starts <i>here</i>.
+    <p class="s1">
+        Paragraph two starts <i class="s1">here</i>.
     </p>
 
-    <p>
+    <p class="s1">
         this is just raw text without any inner elements.
         this is just raw text without any inner elements.
         this is just raw text without any inner elements.
         this is just raw text without any inner elements.
     </p>
+
+
+    <script>
+        let selection = window.getSelection();
+        let range = document.createRange();
+
+        document.querySelectorAll(".s1").forEach(element => {
+            console.log("adding element")
+            range.selectNode(element);
+        })
+
+        selection.removeAllRanges();
+        selection.addRange(range);
+
+        let selectedContent = Selections.computeSelectionRects(window)
+
+        console.log(selectedContent);
+
+        console.log("done with range.")
+
+        selectedContent.rectTexts.forEach(rectText => {
+            SimpleHighlightRenderer.render(document.body, rectText.rect);
+        });
+
+    </script>
 
 </body>
 </html>

@@ -1,6 +1,13 @@
 /**
  *
  */
+const {RectText} = require("./RectText");
+const {Point} = require("../../../Point");
+const {Rect} = require("./Rect");
+const {Rects} = require("../../../Rects");
+const {Objects} = require("../../../util/Objects");
+const {SelectedContent} = require("./SelectedContent");
+
 class Selections {
 
     // I should test this by using something like:
@@ -14,7 +21,7 @@ class Selections {
      * client/viewport offset.
      *
      * @param window {Window}
-     * @return {Array<DomRect>}
+     * @return {SelectedContent}
      */
     static computeSelectionRects(win) {
 
@@ -36,10 +43,16 @@ class Selections {
 
         // TODO: how do I find out that the current selection from just the cursor?
 
+        // here is hte general algorithm I'm going to use.
+        //
+        // there should be a 1/1 pairing of the rects with the the elements.
+        //
+        // the cloned elements will have the text.  This way I can get the text
+        // at each position.
+
         let selection = win.getSelection();
 
-        let clientRects = [];
-        let clonedElements = [];
+        let rectTexts = [];
 
         // one of the rects is the cursor.. how do we tell?
 
@@ -50,10 +63,25 @@ class Selections {
 
             // TODO: get the node/element that the range represents...
 
-            clientRects.push(...range.getClientRects());
-            clonedElements.push(...range.cloneContents().querySelectorAll("*"));
+            let scrollPoint = new Point({
+                x: window.scrollX,
+                y: window.scrollY
+            });
+
+            let clientRects = Array.from(range.getClientRects());
+            clientRects.forEach(clientRect => {
+                let rect = new Rect(Objects.duplicate(clientRect));
+                rect = Rects.validate(rect);
+                rect = Rects.relativeTo(scrollPoint, rect);
+                rectTexts.push(new RectText({rect}));
+
+            });
 
         }
+
+        return new SelectedContent({
+            rectTexts
+        })
 
         // now process all the clientRects to remove cursors...
         //clientRects = clientRects.filter( current => this.isCursor(current))
@@ -75,3 +103,4 @@ class Selections {
 }
 
 module.exports.Selections = Selections;
+

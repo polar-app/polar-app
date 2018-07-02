@@ -24398,6 +24398,28 @@ var Rects = function () {
 
             return rect;
         }
+
+        /**
+         * Assume that the given rect is relative to the point and return the new
+         * rect.
+         *
+         * @param point {Point}
+         */
+
+    }, {
+        key: "relativeTo",
+        value: function relativeTo(point, rect) {
+
+            rect = Objects.duplicate(rect);
+
+            rect.left = rect.left + point.x;
+            rect.top = rect.top + point.y;
+
+            rect.right = rect.right + point.x;
+            rect.bottom = rect.bottom + point.y;
+
+            return Rects.validate(rect);
+        }
     }]);
 
     return Rects;

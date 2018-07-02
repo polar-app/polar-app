@@ -22,3 +22,5 @@ class RectText {
     }
 
 }
+
+module.exports.RectText = RectText;

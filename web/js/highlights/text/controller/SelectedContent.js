@@ -14,8 +14,16 @@ class SelectedContent {
          */
         this.text = null;
 
+        /**
+         *
+         * @type {Array<RectText>}
+         */
+        this.rectTexts = [];
+
         Object.assign(this, obj);
 
     }
 
 }
+
+module.exports.SelectedContent = SelectedContent;
