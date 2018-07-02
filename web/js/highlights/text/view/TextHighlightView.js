@@ -93,6 +93,9 @@ class TextHighlightView {
 
     // TODO: this should probably not be static and instead should just be its
     // own class which is testable.
+    //
+    // TODO pageElement should really be parentElement where we want the
+    // highlight element to be rendered.
     static render(pageElement, highlightRect, textHighlightEvent) {
 
         let docFormat = DocFormatFactory.getInstance();
@@ -104,7 +107,7 @@ class TextHighlightView {
         highlightElement.setAttribute("data-type", "text-highlight");
         highlightElement.setAttribute("data-doc-fingerprint", textHighlightEvent.docMeta.docInfo.fingerprint);
         highlightElement.setAttribute("data-text-highlight-id", textHighlightEvent.textHighlight.id);
-        highlightElement.setAttribute("data-page-num", textHighlightEvent.pageMeta.pageInfo.num);
+        highlightElement.setAttribute("data-page-num", `${textHighlightEvent.pageMeta.pageInfo.num}`);
 
         highlightElement.className = `text-highlight annotation text-highlight-${textHighlightEvent.textHighlight.id}`;
 

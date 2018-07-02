@@ -53,7 +53,7 @@ class TextHighlightController {
                 switch (event.key.toLowerCase()) {
 
                     case "t":
-                        this.textHighlighter.doHighlight();
+                        this.doHighlight();
                         break;
 
                     default:
@@ -64,6 +64,14 @@ class TextHighlightController {
             }
 
         }
+
+    }
+
+    doHighlight() {
+
+        this.textHighlighter.doHighlight();
+
+        // window.getSelection().getRangeAt(0).getClientRects();
 
     }
 
@@ -82,10 +90,10 @@ class TextHighlightController {
             color: '', // this works and the color isn't changed.
             manual: true,
 
-            onBeforeHighlight: function (range) {
+            onBeforeHighlight: (range) => {
                 //log.info("onBeforeHighlight range: ", range);
                 return true;
-            }.bind(this),
+            },
 
             onAfterHighlight: function (range, highlightElements) {
                 // log.info("onAfterHighlight range: ", range);
@@ -150,8 +158,8 @@ class TextHighlightController {
      */
     onTextHighlightCreated(selector) {
 
-        // FIXME: I have to use the PageRedraw detector here... Actually.. the
-        // VIEW is that needs to update, right
+        // FIXME: get the new highlighter working FIRST without text and without
+        // rows , or other advanced features.
 
         log.info("TextHighlightController.onTextHighlightCreated");
 
@@ -159,7 +167,14 @@ class TextHighlightController {
 
         let rects = textHighlightRows.map(current => current.rect);
 
+        // TODO: don't do this from the selector because the textHighlightRows
+        // would be a lot better since we have the raw elements to work with.
+
+        // FIXME: I can call selection.toString() to get the value as a string.
+        // I don't need to use extractText on the selector any more.
+
         let text = this.extractText(selector);
+
         let textSelections = TextExtracter.toTextSelections(textHighlightRows);
 
         let textHighlightRecord = TextHighlightRecords.create(rects, textSelections, text);

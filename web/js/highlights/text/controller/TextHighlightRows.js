@@ -50,6 +50,26 @@ class TextHighlightRows {
     }
 
     /**
+     * Create the rows from the given rects
+     *
+     * @param selector
+     * @return {Array}
+     */
+    static createFromRects(selector) {
+
+        // FIXME: this isn't working yet...
+
+        //
+
+        let rectElements = elements.map(current => this.computeOffset(current));
+
+        //console.log("Working with raw rectElements: ", rectElements);
+
+        return TextHighlightRows.computeContiguousRects(rectElements);
+
+    }
+
+    /**
      * Given the span of our highlight, compute the offset looking at the CSS
      * styles of the element we're trying to map.
      *
@@ -214,8 +234,6 @@ class TextHighlightRows {
 
         let rows = TextHighlightRows.computeRows(rectElements)
         let result = [];
-
-        console.log("FIXME: working with rows: ", rows);
 
         rows.forEach(function (rectElementsWithinRow) {
             let rect = TextHighlightRows.computeRectForRow(rectElementsWithinRow);

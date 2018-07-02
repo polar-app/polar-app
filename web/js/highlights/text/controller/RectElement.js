@@ -8,4 +8,4 @@ module.exports.RectElement = class {
         this.element = element;
     }
 
-}
+};

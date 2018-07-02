@@ -55855,7 +55855,7 @@ var TextHighlightController = function () {
                     switch (event.key.toLowerCase()) {
 
                         case "t":
-                            this.textHighlighter.doHighlight();
+                            this.doHighlight();
                             break;
 
                         default:
@@ -55864,6 +55864,14 @@ var TextHighlightController = function () {
                     }
                 }
             }
+        }
+    }, {
+        key: "doHighlight",
+        value: function doHighlight() {
+
+            this.textHighlighter.doHighlight();
+
+            // window.getSelection().getRangeAt(0).getClientRects();
         }
 
         /**
@@ -55884,10 +55892,10 @@ var TextHighlightController = function () {
                 color: '', // this works and the color isn't changed.
                 manual: true,
 
-                onBeforeHighlight: function (range) {
+                onBeforeHighlight: function onBeforeHighlight(range) {
                     //log.info("onBeforeHighlight range: ", range);
                     return true;
-                }.bind(this),
+                },
 
                 onAfterHighlight: function (range, highlightElements) {
                     // log.info("onAfterHighlight range: ", range);
@@ -55954,8 +55962,8 @@ var TextHighlightController = function () {
         key: "onTextHighlightCreated",
         value: function onTextHighlightCreated(selector) {
 
-            // FIXME: I have to use the PageRedraw detector here... Actually.. the
-            // VIEW is that needs to update, right
+            // FIXME: get the new highlighter working FIRST without text and without
+            // rows , or other advanced features.
 
             log.info("TextHighlightController.onTextHighlightCreated");
 
@@ -55965,7 +55973,14 @@ var TextHighlightController = function () {
                 return current.rect;
             });
 
+            // TODO: don't do this from the selector because the textHighlightRows
+            // would be a lot better since we have the raw elements to work with.
+
+            // FIXME: I can call selection.toString() to get the value as a string.
+            // I don't need to use extractText on the selector any more.
+
             var text = this.extractText(selector);
+
             var textSelections = TextExtracter.toTextSelections(textHighlightRows);
 
             var textHighlightRecord = TextHighlightRecords.create(rects, textSelections, text);
@@ -56121,6 +56136,31 @@ var TextHighlightRows = function () {
 
             var rectElements = elements.map(function (current) {
                 return _this.computeOffset(current);
+            });
+
+            //console.log("Working with raw rectElements: ", rectElements);
+
+            return TextHighlightRows.computeContiguousRects(rectElements);
+        }
+
+        /**
+         * Create the rows from the given rects
+         *
+         * @param selector
+         * @return {Array}
+         */
+
+    }, {
+        key: "createFromRects",
+        value: function createFromRects(selector) {
+            var _this2 = this;
+
+            // FIXME: this isn't working yet...
+
+            //
+
+            var rectElements = elements.map(function (current) {
+                return _this2.computeOffset(current);
             });
 
             //console.log("Working with raw rectElements: ", rectElements);
@@ -56295,8 +56335,6 @@ var TextHighlightRows = function () {
 
             var rows = TextHighlightRows.computeRows(rectElements);
             var result = [];
-
-            console.log("FIXME: working with rows: ", rows);
 
             rows.forEach(function (rectElementsWithinRow) {
                 var rect = TextHighlightRows.computeRectForRow(rectElementsWithinRow);
@@ -56581,6 +56619,9 @@ var TextHighlightView = function () {
 
         // TODO: this should probably not be static and instead should just be its
         // own class which is testable.
+        //
+        // TODO pageElement should really be parentElement where we want the
+        // highlight element to be rendered.
 
     }], [{
         key: "render",
@@ -56595,7 +56636,7 @@ var TextHighlightView = function () {
             highlightElement.setAttribute("data-type", "text-highlight");
             highlightElement.setAttribute("data-doc-fingerprint", textHighlightEvent.docMeta.docInfo.fingerprint);
             highlightElement.setAttribute("data-text-highlight-id", textHighlightEvent.textHighlight.id);
-            highlightElement.setAttribute("data-page-num", textHighlightEvent.pageMeta.pageInfo.num);
+            highlightElement.setAttribute("data-page-num", "" + textHighlightEvent.pageMeta.pageInfo.num);
 
             highlightElement.className = "text-highlight annotation text-highlight-" + textHighlightEvent.textHighlight.id;
 
