@@ -1,5 +1,6 @@
 /**
- *
+ * TODO: refactor this as top, left and width height and do this as percentages
+ * of the entire page.
  *
  */
 module.exports.PagemarkBox = class {

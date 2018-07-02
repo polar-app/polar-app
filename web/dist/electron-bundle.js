@@ -28950,7 +28950,7 @@ module.exports.Pagemark = function (_Annotation) {
         /**
          * The note for this annotation.
          *
-         * @type Note
+         * @type {Object<String,Note>}
          */
         var _this = _possibleConstructorReturn(this, (_class.__proto__ || Object.getPrototypeOf(_class)).call(this, val));
 
@@ -29016,11 +29016,6 @@ module.exports.Pagemark = function (_Annotation) {
         value: function validate() {
             _get(_class.prototype.__proto__ || Object.getPrototypeOf(_class.prototype), "validate", this).call(this);
         }
-
-        // toJSON() {
-        //     return MetadataSerializer.serialize(this);
-        // }
-
     }, {
         key: "toString",
         value: function toString() {

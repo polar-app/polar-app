@@ -13,7 +13,7 @@ module.exports.Pagemark = class extends Annotation {
         /**
          * The note for this annotation.
          *
-         * @type Note
+         * @type {Object<String,Note>}
          */
         this.notes = {};
 
@@ -74,11 +74,6 @@ module.exports.Pagemark = class extends Annotation {
     validate() {
         super.validate();
     }
-
-
-    // toJSON() {
-    //     return MetadataSerializer.serialize(this);
-    // }
 
     toString() {
         return MetadataSerializer.serialize(this);
