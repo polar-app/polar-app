@@ -9,7 +9,13 @@ class RectText {
          *
          * @type {Rect}
          */
-        this.rect = undefined;
+        this.clientRects = undefined;
+
+        /**
+         *
+         * @type {Rect}
+         */
+        this.boundingClientRect = undefined;
 
         /**
          *

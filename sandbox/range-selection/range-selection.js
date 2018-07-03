@@ -64,6 +64,10 @@ function getSelectionCoords(win) {
 // clientRects in the original to get me the text ... I think... or I would need to
 // use the boundingClientRects to do this.. I thin.
 
+// notes:
+//
+// the whitespace at the beginning of a range counts as part of the offset...
+// even though it is not visible.
 
 function getElementsInSelection(range) {
     range.cloneContents(); c.querySelectorAll('*')

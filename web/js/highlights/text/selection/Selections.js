@@ -1,14 +1,36 @@
 /**
  *
  */
-const {RectText} = require("./RectText");
+const {Ranges} = require("./Ranges");
+const {RectText} = require("../controller/RectText");
 const {Point} = require("../../../Point");
-const {Rect} = require("./Rect");
+const {Rect} = require("../controller/Rect");
 const {Rects} = require("../../../Rects");
 const {Objects} = require("../../../util/Objects");
 const {SelectedContent} = require("./SelectedContent");
 
 class Selections {
+
+    /**
+     * Get the ranges of a selection as an array (easier API).
+     *
+     * @param selection {Selection}
+     * @return {Array<Range>}
+     */
+    static toRanges(selection) {
+
+        let result = [];
+
+        for (let idx = 0; idx < selection.rangeCount; idx++) {
+
+            // note that we almost always have 1 selection
+            let range = selection.getRangeAt(idx);
+            result.push(range);
+
+        }
+
+        return result;
+    }
 
     // I should test this by using something like:
     //
@@ -24,6 +46,8 @@ class Selections {
      * @return {SelectedContent}
      */
     static computeSelectionRects(win) {
+
+        // FIXME: how do we determine the caret?
 
         // we use the following tricks to work with selections:
 
@@ -56,10 +80,14 @@ class Selections {
 
         // one of the rects is the cursor.. how do we tell?
 
-        for (let idx = 0; idx < selection.rangeCount; idx++) {
+        // capture the text of the selection as some other APIs might clear
+        // the selection on us.
+        let text = selection.toString();
 
-            // note that we almost always have 1 selection
-            let range = selection.getRangeAt(idx);
+        let ranges = Selections.toRanges(selection);
+        ranges = Ranges.cloneRanges(ranges);
+
+        ranges.forEach(range => {
 
             // TODO: get the node/element that the range represents...
 
@@ -77,10 +105,11 @@ class Selections {
 
             });
 
-        }
+        });
 
         return new SelectedContent({
-            rectTexts
+            rectTexts,
+            text
         })
 
         // now process all the clientRects to remove cursors...
