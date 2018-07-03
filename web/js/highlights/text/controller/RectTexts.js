@@ -4,7 +4,6 @@ const {TextNodes} = require("../selection/TextNodes");
 class RectTexts {
 
     /**
-     * WARNING: this will reset the Selection.
      *
      * @param textNodes
      */
