@@ -48703,7 +48703,9 @@ var RectTexts = function () {
          * @param textNodes
          */
         value: function toRectTexts(textNodes) {
-            return textNodes.map(RectTexts.toRectText);
+            return textNodes.map(RectTexts.toRectText).filter(function (current) {
+                return current.boundingPageRect.width > 0 && current.boundingPageRect.height > 0;
+            });
         }
 
         /**
@@ -48857,6 +48859,9 @@ var _require8 = __webpack_require__(/*! electron */ "electron"),
 
 var _require9 = __webpack_require__(/*! ../selection/SelectedContents */ "./web/js/highlights/text/selection/SelectedContents.js"),
     SelectedContents = _require9.SelectedContents;
+
+var _require10 = __webpack_require__(/*! ./TextSelections */ "./web/js/highlights/text/controller/TextSelections.js"),
+    TextSelections = _require10.TextSelections;
 
 var log = Logger.create();
 
@@ -49088,7 +49093,7 @@ var TextHighlightController = function () {
 
             var text = selectedContent.text;
 
-            var textSelections = {}; // FIXME:
+            var textSelections = TextSelections.compute(selectedContent);
 
             var textHighlightRecord = TextHighlightRecords.create(rects, textSelections, text);
 
@@ -49099,6 +49104,9 @@ var TextHighlightController = function () {
             pageMeta.textHighlights[textHighlightRecord.id] = textHighlightRecord.value;
 
             log.info("Added text highlight to model");
+
+            // now clear the selection since we just highlighted it.
+            win.getSelection().empty();
 
             // let rects = textHighlightRows.map(current => current.rect);
             //
@@ -49554,6 +49562,56 @@ module.exports.TextHighlighterFactory = function () {
 
     return _class;
 }();
+
+/***/ }),
+
+/***/ "./web/js/highlights/text/controller/TextSelections.js":
+/*!*************************************************************!*\
+  !*** ./web/js/highlights/text/controller/TextSelections.js ***!
+  \*************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var _require = __webpack_require__(/*! ../../../metadata/TextRect */ "./web/js/metadata/TextRect.js"),
+    TextRect = _require.TextRect;
+
+var TextSelections = function () {
+    function TextSelections() {
+        _classCallCheck(this, TextSelections);
+    }
+
+    _createClass(TextSelections, null, [{
+        key: "compute",
+        value: function compute(selectedContents) {
+
+            var result = [];
+
+            // TODO: could be cleaner as a map...
+
+            selectedContents.rectTexts.forEach(function (rectText) {
+                var textSelection = new TextRect({
+                    rect: rectText.boundingPageRect,
+                    text: rectText.text
+                });
+
+                result.push(textSelection);
+            });
+
+            return result;
+        }
+    }]);
+
+    return TextSelections;
+}();
+
+module.exports.TextSelections = TextSelections;
 
 /***/ }),
 
@@ -50084,6 +50142,11 @@ var _require7 = __webpack_require__(/*! ../../../docformat/DocFormatFactory */ "
 var _require8 = __webpack_require__(/*! ../../../proxies/MutationState */ "./web/js/proxies/MutationState.js"),
     MutationState = _require8.MutationState;
 
+var _require9 = __webpack_require__(/*! ../../../logger/Logger */ "./web/js/logger/Logger.js"),
+    Logger = _require9.Logger;
+
+var log = Logger.create();
+
 var TextHighlightView = function () {
     function TextHighlightView(model) {
         _classCallCheck(this, TextHighlightView);
@@ -50101,7 +50164,7 @@ var TextHighlightView = function () {
         key: "onDocumentLoaded",
         value: function onDocumentLoaded(documentLoadedEvent) {
 
-            console.log("TextHighlightView.onDocumentLoaded");
+            log.info("TextHighlightView.onDocumentLoaded");
 
             var textHighlightModel = new TextHighlightModel();
 
@@ -50113,11 +50176,11 @@ var TextHighlightView = function () {
         key: "onTextHighlight",
         value: function onTextHighlight(textHighlightEvent) {
 
-            console.log("TextHighlightView.onTextHighlight: ", textHighlightEvent);
+            log.info("TextHighlightView.onTextHighlight: ", textHighlightEvent);
 
             if (textHighlightEvent.mutationState === MutationState.PRESENT) {
 
-                console.log("TextHighlightView.onTextHighlight ... present");
+                log.info("TextHighlightView.onTextHighlight ... present");
 
                 var pageNum = textHighlightEvent.pageMeta.pageInfo.num;
                 var pageElement = this.docFormat.getPageElementFromPageNum(pageNum);
@@ -50154,11 +50217,11 @@ var TextHighlightView = function () {
                 });
             } else if (textHighlightEvent.mutationState === MutationState.ABSENT) {
 
-                console.log("TextHighlightView.onTextHighlight ... delete time.");
+                log.info("TextHighlightView.onTextHighlight ... delete time.");
                 var selector = ".text-highlight-" + textHighlightEvent.previousValue.id;
                 var highlightElements = document.querySelectorAll(selector);
 
-                console.log("Found N elements for selector " + selector + ": " + highlightElements.length);
+                log.info("Found N elements for selector " + selector + ": " + highlightElements.length);
 
                 highlightElements.forEach(function (highlightElement) {
                     highlightElement.parentElement.removeChild(highlightElement);
@@ -50178,7 +50241,7 @@ var TextHighlightView = function () {
 
             var docFormat = DocFormatFactory.getInstance();
 
-            console.log("Rendering annotation at: ", highlightRect);
+            log.info("Rendering annotation at: " + JSON.stringify(highlightRect, null, "  "));
 
             var highlightElement = document.createElement("div");
 

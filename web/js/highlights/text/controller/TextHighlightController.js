@@ -9,6 +9,7 @@ const {KeyEvents} = require("../../../KeyEvents.js");
 const {DocFormatFactory} = require("../../../docformat/DocFormatFactory");
 const {ipcRenderer} = require('electron')
 const {SelectedContents} = require("../selection/SelectedContents");
+const {TextSelections} = require("./TextSelections");
 
 const log = Logger.create();
 
@@ -227,7 +228,7 @@ class TextHighlightController {
 
         let text = selectedContent.text;
 
-        let textSelections = {}; // FIXME:
+        let textSelections = TextSelections.compute(selectedContent);
 
         let textHighlightRecord = TextHighlightRecords.create(rects, textSelections, text);
 
@@ -238,6 +239,9 @@ class TextHighlightController {
         pageMeta.textHighlights[textHighlightRecord.id] = textHighlightRecord.value;
 
         log.info("Added text highlight to model");
+
+        // now clear the selection since we just highlighted it.
+        win.getSelection().empty();
 
         // let rects = textHighlightRows.map(current => current.rect);
         //

@@ -6,6 +6,9 @@ const {RendererContextMenu} = require("../../../contextmenu/electron/RendererCon
 const {ContextMenuType} = require("../../../contextmenu/ContextMenuType");
 const {DocFormatFactory} = require("../../../docformat/DocFormatFactory");
 const {MutationState} = require("../../../proxies/MutationState");
+const {Logger} = require("../../../logger/Logger");
+
+const log = Logger.create();
 
 class TextHighlightView {
 
@@ -21,7 +24,7 @@ class TextHighlightView {
 
     onDocumentLoaded(documentLoadedEvent) {
 
-        console.log("TextHighlightView.onDocumentLoaded");
+        log.info("TextHighlightView.onDocumentLoaded");
 
         let textHighlightModel = new TextHighlightModel();
 
@@ -33,11 +36,11 @@ class TextHighlightView {
 
     onTextHighlight(textHighlightEvent) {
 
-        console.log("TextHighlightView.onTextHighlight: ", textHighlightEvent);
+        log.info("TextHighlightView.onTextHighlight: ", textHighlightEvent);
 
         if(textHighlightEvent.mutationState === MutationState.PRESENT) {
 
-            console.log("TextHighlightView.onTextHighlight ... present");
+            log.info("TextHighlightView.onTextHighlight ... present");
 
             let pageNum = textHighlightEvent.pageMeta.pageInfo.num;
             let pageElement = this.docFormat.getPageElementFromPageNum(pageNum);
@@ -77,11 +80,11 @@ class TextHighlightView {
 
         } else if(textHighlightEvent.mutationState === MutationState.ABSENT) {
 
-            console.log("TextHighlightView.onTextHighlight ... delete time.");
+            log.info("TextHighlightView.onTextHighlight ... delete time.");
             let selector = `.text-highlight-${textHighlightEvent.previousValue.id}`;
             let highlightElements = document.querySelectorAll(selector);
 
-            console.log(`Found N elements for selector ${selector}: ` + highlightElements.length);
+            log.info(`Found N elements for selector ${selector}: ` + highlightElements.length);
 
             highlightElements.forEach(highlightElement => {
                 highlightElement.parentElement.removeChild(highlightElement);
@@ -100,7 +103,7 @@ class TextHighlightView {
 
         let docFormat = DocFormatFactory.getInstance();
 
-        console.log("Rendering annotation at: ", highlightRect);
+        log.info("Rendering annotation at: " + JSON.stringify(highlightRect, null, "  "));
 
         let highlightElement = document.createElement("div");
 

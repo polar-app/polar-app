@@ -12,7 +12,8 @@ class RectTexts {
      * @param textNodes
      */
     static toRectTexts(textNodes) {
-        return textNodes.map(RectTexts.toRectText);
+        return textNodes.map(RectTexts.toRectText)
+                        .filter(current => current.boundingPageRect.width > 0 && current.boundingPageRect.height > 0);
     }
 
     /**
