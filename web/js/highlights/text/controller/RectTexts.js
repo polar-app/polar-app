@@ -15,6 +15,13 @@ class RectTexts {
         return textNodes.map(RectTexts.toRectText);
     }
 
+    /**
+     * Take a Node of type TEXT and build a RectText including the the text,
+     * the rects, etc.
+     *
+     * @param textNode {Node}
+     * @return {RectText}
+     */
     static toRectText(textNode) {
 
         let range = TextNodes.getRange(textNode);

@@ -112,6 +112,7 @@
     "rimraf": "^2.6.2",
     "rx-collection": "^0.1.0",
     "rxjs": "^6.2.0",
+    "sanitize-html": "^1.18.2",
     "serve-static": "^1.13.2",
     "simplemde": "^1.11.2",
     "stream-to-array": "^2.3.0",

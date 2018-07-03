@@ -25,6 +25,33 @@ class Ranges {
     }
 
     /**
+     * Return HTML content of the range.
+     *
+     * @param range
+     */
+    static toHTML(range) {
+
+        let result = "";
+
+        let docFragment = range.cloneContents();
+
+        console.log("docFragment:" , docFragment.childNodes)
+
+        docFragment.childNodes.forEach(childNode => {
+
+            if(childNode.nodeType === Node.TEXT_NODE) {
+                result += childNode.textContent;
+            } else {
+                result += childNode.innerHTML;
+            }
+
+        });
+
+        return result;
+
+    }
+
+    /**
      * Get the text nodes for range. Optionally splitting the text if necessary
      *
      * @param range {Range}

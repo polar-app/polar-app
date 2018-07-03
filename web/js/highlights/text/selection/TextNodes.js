@@ -1,5 +1,14 @@
 class TextNodes {
 
+    /**
+     * Create a Range around this textNode so that we can compute metadata like
+     * the clientRects which normally can't be determined from a TextNode.
+     *
+     * @param textNode
+     * @param offset
+     * @param length
+     * @return {Range}
+     */
     static getRange(textNode, offset, length) {
 
         if(! offset) {

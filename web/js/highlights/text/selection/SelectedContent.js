@@ -15,6 +15,13 @@ class SelectedContent {
         this.text = null;
 
         /**
+         * The html content of the selection.
+         *
+         * @type {String}
+         */
+        this.html = null;
+
+        /**
          *
          * @type {Array<RectText>}
          */
