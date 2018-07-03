@@ -67,7 +67,9 @@ class Logger {
         // make the target use the new configured log (not the console).
         Logger.setLoggerTarget(log);
 
-        // FIXME: this won't work globally...
+        // FIXME: this won't work globally... nor is this needed any more since
+        // we have DelegatedLogger. It might be nice to actually support swapping
+        // this out at runtime.
         initialized = true;
 
     }

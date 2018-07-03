@@ -63,7 +63,10 @@ class Spectron {
             }
 
             if (this.app && this.app.isRunning()) {
+                console.log("Telling app to stop");
                 return this.app.stop()
+            } else {
+                console.log("App already stopped.");
             }
 
         });
