@@ -1,4 +1,5 @@
 const {Point} = require("../../../Point");
+const {Objects} = require("../../../util/Objects");
 const {Rect} = require("../controller/Rect");
 const {Rects} = require("../../../Rects");
 const {RectText} = require("./RectText");
@@ -26,8 +27,6 @@ class RectTexts {
         let boundingClientRect = range.getBoundingClientRect();
 
         let boundingPageRect = new Rect(Objects.duplicate(boundingClientRect));
-        boundingPageRect = new Rect(Objects.duplicate(boundingPageRect));
-        boundingPageRect = Rects.validate(boundingPageRect);
         boundingPageRect = Rects.relativeTo(scrollPoint, boundingPageRect);
 
         return new RectText({
