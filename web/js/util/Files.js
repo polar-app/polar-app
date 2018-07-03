@@ -13,7 +13,13 @@ class Files {
         this.rmdirAsync = util.promisify(fs.rmdir);
     }
 
-    // https://nodejs.org/api/fs.html#fs_fs_readfile_path_options_callback
+    /**
+     *
+     * https://nodejs.org/api/fs.html#fs_fs_readfile_path_options_callback
+     *
+     * @param path {String}
+     * @return {Promise<Buffer>}
+     */
     async readFileAsync(path) {
 
     }

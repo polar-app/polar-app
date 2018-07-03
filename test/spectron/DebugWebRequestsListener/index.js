@@ -17,7 +17,7 @@ function createMainWindow() {
     let debugWebRequestsListener = new DebugWebRequestsListener();
     debugWebRequestsListener.register(webRequestReactor);
 
-    mainWindow.loadURL('http://httpbin.org/get')
+    mainWindow.loadURL('http://httpbin.org/get');
     return mainWindow;
 
 }

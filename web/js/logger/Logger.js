@@ -3,34 +3,9 @@
 const log = require('electron-log');
 const {Files} = require("../util/Files.js");
 const {Objects} = require("../util/Objects.js");
+const {ConsoleLogger} = require("./ConsoleLogger.js");
 
 let initialized = false;
-
-const USE_CONSOLE_LOG = true;
-
-class ConsoleLogger {
-
-    info(...args) {
-        console.log(...args);
-    }
-
-    warn(...args) {
-        console.warn(...args);
-    }
-
-    debug(...args) {
-        console.debug(...args);
-    }
-
-    error(...args) {
-        console.error(...args);
-    }
-
-    debug(...args) {
-        console.log("DEBUG: " , ...args);
-    }
-
-}
 
 class Logger {
 
@@ -39,15 +14,23 @@ class Logger {
      * using.
      */
     static create() {
-
-        if(USE_CONSOLE_LOG) {
-            return new ConsoleLogger();
-        } else {
-            return log;
-        }
-
+        return new DelegatedLogger();
     }
 
+    static setLoggerDelegate(log) {
+        global.polar_logger_delegate = log;
+    }
+
+    static getLoggerDelegate() {
+        return global.polar_logger_delegate;
+    }
+
+    /**
+     * Initialize the logger to write to a specific directory.
+     *
+     * @param logsDir {String} The directory to use to store logs.
+     * @param options
+     */
     static async init(logsDir, options) {
 
         if(initialized) {
@@ -81,11 +64,50 @@ class Logger {
         log.transports.file.level = "info";
         log.transports.file.appName = "polar";
 
+        // make the target use the new configured log (not the console).
+        Logger.setLoggerDelegate(log);
+
+        // FIXME: this won't work globally...
         initialized = true;
 
     }
 
 }
+
+/**
+ * Allows us to swap in delegates at runtime on anyone who calls create()
+ * regardless of require() order.
+ */
+class DelegatedLogger {
+
+    info(...args) {
+        Logger.getLoggerDelegate().info(...args);
+    }
+
+    warn(...args) {
+        Logger.getLoggerDelegate().warn(...args);
+    }
+
+    debug(...args) {
+        Logger.getLoggerDelegate().debug(...args);
+    }
+
+    error(...args) {
+        Logger.getLoggerDelegate().error(...args);
+    }
+
+    debug(...args) {
+        Logger.getLoggerDelegate().info("DEBUG: " , ...args);
+    }
+
+}
+
+/**
+ * When true use a simple console log.  We have to do this for now because there
+ * is a bug with getting stuck in a loop while logging and then choking the
+ * renderer.
+ */
+Logger.setLoggerDelegate(new ConsoleLogger());
 
 module.exports.create = Logger.create;
 module.exports.Logger = Logger;

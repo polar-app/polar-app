@@ -27332,10 +27332,10 @@ module.exports.TextHighlightView = TextHighlightView;
 
 /***/ }),
 
-/***/ "./web/js/logger/Logger.js":
-/*!*********************************!*\
-  !*** ./web/js/logger/Logger.js ***!
-  \*********************************/
+/***/ "./web/js/logger/ConsoleLogger.js":
+/*!****************************************!*\
+  !*** ./web/js/logger/ConsoleLogger.js ***!
+  \****************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -27344,23 +27344,7 @@ module.exports.TextHighlightView = TextHighlightView;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
-
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-// Simple logger that meets the requirements we have for Polar.
-
-var log = __webpack_require__(/*! electron-log */ "./node_modules/electron-log/index.js");
-
-var _require = __webpack_require__(/*! ../util/Files.js */ "./web/js/util/Files.js"),
-    Files = _require.Files;
-
-var _require2 = __webpack_require__(/*! ../util/Objects.js */ "./web/js/util/Objects.js"),
-    Objects = _require2.Objects;
-
-var initialized = false;
-
-var USE_CONSOLE_LOG = true;
 
 var ConsoleLogger = function () {
     function ConsoleLogger() {
@@ -27411,6 +27395,41 @@ var ConsoleLogger = function () {
     return ConsoleLogger;
 }();
 
+module.exports.ConsoleLogger = ConsoleLogger;
+
+/***/ }),
+
+/***/ "./web/js/logger/Logger.js":
+/*!*********************************!*\
+  !*** ./web/js/logger/Logger.js ***!
+  \*********************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+// Simple logger that meets the requirements we have for Polar.
+
+var log = __webpack_require__(/*! electron-log */ "./node_modules/electron-log/index.js");
+
+var _require = __webpack_require__(/*! ../util/Files.js */ "./web/js/util/Files.js"),
+    Files = _require.Files;
+
+var _require2 = __webpack_require__(/*! ../util/Objects.js */ "./web/js/util/Objects.js"),
+    Objects = _require2.Objects;
+
+var _require3 = __webpack_require__(/*! ./ConsoleLogger.js */ "./web/js/logger/ConsoleLogger.js"),
+    ConsoleLogger = _require3.ConsoleLogger;
+
+var initialized = false;
+
 var Logger = function () {
     function Logger() {
         _classCallCheck(this, Logger);
@@ -27425,13 +27444,26 @@ var Logger = function () {
          * using.
          */
         value: function create() {
-
-            if (USE_CONSOLE_LOG) {
-                return new ConsoleLogger();
-            } else {
-                return log;
-            }
+            return new DelegatedLogger();
         }
+    }, {
+        key: "setLoggerDelegate",
+        value: function setLoggerDelegate(log) {
+            global.polar_logger_delegate = log;
+        }
+    }, {
+        key: "getLoggerDelegate",
+        value: function getLoggerDelegate() {
+            return global.polar_logger_delegate;
+        }
+
+        /**
+         * Initialize the logger to write to a specific directory.
+         *
+         * @param logsDir {String} The directory to use to store logs.
+         * @param options
+         */
+
     }, {
         key: "init",
         value: function () {
@@ -27490,9 +27522,13 @@ var Logger = function () {
                                 log.transports.file.level = "info";
                                 log.transports.file.appName = "polar";
 
+                                // make the target use the new configured log (not the console).
+                                Logger.setLoggerDelegate(log);
+
+                                // FIXME: this won't work globally...
                                 initialized = true;
 
-                            case 17:
+                            case 18:
                             case "end":
                                 return _context.stop();
                         }
@@ -27510,6 +27546,70 @@ var Logger = function () {
 
     return Logger;
 }();
+
+/**
+ * Allows us to swap in delegates at runtime on anyone who calls create()
+ * regardless of require() order.
+ */
+
+
+var DelegatedLogger = function () {
+    function DelegatedLogger() {
+        _classCallCheck(this, DelegatedLogger);
+    }
+
+    _createClass(DelegatedLogger, [{
+        key: "info",
+        value: function info() {
+            var _Logger$getLoggerDele;
+
+            (_Logger$getLoggerDele = Logger.getLoggerDelegate()).info.apply(_Logger$getLoggerDele, arguments);
+        }
+    }, {
+        key: "warn",
+        value: function warn() {
+            var _Logger$getLoggerDele2;
+
+            (_Logger$getLoggerDele2 = Logger.getLoggerDelegate()).warn.apply(_Logger$getLoggerDele2, arguments);
+        }
+    }, {
+        key: "debug",
+        value: function debug() {
+            var _Logger$getLoggerDele3;
+
+            (_Logger$getLoggerDele3 = Logger.getLoggerDelegate()).debug.apply(_Logger$getLoggerDele3, arguments);
+        }
+    }, {
+        key: "error",
+        value: function error() {
+            var _Logger$getLoggerDele4;
+
+            (_Logger$getLoggerDele4 = Logger.getLoggerDelegate()).error.apply(_Logger$getLoggerDele4, arguments);
+        }
+    }, {
+        key: "debug",
+        value: function debug() {
+            var _Logger$getLoggerDele5;
+
+            for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+                args[_key] = arguments[_key];
+            }
+
+            (_Logger$getLoggerDele5 = Logger.getLoggerDelegate()).info.apply(_Logger$getLoggerDele5, ["DEBUG: "].concat(args));
+        }
+    }]);
+
+    return DelegatedLogger;
+}();
+
+/**
+ * When true use a simple console log.  We have to do this for now because there
+ * is a bug with getting stuck in a loop while logging and then choking the
+ * renderer.
+ */
+
+
+Logger.setLoggerDelegate(new ConsoleLogger());
 
 module.exports.create = Logger.create;
 module.exports.Logger = Logger;
@@ -31800,7 +31900,13 @@ var Files = function () {
         this.rmdirAsync = util.promisify(fs.rmdir);
     }
 
-    // https://nodejs.org/api/fs.html#fs_fs_readfile_path_options_callback
+    /**
+     *
+     * https://nodejs.org/api/fs.html#fs_fs_readfile_path_options_callback
+     *
+     * @param path {String}
+     * @return {Promise<Buffer>}
+     */
 
 
     _createClass(Files, [{

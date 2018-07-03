@@ -16,6 +16,8 @@ class Spectron {
      */
     static setup(dir) {
 
+        console.log("Configuring spectron...")
+
         // TODO: since spectron requires a window to operate, we should ALWAYS
         // create a window and then return it to the user so that they can
         // work with it directly.
@@ -53,6 +55,8 @@ class Spectron {
         });
 
         afterEach(function () {
+
+            console.log("Going to shutdown now... ");
 
             if(spectronOutputMonitorService) {
                 spectronOutputMonitorService.stop();

@@ -541,7 +541,8 @@ const directories = new Directories();
 
 directories.init().then(async () => {
 
-    await Logger.init(directories.logsDir);
+    // TODO don't use directory logging now as it is broken.
+    //await Logger.init(directories.logsDir);
 
     if(args.enableMemoryDatastore) {
         datastore = new MemoryDatastore();

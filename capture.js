@@ -402,7 +402,8 @@ app.on('ready', function() {
 
         await diskDatastore.init();
 
-        Logger.init(diskDatastore.logsDir);
+        // TODO don't use directory logging now as it is broken.
+        //await Logger.init(diskDatastore.logsDir);
 
         let url = Cmdline.getURLArg(process.argv);
 
