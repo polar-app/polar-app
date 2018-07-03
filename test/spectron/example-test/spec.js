@@ -1,4 +1,5 @@
 const assert = require('assert');
+const {assertJSON} = require("../../../web/js/test/Assertions");
 const {Spectron} = require("../../../web/js/test/Spectron");
 
 describe('Application launch', function () {

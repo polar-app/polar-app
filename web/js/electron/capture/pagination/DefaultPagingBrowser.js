@@ -43,6 +43,9 @@ class DefaultPagingBrowser extends PagingBrowser {
 
     async state() {
 
+        /**
+         * @RendererContext
+         */
         function __state() {
 
             return {

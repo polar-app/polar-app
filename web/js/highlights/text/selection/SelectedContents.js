@@ -2,12 +2,9 @@
  *
  */
 const {Ranges} = require("./Ranges");
-const {RectText} = require("../controller/RectText");
-const {Point} = require("../../../Point");
-const {Rect} = require("../controller/Rect");
-const {Rects} = require("../../../Rects");
-const {Objects} = require("../../../util/Objects");
 const {SelectedContent} = require("./SelectedContent");
+const {Selections} = require("./Selections");
+const {RectTexts} = require("../controller/RectTexts");
 const sanitizeHtml = require("sanitize-html");
 
 class SelectedContents {
@@ -46,9 +43,9 @@ class SelectedContents {
         html = sanitizeHtml(html);
 
         return new SelectedContent({
-            rectTexts,
             text,
-            html
+            html,
+            rectTexts
         })
 
     }

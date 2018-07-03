@@ -61453,7 +61453,14 @@ var Functions = function () {
             var result = "";
             result += _function.toString();
             result += "\n";
-            result += _function.name + "(" + JSON.stringify(_opts) + ");";
+
+            // TODO: expand _opts to varargs... not just one opts.  This way the
+            // function can be an ordinary function.
+            if (_opts) {
+                result += _function.name + "(" + JSON.stringify(_opts) + ");";
+            } else {
+                result += _function.name + "();";
+            }
             return result;
         }
     }, {
