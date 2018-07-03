@@ -9,8 +9,6 @@ describe('DebugWebRequestsListener', function () {
 
     this.timeout(10000);
 
-    Spectron.setup(__dirname);
-
     before(async function () {
         let logsDir = "/tmp/DebugWebRequestsListener";
         await Files.createDirAsync(logsDir);
