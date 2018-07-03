@@ -26,9 +26,13 @@ class RectTexts {
 
         let range = TextNodes.getRange(textNode);
 
+        // FIXME: this is wrong and we are using teh wrong scroll position.
+
+        let win = textNode.ownerDocument.defaultView;
+
         let scrollPoint = new Point({
-            x: window.scrollX,
-            y: window.scrollY
+            x: win.scrollX,
+            y: win.scrollY
         });
 
         let boundingClientRect = range.getBoundingClientRect();

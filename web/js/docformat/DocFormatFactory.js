@@ -8,6 +8,10 @@ const {DocFormat} = require("./DocFormat");
  */
 class DocFormatFactory {
 
+    /**
+     *
+     * @return {DocFormat}
+     */
     static getInstance() {
 
         let polarDocFormat = document.querySelector("meta[name='polar-doc-format']");

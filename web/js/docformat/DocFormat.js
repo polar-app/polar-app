@@ -102,6 +102,11 @@ class DocFormat {
     textHighlightOptions() {
         return {};
     }
+
+    targetDocument() {
+        throw new Error("Not implemented");
+    }
+
 }
 
 module.exports.DocFormat = DocFormat;

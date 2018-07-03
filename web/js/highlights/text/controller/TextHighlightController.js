@@ -8,6 +8,7 @@ const {TextExtracter} = require("./TextExtracter");
 const {KeyEvents} = require("../../../KeyEvents.js");
 const {DocFormatFactory} = require("../../../docformat/DocFormatFactory");
 const {ipcRenderer} = require('electron')
+const {SelectedContents} = require("../selection/SelectedContents");
 
 const log = Logger.create();
 
@@ -69,9 +70,20 @@ class TextHighlightController {
 
     doHighlight() {
 
+        //this.doHighlightLegacy();
+        this.doHighlightModern();
+
+    }
+
+    doHighlightLegacy() {
         this.textHighlighter.doHighlight();
 
-        // window.getSelection().getRangeAt(0).getClientRects();
+    }
+
+    doHighlightModern() {
+
+        console.log("Doing modern text highlight");
+        this.onTextHighlightCreatedModern();
 
     }
 
@@ -107,7 +119,7 @@ class TextHighlightController {
                     highlightElement.className = highlightElement.className + " " + highlightClazz;
                 });
 
-                controller.onTextHighlightCreated("." + highlightClazz)
+                controller.onTextHighlightCreatedLegacy("." + highlightClazz)
 
                 // the underlying <span> highlights need to be removed now.
 
@@ -156,12 +168,12 @@ class TextHighlightController {
      * Called by the controller when we have a new highlight created so that
      * we can update the model.
      */
-    onTextHighlightCreated(selector) {
+    onTextHighlightCreatedLegacy(selector) {
 
         // FIXME: get the new highlighter working FIRST without text and without
         // rows , or other advanced features.
 
-        log.info("TextHighlightController.onTextHighlightCreated");
+        log.info("TextHighlightController.onTextHighlightCreatedLegacy");
 
         let textHighlightRows = TextHighlightRows.createFromSelector(selector);
 
@@ -190,6 +202,69 @@ class TextHighlightController {
         log.info("Added text highlight to model");
 
     }
+
+    /**
+     * Called by the controller when we have a new highlight created so that
+     * we can update the model.
+     */
+    onTextHighlightCreatedModern() {
+
+        // FIXME: get the new highlighter working FIRST without text and without
+        // rows , or other advanced features.
+
+        log.info("TextHighlightController.onTextHighlightCreatedModern");
+
+        // right now we're not implementing rows...
+        //let textHighlightRows = TextHighlightRows.createFromSelector(selector);
+
+        let win = this.docFormat.targetDocument().defaultView;
+
+        let selectedContent = SelectedContents.compute(win);
+
+        console.log("Working with: " + JSON.stringify(selectedContent, null, "  "));
+
+        let rects = selectedContent.rectTexts.map( current => current.boundingPageRect);
+
+        let text = selectedContent.text;
+
+        let textSelections = {}; // FIXME:
+
+        let textHighlightRecord = TextHighlightRecords.create(rects, textSelections, text);
+
+        let currentPageMeta = this.docFormat.getCurrentPageMeta();
+
+        let pageMeta = this.model.docMeta.getPageMeta(currentPageMeta.pageNum);
+
+        pageMeta.textHighlights[textHighlightRecord.id] = textHighlightRecord.value;
+
+        log.info("Added text highlight to model");
+
+        // let rects = textHighlightRows.map(current => current.rect);
+        //
+        // // TODO: don't do this from the selector because the textHighlightRows
+        // // would be a lot better since we have the raw elements to work with.
+        //
+        // // FIXME: I can call selection.toString() to get the value as a string.
+        // // I don't need to use extractText on the selector any more.
+        //
+        // let text = this.extractText(selector);
+        //
+        // let textSelections = TextExtracter.toTextSelections(textHighlightRows);
+        //
+        // let textHighlightRecord = TextHighlightRecords.create(rects, textSelections, text);
+        //
+        // // now update the mode based on the current page metadata
+        //
+        // let currentPageMeta = this.docFormat.getCurrentPageMeta();
+        //
+        // let pageMeta = this.model.docMeta.getPageMeta(currentPageMeta.pageNum);
+        //
+        // pageMeta.textHighlights[textHighlightRecord.id] = textHighlightRecord.value;
+        //
+        // log.info("Added text highlight to model");
+
+    }
+
 
     extractText(selector) {
 
