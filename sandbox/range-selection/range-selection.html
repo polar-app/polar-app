@@ -138,7 +138,6 @@ const {NodeTypes} = require("../../web/js/highlights/text/selection/NodeTypes");
                     "bottom": 86.4375,
                     "left": 188.234375
                 },
-                "text": "interesting",
                 "boundingPageRect": {
                     "left": 188.234375,
                     "top": 67.4375,
@@ -148,7 +147,8 @@ const {NodeTypes} = require("../../web/js/highlights/text/selection/NodeTypes");
                     "height": 19,
                     "x": 188.234375,
                     "y": 67.4375
-                }
+                },
+                "text": "interesting"
             },
             {
                 "clientRects": {
@@ -173,7 +173,6 @@ const {NodeTypes} = require("../../web/js/highlights/text/selection/NodeTypes");
                     "bottom": 86.4375,
                     "left": 287.421875
                 },
-                "text": " text.\n    ",
                 "boundingPageRect": {
                     "left": 287.421875,
                     "top": 67.4375,
@@ -183,7 +182,8 @@ const {NodeTypes} = require("../../web/js/highlights/text/selection/NodeTypes");
                     "height": 19,
                     "x": 287.421875,
                     "y": 67.4375
-                }
+                },
+                "text": " text.\n    "
             },
             {
                 "clientRects": {},
@@ -197,7 +197,6 @@ const {NodeTypes} = require("../../web/js/highlights/text/selection/NodeTypes");
                     "bottom": 0,
                     "left": 0
                 },
-                "text": "\n\n    ",
                 "boundingPageRect": {
                     "left": 0,
                     "top": 0,
@@ -207,7 +206,8 @@ const {NodeTypes} = require("../../web/js/highlights/text/selection/NodeTypes");
                     "height": 0,
                     "x": 0,
                     "y": 0
-                }
+                },
+                "text": "\n\n    "
             },
             {
                 "clientRects": {
@@ -232,7 +232,6 @@ const {NodeTypes} = require("../../web/js/highlights/text/selection/NodeTypes");
                     "bottom": 121.4375,
                     "left": 8
                 },
-                "text": "\n        Paragraph two starts ",
                 "boundingPageRect": {
                     "left": 8,
                     "top": 102.4375,
@@ -242,7 +241,8 @@ const {NodeTypes} = require("../../web/js/highlights/text/selection/NodeTypes");
                     "height": 19,
                     "x": 8,
                     "y": 102.4375
-                }
+                },
+                "text": "\n        Paragraph two starts "
             },
             {
                 "clientRects": {
@@ -267,7 +267,6 @@ const {NodeTypes} = require("../../web/js/highlights/text/selection/NodeTypes");
                     "bottom": 121.4375,
                     "left": 184.234375
                 },
-                "text": "here",
                 "boundingPageRect": {
                     "left": 184.234375,
                     "top": 102.4375,
@@ -277,7 +276,8 @@ const {NodeTypes} = require("../../web/js/highlights/text/selection/NodeTypes");
                     "height": 19,
                     "x": 184.234375,
                     "y": 102.4375
-                }
+                },
+                "text": "here"
             },
             {
                 "clientRects": {
@@ -302,7 +302,6 @@ const {NodeTypes} = require("../../web/js/highlights/text/selection/NodeTypes");
                     "bottom": 121.4375,
                     "left": 221.125
                 },
-                "text": ".\n    ",
                 "boundingPageRect": {
                     "left": 221.125,
                     "top": 102.4375,
@@ -312,7 +311,8 @@ const {NodeTypes} = require("../../web/js/highlights/text/selection/NodeTypes");
                     "height": 19,
                     "x": 221.125,
                     "y": 102.4375
-                }
+                },
+                "text": ".\n    "
             },
             {
                 "clientRects": {},
@@ -326,7 +326,6 @@ const {NodeTypes} = require("../../web/js/highlights/text/selection/NodeTypes");
                     "bottom": 0,
                     "left": 0
                 },
-                "text": "\n\n    ",
                 "boundingPageRect": {
                     "left": 0,
                     "top": 0,
@@ -336,7 +335,8 @@ const {NodeTypes} = require("../../web/js/highlights/text/selection/NodeTypes");
                     "height": 0,
                     "x": 0,
                     "y": 0
-                }
+                },
+                "text": "\n\n    "
             },
             {
                 "clientRects": {
@@ -361,7 +361,6 @@ const {NodeTypes} = require("../../web/js/highlights/text/selection/NodeTypes");
                     "bottom": 156.4375,
                     "left": 8
                 },
-                "text": "\n        this is just raw text with",
                 "boundingPageRect": {
                     "left": 8,
                     "top": 137.4375,
@@ -371,13 +370,20 @@ const {NodeTypes} = require("../../web/js/highlights/text/selection/NodeTypes");
                     "height": 19,
                     "x": 8,
                     "y": 137.4375
-                }
+                },
+                "text": "\n        this is just raw text with"
             }
         ]
 
         assertJSON(rectTexts, expected);
 
         console.log("rectTexts: ", rectTexts)
+
+        window.getSelection().empty();
+
+        rectTexts.forEach(rectText => {
+            SimpleHighlightRenderer.render(document.body, rectText.boundingPageRect);
+        });
 
         expected = {
             "text": "interesting text.\n\nParagraph two starts here.\n\nthis is just raw text with",

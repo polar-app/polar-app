@@ -19,6 +19,12 @@ class RectText {
 
         /**
          *
+         * @type {Rect}
+         */
+        this.boundingPageRect = undefined;
+
+        /**
+         *
          * @type {String}
          */
         this.text = undefined;
