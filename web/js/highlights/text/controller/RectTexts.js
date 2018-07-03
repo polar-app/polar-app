@@ -1,3 +1,6 @@
+const {Point} = require("../../../Point");
+const {Rect} = require("../controller/Rect");
+const {Rects} = require("../../../Rects");
 const {RectText} = require("./RectText");
 const {TextNodes} = require("../selection/TextNodes");
 
@@ -15,9 +18,22 @@ class RectTexts {
 
         let range = TextNodes.getRange(textNode);
 
+        let scrollPoint = new Point({
+            x: window.scrollX,
+            y: window.scrollY
+        });
+
+        let boundingClientRect = range.getBoundingClientRect();
+
+        let boundingPageRect = new Rect(Objects.duplicate(boundingClientRect));
+        boundingPageRect = new Rect(Objects.duplicate(boundingPageRect));
+        boundingPageRect = Rects.validate(boundingPageRect);
+        boundingPageRect = Rects.relativeTo(scrollPoint, boundingPageRect);
+
         return new RectText({
             clientRects: range.getClientRects(),
-            boundingClientRect: range.getBoundingClientRect(),
+            boundingClientRect,
+            boundingPageRect,
             text: textNode.textContent
         });
 
