@@ -27447,14 +27447,14 @@ var Logger = function () {
             return new DelegatedLogger();
         }
     }, {
-        key: "setLoggerDelegate",
-        value: function setLoggerDelegate(log) {
-            global.polar_logger_delegate = log;
+        key: "setLoggerTarget",
+        value: function setLoggerTarget(loggerTarget) {
+            global.polarLoggerTarget = loggerTarget;
         }
     }, {
-        key: "getLoggerDelegate",
-        value: function getLoggerDelegate() {
-            return global.polar_logger_delegate;
+        key: "getLoggerTarget",
+        value: function getLoggerTarget() {
+            return global.polarLoggerTarget;
         }
 
         /**
@@ -27523,7 +27523,7 @@ var Logger = function () {
                                 log.transports.file.appName = "polar";
 
                                 // make the target use the new configured log (not the console).
-                                Logger.setLoggerDelegate(log);
+                                Logger.setLoggerTarget(log);
 
                                 // FIXME: this won't work globally...
                                 initialized = true;
@@ -27561,41 +27561,41 @@ var DelegatedLogger = function () {
     _createClass(DelegatedLogger, [{
         key: "info",
         value: function info() {
-            var _Logger$getLoggerDele;
+            var _Logger$getLoggerTarg;
 
-            (_Logger$getLoggerDele = Logger.getLoggerDelegate()).info.apply(_Logger$getLoggerDele, arguments);
+            (_Logger$getLoggerTarg = Logger.getLoggerTarget()).info.apply(_Logger$getLoggerTarg, arguments);
         }
     }, {
         key: "warn",
         value: function warn() {
-            var _Logger$getLoggerDele2;
+            var _Logger$getLoggerTarg2;
 
-            (_Logger$getLoggerDele2 = Logger.getLoggerDelegate()).warn.apply(_Logger$getLoggerDele2, arguments);
+            (_Logger$getLoggerTarg2 = Logger.getLoggerTarget()).warn.apply(_Logger$getLoggerTarg2, arguments);
         }
     }, {
         key: "debug",
         value: function debug() {
-            var _Logger$getLoggerDele3;
+            var _Logger$getLoggerTarg3;
 
-            (_Logger$getLoggerDele3 = Logger.getLoggerDelegate()).debug.apply(_Logger$getLoggerDele3, arguments);
+            (_Logger$getLoggerTarg3 = Logger.getLoggerTarget()).debug.apply(_Logger$getLoggerTarg3, arguments);
         }
     }, {
         key: "error",
         value: function error() {
-            var _Logger$getLoggerDele4;
+            var _Logger$getLoggerTarg4;
 
-            (_Logger$getLoggerDele4 = Logger.getLoggerDelegate()).error.apply(_Logger$getLoggerDele4, arguments);
+            (_Logger$getLoggerTarg4 = Logger.getLoggerTarget()).error.apply(_Logger$getLoggerTarg4, arguments);
         }
     }, {
         key: "debug",
         value: function debug() {
-            var _Logger$getLoggerDele5;
+            var _Logger$getLoggerTarg5;
 
             for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
                 args[_key] = arguments[_key];
             }
 
-            (_Logger$getLoggerDele5 = Logger.getLoggerDelegate()).info.apply(_Logger$getLoggerDele5, ["DEBUG: "].concat(args));
+            (_Logger$getLoggerTarg5 = Logger.getLoggerTarget()).info.apply(_Logger$getLoggerTarg5, ["DEBUG: "].concat(args));
         }
     }]);
 
@@ -27609,7 +27609,7 @@ var DelegatedLogger = function () {
  */
 
 
-Logger.setLoggerDelegate(new ConsoleLogger());
+Logger.setLoggerTarget(new ConsoleLogger());
 
 module.exports.create = Logger.create;
 module.exports.Logger = Logger;
