@@ -49724,6 +49724,7 @@ var Ranges = function () {
 
         /**
          * Split a text node and get the new / starting node.
+         *
          * @param container
          * @param offset
          * @return {Node}
@@ -49731,11 +49732,12 @@ var Ranges = function () {
 
     }, {
         key: "splitTextNode",
-        value: function splitTextNode(container, offset) {
+        value: function splitTextNode(container, offset, useStartBoundary) {
 
             if (container.nodeType !== Node.TEXT_NODE) {
 
                 if (offset > 0) {
+                    // I don't think this is actually a real-world case.
                     throw new Error("We don't know how to deal with non-zero yet.");
                 }
 
@@ -49744,7 +49746,11 @@ var Ranges = function () {
 
             var newNode = container.splitText(offset);
 
-            return newNode;
+            if (useStartBoundary) {
+                return newNode;
+            } else {
+                return newNode.previousSibling;
+            }
         }
 
         /**
@@ -49791,8 +49797,11 @@ var Ranges = function () {
             // hitting the end node we just return out of the while loop and we're
             // done
 
-            var startNode = Ranges.splitTextNode(range.startContainer, range.startOffset);
-            var endNode = Ranges.splitTextNode(range.endContainer, range.endOffset).previousSibling;
+            var startNode = Ranges.splitTextNode(range.startContainer, range.startOffset, true);
+            var endNode = Ranges.splitTextNode(range.endContainer, range.endOffset, false);
+
+            Preconditions.assertNotNull(startNode, "startNode");
+            Preconditions.assertNotNull(endNode, "endNode");
 
             var doc = range.startContainer.ownerDocument;
 
@@ -49828,6 +49837,11 @@ var Ranges = function () {
             }
 
             return result;
+        }
+    }, {
+        key: "describeNode",
+        value: function describeNode(node) {
+            return node.cloneNode(false).outerHTML;
         }
     }]);
 

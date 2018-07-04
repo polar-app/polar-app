@@ -16,15 +16,17 @@ class Ranges {
 
     /**
      * Split a text node and get the new / starting node.
+     *
      * @param container
      * @param offset
      * @return {Node}
      */
-    static splitTextNode(container, offset) {
+    static splitTextNode(container, offset, useStartBoundary) {
 
         if(container.nodeType !== Node.TEXT_NODE) {
 
             if(offset > 0) {
+                // I don't think this is actually a real-world case.
                 throw new Error("We don't know how to deal with non-zero yet.");
             }
 
@@ -32,9 +34,13 @@ class Ranges {
 
         }
 
-        let newNode = container.splitText(offset);
+        let newNode = container.splitText(offset)
 
-        return newNode;
+        if(useStartBoundary) {
+            return newNode;
+        } else {
+            return newNode.previousSibling;
+        }
 
     }
 
@@ -78,8 +84,11 @@ class Ranges {
         // hitting the end node we just return out of the while loop and we're
         // done
 
-        let startNode = Ranges.splitTextNode(range.startContainer, range.startOffset);
-        let endNode = Ranges.splitTextNode(range.endContainer, range.endOffset).previousSibling;
+        let startNode = Ranges.splitTextNode(range.startContainer, range.startOffset, true);
+        let endNode = Ranges.splitTextNode(range.endContainer, range.endOffset, false);
+
+        Preconditions.assertNotNull(startNode, "startNode");
+        Preconditions.assertNotNull(endNode, "endNode");
 
         let doc = range.startContainer.ownerDocument;
 
@@ -119,6 +128,10 @@ class Ranges {
 
         return result;
 
+    }
+
+    static describeNode(node) {
+        return node.cloneNode(false).outerHTML;
     }
 
 }

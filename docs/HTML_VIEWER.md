@@ -1,32 +1,6 @@
 # TODO:
 
 
-- sometimes I'm getting this:
-
-    VM1392:130 Uncaught TypeError: Cannot read property 'scrollHeight' of null
-        at Function.captureDoc (<anonymous>:130:52)
-        at Function.captureHTML (<anonymous>:48:47)
-        at <anonymous>:85:36
-        at Function.captureHTML (<anonymous>:76:21)
-        at <anonymous>:85:36
-        at NodeList.forEach (<anonymous>)
-        at Function.captureHTML (<anonymous>:76:21)
-        at <anonymous>:1:16
-        at EventEmitter.electron.ipcRenderer.on (/home/burton/projects/polar-bookshelf/node_modules/electron/dist/resources/electron.asar/renderer/init.js:75)
-        at emitMany (events.js:147)
-        at EventEmitter.emit (events.js:224)
-
-    - which brings up another problem of executeJavascript not handling thrown errors.
-
-    - FIXME :" what about async callback funcitons? those won't work I think!!!
-
-- some sites aren't generating proper output...
-
-- the Selected CSS should always be blue background with white text...  the
-  guardian uses yellow so it looks like a highlight:
-
-    https://www.theguardian.com/technology/2018/may/24/facebook-accused-of-conducting-mass-surveillance-through-its-apps
-
 - remaining text highlight bugs:
 
     - sometimes we get overlapped highlights
@@ -57,6 +31,36 @@
               scale by looking at offset of the element in the entire page.. ?
 
             -
+
+    - double clicking the entire div breaks for us...
+
+
+- sometimes I'm getting this:
+
+    VM1392:130 Uncaught TypeError: Cannot read property 'scrollHeight' of null
+        at Function.captureDoc (<anonymous>:130:52)
+        at Function.captureHTML (<anonymous>:48:47)
+        at <anonymous>:85:36
+        at Function.captureHTML (<anonymous>:76:21)
+        at <anonymous>:85:36
+        at NodeList.forEach (<anonymous>)
+        at Function.captureHTML (<anonymous>:76:21)
+        at <anonymous>:1:16
+        at EventEmitter.electron.ipcRenderer.on (/home/burton/projects/polar-bookshelf/node_modules/electron/dist/resources/electron.asar/renderer/init.js:75)
+        at emitMany (events.js:147)
+        at EventEmitter.emit (events.js:224)
+
+    - which brings up another problem of executeJavascript not handling thrown errors.
+
+    - FIXME :" what about async callback funcitons? those won't work I think!!!
+
+- some sites aren't generating proper output...
+
+- the Selected CSS should always be blue background with white text...  the
+  guardian uses yellow so it looks like a highlight:
+
+    https://www.theguardian.com/technology/2018/may/24/facebook-accused-of-conducting-mass-surveillance-through-its-apps
+
 
 - AHAH!.. we can NOT use the highligher javascript because it creates a <span>
   and this span can change the visual presentation of the page.  Instead we have
