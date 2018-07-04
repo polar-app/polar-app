@@ -1,6 +1,3 @@
-const {Application} = require('spectron');
-const assert = require('assert');
-const electronPath = require('electron');
 const path = require('path');
 const {Spectron} = require("../../../web/js/test/Spectron");
 
@@ -13,7 +10,7 @@ describe('Open specific PHZ file from command line', function () {
 
     it('PDF file loads', async function () {
 
-        await this.app.client.waitUntilTextExists('.textLayer', 'A prime number', 10000)
+        await this.app.client.waitForExist(`iframe[src="https://en.m.wikipedia.org/wiki/Prime_number"]`);
 
     });
 
