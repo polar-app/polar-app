@@ -26,13 +26,18 @@ describe('SelectContents of HTML entities.', function () {
 
             const {MockSelections} = require("../../../web/js/highlights/text/selection/MockSelections");
             const {SelectedContents} = require("../../../web/js/highlights/text/selection/SelectedContents");
+            const {SimpleHighlightRenderer} = require("../../../web/js/highlights/text/view/SimpleHighlightRenderer.js");
 
             MockSelections.createSyntheticSelection({ node: document.querySelector("#n4"), offset: 0},
                                                     { node: document.querySelector("#n7").firstChild, offset: 35});
 
+            let selectedContents = SelectedContents.compute(window);
+            SimpleHighlightRenderer.renderSelectedContents(selectedContents);
+
             // we have to stringify ourselves because the webdriver re-orders
             // the keys on us which is annoying.
-            return JSON.stringify(SelectedContents.compute(window), null, "  ");
+            return JSON.stringify(selectedContents, null, "  ");
+
 
         });
 
@@ -274,13 +279,18 @@ describe('SelectContents of HTML entities.', function () {
 
             const {MockSelections} = require("../../../web/js/highlights/text/selection/MockSelections");
             const {SelectedContents} = require("../../../web/js/highlights/text/selection/SelectedContents");
+            const {SimpleHighlightRenderer} = require("../../../web/js/highlights/text/view/SimpleHighlightRenderer.js");
 
             MockSelections.createSyntheticSelection({ node: document.querySelector("#n7").firstChild, offset: 0},
                                                     { node: document.querySelector("#n8"), offset: 0});
 
+            let selectedContents = SelectedContents.compute(window);
+            SimpleHighlightRenderer.renderSelectedContents(selectedContents);
+
             // we have to stringify ourselves because the webdriver re-orders
             // the keys on us which is annoying.
-            return JSON.stringify(SelectedContents.compute(window), null, "  ");
+            return JSON.stringify(selectedContents, null, "  ");
+
 
         });
 
@@ -383,10 +393,7 @@ describe('SelectContents of HTML entities.', function () {
                                                     { node: document.querySelector("#n7").firstChild, offset: 45});
 
             let selectedContents = SelectedContents.compute(window);
-
-            selectedContents.rectTexts.forEach(rectText => {
-                SimpleHighlightRenderer.render(document.body, rectText.boundingPageRect);
-            });
+            SimpleHighlightRenderer.renderSelectedContents(selectedContents);
 
             // we have to stringify ourselves because the webdriver re-orders
             // the keys on us which is annoying.

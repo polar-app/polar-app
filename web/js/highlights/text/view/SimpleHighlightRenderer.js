@@ -4,6 +4,14 @@
  */
 class SimpleHighlightRenderer {
 
+    static renderSelectedContents(selectedContents) {
+
+        selectedContents.rectTexts.forEach(rectText => {
+            SimpleHighlightRenderer.render(document.body, rectText.boundingPageRect);
+        });
+
+    }
+
     static render(parentElement, highlightRect) {
 
         console.log("Rendering annotation at: ", highlightRect);

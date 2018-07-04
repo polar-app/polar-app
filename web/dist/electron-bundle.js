@@ -49700,26 +49700,6 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 var _require = __webpack_require__(/*! ../../../Preconditions */ "./web/js/Preconditions.js"),
     Preconditions = _require.Preconditions;
 
-/**
- * The result of a text node split with the left and right portions of the
- * content.  The left is before the offset, the right is after.
- */
-
-
-var TextNodeSplit =
-
-/**
- *
- * @param left {Node}
- * @param right {Node}
- */
-function TextNodeSplit(left, right) {
-    _classCallCheck(this, TextNodeSplit);
-
-    this.left = left;
-    this.right = right;
-};
-
 var Ranges = function () {
     function Ranges() {
         _classCallCheck(this, Ranges);
@@ -49746,7 +49726,7 @@ var Ranges = function () {
          * Split a text node and get the new / starting node.
          * @param container
          * @param offset
-         * @return {TextNodeSplit}
+         * @return {Node}
          */
 
     }, {
@@ -49764,7 +49744,7 @@ var Ranges = function () {
 
             var newNode = container.splitText(offset);
 
-            return new TextNodeSplit(newNode.previousSibling, newNode);
+            return newNode;
         }
 
         /**
@@ -49811,8 +49791,8 @@ var Ranges = function () {
             // hitting the end node we just return out of the while loop and we're
             // done
 
-            var startNode = Ranges.splitTextNode(range.startContainer, range.startOffset).right;
-            var endNode = Ranges.splitTextNode(range.endContainer, range.endOffset).left;
+            var startNode = Ranges.splitTextNode(range.startContainer, range.startOffset);
+            var endNode = Ranges.splitTextNode(range.endContainer, range.endOffset).previousSibling;
 
             var doc = range.startContainer.ownerDocument;
 

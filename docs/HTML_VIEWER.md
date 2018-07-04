@@ -49,6 +49,15 @@
 
         - which would look far more appropriate
 
+    - now the text highlights don't work with PDF!!!
+        - the legacy system still works.  I must be adjusting the positions
+          specifcially for the PDF version.
+
+            - it MUST be adjusting for scale... I might have to determine the
+              scale by looking at offset of the element in the entire page.. ?
+
+            -
+
 - AHAH!.. we can NOT use the highligher javascript because it creates a <span>
   and this span can change the visual presentation of the page.  Instead we have
   to do this ourselves and then manually compute where the selected region is!!!
