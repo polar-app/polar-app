@@ -17,29 +17,45 @@ class ContentCapture {
 
         const ENABLE_IFRAMES = true;
 
-        if(! contentDoc) {
+        if (!contentDoc) {
             // this is the first document were working with.
             contentDoc = document;
         }
 
-        if(! result) {
+        if (!result) {
 
             result = {
-                capturedDocuments: [],
+
+                /**
+                 * The captured documents indexed by URL
+                 * @type {Object<String,Object>}
+                 */
+                capturedDocuments: {},
+
+                // TODO: this should be something other chan chtml now.  This
+                // actually represents the format of the captured representation
+                // not the actual storage value on disk.
                 type: "chtml",
-                version: "2.0.0",
+                version: "3.0.0",
                 title: contentDoc.title,
                 url: contentDoc.location.href,
+
             }
 
+        }
+
+        if(url in result.capturedDocuments) {
+            console.warn("Skipping URL.  Already indexed: " + url);
+            return result;
         }
 
         let cloneDoc = contentDoc.cloneNode(true);
 
         let capturedDocument = ContentCapture.captureDoc(cloneDoc, contentDoc.location.href);
-        result.capturedDocuments.push(capturedDocument);
 
-        if(ENABLE_IFRAMES) {
+        result.capturedDocuments[url] = capturedDocument;
+
+        if (ENABLE_IFRAMES) {
 
             console.log("Going to export iframes now.");
 
@@ -66,19 +82,20 @@ class ContentCapture {
 
             iframes.forEach(function (iframe) {
 
-                // TODO: only work with http and https URLs.
+                let frameValidity = ContentCapture.computeFrameValidity(iframe);
 
-                if(iframe.contentDocument != null) {
+                if (frameValidity.valid) {
 
-                    let href = iframe.contentDocument.location.href;
+                    let iframeHref = iframe.contentDocument.location.href;
 
-                    console.log("Going to capture iframe: ", href);
-                    ContentCapture.captureHTML(iframe.contentDocument, href, result);
+                    console.log("Going to capture iframe: " + iframeHref);
+                    console.log(iframe.outerHTML);
+                    ContentCapture.captureHTML(iframe.contentDocument, iframeHref, result);
 
                     ++nrHandled;
 
                 } else {
-                    console.log("Skipping iframe: " + iframe.outerHTML);
+                    console.log(`Skipping iframe: (${frameValidity})` + iframe.outerHTML);
                     ++nrSkipped;
                 }
 
@@ -86,6 +103,35 @@ class ContentCapture {
 
             console.log(`Handled ${nrHandled} and skipped ${nrSkipped} iframes`);
 
+        }
+
+        return result;
+
+    }
+
+    /**
+     * Return true if we should handle the given iframe.
+     */
+    static computeFrameValidity(iframe) {
+
+        let result = {
+            reason: null,
+            valid: true
+        };
+
+        if (! iframe.contentDocument) {
+            return {reason: "NO_CONTENT_DOCUMENT", valid: false}
+        }
+
+        // TODO: only work with http and https URLs or about:blank
+
+        if (iframe.style.display === "none") {
+
+            // TODO: we need a more practical mechanism to determine if we
+            // are display none including visibility and calculated CSS and
+            // off screen placement (top: -1000px, left: -1000px)
+
+            return {reason: "DISPLAY_NONE", valid: false}
         }
 
         return result;
@@ -128,8 +174,13 @@ class ContentCapture {
             // The content as an HTML string
             content: null,
 
+            /**
+             * The length of the content in number of characters.  This is NOT
+             * the content length which would be the number of bytes.
+             */
+            contentTextLength: null,
+
             mutations: {
-                scriptsRemoved: 0,
                 eventAttributesRemoved: 0,
                 existingBaseRemoved: false,
                 baseAdded: false,
@@ -138,44 +189,14 @@ class ContentCapture {
 
         };
 
-        // remove the script elements as these are active and we do not want
-        // them loaded in the future.
-        cloneDoc.querySelectorAll("script").forEach(function (scriptElement) {
-            scriptElement.parentElement.removeChild(scriptElement);
-            ++result.mutations.scriptsRemoved;
-        });
+        // TODO: make the mutations a list of functions that need to be run
+        // and the mutation names just the list of the functions. The functions
+        // can then just return a mutation and the data structures are updated.
 
-        // make sure the script removal worked
-        if(cloneDoc.querySelectorAll("script").length !== 0) {
-            throw new Error("Unable to remove scripts");
-        }
+        result.mutations.cleanupRemoveScripts = ContentCapture.cleanupRemoveScripts(cloneDoc, url);
+        result.mutations.cleanupHead = ContentCapture.cleanupHead(cloneDoc, url);
+        result.mutations.cleanupBase = ContentCapture.cleanupBase(cloneDoc, url);
 
-        // now insert a 'base' href so that all pages can load URLs properly.
-        if (! cloneDoc.head) {
-            cloneDoc.insertBefore(cloneDoc.createElement("head"), cloneDoc.firstChild);
-        }
-
-        let base = cloneDoc.querySelector("base");
-
-        if(base) {
-            // remove the current 'base' if one exists...
-            base.parentElement.removeChild(base);
-            result.mutations.existingBaseRemoved = true;
-        }
-
-        // *** create a NEW base element for this HTML
-
-        base = cloneDoc.createElement("base");
-        base.setAttribute("href", result.href);
-
-        if(cloneDoc.head.firstChild != null) {
-            // base must be the first element
-            cloneDoc.head.insertBefore(base,cloneDoc.head.firstChild);
-        } else {
-            cloneDoc.head.appendChild(base);
-        }
-
-        result.mutations.baseAdded = true;
 
         //***  add metadata into the HTML for polar
 
@@ -210,7 +231,82 @@ class ContentCapture {
 
         result.mutations.showAriaHidden = ContentCapture.cleanupShowAriaHidden(cloneDoc);
 
-        result.content = ContentCapture.toOuterHTML(cloneDoc)
+        result.content = ContentCapture.toOuterHTML(cloneDoc);
+        result.contentTextLength = result.content.length;
+
+        console.log(`Captured ${url} which has a text length of: ${result.content.length}`);
+
+        return result;
+
+    }
+
+    static cleanupBase(cloneDoc, url) {
+
+        let result = {
+            existingBaseRemoved: false,
+            baseAdded: false
+        };
+
+        let base = cloneDoc.querySelector("base");
+
+        if(base) {
+            // remove the current 'base' if one exists...
+            base.parentElement.removeChild(base);
+            result.existingBaseRemoved = true;
+        }
+
+        // *** create a NEW base element for this HTML
+
+        base = cloneDoc.createElement("base");
+        base.setAttribute("href", url);
+
+        if(cloneDoc.head.firstChild != null) {
+            // base must be the first element
+            cloneDoc.head.insertBefore(base,cloneDoc.head.firstChild);
+        } else {
+            cloneDoc.head.appendChild(base);
+        }
+
+        result.baseAdded = true;
+
+        return result;
+
+    }
+
+    static cleanupHead(cloneDoc, url) {
+
+        // make sure the document has a head.
+
+        let result = {
+            headAdded: false
+        };
+
+        if (! cloneDoc.head) {
+            cloneDoc.insertBefore(cloneDoc.createElement("head"), cloneDoc.firstChild);
+            result.headAdded = true;
+        }
+
+        return result;
+
+    }
+
+    static cleanupRemoveScripts(cloneDoc, url) {
+
+        let result = {
+            scriptsRemoved: 0
+        };
+
+        // remove the script elements as these are active and we do not want
+        // them loaded in the future.
+        cloneDoc.querySelectorAll("script").forEach(function (scriptElement) {
+            scriptElement.parentElement.removeChild(scriptElement);
+            ++result.scriptsRemoved;
+        });
+
+        // make sure the script removal worked
+        if(cloneDoc.querySelectorAll("script").length !== 0) {
+            throw new Error("Unable to remove scripts");
+        }
 
         return result;
 

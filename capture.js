@@ -147,6 +147,11 @@ async function captureHTML(url, window) {
     let capturedPHZWriter = new CapturedPHZWriter(phzPath);
     await capturedPHZWriter.convert(captured)
 
+    // write the captured HTML to /tmp for debug purposes.  We can enable this
+    // as a command line switch later.
+
+    fs.writeFile(`/tmp/${filename}.json`, JSON.stringify(captured, null, "  "));
+
     log.info("Capturing the HTML...done");
 
     if(args.quit) {

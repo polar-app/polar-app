@@ -28,6 +28,12 @@ class Functions {
 
     }
 
+    /**
+     * We iterate over all keys in the dictionary.  Even inherited keys.
+     *
+     * @param dict
+     * @param callback
+     */
     static forDict(dict, callback) {
 
         Preconditions.assertNotNull(dict, "dict");
@@ -41,6 +47,29 @@ class Functions {
             let value = dict[key];
             callback(key,value);
         })
+
+    };
+
+
+    /**
+     * We iterate over all keys in the dictionary.  Even inherited keys.
+     *
+     * @param dict
+     * @param callback
+     */
+    static async forOwnKeys(dict, callback) {
+
+        Preconditions.assertNotNull(dict, "dict");
+        Preconditions.assertNotNull(callback, "callback");
+
+        for(let key in dict) {
+
+            if(dict.hasOwnProperty(key)) {
+                let value = dict[key];
+                await callback(key,value);
+            }
+
+        }
 
     };
 
@@ -83,4 +112,5 @@ class Functions {
 }
 
 module.exports.forDict = Functions.forDict;
+module.exports.forOwnKeys = Functions.forOwnKeys;
 module.exports.Functions = Functions;

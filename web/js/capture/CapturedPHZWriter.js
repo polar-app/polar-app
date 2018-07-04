@@ -5,6 +5,7 @@ const {Resource} = require("../phz/Resource");
 const {ResourceFactory} = require("../phz/ResourceFactory");
 const {PHZWriter} = require("../phz/PHZWriter");
 const {Objects} = require("../util/Objects");
+const {forOwnKeys} = require("../util/Functions");
 
 
 class CapturedPHZWriter {
@@ -28,16 +29,14 @@ class CapturedPHZWriter {
 
         // now work with each resource
 
-        for (let idx = 0; idx < captured.capturedDocuments.length; idx++) {
-
-            let capturedDocument = captured.capturedDocuments[idx];
+        await forOwnKeys(captured.capturedDocuments, async (url, capturedDocument) => {
 
             let resource = ResourceFactory.create(capturedDocument.url, "text/html");
             resource.title = capturedDocument.title;
 
             await phzWriter.writeResource(resource, capturedDocument.content, capturedDocument.url);
 
-        }
+        });
 
         await phzWriter.writeMetadata(metadata);
 
