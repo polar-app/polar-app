@@ -257,4 +257,107 @@ describe('SelectContents of HTML entities.', function () {
 
     });
 
+    it('Test of select into the next h1.... ', async function () {
+
+        assert.equal(await this.app.client.getWindowCount(), 1);
+
+        /**
+         * @type {Electron.WebContents}
+         */
+        let webContents = this.app.webContents;
+
+        assert.ok(webContents);
+        assert.ok(webContents.executeJavaScript);
+
+
+        let executed = await this.app.client.execute(() => {
+
+            const {MockSelections} = require("../../../web/js/highlights/text/selection/MockSelections");
+            const {SelectedContents} = require("../../../web/js/highlights/text/selection/SelectedContents");
+
+            MockSelections.createSyntheticSelection({ node: document.querySelector("#n7").firstChild, offset: 0},
+                                                    { node: document.querySelector("#n8"), offset: 0});
+
+            // we have to stringify ourselves because the webdriver re-orders
+            // the keys on us which is annoying.
+            return JSON.stringify(SelectedContents.compute(window), null, "  ");
+
+        });
+
+        let expected = {
+            "text": "this is just raw text without any inner elements. this is just raw text without any inner elements. this is just raw text without any inner elements. this is just raw text without any inner elements.\n\n",
+            "html": "\n        this is just raw text without any inner elements.\n        this is just raw text without any inner elements.\n        this is just raw text without any inner elements.\n        this is just raw text without any inner elements.\n    \n\n    ",
+            "rectTexts": [
+                {
+                    "clientRects": {
+                        "0": {
+                            "x": 8,
+                            "y": 137.4375,
+                            "width": 393.671875,
+                            "height": 19,
+                            "top": 137.4375,
+                            "right": 401.671875,
+                            "bottom": 156.4375,
+                            "left": 8
+                        },
+                        "1": {
+                            "x": 401.671875,
+                            "y": 137.4375,
+                            "width": 388.578125,
+                            "height": 19,
+                            "top": 137.4375,
+                            "right": 790.25,
+                            "bottom": 156.4375,
+                            "left": 401.671875
+                        },
+                        "2": {
+                            "x": 8,
+                            "y": 156.4375,
+                            "width": 393.671875,
+                            "height": 19,
+                            "top": 156.4375,
+                            "right": 401.671875,
+                            "bottom": 175.4375,
+                            "left": 8
+                        },
+                        "3": {
+                            "x": 401.671875,
+                            "y": 156.4375,
+                            "width": 388.578125,
+                            "height": 19,
+                            "top": 156.4375,
+                            "right": 790.25,
+                            "bottom": 175.4375,
+                            "left": 401.671875
+                        }
+                    },
+                    "boundingClientRect": {
+                        "x": 8,
+                        "y": 137.4375,
+                        "width": 782.25,
+                        "height": 38,
+                        "top": 137.4375,
+                        "right": 790.25,
+                        "bottom": 175.4375,
+                        "left": 8
+                    },
+                    "boundingPageRect": {
+                        "left": 8,
+                        "top": 137.4375,
+                        "right": 790.25,
+                        "bottom": 175.4375,
+                        "width": 782.25,
+                        "height": 38,
+                        "x": 8,
+                        "y": 137.4375
+                    },
+                    "text": "\n        this is just raw text without any inner elements.\n        this is just raw text without any inner elements.\n        this is just raw text without any inner elements.\n        this is just raw text without any inner elements.\n    "
+                }
+            ]
+        };
+
+        assertJSON(executed.value, expected);
+
+    });
+
 });

@@ -14,13 +14,28 @@ class Ranges {
         return ranges.map(range => range.cloneRange());
     }
 
+    /**
+     * Split a text node and get the new / starting node.
+     * @param container
+     * @param offset
+     * @return {Node} Return the node which represents the boundary point of
+     *                this range.
+     */
     static splitTextNode(container, offset) {
 
         if(container.nodeType !== Node.TEXT_NODE) {
-            return;
+
+            if(offset > 0) {
+                throw new Error("We don't know how to deal with non-zero yet.");
+            }
+
+            return container;
+
         }
 
-        container.splitText(offset);
+        let newNode = container.splitText(offset);
+
+        return newNode.previousSibling;
 
     }
 
@@ -34,8 +49,6 @@ class Ranges {
         let result = "";
 
         let docFragment = range.cloneContents();
-
-        console.log("docFragment:" , docFragment.childNodes)
 
         docFragment.childNodes.forEach(childNode => {
 
@@ -60,29 +73,48 @@ class Ranges {
 
         Preconditions.assertNotNull(range, "range")
 
-        Ranges.splitTextNode(range.startContainer, range.startOffset);
-        Ranges.splitTextNode(range.endContainer, range.endOffset);
+        // TODO: we could change this algorithm to make it a simple/basic state
+        // machine.  We start walking the tree until we find the start node, then we
+        // enable set inSelection = true... then when we exit the selection by
+        // hitting the end node we just return out of the while loop and we're
+        // done
+
+        let startNode = Ranges.splitTextNode(range.startContainer, range.startOffset);
+        let endNode = Ranges.splitTextNode(range.endContainer, range.endOffset);
 
         let doc = range.startContainer.ownerDocument;
 
         // use TreeWalker to walk the commonAncestorContainer and we see which
         // ranges contain which text nodes.
-        let treeWalker = doc.createTreeWalker(range.commonAncestorContainer, NodeFilter.SHOW_TEXT);
+        let treeWalker = doc.createTreeWalker(range.commonAncestorContainer);
 
         let result = [];
 
         let node;
 
-        while(node = treeWalker.nextNode()) {
+        let inSelection = false;
 
-            // TODO: This isn't portable to IE at ALL ... but I think there is
-            // another method which will allow us to know how the node interacts
-            // with the range. Specifically, whether it's before, after, or
-            // after and before.  I couldn't find it when I was implementing
-            // this.
-            if(range.intersectsNode(node)) {
+        // ** traverse until we find the start
+        while(node = treeWalker.nextNode()) {
+            if( startNode === node) {
+                inSelection = true;
+                break;
+            }
+
+        }
+
+        // ** now keep consuming until we hit the last node.
+
+        while(node) {
+
+            if(node.nodeType === Node.TEXT_NODE) {
                 result.push(node);
             }
+
+            if(endNode === node)
+                break;
+
+            node = treeWalker.nextNode();
 
         }
 

@@ -1,5 +1,12 @@
 # TODO:
 
+- remaining text highlight bugs:
+
+    - if we select UP TO an H1 but the next element actually has ZERO elements
+      in it then we accidentally highlight the entire thing.
+
+    - sometimes we get overlapped highlights
+
 
 - AHAH!.. we can NOT use the highligher javascript because it creates a <span>
   and this span can change the visual presentation of the page.  Instead we have
