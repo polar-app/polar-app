@@ -216,46 +216,6 @@ class ContentCapture {
 
     }
 
-    static cleanupInlineIframes(cloneDoc) {
-
-        // TODO: these stats aren't merged across all iframes recursively.  nor
-        // do we have stats for them all.  I could pass one object around with
-        // stats per URL and possibly nest the objects into a tree.
-        let result = {
-
-        };
-
-        // TODO: this code SHOULD work but I need more real world tests and I
-        // need to get pagination to work.
-
-
-        // FUCK !!! ahah1!! the cloneDoc DOES not have a content document
-        // because I imagine it's not cloned!!!
-
-        cloneDoc.querySelectorAll("iframe").forEach(function (iframe) {
-
-            if(iframe.contentDocument != null) {
-
-                console.log("Working with: ", iframe);
-                cloneDoc = iframe.contentDocument.cloneNode(true);
-                let capturedFrame = ContentCapture.captureHTML(cloneDoc);
-                iframe.setAttribute("src", ContentCapture.toHTMLDataURL(capturedFrame.content));
-                result[capturedFrame.href] = capturedFrame;
-
-            } else {
-                console.log("Skipping iframe: " + iframe.outerHTML);
-            }
-
-        });
-
-        return result;
-
-    }
-
-    static toHTMLDataURL(content) {
-        return 'data:text/html,' + encodeURIComponent(content);
-    }
-
     static cleanupShowAriaHidden(cloneDoc) {
 
         let mutations = 0;

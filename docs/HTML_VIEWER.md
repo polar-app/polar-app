@@ -1,12 +1,33 @@
 # TODO:
 
-- remaining text highlight bugs:
+- some sites aren't generating proper output...
 
-    - if we select UP TO an H1 but the next element actually has ZERO elements
-      in it then we accidentally highlight the entire thing.
+- the Selected CSS should always be blue background with white text...  the
+  guardian uses yellow so it looks like a highlight:
+
+    https://www.theguardian.com/technology/2018/may/24/facebook-accused-of-conducting-mass-surveillance-through-its-apps
+
+- remaining text highlight bugs:
 
     - sometimes we get overlapped highlights
 
+        - this is because we're getting two regions with 'expanded' boxes.  An
+          expanded box is like this
+
+          +----------------+
+          |xxxxxxxxxxxxxxxx|
+          |xx              |
+          +----------------+
+
+        - Instead we should call splitText and then build two boxes like:
+
+          +----------------+
+          |xxxxxxxxxxxxxxxx|
+          +--+-------------+
+          |xx|
+          +--+
+
+        - which would look far more appropriate
 
 - AHAH!.. we can NOT use the highligher javascript because it creates a <span>
   and this span can change the visual presentation of the page.  Instead we have

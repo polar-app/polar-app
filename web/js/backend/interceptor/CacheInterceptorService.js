@@ -35,7 +35,9 @@ class CacheInterceptorService {
 
         let cacheEntry = this.cacheRegistry.get(request.url);
 
-        let buffer = await cacheEntry.toBuffer()
+        let buffer = await cacheEntry.toBuffer();
+
+        log.debug(`Calling callback now for: ${request.url} (${buffer.byteLength} bytes)`);
 
         callback({
             mimeType: cacheEntry.mimeType,

@@ -1,0 +1,215 @@
+<html>
+
+<head>
+
+    <style>
+        p {
+            /* use fixed width so that we can see if we have issues with multi
+            rows and columns */
+            width: 500px;
+        }
+    </style>
+
+</head>
+
+
+<body>
+
+<p>
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed pretium, dolor
+    sed euismod tempor, diam urna scelerisque tortor, vel semper ligula urna vel
+
+    enim. Aenean nec facilisis libero. Sed efficitur ac ligula in varius.
+    Pellentesque iaculis, enim ac dignissim aliquet, turpis purus mattis felis,
+    eget consequat eros velit et erat. Curabitur feugiat suscipit leo, vel
+
+
+    ultrices tortor sodales ut. Maecenas a magna eget nunc commodo rutrum ac et
+    augue. Quisque augue sem, ultricies ac ornare non, porta a eros. Morbi
+
+    <b>hello</b>
+
+    posuere, tellus nec cursus rhoncus, nibh leo ultricies urna, eget mollis mi
+    nisl nec purus. Mauris malesuada justo vitae finibus elementum. Donec
+    vestibulum erat ac sem consectetur eleifend. Nullam at nibh sed neque
+    accumsan tincidunt nec a enim. Aliquam pharetra orci tortor, eget gravida
+    felis dictum ac. Maecenas convallis nunc ultrices massa bibendum, et
+    dignissim elit tempus. Ut in luctus dolor, et maximus nisi. Etiam non
+    euismod sem.
+
+    Vestibulum pulvinar bibendum turpis at sodales. Vestibulum consectetur nulla
+    elementum eros rhoncus, non interdum diam tristique. Praesent interdum quam
+    in lacus finibus semper. Phasellus id feugiat tortor. Integer sed molestie
+    urna, a sodales libero. Morbi egestas egestas tortor sed sagittis. Aenean et
+    tellus non quam pellentesque ultrices vel non odio.</p>
+
+<script>
+
+    class TextNodes {
+
+        /**
+         * Create a Range around this textNode so that we can compute metadata like
+         * the clientRects which normally can't be determined from a TextNode.
+         *
+         * @param textNode
+         * @param offset
+         * @param length
+         * @return {Range}
+         */
+        static getRange(textNode, offset, length) {
+
+            if(! offset) {
+                offset = 0;
+            }
+
+            if(! length) {
+                length = textNode.textContent.length;
+            }
+
+            let range = document.createRange();
+
+            range.setStart(textNode, offset);
+            range.setEnd(textNode, length);
+
+            return range;
+
+        }
+
+        /**
+         *
+         * @param textNode {Node}
+         * @param offset {number}
+         * @param length {number}
+         */
+        static getClientRects(textNode, offset, length) {
+            return range.getClientRects();
+        }
+
+    }
+
+    /**
+     * A TextNode with an associated rect.
+     */
+    class TextNodeRect {
+
+        /**
+         *
+         * @param textNode {Node}
+         * @param rect {DOMRect}
+         */
+        constructor(textNode, rect) {
+            this.textNode = textNode;
+            this.rect = rect;
+        }
+
+    }
+
+    /**
+     *
+     * Keep the list of elements together that are in a specific row.  We consider
+     * a row items with the same 'top' and 'bottom' index so effectively everything
+     * with the same height, in the same parent element, and adjacent.  We then
+     * build everything into rows and columns.
+     *
+     */
+    class RowIndex {
+
+        constructor() {
+
+            /**
+             * @type {Map<String,Array<TextNodeRect>>}
+             */
+            this.rows = {};
+
+        }
+
+        /**
+         * @param textNodeRect {TextNodeRect}
+         */
+        update(textNodeRect) {
+
+            let rowKey = this.computeRowKey(textNodeRect.rect);
+
+            if (! rowKey in this.rows) {
+                this.rows[rowKey] = [];
+            }
+
+            this.rows[rowKey].push(textNodeRect);
+
+        }
+
+        /**
+         * @return {Array<string>}
+         */
+        getRows() {
+            return Object.keys(this.rows);
+        }
+
+        /**
+         *
+         * @param row {String}
+         * @return {*}
+         */
+        getRow(row) {
+            return this.rows[row];
+        }
+
+        /**
+         *
+         * @param rect {DOMRect}
+         * @return {string}
+         */
+        computeRowKey(rect) {
+            return `${rect.top}:${rect.bottom}`;
+        }
+
+    }
+
+    // FIXME 'blocks' should be contigous regions of text highlights ...
+
+    /**
+     * Build rows of contiguous text nodes plus break them apart based on how they
+     * display visually.
+     */
+    class TextNodeRows {
+
+        static splitElement(element) {
+
+            Array.from(element.childNodes).forEach(current => {
+
+                if(current.nodeType === Node.TEXT_NODE) {
+                    TextNodeRows.splitTextNode(current);
+                }
+
+                // TODO: if this is a regular element recurse into it...
+                // splitting that too.
+
+            });
+
+        }
+
+        static computeRows() {
+
+        }
+
+        /**
+         * Split the given text node so that every character has its own text
+         * node so that we can see the actual position on the screen.
+         */
+        static splitTextNode(textNode) {
+
+            while(textNode.textContent.length > 1) {
+                textNode = textNode.splitText(1);
+            }
+
+        }
+
+    }
+
+    let p = document.querySelector("p")
+    TextNodeRows.splitElement(p);
+
+</script>
+
+</body>
+</html>
