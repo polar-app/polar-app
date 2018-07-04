@@ -8,13 +8,9 @@ describe('DebugWebRequestsListener', function () {
 
     Spectron.setup(__dirname);
 
-    it('shows an initial window', function () {
+    it('shows an initial window', async function () {
 
-        return this.app.client.getWindowCount().then(function (count) {
-            assert.equal(count, 1)
-            // Please note that getWindowCount() will return 2 if `dev tools` are opened.
-            // assert.equal(count, 2)
-        })
+        assert.equal(await this.app.client.getWindowCount(), 1);
 
     });
 
