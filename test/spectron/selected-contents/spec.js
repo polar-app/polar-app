@@ -360,4 +360,84 @@ describe('SelectContents of HTML entities.', function () {
 
     });
 
+    it('Test of select with start and end offsets in a text node', async function () {
+
+        assert.equal(await this.app.client.getWindowCount(), 1);
+
+        /**
+         * @type {Electron.WebContents}
+         */
+        let webContents = this.app.webContents;
+
+        assert.ok(webContents);
+        assert.ok(webContents.executeJavaScript);
+
+
+        let executed = await this.app.client.execute(() => {
+
+            const {MockSelections} = require("../../../web/js/highlights/text/selection/MockSelections");
+            const {SelectedContents} = require("../../../web/js/highlights/text/selection/SelectedContents");
+            const {SimpleHighlightRenderer} = require("../../../web/js/highlights/text/view/SimpleHighlightRenderer.js");
+
+            MockSelections.createSyntheticSelection({ node: document.querySelector("#n7").firstChild, offset: 20},
+                                                    { node: document.querySelector("#n7").firstChild, offset: 45});
+
+            let selectedContents = SelectedContents.compute(window);
+
+            selectedContents.rectTexts.forEach(rectText => {
+                SimpleHighlightRenderer.render(document.body, rectText.boundingPageRect);
+            });
+
+            // we have to stringify ourselves because the webdriver re-orders
+            // the keys on us which is annoying.
+            return JSON.stringify(selectedContents, null, "  ");
+
+        });
+
+        let expected = {
+            "text": "t raw text without any in",
+            "html": "t raw text without any in",
+            "rectTexts": [
+                {
+                    "clientRects": {
+                        "0": {
+                            "x": 85.03125,
+                            "y": 137.4375,
+                            "width": 200.3125,
+                            "height": 19,
+                            "top": 137.4375,
+                            "right": 285.34375,
+                            "bottom": 156.4375,
+                            "left": 85.03125
+                        }
+                    },
+                    "boundingClientRect": {
+                        "x": 85.03125,
+                        "y": 137.4375,
+                        "width": 200.3125,
+                        "height": 19,
+                        "top": 137.4375,
+                        "right": 285.34375,
+                        "bottom": 156.4375,
+                        "left": 85.03125
+                    },
+                    "boundingPageRect": {
+                        "left": 85.03125,
+                        "top": 137.4375,
+                        "right": 285.34375,
+                        "bottom": 156.4375,
+                        "width": 200.3125,
+                        "height": 19,
+                        "x": 85.03125,
+                        "y": 137.4375
+                    },
+                    "text": "t raw text without any in"
+                }
+            ]
+        };
+
+        assertJSON(executed.value, expected);
+
+    });
+
 });

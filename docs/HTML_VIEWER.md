@@ -1,5 +1,6 @@
 # TODO:
 
+
 - sometimes I'm getting this:
 
     VM1392:130 Uncaught TypeError: Cannot read property 'scrollHeight' of null

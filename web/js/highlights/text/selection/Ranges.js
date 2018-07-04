@@ -1,6 +1,24 @@
 
 const {Preconditions} = require("../../../Preconditions");
 
+/**
+ * The result of a text node split with the left and right portions of the
+ * content.  The left is before the offset, the right is after.
+ */
+class TextNodeSplit {
+
+    /**
+     *
+     * @param left {Node}
+     * @param right {Node}
+     */
+    constructor(left, right) {
+        this.left = left;
+        this.right = right;
+    }
+
+}
+
 class Ranges {
 
     /**
@@ -18,8 +36,7 @@ class Ranges {
      * Split a text node and get the new / starting node.
      * @param container
      * @param offset
-     * @return {Node} Return the node which represents the boundary point of
-     *                this range.
+     * @return {TextNodeSplit}
      */
     static splitTextNode(container, offset) {
 
@@ -35,7 +52,7 @@ class Ranges {
 
         let newNode = container.splitText(offset);
 
-        return newNode.previousSibling;
+        return new TextNodeSplit(newNode.previousSibling, newNode);
 
     }
 
@@ -79,8 +96,8 @@ class Ranges {
         // hitting the end node we just return out of the while loop and we're
         // done
 
-        let startNode = Ranges.splitTextNode(range.startContainer, range.startOffset);
-        let endNode = Ranges.splitTextNode(range.endContainer, range.endOffset);
+        let startNode = Ranges.splitTextNode(range.startContainer, range.startOffset).right;
+        let endNode = Ranges.splitTextNode(range.endContainer, range.endOffset).left;
 
         let doc = range.startContainer.ownerDocument;
 
