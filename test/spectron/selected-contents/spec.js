@@ -38,7 +38,6 @@ describe('SelectContents of HTML entities.', function () {
             // the keys on us which is annoying.
             return JSON.stringify(selectedContents, null, "  ");
 
-
         });
 
         let expected = {

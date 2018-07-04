@@ -20,7 +20,8 @@ class Spectron {
 
         // TODO: since spectron requires a window to operate, we should ALWAYS
         // create a window and then return it to the user so that they can
-        // work with it directly.
+        // work with it directly.  We should do this within setup() and require
+        // a URL to load so that testing always functions properly.
 
         let spectronOutputMonitorService;
 

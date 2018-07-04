@@ -108,12 +108,18 @@ class TextHighlightRows {
         let rect = textLayerDivOffset;
 
         if(docFormat.name === "html") {
+
+            // FIXME this should go into a docFormat.computeAnnotationOrigin(element)
+            // which for iframes should just be the document offset but for
+            // PDFs should be the offset of the textElement.
+
             rect = {
                 left: 0,
                 top: 0,
                 width: 0,
                 height: 0
             };
+
         }
 
 
@@ -125,6 +131,7 @@ class TextHighlightRows {
         // which has the same transform?
         let scaleX = Styles.parseTransformScaleX(textLayerDivElement.style.transform);
         if(! scaleX) {
+            // FIXME: return 1.0 from parseTransformScaleX
             scaleX = 1.0;
         }
 

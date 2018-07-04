@@ -56,8 +56,6 @@ class MockSelections {
 
     }
 
-
-
 }
 
 module.exports.MockSelections = MockSelections;
