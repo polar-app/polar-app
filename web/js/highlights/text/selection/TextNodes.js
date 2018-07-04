@@ -1,3 +1,5 @@
+const {Preconditions} = require("../../../Preconditions");
+
 class TextNodes {
 
     /**
@@ -10,6 +12,8 @@ class TextNodes {
      * @return {Range}
      */
     static getRange(textNode, offset, length) {
+
+        Preconditions.assertNotNull(textNode, "textNode");
 
         if(! offset) {
             offset = 0;

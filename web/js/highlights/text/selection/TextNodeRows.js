@@ -165,6 +165,7 @@ class TextNodeRows {
         Array.from(node.childNodes).forEach(current => {
 
             if(current.nodeType === Node.TEXT_NODE) {
+                // FIXME: assert that the text length is 1
                 region.push(current);
             }
 
@@ -203,6 +204,11 @@ class TextNodeRows {
 
             region.forEach(curr => {
 
+                if(curr.previousSibling == null) {
+                    block.push(curr);
+                    return;
+                }
+
                 let prevRect = TextNodes.getRange(curr.previousSibling).getBoundingClientRect();
                 let currRect = TextNodes.getRange(curr).getBoundingClientRect();
 
@@ -218,6 +224,28 @@ class TextNodeRows {
         });
 
         return blocks;
+
+    }
+
+    static joinBlocks(blocks) {
+        return blocks.map(TextNodeRows.joinBlock);
+    }
+
+    static joinBlock(block) {
+
+        if(block.length === 0) {
+            return;
+        }
+
+        // we will expand the block into this node.
+        let target = block.pop();
+
+        block.forEach(current => {
+            target.textContent += current.textContent;
+            current.parentElement.removeChild(current);
+        });
+
+        return target;
 
     }
 

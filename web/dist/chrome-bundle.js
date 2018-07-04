@@ -74663,6 +74663,9 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
+var _require = __webpack_require__(/*! ../../../Preconditions */ "./web/js/Preconditions.js"),
+    Preconditions = _require.Preconditions;
+
 var TextNodes = function () {
     function TextNodes() {
         _classCallCheck(this, TextNodes);
@@ -74682,6 +74685,8 @@ var TextNodes = function () {
          * @return {Range}
          */
         value: function getRange(textNode, offset, length) {
+
+            Preconditions.assertNotNull(textNode, "textNode");
 
             if (!offset) {
                 offset = 0;
