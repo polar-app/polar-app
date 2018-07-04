@@ -74358,8 +74358,7 @@ var Ranges = function () {
 
             Preconditions.assertNotNull(range, "range");
 
-            // TODO: we could change this algorithm to make it a simple/basic state
-            // machine.  We start walking the tree until we find the start node, then we
+            // We start walking the tree until we find the start node, then we
             // enable set inSelection = true... then when we exit the selection by
             // hitting the end node we just return out of the while loop and we're
             // done

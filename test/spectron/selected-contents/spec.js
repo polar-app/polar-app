@@ -5,7 +5,7 @@ const {Functions} = require("../../../web/js/util/Functions");
 
 describe('SelectContents of HTML entities.', function () {
 
-    this.timeout(10000)
+    this.timeout(10000);
 
     Spectron.setup(__dirname);
 

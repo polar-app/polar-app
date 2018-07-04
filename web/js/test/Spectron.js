@@ -14,7 +14,7 @@ class Spectron {
      * The directory to run the specs from. Usually __dirname in your spec.
      * @param dir
      */
-    static setup(dir) {
+    static setup(dir, ...args) {
 
         console.log("Configuring spectron...")
 
@@ -38,8 +38,8 @@ class Spectron {
                 // Assuming you have the following directory structure
 
                 // The following line tells spectron to look and use the main.js file
-                //args: [path.join(__dirname, '../../..')]
-                args: [dir]
+                //args: [path.join(dir, '../../..')]
+                args: [dir, ...args]
 
             });
 
