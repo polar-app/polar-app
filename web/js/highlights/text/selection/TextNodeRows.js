@@ -1,4 +1,5 @@
 const {TextNodes} = require("./TextNodes");
+const {Rects} = require("../../../Rects");
 
 /**
  * A TextNode with an associated rect.
@@ -12,7 +13,7 @@ class TextNodeRect {
      */
     constructor(textNode, rect) {
         this.textNode = textNode;
-        this.rect = rect;
+        this.rect = Rects.validate(rect);
     }
 
 }
