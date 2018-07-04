@@ -43,11 +43,17 @@ class RowIndex {
 
         let rowKey = this.computeRowKey(textNodeRect.rect);
 
-        if (! rowKey in this.rows) {
+        if (! (rowKey in this.rows)) {
             this.rows[rowKey] = [];
         }
 
-        this.rows[rowKey].push(textNodeRect);
+        let row = this.rows[rowKey];
+
+        if(!row) {
+            throw new Error("No row for key: " + rowKey);
+        }
+
+        row.push(textNodeRect);
 
     }
 
@@ -161,7 +167,7 @@ class TextNodeRows {
 
                 // this is a regular element recurse into it splitting that too.
 
-                TextNodeRows.computeRowIndex(current, result);
+                TextNodeRows.computeRowIndex(current, rowIndex);
 
             }
 
