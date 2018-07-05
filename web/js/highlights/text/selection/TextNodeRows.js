@@ -54,6 +54,7 @@ class TextRegion {
     }
 
     toJSON() {
+        // FIXME: this isn't toJSON as it's returning an object... not a string.
         return { nrNodes: this.textNodes.length, text: this.toString() };
     }
 
@@ -64,6 +65,46 @@ class TextRegion {
  * TextBlock is on different visual rows.
  */
 class TextBlock extends TextRegion {
+
+}
+
+class MergedTextBlock {
+
+    constructor(obj) {
+
+        /**
+         * The merged Node of type TEXT_NODE
+         * @type {Node}
+         */
+        this.textNode = null;
+
+        /**
+         * The rect of this node.
+         *
+         * @type {DOMRect}
+         */
+        this.rect = null;
+
+        /**
+         * The text value of the node.
+         * @type {string}
+         */
+        this.text = null;
+
+        Object.assign(this, obj);
+
+    }
+
+    toString() {
+        return this.text;
+    }
+
+    /**
+     * Convert to an object that can be serialized.
+     */
+    toExternal() {
+        return {text: this.text, rect: this.rect};
+    }
 
 }
 
@@ -240,21 +281,45 @@ class TextNodeRows {
 
     }
 
-    static joinBlock(block) {
+    /**
+     *
+     *
+     * @param textBlocks {Array<TextBlock>}
+     * @return {Array<MergedTextBlock>}
+     */
+    static mergeTextBlocks(textBlocks) {
 
-        if(block.length === 0) {
-            return;
-        }
+        /**
+         *
+         * @type {Array<MergedTextBlock>}
+         */
+        let result = [];
 
-        // we will expand the block into this node.
-        let target = block.pop();
+        textBlocks.forEach(textBlock => {
 
-        block.forEach(current => {
-            target.textContent += current.textContent;
-            current.parentElement.removeChild(current);
+            let textNodes = textBlock.getTextNodes().slice();
+
+            let text = textBlock.toString();
+
+            // the first node should get the text value.
+
+            let textNode = textNodes.pop();
+            textNode.textContent = text;
+
+            // now remove the remaining nodes from the DOM.
+            textNodes.forEach(orphanedNode => {
+                orphanedNode.parentNode.removeChild(orphanedNode);
+            });
+
+            result.push(new MergedTextBlock({
+                textNode,
+                text,
+                rect: TextNodes.getRange(textNode).getBoundingClientRect()
+            }));
+
         });
 
-        return { node: target, text: target.textContent};
+        return result;
 
     }
 
@@ -265,25 +330,6 @@ class TextNodeRows {
      */
     static computeRowKey(rect) {
         return `${rect.top}:${rect.bottom}`;
-    }
-
-    /**
-     * Compute the blocks from the row index.
-     *
-     * @param rowIndex {RowIndex}
-     */
-    static computeBlocks(rowIndex) {
-
-        // the blocks we're working with.
-        let result = [];
-
-        rowIndex.getKeys().forEach(rowKey => {
-            let row = rowIndex.getRow(rowKey);
-            row.sort((a,b) => a.rect.left - b.rect.left)
-        })
-
-        return result;
-
     }
 
     /**
