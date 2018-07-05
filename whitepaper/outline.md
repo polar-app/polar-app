@@ -1,3 +1,14 @@
+
+- full text search
+
+- labels and tagging
+    - my tagfs ideas for unions and derived labels (compsci is linux + microsoft)
+    - search by domain or site too.  automatic tags
+    - tag values site:microsoft.com
+    -
+
+- sharing within groups/companies/universities
+
 - pagemarks
 
 - text higlights
@@ -26,7 +37,15 @@
     - annotations, highlights shared
     - viewable across the web via our extension. Shown inline and with a
       dedicated sidebar app
-    -
+- what requires the chrome extension?
 
 - content is extracted as text snippets, highlights, thumbnails, etc.  You can
   keep it long term.
+
+- create managed reading queues that are more derivatives of tags and control
+  the priority of them based on last updated time and / or progress or importance
+  tags.
+
+- metadata docinfo editor...
+
+    - work on a way for users to set the metadata for their documents.

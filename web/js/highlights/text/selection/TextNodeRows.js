@@ -1,5 +1,7 @@
 const {TextNodes} = require("./TextNodes");
 const {Rects} = require("../../../Rects");
+const {createSiblings} = require("../../../util/Functions");
+const {Text} = require("../../../util/Text");
 
 /**
  * A TextNode with an associated rect.
@@ -106,6 +108,70 @@ class RowIndex {
 
 // FIXME 'blocks' should be contigous regions of text highlights ...
 
+
+/**
+ * A region of text within the document where the nodes are split and are back to
+ * back without an element in between but MAY be between different rows.
+ */
+class TextRegion {
+
+    constructor() {
+        this.textNodes = [];
+    }
+
+    push(textNode) {
+
+        if(textNode.textContent.length > 1) {
+            throw new Error("Nodes must be split");
+        }
+
+        this.textNodes.push(textNode);
+    }
+
+    /**
+     * Return the nodes for this region.
+     */
+    getTextNodes() {
+        return this.textNodes;
+    }
+
+    get length() {
+        return this.textNodes.length;
+    }
+
+    /**
+     * Return an array of text nodes into a string.
+     */
+    toString() {
+
+        let result = "";
+
+        this.textNodes.forEach(textNode => {
+            result += textNode.textContent;
+        });
+
+        return result;
+
+    }
+
+    format() {
+        return `(${this.textNodes.length}): \n` + Text.indent(this.toString(), "  ");
+    }
+
+    toJSON() {
+        return { nrNodes: this.textNodes.length, text: this.toString() };
+    }
+
+}
+
+/**
+ * A TextBlock are structurally the same as TextRegion but semantically a
+ * TextBlock is on different visual rows.
+ */
+class TextBlock extends TextRegion {
+
+}
+
 /**
  * Build rows of contiguous text nodes plus break them apart based on how they
  * display visually.
@@ -121,6 +187,11 @@ class RowIndex {
  */
 class TextNodeRows {
 
+    /**
+     *
+     * @param node The root node to split.
+     * @return {number} The number of nodes split.
+     */
     static splitNode(node) {
 
         let result = 0;
@@ -128,18 +199,20 @@ class TextNodeRows {
         Array.from(node.childNodes).forEach(current => {
 
             if(current.nodeType === Node.TEXT_NODE) {
-                result += TextNodeRows.splitTextNode(current);
+                result += TextNodeRows.splitTextNodePerCharacter(current);
             }
 
             if(current.nodeType === Node.ELEMENT_NODE) {
 
                 // this is a regular element recurse into it splitting that too.
 
-                result += TextNodeRows.splitNode(current, result);
+                result += TextNodeRows.splitNode(current);
 
             }
 
         });
+
+        console.log("FIXME returning: " + result);
 
         return result;
 
@@ -150,84 +223,129 @@ class TextNodeRows {
      * without an element in between.
      *
      * @param node
-     * @return {Array<Array<Node>>}
+     * @param [textRegions] {Array<TextRegion>} The starting text regions. Used mostly for recursion.
+     * @return {Array<TextRegion>} The computed text regions
      */
-    static computeTextRegions(node, regions) {
+    static computeTextRegions(node, textRegions) {
 
         // all text regions that we're working on
-        if(!regions) {
-            regions = [];
+        if(!textRegions) {
+            textRegions = [];
         }
 
         // the current region
-        let region = [];
+        /**
+         * @type {TextRegion}
+         */
+        let textRegion = new TextRegion();
 
-        Array.from(node.childNodes).forEach(current => {
+        createSiblings(node.childNodes).forEach(position => {
 
-            if(current.nodeType === Node.TEXT_NODE) {
-                // FIXME: assert that the text length is 1
-                region.push(current);
+            let currentNode = position.curr;
+
+            if(currentNode.nodeType === Node.TEXT_NODE) {
+                textRegion.push(currentNode);
             }
 
-            if(current.nodeType === Node.ELEMENT_NODE) {
+            if(currentNode.nodeType === Node.ELEMENT_NODE) {
 
-                regions.push(region);
-                region = [];
+                textRegions.push(textRegion);
+                textRegion = new TextRegion();
 
-                TextNodeRows.computeTextRegions(current, regions);
+                TextNodeRows.computeTextRegions(currentNode, textRegions);
 
+            }
+
+            // *** handle the last node
+
+            if(position.next === null) {
+                // don't drop the last block
+                textRegions.push(textRegion);
             }
 
         });
 
-        return regions;
+        return textRegions;
 
     }
 
     /**
-     * From the regions we can compute the blocks if the Rect rows aren't the same.
-     * @param regions {Array<Array<Node>>}
+     * From the regions we can compute the blocks if the Rect rows aren't the
+     * same.
+     *
+     * The rect rows are computed by looking at the top and bottom of the row
+     * to see if they are different.
+     *
+     * @param textRegions {Array<TextRegion>}
+     * @return {Array<TextBlock>}
      */
-    static computeTextBlocks(regions) {
+    static computeTextBlocks(textRegions) {
 
-        let blocks = [];
+        /**
+         * @type {Array<TextBlock>}
+         */
+        let textBlocks = [];
 
-        regions.forEach(region => {
+        textRegions.forEach(textRegion => {
 
-            if(region.length === 1) {
-                // we're done with this region as it's a complete block already.
-                blocks.push(region);
-                return;
-            }
+            /**
+             * @type {TextBlock}
+             */
+            let textBlock = new TextBlock();
 
-            let block = [];
+            // keep track of the previous (visible) rect that we've seen so that
+            // we can compare our position.
 
-            region.forEach(curr => {
+            /**
+             * @type {DOMRect}
+             */
+            let prevRect = null;
 
-                if(curr.previousSibling == null) {
-                    block.push(curr);
-                    return;
+            createSiblings(textRegion.getTextNodes()).forEach(position => {
+
+                // *** handle middle nodes
+
+                let currRect = TextNodes.getRange(position.curr).getBoundingClientRect();
+
+                if(Rects.isVisible(currRect)) {
+
+                    if(prevRect != null) {
+
+                        // we have seen at least one rect before so we can compare them now.
+
+                       if(TextNodeRows.computeRowKey(prevRect) !== TextNodeRows.computeRowKey(currRect)) {
+                           // we're in a new block now as we've jumped to a new visual row.
+                           textBlocks.push(textBlock);
+                           textBlock = new TextBlock();
+                       }
+
+                    }
+
+                    // since the current rect is visible we can update the
+                    // prevRect to avoid \n \r issues which have zero width.
+                    prevRect = currRect;
+
                 }
 
-                let prevRect = TextNodes.getRange(curr.previousSibling).getBoundingClientRect();
-                let currRect = TextNodes.getRange(curr).getBoundingClientRect();
 
-                if(TextNodeRows.computeRowKey(prevRect) === TextNodeRows.computeRowKey(currRect)) {
-                    block.push(curr);
-                } else {
-                    blocks.push(block);
-                    block = [];
+                textBlock.push(position.curr);
+
+                // *** handle the last node
+
+                if(position.next === null) {
+                    // don't drop the last block
+                    textBlocks.push(textBlock);
                 }
 
             });
 
         });
 
-        return blocks;
+        return textBlocks;
 
     }
 
-    static joinBlocks(blocks) {
+    static computeJoinedTextBlocks(blocks) {
         return blocks.map(TextNodeRows.joinBlock);
     }
 
@@ -245,7 +363,7 @@ class TextNodeRows {
             current.parentElement.removeChild(current);
         });
 
-        return target;
+        return { node: target, text: target.textContent};
 
     }
 
@@ -371,7 +489,7 @@ class TextNodeRows {
      *
      * @return {number} The number of splits we performed.
      */
-    static splitTextNode(textNode) {
+    static splitTextNodePerCharacter(textNode) {
 
         let result = 0;
 

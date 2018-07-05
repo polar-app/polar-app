@@ -46543,12 +46543,24 @@ var Rects = function () {
     }
 
     _createClass(Rects, null, [{
-        key: "scale",
+        key: "isVisible",
 
+
+        /**
+         * Make sure the rect is visible. If it has a zero width or height it's
+         * not visible.
+         * @param rect {Rect | DOMRect}
+         */
+        value: function isVisible(rect) {
+            return rect.height > 0 && rect.width > 0;
+        }
 
         /**
          * Scale the rect based on the current values and the given scale.
          */
+
+    }, {
+        key: "scale",
         value: function scale(rect, _scale) {
             Preconditions.assertNotNull(rect, "rect");
             // make sure the input is valid before we work on it.
@@ -47911,6 +47923,9 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 var _require = __webpack_require__(/*! ../util/Elements */ "./web/js/util/Elements.js"),
     Elements = _require.Elements;
 
+var _require2 = __webpack_require__(/*! ../Preconditions */ "./web/js/Preconditions.js"),
+    Preconditions = _require2.Preconditions;
+
 /**
  * Get the proper docFormat to work with.
  */
@@ -47929,6 +47944,7 @@ var DocFormat = function () {
     }, {
         key: "getPageNumFromPageElement",
         value: function getPageNumFromPageElement(pageElement) {
+            Preconditions.assertNotNull(pageElement, "pageElement");
             var dataPageNum = pageElement.getAttribute("data-page-number");
             return parseInt(dataPageNum);
         }
@@ -55181,6 +55197,9 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 var _require = __webpack_require__(/*! ../Preconditions */ "./web/js/Preconditions.js"),
     Preconditions = _require.Preconditions;
 
+var _require2 = __webpack_require__(/*! ../Optional */ "./web/js/Optional.js"),
+    Optional = _require2.Optional;
+
 var Functions = function () {
     function Functions() {
         _classCallCheck(this, Functions);
@@ -55373,13 +55392,81 @@ var Functions = function () {
 
             return waitFor;
         }()
+
+        /**
+         *
+         * @Deprecated use createSiblings as createSiblingTuples implies that this
+         * is a tuple and it's actually a triple.
+         */
+
+    }, {
+        key: "createSiblingTuples",
+        value: function createSiblingTuples(arrayLikeObject) {
+            return Functions.createSiblings(arrayLikeObject);
+        }
+
+        /**
+         * Go over the array-like object and return tuples with prev, curr, and next
+         * properties so that we can peek at siblings easily.  If the prev and / or
+         * next are not present these values are null.
+         *
+         * This can be used for algorithms that need to peek ahead or behind
+         * inside an iterative algorithm
+         *
+         * @param arrayLikeObject {Array<any>}
+         * @return {Array<ArrayPosition>}
+         */
+
+    }, {
+        key: "createSiblings",
+        value: function createSiblings(arrayLikeObject) {
+
+            /**
+             * {Array<ArrayPosition>}
+             * @type {Array}
+             */
+            var result = [];
+
+            for (var idx = 0; idx < arrayLikeObject.length; ++idx) {
+
+                result.push(new ArrayPosition({
+                    curr: arrayLikeObject[idx],
+                    prev: Optional.of(arrayLikeObject[idx - 1]).getOrElse(null),
+                    next: Optional.of(arrayLikeObject[idx + 1]).getOrElse(null)
+                }));
+            }
+
+            return result;
+        }
     }]);
 
     return Functions;
 }();
 
+/**
+ * Represents a 'position' object for createSiblings() that has a curr (current),
+ * prev (previous), and next references for working with lists of objects.  The
+ * position allow sus to know where we currently are but also the previous and
+ * future states.
+ */
+
+
+var ArrayPosition = function ArrayPosition(obj) {
+    _classCallCheck(this, ArrayPosition);
+
+    this.curr = null;
+
+    this.prev = null;
+
+    this.next = null;
+
+    Object.assign(this, obj);
+};
+
 module.exports.forDict = Functions.forDict;
 module.exports.forOwnKeys = Functions.forOwnKeys;
+module.exports.createSiblingTuples = Functions.createSiblingTuples;
+module.exports.createSiblings = Functions.createSiblings;
 module.exports.Functions = Functions;
 
 /***/ }),
@@ -55643,14 +55730,14 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 var $ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
 
-var _require = __webpack_require__(/*! ./Optional */ "./web/js/Optional.js"),
-    Optional = _require.Optional;
+var _require = __webpack_require__(/*! ./Preconditions */ "./web/js/Preconditions.js"),
+    Preconditions = _require.Preconditions;
 
-var _require2 = __webpack_require__(/*! ./Preconditions */ "./web/js/Preconditions.js"),
-    Preconditions = _require2.Preconditions;
+var _require2 = __webpack_require__(/*! ./Rects */ "./web/js/Rects.js"),
+    Rects = _require2.Rects;
 
-var _require3 = __webpack_require__(/*! ./Rects */ "./web/js/Rects.js"),
-    Rects = _require3.Rects;
+var _require3 = __webpack_require__(/*! ./util/Functions */ "./web/js/util/Functions.js"),
+    Functions = _require3.Functions;
 
 module.exports.injectScript = function (src, type) {
 
@@ -55767,28 +55854,6 @@ module.exports.getBoundingClientRectFromBCRs = function (boundingClientRects) {
 };
 
 /**
- * Go over the array-like object and return tuples with prev, curr, and next
- * properties so that we can peek at siblings easily.  If the prev and / or next
- * are not present these values are null.
- *
- */
-module.exports.createSiblingTuples = function (arr) {
-
-    var result = [];
-
-    for (var idx = 0; idx < arr.length; ++idx) {
-
-        result.push({
-            curr: arr[idx],
-            prev: Optional.of(arr[idx - 1]).getOrElse(null),
-            next: Optional.of(arr[idx + 1]).getOrElse(null)
-        });
-    }
-
-    return result;
-};
-
-/**
  * @Deprecated use Elements.offset instead.
  */
 module.exports.elementOffset = function (element) {
@@ -55895,6 +55960,8 @@ module.exports.Styles = function () {
 
     return _class3;
 }();
+
+module.exports.createSiblingTuples = Functions.createSiblingTuples;
 
 // @Deprecated.
 module.exports.Objects = __webpack_require__(/*! ./util/Objects.js */ "./web/js/util/Objects.js").Objects;

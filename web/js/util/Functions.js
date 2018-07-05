@@ -1,4 +1,5 @@
 const {Preconditions} = require("../Preconditions");
+const {Optional} = require("../Optional");
 
 class Functions {
 
@@ -109,8 +110,74 @@ class Functions {
 
     }
 
+    /**
+     *
+     * @Deprecated use createSiblings as createSiblingTuples implies that this
+     * is a tuple and it's actually a triple.
+     */
+    static createSiblingTuples(arrayLikeObject) {
+        return Functions.createSiblings(arrayLikeObject);
+    }
+
+    /**
+     * Go over the array-like object and return tuples with prev, curr, and next
+     * properties so that we can peek at siblings easily.  If the prev and / or
+     * next are not present these values are null.
+     *
+     * This can be used for algorithms that need to peek ahead or behind
+     * inside an iterative algorithm
+     *
+     * @param arrayLikeObject {Array<any>}
+     * @return {Array<ArrayPosition>}
+     */
+    static createSiblings(arrayLikeObject) {
+
+        /**
+         * {Array<ArrayPosition>}
+         * @type {Array}
+         */
+        let result = [];
+
+        for(let idx = 0; idx < arrayLikeObject.length; ++idx) {
+
+            result.push(new ArrayPosition({
+                curr: arrayLikeObject[idx],
+                prev: Optional.of(arrayLikeObject[idx-1]).getOrElse(null),
+                next: Optional.of(arrayLikeObject[idx+1]).getOrElse(null)
+            }));
+
+        }
+
+        return result;
+
+    };
+
+}
+
+/**
+ * Represents a 'position' object for createSiblings() that has a curr (current),
+ * prev (previous), and next references for working with lists of objects.  The
+ * position allow sus to know where we currently are but also the previous and
+ * future states.
+ */
+class ArrayPosition {
+
+    constructor(obj) {
+
+        this.curr = null;
+
+        this.prev = null;
+
+        this.next = null;
+
+        Object.assign(this, obj);
+
+    }
+
 }
 
 module.exports.forDict = Functions.forDict;
 module.exports.forOwnKeys = Functions.forOwnKeys;
+module.exports.createSiblingTuples = Functions.createSiblingTuples;
+module.exports.createSiblings = Functions.createSiblings;
 module.exports.Functions = Functions;

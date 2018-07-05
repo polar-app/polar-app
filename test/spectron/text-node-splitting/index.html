@@ -20,12 +20,12 @@
 <br>
 
 <p>
-    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed pretium, dolor
-    sed euismod tempor, diam urna scelerisque tortor, vel semper ligula urna vel
-
-    enim. Aenean nec facilisis libero. Sed efficitur ac ligula in varius.
-    Pellentesque iaculis, enim ac dignissim aliquet, turpis purus mattis felis,
-    eget consequat eros velit et erat. Curabitur feugiat suscipit leo, vel
+    1.Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+    2.Sed pretium, dolor sed euismod tempor, diam urna
+    3.scelerisque tortor, vel semper ligula urna vel enim. Aenean
+    4.nec facilisis libero. Sed efficitur ac ligula in varius.
+    5.Pellentesque iaculis, enim ac <em>6. dignissim</em> aliquet, turpis
+    7.purus mattis felis, eget consequat eros velit et erat. 8.Curabitur <b>9. feugiat</b> 10.suscipit leo, vel
 
 
     ultrices tortor sodales ut. Maecenas a magna eget nunc commodo rutrum ac et
@@ -50,19 +50,36 @@
 
 <script>
 
-    const {TextNodeRows} = require("../../../web/js/highlights/text/selection/TextNodeRows");
+    const DEBUG = false;
 
-    let p = document.querySelector("p");
+    if(DEBUG) {
 
-    TextNodeRows.splitNode(p);
+        const {TextNodeRows} = require("../../../web/js/highlights/text/selection/TextNodeRows");
 
-    let textRegions = TextNodeRows.computeTextRegions(p);
+        let p = document.querySelector("p");
 
-    console.log("textRegions: ", textRegions);
+        let splitNodes = TextNodeRows.splitNode(p);
 
-    let textBlocks = TextNodeRows.computeTextBlocks(textRegions);
+        console.log("FIXME: split N nodes: " + splitNodes);
 
-    console.log("textBlocks: ", textBlocks);
+        let textRegions = TextNodeRows.computeTextRegions(p);
+
+        // TODO: make our text format these via toString..
+        console.log("textRegions: ", textRegions);
+
+        let textBlocks = TextNodeRows.computeTextBlocks(textRegions);
+
+        console.log("textBlocks: ", textBlocks);
+
+        console.log("textBlocks JSON: ", textBlocks.map(current => current.toJSON()));
+
+    }
+
+   //
+    //
+    // let joinedTextBlocks = TextNodeRows.computeJoinedTextBlocks(textBlocks);
+    //
+    // console.log("joinedTextBlocks: ", joinedTextBlocks);
 
 </script>
 

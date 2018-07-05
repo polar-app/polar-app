@@ -1,8 +1,8 @@
 const $ = require('jquery');
 
-const {Optional} = require("./Optional");
 const {Preconditions} = require("./Preconditions");
 const {Rects} = require("./Rects");
+const {Functions} = require("./util/Functions");
 
 module.exports.injectScript = function(src,type) {
 
@@ -102,30 +102,6 @@ module.exports.getBoundingClientRectFromBCRs = function(boundingClientRects) {
 };
 
 /**
- * Go over the array-like object and return tuples with prev, curr, and next
- * properties so that we can peek at siblings easily.  If the prev and / or next
- * are not present these values are null.
- *
- */
-module.exports.createSiblingTuples = function(arr) {
-
-    let result = [];
-
-    for(let idx = 0; idx < arr.length; ++idx) {
-
-        result.push( {
-            curr: arr[idx],
-            prev: Optional.of(arr[idx-1]).getOrElse(null),
-            next: Optional.of(arr[idx+1]).getOrElse(null)
-        });
-
-    }
-
-    return result;
-
-}
-
-/**
  * @Deprecated use Elements.offset instead.
  */
 module.exports.elementOffset = function(element) {
@@ -221,6 +197,8 @@ module.exports.Styles = class {
     }
 
 }
+
+module.exports.createSiblingTuples = Functions.createSiblingTuples;
 
 // @Deprecated.
 module.exports.Objects = require("./util/Objects.js").Objects;

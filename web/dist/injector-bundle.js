@@ -10719,12 +10719,24 @@ var Rects = function () {
     }
 
     _createClass(Rects, null, [{
-        key: "scale",
+        key: "isVisible",
 
+
+        /**
+         * Make sure the rect is visible. If it has a zero width or height it's
+         * not visible.
+         * @param rect {Rect | DOMRect}
+         */
+        value: function isVisible(rect) {
+            return rect.height > 0 && rect.width > 0;
+        }
 
         /**
          * Scale the rect based on the current values and the given scale.
          */
+
+    }, {
+        key: "scale",
         value: function scale(rect, _scale) {
             Preconditions.assertNotNull(rect, "rect");
             // make sure the input is valid before we work on it.
@@ -10986,6 +10998,299 @@ module.exports.Elements = Elements;
 
 /***/ }),
 
+/***/ "./web/js/util/Functions.js":
+/*!**********************************!*\
+  !*** ./web/js/util/Functions.js ***!
+  \**********************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var _require = __webpack_require__(/*! ../Preconditions */ "./web/js/Preconditions.js"),
+    Preconditions = _require.Preconditions;
+
+var _require2 = __webpack_require__(/*! ../Optional */ "./web/js/Optional.js"),
+    Optional = _require2.Optional;
+
+var Functions = function () {
+    function Functions() {
+        _classCallCheck(this, Functions);
+    }
+
+    _createClass(Functions, null, [{
+        key: "functionToScript",
+
+
+        /**
+         * Take a function and make it an external script we can pass to an external
+         * javascript interpreter. This can be used with the electron renderer, chrome
+         * headless, etc.
+         *
+         * @param _function
+         * @param _opts
+         * @return {string}
+         */
+        value: function functionToScript(_function, _opts) {
+
+            var result = "";
+            result += _function.toString();
+            result += "\n";
+
+            // TODO: expand _opts to varargs... not just one opts.  This way the
+            // function can be an ordinary function.
+            if (_opts) {
+                result += _function.name + "(" + JSON.stringify(_opts) + ");";
+            } else {
+                result += _function.name + "();";
+            }
+            return result;
+        }
+
+        /**
+         * We iterate over all keys in the dictionary.  Even inherited keys.
+         *
+         * @param dict
+         * @param callback
+         */
+
+    }, {
+        key: "forDict",
+        value: function forDict(dict, callback) {
+
+            Preconditions.assertNotNull(dict, "dict");
+            Preconditions.assertNotNull(callback, "callback");
+
+            // get the keys first, that way we can mutate the dictionary while iterating
+            // through it if necessary.
+            var keys = Object.keys(dict);
+
+            keys.forEach(function (key) {
+                var value = dict[key];
+                callback(key, value);
+            });
+        }
+    }, {
+        key: "forOwnKeys",
+
+
+        /**
+         * We iterate over all keys in the dictionary.  Even inherited keys.
+         *
+         * @param dict
+         * @param callback
+         */
+        value: function () {
+            var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(dict, callback) {
+                var key, value;
+                return regeneratorRuntime.wrap(function _callee$(_context) {
+                    while (1) {
+                        switch (_context.prev = _context.next) {
+                            case 0:
+
+                                Preconditions.assertNotNull(dict, "dict");
+                                Preconditions.assertNotNull(callback, "callback");
+
+                                _context.t0 = regeneratorRuntime.keys(dict);
+
+                            case 3:
+                                if ((_context.t1 = _context.t0()).done) {
+                                    _context.next = 11;
+                                    break;
+                                }
+
+                                key = _context.t1.value;
+
+                                if (!dict.hasOwnProperty(key)) {
+                                    _context.next = 9;
+                                    break;
+                                }
+
+                                value = dict[key];
+                                _context.next = 9;
+                                return callback(key, value);
+
+                            case 9:
+                                _context.next = 3;
+                                break;
+
+                            case 11:
+                            case "end":
+                                return _context.stop();
+                        }
+                    }
+                }, _callee, this);
+            }));
+
+            function forOwnKeys(_x, _x2) {
+                return _ref.apply(this, arguments);
+            }
+
+            return forOwnKeys;
+        }()
+    }, {
+        key: "withTimeout",
+
+
+        /**
+         * Calls the given callback as a promise which we can await.
+         */
+        value: function () {
+            var _ref2 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2(timeout, callback) {
+                return regeneratorRuntime.wrap(function _callee2$(_context2) {
+                    while (1) {
+                        switch (_context2.prev = _context2.next) {
+                            case 0:
+                                return _context2.abrupt("return", new Promise(function (resolve, reject) {
+
+                                    setTimeout(function () {
+                                        callback().then(function (result) {
+                                            return resolve(result);
+                                        }).catch(function (err) {
+                                            return reject(err);
+                                        });
+                                    }, timeout);
+                                }));
+
+                            case 1:
+                            case "end":
+                                return _context2.stop();
+                        }
+                    }
+                }, _callee2, this);
+            }));
+
+            function withTimeout(_x3, _x4) {
+                return _ref2.apply(this, arguments);
+            }
+
+            return withTimeout;
+        }()
+
+        /**
+         * A promise based timeout.  This just returns a promise which returns
+         * once the timeout has expired. You can then call .then() or just await
+         * the timeout.
+         *
+         * @param timeout
+         * @return {Promise<void>}
+         */
+
+    }, {
+        key: "waitFor",
+        value: function () {
+            var _ref3 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee3(timeout) {
+                return regeneratorRuntime.wrap(function _callee3$(_context3) {
+                    while (1) {
+                        switch (_context3.prev = _context3.next) {
+                            case 0:
+                                return _context3.abrupt("return", new Promise(function (resolve) {
+
+                                    setTimeout(function () {
+                                        resolve();
+                                    }, timeout);
+                                }));
+
+                            case 1:
+                            case "end":
+                                return _context3.stop();
+                        }
+                    }
+                }, _callee3, this);
+            }));
+
+            function waitFor(_x5) {
+                return _ref3.apply(this, arguments);
+            }
+
+            return waitFor;
+        }()
+
+        /**
+         *
+         * @Deprecated use createSiblings as createSiblingTuples implies that this
+         * is a tuple and it's actually a triple.
+         */
+
+    }, {
+        key: "createSiblingTuples",
+        value: function createSiblingTuples(arrayLikeObject) {
+            return Functions.createSiblings(arrayLikeObject);
+        }
+
+        /**
+         * Go over the array-like object and return tuples with prev, curr, and next
+         * properties so that we can peek at siblings easily.  If the prev and / or
+         * next are not present these values are null.
+         *
+         * This can be used for algorithms that need to peek ahead or behind
+         * inside an iterative algorithm
+         *
+         * @param arrayLikeObject {Array<any>}
+         * @return {Array<ArrayPosition>}
+         */
+
+    }, {
+        key: "createSiblings",
+        value: function createSiblings(arrayLikeObject) {
+
+            /**
+             * {Array<ArrayPosition>}
+             * @type {Array}
+             */
+            var result = [];
+
+            for (var idx = 0; idx < arrayLikeObject.length; ++idx) {
+
+                result.push(new ArrayPosition({
+                    curr: arrayLikeObject[idx],
+                    prev: Optional.of(arrayLikeObject[idx - 1]).getOrElse(null),
+                    next: Optional.of(arrayLikeObject[idx + 1]).getOrElse(null)
+                }));
+            }
+
+            return result;
+        }
+    }]);
+
+    return Functions;
+}();
+
+/**
+ * Represents a 'position' object for createSiblings() that has a curr (current),
+ * prev (previous), and next references for working with lists of objects.  The
+ * position allow sus to know where we currently are but also the previous and
+ * future states.
+ */
+
+
+var ArrayPosition = function ArrayPosition(obj) {
+    _classCallCheck(this, ArrayPosition);
+
+    this.curr = null;
+
+    this.prev = null;
+
+    this.next = null;
+
+    Object.assign(this, obj);
+};
+
+module.exports.forDict = Functions.forDict;
+module.exports.forOwnKeys = Functions.forOwnKeys;
+module.exports.createSiblingTuples = Functions.createSiblingTuples;
+module.exports.createSiblings = Functions.createSiblings;
+module.exports.Functions = Functions;
+
+/***/ }),
+
 /***/ "./web/js/util/Objects.js":
 /*!********************************!*\
   !*** ./web/js/util/Objects.js ***!
@@ -11090,14 +11395,14 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 var $ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
 
-var _require = __webpack_require__(/*! ./Optional */ "./web/js/Optional.js"),
-    Optional = _require.Optional;
+var _require = __webpack_require__(/*! ./Preconditions */ "./web/js/Preconditions.js"),
+    Preconditions = _require.Preconditions;
 
-var _require2 = __webpack_require__(/*! ./Preconditions */ "./web/js/Preconditions.js"),
-    Preconditions = _require2.Preconditions;
+var _require2 = __webpack_require__(/*! ./Rects */ "./web/js/Rects.js"),
+    Rects = _require2.Rects;
 
-var _require3 = __webpack_require__(/*! ./Rects */ "./web/js/Rects.js"),
-    Rects = _require3.Rects;
+var _require3 = __webpack_require__(/*! ./util/Functions */ "./web/js/util/Functions.js"),
+    Functions = _require3.Functions;
 
 module.exports.injectScript = function (src, type) {
 
@@ -11214,28 +11519,6 @@ module.exports.getBoundingClientRectFromBCRs = function (boundingClientRects) {
 };
 
 /**
- * Go over the array-like object and return tuples with prev, curr, and next
- * properties so that we can peek at siblings easily.  If the prev and / or next
- * are not present these values are null.
- *
- */
-module.exports.createSiblingTuples = function (arr) {
-
-    var result = [];
-
-    for (var idx = 0; idx < arr.length; ++idx) {
-
-        result.push({
-            curr: arr[idx],
-            prev: Optional.of(arr[idx - 1]).getOrElse(null),
-            next: Optional.of(arr[idx + 1]).getOrElse(null)
-        });
-    }
-
-    return result;
-};
-
-/**
  * @Deprecated use Elements.offset instead.
  */
 module.exports.elementOffset = function (element) {
@@ -11342,6 +11625,8 @@ module.exports.Styles = function () {
 
     return _class3;
 }();
+
+module.exports.createSiblingTuples = Functions.createSiblingTuples;
 
 // @Deprecated.
 module.exports.Objects = __webpack_require__(/*! ./util/Objects.js */ "./web/js/util/Objects.js").Objects;

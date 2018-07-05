@@ -1,10 +1,13 @@
 const assert = require('assert');
 const {assertJSON} = require("../../../web/js/test/Assertions");
+const {Functions} = require("../../../web/js/util/Functions");
 const {Spectron} = require("../../../web/js/test/Spectron");
+
+const TIMEOUT = 10000;
 
 describe('DebugWebRequestsListener', function () {
 
-    this.timeout(10000);
+    this.timeout(TIMEOUT);
 
     Spectron.setup(__dirname);
 

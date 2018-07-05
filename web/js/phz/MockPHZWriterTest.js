@@ -7,6 +7,7 @@ require("../test/TestingTime").freeze();
 describe('MockPHZWriter', function() {
 
     it("Write basic file", async function () {
+
         let path = "/tmp/test-mock-phz-writer.phz";
         await MockPHZWriter.write(path);
         assert.equal(fs.existsSync(path), true);

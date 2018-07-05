@@ -1,4 +1,5 @@
 const {Elements} = require("../util/Elements");
+const {Preconditions} = require("../Preconditions");
 
 /**
  * Get the proper docFormat to work with.
@@ -10,6 +11,7 @@ class DocFormat {
     }
 
     getPageNumFromPageElement(pageElement) {
+        Preconditions.assertNotNull(pageElement, "pageElement");
         let dataPageNum = pageElement.getAttribute("data-page-number");
         return parseInt(dataPageNum);
     }

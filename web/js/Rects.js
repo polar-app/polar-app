@@ -4,6 +4,15 @@ const {Preconditions} = require("./Preconditions");
 class Rects {
 
     /**
+     * Make sure the rect is visible. If it has a zero width or height it's
+     * not visible.
+     * @param rect {Rect | DOMRect}
+     */
+    static isVisible(rect) {
+        return rect.height > 0 && rect.width > 0;
+    }
+
+    /**
      * Scale the rect based on the current values and the given scale.
      */
     static scale(rect, scale) {
