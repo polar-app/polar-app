@@ -7,6 +7,7 @@ class Rects {
      * Make sure the rect is visible. If it has a zero width or height it's
      * not visible.
      * @param rect {Rect | DOMRect}
+     * @return boolean True when the rect is visible.
      */
     static isVisible(rect) {
         return rect.height > 0 && rect.width > 0;
@@ -16,6 +17,7 @@ class Rects {
      * Scale the rect based on the current values and the given scale.
      */
     static scale(rect, scale) {
+
         Preconditions.assertNotNull(rect, "rect");
         // make sure the input is valid before we work on it.
         rect = Rects.validate(rect);
@@ -33,11 +35,13 @@ class Rects {
 
         return Rects.validate(rect);
 
-    };
+    }
 
     /**
      * Make sure the given rect has all the correct properties and then return
      * the rect.
+     *
+     * @return {Rect}
      */
     static validate(rect) {
 
@@ -74,6 +78,22 @@ class Rects {
 
         rect.right = rect.right + point.x;
         rect.bottom = rect.bottom + point.y;
+
+        return Rects.validate(rect);
+
+    }
+
+    /**
+     * Create a full rect from a rect that has top,left,width,height only.
+     * @param rect {Rect}
+     * @return {Rect}
+     */
+    static createFromBasicRect(rect) {
+
+        rect = Objects.duplicate(rect);
+
+        rect.bottom = rect.top + rect.height;
+        rect.right = rect.left + rect.width;
 
         return Rects.validate(rect);
 

@@ -6,13 +6,7 @@ const $ = require("jquery");
 
 function computeRestriction(x,y, interactionEvent) {
 
-    // FIXME: this only SORT of works...
-
-    console.log("computeRestriction interactionEvent: ", interactionEvent);
-
     let element = interactionEvent.element;
-
-    console.log("computeRestriction element: ", element);
 
     if(! element) {
         throw new Error("No element");

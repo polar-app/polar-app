@@ -1,3 +1,6 @@
+/**
+ * Basic DOM style rect without a hard requirement to use a DOMRect.
+ */
 class Rect {
 
     constructor(obj) {

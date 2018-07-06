@@ -1,6 +1,6 @@
 const {Point} = require("../../../Point");
 const {Objects} = require("../../../util/Objects");
-const {Rect} = require("../controller/Rect");
+const {Rect} = require("../../../Rect");
 const {Rects} = require("../../../Rects");
 const {RectText} = require("./RectText");
 const {TextNodes} = require("../selection/TextNodes");

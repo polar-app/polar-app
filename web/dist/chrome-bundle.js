@@ -70206,6 +70206,59 @@ module.exports.Preconditions = Preconditions;
 
 /***/ }),
 
+/***/ "./web/js/Rect.js":
+/*!************************!*\
+  !*** ./web/js/Rect.js ***!
+  \************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+/**
+ * Basic DOM style rect without a hard requirement to use a DOMRect.
+ */
+class Rect {
+
+  constructor(obj) {
+
+    /**
+     * @type {number}
+     */
+    this.left = undefined;
+
+    /**
+     * @type {number}
+     */
+    this.top = undefined;
+
+    /**
+     * @type {number}
+     */
+    this.right = undefined;
+
+    /**
+     * @type {number}
+     */
+    this.bottom = undefined;
+
+    /**
+     * @type {number}
+     */
+    this.width = undefined;
+
+    /**
+     * @type {number}
+     */
+    this.height = undefined;
+
+    Object.assign(this, obj);
+  }
+
+}
+
+module.exports.Rect = Rect;
+
+/***/ }),
+
 /***/ "./web/js/Rects.js":
 /*!*************************!*\
   !*** ./web/js/Rects.js ***!
@@ -70222,6 +70275,7 @@ class Rects {
      * Make sure the rect is visible. If it has a zero width or height it's
      * not visible.
      * @param rect {Rect | DOMRect}
+     * @return boolean True when the rect is visible.
      */
     static isVisible(rect) {
         return rect.height > 0 && rect.width > 0;
@@ -70231,6 +70285,7 @@ class Rects {
      * Scale the rect based on the current values and the given scale.
      */
     static scale(rect, scale) {
+
         Preconditions.assertNotNull(rect, "rect");
         // make sure the input is valid before we work on it.
         rect = Rects.validate(rect);
@@ -70250,6 +70305,8 @@ class Rects {
     /**
      * Make sure the given rect has all the correct properties and then return
      * the rect.
+     *
+     * @return {Rect}
      */
     static validate(rect) {
 
@@ -70285,6 +70342,21 @@ class Rects {
 
         rect.right = rect.right + point.x;
         rect.bottom = rect.bottom + point.y;
+
+        return Rects.validate(rect);
+    }
+
+    /**
+     * Create a full rect from a rect that has top,left,width,height only.
+     * @param rect {Rect}
+     * @return {Rect}
+     */
+    static createFromBasicRect(rect) {
+
+        rect = Objects.duplicate(rect);
+
+        rect.bottom = rect.top + rect.height;
+        rect.right = rect.left + rect.width;
 
         return Rects.validate(rect);
     }
@@ -71946,56 +72018,6 @@ module.exports.IntermediateRow = class {
 
 /***/ }),
 
-/***/ "./web/js/highlights/text/controller/Rect.js":
-/*!***************************************************!*\
-  !*** ./web/js/highlights/text/controller/Rect.js ***!
-  \***************************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-class Rect {
-
-  constructor(obj) {
-
-    /**
-     * @type {number}
-     */
-    this.left = undefined;
-
-    /**
-     * @type {number}
-     */
-    this.top = undefined;
-
-    /**
-     * @type {number}
-     */
-    this.right = undefined;
-
-    /**
-     * @type {number}
-     */
-    this.bottom = undefined;
-
-    /**
-     * @type {number}
-     */
-    this.width = undefined;
-
-    /**
-     * @type {number}
-     */
-    this.height = undefined;
-
-    Object.assign(this, obj);
-  }
-
-}
-
-module.exports.Rect = Rect;
-
-/***/ }),
-
 /***/ "./web/js/highlights/text/controller/RectElement.js":
 /*!**********************************************************!*\
   !*** ./web/js/highlights/text/controller/RectElement.js ***!
@@ -72073,7 +72095,7 @@ module.exports.RectText = RectText;
 
 const { Point } = __webpack_require__(/*! ../../../Point */ "./web/js/Point.js");
 const { Objects } = __webpack_require__(/*! ../../../util/Objects */ "./web/js/util/Objects.js");
-const { Rect } = __webpack_require__(/*! ../controller/Rect */ "./web/js/highlights/text/controller/Rect.js");
+const { Rect } = __webpack_require__(/*! ../../../Rect */ "./web/js/Rect.js");
 const { Rects } = __webpack_require__(/*! ../../../Rects */ "./web/js/Rects.js");
 const { RectText } = __webpack_require__(/*! ./RectText */ "./web/js/highlights/text/controller/RectText.js");
 const { TextNodes } = __webpack_require__(/*! ../selection/TextNodes */ "./web/js/highlights/text/selection/TextNodes.js");
@@ -73160,7 +73182,7 @@ module.exports.SelectedContents = SelectedContents;
 const { Ranges } = __webpack_require__(/*! ./Ranges */ "./web/js/highlights/text/selection/Ranges.js");
 const { RectText } = __webpack_require__(/*! ../controller/RectText */ "./web/js/highlights/text/controller/RectText.js");
 const { Point } = __webpack_require__(/*! ../../../Point */ "./web/js/Point.js");
-const { Rect } = __webpack_require__(/*! ../controller/Rect */ "./web/js/highlights/text/controller/Rect.js");
+const { Rect } = __webpack_require__(/*! ../../../Rect */ "./web/js/Rect.js");
 const { Rects } = __webpack_require__(/*! ../../../Rects */ "./web/js/Rects.js");
 const { Objects } = __webpack_require__(/*! ../../../util/Objects */ "./web/js/util/Objects.js");
 const { SelectedContent } = __webpack_require__(/*! ./SelectedContent */ "./web/js/highlights/text/selection/SelectedContent.js");
