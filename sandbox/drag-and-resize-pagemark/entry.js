@@ -47,7 +47,7 @@ $(document).ready( () => {
             // keep the edges inside the parent
             restrictEdges: {
                 outer: 'parent',
-                endOnly: true,
+                // endOnly: true,
             },
 
             restrict: {
@@ -59,9 +59,12 @@ $(document).ready( () => {
                 min: { width: 100, height: 50 },
             },
 
-            inertia: true,
+            inertia: false,
+
         })
         .on('resizemove', function (event) {
+
+            // TODO: we will have to update the page metadata for this guy..
 
             let target = event.target,
                 x = (parseFloat(target.getAttribute('data-x')) || 0),
