@@ -1,16 +1,11 @@
-var path = require('path');
+const path = require('path');
+const webpack = require('webpack');
 
 module.exports = [
     {
         mode: 'development',
         entry: {
-            // import "babel-polyfill";
-            schemaform: ["babel-polyfill", './sandbox/schemaform/schemaform.js'],
-        },
-        devtool: "source-map",
-        resolve: {
-            // Add '.ts' and '.tsx' as resolvable extensions.
-            extensions: [".ts", ".tsx", ".js", ".json"]
+            "chrome": [ "babel-polyfill", "./sandbox/drag-and-resize-pagemark/entry.js"],
         },
         module: {
             rules: [
@@ -20,18 +15,60 @@ module.exports = [
                     use: {
                         loader: "babel-loader"
                     }
-                },
-                {
-                    test: /\.tsx?$/,
-                    loaders: ["babel-loader", "awesome-typescript-loader"]
-                },
+                }
             ],
         },
+        devtool: "source-map",
         output: {
-            path: path.resolve(__dirname, 'sandbox/schemaform'),
+            path: path.resolve(__dirname, 'sandbox/drag-and-resize-pagemark'),
             filename: '[name]-bundle.js',
-        }
+        },
+        node: {
+            //needed to make webpack work on chrome
+            fs: 'empty'
+        },
+        plugins: [
+            new webpack.ProvidePlugin({
+                $: "jquery",
+                jQuery: "jquery",
+                "window.$": "jquery",
+                "window.jQuery": "jquery"
+            })
+        ]
+
     },
+    //
+    // {
+    //     mode: 'development',
+    //     entry: {
+    //         // import "babel-polyfill";
+    //         schemaform: ["babel-polyfill", './sandbox/schemaform/schemaform.js'],
+    //     },
+    //     devtool: "source-map",
+    //     resolve: {
+    //         // Add '.ts' and '.tsx' as resolvable extensions.
+    //         extensions: [".ts", ".tsx", ".js", ".json"]
+    //     },
+    //     module: {
+    //         rules: [
+    //             {
+    //                 test: /\.js$/,
+    //                 exclude: /node_modules/,
+    //                 use: {
+    //                     loader: "babel-loader"
+    //                 }
+    //             },
+    //             {
+    //                 test: /\.tsx?$/,
+    //                 loaders: ["babel-loader", "awesome-typescript-loader"]
+    //             },
+    //         ],
+    //     },
+    //     output: {
+    //         path: path.resolve(__dirname, 'sandbox/schemaform'),
+    //         filename: '[name]-bundle.js',
+    //     }
+    // },
     // {
     //     mode: 'development',
     //     entry: {
@@ -56,72 +93,72 @@ module.exports = [
     //         filename: '[name]-bundle.js',
     //     }
     // },
-    {
-        mode: 'development',
-        entry: {
-            bootstrap: './sandbox/bootstrap/bootstrap.js',
-        },
-        output: {
-            path: path.resolve(__dirname, 'sandbox/bootstrap'),
-            filename: '[name]-bundle.js',
-        }
-    },
-    {
-        mode: 'development',
-        entry: {
-            annotations: './sandbox/annotations/annotations.js',
-        },
-        output: {
-            path: path.resolve(__dirname, 'sandbox/annotations'),
-            filename: '[name]-bundle.js',
-        }
-    },
-    {
-        mode: 'development',
-        entry: {
-            simplemd: './sandbox/simplemd/simplemd.js',
-        },
-        output: {
-            path: path.resolve(__dirname, 'sandbox/simplemd'),
-            filename: '[name]-bundle.js',
-        }
-    },
-    {
-        mode: 'development',
-        entry: {
-            contextmenu: './sandbox/jquery-contextmenu/contextmenu.js',
-        },
-        output: {
-            path: path.resolve(__dirname, 'sandbox/jquery-contextmenu'),
-            filename: '[name]-bundle.js',
-        }
-    },
     // {
     //     mode: 'development',
     //     entry: {
-    //         editor: './sandbox/editormd/editormd.js',
+    //         bootstrap: './sandbox/bootstrap/bootstrap.js',
     //     },
     //     output: {
-    //         path: path.resolve(__dirname, 'sandbox/editormd/'),
+    //         path: path.resolve(__dirname, 'sandbox/bootstrap'),
     //         filename: '[name]-bundle.js',
-    //         publicPath: 'sandbox/editormd/'
     //     }
     // },
-    {
-        mode: 'development',
-        entry: {
-            editor: './web/js/editor.js',
-        },
-        output: {
-            path: path.resolve(__dirname, 'web/js/apps'),
-            filename: '[name]-bundle.js',
-            publicPath: '/web/js/apps'
-        },
-        node: {
-            //needed to make webpack work on chrome
-            fs: 'empty'
-        }
-
-    }
+    // {
+    //     mode: 'development',
+    //     entry: {
+    //         annotations: './sandbox/annotations/annotations.js',
+    //     },
+    //     output: {
+    //         path: path.resolve(__dirname, 'sandbox/annotations'),
+    //         filename: '[name]-bundle.js',
+    //     }
+    // },
+    // {
+    //     mode: 'development',
+    //     entry: {
+    //         simplemd: './sandbox/simplemd/simplemd.js',
+    //     },
+    //     output: {
+    //         path: path.resolve(__dirname, 'sandbox/simplemd'),
+    //         filename: '[name]-bundle.js',
+    //     }
+    // },
+    // {
+    //     mode: 'development',
+    //     entry: {
+    //         contextmenu: './sandbox/jquery-contextmenu/contextmenu.js',
+    //     },
+    //     output: {
+    //         path: path.resolve(__dirname, 'sandbox/jquery-contextmenu'),
+    //         filename: '[name]-bundle.js',
+    //     }
+    // },
+    // // {
+    // //     mode: 'development',
+    // //     entry: {
+    // //         editor: './sandbox/editormd/editormd.js',
+    // //     },
+    // //     output: {
+    // //         path: path.resolve(__dirname, 'sandbox/editormd/'),
+    // //         filename: '[name]-bundle.js',
+    // //         publicPath: 'sandbox/editormd/'
+    // //     }
+    // // },
+    // {
+    //     mode: 'development',
+    //     entry: {
+    //         editor: './web/js/editor.js',
+    //     },
+    //     output: {
+    //         path: path.resolve(__dirname, 'web/js/apps'),
+    //         filename: '[name]-bundle.js',
+    //         publicPath: '/web/js/apps'
+    //     },
+    //     node: {
+    //         //needed to make webpack work on chrome
+    //         fs: 'empty'
+    //     }
+    //
+    // }
 
 ];
