@@ -4,7 +4,7 @@ const {PagemarkType} = require("./PagemarkType");
 const {MetadataSerializer} = require("./MetadataSerializer");
 const {ISODateTime} = require("./ISODateTime");
 
-module.exports.Pagemark = class extends Annotation {
+class Pagemark extends Annotation {
 
     constructor(val) {
 
@@ -80,3 +80,5 @@ module.exports.Pagemark = class extends Annotation {
     }
 
 }
+
+module.exports.Pagemark = Pagemark;

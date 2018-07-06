@@ -5,11 +5,9 @@ const {CompositePagemarkRenderer} = require("../pagemarks/CompositePagemarkRende
 const {MainPagemarkRenderer} = require("../pagemarks/MainPagemarkRenderer");
 const {ThumbnailPagemarkRenderer} = require("../pagemarks/ThumbnailPagemarkRenderer");
 const {Preconditions} = require("../Preconditions");
-
-
 const {View} = require("./View.js");
 
-module.exports.WebView = class extends View {
+ class WebView extends View {
 
     constructor(model) {
         super(model);
@@ -330,3 +328,5 @@ module.exports.WebView = class extends View {
     }
 
 };
+
+module.exports.WebView = WebView;

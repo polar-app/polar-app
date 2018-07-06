@@ -142,6 +142,15 @@ const MENU_TEMPLATE = [{
             { type: 'separator' },
             { label: 'Copy', accelerator: 'CmdOrCtrl+C', role: 'copy' },
             { label: 'Select All', accelerator: 'CmdOrCtrl+A', role: 'selectall' },
+            { type: 'separator' },
+            {
+                label: 'Change Pagemark Column Type',
+                submenu: [
+                    { label: 'Single', },
+                    { label: 'Double', },
+                    { label: 'Triple', },
+                ]
+            },
         ]
     },
     {

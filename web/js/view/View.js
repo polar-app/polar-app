@@ -1,10 +1,17 @@
 
+const {Model} = require("../model.js");
 
-module.exports.View = class {
+class View {
 
+    /**
+     * @param model {Model}
+     */
     constructor(model) {
+
         this.model = model;
+
     }
 
 };
 
+module.exports.View = View;

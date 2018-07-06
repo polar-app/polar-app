@@ -1,11 +1,18 @@
+
 class PagemarkRenderer {
 
     constructor(view) {
+
+        /**
+         * @type {WebView}
+         */
         this.view = view;
+
         this.pageElements = [];
 
         // the CSS selector for pulling out the right pageElements.
         this.pageElementSelector = null;
+
     }
 
     setup() {
@@ -15,17 +22,13 @@ class PagemarkRenderer {
     __setup() {
         console.log("PagemarkRenderer: setup...");
 
-        // FIXME: now we need a way to clear a given page by keeping a reference
-        // to the page renderer for that page and then call erase on it once it
-        // has been removed.
-
         this.__updatePageElements();
 
         console.log(`Working with ${this.pageElements.length} elements for selector ${this.pageElementSelector}` );
 
-        this.pageElements.forEach( function (pageElement) {
+        this.pageElements.forEach(pageElement => {
             this.init(pageElement);
-        }.bind(this));
+        });
 
     }
 
@@ -97,7 +100,7 @@ class PagemarkRenderer {
 
         this.__updatePageElements();
 
-        var pageElement = this.pageElements[pageNum-1];
+        let pageElement = this.pageElements[pageNum-1];
 
         if(!pageElement) {
             throw new Error(`No pageElement for pageNum ${pageNum} out of ${this.pageElements.length} pageElements`);

@@ -13,7 +13,7 @@ const {forDict} = require("./utils");
 const {Objects} = require("./util/Objects");
 const {Preconditions} = require("./Preconditions");
 
-module.exports.Model = class {
+class Model {
 
     constructor(persistenceLayer, clock) {
 
@@ -203,3 +203,5 @@ module.exports.Model = class {
     }
 
 }
+
+module.exports.Model = Model;

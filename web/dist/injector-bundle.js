@@ -11074,7 +11074,7 @@ module.exports.Functions = Functions;
 /***/ (function(module, exports) {
 
 
-module.exports.Objects = class {
+class Objects {
 
     /**
      * Take the current object, and use given object as a set of defaults.
@@ -11130,6 +11130,8 @@ module.exports.Objects = class {
     }
 
 };
+
+module.exports.Objects = Objects;
 
 /***/ }),
 

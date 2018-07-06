@@ -75169,7 +75169,7 @@ const { PagemarkType } = __webpack_require__(/*! ./PagemarkType */ "./web/js/met
 const { MetadataSerializer } = __webpack_require__(/*! ./MetadataSerializer */ "./web/js/metadata/MetadataSerializer.js");
 const { ISODateTime } = __webpack_require__(/*! ./ISODateTime */ "./web/js/metadata/ISODateTime.js");
 
-module.exports.Pagemark = class extends Annotation {
+class Pagemark extends Annotation {
 
     constructor(val) {
 
@@ -75242,7 +75242,9 @@ module.exports.Pagemark = class extends Annotation {
         return MetadataSerializer.serialize(this);
     }
 
-};
+}
+
+module.exports.Pagemark = Pagemark;
 
 /***/ }),
 
@@ -75257,7 +75259,8 @@ const { Symbol } = __webpack_require__(/*! ./Symbol.js */ "./web/js/metadata/Sym
 
 module.exports.PagemarkType = Object.freeze({
     SINGLE_COLUMN: new Symbol("SINGLE_COLUMN"),
-    DOUBLE_COLUMN: new Symbol("DOUBLE_COLUMN")
+    DOUBLE_COLUMN: new Symbol("DOUBLE_COLUMN"),
+    TRIPLE_COLUMN: new Symbol("TRIPLE_COLUMN")
 });
 
 /***/ }),
@@ -75795,7 +75798,7 @@ const { forDict } = __webpack_require__(/*! ./utils */ "./web/js/utils.js");
 const { Objects } = __webpack_require__(/*! ./util/Objects */ "./web/js/util/Objects.js");
 const { Preconditions } = __webpack_require__(/*! ./Preconditions */ "./web/js/Preconditions.js");
 
-module.exports.Model = class {
+class Model {
 
     constructor(persistenceLayer, clock) {
 
@@ -75984,7 +75987,9 @@ module.exports.Model = class {
         this.reactor.addEventListener('erasePagemark', eventListener);
     }
 
-};
+}
+
+module.exports.Model = Model;
 
 /***/ }),
 
@@ -76084,10 +76089,16 @@ module.exports.MainPagemarkRenderer = MainPagemarkRenderer;
 /*! no static exports found */
 /***/ (function(module, exports) {
 
+
 class PagemarkRenderer {
 
     constructor(view) {
+
+        /**
+         * @type {WebView}
+         */
         this.view = view;
+
         this.pageElements = [];
 
         // the CSS selector for pulling out the right pageElements.
@@ -76099,17 +76110,13 @@ class PagemarkRenderer {
     __setup() {
         console.log("PagemarkRenderer: setup...");
 
-        // FIXME: now we need a way to clear a given page by keeping a reference
-        // to the page renderer for that page and then call erase on it once it
-        // has been removed.
-
         this.__updatePageElements();
 
         console.log(`Working with ${this.pageElements.length} elements for selector ${this.pageElementSelector}`);
 
-        this.pageElements.forEach(function (pageElement) {
+        this.pageElements.forEach(pageElement => {
             this.init(pageElement);
-        }.bind(this));
+        });
     }
 
     __updatePageElements() {
@@ -76174,7 +76181,7 @@ class PagemarkRenderer {
 
         this.__updatePageElements();
 
-        var pageElement = this.pageElements[pageNum - 1];
+        let pageElement = this.pageElements[pageNum - 1];
 
         if (!pageElement) {
             throw new Error(`No pageElement for pageNum ${pageNum} out of ${this.pageElements.length} pageElements`);
@@ -77557,7 +77564,7 @@ module.exports.Functions = Functions;
 /***/ (function(module, exports) {
 
 
-module.exports.Objects = class {
+class Objects {
 
     /**
      * Take the current object, and use given object as a set of defaults.
@@ -77613,6 +77620,8 @@ module.exports.Objects = class {
     }
 
 };
+
+module.exports.Objects = Objects;
 
 /***/ }),
 
@@ -77967,17 +77976,24 @@ module.exports.Elements = __webpack_require__(/*! ./util/Elements.js */ "./web/j
   !*** ./web/js/view/View.js ***!
   \*****************************/
 /*! no static exports found */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
 
 
+const { Model } = __webpack_require__(/*! ../model.js */ "./web/js/model.js");
 
-module.exports.View = class {
+class View {
 
+    /**
+     * @param model {Model}
+     */
     constructor(model) {
+
         this.model = model;
     }
 
 };
+
+module.exports.View = View;
 
 /***/ }),
 
@@ -77997,10 +78013,9 @@ const { CompositePagemarkRenderer } = __webpack_require__(/*! ../pagemarks/Compo
 const { MainPagemarkRenderer } = __webpack_require__(/*! ../pagemarks/MainPagemarkRenderer */ "./web/js/pagemarks/MainPagemarkRenderer.js");
 const { ThumbnailPagemarkRenderer } = __webpack_require__(/*! ../pagemarks/ThumbnailPagemarkRenderer */ "./web/js/pagemarks/ThumbnailPagemarkRenderer.js");
 const { Preconditions } = __webpack_require__(/*! ../Preconditions */ "./web/js/Preconditions.js");
-
 const { View } = __webpack_require__(/*! ./View.js */ "./web/js/view/View.js");
 
-module.exports.WebView = class extends View {
+class WebView extends View {
 
     constructor(model) {
         super(model);
@@ -78303,6 +78318,8 @@ module.exports.WebView = class extends View {
     }
 
 };
+
+module.exports.WebView = WebView;
 
 /***/ }),
 
