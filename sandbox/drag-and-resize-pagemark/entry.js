@@ -2,6 +2,9 @@ const interact = require("interactjs");
 const $ = require("jquery");
 
 function dragMoveListener (event) {
+
+    console.log("dragmove: target: ", event.target);
+
     var target = event.target,
         // keep the dragged position in the data-x/data-y attributes
         x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx,
@@ -60,7 +63,7 @@ function init(selector) {
         })
         .on('resizemove', function (event) {
 
-            console.log("FIXME: target: ", event.target);
+            console.log("resizemove: target: ", event.target);
 
             // TODO: called when the element is resized.
             let target = event.target,
