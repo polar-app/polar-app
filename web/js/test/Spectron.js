@@ -61,6 +61,7 @@ class Spectron {
 
             if(spectronOutputMonitorService) {
                 spectronOutputMonitorService.stop();
+                spectronOutputMonitorService._doLogForwarding();
             }
 
             if (this.app && this.app.isRunning()) {

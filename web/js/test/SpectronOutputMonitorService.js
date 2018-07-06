@@ -43,7 +43,7 @@ class SpectronOutputMonitorService {
             // via the javascript console.
             client.getRenderProcessLogs().then(function (logs) {
                 logs.forEach(function (log) {
-                    console.log("render: " + log);
+                    console.log("render: " + JSON.stringify(log, null, "  "));
                 })
 
             })

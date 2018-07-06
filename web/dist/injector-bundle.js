@@ -10467,30 +10467,16 @@ return jQuery;
   !*** ./web/js/Electron.js ***!
   \****************************/
 /*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, exports) {
 
-"use strict";
+module.exports.Electron = class {
 
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-module.exports.Electron = function () {
-    function _class() {
-        _classCallCheck(this, _class);
+    static isElectron() {
+        var userAgent = navigator.userAgent.toLowerCase();
+        return userAgent.indexOf(' electron/') !== -1;
     }
 
-    _createClass(_class, null, [{
-        key: 'isElectron',
-        value: function isElectron() {
-            var userAgent = navigator.userAgent.toLowerCase();
-            return userAgent.indexOf(' electron/') !== -1;
-        }
-    }]);
-
-    return _class;
-}();
+};
 
 /***/ }),
 
@@ -10499,57 +10485,40 @@ module.exports.Electron = function () {
   !*** ./web/js/Optional.js ***!
   \****************************/
 /*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+/***/ (function(module, exports) {
 
 // simple optional implementation so we don't need to resort to jquery
 
-var Optional = function () {
-    function Optional(value) {
-        _classCallCheck(this, Optional);
+class Optional {
 
+    constructor(value) {
         this.value = value;
     }
 
-    _createClass(Optional, [{
-        key: "map",
-        value: function map(fn) {
-            if (this.value !== undefined) {
-                return new Some(fn(this.value));
-            }
-            return None;
+    map(fn) {
+        if (this.value !== undefined) {
+            return new Some(fn(this.value));
         }
-    }, {
-        key: "getOrElse",
-        value: function getOrElse(value) {
-            if (this.value !== undefined) {
-                return this.value;
-            }
+        return None;
+    }
 
-            return value;
+    getOrElse(value) {
+        if (this.value !== undefined) {
+            return this.value;
         }
-    }], [{
-        key: "of",
-        value: function of(value) {
-            return new Optional(value);
-        }
-    }]);
 
-    return Optional;
-}();
+        return value;
+    }
+
+    static of(value) {
+        return new Optional(value);
+    }
+}
 
 var None = new Optional();
 
-var Some = function Some(value) {
-    if ((typeof value === "undefined" ? "undefined" : _typeof(value)) !== undefined) {
+var Some = function (value) {
+    if (typeof value !== undefined) {
         return new Optional(value);
     }
     return None;
@@ -10564,130 +10533,101 @@ module.exports.Optional = Optional;
   !*** ./web/js/Preconditions.js ***!
   \*********************************/
 /*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, exports) {
 
-"use strict";
+class Preconditions {
 
+    /**
+     * Assert that this value is defined , not-null, and also not NaN and also a number.
+     * @param value
+     * @param name
+     */
+    static assertNumber(value, name) {
 
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+        Preconditions.assertNotNull(value, name);
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+        if (isNaN(value)) {
+            throw new Error(`Precondition failure for ${name}: NaN`);
+        }
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var Preconditions = function () {
-    function Preconditions() {
-        _classCallCheck(this, Preconditions);
+        Preconditions.assertTypeOf(value, name, "number");
     }
 
-    _createClass(Preconditions, null, [{
-        key: "assertNumber",
+    static assertInstanceOf(value, name, instance) {
 
-
-        /**
-         * Assert that this value is defined , not-null, and also not NaN and also a number.
-         * @param value
-         * @param name
-         */
-        value: function assertNumber(value, name) {
-
-            Preconditions.assertNotNull(value, name);
-
-            if (isNaN(value)) {
-                throw new Error("Precondition failure for " + name + ": NaN");
-            }
-
-            Preconditions.assertTypeOf(value, name, "number");
-        }
-    }, {
-        key: "assertInstanceOf",
-        value: function assertInstanceOf(value, name, instance) {
-
-            if (value instanceof instance) {
-                throw new Error("Precondition for instanceof '" + name + "' was not " + instance + ".");
-            }
-
-            return value;
-        }
-    }, {
-        key: "assertTypeOf",
-        value: function assertTypeOf(value, name, type) {
-
-            if (!((typeof value === "undefined" ? "undefined" : _typeof(value)) === type)) {
-                throw new Error("Precondition for typeof '" + name + "' was not " + type + ".");
-            }
-
-            return value;
-        }
-    }, {
-        key: "assertNotNull",
-        value: function assertNotNull(value, name) {
-
-            if (value === null) {
-                throw new Error("Precondition (argument) for '" + name + "' null.");
-            }
-
-            if (value === undefined) {
-                throw new Error("Precondition (argument) for '" + name + "' undefined.");
-            }
-
-            return value;
-        }
-    }, {
-        key: "assertNotTypeOf",
-        value: function assertNotTypeOf(value, name, type) {
-
-            if ((typeof value === "undefined" ? "undefined" : _typeof(value)) === type) {
-                throw new Error("Precondition for typeof '" + name + "' was " + type + " but not allowed");
-            }
-
-            return value;
-        }
-    }, {
-        key: "assertNotInstanceOf",
-        value: function assertNotInstanceOf(value, name, instance) {
-
-            if (value instanceof instance) {
-                throw new Error("Precondition for instanceof '" + name + "' was " + instance + " but not allowed");
-            }
-
-            return value;
-        }
-    }, {
-        key: "assertTypeof",
-        value: function assertTypeof(value, name, expected) {
-
-            if ((typeof value === "undefined" ? "undefined" : _typeof(value)) !== expected) {
-                throw new Error("Precondition for typeof '" + name + "' was not " + expected + " but actually: " + (typeof value === "undefined" ? "undefined" : _typeof(value)));
-            }
-
-            return value;
+        if (value instanceof instance) {
+            throw new Error(`Precondition for instanceof '${name}' was not ${instance}.`);
         }
 
-        /**
-         * Use a default value if one is not specified.
-         *
-         * @param currentValue
-         * @param defaultValue
-         * @return {*}
-         */
+        return value;
+    }
 
-    }, {
-        key: "defaultValue",
-        value: function defaultValue(currentValue, _defaultValue) {
+    static assertTypeOf(value, name, type) {
 
-            if (!currentValue) {
-                return _defaultValue;
-            }
-
-            return currentValue;
+        if (!(typeof value === type)) {
+            throw new Error(`Precondition for typeof '${name}' was not ${type}.`);
         }
-    }]);
 
-    return Preconditions;
-}();
+        return value;
+    }
 
-;
+    static assertNotNull(value, name) {
+
+        if (value === null) {
+            throw new Error(`Precondition (argument) for '${name}' null.`);
+        }
+
+        if (value === undefined) {
+            throw new Error(`Precondition (argument) for '${name}' undefined.`);
+        }
+
+        return value;
+    }
+
+    static assertNotTypeOf(value, name, type) {
+
+        if (typeof value === type) {
+            throw new Error(`Precondition for typeof '${name}' was ${type} but not allowed`);
+        }
+
+        return value;
+    }
+
+    static assertNotInstanceOf(value, name, instance) {
+
+        if (value instanceof instance) {
+            throw new Error(`Precondition for instanceof '${name}' was ${instance} but not allowed`);
+        }
+
+        return value;
+    }
+
+    static assertTypeof(value, name, expected) {
+
+        if (typeof value !== expected) {
+            throw new Error(`Precondition for typeof '${name}' was not ${expected} but actually: ` + typeof value);
+        }
+
+        return value;
+    }
+
+    /**
+     * Use a default value if one is not specified.
+     *
+     * @param currentValue
+     * @param defaultValue
+     * @return {*}
+     */
+    static defaultValue(currentValue, defaultValue) {
+
+        if (!currentValue) {
+            return defaultValue;
+        }
+
+        return currentValue;
+    }
+
+};
 
 module.exports.Preconditions = Preconditions;
 
@@ -10700,111 +10640,83 @@ module.exports.Preconditions = Preconditions;
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
+const { Objects } = __webpack_require__(/*! ./util/Objects */ "./web/js/util/Objects.js");
+const { Preconditions } = __webpack_require__(/*! ./Preconditions */ "./web/js/Preconditions.js");
 
+class Rects {
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var _require = __webpack_require__(/*! ./util/Objects */ "./web/js/util/Objects.js"),
-    Objects = _require.Objects;
-
-var _require2 = __webpack_require__(/*! ./Preconditions */ "./web/js/Preconditions.js"),
-    Preconditions = _require2.Preconditions;
-
-var Rects = function () {
-    function Rects() {
-        _classCallCheck(this, Rects);
+    /**
+     * Make sure the rect is visible. If it has a zero width or height it's
+     * not visible.
+     * @param rect {Rect | DOMRect}
+     */
+    static isVisible(rect) {
+        return rect.height > 0 && rect.width > 0;
     }
 
-    _createClass(Rects, null, [{
-        key: "isVisible",
+    /**
+     * Scale the rect based on the current values and the given scale.
+     */
+    static scale(rect, scale) {
+        Preconditions.assertNotNull(rect, "rect");
+        // make sure the input is valid before we work on it.
+        rect = Rects.validate(rect);
 
+        rect = Objects.duplicate(rect);
 
-        /**
-         * Make sure the rect is visible. If it has a zero width or height it's
-         * not visible.
-         * @param rect {Rect | DOMRect}
-         */
-        value: function isVisible(rect) {
-            return rect.height > 0 && rect.width > 0;
+        for (let key in rect) {
+
+            if (!rect.hasOwnProperty(key)) continue;
+
+            rect[key] = rect[key] * scale;
         }
 
-        /**
-         * Scale the rect based on the current values and the given scale.
-         */
+        return Rects.validate(rect);
+    }
 
-    }, {
-        key: "scale",
-        value: function scale(rect, _scale) {
-            Preconditions.assertNotNull(rect, "rect");
-            // make sure the input is valid before we work on it.
-            rect = Rects.validate(rect);
+    /**
+     * Make sure the given rect has all the correct properties and then return
+     * the rect.
+     */
+    static validate(rect) {
 
-            rect = Objects.duplicate(rect);
+        Preconditions.assertNotNull(rect.left, "left");
+        Preconditions.assertNotNull(rect.top, "top");
+        Preconditions.assertNotNull(rect.width, "width");
+        Preconditions.assertNotNull(rect.height, "height");
+        Preconditions.assertNotNull(rect.bottom, "bottom");
+        Preconditions.assertNotNull(rect.right, "right");
 
-            for (var key in rect) {
+        Preconditions.assertNumber(rect.left, "left");
+        Preconditions.assertNumber(rect.top, "top");
+        Preconditions.assertNumber(rect.width, "width");
+        Preconditions.assertNumber(rect.height, "height");
+        Preconditions.assertNumber(rect.bottom, "bottom");
+        Preconditions.assertNumber(rect.right, "right");
 
-                if (!rect.hasOwnProperty(key)) continue;
+        return rect;
+    }
 
-                rect[key] = rect[key] * _scale;
-            }
+    /**
+     * Assume that the given rect is relative to the point and return the new
+     * rect.
+     *
+     * @param point {Point}
+     */
+    static relativeTo(point, rect) {
 
-            return Rects.validate(rect);
-        }
-    }, {
-        key: "validate",
+        rect = Objects.duplicate(rect);
 
+        rect.left = rect.left + point.x;
+        rect.top = rect.top + point.y;
 
-        /**
-         * Make sure the given rect has all the correct properties and then return
-         * the rect.
-         */
-        value: function validate(rect) {
+        rect.right = rect.right + point.x;
+        rect.bottom = rect.bottom + point.y;
 
-            Preconditions.assertNotNull(rect.left, "left");
-            Preconditions.assertNotNull(rect.top, "top");
-            Preconditions.assertNotNull(rect.width, "width");
-            Preconditions.assertNotNull(rect.height, "height");
-            Preconditions.assertNotNull(rect.bottom, "bottom");
-            Preconditions.assertNotNull(rect.right, "right");
+        return Rects.validate(rect);
+    }
 
-            Preconditions.assertNumber(rect.left, "left");
-            Preconditions.assertNumber(rect.top, "top");
-            Preconditions.assertNumber(rect.width, "width");
-            Preconditions.assertNumber(rect.height, "height");
-            Preconditions.assertNumber(rect.bottom, "bottom");
-            Preconditions.assertNumber(rect.right, "right");
-
-            return rect;
-        }
-
-        /**
-         * Assume that the given rect is relative to the point and return the new
-         * rect.
-         *
-         * @param point {Point}
-         */
-
-    }, {
-        key: "relativeTo",
-        value: function relativeTo(point, rect) {
-
-            rect = Objects.duplicate(rect);
-
-            rect.left = rect.left + point.x;
-            rect.top = rect.top + point.y;
-
-            rect.right = rect.right + point.x;
-            rect.bottom = rect.bottom + point.y;
-
-            return Rects.validate(rect);
-        }
-    }]);
-
-    return Rects;
-}();
+}
 
 module.exports.Rects = Rects;
 
@@ -10817,16 +10729,10 @@ module.exports.Rects = Rects;
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-
-
 // inject the right bundle depending on whether we're using chrome or electron.
 
-var _require = __webpack_require__(/*! ../Electron */ "./web/js/Electron.js"),
-    Electron = _require.Electron;
-
-var _require2 = __webpack_require__(/*! ../utils.js */ "./web/js/utils.js"),
-    injectScript = _require2.injectScript;
+const { Electron } = __webpack_require__(/*! ../Electron */ "./web/js/Electron.js");
+const { injectScript } = __webpack_require__(/*! ../utils.js */ "./web/js/utils.js");
 
 if (Electron.isElectron()) {
     console.log("Injecting electron bundle");
@@ -10845,154 +10751,123 @@ if (Electron.isElectron()) {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
+const $ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
+const { Preconditions } = __webpack_require__(/*! ../Preconditions */ "./web/js/Preconditions.js");
+const { Rects } = __webpack_require__(/*! ../Rects */ "./web/js/Rects.js");
 
+class Elements {
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+    /**
+     * Create a div from the given innerHTML and return it.
+     *
+     * @param innerHTML
+     * @return {HTMLDivElement}
+     */
+    static createElementHTML(innerHTML) {
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+        let div = document.createElement("div");
+        div.innerHTML = innerHTML;
 
-var $ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
-
-var _require = __webpack_require__(/*! ../Preconditions */ "./web/js/Preconditions.js"),
-    Preconditions = _require.Preconditions;
-
-var _require2 = __webpack_require__(/*! ../Rects */ "./web/js/Rects.js"),
-    Rects = _require2.Rects;
-
-var Elements = function () {
-    function Elements() {
-        _classCallCheck(this, Elements);
+        return div;
     }
 
-    _createClass(Elements, null, [{
-        key: "createElementHTML",
+    static offset(element) {
 
+        let result = {
+            left: element.offsetLeft,
+            top: element.offsetTop,
+            width: element.offsetWidth,
+            height: element.offsetHeight
+        };
 
-        /**
-         * Create a div from the given innerHTML and return it.
-         *
-         * @param innerHTML
-         * @return {HTMLDivElement}
-         */
-        value: function createElementHTML(innerHTML) {
+        result.right = result.left + result.width;
+        result.bottom = result.top + result.height;
 
-            var div = document.createElement("div");
-            div.innerHTML = innerHTML;
+        return Rects.validate(result);
+    }
 
-            return div;
+    /**
+     * Require that the element have the given classname.
+     */
+    static requireClass(element, clazz) {
+
+        let classValue = element.getAttribute("class");
+
+        if (!classValue || classValue.indexOf(clazz) === -1) {
+
+            // element isn't the proper class we're expecting.
+            throw new Error("Element does not have the proper class: " + clazz);
         }
-    }, {
-        key: "offset",
-        value: function offset(element) {
+    }
 
-            var result = {
-                left: element.offsetLeft,
-                top: element.offsetTop,
-                width: element.offsetWidth,
-                height: element.offsetHeight
-            };
+    static offsetRelative(element, parentElement) {
 
-            result.right = result.left + result.width;
-            result.bottom = result.top + result.height;
+        let offsetLeft = 0;
 
-            return Rects.validate(result);
-        }
+        do {
 
-        /**
-         * Require that the element have the given classname.
-         */
-
-    }, {
-        key: "requireClass",
-        value: function requireClass(element, clazz) {
-
-            var classValue = element.getAttribute("class");
-
-            if (!classValue || classValue.indexOf(clazz) === -1) {
-
-                // element isn't the proper class we're expecting.
-                throw new Error("Element does not have the proper class: " + clazz);
+            if (!isNaN(elem.offsetLeft)) {
+                offsetLeft += elem.offsetLeft;
             }
+        } while (element = elem.offsetParent && element !== parentElement);
+
+        return offsetLeft;
+    }
+
+    /**
+     * Keep searching parent notes until we find an element matching the selector,
+     * or return null when one was not found.
+     *
+     * @param selector
+     */
+    static untilRoot(element, selector) {
+
+        if (!element) throw new Error("element required");
+
+        if (!selector) throw new Error("selector required");
+
+        if (element.matches(selector)) {
+            return element;
         }
-    }, {
-        key: "offsetRelative",
-        value: function offsetRelative(element, parentElement) {
 
-            var offsetLeft = 0;
-
-            do {
-
-                if (!isNaN(elem.offsetLeft)) {
-                    offsetLeft += elem.offsetLeft;
-                }
-            } while (element = elem.offsetParent && element !== parentElement);
-
-            return offsetLeft;
+        if (element.parentElement == null) {
+            // we have hit the root.
+            return null;
         }
 
-        /**
-         * Keep searching parent notes until we find an element matching the selector,
-         * or return null when one was not found.
-         *
-         * @param selector
-         */
+        return Elements.untilRoot(element.parentElement, selector);
+    }
 
-    }, {
-        key: "untilRoot",
-        value: function untilRoot(element, selector) {
+    static calculateVisibilityForDiv(div) {
 
-            if (!element) throw new Error("element required");
+        if (div == null) throw Error("Not given a div");
 
-            if (!selector) throw new Error("selector required");
+        let windowHeight = $(window).height(),
+            docScroll = $(document).scrollTop(),
+            divPosition = $(div).offset().top,
+            divHeight = $(div).height();
 
-            if (element.matches(selector)) {
-                return element;
-            }
+        let hiddenBefore = docScroll - divPosition,
+            hiddenAfter = divPosition + divHeight - (docScroll + windowHeight);
 
-            if (element.parentElement == null) {
-                // we have hit the root.
-                return null;
+        if (docScroll > divPosition + divHeight || divPosition > docScroll + windowHeight) {
+            return 0;
+        } else {
+            let result = 100;
+
+            if (hiddenBefore > 0) {
+                result -= hiddenBefore * 100 / divHeight;
             }
 
-            return Elements.untilRoot(element.parentElement, selector);
-        }
-    }, {
-        key: "calculateVisibilityForDiv",
-        value: function calculateVisibilityForDiv(div) {
-
-            if (div == null) throw Error("Not given a div");
-
-            var windowHeight = $(window).height(),
-                docScroll = $(document).scrollTop(),
-                divPosition = $(div).offset().top,
-                divHeight = $(div).height();
-
-            var hiddenBefore = docScroll - divPosition,
-                hiddenAfter = divPosition + divHeight - (docScroll + windowHeight);
-
-            if (docScroll > divPosition + divHeight || divPosition > docScroll + windowHeight) {
-                return 0;
-            } else {
-                var result = 100;
-
-                if (hiddenBefore > 0) {
-                    result -= hiddenBefore * 100 / divHeight;
-                }
-
-                if (hiddenAfter > 0) {
-                    result -= hiddenAfter * 100 / divHeight;
-                }
-
-                return result;
+            if (hiddenAfter > 0) {
+                result -= hiddenAfter * 100 / divHeight;
             }
+
+            return result;
         }
-    }]);
+    }
 
-    return Elements;
-}();
-
-;
+};
 
 module.exports.Elements = Elements;
 
@@ -11005,263 +10880,162 @@ module.exports.Elements = Elements;
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+const { Preconditions } = __webpack_require__(/*! ../Preconditions */ "./web/js/Preconditions.js");
+const { Optional } = __webpack_require__(/*! ../Optional */ "./web/js/Optional.js");
 
-var _require = __webpack_require__(/*! ../Preconditions */ "./web/js/Preconditions.js"),
-    Preconditions = _require.Preconditions;
+class Functions {
 
-var _require2 = __webpack_require__(/*! ../Optional */ "./web/js/Optional.js"),
-    Optional = _require2.Optional;
+    /**
+     * Take a function and make it an external script we can pass to an external
+     * javascript interpreter. This can be used with the electron renderer, chrome
+     * headless, etc.
+     *
+     * @param _function
+     * @param _opts
+     * @return {string}
+     */
+    static functionToScript(_function, _opts) {
 
-var Functions = function () {
-    function Functions() {
-        _classCallCheck(this, Functions);
+        let result = "";
+        result += _function.toString();
+        result += "\n";
+
+        // TODO: expand _opts to varargs... not just one opts.  This way the
+        // function can be an ordinary function.
+        if (_opts) {
+            result += `${_function.name}(${JSON.stringify(_opts)});`;
+        } else {
+            result += `${_function.name}();`;
+        }
+        return result;
     }
 
-    _createClass(Functions, null, [{
-        key: "functionToScript",
+    /**
+     * We iterate over all keys in the dictionary.  Even inherited keys.
+     *
+     * @param dict
+     * @param callback
+     */
+    static forDict(dict, callback) {
 
+        Preconditions.assertNotNull(dict, "dict");
+        Preconditions.assertNotNull(callback, "callback");
 
-        /**
-         * Take a function and make it an external script we can pass to an external
-         * javascript interpreter. This can be used with the electron renderer, chrome
-         * headless, etc.
-         *
-         * @param _function
-         * @param _opts
-         * @return {string}
-         */
-        value: function functionToScript(_function, _opts) {
+        // get the keys first, that way we can mutate the dictionary while iterating
+        // through it if necessary.
+        let keys = Object.keys(dict);
 
-            var result = "";
-            result += _function.toString();
-            result += "\n";
+        keys.forEach(function (key) {
+            let value = dict[key];
+            callback(key, value);
+        });
+    }
 
-            // TODO: expand _opts to varargs... not just one opts.  This way the
-            // function can be an ordinary function.
-            if (_opts) {
-                result += _function.name + "(" + JSON.stringify(_opts) + ");";
-            } else {
-                result += _function.name + "();";
-            }
-            return result;
-        }
-
-        /**
-         * We iterate over all keys in the dictionary.  Even inherited keys.
-         *
-         * @param dict
-         * @param callback
-         */
-
-    }, {
-        key: "forDict",
-        value: function forDict(dict, callback) {
+    /**
+     * We iterate over all keys in the dictionary.  Even inherited keys.
+     *
+     * @param dict
+     * @param callback
+     */
+    static forOwnKeys(dict, callback) {
+        return _asyncToGenerator(function* () {
 
             Preconditions.assertNotNull(dict, "dict");
             Preconditions.assertNotNull(callback, "callback");
 
-            // get the keys first, that way we can mutate the dictionary while iterating
-            // through it if necessary.
-            var keys = Object.keys(dict);
+            for (let key in dict) {
 
-            keys.forEach(function (key) {
-                var value = dict[key];
-                callback(key, value);
+                if (dict.hasOwnProperty(key)) {
+                    let value = dict[key];
+                    yield callback(key, value);
+                }
+            }
+        })();
+    }
+
+    /**
+     * Calls the given callback as a promise which we can await.
+     */
+    static withTimeout(timeout, callback) {
+        return _asyncToGenerator(function* () {
+
+            return new Promise(function (resolve, reject) {
+
+                setTimeout(function () {
+                    callback().then(function (result) {
+                        return resolve(result);
+                    }).catch(function (err) {
+                        return reject(err);
+                    });
+                }, timeout);
             });
-        }
-    }, {
-        key: "forOwnKeys",
+        })();
+    }
 
+    /**
+     * A promise based timeout.  This just returns a promise which returns
+     * once the timeout has expired. You can then call .then() or just await
+     * the timeout.
+     *
+     * @param timeout
+     * @return {Promise<void>}
+     */
+    static waitFor(timeout) {
+        return _asyncToGenerator(function* () {
+
+            return new Promise(function (resolve) {
+
+                setTimeout(function () {
+                    resolve();
+                }, timeout);
+            });
+        })();
+    }
+
+    /**
+     *
+     * @Deprecated use createSiblings as createSiblingTuples implies that this
+     * is a tuple and it's actually a triple.
+     */
+    static createSiblingTuples(arrayLikeObject) {
+        return Functions.createSiblings(arrayLikeObject);
+    }
+
+    /**
+     * Go over the array-like object and return tuples with prev, curr, and next
+     * properties so that we can peek at siblings easily.  If the prev and / or
+     * next are not present these values are null.
+     *
+     * This can be used for algorithms that need to peek ahead or behind
+     * inside an iterative algorithm
+     *
+     * @param arrayLikeObject {Array<any>}
+     * @return {Array<ArrayPosition>}
+     */
+    static createSiblings(arrayLikeObject) {
+
+        Preconditions.assertNotNull(arrayLikeObject, "arrayLikeObject");
 
         /**
-         * We iterate over all keys in the dictionary.  Even inherited keys.
-         *
-         * @param dict
-         * @param callback
+         * {Array<ArrayPosition>}
+         * @type {Array}
          */
-        value: function () {
-            var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(dict, callback) {
-                var key, value;
-                return regeneratorRuntime.wrap(function _callee$(_context) {
-                    while (1) {
-                        switch (_context.prev = _context.next) {
-                            case 0:
+        let result = [];
 
-                                Preconditions.assertNotNull(dict, "dict");
-                                Preconditions.assertNotNull(callback, "callback");
+        for (let idx = 0; idx < arrayLikeObject.length; ++idx) {
 
-                                _context.t0 = regeneratorRuntime.keys(dict);
-
-                            case 3:
-                                if ((_context.t1 = _context.t0()).done) {
-                                    _context.next = 11;
-                                    break;
-                                }
-
-                                key = _context.t1.value;
-
-                                if (!dict.hasOwnProperty(key)) {
-                                    _context.next = 9;
-                                    break;
-                                }
-
-                                value = dict[key];
-                                _context.next = 9;
-                                return callback(key, value);
-
-                            case 9:
-                                _context.next = 3;
-                                break;
-
-                            case 11:
-                            case "end":
-                                return _context.stop();
-                        }
-                    }
-                }, _callee, this);
+            result.push(new ArrayPosition({
+                curr: arrayLikeObject[idx],
+                prev: Optional.of(arrayLikeObject[idx - 1]).getOrElse(null),
+                next: Optional.of(arrayLikeObject[idx + 1]).getOrElse(null)
             }));
-
-            function forOwnKeys(_x, _x2) {
-                return _ref.apply(this, arguments);
-            }
-
-            return forOwnKeys;
-        }()
-    }, {
-        key: "withTimeout",
-
-
-        /**
-         * Calls the given callback as a promise which we can await.
-         */
-        value: function () {
-            var _ref2 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2(timeout, callback) {
-                return regeneratorRuntime.wrap(function _callee2$(_context2) {
-                    while (1) {
-                        switch (_context2.prev = _context2.next) {
-                            case 0:
-                                return _context2.abrupt("return", new Promise(function (resolve, reject) {
-
-                                    setTimeout(function () {
-                                        callback().then(function (result) {
-                                            return resolve(result);
-                                        }).catch(function (err) {
-                                            return reject(err);
-                                        });
-                                    }, timeout);
-                                }));
-
-                            case 1:
-                            case "end":
-                                return _context2.stop();
-                        }
-                    }
-                }, _callee2, this);
-            }));
-
-            function withTimeout(_x3, _x4) {
-                return _ref2.apply(this, arguments);
-            }
-
-            return withTimeout;
-        }()
-
-        /**
-         * A promise based timeout.  This just returns a promise which returns
-         * once the timeout has expired. You can then call .then() or just await
-         * the timeout.
-         *
-         * @param timeout
-         * @return {Promise<void>}
-         */
-
-    }, {
-        key: "waitFor",
-        value: function () {
-            var _ref3 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee3(timeout) {
-                return regeneratorRuntime.wrap(function _callee3$(_context3) {
-                    while (1) {
-                        switch (_context3.prev = _context3.next) {
-                            case 0:
-                                return _context3.abrupt("return", new Promise(function (resolve) {
-
-                                    setTimeout(function () {
-                                        resolve();
-                                    }, timeout);
-                                }));
-
-                            case 1:
-                            case "end":
-                                return _context3.stop();
-                        }
-                    }
-                }, _callee3, this);
-            }));
-
-            function waitFor(_x5) {
-                return _ref3.apply(this, arguments);
-            }
-
-            return waitFor;
-        }()
-
-        /**
-         *
-         * @Deprecated use createSiblings as createSiblingTuples implies that this
-         * is a tuple and it's actually a triple.
-         */
-
-    }, {
-        key: "createSiblingTuples",
-        value: function createSiblingTuples(arrayLikeObject) {
-            return Functions.createSiblings(arrayLikeObject);
         }
 
-        /**
-         * Go over the array-like object and return tuples with prev, curr, and next
-         * properties so that we can peek at siblings easily.  If the prev and / or
-         * next are not present these values are null.
-         *
-         * This can be used for algorithms that need to peek ahead or behind
-         * inside an iterative algorithm
-         *
-         * @param arrayLikeObject {Array<any>}
-         * @return {Array<ArrayPosition>}
-         */
-
-    }, {
-        key: "createSiblings",
-        value: function createSiblings(arrayLikeObject) {
-
-            /**
-             * {Array<ArrayPosition>}
-             * @type {Array}
-             */
-            var result = [];
-
-            for (var idx = 0; idx < arrayLikeObject.length; ++idx) {
-
-                result.push(new ArrayPosition({
-                    curr: arrayLikeObject[idx],
-                    prev: Optional.of(arrayLikeObject[idx - 1]).getOrElse(null),
-                    next: Optional.of(arrayLikeObject[idx + 1]).getOrElse(null)
-                }));
-            }
-
-            return result;
-        }
-    }]);
-
-    return Functions;
-}();
+        return result;
+    }
+}
 
 /**
  * Represents a 'position' object for createSiblings() that has a curr (current),
@@ -11269,19 +11043,20 @@ var Functions = function () {
  * position allow sus to know where we currently are but also the previous and
  * future states.
  */
+class ArrayPosition {
 
+    constructor(obj) {
 
-var ArrayPosition = function ArrayPosition(obj) {
-    _classCallCheck(this, ArrayPosition);
+        this.curr = null;
 
-    this.curr = null;
+        this.prev = null;
 
-    this.prev = null;
+        this.next = null;
 
-    this.next = null;
+        Object.assign(this, obj);
+    }
 
-    Object.assign(this, obj);
-};
+}
 
 module.exports.forDict = Functions.forDict;
 module.exports.forOwnKeys = Functions.forOwnKeys;
@@ -11296,86 +11071,65 @@ module.exports.Functions = Functions;
   !*** ./web/js/util/Objects.js ***!
   \********************************/
 /*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
+/***/ (function(module, exports) {
 
 
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+module.exports.Objects = class {
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+    /**
+     * Take the current object, and use given object as a set of defaults.
+     */
+    static defaults(current, defaults) {
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+        let result = current;
 
-module.exports.Objects = function () {
-    function _class() {
-        _classCallCheck(this, _class);
+        if (!result) {
+            result = {};
+        }
+
+        for (let key in defaults) {
+            if (defaults.hasOwnProperty(key) && !result.hasOwnProperty(key)) {
+                result[key] = defaults[key];
+            }
+        }
+
+        return result;
     }
 
-    _createClass(_class, null, [{
-        key: "defaults",
+    /**
+     * Clear an array or dictionary of all its values so it is reset.
+     * This modifies the object directly.
+     *
+     * @param obj
+     */
+    static clear(obj) {
 
+        if (obj instanceof Array) {
 
-        /**
-         * Take the current object, and use given object as a set of defaults.
-         */
-        value: function defaults(current, _defaults) {
-
-            var result = current;
-
-            if (!result) {
-                result = {};
+            for (let idx = 0; idx < obj.length; ++idx) {
+                obj.pop();
             }
 
-            for (var key in _defaults) {
-                if (_defaults.hasOwnProperty(key) && !result.hasOwnProperty(key)) {
-                    result[key] = _defaults[key];
-                }
-            }
-
-            return result;
+            return obj;
         }
 
-        /**
-         * Clear an array or dictionary of all its values so it is reset.
-         * This modifies the object directly.
-         *
-         * @param obj
-         */
+        if (typeof obj === "object") {
 
-    }, {
-        key: "clear",
-        value: function clear(obj) {
-
-            if (obj instanceof Array) {
-
-                for (var idx = 0; idx < obj.length; ++idx) {
-                    obj.pop();
-                }
-
-                return obj;
+            for (let key in obj) {
+                delete obj[key];
             }
 
-            if ((typeof obj === "undefined" ? "undefined" : _typeof(obj)) === "object") {
-
-                for (var key in obj) {
-                    delete obj[key];
-                }
-
-                return obj;
-            }
-
-            throw new Error("Only works for arrays or objects");
+            return obj;
         }
-    }, {
-        key: "duplicate",
-        value: function duplicate(obj) {
-            return JSON.parse(JSON.stringify(obj));
-        }
-    }]);
 
-    return _class;
-}();
+        throw new Error("Only works for arrays or objects");
+    }
+
+    static duplicate(obj) {
+        return JSON.parse(JSON.stringify(obj));
+    }
+
+};
 
 /***/ }),
 
@@ -11386,27 +11140,15 @@ module.exports.Objects = function () {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
+const $ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
 
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var $ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
-
-var _require = __webpack_require__(/*! ./Preconditions */ "./web/js/Preconditions.js"),
-    Preconditions = _require.Preconditions;
-
-var _require2 = __webpack_require__(/*! ./Rects */ "./web/js/Rects.js"),
-    Rects = _require2.Rects;
-
-var _require3 = __webpack_require__(/*! ./util/Functions */ "./web/js/util/Functions.js"),
-    Functions = _require3.Functions;
+const { Preconditions } = __webpack_require__(/*! ./Preconditions */ "./web/js/Preconditions.js");
+const { Rects } = __webpack_require__(/*! ./Rects */ "./web/js/Rects.js");
+const { Functions } = __webpack_require__(/*! ./util/Functions */ "./web/js/util/Functions.js");
 
 module.exports.injectScript = function (src, type) {
 
-    var script = document.createElement('script');
+    let script = document.createElement('script');
     script.src = src;
 
     // loading async is ugly but we're going to move to webpack and clean this
@@ -11434,34 +11176,27 @@ module.exports.injectScript = function (src, type) {
  * Apply a given function, with arguments, to a list of delegates which have
  * that function name defined.
  */
-module.exports.Delegator = function () {
-    function _class(delegates) {
-        _classCallCheck(this, _class);
+module.exports.Delegator = class {
 
+    constructor(delegates) {
         this.delegates = delegates;
     }
 
     /**
      * Apply the given function to all the delegates.
      */
+    apply(functionName) {
 
+        let args = Array.from(arguments);
+        args.splice(0, 1);
 
-    _createClass(_class, [{
-        key: "apply",
-        value: function apply(functionName) {
+        this.delegates.forEach(function (delegate) {
+            let func = delegate[functionName];
+            func.apply(delegate, args);
+        });
+    }
 
-            var args = Array.from(arguments);
-            args.splice(0, 1);
-
-            this.delegates.forEach(function (delegate) {
-                var func = delegate[functionName];
-                func.apply(delegate, args);
-            });
-        }
-    }]);
-
-    return _class;
-}();
+};
 
 // @Deprecated use Functions.forDict
 module.exports.forDict = function (dict, callback) {
@@ -11471,10 +11206,10 @@ module.exports.forDict = function (dict, callback) {
 
     // get the keys first, that way we can mutate the dictionary while iterating
     // through it if necessary.
-    var keys = Object.keys(dict);
+    let keys = Object.keys(dict);
 
     keys.forEach(function (key) {
-        var value = dict[key];
+        let value = dict[key];
         callback(key, value);
     });
 };
@@ -11485,7 +11220,7 @@ module.exports.forDict = function (dict, callback) {
  */
 module.exports.getBoundingClientRectFromElements = function (elements) {
 
-    var boundingClientRects = elements.map(Element.getBoundingClientRect);
+    let boundingClientRects = elements.map(Element.getBoundingClientRect);
     return getBoundingClientRectFromBCRs(boundingClientRects);
 };
 
@@ -11494,28 +11229,12 @@ module.exports.getBoundingClientRectFromElements = function (elements) {
  */
 module.exports.getBoundingClientRectFromBCRs = function (boundingClientRects) {
 
-    var left = boundingClientRects.map(function (brc) {
-        return brc.left;
-    }).reduce(function (a, b) {
-        return Math.min(a, b);
-    });
-    var top = boundingClientRects.map(function (brc) {
-        return brc.top;
-    }).reduce(function (a, b) {
-        return Math.min(a, b);
-    });
-    var bottom = boundingClientRects.map(function (brc) {
-        return brc.bottom;
-    }).reduce(function (a, b) {
-        return Math.max(a, b);
-    });
-    var right = boundingClientRects.map(function (brc) {
-        return brc.right;
-    }).reduce(function (a, b) {
-        return Math.max(a, b);
-    });
+    let left = boundingClientRects.map(brc => brc.left).reduce((a, b) => Math.min(a, b));
+    let top = boundingClientRects.map(brc => brc.top).reduce((a, b) => Math.min(a, b));
+    let bottom = boundingClientRects.map(brc => brc.bottom).reduce((a, b) => Math.max(a, b));
+    let right = boundingClientRects.map(brc => brc.right).reduce((a, b) => Math.max(a, b));
 
-    return { left: left, top: top, bottom: bottom, right: right };
+    return { left, top, bottom, right };
 };
 
 /**
@@ -11523,7 +11242,7 @@ module.exports.getBoundingClientRectFromBCRs = function (boundingClientRects) {
  */
 module.exports.elementOffset = function (element) {
 
-    var result = {
+    let result = {
         left: element.offsetLeft,
         top: element.offsetTop,
         width: element.offsetWidth,
@@ -11539,92 +11258,72 @@ module.exports.elementOffset = function (element) {
 /**
  * Support the ability to calculate an offset relative to another element.
  */
-module.exports.OffsetCalculator = function () {
-    function _class2() {
-        _classCallCheck(this, _class2);
+module.exports.OffsetCalculator = class {
+
+    // https://stackoverflow.com/questions/5598743/finding-elements-position-relative-to-the-document
+    static calculate(element, rootElement) {
+
+        let offset = { left: 0, top: 0, width: 0, height: 0 };
+
+        while (true) {
+
+            if (element == null) break;
+
+            // FIXME: log the full offsets of EACH element...
+
+            offset.left += this._toInt(element.offsetLeft);
+            offset.top += this._toInt(element.offsetTop);
+            // offset.width += OffsetCalculator._toInt(element.offsetWidth)
+            // offset.height += OffsetCalculator._toInt(element.offsetHeight)
+            offset.width = this._toInt(element.offsetWidth);
+            offset.height = this._toInt(element.offsetHeight);
+
+            if (element === rootElement) break;
+
+            element = element.offsetParent;
+        }
+
+        offset.right = offset.left + offset.width;
+        offset.bottom = offset.top + offset.height;
+
+        return Rects.validate(offset);
     }
 
-    _createClass(_class2, null, [{
-        key: "calculate",
+    static _toInt(value) {
 
-
-        // https://stackoverflow.com/questions/5598743/finding-elements-position-relative-to-the-document
-        value: function calculate(element, rootElement) {
-
-            var offset = { left: 0, top: 0, width: 0, height: 0 };
-
-            while (true) {
-
-                if (element == null) break;
-
-                // FIXME: log the full offsets of EACH element...
-
-                offset.left += this._toInt(element.offsetLeft);
-                offset.top += this._toInt(element.offsetTop);
-                // offset.width += OffsetCalculator._toInt(element.offsetWidth)
-                // offset.height += OffsetCalculator._toInt(element.offsetHeight)
-                offset.width = this._toInt(element.offsetWidth);
-                offset.height = this._toInt(element.offsetHeight);
-
-                if (element === rootElement) break;
-
-                element = element.offsetParent;
-            }
-
-            offset.right = offset.left + offset.width;
-            offset.bottom = offset.top + offset.height;
-
-            return Rects.validate(offset);
+        if (isNaN(value)) {
+            return 0;
         }
-    }, {
-        key: "_toInt",
-        value: function _toInt(value) {
 
-            if (isNaN(value)) {
-                return 0;
-            }
-
-            return value;
-        }
-    }]);
-
-    return _class2;
-}();
-
-module.exports.Styles = function () {
-    function _class3() {
-        _classCallCheck(this, _class3);
+        return value;
     }
 
-    _createClass(_class3, null, [{
-        key: "parseTransformScaleX",
-        value: function parseTransformScaleX(transform) {
+};
 
-            var result = transform;
+module.exports.Styles = class {
 
-            if (!result) return null;
+    static parseTransformScaleX(transform) {
 
-            result = result.replace("scaleX(", "");
-            result = result.replace(")", "");
+        let result = transform;
 
-            return parseFloat(result);
-        }
+        if (!result) return null;
 
-        /**
-         * Take a string of '50px' and return a number of just the pixel count.
-         */
+        result = result.replace("scaleX(", "");
+        result = result.replace(")", "");
 
-    }, {
-        key: "parsePixels",
-        value: function parsePixels(value) {
+        return parseFloat(result);
+    }
 
-            value = value.replace("px", "");
-            return parseInt(value);
-        }
-    }]);
+    /**
+     * Take a string of '50px' and return a number of just the pixel count.
+     */
+    static parsePixels(value) {
 
-    return _class3;
-}();
+        value = value.replace("px", "");
+        return parseInt(value);
+    }
+
+};
 
 module.exports.createSiblingTuples = Functions.createSiblingTuples;
 

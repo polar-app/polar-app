@@ -73,6 +73,7 @@ class Ranges {
      * Get the text nodes for range. Optionally splitting the text if necessary
      *
      * @param range {Range}
+     * @return {Array<Node>}
      */
     static getTextNodes(range) {
 

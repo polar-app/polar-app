@@ -3,11 +3,11 @@ const {assertJSON} = require("../../../web/js/test/Assertions");
 const {Functions} = require("../../../web/js/util/Functions");
 const {Spectron} = require("../../../web/js/test/Spectron");
 
+const TIMEOUT = 10000
+
 describe('Text Node Splitting', function () {
 
-    let timeout = 120000
-
-    this.timeout(timeout);
+    this.timeout(TIMEOUT);
 
     Spectron.setup(__dirname);
 
@@ -22,11 +22,11 @@ describe('Text Node Splitting', function () {
 
             let p = document.querySelector("p");
 
-            return TextNodeRows.splitNode(p);
+            return TextNodeRows.splitElement(p);
 
         });
 
-        assert.equal(splitNodes.value, 1428);
+        assert.equal(splitNodes.value, 1435);
 
     });
 
@@ -37,13 +37,18 @@ describe('Text Node Splitting', function () {
         // first check that we can split the basic nodes properly.
         let textRegions = await this.app.client.execute(() => {
 
-            const {TextNodeRows} = require("../../../web/js/highlights/text/selection/TextNodeRows");
+            const {TextNodeRows, NodeArray} = require("../../../web/js/highlights/text/selection/TextNodeRows");
 
             let p = document.querySelector("p");
 
-            TextNodeRows.splitNode(p);
+            TextNodeRows.splitElement(p);
+            let nodeArray = NodeArray.createFromElement(p);
 
-            let textRegions = TextNodeRows.computeTextRegions(p);
+            if(nodeArray.constructor !== NodeArray) {
+                throw new Error("Got back the wrong object!");
+            }
+
+            let textRegions = TextNodeRows.computeTextRegions(nodeArray);
 
             return textRegions.map(current => current.toJSON());
 
@@ -91,13 +96,14 @@ describe('Text Node Splitting', function () {
         // first check that we can split the basic nodes properly.
         let textBlocks = await this.app.client.execute(() => {
 
-            const {TextNodeRows} = require("../../../web/js/highlights/text/selection/TextNodeRows");
+            const {TextNodeRows, NodeArray} = require("../../../web/js/highlights/text/selection/TextNodeRows");
 
             let p = document.querySelector("p");
 
-            TextNodeRows.splitNode(p);
+            TextNodeRows.splitElement(p);
 
-            let textRegions = TextNodeRows.computeTextRegions(p);
+            let nodeArray = NodeArray.createFromElement(p);
+            let textRegions = TextNodeRows.computeTextRegions(nodeArray);
             let textBlocks = TextNodeRows.computeTextBlocks(textRegions);
 
             return textBlocks.map(current => current.toJSON());
@@ -238,13 +244,13 @@ describe('Text Node Splitting', function () {
         // first check that we can split the basic nodes properly.
         let textBlocks = await this.app.client.execute(() => {
 
-            const {TextNodeRows} = require("../../../web/js/highlights/text/selection/TextNodeRows");
+            const {TextNodeRows, NodeArray} = require("../../../web/js/highlights/text/selection/TextNodeRows");
 
             let p = document.querySelector("p");
 
-            TextNodeRows.splitNode(p);
-
-            let textRegions = TextNodeRows.computeTextRegions(p);
+            TextNodeRows.splitElement(p);
+            let nodeArray = NodeArray.createFromElement(p);
+            let textRegions = TextNodeRows.computeTextRegions(nodeArray);
             let textBlocks = TextNodeRows.computeTextBlocks(textRegions);
             let mergedTextBlocks = TextNodeRows.mergeTextBlocks(textBlocks);
             return mergedTextBlocks.map(current => current.toExternal());

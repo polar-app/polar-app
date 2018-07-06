@@ -132,6 +132,8 @@ class Functions {
      */
     static createSiblings(arrayLikeObject) {
 
+        Preconditions.assertNotNull(arrayLikeObject, "arrayLikeObject");
+
         /**
          * {Array<ArrayPosition>}
          * @type {Array}

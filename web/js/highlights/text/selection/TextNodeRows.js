@@ -2,6 +2,7 @@ const {TextNodes} = require("./TextNodes");
 const {Rects} = require("../../../Rects");
 const {createSiblings} = require("../../../util/Functions");
 const {Text} = require("../../../util/Text");
+const {Preconditions} = require("../../../Preconditions");
 
 
 /**
@@ -109,6 +110,43 @@ class MergedTextBlock {
 }
 
 /**
+ * Holds an array of nodes that we can work with.
+ */
+class NodeArray {
+
+    /**
+     *
+     * @param nodes {Array<Node>}
+     */
+    constructor(nodes) {
+        Preconditions.assertNotNull(nodes, "nodes");
+        this.nodes = nodes;
+    }
+
+    get length() {
+        return this.nodes.length;
+    }
+
+    /**
+     * Get the input as a list of nodes to process.  If the node we give it is
+     * ALREADY a single text node just return that wrapped in an array.
+     * @param element
+     */
+    static createFromElement(element) {
+
+        if(element.nodeType === Node.ELEMENT_NODE) {
+            return new NodeArray(element.childNodes);
+        } else if(element.nodeType === Node.TEXT_NODE) {
+            throw new Error("Text node not supported");
+        } else {
+            throw new Error("Unable to handle node type: " + element.nodeType);
+        }
+
+    }
+
+}
+
+/**
  * Build rows of contiguous text nodes plus break them apart based on how they
  * display visually.
  *
@@ -125,30 +163,78 @@ class TextNodeRows {
 
     /**
      *
-     * @param node The root node to split.
+     * @param textNode {Node}
+     * @return {Array<Node>}
+     */
+    static fromTextNode(textNode) {
+
+        if(textNode.nodeType !== Node.TEXT_NODE) {
+            throw new Error("Not a text node");
+        }
+
+        let nodeArray = TextNodeRows.splitTextNodePerCharacter(textNode);
+
+        let textRegions = TextNodeRows.computeTextRegions(nodeArray);
+
+        console.log("FIXME: textRegions:  ", textRegions.map(current => current.toJSON()));
+
+        let textBlocks = TextNodeRows.computeTextBlocks(textRegions);
+        console.log("FIXME: textBlocks:  ", textBlocks);
+
+        let mergedTextBlocks = TextNodeRows.mergeTextBlocks(textBlocks);
+        console.log("FIXME: mergedTextBlocks:  ", JSON.stringify(mergedTextBlocks.map(current => current.toExternal()), null, "  "));
+
+        let result = mergedTextBlocks.map(current => current.textNode);
+
+        //console.log("FIXME: found N " + result.length);
+        return result;
+
+    }
+
+    /**
+     *
+     * @param textNodes {Array<Node>}
+     * @return {Array<Node>}
+     */
+    static fromTextNodes(textNodes) {
+
+        /**
+         * @type {Array<Node>}
+         */
+        let result = [];
+
+        textNodes.forEach(textNode => {
+            result.push(...TextNodeRows.fromTextNode(textNode));
+        });
+
+        //console.log("FIXME: 123: going to return N: " + result.length)
+
+        return result;
+
+    }
+
+    /**
+     *
+     * @param element {Element} The root node to split.
      * @return {number} The number of nodes split.
      */
-    static splitNode(node) {
+    static splitElement(element) {
 
         let result = 0;
 
-        Array.from(node.childNodes).forEach(current => {
+        Array.from(element.childNodes).forEach(current => {
 
             if(current.nodeType === Node.TEXT_NODE) {
-                result += TextNodeRows.splitTextNodePerCharacter(current);
+                let nodeArray = TextNodeRows.splitTextNodePerCharacter(current);
+                result += nodeArray.length;
             }
 
             if(current.nodeType === Node.ELEMENT_NODE) {
-
                 // this is a regular element recurse into it splitting that too.
-
-                result += TextNodeRows.splitNode(current);
-
+                result += TextNodeRows.splitElement(current);
             }
 
         });
-
-        console.log("FIXME returning: " + result);
 
         return result;
 
@@ -158,11 +244,19 @@ class TextNodeRows {
      * Text regions are groups of contiguous text nodes that are back to back
      * without an element in between.
      *
-     * @param node
+     * @param nodeArray {NodeArray}
      * @param [textRegions] {Array<TextRegion>} The starting text regions. Used mostly for recursion.
      * @return {Array<TextRegion>} The computed text regions
      */
-    static computeTextRegions(node, textRegions) {
+    static computeTextRegions(nodeArray, textRegions) {
+
+        Preconditions.assertNotNull(nodeArray, "nodeArray");
+
+        if(nodeArray.constructor !== NodeArray) {
+            throw new Error("Not a node array: " + nodeArray.constructor);
+        }
+
+        Preconditions.assertNotNull(nodeArray.nodes, "nodeArray.nodes");
 
         // all text regions that we're working on
         if(!textRegions) {
@@ -175,7 +269,7 @@ class TextNodeRows {
          */
         let textRegion = new TextRegion();
 
-        createSiblings(node.childNodes).forEach(position => {
+        createSiblings(nodeArray.nodes).forEach(position => {
 
             let currentNode = position.curr;
 
@@ -188,13 +282,13 @@ class TextNodeRows {
                 textRegions.push(textRegion);
                 textRegion = new TextRegion();
 
-                TextNodeRows.computeTextRegions(currentNode, textRegions);
+                TextNodeRows.computeTextRegions(NodeArray.createFromElement(currentNode), textRegions);
 
             }
 
             // *** handle the last node
 
-            if(position.next === null) {
+            if(position.next === null && textRegion.length > 0) {
                 // don't drop the last block
                 textRegions.push(textRegion);
             }
@@ -268,7 +362,7 @@ class TextNodeRows {
 
                 // *** handle the last node
 
-                if(position.next === null) {
+                if(position.next === null && textBlock.length > 0) {
                     // don't drop the last block
                     textBlocks.push(textBlock);
                 }
@@ -311,6 +405,8 @@ class TextNodeRows {
                 orphanedNode.parentNode.removeChild(orphanedNode);
             });
 
+            console.log(`FIXME: got text '${text}' for TextNode`, textNode);
+
             result.push(new MergedTextBlock({
                 textNode,
                 text,
@@ -336,21 +432,26 @@ class TextNodeRows {
      * Split the given text node so that every character has its own text
      * node so that we can see the actual position on the screen.
      *
-     * @return {number} The number of splits we performed.
+     * @return {NodeArray} The number of splits we performed.
      */
     static splitTextNodePerCharacter(textNode) {
 
-        let result = 0;
+        let result = [
+
+        ];
 
         while(textNode.textContent.length > 1) {
+            result.push(textNode);
             textNode = textNode.splitText(1);
-            ++result;
         }
 
-        return result;
+        result.push(textNode);
+
+        return new NodeArray(result);
 
     }
 
 }
 
+module.exports.NodeArray = NodeArray;
 module.exports.TextNodeRows = TextNodeRows;
