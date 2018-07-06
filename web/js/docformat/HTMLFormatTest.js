@@ -10,11 +10,11 @@ describe('HTMLFormat', function() {
 
             let dom = new JSDOM(HTML);
 
-            // global.document = dom.window.document;
-            //
-            // let htmlFormat = new HTMLFormat();
-            //
-            // assert.equal(htmlFormat.currentDocFingerprint(), "0x0001");
+            global.document = dom.window.document;
+
+            let htmlFormat = new HTMLFormat();
+
+            assert.equal(htmlFormat.currentDocFingerprint(), "0x0001");
 
         });
 
