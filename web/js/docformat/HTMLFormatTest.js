@@ -4,9 +4,6 @@ const {HTMLFormat} = require("./HTMLFormat");
 
 describe('HTMLFormat', function() {
 
-    // FIXME: JSDOM went to 100% cpu on my workstation with this test however
-    // running it MANUALLY as a single test from the command line works fine.
-
     describe('currentDocFingerprint', function() {
 
         it("get", function () {
