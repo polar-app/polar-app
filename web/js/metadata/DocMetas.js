@@ -126,6 +126,9 @@ class DocMetas {
         return MetadataSerializer.serialize(docMeta, spacing);
     }
 
+    /**
+     * @return {DocMeta}
+     */
     static deserialize(data) {
 
         if(! (typeof data === "string")) {
@@ -138,6 +141,11 @@ class DocMetas {
 
     }
 
+    /**
+     *
+     * @param docMeta {DocMeta}
+     * @return {DocMeta}
+     */
     static upgrade(docMeta) {
 
         // validate the JSON data and set defaults. In the future we should migrate
@@ -181,6 +189,15 @@ class DocMetas {
         if(!docMeta.annotationInfo) {
             console.log("No annotation info.. Adding default.")
             docMeta.annotationInfo = new AnnotationInfo();
+        }
+
+        if(docMeta.docInfo) {
+
+            if(!docMeta.docInfo.pagemarkType) {
+                console.log("DocInfo has no pagemarkType... Adding default of SINGLE_COLUMN")
+                docMeta.docInfo.pagemarkType = PagemarkType.SINGLE_COLUMN;
+            }
+
         }
 
         return docMeta;

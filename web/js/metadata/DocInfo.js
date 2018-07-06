@@ -1,5 +1,6 @@
 const {SerializedObject} = require("./SerializedObject.js");
 const {PagemarkType} = require("./PagemarkType.js");
+const {Symbol} = require("./Symbol.js");
 
 /**
  * Lightweight metadata about a document. We do not include full page metadata
@@ -74,6 +75,6 @@ class DocInfo extends SerializedObject {
         ]);
     }
 
-};
+}
 
 module.exports.DocInfo = DocInfo;

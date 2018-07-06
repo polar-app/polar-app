@@ -8,6 +8,7 @@ const {Proxies} = require("../proxies/Proxies");
 const {MetadataSerializer} = require("./MetadataSerializer");
 const {TextHighlightRecords} = require("./TextHighlightRecords");
 const {TextHighlights} = require("./TextHighlights");
+const {PagemarkType} = require("./PagemarkType");
 
 const {assertJSON} = require("../test/Assertions");
 const {TestingTime} = require("../test/TestingTime");
@@ -150,6 +151,22 @@ describe('DocMetas', function() {
     describe('Upgrade', function() {
 
         describe("Test upgrading the metadata if it is missing fields.", function () {
+
+            it("No DocInfo.pagemarkType", function () {
+
+                let docMeta = createUpgradeDoc();
+
+                assert.notEqual(docMeta.docInfo, null);
+                docMeta.getPageMeta(1).textHighlights = null;
+
+                docMeta.docInfo.pagemarkType = null;
+
+                docMeta = DocMetas.upgrade(docMeta)
+
+                assert.deepEqual(docMeta.docInfo.pagemarkType, PagemarkType.SINGLE_COLUMN);
+
+            });
+
 
             it("No text highlights", function () {
 

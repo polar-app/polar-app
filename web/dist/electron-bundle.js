@@ -50012,6 +50012,7 @@ module.exports.DocDescriptor = DocDescriptor;
 
 const { SerializedObject } = __webpack_require__(/*! ./SerializedObject.js */ "./web/js/metadata/SerializedObject.js");
 const { PagemarkType } = __webpack_require__(/*! ./PagemarkType.js */ "./web/js/metadata/PagemarkType.js");
+const { Symbol } = __webpack_require__(/*! ./Symbol.js */ "./web/js/metadata/Symbol.js");
 
 /**
  * Lightweight metadata about a document. We do not include full page metadata
@@ -50082,7 +50083,7 @@ class DocInfo extends SerializedObject {
     this.validateMembers([{ name: 'nrPages', type: "number" }, { name: 'fingerprint', type: "string" }]);
   }
 
-};
+}
 
 module.exports.DocInfo = DocInfo;
 
@@ -50330,6 +50331,9 @@ class DocMetas {
         return MetadataSerializer.serialize(docMeta, spacing);
     }
 
+    /**
+     * @return {DocMeta}
+     */
     static deserialize(data) {
 
         if (!(typeof data === "string")) {
@@ -50341,6 +50345,11 @@ class DocMetas {
         return DocMetas.upgrade(docMeta);
     }
 
+    /**
+     *
+     * @param docMeta {DocMeta}
+     * @return {DocMeta}
+     */
     static upgrade(docMeta) {
 
         // validate the JSON data and set defaults. In the future we should migrate
@@ -50383,6 +50392,14 @@ class DocMetas {
         if (!docMeta.annotationInfo) {
             console.log("No annotation info.. Adding default.");
             docMeta.annotationInfo = new AnnotationInfo();
+        }
+
+        if (docMeta.docInfo) {
+
+            if (!docMeta.docInfo.pagemarkType) {
+                console.log("DocInfo has no pagemarkType... Adding default of SINGLE_COLUMN");
+                docMeta.docInfo.pagemarkType = PagemarkType.SINGLE_COLUMN;
+            }
         }
 
         return docMeta;
@@ -51173,7 +51190,7 @@ module.exports.SerializedObject = class {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports.Symbol = class {
+class Symbol {
 
     constructor(name) {
         this.name = name;
@@ -51185,6 +51202,8 @@ module.exports.Symbol = class {
     }
 
 };
+
+module.exports.Symbol = Symbol;
 
 /***/ }),
 

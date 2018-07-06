@@ -1,4 +1,4 @@
-module.exports.Symbol = class {
+class Symbol {
 
     constructor(name) {
         this.name = name;
@@ -10,3 +10,5 @@ module.exports.Symbol = class {
     }
 
 };
+
+module.exports.Symbol = Symbol
