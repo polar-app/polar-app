@@ -583,14 +583,14 @@ describe('testing model interaction', function() {
 
     xit('Test basic model support.', async function() {
 
-        var clock = new SyntheticClock();
-        var datastore = new MemoryDatastore();
-        var model = new Model(datastore, clock);
-        var view = new MockView(model);
+        let clock = new SyntheticClock();
+        let datastore = new MemoryDatastore();
+        let model = new Model(datastore, clock);
+        let view = new MockView(model);
 
         let fingerprint = "fake-fingerprint";
 
-        var docMeta = await model.documentLoaded(fingerprint, 1);
+        let docMeta = await model.documentLoaded(fingerprint, 1);
 
         assert.isNotNull(docMeta);
 
@@ -706,14 +706,14 @@ describe('testing model interaction', function() {
 
         }
 
-        var clock = new SyntheticClock();
-        var datastore = new MemoryDatastore();
-        var model = new Model(datastore, clock);
-        var view = new MockView(model);
+        let clock = new SyntheticClock();
+        let datastore = new MemoryDatastore();
+        let model = new Model(datastore, clock);
+        let view = new MockView(model);
 
         let fingerprint = "fake-fingerprint";
 
-        var docMeta = await model.documentLoaded(fingerprint, 1);
+        let docMeta = await model.documentLoaded(fingerprint, 1);
         assert.equal(view.pagemarks.length, 0);
 
         await model.createPagemark(1);
