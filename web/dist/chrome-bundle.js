@@ -70071,149 +70071,6 @@ module.exports.PageRedrawHandler = class {
 
 /***/ }),
 
-/***/ "./web/js/PagemarkCoverageEventListener.js":
-/*!*************************************************!*\
-  !*** ./web/js/PagemarkCoverageEventListener.js ***!
-  \*************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-const $ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
-
-const { OffsetCalculator } = __webpack_require__(/*! ./utils.js */ "./web/js/utils.js");
-const { KeyEvents } = __webpack_require__(/*! ./KeyEvents.js */ "./web/js/KeyEvents.js");
-const { Elements } = __webpack_require__(/*! ./util/Elements */ "./web/js/util/Elements.js");
-const { DocFormatFactory } = __webpack_require__(/*! ./docformat/DocFormatFactory */ "./web/js/docformat/DocFormatFactory.js");
-const { DocFormats } = __webpack_require__(/*! ./docformat/DocFormats */ "./web/js/docformat/DocFormats.js");
-
-const BORDER_PADDING = 9;
-
-module.exports.PagemarkCoverageEventListener = class {
-
-    constructor(controller) {
-        this.controller = controller;
-        this.keyActivated = false;
-    }
-
-    start() {
-        document.addEventListener("keyup", this.keyListener.bind(this));
-        document.addEventListener("keydown", this.keyListener.bind(this));
-        document.addEventListener("click", this.mouseListener.bind(this));
-    }
-
-    /**
-     * Track that we've selected 'e' on the keyboard,
-     */
-    keyListener(event) {
-
-        //console.log(event);
-
-        if (!event) {
-            throw new Error("no event");
-        }
-
-        this.keyActivated = KeyEvents.isKeyMetaActive(event);
-    }
-
-    mouseListener(event) {
-
-        if (!event) {
-            throw new Error("no event");
-        }
-
-        if (!this.keyActivated) {
-            return;
-        }
-
-        this.onActivated(event);
-    }
-
-    // https://stackoverflow.com/questions/3234256/find-mouse-position-relative-to-element
-    onActivated(event) {
-
-        let state = this.getPointerState(event);
-
-        if (state.error) {
-            console.error(state.error);
-            return;
-        }
-
-        console.log("Pointer state: ", JSON.stringify(state, null, "  "));
-
-        if (state.mouseTop >= state.pageOffset.top && state.mouseTop <= state.pageOffset.bottom) {
-
-            // make sure the current mouse position is within a page.
-
-            let percentage = state.mousePageY / state.pageOffset.height * 100;
-
-            console.log("percentage: ", percentage);
-
-            let pageNum = this.controller.getPageNum(state.pageElement);
-            this.controller.erasePagemark(pageNum);
-            this.controller.createPagemark(pageNum, { percentage });
-        } else {
-            console.log("Mouse click was outside of page.");
-        }
-    }
-
-    /**
-     * Get the state of the pointer.
-     */
-    getPointerState(event) {
-
-        let state = {
-            error: null,
-            pageElement: null,
-            textLayerElement: null,
-            viewport: null,
-            pageOffset: null,
-            mouseTop: null,
-            mousePageY: null
-
-        };
-
-        state.pageElement = Elements.untilRoot(event.target, ".page");
-
-        if (!state.pageElement) {
-            state.error = "Not within a pageElement";
-            return state;
-        }
-
-        state.textLayerElement = state.pageElement.querySelector(".textLayer");
-
-        if (!state.textLayerElement) {
-            state.error = "No text layer";
-            return state;
-        }
-
-        state.viewport = document.getElementById("viewerContainer");
-
-        state.pageOffset = OffsetCalculator.calculate(state.textLayerElement, state.viewport.parentElement);
-
-        // this is lame.. this is for the border padding.  I don't like hard coding it.
-        state.pageOffset.top += BORDER_PADDING;
-
-        // manually adjust the offsets with correct jquery data.
-        state.pageOffset.height = $(state.textLayerElement).height();
-        state.pageOffset.bottom = state.pageOffset.top + state.pageOffset.height;
-
-        state.mouseTop = event.pageY + state.viewport.scrollTop;
-
-        if (DocFormats.getFormat() === "html") {
-            // the html viewer doesn't need page offset factored in since it
-            // is within an iframe.
-            state.mousePageY = state.mouseTop;
-        } else {
-            state.mousePageY = state.mouseTop - state.pageOffset.top;
-        }
-
-        return state;
-    }
-
-};
-
-/***/ }),
-
 /***/ "./web/js/Point.js":
 /*!*************************!*\
   !*** ./web/js/Point.js ***!
@@ -70882,15 +70739,24 @@ module.exports.RendererContextMenu = class {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
+function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
 
-module.exports.Controller = class {
+class Controller {
 
+    /**
+     *
+     * @param model {Model}
+     */
     constructor(model) {
 
         if (!model) {
             throw new Error("No model");
         }
 
+        /**
+         *
+         * @type {Model}
+         */
         this.model = model;
     }
 
@@ -70898,16 +70764,23 @@ module.exports.Controller = class {
      * Called when a new document has been loaded.
      */
     onDocumentLoaded(fingerprint, nrPages, currentlySelectedPageNum) {
+        var _this = this;
 
-        this.model.documentLoaded(fingerprint, nrPages, currentlySelectedPageNum);
+        return _asyncToGenerator(function* () {
+            yield _this.model.documentLoaded(fingerprint, nrPages, currentlySelectedPageNum);
+        })();
     }
 
     /**
      * Mark the given page number as read.
      */
     createPagemark(pageNum, options) {
-        console.log("Controller sees pagemark created: " + pageNum, options);
-        this.model.createPagemark(pageNum, options);
+        var _this2 = this;
+
+        return _asyncToGenerator(function* () {
+            console.log("Controller sees pagemark created: " + pageNum, options);
+            yield _this2.model.createPagemark(pageNum, options);
+        })();
     }
 
     erasePagemarks(pageNum, options) {
@@ -70927,6 +70800,8 @@ module.exports.Controller = class {
 
 };
 
+module.exports.Controller = Controller;
+
 /***/ }),
 
 /***/ "./web/js/controller/WebController.js":
@@ -70939,7 +70814,7 @@ module.exports.Controller = class {
 const $ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
 
 const { TextHighlightController } = __webpack_require__(/*! ../highlights/text/controller/TextHighlightController */ "./web/js/highlights/text/controller/TextHighlightController.js");
-const { PagemarkCoverageEventListener } = __webpack_require__(/*! ../PagemarkCoverageEventListener.js */ "./web/js/PagemarkCoverageEventListener.js");
+const { PagemarkCoverageEventListener } = __webpack_require__(/*! ../pagemarks/controller/PagemarkCoverageEventListener.js */ "./web/js/pagemarks/controller/PagemarkCoverageEventListener.js");
 const { KeyEvents } = __webpack_require__(/*! ../KeyEvents.js */ "./web/js/KeyEvents.js");
 const { Preconditions } = __webpack_require__(/*! ../Preconditions.js */ "./web/js/Preconditions.js");
 const { Controller } = __webpack_require__(/*! ./Controller.js */ "./web/js/controller/Controller.js");
@@ -70948,7 +70823,7 @@ const { polar } = __webpack_require__(/*! ../polar */ "./web/js/polar.js");
 const { ContextMenuController } = __webpack_require__(/*! ../contextmenu/ContextMenuController */ "./web/js/contextmenu/ContextMenuController.js");
 const { FlashcardsController } = __webpack_require__(/*! ../flashcards/controller/FlashcardsController */ "./web/js/flashcards/controller/FlashcardsController.js");
 
-module.exports.WebController = class extends Controller {
+class WebController extends Controller {
 
     constructor(model) {
         super(Preconditions.assertNotNull(model, "model"));
@@ -71178,6 +71053,8 @@ module.exports.WebController = class extends Controller {
     }
 
 };
+
+module.exports.WebController = WebController;
 
 /***/ }),
 
@@ -75949,6 +75826,7 @@ class Model {
                 type: PagemarkType.SINGLE_COLUMN,
                 percentage: options.percentage,
                 column: 0
+
             });
 
             let docMeta = yield _this2.docMetaPromise;
@@ -75958,7 +75836,7 @@ class Model {
             // set the pagemark that we just created into the map
             pageMeta.pagemarks[pagemark.column] = pagemark;
 
-            // TODO: this can be done with a mutation listener in the future
+            // TODO: this can be done with a mutation listener now
             _this2.reactor.dispatchEvent('createPagemark', { pageNum, pagemark });
         })();
     }
@@ -75977,42 +75855,8 @@ class Model {
         // pagemark. NOT just delete all of them.
         Objects.clear(pageMeta.pagemarks);
 
-        // FIXME: this can be done with a mutation listener...
+        // FIXME: this can be done with a mutation listener now.
         this.reactor.dispatchEvent('erasePagemark', { pageNum });
-    }
-
-    createTextHighlight() {}
-
-    /**
-     *
-     * @param pageNum
-     */
-    pageLoaded(pageNum) {
-        var _this3 = this;
-
-        return _asyncToGenerator(function* () {
-
-            console.log("Page loaded...");
-
-            // FIXME: is this actually called anywhere now??? I don't think it is...
-
-            let docMeta = yield _this3.docMetaPromise;
-            let pageMeta = _this3.docMeta.getPageMeta(pageNum);
-
-            forDict(pageMeta.pagemarks, function (pagemarkId, pagemark) {
-
-                // FIXME: this is wrong and we should fire with the right
-                // pagemark type.
-
-                // FIXME: this IS working but the document isn't finished
-                // loading yet.  We can SEE that a new document was loaded
-                // but not that it was finished loading...
-
-                console.log("Dispatching event to create pagemark for page: " + pageNum);
-
-                this.reactor.dispatchEvent('createPagemark', { pageNum });
-            }.bind(_this3));
-        })();
     }
 
     assertPageNum(pageNum) {
@@ -76296,6 +76140,167 @@ class ThumbnailPagemarkRenderer extends PagemarkRenderer {
 }
 
 module.exports.ThumbnailPagemarkRenderer = ThumbnailPagemarkRenderer;
+
+/***/ }),
+
+/***/ "./web/js/pagemarks/controller/PagemarkCoverageEventListener.js":
+/*!**********************************************************************!*\
+  !*** ./web/js/pagemarks/controller/PagemarkCoverageEventListener.js ***!
+  \**********************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
+
+const $ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
+
+const { OffsetCalculator } = __webpack_require__(/*! ../../utils.js */ "./web/js/utils.js");
+const { KeyEvents } = __webpack_require__(/*! ../../KeyEvents.js */ "./web/js/KeyEvents.js");
+const { Elements } = __webpack_require__(/*! ../../util/Elements */ "./web/js/util/Elements.js");
+const { DocFormats } = __webpack_require__(/*! ../../docformat/DocFormats */ "./web/js/docformat/DocFormats.js");
+
+const BORDER_PADDING = 9;
+
+class PagemarkCoverageEventListener {
+
+    /**
+     * @param controller {WebController}
+     */
+    constructor(controller) {
+        this.controller = controller;
+        this.keyActivated = false;
+    }
+
+    start() {
+        document.addEventListener("keyup", this.keyListener.bind(this));
+        document.addEventListener("keydown", this.keyListener.bind(this));
+        document.addEventListener("click", this.mouseListener.bind(this));
+    }
+
+    /**
+     * Track that we've selected 'e' on the keyboard,
+     */
+    keyListener(event) {
+
+        //console.log(event);
+
+        if (!event) {
+            throw new Error("no event");
+        }
+
+        this.keyActivated = KeyEvents.isKeyMetaActive(event);
+    }
+
+    mouseListener(event) {
+        var _this = this;
+
+        return _asyncToGenerator(function* () {
+
+            if (!event) {
+                throw new Error("no event");
+            }
+
+            if (!_this.keyActivated) {
+                return;
+            }
+
+            yield _this.onActivated(event);
+        })();
+    }
+
+    // https://stackoverflow.com/questions/3234256/find-mouse-position-relative-to-element
+    onActivated(event) {
+        var _this2 = this;
+
+        return _asyncToGenerator(function* () {
+
+            let state = _this2.getPointerState(event);
+
+            if (state.error) {
+                console.error(state.error);
+                return;
+            }
+
+            console.log("Pointer state: ", JSON.stringify(state, null, "  "));
+
+            // FIXME: based on the pageType and other settings determine the width
+            // and height of the new pagemark. Also, refactor this to make it
+            // testable and throw plenty of tests at this...
+
+            if (state.mouseTop >= state.pageOffset.top && state.mouseTop <= state.pageOffset.bottom) {
+
+                // make sure the current mouse position is within a page.
+
+                let percentage = state.mousePageY / state.pageOffset.height * 100;
+
+                console.log("percentage: ", percentage);
+
+                let pageNum = _this2.controller.getPageNum(state.pageElement);
+                _this2.controller.erasePagemark(pageNum);
+                yield _this2.controller.createPagemark(pageNum, { percentage });
+            } else {
+                console.log("Mouse click was outside of page.");
+            }
+        })();
+    }
+
+    /**
+     * Get the state of the pointer.
+     */
+    getPointerState(event) {
+
+        let state = {
+            error: null,
+            pageElement: null,
+            textLayerElement: null,
+            viewport: null,
+            pageOffset: null,
+            mouseTop: null,
+            mousePageY: null
+
+        };
+
+        state.pageElement = Elements.untilRoot(event.target, ".page");
+
+        if (!state.pageElement) {
+            state.error = "Not within a pageElement";
+            return state;
+        }
+
+        state.textLayerElement = state.pageElement.querySelector(".textLayer");
+
+        if (!state.textLayerElement) {
+            state.error = "No text layer";
+            return state;
+        }
+
+        state.viewport = document.getElementById("viewerContainer");
+
+        state.pageOffset = OffsetCalculator.calculate(state.textLayerElement, state.viewport.parentElement);
+
+        // this is lame.. this is for the border padding.  I don't like hard coding it.
+        state.pageOffset.top += BORDER_PADDING;
+
+        // manually adjust the offsets with correct jquery data.
+        state.pageOffset.height = $(state.textLayerElement).height();
+        state.pageOffset.bottom = state.pageOffset.top + state.pageOffset.height;
+
+        state.mouseTop = event.pageY + state.viewport.scrollTop;
+
+        if (DocFormats.getFormat() === "html") {
+            // the html viewer doesn't need page offset factored in since it
+            // is within an iframe.
+            state.mousePageY = state.mouseTop;
+        } else {
+            state.mousePageY = state.mouseTop - state.pageOffset.top;
+        }
+
+        return state;
+    }
+
+};
+
+module.exports.PagemarkCoverageEventListener = PagemarkCoverageEventListener;
 
 /***/ }),
 

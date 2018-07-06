@@ -1,30 +1,36 @@
 
-module.exports.Controller = class {
+class Controller {
 
+    /**
+     *
+     * @param model {Model}
+     */
     constructor(model) {
 
         if(! model) {
             throw new Error("No model");
         }
 
+        /**
+         *
+         * @type {Model}
+         */
         this.model = model;
     }
 
     /**
      * Called when a new document has been loaded.
      */
-    onDocumentLoaded(fingerprint, nrPages, currentlySelectedPageNum) {
-
-        this.model.documentLoaded(fingerprint, nrPages, currentlySelectedPageNum);
-
+    async onDocumentLoaded(fingerprint, nrPages, currentlySelectedPageNum) {
+        await this.model.documentLoaded(fingerprint, nrPages, currentlySelectedPageNum);
     }
 
     /**
      * Mark the given page number as read.
      */
-    createPagemark(pageNum, options) {
+    async createPagemark(pageNum, options) {
         console.log("Controller sees pagemark created: " + pageNum, options);
-        this.model.createPagemark(pageNum, options);
+        await this.model.createPagemark(pageNum, options);
     }
 
     erasePagemarks(pageNum, options) {
@@ -45,3 +51,5 @@ module.exports.Controller = class {
     }
 
 };
+
+module.exports.Controller = Controller;

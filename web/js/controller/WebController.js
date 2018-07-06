@@ -1,7 +1,7 @@
 const $ = require('jquery');
 
 const {TextHighlightController} = require("../highlights/text/controller/TextHighlightController");
-const {PagemarkCoverageEventListener} = require("../PagemarkCoverageEventListener.js");
+const {PagemarkCoverageEventListener} = require("../pagemarks/controller/PagemarkCoverageEventListener.js");
 const {KeyEvents} = require("../KeyEvents.js");
 const {Preconditions} = require("../Preconditions.js");
 const {Controller} = require("./Controller.js");
@@ -10,7 +10,7 @@ const {polar} = require("../polar");
 const {ContextMenuController} = require("../contextmenu/ContextMenuController");
 const {FlashcardsController} = require("../flashcards/controller/FlashcardsController");
 
-module.exports.WebController = class extends Controller {
+class WebController extends Controller {
 
     constructor(model) {
         super(Preconditions.assertNotNull(model, "model"));
@@ -261,3 +261,5 @@ module.exports.WebController = class extends Controller {
 
 };
 
+
+module.exports.WebController = WebController;

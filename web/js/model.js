@@ -116,6 +116,7 @@ class Model {
             type: PagemarkType.SINGLE_COLUMN,
             percentage: options.percentage,
             column: 0
+
         });
 
         let docMeta = await this.docMetaPromise;
@@ -125,7 +126,7 @@ class Model {
         // set the pagemark that we just created into the map
         pageMeta.pagemarks[pagemark.column] = pagemark;
 
-        // TODO: this can be done with a mutation listener in the future
+        // TODO: this can be done with a mutation listener now
         this.reactor.dispatchEvent('createPagemark', {pageNum, pagemark});
 
     }
@@ -144,42 +145,8 @@ class Model {
         // pagemark. NOT just delete all of them.
         Objects.clear(pageMeta.pagemarks);
 
-        // FIXME: this can be done with a mutation listener...
+        // FIXME: this can be done with a mutation listener now.
         this.reactor.dispatchEvent('erasePagemark', {pageNum});
-
-    }
-
-    createTextHighlight() {
-
-    }
-
-    /**
-     *
-     * @param pageNum
-     */
-    async pageLoaded(pageNum) {
-
-        console.log("Page loaded...");
-
-        // FIXME: is this actually called anywhere now??? I don't think it is...
-
-        let docMeta = await this.docMetaPromise;
-        let pageMeta = this.docMeta.getPageMeta(pageNum);
-
-        forDict(pageMeta.pagemarks, function (pagemarkId, pagemark) {
-
-            // FIXME: this is wrong and we should fire with the right
-            // pagemark type.
-
-            // FIXME: this IS working but the document isn't finished
-            // loading yet.  We can SEE that a new document was loaded
-            // but not that it was finished loading...
-
-            console.log("Dispatching event to create pagemark for page: " + pageNum);
-
-            this.reactor.dispatchEvent('createPagemark', {pageNum});
-
-        }.bind(this));
 
     }
 

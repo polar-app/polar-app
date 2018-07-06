@@ -1,15 +1,17 @@
 const $ = require('jquery');
 
-const {OffsetCalculator} = require("./utils.js");
-const {KeyEvents} = require("./KeyEvents.js");
-const {Elements} = require("./util/Elements");
-const {DocFormatFactory} = require("./docformat/DocFormatFactory");
-const {DocFormats} = require("./docformat/DocFormats");
+const {OffsetCalculator} = require("../../utils.js");
+const {KeyEvents} = require("../../KeyEvents.js");
+const {Elements} = require("../../util/Elements");
+const {DocFormats} = require("../../docformat/DocFormats");
 
 const BORDER_PADDING = 9;
 
-module.exports.PagemarkCoverageEventListener = class {
+class PagemarkCoverageEventListener {
 
+    /**
+     * @param controller {WebController}
+     */
     constructor(controller) {
         this.controller = controller;
         this.keyActivated = false;
@@ -36,7 +38,7 @@ module.exports.PagemarkCoverageEventListener = class {
 
     }
 
-    mouseListener(event) {
+    async mouseListener(event) {
 
         if(!event) {
             throw new Error("no event");
@@ -46,12 +48,12 @@ module.exports.PagemarkCoverageEventListener = class {
             return;
         }
 
-        this.onActivated(event);
+        await this.onActivated(event);
 
     }
 
     // https://stackoverflow.com/questions/3234256/find-mouse-position-relative-to-element
-    onActivated(event) {
+    async onActivated(event) {
 
         let state = this.getPointerState(event);
 
@@ -61,6 +63,10 @@ module.exports.PagemarkCoverageEventListener = class {
         }
 
         console.log("Pointer state: ", JSON.stringify(state, null, "  "));
+
+        // FIXME: based on the pageType and other settings determine the width
+        // and height of the new pagemark. Also, refactor this to make it
+        // testable and throw plenty of tests at this...
 
         if(state.mouseTop >= state.pageOffset.top && state.mouseTop <= state.pageOffset.bottom) {
 
@@ -72,7 +78,7 @@ module.exports.PagemarkCoverageEventListener = class {
 
             let pageNum = this.controller.getPageNum(state.pageElement);
             this.controller.erasePagemark(pageNum);
-            this.controller.createPagemark(pageNum, {percentage});
+            await this.controller.createPagemark(pageNum, {percentage});
 
         } else {
             console.log("Mouse click was outside of page.")
@@ -136,3 +142,5 @@ module.exports.PagemarkCoverageEventListener = class {
     }
 
 };
+
+module.exports.PagemarkCoverageEventListener = PagemarkCoverageEventListener;
