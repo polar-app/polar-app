@@ -87,7 +87,8 @@ describe('DocMetas', function() {
                                 "type": "SINGLE_COLUMN",
                                 "percentage": 100,
                                 "column": 0,
-                                "notes": {}
+                                "notes": {},
+                                "box": null
                             }
                         },
                         "notes": {},
@@ -109,7 +110,8 @@ describe('DocMetas', function() {
                                 "type": "SINGLE_COLUMN",
                                 "percentage": 100,
                                 "column": 0,
-                                "notes": {}
+                                "notes": {},
+                                "box": null
                             }
                         },
                         "notes": {},
@@ -189,7 +191,8 @@ describe('DocMetas', function() {
                         "type": "SINGLE_COLUMN",
                         "percentage": 100,
                         "column": 0,
-                        "notes": {}
+                        "notes": {},
+                        "box": null
                     }
                 };
 

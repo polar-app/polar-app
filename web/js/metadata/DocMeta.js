@@ -10,7 +10,7 @@ const {Preconditions} = require("../Preconditions.js");
  * Root metadata for a document including page metadata, and metadata for
  * the specific document.
  */
-module.exports.DocMeta = class extends SerializedObject {
+class DocMeta extends SerializedObject {
 
     constructor(val) {
 
@@ -70,3 +70,5 @@ module.exports.DocMeta = class extends SerializedObject {
     }
 
 };
+
+module.exports.DocMeta = DocMeta;

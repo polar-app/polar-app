@@ -1,26 +1,33 @@
 /**
- * TODO: refactor this as top, left and width height and do this as percentages
- * of the entire page.
+ * The box layout of this pagemark.  We use the typical DOM positioning style
+ * of top, left, width and height only instead of percentages we represent
+ * this as percentage of the entire 'page'.
+ *
+ * For example:
+ *
+ * { top: 0, left: 0, width: 100, height: 100 }
  *
  */
-module.exports.PagemarkBox = class {
+class PagemarkBox {
 
-    constructor(start, end) {
-
-        /**
-         * The row range that this pagemark represents.
-         *
-         * @type {PagemarkRange}
-         */
-        this.rows = null;
+    constructor(obj) {
 
         /**
-         * The column range that this pagemark represents.
-         *
-         * @type {PagemarkRange}
+         * The
+         * @type {null}
          */
-        this.columns = null;
+        this.top = null;
+
+        this.left = null;
+
+        this.width = null;
+
+        this.height = null;
+
+        Object.assign(this, obj);
 
     }
 
 };
+
+module.exports.PagemarkBox = PagemarkBox;

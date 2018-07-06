@@ -647,41 +647,6 @@ describe('testing metadata', function() {
 
 });
 
-describe('testing pagemarks', function() {
-
-    it('Test basic pagemark creation', function() {
-
-        var pagemark = new Pagemark(
-            {
-                created: new ISODateTime(date)
-            });
-
-        //expect(pagemark).to.deep.equal({});
-
-
-        let serialized = MetadataSerializer.serialize(pagemark, "  ");
-        // FIXME: figure out how to make this multiple lines so that it's readable
-        // as a test.
-
-        let expected = {
-            "id": null,
-            "created": "2018-05-30T02:47:44.411Z",
-            "lastUpdated": "2018-05-30T02:47:44.411Z",
-            "author": null,
-            "notes": {},
-            "type": "SINGLE_COLUMN",
-            "percentage": 100,
-            "column": 0
-        };
-        assertJSON(serialized, expected);
-
-        //expect(serialized).to.equal("{\"created\":\"2018-05-30T02:47:44.411Z\",\"lastUpdated\":\"2018-05-30T02:47:44.411Z\",\"note\":{\"text\":\"\",\"created\":\"2018-05-30T02:47:44.411Z\"},\"type\":\"SINGLE_COLUMN\",\"percentage\":100,\"column\":0}");
-
-    });
-
-});
-
-
 
 describe('testing data serialization', function() {
 

@@ -50094,7 +50094,7 @@ const { Preconditions } = __webpack_require__(/*! ../Preconditions.js */ "./web/
  * Root metadata for a document including page metadata, and metadata for
  * the specific document.
  */
-module.exports.DocMeta = class extends SerializedObject {
+class DocMeta extends SerializedObject {
 
     constructor(val) {
 
@@ -50148,6 +50148,8 @@ module.exports.DocMeta = class extends SerializedObject {
     }
 
 };
+
+module.exports.DocMeta = DocMeta;
 
 /***/ }),
 
@@ -50924,9 +50926,20 @@ class Pagemark extends Annotation {
          * metadata and we should be migrating to PagemarkBox and PagemarkRange
          * which supports raw rendering of the pagemarks.
          *
-         * @type {null}
+         * @type {number}
          */
         this.column = null;
+
+        /**
+         * The PagemarkBox for this pagemark. When not specified we use a box of
+         *
+         * { top: 0, left: 0, width: 100, height: 100 }
+         *
+         * or the whole page.
+         *
+         * @type {PagemarkBox}
+         */
+        this.box = null;
 
         // TODO: support 'range' in the future which is a PagemarkRange so that
         // we can start off reading within a smaller page.
