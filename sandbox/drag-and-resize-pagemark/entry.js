@@ -2,7 +2,37 @@ const interact = require("interactjs");
 const $ = require("jquery");
 
 // this is used later in the resizing and gesture demos
-window.dragMoveListener = dragMoveListener;
+//window.dragMoveListener = dragMoveListener;
+
+function computeRestriction(x,y, interactionEvent) {
+
+    // FIXME: this only SORT of works...
+
+    console.log("computeRestriction interactionEvent: ", interactionEvent);
+
+    let element = interactionEvent.element;
+
+    console.log("computeRestriction element: ", element);
+
+    if(! element) {
+        throw new Error("No element");
+    }
+
+    let parentElement = element.parentElement;
+
+    if(! parentElement) {
+        throw new Error("No parentElement");
+    }
+
+    let rect = parentElement.getBoundingClientRect();
+
+    // FIXME: this actually DOES work to implement the restriction properly...
+    // rect.height = rect.height - 100;
+    // rect.bottom = rect.bottom - 100;
+
+    return rect;
+
+}
 
 function init(selector) {
 
@@ -24,13 +54,16 @@ function init(selector) {
                 top: true
             },
 
-            // keep the edges inside the parent
+            // Keep the edges inside the parent. this is needed or else the
+            // bound stretches slightly beyond the container.
             restrictEdges: {
-                outer: 'parent',
+                //outer: 'parent',
+                outer: computeRestriction,
             },
 
             restrict: {
-                restriction: 'parent',
+                //restriction: 'parent',
+                restriction: computeRestriction
             },
 
             // minimum size
@@ -55,7 +88,7 @@ function init(selector) {
                 target.style.transform =
                     'translate(' + x + 'px, ' + y + 'px)';
 
-            // update the posiion attributes
+            // update the position attributes
             target.setAttribute('data-x', x);
             target.setAttribute('data-y', y);
 
