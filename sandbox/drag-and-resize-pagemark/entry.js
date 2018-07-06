@@ -20,18 +20,10 @@ function dragMoveListener (event) {
 // this is used later in the resizing and gesture demos
 window.dragMoveListener = dragMoveListener;
 
-$(document).ready( () => {
-
-    console.log("Ready now...");
-
-    let element = document.querySelector(".resize-drag");
-
-    if(! element) {
-        throw new Error("Can't find element");
-    }
+function init(selector) {
 
     // FIXME.. it actually takes 'el' as teh first param.
-    interact(".resize-drag")
+    interact(selector)
         .draggable({
             onmove: window.dragMoveListener,
             restrict: {
@@ -42,12 +34,16 @@ $(document).ready( () => {
         .resizable({
 
             // resize from all edges and corners
-            edges: { left: true, right: true, bottom: true, top: true },
+            edges: {
+                left: true,
+                right: true,
+                bottom: true,
+                top: true
+            },
 
             // keep the edges inside the parent
             restrictEdges: {
                 outer: 'parent',
-                // endOnly: true,
             },
 
             restrict: {
@@ -64,15 +60,21 @@ $(document).ready( () => {
         })
         .on('resizemove', function (event) {
 
-            // TODO: we will have to update the page metadata for this guy..
+            console.log("FIXME: target: ", event.target);
 
+            // TODO: called when the element is resized.
             let target = event.target,
                 x = (parseFloat(target.getAttribute('data-x')) || 0),
                 y = (parseFloat(target.getAttribute('data-y')) || 0);
 
+            let box = {
+                width: event.rect.width,
+                height: event.rect.height
+            };
+
             // update the element's style
-            target.style.width  = event.rect.width + 'px';
-            target.style.height = event.rect.height + 'px';
+            target.style.width  = `${box.width}px`;
+            target.style.height = `${box.height}px`;
 
             // translate when resizing from top or left edges
             x += event.deltaRect.left;
@@ -83,11 +85,21 @@ $(document).ready( () => {
 
             target.setAttribute('data-x', x);
             target.setAttribute('data-y', y);
+
             target.textContent = Math.round(event.rect.width) + '\u00D7' + Math.round(event.rect.height);
 
         });
+}
+
+$(document).ready( () => {
+
+    console.log("Ready now...");
 
     console.log("Interact setup!");
+    // init("#pagemark0");
+    // init("#pagemark1");
+
+    init(".resize-drag");
 
 });
 

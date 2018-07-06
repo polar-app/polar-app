@@ -17,12 +17,13 @@
 
             /* This makes things *much* easier */
             box-sizing: border-box;
+            position: absolute;
         }
 
         .resize-container {
             display: inline-block;
             width: 100%;
-            height: 240px;
+            height: 500px;
             background: lightgrey;
         }
 
@@ -36,9 +37,15 @@
 <body>
 
 <div class="resize-container">
-    <div class="resize-drag">
+
+    <div class="resize-drag" id="pagemark0">
         Resize from any edge or corner
     </div>
+
+    <div class="resize-drag" id="pagemark1" style="left: 150px;">
+        Resize from any edge or corner
+    </div>
+
 </div>
 
 
