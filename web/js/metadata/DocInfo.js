@@ -1,10 +1,11 @@
 const {SerializedObject} = require("./SerializedObject.js");
+const {PagemarkType} = require("./PagemarkType.js");
 
 /**
  * Lightweight metadata about a document. We do not include full page metadata
  * with this object which makes it lightweight to pass around.
  */
-module.exports.DocInfo = class extends SerializedObject {
+class DocInfo extends SerializedObject {
 
     constructor(val) {
 
@@ -52,6 +53,16 @@ module.exports.DocInfo = class extends SerializedObject {
          */
         this.progress = 0;
 
+        /**
+         * Specify the pagemark type we should use to render this document.
+         *
+         * Usually SINGLE_COLUMN as the default but some documents need to be
+         * double or single column - especially research PDFs.
+         *
+         * @type {Symbol}
+         */
+        this.pagemarkType = PagemarkType.SINGLE_COLUMN;
+
         this.init(val);
 
     }
@@ -64,3 +75,5 @@ module.exports.DocInfo = class extends SerializedObject {
     }
 
 };
+
+module.exports.DocInfo = DocInfo;

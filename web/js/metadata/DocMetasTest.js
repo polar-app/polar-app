@@ -68,7 +68,8 @@ describe('DocMetas', function() {
                     "nrPages": 2,
                     "fingerprint": "0x001",
                     "lastOpened": null,
-                    "progress": 0
+                    "progress": 0,
+                    "pagemarkType": "SINGLE_COLUMN"
                 },
                 "annotationInfo": {
                     "lastAnnotated": null
