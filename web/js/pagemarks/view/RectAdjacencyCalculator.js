@@ -72,12 +72,14 @@ class RectAdjacencyCalculator {
         result.adjustments.horizontal
             = RectAdjacencyCalculator.adjust(primaryBox.horizontal, secondaryBox.horizontal);
 
-        result.adjustments.vertical
-            = RectAdjacencyCalculator.adjust(primaryBox.vertical, secondaryBox.vertical);
+// /*
+//         result.adjustments.vertical
+//             = RectAdjacencyCalculator.adjust(primaryBox.vertical, secondaryBox.vertical);
+// */
 
          result.adjustedRect = Rects.move(primary, {
                  x: result.adjustments.horizontal.start,
-                 //y: result.adjustments.vertical.start
+                 // y: result.adjustments.vertical.start
              },
              true);
 
@@ -138,6 +140,9 @@ class RectAdjacencyCalculator {
      */
     static adjust(primaryLine, secondaryLine) {
 
+        console.log("FIXME: primaryLine: " + primaryLine)
+        console.log("FIXME: secondaryLine: " + secondaryLine)
+
         if(secondaryLine.overlaps(primaryLine)) {
 
             let delta = secondaryLine.end - primaryLine.start;
@@ -177,7 +182,6 @@ class RectAdjacencyCalculator {
 }
 
 class LineAdjustment {
-
 
     /**
      *
@@ -253,6 +257,10 @@ class Line {
      */
     overlaps(line) {
         return this.containsPoint(line.start) || this.containsPoint(line.end);
+    }
+
+    toString() {
+        return `{start: ${this.start}, end: ${this.end}}`;
     }
 
 }

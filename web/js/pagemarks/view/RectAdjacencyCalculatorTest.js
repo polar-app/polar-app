@@ -13,7 +13,7 @@ describe('RectAdjacencyCalculator', function() {
 
     // FIXME: test the snapping direction... do we snap before or after the primary
 
-    it("Primary coming from the right (snapping after)", function () {
+    it("Primary coming from the right, horizontal (snapping after)", function () {
 
         let primaryRect = Rects.createFromBasicRect({left: 16, top: 10, width: 10, height: 10});
 
@@ -41,7 +41,7 @@ describe('RectAdjacencyCalculator', function() {
 
     });
 
-    it("Primary coming from the left (snapping before)", function () {
+    it("Primary coming from the left, horizontal (snapping before)", function () {
 
         let primaryRect = Rects.createFromBasicRect({left: 14, top: 4, width: 10, height: 10, right: 24});
 
@@ -50,6 +50,9 @@ describe('RectAdjacencyCalculator', function() {
         console.log("BEFORE: " + RectArt.formatRects([secondaryRect, primaryRect]).toString());
 
         let adjacency = RectAdjacencyCalculator.calculate(primaryRect, secondaryRect);
+
+        // assert.equal(adjacency.adjustments.vertical.overlapped, false);
+        // assert.equal(adjacency.adjustedRect.top, 4);
 
         console.log("AFTER: " + RectArt.formatRects([secondaryRect, adjacency.adjustedRect]).toString());
 
@@ -68,5 +71,28 @@ describe('RectAdjacencyCalculator', function() {
         assertJSON(adjacency.adjustedRect, expected);
 
     });
+
+    it("No horizontal overlap", function () {
+
+        let primaryRect = Rects.createFromBasicRect({left: 14, top: 4, width: 10, height: 10, right: 24});
+
+        let secondaryRect = Rects.createFromBasicRect({left: 30, top: 4, width: 10, height: 10, right: 28});
+
+        console.log("BEFORE: " + RectArt.formatRects([secondaryRect, primaryRect]).toString());
+
+        let adjacency = RectAdjacencyCalculator.calculate(primaryRect, secondaryRect);
+
+        // assert.equal(adjacency.adjustments.vertical.overlapped, false);
+        // assert.equal(adjacency.adjustedRect.top, 4);
+
+        console.log("AFTER: " + RectArt.formatRects([secondaryRect, adjacency.adjustedRect]).toString());
+
+        assert.equal(adjacency.adjustments.horizontal.overlapped, false);
+        assert.equal(adjacency.adjustments.horizontal.snapped, null);
+
+        assertJSON(adjacency.adjustedRect, primaryRect);
+
+    });
+
 
 });
