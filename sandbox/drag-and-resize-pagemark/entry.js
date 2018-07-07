@@ -1,8 +1,22 @@
 const interact = require("interactjs");
 const $ = require("jquery");
+const {Rects} = require("../../web/js/Rects");
+const {Objects} = require("../../web/js/util/Objects");
 
 // this is used later in the resizing and gesture demos
 //window.dragMoveListener = dragMoveListener;
+
+function computeBoundingRect(parentRect, elementOrigin, intersectingRects) {
+
+    console.log("Working with intersecting rects: " + JSON.stringify(intersectingRects, null, "  ") );
+
+    let result = Objects.duplicate(parentRect);
+
+    result.left = Math.max(parentRect.left, Math.min(intersectingRects.map(intersectingRect => intersectingRect.right)));
+    result.right = Math.min(parentRect.right, Math.min(intersectingRects.map(intersectingRect => intersectingRect.left)));
+
+    return result;
+}
 
 function computeRestriction(x,y, interactionEvent) {
 
@@ -18,42 +32,79 @@ function computeRestriction(x,y, interactionEvent) {
         throw new Error("No parentElement");
     }
 
-    let rect = parentElement.getBoundingClientRect();
+    let elementRect = element.getBoundingClientRect();
+    let parentRect = parentElement.getBoundingClientRect();
 
-    // FIXME: this actually DOES work to implement the restriction properly...
-    // rect.height = rect.height - 100;
-    // rect.bottom = rect.bottom - 100;
+    // TODO: this needs to be PAGE local.. not the entire document.
+    let pagemarks = Array.from(document.querySelectorAll(".pagemark"))
+                            .filter( current => current !== element);
 
+    let intersectedPagemarks =
+        pagemarks.filter(current => Rects.intersect(current.getBoundingClientRect(), elementRect));
 
-    // if we have too many elements at the point then we should just return the
-    // current element's bounding rect to prevent it from growing.
-    let elementsFromPoint = document.elementsFromPoint(x,y);
+    let intersectedPagemarkRects =
+        intersectedPagemarks.map(current => current.getBoundingClientRect());
 
-    let filteredElements = elementsFromPoint.filter( current => current.matches(".pagemark"))
-                                            .filter( current => current !== element);
+    if(intersectedPagemarks.length > 0) {
 
-    // FIXME: this isn't going to work because what happens when we're on the
-    // OTHER side of a rect!!!  plus we can SWALLOW a rect and expand past it!
-    //
-    // fuck.. this is actually a difficult problem.
+        console.log("FIXME: we intersect with N pagemarks: " + intersectedPagemarks.length);
 
-    // FIXME: what if we just compute the union for box and them compute the
-    // bounding box base on the union of the virtual rects its interacting
-    // with.
+        return computeBoundingRect(parentRect, {x: 10, y: 10}, intersectedPagemarkRects)
 
-    if(filteredElements.length === 0) {
-        console.log("Using default parent rect");
-        return rect;
-    } else if (filteredElements.length === 1){
-        console.log("Using custom bounded rect");
-
-        return {top: 0, left: 0, width: 0, height: 0, bottom: 0, right: 0};
-
-        //return rect;
     } else {
-        log.error("Too many filtered elements found: ", filteredElements);
-        throw new Error("Too many filtered elements found: " + filteredElements.length)
+        return parentRect;
+
     }
+
+
+    //
+    // // TODO make this testable by immediately converting to rects and then
+    // // working with them directly.
+    //
+    // // FIXME: this actually DOES work to implement the restriction properly...
+    // // rect.height = rect.height - 100;
+    // // rect.bottom = rect.bottom - 100;
+    //
+    // // TODO: this needs to be PAGE local.. not the entire document.
+    // let pagemarks = document.querySelectorAll(".pagemark")
+    //                         .filter( current => current !== element);
+    //
+    // let intersectedPagemarks =
+    //     pagemarks.filter(current => Rects.intersect(current.getBoundingClientRect(), elementRect));
+    //
+    // console.log("FIXME: we intersect with N pagemarks: " + intersectedPagemarks.length);
+    //
+    // // find pagemarks that I intersect with..
+    //
+    //
+    // // if we have too many elements at the point then we should just return the
+    // // current element's bounding rect to prevent it from growing.
+    // let elementsFromPoint = document.elementsFromPoint(x,y);
+    //
+    // let filteredElements = elementsFromPoint.filter( current => current.matches(".pagemark"))
+    //
+    // // FIXME: this isn't going to work because what happens when we're on the
+    // // OTHER side of a rect!!!  plus we can SWALLOW a rect and expand past it!
+    // //
+    // // fuck.. this is actually a difficult problem.
+    //
+    // // FIXME: what if we just compute the union for box and them compute the
+    // // bounding box base on the union of the virtual rects its interacting
+    // // with.
+    //
+    // if(filteredElements.length === 0) {
+    //     console.log("Using default parent rect");
+    //     return rect;
+    // } else if (filteredElements.length === 1){
+    //     console.log("Using custom bounded rect");
+    //
+    //     return {top: 0, left: 0, width: 0, height: 0, bottom: 0, right: 0};
+    //
+    //     //return rect;
+    // } else {
+    //     log.error("Too many filtered elements found: ", filteredElements);
+    //     throw new Error("Too many filtered elements found: " + filteredElements.length)
+    // }
 
 }
 

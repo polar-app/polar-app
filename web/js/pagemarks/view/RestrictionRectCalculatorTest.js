@@ -3,6 +3,7 @@ const {assertJSON} = require("../../test/Assertions");
 
 const {Rect} = require("../../Rect");
 const {Rects} = require("../../Rects");
+const {Objects} = require("../../util/Objects");
 
 const {RestrictionRectCalculator, BoundingRect} = require("./RestrictionRectCalculator");
 
@@ -148,4 +149,63 @@ describe('RestrictionRectCalculator', function() {
 
     });
 
+
+
+    describe('computeUnionBound', function() {
+
+        it("Test 1", function () {
+            assert.equal(lineIntersects([3,5], [4,6]), true)
+        });
+
+        it("Test 2", function () {
+            assert.equal(lineIntersects([4,6], [3,5]), true)
+        });
+
+        it("Test 3", function () {
+            assert.equal(lineIntersects([4,6], [8,10]), false)
+        });
+
+        it("Test 4", function () {
+            assert.equal(lineIntersects([4,6], [5,10]), true)
+        });
+
+    });
+
+
+    /**
+     * If we have the origin in x, y, just compute the closest bounds to x/y.
+     *
+     * @param elementOrigin
+     * @param intersectingRects
+     */
+    function computeBoundingRect(parentRect, elementOrigin, intersectingRects) {
+
+        console.log("Working with intersecting rects: " + JSON.stringify(intersectingRects, null, "  ") );
+
+        let result = Objects.duplicate(parentRect);
+
+        result.right = Math.min(parentRect.right, Math.min(intersectingRects.map(intersectingRect => intersectingRect.left)));
+
+        return result;
+    }
+
+    it("Completely swallowed rect", function () {
+
+
+        let parentRect = Rects.createFromBasicRect(new Rect({left: 10, top: 10, width: 1000, height: 1000}))
+        let elementOrigin = {x: 50, y: 50};
+
+        let intersectingRects = [
+            Rects.createFromBasicRect(new Rect({left: 100, top: 100, width: 100, height: 100}))
+        ];
+
+        assertJSON(computeBoundingRect(parentRect, elementOrigin, intersectingRects), {
+        });
+
+    });
+
+
+
 });
+
+
