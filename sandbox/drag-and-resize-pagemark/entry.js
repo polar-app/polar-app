@@ -315,80 +315,46 @@ function init(selector) {
             // //     target.style.transform =
             // //         'translate(' + x + 'px, ' + y + 'px)';
             //
-            target.style.left = `${x}px`;
-            target.style.top = `${y}px`;
+            // target.style.left = `${x}px`;
+            // target.style.top = `${y}px`;
+            //
+            // // update the position attributes
+            // target.setAttribute('data-x', x);
+            // target.setAttribute('data-y', y);
 
-            // update the position attributes
-            target.setAttribute('data-x', x);
-            target.setAttribute('data-y', y);
+
+            let intersectedPagemarks = calculateIntersectedPagemarks(x, y, event.currentTarget);
 
 
-            //
-            // // FIXME: AHA!  what's happening is that the element hasn't updated
-            // // yet, so we are looking at the current position, not the NEXT
-            // // position, and then when we calculate the intersection there is
-            // // nothing at the current position but it WUILL be ther e in the future
-            // // once we move it.
-            // let intersectedPagemarks = calculateIntersectedPagemarks(event.clientX, event.clientY, event.currentTarget);
-            //
-            // if(intersectedPagemarks.intersected.length === 0) {
-            //
-            //     // FIXME: could I try to take the position from a derived dx and dy?
-            //
-            //     //
-            //
-            //     // FIXME: now the issue is that the translate() calculation is off
-            //     // SLIGHTLYU and it's keeping us locked...
-            //
-            //     // FIXME: can I translate the two positions??? like the position
-            //     // where it WOULD be?
-            //
-            //     // FIXME: I don't think we can trust event.dx or dy
-            //
-            //     let target = event.target;
-            //
-            //
-            //     let x = Styles.parsePX(target.style.left) + deltaX;
-            //     let y = Styles.parsePX(target.style.top) + deltaY;
-            //
-            //         // // keep the dragged position in the data-x/data-y attributes
-            //         // x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx,
-            //         // y = (parseFloat(target.getAttribute('data-y')) || 0) + event.dy;
-            //
-            //     console.log("FIXME: x: ${x} and y: ${y}");
-            //
-            //     // translate the element
-            //     // target.style.webkitTransform =
-            //     //     target.style.transform =
-            //     //         'translate(' + x + 'px, ' + y + 'px)';
-            //
-            //     target.style.left = `${x}px`;
-            //     target.style.top = `${y}px`;
-            //
-            //     // update the position attributes
-            //     target.setAttribute('data-x', x);
-            //     target.setAttribute('data-y', y);
-            //
-            //     let targetRect = Rects.fromElementStyle(target);
-            //
-            //     console.log("FIXME: placed rect at: " + JSON.stringify(targetRect, null, "  "));
-            //
-            //     // now assert that the place we dropped is the place we expected
-            //     // it to be dropped
-            //
-            //     assertJSON(intersectedPagemarks.elementRect, targetRect);
-            //
-            //     intersectedPagemarks = calculateIntersectedPagemarks(x, y, event.currentTarget);
-            //
-            //     if(intersectedPagemarks.intersected.length !== 0) {
-            //         console.error("Now we are intersected! shit!");
-            //     }
-            //
-            //     updateTargetText(target);
-            //
-            // } else {
-            //     console.log("Will not drag.. intersects with: ", intersectedPagemarks);
-            // }
+            if(intersectedPagemarks.intersected.length === 0) {
+
+                target.style.left = `${x}px`;
+                target.style.top = `${y}px`;
+
+                // update the position attributes
+                target.setAttribute('data-x', x);
+                target.setAttribute('data-y', y);
+
+                let targetRect = Rects.fromElementStyle(target);
+
+                console.log("FIXME: placed rect at: " + JSON.stringify(targetRect, null, "  "));
+
+                // now assert that the place we dropped is the place we expected
+                // it to be dropped
+
+                assertJSON(intersectedPagemarks.elementRect, targetRect);
+
+                intersectedPagemarks = calculateIntersectedPagemarks(x, y, event.currentTarget);
+
+                if(intersectedPagemarks.intersected.length !== 0) {
+                    console.error("Now we are intersected! shit!");
+                }
+
+                updateTargetText(target);
+
+            } else {
+                console.log("Will not drag.. intersects with: ", intersectedPagemarks);
+            }
 
         })
         .on('resizemove', function (event) {
