@@ -46302,6 +46302,8 @@ module.exports.Rect = Rect;
 
 const { Objects } = __webpack_require__(/*! ./util/Objects */ "./web/js/util/Objects.js");
 const { Preconditions } = __webpack_require__(/*! ./Preconditions */ "./web/js/Preconditions.js");
+const { Rect } = __webpack_require__(/*! ./Rect */ "./web/js/Rect.js");
+const { Styles } = __webpack_require__(/*! ./util/Styles */ "./web/js/util/Styles.js");
 
 class Rects {
 
@@ -46392,7 +46394,7 @@ class Rects {
 
     /**
      * Create a full rect from a rect that has top,left,width,height only.
-     * @param rect {Rect}
+     * @param rect {Rect | Object}
      * @return {Rect}
      */
     static createFromBasicRect(rect) {
@@ -46402,7 +46404,26 @@ class Rects {
         rect.bottom = rect.top + rect.height;
         rect.right = rect.left + rect.width;
 
-        return Rects.validate(rect);
+        return Rects.validate(new Rect(rect));
+    }
+
+    /**
+     * Parse the positioning from the style with left, top width and height and then
+     * return this as a rect.
+     * @param element {HTMLElement}
+     */
+    static fromElementStyle(element) {
+
+        console.log("FIXME: element style: " + element.getAttribute("style"));
+
+        return Rects.createFromBasicRect({
+
+            left: Styles.parsePX(element.style.left),
+            top: Styles.parsePX(element.style.top),
+            width: Styles.parsePX(element.style.width),
+            height: Styles.parsePX(element.style.height)
+
+        });
     }
 
 }
@@ -53513,6 +53534,39 @@ class Strings {
 }
 
 module.exports.Strings = Strings;
+
+/***/ }),
+
+/***/ "./web/js/util/Styles.js":
+/*!*******************************!*\
+  !*** ./web/js/util/Styles.js ***!
+  \*******************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+const { Preconditions } = __webpack_require__(/*! ../Preconditions */ "./web/js/Preconditions.js");
+class Styles {
+
+    /**
+     * Parse the amount of pixels from the given value.  Right now we only
+     * support px but in the future we could support other types.
+     *
+     * @param value {string}
+     * @return {number}
+     */
+    static parsePX(value) {
+        Preconditions.assertNotNull(value, "value");
+
+        if (value === "") {
+            throw new Error("Empty string given");
+        }
+
+        return parseInt(value.replace("px", ""));
+    }
+
+}
+
+module.exports.Styles = Styles;
 
 /***/ }),
 

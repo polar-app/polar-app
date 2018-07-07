@@ -1,5 +1,7 @@
 const {Objects} = require("./util/Objects");
 const {Preconditions} = require("./Preconditions");
+const {Rect} = require("./Rect");
+const {Styles} = require("./util/Styles");
 
 class Rects {
 
@@ -98,7 +100,7 @@ class Rects {
 
     /**
      * Create a full rect from a rect that has top,left,width,height only.
-     * @param rect {Rect}
+     * @param rect {Rect | Object}
      * @return {Rect}
      */
     static createFromBasicRect(rect) {
@@ -108,7 +110,27 @@ class Rects {
         rect.bottom = rect.top + rect.height;
         rect.right = rect.left + rect.width;
 
-        return Rects.validate(rect);
+        return Rects.validate(new Rect(rect));
+
+    }
+
+    /**
+     * Parse the positioning from the style with left, top width and height and then
+     * return this as a rect.
+     * @param element {HTMLElement}
+     */
+    static fromElementStyle(element) {
+
+        console.log("FIXME: element style: " + element.getAttribute("style"));
+
+        return Rects.createFromBasicRect({
+
+            left: Styles.parsePX(element.style.left),
+            top: Styles.parsePX(element.style.top),
+            width: Styles.parsePX(element.style.width),
+            height: Styles.parsePX(element.style.height)
+
+        });
 
     }
 

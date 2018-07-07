@@ -1,3 +1,6 @@
+
+// FIXME: remove this code
+
 var assert = require('assert');
 const {assertJSON} = require("../../test/Assertions");
 
