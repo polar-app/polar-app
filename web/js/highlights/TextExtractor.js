@@ -1,11 +1,4 @@
-//
-// TODO:
-//
-// - Much of this code needs to be refactored to use
-//   Rect objects {top,left,bottom,right,width,height} instead of a box with
-//   two points. Rects are easier to work with and more DOM-centric.
-//
-// - I'm using getBoundingClientRect which I think is wrong.
+// TODO: I think this code is obsolete and can be removed.
 
 /**
  * Given a box, extract the text within the box.

@@ -24,17 +24,18 @@ function computeRestriction(x,y, interactionEvent) {
     // rect.height = rect.height - 100;
     // rect.bottom = rect.bottom - 100;
 
+    console.log("FIXME: using restriction rect: " + JSON.stringify(rect, null, "  "));
+
     return rect;
 
 }
 
 function init(selector) {
 
-    // FIXME.. it actually takes 'el' as teh first param.
     interact(selector)
         .draggable({
             restrict: {
-                restriction: 'parent',
+                restriction: computeRestriction,
                 elementRect: { top: 0, left: 0, bottom: 1, right: 1 }
             },
         })
@@ -55,15 +56,22 @@ function init(selector) {
                 outer: computeRestriction,
             },
 
+            restrictSize: {
+                //outer: 'parent',
+                outer: computeRestriction,
+            },
+
+            // FIXME: move doesn't use restrictions...
+
             restrict: {
                 //restriction: 'parent',
                 restriction: computeRestriction
             },
 
             // minimum size
-            restrictSize: {
-                min: { width: 100, height: 50 },
-            },
+            // restrictSize: {
+            //     min: { width: 100, height: 50 },
+            // },
 
             inertia: false,
 
