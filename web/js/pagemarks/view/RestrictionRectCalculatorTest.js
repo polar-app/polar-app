@@ -10,7 +10,7 @@ describe('RestrictionRectCalculator', function() {
 
     // https://stackoverflow.com/questions/8024149/is-it-possible-to-get-the-non-enumerable-inherited-property-names-of-an-object
 
-    describe('BoundingRect', function() {
+    describe('RestrictionRectCalculator', function() {
 
         it("Basic calculation with no siblings", function () {
 
@@ -18,13 +18,13 @@ describe('RestrictionRectCalculator', function() {
 
             let selfRect = Rects.createFromBasicRect(new Rect({left: 200, top: 10, width: 100, height: 100}));
 
-            let boundingRect = new BoundingRect(parentRect, [], selfRect);
+            let restrictionRectCalculator = new RestrictionRectCalculator(parentRect, [], selfRect);
 
-            assert.equal(boundingRect.calculateBottom(), 310);
+            assert.equal(restrictionRectCalculator.calculateBottom(), 310);
 
-            assert.equal(boundingRect.calculateLeft(), 10);
+            assert.equal(restrictionRectCalculator.calculateLeft(), 10);
 
-            assertJSON(boundingRect.calculate(), {
+            assertJSON(restrictionRectCalculator.calculate(), {
                 "left": 10,
                 "top": 10,
                 "right": 510,
@@ -44,13 +44,13 @@ describe('RestrictionRectCalculator', function() {
 
             let selfRect = Rects.createFromBasicRect(new Rect({left: 200, top: 10, width: 100, height: 100}));
 
-            let boundingRect = new BoundingRect(parentRect, [siblingRect0], selfRect);
+            let sut = new RestrictionRectCalculator(parentRect, [siblingRect0], selfRect);
 
-            assert.equal(boundingRect.calculateBottom(), 310);
+            assert.equal(sut.calculateBottom(), 310);
 
-            assert.equal(boundingRect.calculateLeft(), 110);
+            assert.equal(sut.calculateLeft(), 110);
 
-            assertJSON(boundingRect.calculate(), {
+            assertJSON(sut.calculate(), {
                 "left": 110,
                 "top": 10,
                 "right": 510,
@@ -63,24 +63,22 @@ describe('RestrictionRectCalculator', function() {
 
         it("Basic calculation with just one sibling to the left but above", function () {
 
-            let parentRect = Rects.createFromBasicRect(  new Rect({left: 10,  top: 10,  width: 1000, height: 1000, right: 1010, bottom: 1010}));
+            let parentRect = Rects.createFromBasicRect(  new Rect({left: 10,  top: 10,  width: 1000, height: 1000,}));
 
-            let siblingRect0 = Rects.createFromBasicRect(new Rect({left: 10,  top: 10,  width: 100,  height: 100,  right: 110,  bottom: 110}));
+            let siblingRect0 = Rects.createFromBasicRect(new Rect({left: 10,  top: 10,  width: 100,  height: 100}));
 
-            let selfRect = Rects.createFromBasicRect(    new Rect({left: 200, top: 200, width: 100,  height: 100,  right: 300,  bottom: 300}));
+            let selfRect = Rects.createFromBasicRect(    new Rect({left: 200, top: 200, width: 100,  height: 100}));
 
-            let boundingRect = new BoundingRect(parentRect, [siblingRect0], selfRect);
+            let sut = new RestrictionRectCalculator(parentRect, [siblingRect0], selfRect);
 
-            let left = boundingRect.calculateLeft();
-
-            // assertJSON(boundingRect.calculate(), {
-            //     "left": 10,
-            //     "top": 110,
-            //     "right": 1000,
-            //     "bottom": 1000,
-            //     "width": 400,
-            //     "height": 300
-            // });
+            assertJSON(sut.calculate(), {
+                "left": 10,
+                "top": 10,
+                "right": 1010,
+                "bottom": 1010,
+                "width": 1000,
+                "height": 1000
+            });
 
         });
 

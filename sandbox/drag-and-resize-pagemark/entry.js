@@ -24,9 +24,36 @@ function computeRestriction(x,y, interactionEvent) {
     // rect.height = rect.height - 100;
     // rect.bottom = rect.bottom - 100;
 
-    console.log("FIXME: using restriction rect: " + JSON.stringify(rect, null, "  "));
 
-    return rect;
+    // if we have too many elements at the point then we should just return the
+    // current element's bounding rect to prevent it from growing.
+    let elementsFromPoint = document.elementsFromPoint(x,y);
+
+    let filteredElements = elementsFromPoint.filter( current => current.matches(".pagemark"))
+                                            .filter( current => current !== element);
+
+    // FIXME: this isn't going to work because what happens when we're on the
+    // OTHER side of a rect!!!  plus we can SWALLOW a rect and expand past it!
+    //
+    // fuck.. this is actually a difficult problem.
+
+    // FIXME: what if we just compute the union for box and them compute the
+    // bounding box base on the union of the virtual rects its interacting
+    // with.
+
+    if(filteredElements.length === 0) {
+        console.log("Using default parent rect");
+        return rect;
+    } else if (filteredElements.length === 1){
+        console.log("Using custom bounded rect");
+
+        return {top: 0, left: 0, width: 0, height: 0, bottom: 0, right: 0};
+
+        //return rect;
+    } else {
+        log.error("Too many filtered elements found: ", filteredElements);
+        throw new Error("Too many filtered elements found: " + filteredElements.length)
+    }
 
 }
 
