@@ -8,7 +8,10 @@ class AdjacentRect {
         /**
          * @type {boolean}
          */
-        this.intersectedHorizontally = false;
+        this.intersected = {
+            horizontally: false,
+            vertically: false
+        };
 
         /**
          * @type {Rect}
@@ -29,15 +32,6 @@ class AdjacentRect {
 
 }
 
-
-/**
- * @param min {number}
- * @param pt {number}
- * @param max {number}
- */
-function interval(min, pt, max) {
-    return pt >= min && pt <= max;
-}
 
 /**
  * If we have two rects, and the've moved to intersect, compute updated
@@ -68,7 +62,7 @@ class RectAdjacencyCalculator {
         }
 
         // TODO: make intersected an object with a horizontal property.
-        result.intersectedHorizontally = secondaryBox.horizontal.overlaps(primaryBox.horizontal);
+        result.intersected.horizontally = secondaryBox.horizontal.overlaps(primaryBox.horizontal);
 
             // = interval(secondary.left, primary.left, secondary.right) ||
             //   interval(secondary.left, primary.right, secondary.right);
@@ -78,7 +72,7 @@ class RectAdjacencyCalculator {
 
         // primary coming from the left
         // *** secondary.left <= primary.left <= secondary.right
-        if(result.intersectedHorizontally) {
+        if(result.intersected.horizontally) {
 
             // FIXME: when migrating to a line model, call these start + end
 
