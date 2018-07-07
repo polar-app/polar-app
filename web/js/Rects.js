@@ -84,6 +84,19 @@ class Rects {
     }
 
     /**
+     * Return true if the two rects intersect.
+     * @param a {Rect|Object}
+     * @param b {Rect|Object}
+     * @return {boolean}
+     */
+    static intersect(a, b) {
+        return (a.left <= b.right &&
+                b.left <= a.right &&
+                a.top <= b.bottom &&
+                b.top <= a.bottom)
+    }
+
+    /**
      * Create a full rect from a rect that has top,left,width,height only.
      * @param rect {Rect}
      * @return {Rect}
