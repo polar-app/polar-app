@@ -59,9 +59,19 @@ class RectAdjacencyCalculator {
 
         let result = new AdjacentRect();
 
-        result.intersectedHorizontally
-            = interval(secondary.left, primary.left, secondary.right) ||
-              interval(secondary.left, primary.right, secondary.right);
+        let secondaryBox = {
+            horizontal: new Line(secondary.left, secondary.right)
+        }
+
+        let primaryBox = {
+            horizontal: new Line(primary.left, primary.right)
+        }
+
+        // TODO: make intersected an object with a horizontal property.
+        result.intersectedHorizontally = secondaryBox.horizontal.overlaps(primaryBox.horizontal);
+
+            // = interval(secondary.left, primary.left, secondary.right) ||
+            //   interval(secondary.left, primary.right, secondary.right);
 
         // TODO: based on whichever it is closest to, we can decide which side
         // to adjust..  This would be a better strategy I think.
@@ -74,25 +84,19 @@ class RectAdjacencyCalculator {
 
             // TODO: how which side to do we need to dock to?
 
-            let delta = secondary.right - primary.left;
+            let delta = secondaryBox.horizontal.end - primaryBox.horizontal.start;
 
             // determine the percentage we are within the secondary. If we're >
             // 0.5 we should jump to the right.  Otherwise, jump to the left.
-            let perc = delta / secondary.height;
-
-            console.log("FIXME: perc: " + perc);
+            let perc = delta / secondaryBox.horizontal.width;
 
             if(perc < 0.5) {
-                result.adjustedRect = Rects.move(primary, {x: secondary.right}, true);
+                result.adjustedRect = Rects.move(primary, {x: secondaryBox.horizontal.end}, true);
                 result.snapped.x = "AFTER";
             } else {
-                result.adjustedRect = Rects.move(primary, {x: secondary.left - primary.width}, true);
+                result.adjustedRect = Rects.move(primary, {x: secondaryBox.horizontal.start - primaryBox.horizontal.width}, true);
                 result.snapped.x = "BEFORE";
             }
-
-            // // now determine which side to adjust to...
-            //
-            // result.adjustedRect = Rects.move(primary, {x: delta, y: 0});
 
         }
 
@@ -108,6 +112,54 @@ class RectAdjacencyCalculator {
 
     }
 
+}
+
+
+/**
+ * Simple line with just a start and end.
+ */
+class Line {
+
+    /**
+     *
+     * @param start {number}
+     * @param end {number}
+     */
+    constructor(start, end) {
+        this.start = start;
+        this.end = end;
+    }
+
+    /**
+     * The width of the line. Not to be confused with the width of a rect.
+     *
+     * @return {number}
+     */
+    get width() {
+        return this.end - this.start;
+    }
+
+    /**
+     * Return true if the given point is between the start and end position
+     * of the line (inclusive)
+     *
+     * @param pt {number}
+     * @return {boolean}
+     */
+    containsPoint(pt) {
+        return pt >= this.start && pt <= this.end;
+    }
+
+    /**
+     * Return true if the given line overlaps the current line.  IE either the start
+     * or end point on the given line is between the start and end points of the
+     * current line.
+     *
+     * @param line {Line}
+     */
+    overlaps(line) {
+        return this.containsPoint(line.start) || this.containsPoint(line.end);
+    }
 
 }
 
