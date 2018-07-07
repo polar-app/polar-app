@@ -3,6 +3,8 @@
  */
 class Rect {
 
+    // TODO: some rects have x,y ... should we add them here to be complete?
+
     constructor(obj) {
 
         /**

@@ -182,24 +182,14 @@ function init(selector) {
                 target.setAttribute('data-x', x);
                 target.setAttribute('data-y', y);
 
-                let targetRect = Rects.fromElementStyle(target);
-
-                console.log("FIXME: placed rect at: " + JSON.stringify(targetRect, null, "  "));
-
-                // now assert that the place we dropped is the place we expected
-                // it to be dropped
-
-                assertJSON(intersectedPagemarks.elementRect, targetRect);
-
-                intersectedPagemarks = calculateIntersectedPagemarks(x, y, event.currentTarget);
-
-                if(intersectedPagemarks.intersected.length !== 0) {
-                    console.error("Now we are intersected! shit!");
-                }
-
-                //updateTargetText(target);
-
             } else {
+
+                // TODO: update position BUT we need to do so factoring into
+                // position of the element we're about to collide with.  Basically
+                // just adjust the left + top position for now.
+
+                // TODO: make this code testable...
+
                 console.log("Will not drag.. intersects with: ", intersectedPagemarks);
             }
 

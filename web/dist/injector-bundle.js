@@ -10645,6 +10645,8 @@ module.exports.Preconditions = Preconditions;
  */
 class Rect {
 
+  // TODO: some rects have x,y ... should we add them here to be complete?
+
   constructor(obj) {
 
     /**
@@ -10771,6 +10773,29 @@ class Rects {
 
         rect.right = rect.right + point.x;
         rect.bottom = rect.bottom + point.y;
+
+        return Rects.validate(rect);
+    }
+
+    /**
+     * Assume that the given rect is relative to the point and return the new
+     * rect.
+     *
+     * This adjust ALL properties including top, left, bottom, right
+     *
+     * @param rect {Rect} The rect to move.
+     * @param dir {Object} Move the rect in the given dir (direction) in the
+     * x and y plane.  The dir.x and dir.y specify how much to move the rect.
+     */
+    static move(rect, dir) {
+
+        rect = Objects.duplicate(rect);
+
+        rect.left = rect.left + dir.x;
+        rect.top = rect.top + dir.y;
+
+        rect.right = rect.right + dir.x;
+        rect.bottom = rect.bottom + dir.y;
 
         return Rects.validate(rect);
     }
