@@ -245,15 +245,24 @@ function init(selector) {
 
                 // FIXME: I don't think we can trust event.dx or dy
 
-                let target = event.target,
-                    // keep the dragged position in the data-x/data-y attributes
-                    x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx,
-                    y = (parseFloat(target.getAttribute('data-y')) || 0) + event.dy;
+                let target = event.target;
+
+                let x = parseInt(target.style.left.replace("px", "")) + event.dx;
+                let y = parseInt(target.style.top.replace("px", "")) + event.dy;
+
+                    // // keep the dragged position in the data-x/data-y attributes
+                    // x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx,
+                    // y = (parseFloat(target.getAttribute('data-y')) || 0) + event.dy;
+
+                console.log("FIXME: x: ${x} and y: ${y}")
 
                 // translate the element
-                target.style.webkitTransform =
-                    target.style.transform =
-                        'translate(' + x + 'px, ' + y + 'px)';
+                // target.style.webkitTransform =
+                //     target.style.transform =
+                //         'translate(' + x + 'px, ' + y + 'px)';
+
+                target.style.left = `${x}px`;
+                target.style.top = `${y}px`;
 
                 // update the position attributes
                 target.setAttribute('data-x', x);
