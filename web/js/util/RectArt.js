@@ -5,9 +5,26 @@ const {TextArray} = require("./TextArray");
  */
 class RectArt {
 
+    /**
+     *
+     * @param width {number}
+     * @param height {number}
+     */
     constructor(width, height) {
 
-        this.textArray = new TextArray(width, height);
+        // we need a buffer of one so that we can position items at the ZERO
+        // index of the x and y axis.
+        this.textArray = new TextArray(width + 1, height + 1);
+
+        /**
+         * @type {number}
+         */
+        this.width = width;
+
+        /**
+         * @type {number}
+         */
+        this.height = height;
 
     }
 
@@ -29,6 +46,10 @@ class RectArt {
 
     write(x, y, val) {
         this.textArray.write(x,y,val);
+    }
+
+    toTextArray() {
+        return this.textArray;
     }
 
     toString() {
@@ -53,9 +74,35 @@ class RectArt {
         rectArt.write(rect.left, rect.top, "+");
         rectArt.write(rect.left, rect.bottom - 1, "+");
         rectArt.write(rect.right, rect.top, "+");
-        rectArt.write(rect.right, rect.bottom -1, "+");
+        rectArt.write(rect.right, rect.bottom - 1, "+");
 
         return rectArt;
+
+    }
+
+
+    /**
+     * Create a merged display of all the given rects.
+     *
+     * @param rects {Array<Rect>}
+     * @return {TextArray}
+     */
+    static formatRects(rects) {
+
+        let rectArts = rects.map(RectArt.createFromRect);
+
+        let rectTextArrays = rectArts.map(current => current.toTextArray());
+
+        let width = Math.max(...rectTextArrays.map(current => current.width));
+        let height = Math.max(...rectTextArrays.map(current => current.height));
+
+        let target = new TextArray(width, height);
+
+        rectArts.forEach(current => {
+            target.merge(current.toTextArray());
+        });
+
+        return target;
 
     }
 
