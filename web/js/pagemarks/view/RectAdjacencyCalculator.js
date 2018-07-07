@@ -72,7 +72,14 @@ class RectAdjacencyCalculator {
         result.adjustments.horizontal
             = RectAdjacencyCalculator.adjust(primaryBox.horizontal, secondaryBox.horizontal);
 
-         result.adjustedRect = Rects.move(primary, {x: result.adjustments.horizontal.start}, true);
+        result.adjustments.vertical
+            = RectAdjacencyCalculator.adjust(primaryBox.vertical, secondaryBox.vertical);
+
+         result.adjustedRect = Rects.move(primary, {
+                 x: result.adjustments.horizontal.start,
+                 //y: result.adjustments.vertical.start
+             },
+             true);
 
         //
         // // TODO: make intersected an object with a horizontal property.
