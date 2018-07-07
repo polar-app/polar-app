@@ -15,9 +15,9 @@ describe('RectAdjacencyCalculator', function() {
 
     it("Primary coming from the right (snapping after)", function () {
 
-        let primaryRect = Rects.createFromBasicRect({left: 100, top: 10, width: 100, height: 100});
+        let primaryRect = Rects.createFromBasicRect({left: 16, top: 10, width: 10, height: 10});
 
-        let secondaryRect = Rects.createFromBasicRect({left: 10, top: 10, width: 100, height: 100});
+        let secondaryRect = Rects.createFromBasicRect({left: 10, top: 10, width: 10, height: 10});
 
         console.log("BEFORE: " + RectArt.formatRects([secondaryRect, primaryRect]).toString());
 
@@ -28,14 +28,16 @@ describe('RectAdjacencyCalculator', function() {
         assert.equal(adjacency.intersectedHorizontally, true);
         assert.equal(adjacency.snapped.x, "AFTER");
 
-        assertJSON(adjacency.adjustedRect, {
-            "left": 110,
+        let expected = {
+            "left": 20,
             "top": 10,
-            "right": 210,
-            "bottom": 110,
-            "width": 100,
-            "height": 100
-        } );
+            "right": 30,
+            "bottom": 20,
+            "width": 10,
+            "height": 10
+        };
+
+        assertJSON(adjacency.adjustedRect, expected );
 
     });
 
