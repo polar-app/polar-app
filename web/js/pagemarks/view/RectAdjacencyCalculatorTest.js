@@ -25,8 +25,8 @@ describe('RectAdjacencyCalculator', function() {
 
         console.log("AFTER: " + RectArt.formatRects([secondaryRect, adjacency.adjustedRect]).toString());
 
-        assert.equal(adjacency.intersected.horizontally, true);
-        assert.equal(adjacency.snapped.x, "AFTER");
+        assert.equal(adjacency.adjustments.horizontal.overlapped, true);
+        assert.equal(adjacency.adjustments.horizontal.snapped, "AFTER");
 
         let expected = {
             "left": 20,
@@ -53,8 +53,8 @@ describe('RectAdjacencyCalculator', function() {
 
         console.log("AFTER: " + RectArt.formatRects([secondaryRect, adjacency.adjustedRect]).toString());
 
-        assert.equal(adjacency.intersected.horizontally, true);
-        assert.equal(adjacency.snapped.x, "BEFORE");
+        assert.equal(adjacency.adjustments.horizontal.overlapped, true);
+        assert.equal(adjacency.adjustments.horizontal.snapped, "BEFORE");
 
         let expected = {
             "left": 8,
