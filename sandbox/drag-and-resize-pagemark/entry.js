@@ -6,13 +6,24 @@ const {Objects} = require("../../web/js/util/Objects");
 // this is used later in the resizing and gesture demos
 //window.dragMoveListener = dragMoveListener;
 
+class RestrictionRectCalculator {
+
+    // calculateField(parentRect, intersectingRects, name, vsName, reducerFunc) {
+    //     Math.max(parentRect.left, Math.max(intersectingRects.map(intersectingRect => intersectingRect.right)))
+    // }
+
+}
+
 function computeBoundingRect(parentRect, elementOrigin, intersectingRects) {
 
     console.log("Working with intersecting rects: " + JSON.stringify(intersectingRects, null, "  ") );
 
     let result = Objects.duplicate(parentRect);
 
-    result.left = Math.max(parentRect.left, Math.min(intersectingRects.map(intersectingRect => intersectingRect.right)));
+    // FIXME: clean this up a bit.
+    // FIXME: MOVE doesn't work!
+
+    result.left = Math.max(parentRect.left, Math.max(intersectingRects.map(intersectingRect => intersectingRect.right)));
     result.right = Math.min(parentRect.right, Math.min(intersectingRects.map(intersectingRect => intersectingRect.left)));
 
     return result;
@@ -49,7 +60,19 @@ function computeRestriction(x,y, interactionEvent) {
 
         console.log("FIXME: we intersect with N pagemarks: " + intersectedPagemarks.length);
 
-        return computeBoundingRect(parentRect, {x: 10, y: 10}, intersectedPagemarkRects)
+        let restrictedRect = computeBoundingRect(parentRect, {x: 10, y: 10}, intersectedPagemarkRects);
+
+        console.log("FIXME: returning restrictedRect: " + JSON.stringify(restrictedRect, null, "  "));
+
+        return restrictedRect;
+        //
+        // //return {left: 0, top: 0, right: 0, bottom: 0, width: 0, height: 0};
+        // let testRect = Objects.duplicate(parentRect);
+        // testRect.right = testRect.left;
+        // testRect.bottom = testRect.top;
+        // testRect.height = 0;
+        // testRect.width = 0;
+        // return testRect;
 
     } else {
         return parentRect;
@@ -114,7 +137,7 @@ function init(selector) {
         .draggable({
             restrict: {
                 restriction: computeRestriction,
-                elementRect: { top: 0, left: 0, bottom: 1, right: 1 }
+                // elementRect: { top: 0, left: 0, bottom: 1, right: 1 }
             },
         })
         .resizable({
@@ -156,26 +179,32 @@ function init(selector) {
         })
         .on('dragmove',(event) => {
 
-            console.log("dragmove: target: ", event.target);
-
-            let target = event.target,
-                // keep the dragged position in the data-x/data-y attributes
-                x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx,
-                y = (parseFloat(target.getAttribute('data-y')) || 0) + event.dy;
-
-            // translate the element
-            target.style.webkitTransform =
-                target.style.transform =
-                    'translate(' + x + 'px, ' + y + 'px)';
-
-            // update the position attributes
-            target.setAttribute('data-x', x);
-            target.setAttribute('data-y', y);
+            // console.log("dragmove: event: ", event);
+            //
+            // console.log("dragmove: event.target: ", event.target);
+            // console.log("dragmove: event.restrict: ", event.restrict);
+            //
+            // let target = event.target,
+            //     // keep the dragged position in the data-x/data-y attributes
+            //     x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx,
+            //     y = (parseFloat(target.getAttribute('data-y')) || 0) + event.dy;
+            //
+            // // translate the element
+            // target.style.webkitTransform =
+            //     target.style.transform =
+            //         'translate(' + x + 'px, ' + y + 'px)';
+            //
+            // // update the position attributes
+            // target.setAttribute('data-x', x);
+            // target.setAttribute('data-y', y);
 
         })
         .on('resizemove', function (event) {
 
-            console.log("resizemove: target: ", event.target);
+            console.log("resizemove: event: ", event);
+
+            console.log("resizemove: event.target: ", event.target);
+            console.log("resizemove: event.restrict: ", event.restrict);
 
             // TODO: called when the element is resized.
             let target = event.target,
