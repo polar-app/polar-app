@@ -10786,16 +10786,38 @@ class Rects {
      * @param rect {Rect} The rect to move.
      * @param dir {Object} Move the rect in the given dir (direction) in the
      * x and y plane.  The dir.x and dir.y specify how much to move the rect.
+     * @param absolute {boolean} When true, move to the absolute position, not
+     *                           relative.
      */
-    static move(rect, dir) {
+    static move(rect, dir, absolute) {
 
         rect = Objects.duplicate(rect);
 
-        rect.left = rect.left + dir.x;
-        rect.top = rect.top + dir.y;
+        // TODO: I could just convert the relative positions to absolute
 
-        rect.right = rect.right + dir.x;
-        rect.bottom = rect.bottom + dir.y;
+        if (absolute) {
+
+            if (dir.x) {
+                rect.left = dir.x;
+                rect.right = rect.left + rect.width;
+            }
+
+            if (dir.y) {
+                rect.top = dir.y;
+                rect.bottom = rect.top + rect.height;
+            }
+        } else {
+
+            if (dir.x) {
+                rect.left = rect.left + dir.x;
+                rect.right = rect.right + dir.x;
+            }
+
+            if (dir.y) {
+                rect.bottom = rect.bottom + dir.y;
+                rect.top = rect.top + dir.y;
+            }
+        }
 
         return Rects.validate(rect);
     }

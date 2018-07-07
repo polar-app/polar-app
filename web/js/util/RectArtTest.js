@@ -35,7 +35,6 @@ describe('RectArt', function() {
                        "     |         |\n" +
                        "     |         |\n" +
                        "     +---------+\n" +
-                       "                \n" +
                        "                \n";
         assertJSON(RectArt.createFromRect(rect).toString(), expected );
 
@@ -87,7 +86,6 @@ describe('RectArt', function() {
                        "          |                   |\n" +
                        "          |                   |\n" +
                        "          +-------------------+\n" +
-                       "                               \n" +
                        "                               \n";
 
         let textArray = RectArt.formatRects([rect0, rect1]);

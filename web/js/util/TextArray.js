@@ -8,7 +8,7 @@ class TextArray {
         this.height = height;
         this.backing = [];
 
-        for(let idx = 0; idx <= height; ++idx) {
+        for(let idx = 0; idx < height; ++idx) {
             this.backing[idx] = this.createArray(width);
         }
 
