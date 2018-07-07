@@ -29,6 +29,32 @@ function computeBoundingRect(parentRect, elementOrigin, intersectingRects) {
     return result;
 }
 
+function calculateIntersectedPagemarks(clientX, clientY, element) {
+
+    if(! element) {
+        throw new Error("No element");
+    }
+
+    let elementRect = element.getBoundingClientRect();
+
+    console.log("elementRect is now: " + JSON.stringify(elementRect, null, "  "));
+
+    elementRect.left = clientX;
+    elementRect.top = clientY;
+    elementRect.right = elementRect.left + elementRect.width;
+    elementRect.bottom = elementRect.top + elementRect.height;
+
+    console.log("elementRect is now (after mutation): " + JSON.stringify(elementRect, null, "  "));
+
+
+    let doc = element.ownerDocument;
+    let pagemarks = Array.from(doc.querySelectorAll(".pagemark"))
+                                  .filter( current => current !== element);
+
+    return pagemarks.filter(current => Rects.intersect(current.getBoundingClientRect(), elementRect));
+
+}
+
 function computeRestriction(x,y, interactionEvent) {
 
     let element = interactionEvent.element;
@@ -133,10 +159,17 @@ function computeRestriction(x,y, interactionEvent) {
 
 function init(selector) {
 
+    // FIXME: redesign this:
+    //
+    // - the restrictions should just do simple parent restrictions
+    // - all the code should be done within the moiving logic.
+
+
+
     interact(selector)
         .draggable({
             restrict: {
-                restriction: computeRestriction,
+                restriction: "parent",
                 // elementRect: { top: 0, left: 0, bottom: 1, right: 1 }
             },
         })
@@ -153,20 +186,20 @@ function init(selector) {
             // Keep the edges inside the parent. this is needed or else the
             // bound stretches slightly beyond the container.
             restrictEdges: {
-                //outer: 'parent',
-                outer: computeRestriction,
+                outer: 'parent',
+                // outer: computeRestriction,
             },
 
             restrictSize: {
-                //outer: 'parent',
-                outer: computeRestriction,
+                outer: 'parent',
+                // outer: computeRestriction,
             },
 
             // FIXME: move doesn't use restrictions...
 
             restrict: {
-                //restriction: 'parent',
-                restriction: computeRestriction
+                restriction: 'parent',
+                // restriction: computeRestriction
             },
 
             // minimum size
@@ -179,24 +212,58 @@ function init(selector) {
         })
         .on('dragmove',(event) => {
 
-            // console.log("dragmove: event: ", event);
-            //
-            // console.log("dragmove: event.target: ", event.target);
-            // console.log("dragmove: event.restrict: ", event.restrict);
-            //
-            // let target = event.target,
-            //     // keep the dragged position in the data-x/data-y attributes
-            //     x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx,
-            //     y = (parseFloat(target.getAttribute('data-y')) || 0) + event.dy;
-            //
-            // // translate the element
-            // target.style.webkitTransform =
-            //     target.style.transform =
-            //         'translate(' + x + 'px, ' + y + 'px)';
-            //
-            // // update the position attributes
-            // target.setAttribute('data-x', x);
-            // target.setAttribute('data-y', y);
+            console.log("dragmove: event: ", event);
+            console.log("dragmove: event.target: ", event.target);
+            console.log("dragmove: event.restrict: ", event.restrict);
+
+            // FIXME: AHA!  what's happening is that the element hasn't updated
+            // yet, so we are looking at the current position, not the NEXT
+            // position, and then when we calculate the intersection there is
+            // nothing at the current position but it WUILL be ther e in the future
+            // once we move it.
+            let intersectedPagemarks = calculateIntersectedPagemarks(event.clientX, event.clientY, event.currentTarget);
+
+            if(intersectedPagemarks.length === 0) {
+
+                // FIXME: could I try to take the position from a derived dx and dy?
+
+                //
+
+                // FIXME: now the issue is that the translate() calculation is off
+                // SLIGHTLYU and it's keeping us locked...
+
+                // FIXME: can I translate the two positions??? like the position
+                // where it WOULD be?
+
+                // FIXME: I don't think we can trust event.dx or dy
+
+                let target = event.target,
+                    // keep the dragged position in the data-x/data-y attributes
+                    x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx,
+                    y = (parseFloat(target.getAttribute('data-y')) || 0) + event.dy;
+
+                // translate the element
+                target.style.webkitTransform =
+                    target.style.transform =
+                        'translate(' + x + 'px, ' + y + 'px)';
+
+                // update the position attributes
+                target.setAttribute('data-x', x);
+                target.setAttribute('data-y', y);
+
+                let targetRect = target.getBoundingClientRect();
+
+                console.log("FIXME: placed rect at: " + JSON.stringify(targetRect, null, "  "));
+
+                let intersectedPagemarks = calculateIntersectedPagemarks(targetRect.left, targetRect.top, event.currentTarget);
+
+                if(intersectedPagemarks.length !== 0) {
+                    console.error("Now we are intersected! shit!");
+                }
+
+            } else {
+                console.log("Will not drag.. intersects with: ", intersectedPagemarks);
+            }
 
         })
         .on('resizemove', function (event) {
