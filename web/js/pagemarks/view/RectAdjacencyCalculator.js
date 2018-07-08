@@ -156,7 +156,10 @@ class RectAdjacencyCalculator {
         // now sort the adjustments so that ones with a lower delta are first.
         successfulAdjustments = successfulAdjustments.sort((adj0, adj1) => adj0.delta - adj1.delta);
 
-        if(successfulAdjustments.length >= 1) {
+        if(successfulAdjustments.length === 2) {
+
+            // we are only valid if BOTH dimensions intersect (horizontal and
+            // vertical)
 
             result.adjustment = successfulAdjustments[0];
             result.adjustedRect = result.adjustment.adjustRect(primaryRect);

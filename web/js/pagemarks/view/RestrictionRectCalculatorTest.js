@@ -16,7 +16,7 @@ describe('RestrictionRectCalculator', function() {
 
     describe('RestrictionRectCalculator', function() {
 
-        it("Basic calculation with no siblings", function () {
+        xit("Basic calculation with no siblings", function () {
 
             let parentRect = Rects.createFromBasicRect(new Rect({left: 10, top: 10, width: 500, height: 300}));
 
@@ -40,7 +40,7 @@ describe('RestrictionRectCalculator', function() {
         });
 
 
-        it("Basic calculation with just one sibling to the left", function () {
+        xit("Basic calculation with just one sibling to the left", function () {
 
             let parentRect = Rects.createFromBasicRect(new Rect({left: 10, top: 10, width: 500, height: 300}));
 
@@ -65,7 +65,7 @@ describe('RestrictionRectCalculator', function() {
 
         });
 
-        it("Basic calculation with just one sibling to the left but above", function () {
+        xit("Basic calculation with just one sibling to the left but above", function () {
 
             let parentRect = Rects.createFromBasicRect(  new Rect({left: 10,  top: 10,  width: 1000, height: 1000,}));
 
@@ -87,7 +87,7 @@ describe('RestrictionRectCalculator', function() {
         });
 
 
-        it("Basic calculation with just four siblings (one for each side)", function () {
+        xit("Basic calculation with just four siblings (one for each side)", function () {
 
             // let parentRect = Rects.createFromBasicRect(new Rect({left: 10, top: 10, width: 1000, height: 1000}));
             //
@@ -134,19 +134,19 @@ describe('RestrictionRectCalculator', function() {
             return line0[0] < line1[1] && line0[1] > line1[0]
         }
 
-        it("Test 1", function () {
+        xit("Test 1", function () {
             assert.equal(lineIntersects([3,5], [4,6]), true)
         });
 
-        it("Test 2", function () {
+        xit("Test 2", function () {
             assert.equal(lineIntersects([4,6], [3,5]), true)
         });
 
-        it("Test 3", function () {
+        xit("Test 3", function () {
             assert.equal(lineIntersects([4,6], [8,10]), false)
         });
 
-        it("Test 4", function () {
+        xit("Test 4", function () {
             assert.equal(lineIntersects([4,6], [5,10]), true)
         });
 
@@ -156,19 +156,19 @@ describe('RestrictionRectCalculator', function() {
 
     describe('computeUnionBound', function() {
 
-        it("Test 1", function () {
+        xit("Test 1", function () {
             assert.equal(lineIntersects([3,5], [4,6]), true)
         });
 
-        it("Test 2", function () {
+        xit("Test 2", function () {
             assert.equal(lineIntersects([4,6], [3,5]), true)
         });
 
-        it("Test 3", function () {
+        xit("Test 3", function () {
             assert.equal(lineIntersects([4,6], [8,10]), false)
         });
 
-        it("Test 4", function () {
+        xit("Test 4", function () {
             assert.equal(lineIntersects([4,6], [5,10]), true)
         });
 
@@ -192,7 +192,7 @@ describe('RestrictionRectCalculator', function() {
         return result;
     }
 
-    it("Completely swallowed rect", function () {
+    xit("Completely swallowed rect", function () {
 
 
         let parentRect = Rects.createFromBasicRect(new Rect({left: 10, top: 10, width: 1000, height: 1000}))
