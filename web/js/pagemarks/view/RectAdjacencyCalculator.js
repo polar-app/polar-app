@@ -67,6 +67,8 @@ class RectAdjacencyCalculator {
      */
     static calculate(primaryRect, secondaryRect) {
 
+        // FIXME: we don't handle when the rects SWALLOW one of them...
+
         let result = new Adjacency();
 
         result.primaryRect = Rects.validate(primaryRect);

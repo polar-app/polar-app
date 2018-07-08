@@ -256,7 +256,6 @@ function init(selector) {
 
                 console.log("FIXME: intersectedPagemarks: ", JSON.stringify(intersectedPagemarks, null, "  "));
 
-
                 let adjacency = RectAdjacencyCalculator.calculate(primaryRect, intersectedPagemarks.intersectedRects[0]);
 
                 let adjustedRect = adjacency.adjustedRect;
@@ -265,7 +264,6 @@ function init(selector) {
                 console.log("FIXME: Adjusting to adjacent rect: ", adjustedRect);
 
                 moveElement(adjustedRect.left, adjustedRect.top, target);
-
 
             }
 
