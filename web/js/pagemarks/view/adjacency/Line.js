@@ -31,7 +31,7 @@ class Line {
      * @return {boolean}
      */
     containsPoint(pt) {
-        return pt >= this.start && pt <= this.end;
+        return this.start <= pt && pt <= this.end;
     }
 
     /**

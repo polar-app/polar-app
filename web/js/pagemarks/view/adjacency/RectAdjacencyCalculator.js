@@ -80,7 +80,7 @@ class RectAdjacencyCalculator {
             axis
         });
 
-        if(secondaryLine.overlaps(primaryLine)) {
+        if(secondaryLine.overlaps(primaryLine) || primaryLine.overlaps(secondaryLine)) {
 
             let gap = secondaryLine.end - primaryLine.start;
 

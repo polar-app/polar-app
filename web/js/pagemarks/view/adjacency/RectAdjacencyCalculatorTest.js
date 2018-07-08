@@ -125,7 +125,7 @@ describe('RectAdjacencyCalculator', function() {
     });
 
 
-    xit("Large box coming from left", function () {
+    it("Large box coming from left", function () {
 
         let primaryRect = Rects.createFromBasicRect({
             "left": 219,
@@ -147,15 +147,10 @@ describe('RectAdjacencyCalculator', function() {
 
         assert.equal(Rects.intersect(primaryRect, secondaryRect), true);
 
-        // FIXME: this is a bug.. intersect says it's intersected but the
-        // rect adjacency calculator says it is not...
-
-        // FIXME: resizing doesn't work now...
-
-        // FIXME: moving elements outside the parent is possible thanks to a bug
-        // or lack of feature in the rect adjacency calculator..
-
         let adjacency = RectAdjacencyCalculator.calculate(primaryRect, secondaryRect);
+
+        assert.equal(adjacency.adjustments.vertical.overlapped, true);
+        assert.equal(adjacency.adjustments.horizontal.overlapped, true);
 
         assert.equal(adjacency.adjustment !== null, true);
         assert.equal(adjacency.adjustment.overlapped, true);
