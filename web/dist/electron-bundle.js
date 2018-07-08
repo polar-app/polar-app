@@ -46440,6 +46440,54 @@ class Rects {
     }
 
     /**
+     * Subtract second rect from the first and return a virtual rect with the
+     * change in elements. The change is virtual as we could record a rect with
+     * negative width for a given line which would be an imaginary geometric
+     * object.
+     *
+     * @param a {Rect}
+     * @param b {Rect}
+     */
+    static subtract(a, b) {
+
+        a = Rects.validate(a);
+        b = Rects.validate(b);
+
+        let keys = ["left", "top", "right", "bottom", "width", "height"];
+
+        let result = {};
+
+        keys.forEach(key => {
+            result[key] = a[key] - b[key];
+        });
+
+        return new Rect(result);
+    }
+
+    /**
+     * Add two rects together to build a new rect.  The second rect could be
+     * virtual and have a negative width for a line.
+     *
+     * @param a {Rect}
+     * @param b {Rect}
+     */
+    static add(a, b) {
+
+        a = Rects.validate(a);
+        b = Rects.validate(b);
+
+        let keys = ["left", "top", "right", "bottom", "width", "height"];
+
+        let result = {};
+
+        keys.forEach(key => {
+            result[key] = a[key] + b[key];
+        });
+
+        return new Rect(result);
+    }
+
+    /**
      * Create a full rect from a rect that has top,left,width,height only.
      * @param rect {Rect | Object}
      * @return {Rect}

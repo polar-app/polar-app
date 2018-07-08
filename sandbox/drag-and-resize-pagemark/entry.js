@@ -107,13 +107,13 @@ function resizeTargetElement(rect, target) {
     moveTargetElement(rect.left, rect.top, target);
 
     // now set the width and height
-    target.style.width  = `${box.width}px`;
-    target.style.height = `${box.height}px`;
+    target.style.width  = `${rect.width}px`;
+    target.style.height = `${rect.height}px`;
 
 }
 
-function captureTargetStartRect(interactionEvent) {
-    interactionEvent.interaction.targetStartRect = Rects.fromElementStyle(interactionEvent.target);
+function captureStartTargetRect(interactionEvent) {
+    interactionEvent.interaction.startTargetRect = Rects.fromElementStyle(interactionEvent.target);
 }
 
 function computeOriginXY(interactionEvent) {
@@ -127,8 +127,8 @@ function computeOriginXY(interactionEvent) {
     // console.log(`dragmove: interactionEvent.interaction.startCoords.page: ` + JSON.stringify(interactionEvent.interaction.startCoords.page) );
     // console.log(`dragmove: testDelta: ` + JSON.stringify(delta));
 
-    let x = interactionEvent.interaction.targetStartRect.left + delta.x;
-    let y = interactionEvent.interaction.targetStartRect.top + delta.y;
+    let x = interactionEvent.interaction.startTargetRect.left + delta.x;
+    let y = interactionEvent.interaction.startTargetRect.top + delta.y;
 
     return {x, y};
 
@@ -198,7 +198,7 @@ function init(selector) {
 
         })
         .on('dragstart',(interactionEvent) => {
-            captureTargetStartRect(interactionEvent);
+            captureStartTargetRect(interactionEvent);
         })
         .on('dragmove',(interactionEvent) => {
 
@@ -214,27 +214,7 @@ function init(selector) {
 
             let target = interactionEvent.target;
 
-            // let delta = {
-            //     x: interactionEvent.pageX - interactionEvent.interaction.startCoords.page.x,
-            //     y: interactionEvent.pageY - interactionEvent.interaction.startCoords.page.y
-            // };
-
-            // console.log(`dragmove: delta.x: ${delta.x} and delta.y: ${delta.y}`);
-
-            //console.log(`dragmove: event.interaction.startCoords.page: ` + JSON.stringify(event.interaction.startCoords.page) );
-            //
-            // console.log(`dragmove: testDelta: ` + JSON.stringify(delta));
-
-            //
-            // // FIXME: ahah! here is the bug... the deltaX grows vs the original position
-            // // but I'm continuing to update it!!!
-            //
-            // let x = interactionEvent.interaction.targetStartRect.left + delta.x;
-            // let y = interactionEvent.interaction.targetStartRect.top + delta.y;
-
             let origin = computeOriginXY(interactionEvent);
-
-            // console.log("dragmove: x: ${x} and y: ${y}");
 
             let intersectedPagemarks = calculateIntersectedPagemarks(origin.x, origin.y, interactionEvent.currentTarget);
 
@@ -265,39 +245,28 @@ function init(selector) {
 
         })
         .on('resizestart', interactionEvent => {
-            captureTargetStartRect(interactionEvent);
+            captureStartTargetRect(interactionEvent);
+            console.log("resizestart: interactionEvent.rect: " + JSON.stringify(interactionEvent.rect, null, "  "));
+            interactionEvent.interaction.startRect = Objects.duplicate(interactionEvent.rect);
+
         })
         .on('resizemove', interactionEvent => {
 
             console.log("resizemove: event: ", interactionEvent);
             console.log("resizemove: event.target: ", interactionEvent.target);
             console.log("resizemove: event.restrict: ", interactionEvent.restrict);
+            console.log("resizemove: interactionEvent.rect: " + JSON.stringify(interactionEvent.rect, null, "  "));
+            console.log("resizemove: interactionEvent.interaction.startRect: " + JSON.stringify(interactionEvent.interaction.startRect, null, "  "));
 
-            // TODO: called when the element is resized.
-            let target = interactionEvent.target,
-                x = (parseFloat(target.getAttribute('data-x')) || 0),
-                y = (parseFloat(target.getAttribute('data-y')) || 0);
+            let target = interactionEvent.target;
 
-            let box = {
-                width: interactionEvent.rect.width,
-                height: interactionEvent.rect.height
-            };
+            let deltaRect = Rects.subtract(interactionEvent.rect, interactionEvent.interaction.startRect);
 
-            // update the element's style
-            target.style.width  = `${box.width}px`;
-            target.style.height = `${box.height}px`;
+            let resizedRect = Rects.add(interactionEvent.interaction.startTargetRect, deltaRect);
 
-            // translate when resizing from top or left edges
-            x += interactionEvent.deltaRect.left;
-            y += interactionEvent.deltaRect.top;
+            console.log("resizemove: deltaRect: " + JSON.stringify(deltaRect, null, "  "));
 
-            target.style.webkitTransform = target.style.transform =
-                'translate(' + x + 'px,' + y + 'px)';
-
-            target.setAttribute('data-x', x);
-            target.setAttribute('data-y', y);
-
-            updateTargetText(target);
+            resizeTargetElement(resizedRect, target);
 
         });
 }
