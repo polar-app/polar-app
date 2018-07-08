@@ -9,6 +9,7 @@ class Styles {
      * @return {number}
      */
     static parsePX(value) {
+
         Preconditions.assertNotNull(value, "value");
 
         if(value === "") {

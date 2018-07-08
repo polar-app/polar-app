@@ -267,19 +267,19 @@ class Rects {
         // the optional ones are bottom+right or width+height but we could add
         // support for other optional ones...
 
-        if(! rect.bottom && rect.height && rect.top) {
+        if(! rect.bottom && "top" in rect && "height" in rect) {
             rect.bottom = rect.top + rect.height;
         }
 
-        if(! rect.right && rect.width && rect.left) {
+        if(! rect.right && "left" in rect && "width" in rect) {
             rect.right = rect.left + rect.width;
         }
 
-        if(! rect.height && rect.bottom && rect.top) {
+        if(! rect.height && "bottom" in rect && "top" in rect) {
             rect.height = rect.bottom - rect.top;
         }
 
-        if(! rect.width && rect.right && rect.left) {
+        if(! rect.width && "right" in rect && "left" in rect) {
             rect.width = rect.right - rect.left;
         }
 
@@ -294,14 +294,18 @@ class Rects {
      */
     static fromElementStyle(element) {
 
-        return Rects.createFromBasicRect({
+        let rect = {
 
             left: Styles.parsePX(element.style.left),
             top: Styles.parsePX(element.style.top),
             width: Styles.parsePX(element.style.width),
             height: Styles.parsePX(element.style.height)
 
-        });
+        };
+
+        console.log("FIXME: rect", rect);
+
+        return Rects.createFromBasicRect(rect);
 
     }
 

@@ -285,78 +285,88 @@ function init(selector) {
 
             } else {
 
-                // TODO: take the previous unintersected position, determine
-                // if the rect is to the right, left, top , or bottom, and then
-                // truncate at THAT position until we select a new one..
+                // this is still a bit difficult to implement.  my thinking at the
+                // time was to figure out which direction the mouse is primarily
+                // moving OR where the rect was BEFORE it intersected and then
+                // figure out side took up the largest side vs what it's about
+                // to collide into.  Either that or compute a derived rect
+                // from the intersected rect and then figure out if the height
+                // is more than the width and then go with whichever is higher.
 
-                let intersectedRect = intersectedPagemarks.intersectedRects[0];
 
-                let intersectedPositions = Rects.intersectedPositions(resizedRect, intersectedRect);
-
-                // just pick ONE adjustment that would make the smallest change
-                // and then apply it...
-
-                let resizeAdjustments = [];
-
-                if(intersectedPositions.includes("left")) {
-
-                    resizeAdjustments.push({
-                        side: "left",
-                        delta: intersectedRect.right - resizedRect.left
-                    });
-
-                }
-
-                if(intersectedPositions.includes("right")) {
-
-                    resizeAdjustments.push({
-                        side: "right",
-                        delta: intersectedRect.left - resizedRect.right
-                    });
-
-                }
-
-                if(intersectedPositions.includes("top")) {
-
-                    resizeAdjustments.push({
-                        side: "top",
-                        delta: intersectedRect.bottom - resizedRect.top
-                    });
-
-                }
-
-                if(intersectedPositions.includes("bottom")) {
-
-                    resizeAdjustments.push({
-                        side: "bottom",
-                        delta: resizedRect.bottom - intersectedRect.top
-                    });
-
-                }
-
-                // FIXME: I think we have to ignore any that are zero which if we
-                // intersect perfectly is a possibility.
-
-                resizeAdjustments.sort((a,b) => Math.abs(a.delta) - Math.abs(b.delta));
-
-                console.log("FIXME: resizeAdjustments: " + JSON.stringify(resizeAdjustments, null, "  "));
-
-                let resizeAdjustment = resizeAdjustments[0];
-
-                console.log("FIXME: resizeAdjustment: " + JSON.stringify(resizeAdjustment, null, "  "));
-
-                let adjustedRect = Objects.duplicate(resizedRect);
-
-                console.log("FIXME: adjustedRect: " + JSON.stringify(adjustedRect, null, "  "));
-
-                adjustedRect[resizeAdjustment.side] = adjustedRect[resizeAdjustment.side] + resizeAdjustment.value;
-
-                adjustedRect.height = adjustedRect.bottom - adjustedRect.top;
-                adjustedRect.width = adjustedRect.right - adjustedRect.left;
-
-                adjustedRect = Rects.validate(adjustedRect);
-
-                console.log("FIXME: adjustedRect: " + JSON.stringify(adjustedRect, null, "  "));
+                //
+                // // TODO: take the previous unintersected position, determine
+                // // if the rect is to the right, left, top , or bottom, and then
+                // // truncate at THAT position until we select a new one..
+                //
+                // let intersectedRect = intersectedPagemarks.intersectedRects[0];
+                //
+                // let intersectedPositions = Rects.intersectedPositions(resizedRect, intersectedRect);
+                //
+                // // just pick ONE adjustment that would make the smallest change
+                // // and then apply it...
+                //
+                // let resizeAdjustments = [];
+                //
+                // if(intersectedPositions.includes("left")) {
+                //
+                //     resizeAdjustments.push({
+                //         side: "left",
+                //         delta: intersectedRect.right - resizedRect.left
+                //     });
+                //
+                // }
+                //
+                // if(intersectedPositions.includes("right")) {
+                //
+                //     resizeAdjustments.push({
+                //         side: "right",
+                //         delta: intersectedRect.left - resizedRect.right
+                //     });
+                //
+                // }
+                //
+                // if(intersectedPositions.includes("top")) {
+                //
+                //     resizeAdjustments.push({
+                //         side: "top",
+                //         delta: intersectedRect.bottom - resizedRect.top
+                //     });
+                //
+                // }
+                //
+                // if(intersectedPositions.includes("bottom")) {
+                //
+                //     resizeAdjustments.push({
+                //         side: "bottom",
+                //         delta: resizedRect.bottom - intersectedRect.top
+                //     });
+                //
+                // }
+                //
+                // // FIXME: I think we have to ignore any that are zero which if we
+                // // intersect perfectly is a possibility.
+                //
+                // resizeAdjustments.sort((a,b) => Math.abs(a.delta) - Math.abs(b.delta));
+                //
+                // console.log("FIXME: resizeAdjustments: " + JSON.stringify(resizeAdjustments, null, "  "));
+                //
+                // let resizeAdjustment = resizeAdjustments[0];
+                //
+                // console.log("FIXME: resizeAdjustment: " + JSON.stringify(resizeAdjustment, null, "  "));
+                //
+                // let adjustedRect = Objects.duplicate(resizedRect);
+                //
+                // console.log("FIXME: adjustedRect: " + JSON.stringify(adjustedRect, null, "  "));
+                //
+                // adjustedRect[resizeAdjustment.side] = adjustedRect[resizeAdjustment.side] + resizeAdjustment.value;
+                //
+                // adjustedRect.height = adjustedRect.bottom - adjustedRect.top;
+                // adjustedRect.width = adjustedRect.right - adjustedRect.left;
+                //
+                // adjustedRect = Rects.validate(adjustedRect);
+                //
+                // console.log("FIXME: adjustedRect: " + JSON.stringify(adjustedRect, null, "  "));
 
                 //
                 // if(intersectedPositions.includes("top")) {
