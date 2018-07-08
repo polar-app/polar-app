@@ -122,9 +122,14 @@ class RectAdjacencyCalculator {
      *
      * @param primaryLine {Line}
      * @param secondaryLine {Line}
+     * @param axis {string} The axis this represents. "x" or "y".
      * @return {LineAdjustment}
      */
-    static adjust(primaryLine, secondaryLine) {
+    static adjust(primaryLine, secondaryLine, axis) {
+
+        let result = new LineAdjustment({
+            axis
+        });
 
         if(secondaryLine.overlaps(primaryLine)) {
 
@@ -134,9 +139,7 @@ class RectAdjacencyCalculator {
             // 0.5 we should jump to the right.  Otherwise, jump to the left.
             let perc = gap / secondaryLine.width;
 
-            let result = new LineAdjustment({
-                overlapped: true,
-            });
+            result.overlapped = true;
 
             if(perc < 0.5) {
 
@@ -157,11 +160,10 @@ class RectAdjacencyCalculator {
 
         }
 
-        return new LineAdjustment({
-            overlapped: false,
-            start: primaryLine.start,
-            snapped: null
-        });
+        result.overlapped = false;
+        result.start = primaryLine.start;
+        result.snapped = null;
+        return result;
 
     }
 
