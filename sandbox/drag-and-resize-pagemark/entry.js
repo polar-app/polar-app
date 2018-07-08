@@ -220,6 +220,8 @@ function init(selector) {
 
             let targetRect = Rects.fromElementStyle(target);
 
+            // FIXME: dragging to the side now causes an exception to be thrown
+
             if(intersectedPagemarks.intersectedRects.length === 0) {
 
                 moveTargetElement(origin.x, origin.y, target);
@@ -278,20 +280,96 @@ function init(selector) {
             console.log("resizemove: deltaRect: " + JSON.stringify(deltaRect, null, "  "));
 
             if(intersectedPagemarks.intersectedRects.length === 0) {
+
                 resizeTargetElement(resizedRect, target);
+
             } else {
 
+                // TODO: take the previous unintersected position, determine
+                // if the rect is to the right, left, top , or bottom, and then
+                // truncate at THAT position until we select a new one..
+
                 let intersectedRect = intersectedPagemarks.intersectedRects[0];
+
+                let intersectedPositions = Rects.intersectedPositions(resizedRect, intersectedRect);
+
+                // just pick ONE adjustment that would make the smallest change
+                // and then apply it...
+
+                let resizeAdjustments = [];
+
+                if(intersectedPositions.includes("left")) {
+
+                    resizeAdjustments.push({
+                        side: "left",
+                        delta: intersectedRect.right - resizedRect.left
+                    });
+
+                }
+
+                if(intersectedPositions.includes("right")) {
+
+                    resizeAdjustments.push({
+                        side: "right",
+                        delta: intersectedRect.left - resizedRect.right
+                    });
+
+                }
+
+                if(intersectedPositions.includes("top")) {
+
+                    resizeAdjustments.push({
+                        side: "top",
+                        delta: intersectedRect.bottom - resizedRect.top
+                    });
+
+                }
+
+                if(intersectedPositions.includes("bottom")) {
+
+                    resizeAdjustments.push({
+                        side: "bottom",
+                        delta: resizedRect.bottom - intersectedRect.top
+                    });
+
+                }
+
+                // FIXME: I think we have to ignore any that are zero which if we
+                // intersect perfectly is a possibility.
+
+                resizeAdjustments.sort((a,b) => Math.abs(a.delta) - Math.abs(b.delta));
+
+                console.log("FIXME: resizeAdjustments: " + JSON.stringify(resizeAdjustments, null, "  "));
+
+                let resizeAdjustment = resizeAdjustments[0];
+
+                console.log("FIXME: resizeAdjustment: " + JSON.stringify(resizeAdjustment, null, "  "));
+
                 let adjustedRect = Objects.duplicate(resizedRect);
 
-                adjustedRect.left = Math.max(adjustedRect.left, intersectedRect.right);
-                adjustedRect.right = Math.min(adjustedRect.top, intersectedRect.bottom);
+                console.log("FIXME: adjustedRect: " + JSON.stringify(adjustedRect, null, "  "));
+
+                adjustedRect[resizeAdjustment.side] = adjustedRect[resizeAdjustment.side] + resizeAdjustment.value;
+
+                adjustedRect.height = adjustedRect.bottom - adjustedRect.top;
+                adjustedRect.width = adjustedRect.right - adjustedRect.left;
+
+                adjustedRect = Rects.validate(adjustedRect);
+
+                console.log("FIXME: adjustedRect: " + JSON.stringify(adjustedRect, null, "  "));
+
+                //
+                // if(intersectedPositions.includes("top")) {
+                //     adjustedRect.top = Math.max(adjustedRect.top, intersectedRect.bottom);
+                //     adjustedRect.height = adjustedRect.bottom - adjustedRect.top;
+                // }
+
+                //adjustedRect.right = Math.min(adjustedRect.left, intersectedRect.bottom);
 
                 // now just adjust width and height
-                adjustedRect.width = adjustedRect.right - adjustedRect.left;
-                adjustedRect.height = adjustedRect.bottom - adjustedRect.top;
+                // adjustedRect.height = adjustedRect.bottom - adjustedRect.top;
 
-                resizeTargetElement(adjustedRect, target);
+                // resizeTargetElement(adjustedRect, target);
 
                 console.log("Resized using adjacent rect.");
 

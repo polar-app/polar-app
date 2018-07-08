@@ -70409,6 +70409,8 @@ class Rects {
      * Return the positions where `a` (reference) is intersected by `b`.  If
      * all four sizes are present a envelops b.
      *
+     * @param a {Rect}
+     * @param b {Rect}
      * @return {Array<string>}
      */
     static intersectedPositions(a, b) {
@@ -70430,6 +70432,29 @@ class Rects {
         if (_interval(a.top, b.top, a.bottom)) {
             result.push("bottom");
         }
+
+        return result;
+    }
+
+    /**
+     * Take two rects and return the positions relative to one another.  We
+     * assume that the rects to not intersect.
+     *
+     * @param a {Rect}
+     * @param b {Rect}
+     * @return {Object}
+     */
+    static relativePositions(a, b) {
+
+        let result = {};
+
+        // basically this is the degree AWAY from given position.  Negative
+        // values would be BEFORE the position.
+
+        result.top = b.bottom - a.top;
+        result.bottom = a.top - b.bottom;
+        result.left = b.right - a.left;
+        result.right = a.left - b.right;
 
         return result;
     }
