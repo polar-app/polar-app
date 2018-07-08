@@ -95,4 +95,34 @@ describe('RectAdjacencyCalculator', function() {
     });
 
 
+    it("Primary coming from the bottom, vertical (snapping after)", function () {
+
+        let primaryRect = Rects.createFromBasicRect({left: 10, top: 16, width: 10, height: 10});
+
+        let secondaryRect = Rects.createFromBasicRect({left: 10, top: 10, width: 10, height: 10});
+
+        console.log("BEFORE: " + RectArt.formatRects([secondaryRect, primaryRect]).toString());
+
+        let adjacency = RectAdjacencyCalculator.calculate(primaryRect, secondaryRect);
+
+        console.log("AFTER: " + RectArt.formatRects([secondaryRect, adjacency.adjustedRect]).toString());
+
+        assert.equal(adjacency.adjustment.overlapped, true);
+        assert.equal(adjacency.adjustment.snapped, "AFTER");
+
+        let expected = {
+            "left": 10,
+            "top": 20,
+            "right": 20,
+            "bottom": 30,
+            "width": 10,
+            "height": 10
+        };
+
+        assertJSON(adjacency.adjustedRect, expected );
+
+    });
+
+
 });
+

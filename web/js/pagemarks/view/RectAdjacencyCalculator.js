@@ -20,6 +20,14 @@ class AdjacentRect {
         };
 
         /**
+         *
+         * The final adjustment.
+         *
+         * @type {LineAdjustment}
+         */
+        this.adjustment = null;
+
+        /**
          * @type {Rect}
          */
         this.adjustedRect = null;
@@ -72,59 +80,30 @@ class RectAdjacencyCalculator {
         result.adjustments.horizontal
             = RectAdjacencyCalculator.adjust(primaryBox.horizontal, secondaryBox.horizontal);
 
-// /*
-//         result.adjustments.vertical
-//             = RectAdjacencyCalculator.adjust(primaryBox.vertical, secondaryBox.vertical);
-// */
+        result.adjustments.vertical
+            = RectAdjacencyCalculator.adjust(primaryBox.vertical, secondaryBox.vertical);
 
-         result.adjustedRect = Rects.move(primary, {
-                 x: result.adjustments.horizontal.start,
-                 // y: result.adjustments.vertical.start
-             },
-             true);
+        // TODO: this code could be cleaned up by making a box out of lines and
+        // just adjusting the line manually and building a new rect.
 
-        //
-        // // TODO: make intersected an object with a horizontal property.
-        // result.intersected.horizontally = secondaryBox.horizontal.overlaps(primaryBox.horizontal);
-        // result.intersected.vertically = secondaryBox.vertical.overlaps(primaryBox.horizontal);
-        //
-        //     // = interval(secondary.left, primary.left, secondary.right) ||
-        //     //   interval(secondary.left, primary.right, secondary.right);
-        //
-        // // TODO: based on whichever it is closest to, we can decide which side
-        // // to adjust..  This would be a better strategy I think.
-        //
-        // // primary coming from the left
-        // // *** secondary.left <= primary.left <= secondary.right
-        // if(result.intersected.horizontally) {
-        //
-        //     // FIXME: when migrating to a line model, call these start + end
-        //
-        //     // TODO: how which side to do we need to dock to?
-        //
-        //     let delta = secondaryBox.horizontal.end - primaryBox.horizontal.start;
-        //
-        //     // determine the percentage we are within the secondary. If we're >
-        //     // 0.5 we should jump to the right.  Otherwise, jump to the left.
-        //     let perc = delta / secondaryBox.horizontal.width;
-        //
-        //     if(perc < 0.5) {
-        //         result.adjustedRect = Rects.move(primary, {x: secondaryBox.horizontal.end}, true);
-        //         result.snapped.x = "AFTER";
-        //     } else {
-        //         result.adjustedRect = Rects.move(primary, {x: secondaryBox.horizontal.start - primaryBox.horizontal.width}, true);
-        //         result.snapped.x = "BEFORE";
-        //     }
-        //
-        // }
+        if(result.adjustments.horizontal.delta < result.adjustments.vertical.delta) {
 
-        // *** primary coming from the right
+            result.adjustment = result.adjustments.horizontal;
 
-        // *** secondary.right <= primary.right <= secondary.left
-        // if(secondary.right <= primary.right && primary.right <= secondary.left) {
-        //     let delta = secondary.left - primary.right;
-        //     primary = Rects.move(primary, {x: delta, y: 0});
-        // }
+            result.adjustedRect = Rects.move(primary, {
+                x: result.adjustments.horizontal.start,
+            }, true);
+
+        } else {
+
+            result.adjustment = result.adjustments.vertical;
+
+            result.adjustedRect = Rects.move(primary, {
+                y: result.adjustments.vertical.start
+            }, true);
+
+        }
+
 
         return result;
 
@@ -140,34 +119,34 @@ class RectAdjacencyCalculator {
      */
     static adjust(primaryLine, secondaryLine) {
 
-        console.log("FIXME: primaryLine: " + primaryLine)
-        console.log("FIXME: secondaryLine: " + secondaryLine)
-
         if(secondaryLine.overlaps(primaryLine)) {
 
-            let delta = secondaryLine.end - primaryLine.start;
+            let gap = secondaryLine.end - primaryLine.start;
 
             // determine the percentage we are within the secondary. If we're >
             // 0.5 we should jump to the right.  Otherwise, jump to the left.
-            let perc = delta / secondaryLine.width;
+            let perc = gap / secondaryLine.width;
+
+            let result = new LineAdjustment({
+                overlapped: true,
+            });
 
             if(perc < 0.5) {
 
-                return new LineAdjustment({
-                    overlapped: true,
-                    start: secondaryLine.end,
-                    snapped: "AFTER"
-                });
+                result.start = secondaryLine.end;
+                result.snapped = "AFTER";
 
             } else {
 
-                return new LineAdjustment({
-                    overlapped: true,
-                    start: secondaryLine.start - primaryLine.width,
-                    snapped: "BEFORE"
-                });
+
+                result.start = secondaryLine.start - primaryLine.width;
+                result.snapped = "BEFORE";
 
             }
+
+            result.delta = Math.abs(primaryLine.start - result.start);
+
+            return result;
 
         }
 
@@ -205,6 +184,13 @@ class LineAdjustment {
          * @type {string}
          */
         this.snapped = undefined;
+
+        /**
+         * The proposed change for this line.
+         *
+         * @type {number}
+         */
+        this.delta = undefined;
 
         Object.assign(this, obj)
 
