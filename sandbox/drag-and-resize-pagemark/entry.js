@@ -112,6 +112,28 @@ function resizeTargetElement(rect, target) {
 
 }
 
+function captureTargetStartRect(interactionEvent) {
+    interactionEvent.interaction.targetStartRect = Rects.fromElementStyle(interactionEvent.target);
+}
+
+function computeOriginXY(interactionEvent) {
+
+    let delta = {
+        x: interactionEvent.pageX - interactionEvent.interaction.startCoords.page.x,
+        y: interactionEvent.pageY - interactionEvent.interaction.startCoords.page.y
+    };
+
+    // console.log(`dragmove: delta.x: ${delta.x} and delta.y: ${delta.y}`);
+    // console.log(`dragmove: interactionEvent.interaction.startCoords.page: ` + JSON.stringify(interactionEvent.interaction.startCoords.page) );
+    // console.log(`dragmove: testDelta: ` + JSON.stringify(delta));
+
+    let x = interactionEvent.interaction.targetStartRect.left + delta.x;
+    let y = interactionEvent.interaction.targetStartRect.top + delta.y;
+
+    return {x, y};
+
+}
+
 function init(selector) {
 
     // FIXME: redesign this:
@@ -176,7 +198,7 @@ function init(selector) {
 
         })
         .on('dragstart',(interactionEvent) => {
-            interactionEvent.interaction.targetStartRect = Rects.fromElementStyle(interactionEvent.target);
+            captureTargetStartRect(interactionEvent);
         })
         .on('dragmove',(interactionEvent) => {
 
@@ -192,10 +214,10 @@ function init(selector) {
 
             let target = interactionEvent.target;
 
-            let delta = {
-                x: interactionEvent.pageX - interactionEvent.interaction.startCoords.page.x,
-                y: interactionEvent.pageY - interactionEvent.interaction.startCoords.page.y
-            };
+            // let delta = {
+            //     x: interactionEvent.pageX - interactionEvent.interaction.startCoords.page.x,
+            //     y: interactionEvent.pageY - interactionEvent.interaction.startCoords.page.y
+            // };
 
             // console.log(`dragmove: delta.x: ${delta.x} and delta.y: ${delta.y}`);
 
@@ -207,26 +229,28 @@ function init(selector) {
             // // FIXME: ahah! here is the bug... the deltaX grows vs the original position
             // // but I'm continuing to update it!!!
             //
-            let x = interactionEvent.interaction.targetStartRect.left + delta.x;
-            let y = interactionEvent.interaction.targetStartRect.top + delta.y;
+            // let x = interactionEvent.interaction.targetStartRect.left + delta.x;
+            // let y = interactionEvent.interaction.targetStartRect.top + delta.y;
+
+            let origin = computeOriginXY(interactionEvent);
 
             // console.log("dragmove: x: ${x} and y: ${y}");
 
-            let intersectedPagemarks = calculateIntersectedPagemarks(x, y, interactionEvent.currentTarget);
+            let intersectedPagemarks = calculateIntersectedPagemarks(origin.x, origin.y, interactionEvent.currentTarget);
 
             let targetRect = Rects.fromElementStyle(target);
 
             if(intersectedPagemarks.intersectedRects.length === 0) {
 
-                moveTargetElement(x, y, target);
+                moveTargetElement(origin.x, origin.y, target);
 
             } else {
 
                 // FIXME: the target rect should be INSIDE not outside.. this isn't helping..
 
                 let primaryRect = Rects.createFromBasicRect({
-                    left: x,
-                    top: y,
+                    left: origin.x,
+                    top: origin.y,
                     width: targetRect.width,
                     height: targetRect.height
                 });
@@ -241,7 +265,7 @@ function init(selector) {
 
         })
         .on('resizestart', interactionEvent => {
-            interactionEvent.interaction.targetStartRect = Rects.fromElementStyle(interactionEvent.target);
+            captureTargetStartRect(interactionEvent);
         })
         .on('resizemove', interactionEvent => {
 
