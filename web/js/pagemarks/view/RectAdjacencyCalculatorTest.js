@@ -72,7 +72,7 @@ describe('RectAdjacencyCalculator', function() {
 
     });
 
-    it("No horizontal overlap", function () {
+    xit("No horizontal overlap", function () {
 
         let primaryRect = Rects.createFromBasicRect({left: 14, top: 4, width: 10, height: 10, right: 24});
 
@@ -98,6 +98,7 @@ describe('RectAdjacencyCalculator', function() {
     it("Primary coming from the bottom, vertical (snapping after)", function () {
 
         let primaryRect = Rects.createFromBasicRect({left: 10, top: 16, width: 10, height: 10});
+
 
         let secondaryRect = Rects.createFromBasicRect({left: 10, top: 10, width: 10, height: 10});
 

@@ -5,6 +5,9 @@ const {Rects} = require("../../web/js/Rects");
 const {Objects} = require("../../web/js/util/Objects");
 const {Styles} = require("../../web/js/util/Styles");
 const {assertJSON} = require("../../web/js/test/Assertions");
+const {Rect} = require("../../web/js/Rect");
+const {RectAdjacencyCalculator} = require("../../web/js/pagemarks/view/RectAdjacencyCalculator");
+
 
 // this is used later in the resizing and gesture demos
 //window.dragMoveListener = dragMoveListener;
@@ -60,120 +63,41 @@ function calculateIntersectedPagemarks(x, y, element) {
     // remove this when we go to production
     pagemarks.forEach(current => current.getAttribute("id") !== element.getAttribute("id"));
 
-    let intersected = pagemarks.filter(current => Rects.intersect(Rects.fromElementStyle(current), elementRect));
+    let intersectedRects = [];
+
+    pagemarks.forEach(pagemark => {
+
+        let pagemarkRect = Rects.fromElementStyle(pagemark);
+
+        if(Rects.intersect(pagemarkRect, elementRect)) {
+            intersectedRects.push(pagemarkRect);
+        }
+
+    });
 
     return {
         elementRect,
-        intersected
+        intersectedRects
     }
-
-}
-
-function computeRestriction(x,y, interactionEvent) {
-
-    let element = interactionEvent.element;
-
-    if(! element) {
-        throw new Error("No element");
-    }
-
-    let parentElement = element.parentElement;
-
-    if(! parentElement) {
-        throw new Error("No parentElement");
-    }
-
-    let elementRect = element.getBoundingClientRect();
-    let parentRect = parentElement.getBoundingClientRect();
-
-    // TODO: this needs to be PAGE local.. not the entire document.
-    let pagemarks = Array.from(document.querySelectorAll(".pagemark"))
-                            .filter( current => current !== element);
-
-    let intersectedPagemarks =
-        pagemarks.filter(current => Rects.intersect(current.getBoundingClientRect(), elementRect));
-
-    let intersectedPagemarkRects =
-        intersectedPagemarks.map(current => current.getBoundingClientRect());
-
-    if(intersectedPagemarks.length > 0) {
-
-        console.log("FIXME: we intersect with N pagemarks: " + intersectedPagemarks.length);
-
-        let restrictedRect = computeBoundingRect(parentRect, {x: 10, y: 10}, intersectedPagemarkRects);
-
-        console.log("FIXME: returning restrictedRect: " + JSON.stringify(restrictedRect, null, "  "));
-
-        return restrictedRect;
-        //
-        // //return {left: 0, top: 0, right: 0, bottom: 0, width: 0, height: 0};
-        // let testRect = Objects.duplicate(parentRect);
-        // testRect.right = testRect.left;
-        // testRect.bottom = testRect.top;
-        // testRect.height = 0;
-        // testRect.width = 0;
-        // return testRect;
-
-    } else {
-        return parentRect;
-
-    }
-
-
-    //
-    // // TODO make this testable by immediately converting to rects and then
-    // // working with them directly.
-    //
-    // // FIXME: this actually DOES work to implement the restriction properly...
-    // // rect.height = rect.height - 100;
-    // // rect.bottom = rect.bottom - 100;
-    //
-    // // TODO: this needs to be PAGE local.. not the entire document.
-    // let pagemarks = document.querySelectorAll(".pagemark")
-    //                         .filter( current => current !== element);
-    //
-    // let intersectedPagemarks =
-    //     pagemarks.filter(current => Rects.intersect(current.getBoundingClientRect(), elementRect));
-    //
-    // console.log("FIXME: we intersect with N pagemarks: " + intersectedPagemarks.length);
-    //
-    // // find pagemarks that I intersect with..
-    //
-    //
-    // // if we have too many elements at the point then we should just return the
-    // // current element's bounding rect to prevent it from growing.
-    // let elementsFromPoint = document.elementsFromPoint(x,y);
-    //
-    // let filteredElements = elementsFromPoint.filter( current => current.matches(".pagemark"))
-    //
-    // // FIXME: this isn't going to work because what happens when we're on the
-    // // OTHER side of a rect!!!  plus we can SWALLOW a rect and expand past it!
-    // //
-    // // fuck.. this is actually a difficult problem.
-    //
-    // // FIXME: what if we just compute the union for box and them compute the
-    // // bounding box base on the union of the virtual rects its interacting
-    // // with.
-    //
-    // if(filteredElements.length === 0) {
-    //     console.log("Using default parent rect");
-    //     return rect;
-    // } else if (filteredElements.length === 1){
-    //     console.log("Using custom bounded rect");
-    //
-    //     return {top: 0, left: 0, width: 0, height: 0, bottom: 0, right: 0};
-    //
-    //     //return rect;
-    // } else {
-    //     log.error("Too many filtered elements found: ", filteredElements);
-    //     throw new Error("Too many filtered elements found: " + filteredElements.length)
-    // }
 
 }
 
 function updateTargetText(target) {
 
     target.textContent = JSON.stringify(Rects.fromElementStyle(target), null, "  ");
+
+}
+
+function moveElement(x, y, target) {
+
+    target.style.left = `${x}px`;
+    target.style.top = `${y}px`;
+
+    // update the position attributes
+    target.setAttribute('data-x', x);
+    target.setAttribute('data-y', y);
+
+    //updateTargetText(target);
 
 }
 
@@ -278,21 +202,10 @@ function init(selector) {
 
             let target = event.target;
 
-            // we have to use the target rect because it MAY be stable and then
-            // we have to compute the delta vs the current position.
-            let targetRect = target.getBoundingClientRect();
-
-            // let deltaX = event.clientX - event.clientX0;
-            // let deltaY = event.clientY - event.clientY0;
-
-            // let deltaX = event.clientX - targetRect.left;
-            // let deltaY = event.clientY - targetRect.top;
-            //
-
             let delta = {
                 x: event.pageX - event.interaction.startCoords.page.x,
                 y: event.pageY - event.interaction.startCoords.page.y
-            }
+            };
 
             console.log(`dragmove: delta.x: ${delta.x} and delta.y: ${delta.y}`);
 
@@ -324,35 +237,36 @@ function init(selector) {
 
             let intersectedPagemarks = calculateIntersectedPagemarks(x, y, event.currentTarget);
 
+            let targetRect = Rects.fromElementStyle(target);
 
-            if(intersectedPagemarks.intersected.length === 0) {
+            if(intersectedPagemarks.intersectedRects.length === 0) {
 
-                target.style.left = `${x}px`;
-                target.style.top = `${y}px`;
-
-                // update the position attributes
-                target.setAttribute('data-x', x);
-                target.setAttribute('data-y', y);
-
-                let targetRect = Rects.fromElementStyle(target);
-
-                console.log("FIXME: placed rect at: " + JSON.stringify(targetRect, null, "  "));
-
-                // now assert that the place we dropped is the place we expected
-                // it to be dropped
-
-                assertJSON(intersectedPagemarks.elementRect, targetRect);
-
-                intersectedPagemarks = calculateIntersectedPagemarks(x, y, event.currentTarget);
-
-                if(intersectedPagemarks.intersected.length !== 0) {
-                    console.error("Now we are intersected! shit!");
-                }
-
-                //updateTargetText(target);
+                moveElement(x, y, target);
 
             } else {
-                console.log("Will not drag.. intersects with: ", intersectedPagemarks);
+
+                // FIXME: the target rect should be INSIDE not outside.. this isn't helping..
+
+                let primaryRect = Rects.createFromBasicRect({
+                    left: x,
+                    top: y,
+                    width: targetRect.width,
+                    height: targetRect.height
+                });
+
+                console.log("FIXME: intersectedPagemarks: ", JSON.stringify(intersectedPagemarks, null, "  "));
+
+
+                let adjacency = RectAdjacencyCalculator.calculate(primaryRect, intersectedPagemarks.intersectedRects[0]);
+
+                let adjustedRect = adjacency.adjustedRect;
+
+                console.log("FIXME: adjacency: ", JSON.stringify(adjacency, null, "  "));
+                console.log("FIXME: Adjusting to adjacent rect: ", adjustedRect);
+
+                moveElement(adjustedRect.left, adjustedRect.top, target);
+
+
             }
 
         })

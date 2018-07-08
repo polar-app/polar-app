@@ -1,9 +1,21 @@
 const {Rect} = require("../../Rect")
 const {Rects} = require("../../Rects")
 
-class AdjacentRect {
+class Adjacency {
 
     constructor() {
+
+        /**
+         *
+         * @type {Rect}
+         */
+        this.primaryRect = undefined;
+
+        /**
+         *
+         * @type {Rect}
+         */
+        this.secondaryRect = undefined;
 
         this.adjustments = {
 
@@ -32,16 +44,6 @@ class AdjacentRect {
          */
         this.adjustedRect = null;
 
-        /**
-         * Whether we snapped before or after and on which axis.
-         *
-         * @type {Object}
-         */
-        this.snapped = {
-            x: null,
-            y: null,
-        }
-
     }
 
 }
@@ -55,26 +57,29 @@ class RectAdjacencyCalculator {
 
     /**
      *
-     * @param primary {Rect} The primary rect that is moving and is intersecting with
+     * @param primaryRect {Rect} The primary rect that is moving and is intersecting with
      * the secondary rect.  The primary rect is the one we want to adjust.
      *
-     * @param secondary {Rect} The stationary rect that we need to keep our rect
+     * @param secondaryRect {Rect} The stationary rect that we need to keep our rect
      * adjacent too.
      *
-     * @return {AdjacentRect} Return the new / correct position of the primary rect.
+     * @return {Adjacency} Return the new / correct position of the primary rect.
      */
-    static calculate(primary, secondary) {
+    static calculate(primaryRect, secondaryRect) {
 
-        let result = new AdjacentRect();
+        let result = new Adjacency();
+
+        result.primaryRect = Rects.validate(primaryRect);
+        result.secondaryRect = Rects.validate(secondaryRect);
 
         let secondaryBox = {
-            horizontal: new Line(secondary.left, secondary.right),
-            vertical: new Line(secondary.top, secondary.bottom)
+            horizontal: new Line(secondaryRect.left, secondaryRect.right),
+            vertical: new Line(secondaryRect.top, secondaryRect.bottom)
         };
 
         let primaryBox = {
-            horizontal: new Line(primary.left, primary.right),
-            vertical: new Line(primary.top, primary.bottom)
+            horizontal: new Line(primaryRect.left, primaryRect.right),
+            vertical: new Line(primaryRect.top, primaryRect.bottom)
         };
 
         result.adjustments.horizontal
@@ -90,7 +95,7 @@ class RectAdjacencyCalculator {
 
             result.adjustment = result.adjustments.horizontal;
 
-            result.adjustedRect = Rects.move(primary, {
+            result.adjustedRect = Rects.move(primaryRect, {
                 x: result.adjustments.horizontal.start,
             }, true);
 
@@ -98,7 +103,7 @@ class RectAdjacencyCalculator {
 
             result.adjustment = result.adjustments.vertical;
 
-            result.adjustedRect = Rects.move(primary, {
+            result.adjustedRect = Rects.move(primaryRect, {
                 y: result.adjustments.vertical.start
             }, true);
 
@@ -180,6 +185,7 @@ class LineAdjustment {
         this.start = undefined;
 
         /**
+         * Whether we snapped before or after the intersection.
          *
          * @type {string}
          */
