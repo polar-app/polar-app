@@ -10833,6 +10833,35 @@ class Rects {
     }
 
     /**
+     * Return the positions where `a` (reference) is intersected by `b`.  If
+     * all four sizes are present a envelops b.
+     *
+     * @return {Array<string>}
+     */
+    static intersectedPositions(a, b) {
+
+        let result = [];
+
+        if (_interval(a.left, b.right, a.right)) {
+            result.push("left");
+        }
+
+        if (_interval(a.left, b.left, a.right)) {
+            result.push("right");
+        }
+
+        if (_interval(a.top, b.bottom, a.bottom)) {
+            result.push("top");
+        }
+
+        if (_interval(a.top, b.top, a.bottom)) {
+            result.push("bottom");
+        }
+
+        return result;
+    }
+
+    /**
      * Subtract second rect from the first and return a virtual rect with the
      * change in elements. The change is virtual as we could record a rect with
      * negative width for a given line which would be an imaginary geometric
@@ -10881,7 +10910,8 @@ class Rects {
     }
 
     /**
-     * Create a full rect from a rect that has top,left,width,height only.
+     * Create a full rect from a rect that has top, left, width, height only.
+     *
      * @param rect {Rect | Object}
      * @return {Rect}
      */
@@ -10889,8 +10919,26 @@ class Rects {
 
         rect = Objects.duplicate(rect);
 
-        rect.bottom = rect.top + rect.height;
-        rect.right = rect.left + rect.width;
+        // TODO: add x,y in the future.
+
+        // the optional ones are bottom+right or width+height but we could add
+        // support for other optional ones...
+
+        if (!rect.bottom && rect.height && rect.top) {
+            rect.bottom = rect.top + rect.height;
+        }
+
+        if (!rect.right && rect.width && rect.left) {
+            rect.right = rect.left + rect.width;
+        }
+
+        if (!rect.height && rect.bottom && rect.top) {
+            rect.height = rect.bottom - rect.top;
+        }
+
+        if (!rect.width && rect.right && rect.left) {
+            rect.width = rect.right - rect.left;
+        }
 
         return Rects.validate(new Rect(rect));
     }
@@ -10902,8 +10950,6 @@ class Rects {
      */
     static fromElementStyle(element) {
 
-        console.log("FIXME: element style: " + element.getAttribute("style"));
-
         return Rects.createFromBasicRect({
 
             left: Styles.parsePX(element.style.left),
@@ -10914,6 +10960,19 @@ class Rects {
         });
     }
 
+}
+
+/**
+ * Return true if the point is within the given min and max interval.
+ *
+ * @param min {number}
+ * @param point {number}
+ * @param max {number}
+ * @private
+ * @return {boolean}
+ */
+function _interval(min, point, max) {
+    return min <= point && point <= max;
 }
 
 module.exports.Rects = Rects;

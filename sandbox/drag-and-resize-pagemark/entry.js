@@ -226,8 +226,6 @@ function init(selector) {
 
             } else {
 
-                // FIXME: the target rect should be INSIDE not outside.. this isn't helping..
-
                 let primaryRect = Rects.createFromBasicRect({
                     left: origin.x,
                     top: origin.y,
@@ -264,9 +262,40 @@ function init(selector) {
 
             let resizedRect = Rects.add(interactionEvent.interaction.startTargetRect, deltaRect);
 
+            // before we resize, verify that we CAN resize..
+
+            // FIXME: when I'm resizing on ONE axis only adjust the adjacency
+            // of one and note that interactjs allows us to adjust two at once...
+            // I think what we need to do is preserve the origin that it's
+            // resizing from and that would handle this case.
+
+            // FIXME: when we adjust the sizing of the rect.. we actually have
+            // to do it differently and NOT use the calculator I think.. We have
+            // to find out which direction the rect we intersected at lives, and just
+            // truncate at that position during the move..
+            let intersectedPagemarks = calculateIntersectedPagemarks(resizedRect.left, resizedRect.top, target);
+
             console.log("resizemove: deltaRect: " + JSON.stringify(deltaRect, null, "  "));
 
-            resizeTargetElement(resizedRect, target);
+            if(intersectedPagemarks.intersectedRects.length === 0) {
+                resizeTargetElement(resizedRect, target);
+            } else {
+
+                let intersectedRect = intersectedPagemarks.intersectedRects[0];
+                let adjustedRect = Objects.duplicate(resizedRect);
+
+                adjustedRect.left = Math.max(adjustedRect.left, intersectedRect.right);
+                adjustedRect.right = Math.min(adjustedRect.top, intersectedRect.bottom);
+
+                // now just adjust width and height
+                adjustedRect.width = adjustedRect.right - adjustedRect.left;
+                adjustedRect.height = adjustedRect.bottom - adjustedRect.top;
+
+                resizeTargetElement(adjustedRect, target);
+
+                console.log("Resized using adjacent rect.");
+
+            }
 
         });
 }
