@@ -127,8 +127,6 @@ class RectAdjacencyCalculator {
      */
     static calculate(primaryRect, secondaryRect) {
 
-        // FIXME: we don't handle when the rects SWALLOW one of them...
-
         let result = new Adjacency();
 
         result.primaryRect = Rects.validate(primaryRect);
@@ -150,19 +148,19 @@ class RectAdjacencyCalculator {
         result.adjustments.vertical
             = RectAdjacencyCalculator.adjust(primaryBox.vertical, secondaryBox.vertical, "y");
 
-        // TODO: this code could be cleaned up by making a box out of lines and
-        // just adjusting the line manually and building a new rect.
+        let successfulAdjustments = [result.adjustments.horizontal, result.adjustments.vertical];
 
-        if(result.adjustments.horizontal.delta < result.adjustments.vertical.delta) {
-            result.adjustment = result.adjustments.horizontal;
-        } else {
-            result.adjustment = result.adjustments.vertical;
-        }
+        // we only want to factor in where we actually overlapped.
+        successfulAdjustments = successfulAdjustments.filter(current => current.overlapped === true);
 
-        // ** now adjust by the axis...
+        // now sort the adjustments so that ones with a lower delta are first.
+        successfulAdjustments = successfulAdjustments.sort((adj0, adj1) => adj0.delta - adj1.delta);
 
-        if(result.adjustment) {
+        if(successfulAdjustments.length >= 1) {
+
+            result.adjustment = successfulAdjustments[0];
             result.adjustedRect = result.adjustment.adjustRect(primaryRect);
+
         }
 
         return result;
@@ -195,16 +193,11 @@ class RectAdjacencyCalculator {
             result.overlapped = true;
 
             if(perc < 0.5) {
-
                 result.start = secondaryLine.end;
                 result.snapped = "AFTER";
-
             } else {
-
-
                 result.start = secondaryLine.start - primaryLine.width;
                 result.snapped = "BEFORE";
-
             }
 
             result.delta = Math.abs(primaryLine.start - result.start);

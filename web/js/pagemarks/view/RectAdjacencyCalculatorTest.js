@@ -148,21 +148,20 @@ describe('RectAdjacencyCalculator', function() {
         let adjacency = RectAdjacencyCalculator.calculate(primaryRect, secondaryRect);
 
         assert.equal(adjacency.adjustment.overlapped, true);
-        assert.equal(adjacency.adjustment.snapped, "AFTER");
+        assert.equal(adjacency.adjustment.snapped, "BEFORE");
 
         let expected = {
-            "left": 10,
-            "top": 20,
-            "right": 20,
-            "bottom": 30,
-            "width": 10,
-            "height": 10
+            "left": 200,
+            "top": 128,
+            "right": 400,
+            "bottom": 328,
+            "width": 200,
+            "height": 200
         };
 
         assertJSON(adjacency.adjustedRect, expected );
 
     });
-
 
 
 });
