@@ -175,10 +175,10 @@ function init(selector) {
             inertia: false,
 
         })
-        .on('dragstart',(event) => {
-            event.interaction.targetStartRect = Rects.fromElementStyle(event.target);
+        .on('dragstart',(interactionEvent) => {
+            interactionEvent.interaction.targetStartRect = Rects.fromElementStyle(interactionEvent.target);
         })
-        .on('dragmove',(event) => {
+        .on('dragmove',(interactionEvent) => {
 
             // console.log("=====================")
             // console.log("dragmove: event: ", event);
@@ -190,14 +190,14 @@ function init(selector) {
             // console.log(`dragmove: event.clientX: ${event.clientX} and event.clientY: ${event.clientY}`);
             // console.log(`dragmove: event.clientX0: ${event.clientX0} and event.clientY0: ${event.clientY0}`);
 
-            let target = event.target;
+            let target = interactionEvent.target;
 
             let delta = {
-                x: event.pageX - event.interaction.startCoords.page.x,
-                y: event.pageY - event.interaction.startCoords.page.y
+                x: interactionEvent.pageX - interactionEvent.interaction.startCoords.page.x,
+                y: interactionEvent.pageY - interactionEvent.interaction.startCoords.page.y
             };
 
-            console.log(`dragmove: delta.x: ${delta.x} and delta.y: ${delta.y}`);
+            // console.log(`dragmove: delta.x: ${delta.x} and delta.y: ${delta.y}`);
 
             //console.log(`dragmove: event.interaction.startCoords.page: ` + JSON.stringify(event.interaction.startCoords.page) );
             //
@@ -207,12 +207,12 @@ function init(selector) {
             // // FIXME: ahah! here is the bug... the deltaX grows vs the original position
             // // but I'm continuing to update it!!!
             //
-            let x = event.interaction.targetStartRect.left + delta.x;
-            let y = event.interaction.targetStartRect.top + delta.y;
+            let x = interactionEvent.interaction.targetStartRect.left + delta.x;
+            let y = interactionEvent.interaction.targetStartRect.top + delta.y;
 
             // console.log("dragmove: x: ${x} and y: ${y}");
 
-            let intersectedPagemarks = calculateIntersectedPagemarks(x, y, event.currentTarget);
+            let intersectedPagemarks = calculateIntersectedPagemarks(x, y, interactionEvent.currentTarget);
 
             let targetRect = Rects.fromElementStyle(target);
 
@@ -240,23 +240,23 @@ function init(selector) {
             }
 
         })
-        .on('resizestart', event => {
-            event.interaction.targetStartRect = Rects.fromElementStyle(event.target);
+        .on('resizestart', interactionEvent => {
+            interactionEvent.interaction.targetStartRect = Rects.fromElementStyle(interactionEvent.target);
         })
-        .on('resizemove', event => {
+        .on('resizemove', interactionEvent => {
 
-            console.log("resizemove: event: ", event);
-            console.log("resizemove: event.target: ", event.target);
-            console.log("resizemove: event.restrict: ", event.restrict);
+            console.log("resizemove: event: ", interactionEvent);
+            console.log("resizemove: event.target: ", interactionEvent.target);
+            console.log("resizemove: event.restrict: ", interactionEvent.restrict);
 
             // TODO: called when the element is resized.
-            let target = event.target,
+            let target = interactionEvent.target,
                 x = (parseFloat(target.getAttribute('data-x')) || 0),
                 y = (parseFloat(target.getAttribute('data-y')) || 0);
 
             let box = {
-                width: event.rect.width,
-                height: event.rect.height
+                width: interactionEvent.rect.width,
+                height: interactionEvent.rect.height
             };
 
             // update the element's style
@@ -264,8 +264,8 @@ function init(selector) {
             target.style.height = `${box.height}px`;
 
             // translate when resizing from top or left edges
-            x += event.deltaRect.left;
-            y += event.deltaRect.top;
+            x += interactionEvent.deltaRect.left;
+            y += interactionEvent.deltaRect.top;
 
             target.style.webkitTransform = target.style.transform =
                 'translate(' + x + 'px,' + y + 'px)';
