@@ -1,5 +1,5 @@
-const {Rect} = require("../../Rect")
-const {Rects} = require("../../Rects")
+const {Rect} = require("../../../Rect")
+const {Rects} = require("../../../Rects")
 
 class Adjacency {
 

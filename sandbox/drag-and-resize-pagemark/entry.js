@@ -6,7 +6,7 @@ const {Objects} = require("../../web/js/util/Objects");
 const {Styles} = require("../../web/js/util/Styles");
 const {assertJSON} = require("../../web/js/test/Assertions");
 const {Rect} = require("../../web/js/Rect");
-const {RectAdjacencyCalculator} = require("../../web/js/pagemarks/view/RectAdjacencyCalculator");
+const {RectAdjacencyCalculator} = require("../../web/js/pagemarks/view/adjacency/RectAdjacencyCalculator");
 
 
 // this is used later in the resizing and gesture demos

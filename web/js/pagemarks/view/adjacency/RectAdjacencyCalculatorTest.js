@@ -1,11 +1,11 @@
 
 const assert = require('assert');
-const {assertJSON} = require("../../test/Assertions");
+const {assertJSON} = require("../../../test/Assertions");
 
-const {Rect} = require("../../Rect");
-const {Rects} = require("../../Rects");
-const {Objects} = require("../../util/Objects");
-const {RectArt} = require("../../util/RectArt");
+const {Rect} = require("../../../Rect");
+const {Rects} = require("../../../Rects");
+const {Objects} = require("../../../util/Objects");
+const {RectArt} = require("../../../util/RectArt");
 
 const {RectAdjacencyCalculator} = require("./RectAdjacencyCalculator");
 
