@@ -88,7 +88,7 @@ function updateTargetText(target) {
 
 }
 
-function moveElement(x, y, target) {
+function moveTargetElement(x, y, target) {
 
     target.style.left = `${x}px`;
     target.style.top = `${y}px`;
@@ -98,6 +98,17 @@ function moveElement(x, y, target) {
     target.setAttribute('data-y', y);
 
     //updateTargetText(target);
+
+}
+
+function resizeTargetElement(rect, target) {
+
+    // first move it the same way as if it were dragged
+    moveTargetElement(rect.left, rect.top, target);
+
+    // now set the width and height
+    target.style.width  = `${box.width}px`;
+    target.style.height = `${box.height}px`;
 
 }
 
@@ -165,40 +176,19 @@ function init(selector) {
 
         })
         .on('dragstart',(event) => {
-
-            console.log("=====================")
-            console.log("dragstart: event: ", event);
-
-            event.interaction.myTimestamp = new Date().toISOString();
-
-            let target = event.target;
-
-            event.interaction.startRect = Rects.fromElementStyle(target);
-
+            event.interaction.targetStartRect = Rects.fromElementStyle(event.target);
         })
         .on('dragmove',(event) => {
 
-            // FIXME: the offset is CONSISTENT...
-
-            // FIXME: I might have to use 'dragstart' to record the origin
-            // positions of the mouse as I THINK the
-
-            // FUCK.. we are still jumping around.. I think this library was
-            // designed to update EVERY time...
-
-            console.log("=====================")
-            console.log("dragmove: event: ", event);
-            console.log("dragmove: event.interaction.myTimestamp: ", event.interaction.myTimestamp);
+            // console.log("=====================")
+            // console.log("dragmove: event: ", event);
+            // console.log("dragmove: event.interaction.myTimestamp: ", event.interaction.myTimestamp);
             // console.log("dragmove: event.target: ", event.target);
             // console.log("dragmove: event.restrict: ", event.restrict);
-            //
-            // // FIXME: ok.. event.dx and event.dy CAN NOT be used because it is
-            // // from the LAST position that dragmove was called...
             // console.log(`dragmove: event.dx: ${event.dx} and event.dy: ${event.dy}`);
             // console.log(`dragmove: event.x0: ${event.x0} and event.y0: ${event.y0}`);
-
-            console.log(`dragmove: event.clientX: ${event.clientX} and event.clientY: ${event.clientY}`);
-            console.log(`dragmove: event.clientX0: ${event.clientX0} and event.clientY0: ${event.clientY0}`);
+            // console.log(`dragmove: event.clientX: ${event.clientX} and event.clientY: ${event.clientY}`);
+            // console.log(`dragmove: event.clientX0: ${event.clientX0} and event.clientY0: ${event.clientY0}`);
 
             let target = event.target;
 
@@ -210,30 +200,17 @@ function init(selector) {
             console.log(`dragmove: delta.x: ${delta.x} and delta.y: ${delta.y}`);
 
             //console.log(`dragmove: event.interaction.startCoords.page: ` + JSON.stringify(event.interaction.startCoords.page) );
-
-            console.log(`dragmove: testDelta: ` + JSON.stringify(delta));
+            //
+            // console.log(`dragmove: testDelta: ` + JSON.stringify(delta));
 
             //
             // // FIXME: ahah! here is the bug... the deltaX grows vs the original position
             // // but I'm continuing to update it!!!
             //
-            let x = event.interaction.startRect.left + delta.x;
-            let y = event.interaction.startRect.top + delta.y;
+            let x = event.interaction.targetStartRect.left + delta.x;
+            let y = event.interaction.targetStartRect.top + delta.y;
 
-            console.log("dragmove: x: ${x} and y: ${y}");
-            //
-            // // translate the element
-            // // target.style.webkitTransform =
-            // //     target.style.transform =
-            // //         'translate(' + x + 'px, ' + y + 'px)';
-            //
-            // target.style.left = `${x}px`;
-            // target.style.top = `${y}px`;
-            //
-            // // update the position attributes
-            // target.setAttribute('data-x', x);
-            // target.setAttribute('data-y', y);
-
+            // console.log("dragmove: x: ${x} and y: ${y}");
 
             let intersectedPagemarks = calculateIntersectedPagemarks(x, y, event.currentTarget);
 
@@ -241,7 +218,7 @@ function init(selector) {
 
             if(intersectedPagemarks.intersectedRects.length === 0) {
 
-                moveElement(x, y, target);
+                moveTargetElement(x, y, target);
 
             } else {
 
@@ -254,24 +231,21 @@ function init(selector) {
                     height: targetRect.height
                 });
 
-                console.log("FIXME: intersectedPagemarks: ", JSON.stringify(intersectedPagemarks, null, "  "));
-
                 let adjacency = RectAdjacencyCalculator.calculate(primaryRect, intersectedPagemarks.intersectedRects[0]);
 
                 let adjustedRect = adjacency.adjustedRect;
 
-                console.log("FIXME: adjacency: ", JSON.stringify(adjacency, null, "  "));
-                console.log("FIXME: Adjusting to adjacent rect: ", adjustedRect);
-
-                moveElement(adjustedRect.left, adjustedRect.top, target);
+                moveTargetElement(adjustedRect.left, adjustedRect.top, target);
 
             }
 
         })
-        .on('resizemove', function (event) {
+        .on('resizestart', event => {
+            event.interaction.targetStartRect = Rects.fromElementStyle(event.target);
+        })
+        .on('resizemove', event => {
 
             console.log("resizemove: event: ", event);
-
             console.log("resizemove: event.target: ", event.target);
             console.log("resizemove: event.restrict: ", event.restrict);
 
