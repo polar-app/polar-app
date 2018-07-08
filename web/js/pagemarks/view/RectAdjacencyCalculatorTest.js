@@ -125,5 +125,45 @@ describe('RectAdjacencyCalculator', function() {
     });
 
 
+    it("Large box coming from left", function () {
+
+        let primaryRect = Rects.createFromBasicRect({
+            "left": 219,
+            "top": 128,
+            "right": 419,
+            "bottom": 328,
+            "width": 200,
+            "height": 200
+        });
+
+        let secondaryRect = Rects.createFromBasicRect({
+            "left": 400,
+            "top": 150,
+            "right": 500,
+            "bottom": 250,
+            "width": 100,
+            "height": 100
+        });
+
+        let adjacency = RectAdjacencyCalculator.calculate(primaryRect, secondaryRect);
+
+        assert.equal(adjacency.adjustment.overlapped, true);
+        assert.equal(adjacency.adjustment.snapped, "AFTER");
+
+        let expected = {
+            "left": 10,
+            "top": 20,
+            "right": 20,
+            "bottom": 30,
+            "width": 10,
+            "height": 10
+        };
+
+        assertJSON(adjacency.adjustedRect, expected );
+
+    });
+
+
+
 });
 

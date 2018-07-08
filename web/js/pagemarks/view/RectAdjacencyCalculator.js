@@ -49,6 +49,66 @@ class Adjacency {
 }
 
 
+class LineAdjustment {
+
+    /**
+     *
+     */
+    constructor(obj) {
+
+        /**
+         *
+         * @type {boolean}
+         */
+        this.overlapped = undefined;
+
+        /**
+         *
+         * @type {number}
+         */
+        this.start = undefined;
+
+        /**
+         * Whether we snapped before or after the intersection.
+         *
+         * @type {string}
+         */
+        this.snapped = undefined;
+
+        /**
+         * The proposed change for this line.
+         *
+         * @type {number}
+         */
+        this.delta = undefined;
+
+        /**
+         * The cartesian axis this line represents.  Either "x" or "y".
+         *
+         * This is used to adjust the rect when complete.
+         *
+         * @type {string}
+         */
+        this.axis = undefined;
+
+        Object.assign(this, obj)
+
+    }
+
+    /**
+     * Apply the adjustment to the given rect and return the new rect.
+     */
+    adjustRect(primaryRect) {
+
+        let dir = {};
+        dir[this.axis] = this.start;
+
+        return Rects.move(primaryRect, dir, true);
+
+    }
+
+}
+
 /**
  * If we have two rects, and the've moved to intersect, compute updated
  * positions so that they are ADJACENT, not intersecting.
@@ -85,32 +145,25 @@ class RectAdjacencyCalculator {
         };
 
         result.adjustments.horizontal
-            = RectAdjacencyCalculator.adjust(primaryBox.horizontal, secondaryBox.horizontal);
+            = RectAdjacencyCalculator.adjust(primaryBox.horizontal, secondaryBox.horizontal, "x");
 
         result.adjustments.vertical
-            = RectAdjacencyCalculator.adjust(primaryBox.vertical, secondaryBox.vertical);
+            = RectAdjacencyCalculator.adjust(primaryBox.vertical, secondaryBox.vertical, "y");
 
         // TODO: this code could be cleaned up by making a box out of lines and
         // just adjusting the line manually and building a new rect.
 
         if(result.adjustments.horizontal.delta < result.adjustments.vertical.delta) {
-
             result.adjustment = result.adjustments.horizontal;
-
-            result.adjustedRect = Rects.move(primaryRect, {
-                x: result.adjustments.horizontal.start,
-            }, true);
-
         } else {
-
             result.adjustment = result.adjustments.vertical;
-
-            result.adjustedRect = Rects.move(primaryRect, {
-                y: result.adjustments.vertical.start
-            }, true);
-
         }
 
+        // ** now adjust by the axis...
+
+        if(result.adjustment) {
+            result.adjustedRect = result.adjustment.adjustRect(primaryRect);
+        }
 
         return result;
 
@@ -164,45 +217,6 @@ class RectAdjacencyCalculator {
         result.start = primaryLine.start;
         result.snapped = null;
         return result;
-
-    }
-
-}
-
-class LineAdjustment {
-
-    /**
-     *
-     */
-    constructor(obj) {
-
-        /**
-         *
-         * @type {boolean}
-         */
-        this.overlapped = undefined;
-
-        /**
-         *
-         * @type {number}
-         */
-        this.start = undefined;
-
-        /**
-         * Whether we snapped before or after the intersection.
-         *
-         * @type {string}
-         */
-        this.snapped = undefined;
-
-        /**
-         * The proposed change for this line.
-         *
-         * @type {number}
-         */
-        this.delta = undefined;
-
-        Object.assign(this, obj)
 
     }
 
