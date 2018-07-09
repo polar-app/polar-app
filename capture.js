@@ -31,61 +31,6 @@ const log = Logger.create();
 
 const USE_PAGING_LOADER = true;
 
-async function configureBrowser(window) {
-
-    // TODO maybe inject this via a preload script so we know that it's always
-    // running
-
-    log.info("Emulating browser: " + JSON.stringify(browser, null, "  " ));
-
-    // we need to mute by default especially if the window is hidden.
-    log.info("Muting audio...");
-    window.webContents.setAudioMuted(true);
-
-    log.info("Emulating device...");
-    window.webContents.enableDeviceEmulation(browser.deviceEmulation);
-
-    window.webContents.setUserAgent(browser.userAgent);
-
-    let windowDimensions = calculateWindowDimensions(window);
-
-    /** @RendererContext */
-    function configureBrowserWindowSize(windowDimensions) {
-
-        // TODO: see if I have already redefined it.  the second time fails
-        // because I can't redefine a property.  I don't think there is a way
-        // to find out if it's already defined though.
-
-        let definitions = [
-            {key: "width",       value: windowDimensions.width},
-            {key: "availWidth",  value: windowDimensions.width},
-            {key: "height",      value: windowDimensions.height},
-            {key: "availHeight", value: windowDimensions.height}
-        ];
-
-        definitions.forEach((definition) => {
-
-            console.log(`Defining ${definition.key} as: ${definition.value}`);
-
-            try {
-                Object.defineProperty(window.screen, definition.key, {
-                    get: function () {
-                        return definition.value
-                    }
-                });
-            } catch(e) {
-                console.warn(`Unable to define ${definition.key}`, e);
-            }
-
-        });
-
-    }
-
-    let screenDimensionScript = Functions.functionToScript(configureBrowserWindowSize, windowDimensions);
-
-    await window.webContents.executeJavaScript(screenDimensionScript);
-
-}
 
 function calculateWindowDimensions(window) {
 
@@ -361,7 +306,7 @@ class Capture {
 
             if(! this.windowConfigured) {
 
-                configureBrowser(newWindow)
+                this.configureWindow(newWindow)
                     .catch(err => log.error(err));
 
                 this.windowConfigured = true;
@@ -387,6 +332,68 @@ class Capture {
         return newWindow;
 
     }
+
+    async configureWindow(window) {
+
+        // TODO maybe inject this via a preload script so we know that it's always
+        // running
+
+        log.info("Emulating browser: " + JSON.stringify(browser, null, "  " ));
+
+        // we need to mute by default especially if the window is hidden.
+        log.info("Muting audio...");
+        window.webContents.setAudioMuted(true);
+
+        /**
+         * @type {Electron.Parameters}
+         */
+        let deviceEmulation = browser.deviceEmulation;
+
+        log.info("Emulating device...");
+        window.webContents.enableDeviceEmulation(deviceEmulation);
+
+        window.webContents.setUserAgent(browser.userAgent);
+
+        let windowDimensions = calculateWindowDimensions(window);
+
+        /** @RendererContext */
+        function configureBrowserWindowSize(windowDimensions) {
+
+            // TODO: see if I have already redefined it.  the second time fails
+            // because I can't redefine a property.  I don't think there is a way
+            // to find out if it's already defined though.
+
+            let definitions = [
+                {key: "width",       value: windowDimensions.width},
+                {key: "availWidth",  value: windowDimensions.width},
+                {key: "height",      value: windowDimensions.height},
+                {key: "availHeight", value: windowDimensions.height}
+            ];
+
+            definitions.forEach((definition) => {
+
+                console.log(`Defining ${definition.key} as: ${definition.value}`);
+
+                try {
+                    Object.defineProperty(window.screen, definition.key, {
+                        get: function () {
+                            return definition.value
+                        }
+                    });
+                } catch(e) {
+                    console.warn(`Unable to define ${definition.key}`, e);
+                }
+
+            });
+
+        }
+
+        let screenDimensionScript = Functions.functionToScript(configureBrowserWindowSize, windowDimensions);
+
+        await window.webContents.executeJavaScript(screenDimensionScript);
+
+    }
+
 
 }
 

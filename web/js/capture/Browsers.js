@@ -14,6 +14,9 @@ module.exports = {
         description: "Galaxy S8 mobile device (stock)",
         userAgent: "Mozilla/5.0 (Linux; Android 8.0.0; SM-G955U Build/R16NW) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.81 Mobile Safari/537.36",
 
+        /**
+         * @type Electron.Parameters
+         */
         deviceEmulation: {
             screenPosition: "mobile",
             screenSize: {
@@ -35,6 +38,9 @@ module.exports = {
         description: "Galaxy S8 mobile device but with Chrome 61 (same version as Electron)",
         userAgent: "Mozilla/5.0 (Linux; Android 8.0.0; SM-G955U Build/R16NW) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.100 Mobile Safari/537.36",
 
+        /**
+         * @type Electron.Parameters
+         */
         deviceEmulation: {
             screenPosition: "mobile",
             screenSize: {
@@ -56,6 +62,9 @@ module.exports = {
         description: "Galaxy S8 mobile device running Chrome 61 but with width at 750",
         userAgent: "Mozilla/5.0 (Linux; Android 8.0.0; SM-G955U Build/R16NW) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.100 Mobile Safari/537.36",
 
+        /**
+         * @type Electron.Parameters
+         */
         deviceEmulation: {
             screenPosition: "mobile",
             screenSize: {
@@ -76,6 +85,9 @@ module.exports = {
         description: "Galaxy S8 mobile device running Chrome 61 but with width at 700",
         userAgent: "Mozilla/5.0 (Linux; Android 8.0.0; SM-G955U Build/R16NW) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.100 Mobile Safari/537.36",
 
+        /**
+         * @type Electron.Parameters
+         */
         deviceEmulation: {
             screenPosition: "mobile",
             screenSize: {
