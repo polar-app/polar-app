@@ -35,9 +35,9 @@ class Capture {
 
     constructor(url, browser, stashDir) {
 
-        this.url = url;
-        this.browser = browser;
-        this.stashDir = stashDir;
+        this.url = Preconditions.assertNotNull(url, "url");
+        this.browser = Preconditions.assertNotNull(browser, "browser");;
+        this.stashDir = Preconditions.assertNotNull(stashDir, "stashDir");;
 
         /**
          * The resolve function to call when we have completed .

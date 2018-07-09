@@ -3,15 +3,16 @@
 // All of the Node.js APIs are available in this process.
 
 const electron = require('electron');
-
 const app = electron.app;
+const Browsers = require("./web/js/capture/Browsers");
+const prompt = require('electron-prompt');
+const log = Logger.create();
+
 const {Cmdline} = require("./web/js/electron/Cmdline");
 const {DiskDatastore} = require("./web/js/datastore/DiskDatastore");
 const {Args} = require("./web/js/electron/capture/Args");
-const Browsers = require("./web/js/capture/Browsers");
 const {Capture} = require("./web/js/capture/Capture");
-const prompt = require('electron-prompt');
-const log = require("./web/js/logger/Logger").create();
+const {Logger} = require("./web/js/logger/Logger");
 
 let diskDatastore = new DiskDatastore();
 
@@ -46,10 +47,12 @@ app.on('ready', function() {
             });
 
             if(! url) {
-                console.warn("URL is required.")
+                console.warn("URL is required.");
                 app.quit();
                 return;
             }
+
+            url = "https://www.example.com"
 
         }
 
