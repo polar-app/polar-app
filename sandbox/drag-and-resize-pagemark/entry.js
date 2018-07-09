@@ -305,6 +305,8 @@ function init(selector) {
                 // from the intersected rect and then figure out if the height
                 // is more than the width and then go with whichever is higher.
 
+                // FIXME: a cheap fix could be to truncate one of the rets...
+
                 let rectResizeAdjacencyCalculator = new RectResizeAdjacencyCalculator();
 
                 let intersectedRect = intersectedPagemarks.intersectedRects[0];
