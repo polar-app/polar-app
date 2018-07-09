@@ -11,7 +11,37 @@ const {RectAdjacencyCalculator} = require("./RectAdjacencyCalculator");
 
 describe('RectAdjacencyCalculator', function() {
 
-    // FIXME: test the snapping direction... do we snap before or after the primary
+
+    it("Primary coming from the right, horizontal, snapping after due to restriction rect in place.", function () {
+
+        let primaryRect = Rects.createFromBasicRect({left: 2, top: 0, width: 10, height: 10});
+        let secondaryRect = Rects.createFromBasicRect({left: 1, top: 0, width: 10, height: 10});
+        let restrictionRect = Rects.createFromBasicRect({left: 0, top: 0, width: 50, height: 50});
+
+        console.log("BEFORE: " + RectArt.formatRects([secondaryRect, primaryRect]).toString());
+
+        let adjacency = RectAdjacencyCalculator.calculate(primaryRect, secondaryRect, restrictionRect);
+
+        assert.notEqual(adjacency.adjustment, null);
+
+        //console.log("AFTER: " + RectArt.formatRects([secondaryRect, adjacency.adjustedRect]).toString());
+
+        assert.equal(adjacency.adjustment.overlapped, true);
+        assert.equal(adjacency.adjustment.snapped, "AFTER");
+
+        let expected = {
+            "left": 11,
+            "top": 0,
+            "right": 21,
+            "bottom": 10,
+            "width": 10,
+            "height": 10
+        };
+
+        assertJSON(adjacency.adjustedRect, expected );
+
+    });
+
 
     it("Primary coming from the right, horizontal (snapping after)", function () {
 

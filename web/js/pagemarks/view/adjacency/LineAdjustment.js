@@ -1,4 +1,6 @@
 const {Rects} = require("../../../Rects")
+const {Preconditions} = require("../../../Preconditions")
+const {Objects} = require("../../../util/Objects")
 
 class LineAdjustment {
 
@@ -65,16 +67,18 @@ class LineAdjustment {
 
     }
 
-    static create(axis, start, previous, snapped) {
+    static create(opts) {
 
-        return new LineAdjustment({
-            overlapped: true,
-            start,
-            previous,
-            snapped,
-            delta: Math.abs(previous - start),
-            axis
-        });
+        Preconditions.assertNotNull(opts.start, "start");
+        Preconditions.assertNotNull(opts.previous, "previous");
+        Preconditions.assertNotNull(opts.snapped, "snapped");
+        Preconditions.assertNotNull(opts.axis, "axis");
+
+        opts = Objects.duplicate(opts);
+        opts.overlapped = true;
+        opts.delta = Math.abs(opts.previous - opts.start);
+
+        return new LineAdjustment(opts);
 
     }
 

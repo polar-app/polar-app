@@ -116,33 +116,21 @@ class RectAdjacencyCalculator {
 
         if(secondaryLine.overlaps(primaryLine) || primaryLine.overlaps(secondaryLine)) {
 
-            let gap = secondaryLine.end - primaryLine.start;
-
-            // determine the percentage we are within the secondary. If we're >
-            // 0.5 we should jump to the right.  Otherwise, jump to the left.
-            let perc = gap / secondaryLine.width;
-
             let results = [];
 
-            if(perc < 0.5) {
+            results.push(LineAdjustment.create({
+                axis,
+                start: secondaryLine.end,
+                previous: primaryLine.start,
+                snapped: "AFTER"
+            }));
 
-                let start = secondaryLine.end;
-
-                let lineAdjustment
-                    = LineAdjustment.create(axis, start, primaryLine.start, "AFTER");
-
-                results.push(lineAdjustment);
-
-            } else {
-
-                let start = secondaryLine.start - primaryLine.width;
-
-                let lineAdjustment
-                    = LineAdjustment.create(axis, start, primaryLine.start, "BEFORE");
-
-                results.push(lineAdjustment);
-
-            }
+            results.push(LineAdjustment.create({
+                axis,
+                start: secondaryLine.start - primaryLine.width,
+                previous: primaryLine.start,
+                snapped: "BEFORE"
+            }));
 
             // filter out results that would be invalid due to the restriction line.
             results = results.filter( result => {
