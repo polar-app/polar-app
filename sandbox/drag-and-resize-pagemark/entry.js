@@ -151,22 +151,15 @@ function init(selector) {
                 // outer: computeRestriction,
             },
 
-            restrictSize: {
-                outer: 'parent',
-                // outer: computeRestriction,
-            },
-
-            // FIXME: move doesn't use restrictions...
-
             restrict: {
                 restriction: 'parent',
                 // restriction: computeRestriction
             },
 
             // minimum size
-            // restrictSize: {
-            //     min: { width: 100, height: 50 },
-            // },
+            restrictSize: {
+                min: { width: 50, height: 50 },
+            },
 
             inertia: false,
 
