@@ -10,9 +10,8 @@ const {DiskDatastore} = require("./web/js/datastore/DiskDatastore");
 const {Args} = require("./web/js/electron/capture/Args");
 const Browsers = require("./web/js/capture/Browsers");
 const {Capture} = require("./web/js/capture/Capture");
-const Logger = require("./web/js/logger/Logger").Logger;
-
-const log = Logger.create();
+const prompt = require('electron-prompt');
+const log = require("./web/js/logger/Logger").create();
 
 let diskDatastore = new DiskDatastore();
 
@@ -23,8 +22,6 @@ let browser = Browsers[args.browser];
 if(! browser) {
     throw new Error("No browser defined for: " + args.browser);
 }
-
-// command line capture.
 
 app.on('ready', function() {
 
@@ -38,8 +35,25 @@ app.on('ready', function() {
         let url = Cmdline.getURLArg(process.argv);
 
         if(! url) {
-            throw new Error("URL required");
+
+            url = await prompt({
+                title: 'Enter a URL to Capture',
+                label: 'URL: ',
+                value: '',
+                inputAttrs: {
+                    type: 'url'
+                },
+            });
+
+            if(! url) {
+                console.warn("URL is required.")
+                app.quit();
+                return;
+            }
+
         }
+
+        console.log("Going to capture URL: " + url);
 
         let capture = new Capture(url, browser, diskDatastore.stashDir);
 
@@ -52,6 +66,6 @@ app.on('ready', function() {
             log.info("Not quitting (yielding to --no-quit=true).")
         }
 
-    })().catch(err => log.error(err));
+    })().catch(err => console.error(err));
 
 });

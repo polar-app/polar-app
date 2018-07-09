@@ -80,6 +80,7 @@
     "editor.md": "^1.5.0",
     "editor.md.webpack": "^1.5.0",
     "electron-log": "^2.2.15",
+    "electron-prompt": "^1.0.0",
     "electron-viewport": "^1.0.1",
     "express": "^4.16.3",
     "featherlight": "^1.7.13",

@@ -96,6 +96,11 @@ const MENU_TEMPLATE = [{
                 //accelerator: 'CmdOrCtrl+O',
                 click: cmdOpenInNewWindow
             },
+            {
+                label: 'Capture Web Page',
+                //accelerator: 'CmdOrCtrl+O',
+                click: cmdCaptureWebPage
+            },
 
             // {
             //     label: 'Open Containing Folder',
@@ -483,6 +488,16 @@ async function cmdOpen(item, focusedWindow) {
 }
 
 async function cmdOpenInNewWindow(item, focusedWindow) {
+
+    let path = await promptDoc();
+
+    let targetWindow = createWindow();
+
+    await loadDoc(path, targetWindow);
+
+}
+
+async function cmdCaptureWebPage(item, focusedWindow) {
 
     let path = await promptDoc();
 
