@@ -6,13 +6,13 @@ const electron = require('electron');
 const app = electron.app;
 const Browsers = require("./web/js/capture/Browsers");
 const prompt = require('electron-prompt');
-const log = Logger.create();
 
 const {Cmdline} = require("./web/js/electron/Cmdline");
 const {DiskDatastore} = require("./web/js/datastore/DiskDatastore");
 const {Args} = require("./web/js/electron/capture/Args");
 const {Capture} = require("./web/js/capture/Capture");
 const {Logger} = require("./web/js/logger/Logger");
+const log = Logger.create();
 
 let diskDatastore = new DiskDatastore();
 

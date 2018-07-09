@@ -19,6 +19,27 @@ class PendingWebRequestsListener extends BaseWebRequestsListener {
         this.pending = 0;
 
         /**
+         * The total number of requests that have been started.
+         *
+         * @type {number}
+         */
+        this.started = 0;
+
+        /**
+         * The total number of finished requests (either completed, or failed)
+         *
+         * @type {number}
+         */
+        this.finished = 0;
+
+        /**
+         * The current progress for the page from 0 to 100.
+         *
+         * @type {number}
+         */
+        this.progress = 0;
+
+        /**
          * The actual events we've seen for tracking purposes.
          *
          * @type {Object<String,Object>}
@@ -47,6 +68,8 @@ class PendingWebRequestsListener extends BaseWebRequestsListener {
             delete this.pendingRequests[details.url];
 
             --this.pending;
+            ++this.finished;
+
         }
 
         if(name === "onBeforeRequest") {
@@ -55,7 +78,11 @@ class PendingWebRequestsListener extends BaseWebRequestsListener {
             this.pendingRequests[details.url] = details;
 
             ++this.pending;
+            ++this.started;
+
         }
+
+        this.progress = this.calculateProgress();
 
         if(this.pending < 5) {
             log.debug("The following pending requests remain: ", this.pendingRequests);
@@ -65,10 +92,15 @@ class PendingWebRequestsListener extends BaseWebRequestsListener {
             throw new Error("Pending request count is negative: " + this.pending);
         }
 
+        log.debug(`Pending requests: ${this.pending}, started=${this.started}, finished=${this.finished}, progress=${this.progress}`);
+
         this.dispatchEventListeners( {
             name,
             details,
-            pending: this.pending
+            pending: this.pending,
+            started: this.started,
+            finished: this.finished,
+            progress: this.progress
         });
 
         if(callback) {
@@ -77,6 +109,10 @@ class PendingWebRequestsListener extends BaseWebRequestsListener {
             callback({cancel: false});
         }
 
+    }
+
+    calculateProgress() {
+        return 100 * (this.finished / this.started);
     }
 
     /**
