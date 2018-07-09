@@ -65,22 +65,31 @@ class Capture {
 
         this.window = await this.createWindow();
 
+        this.loadURL(this.url);
+
+        return new Promise(resolve => {
+            this.resolve = resolve;
+        });
+
+    }
+
+    loadURL(url) {
+
+        // change the global URL we're loading...
+        this.url = url;
+
         const loadURLOptions = {
 
             // TODO: I don't think we should use no-cache or at least make it
             // a command line option. Probably best to not use it by default
             // but then make it an option later.
 
-            extraHeaders: `pragma: no-cache\nreferer: ${this.url}\n`,
+            extraHeaders: `pragma: no-cache\nreferer: ${url}\n`,
             userAgent: this.browser.userAgent
 
         };
 
-        this.window.loadURL(this.url, loadURLOptions);
-
-        return new Promise(resolve => {
-            this.resolve = resolve;
-        });
+        this.window.loadURL(url, loadURLOptions);
 
     }
 
@@ -110,7 +119,7 @@ class Capture {
                         log.info("Stopping webRequestReactor...done");
                     });
 
-                    this.executeContentCapture(this.url, this.window)
+                    this.executeContentCapture()
                         .catch(err => log.error(err));
 
                 }, 1);
@@ -125,34 +134,63 @@ class Capture {
 
         } else {
 
-            await this.executeContentCapture(this.url, this.window)
+            await this.executeContentCapture()
 
         }
 
     }
 
-    async executeContentCapture(url, window) {
+    /**
+     * See if the page has a rel=amphtml URL.
+     *
+     * @return {Promise<string>}
+     */
+    async getAmpURL() {
+
+        /** @RendererContext */
+        function fetchAmpURL() {
+
+            let link = document.querySelector("link[rel='amphtml']");
+
+            if(link) {
+                return link.href;
+            }
+
+            return null;
+
+        }
+
+        return await this.window.webContents.executeJavaScript(Functions.functionToScript(fetchAmpURL));
+
+    }
+
+    async executeContentCapture() {
 
         // TODO: this function should be cleaned up a bit.. it has too many moving
         // parts now.
 
-        Preconditions.assertNotNull(window);
-        Preconditions.assertNotNull(window.webContents);
+        Preconditions.assertNotNull(this.window);
+        Preconditions.assertNotNull(this.window.webContents);
+
+        let window = this.window;
+        let webContents = this.window.webContents;
 
         log.info("Capturing the HTML...");
 
         // define the content capture script.
         log.info("Defining ContentCapture...");
-        await window.webContents.executeJavaScript(ContentCapture.toString());
+        await webContents.executeJavaScript(ContentCapture.toString());
 
         log.info("Retrieving HTML...");
-        // FIXME: it's locking up here.. not sure why...
 
         let captured;
 
+        // TODO: I don't think executeJavascript actually handles exceptions
+        // properly and they also suggest using the callback so we should test
+        // this more aggressively.
         try {
 
-            captured = await window.webContents.executeJavaScript("ContentCapture.captureHTML()");
+            captured = await webContents.executeJavaScript("ContentCapture.captureHTML()");
 
         } catch (e) {
 
@@ -160,7 +198,7 @@ class Capture {
             // handle exceptions. You just block there forever. I need to wrap
             // this with a closure that is an 'either' err or content.
 
-            log.err("Could not capture HTML: ", e);
+            log.error("Could not capture HTML: ", e);
 
         }
 
@@ -290,8 +328,27 @@ class Capture {
 
         });
 
-        newWindow.webContents.on('did-finish-load', () => {
+        newWindow.webContents.on('did-finish-load', async () => {
             log.info("did-finish-load: ", arguments);
+
+            // see if we first need to handle the page in any special manner.
+
+            let ampURL = await this.getAmpURL();
+
+            console.log("FIXME: ampURL " + ampURL)
+
+            // TODO: if we end up handling multiple types of URLs in the future
+            // we might want to build up a history to prevent endless loops or
+            // just keep track of the redirect count.
+            if(ampURL && ampURL !== this.url) {
+
+                log.info("Found AMP URL.  Redirecting then loading: " + ampURL);
+
+                // redirect us to the amp URL as this will render better.
+                this.loadURL(ampURL);
+                return;
+
+            }
 
             setTimeout(() => {
 

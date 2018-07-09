@@ -1,5 +1,14 @@
 # TODO:
 
+- implement rel=amphtml
+
+- catch and abort history.pushState()
+
+    - https://stackoverflow.com/questions/824349/modify-the-url-without-reloading-the-page
+
+    - this breaks page down on sites like techcrunch ... this is a pretty evil
+      practics too.  I might have to override pushState or something
+
 
 - revert the use of our new highlighter when using PDFs.. this is a short term
   work around for now.
@@ -569,3 +578,7 @@ http://thehill.com/homenews/administration/392430-trump-i-want-americans-to-list
 
 
 
+
+window.history.pushState = function() {
+    throw new Error("Nope.. ");
+}
