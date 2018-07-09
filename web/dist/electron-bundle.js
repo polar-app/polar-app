@@ -46314,7 +46314,7 @@ class Rect {
   adjustHorizontal(line) {
     this.left = line.start;
     this.right = line.end;
-    this.width = this.width;
+    this.width = this.right - this.left;
   }
 
   /**
@@ -46324,7 +46324,7 @@ class Rect {
   adjustVertical(line) {
     this.top = line.start;
     this.bottom = line.end;
-    this.height = line.width;
+    this.height = this.bottom - this.top;
   }
 
 }
@@ -46483,6 +46483,7 @@ class Rects {
      *
      * @param a {Rect}
      * @param b {Rect}
+     * @return {Rect}
      */
     static intersection(a, b) {
 
@@ -53656,6 +53657,7 @@ class Line {
      * @return {number}
      */
     get width() {
+        console.log("FIXME: here");
         return this.end - this.start;
     }
 

@@ -18,13 +18,14 @@ describe('RectResizeAdjacencyCalculator', function() {
 
         console.log("BEFORE: \n" + RectArt.formatRects([resizeRect, intersectedRect]).toString());
 
-        let adjustedRect = RectResizeAdjacencyCalculator.calculate(resizeRect, intersectedRect);
+        let rectResizeAdjacencyCalculator = new RectResizeAdjacencyCalculator();
+        let adjustedRect = rectResizeAdjacencyCalculator.calculate(resizeRect, intersectedRect);
 
         assert.notEqual(adjustedRect, null);
 
-        assert.equal(resizeRect.right, adjustedRect.right)
-        assert.equal(resizeRect.bottom, adjustedRect.bottom)
-        assert.equal(resizeRect.top, adjustedRect.top)
+        assert.equal(resizeRect.right, adjustedRect.right);
+        assert.equal(resizeRect.bottom, adjustedRect.bottom);
+        assert.equal(resizeRect.top, adjustedRect.top);
 
         let expected = {
             "left": 15,

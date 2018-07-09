@@ -20,6 +20,7 @@ class Line {
      * @return {number}
      */
     get width() {
+        console.log("FIXME: here");
         return this.end - this.start;
     }
 

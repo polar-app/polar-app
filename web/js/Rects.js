@@ -152,6 +152,7 @@ class Rects {
      *
      * @param a {Rect}
      * @param b {Rect}
+     * @return {Rect}
      */
     static intersection(a,b) {
 

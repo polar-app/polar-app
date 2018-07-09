@@ -66,7 +66,7 @@ class Rect {
     adjustHorizontal(line) {
         this.left = line.start;
         this.right = line.end;
-        this.width = this.width;
+        this.width = this.right - this.left;
     }
 
     /**
@@ -76,7 +76,7 @@ class Rect {
     adjustVertical(line) {
         this.top = line.start;
         this.bottom = line.end;
-        this.height = line.width;
+        this.height = this.bottom - this.top;
     }
 
 }
