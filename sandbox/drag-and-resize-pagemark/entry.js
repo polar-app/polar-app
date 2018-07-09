@@ -251,6 +251,8 @@ function init(selector) {
 
                 if(adjustedRect) {
                     moveTargetElement(adjustedRect.left, adjustedRect.top, target);
+                } else {
+                    console.warn("Can't move due to no valid adjustedRect we can work with.")
                 }
 
             }

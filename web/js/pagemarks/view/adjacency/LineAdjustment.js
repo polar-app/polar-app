@@ -20,6 +20,13 @@ class LineAdjustment {
         this.start = undefined;
 
         /**
+         * The previous point on the line.
+         *
+         * @type {number}
+         */
+        this.previous = undefined;
+
+        /**
          * Whether we snapped before or after the intersection.
          *
          * @type {string}
@@ -55,6 +62,19 @@ class LineAdjustment {
         dir[this.axis] = this.start;
 
         return Rects.move(primaryRect, dir, true);
+
+    }
+
+    static create(axis, start, previous, snapped) {
+
+        return new LineAdjustment({
+            overlapped: true,
+            start,
+            previous,
+            snapped,
+            delta: Math.abs(previous - start),
+            axis
+        });
 
     }
 

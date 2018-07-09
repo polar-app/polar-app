@@ -122,31 +122,50 @@ class RectAdjacencyCalculator {
             // 0.5 we should jump to the right.  Otherwise, jump to the left.
             let perc = gap / secondaryLine.width;
 
-            let result = new LineAdjustment({
-                axis
-            });
-
-            result.overlapped = true;
+            let results = [];
 
             if(perc < 0.5) {
-                result.start = secondaryLine.end;
-                result.snapped = "AFTER";
+
+                let start = secondaryLine.end;
+
+                let lineAdjustment
+                    = LineAdjustment.create(axis, start, primaryLine.start, "AFTER");
+
+                results.push(lineAdjustment);
+
             } else {
-                result.start = secondaryLine.start - primaryLine.width;
-                result.snapped = "BEFORE";
+
+                let start = secondaryLine.start - primaryLine.width;
+
+                let lineAdjustment
+                    = LineAdjustment.create(axis, start, primaryLine.start, "BEFORE");
+
+                results.push(lineAdjustment);
+
             }
 
-            if(result.start < restrictionLine.start) {
+            // filter out results that would be invalid due to the restriction line.
+            results = results.filter( result => {
+
+                if(result.start < restrictionLine.start) {
+                    return false;
+                }
+
+                if((result.start + primaryLine.width) > restrictionLine.end) {
+                    return false;
+                }
+
+                return true;
+
+            });
+
+            results = results.sort((r0, r1) => r0.delta - r1.delta);
+
+            if(results.length > 0 ) {
+                return results[0];
+            } else {
                 return none;
             }
-
-            if((result.start + primaryLine.width) > restrictionLine.end) {
-                return none;
-            }
-
-            result.delta = Math.abs(primaryLine.start - result.start);
-
-            return result;
 
         }
 
