@@ -70522,6 +70522,10 @@ class Rects {
         // the optional ones are bottom+right or width+height but we could add
         // support for other optional ones...
 
+        // it might be better to say, if var0 and var1 are defined, I can compute
+        // var2 or var 3... and then define them when they are not defined.  For
+        // example. If top and height are defined, I can define bottom.
+
         if (!rect.bottom && "top" in rect && "height" in rect) {
             rect.bottom = rect.top + rect.height;
         }
@@ -70556,8 +70560,6 @@ class Rects {
             height: Styles.parsePX(element.style.height)
 
         };
-
-        console.log("FIXME: rect", rect);
 
         return Rects.createFromBasicRect(rect);
     }
