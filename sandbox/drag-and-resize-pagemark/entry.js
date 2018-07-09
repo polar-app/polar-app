@@ -224,7 +224,7 @@ function init(selector) {
 
             if(intersectedPagemarks.intersectedRects.length === 0) {
 
-                console.log("Moving to origin: " + JSON.stringify(origin))
+                console.log("Moving to origin: " + JSON.stringify(origin));
                 moveTargetElement(origin.x, origin.y, target);
 
             } else {
@@ -279,6 +279,9 @@ function init(selector) {
             let resizedRect = Rects.add(interactionEvent.interaction.startTargetRect, deltaRect);
 
             // before we resize, verify that we CAN resize..
+
+            // FIXME: another option, find the first div we enter, then resize
+            // to connect it, but don't resize again until we leave it...
 
             // FIXME: when I'm resizing on ONE axis only adjust the adjacency
             // of one and note that interactjs allows us to adjust two at once...
