@@ -97,87 +97,6 @@ function getWindowSize(window) {
 
 }
 
-async function captureHTML(url, window) {
-
-    // TODO: this function should be cleaned up a bit.. it has too many moving
-    // parts now.
-
-    Preconditions.assertNotNull(window);
-    Preconditions.assertNotNull(window.webContents);
-
-    log.info("Capturing the HTML...");
-
-    // define the content capture script.
-    log.info("Defining ContentCapture...");
-    await window.webContents.executeJavaScript(ContentCapture.toString());
-
-    log.info("Retrieving HTML...");
-    // FIXME: it's locking up here.. not sure why...
-
-    let captured;
-
-    try {
-
-        captured = await window.webContents.executeJavaScript("ContentCapture.captureHTML()");
-
-    } catch (e) {
-
-        // TODO: this isn't actually called because executeJavascript doesn't
-        // handle exceptions. You just block there forever. I need to wrap
-        // this with a closure that is an 'either' err or content.
-
-        log.err("Could not capture HTML: ", e);
-
-    }
-
-    log.info("Retrieving HTML...done");
-
-    // record the browser that was used to render this page.
-    captured.browser = browser;
-
-    let stashDir = diskDatastore.stashDir;
-    let filename = Filenames.sanitize(captured.title);
-
-    // TODO convert the captured JSON to a phz file...
-
-    let phzPath = `${stashDir}/${filename}.phz`;
-
-    log.info("Writing PHZ to: " + phzPath);
-
-    let capturedPHZWriter = new CapturedPHZWriter(phzPath);
-    await capturedPHZWriter.convert(captured)
-
-    // write the captured HTML to /tmp for debug purposes.  We can enable this
-    // as a command line switch later.
-
-    fs.writeFile(`/tmp/${filename}.json`, JSON.stringify(captured, null, "  "));
-
-    log.info("Capturing the HTML...done");
-
-    if(args.quit) {
-        log.info("Capture finished.  Quitting now");
-        app.quit();
-    } else {
-        log.info("Not quitting (yielding to --no-quit=true).")
-    }
-
-}
-
-/**
- * Move the 'content' key to the last entry so that it's more readable when
- * working with the JSON directly.
- */
-function prettifyCaptured(captured) {
-
-    let content = captured.content;
-    delete captured.content;
-
-    captured.content = content;
-
-    return captured
-
-}
-
 let diskDatastore = new DiskDatastore();
 
 let args = Args.parse(process.argv);
@@ -252,7 +171,7 @@ class Capture {
                         log.info("Stopping webRequestReactor...done");
                     });
 
-                    captureHTML(this.url, this.window)
+                    this.executeContentCapture(this.url, this.window)
                         .catch(err => log.error(err));
 
                 }, 1);
@@ -267,8 +186,74 @@ class Capture {
 
         } else {
 
-            await captureHTML(this.url, this.window)
+            await this.executeContentCapture(this.url, this.window)
 
+        }
+
+    }
+
+    async executeContentCapture(url, window) {
+
+        // TODO: this function should be cleaned up a bit.. it has too many moving
+        // parts now.
+
+        Preconditions.assertNotNull(window);
+        Preconditions.assertNotNull(window.webContents);
+
+        log.info("Capturing the HTML...");
+
+        // define the content capture script.
+        log.info("Defining ContentCapture...");
+        await window.webContents.executeJavaScript(ContentCapture.toString());
+
+        log.info("Retrieving HTML...");
+        // FIXME: it's locking up here.. not sure why...
+
+        let captured;
+
+        try {
+
+            captured = await window.webContents.executeJavaScript("ContentCapture.captureHTML()");
+
+        } catch (e) {
+
+            // TODO: this isn't actually called because executeJavascript doesn't
+            // handle exceptions. You just block there forever. I need to wrap
+            // this with a closure that is an 'either' err or content.
+
+            log.err("Could not capture HTML: ", e);
+
+        }
+
+        log.info("Retrieving HTML...done");
+
+        // record the browser that was used to render this page.
+        captured.browser = browser;
+
+        let stashDir = diskDatastore.stashDir;
+        let filename = Filenames.sanitize(captured.title);
+
+        // TODO convert the captured JSON to a phz file...
+
+        let phzPath = `${stashDir}/${filename}.phz`;
+
+        log.info("Writing PHZ to: " + phzPath);
+
+        let capturedPHZWriter = new CapturedPHZWriter(phzPath);
+        await capturedPHZWriter.convert(captured)
+
+        // write the captured HTML to /tmp for debug purposes.  We can enable this
+        // as a command line switch later.
+
+        fs.writeFile(`/tmp/${filename}.json`, JSON.stringify(captured, null, "  "));
+
+        log.info("Capturing the HTML...done");
+
+        if(args.quit) {
+            log.info("Capture finished.  Quitting now");
+            app.quit();
+        } else {
+            log.info("Not quitting (yielding to --no-quit=true).")
         }
 
     }
@@ -362,6 +347,9 @@ class Capture {
             // We get one webContents per frame so we have to listen to their
             // events too..
 
+            /**
+             * @type {Electron.WebContents}
+             */
             let webContents = event.sender.webContents;
 
             log.info("Detected new loading page: " + webContents.getURL());

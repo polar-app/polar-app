@@ -17,10 +17,15 @@ class Line {
     /**
      * The width of the line. Not to be confused with the width of a rect.
      *
+     * @Deprecated The dimension of a line is length. Not width. Use length()
+     * instead.
      * @return {number}
      */
     get width() {
-        console.log("FIXME: here");
+        return this.end - this.start;
+    }
+
+    get length() {
         return this.end - this.start;
     }
 
