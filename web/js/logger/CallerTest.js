@@ -27,8 +27,6 @@ describe('Caller', function() {
 
 });
 
-//
-
 function myCaller() {
     // should return "myCaller"
     return Caller.getCaller();

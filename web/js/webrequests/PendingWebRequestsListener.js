@@ -92,7 +92,7 @@ class PendingWebRequestsListener extends BaseWebRequestsListener {
             throw new Error("Pending request count is negative: " + this.pending);
         }
 
-        log.debug(`Pending requests: ${this.pending}, started=${this.started}, finished=${this.finished}, progress=${this.progress}`);
+        log.debug(`Pending requests: ${this.pending}, started=${this.started}, finished=${this.finished}, progress=${this.progress}: ` + JSON.stringify(details, null, "  "));
 
         this.dispatchEventListeners( {
             name,

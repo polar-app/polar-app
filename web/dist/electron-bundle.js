@@ -49914,9 +49914,9 @@ class Caller {
         let re = /([^/.]+\.(js|ts|tsx)):[0-9]+:[0-9]+/g;
         let m = re.exec(frame);
 
-        console.log("========= BEGIN stack: ===");
-        console.log(frame);
-        console.log("========= END stack: ===");
+        // console.log("========= BEGIN stack: ===");
+        // console.log(frame);
+        // console.log("========= END stack: ===");
 
         if (m) {
             return { filename: m[1] };
