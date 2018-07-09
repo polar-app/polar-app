@@ -49888,6 +49888,49 @@ module.exports.TextHighlightView = TextHighlightView;
 
 /***/ }),
 
+/***/ "./web/js/logger/Caller.js":
+/*!*********************************!*\
+  !*** ./web/js/logger/Caller.js ***!
+  \*********************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+class Caller {
+
+    static getCaller() {
+        let e = new Error();
+        let stack = e.stack;
+        let frame = stack.split("\n")[1];
+        return Caller._parse(frame);
+    }
+
+    /**
+     * Parse a specific frame in the stack trace.
+     * @param frame {string}
+     * @protected
+     */
+    static _parse(frame) {
+
+        let re = /([^/.]+\.(js|ts|tsx)):[0-9]+:[0-9]+/g;
+        let m = re.exec(frame);
+
+        console.log("========= BEGIN stack: ===");
+        console.log(frame);
+        console.log("========= END stack: ===");
+
+        if (m) {
+            return { filename: m[1] };
+        } else {
+            throw new Error("Could not determine caller");
+        }
+    }
+
+}
+
+module.exports.Caller = Caller;
+
+/***/ }),
+
 /***/ "./web/js/logger/ConsoleLogger.js":
 /*!****************************************!*\
   !*** ./web/js/logger/ConsoleLogger.js ***!
@@ -49939,6 +49982,7 @@ const log = __webpack_require__(/*! electron-log */ "./node_modules/electron-log
 const { Files } = __webpack_require__(/*! ../util/Files.js */ "./web/js/util/Files.js");
 const { Objects } = __webpack_require__(/*! ../util/Objects.js */ "./web/js/util/Objects.js");
 const { ConsoleLogger } = __webpack_require__(/*! ./ConsoleLogger.js */ "./web/js/logger/ConsoleLogger.js");
+const { Caller } = __webpack_require__(/*! ./Caller.js */ "./web/js/logger/Caller.js");
 
 let initialized = false;
 
@@ -49949,15 +49993,16 @@ class Logger {
      * using.
      */
     static create() {
+        let caller = Caller.getCaller();
         return new DelegatedLogger();
     }
 
-    static setLoggerTarget(loggerTarget) {
-        global.polarLoggerTarget = loggerTarget;
+    static setLoggerDelegate(loggerDelegate) {
+        global.polarLoggerDelegate = loggerDelegate;
     }
 
-    static getLoggerTarget() {
-        return global.polarLoggerTarget;
+    static getLoggerDelegate() {
+        return global.polarLoggerDelegate;
     }
 
     /**
@@ -50001,7 +50046,7 @@ class Logger {
             log.transports.file.appName = "polar";
 
             // make the target use the new configured log (not the console).
-            Logger.setLoggerTarget(log);
+            Logger.setLoggerDelegate(log);
 
             // FIXME: this won't work globally... nor is this needed any more since
             // we have DelegatedLogger. It might be nice to actually support swapping
@@ -50019,23 +50064,23 @@ class Logger {
 class DelegatedLogger {
 
     info(...args) {
-        Logger.getLoggerTarget().info(...args);
+        Logger.getLoggerDelegate().info(...args);
     }
 
     warn(...args) {
-        Logger.getLoggerTarget().warn(...args);
+        Logger.getLoggerDelegate().warn(...args);
     }
 
     debug(...args) {
-        Logger.getLoggerTarget().debug(...args);
+        Logger.getLoggerDelegate().debug(...args);
     }
 
     error(...args) {
-        Logger.getLoggerTarget().error(...args);
+        Logger.getLoggerDelegate().error(...args);
     }
 
     debug(...args) {
-        Logger.getLoggerTarget().info("DEBUG: ", ...args);
+        Logger.getLoggerDelegate().info("DEBUG: ", ...args);
     }
 
 }
@@ -50045,7 +50090,7 @@ class DelegatedLogger {
  * is a bug with getting stuck in a loop while logging and then choking the
  * renderer.
  */
-Logger.setLoggerTarget(new ConsoleLogger());
+Logger.setLoggerDelegate(new ConsoleLogger());
 
 module.exports.create = Logger.create;
 module.exports.Logger = Logger;
