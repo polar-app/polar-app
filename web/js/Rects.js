@@ -147,6 +147,27 @@ class Rects {
     }
 
     /**
+     * Compute the intersection of a and b as a new rect.
+     *
+     *
+     * @param a {Rect}
+     * @param b {Rect}
+     */
+    static intersection(a,b) {
+
+        // TODO/refactor.  Make each dimension a line, then adjust the line.
+        // This way the same function is used twice with less copy/paste.
+
+        return Rects.createFromBasicRect({
+            top: Math.max(a.top, b.top),
+            bottom: Math.min(a.bottom, b.bottom),
+            left: Math.max(a.left, b.left),
+            right: Math.min(a.right, b.right),
+        });
+
+    }
+
+    /**
      * Return the positions where `a` (reference) is intersected by `b`.  If
      * all four sizes are present a envelops b.
      *
@@ -188,15 +209,18 @@ class Rects {
      */
     static relativePositions(a, b) {
 
+        Rects.validate(a);
+        Rects.validate(b);
+
         let result = {};
 
         // basically this is the degree AWAY from given position.  Negative
         // values would be BEFORE the position.
 
-        result.top = b.bottom - a.top;
-        result.bottom = a.top - b.bottom;
-        result.left = b.right - a.left;
-        result.right = a.left - b.right;
+        result.top = Math.abs(a.top - b.bottom);
+        result.bottom = Math.abs(a.bottom - b.top);
+        result.left = Math.abs(a.left - a.right);
+        result.right = Math.abs(a.right - b.left);
 
         return result;
 
@@ -323,9 +347,8 @@ class Rects {
  * @return {boolean}
  */
 function _interval(min,point,max) {
+    // TODO: migrate this to use a Line.holds
     return min <= point && point <= max;
-
 }
-
 
 module.exports.Rects = Rects;

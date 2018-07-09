@@ -31,6 +31,15 @@ class Line {
      * @return {boolean}
      */
     containsPoint(pt) {
+        return this.within(pt);
+    }
+
+    /**
+     * Return true if the point is within the start and end points of this line.
+     *
+     * @param pt {number}
+     */
+    within(pt) {
         return this.start <= pt && pt <= this.end;
     }
 
@@ -48,6 +57,17 @@ class Line {
 
     toString() {
         return `{start: ${this.start}, end: ${this.end}}`;
+    }
+
+    /**
+     *
+     * @param start {number}
+     * @param pt {number}
+     * @param end {number}
+     * @return {boolean}
+     */
+    static interval(start, pt, end) {
+        return start <= pt && pt <= end;
     }
 
 }

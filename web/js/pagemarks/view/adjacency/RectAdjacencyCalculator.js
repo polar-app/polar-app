@@ -1,8 +1,10 @@
 const {Rect} = require("../../../Rect")
 const {Rects} = require("../../../Rects")
-const {Line} = require("./Line");
+const {Line} = require("../../../util/Line");
 const {Adjacency} = require("./Adjacency");
 const {LineAdjustment} = require("./LineAdjustment");
+
+// FIXME: call this DragAdjacencyCalculator
 
 /**
  * If we have two rects, and the've moved to intersect, compute updated

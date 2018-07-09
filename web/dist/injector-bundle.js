@@ -10638,7 +10638,9 @@ module.exports.Preconditions = Preconditions;
   !*** ./web/js/Rect.js ***!
   \************************/
 /*! no static exports found */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
+
+const { Line } = __webpack_require__(/*! ./util/Line */ "./web/js/util/Line.js");
 
 /**
  * Basic DOM style rect without a hard requirement to use a DOMRect.
@@ -10680,6 +10682,42 @@ class Rect {
     this.height = undefined;
 
     Object.assign(this, obj);
+  }
+
+  /**
+   *
+   * @return {Line}
+   */
+  horizontalLine() {
+    return new Line(this.left, this.right);
+  }
+
+  /**
+   *
+   * @return {Line}
+   */
+  verticalLine() {
+    return new Line(this.top, this.bottom);
+  }
+
+  /**
+   * Adjust the horizontal based on the given line.
+   * @param line {Line}
+   */
+  adjustHorizontal(line) {
+    this.left = line.start;
+    this.right = line.end;
+    this.width = this.width;
+  }
+
+  /**
+   * Adjust the vertical based on the given line.
+   * @param line {Line}
+   */
+  adjustVertical(line) {
+    this.top = line.start;
+    this.bottom = line.end;
+    this.height = line.width;
   }
 
 }
@@ -10833,6 +10871,26 @@ class Rects {
     }
 
     /**
+     * Compute the intersection of a and b as a new rect.
+     *
+     *
+     * @param a {Rect}
+     * @param b {Rect}
+     */
+    static intersection(a, b) {
+
+        // TODO/refactor.  Make each dimension a line, then adjust the line.
+        // This way the same function is used twice with less copy/paste.
+
+        return Rects.createFromBasicRect({
+            top: Math.max(a.top, b.top),
+            bottom: Math.min(a.bottom, b.bottom),
+            left: Math.max(a.left, b.left),
+            right: Math.min(a.right, b.right)
+        });
+    }
+
+    /**
      * Return the positions where `a` (reference) is intersected by `b`.  If
      * all four sizes are present a envelops b.
      *
@@ -10873,15 +10931,18 @@ class Rects {
      */
     static relativePositions(a, b) {
 
+        Rects.validate(a);
+        Rects.validate(b);
+
         let result = {};
 
         // basically this is the degree AWAY from given position.  Negative
         // values would be BEFORE the position.
 
-        result.top = b.bottom - a.top;
-        result.bottom = a.top - b.bottom;
-        result.left = b.right - a.left;
-        result.right = a.left - b.right;
+        result.top = Math.abs(a.top - b.bottom);
+        result.bottom = Math.abs(a.bottom - b.top);
+        result.left = Math.abs(a.left - a.right);
+        result.right = Math.abs(a.right - b.left);
 
         return result;
     }
@@ -11003,6 +11064,7 @@ class Rects {
  * @return {boolean}
  */
 function _interval(min, point, max) {
+    // TODO: migrate this to use a Line.holds
     return min <= point && point <= max;
 }
 
@@ -11351,6 +11413,91 @@ module.exports.forOwnKeys = Functions.forOwnKeys;
 module.exports.createSiblingTuples = Functions.createSiblingTuples;
 module.exports.createSiblings = Functions.createSiblings;
 module.exports.Functions = Functions;
+
+/***/ }),
+
+/***/ "./web/js/util/Line.js":
+/*!*****************************!*\
+  !*** ./web/js/util/Line.js ***!
+  \*****************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+
+/**
+ * Simple line with just a start and end.
+ */
+class Line {
+
+    /**
+     *
+     * @param start {number}
+     * @param end {number}
+     */
+    constructor(start, end) {
+        this.start = start;
+        this.end = end;
+    }
+
+    /**
+     * The width of the line. Not to be confused with the width of a rect.
+     *
+     * @return {number}
+     */
+    get width() {
+        return this.end - this.start;
+    }
+
+    /**
+     * Return true if the given point is between the start and end position
+     * of the line (inclusive)
+     *
+     * @param pt {number}
+     * @return {boolean}
+     */
+    containsPoint(pt) {
+        return this.within(pt);
+    }
+
+    /**
+     * Return true if the point is within the start and end points of this line.
+     *
+     * @param pt {number}
+     */
+    within(pt) {
+        return this.start <= pt && pt <= this.end;
+    }
+
+    /**
+     * Return true if the given line overlaps the current line.  IE either the start
+     * or end point on the given line is between the start and end points of the
+     * current line.
+     *
+     * @param line {Line}
+     * @return {boolean}
+     */
+    overlaps(line) {
+        return this.containsPoint(line.start) || this.containsPoint(line.end);
+    }
+
+    toString() {
+        return `{start: ${this.start}, end: ${this.end}}`;
+    }
+
+    /**
+     *
+     * @param start {number}
+     * @param pt {number}
+     * @param end {number}
+     * @return {boolean}
+     */
+    static interval(start, pt, end) {
+        return start <= pt && pt <= end;
+    }
+
+}
+
+module.exports.Line = Line;
 
 /***/ }),
 

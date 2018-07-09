@@ -1,3 +1,5 @@
+const {Line} = require("./util/Line");
+
 /**
  * Basic DOM style rect without a hard requirement to use a DOMRect.
  */
@@ -39,6 +41,42 @@ class Rect {
 
         Object.assign(this, obj);
 
+    }
+
+    /**
+     *
+     * @return {Line}
+     */
+    horizontalLine() {
+        return new Line(this.left, this.right);
+    }
+
+    /**
+     *
+     * @return {Line}
+     */
+    verticalLine() {
+        return new Line(this.top, this.bottom);
+    }
+
+    /**
+     * Adjust the horizontal based on the given line.
+     * @param line {Line}
+     */
+    adjustHorizontal(line) {
+        this.left = line.start;
+        this.right = line.end;
+        this.width = this.width;
+    }
+
+    /**
+     * Adjust the vertical based on the given line.
+     * @param line {Line}
+     */
+    adjustVertical(line) {
+        this.top = line.start;
+        this.bottom = line.end;
+        this.height = line.width;
     }
 
 }

@@ -11,9 +11,6 @@ const {RectAdjacencyCalculator} = require("./RectAdjacencyCalculator");
 
 describe('RectAdjacencyCalculator', function() {
 
-    // FIXME: antoher bug.. coming from the left, already restricted, moving into a secondary rect
-
-
     it("Primary coming from the left, horizontal, snapping before due to restriction rect in place.", function () {
 
         let primaryRect = Rects.createFromBasicRect({left: 1, top: 0, width: 10, height: 10});
