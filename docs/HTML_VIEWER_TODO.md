@@ -1,41 +1,21 @@
 # TODO:
 
 
-- remaining text highlight bugs:
+- revert the use of our new highlighter when using PDFs.. this is a short term
+  work around for now.
 
-    - sometimes we get overlapped highlights
+    - remaining text highlight bugs:
 
-        - this is because we're getting two regions with 'expanded' boxes.  An
-          expanded box is like this
+        - now the text highlights don't work with PDF!!!
+            - the legacy system still works.  I must be adjusting the positions
+              specifcially for the PDF version.
 
-          +----------------+
-          |xxxxxxxxxxxxxxxx|
-          |xx              |
-          +----------------+
+                - it MUST be adjusting for scale... I might have to determine the
+                  scale by looking at offset of the element in the entire page.. ?
 
-        - Instead we should call splitText and then build two boxes like:
+                -
 
-          +----------------+
-          |xxxxxxxxxxxxxxxx|
-          +--+-------------+
-          |xx|
-          +--+
-
-        - which would look far more appropriate
-
-    - now the text highlights don't work with PDF!!!
-        - the legacy system still works.  I must be adjusting the positions
-          specifcially for the PDF version.
-
-            - it MUST be adjusting for scale... I might have to determine the
-              scale by looking at offset of the element in the entire page.. ?
-
-            -
-
-    - double clicking the entire div breaks for us...
-
-
-- sometimes I'm getting this:
+- sometimes I'm getting this when using capture:
 
     VM1392:130 Uncaught TypeError: Cannot read property 'scrollHeight' of null
         at Function.captureDoc (<anonymous>:130:52)
@@ -54,26 +34,13 @@
 
     - FIXME :" what about async callback funcitons? those won't work I think!!!
 
-- some sites aren't generating proper output...
-
 - the Selected CSS should always be blue background with white text...  the
   guardian uses yellow so it looks like a highlight:
 
     https://www.theguardian.com/technology/2018/may/24/facebook-accused-of-conducting-mass-surveillance-through-its-apps
 
-
-- AHAH!.. we can NOT use the highligher javascript because it creates a <span>
-  and this span can change the visual presentation of the page.  Instead we have
-  to do this ourselves and then manually compute where the selected region is!!!
-  FUCK!  This is just too too too much work for one person!
-
-    https://stackoverflow.com/questions/6846230/coordinates-of-selected-text-in-browser-page
-
-    - this doesn't actually work the way I want initially.
-
-        - I'm going to need to improve this a bit more.
-
-    -
+    https://css-tricks.com/overriding-the-default-text-selection-color-with-css/
+-
 
 - This webContents API might be easier than ContentCapture... holy fuck!  THIS
   would have saved me a shit load of time!!!  Like a WEEK... FUCK THIS.
@@ -101,188 +68,7 @@
     - Since I control the file output I can at least implemetn the 'partial'
       support.  That I wanted.
 
-- what's currently broken:
-    - HTTPS URLs don't work still
-    - if an error is found in ContentCapture then the callback isn't invoked.
-    - I have to go through EVERY webContents that we're given.
 
-
-
-- NOW the problem is that I can't serve any HTTPS URLs this way...
-    - I could handle these myself!!!
-
-        - https://stackoverflow.com/questions/38986692/how-do-i-trust-a-self-signed-certificate-from-an-electron-app
-        - https://electronjs.org/docs/api/app#event-certificate-error
-
-        - since the URL is sent, and we know we're ok. we don't have to do much
-          SSL work I think.
-
-        - This would basically work.. make ALL HTTP requests go through the
-          localhost... as an origin webserver. NOT as an HTTP proxy.  Then tell
-          electron to respond with the cached content with validated HTTPS
-          certificates.
-
-        - https://github.com/hokein/electron-sample-apps/tree/master/client-certificate
-
-    - I could implement this using:
-
-        https://github.com/electron/electron/blob/master/docs/api/protocol.md
-
-        and use:
-
-        registerHttpProtocol
-
-        ... this would allow me to basically handle ALL HTTP requests and I
-        could push HTTPS requests through the interal 'proxy' server which just
-        forwards handles the original request.  This way I could serve up HTTPS
-        for the original domain so I could serve / store partial results.
-
-        - with this mechanism I wouldn't have to go through my own HTTP Server!!!!
-
-        - I'm going to have to write up a simple/easy custom implementation of this...
-
-
-        - This would mean I don't have to run my own HTTP server... which would be
-          really nice and definhitely a lot less code to work with
-
-        - I could also use the net.* package which uses chrome's native HTTP
-          library BUT I need to figure out what to do about HTTP response data
-          because all of these seems like they wont' work.
-
-        - https://github.com/electron/electron/blob/master/docs/api/structures/stream-protocol-response.md
-
-            THAT is how I would return the headers...
-
-    - documentation URLs:
-        https://github.com/electron/electron/blob/master/docs/api/protocol.md
-        https://github.com/electron/electron/blob/master/docs/api/structures/stream-protocol-response.md
-        https://nodejs.org/api/stream.html
-
-        https://electronjs.org/docs/api/net
-        https://electronjs.org/docs/api/client-request
-
-        https://electronjs.org/docs/api/app#event-certificate-error
-
-    - TODO:
-
-        - how do I handle chunked responses?
-        - what do I do on errors?
-        - what do I do on abort?
-        - use the debug web requests listener to make sure all the webRequests
-          events are being called.
-        - better to use registerServiceWorkerSchemes?
-
-    - NOTES:
-
-        - no abort() method exists on the request
-
-        - I think the best strategy might be to use the debug listener??
-            - like what happens if:
-                - the domain is invalid
-                - the SSL cert is invalid
-            - these errors need to be handled properly.
-
-        - the completion ahndler is whether the interceptX() or registerX()
-          methods worked.  Has nothing to do with per request information.
-
-        - setting session = null in the callback on intersectpHttpProtocol "works"
-          and means I don't get infinite redirects BUT the problem now is that
-          the page never loads for some reason.
-
-        - https://github.com/electron/electron/issues/4008
-            I think these two APIs webRequest and protocol have to be used
-            TOGETHER as partners. I think the protocol intercepts the actual
-            request and then has to drive the webRequest APIs by calling them
-            directly.??
-        - OK.. my code is ALL wrong... I need to call interceptStreamProtocol.
-          interceptHttpProtocol is some weird thing for custom schemes that
-          handle custom URLs then redirect you to soem other site.  I could
-          build an "evernote:" and then have it redirect to a web service like
-          evernote.
-
-            - YES!!! and I confirmed it worked... the URL never changes and
-              we just end up loading the replaced URL in the background.  I
-              could implement this for polar document IDs or something so I
-              could do somethign like polar:12345
-
-        - ok.. this sucks because ALL the IO must be read at once to give me the
-          'response' .. I can't stream it.  This means my pages are going to be
-          more latent.
-            -
-
-        - custom erros can be signaled by retyrning and error code:
-
-            When callback is called with nothing, a number, or an object that
-            has an error property, the request will fail with the error number
-            you specified. For the available error numbers you can use, please
-            see the net error list.
-
-
-            - https://code.google.com/p/chromium/codesearch#chromium/src/net/base/net_error_list.h
-
-        - I could call read a FILE as a stream and try to return that... it';s supposed to work!_
-
-
-Refused to frame  because it violates the following Content Security Policy directive: "frame-src chromenull: https: webviewprogressproxy: medium: 'self'".
-
-- Iframe status:
-
-    - iframes export is harder than I thought:
-        - paging through the document works, and more resources are loaded.
-        - we can't call document.clone() because the iframe aren't cloned
-        - I will have to play around
-
-- iframes have the following problems:
-
-    - some aren't loaded by default.  they are loaded when we scroll to them,
-      not when the page is loaded.  this means we have to paginate BUT the problme
-      is that if we DO paginate , soem sites have infinite scrolling.  So we will
-      be constantly and infinitely paginating.  I would need to detect when this
-      is happening.
-
-        - infinite scrolling can be prevented by not allowing the document to
-          grow more than 2.5x higher than the original scrollHeight.
-
-        - we can use window.scrollBy for this functionality.  What I could do
-          is scroll by say 90% of the viewport.
-
-            - key bindings might be needed though and generating a key event
-              because some scripts might require this to trigger their event
-              handlers
-
-     - I can listen to requets by using webContents.session.webRequest
-
-    - I need to write down ALL the problems I'm encountering
-
-    - I think the BEST way to do this could be to go through EVERY iframe and
-      include the HTML output in the .json file so that I can serve it via the
-      HTTP proxy. This would be easiest and then I dont' have to fuck around.
-
-      Basically, every sub-iframe would work too! I would rpobably want a way to
-      eventually preserve the HTTP headers but only electron has these for now.
-
-      I could add them back in though...
-
-    - I think I should:
-        - store ALL the html in the .json file with keys for the URL...
-            - redirects might be an issue though
-        - use cloneDoc again but keep a mapping between iframe element IDs in
-          the cloneDoc to the new document.
-
-        - store the same output that we had before...
-
-        - change the src URL in the cloneDoc to the document URL after the redirect
-          so I don't have to mess with redirects in the proxy.  i can just load
-          up the documetns as they are inline.
-
-        - the document can just get data-polar-iframe-src attributes for the mapping and then
-          these are updated in the final cloneDoc.
-
-
-    - research I need to do:
-
-        - does a documetn that is cloned have iframes with src attributes or
-          are these stripped?
 
 
 - Highlights DO NOT work when viewing the document at 150%.  The positions are

@@ -8,6 +8,25 @@ const {Preconditions} = require("../../../Preconditions");
 /**
  * A region of text within the document where the nodes are split and are back to
  * back without an element in between but MAY be between different rows.
+ *
+ * We use this is because we're getting two regions with 'expanded' boxes.  An
+ * expanded box is like this
+ *
+ * +----------------+
+ * |xxxxxxxxxxxxxxxx|
+ * |xx              |
+ * +----------------+
+ *
+ * - Instead we should call splitText and then build two boxes like:
+ *
+ * +----------------+
+ * |xxxxxxxxxxxxxxxx|
+ * +--+-------------+
+ * |xx|
+ * +--+
+ *
+ * which would look far more appropriate
+ *
  */
 class TextRegion {
 

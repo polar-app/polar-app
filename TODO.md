@@ -2,16 +2,19 @@
 
 ## Next
 
-- the logger should include the class that's calling it.  I can use argumetns.callee  I think..
+- migrate to using react+redux ... redux should be the backend since it is very
+  near to what I designed using proxies.  If I can implement everything with
+  react + redux I should do so...
 
-- file a bug about text selecton on chrome vs firefox.
+- The logger should include the class that's calling it.  I can create a new
+  Error and parse the caller form that.
+
+- File a bug about text selecton on chrome vs firefox.
 
 - clean up the input page so that it uses whitespace better
     - also initial size should be better
 
 - json schema validation for all data and a schema for our main .json data
-
-- two column pagemarks.. different type of pagemarks (ignored)
 
 - recent files
 
@@ -42,13 +45,12 @@
 
 - 'open-file' event for mac and windows?
 
-- get the JSDOM tests working
-
 - get the transaction logs working
 
-
 # Context Menu
+
     - right click to download
+
     - PDF links should automatically open in Polar.
 
 # Features
