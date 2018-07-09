@@ -111,12 +111,6 @@ function computeOriginXY(interactionEvent) {
 
 function init(selector) {
 
-    // FIXME: redesign this:
-    //
-    // - the restrictions should just do simple parent restrictions
-    // - all the code should be done within the moiving logic.
-
-
     interact(selector)
         .draggable({
 
@@ -187,8 +181,6 @@ function init(selector) {
 
             let targetRect = Rects.fromElementStyle(target);
 
-            // FIXME: dragging to the side now causes an exception to be thrown
-
             if(intersectedPagemarks.intersectedRects.length === 0) {
 
                 console.log("NOT INTERSECTED");
@@ -223,7 +215,43 @@ function init(selector) {
                 if(adjustedRect) {
                     moveTargetElement(adjustedRect.left, adjustedRect.top, target);
                 } else {
-                    console.warn("Can't move due to no valid adjustedRect we can work with.")
+
+                    // FIXME: if we resize slightly..it triggers this code and
+                    // the adjustment doesn't work.
+
+                    console.warn("Can't move due to no valid adjustedRect we can work with.");
+
+                    console.log("FIXME: primaryRect: " + JSON.stringify(primaryRect, null, "  "));
+                    console.log("FIXME: intersectedRect: " + JSON.stringify(intersectedRect, null, "  "));
+                    console.log("FIXME: restrictionRect: " + JSON.stringify(restrictionRect, null, "  "));
+
+                    // looks like it happens when the primary is too large...
+
+                    // FIXME: primaryRect: {
+                    //     "left": 291,
+                    //         "top": 133,
+                    //         "right": 523,
+                    //         "bottom": 366,
+                    //         "width": 232,
+                    //         "height": 233
+                    // }
+                    // entry.js:233 FIXME: intersectedRect: {
+                    //     "left": 170,
+                    //         "top": 162,
+                    //         "right": 370,
+                    //         "bottom": 362,
+                    //         "width": 200,
+                    //         "height": 200
+                    // }
+                    // entry.js:234 FIXME: restrictionRect: {
+                    //     "left": 0,
+                    //         "top": 0,
+                    //         "right": 800,
+                    //         "bottom": 500,
+                    //         "width": 800,
+                    //         "height": 500
+                    // }
+
                 }
 
             }
@@ -245,45 +273,29 @@ function init(selector) {
 
             let target = interactionEvent.target;
 
-            // the resizeRect is the rect that the user has attempted to draw
+            // the tempRect is the rect that the user has attempted to draw
             // but which we have not yet accepted and is controlled by interact.js
-            let resizeRect = Rects.createFromBasicRect(interactionEvent.rect);
 
-            let deltaRect = Rects.subtract(resizeRect, interactionEvent.interaction.startRect);
+            let tempRect = Rects.createFromBasicRect(interactionEvent.rect);
 
-            // position the rect properly vs the delta
-            let positionedRect = Rects.add(interactionEvent.interaction.startTargetRect, deltaRect);
+            let deltaRect = Rects.subtract(tempRect, interactionEvent.interaction.startRect);
+
+            let resizeRect = Rects.add(interactionEvent.interaction.startTargetRect, deltaRect);
 
             // before we resize, verify that we CAN resize..
 
-            // FIXME: another option, find the first div we enter, then resize
-            // to connect it, but don't resize again until we leave it...
-
-            // FIXME: when I'm resizing on ONE axis only adjust the adjacency
-            // of one and note that interactjs allows us to adjust two at once...
-            // I think what we need to do is preserve the origin that it's
-            // resizing from and that would handle this case.
-
-            // FIXME: when we adjust the sizing of the rect.. we actually have
-            // to do it differently and NOT use the calculator I think.. We have
-            // to find out which direction the rect we intersected at lives, and just
-            // truncate at that position during the move..
-            let intersectedPagemarks = calculateIntersectedPagemarks(positionedRect.left, positionedRect.top, target);
+            let intersectedPagemarks = calculateIntersectedPagemarks(resizeRect.left, resizeRect.top, target);
 
             console.log("resizemove: deltaRect: " + JSON.stringify(deltaRect, null, "  "));
 
-            // FIXME:
-            //
-            //
-            // - when we are intersected on the left, we can't expand on the right.
-
             if(intersectedPagemarks.intersectedRects.length === 0) {
 
-                resizeTargetElement(positionedRect, target);
+                resizeTargetElement(resizeRect, target);
 
             } else {
 
-                // FIXME use positionedRect not resizeRect
+                // FIXME: if we envelop the rect... we can expand past it...
+                // just drag one side over it and we experience the problem.
 
                 // this is still a bit difficult to implement.  my thinking at the
                 // time was to figure out which direction the mouse is primarily
@@ -297,7 +309,7 @@ function init(selector) {
 
                 let intersectedRect = intersectedPagemarks.intersectedRects[0];
 
-                let adjustedRect = rectResizeAdjacencyCalculator.calculate(positionedRect, intersectedRect);
+                let adjustedRect = rectResizeAdjacencyCalculator.calculate(resizeRect, intersectedRect);
 
                 resizeTargetElement(adjustedRect, target);
 
