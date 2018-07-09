@@ -224,6 +224,7 @@ function init(selector) {
 
             if(intersectedPagemarks.intersectedRects.length === 0) {
 
+                console.log("Moving to origin: " + JSON.stringify(origin))
                 moveTargetElement(origin.x, origin.y, target);
 
             } else {
@@ -235,11 +236,22 @@ function init(selector) {
                     height: targetRect.height
                 });
 
-                let adjacency = RectAdjacencyCalculator.calculate(primaryRect, intersectedPagemarks.intersectedRects[0]);
+                let intersectedRect = intersectedPagemarks.intersectedRects[0];
+
+                let restrictionRect = Rects.createFromBasicRect({
+                    left: 0,
+                    top: 0,
+                    width: target.parentElement.offsetWidth,
+                    height: target.parentElement.offsetHeight
+                });
+
+                let adjacency = RectAdjacencyCalculator.calculate(primaryRect, intersectedRect, restrictionRect);
 
                 let adjustedRect = adjacency.adjustedRect;
 
-                moveTargetElement(adjustedRect.left, adjustedRect.top, target);
+                if(adjustedRect) {
+                    moveTargetElement(adjustedRect.left, adjustedRect.top, target);
+                }
 
             }
 
@@ -278,6 +290,11 @@ function init(selector) {
             let intersectedPagemarks = calculateIntersectedPagemarks(resizedRect.left, resizedRect.top, target);
 
             console.log("resizemove: deltaRect: " + JSON.stringify(deltaRect, null, "  "));
+
+            // FIXME:
+            //
+            //
+            // - when we are intersected on the left, we can't expand on the right.
 
             if(intersectedPagemarks.intersectedRects.length === 0) {
 

@@ -17,12 +17,29 @@ class RectAdjacencyCalculator {
      *
      * @param secondaryRect {Rect} The stationary rect that we need to keep our rect
      * adjacent too.
+
+     * @param [restrictionRect] {Rect} Limit the movement to the given rect.
      *
      * @return {Adjacency} Return the new / correct position of the primary rect.
      */
-    static calculate(primaryRect, secondaryRect) {
+    static calculate(primaryRect, secondaryRect, restrictionRect) {
 
         let result = new Adjacency();
+
+        if (!restrictionRect) {
+
+            // define a HUGE rect to work within by default.  Mathematically, we
+            // should probably use infinity and negative infinity but working
+            // with these in Javascript + JSON is limited.
+
+            restrictionRect = Rects.createFromBasicRect({
+                left: -1000000,
+                top: -1000000,
+                bottom: 1000000,
+                right: 1000000
+            });
+
+        }
 
         result.primaryRect = Rects.validate(primaryRect);
         result.secondaryRect = Rects.validate(secondaryRect);
@@ -37,11 +54,19 @@ class RectAdjacencyCalculator {
             vertical: new Line(primaryRect.top, primaryRect.bottom)
         };
 
+        let restrictionBox = {
+            horizontal: new Line(restrictionRect.left, restrictionRect.right),
+            vertical: new Line(restrictionRect.top, restrictionRect.bottom)
+        };
+
+        // TODO: it might be better to create a LineSet of vertical and horizontal
+        // and then pass them to adjust.
+
         result.adjustments.horizontal
-            = RectAdjacencyCalculator.adjust(primaryBox.horizontal, secondaryBox.horizontal, "x");
+            = RectAdjacencyCalculator.adjust(primaryBox.horizontal, secondaryBox.horizontal, restrictionBox.horizontal, "x");
 
         result.adjustments.vertical
-            = RectAdjacencyCalculator.adjust(primaryBox.vertical, secondaryBox.vertical, "y");
+            = RectAdjacencyCalculator.adjust(primaryBox.vertical, secondaryBox.vertical, restrictionBox.vertical, "y");
 
         let successfulAdjustments = [result.adjustments.horizontal, result.adjustments.vertical];
 
@@ -70,14 +95,23 @@ class RectAdjacencyCalculator {
      * is needed.
      *
      * @param primaryLine {Line}
+     *
      * @param secondaryLine {Line}
+     *
+     * @param restrictionLine {Line}
+     *
      * @param axis {string} The axis this represents. "x" or "y".
+     *
      * @return {LineAdjustment}
      */
-    static adjust(primaryLine, secondaryLine, axis) {
+    static adjust(primaryLine, secondaryLine, restrictionLine, axis) {
 
-        let result = new LineAdjustment({
-            axis
+        // there were no matches.
+        let none = new LineAdjustment({
+            axis,
+            overlapped: false,
+            start: primaryLine.start,
+            snapped: null
         });
 
         if(secondaryLine.overlaps(primaryLine) || primaryLine.overlaps(secondaryLine)) {
@@ -87,6 +121,10 @@ class RectAdjacencyCalculator {
             // determine the percentage we are within the secondary. If we're >
             // 0.5 we should jump to the right.  Otherwise, jump to the left.
             let perc = gap / secondaryLine.width;
+
+            let result = new LineAdjustment({
+                axis
+            });
 
             result.overlapped = true;
 
@@ -98,16 +136,21 @@ class RectAdjacencyCalculator {
                 result.snapped = "BEFORE";
             }
 
+            if(result.start < restrictionLine.start) {
+                return none;
+            }
+
+            if((result.start + primaryLine.width) > restrictionLine.end) {
+                return none;
+            }
+
             result.delta = Math.abs(primaryLine.start - result.start);
 
             return result;
 
         }
 
-        result.overlapped = false;
-        result.start = primaryLine.start;
-        result.snapped = null;
-        return result;
+        return none;
 
     }
 
