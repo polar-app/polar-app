@@ -63,7 +63,9 @@ class LineAdjustment {
         let dir = {};
         dir[this.axis] = this.start;
 
-        return Rects.move(primaryRect, dir, true);
+        let absolute=true;
+
+        return Rects.move(primaryRect, dir, absolute);
 
     }
 

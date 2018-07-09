@@ -10793,27 +10793,27 @@ class Rects {
 
         rect = Objects.duplicate(rect);
 
-        // TODO: I could just convert the relative positions to absolute
-
         if (absolute) {
 
-            if (dir.x) {
+            if ("x" in dir) {
                 rect.left = dir.x;
                 rect.right = rect.left + rect.width;
             }
 
-            if (dir.y) {
+            if ("y" in dir) {
                 rect.top = dir.y;
                 rect.bottom = rect.top + rect.height;
             }
         } else {
 
-            if (dir.x) {
+            // TODO: I could just convert the relative positions to absolute to
+            // clean up this code a bit.
+            if ("x" in dir) {
                 rect.left = rect.left + dir.x;
                 rect.right = rect.right + dir.x;
             }
 
-            if (dir.y) {
+            if ("y" in dir) {
                 rect.bottom = rect.bottom + dir.y;
                 rect.top = rect.top + dir.y;
             }

@@ -8,32 +8,6 @@ const {assertJSON} = require("../../web/js/test/Assertions");
 const {Rect} = require("../../web/js/Rect");
 const {RectAdjacencyCalculator} = require("../../web/js/pagemarks/view/adjacency/RectAdjacencyCalculator");
 
-
-// this is used later in the resizing and gesture demos
-//window.dragMoveListener = dragMoveListener;
-
-class RestrictionRectCalculator {
-
-    // calculateField(parentRect, intersectingRects, name, vsName, reducerFunc) {
-    //     Math.max(parentRect.left, Math.max(intersectingRects.map(intersectingRect => intersectingRect.right)))
-    // }
-
-}
-
-function computeBoundingRect(parentRect, elementOrigin, intersectingRects) {
-
-    console.log("Working with intersecting rects: " + JSON.stringify(intersectingRects, null, "  ") );
-
-    let result = Objects.duplicate(parentRect);
-
-    result.left = Math.max(parentRect.left, Math.max(intersectingRects.map(intersectingRect => intersectingRect.right)));
-    result.right = Math.min(parentRect.right, Math.min(intersectingRects.map(intersectingRect => intersectingRect.left)));
-    result.top = Math.max(parentRect.top, Math.max(intersectingRects.map(intersectingRect => intersectingRect.bottom)));
-    result.bottom = Math.min(parentRect.bottom, Math.min(intersectingRects.map(intersectingRect => intersectingRect.top)));
-
-    return result;
-}
-
 /**
  */
 function calculateIntersectedPagemarks(x, y, element) {
@@ -224,10 +198,14 @@ function init(selector) {
 
             if(intersectedPagemarks.intersectedRects.length === 0) {
 
+                console.log("NOT INTERSECTED");
+
                 console.log("Moving to origin: " + JSON.stringify(origin));
                 moveTargetElement(origin.x, origin.y, target);
 
             } else {
+
+                console.log("INTERSECTED");
 
                 let primaryRect = Rects.createFromBasicRect({
                     left: origin.x,
