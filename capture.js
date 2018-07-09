@@ -31,18 +31,6 @@ const log = Logger.create();
 
 const USE_PAGING_LOADER = true;
 
-
-function calculateWindowDimensions(window) {
-
-    let size = window.getSize();
-
-    return new Dimensions({
-        width: size[0],
-        height: size[1]
-    });
-
-}
-
 let diskDatastore = new DiskDatastore();
 
 let args = Args.parse(process.argv);
@@ -354,7 +342,7 @@ class Capture {
 
         window.webContents.setUserAgent(browser.userAgent);
 
-        let windowDimensions = calculateWindowDimensions(window);
+        let windowDimensions = this.__calculateWindowDimensions(window);
 
         /** @RendererContext */
         function configureBrowserWindowSize(windowDimensions) {
@@ -391,6 +379,24 @@ class Capture {
         let screenDimensionScript = Functions.functionToScript(configureBrowserWindowSize, windowDimensions);
 
         await window.webContents.executeJavaScript(screenDimensionScript);
+
+    }
+
+    /**
+     * Get back the dimensions of the given window.
+     *
+     * @param window
+     * @return {Dimensions}
+     * @private
+     */
+    __calculateWindowDimensions(window) {
+
+        let size = window.getSize();
+
+        return new Dimensions({
+            width: size[0],
+            height: size[1]
+        });
 
     }
 

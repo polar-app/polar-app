@@ -1,3 +1,5 @@
+const SHOW = false;
+
 class BrowserWindows {
 
     static toBrowserWindowOptions(browser) {
@@ -9,7 +11,7 @@ class BrowserWindows {
             height: browser.deviceEmulation.screenSize.height,
             //maxWidth: WIDTH,
             //maxHeight: HEIGHT,
-            //show: false,
+            show: SHOW,
             webPreferences: {
                 nodeIntegration: false,
                 defaultEncoding: 'UTF-8',
