@@ -7,7 +7,8 @@ class RectResizeAdjacencyCalculator {
 
     /**
      *
-     * @param resizeRect {Rect} The Rect that the user is resizing and hasn't been accepted yet.
+     * @param resizeRect {Rect} The Rect that the user is resizing and hasn't
+     * been accepted yet.
      *
      * @param intersectedRect {Rect} The rect we've intersected with.
      *
@@ -22,12 +23,12 @@ class RectResizeAdjacencyCalculator {
         // only adjust ONE dimension...
         if(intersectionRect.width > intersectionRect.height) {
 
-            let adjustedLine = this.adjustLine(intersectionRect.verticalLine(), resizeRect.verticalLine());
+            let adjustedLine = this.__adjustLine(intersectionRect.verticalLine(), resizeRect.verticalLine());
             adjustedRect.adjustVertical(adjustedLine);
 
         } else {
 
-            let adjustedLine = this.adjustLine(intersectionRect.horizontalLine(), resizeRect.horizontalLine());
+            let adjustedLine = this.__adjustLine(intersectionRect.horizontalLine(), resizeRect.horizontalLine());
             adjustedRect.adjustHorizontal(adjustedLine);
 
         }
@@ -40,9 +41,10 @@ class RectResizeAdjacencyCalculator {
      *
      * @param intersectionLine {Line}
      * @param resizeLine {Line}
+     * @private
      * @return {Line}
      */
-    adjustLine(intersectionLine, resizeLine) {
+    __adjustLine(intersectionLine, resizeLine) {
 
         let adjustLine = Objects.duplicate(resizeLine);
 
