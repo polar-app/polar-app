@@ -25,6 +25,7 @@ const {PagingLoader} = require("./web/js/electron/capture/pagination/PagingLoade
 const Logger = require("./web/js/logger/Logger").Logger;
 const {PendingWebRequestsListener} = require("./web/js/webrequests/PendingWebRequestsListener");
 const {DebugWebRequestsListener} = require("./web/js/webrequests/DebugWebRequestsListener");
+const {Dimensions} = require("./web/js/util/Dimensions");
 
 const log = Logger.create();
 
@@ -46,20 +47,20 @@ async function configureBrowser(window) {
 
     window.webContents.setUserAgent(browser.userAgent);
 
-    let windowSize = getWindowSize(window);
+    let windowDimensions = calculateWindowDimensions(window);
 
     /** @RendererContext */
-    function configureBrowserWindowSize(windowSize) {
+    function configureBrowserWindowSize(windowDimensions) {
 
         // TODO: see if I have already redefined it.  the second time fails
         // because I can't redefine a property.  I don't think there is a way
         // to find out if it's already defined though.
 
         let definitions = [
-            {key: "width",       value: windowSize.width},
-            {key: "availWidth",  value: windowSize.width},
-            {key: "height",      value: windowSize.height},
-            {key: "availHeight", value: windowSize.height}
+            {key: "width",       value: windowDimensions.width},
+            {key: "availWidth",  value: windowDimensions.width},
+            {key: "height",      value: windowDimensions.height},
+            {key: "availHeight", value: windowDimensions.height}
         ];
 
         definitions.forEach((definition) => {
@@ -80,20 +81,20 @@ async function configureBrowser(window) {
 
     }
 
-    let screenDimensionScript = Functions.functionToScript(configureBrowserWindowSize, windowSize);
+    let screenDimensionScript = Functions.functionToScript(configureBrowserWindowSize, windowDimensions);
 
     await window.webContents.executeJavaScript(screenDimensionScript);
 
 }
 
-function getWindowSize(window) {
+function calculateWindowDimensions(window) {
 
     let size = window.getSize();
 
-    return {
+    return new Dimensions({
         width: size[0],
         height: size[1]
-    }
+    });
 
 }
 
