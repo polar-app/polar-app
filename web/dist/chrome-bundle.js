@@ -77623,12 +77623,16 @@ class Files {
      * @return {Promise<Buffer>}
      */
     readFileAsync(path) {
-        return _asyncToGenerator(function* () {})();
+        return _asyncToGenerator(function* () {
+            throw new Error("Not replaced via promisify");
+        })();
     }
 
     // https://nodejs.org/api/fs.html#fs_fs_writefile_file_data_options_callback
     writeFileAsync(path, data) {
-        return _asyncToGenerator(function* () {})();
+        return _asyncToGenerator(function* () {
+            throw new Error("Not replaced via promisify");
+        })();
     }
 
     createDirAsync(dir) {

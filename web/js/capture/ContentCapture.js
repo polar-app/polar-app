@@ -1,3 +1,6 @@
+/**
+ * @RendererContext
+ */
 class ContentCapture {
 
     // FIXME: remove meta http-equiv Location redirects from the raw HTML.

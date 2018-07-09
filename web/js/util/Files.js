@@ -21,12 +21,12 @@ class Files {
      * @return {Promise<Buffer>}
      */
     async readFileAsync(path) {
-
+        throw new Error("Not replaced via promisify");
     }
 
     // https://nodejs.org/api/fs.html#fs_fs_writefile_file_data_options_callback
     async writeFileAsync(path, data) {
-
+        throw new Error("Not replaced via promisify");
     }
 
     async createDirAsync(dir) {
