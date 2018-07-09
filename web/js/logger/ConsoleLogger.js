@@ -9,12 +9,12 @@ class ConsoleLogger {
         console.warn(...args);
     }
 
-    debug(...args) {
-        console.debug(...args);
-    }
-
     error(...args) {
         console.error(...args);
+    }
+
+    verbose(...args) {
+        console.log("VERBOSE: " , ...args);
     }
 
     debug(...args) {

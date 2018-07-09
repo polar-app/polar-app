@@ -16,7 +16,7 @@ class Logger {
      */
     static create() {
         let caller = Caller.getCaller();
-        return new DelegatedLogger();
+        return new DelegatedLogger(caller.filename);
     }
 
     static setLoggerDelegate(loggerDelegate) {
@@ -84,24 +84,32 @@ class Logger {
  */
 class DelegatedLogger {
 
+    /**
+     *
+     * @param caller {string}
+     */
+    constructor(caller) {
+        this.caller = caller;
+    }
+
     info(...args) {
-        Logger.getLoggerDelegate().info(...args);
+        Logger.getLoggerDelegate().info(this.caller, ...args);
     }
 
     warn(...args) {
-        Logger.getLoggerDelegate().warn(...args);
-    }
-
-    debug(...args) {
-        Logger.getLoggerDelegate().debug(...args);
+        Logger.getLoggerDelegate().warn(this.caller, ...args);
     }
 
     error(...args) {
-        Logger.getLoggerDelegate().error(...args);
+        Logger.getLoggerDelegate().error(this.caller, ...args);
+    }
+
+    verbose(...args) {
+        Logger.getLoggerDelegate().debug(this.caller, ...args);
     }
 
     debug(...args) {
-        Logger.getLoggerDelegate().info("DEBUG: " , ...args);
+        Logger.getLoggerDelegate().info(this.caller, ...args);
     }
 
 }

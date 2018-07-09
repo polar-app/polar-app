@@ -3,7 +3,7 @@ class Caller {
     static getCaller() {
         let e = new Error();
         let stack = e.stack;
-        let frame = stack.split("\n")[1];
+        let frame = stack.split("\n")[3];
         return Caller._parse(frame);
     }
 
