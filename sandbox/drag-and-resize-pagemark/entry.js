@@ -7,7 +7,7 @@ const {Styles} = require("../../web/js/util/Styles");
 const {assertJSON} = require("../../web/js/test/Assertions");
 const {Rect} = require("../../web/js/Rect");
 const {RectAdjacencyCalculator} = require("../../web/js/pagemarks/view/interact/drag/RectAdjacencyCalculator");
-const {RectResizeAdjacencyCalculator} = require("../../web/js/pagemarks/view/interact/resize/RectResizeAdjacencyCalculator");
+const {ResizeRectAdjacencyCalculator} = require("../../web/js/pagemarks/view/interact/resize/ResizeRectAdjacencyCalculator");
 const {RectEdges} = require("../../web/js/pagemarks/view/interact/edges/RectEdges");
 const {Preconditions} = require("../../web/js/Preconditions");
 
@@ -303,13 +303,13 @@ function init(selector) {
 
                 console.log("Resizing in intersected mode");
 
-                let rectResizeAdjacencyCalculator = new RectResizeAdjacencyCalculator();
+                let ResizeRectAdjacencyCalculator = new ResizeRectAdjacencyCalculator();
 
                 let intersectedRect = intersectedPagemarks.intersectedRects[0];
 
                 let rectEdges = new RectEdges(interactionEvent.edges);
 
-                let adjustedRect = rectResizeAdjacencyCalculator.calculate(resizeRect, intersectedRect, rectEdges);
+                let adjustedRect = ResizeRectAdjacencyCalculator.calculate(resizeRect, intersectedRect, rectEdges);
 
                 console.log("resizemove: adjustedRect: " + JSON.stringify(adjustedRect, null, "  "));
 
