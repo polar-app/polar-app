@@ -6,9 +6,9 @@ const {Objects} = require("../../web/js/util/Objects");
 const {Styles} = require("../../web/js/util/Styles");
 const {assertJSON} = require("../../web/js/test/Assertions");
 const {Rect} = require("../../web/js/Rect");
-const {RectAdjacencyCalculator} = require("../../web/js/pagemarks/view/adjacency/RectAdjacencyCalculator");
-const {RectResizeAdjacencyCalculator} = require("../../web/js/pagemarks/view/adjacency/RectResizeAdjacencyCalculator");
-const {RectEdges} = require("../../web/js/pagemarks/view/adjacency/edges/RectEdges");
+const {RectAdjacencyCalculator} = require("../../web/js/pagemarks/view/interact/RectAdjacencyCalculator");
+const {RectResizeAdjacencyCalculator} = require("../../web/js/pagemarks/view/interact/RectResizeAdjacencyCalculator");
+const {RectEdges} = require("../../web/js/pagemarks/view/interact/edges/RectEdges");
 const {Preconditions} = require("../../web/js/Preconditions");
 
 /**
