@@ -18,6 +18,8 @@ class EventBridge {
 
         this.iframe.contentDocument.body.addEventListener("keyup", this.eventListener.bind(this));
         this.iframe.contentDocument.body.addEventListener("keydown", this.eventListener.bind(this));
+        this.iframe.contentDocument.body.addEventListener("mouseup", this.eventListener.bind(this));
+        this.iframe.contentDocument.body.addEventListener("mousedown", this.eventListener.bind(this));
         this.iframe.contentDocument.body.addEventListener("contextmenu", this.eventListener.bind(this));
 
         this.iframe.contentDocument.body.addEventListener("click", function(event) {

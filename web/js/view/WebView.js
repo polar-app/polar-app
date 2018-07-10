@@ -6,6 +6,7 @@ const {MainPagemarkRenderer} = require("../pagemarks/MainPagemarkRenderer");
 const {ThumbnailPagemarkRenderer} = require("../pagemarks/ThumbnailPagemarkRenderer");
 const {Preconditions} = require("../Preconditions");
 const {View} = require("./View.js");
+const {BoxController} = require("../pagemarks/controller/interact/BoxController");
 
  class WebView extends View {
 
@@ -18,6 +19,8 @@ const {View} = require("./View.js");
         this.pagemarkRenderer = null;
         this.docFormat = DocFormatFactory.getInstance();
 
+        this.pagemarkBoxController = new BoxController();
+
     }
 
     start() {
@@ -25,6 +28,7 @@ const {View} = require("./View.js");
         this.model.registerListenerForCreatePagemark(this.onCreatePagemark.bind(this));
         this.model.registerListenerForErasePagemark(this.onErasePagemark.bind(this));
         this.model.registerListenerForDocumentLoaded(this.onDocumentLoaded.bind(this));
+
 
         return this;
 
@@ -301,6 +305,12 @@ const {View} = require("./View.js");
         }
 
         options.placementElement.parentElement.insertBefore(pagemarkElement, options.placementElement);
+
+        // TODO: this enables resize but we don't yet support updating the
+        // pagemark data itself.  We're probably going to have to implement
+        // mutation listeners there.
+
+        //this.pagemarkBoxController.register(pagemarkElement);
 
     }
 

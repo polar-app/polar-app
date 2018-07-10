@@ -183,7 +183,7 @@ class WebController extends Controller {
     }
 
     // FIXME: remake this binding to CreatePagemarkEntirePage
-    keyBindingPagemarkEntirePage(event) {
+    async keyBindingPagemarkEntirePage(event) {
 
         console.log("Marking entire page as read.");
 
@@ -191,7 +191,7 @@ class WebController extends Controller {
         let pageNum = this.getPageNum(pageElement);
 
         this.erasePagemarks(pageNum);
-        this.createPagemark(pageNum);
+        await this.createPagemark(pageNum);
 
     }
 
@@ -206,7 +206,7 @@ class WebController extends Controller {
         this.erasePagemark(pageNum);
     }
 
-    keyBindingListener(event) {
+    async keyBindingListener(event) {
 
         if (KeyEvents.isKeyMetaActive(event)) {
 
@@ -225,7 +225,7 @@ class WebController extends Controller {
                         break;
 
                     case "n":
-                        this.keyBindingPagemarkEntirePage(event);
+                        await this.keyBindingPagemarkEntirePage(event);
                         break;
 
                     default:
