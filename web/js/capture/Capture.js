@@ -315,7 +315,7 @@ class Capture {
 
             // FIXME: this might be a bug.  Just because we get a new start loading
             // request doesn't mean it's in a new webContents ...
-            this.onWebRequest(webContents.session.webRequest);
+            //this.onWebRequest(webContents.session.webRequest);
 
             if(! this.windowConfigured) {
 

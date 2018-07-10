@@ -30,7 +30,7 @@ const {Paths} = require("./web/js/util/Paths");
 const {Fingerprints} = require("./web/js/util/Fingerprints");
 const {Files} = require("./web/js/util/Files");
 const {ElectronContextMenu} = require("./web/js/contextmenu/electron/ElectronContextMenu");
-
+const searchInPage = require('electron-in-page-search').default;
 
 const options = { extraHeaders: 'pragma: no-cache\nreferer: http://cnn.com\n' };
 
@@ -144,6 +144,8 @@ const MENU_TEMPLATE = [{
         submenu: [
             { label: 'Undo', accelerator: 'CmdOrCtrl+Z', role: 'undo' },
             { label: 'Redo', accelerator: 'Shift+CmdOrCtrl+Z', role: 'redo' },
+            // { type: 'separator' },
+            // { label: 'Find', accelerator: 'CmdOrCtrl+f', click: cmdFind },
             { type: 'separator' },
             { label: 'Copy', accelerator: 'CmdOrCtrl+C', role: 'copy' },
             { label: 'Select All', accelerator: 'CmdOrCtrl+A', role: 'selectall' },
@@ -265,6 +267,7 @@ function createWindow() {
     newWindow.once('ready-to-show', () => {
         //newWindow.maximize();
         newWindow.show();
+
     });
 
     return newWindow;
@@ -467,6 +470,18 @@ async function loadDoc(path, targetWindow) {
         }
 
     });
+
+}
+
+function cmdFind() {
+
+    // TODO: this won't work as it needs to be in the renderer process...
+
+    // Create an instance with the current window
+    const inPageSearch = searchInPage(remote.getCurrentWebContents());
+
+    // Display the search menu
+    inPageSearch.openSearchWindow();
 
 }
 
