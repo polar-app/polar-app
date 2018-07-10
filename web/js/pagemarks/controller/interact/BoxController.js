@@ -2,9 +2,10 @@ const interact = require("interactjs");
 const {Rects} = require("../../../Rects");
 const {Rect} = require("../../../Rect");
 const {Objects} = require("../../../util/Objects");
-const {DragRectAdjacencyCalculator} = require(".//drag/DragRectAdjacencyCalculator");
-const {ResizeRectAdjacencyCalculator} = require(".//resize/ResizeRectAdjacencyCalculator");
-const {RectEdges} = require(".//edges/RectEdges");
+const {DragRectAdjacencyCalculator} = require("./drag/DragRectAdjacencyCalculator");
+const {ResizeRectAdjacencyCalculator} = require("./resize/ResizeRectAdjacencyCalculator");
+const {BoxMoveEvent} = require("./BoxMoveEvent");
+const {RectEdges} = require("./edges/RectEdges");
 const {Preconditions} = require("../../../Preconditions");
 
 /**
@@ -13,7 +14,12 @@ const {Preconditions} = require("../../../Preconditions");
  */
 class BoxController {
 
-    constructor() {
+    /**
+     *
+     * @param [callback] {Function} Callback function which gives you a {BoxMoveEvent}
+     */
+    constructor(callback) {
+        this.callback = callback;
     }
 
     /**
@@ -21,8 +27,15 @@ class BoxController {
      */
     register(boxIdentifier) {
 
+        // TODO: we need a callback with:
+        //
+        // the parentRect (the container dimensions of the parent)
+        // the boxRect (the position of the box after it was moved)
+        //
+
         // TODO: assert that the boxes for the selector are ALREADY absolutely
-        // positioned
+        // positioned before we accept them and they are done using style
+        // attributes.
 
         interact(boxIdentifier)
             .draggable({
@@ -88,6 +101,13 @@ class BoxController {
 
                 let target = interactionEvent.target;
 
+                let restrictionRect = Rects.createFromBasicRect({
+                    left: 0,
+                    top: 0,
+                    width: target.parentElement.offsetWidth,
+                    height: target.parentElement.offsetHeight
+                });
+
                 let origin = this._computeOriginXY(interactionEvent);
 
                 let targetRect = Rects.fromElementStyle(target);
@@ -98,6 +118,13 @@ class BoxController {
                     width: targetRect.width,
                     height: targetRect.height
                 }));
+
+                let boxRect = Rects.createFromBasicRect({
+                    left: origin.x,
+                    top: origin.y,
+                    width: targetRect.width,
+                    height: targetRect.height
+                });
 
                 if(intersectedBoxes.intersectedRects.length === 0) {
 
@@ -119,25 +146,21 @@ class BoxController {
 
                     let intersectedRect = intersectedBoxes.intersectedRects[0];
 
-                    let restrictionRect = Rects.createFromBasicRect({
-                        left: 0,
-                        top: 0,
-                        width: target.parentElement.offsetWidth,
-                        height: target.parentElement.offsetHeight
-                    });
-
                     let adjacency = DragRectAdjacencyCalculator.calculate(primaryRect, intersectedRect, restrictionRect);
 
                     let adjustedRect = adjacency.adjustedRect;
 
                     if(adjustedRect) {
                         this._moveTargetElement(adjustedRect.left, adjustedRect.top, target);
+                        boxRect = adjustedRect;
                     } else {
                         // this should never happen but log it if there is a bug.
                         console.warn("Can't move due to no valid adjustedRect we can work with.");
                     }
 
                 }
+
+                this._fireBoxMoveEvent("drag", restrictionRect, boxRect, target.id);
 
             })
             .on('resizestart', interactionEvent => {
@@ -156,6 +179,13 @@ class BoxController {
 
                 let target = interactionEvent.target;
 
+                let restrictionRect = Rects.createFromBasicRect({
+                    left: 0,
+                    top: 0,
+                    width: target.parentElement.offsetWidth,
+                    height: target.parentElement.offsetHeight
+                });
+
                 // the tempRect is the rect that the user has attempted to draw
                 // but which we have not yet accepted and is controlled by interact.js
 
@@ -171,13 +201,23 @@ class BoxController {
 
                 console.log("resizemove: deltaRect: " + JSON.stringify(deltaRect, null, "  "));
 
+                let boxRect;
+
                 if(intersectedBoxes.intersectedRects.length === 0) {
 
                     console.log("Resizing in non-intersected mode");
 
+                    boxRect = resizeRect;
+
                     this._resizeTargetElement(resizeRect, target);
 
                 } else {
+
+                    // FIXME: its' also possible to resize smaller than the minSize we defined above...
+
+                    // FIXME: when intersected, if we drag down, the rect vanishes...
+                    //
+                    // FIXME: pulling it left while intersected also makes it vanish...
 
                     console.log("Resizing in intersected mode");
 
@@ -191,11 +231,38 @@ class BoxController {
 
                     console.log("resizemove: adjustedRect: " + JSON.stringify(adjustedRect, null, "  "));
 
+                    boxRect = adjustedRect;
+
                     this._resizeTargetElement(adjustedRect, target);
 
                 }
 
+                this._fireBoxMoveEvent("resize", restrictionRect, boxRect, target.id);
+
             });
+    }
+
+    /**
+     *
+     * @param type {String} "drag" or "resize"
+     * @param restrictionRect {Rect}
+     * @param boxRect {Rect}
+     * @param id {String}
+     * @private
+     */
+    _fireBoxMoveEvent(type, restrictionRect, boxRect, id) {
+
+        let boxMoveEvent = new BoxMoveEvent({
+            type,
+            restrictionRect,
+            boxRect,
+            id
+        });
+
+        if(this.callback) {
+            this.callback(boxMoveEvent);
+        }
+
     }
 
     /**

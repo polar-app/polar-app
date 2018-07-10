@@ -14,7 +14,11 @@ const {BoxController} = require("../../web/js/pagemarks/controller/interact/BoxC
 
 $(document).ready( () => {
 
-    let boxController = new BoxController();
+    let boxController = new BoxController((boxMoveEvent) => {
+
+        console.log("boxMoveEvent: " + JSON.stringify(boxMoveEvent, null, "  "));
+
+    });
 
     console.log("Ready now...");
 
