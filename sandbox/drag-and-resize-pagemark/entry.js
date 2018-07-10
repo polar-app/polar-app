@@ -9,27 +9,20 @@ const {Rect} = require("../../web/js/Rect");
 const {RectAdjacencyCalculator} = require("../../web/js/pagemarks/view/adjacency/RectAdjacencyCalculator");
 const {RectResizeAdjacencyCalculator} = require("../../web/js/pagemarks/view/adjacency/RectResizeAdjacencyCalculator");
 const {RectEdges} = require("../../web/js/pagemarks/view/adjacency/edges/RectEdges");
+const {Preconditions} = require("../../web/js/Preconditions");
 
 /**
  */
-function calculateIntersectedPagemarks(x, y, element) {
+function calculateIntersectedPagemarks(element, resizeRect) {
 
-    if(! element) {
-        throw new Error("No element");
-    }
+    Preconditions.assertNotNull(element, "element");
+    Preconditions.assertNotNull(resizeRect, "resizeRect");
 
-    // This is where we are NOW, now where we are GOING to be.
-    let elementRect = Rects.fromElementStyle(element);
+    // // This is where we are NOW, now where we are GOING to be.
+    // let elementRect = Rects.fromElementStyle(element);
 
-    console.log(`x: ${x}: y: ${y}`);
-    console.log("elementRect is now: " + JSON.stringify(elementRect, null, "  "));
-
-    elementRect.left = x;
-    elementRect.top = y;
-    elementRect.right = elementRect.left + elementRect.width;
-    elementRect.bottom = elementRect.top + elementRect.height;
-
-    console.log("elementRect is now (after mutation): " + JSON.stringify(elementRect, null, "  "));
+    // console.log(`x: ${x}: y: ${y}`);
+    console.log("calculateIntersectedPagemarks: resizeRect is: " + JSON.stringify(resizeRect, null, "  "));
 
     let doc = element.ownerDocument;
     let pagemarks = Array.from(doc.querySelectorAll(".pagemark"))
@@ -45,14 +38,14 @@ function calculateIntersectedPagemarks(x, y, element) {
 
         let pagemarkRect = Rects.fromElementStyle(pagemark);
 
-        if(Rects.intersect(pagemarkRect, elementRect)) {
+        if(Rects.intersect(pagemarkRect, resizeRect)) {
             intersectedRects.push(pagemarkRect);
         }
 
     });
 
     return {
-        elementRect,
+        resizeRect,
         intersectedRects
     }
 
@@ -178,9 +171,14 @@ function init(selector) {
 
             let origin = computeOriginXY(interactionEvent);
 
-            let intersectedPagemarks = calculateIntersectedPagemarks(origin.x, origin.y, interactionEvent.currentTarget);
-
             let targetRect = Rects.fromElementStyle(target);
+
+            let intersectedPagemarks = calculateIntersectedPagemarks(interactionEvent.currentTarget, Rects.createFromBasicRect({
+                left: origin.x,
+                top: origin.y,
+                width: targetRect.width,
+                height: targetRect.height
+            }));
 
             if(intersectedPagemarks.intersectedRects.length === 0) {
 
@@ -285,7 +283,7 @@ function init(selector) {
 
             // before we resize, verify that we CAN resize..
 
-            let intersectedPagemarks = calculateIntersectedPagemarks(resizeRect.left, resizeRect.top, target);
+            let intersectedPagemarks = calculateIntersectedPagemarks(target, resizeRect);
 
             console.log("resizemove: deltaRect: " + JSON.stringify(deltaRect, null, "  "));
 
