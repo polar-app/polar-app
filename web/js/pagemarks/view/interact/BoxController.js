@@ -221,13 +221,13 @@ class BoxController {
 
                     console.log("Resizing in intersected mode");
 
-                    let ResizeRectAdjacencyCalculator = new ResizeRectAdjacencyCalculator();
+                    let resizeRectAdjacencyCalculator = new ResizeRectAdjacencyCalculator();
 
                     let intersectedRect = intersectedBoxes.intersectedRects[0];
 
                     let rectEdges = new RectEdges(interactionEvent.edges);
 
-                    let adjustedRect = ResizeRectAdjacencyCalculator.calculate(resizeRect, intersectedRect, rectEdges);
+                    let adjustedRect = resizeRectAdjacencyCalculator.calculate(resizeRect, intersectedRect, rectEdges);
 
                     console.log("resizemove: adjustedRect: " + JSON.stringify(adjustedRect, null, "  "));
 
@@ -345,4 +345,4 @@ class BoxController {
 
 }
 
-module.exports.PagemarkController = BoxController;
+module.exports.BoxController = BoxController;
