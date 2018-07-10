@@ -7,9 +7,9 @@ const {Rects} = require("../../../../Rects");
 const {Objects} = require("../../../../util/Objects");
 const {RectArt} = require("../../../../util/RectArt");
 
-const {RectAdjacencyCalculator} = require("./RectAdjacencyCalculator");
+const {DragRectAdjacencyCalculator} = require("./DragRectAdjacencyCalculator");
 
-describe('RectAdjacencyCalculator', function() {
+describe('DragRectAdjacencyCalculator', function() {
 
 
     // FIXME: broken resize dimensionws
@@ -50,7 +50,7 @@ describe('RectAdjacencyCalculator', function() {
 
         console.log("BEFORE: " + RectArt.formatRects([secondaryRect, primaryRect]).toString());
 
-        let adjacency = RectAdjacencyCalculator.calculate(primaryRect, secondaryRect, restrictionRect);
+        let adjacency = DragRectAdjacencyCalculator.calculate(primaryRect, secondaryRect, restrictionRect);
 
         assert.notEqual(adjacency.adjustment, null);
 
@@ -81,7 +81,7 @@ describe('RectAdjacencyCalculator', function() {
 
         console.log("BEFORE: " + RectArt.formatRects([secondaryRect, primaryRect]).toString());
 
-        let adjacency = RectAdjacencyCalculator.calculate(primaryRect, secondaryRect, restrictionRect);
+        let adjacency = DragRectAdjacencyCalculator.calculate(primaryRect, secondaryRect, restrictionRect);
 
         assert.notEqual(adjacency.adjustment, null);
 
@@ -111,7 +111,7 @@ describe('RectAdjacencyCalculator', function() {
 
         console.log("BEFORE: " + RectArt.formatRects([secondaryRect, primaryRect]).toString());
 
-        let adjacency = RectAdjacencyCalculator.calculate(primaryRect, secondaryRect, restrictionRect);
+        let adjacency = DragRectAdjacencyCalculator.calculate(primaryRect, secondaryRect, restrictionRect);
 
         assert.notEqual(adjacency.adjustment, null);
 
@@ -141,7 +141,7 @@ describe('RectAdjacencyCalculator', function() {
 
         console.log("BEFORE: " + RectArt.formatRects([secondaryRect, primaryRect]).toString());
 
-        let adjacency = RectAdjacencyCalculator.calculate(primaryRect, secondaryRect);
+        let adjacency = DragRectAdjacencyCalculator.calculate(primaryRect, secondaryRect);
 
         console.log("AFTER: " + RectArt.formatRects([secondaryRect, adjacency.adjustedRect]).toString());
 
@@ -169,7 +169,7 @@ describe('RectAdjacencyCalculator', function() {
 
         console.log("BEFORE: " + RectArt.formatRects([secondaryRect, primaryRect]).toString());
 
-        let adjacency = RectAdjacencyCalculator.calculate(primaryRect, secondaryRect);
+        let adjacency = DragRectAdjacencyCalculator.calculate(primaryRect, secondaryRect);
 
         // assert.equal(adjacency.adjustments.vertical.overlapped, false);
         // assert.equal(adjacency.adjustedRect.top, 4);
@@ -200,7 +200,7 @@ describe('RectAdjacencyCalculator', function() {
 
         console.log("BEFORE: " + RectArt.formatRects([secondaryRect, primaryRect]).toString());
 
-        let adjacency = RectAdjacencyCalculator.calculate(primaryRect, secondaryRect);
+        let adjacency = DragRectAdjacencyCalculator.calculate(primaryRect, secondaryRect);
 
         // assert.equal(adjacency.adjustments.vertical.overlapped, false);
         // assert.equal(adjacency.adjustedRect.top, 4);
@@ -224,7 +224,7 @@ describe('RectAdjacencyCalculator', function() {
 
         console.log("BEFORE: " + RectArt.formatRects([secondaryRect, primaryRect]).toString());
 
-        let adjacency = RectAdjacencyCalculator.calculate(primaryRect, secondaryRect);
+        let adjacency = DragRectAdjacencyCalculator.calculate(primaryRect, secondaryRect);
 
         console.log("AFTER: " + RectArt.formatRects([secondaryRect, adjacency.adjustedRect]).toString());
 
@@ -267,7 +267,7 @@ describe('RectAdjacencyCalculator', function() {
 
         assert.equal(Rects.intersect(primaryRect, secondaryRect), true);
 
-        let adjacency = RectAdjacencyCalculator.calculate(primaryRect, secondaryRect);
+        let adjacency = DragRectAdjacencyCalculator.calculate(primaryRect, secondaryRect);
 
         assert.equal(adjacency.adjustments.vertical.overlapped, true);
         assert.equal(adjacency.adjustments.horizontal.overlapped, true);

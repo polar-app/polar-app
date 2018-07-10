@@ -4,13 +4,11 @@ const {Line} = require("../../../../util/Line");
 const {Adjacency} = require("./Adjacency");
 const {LineAdjustment} = require("./LineAdjustment");
 
-// FIXME: call this DragAdjacencyCalculator
-
 /**
  * If we have two rects, and the've moved to intersect, compute updated
  * positions so that they are ADJACENT, not intersecting.
  */
-class RectAdjacencyCalculator {
+class DragRectAdjacencyCalculator {
 
     /**
      *
@@ -65,10 +63,10 @@ class RectAdjacencyCalculator {
         // and then pass them to adjust.
 
         result.adjustments.horizontal
-            = RectAdjacencyCalculator.adjust(primaryBox.horizontal, secondaryBox.horizontal, restrictionBox.horizontal, "x");
+            = DragRectAdjacencyCalculator.adjust(primaryBox.horizontal, secondaryBox.horizontal, restrictionBox.horizontal, "x");
 
         result.adjustments.vertical
-            = RectAdjacencyCalculator.adjust(primaryBox.vertical, secondaryBox.vertical, restrictionBox.vertical, "y");
+            = DragRectAdjacencyCalculator.adjust(primaryBox.vertical, secondaryBox.vertical, restrictionBox.vertical, "y");
 
         let successfulAdjustments = [result.adjustments.horizontal, result.adjustments.vertical];
 
@@ -165,4 +163,4 @@ class RectAdjacencyCalculator {
 
 }
 
-module.exports.RectAdjacencyCalculator = RectAdjacencyCalculator;
+module.exports.DragRectAdjacencyCalculator = DragRectAdjacencyCalculator;
