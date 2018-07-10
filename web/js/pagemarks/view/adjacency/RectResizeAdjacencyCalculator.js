@@ -2,6 +2,7 @@ const {Rect} = require("../../../Rect");
 const {Rects} = require("../../../Rects");
 const {Objects} = require("../../../util/Objects");
 const {Line} = require("../../../util/Line");
+const {Preconditions} = require("../../../Preconditions");
 
 class RectResizeAdjacencyCalculator {
 
@@ -17,25 +18,24 @@ class RectResizeAdjacencyCalculator {
      */
     calculate(resizeRect, intersectedRect, rectEdges) {
 
+        Preconditions.assertNotNull(rectEdges, "rectEdges");
+
+        // compute the intersection of the two rects.
         let intersectionRect = Rects.intersection(resizeRect, intersectedRect);
 
-        // the rect that we are going to adjust and then use in the UI.
-        let adjustedRect = new Rect(resizeRect);
+        // we could call toLine() on each one and specify an 'axis' parameter
+        // which would be much cleaner.
 
-        // only adjust ONE dimension...
+        // only adjust ONE dimension... the most important.
+
+        // TODO: we can refactor this to pass __adjustLine the axis and then call
+        // toLine(axis) on each rect inside _adjustRect.
+
         if(intersectionRect.width > intersectionRect.height) {
-
-            let adjustedLine = this.__adjustLine(intersectionRect.verticalLine(), resizeRect.verticalLine());
-            adjustedRect = adjustedRect.adjustAxis(adjustedLine);
-
+            return this.__adjustLine(intersectionRect.verticalLine(), resizeRect.verticalLine(), rectEdges.toLineEdges("y"), resizeRect);
         } else {
-
-            let adjustedLine = this.__adjustLine(intersectionRect.horizontalLine(), resizeRect.horizontalLine());
-            adjustedRect = adjustedRect.adjustAxis(adjustedLine);
-
+            return this.__adjustLine(intersectionRect.horizontalLine(), resizeRect.horizontalLine(), rectEdges.toLineEdges("x"), resizeRect);
         }
-
-        return adjustedRect;
 
     }
 
@@ -43,26 +43,37 @@ class RectResizeAdjacencyCalculator {
      *
      * @param intersectionLine {Line}
      * @param resizeLine {Line}
+     * @param resizeRect {Rect}
+     * @param lineEdges {LineEdges}
      * @private
-     * @return {Line}
+     * @return {Rect}
      */
-    __adjustLine(intersectionLine, resizeLine) {
+    __adjustLine(intersectionLine, resizeLine, lineEdges, resizeRect) {
 
-        let adjustLine = Objects.duplicate(resizeLine);
+        // the rect that we are going to adjust and then use in the UI.
+        let adjustedRect = new Rect(resizeRect);
 
-        // only update the lines that are intersected...
-        if (intersectionLine.containsPoint(resizeLine.start)) {
-            adjustLine.start = intersectionLine.end;
+        let adjustedLine = Objects.duplicate(resizeLine);
+
+        if(lineEdges.start) {
+            adjustedLine.start = intersectionLine.end;
+        } else {
+            adjustedLine.end = intersectionLine.start;
         }
 
-        if (intersectionLine.containsPoint(resizeLine.end)) {
-            adjustLine.end = intersectionLine.start;
-        }
+        // // only update the lines that are intersected...
+        // if (intersectionLine.containsPoint(resizeLine.start)) {
+        //     adjustedLine.start = intersectionLine.end;
+        // }
+        //
+        // if (intersectionLine.containsPoint(resizeLine.end)) {
+        //     adjustedLine.end = intersectionLine.start;
+        // }
 
-        // technically we have to adjust the width of the line but the width'
+        // technically we have to adjust the width of the line but the width
         // accessor on Line computes it for us.
 
-        return adjustLine;
+        return adjustedRect.adjustAxis(adjustedLine);
 
     }
 

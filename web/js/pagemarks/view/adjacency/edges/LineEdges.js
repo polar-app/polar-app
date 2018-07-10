@@ -21,9 +21,11 @@ class LineEdges {
 
         //  make sure we have all the values.
 
-        Preconditions.assertTypeof(this.start, "boolean");
-        Preconditions.assertTypeof(this.end, "boolean");
+        Preconditions.assertTypeof(this.start, "start", "boolean");
+        Preconditions.assertTypeof(this.end, "end", "boolean");
 
     }
 
 }
+
+module.exports.LineEdges = LineEdges;

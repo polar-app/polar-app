@@ -33,19 +33,23 @@ class RectEdges {
 
         //  make sure we have all the values.
 
-        Preconditions.assertTypeof(this.left, "boolean");
-        Preconditions.assertTypeof(this.top, "boolean");
-        Preconditions.assertTypeof(this.right, "boolean");
-        Preconditions.assertTypeof(this.bottom, "boolean");
+        Preconditions.assertTypeof(this.left, "left", "boolean");
+        Preconditions.assertTypeof(this.top, "top", "boolean");
+        Preconditions.assertTypeof(this.right, "right", "boolean");
+        Preconditions.assertTypeof(this.bottom, "bottom", "boolean");
 
     }
 
-    toHorizontal() {
-        return new LineEdges(this.left, this.right);
-    }
-
-    toVertical() {
-        return new LineEdges(this.top, this.bottom);
+    toLineEdges(axis) {
+        if(axis === "x") {
+            return new LineEdges({start: this.left, end: this.right});
+        } else if (axis === "y") {
+            return new LineEdges({start: this.top, end: this.bottom});
+        } else {
+            throw new Error("Unknown axis: " + axis);
+        }
     }
 
 }
+
+module.exports.RectEdges = RectEdges;

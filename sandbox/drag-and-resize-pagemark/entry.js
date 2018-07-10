@@ -8,7 +8,7 @@ const {assertJSON} = require("../../web/js/test/Assertions");
 const {Rect} = require("../../web/js/Rect");
 const {RectAdjacencyCalculator} = require("../../web/js/pagemarks/view/adjacency/RectAdjacencyCalculator");
 const {RectResizeAdjacencyCalculator} = require("../../web/js/pagemarks/view/adjacency/RectResizeAdjacencyCalculator");
-const {Edges} = require("../../web/js/pagemarks/view/adjacency/Edges");
+const {RectEdges} = require("../../web/js/pagemarks/view/adjacency/edges/RectEdges");
 
 /**
  */
@@ -323,9 +323,9 @@ function init(selector) {
 
                 let intersectedRect = intersectedPagemarks.intersectedRects[0];
 
-                let edges = new Edges(interactionEvent.edges);
+                let rectEdges = new RectEdges(interactionEvent.edges);
 
-                let adjustedRect = rectResizeAdjacencyCalculator.calculate(resizeRect, intersectedRect, edges);
+                let adjustedRect = rectResizeAdjacencyCalculator.calculate(resizeRect, intersectedRect, rectEdges);
 
                 resizeTargetElement(adjustedRect, target);
 
