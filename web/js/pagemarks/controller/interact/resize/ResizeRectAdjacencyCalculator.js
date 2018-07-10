@@ -20,6 +20,10 @@ class ResizeRectAdjacencyCalculator {
 
         Preconditions.assertNotNull(rectEdges, "rectEdges");
 
+        console.log("DEBUG ResizeRectAdjacencyCalculator.calculate: resizeRect: " + JSON.stringify(resizeRect, null, "  "));
+        console.log("DEBUG ResizeRectAdjacencyCalculator.calculate: intersectedRect: " + JSON.stringify(intersectedRect, null, "  "));
+        console.log("DEBUG ResizeRectAdjacencyCalculator.calculate: rectEdges: " + JSON.stringify(rectEdges, null, "  "));
+
         // compute the intersection of the two rects.
         let intersectionRect = Rects.intersection(resizeRect, intersectedRect);
 

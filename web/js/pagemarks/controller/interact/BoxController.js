@@ -2,9 +2,9 @@ const interact = require("interactjs");
 const {Rects} = require("../../../Rects");
 const {Rect} = require("../../../Rect");
 const {Objects} = require("../../../util/Objects");
-const {DragRectAdjacencyCalculator} = require("../../../pagemarks/view/interact/drag/DragRectAdjacencyCalculator");
-const {ResizeRectAdjacencyCalculator} = require("../../../pagemarks/view/interact/resize/ResizeRectAdjacencyCalculator");
-const {RectEdges} = require("../../../pagemarks/view/interact/edges/RectEdges");
+const {DragRectAdjacencyCalculator} = require(".//drag/DragRectAdjacencyCalculator");
+const {ResizeRectAdjacencyCalculator} = require(".//resize/ResizeRectAdjacencyCalculator");
+const {RectEdges} = require(".//edges/RectEdges");
 const {Preconditions} = require("../../../Preconditions");
 
 /**
@@ -13,17 +13,18 @@ const {Preconditions} = require("../../../Preconditions");
  */
 class BoxController {
 
-    constructor(selector) {
-        // TODO: we will probably have to register new
-        this.selector = selector;
+    constructor() {
     }
 
-    init() {
+    /**
+     * @param boxIdentifier {HTMLElement | string} A specific HTML element or a CSS selector.
+     */
+    register(boxIdentifier) {
 
         // TODO: assert that the boxes for the selector are ALREADY absolutely
         // positioned
 
-        interact(this.selector)
+        interact(boxIdentifier)
             .draggable({
 
                 inertia: false,
@@ -107,7 +108,7 @@ class BoxController {
 
                 } else {
 
-                    console.log("INTERSECTED");
+                    console.log("INTERSECTED========== ");
 
                     let primaryRect = Rects.createFromBasicRect({
                         left: origin.x,
@@ -132,49 +133,8 @@ class BoxController {
                     if(adjustedRect) {
                         this._moveTargetElement(adjustedRect.left, adjustedRect.top, target);
                     } else {
-
-                        // FIXME: if we resize slightly..it triggers this code and
-                        // the adjustment doesn't work.
-
+                        // this should never happen but log it if there is a bug.
                         console.warn("Can't move due to no valid adjustedRect we can work with.");
-
-                        console.log("FIXME: primaryRect: " + JSON.stringify(primaryRect, null, "  "));
-                        console.log("FIXME: intersectedRect: " + JSON.stringify(intersectedRect, null, "  "));
-                        console.log("FIXME: restrictionRect: " + JSON.stringify(restrictionRect, null, "  "));
-
-                        // FIXME: the invisible rect resize problem still remains...
-                        //
-                        //        - it happens when we're to the RIGHT of the intersect
-                        //          and we try to resize in two dimensions.
-
-
-                        // looks like it happens when the primary is too large...
-
-                        // FIXME: primaryRect: {
-                        //     "left": 291,
-                        //         "top": 133,
-                        //         "right": 523,
-                        //         "bottom": 366,
-                        //         "width": 232,
-                        //         "height": 233
-                        // }
-                        // entry.js:233 FIXME: intersectedRect: {
-                        //     "left": 170,
-                        //         "top": 162,
-                        //         "right": 370,
-                        //         "bottom": 362,
-                        //         "width": 200,
-                        //         "height": 200
-                        // }
-                        // entry.js:234 FIXME: restrictionRect: {
-                        //     "left": 0,
-                        //         "top": 0,
-                        //         "right": 800,
-                        //         "bottom": 500,
-                        //         "width": 800,
-                        //         "height": 500
-                        // }
-
                     }
 
                 }

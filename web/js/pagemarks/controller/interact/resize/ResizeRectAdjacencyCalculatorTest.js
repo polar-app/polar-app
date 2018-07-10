@@ -26,6 +26,30 @@ describe('ResizeRectAdjacencyCalculator', function() {
     //     {left: true, right: false, top: false, bottom: true},
     //     { "left": 15, "top": 0, "right": 22, "bottom": 20, "width": 7, "height": 20})
 
+    //
+    // DEBUG ResizeRectAdjacencyCalculator.calculate: resizeRect: {
+    //     "left": 200,
+    //         "top": 0,
+    //         "right": 300,
+    //         "bottom": 101,
+    //         "width": 100,
+    //         "height": 101
+    // }
+    // ResizeRectAdjacencyCalculator.js:24 DEBUG ResizeRectAdjacencyCalculator.calculate: intersectedRect: {
+    //     "left": 0,
+    //         "top": 0,
+    //         "right": 200,
+    //         "bottom": 200,
+    //         "width": 200,
+    //         "height": 200
+    // }
+    // ResizeRectAdjacencyCalculator.js:25 DEBUG ResizeRectAdjacencyCalculator.calculate: rectEdges: {
+    //     "left": false,
+    //         "top": false,
+    //         "right": false,
+    //         "bottom": true
+    // }
+
     function test(name, rectEdges, expected) {
 
         it(name, () => {

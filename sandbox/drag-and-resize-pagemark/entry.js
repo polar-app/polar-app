@@ -6,15 +6,15 @@ const {Objects} = require("../../web/js/util/Objects");
 const {Styles} = require("../../web/js/util/Styles");
 const {assertJSON} = require("../../web/js/test/Assertions");
 const {Rect} = require("../../web/js/Rect");
-const {ResizeRectAdjacencyCalculator} = require("../../web/js/pagemarks/view/interact/resize/ResizeRectAdjacencyCalculator");
-const {RectEdges} = require("../../web/js/pagemarks/view/interact/edges/RectEdges");
+const {ResizeRectAdjacencyCalculator} = require("../../web/js/pagemarks/controller/interact/resize/ResizeRectAdjacencyCalculator");
+const {RectEdges} = require("../../web/js/pagemarks/controller/interact/edges/RectEdges");
 const {Preconditions} = require("../../web/js/Preconditions");
-const {BoxController} = require("../../web/js/pagemarks/view/interact/BoxController");
+const {BoxController} = require("../../web/js/pagemarks/controller/interact/BoxController");
 
 
 $(document).ready( () => {
 
-    let boxController = new BoxController(".resize-drag");
+    let boxController = new BoxController();
 
     console.log("Ready now...");
 
@@ -22,7 +22,7 @@ $(document).ready( () => {
     // init("#pagemark0");
     // init("#pagemark1");
 
-    boxController.init();
+    boxController.register(".resize-drag");
 
 });
 
