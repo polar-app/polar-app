@@ -48,7 +48,7 @@ class Rect {
      * @return {Line}
      */
     horizontalLine() {
-        return new Line(this.left, this.right);
+        return new Line(this.left, this.right, 'x');
     }
 
     /**
@@ -56,7 +56,7 @@ class Rect {
      * @return {Line}
      */
     verticalLine() {
-        return new Line(this.top, this.bottom);
+        return new Line(this.top, this.bottom, 'y');
     }
 
     /**

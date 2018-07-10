@@ -135,15 +135,35 @@ class Rects {
 
     /**
      * Return true if the two rects intersect.
+     *
      * @param a {Rect|Object}
      * @param b {Rect|Object}
+     *
      * @return {boolean}
      */
     static intersect(a, b) {
+
+        // TODO: internally we should convert the object to a rect so we can
+        // validate it.
+
         return (a.left <= b.right &&
                 b.left <= a.right &&
                 a.top <= b.bottom &&
                 b.top <= a.bottom)
+
+    }
+
+    /**
+     * Return true if the two rects overlap. This includes intersection but also
+     * includes one completely swallowing the other.
+     *
+     * @param a {Rect}
+     * @param b {Rect}
+     *
+     * @return {boolean}
+     */
+    static overlap(a, b) {
+        return a.horizontalLine().overlaps(b.horizontalLine()) || a.horizontalLine().overlaps(b.horizontalLine());
     }
 
     /**

@@ -2,6 +2,7 @@ const assert = require('assert');
 
 const {Rects} = require("./Rects");
 const {assertJSON} = require("./test/Assertions");
+const {RectArt} = require("./util/RectArt");
 
 describe('Rects', function() {
 
@@ -36,32 +37,37 @@ describe('Rects', function() {
     });
 
 
-    describe('intersected', function() {
+    describe('intersect + overlap', () => {
 
-        it("basic test", function () {
+        test("not_intersected", false, false);
+        test("basic_test", true, true);
+        test("intersected_right", true, true);
+        test("intersected_left", true, true);
+        test("intersected_top", true, true);
+        test("intersected_bottom", true, true);
+        test("intersected_bottom_left", true, true);
 
-            let rect0 = Rects.createFromBasicRect({
-                "left": 301,
-                "top": 137,
-                "right": 501,
-                "bottom": 337,
-                "width": 200,
-                "height": 200
+        //test("overlap_rect0_over_rect1", false, true);
+
+        /**
+         *
+         * @param name
+         * @param expectedIntersect {boolean}
+         * @param expectedOverlap {boolean}
+         */
+        function test(name, expectedIntersect, expectedOverlap) {
+
+            it(name, () => {
+                let rects = MOCK_RECTS[name];
+
+                console.log("\n" + RectArt.formatRects([rects.rect0, rects.rect1]).toString());
+
+                assert.equal(Rects.intersect(rects.rect0, rects.rect1), expectedIntersect);
+                assert.equal(Rects.overlap(rects.rect0, rects.rect1), expectedOverlap);
+
             });
 
-            let rect1 = Rects.createFromBasicRect({
-                "left": 400,
-                "top": 150,
-                "right": 500,
-                "bottom": 250,
-                "width": 100,
-                "height": 100
-            });
-
-            assert.equal(Rects.intersect(rect0, rect1), true);
-
-        });
-
+        }
 
     });
 
@@ -191,5 +197,157 @@ describe('Rects', function() {
 
     });
 
-
 });
+
+const MOCK_RECTS = {
+
+    not_intersected: {
+
+        rect0: Rects.createFromBasicRect({
+            "left": 100,
+            "top": 100,
+            "width": 100,
+            "height": 100
+        }),
+
+        rect1: Rects.createFromBasicRect({
+            "left": 300,
+            "top": 300,
+            "width": 100,
+            "height": 100
+        })
+
+    },
+
+    basic_test: {
+
+        rect0: Rects.createFromBasicRect({
+            "left": 301,
+            "top": 137,
+            "right": 501,
+            "bottom": 337,
+            "width": 200,
+            "height": 200
+        }),
+
+        rect1: Rects.createFromBasicRect({
+            "left": 400,
+            "top": 150,
+            "right": 500,
+            "bottom": 250,
+            "width": 100,
+            "height": 100
+        })
+
+    },
+
+    intersected_right: {
+
+        rect0: Rects.createFromBasicRect({
+            "left": 100,
+            "top": 100,
+            "width": 100,
+            "height": 100
+        }),
+
+        rect1: Rects.createFromBasicRect({
+            "left": 150,
+            "top": 100,
+            "width": 100,
+            "height": 100
+        })
+
+    },
+
+    intersected_left: {
+
+        rect0: Rects.createFromBasicRect({
+            "left": 100,
+            "top": 100,
+            "width": 100,
+            "height": 100
+        }),
+
+        rect1: Rects.createFromBasicRect({
+            "left": 50,
+            "top": 100,
+            "width": 100,
+            "height": 100
+        })
+
+    },
+
+    intersected_top: {
+
+        rect0: Rects.createFromBasicRect({
+            "left": 100,
+            "top": 100,
+            "width": 100,
+            "height": 100
+        }),
+
+        rect1: Rects.createFromBasicRect({
+            "left": 100,
+            "top": 50,
+            "width": 100,
+            "height": 100
+        })
+
+    },
+
+    intersected_bottom: {
+
+        rect0: Rects.createFromBasicRect({
+            "left": 100,
+            "top": 100,
+            "width": 100,
+            "height": 100
+        }),
+
+        rect1: Rects.createFromBasicRect({
+            "left": 100,
+            "top": 150,
+            "width": 100,
+            "height": 100
+        })
+
+    },
+
+    intersected_bottom_left: {
+
+        rect0: Rects.createFromBasicRect({
+            "left": 100,
+            "top": 100,
+            "width": 100,
+            "height": 100
+        }),
+
+        rect1: Rects.createFromBasicRect({
+            "left": 50,
+            "top": 150,
+            "width": 100,
+            "height": 100
+        })
+
+    },
+
+    overlap_rect0_over_rect1: {
+
+        rect0: Rects.createFromBasicRect({
+            "left": 5,
+            "top": 5,
+            "width": 30,
+            "height": 30
+        }),
+
+        rect1: Rects.createFromBasicRect({
+            "left": 10,
+            "top": 10,
+            "width": 10,
+            "height": 10
+        })
+
+    }
+
+};
+

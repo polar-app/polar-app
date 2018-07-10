@@ -4,6 +4,7 @@ class Preconditions {
      * Assert that this value is defined , not-null, and also not NaN and also a number.
      * @param value
      * @param name
+     * @return {number}
      */
     static assertNumber(value, name) {
 
@@ -14,6 +15,8 @@ class Preconditions {
         }
 
         Preconditions.assertTypeOf(value, name, "number");
+
+        return value;
 
     }
 

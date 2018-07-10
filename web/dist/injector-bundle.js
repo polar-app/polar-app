@@ -10541,6 +10541,7 @@ class Preconditions {
      * Assert that this value is defined , not-null, and also not NaN and also a number.
      * @param value
      * @param name
+     * @return {number}
      */
     static assertNumber(value, name) {
 
@@ -10551,6 +10552,8 @@ class Preconditions {
         }
 
         Preconditions.assertTypeOf(value, name, "number");
+
+        return value;
     }
 
     static assertInstanceOf(value, name, instance) {
@@ -10689,7 +10692,7 @@ class Rect {
    * @return {Line}
    */
   horizontalLine() {
-    return new Line(this.left, this.right);
+    return new Line(this.left, this.right, 'x');
   }
 
   /**
@@ -10697,7 +10700,7 @@ class Rect {
    * @return {Line}
    */
   verticalLine() {
-    return new Line(this.top, this.bottom);
+    return new Line(this.top, this.bottom, 'y');
   }
 
   /**
@@ -10862,12 +10865,31 @@ class Rects {
 
     /**
      * Return true if the two rects intersect.
+     *
      * @param a {Rect|Object}
      * @param b {Rect|Object}
+     *
      * @return {boolean}
      */
     static intersect(a, b) {
+
+        // TODO: internally we should convert the object to a rect so we can
+        // validate it.
+
         return a.left <= b.right && b.left <= a.right && a.top <= b.bottom && b.top <= a.bottom;
+    }
+
+    /**
+     * Return true if the two rects overlap. This includes intersection but also
+     * includes one completely swallowing the other.
+     *
+     * @param a {Rect}
+     * @param b {Rect}
+     *
+     * @return {boolean}
+     */
+    static overlap(a, b) {
+        return a.horizontalLine().overlaps(b.horizontalLine()) || a.horizontalLine().overlaps(b.horizontalLine());
     }
 
     /**
@@ -11422,8 +11444,10 @@ module.exports.Functions = Functions;
   !*** ./web/js/util/Line.js ***!
   \*****************************/
 /*! no static exports found */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
 
+
+const { Preconditions } = __webpack_require__(/*! ../Preconditions */ "./web/js/Preconditions.js");
 
 /**
  * Simple line with just a start and end.
@@ -11434,10 +11458,12 @@ class Line {
      *
      * @param start {number}
      * @param end {number}
+     * @param [axis] {string} Optional axis parameter ('x' or 'y')
      */
-    constructor(start, end) {
-        this.start = start;
-        this.end = end;
+    constructor(start, end, axis) {
+        this.start = Preconditions.assertNumber(start, "start");
+        this.end = Preconditions.assertNumber(end, "end");
+        this.axis = axis; // TODO validate
     }
 
     /**
@@ -11484,10 +11510,24 @@ class Line {
      * @return {boolean}
      */
     overlaps(line) {
+        Preconditions.assertNotNull(line, "line");
+
+        //console.log("DEBUG: %s vs %s", this.toString("interval"), line.toString("interval"));
+
         return this.containsPoint(line.start) || this.containsPoint(line.end);
     }
 
-    toString() {
+    /**
+     *
+     * @param [fmt] optional format parameter. May be 'interval' for interval notation.
+     * @return {string}
+     */
+    toString(fmt) {
+
+        if (fmt === "interval") {
+            return `[${this.start},${this.end}]`;
+        }
+
         return `{start: ${this.start}, end: ${this.end}}`;
     }
 

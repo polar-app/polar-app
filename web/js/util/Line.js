@@ -1,4 +1,6 @@
 
+const {Preconditions} = require("../Preconditions");
+
 /**
  * Simple line with just a start and end.
  */
@@ -8,10 +10,12 @@ class Line {
      *
      * @param start {number}
      * @param end {number}
+     * @param [axis] {string} Optional axis parameter ('x' or 'y')
      */
-    constructor(start, end) {
-        this.start = start;
-        this.end = end;
+    constructor(start, end, axis) {
+        this.start = Preconditions.assertNumber(start, "start");
+        this.end = Preconditions.assertNumber(end, "end");
+        this.axis = axis; // TODO validate
     }
 
     /**
@@ -58,11 +62,26 @@ class Line {
      * @return {boolean}
      */
     overlaps(line) {
+        Preconditions.assertNotNull(line, "line");
+
+        //console.log("DEBUG: %s vs %s", this.toString("interval"), line.toString("interval"));
+
         return this.containsPoint(line.start) || this.containsPoint(line.end);
     }
 
-    toString() {
+    /**
+     *
+     * @param [fmt] optional format parameter. May be 'interval' for interval notation.
+     * @return {string}
+     */
+    toString(fmt) {
+
+        if(fmt === "interval") {
+            return `[${this.start},${this.end}]`;
+        }
+
         return `{start: ${this.start}, end: ${this.end}}`;
+
     }
 
     /**
