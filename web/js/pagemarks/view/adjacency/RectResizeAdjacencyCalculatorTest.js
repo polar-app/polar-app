@@ -26,6 +26,7 @@ describe('RectResizeAdjacencyCalculator', function() {
     //     {left: true, right: false, top: false, bottom: true},
     //     { "left": 15, "top": 0, "right": 22, "bottom": 20, "width": 7, "height": 20})
 
+
     function test(name, rectEdges, expected) {
 
         it(name, () => {

@@ -224,6 +224,12 @@ function init(selector) {
                     console.log("FIXME: intersectedRect: " + JSON.stringify(intersectedRect, null, "  "));
                     console.log("FIXME: restrictionRect: " + JSON.stringify(restrictionRect, null, "  "));
 
+                    // FIXME: the invisible rect resize problem still remains...
+                    //
+                    //        - it happens when we're to the RIGHT of the intersect
+                    //          and we try to resize in two dimensions.
+
+
                     // looks like it happens when the primary is too large...
 
                     // FIXME: primaryRect: {

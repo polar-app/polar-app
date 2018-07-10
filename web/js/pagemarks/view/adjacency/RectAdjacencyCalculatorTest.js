@@ -11,6 +11,68 @@ const {RectAdjacencyCalculator} = require("./RectAdjacencyCalculator");
 
 describe('RectAdjacencyCalculator', function() {
 
+
+    // FIXME: broken resize dimensionws
+
+    // ok.. I know what the bug is.. the problem is that we return NOTHING if
+    // we would break the restrictionRect...
+    //
+    // FIXME: primaryRect: {
+    //     "left": 82,
+    //         "top": 0,
+    //         "right": 410,
+    //         "bottom": 500,
+    //         "width": 328,
+    //         "height": 500
+    // }
+    // entry.js:224 FIXME: intersectedRect: {
+    //     "left": 0,
+    //         "top": 0,
+    //         "right": 195,
+    //         "bottom": 500,
+    //         "width": 195,
+    //         "height": 500
+    // }
+    // entry.js:225 FIXME: restrictionRect: {
+    //     "left": 0,
+    //         "top": 0,
+    //         "right": 800,
+    //         "bottom": 500,
+    //         "width": 800,
+    //         "height": 500
+    // }
+
+    it("Primary coming from the left, horizontal, snapping before due to restriction rect in place.", function () {
+
+        let primaryRect = Rects.createFromBasicRect({left: 1, top: 0, width: 10, height: 10});
+        let secondaryRect = Rects.createFromBasicRect({left: 10, top: 0, width: 10, height: 10});
+        let restrictionRect = Rects.createFromBasicRect({left: 0, top: 0, width: 50, height: 50});
+
+        console.log("BEFORE: " + RectArt.formatRects([secondaryRect, primaryRect]).toString());
+
+        let adjacency = RectAdjacencyCalculator.calculate(primaryRect, secondaryRect, restrictionRect);
+
+        assert.notEqual(adjacency.adjustment, null);
+
+        //console.log("AFTER: " + RectArt.formatRects([secondaryRect, adjacency.adjustedRect]).toString());
+
+        assert.equal(adjacency.adjustment.overlapped, true);
+        assert.equal(adjacency.adjustment.snapped, "BEFORE");
+
+        let expected = {
+            "left": 0,
+            "top": 0,
+            "right": 10,
+            "bottom": 10,
+            "width": 10,
+            "height": 10
+        };
+
+        assertJSON(adjacency.adjustedRect, expected );
+
+    });
+
+
     it("Primary coming from the left, horizontal, snapping before due to restriction rect in place.", function () {
 
         let primaryRect = Rects.createFromBasicRect({left: 1, top: 0, width: 10, height: 10});
@@ -289,3 +351,7 @@ describe('RectAdjacencyCalculator', function() {
 
 });
 
+
+const MOCK_RECTS = {
+
+}
