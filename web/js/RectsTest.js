@@ -51,13 +51,14 @@ describe('Rects', function() {
 
         /**
          *
-         * @param name
+         * @param name {string} The name of the test and the data to extract.
          * @param expectedIntersect {boolean}
          * @param expectedOverlap {boolean}
          */
         function test(name, expectedIntersect, expectedOverlap) {
 
             it(name, () => {
+
                 let rects = MOCK_RECTS[name];
 
                 console.log("\n" + RectArt.formatRects([rects.rect0, rects.rect1]).toString());

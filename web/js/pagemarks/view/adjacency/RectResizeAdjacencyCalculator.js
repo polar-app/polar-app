@@ -12,8 +12,10 @@ class RectResizeAdjacencyCalculator {
      *
      * @param intersectedRect {Rect} The rect we've intersected with.
      *
+     * @param rectEdges {RectEdges} The rectEdges that are being resized.
+     *
      */
-    calculate(resizeRect, intersectedRect) {
+    calculate(resizeRect, intersectedRect, rectEdges) {
 
         let intersectionRect = Rects.intersection(resizeRect, intersectedRect);
 
@@ -24,12 +26,12 @@ class RectResizeAdjacencyCalculator {
         if(intersectionRect.width > intersectionRect.height) {
 
             let adjustedLine = this.__adjustLine(intersectionRect.verticalLine(), resizeRect.verticalLine());
-            adjustedRect.adjustVertical(adjustedLine);
+            adjustedRect = adjustedRect.adjustAxis(adjustedLine);
 
         } else {
 
             let adjustedLine = this.__adjustLine(intersectionRect.horizontalLine(), resizeRect.horizontalLine());
-            adjustedRect.adjustHorizontal(adjustedLine);
+            adjustedRect = adjustedRect.adjustAxis(adjustedLine);
 
         }
 

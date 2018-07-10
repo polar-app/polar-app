@@ -8,6 +8,7 @@ const {assertJSON} = require("../../web/js/test/Assertions");
 const {Rect} = require("../../web/js/Rect");
 const {RectAdjacencyCalculator} = require("../../web/js/pagemarks/view/adjacency/RectAdjacencyCalculator");
 const {RectResizeAdjacencyCalculator} = require("../../web/js/pagemarks/view/adjacency/RectResizeAdjacencyCalculator");
+const {Edges} = require("../../web/js/pagemarks/view/adjacency/Edges");
 
 /**
  */
@@ -290,9 +291,20 @@ function init(selector) {
 
             if(intersectedPagemarks.intersectedRects.length === 0) {
 
+                console.log("Resizing in non-intersected mode");
+
                 resizeTargetElement(resizeRect, target);
 
             } else {
+
+                // TODO: we need to figure out which are the anchor points to
+                // stick with ... and keep our resize from those point.
+
+                // looks like interactionEvent.edges (left, top, right, bottom)
+                // are what we want.  so if we're resizing left, we want to prefer
+                // to take our point vs the right.
+
+                console.log("Resizing in intersected mode");
 
                 // FIXME: if we envelop the rect... we can expand past it...
                 // just drag one side over it and we experience the problem.
@@ -311,7 +323,9 @@ function init(selector) {
 
                 let intersectedRect = intersectedPagemarks.intersectedRects[0];
 
-                let adjustedRect = rectResizeAdjacencyCalculator.calculate(resizeRect, intersectedRect);
+                let edges = new Edges(interactionEvent.edges);
+
+                let adjustedRect = rectResizeAdjacencyCalculator.calculate(resizeRect, intersectedRect, edges);
 
                 resizeTargetElement(adjustedRect, target);
 

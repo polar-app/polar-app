@@ -1,4 +1,5 @@
 const {Line} = require("./util/Line");
+const {Preconditions} = require("./Preconditions");
 
 /**
  * Basic DOM style rect without a hard requirement to use a DOMRect.
@@ -60,23 +61,36 @@ class Rect {
     }
 
     /**
-     * Adjust the horizontal based on the given line.
-     * @param line {Line}
+     * Adjust an axis based on the given line.
+     *
+     * @param line {Line} The line representing the axis.
+     * @return {Rect} Return a NEW rect with updated dimensions.
      */
-    adjustHorizontal(line) {
-        this.left = line.start;
-        this.right = line.end;
-        this.width = this.right - this.left;
-    }
+    adjustAxis(line) {
 
-    /**
-     * Adjust the vertical based on the given line.
-     * @param line {Line}
-     */
-    adjustVertical(line) {
-        this.top = line.start;
-        this.bottom = line.end;
-        this.height = this.bottom - this.top;
+        Preconditions.assertNotNull(line, "line");
+        Preconditions.assertNotNull(line.axis, "line.axis");
+
+        let result = new Rect(this);
+
+        if(line.axis === "x") {
+
+            result.left = line.start;
+            result.right = line.end;
+            result.width = line.end - line.start;
+
+        } else if(line.axis === "y") {
+
+            result.top = line.start;
+            result.bottom = line.end;
+            result.height = line.end - line.start;
+
+        } else {
+            throw new Error("Invalid axis: " + line.axis);
+        }
+
+        return result;
+
     }
 
 }
