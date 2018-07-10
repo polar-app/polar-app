@@ -1,6 +1,6 @@
-const {Rect} = require("../../../Rect")
-const {Rects} = require("../../../Rects")
-const {Line} = require("../../../util/Line");
+const {Rect} = require("../../../../Rect")
+const {Rects} = require("../../../../Rects")
+const {Line} = require("../../../../util/Line");
 const {Adjacency} = require("./Adjacency");
 const {LineAdjustment} = require("./LineAdjustment");
 

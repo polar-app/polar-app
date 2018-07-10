@@ -1,6 +1,6 @@
-const {Rects} = require("../../../Rects")
-const {Preconditions} = require("../../../Preconditions")
-const {Objects} = require("../../../util/Objects")
+const {Rects} = require("../../../../Rects")
+const {Preconditions} = require("../../../../Preconditions")
+const {Objects} = require("../../../../util/Objects")
 
 class LineAdjustment {
 

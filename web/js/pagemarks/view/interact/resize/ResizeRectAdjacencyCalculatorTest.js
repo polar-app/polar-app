@@ -1,17 +1,17 @@
 
 const assert = require('assert');
-const {assertJSON} = require("../../../test/Assertions");
+const {assertJSON} = require("../../../../test/Assertions");
 
-const {Rect} = require("../../../Rect");
-const {Rects} = require("../../../Rects");
-const {Objects} = require("../../../util/Objects");
-const {RectEdges} = require("./edges/RectEdges");
+const {Rect} = require("../../../../Rect");
+const {Rects} = require("../../../../Rects");
+const {Objects} = require("../../../../util/Objects");
+const {RectEdges} = require("../edges/RectEdges");
 
-const {RectArt} = require("../../../util/RectArt");
-const {RectResizeAdjacencyCalculator} = require("./RectResizeAdjacencyCalculator");
-const {MOCK_RECTS} = require("../../../MockRects");
+const {RectArt} = require("../../../../util/RectArt");
+const {ResizeRectAdjacencyCalculator} = require("./ResizeRectAdjacencyCalculator");
+const {MOCK_RECTS} = require("../../../../MockRects");
 
-describe('RectResizeAdjacencyCalculator', function() {
+describe('ResizeRectAdjacencyCalculator', function() {
 
     test("resize_from_right",
         {left: true, right: false, top: false, bottom: false},
@@ -40,8 +40,8 @@ describe('RectResizeAdjacencyCalculator', function() {
 
             console.log("BEFORE: \n" + RectArt.formatRects([resizeRect, intersectedRect]).toString());
 
-            let rectResizeAdjacencyCalculator = new RectResizeAdjacencyCalculator();
-            let adjustedRect = rectResizeAdjacencyCalculator.calculate(resizeRect, intersectedRect, rectEdges);
+            let resizeRectAdjacencyCalculator = new ResizeRectAdjacencyCalculator();
+            let adjustedRect = resizeRectAdjacencyCalculator.calculate(resizeRect, intersectedRect, rectEdges);
 
             console.log("adjustedRect: " + JSON.stringify(adjustedRect));
 

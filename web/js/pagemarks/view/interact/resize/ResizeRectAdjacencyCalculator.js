@@ -1,10 +1,10 @@
-const {Rect} = require("../../../Rect");
-const {Rects} = require("../../../Rects");
-const {Objects} = require("../../../util/Objects");
-const {Line} = require("../../../util/Line");
-const {Preconditions} = require("../../../Preconditions");
+const {Rect} = require("../../../../Rect");
+const {Rects} = require("../../../../Rects");
+const {Objects} = require("../../../../util/Objects");
+const {Line} = require("../../../../util/Line");
+const {Preconditions} = require("../../../../Preconditions");
 
-class RectResizeAdjacencyCalculator {
+class ResizeRectAdjacencyCalculator {
 
     /**
      *
@@ -98,4 +98,4 @@ class RectResizeAdjacencyCalculator {
 
 }
 
-module.exports.RectResizeAdjacencyCalculator = RectResizeAdjacencyCalculator;
+module.exports.ResizeRectAdjacencyCalculator = ResizeRectAdjacencyCalculator;
