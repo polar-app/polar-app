@@ -23,6 +23,8 @@ class RectResizeAdjacencyCalculator {
         // compute the intersection of the two rects.
         let intersectionRect = Rects.intersection(resizeRect, intersectedRect);
 
+        console.log("FIXME: intersectionRect: " + JSON.stringify(intersectionRect, null, "  "));
+
         // we could call toLine() on each one and specify an 'axis' parameter
         // which would be much cleaner.
 
@@ -31,10 +33,41 @@ class RectResizeAdjacencyCalculator {
         // TODO: we can refactor this to pass __adjustLine the axis and then call
         // toLine(axis) on each rect inside _adjustRect.
 
-        if(intersectionRect.width > intersectionRect.height) {
-            return this.__adjustLine(intersectionRect.verticalLine(), resizeRect.verticalLine(), rectEdges.toLineEdges("y"), resizeRect);
+        let intersectionLines = [];
+
+        if(rectEdges.left || rectEdges.right) {
+            intersectionLines.push(intersectionRect.toLine("x"));
+        }
+
+        if(rectEdges.top || rectEdges.bottom) {
+            intersectionLines.push(intersectionRect.toLine("y"));
+        }
+
+        // Now sort the lines by their length to see which one we should use.
+        // We should pick the longest line and adjust by that.
+
+        intersectionLines = intersectionLines.sort((a,b) => a.length - b.length);
+
+
+        // they should be descending.  I could change the sort algorithm but
+        // I think the code is more clear that we want descending this way.
+        intersectionLines = intersectionLines.reverse();
+
+        console.log("FIXME: intersectionLines: " + JSON.stringify(intersectionLines, null, "  "));
+
+        let intersectionLine = intersectionLines[0];
+
+        console.log("FIXME: intersectionLine: " + JSON.stringify(intersectionLine, null, "  "));
+
+        // resize based on the larger axis now.
+        if(intersectionLine.axis === "x") {
+            console.log("Resizing X axis");
+            return this.__adjustLine(intersectionRect.toLine("x"), resizeRect.toLine("x"), rectEdges.toLineEdges("x"), resizeRect);
+        } else if(intersectionLine.axis === "y") {
+            console.log("Resizing Y axis");
+            return this.__adjustLine(intersectionRect.toLine("y"), resizeRect.toLine("y"), rectEdges.toLineEdges("y"), resizeRect);
         } else {
-            return this.__adjustLine(intersectionRect.horizontalLine(), resizeRect.horizontalLine(), rectEdges.toLineEdges("x"), resizeRect);
+            throw new Error("Wrong axis: " + intersectionLine.axis);
         }
 
     }

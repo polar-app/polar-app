@@ -168,7 +168,6 @@ const MOCK_RECTS = {
 
     },
 
-
     resize_from_right_with_overlap: {
 
         resizeRect: Rects.createFromBasicRect({
@@ -185,7 +184,26 @@ const MOCK_RECTS = {
             height: 10
         })
 
+    },
+
+    resize_placed_top_right_resizing_left_bottom: {
+
+        resizeRect: Rects.createFromBasicRect({
+            left: 0,
+            top: 10,
+            width: 10,
+            height: 10
+        }),
+
+        intersectedRect: Rects.createFromBasicRect({
+            left: 1,
+            top: 0,
+            width: 11,
+            height: 11
+        })
+
     }
+
 
 };
 

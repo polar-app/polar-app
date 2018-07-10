@@ -16,6 +16,7 @@ class Line {
         this.start = Preconditions.assertNumber(start, "start");
         this.end = Preconditions.assertNumber(end, "end");
         this.axis = axis; // TODO validate
+        //this.length = length;
     }
 
     /**
@@ -82,6 +83,15 @@ class Line {
 
         return `{start: ${this.start}, end: ${this.end}}`;
 
+    }
+
+    toJSON() {
+        return {
+            axis: this.axis,
+            start: this.start,
+            end: this.end,
+            length: this.length
+        }
     }
 
     /**

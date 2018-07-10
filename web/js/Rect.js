@@ -44,20 +44,16 @@ class Rect {
 
     }
 
-    /**
-     *
-     * @return {Line}
-     */
-    horizontalLine() {
-        return new Line(this.left, this.right, 'x');
-    }
+    toLine(axis) {
 
-    /**
-     *
-     * @return {Line}
-     */
-    verticalLine() {
-        return new Line(this.top, this.bottom, 'y');
+        if(axis === "x") {
+            return new Line(this.left, this.right, axis);
+        } else if(axis === "y") {
+            return new Line(this.top, this.bottom, axis);
+        } else {
+            throw new Error("Wrong axis: " + axis);
+        }
+
     }
 
     /**

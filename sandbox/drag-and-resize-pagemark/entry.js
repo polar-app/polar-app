@@ -295,27 +295,7 @@ function init(selector) {
 
             } else {
 
-                // TODO: we need to figure out which are the anchor points to
-                // stick with ... and keep our resize from those point.
-
-                // looks like interactionEvent.edges (left, top, right, bottom)
-                // are what we want.  so if we're resizing left, we want to prefer
-                // to take our point vs the right.
-
                 console.log("Resizing in intersected mode");
-
-                // FIXME: if we envelop the rect... we can expand past it...
-                // just drag one side over it and we experience the problem.
-
-                // this is still a bit difficult to implement.  my thinking at the
-                // time was to figure out which direction the mouse is primarily
-                // moving OR where the rect was BEFORE it intersected and then
-                // figure out side took up the largest side vs what it's about
-                // to collide into.  Either that or compute a derived rect
-                // from the intersected rect and then figure out if the height
-                // is more than the width and then go with whichever is higher.
-
-                // FIXME: a cheap fix could be to truncate one of the rets...
 
                 let rectResizeAdjacencyCalculator = new RectResizeAdjacencyCalculator();
 
@@ -324,6 +304,8 @@ function init(selector) {
                 let rectEdges = new RectEdges(interactionEvent.edges);
 
                 let adjustedRect = rectResizeAdjacencyCalculator.calculate(resizeRect, intersectedRect, rectEdges);
+
+                console.log("resizemove: adjustedRect: " + JSON.stringify(adjustedRect, null, "  "));
 
                 resizeTargetElement(adjustedRect, target);
 

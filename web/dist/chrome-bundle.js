@@ -70224,88 +70224,83 @@ const { Preconditions } = __webpack_require__(/*! ./Preconditions */ "./web/js/P
  */
 class Rect {
 
-  // TODO: some rects have x,y ... should we add them here to be complete?
+    // TODO: some rects have x,y ... should we add them here to be complete?
 
-  constructor(obj) {
+    constructor(obj) {
 
-    /**
-     * @type {number}
-     */
-    this.left = undefined;
+        /**
+         * @type {number}
+         */
+        this.left = undefined;
 
-    /**
-     * @type {number}
-     */
-    this.top = undefined;
+        /**
+         * @type {number}
+         */
+        this.top = undefined;
 
-    /**
-     * @type {number}
-     */
-    this.right = undefined;
+        /**
+         * @type {number}
+         */
+        this.right = undefined;
 
-    /**
-     * @type {number}
-     */
-    this.bottom = undefined;
+        /**
+         * @type {number}
+         */
+        this.bottom = undefined;
 
-    /**
-     * @type {number}
-     */
-    this.width = undefined;
+        /**
+         * @type {number}
+         */
+        this.width = undefined;
 
-    /**
-     * @type {number}
-     */
-    this.height = undefined;
+        /**
+         * @type {number}
+         */
+        this.height = undefined;
 
-    Object.assign(this, obj);
-  }
-
-  /**
-   *
-   * @return {Line}
-   */
-  horizontalLine() {
-    return new Line(this.left, this.right, 'x');
-  }
-
-  /**
-   *
-   * @return {Line}
-   */
-  verticalLine() {
-    return new Line(this.top, this.bottom, 'y');
-  }
-
-  /**
-   * Adjust an axis based on the given line.
-   *
-   * @param line {Line} The line representing the axis.
-   * @return {Rect} Return a NEW rect with updated dimensions.
-   */
-  adjustAxis(line) {
-
-    Preconditions.assertNotNull(line, "line");
-    Preconditions.assertNotNull(line.axis, "line.axis");
-
-    let result = new Rect(this);
-
-    if (line.axis === "x") {
-
-      result.left = line.start;
-      result.right = line.end;
-      result.width = line.end - line.start;
-    } else if (line.axis === "y") {
-
-      result.top = line.start;
-      result.bottom = line.end;
-      result.height = line.end - line.start;
-    } else {
-      throw new Error("Invalid axis: " + line.axis);
+        Object.assign(this, obj);
     }
 
-    return result;
-  }
+    toLine(axis) {
+
+        if (axis === "x") {
+            return new Line(this.left, this.right, axis);
+        } else if (axis === "y") {
+            return new Line(this.top, this.bottom, axis);
+        } else {
+            throw new Error("Wrong axis: " + axis);
+        }
+    }
+
+    /**
+     * Adjust an axis based on the given line.
+     *
+     * @param line {Line} The line representing the axis.
+     * @return {Rect} Return a NEW rect with updated dimensions.
+     */
+    adjustAxis(line) {
+
+        Preconditions.assertNotNull(line, "line");
+        Preconditions.assertNotNull(line.axis, "line.axis");
+
+        let result = new Rect(this);
+
+        if (line.axis === "x") {
+
+            result.left = line.start;
+            result.right = line.end;
+            result.width = line.end - line.start;
+        } else if (line.axis === "y") {
+
+            result.top = line.start;
+            result.bottom = line.end;
+            result.height = line.end - line.start;
+        } else {
+            throw new Error("Invalid axis: " + line.axis);
+        }
+
+        return result;
+    }
 
 }
 
@@ -78046,6 +78041,7 @@ class Line {
         this.start = Preconditions.assertNumber(start, "start");
         this.end = Preconditions.assertNumber(end, "end");
         this.axis = axis; // TODO validate
+        //this.length = length;
     }
 
     /**
@@ -78111,6 +78107,15 @@ class Line {
         }
 
         return `{start: ${this.start}, end: ${this.end}}`;
+    }
+
+    toJSON() {
+        return {
+            axis: this.axis,
+            start: this.start,
+            end: this.end,
+            length: this.length
+        };
     }
 
     /**
