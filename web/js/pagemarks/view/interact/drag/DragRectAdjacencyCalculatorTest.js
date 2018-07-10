@@ -11,36 +11,82 @@ const {DragRectAdjacencyCalculator} = require("./DragRectAdjacencyCalculator");
 
 describe('DragRectAdjacencyCalculator', function() {
 
+    describe("templated tests", function() {
 
-    // FIXME: broken resize dimensionws
+        test("drag_left_towards_restriction", {
+            "primaryRect": {
+                "left": 50,
+                "top": 0,
+                "right": 350,
+                "bottom": 500,
+                "width": 300,
+                "height": 500
+            },
+            "secondaryRect": {
+                "left": 0,
+                "top": 0,
+                "right": 200,
+                "bottom": 500,
+                "width": 200,
+                "height": 500
+            },
+            "adjustments": {
+                "horizontal": {
+                    "overlapped": true,
+                    "start": 200,
+                    "previous": 50,
+                    "snapped": "AFTER",
+                    "delta": 150,
+                    "axis": "x"
+                },
+                "vertical": {
+                    "overlapped": false,
+                    "start": 0,
+                    "snapped": null,
+                    "axis": "y"
+                }
+            },
+            "adjustment": {
+                "overlapped": true,
+                "start": 200,
+                "previous": 50,
+                "snapped": "AFTER",
+                "delta": 150,
+                "axis": "x"
+            },
+            "adjustedRect": {
+                "left": 200,
+                "top": 0,
+                "right": 500,
+                "bottom": 500,
+                "width": 300,
+                "height": 500
+            }
+        });
 
-    // ok.. I know what the bug is.. the problem is that we return NOTHING if
-    // we would break the restrictionRect...
-    //
-    // FIXME: primaryRect: {
-    //     "left": 82,
-    //         "top": 0,
-    //         "right": 410,
-    //         "bottom": 500,
-    //         "width": 328,
-    //         "height": 500
-    // }
-    // entry.js:224 FIXME: intersectedRect: {
-    //     "left": 0,
-    //         "top": 0,
-    //         "right": 195,
-    //         "bottom": 500,
-    //         "width": 195,
-    //         "height": 500
-    // }
-    // entry.js:225 FIXME: restrictionRect: {
-    //     "left": 0,
-    //         "top": 0,
-    //         "right": 800,
-    //         "bottom": 500,
-    //         "width": 800,
-    //         "height": 500
-    // }
+        function test(name, expected) {
+
+            it(name, () => {
+
+                let {primaryRect, intersectedRect, restrictionRect} = MOCK_RECTS[name];
+
+                primaryRect = Rects.createFromBasicRect(primaryRect);
+                intersectedRect = Rects.createFromBasicRect(intersectedRect);
+                restrictionRect = Rects.createFromBasicRect(restrictionRect);
+
+                let adjacency = DragRectAdjacencyCalculator.calculate(primaryRect, intersectedRect, restrictionRect);
+
+                assert.notEqual(adjacency.adjustment, null);
+
+                //console.log("AFTER: " + RectArt.formatRects([secondaryRect, adjacency.adjustedRect]).toString());
+
+                assertJSON(adjacency, expected );
+
+            });
+
+        }
+
+    });
 
     it("Primary coming from the left, horizontal, snapping before due to restriction rect in place.", function () {
 
@@ -354,4 +400,33 @@ describe('DragRectAdjacencyCalculator', function() {
 
 const MOCK_RECTS = {
 
-}
+    drag_left_towards_restriction: {
+
+        primaryRect: {
+            "left": 50,
+            "top": 0,
+            "right": 350,
+            "bottom": 500,
+        },
+
+        intersectedRect: {
+            "left": 0,
+            "top": 0,
+            "right": 200,
+            "bottom": 500,
+            "width": 200,
+            "height": 500
+        },
+
+        restrictionRect: {
+            "left": 0,
+            "top": 0,
+            "right": 800,
+            "bottom": 500,
+            "width": 800,
+            "height": 500
+        }
+
+    }
+
+};

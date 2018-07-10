@@ -76,14 +76,9 @@ class DragRectAdjacencyCalculator {
         // now sort the adjustments so that ones with a lower delta are first.
         successfulAdjustments = successfulAdjustments.sort((adj0, adj1) => adj0.delta - adj1.delta);
 
-        if(successfulAdjustments.length === 2) {
-
-            // we are only valid if BOTH dimensions intersect (horizontal and
-            // vertical)
-
+        if(successfulAdjustments.length >= 1) {
             result.adjustment = successfulAdjustments[0];
             result.adjustedRect = result.adjustment.adjustRect(primaryRect);
-
         }
 
         return result;
@@ -113,6 +108,8 @@ class DragRectAdjacencyCalculator {
             start: primaryLine.start,
             snapped: null
         });
+
+        let result = none;
 
         if(secondaryLine.overlaps(primaryLine) || primaryLine.overlaps(secondaryLine)) {
 
@@ -149,15 +146,17 @@ class DragRectAdjacencyCalculator {
 
             results = results.sort((r0, r1) => r0.delta - r1.delta);
 
+            console.log(`DEBUG: results for ${axis} axis: ` + JSON.stringify(results, null, "  "));
+
             if(results.length > 0 ) {
-                return results[0];
-            } else {
-                return none;
+                result = results[0];
             }
 
         }
 
-        return none;
+        console.log(`DEBUG: Final result for ${axis} axis: ` + JSON.stringify(result, null, "  "));
+
+        return result;
 
     }
 
