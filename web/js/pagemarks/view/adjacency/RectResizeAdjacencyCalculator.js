@@ -93,15 +93,6 @@ class RectResizeAdjacencyCalculator {
             adjustedLine.end = intersectionLine.start;
         }
 
-        // // only update the lines that are intersected...
-        // if (intersectionLine.containsPoint(resizeLine.start)) {
-        //     adjustedLine.start = intersectionLine.end;
-        // }
-        //
-        // if (intersectionLine.containsPoint(resizeLine.end)) {
-        //     adjustedLine.end = intersectionLine.start;
-        // }
-
         // technically we have to adjust the width of the line but the width
         // accessor on Line computes it for us.
 
