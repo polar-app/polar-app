@@ -23,12 +23,7 @@ class RectResizeAdjacencyCalculator {
         // compute the intersection of the two rects.
         let intersectionRect = Rects.intersection(resizeRect, intersectedRect);
 
-        console.log("FIXME: intersectionRect: " + JSON.stringify(intersectionRect, null, "  "));
-
-        // we could call toLine() on each one and specify an 'axis' parameter
-        // which would be much cleaner.
-
-        // only adjust ONE dimension... the most important.
+        //console.log("DEBUG: intersectionRect: " + JSON.stringify(intersectionRect, null, "  "));
 
         // TODO: we can refactor this to pass __adjustLine the axis and then call
         // toLine(axis) on each rect inside _adjustRect.
@@ -50,21 +45,21 @@ class RectResizeAdjacencyCalculator {
 
         // they should be descending.  I could change the sort algorithm but
         // I think the code is more clear that we want descending this way.
-        resizeLines = resizeLines.reverse();
+        //resizeLines = resizeLines.reverse();
 
-        console.log("FIXME: resizeLines: " + JSON.stringify(resizeLines, null, "  "));
+        //console.log("DEBUG: resizeLines: " + JSON.stringify(resizeLines, null, "  "));
 
         let resizeLine = resizeLines[0];
 
-        console.log("FIXME: resizeLine: " + JSON.stringify(resizeLine, null, "  "));
+        //console.log("DEBUG: resizeLine: " + JSON.stringify(resizeLine, null, "  "));
 
         // resize based on the larger axis now.
         if(resizeLine.axis === "x") {
-            console.log("Resizing Y axis");
-            return this.__adjustLine(intersectionRect.toLine("y"), resizeRect.toLine("y"), rectEdges.toLineEdges("y"), resizeRect);
-        } else if(resizeLine.axis === "y") {
             console.log("Resizing X axis");
             return this.__adjustLine(intersectionRect.toLine("x"), resizeRect.toLine("x"), rectEdges.toLineEdges("x"), resizeRect);
+        } else if(resizeLine.axis === "y") {
+            console.log("Resizing Y axis");
+            return this.__adjustLine(intersectionRect.toLine("y"), resizeRect.toLine("y"), rectEdges.toLineEdges("y"), resizeRect);
         } else {
             throw new Error("Wrong axis: " + resizeLine.axis);
         }

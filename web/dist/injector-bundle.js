@@ -10895,7 +10895,7 @@ class Rects {
      * @return {boolean}
      */
     static overlap(a, b) {
-        return a.horizontalLine().overlaps(b.horizontalLine()) || a.horizontalLine().overlaps(b.horizontalLine());
+        return a.toLine("x").overlaps(b.toLine("x")) || a.toLine("y").overlaps(b.toLine("y"));
     }
 
     /**
