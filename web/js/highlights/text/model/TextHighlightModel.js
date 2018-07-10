@@ -1,6 +1,6 @@
 const {forDict} = require("../../../utils.js");
 
-module.exports.TextHighlightModel = class {
+class TextHighlightModel {
 
     registerListener(docMeta, callback) {
 
@@ -44,3 +44,5 @@ module.exports.TextHighlightModel = class {
     }
 
 };
+
+module.exports.TextHighlightModel = TextHighlightModel;

@@ -72547,8 +72547,11 @@ class TextHighlightController {
 
     doHighlight() {
 
-        //this.doHighlightLegacy();
-        this.doHighlightModern();
+        if (this.docFormat.name === "html") {
+            this.doHighlightModern();
+        } else {
+            this.doHighlightLegacy();
+        }
     }
 
     doHighlightLegacy() {
@@ -73129,16 +73132,16 @@ module.exports.TextSelections = TextSelections;
 
 /***/ }),
 
-/***/ "./web/js/highlights/text/model/TestHighlightModel.js":
+/***/ "./web/js/highlights/text/model/TextHighlightModel.js":
 /*!************************************************************!*\
-  !*** ./web/js/highlights/text/model/TestHighlightModel.js ***!
+  !*** ./web/js/highlights/text/model/TextHighlightModel.js ***!
   \************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
 const { forDict } = __webpack_require__(/*! ../../../utils.js */ "./web/js/utils.js");
 
-module.exports.TextHighlightModel = class {
+class TextHighlightModel {
 
     registerListener(docMeta, callback) {
 
@@ -73179,6 +73182,8 @@ module.exports.TextHighlightModel = class {
     }
 
 };
+
+module.exports.TextHighlightModel = TextHighlightModel;
 
 /***/ }),
 
@@ -74019,7 +74024,7 @@ module.exports.TextNodes = TextNodes;
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-const { TextHighlightModel } = __webpack_require__(/*! ../model/TestHighlightModel */ "./web/js/highlights/text/model/TestHighlightModel.js");
+const { TextHighlightModel } = __webpack_require__(/*! ../model/TextHighlightModel */ "./web/js/highlights/text/model/TextHighlightModel.js");
 const { forDict } = __webpack_require__(/*! ../../../utils.js */ "./web/js/utils.js");
 const { PageRedrawHandler } = __webpack_require__(/*! ../../../PageRedrawHandler */ "./web/js/PageRedrawHandler.js");
 const { Rects } = __webpack_require__(/*! ../../../Rects */ "./web/js/Rects.js");

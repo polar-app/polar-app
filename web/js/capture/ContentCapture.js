@@ -13,8 +13,20 @@ class ContentCapture {
 
     // FIXME: <script> within SVG also needs to be stripped!
 
+    // TODO: support strategy: article to pull out the <article> element from
+    // the main document when one exists.
+
     /**
      * Capture the page as HTML so that we can render it static.
+
+     * @param [contentDoc] {Document}  The document to capture the HTML from.
+     * We default to the global 'document' object. when not given.
+     *
+     * @param [url] {string} The URL of the given document.  We default to
+     * contentDoc.location.href when not provided.
+     *
+     * @param [result] {Object} The result we are building.
+     *
      */
     static captureHTML(contentDoc, url, result) {
 
@@ -23,6 +35,10 @@ class ContentCapture {
         if (!contentDoc) {
             // this is the first document were working with.
             contentDoc = document;
+        }
+
+        if (!url) {
+            url = contentDoc.location.href;
         }
 
         if (!result) {
@@ -54,13 +70,12 @@ class ContentCapture {
 
         let cloneDoc = contentDoc.cloneNode(true);
 
-        let capturedDocument = ContentCapture.captureDoc(cloneDoc, contentDoc.location.href);
-
-        result.capturedDocuments[url] = capturedDocument;
+        result.capturedDocuments[url]
+            = ContentCapture.captureDoc(cloneDoc, contentDoc.location.href);
 
         if (ENABLE_IFRAMES) {
 
-            console.log("Going to export iframes now.");
+            console.log("Exporting iframes...");
 
             // this doesn't always work and I think we need to fundamentally
             // re-think our strategy here. I might have to keep track of all the

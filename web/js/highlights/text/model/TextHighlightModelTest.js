@@ -1,6 +1,6 @@
 var assert = require('assert');
 
-const {TextHighlightModel} = require("./TestHighlightModel");
+const {TextHighlightModel} = require("./TextHighlightModel");
 const {DocMetas} = require("../../../metadata/DocMetas");
 const {TextHighlightRecords} = require("../../../metadata/TextHighlightRecords");
 const {assertJSON} = require("../../../test/Assertions");

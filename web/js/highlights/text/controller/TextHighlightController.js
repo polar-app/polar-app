@@ -71,8 +71,11 @@ class TextHighlightController {
 
     doHighlight() {
 
-        //this.doHighlightLegacy();
-        this.doHighlightModern();
+        if(this.docFormat.name === "html") {
+            this.doHighlightModern();
+        } else {
+            this.doHighlightLegacy();
+        }
 
     }
 

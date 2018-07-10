@@ -1,4 +1,4 @@
-const {TextHighlightModel} = require("../model/TestHighlightModel");
+const {TextHighlightModel} = require("../model/TextHighlightModel");
 const {forDict} = require("../../../utils.js");
 const {PageRedrawHandler} = require("../../../PageRedrawHandler");
 const {Rects} = require("../../../Rects");

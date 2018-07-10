@@ -13,3 +13,6 @@
 
 - Preserve links to youtube, etc.  View the inline or at least make them <a>
   links.
+
+- automatic mode for highlights.  Basically, as you scroll up, everything above
+  the fold gets a pagemark.
