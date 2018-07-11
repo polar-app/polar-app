@@ -1,6 +1,6 @@
 # TODO:
 
-- implement rel=amphtml
+- instead of pagedown.. just change the ENTIRE window height.. then the entire page should render.  
 
 - catch and abort history.pushState()
 
