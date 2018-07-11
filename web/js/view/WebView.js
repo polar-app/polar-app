@@ -8,8 +8,12 @@ const {Preconditions} = require("../Preconditions");
 const {View} = require("./View.js");
 const {BoxController} = require("../pagemarks/controller/interact/BoxController");
 
- class WebView extends View {
+class WebView extends View {
 
+    /**
+     *
+     * @param model {Model}
+     */
     constructor(model) {
         super(model);
 
@@ -157,7 +161,7 @@ const {BoxController} = require("../pagemarks/controller/interact/BoxController"
 
         Preconditions.assertNotNull(pageMeta, "pageMeta");
 
-        forDict(pageMeta.pagemarks, function (column, pagemark) {
+        forDict(pageMeta.pagemarks, (column, pagemark) => {
 
             console.log("Creating pagemarks for page: " + pageNum);
 
@@ -167,7 +171,7 @@ const {BoxController} = require("../pagemarks/controller/interact/BoxController"
 
             this.recreatePagemark(pageElement, recreatePagemarkOptions);
 
-        }.bind(this));
+        });
 
         //this.recreatePagemark(pageElement);
 
@@ -211,6 +215,7 @@ const {BoxController} = require("../pagemarks/controller/interact/BoxController"
     /**
      * Create a pagemark on the given page which marks it read.
      * @param pageElement
+     * @param options {Object}
      */
     createPagemark(pageElement, options) {
 

@@ -5,6 +5,10 @@ const {PagemarkRenderer} = require("./PagemarkRenderer");
  */
 class MainPagemarkRenderer extends PagemarkRenderer {
 
+    /**
+     *
+     * @param view {WebView}
+     */
     constructor(view) {
         super(view);
         this.pageElementSelector = ".page";
@@ -23,18 +27,18 @@ class MainPagemarkRenderer extends PagemarkRenderer {
 
         // TODO: migrate to using PageRedrawHandler
 
-        pageElement.addEventListener('DOMNodeInserted', function(event) {
+        pageElement.addEventListener('DOMNodeInserted', async (event) => {
 
             if (event.target && event.target.className === "endOfContent") {
-                this.__render(pageElement);
+                await this.__render(pageElement);
             }
 
-        }.bind(this), false );
+        }, false );
 
     }
 
-    __render(pageElement) {
-        this.view.recreatePagemarksFromPagemarks(pageElement);
+    async __render(pageElement) {
+        await this.view.recreatePagemarksFromPagemarks(pageElement);
     }
 
 }

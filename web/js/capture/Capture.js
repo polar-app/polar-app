@@ -5,6 +5,8 @@ const debug = require('debug');
 const app = electron.app;
 const shell = electron.shell;
 const BrowserWindow = electron.BrowserWindow;
+const Browsers = require("./Browsers");
+
 const {ContentCapture} = require("./ContentCapture");
 const {Preconditions} = require("../Preconditions");
 const {Cmdline} = require("../electron/Cmdline");
@@ -14,7 +16,6 @@ const {Functions} = require("../util/Functions");
 const {DiskDatastore} = require("../datastore/DiskDatastore");
 const {Args} = require("../electron/capture/Args");
 const {BrowserWindows} = require("./BrowserWindows");
-const Browsers = require("./Browsers");
 const {WebRequestReactor} = require("../webrequests/WebRequestReactor");
 const {CapturedPHZWriter} = require("./CapturedPHZWriter");
 const {DefaultPagingBrowser} = require("../electron/capture/pagination/DefaultPagingBrowser");
@@ -23,6 +24,7 @@ const Logger = require("../logger/Logger").Logger;
 const {PendingWebRequestsListener} = require("../webrequests/PendingWebRequestsListener");
 const {DebugWebRequestsListener} = require("../webrequests/DebugWebRequestsListener");
 const {Dimensions} = require("../util/Dimensions");
+const {Objects} = require("../util/Objects");
 
 // TODO: this code is distributed across two packages.. capture and
 // electron.capture... pick one!
@@ -31,8 +33,31 @@ const log = Logger.create();
 
 const USE_PAGING_LOADER = true;
 
+// TODO: anything greater than 10k triggers a bug on NVidia drivers on Linux
+// but many documents are larger than this 10k limit if they have 10 pages or
+// more.
+//
+// Examples:
+//
+// https://journal.artfuldev.com/unit-testing-node-applications-with-typescript-using-mocha-and-chai-384ef05f32b2
+//
+// It's also an issue that this will use more memory. About 100MB for large
+// documents that need rendering with full windows.
+
+const BROWSER_PROFILE = "headless";
+
+// TODO: migrate this to use Electron offscreen rendering (like chrome headless)
+//
+// https://electronjs.org/docs/tutorial/offscreen-rendering
+
 class Capture {
 
+    /**
+     *
+     * @param url {string}
+     * @param browser {Browser}
+     * @param stashDir {string}
+     */
     constructor(url, browser, stashDir) {
 
         this.url = Preconditions.assertNotNull(url, "url");
@@ -45,8 +70,6 @@ class Capture {
          * @type {Function}
          */
         this.resolve = null;
-
-
 
         this.webRequestReactors = [];
         this.pendingWebRequestsListener = new PendingWebRequestsListener();
@@ -102,6 +125,10 @@ class Capture {
         let pagingBrowser = new DefaultPagingBrowser(this.window.webContents);
 
         if(USE_PAGING_LOADER) {
+
+            // TODO: create a new PageHeightLoader which creates a very very long
+            // window for rendering our document.  It might be nice to dynamically
+            // create this until the scroll goes away.
 
             let pagingLoader = new PagingLoader(pagingBrowser, async () => {
 
@@ -253,7 +280,12 @@ class Capture {
         // Create the browser window.
         let browserWindowOptions = BrowserWindows.toBrowserWindowOptions(this.browser);
 
-        debug("Using browserWindowOptions: " + browserWindowOptions);
+        if(BROWSER_PROFILE) {
+            log.info("Using browser profile: " + BROWSER_PROFILE);
+            browserWindowOptions = BrowserWindows.toProfile(browserWindowOptions, BROWSER_PROFILE);
+        }
+
+        log.info("Using browserWindowOptions: ", browserWindowOptions);
 
         let newWindow = new BrowserWindow(browserWindowOptions);
 
@@ -335,8 +367,6 @@ class Capture {
 
             let ampURL = await this.getAmpURL();
 
-            console.log("FIXME: ampURL " + ampURL)
-
             // TODO: if we end up handling multiple types of URLs in the future
             // we might want to build up a history to prevent endless loops or
             // just keep track of the redirect count.
@@ -381,12 +411,16 @@ class Capture {
          */
         let deviceEmulation = this.browser.deviceEmulation;
 
+        deviceEmulation = Objects.duplicate(deviceEmulation);
+
         log.info("Emulating device...");
         window.webContents.enableDeviceEmulation(deviceEmulation);
 
         window.webContents.setUserAgent(this.browser.userAgent);
 
         let windowDimensions = this.__calculateWindowDimensions(window);
+
+        log.info("Using window dimensions: " + JSON.stringify(windowDimensions, null, "  "));
 
         /** @RendererContext */
         function configureBrowserWindowSize(windowDimensions) {

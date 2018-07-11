@@ -59195,7 +59195,7 @@ const { Preconditions } = __webpack_require__(/*! ./Preconditions */ "./web/js/P
 
 class Model {
 
-    constructor(persistenceLayer, clock) {
+    constructor(persistenceLayer) {
 
         this.persistenceLayer = persistenceLayer;
 
@@ -60515,6 +60515,8 @@ module.exports.CompositePagemarkRenderer = CompositePagemarkRenderer;
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
+function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
+
 const { PagemarkRenderer } = __webpack_require__(/*! ./PagemarkRenderer */ "./web/js/pagemarks/view/renderer/PagemarkRenderer.js");
 
 /**
@@ -60522,6 +60524,10 @@ const { PagemarkRenderer } = __webpack_require__(/*! ./PagemarkRenderer */ "./we
  */
 class MainPagemarkRenderer extends PagemarkRenderer {
 
+    /**
+     *
+     * @param view {WebView}
+     */
     constructor(view) {
         super(view);
         this.pageElementSelector = ".page";
@@ -60536,19 +60542,30 @@ class MainPagemarkRenderer extends PagemarkRenderer {
     }
 
     __registerListener(pageElement) {
+        var _this = this;
 
         // TODO: migrate to using PageRedrawHandler
 
-        pageElement.addEventListener('DOMNodeInserted', function (event) {
+        pageElement.addEventListener('DOMNodeInserted', (() => {
+            var _ref = _asyncToGenerator(function* (event) {
 
-            if (event.target && event.target.className === "endOfContent") {
-                this.__render(pageElement);
-            }
-        }.bind(this), false);
+                if (event.target && event.target.className === "endOfContent") {
+                    yield _this.__render(pageElement);
+                }
+            });
+
+            return function (_x) {
+                return _ref.apply(this, arguments);
+            };
+        })(), false);
     }
 
     __render(pageElement) {
-        this.view.recreatePagemarksFromPagemarks(pageElement);
+        var _this2 = this;
+
+        return _asyncToGenerator(function* () {
+            yield _this2.view.recreatePagemarksFromPagemarks(pageElement);
+        })();
     }
 
 }
@@ -60567,6 +60584,10 @@ module.exports.MainPagemarkRenderer = MainPagemarkRenderer;
 
 class PagemarkRenderer {
 
+    /**
+     *
+     * @param view {WebView}
+     */
     constructor(view) {
 
         /**
@@ -62804,6 +62825,10 @@ const { BoxController } = __webpack_require__(/*! ../pagemarks/controller/intera
 
 class WebView extends View {
 
+    /**
+     *
+     * @param model {Model}
+     */
     constructor(model) {
         super(model);
 
@@ -62950,8 +62975,8 @@ class WebView extends View {
 
                 recreatePagemarkOptions.pagemark = pagemark;
 
-                this.recreatePagemark(pageElement, recreatePagemarkOptions);
-            }.bind(_this));
+                _this.recreatePagemark(pageElement, recreatePagemarkOptions);
+            });
 
             //this.recreatePagemark(pageElement);
         })();
@@ -62991,6 +63016,7 @@ class WebView extends View {
     /**
      * Create a pagemark on the given page which marks it read.
      * @param pageElement
+     * @param options {Object}
      */
     createPagemark(pageElement, options) {
 

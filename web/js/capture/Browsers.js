@@ -1,3 +1,5 @@
+const {Browser} = require("./Browser");
+
 /**
  * Basic structure for defining
  *
@@ -8,7 +10,7 @@ module.exports = {
     //
     // Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) polar-bookshelf/1.0.0-beta13 Chrome/61.0.3163.100 Electron/2.0.2 Safari/537.36
 
-    MOBILE_GALAXY_S8: {
+    MOBILE_GALAXY_S8: new Browser({
 
         name: "MOBILE_GALAXY_S8",
         description: "Galaxy S8 mobile device (stock)",
@@ -30,9 +32,9 @@ module.exports = {
 
         }
 
-    },
+    }),
 
-    MOBILE_GALAXY_S8_WITH_CHROME_61: {
+    MOBILE_GALAXY_S8_WITH_CHROME_61: new Browser({
 
         name: "MOBILE_GALAXY_S8_WITH_CHROME_61",
         description: "Galaxy S8 mobile device but with Chrome 61 (same version as Electron)",
@@ -54,9 +56,9 @@ module.exports = {
 
         }
 
-    },
+    }),
 
-    MOBILE_GALAXY_S8_WITH_CHROME_61_WIDTH_750: {
+    MOBILE_GALAXY_S8_WITH_CHROME_61_WIDTH_750: new Browser({
 
         name: "MOBILE_GALAXY_S8_WITH_CHROME_61_WIDTH_750",
         description: "Galaxy S8 mobile device running Chrome 61 but with width at 750",
@@ -78,8 +80,9 @@ module.exports = {
 
         }
 
-    },
-    MOBILE_GALAXY_S8_WITH_CHROME_61_WIDTH_700: {
+    }),
+
+    MOBILE_GALAXY_S8_WITH_CHROME_61_WIDTH_700: new Browser({
 
         name: "MOBILE_GALAXY_S8_WITH_CHROME_61_WIDTH_700",
         description: "Galaxy S8 mobile device running Chrome 61 but with width at 700",
@@ -101,6 +104,6 @@ module.exports = {
 
         }
 
-    }
+    })
 
 };

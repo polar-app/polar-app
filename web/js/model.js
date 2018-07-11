@@ -15,7 +15,7 @@ const {Preconditions} = require("./Preconditions");
 
 class Model {
 
-    constructor(persistenceLayer, clock) {
+    constructor(persistenceLayer) {
 
         this.persistenceLayer = persistenceLayer;
 

@@ -1,6 +1,10 @@
 
 class PagemarkRenderer {
 
+    /**
+     *
+     * @param view {WebView}
+     */
     constructor(view) {
 
         /**

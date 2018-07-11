@@ -1,4 +1,56 @@
 
+- goals:
+
+    - LONG TERM retension of vast amounts of material
+
+    - discovery and collaboration among people researching the same material
+
+    - work with mobile devices
+        - mobile should be review-only
+        - reading is done on a tablet , laptop , or PC
+            - it's just far too difficult to interact with a mobile device
+
+    - manage what you're reading with a tag UI
+
+    - document collaboration is done via document hash and fingerprint, NOT via URL
+
+        - allows for two people to collaborate on teh same "content" even if it
+          is hosted on a 3rd party URL, mirror like the Internet Archive,
+          filecoin, etc.
+
+- spaced repition
+
+    - when consuming material the main problem is retention
+    - chart of retention falloff
+    -
+
+- incremental reading
+
+   - suspend and resume
+
+   - pagemarks
+        - keep track of reading positions with suspend+resume
+
+- annotations
+
+    - distributed annotations help users collaborate on material
+    - the data this provides can build very powerful machine learning models.
+         - for example we can build deriviative highlights from content based
+           on the number of highlights to prioritize important excerpts in the
+           source material.  We can then  use this to build enhanced cards.
+
+    - provide key markup that enables incremental reading + spaced repitition
+
+
+   - text highlights
+        - highlight source content
+        - add flashcards to the source content
+        - sync to mobile devices
+
+   - area highlights
+
+- improving metadata on cards.
+
 - full text search
 
 - labels and tagging
@@ -8,10 +60,6 @@
     -
 
 - sharing within groups/companies/universities
-
-- pagemarks
-
-- text higlights
 
 - flashcards
 
@@ -49,3 +97,29 @@
 - metadata docinfo editor...
 
     - work on a way for users to set the metadata for their documents.
+
+# Competitors
+
+- duolingo
+- evernote
+- quizlet
+
+# Business Model
+
+- freemium hosted content
+- cross-device sync + mobile support
+- premium, machine generated flashcards
+- premium, 3rd party flashcard sales
+- hosted annotation without needing to install Polar integrated with your site.
+
+# Roadmap
+
+- initial polar version based on Electron
+
+- cross-platform sync and cloud support
+
+- chrome extension support
+
+- firefox extension support
+
+-
