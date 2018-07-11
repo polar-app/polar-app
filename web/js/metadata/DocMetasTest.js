@@ -63,68 +63,71 @@ describe('DocMetas', function() {
             let json = DocMetas.serialize(docMeta, "  ");
 
             let expected = {
-                "docInfo": {
-                    "title": null,
-                    "url": null,
-                    "nrPages": 2,
-                    "fingerprint": "0x001",
-                    "lastOpened": null,
-                    "progress": 0,
-                    "pagemarkType": "SINGLE_COLUMN"
-                },
-                "annotationInfo": {
-                    "lastAnnotated": null
-                },
-                "pageMetas": {
-                    "1": {
-                        "pageInfo": {
-                            "num": 1
-                        },
-                        "pagemarks": {
-                            "0": {
-                                "id": "12Vf1bAzeo",
-                                "created": "2012-03-02T11:38:49.321Z",
-                                "lastUpdated": "2012-03-02T11:38:49.321Z",
-                                "author": null,
-                                "type": "SINGLE_COLUMN",
-                                "percentage": 100,
-                                "column": 0,
-                                "notes": {},
-                                "rect": null
-                            }
-                        },
-                        "notes": {},
-                        "questions": {},
-                        "flashcards": {},
-                        "textHighlights": {},
-                        "areaHighlights": {}
+                    "docInfo": {
+                        "title": null,
+                        "url": null,
+                        "nrPages": 2,
+                        "fingerprint": "0x001",
+                        "lastOpened": null,
+                        "progress": 0,
+                        "pagemarkType": "SINGLE_COLUMN"
                     },
-                    "2": {
-                        "pageInfo": {
-                            "num": 2
+                    "annotationInfo": {
+                        "lastAnnotated": null
+                    },
+                    "pageMetas": {
+                        "1": {
+                            "pageInfo": {
+                                "num": 1
+                            },
+                            "pagemarks": {
+                                "0": {
+                                    "id": "12Vf1bAzeo",
+                                    "created": "2012-03-02T11:38:49.321Z",
+                                    "lastUpdated": "2012-03-02T11:38:49.321Z",
+                                    "author": null,
+                                    "type": "SINGLE_COLUMN",
+                                    "percentage": 100,
+                                    "column": 0,
+                                    "pagemarkRect": null,
+                                    "notes": {},
+                                    "rect": null
+                                }
+                            },
+                            "notes": {},
+                            "questions": {},
+                            "flashcards": {},
+                            "textHighlights": {},
+                            "areaHighlights": {}
                         },
-                        "pagemarks": {
-                            "0": {
-                                "id": "12Vf1bAzeo",
-                                "created": "2012-03-02T11:38:49.321Z",
-                                "lastUpdated": "2012-03-02T11:38:49.321Z",
-                                "author": null,
-                                "type": "SINGLE_COLUMN",
-                                "percentage": 100,
-                                "column": 0,
-                                "notes": {},
-                                "rect": null
-                            }
-                        },
-                        "notes": {},
-                        "questions": {},
-                        "flashcards": {},
-                        "textHighlights": {},
-                        "areaHighlights": {}
-                    }
-                },
-                "version": 1
-            };
+                        "2": {
+                            "pageInfo": {
+                                "num": 2
+                            },
+                            "pagemarks": {
+                                "0": {
+                                    "id": "12Vf1bAzeo",
+                                    "created": "2012-03-02T11:38:49.321Z",
+                                    "lastUpdated": "2012-03-02T11:38:49.321Z",
+                                    "author": null,
+                                    "type": "SINGLE_COLUMN",
+                                    "percentage": 100,
+                                    "column": 0,
+                                    "pagemarkRect": null,
+                                    "notes": {},
+                                    "rect": null
+                                }
+                            },
+                            "notes": {},
+                            "questions": {},
+                            "flashcards": {},
+                            "textHighlights": {},
+                            "areaHighlights": {}
+                        }
+                    },
+                    "version": 1
+                }
+            ;
 
             assert.equal(typeof json, "string");
 
@@ -209,6 +212,7 @@ describe('DocMetas', function() {
                         "type": "SINGLE_COLUMN",
                         "percentage": 100,
                         "column": 0,
+                        "pagemarkRect": null,
                         "notes": {},
                         "rect": null
                     }

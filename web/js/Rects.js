@@ -298,7 +298,8 @@ class Rects {
     }
 
     /**
-     * Return the percentage that a takes of b - a is assumed to be <= b.
+     * Return the percentage that a takes of b, a is assumed to be <= b in terms
+     * of dimensions and on the same coordinate plane.
      *
      * @param a {Rect}
      * @param b {Rect}
@@ -357,6 +358,28 @@ class Rects {
         }
 
         return Rects.validate(new Rect(rect));
+
+    }
+
+    /**
+     * Create a new rect from the given lines
+     * @param xAxis {Line}
+     * @param yAxis {Line}
+     * @return {Rect}
+     */
+    static createFromLines(xAxis, yAxis) {
+
+        Preconditions.assertNotNull(xAxis, "xAxis");
+        Preconditions.assertNotNull(yAxis, "yAxis");
+        Preconditions.assertEqual(xAxis.axis, "x", "xAxis.axis");
+        Preconditions.assertEqual(yAxis.axis, "y", "yAxis.axis");
+
+        return Rects.createFromBasicRect({
+            left: xAxis.start,
+            width: xAxis.length,
+            top: yAxis.start,
+            height: yAxis.length
+        })
 
     }
 

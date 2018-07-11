@@ -1,9 +1,9 @@
 const {Delegator, Styles, Elements, forDict} = require("../utils.js");
 const {DocMetaDescriber} = require("../metadata/DocMetaDescriber");
 const {DocFormatFactory} = require("../docformat/DocFormatFactory");
-const {CompositePagemarkRenderer} = require("../pagemarks/CompositePagemarkRenderer");
-const {MainPagemarkRenderer} = require("../pagemarks/MainPagemarkRenderer");
-const {ThumbnailPagemarkRenderer} = require("../pagemarks/ThumbnailPagemarkRenderer");
+const {CompositePagemarkRenderer} = require("../pagemarks/view/renderer/CompositePagemarkRenderer");
+const {MainPagemarkRenderer} = require("../pagemarks/view/renderer/MainPagemarkRenderer");
+const {ThumbnailPagemarkRenderer} = require("../pagemarks/view/renderer/ThumbnailPagemarkRenderer");
 const {Preconditions} = require("../Preconditions");
 const {View} = require("./View.js");
 const {BoxController} = require("../pagemarks/controller/interact/BoxController");
@@ -214,7 +214,7 @@ const {BoxController} = require("../pagemarks/controller/interact/BoxController"
      */
     createPagemark(pageElement, options) {
 
-        // TODO: this code is ugly:
+        // TODO: this code is ugly, can't be tested, etc.
         //
         // - the options building can't be reliably tested
         //

@@ -100,6 +100,29 @@ class PagemarkRect {
         return 100 * (Rects.createFromBasicRect(this).area / ENTIRE_PAGE.area);
     }
 
+    /**
+     * Convert this to a fractional rect where all the values are in the
+     * interval [0.0,1.0]
+     *
+     * @return {Rect}
+     */
+    toFractionalRect() {
+
+        let result = {};
+
+        for(let key in this) {
+
+            if(! this.hasOwnProperty(key))
+                continue;
+
+            result[key] = this[key] / 100;
+
+        }
+
+        return Rects.createFromBasicRect(result);
+
+    }
+
 };
 
 module.exports.PagemarkRect = PagemarkRect;

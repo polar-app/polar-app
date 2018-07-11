@@ -24,7 +24,24 @@ class Preconditions {
     /**
      * Assert that this value is defined , not-null, and also not NaN and also a number.
      * @param value
+     * @param expected The expected value.
      * @param name
+     * @return {number}
+     */
+    static assertEqual(value, expected, name) {
+
+        if(value !== expected) {
+            throw new Error(`Value of ${value} !==- ${expected}`);
+        }
+
+        return value;
+
+    }
+
+    /**
+     * Assert that this value is defined , not-null, and also not NaN and also a number.
+     * @param value {number} The value we expect to be a number.
+     * @param name {string} The name of the number.
      * @return {number}
      */
     static assertNumber(value, name) {

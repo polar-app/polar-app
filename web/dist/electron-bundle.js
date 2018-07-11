@@ -53350,7 +53350,23 @@ class Preconditions {
     /**
      * Assert that this value is defined , not-null, and also not NaN and also a number.
      * @param value
+     * @param expected The expected value.
      * @param name
+     * @return {number}
+     */
+    static assertEqual(value, expected, name) {
+
+        if (value !== expected) {
+            throw new Error(`Value of ${value} !==- ${expected}`);
+        }
+
+        return value;
+    }
+
+    /**
+     * Assert that this value is defined , not-null, and also not NaN and also a number.
+     * @param value {number} The value we expect to be a number.
+     * @param name {string} The name of the number.
      * @return {number}
      */
     static assertNumber(value, name) {
@@ -53499,6 +53515,11 @@ class Rect {
         Object.assign(this, obj);
     }
 
+    /**
+     *
+     * @param axis {String} The axis to use (x or y)
+     * @return {Line}
+     */
     toLine(axis) {
 
         if (axis === "x") {
@@ -53510,6 +53531,10 @@ class Rect {
         }
     }
 
+    /**
+     *
+     * @return {Dimensions}
+     */
     get dimensions() {
         return new Dimensions(this.width, this, height);
     }
@@ -53844,7 +53869,8 @@ class Rects {
     }
 
     /**
-     * Return the percentage that a takes of b - a is assumed to be <= b.
+     * Return the percentage that a takes of b, a is assumed to be <= b in terms
+     * of dimensions and on the same coordinate plane.
      *
      * @param a {Rect}
      * @param b {Rect}
@@ -53902,6 +53928,27 @@ class Rects {
         }
 
         return Rects.validate(new Rect(rect));
+    }
+
+    /**
+     * Create a new rect from the given lines
+     * @param xAxis {Line}
+     * @param yAxis {Line}
+     * @return {Rect}
+     */
+    static createFromLines(xAxis, yAxis) {
+
+        Preconditions.assertNotNull(xAxis, "xAxis");
+        Preconditions.assertNotNull(yAxis, "yAxis");
+        Preconditions.assertEqual(xAxis.axis, "x", "xAxis.axis");
+        Preconditions.assertEqual(yAxis.axis, "y", "yAxis.axis");
+
+        return Rects.createFromBasicRect({
+            left: xAxis.start,
+            width: xAxis.length,
+            top: yAxis.start,
+            height: yAxis.length
+        });
     }
 
     /**
@@ -59308,267 +59355,6 @@ module.exports.Model = Model;
 
 /***/ }),
 
-/***/ "./web/js/pagemarks/CompositePagemarkRenderer.js":
-/*!*******************************************************!*\
-  !*** ./web/js/pagemarks/CompositePagemarkRenderer.js ***!
-  \*******************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-const { Delegator } = __webpack_require__(/*! ../utils.js */ "./web/js/utils.js");
-const { PagemarkRenderer } = __webpack_require__(/*! ./PagemarkRenderer */ "./web/js/pagemarks/PagemarkRenderer.js");
-
-class CompositePagemarkRenderer extends PagemarkRenderer {
-
-    constructor(view, delegates) {
-        super(view);
-
-        if (!delegates) {
-            throw new Error("No delegates");
-        }
-
-        this.delegator = new Delegator(delegates);
-    }
-
-    setup() {
-        this.delegator.apply("setup");
-    }
-
-    create(pageNum, pagemark) {
-        this.delegator.apply("create", pageNum, pagemark);
-    }
-
-    erase(pageNum) {
-        this.delegator.apply("erase", pageNum);
-    }
-
-};
-
-module.exports.CompositePagemarkRenderer = CompositePagemarkRenderer;
-
-/***/ }),
-
-/***/ "./web/js/pagemarks/MainPagemarkRenderer.js":
-/*!**************************************************!*\
-  !*** ./web/js/pagemarks/MainPagemarkRenderer.js ***!
-  \**************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-const { PagemarkRenderer } = __webpack_require__(/*! ./PagemarkRenderer */ "./web/js/pagemarks/PagemarkRenderer.js");
-
-/**
- * Handles attaching pagemarks to the pages (as opposed to thumbnails).
- */
-class MainPagemarkRenderer extends PagemarkRenderer {
-
-    constructor(view) {
-        super(view);
-        this.pageElementSelector = ".page";
-    }
-
-    setup() {
-        this.__setup();
-    }
-
-    __requiresPagemark(pageElement) {
-        return pageElement.querySelector("canvas") != null || pageElement.querySelector("iframe");
-    }
-
-    __registerListener(pageElement) {
-
-        // TODO: migrate to using PageRedrawHandler
-
-        pageElement.addEventListener('DOMNodeInserted', function (event) {
-
-            if (event.target && event.target.className === "endOfContent") {
-                this.__render(pageElement);
-            }
-        }.bind(this), false);
-    }
-
-    __render(pageElement) {
-        this.view.recreatePagemarksFromPagemarks(pageElement);
-    }
-
-}
-
-module.exports.MainPagemarkRenderer = MainPagemarkRenderer;
-
-/***/ }),
-
-/***/ "./web/js/pagemarks/PagemarkRenderer.js":
-/*!**********************************************!*\
-  !*** ./web/js/pagemarks/PagemarkRenderer.js ***!
-  \**********************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-
-class PagemarkRenderer {
-
-    constructor(view) {
-
-        /**
-         * @type {WebView}
-         */
-        this.view = view;
-
-        this.pageElements = [];
-
-        // the CSS selector for pulling out the right pageElements.
-        this.pageElementSelector = null;
-    }
-
-    setup() {}
-
-    __setup() {
-        console.log("PagemarkRenderer: setup...");
-
-        this.__updatePageElements();
-
-        console.log(`Working with ${this.pageElements.length} elements for selector ${this.pageElementSelector}`);
-
-        this.pageElements.forEach(pageElement => {
-            this.init(pageElement);
-        });
-    }
-
-    __updatePageElements() {
-        this.pageElements = document.querySelectorAll(this.pageElementSelector);
-    }
-
-    init(pageElement) {
-
-        console.log("Initializing pageElement: ", pageElement);
-
-        if (this.__requiresPagemark(pageElement)) {
-            this.__render(pageElement);
-        }
-
-        this.__registerListener(pageElement);
-    }
-
-    /**
-     * Return true if the target needs a pagemark.
-     */
-    __requiresPagemark(pageElement) {}
-
-    /**
-     * Register future listeners to monitor status.
-     */
-    __registerListener(pageElement) {}
-
-    __render(pageElement) {}
-
-    /**
-     * Erase the page elements on the give page number.
-     */
-    create(pageNum, pagemark) {
-
-        if (typeof pageNum !== "number") {
-            throw new Error("pageNum is not a number");
-        }
-
-        if (!pagemark) {
-            throw new Error("No pagemark.");
-        }
-
-        this.__updatePageElements();
-
-        let pageElement = this.pageElements[pageNum - 1];
-
-        if (!pageElement) {
-            throw new Error(`No pageElement for pageNum ${pageNum} out of ${this.pageElements.length} pageElements`);
-        }
-
-        this.__render(pageElement);
-    }
-
-    /**
-     * Erase the pagemarks on the give page number.
-     */
-    erase(pageNum) {
-
-        if (typeof pageNum !== "number") {
-            throw new Error("pageNum is not a number");
-        }
-
-        this.__updatePageElements();
-
-        let pageElement = this.pageElements[pageNum - 1];
-
-        if (!pageElement) {
-            throw new Error(`No pageElement for pageNum ${pageNum} out of ${this.pageElements.length} pageElements`);
-        }
-
-        this.view.erasePagemarks(pageElement);
-    }
-
-}
-
-module.exports.PagemarkRenderer = PagemarkRenderer;
-
-/***/ }),
-
-/***/ "./web/js/pagemarks/ThumbnailPagemarkRenderer.js":
-/*!*******************************************************!*\
-  !*** ./web/js/pagemarks/ThumbnailPagemarkRenderer.js ***!
-  \*******************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-const { PagemarkRenderer } = __webpack_require__(/*! ./PagemarkRenderer */ "./web/js/pagemarks/PagemarkRenderer.js");
-
-/**
- * Handles attaching pagemarks to the pages (as opposed to thumbnails).
- */
-class ThumbnailPagemarkRenderer extends PagemarkRenderer {
-
-    constructor(view) {
-        super(view);
-        this.pageElementSelector = ".thumbnail";
-    }
-
-    setup() {
-        this.__setup();
-    }
-
-    __requiresPagemark(pageElement) {
-        let thumbnailImage = pageElement.querySelector(".thumbnailImage");
-        return thumbnailImage != null && thumbnailImage.getAttribute("src") != null;
-    }
-
-    __registerListener(pageElement) {
-
-        pageElement.querySelector(".thumbnailSelectionRing").addEventListener('DOMNodeInserted', function (event) {
-
-            if (event.target && event.target.className === "thumbnailImage") {
-                this.__render(pageElement);
-            }
-        }.bind(this), false);
-    }
-
-    __render(pageElement) {
-
-        let templateElement = pageElement.querySelector(".thumbnailImage");
-
-        if (!templateElement) {
-            // the thumbnail tab might not be visible.
-            return;
-        }
-
-        let options = { zIndex: 1, templateElement, placementElement: templateElement };
-
-        this.view.recreatePagemarksFromPagemarks(pageElement, options);
-    }
-
-}
-
-module.exports.ThumbnailPagemarkRenderer = ThumbnailPagemarkRenderer;
-
-/***/ }),
-
 /***/ "./web/js/pagemarks/controller/PagemarkCoverageEventListener.js":
 /*!**********************************************************************!*\
   !*** ./web/js/pagemarks/controller/PagemarkCoverageEventListener.js ***!
@@ -60679,6 +60465,267 @@ class ResizeRectAdjacencyCalculator {
 }
 
 module.exports.ResizeRectAdjacencyCalculator = ResizeRectAdjacencyCalculator;
+
+/***/ }),
+
+/***/ "./web/js/pagemarks/view/renderer/CompositePagemarkRenderer.js":
+/*!*********************************************************************!*\
+  !*** ./web/js/pagemarks/view/renderer/CompositePagemarkRenderer.js ***!
+  \*********************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+const { Delegator } = __webpack_require__(/*! ../../../utils.js */ "./web/js/utils.js");
+const { PagemarkRenderer } = __webpack_require__(/*! ./PagemarkRenderer */ "./web/js/pagemarks/view/renderer/PagemarkRenderer.js");
+
+class CompositePagemarkRenderer extends PagemarkRenderer {
+
+    constructor(view, delegates) {
+        super(view);
+
+        if (!delegates) {
+            throw new Error("No delegates");
+        }
+
+        this.delegator = new Delegator(delegates);
+    }
+
+    setup() {
+        this.delegator.apply("setup");
+    }
+
+    create(pageNum, pagemark) {
+        this.delegator.apply("create", pageNum, pagemark);
+    }
+
+    erase(pageNum) {
+        this.delegator.apply("erase", pageNum);
+    }
+
+};
+
+module.exports.CompositePagemarkRenderer = CompositePagemarkRenderer;
+
+/***/ }),
+
+/***/ "./web/js/pagemarks/view/renderer/MainPagemarkRenderer.js":
+/*!****************************************************************!*\
+  !*** ./web/js/pagemarks/view/renderer/MainPagemarkRenderer.js ***!
+  \****************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+const { PagemarkRenderer } = __webpack_require__(/*! ./PagemarkRenderer */ "./web/js/pagemarks/view/renderer/PagemarkRenderer.js");
+
+/**
+ * Handles attaching pagemarks to the pages (as opposed to thumbnails).
+ */
+class MainPagemarkRenderer extends PagemarkRenderer {
+
+    constructor(view) {
+        super(view);
+        this.pageElementSelector = ".page";
+    }
+
+    setup() {
+        this.__setup();
+    }
+
+    __requiresPagemark(pageElement) {
+        return pageElement.querySelector("canvas") != null || pageElement.querySelector("iframe");
+    }
+
+    __registerListener(pageElement) {
+
+        // TODO: migrate to using PageRedrawHandler
+
+        pageElement.addEventListener('DOMNodeInserted', function (event) {
+
+            if (event.target && event.target.className === "endOfContent") {
+                this.__render(pageElement);
+            }
+        }.bind(this), false);
+    }
+
+    __render(pageElement) {
+        this.view.recreatePagemarksFromPagemarks(pageElement);
+    }
+
+}
+
+module.exports.MainPagemarkRenderer = MainPagemarkRenderer;
+
+/***/ }),
+
+/***/ "./web/js/pagemarks/view/renderer/PagemarkRenderer.js":
+/*!************************************************************!*\
+  !*** ./web/js/pagemarks/view/renderer/PagemarkRenderer.js ***!
+  \************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+
+class PagemarkRenderer {
+
+    constructor(view) {
+
+        /**
+         * @type {WebView}
+         */
+        this.view = view;
+
+        this.pageElements = [];
+
+        // the CSS selector for pulling out the right pageElements.
+        this.pageElementSelector = null;
+    }
+
+    setup() {}
+
+    __setup() {
+        console.log("PagemarkRenderer: setup...");
+
+        this.__updatePageElements();
+
+        console.log(`Working with ${this.pageElements.length} elements for selector ${this.pageElementSelector}`);
+
+        this.pageElements.forEach(pageElement => {
+            this.init(pageElement);
+        });
+    }
+
+    __updatePageElements() {
+        this.pageElements = document.querySelectorAll(this.pageElementSelector);
+    }
+
+    init(pageElement) {
+
+        console.log("Initializing pageElement: ", pageElement);
+
+        if (this.__requiresPagemark(pageElement)) {
+            this.__render(pageElement);
+        }
+
+        this.__registerListener(pageElement);
+    }
+
+    /**
+     * Return true if the target needs a pagemark.
+     */
+    __requiresPagemark(pageElement) {}
+
+    /**
+     * Register future listeners to monitor status.
+     */
+    __registerListener(pageElement) {}
+
+    __render(pageElement) {}
+
+    /**
+     * Erase the page elements on the give page number.
+     */
+    create(pageNum, pagemark) {
+
+        if (typeof pageNum !== "number") {
+            throw new Error("pageNum is not a number");
+        }
+
+        if (!pagemark) {
+            throw new Error("No pagemark.");
+        }
+
+        this.__updatePageElements();
+
+        let pageElement = this.pageElements[pageNum - 1];
+
+        if (!pageElement) {
+            throw new Error(`No pageElement for pageNum ${pageNum} out of ${this.pageElements.length} pageElements`);
+        }
+
+        this.__render(pageElement);
+    }
+
+    /**
+     * Erase the pagemarks on the give page number.
+     */
+    erase(pageNum) {
+
+        if (typeof pageNum !== "number") {
+            throw new Error("pageNum is not a number");
+        }
+
+        this.__updatePageElements();
+
+        let pageElement = this.pageElements[pageNum - 1];
+
+        if (!pageElement) {
+            throw new Error(`No pageElement for pageNum ${pageNum} out of ${this.pageElements.length} pageElements`);
+        }
+
+        this.view.erasePagemarks(pageElement);
+    }
+
+}
+
+module.exports.PagemarkRenderer = PagemarkRenderer;
+
+/***/ }),
+
+/***/ "./web/js/pagemarks/view/renderer/ThumbnailPagemarkRenderer.js":
+/*!*********************************************************************!*\
+  !*** ./web/js/pagemarks/view/renderer/ThumbnailPagemarkRenderer.js ***!
+  \*********************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+const { PagemarkRenderer } = __webpack_require__(/*! ./PagemarkRenderer */ "./web/js/pagemarks/view/renderer/PagemarkRenderer.js");
+
+/**
+ * Handles attaching pagemarks to the pages (as opposed to thumbnails).
+ */
+class ThumbnailPagemarkRenderer extends PagemarkRenderer {
+
+    constructor(view) {
+        super(view);
+        this.pageElementSelector = ".thumbnail";
+    }
+
+    setup() {
+        this.__setup();
+    }
+
+    __requiresPagemark(pageElement) {
+        let thumbnailImage = pageElement.querySelector(".thumbnailImage");
+        return thumbnailImage != null && thumbnailImage.getAttribute("src") != null;
+    }
+
+    __registerListener(pageElement) {
+
+        pageElement.querySelector(".thumbnailSelectionRing").addEventListener('DOMNodeInserted', function (event) {
+
+            if (event.target && event.target.className === "thumbnailImage") {
+                this.__render(pageElement);
+            }
+        }.bind(this), false);
+    }
+
+    __render(pageElement) {
+
+        let templateElement = pageElement.querySelector(".thumbnailImage");
+
+        if (!templateElement) {
+            // the thumbnail tab might not be visible.
+            return;
+        }
+
+        let options = { zIndex: 1, templateElement, placementElement: templateElement };
+
+        this.view.recreatePagemarksFromPagemarks(pageElement, options);
+    }
+
+}
+
+module.exports.ThumbnailPagemarkRenderer = ThumbnailPagemarkRenderer;
 
 /***/ }),
 
@@ -62146,6 +62193,97 @@ class Line {
         return start <= pt && pt <= end;
     }
 
+    /**
+     * @return {LineBuilder}
+     */
+    static builder() {
+        return new LineBuilder();
+    }
+
+}
+
+class LineBuilder {
+
+    constructor() {
+
+        /**
+         * @type {number}
+         */
+        this._start = undefined;
+
+        /**
+         * @type {number}
+         */
+        this._end = undefined;
+
+        /**
+         * @type {number}
+         */
+        this._length = undefined;
+
+        /**
+         * @type {string}
+         */
+        this._axis = axis;
+    }
+
+    /**
+     * @param value {number}
+     * @return {LineBuilder}
+     */
+    setStart(value) {
+        Preconditions.assertNumber(value, "value");
+        this.start = value;
+        return this;
+    }
+
+    /**
+     * @param value {number}
+     * @return {LineBuilder}
+     */
+    setEnd(value) {
+        Preconditions.assertNumber(value, "value");
+        this.end = value;
+        return this;
+    }
+
+    /**
+     * @param value {number}
+     * @return {LineBuilder}
+     */
+    setLength(value) {
+        Preconditions.assertNumber(value, "value");
+        this.length = value;
+        return this;
+    }
+
+    /**
+     * @param value {number}
+     * @return {LineBuilder}
+     */
+    setAxis(value) {
+        Preconditions.assertNotNull(axis, "value");
+        this.axis = value;
+        return this;
+    }
+
+    /**
+     *
+     * @return {Line}
+     */
+    build() {
+
+        Preconditions.assertNumber(this._start, "start");
+
+        if (!this._end && this._length) {
+            this._end = this._start + this._length;
+        }
+
+        Preconditions.assertNumber(this._end, "end");
+
+        return new Line(this._start, this._end);
+    }
+
 }
 
 module.exports.Line = Line;
@@ -62657,9 +62795,9 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 const { Delegator, Styles, Elements, forDict } = __webpack_require__(/*! ../utils.js */ "./web/js/utils.js");
 const { DocMetaDescriber } = __webpack_require__(/*! ../metadata/DocMetaDescriber */ "./web/js/metadata/DocMetaDescriber.js");
 const { DocFormatFactory } = __webpack_require__(/*! ../docformat/DocFormatFactory */ "./web/js/docformat/DocFormatFactory.js");
-const { CompositePagemarkRenderer } = __webpack_require__(/*! ../pagemarks/CompositePagemarkRenderer */ "./web/js/pagemarks/CompositePagemarkRenderer.js");
-const { MainPagemarkRenderer } = __webpack_require__(/*! ../pagemarks/MainPagemarkRenderer */ "./web/js/pagemarks/MainPagemarkRenderer.js");
-const { ThumbnailPagemarkRenderer } = __webpack_require__(/*! ../pagemarks/ThumbnailPagemarkRenderer */ "./web/js/pagemarks/ThumbnailPagemarkRenderer.js");
+const { CompositePagemarkRenderer } = __webpack_require__(/*! ../pagemarks/view/renderer/CompositePagemarkRenderer */ "./web/js/pagemarks/view/renderer/CompositePagemarkRenderer.js");
+const { MainPagemarkRenderer } = __webpack_require__(/*! ../pagemarks/view/renderer/MainPagemarkRenderer */ "./web/js/pagemarks/view/renderer/MainPagemarkRenderer.js");
+const { ThumbnailPagemarkRenderer } = __webpack_require__(/*! ../pagemarks/view/renderer/ThumbnailPagemarkRenderer */ "./web/js/pagemarks/view/renderer/ThumbnailPagemarkRenderer.js");
 const { Preconditions } = __webpack_require__(/*! ../Preconditions */ "./web/js/Preconditions.js");
 const { View } = __webpack_require__(/*! ./View.js */ "./web/js/view/View.js");
 const { BoxController } = __webpack_require__(/*! ../pagemarks/controller/interact/BoxController */ "./web/js/pagemarks/controller/interact/BoxController.js");
@@ -62856,7 +62994,7 @@ class WebView extends View {
      */
     createPagemark(pageElement, options) {
 
-        // TODO: this code is ugly:
+        // TODO: this code is ugly, can't be tested, etc.
         //
         // - the options building can't be reliably tested
         //

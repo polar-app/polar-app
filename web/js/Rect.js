@@ -45,6 +45,11 @@ class Rect {
 
     }
 
+    /**
+     *
+     * @param axis {String} The axis to use (x or y)
+     * @return {Line}
+     */
     toLine(axis) {
 
         if(axis === "x") {
@@ -57,6 +62,10 @@ class Rect {
 
     }
 
+    /**
+     *
+     * @return {Dimensions}
+     */
     get dimensions() {
         return new Dimensions(this.width, this,height);
     }

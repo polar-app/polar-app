@@ -105,6 +105,100 @@ class Line {
         return start <= pt && pt <= end;
     }
 
+    /**
+     * @return {LineBuilder}
+     */
+    static builder() {
+        return new LineBuilder();
+    }
+
+}
+
+class LineBuilder {
+
+    constructor() {
+
+        /**
+         * @type {number}
+         */
+        this._start = undefined;
+
+        /**
+         * @type {number}
+         */
+        this._end = undefined;
+
+        /**
+         * @type {number}
+         */
+        this._length = undefined;
+
+        /**
+         * @type {string}
+         */
+        this._axis = axis;
+
+    }
+
+
+    /**
+     * @param value {number}
+     * @return {LineBuilder}
+     */
+    setStart(value) {
+        Preconditions.assertNumber(value, "value");
+        this.start = value;
+        return this;
+    }
+
+    /**
+     * @param value {number}
+     * @return {LineBuilder}
+     */
+    setEnd(value) {
+        Preconditions.assertNumber(value, "value");
+        this.end = value;
+        return this;
+    }
+
+    /**
+     * @param value {number}
+     * @return {LineBuilder}
+     */
+    setLength(value) {
+        Preconditions.assertNumber(value, "value");
+        this.length = value;
+        return this;
+    }
+
+    /**
+     * @param value {number}
+     * @return {LineBuilder}
+     */
+    setAxis(value) {
+        Preconditions.assertNotNull(axis, "value");
+        this.axis = value;
+        return this;
+    }
+
+    /**
+     *
+     * @return {Line}
+     */
+    build() {
+
+        Preconditions.assertNumber(this._start, "start");
+
+        if(! this._end && this._length) {
+            this._end = this._start + this._length;
+        }
+
+        Preconditions.assertNumber(this._end, "end");
+
+        return new Line(this._start, this._end);
+
+    }
+
 }
 
 module.exports.Line = Line;

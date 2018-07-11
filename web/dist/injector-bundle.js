@@ -10560,7 +10560,23 @@ class Preconditions {
     /**
      * Assert that this value is defined , not-null, and also not NaN and also a number.
      * @param value
+     * @param expected The expected value.
      * @param name
+     * @return {number}
+     */
+    static assertEqual(value, expected, name) {
+
+        if (value !== expected) {
+            throw new Error(`Value of ${value} !==- ${expected}`);
+        }
+
+        return value;
+    }
+
+    /**
+     * Assert that this value is defined , not-null, and also not NaN and also a number.
+     * @param value {number} The value we expect to be a number.
+     * @param name {string} The name of the number.
      * @return {number}
      */
     static assertNumber(value, name) {
@@ -10709,6 +10725,11 @@ class Rect {
         Object.assign(this, obj);
     }
 
+    /**
+     *
+     * @param axis {String} The axis to use (x or y)
+     * @return {Line}
+     */
     toLine(axis) {
 
         if (axis === "x") {
@@ -10720,6 +10741,10 @@ class Rect {
         }
     }
 
+    /**
+     *
+     * @return {Dimensions}
+     */
     get dimensions() {
         return new Dimensions(this.width, this, height);
     }
@@ -11054,7 +11079,8 @@ class Rects {
     }
 
     /**
-     * Return the percentage that a takes of b - a is assumed to be <= b.
+     * Return the percentage that a takes of b, a is assumed to be <= b in terms
+     * of dimensions and on the same coordinate plane.
      *
      * @param a {Rect}
      * @param b {Rect}
@@ -11112,6 +11138,27 @@ class Rects {
         }
 
         return Rects.validate(new Rect(rect));
+    }
+
+    /**
+     * Create a new rect from the given lines
+     * @param xAxis {Line}
+     * @param yAxis {Line}
+     * @return {Rect}
+     */
+    static createFromLines(xAxis, yAxis) {
+
+        Preconditions.assertNotNull(xAxis, "xAxis");
+        Preconditions.assertNotNull(yAxis, "yAxis");
+        Preconditions.assertEqual(xAxis.axis, "x", "xAxis.axis");
+        Preconditions.assertEqual(yAxis.axis, "y", "yAxis.axis");
+
+        return Rects.createFromBasicRect({
+            left: xAxis.start,
+            width: xAxis.length,
+            top: yAxis.start,
+            height: yAxis.length
+        });
     }
 
     /**
@@ -11653,6 +11700,97 @@ class Line {
      */
     static interval(start, pt, end) {
         return start <= pt && pt <= end;
+    }
+
+    /**
+     * @return {LineBuilder}
+     */
+    static builder() {
+        return new LineBuilder();
+    }
+
+}
+
+class LineBuilder {
+
+    constructor() {
+
+        /**
+         * @type {number}
+         */
+        this._start = undefined;
+
+        /**
+         * @type {number}
+         */
+        this._end = undefined;
+
+        /**
+         * @type {number}
+         */
+        this._length = undefined;
+
+        /**
+         * @type {string}
+         */
+        this._axis = axis;
+    }
+
+    /**
+     * @param value {number}
+     * @return {LineBuilder}
+     */
+    setStart(value) {
+        Preconditions.assertNumber(value, "value");
+        this.start = value;
+        return this;
+    }
+
+    /**
+     * @param value {number}
+     * @return {LineBuilder}
+     */
+    setEnd(value) {
+        Preconditions.assertNumber(value, "value");
+        this.end = value;
+        return this;
+    }
+
+    /**
+     * @param value {number}
+     * @return {LineBuilder}
+     */
+    setLength(value) {
+        Preconditions.assertNumber(value, "value");
+        this.length = value;
+        return this;
+    }
+
+    /**
+     * @param value {number}
+     * @return {LineBuilder}
+     */
+    setAxis(value) {
+        Preconditions.assertNotNull(axis, "value");
+        this.axis = value;
+        return this;
+    }
+
+    /**
+     *
+     * @return {Line}
+     */
+    build() {
+
+        Preconditions.assertNumber(this._start, "start");
+
+        if (!this._end && this._length) {
+            this._end = this._start + this._length;
+        }
+
+        Preconditions.assertNumber(this._end, "end");
+
+        return new Line(this._start, this._end);
     }
 
 }

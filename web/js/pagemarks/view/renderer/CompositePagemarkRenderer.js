@@ -1,4 +1,4 @@
-const {Delegator} = require("../utils.js");
+const {Delegator} = require("../../../utils.js");
 const {PagemarkRenderer} = require("./PagemarkRenderer");
 
 class CompositePagemarkRenderer extends PagemarkRenderer {
