@@ -1,7 +1,26 @@
-# Windows
+# Release Overview
+
+This documents the steps required to perform a release.
+
+MacOS and Linux are required to perform a release.  We can't create DMG files
+on Linux.
+
+## MacOS
+
+```npm dist-macos```
+
+## Linux
+
+```npm dist-linux```
+
+# Windows:
 
 Windows builds are still alpha quality as I can't test them.  The builds work
 but I need feedback from the community.
+
+## TODO
+
+- clean this up that this is ONE command... and within package.json
 
 ## Docs
 
@@ -29,3 +48,16 @@ Then within the docker container run:
 yarn
 ./node_modules/.bin/electron-builder --config=electron-builder.yml --win nsis portable --publish always --draft=false
 ```
+
+# Snap Store
+
+- might do this once we have the next stable release.
+
+Create account:
+
+https://snapcraft.io/account
+
+  snap install snapcraft
+  snapcraft login
+  snapcraft push --release stable polar-bookshelf_1.0.0-beta20_amd64.snap
+
