@@ -5,6 +5,7 @@ const {PagingCursor} = require("./PagingCursor");
 const {Point} = require("../../../Point");
 
 const {Preconditions} = require("../../../Preconditions");
+const {Dimensions} = require("../../../util/Dimensions");
 
 class PagingBrowser {
 
@@ -101,6 +102,7 @@ class PagingBrowser {
         // Some pages change URLs.
 
         let visualScrollPercentage = this.visualScrollPercentage(state);
+
         return visualScrollPercentage.height >= 100;
 
     }
@@ -145,16 +147,29 @@ class PagingBrowser {
      * dimensions.
      *
      * @param state {PagingState}
-     * @return {BasicBox}
+     * @return {Dimensions}
      */
     visualScrollPercentage(state) {
 
         Preconditions.assertNotNull(state, "state");
 
-        return {
+        // TODO: make the x and y axis into a line and then compute percentage
+        // from a line.
+
+        // TODO: there is a bug here where the numerator will be off by 1. For
+        // some reason, sometime the variables:
+        //
+        // state.scrollPosition.y
+        // state.viewportBox.height
+        //
+        // will not sum to:
+        //
+        // state.scrollBox.height
+
+        return new Dimensions({
             width: PagingBrowser.perc(state.scrollPosition.x + state.viewportBox.width, state.scrollBox.width),
             height: PagingBrowser.perc(state.scrollPosition.y + state.viewportBox.height, state.scrollBox.height)
-        };
+        });
 
     }
 
@@ -162,7 +177,7 @@ class PagingBrowser {
      * Percentage with upper bound of 100.
      */
     static perc(n, d) {
-        return Math.min(100 * (Math.ceil(n) / d), 100);
+        return Math.ceil(Math.min(100 * (Math.ceil(n) / d), 100));
     }
 
 }
