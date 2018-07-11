@@ -1,6 +1,3 @@
-const HEADLESS_HEIGHT = 25000;
-
-const {Objects} = require("../util/Objects");
 
 class BrowserWindows {
 
@@ -13,13 +10,13 @@ class BrowserWindows {
             height: browser.deviceEmulation.screenSize.height,
             //maxWidth: WIDTH,
             //maxHeight: HEIGHT,
-            show: true,
+            show: browser.show,
 
             webPreferences: {
                 nodeIntegration: false,
                 defaultEncoding: 'UTF-8',
                 webaudio: false,
-                offscreen: false,
+                offscreen: browser.offscreen,
 
                 /**
                  * This is needed for now because we have to access the iframe
@@ -32,41 +29,6 @@ class BrowserWindows {
                  */
                 webSecurity: false
             }
-
-        }
-
-    }
-
-    /**
-     * Migrate this to a profile of setting we then use to create the browser
-     * window options.
-     *
-     * @param browserWindowOptions
-     * @param name {string} The name of the profile to use.
-     */
-    static toProfile(browserWindowOptions, name) {
-
-        // support offscreen rendering (similar to chrome headless)
-        //
-        // https://electronjs.org/docs/tutorial/offscreen-rendering
-
-        switch (name) {
-
-            case "headless":
-
-                browserWindowOptions = Objects.duplicate(browserWindowOptions);
-                browserWindowOptions.minHeight = HEADLESS_HEIGHT;
-                browserWindowOptions.height = HEADLESS_HEIGHT;
-                browserWindowOptions.show = false;
-                browserWindowOptions.webPreferences.offscreen = true;
-
-                return browserWindowOptions;
-
-            case "default":
-                return browserWindowOptions;
-
-            default:
-                throw new Error("Incorrect profile name: " + name);
 
         }
 

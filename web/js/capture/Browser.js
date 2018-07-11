@@ -23,6 +23,18 @@ class Browser {
          */
         this.deviceEmulation = undefined;
 
+        /**
+         *
+         * @type {boolean} True when the browser should be shown while we are capturing.
+         */
+        this.show = true;
+
+        /**
+         *
+         * @type {boolean} True when we should use the offscreen support in Electron.
+         */
+        this.offscreen = false;
+
         Object.assign(this, opts);
 
     }

@@ -5,7 +5,6 @@ const debug = require('debug');
 const app = electron.app;
 const shell = electron.shell;
 const BrowserWindow = electron.BrowserWindow;
-const Browsers = require("./Browsers");
 
 const {ContentCapture} = require("./ContentCapture");
 const {Preconditions} = require("../Preconditions");
@@ -15,6 +14,7 @@ const {Files} = require("../util/Files");
 const {Functions} = require("../util/Functions");
 const {DiskDatastore} = require("../datastore/DiskDatastore");
 const {Args} = require("../electron/capture/Args");
+const {Browsers} = require("./Browsers");
 const {BrowserWindows} = require("./BrowserWindows");
 const {WebRequestReactor} = require("../webrequests/WebRequestReactor");
 const {CapturedPHZWriter} = require("./CapturedPHZWriter");
@@ -63,6 +63,11 @@ class Capture {
         this.url = Preconditions.assertNotNull(url, "url");
         this.browser = Preconditions.assertNotNull(browser, "browser");;
         this.stashDir = Preconditions.assertNotNull(stashDir, "stashDir");;
+
+        if(BROWSER_PROFILE) {
+            log.info("Using browser profile: " + BROWSER_PROFILE);
+            this.browser = Browsers.toProfile(this.browser, BROWSER_PROFILE);
+        }
 
         /**
          * The resolve function to call when we have completed .
@@ -279,11 +284,6 @@ class Capture {
 
         // Create the browser window.
         let browserWindowOptions = BrowserWindows.toBrowserWindowOptions(this.browser);
-
-        if(BROWSER_PROFILE) {
-            log.info("Using browser profile: " + BROWSER_PROFILE);
-            browserWindowOptions = BrowserWindows.toProfile(browserWindowOptions, BROWSER_PROFILE);
-        }
 
         log.info("Using browserWindowOptions: ", browserWindowOptions);
 

@@ -1,109 +1,57 @@
-const {Browser} = require("./Browser");
+
+const {Objects} = require("../util/Objects");
 
 /**
- * Basic structure for defining
+ * The page height we should use when loading the document.  It might make
+ * sense in the future to just set this to document.body.scrollHeight after
+ * the page loads.  In fact this will definitely need to be changed.  Some
+ * javascript and CSS can display things at the bottom of the window so it
+ * could make the captured page look massive.
  *
+ * @type {number}
  */
-module.exports = {
+const HEADLESS_HEIGHT = 35000;
 
-    // Stock Electron UA is:
-    //
-    // Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) polar-bookshelf/1.0.0-beta13 Chrome/61.0.3163.100 Electron/2.0.2 Safari/537.36
+class Browsers {
 
-    MOBILE_GALAXY_S8: new Browser({
+    /**
+     * Migrate this to a profile of setting we then use to create the browser
+     * window options.
+     *
+     * @param browser {Browser}
+     * @param name {string} The name of the profile to use.
+     * @return {Browser}
+     */
+    static toProfile(browser, name) {
 
-        name: "MOBILE_GALAXY_S8",
-        description: "Galaxy S8 mobile device (stock)",
-        userAgent: "Mozilla/5.0 (Linux; Android 8.0.0; SM-G955U Build/R16NW) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.81 Mobile Safari/537.36",
+        // support offscreen rendering (similar to chrome headless)
+        //
+        // https://electronjs.org/docs/tutorial/offscreen-rendering
 
-        /**
-         * @type Electron.Parameters
-         */
-        deviceEmulation: {
-            screenPosition: "mobile",
-            screenSize: {
-                width: 412,
-                height: 846
-            },
-            viewSize: {
-                width: 412,
-                height: 846
-            }
+        switch (name) {
 
-        }
+            case "headless":
 
-    }),
+                browser = Objects.duplicate(browser);
 
-    MOBILE_GALAXY_S8_WITH_CHROME_61: new Browser({
+                browser.deviceEmulation.screenSize.height = HEADLESS_HEIGHT;
+                browser.deviceEmulation.viewSize.height = HEADLESS_HEIGHT;
 
-        name: "MOBILE_GALAXY_S8_WITH_CHROME_61",
-        description: "Galaxy S8 mobile device but with Chrome 61 (same version as Electron)",
-        userAgent: "Mozilla/5.0 (Linux; Android 8.0.0; SM-G955U Build/R16NW) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.100 Mobile Safari/537.36",
+                browser.show = false;
+                browser.offscreen = true;
 
-        /**
-         * @type Electron.Parameters
-         */
-        deviceEmulation: {
-            screenPosition: "mobile",
-            screenSize: {
-                width: 412,
-                height: 846
-            },
-            viewSize: {
-                width: 412,
-                height: 846
-            }
+                return browser;
+
+            case "default":
+                return browser;
+
+            default:
+                throw new Error("Incorrect profile name: " + name);
 
         }
 
-    }),
+    }
 
-    MOBILE_GALAXY_S8_WITH_CHROME_61_WIDTH_750: new Browser({
+}
 
-        name: "MOBILE_GALAXY_S8_WITH_CHROME_61_WIDTH_750",
-        description: "Galaxy S8 mobile device running Chrome 61 but with width at 750",
-        userAgent: "Mozilla/5.0 (Linux; Android 8.0.0; SM-G955U Build/R16NW) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.100 Mobile Safari/537.36",
-
-        /**
-         * @type Electron.Parameters
-         */
-        deviceEmulation: {
-            screenPosition: "mobile",
-            screenSize: {
-                width: 750,
-                height: 970
-            },
-            viewSize: {
-                width: 750,
-                height: 970
-            }
-
-        }
-
-    }),
-
-    MOBILE_GALAXY_S8_WITH_CHROME_61_WIDTH_700: new Browser({
-
-        name: "MOBILE_GALAXY_S8_WITH_CHROME_61_WIDTH_700",
-        description: "Galaxy S8 mobile device running Chrome 61 but with width at 700",
-        userAgent: "Mozilla/5.0 (Linux; Android 8.0.0; SM-G955U Build/R16NW) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.100 Mobile Safari/537.36",
-
-        /**
-         * @type Electron.Parameters
-         */
-        deviceEmulation: {
-            screenPosition: "mobile",
-            screenSize: {
-                width: 700,
-                height: 905
-            },
-            viewSize: {
-                width: 700,
-                height: 905
-            }
-
-        }
-
-    })
-
-};
+module.exports.Browsers = Browsers;

@@ -4,7 +4,7 @@
 
 const electron = require('electron');
 const app = electron.app;
-const Browsers = require("./web/js/capture/Browsers");
+const BrowserRegistry = require("./web/js/capture/BrowserRegistry");
 const prompt = require('electron-prompt');
 
 const {Cmdline} = require("./web/js/electron/Cmdline");
@@ -18,7 +18,7 @@ let diskDatastore = new DiskDatastore();
 
 let args = Args.parse(process.argv);
 
-let browser = Browsers[args.browser];
+let browser = BrowserRegistry[args.browser];
 
 if(! browser) {
     throw new Error("No browser defined for: " + args.browser);

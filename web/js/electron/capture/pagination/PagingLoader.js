@@ -27,7 +27,7 @@ class PagingLoader {
     /**
      *
      * @param pagingBrowser {PagingBrowser}
-     * @param finishedCallback function
+     * @param finishedCallback {Function}
      */
     constructor(pagingBrowser, finishedCallback) {
 
