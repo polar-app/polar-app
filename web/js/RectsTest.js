@@ -7,6 +7,43 @@ const {MOCK_RECTS} = require("./MockRects");
 
 describe('Rects', function() {
 
+    describe('perc', function() {
+
+        it("basic perc", function () {
+
+            let a = Rects.createFromBasicRect({
+                top: 0,
+                left: 0,
+                width: 50,
+                height: 50
+            });
+
+            let b = Rects.createFromBasicRect({
+                top: 0,
+                left: 0,
+                width: 100,
+                height: 100
+            });
+
+            let actual = Rects.perc(a, b);
+
+            let expected = {
+                "left": 0,
+                "top": 0,
+                "right": 50,
+                "bottom": 50,
+                "width": 50,
+                "height": 50
+            };
+
+            assertJSON(actual, expected);
+
+        });
+
+
+    });
+
+
     describe('scale', function() {
 
         it("basic scale", function () {

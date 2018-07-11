@@ -77400,6 +77400,7 @@ module.exports.Preconditions = Preconditions;
 /***/ (function(module, exports, __webpack_require__) {
 
 const { Line } = __webpack_require__(/*! ./util/Line */ "./web/js/util/Line.js");
+const { Dimensions } = __webpack_require__(/*! ./util/Dimensions */ "./web/js/util/Dimensions.js");
 const { Preconditions } = __webpack_require__(/*! ./Preconditions */ "./web/js/Preconditions.js");
 
 /**
@@ -77453,6 +77454,10 @@ class Rect {
         } else {
             throw new Error("Wrong axis: " + axis);
         }
+    }
+
+    get dimensions() {
+        return new Dimensions(this.width, this, height);
     }
 
     /**
@@ -77778,6 +77783,29 @@ class Rects {
         });
 
         return new Rect(result);
+    }
+
+    /**
+     * Return the percentage that a takes of b - a is assumed to be <= b.
+     *
+     * @param a {Rect}
+     * @param b {Rect}
+     * @return {Rect}
+     */
+    static perc(a, b) {
+
+        if (a.width > b.width || a.height > b.height) {
+            throw new Error(`Dimensions invalid ${a.dimensions} vs ${b.dimensions}`);
+        }
+
+        let result = {
+            left: 100 * (a.left / b.width),
+            right: 100 * (a.right / b.width),
+            top: 100 * (a.top / b.height),
+            bottom: 100 * (a.bottom / b.height)
+        };
+
+        return Rects.createFromBasicRect(result);
     }
 
     /**
@@ -85690,6 +85718,47 @@ class Attributes {
 }
 
 module.exports.Attributes = Attributes;
+
+/***/ }),
+
+/***/ "./web/js/util/Dimensions.js":
+/*!***********************************!*\
+  !*** ./web/js/util/Dimensions.js ***!
+  \***********************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+/**
+ * Simple dimension of a Rect.
+ */
+class Dimensions {
+
+  constructor(obj) {
+
+    /**
+     * This width of this rect.
+     *
+     * @type {number}
+     */
+    this.width = undefined;
+
+    /**
+     * This height of this rect.
+     *
+     * @type {number}
+     */
+    this.height = undefined;
+
+    Object.assign(this, obj);
+  }
+
+  toString() {
+    return `${this.width}x${this.height}`;
+  }
+
+}
+
+module.exports.Dimensions = Dimensions;
 
 /***/ }),
 

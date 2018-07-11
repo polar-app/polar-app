@@ -1,4 +1,5 @@
 const {Line} = require("./util/Line");
+const {Dimensions} = require("./util/Dimensions");
 const {Preconditions} = require("./Preconditions");
 
 /**
@@ -54,6 +55,10 @@ class Rect {
             throw new Error("Wrong axis: " + axis);
         }
 
+    }
+
+    get dimensions() {
+        return new Dimensions(this.width, this,height);
     }
 
     /**

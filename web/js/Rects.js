@@ -298,6 +298,30 @@ class Rects {
     }
 
     /**
+     * Return the percentage that a takes of b - a is assumed to be <= b.
+     *
+     * @param a {Rect}
+     * @param b {Rect}
+     * @return {Rect}
+     */
+    static perc(a, b) {
+
+        if(a.width > b.width || a.height > b.height) {
+            throw new Error(`Dimensions invalid ${a.dimensions} vs ${b.dimensions}`);
+        }
+
+        let result = {
+            left: 100 * (a.left / b.width),
+            right: 100 * (a.right / b.width),
+            top: 100 * (a.top / b.height),
+            bottom: 100 * (a.bottom / b.height)
+        };
+
+        return Rects.createFromBasicRect(result);
+
+    }
+
+    /**
      * Create a full rect from a rect that has top, left, width, height only.
      *
      * @param rect {Rect | Object}

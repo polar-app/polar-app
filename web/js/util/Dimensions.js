@@ -23,6 +23,10 @@ class Dimensions {
 
     }
 
+    toString() {
+        return `${this.width}x${this.height}`;
+    }
+
 }
 
 module.exports.Dimensions = Dimensions;
