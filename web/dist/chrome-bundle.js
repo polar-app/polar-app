@@ -77294,6 +77294,26 @@ module.exports.Point = Point;
 class Preconditions {
 
     /**
+     *
+     * @param value
+     * @param testFunction {Function} Assert that the test function returns true
+     * @param message
+     * @return {*} Return the value we've been given.
+     */
+    static assert(value, testFunction, message) {
+
+        Preconditions.assertNotNull(testFunction, "testFunction");
+
+        let result = testFunction(value);
+
+        if (!result) {
+            throw new Error("Assertion failed: " + message);
+        }
+
+        return value;
+    }
+
+    /**
      * Assert that this value is defined , not-null, and also not NaN and also a number.
      * @param value
      * @param name
@@ -77458,6 +77478,10 @@ class Rect {
 
     get dimensions() {
         return new Dimensions(this.width, this, height);
+    }
+
+    get area() {
+        return this.width * this.height;
     }
 
     /**
@@ -82822,6 +82846,9 @@ module.exports.Pagemark = Pagemark;
 
 const { Symbol } = __webpack_require__(/*! ./Symbol.js */ "./web/js/metadata/Symbol.js");
 
+/**
+ *
+ */
 module.exports.PagemarkType = Object.freeze({
     SINGLE_COLUMN: new Symbol("SINGLE_COLUMN"),
     DOUBLE_COLUMN: new Symbol("DOUBLE_COLUMN"),
@@ -82861,21 +82888,44 @@ class Pagemarks {
             // default for now until we add multiple column types and handle
             // them properly.
 
+            /**
+             * @type {Symbol}
+             */
             type: PagemarkType.SINGLE_COLUMN,
 
+            /**
+             * @type {number}
+             */
             percentage: 100,
 
-            column: 0
+            /**
+             * @type {number}
+             */
+            column: 0,
+
+            /**
+             * @type {PagemarkRect}
+             */
+            pagemarkRect: null
 
         });
 
         let created = new ISODateTime(new Date());
+
+        options = Objects.duplicate(options);
+
         return new Pagemark({
+
+            // per-pagemark fields.
             id: Pagemarks.createID(created),
             created,
+
+            // the rest are from options.
             type: options.type,
             percentage: options.percentage,
-            column: options.column
+            column: options.column,
+            pagemarkRect: options.pagemarkRect
+
         });
     }
 
@@ -85761,28 +85811,32 @@ module.exports.Attributes = Attributes;
  */
 class Dimensions {
 
-  constructor(obj) {
+    constructor(obj) {
 
-    /**
-     * This width of this rect.
-     *
-     * @type {number}
-     */
-    this.width = undefined;
+        /**
+         * This width of this rect.
+         *
+         * @type {number}
+         */
+        this.width = undefined;
 
-    /**
-     * This height of this rect.
-     *
-     * @type {number}
-     */
-    this.height = undefined;
+        /**
+         * This height of this rect.
+         *
+         * @type {number}
+         */
+        this.height = undefined;
 
-    Object.assign(this, obj);
-  }
+        Object.assign(this, obj);
+    }
 
-  toString() {
-    return `${this.width}x${this.height}`;
-  }
+    get area() {
+        return this.width * this.height;
+    }
+
+    toString() {
+        return `${this.width}x${this.height}`;
+    }
 
 }
 

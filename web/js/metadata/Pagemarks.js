@@ -23,21 +23,44 @@ class Pagemarks {
             // default for now until we add multiple column types and handle
             // them properly.
 
+            /**
+             * @type {Symbol}
+             */
             type: PagemarkType.SINGLE_COLUMN,
 
+            /**
+             * @type {number}
+             */
             percentage: 100,
 
-            column: 0
+            /**
+             * @type {number}
+             */
+            column: 0,
+
+            /**
+             * @type {PagemarkRect}
+             */
+            pagemarkRect: null
 
         });
 
         let created = new ISODateTime(new Date());
+
+        options = Objects.duplicate(options);
+
         return new Pagemark({
+
+            // per-pagemark fields.
             id: Pagemarks.createID(created),
             created,
+
+            // the rest are from options.
             type: options.type,
             percentage: options.percentage,
-            column: options.column
+            column: options.column,
+            pagemarkRect: options.pagemarkRect
+
         });
 
     }

@@ -1,6 +1,27 @@
 class Preconditions {
 
     /**
+     *
+     * @param value
+     * @param testFunction {Function} Assert that the test function returns true
+     * @param message
+     * @return {*} Return the value we've been given.
+     */
+    static assert(value, testFunction, message) {
+
+        Preconditions.assertNotNull(testFunction, "testFunction");
+
+        let result = testFunction(value);
+
+        if(!result) {
+            throw new Error("Assertion failed: " + message);
+        }
+
+        return value;
+
+    }
+
+    /**
      * Assert that this value is defined , not-null, and also not NaN and also a number.
      * @param value
      * @param name

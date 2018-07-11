@@ -2,6 +2,10 @@
 
 ## Next
 
+- Get PagemarkRect to work so that I can start using the new pagemark layout
+  engine with the drag and resize features I worked out. This would let me use
+  two column PDFs too.
+
 - Get the import UI to work.  Ideally I would build out a chrome extension but
   realistically that's a lot of work to get the chrome extension and the app
   to communicate.

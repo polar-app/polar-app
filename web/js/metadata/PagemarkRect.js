@@ -1,10 +1,20 @@
+const {Preconditions} = require("../Preconditions");
+const {Rects} = require("../Rects");
+const {Interval} = require("../math/Interval");
+
+const ENTIRE_PAGE = Rects.createFromBasicRect({
+    left: 0,
+    top: 0,
+    width: 100,
+    height: 100
+});
+
 /**
  * The box layout of this pagemark.  We use the typical DOM positioning style
  * of top, left, width and height only instead of percentages we represent
  * this as percentage of the entire 'page'.
  *
  * For example:
- *
  *
  * This would represent the range within a page that a pagemark covers.  This is
  * essentially a range has a start and end which are percentages of the page that
@@ -28,6 +38,10 @@
  * pagemark anchored to that spot, and give it a bit of height so that the user
  * can visually see it.
  *
+ * Note that the percentage are of the available width and height.  The normal
+ * ratio we use is 8.5x11 but width and height as percentages would be 100x100.
+ *
+ * This would NOT be a square but a rectangle and the percentages confuse that.
  *
  */
 class PagemarkRect {
@@ -56,6 +70,34 @@ class PagemarkRect {
 
         Object.assign(this, obj);
 
+        this._validate();
+
+    }
+
+    /**
+     * Make sure we are in a valid state and that the intervals are within
+     * proper values.
+     *
+     * @private
+     */
+    _validate() {
+
+        let interval = new Interval(0,100);
+
+        let assertInterval = (value) => interval.containsPoint(value);
+
+        Preconditions.assert(this.top, assertInterval, "top");
+        Preconditions.assert(this.left, assertInterval, "left");
+        Preconditions.assert(this.width, assertInterval, "width");
+        Preconditions.assert(this.height, assertInterval, "height");
+
+    }
+
+    /**
+     * Compute a percentage of the page that this rect holds.
+     */
+    toPercentage() {
+        return 100 * (Rects.createFromBasicRect(this).area / ENTIRE_PAGE.area);
     }
 
 };

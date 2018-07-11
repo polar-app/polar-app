@@ -23,6 +23,10 @@ class Dimensions {
 
     }
 
+    get area() {
+        return this.width * this.height;
+    }
+
     toString() {
         return `${this.width}x${this.height}`;
     }

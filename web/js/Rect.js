@@ -61,6 +61,10 @@ class Rect {
         return new Dimensions(this.width, this,height);
     }
 
+    get area() {
+        return this.width * this.height;
+    }
+
     /**
      * Adjust an axis based on the given line.
      *

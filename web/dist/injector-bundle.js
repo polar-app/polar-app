@@ -10538,6 +10538,26 @@ module.exports.Optional = Optional;
 class Preconditions {
 
     /**
+     *
+     * @param value
+     * @param testFunction {Function} Assert that the test function returns true
+     * @param message
+     * @return {*} Return the value we've been given.
+     */
+    static assert(value, testFunction, message) {
+
+        Preconditions.assertNotNull(testFunction, "testFunction");
+
+        let result = testFunction(value);
+
+        if (!result) {
+            throw new Error("Assertion failed: " + message);
+        }
+
+        return value;
+    }
+
+    /**
      * Assert that this value is defined , not-null, and also not NaN and also a number.
      * @param value
      * @param name
@@ -10702,6 +10722,10 @@ class Rect {
 
     get dimensions() {
         return new Dimensions(this.width, this, height);
+    }
+
+    get area() {
+        return this.width * this.height;
     }
 
     /**
@@ -11163,28 +11187,32 @@ if (Electron.isElectron()) {
  */
 class Dimensions {
 
-  constructor(obj) {
+    constructor(obj) {
 
-    /**
-     * This width of this rect.
-     *
-     * @type {number}
-     */
-    this.width = undefined;
+        /**
+         * This width of this rect.
+         *
+         * @type {number}
+         */
+        this.width = undefined;
 
-    /**
-     * This height of this rect.
-     *
-     * @type {number}
-     */
-    this.height = undefined;
+        /**
+         * This height of this rect.
+         *
+         * @type {number}
+         */
+        this.height = undefined;
 
-    Object.assign(this, obj);
-  }
+        Object.assign(this, obj);
+    }
 
-  toString() {
-    return `${this.width}x${this.height}`;
-  }
+    get area() {
+        return this.width * this.height;
+    }
+
+    toString() {
+        return `${this.width}x${this.height}`;
+    }
 
 }
 
