@@ -3,7 +3,7 @@ const {VersionedObject} = require("./VersionedObject");
 /**
  * Private note describing this object.  Meant to last a long time.
  */
-module.exports.Note = class extends VersionedObject {
+class Note extends VersionedObject {
 
     constructor(val) {
 
@@ -37,3 +37,5 @@ module.exports.Note = class extends VersionedObject {
     }
 
 };
+
+module.exports.Note = Note;

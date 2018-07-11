@@ -1,7 +1,7 @@
 const {BaseHighlight} = require("./BaseHighlight");
 const {Preconditions} = require("../Preconditions");
 
-module.exports.TextHighlight = class extends BaseHighlight {
+class TextHighlight extends BaseHighlight {
 
     constructor(val) {
 
@@ -59,4 +59,6 @@ module.exports.TextHighlight = class extends BaseHighlight {
         Preconditions.assertNotInstanceOf(this.textSelections, "textSelections", Array);
     };
 
-};
+}
+
+module.exports.TextHighlight = TextHighlight;

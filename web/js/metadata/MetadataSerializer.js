@@ -43,7 +43,7 @@ class MetadataSerializer {
     /**
      * Given an instance of an object, and a JSON string, deserialize the string into
      * the object.
-     * @param object
+     * @param object {Object} the object which should be returned after deserializing.
      * @param data
      */
     static deserialize(obj, data) {

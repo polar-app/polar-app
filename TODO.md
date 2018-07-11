@@ -2,6 +2,18 @@
 
 ## Next
 
+- Get the import UI to work.  Ideally I would build out a chrome extension but
+  realistically that's a lot of work to get the chrome extension and the app
+  to communicate.
+
+- I would still like to get the Home app working so that I can resome reading.
+
+- Mark pages as 'not going to read' for now so that I don't wonder if I have to
+  resume reading them.
+
+- two column layout for PDFs.
+
+
 - migrate to using react+redux ... redux should be the backend since it is very
   near to what I designed using proxies.  If I can implement everything with
   react + redux I should do so...
@@ -9,7 +21,8 @@
 - The logger should include the class that's calling it.  I can create a new
   Error and parse the caller form that.
 
-- File a bug about text selecton on chrome vs firefox.
+- File a bug about text selecton on chrome vs firefox.  Filed. They are not
+  working on it though.
 
 - clean up the input page so that it uses whitespace better
     - also initial size should be better

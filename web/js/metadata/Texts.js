@@ -1,6 +1,6 @@
 const {Text} = require("./Text.js");
 
-module.exports.Texts = class {
+class Texts {
 
     static create(body, type) {
 
@@ -14,3 +14,5 @@ module.exports.Texts = class {
     }
 
 };
+
+module.exports.Texts = Texts;

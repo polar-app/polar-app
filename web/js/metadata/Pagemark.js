@@ -35,7 +35,7 @@ class Pagemark extends Annotation {
 
         /**
          * The column number on which this pagemark is rendered.  This is mostly
-         * metadata and we should be migrating to PagemarkBox and PagemarkRange
+         * metadata and we should be migrating to PagemarkRect and PagemarkRange
          * which supports raw rendering of the pagemarks.
          *
          * @type {number}

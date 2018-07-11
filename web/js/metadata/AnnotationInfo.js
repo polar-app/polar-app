@@ -5,7 +5,7 @@ const {SerializedObject} = require("./SerializedObject.js");
  *
  * @type {AnnotationInfo}
  */
-module.exports.AnnotationInfo = class extends SerializedObject {
+class AnnotationInfo extends SerializedObject {
 
     constructor(val) {
 
@@ -24,3 +24,6 @@ module.exports.AnnotationInfo = class extends SerializedObject {
     }
 
 };
+
+
+module.exports.AnnotationInfo = AnnotationInfo;

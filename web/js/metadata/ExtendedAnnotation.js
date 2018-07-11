@@ -2,7 +2,7 @@ const {Annotation} = require("./Annotation.js");
 const {Note} = require("./Note.js");
 
 /* abstract */
-module.exports.ExtendedAnnotation = class extends Annotation {
+class ExtendedAnnotation extends Annotation {
 
     constructor(val) {
 
@@ -53,3 +53,5 @@ module.exports.ExtendedAnnotation = class extends Annotation {
     }
 
 }
+
+module.exports.ExtendedAnnotation = ExtendedAnnotation;

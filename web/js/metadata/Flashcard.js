@@ -1,6 +1,6 @@
 const {VersionedObject} = require("./VersionedObject");
 
-module.exports.Flashcard = class extends VersionedObject {
+class Flashcard extends VersionedObject {
 
     constructor(val) {
 
@@ -25,3 +25,5 @@ module.exports.Flashcard = class extends VersionedObject {
     };
 
 };
+
+module.exports.Flashcard = Flashcard;

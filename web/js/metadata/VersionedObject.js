@@ -2,8 +2,10 @@ const {SerializedObject} = require("./SerializedObject.js");
 const {ISODateTime} = require("./ISODateTime");
 
 
-/* abstract */
-module.exports.VersionedObject = class extends SerializedObject {
+/**
+ * @abstract
+ */
+class VersionedObject extends SerializedObject {
 
     constructor(val) {
 
@@ -71,3 +73,4 @@ module.exports.VersionedObject = class extends SerializedObject {
 
 }
 
+module.exports.VersionedObject = VersionedObject;

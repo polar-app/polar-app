@@ -5,7 +5,7 @@
  * and then assign the fields.  Then setup and validate that we have our
  * required data structures.
  */
-module.exports.SerializedObject = class {
+class SerializedObject {
 
     constructor(val) {
         // noop
@@ -95,3 +95,5 @@ module.exports.SerializedObject = class {
     }
 
 };
+
+module.exports.SerializedObject = SerializedObject;

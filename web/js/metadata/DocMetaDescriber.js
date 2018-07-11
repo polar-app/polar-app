@@ -1,7 +1,7 @@
 
 const {forDict} = require("../utils.js");
 
-module.exports.DocMetaDescriber = class {
+class DocMetaDescriber {
 
     static describe(docMeta) {
 
@@ -26,3 +26,4 @@ module.exports.DocMetaDescriber = class {
 
 };
 
+module.exports.DocMetaDescriber = DocMetaDescriber;

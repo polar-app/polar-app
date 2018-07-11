@@ -5,7 +5,7 @@ const {ISODateTime} = require("./ISODateTime");
 // FIXME: move to extend VersionedObject
 
 /* abstract */
-module.exports.Annotation = class extends VersionedObject {
+class Annotation extends VersionedObject {
 
     constructor(val) {
 
@@ -17,3 +17,5 @@ module.exports.Annotation = class extends VersionedObject {
 
 };
 
+
+module.exports.Annotation = Annotation

@@ -10,3 +10,5 @@ class Comment extends Note {
     }
 
 }
+
+module.exports.Comment = Comment;

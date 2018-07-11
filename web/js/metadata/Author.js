@@ -15,3 +15,4 @@ class Author extends SerializedObject {
 
 }
 
+module.exports.Author = Author;

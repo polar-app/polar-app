@@ -3,8 +3,10 @@ const {ISODateTime} = require("./ISODateTime");
 
 /**
  * An object with created and lastUpdated fields.
+ *
+ * @abstract
  */
-module.exports.TemporalObject = /*abstract */ class extends SerializedObject {
+class TemporalObject extends SerializedObject {
 
     constructor(val) {
 
@@ -56,3 +58,4 @@ module.exports.TemporalObject = /*abstract */ class extends SerializedObject {
 
 }
 
+module.exports.TemporalObject = TemporalObject;

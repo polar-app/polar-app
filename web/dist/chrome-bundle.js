@@ -81652,7 +81652,7 @@ const { ISODateTime } = __webpack_require__(/*! ./ISODateTime */ "./web/js/metad
 // FIXME: move to extend VersionedObject
 
 /* abstract */
-module.exports.Annotation = class extends VersionedObject {
+class Annotation extends VersionedObject {
 
     constructor(val) {
 
@@ -81662,6 +81662,8 @@ module.exports.Annotation = class extends VersionedObject {
     }
 
 };
+
+module.exports.Annotation = Annotation;
 
 /***/ }),
 
@@ -81679,7 +81681,7 @@ const { SerializedObject } = __webpack_require__(/*! ./SerializedObject.js */ ".
  *
  * @type {AnnotationInfo}
  */
-module.exports.AnnotationInfo = class extends SerializedObject {
+class AnnotationInfo extends SerializedObject {
 
   constructor(val) {
 
@@ -81697,6 +81699,8 @@ module.exports.AnnotationInfo = class extends SerializedObject {
   }
 
 };
+
+module.exports.AnnotationInfo = AnnotationInfo;
 
 /***/ }),
 
@@ -81727,7 +81731,7 @@ const { SerializedObject } = __webpack_require__(/*! ./SerializedObject.js */ ".
 const { Preconditions } = __webpack_require__(/*! ../Preconditions */ "./web/js/Preconditions.js");
 const { ExtendedAnnotation } = __webpack_require__(/*! ./ExtendedAnnotation */ "./web/js/metadata/ExtendedAnnotation.js");
 
-module.exports.BaseHighlight = class extends ExtendedAnnotation {
+class BaseHighlight extends ExtendedAnnotation {
 
     constructor(val) {
         super(val);
@@ -81753,6 +81757,8 @@ module.exports.BaseHighlight = class extends ExtendedAnnotation {
         Preconditions.assertNotInstanceOf(this.rects, "rects", Array);
     }
 };
+
+module.exports.BaseHighlight = BaseHighlight;
 
 /***/ }),
 
@@ -81960,7 +81966,7 @@ module.exports.DocMeta = DocMeta;
 
 const { forDict } = __webpack_require__(/*! ../utils.js */ "./web/js/utils.js");
 
-module.exports.DocMetaDescriber = class {
+class DocMetaDescriber {
 
     static describe(docMeta) {
 
@@ -81982,6 +81988,8 @@ module.exports.DocMetaDescriber = class {
     }
 
 };
+
+module.exports.DocMetaDescriber = DocMetaDescriber;
 
 /***/ }),
 
@@ -82205,7 +82213,7 @@ const { Annotation } = __webpack_require__(/*! ./Annotation.js */ "./web/js/meta
 const { Note } = __webpack_require__(/*! ./Note.js */ "./web/js/metadata/Note.js");
 
 /* abstract */
-module.exports.ExtendedAnnotation = class extends Annotation {
+class ExtendedAnnotation extends Annotation {
 
     constructor(val) {
 
@@ -82253,7 +82261,9 @@ module.exports.ExtendedAnnotation = class extends Annotation {
         super.validate();
     }
 
-};
+}
+
+module.exports.ExtendedAnnotation = ExtendedAnnotation;
 
 /***/ }),
 
@@ -82266,7 +82276,7 @@ module.exports.ExtendedAnnotation = class extends Annotation {
 
 const { VersionedObject } = __webpack_require__(/*! ./VersionedObject */ "./web/js/metadata/VersionedObject.js");
 
-module.exports.Flashcard = class extends VersionedObject {
+class Flashcard extends VersionedObject {
 
   constructor(val) {
 
@@ -82289,6 +82299,8 @@ module.exports.Flashcard = class extends VersionedObject {
     this.init(val);
   }
 };
+
+module.exports.Flashcard = Flashcard;
 
 /***/ }),
 
@@ -82384,7 +82396,7 @@ class Flashcards {
         return Flashcards.create(FlashcardType.BASIC_FRONT_BACK, fields);
     }
 
-};
+}
 
 module.exports.Flashcards = Flashcards;
 
@@ -82493,7 +82505,7 @@ class MetadataSerializer {
     /**
      * Given an instance of an object, and a JSON string, deserialize the string into
      * the object.
-     * @param object
+     * @param object {Object} the object which should be returned after deserializing.
      * @param data
      */
     static deserialize(obj, data) {
@@ -82529,7 +82541,7 @@ const { VersionedObject } = __webpack_require__(/*! ./VersionedObject */ "./web/
 /**
  * Private note describing this object.  Meant to last a long time.
  */
-module.exports.Note = class extends VersionedObject {
+class Note extends VersionedObject {
 
     constructor(val) {
 
@@ -82561,6 +82573,8 @@ module.exports.Note = class extends VersionedObject {
 
 };
 
+module.exports.Note = Note;
+
 /***/ }),
 
 /***/ "./web/js/metadata/PageInfo.js":
@@ -82572,7 +82586,7 @@ module.exports.Note = class extends VersionedObject {
 
 const { SerializedObject } = __webpack_require__(/*! ./SerializedObject.js */ "./web/js/metadata/SerializedObject.js");
 
-module.exports.PageInfo = class extends SerializedObject {
+class PageInfo extends SerializedObject {
 
     constructor(val) {
 
@@ -82592,7 +82606,9 @@ module.exports.PageInfo = class extends SerializedObject {
         this.validateMembers([{ name: 'num', type: "number" }]);
     }
 
-};
+}
+
+module.exports.PageInfo = PageInfo;
 
 /***/ }),
 
@@ -82606,7 +82622,7 @@ module.exports.PageInfo = class extends SerializedObject {
 const { SerializedObject } = __webpack_require__(/*! ./SerializedObject.js */ "./web/js/metadata/SerializedObject.js");
 const { PageInfo } = __webpack_require__(/*! ./PageInfo */ "./web/js/metadata/PageInfo.js");
 
-module.exports.PageMeta = class extends SerializedObject {
+class PageMeta extends SerializedObject {
 
     constructor(val) {
 
@@ -82688,7 +82704,9 @@ module.exports.PageMeta = class extends SerializedObject {
         this.validateMembers([{ name: 'pageInfo', instance: PageInfo }]);
     }
 
-};
+}
+
+module.exports.PageMeta = PageMeta;
 
 /***/ }),
 
@@ -82736,7 +82754,7 @@ class Pagemark extends Annotation {
 
         /**
          * The column number on which this pagemark is rendered.  This is mostly
-         * metadata and we should be migrating to PagemarkBox and PagemarkRange
+         * metadata and we should be migrating to PagemarkRect and PagemarkRange
          * which supports raw rendering of the pagemarks.
          *
          * @type {number}
@@ -82881,7 +82899,7 @@ module.exports.Pagemarks = Pagemarks;
  * and then assign the fields.  Then setup and validate that we have our
  * required data structures.
  */
-module.exports.SerializedObject = class {
+class SerializedObject {
 
     constructor(val) {
         // noop
@@ -82964,6 +82982,8 @@ module.exports.SerializedObject = class {
 
 };
 
+module.exports.SerializedObject = SerializedObject;
+
 /***/ }),
 
 /***/ "./web/js/metadata/Symbol.js":
@@ -83020,7 +83040,7 @@ module.exports.Text = Text;
 const { BaseHighlight } = __webpack_require__(/*! ./BaseHighlight */ "./web/js/metadata/BaseHighlight.js");
 const { Preconditions } = __webpack_require__(/*! ../Preconditions */ "./web/js/Preconditions.js");
 
-module.exports.TextHighlight = class extends BaseHighlight {
+class TextHighlight extends BaseHighlight {
 
   constructor(val) {
 
@@ -83076,7 +83096,9 @@ module.exports.TextHighlight = class extends BaseHighlight {
     super.validate();
     Preconditions.assertNotInstanceOf(this.textSelections, "textSelections", Array);
   }
-};
+}
+
+module.exports.TextHighlight = TextHighlight;
 
 /***/ }),
 
@@ -83122,7 +83144,7 @@ class TextHighlightRecords {
         return { id, value: textHighlight };
     }
 
-};
+}
 
 module.exports.TextHighlightRecords = TextHighlightRecords;
 
@@ -83230,7 +83252,7 @@ module.exports.TextType = Object.freeze({
 
 const { Text } = __webpack_require__(/*! ./Text.js */ "./web/js/metadata/Text.js");
 
-module.exports.Texts = class {
+class Texts {
 
     static create(body, type) {
 
@@ -83244,6 +83266,8 @@ module.exports.Texts = class {
 
 };
 
+module.exports.Texts = Texts;
+
 /***/ }),
 
 /***/ "./web/js/metadata/VersionedObject.js":
@@ -83256,8 +83280,10 @@ module.exports.Texts = class {
 const { SerializedObject } = __webpack_require__(/*! ./SerializedObject.js */ "./web/js/metadata/SerializedObject.js");
 const { ISODateTime } = __webpack_require__(/*! ./ISODateTime */ "./web/js/metadata/ISODateTime.js");
 
-/* abstract */
-module.exports.VersionedObject = class extends SerializedObject {
+/**
+ * @abstract
+ */
+class VersionedObject extends SerializedObject {
 
     constructor(val) {
 
@@ -83320,7 +83346,9 @@ module.exports.VersionedObject = class extends SerializedObject {
         }
     }
 
-};
+}
+
+module.exports.VersionedObject = VersionedObject;
 
 /***/ }),
 

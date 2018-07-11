@@ -34,6 +34,6 @@ class TextHighlightRecords {
 
     }
 
-};
+}
 
 module.exports.TextHighlightRecords = TextHighlightRecords;

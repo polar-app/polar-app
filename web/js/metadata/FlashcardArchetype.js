@@ -8,7 +8,7 @@ const {Objects} = require("../util/Objects");
  *
  * @type {FlashcardArchetype}
  */
-module.exports.FlashcardArchetype = class {
+class FlashcardArchetype {
 
     constructor(opts) {
 
@@ -39,6 +39,8 @@ module.exports.FlashcardArchetype = class {
 
         this.fields = opts.fields;
 
-    };
+    }
 
-};
+}
+
+module.exports.FlashcardArchetype = FlashcardArchetype;

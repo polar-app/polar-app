@@ -1,6 +1,6 @@
 const {SerializedObject} = require("./SerializedObject.js");
 
-module.exports.PageInfo = class extends SerializedObject {
+class PageInfo extends SerializedObject {
 
     constructor(val) {
 
@@ -24,3 +24,5 @@ module.exports.PageInfo = class extends SerializedObject {
     }
 
 }
+
+module.exports.PageInfo = PageInfo;

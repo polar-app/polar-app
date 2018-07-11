@@ -2,7 +2,7 @@ const {Preconditions} = require("../Preconditions");
 const {Objects} = require("../util/Objects");
 
 
-module.exports.FlashcardField = class {
+class FlashcardField {
 
     constructor(opts) {
 
@@ -43,3 +43,5 @@ module.exports.FlashcardField = class {
     }
 
 };
+
+module.exports.FlashcardField = FlashcardField;

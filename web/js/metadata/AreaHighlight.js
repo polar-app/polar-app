@@ -1,5 +1,5 @@
 
-const {SerializedObject} = require("./SerializedObject.js");
+const {BaseHighlight} = require("./BaseHighlight.js");
 
 class AreaHighlight extends BaseHighlight {
 
@@ -10,3 +10,5 @@ class AreaHighlight extends BaseHighlight {
     }
 
 }
+
+module.exports.AreaHighlight = AreaHighlight;

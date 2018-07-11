@@ -56,6 +56,6 @@ class Flashcards {
 
     }
 
-};
+}
 
 module.exports.Flashcards = Flashcards;

@@ -2,7 +2,7 @@ const {SerializedObject} = require("./SerializedObject.js");
 const {Preconditions} = require("../Preconditions");
 const {ExtendedAnnotation} = require("./ExtendedAnnotation");
 
-module.exports.BaseHighlight = class extends ExtendedAnnotation {
+class BaseHighlight extends ExtendedAnnotation {
 
     constructor(val) {
         super(val);
@@ -30,3 +30,6 @@ module.exports.BaseHighlight = class extends ExtendedAnnotation {
     };
 
 };
+
+
+module.exports.BaseHighlight = BaseHighlight;
