@@ -90,7 +90,7 @@ describe('DocMetas', function() {
                                 "percentage": 100,
                                 "column": 0,
                                 "notes": {},
-                                "box": null
+                                "rect": null
                             }
                         },
                         "notes": {},
@@ -113,7 +113,7 @@ describe('DocMetas', function() {
                                 "percentage": 100,
                                 "column": 0,
                                 "notes": {},
-                                "box": null
+                                "rect": null
                             }
                         },
                         "notes": {},
@@ -210,7 +210,7 @@ describe('DocMetas', function() {
                         "percentage": 100,
                         "column": 0,
                         "notes": {},
-                        "box": null
+                        "rect": null
                     }
                 };
 

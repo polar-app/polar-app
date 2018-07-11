@@ -8,21 +8,29 @@
  * { top: 0, left: 0, width: 100, height: 100 }
  *
  */
-class PagemarkBox {
+class PagemarkRect {
 
     constructor(obj) {
 
         /**
-         * The
-         * @type {null}
+         * @type {number}
          */
-        this.top = null;
+        this.top = undefined;
 
-        this.left = null;
+        /**
+         * @type {number}
+         */
+        this.left = undefined;
 
-        this.width = null;
+        /**
+         * @type {number}
+         */
+        this.width = undefined;
 
-        this.height = null;
+        /**
+         * @type {number}
+         */
+        this.height = undefined;
 
         Object.assign(this, obj);
 
@@ -30,4 +38,4 @@ class PagemarkBox {
 
 };
 
-module.exports.PagemarkBox = PagemarkBox;
+module.exports.PagemarkRect = PagemarkRect;

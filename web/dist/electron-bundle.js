@@ -58437,15 +58437,15 @@ class Pagemark extends Annotation {
         this.column = null;
 
         /**
-         * The PagemarkBox for this pagemark. When not specified we use a box of
+         * The PagemarkRect for this pagemark. When not specified we use a box of
          *
          * { top: 0, left: 0, width: 100, height: 100 }
          *
          * or the whole page.
          *
-         * @type {PagemarkBox}
+         * @type {PagemarkRect}
          */
-        this.box = null;
+        this.rect = null;
 
         // TODO: support 'range' in the future which is a PagemarkRange so that
         // we can start off reading within a smaller page.
