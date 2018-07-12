@@ -47,7 +47,7 @@ class PagingLoader {
         // page load which means that all requests have been properly loaded.
         // we might have to re-think think in the future because it might be
         // more ideal to have it paired with the entire loading lifecycle.
-        this.requestsFinished = true;
+        this.requestsFinished = false;
 
         this.finished = false;
 
@@ -112,7 +112,7 @@ class PagingLoader {
 
         this.requestsFinished = pendingRequestsEvent.pending === 0;
 
-        log.debug("The following pending requests remain: ", pendingRequestsEvent);
+        log.debug(`${pendingRequestsEvent.pending} pending requests remain.`);
         log.info(`requestsFinished is now: ${this.requestsFinished}`);
 
         this._handleFinished();
@@ -123,21 +123,23 @@ class PagingLoader {
 
         if(this.expired && ! this.finished) {
             log.warn("Page timeout. Finishing up manually.");
-            this._finish();
+            this._finish("expired");
             return;
         }
 
         if(this.pagingFinished && this.requestsFinished) {
-            this._finish();
+            this._finish("paging+requests");
             return;
         }
 
     }
 
-    _finish() {
+    _finish(reason) {
+
+        console.log("Paging finished: " + reason);
 
         if(this.finished) {
-            log.warn("Double finish detected. (race triggering more requests?)");
+            log.warn("Double finish detected. (race triggering more requests?): " + reason);
             return;
         }
 

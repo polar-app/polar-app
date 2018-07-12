@@ -1,7 +1,8 @@
 const {TimeoutEvent} = require("./TimeoutEvent");
 
 /**
- *
+ * Creates a way to handle callbacks on setTimeout and listen to the state of
+ * which are pending.
  */
 class TimeoutManager {
 
@@ -35,23 +36,26 @@ class TimeoutManager {
     setTimeout(callback, timeout, ...args) {
 
         ++this.pending;
-        this.fireListener();
+        this.fireListener(timeout);
 
         this.setTimeoutDelegate((...args) => {
 
-            callback(...args);
-
-            --this.pending;
-            this.fireListener();
+            try {
+                callback(...args);
+            } finally {
+                --this.pending;
+                this.fireListener(timeout);
+            }
 
         }, timeout, ...args);
 
     }
 
-    fireListener() {
+    fireListener(timeout) {
 
         let timeoutEvent = new TimeoutEvent({
-            pending: this.pending
+            pending: this.pending,
+            timeout
         });
 
         this.listener(timeoutEvent);

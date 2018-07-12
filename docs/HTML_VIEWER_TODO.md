@@ -1,5 +1,11 @@
 # TODO:
 
+- fonts are looking ugly now at 150% ... even 100% doesn't look that impressive.
+  Maybe play with the native zoom support in Electron via webContents.setZoomLevel
+  which should be [1.0,N].  I might also look at improving fonts in general in
+  Electron.
+
+
 - broken page:
     https://en.m.wikipedia.org/wiki/Multiple_inheritance
 
