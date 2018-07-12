@@ -1,3 +1,4 @@
+
 class PlacedPagemark {
 
     constructor(opts) {

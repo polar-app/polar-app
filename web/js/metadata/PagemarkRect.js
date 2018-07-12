@@ -51,12 +51,12 @@ class PagemarkRect {
         /**
          * @type {number}
          */
-        this.top = undefined;
+        this.left = undefined;
 
         /**
          * @type {number}
          */
-        this.left = undefined;
+        this.top = undefined;
 
         /**
          * @type {number}

@@ -9,15 +9,15 @@ describe('PagemarkRect', function() {
         it("proper interval", function () {
 
             let pagemarkRect = new PagemarkRect({
-                top: 0,
                 left: 0,
+                top: 0,
                 width: 100,
                 height: 100
             });
 
             let expected = {
-                    "top": 0,
                     "left": 0,
+                    "top": 0,
                     "width": 100,
                     "height": 100
                 }

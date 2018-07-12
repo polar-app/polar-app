@@ -59,6 +59,7 @@ class DocMetas {
             let pageMeta = result.getPageMeta(pageNum);
 
             // set the pagemark that we just created.
+            // TODO: this should be pagemark.id as the key not pagemark.column
             pageMeta.pagemarks[pagemark.column] = pagemark;
 
         }

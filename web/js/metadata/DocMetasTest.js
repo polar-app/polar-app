@@ -89,9 +89,13 @@ describe('DocMetas', function() {
                                     "type": "SINGLE_COLUMN",
                                     "percentage": 100,
                                     "column": 0,
-                                    "pagemarkRect": null,
-                                    "notes": {},
-                                    "rect": null
+                                    "rect": {
+                                        "left": 0,
+                                        "top": 0,
+                                        "width": 100,
+                                        "height": 100
+                                    },
+                                    "notes": {}
                                 }
                             },
                             "notes": {},
@@ -113,9 +117,13 @@ describe('DocMetas', function() {
                                     "type": "SINGLE_COLUMN",
                                     "percentage": 100,
                                     "column": 0,
-                                    "pagemarkRect": null,
-                                    "notes": {},
-                                    "rect": null
+                                    "rect": {
+                                        "left": 0,
+                                        "top": 0,
+                                        "width": 100,
+                                        "height": 100
+                                    },
+                                    "notes": {}
                                 }
                             },
                             "notes": {},
@@ -201,22 +209,27 @@ describe('DocMetas', function() {
 
                 docMeta.getPageMeta(1).pagemarks["0"].id = null;
 
-                docMeta = DocMetas.upgrade(docMeta)
+                docMeta = DocMetas.upgrade(docMeta);
 
                 let expected = {
-                    "0": {
-                        "id": "12Vf1bAzeo",
-                        "created": "2012-03-02T11:38:49.321Z",
-                        "lastUpdated": "2012-03-02T11:38:49.321Z",
-                        "author": null,
-                        "type": "SINGLE_COLUMN",
-                        "percentage": 100,
-                        "column": 0,
-                        "pagemarkRect": null,
-                        "notes": {},
-                        "rect": null
+                        "0": {
+                            "id": "12Vf1bAzeo",
+                            "created": "2012-03-02T11:38:49.321Z",
+                            "lastUpdated": "2012-03-02T11:38:49.321Z",
+                            "author": null,
+                            "type": "SINGLE_COLUMN",
+                            "percentage": 100,
+                            "column": 0,
+                            "rect": {
+                                "left": 0,
+                                "top": 0,
+                                "width": 100,
+                                "height": 100
+                            },
+                            "notes": {}
+                        }
                     }
-                };
+                ;
 
                 assertJSON(docMeta.getPageMeta(1).pagemarks, expected);
 

@@ -2,6 +2,7 @@ const {Preconditions} = require("../../Preconditions");
 const {Line} = require("../../util/Line");
 const {Rects} = require("../../Rects");
 const {PlacedPagemark} = require("./PlacedPagemark");
+const {PagemarkRects} = require("../../metadata/PagemarkRects");
 
 class PlacedPagemarkCalculator {
 
@@ -9,10 +10,16 @@ class PlacedPagemarkCalculator {
      * Compute a Rect for rendering the pagemarkRect onto the parentRect.
      *
      * @param parentRect {Rect}
-     * @param pagemarkRect {PagemarkRect}
+     * @param pagemark {Pagemark}
      * @return {PlacedPagemark}
      */
-    calculate(parentRect, pagemarkRect) {
+    calculate(parentRect, pagemark) {
+
+        let pagemarkRect = pagemark.rect;
+
+        if(! pagemarkRect) {
+            pagemarkRect = PagemarkRects.createDefault(pagemark);
+        }
 
         Preconditions.assertNotNull(parentRect, "parentRect");
         Preconditions.assertNotNull(pagemarkRect, "pagemarkRect");

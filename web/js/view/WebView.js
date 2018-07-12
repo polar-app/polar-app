@@ -214,10 +214,10 @@ class WebView extends View {
 
     /**
      * Create a pagemark on the given page which marks it read.
-     * @param pageElement
+     * @param pageElement {HTMLElement}
      * @param options {Object}
      */
-    createPagemark(pageElement, options) {
+    createPagemark(pageElement, options = {}) {
 
         // TODO: this code is ugly, can't be tested, etc.
         //
@@ -228,10 +228,6 @@ class WebView extends View {
         // - we PLACE the element as part of this function.  Have a secondary
         //   way to just CREATE the element so that we can test the settings
         //   properly.
-
-        if(! options) {
-            throw new Error("Options are required");
-        }
 
         if(! options.pagemark) {
             throw new Error("Pagemark is required");
@@ -261,7 +257,6 @@ class WebView extends View {
             throw new Error("No placementElement");
         }
 
-
         if (pageElement.querySelector(".pagemark")) {
             // do nothing if the current page already has a pagemark.
             console.warn("Pagemark already exists");
@@ -282,18 +277,27 @@ class WebView extends View {
         pagemarkElement.style.opacity="0.3";
 
         pagemarkElement.style.position="absolute";
-        pagemarkElement.style.left = options.templateElement.offsetLeft;
-        pagemarkElement.style.top = options.templateElement.offsetTop;
+
+        // FIXME: this needs to be a function of the PlacedPagemarkCalculator
+        pagemarkElement.style.left = `${options.templateElement.offsetLeft}px`;
+
+        // FIXME: this needs to be a function of the PlacedPagemarkCalculator
+        pagemarkElement.style.top = `${options.templateElement.offsetTop}px`;
+
+        // FIXME: this needs to be a function of the PlacedPagemarkCalculator
         pagemarkElement.style.width = options.templateElement.style.width;
 
+        // FIXME: this needs to be a function of the PlacedPagemarkCalculator
         let height = Styles.parsePixels(options.templateElement.style.height);
 
         if(!height) {
+            // FIXME: this needs to be a function of the PlacedPagemarkCalculator
             height = options.templateElement.offsetHeight;
         }
 
         // read the percentage coverage from the pagemark and adjust the height
         // to reflect the portion we've actually read.
+        // FIXME: this needs to be a function of the PlacedPagemarkCalculator
         height = height * (options.pagemark.percentage / 100);
 
         pagemarkElement.style.height = `${height}px`;
