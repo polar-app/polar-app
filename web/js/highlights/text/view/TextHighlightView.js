@@ -57,7 +57,7 @@ class TextHighlightView {
 
             forDict(textHighlightEvent.textHighlight.rects, function (id, rect) {
 
-                let callback = function() {
+                let callback = () => {
                     // make sure we're still in the model if we need to redraw.
 
                     // TODO: we don't actually remove ourselves form the event
