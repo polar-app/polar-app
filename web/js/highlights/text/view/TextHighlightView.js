@@ -12,6 +12,10 @@ const log = Logger.create();
 
 class TextHighlightView {
 
+    /**
+     *
+     * @param model {Model}
+     */
     constructor(model) {
         this.model = model;
         this.docFormat = DocFormatFactory.getInstance();

@@ -54013,6 +54013,8 @@ const { Model } = __webpack_require__(/*! ../model.js */ "./web/js/model.js");
 const { WebController } = __webpack_require__(/*! ../controller/WebController.js */ "./web/js/controller/WebController.js");
 const { WebView } = __webpack_require__(/*! ../view/WebView.js */ "./web/js/view/WebView.js");
 const { TextHighlightView } = __webpack_require__(/*! ../highlights/text/view/TextHighlightView */ "./web/js/highlights/text/view/TextHighlightView.js");
+const { PagemarkView } = __webpack_require__(/*! ../pagemarks/view/PagemarkView */ "./web/js/pagemarks/view/PagemarkView.js");
+
 const { ViewerFactory } = __webpack_require__(/*! ../viewer/ViewerFactory */ "./web/js/viewer/ViewerFactory.js");
 
 /**
@@ -54046,6 +54048,7 @@ module.exports.Launcher = class {
             let model = new Model(persistenceLayer, clock);
             new WebView(model).start();
             new TextHighlightView(model).start();
+            new PagemarkView(model).start();
             ViewerFactory.create().start();
 
             yield persistenceLayer.init();
@@ -57071,6 +57074,10 @@ const log = Logger.create();
 
 class TextHighlightView {
 
+    /**
+     *
+     * @param model {Model}
+     */
     constructor(model) {
         this.model = model;
         this.docFormat = DocFormatFactory.getInstance();
@@ -58892,6 +58899,8 @@ const { PagemarkRects } = __webpack_require__(/*! ./PagemarkRects */ "./web/js/m
 const { ISODateTime } = __webpack_require__(/*! ./ISODateTime */ "./web/js/metadata/ISODateTime.js");
 const { Objects } = __webpack_require__(/*! ../util/Objects */ "./web/js/util/Objects.js");
 
+const log = __webpack_require__(/*! ../logger/Logger */ "./web/js/logger/Logger.js").create();
+
 const DEFAULT_PAGEMARK_RECT = new PagemarkRect({
     left: 0,
     top: 0,
@@ -58957,7 +58966,9 @@ class Pagemarks {
         }
 
         if (keyOptions.percentage !== keyOptions.rect.toPercentage()) {
-            throw new Error("Percentage and rect are not the same");
+            let msg = "Percentage and rect are not the same";
+            log.warn(msg, keyOptions.percentage, keyOptions.rect, keyOptions.rect.toPercentage());
+            throw new Error(msg);
         }
 
         let created = new ISODateTime(new Date());
@@ -60808,6 +60819,110 @@ class ResizeRectAdjacencyCalculator {
 }
 
 module.exports.ResizeRectAdjacencyCalculator = ResizeRectAdjacencyCalculator;
+
+/***/ }),
+
+/***/ "./web/js/pagemarks/model/PagemarkModel.js":
+/*!*************************************************!*\
+  !*** ./web/js/pagemarks/model/PagemarkModel.js ***!
+  \*************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+/**
+ *
+ */
+class PagemarkModel {
+
+    // TODO: it would be ideal if we could either:
+    //
+    // listen to /pageMetas/pagemarks directly ... and then get the parent that
+    // the pagemark contains but the current Proxies system doesn't support that.
+
+    registerListener(docMeta, callback) {
+
+        // TODO: there is a lot of duplication here with TextHighlightModel.js
+        // and we should try to unify them.
+
+        forDict(docMeta.pageMetas, (key, pageMeta) => {
+
+            pageMeta.pagemarks.addTraceListener(traceEvent => {
+
+                if (!traceEvent.path.endsWith("/pagemarks")) {
+                    return;
+                }
+
+                let event = {
+                    docMeta,
+                    pageMeta,
+
+                    value: traceEvent.value,
+                    previousValue: traceEvent.previousValue,
+
+                    mutationType: traceEvent.mutationType,
+                    mutationState: traceEvent.mutationState,
+                    // and of course the full traceEvent as a raw value for
+                    // debug purposes.
+                    traceEvent
+                };
+
+                callback(event);
+
+                return true;
+            }).sync();
+        });
+    }
+}
+
+const { forDict } = __webpack_require__(/*! ../../utils.js */ "./web/js/utils.js");
+
+module.exports.PagemarkModel = PagemarkModel;
+
+/***/ }),
+
+/***/ "./web/js/pagemarks/view/PagemarkView.js":
+/*!***********************************************!*\
+  !*** ./web/js/pagemarks/view/PagemarkView.js ***!
+  \***********************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+const { PagemarkModel } = __webpack_require__(/*! ../model/PagemarkModel */ "./web/js/pagemarks/model/PagemarkModel.js");
+const { Logger } = __webpack_require__(/*! ../../logger/Logger */ "./web/js/logger/Logger.js");
+
+const log = Logger.create();
+
+class PagemarkView {
+
+    /**
+     *
+     * @param model {Model}
+     */
+    constructor(model) {
+        this.model = model;
+    }
+
+    start() {
+        this.model.registerListenerForDocumentLoaded(documentLoadedEvent => this.onDocumentLoaded(documentLoadedEvent));
+    }
+
+    onDocumentLoaded(documentLoadedEvent) {
+
+        log.info("PagemarkView.onDocumentLoaded");
+
+        let pagemarkModel = new PagemarkModel();
+
+        pagemarkModel.registerListener(documentLoadedEvent.docMeta, pagemarkEvent => this.onPagemark(pagemarkEvent));
+    }
+
+    onPagemark(pagemarkEvent) {
+
+        log.info("Got pagemark event!", pagemarkEvent);
+    }
+
+}
+
+module.exports.PagemarkView = PagemarkView;
 
 /***/ }),
 

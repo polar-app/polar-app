@@ -15,7 +15,7 @@ class PagemarkModel {
 
         forDict(docMeta.pageMetas, (key, pageMeta) => {
 
-            pageMeta.textHighlights.addTraceListener(traceEvent => {
+            pageMeta.pagemarks.addTraceListener(traceEvent => {
 
                 if(! traceEvent.path.endsWith("/pagemarks")) {
                     return;
