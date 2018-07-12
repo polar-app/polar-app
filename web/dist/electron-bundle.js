@@ -61597,7 +61597,7 @@ class TraceHandler {
 
             traceListener = FunctionalInterface.create(EVENT_NAME, traceListener);
 
-            this.reactor.addEventListener(eventName, function (traceEvent) {
+            this.reactor.addEventListener(eventName, traceEvent => {
                 traceListener.onMutation(traceEvent);
             });
         });
@@ -61651,6 +61651,7 @@ class TraceHandler {
 
         let result = Reflect.set(target, property, value, receiver);
         let traceEvent = new TraceEvent(this.path, MutationType.SET, target, property, value, previousValue);
+        // TODO/FIXME: what if these mutation listeners throw exceptions?
         this.reactor.dispatchEvent(EVENT_NAME, traceEvent);
         return result;
     }
@@ -61661,6 +61662,7 @@ class TraceHandler {
 
         let result = Reflect.deleteProperty(...arguments);
         let traceEvent = new TraceEvent(this.path, MutationType.DELETE, target, property, undefined, previousValue);
+        // TODO/FIXME: what if these mutation listeners throw exceptions?
         this.reactor.dispatchEvent(EVENT_NAME, traceEvent);
         return result;
     }

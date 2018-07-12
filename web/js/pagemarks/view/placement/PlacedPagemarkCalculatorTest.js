@@ -1,9 +1,9 @@
 const assert = require('assert');
-const {assertJSON} = require("../../test/Assertions");
+const {assertJSON} = require("../../../test/Assertions");
 const {PlacedPagemarkCalculator} = require("./PlacedPagemarkCalculator");
-const {PagemarkRect} = require("../../metadata/PagemarkRect");
-const {Pagemarks} = require("../../metadata/Pagemarks");
-const {Rects} = require("../../Rects");
+const {PagemarkRect} = require("../../../metadata/PagemarkRect");
+const {Pagemarks} = require("../../../metadata/Pagemarks");
+const {Rects} = require("../../../Rects");
 
 describe('PlacedPagemarkCalculator', function() {
 

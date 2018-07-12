@@ -1,8 +1,8 @@
-const {Preconditions} = require("../../Preconditions");
-const {Line} = require("../../util/Line");
-const {Rects} = require("../../Rects");
+const {Preconditions} = require("../../../Preconditions");
+const {Line} = require("../../../util/Line");
+const {Rects} = require("../../../Rects");
 const {PlacedPagemark} = require("./PlacedPagemark");
-const {PagemarkRects} = require("../../metadata/PagemarkRects");
+const {PagemarkRects} = require("../../../metadata/PagemarkRects");
 
 class PlacedPagemarkCalculator {
 
