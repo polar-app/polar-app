@@ -2,12 +2,7 @@ const {Preconditions} = require("../Preconditions");
 const {Rects} = require("../Rects");
 const {Interval} = require("../math/Interval");
 
-const ENTIRE_PAGE = Rects.createFromBasicRect({
-    left: 0,
-    top: 0,
-    width: 100,
-    height: 100
-});
+const ENTIRE_PAGE = Rects.createFromBasicRect({ left: 0, top: 0, width: 100, height: 100});
 
 /**
  * The box layout of this pagemark.  We use the typical DOM positioning style
@@ -123,6 +118,6 @@ class PagemarkRect {
 
     }
 
-};
+}
 
 module.exports.PagemarkRect = PagemarkRect;

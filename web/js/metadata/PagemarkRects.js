@@ -1,5 +1,6 @@
 const {PagemarkType} = require("./PagemarkType");
 const {PagemarkRect} = require("./PagemarkRect");
+const {Rects} = require("../Rects");
 
 class PagemarkRects {
 
@@ -27,6 +28,11 @@ class PagemarkRects {
 
     }
 
+    /**
+     *
+     * @param percentage {number}
+     * @return {PagemarkRect}
+     */
     static createFromPercentage(percentage) {
 
         return new PagemarkRect({
@@ -35,6 +41,58 @@ class PagemarkRects {
             width: 100,
             height: percentage
         });
+    }
+
+
+    /**
+     *
+     *
+     * @param rect {Rect}
+     * @return {PagemarkRect}
+     */
+    static createFromRect(rect) {
+
+        return new PagemarkRect({
+            left: rect.left,
+            top: rect.top,
+            width: rect.width,
+            height: rect.height
+        });
+
+    }
+
+
+    /**
+     *
+     *
+     * @param xAxis {Line}
+     * @param yAxis {Line}
+     * @return {PagemarkRect}
+     */
+    static createFromLines(xAxis, yAxis) {
+        return PagemarkRects.createFromRect(Rects.createFromLines(xAxis, yAxis));
+    }
+
+    /**
+     *
+     * @param rect {Rect}
+     * @param parentRect {Rect}
+     * @return {PagemarkRect}
+     */
+    static createFromPositionedRect(rect, parentRect) {
+
+        // create a new PagemarkRect from a positioned rect.  We use this to take
+        // a dragged or resized rect / box on the screen then convert it to a
+        // PagemarkRect
+
+        let xAxis = rect.toLine("x").multiply(100 / parentRect.width);
+        let yAxis = rect.toLine("y").multiply(100 / parentRect.height);
+
+        console.log("DEBUG: xAxis: " , xAxis);
+        console.log("DEBUG: yAxis: " , yAxis);
+
+        return this.createFromLines(xAxis, yAxis);
+
     }
 
 }

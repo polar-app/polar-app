@@ -85,13 +85,31 @@ class Line {
 
     }
 
+    /**
+     * Build a new line based on the given scalar.  Essentially this models
+     * the line as a vector with zero as the origin and length as the magnitude
+     * and we just apply the scalar to build the new vector with a different
+     * start origin.
+     *
+     * @param scalar {number}
+     */
+    multiply(scalar) {
+
+        console.log(`FIXME: ${this.axis} - ${scalar}`)
+
+        return new Line(this.start * scalar, this.end * scalar, this.axis);
+
+    }
+
     toJSON() {
+
         return {
             axis: this.axis,
             start: this.start,
             end: this.end,
             length: this.length
         }
+
     }
 
     /**

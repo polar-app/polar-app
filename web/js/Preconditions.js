@@ -14,7 +14,7 @@ class Preconditions {
         let result = testFunction(value);
 
         if(!result) {
-            throw new Error("Assertion failed: " + message);
+            throw new Error(`Assertion failed for value ${value}: ` + message);
         }
 
         return value;
