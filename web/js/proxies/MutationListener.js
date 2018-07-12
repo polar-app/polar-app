@@ -1,4 +1,4 @@
-module.exports.MutationListener = class {
+class MutationListener {
 
     /**
      * Listen to a mutation and we're given a list of names and types.
@@ -14,3 +14,5 @@ module.exports.MutationListener = class {
     }
 
 }
+
+module.exports.MutationListener = MutationListener;

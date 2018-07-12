@@ -80456,11 +80456,11 @@ class TextHighlightModel {
 
     registerListener(docMeta, callback) {
 
-        forDict(docMeta.pageMetas, function (key, pageMeta) {
+        forDict(docMeta.pageMetas, (key, pageMeta) => {
 
             // TODO: this is why recursive by default listeners aren't a not a good
             // idea because we can get any object at any depth.
-            pageMeta.textHighlights.addTraceListener(function (traceEvent) {
+            pageMeta.textHighlights.addTraceListener(traceEvent => {
 
                 if (!traceEvent.path.endsWith("/textHighlights")) {
                     // not a new highlight.
@@ -80488,8 +80488,8 @@ class TextHighlightModel {
                 callback(event);
 
                 return true;
-            }.bind(this)).sync();
-        }.bind(this));
+            }).sync();
+        });
     }
 
 };
@@ -85462,7 +85462,7 @@ module.exports.MutationType = Object.freeze({
 const { MutationType } = __webpack_require__(/*! ./MutationType */ "./web/js/proxies/MutationType.js");
 const { MutationState } = __webpack_require__(/*! ./MutationState */ "./web/js/proxies/MutationState.js");
 
-module.exports.MutationTypes = class {
+class MutationTypes {
 
     static toMutationState(mutationType) {
 
@@ -85480,7 +85480,9 @@ module.exports.MutationTypes = class {
         }
     }
 
-};
+}
+
+module.exports.MutationTypes = MutationTypes;
 
 /***/ }),
 
@@ -85500,7 +85502,7 @@ module.exports.MutationTypes = class {
  *
  * @type {ObjectPathEntry}
  */
-module.exports.ObjectPathEntry = class {
+class ObjectPathEntry {
 
   constructor(path, value, parent, parentKey) {
 
@@ -85528,6 +85530,8 @@ module.exports.ObjectPathEntry = class {
   }
 
 };
+
+module.exports.ObjectPathEntry = ObjectPathEntry;
 
 /***/ }),
 
@@ -85693,6 +85697,13 @@ class Proxies {
 
         let traceHandler = new TraceHandler(path, traceListeners, value, Proxies);
 
+        // TODO: could I store these in the TraceHandler and not in the value?
+        //
+        // since we have one TraceHandler per path this might work but I would
+        // need to figure out how to get the right value from the TraceHandler.
+        // I think I can do this by custom handling the get() Proxy and then
+        // returning __traceIdentifier or __traceListeners based on the caller.
+
         let privateMembers = [
 
         // the __traceIdentifier is a unique key for the object which we use
@@ -85757,7 +85768,7 @@ const { MutationTypes } = __webpack_require__(/*! ./MutationTypes */ "./web/js/p
 /**
  * Listen to a mutation and we're given a list of names and types.
  */
-module.exports.TraceEvent = class {
+class TraceEvent {
 
   /**
    *
@@ -85779,7 +85790,9 @@ module.exports.TraceEvent = class {
     this.mutationState = MutationTypes.toMutationState(mutationType);
   }
 
-};
+}
+
+module.exports.TraceEvent = TraceEvent;
 
 /***/ }),
 
@@ -85801,20 +85814,24 @@ const { Paths } = __webpack_require__(/*! ../util/Paths */ "./web/js/util/Paths.
 
 const EVENT_NAME = "onMutation";
 
-module.exports.TraceHandler = class {
+class TraceHandler {
 
     /**
      *
-     * @param path The path to this object.
-     * @param traceListeners The main TraceListener
-     * @param target The object that is the target of this handler.
-     * @param proxies class for creating new traced objects.
+     * @param path {string} The path to this object.
+     *
+     * @param traceListeners {Array<TraceListener>} The main TraceListener
+     *
+     * @param target {Object} The object that is the target of this handler.
+     *
+     * @param proxies {Proxies} class for creating new traced objects.
+     * Referenced here to avoid cyclical dependencies.
      */
     constructor(path, traceListeners, target, proxies) {
 
         this.path = Preconditions.assertNotNull(path, "path");
         this.target = Preconditions.assertNotNull(target, "target");
-        this.proxies = Preconditions.assertNotNull(proxies, "proxies");;
+        this.proxies = Preconditions.assertNotNull(proxies, "proxies");
 
         this.reactor = new Reactor();
         this.reactor.registerEvent(EVENT_NAME);
@@ -85856,6 +85873,15 @@ module.exports.TraceHandler = class {
         return this.reactor.getEventListeners();
     }
 
+    get(target, property, receiver) {
+
+        if (property === "__path") {
+            return this.path;
+        }
+
+        return Reflect.get(...arguments);
+    }
+
     set(target, property, value, receiver) {
 
         // TODO: before we change the value, also trace the new input values
@@ -85893,6 +85919,8 @@ module.exports.TraceHandler = class {
 
 };
 
+module.exports.TraceHandler = TraceHandler;
+
 /***/ }),
 
 /***/ "./web/js/proxies/TraceListenerExecutor.js":
@@ -85906,7 +85934,7 @@ const { FunctionalInterface } = __webpack_require__(/*! ../util/FunctionalInterf
 const { TraceEvent } = __webpack_require__(/*! ./TraceEvent */ "./web/js/proxies/TraceEvent.js");
 const { MutationType } = __webpack_require__(/*! ./MutationType */ "./web/js/proxies/MutationType.js");
 
-module.exports.TraceListenerExecutor = class {
+class TraceListenerExecutor {
 
     /**
      * @param traceListeners The specific traceListener we're working with.
@@ -85943,6 +85971,8 @@ module.exports.TraceListenerExecutor = class {
     }
 
 };
+
+module.exports.TraceListenerExecutor = TraceListenerExecutor;
 
 /***/ }),
 
@@ -87722,6 +87752,8 @@ class WebView extends View {
         pagemarkElement.style.opacity = "0.3";
 
         pagemarkElement.style.position = "absolute";
+
+        let usePlacedPagemark = true;
 
         // FIXME: this needs to be a function of the PlacedPagemarkCalculator
         pagemarkElement.style.left = options.templateElement.offsetLeft;

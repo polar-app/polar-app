@@ -4,11 +4,11 @@ class TextHighlightModel {
 
     registerListener(docMeta, callback) {
 
-        forDict(docMeta.pageMetas, function (key, pageMeta) {
+        forDict(docMeta.pageMetas, (key, pageMeta) => {
 
             // TODO: this is why recursive by default listeners aren't a not a good
             // idea because we can get any object at any depth.
-            pageMeta.textHighlights.addTraceListener(function (traceEvent) {
+            pageMeta.textHighlights.addTraceListener(traceEvent => {
 
                 if(! traceEvent.path.endsWith("/textHighlights")) {
                     // not a new highlight.
@@ -37,9 +37,9 @@ class TextHighlightModel {
 
                 return true;
 
-            }.bind(this)).sync();
+            }).sync();
 
-        }.bind(this));
+        });
 
     }
 

@@ -83,7 +83,7 @@ describe('Proxies', function() {
 
             assertJSON(myTraceListener.mutations, expected);
 
-        })
+        });
 
         it("default as function", function () {
 
@@ -114,8 +114,7 @@ describe('Proxies', function() {
 
             assertJSON(mutations, expected);
 
-        })
-
+        });
 
         it("addListener as object", function () {
 
@@ -149,7 +148,7 @@ describe('Proxies', function() {
 
             assertJSON(myTraceListener.mutations, expected);
 
-        })
+        });
 
         it("addListener as function", function () {
 

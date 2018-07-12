@@ -9,20 +9,24 @@ const {Paths} = require("../util/Paths");
 
 const EVENT_NAME = "onMutation";
 
-module.exports.TraceHandler = class {
+class TraceHandler {
 
     /**
      *
-     * @param path The path to this object.
-     * @param traceListeners The main TraceListener
-     * @param target The object that is the target of this handler.
-     * @param proxies class for creating new traced objects.
+     * @param path {string} The path to this object.
+     *
+     * @param traceListeners {Array<TraceListener>} The main TraceListener
+     *
+     * @param target {Object} The object that is the target of this handler.
+     *
+     * @param proxies {Proxies} class for creating new traced objects.
+     * Referenced here to avoid cyclical dependencies.
      */
     constructor(path, traceListeners, target, proxies) {
 
         this.path = Preconditions.assertNotNull(path, "path");
         this.target = Preconditions.assertNotNull(target, "target");
-        this.proxies = Preconditions.assertNotNull(proxies, "proxies");;
+        this.proxies = Preconditions.assertNotNull(proxies, "proxies");
 
         this.reactor = new Reactor();
         this.reactor.registerEvent(EVENT_NAME);
@@ -67,6 +71,16 @@ module.exports.TraceHandler = class {
         return this.reactor.getEventListeners()
     }
 
+    get(target, property, receiver) {
+
+        if(property === "__path") {
+            return this.path;
+        }
+
+        return Reflect.get(...arguments);
+
+    }
+
     set(target, property, value, receiver) {
 
         // TODO: before we change the value, also trace the new input values
@@ -106,3 +120,5 @@ module.exports.TraceHandler = class {
     }
 
 };
+
+module.exports.TraceHandler = TraceHandler;

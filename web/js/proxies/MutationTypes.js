@@ -1,7 +1,7 @@
 const{MutationType} = require("./MutationType");
 const{MutationState} = require("./MutationState");
 
-module.exports.MutationTypes = class {
+class MutationTypes {
 
     static toMutationState(mutationType) {
 
@@ -20,4 +20,6 @@ module.exports.MutationTypes = class {
 
     }
 
-};
+}
+
+module.exports.MutationTypes = MutationTypes;

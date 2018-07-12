@@ -7,7 +7,7 @@
  *
  * @type {ObjectPathEntry}
  */
-module.exports.ObjectPathEntry = class {
+class ObjectPathEntry {
 
     constructor(path, value, parent, parentKey) {
 
@@ -36,3 +36,5 @@ module.exports.ObjectPathEntry = class {
     }
 
 };
+
+module.exports.ObjectPathEntry = ObjectPathEntry;

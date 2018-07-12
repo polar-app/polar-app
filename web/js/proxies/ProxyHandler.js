@@ -1,4 +1,4 @@
-module.exports.ProxyHandler = class {
+class ProxyHandler {
 
     constructor(onSet, onDelete) {
         this.onSet = onSet;
@@ -16,3 +16,5 @@ module.exports.ProxyHandler = class {
     }
 
 };
+
+module.exports.ProxyHandler = ProxyHandler;

@@ -3,7 +3,7 @@ const {MutationType} = require("./MutationType");
 /**
  *
  */
-module.exports.MutationHandler = class {
+class MutationHandler {
 
     constructor(mutationListener) {
         this.mutationListener = mutationListener;
@@ -20,3 +20,5 @@ module.exports.MutationHandler = class {
     }
 
 };
+
+module.exports.MutationHandler = MutationHandler;

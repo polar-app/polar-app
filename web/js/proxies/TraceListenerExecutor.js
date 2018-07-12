@@ -2,7 +2,7 @@ const {FunctionalInterface} = require("../util/FunctionalInterface");
 const {TraceEvent} = require("./TraceEvent");
 const {MutationType} = require("./MutationType");
 
-module.exports.TraceListenerExecutor = class {
+class TraceListenerExecutor {
 
     /**
      * @param traceListeners The specific traceListener we're working with.
@@ -42,3 +42,5 @@ module.exports.TraceListenerExecutor = class {
     }
 
 };
+
+module.exports.TraceListenerExecutor = TraceListenerExecutor;

@@ -87,6 +87,13 @@ class Proxies {
 
         let traceHandler = new TraceHandler(path, traceListeners, value, Proxies);
 
+        // TODO: could I store these in the TraceHandler and not in the value?
+        //
+        // since we have one TraceHandler per path this might work but I would
+        // need to figure out how to get the right value from the TraceHandler.
+        // I think I can do this by custom handling the get() Proxy and then
+        // returning __traceIdentifier or __traceListeners based on the caller.
+
         let privateMembers = [
 
             // the __traceIdentifier is a unique key for the object which we use

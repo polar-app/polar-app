@@ -6,7 +6,7 @@
  *
  * @constructor
  */
-module.exports.TraceListener = class {
+class TraceListener {
 
     /**
      * Listen to a mutation and we're given a list of names and types.
@@ -17,3 +17,5 @@ module.exports.TraceListener = class {
     }
 
 };
+
+module.exports.TraceListener = TraceListener;
