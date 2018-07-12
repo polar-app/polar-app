@@ -109,27 +109,6 @@ class WebView extends View {
 
     }
 
-    // FIXME: move to using PDFRenderer for this functionality.... getPageElementFromPageNum
-    getPageElementByNum(num) {
-
-        if(!num) {
-            throw new Error("Page number not specified");
-        }
-
-        let pageElements = document.querySelectorAll(".page");
-
-        // note that elements are 0 based indexes but our pages are 1 based
-        // indexes.
-        let pageElement = pageElements[num - 1];
-
-        if(pageElement == null) {
-            throw new Error("Unable to find page element for page num: " + num);
-        }
-
-        return pageElement;
-
-    }
-
     onCreatePagemark(pagemarkEvent) {
         console.log("WebView.onCreatePagemark");
 

@@ -36,6 +36,7 @@ class WebController extends Controller {
 
     onDocumentLoaded(fingerprint, nrPages, currentlySelectedPageNum) {
 
+        // TODO: if I await super.onDocumentLoaded with webpack it breaks
         super.onDocumentLoaded(fingerprint, nrPages, currentlySelectedPageNum);
         this.setupContextMenu();
 
@@ -90,7 +91,7 @@ class WebController extends Controller {
 
     traceEventOnPage(event, eventName) {
         let pageElement = event.target.parentElement;
-        let pageNum = this.getPageNum(pageElement);
+        let pageNum = this.docFormat.getPageNumFromPageElement(pageElement);
 
         console.log(`Found event ${eventName} on page number ${pageNum}`);
 
@@ -120,75 +121,13 @@ class WebController extends Controller {
 
     }
 
-    // FIXME: move to using PDFRenderer for this functionality.
-    getCurrentPageElement() {
-
-        // TODO: It is probably easier to use pdf.pageNum but I'm not sure if this
-        // is actively updated or not.
-        let pages = document.querySelectorAll(".page");
-
-        let result = { element: null, visibility: 0};
-
-        pages.forEach(function (page) {
-            let visibility = this.calculateVisibilityForDiv(page);
-
-            if ( visibility > result.visibility) {
-                result.element = page;
-                result.visibility = visibility;
-            }
-
-        }.bind(this));
-
-        return result.element;
-
-    }
-
-    // TODO: refactor use Elements.calculateVisibilityForDiv
-    calculateVisibilityForDiv(div) {
-
-        if(div == null)
-            throw Error("Not given a div");
-
-        let windowHeight = $(window).height(),
-            docScroll = $(document).scrollTop(),
-            divPosition = $(div).offset().top,
-            divHeight = $(div).height();
-
-        let hiddenBefore = docScroll - divPosition,
-            hiddenAfter = (divPosition + divHeight) - (docScroll + windowHeight);
-
-        if ((docScroll > divPosition + divHeight) || (divPosition > docScroll + windowHeight)) {
-            return 0;
-        } else {
-            let result = 100;
-
-            if (hiddenBefore > 0) {
-                result -= (hiddenBefore * 100) / divHeight;
-            }
-
-            if (hiddenAfter > 0) {
-                result -= (hiddenAfter * 100) / divHeight;
-            }
-
-            return result;
-        }
-
-    }
-
-    // TODO/REFACTOR migrate this to use PDFRenderer
-    getPageNum(pageElement) {
-        Preconditions.assertNotNull(pageElement, "pageElement");
-        let dataPageNum = pageElement.getAttribute("data-page-number");
-        return parseInt(dataPageNum);
-    }
-
     // FIXME: remake this binding to CreatePagemarkEntirePage
     async keyBindingPagemarkEntirePage(event) {
 
         console.log("Marking entire page as read.");
 
-        let pageElement = this.getCurrentPageElement();
-        let pageNum = this.getPageNum(pageElement);
+        let pageElement = this.docFormat.getCurrentPageElement();
+        let pageNum = this.docFormat.getPageNumFromPageElement(pageElement);
 
         this.erasePagemarks(pageNum);
         await this.createPagemark(pageNum);
@@ -201,8 +140,8 @@ class WebController extends Controller {
 
     keyBindingErasePagemark(event) {
         console.log("Erasing pagemark.");
-        let pageElement = this.getCurrentPageElement();
-        let pageNum = this.getPageNum(pageElement);
+        let pageElement = this.docFormat.getCurrentPageElement();
+        let pageNum = this.docFormat.getPageNumFromPageElement(pageElement);
         this.erasePagemark(pageNum);
     }
 

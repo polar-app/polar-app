@@ -54526,6 +54526,7 @@ class WebController extends Controller {
 
     onDocumentLoaded(fingerprint, nrPages, currentlySelectedPageNum) {
 
+        // TODO: if I await super.onDocumentLoaded with webpack it breaks
         super.onDocumentLoaded(fingerprint, nrPages, currentlySelectedPageNum);
         this.setupContextMenu();
     }
@@ -54574,7 +54575,7 @@ class WebController extends Controller {
 
     traceEventOnPage(event, eventName) {
         let pageElement = event.target.parentElement;
-        let pageNum = this.getPageNum(pageElement);
+        let pageNum = this.docFormat.getPageNumFromPageElement(pageElement);
 
         console.log(`Found event ${eventName} on page number ${pageNum}`);
     }
@@ -54601,64 +54602,6 @@ class WebController extends Controller {
         }
     }
 
-    // FIXME: move to using PDFRenderer for this functionality.
-    getCurrentPageElement() {
-
-        // TODO: It is probably easier to use pdf.pageNum but I'm not sure if this
-        // is actively updated or not.
-        let pages = document.querySelectorAll(".page");
-
-        let result = { element: null, visibility: 0 };
-
-        pages.forEach(function (page) {
-            let visibility = this.calculateVisibilityForDiv(page);
-
-            if (visibility > result.visibility) {
-                result.element = page;
-                result.visibility = visibility;
-            }
-        }.bind(this));
-
-        return result.element;
-    }
-
-    // TODO: refactor use Elements.calculateVisibilityForDiv
-    calculateVisibilityForDiv(div) {
-
-        if (div == null) throw Error("Not given a div");
-
-        let windowHeight = $(window).height(),
-            docScroll = $(document).scrollTop(),
-            divPosition = $(div).offset().top,
-            divHeight = $(div).height();
-
-        let hiddenBefore = docScroll - divPosition,
-            hiddenAfter = divPosition + divHeight - (docScroll + windowHeight);
-
-        if (docScroll > divPosition + divHeight || divPosition > docScroll + windowHeight) {
-            return 0;
-        } else {
-            let result = 100;
-
-            if (hiddenBefore > 0) {
-                result -= hiddenBefore * 100 / divHeight;
-            }
-
-            if (hiddenAfter > 0) {
-                result -= hiddenAfter * 100 / divHeight;
-            }
-
-            return result;
-        }
-    }
-
-    // TODO/REFACTOR migrate this to use PDFRenderer
-    getPageNum(pageElement) {
-        Preconditions.assertNotNull(pageElement, "pageElement");
-        let dataPageNum = pageElement.getAttribute("data-page-number");
-        return parseInt(dataPageNum);
-    }
-
     // FIXME: remake this binding to CreatePagemarkEntirePage
     keyBindingPagemarkEntirePage(event) {
         var _this = this;
@@ -54667,8 +54610,8 @@ class WebController extends Controller {
 
             console.log("Marking entire page as read.");
 
-            let pageElement = _this.getCurrentPageElement();
-            let pageNum = _this.getPageNum(pageElement);
+            let pageElement = _this.docFormat.getCurrentPageElement();
+            let pageNum = _this.docFormat.getPageNumFromPageElement(pageElement);
 
             _this.erasePagemarks(pageNum);
             yield _this.createPagemark(pageNum);
@@ -54681,8 +54624,8 @@ class WebController extends Controller {
 
     keyBindingErasePagemark(event) {
         console.log("Erasing pagemark.");
-        let pageElement = this.getCurrentPageElement();
-        let pageNum = this.getPageNum(pageElement);
+        let pageElement = this.docFormat.getCurrentPageElement();
+        let pageNum = this.docFormat.getPageNumFromPageElement(pageElement);
         this.erasePagemark(pageNum);
     }
 
@@ -59724,6 +59667,7 @@ const { OffsetCalculator } = __webpack_require__(/*! ../../utils.js */ "./web/js
 const { KeyEvents } = __webpack_require__(/*! ../../KeyEvents.js */ "./web/js/KeyEvents.js");
 const { Elements } = __webpack_require__(/*! ../../util/Elements */ "./web/js/util/Elements.js");
 const { DocFormats } = __webpack_require__(/*! ../../docformat/DocFormats */ "./web/js/docformat/DocFormats.js");
+const { DocFormatFactory } = __webpack_require__(/*! ../../docformat/DocFormatFactory */ "./web/js/docformat/DocFormatFactory.js");
 
 const BORDER_PADDING = 9;
 
@@ -59735,6 +59679,7 @@ class PagemarkCoverageEventListener {
     constructor(controller) {
         this.controller = controller;
         this.keyActivated = false;
+        this.docFormat = DocFormatFactory.getInstance();
     }
 
     start() {
@@ -59801,7 +59746,7 @@ class PagemarkCoverageEventListener {
 
                 console.log("percentage: ", percentage);
 
-                let pageNum = _this2.controller.getPageNum(state.pageElement);
+                let pageNum = _this2.docFormat.getPageNumFromPageElement(state.pageElement);
                 _this2.controller.erasePagemark(pageNum);
                 yield _this2.controller.createPagemark(pageNum, { percentage });
             } else {
@@ -63451,26 +63396,6 @@ class WebView extends View {
         this.pagemarkRenderer.setup();
 
         this.updateProgress();
-    }
-
-    // FIXME: move to using PDFRenderer for this functionality.... getPageElementFromPageNum
-    getPageElementByNum(num) {
-
-        if (!num) {
-            throw new Error("Page number not specified");
-        }
-
-        let pageElements = document.querySelectorAll(".page");
-
-        // note that elements are 0 based indexes but our pages are 1 based
-        // indexes.
-        let pageElement = pageElements[num - 1];
-
-        if (pageElement == null) {
-            throw new Error("Unable to find page element for page num: " + num);
-        }
-
-        return pageElement;
     }
 
     onCreatePagemark(pagemarkEvent) {

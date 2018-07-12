@@ -4,6 +4,7 @@ const {OffsetCalculator} = require("../../utils.js");
 const {KeyEvents} = require("../../KeyEvents.js");
 const {Elements} = require("../../util/Elements");
 const {DocFormats} = require("../../docformat/DocFormats");
+const {DocFormatFactory} = require("../../docformat/DocFormatFactory");
 
 const BORDER_PADDING = 9;
 
@@ -15,6 +16,7 @@ class PagemarkCoverageEventListener {
     constructor(controller) {
         this.controller = controller;
         this.keyActivated = false;
+        this.docFormat = DocFormatFactory.getInstance();
     }
 
     start() {
@@ -76,7 +78,7 @@ class PagemarkCoverageEventListener {
 
             console.log("percentage: ", percentage);
 
-            let pageNum = this.controller.getPageNum(state.pageElement);
+            let pageNum = this.docFormat.getPageNumFromPageElement(state.pageElement);
             this.controller.erasePagemark(pageNum);
             await this.controller.createPagemark(pageNum, {percentage});
 
