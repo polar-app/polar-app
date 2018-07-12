@@ -12,7 +12,6 @@ const {Objects} = require("../util/Objects");
 // It's also an issue that this will use more memory. About 100MB for large
 // documents that need rendering with full windows.
 
-
 class Browsers {
 
     /**
