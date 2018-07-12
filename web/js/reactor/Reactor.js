@@ -65,6 +65,11 @@ class Reactor {
         return this;
     }
 
+    /**
+     *
+     * @param eventName {String} The name of the event for the listeners.
+     * @return {Array}
+     */
     getEventListeners(eventName){
         Preconditions.assertNotNull(eventName, "eventName");
 

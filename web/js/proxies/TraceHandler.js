@@ -19,13 +19,16 @@ class TraceHandler {
      *
      * @param target {Object} The object that is the target of this handler.
      *
+     * @param traceIdentifier {number} A unique identifier for this handler.
+     *
      * @param proxies {Proxies} class for creating new traced objects.
      * Referenced here to avoid cyclical dependencies.
      */
-    constructor(path, traceListeners, target, proxies) {
+    constructor(path, traceListeners, target, traceIdentifier, proxies) {
 
         this.path = Preconditions.assertNotNull(path, "path");
         this.target = Preconditions.assertNotNull(target, "target");
+        this.traceIdentifier = Preconditions.assertNotNull(traceIdentifier, "traceIdentifier");
         this.proxies = Preconditions.assertNotNull(proxies, "proxies");
 
         this.reactor = new Reactor();
@@ -68,16 +71,28 @@ class TraceHandler {
     }
 
     getTraceListeners() {
-        return this.reactor.getEventListeners()
+        return this.reactor.getEventListeners(EVENT_NAME);
     }
 
     get(target, property, receiver) {
 
-        if(property === "__path") {
-            return this.path;
-        }
+        switch(property) {
 
-        return Reflect.get(...arguments);
+            // provide some default / hidden fields that can be used for debug
+            // reasons.
+
+            case "__path":
+                return this.path;
+
+            case "__traceIdentifier":
+                return this.traceIdentifier;
+
+            case "__traceListeners":
+                return this.getTraceListeners();
+
+            default:
+                return Reflect.get(...arguments);
+        }
 
     }
 
@@ -119,6 +134,6 @@ class TraceHandler {
 
     }
 
-};
+}
 
 module.exports.TraceHandler = TraceHandler;

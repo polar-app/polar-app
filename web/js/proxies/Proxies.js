@@ -85,7 +85,13 @@ class Proxies {
             return value;
         }
 
-        let traceHandler = new TraceHandler(path, traceListeners, value, Proxies);
+        let traceIdentifier = sequence++;
+
+        // for this to work, I need to keep track of ALL TraceHandlers in the
+        // object itself by possibly having a __traceHandlers or some other
+        // strategy or __paths and then dispatch that way...  
+
+        let traceHandler = new TraceHandler(path, traceListeners, value, traceIdentifier, Proxies);
 
         // TODO: could I store these in the TraceHandler and not in the value?
         //
@@ -99,37 +105,39 @@ class Proxies {
             // the __traceIdentifier is a unique key for the object which we use
             // to identify which one is being traced.  This way we essentially
             // have a pointer we can use to work with the object directly.
-
-            { name: "__traceIdentifier", value: sequence++ },
-
-            // keep the traceListener registered with the object so that I can
-            // verify that the object we're working with is actually being used
-            // with the same trace and not being re-traced by something else.
-
-            { name: "__traceListeners", value: traceListeners },
+            //
+            // { name: "__traceIdentifier", value: traceIdentifier },
+            //
+            // // keep the traceListener registered with the object so that I can
+            // // verify that the object we're working with is actually being used
+            // // with the same trace and not being re-traced by something else.
+            //
+            // { name: "__traceListeners", value: traceListeners },
 
             // keep the path to this object for debug purposes.
-            { name: "__path", value: path }
+            // { name: "__path", value: path }
 
         ];
 
-        privateMembers.forEach(privateMember => {
+        // privateMembers.forEach(privateMember => {
+        //
+        //     if(! (privateMember.name in value)) {
+        //
+        //         // the __traceIdentifier is a unique key for the object which we use
+        //         // to identify which one is being traced.  This way we essentially
+        //         // have a pointer we can use to work with the object directly.
+        //
+        //         Object.defineProperty(value, privateMember.name, {
+        //             value: privateMember.value,
+        //             enumerable: false,
+        //             writable: false
+        //         });
+        //
+        //     }
+        //
+        // });
 
-            if(! (privateMember.name in value)) {
-
-                // the __traceIdentifier is a unique key for the object which we use
-                // to identify which one is being traced.  This way we essentially
-                // have a pointer we can use to work with the object directly.
-
-                Object.defineProperty(value, privateMember.name, {
-                    value: privateMember.value,
-                    enumerable: false,
-                    writable: false
-                });
-
-            }
-
-        });
+        // TODO: do this in the TraceHandler get method?
 
         if(value.addTraceListener) {
             value.addTraceListener(traceListeners);

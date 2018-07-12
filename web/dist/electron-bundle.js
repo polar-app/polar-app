@@ -61416,7 +61416,13 @@ class Proxies {
             return value;
         }
 
-        let traceHandler = new TraceHandler(path, traceListeners, value, Proxies);
+        let traceIdentifier = sequence++;
+
+        // for this to work, I need to keep track of ALL TraceHandlers in the
+        // object itself by possibly having a __traceHandlers or some other
+        // strategy or __paths and then dispatch that way...  
+
+        let traceHandler = new TraceHandler(path, traceListeners, value, traceIdentifier, Proxies);
 
         // TODO: could I store these in the TraceHandler and not in the value?
         //
@@ -61427,36 +61433,42 @@ class Proxies {
 
         let privateMembers = [
 
-        // the __traceIdentifier is a unique key for the object which we use
-        // to identify which one is being traced.  This way we essentially
-        // have a pointer we can use to work with the object directly.
+            // the __traceIdentifier is a unique key for the object which we use
+            // to identify which one is being traced.  This way we essentially
+            // have a pointer we can use to work with the object directly.
+            //
+            // { name: "__traceIdentifier", value: traceIdentifier },
+            //
+            // // keep the traceListener registered with the object so that I can
+            // // verify that the object we're working with is actually being used
+            // // with the same trace and not being re-traced by something else.
+            //
+            // { name: "__traceListeners", value: traceListeners },
 
-        { name: "__traceIdentifier", value: sequence++ },
+            // keep the path to this object for debug purposes.
+            // { name: "__path", value: path }
 
-        // keep the traceListener registered with the object so that I can
-        // verify that the object we're working with is actually being used
-        // with the same trace and not being re-traced by something else.
+        ];
 
-        { name: "__traceListeners", value: traceListeners },
+        // privateMembers.forEach(privateMember => {
+        //
+        //     if(! (privateMember.name in value)) {
+        //
+        //         // the __traceIdentifier is a unique key for the object which we use
+        //         // to identify which one is being traced.  This way we essentially
+        //         // have a pointer we can use to work with the object directly.
+        //
+        //         Object.defineProperty(value, privateMember.name, {
+        //             value: privateMember.value,
+        //             enumerable: false,
+        //             writable: false
+        //         });
+        //
+        //     }
+        //
+        // });
 
-        // keep the path to this object for debug purposes.
-        { name: "__path", value: path }];
-
-        privateMembers.forEach(privateMember => {
-
-            if (!(privateMember.name in value)) {
-
-                // the __traceIdentifier is a unique key for the object which we use
-                // to identify which one is being traced.  This way we essentially
-                // have a pointer we can use to work with the object directly.
-
-                Object.defineProperty(value, privateMember.name, {
-                    value: privateMember.value,
-                    enumerable: false,
-                    writable: false
-                });
-            }
-        });
+        // TODO: do this in the TraceHandler get method?
 
         if (value.addTraceListener) {
             value.addTraceListener(traceListeners);
@@ -61545,13 +61557,16 @@ class TraceHandler {
      *
      * @param target {Object} The object that is the target of this handler.
      *
+     * @param traceIdentifier {number} A unique identifier for this handler.
+     *
      * @param proxies {Proxies} class for creating new traced objects.
      * Referenced here to avoid cyclical dependencies.
      */
-    constructor(path, traceListeners, target, proxies) {
+    constructor(path, traceListeners, target, traceIdentifier, proxies) {
 
         this.path = Preconditions.assertNotNull(path, "path");
         this.target = Preconditions.assertNotNull(target, "target");
+        this.traceIdentifier = Preconditions.assertNotNull(traceIdentifier, "traceIdentifier");
         this.proxies = Preconditions.assertNotNull(proxies, "proxies");
 
         this.reactor = new Reactor();
@@ -61591,16 +61606,28 @@ class TraceHandler {
     }
 
     getTraceListeners() {
-        return this.reactor.getEventListeners();
+        return this.reactor.getEventListeners(EVENT_NAME);
     }
 
     get(target, property, receiver) {
 
-        if (property === "__path") {
-            return this.path;
-        }
+        switch (property) {
 
-        return Reflect.get(...arguments);
+            // provide some default / hidden fields that can be used for debug
+            // reasons.
+
+            case "__path":
+                return this.path;
+
+            case "__traceIdentifier":
+                return this.traceIdentifier;
+
+            case "__traceListeners":
+                return this.getTraceListeners();
+
+            default:
+                return Reflect.get(...arguments);
+        }
     }
 
     set(target, property, value, receiver) {
@@ -61638,7 +61665,7 @@ class TraceHandler {
         return result;
     }
 
-};
+}
 
 module.exports.TraceHandler = TraceHandler;
 
@@ -61834,6 +61861,11 @@ class Reactor {
         return this;
     }
 
+    /**
+     *
+     * @param eventName {String} The name of the event for the listeners.
+     * @return {Array}
+     */
     getEventListeners(eventName) {
         Preconditions.assertNotNull(eventName, "eventName");
 
