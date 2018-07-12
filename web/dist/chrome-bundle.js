@@ -77195,6 +77195,15 @@ class Optional {
         return None;
     }
 
+    filter(fn) {
+
+        if (fn(this.value)) {
+            return new Some(this.value);
+        }
+
+        return None;
+    }
+
     getOrElse(value) {
         if (this.value !== undefined) {
             return this.value;
@@ -77307,7 +77316,7 @@ class Preconditions {
         let result = testFunction(value);
 
         if (!result) {
-            throw new Error("Assertion failed: " + message);
+            throw new Error(`Assertion failed for value ${value}: ` + message);
         }
 
         return value;
@@ -79253,15 +79262,6 @@ class DocFormat {
         return false;
     }
 
-    /**
-     * Pagemark options for this viewer.
-     *
-     * @return {{}}
-     */
-    pagemarkOptions() {
-        return {};
-    }
-
     textHighlightOptions() {
         return {};
     }
@@ -79409,15 +79409,6 @@ class HTMLFormat extends DocFormat {
             currentPageNumber: 1,
             pageElement: document.querySelector(".page")
         };
-    }
-
-    /**
-     * Pagemark options for this viewer.
-     *
-     * @return {{}}
-     */
-    pagemarkOptions() {
-        return {};
     }
 
     textHighlightOptions() {
@@ -81709,6 +81700,34 @@ module.exports.Logger = Logger;
 
 /***/ }),
 
+/***/ "./web/js/math/Interval.js":
+/*!*********************************!*\
+  !*** ./web/js/math/Interval.js ***!
+  \*********************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+const { Line } = __webpack_require__(/*! ../util/Line */ "./web/js/util/Line.js");
+
+/**
+ * Represents a mathematical interval between two values.
+ */
+class Interval {
+
+    constructor(start, end) {
+        this.line = new Line(start, end, "x");
+    }
+
+    containsPoint(pt) {
+        return this.line.containsPoint(pt);
+    }
+
+}
+
+module.exports.Interval = Interval;
+
+/***/ }),
+
 /***/ "./web/js/metadata/Annotation.js":
 /*!***************************************!*\
   !*** ./web/js/metadata/Annotation.js ***!
@@ -82131,6 +82150,7 @@ class DocMetas {
             let pageMeta = result.getPageMeta(pageNum);
 
             // set the pagemark that we just created.
+            // TODO: this should be pagemark.id as the key not pagemark.column
             pageMeta.pagemarks[pagemark.column] = pagemark;
         }
 
@@ -82884,6 +82904,238 @@ module.exports.Pagemark = Pagemark;
 
 /***/ }),
 
+/***/ "./web/js/metadata/PagemarkRect.js":
+/*!*****************************************!*\
+  !*** ./web/js/metadata/PagemarkRect.js ***!
+  \*****************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+const { Preconditions } = __webpack_require__(/*! ../Preconditions */ "./web/js/Preconditions.js");
+const { Rects } = __webpack_require__(/*! ../Rects */ "./web/js/Rects.js");
+const { Interval } = __webpack_require__(/*! ../math/Interval */ "./web/js/math/Interval.js");
+
+const ENTIRE_PAGE = Rects.createFromBasicRect({ left: 0, top: 0, width: 100, height: 100 });
+
+/**
+ * The box layout of this pagemark.  We use the typical DOM positioning style
+ * of top, left, width and height only instead of percentages we represent
+ * this as percentage of the entire 'page'.
+ *
+ * For example:
+ *
+ * This would represent the range within a page that a pagemark covers.  This is
+ * essentially a range has a start and end which are percentages of the page that
+ * a pagemark covers but in two dimensions (not just one).
+ *
+ * A default pagemark (for the entire page) would have a value of:
+ *
+ * { top: 0, left: 0, width: 100, height: 100 }
+ *
+ * A range for a page that is half way completed is [0,50]
+ *
+ * { top: 0, left: 0, width: 100, height: 50 }
+ *
+ * We also provide additional functionality where we can start the pagemark
+ * other than at the top of the page. For example, if you wanted to mark the
+ * bottom 50% of the page as read, you could create the pagemark as:
+ *
+ * { top: 50, left: 0, width: 100, height: 50 }
+ *
+ * The user can create pagemarks at any point and then we create a small
+ * pagemark anchored to that spot, and give it a bit of height so that the user
+ * can visually see it.
+ *
+ * Note that the percentage are of the available width and height.  The normal
+ * ratio we use is 8.5x11 but width and height as percentages would be 100x100.
+ *
+ * This would NOT be a square but a rectangle and the percentages confuse that.
+ *
+ */
+class PagemarkRect {
+
+  constructor(obj) {
+
+    /**
+     * @type {number}
+     */
+    this.left = undefined;
+
+    /**
+     * @type {number}
+     */
+    this.top = undefined;
+
+    /**
+     * @type {number}
+     */
+    this.width = undefined;
+
+    /**
+     * @type {number}
+     */
+    this.height = undefined;
+
+    Object.assign(this, obj);
+
+    this._validate();
+  }
+
+  /**
+   * Make sure we are in a valid state and that the intervals are within
+   * proper values.
+   *
+   * @private
+   */
+  _validate() {
+
+    let interval = new Interval(0, 100);
+
+    let assertInterval = value => interval.containsPoint(value);
+
+    Preconditions.assert(this.top, assertInterval, "top");
+    Preconditions.assert(this.left, assertInterval, "left");
+    Preconditions.assert(this.width, assertInterval, "width");
+    Preconditions.assert(this.height, assertInterval, "height");
+  }
+
+  /**
+   * Compute a percentage of the page that this rect holds.
+   */
+  toPercentage() {
+    return 100 * (Rects.createFromBasicRect(this).area / ENTIRE_PAGE.area);
+  }
+
+  /**
+   * Convert this to a fractional rect where all the values are in the
+   * interval [0.0,1.0]
+   *
+   * @return {Rect}
+   */
+  toFractionalRect() {
+
+    let result = {};
+
+    for (let key in this) {
+
+      if (!this.hasOwnProperty(key)) continue;
+
+      result[key] = this[key] / 100;
+    }
+
+    return Rects.createFromBasicRect(result);
+  }
+
+}
+
+module.exports.PagemarkRect = PagemarkRect;
+
+/***/ }),
+
+/***/ "./web/js/metadata/PagemarkRects.js":
+/*!******************************************!*\
+  !*** ./web/js/metadata/PagemarkRects.js ***!
+  \******************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+const { PagemarkType } = __webpack_require__(/*! ./PagemarkType */ "./web/js/metadata/PagemarkType.js");
+const { PagemarkRect } = __webpack_require__(/*! ./PagemarkRect */ "./web/js/metadata/PagemarkRect.js");
+const { Rects } = __webpack_require__(/*! ../Rects */ "./web/js/Rects.js");
+
+class PagemarkRects {
+
+    /**
+     *
+     * Create a default PagemarkRect from a Pagemark that might be legacy.
+     *
+     * @param pagemark {Pagemark}
+     * @return {PagemarkRect}
+     */
+    static createDefault(pagemark) {
+
+        if (pagemark.type === PagemarkType.SINGLE_COLUMN && "percentage" in pagemark) {
+
+            return new PagemarkRect({
+                left: 0,
+                top: 0,
+                width: 100,
+                height: pagemark.percentage
+            });
+        }
+
+        throw new Error("Can not create default");
+    }
+
+    /**
+     *
+     * @param percentage {number}
+     * @return {PagemarkRect}
+     */
+    static createFromPercentage(percentage) {
+
+        return new PagemarkRect({
+            left: 0,
+            top: 0,
+            width: 100,
+            height: percentage
+        });
+    }
+
+    /**
+     *
+     *
+     * @param rect {Rect}
+     * @return {PagemarkRect}
+     */
+    static createFromRect(rect) {
+
+        return new PagemarkRect({
+            left: rect.left,
+            top: rect.top,
+            width: rect.width,
+            height: rect.height
+        });
+    }
+
+    /**
+     *
+     *
+     * @param xAxis {Line}
+     * @param yAxis {Line}
+     * @return {PagemarkRect}
+     */
+    static createFromLines(xAxis, yAxis) {
+        return PagemarkRects.createFromRect(Rects.createFromLines(xAxis, yAxis));
+    }
+
+    /**
+     *
+     * @param rect {Rect}
+     * @param parentRect {Rect}
+     * @return {PagemarkRect}
+     */
+    static createFromPositionedRect(rect, parentRect) {
+
+        // create a new PagemarkRect from a positioned rect.  We use this to take
+        // a dragged or resized rect / box on the screen then convert it to a
+        // PagemarkRect
+
+        let xAxis = rect.toLine("x").multiply(100 / parentRect.width);
+        let yAxis = rect.toLine("y").multiply(100 / parentRect.height);
+
+        console.log("DEBUG: xAxis: ", xAxis);
+        console.log("DEBUG: yAxis: ", yAxis);
+
+        return this.createFromLines(xAxis, yAxis);
+    }
+
+}
+
+module.exports.PagemarkRects = PagemarkRects;
+
+/***/ }),
+
 /***/ "./web/js/metadata/PagemarkType.js":
 /*!*****************************************!*\
   !*** ./web/js/metadata/PagemarkType.js ***!
@@ -82914,8 +83166,17 @@ module.exports.PagemarkType = Object.freeze({
 const { Hashcodes } = __webpack_require__(/*! ../Hashcodes */ "./web/js/Hashcodes.js");
 const { Pagemark } = __webpack_require__(/*! ./Pagemark */ "./web/js/metadata/Pagemark.js");
 const { PagemarkType } = __webpack_require__(/*! ./PagemarkType */ "./web/js/metadata/PagemarkType.js");
+const { PagemarkRect } = __webpack_require__(/*! ./PagemarkRect */ "./web/js/metadata/PagemarkRect.js");
+const { PagemarkRects } = __webpack_require__(/*! ./PagemarkRects */ "./web/js/metadata/PagemarkRects.js");
 const { ISODateTime } = __webpack_require__(/*! ./ISODateTime */ "./web/js/metadata/ISODateTime.js");
 const { Objects } = __webpack_require__(/*! ../util/Objects */ "./web/js/util/Objects.js");
+
+const DEFAULT_PAGEMARK_RECT = new PagemarkRect({
+    left: 0,
+    top: 0,
+    width: 100,
+    height: 100
+});
 
 class Pagemarks {
 
@@ -82927,13 +83188,23 @@ class Pagemarks {
         return id.substring(0, 10);
     }
 
-    static create(options) {
+    /**
+     * Create a new pagemark with the created time, and other mandatory fields
+     * added.
+     *
+     * @param options
+     * @return {Pagemark}
+     */
+    static create(options = {}) {
 
         options = Objects.defaults(options, {
 
             // just set docMeta pageMarkType = PagemarkType.SINGLE_COLUMN by
             // default for now until we add multiple column types and handle
             // them properly.
+
+            // TODO: this needs to be read from the docInfo setting for this
+            // document and the default here
 
             /**
              * @type {Symbol}
@@ -82943,23 +83214,32 @@ class Pagemarks {
             /**
              * @type {number}
              */
-            percentage: 100,
-
-            /**
-             * @type {number}
-             */
-            column: 0,
-
-            /**
-             * @type {PagemarkRect}
-             */
-            pagemarkRect: null
+            column: 0
 
         });
 
-        let created = new ISODateTime(new Date());
+        let keyOptions = Pagemarks.createKeyOptions(options);
 
-        options = Objects.duplicate(options);
+        if (keyOptions.count === 0) {
+            throw new Error("Must specify either rect or percentage.");
+        }
+
+        if (keyOptions.count === 1) {
+
+            if (keyOptions.hasPercentage) {
+                keyOptions.rect = PagemarkRects.createFromPercentage(keyOptions.percentage);
+            }
+
+            if (keyOptions.hasRect) {
+                keyOptions.percentage = keyOptions.rect.toPercentage();
+            }
+        }
+
+        if (keyOptions.percentage !== keyOptions.rect.toPercentage()) {
+            throw new Error("Percentage and rect are not the same");
+        }
+
+        let created = new ISODateTime(new Date());
 
         return new Pagemark({
 
@@ -82969,11 +83249,74 @@ class Pagemarks {
 
             // the rest are from options.
             type: options.type,
-            percentage: options.percentage,
+            percentage: keyOptions.percentage,
             column: options.column,
-            pagemarkRect: options.pagemarkRect
+            rect: keyOptions.rect
 
         });
+    }
+
+    /**
+     *
+     * @param options
+     * @return {KeyOptions}
+     */
+    static createKeyOptions(options) {
+
+        let keyOptions = new KeyOptions();
+
+        keyOptions.hasPercentage = "percentage" in options;
+        keyOptions.hasRect = "rect" in options;
+
+        if (keyOptions.hasPercentage) ++keyOptions.count;
+
+        if (keyOptions.hasRect) ++keyOptions.count;
+
+        keyOptions.rect = options.rect;
+        keyOptions.percentage = options.percentage;
+
+        return keyOptions;
+    }
+
+}
+
+/**
+ * The key / important options when creating a Pagemark.
+ */
+class KeyOptions {
+
+    constructor() {
+
+        /**
+         * The total number of key options.
+         *
+         * @type {number}
+         */
+        this.count = 0;
+
+        /**
+         * True when we have the percentage.
+         *
+         * @type {boolean}
+         */
+        this.hasPercentage = undefined;
+
+        /**
+         * True when we have the rect.
+         *
+         * @type {boolean}
+         */
+        this.hasRect = undefined;
+
+        /**
+         * @type {PagemarkRect}
+         */
+        this.rect = undefined;
+
+        /**
+         * @type {number}
+         */
+        this.percentage = undefined;
     }
 
 }
@@ -86473,7 +86816,23 @@ class Line {
         return `{start: ${this.start}, end: ${this.end}}`;
     }
 
+    /**
+     * Build a new line based on the given scalar.  Essentially this models
+     * the line as a vector with zero as the origin and length as the magnitude
+     * and we just apply the scalar to build the new vector with a different
+     * start origin.
+     *
+     * @param scalar {number}
+     */
+    multiply(scalar) {
+
+        console.log(`FIXME: ${this.axis} - ${scalar}`);
+
+        return new Line(this.start * scalar, this.end * scalar, this.axis);
+    }
+
     toJSON() {
+
         return {
             axis: this.axis,
             start: this.start,
@@ -87117,7 +87476,11 @@ class WebView extends View {
         this.pagemarkRenderer = null;
         this.docFormat = DocFormatFactory.getInstance();
 
-        this.pagemarkBoxController = new BoxController();
+        this.pagemarkBoxController = new BoxController(this.pagemarkMoved);
+    }
+
+    pagemarkMoved(boxMoveEvent) {
+        console.log("Box moved: ", boxMoveEvent);
     }
 
     start() {
@@ -87294,10 +87657,13 @@ class WebView extends View {
 
     /**
      * Create a pagemark on the given page which marks it read.
-     * @param pageElement
+     * @param pageElement {HTMLElement}
      * @param options {Object}
      */
-    createPagemark(pageElement, options) {
+    createPagemark(pageElement, options = {}) {
+
+        // FIXME: migrate this to a proper view that listens to the DocMeta
+        // change
 
         // TODO: this code is ugly, can't be tested, etc.
         //
@@ -87308,10 +87674,6 @@ class WebView extends View {
         // - we PLACE the element as part of this function.  Have a secondary
         //   way to just CREATE the element so that we can test the settings
         //   properly.
-
-        if (!options) {
-            throw new Error("Options are required");
-        }
 
         if (!options.pagemark) {
             throw new Error("Pagemark is required");
@@ -87340,12 +87702,6 @@ class WebView extends View {
             throw new Error("No placementElement");
         }
 
-        let pagemarkOptions = this.docFormat.pagemarkOptions();
-
-        if (pagemarkOptions.zIndex) {
-            options.zIndex = pagemarkOptions.zIndex;
-        }
-
         if (pageElement.querySelector(".pagemark")) {
             // do nothing if the current page already has a pagemark.
             console.warn("Pagemark already exists");
@@ -87366,18 +87722,27 @@ class WebView extends View {
         pagemarkElement.style.opacity = "0.3";
 
         pagemarkElement.style.position = "absolute";
-        pagemarkElement.style.left = options.templateElement.offsetLeft;
-        pagemarkElement.style.top = options.templateElement.offsetTop;
+
+        // FIXME: this needs to be a function of the PlacedPagemarkCalculator
+        pagemarkElement.style.left = `${options.templateElement.offsetLeft}px`;
+
+        // FIXME: this needs to be a function of the PlacedPagemarkCalculator
+        pagemarkElement.style.top = `${options.templateElement.offsetTop}px`;
+
+        // FIXME: this needs to be a function of the PlacedPagemarkCalculator
         pagemarkElement.style.width = options.templateElement.style.width;
 
+        // FIXME: this needs to be a function of the PlacedPagemarkCalculator
         let height = Styles.parsePixels(options.templateElement.style.height);
 
         if (!height) {
+            // FIXME: this needs to be a function of the PlacedPagemarkCalculator
             height = options.templateElement.offsetHeight;
         }
 
         // read the percentage coverage from the pagemark and adjust the height
         // to reflect the portion we've actually read.
+        // FIXME: this needs to be a function of the PlacedPagemarkCalculator
         height = height * (options.pagemark.percentage / 100);
 
         pagemarkElement.style.height = `${height}px`;
@@ -87394,7 +87759,7 @@ class WebView extends View {
         // pagemark data itself.  We're probably going to have to implement
         // mutation listeners there.
 
-        //this.pagemarkBoxController.register(pagemarkElement);
+        this.pagemarkBoxController.register(pagemarkElement);
     }
 
     redrawPagemark() {}
@@ -87655,20 +88020,22 @@ module.exports.FrameInitializer = FrameInitializer;
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-const $ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
+const { Styles } = __webpack_require__(/*! ../../util/Styles */ "./web/js/util/Styles.js");
+const { Optional } = __webpack_require__(/*! ../../Optional */ "./web/js/Optional.js");
 
-const LOADING_CUTOFF = 2 * 60 * 1000;
+const MAX_RESIZES = 25;
 
 /**
- * Frame loader which polls the content iframe until it's loaded.  There's
- * really no way to get loading 'progress' so the trick is to just poll
- * fast enough to get the document size so that the user never notices.
+ * Frame loader which polls the content iframe every 50ms and if the height
+ * changes automatically synchronizes it with the content document.  There's
+ * really no way to get loading 'progress' so the trick is to just poll fast
+ * enough to get the document size so that the user never notices.
  */
 class FrameResizer {
 
     // TODO:
     //
-    // this may be a better way to do the resizing:
+    // this may be a better way to do the resize animation frames.
     //
     // https://stackoverflow.com/questions/1835219/is-there-an-event-that-fires-on-changes-to-scrollheight-or-scrollwidth-in-jquery
 
@@ -87688,10 +88055,12 @@ class FrameResizer {
         this.completed = null;
 
         // how long between polling should we wait to expand the size.
-        this.timeoutInterval = 100;
+        this.timeoutInterval = 50;
 
         // the current height
         this.height = null;
+
+        this.resizes = 0;
     }
 
     start() {
@@ -87699,14 +88068,12 @@ class FrameResizer {
     }
 
     resizeParentInBackground() {
+        this.doResize();
 
-        if (!this.completed && this.iframe.contentDocument.readyState === "complete") {
-            console.log("FrameResizer: Document has finished loading: " + this.iframe.contentDocument.location.href);
-            this.completed = new Date();
+        if (this.resizes > MAX_RESIZES) {
+            console.log("Hit MAX_RESIZES: " + MAX_RESIZES);
             return;
         }
-
-        this.doResize();
 
         setTimeout(this.resizeParentInBackground.bind(this), this.timeoutInterval);
     }
@@ -87716,16 +88083,17 @@ class FrameResizer {
      */
     doResize() {
 
+        let height = Styles.parsePX(Optional.of(this.iframe.style.height).filter(current => current !== "").getOrElse("0px"));
+
         let newHeight = this.iframe.contentDocument.body.scrollHeight;
 
-        if (this.height) {
-            console.log("HEIGHT DELTA: " + (newHeight - this.height));
+        // we basically keep polling.
+        if (height !== newHeight) {
+            console.log(`Setting new height to: ${newHeight} vs previous ${this.iframe.style.height}`);
+            this.iframe.style.height = newHeight;
+            this.height = newHeight;
+            ++this.resizes;
         }
-
-        //let newHeight = this.iframe.contentDocument.documentElement.clientHeight;
-        //console.log("Setting new height to: " + newHeight);
-        this.iframe.style.height = newHeight;
-        this.height = newHeight;
     }
 
 }

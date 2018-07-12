@@ -23,8 +23,12 @@ class WebView extends View {
         this.pagemarkRenderer = null;
         this.docFormat = DocFormatFactory.getInstance();
 
-        this.pagemarkBoxController = new BoxController();
+        this.pagemarkBoxController = new BoxController(this.pagemarkMoved);
 
+    }
+
+    pagemarkMoved(boxMoveEvent) {
+        console.log("Box moved: ", boxMoveEvent);
     }
 
     start() {
@@ -219,6 +223,9 @@ class WebView extends View {
      */
     createPagemark(pageElement, options = {}) {
 
+        // FIXME: migrate this to a proper view that listens to the DocMeta
+        // change
+
         // TODO: this code is ugly, can't be tested, etc.
         //
         // - the options building can't be reliably tested
@@ -314,7 +321,7 @@ class WebView extends View {
         // pagemark data itself.  We're probably going to have to implement
         // mutation listeners there.
 
-        //this.pagemarkBoxController.register(pagemarkElement);
+        this.pagemarkBoxController.register(pagemarkElement);
 
     }
 

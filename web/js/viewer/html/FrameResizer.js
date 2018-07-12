@@ -1,4 +1,7 @@
-const $ = require('jquery')
+const {Styles} = require("../../util/Styles");
+const {Optional} = require("../../Optional");
+
+const MAX_RESIZES = 25;
 
 /**
  * Frame loader which polls the content iframe every 50ms and if the height
@@ -35,6 +38,8 @@ class FrameResizer {
         // the current height
         this.height = null;
 
+        this.resizes = 0;
+
     }
 
     start() {
@@ -43,6 +48,12 @@ class FrameResizer {
 
     resizeParentInBackground() {
         this.doResize();
+
+        if(this.resizes > MAX_RESIZES) {
+            console.log("Hit MAX_RESIZES: " + MAX_RESIZES);
+            return;
+        }
+
         setTimeout(this.resizeParentInBackground.bind(this), this.timeoutInterval);
     }
 
@@ -51,14 +62,18 @@ class FrameResizer {
      */
     doResize() {
 
+        let height = Styles.parsePX(Optional.of(this.iframe.style.height)
+                                            .filter( current => current !== "")
+                                            .getOrElse("0px"));
+
         let newHeight = this.iframe.contentDocument.body.scrollHeight;
 
         // we basically keep polling.
-
-        if(this.iframe.style.height !== newHeight) {
-            console.log("Setting new height to: " + newHeight);
+        if(height !== newHeight) {
+            console.log(`Setting new height to: ${newHeight} vs previous ${this.iframe.style.height}`);
             this.iframe.style.height = newHeight;
             this.height = newHeight;
+            ++this.resizes;
         }
 
     }

@@ -13,6 +13,16 @@ class Optional {
         return None;
     };
 
+    filter(fn) {
+
+        if(fn(this.value)) {
+            return new Some(this.value);
+        }
+
+        return None;
+
+    }
+
     getOrElse(value) {
         if (this.value !== undefined) {
             return this.value;

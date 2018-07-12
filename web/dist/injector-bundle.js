@@ -10502,6 +10502,15 @@ class Optional {
         return None;
     }
 
+    filter(fn) {
+
+        if (fn(this.value)) {
+            return new Some(this.value);
+        }
+
+        return None;
+    }
+
     getOrElse(value) {
         if (this.value !== undefined) {
             return this.value;
@@ -10551,7 +10560,7 @@ class Preconditions {
         let result = testFunction(value);
 
         if (!result) {
-            throw new Error("Assertion failed: " + message);
+            throw new Error(`Assertion failed for value ${value}: ` + message);
         }
 
         return value;
@@ -11682,7 +11691,23 @@ class Line {
         return `{start: ${this.start}, end: ${this.end}}`;
     }
 
+    /**
+     * Build a new line based on the given scalar.  Essentially this models
+     * the line as a vector with zero as the origin and length as the magnitude
+     * and we just apply the scalar to build the new vector with a different
+     * start origin.
+     *
+     * @param scalar {number}
+     */
+    multiply(scalar) {
+
+        console.log(`FIXME: ${this.axis} - ${scalar}`);
+
+        return new Line(this.start * scalar, this.end * scalar, this.axis);
+    }
+
     toJSON() {
+
         return {
             axis: this.axis,
             start: this.start,

@@ -1,5 +1,13 @@
 # TODO:
 
+- some documents seem to NEVER terminate their height adjustment:
+
+    https://medium.com/@mccannatron/guide-to-launching-an-initial-coin-offering-ico-94587af2c8d5
+
+    - consider fixing this via load.js and looking at the document's internal
+      state vs the window NOT the external state of the iframe to see if it
+      needs to change the iframe size.
+
 - fonts are looking ugly now at 150% ... even 100% doesn't look that impressive.
   Maybe play with the native zoom support in Electron via webContents.setZoomLevel
   which should be [1.0,N].  I might also look at improving fonts in general in
