@@ -83120,6 +83120,7 @@ const { PagemarkRect } = __webpack_require__(/*! ./PagemarkRect */ "./web/js/met
 const { PagemarkRects } = __webpack_require__(/*! ./PagemarkRects */ "./web/js/metadata/PagemarkRects.js");
 const { ISODateTime } = __webpack_require__(/*! ./ISODateTime */ "./web/js/metadata/ISODateTime.js");
 const { Objects } = __webpack_require__(/*! ../util/Objects */ "./web/js/util/Objects.js");
+const { round } = __webpack_require__(/*! ../util/Percentages */ "./web/js/util/Percentages.js");
 
 const log = __webpack_require__(/*! ../logger/Logger */ "./web/js/logger/Logger.js").create();
 
@@ -83187,7 +83188,7 @@ class Pagemarks {
             }
         }
 
-        if (keyOptions.percentage !== keyOptions.rect.toPercentage()) {
+        if (round(keyOptions.percentage) !== round(keyOptions.rect.toPercentage())) {
             let msg = "Percentage and rect are not the same";
             log.warn(msg, keyOptions.percentage, keyOptions.rect, keyOptions.rect.toPercentage());
             throw new Error(msg);
@@ -87197,6 +87198,31 @@ module.exports.Paths = class {
 
 /***/ }),
 
+/***/ "./web/js/util/Percentages.js":
+/*!************************************!*\
+  !*** ./web/js/util/Percentages.js ***!
+  \************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+class Percentages {
+
+    /**
+     *
+     * @param perc {number}
+     * @return {number}
+     */
+    static round(perc) {
+        return Math.round(perc * 100) / 100;
+    }
+
+}
+
+module.exports.round = Percentages.round;
+module.exports.Percentages = Percentages;
+
+/***/ }),
+
 /***/ "./web/js/util/Strings.js":
 /*!********************************!*\
   !*** ./web/js/util/Strings.js ***!
@@ -87865,6 +87891,8 @@ class WebView extends View {
         // pagemark data itself.  We're probably going to have to implement
         // mutation listeners there.
 
+        console.log('FIXME: registiner with pagemarkBoxController');
+
         this.pagemarkBoxController.register(pagemarkElement);
     }
 
@@ -87888,7 +87916,7 @@ class WebView extends View {
         console.log("Erasing pagemarks...done");
     }
 
-};
+}
 
 module.exports.WebView = WebView;
 

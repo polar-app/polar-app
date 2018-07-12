@@ -240,6 +240,7 @@ class BoxController {
                 this._fireBoxMoveEvent("resize", restrictionRect, boxRect, target.id);
 
             });
+
     }
 
     /**

@@ -5,6 +5,7 @@ const {PagemarkRect} = require("./PagemarkRect");
 const {PagemarkRects} = require("./PagemarkRects");
 const {ISODateTime} = require("./ISODateTime");
 const {Objects} = require("../util/Objects");
+const {round} = require("../util/Percentages");
 
 const log = require("../logger/Logger").create();
 
@@ -74,7 +75,7 @@ class Pagemarks {
 
         }
 
-        if(keyOptions.percentage !== keyOptions.rect.toPercentage()) {
+        if(round(keyOptions.percentage) !== round(keyOptions.rect.toPercentage())) {
             let msg = "Percentage and rect are not the same";
             log.warn(msg, keyOptions.percentage, keyOptions.rect, keyOptions.rect.toPercentage());
             throw new Error(msg);
