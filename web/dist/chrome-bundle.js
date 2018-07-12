@@ -87724,10 +87724,10 @@ class WebView extends View {
         pagemarkElement.style.position = "absolute";
 
         // FIXME: this needs to be a function of the PlacedPagemarkCalculator
-        pagemarkElement.style.left = `${options.templateElement.offsetLeft}px`;
+        pagemarkElement.style.left = options.templateElement.offsetLeft;
 
         // FIXME: this needs to be a function of the PlacedPagemarkCalculator
-        pagemarkElement.style.top = `${options.templateElement.offsetTop}px`;
+        pagemarkElement.style.top = options.templateElement.offsetTop;
 
         // FIXME: this needs to be a function of the PlacedPagemarkCalculator
         pagemarkElement.style.width = options.templateElement.style.width;
