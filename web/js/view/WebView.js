@@ -285,6 +285,8 @@ class WebView extends View {
 
         pagemarkElement.style.position="absolute";
 
+        let usePlacedPagemark = true;
+
         // FIXME: this needs to be a function of the PlacedPagemarkCalculator
         pagemarkElement.style.left = options.templateElement.offsetLeft;
 
@@ -306,6 +308,8 @@ class WebView extends View {
         // to reflect the portion we've actually read.
         // FIXME: this needs to be a function of the PlacedPagemarkCalculator
         height = height * (options.pagemark.percentage / 100);
+
+
 
         pagemarkElement.style.height = `${height}px`;
 
