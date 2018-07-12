@@ -1,6 +1,52 @@
 # TODO:
 
-- instead of pagedown.. just change the ENTIRE window height.. then the entire page should render.  
+- broken page:
+    https://en.m.wikipedia.org/wiki/Multiple_inheritance
+
+    - won't render images when the browser is too high... it isn't scrolling
+      either. It just doesn't like the browser window being too large.   Either
+      it does not like our fake values or it has a bug.
+
+    - my scrolling fix also doesn't work for some sites as they swap out the page
+      and lead to infinite scrolling.
+
+    - ok.. it CAN load but MY code is breaking it.. probably because I'm not
+      giving it time to finish?
+
+        - add a delay ... command line option.
+
+    - I think we could detect if we're the last load event listener by :
+
+        - adding an event listener with a sequence.  Seeing if we were executed,
+          then increment the sequence, then add yourself back in, if
+
+        - this isn't the problem either. it seems like the page might also have
+          setTimeout.  did-finish-load is called after onload is dispatched.
+
+          - I might have to override setTimeout and keep track of pending events
+            that are working in the background.
+
+            https://github.com/bargoldi/time-events-manager
+
+          - if there are no events or timeouts nothing else can run.
+
+- instead of pagedown.. just change the ENTIRE window height.. then the entire
+  page should render.
+
+    - it locks up NVidia drivers.
+    - headless means SVGs can't render
+    - there's SOME weird bug where the height of the page isnt' being rendered
+      properly
+
+    - I think the problem is that some scripts NEED to scroll to detect that
+      they are now visible.
+
+        couldn't we just re-append ourselves on the first event , which would
+        mean we're at the END and then when the second one fires we know we're
+        done.  The only problem is that OTHER people could add their own load
+        handlers in the mean time and how would we know we are the last?
+
+    - I mostly have this working but there are some issues with document height
 
 - catch and abort history.pushState()
 

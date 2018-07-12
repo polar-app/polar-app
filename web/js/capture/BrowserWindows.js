@@ -1,4 +1,10 @@
 
+// Investigate this as a way to adjust the screen size automatically:
+
+// useContentSize Boolean (optional) - The width and height would be used as web
+// page's size, which means the actual window's size will include window frame's
+// size and be slightly larger. Default is false.
+
 class BrowserWindows {
 
     static toBrowserWindowOptions(browser) {
@@ -11,6 +17,9 @@ class BrowserWindows {
             //maxWidth: WIDTH,
             //maxHeight: HEIGHT,
             show: browser.show,
+
+            // Enable the window to be resized larger than screen. Default is false.
+            enableLargerThanScreen: true,
 
             webPreferences: {
                 nodeIntegration: false,

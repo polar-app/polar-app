@@ -14,7 +14,6 @@ const {Files} = require("../util/Files");
 const {Functions} = require("../util/Functions");
 const {DiskDatastore} = require("../datastore/DiskDatastore");
 const {Args} = require("../electron/capture/Args");
-const {Browsers} = require("./Browsers");
 const {BrowserWindows} = require("./BrowserWindows");
 const {WebRequestReactor} = require("../webrequests/WebRequestReactor");
 const {CapturedPHZWriter} = require("./CapturedPHZWriter");
@@ -33,18 +32,15 @@ const log = Logger.create();
 
 const USE_PAGING_LOADER = true;
 
-// TODO: anything greater than 10k triggers a bug on NVidia drivers on Linux
-// but many documents are larger than this 10k limit if they have 10 pages or
-// more.
-//
-// Examples:
-//
-// https://journal.artfuldev.com/unit-testing-node-applications-with-typescript-using-mocha-and-chai-384ef05f32b2
-//
-// It's also an issue that this will use more memory. About 100MB for large
-// documents that need rendering with full windows.
-
-const BROWSER_PROFILE = "headless";
+/**
+ * This is a hard coded delay to hold off capturing the content until the page
+ * has finished executing all onLoad handlers. I need our own way to handle this
+ * within the capture main process. Maybe I could add our own loader to the END
+ * of the list and only run once our loader function finishes last.
+ *
+ * @type {number}
+ */
+const EXECUTE_CAPTURE_DELAY = 1500;
 
 // TODO: migrate this to use Electron offscreen rendering (like chrome headless)
 //
@@ -54,20 +50,18 @@ class Capture {
 
     /**
      *
-     * @param url {string}
+     * @param url {string} The URL to capture.
      * @param browser {Browser}
      * @param stashDir {string}
      */
     constructor(url, browser, stashDir) {
 
+        // FIXME: don't allow named anchors in the URL like #foo... strip them
+        // and test this functionality.
+
         this.url = Preconditions.assertNotNull(url, "url");
         this.browser = Preconditions.assertNotNull(browser, "browser");;
         this.stashDir = Preconditions.assertNotNull(stashDir, "stashDir");;
-
-        if(BROWSER_PROFILE) {
-            log.info("Using browser profile: " + BROWSER_PROFILE);
-            this.browser = Browsers.toProfile(this.browser, BROWSER_PROFILE);
-        }
 
         /**
          * The resolve function to call when we have completed .
@@ -154,7 +148,7 @@ class Capture {
                     this.executeContentCapture()
                         .catch(err => log.error(err));
 
-                }, 1);
+                }, EXECUTE_CAPTURE_DELAY);
 
             } );
 
@@ -290,7 +284,7 @@ class Capture {
         let newWindow = new BrowserWindow(browserWindowOptions);
 
         // TODO: make this a command line argument
-        //newWindow.toggleDevTools();
+        newWindow.toggleDevTools();
 
         this.onWebRequest(newWindow.webContents.session.webRequest);
 
@@ -418,7 +412,12 @@ class Capture {
 
         window.webContents.setUserAgent(this.browser.userAgent);
 
-        let windowDimensions = this.__calculateWindowDimensions(window);
+        //let windowDimensions = this.__calculateWindowDimensions(window);
+
+        let windowDimensions = {
+            width: deviceEmulation.screenSize.width,
+            height: deviceEmulation.screenSize.height,
+        };
 
         log.info("Using window dimensions: " + JSON.stringify(windowDimensions, null, "  "));
 

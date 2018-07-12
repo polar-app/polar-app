@@ -12,6 +12,7 @@ const {DiskDatastore} = require("./web/js/datastore/DiskDatastore");
 const {Args} = require("./web/js/electron/capture/Args");
 const {Capture} = require("./web/js/capture/Capture");
 const {Logger} = require("./web/js/logger/Logger");
+const {Browsers} = require("./web/js/capture/Browsers");
 const log = Logger.create();
 
 let diskDatastore = new DiskDatastore();
@@ -22,6 +23,11 @@ let browser = BrowserRegistry[args.browser];
 
 if(! browser) {
     throw new Error("No browser defined for: " + args.browser);
+}
+
+if(args.profile) {
+    log.info("Using browser profile: " + args.profile);
+    browser = Browsers.toProfile(browser, args.profile);
 }
 
 app.on('ready', function() {

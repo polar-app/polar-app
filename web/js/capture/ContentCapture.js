@@ -280,7 +280,7 @@ class ContentCapture {
 
         if(cloneDoc.head.firstChild != null) {
             // base must be the first element
-            cloneDoc.head.insertBefore(base,cloneDoc.head.firstChild);
+            cloneDoc.head.insertBefore(base, cloneDoc.head.firstChild);
         } else {
             cloneDoc.head.appendChild(base);
         }

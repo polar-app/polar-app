@@ -13,7 +13,8 @@ class Args {
 
         result = Objects.defaults(result, {
             quit: true,
-            browser: "MOBILE_GALAXY_S8_WITH_CHROME_61_WIDTH_750"
+            browser: "MOBILE_GALAXY_S8_WITH_CHROME_61_WIDTH_750",
+            profile: "headless",
         });
 
         return result;
