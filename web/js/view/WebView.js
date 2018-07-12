@@ -261,11 +261,6 @@ class WebView extends View {
             throw new Error("No placementElement");
         }
 
-        let pagemarkOptions = this.docFormat.pagemarkOptions();
-
-        if (pagemarkOptions.zIndex) {
-            options.zIndex = pagemarkOptions.zIndex;
-        }
 
         if (pageElement.querySelector(".pagemark")) {
             // do nothing if the current page already has a pagemark.

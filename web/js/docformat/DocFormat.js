@@ -90,17 +90,6 @@ class DocFormat {
         return false;
     }
 
-    /**
-     * Pagemark options for this viewer.
-     *
-     * @return {{}}
-     */
-    pagemarkOptions() {
-        return {
-
-        };
-    }
-
     textHighlightOptions() {
         return {};
     }

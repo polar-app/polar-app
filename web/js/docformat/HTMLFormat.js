@@ -44,16 +44,6 @@ class HTMLFormat extends DocFormat {
 
     }
 
-    /**
-     * Pagemark options for this viewer.
-     *
-     * @return {{}}
-     */
-    pagemarkOptions() {
-        return {
-        };
-    }
-
     textHighlightOptions() {
         return {
         };
