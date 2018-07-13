@@ -63615,9 +63615,7 @@ class WebView extends View {
         // pagemark data itself.  We're probably going to have to implement
         // mutation listeners there.
 
-        console.log('FIXME: registiner with pagemarkBoxController');
-
-        this.pagemarkBoxController.register(pagemarkElement);
+        //this.pagemarkBoxController.register(pagemarkElement);
     }
 
     redrawPagemark() {}

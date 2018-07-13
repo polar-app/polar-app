@@ -288,8 +288,6 @@ class WebView extends View {
         // FIXME: this needs to be a function of the PlacedPagemarkCalculator
         height = height * (options.pagemark.percentage / 100);
 
-
-
         pagemarkElement.style.height = `${height}px`;
 
         pagemarkElement.style.zIndex = `${options.zIndex}`;
@@ -304,9 +302,7 @@ class WebView extends View {
         // pagemark data itself.  We're probably going to have to implement
         // mutation listeners there.
 
-        console.log('FIXME: registiner with pagemarkBoxController');
-
-        this.pagemarkBoxController.register(pagemarkElement);
+        //this.pagemarkBoxController.register(pagemarkElement);
 
     }
 

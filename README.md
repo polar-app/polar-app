@@ -3,20 +3,138 @@
 
 # Polar Bookshelf
 
-Polar Bookshelf is a PDF manager created using [Electron
-framework](https://electron.atom.io) and
-[PDF.js](https://mozilla.github.io/pdf.js) with added support for incremental
-reading, pagemarks, and progress tracking.
+Polar Bookshelf is an incremental reading platform for PDF and web content
+created using the [Electron framework](https://electron.atom.io) and
+[PDF.js](https://mozilla.github.io/pdf.js)
+
+It includes support for features like pagemarks, text highlights, and progress
+tracking by keeping track of how much you've read and restoring pagemarks
+when you re-open documents.
 
 Pagemarks are a new proof of concept reading style inspired from [incremental
-reading](https://en.wikipedia.org/wiki/Incremental_reading).  Essentially they
+reading](https://en.wikipedia.org/wiki/Incremental_reading).  They
 allow suspend and resume of reading for weeks and months in the future until
-you're ready to resume, without losing your place.  This works even if you
-jump around in a book (which is often in technical or research work).
+you're ready to resume, without losing your place.
+
+Since you can create multiple pagemarks they work even if you jump around in a
+book (which is often in technical or research work).
 
 <img src="https://raw.githubusercontent.com/burtonator/polar-bookshelf/master/screenshot.png" width="1200">
 
 <a href="https://www.youtube.com/watch?v=OT3qLhMK6Zk"><img src="https://raw.githubusercontent.com/burtonator/polar-bookshelf/master/demo.png?1=2"></a>
+
+# Features
+
+## PDF support
+
+We have first-class PDF support thanks to <a href="https://mozilla.github.io/pdf.js/">PDF.js</a>
+
+PDFs work well when reading content in book format or when reading scientific
+research which is often stored as PDF.
+
+## Captured Web Pages
+
+PDF works well but we've found that many HTML pages don't convert to PDF well
+since they weren't intended to be printed.
+
+Captured pages are HTML content stored in ```phz``` (polar HTML zip) files.
+
+We fetch all resources, render the page as DOM and apply CSS, then de-activate
+the page by removing all scripts.
+
+We then store the content in the phz archive format and serve the content
+directly to Electron.
+
+This means you have long term storage of your content, can annotate it and use
+pagemarks without risk of the content changing.
+
+### Status
+
+Right now the PHZ format is stable and reliable but we haven't implemented the
+capture stage into the UI.
+
+You will have to run ```./capture.sh``` from a source distribution to work
+with this feature.  We're hoping to have this resolved shortly.
+
+We're also planning on working on a Chrome extension to make this easier to use
+directly from y our browser.
+
+## Pagemarks
+
+The pagemarks are persisted on disk in your ```~/.polar``` directory and when
+you re-open a PDF your pagemarks are restored.
+
+Additionally there is a progress bar that tracks the progress of the document
+based on the number of pagemarks you've created.
+
+Right now usage is only via keyboard bindings:
+
+### Linux / Windows key bindings
+
+ - Control Alt N - create a new pagemark on the current page
+ - Control Alt click - create a pagemark on the page up until the current mouse click
+ - Control Alt E - erase the current pagemark
+
+### MacOS Key bindings
+
+ - Meta-Command N - create a new pagemark on the current page
+ - Meta-Command click - create a pagemark on the page up until the current mouse click
+ - Meta-Command E - erase the current pagemark
+
+## Text Highlights
+
+Text highlights allow you to work with content like you're using a text
+highlighter in a book.
+
+### Create a text highlight.
+
+Select text you want to highlight then hit Ctrl-Alt-T
+
+### Delete a text highlight.
+
+Right click the highlight and select delete.
+
+### Key bindings:
+
+ - Ctrl-Alt-T - create a new text highlight from the current selected text.
+
+## REST API
+
+We're developing a REST API for interacting with Polar which is still in the
+beta stage.  Right now we use the REST backend for serving content to the Electron
+renderer via HTTP rather than loading documents from the filesystem.
+
+## Hackable
+
+Since the entire platform is based on Electron (Node + Chromium) the platform
+is very easy to work with which means developers can contribute easily.
+
+# Data
+
+All data is stored on disk in JSON format.  This also includes extracted metadata
+from the document.  For example, text highlights include the source text that you
+copied as well as pointers into the original document where they can be found.
+
+# Pending Features
+
+We're currently working on landing a few key features which are halfway
+implemented including:
+
+- A rework of text highlights for PDFs
+
+- A UI for running capture
+
+- A new UI for working with pagemarks including dragging and resizing them.
+
+- Multiple pagemarks per page including fractional pagemarks that can be placed
+  anywhere.
+
+- Area highlights based on a text box.
+
+- Thumbnails of highlights (text + area) stored in .json
+
+- Flashcard integration with Anki support. The flashcard UI is mostly complete
+  but I need feedback on the design.
 
 # Roadmap
 
@@ -31,8 +149,8 @@ The long term goal is to implement the following functionality:
     - Integration of https://github.com/burtonator/pdf-annotation-exporter to
       enable this functionality.
 
- - Additional annotation types like area highlight, text highlight, plus a
-   complex feature set like notes and tags for these objects.
+ - Additional annotation types like area highlight, plus a complex feature set
+   like notes and tags for these objects.
 
  - Flashcards will be notes designed and marked specifically to be converted
    to flashcards for usage in spaced repitition systems.  They will have extended
@@ -47,12 +165,12 @@ The long term goal is to implement the following functionality:
 
  - Tagging system and the ability to perform advanced functions on the tags.
 
- - Native cloud sync.
+ - Native cloud sync across devices.
 
  - Management UI for all the notes you've worked on (editing, changing them,
    adding metadata, etc).
 
- - Ability to pull down ISBN metadata
+ - Ability to pull down ISBN metadata for books
 
  - Abilty to pull down metadata by academic paper ID using various platform
    APIs.
@@ -69,31 +187,6 @@ successful project.
   MacOS, and Windows.  You shouldn't have to pick a tool, which you might be
   using for the next 5-10 years, and then get stuck to a platform which may
   or may not exist in the future.
-
-# Usage
-
-We currently only support pagemarks but this is the main functionality I wanted
-implemented.
-
-The pagemarks are persisted on disk in your ```~/.polar``` directory and when
-you re-open a PDF your pagemarks are restored.
-
-Additionally there is a progress bar that tracks the progress of the document
-based on the number of pagemarks you've created.
-
-Right now usage is only via keyboard bindings (for pagemarks).
-
-## Linux / Windows key bindings
-
- - Control Alt N - create a new pagemark on the current page
- - Control Alt click - create a pagemark on the page up until the current mouse click
- - Control Alt E - erase the current pagemark
-
-## MacOS Key bindings
-
- - Meta-Command N - create a new pagemark on the current page
- - Meta-Command click - create a pagemark on the page up until the current mouse click
- - Meta-Command E - erase the current pagemark
 
 # Installation
 
@@ -113,13 +206,15 @@ Install NodeJS and npm for your platform.
 
 ```
 $ git clone https://github.com/burtonator/polar-bookshelf
-$ cd Electron-PDF-Viewer
+$ cd polar-bookshelf
 $ npm install && npm start
 ```
 
 ### Run with advanced logging:
 
-./node_modules/.bin/electron --enable-remote-debugging --interactive --enable-console-logging .
+```
+./node_modules/.bin/electron --interactive --enable-console-logging .
+```
 
 License
 ----------------
