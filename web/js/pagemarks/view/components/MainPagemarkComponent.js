@@ -1,9 +1,9 @@
-const {PagemarkRenderer} = require("./PagemarkRenderer");
+const {PagemarkComponent} = require("./PagemarkComponent");
 
 /**
  * Handles attaching pagemarks to the pages (as opposed to thumbnails).
  */
-class MainPagemarkRenderer extends PagemarkRenderer {
+class MainPagemarkComponent extends PagemarkComponent {
 
     /**
      *
@@ -43,4 +43,4 @@ class MainPagemarkRenderer extends PagemarkRenderer {
 
 }
 
-module.exports.MainPagemarkRenderer = MainPagemarkRenderer;
+module.exports.MainPagemarkComponent = MainPagemarkComponent;

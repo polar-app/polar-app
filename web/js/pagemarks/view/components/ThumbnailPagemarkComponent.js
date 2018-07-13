@@ -1,10 +1,14 @@
-const {PagemarkRenderer} = require("./PagemarkRenderer");
+const {PagemarkComponent} = require("./PagemarkComponent");
 
 /**
  * Handles attaching pagemarks to the pages (as opposed to thumbnails).
  */
-class ThumbnailPagemarkRenderer extends PagemarkRenderer {
+class ThumbnailPagemarkComponent extends PagemarkComponent {
 
+    /**
+     *
+     * @param view {WebView}
+     */
     constructor(view) {
         super(view);
         this.pageElementSelector = ".thumbnail";
@@ -21,13 +25,13 @@ class ThumbnailPagemarkRenderer extends PagemarkRenderer {
 
     __registerListener(pageElement) {
 
-        pageElement.querySelector(".thumbnailSelectionRing").addEventListener('DOMNodeInserted', function(event) {
+        pageElement.querySelector(".thumbnailSelectionRing").addEventListener('DOMNodeInserted', event => {
 
             if (event.target && event.target.className === "thumbnailImage") {
                 this.__render(pageElement);
             }
 
-        }.bind(this), false );
+        }, false );
 
     }
 
@@ -48,4 +52,4 @@ class ThumbnailPagemarkRenderer extends PagemarkRenderer {
 
 }
 
-module.exports.ThumbnailPagemarkRenderer = ThumbnailPagemarkRenderer;
+module.exports.ThumbnailPagemarkComponent = ThumbnailPagemarkComponent;

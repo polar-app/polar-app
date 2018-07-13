@@ -1,9 +1,9 @@
 const {Delegator, Styles, Elements, forDict} = require("../utils.js");
 const {DocMetaDescriber} = require("../metadata/DocMetaDescriber");
 const {DocFormatFactory} = require("../docformat/DocFormatFactory");
-const {CompositePagemarkRenderer} = require("../pagemarks/view/renderer/CompositePagemarkRenderer");
-const {MainPagemarkRenderer} = require("../pagemarks/view/renderer/MainPagemarkRenderer");
-const {ThumbnailPagemarkRenderer} = require("../pagemarks/view/renderer/ThumbnailPagemarkRenderer");
+const {CompositePagemarkComponent} = require("../pagemarks/view/renderer/CompositePagemarkComponent");
+const {MainPagemarkComponent} = require("../pagemarks/view/renderer/MainPagemarkComponent");
+const {ThumbnailPagemarkComponent} = require("../pagemarks/view/renderer/ThumbnailPagemarkComponent");
 const {Preconditions} = require("../Preconditions");
 const {View} = require("./View.js");
 const {BoxController} = require("../pagemarks/controller/interact/BoxController");
@@ -20,7 +20,7 @@ class WebView extends View {
         /**
          * The currently defined renderer for pagemarks.
          */
-        this.pagemarkRenderer = null;
+        this.pagemarkComponent = null;
         this.docFormat = DocFormatFactory.getInstance();
 
         this.pagemarkBoxController = new BoxController(this.pagemarkMoved);
@@ -90,20 +90,20 @@ class WebView extends View {
 
         console.log("WebView.onDocumentLoaded: ", this.model.docMeta);
 
-        let pagemarkRendererDelegates = [
-            new MainPagemarkRenderer(this),
+        let pagemarkComponentDelegates = [
+            new MainPagemarkComponent(this),
         ];
 
         if (this.docFormat.supportThumbnails()) {
             // only support rendering thumbnails for documents that have thumbnail
             // support.
-            pagemarkRendererDelegates.push(new ThumbnailPagemarkRenderer(this));
+            pagemarkComponentDelegates.push(new ThumbnailPagemarkComponent(this));
         } else {
             console.warn("Thumbnails not enabled.");
         }
 
-        this.pagemarkRenderer = new CompositePagemarkRenderer(this, pagemarkRendererDelegates);
-        this.pagemarkRenderer.setup();
+        this.pagemarkComponent = new CompositePagemarkComponent(this, pagemarkComponentDelegates);
+        this.pagemarkComponent.setup();
 
         this.updateProgress();
 
@@ -114,7 +114,7 @@ class WebView extends View {
 
         console.log("Creating pagemark on page: " + pagemarkEvent.pageNum);
 
-        this.pagemarkRenderer.create(pagemarkEvent.pageNum, pagemarkEvent.pagemark);
+        this.pagemarkComponent.create(pagemarkEvent.pageNum, pagemarkEvent.pagemark);
         this.updateProgress();
 
     }
@@ -122,7 +122,7 @@ class WebView extends View {
     onErasePagemark(pagemarkEvent) {
         console.log("WebView.onErasePagemark");
 
-        this.pagemarkRenderer.erase(pagemarkEvent.pageNum);
+        this.pagemarkComponent.erase(pagemarkEvent.pageNum);
         this.updateProgress();
 
     }
@@ -247,6 +247,7 @@ class WebView extends View {
 
         // set a pagemark-id in the DOM so that we can work with it when we use
         // the context menu, etc.
+        pagemarkElement.setAttribute("id", options.pagemark.id);
         pagemarkElement.setAttribute("data-pagemark-id", options.pagemark.id);
 
         // make sure we have a reliable CSS classname to work with.
@@ -296,7 +297,8 @@ class WebView extends View {
         // pagemark data itself.  We're probably going to have to implement
         // mutation listeners there.
 
-        //this.pagemarkBoxController.register(pagemarkElement);
+        console.log("Creating box controller for pagemarkElement: ", pagemarkElement);
+        this.pagemarkBoxController.register(pagemarkElement);
 
     }
 

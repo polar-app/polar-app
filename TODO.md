@@ -4,8 +4,12 @@
 
 - Issues with resizeable pagemarks:
 
-    - can not resize them without zIndex=1
+    - when the box is rendered with interactjs in PDF.js the page is
+      permanently changed and it looks like we can resize everything.
+        - this ONLY happens when it breaks though.
+
     - resizes immediately sets height=0 and break rendering
+
     - placement won't work because left/right aren't being used
         - thumbnails need a valid left/right, real pagemarks don't have one
           currently.

@@ -1,5 +1,5 @@
 
-class PagemarkRenderer {
+class PagemarkComponent {
 
     /**
      *
@@ -24,7 +24,8 @@ class PagemarkRenderer {
     }
 
     __setup() {
-        console.log("PagemarkRenderer: setup...");
+
+        console.log("PagemarkComponent: setup...");
 
         this.__updatePageElements();
 
@@ -115,4 +116,4 @@ class PagemarkRenderer {
 
 }
 
-module.exports.PagemarkRenderer = PagemarkRenderer;
+module.exports.PagemarkComponent = PagemarkComponent;
