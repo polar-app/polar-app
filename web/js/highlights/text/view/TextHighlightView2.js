@@ -1,7 +1,6 @@
 const {TextHighlightComponent} = require("./components/TextHighlightComponent");
 const {ComponentManager} = require("../../../components/ComponentManager");
 const {TextHighlightModel} = require("../model/TextHighlightModel");
-const {DocFormatFactory} = require("../../../docformat/DocFormatFactory");
 
 class TextHighlightView2 {
 

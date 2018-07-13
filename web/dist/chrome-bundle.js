@@ -78174,6 +78174,7 @@ const { Model } = __webpack_require__(/*! ../Model.js */ "./web/js/Model.js");
 const { WebController } = __webpack_require__(/*! ../controller/WebController.js */ "./web/js/controller/WebController.js");
 const { WebView } = __webpack_require__(/*! ../view/WebView.js */ "./web/js/view/WebView.js");
 const { TextHighlightView } = __webpack_require__(/*! ../highlights/text/view/TextHighlightView */ "./web/js/highlights/text/view/TextHighlightView.js");
+const { TextHighlightView2 } = __webpack_require__(/*! ../highlights/text/view/TextHighlightView2 */ "./web/js/highlights/text/view/TextHighlightView2.js");
 const { PagemarkView } = __webpack_require__(/*! ../pagemarks/view/PagemarkView */ "./web/js/pagemarks/view/PagemarkView.js");
 
 const { ViewerFactory } = __webpack_require__(/*! ../viewer/ViewerFactory */ "./web/js/viewer/ViewerFactory.js");
@@ -78208,7 +78209,8 @@ class Launcher {
             let clock = new SystemClock();
             let model = new Model(persistenceLayer, clock);
             new WebView(model).start();
-            new TextHighlightView(model).start();
+            //new TextHighlightView(model).start();
+            new TextHighlightView2(model).start();
             new PagemarkView(model).start();
             ViewerFactory.create().start();
 
@@ -78303,6 +78305,142 @@ function createDocMeta1() {
 new Launcher(persistenceLayerFactory).launch().then(function () {
     console.log("App now loaded.");
 });
+
+/***/ }),
+
+/***/ "./web/js/components/Component.js":
+/*!****************************************!*\
+  !*** ./web/js/components/Component.js ***!
+  \****************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+class Component {
+
+    init(componentEvent) {}
+
+    render() {}
+
+    destroy() {}
+
+};
+
+module.exports.Component = Component;
+
+/***/ }),
+
+/***/ "./web/js/components/ComponentManager.js":
+/*!***********************************************!*\
+  !*** ./web/js/components/ComponentManager.js ***!
+  \***********************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+const { PageRedrawHandler } = __webpack_require__(/*! ../PageRedrawHandler */ "./web/js/PageRedrawHandler.js");
+const { DocFormatFactory } = __webpack_require__(/*! ../docformat/DocFormatFactory */ "./web/js/docformat/DocFormatFactory.js");
+const { MutationState } = __webpack_require__(/*! ../proxies/MutationState */ "./web/js/proxies/MutationState.js");
+const log = __webpack_require__(/*! ../logger/Logger */ "./web/js/logger/Logger.js").create();
+
+class ComponentManager {
+
+    /**
+     *
+     * @param model {Model}
+     * @param createComponent {Function<Component>}
+     * @param createDocMetaModel {Function<DocMetaModel>}
+     */
+    constructor(model, createComponent, createDocMetaModel) {
+
+        this.model = model;
+        this.docFormat = DocFormatFactory.getInstance();
+        this.createComponent = createComponent;
+        this.createDocMetaModel = createDocMetaModel;
+
+        /**
+         * A map of components based on their ID.
+         *
+         * @type {Object<String,ComponentEntry>}
+         */
+        this.components = {};
+    }
+
+    start() {
+        this.model.registerListenerForDocumentLoaded(this.onDocumentLoaded.bind(this));
+    }
+
+    onDocumentLoaded(documentLoadedEvent) {
+
+        log.info("onDocumentLoaded");
+
+        let docMetaModel = this.createDocMetaModel();
+
+        // Listen for changes from the model as objects are PRESENT or ABSENT
+        // for the specific objects we're interested in and then call
+        // onComponentEvent so that we can render/destroy the component and
+        // and change it on page events.
+
+        docMetaModel.registerListener(documentLoadedEvent.docMeta, this.onComponentEvent.bind(this));
+    }
+
+    onComponentEvent(componentEvent) {
+
+        log.info("onComponentEvent: ", componentEvent);
+
+        let pageNum = componentEvent.pageMeta.pageInfo.num;
+
+        if (componentEvent.mutationState === MutationState.PRESENT) {
+
+            log.info("PRESENT");
+
+            let pageElement = this.docFormat.getPageElementFromPageNum(pageNum);
+
+            // create the component and call render on it...
+
+            let component = this.createComponent();
+
+            component.init(componentEvent);
+
+            let callback = () => {
+                component.render();
+            };
+
+            // draw it manually the first time.
+            callback();
+
+            // then let the redraw handler do it after this.
+            let pageRedrawHandler = new PageRedrawHandler(pageElement);
+            pageRedrawHandler.register(callback);
+
+            this.components[componentEvent.id] = new ComponentEntry(pageRedrawHandler, component);
+        } else if (componentEvent.mutationState === MutationState.ABSENT) {
+
+            log.info("ABSENT");
+
+            let componentEntry = this.components[componentEvent.id];
+            componentEntry.pageRedrawHandler.unregister();
+            componentEntry.component.destroy();
+
+            delete this.components[componentEvent.id];
+        }
+    }
+
+}
+
+class ComponentEntry {
+
+    /**
+     *
+     * @param pageRedrawHandler {PageRedrawHandler}
+     * @param component {Component}
+     */
+    constructor(pageRedrawHandler, component) {
+        this.pageRedrawHandler = pageRedrawHandler;
+        this.component = component;
+    }
+
+}
+
+module.exports.ComponentManager = ComponentManager;
 
 /***/ }),
 
@@ -81627,6 +81765,164 @@ class TextHighlightView {
 }
 
 module.exports.TextHighlightView = TextHighlightView;
+
+/***/ }),
+
+/***/ "./web/js/highlights/text/view/TextHighlightView2.js":
+/*!***********************************************************!*\
+  !*** ./web/js/highlights/text/view/TextHighlightView2.js ***!
+  \***********************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+const { TextHighlightComponent } = __webpack_require__(/*! ./components/TextHighlightComponent */ "./web/js/highlights/text/view/components/TextHighlightComponent.js");
+const { ComponentManager } = __webpack_require__(/*! ../../../components/ComponentManager */ "./web/js/components/ComponentManager.js");
+const { TextHighlightModel } = __webpack_require__(/*! ../model/TextHighlightModel */ "./web/js/highlights/text/model/TextHighlightModel.js");
+
+class TextHighlightView2 {
+
+    /**
+     *
+     * @param model {Model}
+     */
+    constructor(model) {
+
+        this.componentManager = new ComponentManager(model, () => new TextHighlightComponent(), () => new TextHighlightModel());
+    }
+
+    start() {
+        this.componentManager.start();
+    }
+
+}
+
+module.exports.TextHighlightView2 = TextHighlightView2;
+
+/***/ }),
+
+/***/ "./web/js/highlights/text/view/components/TextHighlightComponent.js":
+/*!**************************************************************************!*\
+  !*** ./web/js/highlights/text/view/components/TextHighlightComponent.js ***!
+  \**************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+const { DocFormatFactory } = __webpack_require__(/*! ../../../../docformat/DocFormatFactory */ "./web/js/docformat/DocFormatFactory.js");
+const { Component } = __webpack_require__(/*! ../../../../components/Component */ "./web/js/components/Component.js");
+const { forDict } = __webpack_require__(/*! ../../../../util/Functions */ "./web/js/util/Functions.js");
+const { Rects } = __webpack_require__(/*! ../../../../Rects */ "./web/js/Rects.js");
+const log = __webpack_require__(/*! ../../../../logger/Logger */ "./web/js/logger/Logger.js").create();
+
+class TextHighlightComponent extends Component {
+
+    constructor() {
+        super();
+        this.docFormat = DocFormatFactory.getInstance();
+
+        /**
+         * The page we're working with.
+         *
+         * @type {number}
+         */
+        this.pageNum = undefined;
+
+        /**
+         * The .page we're working with.
+         *
+         * @type {HTMLElement}
+         */
+        this.pageElement = undefined;
+
+        /**
+         *
+         * @type {DocMeta}
+         */
+        this.docMeta = undefined;
+
+        /**
+         *
+         * @type {TextHighlight}
+         */
+        this.textHighlight = undefined;
+    }
+
+    /**
+     * @Override
+     * @param componentEvent
+     */
+    init(componentEvent) {
+
+        // TODO: we should a specific event class for this data which is captured
+        // within a higher level componentEvent.
+        this.docMeta = componentEvent.docMeta;
+        this.textHighlight = componentEvent.textHighlight;
+        this.pageMeta = componentEvent.pageMeta;
+
+        this.pageNum = this.pageMeta.pageInfo.num;
+        this.pageElement = this.docFormat.getPageElementFromPageNum(this.pageNum);
+    }
+
+    /**
+     * @Override
+     */
+    render() {
+
+        forDict(this.textHighlight.rects, (id, highlightRect) => {
+
+            log.info("Rendering annotation at: " + JSON.stringify(highlightRect, null, "  "));
+
+            let highlightElement = document.createElement("div");
+
+            highlightElement.setAttribute("data-type", "text-highlight");
+            highlightElement.setAttribute("data-doc-fingerprint", this.docMeta.docInfo.fingerprint);
+            highlightElement.setAttribute("data-text-highlight-id", this.textHighlight.id);
+            highlightElement.setAttribute("data-page-num", `${this.pageMeta.pageInfo.num}`);
+
+            highlightElement.className = `text-highlight annotation text-highlight-${this.textHighlight.id}`;
+
+            highlightElement.style.position = "absolute";
+            highlightElement.style.backgroundColor = `yellow`;
+            highlightElement.style.opacity = `0.5`;
+
+            if (this.docFormat.name === "pdf") {
+                // this is only needed for PDF and we might be able to use a transform
+                // in the future which would be easier.
+                let currentScale = this.docFormat.currentScale();
+                highlightRect = Rects.scale(highlightRect, currentScale);
+            }
+
+            highlightElement.style.left = `${highlightRect.left}px`;
+            highlightElement.style.top = `${highlightRect.top}px`;
+
+            highlightElement.style.width = `${highlightRect.width}px`;
+            highlightElement.style.height = `${highlightRect.height}px`;
+
+            // TODO: the problem with this strategy is that it inserts elements in the
+            // REVERSE order they are presented visually.  This isn't a problem but
+            // it might become confusing to debug this issue.  A quick fix is to
+            // just reverse the array before we render the elements.
+            this.pageElement.insertBefore(highlightElement, this.pageElement.firstChild);
+        });
+    }
+
+    /**
+     * @Override
+     */
+    destroy() {
+
+        let selector = `.text-highlight-${this.textHighlight.id}`;
+        let highlightElements = document.querySelectorAll(selector);
+
+        log.info(`Found N elements for selector ${selector}: ` + highlightElements.length);
+
+        highlightElements.forEach(highlightElement => {
+            highlightElement.parentElement.removeChild(highlightElement);
+        });
+    }
+
+}
+
+module.exports.TextHighlightComponent = TextHighlightComponent;
 
 /***/ }),
 

@@ -3,6 +3,7 @@ const {Model} = require("../Model.js");
 const {WebController} = require("../controller/WebController.js");
 const {WebView} = require("../view/WebView.js");
 const {TextHighlightView} = require("../highlights/text/view/TextHighlightView");
+const {TextHighlightView2} = require("../highlights/text/view/TextHighlightView2");
 const {PagemarkView} = require("../pagemarks/view/PagemarkView");
 
 const {ViewerFactory} = require("../viewer/ViewerFactory");
@@ -34,7 +35,8 @@ class Launcher {
         let clock = new SystemClock();
         let model = new Model(persistenceLayer, clock);
         new WebView(model).start();
-        new TextHighlightView(model).start();
+        //new TextHighlightView(model).start();
+        new TextHighlightView2(model).start();
         new PagemarkView(model).start();
         ViewerFactory.create().start();
 
