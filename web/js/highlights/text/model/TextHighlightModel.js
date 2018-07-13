@@ -1,6 +1,7 @@
+const {DocMetaModel} = require("../../../metadata/DocMetaModel");
 const {forDict} = require("../../../utils.js");
 
-class TextHighlightModel {
+class TextHighlightModel extends DocMetaModel {
 
     registerListener(docMeta, callback) {
 

@@ -1,3 +1,5 @@
+const {forDict} = require("../../utils.js");
+
 /**
  *
  */
@@ -21,7 +23,10 @@ class PagemarkModel {
                     return;
                 }
 
+                let id = traceEvent.value ? traceEvent.value.id : traceEvent.previousValue.id;
+
                 let event = {
+                    id,
                     docMeta,
                     pageMeta,
 
@@ -45,7 +50,5 @@ class PagemarkModel {
 
     }
 }
-
-const {forDict} = require("../../utils.js");
 
 module.exports.PagemarkModel = PagemarkModel;

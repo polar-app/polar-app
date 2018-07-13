@@ -80745,9 +80745,10 @@ module.exports.TextSelections = TextSelections;
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
+const { DocMetaModel } = __webpack_require__(/*! ../../../metadata/DocMetaModel */ "./web/js/metadata/DocMetaModel.js");
 const { forDict } = __webpack_require__(/*! ../../../utils.js */ "./web/js/utils.js");
 
-class TextHighlightModel {
+class TextHighlightModel extends DocMetaModel {
 
     registerListener(docMeta, callback) {
 
@@ -81635,6 +81636,9 @@ const { Logger } = __webpack_require__(/*! ../../../logger/Logger */ "./web/js/l
 
 const log = Logger.create();
 
+/**
+ * @deprecated Move to TextHighlightView2
+ */
 class TextHighlightView {
 
     /**
@@ -82524,6 +82528,34 @@ class DocMetaDescriber {
 };
 
 module.exports.DocMetaDescriber = DocMetaDescriber;
+
+/***/ }),
+
+/***/ "./web/js/metadata/DocMetaModel.js":
+/*!*****************************************!*\
+  !*** ./web/js/metadata/DocMetaModel.js ***!
+  \*****************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+/**
+ *
+ * Allows us to register events and listen for specific events on a given DocMeta.
+ *
+ * @abstract
+ */
+class DocMetaModel {
+
+  /**
+   *
+   * @param docMeta {DocMeta}
+   * @param callback
+   */
+  registerListener(docMeta, callback) {}
+
+}
+
+module.exports.DocMetaModel = DocMetaModel;
 
 /***/ }),
 
@@ -85372,6 +85404,8 @@ module.exports.ResizeRectAdjacencyCalculator = ResizeRectAdjacencyCalculator;
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
+const { forDict } = __webpack_require__(/*! ../../utils.js */ "./web/js/utils.js");
+
 /**
  *
  */
@@ -85395,7 +85429,10 @@ class PagemarkModel {
                     return;
                 }
 
+                let id = traceEvent.value ? traceEvent.value.id : traceEvent.previousValue.id;
+
                 let event = {
+                    id,
                     docMeta,
                     pageMeta,
 
@@ -85416,8 +85453,6 @@ class PagemarkModel {
         });
     }
 }
-
-const { forDict } = __webpack_require__(/*! ../../utils.js */ "./web/js/utils.js");
 
 module.exports.PagemarkModel = PagemarkModel;
 
@@ -85474,38 +85509,9 @@ module.exports.PagemarkView = PagemarkView;
   !*** ./web/js/pagemarks/view/components/CompositePagemarkComponent.js ***!
   \************************************************************************/
 /*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, exports) {
 
-const { Delegator } = __webpack_require__(/*! ../../../utils.js */ "./web/js/utils.js");
-const { PagemarkComponent } = __webpack_require__(/*! ./PagemarkComponent */ "./web/js/pagemarks/view/components/PagemarkComponent.js");
-
-class CompositePagemarkComponent extends PagemarkComponent {
-
-    constructor(view, delegates) {
-        super(view);
-
-        if (!delegates) {
-            throw new Error("No delegates");
-        }
-
-        this.delegator = new Delegator(delegates);
-    }
-
-    setup() {
-        this.delegator.apply("setup");
-    }
-
-    create(pageNum, pagemark) {
-        this.delegator.apply("create", pageNum, pagemark);
-    }
-
-    erase(pageNum) {
-        this.delegator.apply("erase", pageNum);
-    }
-
-}
-
-module.exports.CompositePagemarkComponent = CompositePagemarkComponent;
+throw new Error("Module build failed: Error: ENOENT: no such file or directory, open '/home/burton/projects/polar-bookshelf/web/js/pagemarks/view/components/CompositePagemarkComponent.js'");
 
 /***/ }),
 
@@ -85514,185 +85520,9 @@ module.exports.CompositePagemarkComponent = CompositePagemarkComponent;
   !*** ./web/js/pagemarks/view/components/MainPagemarkComponent.js ***!
   \*******************************************************************/
 /*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, exports) {
 
-function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
-
-const { PagemarkComponent } = __webpack_require__(/*! ./PagemarkComponent */ "./web/js/pagemarks/view/components/PagemarkComponent.js");
-
-/**
- * Handles attaching pagemarks to the pages (as opposed to thumbnails).
- */
-class MainPagemarkComponent extends PagemarkComponent {
-
-    /**
-     *
-     * @param view {WebView}
-     */
-    constructor(view) {
-        super(view);
-        this.pageElementSelector = ".page";
-    }
-
-    setup() {
-        this.__setup();
-    }
-
-    __requiresPagemark(pageElement) {
-        return pageElement.querySelector("canvas") != null || pageElement.querySelector("iframe");
-    }
-
-    __registerListener(pageElement) {
-        var _this = this;
-
-        // TODO: migrate to using PageRedrawHandler
-
-        pageElement.addEventListener('DOMNodeInserted', (() => {
-            var _ref = _asyncToGenerator(function* (event) {
-
-                if (event.target && event.target.className === "endOfContent") {
-                    yield _this.__render(pageElement);
-                }
-            });
-
-            return function (_x) {
-                return _ref.apply(this, arguments);
-            };
-        })(), false);
-    }
-
-    __render(pageElement) {
-        var _this2 = this;
-
-        return _asyncToGenerator(function* () {
-            yield _this2.view.recreatePagemarksFromPageElement(pageElement);
-        })();
-    }
-
-}
-
-module.exports.MainPagemarkComponent = MainPagemarkComponent;
-
-/***/ }),
-
-/***/ "./web/js/pagemarks/view/components/PagemarkComponent.js":
-/*!***************************************************************!*\
-  !*** ./web/js/pagemarks/view/components/PagemarkComponent.js ***!
-  \***************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-const { Preconditions } = __webpack_require__(/*! ../../../Preconditions */ "./web/js/Preconditions.js");
-
-class PagemarkComponent {
-
-    /**
-     *
-     * @param view {WebView}
-     */
-    constructor(view) {
-
-        /**
-         * @type {WebView}
-         */
-        this.view = view;
-
-        this.pageElements = [];
-
-        // the CSS selector for pulling out the right pageElements.
-        this.pageElementSelector = null;
-    }
-
-    setup() {}
-
-    __setup() {
-
-        console.log("PagemarkComponent: setup...");
-
-        this.__updatePageElements();
-
-        console.log(`Working with ${this.pageElements.length} elements for selector ${this.pageElementSelector}`);
-
-        this.pageElements.forEach(pageElement => {
-            this.init(pageElement);
-        });
-    }
-
-    __updatePageElements() {
-        Preconditions.assertNotNull(this.pageElementSelector, "pageElementSelector");
-        this.pageElements = document.querySelectorAll(this.pageElementSelector);
-    }
-
-    init(pageElement) {
-
-        console.log("Initializing pageElement: ", pageElement);
-
-        if (this.__requiresPagemark(pageElement)) {
-            this.__render(pageElement);
-        }
-
-        this.__registerListener(pageElement);
-    }
-
-    /**
-     * Return true if the target needs a pagemark.
-     */
-    __requiresPagemark(pageElement) {}
-
-    /**
-     * Register future listeners to monitor status.
-     */
-    __registerListener(pageElement) {}
-
-    __render(pageElement) {}
-
-    /**
-     * Erase the page elements on the give page number.
-     */
-    create(pageNum, pagemark) {
-
-        if (typeof pageNum !== "number") {
-            throw new Error("pageNum is not a number");
-        }
-
-        if (!pagemark) {
-            throw new Error("No pagemark.");
-        }
-
-        this.__updatePageElements();
-
-        let pageElement = this.pageElements[pageNum - 1];
-
-        if (!pageElement) {
-            throw new Error(`No pageElement for pageNum ${pageNum} out of ${this.pageElements.length} pageElements`);
-        }
-
-        this.__render(pageElement);
-    }
-
-    /**
-     * Erase the pagemarks on the give page number.
-     */
-    erase(pageNum) {
-
-        if (typeof pageNum !== "number") {
-            throw new Error("pageNum is not a number");
-        }
-
-        this.__updatePageElements();
-
-        let pageElement = this.pageElements[pageNum - 1];
-
-        if (!pageElement) {
-            throw new Error(`No pageElement for pageNum ${pageNum} out of ${this.pageElements.length} pageElements`);
-        }
-
-        this.view.erasePagemarks(pageElement);
-    }
-
-}
-
-module.exports.PagemarkComponent = PagemarkComponent;
+throw new Error("Module build failed: Error: ENOENT: no such file or directory, open '/home/burton/projects/polar-bookshelf/web/js/pagemarks/view/components/MainPagemarkComponent.js'");
 
 /***/ }),
 
@@ -85701,60 +85531,9 @@ module.exports.PagemarkComponent = PagemarkComponent;
   !*** ./web/js/pagemarks/view/components/ThumbnailPagemarkComponent.js ***!
   \************************************************************************/
 /*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, exports) {
 
-const { PagemarkComponent } = __webpack_require__(/*! ./PagemarkComponent */ "./web/js/pagemarks/view/components/PagemarkComponent.js");
-
-/**
- * Handles attaching pagemarks to the pages (as opposed to thumbnails).
- */
-class ThumbnailPagemarkComponent extends PagemarkComponent {
-
-    /**
-     *
-     * @param view {WebView}
-     */
-    constructor(view) {
-        super(view);
-        this.pageElementSelector = ".thumbnail";
-    }
-
-    setup() {
-        this.__setup();
-    }
-
-    __requiresPagemark(pageElement) {
-        let thumbnailImage = pageElement.querySelector(".thumbnailImage");
-        return thumbnailImage != null && thumbnailImage.getAttribute("src") != null;
-    }
-
-    __registerListener(pageElement) {
-
-        pageElement.querySelector(".thumbnailSelectionRing").addEventListener('DOMNodeInserted', event => {
-
-            if (event.target && event.target.className === "thumbnailImage") {
-                this.__render(pageElement);
-            }
-        }, false);
-    }
-
-    __render(pageElement) {
-
-        let templateElement = pageElement.querySelector(".thumbnailImage");
-
-        if (!templateElement) {
-            // the thumbnail tab might not be visible.
-            return;
-        }
-
-        let options = { zIndex: 1, templateElement, placementElement: templateElement };
-
-        this.view.recreatePagemarksFromPageElement(pageElement, options);
-    }
-
-}
-
-module.exports.ThumbnailPagemarkComponent = ThumbnailPagemarkComponent;
+throw new Error("Module build failed: Error: ENOENT: no such file or directory, open '/home/burton/projects/polar-bookshelf/web/js/pagemarks/view/components/ThumbnailPagemarkComponent.js'");
 
 /***/ }),
 

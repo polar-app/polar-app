@@ -10,6 +10,9 @@ const {Logger} = require("../../../logger/Logger");
 
 const log = Logger.create();
 
+/**
+ * @deprecated Move to TextHighlightView2
+ */
 class TextHighlightView {
 
     /**

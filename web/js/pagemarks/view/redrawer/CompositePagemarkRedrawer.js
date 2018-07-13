@@ -1,7 +1,7 @@
 const {Delegator} = require("../../../utils.js");
-const {PagemarkComponent} = require("./PagemarkComponent");
+const {PagemarkComponent} = require("./PagemarkRedrawer");
 
-class CompositePagemarkComponent extends PagemarkComponent {
+class CompositePagemarkRedrawer extends PagemarkComponent {
 
     constructor(view, delegates) {
         super(view);
@@ -27,4 +27,4 @@ class CompositePagemarkComponent extends PagemarkComponent {
 
 }
 
-module.exports.CompositePagemarkComponent = CompositePagemarkComponent;
+module.exports.CompositePagemarkRedrawer = CompositePagemarkRedrawer;

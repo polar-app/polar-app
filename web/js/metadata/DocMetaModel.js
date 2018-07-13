@@ -16,3 +16,5 @@ class DocMetaModel {
     }
 
 }
+
+module.exports.DocMetaModel = DocMetaModel;

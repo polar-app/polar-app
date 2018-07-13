@@ -1,6 +1,6 @@
 const {Preconditions} = require("../../../Preconditions");
 
-class PagemarkComponent {
+class PagemarkRedrawer {
 
     /**
      *
@@ -26,7 +26,7 @@ class PagemarkComponent {
 
     __setup() {
 
-        console.log("PagemarkComponent: setup...");
+        console.log("PagemarkRedrawer: setup...");
 
         this.__updatePageElements();
 
@@ -118,4 +118,4 @@ class PagemarkComponent {
 
 }
 
-module.exports.PagemarkComponent = PagemarkComponent;
+module.exports.PagemarkComponent = PagemarkRedrawer;
