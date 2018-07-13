@@ -70,6 +70,8 @@ class PendingWebRequestsListener extends BaseWebRequestsListener {
             --this.pending;
             ++this.finished;
 
+            log.info(`Pending state DECREMENTED to ${this.pending} on ${name} for URL: `, details.url);
+
         }
 
         if(name === "onBeforeRequest") {
@@ -79,6 +81,8 @@ class PendingWebRequestsListener extends BaseWebRequestsListener {
 
             ++this.pending;
             ++this.started;
+
+            log.info(`Pending state INCREMENTED to ${this.pending} on ${name} for URL: `, details.url);
 
         }
 
