@@ -8,11 +8,20 @@
       state vs the window NOT the external state of the iframe to see if it
       needs to change the iframe size.
 
+    - play with transform: translateZ(0):
+
+        - which might trick hardware acceleration to work.
+
+
+    - this seems to highlight the problem a bit:
+        https://codepen.io/Vestride/pen/CvBrw
+
 - fonts are looking ugly now at 150% ... even 100% doesn't look that impressive.
   Maybe play with the native zoom support in Electron via webContents.setZoomLevel
   which should be [1.0,N].  I might also look at improving fonts in general in
   Electron.
 
+    https://stackoverflow.com/questions/14677490/blurry-text-after-using-css-transform-scale-in-chrome
 
 - broken page:
 

@@ -145,8 +145,8 @@ class HTMLViewer extends Viewer {
     }
 
     _changeScale(scale) {
-        let iframe = document.querySelector("#content-parent");
-        iframe.style.transform = `scale(${scale})`;
+        let contentParent = document.querySelector("#content-parent");
+        contentParent.style.transform = `scale(${scale})`;
 
     }
 
