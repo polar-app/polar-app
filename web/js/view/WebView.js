@@ -37,12 +37,14 @@ class WebView extends View {
         this.model.registerListenerForErasePagemark(this.onErasePagemark.bind(this));
         this.model.registerListenerForDocumentLoaded(this.onDocumentLoaded.bind(this));
 
-
         return this;
 
     }
 
     updateProgress() {
+
+        // TODO: this should listen directly to the model and the pagemarks
+        // themselves.
 
         let perc = this.computeProgress(this.model.docMeta);
 

@@ -77433,18 +77433,26 @@ class PageRedrawHandler {
     constructor(pageElement) {
 
         this.pageElement = pageElement;
+        this.listener = null;
     }
 
     register(callback) {
 
-        this.pageElement.addEventListener('DOMNodeInserted', event => {
+        this.listener = event => {
 
             if (event.target && event.target.className === "endOfContent") {
                 callback(this.pageElement);
             }
-        }, false);
+        };
+
+        this.pageElement.addEventListener('DOMNodeInserted', this.listener, false);
     }
-};
+
+    unregister() {
+        this.pageElement.removeEventListener('DOMNodeInserted', this.listener, false);
+    }
+
+}
 
 module.exports.PageRedrawHandler = PageRedrawHandler;
 
@@ -80617,6 +80625,7 @@ class TextHighlightModel {
                 }
 
                 let event = {
+                    id: traceEvent.value.id,
                     docMeta,
                     pageMeta,
 
@@ -81613,7 +81622,7 @@ class TextHighlightView {
         RendererContextMenu.register(highlightElement, ContextMenuType.TEXT_HIGHLIGHT);
     }
 
-};
+}
 
 module.exports.TextHighlightView = TextHighlightView;
 
@@ -85224,7 +85233,6 @@ class MainPagemarkComponent extends PagemarkComponent {
      */
     constructor(view) {
         super(view);
-        this.pageElementSelector = ".page";
     }
 
     setup() {
@@ -87665,6 +87673,9 @@ class WebView extends View {
     }
 
     updateProgress() {
+
+        // TODO: this should listen directly to the model and the pagemarks
+        // themselves.
 
         let perc = this.computeProgress(this.model.docMeta);
 

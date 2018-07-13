@@ -92,7 +92,7 @@ class TextHighlightView {
 
             highlightElements.forEach(highlightElement => {
                 highlightElement.parentElement.removeChild(highlightElement);
-            })
+            });
 
         }
 
@@ -145,6 +145,6 @@ class TextHighlightView {
 
     }
 
-};
+}
 
 module.exports.TextHighlightView = TextHighlightView;

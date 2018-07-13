@@ -9,21 +9,28 @@ class PageRedrawHandler {
     constructor(pageElement) {
 
         this.pageElement = pageElement;
+        this.listener = null;
 
     }
 
     register(callback) {
 
-        this.pageElement.addEventListener('DOMNodeInserted', event => {
+        this.listener = event => {
 
             if (event.target && event.target.className === "endOfContent") {
                 callback(this.pageElement);
             }
 
-        }, false);
+        };
+
+        this.pageElement.addEventListener('DOMNodeInserted', this.listener, false);
 
     };
 
-};
+    unregister() {
+        this.pageElement.removeEventListener('DOMNodeInserted', this.listener, false);
+    }
+
+}
 
 module.exports.PageRedrawHandler = PageRedrawHandler;

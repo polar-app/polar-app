@@ -2,6 +2,16 @@
 
 ## Next
 
+- pagemar refactor.
+
+    - PagemarkComponent seems to be oriented around the entire page... it
+      redraws every pagemark
+
+    - the components exists to redraw pages once they are reloaded...
+
+    - this is what we're doing with the TextHighlight system.  We have
+      components which use a PageRedrawHandler and have render() basically.
+
 - Issues with resizeable pagemarks:
 
     - when the box is rendered with interactjs in PDF.js the page is

@@ -16,6 +16,7 @@ class TextHighlightModel {
                 }
 
                 let event = {
+                    id: traceEvent.value.id,
                     docMeta,
                     pageMeta,
 
