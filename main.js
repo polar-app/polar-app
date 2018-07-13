@@ -96,11 +96,11 @@ const MENU_TEMPLATE = [{
                 //accelerator: 'CmdOrCtrl+O',
                 click: cmdOpenInNewWindow
             },
-            {
-                label: 'Capture Web Page',
-                //accelerator: 'CmdOrCtrl+O',
-                click: cmdCaptureWebPage
-            },
+            // {
+            //     label: 'Capture Web Page',
+            //     //accelerator: 'CmdOrCtrl+O',
+            //     click: cmdCaptureWebPage
+            // },
 
             // {
             //     label: 'Open Containing Folder',
@@ -150,14 +150,14 @@ const MENU_TEMPLATE = [{
             { label: 'Copy', accelerator: 'CmdOrCtrl+C', role: 'copy' },
             { label: 'Select All', accelerator: 'CmdOrCtrl+A', role: 'selectall' },
             { type: 'separator' },
-            {
-                label: 'Change Pagemark Column Type',
-                submenu: [
-                    { label: 'Single', },
-                    { label: 'Double', },
-                    { label: 'Triple', },
-                ]
-            },
+            // {
+            //     label: 'Change Pagemark Column Type',
+            //     submenu: [
+            //         { label: 'Single', },
+            //         { label: 'Double', },
+            //         { label: 'Triple', },
+            //     ]
+            // },
         ]
     },
     {

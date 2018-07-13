@@ -160,7 +160,7 @@ class BoxController {
 
                 }
 
-                this._fireBoxMoveEvent("drag", restrictionRect, boxRect, target.id);
+                this._fireBoxMoveEvent("drag", restrictionRect, boxRect, target.id, target);
 
             })
             .on('resizestart', interactionEvent => {
@@ -237,7 +237,7 @@ class BoxController {
 
                 }
 
-                this._fireBoxMoveEvent("resize", restrictionRect, boxRect, target.id);
+                this._fireBoxMoveEvent("resize", restrictionRect, boxRect, target.id, target);
 
             });
 
@@ -249,15 +249,17 @@ class BoxController {
      * @param restrictionRect {Rect}
      * @param boxRect {Rect}
      * @param id {String}
+     * @param target {HTMLElement}
      * @private
      */
-    _fireBoxMoveEvent(type, restrictionRect, boxRect, id) {
+    _fireBoxMoveEvent(type, restrictionRect, boxRect, id, target) {
 
         let boxMoveEvent = new BoxMoveEvent({
             type,
             restrictionRect,
             boxRect,
-            id
+            id,
+            target,
         });
 
         if(this.callback) {

@@ -30,6 +30,13 @@ class BoxMoveEvent {
          */
         this.id = undefined;
 
+        /**
+         * The element being moved.
+         *
+         * @type {HTMLElement}
+         */
+        this.target = undefined;
+
         Object.assign(this, opts);
 
     }

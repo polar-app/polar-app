@@ -135,12 +135,6 @@ class TextHighlightView {
         highlightElement.style.width = `${highlightRect.width}px`;
         highlightElement.style.height = `${highlightRect.height}px`;
 
-        let textHighlightOptions = docFormat.pagemarkOptions();
-
-        if (textHighlightOptions.zIndex) {
-            highlightElement.style.zIndex = `${textHighlightOptions.zIndex}`;
-        }
-
         // TODO: the problem with this strategy is that it inserts elements in the
         // REVERSE order they are presented visually.  This isn't a problem but
         // it might become confusing to debug this issue.  A quick fix is to

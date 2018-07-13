@@ -57133,12 +57133,6 @@ class TextHighlightView {
         highlightElement.style.width = `${highlightRect.width}px`;
         highlightElement.style.height = `${highlightRect.height}px`;
 
-        let textHighlightOptions = docFormat.pagemarkOptions();
-
-        if (textHighlightOptions.zIndex) {
-            highlightElement.style.zIndex = `${textHighlightOptions.zIndex}`;
-        }
-
         // TODO: the problem with this strategy is that it inserts elements in the
         // REVERSE order they are presented visually.  This isn't a problem but
         // it might become confusing to debug this issue.  A quick fix is to
@@ -59979,7 +59973,7 @@ class BoxController {
                 }
             }
 
-            this._fireBoxMoveEvent("drag", restrictionRect, boxRect, target.id);
+            this._fireBoxMoveEvent("drag", restrictionRect, boxRect, target.id, target);
         }).on('resizestart', interactionEvent => {
             this._captureStartTargetRect(interactionEvent);
             console.log("resizestart: interactionEvent.rect: " + JSON.stringify(interactionEvent.rect, null, "  "));
@@ -60050,7 +60044,7 @@ class BoxController {
                 this._resizeTargetElement(adjustedRect, target);
             }
 
-            this._fireBoxMoveEvent("resize", restrictionRect, boxRect, target.id);
+            this._fireBoxMoveEvent("resize", restrictionRect, boxRect, target.id, target);
         });
     }
 
@@ -60060,15 +60054,17 @@ class BoxController {
      * @param restrictionRect {Rect}
      * @param boxRect {Rect}
      * @param id {String}
+     * @param target {HTMLElement}
      * @private
      */
-    _fireBoxMoveEvent(type, restrictionRect, boxRect, id) {
+    _fireBoxMoveEvent(type, restrictionRect, boxRect, id, target) {
 
         let boxMoveEvent = new BoxMoveEvent({
             type,
             restrictionRect,
             boxRect,
-            id
+            id,
+            target
         });
 
         if (this.callback) {
@@ -60218,6 +60214,13 @@ class BoxMoveEvent {
      * @type {string}
      */
     this.id = undefined;
+
+    /**
+     * The element being moved.
+     *
+     * @type {HTMLElement}
+     */
+    this.target = undefined;
 
     Object.assign(this, opts);
   }
