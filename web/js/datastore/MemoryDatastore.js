@@ -6,7 +6,7 @@ const {Paths} = require("../util/Paths");
 /**
  * Datastore just in memory with no on disk persistence.
  */
-module.exports.MemoryDatastore = class extends Datastore {
+class MemoryDatastore extends Datastore {
 
     constructor() {
 
@@ -53,3 +53,5 @@ module.exports.MemoryDatastore = class extends Datastore {
     }
 
 };
+
+module.exports.MemoryDatastore = MemoryDatastore;

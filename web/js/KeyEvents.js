@@ -1,7 +1,7 @@
-module.exports.KeyEvents = class {
+class KeyEvents {
 
     /**
-     * Return true if the 'meta' keys are active. 
+     * Return true if the 'meta' keys are active.
      */
     static isKeyMetaActive(event) {
 
@@ -17,3 +17,5 @@ module.exports.KeyEvents = class {
     }
 
 };
+
+module.exports.KeyEvents = KeyEvents;

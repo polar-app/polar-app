@@ -10469,14 +10469,16 @@ return jQuery;
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports.Electron = class {
+class Electron {
 
     static isElectron() {
         var userAgent = navigator.userAgent.toLowerCase();
         return userAgent.indexOf(' electron/') !== -1;
     }
 
-};
+}
+
+module.exports.Electron = Electron;
 
 /***/ }),
 

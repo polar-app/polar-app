@@ -1,7 +1,7 @@
 /**
  * A rect and element pair.
  */
-module.exports.RectElement = class {
+class RectElement {
 
     constructor(rect, element) {
         this.rect = rect;
@@ -9,3 +9,5 @@ module.exports.RectElement = class {
     }
 
 };
+
+module.exports.RectElement = RectElement;

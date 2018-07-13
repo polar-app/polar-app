@@ -1,9 +1,11 @@
 const {Clock} = require("./Clock.js");
 
-module.exports.SystemClock = class extends Clock {
+class SystemClock extends Clock {
 
     getDate() {
         return new Date();
     }
 
 }
+
+module.exports.SystemClock = SystemClock;

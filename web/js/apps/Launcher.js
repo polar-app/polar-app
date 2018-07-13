@@ -13,7 +13,7 @@ const {ViewerFactory} = require("../viewer/ViewerFactory");
  *
  * @type {Launcher}
  */
-module.exports.Launcher = class {
+class Launcher {
 
     /**
      * Launch the app with the given launch function.
@@ -56,4 +56,6 @@ module.exports.Launcher = class {
 
     }
 
-};
+}
+
+module.exports.Launcher = Launcher;

@@ -77088,14 +77088,16 @@ module.exports = function(module) {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports.Electron = class {
+class Electron {
 
     static isElectron() {
         var userAgent = navigator.userAgent.toLowerCase();
         return userAgent.indexOf(' electron/') !== -1;
     }
 
-};
+}
+
+module.exports.Electron = Electron;
 
 /***/ }),
 
@@ -77151,10 +77153,10 @@ module.exports.Hashcodes = Hashcodes;
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports.KeyEvents = class {
+class KeyEvents {
 
     /**
-     * Return true if the 'meta' keys are active. 
+     * Return true if the 'meta' keys are active.
      */
     static isKeyMetaActive(event) {
 
@@ -77170,6 +77172,8 @@ module.exports.KeyEvents = class {
     }
 
 };
+
+module.exports.KeyEvents = KeyEvents;
 
 /***/ }),
 
@@ -77424,7 +77428,7 @@ module.exports.Optional = Optional;
  *
  * @type {PageRedrawHandler}
  */
-module.exports.PageRedrawHandler = class {
+class PageRedrawHandler {
 
     constructor(pageElement) {
 
@@ -77441,6 +77445,8 @@ module.exports.PageRedrawHandler = class {
         }, false);
     }
 };
+
+module.exports.PageRedrawHandler = PageRedrawHandler;
 
 /***/ }),
 
@@ -78170,7 +78176,7 @@ const { ViewerFactory } = __webpack_require__(/*! ../viewer/ViewerFactory */ "./
  *
  * @type {Launcher}
  */
-module.exports.Launcher = class {
+class Launcher {
 
     /**
      * Launch the app with the given launch function.
@@ -78219,7 +78225,9 @@ module.exports.Launcher = class {
         })();
     }
 
-};
+}
+
+module.exports.Launcher = Launcher;
 
 /***/ }),
 
@@ -78529,7 +78537,7 @@ module.exports.TriggerEvent = TriggerEvent;
  *
  * @type {RendererContextMenu}
  */
-module.exports.RendererContextMenu = class {
+class RendererContextMenu {
 
     constructor() {
 
@@ -78582,7 +78590,9 @@ module.exports.RendererContextMenu = class {
         return null;
     }
 
-};
+}
+
+module.exports.RendererContextMenu = RendererContextMenu;
 
 /***/ }),
 
@@ -78875,7 +78885,7 @@ module.exports.WebController = WebController;
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
 
 // A datastore that supports ledgers and checkpoints.
-module.exports.Datastore = class {
+class Datastore {
 
   /**
    * Init the datastore, potentially reading files of disk, the network, etc.
@@ -78905,6 +78915,8 @@ module.exports.Datastore = class {
   }
 
 };
+
+module.exports.Datastore = Datastore;
 
 /***/ }),
 
@@ -79132,7 +79144,7 @@ const { Paths } = __webpack_require__(/*! ../util/Paths */ "./web/js/util/Paths.
 /**
  * Datastore just in memory with no on disk persistence.
  */
-module.exports.MemoryDatastore = class extends Datastore {
+class MemoryDatastore extends Datastore {
 
     constructor() {
 
@@ -79187,6 +79199,8 @@ module.exports.MemoryDatastore = class extends Datastore {
 
 };
 
+module.exports.MemoryDatastore = MemoryDatastore;
+
 /***/ }),
 
 /***/ "./web/js/datastore/PersistenceLayer.js":
@@ -79215,7 +79229,7 @@ const util = __webpack_require__(/*! util */ "./node_modules/util/util.js");
  * with node+chrome behaving differently so now we just make node work with raw
  * strings.
  */
-module.exports.PersistenceLayer = class {
+class PersistenceLayer {
 
     /**
      */
@@ -79295,6 +79309,8 @@ module.exports.PersistenceLayer = class {
     }
 
 };
+
+module.exports.PersistenceLayer = PersistenceLayer;
 
 /***/ }),
 
@@ -79646,7 +79662,7 @@ const { ipcRenderer } = __webpack_require__(/*! electron */ "./node_modules/elec
 const { AnnotationType } = __webpack_require__(/*! ../../metadata/AnnotationType */ "./web/js/metadata/AnnotationType.js");
 const { Flashcards } = __webpack_require__(/*! ../../metadata/Flashcards */ "./web/js/metadata/Flashcards.js");
 
-module.exports.FlashcardsController = class {
+class FlashcardsController {
 
     constructor(model) {
         this.model = model;
@@ -79711,6 +79727,8 @@ module.exports.FlashcardsController = class {
 
 };
 
+module.exports.FlashcardsController = FlashcardsController;
+
 /***/ }),
 
 /***/ "./web/js/highlights/text/controller/IntermediateRow.js":
@@ -79745,7 +79763,7 @@ module.exports.IntermediateRow = class {
 /**
  * A rect and element pair.
  */
-module.exports.RectElement = class {
+class RectElement {
 
     constructor(rect, element) {
         this.rect = rect;
@@ -79753,6 +79771,8 @@ module.exports.RectElement = class {
     }
 
 };
+
+module.exports.RectElement = RectElement;
 
 /***/ }),
 
@@ -80208,7 +80228,7 @@ module.exports.TextHighlightController = TextHighlightController;
  * Represents a row of highlighted text including the rect around it, and the
  * elements it contains.
  */
-module.exports.TextHighlightRow = class {
+class TextHighlightRow {
 
     constructor(rect, rectElements) {
         this.rect = rect;
@@ -80216,6 +80236,8 @@ module.exports.TextHighlightRow = class {
     }
 
 };
+
+module.exports.TextHighlightRow = TextHighlightRow;
 
 /***/ }),
 
@@ -86226,14 +86248,16 @@ module.exports.Reactor = Reactor;
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports.Clock = class {
+class Clock {
 
   /**
    * @return a new Date object representing the current time.
    */
   getDate() {}
 
-};
+}
+
+module.exports.Clock = Clock;
 
 /***/ }),
 
@@ -86246,13 +86270,15 @@ module.exports.Clock = class {
 
 const { Clock } = __webpack_require__(/*! ./Clock.js */ "./web/js/time/Clock.js");
 
-module.exports.SystemClock = class extends Clock {
+class SystemClock extends Clock {
 
     getDate() {
         return new Date();
     }
 
-};
+}
+
+module.exports.SystemClock = SystemClock;
 
 /***/ }),
 
@@ -86263,7 +86289,7 @@ module.exports.SystemClock = class extends Clock {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports.Arrays = class {
+class Arrays {
 
     /**
      * Convert an array to a dictionary.
@@ -86288,7 +86314,9 @@ module.exports.Arrays = class {
         return result;
     }
 
-};
+}
+
+module.exports.Arrays = Arrays;
 
 /***/ }),
 
@@ -87150,7 +87178,7 @@ module.exports.Objects = Objects;
 /***/ (function(module, exports) {
 
 
-module.exports.Paths = class {
+class Paths {
 
     /**
      * Create a path from the given parts regardless of their structure.
@@ -87194,6 +87222,8 @@ module.exports.Paths = class {
     }
 
 };
+
+module.exports.Paths = Paths;
 
 /***/ }),
 

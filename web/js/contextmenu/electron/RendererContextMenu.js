@@ -7,7 +7,7 @@
  *
  * @type {RendererContextMenu}
  */
-module.exports.RendererContextMenu = class {
+class RendererContextMenu {
 
     constructor() {
 
@@ -62,4 +62,6 @@ module.exports.RendererContextMenu = class {
 
     }
 
-};
+}
+
+module.exports.RendererContextMenu = RendererContextMenu;

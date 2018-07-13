@@ -2,7 +2,7 @@ const {ipcRenderer} = require('electron')
 const {AnnotationType} = require("../../metadata/AnnotationType");
 const {Flashcards} = require("../../metadata/Flashcards");
 
-module.exports.FlashcardsController = class {
+class FlashcardsController {
 
     constructor(model) {
         this.model = model;
@@ -72,3 +72,6 @@ module.exports.FlashcardsController = class {
     }
 
 };
+
+
+module.exports.FlashcardsController = FlashcardsController;

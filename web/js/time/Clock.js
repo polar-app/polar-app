@@ -1,4 +1,4 @@
-module.exports.Clock = class {
+class Clock {
 
     /**
      * @return a new Date object representing the current time.
@@ -9,3 +9,4 @@ module.exports.Clock = class {
 
 }
 
+module.exports.Clock = Clock;

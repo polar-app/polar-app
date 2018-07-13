@@ -17,7 +17,7 @@ const util = require('util');
  * with node+chrome behaving differently so now we just make node work with raw
  * strings.
  */
-module.exports.PersistenceLayer = class {
+class PersistenceLayer {
 
     /**
      */
@@ -82,3 +82,5 @@ module.exports.PersistenceLayer = class {
     }
 
 };
+
+module.exports.PersistenceLayer = PersistenceLayer;

@@ -1,5 +1,5 @@
 // A datastore that supports ledgers and checkpoints.
-module.exports.Datastore = class {
+class Datastore {
 
     /**
      * Init the datastore, potentially reading files of disk, the network, etc.
@@ -29,3 +29,5 @@ module.exports.Datastore = class {
     }
 
 };
+
+module.exports.Datastore = Datastore;

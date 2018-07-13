@@ -4,7 +4,7 @@
  *
  * @type {PageRedrawHandler}
  */
-module.exports.PageRedrawHandler = class {
+class PageRedrawHandler {
 
     constructor(pageElement) {
 
@@ -25,3 +25,5 @@ module.exports.PageRedrawHandler = class {
     };
 
 };
+
+module.exports.PageRedrawHandler = PageRedrawHandler;

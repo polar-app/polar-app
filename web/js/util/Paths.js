@@ -1,5 +1,5 @@
 
-module.exports.Paths = class {
+class Paths {
 
     /**
      * Create a path from the given parts regardless of their structure.
@@ -47,3 +47,5 @@ module.exports.Paths = class {
     }
 
 };
+
+module.exports.Paths = Paths;

@@ -1,4 +1,4 @@
-module.exports.Arrays = class {
+class Arrays {
 
     /**
      * Convert an array to a dictionary.
@@ -25,3 +25,5 @@ module.exports.Arrays = class {
     }
 
 }
+
+module.exports.Arrays = Arrays;

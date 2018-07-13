@@ -10,6 +10,9 @@ require("../../test/TestingTime").freeze();
 
 describe('FlashcardsControllerTest', function() {
 
+    /**
+     * @type {FlashcardController}
+     */
     let flashcardsController;
     let model;
 
