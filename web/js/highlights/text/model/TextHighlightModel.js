@@ -15,8 +15,10 @@ class TextHighlightModel {
                     return;
                 }
 
+                let id = traceEvent.value ? traceEvent.value.id : traceEvent.previousValue.id;
+
                 let event = {
-                    id: traceEvent.value.id,
+                    id,
                     docMeta,
                     pageMeta,
 

@@ -80624,8 +80624,10 @@ class TextHighlightModel {
                     return;
                 }
 
+                let id = traceEvent.value ? traceEvent.value.id : traceEvent.previousValue.id;
+
                 let event = {
-                    id: traceEvent.value.id,
+                    id,
                     docMeta,
                     pageMeta,
 
@@ -85233,6 +85235,7 @@ class MainPagemarkComponent extends PagemarkComponent {
      */
     constructor(view) {
         super(view);
+        this.pageElementSelector = ".page";
     }
 
     setup() {
@@ -85281,8 +85284,9 @@ module.exports.MainPagemarkComponent = MainPagemarkComponent;
   !*** ./web/js/pagemarks/view/components/PagemarkComponent.js ***!
   \***************************************************************/
 /*! no static exports found */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
 
+const { Preconditions } = __webpack_require__(/*! ../../../Preconditions */ "./web/js/Preconditions.js");
 
 class PagemarkComponent {
 
@@ -85319,6 +85323,7 @@ class PagemarkComponent {
     }
 
     __updatePageElements() {
+        Preconditions.assertNotNull(this.pageElementSelector, "pageElementSelector");
         this.pageElements = document.querySelectorAll(this.pageElementSelector);
     }
 

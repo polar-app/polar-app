@@ -11,6 +11,8 @@ class MainPagemarkComponent extends PagemarkComponent {
      */
     constructor(view) {
         super(view);
+        this.pageElementSelector = ".page";
+
     }
 
     setup() {

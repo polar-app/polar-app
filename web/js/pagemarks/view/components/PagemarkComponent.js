@@ -1,3 +1,4 @@
+const {Preconditions} = require("../../../Preconditions");
 
 class PagemarkComponent {
 
@@ -38,6 +39,7 @@ class PagemarkComponent {
     }
 
     __updatePageElements() {
+        Preconditions.assertNotNull(this.pageElementSelector, "pageElementSelector");
         this.pageElements = document.querySelectorAll(this.pageElementSelector);
     }
 
