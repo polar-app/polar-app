@@ -63541,7 +63541,7 @@ class WebView extends View {
             throw new Error("Pagemark has no percentage");
         }
 
-        if (!options.zIndex) options.zIndex = 0;
+        if (!options.zIndex) options.zIndex = 1;
 
         if (!options.templateElement) {
             options.templateElement = pageElement;

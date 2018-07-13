@@ -218,7 +218,7 @@ class WebView extends View {
         }
 
         if(! options.zIndex)
-            options.zIndex = 0;
+            options.zIndex = 1;
 
         if(! options.templateElement) {
             options.templateElement = pageElement;

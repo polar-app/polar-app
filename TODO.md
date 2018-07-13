@@ -2,6 +2,15 @@
 
 ## Next
 
+- Issues with resizeable pagemarks:
+
+    - can not resize them without zIndex=1
+    - resizes immediately sets height=0 and break rendering
+    - placement won't work because left/right aren't being used
+        - thumbnails need a valid left/right, real pagemarks don't have one
+          currently.
+
+
 - Get PagemarkRect to work so that I can start using the new pagemark layout
   engine with the drag and resize features I worked out. This would let me use
   two column PDFs too.
