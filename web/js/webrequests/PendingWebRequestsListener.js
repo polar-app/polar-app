@@ -1,5 +1,6 @@
 const {BaseWebRequestsListener} = require("./BaseWebRequestsListener");
 const {Logger} = require("../logger/Logger");
+const {RequestState} = require("./RequestState");
 const log = Logger.create();
 
 /**
@@ -47,11 +48,27 @@ class PendingWebRequestsListener extends BaseWebRequestsListener {
         this.pendingRequests = {};
 
         /**
+         * The map of all states for all URLs.
+         */
+        this.requests = {};
+
+        /**
          * Registered event listeners that we would need to dispatch.
          *
          * @type {Array<Function>}
          */
         this.eventListeners = [];
+
+        /**
+         * Keeps track of metadata for each request to help detect errors.
+         *
+         * @type {RequestState}
+         */
+        this.requestState = new RequestState();
+
+        this.startedRequests = {};
+
+        this.finishedRequests = {};
 
     }
 
@@ -61,29 +78,51 @@ class PendingWebRequestsListener extends BaseWebRequestsListener {
      */
     onWebRequestEvent(name, details, callback) {
 
-        if(name === "onCompleted" || name === "onErrorOccurred" || name === "onBeforeRedirect" || name === "onAuthRequired") {
-            // this request has already completed so is not considered against
-            // pending any longer
+        let pendingChange = null;
 
-            delete this.pendingRequests[details.url];
+        // https://developer.chrome.com/extensions/webRequest
 
-            --this.pending;
-            ++this.finished;
-
-            log.info(`Pending state DECREMENTED to ${this.pending} on ${name} for URL: `, details.url);
-
-        }
+        // WARN: I don't think increment + decrement work here as I suspect
+        // multiple threads are calling us so we're having to keep requests
+        // in maps which wastes a bit more memory. I suspect we have one thread
+        // per iframe.  Either way using dictionaries avoided a -1 pending
+        // count.
 
         if(name === "onBeforeRequest") {
             // after this request the pending will be incremented.
 
             this.pendingRequests[details.url] = details;
 
-            ++this.pending;
-            ++this.started;
+            this.startedRequests[details.id] = details.url;
 
-            log.info(`Pending state INCREMENTED to ${this.pending} on ${name} for URL: `, details.url);
+            pendingChange = "INCREMENTED";
 
+            this.requestState.markStarted(details.id, details.url);
+
+        }
+
+        if(name === "onCompleted" || name === "onErrorOccurred" || name === "onBeforeRedirect" || name === "onAuthRequired") {
+
+            // this request has already completed so is not considered against
+            // pending any longer
+
+            delete this.pendingRequests[details.url];
+
+            this.finishedRequests[details.id] = details.url;
+
+            pendingChange = "DECREMENTED";
+
+            this.requestState.markFinished(details.id, details.url);
+
+        }
+
+        this.finished = Object.keys(this.finishedRequests).length;
+        this.started = Object.keys(this.startedRequests).length;
+
+        this.pending = this.started - this.finished;
+
+        if(pendingChange) {
+            log.info(`Pending state ${pendingChange} for request id=${details.id} to ${this.pending} on ${name} for URL: ${details.url}`);
         }
 
         this.progress = this.calculateProgress();

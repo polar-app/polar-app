@@ -16,8 +16,6 @@ const log = Logger.create();
 class DebugWebRequestsListener extends BaseWebRequestsListener {
 
     /**
-     *
-     * @param webRequestReactor {WebRequestReactor}
      */
     constructor() {
 

@@ -11,6 +11,7 @@ const {Cmdline} = require("./web/js/electron/Cmdline");
 const {DiskDatastore} = require("./web/js/datastore/DiskDatastore");
 const {Args} = require("./web/js/electron/capture/Args");
 const {Capture} = require("./web/js/capture/Capture");
+const {CaptureOpts} = require("./web/js/capture/CaptureOpts");
 const {Logger} = require("./web/js/logger/Logger");
 const {Browsers} = require("./web/js/capture/Browsers");
 const log = Logger.create();
@@ -64,7 +65,12 @@ app.on('ready', function() {
 
         console.log("Going to capture URL: " + url);
 
-        let capture = new Capture(url, browser, diskDatastore.stashDir);
+        // TODO: sync up args + CaptureOpts
+        let captureOpts = new CaptureOpts({
+            amp: args.amp
+        });
+
+        let capture = new Capture(url, browser, diskDatastore.stashDir, captureOpts);
 
         await capture.execute();
 

@@ -7,6 +7,8 @@ const shell = electron.shell;
 const BrowserWindow = electron.BrowserWindow;
 
 const {ContentCapture} = require("./ContentCapture");
+const {CaptureOpts} = require("./CaptureOpts");
+
 const {Preconditions} = require("../Preconditions");
 const {Cmdline} = require("../electron/Cmdline");
 const {Filenames} = require("../util/Filenames");
@@ -53,15 +55,17 @@ class Capture {
      * @param url {string} The URL to capture.
      * @param browser {Browser}
      * @param stashDir {string}
+     * @param captureOpts {CaptureOpts}
      */
-    constructor(url, browser, stashDir) {
+    constructor(url, browser, stashDir, captureOpts = new CaptureOpts()) {
 
         // FIXME: don't allow named anchors in the URL like #foo... strip them
         // and test this functionality.
 
         this.url = Preconditions.assertNotNull(url, "url");
         this.browser = Preconditions.assertNotNull(browser, "browser");;
-        this.stashDir = Preconditions.assertNotNull(stashDir, "stashDir");;
+        this.stashDir = Preconditions.assertNotNull(stashDir, "stashDir");
+        this.captureOpts = captureOpts;
 
         /**
          * The resolve function to call when we have completed .
@@ -364,7 +368,7 @@ class Capture {
             // TODO: if we end up handling multiple types of URLs in the future
             // we might want to build up a history to prevent endless loops or
             // just keep track of the redirect count.
-            if(ampURL && ampURL !== this.url) {
+            if(this.captureOpts.amp && ampURL && ampURL !== this.url) {
 
                 log.info("Found AMP URL.  Redirecting then loading: " + ampURL);
 

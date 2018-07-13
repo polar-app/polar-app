@@ -15,6 +15,7 @@ class Args {
             quit: true,
             browser: "MOBILE_GALAXY_S8_WITH_CHROME_61_WIDTH_750",
             profile: "headless",
+            amp: true
         });
 
         return result;
