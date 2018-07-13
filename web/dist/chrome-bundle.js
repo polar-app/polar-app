@@ -80886,11 +80886,7 @@ class SelectedContents {
 
         textNodes = TextNodeRows.fromTextNodes(textNodes);
 
-        console.log("FIXME XX: working with N now: " + textNodes.length);
-
         let rectTexts = RectTexts.toRectTexts(textNodes);
-
-        console.log("FIXME 11233: working with N rectTexts: " + rectTexts.length);
 
         return new SelectedContent({
             text,
@@ -81157,13 +81153,9 @@ class TextNodeRows {
 
         let textRegions = TextNodeRows.computeTextRegions(nodeArray);
 
-        console.log("FIXME: textRegions:  ", textRegions.map(current => current.toJSON()));
-
         let textBlocks = TextNodeRows.computeTextBlocks(textRegions);
-        console.log("FIXME: textBlocks:  ", textBlocks);
 
         let mergedTextBlocks = TextNodeRows.mergeTextBlocks(textBlocks);
-        console.log("FIXME: mergedTextBlocks:  ", JSON.stringify(mergedTextBlocks.map(current => current.toExternal()), null, "  "));
 
         let result = mergedTextBlocks.map(current => current.textNode);
 
@@ -81372,8 +81364,6 @@ class TextNodeRows {
             textNodes.forEach(orphanedNode => {
                 orphanedNode.parentNode.removeChild(orphanedNode);
             });
-
-            console.log(`FIXME: got text '${text}' for TextNode`, textNode);
 
             result.push(new MergedTextBlock({
                 textNode,
@@ -86977,8 +86967,6 @@ class Line {
      * @param scalar {number}
      */
     multiply(scalar) {
-
-        console.log(`FIXME: ${this.axis} - ${scalar}`);
 
         return new Line(this.start * scalar, this.end * scalar, this.axis);
     }

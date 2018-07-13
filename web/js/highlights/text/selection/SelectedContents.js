@@ -44,11 +44,7 @@ class SelectedContents {
 
         textNodes = TextNodeRows.fromTextNodes(textNodes);
 
-        console.log("FIXME XX: working with N now: " + textNodes.length )
-
         let rectTexts = RectTexts.toRectTexts(textNodes);
-
-        console.log("FIXME 11233: working with N rectTexts: " + rectTexts.length )
 
         return new SelectedContent({
             text,

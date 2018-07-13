@@ -11703,8 +11703,6 @@ class Line {
      */
     multiply(scalar) {
 
-        console.log(`FIXME: ${this.axis} - ${scalar}`);
-
         return new Line(this.start * scalar, this.end * scalar, this.axis);
     }
 
