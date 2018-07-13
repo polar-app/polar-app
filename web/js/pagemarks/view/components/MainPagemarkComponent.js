@@ -38,7 +38,7 @@ class MainPagemarkComponent extends PagemarkComponent {
     }
 
     async __render(pageElement) {
-        await this.view.recreatePagemarksFromPagemarks(pageElement);
+        await this.view.recreatePagemarksFromPageElement(pageElement);
     }
 
 }

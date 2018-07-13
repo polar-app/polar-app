@@ -46,7 +46,7 @@ class ThumbnailPagemarkComponent extends PagemarkComponent {
 
         let options = {zIndex: 1, templateElement, placementElement: templateElement};
 
-        this.view.recreatePagemarksFromPagemarks(pageElement, options);
+        this.view.recreatePagemarksFromPageElement(pageElement, options);
 
     }
 

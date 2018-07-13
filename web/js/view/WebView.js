@@ -1,9 +1,9 @@
 const {Delegator, Styles, Elements, forDict} = require("../utils.js");
 const {DocMetaDescriber} = require("../metadata/DocMetaDescriber");
 const {DocFormatFactory} = require("../docformat/DocFormatFactory");
-const {CompositePagemarkComponent} = require("../pagemarks/view/renderer/CompositePagemarkComponent");
-const {MainPagemarkComponent} = require("../pagemarks/view/renderer/MainPagemarkComponent");
-const {ThumbnailPagemarkComponent} = require("../pagemarks/view/renderer/ThumbnailPagemarkComponent");
+const {CompositePagemarkComponent} = require("../pagemarks/view/components/CompositePagemarkComponent");
+const {MainPagemarkComponent} = require("../pagemarks/view/components/MainPagemarkComponent");
+const {ThumbnailPagemarkComponent} = require("../pagemarks/view/components/ThumbnailPagemarkComponent");
 const {Preconditions} = require("../Preconditions");
 const {View} = require("./View.js");
 const {BoxController} = require("../pagemarks/controller/interact/BoxController");
@@ -127,7 +127,7 @@ class WebView extends View {
 
     }
 
-    async recreatePagemarksFromPagemarks(pageElement, options) {
+    async recreatePagemarksFromPageElement(pageElement, options) {
 
         let pageNum = this.docFormat.getPageNumFromPageElement(pageElement);
 
