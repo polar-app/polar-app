@@ -1,5 +1,5 @@
 const {SystemClock} = require("../time/SystemClock.js");
-const {Model} = require("../model.js");
+const {Model} = require("../Model.js");
 const {WebController} = require("../controller/WebController.js");
 const {WebView} = require("../view/WebView.js");
 const {TextHighlightView} = require("../highlights/text/view/TextHighlightView");

@@ -1,5 +1,5 @@
 
-const {Model} = require("../model.js");
+const {Model} = require("../Model");
 
 class View {
 

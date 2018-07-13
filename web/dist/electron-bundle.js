@@ -53207,6 +53207,187 @@ module.exports.KeyEvents = class {
 
 /***/ }),
 
+/***/ "./web/js/Model.js":
+/*!*************************!*\
+  !*** ./web/js/Model.js ***!
+  \*************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
+
+const { Proxies } = __webpack_require__(/*! ./proxies/Proxies */ "./web/js/proxies/Proxies.js");
+const { Pagemark } = __webpack_require__(/*! ./metadata/Pagemark */ "./web/js/metadata/Pagemark.js");
+const { Pagemarks } = __webpack_require__(/*! ./metadata/Pagemarks */ "./web/js/metadata/Pagemarks.js");
+const { PagemarkType } = __webpack_require__(/*! ./metadata/PagemarkType */ "./web/js/metadata/PagemarkType.js");
+const { DocMeta } = __webpack_require__(/*! ./metadata/DocMeta */ "./web/js/metadata/DocMeta.js");
+const { DocMetas } = __webpack_require__(/*! ./metadata/DocMetas */ "./web/js/metadata/DocMetas.js");
+const { ISODateTime } = __webpack_require__(/*! ./metadata/ISODateTime */ "./web/js/metadata/ISODateTime.js");
+const { DocMetaDescriber } = __webpack_require__(/*! ./metadata/DocMetaDescriber */ "./web/js/metadata/DocMetaDescriber.js");
+const { Reactor } = __webpack_require__(/*! ./reactor/Reactor */ "./web/js/reactor/Reactor.js");
+const { Event } = __webpack_require__(/*! ./reactor/Event */ "./web/js/reactor/Event.js");
+const { forDict } = __webpack_require__(/*! ./utils */ "./web/js/utils.js");
+const { Objects } = __webpack_require__(/*! ./util/Objects */ "./web/js/util/Objects.js");
+const { Preconditions } = __webpack_require__(/*! ./Preconditions */ "./web/js/Preconditions.js");
+
+class Model {
+
+    constructor(persistenceLayer) {
+
+        this.persistenceLayer = persistenceLayer;
+
+        this.reactor = new Reactor();
+        this.reactor.registerEvent('documentLoaded');
+        this.reactor.registerEvent('createPagemark');
+        this.reactor.registerEvent('erasePagemark');
+
+        // The currently loaded document.
+        this.docMetaPromise = null;
+
+        this.docMeta = null;
+    }
+
+    /**
+     * Called when a new document has been loaded.
+     */
+    documentLoaded(fingerprint, nrPages, currentPageNumber) {
+        var _this = this;
+
+        return _asyncToGenerator(function* () {
+
+            // docMetaPromise is used for future readers after the document is loaded
+            _this.docMetaPromise = _this.persistenceLayer.getDocMeta(fingerprint);
+
+            _this.docMeta = yield _this.docMetaPromise;
+
+            if (_this.docMeta == null) {
+
+                console.warn("New document found. Creating initial DocMeta");
+
+                // this is a new document...
+                //this.docMeta = DocMeta.createWithinInitialPagemarks(fingerprint, nrPages);
+                _this.docMeta = DocMetas.create(fingerprint, nrPages);
+                _this.persistenceLayer.sync(fingerprint, _this.docMeta);
+
+                // I'm not sure this is the best way to resolve this as swapping in
+                // the docMetaPromise without any synchronization seems like we're
+                // asking for a race condition.
+            }
+
+            console.log("Description of doc loaded: " + DocMetaDescriber.describe(_this.docMeta));
+            console.log("Document loaded: ", _this.docMeta);
+
+            _this.docMeta = Proxies.create(_this.docMeta, function (traceEvent) {
+
+                // right now we just sync the datastore on mutation.  We do not
+                // attempt to use a journal yet.
+
+                console.log("sync of persistence layer via deep trace... ");
+                this.persistenceLayer.sync(this.docMeta.docInfo.fingerprint, this.docMeta);
+
+                return true;
+            }.bind(_this));
+
+            _this.docMetaPromise = new Promise(function (resolve, reject) {
+                // always provide this promise for the metadata.  For NEW documents
+                // we have to provide the promise but we ALSO have to provide it
+                // to swap out the docMeta with the right version.
+                resolve(this.docMeta);
+            }.bind(_this));
+
+            let documentLoadedEvent = { fingerprint, nrPages, currentPageNumber, docMeta: _this.docMeta };
+            _this.reactor.dispatchEvent('documentLoaded', documentLoadedEvent);
+
+            return _this.docMeta;
+        })();
+    }
+
+    registerListenerForDocumentLoaded(eventListener) {
+        this.reactor.addEventListener('documentLoaded', eventListener);
+    }
+
+    /**
+     *
+     * @param pageNum The page num to use for our created pagemark.
+     */
+    createPagemark(pageNum, options = {}) {
+        var _this2 = this;
+
+        return _asyncToGenerator(function* () {
+
+            if (!options.percentage) {
+                options.percentage = 100;
+            }
+
+            console.log("Model sees createPagemark");
+
+            _this2.assertPageNum(pageNum);
+
+            let pagemark = Pagemarks.create({
+
+                // just set docMeta pageMarkType = PagemarkType.SINGLE_COLUMN by
+                // default for now until we add multiple column types and handle
+                // them properly.
+
+                type: PagemarkType.SINGLE_COLUMN,
+                percentage: options.percentage,
+                column: 0
+
+            });
+
+            let docMeta = yield _this2.docMetaPromise;
+
+            let pageMeta = docMeta.getPageMeta(pageNum);
+
+            // set the pagemark that we just created into the map.
+            pageMeta.pagemarks[pagemark.id] = pagemark;
+
+            // TODO: this can be done with a mutation listener now
+            _this2.reactor.dispatchEvent('createPagemark', { pageNum, pagemark });
+        })();
+    }
+
+    erasePagemark(pageNum) {
+
+        Preconditions.assertNumber(pageNum, "pageNum");
+
+        console.log("Model sees erasePagemark");
+
+        this.assertPageNum(pageNum);
+
+        let pageMeta = this.docMeta.getPageMeta(pageNum);
+
+        // FIXME: this is actually wrong because I need to delete the RIGHT
+        // pagemark. NOT just delete all of them.
+        Objects.clear(pageMeta.pagemarks);
+
+        // FIXME: this can be done with a mutation listener now.
+        this.reactor.dispatchEvent('erasePagemark', { pageNum });
+    }
+
+    assertPageNum(pageNum) {
+
+        if (pageNum == null) throw new Error("Must specify page pageNum");
+
+        if (pageNum <= 0) {
+            throw new Error("Page numbers begin at 1");
+        }
+    }
+
+    registerListenerForCreatePagemark(eventListener) {
+        this.reactor.addEventListener('createPagemark', eventListener);
+    }
+
+    registerListenerForErasePagemark(eventListener) {
+        this.reactor.addEventListener('erasePagemark', eventListener);
+    }
+
+}
+
+module.exports.Model = Model;
+
+/***/ }),
+
 /***/ "./web/js/Optional.js":
 /*!****************************!*\
   !*** ./web/js/Optional.js ***!
@@ -54009,7 +54190,7 @@ module.exports.Rects = Rects;
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
 
 const { SystemClock } = __webpack_require__(/*! ../time/SystemClock.js */ "./web/js/time/SystemClock.js");
-const { Model } = __webpack_require__(/*! ../model.js */ "./web/js/model.js");
+const { Model } = __webpack_require__(/*! ../Model.js */ "./web/js/Model.js");
 const { WebController } = __webpack_require__(/*! ../controller/WebController.js */ "./web/js/controller/WebController.js");
 const { WebView } = __webpack_require__(/*! ../view/WebView.js */ "./web/js/view/WebView.js");
 const { TextHighlightView } = __webpack_require__(/*! ../highlights/text/view/TextHighlightView */ "./web/js/highlights/text/view/TextHighlightView.js");
@@ -59462,191 +59643,6 @@ module.exports.VersionedObject = VersionedObject;
 
 /***/ }),
 
-/***/ "./web/js/model.js":
-/*!*************************!*\
-  !*** ./web/js/model.js ***!
-  \*************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
-
-const { Proxies } = __webpack_require__(/*! ./proxies/Proxies */ "./web/js/proxies/Proxies.js");
-const { Pagemark } = __webpack_require__(/*! ./metadata/Pagemark */ "./web/js/metadata/Pagemark.js");
-const { Pagemarks } = __webpack_require__(/*! ./metadata/Pagemarks */ "./web/js/metadata/Pagemarks.js");
-const { PagemarkType } = __webpack_require__(/*! ./metadata/PagemarkType */ "./web/js/metadata/PagemarkType.js");
-const { DocMeta } = __webpack_require__(/*! ./metadata/DocMeta */ "./web/js/metadata/DocMeta.js");
-const { DocMetas } = __webpack_require__(/*! ./metadata/DocMetas */ "./web/js/metadata/DocMetas.js");
-const { ISODateTime } = __webpack_require__(/*! ./metadata/ISODateTime */ "./web/js/metadata/ISODateTime.js");
-const { DocMetaDescriber } = __webpack_require__(/*! ./metadata/DocMetaDescriber */ "./web/js/metadata/DocMetaDescriber.js");
-const { Reactor } = __webpack_require__(/*! ./reactor/Reactor */ "./web/js/reactor/Reactor.js");
-const { Event } = __webpack_require__(/*! ./reactor/Event */ "./web/js/reactor/Event.js");
-const { forDict } = __webpack_require__(/*! ./utils */ "./web/js/utils.js");
-const { Objects } = __webpack_require__(/*! ./util/Objects */ "./web/js/util/Objects.js");
-const { Preconditions } = __webpack_require__(/*! ./Preconditions */ "./web/js/Preconditions.js");
-
-class Model {
-
-    constructor(persistenceLayer) {
-
-        this.persistenceLayer = persistenceLayer;
-
-        this.reactor = new Reactor();
-        this.reactor.registerEvent('documentLoaded');
-        this.reactor.registerEvent('createPagemark');
-        this.reactor.registerEvent('erasePagemark');
-
-        // The currently loaded document.
-        this.docMetaPromise = null;
-
-        this.docMeta = null;
-    }
-
-    /**
-     * Called when a new document has been loaded.
-     */
-    documentLoaded(fingerprint, nrPages, currentPageNumber) {
-        var _this = this;
-
-        return _asyncToGenerator(function* () {
-
-            // docMetaPromise is used for future readers after the document is loaded
-            _this.docMetaPromise = _this.persistenceLayer.getDocMeta(fingerprint);
-
-            _this.docMeta = yield _this.docMetaPromise;
-
-            if (_this.docMeta == null) {
-
-                console.warn("New document found. Creating initial DocMeta");
-
-                // this is a new document...
-                //this.docMeta = DocMeta.createWithinInitialPagemarks(fingerprint, nrPages);
-                _this.docMeta = DocMetas.create(fingerprint, nrPages);
-                _this.persistenceLayer.sync(fingerprint, _this.docMeta);
-
-                // I'm not sure this is the best way to resolve this as swapping in
-                // the docMetaPromise without any synchronization seems like we're
-                // asking for a race condition.
-            }
-
-            console.log("Description of doc loaded: " + DocMetaDescriber.describe(_this.docMeta));
-            console.log("Document loaded: ", _this.docMeta);
-
-            _this.docMeta = Proxies.create(_this.docMeta, function (traceEvent) {
-
-                // right now we just sync the datastore on mutation.  We do not
-                // attempt to use a journal yet.
-
-                console.log("sync of persistence layer via deep trace... ");
-                this.persistenceLayer.sync(this.docMeta.docInfo.fingerprint, this.docMeta);
-
-                return true;
-            }.bind(_this));
-
-            _this.docMetaPromise = new Promise(function (resolve, reject) {
-                // always provide this promise for the metadata.  For NEW documents
-                // we have to provide the promise but we ALSO have to provide it
-                // to swap out the docMeta with the right version.
-                resolve(this.docMeta);
-            }.bind(_this));
-
-            let documentLoadedEvent = { fingerprint, nrPages, currentPageNumber, docMeta: _this.docMeta };
-            _this.reactor.dispatchEvent('documentLoaded', documentLoadedEvent);
-
-            return _this.docMeta;
-        })();
-    }
-
-    registerListenerForDocumentLoaded(eventListener) {
-        this.reactor.addEventListener('documentLoaded', eventListener);
-    }
-
-    /**
-     *
-     * @param pageNum The page num to use for our created pagemark.
-     */
-    createPagemark(pageNum, options) {
-        var _this2 = this;
-
-        return _asyncToGenerator(function* () {
-
-            if (!options) {
-                options = {};
-            }
-
-            if (!options.percentage) {
-                options.percentage = 100;
-            }
-
-            console.log("Model sees createPagemark");
-
-            _this2.assertPageNum(pageNum);
-
-            let pagemark = Pagemarks.create({
-
-                // just set docMeta pageMarkType = PagemarkType.SINGLE_COLUMN by
-                // default for now until we add multiple column types and handle
-                // them properly.
-
-                type: PagemarkType.SINGLE_COLUMN,
-                percentage: options.percentage,
-                column: 0
-
-            });
-
-            let docMeta = yield _this2.docMetaPromise;
-
-            let pageMeta = docMeta.getPageMeta(pageNum);
-
-            // set the pagemark that we just created into the map
-            pageMeta.pagemarks[pagemark.column] = pagemark;
-
-            // TODO: this can be done with a mutation listener now
-            _this2.reactor.dispatchEvent('createPagemark', { pageNum, pagemark });
-        })();
-    }
-
-    erasePagemark(pageNum) {
-
-        Preconditions.assertNumber(pageNum, "pageNum");
-
-        console.log("Model sees erasePagemark");
-
-        this.assertPageNum(pageNum);
-
-        let pageMeta = this.docMeta.getPageMeta(pageNum);
-
-        // FIXME: this is actually wrong because I need to delete the RIGHT
-        // pagemark. NOT just delete all of them.
-        Objects.clear(pageMeta.pagemarks);
-
-        // FIXME: this can be done with a mutation listener now.
-        this.reactor.dispatchEvent('erasePagemark', { pageNum });
-    }
-
-    assertPageNum(pageNum) {
-
-        if (pageNum == null) throw new Error("Must specify page pageNum");
-
-        if (pageNum <= 0) {
-            throw new Error("Page numbers begin at 1");
-        }
-    }
-
-    registerListenerForCreatePagemark(eventListener) {
-        this.reactor.addEventListener('createPagemark', eventListener);
-    }
-
-    registerListenerForErasePagemark(eventListener) {
-        this.reactor.addEventListener('erasePagemark', eventListener);
-    }
-
-}
-
-module.exports.Model = Model;
-
-/***/ }),
-
 /***/ "./web/js/pagemarks/controller/PagemarkCoverageEventListener.js":
 /*!**********************************************************************!*\
   !*** ./web/js/pagemarks/controller/PagemarkCoverageEventListener.js ***!
@@ -63298,7 +63294,7 @@ module.exports.Elements = __webpack_require__(/*! ./util/Elements.js */ "./web/j
 /***/ (function(module, exports, __webpack_require__) {
 
 
-const { Model } = __webpack_require__(/*! ../model.js */ "./web/js/model.js");
+const { Model } = __webpack_require__(/*! ../Model */ "./web/js/Model.js");
 
 class View {
 
@@ -63448,7 +63444,7 @@ class WebView extends View {
 
         return _asyncToGenerator(function* () {
 
-            let pageNum = _this.getPageNum(pageElement);
+            let pageNum = _this.docFormat.getPageNumFromPageElement(pageElement);
 
             Preconditions.assertNotNull(pageNum, "pageNum");
             Preconditions.assertNumber(pageNum, "pageNum");
@@ -63476,12 +63472,6 @@ class WebView extends View {
 
             //this.recreatePagemark(pageElement);
         })();
-    }
-
-    // FIXME: this should move to the DocFormat
-    getPageNum(pageElement) {
-        let dataPageNum = pageElement.getAttribute("data-page-number");
-        return parseInt(dataPageNum);
     }
 
     recreatePagemark(pageElement, options) {

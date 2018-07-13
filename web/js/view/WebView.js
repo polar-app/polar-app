@@ -129,7 +129,7 @@ class WebView extends View {
 
     async recreatePagemarksFromPagemarks(pageElement, options) {
 
-        let pageNum = this.getPageNum(pageElement);
+        let pageNum = this.docFormat.getPageNumFromPageElement(pageElement);
 
         Preconditions.assertNotNull(pageNum, "pageNum");
         Preconditions.assertNumber(pageNum, "pageNum");
@@ -158,12 +158,6 @@ class WebView extends View {
 
         //this.recreatePagemark(pageElement);
 
-    }
-
-    // FIXME: this should move to the DocFormat
-    getPageNum(pageElement) {
-        let dataPageNum = pageElement.getAttribute("data-page-number");
-        return parseInt(dataPageNum);
     }
 
     recreatePagemark(pageElement, options) {

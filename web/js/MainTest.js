@@ -19,7 +19,7 @@ const {View} = require("./view/View");
 const {WebView} = require("./view/WebView");
 const {SyntheticClock} = require("./time/SyntheticClock");
 const {MemoryDatastore} = require("./datastore/MemoryDatastore");
-const {Model} = require("./model.js");
+const {Model} = require("./Model.js");
 const {assertJSON} = require("./test/Assertions")
 
 //import * as utils from "./utils.js";

@@ -93,11 +93,7 @@ class Model {
      *
      * @param pageNum The page num to use for our created pagemark.
      */
-    async createPagemark(pageNum, options) {
-
-        if(!options) {
-            options = {};
-        }
+    async createPagemark(pageNum, options = {}) {
 
         if(!options.percentage) {
             options.percentage = 100;
@@ -123,8 +119,8 @@ class Model {
 
         let pageMeta = docMeta.getPageMeta(pageNum);
 
-        // set the pagemark that we just created into the map
-        pageMeta.pagemarks[pagemark.column] = pagemark;
+        // set the pagemark that we just created into the map.
+        pageMeta.pagemarks[pagemark.id] = pagemark;
 
         // TODO: this can be done with a mutation listener now
         this.reactor.dispatchEvent('createPagemark', {pageNum, pagemark});
