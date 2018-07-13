@@ -86,6 +86,31 @@ module.exports = [
             filename: '[name]-bundle.js',
             publicPath: '/web/js/apps'
         }
+    },
+
+    {
+        mode: 'development',
+        target: "electron-renderer",
+        entry: {
+            "capture": [ "babel-polyfill", "./apps/capture/js/entry.js"]
+        },
+        module: {
+            rules: [
+                {
+                    test: /\.js$/,
+                    exclude: /node_modules/,
+                    use: {
+                        loader: "babel-loader"
+                    }
+                }
+            ],
+        },
+        devtool: "source-map",
+        output: {
+            path: path.resolve(__dirname, 'dist'),
+            filename: '[name]-bundle.js',
+        }
+
     }
 
 ];
