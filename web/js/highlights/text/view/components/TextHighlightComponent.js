@@ -8,7 +8,30 @@ class TextHighlightComponent extends Component {
 
     constructor() {
         super();
+
+        /**
+         *
+         * @type {DocFormat}
+         */
         this.docFormat = DocFormatFactory.getInstance();
+
+        /**
+         *
+         * @type {DocMeta}
+         */
+        this.docMeta = undefined;
+
+        /**
+         *
+         * @type {TextHighlight}
+         */
+        this.textHighlight = undefined;
+
+        /**
+         *
+         * @type {PageMeta}
+         */
+        this.pageMeta = undefined;
 
         /**
          * The page we're working with.
@@ -23,18 +46,6 @@ class TextHighlightComponent extends Component {
          * @type {HTMLElement}
          */
         this.pageElement = undefined;
-
-        /**
-         *
-         * @type {DocMeta}
-         */
-        this.docMeta = undefined;
-
-        /**
-         *
-         * @type {TextHighlight}
-         */
-        this.textHighlight = undefined;
 
     }
 
