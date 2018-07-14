@@ -16,7 +16,15 @@ class TextHighlightModel extends DocMetaModel {
                     return;
                 }
 
-                let id = traceEvent.value ? traceEvent.value.id : traceEvent.previousValue.id;
+                let id;
+
+                if(traceEvent.value) {
+                    id = traceEvent.value.id;
+                } else {
+                    id = traceEvent.previousValue.id;
+                }
+
+                // FIXME: migrate to AnnotationEvent
 
                 let event = {
                     id,
@@ -47,6 +55,6 @@ class TextHighlightModel extends DocMetaModel {
 
     }
 
-};
+}
 
 module.exports.TextHighlightModel = TextHighlightModel;

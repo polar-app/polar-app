@@ -1,17 +1,12 @@
 const {Component} = require("../../../components/Component");
 const {DocFormatFactory} = require("../../../docformat/DocFormatFactory");
-
+const {Styles} = require("../../../util/Styles");
+const {Preconditions} = require("../../../Preconditions");
 
 class AbstractPagemarkComponent extends Component {
 
     constructor() {
         super();
-
-        // FIXME: this needs to be refactored so that the EVENT is just stored
-        // and the event is an AnnotationEvent which already has docMeta,
-        // pageMeta, pageNum, and possibly pageElement attributes and shared
-        // with TextHighlightModel and PagemarkModel and we just keep a reference
-        // to annotationEvent which has all the fields we need.
 
         /**
          *
@@ -21,51 +16,53 @@ class AbstractPagemarkComponent extends Component {
 
         /**
          *
-         * @type {DocMeta}
+         * @type {Pagemark}
          */
-        this.docMeta = undefined;
+        this.pagemark = undefined;
 
         /**
          *
-         * @type {TextHighlight}
+         * @type {AnnotationEvent}
          */
-        this.textHighlight = undefined;
+        this.annotationEvent = undefined;
+
+        this.pagemarkBoxController = new BoxController(this.pagemarkMoved);
 
         /**
          *
-         * @type {PageMeta}
-         */
-        this.pageMeta = undefined;
-
-        /**
-         * The page we're working with.
-         *
-         * @type {number}
-         */
-        this.pageNum = undefined;
-
-        /**
-         * The .page we're working with.
+         * The element created to represent the pagemark.
          *
          * @type {HTMLElement}
          */
-        this.pageElement = undefined;
+        this.pagemarkElement = null;
+
+        this.options = {
+            templateElement: null,
+            placementElement: null
+        };
 
     }
 
     /**
      * @Override
-     * @param componentEvent
+     * @param annotationEvent {AnnotationEvent}
      */
-    init(componentEvent) {
+    init(annotationEvent) {
 
-        this.docMeta = componentEvent.docMeta;
-        this.textHighlight = componentEvent.textHighlight;
-        this.pageMeta = componentEvent.pageMeta;
+        this.annotationEvent = annotationEvent;
+        this.pagemark = annotationEvent.value;
 
-        this.pageNum = this.pageMeta.pageInfo.num;
-        this.pageElement = this.docFormat.getPageElementFromPageNum(this.pageNum);
+    }
 
+    pagemarkMoved(boxMoveEvent) {
+
+        // TODO: actually I think this belongs in the controller... not the view
+        //
+        //
+
+        // TODO: remove the pagemark, then recreate it...
+
+        console.log("Box moved: ", boxMoveEvent);
     }
 
     /**
@@ -83,95 +80,88 @@ class AbstractPagemarkComponent extends Component {
         //   way to just CREATE the element so that we can test the settings
         //   properly.
 
-        if(! options.pagemark) {
+        if(! this.pagemark) {
             throw new Error("Pagemark is required");
         }
 
-        if(! options.pagemark.percentage) {
+        if(! this.pagemark.percentage) {
             throw new Error("Pagemark has no percentage");
         }
 
-        if(! options.zIndex)
-            options.zIndex = 1;
+        let templateElement = this.options.templateElement;
+        let placementElement = this.options.placementElement;
 
-        if(! options.templateElement) {
-            options.templateElement = this.pageElement;
+        if(! templateElement) {
+            templateElement = this.annotationEvent.pageElement;
         }
 
-        if (! options.placementElement) {
-            // TODO: move this to the object dealing with pages only.
-            options.placementElement = pageElement.querySelector(".canvasWrapper, .iframeWrapper");
+        if (! placementElement) {
+            // TODO: move this to the proper component
+            placementElement = this.pageElement.querySelector(".canvasWrapper, .iframeWrapper");
         }
 
-        if(! options.templateElement) {
-            throw new Error("No templateElement");
-        }
+        Preconditions.assertNotNull(templateElement, "templateElement")
+        Preconditions.assertNotNull(placementElement, "placementElement")
 
-        if(! options.placementElement) {
-            throw new Error("No placementElement");
-        }
-
-        if (pageElement.querySelector(".pagemark")) {
+        if (this.pageElement.querySelector(this.pagemark.id)) {
             // do nothing if the current page already has a pagemark.
             console.warn("Pagemark already exists");
             return;
         }
 
-        let pagemarkElement = document.createElement("div");
+        this.pagemarkElement = document.createElement("div");
 
         // set a pagemark-id in the DOM so that we can work with it when we use
         // the context menu, etc.
-        pagemarkElement.setAttribute("id", options.pagemark.id);
-        pagemarkElement.setAttribute("data-pagemark-id", options.pagemark.id);
+        this.pagemarkElement.setAttribute("id", this.pagemark.id);
+        this.pagemarkElement.setAttribute("data-pagemark-id", this.pagemark.id);
 
         // make sure we have a reliable CSS classname to work with.
-        pagemarkElement.className="pagemark annotation";
+        this.pagemarkElement.className="pagemark annotation";
 
         //pagemark.style.backgroundColor="rgb(198, 198, 198)";
-        pagemarkElement.style.backgroundColor="#00CCFF";
-        pagemarkElement.style.opacity="0.3";
+        this.pagemarkElement.style.backgroundColor="#00CCFF";
+        this.pagemarkElement.style.opacity="0.3";
 
-        pagemarkElement.style.position="absolute";
-
-        let usePlacedPagemark = true;
+        this.pagemarkElement.style.position="absolute";
 
         // FIXME: this needs to be a function of the PlacedPagemarkCalculator
-        pagemarkElement.style.left = options.templateElement.offsetLeft;
+        this.pagemarkElement.style.left = templateElement.offsetLeft;
 
         // FIXME: this needs to be a function of the PlacedPagemarkCalculator
-        pagemarkElement.style.top = options.templateElement.offsetTop;
+        this.pagemarkElement.style.top = templateElement.offsetTop;
 
         // FIXME: this needs to be a function of the PlacedPagemarkCalculator
-        pagemarkElement.style.width = options.templateElement.style.width;
+        this.pagemarkElement.style.width = templateElement.style.width;
 
         // FIXME: this needs to be a function of the PlacedPagemarkCalculator
-        let height = Styles.parsePixels(options.templateElement.style.height);
+        let height = Styles.parsePX(templateElement.style.height);
 
         if(!height) {
             // FIXME: this needs to be a function of the PlacedPagemarkCalculator
-            height = options.templateElement.offsetHeight;
+            height = templateElement.offsetHeight;
         }
 
         // read the percentage coverage from the pagemark and adjust the height
         // to reflect the portion we've actually read.
         // FIXME: this needs to be a function of the PlacedPagemarkCalculator
-        height = height * (options.pagemark.percentage / 100);
+        height = height * (this.pagemark.percentage / 100);
 
-        pagemarkElement.style.height = `${height}px`;
+        this.pagemarkElement.style.height = `${height}px`;
 
-        pagemarkElement.style.zIndex = `${options.zIndex}`;
+        this.pagemarkElement.style.zIndex = '1';
 
-        if(!pagemarkElement.style.width) {
+        if(!this.pagemarkElement.style.width) {
             throw new Error("Could not determine width");
         }
 
-        options.placementElement.parentElement.insertBefore(pagemarkElement, options.placementElement);
+        placementElement.parentElement.insertBefore(this.pagemarkElement, placementElement);
 
         // TODO: this enables resize but we don't yet support updating the
         // pagemark data itself.  We're probably going to have to implement
         // mutation listeners there.
 
-        console.log("Creating box controller for pagemarkElement: ", pagemarkElement);
+        console.log("Creating box controller for pagemarkElement: ", this.pagemarkElement);
         this.pagemarkBoxController.register(this.pagemarkElement);
 
     }

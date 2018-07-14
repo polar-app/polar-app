@@ -1,9 +1,9 @@
-const {Delegator, Styles, Elements, forDict} = require("../utils.js");
+const {Styles, forDict} = require("../utils.js");
 const {DocMetaDescriber} = require("../metadata/DocMetaDescriber");
 const {DocFormatFactory} = require("../docformat/DocFormatFactory");
-const {CompositePagemarkComponent} = require("../pagemarks/view/components/CompositePagemarkComponent");
-const {MainPagemarkComponent} = require("../pagemarks/view/components/MainPagemarkComponent");
-const {ThumbnailPagemarkComponent} = require("../pagemarks/view/components/ThumbnailPagemarkComponent");
+const {CompositePagemarkRedrawer} = require("../pagemarks/view/redrawer/CompositePagemarkRedrawer");
+const {MainPagemarkRedrawer} = require("../pagemarks/view/redrawer/MainPagemarkRedrawer");
+const {ThumbnailPagemarkRedrawer} = require("../pagemarks/view/redrawer/ThumbnailPagemarkRedrawer");
 const {Preconditions} = require("../Preconditions");
 const {View} = require("./View.js");
 const {BoxController} = require("../pagemarks/controller/interact/BoxController");
@@ -20,7 +20,7 @@ class WebView extends View {
         /**
          * The currently defined renderer for pagemarks.
          */
-        this.pagemarkComponent = null;
+        this.pagemarkRedrawer = null;
         this.docFormat = DocFormatFactory.getInstance();
 
         this.pagemarkBoxController = new BoxController(this.pagemarkMoved);
@@ -93,19 +93,19 @@ class WebView extends View {
         console.log("WebView.onDocumentLoaded: ", this.model.docMeta);
 
         let pagemarkComponentDelegates = [
-            new MainPagemarkComponent(this),
+            new MainPagemarkRedrawer(this),
         ];
 
         if (this.docFormat.supportThumbnails()) {
             // only support rendering thumbnails for documents that have thumbnail
             // support.
-            pagemarkComponentDelegates.push(new ThumbnailPagemarkComponent(this));
+            pagemarkComponentDelegates.push(new ThumbnailPagemarkRedrawer(this));
         } else {
             console.warn("Thumbnails not enabled.");
         }
 
-        this.pagemarkComponent = new CompositePagemarkComponent(this, pagemarkComponentDelegates);
-        this.pagemarkComponent.setup();
+        this.pagemarkRedrawer = new CompositePagemarkRedrawer(this, pagemarkComponentDelegates);
+        this.pagemarkRedrawer.setup();
 
         this.updateProgress();
 
@@ -116,7 +116,7 @@ class WebView extends View {
 
         console.log("Creating pagemark on page: " + pagemarkEvent.pageNum);
 
-        this.pagemarkComponent.create(pagemarkEvent.pageNum, pagemarkEvent.pagemark);
+        this.pagemarkRedrawer.create(pagemarkEvent.pageNum, pagemarkEvent.pagemark);
         this.updateProgress();
 
     }
@@ -124,11 +124,17 @@ class WebView extends View {
     onErasePagemark(pagemarkEvent) {
         console.log("WebView.onErasePagemark");
 
-        this.pagemarkComponent.erase(pagemarkEvent.pageNum);
+        this.pagemarkRedrawer.erase(pagemarkEvent.pageNum);
         this.updateProgress();
 
     }
 
+    /**
+     * @deprecated Remove in favor of new PagemarkView code
+     * @param pageElement
+     * @param options
+     * @return {Promise<void>}
+     */
     async recreatePagemarksFromPageElement(pageElement, options) {
 
         let pageNum = this.docFormat.getPageNumFromPageElement(pageElement);
@@ -162,6 +168,11 @@ class WebView extends View {
 
     }
 
+    /**
+     * @deprecated Remove in favor of new PagemarkView code
+     * @param pageElement
+     * @param options
+     */
     recreatePagemark(pageElement, options) {
 
         if(! options.pagemark) {
@@ -193,6 +204,7 @@ class WebView extends View {
 
     /**
      * Create a pagemark on the given page which marks it read.
+     * @deprecated Remove in favor of new PagemarkView code
      * @param pageElement {HTMLElement}
      * @param options {Object}
      */
@@ -304,10 +316,10 @@ class WebView extends View {
 
     }
 
-    redrawPagemark() {
-
-    }
-
+    /**
+     * @deprecated Remove in favor of new PagemarkView code
+     * @param pageElement
+     */
     erasePagemarks(pageElement) {
 
         if(!pageElement) {

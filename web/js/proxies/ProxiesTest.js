@@ -513,6 +513,7 @@ describe('Proxies', function() {
                 }
             ];
 
+            assert.equal( mutations[0].previousValue, "dog");
             assert.equal( mutations[0].value === undefined, true);
             assert.equal( "value" in mutations[0], true);
 

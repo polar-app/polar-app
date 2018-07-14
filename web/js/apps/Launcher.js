@@ -37,7 +37,7 @@ class Launcher {
         new WebView(model).start();
         //new TextHighlightView(model).start();
         new TextHighlightView2(model).start();
-        new PagemarkView(model).start();
+        //new PagemarkView(model).start();
         ViewerFactory.create().start();
 
         await persistenceLayer.init();

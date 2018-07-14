@@ -1,7 +1,4 @@
-const http = require('http');
-const fs = require('fs');
 const assert = require('assert');
-const url = require('url');
 const {Caller} = require('./Caller');
 
 describe('Caller', function() {
@@ -18,10 +15,19 @@ describe('Caller', function() {
 
         it("Parse a basic frame", async function () {
 
-            let frame = "     at Function.getCaller (/home/burton/projects/polar-bookshelf/web/js/logger/CallerTest.js:5:17)";
+            let frame = "     at Function.getCaller (/home/burton/projects/polar-bookshelf/web/js/test/MyTest.js:5:17)";
 
-            assert.deepEqual(Caller._parse(frame), { filename: "CallerTest.js" });
+            assert.deepEqual(Caller._parse(frame), { filename: "MyTest.js" });
         });
+
+
+        it("Parse a webpack frame", async function () {
+
+            let frame = "    at Object../web/js/metadata/Pagemarks.js (http://127.0.0.1:8500/web/dist/electron-bundle.js:59471:86)\n";
+
+            assert.deepEqual(Caller._parse(frame), { filename: "Pagemarks.js" });
+        });
+
 
     });
 

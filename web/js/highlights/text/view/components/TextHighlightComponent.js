@@ -71,6 +71,9 @@ class TextHighlightComponent extends Component {
      */
     render() {
 
+        log.info("render()");
+        log.error(new Error("FIXME"));
+
         forDict(this.textHighlight.rects, (id, highlightRect) => {
 
             log.info("Rendering annotation at: " + JSON.stringify(highlightRect, null, "  "));

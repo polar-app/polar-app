@@ -117,7 +117,16 @@ class TraceHandler {
         let previousValue = target[property];
 
         let result = Reflect.set(target, property, value, receiver);
-        let traceEvent = new TraceEvent(this.path, MutationType.SET, target, property, value, previousValue);
+
+        let traceEvent = new TraceEvent({
+            path: this.path,
+            mutationType: MutationType.SET,
+            target,
+            property,
+            value,
+            previousValue
+        });
+
         // TODO/FIXME: what if these mutation listeners throw exceptions?
         this.reactor.dispatchEvent(EVENT_NAME, traceEvent);
         return result;
@@ -129,7 +138,16 @@ class TraceHandler {
         let previousValue = target[property];
 
         let result = Reflect.deleteProperty(...arguments);
-        let traceEvent = new TraceEvent(this.path, MutationType.DELETE, target, property, undefined, previousValue);
+
+        let traceEvent = new TraceEvent({
+            path: this.path,
+            mutationType: MutationType.DELETE,
+            target,
+            property,
+            value: undefined,
+            previousValue
+        });
+
         // TODO/FIXME: what if these mutation listeners throw exceptions?
         this.reactor.dispatchEvent(EVENT_NAME, traceEvent);
         return result;

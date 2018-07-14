@@ -5,24 +5,46 @@ const{MutationTypes} = require("./MutationTypes");
  */
 class TraceEvent {
 
-    /**
-     *
-     * @param path The path in the object tree of the object being mutated.
-     * @param mutationType The type of the mutation.
-     * @param target The object being mutated.
-     * @param property The name of the field in the object.
-     * @param value The new value of the field or undefined if it's a delete operation.
-     * @param previousValue The previous value of the field before the operation.
-     * @return True if the mutation should continue.
-     */
-    constructor(path, mutationType, target, property, value, previousValue) {
-        this.path = path;
-        this.mutationType = mutationType;
-        this.target = target;
-        this.property = property;
-        this.value = value;
-        this.previousValue = previousValue;
-        this.mutationState = MutationTypes.toMutationState(mutationType);
+    constructor(opts) {
+
+        /**
+         * @type {string} The path in the object tree of the object being mutated.
+         */
+        this.path = undefined;
+
+        /**
+         * @type {MutationType} The type of the mutation.
+         */
+        this.mutationType = undefined;
+
+        /**
+         * @type {Object} The object being mutated.
+         */
+        this.target = undefined;
+
+        /**
+         * @type {string} The name of the field in the object.
+         */
+        this.property = undefined;
+
+        /**
+         * @type {Object} The new value of the field or undefined if it's a delete operation.
+         */
+        this.value = undefined;
+
+        /**
+         * @type {Object} The previous value of the field before the operation.
+         */
+        this.previousValue = undefined;
+
+
+        Object.assign(this, opts);
+
+        /**
+         * @type {MutationState} A high level
+         */
+        this.mutationState = MutationTypes.toMutationState(this.mutationType);
+
     }
 
 }

@@ -1,3 +1,4 @@
+const {AnnotationEvent} = require("../../annotations/components/AnnotationEvent");
 const {forDict} = require("../../utils.js");
 
 /**
@@ -23,24 +24,12 @@ class PagemarkModel {
                     return;
                 }
 
-                let id = traceEvent.value ? traceEvent.value.id : traceEvent.previousValue.id;
-
-                let event = {
-                    id,
+                let annotationEvent = new AnnotationEvent(Object.assign({}, traceEvent, {
                     docMeta,
                     pageMeta,
+                }));
 
-                    value: traceEvent.value,
-                    previousValue: traceEvent.previousValue,
-
-                    mutationType: traceEvent.mutationType,
-                    mutationState: traceEvent.mutationState,
-                    // and of course the full traceEvent as a raw value for
-                    // debug purposes.
-                    traceEvent
-                };
-
-                callback(event);
+                callback(annotationEvent);
 
                 return true;
 
@@ -49,6 +38,7 @@ class PagemarkModel {
         });
 
     }
+
 }
 
 module.exports.PagemarkModel = PagemarkModel;

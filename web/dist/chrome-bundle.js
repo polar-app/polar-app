@@ -78160,6 +78160,76 @@ module.exports.Rects = Rects;
 
 /***/ }),
 
+/***/ "./web/js/annotations/components/AnnotationEvent.js":
+/*!**********************************************************!*\
+  !*** ./web/js/annotations/components/AnnotationEvent.js ***!
+  \**********************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+const { TraceEvent } = __webpack_require__(/*! ../../proxies/TraceEvent */ "./web/js/proxies/TraceEvent.js");
+
+class AnnotationEvent extends TraceEvent {
+
+  constructor(opts) {
+
+    super(opts);
+
+    /**
+     * The ID for this annotation.
+     *
+     * @type {string}
+     */
+    this.id = undefined;
+
+    /**
+     *
+     * @type {DocMeta}
+     */
+    this.docMeta = undefined;
+
+    /**
+     *
+     * @type {PageMeta}
+     */
+    this.pageMeta = undefined;
+
+    /**
+     * The page we're working with.
+     *
+     * @type {number}
+     */
+    this.pageNum = undefined;
+
+    /**
+     * The page we're working with to which this annotation is attached.
+     *
+     * @type {HTMLElement}
+     */
+    this.pageElement = undefined;
+
+    /**
+     * The raw TraceEvent for this annotation.
+     *
+     * @type {TraceEvent}
+     */
+    this.traceEvent = undefined;
+
+    Object.assign(this, opts);
+
+    if (this.value) {
+      this.id = this.value.id;
+    } else {
+      this.id = this.previousValue.id;
+    }
+  }
+
+}
+
+module.exports.AnnotationEvent = AnnotationEvent;
+
+/***/ }),
+
 /***/ "./web/js/apps/Launcher.js":
 /*!*********************************!*\
   !*** ./web/js/apps/Launcher.js ***!
@@ -78211,7 +78281,7 @@ class Launcher {
             new WebView(model).start();
             //new TextHighlightView(model).start();
             new TextHighlightView2(model).start();
-            new PagemarkView(model).start();
+            //new PagemarkView(model).start();
             ViewerFactory.create().start();
 
             yield persistenceLayer.init();
@@ -78382,6 +78452,8 @@ class ComponentManager {
         docMetaModel.registerListener(documentLoadedEvent.docMeta, this.onComponentEvent.bind(this));
     }
 
+    // FIXME: this is actually an AnnotationEvent right?
+
     onComponentEvent(componentEvent) {
 
         log.info("onComponentEvent: ", componentEvent);
@@ -78401,6 +78473,13 @@ class ComponentManager {
             component.init(componentEvent);
 
             let callback = () => {
+
+                // always destroy the component before we erase it.  This way
+                // if there is an existing component rendered on the screen it's
+                // first removed so we don't get a double render.
+                component.destroy();
+
+                // now render the component on screen.
                 component.render();
             };
 
@@ -80763,7 +80842,15 @@ class TextHighlightModel extends DocMetaModel {
                     return;
                 }
 
-                let id = traceEvent.value ? traceEvent.value.id : traceEvent.previousValue.id;
+                let id;
+
+                if (traceEvent.value) {
+                    id = traceEvent.value.id;
+                } else {
+                    id = traceEvent.previousValue.id;
+                }
+
+                // FIXME: migrate to AnnotationEvent
 
                 let event = {
                     id,
@@ -80791,7 +80878,7 @@ class TextHighlightModel extends DocMetaModel {
         });
     }
 
-};
+}
 
 module.exports.TextHighlightModel = TextHighlightModel;
 
@@ -81819,110 +81906,124 @@ const log = __webpack_require__(/*! ../../../../logger/Logger */ "./web/js/logge
 
 class TextHighlightComponent extends Component {
 
-    constructor() {
-        super();
-        this.docFormat = DocFormatFactory.getInstance();
-
-        /**
-         * The page we're working with.
-         *
-         * @type {number}
-         */
-        this.pageNum = undefined;
-
-        /**
-         * The .page we're working with.
-         *
-         * @type {HTMLElement}
-         */
-        this.pageElement = undefined;
-
-        /**
-         *
-         * @type {DocMeta}
-         */
-        this.docMeta = undefined;
-
-        /**
-         *
-         * @type {TextHighlight}
-         */
-        this.textHighlight = undefined;
-    }
+  constructor() {
+    super();
 
     /**
-     * @Override
-     * @param componentEvent
+     *
+     * @type {DocFormat}
      */
-    init(componentEvent) {
-
-        // TODO: we should a specific event class for this data which is captured
-        // within a higher level componentEvent.
-        this.docMeta = componentEvent.docMeta;
-        this.textHighlight = componentEvent.textHighlight;
-        this.pageMeta = componentEvent.pageMeta;
-
-        this.pageNum = this.pageMeta.pageInfo.num;
-        this.pageElement = this.docFormat.getPageElementFromPageNum(this.pageNum);
-    }
+    this.docFormat = DocFormatFactory.getInstance();
 
     /**
-     * @Override
+     *
+     * @type {DocMeta}
      */
-    render() {
-
-        forDict(this.textHighlight.rects, (id, highlightRect) => {
-
-            log.info("Rendering annotation at: " + JSON.stringify(highlightRect, null, "  "));
-
-            let highlightElement = document.createElement("div");
-
-            highlightElement.setAttribute("data-type", "text-highlight");
-            highlightElement.setAttribute("data-doc-fingerprint", this.docMeta.docInfo.fingerprint);
-            highlightElement.setAttribute("data-text-highlight-id", this.textHighlight.id);
-            highlightElement.setAttribute("data-page-num", `${this.pageMeta.pageInfo.num}`);
-
-            highlightElement.className = `text-highlight annotation text-highlight-${this.textHighlight.id}`;
-
-            highlightElement.style.position = "absolute";
-            highlightElement.style.backgroundColor = `yellow`;
-            highlightElement.style.opacity = `0.5`;
-
-            if (this.docFormat.name === "pdf") {
-                // this is only needed for PDF and we might be able to use a transform
-                // in the future which would be easier.
-                let currentScale = this.docFormat.currentScale();
-                highlightRect = Rects.scale(highlightRect, currentScale);
-            }
-
-            highlightElement.style.left = `${highlightRect.left}px`;
-            highlightElement.style.top = `${highlightRect.top}px`;
-
-            highlightElement.style.width = `${highlightRect.width}px`;
-            highlightElement.style.height = `${highlightRect.height}px`;
-
-            // TODO: the problem with this strategy is that it inserts elements in the
-            // REVERSE order they are presented visually.  This isn't a problem but
-            // it might become confusing to debug this issue.  A quick fix is to
-            // just reverse the array before we render the elements.
-            this.pageElement.insertBefore(highlightElement, this.pageElement.firstChild);
-        });
-    }
+    this.docMeta = undefined;
 
     /**
-     * @Override
+     *
+     * @type {TextHighlight}
      */
-    destroy() {
+    this.textHighlight = undefined;
 
-        let selector = `.text-highlight-${this.textHighlight.id}`;
-        let highlightElements = document.querySelectorAll(selector);
+    /**
+     *
+     * @type {PageMeta}
+     */
+    this.pageMeta = undefined;
 
-        log.info(`Found N elements for selector ${selector}: ` + highlightElements.length);
+    /**
+     * The page we're working with.
+     *
+     * @type {number}
+     */
+    this.pageNum = undefined;
 
-        highlightElements.forEach(highlightElement => {
-            highlightElement.parentElement.removeChild(highlightElement);
-        });
-    }
+    /**
+     * The .page we're working with.
+     *
+     * @type {HTMLElement}
+     */
+    this.pageElement = undefined;
+  }
+
+  /**
+   * @Override
+   * @param componentEvent
+   */
+  init(componentEvent) {
+
+    // TODO: we should a specific event class for this data which is captured
+    // within a higher level componentEvent.
+    this.docMeta = componentEvent.docMeta;
+    this.textHighlight = componentEvent.textHighlight;
+    this.pageMeta = componentEvent.pageMeta;
+
+    this.pageNum = this.pageMeta.pageInfo.num;
+    this.pageElement = this.docFormat.getPageElementFromPageNum(this.pageNum);
+  }
+
+  /**
+   * @Override
+   */
+  render() {
+
+    log.info("render()");
+    log.error(new Error("FIXME"));
+
+    forDict(this.textHighlight.rects, (id, highlightRect) => {
+
+      log.info("Rendering annotation at: " + JSON.stringify(highlightRect, null, "  "));
+
+      let highlightElement = document.createElement("div");
+
+      highlightElement.setAttribute("data-type", "text-highlight");
+      highlightElement.setAttribute("data-doc-fingerprint", this.docMeta.docInfo.fingerprint);
+      highlightElement.setAttribute("data-text-highlight-id", this.textHighlight.id);
+      highlightElement.setAttribute("data-page-num", `${this.pageMeta.pageInfo.num}`);
+
+      highlightElement.className = `text-highlight annotation text-highlight-${this.textHighlight.id}`;
+
+      highlightElement.style.position = "absolute";
+      highlightElement.style.backgroundColor = `yellow`;
+      highlightElement.style.opacity = `0.5`;
+
+      if (this.docFormat.name === "pdf") {
+        // this is only needed for PDF and we might be able to use a transform
+        // in the future which would be easier.
+        let currentScale = this.docFormat.currentScale();
+        highlightRect = Rects.scale(highlightRect, currentScale);
+      }
+
+      highlightElement.style.left = `${highlightRect.left}px`;
+      highlightElement.style.top = `${highlightRect.top}px`;
+
+      highlightElement.style.width = `${highlightRect.width}px`;
+      highlightElement.style.height = `${highlightRect.height}px`;
+
+      // TODO: the problem with this strategy is that it inserts elements in the
+      // REVERSE order they are presented visually.  This isn't a problem but
+      // it might become confusing to debug this issue.  A quick fix is to
+      // just reverse the array before we render the elements.
+      this.pageElement.insertBefore(highlightElement, this.pageElement.firstChild);
+    });
+  }
+
+  /**
+   * @Override
+   */
+  destroy() {
+
+    let selector = `.text-highlight-${this.textHighlight.id}`;
+    let highlightElements = document.querySelectorAll(selector);
+
+    log.info(`Found N elements for selector ${selector}: ` + highlightElements.length);
+
+    highlightElements.forEach(highlightElement => {
+      highlightElement.parentElement.removeChild(highlightElement);
+    });
+  }
 
 }
 
@@ -81942,8 +82043,13 @@ class Caller {
     static getCaller() {
         let e = new Error();
         let stack = e.stack;
+
+        //console.error("FIXME: stack: ", stack);
         let frame = stack.split("\n")[3];
-        return Caller._parse(frame);
+        //console.error("FIXME: frame: ", frame);
+        let result = Caller._parse(frame);
+        //console.error("FIXME: result: ", result);
+        return result;
     }
 
     /**
@@ -81953,17 +82059,28 @@ class Caller {
      */
     static _parse(frame) {
 
-        let re = /([^/.]+\.(js|ts|tsx)):[0-9]+:[0-9]+/g;
-        let m = re.exec(frame);
+        let javascriptCaller = Caller.parseRE(frame, /([^/.)]+\.(js|ts|tsx)):[0-9]+:[0-9]+\)$/g);
 
-        // console.log("========= BEGIN stack: ===");
-        // console.log(frame);
-        // console.log("========= END stack: ===");
+        // this returns the first match with a space at the end.
+        let webpackCaller = Caller.parseRE(frame, /([^/.)]+\.(js|ts|tsx)) /g);
+
+        if (webpackCaller) {
+            return webpackCaller;
+        }
+
+        if (javascriptCaller) return javascriptCaller;
+
+        throw new Error("Could not determine caller");
+    }
+
+    static parseRE(frame, re) {
+
+        let m = re.exec(frame);
 
         if (m) {
             return { filename: m[1] };
         } else {
-            throw new Error("Could not determine caller");
+            return null;
         }
     }
 
@@ -85404,6 +85521,7 @@ module.exports.ResizeRectAdjacencyCalculator = ResizeRectAdjacencyCalculator;
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
+const { AnnotationEvent } = __webpack_require__(/*! ../../annotations/components/AnnotationEvent */ "./web/js/annotations/components/AnnotationEvent.js");
 const { forDict } = __webpack_require__(/*! ../../utils.js */ "./web/js/utils.js");
 
 /**
@@ -85429,29 +85547,18 @@ class PagemarkModel {
                     return;
                 }
 
-                let id = traceEvent.value ? traceEvent.value.id : traceEvent.previousValue.id;
-
-                let event = {
-                    id,
+                let annotationEvent = new AnnotationEvent(Object.assign({}, traceEvent, {
                     docMeta,
-                    pageMeta,
+                    pageMeta
+                }));
 
-                    value: traceEvent.value,
-                    previousValue: traceEvent.previousValue,
-
-                    mutationType: traceEvent.mutationType,
-                    mutationState: traceEvent.mutationState,
-                    // and of course the full traceEvent as a raw value for
-                    // debug purposes.
-                    traceEvent
-                };
-
-                callback(event);
+                callback(annotationEvent);
 
                 return true;
             }).sync();
         });
     }
+
 }
 
 module.exports.PagemarkModel = PagemarkModel;
@@ -85465,10 +85572,9 @@ module.exports.PagemarkModel = PagemarkModel;
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
+const { PrimaryPagemarkComponent } = __webpack_require__(/*! ./components/PrimaryPagemarkComponent */ "./web/js/pagemarks/view/components/PrimaryPagemarkComponent.js");
+const { ComponentManager } = __webpack_require__(/*! ../../components/ComponentManager */ "./web/js/components/ComponentManager.js");
 const { PagemarkModel } = __webpack_require__(/*! ../model/PagemarkModel */ "./web/js/pagemarks/model/PagemarkModel.js");
-const { Logger } = __webpack_require__(/*! ../../logger/Logger */ "./web/js/logger/Logger.js");
-
-const log = Logger.create();
 
 class PagemarkView {
 
@@ -85477,25 +85583,12 @@ class PagemarkView {
      * @param model {Model}
      */
     constructor(model) {
-        this.model = model;
+
+        this.componentManager = new ComponentManager(model, () => new PrimaryPagemarkComponent(), () => new PagemarkModel());
     }
 
     start() {
-        this.model.registerListenerForDocumentLoaded(documentLoadedEvent => this.onDocumentLoaded(documentLoadedEvent));
-    }
-
-    onDocumentLoaded(documentLoadedEvent) {
-
-        log.info("PagemarkView.onDocumentLoaded");
-
-        let pagemarkModel = new PagemarkModel();
-
-        pagemarkModel.registerListener(documentLoadedEvent.docMeta, pagemarkEvent => this.onPagemark(pagemarkEvent));
-    }
-
-    onPagemark(pagemarkEvent) {
-
-        log.info("Got pagemark event!", pagemarkEvent);
+        this.componentManager.start();
     }
 
 }
@@ -85504,36 +85597,480 @@ module.exports.PagemarkView = PagemarkView;
 
 /***/ }),
 
-/***/ "./web/js/pagemarks/view/components/CompositePagemarkComponent.js":
-/*!************************************************************************!*\
-  !*** ./web/js/pagemarks/view/components/CompositePagemarkComponent.js ***!
-  \************************************************************************/
+/***/ "./web/js/pagemarks/view/components/AbstractPagemarkComponent.js":
+/*!***********************************************************************!*\
+  !*** ./web/js/pagemarks/view/components/AbstractPagemarkComponent.js ***!
+  \***********************************************************************/
 /*! no static exports found */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
 
-throw new Error("Module build failed: Error: ENOENT: no such file or directory, open '/home/burton/projects/polar-bookshelf/web/js/pagemarks/view/components/CompositePagemarkComponent.js'");
+const { Component } = __webpack_require__(/*! ../../../components/Component */ "./web/js/components/Component.js");
+const { DocFormatFactory } = __webpack_require__(/*! ../../../docformat/DocFormatFactory */ "./web/js/docformat/DocFormatFactory.js");
+
+class AbstractPagemarkComponent extends Component {
+
+    constructor() {
+        super();
+
+        // FIXME: this needs to be refactored so that the EVENT is just stored
+        // and the event is an AnnotationEvent which already has docMeta,
+        // pageMeta, pageNum, and possibly pageElement attributes and shared
+        // with TextHighlightModel and PagemarkModel and we just keep a reference
+        // to annotationEvent which has all the fields we need.
+
+        /**
+         *
+         * @type {DocFormat}
+         */
+        this.docFormat = DocFormatFactory.getInstance();
+
+        /**
+         *
+         * @type {Pagemark}
+         */
+        this.pagemark = undefined;
+    }
+
+    /**
+     * @Override
+     * @param componentEvent
+     */
+    init(annotationEvent) {
+
+        this.docMeta = componentEvent.docMeta;
+        this.textHighlight = componentEvent.textHighlight;
+        this.pageMeta = componentEvent.pageMeta;
+
+        this.pageNum = this.pageMeta.pageInfo.num;
+        this.pageElement = this.docFormat.getPageElementFromPageNum(this.pageNum);
+    }
+
+    /**
+     * @Override
+     *
+     */
+    render() {
+
+        //
+        // - the options building can't be reliably tested
+        //
+        // - there are too many ways to compute the options
+        //
+        // - we PLACE the element as part of this function.  Have a secondary
+        //   way to just CREATE the element so that we can test the settings
+        //   properly.
+
+        if (!options.pagemark) {
+            throw new Error("Pagemark is required");
+        }
+
+        if (!options.pagemark.percentage) {
+            throw new Error("Pagemark has no percentage");
+        }
+
+        if (!options.zIndex) options.zIndex = 1;
+
+        if (!options.templateElement) {
+            options.templateElement = this.pageElement;
+        }
+
+        if (!options.placementElement) {
+            // TODO: move this to the object dealing with pages only.
+            options.placementElement = pageElement.querySelector(".canvasWrapper, .iframeWrapper");
+        }
+
+        if (!options.templateElement) {
+            throw new Error("No templateElement");
+        }
+
+        if (!options.placementElement) {
+            throw new Error("No placementElement");
+        }
+
+        if (pageElement.querySelector(".pagemark")) {
+            // do nothing if the current page already has a pagemark.
+            console.warn("Pagemark already exists");
+            return;
+        }
+
+        let pagemarkElement = document.createElement("div");
+
+        // set a pagemark-id in the DOM so that we can work with it when we use
+        // the context menu, etc.
+        pagemarkElement.setAttribute("id", options.pagemark.id);
+        pagemarkElement.setAttribute("data-pagemark-id", options.pagemark.id);
+
+        // make sure we have a reliable CSS classname to work with.
+        pagemarkElement.className = "pagemark annotation";
+
+        //pagemark.style.backgroundColor="rgb(198, 198, 198)";
+        pagemarkElement.style.backgroundColor = "#00CCFF";
+        pagemarkElement.style.opacity = "0.3";
+
+        pagemarkElement.style.position = "absolute";
+
+        let usePlacedPagemark = true;
+
+        // FIXME: this needs to be a function of the PlacedPagemarkCalculator
+        pagemarkElement.style.left = options.templateElement.offsetLeft;
+
+        // FIXME: this needs to be a function of the PlacedPagemarkCalculator
+        pagemarkElement.style.top = options.templateElement.offsetTop;
+
+        // FIXME: this needs to be a function of the PlacedPagemarkCalculator
+        pagemarkElement.style.width = options.templateElement.style.width;
+
+        // FIXME: this needs to be a function of the PlacedPagemarkCalculator
+        let height = Styles.parsePixels(options.templateElement.style.height);
+
+        if (!height) {
+            // FIXME: this needs to be a function of the PlacedPagemarkCalculator
+            height = options.templateElement.offsetHeight;
+        }
+
+        // read the percentage coverage from the pagemark and adjust the height
+        // to reflect the portion we've actually read.
+        // FIXME: this needs to be a function of the PlacedPagemarkCalculator
+        height = height * (options.pagemark.percentage / 100);
+
+        pagemarkElement.style.height = `${height}px`;
+
+        pagemarkElement.style.zIndex = `${options.zIndex}`;
+
+        if (!pagemarkElement.style.width) {
+            throw new Error("Could not determine width");
+        }
+
+        options.placementElement.parentElement.insertBefore(pagemarkElement, options.placementElement);
+
+        // TODO: this enables resize but we don't yet support updating the
+        // pagemark data itself.  We're probably going to have to implement
+        // mutation listeners there.
+
+        console.log("Creating box controller for pagemarkElement: ", pagemarkElement);
+        this.pagemarkBoxController.register(this.pagemarkElement);
+    }
+
+    /**
+     * @Override
+     * @returns {*}
+     */
+    destroy() {
+        this.pagemarkBoxController.unregister(this.pagemarkElement);
+    }
+
+}
+
+module.exports.AbstractPagemarkComponent = AbstractPagemarkComponent;
 
 /***/ }),
 
-/***/ "./web/js/pagemarks/view/components/MainPagemarkComponent.js":
-/*!*******************************************************************!*\
-  !*** ./web/js/pagemarks/view/components/MainPagemarkComponent.js ***!
-  \*******************************************************************/
+/***/ "./web/js/pagemarks/view/components/PrimaryPagemarkComponent.js":
+/*!**********************************************************************!*\
+  !*** ./web/js/pagemarks/view/components/PrimaryPagemarkComponent.js ***!
+  \**********************************************************************/
 /*! no static exports found */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
 
-throw new Error("Module build failed: Error: ENOENT: no such file or directory, open '/home/burton/projects/polar-bookshelf/web/js/pagemarks/view/components/MainPagemarkComponent.js'");
+const { AbstractPagemarkComponent } = __webpack_require__(/*! ./AbstractPagemarkComponent */ "./web/js/pagemarks/view/components/AbstractPagemarkComponent.js");
+
+/**
+ * The primary pagemark for displaying pagemarks on a .page.  This is in contrast
+ * to a thumbnail pagemark.
+ */
+
+class PrimaryPagemarkComponent extends AbstractPagemarkComponent {}
+
+module.exports.PrimaryPagemarkComponent = PrimaryPagemarkComponent;
 
 /***/ }),
 
-/***/ "./web/js/pagemarks/view/components/ThumbnailPagemarkComponent.js":
-/*!************************************************************************!*\
-  !*** ./web/js/pagemarks/view/components/ThumbnailPagemarkComponent.js ***!
-  \************************************************************************/
+/***/ "./web/js/pagemarks/view/redrawer/CompositePagemarkRedrawer.js":
+/*!*********************************************************************!*\
+  !*** ./web/js/pagemarks/view/redrawer/CompositePagemarkRedrawer.js ***!
+  \*********************************************************************/
 /*! no static exports found */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
 
-throw new Error("Module build failed: Error: ENOENT: no such file or directory, open '/home/burton/projects/polar-bookshelf/web/js/pagemarks/view/components/ThumbnailPagemarkComponent.js'");
+const { Delegator } = __webpack_require__(/*! ../../../utils.js */ "./web/js/utils.js");
+const { PagemarkComponent } = __webpack_require__(/*! ./PagemarkRedrawer */ "./web/js/pagemarks/view/redrawer/PagemarkRedrawer.js");
+
+class CompositePagemarkRedrawer extends PagemarkComponent {
+
+    constructor(view, delegates) {
+        super(view);
+
+        if (!delegates) {
+            throw new Error("No delegates");
+        }
+
+        this.delegator = new Delegator(delegates);
+    }
+
+    setup() {
+        this.delegator.apply("setup");
+    }
+
+    create(pageNum, pagemark) {
+        this.delegator.apply("create", pageNum, pagemark);
+    }
+
+    erase(pageNum) {
+        this.delegator.apply("erase", pageNum);
+    }
+
+}
+
+module.exports.CompositePagemarkRedrawer = CompositePagemarkRedrawer;
+
+/***/ }),
+
+/***/ "./web/js/pagemarks/view/redrawer/MainPagemarkRedrawer.js":
+/*!****************************************************************!*\
+  !*** ./web/js/pagemarks/view/redrawer/MainPagemarkRedrawer.js ***!
+  \****************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
+
+const { PagemarkComponent } = __webpack_require__(/*! ./PagemarkRedrawer */ "./web/js/pagemarks/view/redrawer/PagemarkRedrawer.js");
+
+/**
+ * Handles attaching pagemarks to the pages (as opposed to thumbnails).
+ */
+class MainPagemarkRedrawer extends PagemarkComponent {
+
+    /**
+     *
+     * @param view {WebView}
+     */
+    constructor(view) {
+        super(view);
+        this.pageElementSelector = ".page";
+    }
+
+    setup() {
+        this.__setup();
+    }
+
+    __requiresPagemark(pageElement) {
+        return pageElement.querySelector("canvas") != null || pageElement.querySelector("iframe");
+    }
+
+    __registerListener(pageElement) {
+        var _this = this;
+
+        // TODO: migrate to using PageRedrawHandler
+
+        pageElement.addEventListener('DOMNodeInserted', (() => {
+            var _ref = _asyncToGenerator(function* (event) {
+
+                if (event.target && event.target.className === "endOfContent") {
+                    yield _this.__render(pageElement);
+                }
+            });
+
+            return function (_x) {
+                return _ref.apply(this, arguments);
+            };
+        })(), false);
+    }
+
+    __render(pageElement) {
+        var _this2 = this;
+
+        return _asyncToGenerator(function* () {
+            yield _this2.view.recreatePagemarksFromPageElement(pageElement);
+        })();
+    }
+
+}
+
+module.exports.MainPagemarkRedrawer = MainPagemarkRedrawer;
+
+/***/ }),
+
+/***/ "./web/js/pagemarks/view/redrawer/PagemarkRedrawer.js":
+/*!************************************************************!*\
+  !*** ./web/js/pagemarks/view/redrawer/PagemarkRedrawer.js ***!
+  \************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+const { Preconditions } = __webpack_require__(/*! ../../../Preconditions */ "./web/js/Preconditions.js");
+
+class PagemarkRedrawer {
+
+    /**
+     *
+     * @param view {WebView}
+     */
+    constructor(view) {
+
+        /**
+         * @type {WebView}
+         */
+        this.view = view;
+
+        this.pageElements = [];
+
+        // the CSS selector for pulling out the right pageElements.
+        this.pageElementSelector = null;
+    }
+
+    setup() {}
+
+    __setup() {
+
+        console.log("PagemarkRedrawer: setup...");
+
+        this.__updatePageElements();
+
+        console.log(`Working with ${this.pageElements.length} elements for selector ${this.pageElementSelector}`);
+
+        this.pageElements.forEach(pageElement => {
+            this.init(pageElement);
+        });
+    }
+
+    __updatePageElements() {
+        Preconditions.assertNotNull(this.pageElementSelector, "pageElementSelector");
+        this.pageElements = document.querySelectorAll(this.pageElementSelector);
+    }
+
+    init(pageElement) {
+
+        console.log("Initializing pageElement: ", pageElement);
+
+        if (this.__requiresPagemark(pageElement)) {
+            this.__render(pageElement);
+        }
+
+        this.__registerListener(pageElement);
+    }
+
+    /**
+     * Return true if the target needs a pagemark.
+     */
+    __requiresPagemark(pageElement) {}
+
+    /**
+     * Register future listeners to monitor status.
+     */
+    __registerListener(pageElement) {}
+
+    __render(pageElement) {}
+
+    /**
+     * Erase the page elements on the give page number.
+     */
+    create(pageNum, pagemark) {
+
+        if (typeof pageNum !== "number") {
+            throw new Error("pageNum is not a number");
+        }
+
+        if (!pagemark) {
+            throw new Error("No pagemark.");
+        }
+
+        this.__updatePageElements();
+
+        let pageElement = this.pageElements[pageNum - 1];
+
+        if (!pageElement) {
+            throw new Error(`No pageElement for pageNum ${pageNum} out of ${this.pageElements.length} pageElements`);
+        }
+
+        this.__render(pageElement);
+    }
+
+    /**
+     * Erase the pagemarks on the give page number.
+     */
+    erase(pageNum) {
+
+        if (typeof pageNum !== "number") {
+            throw new Error("pageNum is not a number");
+        }
+
+        this.__updatePageElements();
+
+        let pageElement = this.pageElements[pageNum - 1];
+
+        if (!pageElement) {
+            throw new Error(`No pageElement for pageNum ${pageNum} out of ${this.pageElements.length} pageElements`);
+        }
+
+        this.view.erasePagemarks(pageElement);
+    }
+
+}
+
+module.exports.PagemarkComponent = PagemarkRedrawer;
+
+/***/ }),
+
+/***/ "./web/js/pagemarks/view/redrawer/ThumbnailPagemarkRedrawer.js":
+/*!*********************************************************************!*\
+  !*** ./web/js/pagemarks/view/redrawer/ThumbnailPagemarkRedrawer.js ***!
+  \*********************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+const { PagemarkComponent } = __webpack_require__(/*! ./PagemarkRedrawer */ "./web/js/pagemarks/view/redrawer/PagemarkRedrawer.js");
+
+/**
+ * Handles attaching pagemarks to the pages (as opposed to thumbnails).
+ */
+class ThumbnailPagemarkRedrawer extends PagemarkComponent {
+
+    /**
+     *
+     * @param view {WebView}
+     */
+    constructor(view) {
+        super(view);
+        this.pageElementSelector = ".thumbnail";
+    }
+
+    setup() {
+        this.__setup();
+    }
+
+    __requiresPagemark(pageElement) {
+        let thumbnailImage = pageElement.querySelector(".thumbnailImage");
+        return thumbnailImage != null && thumbnailImage.getAttribute("src") != null;
+    }
+
+    __registerListener(pageElement) {
+
+        pageElement.querySelector(".thumbnailSelectionRing").addEventListener('DOMNodeInserted', event => {
+
+            if (event.target && event.target.className === "thumbnailImage") {
+                this.__render(pageElement);
+            }
+        }, false);
+    }
+
+    __render(pageElement) {
+
+        let templateElement = pageElement.querySelector(".thumbnailImage");
+
+        if (!templateElement) {
+            // the thumbnail tab might not be visible.
+            return;
+        }
+
+        let options = { zIndex: 1, templateElement, placementElement: templateElement };
+
+        this.view.recreatePagemarksFromPageElement(pageElement, options);
+    }
+
+}
+
+module.exports.ThumbnailPagemarkRedrawer = ThumbnailPagemarkRedrawer;
 
 /***/ }),
 
@@ -85947,24 +86484,44 @@ const { MutationTypes } = __webpack_require__(/*! ./MutationTypes */ "./web/js/p
  */
 class TraceEvent {
 
-  /**
-   *
-   * @param path The path in the object tree of the object being mutated.
-   * @param mutationType The type of the mutation.
-   * @param target The object being mutated.
-   * @param property The name of the field in the object.
-   * @param value The new value of the field or undefined if it's a delete operation.
-   * @param previousValue The previous value of the field before the operation.
-   * @return True if the mutation should continue.
-   */
-  constructor(path, mutationType, target, property, value, previousValue) {
-    this.path = path;
-    this.mutationType = mutationType;
-    this.target = target;
-    this.property = property;
-    this.value = value;
-    this.previousValue = previousValue;
-    this.mutationState = MutationTypes.toMutationState(mutationType);
+  constructor(opts) {
+
+    /**
+     * @type {string} The path in the object tree of the object being mutated.
+     */
+    this.path = undefined;
+
+    /**
+     * @type {MutationType} The type of the mutation.
+     */
+    this.mutationType = undefined;
+
+    /**
+     * @type {Object} The object being mutated.
+     */
+    this.target = undefined;
+
+    /**
+     * @type {string} The name of the field in the object.
+     */
+    this.property = undefined;
+
+    /**
+     * @type {Object} The new value of the field or undefined if it's a delete operation.
+     */
+    this.value = undefined;
+
+    /**
+     * @type {Object} The previous value of the field before the operation.
+     */
+    this.previousValue = undefined;
+
+    Object.assign(this, opts);
+
+    /**
+     * @type {MutationState} A high level
+     */
+    this.mutationState = MutationTypes.toMutationState(this.mutationType);
   }
 
 }
@@ -86094,7 +86651,16 @@ class TraceHandler {
         let previousValue = target[property];
 
         let result = Reflect.set(target, property, value, receiver);
-        let traceEvent = new TraceEvent(this.path, MutationType.SET, target, property, value, previousValue);
+
+        let traceEvent = new TraceEvent({
+            path: this.path,
+            mutationType: MutationType.SET,
+            target,
+            property,
+            value,
+            previousValue
+        });
+
         // TODO/FIXME: what if these mutation listeners throw exceptions?
         this.reactor.dispatchEvent(EVENT_NAME, traceEvent);
         return result;
@@ -86105,7 +86671,16 @@ class TraceHandler {
         let previousValue = target[property];
 
         let result = Reflect.deleteProperty(...arguments);
-        let traceEvent = new TraceEvent(this.path, MutationType.DELETE, target, property, undefined, previousValue);
+
+        let traceEvent = new TraceEvent({
+            path: this.path,
+            mutationType: MutationType.DELETE,
+            target,
+            property,
+            value: undefined,
+            previousValue
+        });
+
         // TODO/FIXME: what if these mutation listeners throw exceptions?
         this.reactor.dispatchEvent(EVENT_NAME, traceEvent);
         return result;
@@ -86158,7 +86733,16 @@ class TraceListenerExecutor {
 
                 if (target.hasOwnProperty(key)) {
                     let val = target[key];
-                    traceListener.onMutation(new TraceEvent(path, MutationType.INITIAL, target, key, val));
+
+                    let traceEvent = new TraceEvent({
+                        path,
+                        mutationType: MutationType.INITIAL,
+                        target,
+                        property: key,
+                        value: val
+                    });
+
+                    traceListener.onMutation(traceEvent);
                 }
             }
         });
@@ -87711,12 +88295,12 @@ module.exports.View = View;
 
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
 
-const { Delegator, Styles, Elements, forDict } = __webpack_require__(/*! ../utils.js */ "./web/js/utils.js");
+const { Styles, forDict } = __webpack_require__(/*! ../utils.js */ "./web/js/utils.js");
 const { DocMetaDescriber } = __webpack_require__(/*! ../metadata/DocMetaDescriber */ "./web/js/metadata/DocMetaDescriber.js");
 const { DocFormatFactory } = __webpack_require__(/*! ../docformat/DocFormatFactory */ "./web/js/docformat/DocFormatFactory.js");
-const { CompositePagemarkComponent } = __webpack_require__(/*! ../pagemarks/view/components/CompositePagemarkComponent */ "./web/js/pagemarks/view/components/CompositePagemarkComponent.js");
-const { MainPagemarkComponent } = __webpack_require__(/*! ../pagemarks/view/components/MainPagemarkComponent */ "./web/js/pagemarks/view/components/MainPagemarkComponent.js");
-const { ThumbnailPagemarkComponent } = __webpack_require__(/*! ../pagemarks/view/components/ThumbnailPagemarkComponent */ "./web/js/pagemarks/view/components/ThumbnailPagemarkComponent.js");
+const { CompositePagemarkRedrawer } = __webpack_require__(/*! ../pagemarks/view/redrawer/CompositePagemarkRedrawer */ "./web/js/pagemarks/view/redrawer/CompositePagemarkRedrawer.js");
+const { MainPagemarkRedrawer } = __webpack_require__(/*! ../pagemarks/view/redrawer/MainPagemarkRedrawer */ "./web/js/pagemarks/view/redrawer/MainPagemarkRedrawer.js");
+const { ThumbnailPagemarkRedrawer } = __webpack_require__(/*! ../pagemarks/view/redrawer/ThumbnailPagemarkRedrawer */ "./web/js/pagemarks/view/redrawer/ThumbnailPagemarkRedrawer.js");
 const { Preconditions } = __webpack_require__(/*! ../Preconditions */ "./web/js/Preconditions.js");
 const { View } = __webpack_require__(/*! ./View.js */ "./web/js/view/View.js");
 const { BoxController } = __webpack_require__(/*! ../pagemarks/controller/interact/BoxController */ "./web/js/pagemarks/controller/interact/BoxController.js");
@@ -87733,7 +88317,7 @@ class WebView extends View {
         /**
          * The currently defined renderer for pagemarks.
          */
-        this.pagemarkComponent = null;
+        this.pagemarkRedrawer = null;
         this.docFormat = DocFormatFactory.getInstance();
 
         this.pagemarkBoxController = new BoxController(this.pagemarkMoved);
@@ -87800,18 +88384,18 @@ class WebView extends View {
 
         console.log("WebView.onDocumentLoaded: ", this.model.docMeta);
 
-        let pagemarkComponentDelegates = [new MainPagemarkComponent(this)];
+        let pagemarkComponentDelegates = [new MainPagemarkRedrawer(this)];
 
         if (this.docFormat.supportThumbnails()) {
             // only support rendering thumbnails for documents that have thumbnail
             // support.
-            pagemarkComponentDelegates.push(new ThumbnailPagemarkComponent(this));
+            pagemarkComponentDelegates.push(new ThumbnailPagemarkRedrawer(this));
         } else {
             console.warn("Thumbnails not enabled.");
         }
 
-        this.pagemarkComponent = new CompositePagemarkComponent(this, pagemarkComponentDelegates);
-        this.pagemarkComponent.setup();
+        this.pagemarkRedrawer = new CompositePagemarkRedrawer(this, pagemarkComponentDelegates);
+        this.pagemarkRedrawer.setup();
 
         this.updateProgress();
     }
@@ -87821,17 +88405,23 @@ class WebView extends View {
 
         console.log("Creating pagemark on page: " + pagemarkEvent.pageNum);
 
-        this.pagemarkComponent.create(pagemarkEvent.pageNum, pagemarkEvent.pagemark);
+        this.pagemarkRedrawer.create(pagemarkEvent.pageNum, pagemarkEvent.pagemark);
         this.updateProgress();
     }
 
     onErasePagemark(pagemarkEvent) {
         console.log("WebView.onErasePagemark");
 
-        this.pagemarkComponent.erase(pagemarkEvent.pageNum);
+        this.pagemarkRedrawer.erase(pagemarkEvent.pageNum);
         this.updateProgress();
     }
 
+    /**
+     * @deprecated Remove in favor of new PagemarkView code
+     * @param pageElement
+     * @param options
+     * @return {Promise<void>}
+     */
     recreatePagemarksFromPageElement(pageElement, options) {
         var _this = this;
 
@@ -87867,6 +88457,11 @@ class WebView extends View {
         })();
     }
 
+    /**
+     * @deprecated Remove in favor of new PagemarkView code
+     * @param pageElement
+     * @param options
+     */
     recreatePagemark(pageElement, options) {
 
         if (!options.pagemark) {
@@ -87894,6 +88489,7 @@ class WebView extends View {
 
     /**
      * Create a pagemark on the given page which marks it read.
+     * @deprecated Remove in favor of new PagemarkView code
      * @param pageElement {HTMLElement}
      * @param options {Object}
      */
@@ -88003,8 +88599,10 @@ class WebView extends View {
         this.pagemarkBoxController.register(pagemarkElement);
     }
 
-    redrawPagemark() {}
-
+    /**
+     * @deprecated Remove in favor of new PagemarkView code
+     * @param pageElement
+     */
     erasePagemarks(pageElement) {
 
         if (!pageElement) {

@@ -3,8 +3,13 @@ class Caller {
     static getCaller() {
         let e = new Error();
         let stack = e.stack;
+
+        //console.error("FIXME: stack: ", stack);
         let frame = stack.split("\n")[3];
-        return Caller._parse(frame);
+        //console.error("FIXME: frame: ", frame);
+        let result = Caller._parse(frame);
+        //console.error("FIXME: result: ", result);
+        return result;
     }
 
     /**
@@ -14,18 +19,32 @@ class Caller {
      */
     static _parse(frame) {
 
-        let re = /([^/.]+\.(js|ts|tsx)):[0-9]+:[0-9]+/g;
-        let m = re.exec(frame);
+        let javascriptCaller = Caller.parseRE(frame, /([^/.)]+\.(js|ts|tsx)):[0-9]+:[0-9]+\)$/g);
 
-        // console.log("========= BEGIN stack: ===");
-        // console.log(frame);
-        // console.log("========= END stack: ===");
+        // this returns the first match with a space at the end.
+        let webpackCaller = Caller.parseRE(frame, /([^/.)]+\.(js|ts|tsx)) /g);
+
+        if(webpackCaller) {
+            return webpackCaller;
+        }
+
+        if(javascriptCaller)
+            return javascriptCaller;
+
+        throw new Error("Could not determine caller");
+
+    }
+
+    static parseRE(frame, re) {
+
+        let m = re.exec(frame);
 
         if(m) {
             return { filename: m[1] };
         } else {
-            throw new Error("Could not determine caller");
+            return null;
         }
+
     }
 
 }

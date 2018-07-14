@@ -32,7 +32,16 @@ class TraceListenerExecutor {
 
                 if (target.hasOwnProperty(key)) {
                     let val = target[key];
-                    traceListener.onMutation(new TraceEvent(path, MutationType.INITIAL, target, key, val));
+
+                    let traceEvent = new TraceEvent({
+                        path,
+                        mutationType: MutationType.INITIAL,
+                        target,
+                        property: key,
+                        value: val
+                    });
+
+                    traceListener.onMutation(traceEvent);
                 }
 
             }
