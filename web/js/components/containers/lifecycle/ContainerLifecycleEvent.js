@@ -12,7 +12,7 @@ class ContainerLifecycleEvent {
         /**
          * The container we're working with.
          *
-         * @type {HTMLElement}
+         * @type {Container}
          */
         this.container = undefined;
 

@@ -5,7 +5,7 @@ class DefaultContainerProvider extends ContainerProvider {
 
     /**
      *
-     * @return {Object<number,HTMLElement>}
+     * @return {Object<number,Container>}
      */
     getContainers() {
         return super._getContainers(".page");
@@ -13,7 +13,7 @@ class DefaultContainerProvider extends ContainerProvider {
 
     /**
      * @Override
-     * @param container {HTMLElement}
+     * @param container {Container}
      * @return {ContainerLifecycleListener}
      */
     createContainerLifecycleListener(container) {

@@ -45,7 +45,7 @@ class AnnotationEvent extends TraceEvent {
         /**
          * The container which holds this annotation.
          *
-         * @type {HTMLElement}
+         * @type {Container}
          */
         this.container = undefined;
 

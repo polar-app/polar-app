@@ -5,6 +5,9 @@ const {ContainerLifecycleListener} = require("../ContainerLifecycleListener");
  */
 class ThumbnailContainerLifecycleListener extends ContainerLifecycleListener {
 
+    /**
+     * @param container {Container}
+     */
     constructor(container) {
         super();
         this.container = container;
@@ -22,14 +25,14 @@ class ThumbnailContainerLifecycleListener extends ContainerLifecycleListener {
 
         };
 
-        let mutatingElement = this.container.querySelector(".thumbnailSelectionRing");
+        let mutatingElement = this.container.element.querySelector(".thumbnailSelectionRing");
 
         mutatingElement.addEventListener('DOMNodeInserted', this.listener, false);
 
     };
 
     unregister() {
-        this.container.removeEventListener('DOMNodeInserted', this.listener, false);
+        this.container.element.removeEventListener('DOMNodeInserted', this.listener, false);
         this.listener = null;
     }
 

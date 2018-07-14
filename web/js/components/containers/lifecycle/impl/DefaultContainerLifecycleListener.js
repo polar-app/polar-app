@@ -9,6 +9,9 @@ const {ContainerLifecycleEvent} = require("../ContainerLifecycleEvent");
  */
 class DefaultContainerLifecycleListener extends ContainerLifecycleListener {
 
+    /**
+     * @param container {Container}
+     */
     constructor(container) {
         super();
         this.container = container;
@@ -31,12 +34,12 @@ class DefaultContainerLifecycleListener extends ContainerLifecycleListener {
 
         };
 
-        this.container.addEventListener('DOMNodeInserted', this.listener, false);
+        this.container.element.addEventListener('DOMNodeInserted', this.listener, false);
 
     };
 
     unregister() {
-        this.container.removeEventListener('DOMNodeInserted', this.listener, false);
+        this.container.element.removeEventListener('DOMNodeInserted', this.listener, false);
         this.listener = null;
     }
 

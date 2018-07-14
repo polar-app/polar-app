@@ -13,16 +13,17 @@ class ThumbnailPagemarkComponent extends AbstractPagemarkComponent {
 
         super.init(annotationEvent);
 
-        let templateElement = annotationEvent.container.querySelector(".thumbnailImage");
+        let container = annotationEvent.container;
+        let templateElement = container.element.querySelector(".thumbnailImage");
 
         if( ! templateElement) {
-            console.warn("Thumbnail tab may not be visible.");
+            console.warn("Thumbnail tab may not be visible in", container);
             // the thumbnail tab might not be visible.
             return;
         }
 
         this.options.templateElement = templateElement;
-        this.options.placementElement = placementElement;
+        this.options.placementElement = templateElement;
 
     }
 

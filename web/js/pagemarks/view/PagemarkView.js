@@ -32,7 +32,8 @@ class PagemarkView {
         //                            new ThumbnailContainerProvider(),
         //                            () => new ThumbnailPagemarkComponent(),
         //                            () => new PagemarkModel());
-        //
+
+
     }
 
     start() {

@@ -1,3 +1,5 @@
+const {Container} = require("../Container");
+
 /**
  * @abstract
  */
@@ -7,7 +9,7 @@ class ContainerProvider {
      * Return all containers in the document indexed by their ID.  For pages
      * and thumbnails this is just going to be the page number.
      *
-     * @return {Object<number,HTMLElement>}
+     * @return {Object<number,Container>}
      */
     getContainers() {
         throw new Error("Not implemented");
@@ -15,17 +17,18 @@ class ContainerProvider {
 
     /**
      *
-     * @return {Object<number,HTMLElement>}
+     * @return {Object<number,Container>}
      */
     _getContainers(selector) {
 
         let result = {};
 
-        let pageElements = Array.from(document.querySelectorAll(selector));
+        let elements = Array.from(document.querySelectorAll(selector));
 
-        pageElements.forEach(pageElement => {
-            let id = parseInt(pageElement.getAttribute("data-page-number"));
-            result[id] = pageElement;
+        elements.forEach(element => {
+            let id = parseInt(element.getAttribute("data-page-number"));
+            let container = new Container({id, element });
+            result[id] = container;
         });
 
         return result;
@@ -35,7 +38,7 @@ class ContainerProvider {
     /**
      * Get the {ContainerLifecycleListener} to use with the container types.
      *
-     * @param container {HTMLElement}
+     * @param container {Container}
      * @return {ContainerLifecycleListener}
      */
     createContainerLifecycleListener(container) {

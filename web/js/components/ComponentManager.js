@@ -38,7 +38,7 @@ class ComponentManager {
 
         /**
          *
-         * @return {Object<number,HTMLElement>}
+         * @return {Object<number,Container>}
          */
         this.containers = {};
 
@@ -124,10 +124,19 @@ class ComponentManager {
             log.info("ABSENT");
 
             let componentEntry = this.components[componentEvent.id];
-            componentEntry.containerLifecycleListener.unregister();
-            componentEntry.component.destroy();
 
-            delete this.components[componentEvent.id];
+            if(componentEntry) {
+
+                componentEntry.containerLifecycleListener.unregister();
+                componentEntry.component.destroy();
+
+                log.info("Destroyed component: " + componentEvent.id);
+
+                delete this.components[componentEvent.id];
+
+            } else {
+                log.warn("No component entry for: " + componentEvent.id);
+            }
 
         }
 
