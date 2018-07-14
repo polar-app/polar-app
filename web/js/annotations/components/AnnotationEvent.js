@@ -42,6 +42,13 @@ class AnnotationEvent extends TraceEvent {
          */
         this.traceEvent = undefined;
 
+        /**
+         * The container which holds this annotation.
+         *
+         * @type {HTMLElement}
+         */
+        this.container = undefined;
+
         Object.assign(this, opts);
 
         if(this.value) {

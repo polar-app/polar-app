@@ -7,7 +7,7 @@ const {ContainerLifecycleEvent} = require("../ContainerLifecycleEvent");
 /**
  * Listens to the lifecycle of .page
  */
-class DefaultContainerLifecycleListener extends ContainerLifecycleListener {
+class AbstractContainerLifecycleListener extends ContainerLifecycleListener {
 
     constructor(container) {
         super();
@@ -31,15 +31,28 @@ class DefaultContainerLifecycleListener extends ContainerLifecycleListener {
 
         };
 
-        this.container.addEventListener('DOMNodeInserted', this.listener, false);
+        this.pageElement.addEventListener('DOMNodeInserted', event => {
+            if(this._testEvent(event)) {
+
+            }
+        }, false);
 
     };
 
+    /**
+     * @abstract
+     * @private
+     * @return {boolean} Return true if this is the event we're monitoring.
+     */
+    _testEvent(event) {
+        throw new Error("Not implemented");
+    }
+
     unregister() {
-        this.container.removeEventListener('DOMNodeInserted', this.listener, false);
+        this.pageElement.removeEventListener('DOMNodeInserted', this.listener, false);
         this.listener = null;
     }
 
 }
 
-module.exports.DefaultContainerLifecycleListener = DefaultContainerLifecycleListener;
+module.exports.AbstractContainerLifecycleListener = AbstractContainerLifecycleListener;

@@ -5,18 +5,15 @@ const {AbstractPagemarkComponent} = require("./AbstractPagemarkComponent");
  */
 class ThumbnailPagemarkComponent extends AbstractPagemarkComponent {
 
+    /**
+     *
+     * @param annotationEvent {AnnotationEvent}
+     */
     init(annotationEvent) {
-
-        // FIXME: __requiresPagemark needs to be used ... we're not ALWAYS rendering these.
-        // Maybe refactor it to visible()
-
-        //
-        // __registerListener is different too.. it's listening to a different element
-
 
         super.init(annotationEvent);
 
-        let templateElement = annotationEvent.pageElement.querySelector(".thumbnailImage");
+        let templateElement = annotationEvent.container.querySelector(".thumbnailImage");
 
         if( ! templateElement) {
             console.warn("Thumbnail tab may not be visible.");

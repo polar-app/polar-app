@@ -1,16 +1,13 @@
-/**
- *
- */
 const {ContainerLifecycleListener} = require("../ContainerLifecycleListener");
 
 /**
- * Listens to the lifecycle of .page
+ * Listens to the lifecycle of .thumbnail
  */
 class ThumbnailContainerLifecycleListener extends ContainerLifecycleListener {
 
-    constructor(thumbnailElement) {
+    constructor(container) {
         super();
-        this.thumbnailElement = thumbnailElement;
+        this.container = container;
         this.listener = null;
 
     }
@@ -20,19 +17,19 @@ class ThumbnailContainerLifecycleListener extends ContainerLifecycleListener {
         this.listener = event => {
 
             if (event.target && event.target.className === "thumbnailImage") {
-                callback(this.pageElement);
+                callback(this.container);
             }
 
         };
 
-        let mutatingElement = this.thumbnailElement.querySelector(".thumbnailSelectionRing");
+        let mutatingElement = this.container.querySelector(".thumbnailSelectionRing");
 
         mutatingElement.addEventListener('DOMNodeInserted', this.listener, false);
 
     };
 
     unregister() {
-        this.pageElement.removeEventListener('DOMNodeInserted', this.listener, false);
+        this.container.removeEventListener('DOMNodeInserted', this.listener, false);
         this.listener = null;
     }
 

@@ -54246,6 +54246,13 @@ class AnnotationEvent extends TraceEvent {
      */
     this.traceEvent = undefined;
 
+    /**
+     * The container which holds this annotation.
+     *
+     * @type {HTMLElement}
+     */
+    this.container = undefined;
+
     Object.assign(this, opts);
 
     if (this.value) {
@@ -54497,7 +54504,6 @@ class ComponentManager {
             let container = this.containers[containerID];
 
             if (!container) {
-                console.warn("FIXME3: containers; ", this.containers);
                 throw new Error("No container for containerID: " + containerID);
             }
 
@@ -54639,9 +54645,9 @@ const { ContainerLifecycleEvent } = __webpack_require__(/*! ../ContainerLifecycl
  */
 class DefaultContainerLifecycleListener extends ContainerLifecycleListener {
 
-    constructor(pageElement) {
+    constructor(container) {
         super();
-        this.pageElement = pageElement;
+        this.container = container;
         this.listener = null;
     }
 
@@ -54652,23 +54658,68 @@ class DefaultContainerLifecycleListener extends ContainerLifecycleListener {
             if (event.target && event.target.className === "endOfContent") {
 
                 callback(new ContainerLifecycleEvent({
-                    container: this.pageElement,
+                    container: this.container,
                     visible: true
                 }));
             }
         };
 
-        this.pageElement.addEventListener('DOMNodeInserted', this.listener, false);
+        this.container.addEventListener('DOMNodeInserted', this.listener, false);
     }
 
     unregister() {
-        this.pageElement.removeEventListener('DOMNodeInserted', this.listener, false);
+        this.container.removeEventListener('DOMNodeInserted', this.listener, false);
         this.listener = null;
     }
 
 }
 
 module.exports.DefaultContainerLifecycleListener = DefaultContainerLifecycleListener;
+
+/***/ }),
+
+/***/ "./web/js/components/containers/lifecycle/impl/ThumbnailContainerLifecycleListener.js":
+/*!********************************************************************************************!*\
+  !*** ./web/js/components/containers/lifecycle/impl/ThumbnailContainerLifecycleListener.js ***!
+  \********************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+const { ContainerLifecycleListener } = __webpack_require__(/*! ../ContainerLifecycleListener */ "./web/js/components/containers/lifecycle/ContainerLifecycleListener.js");
+
+/**
+ * Listens to the lifecycle of .thumbnail
+ */
+class ThumbnailContainerLifecycleListener extends ContainerLifecycleListener {
+
+    constructor(container) {
+        super();
+        this.container = container;
+        this.listener = null;
+    }
+
+    register(callback) {
+
+        this.listener = event => {
+
+            if (event.target && event.target.className === "thumbnailImage") {
+                callback(this.container);
+            }
+        };
+
+        let mutatingElement = this.container.querySelector(".thumbnailSelectionRing");
+
+        mutatingElement.addEventListener('DOMNodeInserted', this.listener, false);
+    }
+
+    unregister() {
+        this.container.removeEventListener('DOMNodeInserted', this.listener, false);
+        this.listener = null;
+    }
+
+}
+
+module.exports.ThumbnailContainerLifecycleListener = ThumbnailContainerLifecycleListener;
 
 /***/ }),
 
@@ -54684,25 +54735,43 @@ module.exports.DefaultContainerLifecycleListener = DefaultContainerLifecycleList
  */
 class ContainerProvider {
 
-  /**
-   * Return all containers in the document indexed by their ID.  For pages
-   * and thumbnails this is just going to be the page number.
-   *
-   * @return {Object<number,HTMLElement>}
-   */
-  getContainers() {
-    throw new Error("Not implemented");
-  }
+    /**
+     * Return all containers in the document indexed by their ID.  For pages
+     * and thumbnails this is just going to be the page number.
+     *
+     * @return {Object<number,HTMLElement>}
+     */
+    getContainers() {
+        throw new Error("Not implemented");
+    }
 
-  /**
-   * Get the {ContainerLifecycleListener} to use with the container types.
-   *
-   * @param container {HTMLElement}
-   * @return {ContainerLifecycleListener}
-   */
-  createContainerLifecycleListener(container) {
-    throw new Error("Not implemented");
-  }
+    /**
+     *
+     * @return {Object<number,HTMLElement>}
+     */
+    _getContainers(selector) {
+
+        let result = {};
+
+        let pageElements = Array.from(document.querySelectorAll(selector));
+
+        pageElements.forEach(pageElement => {
+            let id = parseInt(pageElement.getAttribute("data-page-number"));
+            result[id] = pageElement;
+        });
+
+        return result;
+    }
+
+    /**
+     * Get the {ContainerLifecycleListener} to use with the container types.
+     *
+     * @param container {HTMLElement}
+     * @return {ContainerLifecycleListener}
+     */
+    createContainerLifecycleListener(container) {
+        throw new Error("Not implemented");
+    }
 
 }
 
@@ -54727,21 +54796,7 @@ class DefaultContainerProvider extends ContainerProvider {
      * @return {Object<number,HTMLElement>}
      */
     getContainers() {
-
-        let result = {};
-
-        let pageElements = Array.from(document.querySelectorAll(".page"));
-
-        console.log("FIXME: found N pageElements: " + pageElements.length);
-
-        pageElements.forEach(pageElement => {
-            let id = parseInt(pageElement.getAttribute("data-page-number"));
-            result[id] = pageElement;
-        });
-
-        console.log("FIXME: resi;t: ", result);
-
-        return result;
+        return super._getContainers(".page");
     }
 
     /**
@@ -54756,6 +54811,41 @@ class DefaultContainerProvider extends ContainerProvider {
 }
 
 module.exports.DefaultContainerProvider = DefaultContainerProvider;
+
+/***/ }),
+
+/***/ "./web/js/components/containers/providers/impl/ThumbnailContainerProvider.js":
+/*!***********************************************************************************!*\
+  !*** ./web/js/components/containers/providers/impl/ThumbnailContainerProvider.js ***!
+  \***********************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+const { ThumbnailContainerLifecycleListener } = __webpack_require__(/*! ../../lifecycle/impl/ThumbnailContainerLifecycleListener */ "./web/js/components/containers/lifecycle/impl/ThumbnailContainerLifecycleListener.js");
+const { ContainerProvider } = __webpack_require__(/*! ../ContainerProvider */ "./web/js/components/containers/providers/ContainerProvider.js");
+
+class ThumbnailContainerProvider extends ContainerProvider {
+
+    /**
+     *
+     * @return {Object<number,HTMLElement>}
+     */
+    getContainers() {
+        return super._getContainers(".thumbnail");
+    }
+
+    /**
+     * @Override
+     * @param container {HTMLElement}
+     * @return {ContainerLifecycleListener}
+     */
+    createContainerLifecycleListener(container) {
+        return new ThumbnailContainerLifecycleListener(container);
+    }
+
+}
+
+module.exports.ThumbnailContainerProvider = ThumbnailContainerProvider;
 
 /***/ }),
 
@@ -61523,6 +61613,7 @@ module.exports.PagemarkModel = PagemarkModel;
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
+const { ThumbnailContainerProvider } = __webpack_require__(/*! ../../components/containers/providers/impl/ThumbnailContainerProvider */ "./web/js/components/containers/providers/impl/ThumbnailContainerProvider.js");
 const { DefaultContainerProvider } = __webpack_require__(/*! ../../components/containers/providers/impl/DefaultContainerProvider */ "./web/js/components/containers/providers/impl/DefaultContainerProvider.js");
 const { ThumbnailPagemarkComponent } = __webpack_require__(/*! ./components/ThumbnailPagemarkComponent */ "./web/js/pagemarks/view/components/ThumbnailPagemarkComponent.js");
 const { PrimaryPagemarkComponent } = __webpack_require__(/*! ./components/PrimaryPagemarkComponent */ "./web/js/pagemarks/view/components/PrimaryPagemarkComponent.js");
@@ -61533,30 +61624,34 @@ const PAGEMARK_VIEW_ENABLED = true;
 
 class PagemarkView {
 
-  /**
-   *
-   * @param model {Model}
-   */
-  constructor(model) {
-
-    /***
-     * @type {ComponentManager}
+    /**
+     *
+     * @param model {Model}
      */
-    this.primaryPagemarkComponentManager = new ComponentManager(model, new DefaultContainerProvider(), () => new PrimaryPagemarkComponent(), () => new PagemarkModel());
+    constructor(model) {
 
-    /***
-     * @type {ComponentManager}
-     */
-    // this.thumbnailPagemarkComponentManager = new ComponentManager(model,
-    //     () => new ThumbnailPagemarkComponent(),
-    //     () => new PagemarkModel());
-  }
+        /***
+         * @type {ComponentManager}
+         */
+        this.primaryPagemarkComponentManager = new ComponentManager(model, new DefaultContainerProvider(), () => new PrimaryPagemarkComponent(), () => new PagemarkModel());
 
-  start() {
+        /***
+         * @type {ComponentManager}
+         */
+        // this.thumbnailPagemarkComponentManager
+        //     = new ComponentManager(model,
+        //                            new ThumbnailContainerProvider(),
+        //                            () => new ThumbnailPagemarkComponent(),
+        //                            () => new PagemarkModel());
+        //
+    }
 
-    this.primaryPagemarkComponentManager.start();
-    // this.thumbnailPagemarkComponentManager.start();
-  }
+    start() {
+
+        if (this.primaryPagemarkComponentManager) this.primaryPagemarkComponentManager.start();
+
+        if (this.thumbnailPagemarkComponentManager) this.thumbnailPagemarkComponentManager.start();
+    }
 
 }
 
@@ -61743,9 +61838,8 @@ class AbstractPagemarkComponent extends Component {
         // pagemark data itself.  We're probably going to have to implement
         // mutation listeners there.
 
-        console.log("Creating box controller for pagemarkElement: ", this.pagemarkElement);
-
         if (ENABLE_BOX_CONTROLLER) {
+            console.log("Creating box controller for pagemarkElement: ", this.pagemarkElement);
             this.pagemarkBoxController.register(this.pagemarkElement);
         }
     }
@@ -61755,8 +61849,13 @@ class AbstractPagemarkComponent extends Component {
      * @returns {*}
      */
     destroy() {
+
         if (this.pagemarkElement) {
-            this.pagemarkElement.parentElement.removeChild(this.pagemarkElement);
+
+            if (this.pagemarkElement.parentElement) {
+                this.pagemarkElement.parentElement.removeChild(this.pagemarkElement);
+            }
+
             //this.pagemarkBoxController.unregister(this.pagemarkElement);
             this.pagemarkElement = null;
         }
@@ -61802,18 +61901,15 @@ const { AbstractPagemarkComponent } = __webpack_require__(/*! ./AbstractPagemark
  */
 class ThumbnailPagemarkComponent extends AbstractPagemarkComponent {
 
+    /**
+     *
+     * @param annotationEvent {AnnotationEvent}
+     */
     init(annotationEvent) {
-
-        // FIXME: __requiresPagemark needs to be used ... we're not ALWAYS rendering these.
-        // Maybe refactor it to visible()
-
-        //
-        // __registerListener is different too.. it's listening to a different element
-
 
         super.init(annotationEvent);
 
-        let templateElement = annotationEvent.pageElement.querySelector(".thumbnailImage");
+        let templateElement = annotationEvent.container.querySelector(".thumbnailImage");
 
         if (!templateElement) {
             console.warn("Thumbnail tab may not be visible.");

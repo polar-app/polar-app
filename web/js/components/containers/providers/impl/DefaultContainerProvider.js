@@ -8,18 +8,7 @@ class DefaultContainerProvider extends ContainerProvider {
      * @return {Object<number,HTMLElement>}
      */
     getContainers() {
-
-        let result = {};
-
-        let pageElements = Array.from(document.querySelectorAll(".page"));
-
-        pageElements.forEach(pageElement => {
-            let id = parseInt(pageElement.getAttribute("data-page-number"));
-            result[id] = pageElement;
-        });
-
-        return result;
-
+        return super._getContainers(".page");
     }
 
     /**

@@ -171,9 +171,8 @@ class AbstractPagemarkComponent extends Component {
         // pagemark data itself.  We're probably going to have to implement
         // mutation listeners there.
 
-        console.log("Creating box controller for pagemarkElement: ", this.pagemarkElement);
-
         if(ENABLE_BOX_CONTROLLER) {
+            console.log("Creating box controller for pagemarkElement: ", this.pagemarkElement);
             this.pagemarkBoxController.register(this.pagemarkElement);
         }
 
@@ -184,11 +183,18 @@ class AbstractPagemarkComponent extends Component {
      * @returns {*}
      */
     destroy() {
+
         if(this.pagemarkElement) {
-            this.pagemarkElement.parentElement.removeChild(this.pagemarkElement);
+
+            if(this.pagemarkElement.parentElement) {
+                this.pagemarkElement.parentElement.removeChild(this.pagemarkElement);
+            }
+
             //this.pagemarkBoxController.unregister(this.pagemarkElement);
             this.pagemarkElement = null;
+
         }
+
     }
 
 }

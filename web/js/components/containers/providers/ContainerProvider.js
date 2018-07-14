@@ -14,6 +14,25 @@ class ContainerProvider {
     }
 
     /**
+     *
+     * @return {Object<number,HTMLElement>}
+     */
+    _getContainers(selector) {
+
+        let result = {};
+
+        let pageElements = Array.from(document.querySelectorAll(selector));
+
+        pageElements.forEach(pageElement => {
+            let id = parseInt(pageElement.getAttribute("data-page-number"));
+            result[id] = pageElement;
+        });
+
+        return result;
+
+    }
+
+    /**
      * Get the {ContainerLifecycleListener} to use with the container types.
      *
      * @param container {HTMLElement}
