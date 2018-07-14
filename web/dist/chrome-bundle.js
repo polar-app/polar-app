@@ -86131,6 +86131,7 @@ const { Styles } = __webpack_require__(/*! ../../../util/Styles */ "./web/js/uti
 const { Preconditions } = __webpack_require__(/*! ../../../Preconditions */ "./web/js/Preconditions.js");
 const { BoxController } = __webpack_require__(/*! ../../../pagemarks/controller/interact/BoxController */ "./web/js/pagemarks/controller/interact/BoxController.js");
 const { Rects } = __webpack_require__(/*! ../../../Rects */ "./web/js/Rects.js");
+const { Optional } = __webpack_require__(/*! ../../../Optional */ "./web/js/Optional.js");
 const log = __webpack_require__(/*! ../../../logger/Logger */ "./web/js/logger/Logger.js").create();
 
 const ENABLE_BOX_CONTROLLER = false;
@@ -86289,23 +86290,18 @@ class AbstractPagemarkComponent extends Component {
     createTemplateRect(templateElement) {
 
         let positioning = Styles.positioning(templateElement);
-
-        // now convert these to pixels.
         positioning = Styles.positioningToPX(positioning);
 
-        try {
+        console.log("FIXME: positioning: ", positioning);
 
-            positioning.left = 0;
-            positioning.top = 0;
+        let result = {
+            left: 0,
+            top: 0,
+            width: Optional.of(positioning.width).getOrElse(templateElement.offsetWidth),
+            height: Optional.of(positioning.height).getOrElse(templateElement.offsetHeight)
+        };
 
-            positioning.height = templateElement.offsetHeight;
-            positioning.width = templateElement.offsetWidth;
-
-            return Rects.createFromBasicRect(positioning);
-        } catch (e) {
-            // not a valid rect
-            return Rects.createFromOffset(templateElement);
-        }
+        return Rects.createFromBasicRect(result);
     }
 
     createTemplateRect1(templateElement) {
@@ -88638,12 +88634,12 @@ class Styles {
     static positioning(element) {
 
         let result = {
-            left: null,
-            top: null,
-            right: null,
-            bottom: null,
-            width: null,
-            height: null
+            left: undefined,
+            top: undefined,
+            right: undefined,
+            bottom: undefined,
+            width: undefined,
+            height: undefined
         };
 
         for (let key in result) {
@@ -88652,7 +88648,7 @@ class Styles {
                 continue;
             }
 
-            result[key] = Optional.of(element.style[key]).filter(current => current !== null && current !== "").getOrElse(null);
+            result[key] = Optional.of(element.style[key]).filter(current => current !== null && current !== "").getOrElse(undefined);
         }
 
         return result;
@@ -88671,7 +88667,7 @@ class Styles {
                 continue;
             }
 
-            if (result[key] === null) {
+            if (result[key] === null || result[key] === undefined) {
                 continue;
             }
 

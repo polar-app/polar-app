@@ -4,6 +4,7 @@ const {Styles} = require("../../../util/Styles");
 const {Preconditions} = require("../../../Preconditions");
 const {BoxController} = require("../../../pagemarks/controller/interact/BoxController");
 const {Rects} = require("../../../Rects");
+const {Optional} = require("../../../Optional");
 const log = require("../../../logger/Logger").create();
 
 const ENABLE_BOX_CONTROLLER = false;
@@ -166,24 +167,18 @@ class AbstractPagemarkComponent extends Component {
     createTemplateRect(templateElement) {
 
         let positioning = Styles.positioning(templateElement);
-
-        // now convert these to pixels.
         positioning = Styles.positioningToPX(positioning);
 
-        try {
+        console.log("FIXME: positioning: " , positioning );
 
-            positioning.left = 0;
-            positioning.top = 0;
+        let result = {
+            left: 0,
+            top: 0,
+            width: Optional.of(positioning.width).getOrElse(templateElement.offsetWidth),
+            height: Optional.of(positioning.height).getOrElse(templateElement.offsetHeight),
+        };
 
-            positioning.height = templateElement.offsetHeight;
-            positioning.width = templateElement.offsetWidth;
-
-            return Rects.createFromBasicRect(positioning);
-
-        } catch (e) {
-            // not a valid rect
-            return Rects.createFromOffset(templateElement);
-        }
+        return Rects.createFromBasicRect(result);
 
     }
 

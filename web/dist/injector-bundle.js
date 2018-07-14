@@ -11946,12 +11946,12 @@ class Styles {
     static positioning(element) {
 
         let result = {
-            left: null,
-            top: null,
-            right: null,
-            bottom: null,
-            width: null,
-            height: null
+            left: undefined,
+            top: undefined,
+            right: undefined,
+            bottom: undefined,
+            width: undefined,
+            height: undefined
         };
 
         for (let key in result) {
@@ -11960,7 +11960,7 @@ class Styles {
                 continue;
             }
 
-            result[key] = Optional.of(element.style[key]).filter(current => current !== null && current !== "").getOrElse(null);
+            result[key] = Optional.of(element.style[key]).filter(current => current !== null && current !== "").getOrElse(undefined);
         }
 
         return result;
@@ -11979,7 +11979,7 @@ class Styles {
                 continue;
             }
 
-            if (result[key] === null) {
+            if (result[key] === null || result[key] === undefined) {
                 continue;
             }
 
