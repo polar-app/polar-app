@@ -2,7 +2,7 @@
  *
  */
 const {ContainerLifecycleListener} = require("../ContainerLifecycleListener");
-const {ContainerLifecycleEvent} = require("../ContainerLifecycleEvent");
+const {ContainerLifecycleEvent} = require("../ContainerLifecycleState");
 
 /**
  * Listens to the lifecycle of .page

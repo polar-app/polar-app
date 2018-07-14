@@ -1,4 +1,7 @@
-class ContainerLifecycleEvent {
+/**
+ * The state of the container.
+ */
+class ContainerLifecycleState {
 
     constructor(opts) {
 
@@ -22,4 +25,4 @@ class ContainerLifecycleEvent {
 
 }
 
-module.exports.ContainerLifecycleEvent = ContainerLifecycleEvent;
+module.exports.ContainerLifecycleState = ContainerLifecycleState;

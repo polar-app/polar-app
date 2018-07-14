@@ -54517,23 +54517,33 @@ class ComponentManager {
 
             component.init(componentEvent);
 
-            let callback = containerLifecycleEvent => {
+            // FIXME: register the component with the container and ONLY call
+            // he callback if and when the container is visible.
 
-                // always destroy the component before we erase it.  This way
-                // if there is an existing component rendered on the screen it's
-                // first removed so we don't get a double render.
-                component.destroy();
+            let callback = containerLifecycleState => {
 
-                // now render the component on screen.
-                component.render();
+                if (containerLifecycleState.visible) {
+
+                    // always destroy the component before we erase it.  This way
+                    // if there is an existing component rendered on the screen it's
+                    // first removed so we don't get a double render.
+                    component.destroy();
+
+                    // now render the component on screen.
+                    component.render();
+                } else {
+                    component.destroy();
+                }
             };
-
-            // draw it manually the first time.
-            callback();
 
             let containerLifecycleListener = this.containerProvider.createContainerLifecycleListener(container);
 
             containerLifecycleListener.register(callback);
+
+            if (containerLifecycleListener.getState().visible) {
+                // draw it manually the first time.
+                callback();
+            }
 
             this.components[componentEvent.id] = new ComponentEntry(containerLifecycleListener, component);
         } else if (componentEvent.mutationState === MutationState.ABSENT) {
@@ -54634,14 +54644,57 @@ module.exports.Container = Container;
 
 /***/ }),
 
-/***/ "./web/js/components/containers/lifecycle/ContainerLifecycleEvent.js":
+/***/ "./web/js/components/containers/lifecycle/ContainerLifecycleListener.js":
+/*!******************************************************************************!*\
+  !*** ./web/js/components/containers/lifecycle/ContainerLifecycleListener.js ***!
+  \******************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+class ContainerLifecycleListener {
+
+  /**
+   *
+   * @param callback {Function} A callback function that accepts
+   * {ContainerLifecycleEvent} to determine the state of the container.
+   *
+   */
+  register(callback) {}
+
+  unregister() {}
+
+  /**
+   * Get the current state from an event.
+   *
+   * @param event
+   * @return {ContainerLifecycleState | null}
+   */
+  getStateFromEvent(event) {}
+
+  /**
+   * Get the current state.
+   *
+   * @return {ContainerLifecycleState}
+   */
+  getState() {}
+
+}
+
+module.exports.ContainerLifecycleListener = ContainerLifecycleListener;
+
+/***/ }),
+
+/***/ "./web/js/components/containers/lifecycle/ContainerLifecycleState.js":
 /*!***************************************************************************!*\
-  !*** ./web/js/components/containers/lifecycle/ContainerLifecycleEvent.js ***!
+  !*** ./web/js/components/containers/lifecycle/ContainerLifecycleState.js ***!
   \***************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-class ContainerLifecycleEvent {
+/**
+ * The state of the container.
+ */
+class ContainerLifecycleState {
 
   constructor(opts) {
 
@@ -54664,32 +54717,7 @@ class ContainerLifecycleEvent {
 
 }
 
-module.exports.ContainerLifecycleEvent = ContainerLifecycleEvent;
-
-/***/ }),
-
-/***/ "./web/js/components/containers/lifecycle/ContainerLifecycleListener.js":
-/*!******************************************************************************!*\
-  !*** ./web/js/components/containers/lifecycle/ContainerLifecycleListener.js ***!
-  \******************************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-class ContainerLifecycleListener {
-
-  /**
-   *
-   * @param callback {Function} A callback function that accepts
-   * {ContainerLifecycleEvent} to determine the state of the container.
-   *
-   */
-  register(callback) {}
-
-  unregister() {}
-
-}
-
-module.exports.ContainerLifecycleListener = ContainerLifecycleListener;
+module.exports.ContainerLifecycleState = ContainerLifecycleState;
 
 /***/ }),
 
@@ -54704,7 +54732,7 @@ module.exports.ContainerLifecycleListener = ContainerLifecycleListener;
  *
  */
 const { ContainerLifecycleListener } = __webpack_require__(/*! ../ContainerLifecycleListener */ "./web/js/components/containers/lifecycle/ContainerLifecycleListener.js");
-const { ContainerLifecycleEvent } = __webpack_require__(/*! ../ContainerLifecycleEvent */ "./web/js/components/containers/lifecycle/ContainerLifecycleEvent.js");
+const { ContainerLifecycleState } = __webpack_require__(/*! ../ContainerLifecycleState */ "./web/js/components/containers/lifecycle/ContainerLifecycleState.js");
 
 /**
  * Listens to the lifecycle of .page
@@ -54717,28 +54745,83 @@ class DefaultContainerLifecycleListener extends ContainerLifecycleListener {
     constructor(container) {
         super();
         this.container = container;
+
         this.listener = null;
     }
 
     register(callback) {
 
-        this.listener = event => {
+        // TODO: it would be cleaner to keep these in a map and add and remove them by pattern.
 
-            if (event.target && event.target.className === "endOfContent") {
+        this.listener = this._createListener(callback);
 
-                callback(new ContainerLifecycleEvent({
-                    container: this.container,
-                    visible: true
-                }));
+        let element = this.container.element;
+
+        element.addEventListener('DOMNodeInserted', this.listener, false);
+    }
+
+    _createContainerLifecycleEvent(visible) {
+
+        return new ContainerLifecycleState({
+            container: this.container,
+            visible
+        });
+    }
+
+    _createListener(callback) {
+
+        return event => {
+
+            // FIXME: this will give us too many events...
+
+            let containerLifecycleState = this.getStateFromEvent(event);
+            if (containerLifecycleState) {
+                console.log("container lifecycle state change: FIXME: " + JSON.stringify(containerLifecycleState));
+                callback(containerLifecycleState);
             }
         };
+    }
 
-        this.container.element.addEventListener('DOMNodeInserted', this.listener, false);
+    /**
+     * Get the current state from an event.
+     *
+     * @param event
+     * @return {ContainerLifecycleState | null}
+     */
+    getStateFromEvent(event) {
+
+        if (event.target && event.target.className === "endOfContent") {
+            return this._createContainerLifecycleEvent(true);
+        }
+
+        if (event.target && event.target.className === "loadingIcon") {
+            return this._createContainerLifecycleEvent(false);
+        }
+
+        return null;
+    }
+
+    /**
+     * Get the current state.
+     *
+     * @return {ContainerLifecycleState}
+     */
+    getState() {
+
+        if (this.container.element.querySelector(".endOfContent") !== null) {
+            return this._createContainerLifecycleEvent(true);
+        }
+
+        if (this.container.element.querySelector(".loadingIcon") !== null) {
+            return this._createContainerLifecycleEvent(false);
+        }
+
+        throw new Error("Unable to determine state.");
     }
 
     unregister() {
+
         this.container.element.removeEventListener('DOMNodeInserted', this.listener, false);
-        this.listener = null;
     }
 
 }

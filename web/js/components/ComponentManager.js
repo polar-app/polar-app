@@ -97,25 +97,36 @@ class ComponentManager {
 
             component.init(componentEvent);
 
-            let callback = (containerLifecycleEvent) => {
+            // FIXME: register the component with the container and ONLY call
+            // he callback if and when the container is visible.
 
-                // always destroy the component before we erase it.  This way
-                // if there is an existing component rendered on the screen it's
-                // first removed so we don't get a double render.
-                component.destroy();
+            let callback = (containerLifecycleState) => {
 
-                // now render the component on screen.
-                component.render();
+                if(containerLifecycleState.visible) {
+
+                    // always destroy the component before we erase it.  This way
+                    // if there is an existing component rendered on the screen it's
+                    // first removed so we don't get a double render.
+                    component.destroy();
+
+                    // now render the component on screen.
+                    component.render();
+
+                } else {
+                    component.destroy();
+                }
 
             };
-
-            // draw it manually the first time.
-            callback();
 
             let containerLifecycleListener
                 = this.containerProvider.createContainerLifecycleListener(container);
 
             containerLifecycleListener.register(callback);
+
+            if(containerLifecycleListener.getState().visible) {
+                // draw it manually the first time.
+                callback();
+            }
 
             this.components[componentEvent.id] = new ComponentEntry(containerLifecycleListener, component);
 
