@@ -1,9 +1,10 @@
-const {PagemarkComponent} = require("./PagemarkRedrawer");
+const {PagemarkRedrawer} = require("./PagemarkRedrawer");
 
 /**
  * Handles attaching pagemarks to the pages (as opposed to thumbnails).
+ * @Deprecated Remove when we go to the new PagemarkView system
  */
-class ThumbnailPagemarkRedrawer extends PagemarkComponent {
+class ThumbnailPagemarkRedrawer extends PagemarkRedrawer {
 
     /**
      *

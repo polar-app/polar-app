@@ -57,7 +57,7 @@ class AnnotationEvent extends TraceEvent {
             this.id = this.previousValue.id;
         }
 
-        Preconditions.assertNotNull(this.pageMeta, "pageMeta")
+        Preconditions.assertNotNull(this.pageMeta, "pageMeta");
 
         // now get the proper pageElement we're working with for this annotation.
 

@@ -1,7 +1,10 @@
 const {Delegator} = require("../../../utils.js");
-const {PagemarkComponent} = require("./PagemarkRedrawer");
+const {PagemarkRedrawer} = require("./PagemarkRedrawer");
 
-class CompositePagemarkRedrawer extends PagemarkComponent {
+/**
+ * @Deprecated Remove when we go to the new PagemarkView system
+ */
+class CompositePagemarkRedrawer extends PagemarkRedrawer {
 
     constructor(view, delegates) {
         super(view);

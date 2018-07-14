@@ -107,6 +107,8 @@ class AbstractPagemarkComponent extends Component {
         if (! placementElement) {
             // TODO: move this to the proper component
             placementElement = pageElement.querySelector(".canvasWrapper, .iframeWrapper");
+            // TODO: we need to code this directly into the caller
+            log.warn("Using a default placementElement from selector");
         }
 
         Preconditions.assertNotNull(templateElement, "templateElement")

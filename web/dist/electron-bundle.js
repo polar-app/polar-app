@@ -61309,6 +61309,7 @@ module.exports.PagemarkModel = PagemarkModel;
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
+const { ThumbnailPagemarkComponent } = __webpack_require__(/*! ./components/ThumbnailPagemarkComponent */ "./web/js/pagemarks/view/components/ThumbnailPagemarkComponent.js");
 const { PrimaryPagemarkComponent } = __webpack_require__(/*! ./components/PrimaryPagemarkComponent */ "./web/js/pagemarks/view/components/PrimaryPagemarkComponent.js");
 const { ComponentManager } = __webpack_require__(/*! ../../components/ComponentManager */ "./web/js/components/ComponentManager.js");
 const { PagemarkModel } = __webpack_require__(/*! ../model/PagemarkModel */ "./web/js/pagemarks/model/PagemarkModel.js");
@@ -61317,20 +61318,30 @@ const PAGEMARK_VIEW_ENABLED = true;
 
 class PagemarkView {
 
-    /**
-     *
-     * @param model {Model}
+  /**
+   *
+   * @param model {Model}
+   */
+  constructor(model) {
+
+    /***
+     * @type {ComponentManager}
      */
-    constructor(model) {
+    // this.primaryPagemarkComponentManager = new ComponentManager(model,
+    //     () => new PrimaryPagemarkComponent(),
+    //     () => new PagemarkModel());
 
-        // right now we're only doing the primary pagemark.. add thumbnails
-        // in the future.
-        this.componentManager = new ComponentManager(model, () => new PrimaryPagemarkComponent(), () => new PagemarkModel());
-    }
+    /***
+     * @type {ComponentManager}
+     */
+    this.thumbnailPagemarkComponentManager = new ComponentManager(model, () => new ThumbnailPagemarkComponent(), () => new PagemarkModel());
+  }
 
-    start() {
-        this.componentManager.start();
-    }
+  start() {
+
+    // this.primaryPagemarkComponentManager.start();
+    this.thumbnailPagemarkComponentManager.start();
+  }
 
 }
 
@@ -61453,6 +61464,8 @@ class AbstractPagemarkComponent extends Component {
         if (!placementElement) {
             // TODO: move this to the proper component
             placementElement = pageElement.querySelector(".canvasWrapper, .iframeWrapper");
+            // TODO: we need to code this directly into the caller
+            log.warn("Using a default placementElement from selector");
         }
 
         Preconditions.assertNotNull(templateElement, "templateElement");
@@ -61560,6 +61573,49 @@ module.exports.PrimaryPagemarkComponent = PrimaryPagemarkComponent;
 
 /***/ }),
 
+/***/ "./web/js/pagemarks/view/components/ThumbnailPagemarkComponent.js":
+/*!************************************************************************!*\
+  !*** ./web/js/pagemarks/view/components/ThumbnailPagemarkComponent.js ***!
+  \************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+const { AbstractPagemarkComponent } = __webpack_require__(/*! ./AbstractPagemarkComponent */ "./web/js/pagemarks/view/components/AbstractPagemarkComponent.js");
+
+/**
+ * A pagemark for thumbnails.
+ */
+class ThumbnailPagemarkComponent extends AbstractPagemarkComponent {
+
+    init(annotationEvent) {
+
+        // FIXME: __requiresPagemark needs to be used ... we're not ALWAYS rendering these.
+        // Maybe refactor it to visible()
+
+        //
+        // __registerListener is different too.. it's listening to a different element
+
+
+        super.init(annotationEvent);
+
+        let templateElement = annotationEvent.pageElement.querySelector(".thumbnailImage");
+
+        if (!templateElement) {
+            console.warn("Thumbnail tab may not be visible.");
+            // the thumbnail tab might not be visible.
+            return;
+        }
+
+        this.options.templateElement = templateElement;
+        this.options.placementElement = placementElement;
+    }
+
+}
+
+module.exports.ThumbnailPagemarkComponent = ThumbnailPagemarkComponent;
+
+/***/ }),
+
 /***/ "./web/js/pagemarks/view/redrawer/CompositePagemarkRedrawer.js":
 /*!*********************************************************************!*\
   !*** ./web/js/pagemarks/view/redrawer/CompositePagemarkRedrawer.js ***!
@@ -61568,9 +61624,12 @@ module.exports.PrimaryPagemarkComponent = PrimaryPagemarkComponent;
 /***/ (function(module, exports, __webpack_require__) {
 
 const { Delegator } = __webpack_require__(/*! ../../../utils.js */ "./web/js/utils.js");
-const { PagemarkComponent } = __webpack_require__(/*! ./PagemarkRedrawer */ "./web/js/pagemarks/view/redrawer/PagemarkRedrawer.js");
+const { PagemarkRedrawer } = __webpack_require__(/*! ./PagemarkRedrawer */ "./web/js/pagemarks/view/redrawer/PagemarkRedrawer.js");
 
-class CompositePagemarkRedrawer extends PagemarkComponent {
+/**
+ * @Deprecated Remove when we go to the new PagemarkView system
+ */
+class CompositePagemarkRedrawer extends PagemarkRedrawer {
 
     constructor(view, delegates) {
         super(view);
@@ -61609,12 +61668,13 @@ module.exports.CompositePagemarkRedrawer = CompositePagemarkRedrawer;
 
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
 
-const { PagemarkComponent } = __webpack_require__(/*! ./PagemarkRedrawer */ "./web/js/pagemarks/view/redrawer/PagemarkRedrawer.js");
+const { PagemarkRedrawer } = __webpack_require__(/*! ./PagemarkRedrawer */ "./web/js/pagemarks/view/redrawer/PagemarkRedrawer.js");
 
 /**
  * Handles attaching pagemarks to the pages (as opposed to thumbnails).
+ * @Deprecated Remove when we go to the new PagemarkView system
  */
-class MainPagemarkRedrawer extends PagemarkComponent {
+class MainPagemarkRedrawer extends PagemarkRedrawer {
 
     /**
      *
@@ -61675,6 +61735,10 @@ module.exports.MainPagemarkRedrawer = MainPagemarkRedrawer;
 
 const { Preconditions } = __webpack_require__(/*! ../../../Preconditions */ "./web/js/Preconditions.js");
 
+/**
+ * @Deprecated Remove when we go to the new PagemarkView system
+ *
+ */
 class PagemarkRedrawer {
 
     /**
@@ -61783,7 +61847,7 @@ class PagemarkRedrawer {
 
 }
 
-module.exports.PagemarkComponent = PagemarkRedrawer;
+module.exports.PagemarkRedrawer = PagemarkRedrawer;
 
 /***/ }),
 
@@ -61794,12 +61858,13 @@ module.exports.PagemarkComponent = PagemarkRedrawer;
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-const { PagemarkComponent } = __webpack_require__(/*! ./PagemarkRedrawer */ "./web/js/pagemarks/view/redrawer/PagemarkRedrawer.js");
+const { PagemarkRedrawer } = __webpack_require__(/*! ./PagemarkRedrawer */ "./web/js/pagemarks/view/redrawer/PagemarkRedrawer.js");
 
 /**
  * Handles attaching pagemarks to the pages (as opposed to thumbnails).
+ * @Deprecated Remove when we go to the new PagemarkView system
  */
-class ThumbnailPagemarkRedrawer extends PagemarkComponent {
+class ThumbnailPagemarkRedrawer extends PagemarkRedrawer {
 
     /**
      *

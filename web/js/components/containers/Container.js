@@ -1,4 +1,48 @@
-const {Preconditions} = require("../../../Preconditions");
+
+const {Preconditions} = require("../../Preconditions");
+const log = require("../../logger/Logger").create();
+
+class Container {
+
+    /**
+     *
+     * @param containerDescriptor {ContainerDescriptor}
+     */
+    constructor(containerDescriptor) {
+
+        this.containerDescriptor = containerDescriptor;
+
+        /**
+         *
+         * @type {Array<Component>} The components held within this container.
+         */
+        this.components = [];
+
+
+
+    }
+
+    /**
+     * init this container.
+     */
+    init() {
+
+        log.info("init()")
+
+    }
+
+}
+
+module.exports.Container = Container;
+
+
+
+
+
+
+
+
+const {Preconditions} = require("../../Preconditions");
 
 /**
  * @Deprecated Remove when we go to the new PagemarkView system
@@ -76,9 +120,6 @@ class PagemarkRedrawer {
     __render(pageElement) {
     }
 
-    /**
-     * Erase the page elements on the give page number.
-     */
     create(pageNum, pagemark) {
 
         if(typeof pageNum !== "number") {

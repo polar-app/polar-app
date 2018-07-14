@@ -1,3 +1,4 @@
+const {ThumbnailPagemarkComponent} = require("./components/ThumbnailPagemarkComponent");
 const {PrimaryPagemarkComponent} = require("./components/PrimaryPagemarkComponent");
 const {ComponentManager} = require("../../components/ComponentManager");
 const {PagemarkModel} = require("../model/PagemarkModel");
@@ -12,16 +13,26 @@ class PagemarkView {
      */
     constructor(model) {
 
-        // right now we're only doing the primary pagemark.. add thumbnails
-        // in the future.
-        this.componentManager = new ComponentManager(model,
-            () => new PrimaryPagemarkComponent(),
+        /***
+         * @type {ComponentManager}
+         */
+        // this.primaryPagemarkComponentManager = new ComponentManager(model,
+        //     () => new PrimaryPagemarkComponent(),
+        //     () => new PagemarkModel());
+
+        /***
+         * @type {ComponentManager}
+         */
+        this.thumbnailPagemarkComponentManager = new ComponentManager(model,
+            () => new ThumbnailPagemarkComponent(),
             () => new PagemarkModel());
 
     }
 
     start() {
-        this.componentManager.start();
+
+        // this.primaryPagemarkComponentManager.start();
+        this.thumbnailPagemarkComponentManager.start();
     }
 
 }
