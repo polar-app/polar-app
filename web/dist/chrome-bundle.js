@@ -85369,7 +85369,7 @@ class BoxController {
         console.log("_calculateIntersectedBoxes: resizeRect is: " + JSON.stringify(resizeRect, null, "  "));
 
         let doc = element.ownerDocument;
-        let boxes = Array.from(doc.querySelectorAll(".pagemark")).filter(current => current !== element);
+        let boxes = Array.from(element.parentElement.querySelectorAll(".pagemark")).filter(current => current !== element);
 
         // make sure that our boxes aren't the same ID as the element. we can
         // remove this when we go to production
@@ -86170,7 +86170,7 @@ const { Rects } = __webpack_require__(/*! ../../../Rects */ "./web/js/Rects.js")
 const { Optional } = __webpack_require__(/*! ../../../Optional */ "./web/js/Optional.js");
 const log = __webpack_require__(/*! ../../../logger/Logger */ "./web/js/logger/Logger.js").create();
 
-const ENABLE_BOX_CONTROLLER = false;
+const ENABLE_BOX_CONTROLLER = true;
 
 class AbstractPagemarkComponent extends Component {
 
@@ -89644,9 +89644,13 @@ class FrameResizer {
      */
     doResize() {
 
+        let contentDocument = this.iframe.contentDocument;
+
+        if (!contentDocument) return;
+
         let height = Styles.parsePX(Optional.of(this.iframe.style.height).filter(current => current !== "").getOrElse("0px"));
 
-        let newHeight = this.iframe.contentDocument.body.scrollHeight;
+        let newHeight = contentDocument.body.scrollHeight;
 
         // we basically keep polling.
         if (height !== newHeight) {

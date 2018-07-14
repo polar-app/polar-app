@@ -62,11 +62,16 @@ class FrameResizer {
      */
     doResize() {
 
+        let contentDocument = this.iframe.contentDocument;
+
+        if(! contentDocument)
+            return;
+
         let height = Styles.parsePX(Optional.of(this.iframe.style.height)
                                             .filter( current => current !== "")
                                             .getOrElse("0px"));
 
-        let newHeight = this.iframe.contentDocument.body.scrollHeight;
+        let newHeight = contentDocument.body.scrollHeight;
 
         // we basically keep polling.
         if(height !== newHeight) {

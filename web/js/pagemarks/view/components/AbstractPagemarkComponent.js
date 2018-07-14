@@ -7,7 +7,7 @@ const {Rects} = require("../../../Rects");
 const {Optional} = require("../../../Optional");
 const log = require("../../../logger/Logger").create();
 
-const ENABLE_BOX_CONTROLLER = false;
+const ENABLE_BOX_CONTROLLER = true;
 
 class AbstractPagemarkComponent extends Component {
 
