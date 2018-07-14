@@ -27,11 +27,11 @@ class PagemarkView {
         /***
          * @type {ComponentManager}
          */
-        // this.thumbnailPagemarkComponentManager
-        //     = new ComponentManager(model,
-        //                            new ThumbnailContainerProvider(),
-        //                            () => new ThumbnailPagemarkComponent(),
-        //                            () => new PagemarkModel());
+        this.thumbnailPagemarkComponentManager
+            = new ComponentManager(model,
+                                   new ThumbnailContainerProvider(),
+                                   () => new ThumbnailPagemarkComponent(),
+                                   () => new PagemarkModel());
 
 
     }

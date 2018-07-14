@@ -1,60 +1,17 @@
-/**
- *
- */
+const {AbstractContainerLifecycleListener} = require("./AbstractContainerLifecycleListener");
 const {ContainerLifecycleListener} = require("../ContainerLifecycleListener");
 const {ContainerLifecycleState} = require("../ContainerLifecycleState");
 
 /**
  * Listens to the lifecycle of .page
  */
-class DefaultContainerLifecycleListener extends ContainerLifecycleListener {
+class DefaultContainerLifecycleListener extends AbstractContainerLifecycleListener {
 
     /**
      * @param container {Container}
      */
     constructor(container) {
-        super();
-        this.container = container;
-
-        this.listener = null;
-
-    }
-
-    register(callback) {
-
-        // TODO: it would be cleaner to keep these in a map and add and remove them by pattern.
-
-        this.listener = this._createListener(callback);
-
-        let element = this.container.element;
-
-        element.addEventListener('DOMNodeInserted', this.listener, false);
-
-    }
-
-    _createContainerLifecycleEvent(visible) {
-
-        return new ContainerLifecycleState({
-            container: this.container,
-            visible
-        });
-
-    }
-
-    _createListener(callback) {
-
-        return event => {
-
-            // FIXME: this will give us too many events...
-
-            let containerLifecycleState = this.getStateFromEvent(event);
-            if(containerLifecycleState) {
-                console.log("container lifecycle state change: FIXME: " + JSON.stringify(containerLifecycleState))
-                callback(containerLifecycleState);
-            }
-
-        }
-
+        super(container);
     }
 
     /**
@@ -96,11 +53,6 @@ class DefaultContainerLifecycleListener extends ContainerLifecycleListener {
 
     }
 
-    unregister() {
-
-        this.container.element.removeEventListener('DOMNodeInserted', this.listener, false);
-
-    }
 
 }
 

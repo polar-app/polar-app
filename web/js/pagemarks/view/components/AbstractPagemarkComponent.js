@@ -141,9 +141,12 @@ class AbstractPagemarkComponent extends Component {
 
         this.pagemarkElement.style.position="absolute";
 
-
-        let templateRect = this.createTemplateRect(templateElement);
+        let templateRect = this.createTemplateRect(placementElement);
         let pagemarkRect = this.createPagemarkRect(templateRect, this.pagemark);
+
+        // TODO: what I need is a generic way to cover an element and place
+        // something on top of it no matter what positioning strategy it uses.
+
 
         this.pagemarkElement.style.left = `${pagemarkRect.left}px`;
         this.pagemarkElement.style.top = `${pagemarkRect.top}px`;
@@ -164,18 +167,18 @@ class AbstractPagemarkComponent extends Component {
 
     }
 
-    createTemplateRect(templateElement) {
+    createTemplateRect(placementElement) {
 
-        let positioning = Styles.positioning(templateElement);
+        let positioning = Styles.positioning(placementElement);
         positioning = Styles.positioningToPX(positioning);
 
-        console.log("FIXME: positioning: " , positioning );
+        // TODO: this could be cleaned up a bit...
 
         let result = {
-            left: 0,
-            top: 0,
-            width: Optional.of(positioning.width).getOrElse(templateElement.offsetWidth),
-            height: Optional.of(positioning.height).getOrElse(templateElement.offsetHeight),
+            left: Optional.of(positioning.left).getOrElse(placementElement.offsetLeft),
+            top: Optional.of(positioning.top).getOrElse(placementElement.offsetTop),
+            width: Optional.of(positioning.width).getOrElse(placementElement.offsetWidth),
+            height: Optional.of(positioning.height).getOrElse(placementElement.offsetHeight),
         };
 
         return Rects.createFromBasicRect(result);

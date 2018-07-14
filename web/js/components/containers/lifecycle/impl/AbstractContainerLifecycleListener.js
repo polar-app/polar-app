@@ -2,7 +2,7 @@
  *
  */
 const {ContainerLifecycleListener} = require("../ContainerLifecycleListener");
-const {ContainerLifecycleEvent} = require("../ContainerLifecycleState");
+const {ContainerLifecycleState} = require("../ContainerLifecycleState");
 
 /**
  * Listens to the lifecycle of .page
@@ -18,39 +18,42 @@ class AbstractContainerLifecycleListener extends ContainerLifecycleListener {
 
     register(callback) {
 
-        this.listener = event => {
+        this.listener = this._createListener(callback);
 
-            if (event.target && event.target.className === "endOfContent") {
+        let element = this.container.element;
 
-                callback(new ContainerLifecycleEvent({
-                    container: this.container,
-                    visible: true
-                }));
+        element.addEventListener('DOMNodeInserted', this.listener, false);
 
+    }
+
+    _createContainerLifecycleEvent(visible) {
+
+        return new ContainerLifecycleState({
+            container: this.container,
+            visible
+        });
+
+    }
+
+    _createListener(callback) {
+
+        return event => {
+
+            let containerLifecycleState = this.getStateFromEvent(event);
+
+            if(containerLifecycleState) {
+                callback(containerLifecycleState);
             }
 
-        };
+        }
 
-        this.pageElement.addEventListener('DOMNodeInserted', event => {
-            if(this._testEvent(event)) {
-
-            }
-        }, false);
-
-    };
-
-    /**
-     * @abstract
-     * @private
-     * @return {boolean} Return true if this is the event we're monitoring.
-     */
-    _testEvent(event) {
-        throw new Error("Not implemented");
     }
 
     unregister() {
-        this.pageElement.removeEventListener('DOMNodeInserted', this.listener, false);
+
+        this.container.element.removeEventListener('DOMNodeInserted', this.listener, false);
         this.listener = null;
+
     }
 
 }

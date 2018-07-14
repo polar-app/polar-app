@@ -78736,10 +78736,10 @@ module.exports.ContainerLifecycleState = ContainerLifecycleState;
 
 /***/ }),
 
-/***/ "./web/js/components/containers/lifecycle/impl/DefaultContainerLifecycleListener.js":
-/*!******************************************************************************************!*\
-  !*** ./web/js/components/containers/lifecycle/impl/DefaultContainerLifecycleListener.js ***!
-  \******************************************************************************************/
+/***/ "./web/js/components/containers/lifecycle/impl/AbstractContainerLifecycleListener.js":
+/*!*******************************************************************************************!*\
+  !*** ./web/js/components/containers/lifecycle/impl/AbstractContainerLifecycleListener.js ***!
+  \*******************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -78752,21 +78752,15 @@ const { ContainerLifecycleState } = __webpack_require__(/*! ../ContainerLifecycl
 /**
  * Listens to the lifecycle of .page
  */
-class DefaultContainerLifecycleListener extends ContainerLifecycleListener {
+class AbstractContainerLifecycleListener extends ContainerLifecycleListener {
 
-    /**
-     * @param container {Container}
-     */
     constructor(container) {
         super();
         this.container = container;
-
         this.listener = null;
     }
 
     register(callback) {
-
-        // TODO: it would be cleaner to keep these in a map and add and remove them by pattern.
 
         this.listener = this._createListener(callback);
 
@@ -78787,14 +78781,47 @@ class DefaultContainerLifecycleListener extends ContainerLifecycleListener {
 
         return event => {
 
-            // FIXME: this will give us too many events...
-
             let containerLifecycleState = this.getStateFromEvent(event);
+
             if (containerLifecycleState) {
-                console.log("container lifecycle state change: FIXME: " + JSON.stringify(containerLifecycleState));
                 callback(containerLifecycleState);
             }
         };
+    }
+
+    unregister() {
+
+        this.container.element.removeEventListener('DOMNodeInserted', this.listener, false);
+        this.listener = null;
+    }
+
+}
+
+module.exports.AbstractContainerLifecycleListener = AbstractContainerLifecycleListener;
+
+/***/ }),
+
+/***/ "./web/js/components/containers/lifecycle/impl/DefaultContainerLifecycleListener.js":
+/*!******************************************************************************************!*\
+  !*** ./web/js/components/containers/lifecycle/impl/DefaultContainerLifecycleListener.js ***!
+  \******************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+const { AbstractContainerLifecycleListener } = __webpack_require__(/*! ./AbstractContainerLifecycleListener */ "./web/js/components/containers/lifecycle/impl/AbstractContainerLifecycleListener.js");
+const { ContainerLifecycleListener } = __webpack_require__(/*! ../ContainerLifecycleListener */ "./web/js/components/containers/lifecycle/ContainerLifecycleListener.js");
+const { ContainerLifecycleState } = __webpack_require__(/*! ../ContainerLifecycleState */ "./web/js/components/containers/lifecycle/ContainerLifecycleState.js");
+
+/**
+ * Listens to the lifecycle of .page
+ */
+class DefaultContainerLifecycleListener extends AbstractContainerLifecycleListener {
+
+    /**
+     * @param container {Container}
+     */
+    constructor(container) {
+        super(container);
     }
 
     /**
@@ -78834,11 +78861,6 @@ class DefaultContainerLifecycleListener extends ContainerLifecycleListener {
         throw new Error("Unable to determine state.");
     }
 
-    unregister() {
-
-        this.container.element.removeEventListener('DOMNodeInserted', this.listener, false);
-    }
-
 }
 
 module.exports.DefaultContainerLifecycleListener = DefaultContainerLifecycleListener;
@@ -78852,12 +78874,12 @@ module.exports.DefaultContainerLifecycleListener = DefaultContainerLifecycleList
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-const { ContainerLifecycleListener } = __webpack_require__(/*! ../ContainerLifecycleListener */ "./web/js/components/containers/lifecycle/ContainerLifecycleListener.js");
+const { AbstractContainerLifecycleListener } = __webpack_require__(/*! ./AbstractContainerLifecycleListener */ "./web/js/components/containers/lifecycle/impl/AbstractContainerLifecycleListener.js");
 
 /**
  * Listens to the lifecycle of .thumbnail
  */
-class ThumbnailContainerLifecycleListener extends ContainerLifecycleListener {
+class ThumbnailContainerLifecycleListener extends AbstractContainerLifecycleListener {
 
     /**
      * @param container {Container}
@@ -78868,23 +78890,42 @@ class ThumbnailContainerLifecycleListener extends ContainerLifecycleListener {
         this.listener = null;
     }
 
-    register(callback) {
+    /**
+     * Get the current state from an event.
+     *
+     * @param event
+     * @return {ContainerLifecycleState | null}
+     */
+    getStateFromEvent(event) {
 
-        this.listener = event => {
-
-            if (event.target && event.target.className === "thumbnailImage") {
-                callback(this.container);
-            }
-        };
-
-        let mutatingElement = this.container.element.querySelector(".thumbnailSelectionRing");
-
-        mutatingElement.addEventListener('DOMNodeInserted', this.listener, false);
+        return this._createContainerLifecycleEvent(true);
+        //
+        // if (event.target && event.target.className === "endOfContent") {
+        //     return this._createContainerLifecycleEvent(true);
+        // }
+        //
+        // if (event.target && event.target.className === "loadingIcon") {
+        //     return this._createContainerLifecycleEvent(false);
+        // }
+        //
+        // return null;
     }
 
-    unregister() {
-        this.container.element.removeEventListener('DOMNodeInserted', this.listener, false);
-        this.listener = null;
+    /**
+     * Get the current state.
+     *
+     * @return {ContainerLifecycleState}
+     */
+    getState() {
+
+        return this._createContainerLifecycleEvent(true);
+
+        //
+        // if(this.container.element.querySelector(".thumbnailImage") !== null) {
+        //     return this._createContainerLifecycleEvent(true);
+        // } else {
+        //     return this._createContainerLifecycleEvent(false);
+        // }
     }
 
 }
@@ -86096,12 +86137,7 @@ class PagemarkView {
         /***
          * @type {ComponentManager}
          */
-        // this.thumbnailPagemarkComponentManager
-        //     = new ComponentManager(model,
-        //                            new ThumbnailContainerProvider(),
-        //                            () => new ThumbnailPagemarkComponent(),
-        //                            () => new PagemarkModel());
-
+        this.thumbnailPagemarkComponentManager = new ComponentManager(model, new ThumbnailContainerProvider(), () => new ThumbnailPagemarkComponent(), () => new PagemarkModel());
     }
 
     start() {
@@ -86266,8 +86302,12 @@ class AbstractPagemarkComponent extends Component {
 
         this.pagemarkElement.style.position = "absolute";
 
-        let templateRect = this.createTemplateRect(templateElement);
+        let templateRect = this.createTemplateRect(placementElement);
         let pagemarkRect = this.createPagemarkRect(templateRect, this.pagemark);
+
+        // TODO: what I need is a generic way to cover an element and place
+        // something on top of it no matter what positioning strategy it uses.
+
 
         this.pagemarkElement.style.left = `${pagemarkRect.left}px`;
         this.pagemarkElement.style.top = `${pagemarkRect.top}px`;
@@ -86287,18 +86327,18 @@ class AbstractPagemarkComponent extends Component {
         }
     }
 
-    createTemplateRect(templateElement) {
+    createTemplateRect(placementElement) {
 
-        let positioning = Styles.positioning(templateElement);
+        let positioning = Styles.positioning(placementElement);
         positioning = Styles.positioningToPX(positioning);
 
-        console.log("FIXME: positioning: ", positioning);
+        // TODO: this could be cleaned up a bit...
 
         let result = {
-            left: 0,
-            top: 0,
-            width: Optional.of(positioning.width).getOrElse(templateElement.offsetWidth),
-            height: Optional.of(positioning.height).getOrElse(templateElement.offsetHeight)
+            left: Optional.of(positioning.left).getOrElse(placementElement.offsetLeft),
+            top: Optional.of(positioning.top).getOrElse(placementElement.offsetTop),
+            width: Optional.of(positioning.width).getOrElse(placementElement.offsetWidth),
+            height: Optional.of(positioning.height).getOrElse(placementElement.offsetHeight)
         };
 
         return Rects.createFromBasicRect(result);
@@ -86403,7 +86443,9 @@ class ThumbnailPagemarkComponent extends AbstractPagemarkComponent {
         super.init(annotationEvent);
 
         let container = annotationEvent.container;
-        let templateElement = container.element.querySelector(".thumbnailImage");
+        //let templateElement = container.element.querySelector(".thumbnailImage");
+
+        let templateElement = container.element;
 
         if (!templateElement) {
             console.warn("Thumbnail tab may not be visible in", container);

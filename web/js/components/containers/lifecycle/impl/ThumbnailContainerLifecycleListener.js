@@ -1,9 +1,9 @@
-const {ContainerLifecycleListener} = require("../ContainerLifecycleListener");
+const {AbstractContainerLifecycleListener} = require("./AbstractContainerLifecycleListener");
 
 /**
  * Listens to the lifecycle of .thumbnail
  */
-class ThumbnailContainerLifecycleListener extends ContainerLifecycleListener {
+class ThumbnailContainerLifecycleListener extends AbstractContainerLifecycleListener {
 
     /**
      * @param container {Container}
@@ -15,25 +15,44 @@ class ThumbnailContainerLifecycleListener extends ContainerLifecycleListener {
 
     }
 
-    register(callback) {
+    /**
+     * Get the current state from an event.
+     *
+     * @param event
+     * @return {ContainerLifecycleState | null}
+     */
+    getStateFromEvent(event) {
 
-        this.listener = event => {
+        return this._createContainerLifecycleEvent(true);
+        //
+        // if (event.target && event.target.className === "endOfContent") {
+        //     return this._createContainerLifecycleEvent(true);
+        // }
+        //
+        // if (event.target && event.target.className === "loadingIcon") {
+        //     return this._createContainerLifecycleEvent(false);
+        // }
+        //
+        // return null;
 
-            if (event.target && event.target.className === "thumbnailImage") {
-                callback(this.container);
-            }
+    }
 
-        };
+    /**
+     * Get the current state.
+     *
+     * @return {ContainerLifecycleState}
+     */
+    getState() {
 
-        let mutatingElement = this.container.element.querySelector(".thumbnailSelectionRing");
+        return this._createContainerLifecycleEvent(true);
 
-        mutatingElement.addEventListener('DOMNodeInserted', this.listener, false);
+        //
+        // if(this.container.element.querySelector(".thumbnailImage") !== null) {
+        //     return this._createContainerLifecycleEvent(true);
+        // } else {
+        //     return this._createContainerLifecycleEvent(false);
+        // }
 
-    };
-
-    unregister() {
-        this.container.element.removeEventListener('DOMNodeInserted', this.listener, false);
-        this.listener = null;
     }
 
 }

@@ -14,7 +14,9 @@ class ThumbnailPagemarkComponent extends AbstractPagemarkComponent {
         super.init(annotationEvent);
 
         let container = annotationEvent.container;
-        let templateElement = container.element.querySelector(".thumbnailImage");
+        //let templateElement = container.element.querySelector(".thumbnailImage");
+
+        let templateElement = container.element;
 
         if( ! templateElement) {
             console.warn("Thumbnail tab may not be visible in", container);
