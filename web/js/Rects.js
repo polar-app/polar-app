@@ -384,6 +384,22 @@ class Rects {
     }
 
     /**
+     *
+     * @param element {HTMLElement}
+     * @return {Rect}
+     */
+    static createFromOffset(element) {
+
+        return Rects.createFromBasicRect({
+            left: element.offsetLeft,
+            top: element.offsetTop,
+            width: element.offsetWidth,
+            height: element.offsetHeight,
+        });
+
+    }
+
+    /**
      * Parse the positioning from the style with left, top width and height and then
      * return this as a rect.
      * @param element {HTMLElement}

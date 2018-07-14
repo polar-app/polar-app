@@ -11173,6 +11173,21 @@ class Rects {
     }
 
     /**
+     *
+     * @param element {HTMLElement}
+     * @return {Rect}
+     */
+    static createFromOffset(element) {
+
+        return Rects.createFromBasicRect({
+            left: element.offsetLeft,
+            top: element.offsetTop,
+            width: element.offsetWidth,
+            height: element.offsetHeight
+        });
+    }
+
+    /**
      * Parse the positioning from the style with left, top width and height and then
      * return this as a rect.
      * @param element {HTMLElement}
@@ -11901,6 +11916,8 @@ module.exports.Objects = Objects;
 /***/ (function(module, exports, __webpack_require__) {
 
 const { Preconditions } = __webpack_require__(/*! ../Preconditions */ "./web/js/Preconditions.js");
+const { Optional } = __webpack_require__(/*! ../Optional */ "./web/js/Optional.js");
+
 class Styles {
 
     /**
@@ -11919,6 +11936,57 @@ class Styles {
         }
 
         return parseInt(value.replace("px", ""));
+    }
+
+    /**
+     * Return the top, left, width, and height of the given element.
+     *
+     * @param element {HTMLElement}
+     */
+    static positioning(element) {
+
+        let result = {
+            left: null,
+            top: null,
+            right: null,
+            bottom: null,
+            width: null,
+            height: null
+        };
+
+        for (let key in result) {
+
+            if (!result.hasOwnProperty(key)) {
+                continue;
+            }
+
+            result[key] = Optional.of(element.style[key]).filter(current => current !== null && current !== "").getOrElse(null);
+        }
+
+        return result;
+    }
+
+    /**
+     * Return all the positioning keys to pixels.
+     */
+    static positioningToPX(positioning) {
+
+        let result = Object.assign({}, positioning);
+
+        for (let key in result) {
+
+            if (!result.hasOwnProperty(key)) {
+                continue;
+            }
+
+            if (result[key] === null) {
+                continue;
+            }
+
+            result[key] = Styles.parsePX(result[key]);
+        }
+
+        return result;
     }
 
 }

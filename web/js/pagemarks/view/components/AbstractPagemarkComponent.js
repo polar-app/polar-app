@@ -3,6 +3,7 @@ const {DocFormatFactory} = require("../../../docformat/DocFormatFactory");
 const {Styles} = require("../../../util/Styles");
 const {Preconditions} = require("../../../Preconditions");
 const {BoxController} = require("../../../pagemarks/controller/interact/BoxController");
+const {Rects} = require("../../../Rects");
 const log = require("../../../logger/Logger").create();
 
 const ENABLE_BOX_CONTROLLER = false;
@@ -108,11 +109,14 @@ class AbstractPagemarkComponent extends Component {
             // TODO: move this to the proper component
             placementElement = container.element.querySelector(".canvasWrapper, .iframeWrapper");
             // TODO: we need to code this directly into the caller
-            log.warn("Using a default placementElement from selector");
+            log.warn("Using a default placementElement from selector: ", placementElement);
         }
 
         Preconditions.assertNotNull(templateElement, "templateElement")
         Preconditions.assertNotNull(placementElement, "placementElement")
+
+        console.log("Using templateElement: ", templateElement);
+        console.log("Using placementElement: ", placementElement);
 
         if (container.element.querySelector("#pagemark-" + this.pagemark.id)) {
             // do nothing if the current page already has a pagemark.
@@ -136,34 +140,15 @@ class AbstractPagemarkComponent extends Component {
 
         this.pagemarkElement.style.position="absolute";
 
-        // FIXME: this needs to be a function of the PlacedPagemarkCalculator
-        this.pagemarkElement.style.left = templateElement.offsetLeft;
 
-        // FIXME: this needs to be a function of the PlacedPagemarkCalculator
-        this.pagemarkElement.style.top = templateElement.offsetTop;
+        let templateRect = this.createTemplateRect(templateElement);
+        let pagemarkRect = this.createPagemarkRect(templateRect, this.pagemark);
 
-        // FIXME: this needs to be a function of the PlacedPagemarkCalculator
-        this.pagemarkElement.style.width = templateElement.style.width;
-
-        // FIXME: this needs to be a function of the PlacedPagemarkCalculator
-        let height = Styles.parsePX(templateElement.style.height);
-
-        if(!height) {
-            // FIXME: this needs to be a function of the PlacedPagemarkCalculator
-            height = templateElement.offsetHeight;
-        }
-
-        // read the percentage coverage from the pagemark and adjust the height
-        // to reflect the portion we've actually read.
-        // FIXME: this needs to be a function of the PlacedPagemarkCalculator
-        height = height * (this.pagemark.percentage / 100);
-
-        this.pagemarkElement.style.height = `${height}px`;
+        this.pagemarkElement.style.left = `${pagemarkRect.left}px`;
+        this.pagemarkElement.style.top = `${pagemarkRect.top}px`;
+        this.pagemarkElement.style.width = `${pagemarkRect.width}px`;
+        this.pagemarkElement.style.height = `${pagemarkRect.height}px`;
         this.pagemarkElement.style.zIndex = '1';
-
-        if(!this.pagemarkElement.style.width) {
-            throw new Error("Could not determine width");
-        }
 
         placementElement.parentElement.insertBefore(this.pagemarkElement, placementElement);
 
@@ -175,6 +160,65 @@ class AbstractPagemarkComponent extends Component {
             console.log("Creating box controller for pagemarkElement: ", this.pagemarkElement);
             this.pagemarkBoxController.register(this.pagemarkElement);
         }
+
+    }
+
+    createTemplateRect(templateElement) {
+
+        let positioning = Styles.positioning(templateElement);
+
+        // now convert these to pixels.
+        positioning = Styles.positioningToPX(positioning);
+
+        try {
+
+            positioning.left = 0;
+            positioning.top = 0;
+
+            positioning.height = templateElement.offsetHeight;
+            positioning.width = templateElement.offsetWidth;
+
+            return Rects.createFromBasicRect(positioning);
+
+        } catch (e) {
+            // not a valid rect
+            return Rects.createFromOffset(templateElement);
+        }
+
+    }
+
+    createTemplateRect1(templateElement) {
+
+        return {
+            left: templateElement.offsetLeft,
+            top: templateElement.offsetTop,
+            width: templateElement.style.width,
+            height: Styles.parsePX(templateElement.style.height)
+        };
+
+        if(!result.height) {
+            result.height = templateElement.offsetHeight;
+        }
+
+        return result;
+
+    }
+
+    createPagemarkRect(templateRect, pagemark) {
+
+        let rect = {
+            left: templateRect.left,
+            top: templateRect.top,
+            height: templateRect.height,
+            width: templateRect.width,
+        };
+
+        // read the percentage coverage from the pagemark and adjust the height
+        // to reflect the portion we've actually read.
+
+        rect.height = rect.height * (pagemark.percentage / 100);
+
+        return Rects.createFromBasicRect(rect);
 
     }
 

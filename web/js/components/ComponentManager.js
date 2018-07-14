@@ -123,9 +123,11 @@ class ComponentManager {
 
             containerLifecycleListener.register(callback);
 
-            if(containerLifecycleListener.getState().visible) {
+            let containerState = containerLifecycleListener.getState();
+
+            if(containerState.visible) {
                 // draw it manually the first time.
-                callback();
+                callback(containerState);
             }
 
             this.components[componentEvent.id] = new ComponentEntry(containerLifecycleListener, component);

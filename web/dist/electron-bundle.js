@@ -54158,6 +54158,21 @@ class Rects {
     }
 
     /**
+     *
+     * @param element {HTMLElement}
+     * @return {Rect}
+     */
+    static createFromOffset(element) {
+
+        return Rects.createFromBasicRect({
+            left: element.offsetLeft,
+            top: element.offsetTop,
+            width: element.offsetWidth,
+            height: element.offsetHeight
+        });
+    }
+
+    /**
      * Parse the positioning from the style with left, top width and height and then
      * return this as a rect.
      * @param element {HTMLElement}
@@ -54540,9 +54555,11 @@ class ComponentManager {
 
             containerLifecycleListener.register(callback);
 
-            if (containerLifecycleListener.getState().visible) {
+            let containerState = containerLifecycleListener.getState();
+
+            if (containerState.visible) {
                 // draw it manually the first time.
-                callback();
+                callback(containerState);
             }
 
             this.components[componentEvent.id] = new ComponentEntry(containerLifecycleListener, component);
@@ -61830,6 +61847,7 @@ const { DocFormatFactory } = __webpack_require__(/*! ../../../docformat/DocForma
 const { Styles } = __webpack_require__(/*! ../../../util/Styles */ "./web/js/util/Styles.js");
 const { Preconditions } = __webpack_require__(/*! ../../../Preconditions */ "./web/js/Preconditions.js");
 const { BoxController } = __webpack_require__(/*! ../../../pagemarks/controller/interact/BoxController */ "./web/js/pagemarks/controller/interact/BoxController.js");
+const { Rects } = __webpack_require__(/*! ../../../Rects */ "./web/js/Rects.js");
 const log = __webpack_require__(/*! ../../../logger/Logger */ "./web/js/logger/Logger.js").create();
 
 const ENABLE_BOX_CONTROLLER = false;
@@ -61933,11 +61951,14 @@ class AbstractPagemarkComponent extends Component {
             // TODO: move this to the proper component
             placementElement = container.element.querySelector(".canvasWrapper, .iframeWrapper");
             // TODO: we need to code this directly into the caller
-            log.warn("Using a default placementElement from selector");
+            log.warn("Using a default placementElement from selector: ", placementElement);
         }
 
         Preconditions.assertNotNull(templateElement, "templateElement");
         Preconditions.assertNotNull(placementElement, "placementElement");
+
+        console.log("Using templateElement: ", templateElement);
+        console.log("Using placementElement: ", placementElement);
 
         if (container.element.querySelector("#pagemark-" + this.pagemark.id)) {
             // do nothing if the current page already has a pagemark.
@@ -61961,34 +61982,14 @@ class AbstractPagemarkComponent extends Component {
 
         this.pagemarkElement.style.position = "absolute";
 
-        // FIXME: this needs to be a function of the PlacedPagemarkCalculator
-        this.pagemarkElement.style.left = templateElement.offsetLeft;
+        let templateRect = this.createTemplateRect(templateElement);
+        let pagemarkRect = this.createPagemarkRect(templateRect, this.pagemark);
 
-        // FIXME: this needs to be a function of the PlacedPagemarkCalculator
-        this.pagemarkElement.style.top = templateElement.offsetTop;
-
-        // FIXME: this needs to be a function of the PlacedPagemarkCalculator
-        this.pagemarkElement.style.width = templateElement.style.width;
-
-        // FIXME: this needs to be a function of the PlacedPagemarkCalculator
-        let height = Styles.parsePX(templateElement.style.height);
-
-        if (!height) {
-            // FIXME: this needs to be a function of the PlacedPagemarkCalculator
-            height = templateElement.offsetHeight;
-        }
-
-        // read the percentage coverage from the pagemark and adjust the height
-        // to reflect the portion we've actually read.
-        // FIXME: this needs to be a function of the PlacedPagemarkCalculator
-        height = height * (this.pagemark.percentage / 100);
-
-        this.pagemarkElement.style.height = `${height}px`;
+        this.pagemarkElement.style.left = `${pagemarkRect.left}px`;
+        this.pagemarkElement.style.top = `${pagemarkRect.top}px`;
+        this.pagemarkElement.style.width = `${pagemarkRect.width}px`;
+        this.pagemarkElement.style.height = `${pagemarkRect.height}px`;
         this.pagemarkElement.style.zIndex = '1';
-
-        if (!this.pagemarkElement.style.width) {
-            throw new Error("Could not determine width");
-        }
 
         placementElement.parentElement.insertBefore(this.pagemarkElement, placementElement);
 
@@ -62000,6 +62001,61 @@ class AbstractPagemarkComponent extends Component {
             console.log("Creating box controller for pagemarkElement: ", this.pagemarkElement);
             this.pagemarkBoxController.register(this.pagemarkElement);
         }
+    }
+
+    createTemplateRect(templateElement) {
+
+        let positioning = Styles.positioning(templateElement);
+
+        // now convert these to pixels.
+        positioning = Styles.positioningToPX(positioning);
+
+        try {
+
+            positioning.left = 0;
+            positioning.top = 0;
+
+            positioning.height = templateElement.offsetHeight;
+            positioning.width = templateElement.offsetWidth;
+
+            return Rects.createFromBasicRect(positioning);
+        } catch (e) {
+            // not a valid rect
+            return Rects.createFromOffset(templateElement);
+        }
+    }
+
+    createTemplateRect1(templateElement) {
+
+        return {
+            left: templateElement.offsetLeft,
+            top: templateElement.offsetTop,
+            width: templateElement.style.width,
+            height: Styles.parsePX(templateElement.style.height)
+        };
+
+        if (!result.height) {
+            result.height = templateElement.offsetHeight;
+        }
+
+        return result;
+    }
+
+    createPagemarkRect(templateRect, pagemark) {
+
+        let rect = {
+            left: templateRect.left,
+            top: templateRect.top,
+            height: templateRect.height,
+            width: templateRect.width
+        };
+
+        // read the percentage coverage from the pagemark and adjust the height
+        // to reflect the portion we've actually read.
+
+        rect.height = rect.height * (pagemark.percentage / 100);
+
+        return Rects.createFromBasicRect(rect);
     }
 
     /**
@@ -64269,6 +64325,8 @@ module.exports.Strings = Strings;
 /***/ (function(module, exports, __webpack_require__) {
 
 const { Preconditions } = __webpack_require__(/*! ../Preconditions */ "./web/js/Preconditions.js");
+const { Optional } = __webpack_require__(/*! ../Optional */ "./web/js/Optional.js");
+
 class Styles {
 
     /**
@@ -64287,6 +64345,57 @@ class Styles {
         }
 
         return parseInt(value.replace("px", ""));
+    }
+
+    /**
+     * Return the top, left, width, and height of the given element.
+     *
+     * @param element {HTMLElement}
+     */
+    static positioning(element) {
+
+        let result = {
+            left: null,
+            top: null,
+            right: null,
+            bottom: null,
+            width: null,
+            height: null
+        };
+
+        for (let key in result) {
+
+            if (!result.hasOwnProperty(key)) {
+                continue;
+            }
+
+            result[key] = Optional.of(element.style[key]).filter(current => current !== null && current !== "").getOrElse(null);
+        }
+
+        return result;
+    }
+
+    /**
+     * Return all the positioning keys to pixels.
+     */
+    static positioningToPX(positioning) {
+
+        let result = Object.assign({}, positioning);
+
+        for (let key in result) {
+
+            if (!result.hasOwnProperty(key)) {
+                continue;
+            }
+
+            if (result[key] === null) {
+                continue;
+            }
+
+            result[key] = Styles.parsePX(result[key]);
+        }
+
+        return result;
     }
 
 }
