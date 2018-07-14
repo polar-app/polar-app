@@ -36,13 +36,6 @@ class AnnotationEvent extends TraceEvent {
         this.pageNum = undefined;
 
         /**
-         * The page we're working with to which this annotation is attached.
-         *
-         * @type {HTMLElement}
-         */
-        this.pageElement = undefined;
-
-        /**
          * The raw TraceEvent for this annotation.
          *
          * @type {TraceEvent}
@@ -58,16 +51,6 @@ class AnnotationEvent extends TraceEvent {
         }
 
         Preconditions.assertNotNull(this.pageMeta, "pageMeta");
-
-        // now get the proper pageElement we're working with for this annotation.
-
-        let docFormat = DocFormatFactory.getInstance();
-
-        let pageNum = this.pageMeta.pageInfo.num;
-
-        this.pageElement = docFormat.getPageElementFromPageNum(pageNum);
-
-        Preconditions.assertNotNull(this.pageElement, "pageElement")
 
     }
 

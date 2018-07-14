@@ -1,6 +1,8 @@
 const {PageRedrawHandler} = require("../PageRedrawHandler");
 const {DocFormatFactory} = require("../docformat/DocFormatFactory");
 const {MutationState} = require("../proxies/MutationState");
+const {Preconditions} = require("../Preconditions");
+
 const log = require("../logger/Logger").create();
 
 class ComponentManager {
@@ -8,14 +10,23 @@ class ComponentManager {
     /**
      *
      * @param model {Model}
+     * @param containerProvider {ContainerProvider}
      * @param createComponent {Function<Component>}
      * @param createDocMetaModel {Function<DocMetaModel>}
      */
-    constructor(model, createComponent, createDocMetaModel) {
+    constructor(model, containerProvider, createComponent, createDocMetaModel) {
 
         this.model = model;
+
+        /**
+         * @type {ContainerProvider}
+         */
+        this.containerProvider = containerProvider;
+
         this.docFormat = DocFormatFactory.getInstance();
+
         this.createComponent = createComponent;
+
         this.createDocMetaModel = createDocMetaModel;
 
         /**
@@ -25,6 +36,12 @@ class ComponentManager {
          */
         this.components = {};
 
+        /**
+         *
+         * @return {Object<number,HTMLElement>}
+         */
+        this.containers = {};
+
     }
 
     start() {
@@ -33,9 +50,11 @@ class ComponentManager {
 
     onDocumentLoaded(documentLoadedEvent) {
 
-        log.info("onDocumentLoaded");
+        log.info("onDocumentLoaded: ", documentLoadedEvent.fingerprint);
 
         let docMetaModel = this.createDocMetaModel();
+
+        this.containers = this.containerProvider.getContainers();
 
         // Listen for changes from the model as objects are PRESENT or ABSENT
         // for the specific objects we're interested in and then call
@@ -54,13 +73,23 @@ class ComponentManager {
 
         log.info("onComponentEvent: ", componentEvent);
 
-        let pageNum = componentEvent.pageMeta.pageInfo.num;
+        let containerID = componentEvent.pageMeta.pageInfo.num;
+
+        Preconditions.assertNumber(containerID, "containerID");
 
         if(componentEvent.mutationState === MutationState.PRESENT) {
 
             log.info("PRESENT");
 
-            let pageElement = this.docFormat.getPageElementFromPageNum(pageNum);
+            let container = this.containers[containerID];
+
+            if(! container) {
+                throw new Error("No container for containerID: " + containerID);
+            }
+
+            componentEvent.container = container;
+
+            //let container = this.cont
 
             // create the component and call render on it...
 
@@ -68,7 +97,7 @@ class ComponentManager {
 
             component.init(componentEvent);
 
-            let callback = () => {
+            let callback = (containerLifecycleEvent) => {
 
                 // always destroy the component before we erase it.  This way
                 // if there is an existing component rendered on the screen it's
@@ -83,18 +112,19 @@ class ComponentManager {
             // draw it manually the first time.
             callback();
 
-            // then let the redraw handler do it after this.
-            let pageRedrawHandler = new PageRedrawHandler(pageElement);
-            pageRedrawHandler.register(callback);
+            let containerLifecycleListener
+                = this.containerProvider.createContainerLifecycleListener(container);
 
-            this.components[componentEvent.id] = new ComponentEntry(pageRedrawHandler, component);
+            containerLifecycleListener.register(callback);
+
+            this.components[componentEvent.id] = new ComponentEntry(containerLifecycleListener, component);
 
         } else if(componentEvent.mutationState === MutationState.ABSENT) {
 
             log.info("ABSENT");
 
             let componentEntry = this.components[componentEvent.id];
-            componentEntry.pageRedrawHandler.unregister();
+            componentEntry.containerLifecycleListener.unregister();
             componentEntry.component.destroy();
 
             delete this.components[componentEvent.id];
@@ -109,11 +139,11 @@ class ComponentEntry {
 
     /**
      *
-     * @param pageRedrawHandler {PageRedrawHandler}
+     * @param containerLifecycleListener {ContainerLifecycleListener}
      * @param component {Component}
      */
-    constructor(pageRedrawHandler, component) {
-        this.pageRedrawHandler = pageRedrawHandler;
+    constructor(containerLifecycleListener, component) {
+        this.containerLifecycleListener = containerLifecycleListener;
         this.component = component;
     }
 

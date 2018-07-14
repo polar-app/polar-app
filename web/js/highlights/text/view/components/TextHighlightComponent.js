@@ -72,7 +72,6 @@ class TextHighlightComponent extends Component {
     render() {
 
         log.info("render()");
-        log.error(new Error("FIXME"));
 
         forDict(this.textHighlight.rects, (id, highlightRect) => {
 

@@ -77265,6 +77265,9 @@ class Model {
                 resolve(this.docMeta);
             }.bind(_this));
 
+            console.log("FIXME999: dispatching documentLoaded");
+
+            // TODO: make this into an object..
             let documentLoadedEvent = { fingerprint, nrPages, currentPageNumber, docMeta: _this.docMeta };
             _this.reactor.dispatchEvent('documentLoaded', documentLoadedEvent);
 
@@ -77426,6 +77429,7 @@ module.exports.Optional = Optional;
  * Calls an event handler when the page has been redrawn so that we can
  * attach annotations, pagemarks, etc.
  *
+ * @deprecated Use the new {ContainerLifecycleListener} instead.
  * @type {PageRedrawHandler}
  */
 class PageRedrawHandler {
@@ -78204,13 +78208,6 @@ class AnnotationEvent extends TraceEvent {
     this.pageNum = undefined;
 
     /**
-     * The page we're working with to which this annotation is attached.
-     *
-     * @type {HTMLElement}
-     */
-    this.pageElement = undefined;
-
-    /**
      * The raw TraceEvent for this annotation.
      *
      * @type {TraceEvent}
@@ -78226,16 +78223,6 @@ class AnnotationEvent extends TraceEvent {
     }
 
     Preconditions.assertNotNull(this.pageMeta, "pageMeta");
-
-    // now get the proper pageElement we're working with for this annotation.
-
-    let docFormat = DocFormatFactory.getInstance();
-
-    let pageNum = this.pageMeta.pageInfo.num;
-
-    this.pageElement = docFormat.getPageElementFromPageNum(pageNum);
-
-    Preconditions.assertNotNull(this.pageElement, "pageElement");
   }
 
 }
@@ -78427,6 +78414,8 @@ module.exports.Component = Component;
 const { PageRedrawHandler } = __webpack_require__(/*! ../PageRedrawHandler */ "./web/js/PageRedrawHandler.js");
 const { DocFormatFactory } = __webpack_require__(/*! ../docformat/DocFormatFactory */ "./web/js/docformat/DocFormatFactory.js");
 const { MutationState } = __webpack_require__(/*! ../proxies/MutationState */ "./web/js/proxies/MutationState.js");
+const { Preconditions } = __webpack_require__(/*! ../Preconditions */ "./web/js/Preconditions.js");
+
 const log = __webpack_require__(/*! ../logger/Logger */ "./web/js/logger/Logger.js").create();
 
 class ComponentManager {
@@ -78434,14 +78423,23 @@ class ComponentManager {
     /**
      *
      * @param model {Model}
+     * @param containerProvider {ContainerProvider}
      * @param createComponent {Function<Component>}
      * @param createDocMetaModel {Function<DocMetaModel>}
      */
-    constructor(model, createComponent, createDocMetaModel) {
+    constructor(model, containerProvider, createComponent, createDocMetaModel) {
 
         this.model = model;
+
+        /**
+         * @type {ContainerProvider}
+         */
+        this.containerProvider = containerProvider;
+
         this.docFormat = DocFormatFactory.getInstance();
+
         this.createComponent = createComponent;
+
         this.createDocMetaModel = createDocMetaModel;
 
         /**
@@ -78450,6 +78448,12 @@ class ComponentManager {
          * @type {Object<String,ComponentEntry>}
          */
         this.components = {};
+
+        /**
+         *
+         * @return {Object<number,HTMLElement>}
+         */
+        this.containers = {};
     }
 
     start() {
@@ -78458,9 +78462,11 @@ class ComponentManager {
 
     onDocumentLoaded(documentLoadedEvent) {
 
-        log.info("onDocumentLoaded");
+        log.info("onDocumentLoaded: ", documentLoadedEvent.fingerprint);
 
         let docMetaModel = this.createDocMetaModel();
+
+        this.containers = this.containerProvider.getContainers();
 
         // Listen for changes from the model as objects are PRESENT or ABSENT
         // for the specific objects we're interested in and then call
@@ -78478,13 +78484,24 @@ class ComponentManager {
 
         log.info("onComponentEvent: ", componentEvent);
 
-        let pageNum = componentEvent.pageMeta.pageInfo.num;
+        let containerID = componentEvent.pageMeta.pageInfo.num;
+
+        Preconditions.assertNumber(containerID, "containerID");
 
         if (componentEvent.mutationState === MutationState.PRESENT) {
 
             log.info("PRESENT");
 
-            let pageElement = this.docFormat.getPageElementFromPageNum(pageNum);
+            let container = this.containers[containerID];
+
+            if (!container) {
+                console.warn("FIXME3: containers; ", this.containers);
+                throw new Error("No container for containerID: " + containerID);
+            }
+
+            componentEvent.container = container;
+
+            //let container = this.cont
 
             // create the component and call render on it...
 
@@ -78492,7 +78509,7 @@ class ComponentManager {
 
             component.init(componentEvent);
 
-            let callback = () => {
+            let callback = containerLifecycleEvent => {
 
                 // always destroy the component before we erase it.  This way
                 // if there is an existing component rendered on the screen it's
@@ -78506,17 +78523,17 @@ class ComponentManager {
             // draw it manually the first time.
             callback();
 
-            // then let the redraw handler do it after this.
-            let pageRedrawHandler = new PageRedrawHandler(pageElement);
-            pageRedrawHandler.register(callback);
+            let containerLifecycleListener = this.containerProvider.createContainerLifecycleListener(container);
 
-            this.components[componentEvent.id] = new ComponentEntry(pageRedrawHandler, component);
+            containerLifecycleListener.register(callback);
+
+            this.components[componentEvent.id] = new ComponentEntry(containerLifecycleListener, component);
         } else if (componentEvent.mutationState === MutationState.ABSENT) {
 
             log.info("ABSENT");
 
             let componentEntry = this.components[componentEvent.id];
-            componentEntry.pageRedrawHandler.unregister();
+            componentEntry.containerLifecycleListener.unregister();
             componentEntry.component.destroy();
 
             delete this.components[componentEvent.id];
@@ -78529,17 +78546,214 @@ class ComponentEntry {
 
     /**
      *
-     * @param pageRedrawHandler {PageRedrawHandler}
+     * @param containerLifecycleListener {ContainerLifecycleListener}
      * @param component {Component}
      */
-    constructor(pageRedrawHandler, component) {
-        this.pageRedrawHandler = pageRedrawHandler;
+    constructor(containerLifecycleListener, component) {
+        this.containerLifecycleListener = containerLifecycleListener;
         this.component = component;
     }
 
 }
 
 module.exports.ComponentManager = ComponentManager;
+
+/***/ }),
+
+/***/ "./web/js/components/containers/lifecycle/ContainerLifecycleEvent.js":
+/*!***************************************************************************!*\
+  !*** ./web/js/components/containers/lifecycle/ContainerLifecycleEvent.js ***!
+  \***************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+class ContainerLifecycleEvent {
+
+  constructor(opts) {
+
+    /**
+     * True if this container is now visible.
+     *
+     * @type {boolean}
+     */
+    this.visible = undefined;
+
+    /**
+     * The container we're working with.
+     *
+     * @type {HTMLElement}
+     */
+    this.container = undefined;
+
+    Object.assign(this, opts);
+  }
+
+}
+
+module.exports.ContainerLifecycleEvent = ContainerLifecycleEvent;
+
+/***/ }),
+
+/***/ "./web/js/components/containers/lifecycle/ContainerLifecycleListener.js":
+/*!******************************************************************************!*\
+  !*** ./web/js/components/containers/lifecycle/ContainerLifecycleListener.js ***!
+  \******************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+class ContainerLifecycleListener {
+
+  /**
+   *
+   * @param callback {Function} A callback function that accepts
+   * {ContainerLifecycleEvent} to determine the state of the container.
+   *
+   */
+  register(callback) {}
+
+  unregister() {}
+
+}
+
+module.exports.ContainerLifecycleListener = ContainerLifecycleListener;
+
+/***/ }),
+
+/***/ "./web/js/components/containers/lifecycle/impl/DefaultContainerLifecycleListener.js":
+/*!******************************************************************************************!*\
+  !*** ./web/js/components/containers/lifecycle/impl/DefaultContainerLifecycleListener.js ***!
+  \******************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+/**
+ *
+ */
+const { ContainerLifecycleListener } = __webpack_require__(/*! ../ContainerLifecycleListener */ "./web/js/components/containers/lifecycle/ContainerLifecycleListener.js");
+const { ContainerLifecycleEvent } = __webpack_require__(/*! ../ContainerLifecycleEvent */ "./web/js/components/containers/lifecycle/ContainerLifecycleEvent.js");
+
+/**
+ * Listens to the lifecycle of .page
+ */
+class DefaultContainerLifecycleListener extends ContainerLifecycleListener {
+
+    constructor(pageElement) {
+        super();
+        this.pageElement = pageElement;
+        this.listener = null;
+    }
+
+    register(callback) {
+
+        this.listener = event => {
+
+            if (event.target && event.target.className === "endOfContent") {
+
+                callback(new ContainerLifecycleEvent({
+                    container: this.pageElement,
+                    visible: true
+                }));
+            }
+        };
+
+        this.pageElement.addEventListener('DOMNodeInserted', this.listener, false);
+    }
+
+    unregister() {
+        this.pageElement.removeEventListener('DOMNodeInserted', this.listener, false);
+        this.listener = null;
+    }
+
+}
+
+module.exports.DefaultContainerLifecycleListener = DefaultContainerLifecycleListener;
+
+/***/ }),
+
+/***/ "./web/js/components/containers/providers/ContainerProvider.js":
+/*!*********************************************************************!*\
+  !*** ./web/js/components/containers/providers/ContainerProvider.js ***!
+  \*********************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+/**
+ * @abstract
+ */
+class ContainerProvider {
+
+  /**
+   * Return all containers in the document indexed by their ID.  For pages
+   * and thumbnails this is just going to be the page number.
+   *
+   * @return {Object<number,HTMLElement>}
+   */
+  getContainers() {
+    throw new Error("Not implemented");
+  }
+
+  /**
+   * Get the {ContainerLifecycleListener} to use with the container types.
+   *
+   * @param container {HTMLElement}
+   * @return {ContainerLifecycleListener}
+   */
+  createContainerLifecycleListener(container) {
+    throw new Error("Not implemented");
+  }
+
+}
+
+module.exports.ContainerProvider = ContainerProvider;
+
+/***/ }),
+
+/***/ "./web/js/components/containers/providers/impl/DefaultContainerProvider.js":
+/*!*********************************************************************************!*\
+  !*** ./web/js/components/containers/providers/impl/DefaultContainerProvider.js ***!
+  \*********************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+const { DefaultContainerLifecycleListener } = __webpack_require__(/*! ../../lifecycle/impl/DefaultContainerLifecycleListener */ "./web/js/components/containers/lifecycle/impl/DefaultContainerLifecycleListener.js");
+const { ContainerProvider } = __webpack_require__(/*! ../ContainerProvider */ "./web/js/components/containers/providers/ContainerProvider.js");
+
+class DefaultContainerProvider extends ContainerProvider {
+
+    /**
+     *
+     * @return {Object<number,HTMLElement>}
+     */
+    getContainers() {
+
+        let result = {};
+
+        let pageElements = Array.from(document.querySelectorAll(".page"));
+
+        console.log("FIXME: found N pageElements: " + pageElements.length);
+
+        pageElements.forEach(pageElement => {
+            let id = parseInt(pageElement.getAttribute("data-page-number"));
+            result[id] = pageElement;
+        });
+
+        console.log("FIXME: resi;t: ", result);
+
+        return result;
+    }
+
+    /**
+     * @Override
+     * @param container {HTMLElement}
+     * @return {ContainerLifecycleListener}
+     */
+    createContainerLifecycleListener(container) {
+        return new DefaultContainerLifecycleListener(container);
+    }
+
+}
+
+module.exports.DefaultContainerProvider = DefaultContainerProvider;
 
 /***/ }),
 
@@ -81886,6 +82100,7 @@ module.exports.TextHighlightView = TextHighlightView;
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
+const { DefaultContainerProvider } = __webpack_require__(/*! ../../../components/containers/providers/impl/DefaultContainerProvider */ "./web/js/components/containers/providers/impl/DefaultContainerProvider.js");
 const { TextHighlightComponent } = __webpack_require__(/*! ./components/TextHighlightComponent */ "./web/js/highlights/text/view/components/TextHighlightComponent.js");
 const { ComponentManager } = __webpack_require__(/*! ../../../components/ComponentManager */ "./web/js/components/ComponentManager.js");
 const { TextHighlightModel } = __webpack_require__(/*! ../model/TextHighlightModel */ "./web/js/highlights/text/model/TextHighlightModel.js");
@@ -81898,7 +82113,7 @@ class TextHighlightView2 {
      */
     constructor(model) {
 
-        this.componentManager = new ComponentManager(model, () => new TextHighlightComponent(), () => new TextHighlightModel());
+        this.componentManager = new ComponentManager(model, new DefaultContainerProvider(), () => new TextHighlightComponent(), () => new TextHighlightModel());
     }
 
     start() {
@@ -81990,7 +82205,6 @@ class TextHighlightComponent extends Component {
   render() {
 
     log.info("render()");
-    log.error(new Error("FIXME"));
 
     forDict(this.textHighlight.rects, (id, highlightRect) => {
 
@@ -85592,6 +85806,7 @@ module.exports.PagemarkModel = PagemarkModel;
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
+const { DefaultContainerProvider } = __webpack_require__(/*! ../../components/containers/providers/impl/DefaultContainerProvider */ "./web/js/components/containers/providers/impl/DefaultContainerProvider.js");
 const { ThumbnailPagemarkComponent } = __webpack_require__(/*! ./components/ThumbnailPagemarkComponent */ "./web/js/pagemarks/view/components/ThumbnailPagemarkComponent.js");
 const { PrimaryPagemarkComponent } = __webpack_require__(/*! ./components/PrimaryPagemarkComponent */ "./web/js/pagemarks/view/components/PrimaryPagemarkComponent.js");
 const { ComponentManager } = __webpack_require__(/*! ../../components/ComponentManager */ "./web/js/components/ComponentManager.js");
@@ -85610,20 +85825,20 @@ class PagemarkView {
     /***
      * @type {ComponentManager}
      */
-    // this.primaryPagemarkComponentManager = new ComponentManager(model,
-    //     () => new PrimaryPagemarkComponent(),
-    //     () => new PagemarkModel());
+    this.primaryPagemarkComponentManager = new ComponentManager(model, new DefaultContainerProvider(), () => new PrimaryPagemarkComponent(), () => new PagemarkModel());
 
     /***
      * @type {ComponentManager}
      */
-    this.thumbnailPagemarkComponentManager = new ComponentManager(model, () => new ThumbnailPagemarkComponent(), () => new PagemarkModel());
+    // this.thumbnailPagemarkComponentManager = new ComponentManager(model,
+    //     () => new ThumbnailPagemarkComponent(),
+    //     () => new PagemarkModel());
   }
 
   start() {
 
-    // this.primaryPagemarkComponentManager.start();
-    this.thumbnailPagemarkComponentManager.start();
+    this.primaryPagemarkComponentManager.start();
+    // this.thumbnailPagemarkComponentManager.start();
   }
 
 }
@@ -85726,8 +85941,8 @@ class AbstractPagemarkComponent extends Component {
         //   way to just CREATE the element so that we can test the settings
         //   properly.
 
-        let pageElement = this.annotationEvent.pageElement;
-        Preconditions.assertNotNull(pageElement, "pageElement");
+        let container = this.annotationEvent.container;
+        Preconditions.assertNotNull(container, "container");
 
         if (!this.pagemark) {
             throw new Error("Pagemark is required");
@@ -85741,12 +85956,12 @@ class AbstractPagemarkComponent extends Component {
         let placementElement = this.options.placementElement;
 
         if (!templateElement) {
-            templateElement = this.annotationEvent.pageElement;
+            templateElement = this.annotationEvent.container;
         }
 
         if (!placementElement) {
             // TODO: move this to the proper component
-            placementElement = pageElement.querySelector(".canvasWrapper, .iframeWrapper");
+            placementElement = container.querySelector(".canvasWrapper, .iframeWrapper");
             // TODO: we need to code this directly into the caller
             log.warn("Using a default placementElement from selector");
         }
@@ -85754,7 +85969,7 @@ class AbstractPagemarkComponent extends Component {
         Preconditions.assertNotNull(templateElement, "templateElement");
         Preconditions.assertNotNull(placementElement, "placementElement");
 
-        if (pageElement.querySelector("#pagemark-" + this.pagemark.id)) {
+        if (container.querySelector("#pagemark-" + this.pagemark.id)) {
             // do nothing if the current page already has a pagemark.
             console.warn("Pagemark already exists");
             return;
@@ -86992,6 +87207,7 @@ class Reactor {
         Preconditions.assertNotNull(eventName, "eventName");
 
         this.events[eventName].callbacks.forEach(function (callback) {
+            // TODO: what if these throw exceptions?
             callback(...eventArgs);
         });
         return this;

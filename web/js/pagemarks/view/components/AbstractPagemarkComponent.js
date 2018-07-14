@@ -86,8 +86,8 @@ class AbstractPagemarkComponent extends Component {
         //   way to just CREATE the element so that we can test the settings
         //   properly.
 
-        let pageElement = this.annotationEvent.pageElement;
-        Preconditions.assertNotNull(pageElement, "pageElement")
+        let container = this.annotationEvent.container;
+        Preconditions.assertNotNull(container, "container")
 
         if(! this.pagemark) {
             throw new Error("Pagemark is required");
@@ -101,12 +101,12 @@ class AbstractPagemarkComponent extends Component {
         let placementElement = this.options.placementElement;
 
         if(! templateElement) {
-            templateElement = this.annotationEvent.pageElement;
+            templateElement = this.annotationEvent.container;
         }
 
         if (! placementElement) {
             // TODO: move this to the proper component
-            placementElement = pageElement.querySelector(".canvasWrapper, .iframeWrapper");
+            placementElement = container.querySelector(".canvasWrapper, .iframeWrapper");
             // TODO: we need to code this directly into the caller
             log.warn("Using a default placementElement from selector");
         }
@@ -114,7 +114,7 @@ class AbstractPagemarkComponent extends Component {
         Preconditions.assertNotNull(templateElement, "templateElement")
         Preconditions.assertNotNull(placementElement, "placementElement")
 
-        if (pageElement.querySelector("#pagemark-" + this.pagemark.id)) {
+        if (container.querySelector("#pagemark-" + this.pagemark.id)) {
             // do nothing if the current page already has a pagemark.
             console.warn("Pagemark already exists");
             return;

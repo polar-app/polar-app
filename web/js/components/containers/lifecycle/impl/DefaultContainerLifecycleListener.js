@@ -2,6 +2,7 @@
  *
  */
 const {ContainerLifecycleListener} = require("../ContainerLifecycleListener");
+const {ContainerLifecycleEvent} = require("../ContainerLifecycleEvent");
 
 /**
  * Listens to the lifecycle of .page
@@ -20,7 +21,11 @@ class DefaultContainerLifecycleListener extends ContainerLifecycleListener {
         this.listener = event => {
 
             if (event.target && event.target.className === "endOfContent") {
-                callback(this.pageElement);
+
+                callback(new ContainerLifecycleEvent({
+                    container: this.pageElement,
+                    visible: true
+                }));
             }
 
         };

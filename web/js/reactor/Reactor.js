@@ -43,6 +43,7 @@ class Reactor {
         Preconditions.assertNotNull(eventName, "eventName");
 
         this.events[eventName].callbacks.forEach(function(callback){
+            // TODO: what if these throw exceptions?
             callback(...eventArgs);
         });
         return this;

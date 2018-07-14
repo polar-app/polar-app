@@ -9,6 +9,13 @@ class ContainerLifecycleEvent {
          */
         this.visible = undefined;
 
+        /**
+         * The container we're working with.
+         *
+         * @type {HTMLElement}
+         */
+        this.container = undefined;
+
         Object.assign(this, opts);
 
     }

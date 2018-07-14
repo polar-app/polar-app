@@ -10,6 +10,10 @@ class ContainerLifecycleListener {
 
     }
 
+    unregister() {
+
+    }
+
 }
 
 module.exports.ContainerLifecycleListener = ContainerLifecycleListener;

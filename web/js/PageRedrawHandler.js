@@ -2,6 +2,7 @@
  * Calls an event handler when the page has been redrawn so that we can
  * attach annotations, pagemarks, etc.
  *
+ * @deprecated Use the new {ContainerLifecycleListener} instead.
  * @type {PageRedrawHandler}
  */
 class PageRedrawHandler {

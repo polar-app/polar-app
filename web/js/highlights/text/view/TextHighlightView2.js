@@ -1,3 +1,4 @@
+const {DefaultContainerProvider} = require("../../../components/containers/providers/impl/DefaultContainerProvider");
 const {TextHighlightComponent} = require("./components/TextHighlightComponent");
 const {ComponentManager} = require("../../../components/ComponentManager");
 const {TextHighlightModel} = require("../model/TextHighlightModel");
@@ -11,6 +12,7 @@ class TextHighlightView2 {
     constructor(model) {
 
         this.componentManager = new ComponentManager(model,
+                                                     new DefaultContainerProvider(),
                                                      () => new TextHighlightComponent(),
                                                      () => new TextHighlightModel());
 
