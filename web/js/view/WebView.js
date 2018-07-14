@@ -6,7 +6,7 @@ const {MainPagemarkRedrawer} = require("../pagemarks/view/redrawer/MainPagemarkR
 const {ThumbnailPagemarkRedrawer} = require("../pagemarks/view/redrawer/ThumbnailPagemarkRedrawer");
 const {Preconditions} = require("../Preconditions");
 const {View} = require("./View.js");
-const {BoxController} = require("../pagemarks/controller/interact/BoxController");
+const {PAGEMARK_VIEW_ENABLED} = require("../pagemarks/view/PagemarkView");
 
 class WebView extends View {
 
@@ -23,18 +23,15 @@ class WebView extends View {
         this.pagemarkRedrawer = null;
         this.docFormat = DocFormatFactory.getInstance();
 
-        this.pagemarkBoxController = new BoxController(this.pagemarkMoved);
-
-    }
-
-    pagemarkMoved(boxMoveEvent) {
-        console.log("Box moved: ", boxMoveEvent);
     }
 
     start() {
 
-        this.model.registerListenerForCreatePagemark(this.onCreatePagemark.bind(this));
-        this.model.registerListenerForErasePagemark(this.onErasePagemark.bind(this));
+        if(! PAGEMARK_VIEW_ENABLED) {
+            this.model.registerListenerForCreatePagemark(this.onCreatePagemark.bind(this));
+            this.model.registerListenerForErasePagemark(this.onErasePagemark.bind(this));
+        }
+
         this.model.registerListenerForDocumentLoaded(this.onDocumentLoaded.bind(this));
 
         return this;
@@ -92,20 +89,24 @@ class WebView extends View {
 
         console.log("WebView.onDocumentLoaded: ", this.model.docMeta);
 
-        let pagemarkComponentDelegates = [
-            new MainPagemarkRedrawer(this),
-        ];
+        if(! PAGEMARK_VIEW_ENABLED) {
 
-        if (this.docFormat.supportThumbnails()) {
-            // only support rendering thumbnails for documents that have thumbnail
-            // support.
-            pagemarkComponentDelegates.push(new ThumbnailPagemarkRedrawer(this));
-        } else {
-            console.warn("Thumbnails not enabled.");
+            let pagemarkRedrawerDelegates = [
+                new MainPagemarkRedrawer(this),
+            ];
+
+            if (this.docFormat.supportThumbnails()) {
+                // only support rendering thumbnails for documents that have thumbnail
+                // support.
+                pagemarkRedrawerDelegates.push(new ThumbnailPagemarkRedrawer(this));
+            } else {
+                console.warn("Thumbnails not enabled.");
+            }
+
+            this.pagemarkRedrawer = new CompositePagemarkRedrawer(this, pagemarkRedrawerDelegates);
+            this.pagemarkRedrawer.setup();
+
         }
-
-        this.pagemarkRedrawer = new CompositePagemarkRedrawer(this, pagemarkComponentDelegates);
-        this.pagemarkRedrawer.setup();
 
         this.updateProgress();
 
@@ -310,9 +311,6 @@ class WebView extends View {
         // TODO: this enables resize but we don't yet support updating the
         // pagemark data itself.  We're probably going to have to implement
         // mutation listeners there.
-
-        console.log("Creating box controller for pagemarkElement: ", pagemarkElement);
-        this.pagemarkBoxController.register(pagemarkElement);
 
     }
 

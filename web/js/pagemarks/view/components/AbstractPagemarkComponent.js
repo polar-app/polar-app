@@ -2,6 +2,10 @@ const {Component} = require("../../../components/Component");
 const {DocFormatFactory} = require("../../../docformat/DocFormatFactory");
 const {Styles} = require("../../../util/Styles");
 const {Preconditions} = require("../../../Preconditions");
+const {BoxController} = require("../../../pagemarks/controller/interact/BoxController");
+const log = require("../../../logger/Logger").create();
+
+const ENABLE_BOX_CONTROLLER = false;
 
 class AbstractPagemarkComponent extends Component {
 
@@ -26,7 +30,7 @@ class AbstractPagemarkComponent extends Component {
          */
         this.annotationEvent = undefined;
 
-        this.pagemarkBoxController = new BoxController(this.pagemarkMoved);
+        this.pagemarkBoxController = undefined;
 
         /**
          *
@@ -51,6 +55,8 @@ class AbstractPagemarkComponent extends Component {
 
         this.annotationEvent = annotationEvent;
         this.pagemark = annotationEvent.value;
+
+        this.pagemarkBoxController = new BoxController(this.pagemarkMoved);
 
     }
 
@@ -80,6 +86,9 @@ class AbstractPagemarkComponent extends Component {
         //   way to just CREATE the element so that we can test the settings
         //   properly.
 
+        let pageElement = this.annotationEvent.pageElement;
+        Preconditions.assertNotNull(pageElement, "pageElement")
+
         if(! this.pagemark) {
             throw new Error("Pagemark is required");
         }
@@ -97,13 +106,13 @@ class AbstractPagemarkComponent extends Component {
 
         if (! placementElement) {
             // TODO: move this to the proper component
-            placementElement = this.pageElement.querySelector(".canvasWrapper, .iframeWrapper");
+            placementElement = pageElement.querySelector(".canvasWrapper, .iframeWrapper");
         }
 
         Preconditions.assertNotNull(templateElement, "templateElement")
         Preconditions.assertNotNull(placementElement, "placementElement")
 
-        if (this.pageElement.querySelector(this.pagemark.id)) {
+        if (pageElement.querySelector("#pagemark-" + this.pagemark.id)) {
             // do nothing if the current page already has a pagemark.
             console.warn("Pagemark already exists");
             return;
@@ -113,7 +122,7 @@ class AbstractPagemarkComponent extends Component {
 
         // set a pagemark-id in the DOM so that we can work with it when we use
         // the context menu, etc.
-        this.pagemarkElement.setAttribute("id", this.pagemark.id);
+        this.pagemarkElement.setAttribute("id", "pagemark-" + this.pagemark.id);
         this.pagemarkElement.setAttribute("data-pagemark-id", this.pagemark.id);
 
         // make sure we have a reliable CSS classname to work with.
@@ -148,7 +157,6 @@ class AbstractPagemarkComponent extends Component {
         height = height * (this.pagemark.percentage / 100);
 
         this.pagemarkElement.style.height = `${height}px`;
-
         this.pagemarkElement.style.zIndex = '1';
 
         if(!this.pagemarkElement.style.width) {
@@ -162,7 +170,10 @@ class AbstractPagemarkComponent extends Component {
         // mutation listeners there.
 
         console.log("Creating box controller for pagemarkElement: ", this.pagemarkElement);
-        this.pagemarkBoxController.register(this.pagemarkElement);
+
+        if(ENABLE_BOX_CONTROLLER) {
+            this.pagemarkBoxController.register(this.pagemarkElement);
+        }
 
     }
 
@@ -171,7 +182,11 @@ class AbstractPagemarkComponent extends Component {
      * @returns {*}
      */
     destroy() {
-        this.pagemarkBoxController.unregister(this.pagemarkElement);
+        if(this.pagemarkElement) {
+            this.pagemarkElement.parentElement.removeChild(this.pagemarkElement);
+            //this.pagemarkBoxController.unregister(this.pagemarkElement);
+            this.pagemarkElement = null;
+        }
     }
 
 }

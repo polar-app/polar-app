@@ -46,9 +46,11 @@ class ComponentManager {
 
     }
 
-    // FIXME: this is actually an AnnotationEvent right?
-
     onComponentEvent(componentEvent) {
+
+        // TODO: I think it would be better to build up pageNum and pageElement
+        // within AnnotationEvent - not here.  This should just be a ComponentEvent
+        // and not know anything about annotations.
 
         log.info("onComponentEvent: ", componentEvent);
 

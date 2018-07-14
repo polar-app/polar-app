@@ -4,7 +4,7 @@ const {WebController} = require("../controller/WebController.js");
 const {WebView} = require("../view/WebView.js");
 const {TextHighlightView} = require("../highlights/text/view/TextHighlightView");
 const {TextHighlightView2} = require("../highlights/text/view/TextHighlightView2");
-const {PagemarkView} = require("../pagemarks/view/PagemarkView");
+const {PagemarkView, PAGEMARK_VIEW_ENABLED} = require("../pagemarks/view/PagemarkView");
 
 const {ViewerFactory} = require("../viewer/ViewerFactory");
 
@@ -37,7 +37,11 @@ class Launcher {
         new WebView(model).start();
         //new TextHighlightView(model).start();
         new TextHighlightView2(model).start();
-        //new PagemarkView(model).start();
+
+        if(PAGEMARK_VIEW_ENABLED) {
+            new PagemarkView(model).start();
+        }
+
         ViewerFactory.create().start();
 
         await persistenceLayer.init();

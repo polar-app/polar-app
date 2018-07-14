@@ -1,4 +1,6 @@
 const {TraceEvent} = require("../../proxies/TraceEvent");
+const {DocFormatFactory} = require("../../docformat/DocFormatFactory");
+const {Preconditions} = require("../../Preconditions");
 
 
 class AnnotationEvent extends TraceEvent {
@@ -54,6 +56,18 @@ class AnnotationEvent extends TraceEvent {
         } else {
             this.id = this.previousValue.id;
         }
+
+        Preconditions.assertNotNull(this.pageMeta, "pageMeta")
+
+        // now get the proper pageElement we're working with for this annotation.
+
+        let docFormat = DocFormatFactory.getInstance();
+
+        let pageNum = this.pageMeta.pageInfo.num;
+
+        this.pageElement = docFormat.getPageElementFromPageNum(pageNum);
+
+        Preconditions.assertNotNull(this.pageElement, "pageElement")
 
     }
 
