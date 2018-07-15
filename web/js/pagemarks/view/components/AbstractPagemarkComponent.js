@@ -1,3 +1,4 @@
+const PagemarkRect = require("../../../metadata/PagemarkRect").PagemarkRect;
 const {PagemarkRects} = require("../../../metadata/PagemarkRects");
 const {Component} = require("../../../components/Component");
 const {DocFormatFactory} = require("../../../docformat/DocFormatFactory");
@@ -77,8 +78,11 @@ class AbstractPagemarkComponent extends Component {
 
         console.log("Box moved to: ", boxMoveEvent);
 
-        let rect = PagemarkRects.createFromPositionedRect( boxMoveEvent.boxRect,
-                                                           boxMoveEvent.restrictionRect);
+
+        // boxRect, containerRect, pageRect...
+
+        let rect = PagemarkRects.createFromPositionedRect(boxMoveEvent.boxRect,
+                                                          boxMoveEvent.restrictionRect);
 
         this.pagemark.percentage = rect.toPercentage();
         this.pagemark.rect = rect;
@@ -202,7 +206,12 @@ class AbstractPagemarkComponent extends Component {
 
     }
 
+    // FIXME: I have to improve this grammar... placement, positioned, etc..
+    // which one is which.
+
     createPagemarkRect(templateRect, pagemark) {
+
+        // FIXME: createFromPositionedRect
 
         let rect = {
             left: templateRect.left,
@@ -210,6 +219,8 @@ class AbstractPagemarkComponent extends Component {
             height: templateRect.height,
             width: templateRect.width,
         };
+
+        let pagemarkRect = new PagemarkRect(pagemark.rect);
 
         // read the percentage coverage from the pagemark and adjust the height
         // to reflect the portion we've actually read.

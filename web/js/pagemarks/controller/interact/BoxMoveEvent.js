@@ -17,7 +17,8 @@ class BoxMoveEvent {
         this.restrictionRect = undefined;
 
         /**
-         * The Rect of the box we moved.
+         * The Rect of the box we moved.  This is the final position of the box
+         * once we're done moving it.
          *
          * @type {Rect}
          */

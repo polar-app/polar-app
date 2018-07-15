@@ -59962,6 +59962,9 @@ class PagemarkRects {
     }
 
     /**
+     * Create a new PagemarkRect from a positioned rect.  We use this to take
+     * a dragged or resized rect / box on the screen then convert it to a
+     * PagemarkRect with the correct coordinates.
      *
      * @param rect {Rect}
      * @param parentRect {Rect}
@@ -59969,15 +59972,8 @@ class PagemarkRects {
      */
     static createFromPositionedRect(rect, parentRect) {
 
-        // create a new PagemarkRect from a positioned rect.  We use this to take
-        // a dragged or resized rect / box on the screen then convert it to a
-        // PagemarkRect
-
         let xAxis = rect.toLine("x").multiply(100 / parentRect.width);
         let yAxis = rect.toLine("y").multiply(100 / parentRect.height);
-
-        console.log("DEBUG: xAxis: ", xAxis);
-        console.log("DEBUG: yAxis: ", yAxis);
 
         return this.createFromLines(xAxis, yAxis);
     }
@@ -61211,7 +61207,8 @@ class BoxMoveEvent {
     this.restrictionRect = undefined;
 
     /**
-     * The Rect of the box we moved.
+     * The Rect of the box we moved.  This is the final position of the box
+     * once we're done moving it.
      *
      * @type {Rect}
      */
@@ -62008,6 +62005,7 @@ module.exports.ProgressView = ProgressView;
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
+const PagemarkRect = __webpack_require__(/*! ../../../metadata/PagemarkRect */ "./web/js/metadata/PagemarkRect.js").PagemarkRect;
 const { PagemarkRects } = __webpack_require__(/*! ../../../metadata/PagemarkRects */ "./web/js/metadata/PagemarkRects.js");
 const { Component } = __webpack_require__(/*! ../../../components/Component */ "./web/js/components/Component.js");
 const { DocFormatFactory } = __webpack_require__(/*! ../../../docformat/DocFormatFactory */ "./web/js/docformat/DocFormatFactory.js");
@@ -62084,6 +62082,8 @@ class AbstractPagemarkComponent extends Component {
         // TODO: remove the pagemark, then recreate it...
 
         console.log("Box moved to: ", boxMoveEvent);
+
+        // boxRect, containerRect, pageRect...
 
         let rect = PagemarkRects.createFromPositionedRect(boxMoveEvent.boxRect, boxMoveEvent.restrictionRect);
 
@@ -62206,7 +62206,12 @@ class AbstractPagemarkComponent extends Component {
         return Rects.createFromBasicRect(result);
     }
 
+    // FIXME: I have to improve this grammar... placement, positioned, etc..
+    // which one is which.
+
     createPagemarkRect(templateRect, pagemark) {
+
+        // FIXME: createFromPositionedRect
 
         let rect = {
             left: templateRect.left,
@@ -62214,6 +62219,8 @@ class AbstractPagemarkComponent extends Component {
             height: templateRect.height,
             width: templateRect.width
         };
+
+        let pagemarkRect = new PagemarkRect(pagemark.rect);
 
         // read the percentage coverage from the pagemark and adjust the height
         // to reflect the portion we've actually read.

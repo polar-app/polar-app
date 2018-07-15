@@ -2,6 +2,15 @@
 
 ## Next
 
+- prgress bar missing with PDFs
+
+- implement the full support for pagemarkRect including top+left+width
+    - we need a way to place the pagemark and this involves converting it between
+      positioning systems.
+
+- progress bar needs to be updated on drag...
+
+
 - pagemar refactor.
 
     - PagemarkComponent seems to be oriented around the entire page... it
