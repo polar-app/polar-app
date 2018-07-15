@@ -106,10 +106,7 @@ class ElectronContextMenu extends ContextMenu {
         await this.messenger.postMessage({
             message: {
                 type: "create-pagemark",
-                point: {
-                    x: triggerEvent.point.x,
-                    y: triggerEvent.point.y
-                }
+                points: triggerEvent.points
             }
         })
     }
@@ -156,6 +153,10 @@ class ElectronContextMenu extends ContextMenu {
         }
 
         if (triggerEvent.contextMenuTypes.includes(ContextMenuType.PAGE)) {
+            contextMenus.push(this.createPageContextMenu(triggerEvent, sender));
+        }
+
+        if (triggerEvent.contextMenuTypes.includes(ContextMenuType.PAGEMARK)) {
             contextMenus.push(this.createPagemarkContextMenu(triggerEvent, sender));
         }
 
@@ -214,6 +215,25 @@ class ElectronContextMenu extends ContextMenu {
      * @return {Electron.Menu}
      */
     createPagemarkContextMenu(triggerEvent, sender) {
+
+        const ctxMenu = new Menu();
+
+        // ctxMenu.append(new MenuItem({
+        //     label: 'Delete Pagemark',
+        //     click: () => this.cmdCreatePagemark(triggerEvent, sender)
+        // }));
+
+        return ctxMenu;
+
+    }
+
+    /**
+     *
+     * @param triggerEvent {TriggerEvent}
+     * @param sender
+     * @return {Electron.Menu}
+     */
+    createPageContextMenu(triggerEvent, sender) {
 
         const ctxMenu = new Menu();
 

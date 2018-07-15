@@ -62,6 +62,16 @@ class ContextMenuController {
 
                 ipcRenderer.send('context-menu-trigger', new TriggerEvent({
                     point: {x: event.pageX, y: event.pageY },
+                    points: {
+                        page: {
+                            x: event.pageX,
+                            y: event.pageY
+                        },
+                        client: {
+                            x: event.clientX,
+                            y: event.clientY
+                        }
+                    },
                     contextMenuTypes,
                     matchingSelectors,
                     docDescriptor

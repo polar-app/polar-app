@@ -55156,6 +55156,16 @@ class ContextMenuController {
 
                 ipcRenderer.send('context-menu-trigger', new TriggerEvent({
                     point: { x: event.pageX, y: event.pageY },
+                    points: {
+                        page: {
+                            x: event.pageX,
+                            y: event.pageY
+                        },
+                        client: {
+                            x: event.clientX,
+                            y: event.clientY
+                        }
+                    },
                     contextMenuTypes,
                     matchingSelectors,
                     docDescriptor
@@ -60730,11 +60740,9 @@ class PagemarkController {
 
         // convert the point on the page to a pagemark and then save it into
         // the model/docMeta... the view will do the rest.
-        console.log("Creating pagemark.");
+        console.log("Creating pagemarks: ", data);
 
-        // FIXME: The point is based on the viewport I think.
-
-        let elements = document.elementsFromPoint(data.point.x, data.point.y);
+        let elements = document.elementsFromPoint(data.points.page.x, data.points.page.y);
 
         elements = elements.filter(element => element.matches(".page"));
 
@@ -60746,11 +60754,16 @@ class PagemarkController {
 
             let pageNum = this.docFormat.getPageNumFromPageElement(pageElement);
 
+            // ok... I have two points now.. client and page.. now do I find
+            // out the offset relative to the .page element?
+
+            let pageElementPoint = this.getRelativePoint(pageElement, data.points.page);
+
             let boxRect = Rects.createFromBasicRect({
-                left: data.point.x,
-                top: data.point.y,
-                width: 30,
-                height: 30
+                left: pageElementPoint.x,
+                top: pageElementPoint.y,
+                width: 50,
+                height: 50
             });
 
             let containerRect = Rects.createFromOffset(pageElement);
@@ -60763,10 +60776,22 @@ class PagemarkController {
 
             log.info("Using pagemarkRect: ", pagemarkRect);
 
+            // TODO: do we somehow need to focus the new pagemark.
+
             // update the DocMeta with a pagemark on this page..
         } else {
             log.warn("No .page element clicked.");
         }
+    }
+
+    getRelativePoint(element, point) {
+
+        let rect = element.getBoundingClientRect();
+
+        return {
+            x: point.x - rect.left,
+            y: point.y - rect.top
+        };
     }
 
 }
