@@ -11,7 +11,8 @@ describe('Args', function() {
             assertJSON(Args.parse([]), {
                     "quit": true,
                     "browser": "MOBILE_GALAXY_S8_WITH_CHROME_61_WIDTH_750",
-                    "profile": "headless"
+                    "profile": "headless",
+                    "amp": true
                 }
             );
 
@@ -21,7 +22,8 @@ describe('Args', function() {
             assertJSON(Args.parse(["--browser=TEST_BROWSER"]), {
                 "browser": "TEST_BROWSER",
                 "quit": true,
-                "profile": "headless"
+                "profile": "headless",
+                "amp": true
             });
         });
 

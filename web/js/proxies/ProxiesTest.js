@@ -488,6 +488,34 @@ describe('Proxies', function() {
 
         });
 
+        // our event listener design is broken.. the first listener is
+        // recursive.. but not NEW listeners...
+        xit("modify nested value with listener at root", function () {
+
+            let myDict = {
+            };
+
+            let mutations = [];
+
+            myDict = Proxies.create(myDict, function(traceEvent) {
+                // noop
+            });
+
+            myDict.addTraceListener(function (traceEvent) {
+                mutations.push(traceEvent);
+            });
+
+            myDict.car = {};
+
+            myDict.car.type = "mazda";
+
+            let expected = [
+            ];
+
+            assertJSON(mutations, expected);
+
+        });
+
         it("delete value", function () {
 
             let myDict = {
