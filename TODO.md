@@ -3,10 +3,10 @@
 ## Next
 
 
+
 - prgress bar missing with PDFs
 
 - progress bar needs to be updated on drag
-
 
 
 

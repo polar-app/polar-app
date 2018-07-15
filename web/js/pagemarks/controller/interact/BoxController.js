@@ -299,7 +299,11 @@ class BoxController {
 
             if(this.callback) {
                 log.info("Firing completed BoxMoveEvent: ", boxMoveEvent);
-                this.callback(boxMoveEvent);
+
+                // for some reason, without a timeout, the controller just seems
+                // to lock up.
+                setTimeout(() => this.callback(boxMoveEvent), 1);
+
             }
 
         }

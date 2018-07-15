@@ -61117,7 +61117,10 @@ class BoxController {
 
             if (this.callback) {
                 log.info("Firing completed BoxMoveEvent: ", boxMoveEvent);
-                this.callback(boxMoveEvent);
+
+                // for some reason, without a timeout, the controller just seems
+                // to lock up.
+                setTimeout(() => this.callback(boxMoveEvent), 1);
             }
         }
     }
@@ -62144,21 +62147,14 @@ class AbstractPagemarkComponent extends Component {
 
         let rect = PagemarkRects.createFromPositionedRect(boxMoveEvent.boxRect, boxMoveEvent.restrictionRect);
 
-        // TODO: we will need a way to still send out pagemark event handling
-        // other than the direct manipulation of the elements though.
+        // FIXME: the lastUpdated here isn't being updated. I'm going to
+        // have to change the setters I think..
 
-        let updateDirectly = true;
+        if (boxMoveEvent.state === "completed") {
 
-        if (updateDirectly) {
+            // FIXME: this triggers an infinite loop....
 
-            this.pagemark.percentage = rect.toPercentage();
-            this.pagemark.rect = rect;
-
-            // FIXME: the lastUpdated here isn't being updated. I'm going to
-            // have to change the setters I think..
-
-            log.info("New pagemark: ", JSON.stringify(this.pagemark, null, "  "));
-        } else {
+            log.info("Box move completed.  Updating to trigger persistence.");
 
             // TODO: this mode is too slow... I need a new BoxMoveEvent that
             // signifies the state.. IE final or pending.
@@ -62170,6 +62166,12 @@ class AbstractPagemarkComponent extends Component {
             log.info("New pagemark: ", JSON.stringify(this.pagemark, null, "  "));
 
             this.annotationEvent.pageMeta.pagemarks[pagemark.id] = pagemark;
+        } else {
+
+            //this.pagemark.percentage = rect.toPercentage();
+            //this.pagemark.rect = rect;
+
+            log.info("New pagemark: ", JSON.stringify(this.pagemark, null, "  "));
         }
 
         log.info("New pagemarkRect: ", this.pagemark.rect);
@@ -62221,12 +62223,6 @@ class AbstractPagemarkComponent extends Component {
         console.log("Using templateElement: ", templateElement);
         console.log("Using placementElement: ", placementElement);
 
-        if (container.element.querySelector("#pagemark-" + this.pagemark.id)) {
-            // do nothing if the current page already has a pagemark.
-            console.warn("Pagemark already exists");
-            return;
-        }
-
         // a unique ID in the DOM for this element.
         let id = this.createID();
 
@@ -62235,6 +62231,16 @@ class AbstractPagemarkComponent extends Component {
         if (pagemarkElement === null) {
             // only create the pagemark if it's missing.
             pagemarkElement = document.createElement("div");
+
+            placementElement.parentElement.insertBefore(pagemarkElement, placementElement);
+
+            if (ENABLE_BOX_CONTROLLER) {
+                console.log("Creating box controller for pagemarkElement: ", pagemarkElement);
+                this.pagemarkBoxController.register({
+                    target: pagemarkElement,
+                    restrictionElement: placementElement
+                });
+            }
         }
 
         // set a pagemark-id in the DOM so that we can work with it when we use
@@ -62262,20 +62268,6 @@ class AbstractPagemarkComponent extends Component {
         pagemarkElement.style.width = `${pagemarkRect.width}px`;
         pagemarkElement.style.height = `${pagemarkRect.height}px`;
         pagemarkElement.style.zIndex = '1';
-
-        placementElement.parentElement.insertBefore(pagemarkElement, placementElement);
-
-        // TODO: this enables resize but we don't yet support updating the
-        // pagemark data itself.  We're probably going to have to implement
-        // mutation listeners there.
-
-        if (ENABLE_BOX_CONTROLLER) {
-            console.log("Creating box controller for pagemarkElement: ", pagemarkElement);
-            this.pagemarkBoxController.register({
-                target: pagemarkElement,
-                restrictionElement: placementElement
-            });
-        }
     }
 
     /**
