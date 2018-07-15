@@ -85101,6 +85101,7 @@ module.exports.PagemarkCoverageEventListener = PagemarkCoverageEventListener;
 /***/ (function(module, exports, __webpack_require__) {
 
 const interact = __webpack_require__(/*! interactjs */ "./node_modules/interactjs/dist/interact.js");
+const { BoxOptions } = __webpack_require__(/*! ./BoxOptions */ "./web/js/pagemarks/controller/interact/BoxOptions.js");
 const { Rects } = __webpack_require__(/*! ../../../Rects */ "./web/js/Rects.js");
 const { Rect } = __webpack_require__(/*! ../../../Rect */ "./web/js/Rect.js");
 const { Objects } = __webpack_require__(/*! ../../../util/Objects */ "./web/js/util/Objects.js");
@@ -85109,6 +85110,7 @@ const { ResizeRectAdjacencyCalculator } = __webpack_require__(/*! ./resize/Resiz
 const { BoxMoveEvent } = __webpack_require__(/*! ./BoxMoveEvent */ "./web/js/pagemarks/controller/interact/BoxMoveEvent.js");
 const { RectEdges } = __webpack_require__(/*! ./edges/RectEdges */ "./web/js/pagemarks/controller/interact/edges/RectEdges.js");
 const { Preconditions } = __webpack_require__(/*! ../../../Preconditions */ "./web/js/Preconditions.js");
+const { Optional } = __webpack_require__(/*! ../../../Optional */ "./web/js/Optional.js");
 
 /**
  * A generic controller for dragging boxes (divs) which are resizeable and can
@@ -85125,9 +85127,11 @@ class BoxController {
     }
 
     /**
-     * @param boxIdentifier {HTMLElement | string} A specific HTML element or a CSS selector.
+     * @param opts {BoxOptions}
      */
-    register(boxIdentifier) {
+    register(opts) {
+
+        let boxOptions = new BoxOptions(opts);
 
         // TODO: we need a callback with:
         //
@@ -85139,11 +85143,13 @@ class BoxController {
         // positioned before we accept them and they are done using style
         // attributes.
 
-        interact(boxIdentifier).draggable({
+        let restrictionElement = Optional.of(boxOptions.restrictionElement).getOrElse(boxOptions.target.parentElement);
+
+        interact(boxOptions.target).draggable({
 
             inertia: false,
             restrict: {
-                restriction: "parent",
+                restriction: restrictionElement,
                 outer: 'parent',
 
                 elementRect: { top: 0, left: 0, bottom: 1, right: 1 }
@@ -85167,12 +85173,12 @@ class BoxController {
             // Keep the edges inside the parent. this is needed or else the
             // bound stretches slightly beyond the container.
             restrictEdges: {
-                outer: 'parent'
+                outer: restrictionElement
                 // outer: computeRestriction,
             },
 
             restrict: {
-                restriction: 'parent'
+                restriction: restrictionElement
                 // restriction: computeRestriction
             },
 
@@ -85202,8 +85208,8 @@ class BoxController {
             let restrictionRect = Rects.createFromBasicRect({
                 left: 0,
                 top: 0,
-                width: target.parentElement.offsetWidth,
-                height: target.parentElement.offsetHeight
+                width: restrictionElement.offsetWidth,
+                height: restrictionElement.offsetHeight
             });
 
             let origin = this._computeOriginXY(interactionEvent);
@@ -85274,8 +85280,8 @@ class BoxController {
             let restrictionRect = Rects.createFromBasicRect({
                 left: 0,
                 top: 0,
-                width: target.parentElement.offsetWidth,
-                height: target.parentElement.offsetHeight
+                width: restrictionElement.offsetWidth,
+                height: restrictionElement.offsetHeight
             });
 
             // the tempRect is the rect that the user has attempted to draw
@@ -85368,7 +85374,8 @@ class BoxController {
         // console.log(`x: ${x}: y: ${y}`);
         console.log("_calculateIntersectedBoxes: resizeRect is: " + JSON.stringify(resizeRect, null, "  "));
 
-        let doc = element.ownerDocument;
+        // TODO: the .pagemark selector must be configured
+
         let boxes = Array.from(element.parentElement.querySelectorAll(".pagemark")).filter(current => current !== element);
 
         // make sure that our boxes aren't the same ID as the element. we can
@@ -85511,6 +85518,40 @@ class BoxMoveEvent {
 }
 
 module.exports.BoxMoveEvent = BoxMoveEvent;
+
+/***/ }),
+
+/***/ "./web/js/pagemarks/controller/interact/BoxOptions.js":
+/*!************************************************************!*\
+  !*** ./web/js/pagemarks/controller/interact/BoxOptions.js ***!
+  \************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+class BoxOptions {
+
+  constructor(opts) {
+
+    /**
+     * The element or selector to define boxes.
+     *
+     * @type {HTMLElement}
+     */
+    this.target = undefined;
+
+    /**
+     * The element used to define the restrictionRect.
+     *
+     * @type {HTMLElement}
+     */
+    this.restrictionElement = undefined;
+
+    Object.assign(this, opts);
+  }
+
+}
+
+module.exports.BoxOptions = BoxOptions;
 
 /***/ }),
 
@@ -86161,6 +86202,7 @@ module.exports.PagemarkView = PagemarkView;
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
+const { PagemarkRects } = __webpack_require__(/*! ../../../metadata/PagemarkRects */ "./web/js/metadata/PagemarkRects.js");
 const { Component } = __webpack_require__(/*! ../../../components/Component */ "./web/js/components/Component.js");
 const { DocFormatFactory } = __webpack_require__(/*! ../../../docformat/DocFormatFactory */ "./web/js/docformat/DocFormatFactory.js");
 const { Styles } = __webpack_require__(/*! ../../../util/Styles */ "./web/js/util/Styles.js");
@@ -86220,9 +86262,13 @@ class AbstractPagemarkComponent extends Component {
         this.annotationEvent = annotationEvent;
         this.pagemark = annotationEvent.value;
 
-        this.pagemarkBoxController = new BoxController(this.pagemarkMoved);
+        this.pagemarkBoxController = new BoxController(boxMoveEvent => this.pagemarkMoved(boxMoveEvent));
     }
 
+    /**
+     *
+     * @param boxMoveEvent {BoxMoveEvent}
+     */
     pagemarkMoved(boxMoveEvent) {
 
         // TODO: actually I think this belongs in the controller... not the view
@@ -86231,7 +86277,14 @@ class AbstractPagemarkComponent extends Component {
 
         // TODO: remove the pagemark, then recreate it...
 
-        console.log("Box moved: ", boxMoveEvent);
+        console.log("Box moved to: ", boxMoveEvent);
+
+        let rect = PagemarkRects.createFromPositionedRect(boxMoveEvent.boxRect, boxMoveEvent.restrictionRect);
+
+        this.pagemark.percentage = rect.toPercentage();
+        this.pagemark.rect = rect;
+
+        log.info("New pagemarkRect: ", this.pagemark.rect);
     }
 
     /**
@@ -86323,7 +86376,10 @@ class AbstractPagemarkComponent extends Component {
 
         if (ENABLE_BOX_CONTROLLER) {
             console.log("Creating box controller for pagemarkElement: ", this.pagemarkElement);
-            this.pagemarkBoxController.register(this.pagemarkElement);
+            this.pagemarkBoxController.register({
+                target: this.pagemarkElement,
+                restrictionElement: placementElement
+            });
         }
     }
 

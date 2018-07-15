@@ -1,3 +1,4 @@
+const {PagemarkRects} = require("../../../metadata/PagemarkRects");
 const {Component} = require("../../../components/Component");
 const {DocFormatFactory} = require("../../../docformat/DocFormatFactory");
 const {Styles} = require("../../../util/Styles");
@@ -58,10 +59,14 @@ class AbstractPagemarkComponent extends Component {
         this.annotationEvent = annotationEvent;
         this.pagemark = annotationEvent.value;
 
-        this.pagemarkBoxController = new BoxController(this.pagemarkMoved);
+        this.pagemarkBoxController = new BoxController(boxMoveEvent => this.pagemarkMoved(boxMoveEvent));
 
     }
 
+    /**
+     *
+     * @param boxMoveEvent {BoxMoveEvent}
+     */
     pagemarkMoved(boxMoveEvent) {
 
         // TODO: actually I think this belongs in the controller... not the view
@@ -70,7 +75,16 @@ class AbstractPagemarkComponent extends Component {
 
         // TODO: remove the pagemark, then recreate it...
 
-        console.log("Box moved: ", boxMoveEvent);
+        console.log("Box moved to: ", boxMoveEvent);
+
+        let rect = PagemarkRects.createFromPositionedRect( boxMoveEvent.boxRect,
+                                                           boxMoveEvent.restrictionRect);
+
+        this.pagemark.percentage = rect.toPercentage();
+        this.pagemark.rect = rect;
+
+        log.info("New pagemarkRect: ", this.pagemark.rect);
+
     }
 
     /**
@@ -89,7 +103,7 @@ class AbstractPagemarkComponent extends Component {
         //   properly.
 
         let container = this.annotationEvent.container;
-        Preconditions.assertNotNull(container, "container")
+        Preconditions.assertNotNull(container, "container");
 
         if(! this.pagemark) {
             throw new Error("Pagemark is required");
@@ -162,7 +176,10 @@ class AbstractPagemarkComponent extends Component {
 
         if(ENABLE_BOX_CONTROLLER) {
             console.log("Creating box controller for pagemarkElement: ", this.pagemarkElement);
-            this.pagemarkBoxController.register(this.pagemarkElement);
+            this.pagemarkBoxController.register({
+                target: this.pagemarkElement,
+                restrictionElement: placementElement
+            });
         }
 
     }

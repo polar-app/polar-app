@@ -1,4 +1,5 @@
 const interact = require("interactjs");
+const {BoxOptions} = require("./BoxOptions");
 const {Rects} = require("../../../Rects");
 const {Rect} = require("../../../Rect");
 const {Objects} = require("../../../util/Objects");
@@ -7,6 +8,7 @@ const {ResizeRectAdjacencyCalculator} = require("./resize/ResizeRectAdjacencyCal
 const {BoxMoveEvent} = require("./BoxMoveEvent");
 const {RectEdges} = require("./edges/RectEdges");
 const {Preconditions} = require("../../../Preconditions");
+const {Optional} = require("../../../Optional");
 
 /**
  * A generic controller for dragging boxes (divs) which are resizeable and can
@@ -23,9 +25,11 @@ class BoxController {
     }
 
     /**
-     * @param boxIdentifier {HTMLElement | string} A specific HTML element or a CSS selector.
+     * @param opts {BoxOptions}
      */
-    register(boxIdentifier) {
+    register(opts) {
+
+        let boxOptions = new BoxOptions(opts);
 
         // TODO: we need a callback with:
         //
@@ -37,12 +41,16 @@ class BoxController {
         // positioned before we accept them and they are done using style
         // attributes.
 
-        interact(boxIdentifier)
+        let restrictionElement =
+            Optional.of(boxOptions.restrictionElement)
+                    .getOrElse(boxOptions.target.parentElement);
+
+        interact(boxOptions.target)
             .draggable({
 
                 inertia: false,
                 restrict: {
-                    restriction: "parent",
+                    restriction: restrictionElement,
                     outer: 'parent',
 
                     elementRect: { top: 0, left: 0, bottom: 1, right: 1 }
@@ -67,12 +75,12 @@ class BoxController {
                 // Keep the edges inside the parent. this is needed or else the
                 // bound stretches slightly beyond the container.
                 restrictEdges: {
-                    outer: 'parent',
+                    outer: restrictionElement,
                     // outer: computeRestriction,
                 },
 
                 restrict: {
-                    restriction: 'parent',
+                    restriction: restrictionElement,
                     // restriction: computeRestriction
                 },
 
@@ -104,8 +112,8 @@ class BoxController {
                 let restrictionRect = Rects.createFromBasicRect({
                     left: 0,
                     top: 0,
-                    width: target.parentElement.offsetWidth,
-                    height: target.parentElement.offsetHeight
+                    width: restrictionElement.offsetWidth,
+                    height: restrictionElement.offsetHeight
                 });
 
                 let origin = this._computeOriginXY(interactionEvent);
@@ -182,8 +190,8 @@ class BoxController {
                 let restrictionRect = Rects.createFromBasicRect({
                     left: 0,
                     top: 0,
-                    width: target.parentElement.offsetWidth,
-                    height: target.parentElement.offsetHeight
+                    width: restrictionElement.offsetWidth,
+                    height: restrictionElement.offsetHeight
                 });
 
                 // the tempRect is the rect that the user has attempted to draw
@@ -281,7 +289,8 @@ class BoxController {
         // console.log(`x: ${x}: y: ${y}`);
         console.log("_calculateIntersectedBoxes: resizeRect is: " + JSON.stringify(resizeRect, null, "  "));
 
-        let doc = element.ownerDocument;
+        // TODO: the .pagemark selector must be configured
+
         let boxes = Array.from(element.parentElement.querySelectorAll(".pagemark"))
                              .filter( current => current !== element);
 
