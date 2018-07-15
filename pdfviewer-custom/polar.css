@@ -7,7 +7,7 @@
 /*}*/
 
 #polar-header {
-    position: fixed;
+    position: sticky;
     left: 0;
     top: 0;
     color: white;
@@ -20,12 +20,19 @@
 
 }
 
+.polar-htmlviewer #polar-header {
+    position: fixed;
+}
+
 .polar-pdf-header {
     height: 30px;
 }
 
 .polar-html-header {
     height: 12px;
+    position: fixed;
+    width: calc(100% - 30px);
+    background-color: rgb(71, 71, 71);
 }
 
 #polar-progress {
