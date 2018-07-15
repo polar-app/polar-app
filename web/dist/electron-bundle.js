@@ -61989,6 +61989,7 @@ module.exports.PagemarkView = PagemarkView;
 /***/ (function(module, exports, __webpack_require__) {
 
 const { DocMetaDescriber } = __webpack_require__(/*! ../../metadata/DocMetaDescriber */ "./web/js/metadata/DocMetaDescriber.js");
+const { forDict } = __webpack_require__(/*! ../../util/Functions */ "./web/js/util/Functions.js");
 const log = __webpack_require__(/*! ../../logger/Logger */ "./web/js/logger/Logger.js").create();
 
 /**
@@ -62011,9 +62012,13 @@ class ProgressView {
 
             log.info("onDocumentLoaded");
 
-            documentLoadedEvent.docMeta.addTraceListener(traceEvent => {
-                log.info("Got trace event.");
-                this.update();
+            let docMeta = documentLoadedEvent.docMeta;
+
+            forDict(docMeta.pageMetas, (key, pageMeta) => {
+
+                pageMeta.pagemarks.addTraceListener(traceEvent => {
+                    this.update();
+                });
             });
         });
     }

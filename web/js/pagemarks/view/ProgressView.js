@@ -1,4 +1,5 @@
 const {DocMetaDescriber} = require("../../metadata/DocMetaDescriber");
+const {forDict} = require("../../util/Functions");
 const log = require("../../logger/Logger").create();
 
 /**
@@ -21,12 +22,18 @@ class ProgressView {
 
             log.info("onDocumentLoaded");
 
-            documentLoadedEvent.docMeta.addTraceListener(traceEvent => {
-                log.info("Got trace event.");
-                this.update();
-            })
+            let docMeta = documentLoadedEvent.docMeta;
+
+            forDict(docMeta.pageMetas, (key, pageMeta) => {
+
+                pageMeta.pagemarks.addTraceListener(traceEvent => {
+                    this.update();
+                });
+
+            });
 
         });
+
     }
 
     update() {
