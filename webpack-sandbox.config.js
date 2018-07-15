@@ -20,7 +20,7 @@ module.exports = [
         },
         devtool: "source-map",
         output: {
-            path: path.resolve(__dirname, 'sandbox/drag-and-resize-pagemark'),
+            path: path.resolve(__dirname, 'sandbox/drag-and-resize-pagemark/dist'),
             filename: '[name]-bundle.js',
         },
         node: {

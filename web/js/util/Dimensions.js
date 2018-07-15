@@ -1,3 +1,4 @@
+const {Preconditions} = require("../Preconditions");
 /**
  * Simple dimension of a Rect.
  */
@@ -20,6 +21,9 @@ class Dimensions {
         this.height = undefined;
 
         Object.assign(this, obj);
+
+        Preconditions.assertNumber(this.height, "height");
+        Preconditions.assertNumber(this.width, "width");
 
     }
 

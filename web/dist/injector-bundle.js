@@ -10757,7 +10757,10 @@ class Rect {
      * @return {Dimensions}
      */
     get dimensions() {
-        return new Dimensions(this.width, this, height);
+        return new Dimensions({
+            width: this.width,
+            height: this.height
+        });
     }
 
     get area() {
@@ -11253,8 +11256,9 @@ if (Electron.isElectron()) {
   !*** ./web/js/util/Dimensions.js ***!
   \***********************************/
 /*! no static exports found */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
 
+const { Preconditions } = __webpack_require__(/*! ../Preconditions */ "./web/js/Preconditions.js");
 /**
  * Simple dimension of a Rect.
  */
@@ -11277,6 +11281,9 @@ class Dimensions {
         this.height = undefined;
 
         Object.assign(this, obj);
+
+        Preconditions.assertNumber(this.height, "height");
+        Preconditions.assertNumber(this.width, "width");
     }
 
     get area() {

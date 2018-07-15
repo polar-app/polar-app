@@ -77708,7 +77708,10 @@ class Rect {
      * @return {Dimensions}
      */
     get dimensions() {
-        return new Dimensions(this.width, this, height);
+        return new Dimensions({
+            width: this.width,
+            height: this.height
+        });
     }
 
     get area() {
@@ -84161,6 +84164,23 @@ class PagemarkRect {
     return Rects.createFromBasicRect(result);
   }
 
+  /**
+   *
+   * @param dimensions {Dimensions}
+   * @return {Rect}
+   */
+  toDimensions(dimensions) {
+
+    let fractionalRect = this.toFractionalRect();
+
+    return Rects.createFromBasicRect({
+      left: fractionalRect.left * dimensions.width,
+      width: fractionalRect.width * dimensions.width,
+      top: fractionalRect.top * dimensions.height,
+      height: fractionalRect.height * dimensions.height
+    });
+  }
+
 }
 
 module.exports.PagemarkRect = PagemarkRect;
@@ -84249,14 +84269,14 @@ class PagemarkRects {
      * a dragged or resized rect / box on the screen then convert it to a
      * PagemarkRect with the correct coordinates.
      *
-     * @param rect {Rect}
-     * @param parentRect {Rect}
+     * @param boxRect {Rect}
+     * @param containerRect {Rect}
      * @return {PagemarkRect}
      */
-    static createFromPositionedRect(rect, parentRect) {
+    static createFromPositionedRect(boxRect, containerRect) {
 
-        let xAxis = rect.toLine("x").multiply(100 / parentRect.width);
-        let yAxis = rect.toLine("y").multiply(100 / parentRect.height);
+        let xAxis = boxRect.toLine("x").multiply(100 / containerRect.width);
+        let yAxis = boxRect.toLine("y").multiply(100 / containerRect.height);
 
         return this.createFromLines(xAxis, yAxis);
     }
@@ -86445,7 +86465,7 @@ class AbstractPagemarkComponent extends Component {
         this.pagemarkElement.style.position = "absolute";
 
         let placementRect = this.createPlacementRect(placementElement);
-        let pagemarkRect = this.createPagemarkRect(placementRect, this.pagemark);
+        let pagemarkRect = this.toOverlayRect(placementRect, this.pagemark);
 
         // TODO: what I need is a generic way to cover an element and place
         // something on top of it no matter what positioning strategy it uses.
@@ -86492,25 +86512,26 @@ class AbstractPagemarkComponent extends Component {
     // FIXME: I have to improve this grammar... placement, positioned, etc..
     // which one is which.
 
-    createPagemarkRect(templateRect, pagemark) {
-
-        // FIXME: createFromPositionedRect
-
-        let rect = {
-            left: templateRect.left,
-            top: templateRect.top,
-            height: templateRect.height,
-            width: templateRect.width
-        };
+    /**
+     *
+     * @param placementRect {Rect}
+     * @param pagemark {Pagemark}
+     * @return {Rect}
+     */
+    toOverlayRect(placementRect, pagemark) {
 
         let pagemarkRect = new PagemarkRect(pagemark.rect);
 
-        // read the percentage coverage from the pagemark and adjust the height
-        // to reflect the portion we've actually read.
+        let overlayRect = pagemarkRect.toDimensions(placementRect.dimensions);
 
-        rect.height = rect.height * (pagemark.percentage / 100);
-
-        return Rects.createFromBasicRect(rect);
+        // we have to apply the original placementRect top and left so it's
+        // placed as a proper overlay
+        return Rects.createFromBasicRect({
+            left: overlayRect.left + placementRect.left,
+            top: overlayRect.top + placementRect.top,
+            width: overlayRect.width,
+            height: overlayRect.height
+        });
     }
 
     /**
@@ -87858,8 +87879,9 @@ module.exports.Attributes = Attributes;
   !*** ./web/js/util/Dimensions.js ***!
   \***********************************/
 /*! no static exports found */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
 
+const { Preconditions } = __webpack_require__(/*! ../Preconditions */ "./web/js/Preconditions.js");
 /**
  * Simple dimension of a Rect.
  */
@@ -87882,6 +87904,9 @@ class Dimensions {
         this.height = undefined;
 
         Object.assign(this, obj);
+
+        Preconditions.assertNumber(this.height, "height");
+        Preconditions.assertNumber(this.width, "width");
     }
 
     get area() {

@@ -67,7 +67,10 @@ class Rect {
      * @return {Dimensions}
      */
     get dimensions() {
-        return new Dimensions(this.width, this,height);
+        return new Dimensions({
+            width: this.width,
+            height: this.height
+        });
     }
 
     get area() {

@@ -160,7 +160,7 @@ class AbstractPagemarkComponent extends Component {
         this.pagemarkElement.style.position="absolute";
 
         let placementRect = this.createPlacementRect(placementElement);
-        let pagemarkRect = this.createPagemarkRect(placementRect, this.pagemark);
+        let pagemarkRect = this.toOverlayRect(placementRect, this.pagemark);
 
         // TODO: what I need is a generic way to cover an element and place
         // something on top of it no matter what positioning strategy it uses.
@@ -209,25 +209,26 @@ class AbstractPagemarkComponent extends Component {
     // FIXME: I have to improve this grammar... placement, positioned, etc..
     // which one is which.
 
-    createPagemarkRect(templateRect, pagemark) {
-
-        // FIXME: createFromPositionedRect
-
-        let rect = {
-            left: templateRect.left,
-            top: templateRect.top,
-            height: templateRect.height,
-            width: templateRect.width,
-        };
+    /**
+     *
+     * @param placementRect {Rect}
+     * @param pagemark {Pagemark}
+     * @return {Rect}
+     */
+    toOverlayRect(placementRect, pagemark) {
 
         let pagemarkRect = new PagemarkRect(pagemark.rect);
 
-        // read the percentage coverage from the pagemark and adjust the height
-        // to reflect the portion we've actually read.
+        let overlayRect = pagemarkRect.toDimensions(placementRect.dimensions);
 
-        rect.height = rect.height * (pagemark.percentage / 100);
-
-        return Rects.createFromBasicRect(rect);
+        // we have to apply the original placementRect top and left so it's
+        // placed as a proper overlay
+        return Rects.createFromBasicRect({
+            left: overlayRect.left + placementRect.left,
+            top: overlayRect.top + placementRect.top,
+            width: overlayRect.width,
+            height: overlayRect.height,
+        });
 
     }
 
