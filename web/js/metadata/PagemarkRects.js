@@ -78,14 +78,14 @@ class PagemarkRects {
      * a dragged or resized rect / box on the screen then convert it to a
      * PagemarkRect with the correct coordinates.
      *
-     * @param rect {Rect}
-     * @param parentRect {Rect}
+     * @param boxRect {Rect}
+     * @param containerRect {Rect}
      * @return {PagemarkRect}
      */
-    static createFromPositionedRect(rect, parentRect) {
+    static createFromPositionedRect(boxRect, containerRect) {
 
-        let xAxis = rect.toLine("x").multiply(100 / parentRect.width);
-        let yAxis = rect.toLine("y").multiply(100 / parentRect.height);
+        let xAxis = boxRect.toLine("x").multiply(100 / containerRect.width);
+        let yAxis = boxRect.toLine("y").multiply(100 / containerRect.height);
 
         return this.createFromLines(xAxis, yAxis);
 

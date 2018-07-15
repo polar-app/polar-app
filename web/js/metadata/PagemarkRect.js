@@ -118,6 +118,24 @@ class PagemarkRect {
 
     }
 
+    /**
+     *
+     * @param dimensions {Dimensions}
+     * @return {Rect}
+     */
+    toDimensions(dimensions) {
+
+        let fractionalRect = this.toFractionalRect();
+
+        return Rects.createFromBasicRect({
+            left: fractionalRect.left * dimensions.width,
+            width: fractionalRect.width * dimensions.width,
+            top: fractionalRect.top * dimensions.height,
+            height: fractionalRect.height * dimensions.height,
+        })
+
+    }
+
 }
 
 module.exports.PagemarkRect = PagemarkRect;
