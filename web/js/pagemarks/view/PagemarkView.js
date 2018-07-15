@@ -1,3 +1,4 @@
+const {ProgressView} = require("./ProgressView");
 const {ThumbnailContainerProvider} = require("../../components/containers/providers/impl/ThumbnailContainerProvider");
 const {DefaultContainerProvider} = require("../../components/containers/providers/impl/DefaultContainerProvider");
 const {ThumbnailPagemarkComponent} = require("./components/ThumbnailPagemarkComponent");
@@ -14,6 +15,8 @@ class PagemarkView {
      * @param model {Model}
      */
     constructor(model) {
+
+        this.model = model;
 
         /***
          * @type {ComponentManager}
@@ -34,6 +37,8 @@ class PagemarkView {
                                    () => new PagemarkModel());
 
 
+        this.progressView = new ProgressView(this.model);
+
     }
 
     start() {
@@ -43,6 +48,8 @@ class PagemarkView {
 
         if(this.thumbnailPagemarkComponentManager)
             this.thumbnailPagemarkComponentManager.start();
+
+        this.progressView.start();
 
     }
 

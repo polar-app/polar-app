@@ -53297,8 +53297,6 @@ class Model {
                 resolve(this.docMeta);
             }.bind(_this));
 
-            console.log("FIXME999: dispatching documentLoaded");
-
             // TODO: make this into an object..
             let documentLoadedEvent = { fingerprint, nrPages, currentPageNumber, docMeta: _this.docMeta };
             _this.reactor.dispatchEvent('documentLoaded', documentLoadedEvent);
@@ -54492,6 +54490,8 @@ class ComponentManager {
 
         this.containers = this.containerProvider.getContainers();
 
+        log.info("Working with containers: ", this.containers);
+
         // Listen for changes from the model as objects are PRESENT or ABSENT
         // for the specific objects we're interested in and then call
         // onComponentEvent so that we can render/destroy the component and
@@ -54509,6 +54509,8 @@ class ComponentManager {
         log.info("onComponentEvent: ", componentEvent);
 
         let containerID = componentEvent.pageMeta.pageInfo.num;
+
+        Preconditions.assertNumber(containerID, "containerID");
 
         Preconditions.assertNumber(containerID, "containerID");
 
@@ -58899,7 +58901,7 @@ class DocMetaDescriber {
         return `PDF with ${docMeta.docInfo.nrPages} pages with ${nrTextHighlights} text highlights and ${nrPagemarks} pagemarks.`;
     }
 
-};
+}
 
 module.exports.DocMetaDescriber = DocMetaDescriber;
 
@@ -61870,6 +61872,7 @@ module.exports.PagemarkModel = PagemarkModel;
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
+const { ProgressView } = __webpack_require__(/*! ./ProgressView */ "./web/js/pagemarks/view/ProgressView.js");
 const { ThumbnailContainerProvider } = __webpack_require__(/*! ../../components/containers/providers/impl/ThumbnailContainerProvider */ "./web/js/components/containers/providers/impl/ThumbnailContainerProvider.js");
 const { DefaultContainerProvider } = __webpack_require__(/*! ../../components/containers/providers/impl/DefaultContainerProvider */ "./web/js/components/containers/providers/impl/DefaultContainerProvider.js");
 const { ThumbnailPagemarkComponent } = __webpack_require__(/*! ./components/ThumbnailPagemarkComponent */ "./web/js/pagemarks/view/components/ThumbnailPagemarkComponent.js");
@@ -61887,6 +61890,8 @@ class PagemarkView {
      */
     constructor(model) {
 
+        this.model = model;
+
         /***
          * @type {ComponentManager}
          */
@@ -61896,6 +61901,8 @@ class PagemarkView {
          * @type {ComponentManager}
          */
         this.thumbnailPagemarkComponentManager = new ComponentManager(model, new ThumbnailContainerProvider(), () => new ThumbnailPagemarkComponent(), () => new PagemarkModel());
+
+        this.progressView = new ProgressView(this.model);
     }
 
     start() {
@@ -61903,12 +61910,94 @@ class PagemarkView {
         if (this.primaryPagemarkComponentManager) this.primaryPagemarkComponentManager.start();
 
         if (this.thumbnailPagemarkComponentManager) this.thumbnailPagemarkComponentManager.start();
+
+        this.progressView.start();
     }
 
 }
 
 module.exports.PAGEMARK_VIEW_ENABLED = PAGEMARK_VIEW_ENABLED;
 module.exports.PagemarkView = PagemarkView;
+
+/***/ }),
+
+/***/ "./web/js/pagemarks/view/ProgressView.js":
+/*!***********************************************!*\
+  !*** ./web/js/pagemarks/view/ProgressView.js ***!
+  \***********************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+const { DocMetaDescriber } = __webpack_require__(/*! ../../metadata/DocMetaDescriber */ "./web/js/metadata/DocMetaDescriber.js");
+const log = __webpack_require__(/*! ../../logger/Logger */ "./web/js/logger/Logger.js").create();
+
+/**
+ * Updates our progress as we read the doc.
+ */
+class ProgressView {
+
+    /**
+     * @param model {Model}
+     */
+    constructor(model) {
+        this.model = model;
+    }
+
+    start() {
+
+        log.info("Starting...");
+
+        this.model.registerListenerForDocumentLoaded(documentLoadedEvent => {
+
+            log.info("onDocumentLoaded");
+
+            documentLoadedEvent.docMeta.addTraceListener(traceEvent => {
+                log.info("Got trace event.");
+                this.update();
+            });
+        });
+    }
+
+    update() {
+
+        // TODO: this should listen directly to the model and the pagemarks
+        // themselves.
+
+        let perc = this.computeProgress(this.model.docMeta);
+
+        log.info("Percentage is now: " + perc);
+
+        document.querySelector("#polar-progress progress").value = perc;
+
+        // now update the description of the doc at the bottom.
+
+        let description = DocMetaDescriber.describe(this.model.docMeta);
+
+        let docOverview = document.querySelector("#polar-doc-overview");
+
+        if (docOverview) {
+            docOverview.textContent = description;
+        }
+    }
+
+    computeProgress(docMeta) {
+
+        let total = 0;
+
+        forDict(docMeta.pageMetas, (key, pageMeta) => {
+
+            forDict(pageMeta.pagemarks, (column, pagemark) => {
+
+                total += pagemark.percentage;
+            });
+        });
+
+        return total / (docMeta.docInfo.nrPages * 100);
+    }
+
+}
+
+module.exports.ProgressView = ProgressView;
 
 /***/ }),
 
@@ -65420,6 +65509,8 @@ class FrameResizer {
         let contentDocument = this.iframe.contentDocument;
 
         if (!contentDocument) return;
+
+        if (!contentDocument.body) return;
 
         let height = Styles.parsePX(Optional.of(this.iframe.style.height).filter(current => current !== "").getOrElse("0px"));
 

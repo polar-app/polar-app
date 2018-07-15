@@ -56,6 +56,8 @@ class ComponentManager {
 
         this.containers = this.containerProvider.getContainers();
 
+        log.info("Working with containers: ", this.containers);
+
         // Listen for changes from the model as objects are PRESENT or ABSENT
         // for the specific objects we're interested in and then call
         // onComponentEvent so that we can render/destroy the component and
@@ -74,6 +76,8 @@ class ComponentManager {
         log.info("onComponentEvent: ", componentEvent);
 
         let containerID = componentEvent.pageMeta.pageInfo.num;
+
+        Preconditions.assertNumber(containerID, "containerID");
 
         Preconditions.assertNumber(containerID, "containerID");
 

@@ -67,6 +67,9 @@ class FrameResizer {
         if(! contentDocument)
             return;
 
+        if(! contentDocument.body)
+            return;
+
         let height = Styles.parsePX(Optional.of(this.iframe.style.height)
                                             .filter( current => current !== "")
                                             .getOrElse("0px"));

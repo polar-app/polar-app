@@ -78,8 +78,6 @@ class Model {
             resolve(this.docMeta);
         }.bind(this));
 
-        console.log("FIXME999: dispatching documentLoaded" )
-
         // TODO: make this into an object..
         let documentLoadedEvent = {fingerprint, nrPages, currentPageNumber, docMeta: this.docMeta};
         this.reactor.dispatchEvent('documentLoaded', documentLoadedEvent);

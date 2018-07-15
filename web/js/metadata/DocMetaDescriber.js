@@ -24,6 +24,6 @@ class DocMetaDescriber {
 
     }
 
-};
+}
 
 module.exports.DocMetaDescriber = DocMetaDescriber;
