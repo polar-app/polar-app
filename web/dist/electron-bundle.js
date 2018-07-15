@@ -53310,6 +53310,7 @@ class Model {
     }
 
     /**
+     * @refactor This code should be in its own dedicated helper class
      *
      * @param pageNum The page num to use for our created pagemark.
      */
@@ -53350,6 +53351,10 @@ class Model {
         })();
     }
 
+    /**
+     * @refactor This code should be in its own dedicated helper class
+     * @param pageNum
+     */
     erasePagemark(pageNum) {
 
         Preconditions.assertNumber(pageNum, "pageNum");
@@ -53377,10 +53382,18 @@ class Model {
         }
     }
 
+    /**
+     * @deprecated
+     * @param eventListener
+     */
     registerListenerForCreatePagemark(eventListener) {
         this.reactor.addEventListener('createPagemark', eventListener);
     }
 
+    /**
+     * @deprecated
+     * @param eventListener
+     */
     registerListenerForErasePagemark(eventListener) {
         this.reactor.addEventListener('erasePagemark', eventListener);
     }
@@ -55086,6 +55099,7 @@ const { Attributes } = __webpack_require__(/*! ../util/Attributes */ "./web/js/u
 const { TriggerEvent } = __webpack_require__(/*! ./TriggerEvent */ "./web/js/contextmenu/TriggerEvent.js");
 const { DocDescriptor } = __webpack_require__(/*! ../metadata/DocDescriptor */ "./web/js/metadata/DocDescriptor.js");
 const { Preconditions } = __webpack_require__(/*! ../Preconditions */ "./web/js/Preconditions.js");
+const log = __webpack_require__(/*! ../logger/Logger */ "./web/js/logger/Logger.js").create();
 
 /**
  * Handles listening for context menus and then calling back the proper handler.
@@ -55121,9 +55135,7 @@ class ContextMenuController {
 
             targetElement.addEventListener("contextmenu", event => {
 
-                console.log("got context menu");
-
-                let annotationSelectors = [".text-highlight", ".area-highlight", ".pagemark"];
+                let annotationSelectors = [".text-highlight", ".area-highlight", ".pagemark", ".page"];
 
                 let matchingSelectors = ContextMenuController.elementsFromEventMatchingSelectors(event, annotationSelectors);
 
@@ -55136,6 +55148,8 @@ class ContextMenuController {
                 });
 
                 let docDescriptor = new DocDescriptor({ fingerprint: this.model.docMeta.docInfo.fingerprint });
+
+                log.info("Creating context menu for contextMenuTypes: ", contextMenuTypes);
 
                 ipcRenderer.send('context-menu-trigger', new TriggerEvent({
                     point: { x: event.pageX, y: event.pageY },
@@ -55238,9 +55252,14 @@ module.exports.ContextMenuType = Object.freeze({
   ANNOTATION: "ANNOTATION",
 
   /**
-   *
+   * A text highlight is selected.
    */
-  TEXT_HIGHLIGHT: "TEXT_HIGHLIGHT"
+  TEXT_HIGHLIGHT: "TEXT_HIGHLIGHT",
+
+  /**
+   * We are hovering over a .page so add page specific options.
+   */
+  PAGE: "PAGE"
 
 });
 
@@ -65034,6 +65053,9 @@ class WebView extends View {
         return this;
     }
 
+    /**
+     * @deprecated Moved to pagemark.ProgressView... remove this code.
+     */
     updateProgress() {
 
         // TODO: this should listen directly to the model and the pagemarks
@@ -65056,6 +65078,9 @@ class WebView extends View {
         }
     }
 
+    /**
+     * @deprecated Moved to pagemark.ProgressView... remove this code.
+     */
     computeProgress(docMeta) {
 
         // I think this is an issue of being async maybel?
@@ -65101,6 +65126,9 @@ class WebView extends View {
         this.updateProgress();
     }
 
+    /**
+     * @deprecated Moved to pagemark.ProgressView... remove this code.
+     */
     onCreatePagemark(pagemarkEvent) {
         console.log("WebView.onCreatePagemark");
 
@@ -65110,6 +65138,9 @@ class WebView extends View {
         this.updateProgress();
     }
 
+    /**
+     * @deprecated Moved to pagemark.ProgressView... remove this code.
+     */
     onErasePagemark(pagemarkEvent) {
         console.log("WebView.onErasePagemark");
 

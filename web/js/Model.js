@@ -91,6 +91,7 @@ class Model {
     }
 
     /**
+     * @refactor This code should be in its own dedicated helper class
      *
      * @param pageNum The page num to use for our created pagemark.
      */
@@ -128,6 +129,10 @@ class Model {
 
     }
 
+    /**
+     * @refactor This code should be in its own dedicated helper class
+     * @param pageNum
+     */
     erasePagemark(pageNum) {
 
         Preconditions.assertNumber(pageNum, "pageNum");
@@ -158,10 +163,18 @@ class Model {
 
     }
 
+    /**
+     * @deprecated
+     * @param eventListener
+     */
     registerListenerForCreatePagemark(eventListener) {
         this.reactor.addEventListener('createPagemark', eventListener);
     }
 
+    /**
+     * @deprecated
+     * @param eventListener
+     */
     registerListenerForErasePagemark(eventListener) {
         this.reactor.addEventListener('erasePagemark', eventListener);
     }

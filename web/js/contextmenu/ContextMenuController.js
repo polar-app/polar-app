@@ -6,6 +6,7 @@ const {Attributes} = require("../util/Attributes");
 const {TriggerEvent} = require("./TriggerEvent");
 const {DocDescriptor} = require("../metadata/DocDescriptor");
 const {Preconditions} = require("../Preconditions");
+const log = require("../logger/Logger").create();
 
 /**
  * Handles listening for context menus and then calling back the proper handler.
@@ -42,9 +43,7 @@ class ContextMenuController {
 
             targetElement.addEventListener("contextmenu", (event) => {
 
-                console.log("got context menu");
-
-                let annotationSelectors = [ ".text-highlight", ".area-highlight", ".pagemark" ];
+                let annotationSelectors = [ ".text-highlight", ".area-highlight", ".pagemark", ".page" ];
 
                 let matchingSelectors
                     = ContextMenuController.elementsFromEventMatchingSelectors(event, annotationSelectors );
@@ -58,6 +57,8 @@ class ContextMenuController {
                 });
 
                 let docDescriptor = new DocDescriptor({fingerprint: this.model.docMeta.docInfo.fingerprint})
+
+                log.info("Creating context menu for contextMenuTypes: ", contextMenuTypes);
 
                 ipcRenderer.send('context-menu-trigger', new TriggerEvent({
                     point: {x: event.pageX, y: event.pageY },

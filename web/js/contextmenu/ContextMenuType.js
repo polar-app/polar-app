@@ -26,8 +26,13 @@ module.exports.ContextMenuType = Object.freeze({
     ANNOTATION: "ANNOTATION",
 
     /**
-     *
+     * A text highlight is selected.
      */
-    TEXT_HIGHLIGHT: "TEXT_HIGHLIGHT"
+    TEXT_HIGHLIGHT: "TEXT_HIGHLIGHT",
+
+    /**
+     * We are hovering over a .page so add page specific options.
+     */
+    PAGE: "PAGE"
 
 });

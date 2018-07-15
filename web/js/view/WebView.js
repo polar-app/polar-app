@@ -38,6 +38,9 @@ class WebView extends View {
 
     }
 
+    /**
+     * @deprecated Moved to pagemark.ProgressView... remove this code.
+     */
     updateProgress() {
 
         // TODO: this should listen directly to the model and the pagemarks
@@ -61,6 +64,9 @@ class WebView extends View {
 
     }
 
+    /**
+     * @deprecated Moved to pagemark.ProgressView... remove this code.
+     */
     computeProgress(docMeta) {
 
         // I think this is an issue of being async maybel?
@@ -112,6 +118,9 @@ class WebView extends View {
 
     }
 
+    /**
+     * @deprecated Moved to pagemark.ProgressView... remove this code.
+     */
     onCreatePagemark(pagemarkEvent) {
         console.log("WebView.onCreatePagemark");
 
@@ -122,6 +131,9 @@ class WebView extends View {
 
     }
 
+    /**
+     * @deprecated Moved to pagemark.ProgressView... remove this code.
+     */
     onErasePagemark(pagemarkEvent) {
         console.log("WebView.onErasePagemark");
 

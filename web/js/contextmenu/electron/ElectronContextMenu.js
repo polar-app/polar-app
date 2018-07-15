@@ -9,6 +9,7 @@ const {DialogWindow} = require("./DialogWindow");
 const {ContextMenu} = require("../ContextMenu");
 const {Preconditions} = require("../../Preconditions");
 const {Broadcaster} = require("../../ipc/Broadcaster");
+const {createSiblings} = require("../../util/Functions");
 
 const WEBSERVER_PORT = 8500;
 const DEFAULT_HOST = "127.0.0.1";
@@ -34,6 +35,11 @@ class ElectronContextMenu extends ContextMenu {
 
     }
 
+    /**
+     *
+     * @param triggerEvent {TriggerEvent}
+     * @param sender
+     */
     trigger(triggerEvent, sender) {
 
         Preconditions.assertNotNull(sender, "sender");
@@ -43,7 +49,7 @@ class ElectronContextMenu extends ContextMenu {
         //console.log("GOT IT for: contextMenuTypes: " + contextMenuTypes)
         //console.log("GOT IT for: matchingSelectors: " + JSON.stringify(matchingSelectors, null, "  "))
 
-        const ctxMenu = this.createTextHighlightContextMenu(triggerEvent, sender);
+        const ctxMenu = this.createContextMenu(triggerEvent, sender);
 
         // The documentation for this looks wrong and it actually takes three
         // arguments not a object
@@ -51,6 +57,11 @@ class ElectronContextMenu extends ContextMenu {
 
     }
 
+    /**
+     *
+     * @param triggerEvent {TriggerEvent}
+     * @param sender
+     */
     cmdAddFlashcard(triggerEvent, sender) {
 
         Preconditions.assertNotNull(sender, "sender");
@@ -66,7 +77,7 @@ class ElectronContextMenu extends ContextMenu {
 
         let contextJSON = JSON.stringify(context);
 
-        let url = `http://${DEFAULT_HOST}:${WEBSERVER_PORT}/card-creator/index.html?context=${encodeURIComponent(contextJSON)}` ;
+        let url = `http://${DEFAULT_HOST}:${WEBSERVER_PORT}/card-creator/index.html?context=${encodeURIComponent(contextJSON)}`;
 
         DialogWindow.create({url});
 
@@ -101,40 +112,115 @@ class ElectronContextMenu extends ContextMenu {
 
     }
 
-    createTextHighlightContextMenu(triggerEvent, sender) {
+    /**
+     *
+     * @param triggerEvent {TriggerEvent}
+     * @param sender
+     */
+    createContextMenu(triggerEvent, sender) {
+
 
         Preconditions.assertNotNull(sender, "sender");
+
+        // TODO: move this to a template as the code is cleaner
+
+        let contextMenus = [];
+
+        if (triggerEvent.contextMenuTypes.includes(ContextMenuType.TEXT_HIGHLIGHT)) {
+            contextMenus.push(this.createTextHighlightContextMenu(triggerEvent, sender));
+        }
+
+        if (triggerEvent.contextMenuTypes.includes(ContextMenuType.PAGE)) {
+            contextMenus.push(this.createPagemarkContextMenu(triggerEvent, sender));
+        }
+
+        contextMenus.push(this.createDefaultContextMenu(triggerEvent, sender));
+
+        const ctxMenu = new Menu();
+
+        createSiblings(contextMenus).forEach(contextMenuCursor => {
+
+            contextMenuCursor.curr.items.forEach(menuItem => {
+                ctxMenu.append(menuItem);
+            });
+
+            if(contextMenuCursor.curr.items.length > 0 && contextMenuCursor.next) {
+                ctxMenu.append(new MenuItem({
+                    type: 'separator'
+                }));
+            }
+
+        });
+
+        return ctxMenu;
+
+    }
+
+    /**
+     *
+     * @param triggerEvent {TriggerEvent}
+     * @param sender
+     * @return {Electron.Menu}
+     */
+    createTextHighlightContextMenu(triggerEvent, sender) {
+
+        const ctxMenu = new Menu();
+
+        ctxMenu.append(new MenuItem({
+            label: 'Add Flashcard',
+            //accelerator: 'CmdOrCtrl+A',
+            click: () => this.cmdAddFlashcard(triggerEvent, sender)
+        }));
+
+        ctxMenu.append(new MenuItem({
+            label: 'Delete Text Highlight',
+            //accelerator: 'CmdOrCtrl+A',
+            click: () => this.cmdNotify("delete-text-highlight", triggerEvent, sender)
+        }));
+
+        return ctxMenu;
+
+    }
+
+    /**
+     *
+     * @param triggerEvent {TriggerEvent}
+     * @param sender
+     * @return {Electron.Menu}
+     */
+    createPagemarkContextMenu(triggerEvent, sender) {
+
+        const ctxMenu = new Menu();
+
+        ctxMenu.append(new MenuItem({
+            label: 'Create Pagemark',
+            click: () => this.cmdCreatePagemark(triggerEvent, sender)
+        }));
+
+        return ctxMenu;
+
+    }
+
+    /**
+     *
+     * @param triggerEvent
+     * @param sender
+     * @return {Electron.Menu}
+     */
+    createDefaultContextMenu(triggerEvent, sender) {
 
         const ctxMenu = new Menu();
 
         let window = BrowserWindow.getFocusedWindow();
 
-        // TODO: move this to a template as the code is cleaner
+        // TODO: display this first and only if text is highlighted
+        // ctxMenu.append(new MenuItem({ label: 'Copy', accelerator: 'CmdOrCtrl+C', role: 'copy' }));
 
-        if(triggerEvent.contextMenuTypes.includes(ContextMenuType.TEXT_HIGHLIGHT)) {
-
-            ctxMenu.append(new MenuItem( {
-                label: 'Add Flashcard',
-                //accelerator: 'CmdOrCtrl+A',
-                click: () => this.cmdAddFlashcard(triggerEvent, sender)
-            }));
-
-            ctxMenu.append(new MenuItem( {
-                label: 'Delete Text Highlight',
-                //accelerator: 'CmdOrCtrl+A',
-                click: () => this.cmdNotify("delete-text-highlight", triggerEvent, sender)
-            }));
-
-        }
-
-        // TODO: add a handler for pagemarks (ability to delete them, or change the type)
-        // also "create pagemark here"
-
-        ctxMenu.append(new MenuItem( {
+        ctxMenu.append(new MenuItem({
             label: 'Inspect Element',
             id: "inspect",
-            //accelerator: 'CmdOrCtrl+A',
-            click: function (event) {
+            //accelerator: 'Ctrl+Shift+I',
+            click: event => {
 
                 // the points are SLIGHTLY off for the iframe version which is
                 // very annoying.
@@ -144,9 +230,10 @@ class ElectronContextMenu extends ContextMenu {
                     window.webContents.devToolsWebContents.focus();
                 }
 
-            }.bind(this)}));
+            }
 
-        // ctxMenu.append(new MenuItem({ label: 'Copy', accelerator: 'CmdOrCtrl+C', role: 'copy' }))
+        }));
+
         // ctxMenu.append(new MenuItem({ label: 'Inspect Element', accelerator: 'Ctrl+Shift+I', click: function () {
         //         window.inspectElement(screenX, screenY)
         //     } }));
@@ -155,6 +242,6 @@ class ElectronContextMenu extends ContextMenu {
 
     }
 
-};
+}
 
 module.exports.ElectronContextMenu = ElectronContextMenu;
