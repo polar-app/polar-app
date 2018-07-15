@@ -2,14 +2,12 @@
 
 ## Next
 
-- 'redraw' mode for components.. if their state changes , they shouldn't
-  completely fuck themselves over and should just reload properly.
-
-  ComponentManager needs to be updaetd for this.
 
 - prgress bar missing with PDFs
 
-- progress bar needs to be updated on drag...
+- progress bar needs to be updated on drag
+
+
 
 
 - pagemar refactor.

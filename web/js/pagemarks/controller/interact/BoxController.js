@@ -9,6 +9,7 @@ const {BoxMoveEvent} = require("./BoxMoveEvent");
 const {RectEdges} = require("./edges/RectEdges");
 const {Preconditions} = require("../../../Preconditions");
 const {Optional} = require("../../../Optional");
+const log = require("../../../logger/Logger").create();
 
 /**
  * A generic controller for dragging boxes (divs) which are resizeable and can
@@ -97,15 +98,15 @@ class BoxController {
             })
             .on('dragmove',(interactionEvent) => {
 
-                // console.log("=====================")
-                // console.log("dragmove: event: ", event);
-                // console.log("dragmove: event.interaction.myTimestamp: ", event.interaction.myTimestamp);
-                // console.log("dragmove: event.target: ", event.target);
-                // console.log("dragmove: event.restrict: ", event.restrict);
-                // console.log(`dragmove: event.dx: ${event.dx} and event.dy: ${event.dy}`);
-                // console.log(`dragmove: event.x0: ${event.x0} and event.y0: ${event.y0}`);
-                // console.log(`dragmove: event.clientX: ${event.clientX} and event.clientY: ${event.clientY}`);
-                // console.log(`dragmove: event.clientX0: ${event.clientX0} and event.clientY0: ${event.clientY0}`);
+                // log.info("=====================")
+                // log.info("dragmove: event: ", event);
+                // log.info("dragmove: event.interaction.myTimestamp: ", event.interaction.myTimestamp);
+                // log.info("dragmove: event.target: ", event.target);
+                // log.info("dragmove: event.restrict: ", event.restrict);
+                // log.info(`dragmove: event.dx: ${event.dx} and event.dy: ${event.dy}`);
+                // log.info(`dragmove: event.x0: ${event.x0} and event.y0: ${event.y0}`);
+                // log.info(`dragmove: event.clientX: ${event.clientX} and event.clientY: ${event.clientY}`);
+                // log.info(`dragmove: event.clientX0: ${event.clientX0} and event.clientY0: ${event.clientY0}`);
 
                 let target = interactionEvent.target;
 
@@ -136,14 +137,14 @@ class BoxController {
 
                 if(intersectedBoxes.intersectedRects.length === 0) {
 
-                    console.log("NOT INTERSECTED");
+                    log.info("NOT INTERSECTED");
 
-                    console.log("Moving to origin: " + JSON.stringify(origin));
+                    log.info("Moving to origin: " + JSON.stringify(origin));
                     this._moveTargetElement(origin.x, origin.y, target);
 
                 } else {
 
-                    console.log("INTERSECTED========== ");
+                    log.info("INTERSECTED========== ");
 
                     let primaryRect = Rects.createFromBasicRect({
                         left: origin.x,
@@ -168,22 +169,26 @@ class BoxController {
 
                 }
 
-                this._fireBoxMoveEvent("drag", restrictionRect, boxRect, target.id, target);
+                interactionEvent.interaction.lastBoxMoveEvent =
+                    this._fireBoxMoveEvent("drag", restrictionRect, boxRect, target.id, target);
 
+            })
+            .on('dragend',(interactionEvent) => {
+                this._fireCompletedBoxMoveEvent(interactionEvent);
             })
             .on('resizestart', interactionEvent => {
                 this._captureStartTargetRect(interactionEvent);
-                console.log("resizestart: interactionEvent.rect: " + JSON.stringify(interactionEvent.rect, null, "  "));
+                log.info("resizestart: interactionEvent.rect: " + JSON.stringify(interactionEvent.rect, null, "  "));
                 interactionEvent.interaction.startRect = Objects.duplicate(interactionEvent.rect);
 
             })
             .on('resizemove', interactionEvent => {
 
-                console.log("resizemove: event: ", interactionEvent);
-                console.log("resizemove: event.target: ", interactionEvent.target);
-                console.log("resizemove: event.restrict: ", interactionEvent.restrict);
-                console.log("resizemove: interactionEvent.rect: " + JSON.stringify(interactionEvent.rect, null, "  "));
-                console.log("resizemove: interactionEvent.interaction.startRect: " + JSON.stringify(interactionEvent.interaction.startRect, null, "  "));
+                log.info("resizemove: event: ", interactionEvent);
+                log.info("resizemove: event.target: ", interactionEvent.target);
+                log.info("resizemove: event.restrict: ", interactionEvent.restrict);
+                log.info("resizemove: interactionEvent.rect: " + JSON.stringify(interactionEvent.rect, null, "  "));
+                log.info("resizemove: interactionEvent.interaction.startRect: " + JSON.stringify(interactionEvent.interaction.startRect, null, "  "));
 
                 let target = interactionEvent.target;
 
@@ -207,13 +212,13 @@ class BoxController {
 
                 let intersectedBoxes = this._calculateIntersectedBoxes(target, resizeRect);
 
-                console.log("resizemove: deltaRect: " + JSON.stringify(deltaRect, null, "  "));
+                log.info("resizemove: deltaRect: " + JSON.stringify(deltaRect, null, "  "));
 
                 let boxRect;
 
                 if(intersectedBoxes.intersectedRects.length === 0) {
 
-                    console.log("Resizing in non-intersected mode");
+                    log.info("Resizing in non-intersected mode");
 
                     boxRect = resizeRect;
 
@@ -227,7 +232,7 @@ class BoxController {
                     //
                     // FIXME: pulling it left while intersected also makes it vanish...
 
-                    console.log("Resizing in intersected mode");
+                    log.info("Resizing in intersected mode");
 
                     let resizeRectAdjacencyCalculator = new ResizeRectAdjacencyCalculator();
 
@@ -237,7 +242,7 @@ class BoxController {
 
                     let adjustedRect = resizeRectAdjacencyCalculator.calculate(resizeRect, intersectedRect, rectEdges);
 
-                    console.log("resizemove: adjustedRect: " + JSON.stringify(adjustedRect, null, "  "));
+                    log.info("resizemove: adjustedRect: " + JSON.stringify(adjustedRect, null, "  "));
 
                     boxRect = adjustedRect;
 
@@ -245,8 +250,12 @@ class BoxController {
 
                 }
 
-                this._fireBoxMoveEvent("resize", restrictionRect, boxRect, target.id, target);
+                interactionEvent.interaction.lastBoxMoveEvent
+                    = this._fireBoxMoveEvent("resize", restrictionRect, boxRect, target.id, target);
 
+            })
+            .on('resizeend',(interactionEvent) => {
+                this._fireCompletedBoxMoveEvent(interactionEvent);
             });
 
     }
@@ -258,6 +267,7 @@ class BoxController {
      * @param boxRect {Rect}
      * @param id {String}
      * @param target {HTMLElement}
+     * @return {BoxMoveEvent}
      * @private
      */
     _fireBoxMoveEvent(type, restrictionRect, boxRect, id, target) {
@@ -274,6 +284,26 @@ class BoxController {
             this.callback(boxMoveEvent);
         }
 
+        return boxMoveEvent;
+
+    }
+
+
+    _fireCompletedBoxMoveEvent(interactionEvent) {
+
+        if(interactionEvent.interaction.lastBoxMoveEvent) {
+
+            let boxMoveEvent = Object.assign({}, interactionEvent.interaction.lastBoxMoveEvent);
+
+            boxMoveEvent.state = "completed";
+
+            if(this.callback) {
+                log.info("Firing completed BoxMoveEvent: ", boxMoveEvent);
+                this.callback(boxMoveEvent);
+            }
+
+        }
+
     }
 
     /**
@@ -286,8 +316,8 @@ class BoxController {
         // // This is where we are NOW, now where we are GOING to be.
         // let elementRect = Rects.fromElementStyle(element);
 
-        // console.log(`x: ${x}: y: ${y}`);
-        console.log("_calculateIntersectedBoxes: resizeRect is: " + JSON.stringify(resizeRect, null, "  "));
+        // log.info(`x: ${x}: y: ${y}`);
+        log.info("_calculateIntersectedBoxes: resizeRect is: " + JSON.stringify(resizeRect, null, "  "));
 
         // TODO: the .pagemark selector must be configured
 
@@ -329,9 +359,9 @@ class BoxController {
             y: interactionEvent.pageY - interactionEvent.interaction.startCoords.page.y
         };
 
-        // console.log(`dragmove: delta.x: ${delta.x} and delta.y: ${delta.y}`);
-        // console.log(`dragmove: interactionEvent.interaction.startCoords.page: ` + JSON.stringify(interactionEvent.interaction.startCoords.page) );
-        // console.log(`dragmove: testDelta: ` + JSON.stringify(delta));
+        // log.info(`dragmove: delta.x: ${delta.x} and delta.y: ${delta.y}`);
+        // log.info(`dragmove: interactionEvent.interaction.startCoords.page: ` + JSON.stringify(interactionEvent.interaction.startCoords.page) );
+        // log.info(`dragmove: testDelta: ` + JSON.stringify(delta));
 
         let x = interactionEvent.interaction.startTargetRect.left + delta.x;
         let y = interactionEvent.interaction.startTargetRect.top + delta.y;
@@ -379,6 +409,8 @@ class BoxController {
     }
 
     _captureStartTargetRect(interactionEvent) {
+        // TODO: this modifies interactionEvent.interaction by side effect which
+        // I don't like.
         interactionEvent.interaction.startTargetRect = Rects.fromElementStyle(interactionEvent.target);
     }
 

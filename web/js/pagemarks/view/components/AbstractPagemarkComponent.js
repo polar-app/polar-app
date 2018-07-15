@@ -80,8 +80,35 @@ class AbstractPagemarkComponent extends Component {
         let rect = PagemarkRects.createFromPositionedRect(boxMoveEvent.boxRect,
                                                           boxMoveEvent.restrictionRect);
 
-        this.pagemark.percentage = rect.toPercentage();
-        this.pagemark.rect = rect;
+        // TODO: we will need a way to still send out pagemark event handling
+        // other than the direct manipulation of the elements though.
+
+        let updateDirectly = true;
+
+        if (updateDirectly) {
+
+            this.pagemark.percentage = rect.toPercentage();
+            this.pagemark.rect = rect;
+
+            // FIXME: the lastUpdated here isn't being updated. I'm going to
+            // have to change the setters I think..
+
+            log.info("New pagemark: " , JSON.stringify(this.pagemark, null, "  "));
+
+        } else {
+
+            // TODO: this mode is too slow... I need a new BoxMoveEvent that
+            // signifies the state.. IE final or pending.
+
+            let pagemark = Object.assign({}, this.pagemark);
+            pagemark.percentage = rect.toPercentage();
+            pagemark.rect = rect;
+
+            log.info("New pagemark: " , JSON.stringify(this.pagemark, null, "  "));
+
+            this.annotationEvent.pageMeta.pagemarks[pagemark.id] = pagemark;
+
+        }
 
         log.info("New pagemarkRect: ", this.pagemark.rect);
 

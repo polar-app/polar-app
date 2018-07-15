@@ -38,6 +38,18 @@ class BoxMoveEvent {
          */
         this.target = undefined;
 
+        /**
+         * The state of the box movement. States are:
+         *
+         * pending: The box is still being drawn but the user hasn't finished
+         * moving it:
+         *
+         * completed: The box move operation is completed and is in its final position.
+         *
+         * @type {string}
+         */
+        this.state = "pending";
+
         Object.assign(this, opts);
 
     }
