@@ -10,6 +10,7 @@ const {ContextMenu} = require("../ContextMenu");
 const {Preconditions} = require("../../Preconditions");
 const {Broadcaster} = require("../../ipc/Broadcaster");
 const {createSiblings} = require("../../util/Functions");
+const {Messenger} = require("../../electron/messenger/Messenger");
 
 const WEBSERVER_PORT = 8500;
 const DEFAULT_HOST = "127.0.0.1";
@@ -23,6 +24,8 @@ class ElectronContextMenu extends ContextMenu {
 
     constructor() {
         super();
+
+        this.messenger = new Messenger();
 
         // TODO: move this to a start method.
         ipcMain.on('context-menu-trigger', (event, triggerEvent) => {
@@ -96,9 +99,30 @@ class ElectronContextMenu extends ContextMenu {
 
     }
 
+    async cmdCreatePagemark(triggerEvent, sender) {
+
+        console.log("cmdCreatePagemark()")
+
+        await this.messenger.postMessage({
+            message: {
+                type: "create-pagemark",
+                point: {
+                    x: triggerEvent.point.x,
+                    y: triggerEvent.point.y
+                }
+            }
+        })
+    }
+
+    /**
+     * Send the annotation BACK to the sender with the specific actions to take.
+     *
+     * @param command
+     * @param triggerEvent
+     * @param sender
+     */
     cmdNotify(command, triggerEvent, sender) {
 
-        // send the annotation BACK to the sender with the specific actions.
 
         // we're sending back LESS data because I think all of the original data
         // is probably not needed.
@@ -111,6 +135,7 @@ class ElectronContextMenu extends ContextMenu {
         sender.send("context-menu-command", event);
 
     }
+
 
     /**
      *

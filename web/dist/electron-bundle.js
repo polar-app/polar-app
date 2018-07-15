@@ -54315,6 +54315,7 @@ const { WebView } = __webpack_require__(/*! ../view/WebView.js */ "./web/js/view
 const { TextHighlightView } = __webpack_require__(/*! ../highlights/text/view/TextHighlightView */ "./web/js/highlights/text/view/TextHighlightView.js");
 const { TextHighlightView2 } = __webpack_require__(/*! ../highlights/text/view/TextHighlightView2 */ "./web/js/highlights/text/view/TextHighlightView2.js");
 const { PagemarkView, PAGEMARK_VIEW_ENABLED } = __webpack_require__(/*! ../pagemarks/view/PagemarkView */ "./web/js/pagemarks/view/PagemarkView.js");
+const { PagemarkController } = __webpack_require__(/*! ../pagemarks/controller/PagemarkController */ "./web/js/pagemarks/controller/PagemarkController.js");
 
 const { ViewerFactory } = __webpack_require__(/*! ../viewer/ViewerFactory */ "./web/js/viewer/ViewerFactory.js");
 
@@ -54358,6 +54359,8 @@ class Launcher {
             ViewerFactory.create().start();
 
             yield persistenceLayer.init();
+
+            new PagemarkController(model).start();
 
             new WebController(model).start();
         })();
@@ -60684,6 +60687,38 @@ class VersionedObject extends SerializedObject {
 }
 
 module.exports.VersionedObject = VersionedObject;
+
+/***/ }),
+
+/***/ "./web/js/pagemarks/controller/PagemarkController.js":
+/*!***********************************************************!*\
+  !*** ./web/js/pagemarks/controller/PagemarkController.js ***!
+  \***********************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+class PagemarkController {
+
+    /**
+     *
+     * @param model {Model}
+     */
+    constructor(model) {
+        this.model = model;
+    }
+
+    start() {
+
+        window.addEventListener("message", this.onMessageReceived, false);
+    }
+
+    onMessageReceived(event) {
+        console.log("Got message: " + event);
+    }
+
+}
+
+module.exports.PagemarkController = PagemarkController;
 
 /***/ }),
 
