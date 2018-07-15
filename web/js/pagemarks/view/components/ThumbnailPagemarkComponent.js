@@ -5,6 +5,10 @@ const {AbstractPagemarkComponent} = require("./AbstractPagemarkComponent");
  */
 class ThumbnailPagemarkComponent extends AbstractPagemarkComponent {
 
+    constructor() {
+        super("thumbnail");
+    }
+
     /**
      *
      * @param annotationEvent {AnnotationEvent}

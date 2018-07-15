@@ -7,6 +7,9 @@ const {AbstractPagemarkComponent} = require("./AbstractPagemarkComponent");
 
 class PrimaryPagemarkComponent extends AbstractPagemarkComponent {
 
+    constructor() {
+        super("primary");
+    }
 
 }
 

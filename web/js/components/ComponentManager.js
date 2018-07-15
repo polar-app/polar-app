@@ -108,11 +108,6 @@ class ComponentManager {
 
                 if(containerLifecycleState.visible) {
 
-                    // always destroy the component before we erase it.  This way
-                    // if there is an existing component rendered on the screen it's
-                    // first removed so we don't get a double render.
-                    component.destroy();
-
                     // now render the component on screen.
                     component.render();
 

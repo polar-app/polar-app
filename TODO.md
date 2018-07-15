@@ -2,11 +2,12 @@
 
 ## Next
 
-- prgress bar missing with PDFs
+- 'redraw' mode for components.. if their state changes , they shouldn't
+  completely fuck themselves over and should just reload properly.
 
-- implement the full support for pagemarkRect including top+left+width
-    - we need a way to place the pagemark and this involves converting it between
-      positioning systems.
+  ComponentManager needs to be updaetd for this.
+
+- prgress bar missing with PDFs
 
 - progress bar needs to be updated on drag...
 

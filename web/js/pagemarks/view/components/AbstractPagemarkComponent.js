@@ -13,8 +13,13 @@ const ENABLE_BOX_CONTROLLER = true;
 
 class AbstractPagemarkComponent extends Component {
 
-    constructor() {
+    constructor(type) {
         super();
+
+        /**
+         * The type of the pagemark (primary or thumbnail)
+         */
+        this.type = type;
 
         /**
          *
@@ -36,14 +41,6 @@ class AbstractPagemarkComponent extends Component {
 
         this.pagemarkBoxController = undefined;
 
-        /**
-         *
-         * The element created to represent the pagemark.
-         *
-         * @type {HTMLElement}
-         */
-        this.pagemarkElement = null;
-
         this.options = {
             templateElement: null,
             placementElement: null
@@ -60,7 +57,7 @@ class AbstractPagemarkComponent extends Component {
         this.annotationEvent = annotationEvent;
         this.pagemark = annotationEvent.value;
 
-        this.pagemarkBoxController = new BoxController(boxMoveEvent => this.pagemarkMoved(boxMoveEvent));
+        this.pagemarkBoxController = new BoxController(boxMoveEvent => this.onPagemarkMoved(boxMoveEvent));
 
     }
 
@@ -68,7 +65,7 @@ class AbstractPagemarkComponent extends Component {
      *
      * @param boxMoveEvent {BoxMoveEvent}
      */
-    pagemarkMoved(boxMoveEvent) {
+    onPagemarkMoved(boxMoveEvent) {
 
         // TODO: actually I think this belongs in the controller... not the view
         //
@@ -77,7 +74,6 @@ class AbstractPagemarkComponent extends Component {
         // TODO: remove the pagemark, then recreate it...
 
         console.log("Box moved to: ", boxMoveEvent);
-
 
         // boxRect, containerRect, pageRect...
 
@@ -143,21 +139,29 @@ class AbstractPagemarkComponent extends Component {
             return;
         }
 
-        this.pagemarkElement = document.createElement("div");
+        // a unique ID in the DOM for this element.
+        let id = this.createID();
+
+        let pagemarkElement = document.getElementById(id);
+
+        if(pagemarkElement === null ) {
+            // only create the pagemark if it's missing.
+            pagemarkElement = document.createElement("div");
+        }
 
         // set a pagemark-id in the DOM so that we can work with it when we use
         // the context menu, etc.
-        this.pagemarkElement.setAttribute("id", "pagemark-" + this.pagemark.id);
-        this.pagemarkElement.setAttribute("data-pagemark-id", this.pagemark.id);
+        pagemarkElement.setAttribute("id", id);
+        pagemarkElement.setAttribute("data-pagemark-id", this.pagemark.id);
 
         // make sure we have a reliable CSS classname to work with.
-        this.pagemarkElement.className="pagemark annotation";
+        pagemarkElement.className="pagemark annotation";
 
         //pagemark.style.backgroundColor="rgb(198, 198, 198)";
-        this.pagemarkElement.style.backgroundColor="#00CCFF";
-        this.pagemarkElement.style.opacity="0.3";
+        pagemarkElement.style.backgroundColor="#00CCFF";
+        pagemarkElement.style.opacity="0.3";
 
-        this.pagemarkElement.style.position="absolute";
+        pagemarkElement.style.position="absolute";
 
         let placementRect = this.createPlacementRect(placementElement);
         let pagemarkRect = this.toOverlayRect(placementRect, this.pagemark);
@@ -165,25 +169,42 @@ class AbstractPagemarkComponent extends Component {
         // TODO: what I need is a generic way to cover an element and place
         // something on top of it no matter what positioning strategy it uses.
 
+        pagemarkElement.style.left = `${pagemarkRect.left}px`;
+        pagemarkElement.style.top = `${pagemarkRect.top}px`;
+        pagemarkElement.style.width = `${pagemarkRect.width}px`;
+        pagemarkElement.style.height = `${pagemarkRect.height}px`;
+        pagemarkElement.style.zIndex = '1';
 
-        this.pagemarkElement.style.left = `${pagemarkRect.left}px`;
-        this.pagemarkElement.style.top = `${pagemarkRect.top}px`;
-        this.pagemarkElement.style.width = `${pagemarkRect.width}px`;
-        this.pagemarkElement.style.height = `${pagemarkRect.height}px`;
-        this.pagemarkElement.style.zIndex = '1';
-
-        placementElement.parentElement.insertBefore(this.pagemarkElement, placementElement);
+        placementElement.parentElement.insertBefore(pagemarkElement, placementElement);
 
         // TODO: this enables resize but we don't yet support updating the
         // pagemark data itself.  We're probably going to have to implement
         // mutation listeners there.
 
         if(ENABLE_BOX_CONTROLLER) {
-            console.log("Creating box controller for pagemarkElement: ", this.pagemarkElement);
+            console.log("Creating box controller for pagemarkElement: ", pagemarkElement);
             this.pagemarkBoxController.register({
-                target: this.pagemarkElement,
+                target: pagemarkElement,
                 restrictionElement: placementElement
             });
+        }
+
+    }
+
+    /**
+     * @Override
+     * @returns {*}
+     */
+    destroy() {
+
+        let pagemarkElement = document.getElementById(this.createID());
+
+        if(pagemarkElement) {
+
+            if(pagemarkElement.parentElement) {
+                pagemarkElement.parentElement.removeChild(pagemarkElement);
+            }
+
         }
 
     }
@@ -204,6 +225,13 @@ class AbstractPagemarkComponent extends Component {
 
         return Rects.createFromBasicRect(result);
 
+    }
+
+    /**
+     * Create a unique DOM ID for this pagemark.
+     */
+    createID() {
+        return `${this.type}-pagemark-${this.pagemark.id}`;
     }
 
     // FIXME: I have to improve this grammar... placement, positioned, etc..
@@ -229,25 +257,6 @@ class AbstractPagemarkComponent extends Component {
             width: overlayRect.width,
             height: overlayRect.height,
         });
-
-    }
-
-    /**
-     * @Override
-     * @returns {*}
-     */
-    destroy() {
-
-        if(this.pagemarkElement) {
-
-            if(this.pagemarkElement.parentElement) {
-                this.pagemarkElement.parentElement.removeChild(this.pagemarkElement);
-            }
-
-            //this.pagemarkBoxController.unregister(this.pagemarkElement);
-            this.pagemarkElement = null;
-
-        }
 
     }
 

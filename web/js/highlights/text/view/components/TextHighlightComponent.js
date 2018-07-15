@@ -71,6 +71,8 @@ class TextHighlightComponent extends Component {
      */
     render() {
 
+        this.destroy();
+
         log.info("render()");
 
         forDict(this.textHighlight.rects, (id, highlightRect) => {
