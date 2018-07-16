@@ -35,6 +35,8 @@ class PHZLoader {
      */
     async registerForLoad(path) {
 
+        // FIXME: update main.js to use this loader moving forward...
+
         // register the phz.  the cache interceptor should do the rest.
         let cachedRequestsHolder = await this.cacheRegistry.registerFile(path);
 

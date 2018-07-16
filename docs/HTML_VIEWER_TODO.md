@@ -1,5 +1,8 @@
 # TODO:
 
+- The new Capture UI is mostly working.. 80% .. but it locks up the main Electron
+  process after it runs.
+
 - maybe one way to apply CSS style to an element could be to:
     - CSS hide the original
     - make a clone of it, including style,

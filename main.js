@@ -412,6 +412,8 @@ async function loadDoc(path, targetWindow) {
 
     } else if(path.endsWith(".phz")) {
 
+        // FIXME: this should use the new PHZLoader.  There's a duplication of code there otherwise.
+
         // register the phz.  the cache interceptor should do the rest.
         let cachedRequestsHolder = await cacheRegistry.registerFile(path);
 
