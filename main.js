@@ -531,7 +531,7 @@ async function cmdCaptureWebPage(item, focusedWindow) {
 
     let captureController = new CaptureController();
 
-    captureController.startCapture();
+    captureController.launchStartCapture();
 
 }
 

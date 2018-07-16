@@ -2,6 +2,16 @@
 
 ## Next
 
+- full-text search:
+
+    http://elasticlunr.com/
+    https://lunrjs.com/
+    http://fusejs.io/
+
+- change library to GPL
+
+    - figure out a grid control I should use... should be react based I think.
+
 - I definitely need the sidebar app that shows all highlights in the current
   PDF...
 
