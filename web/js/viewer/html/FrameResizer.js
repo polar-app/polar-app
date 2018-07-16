@@ -4,10 +4,13 @@ const {Optional} = require("../../Optional");
 const MAX_RESIZES = 25;
 
 /**
- * Frame loader which polls the content iframe every 50ms and if the height
- * changes automatically synchronizes it with the content document.  There's
- * really no way to get loading 'progress' so the trick is to just poll fast
- * enough to get the document size so that the user never notices.
+ * Listens to the main iframe load and resizes it appropriately based on the
+ * scroll height of the document.
+ *
+ * The loader polls the content iframe every 50ms and if the height changes
+ * automatically synchronizes it with the content document.  There's really no
+ * way to get loading 'progress' so the trick is to just poll fast enough to get
+ * the document size so that the user never notices.
  */
 class FrameResizer {
 

@@ -79488,7 +79488,6 @@ const { KeyEvents } = __webpack_require__(/*! ../KeyEvents.js */ "./web/js/KeyEv
 const { Preconditions } = __webpack_require__(/*! ../Preconditions.js */ "./web/js/Preconditions.js");
 const { Controller } = __webpack_require__(/*! ./Controller.js */ "./web/js/controller/Controller.js");
 const { DocFormatFactory } = __webpack_require__(/*! ../docformat/DocFormatFactory */ "./web/js/docformat/DocFormatFactory.js");
-const { polar } = __webpack_require__(/*! ../polar */ "./web/js/polar.js");
 const { ContextMenuController } = __webpack_require__(/*! ../contextmenu/ContextMenuController */ "./web/js/contextmenu/ContextMenuController.js");
 const { FlashcardsController } = __webpack_require__(/*! ../flashcards/controller/FlashcardsController */ "./web/js/flashcards/controller/FlashcardsController.js");
 
@@ -79655,13 +79654,7 @@ class WebController extends Controller {
 
     listenForKeyBindings() {
 
-        if (polar.state.listenForKeyBindings) {
-            return;
-        }
-
         document.addEventListener("keydown", this.keyBindingListener.bind(this));
-
-        polar.state.listenForKeyBindings = true;
 
         console.log("Key bindings registered");
 
@@ -79672,7 +79665,7 @@ class WebController extends Controller {
         new FlashcardsController(this.model).start();
     }
 
-};
+}
 
 module.exports.WebController = WebController;
 
@@ -87132,17 +87125,6 @@ module.exports.ThumbnailPagemarkRedrawer = ThumbnailPagemarkRedrawer;
 
 /***/ }),
 
-/***/ "./web/js/polar.js":
-/*!*************************!*\
-  !*** ./web/js/polar.js ***!
-  \*************************/
-/*! exports provided: polar */
-/***/ (function(module, exports) {
-
-throw new Error("Module build failed: Error: ENOENT: no such file or directory, open '/home/burton/projects/polar-bookshelf/web/js/polar.js'");
-
-/***/ }),
-
 /***/ "./web/js/proxies/MutationState.js":
 /*!*****************************************!*\
   !*** ./web/js/proxies/MutationState.js ***!
@@ -89978,10 +89960,13 @@ const { Optional } = __webpack_require__(/*! ../../Optional */ "./web/js/Optiona
 const MAX_RESIZES = 25;
 
 /**
- * Frame loader which polls the content iframe every 50ms and if the height
- * changes automatically synchronizes it with the content document.  There's
- * really no way to get loading 'progress' so the trick is to just poll fast
- * enough to get the document size so that the user never notices.
+ * Listens to the main iframe load and resizes it appropriately based on the
+ * scroll height of the document.
+ *
+ * The loader polls the content iframe every 50ms and if the height changes
+ * automatically synchronizes it with the content document.  There's really no
+ * way to get loading 'progress' so the trick is to just poll fast enough to get
+ * the document size so that the user never notices.
  */
 class FrameResizer {
 
@@ -90073,6 +90058,7 @@ const { FrameResizer } = __webpack_require__(/*! ./FrameResizer */ "./web/js/vie
 const { FrameInitializer } = __webpack_require__(/*! ./FrameInitializer */ "./web/js/viewer/html/FrameInitializer.js");
 const { IFrameWatcher } = __webpack_require__(/*! ./IFrameWatcher */ "./web/js/viewer/html/IFrameWatcher.js");
 const { HTMLFormat } = __webpack_require__(/*! ../../docformat/HTMLFormat */ "./web/js/docformat/HTMLFormat.js");
+const log = __webpack_require__(/*! ../../logger/Logger */ "./web/js/logger/Logger.js").create();
 
 class HTMLViewer extends Viewer {
 
@@ -90156,6 +90142,7 @@ class HTMLViewer extends Viewer {
 
     /**
      * Get the page width from the descriptor if it's present and use that.
+     *
      * Otherwise, use the defaults.
      */
     _configurePageWidth() {
@@ -90165,8 +90152,25 @@ class HTMLViewer extends Viewer {
         // the default width
         let width = 750;
 
-        if (params.descriptor && params.descriptor.browser) {
-            width = params.descriptor.browser.deviceEmulation.screenSize.width;
+        let descriptor = params.descriptor;
+
+        if (descriptor && descriptor.browser) {
+
+            // use the screen width from the emulated device
+            width = descriptor.browser.deviceEmulation.screenSize.width;
+
+            log.info("Setting width from device emulation: " + width);
+        }
+
+        if ("scroll" in descriptor && typeof descriptor.scroll.width === "number" && descriptor.scroll.width > width) {
+
+            // we have a document that isn't mobile aware and hard coded to a
+            // specific width greater than our default width.  This is a new
+            // setting so we have to make sure the key is in the descriptor.
+
+            width = descriptor.scroll.width;
+
+            log.info("Setting width from scroll settings: " + width);
         }
 
         // page height size should be a function of 8.5x11

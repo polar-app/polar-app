@@ -6,7 +6,6 @@ const {KeyEvents} = require("../KeyEvents.js");
 const {Preconditions} = require("../Preconditions.js");
 const {Controller} = require("./Controller.js");
 const {DocFormatFactory} = require("../docformat/DocFormatFactory");
-const {polar} = require("../polar");
 const {ContextMenuController} = require("../contextmenu/ContextMenuController");
 const {FlashcardsController} = require("../flashcards/controller/FlashcardsController");
 
@@ -180,13 +179,7 @@ class WebController extends Controller {
 
     listenForKeyBindings() {
 
-        if(polar.state.listenForKeyBindings) {
-            return;
-        }
-
         document.addEventListener("keydown", this.keyBindingListener.bind(this));
-
-        polar.state.listenForKeyBindings = true;
 
         console.log("Key bindings registered");
 
@@ -198,7 +191,6 @@ class WebController extends Controller {
 
     }
 
-};
-
+}
 
 module.exports.WebController = WebController;

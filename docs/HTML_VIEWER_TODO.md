@@ -1,5 +1,23 @@
 # TODO:
 
+- Also listen for timers to terminate. Many events of the page still haven't
+  executed and we're running into races wehre the page hasn't finished loading.
+
+  Right now we have a 1.5s timer setup to allow this to finish but that's a hack.
+
+  I have some code to wrap setTimer() with TimeoutManager and I can use this to
+  either:
+    - wait until all initial timeouts are finished
+    - wait a specific time
+
+    ... whichever happens first.
+
+
+    If the page is STILL fetching content and executing after 1.5s I'm not sure
+    we should do anythinhg.. we can show the user this progress though so that
+    theyr'e awayre why the page isn't finished loading.
+
+
 - some documents seem to NEVER terminate their height adjustment:
 
     https://medium.com/@mccannatron/guide-to-launching-an-initial-coin-offering-ico-94587af2c8d5
