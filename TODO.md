@@ -1,16 +1,11 @@
 
 ## Usability priorities:
 
-- Fonts are still a bit fuzzy at 1.5x...
-    - The color is slightly off ... but 1.999 works and 2.0 works.  There is
-      some weird difference here where the UI is scaling vs deciding to create
-      a new render.
+- fonts aren't being subpixel anti-aliased I think...
 
-    - it still fails if I set it as 1.5 as a default and also put the style on
-      the iframe.
-
-    - ok.. but I know it's possible now because if I load it in my fuzzy-text
-      sandbox app it will work fine.
+    - will-change: transform breaks us
+    - must add and insert back in the iframe
+    -
 
 - HTML text highlights don't use the whole line-height which is kind of
   frustrating.  Try to fix this.
