@@ -36,7 +36,7 @@ class FrameResizer {
         this.completed = null;
 
         // how long between polling should we wait to expand the size.
-        this.timeoutInterval = 50;
+        this.timeoutInterval = 200;
 
         // the current height
         this.height = null;

@@ -179,17 +179,32 @@ describe('DocMetas', function() {
             });
 
             it("Pagemark without rect", function () {
-                //
-                // let docMeta = createUpgradeDoc();
-                //
-                // assert.notEqual(docMeta.docInfo, null);
-                // docMeta.getPageMeta(1).textHighlights = null;
-                //
-                // docMeta.docInfo.pagemarkType = null;
-                //
-                // docMeta = DocMetas.upgrade(docMeta)
-                //
-                // assert.deepEqual(docMeta.docInfo.pagemarkType, PagemarkType.SINGLE_COLUMN);
+                let docMeta = createUpgradeDoc();
+
+                delete docMeta.getPageMeta(1).pagemarks["0"].rect ;
+
+                docMeta = DocMetas.upgrade(docMeta);
+
+                let expected = {
+                        "0": {
+                            "id": "12Vf1bAzeo",
+                            "created": "2012-03-02T11:38:49.321Z",
+                            "lastUpdated": "2012-03-02T11:38:49.321Z",
+                            "author": null,
+                            "type": "SINGLE_COLUMN",
+                            "percentage": 100,
+                            "column": 0,
+                            "notes": {},
+                            "rect": {
+                                "left": 0,
+                                "top": 0,
+                                "width": 100,
+                                "height": 100
+                            }
+                        }
+                    };
+
+                assertJSON(docMeta.getPageMeta(1).pagemarks, expected);
 
             });
 

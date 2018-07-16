@@ -9,6 +9,7 @@ class PageMeta extends SerializedObject {
 
         /**
          * The pageInfo for this page.
+         * @type {PageInfo}
          */
         this.pageInfo = null;
 
@@ -29,27 +30,27 @@ class PageMeta extends SerializedObject {
 
         /**
          *
-         * @type map<string,Question>
+         * @type {Object<string,Question>}
          */
         this.questions = {};
 
         /**
          *
-         * @type map<string,Flashcard>
+         * @type {Object<string,Flashcard>}
          */
         this.flashcards = {};
 
         /**
          * An index of test highlights for the page.
          *
-         * @type map<string,TextHighlight>
+         * @type {Object<string,TextHighlight>}
          */
         this.textHighlights = {};
 
         /**
          * An index of area highlights for the page.
          *
-         * @type map<string,AreaHighlight>
+         * @type {Object<string,AreaHighlight>}
          */
         this.areaHighlights = {};
 
