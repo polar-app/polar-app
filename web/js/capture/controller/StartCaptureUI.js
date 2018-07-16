@@ -27,10 +27,10 @@ class StartCaptureUI {
 
             console.log("onSubmit");
 
-            // TODO: trigger the progress page now...
+            let url = document.getElementById("url").value;
 
             this.requestStartCapture({
-                url: "http://www.example.com"
+                url
             });
 
         } catch (e) {

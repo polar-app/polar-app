@@ -61,26 +61,15 @@ class CaptureController {
 
         // FIXME: make this its own function
 
-        let captureOpts = new CaptureOpts({});
+        // FIXME: let captureResult = await this.runCapture();
 
-        let browser = BrowserRegistry.DEFAULT;
+        let captureResult = {
+            path: "/home/burton/.polar/stash/UK_unveils_new_Tempest_fighter_jet_model___BBC_News.phz"
+        }
 
-        browser = Browsers.toProfile(browser, "headless");
+        // now load the phz in the target window
 
-        // FIXME: Capture doesn't destroy the window I think...
-
-        let capture = new Capture(url, browser, this.directories.stashDir, captureOpts);
-
-        let captureResult = await capture.execute();
-
-        log.info("captureResult: ", captureResult);
-
-        // FIXME: we have to register the resulting phz with the cacheRegistry
-        // now... then load the URL
-
-        // FIXME: now load the phz in the target window via its own function..
-
-        await this.loadPHZ(webContents, captureResult.path);
+        await this.loadPHZ(window.webContents, captureResult.path);
 
     }
 
@@ -117,6 +106,24 @@ class CaptureController {
 
     }
 
+    async runCapture() {
+
+        let captureOpts = new CaptureOpts({});
+
+        let browser = BrowserRegistry.DEFAULT;
+
+        browser = Browsers.toProfile(browser, "headless");
+
+        let capture = new Capture(url, browser, this.directories.stashDir, captureOpts);
+
+        let captureResult = await capture.execute();
+
+        log.info("captureResult: ", captureResult);
+
+        return captureResult;
+
+    }
+
     /**
      *
      * @param webContents {Electron.WebContents}
@@ -126,6 +133,9 @@ class CaptureController {
     async loadPHZ(webContents, path) {
 
         let url = await this.phzLoader.registerForLoad(path);
+
+        console.log("Loading PHZ URL: " + url);
+
         webContents.loadURL(url);
 
     }

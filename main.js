@@ -492,6 +492,7 @@ function cmdFind() {
 }
 
 function cmdToggleDevTools(item, focusedWindow) {
+    console.log("Toggling dev tools in: " + focusedWindow);
     focusedWindow.toggleDevTools();
 }
 
