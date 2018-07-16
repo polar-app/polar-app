@@ -65920,8 +65920,16 @@ class HTMLViewer extends Viewer {
     }
 
     _changeScale(scale) {
+
+        let iframe = document.querySelector("iframe");
+        let iframeParentElement = iframe.parentElement;
+
+        iframeParentElement.removeChild(iframe);
+
         let contentParent = document.querySelector("#content-parent");
         contentParent.style.transform = `scale(${scale})`;
+
+        iframeParentElement.appendChild(iframe);
     }
 
     _removeAnnotations() {
