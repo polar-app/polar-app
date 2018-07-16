@@ -2,7 +2,7 @@ const electron = require('electron');
 const fspath = require('path');
 const url = require('url');
 const CacheInterceptorService = require("./web/js/backend/interceptor/CacheInterceptorService").CacheInterceptorService;
-const Directories = require("./web/js/datastore/Directories").Directories;
+const {Directories} = require("./web/js/datastore/Directories");
 const {DiskDatastore} = require("./web/js/datastore/DiskDatastore");
 const {MemoryDatastore} = require("./web/js/datastore/MemoryDatastore");
 const {Logger} = require("./web/js/logger/Logger");
@@ -370,9 +370,13 @@ async function loadDoc(path, targetWindow) {
 
     if(path.endsWith(".pdf")) {
 
+        // FIXME: Use a PHZ loader for this.
+
         url = `http://${DEFAULT_HOST}:${WEBSERVER_PORT}/pdfviewer/web/viewer.html?file=${fileParam}`;
 
     } else if(path.endsWith(".chtml")) {
+
+        // FIXME: CHTML Can go away and this block should be removed.
 
         let cacheMetas = await cacheRegistry.registerFile(path);
 
@@ -516,19 +520,10 @@ async function cmdOpenInNewWindow(item, focusedWindow) {
 
 async function cmdCaptureWebPage(item, focusedWindow) {
 
-    // let path = await promptDoc();
-    //
-    // let targetWindow = createWindow();
-    //
-    // await loadDoc(path, targetWindow);
+    let targetWindow = createWindow();
 
-    // var result = dialog.showMessageBox({
-    //     type: 'info',
-    //     message: 'message',
-    //     buttons: ['Yes', 'No']
-    // });
-
-    captureController.launchStartCapture();
+    let url = 'http://127.0.0.1:8500/apps/capture/start-capture.html';
+    targetWindow.loadURL(url);
 
 }
 
@@ -588,7 +583,7 @@ const cacheRegistry = new CacheRegistry(proxyServerConfig);
 
 const directories = new Directories();
 
-let captureController = new CaptureController();
+let captureController = new CaptureController({directories, cacheRegistry});
 
 directories.init().then(async () => {
 

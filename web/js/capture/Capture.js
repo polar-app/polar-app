@@ -1,6 +1,7 @@
 
 const electron = require('electron');
 const debug = require('debug');
+const CaptureResult = require("./CaptureResult").CaptureResult;
 
 const app = electron.app;
 const shell = electron.shell;
@@ -197,7 +198,7 @@ class Capture {
     async executeContentCapture() {
 
         // TODO: this function should be cleaned up a bit.. it has too many moving
-        // parts now.
+        // parts now and should be moved into smaller functions.
 
         Preconditions.assertNotNull(this.window);
         Preconditions.assertNotNull(this.window.webContents);
@@ -256,7 +257,11 @@ class Capture {
 
         log.info("Capturing the HTML...done");
 
-        this.resolve();
+        window.close();
+
+        this.resolve(new CaptureResult({
+            path: phzPath
+        }));
 
     }
 

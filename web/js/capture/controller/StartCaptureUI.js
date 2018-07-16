@@ -29,7 +29,9 @@ class StartCaptureUI {
 
             // TODO: trigger the progress page now...
 
-            this.launchCapture("http://www.example.com")
+            this.requestStartCapture({
+                url: "http://www.example.com"
+            });
 
         } catch (e) {
             console.error(e);
@@ -44,16 +46,10 @@ class StartCaptureUI {
      *
      * @param url
      */
-    launchCapture(captureURL) {
+    requestStartCapture(message) {
 
-        let window = BrowserWindow.getFocusedWindow();
-
-        let url = 'http://127.0.0.1:8500/apps/capture/capture.html?url=' + encodeURIComponent(url);
-        window.loadURL(url);
-
-        window.webContents.once("did-finish-load", () => {
-
-        })
+        console.log("Sending message to start capture: ", message);
+        ipcRenderer.send('capture-controller-start-capture', message);
 
     }
 

@@ -1,5 +1,15 @@
 # TODO:
 
+- maybe one way to apply CSS style to an element could be to:
+    - CSS hide the original
+    - make a clone of it, including style,
+    - mutate it
+    - inject the shadow dom node...
+    - the problme with this approach is that I would still need to use span.
+
+    - ANOTHER idea is that I could, instead of using DOM , use the Selection.
+    ... but then the user could NEVER copy text.
+
 - Also listen for timers to terminate. Many events of the page still haven't
   executed and we're running into races wehre the page hasn't finished loading.
 

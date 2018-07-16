@@ -4,7 +4,7 @@ const {Browser} = require("./Browser");
  * Basic structure for defining
  *
  */
-module.exports = {
+let BrowserRegistry = {
 
     // Stock Electron UA is:
     //
@@ -107,3 +107,8 @@ module.exports = {
     })
 
 };
+
+// setup a default browser...
+BrowserRegistry.DEFAULT = BrowserRegistry.MOBILE_GALAXY_S8_WITH_CHROME_61_WIDTH_750;
+
+module.exports = BrowserRegistry;
