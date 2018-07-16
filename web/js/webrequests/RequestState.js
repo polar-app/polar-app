@@ -11,6 +11,7 @@ class RequestState {
 
     constructor() {
         this.map = {};
+        log.info("Tracking request state...");
     }
 
     // check for double started and double finished too..

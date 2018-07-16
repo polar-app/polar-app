@@ -1,6 +1,54 @@
 
+## Usability priorities:
+
+- Fonts look VERY horrible when between the interval (100%,200%).  This URL is a
+  good example:
+
+  https://resobscura.blogspot.com/2018/07/when-california-was-bear-republic.html?m=1
+
+  ... the fonts just render horribly.
+
+    - moving the iframe outside of the .page completely fixed the problem.
+
+    - it's something with CHANGING the value... moving the element isn't the issue.
+
+    - it SEEMS what happens is that it keeps the ORIGINAL version around...
+      and then resizes that one... possibly.
+
+    - if I START at 1.5.. it works and looks great. If I change the CSS manually
+      to 1.5 it looks ugly.. but I think if I move the iframe outside of the scaled
+      div that it will work properly.
+
+
+    - OK!!! removing the iframe, changing the scale, then putting it back works
+      perfectly .. but the offset is wrong.
+
+    let iframe = document.querySelector("iframe");
+    let page = document.querySelector("iframe");
+    let textLayer = document.querySelector(".textLayer");
+
+    iframe.parentElement.removeChild(iframe);
+    page.style.transform="scale(1.5)";
+
+    textLayer.appendChild(iframe);
+
+
+- HTML text highlights don't use the whole line-height which is kind of
+  frustrating.  Try to fix this.
+
+- The first time we create a new pagemark we can drag it outside of its
+  container
+
+- I need a sidebar app to view the highlights.
+
+- I have to finish up the annotation editor for viewing / managing my annotations.
+
+- link text highlighhts that are on different columns
+
 
 ## Next
+
+
 
 - full-text search:
 
