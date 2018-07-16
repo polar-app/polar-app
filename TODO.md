@@ -2,6 +2,23 @@
 
 ## Next
 
+- I definitely need the sidebar app that shows all highlights in the current
+  PDF...
+
+    I think I could build them via a sidebar app...
+
+
+    I can put
+
+        #mainContainer {
+            margin-right: 200px;
+        }
+
+    which should give me the room to add it...
+
+- I need the ability to 'link' two highlights if they are between pages or
+  between columns.
+
 - Exit doesn't actyually work..
 
 - Issues with resizeable pagemarks:

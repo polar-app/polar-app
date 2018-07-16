@@ -107,7 +107,7 @@ module.exports = [
         },
         devtool: "source-map",
         output: {
-            path: path.resolve(__dirname, 'dist'),
+            path: path.resolve(__dirname, 'apps/capture/dist'),
             filename: '[name]-bundle.js',
         }
 

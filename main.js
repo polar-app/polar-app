@@ -30,6 +30,8 @@ const {Paths} = require("./web/js/util/Paths");
 const {Fingerprints} = require("./web/js/util/Fingerprints");
 const {Files} = require("./web/js/util/Files");
 const {ElectronContextMenu} = require("./web/js/contextmenu/electron/ElectronContextMenu");
+const {CaptureController} = require("./web/js/capture/controller/CaptureController");
+
 const searchInPage = require('electron-in-page-search').default;
 
 const options = { extraHeaders: 'pragma: no-cache\nreferer: http://cnn.com\n' };
@@ -96,11 +98,11 @@ const MENU_TEMPLATE = [{
                 //accelerator: 'CmdOrCtrl+O',
                 click: cmdOpenInNewWindow
             },
-            // {
-            //     label: 'Capture Web Page',
-            //     //accelerator: 'CmdOrCtrl+O',
-            //     click: cmdCaptureWebPage
-            // },
+            {
+                label: 'Capture Web Page',
+                //accelerator: 'CmdOrCtrl+O',
+                click: cmdCaptureWebPage
+            },
 
             // {
             //     label: 'Open Containing Folder',
@@ -514,11 +516,22 @@ async function cmdOpenInNewWindow(item, focusedWindow) {
 
 async function cmdCaptureWebPage(item, focusedWindow) {
 
-    let path = await promptDoc();
+    // let path = await promptDoc();
+    //
+    // let targetWindow = createWindow();
+    //
+    // await loadDoc(path, targetWindow);
 
-    let targetWindow = createWindow();
+    // var result = dialog.showMessageBox({
+    //     type: 'info',
+    //     message: 'message',
+    //     buttons: ['Yes', 'No']
+    // });
 
-    await loadDoc(path, targetWindow);
+
+    let captureController = new CaptureController();
+
+    captureController.startCapture();
 
 }
 

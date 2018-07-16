@@ -55,9 +55,20 @@ class ContentCapture {
                 // actually represents the format of the captured representation
                 // not the actual storage value on disk.
                 type: "chtml",
+
                 version: "3.0.0",
+
                 title: contentDoc.title,
+
                 url: contentDoc.location.href,
+
+                // keep track of the scroll height and width of the document.
+                // when the document is able to be adjusted to the size of the
+                // window then we're able to display it within the HTML viewer.
+                scroll: {
+                    height: contentDoc.body.scrollHeight,
+                    width: contentDoc.body.scrollWidth
+                }
 
             }
 
