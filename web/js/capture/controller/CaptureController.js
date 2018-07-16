@@ -52,12 +52,14 @@ class CaptureController {
 
     /**
      *
-     * @param webContents {Electron.WebContents}
+     * @param webContents {Electron.WebContents} The webContents of the dialog
+     * box that started the whole capture.
+     *
      * @param url {string}
      */
     async startCapture(webContents, url) {
 
-        let window = await this.loadApp(webContents, url);
+        webContents = await this.loadApp(webContents, url);
 
         // FIXME: make this its own function
 
@@ -65,11 +67,11 @@ class CaptureController {
 
         let captureResult = {
             path: "/home/burton/.polar/stash/UK_unveils_new_Tempest_fighter_jet_model___BBC_News.phz"
-        }
+        };
 
         // now load the phz in the target window
 
-        await this.loadPHZ(window.webContents, captureResult.path);
+        await this.loadPHZ(webContents, captureResult.path);
 
     }
 
@@ -79,7 +81,7 @@ class CaptureController {
      * @param webContents {Electron.WebContents}
      * @param url {string}
      *
-     * @return {Promise<Electron.BrowserWindow>}
+     * @return {Promise<Electron.WebContents>}
      */
     async loadApp(webContents, url) {
 
@@ -87,20 +89,18 @@ class CaptureController {
 
             console.log("Starting capture for URL: " + url);
 
-            let window = BrowserWindow.fromWebContents(webContents);
-
             // load the capture.html page
 
             let pageURL = 'http://127.0.0.1:8500/apps/capture/capture.html?url=' + encodeURIComponent(url);
 
-            window.webContents.once("did-finish-load", () => {
+            webContents.once("did-finish-load", () => {
 
                 // our app finished loading...
-                resolve(window);
+                resolve(webContents);
 
             });
 
-            window.loadURL(pageURL);
+            webContents.loadURL(pageURL);
 
         });
 
