@@ -16,14 +16,14 @@ class PageMeta extends SerializedObject {
          * The index of page number to pagemark which stores the data we need
          * for keeping track of pagemarks.  The index is the pagemark column.
          *
-         * @type map<int,pagemark>.
+         * @type Object<string,pagemark>
          */
         this.pagemarks = {};
 
         /**
          * The note for this annotation.
          *
-         * @type Note
+         * @type Object<string,Note>
          */
         this.notes = {};
 

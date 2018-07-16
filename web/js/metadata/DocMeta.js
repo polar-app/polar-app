@@ -33,7 +33,7 @@ class DocMeta extends SerializedObject {
         /**
          * A sparse dictionary of page number to page metadata.
          *
-         * @type map<int,PageMeta>
+         * @type Object<int,PageMeta>
          */
         this.pageMetas = {};
 

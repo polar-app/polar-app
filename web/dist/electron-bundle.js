@@ -58865,7 +58865,7 @@ class DocMeta extends SerializedObject {
         /**
          * A sparse dictionary of page number to page metadata.
          *
-         * @type map<int,PageMeta>
+         * @type Object<int,PageMeta>
          */
         this.pageMetas = {};
 
@@ -58984,10 +58984,12 @@ const { PagemarkType } = __webpack_require__(/*! ./PagemarkType */ "./web/js/met
 const { ISODateTime } = __webpack_require__(/*! ./ISODateTime */ "./web/js/metadata/ISODateTime.js");
 const { AnnotationInfo } = __webpack_require__(/*! ./AnnotationInfo */ "./web/js/metadata/AnnotationInfo.js");
 const { MetadataSerializer } = __webpack_require__(/*! ./MetadataSerializer */ "./web/js/metadata/MetadataSerializer.js");
+const { PageMetas } = __webpack_require__(/*! ./PageMetas */ "./web/js/metadata/PageMetas.js");
 const { TextHighlightRecords } = __webpack_require__(/*! ./TextHighlightRecords */ "./web/js/metadata/TextHighlightRecords.js");
 const { TextHighlights } = __webpack_require__(/*! ./TextHighlights */ "./web/js/metadata/TextHighlights.js");
 const { Hashcodes } = __webpack_require__(/*! ../Hashcodes */ "./web/js/Hashcodes.js");
-const { forDict } = __webpack_require__(/*! ../utils */ "./web/js/utils.js");
+const { forDict } = __webpack_require__(/*! ../util/Functions */ "./web/js/util/Functions.js");
+const log = __webpack_require__(/*! ../logger/Logger */ "./web/js/logger/Logger.js").create();
 
 class DocMetas {
 
@@ -59121,55 +59123,20 @@ class DocMetas {
         // to using something like AJV to provide these defaults and also perform
         // type assertion.
 
-        // TODO: this should be docMeta.pageMetas = PageMetas.upgrade(docMeta.pageMetas)
-
-        forDict(docMeta.pageMetas, function (key, pageMeta) {
-
-            if (!pageMeta.textHighlights) {
-                console.warn("No textHighlights.  Assigning default.");
-                pageMeta.textHighlights = {};
-            }
-
-            // make sure legacy / old text highlights are given IDs.
-            forDict(pageMeta.textHighlights, function (key, textHighlight) {
-                if (!textHighlight.id) {
-                    console.warn("Text highlight given ID");
-                    textHighlight.id = Hashcodes.createID(textHighlight.rects);
-                }
-            });
-
-            if (!pageMeta.areaHighlights) {
-                console.warn("No areaHighlights.  Assigning default.");
-                pageMeta.areaHighlights = {};
-            }
-
-            if (!pageMeta.pagemarks) {
-                console.warn("No pagemarks.  Assigning default.");
-                pageMeta.pagemarks = {};
-            }
-
-            // call pageMeta.pagemarks = Pagemarks.upgrade(pageMeta.pagemarks)
-
-            forDict(pageMeta.pagemarks, function (key, pagemark) {
-                if (!pagemark.id) {
-                    console.warn("Pagemark given ID");
-                    pagemark.id = Pagemarks.createID(pagemark.created);
-                }
-            });
-        });
+        docMeta.pageMetas = PageMetas.upgrade(docMeta.pageMetas);
 
         // TODO: go through and upgrade the pagemarks. I should probably have
         // an upgrade function for each object type...
 
         if (!docMeta.annotationInfo) {
-            console.log("No annotation info.. Adding default.");
+            log.warn("No annotation info.. Adding default.");
             docMeta.annotationInfo = new AnnotationInfo();
         }
 
         if (docMeta.docInfo) {
 
             if (!docMeta.docInfo.pagemarkType) {
-                console.log("DocInfo has no pagemarkType... Adding default of SINGLE_COLUMN");
+                log.warn("DocInfo has no pagemarkType... Adding default of SINGLE_COLUMN");
                 docMeta.docInfo.pagemarkType = PagemarkType.SINGLE_COLUMN;
             }
         }
@@ -59618,14 +59585,14 @@ class PageMeta extends SerializedObject {
          * The index of page number to pagemark which stores the data we need
          * for keeping track of pagemarks.  The index is the pagemark column.
          *
-         * @type map<int,pagemark>.
+         * @type Object<string,pagemark>
          */
         this.pagemarks = {};
 
         /**
          * The note for this annotation.
          *
-         * @type Note
+         * @type Object<string,Note>
          */
         this.notes = {};
 
@@ -59688,6 +59655,65 @@ class PageMeta extends SerializedObject {
 }
 
 module.exports.PageMeta = PageMeta;
+
+/***/ }),
+
+/***/ "./web/js/metadata/PageMetas.js":
+/*!**************************************!*\
+  !*** ./web/js/metadata/PageMetas.js ***!
+  \**************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+const { Pagemarks } = __webpack_require__(/*! ./Pagemarks.js */ "./web/js/metadata/Pagemarks.js");
+const { forDict } = __webpack_require__(/*! ../util/Functions */ "./web/js/util/Functions.js");
+const { Hashcodes } = __webpack_require__(/*! ../Hashcodes */ "./web/js/Hashcodes.js");
+const log = __webpack_require__(/*! ../logger/Logger */ "./web/js/logger/Logger.js").create();
+
+class PageMetas {
+
+    /**
+     * @param pageMetas {Object<int,PageMeta>}
+     * @return {Object<int,PageMeta>}
+     */
+    static upgrade(pageMetas) {
+
+        pageMetas = Object.assign({}, pageMetas);
+
+        forDict(pageMetas, function (key, pageMeta) {
+
+            if (!pageMeta.textHighlights) {
+                log.warn("No textHighlights.  Assigning default.");
+                pageMeta.textHighlights = {};
+            }
+
+            // make sure legacy / old text highlights are given IDs.
+            forDict(pageMeta.textHighlights, function (key, textHighlight) {
+                if (!textHighlight.id) {
+                    log.warn("Text highlight given ID");
+                    textHighlight.id = Hashcodes.createID(textHighlight.rects);
+                }
+            });
+
+            if (!pageMeta.areaHighlights) {
+                log.warn("No areaHighlights.  Assigning default.");
+                pageMeta.areaHighlights = {};
+            }
+
+            if (!pageMeta.pagemarks) {
+                log.warn("No pagemarks.  Assigning default (empty map)");
+                pageMeta.pagemarks = {};
+            }
+
+            pageMeta.pagemarks = Pagemarks.upgrade(pageMeta.pagemarks);
+        });
+
+        return pageMetas;
+    }
+
+}
+
+module.exports.PageMetas = PageMetas;
 
 /***/ }),
 
@@ -60074,6 +60100,7 @@ const { PagemarkRects } = __webpack_require__(/*! ./PagemarkRects */ "./web/js/m
 const { ISODateTime } = __webpack_require__(/*! ./ISODateTime */ "./web/js/metadata/ISODateTime.js");
 const { Objects } = __webpack_require__(/*! ../util/Objects */ "./web/js/util/Objects.js");
 const { round } = __webpack_require__(/*! ../util/Percentages */ "./web/js/util/Percentages.js");
+const { forDict } = __webpack_require__(/*! ../util/Functions */ "./web/js/util/Functions.js");
 
 const log = __webpack_require__(/*! ../logger/Logger */ "./web/js/logger/Logger.js").create();
 
@@ -60184,6 +60211,35 @@ class Pagemarks {
         keyOptions.percentage = options.percentage;
 
         return keyOptions;
+    }
+
+    /**
+     *
+     * @param pagemarks {Object<?,pagemark>}
+     * @return {Object<?,pagemark>}
+     */
+    static upgrade(pagemarks) {
+
+        pagemarks = Object.assign({}, pagemarks);
+
+        forDict(pagemarks, function (key, pagemark) {
+
+            if (!pagemark.rect) {
+
+                if (pagemark.percentage >= 0 && pagemark.percentage <= 100) {
+
+                    // now rect but we can build one from the percentage.
+                    pagemark.rect = PagemarkRects.createFromPercentage(pagemark.percentage);
+                }
+            }
+
+            if (!pagemark.id) {
+                log.warn("Pagemark given ID");
+                pagemark.id = Pagemarks.createID(pagemark.created);
+            }
+        });
+
+        return pagemarks;
     }
 
 }
@@ -60641,9 +60697,9 @@ class VersionedObject extends SerializedObject {
          * The unique ID for this object.  Every object needs to have a unique
          * ID so that we can reference it easily.
          *
-         * @type {null}
+         * @type {string}
          */
-        this.id = null;
+        this.id = undefined;
 
         /**
          * The time this object was created

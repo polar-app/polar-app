@@ -178,6 +178,20 @@ describe('DocMetas', function() {
 
             });
 
+            it("Pagemark without rect", function () {
+                //
+                // let docMeta = createUpgradeDoc();
+                //
+                // assert.notEqual(docMeta.docInfo, null);
+                // docMeta.getPageMeta(1).textHighlights = null;
+                //
+                // docMeta.docInfo.pagemarkType = null;
+                //
+                // docMeta = DocMetas.upgrade(docMeta)
+                //
+                // assert.deepEqual(docMeta.docInfo.pagemarkType, PagemarkType.SINGLE_COLUMN);
+
+            });
 
             it("No text highlights", function () {
 

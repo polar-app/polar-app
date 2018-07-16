@@ -18,4 +18,4 @@ class Annotation extends VersionedObject {
 };
 
 
-module.exports.Annotation = Annotation
+module.exports.Annotation = Annotation;

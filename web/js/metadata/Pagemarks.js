@@ -6,6 +6,7 @@ const {PagemarkRects} = require("./PagemarkRects");
 const {ISODateTime} = require("./ISODateTime");
 const {Objects} = require("../util/Objects");
 const {round} = require("../util/Percentages");
+const {forDict} = require("../util/Functions");
 
 const log = require("../logger/Logger").create();
 
@@ -121,6 +122,39 @@ class Pagemarks {
         keyOptions.percentage = options.percentage;
 
         return keyOptions;
+
+    }
+
+    /**
+     *
+     * @param pagemarks {Object<?,pagemark>}
+     * @return {Object<?,pagemark>}
+     */
+    static upgrade(pagemarks) {
+
+        pagemarks = Object.assign({}, pagemarks);
+
+        forDict(pagemarks, function (key, pagemark) {
+
+            if(! pagemark.rect) {
+
+                if(pagemark.percentage >= 0 && pagemark.percentage <= 100) {
+
+                    // now rect but we can build one from the percentage.
+                    pagemark.rect = PagemarkRects.createFromPercentage(pagemark.percentage);
+
+                }
+
+            }
+
+            if(! pagemark.id) {
+                log.warn("Pagemark given ID");
+                pagemark.id = Pagemarks.createID(pagemark.created);
+            }
+
+        });
+
+        return pagemarks;
 
     }
 

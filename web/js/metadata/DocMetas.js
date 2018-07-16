@@ -9,10 +9,12 @@ const {PagemarkType} = require("./PagemarkType");
 const {ISODateTime} = require("./ISODateTime");
 const {AnnotationInfo} = require("./AnnotationInfo");
 const {MetadataSerializer} = require("./MetadataSerializer");
+const {PageMetas} = require("./PageMetas");
 const {TextHighlightRecords} = require("./TextHighlightRecords");
 const {TextHighlights} = require("./TextHighlights");
 const {Hashcodes} = require("../Hashcodes");
-const {forDict} = require("../utils");
+const {forDict} = require("../util/Functions");
+const log = require("../logger/Logger").create();
 
 class DocMetas {
 
@@ -153,56 +155,20 @@ class DocMetas {
         // to using something like AJV to provide these defaults and also perform
         // type assertion.
 
-        // TODO: this should be docMeta.pageMetas = PageMetas.upgrade(docMeta.pageMetas)
-
-        forDict(docMeta.pageMetas, function (key, pageMeta) {
-
-            if(!pageMeta.textHighlights) {
-                console.warn("No textHighlights.  Assigning default.");
-                pageMeta.textHighlights = {};
-            }
-
-            // make sure legacy / old text highlights are given IDs.
-            forDict(pageMeta.textHighlights, function (key, textHighlight) {
-                if(! textHighlight.id) {
-                    console.warn("Text highlight given ID");
-                    textHighlight.id = Hashcodes.createID(textHighlight.rects);
-                }
-            });
-
-            if(!pageMeta.areaHighlights) {
-                console.warn("No areaHighlights.  Assigning default.");
-                pageMeta.areaHighlights = {};
-            }
-
-            if(!pageMeta.pagemarks) {
-                console.warn("No pagemarks.  Assigning default.");
-                pageMeta.pagemarks = {};
-            }
-
-            // call pageMeta.pagemarks = Pagemarks.upgrade(pageMeta.pagemarks)
-
-            forDict(pageMeta.pagemarks, function (key, pagemark) {
-                if(! pagemark.id) {
-                    console.warn("Pagemark given ID");
-                    pagemark.id = Pagemarks.createID(pagemark.created);
-                }
-            });
-
-        } );
+        docMeta.pageMetas = PageMetas.upgrade(docMeta.pageMetas);
 
         // TODO: go through and upgrade the pagemarks. I should probably have
         // an upgrade function for each object type...
 
         if(!docMeta.annotationInfo) {
-            console.log("No annotation info.. Adding default.")
+            log.warn("No annotation info.. Adding default.")
             docMeta.annotationInfo = new AnnotationInfo();
         }
 
         if(docMeta.docInfo) {
 
             if(!docMeta.docInfo.pagemarkType) {
-                console.log("DocInfo has no pagemarkType... Adding default of SINGLE_COLUMN")
+                log.warn("DocInfo has no pagemarkType... Adding default of SINGLE_COLUMN")
                 docMeta.docInfo.pagemarkType = PagemarkType.SINGLE_COLUMN;
             }
 

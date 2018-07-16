@@ -15,9 +15,9 @@ class VersionedObject extends SerializedObject {
          * The unique ID for this object.  Every object needs to have a unique
          * ID so that we can reference it easily.
          *
-         * @type {null}
+         * @type {string}
          */
-        this.id = null;
+        this.id = undefined;
 
         /**
          * The time this object was created
