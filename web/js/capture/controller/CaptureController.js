@@ -63,11 +63,11 @@ class CaptureController {
 
         // FIXME: make this its own function
 
-        // FIXME: let captureResult = await this.runCapture();
-
-        let captureResult = {
-            path: "/home/burton/.polar/stash/UK_unveils_new_Tempest_fighter_jet_model___BBC_News.phz"
-        };
+        let captureResult = await this.runCapture(url);
+        //
+        // let captureResult = {
+        //     path: "/home/burton/.polar/stash/UK_unveils_new_Tempest_fighter_jet_model___BBC_News.phz"
+        // };
 
         // now load the phz in the target window
 
@@ -106,12 +106,13 @@ class CaptureController {
 
     }
 
-    async runCapture() {
+    async runCapture(url) {
 
         let captureOpts = new CaptureOpts({});
 
         let browser = BrowserRegistry.DEFAULT;
 
+        // TODO: it would be nice if there were an option to NOT be headless
         browser = Browsers.toProfile(browser, "headless");
 
         let capture = new Capture(url, browser, this.directories.stashDir, captureOpts);
