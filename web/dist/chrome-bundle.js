@@ -79480,8 +79480,6 @@ module.exports.Controller = Controller;
 
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
 
-const $ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
-
 const { TextHighlightController } = __webpack_require__(/*! ../highlights/text/controller/TextHighlightController */ "./web/js/highlights/text/controller/TextHighlightController.js");
 const { PagemarkCoverageEventListener } = __webpack_require__(/*! ../pagemarks/controller/PagemarkCoverageEventListener.js */ "./web/js/pagemarks/controller/PagemarkCoverageEventListener.js");
 const { KeyEvents } = __webpack_require__(/*! ../KeyEvents.js */ "./web/js/KeyEvents.js");
@@ -79490,6 +79488,8 @@ const { Controller } = __webpack_require__(/*! ./Controller.js */ "./web/js/cont
 const { DocFormatFactory } = __webpack_require__(/*! ../docformat/DocFormatFactory */ "./web/js/docformat/DocFormatFactory.js");
 const { ContextMenuController } = __webpack_require__(/*! ../contextmenu/ContextMenuController */ "./web/js/contextmenu/ContextMenuController.js");
 const { FlashcardsController } = __webpack_require__(/*! ../flashcards/controller/FlashcardsController */ "./web/js/flashcards/controller/FlashcardsController.js");
+
+const log = __webpack_require__(/*! ../logger/Logger */ "./web/js/logger/Logger.js").create();
 
 class WebController extends Controller {
 
@@ -79543,7 +79543,7 @@ class WebController extends Controller {
 
         if (currentDocFingerprint !== this.docFingerprint) {
 
-            console.log("controller: New document loaded!");
+            log.info("controller: New document loaded!");
 
             let newDocumentFingerprint = currentDocFingerprint;
 
@@ -79555,7 +79555,7 @@ class WebController extends Controller {
 
     onNewDocumentFingerprint(newDocumentFingerprint, nrPages, currentPageNumber) {
 
-        console.log(`Detected new document fingerprint (fingerprint=${newDocumentFingerprint}, nrPages=${nrPages}, currentPageNumber=${currentPageNumber})`);
+        log.info(`Detected new document fingerprint (fingerprint=${newDocumentFingerprint}, nrPages=${nrPages}, currentPageNumber=${currentPageNumber})`);
 
         this.docFingerprint = newDocumentFingerprint;
 
@@ -79566,7 +79566,7 @@ class WebController extends Controller {
         let pageElement = event.target.parentElement;
         let pageNum = this.docFormat.getPageNumFromPageElement(pageElement);
 
-        console.log(`Found event ${eventName} on page number ${pageNum}`);
+        log.info(`Found event ${eventName} on page number ${pageNum}`);
     }
 
     onViewerElementInserted() {
@@ -79597,9 +79597,14 @@ class WebController extends Controller {
 
         return _asyncToGenerator(function* () {
 
-            console.log("Marking entire page as read.");
+            log.info("Marking entire page as read.");
 
             let pageElement = _this.docFormat.getCurrentPageElement();
+
+            if (!pageElement) {
+                log.warn("No current pageElement to create pagemark.");
+            }
+
             let pageNum = _this.docFormat.getPageNumFromPageElement(pageElement);
 
             _this.erasePagemarks(pageNum);
@@ -79608,11 +79613,11 @@ class WebController extends Controller {
     }
 
     keyBindingPagemarkUpToMouse(event) {
-        console.log("Marking page as read up to mouse point");
+        log.info("Marking page as read up to mouse point");
     }
 
     keyBindingErasePagemark(event) {
-        console.log("Erasing pagemark.");
+        log.info("Erasing pagemark.");
         let pageElement = this.docFormat.getCurrentPageElement();
         let pageNum = this.docFormat.getPageNumFromPageElement(pageElement);
         this.erasePagemark(pageNum);
@@ -79656,7 +79661,7 @@ class WebController extends Controller {
 
         document.addEventListener("keydown", this.keyBindingListener.bind(this));
 
-        console.log("Key bindings registered");
+        log.info("Key bindings registered");
 
         new TextHighlightController(this.model).start();
 
@@ -79725,12 +79730,14 @@ module.exports.Datastore = Datastore;
 
 /* WEBPACK VAR INJECTION */(function(process) {function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
 
+const fs = __webpack_require__(/*! fs */ "./node_modules/node-libs-browser/mock/empty.js");
+const util = __webpack_require__(/*! util */ "./node_modules/util/util.js");
+
 const { Preconditions } = __webpack_require__(/*! ../Preconditions */ "./web/js/Preconditions.js");
 const { Datastore } = __webpack_require__(/*! ./Datastore.js */ "./web/js/datastore/Datastore.js");
 const { Paths } = __webpack_require__(/*! ../util/Paths */ "./web/js/util/Paths.js");
 
-const fs = __webpack_require__(/*! fs */ "./node_modules/node-libs-browser/mock/empty.js");
-const util = __webpack_require__(/*! util */ "./node_modules/util/util.js");
+const log = __webpack_require__(/*! ../logger/Logger */ "./web/js/logger/Logger.js").create();
 
 class DiskDatastore extends Datastore {
 
@@ -79872,7 +79879,7 @@ class DiskDatastore extends Datastore {
 
             Preconditions.assertTypeof(data, "data", "string");
 
-            console.log("Performing sync of content into disk datastore.");
+            log.info("Performing sync of content into disk datastore.");
 
             let docDir = _this5.dataDir + "/" + fingerprint;
 
@@ -79884,13 +79891,13 @@ class DiskDatastore extends Datastore {
 
             if (!dirExists) {
                 // the directory for this file is missing.
-                console.log(`Doc dir does not exist. Creating ${docDir}`);
+                log.info(`Doc dir does not exist. Creating ${docDir}`);
                 yield _this5.mkdirAsync(docDir);
             }
 
             let statePath = docDir + "/state.json";
 
-            console.log(`Writing data to state file: ${statePath}`);
+            log.info(`Writing data to state file: ${statePath}`);
 
             // FIXME: is this UTF-8 ??
 

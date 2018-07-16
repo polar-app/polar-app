@@ -1,4 +1,3 @@
-const $ = require('jquery');
 
 const {TextHighlightController} = require("../highlights/text/controller/TextHighlightController");
 const {PagemarkCoverageEventListener} = require("../pagemarks/controller/PagemarkCoverageEventListener.js");
@@ -8,6 +7,8 @@ const {Controller} = require("./Controller.js");
 const {DocFormatFactory} = require("../docformat/DocFormatFactory");
 const {ContextMenuController} = require("../contextmenu/ContextMenuController");
 const {FlashcardsController} = require("../flashcards/controller/FlashcardsController");
+
+const log = require("../logger/Logger").create();
 
 class WebController extends Controller {
 
@@ -66,7 +67,7 @@ class WebController extends Controller {
 
         if (currentDocFingerprint !== this.docFingerprint) {
 
-            console.log("controller: New document loaded!");
+            log.info("controller: New document loaded!");
 
             let newDocumentFingerprint = currentDocFingerprint;
 
@@ -80,7 +81,7 @@ class WebController extends Controller {
 
     onNewDocumentFingerprint(newDocumentFingerprint, nrPages, currentPageNumber) {
 
-        console.log(`Detected new document fingerprint (fingerprint=${newDocumentFingerprint}, nrPages=${nrPages}, currentPageNumber=${currentPageNumber})`);
+        log.info(`Detected new document fingerprint (fingerprint=${newDocumentFingerprint}, nrPages=${nrPages}, currentPageNumber=${currentPageNumber})`);
 
         this.docFingerprint = newDocumentFingerprint;
 
@@ -92,7 +93,7 @@ class WebController extends Controller {
         let pageElement = event.target.parentElement;
         let pageNum = this.docFormat.getPageNumFromPageElement(pageElement);
 
-        console.log(`Found event ${eventName} on page number ${pageNum}`);
+        log.info(`Found event ${eventName} on page number ${pageNum}`);
 
     }
 
@@ -123,9 +124,14 @@ class WebController extends Controller {
     // FIXME: remake this binding to CreatePagemarkEntirePage
     async keyBindingPagemarkEntirePage(event) {
 
-        console.log("Marking entire page as read.");
+        log.info("Marking entire page as read.");
 
         let pageElement = this.docFormat.getCurrentPageElement();
+
+        if(! pageElement) {
+            log.warn("No current pageElement to create pagemark.");
+        }
+
         let pageNum = this.docFormat.getPageNumFromPageElement(pageElement);
 
         this.erasePagemarks(pageNum);
@@ -134,11 +140,11 @@ class WebController extends Controller {
     }
 
     keyBindingPagemarkUpToMouse(event) {
-        console.log("Marking page as read up to mouse point");
+        log.info("Marking page as read up to mouse point");
     }
 
     keyBindingErasePagemark(event) {
-        console.log("Erasing pagemark.");
+        log.info("Erasing pagemark.");
         let pageElement = this.docFormat.getCurrentPageElement();
         let pageNum = this.docFormat.getPageNumFromPageElement(pageElement);
         this.erasePagemark(pageNum);
@@ -181,7 +187,7 @@ class WebController extends Controller {
 
         document.addEventListener("keydown", this.keyBindingListener.bind(this));
 
-        console.log("Key bindings registered");
+        log.info("Key bindings registered");
 
         new TextHighlightController(this.model).start();
 

@@ -5,7 +5,7 @@
 
     - will-change: transform breaks us
     - must add and insert back in the iframe
-    -
+    - looks like this is a bug with Electron on Linux...
 
 - HTML text highlights don't use the whole line-height which is kind of
   frustrating.  Try to fix this.

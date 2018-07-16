@@ -130,10 +130,6 @@ class Capture {
 
         if(USE_PAGING_LOADER) {
 
-            // TODO: create a new PageHeightLoader which creates a very very long
-            // window for rendering our document.  It might be nice to dynamically
-            // create this until the scroll goes away.
-
             let pagingLoader = new PagingLoader(pagingBrowser, async () => {
 
                 // TODO: use the promise version of setTimeout in Functions.

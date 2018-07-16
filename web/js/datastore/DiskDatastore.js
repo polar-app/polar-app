@@ -1,9 +1,11 @@
+const fs = require("fs");
+const util = require('util');
+
 const {Preconditions} = require("../Preconditions");
 const {Datastore} = require("./Datastore.js");
 const {Paths} = require("../util/Paths");
 
-const fs = require("fs");
-const util = require('util');
+const log = require("../logger/Logger").create();
 
 class DiskDatastore extends Datastore {
 
@@ -133,7 +135,7 @@ class DiskDatastore extends Datastore {
 
         Preconditions.assertTypeof(data, "data", "string");
 
-        console.log("Performing sync of content into disk datastore.");
+        log.info("Performing sync of content into disk datastore.");
 
         let docDir = this.dataDir + "/" + fingerprint;
 
@@ -144,13 +146,13 @@ class DiskDatastore extends Datastore {
 
         if ( ! dirExists) {
             // the directory for this file is missing.
-            console.log(`Doc dir does not exist. Creating ${docDir}`);
+            log.info(`Doc dir does not exist. Creating ${docDir}`);
             await this.mkdirAsync(docDir)
         }
 
         let statePath = docDir + "/state.json";
 
-        console.log(`Writing data to state file: ${statePath}`);
+        log.info(`Writing data to state file: ${statePath}`);
 
         // FIXME: is this UTF-8 ??
 
