@@ -55573,7 +55573,7 @@ class WebController extends Controller {
 
     onViewerElementInserted() {
 
-        // FIXME: try to use window.PDFViewerApplication.eventBus with:
+        //TODO : try to use the window.PDFViewerApplication.eventBus with:
         //
         // documentload, pagerendered, textlayerrendered, pagechange, and pagesinit...
 

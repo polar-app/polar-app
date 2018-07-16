@@ -126,31 +126,12 @@ class Capture {
      */
     async startCapture() {
 
-        let pagingBrowser = new DefaultPagingBrowser(this.window.webContents);
-
         if(USE_PAGING_LOADER) {
 
+            let pagingBrowser = new DefaultPagingBrowser(this.window.webContents);
+
             let pagingLoader = new PagingLoader(pagingBrowser, async () => {
-
-                // TODO: use the promise version of setTimeout in Functions.
-
-                setTimeout(() => {
-
-                    // capture within timeout just for debug purposes.  This way
-                    // we can let the page continue loading for some time if
-                    // there are any straggling resources.
-
-                    this.webRequestReactors.forEach(webRequestReactor => {
-                        log.info("Stopping webRequestReactor...");
-                        webRequestReactor.stop();
-                        log.info("Stopping webRequestReactor...done");
-                    });
-
-                    this.executeContentCapture()
-                        .catch(err => log.error(err));
-
-                }, EXECUTE_CAPTURE_DELAY);
-
+                log.info("Paging loader finished.")
             } );
 
             this.pendingWebRequestsListener.addEventListener(pendingRequestEvent => {
@@ -159,11 +140,18 @@ class Capture {
 
             await pagingLoader.onLoad();
 
-        } else {
-
-            await this.executeContentCapture()
+            this.webRequestReactors.forEach(webRequestReactor => {
+                log.info("Stopping webRequestReactor...");
+                webRequestReactor.stop();
+                log.info("Stopping webRequestReactor...done");
+            });
 
         }
+
+        await Functions.waitFor(EXECUTE_CAPTURE_DELAY);
+
+        this.executeContentCapture()
+            .catch(err => log.error(err));
 
     }
 
