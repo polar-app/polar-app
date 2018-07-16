@@ -33,7 +33,7 @@ const {Objects} = require("../util/Objects");
 
 const log = Logger.create();
 
-const USE_PAGING_LOADER = true;
+const USE_PAGING_LOADER = false;
 
 /**
  * This is a hard coded delay to hold off capturing the content until the page
