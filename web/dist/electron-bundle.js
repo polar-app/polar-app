@@ -62854,21 +62854,9 @@ module.exports.ThumbnailPagemarkRedrawer = ThumbnailPagemarkRedrawer;
   !*** ./web/js/polar.js ***!
   \*************************/
 /*! exports provided: polar */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ (function(module, exports) {
 
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "polar", function() { return polar; });
-// const electron = require('electron');
-// const path = require('path');
-// const fs = require('fs');
-
-// basic object around polar state and runtime.
-let polar = {
-
-    state: {}
-
-};
+throw new Error("Module build failed: Error: ENOENT: no such file or directory, open '/home/burton/projects/polar-bookshelf/web/js/polar.js'");
 
 /***/ }),
 

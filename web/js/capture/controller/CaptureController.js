@@ -1,5 +1,6 @@
 const electron = require('electron');
 const BrowserWindow = electron.BrowserWindow;
+const ipcMain = electron.ipcMain;
 
 const BROWSER_WINDOW_OPTIONS = {
 
@@ -37,6 +38,18 @@ class CaptureController {
     launchCapture(url) {
 
 
+
+    }
+
+    /**
+     * Start the service to receive and handle IPC messages.
+     */
+    start() {
+
+
+        ipcMain.on('capture-controller-start-capture', (event, triggerEvent) => {
+
+        });
 
     }
 

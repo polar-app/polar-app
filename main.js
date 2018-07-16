@@ -528,9 +528,6 @@ async function cmdCaptureWebPage(item, focusedWindow) {
     //     buttons: ['Yes', 'No']
     // });
 
-
-    let captureController = new CaptureController();
-
     captureController.launchStartCapture();
 
 }
@@ -591,6 +588,8 @@ const cacheRegistry = new CacheRegistry(proxyServerConfig);
 
 const directories = new Directories();
 
+let captureController = new CaptureController();
+
 directories.init().then(async () => {
 
     // TODO don't use directory logging now as it is broken.
@@ -622,6 +621,8 @@ directories.init().then(async () => {
 
     let cacheInterceptorService = new CacheInterceptorService(cacheRegistry);
     await cacheInterceptorService.start();
+
+    await captureController.start();
 
     log.info("Running with process.args: ", JSON.stringify(process.argv));
 
