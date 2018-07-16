@@ -153,6 +153,8 @@ class DocMetas {
         // to using something like AJV to provide these defaults and also perform
         // type assertion.
 
+        // TODO: this should be docMeta.pageMetas = PageMetas.upgrade(docMeta.pageMetas)
+
         forDict(docMeta.pageMetas, function (key, pageMeta) {
 
             if(!pageMeta.textHighlights) {
@@ -178,6 +180,8 @@ class DocMetas {
                 pageMeta.pagemarks = {};
             }
 
+            // call pageMeta.pagemarks = Pagemarks.upgrade(pageMeta.pagemarks)
+
             forDict(pageMeta.pagemarks, function (key, pagemark) {
                 if(! pagemark.id) {
                     console.warn("Pagemark given ID");
@@ -186,6 +190,9 @@ class DocMetas {
             });
 
         } );
+
+        // TODO: go through and upgrade the pagemarks. I should probably have
+        // an upgrade function for each object type...
 
         if(!docMeta.annotationInfo) {
             console.log("No annotation info.. Adding default.")

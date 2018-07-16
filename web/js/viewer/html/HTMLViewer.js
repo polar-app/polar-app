@@ -169,6 +169,11 @@ class HTMLViewer extends Viewer {
 
     _changeScale(scale) {
 
+        // NOTE: removing the iframe and adding it back in fixed a major problem
+        // with font fuzziness on Chrome/Electron.  Technically it should be
+        // possible to resize the iframe via scale alone but I don't think
+        // chrome re-renders the fonts unless significant scale changes are
+        // made.
 
         let iframe = document.querySelector("iframe");
         let iframeParentElement = iframe.parentElement;

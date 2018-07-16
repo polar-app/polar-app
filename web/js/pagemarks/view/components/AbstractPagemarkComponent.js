@@ -262,6 +262,10 @@ class AbstractPagemarkComponent extends Component {
      */
     toOverlayRect(placementRect, pagemark) {
 
+        // FIXME: this doesn't yet support the legacy pagemarks without rects...
+        //
+        //
+
         let pagemarkRect = new PagemarkRect(pagemark.rect);
 
         let overlayRect = pagemarkRect.toDimensions(placementRect.dimensions);

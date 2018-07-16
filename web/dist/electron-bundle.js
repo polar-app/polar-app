@@ -59121,6 +59121,8 @@ class DocMetas {
         // to using something like AJV to provide these defaults and also perform
         // type assertion.
 
+        // TODO: this should be docMeta.pageMetas = PageMetas.upgrade(docMeta.pageMetas)
+
         forDict(docMeta.pageMetas, function (key, pageMeta) {
 
             if (!pageMeta.textHighlights) {
@@ -59146,6 +59148,8 @@ class DocMetas {
                 pageMeta.pagemarks = {};
             }
 
+            // call pageMeta.pagemarks = Pagemarks.upgrade(pageMeta.pagemarks)
+
             forDict(pageMeta.pagemarks, function (key, pagemark) {
                 if (!pagemark.id) {
                     console.warn("Pagemark given ID");
@@ -59153,6 +59157,9 @@ class DocMetas {
                 }
             });
         });
+
+        // TODO: go through and upgrade the pagemarks. I should probably have
+        // an upgrade function for each object type...
 
         if (!docMeta.annotationInfo) {
             console.log("No annotation info.. Adding default.");
@@ -62450,6 +62457,10 @@ class AbstractPagemarkComponent extends Component {
      * @return {Rect}
      */
     toOverlayRect(placementRect, pagemark) {
+
+        // FIXME: this doesn't yet support the legacy pagemarks without rects...
+        //
+        //
 
         let pagemarkRect = new PagemarkRect(pagemark.rect);
 
@@ -65920,6 +65931,12 @@ class HTMLViewer extends Viewer {
     }
 
     _changeScale(scale) {
+
+        // NOTE: removing the iframe and adding it back in fixed a major problem
+        // with font fuzziness on Chrome/Electron.  Technically it should be
+        // possible to resize the iframe via scale alone but I don't think
+        // chrome re-renders the fonts unless significant scale changes are
+        // made.
 
         let iframe = document.querySelector("iframe");
         let iframeParentElement = iframe.parentElement;
