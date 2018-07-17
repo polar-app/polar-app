@@ -54,6 +54,15 @@ class PageMeta extends SerializedObject {
          */
         this.areaHighlights = {};
 
+        /**
+         * The thumbnails for this page.  Usually, this is just one thumbnail
+         * but there might be multiple.  If we want a specific noe we can just
+         * look at the width and height.
+         *
+         * @type {{}}
+         */
+        //this.thumbails = {};
+
         this.init(val);
 
     }

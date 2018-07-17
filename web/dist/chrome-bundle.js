@@ -28107,7 +28107,7 @@ utils.intFromLE = intFromLE;
 /*! exports provided: _args, _from, _id, _inBundle, _integrity, _location, _phantomChildren, _requested, _requiredBy, _resolved, _spec, _where, author, bugs, dependencies, description, devDependencies, files, homepage, keywords, license, main, name, repository, scripts, version, default */
 /***/ (function(module) {
 
-module.exports = {"_args":[["elliptic@6.4.0","/home/burton/projects/polar-bookshelf"]],"_from":"elliptic@6.4.0","_id":"elliptic@6.4.0","_inBundle":false,"_integrity":"sha1-ysmvh2LIWDYYcAPI3+GT5eLq5d8=","_location":"/elliptic","_phantomChildren":{},"_requested":{"type":"version","registry":true,"raw":"elliptic@6.4.0","name":"elliptic","escapedName":"elliptic","rawSpec":"6.4.0","saveSpec":null,"fetchSpec":"6.4.0"},"_requiredBy":["/browserify-sign","/create-ecdh"],"_resolved":"https://registry.npmjs.org/elliptic/-/elliptic-6.4.0.tgz","_spec":"6.4.0","_where":"/home/burton/projects/polar-bookshelf","author":{"name":"Fedor Indutny","email":"fedor@indutny.com"},"bugs":{"url":"https://github.com/indutny/elliptic/issues"},"dependencies":{"bn.js":"^4.4.0","brorand":"^1.0.1","hash.js":"^1.0.0","hmac-drbg":"^1.0.0","inherits":"^2.0.1","minimalistic-assert":"^1.0.0","minimalistic-crypto-utils":"^1.0.0"},"description":"EC cryptography","devDependencies":{"brfs":"^1.4.3","coveralls":"^2.11.3","grunt":"^0.4.5","grunt-browserify":"^5.0.0","grunt-cli":"^1.2.0","grunt-contrib-connect":"^1.0.0","grunt-contrib-copy":"^1.0.0","grunt-contrib-uglify":"^1.0.1","grunt-mocha-istanbul":"^3.0.1","grunt-saucelabs":"^8.6.2","istanbul":"^0.4.2","jscs":"^2.9.0","jshint":"^2.6.0","mocha":"^2.1.0"},"files":["lib"],"homepage":"https://github.com/indutny/elliptic","keywords":["EC","Elliptic","curve","Cryptography"],"license":"MIT","main":"lib/elliptic.js","name":"elliptic","repository":{"type":"git","url":"git+ssh://git@github.com/indutny/elliptic.git"},"scripts":{"jscs":"jscs benchmarks/*.js lib/*.js lib/**/*.js lib/**/**/*.js test/index.js","jshint":"jscs benchmarks/*.js lib/*.js lib/**/*.js lib/**/**/*.js test/index.js","lint":"npm run jscs && npm run jshint","test":"npm run lint && npm run unit","unit":"istanbul test _mocha --reporter=spec test/index.js","version":"grunt dist && git add dist/"},"version":"6.4.0"};
+module.exports = {"_args":[["elliptic@6.4.0","/Users/burton/projects/polar-bookshelf"]],"_from":"elliptic@6.4.0","_id":"elliptic@6.4.0","_inBundle":false,"_integrity":"sha1-ysmvh2LIWDYYcAPI3+GT5eLq5d8=","_location":"/elliptic","_phantomChildren":{},"_requested":{"type":"version","registry":true,"raw":"elliptic@6.4.0","name":"elliptic","escapedName":"elliptic","rawSpec":"6.4.0","saveSpec":null,"fetchSpec":"6.4.0"},"_requiredBy":["/browserify-sign","/create-ecdh"],"_resolved":"https://registry.npmjs.org/elliptic/-/elliptic-6.4.0.tgz","_spec":"6.4.0","_where":"/Users/burton/projects/polar-bookshelf","author":{"name":"Fedor Indutny","email":"fedor@indutny.com"},"bugs":{"url":"https://github.com/indutny/elliptic/issues"},"dependencies":{"bn.js":"^4.4.0","brorand":"^1.0.1","hash.js":"^1.0.0","hmac-drbg":"^1.0.0","inherits":"^2.0.1","minimalistic-assert":"^1.0.0","minimalistic-crypto-utils":"^1.0.0"},"description":"EC cryptography","devDependencies":{"brfs":"^1.4.3","coveralls":"^2.11.3","grunt":"^0.4.5","grunt-browserify":"^5.0.0","grunt-cli":"^1.2.0","grunt-contrib-connect":"^1.0.0","grunt-contrib-copy":"^1.0.0","grunt-contrib-uglify":"^1.0.1","grunt-mocha-istanbul":"^3.0.1","grunt-saucelabs":"^8.6.2","istanbul":"^0.4.2","jscs":"^2.9.0","jshint":"^2.6.0","mocha":"^2.1.0"},"files":["lib"],"homepage":"https://github.com/indutny/elliptic","keywords":["EC","Elliptic","curve","Cryptography"],"license":"MIT","main":"lib/elliptic.js","name":"elliptic","repository":{"type":"git","url":"git+ssh://git@github.com/indutny/elliptic.git"},"scripts":{"jscs":"jscs benchmarks/*.js lib/*.js lib/**/*.js lib/**/**/*.js test/index.js","jshint":"jscs benchmarks/*.js lib/*.js lib/**/*.js lib/**/**/*.js test/index.js","lint":"npm run jscs && npm run jshint","test":"npm run lint && npm run unit","unit":"istanbul test _mocha --reporter=spec test/index.js","version":"grunt dist && git add dist/"},"version":"6.4.0"};
 
 /***/ }),
 
@@ -83862,86 +83862,95 @@ const { PageInfo } = __webpack_require__(/*! ./PageInfo */ "./web/js/metadata/Pa
 
 class PageMeta extends SerializedObject {
 
-    constructor(val) {
+  constructor(val) {
 
-        super(val);
+    super(val);
 
-        /**
-         * The pageInfo for this page.
-         * @type {PageInfo}
-         */
-        this.pageInfo = null;
+    /**
+     * The pageInfo for this page.
+     * @type {PageInfo}
+     */
+    this.pageInfo = null;
 
-        /**
-         * The index of page number to pagemark which stores the data we need
-         * for keeping track of pagemarks.  The index is the pagemark column.
-         *
-         * @type Object<string,pagemark>
-         */
-        this.pagemarks = {};
+    /**
+     * The index of page number to pagemark which stores the data we need
+     * for keeping track of pagemarks.  The index is the pagemark column.
+     *
+     * @type Object<string,pagemark>
+     */
+    this.pagemarks = {};
 
-        /**
-         * The note for this annotation.
-         *
-         * @type Object<string,Note>
-         */
-        this.notes = {};
+    /**
+     * The note for this annotation.
+     *
+     * @type Object<string,Note>
+     */
+    this.notes = {};
 
-        /**
-         *
-         * @type {Object<string,Question>}
-         */
-        this.questions = {};
+    /**
+     *
+     * @type {Object<string,Question>}
+     */
+    this.questions = {};
 
-        /**
-         *
-         * @type {Object<string,Flashcard>}
-         */
-        this.flashcards = {};
+    /**
+     *
+     * @type {Object<string,Flashcard>}
+     */
+    this.flashcards = {};
 
-        /**
-         * An index of test highlights for the page.
-         *
-         * @type {Object<string,TextHighlight>}
-         */
-        this.textHighlights = {};
+    /**
+     * An index of test highlights for the page.
+     *
+     * @type {Object<string,TextHighlight>}
+     */
+    this.textHighlights = {};
 
-        /**
-         * An index of area highlights for the page.
-         *
-         * @type {Object<string,AreaHighlight>}
-         */
-        this.areaHighlights = {};
+    /**
+     * An index of area highlights for the page.
+     *
+     * @type {Object<string,AreaHighlight>}
+     */
+    this.areaHighlights = {};
 
-        this.init(val);
+    /**
+     * The thumbnails for this page.  Usually, this is just one thumbnail
+     * but there might be multiple.  If we want a specific noe we can just
+     * look at the width and height.
+     *
+     * @type {{}}
+     */
+    //this.thumbails = {};
+
+    this.init(val);
+  }
+
+  setup() {
+
+    super.setup();
+
+    if (!this.pagemarks) {
+      // this could happen when serializing from old file formats
+      this.pagemarks = {};
     }
 
-    setup() {
-
-        super.setup();
-
-        if (!this.pagemarks) {
-            // this could happen when serializing from old file formats
-            this.pagemarks = {};
-        }
-
-        if (!this.textHighlights) {
-            // this could happen when serializing from old file formats
-            this.textHighlights = {};
-        }
-
-        if (!this.areaHighlights) {
-            // this could happen when serializing from old file formats
-            this.areaHighlights = {};
-        }
+    if (!this.textHighlights) {
+      // this could happen when serializing from old file formats
+      this.textHighlights = {};
     }
 
-    validate() {
-
-        super.validate();
-
-        this.validateMembers([{ name: 'pageInfo', instance: PageInfo }]);
+    if (!this.areaHighlights) {
+      // this could happen when serializing from old file formats
+      this.areaHighlights = {};
     }
+  }
+
+  validate() {
+
+    super.validate();
+
+    this.validateMembers([{ name: 'pageInfo', instance: PageInfo }]);
+  }
 
 }
 
@@ -85163,6 +85172,7 @@ const { KeyEvents } = __webpack_require__(/*! ../../KeyEvents.js */ "./web/js/Ke
 const { Elements } = __webpack_require__(/*! ../../util/Elements */ "./web/js/util/Elements.js");
 const { DocFormats } = __webpack_require__(/*! ../../docformat/DocFormats */ "./web/js/docformat/DocFormats.js");
 const { DocFormatFactory } = __webpack_require__(/*! ../../docformat/DocFormatFactory */ "./web/js/docformat/DocFormatFactory.js");
+const log = __webpack_require__(/*! ../../logger/Logger */ "./web/js/logger/Logger.js").create();
 
 const BORDER_PADDING = 9;
 
@@ -85304,7 +85314,7 @@ class PagemarkCoverageEventListener {
         return state;
     }
 
-};
+}
 
 module.exports.PagemarkCoverageEventListener = PagemarkCoverageEventListener;
 
@@ -89856,8 +89866,9 @@ module.exports.ViewerFactory = ViewerFactory;
   !*** ./web/js/viewer/html/EventBridge.js ***!
   \*******************************************/
 /*! no static exports found */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
 
+const log = __webpack_require__(/*! ../../logger/Logger */ "./web/js/logger/Logger.js").create();
 
 /**
  * Moves events from the iframe, into the target document. This allows the event
@@ -89873,21 +89884,41 @@ class EventBridge {
 
     start() {
 
-        // TODO/FIXME: the child iframes within this iframe / recursively /
-        // also need event listeners.
+        // TODO/FIXME: the child iframes within this iframe / recursively also
+        // need to be configured.
 
-        this.iframe.contentDocument.body.addEventListener("keyup", this.eventListener.bind(this));
-        this.iframe.contentDocument.body.addEventListener("keydown", this.eventListener.bind(this));
-        this.iframe.contentDocument.body.addEventListener("mouseup", this.eventListener.bind(this));
-        this.iframe.contentDocument.body.addEventListener("mousedown", this.eventListener.bind(this));
-        this.iframe.contentDocument.body.addEventListener("contextmenu", this.eventListener.bind(this));
+        this.addListeners(this.iframe);
 
-        this.iframe.contentDocument.body.addEventListener("click", function (event) {
+        this.iframe.parentElement.addEventListener('DOMNodeInserted', event => this.elementInsertedListener(event), false);
+
+        log.info("Event bridge started on: ", this.iframe.contentDocument.location.href);
+    }
+
+    elementInsertedListener(event) {
+
+        log.info("elementInsertedListener event: ", event);
+
+        if (event.target && event.target.tagName === "IFRAME") {
+            log.info("Main iframe re-added.  Registering event listeners again");
+            let iframe = event.target;
+            this.addListeners(iframe);
+        }
+    }
+
+    addListeners(iframe) {
+
+        iframe.contentDocument.body.addEventListener("keyup", this.eventListener.bind(this));
+        iframe.contentDocument.body.addEventListener("keydown", this.eventListener.bind(this));
+        iframe.contentDocument.body.addEventListener("mouseup", this.eventListener.bind(this));
+        iframe.contentDocument.body.addEventListener("mousedown", this.eventListener.bind(this));
+        iframe.contentDocument.body.addEventListener("contextmenu", this.eventListener.bind(this));
+
+        iframe.contentDocument.body.addEventListener("click", function (event) {
 
             let anchor = this.getAnchor(event.target);
 
             if (anchor) {
-                console.log("Link click prevented.");
+                log.info("Link click prevented.");
                 event.preventDefault();
 
                 let href = anchor.href;
@@ -89903,8 +89934,6 @@ class EventBridge {
                 this.eventListener(event);
             }
         }.bind(this));
-
-        console.log("Event bridge started on: ", this.iframe.contentDocument.location.href);
     }
 
     /**
@@ -89943,7 +89972,6 @@ module.exports.EventBridge = EventBridge;
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-const $ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
 const { EventBridge } = __webpack_require__(/*! ./EventBridge */ "./web/js/viewer/html/EventBridge.js");
 
 /**
@@ -89967,6 +89995,7 @@ class FrameInitializer {
     start() {
 
         this.iframe.contentDocument.addEventListener("readystatechange", this.onReadyStateChange.bind(this));
+
         this._checkLoaded();
     }
 

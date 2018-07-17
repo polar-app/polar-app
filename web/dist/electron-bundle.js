@@ -59577,86 +59577,95 @@ const { PageInfo } = __webpack_require__(/*! ./PageInfo */ "./web/js/metadata/Pa
 
 class PageMeta extends SerializedObject {
 
-    constructor(val) {
+  constructor(val) {
 
-        super(val);
+    super(val);
 
-        /**
-         * The pageInfo for this page.
-         * @type {PageInfo}
-         */
-        this.pageInfo = null;
+    /**
+     * The pageInfo for this page.
+     * @type {PageInfo}
+     */
+    this.pageInfo = null;
 
-        /**
-         * The index of page number to pagemark which stores the data we need
-         * for keeping track of pagemarks.  The index is the pagemark column.
-         *
-         * @type Object<string,pagemark>
-         */
-        this.pagemarks = {};
+    /**
+     * The index of page number to pagemark which stores the data we need
+     * for keeping track of pagemarks.  The index is the pagemark column.
+     *
+     * @type Object<string,pagemark>
+     */
+    this.pagemarks = {};
 
-        /**
-         * The note for this annotation.
-         *
-         * @type Object<string,Note>
-         */
-        this.notes = {};
+    /**
+     * The note for this annotation.
+     *
+     * @type Object<string,Note>
+     */
+    this.notes = {};
 
-        /**
-         *
-         * @type {Object<string,Question>}
-         */
-        this.questions = {};
+    /**
+     *
+     * @type {Object<string,Question>}
+     */
+    this.questions = {};
 
-        /**
-         *
-         * @type {Object<string,Flashcard>}
-         */
-        this.flashcards = {};
+    /**
+     *
+     * @type {Object<string,Flashcard>}
+     */
+    this.flashcards = {};
 
-        /**
-         * An index of test highlights for the page.
-         *
-         * @type {Object<string,TextHighlight>}
-         */
-        this.textHighlights = {};
+    /**
+     * An index of test highlights for the page.
+     *
+     * @type {Object<string,TextHighlight>}
+     */
+    this.textHighlights = {};
 
-        /**
-         * An index of area highlights for the page.
-         *
-         * @type {Object<string,AreaHighlight>}
-         */
-        this.areaHighlights = {};
+    /**
+     * An index of area highlights for the page.
+     *
+     * @type {Object<string,AreaHighlight>}
+     */
+    this.areaHighlights = {};
 
-        this.init(val);
+    /**
+     * The thumbnails for this page.  Usually, this is just one thumbnail
+     * but there might be multiple.  If we want a specific noe we can just
+     * look at the width and height.
+     *
+     * @type {{}}
+     */
+    //this.thumbails = {};
+
+    this.init(val);
+  }
+
+  setup() {
+
+    super.setup();
+
+    if (!this.pagemarks) {
+      // this could happen when serializing from old file formats
+      this.pagemarks = {};
     }
 
-    setup() {
-
-        super.setup();
-
-        if (!this.pagemarks) {
-            // this could happen when serializing from old file formats
-            this.pagemarks = {};
-        }
-
-        if (!this.textHighlights) {
-            // this could happen when serializing from old file formats
-            this.textHighlights = {};
-        }
-
-        if (!this.areaHighlights) {
-            // this could happen when serializing from old file formats
-            this.areaHighlights = {};
-        }
+    if (!this.textHighlights) {
+      // this could happen when serializing from old file formats
+      this.textHighlights = {};
     }
 
-    validate() {
-
-        super.validate();
-
-        this.validateMembers([{ name: 'pageInfo', instance: PageInfo }]);
+    if (!this.areaHighlights) {
+      // this could happen when serializing from old file formats
+      this.areaHighlights = {};
     }
+  }
+
+  validate() {
+
+    super.validate();
+
+    this.validateMembers([{ name: 'pageInfo', instance: PageInfo }]);
+  }
 
 }
 
@@ -60878,6 +60887,7 @@ const { KeyEvents } = __webpack_require__(/*! ../../KeyEvents.js */ "./web/js/Ke
 const { Elements } = __webpack_require__(/*! ../../util/Elements */ "./web/js/util/Elements.js");
 const { DocFormats } = __webpack_require__(/*! ../../docformat/DocFormats */ "./web/js/docformat/DocFormats.js");
 const { DocFormatFactory } = __webpack_require__(/*! ../../docformat/DocFormatFactory */ "./web/js/docformat/DocFormatFactory.js");
+const log = __webpack_require__(/*! ../../logger/Logger */ "./web/js/logger/Logger.js").create();
 
 const BORDER_PADDING = 9;
 
@@ -61019,7 +61029,7 @@ class PagemarkCoverageEventListener {
         return state;
     }
 
-};
+}
 
 module.exports.PagemarkCoverageEventListener = PagemarkCoverageEventListener;
 
@@ -65571,8 +65581,9 @@ module.exports.ViewerFactory = ViewerFactory;
   !*** ./web/js/viewer/html/EventBridge.js ***!
   \*******************************************/
 /*! no static exports found */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
 
+const log = __webpack_require__(/*! ../../logger/Logger */ "./web/js/logger/Logger.js").create();
 
 /**
  * Moves events from the iframe, into the target document. This allows the event
@@ -65588,21 +65599,41 @@ class EventBridge {
 
     start() {
 
-        // TODO/FIXME: the child iframes within this iframe / recursively /
-        // also need event listeners.
+        // TODO/FIXME: the child iframes within this iframe / recursively also
+        // need to be configured.
 
-        this.iframe.contentDocument.body.addEventListener("keyup", this.eventListener.bind(this));
-        this.iframe.contentDocument.body.addEventListener("keydown", this.eventListener.bind(this));
-        this.iframe.contentDocument.body.addEventListener("mouseup", this.eventListener.bind(this));
-        this.iframe.contentDocument.body.addEventListener("mousedown", this.eventListener.bind(this));
-        this.iframe.contentDocument.body.addEventListener("contextmenu", this.eventListener.bind(this));
+        this.addListeners(this.iframe);
 
-        this.iframe.contentDocument.body.addEventListener("click", function (event) {
+        this.iframe.parentElement.addEventListener('DOMNodeInserted', event => this.elementInsertedListener(event), false);
+
+        log.info("Event bridge started on: ", this.iframe.contentDocument.location.href);
+    }
+
+    elementInsertedListener(event) {
+
+        log.info("elementInsertedListener event: ", event);
+
+        if (event.target && event.target.tagName === "IFRAME") {
+            log.info("Main iframe re-added.  Registering event listeners again");
+            let iframe = event.target;
+            this.addListeners(iframe);
+        }
+    }
+
+    addListeners(iframe) {
+
+        iframe.contentDocument.body.addEventListener("keyup", this.eventListener.bind(this));
+        iframe.contentDocument.body.addEventListener("keydown", this.eventListener.bind(this));
+        iframe.contentDocument.body.addEventListener("mouseup", this.eventListener.bind(this));
+        iframe.contentDocument.body.addEventListener("mousedown", this.eventListener.bind(this));
+        iframe.contentDocument.body.addEventListener("contextmenu", this.eventListener.bind(this));
+
+        iframe.contentDocument.body.addEventListener("click", function (event) {
 
             let anchor = this.getAnchor(event.target);
 
             if (anchor) {
-                console.log("Link click prevented.");
+                log.info("Link click prevented.");
                 event.preventDefault();
 
                 let href = anchor.href;
@@ -65618,8 +65649,6 @@ class EventBridge {
                 this.eventListener(event);
             }
         }.bind(this));
-
-        console.log("Event bridge started on: ", this.iframe.contentDocument.location.href);
     }
 
     /**
@@ -65658,7 +65687,6 @@ module.exports.EventBridge = EventBridge;
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-const $ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
 const { EventBridge } = __webpack_require__(/*! ./EventBridge */ "./web/js/viewer/html/EventBridge.js");
 
 /**
@@ -65682,6 +65710,7 @@ class FrameInitializer {
     start() {
 
         this.iframe.contentDocument.addEventListener("readystatechange", this.onReadyStateChange.bind(this));
+
         this._checkLoaded();
     }
 
