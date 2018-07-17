@@ -1,14 +1,18 @@
 
+## 1.0 b20 release
+
+- capture needs to work
+
 ## Usability priorities:
 
-- adding/removing the iframe now breaks events as the event listeners aren't 
-  properly added again ... 
+- initial window should be a factor of 8.5/11 ?
 
 - fonts aren't being subpixel anti-aliased I think...
 
     - will-change: transform breaks us
     - must add and insert back in the iframe
-    - looks like this is a bug with Electron on Linux...
+    - looks like this is a bug with Electron on Linux...  I don't think there
+      is a fix.
 
 - HTML text highlights don't use the whole line-height which is kind of
   frustrating.  Try to fix this.
