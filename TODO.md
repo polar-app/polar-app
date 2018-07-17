@@ -1,6 +1,9 @@
 
 ## Usability priorities:
 
+- adding/removing the iframe now breaks events as the event listeners aren't 
+  properly added again ... 
+
 - fonts aren't being subpixel anti-aliased I think...
 
     - will-change: transform breaks us

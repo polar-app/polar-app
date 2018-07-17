@@ -5,6 +5,7 @@ const {KeyEvents} = require("../../KeyEvents.js");
 const {Elements} = require("../../util/Elements");
 const {DocFormats} = require("../../docformat/DocFormats");
 const {DocFormatFactory} = require("../../docformat/DocFormatFactory");
+const log = require("../../logger/Logger").create();
 
 const BORDER_PADDING = 9;
 
@@ -143,6 +144,6 @@ class PagemarkCoverageEventListener {
 
     }
 
-};
+}
 
 module.exports.PagemarkCoverageEventListener = PagemarkCoverageEventListener;

@@ -1,3 +1,4 @@
+const log = require("../../logger/Logger").create();
 
 /**
  * Moves events from the iframe, into the target document. This allows the event
@@ -13,21 +14,43 @@ class EventBridge {
 
     start() {
 
-        // TODO/FIXME: the child iframes within this iframe / recursively /
-        // also need event listeners.
+        // TODO/FIXME: the child iframes within this iframe / recursively also
+        // need to be configured.
 
-        this.iframe.contentDocument.body.addEventListener("keyup", this.eventListener.bind(this));
-        this.iframe.contentDocument.body.addEventListener("keydown", this.eventListener.bind(this));
-        this.iframe.contentDocument.body.addEventListener("mouseup", this.eventListener.bind(this));
-        this.iframe.contentDocument.body.addEventListener("mousedown", this.eventListener.bind(this));
-        this.iframe.contentDocument.body.addEventListener("contextmenu", this.eventListener.bind(this));
+        this.addListeners(this.iframe);
 
-        this.iframe.contentDocument.body.addEventListener("click", function(event) {
+        this.iframe.parentElement.addEventListener('DOMNodeInserted', (event) => this.elementInsertedListener(event), false);
+
+        log.info("Event bridge started on: ", this.iframe.contentDocument.location.href);
+
+    }
+
+    elementInsertedListener(event) {
+
+        log.info("elementInsertedListener event: " , event)
+
+        if (event.target && event.target.tagName === "IFRAME") {
+            log.info("Main iframe re-added.  Registering event listeners again");
+            let iframe = event.target;
+            this.addListeners(iframe);
+        }
+
+    }
+
+    addListeners(iframe) {
+
+        iframe.contentDocument.body.addEventListener("keyup", this.eventListener.bind(this));
+        iframe.contentDocument.body.addEventListener("keydown", this.eventListener.bind(this));
+        iframe.contentDocument.body.addEventListener("mouseup", this.eventListener.bind(this));
+        iframe.contentDocument.body.addEventListener("mousedown", this.eventListener.bind(this));
+        iframe.contentDocument.body.addEventListener("contextmenu", this.eventListener.bind(this));
+
+        iframe.contentDocument.body.addEventListener("click", function(event) {
 
             let anchor = this.getAnchor(event.target);
 
             if(anchor) {
-                console.log("Link click prevented.");
+                log.info("Link click prevented.");
                 event.preventDefault();
 
                 let href = anchor.href;
@@ -45,8 +68,6 @@ class EventBridge {
             }
 
         }.bind(this));
-
-        console.log("Event bridge started on: ", this.iframe.contentDocument.location.href);
 
     }
 
