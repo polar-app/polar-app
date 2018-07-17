@@ -30,11 +30,25 @@ class Browsers {
 
         switch (name) {
 
+            case "hidden":
+                return new BrowserMutator(browser)
+                    .setHeight(35000)
+                    .setShow(false)
+                    .build();
+
             case "headless":
-                return Browsers.createHeadless(browser, 35000);
+                return new BrowserMutator(browser)
+                    .setHeight(35000)
+                    .setShow(false)
+                    .setOffscreen(true)
+                    .build();
 
             case "headless_500":
-                return Browsers.createHeadless(browser, 500);
+                return new BrowserMutator(browser)
+                    .setHeight(500)
+                    .setShow(false)
+                    .setOffscreen(true)
+                    .build();
 
             case "default_500":
                 return Browsers.createDefault(browser, 500);
@@ -79,34 +93,62 @@ class Browsers {
         return browser;
     }
 
+}
+
+
+class BrowserMutator {
+
+
     /**
-     *
      * @param browser {Browser}
-     * @param height {number}
-     * @return {Browser}
      */
-    static createHeadless(browser, height) {
+    constructor(browser) {
+        this.browser = Object.assign({}, browser);
+    }
 
-        browser = Objects.duplicate(browser);
+    /**
+     * @param height {number}
+     * @return {BrowserMutator}
+     */
+    setHeight(height) {
 
-        /**
-         * The page height we should use when loading the document.  It
-         * might make sense in the future to just set this to
-         * document.body.scrollHeight after the page loads.  In fact
-         * this will definitely need to be changed.  Some javascript and
-         * CSS can display things at the bottom of the window so it
-         * could make the captured page look massive.
-         */
+        this.browser.deviceEmulation.screenSize.height = height;
+        this.browser.deviceEmulation.viewSize.height = height;
 
-        browser.deviceEmulation.screenSize.height = height;
-        browser.deviceEmulation.viewSize.height = height;
+        return this;
 
-        browser.show = false;
-        browser.offscreen = true;
+    }
 
-        return browser;
+    /**
+     * @param show {boolean}
+     * @return {BrowserMutator}
+     */
+    setShow(show) {
+
+        this.browser.show = show;
+
+        return this;
+
+    }
+
+    /**
+     * @param offscreen {boolean}
+     * @return {BrowserMutator}
+     */
+    setOffscreen(offscreen) {
+
+        this.browser.offscreen = true;
+
+        return this;
+
+    }
+
+    build() {
+        return this.browser;
     }
 
 }
+
+
 
 module.exports.Browsers = Browsers;

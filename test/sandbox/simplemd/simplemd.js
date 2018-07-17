@@ -2,7 +2,7 @@ const $ = require('jquery')
 jQuery = $;
 //const bootstrap = require('bootstrap');
 const featherlight = require('featherlight');
-const {Elements} = require("../../web/js/util/Elements.js");
+const {Elements} = require("../../../web/js/util/Elements.js");
 
 // FIXME: this is not working for soem reason and I ahve NO ideawhy.. module.exports is setup properly.
 

@@ -1,4 +1,4 @@
-const {Elements} = require("../../web/js/util/Elements.js");
+const {Elements} = require("../../../web/js/util/Elements.js");
 
 /**
  * Support for easily handling pasting images into simplemd.

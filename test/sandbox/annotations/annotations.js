@@ -1,7 +1,7 @@
 const $ = require("jquery"); jQuery = $;
 const jcm = require("jquery-contextmenu");
 const featherlight = require('featherlight');
-const {Elements} = require("../../web/js/util/Elements.js");
+const {Elements} = require("../../../web/js/util/Elements.js");
 const SimpleMDE = require("simplemde");
 
 function cmdAddFlashcard() {

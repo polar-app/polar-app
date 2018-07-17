@@ -126,8 +126,8 @@ class CaptureController {
 
         let browser = BrowserRegistry.DEFAULT;
 
-        // TODO: it would be nice if there were an option to NOT be headless
-        browser = Browsers.toProfile(browser, "headless");
+        //browser = Browsers.toProfile(browser, "headless");
+        browser = Browsers.toProfile(browser, "hidden");
 
         let capture = new Capture(url, browser, this.directories.stashDir, captureOpts);
 
