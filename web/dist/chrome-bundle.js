@@ -85216,8 +85216,6 @@ class PagemarkCoverageEventListener {
                 throw new Error("no event");
             }
 
-            console.log("FIXME: here...");
-
             if (!_this.keyActivated) {
                 return;
             }
@@ -89956,11 +89954,9 @@ class EventBridge {
     }
 
     eventListener(event) {
-        console.log("FIXME: dispatching evetn ");
         let newEvent = new event.constructor(event.type, event);
 
         this.targetElement.dispatchEvent(newEvent);
-        console.log("FIXME: dispatching evetn DONE..");
     }
 
 }
