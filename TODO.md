@@ -22,6 +22,12 @@
 
 ## Next
 
+- multi-color highlights:
+
+    use these colors:
+
+    https://chrome.google.com/webstore/detail/weava-highlighter-pdf-web/cbnaodkpfinfiipjblikofhlhlcickei/related
+
 
 
 - full-text search:
