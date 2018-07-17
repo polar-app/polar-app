@@ -44,6 +44,9 @@ class WebRequestReactor {
 
     stop() {
 
+        // TODO: I don't think this properly removes the event we're trying to
+        // remove.
+
         this.started = false;
 
         const eventRegisterFunctions = this.toEventRegisterFunctions();
@@ -54,7 +57,13 @@ class WebRequestReactor {
             this.reactor.clearEvent(functionName);
 
             eventRegisterFunction = eventRegisterFunction.bind(this.webRequest);
-            eventRegisterFunction(() => {})
+            eventRegisterFunction((details, callback) => {
+
+                if(callback)
+                    callback({cancel: false})
+
+            });
+
         });
 
     }

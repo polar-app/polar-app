@@ -145,13 +145,14 @@ class Capture {
 
             await pagingLoader.onLoad();
 
-            this.webRequestReactors.forEach(webRequestReactor => {
-                log.info("Stopping webRequestReactor...");
-                webRequestReactor.stop();
-                log.info("Stopping webRequestReactor...done");
-            });
-
         }
+
+
+        this.webRequestReactors.forEach(webRequestReactor => {
+            log.info("Stopping webRequestReactor...");
+            webRequestReactor.stop();
+            log.info("Stopping webRequestReactor...done");
+        });
 
         await Functions.waitFor(EXECUTE_CAPTURE_DELAY);
 

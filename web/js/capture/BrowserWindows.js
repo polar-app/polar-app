@@ -9,6 +9,8 @@ class BrowserWindows {
 
     static toBrowserWindowOptions(browser) {
 
+        let partition = "part-" + new Date().getMilliseconds();
+
         return {
             minWidth: browser.deviceEmulation.screenSize.width,
             minHeight: browser.deviceEmulation.screenSize.height,
@@ -36,7 +38,14 @@ class BrowserWindows {
                  * to the iframe documents from electron we should move to
                  * a more secure solution.
                  */
-                webSecurity: false
+                webSecurity: false,
+
+                /**
+                 * Use a session per capture so that webRequests between capture
+                 * instances aren't shared.
+                 */
+                partition
+
             }
 
         }
