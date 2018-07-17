@@ -1,4 +1,4 @@
-const {StartCaptureUI} = require("../../../web/js/capture/controller/StartCaptureUI");
+const {StartCaptureUI} = require("../../../../web/js/capture/controller/StartCaptureUI");
 
 let startCaptureUI = new StartCaptureUI();
 startCaptureUI.init();

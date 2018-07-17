@@ -79,6 +79,11 @@ class Capture {
         this.pendingWebRequestsListener = new PendingWebRequestsListener();
         this.debugWebRequestsListener = new DebugWebRequestsListener();
 
+
+        if(captureOpts.pendingWebRequestsCallback) {
+            this.pendingWebRequestsListener.addEventListener(captureOpts.pendingWebRequestsCallback);
+        }
+
         /**
          * @type {Electron.BrowserWindow}
          */

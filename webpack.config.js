@@ -1,6 +1,38 @@
 const path = require('path');
 const webpack = require('webpack');
 
+function createElectronRendererProfile(name, entryPath, distPath) {
+
+    entryPath = path.resolve(__dirname, entryPath);
+    distPath = path.resolve(__dirname, distPath);
+
+    return {
+        mode: 'development',
+        target: "electron-renderer",
+        entry: {
+            name: [ "babel-polyfill", entryPath]
+        },
+        module: {
+            rules: [
+                {
+                    test: /\.js$/,
+                    exclude: /node_modules/,
+                    use: {
+                        loader: "babel-loader"
+                    }
+                }
+            ],
+        },
+        devtool: "source-map",
+        output: {
+            path: distPath,
+            filename: `${name}-bundle.js`,
+        }
+
+    }
+
+}
+
 module.exports = [
     {
         mode: 'development',
@@ -88,29 +120,7 @@ module.exports = [
         }
     },
 
-    {
-        mode: 'development',
-        target: "electron-renderer",
-        entry: {
-            "capture": [ "babel-polyfill", "./apps/capture/js/entry.js"]
-        },
-        module: {
-            rules: [
-                {
-                    test: /\.js$/,
-                    exclude: /node_modules/,
-                    use: {
-                        loader: "babel-loader"
-                    }
-                }
-            ],
-        },
-        devtool: "source-map",
-        output: {
-            path: path.resolve(__dirname, 'apps/capture/dist'),
-            filename: '[name]-bundle.js',
-        }
-
-    }
-
 ];
+
+module.exports.push(createElectronRendererProfile("start-capture", "apps/capture/start-capture/js/entry.js", "apps/capture/start-capture/dist"));
+module.exports.push(createElectronRendererProfile("progress", "apps/capture/progress/js/entry.js", "apps/capture/progress/dist"));

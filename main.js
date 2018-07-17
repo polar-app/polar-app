@@ -128,7 +128,7 @@ const MENU_TEMPLATE = [{
                 label: 'Close',
                 accelerator: 'Shift+CmdOrCtrl+Z',
                 click: function(item, focusedWindow) {
-                    if (focusedWindow) focusedWindow.loadURL(DEFAULT_URL, options);
+                    if (focusedWindow) focusedWindow.close();
                 }
             },
             {
@@ -525,7 +525,7 @@ async function cmdCaptureWebPage(item, focusedWindow) {
 
     let targetWindow = createWindow();
 
-    let url = 'http://127.0.0.1:8500/apps/capture/start-capture.html';
+    let url = 'http://127.0.0.1:8500/apps/capture/start-capture/index.html';
     targetWindow.loadURL(url);
 
 }

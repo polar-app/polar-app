@@ -163,7 +163,7 @@ class PendingWebRequestsListener extends BaseWebRequestsListener {
 
         log.debug(`Pending requests: ${pending}, started=${started}, finished=${finished}, progress=${progress}: ${name}: ` + JSON.stringify(details, null, "  "));
 
-        this.dispatchEventListeners( {
+        this.dispatchEventListeners({
             name,
             details,
             pending,

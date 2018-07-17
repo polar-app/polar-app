@@ -63,7 +63,7 @@ class CaptureController {
 
         // FIXME: make this its own function
 
-        let captureResult = await this.runCapture(url);
+        let captureResult = await this.runCapture(webContents, url);
         //
         // let captureResult = {
         //     path: "/home/burton/.polar/stash/UK_unveils_new_Tempest_fighter_jet_model___BBC_News.phz"
@@ -91,7 +91,7 @@ class CaptureController {
 
             // load the capture.html page
 
-            let pageURL = 'http://127.0.0.1:8500/apps/capture/capture.html?url=' + encodeURIComponent(url);
+            let pageURL = 'http://127.0.0.1:8500/apps/capture/progress/index.html?url=' + encodeURIComponent(url);
 
             webContents.once("did-finish-load", () => {
 
@@ -106,9 +106,23 @@ class CaptureController {
 
     }
 
-    async runCapture(url) {
+    /**
+     *
+     * @param webContents {Electron.WebContents} The webContents page that
+     * should be updated with our progress.
+     *
+     * @param url {string}
+     * @return {Promise<CaptureResult>}
+     */
+    async runCapture(webContents, url) {
 
-        let captureOpts = new CaptureOpts({});
+        Preconditions.assertNotNull(webContents, "webContents");
+
+        let progressForwarder = new ProgressForwarder({webContents});
+
+        let captureOpts = new CaptureOpts({
+            pendingWebRequestsCallback: event => progressForwarder.pendingWebRequestsCallback(event)
+        });
 
         let browser = BrowserRegistry.DEFAULT;
 
@@ -138,6 +152,31 @@ class CaptureController {
         console.log("Loading PHZ URL: " + url);
 
         webContents.loadURL(url);
+
+    }
+
+}
+
+
+class ProgressForwarder {
+
+    constructor(opts) {
+
+        /**
+         *
+         * @type {Electron.WebContents}
+         */
+        this.webContents = null;
+
+        Object.assign(this, opts);
+
+        Preconditions.assertNotNull(this.webContents, "webContents");
+
+    }
+
+    pendingWebRequestsCallback(event) {
+
+        this.webContents.send("capture-progress-update", event);
 
     }
 
