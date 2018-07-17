@@ -178,12 +178,16 @@ class HTMLViewer extends Viewer {
         let iframe = document.querySelector("iframe");
         let iframeParentElement = iframe.parentElement;
 
-        iframeParentElement.removeChild(iframe);
+        // TODO: we were experimenting with adding+removing the child iframes
+        // but decided to back out the code as it was de-activating the iframes
+        // and I couldn't click on them.
+
+        //iframeParentElement.removeChild(iframe);
 
         let contentParent = document.querySelector("#content-parent");
         contentParent.style.transform = `scale(${scale})`;
 
-        iframeParentElement.appendChild(iframe);
+        //iframeParentElement.appendChild(iframe);
 
     }
 
