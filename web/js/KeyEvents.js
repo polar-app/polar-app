@@ -10,6 +10,7 @@ class KeyEvents {
         } else {
             return event.ctrlKey && event.altKey;
         }
+
     }
 
     static isMacOS() {
