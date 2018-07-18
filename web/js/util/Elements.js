@@ -125,6 +125,6 @@ class Elements {
 
     }
 
-};
+}
 
 module.exports.Elements = Elements;

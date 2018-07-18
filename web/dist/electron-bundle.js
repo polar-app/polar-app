@@ -55564,35 +55564,6 @@ class WebController extends Controller {
         this.onDocumentLoaded(newDocumentFingerprint, nrPages, currentPageNumber);
     }
 
-    traceEventOnPage(event, eventName) {
-        let pageElement = event.target.parentElement;
-        let pageNum = this.docFormat.getPageNumFromPageElement(pageElement);
-
-        log.info(`Found event ${eventName} on page number ${pageNum}`);
-    }
-
-    onViewerElementInserted() {
-
-        //TODO : try to use the window.PDFViewerApplication.eventBus with:
-        //
-        // documentload, pagerendered, textlayerrendered, pagechange, and pagesinit...
-
-        if (this.docFormat.currentDocFingerprint() !== this.docFingerprint) {
-
-            let newDocumentFingerprint = window.PDFViewerApplication.pdfDocument.pdfInfo.fingerprint;
-            let nrPages = window.PDFViewerApplication.pagesCount;
-
-            let pages = document.querySelectorAll("#viewer .page");
-
-            // FIXME:: I need to find the current selected page
-            let currentPageNumber = window.PDFViewerApplication.pdfViewer.currentPageNumber;
-
-            if (pages.length === nrPages) {
-                this.onNewDocumentFingerprint(newDocumentFingerprint, nrPages, currentPageNumber);
-            }
-        }
-    }
-
     // FIXME: remake this binding to CreatePagemarkEntirePage
     keyBindingPagemarkEntirePage(event) {
         var _this = this;
@@ -55603,14 +55574,16 @@ class WebController extends Controller {
 
             let pageElement = _this.docFormat.getCurrentPageElement();
 
-            if (!pageElement) {
+            if (pageElement) {
+
+                let pageNum = _this.docFormat.getPageNumFromPageElement(pageElement);
+
+                _this.erasePagemarks(pageNum);
+                yield _this.createPagemark(pageNum);
+            } else {
+
                 log.warn("No current pageElement to create pagemark.");
             }
-
-            let pageNum = _this.docFormat.getPageNumFromPageElement(pageElement);
-
-            _this.erasePagemarks(pageNum);
-            yield _this.createPagemark(pageNum);
         })();
     }
 
@@ -55884,15 +55857,20 @@ class DocFormat {
      */
     getCurrentPageElement() {
 
-        let pages = document.querySelectorAll(".page");
+        let pageElements = document.querySelectorAll(".page");
+
+        if (pageElements.length === 0) {
+            return pageElements[0];
+        }
 
         let result = { element: null, visibility: 0 };
 
-        pages.forEach(function (page) {
-            let visibility = Elements.calculateVisibilityForDiv(page);
+        pageElements.forEach(function (pageElement) {
+
+            let visibility = Elements.calculateVisibilityForDiv(pageElement);
 
             if (visibility > result.visibility) {
-                result.element = page;
+                result.element = pageElement;
                 result.visibility = visibility;
             }
         });
@@ -64030,7 +64008,7 @@ class Elements {
         }
     }
 
-};
+}
 
 module.exports.Elements = Elements;
 

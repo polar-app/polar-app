@@ -2,6 +2,7 @@ const electron = require('electron')
 const ipcRenderer = electron.ipcRenderer;
 const BrowserWindow = electron.BrowserWindow;
 const {Preconditions} = require("../../Preconditions");
+const {Elements} = require("../../util/Elements");
 
 const log = require("../../logger/Logger").create();
 
@@ -11,10 +12,6 @@ const log = require("../../logger/Logger").create();
 class ProgressUI {
 
     constructor() {
-
-        this.progressElement = document.querySelector("progress");
-
-        Preconditions.assertNotNull(this.progressElement, "progressElement");
 
     }
 
@@ -37,10 +34,28 @@ class ProgressUI {
 
         console.log("Got progress update: ", progressEvent.progress);
 
-        this.progressElement.value = progressEvent.progress;
+        this.updateProgress(progressEvent);
+        this.updateLogView(progressEvent);
 
     }
 
+    updateProgress(progressEvent) {
+
+        let progressElement = document.querySelector("progress");
+        progressElement.value = progressEvent.progress;
+
+    }
+
+    updateLogView(progressEvent) {
+
+
+        let logElement = document.querySelector(".log");
+
+        let lineElement = Elements.createElementHTML(`<div class="">${progressEvent.details.url}</div>`);
+
+        logElement.append(lineElement);
+
+    }
 
 }
 

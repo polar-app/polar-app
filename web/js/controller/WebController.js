@@ -89,38 +89,6 @@ class WebController extends Controller {
 
     }
 
-    traceEventOnPage(event, eventName) {
-        let pageElement = event.target.parentElement;
-        let pageNum = this.docFormat.getPageNumFromPageElement(pageElement);
-
-        log.info(`Found event ${eventName} on page number ${pageNum}`);
-
-    }
-
-    onViewerElementInserted() {
-
-        //TODO : try to use the window.PDFViewerApplication.eventBus with:
-        //
-        // documentload, pagerendered, textlayerrendered, pagechange, and pagesinit...
-
-        if (this.docFormat.currentDocFingerprint() !== this.docFingerprint) {
-
-            let newDocumentFingerprint = window.PDFViewerApplication.pdfDocument.pdfInfo.fingerprint;
-            let nrPages = window.PDFViewerApplication.pagesCount;
-
-            let pages = document.querySelectorAll("#viewer .page");
-
-            // FIXME:: I need to find the current selected page
-            let currentPageNumber = window.PDFViewerApplication.pdfViewer.currentPageNumber;
-
-            if (pages.length === nrPages) {
-                this.onNewDocumentFingerprint(newDocumentFingerprint, nrPages, currentPageNumber);
-            }
-
-        }
-
-    }
-
     // FIXME: remake this binding to CreatePagemarkEntirePage
     async keyBindingPagemarkEntirePage(event) {
 
@@ -128,14 +96,17 @@ class WebController extends Controller {
 
         let pageElement = this.docFormat.getCurrentPageElement();
 
-        if(! pageElement) {
+        if(pageElement) {
+
+            let pageNum = this.docFormat.getPageNumFromPageElement(pageElement);
+
+            this.erasePagemarks(pageNum);
+            await this.createPagemark(pageNum);
+
+        } else {
+
             log.warn("No current pageElement to create pagemark.");
         }
-
-        let pageNum = this.docFormat.getPageNumFromPageElement(pageElement);
-
-        this.erasePagemarks(pageNum);
-        await this.createPagemark(pageNum);
 
     }
 

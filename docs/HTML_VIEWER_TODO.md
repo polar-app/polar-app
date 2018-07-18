@@ -1,7 +1,10 @@
 # TODO:
 
-- The new Capture UI is mostly working.. 80% .. but it locks up the main Electron
-  process after it runs.
+- Some documents are always 105% of the browser height.
+
+    1. If we capture with a HUGE window then we end up with a HUGE captured
+       document.  Even if the HTML document is super small.  This happens in
+       practice with some real world documents.
 
 - maybe one way to apply CSS style to an element could be to:
     - CSS hide the original
@@ -42,7 +45,6 @@
     - play with transform: translateZ(0):
 
         - which might trick hardware acceleration to work.
-
 
     - this seems to highlight the problem a bit:
         https://codepen.io/Vestride/pen/CvBrw

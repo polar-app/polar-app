@@ -42,15 +42,20 @@ class DocFormat {
      */
     getCurrentPageElement() {
 
-        let pages = document.querySelectorAll(".page");
+        let pageElements = document.querySelectorAll(".page");
+
+        if(pageElements.length === 0) {
+            return pageElements[0];
+        }
 
         let result = { element: null, visibility: 0};
 
-        pages.forEach(function (page) {
-            let visibility = Elements.calculateVisibilityForDiv(page);
+        pageElements.forEach(function (pageElement) {
+
+            let visibility = Elements.calculateVisibilityForDiv(pageElement);
 
             if ( visibility > result.visibility) {
-                result.element = page;
+                result.element = pageElement;
                 result.visibility = visibility;
             }
 
