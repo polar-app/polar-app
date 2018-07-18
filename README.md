@@ -72,6 +72,8 @@ Right now usage is only via keyboard bindings:
 
 ## Text Highlights
 
+<img src="https://i.imgur.com/xdhZsu3.png">
+
 Text highlights allow you to work with content like you're using a text
 highlighter in a book.
 
@@ -110,8 +112,6 @@ We're currently working on landing a few key features which are halfway
 implemented including:
 
 - A rework of text highlights for PDFs
-
-- A UI for running capture
 
 - A new UI for working with pagemarks including dragging and resizing them.
 
