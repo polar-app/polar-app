@@ -3,12 +3,12 @@
 
 # Polar Bookshelf
 
-Polar Bookshelf is an incremental reading platform for PDF and web content
-created using the [Electron framework](https://electron.atom.io) and
+Polar Bookshelf is an incremental reading platform for PDF and the Web created
+using the [Electron framework](https://electron.atom.io) and
 [PDF.js](https://mozilla.github.io/pdf.js)
 
 It includes support for features like pagemarks, text highlights, and progress
-tracking by keeping track of how much you've read and restoring pagemarks
+tracking by keeping track of how much you've read including restoring pagemarks
 when you re-open documents.
 
 Pagemarks are a new proof of concept reading style inspired from [incremental
@@ -47,17 +47,6 @@ directly to Electron.
 
 This means you have long term storage of your content, can annotate it and use
 pagemarks without risk of the content changing.
-
-### Status
-
-Right now the PHZ format is stable and reliable but we haven't implemented the
-capture stage into the UI.
-
-You will have to run ```./capture.sh``` from a source distribution to work
-with this feature.  We're hoping to have this resolved shortly.
-
-We're also planning on working on a Chrome extension to make this easier to use
-directly from y our browser.
 
 ## Pagemarks
 
