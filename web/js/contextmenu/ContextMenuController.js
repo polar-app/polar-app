@@ -56,7 +56,9 @@ class ContextMenuController {
                     }
                 });
 
-                let docDescriptor = new DocDescriptor({fingerprint: this.model.docMeta.docInfo.fingerprint})
+                let docDescriptor = new DocDescriptor({
+                    fingerprint: this.model.docMeta.docInfo.fingerprint
+                });
 
                 log.info("Creating context menu for contextMenuTypes: ", contextMenuTypes);
 
@@ -84,11 +86,10 @@ class ContextMenuController {
     }
 
     static elementsFromEvent(event) {
-        // relative to the viewport
-
-        let point = {x: event.pageX, y: event.pageY};
-        console.log("FIXME: getting context at point: ", point);
+        // the point must be relative to the viewport
+        let point = {x: event.clientX, y: event.clientY};
         return event.target.ownerDocument.elementsFromPoint(point.x, point.y);
+
     }
 
     static toContextMenuType(selector) {
