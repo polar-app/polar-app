@@ -24,7 +24,7 @@ but I need feedback from the community.
 
 ## Docs
 
-- https://github.com/electron-userland/electron-builder/blob/master/docs/multi-platform-build.md#docker
+- https://www.electron.build/multi-platform-build#docker
 
 ## Running
 
@@ -39,14 +39,15 @@ docker run --rm -ti \
    -v ~/.cache/electron-builder:/root/.cache/electron-builder \
    electronuserland/builder:wine
 
+   bash -c 'yarn && ./node_modules/.bin/electron-builder --config=electron-builder.yml --win nsis portable --publish always --draft=false'
+
 
 ```
 
 Then within the docker container run:
 
 ```bash
-yarn
-./node_modules/.bin/electron-builder --config=electron-builder.yml --win nsis portable --publish always --draft=false
+yarn && ./node_modules/.bin/electron-builder --config=electron-builder.yml --win nsis portable --publish always --draft=false
 ```
 
 # Snap Store
