@@ -48,6 +48,12 @@ directly to Electron.
 This means you have long term storage of your content, can annotate it and use
 pagemarks without risk of the content changing.
 
+### Capturing Pages
+
+To capture a new page just select ```File | Capture Web Page``` then enter a URL. 
+
+After that the page will be captured and then loaded.
+
 ## Pagemarks
 
 The pagemarks are persisted on disk in your ```~/.polar``` directory and when
