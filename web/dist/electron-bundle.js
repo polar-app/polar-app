@@ -55859,7 +55859,10 @@ class DocFormat {
 
         let pageElements = document.querySelectorAll(".page");
 
-        if (pageElements.length === 0) {
+        if (pageElements.length === 1) {
+            // if we only have one page, just go with that as there are no other
+            // options.  This was added to avoid a bug in calculate visibility
+            // but it works.
             return pageElements[0];
         }
 

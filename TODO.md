@@ -1,7 +1,7 @@
 
 ## 1.0 b20 release
 
-- capture needs to work
+- can't create pagemark lower down on the page...
 
 ## Usability priorities:
 

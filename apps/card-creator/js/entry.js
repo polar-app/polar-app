@@ -7,10 +7,10 @@ import Form from "react-jsonschema-form";
 import SimpleMDE from 'react-simplemde-editor';
 
 const {ipcRenderer} = require('electron');
-const {InputController} = require("../annotations/InputController");
-const {FormHandler} = require("../annotations/FormHandler");
-const {AnnotationType} = require("../metadata/AnnotationType");
-const {Objects} = require("../util/Objects");
+const {InputController} = require("../../../web/js/annotations/InputController");
+const {FormHandler} = require("../../../web/js/annotations/FormHandler");
+const {AnnotationType} = require("../../../web/js/metadata/AnnotationType");
+const {Objects} = require("../../../web/js/util/Objects");
 
 /**
  * Convert the data to an external form. The uiSchema includes functions which

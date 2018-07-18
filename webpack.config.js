@@ -20,6 +20,11 @@ function createElectronRendererProfile(name, entryPath, distPath) {
                     use: {
                         loader: "babel-loader"
                     }
+                    // tell babel to NOT use .babelrc so we can define our
+                    // configuration here.  then tell it modules:false per
+                    //
+                    // https://insights.untapt.com/webpack-import-require-and-you-3fd7f5ea93c0
+
                 }
             ],
         },
@@ -75,7 +80,6 @@ module.exports = [
         target: "electron-renderer",
         entry: {
             "electron": ["babel-polyfill", "./web/js/apps/electron.js"],
-            "card-creator": [ "babel-polyfill", "./web/js/apps/card-creator.js"]
         },
         module: {
             rules: [
@@ -124,3 +128,4 @@ module.exports = [
 
 module.exports.push(createElectronRendererProfile("start-capture", "apps/capture/start-capture/js/entry.js", "apps/capture/start-capture/dist"));
 module.exports.push(createElectronRendererProfile("progress", "apps/capture/progress/js/entry.js", "apps/capture/progress/dist"));
+module.exports.push(createElectronRendererProfile("card-creator", "apps/card-creator/js/entry.js", "apps/card-creator/dist"));
