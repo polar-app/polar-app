@@ -55176,7 +55176,9 @@ class ContextMenuController {
 
     static elementsFromEvent(event) {
         // relative to the viewport
-        let point = { x: event.clientX, y: event.clientY };
+
+        let point = { x: event.pageX, y: event.pageY };
+        console.log("FIXME: getting context at point: ", point);
         return event.target.ownerDocument.elementsFromPoint(point.x, point.y);
     }
 
@@ -55607,19 +55609,16 @@ class WebController extends Controller {
 
                 if (event.key) {
 
-                    switch (event.key.toLowerCase()) {
+                    // TODO: we should not use 'code' but should use 'key'... The
+                    // problem is that on OS X the key code returned 'Dead' but was
+                    // working before.  Not sure why it started breaking.
+                    switch (event.code) {
 
-                        case "e":
+                        case "KeyE":
                             _this2.keyBindingErasePagemark(event);
                             break;
 
-                        case "m":
-                            // FIXME this is no longer used here and has migrated to
-                            // PagemarkCoverageEventListener
-                            _this2.keyBindingPagemarkUpToMouse(event);
-                            break;
-
-                        case "n":
+                        case "KeyN":
                             yield _this2.keyBindingPagemarkEntirePage(event);
                             break;
 
@@ -55628,7 +55627,7 @@ class WebController extends Controller {
 
                     }
                 }
-            }
+            } else {}
         })();
     }
 

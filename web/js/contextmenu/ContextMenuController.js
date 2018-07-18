@@ -85,7 +85,9 @@ class ContextMenuController {
 
     static elementsFromEvent(event) {
         // relative to the viewport
-        let point = {x: event.clientX, y: event.clientY};
+
+        let point = {x: event.pageX, y: event.pageY};
+        console.log("FIXME: getting context at point: ", point);
         return event.target.ownerDocument.elementsFromPoint(point.x, point.y);
     }
 
