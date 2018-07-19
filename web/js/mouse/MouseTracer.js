@@ -22,6 +22,14 @@ class MouseTracer {
 
         });
 
+        this.doc.addEventListener("mouseout", mouseEvent => {
+
+            //console.log("Got mouseEvent: ", mouseEvent);
+
+            tracerElement.textContent = "";
+
+        });
+
     }
 
     toString(mouseEvent) {
@@ -36,7 +44,7 @@ class MouseTracer {
 
         let div = this.doc.createElement("div");
 
-        div.style = "position: fixed; top: 0px; right: 0px; padding: 5px; background-color: #c6c6c6; z-index: 1; font-size: 12px;";
+        div.style = "position: fixed; top: 0px; right: 0px; padding: 5px; background-color: #c6c6c6; z-index: 1; font-size: 12px; min-width: 18em; min-height: 1em;";
 
         div.textContent = ' ';
 

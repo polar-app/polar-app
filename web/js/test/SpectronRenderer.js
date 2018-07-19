@@ -2,6 +2,12 @@ const electron = require('electron');
 const app = electron.app;
 const BrowserWindow = electron.BrowserWindow;
 
+const BROWSER_OPTIONS = {
+    webPreferences: {
+        webSecurity: false
+    }
+}
+
 class SpectronRenderer {
 
     /**

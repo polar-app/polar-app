@@ -65799,13 +65799,13 @@ class FrameEvents {
         // that into the page positions.
         //
 
-        let relativeOffsetRect = Elements.getRelativeOffsetRect(iframe);
+        result.client.x = mouseEvent.screenX - window.screenX;
+        result.client.y = mouseEvent.screenY - window.screenY;
 
-        result.page.x = mouseEvent.pageX + relativeOffsetRect.left;
-        result.page.y = mouseEvent.pageY + relativeOffsetRect.top;
+        // FIXME: wer'e off by 26px because of the electron navbar
 
-        result.client.x = result.page.x - window.scrollX;
-        result.client.y = result.page.y - window.scrollY;
+        result.page.x = result.client.x + window.scrollX;
+        result.page.y = result.client.y + window.scrollY;
 
         return result;
     }
