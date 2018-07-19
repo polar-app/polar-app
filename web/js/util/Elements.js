@@ -11,14 +11,17 @@ class Elements {
      *
      * @param element
      * @param [parentElement] {HTMLElement} relative to this parentElement.
+     *        By default we are relative to the document root (documentElement).
      * @return {Rect}
      */
+
+    // FIXME: this should be getPageOffsetRect and have a relativeToParentElement which is optional.
     static getRelativeOffsetRect(element, parentElement) {
 
         Preconditions.assertNotNull(element, "element");
 
         if(! parentElement) {
-            parentElement = element.ownerDocument.body;
+            parentElement = element.ownerDocument.documentElement;
         }
 
         let offsetRect = {left: 0, top: 0, width: 0, height: 0};
@@ -40,6 +43,11 @@ class Elements {
 
             offsetRect.left += toInt(element.offsetLeft);
             offsetRect.top += toInt(element.offsetTop);
+
+            // FIXME: I have to factor in scrollTop here.. this is insane.
+
+            //offsetRect.left += toInt(element.scrollLeft);
+            //offsetRect.top += toInt(element.scrollTop);
 
             if(element === parentElement)
                 break;

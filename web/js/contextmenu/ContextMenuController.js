@@ -32,23 +32,16 @@ class ContextMenuController {
 
     start() {
 
-
-        document.body.addEventListener("click", event => {
-            console.log(`FIXME event point is: clientX: ${event.clientX}, clientY: ${event.clientY}`,);
-        })
-
         // TODO: this should be refactored to make it testable with jsdom once
         // I get it working.
 
         console.log("Starting ContextMenuController");
 
-        document.querySelectorAll("body").forEach((targetElement) => {
+        document.querySelectorAll(".page").forEach((targetElement) => {
 
             console.log("Adding contextmenu listener on", targetElement);
 
-            targetElement.addEventListener("contextmenu", (event) => {
-
-                console.log("FIXME event early is: ", event);
+            targetElement.addEventListener("contextmenu", /** @type {MouseEvent} */ (event) => {
 
                 let annotationSelectors = [ ".text-highlight", ".area-highlight", ".pagemark", ".page" ];
 
@@ -79,6 +72,10 @@ class ContextMenuController {
                         client: {
                             x: event.clientX,
                             y: event.clientY
+                        },
+                        offset: {
+                            x: event.offsetX,
+                            y: event.offsetY
                         }
                     },
                     contextMenuTypes,

@@ -78146,6 +78146,8 @@ class Rects {
      */
     static createFromOffset(element) {
 
+        // FIXME: if I'm using this it might not be what I want.
+
         return Rects.createFromBasicRect({
             left: element.offsetLeft,
             top: element.offsetTop,
@@ -79125,22 +79127,16 @@ class ContextMenuController {
 
     start() {
 
-        document.body.addEventListener("click", event => {
-            console.log(`FIXME event point is: clientX: ${event.clientX}, clientY: ${event.clientY}`);
-        });
-
         // TODO: this should be refactored to make it testable with jsdom once
         // I get it working.
 
         console.log("Starting ContextMenuController");
 
-        document.querySelectorAll("body").forEach(targetElement => {
+        document.querySelectorAll(".page").forEach(targetElement => {
 
             console.log("Adding contextmenu listener on", targetElement);
 
-            targetElement.addEventListener("contextmenu", event => {
-
-                console.log("FIXME event early is: ", event);
+            targetElement.addEventListener("contextmenu", /** @type {MouseEvent} */event => {
 
                 let annotationSelectors = [".text-highlight", ".area-highlight", ".pagemark", ".page"];
 
@@ -79170,6 +79166,10 @@ class ContextMenuController {
                         client: {
                             x: event.clientX,
                             y: event.clientY
+                        },
+                        offset: {
+                            x: event.offsetX,
+                            y: event.offsetY
                         }
                     },
                     contextMenuTypes,
@@ -79508,6 +79508,7 @@ const { Controller } = __webpack_require__(/*! ./Controller.js */ "./web/js/cont
 const { DocFormatFactory } = __webpack_require__(/*! ../docformat/DocFormatFactory */ "./web/js/docformat/DocFormatFactory.js");
 const { ContextMenuController } = __webpack_require__(/*! ../contextmenu/ContextMenuController */ "./web/js/contextmenu/ContextMenuController.js");
 const { FlashcardsController } = __webpack_require__(/*! ../flashcards/controller/FlashcardsController */ "./web/js/flashcards/controller/FlashcardsController.js");
+const { MouseTracer } = __webpack_require__(/*! ../mouse/MouseTracer */ "./web/js/mouse/MouseTracer.js");
 
 const log = __webpack_require__(/*! ../logger/Logger */ "./web/js/logger/Logger.js").create();
 
@@ -79531,6 +79532,8 @@ class WebController extends Controller {
     start() {
         this.listenForDocumentLoad();
         this.listenForKeyBindings();
+
+        new MouseTracer(document).start();
     }
 
     onDocumentLoaded(fingerprint, nrPages, currentlySelectedPageNum) {
@@ -85054,6 +85057,94 @@ module.exports.VersionedObject = VersionedObject;
 
 /***/ }),
 
+/***/ "./web/js/mouse/MouseTracer.js":
+/*!*************************************!*\
+  !*** ./web/js/mouse/MouseTracer.js ***!
+  \*************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+
+/**
+ * Create a visual identifier on page of the current mouse position from the
+ * page events.  We also inject ourselves in child iframes.
+ */
+class MouseTracer {
+
+    /**
+     * @param doc {Document} The document to work with.
+     */
+    constructor(doc) {
+        this.doc = doc;
+    }
+
+    start() {
+
+        MouseTracer.startWithinDoc(this.doc);
+
+        this.doc.querySelectorAll("iframe").forEach(iframe => {
+
+            if (iframe.contentDocument) {
+                MouseTracer.startWithinDoc(iframe.contentDocument);
+            }
+
+            iframe.addEventListener("load", () => MouseTracer.startWithinDoc(iframe.contentDocument));
+        });
+    }
+
+    static startWithinDoc(doc) {
+
+        let tracerElement = MouseTracer.createTracerElement(doc);
+
+        doc.body.appendChild(tracerElement);
+
+        doc.addEventListener("mousemove", mouseEvent => {
+
+            //console.log("Got mouseEvent: ", mouseEvent);
+
+            tracerElement.textContent = MouseTracer.format(mouseEvent);
+        });
+
+        doc.addEventListener("mouseout", mouseEvent => {
+
+            //console.log("Got mouseEvent: ", mouseEvent);
+
+            let last = tracerElement.textContent;
+
+            tracerElement.textContent = `OUT (last was: ${last})`;
+        });
+
+        doc.addEventListener("click", mouseEvent => {
+
+            console.log(`Got mouseEvent at ${doc.location.href}: `, mouseEvent);
+        });
+    }
+
+    static format(mouseEvent) {
+        return `screen: ${mouseEvent.screenX}, ${mouseEvent.screenY} client: ${mouseEvent.clientX}, ${mouseEvent.clientY} page: ${mouseEvent.pageX}, ${mouseEvent.pageY}`;
+    }
+
+    /**
+     *
+     * @return {HTMLDivElement}
+     */
+    static createTracerElement(doc) {
+
+        let div = doc.createElement("div");
+
+        div.style = "position: fixed; top: 0px; right: 0px; padding: 5px; background-color: #c6c6c6; z-index: 999999; font-size: 12px; min-width: 18em; min-height: 1em;";
+
+        div.textContent = ' ';
+
+        return div;
+    }
+
+}
+
+module.exports.MouseTracer = MouseTracer;
+
+/***/ }),
+
 /***/ "./web/js/pagemarks/controller/PagemarkController.js":
 /*!***********************************************************!*\
   !*** ./web/js/pagemarks/controller/PagemarkController.js ***!
@@ -85066,6 +85157,7 @@ const { DocFormatFactory } = __webpack_require__(/*! ../../docformat/DocFormatFa
 const { Rects } = __webpack_require__(/*! ../../Rects */ "./web/js/Rects.js");
 const { Pagemarks } = __webpack_require__(/*! ../../metadata/Pagemarks */ "./web/js/metadata/Pagemarks.js");
 const { PagemarkRects } = __webpack_require__(/*! ../../metadata/PagemarkRects */ "./web/js/metadata/PagemarkRects.js");
+const { Elements } = __webpack_require__(/*! ../../util/Elements */ "./web/js/util/Elements.js");
 
 class PagemarkController {
 
@@ -85094,7 +85186,7 @@ class PagemarkController {
 
         // convert the point on the page to a pagemark and then save it into
         // the model/docMeta... the view will do the rest.
-        console.log("Creating pagemarks: ", data);
+        log.info("================= Creating pagemarks from data: ", data);
 
         let elements = document.elementsFromPoint(data.points.client.x, data.points.client.y);
 
@@ -85108,7 +85200,8 @@ class PagemarkController {
 
             let pageNum = this.docFormat.getPageNumFromPageElement(pageElement);
 
-            let pageElementPoint = this.getRelativePoint(pageElement, data.points.page);
+            // get the point within the element itself..
+            let pageElementPoint = data.points.offset;
 
             let boxRect = Rects.createFromBasicRect({
                 left: pageElementPoint.x,
@@ -85119,7 +85212,14 @@ class PagemarkController {
 
             log.info("Placing pagemark at: ", boxRect);
 
-            let containerRect = Rects.createFromOffset(pageElement);
+            // get a rect for the element... we really only need the dimensions
+            // though.. not the width and height.
+            let containerRect = Rects.createFromBasicRect({
+                left: 0,
+                top: 0,
+                width: pageElement.offsetWidth,
+                height: pageElement.offsetHeight
+            });
 
             let pagemarkRect = PagemarkRects.createFromPositionedRect(boxRect, containerRect);
 
@@ -85135,16 +85235,6 @@ class PagemarkController {
         } else {
             log.warn("Wrong number of elements selected: " + elements.length);
         }
-    }
-
-    getRelativePoint(element, point) {
-
-        let rect = element.getBoundingClientRect();
-
-        return {
-            x: point.x - rect.left,
-            y: point.y - rect.top
-        };
     }
 
 }
@@ -85171,7 +85261,7 @@ const { DocFormats } = __webpack_require__(/*! ../../docformat/DocFormats */ "./
 const { DocFormatFactory } = __webpack_require__(/*! ../../docformat/DocFormatFactory */ "./web/js/docformat/DocFormatFactory.js");
 const log = __webpack_require__(/*! ../../logger/Logger */ "./web/js/logger/Logger.js").create();
 
-const BORDER_PADDING = 9;
+const BORDER_PADDING = 0;
 
 class PagemarkCoverageEventListener {
 
@@ -85240,7 +85330,14 @@ class PagemarkCoverageEventListener {
             // and height of the new pagemark. Also, refactor this to make it
             // testable and throw plenty of tests at this...
 
-            if (state.mouseTop >= state.pageOffset.top && state.mouseTop <= state.pageOffset.bottom) {
+            if (state.pageOffset.top <= state.mouseTop && state.mouseTop <= state.pageOffset.bottom) {
+
+                // TODO/FIXME: we're not testing whether we're within the page by
+                // looking at the x coordinates.. just the y coordinates.
+
+                // TODO: if I just add the event listeners on the .page elements
+                // I don't need to validate that we're within a page.  The event
+                // listeners will do that for us.
 
                 // make sure the current mouse position is within a page.
 
@@ -85262,6 +85359,8 @@ class PagemarkCoverageEventListener {
      */
     getPointerState(event) {
 
+        log.info("Creating pagemark coverage from mouse event: ", event);
+
         let state = {
             error: null,
             pageElement: null,
@@ -85272,6 +85371,8 @@ class PagemarkCoverageEventListener {
             mousePageY: null
 
         };
+
+        log.info("Building pagemark for target: ", event.target);
 
         state.pageElement = Elements.untilRoot(event.target, ".page");
 
@@ -85289,7 +85390,10 @@ class PagemarkCoverageEventListener {
 
         state.viewport = document.getElementById("viewerContainer");
 
-        state.pageOffset = OffsetCalculator.calculate(state.textLayerElement, state.viewport.parentElement);
+        //state.pageOffset = OffsetCalculator.calculate(state.textLayerElement, state.viewport.parentElement);
+        state.pageOffset = Elements.getRelativeOffsetRect(state.textLayerElement, state.viewport.pageElement);
+
+        log.info("Using page offset: ", state.pageOffset);
 
         // this is lame.. this is for the border padding.  I don't like hard coding it.
         state.pageOffset.top += BORDER_PADDING;
@@ -88209,14 +88313,17 @@ class Elements {
      *
      * @param element
      * @param [parentElement] {HTMLElement} relative to this parentElement.
+     *        By default we are relative to the document root (documentElement).
      * @return {Rect}
      */
+
+    // FIXME: this should be getPageOffsetRect and have a relativeToParentElement which is optional.
     static getRelativeOffsetRect(element, parentElement) {
 
         Preconditions.assertNotNull(element, "element");
 
         if (!parentElement) {
-            parentElement = element.ownerDocument.body;
+            parentElement = element.ownerDocument.documentElement;
         }
 
         let offsetRect = { left: 0, top: 0, width: 0, height: 0 };
@@ -88237,6 +88344,11 @@ class Elements {
 
             offsetRect.left += toInt(element.offsetLeft);
             offsetRect.top += toInt(element.offsetTop);
+
+            // FIXME: I have to factor in scrollTop here.. this is insane.
+
+            //offsetRect.left += toInt(element.scrollLeft);
+            //offsetRect.top += toInt(element.scrollTop);
 
             if (element === parentElement) break;
 
@@ -89922,11 +90034,16 @@ const log = __webpack_require__(/*! ../../logger/Logger */ "./web/js/logger/Logg
  */
 class EventBridge {
 
+    /**
+     *
+     * @param targetElement
+     * @param iframe {HTMLIFrameElement}
+     */
     constructor(targetElement, iframe) {
         this.targetElement = targetElement;
 
         /**
-         * @type {HTMLElement}
+         * @type {HTMLIFrameElement}
          */
         this.iframe = iframe;
     }
@@ -89936,9 +90053,11 @@ class EventBridge {
         // TODO/FIXME: the child iframes within this iframe / recursively also
         // need to be configured.
 
-        this.addListeners(this.iframe);
+        this.iframe.addEventListener("load", () => this.addListeners(this.iframe));
 
         this.iframe.parentElement.addEventListener('DOMNodeInserted', event => this.elementInsertedListener(event), false);
+
+        //this.addListeners(this.iframe);
 
         log.info("Event bridge started on: ", this.iframe.contentDocument.location.href);
     }
@@ -89947,7 +90066,7 @@ class EventBridge {
 
         log.info("elementInsertedListener event: ", event);
 
-        if (event.target && event.target.tagName === "IFRAME") {
+        if (event && event.target && event.target.tagName === "IFRAME") {
             log.info("Main iframe re-added.  Registering event listeners again");
             let iframe = event.target;
             this.addListeners(iframe);
@@ -89955,6 +90074,10 @@ class EventBridge {
     }
 
     addListeners(iframe) {
+
+        if (!iframe.contentDocument) {
+            return;
+        }
 
         iframe.contentDocument.body.addEventListener("keyup", this.keyListener.bind(this));
         iframe.contentDocument.body.addEventListener("keydown", this.keyListener.bind(this));
@@ -89966,6 +90089,12 @@ class EventBridge {
         iframe.contentDocument.body.addEventListener("click", event => {
 
             let anchor = this.getAnchor(event.target);
+
+            // TODO: this needs to be reworked. This isn't the appropriate way
+            // to handle this.  I'm going to have to think about which "actions"
+            // must be handled by Polar and which ones we allow to be handled
+            // by the PHZ.  All Polar actions should call preventDefault and
+            // should preventDefault and not sent to the PHZ.
 
             if (anchor) {
                 log.info("Link click prevented.");
@@ -90011,8 +90140,12 @@ class EventBridge {
 
         Object.defineProperty(newEvent, "pageX", { value: eventPoints.page.x });
         Object.defineProperty(newEvent, "pageY", { value: eventPoints.page.y });
-        Object.defineProperty(newEvent, "clientX", { value: eventPoints.client.y });
+
+        Object.defineProperty(newEvent, "clientX", { value: eventPoints.client.x });
         Object.defineProperty(newEvent, "clientY", { value: eventPoints.client.y });
+
+        Object.defineProperty(newEvent, "offsetX", { value: eventPoints.offset.x });
+        Object.defineProperty(newEvent, "offsetY", { value: eventPoints.offset.y });
 
         if (newEvent.pageX !== eventPoints.page.x) {
             throw new Error("Define of properties failed");
@@ -90073,6 +90206,10 @@ class FrameEvents {
             client: {
                 x: undefined,
                 y: undefined
+            },
+            offset: {
+                x: undefined,
+                y: undefined
             }
 
         };
@@ -90085,12 +90222,24 @@ class FrameEvents {
         //
 
         result.client.x = mouseEvent.screenX - window.screenX;
-        result.client.y = mouseEvent.screenY - window.screenY;
 
-        // FIXME: wer'e off by 26px because of the electron navbar
+        // we have to adjust by window.screen.availTop to account for the electron
+        // navbar.  This isn't standardized though and might not be portable in
+        // the future but it works for now.
+        result.client.y = mouseEvent.screenY - window.screenY - window.screen.availTop;
+
+        // FIXME: removing these two below fixes pagemarks for PHZ files but
+        // I'm pretty sure that scrollX MUST be used to get the right position.
+        // it might be that my code is incorrect here.
 
         result.page.x = result.client.x + window.scrollX;
         result.page.y = result.client.y + window.scrollY;
+
+        result.offset.x = mouseEvent.pageX;
+        result.offset.y = mouseEvent.pageY;
+
+        // result.page.x = result.client.x;
+        // result.page.y = result.client.y;
 
         return result;
     }

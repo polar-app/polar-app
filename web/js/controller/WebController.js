@@ -7,6 +7,7 @@ const {Controller} = require("./Controller.js");
 const {DocFormatFactory} = require("../docformat/DocFormatFactory");
 const {ContextMenuController} = require("../contextmenu/ContextMenuController");
 const {FlashcardsController} = require("../flashcards/controller/FlashcardsController");
+const {MouseTracer} = require("../mouse/MouseTracer");
 
 const log = require("../logger/Logger").create();
 
@@ -31,6 +32,9 @@ class WebController extends Controller {
     start() {
         this.listenForDocumentLoad();
         this.listenForKeyBindings();
+
+        new MouseTracer(document).start();
+
     }
 
 

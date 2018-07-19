@@ -1,10 +1,26 @@
 
-## 1.0 b20 release
+## 1.0 b30 release
+
+- area highlights
+
+- flashcards
 
 - can't create pagemark lower down on the page... elementsFromPage is supposed
   to be based on the viewport but neither client nor page seems to fix it.
 
+    - I think this is because the offset position isn't within the parent page.
+
+    - any child iframes in the host iframe ALSO need the proper event offset...
+      I guess I just need a set of events all the way down the tree.
+
+    - wow.. in PDF.js the pageX CHANGES as I move elemtns around the page?  How
+      is that possible?
+
+        MUST be element scroll!!!
+
 ## Usability priorities:
+
+
 
 - there needs to be a 3rd pagemark type, IE informational.. bascially table of
   content and appendix pages. They should not have a full pagemark over them.
@@ -225,6 +241,8 @@
     - file associations are broken
         - they don't work on MacOS
         - they aren't even present as an option for MacOS
+
+#
 
 # Development productivity
 

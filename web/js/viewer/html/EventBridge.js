@@ -8,11 +8,16 @@ const log = require("../../logger/Logger").create();
  */
 class EventBridge {
 
+    /**
+     *
+     * @param targetElement
+     * @param iframe {HTMLIFrameElement}
+     */
     constructor(targetElement, iframe) {
         this.targetElement = targetElement;
 
         /**
-         * @type {HTMLElement}
+         * @type {HTMLIFrameElement}
          */
         this.iframe = iframe;
     }
@@ -22,9 +27,11 @@ class EventBridge {
         // TODO/FIXME: the child iframes within this iframe / recursively also
         // need to be configured.
 
-        this.addListeners(this.iframe);
+        this.iframe.addEventListener("load", () => this.addListeners(this.iframe));
 
         this.iframe.parentElement.addEventListener('DOMNodeInserted', (event) => this.elementInsertedListener(event), false);
+
+        //this.addListeners(this.iframe);
 
         log.info("Event bridge started on: ", this.iframe.contentDocument.location.href);
 
@@ -34,7 +41,7 @@ class EventBridge {
 
         log.info("elementInsertedListener event: " , event)
 
-        if (event.target && event.target.tagName === "IFRAME") {
+        if (event && event.target && event.target.tagName === "IFRAME") {
             log.info("Main iframe re-added.  Registering event listeners again");
             let iframe = event.target;
             this.addListeners(iframe);
@@ -43,6 +50,10 @@ class EventBridge {
     }
 
     addListeners(iframe) {
+
+        if(! iframe.contentDocument) {
+            return;
+        }
 
         iframe.contentDocument.body.addEventListener("keyup", this.keyListener.bind(this));
         iframe.contentDocument.body.addEventListener("keydown", this.keyListener.bind(this));
@@ -54,6 +65,12 @@ class EventBridge {
         iframe.contentDocument.body.addEventListener("click", event => {
 
             let anchor = this.getAnchor(event.target);
+
+            // TODO: this needs to be reworked. This isn't the appropriate way
+            // to handle this.  I'm going to have to think about which "actions"
+            // must be handled by Polar and which ones we allow to be handled
+            // by the PHZ.  All Polar actions should call preventDefault and
+            // should preventDefault and not sent to the PHZ.
 
             if(anchor) {
                 log.info("Link click prevented.");
@@ -103,8 +120,12 @@ class EventBridge {
 
         Object.defineProperty(newEvent, "pageX", {value: eventPoints.page.x});
         Object.defineProperty(newEvent, "pageY", {value: eventPoints.page.y});
-        Object.defineProperty(newEvent, "clientX", {value: eventPoints.client.y});
+
+        Object.defineProperty(newEvent, "clientX", {value: eventPoints.client.x});
         Object.defineProperty(newEvent, "clientY", {value: eventPoints.client.y});
+
+        Object.defineProperty(newEvent, "offsetX", {value: eventPoints.offset.x});
+        Object.defineProperty(newEvent, "offsetY", {value: eventPoints.offset.y});
 
         if(newEvent.pageX !== eventPoints.page.x) {
             throw new Error("Define of properties failed");

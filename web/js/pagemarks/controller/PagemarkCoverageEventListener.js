@@ -7,7 +7,7 @@ const {DocFormats} = require("../../docformat/DocFormats");
 const {DocFormatFactory} = require("../../docformat/DocFormatFactory");
 const log = require("../../logger/Logger").create();
 
-const BORDER_PADDING = 9;
+const BORDER_PADDING = 0;
 
 class PagemarkCoverageEventListener {
 
@@ -71,7 +71,14 @@ class PagemarkCoverageEventListener {
         // and height of the new pagemark. Also, refactor this to make it
         // testable and throw plenty of tests at this...
 
-        if(state.mouseTop >= state.pageOffset.top && state.mouseTop <= state.pageOffset.bottom) {
+        if(state.pageOffset.top <= state.mouseTop && state.mouseTop <= state.pageOffset.bottom) {
+
+            // TODO/FIXME: we're not testing whether we're within the page by
+            // looking at the x coordinates.. just the y coordinates.
+
+            // TODO: if I just add the event listeners on the .page elements
+            // I don't need to validate that we're within a page.  The event
+            // listeners will do that for us.
 
             // make sure the current mouse position is within a page.
 
@@ -94,6 +101,8 @@ class PagemarkCoverageEventListener {
      */
     getPointerState(event) {
 
+        log.info("Creating pagemark coverage from mouse event: ", event);
+
         let state = {
             error: null,
             pageElement: null,
@@ -104,6 +113,8 @@ class PagemarkCoverageEventListener {
             mousePageY: null
 
         };
+
+        log.info("Building pagemark for target: ", event.target);
 
         state.pageElement = Elements.untilRoot(event.target, ".page");
 
@@ -121,7 +132,10 @@ class PagemarkCoverageEventListener {
 
         state.viewport = document.getElementById("viewerContainer");
 
-        state.pageOffset = OffsetCalculator.calculate(state.textLayerElement, state.viewport.parentElement);
+        //state.pageOffset = OffsetCalculator.calculate(state.textLayerElement, state.viewport.parentElement);
+        state.pageOffset = Elements.getRelativeOffsetRect(state.textLayerElement, state.viewport.pageElement);
+
+        log.info("Using page offset: " , state.pageOffset);
 
         // this is lame.. this is for the border padding.  I don't like hard coding it.
         state.pageOffset.top += BORDER_PADDING;

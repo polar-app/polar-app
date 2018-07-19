@@ -30,6 +30,10 @@ class FrameEvents {
             client: {
                 x: undefined,
                 y: undefined
+            },
+            offset: {
+                x: undefined,
+                y: undefined
             }
 
         };
@@ -42,12 +46,24 @@ class FrameEvents {
         //
 
         result.client.x = mouseEvent.screenX - window.screenX;
-        result.client.y = mouseEvent.screenY - window.screenY;
 
-        // FIXME: wer'e off by 26px because of the electron navbar
+        // we have to adjust by window.screen.availTop to account for the electron
+        // navbar.  This isn't standardized though and might not be portable in
+        // the future but it works for now.
+        result.client.y = mouseEvent.screenY - window.screenY - window.screen.availTop;
+
+        // FIXME: removing these two below fixes pagemarks for PHZ files but
+        // I'm pretty sure that scrollX MUST be used to get the right position.
+        // it might be that my code is incorrect here.
 
         result.page.x = result.client.x + window.scrollX;
         result.page.y = result.client.y + window.scrollY;
+
+        result.offset.x = mouseEvent.pageX;
+        result.offset.y = mouseEvent.pageY;
+
+        // result.page.x = result.client.x;
+        // result.page.y = result.client.y;
 
         return result;
 

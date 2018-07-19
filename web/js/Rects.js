@@ -390,6 +390,8 @@ class Rects {
      */
     static createFromOffset(element) {
 
+        // FIXME: if I'm using this it might not be what I want.
+
         return Rects.createFromBasicRect({
             left: element.offsetLeft,
             top: element.offsetTop,

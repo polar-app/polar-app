@@ -3,6 +3,7 @@ const {DocFormatFactory} = require("../../docformat/DocFormatFactory");
 const {Rects} = require("../../Rects");
 const {Pagemarks} = require("../../metadata/Pagemarks");
 const {PagemarkRects} = require("../../metadata/PagemarkRects");
+const {Elements} = require("../../util/Elements");
 
 class PagemarkController {
 
@@ -33,7 +34,7 @@ class PagemarkController {
 
         // convert the point on the page to a pagemark and then save it into
         // the model/docMeta... the view will do the rest.
-        console.log("Creating pagemarks: ", data);
+        log.info("================= Creating pagemarks from data: ", data);
 
         let elements = document.elementsFromPoint(data.points.client.x, data.points.client.y);
 
@@ -47,7 +48,8 @@ class PagemarkController {
 
             let pageNum = this.docFormat.getPageNumFromPageElement(pageElement);
 
-            let pageElementPoint = this.getRelativePoint(pageElement, data.points.page);
+            // get the point within the element itself..
+            let pageElementPoint = data.points.offset;
 
             let boxRect = Rects.createFromBasicRect({
                 left: pageElementPoint.x,
@@ -58,7 +60,14 @@ class PagemarkController {
 
             log.info("Placing pagemark at: ", boxRect);
 
-            let containerRect = Rects.createFromOffset(pageElement);
+            // get a rect for the element... we really only need the dimensions
+            // though.. not the width and height.
+            let containerRect = Rects.createFromBasicRect({
+                left: 0,
+                top: 0,
+                width: pageElement.offsetWidth,
+                height: pageElement.offsetHeight
+            });
 
             let pagemarkRect = PagemarkRects.createFromPositionedRect(boxRect, containerRect);
 
@@ -75,17 +84,6 @@ class PagemarkController {
         } else {
             log.warn("Wrong number of elements selected: " + elements.length);
         }
-
-    }
-
-    getRelativePoint(element, point) {
-
-        let rect = element.getBoundingClientRect();
-
-        return {
-            x: point.x - rect.left,
-            y: point.y - rect.top
-        };
 
     }
 
