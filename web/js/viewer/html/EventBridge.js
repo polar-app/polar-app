@@ -1,3 +1,4 @@
+const {FrameEvents} = require("./FrameEvents");
 const log = require("../../logger/Logger").create();
 
 /**
@@ -9,6 +10,10 @@ class EventBridge {
 
     constructor(targetElement, iframe) {
         this.targetElement = targetElement;
+
+        /**
+         * @type {HTMLElement}
+         */
         this.iframe = iframe;
     }
 
@@ -39,13 +44,14 @@ class EventBridge {
 
     addListeners(iframe) {
 
-        iframe.contentDocument.body.addEventListener("keyup", this.eventListener.bind(this));
-        iframe.contentDocument.body.addEventListener("keydown", this.eventListener.bind(this));
-        iframe.contentDocument.body.addEventListener("mouseup", this.eventListener.bind(this));
-        iframe.contentDocument.body.addEventListener("mousedown", this.eventListener.bind(this));
-        iframe.contentDocument.body.addEventListener("contextmenu", this.eventListener.bind(this));
+        iframe.contentDocument.body.addEventListener("keyup", this.keyListener.bind(this));
+        iframe.contentDocument.body.addEventListener("keydown", this.keyListener.bind(this));
 
-        iframe.contentDocument.body.addEventListener("click", function(event) {
+        iframe.contentDocument.body.addEventListener("mouseup", this.mouseListener.bind(this));
+        iframe.contentDocument.body.addEventListener("mousedown", this.mouseListener.bind(this));
+        iframe.contentDocument.body.addEventListener("contextmenu", this.mouseListener.bind(this));
+
+        iframe.contentDocument.body.addEventListener("click", event => {
 
             let anchor = this.getAnchor(event.target);
 
@@ -64,10 +70,10 @@ class EventBridge {
                 }
 
             } else {
-                this.eventListener(event);
+                this.mouseListener(event);
             }
 
-        }.bind(this));
+        });
 
     }
 
@@ -89,10 +95,31 @@ class EventBridge {
 
     }
 
-    eventListener(event) {
-        let newEvent = new event.constructor(event.type, event)
+    mouseListener(event) {
+
+        let eventPoints = FrameEvents.calculatePoints(this.iframe, event);
+
+        let newEvent = new event.constructor(event.type, event);
+
+        Object.defineProperty(newEvent, "pageX", {value: eventPoints.page.x});
+        Object.defineProperty(newEvent, "pageY", {value: eventPoints.page.y});
+        Object.defineProperty(newEvent, "clientX", {value: eventPoints.client.y});
+        Object.defineProperty(newEvent, "clientY", {value: eventPoints.client.y});
+
+        if(newEvent.pageX !== eventPoints.page.x) {
+            throw new Error("Define of properties failed");
+        }
 
         this.targetElement.dispatchEvent(newEvent);
+
+    }
+
+    keyListener(event) {
+
+        let newEvent = new event.constructor(event.type, event);
+
+        this.targetElement.dispatchEvent(newEvent);
+
     }
 
 }

@@ -5,6 +5,54 @@ const {Rects} = require("../Rects");
 class Elements {
 
     /**
+     *
+     * Compute the offset relative to another parent element.  This can be used
+     * to compute the absolute position of an element on a page.
+     *
+     * @param element
+     * @param [parentElement] {HTMLElement} relative to this parentElement.
+     * @return {Rect}
+     */
+    static getRelativeOffsetRect(element, parentElement) {
+
+        Preconditions.assertNotNull(element, "element");
+
+        if(! parentElement) {
+            parentElement = element.ownerDocument.body;
+        }
+
+        let offsetRect = {left: 0, top: 0, width: 0, height: 0};
+
+        function toInt(value) {
+
+            if ( isNaN( value ) ) {
+                return 0;
+            }
+
+            return value;
+
+        }
+
+        offsetRect.width = toInt(element.offsetWidth);
+        offsetRect.height = toInt(element.offsetHeight);
+
+        while(element !== null) {
+
+            offsetRect.left += toInt(element.offsetLeft);
+            offsetRect.top += toInt(element.offsetTop);
+
+            if(element === parentElement)
+                break;
+
+            element = element.offsetParent;
+
+        }
+
+        return Rects.createFromBasicRect(offsetRect);
+
+    }
+
+    /**
      * Create a div from the given innerHTML and return it.
      *
      * @param innerHTML
@@ -51,6 +99,13 @@ class Elements {
 
     }
 
+    /**
+     *
+     * @param element
+     * @param parentElement
+     * @return {number}
+     * @deprecated
+     */
     static offsetRelative(element, parentElement) {
 
         let offsetLeft = 0;

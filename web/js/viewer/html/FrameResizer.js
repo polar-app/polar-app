@@ -108,13 +108,13 @@ class FrameResizer {
         let deltaPerc = 100 *(delta / height);
 
         if(! final && deltaPerc < 5) {
-            console.log(`Skipping resize as delta is too small (deltaPerc=${deltaPerc}, height=${height}, newHeight=${newHeight})`)
+            //console.log(`Skipping resize as delta is too small (deltaPerc=${deltaPerc}, height=${height}, newHeight=${newHeight})`)
             return;
         }
 
         // we basically keep polling.
         if(height !== newHeight) {
-            console.log(`Setting new height to: ${newHeight} vs previous ${this.iframe.style.height}`);
+            //console.log(`Setting new height to: ${newHeight} vs previous ${this.iframe.style.height}`);
             this.iframe.style.height = newHeight;
             this.height = newHeight;
         }

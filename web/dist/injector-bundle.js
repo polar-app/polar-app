@@ -11314,6 +11314,50 @@ const { Rects } = __webpack_require__(/*! ../Rects */ "./web/js/Rects.js");
 class Elements {
 
     /**
+     *
+     * Compute the offset relative to another parent element.  This can be used
+     * to compute the absolute position of an element on a page.
+     *
+     * @param element
+     * @param [parentElement] {HTMLElement} relative to this parentElement.
+     * @return {Rect}
+     */
+    static getRelativeOffsetRect(element, parentElement) {
+
+        Preconditions.assertNotNull(element, "element");
+
+        if (!parentElement) {
+            parentElement = element.ownerDocument.body;
+        }
+
+        let offsetRect = { left: 0, top: 0, width: 0, height: 0 };
+
+        function toInt(value) {
+
+            if (isNaN(value)) {
+                return 0;
+            }
+
+            return value;
+        }
+
+        offsetRect.width = toInt(element.offsetWidth);
+        offsetRect.height = toInt(element.offsetHeight);
+
+        while (element !== null) {
+
+            offsetRect.left += toInt(element.offsetLeft);
+            offsetRect.top += toInt(element.offsetTop);
+
+            if (element === parentElement) break;
+
+            element = element.offsetParent;
+        }
+
+        return Rects.createFromBasicRect(offsetRect);
+    }
+
+    /**
      * Create a div from the given innerHTML and return it.
      *
      * @param innerHTML
@@ -11356,6 +11400,13 @@ class Elements {
         }
     }
 
+    /**
+     *
+     * @param element
+     * @param parentElement
+     * @return {number}
+     * @deprecated
+     */
     static offsetRelative(element, parentElement) {
 
         let offsetLeft = 0;
@@ -12138,12 +12189,8 @@ module.exports.OffsetCalculator = class {
 
             if (element == null) break;
 
-            // FIXME: log the full offsets of EACH element...
-
             offset.left += this._toInt(element.offsetLeft);
             offset.top += this._toInt(element.offsetTop);
-            // offset.width += OffsetCalculator._toInt(element.offsetWidth)
-            // offset.height += OffsetCalculator._toInt(element.offsetHeight)
             offset.width = this._toInt(element.offsetWidth);
             offset.height = this._toInt(element.offsetHeight);
 

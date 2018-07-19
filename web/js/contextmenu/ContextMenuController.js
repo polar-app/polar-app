@@ -32,6 +32,11 @@ class ContextMenuController {
 
     start() {
 
+
+        document.body.addEventListener("click", event => {
+            console.log(`FIXME event point is: clientX: ${event.clientX}, clientY: ${event.clientY}`,);
+        })
+
         // TODO: this should be refactored to make it testable with jsdom once
         // I get it working.
 
@@ -42,6 +47,8 @@ class ContextMenuController {
             console.log("Adding contextmenu listener on", targetElement);
 
             targetElement.addEventListener("contextmenu", (event) => {
+
+                console.log("FIXME event early is: ", event);
 
                 let annotationSelectors = [ ".text-highlight", ".area-highlight", ".pagemark", ".page" ];
 
@@ -86,9 +93,22 @@ class ContextMenuController {
     }
 
     static elementsFromEvent(event) {
+
+        // FIXME: the bug is that the event is being sent from the bridge..
+        // NOT from the parent..
+
+        console.log("FIXME: event: ", event);
+
         // the point must be relative to the viewport
         let point = {x: event.clientX, y: event.clientY};
-        return event.target.ownerDocument.elementsFromPoint(point.x, point.y);
+
+        let doc = event.target.ownerDocument;
+
+
+        console.log("FIXME: running within doc: " + doc.location.href);
+        console.log("FIXME: running at point: ", point);
+
+        return doc.elementsFromPoint(point.x, point.y);
 
     }
 

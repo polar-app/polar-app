@@ -35,7 +35,7 @@ class PagemarkController {
         // the model/docMeta... the view will do the rest.
         console.log("Creating pagemarks: ", data);
 
-        let elements = document.elementsFromPoint(data.points.page.x, data.points.page.y);
+        let elements = document.elementsFromPoint(data.points.client.x, data.points.client.y);
 
         elements = elements.filter(element => element.matches(".page"));
 
@@ -47,17 +47,16 @@ class PagemarkController {
 
             let pageNum = this.docFormat.getPageNumFromPageElement(pageElement);
 
-            // ok... I have two points now.. client and page.. now do I find
-            // out the offset relative to the .page element?
-
             let pageElementPoint = this.getRelativePoint(pageElement, data.points.page);
 
             let boxRect = Rects.createFromBasicRect({
                 left: pageElementPoint.x,
                 top: pageElementPoint.y,
-                width: 50,
-                height: 50
+                width: 150,
+                height: 150
             });
+
+            log.info("Placing pagemark at: ", boxRect);
 
             let containerRect = Rects.createFromOffset(pageElement);
 
@@ -74,7 +73,7 @@ class PagemarkController {
             // update the DocMeta with a pagemark on this page..
 
         } else {
-            log.warn("No .page element clicked.");
+            log.warn("Wrong number of elements selected: " + elements.length);
         }
 
     }

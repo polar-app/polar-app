@@ -135,12 +135,8 @@ module.exports.OffsetCalculator = class {
             if(element == null)
                 break;
 
-            // FIXME: log the full offsets of EACH element...
-
             offset.left += this._toInt(element.offsetLeft);
             offset.top += this._toInt(element.offsetTop);
-            // offset.width += OffsetCalculator._toInt(element.offsetWidth)
-            // offset.height += OffsetCalculator._toInt(element.offsetHeight)
             offset.width = this._toInt(element.offsetWidth);
             offset.height = this._toInt(element.offsetHeight);
 
@@ -168,7 +164,7 @@ module.exports.OffsetCalculator = class {
 
     }
 
-}
+};
 
 module.exports.Styles = class {
 

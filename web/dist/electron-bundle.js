@@ -55127,6 +55127,10 @@ class ContextMenuController {
 
     start() {
 
+        document.body.addEventListener("click", event => {
+            console.log(`FIXME event point is: clientX: ${event.clientX}, clientY: ${event.clientY}`);
+        });
+
         // TODO: this should be refactored to make it testable with jsdom once
         // I get it working.
 
@@ -55137,6 +55141,8 @@ class ContextMenuController {
             console.log("Adding contextmenu listener on", targetElement);
 
             targetElement.addEventListener("contextmenu", event => {
+
+                console.log("FIXME event early is: ", event);
 
                 let annotationSelectors = [".text-highlight", ".area-highlight", ".pagemark", ".page"];
 
@@ -55177,9 +55183,21 @@ class ContextMenuController {
     }
 
     static elementsFromEvent(event) {
+
+        // FIXME: the bug is that the event is being sent from the bridge..
+        // NOT from the parent..
+
+        console.log("FIXME: event: ", event);
+
         // the point must be relative to the viewport
         let point = { x: event.clientX, y: event.clientY };
-        return event.target.ownerDocument.elementsFromPoint(point.x, point.y);
+
+        let doc = event.target.ownerDocument;
+
+        console.log("FIXME: running within doc: " + doc.location.href);
+        console.log("FIXME: running at point: ", point);
+
+        return doc.elementsFromPoint(point.x, point.y);
     }
 
     static toContextMenuType(selector) {
@@ -60793,7 +60811,7 @@ class PagemarkController {
         // the model/docMeta... the view will do the rest.
         console.log("Creating pagemarks: ", data);
 
-        let elements = document.elementsFromPoint(data.points.page.x, data.points.page.y);
+        let elements = document.elementsFromPoint(data.points.client.x, data.points.client.y);
 
         elements = elements.filter(element => element.matches(".page"));
 
@@ -60805,17 +60823,16 @@ class PagemarkController {
 
             let pageNum = this.docFormat.getPageNumFromPageElement(pageElement);
 
-            // ok... I have two points now.. client and page.. now do I find
-            // out the offset relative to the .page element?
-
             let pageElementPoint = this.getRelativePoint(pageElement, data.points.page);
 
             let boxRect = Rects.createFromBasicRect({
                 left: pageElementPoint.x,
                 top: pageElementPoint.y,
-                width: 50,
-                height: 50
+                width: 150,
+                height: 150
             });
+
+            log.info("Placing pagemark at: ", boxRect);
 
             let containerRect = Rects.createFromOffset(pageElement);
 
@@ -60831,7 +60848,7 @@ class PagemarkController {
 
             // update the DocMeta with a pagemark on this page..
         } else {
-            log.warn("No .page element clicked.");
+            log.warn("Wrong number of elements selected: " + elements.length);
         }
     }
 
@@ -63901,6 +63918,50 @@ const { Rects } = __webpack_require__(/*! ../Rects */ "./web/js/Rects.js");
 class Elements {
 
     /**
+     *
+     * Compute the offset relative to another parent element.  This can be used
+     * to compute the absolute position of an element on a page.
+     *
+     * @param element
+     * @param [parentElement] {HTMLElement} relative to this parentElement.
+     * @return {Rect}
+     */
+    static getRelativeOffsetRect(element, parentElement) {
+
+        Preconditions.assertNotNull(element, "element");
+
+        if (!parentElement) {
+            parentElement = element.ownerDocument.body;
+        }
+
+        let offsetRect = { left: 0, top: 0, width: 0, height: 0 };
+
+        function toInt(value) {
+
+            if (isNaN(value)) {
+                return 0;
+            }
+
+            return value;
+        }
+
+        offsetRect.width = toInt(element.offsetWidth);
+        offsetRect.height = toInt(element.offsetHeight);
+
+        while (element !== null) {
+
+            offsetRect.left += toInt(element.offsetLeft);
+            offsetRect.top += toInt(element.offsetTop);
+
+            if (element === parentElement) break;
+
+            element = element.offsetParent;
+        }
+
+        return Rects.createFromBasicRect(offsetRect);
+    }
+
+    /**
      * Create a div from the given innerHTML and return it.
      *
      * @param innerHTML
@@ -63943,6 +64004,13 @@ class Elements {
         }
     }
 
+    /**
+     *
+     * @param element
+     * @param parentElement
+     * @return {number}
+     * @deprecated
+     */
     static offsetRelative(element, parentElement) {
 
         let offsetLeft = 0;
@@ -65062,12 +65130,8 @@ module.exports.OffsetCalculator = class {
 
             if (element == null) break;
 
-            // FIXME: log the full offsets of EACH element...
-
             offset.left += this._toInt(element.offsetLeft);
             offset.top += this._toInt(element.offsetTop);
-            // offset.width += OffsetCalculator._toInt(element.offsetWidth)
-            // offset.height += OffsetCalculator._toInt(element.offsetHeight)
             offset.width = this._toInt(element.offsetWidth);
             offset.height = this._toInt(element.offsetHeight);
 
@@ -65563,6 +65627,7 @@ module.exports.ViewerFactory = ViewerFactory;
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
+const { FrameEvents } = __webpack_require__(/*! ./FrameEvents */ "./web/js/viewer/html/FrameEvents.js");
 const log = __webpack_require__(/*! ../../logger/Logger */ "./web/js/logger/Logger.js").create();
 
 /**
@@ -65574,6 +65639,10 @@ class EventBridge {
 
     constructor(targetElement, iframe) {
         this.targetElement = targetElement;
+
+        /**
+         * @type {HTMLElement}
+         */
         this.iframe = iframe;
     }
 
@@ -65602,13 +65671,14 @@ class EventBridge {
 
     addListeners(iframe) {
 
-        iframe.contentDocument.body.addEventListener("keyup", this.eventListener.bind(this));
-        iframe.contentDocument.body.addEventListener("keydown", this.eventListener.bind(this));
-        iframe.contentDocument.body.addEventListener("mouseup", this.eventListener.bind(this));
-        iframe.contentDocument.body.addEventListener("mousedown", this.eventListener.bind(this));
-        iframe.contentDocument.body.addEventListener("contextmenu", this.eventListener.bind(this));
+        iframe.contentDocument.body.addEventListener("keyup", this.keyListener.bind(this));
+        iframe.contentDocument.body.addEventListener("keydown", this.keyListener.bind(this));
 
-        iframe.contentDocument.body.addEventListener("click", function (event) {
+        iframe.contentDocument.body.addEventListener("mouseup", this.mouseListener.bind(this));
+        iframe.contentDocument.body.addEventListener("mousedown", this.mouseListener.bind(this));
+        iframe.contentDocument.body.addEventListener("contextmenu", this.mouseListener.bind(this));
+
+        iframe.contentDocument.body.addEventListener("click", event => {
 
             let anchor = this.getAnchor(event.target);
 
@@ -65626,9 +65696,9 @@ class EventBridge {
                     document.location.href = href;
                 }
             } else {
-                this.eventListener(event);
+                this.mouseListener(event);
             }
-        }.bind(this));
+        });
     }
 
     /**
@@ -65648,7 +65718,26 @@ class EventBridge {
         return this.getAnchor(element.parentElement);
     }
 
-    eventListener(event) {
+    mouseListener(event) {
+
+        let eventPoints = FrameEvents.calculatePoints(this.iframe, event);
+
+        let newEvent = new event.constructor(event.type, event);
+
+        Object.defineProperty(newEvent, "pageX", { value: eventPoints.page.x });
+        Object.defineProperty(newEvent, "pageY", { value: eventPoints.page.y });
+        Object.defineProperty(newEvent, "clientX", { value: eventPoints.client.y });
+        Object.defineProperty(newEvent, "clientY", { value: eventPoints.client.y });
+
+        if (newEvent.pageX !== eventPoints.page.x) {
+            throw new Error("Define of properties failed");
+        }
+
+        this.targetElement.dispatchEvent(newEvent);
+    }
+
+    keyListener(event) {
+
         let newEvent = new event.constructor(event.type, event);
 
         this.targetElement.dispatchEvent(newEvent);
@@ -65657,6 +65746,73 @@ class EventBridge {
 }
 
 module.exports.EventBridge = EventBridge;
+
+/***/ }),
+
+/***/ "./web/js/viewer/html/FrameEvents.js":
+/*!*******************************************!*\
+  !*** ./web/js/viewer/html/FrameEvents.js ***!
+  \*******************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+const { Elements } = __webpack_require__(/*! ../../util/Elements */ "./web/js/util/Elements.js");
+const { Preconditions } = __webpack_require__(/*! ../../Preconditions */ "./web/js/Preconditions.js");
+
+class FrameEvents {
+
+    /**
+     * Calculate the points of an mouseEvent in the current window relative to the
+     * frame which originated the mouseEvent.
+     *
+     * @param iframe {HTMLIFrameElement}
+     * @param mouseEvent {MouseEvent}
+     */
+    static calculatePoints(iframe, mouseEvent) {
+
+        // FIXME: make sure the mouseEvent ACTUALLY happened in the iframe because
+        // if it didn't then the calculations here won't make any sense.
+
+        Preconditions.assertNotNull(iframe, "iframe");
+
+        if (mouseEvent.target.ownerDocument !== iframe.contentDocument) {
+            throw new Error("Event did not occur in specified iframe");
+        }
+
+        let result = {
+
+            page: {
+                x: undefined,
+                y: undefined
+            },
+            client: {
+                x: undefined,
+                y: undefined
+            }
+
+        };
+
+        // We need a frame of reference to translate the two coordinate systems.
+        // using screenX and screenY solve this problem for us.  We can
+        // translate the the screen position to the client (viewport) position,
+        // and then based on the scrolling positions of the document translate
+        // that into the page positions.
+        //
+
+        let relativeOffsetRect = Elements.getRelativeOffsetRect(iframe);
+
+        result.page.x = mouseEvent.pageX + relativeOffsetRect.left;
+        result.page.y = mouseEvent.pageY + relativeOffsetRect.top;
+
+        result.client.x = result.page.x - window.scrollX;
+        result.client.y = result.page.y - window.scrollY;
+
+        return result;
+    }
+
+}
+
+module.exports.FrameEvents = FrameEvents;
 
 /***/ }),
 
@@ -65857,13 +66013,13 @@ class FrameResizer {
         let deltaPerc = 100 * (delta / height);
 
         if (!final && deltaPerc < 5) {
-            console.log(`Skipping resize as delta is too small (deltaPerc=${deltaPerc}, height=${height}, newHeight=${newHeight})`);
+            //console.log(`Skipping resize as delta is too small (deltaPerc=${deltaPerc}, height=${height}, newHeight=${newHeight})`)
             return;
         }
 
         // we basically keep polling.
         if (height !== newHeight) {
-            console.log(`Setting new height to: ${newHeight} vs previous ${this.iframe.style.height}`);
+            //console.log(`Setting new height to: ${newHeight} vs previous ${this.iframe.style.height}`);
             this.iframe.style.height = newHeight;
             this.height = newHeight;
         }

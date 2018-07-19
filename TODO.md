@@ -1,9 +1,22 @@
 
 ## 1.0 b20 release
 
-- can't create pagemark lower down on the page...
+- can't create pagemark lower down on the page... elementsFromPage is supposed
+  to be based on the viewport but neither client nor page seems to fix it.
 
 ## Usability priorities:
+
+- there needs to be a 3rd pagemark type, IE informational.. bascially table of
+  content and appendix pages. They should not have a full pagemark over them.
+  and/or the pagemark should just be inactive.  If the pagemark obsctures / blocks
+  the UI then the table of contents won't be usable but at the same time I don't
+  want the ToC to count against our progress percentage.
+
+
+- metadata needs lastUpdate timestamps for pagemarks and for the document...
+
+    - I can do this in Model when I syunc the data to disk but I'll need to
+      make sure to not double write it...
 
 - initial window should be a factor of 8.5/11 ?
 
