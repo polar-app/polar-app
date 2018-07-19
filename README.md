@@ -48,6 +48,12 @@ directly to Electron.
 This means you have long term storage of your content, can annotate it and use
 pagemarks without risk of the content changing.
 
+### Capturing Pages
+
+To capture a new page just select ```File | Capture Web Page``` then enter a URL. 
+
+After that the page will be captured and then loaded.
+
 ## Pagemarks
 
 The pagemarks are persisted on disk in your ```~/.polar``` directory and when
@@ -71,6 +77,8 @@ Right now usage is only via keyboard bindings:
  - Meta-Command E - erase the current pagemark
 
 ## Text Highlights
+
+<img src="https://i.imgur.com/xdhZsu3.png">
 
 Text highlights allow you to work with content like you're using a text
 highlighter in a book.
@@ -110,8 +118,6 @@ We're currently working on landing a few key features which are halfway
 implemented including:
 
 - A rework of text highlights for PDFs
-
-- A UI for running capture
 
 - A new UI for working with pagemarks including dragging and resizing them.
 
