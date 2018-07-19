@@ -55184,18 +55184,10 @@ class ContextMenuController {
 
     static elementsFromEvent(event) {
 
-        // FIXME: the bug is that the event is being sent from the bridge..
-        // NOT from the parent..
-
-        console.log("FIXME: event: ", event);
-
         // the point must be relative to the viewport
         let point = { x: event.clientX, y: event.clientY };
 
         let doc = event.target.ownerDocument;
-
-        console.log("FIXME: running within doc: " + doc.location.href);
-        console.log("FIXME: running at point: ", point);
 
         return doc.elementsFromPoint(point.x, point.y);
     }
@@ -60901,7 +60893,6 @@ class PagemarkController {
 
         // convert the point on the page to a pagemark and then save it into
         // the model/docMeta... the view will do the rest.
-        log.info("================= Creating pagemarks from data: ", data);
 
         let elements = document.elementsFromPoint(data.points.client.x, data.points.client.y);
 
@@ -61105,7 +61096,6 @@ class PagemarkCoverageEventListener {
 
         state.viewport = document.getElementById("viewerContainer");
 
-        //state.pageOffset = OffsetCalculator.calculate(state.textLayerElement, state.viewport.parentElement);
         state.pageOffset = Elements.getRelativeOffsetRect(state.textLayerElement, state.viewport.pageElement);
 
         log.info("Using page offset: ", state.pageOffset);

@@ -34,7 +34,6 @@ class PagemarkController {
 
         // convert the point on the page to a pagemark and then save it into
         // the model/docMeta... the view will do the rest.
-        log.info("================= Creating pagemarks from data: ", data);
 
         let elements = document.elementsFromPoint(data.points.client.x, data.points.client.y);
 

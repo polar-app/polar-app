@@ -132,7 +132,6 @@ class PagemarkCoverageEventListener {
 
         state.viewport = document.getElementById("viewerContainer");
 
-        //state.pageOffset = OffsetCalculator.calculate(state.textLayerElement, state.viewport.parentElement);
         state.pageOffset = Elements.getRelativeOffsetRect(state.textLayerElement, state.viewport.pageElement);
 
         log.info("Using page offset: " , state.pageOffset);

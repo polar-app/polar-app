@@ -91,19 +91,10 @@ class ContextMenuController {
 
     static elementsFromEvent(event) {
 
-        // FIXME: the bug is that the event is being sent from the bridge..
-        // NOT from the parent..
-
-        console.log("FIXME: event: ", event);
-
         // the point must be relative to the viewport
         let point = {x: event.clientX, y: event.clientY};
 
         let doc = event.target.ownerDocument;
-
-
-        console.log("FIXME: running within doc: " + doc.location.href);
-        console.log("FIXME: running at point: ", point);
 
         return doc.elementsFromPoint(point.x, point.y);
 
