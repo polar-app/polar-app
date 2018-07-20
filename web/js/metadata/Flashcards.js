@@ -48,8 +48,7 @@ class Flashcards {
 
         // now work with the formData to create the fields.
         Functions.forDict(data.formData, (key,value) => {
-            let text = Texts.create(value, TextType.MARKDOWN);
-            fields[key] = text;
+            fields[key] = Texts.create(value, TextType.HTML);
         });
 
         return Flashcards.create(FlashcardType.BASIC_FRONT_BACK, fields);
