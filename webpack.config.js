@@ -28,7 +28,16 @@ function createElectronRendererProfile(name, entryPath, distPath) {
         output: {
             path: distPath,
             filename: `${name}-bundle.js`,
-        }
+        },
+        plugins: [
+            new webpack.ProvidePlugin({
+                $: "jquery",
+                jQuery: "jquery",
+                "window.$": "jquery",
+                "window.jQuery": "jquery",
+                Popper: 'popper.js',
+            })
+        ]
 
     }
 
@@ -125,3 +134,4 @@ module.exports = [
 module.exports.push(createElectronRendererProfile("start-capture", "apps/capture/start-capture/js/entry.js", "apps/capture/start-capture/dist"));
 module.exports.push(createElectronRendererProfile("progress", "apps/capture/progress/js/entry.js", "apps/capture/progress/dist"));
 module.exports.push(createElectronRendererProfile("card-creator", "apps/card-creator/js/entry.js", "apps/card-creator/dist"));
+module.exports.push(createElectronRendererProfile("summernote", "test/sandbox/summernote/js/entry.js", "test/sandbox/summernote/dist"));
