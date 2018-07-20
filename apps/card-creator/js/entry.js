@@ -1,10 +1,10 @@
 const $ = require("jquery");
 
-import React, {Component } from "react";
-import { render } from "react-dom";
-
-import Form from "react-jsonschema-form";
-import SimpleMDE from 'react-simplemde-editor';
+import React from "react";
+// import { render } from "react-dom";
+//
+// import Form from "react-jsonschema-form";
+// import SimpleMDE from 'react-simplemde-editor';
 
 const {ipcRenderer} = require('electron');
 const {InputController} = require("../../../web/js/annotations/InputController");

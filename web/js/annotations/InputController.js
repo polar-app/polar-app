@@ -1,10 +1,26 @@
 const $ = require("jquery");
 
+import 'bootstrap';
+import 'bootstrap/js/src/util';
+import 'bootstrap/js/src/modal';
+import 'bootstrap/js/src/dropdown';
+import 'bootstrap/js/src/tooltip';
+
+// require('bootstrap/js/dist/modal.js');
+// require('bootstrap/js/dist/dropdown.js');
+// require('bootstrap/js/dist/tooltip.js');
+// require('bootstrap/dist/css/bootstrap.css');
+// require('font-awesome/css/font-awesome.css');
+// require('summernote/dist/summernote.css');
+require('summernote/dist/summernote-bs4');
+
 import React, {Component} from "react";
 import { render } from "react-dom";
 
 import Form from "react-jsonschema-form";
 import SimpleMDE from 'react-simplemde-editor';
+
+import ReactSummernote from 'react-summernote';
 
 //import {ImagePasteHandler} from "../paste/ImagePasteHandler";
 
@@ -57,10 +73,10 @@ class InputController {
         const uiSchema = {
 
             front: {
-                "ui:widget": MarkdownWidget,
+                "ui:widget": RichTextEditor,
             },
             back: {
-                "ui:widget": MarkdownWidget,
+                "ui:widget": RichTextEditor,
             }
 
         };
@@ -104,6 +120,35 @@ class InputController {
 
 }
 
+class RichTextEditor extends Component {
+
+    onChange(content) {
+        console.log('onChange', content);
+    }
+
+    render() {
+        return (
+            <ReactSummernote
+                value="Default value"
+                options={{
+                    lang: 'ru-RU',
+                    height: 350,
+                    dialogsInBody: true,
+                    toolbar: [
+                        ['style', ['style']],
+                        ['font', ['bold', 'underline', 'clear']],
+                        ['fontname', ['fontname']],
+                        ['para', ['ul', 'ol', 'paragraph']],
+                        ['table', ['table']],
+                        ['insert', ['link', 'picture', 'video']],
+                        ['view', ['fullscreen', 'codeview']]
+                    ]
+                }}
+                onChange={this.onChange}
+            />
+        );
+    }
+}
 
 function MarkdownWidget(props) {
 
