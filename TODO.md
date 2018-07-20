@@ -1,6 +1,8 @@
 
 ## 1.0 b30 release
 
+- wikipedia pages look poor at 150%
+
 - area highlights
 
 - flashcards

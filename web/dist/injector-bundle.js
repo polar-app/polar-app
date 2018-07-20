@@ -10467,16 +10467,30 @@ return jQuery;
   !*** ./web/js/Electron.js ***!
   \****************************/
 /*! no static exports found */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
 
-class Electron {
+"use strict";
 
-    static isElectron() {
-        var userAgent = navigator.userAgent.toLowerCase();
-        return userAgent.indexOf(' electron/') !== -1;
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var Electron = function () {
+    function Electron() {
+        _classCallCheck(this, Electron);
     }
 
-}
+    _createClass(Electron, null, [{
+        key: 'isElectron',
+        value: function isElectron() {
+            var userAgent = navigator.userAgent.toLowerCase();
+            return userAgent.indexOf(' electron/') !== -1;
+        }
+    }]);
+
+    return Electron;
+}();
 
 module.exports.Electron = Electron;
 
@@ -10487,49 +10501,67 @@ module.exports.Electron = Electron;
   !*** ./web/js/Optional.js ***!
   \****************************/
 /*! no static exports found */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 // simple optional implementation so we don't need to resort to jquery
 
-class Optional {
+var Optional = function () {
+    function Optional(value) {
+        _classCallCheck(this, Optional);
 
-    constructor(value) {
         this.value = value;
     }
 
-    map(fn) {
-        if (this.value !== undefined) {
-            return new Some(fn(this.value));
+    _createClass(Optional, [{
+        key: "map",
+        value: function map(fn) {
+            if (this.value !== undefined) {
+                return new Some(fn(this.value));
+            }
+            return None;
         }
-        return None;
-    }
+    }, {
+        key: "filter",
+        value: function filter(fn) {
 
-    filter(fn) {
+            if (fn(this.value)) {
+                return new Some(this.value);
+            }
 
-        if (fn(this.value)) {
-            return new Some(this.value);
+            return None;
         }
+    }, {
+        key: "getOrElse",
+        value: function getOrElse(value) {
+            if (this.value !== undefined) {
+                return this.value;
+            }
 
-        return None;
-    }
-
-    getOrElse(value) {
-        if (this.value !== undefined) {
-            return this.value;
+            return value;
         }
+    }], [{
+        key: "of",
+        value: function of(value) {
+            return new Optional(value);
+        }
+    }]);
 
-        return value;
-    }
-
-    static of(value) {
-        return new Optional(value);
-    }
-}
+    return Optional;
+}();
 
 var None = new Optional();
 
-var Some = function (value) {
-    if (typeof value !== undefined) {
+var Some = function Some(value) {
+    if ((typeof value === "undefined" ? "undefined" : _typeof(value)) !== undefined) {
         return new Optional(value);
     }
     return None;
@@ -10544,140 +10576,175 @@ module.exports.Optional = Optional;
   !*** ./web/js/Preconditions.js ***!
   \*********************************/
 /*! no static exports found */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
 
-class Preconditions {
+"use strict";
 
-    /**
-     *
-     * @param value
-     * @param testFunction {Function} Assert that the test function returns true
-     * @param message
-     * @return {*} Return the value we've been given.
-     */
-    static assert(value, testFunction, message) {
 
-        Preconditions.assertNotNull(testFunction, "testFunction");
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
-        let result = testFunction(value);
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-        if (!result) {
-            throw new Error(`Assertion failed for value ${value}: ` + message);
-        }
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-        return value;
+var Preconditions = function () {
+    function Preconditions() {
+        _classCallCheck(this, Preconditions);
     }
 
-    /**
-     * Assert that this value is defined , not-null, and also not NaN and also a number.
-     * @param value
-     * @param expected The expected value.
-     * @param name
-     * @return {number}
-     */
-    static assertEqual(value, expected, name) {
+    _createClass(Preconditions, null, [{
+        key: "assert",
 
-        if (value !== expected) {
-            throw new Error(`Value of ${value} !==- ${expected}`);
+
+        /**
+         *
+         * @param value
+         * @param testFunction {Function} Assert that the test function returns true
+         * @param message
+         * @return {*} Return the value we've been given.
+         */
+        value: function assert(value, testFunction, message) {
+
+            Preconditions.assertNotNull(testFunction, "testFunction");
+
+            var result = testFunction(value);
+
+            if (!result) {
+                throw new Error("Assertion failed for value " + value + ": " + message);
+            }
+
+            return value;
         }
 
-        return value;
-    }
+        /**
+         * Assert that this value is defined , not-null, and also not NaN and also a number.
+         * @param value
+         * @param expected The expected value.
+         * @param name
+         * @return {number}
+         */
 
-    /**
-     * Assert that this value is defined , not-null, and also not NaN and also a number.
-     * @param value {number} The value we expect to be a number.
-     * @param name {string} The name of the number.
-     * @return {number}
-     */
-    static assertNumber(value, name) {
+    }, {
+        key: "assertEqual",
+        value: function assertEqual(value, expected, name) {
 
-        Preconditions.assertNotNull(value, name);
+            if (value !== expected) {
+                throw new Error("Value of " + value + " !==- " + expected);
+            }
 
-        if (isNaN(value)) {
-            throw new Error(`Precondition failure for ${name}: NaN`);
+            return value;
         }
 
-        Preconditions.assertTypeOf(value, name, "number");
+        /**
+         * Assert that this value is defined , not-null, and also not NaN and also a number.
+         * @param value {number} The value we expect to be a number.
+         * @param name {string} The name of the number.
+         * @return {number}
+         */
 
-        return value;
-    }
+    }, {
+        key: "assertNumber",
+        value: function assertNumber(value, name) {
 
-    static assertInstanceOf(value, name, instance) {
+            Preconditions.assertNotNull(value, name);
 
-        if (value instanceof instance) {
-            throw new Error(`Precondition for instanceof '${name}' was not ${instance}.`);
+            if (isNaN(value)) {
+                throw new Error("Precondition failure for " + name + ": NaN");
+            }
+
+            Preconditions.assertTypeOf(value, name, "number");
+
+            return value;
+        }
+    }, {
+        key: "assertInstanceOf",
+        value: function assertInstanceOf(value, name, instance) {
+
+            if (value instanceof instance) {
+                throw new Error("Precondition for instanceof '" + name + "' was not " + instance + ".");
+            }
+
+            return value;
+        }
+    }, {
+        key: "assertTypeOf",
+        value: function assertTypeOf(value, name, type) {
+
+            if (!((typeof value === "undefined" ? "undefined" : _typeof(value)) === type)) {
+                throw new Error("Precondition for typeof '" + name + "' was not " + type + ".");
+            }
+
+            return value;
+        }
+    }, {
+        key: "assertNotNull",
+        value: function assertNotNull(value, name) {
+
+            if (value === null) {
+                throw new Error("Precondition (argument) for '" + name + "' null.");
+            }
+
+            if (value === undefined) {
+                throw new Error("Precondition (argument) for '" + name + "' undefined.");
+            }
+
+            return value;
+        }
+    }, {
+        key: "assertNotTypeOf",
+        value: function assertNotTypeOf(value, name, type) {
+
+            if ((typeof value === "undefined" ? "undefined" : _typeof(value)) === type) {
+                throw new Error("Precondition for typeof '" + name + "' was " + type + " but not allowed");
+            }
+
+            return value;
+        }
+    }, {
+        key: "assertNotInstanceOf",
+        value: function assertNotInstanceOf(value, name, instance) {
+
+            if (value instanceof instance) {
+                throw new Error("Precondition for instanceof '" + name + "' was " + instance + " but not allowed");
+            }
+
+            return value;
+        }
+    }, {
+        key: "assertTypeof",
+        value: function assertTypeof(value, name, expected) {
+
+            if ((typeof value === "undefined" ? "undefined" : _typeof(value)) !== expected) {
+                throw new Error("Precondition for typeof '" + name + "' was not " + expected + " but actually: " + (typeof value === "undefined" ? "undefined" : _typeof(value)));
+            }
+
+            return value;
         }
 
-        return value;
-    }
+        /**
+         * Use a default value if one is not specified.
+         *
+         * @param currentValue
+         * @param defaultValue
+         * @return {*}
+         */
 
-    static assertTypeOf(value, name, type) {
+    }, {
+        key: "defaultValue",
+        value: function defaultValue(currentValue, _defaultValue) {
 
-        if (!(typeof value === type)) {
-            throw new Error(`Precondition for typeof '${name}' was not ${type}.`);
+            if (!currentValue) {
+                return _defaultValue;
+            }
+
+            return currentValue;
         }
+    }]);
 
-        return value;
-    }
+    return Preconditions;
+}();
 
-    static assertNotNull(value, name) {
-
-        if (value === null) {
-            throw new Error(`Precondition (argument) for '${name}' null.`);
-        }
-
-        if (value === undefined) {
-            throw new Error(`Precondition (argument) for '${name}' undefined.`);
-        }
-
-        return value;
-    }
-
-    static assertNotTypeOf(value, name, type) {
-
-        if (typeof value === type) {
-            throw new Error(`Precondition for typeof '${name}' was ${type} but not allowed`);
-        }
-
-        return value;
-    }
-
-    static assertNotInstanceOf(value, name, instance) {
-
-        if (value instanceof instance) {
-            throw new Error(`Precondition for instanceof '${name}' was ${instance} but not allowed`);
-        }
-
-        return value;
-    }
-
-    static assertTypeof(value, name, expected) {
-
-        if (typeof value !== expected) {
-            throw new Error(`Precondition for typeof '${name}' was not ${expected} but actually: ` + typeof value);
-        }
-
-        return value;
-    }
-
-    /**
-     * Use a default value if one is not specified.
-     *
-     * @param currentValue
-     * @param defaultValue
-     * @return {*}
-     */
-    static defaultValue(currentValue, defaultValue) {
-
-        if (!currentValue) {
-            return defaultValue;
-        }
-
-        return currentValue;
-    }
-
-};
+;
 
 module.exports.Preconditions = Preconditions;
 
@@ -10690,18 +10757,33 @@ module.exports.Preconditions = Preconditions;
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-const { Line } = __webpack_require__(/*! ./util/Line */ "./web/js/util/Line.js");
-const { Dimensions } = __webpack_require__(/*! ./util/Dimensions */ "./web/js/util/Dimensions.js");
-const { Preconditions } = __webpack_require__(/*! ./Preconditions */ "./web/js/Preconditions.js");
+"use strict";
+
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var _require = __webpack_require__(/*! ./util/Line */ "./web/js/util/Line.js"),
+    Line = _require.Line;
+
+var _require2 = __webpack_require__(/*! ./util/Dimensions */ "./web/js/util/Dimensions.js"),
+    Dimensions = _require2.Dimensions;
+
+var _require3 = __webpack_require__(/*! ./Preconditions */ "./web/js/Preconditions.js"),
+    Preconditions = _require3.Preconditions;
 
 /**
  * Basic DOM style rect without a hard requirement to use a DOMRect.
  */
-class Rect {
+
+
+var Rect = function () {
 
     // TODO: some rects have x,y ... should we add them here to be complete?
 
-    constructor(obj) {
+    function Rect(obj) {
+        _classCallCheck(this, Rect);
 
         /**
          * @type {number}
@@ -10741,63 +10823,76 @@ class Rect {
      * @param axis {String} The axis to use (x or y)
      * @return {Line}
      */
-    toLine(axis) {
 
-        if (axis === "x") {
-            return new Line(this.left, this.right, axis);
-        } else if (axis === "y") {
-            return new Line(this.top, this.bottom, axis);
-        } else {
-            throw new Error("Wrong axis: " + axis);
-        }
-    }
 
-    /**
-     *
-     * @return {Dimensions}
-     */
-    get dimensions() {
-        return new Dimensions({
-            width: this.width,
-            height: this.height
-        });
-    }
+    _createClass(Rect, [{
+        key: "toLine",
+        value: function toLine(axis) {
 
-    get area() {
-        return this.width * this.height;
-    }
-
-    /**
-     * Adjust an axis based on the given line.
-     *
-     * @param line {Line} The line representing the axis.
-     * @return {Rect} Return a NEW rect with updated dimensions.
-     */
-    adjustAxis(line) {
-
-        Preconditions.assertNotNull(line, "line");
-        Preconditions.assertNotNull(line.axis, "line.axis");
-
-        let result = new Rect(this);
-
-        if (line.axis === "x") {
-
-            result.left = line.start;
-            result.right = line.end;
-            result.width = line.end - line.start;
-        } else if (line.axis === "y") {
-
-            result.top = line.start;
-            result.bottom = line.end;
-            result.height = line.end - line.start;
-        } else {
-            throw new Error("Invalid axis: " + line.axis);
+            if (axis === "x") {
+                return new Line(this.left, this.right, axis);
+            } else if (axis === "y") {
+                return new Line(this.top, this.bottom, axis);
+            } else {
+                throw new Error("Wrong axis: " + axis);
+            }
         }
 
-        return result;
-    }
+        /**
+         *
+         * @return {Dimensions}
+         */
 
-}
+    }, {
+        key: "adjustAxis",
+
+
+        /**
+         * Adjust an axis based on the given line.
+         *
+         * @param line {Line} The line representing the axis.
+         * @return {Rect} Return a NEW rect with updated dimensions.
+         */
+        value: function adjustAxis(line) {
+
+            Preconditions.assertNotNull(line, "line");
+            Preconditions.assertNotNull(line.axis, "line.axis");
+
+            var result = new Rect(this);
+
+            if (line.axis === "x") {
+
+                result.left = line.start;
+                result.right = line.end;
+                result.width = line.end - line.start;
+            } else if (line.axis === "y") {
+
+                result.top = line.start;
+                result.bottom = line.end;
+                result.height = line.end - line.start;
+            } else {
+                throw new Error("Invalid axis: " + line.axis);
+            }
+
+            return result;
+        }
+    }, {
+        key: "dimensions",
+        get: function get() {
+            return new Dimensions({
+                width: this.width,
+                height: this.height
+            });
+        }
+    }, {
+        key: "area",
+        get: function get() {
+            return this.width * this.height;
+        }
+    }]);
+
+    return Rect;
+}();
 
 module.exports.Rect = Rect;
 
@@ -10810,408 +10905,479 @@ module.exports.Rect = Rect;
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-const { Objects } = __webpack_require__(/*! ./util/Objects */ "./web/js/util/Objects.js");
-const { Preconditions } = __webpack_require__(/*! ./Preconditions */ "./web/js/Preconditions.js");
-const { Rect } = __webpack_require__(/*! ./Rect */ "./web/js/Rect.js");
-const { Styles } = __webpack_require__(/*! ./util/Styles */ "./web/js/util/Styles.js");
+"use strict";
 
-class Rects {
 
-    /**
-     * Make sure the rect is visible. If it has a zero width or height it's
-     * not visible.
-     * @param rect {Rect | DOMRect}
-     * @return boolean True when the rect is visible.
-     */
-    static isVisible(rect) {
-        return rect.height > 0 && rect.width > 0;
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var _require = __webpack_require__(/*! ./util/Objects */ "./web/js/util/Objects.js"),
+    Objects = _require.Objects;
+
+var _require2 = __webpack_require__(/*! ./Preconditions */ "./web/js/Preconditions.js"),
+    Preconditions = _require2.Preconditions;
+
+var _require3 = __webpack_require__(/*! ./Rect */ "./web/js/Rect.js"),
+    Rect = _require3.Rect;
+
+var _require4 = __webpack_require__(/*! ./util/Styles */ "./web/js/util/Styles.js"),
+    Styles = _require4.Styles;
+
+var Rects = function () {
+    function Rects() {
+        _classCallCheck(this, Rects);
     }
 
-    /**
-     * Scale the rect based on the current values and the given scale.
-     */
-    static scale(rect, scale) {
+    _createClass(Rects, null, [{
+        key: "isVisible",
 
-        Preconditions.assertNotNull(rect, "rect");
-        // make sure the input is valid before we work on it.
-        rect = Rects.validate(rect);
 
-        rect = Objects.duplicate(rect);
-
-        for (let key in rect) {
-
-            if (!rect.hasOwnProperty(key)) continue;
-
-            rect[key] = rect[key] * scale;
+        /**
+         * Make sure the rect is visible. If it has a zero width or height it's
+         * not visible.
+         * @param rect {Rect | DOMRect}
+         * @return boolean True when the rect is visible.
+         */
+        value: function isVisible(rect) {
+            return rect.height > 0 && rect.width > 0;
         }
 
-        return Rects.validate(rect);
-    }
+        /**
+         * Scale the rect based on the current values and the given scale.
+         */
 
-    /**
-     * Make sure the given rect has all the correct properties and then return
-     * the rect.
-     *
-     * @return {Rect}
-     */
-    static validate(rect) {
+    }, {
+        key: "scale",
+        value: function scale(rect, _scale) {
 
-        Preconditions.assertNotNull(rect.left, "left");
-        Preconditions.assertNotNull(rect.top, "top");
-        Preconditions.assertNotNull(rect.width, "width");
-        Preconditions.assertNotNull(rect.height, "height");
-        Preconditions.assertNotNull(rect.bottom, "bottom");
-        Preconditions.assertNotNull(rect.right, "right");
+            Preconditions.assertNotNull(rect, "rect");
+            // make sure the input is valid before we work on it.
+            rect = Rects.validate(rect);
 
-        Preconditions.assertNumber(rect.left, "left");
-        Preconditions.assertNumber(rect.top, "top");
-        Preconditions.assertNumber(rect.width, "width");
-        Preconditions.assertNumber(rect.height, "height");
-        Preconditions.assertNumber(rect.bottom, "bottom");
-        Preconditions.assertNumber(rect.right, "right");
+            rect = Objects.duplicate(rect);
 
-        return rect;
-    }
+            for (var key in rect) {
 
-    /**
-     * Assume that the given rect is relative to the point and return the new
-     * rect.
-     *
-     * @param point {Point}
-     */
-    static relativeTo(point, rect) {
+                if (!rect.hasOwnProperty(key)) continue;
 
-        rect = Objects.duplicate(rect);
+                rect[key] = rect[key] * _scale;
+            }
 
-        rect.left = rect.left + point.x;
-        rect.top = rect.top + point.y;
+            return Rects.validate(rect);
+        }
 
-        rect.right = rect.right + point.x;
-        rect.bottom = rect.bottom + point.y;
+        /**
+         * Make sure the given rect has all the correct properties and then return
+         * the rect.
+         *
+         * @return {Rect}
+         */
 
-        return Rects.validate(rect);
-    }
+    }, {
+        key: "validate",
+        value: function validate(rect) {
 
-    /**
-     * Assume that the given rect is relative to the point and return the new
-     * rect.
-     *
-     * This adjust ALL properties including top, left, bottom, right
-     *
-     * @param rect {Rect} The rect to move.
-     * @param dir {Object} Move the rect in the given dir (direction) in the
-     * x and y plane.  The dir.x and dir.y specify how much to move the rect.
-     * @param absolute {boolean} When true, move to the absolute position, not
-     *                           relative.
-     */
-    static move(rect, dir, absolute) {
+            Preconditions.assertNotNull(rect.left, "left");
+            Preconditions.assertNotNull(rect.top, "top");
+            Preconditions.assertNotNull(rect.width, "width");
+            Preconditions.assertNotNull(rect.height, "height");
+            Preconditions.assertNotNull(rect.bottom, "bottom");
+            Preconditions.assertNotNull(rect.right, "right");
 
-        rect = Objects.duplicate(rect);
+            Preconditions.assertNumber(rect.left, "left");
+            Preconditions.assertNumber(rect.top, "top");
+            Preconditions.assertNumber(rect.width, "width");
+            Preconditions.assertNumber(rect.height, "height");
+            Preconditions.assertNumber(rect.bottom, "bottom");
+            Preconditions.assertNumber(rect.right, "right");
 
-        if (absolute) {
+            return rect;
+        }
 
-            if ("x" in dir) {
-                rect.left = dir.x;
+        /**
+         * Assume that the given rect is relative to the point and return the new
+         * rect.
+         *
+         * @param point {Point}
+         */
+
+    }, {
+        key: "relativeTo",
+        value: function relativeTo(point, rect) {
+
+            rect = Objects.duplicate(rect);
+
+            rect.left = rect.left + point.x;
+            rect.top = rect.top + point.y;
+
+            rect.right = rect.right + point.x;
+            rect.bottom = rect.bottom + point.y;
+
+            return Rects.validate(rect);
+        }
+
+        /**
+         * Assume that the given rect is relative to the point and return the new
+         * rect.
+         *
+         * This adjust ALL properties including top, left, bottom, right
+         *
+         * @param rect {Rect} The rect to move.
+         * @param dir {Object} Move the rect in the given dir (direction) in the
+         * x and y plane.  The dir.x and dir.y specify how much to move the rect.
+         * @param absolute {boolean} When true, move to the absolute position, not
+         *                           relative.
+         */
+
+    }, {
+        key: "move",
+        value: function move(rect, dir, absolute) {
+
+            rect = Objects.duplicate(rect);
+
+            if (absolute) {
+
+                if ("x" in dir) {
+                    rect.left = dir.x;
+                    rect.right = rect.left + rect.width;
+                }
+
+                if ("y" in dir) {
+                    rect.top = dir.y;
+                    rect.bottom = rect.top + rect.height;
+                }
+            } else {
+
+                // TODO: I could just convert the relative positions to absolute to
+                // clean up this code a bit.
+                if ("x" in dir) {
+                    rect.left = rect.left + dir.x;
+                    rect.right = rect.right + dir.x;
+                }
+
+                if ("y" in dir) {
+                    rect.bottom = rect.bottom + dir.y;
+                    rect.top = rect.top + dir.y;
+                }
+            }
+
+            return Rects.validate(rect);
+        }
+
+        /**
+         * Return true if the two rects intersect.
+         *
+         * @param a {Rect|Object}
+         * @param b {Rect|Object}
+         *
+         * @return {boolean}
+         */
+
+    }, {
+        key: "intersect",
+        value: function intersect(a, b) {
+
+            // TODO: internally we should convert the object to a rect so we can
+            // validate it.
+
+            return a.left <= b.right && b.left <= a.right && a.top <= b.bottom && b.top <= a.bottom;
+        }
+
+        /**
+         * Return true if the two rects overlap. This includes intersection but also
+         * includes one completely swallowing the other.
+         *
+         * @param a {Rect}
+         * @param b {Rect}
+         *
+         * @return {boolean}
+         */
+
+    }, {
+        key: "overlap",
+        value: function overlap(a, b) {
+            return a.toLine("x").overlaps(b.toLine("x")) || a.toLine("y").overlaps(b.toLine("y"));
+        }
+
+        /**
+         * Compute the intersection of a and b as a new rect.
+         *
+         *
+         * @param a {Rect}
+         * @param b {Rect}
+         * @return {Rect}
+         */
+
+    }, {
+        key: "intersection",
+        value: function intersection(a, b) {
+
+            // TODO/refactor.  Make each dimension a line, then adjust the line.
+            // This way the same function is used twice with less copy/paste.
+
+            return Rects.createFromBasicRect({
+                top: Math.max(a.top, b.top),
+                bottom: Math.min(a.bottom, b.bottom),
+                left: Math.max(a.left, b.left),
+                right: Math.min(a.right, b.right)
+            });
+        }
+
+        /**
+         * Return the positions where `a` (reference) is intersected by `b`.  If
+         * all four sizes are present a envelops b.
+         *
+         * @param a {Rect}
+         * @param b {Rect}
+         * @return {Array<string>}
+         */
+
+    }, {
+        key: "intersectedPositions",
+        value: function intersectedPositions(a, b) {
+
+            var result = [];
+
+            if (_interval(a.left, b.right, a.right)) {
+                result.push("left");
+            }
+
+            if (_interval(a.left, b.left, a.right)) {
+                result.push("right");
+            }
+
+            if (_interval(a.top, b.bottom, a.bottom)) {
+                result.push("top");
+            }
+
+            if (_interval(a.top, b.top, a.bottom)) {
+                result.push("bottom");
+            }
+
+            return result;
+        }
+
+        /**
+         * Take two rects and return the positions relative to one another.  We
+         * assume that the rects to not intersect.
+         *
+         * @param a {Rect}
+         * @param b {Rect}
+         * @return {Object}
+         */
+
+    }, {
+        key: "relativePositions",
+        value: function relativePositions(a, b) {
+
+            Rects.validate(a);
+            Rects.validate(b);
+
+            var result = {};
+
+            // basically this is the degree AWAY from given position.  Negative
+            // values would be BEFORE the position.
+
+            result.top = Math.abs(a.top - b.bottom);
+            result.bottom = Math.abs(a.bottom - b.top);
+            result.left = Math.abs(a.left - a.right);
+            result.right = Math.abs(a.right - b.left);
+
+            return result;
+        }
+
+        /**
+         * Subtract second rect from the first and return a virtual rect with the
+         * change in elements. The change is virtual as we could record a rect with
+         * negative width for a given line which would be an imaginary geometric
+         * object.
+         *
+         * @param a {Rect}
+         * @param b {Rect}
+         */
+
+    }, {
+        key: "subtract",
+        value: function subtract(a, b) {
+
+            a = Rects.validate(a);
+            b = Rects.validate(b);
+
+            var keys = ["left", "top", "right", "bottom", "width", "height"];
+
+            var result = {};
+
+            keys.forEach(function (key) {
+                result[key] = a[key] - b[key];
+            });
+
+            return new Rect(result);
+        }
+
+        /**
+         * Add two rects together to build a new rect.  The second rect could be
+         * virtual and have a negative width for a line.
+         *
+         * @param a {Rect}
+         * @param b {Rect}
+         */
+
+    }, {
+        key: "add",
+        value: function add(a, b) {
+
+            a = Rects.validate(a);
+            b = Rects.validate(b);
+
+            var keys = ["left", "top", "right", "bottom", "width", "height"];
+
+            var result = {};
+
+            keys.forEach(function (key) {
+                result[key] = a[key] + b[key];
+            });
+
+            return new Rect(result);
+        }
+
+        /**
+         * Return the percentage that a takes of b, a is assumed to be <= b in terms
+         * of dimensions and on the same coordinate plane.
+         *
+         * @param a {Rect}
+         * @param b {Rect}
+         * @return {Rect}
+         */
+
+    }, {
+        key: "perc",
+        value: function perc(a, b) {
+
+            if (a.width > b.width || a.height > b.height) {
+                throw new Error("Dimensions invalid " + a.dimensions + " vs " + b.dimensions);
+            }
+
+            var result = {
+                left: 100 * (a.left / b.width),
+                right: 100 * (a.right / b.width),
+                top: 100 * (a.top / b.height),
+                bottom: 100 * (a.bottom / b.height)
+            };
+
+            return Rects.createFromBasicRect(result);
+        }
+
+        /**
+         * Create a full rect from a rect that has top, left, width, height only.
+         *
+         * @param rect {Rect | Object}
+         * @return {Rect}
+         */
+
+    }, {
+        key: "createFromBasicRect",
+        value: function createFromBasicRect(rect) {
+
+            rect = Objects.duplicate(rect);
+
+            // TODO: add x,y in the future.
+
+            // the optional ones are bottom+right or width+height but we could add
+            // support for other optional ones...
+
+            // it might be better to say, if var0 and var1 are defined, I can compute
+            // var2 or var 3... and then define them when they are not defined.  For
+            // example. If top and height are defined, I can define bottom.
+
+            if (!rect.bottom && "top" in rect && "height" in rect) {
+                rect.bottom = rect.top + rect.height;
+            }
+
+            if (!rect.right && "left" in rect && "width" in rect) {
                 rect.right = rect.left + rect.width;
             }
 
-            if ("y" in dir) {
-                rect.top = dir.y;
-                rect.bottom = rect.top + rect.height;
-            }
-        } else {
-
-            // TODO: I could just convert the relative positions to absolute to
-            // clean up this code a bit.
-            if ("x" in dir) {
-                rect.left = rect.left + dir.x;
-                rect.right = rect.right + dir.x;
+            if (!rect.height && "bottom" in rect && "top" in rect) {
+                rect.height = rect.bottom - rect.top;
             }
 
-            if ("y" in dir) {
-                rect.bottom = rect.bottom + dir.y;
-                rect.top = rect.top + dir.y;
+            if (!rect.width && "right" in rect && "left" in rect) {
+                rect.width = rect.right - rect.left;
             }
+
+            return Rects.validate(new Rect(rect));
         }
 
-        return Rects.validate(rect);
-    }
+        /**
+         * Create a new rect from the given lines
+         * @param xAxis {Line}
+         * @param yAxis {Line}
+         * @return {Rect}
+         */
 
-    /**
-     * Return true if the two rects intersect.
-     *
-     * @param a {Rect|Object}
-     * @param b {Rect|Object}
-     *
-     * @return {boolean}
-     */
-    static intersect(a, b) {
+    }, {
+        key: "createFromLines",
+        value: function createFromLines(xAxis, yAxis) {
 
-        // TODO: internally we should convert the object to a rect so we can
-        // validate it.
+            Preconditions.assertNotNull(xAxis, "xAxis");
+            Preconditions.assertNotNull(yAxis, "yAxis");
+            Preconditions.assertEqual(xAxis.axis, "x", "xAxis.axis");
+            Preconditions.assertEqual(yAxis.axis, "y", "yAxis.axis");
 
-        return a.left <= b.right && b.left <= a.right && a.top <= b.bottom && b.top <= a.bottom;
-    }
-
-    /**
-     * Return true if the two rects overlap. This includes intersection but also
-     * includes one completely swallowing the other.
-     *
-     * @param a {Rect}
-     * @param b {Rect}
-     *
-     * @return {boolean}
-     */
-    static overlap(a, b) {
-        return a.toLine("x").overlaps(b.toLine("x")) || a.toLine("y").overlaps(b.toLine("y"));
-    }
-
-    /**
-     * Compute the intersection of a and b as a new rect.
-     *
-     *
-     * @param a {Rect}
-     * @param b {Rect}
-     * @return {Rect}
-     */
-    static intersection(a, b) {
-
-        // TODO/refactor.  Make each dimension a line, then adjust the line.
-        // This way the same function is used twice with less copy/paste.
-
-        return Rects.createFromBasicRect({
-            top: Math.max(a.top, b.top),
-            bottom: Math.min(a.bottom, b.bottom),
-            left: Math.max(a.left, b.left),
-            right: Math.min(a.right, b.right)
-        });
-    }
-
-    /**
-     * Return the positions where `a` (reference) is intersected by `b`.  If
-     * all four sizes are present a envelops b.
-     *
-     * @param a {Rect}
-     * @param b {Rect}
-     * @return {Array<string>}
-     */
-    static intersectedPositions(a, b) {
-
-        let result = [];
-
-        if (_interval(a.left, b.right, a.right)) {
-            result.push("left");
+            return Rects.createFromBasicRect({
+                left: xAxis.start,
+                width: xAxis.length,
+                top: yAxis.start,
+                height: yAxis.length
+            });
         }
 
-        if (_interval(a.left, b.left, a.right)) {
-            result.push("right");
+        /**
+         *
+         * @param element {HTMLElement}
+         * @return {Rect}
+         */
+
+    }, {
+        key: "createFromOffset",
+        value: function createFromOffset(element) {
+
+            // FIXME: if I'm using this it might not be what I want.
+
+            return Rects.createFromBasicRect({
+                left: element.offsetLeft,
+                top: element.offsetTop,
+                width: element.offsetWidth,
+                height: element.offsetHeight
+            });
         }
 
-        if (_interval(a.top, b.bottom, a.bottom)) {
-            result.push("top");
+        /**
+         * Parse the positioning from the style with left, top width and height and then
+         * return this as a rect.
+         * @param element {HTMLElement}
+         */
+
+    }, {
+        key: "fromElementStyle",
+        value: function fromElementStyle(element) {
+
+            var rect = {
+
+                left: Styles.parsePX(element.style.left),
+                top: Styles.parsePX(element.style.top),
+                width: Styles.parsePX(element.style.width),
+                height: Styles.parsePX(element.style.height)
+
+            };
+
+            return Rects.createFromBasicRect(rect);
         }
+    }]);
 
-        if (_interval(a.top, b.top, a.bottom)) {
-            result.push("bottom");
-        }
-
-        return result;
-    }
-
-    /**
-     * Take two rects and return the positions relative to one another.  We
-     * assume that the rects to not intersect.
-     *
-     * @param a {Rect}
-     * @param b {Rect}
-     * @return {Object}
-     */
-    static relativePositions(a, b) {
-
-        Rects.validate(a);
-        Rects.validate(b);
-
-        let result = {};
-
-        // basically this is the degree AWAY from given position.  Negative
-        // values would be BEFORE the position.
-
-        result.top = Math.abs(a.top - b.bottom);
-        result.bottom = Math.abs(a.bottom - b.top);
-        result.left = Math.abs(a.left - a.right);
-        result.right = Math.abs(a.right - b.left);
-
-        return result;
-    }
-
-    /**
-     * Subtract second rect from the first and return a virtual rect with the
-     * change in elements. The change is virtual as we could record a rect with
-     * negative width for a given line which would be an imaginary geometric
-     * object.
-     *
-     * @param a {Rect}
-     * @param b {Rect}
-     */
-    static subtract(a, b) {
-
-        a = Rects.validate(a);
-        b = Rects.validate(b);
-
-        let keys = ["left", "top", "right", "bottom", "width", "height"];
-
-        let result = {};
-
-        keys.forEach(key => {
-            result[key] = a[key] - b[key];
-        });
-
-        return new Rect(result);
-    }
-
-    /**
-     * Add two rects together to build a new rect.  The second rect could be
-     * virtual and have a negative width for a line.
-     *
-     * @param a {Rect}
-     * @param b {Rect}
-     */
-    static add(a, b) {
-
-        a = Rects.validate(a);
-        b = Rects.validate(b);
-
-        let keys = ["left", "top", "right", "bottom", "width", "height"];
-
-        let result = {};
-
-        keys.forEach(key => {
-            result[key] = a[key] + b[key];
-        });
-
-        return new Rect(result);
-    }
-
-    /**
-     * Return the percentage that a takes of b, a is assumed to be <= b in terms
-     * of dimensions and on the same coordinate plane.
-     *
-     * @param a {Rect}
-     * @param b {Rect}
-     * @return {Rect}
-     */
-    static perc(a, b) {
-
-        if (a.width > b.width || a.height > b.height) {
-            throw new Error(`Dimensions invalid ${a.dimensions} vs ${b.dimensions}`);
-        }
-
-        let result = {
-            left: 100 * (a.left / b.width),
-            right: 100 * (a.right / b.width),
-            top: 100 * (a.top / b.height),
-            bottom: 100 * (a.bottom / b.height)
-        };
-
-        return Rects.createFromBasicRect(result);
-    }
-
-    /**
-     * Create a full rect from a rect that has top, left, width, height only.
-     *
-     * @param rect {Rect | Object}
-     * @return {Rect}
-     */
-    static createFromBasicRect(rect) {
-
-        rect = Objects.duplicate(rect);
-
-        // TODO: add x,y in the future.
-
-        // the optional ones are bottom+right or width+height but we could add
-        // support for other optional ones...
-
-        // it might be better to say, if var0 and var1 are defined, I can compute
-        // var2 or var 3... and then define them when they are not defined.  For
-        // example. If top and height are defined, I can define bottom.
-
-        if (!rect.bottom && "top" in rect && "height" in rect) {
-            rect.bottom = rect.top + rect.height;
-        }
-
-        if (!rect.right && "left" in rect && "width" in rect) {
-            rect.right = rect.left + rect.width;
-        }
-
-        if (!rect.height && "bottom" in rect && "top" in rect) {
-            rect.height = rect.bottom - rect.top;
-        }
-
-        if (!rect.width && "right" in rect && "left" in rect) {
-            rect.width = rect.right - rect.left;
-        }
-
-        return Rects.validate(new Rect(rect));
-    }
-
-    /**
-     * Create a new rect from the given lines
-     * @param xAxis {Line}
-     * @param yAxis {Line}
-     * @return {Rect}
-     */
-    static createFromLines(xAxis, yAxis) {
-
-        Preconditions.assertNotNull(xAxis, "xAxis");
-        Preconditions.assertNotNull(yAxis, "yAxis");
-        Preconditions.assertEqual(xAxis.axis, "x", "xAxis.axis");
-        Preconditions.assertEqual(yAxis.axis, "y", "yAxis.axis");
-
-        return Rects.createFromBasicRect({
-            left: xAxis.start,
-            width: xAxis.length,
-            top: yAxis.start,
-            height: yAxis.length
-        });
-    }
-
-    /**
-     *
-     * @param element {HTMLElement}
-     * @return {Rect}
-     */
-    static createFromOffset(element) {
-
-        // FIXME: if I'm using this it might not be what I want.
-
-        return Rects.createFromBasicRect({
-            left: element.offsetLeft,
-            top: element.offsetTop,
-            width: element.offsetWidth,
-            height: element.offsetHeight
-        });
-    }
-
-    /**
-     * Parse the positioning from the style with left, top width and height and then
-     * return this as a rect.
-     * @param element {HTMLElement}
-     */
-    static fromElementStyle(element) {
-
-        let rect = {
-
-            left: Styles.parsePX(element.style.left),
-            top: Styles.parsePX(element.style.top),
-            width: Styles.parsePX(element.style.width),
-            height: Styles.parsePX(element.style.height)
-
-        };
-
-        return Rects.createFromBasicRect(rect);
-    }
-
-}
+    return Rects;
+}();
 
 /**
  * Return true if the point is within the given min and max interval.
@@ -11222,6 +11388,8 @@ class Rects {
  * @private
  * @return {boolean}
  */
+
+
 function _interval(min, point, max) {
     // TODO: migrate this to use a Line.holds
     return min <= point && point <= max;
@@ -11238,10 +11406,16 @@ module.exports.Rects = Rects;
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
+"use strict";
+
+
 // inject the right bundle depending on whether we're using chrome or electron.
 
-const { Electron } = __webpack_require__(/*! ../Electron */ "./web/js/Electron.js");
-const { injectScript } = __webpack_require__(/*! ../utils.js */ "./web/js/utils.js");
+var _require = __webpack_require__(/*! ../Electron */ "./web/js/Electron.js"),
+    Electron = _require.Electron;
+
+var _require2 = __webpack_require__(/*! ../utils.js */ "./web/js/utils.js"),
+    injectScript = _require2.injectScript;
 
 if (Electron.isElectron()) {
     console.log("Injecting electron bundle");
@@ -11260,13 +11434,23 @@ if (Electron.isElectron()) {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-const { Preconditions } = __webpack_require__(/*! ../Preconditions */ "./web/js/Preconditions.js");
+"use strict";
+
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var _require = __webpack_require__(/*! ../Preconditions */ "./web/js/Preconditions.js"),
+    Preconditions = _require.Preconditions;
 /**
  * Simple dimension of a Rect.
  */
-class Dimensions {
 
-    constructor(obj) {
+
+var Dimensions = function () {
+    function Dimensions(obj) {
+        _classCallCheck(this, Dimensions);
 
         /**
          * This width of this rect.
@@ -11288,15 +11472,20 @@ class Dimensions {
         Preconditions.assertNumber(this.width, "width");
     }
 
-    get area() {
-        return this.width * this.height;
-    }
+    _createClass(Dimensions, [{
+        key: "toString",
+        value: function toString() {
+            return this.width + "x" + this.height;
+        }
+    }, {
+        key: "area",
+        get: function get() {
+            return this.width * this.height;
+        }
+    }]);
 
-    toString() {
-        return `${this.width}x${this.height}`;
-    }
-
-}
+    return Dimensions;
+}();
 
 module.exports.Dimensions = Dimensions;
 
@@ -11309,182 +11498,216 @@ module.exports.Dimensions = Dimensions;
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-const $ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
-const { Preconditions } = __webpack_require__(/*! ../Preconditions */ "./web/js/Preconditions.js");
-const { Rects } = __webpack_require__(/*! ../Rects */ "./web/js/Rects.js");
+"use strict";
 
-class Elements {
 
-    /**
-     *
-     * Compute the offset relative to another parent element.  This can be used
-     * to compute the absolute position of an element on a page.
-     *
-     * @param element
-     * @param [parentElement] {HTMLElement} relative to this parentElement.
-     *        By default we are relative to the document root (documentElement).
-     * @return {Rect}
-     */
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-    // FIXME: this should be getPageOffsetRect and have a relativeToParentElement which is optional.
-    static getRelativeOffsetRect(element, parentElement) {
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-        Preconditions.assertNotNull(element, "element");
+var $ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
 
-        if (!parentElement) {
-            parentElement = element.ownerDocument.documentElement;
+var _require = __webpack_require__(/*! ../Preconditions */ "./web/js/Preconditions.js"),
+    Preconditions = _require.Preconditions;
+
+var _require2 = __webpack_require__(/*! ../Rects */ "./web/js/Rects.js"),
+    Rects = _require2.Rects;
+
+var Elements = function () {
+    function Elements() {
+        _classCallCheck(this, Elements);
+    }
+
+    _createClass(Elements, null, [{
+        key: "getRelativeOffsetRect",
+
+
+        /**
+         *
+         * Compute the offset relative to another parent element.  This can be used
+         * to compute the absolute position of an element on a page.
+         *
+         * @param element
+         * @param [parentElement] {HTMLElement} relative to this parentElement.
+         *        By default we are relative to the document root (documentElement).
+         * @return {Rect}
+         */
+
+        // FIXME: this should be getPageOffsetRect and have a relativeToParentElement which is optional.
+        value: function getRelativeOffsetRect(element, parentElement) {
+
+            Preconditions.assertNotNull(element, "element");
+
+            if (!parentElement) {
+                parentElement = element.ownerDocument.documentElement;
+            }
+
+            var offsetRect = { left: 0, top: 0, width: 0, height: 0 };
+
+            function toInt(value) {
+
+                if (isNaN(value)) {
+                    return 0;
+                }
+
+                return value;
+            }
+
+            offsetRect.width = toInt(element.offsetWidth);
+            offsetRect.height = toInt(element.offsetHeight);
+
+            while (element !== null) {
+
+                offsetRect.left += toInt(element.offsetLeft);
+                offsetRect.top += toInt(element.offsetTop);
+
+                // FIXME: I have to factor in scrollTop here.. this is insane.
+
+                //offsetRect.left += toInt(element.scrollLeft);
+                //offsetRect.top += toInt(element.scrollTop);
+
+                if (element === parentElement) break;
+
+                element = element.offsetParent;
+            }
+
+            return Rects.createFromBasicRect(offsetRect);
         }
 
-        let offsetRect = { left: 0, top: 0, width: 0, height: 0 };
+        /**
+         * Create a div from the given innerHTML and return it.
+         *
+         * @param innerHTML
+         * @return {HTMLDivElement}
+         */
 
-        function toInt(value) {
+    }, {
+        key: "createElementHTML",
+        value: function createElementHTML(innerHTML) {
 
-            if (isNaN(value)) {
+            var div = document.createElement("div");
+            div.innerHTML = innerHTML;
+
+            return div;
+        }
+    }, {
+        key: "offset",
+        value: function offset(element) {
+
+            var result = {
+                left: element.offsetLeft,
+                top: element.offsetTop,
+                width: element.offsetWidth,
+                height: element.offsetHeight
+            };
+
+            result.right = result.left + result.width;
+            result.bottom = result.top + result.height;
+
+            return Rects.validate(result);
+        }
+
+        /**
+         * Require that the element have the given classname.
+         */
+
+    }, {
+        key: "requireClass",
+        value: function requireClass(element, clazz) {
+
+            var classValue = element.getAttribute("class");
+
+            if (!classValue || classValue.indexOf(clazz) === -1) {
+
+                // element isn't the proper class we're expecting.
+                throw new Error("Element does not have the proper class: " + clazz);
+            }
+        }
+
+        /**
+         *
+         * @param element
+         * @param parentElement
+         * @return {number}
+         * @deprecated
+         */
+
+    }, {
+        key: "offsetRelative",
+        value: function offsetRelative(element, parentElement) {
+
+            var offsetLeft = 0;
+
+            do {
+
+                if (!isNaN(elem.offsetLeft)) {
+                    offsetLeft += elem.offsetLeft;
+                }
+            } while (element = elem.offsetParent && element !== parentElement);
+
+            return offsetLeft;
+        }
+
+        /**
+         * Keep searching parent notes until we find an element matching the selector,
+         * or return null when one was not found.
+         *
+         * @param selector
+         */
+
+    }, {
+        key: "untilRoot",
+        value: function untilRoot(element, selector) {
+
+            if (!element) throw new Error("element required");
+
+            if (!selector) throw new Error("selector required");
+
+            if (element.matches(selector)) {
+                return element;
+            }
+
+            if (element.parentElement == null) {
+                // we have hit the root.
+                return null;
+            }
+
+            return Elements.untilRoot(element.parentElement, selector);
+        }
+    }, {
+        key: "calculateVisibilityForDiv",
+        value: function calculateVisibilityForDiv(div) {
+
+            if (div == null) throw Error("Not given a div");
+
+            var windowHeight = $(window).height(),
+                docScroll = $(document).scrollTop(),
+                divPosition = $(div).offset().top,
+                divHeight = $(div).height();
+
+            var hiddenBefore = docScroll - divPosition,
+                hiddenAfter = divPosition + divHeight - (docScroll + windowHeight);
+
+            if (docScroll > divPosition + divHeight || divPosition > docScroll + windowHeight) {
                 return 0;
+            } else {
+                var result = 100;
+
+                if (hiddenBefore > 0) {
+                    result -= hiddenBefore * 100 / divHeight;
+                }
+
+                if (hiddenAfter > 0) {
+                    result -= hiddenAfter * 100 / divHeight;
+                }
+
+                return result;
             }
-
-            return value;
         }
+    }]);
 
-        offsetRect.width = toInt(element.offsetWidth);
-        offsetRect.height = toInt(element.offsetHeight);
-
-        while (element !== null) {
-
-            offsetRect.left += toInt(element.offsetLeft);
-            offsetRect.top += toInt(element.offsetTop);
-
-            // FIXME: I have to factor in scrollTop here.. this is insane.
-
-            //offsetRect.left += toInt(element.scrollLeft);
-            //offsetRect.top += toInt(element.scrollTop);
-
-            if (element === parentElement) break;
-
-            element = element.offsetParent;
-        }
-
-        return Rects.createFromBasicRect(offsetRect);
-    }
-
-    /**
-     * Create a div from the given innerHTML and return it.
-     *
-     * @param innerHTML
-     * @return {HTMLDivElement}
-     */
-    static createElementHTML(innerHTML) {
-
-        let div = document.createElement("div");
-        div.innerHTML = innerHTML;
-
-        return div;
-    }
-
-    static offset(element) {
-
-        let result = {
-            left: element.offsetLeft,
-            top: element.offsetTop,
-            width: element.offsetWidth,
-            height: element.offsetHeight
-        };
-
-        result.right = result.left + result.width;
-        result.bottom = result.top + result.height;
-
-        return Rects.validate(result);
-    }
-
-    /**
-     * Require that the element have the given classname.
-     */
-    static requireClass(element, clazz) {
-
-        let classValue = element.getAttribute("class");
-
-        if (!classValue || classValue.indexOf(clazz) === -1) {
-
-            // element isn't the proper class we're expecting.
-            throw new Error("Element does not have the proper class: " + clazz);
-        }
-    }
-
-    /**
-     *
-     * @param element
-     * @param parentElement
-     * @return {number}
-     * @deprecated
-     */
-    static offsetRelative(element, parentElement) {
-
-        let offsetLeft = 0;
-
-        do {
-
-            if (!isNaN(elem.offsetLeft)) {
-                offsetLeft += elem.offsetLeft;
-            }
-        } while (element = elem.offsetParent && element !== parentElement);
-
-        return offsetLeft;
-    }
-
-    /**
-     * Keep searching parent notes until we find an element matching the selector,
-     * or return null when one was not found.
-     *
-     * @param selector
-     */
-    static untilRoot(element, selector) {
-
-        if (!element) throw new Error("element required");
-
-        if (!selector) throw new Error("selector required");
-
-        if (element.matches(selector)) {
-            return element;
-        }
-
-        if (element.parentElement == null) {
-            // we have hit the root.
-            return null;
-        }
-
-        return Elements.untilRoot(element.parentElement, selector);
-    }
-
-    static calculateVisibilityForDiv(div) {
-
-        if (div == null) throw Error("Not given a div");
-
-        let windowHeight = $(window).height(),
-            docScroll = $(document).scrollTop(),
-            divPosition = $(div).offset().top,
-            divHeight = $(div).height();
-
-        let hiddenBefore = docScroll - divPosition,
-            hiddenAfter = divPosition + divHeight - (docScroll + windowHeight);
-
-        if (docScroll > divPosition + divHeight || divPosition > docScroll + windowHeight) {
-            return 0;
-        } else {
-            let result = 100;
-
-            if (hiddenBefore > 0) {
-                result -= hiddenBefore * 100 / divHeight;
-            }
-
-            if (hiddenAfter > 0) {
-                result -= hiddenAfter * 100 / divHeight;
-            }
-
-            return result;
-        }
-    }
-
-}
+    return Elements;
+}();
 
 module.exports.Elements = Elements;
 
@@ -11497,86 +11720,107 @@ module.exports.Elements = Elements;
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
+"use strict";
 
-const { Preconditions } = __webpack_require__(/*! ../Preconditions */ "./web/js/Preconditions.js");
-const { Optional } = __webpack_require__(/*! ../Optional */ "./web/js/Optional.js");
 
-class Functions {
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-    /**
-     * Take a function and make it an external script we can pass to an external
-     * javascript interpreter. This can be used with the electron renderer, chrome
-     * headless, etc.
-     *
-     * @param _function
-     * @param _opts
-     * @return {string}
-     */
-    static functionToScript(_function, _opts) {
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-        let result = "";
-        result += _function.toString();
-        result += "\n";
+var _require = __webpack_require__(/*! ../Preconditions */ "./web/js/Preconditions.js"),
+    Preconditions = _require.Preconditions;
 
-        // TODO: expand _opts to varargs... not just one opts.  This way the
-        // function can be an ordinary function.
-        if (_opts) {
-            result += `${_function.name}(${JSON.stringify(_opts)});`;
-        } else {
-            result += `${_function.name}();`;
+var _require2 = __webpack_require__(/*! ../Optional */ "./web/js/Optional.js"),
+    Optional = _require2.Optional;
+
+var Functions = function () {
+    function Functions() {
+        _classCallCheck(this, Functions);
+    }
+
+    _createClass(Functions, null, [{
+        key: "functionToScript",
+
+
+        /**
+         * Take a function and make it an external script we can pass to an external
+         * javascript interpreter. This can be used with the electron renderer, chrome
+         * headless, etc.
+         *
+         * @param _function
+         * @param _opts
+         * @return {string}
+         */
+        value: function functionToScript(_function, _opts) {
+
+            var result = "";
+            result += _function.toString();
+            result += "\n";
+
+            // TODO: expand _opts to varargs... not just one opts.  This way the
+            // function can be an ordinary function.
+            if (_opts) {
+                result += _function.name + "(" + JSON.stringify(_opts) + ");";
+            } else {
+                result += _function.name + "();";
+            }
+            return result;
         }
-        return result;
-    }
 
-    /**
-     * We iterate over all keys in the dictionary.  Even inherited keys.
-     *
-     * @param dict
-     * @param callback
-     */
-    static forDict(dict, callback) {
+        /**
+         * We iterate over all keys in the dictionary.  Even inherited keys.
+         *
+         * @param dict
+         * @param callback
+         */
 
-        Preconditions.assertNotNull(dict, "dict");
-        Preconditions.assertNotNull(callback, "callback");
-
-        // get the keys first, that way we can mutate the dictionary while iterating
-        // through it if necessary.
-        let keys = Object.keys(dict);
-
-        keys.forEach(function (key) {
-            let value = dict[key];
-            callback(key, value);
-        });
-    }
-
-    /**
-     * We iterate over all keys in the dictionary.  Even inherited keys.
-     *
-     * @param dict
-     * @param callback
-     */
-    static forOwnKeys(dict, callback) {
-        return _asyncToGenerator(function* () {
+    }, {
+        key: "forDict",
+        value: function forDict(dict, callback) {
 
             Preconditions.assertNotNull(dict, "dict");
             Preconditions.assertNotNull(callback, "callback");
 
-            for (let key in dict) {
+            // get the keys first, that way we can mutate the dictionary while iterating
+            // through it if necessary.
+            var keys = Object.keys(dict);
+
+            keys.forEach(function (key) {
+                var value = dict[key];
+                callback(key, value);
+            });
+        }
+    }, {
+        key: "forOwnKeys",
+
+
+        /**
+         * We iterate over all keys in the dictionary.  Even inherited keys.
+         *
+         * @param dict
+         * @param callback
+         */
+        value: async function forOwnKeys(dict, callback) {
+
+            Preconditions.assertNotNull(dict, "dict");
+            Preconditions.assertNotNull(callback, "callback");
+
+            for (var key in dict) {
 
                 if (dict.hasOwnProperty(key)) {
-                    let value = dict[key];
-                    yield callback(key, value);
+                    var value = dict[key];
+                    await callback(key, value);
                 }
             }
-        })();
-    }
+        }
+    }, {
+        key: "withTimeout",
 
-    /**
-     * Calls the given callback as a promise which we can await.
-     */
-    static withTimeout(timeout, callback) {
-        return _asyncToGenerator(function* () {
+
+        /**
+         * Calls the given callback as a promise which we can await.
+         */
+        value: async function withTimeout(timeout, callback) {
 
             return new Promise(function (resolve, reject) {
 
@@ -11588,19 +11832,20 @@ class Functions {
                     });
                 }, timeout);
             });
-        })();
-    }
+        }
 
-    /**
-     * A promise based timeout.  This just returns a promise which returns
-     * once the timeout has expired. You can then call .then() or just await
-     * the timeout.
-     *
-     * @param timeout
-     * @return {Promise<void>}
-     */
-    static waitFor(timeout) {
-        return _asyncToGenerator(function* () {
+        /**
+         * A promise based timeout.  This just returns a promise which returns
+         * once the timeout has expired. You can then call .then() or just await
+         * the timeout.
+         *
+         * @param timeout
+         * @return {Promise<void>}
+         */
+
+    }, {
+        key: "waitFor",
+        value: async function waitFor(timeout) {
 
             return new Promise(function (resolve) {
 
@@ -11608,51 +11853,59 @@ class Functions {
                     resolve();
                 }, timeout);
             });
-        })();
-    }
-
-    /**
-     *
-     * @Deprecated use createSiblings as createSiblingTuples implies that this
-     * is a tuple and it's actually a triple.
-     */
-    static createSiblingTuples(arrayLikeObject) {
-        return Functions.createSiblings(arrayLikeObject);
-    }
-
-    /**
-     * Go over the array-like object and return tuples with prev, curr, and next
-     * properties so that we can peek at siblings easily.  If the prev and / or
-     * next are not present these values are null.
-     *
-     * This can be used for algorithms that need to peek ahead or behind
-     * inside an iterative algorithm
-     *
-     * @param arrayLikeObject {Array<any>}
-     * @return {Array<ArrayPosition>}
-     */
-    static createSiblings(arrayLikeObject) {
-
-        Preconditions.assertNotNull(arrayLikeObject, "arrayLikeObject");
-
-        /**
-         * {Array<ArrayPosition>}
-         * @type {Array}
-         */
-        let result = [];
-
-        for (let idx = 0; idx < arrayLikeObject.length; ++idx) {
-
-            result.push(new ArrayPosition({
-                curr: arrayLikeObject[idx],
-                prev: Optional.of(arrayLikeObject[idx - 1]).getOrElse(null),
-                next: Optional.of(arrayLikeObject[idx + 1]).getOrElse(null)
-            }));
         }
 
-        return result;
-    }
-}
+        /**
+         *
+         * @Deprecated use createSiblings as createSiblingTuples implies that this
+         * is a tuple and it's actually a triple.
+         */
+
+    }, {
+        key: "createSiblingTuples",
+        value: function createSiblingTuples(arrayLikeObject) {
+            return Functions.createSiblings(arrayLikeObject);
+        }
+
+        /**
+         * Go over the array-like object and return tuples with prev, curr, and next
+         * properties so that we can peek at siblings easily.  If the prev and / or
+         * next are not present these values are null.
+         *
+         * This can be used for algorithms that need to peek ahead or behind
+         * inside an iterative algorithm
+         *
+         * @param arrayLikeObject {Array<any>}
+         * @return {Array<ArrayPosition>}
+         */
+
+    }, {
+        key: "createSiblings",
+        value: function createSiblings(arrayLikeObject) {
+
+            Preconditions.assertNotNull(arrayLikeObject, "arrayLikeObject");
+
+            /**
+             * {Array<ArrayPosition>}
+             * @type {Array}
+             */
+            var result = [];
+
+            for (var idx = 0; idx < arrayLikeObject.length; ++idx) {
+
+                result.push(new ArrayPosition({
+                    curr: arrayLikeObject[idx],
+                    prev: Optional.of(arrayLikeObject[idx - 1]).getOrElse(null),
+                    next: Optional.of(arrayLikeObject[idx + 1]).getOrElse(null)
+                }));
+            }
+
+            return result;
+        }
+    }]);
+
+    return Functions;
+}();
 
 /**
  * Represents a 'position' object for createSiblings() that has a curr (current),
@@ -11660,20 +11913,19 @@ class Functions {
  * position allow sus to know where we currently are but also the previous and
  * future states.
  */
-class ArrayPosition {
 
-    constructor(obj) {
 
-        this.curr = null;
+var ArrayPosition = function ArrayPosition(obj) {
+    _classCallCheck(this, ArrayPosition);
 
-        this.prev = null;
+    this.curr = null;
 
-        this.next = null;
+    this.prev = null;
 
-        Object.assign(this, obj);
-    }
+    this.next = null;
 
-}
+    Object.assign(this, obj);
+};
 
 module.exports.forDict = Functions.forDict;
 module.exports.forOwnKeys = Functions.forOwnKeys;
@@ -11690,13 +11942,22 @@ module.exports.Functions = Functions;
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
+"use strict";
 
-const { Preconditions } = __webpack_require__(/*! ../Preconditions */ "./web/js/Preconditions.js");
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var _require = __webpack_require__(/*! ../Preconditions */ "./web/js/Preconditions.js"),
+    Preconditions = _require.Preconditions;
 
 /**
  * Simple line with just a start and end.
  */
-class Line {
+
+
+var Line = function () {
 
     /**
      *
@@ -11704,7 +11965,9 @@ class Line {
      * @param end {number}
      * @param [axis] {string} Optional axis parameter ('x' or 'y')
      */
-    constructor(start, end, axis) {
+    function Line(start, end, axis) {
+        _classCallCheck(this, Line);
+
         this.start = Preconditions.assertNumber(start, "start");
         this.end = Preconditions.assertNumber(end, "end");
         this.axis = axis; // TODO validate
@@ -11718,110 +11981,139 @@ class Line {
      * instead.
      * @return {number}
      */
-    get width() {
-        return this.end - this.start;
-    }
 
-    get length() {
-        return this.end - this.start;
-    }
 
-    /**
-     * Return true if the given point is between the start and end position
-     * of the line (inclusive)
-     *
-     * @param pt {number}
-     * @return {boolean}
-     */
-    containsPoint(pt) {
-        return this.within(pt);
-    }
+    _createClass(Line, [{
+        key: "containsPoint",
 
-    /**
-     * Return true if the point is within the start and end points of this line.
-     *
-     * @param pt {number}
-     */
-    within(pt) {
-        return this.start <= pt && pt <= this.end;
-    }
 
-    /**
-     * Return true if the given line overlaps the current line.  IE either the start
-     * or end point on the given line is between the start and end points of the
-     * current line.
-     *
-     * @param line {Line}
-     * @return {boolean}
-     */
-    overlaps(line) {
-        Preconditions.assertNotNull(line, "line");
-
-        //console.log("DEBUG: %s vs %s", this.toString("interval"), line.toString("interval"));
-
-        return this.containsPoint(line.start) || this.containsPoint(line.end);
-    }
-
-    /**
-     *
-     * @param [fmt] optional format parameter. May be 'interval' for interval notation.
-     * @return {string}
-     */
-    toString(fmt) {
-
-        if (fmt === "interval") {
-            return `[${this.start},${this.end}]`;
+        /**
+         * Return true if the given point is between the start and end position
+         * of the line (inclusive)
+         *
+         * @param pt {number}
+         * @return {boolean}
+         */
+        value: function containsPoint(pt) {
+            return this.within(pt);
         }
 
-        return `{start: ${this.start}, end: ${this.end}}`;
-    }
+        /**
+         * Return true if the point is within the start and end points of this line.
+         *
+         * @param pt {number}
+         */
 
-    /**
-     * Build a new line based on the given scalar.  Essentially this models
-     * the line as a vector with zero as the origin and length as the magnitude
-     * and we just apply the scalar to build the new vector with a different
-     * start origin.
-     *
-     * @param scalar {number}
-     */
-    multiply(scalar) {
+    }, {
+        key: "within",
+        value: function within(pt) {
+            return this.start <= pt && pt <= this.end;
+        }
 
-        return new Line(this.start * scalar, this.end * scalar, this.axis);
-    }
+        /**
+         * Return true if the given line overlaps the current line.  IE either the start
+         * or end point on the given line is between the start and end points of the
+         * current line.
+         *
+         * @param line {Line}
+         * @return {boolean}
+         */
 
-    toJSON() {
+    }, {
+        key: "overlaps",
+        value: function overlaps(line) {
+            Preconditions.assertNotNull(line, "line");
 
-        return {
-            axis: this.axis,
-            start: this.start,
-            end: this.end,
-            length: this.length
-        };
-    }
+            //console.log("DEBUG: %s vs %s", this.toString("interval"), line.toString("interval"));
 
-    /**
-     *
-     * @param start {number}
-     * @param pt {number}
-     * @param end {number}
-     * @return {boolean}
-     */
-    static interval(start, pt, end) {
-        return start <= pt && pt <= end;
-    }
+            return this.containsPoint(line.start) || this.containsPoint(line.end);
+        }
 
-    /**
-     * @return {LineBuilder}
-     */
-    static builder() {
-        return new LineBuilder();
-    }
+        /**
+         *
+         * @param [fmt] optional format parameter. May be 'interval' for interval notation.
+         * @return {string}
+         */
 
-}
+    }, {
+        key: "toString",
+        value: function toString(fmt) {
 
-class LineBuilder {
+            if (fmt === "interval") {
+                return "[" + this.start + "," + this.end + "]";
+            }
 
-    constructor() {
+            return "{start: " + this.start + ", end: " + this.end + "}";
+        }
+
+        /**
+         * Build a new line based on the given scalar.  Essentially this models
+         * the line as a vector with zero as the origin and length as the magnitude
+         * and we just apply the scalar to build the new vector with a different
+         * start origin.
+         *
+         * @param scalar {number}
+         */
+
+    }, {
+        key: "multiply",
+        value: function multiply(scalar) {
+
+            return new Line(this.start * scalar, this.end * scalar, this.axis);
+        }
+    }, {
+        key: "toJSON",
+        value: function toJSON() {
+
+            return {
+                axis: this.axis,
+                start: this.start,
+                end: this.end,
+                length: this.length
+            };
+        }
+
+        /**
+         *
+         * @param start {number}
+         * @param pt {number}
+         * @param end {number}
+         * @return {boolean}
+         */
+
+    }, {
+        key: "width",
+        get: function get() {
+            return this.end - this.start;
+        }
+    }, {
+        key: "length",
+        get: function get() {
+            return this.end - this.start;
+        }
+    }], [{
+        key: "interval",
+        value: function interval(start, pt, end) {
+            return start <= pt && pt <= end;
+        }
+
+        /**
+         * @return {LineBuilder}
+         */
+
+    }, {
+        key: "builder",
+        value: function builder() {
+            return new LineBuilder();
+        }
+    }]);
+
+    return Line;
+}();
+
+var LineBuilder = function () {
+    function LineBuilder() {
+        _classCallCheck(this, LineBuilder);
 
         /**
          * @type {number}
@@ -11848,60 +12140,78 @@ class LineBuilder {
      * @param value {number}
      * @return {LineBuilder}
      */
-    setStart(value) {
-        Preconditions.assertNumber(value, "value");
-        this.start = value;
-        return this;
-    }
 
-    /**
-     * @param value {number}
-     * @return {LineBuilder}
-     */
-    setEnd(value) {
-        Preconditions.assertNumber(value, "value");
-        this.end = value;
-        return this;
-    }
 
-    /**
-     * @param value {number}
-     * @return {LineBuilder}
-     */
-    setLength(value) {
-        Preconditions.assertNumber(value, "value");
-        this.length = value;
-        return this;
-    }
-
-    /**
-     * @param value {number}
-     * @return {LineBuilder}
-     */
-    setAxis(value) {
-        Preconditions.assertNotNull(axis, "value");
-        this.axis = value;
-        return this;
-    }
-
-    /**
-     *
-     * @return {Line}
-     */
-    build() {
-
-        Preconditions.assertNumber(this._start, "start");
-
-        if (!this._end && this._length) {
-            this._end = this._start + this._length;
+    _createClass(LineBuilder, [{
+        key: "setStart",
+        value: function setStart(value) {
+            Preconditions.assertNumber(value, "value");
+            this.start = value;
+            return this;
         }
 
-        Preconditions.assertNumber(this._end, "end");
+        /**
+         * @param value {number}
+         * @return {LineBuilder}
+         */
 
-        return new Line(this._start, this._end);
-    }
+    }, {
+        key: "setEnd",
+        value: function setEnd(value) {
+            Preconditions.assertNumber(value, "value");
+            this.end = value;
+            return this;
+        }
 
-}
+        /**
+         * @param value {number}
+         * @return {LineBuilder}
+         */
+
+    }, {
+        key: "setLength",
+        value: function setLength(value) {
+            Preconditions.assertNumber(value, "value");
+            this.length = value;
+            return this;
+        }
+
+        /**
+         * @param value {number}
+         * @return {LineBuilder}
+         */
+
+    }, {
+        key: "setAxis",
+        value: function setAxis(value) {
+            Preconditions.assertNotNull(axis, "value");
+            this.axis = value;
+            return this;
+        }
+
+        /**
+         *
+         * @return {Line}
+         */
+
+    }, {
+        key: "build",
+        value: function build() {
+
+            Preconditions.assertNumber(this._start, "start");
+
+            if (!this._end && this._length) {
+                this._end = this._start + this._length;
+            }
+
+            Preconditions.assertNumber(this._end, "end");
+
+            return new Line(this._start, this._end);
+        }
+    }]);
+
+    return LineBuilder;
+}();
 
 module.exports.Line = Line;
 
@@ -11912,65 +12222,88 @@ module.exports.Line = Line;
   !*** ./web/js/util/Objects.js ***!
   \********************************/
 /*! no static exports found */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
 
 
-class Objects {
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
-    /**
-     * Take the current object, and use given object as a set of defaults.
-     */
-    static defaults(current, defaults) {
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-        let result = current;
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-        if (!result) {
-            result = {};
-        }
-
-        for (let key in defaults) {
-            if (defaults.hasOwnProperty(key) && !result.hasOwnProperty(key)) {
-                result[key] = defaults[key];
-            }
-        }
-
-        return result;
+var Objects = function () {
+    function Objects() {
+        _classCallCheck(this, Objects);
     }
 
-    /**
-     * Clear an array or dictionary of all its values so it is reset.
-     * This modifies the object directly.
-     *
-     * @param obj
-     */
-    static clear(obj) {
+    _createClass(Objects, null, [{
+        key: "defaults",
 
-        if (obj instanceof Array) {
 
-            for (let idx = 0; idx < obj.length; ++idx) {
-                obj.pop();
+        /**
+         * Take the current object, and use given object as a set of defaults.
+         */
+        value: function defaults(current, _defaults) {
+
+            var result = current;
+
+            if (!result) {
+                result = {};
             }
 
-            return obj;
-        }
-
-        if (typeof obj === "object") {
-
-            for (let key in obj) {
-                delete obj[key];
+            for (var key in _defaults) {
+                if (_defaults.hasOwnProperty(key) && !result.hasOwnProperty(key)) {
+                    result[key] = _defaults[key];
+                }
             }
 
-            return obj;
+            return result;
         }
 
-        throw new Error("Only works for arrays or objects");
-    }
+        /**
+         * Clear an array or dictionary of all its values so it is reset.
+         * This modifies the object directly.
+         *
+         * @param obj
+         */
 
-    static duplicate(obj) {
-        return JSON.parse(JSON.stringify(obj));
-    }
+    }, {
+        key: "clear",
+        value: function clear(obj) {
 
-};
+            if (obj instanceof Array) {
+
+                for (var idx = 0; idx < obj.length; ++idx) {
+                    obj.pop();
+                }
+
+                return obj;
+            }
+
+            if ((typeof obj === "undefined" ? "undefined" : _typeof(obj)) === "object") {
+
+                for (var key in obj) {
+                    delete obj[key];
+                }
+
+                return obj;
+            }
+
+            throw new Error("Only works for arrays or objects");
+        }
+    }, {
+        key: "duplicate",
+        value: function duplicate(obj) {
+            return JSON.parse(JSON.stringify(obj));
+        }
+    }]);
+
+    return Objects;
+}();
+
+;
 
 module.exports.Objects = Objects;
 
@@ -11983,81 +12316,108 @@ module.exports.Objects = Objects;
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-const { Preconditions } = __webpack_require__(/*! ../Preconditions */ "./web/js/Preconditions.js");
-const { Optional } = __webpack_require__(/*! ../Optional */ "./web/js/Optional.js");
+"use strict";
 
-class Styles {
 
-    /**
-     * Parse the amount of pixels from the given value.  Right now we only
-     * support px but in the future we could support other types.
-     *
-     * @param value {string}
-     * @return {number}
-     */
-    static parsePX(value) {
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-        Preconditions.assertNotNull(value, "value");
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-        if (value === "") {
-            throw new Error("Empty string given");
-        }
+var _require = __webpack_require__(/*! ../Preconditions */ "./web/js/Preconditions.js"),
+    Preconditions = _require.Preconditions;
 
-        return parseInt(value.replace("px", ""));
+var _require2 = __webpack_require__(/*! ../Optional */ "./web/js/Optional.js"),
+    Optional = _require2.Optional;
+
+var Styles = function () {
+    function Styles() {
+        _classCallCheck(this, Styles);
     }
 
-    /**
-     * Return the top, left, width, and height of the given element.
-     *
-     * @param element {HTMLElement}
-     */
-    static positioning(element) {
+    _createClass(Styles, null, [{
+        key: "parsePX",
 
-        let result = {
-            left: undefined,
-            top: undefined,
-            right: undefined,
-            bottom: undefined,
-            width: undefined,
-            height: undefined
-        };
 
-        for (let key in result) {
+        /**
+         * Parse the amount of pixels from the given value.  Right now we only
+         * support px but in the future we could support other types.
+         *
+         * @param value {string}
+         * @return {number}
+         */
+        value: function parsePX(value) {
 
-            if (!result.hasOwnProperty(key)) {
-                continue;
+            Preconditions.assertNotNull(value, "value");
+
+            if (value === "") {
+                throw new Error("Empty string given");
             }
 
-            result[key] = Optional.of(element.style[key]).filter(current => current !== null && current !== "").getOrElse(undefined);
+            return parseInt(value.replace("px", ""));
         }
 
-        return result;
-    }
+        /**
+         * Return the top, left, width, and height of the given element.
+         *
+         * @param element {HTMLElement}
+         */
 
-    /**
-     * Return all the positioning keys to pixels.
-     */
-    static positioningToPX(positioning) {
+    }, {
+        key: "positioning",
+        value: function positioning(element) {
 
-        let result = Object.assign({}, positioning);
+            var result = {
+                left: undefined,
+                top: undefined,
+                right: undefined,
+                bottom: undefined,
+                width: undefined,
+                height: undefined
+            };
 
-        for (let key in result) {
+            for (var key in result) {
 
-            if (!result.hasOwnProperty(key)) {
-                continue;
+                if (!result.hasOwnProperty(key)) {
+                    continue;
+                }
+
+                result[key] = Optional.of(element.style[key]).filter(function (current) {
+                    return current !== null && current !== "";
+                }).getOrElse(undefined);
             }
 
-            if (result[key] === null || result[key] === undefined) {
-                continue;
-            }
-
-            result[key] = Styles.parsePX(result[key]);
+            return result;
         }
 
-        return result;
-    }
+        /**
+         * Return all the positioning keys to pixels.
+         */
 
-}
+    }, {
+        key: "positioningToPX",
+        value: function positioningToPX(positioning) {
+
+            var result = Object.assign({}, positioning);
+
+            for (var key in result) {
+
+                if (!result.hasOwnProperty(key)) {
+                    continue;
+                }
+
+                if (result[key] === null || result[key] === undefined) {
+                    continue;
+                }
+
+                result[key] = Styles.parsePX(result[key]);
+            }
+
+            return result;
+        }
+    }]);
+
+    return Styles;
+}();
 
 module.exports.Styles = Styles;
 
@@ -12070,15 +12430,27 @@ module.exports.Styles = Styles;
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-const $ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
+"use strict";
 
-const { Preconditions } = __webpack_require__(/*! ./Preconditions */ "./web/js/Preconditions.js");
-const { Rects } = __webpack_require__(/*! ./Rects */ "./web/js/Rects.js");
-const { Functions } = __webpack_require__(/*! ./util/Functions */ "./web/js/util/Functions.js");
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var $ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
+
+var _require = __webpack_require__(/*! ./Preconditions */ "./web/js/Preconditions.js"),
+    Preconditions = _require.Preconditions;
+
+var _require2 = __webpack_require__(/*! ./Rects */ "./web/js/Rects.js"),
+    Rects = _require2.Rects;
+
+var _require3 = __webpack_require__(/*! ./util/Functions */ "./web/js/util/Functions.js"),
+    Functions = _require3.Functions;
 
 module.exports.injectScript = function (src, type) {
 
-    let script = document.createElement('script');
+    var script = document.createElement('script');
     script.src = src;
 
     // loading async is ugly but we're going to move to webpack and clean this
@@ -12106,27 +12478,34 @@ module.exports.injectScript = function (src, type) {
  * Apply a given function, with arguments, to a list of delegates which have
  * that function name defined.
  */
-module.exports.Delegator = class {
+module.exports.Delegator = function () {
+    function _class(delegates) {
+        _classCallCheck(this, _class);
 
-    constructor(delegates) {
         this.delegates = delegates;
     }
 
     /**
      * Apply the given function to all the delegates.
      */
-    apply(functionName) {
 
-        let args = Array.from(arguments);
-        args.splice(0, 1);
 
-        this.delegates.forEach(function (delegate) {
-            let func = delegate[functionName];
-            func.apply(delegate, args);
-        });
-    }
+    _createClass(_class, [{
+        key: "apply",
+        value: function apply(functionName) {
 
-};
+            var args = Array.from(arguments);
+            args.splice(0, 1);
+
+            this.delegates.forEach(function (delegate) {
+                var func = delegate[functionName];
+                func.apply(delegate, args);
+            });
+        }
+    }]);
+
+    return _class;
+}();
 
 // @Deprecated use Functions.forDict
 module.exports.forDict = function (dict, callback) {
@@ -12136,10 +12515,10 @@ module.exports.forDict = function (dict, callback) {
 
     // get the keys first, that way we can mutate the dictionary while iterating
     // through it if necessary.
-    let keys = Object.keys(dict);
+    var keys = Object.keys(dict);
 
     keys.forEach(function (key) {
-        let value = dict[key];
+        var value = dict[key];
         callback(key, value);
     });
 };
@@ -12150,7 +12529,7 @@ module.exports.forDict = function (dict, callback) {
  */
 module.exports.getBoundingClientRectFromElements = function (elements) {
 
-    let boundingClientRects = elements.map(Element.getBoundingClientRect);
+    var boundingClientRects = elements.map(Element.getBoundingClientRect);
     return getBoundingClientRectFromBCRs(boundingClientRects);
 };
 
@@ -12159,12 +12538,28 @@ module.exports.getBoundingClientRectFromElements = function (elements) {
  */
 module.exports.getBoundingClientRectFromBCRs = function (boundingClientRects) {
 
-    let left = boundingClientRects.map(brc => brc.left).reduce((a, b) => Math.min(a, b));
-    let top = boundingClientRects.map(brc => brc.top).reduce((a, b) => Math.min(a, b));
-    let bottom = boundingClientRects.map(brc => brc.bottom).reduce((a, b) => Math.max(a, b));
-    let right = boundingClientRects.map(brc => brc.right).reduce((a, b) => Math.max(a, b));
+    var left = boundingClientRects.map(function (brc) {
+        return brc.left;
+    }).reduce(function (a, b) {
+        return Math.min(a, b);
+    });
+    var top = boundingClientRects.map(function (brc) {
+        return brc.top;
+    }).reduce(function (a, b) {
+        return Math.min(a, b);
+    });
+    var bottom = boundingClientRects.map(function (brc) {
+        return brc.bottom;
+    }).reduce(function (a, b) {
+        return Math.max(a, b);
+    });
+    var right = boundingClientRects.map(function (brc) {
+        return brc.right;
+    }).reduce(function (a, b) {
+        return Math.max(a, b);
+    });
 
-    return { left, top, bottom, right };
+    return { left: left, top: top, bottom: bottom, right: right };
 };
 
 /**
@@ -12172,7 +12567,7 @@ module.exports.getBoundingClientRectFromBCRs = function (boundingClientRects) {
  */
 module.exports.elementOffset = function (element) {
 
-    let result = {
+    var result = {
         left: element.offsetLeft,
         top: element.offsetTop,
         width: element.offsetWidth,
@@ -12188,68 +12583,88 @@ module.exports.elementOffset = function (element) {
 /**
  * Support the ability to calculate an offset relative to another element.
  */
-module.exports.OffsetCalculator = class {
+module.exports.OffsetCalculator = function () {
+    function _class2() {
+        _classCallCheck(this, _class2);
+    }
 
-    // https://stackoverflow.com/questions/5598743/finding-elements-position-relative-to-the-document
-    static calculate(element, rootElement) {
+    _createClass(_class2, null, [{
+        key: "calculate",
 
-        let offset = { left: 0, top: 0, width: 0, height: 0 };
 
-        while (true) {
+        // https://stackoverflow.com/questions/5598743/finding-elements-position-relative-to-the-document
+        value: function calculate(element, rootElement) {
 
-            if (element == null) break;
+            var offset = { left: 0, top: 0, width: 0, height: 0 };
 
-            offset.left += this._toInt(element.offsetLeft);
-            offset.top += this._toInt(element.offsetTop);
-            offset.width = this._toInt(element.offsetWidth);
-            offset.height = this._toInt(element.offsetHeight);
+            while (true) {
 
-            if (element === rootElement) break;
+                if (element == null) break;
 
-            element = element.offsetParent;
+                offset.left += this._toInt(element.offsetLeft);
+                offset.top += this._toInt(element.offsetTop);
+                offset.width = this._toInt(element.offsetWidth);
+                offset.height = this._toInt(element.offsetHeight);
+
+                if (element === rootElement) break;
+
+                element = element.offsetParent;
+            }
+
+            offset.right = offset.left + offset.width;
+            offset.bottom = offset.top + offset.height;
+
+            return Rects.validate(offset);
+        }
+    }, {
+        key: "_toInt",
+        value: function _toInt(value) {
+
+            if (isNaN(value)) {
+                return 0;
+            }
+
+            return value;
+        }
+    }]);
+
+    return _class2;
+}();
+
+module.exports.Styles = function () {
+    function _class3() {
+        _classCallCheck(this, _class3);
+    }
+
+    _createClass(_class3, null, [{
+        key: "parseTransformScaleX",
+        value: function parseTransformScaleX(transform) {
+
+            var result = transform;
+
+            if (!result) return null;
+
+            result = result.replace("scaleX(", "");
+            result = result.replace(")", "");
+
+            return parseFloat(result);
         }
 
-        offset.right = offset.left + offset.width;
-        offset.bottom = offset.top + offset.height;
+        /**
+         * Take a string of '50px' and return a number of just the pixel count.
+         */
 
-        return Rects.validate(offset);
-    }
+    }, {
+        key: "parsePixels",
+        value: function parsePixels(value) {
 
-    static _toInt(value) {
-
-        if (isNaN(value)) {
-            return 0;
+            value = value.replace("px", "");
+            return parseInt(value);
         }
+    }]);
 
-        return value;
-    }
-
-};
-
-module.exports.Styles = class {
-
-    static parseTransformScaleX(transform) {
-
-        let result = transform;
-
-        if (!result) return null;
-
-        result = result.replace("scaleX(", "");
-        result = result.replace(")", "");
-
-        return parseFloat(result);
-    }
-
-    /**
-     * Take a string of '50px' and return a number of just the pixel count.
-     */
-    static parsePixels(value) {
-
-        value = value.replace("px", "");
-        return parseInt(value);
-    }
-
-};
+    return _class3;
+}();
 
 module.exports.createSiblingTuples = Functions.createSiblingTuples;
 

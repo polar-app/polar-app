@@ -1,6 +1,6 @@
 const $ = require("jquery");
 
-import React, {Component } from "react";
+import React, {Component} from "react";
 import { render } from "react-dom";
 
 import Form from "react-jsonschema-form";

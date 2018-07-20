@@ -91,7 +91,10 @@
   !*** ./lib/TextHighlighter.js ***!
   \********************************/
 /*! no static exports found */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
 
 (function (global) {
     'use strict';
@@ -244,7 +247,7 @@
             grouped.push({
                 chunks: group,
                 timestamp: timestamp,
-                toString: function () {
+                toString: function toString() {
                     return group.map(function (h) {
                         return h.textContent;
                     }).join('');
@@ -260,7 +263,7 @@
      * @param {Node|HTMLElement} [el] - base DOM element to manipulate
      * @returns {object}
      */
-    var dom = function (el) {
+    var dom = function dom(el) {
 
         return (/** @lends dom **/{
 
@@ -268,7 +271,7 @@
                  * Adds class to element.
                  * @param {string} className
                  */
-                addClass: function (className) {
+                addClass: function addClass(className) {
                     if (el.classList) {
                         el.classList.add(className);
                     } else {
@@ -280,7 +283,7 @@
                  * Removes class from element.
                  * @param {string} className
                  */
-                removeClass: function (className) {
+                removeClass: function removeClass(className) {
                     if (el.classList) {
                         el.classList.remove(className);
                     } else {
@@ -292,7 +295,7 @@
                  * Prepends child nodes to base element.
                  * @param {Node[]} nodesToPrepend
                  */
-                prepend: function (nodesToPrepend) {
+                prepend: function prepend(nodesToPrepend) {
                     var nodes = Array.prototype.slice.call(nodesToPrepend),
                         i = nodes.length;
 
@@ -305,7 +308,7 @@
                  * Appends child nodes to base element.
                  * @param {Node[]} nodesToAppend
                  */
-                append: function (nodesToAppend) {
+                append: function append(nodesToAppend) {
                     var nodes = Array.prototype.slice.call(nodesToAppend);
 
                     for (var i = 0, len = nodes.length; i < len; ++i) {
@@ -318,7 +321,7 @@
                  * @param {Node} refEl - node after which base element will be inserted
                  * @returns {Node} - inserted element
                  */
-                insertAfter: function (refEl) {
+                insertAfter: function insertAfter(refEl) {
                     return refEl.parentNode.insertBefore(el, refEl.nextSibling);
                 },
 
@@ -327,14 +330,14 @@
                  * @param {Node} refEl - node before which base element will be inserted
                  * @returns {Node} - inserted element
                  */
-                insertBefore: function (refEl) {
+                insertBefore: function insertBefore(refEl) {
                     return refEl.parentNode.insertBefore(el, refEl);
                 },
 
                 /**
                  * Removes base element from DOM.
                  */
-                remove: function () {
+                remove: function remove() {
                     el.parentNode.removeChild(el);
                     el = null;
                 },
@@ -344,7 +347,7 @@
                  * @param {Node|HTMLElement} child
                  * @returns {boolean}
                  */
-                contains: function (child) {
+                contains: function contains(child) {
                     return el !== child && el.contains(child);
                 },
 
@@ -353,7 +356,7 @@
                  * @param {HTMLElement} wrapper
                  * @returns {HTMLElement} wrapper element
                  */
-                wrap: function (wrapper) {
+                wrap: function wrap(wrapper) {
                     if (el.parentNode) {
                         el.parentNode.insertBefore(wrapper, el);
                     }
@@ -366,7 +369,7 @@
                  * Unwraps base element.
                  * @returns {Node[]} - child nodes of unwrapped element.
                  */
-                unwrap: function () {
+                unwrap: function unwrap() {
                     var nodes = Array.prototype.slice.call(el.childNodes),
                         wrapper;
 
@@ -383,7 +386,7 @@
                  * Returns array of base element parents.
                  * @returns {HTMLElement[]}
                  */
-                parents: function () {
+                parents: function parents() {
                     var parent,
                         path = [];
 
@@ -400,7 +403,7 @@
                  * element node has only one text node.
                  * It should does the same as standard element.normalize, but IE implements it incorrectly.
                  */
-                normalizeTextNodes: function () {
+                normalizeTextNodes: function normalizeTextNodes() {
                     if (!el) {
                         return;
                     }
@@ -420,7 +423,7 @@
                  * Returns element background color.
                  * @returns {CSSStyleDeclaration.backgroundColor}
                  */
-                color: function () {
+                color: function color() {
                     return el.style.backgroundColor;
                 },
 
@@ -429,7 +432,7 @@
                  * @param {string} html
                  * @returns {NodeList}
                  */
-                fromHTML: function (html) {
+                fromHTML: function fromHTML(html) {
                     var div = document.createElement('div');
                     div.innerHTML = html;
                     return div.childNodes;
@@ -439,7 +442,7 @@
                  * Returns first range of the window of base element.
                  * @returns {Range}
                  */
-                getRange: function () {
+                getRange: function getRange() {
                     var selection = dom(el).getSelection(),
                         range;
 
@@ -453,7 +456,7 @@
                 /**
                  * Removes all ranges of the window of base element.
                  */
-                removeAllRanges: function () {
+                removeAllRanges: function removeAllRanges() {
                     var selection = dom(el).getSelection();
                     selection.removeAllRanges();
                 },
@@ -462,7 +465,7 @@
                  * Returns selection object of the window of base element.
                  * @returns {Selection}
                  */
-                getSelection: function () {
+                getSelection: function getSelection() {
                     return dom(el).getWindow().getSelection();
                 },
 
@@ -470,7 +473,7 @@
                  * Returns window of the base element.
                  * @returns {Window}
                  */
-                getWindow: function () {
+                getWindow: function getWindow() {
                     return dom(el).getDocument().defaultView;
                 },
 
@@ -478,7 +481,7 @@
                  * Returns document of the base element.
                  * @returns {HTMLDocument}
                  */
-                getDocument: function () {
+                getDocument: function getDocument() {
                     // if ownerDocument is null then el is the document itself.
                     return el.ownerDocument || el;
                 }
@@ -524,13 +527,13 @@
             highlightedClass: 'highlighted',
             contextClass: 'highlighter-context',
             manual: true,
-            onRemoveHighlight: function () {
+            onRemoveHighlight: function onRemoveHighlight() {
                 return true;
             },
-            onBeforeHighlight: function () {
+            onBeforeHighlight: function onBeforeHighlight() {
                 return true;
             },
-            onAfterHighlight: function () {}
+            onAfterHighlight: function onAfterHighlight() {}
         });
 
         dom(this.el).addClass(this.options.contextClass);
@@ -53140,39 +53143,61 @@ module.exports = function(module) {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
+"use strict";
 
-const base58check = __webpack_require__(/*! base58check */ "./node_modules/base58check/index.js");
-const createKeccakHash = __webpack_require__(/*! keccak */ "./node_modules/keccak/index.js");
-const { Preconditions } = __webpack_require__(/*! ./Preconditions */ "./web/js/Preconditions.js");
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var base58check = __webpack_require__(/*! base58check */ "./node_modules/base58check/index.js");
+var createKeccakHash = __webpack_require__(/*! keccak */ "./node_modules/keccak/index.js");
+
+var _require = __webpack_require__(/*! ./Preconditions */ "./web/js/Preconditions.js"),
+    Preconditions = _require.Preconditions;
 
 /**
  * Create hashcodes from string data to be used as identifiers in keys.
  *
  * @type {Hashcodes}
  */
-class Hashcodes {
 
-    static create(data) {
-        Preconditions.assertNotNull(data, "data");
-        return base58check.encode(createKeccakHash('keccak256').update(data).digest());
+
+var Hashcodes = function () {
+    function Hashcodes() {
+        _classCallCheck(this, Hashcodes);
     }
 
-    /**
-     * Create a hashcode as a truncated SHA hashcode.
-     */
-    static createID(obj, len) {
-
-        if (!len) {
-            len = 10;
+    _createClass(Hashcodes, null, [{
+        key: "create",
+        value: function create(data) {
+            Preconditions.assertNotNull(data, "data");
+            return base58check.encode(createKeccakHash('keccak256').update(data).digest());
         }
 
-        let id = Hashcodes.create(JSON.stringify(obj));
+        /**
+         * Create a hashcode as a truncated SHA hashcode.
+         */
 
-        // truncate.  We don't need that much precision against collision.
-        return id.substring(0, len);
-    }
+    }, {
+        key: "createID",
+        value: function createID(obj, len) {
 
-};
+            if (!len) {
+                len = 10;
+            }
+
+            var id = Hashcodes.create(JSON.stringify(obj));
+
+            // truncate.  We don't need that much precision against collision.
+            return id.substring(0, len);
+        }
+    }]);
+
+    return Hashcodes;
+}();
+
+;
 
 module.exports.Hashcodes = Hashcodes;
 
@@ -53183,27 +53208,46 @@ module.exports.Hashcodes = Hashcodes;
   !*** ./web/js/KeyEvents.js ***!
   \*****************************/
 /*! no static exports found */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
 
-class KeyEvents {
+"use strict";
 
-    /**
-     * Return true if the 'meta' keys are active.
-     */
-    static isKeyMetaActive(event) {
 
-        if (this.isMacOS()) {
-            return event.metaKey && event.altKey;
-        } else {
-            return event.ctrlKey && event.altKey;
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var KeyEvents = function () {
+    function KeyEvents() {
+        _classCallCheck(this, KeyEvents);
+    }
+
+    _createClass(KeyEvents, null, [{
+        key: "isKeyMetaActive",
+
+
+        /**
+         * Return true if the 'meta' keys are active.
+         */
+        value: function isKeyMetaActive(event) {
+
+            if (this.isMacOS()) {
+                return event.metaKey && event.altKey;
+            } else {
+                return event.ctrlKey && event.altKey;
+            }
         }
-    }
+    }, {
+        key: "isMacOS",
+        value: function isMacOS() {
+            return navigator.platform === "MacIntel";
+        }
+    }]);
 
-    static isMacOS() {
-        return navigator.platform === "MacIntel";
-    }
+    return KeyEvents;
+}();
 
-};
+;
 
 module.exports.KeyEvents = KeyEvents;
 
@@ -53216,25 +53260,55 @@ module.exports.KeyEvents = KeyEvents;
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
+"use strict";
 
-const { Proxies } = __webpack_require__(/*! ./proxies/Proxies */ "./web/js/proxies/Proxies.js");
-const { Pagemark } = __webpack_require__(/*! ./metadata/Pagemark */ "./web/js/metadata/Pagemark.js");
-const { Pagemarks } = __webpack_require__(/*! ./metadata/Pagemarks */ "./web/js/metadata/Pagemarks.js");
-const { PagemarkType } = __webpack_require__(/*! ./metadata/PagemarkType */ "./web/js/metadata/PagemarkType.js");
-const { DocMeta } = __webpack_require__(/*! ./metadata/DocMeta */ "./web/js/metadata/DocMeta.js");
-const { DocMetas } = __webpack_require__(/*! ./metadata/DocMetas */ "./web/js/metadata/DocMetas.js");
-const { ISODateTime } = __webpack_require__(/*! ./metadata/ISODateTime */ "./web/js/metadata/ISODateTime.js");
-const { DocMetaDescriber } = __webpack_require__(/*! ./metadata/DocMetaDescriber */ "./web/js/metadata/DocMetaDescriber.js");
-const { Reactor } = __webpack_require__(/*! ./reactor/Reactor */ "./web/js/reactor/Reactor.js");
-const { Event } = __webpack_require__(/*! ./reactor/Event */ "./web/js/reactor/Event.js");
-const { forDict } = __webpack_require__(/*! ./utils */ "./web/js/utils.js");
-const { Objects } = __webpack_require__(/*! ./util/Objects */ "./web/js/util/Objects.js");
-const { Preconditions } = __webpack_require__(/*! ./Preconditions */ "./web/js/Preconditions.js");
 
-class Model {
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-    constructor(persistenceLayer) {
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var _require = __webpack_require__(/*! ./proxies/Proxies */ "./web/js/proxies/Proxies.js"),
+    Proxies = _require.Proxies;
+
+var _require2 = __webpack_require__(/*! ./metadata/Pagemark */ "./web/js/metadata/Pagemark.js"),
+    Pagemark = _require2.Pagemark;
+
+var _require3 = __webpack_require__(/*! ./metadata/Pagemarks */ "./web/js/metadata/Pagemarks.js"),
+    Pagemarks = _require3.Pagemarks;
+
+var _require4 = __webpack_require__(/*! ./metadata/PagemarkType */ "./web/js/metadata/PagemarkType.js"),
+    PagemarkType = _require4.PagemarkType;
+
+var _require5 = __webpack_require__(/*! ./metadata/DocMeta */ "./web/js/metadata/DocMeta.js"),
+    DocMeta = _require5.DocMeta;
+
+var _require6 = __webpack_require__(/*! ./metadata/DocMetas */ "./web/js/metadata/DocMetas.js"),
+    DocMetas = _require6.DocMetas;
+
+var _require7 = __webpack_require__(/*! ./metadata/ISODateTime */ "./web/js/metadata/ISODateTime.js"),
+    ISODateTime = _require7.ISODateTime;
+
+var _require8 = __webpack_require__(/*! ./metadata/DocMetaDescriber */ "./web/js/metadata/DocMetaDescriber.js"),
+    DocMetaDescriber = _require8.DocMetaDescriber;
+
+var _require9 = __webpack_require__(/*! ./reactor/Reactor */ "./web/js/reactor/Reactor.js"),
+    Reactor = _require9.Reactor;
+
+var _require10 = __webpack_require__(/*! ./reactor/Event */ "./web/js/reactor/Event.js"),
+    Event = _require10.Event;
+
+var _require11 = __webpack_require__(/*! ./utils */ "./web/js/utils.js"),
+    forDict = _require11.forDict;
+
+var _require12 = __webpack_require__(/*! ./util/Objects */ "./web/js/util/Objects.js"),
+    Objects = _require12.Objects;
+
+var _require13 = __webpack_require__(/*! ./Preconditions */ "./web/js/Preconditions.js"),
+    Preconditions = _require13.Preconditions;
+
+var Model = function () {
+    function Model(persistenceLayer) {
+        _classCallCheck(this, Model);
 
         this.persistenceLayer = persistenceLayer;
 
@@ -53252,34 +53326,35 @@ class Model {
     /**
      * Called when a new document has been loaded.
      */
-    documentLoaded(fingerprint, nrPages, currentPageNumber) {
-        var _this = this;
 
-        return _asyncToGenerator(function* () {
+
+    _createClass(Model, [{
+        key: "documentLoaded",
+        value: async function documentLoaded(fingerprint, nrPages, currentPageNumber) {
 
             // docMetaPromise is used for future readers after the document is loaded
-            _this.docMetaPromise = _this.persistenceLayer.getDocMeta(fingerprint);
+            this.docMetaPromise = this.persistenceLayer.getDocMeta(fingerprint);
 
-            _this.docMeta = yield _this.docMetaPromise;
+            this.docMeta = await this.docMetaPromise;
 
-            if (_this.docMeta == null) {
+            if (this.docMeta == null) {
 
                 console.warn("New document found. Creating initial DocMeta");
 
                 // this is a new document...
                 //this.docMeta = DocMeta.createWithinInitialPagemarks(fingerprint, nrPages);
-                _this.docMeta = DocMetas.create(fingerprint, nrPages);
-                _this.persistenceLayer.sync(fingerprint, _this.docMeta);
+                this.docMeta = DocMetas.create(fingerprint, nrPages);
+                this.persistenceLayer.sync(fingerprint, this.docMeta);
 
                 // I'm not sure this is the best way to resolve this as swapping in
                 // the docMetaPromise without any synchronization seems like we're
                 // asking for a race condition.
             }
 
-            console.log("Description of doc loaded: " + DocMetaDescriber.describe(_this.docMeta));
-            console.log("Document loaded: ", _this.docMeta);
+            console.log("Description of doc loaded: " + DocMetaDescriber.describe(this.docMeta));
+            console.log("Document loaded: ", this.docMeta);
 
-            _this.docMeta = Proxies.create(_this.docMeta, function (traceEvent) {
+            this.docMeta = Proxies.create(this.docMeta, function (traceEvent) {
 
                 // right now we just sync the datastore on mutation.  We do not
                 // attempt to use a journal yet.
@@ -53288,36 +53363,38 @@ class Model {
                 this.persistenceLayer.sync(this.docMeta.docInfo.fingerprint, this.docMeta);
 
                 return true;
-            }.bind(_this));
+            }.bind(this));
 
-            _this.docMetaPromise = new Promise(function (resolve, reject) {
+            this.docMetaPromise = new Promise(function (resolve, reject) {
                 // always provide this promise for the metadata.  For NEW documents
                 // we have to provide the promise but we ALSO have to provide it
                 // to swap out the docMeta with the right version.
                 resolve(this.docMeta);
-            }.bind(_this));
+            }.bind(this));
 
             // TODO: make this into an object..
-            let documentLoadedEvent = { fingerprint, nrPages, currentPageNumber, docMeta: _this.docMeta };
-            _this.reactor.dispatchEvent('documentLoaded', documentLoadedEvent);
+            var documentLoadedEvent = { fingerprint: fingerprint, nrPages: nrPages, currentPageNumber: currentPageNumber, docMeta: this.docMeta };
+            this.reactor.dispatchEvent('documentLoaded', documentLoadedEvent);
 
-            return _this.docMeta;
-        })();
-    }
+            return this.docMeta;
+        }
+    }, {
+        key: "registerListenerForDocumentLoaded",
+        value: function registerListenerForDocumentLoaded(eventListener) {
+            this.reactor.addEventListener('documentLoaded', eventListener);
+        }
 
-    registerListenerForDocumentLoaded(eventListener) {
-        this.reactor.addEventListener('documentLoaded', eventListener);
-    }
+        /**
+         * @refactor This code should be in its own dedicated helper class
+         *
+         * @param pageNum The page num to use for our created pagemark.
+         */
 
-    /**
-     * @refactor This code should be in its own dedicated helper class
-     *
-     * @param pageNum The page num to use for our created pagemark.
-     */
-    createPagemark(pageNum, options = {}) {
-        var _this2 = this;
+    }, {
+        key: "createPagemark",
+        value: async function createPagemark(pageNum) {
+            var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
 
-        return _asyncToGenerator(function* () {
 
             if (!options.percentage) {
                 options.percentage = 100;
@@ -53325,9 +53402,9 @@ class Model {
 
             console.log("Model sees createPagemark");
 
-            _this2.assertPageNum(pageNum);
+            this.assertPageNum(pageNum);
 
-            let pagemark = Pagemarks.create({
+            var pagemark = Pagemarks.create({
 
                 // just set docMeta pageMarkType = PagemarkType.SINGLE_COLUMN by
                 // default for now until we add multiple column types and handle
@@ -53339,66 +53416,77 @@ class Model {
 
             });
 
-            let docMeta = yield _this2.docMetaPromise;
+            var docMeta = await this.docMetaPromise;
 
-            let pageMeta = docMeta.getPageMeta(pageNum);
+            var pageMeta = docMeta.getPageMeta(pageNum);
 
             // set the pagemark that we just created into the map.
             pageMeta.pagemarks[pagemark.id] = pagemark;
 
             // TODO: this can be done with a mutation listener now
-            _this2.reactor.dispatchEvent('createPagemark', { pageNum, pagemark });
-        })();
-    }
-
-    /**
-     * @refactor This code should be in its own dedicated helper class
-     * @param pageNum
-     */
-    erasePagemark(pageNum) {
-
-        Preconditions.assertNumber(pageNum, "pageNum");
-
-        console.log("Model sees erasePagemark");
-
-        this.assertPageNum(pageNum);
-
-        let pageMeta = this.docMeta.getPageMeta(pageNum);
-
-        // FIXME: this is actually wrong because I need to delete the RIGHT
-        // pagemark. NOT just delete all of them.
-        Objects.clear(pageMeta.pagemarks);
-
-        // FIXME: this can be done with a mutation listener now.
-        this.reactor.dispatchEvent('erasePagemark', { pageNum });
-    }
-
-    assertPageNum(pageNum) {
-
-        if (pageNum == null) throw new Error("Must specify page pageNum");
-
-        if (pageNum <= 0) {
-            throw new Error("Page numbers begin at 1");
+            this.reactor.dispatchEvent('createPagemark', { pageNum: pageNum, pagemark: pagemark });
         }
-    }
 
-    /**
-     * @deprecated
-     * @param eventListener
-     */
-    registerListenerForCreatePagemark(eventListener) {
-        this.reactor.addEventListener('createPagemark', eventListener);
-    }
+        /**
+         * @refactor This code should be in its own dedicated helper class
+         * @param pageNum
+         */
 
-    /**
-     * @deprecated
-     * @param eventListener
-     */
-    registerListenerForErasePagemark(eventListener) {
-        this.reactor.addEventListener('erasePagemark', eventListener);
-    }
+    }, {
+        key: "erasePagemark",
+        value: function erasePagemark(pageNum) {
 
-}
+            Preconditions.assertNumber(pageNum, "pageNum");
+
+            console.log("Model sees erasePagemark");
+
+            this.assertPageNum(pageNum);
+
+            var pageMeta = this.docMeta.getPageMeta(pageNum);
+
+            // FIXME: this is actually wrong because I need to delete the RIGHT
+            // pagemark. NOT just delete all of them.
+            Objects.clear(pageMeta.pagemarks);
+
+            // FIXME: this can be done with a mutation listener now.
+            this.reactor.dispatchEvent('erasePagemark', { pageNum: pageNum });
+        }
+    }, {
+        key: "assertPageNum",
+        value: function assertPageNum(pageNum) {
+
+            if (pageNum == null) throw new Error("Must specify page pageNum");
+
+            if (pageNum <= 0) {
+                throw new Error("Page numbers begin at 1");
+            }
+        }
+
+        /**
+         * @deprecated
+         * @param eventListener
+         */
+
+    }, {
+        key: "registerListenerForCreatePagemark",
+        value: function registerListenerForCreatePagemark(eventListener) {
+            this.reactor.addEventListener('createPagemark', eventListener);
+        }
+
+        /**
+         * @deprecated
+         * @param eventListener
+         */
+
+    }, {
+        key: "registerListenerForErasePagemark",
+        value: function registerListenerForErasePagemark(eventListener) {
+            this.reactor.addEventListener('erasePagemark', eventListener);
+        }
+    }]);
+
+    return Model;
+}();
 
 module.exports.Model = Model;
 
@@ -53409,49 +53497,67 @@ module.exports.Model = Model;
   !*** ./web/js/Optional.js ***!
   \****************************/
 /*! no static exports found */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 // simple optional implementation so we don't need to resort to jquery
 
-class Optional {
+var Optional = function () {
+    function Optional(value) {
+        _classCallCheck(this, Optional);
 
-    constructor(value) {
         this.value = value;
     }
 
-    map(fn) {
-        if (this.value !== undefined) {
-            return new Some(fn(this.value));
+    _createClass(Optional, [{
+        key: "map",
+        value: function map(fn) {
+            if (this.value !== undefined) {
+                return new Some(fn(this.value));
+            }
+            return None;
         }
-        return None;
-    }
+    }, {
+        key: "filter",
+        value: function filter(fn) {
 
-    filter(fn) {
+            if (fn(this.value)) {
+                return new Some(this.value);
+            }
 
-        if (fn(this.value)) {
-            return new Some(this.value);
+            return None;
         }
+    }, {
+        key: "getOrElse",
+        value: function getOrElse(value) {
+            if (this.value !== undefined) {
+                return this.value;
+            }
 
-        return None;
-    }
-
-    getOrElse(value) {
-        if (this.value !== undefined) {
-            return this.value;
+            return value;
         }
+    }], [{
+        key: "of",
+        value: function of(value) {
+            return new Optional(value);
+        }
+    }]);
 
-        return value;
-    }
-
-    static of(value) {
-        return new Optional(value);
-    }
-}
+    return Optional;
+}();
 
 var None = new Optional();
 
-var Some = function (value) {
-    if (typeof value !== undefined) {
+var Some = function Some(value) {
+    if ((typeof value === "undefined" ? "undefined" : _typeof(value)) !== undefined) {
         return new Optional(value);
     }
     return None;
@@ -53466,7 +53572,14 @@ module.exports.Optional = Optional;
   !*** ./web/js/PageRedrawHandler.js ***!
   \*************************************/
 /*! no static exports found */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 /**
  * Calls an event handler when the page has been redrawn so that we can
@@ -53475,31 +53588,37 @@ module.exports.Optional = Optional;
  * @deprecated Use the new {ContainerLifecycleListener} instead.
  * @type {PageRedrawHandler}
  */
-class PageRedrawHandler {
-
-    constructor(pageElement) {
+var PageRedrawHandler = function () {
+    function PageRedrawHandler(pageElement) {
+        _classCallCheck(this, PageRedrawHandler);
 
         this.pageElement = pageElement;
         this.listener = null;
     }
 
-    register(callback) {
+    _createClass(PageRedrawHandler, [{
+        key: 'register',
+        value: function register(callback) {
+            var _this = this;
 
-        this.listener = event => {
+            this.listener = function (event) {
 
-            if (event.target && event.target.className === "endOfContent") {
-                callback(this.pageElement);
-            }
-        };
+                if (event.target && event.target.className === "endOfContent") {
+                    callback(_this.pageElement);
+                }
+            };
 
-        this.pageElement.addEventListener('DOMNodeInserted', this.listener, false);
-    }
+            this.pageElement.addEventListener('DOMNodeInserted', this.listener, false);
+        }
+    }, {
+        key: 'unregister',
+        value: function unregister() {
+            this.pageElement.removeEventListener('DOMNodeInserted', this.listener, false);
+        }
+    }]);
 
-    unregister() {
-        this.pageElement.removeEventListener('DOMNodeInserted', this.listener, false);
-    }
-
-}
+    return PageRedrawHandler;
+}();
 
 module.exports.PageRedrawHandler = PageRedrawHandler;
 
@@ -53510,26 +53629,28 @@ module.exports.PageRedrawHandler = PageRedrawHandler;
   !*** ./web/js/Point.js ***!
   \*************************/
 /*! no static exports found */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
 
-class Point {
+"use strict";
 
-  constructor(obj) {
 
-    /**
-     * @type number
-     */
-    this.x = undefined;
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-    /**
-     * @type number
-     */
-    this.y = undefined;
+var Point = function Point(obj) {
+  _classCallCheck(this, Point);
 
-    Object.assign(this, obj);
-  }
+  /**
+   * @type number
+   */
+  this.x = undefined;
 
-}
+  /**
+   * @type number
+   */
+  this.y = undefined;
+
+  Object.assign(this, obj);
+};
 
 module.exports.Point = Point;
 
@@ -53540,140 +53661,175 @@ module.exports.Point = Point;
   !*** ./web/js/Preconditions.js ***!
   \*********************************/
 /*! no static exports found */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
 
-class Preconditions {
+"use strict";
 
-    /**
-     *
-     * @param value
-     * @param testFunction {Function} Assert that the test function returns true
-     * @param message
-     * @return {*} Return the value we've been given.
-     */
-    static assert(value, testFunction, message) {
 
-        Preconditions.assertNotNull(testFunction, "testFunction");
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
-        let result = testFunction(value);
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-        if (!result) {
-            throw new Error(`Assertion failed for value ${value}: ` + message);
-        }
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-        return value;
+var Preconditions = function () {
+    function Preconditions() {
+        _classCallCheck(this, Preconditions);
     }
 
-    /**
-     * Assert that this value is defined , not-null, and also not NaN and also a number.
-     * @param value
-     * @param expected The expected value.
-     * @param name
-     * @return {number}
-     */
-    static assertEqual(value, expected, name) {
+    _createClass(Preconditions, null, [{
+        key: "assert",
 
-        if (value !== expected) {
-            throw new Error(`Value of ${value} !==- ${expected}`);
+
+        /**
+         *
+         * @param value
+         * @param testFunction {Function} Assert that the test function returns true
+         * @param message
+         * @return {*} Return the value we've been given.
+         */
+        value: function assert(value, testFunction, message) {
+
+            Preconditions.assertNotNull(testFunction, "testFunction");
+
+            var result = testFunction(value);
+
+            if (!result) {
+                throw new Error("Assertion failed for value " + value + ": " + message);
+            }
+
+            return value;
         }
 
-        return value;
-    }
+        /**
+         * Assert that this value is defined , not-null, and also not NaN and also a number.
+         * @param value
+         * @param expected The expected value.
+         * @param name
+         * @return {number}
+         */
 
-    /**
-     * Assert that this value is defined , not-null, and also not NaN and also a number.
-     * @param value {number} The value we expect to be a number.
-     * @param name {string} The name of the number.
-     * @return {number}
-     */
-    static assertNumber(value, name) {
+    }, {
+        key: "assertEqual",
+        value: function assertEqual(value, expected, name) {
 
-        Preconditions.assertNotNull(value, name);
+            if (value !== expected) {
+                throw new Error("Value of " + value + " !==- " + expected);
+            }
 
-        if (isNaN(value)) {
-            throw new Error(`Precondition failure for ${name}: NaN`);
+            return value;
         }
 
-        Preconditions.assertTypeOf(value, name, "number");
+        /**
+         * Assert that this value is defined , not-null, and also not NaN and also a number.
+         * @param value {number} The value we expect to be a number.
+         * @param name {string} The name of the number.
+         * @return {number}
+         */
 
-        return value;
-    }
+    }, {
+        key: "assertNumber",
+        value: function assertNumber(value, name) {
 
-    static assertInstanceOf(value, name, instance) {
+            Preconditions.assertNotNull(value, name);
 
-        if (value instanceof instance) {
-            throw new Error(`Precondition for instanceof '${name}' was not ${instance}.`);
+            if (isNaN(value)) {
+                throw new Error("Precondition failure for " + name + ": NaN");
+            }
+
+            Preconditions.assertTypeOf(value, name, "number");
+
+            return value;
+        }
+    }, {
+        key: "assertInstanceOf",
+        value: function assertInstanceOf(value, name, instance) {
+
+            if (value instanceof instance) {
+                throw new Error("Precondition for instanceof '" + name + "' was not " + instance + ".");
+            }
+
+            return value;
+        }
+    }, {
+        key: "assertTypeOf",
+        value: function assertTypeOf(value, name, type) {
+
+            if (!((typeof value === "undefined" ? "undefined" : _typeof(value)) === type)) {
+                throw new Error("Precondition for typeof '" + name + "' was not " + type + ".");
+            }
+
+            return value;
+        }
+    }, {
+        key: "assertNotNull",
+        value: function assertNotNull(value, name) {
+
+            if (value === null) {
+                throw new Error("Precondition (argument) for '" + name + "' null.");
+            }
+
+            if (value === undefined) {
+                throw new Error("Precondition (argument) for '" + name + "' undefined.");
+            }
+
+            return value;
+        }
+    }, {
+        key: "assertNotTypeOf",
+        value: function assertNotTypeOf(value, name, type) {
+
+            if ((typeof value === "undefined" ? "undefined" : _typeof(value)) === type) {
+                throw new Error("Precondition for typeof '" + name + "' was " + type + " but not allowed");
+            }
+
+            return value;
+        }
+    }, {
+        key: "assertNotInstanceOf",
+        value: function assertNotInstanceOf(value, name, instance) {
+
+            if (value instanceof instance) {
+                throw new Error("Precondition for instanceof '" + name + "' was " + instance + " but not allowed");
+            }
+
+            return value;
+        }
+    }, {
+        key: "assertTypeof",
+        value: function assertTypeof(value, name, expected) {
+
+            if ((typeof value === "undefined" ? "undefined" : _typeof(value)) !== expected) {
+                throw new Error("Precondition for typeof '" + name + "' was not " + expected + " but actually: " + (typeof value === "undefined" ? "undefined" : _typeof(value)));
+            }
+
+            return value;
         }
 
-        return value;
-    }
+        /**
+         * Use a default value if one is not specified.
+         *
+         * @param currentValue
+         * @param defaultValue
+         * @return {*}
+         */
 
-    static assertTypeOf(value, name, type) {
+    }, {
+        key: "defaultValue",
+        value: function defaultValue(currentValue, _defaultValue) {
 
-        if (!(typeof value === type)) {
-            throw new Error(`Precondition for typeof '${name}' was not ${type}.`);
+            if (!currentValue) {
+                return _defaultValue;
+            }
+
+            return currentValue;
         }
+    }]);
 
-        return value;
-    }
+    return Preconditions;
+}();
 
-    static assertNotNull(value, name) {
-
-        if (value === null) {
-            throw new Error(`Precondition (argument) for '${name}' null.`);
-        }
-
-        if (value === undefined) {
-            throw new Error(`Precondition (argument) for '${name}' undefined.`);
-        }
-
-        return value;
-    }
-
-    static assertNotTypeOf(value, name, type) {
-
-        if (typeof value === type) {
-            throw new Error(`Precondition for typeof '${name}' was ${type} but not allowed`);
-        }
-
-        return value;
-    }
-
-    static assertNotInstanceOf(value, name, instance) {
-
-        if (value instanceof instance) {
-            throw new Error(`Precondition for instanceof '${name}' was ${instance} but not allowed`);
-        }
-
-        return value;
-    }
-
-    static assertTypeof(value, name, expected) {
-
-        if (typeof value !== expected) {
-            throw new Error(`Precondition for typeof '${name}' was not ${expected} but actually: ` + typeof value);
-        }
-
-        return value;
-    }
-
-    /**
-     * Use a default value if one is not specified.
-     *
-     * @param currentValue
-     * @param defaultValue
-     * @return {*}
-     */
-    static defaultValue(currentValue, defaultValue) {
-
-        if (!currentValue) {
-            return defaultValue;
-        }
-
-        return currentValue;
-    }
-
-};
+;
 
 module.exports.Preconditions = Preconditions;
 
@@ -53686,18 +53842,33 @@ module.exports.Preconditions = Preconditions;
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-const { Line } = __webpack_require__(/*! ./util/Line */ "./web/js/util/Line.js");
-const { Dimensions } = __webpack_require__(/*! ./util/Dimensions */ "./web/js/util/Dimensions.js");
-const { Preconditions } = __webpack_require__(/*! ./Preconditions */ "./web/js/Preconditions.js");
+"use strict";
+
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var _require = __webpack_require__(/*! ./util/Line */ "./web/js/util/Line.js"),
+    Line = _require.Line;
+
+var _require2 = __webpack_require__(/*! ./util/Dimensions */ "./web/js/util/Dimensions.js"),
+    Dimensions = _require2.Dimensions;
+
+var _require3 = __webpack_require__(/*! ./Preconditions */ "./web/js/Preconditions.js"),
+    Preconditions = _require3.Preconditions;
 
 /**
  * Basic DOM style rect without a hard requirement to use a DOMRect.
  */
-class Rect {
+
+
+var Rect = function () {
 
     // TODO: some rects have x,y ... should we add them here to be complete?
 
-    constructor(obj) {
+    function Rect(obj) {
+        _classCallCheck(this, Rect);
 
         /**
          * @type {number}
@@ -53737,63 +53908,76 @@ class Rect {
      * @param axis {String} The axis to use (x or y)
      * @return {Line}
      */
-    toLine(axis) {
 
-        if (axis === "x") {
-            return new Line(this.left, this.right, axis);
-        } else if (axis === "y") {
-            return new Line(this.top, this.bottom, axis);
-        } else {
-            throw new Error("Wrong axis: " + axis);
-        }
-    }
 
-    /**
-     *
-     * @return {Dimensions}
-     */
-    get dimensions() {
-        return new Dimensions({
-            width: this.width,
-            height: this.height
-        });
-    }
+    _createClass(Rect, [{
+        key: "toLine",
+        value: function toLine(axis) {
 
-    get area() {
-        return this.width * this.height;
-    }
-
-    /**
-     * Adjust an axis based on the given line.
-     *
-     * @param line {Line} The line representing the axis.
-     * @return {Rect} Return a NEW rect with updated dimensions.
-     */
-    adjustAxis(line) {
-
-        Preconditions.assertNotNull(line, "line");
-        Preconditions.assertNotNull(line.axis, "line.axis");
-
-        let result = new Rect(this);
-
-        if (line.axis === "x") {
-
-            result.left = line.start;
-            result.right = line.end;
-            result.width = line.end - line.start;
-        } else if (line.axis === "y") {
-
-            result.top = line.start;
-            result.bottom = line.end;
-            result.height = line.end - line.start;
-        } else {
-            throw new Error("Invalid axis: " + line.axis);
+            if (axis === "x") {
+                return new Line(this.left, this.right, axis);
+            } else if (axis === "y") {
+                return new Line(this.top, this.bottom, axis);
+            } else {
+                throw new Error("Wrong axis: " + axis);
+            }
         }
 
-        return result;
-    }
+        /**
+         *
+         * @return {Dimensions}
+         */
 
-}
+    }, {
+        key: "adjustAxis",
+
+
+        /**
+         * Adjust an axis based on the given line.
+         *
+         * @param line {Line} The line representing the axis.
+         * @return {Rect} Return a NEW rect with updated dimensions.
+         */
+        value: function adjustAxis(line) {
+
+            Preconditions.assertNotNull(line, "line");
+            Preconditions.assertNotNull(line.axis, "line.axis");
+
+            var result = new Rect(this);
+
+            if (line.axis === "x") {
+
+                result.left = line.start;
+                result.right = line.end;
+                result.width = line.end - line.start;
+            } else if (line.axis === "y") {
+
+                result.top = line.start;
+                result.bottom = line.end;
+                result.height = line.end - line.start;
+            } else {
+                throw new Error("Invalid axis: " + line.axis);
+            }
+
+            return result;
+        }
+    }, {
+        key: "dimensions",
+        get: function get() {
+            return new Dimensions({
+                width: this.width,
+                height: this.height
+            });
+        }
+    }, {
+        key: "area",
+        get: function get() {
+            return this.width * this.height;
+        }
+    }]);
+
+    return Rect;
+}();
 
 module.exports.Rect = Rect;
 
@@ -53806,408 +53990,479 @@ module.exports.Rect = Rect;
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-const { Objects } = __webpack_require__(/*! ./util/Objects */ "./web/js/util/Objects.js");
-const { Preconditions } = __webpack_require__(/*! ./Preconditions */ "./web/js/Preconditions.js");
-const { Rect } = __webpack_require__(/*! ./Rect */ "./web/js/Rect.js");
-const { Styles } = __webpack_require__(/*! ./util/Styles */ "./web/js/util/Styles.js");
+"use strict";
 
-class Rects {
 
-    /**
-     * Make sure the rect is visible. If it has a zero width or height it's
-     * not visible.
-     * @param rect {Rect | DOMRect}
-     * @return boolean True when the rect is visible.
-     */
-    static isVisible(rect) {
-        return rect.height > 0 && rect.width > 0;
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var _require = __webpack_require__(/*! ./util/Objects */ "./web/js/util/Objects.js"),
+    Objects = _require.Objects;
+
+var _require2 = __webpack_require__(/*! ./Preconditions */ "./web/js/Preconditions.js"),
+    Preconditions = _require2.Preconditions;
+
+var _require3 = __webpack_require__(/*! ./Rect */ "./web/js/Rect.js"),
+    Rect = _require3.Rect;
+
+var _require4 = __webpack_require__(/*! ./util/Styles */ "./web/js/util/Styles.js"),
+    Styles = _require4.Styles;
+
+var Rects = function () {
+    function Rects() {
+        _classCallCheck(this, Rects);
     }
 
-    /**
-     * Scale the rect based on the current values and the given scale.
-     */
-    static scale(rect, scale) {
+    _createClass(Rects, null, [{
+        key: "isVisible",
 
-        Preconditions.assertNotNull(rect, "rect");
-        // make sure the input is valid before we work on it.
-        rect = Rects.validate(rect);
 
-        rect = Objects.duplicate(rect);
-
-        for (let key in rect) {
-
-            if (!rect.hasOwnProperty(key)) continue;
-
-            rect[key] = rect[key] * scale;
+        /**
+         * Make sure the rect is visible. If it has a zero width or height it's
+         * not visible.
+         * @param rect {Rect | DOMRect}
+         * @return boolean True when the rect is visible.
+         */
+        value: function isVisible(rect) {
+            return rect.height > 0 && rect.width > 0;
         }
 
-        return Rects.validate(rect);
-    }
+        /**
+         * Scale the rect based on the current values and the given scale.
+         */
 
-    /**
-     * Make sure the given rect has all the correct properties and then return
-     * the rect.
-     *
-     * @return {Rect}
-     */
-    static validate(rect) {
+    }, {
+        key: "scale",
+        value: function scale(rect, _scale) {
 
-        Preconditions.assertNotNull(rect.left, "left");
-        Preconditions.assertNotNull(rect.top, "top");
-        Preconditions.assertNotNull(rect.width, "width");
-        Preconditions.assertNotNull(rect.height, "height");
-        Preconditions.assertNotNull(rect.bottom, "bottom");
-        Preconditions.assertNotNull(rect.right, "right");
+            Preconditions.assertNotNull(rect, "rect");
+            // make sure the input is valid before we work on it.
+            rect = Rects.validate(rect);
 
-        Preconditions.assertNumber(rect.left, "left");
-        Preconditions.assertNumber(rect.top, "top");
-        Preconditions.assertNumber(rect.width, "width");
-        Preconditions.assertNumber(rect.height, "height");
-        Preconditions.assertNumber(rect.bottom, "bottom");
-        Preconditions.assertNumber(rect.right, "right");
+            rect = Objects.duplicate(rect);
 
-        return rect;
-    }
+            for (var key in rect) {
 
-    /**
-     * Assume that the given rect is relative to the point and return the new
-     * rect.
-     *
-     * @param point {Point}
-     */
-    static relativeTo(point, rect) {
+                if (!rect.hasOwnProperty(key)) continue;
 
-        rect = Objects.duplicate(rect);
+                rect[key] = rect[key] * _scale;
+            }
 
-        rect.left = rect.left + point.x;
-        rect.top = rect.top + point.y;
+            return Rects.validate(rect);
+        }
 
-        rect.right = rect.right + point.x;
-        rect.bottom = rect.bottom + point.y;
+        /**
+         * Make sure the given rect has all the correct properties and then return
+         * the rect.
+         *
+         * @return {Rect}
+         */
 
-        return Rects.validate(rect);
-    }
+    }, {
+        key: "validate",
+        value: function validate(rect) {
 
-    /**
-     * Assume that the given rect is relative to the point and return the new
-     * rect.
-     *
-     * This adjust ALL properties including top, left, bottom, right
-     *
-     * @param rect {Rect} The rect to move.
-     * @param dir {Object} Move the rect in the given dir (direction) in the
-     * x and y plane.  The dir.x and dir.y specify how much to move the rect.
-     * @param absolute {boolean} When true, move to the absolute position, not
-     *                           relative.
-     */
-    static move(rect, dir, absolute) {
+            Preconditions.assertNotNull(rect.left, "left");
+            Preconditions.assertNotNull(rect.top, "top");
+            Preconditions.assertNotNull(rect.width, "width");
+            Preconditions.assertNotNull(rect.height, "height");
+            Preconditions.assertNotNull(rect.bottom, "bottom");
+            Preconditions.assertNotNull(rect.right, "right");
 
-        rect = Objects.duplicate(rect);
+            Preconditions.assertNumber(rect.left, "left");
+            Preconditions.assertNumber(rect.top, "top");
+            Preconditions.assertNumber(rect.width, "width");
+            Preconditions.assertNumber(rect.height, "height");
+            Preconditions.assertNumber(rect.bottom, "bottom");
+            Preconditions.assertNumber(rect.right, "right");
 
-        if (absolute) {
+            return rect;
+        }
 
-            if ("x" in dir) {
-                rect.left = dir.x;
+        /**
+         * Assume that the given rect is relative to the point and return the new
+         * rect.
+         *
+         * @param point {Point}
+         */
+
+    }, {
+        key: "relativeTo",
+        value: function relativeTo(point, rect) {
+
+            rect = Objects.duplicate(rect);
+
+            rect.left = rect.left + point.x;
+            rect.top = rect.top + point.y;
+
+            rect.right = rect.right + point.x;
+            rect.bottom = rect.bottom + point.y;
+
+            return Rects.validate(rect);
+        }
+
+        /**
+         * Assume that the given rect is relative to the point and return the new
+         * rect.
+         *
+         * This adjust ALL properties including top, left, bottom, right
+         *
+         * @param rect {Rect} The rect to move.
+         * @param dir {Object} Move the rect in the given dir (direction) in the
+         * x and y plane.  The dir.x and dir.y specify how much to move the rect.
+         * @param absolute {boolean} When true, move to the absolute position, not
+         *                           relative.
+         */
+
+    }, {
+        key: "move",
+        value: function move(rect, dir, absolute) {
+
+            rect = Objects.duplicate(rect);
+
+            if (absolute) {
+
+                if ("x" in dir) {
+                    rect.left = dir.x;
+                    rect.right = rect.left + rect.width;
+                }
+
+                if ("y" in dir) {
+                    rect.top = dir.y;
+                    rect.bottom = rect.top + rect.height;
+                }
+            } else {
+
+                // TODO: I could just convert the relative positions to absolute to
+                // clean up this code a bit.
+                if ("x" in dir) {
+                    rect.left = rect.left + dir.x;
+                    rect.right = rect.right + dir.x;
+                }
+
+                if ("y" in dir) {
+                    rect.bottom = rect.bottom + dir.y;
+                    rect.top = rect.top + dir.y;
+                }
+            }
+
+            return Rects.validate(rect);
+        }
+
+        /**
+         * Return true if the two rects intersect.
+         *
+         * @param a {Rect|Object}
+         * @param b {Rect|Object}
+         *
+         * @return {boolean}
+         */
+
+    }, {
+        key: "intersect",
+        value: function intersect(a, b) {
+
+            // TODO: internally we should convert the object to a rect so we can
+            // validate it.
+
+            return a.left <= b.right && b.left <= a.right && a.top <= b.bottom && b.top <= a.bottom;
+        }
+
+        /**
+         * Return true if the two rects overlap. This includes intersection but also
+         * includes one completely swallowing the other.
+         *
+         * @param a {Rect}
+         * @param b {Rect}
+         *
+         * @return {boolean}
+         */
+
+    }, {
+        key: "overlap",
+        value: function overlap(a, b) {
+            return a.toLine("x").overlaps(b.toLine("x")) || a.toLine("y").overlaps(b.toLine("y"));
+        }
+
+        /**
+         * Compute the intersection of a and b as a new rect.
+         *
+         *
+         * @param a {Rect}
+         * @param b {Rect}
+         * @return {Rect}
+         */
+
+    }, {
+        key: "intersection",
+        value: function intersection(a, b) {
+
+            // TODO/refactor.  Make each dimension a line, then adjust the line.
+            // This way the same function is used twice with less copy/paste.
+
+            return Rects.createFromBasicRect({
+                top: Math.max(a.top, b.top),
+                bottom: Math.min(a.bottom, b.bottom),
+                left: Math.max(a.left, b.left),
+                right: Math.min(a.right, b.right)
+            });
+        }
+
+        /**
+         * Return the positions where `a` (reference) is intersected by `b`.  If
+         * all four sizes are present a envelops b.
+         *
+         * @param a {Rect}
+         * @param b {Rect}
+         * @return {Array<string>}
+         */
+
+    }, {
+        key: "intersectedPositions",
+        value: function intersectedPositions(a, b) {
+
+            var result = [];
+
+            if (_interval(a.left, b.right, a.right)) {
+                result.push("left");
+            }
+
+            if (_interval(a.left, b.left, a.right)) {
+                result.push("right");
+            }
+
+            if (_interval(a.top, b.bottom, a.bottom)) {
+                result.push("top");
+            }
+
+            if (_interval(a.top, b.top, a.bottom)) {
+                result.push("bottom");
+            }
+
+            return result;
+        }
+
+        /**
+         * Take two rects and return the positions relative to one another.  We
+         * assume that the rects to not intersect.
+         *
+         * @param a {Rect}
+         * @param b {Rect}
+         * @return {Object}
+         */
+
+    }, {
+        key: "relativePositions",
+        value: function relativePositions(a, b) {
+
+            Rects.validate(a);
+            Rects.validate(b);
+
+            var result = {};
+
+            // basically this is the degree AWAY from given position.  Negative
+            // values would be BEFORE the position.
+
+            result.top = Math.abs(a.top - b.bottom);
+            result.bottom = Math.abs(a.bottom - b.top);
+            result.left = Math.abs(a.left - a.right);
+            result.right = Math.abs(a.right - b.left);
+
+            return result;
+        }
+
+        /**
+         * Subtract second rect from the first and return a virtual rect with the
+         * change in elements. The change is virtual as we could record a rect with
+         * negative width for a given line which would be an imaginary geometric
+         * object.
+         *
+         * @param a {Rect}
+         * @param b {Rect}
+         */
+
+    }, {
+        key: "subtract",
+        value: function subtract(a, b) {
+
+            a = Rects.validate(a);
+            b = Rects.validate(b);
+
+            var keys = ["left", "top", "right", "bottom", "width", "height"];
+
+            var result = {};
+
+            keys.forEach(function (key) {
+                result[key] = a[key] - b[key];
+            });
+
+            return new Rect(result);
+        }
+
+        /**
+         * Add two rects together to build a new rect.  The second rect could be
+         * virtual and have a negative width for a line.
+         *
+         * @param a {Rect}
+         * @param b {Rect}
+         */
+
+    }, {
+        key: "add",
+        value: function add(a, b) {
+
+            a = Rects.validate(a);
+            b = Rects.validate(b);
+
+            var keys = ["left", "top", "right", "bottom", "width", "height"];
+
+            var result = {};
+
+            keys.forEach(function (key) {
+                result[key] = a[key] + b[key];
+            });
+
+            return new Rect(result);
+        }
+
+        /**
+         * Return the percentage that a takes of b, a is assumed to be <= b in terms
+         * of dimensions and on the same coordinate plane.
+         *
+         * @param a {Rect}
+         * @param b {Rect}
+         * @return {Rect}
+         */
+
+    }, {
+        key: "perc",
+        value: function perc(a, b) {
+
+            if (a.width > b.width || a.height > b.height) {
+                throw new Error("Dimensions invalid " + a.dimensions + " vs " + b.dimensions);
+            }
+
+            var result = {
+                left: 100 * (a.left / b.width),
+                right: 100 * (a.right / b.width),
+                top: 100 * (a.top / b.height),
+                bottom: 100 * (a.bottom / b.height)
+            };
+
+            return Rects.createFromBasicRect(result);
+        }
+
+        /**
+         * Create a full rect from a rect that has top, left, width, height only.
+         *
+         * @param rect {Rect | Object}
+         * @return {Rect}
+         */
+
+    }, {
+        key: "createFromBasicRect",
+        value: function createFromBasicRect(rect) {
+
+            rect = Objects.duplicate(rect);
+
+            // TODO: add x,y in the future.
+
+            // the optional ones are bottom+right or width+height but we could add
+            // support for other optional ones...
+
+            // it might be better to say, if var0 and var1 are defined, I can compute
+            // var2 or var 3... and then define them when they are not defined.  For
+            // example. If top and height are defined, I can define bottom.
+
+            if (!rect.bottom && "top" in rect && "height" in rect) {
+                rect.bottom = rect.top + rect.height;
+            }
+
+            if (!rect.right && "left" in rect && "width" in rect) {
                 rect.right = rect.left + rect.width;
             }
 
-            if ("y" in dir) {
-                rect.top = dir.y;
-                rect.bottom = rect.top + rect.height;
-            }
-        } else {
-
-            // TODO: I could just convert the relative positions to absolute to
-            // clean up this code a bit.
-            if ("x" in dir) {
-                rect.left = rect.left + dir.x;
-                rect.right = rect.right + dir.x;
+            if (!rect.height && "bottom" in rect && "top" in rect) {
+                rect.height = rect.bottom - rect.top;
             }
 
-            if ("y" in dir) {
-                rect.bottom = rect.bottom + dir.y;
-                rect.top = rect.top + dir.y;
+            if (!rect.width && "right" in rect && "left" in rect) {
+                rect.width = rect.right - rect.left;
             }
+
+            return Rects.validate(new Rect(rect));
         }
 
-        return Rects.validate(rect);
-    }
+        /**
+         * Create a new rect from the given lines
+         * @param xAxis {Line}
+         * @param yAxis {Line}
+         * @return {Rect}
+         */
 
-    /**
-     * Return true if the two rects intersect.
-     *
-     * @param a {Rect|Object}
-     * @param b {Rect|Object}
-     *
-     * @return {boolean}
-     */
-    static intersect(a, b) {
+    }, {
+        key: "createFromLines",
+        value: function createFromLines(xAxis, yAxis) {
 
-        // TODO: internally we should convert the object to a rect so we can
-        // validate it.
+            Preconditions.assertNotNull(xAxis, "xAxis");
+            Preconditions.assertNotNull(yAxis, "yAxis");
+            Preconditions.assertEqual(xAxis.axis, "x", "xAxis.axis");
+            Preconditions.assertEqual(yAxis.axis, "y", "yAxis.axis");
 
-        return a.left <= b.right && b.left <= a.right && a.top <= b.bottom && b.top <= a.bottom;
-    }
-
-    /**
-     * Return true if the two rects overlap. This includes intersection but also
-     * includes one completely swallowing the other.
-     *
-     * @param a {Rect}
-     * @param b {Rect}
-     *
-     * @return {boolean}
-     */
-    static overlap(a, b) {
-        return a.toLine("x").overlaps(b.toLine("x")) || a.toLine("y").overlaps(b.toLine("y"));
-    }
-
-    /**
-     * Compute the intersection of a and b as a new rect.
-     *
-     *
-     * @param a {Rect}
-     * @param b {Rect}
-     * @return {Rect}
-     */
-    static intersection(a, b) {
-
-        // TODO/refactor.  Make each dimension a line, then adjust the line.
-        // This way the same function is used twice with less copy/paste.
-
-        return Rects.createFromBasicRect({
-            top: Math.max(a.top, b.top),
-            bottom: Math.min(a.bottom, b.bottom),
-            left: Math.max(a.left, b.left),
-            right: Math.min(a.right, b.right)
-        });
-    }
-
-    /**
-     * Return the positions where `a` (reference) is intersected by `b`.  If
-     * all four sizes are present a envelops b.
-     *
-     * @param a {Rect}
-     * @param b {Rect}
-     * @return {Array<string>}
-     */
-    static intersectedPositions(a, b) {
-
-        let result = [];
-
-        if (_interval(a.left, b.right, a.right)) {
-            result.push("left");
+            return Rects.createFromBasicRect({
+                left: xAxis.start,
+                width: xAxis.length,
+                top: yAxis.start,
+                height: yAxis.length
+            });
         }
 
-        if (_interval(a.left, b.left, a.right)) {
-            result.push("right");
+        /**
+         *
+         * @param element {HTMLElement}
+         * @return {Rect}
+         */
+
+    }, {
+        key: "createFromOffset",
+        value: function createFromOffset(element) {
+
+            // FIXME: if I'm using this it might not be what I want.
+
+            return Rects.createFromBasicRect({
+                left: element.offsetLeft,
+                top: element.offsetTop,
+                width: element.offsetWidth,
+                height: element.offsetHeight
+            });
         }
 
-        if (_interval(a.top, b.bottom, a.bottom)) {
-            result.push("top");
+        /**
+         * Parse the positioning from the style with left, top width and height and then
+         * return this as a rect.
+         * @param element {HTMLElement}
+         */
+
+    }, {
+        key: "fromElementStyle",
+        value: function fromElementStyle(element) {
+
+            var rect = {
+
+                left: Styles.parsePX(element.style.left),
+                top: Styles.parsePX(element.style.top),
+                width: Styles.parsePX(element.style.width),
+                height: Styles.parsePX(element.style.height)
+
+            };
+
+            return Rects.createFromBasicRect(rect);
         }
+    }]);
 
-        if (_interval(a.top, b.top, a.bottom)) {
-            result.push("bottom");
-        }
-
-        return result;
-    }
-
-    /**
-     * Take two rects and return the positions relative to one another.  We
-     * assume that the rects to not intersect.
-     *
-     * @param a {Rect}
-     * @param b {Rect}
-     * @return {Object}
-     */
-    static relativePositions(a, b) {
-
-        Rects.validate(a);
-        Rects.validate(b);
-
-        let result = {};
-
-        // basically this is the degree AWAY from given position.  Negative
-        // values would be BEFORE the position.
-
-        result.top = Math.abs(a.top - b.bottom);
-        result.bottom = Math.abs(a.bottom - b.top);
-        result.left = Math.abs(a.left - a.right);
-        result.right = Math.abs(a.right - b.left);
-
-        return result;
-    }
-
-    /**
-     * Subtract second rect from the first and return a virtual rect with the
-     * change in elements. The change is virtual as we could record a rect with
-     * negative width for a given line which would be an imaginary geometric
-     * object.
-     *
-     * @param a {Rect}
-     * @param b {Rect}
-     */
-    static subtract(a, b) {
-
-        a = Rects.validate(a);
-        b = Rects.validate(b);
-
-        let keys = ["left", "top", "right", "bottom", "width", "height"];
-
-        let result = {};
-
-        keys.forEach(key => {
-            result[key] = a[key] - b[key];
-        });
-
-        return new Rect(result);
-    }
-
-    /**
-     * Add two rects together to build a new rect.  The second rect could be
-     * virtual and have a negative width for a line.
-     *
-     * @param a {Rect}
-     * @param b {Rect}
-     */
-    static add(a, b) {
-
-        a = Rects.validate(a);
-        b = Rects.validate(b);
-
-        let keys = ["left", "top", "right", "bottom", "width", "height"];
-
-        let result = {};
-
-        keys.forEach(key => {
-            result[key] = a[key] + b[key];
-        });
-
-        return new Rect(result);
-    }
-
-    /**
-     * Return the percentage that a takes of b, a is assumed to be <= b in terms
-     * of dimensions and on the same coordinate plane.
-     *
-     * @param a {Rect}
-     * @param b {Rect}
-     * @return {Rect}
-     */
-    static perc(a, b) {
-
-        if (a.width > b.width || a.height > b.height) {
-            throw new Error(`Dimensions invalid ${a.dimensions} vs ${b.dimensions}`);
-        }
-
-        let result = {
-            left: 100 * (a.left / b.width),
-            right: 100 * (a.right / b.width),
-            top: 100 * (a.top / b.height),
-            bottom: 100 * (a.bottom / b.height)
-        };
-
-        return Rects.createFromBasicRect(result);
-    }
-
-    /**
-     * Create a full rect from a rect that has top, left, width, height only.
-     *
-     * @param rect {Rect | Object}
-     * @return {Rect}
-     */
-    static createFromBasicRect(rect) {
-
-        rect = Objects.duplicate(rect);
-
-        // TODO: add x,y in the future.
-
-        // the optional ones are bottom+right or width+height but we could add
-        // support for other optional ones...
-
-        // it might be better to say, if var0 and var1 are defined, I can compute
-        // var2 or var 3... and then define them when they are not defined.  For
-        // example. If top and height are defined, I can define bottom.
-
-        if (!rect.bottom && "top" in rect && "height" in rect) {
-            rect.bottom = rect.top + rect.height;
-        }
-
-        if (!rect.right && "left" in rect && "width" in rect) {
-            rect.right = rect.left + rect.width;
-        }
-
-        if (!rect.height && "bottom" in rect && "top" in rect) {
-            rect.height = rect.bottom - rect.top;
-        }
-
-        if (!rect.width && "right" in rect && "left" in rect) {
-            rect.width = rect.right - rect.left;
-        }
-
-        return Rects.validate(new Rect(rect));
-    }
-
-    /**
-     * Create a new rect from the given lines
-     * @param xAxis {Line}
-     * @param yAxis {Line}
-     * @return {Rect}
-     */
-    static createFromLines(xAxis, yAxis) {
-
-        Preconditions.assertNotNull(xAxis, "xAxis");
-        Preconditions.assertNotNull(yAxis, "yAxis");
-        Preconditions.assertEqual(xAxis.axis, "x", "xAxis.axis");
-        Preconditions.assertEqual(yAxis.axis, "y", "yAxis.axis");
-
-        return Rects.createFromBasicRect({
-            left: xAxis.start,
-            width: xAxis.length,
-            top: yAxis.start,
-            height: yAxis.length
-        });
-    }
-
-    /**
-     *
-     * @param element {HTMLElement}
-     * @return {Rect}
-     */
-    static createFromOffset(element) {
-
-        // FIXME: if I'm using this it might not be what I want.
-
-        return Rects.createFromBasicRect({
-            left: element.offsetLeft,
-            top: element.offsetTop,
-            width: element.offsetWidth,
-            height: element.offsetHeight
-        });
-    }
-
-    /**
-     * Parse the positioning from the style with left, top width and height and then
-     * return this as a rect.
-     * @param element {HTMLElement}
-     */
-    static fromElementStyle(element) {
-
-        let rect = {
-
-            left: Styles.parsePX(element.style.left),
-            top: Styles.parsePX(element.style.top),
-            width: Styles.parsePX(element.style.width),
-            height: Styles.parsePX(element.style.height)
-
-        };
-
-        return Rects.createFromBasicRect(rect);
-    }
-
-}
+    return Rects;
+}();
 
 /**
  * Return true if the point is within the given min and max interval.
@@ -54218,6 +54473,8 @@ class Rects {
  * @private
  * @return {boolean}
  */
+
+
 function _interval(min, point, max) {
     // TODO: migrate this to use a Line.holds
     return min <= point && point <= max;
@@ -54234,68 +54491,87 @@ module.exports.Rects = Rects;
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-const { TraceEvent } = __webpack_require__(/*! ../../proxies/TraceEvent */ "./web/js/proxies/TraceEvent.js");
-const { DocFormatFactory } = __webpack_require__(/*! ../../docformat/DocFormatFactory */ "./web/js/docformat/DocFormatFactory.js");
-const { Preconditions } = __webpack_require__(/*! ../../Preconditions */ "./web/js/Preconditions.js");
+"use strict";
 
-class AnnotationEvent extends TraceEvent {
 
-  constructor(opts) {
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-    super(opts);
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var _require = __webpack_require__(/*! ../../proxies/TraceEvent */ "./web/js/proxies/TraceEvent.js"),
+    TraceEvent = _require.TraceEvent;
+
+var _require2 = __webpack_require__(/*! ../../docformat/DocFormatFactory */ "./web/js/docformat/DocFormatFactory.js"),
+    DocFormatFactory = _require2.DocFormatFactory;
+
+var _require3 = __webpack_require__(/*! ../../Preconditions */ "./web/js/Preconditions.js"),
+    Preconditions = _require3.Preconditions;
+
+var AnnotationEvent = function (_TraceEvent) {
+  _inherits(AnnotationEvent, _TraceEvent);
+
+  function AnnotationEvent(opts) {
+    _classCallCheck(this, AnnotationEvent);
 
     /**
      * The ID for this annotation.
      *
      * @type {string}
      */
-    this.id = undefined;
+    var _this = _possibleConstructorReturn(this, (AnnotationEvent.__proto__ || Object.getPrototypeOf(AnnotationEvent)).call(this, opts));
+
+    _this.id = undefined;
 
     /**
      *
      * @type {DocMeta}
      */
-    this.docMeta = undefined;
+    _this.docMeta = undefined;
 
     /**
      *
      * @type {PageMeta}
      */
-    this.pageMeta = undefined;
+    _this.pageMeta = undefined;
 
     /**
      * The page we're working with.
      *
      * @type {number}
      */
-    this.pageNum = undefined;
+    _this.pageNum = undefined;
 
     /**
      * The raw TraceEvent for this annotation.
      *
      * @type {TraceEvent}
      */
-    this.traceEvent = undefined;
+    _this.traceEvent = undefined;
 
     /**
      * The container which holds this annotation.
      *
      * @type {Container}
      */
-    this.container = undefined;
+    _this.container = undefined;
 
-    Object.assign(this, opts);
+    Object.assign(_this, opts);
 
-    if (this.value) {
-      this.id = this.value.id;
+    if (_this.value) {
+      _this.id = _this.value.id;
     } else {
-      this.id = this.previousValue.id;
+      _this.id = _this.previousValue.id;
     }
 
-    Preconditions.assertNotNull(this.pageMeta, "pageMeta");
+    Preconditions.assertNotNull(_this.pageMeta, "pageMeta");
+
+    return _this;
   }
 
-}
+  return AnnotationEvent;
+}(TraceEvent);
 
 module.exports.AnnotationEvent = AnnotationEvent;
 
@@ -54308,18 +54584,40 @@ module.exports.AnnotationEvent = AnnotationEvent;
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
+"use strict";
 
-const { SystemClock } = __webpack_require__(/*! ../time/SystemClock.js */ "./web/js/time/SystemClock.js");
-const { Model } = __webpack_require__(/*! ../Model.js */ "./web/js/Model.js");
-const { WebController } = __webpack_require__(/*! ../controller/WebController.js */ "./web/js/controller/WebController.js");
-const { WebView } = __webpack_require__(/*! ../view/WebView.js */ "./web/js/view/WebView.js");
-const { TextHighlightView } = __webpack_require__(/*! ../highlights/text/view/TextHighlightView */ "./web/js/highlights/text/view/TextHighlightView.js");
-const { TextHighlightView2 } = __webpack_require__(/*! ../highlights/text/view/TextHighlightView2 */ "./web/js/highlights/text/view/TextHighlightView2.js");
-const { PagemarkView, PAGEMARK_VIEW_ENABLED } = __webpack_require__(/*! ../pagemarks/view/PagemarkView */ "./web/js/pagemarks/view/PagemarkView.js");
-const { PagemarkController } = __webpack_require__(/*! ../pagemarks/controller/PagemarkController */ "./web/js/pagemarks/controller/PagemarkController.js");
 
-const { ViewerFactory } = __webpack_require__(/*! ../viewer/ViewerFactory */ "./web/js/viewer/ViewerFactory.js");
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var _require = __webpack_require__(/*! ../time/SystemClock.js */ "./web/js/time/SystemClock.js"),
+    SystemClock = _require.SystemClock;
+
+var _require2 = __webpack_require__(/*! ../Model.js */ "./web/js/Model.js"),
+    Model = _require2.Model;
+
+var _require3 = __webpack_require__(/*! ../controller/WebController.js */ "./web/js/controller/WebController.js"),
+    WebController = _require3.WebController;
+
+var _require4 = __webpack_require__(/*! ../view/WebView.js */ "./web/js/view/WebView.js"),
+    WebView = _require4.WebView;
+
+var _require5 = __webpack_require__(/*! ../highlights/text/view/TextHighlightView */ "./web/js/highlights/text/view/TextHighlightView.js"),
+    TextHighlightView = _require5.TextHighlightView;
+
+var _require6 = __webpack_require__(/*! ../highlights/text/view/TextHighlightView2 */ "./web/js/highlights/text/view/TextHighlightView2.js"),
+    TextHighlightView2 = _require6.TextHighlightView2;
+
+var _require7 = __webpack_require__(/*! ../pagemarks/view/PagemarkView */ "./web/js/pagemarks/view/PagemarkView.js"),
+    PagemarkView = _require7.PagemarkView,
+    PAGEMARK_VIEW_ENABLED = _require7.PAGEMARK_VIEW_ENABLED;
+
+var _require8 = __webpack_require__(/*! ../pagemarks/controller/PagemarkController */ "./web/js/pagemarks/controller/PagemarkController.js"),
+    PagemarkController = _require8.PagemarkController;
+
+var _require9 = __webpack_require__(/*! ../viewer/ViewerFactory */ "./web/js/viewer/ViewerFactory.js"),
+    ViewerFactory = _require9.ViewerFactory;
 
 /**
  * Basic class for connecting event listeners and then running a launchFunction
@@ -54327,29 +54625,34 @@ const { ViewerFactory } = __webpack_require__(/*! ../viewer/ViewerFactory */ "./
  *
  * @type {Launcher}
  */
-class Launcher {
+
+
+var Launcher = function () {
 
     /**
      * Launch the app with the given launch function.
      *
      * @param persistenceLayerFactory
      */
-    constructor(persistenceLayerFactory) {
+    function Launcher(persistenceLayerFactory) {
+        _classCallCheck(this, Launcher);
+
         this.persistenceLayerFactory = persistenceLayerFactory;
     }
 
     /**
      * Trigger the launch function.
      */
-    trigger() {
-        var _this = this;
 
-        return _asyncToGenerator(function* () {
 
-            let persistenceLayer = yield _this.persistenceLayerFactory();
+    _createClass(Launcher, [{
+        key: "trigger",
+        value: async function trigger() {
 
-            let clock = new SystemClock();
-            let model = new Model(persistenceLayer, clock);
+            var persistenceLayer = await this.persistenceLayerFactory();
+
+            var clock = new SystemClock();
+            var model = new Model(persistenceLayer, clock);
             new WebView(model).start();
             //new TextHighlightView(model).start();
             new TextHighlightView2(model).start();
@@ -54360,30 +54663,28 @@ class Launcher {
 
             ViewerFactory.create().start();
 
-            yield persistenceLayer.init();
+            await persistenceLayer.init();
 
             new PagemarkController(model).start();
 
             new WebController(model).start();
-        })();
-    }
-
-    launch() {
-        var _this2 = this;
-
-        return _asyncToGenerator(function* () {
+        }
+    }, {
+        key: "launch",
+        value: async function launch() {
 
             if (document.readyState === "complete" || document.readyState === "loaded" || document.readyState === "interactive") {
                 console.log("Already completed loading.");
-                yield _this2.trigger();
+                await this.trigger();
             } else {
                 console.log("Waiting for DOM content to load");
-                document.addEventListener('DOMContentLoaded', _this2.trigger.bind(_this2), true);
+                document.addEventListener('DOMContentLoaded', this.trigger.bind(this), true);
             }
-        })();
-    }
+        }
+    }]);
 
-}
+    return Launcher;
+}();
 
 module.exports.Launcher = Launcher;
 
@@ -54396,29 +54697,27 @@ module.exports.Launcher = Launcher;
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-let persistenceLayerFactory = (() => {
-    var _ref = _asyncToGenerator(function* () {
+"use strict";
 
-        console.log("Using electron persistence layer and disk store");
 
-        const remote = __webpack_require__(/*! electron */ "electron").remote;
+var _require = __webpack_require__(/*! ../datastore/PersistenceLayer.js */ "./web/js/datastore/PersistenceLayer.js"),
+    PersistenceLayer = _require.PersistenceLayer;
 
-        console.log("Accessing datastore...");
-        let datastore = remote.getGlobal("datastore");
-        console.log("Accessing datastore...done");
+var _require2 = __webpack_require__(/*! ./Launcher */ "./web/js/apps/Launcher.js"),
+    Launcher = _require2.Launcher;
 
-        return new PersistenceLayer(datastore);
-    });
+async function persistenceLayerFactory() {
 
-    return function persistenceLayerFactory() {
-        return _ref.apply(this, arguments);
-    };
-})();
+    console.log("Using electron persistence layer and disk store");
 
-function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
+    var remote = __webpack_require__(/*! electron */ "electron").remote;
 
-const { PersistenceLayer } = __webpack_require__(/*! ../datastore/PersistenceLayer.js */ "./web/js/datastore/PersistenceLayer.js");
-const { Launcher } = __webpack_require__(/*! ./Launcher */ "./web/js/apps/Launcher.js");
+    console.log("Accessing datastore...");
+    var datastore = remote.getGlobal("datastore");
+    console.log("Accessing datastore...done");
+
+    return new PersistenceLayer(datastore);
+}
 
 new Launcher(persistenceLayerFactory).launch().then(function () {
     console.log("App now loaded.");
@@ -54431,23 +54730,43 @@ new Launcher(persistenceLayerFactory).launch().then(function () {
   !*** ./web/js/components/Component.js ***!
   \****************************************/
 /*! no static exports found */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
 
-class Component {
+"use strict";
 
-  init(componentEvent) {}
 
-  /**
-   * Render the component to the DOM. Note that the component should handle
-   * re-draw of state if it already exists and is already rendered.  This
-   * could be done by just calling destroy() itself or its own internal update
-   * mechanism.
-   */
-  render() {}
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-  destroy() {}
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-};
+var Component = function () {
+  function Component() {
+    _classCallCheck(this, Component);
+  }
+
+  _createClass(Component, [{
+    key: "init",
+    value: function init(componentEvent) {}
+
+    /**
+     * Render the component to the DOM. Note that the component should handle
+     * re-draw of state if it already exists and is already rendered.  This
+     * could be done by just calling destroy() itself or its own internal update
+     * mechanism.
+     */
+
+  }, {
+    key: "render",
+    value: function render() {}
+  }, {
+    key: "destroy",
+    value: function destroy() {}
+  }]);
+
+  return Component;
+}();
+
+;
 
 module.exports.Component = Component;
 
@@ -54460,14 +54779,28 @@ module.exports.Component = Component;
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-const { PageRedrawHandler } = __webpack_require__(/*! ../PageRedrawHandler */ "./web/js/PageRedrawHandler.js");
-const { DocFormatFactory } = __webpack_require__(/*! ../docformat/DocFormatFactory */ "./web/js/docformat/DocFormatFactory.js");
-const { MutationState } = __webpack_require__(/*! ../proxies/MutationState */ "./web/js/proxies/MutationState.js");
-const { Preconditions } = __webpack_require__(/*! ../Preconditions */ "./web/js/Preconditions.js");
+"use strict";
 
-const log = __webpack_require__(/*! ../logger/Logger */ "./web/js/logger/Logger.js").create();
 
-class ComponentManager {
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var _require = __webpack_require__(/*! ../PageRedrawHandler */ "./web/js/PageRedrawHandler.js"),
+    PageRedrawHandler = _require.PageRedrawHandler;
+
+var _require2 = __webpack_require__(/*! ../docformat/DocFormatFactory */ "./web/js/docformat/DocFormatFactory.js"),
+    DocFormatFactory = _require2.DocFormatFactory;
+
+var _require3 = __webpack_require__(/*! ../proxies/MutationState */ "./web/js/proxies/MutationState.js"),
+    MutationState = _require3.MutationState;
+
+var _require4 = __webpack_require__(/*! ../Preconditions */ "./web/js/Preconditions.js"),
+    Preconditions = _require4.Preconditions;
+
+var log = __webpack_require__(/*! ../logger/Logger */ "./web/js/logger/Logger.js").create();
+
+var ComponentManager = function () {
 
     /**
      *
@@ -54476,7 +54809,8 @@ class ComponentManager {
      * @param createComponent {Function<Component>}
      * @param createDocMetaModel {Function<DocMetaModel>}
      */
-    constructor(model, containerProvider, createComponent, createDocMetaModel) {
+    function ComponentManager(model, containerProvider, createComponent, createDocMetaModel) {
+        _classCallCheck(this, ComponentManager);
 
         this.model = model;
 
@@ -54505,123 +54839,129 @@ class ComponentManager {
         this.containers = {};
     }
 
-    start() {
-        this.model.registerListenerForDocumentLoaded(this.onDocumentLoaded.bind(this));
-    }
+    _createClass(ComponentManager, [{
+        key: "start",
+        value: function start() {
+            this.model.registerListenerForDocumentLoaded(this.onDocumentLoaded.bind(this));
+        }
+    }, {
+        key: "onDocumentLoaded",
+        value: function onDocumentLoaded(documentLoadedEvent) {
 
-    onDocumentLoaded(documentLoadedEvent) {
+            log.info("onDocumentLoaded: ", documentLoadedEvent.fingerprint);
 
-        log.info("onDocumentLoaded: ", documentLoadedEvent.fingerprint);
+            var docMetaModel = this.createDocMetaModel();
 
-        let docMetaModel = this.createDocMetaModel();
+            this.containers = this.containerProvider.getContainers();
 
-        this.containers = this.containerProvider.getContainers();
+            log.info("Working with containers: ", this.containers);
 
-        log.info("Working with containers: ", this.containers);
+            // Listen for changes from the model as objects are PRESENT or ABSENT
+            // for the specific objects we're interested in and then call
+            // onComponentEvent so that we can render/destroy the component and
+            // and change it on page events.
 
-        // Listen for changes from the model as objects are PRESENT or ABSENT
-        // for the specific objects we're interested in and then call
-        // onComponentEvent so that we can render/destroy the component and
-        // and change it on page events.
+            docMetaModel.registerListener(documentLoadedEvent.docMeta, this.onComponentEvent.bind(this));
+        }
+    }, {
+        key: "onComponentEvent",
+        value: function onComponentEvent(componentEvent) {
 
-        docMetaModel.registerListener(documentLoadedEvent.docMeta, this.onComponentEvent.bind(this));
-    }
+            // TODO: I think it would be better to build up pageNum and pageElement
+            // within AnnotationEvent - not here.  This should just be a ComponentEvent
+            // and not know anything about annotations.
 
-    onComponentEvent(componentEvent) {
+            log.info("onComponentEvent: ", componentEvent);
 
-        // TODO: I think it would be better to build up pageNum and pageElement
-        // within AnnotationEvent - not here.  This should just be a ComponentEvent
-        // and not know anything about annotations.
+            var containerID = componentEvent.pageMeta.pageInfo.num;
 
-        log.info("onComponentEvent: ", componentEvent);
+            Preconditions.assertNumber(containerID, "containerID");
 
-        let containerID = componentEvent.pageMeta.pageInfo.num;
+            Preconditions.assertNumber(containerID, "containerID");
 
-        Preconditions.assertNumber(containerID, "containerID");
+            if (componentEvent.mutationState === MutationState.PRESENT) {
 
-        Preconditions.assertNumber(containerID, "containerID");
+                log.info("PRESENT");
 
-        if (componentEvent.mutationState === MutationState.PRESENT) {
+                var container = this.containers[containerID];
 
-            log.info("PRESENT");
-
-            let container = this.containers[containerID];
-
-            if (!container) {
-                throw new Error("No container for containerID: " + containerID);
-            }
-
-            componentEvent.container = container;
-
-            //let container = this.cont
-
-            // create the component and call render on it...
-
-            let component = this.createComponent();
-
-            component.init(componentEvent);
-
-            // FIXME: register the component with the container and ONLY call
-            // he callback if and when the container is visible.
-
-            let callback = containerLifecycleState => {
-
-                if (containerLifecycleState.visible) {
-
-                    // now render the component on screen.
-                    component.render();
-                } else {
-                    component.destroy();
+                if (!container) {
+                    throw new Error("No container for containerID: " + containerID);
                 }
-            };
 
-            let containerLifecycleListener = this.containerProvider.createContainerLifecycleListener(container);
+                componentEvent.container = container;
 
-            containerLifecycleListener.register(callback);
+                //let container = this.cont
 
-            let containerState = containerLifecycleListener.getState();
+                // create the component and call render on it...
 
-            if (containerState.visible) {
-                // draw it manually the first time.
-                callback(containerState);
-            }
+                var component = this.createComponent();
 
-            this.components[componentEvent.id] = new ComponentEntry(containerLifecycleListener, component);
-        } else if (componentEvent.mutationState === MutationState.ABSENT) {
+                component.init(componentEvent);
 
-            log.info("ABSENT");
+                // FIXME: register the component with the container and ONLY call
+                // he callback if and when the container is visible.
 
-            let componentEntry = this.components[componentEvent.id];
+                var callback = function callback(containerLifecycleState) {
 
-            if (componentEntry) {
+                    if (containerLifecycleState.visible) {
 
-                componentEntry.containerLifecycleListener.unregister();
-                componentEntry.component.destroy();
+                        // now render the component on screen.
+                        component.render();
+                    } else {
+                        component.destroy();
+                    }
+                };
 
-                log.info("Destroyed component: " + componentEvent.id);
+                var containerLifecycleListener = this.containerProvider.createContainerLifecycleListener(container);
 
-                delete this.components[componentEvent.id];
-            } else {
-                log.warn("No component entry for: " + componentEvent.id);
+                containerLifecycleListener.register(callback);
+
+                var containerState = containerLifecycleListener.getState();
+
+                if (containerState.visible) {
+                    // draw it manually the first time.
+                    callback(containerState);
+                }
+
+                this.components[componentEvent.id] = new ComponentEntry(containerLifecycleListener, component);
+            } else if (componentEvent.mutationState === MutationState.ABSENT) {
+
+                log.info("ABSENT");
+
+                var componentEntry = this.components[componentEvent.id];
+
+                if (componentEntry) {
+
+                    componentEntry.containerLifecycleListener.unregister();
+                    componentEntry.component.destroy();
+
+                    log.info("Destroyed component: " + componentEvent.id);
+
+                    delete this.components[componentEvent.id];
+                } else {
+                    log.warn("No component entry for: " + componentEvent.id);
+                }
             }
         }
-    }
+    }]);
 
-}
+    return ComponentManager;
+}();
 
-class ComponentEntry {
+var ComponentEntry =
 
-    /**
-     *
-     * @param containerLifecycleListener {ContainerLifecycleListener}
-     * @param component {Component}
-     */
-    constructor(containerLifecycleListener, component) {
-        this.containerLifecycleListener = containerLifecycleListener;
-        this.component = component;
-    }
+/**
+ *
+ * @param containerLifecycleListener {ContainerLifecycleListener}
+ * @param component {Component}
+ */
+function ComponentEntry(containerLifecycleListener, component) {
+    _classCallCheck(this, ComponentEntry);
 
-}
+    this.containerLifecycleListener = containerLifecycleListener;
+    this.component = component;
+};
 
 module.exports.ComponentManager = ComponentManager;
 
@@ -54632,12 +54972,18 @@ module.exports.ComponentManager = ComponentManager;
   !*** ./web/js/components/containers/Container.js ***!
   \***************************************************/
 /*! no static exports found */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
 
 
-class Container {
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-  constructor(opts) {
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var Container = function () {
+  function Container(opts) {
+    _classCallCheck(this, Container);
 
     /**
      * The ID for this container.
@@ -54667,19 +55013,28 @@ class Container {
    *
    * @param component {Component}
    */
-  addComponent(component) {
-    this.components.push(component);
-  }
 
-  /**
-   *
-   * @return {Array<Component>}
-   */
-  getComponents() {
-    return this.components;
-  }
 
-}
+  _createClass(Container, [{
+    key: "addComponent",
+    value: function addComponent(component) {
+      this.components.push(component);
+    }
+
+    /**
+     *
+     * @return {Array<Component>}
+     */
+
+  }, {
+    key: "getComponents",
+    value: function getComponents() {
+      return this.components;
+    }
+  }]);
+
+  return Container;
+}();
 
 module.exports.Container = Container;
 
@@ -54690,36 +55045,59 @@ module.exports.Container = Container;
   !*** ./web/js/components/containers/lifecycle/ContainerLifecycleListener.js ***!
   \******************************************************************************/
 /*! no static exports found */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
 
-class ContainerLifecycleListener {
+"use strict";
 
-  /**
-   *
-   * @param callback {Function} A callback function that accepts
-   * {ContainerLifecycleEvent} to determine the state of the container.
-   *
-   */
-  register(callback) {}
 
-  unregister() {}
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-  /**
-   * Get the current state from an event.
-   *
-   * @param event
-   * @return {ContainerLifecycleState | null}
-   */
-  getStateFromEvent(event) {}
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-  /**
-   * Get the current state.
-   *
-   * @return {ContainerLifecycleState}
-   */
-  getState() {}
+var ContainerLifecycleListener = function () {
+  function ContainerLifecycleListener() {
+    _classCallCheck(this, ContainerLifecycleListener);
+  }
 
-}
+  _createClass(ContainerLifecycleListener, [{
+    key: "register",
+
+
+    /**
+     *
+     * @param callback {Function} A callback function that accepts
+     * {ContainerLifecycleEvent} to determine the state of the container.
+     *
+     */
+    value: function register(callback) {}
+  }, {
+    key: "unregister",
+    value: function unregister() {}
+
+    /**
+     * Get the current state from an event.
+     *
+     * @param event
+     * @return {ContainerLifecycleState | null}
+     */
+
+  }, {
+    key: "getStateFromEvent",
+    value: function getStateFromEvent(event) {}
+
+    /**
+     * Get the current state.
+     *
+     * @return {ContainerLifecycleState}
+     */
+
+  }, {
+    key: "getState",
+    value: function getState() {}
+  }]);
+
+  return ContainerLifecycleListener;
+}();
 
 module.exports.ContainerLifecycleListener = ContainerLifecycleListener;
 
@@ -54730,33 +55108,35 @@ module.exports.ContainerLifecycleListener = ContainerLifecycleListener;
   !*** ./web/js/components/containers/lifecycle/ContainerLifecycleState.js ***!
   \***************************************************************************/
 /*! no static exports found */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 /**
  * The state of the container.
  */
-class ContainerLifecycleState {
+var ContainerLifecycleState = function ContainerLifecycleState(opts) {
+  _classCallCheck(this, ContainerLifecycleState);
 
-  constructor(opts) {
+  /**
+   * True if this container is now visible.
+   *
+   * @type {boolean}
+   */
+  this.visible = undefined;
 
-    /**
-     * True if this container is now visible.
-     *
-     * @type {boolean}
-     */
-    this.visible = undefined;
+  /**
+   * The container we're working with.
+   *
+   * @type {Container}
+   */
+  this.container = undefined;
 
-    /**
-     * The container we're working with.
-     *
-     * @type {Container}
-     */
-    this.container = undefined;
-
-    Object.assign(this, opts);
-  }
-
-}
+  Object.assign(this, opts);
+};
 
 module.exports.ContainerLifecycleState = ContainerLifecycleState;
 
@@ -54769,59 +55149,89 @@ module.exports.ContainerLifecycleState = ContainerLifecycleState;
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
+"use strict";
+
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
 /**
  *
  */
-const { ContainerLifecycleListener } = __webpack_require__(/*! ../ContainerLifecycleListener */ "./web/js/components/containers/lifecycle/ContainerLifecycleListener.js");
-const { ContainerLifecycleState } = __webpack_require__(/*! ../ContainerLifecycleState */ "./web/js/components/containers/lifecycle/ContainerLifecycleState.js");
+var _require = __webpack_require__(/*! ../ContainerLifecycleListener */ "./web/js/components/containers/lifecycle/ContainerLifecycleListener.js"),
+    ContainerLifecycleListener = _require.ContainerLifecycleListener;
+
+var _require2 = __webpack_require__(/*! ../ContainerLifecycleState */ "./web/js/components/containers/lifecycle/ContainerLifecycleState.js"),
+    ContainerLifecycleState = _require2.ContainerLifecycleState;
 
 /**
  * Listens to the lifecycle of .page
  */
-class AbstractContainerLifecycleListener extends ContainerLifecycleListener {
 
-    constructor(container) {
-        super();
-        this.container = container;
-        this.listener = null;
+
+var AbstractContainerLifecycleListener = function (_ContainerLifecycleLi) {
+    _inherits(AbstractContainerLifecycleListener, _ContainerLifecycleLi);
+
+    function AbstractContainerLifecycleListener(container) {
+        _classCallCheck(this, AbstractContainerLifecycleListener);
+
+        var _this = _possibleConstructorReturn(this, (AbstractContainerLifecycleListener.__proto__ || Object.getPrototypeOf(AbstractContainerLifecycleListener)).call(this));
+
+        _this.container = container;
+        _this.listener = null;
+
+        return _this;
     }
 
-    register(callback) {
+    _createClass(AbstractContainerLifecycleListener, [{
+        key: "register",
+        value: function register(callback) {
 
-        this.listener = this._createListener(callback);
+            this.listener = this._createListener(callback);
 
-        let element = this.container.element;
+            var element = this.container.element;
 
-        element.addEventListener('DOMNodeInserted', this.listener, false);
-    }
+            element.addEventListener('DOMNodeInserted', this.listener, false);
+        }
+    }, {
+        key: "_createContainerLifecycleEvent",
+        value: function _createContainerLifecycleEvent(visible) {
 
-    _createContainerLifecycleEvent(visible) {
+            return new ContainerLifecycleState({
+                container: this.container,
+                visible: visible
+            });
+        }
+    }, {
+        key: "_createListener",
+        value: function _createListener(callback) {
+            var _this2 = this;
 
-        return new ContainerLifecycleState({
-            container: this.container,
-            visible
-        });
-    }
+            return function (event) {
 
-    _createListener(callback) {
+                var containerLifecycleState = _this2.getStateFromEvent(event);
 
-        return event => {
+                if (containerLifecycleState) {
+                    callback(containerLifecycleState);
+                }
+            };
+        }
+    }, {
+        key: "unregister",
+        value: function unregister() {
 
-            let containerLifecycleState = this.getStateFromEvent(event);
+            this.container.element.removeEventListener('DOMNodeInserted', this.listener, false);
+            this.listener = null;
+        }
+    }]);
 
-            if (containerLifecycleState) {
-                callback(containerLifecycleState);
-            }
-        };
-    }
-
-    unregister() {
-
-        this.container.element.removeEventListener('DOMNodeInserted', this.listener, false);
-        this.listener = null;
-    }
-
-}
+    return AbstractContainerLifecycleListener;
+}(ContainerLifecycleListener);
 
 module.exports.AbstractContainerLifecycleListener = AbstractContainerLifecycleListener;
 
@@ -54834,20 +55244,41 @@ module.exports.AbstractContainerLifecycleListener = AbstractContainerLifecycleLi
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-const { AbstractContainerLifecycleListener } = __webpack_require__(/*! ./AbstractContainerLifecycleListener */ "./web/js/components/containers/lifecycle/impl/AbstractContainerLifecycleListener.js");
-const { ContainerLifecycleListener } = __webpack_require__(/*! ../ContainerLifecycleListener */ "./web/js/components/containers/lifecycle/ContainerLifecycleListener.js");
-const { ContainerLifecycleState } = __webpack_require__(/*! ../ContainerLifecycleState */ "./web/js/components/containers/lifecycle/ContainerLifecycleState.js");
+"use strict";
+
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var _require = __webpack_require__(/*! ./AbstractContainerLifecycleListener */ "./web/js/components/containers/lifecycle/impl/AbstractContainerLifecycleListener.js"),
+    AbstractContainerLifecycleListener = _require.AbstractContainerLifecycleListener;
+
+var _require2 = __webpack_require__(/*! ../ContainerLifecycleListener */ "./web/js/components/containers/lifecycle/ContainerLifecycleListener.js"),
+    ContainerLifecycleListener = _require2.ContainerLifecycleListener;
+
+var _require3 = __webpack_require__(/*! ../ContainerLifecycleState */ "./web/js/components/containers/lifecycle/ContainerLifecycleState.js"),
+    ContainerLifecycleState = _require3.ContainerLifecycleState;
 
 /**
  * Listens to the lifecycle of .page
  */
-class DefaultContainerLifecycleListener extends AbstractContainerLifecycleListener {
+
+
+var DefaultContainerLifecycleListener = function (_AbstractContainerLif) {
+    _inherits(DefaultContainerLifecycleListener, _AbstractContainerLif);
 
     /**
      * @param container {Container}
      */
-    constructor(container) {
-        super(container);
+    function DefaultContainerLifecycleListener(container) {
+        _classCallCheck(this, DefaultContainerLifecycleListener);
+
+        return _possibleConstructorReturn(this, (DefaultContainerLifecycleListener.__proto__ || Object.getPrototypeOf(DefaultContainerLifecycleListener)).call(this, container));
     }
 
     /**
@@ -54856,38 +55287,47 @@ class DefaultContainerLifecycleListener extends AbstractContainerLifecycleListen
      * @param event
      * @return {ContainerLifecycleState | null}
      */
-    getStateFromEvent(event) {
 
-        if (event.target && event.target.className === "endOfContent") {
-            return this._createContainerLifecycleEvent(true);
+
+    _createClass(DefaultContainerLifecycleListener, [{
+        key: "getStateFromEvent",
+        value: function getStateFromEvent(event) {
+
+            if (event.target && event.target.className === "endOfContent") {
+                return this._createContainerLifecycleEvent(true);
+            }
+
+            if (event.target && event.target.className === "loadingIcon") {
+                return this._createContainerLifecycleEvent(false);
+            }
+
+            return null;
         }
 
-        if (event.target && event.target.className === "loadingIcon") {
-            return this._createContainerLifecycleEvent(false);
+        /**
+         * Get the current state.
+         *
+         * @return {ContainerLifecycleState}
+         */
+
+    }, {
+        key: "getState",
+        value: function getState() {
+
+            if (this.container.element.querySelector(".endOfContent") !== null) {
+                return this._createContainerLifecycleEvent(true);
+            }
+
+            if (this.container.element.querySelector(".loadingIcon") !== null) {
+                return this._createContainerLifecycleEvent(false);
+            }
+
+            throw new Error("Unable to determine state.");
         }
+    }]);
 
-        return null;
-    }
-
-    /**
-     * Get the current state.
-     *
-     * @return {ContainerLifecycleState}
-     */
-    getState() {
-
-        if (this.container.element.querySelector(".endOfContent") !== null) {
-            return this._createContainerLifecycleEvent(true);
-        }
-
-        if (this.container.element.querySelector(".loadingIcon") !== null) {
-            return this._createContainerLifecycleEvent(false);
-        }
-
-        throw new Error("Unable to determine state.");
-    }
-
-}
+    return DefaultContainerLifecycleListener;
+}(AbstractContainerLifecycleListener);
 
 module.exports.DefaultContainerLifecycleListener = DefaultContainerLifecycleListener;
 
@@ -54900,20 +55340,40 @@ module.exports.DefaultContainerLifecycleListener = DefaultContainerLifecycleList
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-const { AbstractContainerLifecycleListener } = __webpack_require__(/*! ./AbstractContainerLifecycleListener */ "./web/js/components/containers/lifecycle/impl/AbstractContainerLifecycleListener.js");
+"use strict";
+
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var _require = __webpack_require__(/*! ./AbstractContainerLifecycleListener */ "./web/js/components/containers/lifecycle/impl/AbstractContainerLifecycleListener.js"),
+    AbstractContainerLifecycleListener = _require.AbstractContainerLifecycleListener;
 
 /**
  * Listens to the lifecycle of .thumbnail
  */
-class ThumbnailContainerLifecycleListener extends AbstractContainerLifecycleListener {
+
+
+var ThumbnailContainerLifecycleListener = function (_AbstractContainerLif) {
+    _inherits(ThumbnailContainerLifecycleListener, _AbstractContainerLif);
 
     /**
      * @param container {Container}
      */
-    constructor(container) {
-        super();
-        this.container = container;
-        this.listener = null;
+    function ThumbnailContainerLifecycleListener(container) {
+        _classCallCheck(this, ThumbnailContainerLifecycleListener);
+
+        var _this = _possibleConstructorReturn(this, (ThumbnailContainerLifecycleListener.__proto__ || Object.getPrototypeOf(ThumbnailContainerLifecycleListener)).call(this));
+
+        _this.container = container;
+        _this.listener = null;
+
+        return _this;
     }
 
     /**
@@ -54922,39 +55382,48 @@ class ThumbnailContainerLifecycleListener extends AbstractContainerLifecycleList
      * @param event
      * @return {ContainerLifecycleState | null}
      */
-    getStateFromEvent(event) {
 
-        return this._createContainerLifecycleEvent(true);
-        //
-        // if (event.target && event.target.className === "endOfContent") {
-        //     return this._createContainerLifecycleEvent(true);
-        // }
-        //
-        // if (event.target && event.target.className === "loadingIcon") {
-        //     return this._createContainerLifecycleEvent(false);
-        // }
-        //
-        // return null;
-    }
 
-    /**
-     * Get the current state.
-     *
-     * @return {ContainerLifecycleState}
-     */
-    getState() {
+    _createClass(ThumbnailContainerLifecycleListener, [{
+        key: "getStateFromEvent",
+        value: function getStateFromEvent(event) {
 
-        return this._createContainerLifecycleEvent(true);
+            return this._createContainerLifecycleEvent(true);
+            //
+            // if (event.target && event.target.className === "endOfContent") {
+            //     return this._createContainerLifecycleEvent(true);
+            // }
+            //
+            // if (event.target && event.target.className === "loadingIcon") {
+            //     return this._createContainerLifecycleEvent(false);
+            // }
+            //
+            // return null;
+        }
 
-        //
-        // if(this.container.element.querySelector(".thumbnailImage") !== null) {
-        //     return this._createContainerLifecycleEvent(true);
-        // } else {
-        //     return this._createContainerLifecycleEvent(false);
-        // }
-    }
+        /**
+         * Get the current state.
+         *
+         * @return {ContainerLifecycleState}
+         */
 
-}
+    }, {
+        key: "getState",
+        value: function getState() {
+
+            return this._createContainerLifecycleEvent(true);
+
+            //
+            // if(this.container.element.querySelector(".thumbnailImage") !== null) {
+            //     return this._createContainerLifecycleEvent(true);
+            // } else {
+            //     return this._createContainerLifecycleEvent(false);
+            // }
+        }
+    }]);
+
+    return ThumbnailContainerLifecycleListener;
+}(AbstractContainerLifecycleListener);
 
 module.exports.ThumbnailContainerLifecycleListener = ThumbnailContainerLifecycleListener;
 
@@ -54967,53 +55436,78 @@ module.exports.ThumbnailContainerLifecycleListener = ThumbnailContainerLifecycle
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-const { Container } = __webpack_require__(/*! ../Container */ "./web/js/components/containers/Container.js");
+"use strict";
+
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var _require = __webpack_require__(/*! ../Container */ "./web/js/components/containers/Container.js"),
+    Container = _require.Container;
 
 /**
  * @abstract
  */
-class ContainerProvider {
 
-    /**
-     * Return all containers in the document indexed by their ID.  For pages
-     * and thumbnails this is just going to be the page number.
-     *
-     * @return {Object<number,Container>}
-     */
-    getContainers() {
-        throw new Error("Not implemented");
+
+var ContainerProvider = function () {
+    function ContainerProvider() {
+        _classCallCheck(this, ContainerProvider);
     }
 
-    /**
-     *
-     * @return {Object<number,Container>}
-     */
-    _getContainers(selector) {
+    _createClass(ContainerProvider, [{
+        key: "getContainers",
 
-        let result = {};
 
-        let elements = Array.from(document.querySelectorAll(selector));
+        /**
+         * Return all containers in the document indexed by their ID.  For pages
+         * and thumbnails this is just going to be the page number.
+         *
+         * @return {Object<number,Container>}
+         */
+        value: function getContainers() {
+            throw new Error("Not implemented");
+        }
 
-        elements.forEach(element => {
-            let id = parseInt(element.getAttribute("data-page-number"));
-            let container = new Container({ id, element });
-            result[id] = container;
-        });
+        /**
+         *
+         * @return {Object<number,Container>}
+         */
 
-        return result;
-    }
+    }, {
+        key: "_getContainers",
+        value: function _getContainers(selector) {
 
-    /**
-     * Get the {ContainerLifecycleListener} to use with the container types.
-     *
-     * @param container {Container}
-     * @return {ContainerLifecycleListener}
-     */
-    createContainerLifecycleListener(container) {
-        throw new Error("Not implemented");
-    }
+            var result = {};
 
-}
+            var elements = Array.from(document.querySelectorAll(selector));
+
+            elements.forEach(function (element) {
+                var id = parseInt(element.getAttribute("data-page-number"));
+                var container = new Container({ id: id, element: element });
+                result[id] = container;
+            });
+
+            return result;
+        }
+
+        /**
+         * Get the {ContainerLifecycleListener} to use with the container types.
+         *
+         * @param container {Container}
+         * @return {ContainerLifecycleListener}
+         */
+
+    }, {
+        key: "createContainerLifecycleListener",
+        value: function createContainerLifecycleListener(container) {
+            throw new Error("Not implemented");
+        }
+    }]);
+
+    return ContainerProvider;
+}();
 
 module.exports.ContainerProvider = ContainerProvider;
 
@@ -55026,29 +55520,61 @@ module.exports.ContainerProvider = ContainerProvider;
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-const { DefaultContainerLifecycleListener } = __webpack_require__(/*! ../../lifecycle/impl/DefaultContainerLifecycleListener */ "./web/js/components/containers/lifecycle/impl/DefaultContainerLifecycleListener.js");
-const { ContainerProvider } = __webpack_require__(/*! ../ContainerProvider */ "./web/js/components/containers/providers/ContainerProvider.js");
+"use strict";
 
-class DefaultContainerProvider extends ContainerProvider {
 
-    /**
-     *
-     * @return {Object<number,Container>}
-     */
-    getContainers() {
-        return super._getContainers(".page");
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var _require = __webpack_require__(/*! ../../lifecycle/impl/DefaultContainerLifecycleListener */ "./web/js/components/containers/lifecycle/impl/DefaultContainerLifecycleListener.js"),
+    DefaultContainerLifecycleListener = _require.DefaultContainerLifecycleListener;
+
+var _require2 = __webpack_require__(/*! ../ContainerProvider */ "./web/js/components/containers/providers/ContainerProvider.js"),
+    ContainerProvider = _require2.ContainerProvider;
+
+var DefaultContainerProvider = function (_ContainerProvider) {
+    _inherits(DefaultContainerProvider, _ContainerProvider);
+
+    function DefaultContainerProvider() {
+        _classCallCheck(this, DefaultContainerProvider);
+
+        return _possibleConstructorReturn(this, (DefaultContainerProvider.__proto__ || Object.getPrototypeOf(DefaultContainerProvider)).apply(this, arguments));
     }
 
-    /**
-     * @Override
-     * @param container {Container}
-     * @return {ContainerLifecycleListener}
-     */
-    createContainerLifecycleListener(container) {
-        return new DefaultContainerLifecycleListener(container);
-    }
+    _createClass(DefaultContainerProvider, [{
+        key: "getContainers",
 
-}
+
+        /**
+         *
+         * @return {Object<number,Container>}
+         */
+        value: function getContainers() {
+            return _get(DefaultContainerProvider.prototype.__proto__ || Object.getPrototypeOf(DefaultContainerProvider.prototype), "_getContainers", this).call(this, ".page");
+        }
+
+        /**
+         * @Override
+         * @param container {Container}
+         * @return {ContainerLifecycleListener}
+         */
+
+    }, {
+        key: "createContainerLifecycleListener",
+        value: function createContainerLifecycleListener(container) {
+            return new DefaultContainerLifecycleListener(container);
+        }
+    }]);
+
+    return DefaultContainerProvider;
+}(ContainerProvider);
 
 module.exports.DefaultContainerProvider = DefaultContainerProvider;
 
@@ -55061,29 +55587,61 @@ module.exports.DefaultContainerProvider = DefaultContainerProvider;
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-const { ThumbnailContainerLifecycleListener } = __webpack_require__(/*! ../../lifecycle/impl/ThumbnailContainerLifecycleListener */ "./web/js/components/containers/lifecycle/impl/ThumbnailContainerLifecycleListener.js");
-const { ContainerProvider } = __webpack_require__(/*! ../ContainerProvider */ "./web/js/components/containers/providers/ContainerProvider.js");
+"use strict";
 
-class ThumbnailContainerProvider extends ContainerProvider {
 
-    /**
-     *
-     * @return {Object<number,Container>}
-     */
-    getContainers() {
-        return super._getContainers(".thumbnail");
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var _require = __webpack_require__(/*! ../../lifecycle/impl/ThumbnailContainerLifecycleListener */ "./web/js/components/containers/lifecycle/impl/ThumbnailContainerLifecycleListener.js"),
+    ThumbnailContainerLifecycleListener = _require.ThumbnailContainerLifecycleListener;
+
+var _require2 = __webpack_require__(/*! ../ContainerProvider */ "./web/js/components/containers/providers/ContainerProvider.js"),
+    ContainerProvider = _require2.ContainerProvider;
+
+var ThumbnailContainerProvider = function (_ContainerProvider) {
+    _inherits(ThumbnailContainerProvider, _ContainerProvider);
+
+    function ThumbnailContainerProvider() {
+        _classCallCheck(this, ThumbnailContainerProvider);
+
+        return _possibleConstructorReturn(this, (ThumbnailContainerProvider.__proto__ || Object.getPrototypeOf(ThumbnailContainerProvider)).apply(this, arguments));
     }
 
-    /**
-     * @Override
-     * @param container {Container}
-     * @return {ContainerLifecycleListener}
-     */
-    createContainerLifecycleListener(container) {
-        return new ThumbnailContainerLifecycleListener(container);
-    }
+    _createClass(ThumbnailContainerProvider, [{
+        key: "getContainers",
 
-}
+
+        /**
+         *
+         * @return {Object<number,Container>}
+         */
+        value: function getContainers() {
+            return _get(ThumbnailContainerProvider.prototype.__proto__ || Object.getPrototypeOf(ThumbnailContainerProvider.prototype), "_getContainers", this).call(this, ".thumbnail");
+        }
+
+        /**
+         * @Override
+         * @param container {Container}
+         * @return {ContainerLifecycleListener}
+         */
+
+    }, {
+        key: "createContainerLifecycleListener",
+        value: function createContainerLifecycleListener(container) {
+            return new ThumbnailContainerLifecycleListener(container);
+        }
+    }]);
+
+    return ThumbnailContainerProvider;
+}(ContainerProvider);
 
 module.exports.ThumbnailContainerProvider = ThumbnailContainerProvider;
 
@@ -55096,15 +55654,35 @@ module.exports.ThumbnailContainerProvider = ThumbnailContainerProvider;
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
+"use strict";
 
-const { ipcRenderer } = __webpack_require__(/*! electron */ "electron");
-const { ContextMenuType } = __webpack_require__(/*! ./ContextMenuType */ "./web/js/contextmenu/ContextMenuType.js");
-const { forDict } = __webpack_require__(/*! ../utils */ "./web/js/utils.js");
-const { Attributes } = __webpack_require__(/*! ../util/Attributes */ "./web/js/util/Attributes.js");
-const { TriggerEvent } = __webpack_require__(/*! ./TriggerEvent */ "./web/js/contextmenu/TriggerEvent.js");
-const { DocDescriptor } = __webpack_require__(/*! ../metadata/DocDescriptor */ "./web/js/metadata/DocDescriptor.js");
-const { Preconditions } = __webpack_require__(/*! ../Preconditions */ "./web/js/Preconditions.js");
-const log = __webpack_require__(/*! ../logger/Logger */ "./web/js/logger/Logger.js").create();
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var _require = __webpack_require__(/*! electron */ "electron"),
+    ipcRenderer = _require.ipcRenderer;
+
+var _require2 = __webpack_require__(/*! ./ContextMenuType */ "./web/js/contextmenu/ContextMenuType.js"),
+    ContextMenuType = _require2.ContextMenuType;
+
+var _require3 = __webpack_require__(/*! ../utils */ "./web/js/utils.js"),
+    forDict = _require3.forDict;
+
+var _require4 = __webpack_require__(/*! ../util/Attributes */ "./web/js/util/Attributes.js"),
+    Attributes = _require4.Attributes;
+
+var _require5 = __webpack_require__(/*! ./TriggerEvent */ "./web/js/contextmenu/TriggerEvent.js"),
+    TriggerEvent = _require5.TriggerEvent;
+
+var _require6 = __webpack_require__(/*! ../metadata/DocDescriptor */ "./web/js/metadata/DocDescriptor.js"),
+    DocDescriptor = _require6.DocDescriptor;
+
+var _require7 = __webpack_require__(/*! ../Preconditions */ "./web/js/Preconditions.js"),
+    Preconditions = _require7.Preconditions;
+
+var log = __webpack_require__(/*! ../logger/Logger */ "./web/js/logger/Logger.js").create();
 
 /**
  * Handles listening for context menus and then calling back the proper handler.
@@ -55113,13 +55691,14 @@ const log = __webpack_require__(/*! ../logger/Logger */ "./web/js/logger/Logger.
  *
  * context-menu-create-flashcard: open the 'create flashcard' modal.
  */
-class ContextMenuController {
 
-    constructor(model) {
+var ContextMenuController = function () {
+    function ContextMenuController(model) {
+        _classCallCheck(this, ContextMenuController);
 
         this.model = Preconditions.assertNotNull(model, "model");
 
-        ipcRenderer.on('context-menu-command', (event, arg) => {
+        ipcRenderer.on('context-menu-command', function (event, arg) {
 
             // I don't think we need to listen to these here but rather in the
             // specific controllers.
@@ -55127,116 +55706,126 @@ class ContextMenuController {
         });
     }
 
-    start() {
+    _createClass(ContextMenuController, [{
+        key: "start",
+        value: function start() {
+            var _this = this;
 
-        // TODO: this should be refactored to make it testable with jsdom once
-        // I get it working.
+            // TODO: this should be refactored to make it testable with jsdom once
+            // I get it working.
 
-        console.log("Starting ContextMenuController");
+            console.log("Starting ContextMenuController");
 
-        document.querySelectorAll(".page").forEach(targetElement => {
+            document.querySelectorAll(".page").forEach(function (targetElement) {
 
-            targetElement.addEventListener("contextmenu", /** @type {MouseEvent} */event => {
+                targetElement.addEventListener("contextmenu", /** @type {MouseEvent} */function (event) {
 
-                let annotationSelectors = [".text-highlight", ".area-highlight", ".pagemark", ".page"];
+                    var annotationSelectors = [".text-highlight", ".area-highlight", ".pagemark", ".page"];
 
-                let matchingSelectors = ContextMenuController.elementsFromEventMatchingSelectors(event, annotationSelectors);
+                    var matchingSelectors = ContextMenuController.elementsFromEventMatchingSelectors(event, annotationSelectors);
 
-                let contextMenuTypes = [];
+                    var contextMenuTypes = [];
 
-                forDict(matchingSelectors, function (selector, current) {
-                    if (current.elements.length > 0) {
-                        contextMenuTypes.push(ContextMenuController.toContextMenuType(current.selector));
+                    forDict(matchingSelectors, function (selector, current) {
+                        if (current.elements.length > 0) {
+                            contextMenuTypes.push(ContextMenuController.toContextMenuType(current.selector));
+                        }
+                    });
+
+                    var docDescriptor = new DocDescriptor({
+                        fingerprint: _this.model.docMeta.docInfo.fingerprint
+                    });
+
+                    log.info("Creating context menu for contextMenuTypes: ", contextMenuTypes);
+
+                    ipcRenderer.send('context-menu-trigger', new TriggerEvent({
+                        point: { x: event.pageX, y: event.pageY },
+                        points: {
+                            page: {
+                                x: event.pageX,
+                                y: event.pageY
+                            },
+                            client: {
+                                x: event.clientX,
+                                y: event.clientY
+                            },
+                            offset: {
+                                x: event.offsetX,
+                                y: event.offsetY
+                            }
+                        },
+                        contextMenuTypes: contextMenuTypes,
+                        matchingSelectors: matchingSelectors,
+                        docDescriptor: docDescriptor
+                    }));
+                });
+            });
+        }
+    }], [{
+        key: "elementsFromEvent",
+        value: function elementsFromEvent(event) {
+
+            // the point must be relative to the viewport
+            var point = { x: event.clientX, y: event.clientY };
+
+            var doc = event.target.ownerDocument;
+
+            return doc.elementsFromPoint(point.x, point.y);
+        }
+    }, {
+        key: "toContextMenuType",
+        value: function toContextMenuType(selector) {
+            var result = selector.toUpperCase();
+            result = result.replace(".", "");
+            result = result.replace("-", "_");
+            return result;
+        }
+
+        /**
+         * Create a result by looking at all the events, and all the selectors,
+         * building up an index of matching elements at the position.
+         *
+         * @param event
+         * @param selectors
+         */
+
+    }, {
+        key: "elementsFromEventMatchingSelectors",
+        value: function elementsFromEventMatchingSelectors(event, selectors) {
+
+            var result = {};
+
+            // setup the selector result
+            selectors.forEach(function (selector) {
+                result[selector] = {
+                    selector: selector,
+                    elements: [],
+                    /**
+                     * Includes metadata about each annotation that is selected.
+                     */
+                    annotationDescriptors: []
+                };
+            });
+
+            var elements = ContextMenuController.elementsFromEvent(event);
+
+            elements.forEach(function (element) {
+
+                selectors.forEach(function (selector) {
+
+                    if (element.matches(selector)) {
+                        result[selector].elements.push(element);
+                        result[selector].annotationDescriptors.push(Attributes.dataToMap(element));
                     }
                 });
-
-                let docDescriptor = new DocDescriptor({
-                    fingerprint: this.model.docMeta.docInfo.fingerprint
-                });
-
-                log.info("Creating context menu for contextMenuTypes: ", contextMenuTypes);
-
-                ipcRenderer.send('context-menu-trigger', new TriggerEvent({
-                    point: { x: event.pageX, y: event.pageY },
-                    points: {
-                        page: {
-                            x: event.pageX,
-                            y: event.pageY
-                        },
-                        client: {
-                            x: event.clientX,
-                            y: event.clientY
-                        },
-                        offset: {
-                            x: event.offsetX,
-                            y: event.offsetY
-                        }
-                    },
-                    contextMenuTypes,
-                    matchingSelectors,
-                    docDescriptor
-                }));
             });
-        });
-    }
 
-    static elementsFromEvent(event) {
+            return result;
+        }
+    }]);
 
-        // the point must be relative to the viewport
-        let point = { x: event.clientX, y: event.clientY };
-
-        let doc = event.target.ownerDocument;
-
-        return doc.elementsFromPoint(point.x, point.y);
-    }
-
-    static toContextMenuType(selector) {
-        let result = selector.toUpperCase();
-        result = result.replace(".", "");
-        result = result.replace("-", "_");
-        return result;
-    }
-
-    /**
-     * Create a result by looking at all the events, and all the selectors,
-     * building up an index of matching elements at the position.
-     *
-     * @param event
-     * @param selectors
-     */
-    static elementsFromEventMatchingSelectors(event, selectors) {
-
-        let result = {};
-
-        // setup the selector result
-        selectors.forEach(function (selector) {
-            result[selector] = {
-                selector,
-                elements: [],
-                /**
-                 * Includes metadata about each annotation that is selected.
-                 */
-                annotationDescriptors: []
-            };
-        });
-
-        let elements = ContextMenuController.elementsFromEvent(event);
-
-        elements.forEach(function (element) {
-
-            selectors.forEach(function (selector) {
-
-                if (element.matches(selector)) {
-                    result[selector].elements.push(element);
-                    result[selector].annotationDescriptors.push(Attributes.dataToMap(element));
-                }
-            });
-        });
-
-        return result;
-    }
-
-}
+    return ContextMenuController;
+}();
 
 module.exports.ContextMenuController = ContextMenuController;
 
@@ -55247,7 +55836,9 @@ module.exports.ContextMenuController = ContextMenuController;
   !*** ./web/js/contextmenu/ContextMenuType.js ***!
   \***********************************************/
 /*! no static exports found */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
 
 
 /**
@@ -55293,44 +55884,46 @@ module.exports.ContextMenuType = Object.freeze({
   !*** ./web/js/contextmenu/TriggerEvent.js ***!
   \********************************************/
 /*! no static exports found */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
 
-class TriggerEvent {
+"use strict";
 
-  constructor(opts) {
 
-    /**
-     * The point on the screen where the context menu was requested.  This
-     * is just a point with x,y positions.
-     *
-     * @type {null}
-     */
-    this.point = null;
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-    /**
-     * The type of context menus to create based on what the user is clicking.
-     * @type {Object}
-     */
-    this.contextMenuTypes = null;
+var TriggerEvent = function TriggerEvent(opts) {
+  _classCallCheck(this, TriggerEvent);
 
-    /**
-     * A more complex data structure with the selectors and metadata
-     * about the annotations that were selected.
-     * @type {Object}
-     */
-    this.matchingSelectors = null;
+  /**
+   * The point on the screen where the context menu was requested.  This
+   * is just a point with x,y positions.
+   *
+   * @type {null}
+   */
+  this.point = null;
 
-    /**
-     * Basic metadata about the document with which we're interacting.
-     *
-     * @type {DocDescriptor}
-     */
-    this.docDescriptor = null;
+  /**
+   * The type of context menus to create based on what the user is clicking.
+   * @type {Object}
+   */
+  this.contextMenuTypes = null;
 
-    Object.assign(this, opts);
-  }
+  /**
+   * A more complex data structure with the selectors and metadata
+   * about the annotations that were selected.
+   * @type {Object}
+   */
+  this.matchingSelectors = null;
 
-}
+  /**
+   * Basic metadata about the document with which we're interacting.
+   *
+   * @type {DocDescriptor}
+   */
+  this.docDescriptor = null;
+
+  Object.assign(this, opts);
+};
 
 module.exports.TriggerEvent = TriggerEvent;
 
@@ -55341,7 +55934,14 @@ module.exports.TriggerEvent = TriggerEvent;
   !*** ./web/js/contextmenu/electron/RendererContextMenu.js ***!
   \************************************************************/
 /*! no static exports found */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 // const remote = require('electron').remote;
 // const {ContextMenuType} = require("./ContextMenuType");
@@ -55352,60 +55952,65 @@ module.exports.TriggerEvent = TriggerEvent;
  *
  * @type {RendererContextMenu}
  */
-class RendererContextMenu {
-
-    constructor() {
+var RendererContextMenu = function () {
+    function RendererContextMenu() {
 
         //console.log("FIXME: here at least..");
 
+        _classCallCheck(this, RendererContextMenu);
     }
 
-    static register(element, contextMenuType) {
+    _createClass(RendererContextMenu, [{
+        key: "determineContextMenuType",
+        value: function determineContextMenuType(element) {
 
-        //
-        // console.log("FIXME: here... part 1.")
-        //
-        // element = document.querySelector(".page");
-        //
-        // element.addEventListener("contextmenu", function (event) {
-        //
-        //     // FIXME: determine which context menu we should bring up first...
-        //     //
-        //     //
-        //
-        //     let electronContextMenu = remote.getGlobal("electronContextMenu" );
-        //
-        //     console.log("FIXME: electronContextMenu: ", electronContextMenu)
-        //
-        //     console.log("FIXME: Got context menu!");
-        //
-        //     //remote.getCurrentWindow(), event.screenX, event.screenY
-        //
-        //     console.log(event);
-        //
-        //     console.log("FIXME4: " + contextMenuType)
-        //
-        //     electronContextMenu.popup(remote.getCurrentWindow(), event.screenX, event.screenY, contextMenuType);
-        //
-        // }.bind(this));
+            while (element != null) {
 
-    }
+                if (element.classList.contains("text-highlight")) {
+                    return ContextMenuType.TEXT_HIGHLIGHT;
+                }
 
-    determineContextMenuType(element) {
-
-        while (element != null) {
-
-            if (element.classList.contains("text-highlight")) {
-                return ContextMenuType.TEXT_HIGHLIGHT;
+                element = element.parentElement;
             }
 
-            element = element.parentElement;
+            return null;
         }
+    }], [{
+        key: "register",
+        value: function register(element, contextMenuType) {
 
-        return null;
-    }
+            //
+            // console.log("FIXME: here... part 1.")
+            //
+            // element = document.querySelector(".page");
+            //
+            // element.addEventListener("contextmenu", function (event) {
+            //
+            //     // FIXME: determine which context menu we should bring up first...
+            //     //
+            //     //
+            //
+            //     let electronContextMenu = remote.getGlobal("electronContextMenu" );
+            //
+            //     console.log("FIXME: electronContextMenu: ", electronContextMenu)
+            //
+            //     console.log("FIXME: Got context menu!");
+            //
+            //     //remote.getCurrentWindow(), event.screenX, event.screenY
+            //
+            //     console.log(event);
+            //
+            //     console.log("FIXME4: " + contextMenuType)
+            //
+            //     electronContextMenu.popup(remote.getCurrentWindow(), event.screenX, event.screenY, contextMenuType);
+            //
+            // }.bind(this));
 
-}
+        }
+    }]);
+
+    return RendererContextMenu;
+}();
 
 module.exports.RendererContextMenu = RendererContextMenu;
 
@@ -55416,17 +56021,23 @@ module.exports.RendererContextMenu = RendererContextMenu;
   !*** ./web/js/controller/Controller.js ***!
   \*****************************************/
 /*! no static exports found */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
 
-function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
+"use strict";
 
-class Controller {
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var Controller = function () {
 
     /**
      *
      * @param model {Model}
      */
-    constructor(model) {
+    function Controller(model) {
+        _classCallCheck(this, Controller);
 
         if (!model) {
             throw new Error("No model");
@@ -55442,42 +56053,50 @@ class Controller {
     /**
      * Called when a new document has been loaded.
      */
-    onDocumentLoaded(fingerprint, nrPages, currentlySelectedPageNum) {
-        var _this = this;
 
-        return _asyncToGenerator(function* () {
-            yield _this.model.documentLoaded(fingerprint, nrPages, currentlySelectedPageNum);
-        })();
-    }
 
-    /**
-     * Mark the given page number as read.
-     */
-    createPagemark(pageNum, options) {
-        var _this2 = this;
+    _createClass(Controller, [{
+        key: "onDocumentLoaded",
+        value: async function onDocumentLoaded(fingerprint, nrPages, currentlySelectedPageNum) {
+            await this.model.documentLoaded(fingerprint, nrPages, currentlySelectedPageNum);
+        }
 
-        return _asyncToGenerator(function* () {
+        /**
+         * Mark the given page number as read.
+         */
+
+    }, {
+        key: "createPagemark",
+        value: async function createPagemark(pageNum, options) {
             console.log("Controller sees pagemark created: " + pageNum, options);
-            yield _this2.model.createPagemark(pageNum, options);
-        })();
-    }
+            await this.model.createPagemark(pageNum, options);
+        }
+    }, {
+        key: "erasePagemarks",
+        value: function erasePagemarks(pageNum, options) {
+            console.log("Controller sees pagemarks erased: " + pageNum);
+            this.model.erasePagemark(pageNum, options);
+        }
 
-    erasePagemarks(pageNum, options) {
-        console.log("Controller sees pagemarks erased: " + pageNum);
-        this.model.erasePagemark(pageNum, options);
-    }
+        /**
+         * Mark the given page number as read.
+         */
 
-    /**
-     * Mark the given page number as read.
-     */
-    erasePagemark(num) {
-        console.log("Controller sees pagemark erased: " + num);
-        this.model.erasePagemark(num);
-    }
+    }, {
+        key: "erasePagemark",
+        value: function erasePagemark(num) {
+            console.log("Controller sees pagemark erased: " + num);
+            this.model.erasePagemark(num);
+        }
+    }, {
+        key: "getCurrentPageElement",
+        value: function getCurrentPageElement() {}
+    }]);
 
-    getCurrentPageElement() {}
+    return Controller;
+}();
 
-};
+;
 
 module.exports.Controller = Controller;
 
@@ -55490,24 +56109,53 @@ module.exports.Controller = Controller;
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
+"use strict";
 
-const { TextHighlightController } = __webpack_require__(/*! ../highlights/text/controller/TextHighlightController */ "./web/js/highlights/text/controller/TextHighlightController.js");
-const { PagemarkCoverageEventListener } = __webpack_require__(/*! ../pagemarks/controller/PagemarkCoverageEventListener.js */ "./web/js/pagemarks/controller/PagemarkCoverageEventListener.js");
-const { KeyEvents } = __webpack_require__(/*! ../KeyEvents.js */ "./web/js/KeyEvents.js");
-const { Preconditions } = __webpack_require__(/*! ../Preconditions.js */ "./web/js/Preconditions.js");
-const { Controller } = __webpack_require__(/*! ./Controller.js */ "./web/js/controller/Controller.js");
-const { DocFormatFactory } = __webpack_require__(/*! ../docformat/DocFormatFactory */ "./web/js/docformat/DocFormatFactory.js");
-const { ContextMenuController } = __webpack_require__(/*! ../contextmenu/ContextMenuController */ "./web/js/contextmenu/ContextMenuController.js");
-const { FlashcardsController } = __webpack_require__(/*! ../flashcards/controller/FlashcardsController */ "./web/js/flashcards/controller/FlashcardsController.js");
-const { MouseTracer } = __webpack_require__(/*! ../mouse/MouseTracer */ "./web/js/mouse/MouseTracer.js");
 
-const log = __webpack_require__(/*! ../logger/Logger */ "./web/js/logger/Logger.js").create();
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-class WebController extends Controller {
+var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
 
-    constructor(model) {
-        super(Preconditions.assertNotNull(model, "model"));
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var _require = __webpack_require__(/*! ../highlights/text/controller/TextHighlightController */ "./web/js/highlights/text/controller/TextHighlightController.js"),
+    TextHighlightController = _require.TextHighlightController;
+
+var _require2 = __webpack_require__(/*! ../pagemarks/controller/PagemarkCoverageEventListener.js */ "./web/js/pagemarks/controller/PagemarkCoverageEventListener.js"),
+    PagemarkCoverageEventListener = _require2.PagemarkCoverageEventListener;
+
+var _require3 = __webpack_require__(/*! ../KeyEvents.js */ "./web/js/KeyEvents.js"),
+    KeyEvents = _require3.KeyEvents;
+
+var _require4 = __webpack_require__(/*! ../Preconditions.js */ "./web/js/Preconditions.js"),
+    Preconditions = _require4.Preconditions;
+
+var _require5 = __webpack_require__(/*! ./Controller.js */ "./web/js/controller/Controller.js"),
+    Controller = _require5.Controller;
+
+var _require6 = __webpack_require__(/*! ../docformat/DocFormatFactory */ "./web/js/docformat/DocFormatFactory.js"),
+    DocFormatFactory = _require6.DocFormatFactory;
+
+var _require7 = __webpack_require__(/*! ../contextmenu/ContextMenuController */ "./web/js/contextmenu/ContextMenuController.js"),
+    ContextMenuController = _require7.ContextMenuController;
+
+var _require8 = __webpack_require__(/*! ../flashcards/controller/FlashcardsController */ "./web/js/flashcards/controller/FlashcardsController.js"),
+    FlashcardsController = _require8.FlashcardsController;
+
+var _require9 = __webpack_require__(/*! ../mouse/MouseTracer */ "./web/js/mouse/MouseTracer.js"),
+    MouseTracer = _require9.MouseTracer;
+
+var log = __webpack_require__(/*! ../logger/Logger */ "./web/js/logger/Logger.js").create();
+
+var WebController = function (_Controller) {
+    _inherits(WebController, _Controller);
+
+    function WebController(model) {
+        _classCallCheck(this, WebController);
 
         /**
          * The document fingerprint that we have loaded to detect when the
@@ -55516,105 +56164,115 @@ class WebController extends Controller {
          *
          * @type string
          */
-        this.docFingerprint = null;
+        var _this = _possibleConstructorReturn(this, (WebController.__proto__ || Object.getPrototypeOf(WebController)).call(this, Preconditions.assertNotNull(model, "model")));
 
-        this.docFormat = DocFormatFactory.getInstance();
+        _this.docFingerprint = null;
+
+        _this.docFormat = DocFormatFactory.getInstance();
+
+        return _this;
     }
 
-    start() {
-        this.listenForDocumentLoad();
-        this.listenForKeyBindings();
+    _createClass(WebController, [{
+        key: "start",
+        value: function start() {
+            this.listenForDocumentLoad();
+            this.listenForKeyBindings();
 
-        //new MouseTracer(document).start();
-    }
-
-    onDocumentLoaded(fingerprint, nrPages, currentlySelectedPageNum) {
-
-        // TODO: if I await super.onDocumentLoaded with webpack it breaks
-        super.onDocumentLoaded(fingerprint, nrPages, currentlySelectedPageNum);
-        this.setupContextMenu();
-    }
-
-    setupContextMenu() {
-
-        let contextMenuController = new ContextMenuController(this.model);
-        contextMenuController.start();
-    }
-
-    listenForDocumentLoad() {
-
-        let container = document.getElementById('viewerContainer');
-
-        container.addEventListener('pagesinit', this.detectDocumentLoadedEventListener.bind(this));
-        container.addEventListener('updateviewarea', this.detectDocumentLoadedEventListener.bind(this));
-
-        // run manually the first time in case we get lucky of we're running HTML
-        //this.detectDocumentLoadedEventListener();
-    }
-
-    detectDocumentLoadedEventListener(event) {
-
-        let currentDocFingerprint = this.docFormat.currentDocFingerprint();
-
-        if (currentDocFingerprint !== this.docFingerprint) {
-
-            log.info("controller: New document loaded!");
-
-            let newDocumentFingerprint = currentDocFingerprint;
-
-            let currentDocState = this.docFormat.currentState(event);
-
-            this.onNewDocumentFingerprint(newDocumentFingerprint, currentDocState.nrPages, currentDocState.currentPageNumber);
+            //new MouseTracer(document).start();
         }
-    }
+    }, {
+        key: "onDocumentLoaded",
+        value: function onDocumentLoaded(fingerprint, nrPages, currentlySelectedPageNum) {
 
-    onNewDocumentFingerprint(newDocumentFingerprint, nrPages, currentPageNumber) {
+            // TODO: if I await super.onDocumentLoaded with webpack it breaks
+            _get(WebController.prototype.__proto__ || Object.getPrototypeOf(WebController.prototype), "onDocumentLoaded", this).call(this, fingerprint, nrPages, currentlySelectedPageNum);
+            this.setupContextMenu();
+        }
+    }, {
+        key: "setupContextMenu",
+        value: function setupContextMenu() {
 
-        log.info(`Detected new document fingerprint (fingerprint=${newDocumentFingerprint}, nrPages=${nrPages}, currentPageNumber=${currentPageNumber})`);
+            var contextMenuController = new ContextMenuController(this.model);
+            contextMenuController.start();
+        }
+    }, {
+        key: "listenForDocumentLoad",
+        value: function listenForDocumentLoad() {
 
-        this.docFingerprint = newDocumentFingerprint;
+            var container = document.getElementById('viewerContainer');
 
-        this.onDocumentLoaded(newDocumentFingerprint, nrPages, currentPageNumber);
-    }
+            container.addEventListener('pagesinit', this.detectDocumentLoadedEventListener.bind(this));
+            container.addEventListener('updateviewarea', this.detectDocumentLoadedEventListener.bind(this));
 
-    // FIXME: remake this binding to CreatePagemarkEntirePage
-    keyBindingPagemarkEntirePage(event) {
-        var _this = this;
+            // run manually the first time in case we get lucky of we're running HTML
+            //this.detectDocumentLoadedEventListener();
+        }
+    }, {
+        key: "detectDocumentLoadedEventListener",
+        value: function detectDocumentLoadedEventListener(event) {
 
-        return _asyncToGenerator(function* () {
+            var currentDocFingerprint = this.docFormat.currentDocFingerprint();
+
+            if (currentDocFingerprint !== this.docFingerprint) {
+
+                log.info("controller: New document loaded!");
+
+                var newDocumentFingerprint = currentDocFingerprint;
+
+                var currentDocState = this.docFormat.currentState(event);
+
+                this.onNewDocumentFingerprint(newDocumentFingerprint, currentDocState.nrPages, currentDocState.currentPageNumber);
+            }
+        }
+    }, {
+        key: "onNewDocumentFingerprint",
+        value: function onNewDocumentFingerprint(newDocumentFingerprint, nrPages, currentPageNumber) {
+
+            log.info("Detected new document fingerprint (fingerprint=" + newDocumentFingerprint + ", nrPages=" + nrPages + ", currentPageNumber=" + currentPageNumber + ")");
+
+            this.docFingerprint = newDocumentFingerprint;
+
+            this.onDocumentLoaded(newDocumentFingerprint, nrPages, currentPageNumber);
+        }
+
+        // FIXME: remake this binding to CreatePagemarkEntirePage
+
+    }, {
+        key: "keyBindingPagemarkEntirePage",
+        value: async function keyBindingPagemarkEntirePage(event) {
 
             log.info("Marking entire page as read.");
 
-            let pageElement = _this.docFormat.getCurrentPageElement();
+            var pageElement = this.docFormat.getCurrentPageElement();
 
             if (pageElement) {
 
-                let pageNum = _this.docFormat.getPageNumFromPageElement(pageElement);
+                var pageNum = this.docFormat.getPageNumFromPageElement(pageElement);
 
-                _this.erasePagemarks(pageNum);
-                yield _this.createPagemark(pageNum);
+                this.erasePagemarks(pageNum);
+                await this.createPagemark(pageNum);
             } else {
 
                 log.warn("No current pageElement to create pagemark.");
             }
-        })();
-    }
-
-    keyBindingPagemarkUpToMouse(event) {
-        log.info("Marking page as read up to mouse point");
-    }
-
-    keyBindingErasePagemark(event) {
-        log.info("Erasing pagemark.");
-        let pageElement = this.docFormat.getCurrentPageElement();
-        let pageNum = this.docFormat.getPageNumFromPageElement(pageElement);
-        this.erasePagemark(pageNum);
-    }
-
-    keyBindingListener(event) {
-        var _this2 = this;
-
-        return _asyncToGenerator(function* () {
+        }
+    }, {
+        key: "keyBindingPagemarkUpToMouse",
+        value: function keyBindingPagemarkUpToMouse(event) {
+            log.info("Marking page as read up to mouse point");
+        }
+    }, {
+        key: "keyBindingErasePagemark",
+        value: function keyBindingErasePagemark(event) {
+            log.info("Erasing pagemark.");
+            var pageElement = this.docFormat.getCurrentPageElement();
+            var pageNum = this.docFormat.getPageNumFromPageElement(pageElement);
+            this.erasePagemark(pageNum);
+        }
+    }, {
+        key: "keyBindingListener",
+        value: async function keyBindingListener(event) {
 
             if (KeyEvents.isKeyMetaActive(event)) {
 
@@ -55626,11 +56284,11 @@ class WebController extends Controller {
                     switch (event.code) {
 
                         case "KeyE":
-                            _this2.keyBindingErasePagemark(event);
+                            this.keyBindingErasePagemark(event);
                             break;
 
                         case "KeyN":
-                            yield _this2.keyBindingPagemarkEntirePage(event);
+                            await this.keyBindingPagemarkEntirePage(event);
                             break;
 
                         default:
@@ -55639,23 +56297,25 @@ class WebController extends Controller {
                     }
                 }
             } else {}
-        })();
-    }
+        }
+    }, {
+        key: "listenForKeyBindings",
+        value: function listenForKeyBindings() {
 
-    listenForKeyBindings() {
+            document.addEventListener("keydown", this.keyBindingListener.bind(this));
 
-        document.addEventListener("keydown", this.keyBindingListener.bind(this));
+            log.info("Key bindings registered");
 
-        log.info("Key bindings registered");
+            new TextHighlightController(this.model).start();
 
-        new TextHighlightController(this.model).start();
+            new PagemarkCoverageEventListener(this, this.model).start();
 
-        new PagemarkCoverageEventListener(this, this.model).start();
+            new FlashcardsController(this.model).start();
+        }
+    }]);
 
-        new FlashcardsController(this.model).start();
-    }
-
-}
+    return WebController;
+}(Controller);
 
 module.exports.WebController = WebController;
 
@@ -55666,41 +56326,57 @@ module.exports.WebController = WebController;
   !*** ./web/js/datastore/Datastore.js ***!
   \***************************************/
 /*! no static exports found */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
 
-function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
+"use strict";
+
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 // A datastore that supports ledgers and checkpoints.
-class Datastore {
-
-  /**
-   * Init the datastore, potentially reading files of disk, the network, etc.
-   */
-  init() {
-    return _asyncToGenerator(function* () {})();
+var Datastore = function () {
+  function Datastore() {
+    _classCallCheck(this, Datastore);
   }
 
-  /**
-   * Get the data for the DocMeta object we currently in the datastore for
-   * this given fingerprint or null if it does not exist.
-    * @return A JSON string representing the DocMeta which is decoded by the
-   * PersistenceLayer.
-   */
-  getDocMeta(fingerprint) {
-    return _asyncToGenerator(function* () {})();
-  }
+  _createClass(Datastore, [{
+    key: "init",
 
-  /**
-   * Write the datastore to disk.
-   *
-   * @param fingerprint The fingerprint of the data we should be working with.
-   * @param data The RAW data to decode by the PersistenceLayer
-   */
-  sync(fingerprint, data) {
-    return _asyncToGenerator(function* () {})();
-  }
 
-};
+    /**
+     * Init the datastore, potentially reading files of disk, the network, etc.
+     */
+    value: async function init() {}
+
+    /**
+     * Get the data for the DocMeta object we currently in the datastore for
+     * this given fingerprint or null if it does not exist.
+      * @return A JSON string representing the DocMeta which is decoded by the
+     * PersistenceLayer.
+     */
+
+  }, {
+    key: "getDocMeta",
+    value: async function getDocMeta(fingerprint) {}
+
+    /**
+     * Write the datastore to disk.
+     *
+     * @param fingerprint The fingerprint of the data we should be working with.
+     * @param data The RAW data to decode by the PersistenceLayer
+     */
+
+  }, {
+    key: "sync",
+    value: async function sync(fingerprint, data) {}
+  }]);
+
+  return Datastore;
+}();
+
+;
 
 module.exports.Datastore = Datastore;
 
@@ -55713,18 +56389,36 @@ module.exports.Datastore = Datastore;
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
+"use strict";
 
-const { Datastore } = __webpack_require__(/*! ./Datastore.js */ "./web/js/datastore/Datastore.js");
-const { MetadataSerializer } = __webpack_require__(/*! ../metadata/MetadataSerializer */ "./web/js/metadata/MetadataSerializer.js");
-const { DocMeta } = __webpack_require__(/*! ../metadata/DocMeta */ "./web/js/metadata/DocMeta.js");
-const { DocMetas } = __webpack_require__(/*! ../metadata/DocMetas */ "./web/js/metadata/DocMetas.js");
-const { DocMetaDescriber } = __webpack_require__(/*! ../metadata/DocMetaDescriber */ "./web/js/metadata/DocMetaDescriber.js");
-const { Preconditions } = __webpack_require__(/*! ../Preconditions */ "./web/js/Preconditions.js");
 
-const fs = __webpack_require__(/*! fs */ "fs");
-const os = __webpack_require__(/*! os */ "os");
-const util = __webpack_require__(/*! util */ "util");
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var _require = __webpack_require__(/*! ./Datastore.js */ "./web/js/datastore/Datastore.js"),
+    Datastore = _require.Datastore;
+
+var _require2 = __webpack_require__(/*! ../metadata/MetadataSerializer */ "./web/js/metadata/MetadataSerializer.js"),
+    MetadataSerializer = _require2.MetadataSerializer;
+
+var _require3 = __webpack_require__(/*! ../metadata/DocMeta */ "./web/js/metadata/DocMeta.js"),
+    DocMeta = _require3.DocMeta;
+
+var _require4 = __webpack_require__(/*! ../metadata/DocMetas */ "./web/js/metadata/DocMetas.js"),
+    DocMetas = _require4.DocMetas;
+
+var _require5 = __webpack_require__(/*! ../metadata/DocMetaDescriber */ "./web/js/metadata/DocMetaDescriber.js"),
+    DocMetaDescriber = _require5.DocMetaDescriber;
+
+var _require6 = __webpack_require__(/*! ../Preconditions */ "./web/js/Preconditions.js"),
+    Preconditions = _require6.Preconditions;
+
+var fs = __webpack_require__(/*! fs */ "fs");
+var os = __webpack_require__(/*! os */ "os");
+var util = __webpack_require__(/*! util */ "util");
 
 /**
  * First layer before the raw datastore. At one point we allowed the datastore
@@ -55732,66 +56426,65 @@ const util = __webpack_require__(/*! util */ "util");
  * with node+chrome behaving differently so now we just make node work with raw
  * strings.
  */
-class PersistenceLayer {
+
+var PersistenceLayer = function () {
 
     /**
      */
-    constructor(datastore) {
+    function PersistenceLayer(datastore) {
+        _classCallCheck(this, PersistenceLayer);
+
         /**
          * @type Datastore
          */
         this.datastore = datastore;
     }
 
-    init() {
-        var _this = this;
+    _createClass(PersistenceLayer, [{
+        key: "init",
+        value: async function init() {
+            await this.datastore.init();
+        }
 
-        return _asyncToGenerator(function* () {
-            yield _this.datastore.init();
-        })();
-    }
+        /**
+         * Get the DocMeta object we currently in the datastore for this given
+         * fingerprint or null if it does not exist.
+         */
 
-    /**
-     * Get the DocMeta object we currently in the datastore for this given
-     * fingerprint or null if it does not exist.
-     */
-    getDocMeta(fingerprint) {
-        var _this2 = this;
+    }, {
+        key: "getDocMeta",
+        value: async function getDocMeta(fingerprint) {
 
-        return _asyncToGenerator(function* () {
-
-            let data = yield _this2.datastore.getDocMeta(fingerprint);
+            var data = await this.datastore.getDocMeta(fingerprint);
 
             if (!data) {
                 return null;
             }
 
             if (!(typeof data === "string")) {
-                throw new Error("Expected string and received: " + typeof data);
+                throw new Error("Expected string and received: " + (typeof data === "undefined" ? "undefined" : _typeof(data)));
             }
 
             return DocMetas.deserialize(data);
-        })();
-    }
+        }
 
-    /**
-     * Convenience method to not require the fingerprint.
-     */
-    syncDocMeta(docMeta) {
-        var _this3 = this;
+        /**
+         * Convenience method to not require the fingerprint.
+         */
 
-        return _asyncToGenerator(function* () {
-            return _this3.sync(docMeta.docInfo.fingerprint, docMeta);
-        })();
-    }
+    }, {
+        key: "syncDocMeta",
+        value: async function syncDocMeta(docMeta) {
+            return this.sync(docMeta.docInfo.fingerprint, docMeta);
+        }
 
-    /**
-     * Write the datastore to disk.
-     */
-    sync(fingerprint, docMeta) {
-        var _this4 = this;
+        /**
+         * Write the datastore to disk.
+         */
 
-        return _asyncToGenerator(function* () {
+    }, {
+        key: "sync",
+        value: async function sync(fingerprint, docMeta) {
 
             Preconditions.assertNotNull(fingerprint, "fingerprint");
             Preconditions.assertNotNull(docMeta, "docMeta");
@@ -55805,13 +56498,16 @@ class PersistenceLayer {
             // NOTE that we always write the state with JSON pretty printing.
             // Otherwise tools like git diff , etc will be impossible to deal with
             // in practice.
-            let data = DocMetas.serialize(docMeta, "  ");
+            var data = DocMetas.serialize(docMeta, "  ");
 
-            yield _this4.datastore.sync(fingerprint, data);
-        })();
-    }
+            await this.datastore.sync(fingerprint, data);
+        }
+    }]);
 
-};
+    return PersistenceLayer;
+}();
+
+;
 
 module.exports.PersistenceLayer = PersistenceLayer;
 
@@ -55824,107 +56520,143 @@ module.exports.PersistenceLayer = PersistenceLayer;
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-const { Elements } = __webpack_require__(/*! ../util/Elements */ "./web/js/util/Elements.js");
-const { Preconditions } = __webpack_require__(/*! ../Preconditions */ "./web/js/Preconditions.js");
+"use strict";
+
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var _require = __webpack_require__(/*! ../util/Elements */ "./web/js/util/Elements.js"),
+    Elements = _require.Elements;
+
+var _require2 = __webpack_require__(/*! ../Preconditions */ "./web/js/Preconditions.js"),
+    Preconditions = _require2.Preconditions;
 
 /**
  * Get the proper docFormat to work with.
  */
-class DocFormat {
 
-    currentScale() {
-        return 1.0;
+
+var DocFormat = function () {
+    function DocFormat() {
+        _classCallCheck(this, DocFormat);
     }
 
-    getPageNumFromPageElement(pageElement) {
-        Preconditions.assertNotNull(pageElement, "pageElement");
-        let dataPageNum = pageElement.getAttribute("data-page-number");
-        return parseInt(dataPageNum);
-    }
-
-    getPageElementFromPageNum(pageNum) {
-
-        if (!pageNum) {
-            throw new Error("Page number not specified");
+    _createClass(DocFormat, [{
+        key: "currentScale",
+        value: function currentScale() {
+            return 1.0;
         }
-
-        let pageElements = document.querySelectorAll(".page");
-
-        // note that elements are 0 based indexes but our pages are 1 based
-        // indexes.
-        let pageElement = pageElements[pageNum - 1];
-
-        if (pageElement == null) {
-            throw new Error("Unable to find page element for page num: " + pageNum);
+    }, {
+        key: "getPageNumFromPageElement",
+        value: function getPageNumFromPageElement(pageElement) {
+            Preconditions.assertNotNull(pageElement, "pageElement");
+            var dataPageNum = pageElement.getAttribute("data-page-number");
+            return parseInt(dataPageNum);
         }
+    }, {
+        key: "getPageElementFromPageNum",
+        value: function getPageElementFromPageNum(pageNum) {
 
-        return pageElement;
-    }
-
-    /**
-     * Get the current page number based on which page is occupying the largest
-     * percentage of the viewport.
-     */
-    getCurrentPageElement() {
-
-        let pageElements = document.querySelectorAll(".page");
-
-        if (pageElements.length === 1) {
-            // if we only have one page, just go with that as there are no other
-            // options.  This was added to avoid a bug in calculate visibility
-            // but it works.
-            return pageElements[0];
-        }
-
-        let result = { element: null, visibility: 0 };
-
-        pageElements.forEach(function (pageElement) {
-
-            let visibility = Elements.calculateVisibilityForDiv(pageElement);
-
-            if (visibility > result.visibility) {
-                result.element = pageElement;
-                result.visibility = visibility;
+            if (!pageNum) {
+                throw new Error("Page number not specified");
             }
-        });
 
-        return result.element;
-    }
+            var pageElements = document.querySelectorAll(".page");
 
-    /**
-     * Get all the metadata about the current page.
-     */
-    getCurrentPageMeta() {
+            // note that elements are 0 based indexes but our pages are 1 based
+            // indexes.
+            var pageElement = pageElements[pageNum - 1];
 
-        let pageElement = this.getCurrentPageElement();
-        let pageNum = this.getPageNumFromPageElement(pageElement);
+            if (pageElement == null) {
+                throw new Error("Unable to find page element for page num: " + pageNum);
+            }
 
-        return { pageElement, pageNum };
-    }
+            return pageElement;
+        }
 
-    /**
-     * Get the current doc fingerprint or null if it hasn't been loaded yet.
-     */
-    currentDocFingerprint() {}
+        /**
+         * Get the current page number based on which page is occupying the largest
+         * percentage of the viewport.
+         */
 
-    /**
-     * Get the current state of the doc.
-     */
-    currentState(event) {}
+    }, {
+        key: "getCurrentPageElement",
+        value: function getCurrentPageElement() {
 
-    supportThumbnails() {
-        return false;
-    }
+            var pageElements = document.querySelectorAll(".page");
 
-    textHighlightOptions() {
-        return {};
-    }
+            if (pageElements.length === 1) {
+                // if we only have one page, just go with that as there are no other
+                // options.  This was added to avoid a bug in calculate visibility
+                // but it works.
+                return pageElements[0];
+            }
 
-    targetDocument() {
-        throw new Error("Not implemented");
-    }
+            var result = { element: null, visibility: 0 };
 
-}
+            pageElements.forEach(function (pageElement) {
+
+                var visibility = Elements.calculateVisibilityForDiv(pageElement);
+
+                if (visibility > result.visibility) {
+                    result.element = pageElement;
+                    result.visibility = visibility;
+                }
+            });
+
+            return result.element;
+        }
+
+        /**
+         * Get all the metadata about the current page.
+         */
+
+    }, {
+        key: "getCurrentPageMeta",
+        value: function getCurrentPageMeta() {
+
+            var pageElement = this.getCurrentPageElement();
+            var pageNum = this.getPageNumFromPageElement(pageElement);
+
+            return { pageElement: pageElement, pageNum: pageNum };
+        }
+
+        /**
+         * Get the current doc fingerprint or null if it hasn't been loaded yet.
+         */
+
+    }, {
+        key: "currentDocFingerprint",
+        value: function currentDocFingerprint() {}
+
+        /**
+         * Get the current state of the doc.
+         */
+
+    }, {
+        key: "currentState",
+        value: function currentState(event) {}
+    }, {
+        key: "supportThumbnails",
+        value: function supportThumbnails() {
+            return false;
+        }
+    }, {
+        key: "textHighlightOptions",
+        value: function textHighlightOptions() {
+            return {};
+        }
+    }, {
+        key: "targetDocument",
+        value: function targetDocument() {
+            throw new Error("Not implemented");
+        }
+    }]);
+
+    return DocFormat;
+}();
 
 module.exports.DocFormat = DocFormat;
 
@@ -55937,40 +56669,65 @@ module.exports.DocFormat = DocFormat;
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-const { Elements } = __webpack_require__(/*! ../util/Elements */ "./web/js/util/Elements.js");
-const { PDFFormat } = __webpack_require__(/*! ./PDFFormat */ "./web/js/docformat/PDFFormat.js");
-const { HTMLFormat } = __webpack_require__(/*! ./HTMLFormat */ "./web/js/docformat/HTMLFormat.js");
-const { DocFormat } = __webpack_require__(/*! ./DocFormat */ "./web/js/docformat/DocFormat.js");
+"use strict";
+
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var _require = __webpack_require__(/*! ../util/Elements */ "./web/js/util/Elements.js"),
+    Elements = _require.Elements;
+
+var _require2 = __webpack_require__(/*! ./PDFFormat */ "./web/js/docformat/PDFFormat.js"),
+    PDFFormat = _require2.PDFFormat;
+
+var _require3 = __webpack_require__(/*! ./HTMLFormat */ "./web/js/docformat/HTMLFormat.js"),
+    HTMLFormat = _require3.HTMLFormat;
+
+var _require4 = __webpack_require__(/*! ./DocFormat */ "./web/js/docformat/DocFormat.js"),
+    DocFormat = _require4.DocFormat;
 
 /**
  * Get the proper docFormat to work with.
  */
-class DocFormatFactory {
 
-    /**
-     *
-     * @return {DocFormat}
-     */
-    static getInstance() {
 
-        let polarDocFormat = document.querySelector("meta[name='polar-doc-format']");
-
-        if (polarDocFormat) {
-            polarDocFormat = polarDocFormat.getAttribute("content");
-        }
-
-        if (polarDocFormat === "html") {
-            return new HTMLFormat();
-        } else if (polarDocFormat === "pdf") {
-            return new PDFFormat();
-        } else if (polarDocFormat == null) {
-            return new PDFFormat();
-        } else {
-            throw new Error("Unable to handle the given format: " + polarDocFormat);
-        }
+var DocFormatFactory = function () {
+    function DocFormatFactory() {
+        _classCallCheck(this, DocFormatFactory);
     }
 
-}
+    _createClass(DocFormatFactory, null, [{
+        key: "getInstance",
+
+
+        /**
+         *
+         * @return {DocFormat}
+         */
+        value: function getInstance() {
+
+            var polarDocFormat = document.querySelector("meta[name='polar-doc-format']");
+
+            if (polarDocFormat) {
+                polarDocFormat = polarDocFormat.getAttribute("content");
+            }
+
+            if (polarDocFormat === "html") {
+                return new HTMLFormat();
+            } else if (polarDocFormat === "pdf") {
+                return new PDFFormat();
+            } else if (polarDocFormat == null) {
+                return new PDFFormat();
+            } else {
+                throw new Error("Unable to handle the given format: " + polarDocFormat);
+            }
+        }
+    }]);
+
+    return DocFormatFactory;
+}();
 
 module.exports.DocFormatFactory = DocFormatFactory;
 
@@ -55983,32 +56740,57 @@ module.exports.DocFormatFactory = DocFormatFactory;
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-const { Elements } = __webpack_require__(/*! ../util/Elements */ "./web/js/util/Elements.js");
-const { PDFFormat } = __webpack_require__(/*! ./PDFFormat */ "./web/js/docformat/PDFFormat.js");
-const { HTMLFormat } = __webpack_require__(/*! ./HTMLFormat */ "./web/js/docformat/HTMLFormat.js");
-const { DocFormat } = __webpack_require__(/*! ./DocFormat */ "./web/js/docformat/DocFormat.js");
+"use strict";
+
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var _require = __webpack_require__(/*! ../util/Elements */ "./web/js/util/Elements.js"),
+    Elements = _require.Elements;
+
+var _require2 = __webpack_require__(/*! ./PDFFormat */ "./web/js/docformat/PDFFormat.js"),
+    PDFFormat = _require2.PDFFormat;
+
+var _require3 = __webpack_require__(/*! ./HTMLFormat */ "./web/js/docformat/HTMLFormat.js"),
+    HTMLFormat = _require3.HTMLFormat;
+
+var _require4 = __webpack_require__(/*! ./DocFormat */ "./web/js/docformat/DocFormat.js"),
+    DocFormat = _require4.DocFormat;
 
 /**
  *
  */
-class DocFormats {
 
-    /**
-     * Get the doc format we're using (html, pdf, etc). Otherwise return null.
-     * @return {*}
-     */
-    static getFormat() {
 
-        let polarDocFormat = document.querySelector("meta[name='polar-doc-format']");
-
-        if (polarDocFormat) {
-            return polarDocFormat.getAttribute("content");
-        }
-
-        return null;
+var DocFormats = function () {
+    function DocFormats() {
+        _classCallCheck(this, DocFormats);
     }
 
-}
+    _createClass(DocFormats, null, [{
+        key: "getFormat",
+
+
+        /**
+         * Get the doc format we're using (html, pdf, etc). Otherwise return null.
+         * @return {*}
+         */
+        value: function getFormat() {
+
+            var polarDocFormat = document.querySelector("meta[name='polar-doc-format']");
+
+            if (polarDocFormat) {
+                return polarDocFormat.getAttribute("content");
+            }
+
+            return null;
+        }
+    }]);
+
+    return DocFormats;
+}();
 
 module.exports.DocFormats = DocFormats;
 
@@ -56021,82 +56803,113 @@ module.exports.DocFormats = DocFormats;
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-const { DocFormat } = __webpack_require__(/*! ./DocFormat */ "./web/js/docformat/DocFormat.js");
+"use strict";
 
-class HTMLFormat extends DocFormat {
 
-    constructor() {
-        super();
-        this.name = "html";
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var _require = __webpack_require__(/*! ./DocFormat */ "./web/js/docformat/DocFormat.js"),
+    DocFormat = _require.DocFormat;
+
+var HTMLFormat = function (_DocFormat) {
+    _inherits(HTMLFormat, _DocFormat);
+
+    function HTMLFormat() {
+        _classCallCheck(this, HTMLFormat);
+
+        var _this = _possibleConstructorReturn(this, (HTMLFormat.__proto__ || Object.getPrototypeOf(HTMLFormat)).call(this));
+
+        _this.name = "html";
+        return _this;
     }
 
     /**
      * Get the current doc fingerprint or null if it hasn't been loaded yet.
      */
-    currentDocFingerprint() {
 
-        let polarFingerprint = this._queryFingerprintElement();
 
-        if (polarFingerprint !== null) {
-            return polarFingerprint.getAttribute("content");
+    _createClass(HTMLFormat, [{
+        key: "currentDocFingerprint",
+        value: function currentDocFingerprint() {
+
+            var polarFingerprint = this._queryFingerprintElement();
+
+            if (polarFingerprint !== null) {
+                return polarFingerprint.getAttribute("content");
+            }
+
+            return null;
+        }
+    }, {
+        key: "setCurrentDocFingerprint",
+        value: function setCurrentDocFingerprint(fingerprint) {
+            var polarFingerprint = this._queryFingerprintElement();
+            polarFingerprint.setAttribute("content", fingerprint);
+        }
+    }, {
+        key: "_queryFingerprintElement",
+        value: function _queryFingerprintElement() {
+            return document.querySelector("meta[name='polar-fingerprint']");
         }
 
-        return null;
-    }
+        /**
+         * Get the current state of the doc.
+         */
 
-    setCurrentDocFingerprint(fingerprint) {
-        let polarFingerprint = this._queryFingerprintElement();
-        polarFingerprint.setAttribute("content", fingerprint);
-    }
+    }, {
+        key: "currentState",
+        value: function currentState(event) {
 
-    _queryFingerprintElement() {
-        return document.querySelector("meta[name='polar-fingerprint']");
-    }
-
-    /**
-     * Get the current state of the doc.
-     */
-    currentState(event) {
-
-        return {
-            nrPages: 1,
-            currentPageNumber: 1,
-            pageElement: document.querySelector(".page")
-        };
-    }
-
-    textHighlightOptions() {
-        return {};
-    }
-
-    currentScale() {
-
-        let scale = parseFloat(document.querySelector("meta[name='polar-scale']").getAttribute("content"));
-
-        return scale;
-
-        /*
-        let select = document.querySelector("select");
-        let value = select.options[select.selectedIndex].value;
-         if(!value) {
-            throw new Error("No scale value");
+            return {
+                nrPages: 1,
+                currentPageNumber: 1,
+                pageElement: document.querySelector(".page")
+            };
         }
-         let result = parseInt(value);
-         if(isNaN(result)) {
-            throw new Error("Not a number from: " + value);
+    }, {
+        key: "textHighlightOptions",
+        value: function textHighlightOptions() {
+            return {};
         }
-         if(result <= 0) {
-            throw new Error("Scale is too small: " + result);
+    }, {
+        key: "currentScale",
+        value: function currentScale() {
+
+            var scale = parseFloat(document.querySelector("meta[name='polar-scale']").getAttribute("content"));
+
+            return scale;
+
+            /*
+            let select = document.querySelector("select");
+            let value = select.options[select.selectedIndex].value;
+             if(!value) {
+                throw new Error("No scale value");
+            }
+             let result = parseInt(value);
+             if(isNaN(result)) {
+                throw new Error("Not a number from: " + value);
+            }
+             if(result <= 0) {
+                throw new Error("Scale is too small: " + result);
+            }
+             return result;
+            */
         }
-         return result;
-        */
-    }
+    }, {
+        key: "targetDocument",
+        value: function targetDocument() {
+            return document.querySelector("iframe").contentDocument;
+        }
+    }]);
 
-    targetDocument() {
-        return document.querySelector("iframe").contentDocument;
-    }
-
-}
+    return HTMLFormat;
+}(DocFormat);
 
 module.exports.HTMLFormat = HTMLFormat;
 
@@ -56109,54 +56922,85 @@ module.exports.HTMLFormat = HTMLFormat;
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-const { DocFormat } = __webpack_require__(/*! ./DocFormat */ "./web/js/docformat/DocFormat.js");
-const { Preconditions } = __webpack_require__(/*! ../Preconditions */ "./web/js/Preconditions.js");
+"use strict";
 
-class PDFFormat extends DocFormat {
 
-    constructor() {
-        super();
-        this.name = "pdf";
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var _require = __webpack_require__(/*! ./DocFormat */ "./web/js/docformat/DocFormat.js"),
+    DocFormat = _require.DocFormat;
+
+var _require2 = __webpack_require__(/*! ../Preconditions */ "./web/js/Preconditions.js"),
+    Preconditions = _require2.Preconditions;
+
+var PDFFormat = function (_DocFormat) {
+    _inherits(PDFFormat, _DocFormat);
+
+    function PDFFormat() {
+        _classCallCheck(this, PDFFormat);
+
+        var _this = _possibleConstructorReturn(this, (PDFFormat.__proto__ || Object.getPrototypeOf(PDFFormat)).call(this));
+
+        _this.name = "pdf";
+        return _this;
     }
 
     /**
      * Get the current doc fingerprint or null if it hasn't been loaded yet.
      */
-    currentDocFingerprint() {
 
-        if (window.PDFViewerApplication && window.PDFViewerApplication.pdfDocument && window.PDFViewerApplication.pdfDocument.pdfInfo && window.PDFViewerApplication.pdfDocument.pdfInfo.fingerprint != null) {
 
-            return window.PDFViewerApplication.pdfDocument.pdfInfo.fingerprint;
+    _createClass(PDFFormat, [{
+        key: "currentDocFingerprint",
+        value: function currentDocFingerprint() {
+
+            if (window.PDFViewerApplication && window.PDFViewerApplication.pdfDocument && window.PDFViewerApplication.pdfDocument.pdfInfo && window.PDFViewerApplication.pdfDocument.pdfInfo.fingerprint != null) {
+
+                return window.PDFViewerApplication.pdfDocument.pdfInfo.fingerprint;
+            }
         }
-    }
 
-    /**
-     * Get the current state of the doc.
-     */
-    currentState(event) {
+        /**
+         * Get the current state of the doc.
+         */
 
-        Preconditions.assertNotNull(event, "event");
+    }, {
+        key: "currentState",
+        value: function currentState(event) {
 
-        return {
-            nrPages: window.PDFViewerApplication.pagesCount,
-            currentPageNumber: window.PDFViewerApplication.pdfViewer.currentPageNumber,
-            pageElement: event.target.parentElement
-        };
-    }
+            Preconditions.assertNotNull(event, "event");
 
-    supportThumbnails() {
-        return true;
-    }
+            return {
+                nrPages: window.PDFViewerApplication.pagesCount,
+                currentPageNumber: window.PDFViewerApplication.pdfViewer.currentPageNumber,
+                pageElement: event.target.parentElement
+            };
+        }
+    }, {
+        key: "supportThumbnails",
+        value: function supportThumbnails() {
+            return true;
+        }
+    }, {
+        key: "targetDocument",
+        value: function targetDocument() {
+            return document;
+        }
+    }, {
+        key: "currentScale",
+        value: function currentScale() {
+            return window.PDFViewerApplication.pdfViewer._currentScale;
+        }
+    }]);
 
-    targetDocument() {
-        return document;
-    }
-
-    currentScale() {
-        return window.PDFViewerApplication.pdfViewer._currentScale;
-    }
-
-}
+    return PDFFormat;
+}(DocFormat);
 
 module.exports.PDFFormat = PDFFormat;
 
@@ -56169,74 +57013,98 @@ module.exports.PDFFormat = PDFFormat;
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-const { ipcRenderer } = __webpack_require__(/*! electron */ "electron");
-const { AnnotationType } = __webpack_require__(/*! ../../metadata/AnnotationType */ "./web/js/metadata/AnnotationType.js");
-const { Flashcards } = __webpack_require__(/*! ../../metadata/Flashcards */ "./web/js/metadata/Flashcards.js");
+"use strict";
 
-class FlashcardsController {
 
-    constructor(model) {
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var _require = __webpack_require__(/*! electron */ "electron"),
+    ipcRenderer = _require.ipcRenderer;
+
+var _require2 = __webpack_require__(/*! ../../metadata/AnnotationType */ "./web/js/metadata/AnnotationType.js"),
+    AnnotationType = _require2.AnnotationType;
+
+var _require3 = __webpack_require__(/*! ../../metadata/Flashcards */ "./web/js/metadata/Flashcards.js"),
+    Flashcards = _require3.Flashcards;
+
+var FlashcardsController = function () {
+    function FlashcardsController(model) {
+        _classCallCheck(this, FlashcardsController);
+
         this.model = model;
     }
 
-    start() {
+    _createClass(FlashcardsController, [{
+        key: "start",
+        value: function start() {
+            var _this = this;
 
-        if (ipcRenderer) {
+            if (ipcRenderer) {
 
-            console.log("IPC listener added for create-annotation");
+                console.log("IPC listener added for create-annotation");
 
-            ipcRenderer.on('create-annotation', (event, data) => {
+                ipcRenderer.on('create-annotation', function (event, data) {
 
-                console.log("Received create-annotation event: ", data);
+                    console.log("Received create-annotation event: ", data);
 
-                if (data.annotationType === AnnotationType.FLASHCARD) {
+                    if (data.annotationType === AnnotationType.FLASHCARD) {
 
-                    console.log("Working with flashcard");
+                        console.log("Working with flashcard");
 
-                    if (data.context.docDescriptor.fingerprint === this.model.docMeta.docInfo.fingerprint) {
+                        if (data.context.docDescriptor.fingerprint === _this.model.docMeta.docInfo.fingerprint) {
 
-                        console.log("Going to add this flashcard to the model");
-                        this.onCreateFlashcard(data);
-                    } else {
-                        console.log(`Ignoring flashcard.  ${data.context.docDescriptor.fingerprint} != ${this.model.docMeta.docInfo.fingerprint}`);
+                            console.log("Going to add this flashcard to the model");
+                            _this.onCreateFlashcard(data);
+                        } else {
+                            console.log("Ignoring flashcard.  " + data.context.docDescriptor.fingerprint + " != " + _this.model.docMeta.docInfo.fingerprint);
+                        }
                     }
+
+                    // I don't think we need to listen to these here but rather in the
+                    // specific controllers.
+                });
+            } else {
+                console.warn("Not running within electron");
+            }
+        }
+
+        /**
+         * Called when we need to create a new flashcard.
+         */
+
+    }, {
+        key: "onCreateFlashcard",
+        value: function onCreateFlashcard(data) {
+            var _this2 = this;
+
+            console.log("onCreateFlashcard: ", data);
+
+            var flashcard = Flashcards.createFromSchemaFormData(data);
+
+            var textHighlightAnnotationDescriptors = data.context.matchingSelectors[".text-highlight"].annotationDescriptors;
+
+            // FIXME: if there are multiple visual annotations, each with the same ID
+            // which is currently a bug, then we need to filter them out to just ONE
+            // annotation.
+            textHighlightAnnotationDescriptors.forEach(function (annotationDescriptor) {
+                var pageMeta = _this2.model.docMeta.getPageMeta(annotationDescriptor.pageNum);
+                var textHighlight = pageMeta.textHighlights[annotationDescriptor.textHighlightId];
+
+                if (!textHighlight) {
+                    throw new Error("No text highlight for ID " + annotationDescriptor.textHighlightId + " on page " + annotationDescriptor.pageNum);
                 }
 
-                // I don't think we need to listen to these here but rather in the
-                // specific controllers.
+                textHighlight.flashcards[flashcard.id] = flashcard;
             });
-        } else {
-            console.warn("Not running within electron");
         }
-    }
+    }]);
 
-    /**
-     * Called when we need to create a new flashcard.
-     */
-    onCreateFlashcard(data) {
+    return FlashcardsController;
+}();
 
-        console.log("onCreateFlashcard: ", data);
-
-        let flashcard = Flashcards.createFromSchemaFormData(data);
-
-        let textHighlightAnnotationDescriptors = data.context.matchingSelectors[".text-highlight"].annotationDescriptors;
-
-        // FIXME: if there are multiple visual annotations, each with the same ID
-        // which is currently a bug, then we need to filter them out to just ONE
-        // annotation.
-        textHighlightAnnotationDescriptors.forEach(annotationDescriptor => {
-            let pageMeta = this.model.docMeta.getPageMeta(annotationDescriptor.pageNum);
-            let textHighlight = pageMeta.textHighlights[annotationDescriptor.textHighlightId];
-
-            if (!textHighlight) {
-                throw new Error(`No text highlight for ID ${annotationDescriptor.textHighlightId} on page ${annotationDescriptor.pageNum}`);
-            }
-
-            textHighlight.flashcards[flashcard.id] = flashcard;
-        });
-    }
-
-};
+;
 
 module.exports.FlashcardsController = FlashcardsController;
 
@@ -56247,20 +57115,27 @@ module.exports.FlashcardsController = FlashcardsController;
   !*** ./web/js/highlights/text/controller/IntermediateRow.js ***!
   \**************************************************************/
 /*! no static exports found */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 /**
  * An intermediate row with a rect covering the whole row and the rectElements
  * it contains.
  */
-module.exports.IntermediateRow = class {
+module.exports.IntermediateRow = function () {
+    function _class(rect, rectElements) {
+        _classCallCheck(this, _class);
 
-    constructor(rect, rectElements) {
         this.rect = rect;
         this.rectElements = rectElements;
     }
 
-};
+    return _class;
+}();
 
 /***/ }),
 
@@ -56269,19 +57144,24 @@ module.exports.IntermediateRow = class {
   !*** ./web/js/highlights/text/controller/RectElement.js ***!
   \**********************************************************/
 /*! no static exports found */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 /**
  * A rect and element pair.
  */
-class RectElement {
+var RectElement = function RectElement(rect, element) {
+    _classCallCheck(this, RectElement);
 
-    constructor(rect, element) {
-        this.rect = rect;
-        this.element = element;
-    }
-
+    this.rect = rect;
+    this.element = element;
 };
+
+;
 
 module.exports.RectElement = RectElement;
 
@@ -56292,43 +57172,45 @@ module.exports.RectElement = RectElement;
   !*** ./web/js/highlights/text/controller/RectText.js ***!
   \*******************************************************/
 /*! no static exports found */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 /**
  *
  */
-class RectText {
+var RectText = function RectText(obj) {
+  _classCallCheck(this, RectText);
 
-  constructor(obj) {
+  /**
+   *
+   * @type {Rect}
+   */
+  this.clientRects = undefined;
 
-    /**
-     *
-     * @type {Rect}
-     */
-    this.clientRects = undefined;
+  /**
+   *
+   * @type {Rect}
+   */
+  this.boundingClientRect = undefined;
 
-    /**
-     *
-     * @type {Rect}
-     */
-    this.boundingClientRect = undefined;
+  /**
+   *
+   * @type {Rect}
+   */
+  this.boundingPageRect = undefined;
 
-    /**
-     *
-     * @type {Rect}
-     */
-    this.boundingPageRect = undefined;
+  /**
+   *
+   * @type {String}
+   */
+  this.text = undefined;
 
-    /**
-     *
-     * @type {String}
-     */
-    this.text = undefined;
-
-    Object.assign(this, obj);
-  }
-
-}
+  Object.assign(this, obj);
+};
 
 module.exports.RectText = RectText;
 
@@ -56341,57 +57223,89 @@ module.exports.RectText = RectText;
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-const { Point } = __webpack_require__(/*! ../../../Point */ "./web/js/Point.js");
-const { Objects } = __webpack_require__(/*! ../../../util/Objects */ "./web/js/util/Objects.js");
-const { Rect } = __webpack_require__(/*! ../../../Rect */ "./web/js/Rect.js");
-const { Rects } = __webpack_require__(/*! ../../../Rects */ "./web/js/Rects.js");
-const { RectText } = __webpack_require__(/*! ./RectText */ "./web/js/highlights/text/controller/RectText.js");
-const { TextNodes } = __webpack_require__(/*! ../selection/TextNodes */ "./web/js/highlights/text/selection/TextNodes.js");
+"use strict";
 
-class RectTexts {
 
-    /**
-     *
-     * @param textNodes
-     */
-    static toRectTexts(textNodes) {
-        return textNodes.map(RectTexts.toRectText).filter(current => current.boundingPageRect.width > 0 && current.boundingPageRect.height > 0);
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var _require = __webpack_require__(/*! ../../../Point */ "./web/js/Point.js"),
+    Point = _require.Point;
+
+var _require2 = __webpack_require__(/*! ../../../util/Objects */ "./web/js/util/Objects.js"),
+    Objects = _require2.Objects;
+
+var _require3 = __webpack_require__(/*! ../../../Rect */ "./web/js/Rect.js"),
+    Rect = _require3.Rect;
+
+var _require4 = __webpack_require__(/*! ../../../Rects */ "./web/js/Rects.js"),
+    Rects = _require4.Rects;
+
+var _require5 = __webpack_require__(/*! ./RectText */ "./web/js/highlights/text/controller/RectText.js"),
+    RectText = _require5.RectText;
+
+var _require6 = __webpack_require__(/*! ../selection/TextNodes */ "./web/js/highlights/text/selection/TextNodes.js"),
+    TextNodes = _require6.TextNodes;
+
+var RectTexts = function () {
+    function RectTexts() {
+        _classCallCheck(this, RectTexts);
     }
 
-    /**
-     * Take a Node of type TEXT and build a RectText including the the text,
-     * the rects, etc.
-     *
-     * @param textNode {Node}
-     * @return {RectText}
-     */
-    static toRectText(textNode) {
+    _createClass(RectTexts, null, [{
+        key: "toRectTexts",
 
-        let range = TextNodes.getRange(textNode);
 
-        // FIXME: this is wrong and we are using teh wrong scroll position.
+        /**
+         *
+         * @param textNodes
+         */
+        value: function toRectTexts(textNodes) {
+            return textNodes.map(RectTexts.toRectText).filter(function (current) {
+                return current.boundingPageRect.width > 0 && current.boundingPageRect.height > 0;
+            });
+        }
 
-        let win = textNode.ownerDocument.defaultView;
+        /**
+         * Take a Node of type TEXT and build a RectText including the the text,
+         * the rects, etc.
+         *
+         * @param textNode {Node}
+         * @return {RectText}
+         */
 
-        let scrollPoint = new Point({
-            x: win.scrollX,
-            y: win.scrollY
-        });
+    }, {
+        key: "toRectText",
+        value: function toRectText(textNode) {
 
-        let boundingClientRect = range.getBoundingClientRect();
+            var range = TextNodes.getRange(textNode);
 
-        let boundingPageRect = new Rect(Objects.duplicate(boundingClientRect));
-        boundingPageRect = Rects.relativeTo(scrollPoint, boundingPageRect);
+            // FIXME: this is wrong and we are using teh wrong scroll position.
 
-        return new RectText({
-            clientRects: range.getClientRects(),
-            boundingClientRect,
-            boundingPageRect,
-            text: textNode.textContent
-        });
-    }
+            var win = textNode.ownerDocument.defaultView;
 
-}
+            var scrollPoint = new Point({
+                x: win.scrollX,
+                y: win.scrollY
+            });
+
+            var boundingClientRect = range.getBoundingClientRect();
+
+            var boundingPageRect = new Rect(Objects.duplicate(boundingClientRect));
+            boundingPageRect = Rects.relativeTo(scrollPoint, boundingPageRect);
+
+            return new RectText({
+                clientRects: range.getClientRects(),
+                boundingClientRect: boundingClientRect,
+                boundingPageRect: boundingPageRect,
+                text: textNode.textContent
+            });
+        }
+    }]);
+
+    return RectTexts;
+}();
 
 module.exports.RectTexts = RectTexts;
 
@@ -56404,38 +57318,58 @@ module.exports.RectTexts = RectTexts;
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-const $ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
-const { Preconditions } = __webpack_require__(/*! ../../../Preconditions */ "./web/js/Preconditions.js");
-const { TextRect } = __webpack_require__(/*! ../../../metadata/TextRect */ "./web/js/metadata/TextRect.js");
+"use strict";
+
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var $ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
+
+var _require = __webpack_require__(/*! ../../../Preconditions */ "./web/js/Preconditions.js"),
+    Preconditions = _require.Preconditions;
+
+var _require2 = __webpack_require__(/*! ../../../metadata/TextRect */ "./web/js/metadata/TextRect.js"),
+    TextRect = _require2.TextRect;
 
 /**
  * Takes TextHighlightRows and then builds adjacent test runs from the data.
  */
-class TextExtracter {
 
-    static toTextSelections(textHighlightRows) {
 
-        let result = [];
-
-        textHighlightRows.forEach(function (textHighlightRow) {
-
-            Preconditions.assertNotNull(textHighlightRow.rectElements, "rectElements");
-
-            textHighlightRow.rectElements.forEach(function (rectElement) {
-
-                let textSelection = new TextRect({
-                    rect: rectElement.rect,
-                    text: $(rectElement.element).text()
-                });
-
-                result.push(textSelection);
-            });
-        });
-
-        return result;
+var TextExtracter = function () {
+    function TextExtracter() {
+        _classCallCheck(this, TextExtracter);
     }
 
-}
+    _createClass(TextExtracter, null, [{
+        key: "toTextSelections",
+        value: function toTextSelections(textHighlightRows) {
+
+            var result = [];
+
+            textHighlightRows.forEach(function (textHighlightRow) {
+
+                Preconditions.assertNotNull(textHighlightRow.rectElements, "rectElements");
+
+                textHighlightRow.rectElements.forEach(function (rectElement) {
+
+                    var textSelection = new TextRect({
+                        rect: rectElement.rect,
+                        text: $(rectElement.element).text()
+                    });
+
+                    result.push(textSelection);
+                });
+            });
+
+            return result;
+        }
+    }]);
+
+    return TextExtracter;
+}();
 
 module.exports.TextExtracter = TextExtracter;
 
@@ -56448,33 +57382,63 @@ module.exports.TextExtracter = TextExtracter;
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-const $ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
-const Logger = __webpack_require__(/*! ../../../logger/Logger */ "./web/js/logger/Logger.js").Logger;
-const { TextHighlightRecords } = __webpack_require__(/*! ../../../metadata/TextHighlightRecords */ "./web/js/metadata/TextHighlightRecords.js");
-const { TextHighlighterFactory } = __webpack_require__(/*! ./TextHighlighterFactory */ "./web/js/highlights/text/controller/TextHighlighterFactory.js");
-const { TextHighlightRows } = __webpack_require__(/*! ./TextHighlightRows */ "./web/js/highlights/text/controller/TextHighlightRows.js");
-const { Preconditions } = __webpack_require__(/*! ../../../Preconditions */ "./web/js/Preconditions.js");
-const { TextExtracter } = __webpack_require__(/*! ./TextExtracter */ "./web/js/highlights/text/controller/TextExtracter.js");
-const { KeyEvents } = __webpack_require__(/*! ../../../KeyEvents.js */ "./web/js/KeyEvents.js");
-const { DocFormatFactory } = __webpack_require__(/*! ../../../docformat/DocFormatFactory */ "./web/js/docformat/DocFormatFactory.js");
-const { ipcRenderer } = __webpack_require__(/*! electron */ "electron");
-const { SelectedContents } = __webpack_require__(/*! ../selection/SelectedContents */ "./web/js/highlights/text/selection/SelectedContents.js");
-const { TextSelections } = __webpack_require__(/*! ./TextSelections */ "./web/js/highlights/text/controller/TextSelections.js");
+"use strict";
 
-const log = Logger.create();
 
-class TextHighlightController {
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-    constructor(model) {
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var $ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
+var Logger = __webpack_require__(/*! ../../../logger/Logger */ "./web/js/logger/Logger.js").Logger;
+
+var _require = __webpack_require__(/*! ../../../metadata/TextHighlightRecords */ "./web/js/metadata/TextHighlightRecords.js"),
+    TextHighlightRecords = _require.TextHighlightRecords;
+
+var _require2 = __webpack_require__(/*! ./TextHighlighterFactory */ "./web/js/highlights/text/controller/TextHighlighterFactory.js"),
+    TextHighlighterFactory = _require2.TextHighlighterFactory;
+
+var _require3 = __webpack_require__(/*! ./TextHighlightRows */ "./web/js/highlights/text/controller/TextHighlightRows.js"),
+    TextHighlightRows = _require3.TextHighlightRows;
+
+var _require4 = __webpack_require__(/*! ../../../Preconditions */ "./web/js/Preconditions.js"),
+    Preconditions = _require4.Preconditions;
+
+var _require5 = __webpack_require__(/*! ./TextExtracter */ "./web/js/highlights/text/controller/TextExtracter.js"),
+    TextExtracter = _require5.TextExtracter;
+
+var _require6 = __webpack_require__(/*! ../../../KeyEvents.js */ "./web/js/KeyEvents.js"),
+    KeyEvents = _require6.KeyEvents;
+
+var _require7 = __webpack_require__(/*! ../../../docformat/DocFormatFactory */ "./web/js/docformat/DocFormatFactory.js"),
+    DocFormatFactory = _require7.DocFormatFactory;
+
+var _require8 = __webpack_require__(/*! electron */ "electron"),
+    ipcRenderer = _require8.ipcRenderer;
+
+var _require9 = __webpack_require__(/*! ../selection/SelectedContents */ "./web/js/highlights/text/selection/SelectedContents.js"),
+    SelectedContents = _require9.SelectedContents;
+
+var _require10 = __webpack_require__(/*! ./TextSelections */ "./web/js/highlights/text/controller/TextSelections.js"),
+    TextSelections = _require10.TextSelections;
+
+var log = Logger.create();
+
+var TextHighlightController = function () {
+    function TextHighlightController(model) {
+        var _this = this;
+
+        _classCallCheck(this, TextHighlightController);
+
         this.model = Preconditions.assertNotNull(model, "model");
         this.docFormat = DocFormatFactory.getInstance();
 
-        ipcRenderer.on('context-menu-command', (event, arg) => {
+        ipcRenderer.on('context-menu-command', function (event, arg) {
 
             switch (arg.command) {
 
                 case "delete-text-highlight":
-                    this.onTextHighlightDeleted(arg);
+                    _this.onTextHighlightDeleted(arg);
                     break;
 
                 default:
@@ -56484,245 +57448,272 @@ class TextHighlightController {
         });
     }
 
-    onDocumentLoaded() {
-        log.info("TextHighlightController.onDocumentLoaded: ", this.model.docMeta);
-        this.textHighlighter = this.createTextHighlighter();
-    }
+    _createClass(TextHighlightController, [{
+        key: "onDocumentLoaded",
+        value: function onDocumentLoaded() {
+            log.info("TextHighlightController.onDocumentLoaded: ", this.model.docMeta);
+            this.textHighlighter = this.createTextHighlighter();
+        }
+    }, {
+        key: "start",
+        value: function start() {
+            document.addEventListener("keydown", this.keyBindingListener.bind(this));
+            this.model.registerListenerForDocumentLoaded(this.onDocumentLoaded.bind(this));
+        }
+    }, {
+        key: "keyBindingListener",
+        value: function keyBindingListener(event) {
 
-    start() {
-        document.addEventListener("keydown", this.keyBindingListener.bind(this));
-        this.model.registerListenerForDocumentLoaded(this.onDocumentLoaded.bind(this));
-    }
+            if (KeyEvents.isKeyMetaActive(event)) {
 
-    keyBindingListener(event) {
+                if (event.key) {
 
-        if (KeyEvents.isKeyMetaActive(event)) {
+                    switch (event.key.toLowerCase()) {
 
-            if (event.key) {
+                        case "t":
+                            this.doHighlight();
+                            break;
 
-                switch (event.key.toLowerCase()) {
+                        default:
+                            break;
 
-                    case "t":
-                        this.doHighlight();
-                        break;
-
-                    default:
-                        break;
-
+                    }
                 }
             }
         }
-    }
+    }, {
+        key: "doHighlight",
+        value: function doHighlight() {
 
-    doHighlight() {
-
-        if (this.docFormat.name === "html") {
-            this.doHighlightModern();
-        } else {
-            this.doHighlightLegacy();
-        }
-    }
-
-    doHighlightLegacy() {
-        this.textHighlighter.doHighlight();
-    }
-
-    doHighlightModern() {
-
-        console.log("Doing modern text highlight");
-        this.onTextHighlightCreatedModern();
-    }
-
-    /**
-     * Set text highlighting in the current document with the highlighter.
-     */
-    createTextHighlighter() {
-
-        let sequence = 0;
-
-        let controller = this;
-
-        let textHighlighterOptions = {
-
-            highlightedClass: "text-highlight-span",
-            color: '', // this works and the color isn't changed.
-            manual: true,
-
-            onBeforeHighlight: range => {
-                //log.info("onBeforeHighlight range: ", range);
-                return true;
-            },
-
-            onAfterHighlight: function (range, highlightElements) {
-                // log.info("onAfterHighlight range: ", range);
-                // log.info("onAfterHighlight hlts: ", highlightElements);
-
-                let id = sequence++;
-                let highlightClazz = "text-highlight-" + id;
-
-                highlightElements.forEach(function (highlightElement) {
-                    //highlightElement.style.color = 'blue';
-                    highlightElement.className = highlightElement.className + " " + highlightClazz;
-                });
-
-                controller.onTextHighlightCreatedLegacy("." + highlightClazz);
-
-                // the underlying <span> highlights need to be removed now.
-
-                log.info("Removing highlights now");
-                this.textHighlighter.removeHighlights();
-            }.bind(this),
-
-            onRemoveHighlight: function (hlt) {
-                log.info("onRemoveHighlight hlt: ", hlt);
-                return true;
+            if (this.docFormat.name === "html") {
+                this.doHighlightModern();
+            } else {
+                this.doHighlightLegacy();
             }
+        }
+    }, {
+        key: "doHighlightLegacy",
+        value: function doHighlightLegacy() {
+            this.textHighlighter.doHighlight();
+        }
+    }, {
+        key: "doHighlightModern",
+        value: function doHighlightModern() {
 
-        };
+            console.log("Doing modern text highlight");
+            this.onTextHighlightCreatedModern();
+        }
 
-        let targetDocument = this.docFormat.targetDocument();
+        /**
+         * Set text highlighting in the current document with the highlighter.
+         */
 
-        return TextHighlighterFactory.newInstance(targetDocument.body, textHighlighterOptions);
-    }
+    }, {
+        key: "createTextHighlighter",
+        value: function createTextHighlighter() {
 
-    /**
-     * A text highlight was deleted so update the model now.
-     * @param event
-     */
-    onTextHighlightDeleted(commandEvent) {
+            var sequence = 0;
 
-        log.info("Deleting text highlight from model: ", commandEvent);
+            var controller = this;
 
-        // should we just send this event to all the the windows?
-        commandEvent.matchingSelectors[".text-highlight"].annotationDescriptors.forEach(annotationDescriptor => {
+            var textHighlighterOptions = {
 
-            log.info("Deleting annotationDescriptor: ", JSON.stringify(annotationDescriptor, null, "  "));
+                highlightedClass: "text-highlight-span",
+                color: '', // this works and the color isn't changed.
+                manual: true,
 
-            let pageMeta = this.model.docMeta.getPageMeta(annotationDescriptor.pageNum);
-            delete pageMeta.textHighlights[annotationDescriptor.textHighlightId];
-        });
+                onBeforeHighlight: function onBeforeHighlight(range) {
+                    //log.info("onBeforeHighlight range: ", range);
+                    return true;
+                },
 
-        log.info("Deleting text highlight");
-    }
+                onAfterHighlight: function (range, highlightElements) {
+                    // log.info("onAfterHighlight range: ", range);
+                    // log.info("onAfterHighlight hlts: ", highlightElements);
 
-    /**
-     * Called by the controller when we have a new highlight created so that
-     * we can update the model.
-     */
-    onTextHighlightCreatedLegacy(selector) {
+                    var id = sequence++;
+                    var highlightClazz = "text-highlight-" + id;
 
-        // FIXME: get the new highlighter working FIRST without text and without
-        // rows , or other advanced features.
+                    highlightElements.forEach(function (highlightElement) {
+                        //highlightElement.style.color = 'blue';
+                        highlightElement.className = highlightElement.className + " " + highlightClazz;
+                    });
 
-        log.info("TextHighlightController.onTextHighlightCreatedLegacy");
+                    controller.onTextHighlightCreatedLegacy("." + highlightClazz);
 
-        let textHighlightRows = TextHighlightRows.createFromSelector(selector);
+                    // the underlying <span> highlights need to be removed now.
 
-        let rects = textHighlightRows.map(current => current.rect);
+                    log.info("Removing highlights now");
+                    this.textHighlighter.removeHighlights();
+                }.bind(this),
 
-        // TODO: don't do this from the selector because the textHighlightRows
-        // would be a lot better since we have the raw elements to work with.
+                onRemoveHighlight: function onRemoveHighlight(hlt) {
+                    log.info("onRemoveHighlight hlt: ", hlt);
+                    return true;
+                }
 
-        // FIXME: I can call selection.toString() to get the value as a string.
-        // I don't need to use extractText on the selector any more.
+            };
 
-        let text = this.extractText(selector);
+            var targetDocument = this.docFormat.targetDocument();
 
-        let textSelections = TextExtracter.toTextSelections(textHighlightRows);
+            return TextHighlighterFactory.newInstance(targetDocument.body, textHighlighterOptions);
+        }
 
-        let textHighlightRecord = TextHighlightRecords.create(rects, textSelections, text);
+        /**
+         * A text highlight was deleted so update the model now.
+         * @param event
+         */
 
-        // now update the mode based on the current page metadata
+    }, {
+        key: "onTextHighlightDeleted",
+        value: function onTextHighlightDeleted(commandEvent) {
+            var _this2 = this;
 
-        let currentPageMeta = this.docFormat.getCurrentPageMeta();
+            log.info("Deleting text highlight from model: ", commandEvent);
 
-        let pageMeta = this.model.docMeta.getPageMeta(currentPageMeta.pageNum);
+            // should we just send this event to all the the windows?
+            commandEvent.matchingSelectors[".text-highlight"].annotationDescriptors.forEach(function (annotationDescriptor) {
 
-        pageMeta.textHighlights[textHighlightRecord.id] = textHighlightRecord.value;
+                log.info("Deleting annotationDescriptor: ", JSON.stringify(annotationDescriptor, null, "  "));
 
-        log.info("Added text highlight to model");
-    }
+                var pageMeta = _this2.model.docMeta.getPageMeta(annotationDescriptor.pageNum);
+                delete pageMeta.textHighlights[annotationDescriptor.textHighlightId];
+            });
 
-    /**
-     * Called by the controller when we have a new highlight created so that
-     * we can update the model.
-     */
-    onTextHighlightCreatedModern() {
+            log.info("Deleting text highlight");
+        }
 
-        // FIXME: get the new highlighter working FIRST without text and without
-        // rows , or other advanced features.
+        /**
+         * Called by the controller when we have a new highlight created so that
+         * we can update the model.
+         */
 
-        log.info("TextHighlightController.onTextHighlightCreatedModern");
+    }, {
+        key: "onTextHighlightCreatedLegacy",
+        value: function onTextHighlightCreatedLegacy(selector) {
 
-        // right now we're not implementing rows...
-        //let textHighlightRows = TextHighlightRows.createFromSelector(selector);
+            // FIXME: get the new highlighter working FIRST without text and without
+            // rows , or other advanced features.
 
-        let win = this.docFormat.targetDocument().defaultView;
+            log.info("TextHighlightController.onTextHighlightCreatedLegacy");
 
-        let selectedContent = SelectedContents.compute(win);
+            var textHighlightRows = TextHighlightRows.createFromSelector(selector);
 
-        console.log("Working with: " + JSON.stringify(selectedContent, null, "  "));
+            var rects = textHighlightRows.map(function (current) {
+                return current.rect;
+            });
 
-        let rects = selectedContent.rectTexts.map(current => current.boundingPageRect);
+            // TODO: don't do this from the selector because the textHighlightRows
+            // would be a lot better since we have the raw elements to work with.
 
-        let text = selectedContent.text;
+            // FIXME: I can call selection.toString() to get the value as a string.
+            // I don't need to use extractText on the selector any more.
 
-        let textSelections = TextSelections.compute(selectedContent);
+            var text = this.extractText(selector);
 
-        let textHighlightRecord = TextHighlightRecords.create(rects, textSelections, text);
+            var textSelections = TextExtracter.toTextSelections(textHighlightRows);
 
-        let currentPageMeta = this.docFormat.getCurrentPageMeta();
+            var textHighlightRecord = TextHighlightRecords.create(rects, textSelections, text);
 
-        let pageMeta = this.model.docMeta.getPageMeta(currentPageMeta.pageNum);
+            // now update the mode based on the current page metadata
 
-        pageMeta.textHighlights[textHighlightRecord.id] = textHighlightRecord.value;
+            var currentPageMeta = this.docFormat.getCurrentPageMeta();
 
-        log.info("Added text highlight to model");
+            var pageMeta = this.model.docMeta.getPageMeta(currentPageMeta.pageNum);
 
-        // now clear the selection since we just highlighted it.
-        win.getSelection().empty();
+            pageMeta.textHighlights[textHighlightRecord.id] = textHighlightRecord.value;
 
-        // let rects = textHighlightRows.map(current => current.rect);
-        //
-        // // TODO: don't do this from the selector because the textHighlightRows
-        // // would be a lot better since we have the raw elements to work with.
-        //
-        // // FIXME: I can call selection.toString() to get the value as a string.
-        // // I don't need to use extractText on the selector any more.
-        //
-        // let text = this.extractText(selector);
-        //
-        // let textSelections = TextExtracter.toTextSelections(textHighlightRows);
-        //
-        // let textHighlightRecord = TextHighlightRecords.create(rects, textSelections, text);
-        //
-        // // now update the mode based on the current page metadata
-        //
-        // let currentPageMeta = this.docFormat.getCurrentPageMeta();
-        //
-        // let pageMeta = this.model.docMeta.getPageMeta(currentPageMeta.pageNum);
-        //
-        // pageMeta.textHighlights[textHighlightRecord.id] = textHighlightRecord.value;
-        //
-        // log.info("Added text highlight to model");
-    }
+            log.info("Added text highlight to model");
+        }
 
-    extractText(selector) {
+        /**
+         * Called by the controller when we have a new highlight created so that
+         * we can update the model.
+         */
 
-        let result = "";
+    }, {
+        key: "onTextHighlightCreatedModern",
+        value: function onTextHighlightCreatedModern() {
 
-        $(selector).each(function () {
+            // FIXME: get the new highlighter working FIRST without text and without
+            // rows , or other advanced features.
 
-            // TODO: we should include the x/y and width + height of every text
-            // selection so that we have where it was placed in the document.
+            log.info("TextHighlightController.onTextHighlightCreatedModern");
 
-            result += "\n" + $(this).text();
-        });
+            // right now we're not implementing rows...
+            //let textHighlightRows = TextHighlightRows.createFromSelector(selector);
 
-        return result;
-    }
+            var win = this.docFormat.targetDocument().defaultView;
 
-}
+            var selectedContent = SelectedContents.compute(win);
+
+            console.log("Working with: " + JSON.stringify(selectedContent, null, "  "));
+
+            var rects = selectedContent.rectTexts.map(function (current) {
+                return current.boundingPageRect;
+            });
+
+            var text = selectedContent.text;
+
+            var textSelections = TextSelections.compute(selectedContent);
+
+            var textHighlightRecord = TextHighlightRecords.create(rects, textSelections, text);
+
+            var currentPageMeta = this.docFormat.getCurrentPageMeta();
+
+            var pageMeta = this.model.docMeta.getPageMeta(currentPageMeta.pageNum);
+
+            pageMeta.textHighlights[textHighlightRecord.id] = textHighlightRecord.value;
+
+            log.info("Added text highlight to model");
+
+            // now clear the selection since we just highlighted it.
+            win.getSelection().empty();
+
+            // let rects = textHighlightRows.map(current => current.rect);
+            //
+            // // TODO: don't do this from the selector because the textHighlightRows
+            // // would be a lot better since we have the raw elements to work with.
+            //
+            // // FIXME: I can call selection.toString() to get the value as a string.
+            // // I don't need to use extractText on the selector any more.
+            //
+            // let text = this.extractText(selector);
+            //
+            // let textSelections = TextExtracter.toTextSelections(textHighlightRows);
+            //
+            // let textHighlightRecord = TextHighlightRecords.create(rects, textSelections, text);
+            //
+            // // now update the mode based on the current page metadata
+            //
+            // let currentPageMeta = this.docFormat.getCurrentPageMeta();
+            //
+            // let pageMeta = this.model.docMeta.getPageMeta(currentPageMeta.pageNum);
+            //
+            // pageMeta.textHighlights[textHighlightRecord.id] = textHighlightRecord.value;
+            //
+            // log.info("Added text highlight to model");
+        }
+    }, {
+        key: "extractText",
+        value: function extractText(selector) {
+
+            var result = "";
+
+            $(selector).each(function () {
+
+                // TODO: we should include the x/y and width + height of every text
+                // selection so that we have where it was placed in the document.
+
+                result += "\n" + $(this).text();
+            });
+
+            return result;
+        }
+    }]);
+
+    return TextHighlightController;
+}();
 
 module.exports.TextHighlightController = TextHighlightController;
 
@@ -56733,20 +57724,25 @@ module.exports.TextHighlightController = TextHighlightController;
   !*** ./web/js/highlights/text/controller/TextHighlightRow.js ***!
   \***************************************************************/
 /*! no static exports found */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 /**
  * Represents a row of highlighted text including the rect around it, and the
  * elements it contains.
  */
-class TextHighlightRow {
+var TextHighlightRow = function TextHighlightRow(rect, rectElements) {
+    _classCallCheck(this, TextHighlightRow);
 
-    constructor(rect, rectElements) {
-        this.rect = rect;
-        this.rectElements = rectElements;
-    }
-
+    this.rect = rect;
+    this.rectElements = rectElements;
 };
+
+;
 
 module.exports.TextHighlightRow = TextHighlightRow;
 
@@ -56759,14 +57755,39 @@ module.exports.TextHighlightRow = TextHighlightRow;
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-const { Elements, Styles, createSiblingTuples, elementOffset } = __webpack_require__(/*! ../../../utils.js */ "./web/js/utils.js");
-const { Objects } = __webpack_require__(/*! ../../../util/Objects */ "./web/js/util/Objects.js");
-const { RectElement } = __webpack_require__(/*! ./RectElement */ "./web/js/highlights/text/controller/RectElement.js");
-const { TextHighlightRow } = __webpack_require__(/*! ./TextHighlightRow */ "./web/js/highlights/text/controller/TextHighlightRow.js");
-const { IntermediateRow } = __webpack_require__(/*! ./IntermediateRow */ "./web/js/highlights/text/controller/IntermediateRow.js");
-const { Rects } = __webpack_require__(/*! ../../../Rects */ "./web/js/Rects.js");
-const { DocFormatFactory } = __webpack_require__(/*! ../../../docformat/DocFormatFactory */ "./web/js/docformat/DocFormatFactory.js");
-const { Preconditions } = __webpack_require__(/*! ../../../Preconditions */ "./web/js/Preconditions.js");
+"use strict";
+
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var _require = __webpack_require__(/*! ../../../utils.js */ "./web/js/utils.js"),
+    Elements = _require.Elements,
+    Styles = _require.Styles,
+    createSiblingTuples = _require.createSiblingTuples,
+    elementOffset = _require.elementOffset;
+
+var _require2 = __webpack_require__(/*! ../../../util/Objects */ "./web/js/util/Objects.js"),
+    Objects = _require2.Objects;
+
+var _require3 = __webpack_require__(/*! ./RectElement */ "./web/js/highlights/text/controller/RectElement.js"),
+    RectElement = _require3.RectElement;
+
+var _require4 = __webpack_require__(/*! ./TextHighlightRow */ "./web/js/highlights/text/controller/TextHighlightRow.js"),
+    TextHighlightRow = _require4.TextHighlightRow;
+
+var _require5 = __webpack_require__(/*! ./IntermediateRow */ "./web/js/highlights/text/controller/IntermediateRow.js"),
+    IntermediateRow = _require5.IntermediateRow;
+
+var _require6 = __webpack_require__(/*! ../../../Rects */ "./web/js/Rects.js"),
+    Rects = _require6.Rects;
+
+var _require7 = __webpack_require__(/*! ../../../docformat/DocFormatFactory */ "./web/js/docformat/DocFormatFactory.js"),
+    DocFormatFactory = _require7.DocFormatFactory;
+
+var _require8 = __webpack_require__(/*! ../../../Preconditions */ "./web/js/Preconditions.js"),
+    Preconditions = _require8.Preconditions;
 
 /**
  * TODO:
@@ -56785,265 +57806,296 @@ const { Preconditions } = __webpack_require__(/*! ../../../Preconditions */ "./w
  * as a stream of text, not of geometric points.
  *
  */
-class TextHighlightRows {
 
-    /**
-     * Create a highlight from a CSS selector.
-     */
-    static createFromSelector(selector) {
 
-        let docFormat = DocFormatFactory.getInstance();
+var TextHighlightRows = function () {
+    function TextHighlightRows() {
+        _classCallCheck(this, TextHighlightRows);
+    }
 
-        let targetDocument = docFormat.targetDocument();
+    _createClass(TextHighlightRows, null, [{
+        key: "createFromSelector",
 
-        let elements = Array.from(targetDocument.querySelectorAll(selector));
 
-        if (!elements) {
-            throw new Error("No elements");
+        /**
+         * Create a highlight from a CSS selector.
+         */
+        value: function createFromSelector(selector) {
+            var _this = this;
+
+            var docFormat = DocFormatFactory.getInstance();
+
+            var targetDocument = docFormat.targetDocument();
+
+            var elements = Array.from(targetDocument.querySelectorAll(selector));
+
+            if (!elements) {
+                throw new Error("No elements");
+            }
+
+            var rectElements = elements.map(function (current) {
+                return _this.computeOffset(current);
+            });
+
+            //console.log("Working with raw rectElements: ", rectElements);
+
+            return TextHighlightRows.computeContiguousRects(rectElements);
         }
 
-        let rectElements = elements.map(current => this.computeOffset(current));
+        /**
+         * Create the rows from the given rects
+         *
+         * @param selector
+         * @return {Array}
+         */
 
-        //console.log("Working with raw rectElements: ", rectElements);
+    }, {
+        key: "createFromRects",
+        value: function createFromRects(selector) {
+            var _this2 = this;
 
-        return TextHighlightRows.computeContiguousRects(rectElements);
-    }
+            // FIXME: this isn't working yet...
 
-    /**
-     * Create the rows from the given rects
-     *
-     * @param selector
-     * @return {Array}
-     */
-    static createFromRects(selector) {
+            //
 
-        // FIXME: this isn't working yet...
+            var rectElements = elements.map(function (current) {
+                return _this2.computeOffset(current);
+            });
 
-        //
+            //console.log("Working with raw rectElements: ", rectElements);
 
-        let rectElements = elements.map(current => this.computeOffset(current));
-
-        //console.log("Working with raw rectElements: ", rectElements);
-
-        return TextHighlightRows.computeContiguousRects(rectElements);
-    }
-
-    /**
-     * Given the span of our highlight, compute the offset looking at the CSS
-     * styles of the element we're trying to map.
-     *
-     * @param element The element which we're computing over.
-     * @return A RectElement for the rect (result) and the element
-     */
-    static computeOffset(element) {
-
-        let docFormat = DocFormatFactory.getInstance();
-
-        // make sure we're working on the right element or our math won't be right.
-        Elements.requireClass(element, "text-highlight-span");
-
-        let textHighlightSpanOffset = Elements.offset(element);
-
-        if (docFormat.name === "html") {
-
-            // FIXME: getBoundingClientRect doesn't take into consideration
-            // transforms and when scaled we're getting the wrong positions..
-
-            // FIXME: also , this only works for the html version because the
-            // iframe doesn't scroll.  getBoundingClientRect is relative to the
-            // viewport.
-
-            // TODO: sit down and REALLY understand getBoundingClientRect and
-            // getClientRects as well as offsetLeft,offsetTop (and friends).
-            // I think, in retrospect, that I'm computing all of these wrong.
-            // I think I need to use getBoundingClientRect() and not offset
-            // but the PDF viewer uses transforms which is confusing.
-            textHighlightSpanOffset = element.getBoundingClientRect();
+            return TextHighlightRows.computeContiguousRects(rectElements);
         }
 
-        let textLayerDivElement = element.parentElement;
+        /**
+         * Given the span of our highlight, compute the offset looking at the CSS
+         * styles of the element we're trying to map.
+         *
+         * @param element The element which we're computing over.
+         * @return A RectElement for the rect (result) and the element
+         */
 
-        let textLayerDivOffset = elementOffset(textLayerDivElement);
-        let rect = textLayerDivOffset;
+    }, {
+        key: "computeOffset",
+        value: function computeOffset(element) {
 
-        if (docFormat.name === "html") {
+            var docFormat = DocFormatFactory.getInstance();
 
-            // FIXME this should go into a docFormat.computeAnnotationOrigin(element)
-            // which for iframes should just be the document offset but for
-            // PDFs should be the offset of the textElement.
+            // make sure we're working on the right element or our math won't be right.
+            Elements.requireClass(element, "text-highlight-span");
 
-            rect = {
-                left: 0,
-                top: 0,
-                width: 0,
-                height: 0
-            };
+            var textHighlightSpanOffset = Elements.offset(element);
+
+            if (docFormat.name === "html") {
+
+                // FIXME: getBoundingClientRect doesn't take into consideration
+                // transforms and when scaled we're getting the wrong positions..
+
+                // FIXME: also , this only works for the html version because the
+                // iframe doesn't scroll.  getBoundingClientRect is relative to the
+                // viewport.
+
+                // TODO: sit down and REALLY understand getBoundingClientRect and
+                // getClientRects as well as offsetLeft,offsetTop (and friends).
+                // I think, in retrospect, that I'm computing all of these wrong.
+                // I think I need to use getBoundingClientRect() and not offset
+                // but the PDF viewer uses transforms which is confusing.
+                textHighlightSpanOffset = element.getBoundingClientRect();
+            }
+
+            var textLayerDivElement = element.parentElement;
+
+            var textLayerDivOffset = elementOffset(textLayerDivElement);
+            var rect = textLayerDivOffset;
+
+            if (docFormat.name === "html") {
+
+                // FIXME this should go into a docFormat.computeAnnotationOrigin(element)
+                // which for iframes should just be the document offset but for
+                // PDFs should be the offset of the textElement.
+
+                rect = {
+                    left: 0,
+                    top: 0,
+                    width: 0,
+                    height: 0
+                };
+            }
+
+            // FIXME: we should also parse scaleY and scale here. Normally scaleY
+            // would be zero which would work with the PDF viewer.
+            //
+            // FIXME: and couldn't another way to deal with this be to place these
+            // into either the textLayerDivElement or my own annotationsDivElement
+            // which has the same transform?
+            var scaleX = Styles.parseTransformScaleX(textLayerDivElement.style.transform);
+            if (!scaleX) {
+                // FIXME: return 1.0 from parseTransformScaleX
+                scaleX = 1.0;
+            }
+
+            rect.left = rect.left + textHighlightSpanOffset.left * scaleX;
+            rect.top = rect.top + textHighlightSpanOffset.top;
+
+            rect.height = textHighlightSpanOffset.height;
+            rect.width = textHighlightSpanOffset.width * scaleX;
+
+            rect.width = Math.min(rect.width, textLayerDivOffset.width);
+
+            rect.bottom = rect.top + rect.height;
+            rect.right = rect.left + rect.width;
+
+            rect = Rects.validate(rect);
+
+            // the result needs to factor in the current scale vs the reference
+            // scale of 1.0.  We always store / reference the highlights in a scale
+            // of 1.0 and then adjust them based on the current view.
+
+            var currentScale = docFormat.currentScale();
+
+            Preconditions.assertNotNull(currentScale, "currentScale");
+            Preconditions.assertNumber(currentScale, "currentScale");
+
+            rect = Rects.scale(rect, 1.0 / currentScale);
+
+            return new RectElement(rect, element);
         }
 
-        // FIXME: we should also parse scaleY and scale here. Normally scaleY
-        // would be zero which would work with the PDF viewer.
-        //
-        // FIXME: and couldn't another way to deal with this be to place these
-        // into either the textLayerDivElement or my own annotationsDivElement
-        // which has the same transform?
-        let scaleX = Styles.parseTransformScaleX(textLayerDivElement.style.transform);
-        if (!scaleX) {
-            // FIXME: return 1.0 from parseTransformScaleX
-            scaleX = 1.0;
+        /**
+         * Go through ALL the rects and build out rows of elements that are
+         * horizontally all on the same plane.
+         *
+         * @param rectElements
+         */
+
+    }, {
+        key: "computeRows",
+        value: function computeRows(rectElements) {
+
+            var tuples = createSiblingTuples(rectElements);
+
+            var result = [];
+
+            // the current row
+            var row = [];
+
+            tuples.forEach(function (tuple) {
+
+                if (!tuple.curr.rect) {
+                    throw new Error("Not a RectElement");
+                }
+
+                row.push(tuple.curr);
+
+                if (tuple.next == null || tuple.next && tuple.curr.rect.top !== tuple.next.rect.top) {
+                    result.push(row);
+                    row = [];
+                }
+            });
+
+            if (row.length !== 0) result.push(row);
+
+            return result;
         }
 
-        rect.left = rect.left + textHighlightSpanOffset.left * scaleX;
-        rect.top = rect.top + textHighlightSpanOffset.top;
+        // given a row of rects, compute a rect that covers the entire row maximizing
+        // the height and width.
 
-        rect.height = textHighlightSpanOffset.height;
-        rect.width = textHighlightSpanOffset.width * scaleX;
+    }, {
+        key: "computeRectForRow",
+        value: function computeRectForRow(row) {
 
-        rect.width = Math.min(rect.width, textLayerDivOffset.width);
+            if (row.length == null || row.length === 0) throw new Error("Invalid row data");
 
-        rect.bottom = rect.top + rect.height;
-        rect.right = rect.left + rect.width;
+            // duplicate the first entry... we will keep maximixing the bounds.
+            var result = Rects.validate(Objects.duplicate(row[0].rect));
 
-        rect = Rects.validate(rect);
+            row.forEach(function (rectElement) {
 
-        // the result needs to factor in the current scale vs the reference
-        // scale of 1.0.  We always store / reference the highlights in a scale
-        // of 1.0 and then adjust them based on the current view.
+                if (rectElement.rect.left < result.left) {
+                    result.left = rectElement.rect.left;
+                }
 
-        let currentScale = docFormat.currentScale();
+                if (rectElement.rect.top < result.top) {
+                    result.top = rectElement.rect.top;
+                }
 
-        Preconditions.assertNotNull(currentScale, "currentScale");
-        Preconditions.assertNumber(currentScale, "currentScale");
+                if (rectElement.rect.bottom > result.bottom) {
+                    result.bottom = rectElement.rect.bottom;
+                }
 
-        rect = Rects.scale(rect, 1.0 / currentScale);
+                if (rectElement.rect.right > result.right) {
+                    result.right = rectElement.rect.right;
+                }
 
-        return new RectElement(rect, element);
-    }
+                result.width = result.right - result.left;
+                result.height = result.bottom - result.top;
+            });
 
-    /**
-     * Go through ALL the rects and build out rows of elements that are
-     * horizontally all on the same plane.
-     *
-     * @param rectElements
-     */
-    static computeRows(rectElements) {
+            return Rects.validate(result);
+        }
+    }, {
+        key: "computeIntermediateRows",
+        value: function computeIntermediateRows(rectElements) {
 
-        let tuples = createSiblingTuples(rectElements);
+            var rows = TextHighlightRows.computeRows(rectElements);
+            var result = [];
 
-        let result = [];
+            rows.forEach(function (rectElementsWithinRow) {
+                var rect = TextHighlightRows.computeRectForRow(rectElementsWithinRow);
+                var intermediateRow = new IntermediateRow(rect, rectElementsWithinRow);
+                result.push(intermediateRow);
+            });
 
-        // the current row
-        let row = [];
+            return result;
+        }
+    }, {
+        key: "computeContiguousRects",
+        value: function computeContiguousRects(rectElements) {
 
-        tuples.forEach(function (tuple) {
+            var intermediateRows = TextHighlightRows.computeIntermediateRows(rectElements);
 
-            if (!tuple.curr.rect) {
-                throw new Error("Not a RectElement");
-            }
+            var intermediateRowPager = createSiblingTuples(intermediateRows);
 
-            row.push(tuple.curr);
+            var result = [];
 
-            if (tuple.next == null || tuple.next && tuple.curr.rect.top !== tuple.next.rect.top) {
-                result.push(row);
-                row = [];
-            }
-        });
+            intermediateRowPager.forEach(function (page) {
 
-        if (row.length !== 0) result.push(row);
+                if (!page.curr.rect || !page.curr.rectElements) {
+                    throw new Error("Not a IntermediateRow");
+                }
 
-        return result;
-    }
+                var adjustedRect = {
+                    left: page.curr.rect.left,
+                    top: page.curr.rect.top,
+                    right: page.curr.rect.right,
+                    bottom: page.curr.rect.bottom
+                };
 
-    // given a row of rects, compute a rect that covers the entire row maximizing
-    // the height and width.
-    static computeRectForRow(row) {
+                // adjust the bottom of this div but ONLY if the next div is not on
+                // the same rows.  I might need to have some code to first build
+                // this into ROWS.
 
-        if (row.length == null || row.length === 0) throw new Error("Invalid row data");
+                if (page.next && page.next.rect.top !== page.curr.rect.top) {
+                    adjustedRect.bottom = Math.max(page.next.rect.top, adjustedRect.bottom);
+                }
 
-        // duplicate the first entry... we will keep maximixing the bounds.
-        let result = Rects.validate(Objects.duplicate(row[0].rect));
+                adjustedRect.width = adjustedRect.right - adjustedRect.left;
+                adjustedRect.height = adjustedRect.bottom - adjustedRect.top;
 
-        row.forEach(function (rectElement) {
+                adjustedRect = Rects.validate(adjustedRect);
 
-            if (rectElement.rect.left < result.left) {
-                result.left = rectElement.rect.left;
-            }
+                var textHighlightRow = new TextHighlightRow(adjustedRect, page.curr.rectElements);
 
-            if (rectElement.rect.top < result.top) {
-                result.top = rectElement.rect.top;
-            }
+                result.push(textHighlightRow);
+            });
 
-            if (rectElement.rect.bottom > result.bottom) {
-                result.bottom = rectElement.rect.bottom;
-            }
+            return result;
+        }
+    }]);
 
-            if (rectElement.rect.right > result.right) {
-                result.right = rectElement.rect.right;
-            }
-
-            result.width = result.right - result.left;
-            result.height = result.bottom - result.top;
-        });
-
-        return Rects.validate(result);
-    }
-
-    static computeIntermediateRows(rectElements) {
-
-        let rows = TextHighlightRows.computeRows(rectElements);
-        let result = [];
-
-        rows.forEach(function (rectElementsWithinRow) {
-            let rect = TextHighlightRows.computeRectForRow(rectElementsWithinRow);
-            let intermediateRow = new IntermediateRow(rect, rectElementsWithinRow);
-            result.push(intermediateRow);
-        });
-
-        return result;
-    }
-
-    static computeContiguousRects(rectElements) {
-
-        let intermediateRows = TextHighlightRows.computeIntermediateRows(rectElements);
-
-        let intermediateRowPager = createSiblingTuples(intermediateRows);
-
-        let result = [];
-
-        intermediateRowPager.forEach(function (page) {
-
-            if (!page.curr.rect || !page.curr.rectElements) {
-                throw new Error("Not a IntermediateRow");
-            }
-
-            let adjustedRect = {
-                left: page.curr.rect.left,
-                top: page.curr.rect.top,
-                right: page.curr.rect.right,
-                bottom: page.curr.rect.bottom
-            };
-
-            // adjust the bottom of this div but ONLY if the next div is not on
-            // the same rows.  I might need to have some code to first build
-            // this into ROWS.
-
-            if (page.next && page.next.rect.top !== page.curr.rect.top) {
-                adjustedRect.bottom = Math.max(page.next.rect.top, adjustedRect.bottom);
-            }
-
-            adjustedRect.width = adjustedRect.right - adjustedRect.left;
-            adjustedRect.height = adjustedRect.bottom - adjustedRect.top;
-
-            adjustedRect = Rects.validate(adjustedRect);
-
-            let textHighlightRow = new TextHighlightRow(adjustedRect, page.curr.rectElements);
-
-            result.push(textHighlightRow);
-        });
-
-        return result;
-    }
-
-}
+    return TextHighlightRows;
+}();
 
 module.exports.TextHighlightRows = TextHighlightRows;
 
@@ -57056,14 +58108,28 @@ module.exports.TextHighlightRows = TextHighlightRows;
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! ../../../../../lib/TextHighlighter.js */ "./lib/TextHighlighter.js");
-module.exports.TextHighlighterFactory = class {
+"use strict";
 
-    static newInstance(element, options) {
-        return new global.TextHighlighter(element, options);
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+__webpack_require__(/*! ../../../../../lib/TextHighlighter.js */ "./lib/TextHighlighter.js");
+module.exports.TextHighlighterFactory = function () {
+    function _class() {
+        _classCallCheck(this, _class);
     }
 
-};
+    _createClass(_class, null, [{
+        key: "newInstance",
+        value: function newInstance(element, options) {
+            return new global.TextHighlighter(element, options);
+        }
+    }]);
+
+    return _class;
+}();
 
 /***/ }),
 
@@ -57074,29 +58140,44 @@ module.exports.TextHighlighterFactory = class {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-const { TextRect } = __webpack_require__(/*! ../../../metadata/TextRect */ "./web/js/metadata/TextRect.js");
+"use strict";
 
-class TextSelections {
 
-    static compute(selectedContents) {
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-        let result = [];
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-        // TODO: could be cleaner as a map...
+var _require = __webpack_require__(/*! ../../../metadata/TextRect */ "./web/js/metadata/TextRect.js"),
+    TextRect = _require.TextRect;
 
-        selectedContents.rectTexts.forEach(function (rectText) {
-            let textSelection = new TextRect({
-                rect: rectText.boundingPageRect,
-                text: rectText.text
-            });
-
-            result.push(textSelection);
-        });
-
-        return result;
+var TextSelections = function () {
+    function TextSelections() {
+        _classCallCheck(this, TextSelections);
     }
 
-}
+    _createClass(TextSelections, null, [{
+        key: "compute",
+        value: function compute(selectedContents) {
+
+            var result = [];
+
+            // TODO: could be cleaner as a map...
+
+            selectedContents.rectTexts.forEach(function (rectText) {
+                var textSelection = new TextRect({
+                    rect: rectText.boundingPageRect,
+                    text: rectText.text
+                });
+
+                result.push(textSelection);
+            });
+
+            return result;
+        }
+    }]);
+
+    return TextSelections;
+}();
 
 module.exports.TextSelections = TextSelections;
 
@@ -57109,61 +58190,86 @@ module.exports.TextSelections = TextSelections;
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-const { DocMetaModel } = __webpack_require__(/*! ../../../metadata/DocMetaModel */ "./web/js/metadata/DocMetaModel.js");
-const { forDict } = __webpack_require__(/*! ../../../utils.js */ "./web/js/utils.js");
+"use strict";
 
-class TextHighlightModel extends DocMetaModel {
 
-    registerListener(docMeta, callback) {
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-        forDict(docMeta.pageMetas, (key, pageMeta) => {
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-            // TODO: this is why recursive by default listeners aren't a not a good
-            // idea because we can get any object at any depth.
-            pageMeta.textHighlights.addTraceListener(traceEvent => {
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
-                if (!traceEvent.path.endsWith("/textHighlights")) {
-                    // not a new highlight.
-                    return;
-                }
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-                let id;
+var _require = __webpack_require__(/*! ../../../metadata/DocMetaModel */ "./web/js/metadata/DocMetaModel.js"),
+    DocMetaModel = _require.DocMetaModel;
 
-                if (traceEvent.value) {
-                    id = traceEvent.value.id;
-                } else {
-                    id = traceEvent.previousValue.id;
-                }
+var _require2 = __webpack_require__(/*! ../../../utils.js */ "./web/js/utils.js"),
+    forDict = _require2.forDict;
 
-                // FIXME: migrate to AnnotationEvent
+var TextHighlightModel = function (_DocMetaModel) {
+    _inherits(TextHighlightModel, _DocMetaModel);
 
-                let event = {
-                    id,
-                    docMeta,
-                    pageMeta,
+    function TextHighlightModel() {
+        _classCallCheck(this, TextHighlightModel);
 
-                    // deprecated: use value and previousValue
-                    textHighlight: traceEvent.value,
-                    // deprecated: use value and previousValue
-                    previousTextHighlight: traceEvent.previousValue,
-
-                    value: traceEvent.value,
-                    previousValue: traceEvent.previousValue,
-
-                    mutationType: traceEvent.mutationType,
-                    mutationState: traceEvent.mutationState,
-                    // and of course the full traceEvent as a raw value.
-                    traceEvent
-                };
-
-                callback(event);
-
-                return true;
-            }).sync();
-        });
+        return _possibleConstructorReturn(this, (TextHighlightModel.__proto__ || Object.getPrototypeOf(TextHighlightModel)).apply(this, arguments));
     }
 
-}
+    _createClass(TextHighlightModel, [{
+        key: "registerListener",
+        value: function registerListener(docMeta, callback) {
+
+            forDict(docMeta.pageMetas, function (key, pageMeta) {
+
+                // TODO: this is why recursive by default listeners aren't a not a good
+                // idea because we can get any object at any depth.
+                pageMeta.textHighlights.addTraceListener(function (traceEvent) {
+
+                    if (!traceEvent.path.endsWith("/textHighlights")) {
+                        // not a new highlight.
+                        return;
+                    }
+
+                    var id = void 0;
+
+                    if (traceEvent.value) {
+                        id = traceEvent.value.id;
+                    } else {
+                        id = traceEvent.previousValue.id;
+                    }
+
+                    // FIXME: migrate to AnnotationEvent
+
+                    var event = {
+                        id: id,
+                        docMeta: docMeta,
+                        pageMeta: pageMeta,
+
+                        // deprecated: use value and previousValue
+                        textHighlight: traceEvent.value,
+                        // deprecated: use value and previousValue
+                        previousTextHighlight: traceEvent.previousValue,
+
+                        value: traceEvent.value,
+                        previousValue: traceEvent.previousValue,
+
+                        mutationType: traceEvent.mutationType,
+                        mutationState: traceEvent.mutationState,
+                        // and of course the full traceEvent as a raw value.
+                        traceEvent: traceEvent
+                    };
+
+                    callback(event);
+
+                    return true;
+                }).sync();
+            });
+        }
+    }]);
+
+    return TextHighlightModel;
+}(DocMetaModel);
 
 module.exports.TextHighlightModel = TextHighlightModel;
 
@@ -57176,135 +58282,163 @@ module.exports.TextHighlightModel = TextHighlightModel;
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
+"use strict";
 
-const { Preconditions } = __webpack_require__(/*! ../../../Preconditions */ "./web/js/Preconditions.js");
 
-class Ranges {
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-    /**
-     * Create duplicate of the given ranges so that we can know that we have
-     * our own unique copies that can't be reset.
-     *
-     * @param ranges {Array<Range>}
-     * @return {Array<Range>}
-     */
-    static cloneRanges(ranges) {
-        return ranges.map(range => range.cloneRange());
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var _require = __webpack_require__(/*! ../../../Preconditions */ "./web/js/Preconditions.js"),
+    Preconditions = _require.Preconditions;
+
+var Ranges = function () {
+    function Ranges() {
+        _classCallCheck(this, Ranges);
     }
 
-    /**
-     * Split a text node and get the new / starting node.
-     *
-     * @param container
-     * @param offset
-     * @return {Node}
-     */
-    static splitTextNode(container, offset, useStartBoundary) {
+    _createClass(Ranges, null, [{
+        key: "cloneRanges",
 
-        if (container.nodeType !== Node.TEXT_NODE) {
 
-            if (offset > 0) {
-                // I don't think this is actually a real-world case.
-                throw new Error("We don't know how to deal with non-zero yet.");
+        /**
+         * Create duplicate of the given ranges so that we can know that we have
+         * our own unique copies that can't be reset.
+         *
+         * @param ranges {Array<Range>}
+         * @return {Array<Range>}
+         */
+        value: function cloneRanges(ranges) {
+            return ranges.map(function (range) {
+                return range.cloneRange();
+            });
+        }
+
+        /**
+         * Split a text node and get the new / starting node.
+         *
+         * @param container
+         * @param offset
+         * @return {Node}
+         */
+
+    }, {
+        key: "splitTextNode",
+        value: function splitTextNode(container, offset, useStartBoundary) {
+
+            if (container.nodeType !== Node.TEXT_NODE) {
+
+                if (offset > 0) {
+                    // I don't think this is actually a real-world case.
+                    throw new Error("We don't know how to deal with non-zero yet.");
+                }
+
+                return container;
             }
 
-            return container;
-        }
+            var newNode = container.splitText(offset);
 
-        let newNode = container.splitText(offset);
-
-        if (useStartBoundary) {
-            return newNode;
-        } else {
-            return newNode.previousSibling;
-        }
-    }
-
-    /**
-     * Return HTML content of the range.
-     *
-     * @param range
-     */
-    static toHTML(range) {
-
-        let result = "";
-
-        let docFragment = range.cloneContents();
-
-        docFragment.childNodes.forEach(childNode => {
-
-            if (childNode.nodeType === Node.TEXT_NODE) {
-                result += childNode.textContent;
+            if (useStartBoundary) {
+                return newNode;
             } else {
-                result += childNode.innerHTML;
-            }
-        });
-
-        return result;
-    }
-
-    /**
-     * Get the text nodes for range. Optionally splitting the text if necessary
-     *
-     * @param range {Range}
-     * @return {Array<Node>}
-     */
-    static getTextNodes(range) {
-
-        Preconditions.assertNotNull(range, "range");
-
-        // We start walking the tree until we find the start node, then we
-        // enable set inSelection = true... then when we exit the selection by
-        // hitting the end node we just return out of the while loop and we're
-        // done
-
-        let startNode = Ranges.splitTextNode(range.startContainer, range.startOffset, true);
-        let endNode = Ranges.splitTextNode(range.endContainer, range.endOffset, false);
-
-        Preconditions.assertNotNull(startNode, "startNode");
-        Preconditions.assertNotNull(endNode, "endNode");
-
-        let doc = range.startContainer.ownerDocument;
-
-        // use TreeWalker to walk the commonAncestorContainer and we see which
-        // ranges contain which text nodes.
-        let treeWalker = doc.createTreeWalker(range.commonAncestorContainer);
-
-        let result = [];
-
-        let node;
-
-        let inSelection = false;
-
-        // ** traverse until we find the start
-        while (node = treeWalker.nextNode()) {
-            if (startNode === node) {
-                inSelection = true;
-                break;
+                return newNode.previousSibling;
             }
         }
 
-        // ** now keep consuming until we hit the last node.
+        /**
+         * Return HTML content of the range.
+         *
+         * @param range
+         */
 
-        while (node) {
+    }, {
+        key: "toHTML",
+        value: function toHTML(range) {
 
-            if (node.nodeType === Node.TEXT_NODE) {
-                result.push(node);
-            }
+            var result = "";
 
-            if (endNode === node) break;
+            var docFragment = range.cloneContents();
 
-            node = treeWalker.nextNode();
+            docFragment.childNodes.forEach(function (childNode) {
+
+                if (childNode.nodeType === Node.TEXT_NODE) {
+                    result += childNode.textContent;
+                } else {
+                    result += childNode.innerHTML;
+                }
+            });
+
+            return result;
         }
 
-        return result;
-    }
+        /**
+         * Get the text nodes for range. Optionally splitting the text if necessary
+         *
+         * @param range {Range}
+         * @return {Array<Node>}
+         */
 
-    static describeNode(node) {
-        return node.cloneNode(false).outerHTML;
-    }
+    }, {
+        key: "getTextNodes",
+        value: function getTextNodes(range) {
 
-}
+            Preconditions.assertNotNull(range, "range");
+
+            // We start walking the tree until we find the start node, then we
+            // enable set inSelection = true... then when we exit the selection by
+            // hitting the end node we just return out of the while loop and we're
+            // done
+
+            var startNode = Ranges.splitTextNode(range.startContainer, range.startOffset, true);
+            var endNode = Ranges.splitTextNode(range.endContainer, range.endOffset, false);
+
+            Preconditions.assertNotNull(startNode, "startNode");
+            Preconditions.assertNotNull(endNode, "endNode");
+
+            var doc = range.startContainer.ownerDocument;
+
+            // use TreeWalker to walk the commonAncestorContainer and we see which
+            // ranges contain which text nodes.
+            var treeWalker = doc.createTreeWalker(range.commonAncestorContainer);
+
+            var result = [];
+
+            var node = void 0;
+
+            var inSelection = false;
+
+            // ** traverse until we find the start
+            while (node = treeWalker.nextNode()) {
+                if (startNode === node) {
+                    inSelection = true;
+                    break;
+                }
+            }
+
+            // ** now keep consuming until we hit the last node.
+
+            while (node) {
+
+                if (node.nodeType === Node.TEXT_NODE) {
+                    result.push(node);
+                }
+
+                if (endNode === node) break;
+
+                node = treeWalker.nextNode();
+            }
+
+            return result;
+        }
+    }, {
+        key: "describeNode",
+        value: function describeNode(node) {
+            return node.cloneNode(false).outerHTML;
+        }
+    }]);
+
+    return Ranges;
+}();
 
 module.exports.Ranges = Ranges;
 
@@ -57315,41 +58449,43 @@ module.exports.Ranges = Ranges;
   !*** ./web/js/highlights/text/selection/SelectedContent.js ***!
   \*************************************************************/
 /*! no static exports found */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 /**
  * High level class representing the underlying selections without the
  * complexities and insanity of the selection API which is really rough to deal
  * with.
  */
-class SelectedContent {
+var SelectedContent = function SelectedContent(obj) {
+  _classCallCheck(this, SelectedContent);
 
-  constructor(obj) {
+  /**
+   * The text of the selected content.
+   *
+   * @type {String}
+   */
+  this.text = null;
 
-    /**
-     * The text of the selected content.
-     *
-     * @type {String}
-     */
-    this.text = null;
+  /**
+   * The html content of the selection.
+   *
+   * @type {String}
+   */
+  this.html = null;
 
-    /**
-     * The html content of the selection.
-     *
-     * @type {String}
-     */
-    this.html = null;
+  /**
+   *
+   * @type {Array<RectText>}
+   */
+  this.rectTexts = [];
 
-    /**
-     *
-     * @type {Array<RectText>}
-     */
-    this.rectTexts = [];
-
-    Object.assign(this, obj);
-  }
-
-}
+  Object.assign(this, obj);
+};
 
 module.exports.SelectedContent = SelectedContent;
 
@@ -57362,70 +58498,105 @@ module.exports.SelectedContent = SelectedContent;
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
+"use strict";
+
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
 /**
  *
  */
-const { Ranges } = __webpack_require__(/*! ./Ranges */ "./web/js/highlights/text/selection/Ranges.js");
-const { SelectedContent } = __webpack_require__(/*! ./SelectedContent */ "./web/js/highlights/text/selection/SelectedContent.js");
-const { TextNodeRows } = __webpack_require__(/*! ./TextNodeRows */ "./web/js/highlights/text/selection/TextNodeRows.js");
-const { Selections } = __webpack_require__(/*! ./Selections */ "./web/js/highlights/text/selection/Selections.js");
-const { RectTexts } = __webpack_require__(/*! ../controller/RectTexts */ "./web/js/highlights/text/controller/RectTexts.js");
-const sanitizeHtml = __webpack_require__(/*! sanitize-html */ "./node_modules/sanitize-html/dist/index.js");
+var _require = __webpack_require__(/*! ./Ranges */ "./web/js/highlights/text/selection/Ranges.js"),
+    Ranges = _require.Ranges;
 
-class SelectedContents {
+var _require2 = __webpack_require__(/*! ./SelectedContent */ "./web/js/highlights/text/selection/SelectedContent.js"),
+    SelectedContent = _require2.SelectedContent;
 
-    /**
-     * Compute the SelectedContents based on the page offset, not the
-     * client/viewport offset, and include additional metadata including the
-     * text of the selection, the html, etc.
-     *
-     * @param win {Window}
-     * @return {SelectedContent}
-     */
-    static compute(win) {
+var _require3 = __webpack_require__(/*! ./TextNodeRows */ "./web/js/highlights/text/selection/TextNodeRows.js"),
+    TextNodeRows = _require3.TextNodeRows;
 
-        let selection = win.getSelection();
+var _require4 = __webpack_require__(/*! ./Selections */ "./web/js/highlights/text/selection/Selections.js"),
+    Selections = _require4.Selections;
 
-        // get all the ranges and clone them so they can't vanish.
-        let ranges = Ranges.cloneRanges(Selections.toRanges(selection));
+var _require5 = __webpack_require__(/*! ../controller/RectTexts */ "./web/js/highlights/text/controller/RectTexts.js"),
+    RectTexts = _require5.RectTexts;
 
-        // now get the text and the sanitized HTML
-        let text = selection.toString();
-        let html = sanitizeHtml(SelectedContents.toHTML(ranges));
+var sanitizeHtml = __webpack_require__(/*! sanitize-html */ "./node_modules/sanitize-html/dist/index.js");
 
-        let textNodes = [];
-
-        ranges.forEach(range => {
-            textNodes.push(...Ranges.getTextNodes(range));
-        });
-
-        // FIXME: we're getting FEWER results.. not mroe.. that's a bug..
-
-        // convert textNodes to visual blocks that don't overlap ...
-        // FIXME: this is the problem.. we're splitting the first node and then it's
-        // only a partial node at that point.. we have to keep the children too
-        // and return it as some sort of container.
-
-        textNodes = TextNodeRows.fromTextNodes(textNodes);
-
-        let rectTexts = RectTexts.toRectTexts(textNodes);
-
-        return new SelectedContent({
-            text,
-            html,
-            rectTexts
-        });
+var SelectedContents = function () {
+    function SelectedContents() {
+        _classCallCheck(this, SelectedContents);
     }
 
-    /**
-     * Compute the given ranges as HTML, factoring in sanitization as well.
-     * @param ranges
-     */
-    static toHTML(ranges) {
-        return ranges.map(range => Ranges.toHTML(range)).join("");
-    }
+    _createClass(SelectedContents, null, [{
+        key: "compute",
 
-}
+
+        /**
+         * Compute the SelectedContents based on the page offset, not the
+         * client/viewport offset, and include additional metadata including the
+         * text of the selection, the html, etc.
+         *
+         * @param win {Window}
+         * @return {SelectedContent}
+         */
+        value: function compute(win) {
+
+            var selection = win.getSelection();
+
+            // get all the ranges and clone them so they can't vanish.
+            var ranges = Ranges.cloneRanges(Selections.toRanges(selection));
+
+            // now get the text and the sanitized HTML
+            var text = selection.toString();
+            var html = sanitizeHtml(SelectedContents.toHTML(ranges));
+
+            var textNodes = [];
+
+            ranges.forEach(function (range) {
+                var _textNodes;
+
+                (_textNodes = textNodes).push.apply(_textNodes, _toConsumableArray(Ranges.getTextNodes(range)));
+            });
+
+            // FIXME: we're getting FEWER results.. not mroe.. that's a bug..
+
+            // convert textNodes to visual blocks that don't overlap ...
+            // FIXME: this is the problem.. we're splitting the first node and then it's
+            // only a partial node at that point.. we have to keep the children too
+            // and return it as some sort of container.
+
+            textNodes = TextNodeRows.fromTextNodes(textNodes);
+
+            var rectTexts = RectTexts.toRectTexts(textNodes);
+
+            return new SelectedContent({
+                text: text,
+                html: html,
+                rectTexts: rectTexts
+            });
+        }
+
+        /**
+         * Compute the given ranges as HTML, factoring in sanitization as well.
+         * @param ranges
+         */
+
+    }, {
+        key: "toHTML",
+        value: function toHTML(ranges) {
+            return ranges.map(function (range) {
+                return Ranges.toHTML(range);
+            }).join("");
+        }
+    }]);
+
+    return SelectedContents;
+}();
 
 module.exports.SelectedContents = SelectedContents;
 
@@ -57438,40 +58609,69 @@ module.exports.SelectedContents = SelectedContents;
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
+"use strict";
+
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
 /**
  *
  */
-const { Ranges } = __webpack_require__(/*! ./Ranges */ "./web/js/highlights/text/selection/Ranges.js");
-const { RectText } = __webpack_require__(/*! ../controller/RectText */ "./web/js/highlights/text/controller/RectText.js");
-const { Point } = __webpack_require__(/*! ../../../Point */ "./web/js/Point.js");
-const { Rect } = __webpack_require__(/*! ../../../Rect */ "./web/js/Rect.js");
-const { Rects } = __webpack_require__(/*! ../../../Rects */ "./web/js/Rects.js");
-const { Objects } = __webpack_require__(/*! ../../../util/Objects */ "./web/js/util/Objects.js");
-const { SelectedContent } = __webpack_require__(/*! ./SelectedContent */ "./web/js/highlights/text/selection/SelectedContent.js");
+var _require = __webpack_require__(/*! ./Ranges */ "./web/js/highlights/text/selection/Ranges.js"),
+    Ranges = _require.Ranges;
 
-class Selections {
+var _require2 = __webpack_require__(/*! ../controller/RectText */ "./web/js/highlights/text/controller/RectText.js"),
+    RectText = _require2.RectText;
 
-    /**
-     * Get the ranges of a selection as an array (easier API).
-     *
-     * @param selection {Selection}
-     * @return {Array<Range>}
-     */
-    static toRanges(selection) {
+var _require3 = __webpack_require__(/*! ../../../Point */ "./web/js/Point.js"),
+    Point = _require3.Point;
 
-        let result = [];
+var _require4 = __webpack_require__(/*! ../../../Rect */ "./web/js/Rect.js"),
+    Rect = _require4.Rect;
 
-        for (let idx = 0; idx < selection.rangeCount; idx++) {
+var _require5 = __webpack_require__(/*! ../../../Rects */ "./web/js/Rects.js"),
+    Rects = _require5.Rects;
 
-            // note that we almost always have 1 selection
-            let range = selection.getRangeAt(idx);
-            result.push(range);
-        }
+var _require6 = __webpack_require__(/*! ../../../util/Objects */ "./web/js/util/Objects.js"),
+    Objects = _require6.Objects;
 
-        return result;
+var _require7 = __webpack_require__(/*! ./SelectedContent */ "./web/js/highlights/text/selection/SelectedContent.js"),
+    SelectedContent = _require7.SelectedContent;
+
+var Selections = function () {
+    function Selections() {
+        _classCallCheck(this, Selections);
     }
 
-}
+    _createClass(Selections, null, [{
+        key: "toRanges",
+
+
+        /**
+         * Get the ranges of a selection as an array (easier API).
+         *
+         * @param selection {Selection}
+         * @return {Array<Range>}
+         */
+        value: function toRanges(selection) {
+
+            var result = [];
+
+            for (var idx = 0; idx < selection.rangeCount; idx++) {
+
+                // note that we almost always have 1 selection
+                var range = selection.getRangeAt(idx);
+                result.push(range);
+            }
+
+            return result;
+        }
+    }]);
+
+    return Selections;
+}();
 
 module.exports.Selections = Selections;
 
@@ -57484,11 +58684,33 @@ module.exports.Selections = Selections;
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-const { TextNodes } = __webpack_require__(/*! ./TextNodes */ "./web/js/highlights/text/selection/TextNodes.js");
-const { Rects } = __webpack_require__(/*! ../../../Rects */ "./web/js/Rects.js");
-const { createSiblings } = __webpack_require__(/*! ../../../util/Functions */ "./web/js/util/Functions.js");
-const { Text } = __webpack_require__(/*! ../../../util/Text */ "./web/js/util/Text.js");
-const { Preconditions } = __webpack_require__(/*! ../../../Preconditions */ "./web/js/Preconditions.js");
+"use strict";
+
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var _require = __webpack_require__(/*! ./TextNodes */ "./web/js/highlights/text/selection/TextNodes.js"),
+    TextNodes = _require.TextNodes;
+
+var _require2 = __webpack_require__(/*! ../../../Rects */ "./web/js/Rects.js"),
+    Rects = _require2.Rects;
+
+var _require3 = __webpack_require__(/*! ../../../util/Functions */ "./web/js/util/Functions.js"),
+    createSiblings = _require3.createSiblings;
+
+var _require4 = __webpack_require__(/*! ../../../util/Text */ "./web/js/util/Text.js"),
+    Text = _require4.Text;
+
+var _require5 = __webpack_require__(/*! ../../../Preconditions */ "./web/js/Preconditions.js"),
+    Preconditions = _require5.Preconditions;
 
 /**
  * A region of text within the document where the nodes are split and are back to
@@ -57513,66 +58735,94 @@ const { Preconditions } = __webpack_require__(/*! ../../../Preconditions */ "./w
  * which would look far more appropriate
  *
  */
-class TextRegion {
 
-    constructor() {
+
+var TextRegion = function () {
+    function TextRegion() {
+        _classCallCheck(this, TextRegion);
+
         this.textNodes = [];
     }
 
-    push(textNode) {
+    _createClass(TextRegion, [{
+        key: "push",
+        value: function push(textNode) {
 
-        if (textNode.textContent.length > 1) {
-            throw new Error("Nodes must be split");
+            if (textNode.textContent.length > 1) {
+                throw new Error("Nodes must be split");
+            }
+
+            this.textNodes.push(textNode);
         }
 
-        this.textNodes.push(textNode);
-    }
+        /**
+         * Return the nodes for this region.
+         */
 
-    /**
-     * Return the nodes for this region.
-     */
-    getTextNodes() {
-        return this.textNodes;
-    }
+    }, {
+        key: "getTextNodes",
+        value: function getTextNodes() {
+            return this.textNodes;
+        }
+    }, {
+        key: "toString",
 
-    get length() {
-        return this.textNodes.length;
-    }
 
-    /**
-     * Return an array of text nodes into a string.
-     */
-    toString() {
+        /**
+         * Return an array of text nodes into a string.
+         */
+        value: function toString() {
 
-        let result = "";
+            var result = "";
 
-        this.textNodes.forEach(textNode => {
-            result += textNode.textContent;
-        });
+            this.textNodes.forEach(function (textNode) {
+                result += textNode.textContent;
+            });
 
-        return result;
-    }
+            return result;
+        }
+    }, {
+        key: "format",
+        value: function format() {
+            return "(" + this.textNodes.length + "): \n" + Text.indent(this.toString(), "  ");
+        }
+    }, {
+        key: "toJSON",
+        value: function toJSON() {
+            // FIXME: this isn't toJSON as it's returning an object... not a string.
+            return { nrNodes: this.textNodes.length, text: this.toString() };
+        }
+    }, {
+        key: "length",
+        get: function get() {
+            return this.textNodes.length;
+        }
+    }]);
 
-    format() {
-        return `(${this.textNodes.length}): \n` + Text.indent(this.toString(), "  ");
-    }
-
-    toJSON() {
-        // FIXME: this isn't toJSON as it's returning an object... not a string.
-        return { nrNodes: this.textNodes.length, text: this.toString() };
-    }
-
-}
+    return TextRegion;
+}();
 
 /**
  * A TextBlock are structurally the same as TextRegion but semantically a
  * TextBlock is on different visual rows.
  */
-class TextBlock extends TextRegion {}
 
-class MergedTextBlock {
 
-    constructor(obj) {
+var TextBlock = function (_TextRegion) {
+    _inherits(TextBlock, _TextRegion);
+
+    function TextBlock() {
+        _classCallCheck(this, TextBlock);
+
+        return _possibleConstructorReturn(this, (TextBlock.__proto__ || Object.getPrototypeOf(TextBlock)).apply(this, arguments));
+    }
+
+    return TextBlock;
+}(TextRegion);
+
+var MergedTextBlock = function () {
+    function MergedTextBlock(obj) {
+        _classCallCheck(this, MergedTextBlock);
 
         /**
          * The merged Node of type TEXT_NODE
@@ -57596,54 +58846,72 @@ class MergedTextBlock {
         Object.assign(this, obj);
     }
 
-    toString() {
-        return this.text;
-    }
+    _createClass(MergedTextBlock, [{
+        key: "toString",
+        value: function toString() {
+            return this.text;
+        }
 
-    /**
-     * Convert to an object that can be serialized.
-     */
-    toExternal() {
-        return { text: this.text, rect: this.rect };
-    }
+        /**
+         * Convert to an object that can be serialized.
+         */
 
-}
+    }, {
+        key: "toExternal",
+        value: function toExternal() {
+            return { text: this.text, rect: this.rect };
+        }
+    }]);
+
+    return MergedTextBlock;
+}();
 
 /**
  * Holds an array of nodes that we can work with.
  */
-class NodeArray {
+
+
+var NodeArray = function () {
 
     /**
      *
      * @param nodes {Array<Node>}
      */
-    constructor(nodes) {
+    function NodeArray(nodes) {
+        _classCallCheck(this, NodeArray);
+
         Preconditions.assertNotNull(nodes, "nodes");
         this.nodes = nodes;
     }
 
-    get length() {
-        return this.nodes.length;
-    }
-
-    /**
-     * Get the input as a list of nodes to process.  If the node we give it is
-     * ALREADY a single text node just return that wrapped in an array.
-     * @param element
-     */
-    static createFromElement(element) {
-
-        if (element.nodeType === Node.ELEMENT_NODE) {
-            return new NodeArray(element.childNodes);
-        } else if (element.nodeType === Node.TEXT_NODE) {
-            throw new Error("Text node not supported");
-        } else {
-            throw new Error("Unable to handle node type: " + element.nodeType);
+    _createClass(NodeArray, [{
+        key: "length",
+        get: function get() {
+            return this.nodes.length;
         }
-    }
 
-}
+        /**
+         * Get the input as a list of nodes to process.  If the node we give it is
+         * ALREADY a single text node just return that wrapped in an array.
+         * @param element
+         */
+
+    }], [{
+        key: "createFromElement",
+        value: function createFromElement(element) {
+
+            if (element.nodeType === Node.ELEMENT_NODE) {
+                return new NodeArray(element.childNodes);
+            } else if (element.nodeType === Node.TEXT_NODE) {
+                throw new Error("Text node not supported");
+            } else {
+                throw new Error("Unable to handle node type: " + element.nodeType);
+            }
+        }
+    }]);
+
+    return NodeArray;
+}();
 
 /**
  * Build rows of contiguous text nodes plus break them apart based on how they
@@ -57658,275 +58926,309 @@ class NodeArray {
  *   the text starts a new row vertically.
  *
  */
-class TextNodeRows {
 
-    /**
-     *
-     * @param textNode {Node}
-     * @return {Array<Node>}
-     */
-    static fromTextNode(textNode) {
 
-        if (textNode.nodeType !== Node.TEXT_NODE) {
-            throw new Error("Not a text node");
-        }
-
-        let nodeArray = TextNodeRows.splitTextNodePerCharacter(textNode);
-
-        let textRegions = TextNodeRows.computeTextRegions(nodeArray);
-
-        let textBlocks = TextNodeRows.computeTextBlocks(textRegions);
-
-        let mergedTextBlocks = TextNodeRows.mergeTextBlocks(textBlocks);
-
-        let result = mergedTextBlocks.map(current => current.textNode);
-
-        //console.log("FIXME: found N " + result.length);
-        return result;
+var TextNodeRows = function () {
+    function TextNodeRows() {
+        _classCallCheck(this, TextNodeRows);
     }
 
-    /**
-     *
-     * @param textNodes {Array<Node>}
-     * @return {Array<Node>}
-     */
-    static fromTextNodes(textNodes) {
+    _createClass(TextNodeRows, null, [{
+        key: "fromTextNode",
 
-        /**
-         * @type {Array<Node>}
-         */
-        let result = [];
-
-        textNodes.forEach(textNode => {
-            result.push(...TextNodeRows.fromTextNode(textNode));
-        });
-
-        //console.log("FIXME: 123: going to return N: " + result.length)
-
-        return result;
-    }
-
-    /**
-     *
-     * @param element {Element} The root node to split.
-     * @return {number} The number of nodes split.
-     */
-    static splitElement(element) {
-
-        let result = 0;
-
-        Array.from(element.childNodes).forEach(current => {
-
-            if (current.nodeType === Node.TEXT_NODE) {
-                let nodeArray = TextNodeRows.splitTextNodePerCharacter(current);
-                result += nodeArray.length;
-            }
-
-            if (current.nodeType === Node.ELEMENT_NODE) {
-                // this is a regular element recurse into it splitting that too.
-                result += TextNodeRows.splitElement(current);
-            }
-        });
-
-        return result;
-    }
-
-    /**
-     * Text regions are groups of contiguous text nodes that are back to back
-     * without an element in between.
-     *
-     * @param nodeArray {NodeArray}
-     * @param [textRegions] {Array<TextRegion>} The starting text regions. Used mostly for recursion.
-     * @return {Array<TextRegion>} The computed text regions
-     */
-    static computeTextRegions(nodeArray, textRegions) {
-
-        Preconditions.assertNotNull(nodeArray, "nodeArray");
-
-        if (nodeArray.constructor !== NodeArray) {
-            throw new Error("Not a node array: " + nodeArray.constructor);
-        }
-
-        Preconditions.assertNotNull(nodeArray.nodes, "nodeArray.nodes");
-
-        // all text regions that we're working on
-        if (!textRegions) {
-            textRegions = [];
-        }
-
-        // the current region
-        /**
-         * @type {TextRegion}
-         */
-        let textRegion = new TextRegion();
-
-        createSiblings(nodeArray.nodes).forEach(position => {
-
-            let currentNode = position.curr;
-
-            if (currentNode.nodeType === Node.TEXT_NODE) {
-                textRegion.push(currentNode);
-            }
-
-            if (currentNode.nodeType === Node.ELEMENT_NODE) {
-
-                textRegions.push(textRegion);
-                textRegion = new TextRegion();
-
-                TextNodeRows.computeTextRegions(NodeArray.createFromElement(currentNode), textRegions);
-            }
-
-            // *** handle the last node
-
-            if (position.next === null && textRegion.length > 0) {
-                // don't drop the last block
-                textRegions.push(textRegion);
-            }
-        });
-
-        return textRegions;
-    }
-
-    /**
-     * From the regions we can compute the blocks if the Rect rows aren't the
-     * same.
-     *
-     * The rect rows are computed by looking at the top and bottom of the row
-     * to see if they are different.
-     *
-     * @param textRegions {Array<TextRegion>}
-     * @return {Array<TextBlock>}
-     */
-    static computeTextBlocks(textRegions) {
-
-        /**
-         * @type {Array<TextBlock>}
-         */
-        let textBlocks = [];
-
-        textRegions.forEach(textRegion => {
-
-            /**
-             * @type {TextBlock}
-             */
-            let textBlock = new TextBlock();
-
-            // keep track of the previous (visible) rect that we've seen so that
-            // we can compare our position.
-
-            /**
-             * @type {DOMRect}
-             */
-            let prevRect = null;
-
-            createSiblings(textRegion.getTextNodes()).forEach(position => {
-
-                // *** handle middle nodes
-
-                let currRect = TextNodes.getRange(position.curr).getBoundingClientRect();
-
-                if (Rects.isVisible(currRect)) {
-
-                    if (prevRect != null) {
-
-                        // we have seen at least one rect before so we can compare them now.
-
-                        if (TextNodeRows.computeRowKey(prevRect) !== TextNodeRows.computeRowKey(currRect)) {
-                            // we're in a new block now as we've jumped to a new visual row.
-                            textBlocks.push(textBlock);
-                            textBlock = new TextBlock();
-                        }
-                    }
-
-                    // since the current rect is visible we can update the
-                    // prevRect to avoid \n \r issues which have zero width.
-                    prevRect = currRect;
-                }
-
-                textBlock.push(position.curr);
-
-                // *** handle the last node
-
-                if (position.next === null && textBlock.length > 0) {
-                    // don't drop the last block
-                    textBlocks.push(textBlock);
-                }
-            });
-        });
-
-        return textBlocks;
-    }
-
-    /**
-     *
-     *
-     * @param textBlocks {Array<TextBlock>}
-     * @return {Array<MergedTextBlock>}
-     */
-    static mergeTextBlocks(textBlocks) {
 
         /**
          *
-         * @type {Array<MergedTextBlock>}
+         * @param textNode {Node}
+         * @return {Array<Node>}
          */
-        let result = [];
+        value: function fromTextNode(textNode) {
 
-        textBlocks.forEach(textBlock => {
+            if (textNode.nodeType !== Node.TEXT_NODE) {
+                throw new Error("Not a text node");
+            }
 
-            let textNodes = textBlock.getTextNodes().slice();
+            var nodeArray = TextNodeRows.splitTextNodePerCharacter(textNode);
 
-            let text = textBlock.toString();
+            var textRegions = TextNodeRows.computeTextRegions(nodeArray);
 
-            // the first node should get the text value.
+            var textBlocks = TextNodeRows.computeTextBlocks(textRegions);
 
-            let textNode = textNodes.pop();
-            textNode.textContent = text;
+            var mergedTextBlocks = TextNodeRows.mergeTextBlocks(textBlocks);
 
-            // now remove the remaining nodes from the DOM.
-            textNodes.forEach(orphanedNode => {
-                orphanedNode.parentNode.removeChild(orphanedNode);
+            var result = mergedTextBlocks.map(function (current) {
+                return current.textNode;
             });
 
-            result.push(new MergedTextBlock({
-                textNode,
-                text,
-                rect: TextNodes.getRange(textNode).getBoundingClientRect()
-            }));
-        });
-
-        return result;
-    }
-
-    /**
-     *
-     * @param rect {DOMRect}
-     * @return {string}
-     */
-    static computeRowKey(rect) {
-        return `${rect.top}:${rect.bottom}`;
-    }
-
-    /**
-     * Split the given text node so that every character has its own text
-     * node so that we can see the actual position on the screen.
-     *
-     * @return {NodeArray} The number of splits we performed.
-     */
-    static splitTextNodePerCharacter(textNode) {
-
-        let result = [];
-
-        while (textNode.textContent.length > 1) {
-            result.push(textNode);
-            textNode = textNode.splitText(1);
+            //console.log("FIXME: found N " + result.length);
+            return result;
         }
 
-        result.push(textNode);
+        /**
+         *
+         * @param textNodes {Array<Node>}
+         * @return {Array<Node>}
+         */
 
-        return new NodeArray(result);
-    }
+    }, {
+        key: "fromTextNodes",
+        value: function fromTextNodes(textNodes) {
 
-}
+            /**
+             * @type {Array<Node>}
+             */
+            var result = [];
+
+            textNodes.forEach(function (textNode) {
+                result.push.apply(result, _toConsumableArray(TextNodeRows.fromTextNode(textNode)));
+            });
+
+            //console.log("FIXME: 123: going to return N: " + result.length)
+
+            return result;
+        }
+
+        /**
+         *
+         * @param element {Element} The root node to split.
+         * @return {number} The number of nodes split.
+         */
+
+    }, {
+        key: "splitElement",
+        value: function splitElement(element) {
+
+            var result = 0;
+
+            Array.from(element.childNodes).forEach(function (current) {
+
+                if (current.nodeType === Node.TEXT_NODE) {
+                    var nodeArray = TextNodeRows.splitTextNodePerCharacter(current);
+                    result += nodeArray.length;
+                }
+
+                if (current.nodeType === Node.ELEMENT_NODE) {
+                    // this is a regular element recurse into it splitting that too.
+                    result += TextNodeRows.splitElement(current);
+                }
+            });
+
+            return result;
+        }
+
+        /**
+         * Text regions are groups of contiguous text nodes that are back to back
+         * without an element in between.
+         *
+         * @param nodeArray {NodeArray}
+         * @param [textRegions] {Array<TextRegion>} The starting text regions. Used mostly for recursion.
+         * @return {Array<TextRegion>} The computed text regions
+         */
+
+    }, {
+        key: "computeTextRegions",
+        value: function computeTextRegions(nodeArray, textRegions) {
+
+            Preconditions.assertNotNull(nodeArray, "nodeArray");
+
+            if (nodeArray.constructor !== NodeArray) {
+                throw new Error("Not a node array: " + nodeArray.constructor);
+            }
+
+            Preconditions.assertNotNull(nodeArray.nodes, "nodeArray.nodes");
+
+            // all text regions that we're working on
+            if (!textRegions) {
+                textRegions = [];
+            }
+
+            // the current region
+            /**
+             * @type {TextRegion}
+             */
+            var textRegion = new TextRegion();
+
+            createSiblings(nodeArray.nodes).forEach(function (position) {
+
+                var currentNode = position.curr;
+
+                if (currentNode.nodeType === Node.TEXT_NODE) {
+                    textRegion.push(currentNode);
+                }
+
+                if (currentNode.nodeType === Node.ELEMENT_NODE) {
+
+                    textRegions.push(textRegion);
+                    textRegion = new TextRegion();
+
+                    TextNodeRows.computeTextRegions(NodeArray.createFromElement(currentNode), textRegions);
+                }
+
+                // *** handle the last node
+
+                if (position.next === null && textRegion.length > 0) {
+                    // don't drop the last block
+                    textRegions.push(textRegion);
+                }
+            });
+
+            return textRegions;
+        }
+
+        /**
+         * From the regions we can compute the blocks if the Rect rows aren't the
+         * same.
+         *
+         * The rect rows are computed by looking at the top and bottom of the row
+         * to see if they are different.
+         *
+         * @param textRegions {Array<TextRegion>}
+         * @return {Array<TextBlock>}
+         */
+
+    }, {
+        key: "computeTextBlocks",
+        value: function computeTextBlocks(textRegions) {
+
+            /**
+             * @type {Array<TextBlock>}
+             */
+            var textBlocks = [];
+
+            textRegions.forEach(function (textRegion) {
+
+                /**
+                 * @type {TextBlock}
+                 */
+                var textBlock = new TextBlock();
+
+                // keep track of the previous (visible) rect that we've seen so that
+                // we can compare our position.
+
+                /**
+                 * @type {DOMRect}
+                 */
+                var prevRect = null;
+
+                createSiblings(textRegion.getTextNodes()).forEach(function (position) {
+
+                    // *** handle middle nodes
+
+                    var currRect = TextNodes.getRange(position.curr).getBoundingClientRect();
+
+                    if (Rects.isVisible(currRect)) {
+
+                        if (prevRect != null) {
+
+                            // we have seen at least one rect before so we can compare them now.
+
+                            if (TextNodeRows.computeRowKey(prevRect) !== TextNodeRows.computeRowKey(currRect)) {
+                                // we're in a new block now as we've jumped to a new visual row.
+                                textBlocks.push(textBlock);
+                                textBlock = new TextBlock();
+                            }
+                        }
+
+                        // since the current rect is visible we can update the
+                        // prevRect to avoid \n \r issues which have zero width.
+                        prevRect = currRect;
+                    }
+
+                    textBlock.push(position.curr);
+
+                    // *** handle the last node
+
+                    if (position.next === null && textBlock.length > 0) {
+                        // don't drop the last block
+                        textBlocks.push(textBlock);
+                    }
+                });
+            });
+
+            return textBlocks;
+        }
+
+        /**
+         *
+         *
+         * @param textBlocks {Array<TextBlock>}
+         * @return {Array<MergedTextBlock>}
+         */
+
+    }, {
+        key: "mergeTextBlocks",
+        value: function mergeTextBlocks(textBlocks) {
+
+            /**
+             *
+             * @type {Array<MergedTextBlock>}
+             */
+            var result = [];
+
+            textBlocks.forEach(function (textBlock) {
+
+                var textNodes = textBlock.getTextNodes().slice();
+
+                var text = textBlock.toString();
+
+                // the first node should get the text value.
+
+                var textNode = textNodes.pop();
+                textNode.textContent = text;
+
+                // now remove the remaining nodes from the DOM.
+                textNodes.forEach(function (orphanedNode) {
+                    orphanedNode.parentNode.removeChild(orphanedNode);
+                });
+
+                result.push(new MergedTextBlock({
+                    textNode: textNode,
+                    text: text,
+                    rect: TextNodes.getRange(textNode).getBoundingClientRect()
+                }));
+            });
+
+            return result;
+        }
+
+        /**
+         *
+         * @param rect {DOMRect}
+         * @return {string}
+         */
+
+    }, {
+        key: "computeRowKey",
+        value: function computeRowKey(rect) {
+            return rect.top + ":" + rect.bottom;
+        }
+
+        /**
+         * Split the given text node so that every character has its own text
+         * node so that we can see the actual position on the screen.
+         *
+         * @return {NodeArray} The number of splits we performed.
+         */
+
+    }, {
+        key: "splitTextNodePerCharacter",
+        value: function splitTextNodePerCharacter(textNode) {
+
+            var result = [];
+
+            while (textNode.textContent.length > 1) {
+                result.push(textNode);
+                textNode = textNode.splitText(1);
+            }
+
+            result.push(textNode);
+
+            return new NodeArray(result);
+        }
+    }]);
+
+    return TextNodeRows;
+}();
 
 module.exports.NodeArray = NodeArray;
 module.exports.TextNodeRows = TextNodeRows;
@@ -57940,50 +59242,70 @@ module.exports.TextNodeRows = TextNodeRows;
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-const { Preconditions } = __webpack_require__(/*! ../../../Preconditions */ "./web/js/Preconditions.js");
+"use strict";
 
-class TextNodes {
 
-    /**
-     * Create a Range around this textNode so that we can compute metadata like
-     * the clientRects which normally can't be determined from a TextNode.
-     *
-     * @param textNode
-     * @param offset
-     * @param length
-     * @return {Range}
-     */
-    static getRange(textNode, offset, length) {
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-        Preconditions.assertNotNull(textNode, "textNode");
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-        if (!offset) {
-            offset = 0;
-        }
+var _require = __webpack_require__(/*! ../../../Preconditions */ "./web/js/Preconditions.js"),
+    Preconditions = _require.Preconditions;
 
-        if (!length) {
-            length = textNode.textContent.length;
-        }
-
-        let range = document.createRange();
-
-        range.setStart(textNode, offset);
-        range.setEnd(textNode, length);
-
-        return range;
+var TextNodes = function () {
+    function TextNodes() {
+        _classCallCheck(this, TextNodes);
     }
 
-    /**
-     *
-     * @param textNode {Node}
-     * @param offset {number}
-     * @param length {number}
-     */
-    static getClientRects(textNode, offset, length) {
-        return range.getClientRects();
-    }
+    _createClass(TextNodes, null, [{
+        key: "getRange",
 
-}
+
+        /**
+         * Create a Range around this textNode so that we can compute metadata like
+         * the clientRects which normally can't be determined from a TextNode.
+         *
+         * @param textNode
+         * @param offset
+         * @param length
+         * @return {Range}
+         */
+        value: function getRange(textNode, offset, length) {
+
+            Preconditions.assertNotNull(textNode, "textNode");
+
+            if (!offset) {
+                offset = 0;
+            }
+
+            if (!length) {
+                length = textNode.textContent.length;
+            }
+
+            var range = document.createRange();
+
+            range.setStart(textNode, offset);
+            range.setEnd(textNode, length);
+
+            return range;
+        }
+
+        /**
+         *
+         * @param textNode {Node}
+         * @param offset {number}
+         * @param length {number}
+         */
+
+    }, {
+        key: "getClientRects",
+        value: function getClientRects(textNode, offset, length) {
+            return range.getClientRects();
+        }
+    }]);
+
+    return TextNodes;
+}();
 
 module.exports.TextNodes = TextNodes;
 
@@ -57996,149 +59318,185 @@ module.exports.TextNodes = TextNodes;
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-const { TextHighlightModel } = __webpack_require__(/*! ../model/TextHighlightModel */ "./web/js/highlights/text/model/TextHighlightModel.js");
-const { forDict } = __webpack_require__(/*! ../../../utils.js */ "./web/js/utils.js");
-const { PageRedrawHandler } = __webpack_require__(/*! ../../../PageRedrawHandler */ "./web/js/PageRedrawHandler.js");
-const { Rects } = __webpack_require__(/*! ../../../Rects */ "./web/js/Rects.js");
-const { RendererContextMenu } = __webpack_require__(/*! ../../../contextmenu/electron/RendererContextMenu */ "./web/js/contextmenu/electron/RendererContextMenu.js");
-const { ContextMenuType } = __webpack_require__(/*! ../../../contextmenu/ContextMenuType */ "./web/js/contextmenu/ContextMenuType.js");
-const { DocFormatFactory } = __webpack_require__(/*! ../../../docformat/DocFormatFactory */ "./web/js/docformat/DocFormatFactory.js");
-const { MutationState } = __webpack_require__(/*! ../../../proxies/MutationState */ "./web/js/proxies/MutationState.js");
-const { Logger } = __webpack_require__(/*! ../../../logger/Logger */ "./web/js/logger/Logger.js");
+"use strict";
 
-const log = Logger.create();
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var _require = __webpack_require__(/*! ../model/TextHighlightModel */ "./web/js/highlights/text/model/TextHighlightModel.js"),
+    TextHighlightModel = _require.TextHighlightModel;
+
+var _require2 = __webpack_require__(/*! ../../../utils.js */ "./web/js/utils.js"),
+    forDict = _require2.forDict;
+
+var _require3 = __webpack_require__(/*! ../../../PageRedrawHandler */ "./web/js/PageRedrawHandler.js"),
+    PageRedrawHandler = _require3.PageRedrawHandler;
+
+var _require4 = __webpack_require__(/*! ../../../Rects */ "./web/js/Rects.js"),
+    Rects = _require4.Rects;
+
+var _require5 = __webpack_require__(/*! ../../../contextmenu/electron/RendererContextMenu */ "./web/js/contextmenu/electron/RendererContextMenu.js"),
+    RendererContextMenu = _require5.RendererContextMenu;
+
+var _require6 = __webpack_require__(/*! ../../../contextmenu/ContextMenuType */ "./web/js/contextmenu/ContextMenuType.js"),
+    ContextMenuType = _require6.ContextMenuType;
+
+var _require7 = __webpack_require__(/*! ../../../docformat/DocFormatFactory */ "./web/js/docformat/DocFormatFactory.js"),
+    DocFormatFactory = _require7.DocFormatFactory;
+
+var _require8 = __webpack_require__(/*! ../../../proxies/MutationState */ "./web/js/proxies/MutationState.js"),
+    MutationState = _require8.MutationState;
+
+var _require9 = __webpack_require__(/*! ../../../logger/Logger */ "./web/js/logger/Logger.js"),
+    Logger = _require9.Logger;
+
+var log = Logger.create();
 
 /**
  * @deprecated Move to TextHighlightView2
  */
-class TextHighlightView {
+
+var TextHighlightView = function () {
 
     /**
      *
      * @param model {Model}
      */
-    constructor(model) {
+    function TextHighlightView(model) {
+        _classCallCheck(this, TextHighlightView);
+
         this.model = model;
         this.docFormat = DocFormatFactory.getInstance();
     }
 
-    start() {
-        this.model.registerListenerForDocumentLoaded(this.onDocumentLoaded.bind(this));
-    }
+    _createClass(TextHighlightView, [{
+        key: "start",
+        value: function start() {
+            this.model.registerListenerForDocumentLoaded(this.onDocumentLoaded.bind(this));
+        }
+    }, {
+        key: "onDocumentLoaded",
+        value: function onDocumentLoaded(documentLoadedEvent) {
 
-    onDocumentLoaded(documentLoadedEvent) {
+            log.info("TextHighlightView.onDocumentLoaded");
 
-        log.info("TextHighlightView.onDocumentLoaded");
+            var textHighlightModel = new TextHighlightModel();
 
-        let textHighlightModel = new TextHighlightModel();
+            // listen for highlights from the model as highlights are added and deleted.
 
-        // listen for highlights from the model as highlights are added and deleted.
+            textHighlightModel.registerListener(documentLoadedEvent.docMeta, this.onTextHighlight.bind(this));
+        }
+    }, {
+        key: "onTextHighlight",
+        value: function onTextHighlight(textHighlightEvent) {
 
-        textHighlightModel.registerListener(documentLoadedEvent.docMeta, this.onTextHighlight.bind(this));
-    }
+            log.info("TextHighlightView.onTextHighlight: ", textHighlightEvent);
 
-    onTextHighlight(textHighlightEvent) {
+            if (textHighlightEvent.mutationState === MutationState.PRESENT) {
 
-        log.info("TextHighlightView.onTextHighlight: ", textHighlightEvent);
+                log.info("TextHighlightView.onTextHighlight ... present");
 
-        if (textHighlightEvent.mutationState === MutationState.PRESENT) {
+                var pageNum = textHighlightEvent.pageMeta.pageInfo.num;
+                var pageElement = this.docFormat.getPageElementFromPageNum(pageNum);
 
-            log.info("TextHighlightView.onTextHighlight ... present");
+                // for each rect just call render on that pageElement...
 
-            let pageNum = textHighlightEvent.pageMeta.pageInfo.num;
-            let pageElement = this.docFormat.getPageElementFromPageNum(pageNum);
+                if (!textHighlightEvent.textHighlight.rects) {
+                    throw new Error("No rects with text highlight");
+                }
 
-            // for each rect just call render on that pageElement...
+                forDict(textHighlightEvent.textHighlight.rects, function (id, rect) {
 
-            if (!textHighlightEvent.textHighlight.rects) {
-                throw new Error("No rects with text highlight");
+                    var callback = function callback() {
+                        // make sure we're still in the model if we need to redraw.
+
+                        // TODO: we don't actually remove ourselves form the event
+                        // listeners so this is going to end up as a memory leak
+                        // unless we fix it in the future.
+                        //
+                        // TODO: one good workaround for this is that we could
+                        // re-emit all the state of the document again and have the
+                        // PRESENT state re-draw everything.
+
+                        if (textHighlightEvent.value.id in textHighlightEvent.pageMeta.textHighlights) {
+                            TextHighlightView.render(pageElement, rect, textHighlightEvent);
+                        }
+                    };
+
+                    // draw it manually the first time.
+                    callback();
+
+                    // then let the redraw handler do it after this.
+                    new PageRedrawHandler(pageElement).register(callback);
+                });
+            } else if (textHighlightEvent.mutationState === MutationState.ABSENT) {
+
+                log.info("TextHighlightView.onTextHighlight ... delete time.");
+                var selector = ".text-highlight-" + textHighlightEvent.previousValue.id;
+                var highlightElements = document.querySelectorAll(selector);
+
+                log.info("Found N elements for selector " + selector + ": " + highlightElements.length);
+
+                highlightElements.forEach(function (highlightElement) {
+                    highlightElement.parentElement.removeChild(highlightElement);
+                });
+            }
+        }
+
+        // TODO: this should probably not be static and instead should just be its
+        // own class which is testable.
+        //
+        // TODO pageElement should really be parentElement where we want the
+        // highlight element to be rendered.
+
+    }], [{
+        key: "render",
+        value: function render(pageElement, highlightRect, textHighlightEvent) {
+
+            var docFormat = DocFormatFactory.getInstance();
+
+            log.info("Rendering annotation at: " + JSON.stringify(highlightRect, null, "  "));
+
+            var highlightElement = document.createElement("div");
+
+            highlightElement.setAttribute("data-type", "text-highlight");
+            highlightElement.setAttribute("data-doc-fingerprint", textHighlightEvent.docMeta.docInfo.fingerprint);
+            highlightElement.setAttribute("data-text-highlight-id", textHighlightEvent.textHighlight.id);
+            highlightElement.setAttribute("data-page-num", "" + textHighlightEvent.pageMeta.pageInfo.num);
+
+            highlightElement.className = "text-highlight annotation text-highlight-" + textHighlightEvent.textHighlight.id;
+
+            highlightElement.style.position = "absolute";
+            highlightElement.style.backgroundColor = "yellow";
+            highlightElement.style.opacity = "0.5";
+
+            if (docFormat.name === "pdf") {
+                // this is only needed for PDF and we might be able to use a transform
+                // in the future which would be easier.
+                var currentScale = docFormat.currentScale();
+                highlightRect = Rects.scale(highlightRect, currentScale);
             }
 
-            forDict(textHighlightEvent.textHighlight.rects, function (id, rect) {
+            highlightElement.style.left = highlightRect.left + "px";
+            highlightElement.style.top = highlightRect.top + "px";
 
-                let callback = () => {
-                    // make sure we're still in the model if we need to redraw.
+            highlightElement.style.width = highlightRect.width + "px";
+            highlightElement.style.height = highlightRect.height + "px";
 
-                    // TODO: we don't actually remove ourselves form the event
-                    // listeners so this is going to end up as a memory leak
-                    // unless we fix it in the future.
-                    //
-                    // TODO: one good workaround for this is that we could
-                    // re-emit all the state of the document again and have the
-                    // PRESENT state re-draw everything.
+            // TODO: the problem with this strategy is that it inserts elements in the
+            // REVERSE order they are presented visually.  This isn't a problem but
+            // it might become confusing to debug this issue.  A quick fix is to
+            // just reverse the array before we render the elements.
+            pageElement.insertBefore(highlightElement, pageElement.firstChild);
 
-                    if (textHighlightEvent.value.id in textHighlightEvent.pageMeta.textHighlights) {
-                        TextHighlightView.render(pageElement, rect, textHighlightEvent);
-                    }
-                };
-
-                // draw it manually the first time.
-                callback();
-
-                // then let the redraw handler do it after this.
-                new PageRedrawHandler(pageElement).register(callback);
-            });
-        } else if (textHighlightEvent.mutationState === MutationState.ABSENT) {
-
-            log.info("TextHighlightView.onTextHighlight ... delete time.");
-            let selector = `.text-highlight-${textHighlightEvent.previousValue.id}`;
-            let highlightElements = document.querySelectorAll(selector);
-
-            log.info(`Found N elements for selector ${selector}: ` + highlightElements.length);
-
-            highlightElements.forEach(highlightElement => {
-                highlightElement.parentElement.removeChild(highlightElement);
-            });
+            RendererContextMenu.register(highlightElement, ContextMenuType.TEXT_HIGHLIGHT);
         }
-    }
+    }]);
 
-    // TODO: this should probably not be static and instead should just be its
-    // own class which is testable.
-    //
-    // TODO pageElement should really be parentElement where we want the
-    // highlight element to be rendered.
-    static render(pageElement, highlightRect, textHighlightEvent) {
-
-        let docFormat = DocFormatFactory.getInstance();
-
-        log.info("Rendering annotation at: " + JSON.stringify(highlightRect, null, "  "));
-
-        let highlightElement = document.createElement("div");
-
-        highlightElement.setAttribute("data-type", "text-highlight");
-        highlightElement.setAttribute("data-doc-fingerprint", textHighlightEvent.docMeta.docInfo.fingerprint);
-        highlightElement.setAttribute("data-text-highlight-id", textHighlightEvent.textHighlight.id);
-        highlightElement.setAttribute("data-page-num", `${textHighlightEvent.pageMeta.pageInfo.num}`);
-
-        highlightElement.className = `text-highlight annotation text-highlight-${textHighlightEvent.textHighlight.id}`;
-
-        highlightElement.style.position = "absolute";
-        highlightElement.style.backgroundColor = `yellow`;
-        highlightElement.style.opacity = `0.5`;
-
-        if (docFormat.name === "pdf") {
-            // this is only needed for PDF and we might be able to use a transform
-            // in the future which would be easier.
-            let currentScale = docFormat.currentScale();
-            highlightRect = Rects.scale(highlightRect, currentScale);
-        }
-
-        highlightElement.style.left = `${highlightRect.left}px`;
-        highlightElement.style.top = `${highlightRect.top}px`;
-
-        highlightElement.style.width = `${highlightRect.width}px`;
-        highlightElement.style.height = `${highlightRect.height}px`;
-
-        // TODO: the problem with this strategy is that it inserts elements in the
-        // REVERSE order they are presented visually.  This isn't a problem but
-        // it might become confusing to debug this issue.  A quick fix is to
-        // just reverse the array before we render the elements.
-        pageElement.insertBefore(highlightElement, pageElement.firstChild);
-
-        RendererContextMenu.register(highlightElement, ContextMenuType.TEXT_HIGHLIGHT);
-    }
-
-}
+    return TextHighlightView;
+}();
 
 module.exports.TextHighlightView = TextHighlightView;
 
@@ -58151,27 +59509,50 @@ module.exports.TextHighlightView = TextHighlightView;
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-const { DefaultContainerProvider } = __webpack_require__(/*! ../../../components/containers/providers/impl/DefaultContainerProvider */ "./web/js/components/containers/providers/impl/DefaultContainerProvider.js");
-const { TextHighlightComponent } = __webpack_require__(/*! ./components/TextHighlightComponent */ "./web/js/highlights/text/view/components/TextHighlightComponent.js");
-const { ComponentManager } = __webpack_require__(/*! ../../../components/ComponentManager */ "./web/js/components/ComponentManager.js");
-const { TextHighlightModel } = __webpack_require__(/*! ../model/TextHighlightModel */ "./web/js/highlights/text/model/TextHighlightModel.js");
+"use strict";
 
-class TextHighlightView2 {
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var _require = __webpack_require__(/*! ../../../components/containers/providers/impl/DefaultContainerProvider */ "./web/js/components/containers/providers/impl/DefaultContainerProvider.js"),
+    DefaultContainerProvider = _require.DefaultContainerProvider;
+
+var _require2 = __webpack_require__(/*! ./components/TextHighlightComponent */ "./web/js/highlights/text/view/components/TextHighlightComponent.js"),
+    TextHighlightComponent = _require2.TextHighlightComponent;
+
+var _require3 = __webpack_require__(/*! ../../../components/ComponentManager */ "./web/js/components/ComponentManager.js"),
+    ComponentManager = _require3.ComponentManager;
+
+var _require4 = __webpack_require__(/*! ../model/TextHighlightModel */ "./web/js/highlights/text/model/TextHighlightModel.js"),
+    TextHighlightModel = _require4.TextHighlightModel;
+
+var TextHighlightView2 = function () {
 
     /**
      *
      * @param model {Model}
      */
-    constructor(model) {
+    function TextHighlightView2(model) {
+        _classCallCheck(this, TextHighlightView2);
 
-        this.componentManager = new ComponentManager(model, new DefaultContainerProvider(), () => new TextHighlightComponent(), () => new TextHighlightModel());
+        this.componentManager = new ComponentManager(model, new DefaultContainerProvider(), function () {
+            return new TextHighlightComponent();
+        }, function () {
+            return new TextHighlightModel();
+        });
     }
 
-    start() {
-        this.componentManager.start();
-    }
+    _createClass(TextHighlightView2, [{
+        key: "start",
+        value: function start() {
+            this.componentManager.start();
+        }
+    }]);
 
-}
+    return TextHighlightView2;
+}();
 
 module.exports.TextHighlightView2 = TextHighlightView2;
 
@@ -58184,135 +59565,172 @@ module.exports.TextHighlightView2 = TextHighlightView2;
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-const { DocFormatFactory } = __webpack_require__(/*! ../../../../docformat/DocFormatFactory */ "./web/js/docformat/DocFormatFactory.js");
-const { Component } = __webpack_require__(/*! ../../../../components/Component */ "./web/js/components/Component.js");
-const { forDict } = __webpack_require__(/*! ../../../../util/Functions */ "./web/js/util/Functions.js");
-const { Rects } = __webpack_require__(/*! ../../../../Rects */ "./web/js/Rects.js");
-const log = __webpack_require__(/*! ../../../../logger/Logger */ "./web/js/logger/Logger.js").create();
+"use strict";
 
-class TextHighlightComponent extends Component {
 
-  constructor() {
-    super();
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var _require = __webpack_require__(/*! ../../../../docformat/DocFormatFactory */ "./web/js/docformat/DocFormatFactory.js"),
+    DocFormatFactory = _require.DocFormatFactory;
+
+var _require2 = __webpack_require__(/*! ../../../../components/Component */ "./web/js/components/Component.js"),
+    Component = _require2.Component;
+
+var _require3 = __webpack_require__(/*! ../../../../util/Functions */ "./web/js/util/Functions.js"),
+    forDict = _require3.forDict;
+
+var _require4 = __webpack_require__(/*! ../../../../Rects */ "./web/js/Rects.js"),
+    Rects = _require4.Rects;
+
+var log = __webpack_require__(/*! ../../../../logger/Logger */ "./web/js/logger/Logger.js").create();
+
+var TextHighlightComponent = function (_Component) {
+  _inherits(TextHighlightComponent, _Component);
+
+  function TextHighlightComponent() {
+    _classCallCheck(this, TextHighlightComponent);
 
     /**
      *
      * @type {DocFormat}
      */
-    this.docFormat = DocFormatFactory.getInstance();
+    var _this = _possibleConstructorReturn(this, (TextHighlightComponent.__proto__ || Object.getPrototypeOf(TextHighlightComponent)).call(this));
+
+    _this.docFormat = DocFormatFactory.getInstance();
 
     /**
      *
      * @type {DocMeta}
      */
-    this.docMeta = undefined;
+    _this.docMeta = undefined;
 
     /**
      *
      * @type {TextHighlight}
      */
-    this.textHighlight = undefined;
+    _this.textHighlight = undefined;
 
     /**
      *
      * @type {PageMeta}
      */
-    this.pageMeta = undefined;
+    _this.pageMeta = undefined;
 
     /**
      * The page we're working with.
      *
      * @type {number}
      */
-    this.pageNum = undefined;
+    _this.pageNum = undefined;
 
     /**
      * The .page we're working with.
      *
      * @type {HTMLElement}
      */
-    this.pageElement = undefined;
+    _this.pageElement = undefined;
+
+    return _this;
   }
 
   /**
    * @Override
    * @param componentEvent
    */
-  init(componentEvent) {
 
-    // TODO: we should a specific event class for this data which is captured
-    // within a higher level componentEvent.
-    this.docMeta = componentEvent.docMeta;
-    this.textHighlight = componentEvent.textHighlight;
-    this.pageMeta = componentEvent.pageMeta;
 
-    this.pageNum = this.pageMeta.pageInfo.num;
-    this.pageElement = this.docFormat.getPageElementFromPageNum(this.pageNum);
-  }
+  _createClass(TextHighlightComponent, [{
+    key: "init",
+    value: function init(componentEvent) {
 
-  /**
-   * @Override
-   */
-  render() {
+      // TODO: we should a specific event class for this data which is captured
+      // within a higher level componentEvent.
+      this.docMeta = componentEvent.docMeta;
+      this.textHighlight = componentEvent.textHighlight;
+      this.pageMeta = componentEvent.pageMeta;
 
-    this.destroy();
+      this.pageNum = this.pageMeta.pageInfo.num;
+      this.pageElement = this.docFormat.getPageElementFromPageNum(this.pageNum);
+    }
 
-    log.info("render()");
+    /**
+     * @Override
+     */
 
-    forDict(this.textHighlight.rects, (id, highlightRect) => {
+  }, {
+    key: "render",
+    value: function render() {
+      var _this2 = this;
 
-      log.info("Rendering annotation at: " + JSON.stringify(highlightRect, null, "  "));
+      this.destroy();
 
-      let highlightElement = document.createElement("div");
+      log.info("render()");
 
-      highlightElement.setAttribute("data-type", "text-highlight");
-      highlightElement.setAttribute("data-doc-fingerprint", this.docMeta.docInfo.fingerprint);
-      highlightElement.setAttribute("data-text-highlight-id", this.textHighlight.id);
-      highlightElement.setAttribute("data-page-num", `${this.pageMeta.pageInfo.num}`);
+      forDict(this.textHighlight.rects, function (id, highlightRect) {
 
-      highlightElement.className = `text-highlight annotation text-highlight-${this.textHighlight.id}`;
+        log.info("Rendering annotation at: " + JSON.stringify(highlightRect, null, "  "));
 
-      highlightElement.style.position = "absolute";
-      highlightElement.style.backgroundColor = `yellow`;
-      highlightElement.style.opacity = `0.5`;
+        var highlightElement = document.createElement("div");
 
-      if (this.docFormat.name === "pdf") {
-        // this is only needed for PDF and we might be able to use a transform
-        // in the future which would be easier.
-        let currentScale = this.docFormat.currentScale();
-        highlightRect = Rects.scale(highlightRect, currentScale);
-      }
+        highlightElement.setAttribute("data-type", "text-highlight");
+        highlightElement.setAttribute("data-doc-fingerprint", _this2.docMeta.docInfo.fingerprint);
+        highlightElement.setAttribute("data-text-highlight-id", _this2.textHighlight.id);
+        highlightElement.setAttribute("data-page-num", "" + _this2.pageMeta.pageInfo.num);
 
-      highlightElement.style.left = `${highlightRect.left}px`;
-      highlightElement.style.top = `${highlightRect.top}px`;
+        highlightElement.className = "text-highlight annotation text-highlight-" + _this2.textHighlight.id;
 
-      highlightElement.style.width = `${highlightRect.width}px`;
-      highlightElement.style.height = `${highlightRect.height}px`;
+        highlightElement.style.position = "absolute";
+        highlightElement.style.backgroundColor = "yellow";
+        highlightElement.style.opacity = "0.5";
 
-      // TODO: the problem with this strategy is that it inserts elements in the
-      // REVERSE order they are presented visually.  This isn't a problem but
-      // it might become confusing to debug this issue.  A quick fix is to
-      // just reverse the array before we render the elements.
-      this.pageElement.insertBefore(highlightElement, this.pageElement.firstChild);
-    });
-  }
+        if (_this2.docFormat.name === "pdf") {
+          // this is only needed for PDF and we might be able to use a transform
+          // in the future which would be easier.
+          var currentScale = _this2.docFormat.currentScale();
+          highlightRect = Rects.scale(highlightRect, currentScale);
+        }
 
-  /**
-   * @Override
-   */
-  destroy() {
+        highlightElement.style.left = highlightRect.left + "px";
+        highlightElement.style.top = highlightRect.top + "px";
 
-    let selector = `.text-highlight-${this.textHighlight.id}`;
-    let highlightElements = document.querySelectorAll(selector);
+        highlightElement.style.width = highlightRect.width + "px";
+        highlightElement.style.height = highlightRect.height + "px";
 
-    log.info(`Found N elements for selector ${selector}: ` + highlightElements.length);
+        // TODO: the problem with this strategy is that it inserts elements in the
+        // REVERSE order they are presented visually.  This isn't a problem but
+        // it might become confusing to debug this issue.  A quick fix is to
+        // just reverse the array before we render the elements.
+        _this2.pageElement.insertBefore(highlightElement, _this2.pageElement.firstChild);
+      });
+    }
 
-    highlightElements.forEach(highlightElement => {
-      highlightElement.parentElement.removeChild(highlightElement);
-    });
-  }
+    /**
+     * @Override
+     */
 
-}
+  }, {
+    key: "destroy",
+    value: function destroy() {
+
+      var selector = ".text-highlight-" + this.textHighlight.id;
+      var highlightElements = document.querySelectorAll(selector);
+
+      log.info("Found N elements for selector " + selector + ": " + highlightElements.length);
+
+      highlightElements.forEach(function (highlightElement) {
+        highlightElement.parentElement.removeChild(highlightElement);
+      });
+    }
+  }]);
+
+  return TextHighlightComponent;
+}(Component);
 
 module.exports.TextHighlightComponent = TextHighlightComponent;
 
@@ -58323,55 +59741,73 @@ module.exports.TextHighlightComponent = TextHighlightComponent;
   !*** ./web/js/logger/Caller.js ***!
   \*********************************/
 /*! no static exports found */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
 
-class Caller {
+"use strict";
 
-    static getCaller() {
-        let e = new Error();
-        let stack = e.stack;
 
-        //console.error("FIXME: stack: ", stack);
-        let frame = stack.split("\n")[3];
-        //console.error("FIXME: frame: ", frame);
-        let result = Caller._parse(frame);
-        //console.error("FIXME: result: ", result);
-        return result;
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var Caller = function () {
+    function Caller() {
+        _classCallCheck(this, Caller);
     }
 
-    /**
-     * Parse a specific frame in the stack trace.
-     * @param frame {string}
-     * @protected
-     */
-    static _parse(frame) {
+    _createClass(Caller, null, [{
+        key: "getCaller",
+        value: function getCaller() {
+            var e = new Error();
+            var stack = e.stack;
 
-        let javascriptCaller = Caller.parseRE(frame, /([^/.)]+\.(js|ts|tsx)):[0-9]+:[0-9]+\)$/g);
-
-        // this returns the first match with a space at the end.
-        let webpackCaller = Caller.parseRE(frame, /([^/.)]+\.(js|ts|tsx)) /g);
-
-        if (webpackCaller) {
-            return webpackCaller;
+            //console.error("FIXME: stack: ", stack);
+            var frame = stack.split("\n")[3];
+            //console.error("FIXME: frame: ", frame);
+            var result = Caller._parse(frame);
+            //console.error("FIXME: result: ", result);
+            return result;
         }
 
-        if (javascriptCaller) return javascriptCaller;
+        /**
+         * Parse a specific frame in the stack trace.
+         * @param frame {string}
+         * @protected
+         */
 
-        throw new Error("Could not determine caller");
-    }
+    }, {
+        key: "_parse",
+        value: function _parse(frame) {
 
-    static parseRE(frame, re) {
+            var javascriptCaller = Caller.parseRE(frame, /([^/.)]+\.(js|ts|tsx)):[0-9]+:[0-9]+\)$/g);
 
-        let m = re.exec(frame);
+            // this returns the first match with a space at the end.
+            var webpackCaller = Caller.parseRE(frame, /([^/.)]+\.(js|ts|tsx)) /g);
 
-        if (m) {
-            return { filename: m[1] };
-        } else {
-            return null;
+            if (webpackCaller) {
+                return webpackCaller;
+            }
+
+            if (javascriptCaller) return javascriptCaller;
+
+            throw new Error("Could not determine caller");
         }
-    }
+    }, {
+        key: "parseRE",
+        value: function parseRE(frame, re) {
 
-}
+            var m = re.exec(frame);
+
+            if (m) {
+                return { filename: m[1] };
+            } else {
+                return null;
+            }
+        }
+    }]);
+
+    return Caller;
+}();
 
 module.exports.Caller = Caller;
 
@@ -58382,32 +59818,67 @@ module.exports.Caller = Caller;
   !*** ./web/js/logger/ConsoleLogger.js ***!
   \****************************************/
 /*! no static exports found */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
 
 
-class ConsoleLogger {
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-    info(...args) {
-        console.log(...args);
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var ConsoleLogger = function () {
+    function ConsoleLogger() {
+        _classCallCheck(this, ConsoleLogger);
     }
 
-    warn(...args) {
-        console.warn(...args);
-    }
+    _createClass(ConsoleLogger, [{
+        key: "info",
+        value: function info() {
+            var _console;
 
-    error(...args) {
-        console.error(...args);
-    }
+            (_console = console).log.apply(_console, arguments);
+        }
+    }, {
+        key: "warn",
+        value: function warn() {
+            var _console2;
 
-    verbose(...args) {
-        console.log("VERBOSE: ", ...args);
-    }
+            (_console2 = console).warn.apply(_console2, arguments);
+        }
+    }, {
+        key: "error",
+        value: function error() {
+            var _console3;
 
-    debug(...args) {
-        console.log("DEBUG: ", ...args);
-    }
+            (_console3 = console).error.apply(_console3, arguments);
+        }
+    }, {
+        key: "verbose",
+        value: function verbose() {
+            var _console4;
 
-}
+            for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+                args[_key] = arguments[_key];
+            }
+
+            (_console4 = console).log.apply(_console4, ["VERBOSE: "].concat(args));
+        }
+    }, {
+        key: "debug",
+        value: function debug() {
+            var _console5;
+
+            for (var _len2 = arguments.length, args = Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
+                args[_key2] = arguments[_key2];
+            }
+
+            (_console5 = console).log.apply(_console5, ["DEBUG: "].concat(args));
+        }
+    }]);
+
+    return ConsoleLogger;
+}();
 
 module.exports.ConsoleLogger = ConsoleLogger;
 
@@ -58420,45 +59891,69 @@ module.exports.ConsoleLogger = ConsoleLogger;
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
+"use strict";
+
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 // Simple logger that meets the requirements we have for Polar.
 
-const log = __webpack_require__(/*! electron-log */ "./node_modules/electron-log/index.js");
-const { Files } = __webpack_require__(/*! ../util/Files.js */ "./web/js/util/Files.js");
-const { Objects } = __webpack_require__(/*! ../util/Objects.js */ "./web/js/util/Objects.js");
-const { ConsoleLogger } = __webpack_require__(/*! ./ConsoleLogger.js */ "./web/js/logger/ConsoleLogger.js");
-const { Caller } = __webpack_require__(/*! ./Caller.js */ "./web/js/logger/Caller.js");
+var log = __webpack_require__(/*! electron-log */ "./node_modules/electron-log/index.js");
 
-let initialized = false;
+var _require = __webpack_require__(/*! ../util/Files.js */ "./web/js/util/Files.js"),
+    Files = _require.Files;
 
-class Logger {
+var _require2 = __webpack_require__(/*! ../util/Objects.js */ "./web/js/util/Objects.js"),
+    Objects = _require2.Objects;
 
-    /**
-     * Create a new logger, delegating to the actual implementation we are
-     * using.
-     */
-    static create() {
-        let caller = Caller.getCaller();
-        return new DelegatedLogger(caller.filename);
+var _require3 = __webpack_require__(/*! ./ConsoleLogger.js */ "./web/js/logger/ConsoleLogger.js"),
+    ConsoleLogger = _require3.ConsoleLogger;
+
+var _require4 = __webpack_require__(/*! ./Caller.js */ "./web/js/logger/Caller.js"),
+    Caller = _require4.Caller;
+
+var initialized = false;
+
+var Logger = function () {
+    function Logger() {
+        _classCallCheck(this, Logger);
     }
 
-    static setLoggerDelegate(loggerDelegate) {
-        global.polarLoggerDelegate = loggerDelegate;
-    }
+    _createClass(Logger, null, [{
+        key: "create",
 
-    static getLoggerDelegate() {
-        return global.polarLoggerDelegate;
-    }
 
-    /**
-     * Initialize the logger to write to a specific directory.
-     *
-     * @param logsDir {String} The directory to use to store logs.
-     * @param options
-     */
-    static init(logsDir, options) {
-        return _asyncToGenerator(function* () {
+        /**
+         * Create a new logger, delegating to the actual implementation we are
+         * using.
+         */
+        value: function create() {
+            var caller = Caller.getCaller();
+            return new DelegatedLogger(caller.filename);
+        }
+    }, {
+        key: "setLoggerDelegate",
+        value: function setLoggerDelegate(loggerDelegate) {
+            global.polarLoggerDelegate = loggerDelegate;
+        }
+    }, {
+        key: "getLoggerDelegate",
+        value: function getLoggerDelegate() {
+            return global.polarLoggerDelegate;
+        }
+
+        /**
+         * Initialize the logger to write to a specific directory.
+         *
+         * @param logsDir {String} The directory to use to store logs.
+         * @param options
+         */
+
+    }, {
+        key: "init",
+        value: async function init(logsDir, options) {
 
             if (initialized) {
                 throw new Error("Already initialized");
@@ -58469,13 +59964,13 @@ class Logger {
             }
 
             if (process.type === "renderer") {
-                throw new Error(`Must initialize from the main electron process (process=${process.type})`);
+                throw new Error("Must initialize from the main electron process (process=" + process.type + ")");
             }
 
             options = Objects.defaults(options, { createDir: true });
 
             if (options.createDir) {
-                yield Files.createDirAsync(logsDir);
+                await Files.createDirAsync(logsDir);
             }
 
             // *** configure console
@@ -58485,7 +59980,7 @@ class Logger {
             // *** configure file
 
             // set the directory name properly
-            log.transports.file.file = `${logsDir}/polar.log`;
+            log.transports.file.file = logsDir + "/polar.log";
             log.transports.file.format = "[{y}-{m}-{d} {h}:{i}:{s}.{ms} {z}] [{level}] {text}";
 
             log.transports.file.level = "info";
@@ -58498,52 +59993,97 @@ class Logger {
             // we have DelegatedLogger. It might be nice to actually support swapping
             // this out at runtime.
             initialized = true;
-        })();
-    }
+        }
+    }]);
 
-}
+    return Logger;
+}();
 
 /**
  * Allows us to swap in delegates at runtime on anyone who calls create()
  * regardless of require() order.
  */
-class DelegatedLogger {
+
+
+var DelegatedLogger = function () {
 
     /**
      *
      * @param caller {string}
      */
-    constructor(caller) {
+    function DelegatedLogger(caller) {
+        _classCallCheck(this, DelegatedLogger);
+
         this.caller = caller;
     }
 
-    info(...args) {
-        Logger.getLoggerDelegate().info(this.caller, ...args);
-    }
+    _createClass(DelegatedLogger, [{
+        key: "info",
+        value: function info() {
+            var _Logger$getLoggerDele;
 
-    warn(...args) {
-        Logger.getLoggerDelegate().warn(this.caller, ...args);
-    }
+            for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+                args[_key] = arguments[_key];
+            }
 
-    error(...args) {
-        Logger.getLoggerDelegate().error(this.caller, ...args);
-    }
+            (_Logger$getLoggerDele = Logger.getLoggerDelegate()).info.apply(_Logger$getLoggerDele, [this.caller].concat(args));
+        }
+    }, {
+        key: "warn",
+        value: function warn() {
+            var _Logger$getLoggerDele2;
 
-    verbose(...args) {
-        Logger.getLoggerDelegate().debug(this.caller, ...args);
-    }
+            for (var _len2 = arguments.length, args = Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
+                args[_key2] = arguments[_key2];
+            }
 
-    debug(...args) {
-        Logger.getLoggerDelegate().info(this.caller, ...args);
-    }
+            (_Logger$getLoggerDele2 = Logger.getLoggerDelegate()).warn.apply(_Logger$getLoggerDele2, [this.caller].concat(args));
+        }
+    }, {
+        key: "error",
+        value: function error() {
+            var _Logger$getLoggerDele3;
 
-}
+            for (var _len3 = arguments.length, args = Array(_len3), _key3 = 0; _key3 < _len3; _key3++) {
+                args[_key3] = arguments[_key3];
+            }
+
+            (_Logger$getLoggerDele3 = Logger.getLoggerDelegate()).error.apply(_Logger$getLoggerDele3, [this.caller].concat(args));
+        }
+    }, {
+        key: "verbose",
+        value: function verbose() {
+            var _Logger$getLoggerDele4;
+
+            for (var _len4 = arguments.length, args = Array(_len4), _key4 = 0; _key4 < _len4; _key4++) {
+                args[_key4] = arguments[_key4];
+            }
+
+            (_Logger$getLoggerDele4 = Logger.getLoggerDelegate()).debug.apply(_Logger$getLoggerDele4, [this.caller].concat(args));
+        }
+    }, {
+        key: "debug",
+        value: function debug() {
+            var _Logger$getLoggerDele5;
+
+            for (var _len5 = arguments.length, args = Array(_len5), _key5 = 0; _key5 < _len5; _key5++) {
+                args[_key5] = arguments[_key5];
+            }
+
+            (_Logger$getLoggerDele5 = Logger.getLoggerDelegate()).info.apply(_Logger$getLoggerDele5, [this.caller].concat(args));
+        }
+    }]);
+
+    return DelegatedLogger;
+}();
 
 /**
  * When true use a simple console log.  We have to do this for now because there
  * is a bug with getting stuck in a loop while logging and then choking the
  * renderer.
  */
+
+
 Logger.setLoggerDelegate(new ConsoleLogger());
 
 module.exports.create = Logger.create;
@@ -58558,22 +60098,37 @@ module.exports.Logger = Logger;
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-const { Line } = __webpack_require__(/*! ../util/Line */ "./web/js/util/Line.js");
+"use strict";
+
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var _require = __webpack_require__(/*! ../util/Line */ "./web/js/util/Line.js"),
+    Line = _require.Line;
 
 /**
  * Represents a mathematical interval between two values.
  */
-class Interval {
 
-    constructor(start, end) {
+
+var Interval = function () {
+    function Interval(start, end) {
+        _classCallCheck(this, Interval);
+
         this.line = new Line(start, end, "x");
     }
 
-    containsPoint(pt) {
-        return this.line.containsPoint(pt);
-    }
+    _createClass(Interval, [{
+        key: "containsPoint",
+        value: function containsPoint(pt) {
+            return this.line.containsPoint(pt);
+        }
+    }]);
 
-}
+    return Interval;
+}();
 
 module.exports.Interval = Interval;
 
@@ -58586,23 +60141,46 @@ module.exports.Interval = Interval;
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-const { SerializedObject } = __webpack_require__(/*! ./SerializedObject.js */ "./web/js/metadata/SerializedObject.js");
-const { VersionedObject } = __webpack_require__(/*! ./VersionedObject */ "./web/js/metadata/VersionedObject.js");
-const { ISODateTime } = __webpack_require__(/*! ./ISODateTime */ "./web/js/metadata/ISODateTime.js");
+"use strict";
+
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var _require = __webpack_require__(/*! ./SerializedObject.js */ "./web/js/metadata/SerializedObject.js"),
+    SerializedObject = _require.SerializedObject;
+
+var _require2 = __webpack_require__(/*! ./VersionedObject */ "./web/js/metadata/VersionedObject.js"),
+    VersionedObject = _require2.VersionedObject;
+
+var _require3 = __webpack_require__(/*! ./ISODateTime */ "./web/js/metadata/ISODateTime.js"),
+    ISODateTime = _require3.ISODateTime;
 
 // FIXME: move to extend VersionedObject
 
 /* abstract */
-class Annotation extends VersionedObject {
 
-    constructor(val) {
 
-        super(val);
+var Annotation = function (_VersionedObject) {
+    _inherits(Annotation, _VersionedObject);
 
-        this.init(val);
+    function Annotation(val) {
+        _classCallCheck(this, Annotation);
+
+        var _this = _possibleConstructorReturn(this, (Annotation.__proto__ || Object.getPrototypeOf(Annotation)).call(this, val));
+
+        _this.init(val);
+
+        return _this;
     }
 
-};
+    return Annotation;
+}(VersionedObject);
+
+;
 
 module.exports.Annotation = Annotation;
 
@@ -58615,18 +60193,30 @@ module.exports.Annotation = Annotation;
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-const { SerializedObject } = __webpack_require__(/*! ./SerializedObject.js */ "./web/js/metadata/SerializedObject.js");
+"use strict";
+
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var _require = __webpack_require__(/*! ./SerializedObject.js */ "./web/js/metadata/SerializedObject.js"),
+    SerializedObject = _require.SerializedObject;
 
 /**
  * High level information about the annotations in this document.
  *
  * @type {AnnotationInfo}
  */
-class AnnotationInfo extends SerializedObject {
 
-  constructor(val) {
 
-    super(val);
+var AnnotationInfo = function (_SerializedObject) {
+  _inherits(AnnotationInfo, _SerializedObject);
+
+  function AnnotationInfo(val) {
+    _classCallCheck(this, AnnotationInfo);
 
     /**
      * The last time this document was annotated (pagemarks updated, text
@@ -58634,12 +60224,19 @@ class AnnotationInfo extends SerializedObject {
      *
      * @type {ISODateTime}
      */
-    this.lastAnnotated = null;
+    var _this = _possibleConstructorReturn(this, (AnnotationInfo.__proto__ || Object.getPrototypeOf(AnnotationInfo)).call(this, val));
 
-    this.init(val);
+    _this.lastAnnotated = null;
+
+    _this.init(val);
+
+    return _this;
   }
 
-};
+  return AnnotationInfo;
+}(SerializedObject);
+
+;
 
 module.exports.AnnotationInfo = AnnotationInfo;
 
@@ -58650,7 +60247,9 @@ module.exports.AnnotationInfo = AnnotationInfo;
   !*** ./web/js/metadata/AnnotationType.js ***!
   \*******************************************/
 /*! no static exports found */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
 
 
 module.exports.AnnotationType = Object.freeze({
@@ -58668,36 +60267,66 @@ module.exports.AnnotationType = Object.freeze({
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-const { SerializedObject } = __webpack_require__(/*! ./SerializedObject.js */ "./web/js/metadata/SerializedObject.js");
-const { Preconditions } = __webpack_require__(/*! ../Preconditions */ "./web/js/Preconditions.js");
-const { ExtendedAnnotation } = __webpack_require__(/*! ./ExtendedAnnotation */ "./web/js/metadata/ExtendedAnnotation.js");
+"use strict";
 
-class BaseHighlight extends ExtendedAnnotation {
 
-    constructor(val) {
-        super(val);
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var _require = __webpack_require__(/*! ./SerializedObject.js */ "./web/js/metadata/SerializedObject.js"),
+    SerializedObject = _require.SerializedObject;
+
+var _require2 = __webpack_require__(/*! ../Preconditions */ "./web/js/Preconditions.js"),
+    Preconditions = _require2.Preconditions;
+
+var _require3 = __webpack_require__(/*! ./ExtendedAnnotation */ "./web/js/metadata/ExtendedAnnotation.js"),
+    ExtendedAnnotation = _require3.ExtendedAnnotation;
+
+var BaseHighlight = function (_ExtendedAnnotation) {
+    _inherits(BaseHighlight, _ExtendedAnnotation);
+
+    function BaseHighlight(val) {
+        _classCallCheck(this, BaseHighlight);
 
         /**
          * The rectangles where we need to place content for this highlights.
          *
          * @type {{}}
          */
-        this.rects = {};
+        var _this = _possibleConstructorReturn(this, (BaseHighlight.__proto__ || Object.getPrototypeOf(BaseHighlight)).call(this, val));
+
+        _this.rects = {};
 
         /**
          * Optional thumbnail for this highlight.
          * @type {null}
          */
-        this.thumbnail = null;
+        _this.thumbnail = null;
+
+        return _this;
     }
 
-    validate() {
-        super.validate();
+    _createClass(BaseHighlight, [{
+        key: "validate",
+        value: function validate() {
+            _get(BaseHighlight.prototype.__proto__ || Object.getPrototypeOf(BaseHighlight.prototype), "validate", this).call(this);
 
-        Preconditions.assertNotNull(this.rects, "rects");
-        Preconditions.assertNotInstanceOf(this.rects, "rects", Array);
-    }
-};
+            Preconditions.assertNotNull(this.rects, "rects");
+            Preconditions.assertNotInstanceOf(this.rects, "rects", Array);
+        }
+    }]);
+
+    return BaseHighlight;
+}(ExtendedAnnotation);
+
+;
 
 module.exports.BaseHighlight = BaseHighlight;
 
@@ -58708,26 +60337,28 @@ module.exports.BaseHighlight = BaseHighlight;
   !*** ./web/js/metadata/DocDescriptor.js ***!
   \******************************************/
 /*! no static exports found */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 /**
  * Lightweight document descriptor representing documents easily without having
  * to pass around the full document.
  */
-class DocDescriptor {
+var DocDescriptor = function DocDescriptor(opts) {
+  _classCallCheck(this, DocDescriptor);
 
-  constructor(opts) {
+  /**
+   * The fingerprint representing the document we're working with.
+   * @type {null}
+   */
+  this.fingerprint = null;
 
-    /**
-     * The fingerprint representing the document we're working with.
-     * @type {null}
-     */
-    this.fingerprint = null;
-
-    Object.assign(this, opts);
-  }
-
-}
+  Object.assign(this, opts);
+};
 
 module.exports.DocDescriptor = DocDescriptor;
 
@@ -58740,44 +60371,64 @@ module.exports.DocDescriptor = DocDescriptor;
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-const { SerializedObject } = __webpack_require__(/*! ./SerializedObject.js */ "./web/js/metadata/SerializedObject.js");
-const { PagemarkType } = __webpack_require__(/*! ./PagemarkType.js */ "./web/js/metadata/PagemarkType.js");
-const { Symbol } = __webpack_require__(/*! ./Symbol.js */ "./web/js/metadata/Symbol.js");
+"use strict";
+
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var _require = __webpack_require__(/*! ./SerializedObject.js */ "./web/js/metadata/SerializedObject.js"),
+    SerializedObject = _require.SerializedObject;
+
+var _require2 = __webpack_require__(/*! ./PagemarkType.js */ "./web/js/metadata/PagemarkType.js"),
+    PagemarkType = _require2.PagemarkType;
+
+var _require3 = __webpack_require__(/*! ./Symbol.js */ "./web/js/metadata/Symbol.js"),
+    _Symbol = _require3.Symbol;
 
 /**
  * Lightweight metadata about a document. We do not include full page metadata
  * with this object which makes it lightweight to pass around.
  */
-class DocInfo extends SerializedObject {
 
-  constructor(val) {
 
-    super(val);
+var DocInfo = function (_SerializedObject) {
+  _inherits(DocInfo, _SerializedObject);
+
+  function DocInfo(val) {
+    _classCallCheck(this, DocInfo);
 
     /**
      * The title for the document.
      * @type {null}
      */
-    this.title = null;
+    var _this = _possibleConstructorReturn(this, (DocInfo.__proto__ || Object.getPrototypeOf(DocInfo)).call(this, val));
+
+    _this.title = null;
 
     /**
      * The network URL for the document where we originally fetched it.
      * @type string
      */
-    this.url = null;
+    _this.url = null;
 
     /**
      * The number of pages in this document.
      *
      * @type number
      */
-    this.nrPages = null;
+    _this.nrPages = null;
 
     /**
      * A fingerprint for the document created from PDF.js
      * @type string
      */
-    this.fingerprint = null;
+    _this.fingerprint = null;
 
     /**
      * The last time this document was opened or null if it's never been
@@ -58785,7 +60436,7 @@ class DocInfo extends SerializedObject {
      *
      * @type ISODateTime
      */
-    this.lastOpened = null;
+    _this.lastOpened = null;
 
     /**
      * The progress of this document (until completion) from 0 to 100.
@@ -58794,7 +60445,7 @@ class DocInfo extends SerializedObject {
      *
      * @type {number}
      */
-    this.progress = 0;
+    _this.progress = 0;
 
     /**
      * Specify the pagemark type we should use to render this document.
@@ -58804,16 +60455,22 @@ class DocInfo extends SerializedObject {
      *
      * @type {Symbol}
      */
-    this.pagemarkType = PagemarkType.SINGLE_COLUMN;
+    _this.pagemarkType = PagemarkType.SINGLE_COLUMN;
 
-    this.init(val);
+    _this.init(val);
+
+    return _this;
   }
 
-  validate() {
-    this.validateMembers([{ name: 'nrPages', type: "number" }, { name: 'fingerprint', type: "string" }]);
-  }
+  _createClass(DocInfo, [{
+    key: "validate",
+    value: function validate() {
+      this.validateMembers([{ name: 'nrPages', type: "number" }, { name: 'fingerprint', type: "string" }]);
+    }
+  }]);
 
-}
+  return DocInfo;
+}(SerializedObject);
 
 module.exports.DocInfo = DocInfo;
 
@@ -58826,29 +60483,54 @@ module.exports.DocInfo = DocInfo;
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
+"use strict";
 
-const { DocInfo } = __webpack_require__(/*! ./DocInfo */ "./web/js/metadata/DocInfo.js");
-const { PageMeta } = __webpack_require__(/*! ./PageMeta */ "./web/js/metadata/PageMeta.js");
-const { PageInfo } = __webpack_require__(/*! ./PageInfo */ "./web/js/metadata/PageInfo.js");
-const { AnnotationInfo } = __webpack_require__(/*! ./AnnotationInfo */ "./web/js/metadata/AnnotationInfo.js");
-const { SerializedObject } = __webpack_require__(/*! ./SerializedObject.js */ "./web/js/metadata/SerializedObject.js");
-const { Preconditions } = __webpack_require__(/*! ../Preconditions.js */ "./web/js/Preconditions.js");
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var _require = __webpack_require__(/*! ./DocInfo */ "./web/js/metadata/DocInfo.js"),
+    DocInfo = _require.DocInfo;
+
+var _require2 = __webpack_require__(/*! ./PageMeta */ "./web/js/metadata/PageMeta.js"),
+    PageMeta = _require2.PageMeta;
+
+var _require3 = __webpack_require__(/*! ./PageInfo */ "./web/js/metadata/PageInfo.js"),
+    PageInfo = _require3.PageInfo;
+
+var _require4 = __webpack_require__(/*! ./AnnotationInfo */ "./web/js/metadata/AnnotationInfo.js"),
+    AnnotationInfo = _require4.AnnotationInfo;
+
+var _require5 = __webpack_require__(/*! ./SerializedObject.js */ "./web/js/metadata/SerializedObject.js"),
+    SerializedObject = _require5.SerializedObject;
+
+var _require6 = __webpack_require__(/*! ../Preconditions.js */ "./web/js/Preconditions.js"),
+    Preconditions = _require6.Preconditions;
 
 /**
  * Root metadata for a document including page metadata, and metadata for
  * the specific document.
  */
-class DocMeta extends SerializedObject {
 
-    constructor(val) {
 
-        super(val);
+var DocMeta = function (_SerializedObject) {
+    _inherits(DocMeta, _SerializedObject);
+
+    function DocMeta(val) {
+        _classCallCheck(this, DocMeta);
 
         /**
          * The DocInfo which includes information like title, nrPages, etc.
          * @type DocInfo
          */
-        this.docInfo = null;
+        var _this = _possibleConstructorReturn(this, (DocMeta.__proto__ || Object.getPrototypeOf(DocMeta)).call(this, val));
+
+        _this.docInfo = null;
 
         /**
          * The annotation info for this document including the last annotation
@@ -58856,42 +60538,51 @@ class DocMeta extends SerializedObject {
          *
          * @type {AnnotationInfo}
          */
-        this.annotationInfo = new AnnotationInfo({});
+        _this.annotationInfo = new AnnotationInfo({});
 
         /**
          * A sparse dictionary of page number to page metadata.
          *
          * @type Object<int,PageMeta>
          */
-        this.pageMetas = {};
+        _this.pageMetas = {};
 
         /**
          * The version of this DocMeta version.
          */
-        this.version = 1;
+        _this.version = 1;
 
-        this.init(val);
+        _this.init(val);
+
+        return _this;
     }
 
-    getPageMeta(num) {
+    _createClass(DocMeta, [{
+        key: "getPageMeta",
+        value: function getPageMeta(num) {
 
-        num = Preconditions.assertNotNull(num, "num");
+            num = Preconditions.assertNotNull(num, "num");
 
-        let pageMeta = this.pageMetas[num];
+            var pageMeta = this.pageMetas[num];
 
-        if (!pageMeta) {
-            throw new Error("No pageMeta for page: " + num);
+            if (!pageMeta) {
+                throw new Error("No pageMeta for page: " + num);
+            }
+
+            return pageMeta;
         }
+    }, {
+        key: "validate",
+        value: function validate() {
 
-        return pageMeta;
-    }
+            this.validateMembers([{ name: 'docInfo', instance: DocInfo }, { name: 'pageMetas', type: "object" }, { name: 'version', type: "number" }]);
+        }
+    }]);
 
-    validate() {
+    return DocMeta;
+}(SerializedObject);
 
-        this.validateMembers([{ name: 'docInfo', instance: DocInfo }, { name: 'pageMetas', type: "object" }, { name: 'version', type: "number" }]);
-    }
-
-};
+;
 
 module.exports.DocMeta = DocMeta;
 
@@ -58904,31 +60595,45 @@ module.exports.DocMeta = DocMeta;
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
+"use strict";
 
-const { forDict } = __webpack_require__(/*! ../utils.js */ "./web/js/utils.js");
 
-class DocMetaDescriber {
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-    static describe(docMeta) {
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-        let nrPagemarks = 0;
-        let nrTextHighlights = 0;
+var _require = __webpack_require__(/*! ../utils.js */ "./web/js/utils.js"),
+    forDict = _require.forDict;
 
-        forDict(docMeta.pageMetas, function (key, pageMeta) {
-
-            forDict(pageMeta.pagemarks, function (id, pagemark) {
-                ++nrPagemarks;
-            }.bind(this));
-
-            forDict(pageMeta.textHighlights, function (id, textHighlight) {
-                ++nrTextHighlights;
-            }.bind(this));
-        }.bind(this));
-
-        return `PDF with ${docMeta.docInfo.nrPages} pages with ${nrTextHighlights} text highlights and ${nrPagemarks} pagemarks.`;
+var DocMetaDescriber = function () {
+    function DocMetaDescriber() {
+        _classCallCheck(this, DocMetaDescriber);
     }
 
-}
+    _createClass(DocMetaDescriber, null, [{
+        key: "describe",
+        value: function describe(docMeta) {
+
+            var nrPagemarks = 0;
+            var nrTextHighlights = 0;
+
+            forDict(docMeta.pageMetas, function (key, pageMeta) {
+
+                forDict(pageMeta.pagemarks, function (id, pagemark) {
+                    ++nrPagemarks;
+                }.bind(this));
+
+                forDict(pageMeta.textHighlights, function (id, textHighlight) {
+                    ++nrTextHighlights;
+                }.bind(this));
+            }.bind(this));
+
+            return "PDF with " + docMeta.docInfo.nrPages + " pages with " + nrTextHighlights + " text highlights and " + nrPagemarks + " pagemarks.";
+        }
+    }]);
+
+    return DocMetaDescriber;
+}();
 
 module.exports.DocMetaDescriber = DocMetaDescriber;
 
@@ -58939,7 +60644,14 @@ module.exports.DocMetaDescriber = DocMetaDescriber;
   !*** ./web/js/metadata/DocMetaModel.js ***!
   \*****************************************/
 /*! no static exports found */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 /**
  *
@@ -58947,16 +60659,25 @@ module.exports.DocMetaDescriber = DocMetaDescriber;
  *
  * @abstract
  */
-class DocMetaModel {
+var DocMetaModel = function () {
+  function DocMetaModel() {
+    _classCallCheck(this, DocMetaModel);
+  }
 
-  /**
-   *
-   * @param docMeta {DocMeta}
-   * @param callback
-   */
-  registerListener(docMeta, callback) {}
+  _createClass(DocMetaModel, [{
+    key: "registerListener",
 
-}
+
+    /**
+     *
+     * @param docMeta {DocMeta}
+     * @param callback
+     */
+    value: function registerListener(docMeta, callback) {}
+  }]);
+
+  return DocMetaModel;
+}();
 
 module.exports.DocMetaModel = DocMetaModel;
 
@@ -58969,178 +60690,239 @@ module.exports.DocMetaModel = DocMetaModel;
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
+"use strict";
 
-const { Pagemarks } = __webpack_require__(/*! ./Pagemarks */ "./web/js/metadata/Pagemarks.js");
-const { Pagemark } = __webpack_require__(/*! ./Pagemark */ "./web/js/metadata/Pagemark.js");
-const { DocMeta } = __webpack_require__(/*! ./DocMeta */ "./web/js/metadata/DocMeta.js");
-const { DocInfo } = __webpack_require__(/*! ./DocInfo */ "./web/js/metadata/DocInfo.js");
-const { PageInfo } = __webpack_require__(/*! ./PageInfo */ "./web/js/metadata/PageInfo.js");
-const { PageMeta } = __webpack_require__(/*! ./PageMeta */ "./web/js/metadata/PageMeta.js");
-const { PagemarkType } = __webpack_require__(/*! ./PagemarkType */ "./web/js/metadata/PagemarkType.js");
-const { ISODateTime } = __webpack_require__(/*! ./ISODateTime */ "./web/js/metadata/ISODateTime.js");
-const { AnnotationInfo } = __webpack_require__(/*! ./AnnotationInfo */ "./web/js/metadata/AnnotationInfo.js");
-const { MetadataSerializer } = __webpack_require__(/*! ./MetadataSerializer */ "./web/js/metadata/MetadataSerializer.js");
-const { PageMetas } = __webpack_require__(/*! ./PageMetas */ "./web/js/metadata/PageMetas.js");
-const { TextHighlightRecords } = __webpack_require__(/*! ./TextHighlightRecords */ "./web/js/metadata/TextHighlightRecords.js");
-const { TextHighlights } = __webpack_require__(/*! ./TextHighlights */ "./web/js/metadata/TextHighlights.js");
-const { Hashcodes } = __webpack_require__(/*! ../Hashcodes */ "./web/js/Hashcodes.js");
-const { forDict } = __webpack_require__(/*! ../util/Functions */ "./web/js/util/Functions.js");
-const log = __webpack_require__(/*! ../logger/Logger */ "./web/js/logger/Logger.js").create();
 
-class DocMetas {
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
-    /**
-     * Create the basic DocInfo structure that we can use with required / basic
-     * field structure.
-     * @param fingerprint The fingerprint
-     * @param nrPages The number of pages in this document.
-     * @returns {DocMeta}
-     */
-    static create(fingerprint, nrPages) {
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-        let docInfo = new DocInfo({ fingerprint, nrPages });
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-        let pageMetas = {};
+var _require = __webpack_require__(/*! ./Pagemarks */ "./web/js/metadata/Pagemarks.js"),
+    Pagemarks = _require.Pagemarks;
 
-        for (let idx = 1; idx <= nrPages; ++idx) {
-            let pageInfo = new PageInfo({ num: idx });
-            let pageMeta = new PageMeta({ pageInfo: pageInfo });
-            pageMetas[idx] = pageMeta;
-        }
+var _require2 = __webpack_require__(/*! ./Pagemark */ "./web/js/metadata/Pagemark.js"),
+    Pagemark = _require2.Pagemark;
 
-        return new DocMeta({ docInfo, pageMetas });
+var _require3 = __webpack_require__(/*! ./DocMeta */ "./web/js/metadata/DocMeta.js"),
+    DocMeta = _require3.DocMeta;
+
+var _require4 = __webpack_require__(/*! ./DocInfo */ "./web/js/metadata/DocInfo.js"),
+    DocInfo = _require4.DocInfo;
+
+var _require5 = __webpack_require__(/*! ./PageInfo */ "./web/js/metadata/PageInfo.js"),
+    PageInfo = _require5.PageInfo;
+
+var _require6 = __webpack_require__(/*! ./PageMeta */ "./web/js/metadata/PageMeta.js"),
+    PageMeta = _require6.PageMeta;
+
+var _require7 = __webpack_require__(/*! ./PagemarkType */ "./web/js/metadata/PagemarkType.js"),
+    PagemarkType = _require7.PagemarkType;
+
+var _require8 = __webpack_require__(/*! ./ISODateTime */ "./web/js/metadata/ISODateTime.js"),
+    ISODateTime = _require8.ISODateTime;
+
+var _require9 = __webpack_require__(/*! ./AnnotationInfo */ "./web/js/metadata/AnnotationInfo.js"),
+    AnnotationInfo = _require9.AnnotationInfo;
+
+var _require10 = __webpack_require__(/*! ./MetadataSerializer */ "./web/js/metadata/MetadataSerializer.js"),
+    MetadataSerializer = _require10.MetadataSerializer;
+
+var _require11 = __webpack_require__(/*! ./PageMetas */ "./web/js/metadata/PageMetas.js"),
+    PageMetas = _require11.PageMetas;
+
+var _require12 = __webpack_require__(/*! ./TextHighlightRecords */ "./web/js/metadata/TextHighlightRecords.js"),
+    TextHighlightRecords = _require12.TextHighlightRecords;
+
+var _require13 = __webpack_require__(/*! ./TextHighlights */ "./web/js/metadata/TextHighlights.js"),
+    TextHighlights = _require13.TextHighlights;
+
+var _require14 = __webpack_require__(/*! ../Hashcodes */ "./web/js/Hashcodes.js"),
+    Hashcodes = _require14.Hashcodes;
+
+var _require15 = __webpack_require__(/*! ../util/Functions */ "./web/js/util/Functions.js"),
+    forDict = _require15.forDict;
+
+var log = __webpack_require__(/*! ../logger/Logger */ "./web/js/logger/Logger.js").create();
+
+var DocMetas = function () {
+    function DocMetas() {
+        _classCallCheck(this, DocMetas);
     }
 
-    /**
-     * Create a DocMeta object but place initial pagemarks on it. This is useful
-     * for testing.
-     */
-    static createWithinInitialPagemarks(fingerprint, nrPages) {
+    _createClass(DocMetas, null, [{
+        key: "create",
 
-        let result = this.create(fingerprint, nrPages);
 
-        let maxPages = 3;
-        for (let pageNum = 1; pageNum <= Math.min(nrPages, maxPages); ++pageNum) {
+        /**
+         * Create the basic DocInfo structure that we can use with required / basic
+         * field structure.
+         * @param fingerprint The fingerprint
+         * @param nrPages The number of pages in this document.
+         * @returns {DocMeta}
+         */
+        value: function create(fingerprint, nrPages) {
 
-            let pagemark = Pagemarks.create({
-                type: PagemarkType.SINGLE_COLUMN,
-                percentage: 100,
-                column: 0
-            });
+            var docInfo = new DocInfo({ fingerprint: fingerprint, nrPages: nrPages });
 
-            let pageMeta = result.getPageMeta(pageNum);
+            var pageMetas = {};
 
-            // set the pagemark that we just created.
-            // TODO: this should be pagemark.id as the key not pagemark.column
-            pageMeta.pagemarks[pagemark.column] = pagemark;
+            for (var idx = 1; idx <= nrPages; ++idx) {
+                var pageInfo = new PageInfo({ num: idx });
+                var pageMeta = new PageMeta({ pageInfo: pageInfo });
+                pageMetas[idx] = pageMeta;
+            }
+
+            return new DocMeta({ docInfo: docInfo, pageMetas: pageMetas });
         }
 
-        return result;
-    }
+        /**
+         * Create a DocMeta object but place initial pagemarks on it. This is useful
+         * for testing.
+         */
 
-    static createMockDocMeta() {
+    }, {
+        key: "createWithinInitialPagemarks",
+        value: function createWithinInitialPagemarks(fingerprint, nrPages) {
 
-        let fingerprint = "0x001";
-        let nrPages = 4;
-        let docMeta = DocMetas.createWithinInitialPagemarks(fingerprint, nrPages);
+            var result = this.create(fingerprint, nrPages);
 
-        let textHighlight = TextHighlights.createMockTextHighlight();
+            var maxPages = 3;
+            for (var pageNum = 1; pageNum <= Math.min(nrPages, maxPages); ++pageNum) {
 
-        docMeta.getPageMeta(1).textHighlights[textHighlight.id] = textHighlight;
+                var pagemark = Pagemarks.create({
+                    type: PagemarkType.SINGLE_COLUMN,
+                    percentage: 100,
+                    column: 0
+                });
 
-        return docMeta;
-    }
+                var pageMeta = result.getPageMeta(pageNum);
 
-    /**
-     */
-    static addPagemarks(docMeta, options) {
+                // set the pagemark that we just created.
+                // TODO: this should be pagemark.id as the key not pagemark.column
+                pageMeta.pagemarks[pagemark.column] = pagemark;
+            }
 
-        if (!options) {
-            options = {};
+            return result;
+        }
+    }, {
+        key: "createMockDocMeta",
+        value: function createMockDocMeta() {
+
+            var fingerprint = "0x001";
+            var nrPages = 4;
+            var docMeta = DocMetas.createWithinInitialPagemarks(fingerprint, nrPages);
+
+            var textHighlight = TextHighlights.createMockTextHighlight();
+
+            docMeta.getPageMeta(1).textHighlights[textHighlight.id] = textHighlight;
+
+            return docMeta;
         }
 
-        if (!options.nrPages) {
-            options.nrPages = 3;
-        }
+        /**
+         */
 
-        if (!options.offsetPage) {
-            // the starting page
-            options.offsetPage = 1;
-        }
+    }, {
+        key: "addPagemarks",
+        value: function addPagemarks(docMeta, options) {
 
-        if (!options.percentage) {
-            // the percentage value from 0-100
-            options.percentage = 100;
-        }
+            if (!options) {
+                options = {};
+            }
 
-        let maxPageNum = Math.min(options.offsetPage + options.nrPages - 1, docMeta.docInfo.nrPages);
+            if (!options.nrPages) {
+                options.nrPages = 3;
+            }
 
-        for (let pageNum = options.offsetPage; pageNum <= maxPageNum; ++pageNum) {
+            if (!options.offsetPage) {
+                // the starting page
+                options.offsetPage = 1;
+            }
 
-            let pagemark = Pagemarks.create({
-                type: PagemarkType.SINGLE_COLUMN,
-                percentage: 100,
-                column: 0
-            });
+            if (!options.percentage) {
+                // the percentage value from 0-100
+                options.percentage = 100;
+            }
 
-            let pageMeta = docMeta.getPageMeta(pageNum);
+            var maxPageNum = Math.min(options.offsetPage + options.nrPages - 1, docMeta.docInfo.nrPages);
 
-            // set the pagemark that we just created.
-            pageMeta.pagemarks[pagemark.column] = pagemark;
-        }
-    }
+            for (var pageNum = options.offsetPage; pageNum <= maxPageNum; ++pageNum) {
 
-    static serialize(docMeta, spacing) {
-        return MetadataSerializer.serialize(docMeta, spacing);
-    }
+                var pagemark = Pagemarks.create({
+                    type: PagemarkType.SINGLE_COLUMN,
+                    percentage: 100,
+                    column: 0
+                });
 
-    /**
-     * @return {DocMeta}
-     */
-    static deserialize(data) {
+                var pageMeta = docMeta.getPageMeta(pageNum);
 
-        if (!(typeof data === "string")) {
-            throw new Error("We can only deserialize strings: " + typeof data);
-        }
-
-        let docMeta = MetadataSerializer.deserialize(new DocMeta(), data);
-
-        return DocMetas.upgrade(docMeta);
-    }
-
-    /**
-     *
-     * @param docMeta {DocMeta}
-     * @return {DocMeta}
-     */
-    static upgrade(docMeta) {
-
-        // validate the JSON data and set defaults. In the future we should migrate
-        // to using something like AJV to provide these defaults and also perform
-        // type assertion.
-
-        docMeta.pageMetas = PageMetas.upgrade(docMeta.pageMetas);
-
-        // TODO: go through and upgrade the pagemarks. I should probably have
-        // an upgrade function for each object type...
-
-        if (!docMeta.annotationInfo) {
-            log.warn("No annotation info.. Adding default.");
-            docMeta.annotationInfo = new AnnotationInfo();
-        }
-
-        if (docMeta.docInfo) {
-
-            if (!docMeta.docInfo.pagemarkType) {
-                log.warn("DocInfo has no pagemarkType... Adding default of SINGLE_COLUMN");
-                docMeta.docInfo.pagemarkType = PagemarkType.SINGLE_COLUMN;
+                // set the pagemark that we just created.
+                pageMeta.pagemarks[pagemark.column] = pagemark;
             }
         }
+    }, {
+        key: "serialize",
+        value: function serialize(docMeta, spacing) {
+            return MetadataSerializer.serialize(docMeta, spacing);
+        }
 
-        return docMeta;
-    }
+        /**
+         * @return {DocMeta}
+         */
 
-}
+    }, {
+        key: "deserialize",
+        value: function deserialize(data) {
+
+            if (!(typeof data === "string")) {
+                throw new Error("We can only deserialize strings: " + (typeof data === "undefined" ? "undefined" : _typeof(data)));
+            }
+
+            var docMeta = MetadataSerializer.deserialize(new DocMeta(), data);
+
+            return DocMetas.upgrade(docMeta);
+        }
+
+        /**
+         *
+         * @param docMeta {DocMeta}
+         * @return {DocMeta}
+         */
+
+    }, {
+        key: "upgrade",
+        value: function upgrade(docMeta) {
+
+            // validate the JSON data and set defaults. In the future we should migrate
+            // to using something like AJV to provide these defaults and also perform
+            // type assertion.
+
+            docMeta.pageMetas = PageMetas.upgrade(docMeta.pageMetas);
+
+            // TODO: go through and upgrade the pagemarks. I should probably have
+            // an upgrade function for each object type...
+
+            if (!docMeta.annotationInfo) {
+                log.warn("No annotation info.. Adding default.");
+                docMeta.annotationInfo = new AnnotationInfo();
+            }
+
+            if (docMeta.docInfo) {
+
+                if (!docMeta.docInfo.pagemarkType) {
+                    log.warn("DocInfo has no pagemarkType... Adding default of SINGLE_COLUMN");
+                    docMeta.docInfo.pagemarkType = PagemarkType.SINGLE_COLUMN;
+                }
+            }
+
+            return docMeta;
+        }
+    }]);
+
+    return DocMetas;
+}();
 
 module.exports.DocMetas = DocMetas;
 
@@ -59153,34 +60935,54 @@ module.exports.DocMetas = DocMetas;
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-const { Annotation } = __webpack_require__(/*! ./Annotation.js */ "./web/js/metadata/Annotation.js");
-const { Note } = __webpack_require__(/*! ./Note.js */ "./web/js/metadata/Note.js");
+"use strict";
+
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var _require = __webpack_require__(/*! ./Annotation.js */ "./web/js/metadata/Annotation.js"),
+    Annotation = _require.Annotation;
+
+var _require2 = __webpack_require__(/*! ./Note.js */ "./web/js/metadata/Note.js"),
+    Note = _require2.Note;
 
 /* abstract */
-class ExtendedAnnotation extends Annotation {
 
-    constructor(val) {
 
-        super(val);
+var ExtendedAnnotation = function (_Annotation) {
+    _inherits(ExtendedAnnotation, _Annotation);
+
+    function ExtendedAnnotation(val) {
+        _classCallCheck(this, ExtendedAnnotation);
 
         /**
          * The note for this annotation.
          *
          * @type Note
          */
-        this.notes = {};
+        var _this = _possibleConstructorReturn(this, (ExtendedAnnotation.__proto__ || Object.getPrototypeOf(ExtendedAnnotation)).call(this, val));
+
+        _this.notes = {};
 
         /**
          *
          * @type map<string,Question>
          */
-        this.questions = {};
+        _this.questions = {};
 
         /**
          *
          * @type map<string,Flashcard>
          */
-        this.flashcards = {};
+        _this.flashcards = {};
 
         // FIXME: the keys of these objects should be the hash of the time
         // sequenece, the user, and machine that this was generated on.
@@ -59189,23 +60991,30 @@ class ExtendedAnnotation extends Annotation {
 
         // FIXME: should have tags (plural)
 
-        this.init(val);
+        _this.init(val);
+
+        return _this;
     }
 
-    setup() {
+    _createClass(ExtendedAnnotation, [{
+        key: "setup",
+        value: function setup() {
 
-        super.setup();
+            _get(ExtendedAnnotation.prototype.__proto__ || Object.getPrototypeOf(ExtendedAnnotation.prototype), "setup", this).call(this);
 
-        if (!this.notes) {
-            this.notes = {};
+            if (!this.notes) {
+                this.notes = {};
+            }
         }
-    }
+    }, {
+        key: "validate",
+        value: function validate() {
+            _get(ExtendedAnnotation.prototype.__proto__ || Object.getPrototypeOf(ExtendedAnnotation.prototype), "validate", this).call(this);
+        }
+    }]);
 
-    validate() {
-        super.validate();
-    }
-
-}
+    return ExtendedAnnotation;
+}(Annotation);
 
 module.exports.ExtendedAnnotation = ExtendedAnnotation;
 
@@ -59218,31 +61027,49 @@ module.exports.ExtendedAnnotation = ExtendedAnnotation;
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-const { VersionedObject } = __webpack_require__(/*! ./VersionedObject */ "./web/js/metadata/VersionedObject.js");
+"use strict";
 
-class Flashcard extends VersionedObject {
 
-  constructor(val) {
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-    super(val);
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var _require = __webpack_require__(/*! ./VersionedObject */ "./web/js/metadata/VersionedObject.js"),
+    VersionedObject = _require.VersionedObject;
+
+var Flashcard = function (_VersionedObject) {
+  _inherits(Flashcard, _VersionedObject);
+
+  function Flashcard(val) {
+    _classCallCheck(this, Flashcard);
 
     /**
      * The type of this flashcard.
      *
      * @type FlashcardType
      */
-    this.type = null;
+    var _this = _possibleConstructorReturn(this, (Flashcard.__proto__ || Object.getPrototypeOf(Flashcard)).call(this, val));
+
+    _this.type = null;
 
     /**
      * The content of this flashcard created by the user.
      *
      * @type map<String,Text> for each defined field.
      */
-    this.fields = {};
+    _this.fields = {};
 
-    this.init(val);
+    _this.init(val);
+
+    return _this;
   }
-};
+
+  return Flashcard;
+}(VersionedObject);
+
+;
 
 module.exports.Flashcard = Flashcard;
 
@@ -59255,23 +61082,29 @@ module.exports.Flashcard = Flashcard;
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-const { Symbol } = __webpack_require__(/*! ./Symbol.js */ "./web/js/metadata/Symbol.js");
+"use strict";
+
+
+var _require = __webpack_require__(/*! ./Symbol.js */ "./web/js/metadata/Symbol.js"),
+    _Symbol = _require.Symbol;
 
 /**
  * The type of the flashcard.
  */
+
+
 module.exports.FlashcardType = Object.freeze({
 
-    CLOZURE: new Symbol("CLOZURE"),
+    CLOZURE: new _Symbol("CLOZURE"),
 
-    BASIC_FRONT_BACK: new Symbol("BASIC_FRONT_BACK"),
+    BASIC_FRONT_BACK: new _Symbol("BASIC_FRONT_BACK"),
 
     // Create two derived views.  The front and back and then the reverse
     // (reverse with the back->front)
-    BASIC_FRONT_BACK_AND_REVERSE: new Symbol("BASIC_FRONT_BACK_AND_REVERSE"),
+    BASIC_FRONT_BACK_AND_REVERSE: new _Symbol("BASIC_FRONT_BACK_AND_REVERSE"),
 
     // the reverse is optional
-    BASIC_FRONT_BACK_OR_REVERSE: new Symbol("BASIC_FRONT_BACK_OR_REVERSE")
+    BASIC_FRONT_BACK_OR_REVERSE: new _Symbol("BASIC_FRONT_BACK_OR_REVERSE")
 
 });
 
@@ -59284,63 +61117,99 @@ module.exports.FlashcardType = Object.freeze({
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-const { Preconditions } = __webpack_require__(/*! ../Preconditions */ "./web/js/Preconditions.js");
-const { Flashcard } = __webpack_require__(/*! ./Flashcard */ "./web/js/metadata/Flashcard.js");
-const { Text } = __webpack_require__(/*! ./Text */ "./web/js/metadata/Text.js");
-const { ISODateTime } = __webpack_require__(/*! ./ISODateTime */ "./web/js/metadata/ISODateTime.js");
-const { Hashcodes } = __webpack_require__(/*! ../Hashcodes */ "./web/js/Hashcodes.js");
-const { AnnotationType } = __webpack_require__(/*! ./AnnotationType */ "./web/js/metadata/AnnotationType.js");
-const { FlashcardType } = __webpack_require__(/*! ./FlashcardType */ "./web/js/metadata/FlashcardType.js");
-const { TextType } = __webpack_require__(/*! ./TextType */ "./web/js/metadata/TextType.js");
-const { Texts } = __webpack_require__(/*! ./Texts */ "./web/js/metadata/Texts.js");
-const { Functions } = __webpack_require__(/*! ../util/Functions */ "./web/js/util/Functions.js");
+"use strict";
 
-class Flashcards {
 
-    static create(type, fields) {
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-        Preconditions.assertNotNull(fields, "fields");
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-        let now = new Date();
-        let created = new ISODateTime(now);
+var _require = __webpack_require__(/*! ../Preconditions */ "./web/js/Preconditions.js"),
+    Preconditions = _require.Preconditions;
 
-        let id = Hashcodes.createID({ created, fields });
-        return new Flashcard({
-            id,
-            created,
-            lastUpdated: new ISODateTime(now),
-            type,
-            fields
-        });
+var _require2 = __webpack_require__(/*! ./Flashcard */ "./web/js/metadata/Flashcard.js"),
+    Flashcard = _require2.Flashcard;
+
+var _require3 = __webpack_require__(/*! ./Text */ "./web/js/metadata/Text.js"),
+    Text = _require3.Text;
+
+var _require4 = __webpack_require__(/*! ./ISODateTime */ "./web/js/metadata/ISODateTime.js"),
+    ISODateTime = _require4.ISODateTime;
+
+var _require5 = __webpack_require__(/*! ../Hashcodes */ "./web/js/Hashcodes.js"),
+    Hashcodes = _require5.Hashcodes;
+
+var _require6 = __webpack_require__(/*! ./AnnotationType */ "./web/js/metadata/AnnotationType.js"),
+    AnnotationType = _require6.AnnotationType;
+
+var _require7 = __webpack_require__(/*! ./FlashcardType */ "./web/js/metadata/FlashcardType.js"),
+    FlashcardType = _require7.FlashcardType;
+
+var _require8 = __webpack_require__(/*! ./TextType */ "./web/js/metadata/TextType.js"),
+    TextType = _require8.TextType;
+
+var _require9 = __webpack_require__(/*! ./Texts */ "./web/js/metadata/Texts.js"),
+    Texts = _require9.Texts;
+
+var _require10 = __webpack_require__(/*! ../util/Functions */ "./web/js/util/Functions.js"),
+    Functions = _require10.Functions;
+
+var Flashcards = function () {
+    function Flashcards() {
+        _classCallCheck(this, Flashcards);
     }
 
-    /**
-     * Create a flashcard from the raw, completed, schema form data.
-     * @param data
-     */
-    static createFromSchemaFormData(data) {
+    _createClass(Flashcards, null, [{
+        key: "create",
+        value: function create(type, fields) {
 
-        // TODO: the markdown needs to be converted to HTML as well.  The text
-        // we get from the markdown widget is markdown. Not HTML and I confirmed
-        // this is the case.
+            Preconditions.assertNotNull(fields, "fields");
 
-        // require that the annotation type is correct
-        if (data.annotationType !== AnnotationType.FLASHCARD) {
-            throw new Error("Annotation type is incorrect: " + data.annotationType);
+            var now = new Date();
+            var created = new ISODateTime(now);
+
+            var id = Hashcodes.createID({ created: created, fields: fields });
+            return new Flashcard({
+                id: id,
+                created: created,
+                lastUpdated: new ISODateTime(now),
+                type: type,
+                fields: fields
+            });
         }
 
-        let fields = {};
+        /**
+         * Create a flashcard from the raw, completed, schema form data.
+         * @param data
+         */
 
-        // now work with the formData to create the fields.
-        Functions.forDict(data.formData, (key, value) => {
-            let text = Texts.create(value, TextType.MARKDOWN);
-            fields[key] = text;
-        });
+    }, {
+        key: "createFromSchemaFormData",
+        value: function createFromSchemaFormData(data) {
 
-        return Flashcards.create(FlashcardType.BASIC_FRONT_BACK, fields);
-    }
+            // TODO: the markdown needs to be converted to HTML as well.  The text
+            // we get from the markdown widget is markdown. Not HTML and I confirmed
+            // this is the case.
 
-}
+            // require that the annotation type is correct
+            if (data.annotationType !== AnnotationType.FLASHCARD) {
+                throw new Error("Annotation type is incorrect: " + data.annotationType);
+            }
+
+            var fields = {};
+
+            // now work with the formData to create the fields.
+            Functions.forDict(data.formData, function (key, value) {
+                var text = Texts.create(value, TextType.MARKDOWN);
+                fields[key] = text;
+            });
+
+            return Flashcards.create(FlashcardType.BASIC_FRONT_BACK, fields);
+        }
+    }]);
+
+    return Flashcards;
+}();
 
 module.exports.Flashcards = Flashcards;
 
@@ -59351,15 +61220,24 @@ module.exports.Flashcards = Flashcards;
   !*** ./web/js/metadata/ISODateTime.js ***!
   \****************************************/
 /*! no static exports found */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 /**
  *
  * Basic ISO8601 date and time format.
  */
-class ISODateTime {
-
-    constructor(val) {
+var ISODateTime = function () {
+    function ISODateTime(val) {
+        _classCallCheck(this, ISODateTime);
 
         /**
          * The Date object representing this time.
@@ -59371,30 +61249,39 @@ class ISODateTime {
         } else if (val instanceof Date) {
             this.value = val.toISOString();
         } else {
-            throw new Error("Invalid type: " + typeof val);
+            throw new Error("Invalid type: " + (typeof val === "undefined" ? "undefined" : _typeof(val)));
         }
     }
 
-    toDate() {
-        return Date.parse(this.value);
-    }
+    _createClass(ISODateTime, [{
+        key: "toDate",
+        value: function toDate() {
+            return Date.parse(this.value);
+        }
+    }, {
+        key: "toJSON",
+        value: function toJSON() {
+            return this.value;
+        }
+    }, {
+        key: "toString",
+        value: function toString() {
+            return this.value;
+        }
 
-    toJSON() {
-        return this.value;
-    }
+        /**
+         * Create a duplicate version of this object.
+         */
 
-    toString() {
-        return this.value;
-    }
+    }, {
+        key: "duplicate",
+        value: function duplicate() {
+            return new ISODateTime(this.value);
+        }
+    }]);
 
-    /**
-     * Create a duplicate version of this object.
-     */
-    duplicate() {
-        return new ISODateTime(this.value);
-    }
-
-}
+    return ISODateTime;
+}();
 
 module.exports.ISODateTime = ISODateTime;
 
@@ -59407,67 +61294,95 @@ module.exports.ISODateTime = ISODateTime;
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-const { ISODateTime } = __webpack_require__(/*! ./ISODateTime */ "./web/js/metadata/ISODateTime.js");
-const { SerializedObject } = __webpack_require__(/*! ./SerializedObject */ "./web/js/metadata/SerializedObject.js");
+"use strict";
+
+
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var _require = __webpack_require__(/*! ./ISODateTime */ "./web/js/metadata/ISODateTime.js"),
+    ISODateTime = _require.ISODateTime;
+
+var _require2 = __webpack_require__(/*! ./SerializedObject */ "./web/js/metadata/SerializedObject.js"),
+    SerializedObject = _require2.SerializedObject;
 
 /**
  * All JSON must go through the metadata serializer so we can handle proper
  * serialization but also object validation once they are deserialized.
  */
-class MetadataSerializer {
 
-    static replacer(key, value) {
 
-        if (value instanceof SerializedObject) {
-            value.setup();
-            value.validate();
-        }
-
-        return value;
+var MetadataSerializer = function () {
+    function MetadataSerializer() {
+        _classCallCheck(this, MetadataSerializer);
     }
 
-    static reviver(key, value) {
+    _createClass(MetadataSerializer, null, [{
+        key: "replacer",
+        value: function replacer(key, value) {
 
-        if (value instanceof SerializedObject) {
-            value.setup();
-            value.validate();
+            if (value instanceof SerializedObject) {
+                value.setup();
+                value.validate();
+            }
+
+            return value;
+        }
+    }, {
+        key: "reviver",
+        value: function reviver(key, value) {
+
+            if (value instanceof SerializedObject) {
+                value.setup();
+                value.validate();
+            }
+
+            return value;
+        }
+    }, {
+        key: "serialize",
+        value: function serialize(object, spacing) {
+            //return JSON.stringify(object, MetadataSerializer.replacer, "");
+
+            if (!spacing) {
+                spacing = "";
+            }
+
+            return JSON.stringify(object, null, spacing);
         }
 
-        return value;
-    }
+        /**
+         * Given an instance of an object, and a JSON string, deserialize the string into
+         * the object.
+         * @param object {Object} the object which should be returned after deserializing.
+         * @param data
+         */
 
-    static serialize(object, spacing) {
-        //return JSON.stringify(object, MetadataSerializer.replacer, "");
+    }, {
+        key: "deserialize",
+        value: function deserialize(obj, data) {
 
-        if (!spacing) {
-            spacing = "";
+            if (!data) {
+                throw new Error("No data given!");
+            }
+
+            if (!(typeof data === "string")) {
+                throw new Error("We can only deserialize strings: " + (typeof data === "undefined" ? "undefined" : _typeof(data)));
+            }
+
+            var parsed = JSON.parse(data);
+            Object.assign(obj, parsed);
+            return obj;
         }
+    }]);
 
-        return JSON.stringify(object, null, spacing);
-    }
+    return MetadataSerializer;
+}();
 
-    /**
-     * Given an instance of an object, and a JSON string, deserialize the string into
-     * the object.
-     * @param object {Object} the object which should be returned after deserializing.
-     * @param data
-     */
-    static deserialize(obj, data) {
-
-        if (!data) {
-            throw new Error("No data given!");
-        }
-
-        if (!(typeof data === "string")) {
-            throw new Error("We can only deserialize strings: " + typeof data);
-        }
-
-        let parsed = JSON.parse(data);
-        Object.assign(obj, parsed);
-        return obj;
-    }
-
-};
+;
 
 module.exports.MetadataSerializer = MetadataSerializer;
 
@@ -59480,42 +61395,67 @@ module.exports.MetadataSerializer = MetadataSerializer;
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-const { VersionedObject } = __webpack_require__(/*! ./VersionedObject */ "./web/js/metadata/VersionedObject.js");
+"use strict";
+
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var _require = __webpack_require__(/*! ./VersionedObject */ "./web/js/metadata/VersionedObject.js"),
+    VersionedObject = _require.VersionedObject;
 
 /**
  * Private note describing this object.  Meant to last a long time.
  */
-class Note extends VersionedObject {
 
-    constructor(val) {
 
-        super(val);
+var Note = function (_VersionedObject) {
+    _inherits(Note, _VersionedObject);
+
+    function Note(val) {
+        _classCallCheck(this, Note);
 
         /**
          * The content of this note.
          *
          * @type {Text}
          */
-        this.content = null;
+        var _this = _possibleConstructorReturn(this, (Note.__proto__ || Object.getPrototypeOf(Note)).call(this, val));
 
-        this.init(val);
+        _this.content = null;
+
+        _this.init(val);
+
+        return _this;
     }
 
-    setup() {
+    _createClass(Note, [{
+        key: "setup",
+        value: function setup() {
 
-        if (!this.content) {
-            this.content = "";
+            if (!this.content) {
+                this.content = "";
+            }
         }
-    }
+    }, {
+        key: "validate",
+        value: function validate() {
 
-    validate() {
-
-        if (!this.created) {
-            throw new Error("The field `created` is required.");
+            if (!this.created) {
+                throw new Error("The field `created` is required.");
+            }
         }
-    }
+    }]);
 
-};
+    return Note;
+}(VersionedObject);
+
+;
 
 module.exports.Note = Note;
 
@@ -59528,29 +61468,49 @@ module.exports.Note = Note;
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-const { SerializedObject } = __webpack_require__(/*! ./SerializedObject.js */ "./web/js/metadata/SerializedObject.js");
+"use strict";
 
-class PageInfo extends SerializedObject {
 
-    constructor(val) {
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-        super(val);
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var _require = __webpack_require__(/*! ./SerializedObject.js */ "./web/js/metadata/SerializedObject.js"),
+    SerializedObject = _require.SerializedObject;
+
+var PageInfo = function (_SerializedObject) {
+    _inherits(PageInfo, _SerializedObject);
+
+    function PageInfo(val) {
+        _classCallCheck(this, PageInfo);
 
         /**
          * The page number of this page.
          *
          * @type number.
          */
-        this.num = null;
+        var _this = _possibleConstructorReturn(this, (PageInfo.__proto__ || Object.getPrototypeOf(PageInfo)).call(this, val));
 
-        this.init(val);
+        _this.num = null;
+
+        _this.init(val);
+
+        return _this;
     }
 
-    validate() {
-        this.validateMembers([{ name: 'num', type: "number" }]);
-    }
+    _createClass(PageInfo, [{
+        key: "validate",
+        value: function validate() {
+            this.validateMembers([{ name: 'num', type: "number" }]);
+        }
+    }]);
 
-}
+    return PageInfo;
+}(SerializedObject);
 
 module.exports.PageInfo = PageInfo;
 
@@ -59563,20 +61523,38 @@ module.exports.PageInfo = PageInfo;
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-const { SerializedObject } = __webpack_require__(/*! ./SerializedObject.js */ "./web/js/metadata/SerializedObject.js");
-const { PageInfo } = __webpack_require__(/*! ./PageInfo */ "./web/js/metadata/PageInfo.js");
+"use strict";
 
-class PageMeta extends SerializedObject {
 
-  constructor(val) {
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-    super(val);
+var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var _require = __webpack_require__(/*! ./SerializedObject.js */ "./web/js/metadata/SerializedObject.js"),
+    SerializedObject = _require.SerializedObject;
+
+var _require2 = __webpack_require__(/*! ./PageInfo */ "./web/js/metadata/PageInfo.js"),
+    PageInfo = _require2.PageInfo;
+
+var PageMeta = function (_SerializedObject) {
+  _inherits(PageMeta, _SerializedObject);
+
+  function PageMeta(val) {
+    _classCallCheck(this, PageMeta);
 
     /**
      * The pageInfo for this page.
      * @type {PageInfo}
      */
-    this.pageInfo = null;
+    var _this = _possibleConstructorReturn(this, (PageMeta.__proto__ || Object.getPrototypeOf(PageMeta)).call(this, val));
+
+    _this.pageInfo = null;
 
     /**
      * The index of page number to pagemark which stores the data we need
@@ -59584,40 +61562,40 @@ class PageMeta extends SerializedObject {
      *
      * @type Object<string,pagemark>
      */
-    this.pagemarks = {};
+    _this.pagemarks = {};
 
     /**
      * The note for this annotation.
      *
      * @type Object<string,Note>
      */
-    this.notes = {};
+    _this.notes = {};
 
     /**
      *
      * @type {Object<string,Question>}
      */
-    this.questions = {};
+    _this.questions = {};
 
     /**
      *
      * @type {Object<string,Flashcard>}
      */
-    this.flashcards = {};
+    _this.flashcards = {};
 
     /**
      * An index of test highlights for the page.
      *
      * @type {Object<string,TextHighlight>}
      */
-    this.textHighlights = {};
+    _this.textHighlights = {};
 
     /**
      * An index of area highlights for the page.
      *
      * @type {Object<string,AreaHighlight>}
      */
-    this.areaHighlights = {};
+    _this.areaHighlights = {};
 
     /**
      * The thumbnails for this page.  Usually, this is just one thumbnail
@@ -59628,37 +61606,44 @@ class PageMeta extends SerializedObject {
      */
     //this.thumbails = {};
 
-    this.init(val);
+    _this.init(val);
+
+    return _this;
   }
 
-  setup() {
+  _createClass(PageMeta, [{
+    key: "setup",
+    value: function setup() {
 
-    super.setup();
+      _get(PageMeta.prototype.__proto__ || Object.getPrototypeOf(PageMeta.prototype), "setup", this).call(this);
 
-    if (!this.pagemarks) {
-      // this could happen when serializing from old file formats
-      this.pagemarks = {};
+      if (!this.pagemarks) {
+        // this could happen when serializing from old file formats
+        this.pagemarks = {};
+      }
+
+      if (!this.textHighlights) {
+        // this could happen when serializing from old file formats
+        this.textHighlights = {};
+      }
+
+      if (!this.areaHighlights) {
+        // this could happen when serializing from old file formats
+        this.areaHighlights = {};
+      }
     }
+  }, {
+    key: "validate",
+    value: function validate() {
 
-    if (!this.textHighlights) {
-      // this could happen when serializing from old file formats
-      this.textHighlights = {};
+      _get(PageMeta.prototype.__proto__ || Object.getPrototypeOf(PageMeta.prototype), "validate", this).call(this);
+
+      this.validateMembers([{ name: 'pageInfo', instance: PageInfo }]);
     }
+  }]);
 
-    if (!this.areaHighlights) {
-      // this could happen when serializing from old file formats
-      this.areaHighlights = {};
-    }
-  }
-
-  validate() {
-
-    super.validate();
-
-    this.validateMembers([{ name: 'pageInfo', instance: PageInfo }]);
-  }
-
-}
+  return PageMeta;
+}(SerializedObject);
 
 module.exports.PageMeta = PageMeta;
 
@@ -59671,53 +61656,75 @@ module.exports.PageMeta = PageMeta;
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-const { Pagemarks } = __webpack_require__(/*! ./Pagemarks.js */ "./web/js/metadata/Pagemarks.js");
-const { forDict } = __webpack_require__(/*! ../util/Functions */ "./web/js/util/Functions.js");
-const { Hashcodes } = __webpack_require__(/*! ../Hashcodes */ "./web/js/Hashcodes.js");
-const log = __webpack_require__(/*! ../logger/Logger */ "./web/js/logger/Logger.js").create();
+"use strict";
 
-class PageMetas {
 
-    /**
-     * @param pageMetas {Object<int,PageMeta>}
-     * @return {Object<int,PageMeta>}
-     */
-    static upgrade(pageMetas) {
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-        pageMetas = Object.assign({}, pageMetas);
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-        forDict(pageMetas, function (key, pageMeta) {
+var _require = __webpack_require__(/*! ./Pagemarks.js */ "./web/js/metadata/Pagemarks.js"),
+    Pagemarks = _require.Pagemarks;
 
-            if (!pageMeta.textHighlights) {
-                log.warn("No textHighlights.  Assigning default.");
-                pageMeta.textHighlights = {};
-            }
+var _require2 = __webpack_require__(/*! ../util/Functions */ "./web/js/util/Functions.js"),
+    forDict = _require2.forDict;
 
-            // make sure legacy / old text highlights are given IDs.
-            forDict(pageMeta.textHighlights, function (key, textHighlight) {
-                if (!textHighlight.id) {
-                    log.warn("Text highlight given ID");
-                    textHighlight.id = Hashcodes.createID(textHighlight.rects);
-                }
-            });
+var _require3 = __webpack_require__(/*! ../Hashcodes */ "./web/js/Hashcodes.js"),
+    Hashcodes = _require3.Hashcodes;
 
-            if (!pageMeta.areaHighlights) {
-                log.warn("No areaHighlights.  Assigning default.");
-                pageMeta.areaHighlights = {};
-            }
+var log = __webpack_require__(/*! ../logger/Logger */ "./web/js/logger/Logger.js").create();
 
-            if (!pageMeta.pagemarks) {
-                log.warn("No pagemarks.  Assigning default (empty map)");
-                pageMeta.pagemarks = {};
-            }
-
-            pageMeta.pagemarks = Pagemarks.upgrade(pageMeta.pagemarks);
-        });
-
-        return pageMetas;
+var PageMetas = function () {
+    function PageMetas() {
+        _classCallCheck(this, PageMetas);
     }
 
-}
+    _createClass(PageMetas, null, [{
+        key: "upgrade",
+
+
+        /**
+         * @param pageMetas {Object<int,PageMeta>}
+         * @return {Object<int,PageMeta>}
+         */
+        value: function upgrade(pageMetas) {
+
+            pageMetas = Object.assign({}, pageMetas);
+
+            forDict(pageMetas, function (key, pageMeta) {
+
+                if (!pageMeta.textHighlights) {
+                    log.warn("No textHighlights.  Assigning default.");
+                    pageMeta.textHighlights = {};
+                }
+
+                // make sure legacy / old text highlights are given IDs.
+                forDict(pageMeta.textHighlights, function (key, textHighlight) {
+                    if (!textHighlight.id) {
+                        log.warn("Text highlight given ID");
+                        textHighlight.id = Hashcodes.createID(textHighlight.rects);
+                    }
+                });
+
+                if (!pageMeta.areaHighlights) {
+                    log.warn("No areaHighlights.  Assigning default.");
+                    pageMeta.areaHighlights = {};
+                }
+
+                if (!pageMeta.pagemarks) {
+                    log.warn("No pagemarks.  Assigning default (empty map)");
+                    pageMeta.pagemarks = {};
+                }
+
+                pageMeta.pagemarks = Pagemarks.upgrade(pageMeta.pagemarks);
+            });
+
+            return pageMetas;
+        }
+    }]);
+
+    return PageMetas;
+}();
 
 module.exports.PageMetas = PageMetas;
 
@@ -59730,31 +61737,52 @@ module.exports.PageMetas = PageMetas;
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
+"use strict";
 
-const { Annotation } = __webpack_require__(/*! ./Annotation */ "./web/js/metadata/Annotation.js");
-const { PagemarkType } = __webpack_require__(/*! ./PagemarkType */ "./web/js/metadata/PagemarkType.js");
-const { MetadataSerializer } = __webpack_require__(/*! ./MetadataSerializer */ "./web/js/metadata/MetadataSerializer.js");
-const { ISODateTime } = __webpack_require__(/*! ./ISODateTime */ "./web/js/metadata/ISODateTime.js");
 
-class Pagemark extends Annotation {
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-    constructor(val) {
+var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
 
-        super(val);
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var _require = __webpack_require__(/*! ./Annotation */ "./web/js/metadata/Annotation.js"),
+    Annotation = _require.Annotation;
+
+var _require2 = __webpack_require__(/*! ./PagemarkType */ "./web/js/metadata/PagemarkType.js"),
+    PagemarkType = _require2.PagemarkType;
+
+var _require3 = __webpack_require__(/*! ./MetadataSerializer */ "./web/js/metadata/MetadataSerializer.js"),
+    MetadataSerializer = _require3.MetadataSerializer;
+
+var _require4 = __webpack_require__(/*! ./ISODateTime */ "./web/js/metadata/ISODateTime.js"),
+    ISODateTime = _require4.ISODateTime;
+
+var Pagemark = function (_Annotation) {
+    _inherits(Pagemark, _Annotation);
+
+    function Pagemark(val) {
+        _classCallCheck(this, Pagemark);
 
         /**
          * The note for this annotation.
          *
          * @type {Object<String,Note>}
          */
-        this.notes = {};
+        var _this = _possibleConstructorReturn(this, (Pagemark.__proto__ || Object.getPrototypeOf(Pagemark)).call(this, val));
+
+        _this.notes = {};
 
         /**
          * The type of pagemark.
          *
          * @type {PagemarkType}
          */
-        this.type = null;
+        _this.type = null;
 
         /**
          * The total percentage of the page that is covered with the page mark.
@@ -59763,7 +61791,7 @@ class Pagemark extends Annotation {
          *
          * @type number
          */
-        this.percentage = null;
+        _this.percentage = null;
 
         /**
          * The column number on which this pagemark is rendered.  This is mostly
@@ -59772,7 +61800,7 @@ class Pagemark extends Annotation {
          *
          * @type {number}
          */
-        this.column = null;
+        _this.column = null;
 
         /**
          * The PagemarkRect for this pagemark. When not specified we use a box of
@@ -59783,44 +61811,52 @@ class Pagemark extends Annotation {
          *
          * @type {PagemarkRect}
          */
-        this.rect = null;
+        _this.rect = null;
 
         // TODO: support 'range' in the future which is a PagemarkRange so that
         // we can start off reading within a smaller page.
 
-        this.init(val);
+        _this.init(val);
+
+        return _this;
     }
 
-    setup() {
+    _createClass(Pagemark, [{
+        key: "setup",
+        value: function setup() {
 
-        super.setup();
+            _get(Pagemark.prototype.__proto__ || Object.getPrototypeOf(Pagemark.prototype), "setup", this).call(this);
 
-        if (!this.notes) {
-            this.notes = {};
+            if (!this.notes) {
+                this.notes = {};
+            }
+
+            if (!this.type) {
+                this.type = PagemarkType.SINGLE_COLUMN;
+            }
+
+            if (!this.percentage) {
+                this.percentage = 100;
+            }
+
+            if (!this.column) {
+                this.column = 0;
+            }
         }
-
-        if (!this.type) {
-            this.type = PagemarkType.SINGLE_COLUMN;
+    }, {
+        key: "validate",
+        value: function validate() {
+            _get(Pagemark.prototype.__proto__ || Object.getPrototypeOf(Pagemark.prototype), "validate", this).call(this);
         }
-
-        if (!this.percentage) {
-            this.percentage = 100;
+    }, {
+        key: "toString",
+        value: function toString() {
+            return MetadataSerializer.serialize(this);
         }
+    }]);
 
-        if (!this.column) {
-            this.column = 0;
-        }
-    }
-
-    validate() {
-        super.validate();
-    }
-
-    toString() {
-        return MetadataSerializer.serialize(this);
-    }
-
-}
+    return Pagemark;
+}(Annotation);
 
 module.exports.Pagemark = Pagemark;
 
@@ -59833,11 +61869,23 @@ module.exports.Pagemark = Pagemark;
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-const { Preconditions } = __webpack_require__(/*! ../Preconditions */ "./web/js/Preconditions.js");
-const { Rects } = __webpack_require__(/*! ../Rects */ "./web/js/Rects.js");
-const { Interval } = __webpack_require__(/*! ../math/Interval */ "./web/js/math/Interval.js");
+"use strict";
 
-const ENTIRE_PAGE = Rects.createFromBasicRect({ left: 0, top: 0, width: 100, height: 100 });
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var _require = __webpack_require__(/*! ../Preconditions */ "./web/js/Preconditions.js"),
+    Preconditions = _require.Preconditions;
+
+var _require2 = __webpack_require__(/*! ../Rects */ "./web/js/Rects.js"),
+    Rects = _require2.Rects;
+
+var _require3 = __webpack_require__(/*! ../math/Interval */ "./web/js/math/Interval.js"),
+    Interval = _require3.Interval;
+
+var ENTIRE_PAGE = Rects.createFromBasicRect({ left: 0, top: 0, width: 100, height: 100 });
 
 /**
  * The box layout of this pagemark.  We use the typical DOM positioning style
@@ -59874,9 +61922,10 @@ const ENTIRE_PAGE = Rects.createFromBasicRect({ left: 0, top: 0, width: 100, hei
  * This would NOT be a square but a rectangle and the percentages confuse that.
  *
  */
-class PagemarkRect {
 
-  constructor(obj) {
+var PagemarkRect = function () {
+  function PagemarkRect(obj) {
+    _classCallCheck(this, PagemarkRect);
 
     /**
      * @type {number}
@@ -59909,63 +61958,80 @@ class PagemarkRect {
    *
    * @private
    */
-  _validate() {
 
-    let interval = new Interval(0, 100);
 
-    let assertInterval = value => interval.containsPoint(value);
+  _createClass(PagemarkRect, [{
+    key: "_validate",
+    value: function _validate() {
 
-    Preconditions.assert(this.top, assertInterval, "top");
-    Preconditions.assert(this.left, assertInterval, "left");
-    Preconditions.assert(this.width, assertInterval, "width");
-    Preconditions.assert(this.height, assertInterval, "height");
-  }
+      var interval = new Interval(0, 100);
 
-  /**
-   * Compute a percentage of the page that this rect holds.
-   */
-  toPercentage() {
-    return 100 * (Rects.createFromBasicRect(this).area / ENTIRE_PAGE.area);
-  }
+      var assertInterval = function assertInterval(value) {
+        return interval.containsPoint(value);
+      };
 
-  /**
-   * Convert this to a fractional rect where all the values are in the
-   * interval [0.0,1.0]
-   *
-   * @return {Rect}
-   */
-  toFractionalRect() {
-
-    let result = {};
-
-    for (let key in this) {
-
-      if (!this.hasOwnProperty(key)) continue;
-
-      result[key] = this[key] / 100;
+      Preconditions.assert(this.top, assertInterval, "top");
+      Preconditions.assert(this.left, assertInterval, "left");
+      Preconditions.assert(this.width, assertInterval, "width");
+      Preconditions.assert(this.height, assertInterval, "height");
     }
 
-    return Rects.createFromBasicRect(result);
-  }
+    /**
+     * Compute a percentage of the page that this rect holds.
+     */
 
-  /**
-   *
-   * @param dimensions {Dimensions}
-   * @return {Rect}
-   */
-  toDimensions(dimensions) {
+  }, {
+    key: "toPercentage",
+    value: function toPercentage() {
+      return 100 * (Rects.createFromBasicRect(this).area / ENTIRE_PAGE.area);
+    }
 
-    let fractionalRect = this.toFractionalRect();
+    /**
+     * Convert this to a fractional rect where all the values are in the
+     * interval [0.0,1.0]
+     *
+     * @return {Rect}
+     */
 
-    return Rects.createFromBasicRect({
-      left: fractionalRect.left * dimensions.width,
-      width: fractionalRect.width * dimensions.width,
-      top: fractionalRect.top * dimensions.height,
-      height: fractionalRect.height * dimensions.height
-    });
-  }
+  }, {
+    key: "toFractionalRect",
+    value: function toFractionalRect() {
 
-}
+      var result = {};
+
+      for (var key in this) {
+
+        if (!this.hasOwnProperty(key)) continue;
+
+        result[key] = this[key] / 100;
+      }
+
+      return Rects.createFromBasicRect(result);
+    }
+
+    /**
+     *
+     * @param dimensions {Dimensions}
+     * @return {Rect}
+     */
+
+  }, {
+    key: "toDimensions",
+    value: function toDimensions(dimensions) {
+
+      var fractionalRect = this.toFractionalRect();
+
+      return Rects.createFromBasicRect({
+        left: fractionalRect.left * dimensions.width,
+        width: fractionalRect.width * dimensions.width,
+        top: fractionalRect.top * dimensions.height,
+        height: fractionalRect.height * dimensions.height
+      });
+    }
+  }]);
+
+  return PagemarkRect;
+}();
 
 module.exports.PagemarkRect = PagemarkRect;
 
@@ -59978,94 +62044,127 @@ module.exports.PagemarkRect = PagemarkRect;
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-const { PagemarkType } = __webpack_require__(/*! ./PagemarkType */ "./web/js/metadata/PagemarkType.js");
-const { PagemarkRect } = __webpack_require__(/*! ./PagemarkRect */ "./web/js/metadata/PagemarkRect.js");
-const { Rects } = __webpack_require__(/*! ../Rects */ "./web/js/Rects.js");
+"use strict";
 
-class PagemarkRects {
 
-    /**
-     *
-     * Create a default PagemarkRect from a Pagemark that might be legacy.
-     *
-     * @param pagemark {Pagemark}
-     * @return {PagemarkRect}
-     */
-    static createDefault(pagemark) {
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-        if (pagemark.type === PagemarkType.SINGLE_COLUMN && "percentage" in pagemark) {
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var _require = __webpack_require__(/*! ./PagemarkType */ "./web/js/metadata/PagemarkType.js"),
+    PagemarkType = _require.PagemarkType;
+
+var _require2 = __webpack_require__(/*! ./PagemarkRect */ "./web/js/metadata/PagemarkRect.js"),
+    PagemarkRect = _require2.PagemarkRect;
+
+var _require3 = __webpack_require__(/*! ../Rects */ "./web/js/Rects.js"),
+    Rects = _require3.Rects;
+
+var PagemarkRects = function () {
+    function PagemarkRects() {
+        _classCallCheck(this, PagemarkRects);
+    }
+
+    _createClass(PagemarkRects, null, [{
+        key: "createDefault",
+
+
+        /**
+         *
+         * Create a default PagemarkRect from a Pagemark that might be legacy.
+         *
+         * @param pagemark {Pagemark}
+         * @return {PagemarkRect}
+         */
+        value: function createDefault(pagemark) {
+
+            if (pagemark.type === PagemarkType.SINGLE_COLUMN && "percentage" in pagemark) {
+
+                return new PagemarkRect({
+                    left: 0,
+                    top: 0,
+                    width: 100,
+                    height: pagemark.percentage
+                });
+            }
+
+            throw new Error("Can not create default");
+        }
+
+        /**
+         *
+         * @param percentage {number}
+         * @return {PagemarkRect}
+         */
+
+    }, {
+        key: "createFromPercentage",
+        value: function createFromPercentage(percentage) {
 
             return new PagemarkRect({
                 left: 0,
                 top: 0,
                 width: 100,
-                height: pagemark.percentage
+                height: percentage
             });
         }
 
-        throw new Error("Can not create default");
-    }
+        /**
+         *
+         *
+         * @param rect {Rect}
+         * @return {PagemarkRect}
+         */
 
-    /**
-     *
-     * @param percentage {number}
-     * @return {PagemarkRect}
-     */
-    static createFromPercentage(percentage) {
+    }, {
+        key: "createFromRect",
+        value: function createFromRect(rect) {
 
-        return new PagemarkRect({
-            left: 0,
-            top: 0,
-            width: 100,
-            height: percentage
-        });
-    }
+            return new PagemarkRect({
+                left: rect.left,
+                top: rect.top,
+                width: rect.width,
+                height: rect.height
+            });
+        }
 
-    /**
-     *
-     *
-     * @param rect {Rect}
-     * @return {PagemarkRect}
-     */
-    static createFromRect(rect) {
+        /**
+         *
+         *
+         * @param xAxis {Line}
+         * @param yAxis {Line}
+         * @return {PagemarkRect}
+         */
 
-        return new PagemarkRect({
-            left: rect.left,
-            top: rect.top,
-            width: rect.width,
-            height: rect.height
-        });
-    }
+    }, {
+        key: "createFromLines",
+        value: function createFromLines(xAxis, yAxis) {
+            return PagemarkRects.createFromRect(Rects.createFromLines(xAxis, yAxis));
+        }
 
-    /**
-     *
-     *
-     * @param xAxis {Line}
-     * @param yAxis {Line}
-     * @return {PagemarkRect}
-     */
-    static createFromLines(xAxis, yAxis) {
-        return PagemarkRects.createFromRect(Rects.createFromLines(xAxis, yAxis));
-    }
+        /**
+         * Create a new PagemarkRect from a positioned rect.  We use this to take
+         * a dragged or resized rect / box on the screen then convert it to a
+         * PagemarkRect with the correct coordinates.
+         *
+         * @param boxRect {Rect}
+         * @param containerRect {Rect}
+         * @return {PagemarkRect}
+         */
 
-    /**
-     * Create a new PagemarkRect from a positioned rect.  We use this to take
-     * a dragged or resized rect / box on the screen then convert it to a
-     * PagemarkRect with the correct coordinates.
-     *
-     * @param boxRect {Rect}
-     * @param containerRect {Rect}
-     * @return {PagemarkRect}
-     */
-    static createFromPositionedRect(boxRect, containerRect) {
+    }, {
+        key: "createFromPositionedRect",
+        value: function createFromPositionedRect(boxRect, containerRect) {
 
-        let xAxis = boxRect.toLine("x").multiply(100 / containerRect.width);
-        let yAxis = boxRect.toLine("y").multiply(100 / containerRect.height);
+            var xAxis = boxRect.toLine("x").multiply(100 / containerRect.width);
+            var yAxis = boxRect.toLine("y").multiply(100 / containerRect.height);
 
-        return this.createFromLines(xAxis, yAxis);
-    }
+            return this.createFromLines(xAxis, yAxis);
+        }
+    }]);
 
-}
+    return PagemarkRects;
+}();
 
 module.exports.PagemarkRects = PagemarkRects;
 
@@ -60078,15 +62177,21 @@ module.exports.PagemarkRects = PagemarkRects;
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-const { Symbol } = __webpack_require__(/*! ./Symbol.js */ "./web/js/metadata/Symbol.js");
+"use strict";
+
+
+var _require = __webpack_require__(/*! ./Symbol.js */ "./web/js/metadata/Symbol.js"),
+    _Symbol = _require.Symbol;
 
 /**
  *
  */
+
+
 module.exports.PagemarkType = Object.freeze({
-    SINGLE_COLUMN: new Symbol("SINGLE_COLUMN"),
-    DOUBLE_COLUMN: new Symbol("DOUBLE_COLUMN"),
-    TRIPLE_COLUMN: new Symbol("TRIPLE_COLUMN")
+    SINGLE_COLUMN: new _Symbol("SINGLE_COLUMN"),
+    DOUBLE_COLUMN: new _Symbol("DOUBLE_COLUMN"),
+    TRIPLE_COLUMN: new _Symbol("TRIPLE_COLUMN")
 });
 
 /***/ }),
@@ -60098,198 +62203,239 @@ module.exports.PagemarkType = Object.freeze({
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-const { Hashcodes } = __webpack_require__(/*! ../Hashcodes */ "./web/js/Hashcodes.js");
-const { Pagemark } = __webpack_require__(/*! ./Pagemark */ "./web/js/metadata/Pagemark.js");
-const { PagemarkType } = __webpack_require__(/*! ./PagemarkType */ "./web/js/metadata/PagemarkType.js");
-const { PagemarkRect } = __webpack_require__(/*! ./PagemarkRect */ "./web/js/metadata/PagemarkRect.js");
-const { PagemarkRects } = __webpack_require__(/*! ./PagemarkRects */ "./web/js/metadata/PagemarkRects.js");
-const { ISODateTime } = __webpack_require__(/*! ./ISODateTime */ "./web/js/metadata/ISODateTime.js");
-const { Objects } = __webpack_require__(/*! ../util/Objects */ "./web/js/util/Objects.js");
-const { round } = __webpack_require__(/*! ../util/Percentages */ "./web/js/util/Percentages.js");
-const { forDict } = __webpack_require__(/*! ../util/Functions */ "./web/js/util/Functions.js");
+"use strict";
 
-const log = __webpack_require__(/*! ../logger/Logger */ "./web/js/logger/Logger.js").create();
 
-const DEFAULT_PAGEMARK_RECT = new PagemarkRect({
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var _require = __webpack_require__(/*! ../Hashcodes */ "./web/js/Hashcodes.js"),
+    Hashcodes = _require.Hashcodes;
+
+var _require2 = __webpack_require__(/*! ./Pagemark */ "./web/js/metadata/Pagemark.js"),
+    Pagemark = _require2.Pagemark;
+
+var _require3 = __webpack_require__(/*! ./PagemarkType */ "./web/js/metadata/PagemarkType.js"),
+    PagemarkType = _require3.PagemarkType;
+
+var _require4 = __webpack_require__(/*! ./PagemarkRect */ "./web/js/metadata/PagemarkRect.js"),
+    PagemarkRect = _require4.PagemarkRect;
+
+var _require5 = __webpack_require__(/*! ./PagemarkRects */ "./web/js/metadata/PagemarkRects.js"),
+    PagemarkRects = _require5.PagemarkRects;
+
+var _require6 = __webpack_require__(/*! ./ISODateTime */ "./web/js/metadata/ISODateTime.js"),
+    ISODateTime = _require6.ISODateTime;
+
+var _require7 = __webpack_require__(/*! ../util/Objects */ "./web/js/util/Objects.js"),
+    Objects = _require7.Objects;
+
+var _require8 = __webpack_require__(/*! ../util/Percentages */ "./web/js/util/Percentages.js"),
+    round = _require8.round;
+
+var _require9 = __webpack_require__(/*! ../util/Functions */ "./web/js/util/Functions.js"),
+    forDict = _require9.forDict;
+
+var log = __webpack_require__(/*! ../logger/Logger */ "./web/js/logger/Logger.js").create();
+
+var DEFAULT_PAGEMARK_RECT = new PagemarkRect({
     left: 0,
     top: 0,
     width: 100,
     height: 100
 });
 
-class Pagemarks {
-
-    static createID(created) {
-
-        let id = Hashcodes.create(JSON.stringify(created));
-
-        // truncate.  We don't need that much precision against collision.
-        return id.substring(0, 10);
+var Pagemarks = function () {
+    function Pagemarks() {
+        _classCallCheck(this, Pagemarks);
     }
 
-    /**
-     * Create a new pagemark with the created time, and other mandatory fields
-     * added.
-     *
-     * @param options
-     * @return {Pagemark}
-     */
-    static create(options = {}) {
+    _createClass(Pagemarks, null, [{
+        key: "createID",
+        value: function createID(created) {
 
-        options = Objects.defaults(options, {
+            var id = Hashcodes.create(JSON.stringify(created));
 
-            // just set docMeta pageMarkType = PagemarkType.SINGLE_COLUMN by
-            // default for now until we add multiple column types and handle
-            // them properly.
-
-            // TODO: this needs to be read from the docInfo setting for this
-            // document and the default here
-
-            /**
-             * @type {Symbol}
-             */
-            type: PagemarkType.SINGLE_COLUMN,
-
-            /**
-             * @type {number}
-             */
-            column: 0
-
-        });
-
-        let keyOptions = Pagemarks.createKeyOptions(options);
-
-        if (keyOptions.count === 0) {
-            throw new Error("Must specify either rect or percentage.");
+            // truncate.  We don't need that much precision against collision.
+            return id.substring(0, 10);
         }
 
-        if (keyOptions.count === 1) {
+        /**
+         * Create a new pagemark with the created time, and other mandatory fields
+         * added.
+         *
+         * @param options
+         * @return {Pagemark}
+         */
 
-            if (keyOptions.hasPercentage) {
-                keyOptions.rect = PagemarkRects.createFromPercentage(keyOptions.percentage);
+    }, {
+        key: "create",
+        value: function create() {
+            var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+
+
+            options = Objects.defaults(options, {
+
+                // just set docMeta pageMarkType = PagemarkType.SINGLE_COLUMN by
+                // default for now until we add multiple column types and handle
+                // them properly.
+
+                // TODO: this needs to be read from the docInfo setting for this
+                // document and the default here
+
+                /**
+                 * @type {Symbol}
+                 */
+                type: PagemarkType.SINGLE_COLUMN,
+
+                /**
+                 * @type {number}
+                 */
+                column: 0
+
+            });
+
+            var keyOptions = Pagemarks.createKeyOptions(options);
+
+            if (keyOptions.count === 0) {
+                throw new Error("Must specify either rect or percentage.");
             }
 
-            if (keyOptions.hasRect) {
-                keyOptions.percentage = keyOptions.rect.toPercentage();
-            }
-        }
+            if (keyOptions.count === 1) {
 
-        if (round(keyOptions.percentage) !== round(keyOptions.rect.toPercentage())) {
-            let msg = "Percentage and rect are not the same";
-            log.warn(msg, keyOptions.percentage, keyOptions.rect, keyOptions.rect.toPercentage());
-            throw new Error(msg);
-        }
+                if (keyOptions.hasPercentage) {
+                    keyOptions.rect = PagemarkRects.createFromPercentage(keyOptions.percentage);
+                }
 
-        let created = new ISODateTime(new Date());
-
-        return new Pagemark({
-
-            // per-pagemark fields.
-            id: Pagemarks.createID(created),
-            created,
-
-            // the rest are from options.
-            type: options.type,
-            percentage: keyOptions.percentage,
-            column: options.column,
-            rect: keyOptions.rect
-
-        });
-    }
-
-    /**
-     *
-     * @param options
-     * @return {KeyOptions}
-     */
-    static createKeyOptions(options) {
-
-        let keyOptions = new KeyOptions();
-
-        keyOptions.hasPercentage = "percentage" in options;
-        keyOptions.hasRect = "rect" in options;
-
-        if (keyOptions.hasPercentage) ++keyOptions.count;
-
-        if (keyOptions.hasRect) ++keyOptions.count;
-
-        keyOptions.rect = options.rect;
-        keyOptions.percentage = options.percentage;
-
-        return keyOptions;
-    }
-
-    /**
-     *
-     * @param pagemarks {Object<?,pagemark>}
-     * @return {Object<?,pagemark>}
-     */
-    static upgrade(pagemarks) {
-
-        pagemarks = Object.assign({}, pagemarks);
-
-        forDict(pagemarks, function (key, pagemark) {
-
-            if (!pagemark.rect) {
-
-                if (pagemark.percentage >= 0 && pagemark.percentage <= 100) {
-
-                    // now rect but we can build one from the percentage.
-                    pagemark.rect = PagemarkRects.createFromPercentage(pagemark.percentage);
+                if (keyOptions.hasRect) {
+                    keyOptions.percentage = keyOptions.rect.toPercentage();
                 }
             }
 
-            if (!pagemark.id) {
-                log.warn("Pagemark given ID");
-                pagemark.id = Pagemarks.createID(pagemark.created);
+            if (round(keyOptions.percentage) !== round(keyOptions.rect.toPercentage())) {
+                var msg = "Percentage and rect are not the same";
+                log.warn(msg, keyOptions.percentage, keyOptions.rect, keyOptions.rect.toPercentage());
+                throw new Error(msg);
             }
-        });
 
-        return pagemarks;
-    }
+            var created = new ISODateTime(new Date());
 
-}
+            return new Pagemark({
+
+                // per-pagemark fields.
+                id: Pagemarks.createID(created),
+                created: created,
+
+                // the rest are from options.
+                type: options.type,
+                percentage: keyOptions.percentage,
+                column: options.column,
+                rect: keyOptions.rect
+
+            });
+        }
+
+        /**
+         *
+         * @param options
+         * @return {KeyOptions}
+         */
+
+    }, {
+        key: "createKeyOptions",
+        value: function createKeyOptions(options) {
+
+            var keyOptions = new KeyOptions();
+
+            keyOptions.hasPercentage = "percentage" in options;
+            keyOptions.hasRect = "rect" in options;
+
+            if (keyOptions.hasPercentage) ++keyOptions.count;
+
+            if (keyOptions.hasRect) ++keyOptions.count;
+
+            keyOptions.rect = options.rect;
+            keyOptions.percentage = options.percentage;
+
+            return keyOptions;
+        }
+
+        /**
+         *
+         * @param pagemarks {Object<?,pagemark>}
+         * @return {Object<?,pagemark>}
+         */
+
+    }, {
+        key: "upgrade",
+        value: function upgrade(pagemarks) {
+
+            pagemarks = Object.assign({}, pagemarks);
+
+            forDict(pagemarks, function (key, pagemark) {
+
+                if (!pagemark.rect) {
+
+                    if (pagemark.percentage >= 0 && pagemark.percentage <= 100) {
+
+                        // now rect but we can build one from the percentage.
+                        pagemark.rect = PagemarkRects.createFromPercentage(pagemark.percentage);
+                    }
+                }
+
+                if (!pagemark.id) {
+                    log.warn("Pagemark given ID");
+                    pagemark.id = Pagemarks.createID(pagemark.created);
+                }
+            });
+
+            return pagemarks;
+        }
+    }]);
+
+    return Pagemarks;
+}();
 
 /**
  * The key / important options when creating a Pagemark.
  */
-class KeyOptions {
 
-    constructor() {
 
-        /**
-         * The total number of key options.
-         *
-         * @type {number}
-         */
-        this.count = 0;
+var KeyOptions = function KeyOptions() {
+    _classCallCheck(this, KeyOptions);
 
-        /**
-         * True when we have the percentage.
-         *
-         * @type {boolean}
-         */
-        this.hasPercentage = undefined;
+    /**
+     * The total number of key options.
+     *
+     * @type {number}
+     */
+    this.count = 0;
 
-        /**
-         * True when we have the rect.
-         *
-         * @type {boolean}
-         */
-        this.hasRect = undefined;
+    /**
+     * True when we have the percentage.
+     *
+     * @type {boolean}
+     */
+    this.hasPercentage = undefined;
 
-        /**
-         * @type {PagemarkRect}
-         */
-        this.rect = undefined;
+    /**
+     * True when we have the rect.
+     *
+     * @type {boolean}
+     */
+    this.hasRect = undefined;
 
-        /**
-         * @type {number}
-         */
-        this.percentage = undefined;
-    }
+    /**
+     * @type {PagemarkRect}
+     */
+    this.rect = undefined;
 
-}
+    /**
+     * @type {number}
+     */
+    this.percentage = undefined;
+};
 
 module.exports.Pagemarks = Pagemarks;
 
@@ -60300,97 +62446,124 @@ module.exports.Pagemarks = Pagemarks;
   !*** ./web/js/metadata/SerializedObject.js ***!
   \*********************************************/
 /*! no static exports found */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
 
 
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 /**
  * Basic serialized object pattern. Take a closure as an argument to init,
  * and then assign the fields.  Then setup and validate that we have our
  * required data structures.
  */
-class SerializedObject {
-
-    constructor(val) {
+var SerializedObject = function () {
+    function SerializedObject(val) {
         // noop
+
+        _classCallCheck(this, SerializedObject);
     }
 
-    init(val) {
+    _createClass(SerializedObject, [{
+        key: "init",
+        value: function init(val) {
 
-        if (arguments.length > 1) {
-            throw new Error("Too many arguments");
+            if (arguments.length > 1) {
+                throw new Error("Too many arguments");
+            }
+
+            if ((typeof val === "undefined" ? "undefined" : _typeof(val)) === "object") {
+                Object.assign(this, val);
+                this.setup();
+                this.validate();
+            }
+        }
+    }, {
+        key: "setup",
+        value: function setup() {}
+    }, {
+        key: "validate",
+        value: function validate() {}
+
+        // FIXME: migrate to Preconditions I think or use ajv.
+
+    }, {
+        key: "validateMemberExists",
+        value: function validateMemberExists(name) {
+
+            if (!this[name]) {
+                throw new Error("Member field '" + name + "' missing.");
+            }
         }
 
-        if (typeof val === "object") {
-            Object.assign(this, val);
-            this.setup();
-            this.validate();
+        /**
+         * Validate that the member is defined and that it has the given type.
+         *
+         * These are instance types compared via instanceof
+         *
+         * @param name The name of the member.
+         * @param instance The instance type we expect
+         */
+
+    }, {
+        key: "validateMemberInstanceOf",
+        value: function validateMemberInstanceOf(name, instance) {
+
+            this.validateMemberExists(name);
+
+            if (!this[name] instanceof instance) {
+                throw new Error("Member field '" + name + "' is not a instance of " + instance);
+            }
         }
-    }
 
-    setup() {}
+        /**
+         * Validate that the given member exists and it is a typeof of 'type'
+         *
+         * The types in this case are primitive types compared with typeof
+         *
+         * @param name The name of the member.
+         * @param type The instance type we expect
+         */
 
-    validate() {}
+    }, {
+        key: "validateMemberTypeOf",
+        value: function validateMemberTypeOf(name, type) {
 
-    // FIXME: migrate to Preconditions I think or use ajv.
-    validateMemberExists(name) {
+            this.validateMemberExists(name);
 
-        if (!this[name]) {
-            throw new Error(`Member field '${name}' missing.`);
+            if (!_typeof(this[name]) === type) {
+                throw new Error("Member field '" + name + "' is not a type of " + type);
+            }
         }
-    }
+    }, {
+        key: "validateMember",
+        value: function validateMember(member) {
 
-    /**
-     * Validate that the member is defined and that it has the given type.
-     *
-     * These are instance types compared via instanceof
-     *
-     * @param name The name of the member.
-     * @param instance The instance type we expect
-     */
-    validateMemberInstanceOf(name, instance) {
-
-        this.validateMemberExists(name);
-
-        if (!this[name] instanceof instance) {
-            throw new Error(`Member field '${name}' is not a instance of ${instance}`);
+            if (member.instance) {
+                this.validateMemberInstanceOf(member.name, member.instance);
+            } else if (member.type) {
+                this.validateMemberTypeOf(member.name, member.type);
+            } else {
+                throw new Error("Unable to handle member: " + member);
+            }
         }
-    }
+    }, {
+        key: "validateMembers",
+        value: function validateMembers(members) {
 
-    /**
-     * Validate that the given member exists and it is a typeof of 'type'
-     *
-     * The types in this case are primitive types compared with typeof
-     *
-     * @param name The name of the member.
-     * @param type The instance type we expect
-     */
-    validateMemberTypeOf(name, type) {
-
-        this.validateMemberExists(name);
-
-        if (!typeof this[name] === type) {
-            throw new Error(`Member field '${name}' is not a type of ${type}`);
+            members.forEach(this.validateMember.bind(this));
         }
-    }
+    }]);
 
-    validateMember(member) {
+    return SerializedObject;
+}();
 
-        if (member.instance) {
-            this.validateMemberInstanceOf(member.name, member.instance);
-        } else if (member.type) {
-            this.validateMemberTypeOf(member.name, member.type);
-        } else {
-            throw new Error("Unable to handle member: " + member);
-        }
-    }
-
-    validateMembers(members) {
-
-        members.forEach(this.validateMember.bind(this));
-    }
-
-};
+;
 
 module.exports.SerializedObject = SerializedObject;
 
@@ -60401,22 +62574,36 @@ module.exports.SerializedObject = SerializedObject;
   !*** ./web/js/metadata/Symbol.js ***!
   \***********************************/
 /*! no static exports found */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
 
-class Symbol {
+"use strict";
 
-    constructor(name) {
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var _Symbol = function () {
+    function _Symbol(name) {
+        _classCallCheck(this, _Symbol);
+
         this.name = name;
         Object.freeze(this);
     }
 
-    toJSON() {
-        return this.name;
-    }
+    _createClass(_Symbol, [{
+        key: "toJSON",
+        value: function toJSON() {
+            return this.name;
+        }
+    }]);
 
-};
+    return _Symbol;
+}();
 
-module.exports.Symbol = Symbol;
+;
+
+module.exports.Symbol = _Symbol;
 
 /***/ }),
 
@@ -60427,14 +62614,28 @@ module.exports.Symbol = Symbol;
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-const { SerializedObject } = __webpack_require__(/*! ./SerializedObject */ "./web/js/metadata/SerializedObject.js");
-const { TextType } = __webpack_require__(/*! ./TextType */ "./web/js/metadata/TextType.js");
+"use strict";
+
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var _require = __webpack_require__(/*! ./SerializedObject */ "./web/js/metadata/SerializedObject.js"),
+    SerializedObject = _require.SerializedObject;
+
+var _require2 = __webpack_require__(/*! ./TextType */ "./web/js/metadata/TextType.js"),
+    TextType = _require2.TextType;
 
 /**
  * Text mapping of TextType to string for each type of content generated which
  * represents this data.
  */
-class Text {};
+
+
+var Text = function Text() {
+  _classCallCheck(this, Text);
+};
+
+;
 
 module.exports.Text = Text;
 
@@ -60447,14 +62648,30 @@ module.exports.Text = Text;
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-const { BaseHighlight } = __webpack_require__(/*! ./BaseHighlight */ "./web/js/metadata/BaseHighlight.js");
-const { Preconditions } = __webpack_require__(/*! ../Preconditions */ "./web/js/Preconditions.js");
+"use strict";
 
-class TextHighlight extends BaseHighlight {
 
-  constructor(val) {
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-    super(val);
+var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var _require = __webpack_require__(/*! ./BaseHighlight */ "./web/js/metadata/BaseHighlight.js"),
+    BaseHighlight = _require.BaseHighlight;
+
+var _require2 = __webpack_require__(/*! ../Preconditions */ "./web/js/Preconditions.js"),
+    Preconditions = _require2.Preconditions;
+
+var TextHighlight = function (_BaseHighlight) {
+  _inherits(TextHighlight, _BaseHighlight);
+
+  function TextHighlight(val) {
+    _classCallCheck(this, TextHighlight);
 
     /**
      * A raw array-like object of text from the regions that the user
@@ -60464,7 +62681,9 @@ class TextHighlight extends BaseHighlight {
      *
      * @type map<int,TextRect>
      */
-    this.textSelections = {};
+    var _this = _possibleConstructorReturn(this, (TextHighlight.__proto__ || Object.getPrototypeOf(TextHighlight)).call(this, val));
+
+    _this.textSelections = {};
 
     /**
      * The text selections converted to a text string which may or may not
@@ -60472,7 +62691,7 @@ class TextHighlight extends BaseHighlight {
      *
      * @type {Text}
      */
-    this.text = null;
+    _this.text = null;
 
     // FIXME: all these extractions (text, html, etc) should be 'snippet'
     // because we also have to include the context with them and with the
@@ -60499,14 +62718,21 @@ class TextHighlight extends BaseHighlight {
     //
     //this.html = null;
 
-    this.init(val);
+    _this.init(val);
+
+    return _this;
   }
 
-  validate() {
-    super.validate();
-    Preconditions.assertNotInstanceOf(this.textSelections, "textSelections", Array);
-  }
-}
+  _createClass(TextHighlight, [{
+    key: "validate",
+    value: function validate() {
+      _get(TextHighlight.prototype.__proto__ || Object.getPrototypeOf(TextHighlight.prototype), "validate", this).call(this);
+      Preconditions.assertNotInstanceOf(this.textSelections, "textSelections", Array);
+    }
+  }]);
+
+  return TextHighlight;
+}(BaseHighlight);
 
 module.exports.TextHighlight = TextHighlight;
 
@@ -60519,42 +62745,65 @@ module.exports.TextHighlight = TextHighlight;
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-const { ISODateTime } = __webpack_require__(/*! ./ISODateTime */ "./web/js/metadata/ISODateTime.js");
-const { TextHighlight } = __webpack_require__(/*! ./TextHighlight */ "./web/js/metadata/TextHighlight.js");
-const { Hashcodes } = __webpack_require__(/*! ../Hashcodes */ "./web/js/Hashcodes.js");
-const { Arrays } = __webpack_require__(/*! ../util/Arrays */ "./web/js/util/Arrays.js");
+"use strict";
 
-class TextHighlightRecords {
 
-    /**
-     * Create a TextHighlight by specifying all required rows.
-     *
-     * We also automatically assign the created and lastUpdated values of this
-     * object as we're working with it.
-     *
-     * @return an object with an "id" for a unique hash and a "value" of the
-     * TextHighlight to use.                                                                                                                                                                                                         np
-     */
-    static create(rects, textSelections, text) {
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-        let id = Hashcodes.createID(rects);
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-        let created = new ISODateTime(new Date());
-        let lastUpdated = created.duplicate();
+var _require = __webpack_require__(/*! ./ISODateTime */ "./web/js/metadata/ISODateTime.js"),
+    ISODateTime = _require.ISODateTime;
 
-        let textHighlight = new TextHighlight({
-            id,
-            created,
-            lastUpdated,
-            rects: Arrays.toDict(rects),
-            textSelections: Arrays.toDict(textSelections),
-            text
-        });
+var _require2 = __webpack_require__(/*! ./TextHighlight */ "./web/js/metadata/TextHighlight.js"),
+    TextHighlight = _require2.TextHighlight;
 
-        return { id, value: textHighlight };
+var _require3 = __webpack_require__(/*! ../Hashcodes */ "./web/js/Hashcodes.js"),
+    Hashcodes = _require3.Hashcodes;
+
+var _require4 = __webpack_require__(/*! ../util/Arrays */ "./web/js/util/Arrays.js"),
+    Arrays = _require4.Arrays;
+
+var TextHighlightRecords = function () {
+    function TextHighlightRecords() {
+        _classCallCheck(this, TextHighlightRecords);
     }
 
-}
+    _createClass(TextHighlightRecords, null, [{
+        key: "create",
+
+
+        /**
+         * Create a TextHighlight by specifying all required rows.
+         *
+         * We also automatically assign the created and lastUpdated values of this
+         * object as we're working with it.
+         *
+         * @return an object with an "id" for a unique hash and a "value" of the
+         * TextHighlight to use.                                                                                                                                                                                                         np
+         */
+        value: function create(rects, textSelections, text) {
+
+            var id = Hashcodes.createID(rects);
+
+            var created = new ISODateTime(new Date());
+            var lastUpdated = created.duplicate();
+
+            var textHighlight = new TextHighlight({
+                id: id,
+                created: created,
+                lastUpdated: lastUpdated,
+                rects: Arrays.toDict(rects),
+                textSelections: Arrays.toDict(textSelections),
+                text: text
+            });
+
+            return { id: id, value: textHighlight };
+        }
+    }]);
+
+    return TextHighlightRecords;
+}();
 
 module.exports.TextHighlightRecords = TextHighlightRecords;
 
@@ -60567,25 +62816,42 @@ module.exports.TextHighlightRecords = TextHighlightRecords;
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-const { TextHighlightRecords } = __webpack_require__(/*! ./TextHighlightRecords */ "./web/js/metadata/TextHighlightRecords.js");
+"use strict";
 
-class TextHighlights {
 
-    /**
-     * Create a mock text highlight for testing.
-     * @return {*}
-     */
-    static createMockTextHighlight() {
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-        let rects = [{ top: 100, left: 100, right: 200, bottom: 200, width: 100, height: 100 }];
-        let textSelections = ["hello world"];
-        let text = "hello world";
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-        // create a basic TextHighlight object..
-        return TextHighlightRecords.create(rects, textSelections, text).value;
+var _require = __webpack_require__(/*! ./TextHighlightRecords */ "./web/js/metadata/TextHighlightRecords.js"),
+    TextHighlightRecords = _require.TextHighlightRecords;
+
+var TextHighlights = function () {
+    function TextHighlights() {
+        _classCallCheck(this, TextHighlights);
     }
 
-}
+    _createClass(TextHighlights, null, [{
+        key: "createMockTextHighlight",
+
+
+        /**
+         * Create a mock text highlight for testing.
+         * @return {*}
+         */
+        value: function createMockTextHighlight() {
+
+            var rects = [{ top: 100, left: 100, right: 200, bottom: 200, width: 100, height: 100 }];
+            var textSelections = ["hello world"];
+            var text = "hello world";
+
+            // create a basic TextHighlight object..
+            return TextHighlightRecords.create(rects, textSelections, text).value;
+        }
+    }]);
+
+    return TextHighlights;
+}();
 
 module.exports.TextHighlights = TextHighlights;
 
@@ -60598,24 +62864,39 @@ module.exports.TextHighlights = TextHighlights;
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-const { SerializedObject } = __webpack_require__(/*! ./SerializedObject.js */ "./web/js/metadata/SerializedObject.js");
+"use strict";
 
-class TextRect extends SerializedObject {
 
-    constructor(val) {
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-        super(val);
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var _require = __webpack_require__(/*! ./SerializedObject.js */ "./web/js/metadata/SerializedObject.js"),
+    SerializedObject = _require.SerializedObject;
+
+var TextRect = function (_SerializedObject) {
+    _inherits(TextRect, _SerializedObject);
+
+    function TextRect(val) {
+        _classCallCheck(this, TextRect);
 
         // the actual text in this rect.
-        this.text = null;
+        var _this = _possibleConstructorReturn(this, (TextRect.__proto__ || Object.getPrototypeOf(TextRect)).call(this, val));
+
+        _this.text = null;
 
         // A rect area that the user has selected text.
-        this.rect = null;
+        _this.rect = null;
 
-        this.init(val);
+        _this.init(val);
+
+        return _this;
     }
 
-}
+    return TextRect;
+}(SerializedObject);
 
 module.exports.TextRect = TextRect;
 
@@ -60628,10 +62909,16 @@ module.exports.TextRect = TextRect;
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-const { Symbol } = __webpack_require__(/*! ./Symbol.js */ "./web/js/metadata/Symbol.js");
+"use strict";
+
+
+var _require = __webpack_require__(/*! ./Symbol.js */ "./web/js/metadata/Symbol.js"),
+    _Symbol = _require.Symbol;
 
 // this is I think a better pattern for typesafe enum:
 // http://2ality.com/2016/01/enumify.html
+
+
 module.exports.TextType = Object.freeze({
 
   /**
@@ -60660,21 +62947,38 @@ module.exports.TextType = Object.freeze({
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-const { Text } = __webpack_require__(/*! ./Text.js */ "./web/js/metadata/Text.js");
+"use strict";
 
-class Texts {
 
-    static create(body, type) {
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-        // TODO: if this is markdown, and we don't have the HTML version,
-        // we need to add the HTML version by converting the markdown to HTML.
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-        let result = {};
-        result[type] = body;
-        return result;
+var _require = __webpack_require__(/*! ./Text.js */ "./web/js/metadata/Text.js"),
+    Text = _require.Text;
+
+var Texts = function () {
+    function Texts() {
+        _classCallCheck(this, Texts);
     }
 
-};
+    _createClass(Texts, null, [{
+        key: "create",
+        value: function create(body, type) {
+
+            // TODO: if this is markdown, and we don't have the HTML version,
+            // we need to add the HTML version by converting the markdown to HTML.
+
+            var result = {};
+            result[type] = body;
+            return result;
+        }
+    }]);
+
+    return Texts;
+}();
+
+;
 
 module.exports.Texts = Texts;
 
@@ -60687,17 +62991,37 @@ module.exports.Texts = Texts;
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-const { SerializedObject } = __webpack_require__(/*! ./SerializedObject.js */ "./web/js/metadata/SerializedObject.js");
-const { ISODateTime } = __webpack_require__(/*! ./ISODateTime */ "./web/js/metadata/ISODateTime.js");
+"use strict";
+
+
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var _require = __webpack_require__(/*! ./SerializedObject.js */ "./web/js/metadata/SerializedObject.js"),
+    SerializedObject = _require.SerializedObject;
+
+var _require2 = __webpack_require__(/*! ./ISODateTime */ "./web/js/metadata/ISODateTime.js"),
+    ISODateTime = _require2.ISODateTime;
 
 /**
  * @abstract
  */
-class VersionedObject extends SerializedObject {
 
-    constructor(val) {
 
-        super(val);
+var VersionedObject = function (_SerializedObject) {
+    _inherits(VersionedObject, _SerializedObject);
+
+    function VersionedObject(val) {
+        _classCallCheck(this, VersionedObject);
 
         /**
          * The unique ID for this object.  Every object needs to have a unique
@@ -60705,58 +63029,67 @@ class VersionedObject extends SerializedObject {
          *
          * @type {string}
          */
-        this.id = undefined;
+        var _this = _possibleConstructorReturn(this, (VersionedObject.__proto__ || Object.getPrototypeOf(VersionedObject)).call(this, val));
+
+        _this.id = undefined;
 
         /**
          * The time this object was created
          *
          * @type ISODateTime
          */
-        this.created = null;
+        _this.created = null;
 
         /**
          * The last time this annotation was updated (note changed, moved, etc).
          * @type ISODateTime
          */
-        this.lastUpdated = null;
+        _this.lastUpdated = null;
 
         /**
          * The author who created this.
          *
          * @type Author
          */
-        this.author = null;
+        _this.author = null;
 
-        this.init(val);
+        _this.init(val);
+
+        return _this;
     }
 
-    setup() {
-        super.setup();
+    _createClass(VersionedObject, [{
+        key: "setup",
+        value: function setup() {
+            _get(VersionedObject.prototype.__proto__ || Object.getPrototypeOf(VersionedObject.prototype), "setup", this).call(this);
 
-        if (!this.lastUpdated && this.created) {
-            this.lastUpdated = this.created;
+            if (!this.lastUpdated && this.created) {
+                this.lastUpdated = this.created;
+            }
         }
-    }
+    }, {
+        key: "validate",
+        value: function validate() {
 
-    validate() {
+            _get(VersionedObject.prototype.__proto__ || Object.getPrototypeOf(VersionedObject.prototype), "validate", this).call(this);
 
-        super.validate();
+            if (!this.created) {
+                throw new Error("Created is required");
+            }
 
-        if (!this.created) {
-            throw new Error("Created is required");
+            // FIXME: move this to validateMembers
+            if (!this.created instanceof ISODateTime) {
+                throw new Error("Member created has wrong type: " + _typeof(this.created));
+            }
+
+            if (!this.lastUpdated instanceof ISODateTime) {
+                throw new Error("Member lastUpdated has wrong type: " + _typeof(this.lastUpdated));
+            }
         }
+    }]);
 
-        // FIXME: move this to validateMembers
-        if (!this.created instanceof ISODateTime) {
-            throw new Error("Member created has wrong type: " + typeof this.created);
-        }
-
-        if (!this.lastUpdated instanceof ISODateTime) {
-            throw new Error("Member lastUpdated has wrong type: " + typeof this.lastUpdated);
-        }
-    }
-
-}
+    return VersionedObject;
+}(SerializedObject);
 
 module.exports.VersionedObject = VersionedObject;
 
@@ -60767,84 +63100,103 @@ module.exports.VersionedObject = VersionedObject;
   !*** ./web/js/mouse/MouseTracer.js ***!
   \*************************************/
 /*! no static exports found */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
 
+"use strict";
+
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 /**
  * Create a visual identifier on page of the current mouse position from the
  * page events.  We also inject ourselves in child iframes.
  */
-class MouseTracer {
+var MouseTracer = function () {
 
     /**
      * @param doc {Document} The document to work with.
      */
-    constructor(doc) {
+    function MouseTracer(doc) {
+        _classCallCheck(this, MouseTracer);
+
         this.doc = doc;
     }
 
-    start() {
+    _createClass(MouseTracer, [{
+        key: "start",
+        value: function start() {
 
-        MouseTracer.startWithinDoc(this.doc);
+            MouseTracer.startWithinDoc(this.doc);
 
-        this.doc.querySelectorAll("iframe").forEach(iframe => {
+            this.doc.querySelectorAll("iframe").forEach(function (iframe) {
 
-            if (iframe.contentDocument) {
-                MouseTracer.startWithinDoc(iframe.contentDocument);
-            }
+                if (iframe.contentDocument) {
+                    MouseTracer.startWithinDoc(iframe.contentDocument);
+                }
 
-            iframe.addEventListener("load", () => MouseTracer.startWithinDoc(iframe.contentDocument));
-        });
-    }
+                iframe.addEventListener("load", function () {
+                    return MouseTracer.startWithinDoc(iframe.contentDocument);
+                });
+            });
+        }
+    }], [{
+        key: "startWithinDoc",
+        value: function startWithinDoc(doc) {
 
-    static startWithinDoc(doc) {
+            var tracerElement = MouseTracer.createTracerElement(doc);
 
-        let tracerElement = MouseTracer.createTracerElement(doc);
+            doc.body.appendChild(tracerElement);
 
-        doc.body.appendChild(tracerElement);
+            doc.addEventListener("mousemove", function (mouseEvent) {
 
-        doc.addEventListener("mousemove", mouseEvent => {
+                //console.log("Got mouseEvent: ", mouseEvent);
 
-            //console.log("Got mouseEvent: ", mouseEvent);
+                tracerElement.textContent = MouseTracer.format(mouseEvent);
+            });
 
-            tracerElement.textContent = MouseTracer.format(mouseEvent);
-        });
+            doc.addEventListener("mouseout", function (mouseEvent) {
 
-        doc.addEventListener("mouseout", mouseEvent => {
+                //console.log("Got mouseEvent: ", mouseEvent);
 
-            //console.log("Got mouseEvent: ", mouseEvent);
+                var last = tracerElement.textContent;
 
-            let last = tracerElement.textContent;
+                tracerElement.textContent = "OUT (last was: " + last + ")";
+            });
 
-            tracerElement.textContent = `OUT (last was: ${last})`;
-        });
+            doc.addEventListener("click", function (mouseEvent) {
 
-        doc.addEventListener("click", mouseEvent => {
+                console.log("Got mouseEvent at " + doc.location.href + ": ", mouseEvent);
+            });
+        }
+    }, {
+        key: "format",
+        value: function format(mouseEvent) {
+            return "screen: " + mouseEvent.screenX + ", " + mouseEvent.screenY + " client: " + mouseEvent.clientX + ", " + mouseEvent.clientY + " page: " + mouseEvent.pageX + ", " + mouseEvent.pageY;
+        }
 
-            console.log(`Got mouseEvent at ${doc.location.href}: `, mouseEvent);
-        });
-    }
+        /**
+         *
+         * @return {HTMLDivElement}
+         */
 
-    static format(mouseEvent) {
-        return `screen: ${mouseEvent.screenX}, ${mouseEvent.screenY} client: ${mouseEvent.clientX}, ${mouseEvent.clientY} page: ${mouseEvent.pageX}, ${mouseEvent.pageY}`;
-    }
+    }, {
+        key: "createTracerElement",
+        value: function createTracerElement(doc) {
 
-    /**
-     *
-     * @return {HTMLDivElement}
-     */
-    static createTracerElement(doc) {
+            var div = doc.createElement("div");
 
-        let div = doc.createElement("div");
+            div.style = "position: fixed; top: 0px; right: 0px; padding: 5px; background-color: #c6c6c6; z-index: 999999; font-size: 12px; min-width: 18em; min-height: 1em;";
 
-        div.style = "position: fixed; top: 0px; right: 0px; padding: 5px; background-color: #c6c6c6; z-index: 999999; font-size: 12px; min-width: 18em; min-height: 1em;";
+            div.textContent = ' ';
 
-        div.textContent = ' ';
+            return div;
+        }
+    }]);
 
-        return div;
-    }
-
-}
+    return MouseTracer;
+}();
 
 module.exports.MouseTracer = MouseTracer;
 
@@ -60857,91 +63209,121 @@ module.exports.MouseTracer = MouseTracer;
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-const log = __webpack_require__(/*! ../../logger/Logger */ "./web/js/logger/Logger.js").create();
-const { DocFormatFactory } = __webpack_require__(/*! ../../docformat/DocFormatFactory */ "./web/js/docformat/DocFormatFactory.js");
-const { Rects } = __webpack_require__(/*! ../../Rects */ "./web/js/Rects.js");
-const { Pagemarks } = __webpack_require__(/*! ../../metadata/Pagemarks */ "./web/js/metadata/Pagemarks.js");
-const { PagemarkRects } = __webpack_require__(/*! ../../metadata/PagemarkRects */ "./web/js/metadata/PagemarkRects.js");
-const { Elements } = __webpack_require__(/*! ../../util/Elements */ "./web/js/util/Elements.js");
+"use strict";
 
-class PagemarkController {
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var log = __webpack_require__(/*! ../../logger/Logger */ "./web/js/logger/Logger.js").create();
+
+var _require = __webpack_require__(/*! ../../docformat/DocFormatFactory */ "./web/js/docformat/DocFormatFactory.js"),
+    DocFormatFactory = _require.DocFormatFactory;
+
+var _require2 = __webpack_require__(/*! ../../Rects */ "./web/js/Rects.js"),
+    Rects = _require2.Rects;
+
+var _require3 = __webpack_require__(/*! ../../metadata/Pagemarks */ "./web/js/metadata/Pagemarks.js"),
+    Pagemarks = _require3.Pagemarks;
+
+var _require4 = __webpack_require__(/*! ../../metadata/PagemarkRects */ "./web/js/metadata/PagemarkRects.js"),
+    PagemarkRects = _require4.PagemarkRects;
+
+var _require5 = __webpack_require__(/*! ../../util/Elements */ "./web/js/util/Elements.js"),
+    Elements = _require5.Elements;
+
+var PagemarkController = function () {
 
     /**
      *
      * @param model {Model}
      */
-    constructor(model) {
+    function PagemarkController(model) {
+        _classCallCheck(this, PagemarkController);
+
         this.model = model;
         this.docFormat = DocFormatFactory.getInstance();
     }
 
-    start() {
+    _createClass(PagemarkController, [{
+        key: "start",
+        value: function start() {
+            var _this = this;
 
-        window.addEventListener("message", event => this.onMessageReceived(event), false);
-    }
-
-    onMessageReceived(event) {
-
-        if (event.data && event.data.type === "create-pagemark") {
-            this.onCreatePagemark(event.data);
+            window.addEventListener("message", function (event) {
+                return _this.onMessageReceived(event);
+            }, false);
         }
-    }
+    }, {
+        key: "onMessageReceived",
+        value: function onMessageReceived(event) {
 
-    onCreatePagemark(data) {
+            if (event.data && event.data.type === "create-pagemark") {
+                this.onCreatePagemark(event.data);
+            }
+        }
+    }, {
+        key: "onCreatePagemark",
+        value: function onCreatePagemark(data) {
 
-        // convert the point on the page to a pagemark and then save it into
-        // the model/docMeta... the view will do the rest.
+            // convert the point on the page to a pagemark and then save it into
+            // the model/docMeta... the view will do the rest.
 
-        let elements = document.elementsFromPoint(data.points.client.x, data.points.client.y);
+            var elements = document.elementsFromPoint(data.points.client.x, data.points.client.y);
 
-        elements = elements.filter(element => element.matches(".page"));
-
-        if (elements.length === 1) {
-
-            let pageElement = elements[0];
-
-            log.info("Creating pagemark on pageElement: ", pageElement);
-
-            let pageNum = this.docFormat.getPageNumFromPageElement(pageElement);
-
-            // get the point within the element itself..
-            let pageElementPoint = data.points.offset;
-
-            let boxRect = Rects.createFromBasicRect({
-                left: pageElementPoint.x,
-                top: pageElementPoint.y,
-                width: 150,
-                height: 150
+            elements = elements.filter(function (element) {
+                return element.matches(".page");
             });
 
-            log.info("Placing pagemark at: ", boxRect);
+            if (elements.length === 1) {
 
-            // get a rect for the element... we really only need the dimensions
-            // though.. not the width and height.
-            let containerRect = Rects.createFromBasicRect({
-                left: 0,
-                top: 0,
-                width: pageElement.offsetWidth,
-                height: pageElement.offsetHeight
-            });
+                var pageElement = elements[0];
 
-            let pagemarkRect = PagemarkRects.createFromPositionedRect(boxRect, containerRect);
+                log.info("Creating pagemark on pageElement: ", pageElement);
 
-            let pagemark = Pagemarks.create({ rect: pagemarkRect });
+                var pageNum = this.docFormat.getPageNumFromPageElement(pageElement);
 
-            this.model.docMeta.getPageMeta(pageNum).pagemarks[pagemark.id] = pagemark;
+                // get the point within the element itself..
+                var pageElementPoint = data.points.offset;
 
-            log.info("Using pagemarkRect: ", pagemarkRect);
+                var boxRect = Rects.createFromBasicRect({
+                    left: pageElementPoint.x,
+                    top: pageElementPoint.y,
+                    width: 150,
+                    height: 150
+                });
 
-            // TODO: do we somehow need to focus the new pagemark.
+                log.info("Placing pagemark at: ", boxRect);
 
-            // update the DocMeta with a pagemark on this page..
-        } else {
-            log.warn("Wrong number of elements selected: " + elements.length);
+                // get a rect for the element... we really only need the dimensions
+                // though.. not the width and height.
+                var containerRect = Rects.createFromBasicRect({
+                    left: 0,
+                    top: 0,
+                    width: pageElement.offsetWidth,
+                    height: pageElement.offsetHeight
+                });
+
+                var pagemarkRect = PagemarkRects.createFromPositionedRect(boxRect, containerRect);
+
+                var pagemark = Pagemarks.create({ rect: pagemarkRect });
+
+                this.model.docMeta.getPageMeta(pageNum).pagemarks[pagemark.id] = pagemark;
+
+                log.info("Using pagemarkRect: ", pagemarkRect);
+
+                // TODO: do we somehow need to focus the new pagemark.
+
+                // update the DocMeta with a pagemark on this page..
+            } else {
+                log.warn("Wrong number of elements selected: " + elements.length);
+            }
         }
-    }
+    }]);
 
-}
+    return PagemarkController;
+}();
 
 module.exports.PagemarkController = PagemarkController;
 
@@ -60954,93 +63336,111 @@ module.exports.PagemarkController = PagemarkController;
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
+"use strict";
 
-const $ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
 
-const { KeyEvents } = __webpack_require__(/*! ../../KeyEvents.js */ "./web/js/KeyEvents.js");
-const { Elements } = __webpack_require__(/*! ../../util/Elements */ "./web/js/util/Elements.js");
-const { DocFormatFactory } = __webpack_require__(/*! ../../docformat/DocFormatFactory */ "./web/js/docformat/DocFormatFactory.js");
-const log = __webpack_require__(/*! ../../logger/Logger */ "./web/js/logger/Logger.js").create();
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-class PagemarkCoverageEventListener {
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var $ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
+
+var _require = __webpack_require__(/*! ../../KeyEvents.js */ "./web/js/KeyEvents.js"),
+    KeyEvents = _require.KeyEvents;
+
+var _require2 = __webpack_require__(/*! ../../util/Elements */ "./web/js/util/Elements.js"),
+    Elements = _require2.Elements;
+
+var _require3 = __webpack_require__(/*! ../../docformat/DocFormatFactory */ "./web/js/docformat/DocFormatFactory.js"),
+    DocFormatFactory = _require3.DocFormatFactory;
+
+var log = __webpack_require__(/*! ../../logger/Logger */ "./web/js/logger/Logger.js").create();
+
+var PagemarkCoverageEventListener = function () {
 
     /**
      * @param controller {WebController}
      * @param model {Model}
      */
-    constructor(controller, model) {
+    function PagemarkCoverageEventListener(controller, model) {
+        _classCallCheck(this, PagemarkCoverageEventListener);
+
         this.controller = controller;
         this.model = model;
         this.keyActivated = false;
         this.docFormat = DocFormatFactory.getInstance();
     }
 
-    start() {
+    _createClass(PagemarkCoverageEventListener, [{
+        key: "start",
+        value: function start() {
 
-        this.model.registerListenerForDocumentLoaded(this.onDocumentLoaded.bind(this));
-    }
+            this.model.registerListenerForDocumentLoaded(this.onDocumentLoaded.bind(this));
+        }
+    }, {
+        key: "onDocumentLoaded",
+        value: function onDocumentLoaded() {
+            var _this = this;
 
-    onDocumentLoaded() {
+            document.addEventListener("keyup", this.keyListener.bind(this));
+            document.addEventListener("keydown", this.keyListener.bind(this));
 
-        document.addEventListener("keyup", this.keyListener.bind(this));
-        document.addEventListener("keydown", this.keyListener.bind(this));
-
-        document.querySelectorAll(".page").forEach(pageElement => {
-            pageElement.addEventListener("click", this.mouseListener.bind(this));
-        });
-    }
-
-    /**
-     * Track that we've selected 'e' on the keyboard,
-     */
-    keyListener(event) {
-
-        if (!event) {
-            throw new Error("no event");
+            document.querySelectorAll(".page").forEach(function (pageElement) {
+                pageElement.addEventListener("click", _this.mouseListener.bind(_this));
+            });
         }
 
-        this.keyActivated = KeyEvents.isKeyMetaActive(event);
-    }
+        /**
+         * Track that we've selected 'e' on the keyboard,
+         */
 
-    mouseListener(event) {
-        var _this = this;
-
-        return _asyncToGenerator(function* () {
+    }, {
+        key: "keyListener",
+        value: function keyListener(event) {
 
             if (!event) {
                 throw new Error("no event");
             }
 
-            if (!_this.keyActivated) {
+            this.keyActivated = KeyEvents.isKeyMetaActive(event);
+        }
+    }, {
+        key: "mouseListener",
+        value: async function mouseListener(event) {
+
+            if (!event) {
+                throw new Error("no event");
+            }
+
+            if (!this.keyActivated) {
                 return;
             }
 
-            yield _this.onActivated(event);
-        })();
-    }
+            await this.onActivated(event);
+        }
 
-    // https://stackoverflow.com/questions/3234256/find-mouse-position-relative-to-element
-    onActivated(event) {
-        var _this2 = this;
+        // https://stackoverflow.com/questions/3234256/find-mouse-position-relative-to-element
 
-        return _asyncToGenerator(function* () {
+    }, {
+        key: "onActivated",
+        value: async function onActivated(event) {
 
-            let pageElement = Elements.untilRoot(event.target, ".page");
+            var pageElement = Elements.untilRoot(event.target, ".page");
 
-            let height = pageElement.clientHeight;
+            var height = pageElement.clientHeight;
 
-            let percentage = event.offsetY / height * 100;
+            var percentage = event.offsetY / height * 100;
 
             log.info("percentage: ", percentage);
 
-            let pageNum = _this2.docFormat.getPageNumFromPageElement(pageElement);
-            _this2.controller.erasePagemark(pageNum);
-            yield _this2.controller.createPagemark(pageNum, { percentage });
-        })();
-    }
+            var pageNum = this.docFormat.getPageNumFromPageElement(pageElement);
+            this.controller.erasePagemark(pageNum);
+            await this.controller.createPagemark(pageNum, { percentage: percentage });
+        }
+    }]);
 
-}
+    return PagemarkCoverageEventListener;
+}();
 
 module.exports.PagemarkCoverageEventListener = PagemarkCoverageEventListener;
 
@@ -61053,395 +63453,457 @@ module.exports.PagemarkCoverageEventListener = PagemarkCoverageEventListener;
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-const interact = __webpack_require__(/*! interactjs */ "./node_modules/interactjs/dist/interact.js");
-const { BoxOptions } = __webpack_require__(/*! ./BoxOptions */ "./web/js/pagemarks/controller/interact/BoxOptions.js");
-const { Rects } = __webpack_require__(/*! ../../../Rects */ "./web/js/Rects.js");
-const { Rect } = __webpack_require__(/*! ../../../Rect */ "./web/js/Rect.js");
-const { Objects } = __webpack_require__(/*! ../../../util/Objects */ "./web/js/util/Objects.js");
-const { DragRectAdjacencyCalculator } = __webpack_require__(/*! ./drag/DragRectAdjacencyCalculator */ "./web/js/pagemarks/controller/interact/drag/DragRectAdjacencyCalculator.js");
-const { ResizeRectAdjacencyCalculator } = __webpack_require__(/*! ./resize/ResizeRectAdjacencyCalculator */ "./web/js/pagemarks/controller/interact/resize/ResizeRectAdjacencyCalculator.js");
-const { BoxMoveEvent } = __webpack_require__(/*! ./BoxMoveEvent */ "./web/js/pagemarks/controller/interact/BoxMoveEvent.js");
-const { RectEdges } = __webpack_require__(/*! ./edges/RectEdges */ "./web/js/pagemarks/controller/interact/edges/RectEdges.js");
-const { Preconditions } = __webpack_require__(/*! ../../../Preconditions */ "./web/js/Preconditions.js");
-const { Optional } = __webpack_require__(/*! ../../../Optional */ "./web/js/Optional.js");
-const log = __webpack_require__(/*! ../../../logger/Logger */ "./web/js/logger/Logger.js").create();
+"use strict";
+
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var interact = __webpack_require__(/*! interactjs */ "./node_modules/interactjs/dist/interact.js");
+
+var _require = __webpack_require__(/*! ./BoxOptions */ "./web/js/pagemarks/controller/interact/BoxOptions.js"),
+    BoxOptions = _require.BoxOptions;
+
+var _require2 = __webpack_require__(/*! ../../../Rects */ "./web/js/Rects.js"),
+    Rects = _require2.Rects;
+
+var _require3 = __webpack_require__(/*! ../../../Rect */ "./web/js/Rect.js"),
+    Rect = _require3.Rect;
+
+var _require4 = __webpack_require__(/*! ../../../util/Objects */ "./web/js/util/Objects.js"),
+    Objects = _require4.Objects;
+
+var _require5 = __webpack_require__(/*! ./drag/DragRectAdjacencyCalculator */ "./web/js/pagemarks/controller/interact/drag/DragRectAdjacencyCalculator.js"),
+    DragRectAdjacencyCalculator = _require5.DragRectAdjacencyCalculator;
+
+var _require6 = __webpack_require__(/*! ./resize/ResizeRectAdjacencyCalculator */ "./web/js/pagemarks/controller/interact/resize/ResizeRectAdjacencyCalculator.js"),
+    ResizeRectAdjacencyCalculator = _require6.ResizeRectAdjacencyCalculator;
+
+var _require7 = __webpack_require__(/*! ./BoxMoveEvent */ "./web/js/pagemarks/controller/interact/BoxMoveEvent.js"),
+    BoxMoveEvent = _require7.BoxMoveEvent;
+
+var _require8 = __webpack_require__(/*! ./edges/RectEdges */ "./web/js/pagemarks/controller/interact/edges/RectEdges.js"),
+    RectEdges = _require8.RectEdges;
+
+var _require9 = __webpack_require__(/*! ../../../Preconditions */ "./web/js/Preconditions.js"),
+    Preconditions = _require9.Preconditions;
+
+var _require10 = __webpack_require__(/*! ../../../Optional */ "./web/js/Optional.js"),
+    Optional = _require10.Optional;
+
+var log = __webpack_require__(/*! ../../../logger/Logger */ "./web/js/logger/Logger.js").create();
 
 /**
  * A generic controller for dragging boxes (divs) which are resizeable and can
  * be dragged within a container and absolutely positioned.
  */
-class BoxController {
+
+var BoxController = function () {
 
     /**
      *
      * @param [callback] {Function} Callback function which gives you a {BoxMoveEvent}
      */
-    constructor(callback) {
+    function BoxController(callback) {
+        _classCallCheck(this, BoxController);
+
         this.callback = callback;
     }
 
     /**
      * @param opts {BoxOptions}
      */
-    register(opts) {
 
-        let boxOptions = new BoxOptions(opts);
 
-        // TODO: we need a callback with:
-        //
-        // the parentRect (the container dimensions of the parent)
-        // the boxRect (the position of the box after it was moved)
-        //
+    _createClass(BoxController, [{
+        key: "register",
+        value: function register(opts) {
+            var _this = this;
 
-        // TODO: assert that the boxes for the selector are ALREADY absolutely
-        // positioned before we accept them and they are done using style
-        // attributes.
+            var boxOptions = new BoxOptions(opts);
 
-        let restrictionElement = Optional.of(boxOptions.restrictionElement).getOrElse(boxOptions.target.parentElement);
+            // TODO: we need a callback with:
+            //
+            // the parentRect (the container dimensions of the parent)
+            // the boxRect (the position of the box after it was moved)
+            //
 
-        interact(boxOptions.target).draggable({
+            // TODO: assert that the boxes for the selector are ALREADY absolutely
+            // positioned before we accept them and they are done using style
+            // attributes.
 
-            inertia: false,
-            restrict: {
-                restriction: restrictionElement,
-                outer: 'parent',
+            var restrictionElement = Optional.of(boxOptions.restrictionElement).getOrElse(boxOptions.target.parentElement);
 
-                elementRect: { top: 0, left: 0, bottom: 1, right: 1 }
-            },
+            interact(boxOptions.target).draggable({
 
-            restrictEdges: {
-                outer: 'parent'
-                // outer: computeRestriction,
-            }
+                inertia: false,
+                restrict: {
+                    restriction: restrictionElement,
+                    outer: 'parent',
 
-        }).resizable({
+                    elementRect: { top: 0, left: 0, bottom: 1, right: 1 }
+                },
 
-            // resize from all edges and corners
-            edges: {
-                left: true,
-                right: true,
-                bottom: true,
-                top: true
-            },
+                restrictEdges: {
+                    outer: 'parent'
+                    // outer: computeRestriction,
+                }
 
-            // Keep the edges inside the parent. this is needed or else the
-            // bound stretches slightly beyond the container.
-            restrictEdges: {
-                outer: restrictionElement
-                // outer: computeRestriction,
-            },
+            }).resizable({
 
-            restrict: {
-                restriction: restrictionElement
-                // restriction: computeRestriction
-            },
+                // resize from all edges and corners
+                edges: {
+                    left: true,
+                    right: true,
+                    bottom: true,
+                    top: true
+                },
 
-            // minimum size
-            restrictSize: {
-                min: { width: 50, height: 50 }
-            },
+                // Keep the edges inside the parent. this is needed or else the
+                // bound stretches slightly beyond the container.
+                restrictEdges: {
+                    outer: restrictionElement
+                    // outer: computeRestriction,
+                },
 
-            inertia: false
+                restrict: {
+                    restriction: restrictionElement
+                    // restriction: computeRestriction
+                },
 
-        }).on('dragstart', interactionEvent => {
-            this._captureStartTargetRect(interactionEvent);
-        }).on('dragmove', interactionEvent => {
+                // minimum size
+                restrictSize: {
+                    min: { width: 50, height: 50 }
+                },
 
-            // log.info("=====================")
-            // log.info("dragmove: event: ", event);
-            // log.info("dragmove: event.interaction.myTimestamp: ", event.interaction.myTimestamp);
-            // log.info("dragmove: event.target: ", event.target);
-            // log.info("dragmove: event.restrict: ", event.restrict);
-            // log.info(`dragmove: event.dx: ${event.dx} and event.dy: ${event.dy}`);
-            // log.info(`dragmove: event.x0: ${event.x0} and event.y0: ${event.y0}`);
-            // log.info(`dragmove: event.clientX: ${event.clientX} and event.clientY: ${event.clientY}`);
-            // log.info(`dragmove: event.clientX0: ${event.clientX0} and event.clientY0: ${event.clientY0}`);
+                inertia: false
 
-            let target = interactionEvent.target;
+            }).on('dragstart', function (interactionEvent) {
+                _this._captureStartTargetRect(interactionEvent);
+            }).on('dragmove', function (interactionEvent) {
 
-            let restrictionRect = Rects.createFromBasicRect({
-                left: 0,
-                top: 0,
-                width: restrictionElement.offsetWidth,
-                height: restrictionElement.offsetHeight
-            });
+                // log.info("=====================")
+                // log.info("dragmove: event: ", event);
+                // log.info("dragmove: event.interaction.myTimestamp: ", event.interaction.myTimestamp);
+                // log.info("dragmove: event.target: ", event.target);
+                // log.info("dragmove: event.restrict: ", event.restrict);
+                // log.info(`dragmove: event.dx: ${event.dx} and event.dy: ${event.dy}`);
+                // log.info(`dragmove: event.x0: ${event.x0} and event.y0: ${event.y0}`);
+                // log.info(`dragmove: event.clientX: ${event.clientX} and event.clientY: ${event.clientY}`);
+                // log.info(`dragmove: event.clientX0: ${event.clientX0} and event.clientY0: ${event.clientY0}`);
 
-            let origin = this._computeOriginXY(interactionEvent);
+                var target = interactionEvent.target;
 
-            let targetRect = Rects.fromElementStyle(target);
+                var restrictionRect = Rects.createFromBasicRect({
+                    left: 0,
+                    top: 0,
+                    width: restrictionElement.offsetWidth,
+                    height: restrictionElement.offsetHeight
+                });
 
-            let intersectedBoxes = this._calculateIntersectedBoxes(interactionEvent.currentTarget, Rects.createFromBasicRect({
-                left: origin.x,
-                top: origin.y,
-                width: targetRect.width,
-                height: targetRect.height
-            }));
+                var origin = _this._computeOriginXY(interactionEvent);
 
-            let boxRect = Rects.createFromBasicRect({
-                left: origin.x,
-                top: origin.y,
-                width: targetRect.width,
-                height: targetRect.height
-            });
+                var targetRect = Rects.fromElementStyle(target);
 
-            if (intersectedBoxes.intersectedRects.length === 0) {
+                var intersectedBoxes = _this._calculateIntersectedBoxes(interactionEvent.currentTarget, Rects.createFromBasicRect({
+                    left: origin.x,
+                    top: origin.y,
+                    width: targetRect.width,
+                    height: targetRect.height
+                }));
 
-                log.info("NOT INTERSECTED");
-
-                log.info("Moving to origin: " + JSON.stringify(origin));
-                this._moveTargetElement(origin.x, origin.y, target);
-            } else {
-
-                log.info("INTERSECTED========== ");
-
-                let primaryRect = Rects.createFromBasicRect({
+                var boxRect = Rects.createFromBasicRect({
                     left: origin.x,
                     top: origin.y,
                     width: targetRect.width,
                     height: targetRect.height
                 });
 
-                let intersectedRect = intersectedBoxes.intersectedRects[0];
+                if (intersectedBoxes.intersectedRects.length === 0) {
 
-                let adjacency = DragRectAdjacencyCalculator.calculate(primaryRect, intersectedRect, restrictionRect);
+                    log.info("NOT INTERSECTED");
 
-                let adjustedRect = adjacency.adjustedRect;
-
-                if (adjustedRect) {
-                    this._moveTargetElement(adjustedRect.left, adjustedRect.top, target);
-                    boxRect = adjustedRect;
+                    log.info("Moving to origin: " + JSON.stringify(origin));
+                    _this._moveTargetElement(origin.x, origin.y, target);
                 } else {
-                    // this should never happen but log it if there is a bug.
-                    console.warn("Can't move due to no valid adjustedRect we can work with.");
+
+                    log.info("INTERSECTED========== ");
+
+                    var primaryRect = Rects.createFromBasicRect({
+                        left: origin.x,
+                        top: origin.y,
+                        width: targetRect.width,
+                        height: targetRect.height
+                    });
+
+                    var intersectedRect = intersectedBoxes.intersectedRects[0];
+
+                    var adjacency = DragRectAdjacencyCalculator.calculate(primaryRect, intersectedRect, restrictionRect);
+
+                    var adjustedRect = adjacency.adjustedRect;
+
+                    if (adjustedRect) {
+                        _this._moveTargetElement(adjustedRect.left, adjustedRect.top, target);
+                        boxRect = adjustedRect;
+                    } else {
+                        // this should never happen but log it if there is a bug.
+                        console.warn("Can't move due to no valid adjustedRect we can work with.");
+                    }
                 }
-            }
 
-            interactionEvent.interaction.lastBoxMoveEvent = this._fireBoxMoveEvent("drag", restrictionRect, boxRect, target.id, target);
-        }).on('dragend', interactionEvent => {
-            this._fireCompletedBoxMoveEvent(interactionEvent);
-        }).on('resizestart', interactionEvent => {
-            this._captureStartTargetRect(interactionEvent);
-            log.info("resizestart: interactionEvent.rect: " + JSON.stringify(interactionEvent.rect, null, "  "));
-            interactionEvent.interaction.startRect = Objects.duplicate(interactionEvent.rect);
-        }).on('resizemove', interactionEvent => {
+                interactionEvent.interaction.lastBoxMoveEvent = _this._fireBoxMoveEvent("drag", restrictionRect, boxRect, target.id, target);
+            }).on('dragend', function (interactionEvent) {
+                _this._fireCompletedBoxMoveEvent(interactionEvent);
+            }).on('resizestart', function (interactionEvent) {
+                _this._captureStartTargetRect(interactionEvent);
+                log.info("resizestart: interactionEvent.rect: " + JSON.stringify(interactionEvent.rect, null, "  "));
+                interactionEvent.interaction.startRect = Objects.duplicate(interactionEvent.rect);
+            }).on('resizemove', function (interactionEvent) {
 
-            log.info("resizemove: event: ", interactionEvent);
-            log.info("resizemove: event.target: ", interactionEvent.target);
-            log.info("resizemove: event.restrict: ", interactionEvent.restrict);
-            log.info("resizemove: interactionEvent.rect: " + JSON.stringify(interactionEvent.rect, null, "  "));
-            log.info("resizemove: interactionEvent.interaction.startRect: " + JSON.stringify(interactionEvent.interaction.startRect, null, "  "));
+                log.info("resizemove: event: ", interactionEvent);
+                log.info("resizemove: event.target: ", interactionEvent.target);
+                log.info("resizemove: event.restrict: ", interactionEvent.restrict);
+                log.info("resizemove: interactionEvent.rect: " + JSON.stringify(interactionEvent.rect, null, "  "));
+                log.info("resizemove: interactionEvent.interaction.startRect: " + JSON.stringify(interactionEvent.interaction.startRect, null, "  "));
 
-            let target = interactionEvent.target;
+                var target = interactionEvent.target;
 
-            let restrictionRect = Rects.createFromBasicRect({
-                left: 0,
-                top: 0,
-                width: restrictionElement.offsetWidth,
-                height: restrictionElement.offsetHeight
+                var restrictionRect = Rects.createFromBasicRect({
+                    left: 0,
+                    top: 0,
+                    width: restrictionElement.offsetWidth,
+                    height: restrictionElement.offsetHeight
+                });
+
+                // the tempRect is the rect that the user has attempted to draw
+                // but which we have not yet accepted and is controlled by interact.js
+
+                var tempRect = Rects.createFromBasicRect(interactionEvent.rect);
+
+                var deltaRect = Rects.subtract(tempRect, interactionEvent.interaction.startRect);
+
+                var resizeRect = Rects.add(interactionEvent.interaction.startTargetRect, deltaRect);
+
+                // before we resize, verify that we CAN resize..
+
+                var intersectedBoxes = _this._calculateIntersectedBoxes(target, resizeRect);
+
+                log.info("resizemove: deltaRect: " + JSON.stringify(deltaRect, null, "  "));
+
+                var boxRect = void 0;
+
+                if (intersectedBoxes.intersectedRects.length === 0) {
+
+                    log.info("Resizing in non-intersected mode");
+
+                    boxRect = resizeRect;
+
+                    _this._resizeTargetElement(resizeRect, target);
+                } else {
+
+                    // FIXME: its' also possible to resize smaller than the minSize we defined above...
+
+                    // FIXME: when intersected, if we drag down, the rect vanishes...
+                    //
+                    // FIXME: pulling it left while intersected also makes it vanish...
+
+                    log.info("Resizing in intersected mode");
+
+                    var resizeRectAdjacencyCalculator = new ResizeRectAdjacencyCalculator();
+
+                    var intersectedRect = intersectedBoxes.intersectedRects[0];
+
+                    var rectEdges = new RectEdges(interactionEvent.edges);
+
+                    var adjustedRect = resizeRectAdjacencyCalculator.calculate(resizeRect, intersectedRect, rectEdges);
+
+                    log.info("resizemove: adjustedRect: " + JSON.stringify(adjustedRect, null, "  "));
+
+                    boxRect = adjustedRect;
+
+                    _this._resizeTargetElement(adjustedRect, target);
+                }
+
+                interactionEvent.interaction.lastBoxMoveEvent = _this._fireBoxMoveEvent("resize", restrictionRect, boxRect, target.id, target);
+            }).on('resizeend', function (interactionEvent) {
+                _this._fireCompletedBoxMoveEvent(interactionEvent);
+            });
+        }
+
+        /**
+         *
+         * @param type {String} "drag" or "resize"
+         * @param restrictionRect {Rect}
+         * @param boxRect {Rect}
+         * @param id {String}
+         * @param target {HTMLElement}
+         * @return {BoxMoveEvent}
+         * @private
+         */
+
+    }, {
+        key: "_fireBoxMoveEvent",
+        value: function _fireBoxMoveEvent(type, restrictionRect, boxRect, id, target) {
+
+            var boxMoveEvent = new BoxMoveEvent({
+                type: type,
+                restrictionRect: restrictionRect,
+                boxRect: boxRect,
+                id: id,
+                target: target
             });
 
-            // the tempRect is the rect that the user has attempted to draw
-            // but which we have not yet accepted and is controlled by interact.js
-
-            let tempRect = Rects.createFromBasicRect(interactionEvent.rect);
-
-            let deltaRect = Rects.subtract(tempRect, interactionEvent.interaction.startRect);
-
-            let resizeRect = Rects.add(interactionEvent.interaction.startTargetRect, deltaRect);
-
-            // before we resize, verify that we CAN resize..
-
-            let intersectedBoxes = this._calculateIntersectedBoxes(target, resizeRect);
-
-            log.info("resizemove: deltaRect: " + JSON.stringify(deltaRect, null, "  "));
-
-            let boxRect;
-
-            if (intersectedBoxes.intersectedRects.length === 0) {
-
-                log.info("Resizing in non-intersected mode");
-
-                boxRect = resizeRect;
-
-                this._resizeTargetElement(resizeRect, target);
-            } else {
-
-                // FIXME: its' also possible to resize smaller than the minSize we defined above...
-
-                // FIXME: when intersected, if we drag down, the rect vanishes...
-                //
-                // FIXME: pulling it left while intersected also makes it vanish...
-
-                log.info("Resizing in intersected mode");
-
-                let resizeRectAdjacencyCalculator = new ResizeRectAdjacencyCalculator();
-
-                let intersectedRect = intersectedBoxes.intersectedRects[0];
-
-                let rectEdges = new RectEdges(interactionEvent.edges);
-
-                let adjustedRect = resizeRectAdjacencyCalculator.calculate(resizeRect, intersectedRect, rectEdges);
-
-                log.info("resizemove: adjustedRect: " + JSON.stringify(adjustedRect, null, "  "));
-
-                boxRect = adjustedRect;
-
-                this._resizeTargetElement(adjustedRect, target);
-            }
-
-            interactionEvent.interaction.lastBoxMoveEvent = this._fireBoxMoveEvent("resize", restrictionRect, boxRect, target.id, target);
-        }).on('resizeend', interactionEvent => {
-            this._fireCompletedBoxMoveEvent(interactionEvent);
-        });
-    }
-
-    /**
-     *
-     * @param type {String} "drag" or "resize"
-     * @param restrictionRect {Rect}
-     * @param boxRect {Rect}
-     * @param id {String}
-     * @param target {HTMLElement}
-     * @return {BoxMoveEvent}
-     * @private
-     */
-    _fireBoxMoveEvent(type, restrictionRect, boxRect, id, target) {
-
-        let boxMoveEvent = new BoxMoveEvent({
-            type,
-            restrictionRect,
-            boxRect,
-            id,
-            target
-        });
-
-        if (this.callback) {
-            this.callback(boxMoveEvent);
-        }
-
-        return boxMoveEvent;
-    }
-
-    _fireCompletedBoxMoveEvent(interactionEvent) {
-
-        if (interactionEvent.interaction.lastBoxMoveEvent) {
-
-            let boxMoveEvent = Object.assign({}, interactionEvent.interaction.lastBoxMoveEvent);
-
-            boxMoveEvent.state = "completed";
-
             if (this.callback) {
-                log.info("Firing completed BoxMoveEvent: ", boxMoveEvent);
+                this.callback(boxMoveEvent);
+            }
 
-                // for some reason, without a timeout, the controller just seems
-                // to lock up.
-                setTimeout(() => this.callback(boxMoveEvent), 1);
+            return boxMoveEvent;
+        }
+    }, {
+        key: "_fireCompletedBoxMoveEvent",
+        value: function _fireCompletedBoxMoveEvent(interactionEvent) {
+            var _this2 = this;
+
+            if (interactionEvent.interaction.lastBoxMoveEvent) {
+
+                var boxMoveEvent = Object.assign({}, interactionEvent.interaction.lastBoxMoveEvent);
+
+                boxMoveEvent.state = "completed";
+
+                if (this.callback) {
+                    log.info("Firing completed BoxMoveEvent: ", boxMoveEvent);
+
+                    // for some reason, without a timeout, the controller just seems
+                    // to lock up.
+                    setTimeout(function () {
+                        return _this2.callback(boxMoveEvent);
+                    }, 1);
+                }
             }
         }
-    }
 
-    /**
-     */
-    _calculateIntersectedBoxes(element, resizeRect) {
+        /**
+         */
 
-        Preconditions.assertNotNull(element, "element");
-        Preconditions.assertNotNull(resizeRect, "resizeRect");
+    }, {
+        key: "_calculateIntersectedBoxes",
+        value: function _calculateIntersectedBoxes(element, resizeRect) {
 
-        // // This is where we are NOW, now where we are GOING to be.
-        // let elementRect = Rects.fromElementStyle(element);
+            Preconditions.assertNotNull(element, "element");
+            Preconditions.assertNotNull(resizeRect, "resizeRect");
 
-        // log.info(`x: ${x}: y: ${y}`);
-        log.info("_calculateIntersectedBoxes: resizeRect is: " + JSON.stringify(resizeRect, null, "  "));
+            // // This is where we are NOW, now where we are GOING to be.
+            // let elementRect = Rects.fromElementStyle(element);
 
-        // TODO: the .pagemark selector must be configured
+            // log.info(`x: ${x}: y: ${y}`);
+            log.info("_calculateIntersectedBoxes: resizeRect is: " + JSON.stringify(resizeRect, null, "  "));
 
-        let boxes = Array.from(element.parentElement.querySelectorAll(".pagemark")).filter(current => current !== element);
+            // TODO: the .pagemark selector must be configured
 
-        // make sure that our boxes aren't the same ID as the element. we can
-        // remove this when we go to production
-        boxes.forEach(current => current.getAttribute("id") !== element.getAttribute("id"));
+            var boxes = Array.from(element.parentElement.querySelectorAll(".pagemark")).filter(function (current) {
+                return current !== element;
+            });
 
-        let intersectedRects = [];
+            // make sure that our boxes aren't the same ID as the element. we can
+            // remove this when we go to production
+            boxes.forEach(function (current) {
+                return current.getAttribute("id") !== element.getAttribute("id");
+            });
 
-        boxes.forEach(box => {
+            var intersectedRects = [];
 
-            let pagemarkRect = Rects.fromElementStyle(box);
+            boxes.forEach(function (box) {
 
-            if (Rects.intersect(pagemarkRect, resizeRect)) {
-                intersectedRects.push(pagemarkRect);
-            }
-        });
+                var pagemarkRect = Rects.fromElementStyle(box);
 
-        return {
-            resizeRect,
-            intersectedRects
-        };
-    }
+                if (Rects.intersect(pagemarkRect, resizeRect)) {
+                    intersectedRects.push(pagemarkRect);
+                }
+            });
 
-    /**
-     *
-     * @param interactionEvent
-     * @private
-     */
-    _computeOriginXY(interactionEvent) {
+            return {
+                resizeRect: resizeRect,
+                intersectedRects: intersectedRects
+            };
+        }
 
-        let delta = {
-            x: interactionEvent.pageX - interactionEvent.interaction.startCoords.page.x,
-            y: interactionEvent.pageY - interactionEvent.interaction.startCoords.page.y
-        };
+        /**
+         *
+         * @param interactionEvent
+         * @private
+         */
 
-        // log.info(`dragmove: delta.x: ${delta.x} and delta.y: ${delta.y}`);
-        // log.info(`dragmove: interactionEvent.interaction.startCoords.page: ` + JSON.stringify(interactionEvent.interaction.startCoords.page) );
-        // log.info(`dragmove: testDelta: ` + JSON.stringify(delta));
+    }, {
+        key: "_computeOriginXY",
+        value: function _computeOriginXY(interactionEvent) {
 
-        let x = interactionEvent.interaction.startTargetRect.left + delta.x;
-        let y = interactionEvent.interaction.startTargetRect.top + delta.y;
+            var delta = {
+                x: interactionEvent.pageX - interactionEvent.interaction.startCoords.page.x,
+                y: interactionEvent.pageY - interactionEvent.interaction.startCoords.page.y
+            };
 
-        return { x, y };
-    }
+            // log.info(`dragmove: delta.x: ${delta.x} and delta.y: ${delta.y}`);
+            // log.info(`dragmove: interactionEvent.interaction.startCoords.page: ` + JSON.stringify(interactionEvent.interaction.startCoords.page) );
+            // log.info(`dragmove: testDelta: ` + JSON.stringify(delta));
 
-    /**
-     *
-     * @param x {number}
-     * @param y {number}
-     * @param target
-     * @private
-     */
-    _moveTargetElement(x, y, target) {
+            var x = interactionEvent.interaction.startTargetRect.left + delta.x;
+            var y = interactionEvent.interaction.startTargetRect.top + delta.y;
 
-        target.style.left = `${x}px`;
-        target.style.top = `${y}px`;
+            return { x: x, y: y };
+        }
 
-        // update the position attributes
-        target.setAttribute('data-x', x);
-        target.setAttribute('data-y', y);
+        /**
+         *
+         * @param x {number}
+         * @param y {number}
+         * @param target
+         * @private
+         */
 
-        //updateTargetText(target);
-    }
+    }, {
+        key: "_moveTargetElement",
+        value: function _moveTargetElement(x, y, target) {
 
-    /**
-     *
-     * @param rect {Rect}
-     * @param target {HTMLElement}
-     * @private
-     */
-    _resizeTargetElement(rect, target) {
+            target.style.left = x + "px";
+            target.style.top = y + "px";
 
-        // first move it the same way as if it were dragged
-        this._moveTargetElement(rect.left, rect.top, target);
+            // update the position attributes
+            target.setAttribute('data-x', x);
+            target.setAttribute('data-y', y);
 
-        // now set the width and height
-        target.style.width = `${rect.width}px`;
-        target.style.height = `${rect.height}px`;
-    }
+            //updateTargetText(target);
+        }
 
-    _captureStartTargetRect(interactionEvent) {
-        // TODO: this modifies interactionEvent.interaction by side effect which
-        // I don't like.
-        interactionEvent.interaction.startTargetRect = Rects.fromElementStyle(interactionEvent.target);
-    }
+        /**
+         *
+         * @param rect {Rect}
+         * @param target {HTMLElement}
+         * @private
+         */
 
-}
+    }, {
+        key: "_resizeTargetElement",
+        value: function _resizeTargetElement(rect, target) {
+
+            // first move it the same way as if it were dragged
+            this._moveTargetElement(rect.left, rect.top, target);
+
+            // now set the width and height
+            target.style.width = rect.width + "px";
+            target.style.height = rect.height + "px";
+        }
+    }, {
+        key: "_captureStartTargetRect",
+        value: function _captureStartTargetRect(interactionEvent) {
+            // TODO: this modifies interactionEvent.interaction by side effect which
+            // I don't like.
+            interactionEvent.interaction.startTargetRect = Rects.fromElementStyle(interactionEvent.target);
+        }
+    }]);
+
+    return BoxController;
+}();
 
 module.exports.BoxController = BoxController;
 
@@ -61452,64 +63914,66 @@ module.exports.BoxController = BoxController;
   !*** ./web/js/pagemarks/controller/interact/BoxMoveEvent.js ***!
   \**************************************************************/
 /*! no static exports found */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
 
-class BoxMoveEvent {
+"use strict";
 
-  constructor(opts) {
 
-    /**
-     * The type of the event.  Either 'resize' or 'drag'
-     * @type {string}
-     */
-    this.type = undefined;
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-    /**
-     * The restrictionRect Rect of the box we moved.  This is the parent
-     * Rect.
-     *
-     * @type {Rect}
-     */
-    this.restrictionRect = undefined;
+var BoxMoveEvent = function BoxMoveEvent(opts) {
+  _classCallCheck(this, BoxMoveEvent);
 
-    /**
-     * The Rect of the box we moved.  This is the final position of the box
-     * once we're done moving it.
-     *
-     * @type {Rect}
-     */
-    this.boxRect = undefined;
+  /**
+   * The type of the event.  Either 'resize' or 'drag'
+   * @type {string}
+   */
+  this.type = undefined;
 
-    /**
-     * The ID of the box we moved.
-     *
-     * @type {string}
-     */
-    this.id = undefined;
+  /**
+   * The restrictionRect Rect of the box we moved.  This is the parent
+   * Rect.
+   *
+   * @type {Rect}
+   */
+  this.restrictionRect = undefined;
 
-    /**
-     * The element being moved.
-     *
-     * @type {HTMLElement}
-     */
-    this.target = undefined;
+  /**
+   * The Rect of the box we moved.  This is the final position of the box
+   * once we're done moving it.
+   *
+   * @type {Rect}
+   */
+  this.boxRect = undefined;
 
-    /**
-     * The state of the box movement. States are:
-     *
-     * pending: The box is still being drawn but the user hasn't finished
-     * moving it:
-     *
-     * completed: The box move operation is completed and is in its final position.
-     *
-     * @type {string}
-     */
-    this.state = "pending";
+  /**
+   * The ID of the box we moved.
+   *
+   * @type {string}
+   */
+  this.id = undefined;
 
-    Object.assign(this, opts);
-  }
+  /**
+   * The element being moved.
+   *
+   * @type {HTMLElement}
+   */
+  this.target = undefined;
 
-}
+  /**
+   * The state of the box movement. States are:
+   *
+   * pending: The box is still being drawn but the user hasn't finished
+   * moving it:
+   *
+   * completed: The box move operation is completed and is in its final position.
+   *
+   * @type {string}
+   */
+  this.state = "pending";
+
+  Object.assign(this, opts);
+};
 
 module.exports.BoxMoveEvent = BoxMoveEvent;
 
@@ -61520,30 +63984,32 @@ module.exports.BoxMoveEvent = BoxMoveEvent;
   !*** ./web/js/pagemarks/controller/interact/BoxOptions.js ***!
   \************************************************************/
 /*! no static exports found */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
 
-class BoxOptions {
+"use strict";
 
-  constructor(opts) {
 
-    /**
-     * The element or selector to define boxes.
-     *
-     * @type {HTMLElement}
-     */
-    this.target = undefined;
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-    /**
-     * The element used to define the restrictionRect.
-     *
-     * @type {HTMLElement}
-     */
-    this.restrictionElement = undefined;
+var BoxOptions = function BoxOptions(opts) {
+  _classCallCheck(this, BoxOptions);
 
-    Object.assign(this, opts);
-  }
+  /**
+   * The element or selector to define boxes.
+   *
+   * @type {HTMLElement}
+   */
+  this.target = undefined;
 
-}
+  /**
+   * The element used to define the restrictionRect.
+   *
+   * @type {HTMLElement}
+   */
+  this.restrictionElement = undefined;
+
+  Object.assign(this, opts);
+};
 
 module.exports.BoxOptions = BoxOptions;
 
@@ -61554,57 +64020,58 @@ module.exports.BoxOptions = BoxOptions;
   !*** ./web/js/pagemarks/controller/interact/drag/Adjacency.js ***!
   \****************************************************************/
 /*! no static exports found */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
 
+"use strict";
+
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 /**
  * Represents the results from the {RectAdjacencyCalculator}
  */
-class Adjacency {
+var Adjacency = function Adjacency() {
+  _classCallCheck(this, Adjacency);
 
-  constructor() {
+  /**
+   *
+   * @type {Rect}
+   */
+  this.primaryRect = undefined;
 
-    /**
-     *
-     * @type {Rect}
-     */
-    this.primaryRect = undefined;
+  /**
+   *
+   * @type {Rect}
+   */
+  this.secondaryRect = undefined;
 
-    /**
-     *
-     * @type {Rect}
-     */
-    this.secondaryRect = undefined;
-
-    this.adjustments = {
-
-      /**
-       * @type {LineAdjustment}
-       */
-      horizontal: null,
-
-      /**
-       * @type {LineAdjustment}
-       */
-      vertical: null
-
-    };
+  this.adjustments = {
 
     /**
-     *
-     * The final adjustment.
-     *
      * @type {LineAdjustment}
      */
-    this.adjustment = null;
+    horizontal: null,
 
     /**
-     * @type {Rect}
+     * @type {LineAdjustment}
      */
-    this.adjustedRect = null;
-  }
+    vertical: null
 
-}
+  };
+
+  /**
+   *
+   * The final adjustment.
+   *
+   * @type {LineAdjustment}
+   */
+  this.adjustment = null;
+
+  /**
+   * @type {Rect}
+   */
+  this.adjustedRect = null;
+};
 
 module.exports.Adjacency = Adjacency;
 
@@ -61617,161 +64084,197 @@ module.exports.Adjacency = Adjacency;
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-const { Rect } = __webpack_require__(/*! ../../../../Rect */ "./web/js/Rect.js");
-const { Rects } = __webpack_require__(/*! ../../../../Rects */ "./web/js/Rects.js");
-const { Line } = __webpack_require__(/*! ../../../../util/Line */ "./web/js/util/Line.js");
-const { Adjacency } = __webpack_require__(/*! ./Adjacency */ "./web/js/pagemarks/controller/interact/drag/Adjacency.js");
-const { LineAdjustment } = __webpack_require__(/*! ./LineAdjustment */ "./web/js/pagemarks/controller/interact/drag/LineAdjustment.js");
+"use strict";
+
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var _require = __webpack_require__(/*! ../../../../Rect */ "./web/js/Rect.js"),
+    Rect = _require.Rect;
+
+var _require2 = __webpack_require__(/*! ../../../../Rects */ "./web/js/Rects.js"),
+    Rects = _require2.Rects;
+
+var _require3 = __webpack_require__(/*! ../../../../util/Line */ "./web/js/util/Line.js"),
+    Line = _require3.Line;
+
+var _require4 = __webpack_require__(/*! ./Adjacency */ "./web/js/pagemarks/controller/interact/drag/Adjacency.js"),
+    Adjacency = _require4.Adjacency;
+
+var _require5 = __webpack_require__(/*! ./LineAdjustment */ "./web/js/pagemarks/controller/interact/drag/LineAdjustment.js"),
+    LineAdjustment = _require5.LineAdjustment;
 
 /**
  * If we have two rects, and the've moved to intersect, compute updated
  * positions so that they are ADJACENT, not intersecting.
  */
-class DragRectAdjacencyCalculator {
 
-    /**
-     *
-     * @param primaryRect {Rect} The primary rect that is moving and is intersecting with
-     * the secondary rect.  The primary rect is the one we want to adjust.
-     *
-     * @param secondaryRect {Rect} The stationary rect that we need to keep our rect
-     * adjacent too.
-      * @param [restrictionRect] {Rect} Limit the movement to the given rect.
-     *
-     * @return {Adjacency} Return the new / correct position of the primary rect.
-     */
-    static calculate(primaryRect, secondaryRect, restrictionRect) {
 
-        let result = new Adjacency();
-
-        if (!restrictionRect) {
-
-            // define a HUGE rect to work within by default.  Mathematically, we
-            // should probably use infinity and negative infinity but working
-            // with these in Javascript + JSON is limited.
-
-            restrictionRect = Rects.createFromBasicRect({
-                left: -1000000,
-                top: -1000000,
-                bottom: 1000000,
-                right: 1000000
-            });
-        }
-
-        result.primaryRect = Rects.validate(primaryRect);
-        result.secondaryRect = Rects.validate(secondaryRect);
-
-        let secondaryBox = {
-            horizontal: new Line(secondaryRect.left, secondaryRect.right),
-            vertical: new Line(secondaryRect.top, secondaryRect.bottom)
-        };
-
-        let primaryBox = {
-            horizontal: new Line(primaryRect.left, primaryRect.right),
-            vertical: new Line(primaryRect.top, primaryRect.bottom)
-        };
-
-        let restrictionBox = {
-            horizontal: new Line(restrictionRect.left, restrictionRect.right),
-            vertical: new Line(restrictionRect.top, restrictionRect.bottom)
-        };
-
-        // TODO: it might be better to create a LineSet of vertical and horizontal
-        // and then pass them to adjust.
-
-        result.adjustments.horizontal = DragRectAdjacencyCalculator.adjust(primaryBox.horizontal, secondaryBox.horizontal, restrictionBox.horizontal, "x");
-
-        result.adjustments.vertical = DragRectAdjacencyCalculator.adjust(primaryBox.vertical, secondaryBox.vertical, restrictionBox.vertical, "y");
-
-        let successfulAdjustments = [result.adjustments.horizontal, result.adjustments.vertical];
-
-        // we only want to factor in where we actually overlapped.
-        successfulAdjustments = successfulAdjustments.filter(current => current.overlapped === true);
-
-        // now sort the adjustments so that ones with a lower delta are first.
-        successfulAdjustments = successfulAdjustments.sort((adj0, adj1) => adj0.delta - adj1.delta);
-
-        if (successfulAdjustments.length >= 1) {
-            result.adjustment = successfulAdjustments[0];
-            result.adjustedRect = result.adjustment.adjustRect(primaryRect);
-        }
-
-        return result;
+var DragRectAdjacencyCalculator = function () {
+    function DragRectAdjacencyCalculator() {
+        _classCallCheck(this, DragRectAdjacencyCalculator);
     }
 
-    /**
-     * Adjust the line and return the required adjustment, or null if no adjustment
-     * is needed.
-     *
-     * @param primaryLine {Line}
-     *
-     * @param secondaryLine {Line}
-     *
-     * @param restrictionLine {Line}
-     *
-     * @param axis {string} The axis this represents. "x" or "y".
-     *
-     * @return {LineAdjustment}
-     */
-    static adjust(primaryLine, secondaryLine, restrictionLine, axis) {
+    _createClass(DragRectAdjacencyCalculator, null, [{
+        key: "calculate",
 
-        // there were no matches.
-        let none = new LineAdjustment({
-            axis,
-            overlapped: false,
-            start: primaryLine.start,
-            snapped: null
-        });
 
-        let result = none;
+        /**
+         *
+         * @param primaryRect {Rect} The primary rect that is moving and is intersecting with
+         * the secondary rect.  The primary rect is the one we want to adjust.
+         *
+         * @param secondaryRect {Rect} The stationary rect that we need to keep our rect
+         * adjacent too.
+          * @param [restrictionRect] {Rect} Limit the movement to the given rect.
+         *
+         * @return {Adjacency} Return the new / correct position of the primary rect.
+         */
+        value: function calculate(primaryRect, secondaryRect, restrictionRect) {
 
-        if (secondaryLine.overlaps(primaryLine) || primaryLine.overlaps(secondaryLine)) {
+            var result = new Adjacency();
 
-            let results = [];
+            if (!restrictionRect) {
 
-            results.push(LineAdjustment.create({
-                axis,
-                start: secondaryLine.end,
-                previous: primaryLine.start,
-                snapped: "AFTER"
-            }));
+                // define a HUGE rect to work within by default.  Mathematically, we
+                // should probably use infinity and negative infinity but working
+                // with these in Javascript + JSON is limited.
 
-            results.push(LineAdjustment.create({
-                axis,
-                start: secondaryLine.start - primaryLine.width,
-                previous: primaryLine.start,
-                snapped: "BEFORE"
-            }));
-
-            // filter out results that would be invalid due to the restriction line.
-            results = results.filter(result => {
-
-                if (result.start < restrictionLine.start) {
-                    return false;
-                }
-
-                if (result.start + primaryLine.width > restrictionLine.end) {
-                    return false;
-                }
-
-                return true;
-            });
-
-            results = results.sort((r0, r1) => r0.delta - r1.delta);
-
-            console.log(`DEBUG: results for ${axis} axis: ` + JSON.stringify(results, null, "  "));
-
-            if (results.length > 0) {
-                result = results[0];
+                restrictionRect = Rects.createFromBasicRect({
+                    left: -1000000,
+                    top: -1000000,
+                    bottom: 1000000,
+                    right: 1000000
+                });
             }
+
+            result.primaryRect = Rects.validate(primaryRect);
+            result.secondaryRect = Rects.validate(secondaryRect);
+
+            var secondaryBox = {
+                horizontal: new Line(secondaryRect.left, secondaryRect.right),
+                vertical: new Line(secondaryRect.top, secondaryRect.bottom)
+            };
+
+            var primaryBox = {
+                horizontal: new Line(primaryRect.left, primaryRect.right),
+                vertical: new Line(primaryRect.top, primaryRect.bottom)
+            };
+
+            var restrictionBox = {
+                horizontal: new Line(restrictionRect.left, restrictionRect.right),
+                vertical: new Line(restrictionRect.top, restrictionRect.bottom)
+            };
+
+            // TODO: it might be better to create a LineSet of vertical and horizontal
+            // and then pass them to adjust.
+
+            result.adjustments.horizontal = DragRectAdjacencyCalculator.adjust(primaryBox.horizontal, secondaryBox.horizontal, restrictionBox.horizontal, "x");
+
+            result.adjustments.vertical = DragRectAdjacencyCalculator.adjust(primaryBox.vertical, secondaryBox.vertical, restrictionBox.vertical, "y");
+
+            var successfulAdjustments = [result.adjustments.horizontal, result.adjustments.vertical];
+
+            // we only want to factor in where we actually overlapped.
+            successfulAdjustments = successfulAdjustments.filter(function (current) {
+                return current.overlapped === true;
+            });
+
+            // now sort the adjustments so that ones with a lower delta are first.
+            successfulAdjustments = successfulAdjustments.sort(function (adj0, adj1) {
+                return adj0.delta - adj1.delta;
+            });
+
+            if (successfulAdjustments.length >= 1) {
+                result.adjustment = successfulAdjustments[0];
+                result.adjustedRect = result.adjustment.adjustRect(primaryRect);
+            }
+
+            return result;
         }
 
-        console.log(`DEBUG: Final result for ${axis} axis: ` + JSON.stringify(result, null, "  "));
+        /**
+         * Adjust the line and return the required adjustment, or null if no adjustment
+         * is needed.
+         *
+         * @param primaryLine {Line}
+         *
+         * @param secondaryLine {Line}
+         *
+         * @param restrictionLine {Line}
+         *
+         * @param axis {string} The axis this represents. "x" or "y".
+         *
+         * @return {LineAdjustment}
+         */
 
-        return result;
-    }
+    }, {
+        key: "adjust",
+        value: function adjust(primaryLine, secondaryLine, restrictionLine, axis) {
 
-}
+            // there were no matches.
+            var none = new LineAdjustment({
+                axis: axis,
+                overlapped: false,
+                start: primaryLine.start,
+                snapped: null
+            });
+
+            var result = none;
+
+            if (secondaryLine.overlaps(primaryLine) || primaryLine.overlaps(secondaryLine)) {
+
+                var results = [];
+
+                results.push(LineAdjustment.create({
+                    axis: axis,
+                    start: secondaryLine.end,
+                    previous: primaryLine.start,
+                    snapped: "AFTER"
+                }));
+
+                results.push(LineAdjustment.create({
+                    axis: axis,
+                    start: secondaryLine.start - primaryLine.width,
+                    previous: primaryLine.start,
+                    snapped: "BEFORE"
+                }));
+
+                // filter out results that would be invalid due to the restriction line.
+                results = results.filter(function (result) {
+
+                    if (result.start < restrictionLine.start) {
+                        return false;
+                    }
+
+                    if (result.start + primaryLine.width > restrictionLine.end) {
+                        return false;
+                    }
+
+                    return true;
+                });
+
+                results = results.sort(function (r0, r1) {
+                    return r0.delta - r1.delta;
+                });
+
+                console.log("DEBUG: results for " + axis + " axis: " + JSON.stringify(results, null, "  "));
+
+                if (results.length > 0) {
+                    result = results[0];
+                }
+            }
+
+            console.log("DEBUG: Final result for " + axis + " axis: " + JSON.stringify(result, null, "  "));
+
+            return result;
+        }
+    }]);
+
+    return DragRectAdjacencyCalculator;
+}();
 
 module.exports.DragRectAdjacencyCalculator = DragRectAdjacencyCalculator;
 
@@ -61784,16 +64287,29 @@ module.exports.DragRectAdjacencyCalculator = DragRectAdjacencyCalculator;
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-const { Rects } = __webpack_require__(/*! ../../../../Rects */ "./web/js/Rects.js");
-const { Preconditions } = __webpack_require__(/*! ../../../../Preconditions */ "./web/js/Preconditions.js");
-const { Objects } = __webpack_require__(/*! ../../../../util/Objects */ "./web/js/util/Objects.js");
+"use strict";
 
-class LineAdjustment {
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var _require = __webpack_require__(/*! ../../../../Rects */ "./web/js/Rects.js"),
+    Rects = _require.Rects;
+
+var _require2 = __webpack_require__(/*! ../../../../Preconditions */ "./web/js/Preconditions.js"),
+    Preconditions = _require2.Preconditions;
+
+var _require3 = __webpack_require__(/*! ../../../../util/Objects */ "./web/js/util/Objects.js"),
+    Objects = _require3.Objects;
+
+var LineAdjustment = function () {
 
   /**
    *
    */
-  constructor(obj) {
+  function LineAdjustment(obj) {
+    _classCallCheck(this, LineAdjustment);
 
     /**
      *
@@ -61843,31 +64359,38 @@ class LineAdjustment {
   /**
    * Apply the adjustment to the given rect and return the new rect.
    */
-  adjustRect(primaryRect) {
 
-    let dir = {};
-    dir[this.axis] = this.start;
 
-    let absolute = true;
+  _createClass(LineAdjustment, [{
+    key: "adjustRect",
+    value: function adjustRect(primaryRect) {
 
-    return Rects.move(primaryRect, dir, absolute);
-  }
+      var dir = {};
+      dir[this.axis] = this.start;
 
-  static create(opts) {
+      var absolute = true;
 
-    Preconditions.assertNotNull(opts.start, "start");
-    Preconditions.assertNotNull(opts.previous, "previous");
-    Preconditions.assertNotNull(opts.snapped, "snapped");
-    Preconditions.assertNotNull(opts.axis, "axis");
+      return Rects.move(primaryRect, dir, absolute);
+    }
+  }], [{
+    key: "create",
+    value: function create(opts) {
 
-    opts = Objects.duplicate(opts);
-    opts.overlapped = true;
-    opts.delta = Math.abs(opts.previous - opts.start);
+      Preconditions.assertNotNull(opts.start, "start");
+      Preconditions.assertNotNull(opts.previous, "previous");
+      Preconditions.assertNotNull(opts.snapped, "snapped");
+      Preconditions.assertNotNull(opts.axis, "axis");
 
-    return new LineAdjustment(opts);
-  }
+      opts = Objects.duplicate(opts);
+      opts.overlapped = true;
+      opts.delta = Math.abs(opts.previous - opts.start);
 
-}
+      return new LineAdjustment(opts);
+    }
+  }]);
+
+  return LineAdjustment;
+}();
 
 module.exports.LineAdjustment = LineAdjustment;
 
@@ -61880,34 +64403,39 @@ module.exports.LineAdjustment = LineAdjustment;
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-const { Preconditions } = __webpack_require__(/*! ../../../../Preconditions */ "./web/js/Preconditions.js");
+"use strict";
+
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var _require = __webpack_require__(/*! ../../../../Preconditions */ "./web/js/Preconditions.js"),
+    Preconditions = _require.Preconditions;
 
 /**
  * Like {RectEdges} but only for lines and only for start and end.
  */
-class LineEdges {
 
-  constructor(obj) {
 
-    /**
-     * @type {boolean}
-     */
-    this.start = undefined;
+var LineEdges = function LineEdges(obj) {
+  _classCallCheck(this, LineEdges);
 
-    /**
-     * @type {boolean}
-     */
-    this.end = undefined;
+  /**
+   * @type {boolean}
+   */
+  this.start = undefined;
 
-    Object.assign(this, obj);
+  /**
+   * @type {boolean}
+   */
+  this.end = undefined;
 
-    //  make sure we have all the values.
+  Object.assign(this, obj);
 
-    Preconditions.assertTypeof(this.start, "start", "boolean");
-    Preconditions.assertTypeof(this.end, "end", "boolean");
-  }
+  //  make sure we have all the values.
 
-}
+  Preconditions.assertTypeof(this.start, "start", "boolean");
+  Preconditions.assertTypeof(this.end, "end", "boolean");
+};
 
 module.exports.LineEdges = LineEdges;
 
@@ -61920,16 +64448,28 @@ module.exports.LineEdges = LineEdges;
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-const { Preconditions } = __webpack_require__(/*! ../../../../Preconditions */ "./web/js/Preconditions.js");
-const { LineEdges } = __webpack_require__(/*! ./LineEdges */ "./web/js/pagemarks/controller/interact/edges/LineEdges.js");
+"use strict";
+
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var _require = __webpack_require__(/*! ../../../../Preconditions */ "./web/js/Preconditions.js"),
+    Preconditions = _require.Preconditions;
+
+var _require2 = __webpack_require__(/*! ./LineEdges */ "./web/js/pagemarks/controller/interact/edges/LineEdges.js"),
+    LineEdges = _require2.LineEdges;
 
 /**
  * Stores how we are resizing a rect.  If any of the values are defined that
  * means this side is being resized. At most TWO can be resized at once.
  */
-class RectEdges {
 
-    constructor(obj) {
+
+var RectEdges = function () {
+    function RectEdges(obj) {
+        _classCallCheck(this, RectEdges);
 
         /**
          * @type {boolean}
@@ -61961,17 +64501,21 @@ class RectEdges {
         Preconditions.assertTypeof(this.bottom, "bottom", "boolean");
     }
 
-    toLineEdges(axis) {
-        if (axis === "x") {
-            return new LineEdges({ start: this.left, end: this.right });
-        } else if (axis === "y") {
-            return new LineEdges({ start: this.top, end: this.bottom });
-        } else {
-            throw new Error("Unknown axis: " + axis);
+    _createClass(RectEdges, [{
+        key: "toLineEdges",
+        value: function toLineEdges(axis) {
+            if (axis === "x") {
+                return new LineEdges({ start: this.left, end: this.right });
+            } else if (axis === "y") {
+                return new LineEdges({ start: this.top, end: this.bottom });
+            } else {
+                throw new Error("Unknown axis: " + axis);
+            }
         }
-    }
+    }]);
 
-}
+    return RectEdges;
+}();
 
 module.exports.RectEdges = RectEdges;
 
@@ -61984,106 +64528,136 @@ module.exports.RectEdges = RectEdges;
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-const { Rect } = __webpack_require__(/*! ../../../../Rect */ "./web/js/Rect.js");
-const { Rects } = __webpack_require__(/*! ../../../../Rects */ "./web/js/Rects.js");
-const { Objects } = __webpack_require__(/*! ../../../../util/Objects */ "./web/js/util/Objects.js");
-const { Line } = __webpack_require__(/*! ../../../../util/Line */ "./web/js/util/Line.js");
-const { Preconditions } = __webpack_require__(/*! ../../../../Preconditions */ "./web/js/Preconditions.js");
+"use strict";
 
-class ResizeRectAdjacencyCalculator {
 
-    /**
-     *
-     * @param resizeRect {Rect} The Rect that the user is resizing and hasn't
-     * been accepted yet.
-     *
-     * @param intersectedRect {Rect} The rect we've intersected with.
-     *
-     * @param rectEdges {RectEdges} The rectEdges that are being resized.
-     *
-     */
-    calculate(resizeRect, intersectedRect, rectEdges) {
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-        Preconditions.assertNotNull(rectEdges, "rectEdges");
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-        console.log("DEBUG ResizeRectAdjacencyCalculator.calculate: resizeRect: " + JSON.stringify(resizeRect, null, "  "));
-        console.log("DEBUG ResizeRectAdjacencyCalculator.calculate: intersectedRect: " + JSON.stringify(intersectedRect, null, "  "));
-        console.log("DEBUG ResizeRectAdjacencyCalculator.calculate: rectEdges: " + JSON.stringify(rectEdges, null, "  "));
+var _require = __webpack_require__(/*! ../../../../Rect */ "./web/js/Rect.js"),
+    Rect = _require.Rect;
 
-        // compute the intersection of the two rects.
-        let intersectionRect = Rects.intersection(resizeRect, intersectedRect);
+var _require2 = __webpack_require__(/*! ../../../../Rects */ "./web/js/Rects.js"),
+    Rects = _require2.Rects;
 
-        //console.log("DEBUG: intersectionRect: " + JSON.stringify(intersectionRect, null, "  "));
+var _require3 = __webpack_require__(/*! ../../../../util/Objects */ "./web/js/util/Objects.js"),
+    Objects = _require3.Objects;
 
-        // TODO: we can refactor this to pass __adjustLine the axis and then call
-        // toLine(axis) on each rect inside _adjustRect.
+var _require4 = __webpack_require__(/*! ../../../../util/Line */ "./web/js/util/Line.js"),
+    Line = _require4.Line;
 
-        let resizeLines = [];
+var _require5 = __webpack_require__(/*! ../../../../Preconditions */ "./web/js/Preconditions.js"),
+    Preconditions = _require5.Preconditions;
 
-        if (rectEdges.left || rectEdges.right) {
-            resizeLines.push(resizeRect.toLine("x"));
-        }
-
-        if (rectEdges.top || rectEdges.bottom) {
-            resizeLines.push(resizeRect.toLine("y"));
-        }
-
-        // Now sort the lines by their length to see which one we should use.
-        // We should pick the longest line and adjust by that.
-
-        resizeLines = resizeLines.sort((a, b) => a.length - b.length);
-
-        // they should be descending.  I could change the sort algorithm but
-        // I think the code is more clear that we want descending this way.
-        //resizeLines = resizeLines.reverse();
-
-        //console.log("DEBUG: resizeLines: " + JSON.stringify(resizeLines, null, "  "));
-
-        let resizeLine = resizeLines[0];
-
-        //console.log("DEBUG: resizeLine: " + JSON.stringify(resizeLine, null, "  "));
-
-        // resize based on the larger axis now.
-        if (resizeLine.axis === "x") {
-            console.log("Resizing X axis");
-            return this.__adjustLine(intersectionRect.toLine("x"), resizeRect.toLine("x"), rectEdges.toLineEdges("x"), resizeRect);
-        } else if (resizeLine.axis === "y") {
-            console.log("Resizing Y axis");
-            return this.__adjustLine(intersectionRect.toLine("y"), resizeRect.toLine("y"), rectEdges.toLineEdges("y"), resizeRect);
-        } else {
-            throw new Error("Wrong axis: " + resizeLine.axis);
-        }
+var ResizeRectAdjacencyCalculator = function () {
+    function ResizeRectAdjacencyCalculator() {
+        _classCallCheck(this, ResizeRectAdjacencyCalculator);
     }
 
-    /**
-     *
-     * @param intersectionLine {Line}
-     * @param resizeLine {Line}
-     * @param resizeRect {Rect}
-     * @param lineEdges {LineEdges}
-     * @private
-     * @return {Rect}
-     */
-    __adjustLine(intersectionLine, resizeLine, lineEdges, resizeRect) {
+    _createClass(ResizeRectAdjacencyCalculator, [{
+        key: "calculate",
 
-        // the rect that we are going to adjust and then use in the UI.
-        let adjustedRect = new Rect(resizeRect);
 
-        let adjustedLine = Objects.duplicate(resizeLine);
+        /**
+         *
+         * @param resizeRect {Rect} The Rect that the user is resizing and hasn't
+         * been accepted yet.
+         *
+         * @param intersectedRect {Rect} The rect we've intersected with.
+         *
+         * @param rectEdges {RectEdges} The rectEdges that are being resized.
+         *
+         */
+        value: function calculate(resizeRect, intersectedRect, rectEdges) {
 
-        if (lineEdges.start) {
-            adjustedLine.start = intersectionLine.end;
-        } else {
-            adjustedLine.end = intersectionLine.start;
+            Preconditions.assertNotNull(rectEdges, "rectEdges");
+
+            console.log("DEBUG ResizeRectAdjacencyCalculator.calculate: resizeRect: " + JSON.stringify(resizeRect, null, "  "));
+            console.log("DEBUG ResizeRectAdjacencyCalculator.calculate: intersectedRect: " + JSON.stringify(intersectedRect, null, "  "));
+            console.log("DEBUG ResizeRectAdjacencyCalculator.calculate: rectEdges: " + JSON.stringify(rectEdges, null, "  "));
+
+            // compute the intersection of the two rects.
+            var intersectionRect = Rects.intersection(resizeRect, intersectedRect);
+
+            //console.log("DEBUG: intersectionRect: " + JSON.stringify(intersectionRect, null, "  "));
+
+            // TODO: we can refactor this to pass __adjustLine the axis and then call
+            // toLine(axis) on each rect inside _adjustRect.
+
+            var resizeLines = [];
+
+            if (rectEdges.left || rectEdges.right) {
+                resizeLines.push(resizeRect.toLine("x"));
+            }
+
+            if (rectEdges.top || rectEdges.bottom) {
+                resizeLines.push(resizeRect.toLine("y"));
+            }
+
+            // Now sort the lines by their length to see which one we should use.
+            // We should pick the longest line and adjust by that.
+
+            resizeLines = resizeLines.sort(function (a, b) {
+                return a.length - b.length;
+            });
+
+            // they should be descending.  I could change the sort algorithm but
+            // I think the code is more clear that we want descending this way.
+            //resizeLines = resizeLines.reverse();
+
+            //console.log("DEBUG: resizeLines: " + JSON.stringify(resizeLines, null, "  "));
+
+            var resizeLine = resizeLines[0];
+
+            //console.log("DEBUG: resizeLine: " + JSON.stringify(resizeLine, null, "  "));
+
+            // resize based on the larger axis now.
+            if (resizeLine.axis === "x") {
+                console.log("Resizing X axis");
+                return this.__adjustLine(intersectionRect.toLine("x"), resizeRect.toLine("x"), rectEdges.toLineEdges("x"), resizeRect);
+            } else if (resizeLine.axis === "y") {
+                console.log("Resizing Y axis");
+                return this.__adjustLine(intersectionRect.toLine("y"), resizeRect.toLine("y"), rectEdges.toLineEdges("y"), resizeRect);
+            } else {
+                throw new Error("Wrong axis: " + resizeLine.axis);
+            }
         }
 
-        // technically we have to adjust the width of the line but the width
-        // accessor on Line computes it for us.
+        /**
+         *
+         * @param intersectionLine {Line}
+         * @param resizeLine {Line}
+         * @param resizeRect {Rect}
+         * @param lineEdges {LineEdges}
+         * @private
+         * @return {Rect}
+         */
 
-        return adjustedRect.adjustAxis(adjustedLine);
-    }
+    }, {
+        key: "__adjustLine",
+        value: function __adjustLine(intersectionLine, resizeLine, lineEdges, resizeRect) {
 
-}
+            // the rect that we are going to adjust and then use in the UI.
+            var adjustedRect = new Rect(resizeRect);
+
+            var adjustedLine = Objects.duplicate(resizeLine);
+
+            if (lineEdges.start) {
+                adjustedLine.start = intersectionLine.end;
+            } else {
+                adjustedLine.end = intersectionLine.start;
+            }
+
+            // technically we have to adjust the width of the line but the width
+            // accessor on Line computes it for us.
+
+            return adjustedRect.adjustAxis(adjustedLine);
+        }
+    }]);
+
+    return ResizeRectAdjacencyCalculator;
+}();
 
 module.exports.ResizeRectAdjacencyCalculator = ResizeRectAdjacencyCalculator;
 
@@ -62096,45 +64670,66 @@ module.exports.ResizeRectAdjacencyCalculator = ResizeRectAdjacencyCalculator;
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-const { AnnotationEvent } = __webpack_require__(/*! ../../annotations/components/AnnotationEvent */ "./web/js/annotations/components/AnnotationEvent.js");
-const { forDict } = __webpack_require__(/*! ../../utils.js */ "./web/js/utils.js");
+"use strict";
+
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var _require = __webpack_require__(/*! ../../annotations/components/AnnotationEvent */ "./web/js/annotations/components/AnnotationEvent.js"),
+    AnnotationEvent = _require.AnnotationEvent;
+
+var _require2 = __webpack_require__(/*! ../../utils.js */ "./web/js/utils.js"),
+    forDict = _require2.forDict;
 
 /**
  *
  */
-class PagemarkModel {
 
-    // TODO: it would be ideal if we could either:
-    //
-    // listen to /pageMetas/pagemarks directly ... and then get the parent that
-    // the pagemark contains but the current Proxies system doesn't support that.
 
-    registerListener(docMeta, callback) {
-
-        // TODO: there is a lot of duplication here with TextHighlightModel.js
-        // and we should try to unify them.
-
-        forDict(docMeta.pageMetas, (key, pageMeta) => {
-
-            pageMeta.pagemarks.addTraceListener(traceEvent => {
-
-                if (!traceEvent.path.endsWith("/pagemarks")) {
-                    return;
-                }
-
-                let annotationEvent = new AnnotationEvent(Object.assign({}, traceEvent, {
-                    docMeta,
-                    pageMeta
-                }));
-
-                callback(annotationEvent);
-
-                return true;
-            }).sync();
-        });
+var PagemarkModel = function () {
+    function PagemarkModel() {
+        _classCallCheck(this, PagemarkModel);
     }
 
-}
+    _createClass(PagemarkModel, [{
+        key: "registerListener",
+
+
+        // TODO: it would be ideal if we could either:
+        //
+        // listen to /pageMetas/pagemarks directly ... and then get the parent that
+        // the pagemark contains but the current Proxies system doesn't support that.
+
+        value: function registerListener(docMeta, callback) {
+
+            // TODO: there is a lot of duplication here with TextHighlightModel.js
+            // and we should try to unify them.
+
+            forDict(docMeta.pageMetas, function (key, pageMeta) {
+
+                pageMeta.pagemarks.addTraceListener(function (traceEvent) {
+
+                    if (!traceEvent.path.endsWith("/pagemarks")) {
+                        return;
+                    }
+
+                    var annotationEvent = new AnnotationEvent(Object.assign({}, traceEvent, {
+                        docMeta: docMeta,
+                        pageMeta: pageMeta
+                    }));
+
+                    callback(annotationEvent);
+
+                    return true;
+                }).sync();
+            });
+        }
+    }]);
+
+    return PagemarkModel;
+}();
 
 module.exports.PagemarkModel = PagemarkModel;
 
@@ -62147,49 +64742,82 @@ module.exports.PagemarkModel = PagemarkModel;
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-const { ProgressView } = __webpack_require__(/*! ./ProgressView */ "./web/js/pagemarks/view/ProgressView.js");
-const { ThumbnailContainerProvider } = __webpack_require__(/*! ../../components/containers/providers/impl/ThumbnailContainerProvider */ "./web/js/components/containers/providers/impl/ThumbnailContainerProvider.js");
-const { DefaultContainerProvider } = __webpack_require__(/*! ../../components/containers/providers/impl/DefaultContainerProvider */ "./web/js/components/containers/providers/impl/DefaultContainerProvider.js");
-const { ThumbnailPagemarkComponent } = __webpack_require__(/*! ./components/ThumbnailPagemarkComponent */ "./web/js/pagemarks/view/components/ThumbnailPagemarkComponent.js");
-const { PrimaryPagemarkComponent } = __webpack_require__(/*! ./components/PrimaryPagemarkComponent */ "./web/js/pagemarks/view/components/PrimaryPagemarkComponent.js");
-const { ComponentManager } = __webpack_require__(/*! ../../components/ComponentManager */ "./web/js/components/ComponentManager.js");
-const { PagemarkModel } = __webpack_require__(/*! ../model/PagemarkModel */ "./web/js/pagemarks/model/PagemarkModel.js");
+"use strict";
 
-const PAGEMARK_VIEW_ENABLED = true;
 
-class PagemarkView {
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var _require = __webpack_require__(/*! ./ProgressView */ "./web/js/pagemarks/view/ProgressView.js"),
+    ProgressView = _require.ProgressView;
+
+var _require2 = __webpack_require__(/*! ../../components/containers/providers/impl/ThumbnailContainerProvider */ "./web/js/components/containers/providers/impl/ThumbnailContainerProvider.js"),
+    ThumbnailContainerProvider = _require2.ThumbnailContainerProvider;
+
+var _require3 = __webpack_require__(/*! ../../components/containers/providers/impl/DefaultContainerProvider */ "./web/js/components/containers/providers/impl/DefaultContainerProvider.js"),
+    DefaultContainerProvider = _require3.DefaultContainerProvider;
+
+var _require4 = __webpack_require__(/*! ./components/ThumbnailPagemarkComponent */ "./web/js/pagemarks/view/components/ThumbnailPagemarkComponent.js"),
+    ThumbnailPagemarkComponent = _require4.ThumbnailPagemarkComponent;
+
+var _require5 = __webpack_require__(/*! ./components/PrimaryPagemarkComponent */ "./web/js/pagemarks/view/components/PrimaryPagemarkComponent.js"),
+    PrimaryPagemarkComponent = _require5.PrimaryPagemarkComponent;
+
+var _require6 = __webpack_require__(/*! ../../components/ComponentManager */ "./web/js/components/ComponentManager.js"),
+    ComponentManager = _require6.ComponentManager;
+
+var _require7 = __webpack_require__(/*! ../model/PagemarkModel */ "./web/js/pagemarks/model/PagemarkModel.js"),
+    PagemarkModel = _require7.PagemarkModel;
+
+var PAGEMARK_VIEW_ENABLED = true;
+
+var PagemarkView = function () {
 
     /**
      *
      * @param model {Model}
      */
-    constructor(model) {
+    function PagemarkView(model) {
+        _classCallCheck(this, PagemarkView);
 
         this.model = model;
 
         /***
          * @type {ComponentManager}
          */
-        this.primaryPagemarkComponentManager = new ComponentManager(model, new DefaultContainerProvider(), () => new PrimaryPagemarkComponent(), () => new PagemarkModel());
+        this.primaryPagemarkComponentManager = new ComponentManager(model, new DefaultContainerProvider(), function () {
+            return new PrimaryPagemarkComponent();
+        }, function () {
+            return new PagemarkModel();
+        });
 
         /***
          * @type {ComponentManager}
          */
-        this.thumbnailPagemarkComponentManager = new ComponentManager(model, new ThumbnailContainerProvider(), () => new ThumbnailPagemarkComponent(), () => new PagemarkModel());
+        this.thumbnailPagemarkComponentManager = new ComponentManager(model, new ThumbnailContainerProvider(), function () {
+            return new ThumbnailPagemarkComponent();
+        }, function () {
+            return new PagemarkModel();
+        });
 
         this.progressView = new ProgressView(this.model);
     }
 
-    start() {
+    _createClass(PagemarkView, [{
+        key: "start",
+        value: function start() {
 
-        if (this.primaryPagemarkComponentManager) this.primaryPagemarkComponentManager.start();
+            if (this.primaryPagemarkComponentManager) this.primaryPagemarkComponentManager.start();
 
-        if (this.thumbnailPagemarkComponentManager) this.thumbnailPagemarkComponentManager.start();
+            if (this.thumbnailPagemarkComponentManager) this.thumbnailPagemarkComponentManager.start();
 
-        this.progressView.start();
-    }
+            this.progressView.start();
+        }
+    }]);
 
-}
+    return PagemarkView;
+}();
 
 module.exports.PAGEMARK_VIEW_ENABLED = PAGEMARK_VIEW_ENABLED;
 module.exports.PagemarkView = PagemarkView;
@@ -62203,79 +64831,100 @@ module.exports.PagemarkView = PagemarkView;
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-const { DocMetaDescriber } = __webpack_require__(/*! ../../metadata/DocMetaDescriber */ "./web/js/metadata/DocMetaDescriber.js");
-const { forDict } = __webpack_require__(/*! ../../util/Functions */ "./web/js/util/Functions.js");
-const log = __webpack_require__(/*! ../../logger/Logger */ "./web/js/logger/Logger.js").create();
+"use strict";
+
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var _require = __webpack_require__(/*! ../../metadata/DocMetaDescriber */ "./web/js/metadata/DocMetaDescriber.js"),
+    DocMetaDescriber = _require.DocMetaDescriber;
+
+var _require2 = __webpack_require__(/*! ../../util/Functions */ "./web/js/util/Functions.js"),
+    forDict = _require2.forDict;
+
+var log = __webpack_require__(/*! ../../logger/Logger */ "./web/js/logger/Logger.js").create();
 
 /**
  * Updates our progress as we read the doc.
  */
-class ProgressView {
+
+var ProgressView = function () {
 
     /**
      * @param model {Model}
      */
-    constructor(model) {
+    function ProgressView(model) {
+        _classCallCheck(this, ProgressView);
+
         this.model = model;
     }
 
-    start() {
+    _createClass(ProgressView, [{
+        key: "start",
+        value: function start() {
+            var _this = this;
 
-        log.info("Starting...");
+            log.info("Starting...");
 
-        this.model.registerListenerForDocumentLoaded(documentLoadedEvent => {
+            this.model.registerListenerForDocumentLoaded(function (documentLoadedEvent) {
 
-            log.info("onDocumentLoaded");
+                log.info("onDocumentLoaded");
 
-            let docMeta = documentLoadedEvent.docMeta;
+                var docMeta = documentLoadedEvent.docMeta;
 
-            forDict(docMeta.pageMetas, (key, pageMeta) => {
+                forDict(docMeta.pageMetas, function (key, pageMeta) {
 
-                pageMeta.pagemarks.addTraceListener(traceEvent => {
-                    this.update();
+                    pageMeta.pagemarks.addTraceListener(function (traceEvent) {
+                        _this.update();
+                    });
                 });
             });
-        });
-    }
-
-    update() {
-
-        // TODO: this should listen directly to the model and the pagemarks
-        // themselves.
-
-        let perc = this.computeProgress(this.model.docMeta);
-
-        log.info("Percentage is now: " + perc);
-
-        document.querySelector("#polar-progress progress").value = perc;
-
-        // now update the description of the doc at the bottom.
-
-        let description = DocMetaDescriber.describe(this.model.docMeta);
-
-        let docOverview = document.querySelector("#polar-doc-overview");
-
-        if (docOverview) {
-            docOverview.textContent = description;
         }
-    }
+    }, {
+        key: "update",
+        value: function update() {
 
-    computeProgress(docMeta) {
+            // TODO: this should listen directly to the model and the pagemarks
+            // themselves.
 
-        let total = 0;
+            var perc = this.computeProgress(this.model.docMeta);
 
-        forDict(docMeta.pageMetas, (key, pageMeta) => {
+            log.info("Percentage is now: " + perc);
 
-            forDict(pageMeta.pagemarks, (column, pagemark) => {
+            document.querySelector("#polar-progress progress").value = perc;
 
-                total += pagemark.percentage;
+            // now update the description of the doc at the bottom.
+
+            var description = DocMetaDescriber.describe(this.model.docMeta);
+
+            var docOverview = document.querySelector("#polar-doc-overview");
+
+            if (docOverview) {
+                docOverview.textContent = description;
+            }
+        }
+    }, {
+        key: "computeProgress",
+        value: function computeProgress(docMeta) {
+
+            var total = 0;
+
+            forDict(docMeta.pageMetas, function (key, pageMeta) {
+
+                forDict(pageMeta.pagemarks, function (column, pagemark) {
+
+                    total += pagemark.percentage;
+                });
             });
-        });
 
-        return total / (docMeta.docInfo.nrPages * 100);
-    }
+            return total / (docMeta.docInfo.nrPages * 100);
+        }
+    }]);
 
-}
+    return ProgressView;
+}();
 
 module.exports.ProgressView = ProgressView;
 
@@ -62288,278 +64937,336 @@ module.exports.ProgressView = ProgressView;
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-const PagemarkRect = __webpack_require__(/*! ../../../metadata/PagemarkRect */ "./web/js/metadata/PagemarkRect.js").PagemarkRect;
-const { PagemarkRects } = __webpack_require__(/*! ../../../metadata/PagemarkRects */ "./web/js/metadata/PagemarkRects.js");
-const { Component } = __webpack_require__(/*! ../../../components/Component */ "./web/js/components/Component.js");
-const { DocFormatFactory } = __webpack_require__(/*! ../../../docformat/DocFormatFactory */ "./web/js/docformat/DocFormatFactory.js");
-const { Styles } = __webpack_require__(/*! ../../../util/Styles */ "./web/js/util/Styles.js");
-const { Preconditions } = __webpack_require__(/*! ../../../Preconditions */ "./web/js/Preconditions.js");
-const { BoxController } = __webpack_require__(/*! ../../../pagemarks/controller/interact/BoxController */ "./web/js/pagemarks/controller/interact/BoxController.js");
-const { Rects } = __webpack_require__(/*! ../../../Rects */ "./web/js/Rects.js");
-const { Optional } = __webpack_require__(/*! ../../../Optional */ "./web/js/Optional.js");
-const log = __webpack_require__(/*! ../../../logger/Logger */ "./web/js/logger/Logger.js").create();
+"use strict";
 
-const ENABLE_BOX_CONTROLLER = true;
 
-class AbstractPagemarkComponent extends Component {
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-    constructor(type) {
-        super();
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var PagemarkRect = __webpack_require__(/*! ../../../metadata/PagemarkRect */ "./web/js/metadata/PagemarkRect.js").PagemarkRect;
+
+var _require = __webpack_require__(/*! ../../../metadata/PagemarkRects */ "./web/js/metadata/PagemarkRects.js"),
+    PagemarkRects = _require.PagemarkRects;
+
+var _require2 = __webpack_require__(/*! ../../../components/Component */ "./web/js/components/Component.js"),
+    Component = _require2.Component;
+
+var _require3 = __webpack_require__(/*! ../../../docformat/DocFormatFactory */ "./web/js/docformat/DocFormatFactory.js"),
+    DocFormatFactory = _require3.DocFormatFactory;
+
+var _require4 = __webpack_require__(/*! ../../../util/Styles */ "./web/js/util/Styles.js"),
+    Styles = _require4.Styles;
+
+var _require5 = __webpack_require__(/*! ../../../Preconditions */ "./web/js/Preconditions.js"),
+    Preconditions = _require5.Preconditions;
+
+var _require6 = __webpack_require__(/*! ../../../pagemarks/controller/interact/BoxController */ "./web/js/pagemarks/controller/interact/BoxController.js"),
+    BoxController = _require6.BoxController;
+
+var _require7 = __webpack_require__(/*! ../../../Rects */ "./web/js/Rects.js"),
+    Rects = _require7.Rects;
+
+var _require8 = __webpack_require__(/*! ../../../Optional */ "./web/js/Optional.js"),
+    Optional = _require8.Optional;
+
+var log = __webpack_require__(/*! ../../../logger/Logger */ "./web/js/logger/Logger.js").create();
+
+var ENABLE_BOX_CONTROLLER = true;
+
+var AbstractPagemarkComponent = function (_Component) {
+    _inherits(AbstractPagemarkComponent, _Component);
+
+    function AbstractPagemarkComponent(type) {
+        _classCallCheck(this, AbstractPagemarkComponent);
 
         /**
          * The type of the pagemark (primary or thumbnail)
          */
-        this.type = type;
+        var _this = _possibleConstructorReturn(this, (AbstractPagemarkComponent.__proto__ || Object.getPrototypeOf(AbstractPagemarkComponent)).call(this));
+
+        _this.type = type;
 
         /**
          *
          * @type {DocFormat}
          */
-        this.docFormat = DocFormatFactory.getInstance();
+        _this.docFormat = DocFormatFactory.getInstance();
 
         /**
          *
          * @type {Pagemark}
          */
-        this.pagemark = undefined;
+        _this.pagemark = undefined;
 
         /**
          *
          * @type {AnnotationEvent}
          */
-        this.annotationEvent = undefined;
+        _this.annotationEvent = undefined;
 
-        this.pagemarkBoxController = undefined;
+        _this.pagemarkBoxController = undefined;
 
-        this.options = {
+        _this.options = {
             templateElement: null,
             placementElement: null
         };
+
+        return _this;
     }
 
     /**
      * @Override
      * @param annotationEvent {AnnotationEvent}
      */
-    init(annotationEvent) {
 
-        this.annotationEvent = annotationEvent;
-        this.pagemark = annotationEvent.value;
 
-        this.pagemarkBoxController = new BoxController(boxMoveEvent => this.onPagemarkMoved(boxMoveEvent));
-    }
+    _createClass(AbstractPagemarkComponent, [{
+        key: "init",
+        value: function init(annotationEvent) {
+            var _this2 = this;
 
-    /**
-     *
-     * @param boxMoveEvent {BoxMoveEvent}
-     */
-    onPagemarkMoved(boxMoveEvent) {
+            this.annotationEvent = annotationEvent;
+            this.pagemark = annotationEvent.value;
 
-        // TODO: actually I think this belongs in the controller... not the view
-        //
-        //
-
-        // TODO: remove the pagemark, then recreate it...
-
-        console.log("Box moved to: ", boxMoveEvent);
-
-        // boxRect, containerRect, pageRect...
-
-        let rect = PagemarkRects.createFromPositionedRect(boxMoveEvent.boxRect, boxMoveEvent.restrictionRect);
-
-        // FIXME: the lastUpdated here isn't being updated. I'm going to
-        // have to change the setters I think..
-
-        if (boxMoveEvent.state === "completed") {
-
-            // FIXME: this triggers an infinite loop....
-
-            log.info("Box move completed.  Updating to trigger persistence.");
-
-            // TODO: this mode is too slow... I need a new BoxMoveEvent that
-            // signifies the state.. IE final or pending.
-
-            let pagemark = Object.assign({}, this.pagemark);
-            pagemark.percentage = rect.toPercentage();
-            pagemark.rect = rect;
-
-            log.info("New pagemark: ", JSON.stringify(this.pagemark, null, "  "));
-
-            this.annotationEvent.pageMeta.pagemarks[pagemark.id] = pagemark;
-        } else {
-
-            //this.pagemark.percentage = rect.toPercentage();
-            //this.pagemark.rect = rect;
-
-            log.info("New pagemark: ", JSON.stringify(this.pagemark, null, "  "));
+            this.pagemarkBoxController = new BoxController(function (boxMoveEvent) {
+                return _this2.onPagemarkMoved(boxMoveEvent);
+            });
         }
 
-        log.info("New pagemarkRect: ", this.pagemark.rect);
-    }
+        /**
+         *
+         * @param boxMoveEvent {BoxMoveEvent}
+         */
 
-    /**
-     * @Override
-     *
-     */
-    render() {
+    }, {
+        key: "onPagemarkMoved",
+        value: function onPagemarkMoved(boxMoveEvent) {
 
-        //
-        // - the options building can't be reliably tested
-        //
-        // - there are too many ways to compute the options
-        //
-        // - we PLACE the element as part of this function.  Have a secondary
-        //   way to just CREATE the element so that we can test the settings
-        //   properly.
+            // TODO: actually I think this belongs in the controller... not the view
+            //
+            //
 
-        let container = this.annotationEvent.container;
-        Preconditions.assertNotNull(container, "container");
+            // TODO: remove the pagemark, then recreate it...
 
-        if (!this.pagemark) {
-            throw new Error("Pagemark is required");
+            console.log("Box moved to: ", boxMoveEvent);
+
+            // boxRect, containerRect, pageRect...
+
+            var rect = PagemarkRects.createFromPositionedRect(boxMoveEvent.boxRect, boxMoveEvent.restrictionRect);
+
+            // FIXME: the lastUpdated here isn't being updated. I'm going to
+            // have to change the setters I think..
+
+            if (boxMoveEvent.state === "completed") {
+
+                // FIXME: this triggers an infinite loop....
+
+                log.info("Box move completed.  Updating to trigger persistence.");
+
+                // TODO: this mode is too slow... I need a new BoxMoveEvent that
+                // signifies the state.. IE final or pending.
+
+                var pagemark = Object.assign({}, this.pagemark);
+                pagemark.percentage = rect.toPercentage();
+                pagemark.rect = rect;
+
+                log.info("New pagemark: ", JSON.stringify(this.pagemark, null, "  "));
+
+                this.annotationEvent.pageMeta.pagemarks[pagemark.id] = pagemark;
+            } else {
+
+                //this.pagemark.percentage = rect.toPercentage();
+                //this.pagemark.rect = rect;
+
+                log.info("New pagemark: ", JSON.stringify(this.pagemark, null, "  "));
+            }
+
+            log.info("New pagemarkRect: ", this.pagemark.rect);
         }
 
-        if (!this.pagemark.percentage) {
-            throw new Error("Pagemark has no percentage");
+        /**
+         * @Override
+         *
+         */
+
+    }, {
+        key: "render",
+        value: function render() {
+
+            //
+            // - the options building can't be reliably tested
+            //
+            // - there are too many ways to compute the options
+            //
+            // - we PLACE the element as part of this function.  Have a secondary
+            //   way to just CREATE the element so that we can test the settings
+            //   properly.
+
+            var container = this.annotationEvent.container;
+            Preconditions.assertNotNull(container, "container");
+
+            if (!this.pagemark) {
+                throw new Error("Pagemark is required");
+            }
+
+            if (!this.pagemark.percentage) {
+                throw new Error("Pagemark has no percentage");
+            }
+
+            var templateElement = this.options.templateElement;
+            var placementElement = this.options.placementElement;
+
+            if (!templateElement) {
+                templateElement = container.element;
+            }
+
+            if (!placementElement) {
+                // TODO: move this to the proper component
+                placementElement = container.element.querySelector(".canvasWrapper, .iframeWrapper");
+                // TODO: we need to code this directly into the caller
+                log.warn("Using a default placementElement from selector: ", placementElement);
+            }
+
+            Preconditions.assertNotNull(templateElement, "templateElement");
+            Preconditions.assertNotNull(placementElement, "placementElement");
+
+            console.log("Using templateElement: ", templateElement);
+            console.log("Using placementElement: ", placementElement);
+
+            // a unique ID in the DOM for this element.
+            var id = this.createID();
+
+            var pagemarkElement = document.getElementById(id);
+
+            if (pagemarkElement === null) {
+                // only create the pagemark if it's missing.
+                pagemarkElement = document.createElement("div");
+
+                placementElement.parentElement.insertBefore(pagemarkElement, placementElement);
+
+                if (ENABLE_BOX_CONTROLLER) {
+                    console.log("Creating box controller for pagemarkElement: ", pagemarkElement);
+                    this.pagemarkBoxController.register({
+                        target: pagemarkElement,
+                        restrictionElement: placementElement
+                    });
+                }
+            }
+
+            // set a pagemark-id in the DOM so that we can work with it when we use
+            // the context menu, etc.
+            pagemarkElement.setAttribute("id", id);
+            pagemarkElement.setAttribute("data-pagemark-id", this.pagemark.id);
+
+            // make sure we have a reliable CSS classname to work with.
+            pagemarkElement.className = "pagemark annotation";
+
+            //pagemark.style.backgroundColor="rgb(198, 198, 198)";
+            pagemarkElement.style.backgroundColor = "#00CCFF";
+            pagemarkElement.style.opacity = "0.3";
+
+            pagemarkElement.style.position = "absolute";
+
+            var placementRect = this.createPlacementRect(placementElement);
+            var pagemarkRect = this.toOverlayRect(placementRect, this.pagemark);
+
+            // TODO: what I need is a generic way to cover an element and place
+            // something on top of it no matter what positioning strategy it uses.
+
+            pagemarkElement.style.left = pagemarkRect.left + "px";
+            pagemarkElement.style.top = pagemarkRect.top + "px";
+            pagemarkElement.style.width = pagemarkRect.width + "px";
+            pagemarkElement.style.height = pagemarkRect.height + "px";
+            pagemarkElement.style.zIndex = '1';
         }
 
-        let templateElement = this.options.templateElement;
-        let placementElement = this.options.placementElement;
+        /**
+         * @Override
+         * @returns {*}
+         */
 
-        if (!templateElement) {
-            templateElement = container.element;
-        }
+    }, {
+        key: "destroy",
+        value: function destroy() {
 
-        if (!placementElement) {
-            // TODO: move this to the proper component
-            placementElement = container.element.querySelector(".canvasWrapper, .iframeWrapper");
-            // TODO: we need to code this directly into the caller
-            log.warn("Using a default placementElement from selector: ", placementElement);
-        }
+            var pagemarkElement = document.getElementById(this.createID());
 
-        Preconditions.assertNotNull(templateElement, "templateElement");
-        Preconditions.assertNotNull(placementElement, "placementElement");
+            if (pagemarkElement) {
 
-        console.log("Using templateElement: ", templateElement);
-        console.log("Using placementElement: ", placementElement);
-
-        // a unique ID in the DOM for this element.
-        let id = this.createID();
-
-        let pagemarkElement = document.getElementById(id);
-
-        if (pagemarkElement === null) {
-            // only create the pagemark if it's missing.
-            pagemarkElement = document.createElement("div");
-
-            placementElement.parentElement.insertBefore(pagemarkElement, placementElement);
-
-            if (ENABLE_BOX_CONTROLLER) {
-                console.log("Creating box controller for pagemarkElement: ", pagemarkElement);
-                this.pagemarkBoxController.register({
-                    target: pagemarkElement,
-                    restrictionElement: placementElement
-                });
+                if (pagemarkElement.parentElement) {
+                    pagemarkElement.parentElement.removeChild(pagemarkElement);
+                }
             }
         }
+    }, {
+        key: "createPlacementRect",
+        value: function createPlacementRect(placementElement) {
 
-        // set a pagemark-id in the DOM so that we can work with it when we use
-        // the context menu, etc.
-        pagemarkElement.setAttribute("id", id);
-        pagemarkElement.setAttribute("data-pagemark-id", this.pagemark.id);
+            var positioning = Styles.positioning(placementElement);
+            positioning = Styles.positioningToPX(positioning);
 
-        // make sure we have a reliable CSS classname to work with.
-        pagemarkElement.className = "pagemark annotation";
+            // TODO: this could be cleaned up a bit...
 
-        //pagemark.style.backgroundColor="rgb(198, 198, 198)";
-        pagemarkElement.style.backgroundColor = "#00CCFF";
-        pagemarkElement.style.opacity = "0.3";
+            var result = {
+                left: Optional.of(positioning.left).getOrElse(placementElement.offsetLeft),
+                top: Optional.of(positioning.top).getOrElse(placementElement.offsetTop),
+                width: Optional.of(positioning.width).getOrElse(placementElement.offsetWidth),
+                height: Optional.of(positioning.height).getOrElse(placementElement.offsetHeight)
+            };
 
-        pagemarkElement.style.position = "absolute";
-
-        let placementRect = this.createPlacementRect(placementElement);
-        let pagemarkRect = this.toOverlayRect(placementRect, this.pagemark);
-
-        // TODO: what I need is a generic way to cover an element and place
-        // something on top of it no matter what positioning strategy it uses.
-
-        pagemarkElement.style.left = `${pagemarkRect.left}px`;
-        pagemarkElement.style.top = `${pagemarkRect.top}px`;
-        pagemarkElement.style.width = `${pagemarkRect.width}px`;
-        pagemarkElement.style.height = `${pagemarkRect.height}px`;
-        pagemarkElement.style.zIndex = '1';
-    }
-
-    /**
-     * @Override
-     * @returns {*}
-     */
-    destroy() {
-
-        let pagemarkElement = document.getElementById(this.createID());
-
-        if (pagemarkElement) {
-
-            if (pagemarkElement.parentElement) {
-                pagemarkElement.parentElement.removeChild(pagemarkElement);
-            }
+            return Rects.createFromBasicRect(result);
         }
-    }
 
-    createPlacementRect(placementElement) {
+        /**
+         * Create a unique DOM ID for this pagemark.
+         */
 
-        let positioning = Styles.positioning(placementElement);
-        positioning = Styles.positioningToPX(positioning);
+    }, {
+        key: "createID",
+        value: function createID() {
+            return this.type + "-pagemark-" + this.pagemark.id;
+        }
 
-        // TODO: this could be cleaned up a bit...
+        // FIXME: I have to improve this grammar... placement, positioned, etc..
+        // which one is which.
 
-        let result = {
-            left: Optional.of(positioning.left).getOrElse(placementElement.offsetLeft),
-            top: Optional.of(positioning.top).getOrElse(placementElement.offsetTop),
-            width: Optional.of(positioning.width).getOrElse(placementElement.offsetWidth),
-            height: Optional.of(positioning.height).getOrElse(placementElement.offsetHeight)
-        };
+        /**
+         *
+         * @param placementRect {Rect}
+         * @param pagemark {Pagemark}
+         * @return {Rect}
+         */
 
-        return Rects.createFromBasicRect(result);
-    }
+    }, {
+        key: "toOverlayRect",
+        value: function toOverlayRect(placementRect, pagemark) {
 
-    /**
-     * Create a unique DOM ID for this pagemark.
-     */
-    createID() {
-        return `${this.type}-pagemark-${this.pagemark.id}`;
-    }
+            // FIXME: this doesn't yet support the legacy pagemarks without rects...
+            //
+            //
 
-    // FIXME: I have to improve this grammar... placement, positioned, etc..
-    // which one is which.
+            var pagemarkRect = new PagemarkRect(pagemark.rect);
 
-    /**
-     *
-     * @param placementRect {Rect}
-     * @param pagemark {Pagemark}
-     * @return {Rect}
-     */
-    toOverlayRect(placementRect, pagemark) {
+            var overlayRect = pagemarkRect.toDimensions(placementRect.dimensions);
 
-        // FIXME: this doesn't yet support the legacy pagemarks without rects...
-        //
-        //
+            // we have to apply the original placementRect top and left so it's
+            // placed as a proper overlay
+            return Rects.createFromBasicRect({
+                left: overlayRect.left + placementRect.left,
+                top: overlayRect.top + placementRect.top,
+                width: overlayRect.width,
+                height: overlayRect.height
+            });
+        }
+    }]);
 
-        let pagemarkRect = new PagemarkRect(pagemark.rect);
-
-        let overlayRect = pagemarkRect.toDimensions(placementRect.dimensions);
-
-        // we have to apply the original placementRect top and left so it's
-        // placed as a proper overlay
-        return Rects.createFromBasicRect({
-            left: overlayRect.left + placementRect.left,
-            top: overlayRect.top + placementRect.top,
-            width: overlayRect.width,
-            height: overlayRect.height
-        });
-    }
-
-}
+    return AbstractPagemarkComponent;
+}(Component);
 
 module.exports.AbstractPagemarkComponent = AbstractPagemarkComponent;
 
@@ -62572,20 +65279,34 @@ module.exports.AbstractPagemarkComponent = AbstractPagemarkComponent;
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-const { AbstractPagemarkComponent } = __webpack_require__(/*! ./AbstractPagemarkComponent */ "./web/js/pagemarks/view/components/AbstractPagemarkComponent.js");
+"use strict";
+
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var _require = __webpack_require__(/*! ./AbstractPagemarkComponent */ "./web/js/pagemarks/view/components/AbstractPagemarkComponent.js"),
+    AbstractPagemarkComponent = _require.AbstractPagemarkComponent;
 
 /**
  * The primary pagemark for displaying pagemarks on a .page.  This is in contrast
  * to a thumbnail pagemark.
  */
 
-class PrimaryPagemarkComponent extends AbstractPagemarkComponent {
+var PrimaryPagemarkComponent = function (_AbstractPagemarkComp) {
+    _inherits(PrimaryPagemarkComponent, _AbstractPagemarkComp);
 
-    constructor() {
-        super("primary");
+    function PrimaryPagemarkComponent() {
+        _classCallCheck(this, PrimaryPagemarkComponent);
+
+        return _possibleConstructorReturn(this, (PrimaryPagemarkComponent.__proto__ || Object.getPrototypeOf(PrimaryPagemarkComponent)).call(this, "primary"));
     }
 
-}
+    return PrimaryPagemarkComponent;
+}(AbstractPagemarkComponent);
 
 module.exports.PrimaryPagemarkComponent = PrimaryPagemarkComponent;
 
@@ -62598,41 +65319,66 @@ module.exports.PrimaryPagemarkComponent = PrimaryPagemarkComponent;
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-const { AbstractPagemarkComponent } = __webpack_require__(/*! ./AbstractPagemarkComponent */ "./web/js/pagemarks/view/components/AbstractPagemarkComponent.js");
+"use strict";
+
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var _require = __webpack_require__(/*! ./AbstractPagemarkComponent */ "./web/js/pagemarks/view/components/AbstractPagemarkComponent.js"),
+    AbstractPagemarkComponent = _require.AbstractPagemarkComponent;
 
 /**
  * A pagemark for thumbnails.
  */
-class ThumbnailPagemarkComponent extends AbstractPagemarkComponent {
 
-    constructor() {
-        super("thumbnail");
+
+var ThumbnailPagemarkComponent = function (_AbstractPagemarkComp) {
+    _inherits(ThumbnailPagemarkComponent, _AbstractPagemarkComp);
+
+    function ThumbnailPagemarkComponent() {
+        _classCallCheck(this, ThumbnailPagemarkComponent);
+
+        return _possibleConstructorReturn(this, (ThumbnailPagemarkComponent.__proto__ || Object.getPrototypeOf(ThumbnailPagemarkComponent)).call(this, "thumbnail"));
     }
 
     /**
      *
      * @param annotationEvent {AnnotationEvent}
      */
-    init(annotationEvent) {
 
-        super.init(annotationEvent);
 
-        let container = annotationEvent.container;
-        //let templateElement = container.element.querySelector(".thumbnailImage");
+    _createClass(ThumbnailPagemarkComponent, [{
+        key: "init",
+        value: function init(annotationEvent) {
 
-        let templateElement = container.element;
+            _get(ThumbnailPagemarkComponent.prototype.__proto__ || Object.getPrototypeOf(ThumbnailPagemarkComponent.prototype), "init", this).call(this, annotationEvent);
 
-        if (!templateElement) {
-            console.warn("Thumbnail tab may not be visible in", container);
-            // the thumbnail tab might not be visible.
-            return;
+            var container = annotationEvent.container;
+            //let templateElement = container.element.querySelector(".thumbnailImage");
+
+            var templateElement = container.element;
+
+            if (!templateElement) {
+                console.warn("Thumbnail tab may not be visible in", container);
+                // the thumbnail tab might not be visible.
+                return;
+            }
+
+            this.options.templateElement = templateElement;
+            this.options.placementElement = templateElement;
         }
+    }]);
 
-        this.options.templateElement = templateElement;
-        this.options.placementElement = templateElement;
-    }
-
-}
+    return ThumbnailPagemarkComponent;
+}(AbstractPagemarkComponent);
 
 module.exports.ThumbnailPagemarkComponent = ThumbnailPagemarkComponent;
 
@@ -62645,37 +65391,63 @@ module.exports.ThumbnailPagemarkComponent = ThumbnailPagemarkComponent;
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-const { Delegator } = __webpack_require__(/*! ../../../utils.js */ "./web/js/utils.js");
-const { PagemarkRedrawer } = __webpack_require__(/*! ./PagemarkRedrawer */ "./web/js/pagemarks/view/redrawer/PagemarkRedrawer.js");
+"use strict";
+
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var _require = __webpack_require__(/*! ../../../utils.js */ "./web/js/utils.js"),
+    Delegator = _require.Delegator;
+
+var _require2 = __webpack_require__(/*! ./PagemarkRedrawer */ "./web/js/pagemarks/view/redrawer/PagemarkRedrawer.js"),
+    PagemarkRedrawer = _require2.PagemarkRedrawer;
 
 /**
  * @Deprecated Remove when we go to the new PagemarkView system
  */
-class CompositePagemarkRedrawer extends PagemarkRedrawer {
 
-    constructor(view, delegates) {
-        super(view);
+
+var CompositePagemarkRedrawer = function (_PagemarkRedrawer) {
+    _inherits(CompositePagemarkRedrawer, _PagemarkRedrawer);
+
+    function CompositePagemarkRedrawer(view, delegates) {
+        _classCallCheck(this, CompositePagemarkRedrawer);
+
+        var _this = _possibleConstructorReturn(this, (CompositePagemarkRedrawer.__proto__ || Object.getPrototypeOf(CompositePagemarkRedrawer)).call(this, view));
 
         if (!delegates) {
             throw new Error("No delegates");
         }
 
-        this.delegator = new Delegator(delegates);
+        _this.delegator = new Delegator(delegates);
+        return _this;
     }
 
-    setup() {
-        this.delegator.apply("setup");
-    }
+    _createClass(CompositePagemarkRedrawer, [{
+        key: "setup",
+        value: function setup() {
+            this.delegator.apply("setup");
+        }
+    }, {
+        key: "create",
+        value: function create(pageNum, pagemark) {
+            this.delegator.apply("create", pageNum, pagemark);
+        }
+    }, {
+        key: "erase",
+        value: function erase(pageNum) {
+            this.delegator.apply("erase", pageNum);
+        }
+    }]);
 
-    create(pageNum, pagemark) {
-        this.delegator.apply("create", pageNum, pagemark);
-    }
-
-    erase(pageNum) {
-        this.delegator.apply("erase", pageNum);
-    }
-
-}
+    return CompositePagemarkRedrawer;
+}(PagemarkRedrawer);
 
 module.exports.CompositePagemarkRedrawer = CompositePagemarkRedrawer;
 
@@ -62688,61 +65460,76 @@ module.exports.CompositePagemarkRedrawer = CompositePagemarkRedrawer;
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
+"use strict";
 
-const { PagemarkRedrawer } = __webpack_require__(/*! ./PagemarkRedrawer */ "./web/js/pagemarks/view/redrawer/PagemarkRedrawer.js");
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var _require = __webpack_require__(/*! ./PagemarkRedrawer */ "./web/js/pagemarks/view/redrawer/PagemarkRedrawer.js"),
+    PagemarkRedrawer = _require.PagemarkRedrawer;
 
 /**
  * Handles attaching pagemarks to the pages (as opposed to thumbnails).
  * @Deprecated Remove when we go to the new PagemarkView system
  */
-class MainPagemarkRedrawer extends PagemarkRedrawer {
+
+
+var MainPagemarkRedrawer = function (_PagemarkRedrawer) {
+    _inherits(MainPagemarkRedrawer, _PagemarkRedrawer);
 
     /**
      *
      * @param view {WebView}
      */
-    constructor(view) {
-        super(view);
-        this.pageElementSelector = ".page";
+    function MainPagemarkRedrawer(view) {
+        _classCallCheck(this, MainPagemarkRedrawer);
+
+        var _this = _possibleConstructorReturn(this, (MainPagemarkRedrawer.__proto__ || Object.getPrototypeOf(MainPagemarkRedrawer)).call(this, view));
+
+        _this.pageElementSelector = ".page";
+
+        return _this;
     }
 
-    setup() {
-        this.__setup();
-    }
+    _createClass(MainPagemarkRedrawer, [{
+        key: "setup",
+        value: function setup() {
+            this.__setup();
+        }
+    }, {
+        key: "__requiresPagemark",
+        value: function __requiresPagemark(pageElement) {
+            return pageElement.querySelector("canvas") != null || pageElement.querySelector("iframe");
+        }
+    }, {
+        key: "__registerListener",
+        value: function __registerListener(pageElement) {
+            var _this2 = this;
 
-    __requiresPagemark(pageElement) {
-        return pageElement.querySelector("canvas") != null || pageElement.querySelector("iframe");
-    }
+            // TODO: migrate to using PageRedrawHandler
 
-    __registerListener(pageElement) {
-        var _this = this;
-
-        // TODO: migrate to using PageRedrawHandler
-
-        pageElement.addEventListener('DOMNodeInserted', (() => {
-            var _ref = _asyncToGenerator(function* (event) {
+            pageElement.addEventListener('DOMNodeInserted', async function (event) {
 
                 if (event.target && event.target.className === "endOfContent") {
-                    yield _this.__render(pageElement);
+                    await _this2.__render(pageElement);
                 }
-            });
+            }, false);
+        }
+    }, {
+        key: "__render",
+        value: async function __render(pageElement) {
+            await this.view.recreatePagemarksFromPageElement(pageElement);
+        }
+    }]);
 
-            return function (_x) {
-                return _ref.apply(this, arguments);
-            };
-        })(), false);
-    }
-
-    __render(pageElement) {
-        var _this2 = this;
-
-        return _asyncToGenerator(function* () {
-            yield _this2.view.recreatePagemarksFromPageElement(pageElement);
-        })();
-    }
-
-}
+    return MainPagemarkRedrawer;
+}(PagemarkRedrawer);
 
 module.exports.MainPagemarkRedrawer = MainPagemarkRedrawer;
 
@@ -62755,19 +65542,30 @@ module.exports.MainPagemarkRedrawer = MainPagemarkRedrawer;
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-const { Preconditions } = __webpack_require__(/*! ../../../Preconditions */ "./web/js/Preconditions.js");
+"use strict";
+
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var _require = __webpack_require__(/*! ../../../Preconditions */ "./web/js/Preconditions.js"),
+    Preconditions = _require.Preconditions;
 
 /**
  * @Deprecated Remove when we go to the new PagemarkView system
  *
  */
-class PagemarkRedrawer {
+
+
+var PagemarkRedrawer = function () {
 
     /**
      *
      * @param view {WebView}
      */
-    constructor(view) {
+    function PagemarkRedrawer(view) {
+        _classCallCheck(this, PagemarkRedrawer);
 
         /**
          * @type {WebView}
@@ -62780,94 +65578,115 @@ class PagemarkRedrawer {
         this.pageElementSelector = null;
     }
 
-    setup() {}
+    _createClass(PagemarkRedrawer, [{
+        key: "setup",
+        value: function setup() {}
+    }, {
+        key: "__setup",
+        value: function __setup() {
+            var _this = this;
 
-    __setup() {
+            console.log("PagemarkRedrawer: setup...");
 
-        console.log("PagemarkRedrawer: setup...");
+            this.__updatePageElements();
 
-        this.__updatePageElements();
+            console.log("Working with " + this.pageElements.length + " elements for selector " + this.pageElementSelector);
 
-        console.log(`Working with ${this.pageElements.length} elements for selector ${this.pageElementSelector}`);
+            this.pageElements.forEach(function (pageElement) {
+                _this.init(pageElement);
+            });
+        }
+    }, {
+        key: "__updatePageElements",
+        value: function __updatePageElements() {
+            Preconditions.assertNotNull(this.pageElementSelector, "pageElementSelector");
+            this.pageElements = document.querySelectorAll(this.pageElementSelector);
+        }
+    }, {
+        key: "init",
+        value: function init(pageElement) {
 
-        this.pageElements.forEach(pageElement => {
-            this.init(pageElement);
-        });
-    }
+            console.log("Initializing pageElement: ", pageElement);
 
-    __updatePageElements() {
-        Preconditions.assertNotNull(this.pageElementSelector, "pageElementSelector");
-        this.pageElements = document.querySelectorAll(this.pageElementSelector);
-    }
+            if (this.__requiresPagemark(pageElement)) {
+                this.__render(pageElement);
+            }
 
-    init(pageElement) {
+            this.__registerListener(pageElement);
+        }
 
-        console.log("Initializing pageElement: ", pageElement);
+        /**
+         * Return true if the target needs a pagemark.
+         */
 
-        if (this.__requiresPagemark(pageElement)) {
+    }, {
+        key: "__requiresPagemark",
+        value: function __requiresPagemark(pageElement) {}
+
+        /**
+         * Register future listeners to monitor status.
+         */
+
+    }, {
+        key: "__registerListener",
+        value: function __registerListener(pageElement) {}
+    }, {
+        key: "__render",
+        value: function __render(pageElement) {}
+
+        /**
+         * Erase the page elements on the give page number.
+         */
+
+    }, {
+        key: "create",
+        value: function create(pageNum, pagemark) {
+
+            if (typeof pageNum !== "number") {
+                throw new Error("pageNum is not a number");
+            }
+
+            if (!pagemark) {
+                throw new Error("No pagemark.");
+            }
+
+            this.__updatePageElements();
+
+            var pageElement = this.pageElements[pageNum - 1];
+
+            if (!pageElement) {
+                throw new Error("No pageElement for pageNum " + pageNum + " out of " + this.pageElements.length + " pageElements");
+            }
+
             this.__render(pageElement);
         }
 
-        this.__registerListener(pageElement);
-    }
+        /**
+         * Erase the pagemarks on the give page number.
+         */
 
-    /**
-     * Return true if the target needs a pagemark.
-     */
-    __requiresPagemark(pageElement) {}
+    }, {
+        key: "erase",
+        value: function erase(pageNum) {
 
-    /**
-     * Register future listeners to monitor status.
-     */
-    __registerListener(pageElement) {}
+            if (typeof pageNum !== "number") {
+                throw new Error("pageNum is not a number");
+            }
 
-    __render(pageElement) {}
+            this.__updatePageElements();
 
-    /**
-     * Erase the page elements on the give page number.
-     */
-    create(pageNum, pagemark) {
+            var pageElement = this.pageElements[pageNum - 1];
 
-        if (typeof pageNum !== "number") {
-            throw new Error("pageNum is not a number");
+            if (!pageElement) {
+                throw new Error("No pageElement for pageNum " + pageNum + " out of " + this.pageElements.length + " pageElements");
+            }
+
+            this.view.erasePagemarks(pageElement);
         }
+    }]);
 
-        if (!pagemark) {
-            throw new Error("No pagemark.");
-        }
-
-        this.__updatePageElements();
-
-        let pageElement = this.pageElements[pageNum - 1];
-
-        if (!pageElement) {
-            throw new Error(`No pageElement for pageNum ${pageNum} out of ${this.pageElements.length} pageElements`);
-        }
-
-        this.__render(pageElement);
-    }
-
-    /**
-     * Erase the pagemarks on the give page number.
-     */
-    erase(pageNum) {
-
-        if (typeof pageNum !== "number") {
-            throw new Error("pageNum is not a number");
-        }
-
-        this.__updatePageElements();
-
-        let pageElement = this.pageElements[pageNum - 1];
-
-        if (!pageElement) {
-            throw new Error(`No pageElement for pageNum ${pageNum} out of ${this.pageElements.length} pageElements`);
-        }
-
-        this.view.erasePagemarks(pageElement);
-    }
-
-}
+    return PagemarkRedrawer;
+}();
 
 module.exports.PagemarkRedrawer = PagemarkRedrawer;
 
@@ -62880,57 +65699,84 @@ module.exports.PagemarkRedrawer = PagemarkRedrawer;
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-const { PagemarkRedrawer } = __webpack_require__(/*! ./PagemarkRedrawer */ "./web/js/pagemarks/view/redrawer/PagemarkRedrawer.js");
+"use strict";
+
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var _require = __webpack_require__(/*! ./PagemarkRedrawer */ "./web/js/pagemarks/view/redrawer/PagemarkRedrawer.js"),
+    PagemarkRedrawer = _require.PagemarkRedrawer;
 
 /**
  * Handles attaching pagemarks to the pages (as opposed to thumbnails).
  * @Deprecated Remove when we go to the new PagemarkView system
  */
-class ThumbnailPagemarkRedrawer extends PagemarkRedrawer {
+
+
+var ThumbnailPagemarkRedrawer = function (_PagemarkRedrawer) {
+    _inherits(ThumbnailPagemarkRedrawer, _PagemarkRedrawer);
 
     /**
      *
      * @param view {WebView}
      */
-    constructor(view) {
-        super(view);
-        this.pageElementSelector = ".thumbnail";
+    function ThumbnailPagemarkRedrawer(view) {
+        _classCallCheck(this, ThumbnailPagemarkRedrawer);
+
+        var _this = _possibleConstructorReturn(this, (ThumbnailPagemarkRedrawer.__proto__ || Object.getPrototypeOf(ThumbnailPagemarkRedrawer)).call(this, view));
+
+        _this.pageElementSelector = ".thumbnail";
+        return _this;
     }
 
-    setup() {
-        this.__setup();
-    }
-
-    __requiresPagemark(pageElement) {
-        let thumbnailImage = pageElement.querySelector(".thumbnailImage");
-        return thumbnailImage != null && thumbnailImage.getAttribute("src") != null;
-    }
-
-    __registerListener(pageElement) {
-
-        pageElement.querySelector(".thumbnailSelectionRing").addEventListener('DOMNodeInserted', event => {
-
-            if (event.target && event.target.className === "thumbnailImage") {
-                this.__render(pageElement);
-            }
-        }, false);
-    }
-
-    __render(pageElement) {
-
-        let templateElement = pageElement.querySelector(".thumbnailImage");
-
-        if (!templateElement) {
-            // the thumbnail tab might not be visible.
-            return;
+    _createClass(ThumbnailPagemarkRedrawer, [{
+        key: "setup",
+        value: function setup() {
+            this.__setup();
         }
+    }, {
+        key: "__requiresPagemark",
+        value: function __requiresPagemark(pageElement) {
+            var thumbnailImage = pageElement.querySelector(".thumbnailImage");
+            return thumbnailImage != null && thumbnailImage.getAttribute("src") != null;
+        }
+    }, {
+        key: "__registerListener",
+        value: function __registerListener(pageElement) {
+            var _this2 = this;
 
-        let options = { zIndex: 1, templateElement, placementElement: templateElement };
+            pageElement.querySelector(".thumbnailSelectionRing").addEventListener('DOMNodeInserted', function (event) {
 
-        this.view.recreatePagemarksFromPageElement(pageElement, options);
-    }
+                if (event.target && event.target.className === "thumbnailImage") {
+                    _this2.__render(pageElement);
+                }
+            }, false);
+        }
+    }, {
+        key: "__render",
+        value: function __render(pageElement) {
 
-}
+            var templateElement = pageElement.querySelector(".thumbnailImage");
+
+            if (!templateElement) {
+                // the thumbnail tab might not be visible.
+                return;
+            }
+
+            var options = { zIndex: 1, templateElement: templateElement, placementElement: templateElement };
+
+            this.view.recreatePagemarksFromPageElement(pageElement, options);
+        }
+    }]);
+
+    return ThumbnailPagemarkRedrawer;
+}(PagemarkRedrawer);
 
 module.exports.ThumbnailPagemarkRedrawer = ThumbnailPagemarkRedrawer;
 
@@ -62941,7 +65787,10 @@ module.exports.ThumbnailPagemarkRedrawer = ThumbnailPagemarkRedrawer;
   !*** ./web/js/proxies/MutationState.js ***!
   \*****************************************/
 /*! no static exports found */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
 
 /**
  * The state of the mutation.  IE whether it is present or absent.  For more detailed
@@ -62968,7 +65817,10 @@ module.exports.MutationState = Object.freeze({
   !*** ./web/js/proxies/MutationType.js ***!
   \****************************************/
 /*! no static exports found */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
 
 module.exports.MutationType = Object.freeze({
 
@@ -63000,28 +65852,45 @@ module.exports.MutationType = Object.freeze({
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-const { MutationType } = __webpack_require__(/*! ./MutationType */ "./web/js/proxies/MutationType.js");
-const { MutationState } = __webpack_require__(/*! ./MutationState */ "./web/js/proxies/MutationState.js");
+"use strict";
 
-class MutationTypes {
 
-    static toMutationState(mutationType) {
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-        switch (mutationType) {
-            case MutationType.INITIAL:
-                return MutationState.PRESENT;
-            case MutationType.SET:
-                return MutationState.PRESENT;
-            case MutationType.DELETE:
-                return MutationState.ABSENT;
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-            default:
-                throw new Error("Invalid mutationType: " + mutationType);
+var _require = __webpack_require__(/*! ./MutationType */ "./web/js/proxies/MutationType.js"),
+    MutationType = _require.MutationType;
 
-        }
+var _require2 = __webpack_require__(/*! ./MutationState */ "./web/js/proxies/MutationState.js"),
+    MutationState = _require2.MutationState;
+
+var MutationTypes = function () {
+    function MutationTypes() {
+        _classCallCheck(this, MutationTypes);
     }
 
-}
+    _createClass(MutationTypes, null, [{
+        key: "toMutationState",
+        value: function toMutationState(mutationType) {
+
+            switch (mutationType) {
+                case MutationType.INITIAL:
+                    return MutationState.PRESENT;
+                case MutationType.SET:
+                    return MutationState.PRESENT;
+                case MutationType.DELETE:
+                    return MutationState.ABSENT;
+
+                default:
+                    throw new Error("Invalid mutationType: " + mutationType);
+
+            }
+        }
+    }]);
+
+    return MutationTypes;
+}();
 
 module.exports.MutationTypes = MutationTypes;
 
@@ -63032,7 +65901,12 @@ module.exports.MutationTypes = MutationTypes;
   !*** ./web/js/proxies/ObjectPathEntry.js ***!
   \*******************************************/
 /*! no static exports found */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 /**
  * A simple map of the object and the path to get to that object.
@@ -63043,34 +65917,33 @@ module.exports.MutationTypes = MutationTypes;
  *
  * @type {ObjectPathEntry}
  */
-class ObjectPathEntry {
+var ObjectPathEntry = function ObjectPathEntry(path, value, parent, parentKey) {
+  _classCallCheck(this, ObjectPathEntry);
 
-  constructor(path, value, parent, parentKey) {
+  /**
+   * The parent object which holds a reference to this object, or null if
+   * it is the root.
+   * @type {Window}
+   */
+  this.parent = parent;
 
-    /**
-     * The parent object which holds a reference to this object, or null if
-     * it is the root.
-     * @type {Window}
-     */
-    this.parent = parent;
+  /**
+   * The key of this object within the parent.
+   */
+  this.parentKey = parentKey;
 
-    /**
-     * The key of this object within the parent.
-     */
-    this.parentKey = parentKey;
+  /**
+   * The full path to this object from the root.
+   */
+  this.path = path;
 
-    /**
-     * The full path to this object from the root.
-     */
-    this.path = path;
-
-    /**
-     * The actual value of this object.
-     */
-    this.value = value;
-  }
-
+  /**
+   * The actual value of this object.
+   */
+  this.value = value;
 };
+
+;
 
 module.exports.ObjectPathEntry = ObjectPathEntry;
 
@@ -63082,6 +65955,15 @@ module.exports.ObjectPathEntry = ObjectPathEntry;
   \***************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 /**
  * A simple map of the object and the path to get to that object.
@@ -63095,50 +65977,61 @@ module.exports.ObjectPathEntry = ObjectPathEntry;
  *
  * @type {ObjectPathEntry}
  */
-const { ObjectPathEntry } = __webpack_require__(/*! ./ObjectPathEntry */ "./web/js/proxies/ObjectPathEntry.js");
-const { Paths } = __webpack_require__(/*! ../util/Paths */ "./web/js/util/Paths.js");
+var _require = __webpack_require__(/*! ./ObjectPathEntry */ "./web/js/proxies/ObjectPathEntry.js"),
+    ObjectPathEntry = _require.ObjectPathEntry;
 
-class ObjectPaths {
+var _require2 = __webpack_require__(/*! ../util/Paths */ "./web/js/util/Paths.js"),
+    Paths = _require2.Paths;
 
-    static recurse(obj) {
-
-        let result = [];
-
-        ObjectPaths._recurse("/", obj, null, null, result);
-
-        // sort the result to give the data back sorted by path.  It's
-        // deterministic either way but its nice for testing to have them sorted
-        // by path
-        result.sort(function (val0, val1) {
-            return val0.path.localeCompare(val1.path);
-        });
-
-        return result;
+var ObjectPaths = function () {
+    function ObjectPaths() {
+        _classCallCheck(this, ObjectPaths);
     }
 
-    static _recurse(path, obj, parent, parentKey, result) {
+    _createClass(ObjectPaths, null, [{
+        key: "recurse",
+        value: function recurse(obj) {
 
-        if (typeof obj !== "object") {
-            throw new Error("We can only recurse on object types.");
+            var result = [];
+
+            ObjectPaths._recurse("/", obj, null, null, result);
+
+            // sort the result to give the data back sorted by path.  It's
+            // deterministic either way but its nice for testing to have them sorted
+            // by path
+            result.sort(function (val0, val1) {
+                return val0.path.localeCompare(val1.path);
+            });
+
+            return result;
         }
+    }, {
+        key: "_recurse",
+        value: function _recurse(path, obj, parent, parentKey, result) {
 
-        result.push(new ObjectPathEntry(path, obj, parent, parentKey));
+            if ((typeof obj === "undefined" ? "undefined" : _typeof(obj)) !== "object") {
+                throw new Error("We can only recurse on object types.");
+            }
 
-        for (let childKey in obj) {
+            result.push(new ObjectPathEntry(path, obj, parent, parentKey));
 
-            if (obj.hasOwnProperty(childKey)) {
+            for (var childKey in obj) {
 
-                let childVal = obj[childKey];
+                if (obj.hasOwnProperty(childKey)) {
 
-                if (childVal && typeof childVal === "object") {
-                    let childPath = Paths.create(path, childKey);
-                    ObjectPaths._recurse(childPath, childVal, obj, childKey, result);
+                    var childVal = obj[childKey];
+
+                    if (childVal && (typeof childVal === "undefined" ? "undefined" : _typeof(childVal)) === "object") {
+                        var childPath = Paths.create(path, childKey);
+                        ObjectPaths._recurse(childPath, childVal, obj, childKey, result);
+                    }
                 }
             }
         }
-    }
+    }]);
 
-}
+    return ObjectPaths;
+}();
 
 module.exports.ObjectPaths = ObjectPaths;
 
@@ -63151,6 +66044,15 @@ module.exports.ObjectPaths = ObjectPaths;
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
+"use strict";
+
+
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
 /**
  * Framework to create listeners to watch changes in dictionaries.  We can
  * change these into observables if we want by making them streams of SET and
@@ -63160,150 +66062,171 @@ module.exports.ObjectPaths = ObjectPaths;
  * Note that Object.observe and other changes were apparently never ratified
  * so we have to use Proxy objects to implement this functionality.
  */
-const { TraceListeners } = __webpack_require__(/*! ./TraceListeners */ "./web/js/proxies/TraceListeners.js");
-const { Objects } = __webpack_require__(/*! ../util/Objects */ "./web/js/util/Objects.js");
-const { TraceHandler } = __webpack_require__(/*! ./TraceHandler */ "./web/js/proxies/TraceHandler.js");
-const { ObjectPaths } = __webpack_require__(/*! ./ObjectPaths */ "./web/js/proxies/ObjectPaths.js");
-const { Paths } = __webpack_require__(/*! ../util/Paths */ "./web/js/util/Paths.js");
+var _require = __webpack_require__(/*! ./TraceListeners */ "./web/js/proxies/TraceListeners.js"),
+    TraceListeners = _require.TraceListeners;
+
+var _require2 = __webpack_require__(/*! ../util/Objects */ "./web/js/util/Objects.js"),
+    Objects = _require2.Objects;
+
+var _require3 = __webpack_require__(/*! ./TraceHandler */ "./web/js/proxies/TraceHandler.js"),
+    TraceHandler = _require3.TraceHandler;
+
+var _require4 = __webpack_require__(/*! ./ObjectPaths */ "./web/js/proxies/ObjectPaths.js"),
+    ObjectPaths = _require4.ObjectPaths;
+
+var _require5 = __webpack_require__(/*! ../util/Paths */ "./web/js/util/Paths.js"),
+    Paths = _require5.Paths;
 
 /**
  * A sequence identifier generator so that we can assign objects a unique value
  * while we're enumerating them.
  */
-let sequence = 0;
 
-class Proxies {
 
-    /**
-     * Deeply trace the given object and call back on the traceListener every time
-     * we notice a mutation.  The trace listener receives the following arguments:
-     *
-     *
-     */
-    static create(target, traceListeners, opts) {
+var sequence = 0;
 
-        if (typeof target !== "object") {
-            throw new Error("Only works on objects: " + typeof target);
-        }
-
-        opts = Objects.defaults(opts, {
-            pathPrefix: ""
-        });
-
-        if (!traceListeners) {
-            traceListeners = [];
-        }
-
-        traceListeners = TraceListeners.asArray(traceListeners);
-
-        let objectPathEntries = ObjectPaths.recurse(target);
-
-        let root = null;
-
-        objectPathEntries.forEach(function (objectPathEntry) {
-
-            let path = objectPathEntry.path;
-
-            if (opts.pathPrefix && opts.pathPrefix !== "") {
-                path = Paths.create(opts.pathPrefix, objectPathEntry.path);
-            }
-
-            let proxy = Proxies.trace(path, objectPathEntry.value, traceListeners);
-
-            // replace the object key in the parent with a new object that is
-            // traced.
-            if (objectPathEntry.parent != null) {
-                objectPathEntry.parent[objectPathEntry.parentKey] = proxy;
-            } else {
-                root = proxy;
-            }
-        });
-
-        return root;
+var Proxies = function () {
+    function Proxies() {
+        _classCallCheck(this, Proxies);
     }
 
-    static trace(path, value, traceListeners) {
+    _createClass(Proxies, null, [{
+        key: "create",
 
-        if (typeof value !== "object") {
-            throw new Error("We can only trace object types.");
-        }
 
-        traceListeners = TraceListeners.asArray(traceListeners);
+        /**
+         * Deeply trace the given object and call back on the traceListener every time
+         * we notice a mutation.  The trace listener receives the following arguments:
+         *
+         *
+         */
+        value: function create(target, traceListeners, opts) {
 
-        if (Object.isFrozen(value)) {
-            // Do not handle frozen objects but might have to in the future for
-            // the initial value.
-            return value;
-        }
+            if ((typeof target === "undefined" ? "undefined" : _typeof(target)) !== "object") {
+                throw new Error("Only works on objects: " + (typeof target === "undefined" ? "undefined" : _typeof(target)));
+            }
 
-        let traceIdentifier = sequence++;
-
-        // for this to work, I need to keep track of ALL TraceHandlers in the
-        // object itself by possibly having a __traceHandlers or some other
-        // strategy or __paths and then dispatch that way...  
-
-        let traceHandler = new TraceHandler(path, traceListeners, value, traceIdentifier, Proxies);
-
-        // TODO: could I store these in the TraceHandler and not in the value?
-        //
-        // since we have one TraceHandler per path this might work but I would
-        // need to figure out how to get the right value from the TraceHandler.
-        // I think I can do this by custom handling the get() Proxy and then
-        // returning __traceIdentifier or __traceListeners based on the caller.
-
-        let privateMembers = [
-
-            // the __traceIdentifier is a unique key for the object which we use
-            // to identify which one is being traced.  This way we essentially
-            // have a pointer we can use to work with the object directly.
-            //
-            // { name: "__traceIdentifier", value: traceIdentifier },
-            //
-            // // keep the traceListener registered with the object so that I can
-            // // verify that the object we're working with is actually being used
-            // // with the same trace and not being re-traced by something else.
-            //
-            // { name: "__traceListeners", value: traceListeners },
-
-            // keep the path to this object for debug purposes.
-            // { name: "__path", value: path }
-
-        ];
-
-        // privateMembers.forEach(privateMember => {
-        //
-        //     if(! (privateMember.name in value)) {
-        //
-        //         // the __traceIdentifier is a unique key for the object which we use
-        //         // to identify which one is being traced.  This way we essentially
-        //         // have a pointer we can use to work with the object directly.
-        //
-        //         Object.defineProperty(value, privateMember.name, {
-        //             value: privateMember.value,
-        //             enumerable: false,
-        //             writable: false
-        //         });
-        //
-        //     }
-        //
-        // });
-
-        // TODO: do this in the TraceHandler get method?
-
-        if (value.addTraceListener) {
-            value.addTraceListener(traceListeners);
-        } else {
-            Object.defineProperty(value, "addTraceListener", {
-                value: traceHandler.addTraceListener.bind(traceHandler),
-                enumerable: false,
-                writable: false
+            opts = Objects.defaults(opts, {
+                pathPrefix: ""
             });
+
+            if (!traceListeners) {
+                traceListeners = [];
+            }
+
+            traceListeners = TraceListeners.asArray(traceListeners);
+
+            var objectPathEntries = ObjectPaths.recurse(target);
+
+            var root = null;
+
+            objectPathEntries.forEach(function (objectPathEntry) {
+
+                var path = objectPathEntry.path;
+
+                if (opts.pathPrefix && opts.pathPrefix !== "") {
+                    path = Paths.create(opts.pathPrefix, objectPathEntry.path);
+                }
+
+                var proxy = Proxies.trace(path, objectPathEntry.value, traceListeners);
+
+                // replace the object key in the parent with a new object that is
+                // traced.
+                if (objectPathEntry.parent != null) {
+                    objectPathEntry.parent[objectPathEntry.parentKey] = proxy;
+                } else {
+                    root = proxy;
+                }
+            });
+
+            return root;
         }
+    }, {
+        key: "trace",
+        value: function trace(path, value, traceListeners) {
 
-        return new Proxy(value, traceHandler);
-    }
+            if ((typeof value === "undefined" ? "undefined" : _typeof(value)) !== "object") {
+                throw new Error("We can only trace object types.");
+            }
 
-}
+            traceListeners = TraceListeners.asArray(traceListeners);
+
+            if (Object.isFrozen(value)) {
+                // Do not handle frozen objects but might have to in the future for
+                // the initial value.
+                return value;
+            }
+
+            var traceIdentifier = sequence++;
+
+            // for this to work, I need to keep track of ALL TraceHandlers in the
+            // object itself by possibly having a __traceHandlers or some other
+            // strategy or __paths and then dispatch that way...  
+
+            var traceHandler = new TraceHandler(path, traceListeners, value, traceIdentifier, Proxies);
+
+            // TODO: could I store these in the TraceHandler and not in the value?
+            //
+            // since we have one TraceHandler per path this might work but I would
+            // need to figure out how to get the right value from the TraceHandler.
+            // I think I can do this by custom handling the get() Proxy and then
+            // returning __traceIdentifier or __traceListeners based on the caller.
+
+            var privateMembers = [
+
+                // the __traceIdentifier is a unique key for the object which we use
+                // to identify which one is being traced.  This way we essentially
+                // have a pointer we can use to work with the object directly.
+                //
+                // { name: "__traceIdentifier", value: traceIdentifier },
+                //
+                // // keep the traceListener registered with the object so that I can
+                // // verify that the object we're working with is actually being used
+                // // with the same trace and not being re-traced by something else.
+                //
+                // { name: "__traceListeners", value: traceListeners },
+
+                // keep the path to this object for debug purposes.
+                // { name: "__path", value: path }
+
+            ];
+
+            // privateMembers.forEach(privateMember => {
+            //
+            //     if(! (privateMember.name in value)) {
+            //
+            //         // the __traceIdentifier is a unique key for the object which we use
+            //         // to identify which one is being traced.  This way we essentially
+            //         // have a pointer we can use to work with the object directly.
+            //
+            //         Object.defineProperty(value, privateMember.name, {
+            //             value: privateMember.value,
+            //             enumerable: false,
+            //             writable: false
+            //         });
+            //
+            //     }
+            //
+            // });
+
+            // TODO: do this in the TraceHandler get method?
+
+            if (value.addTraceListener) {
+                value.addTraceListener(traceListeners);
+            } else {
+                Object.defineProperty(value, "addTraceListener", {
+                    value: traceHandler.addTraceListener.bind(traceHandler),
+                    enumerable: false,
+                    writable: false
+                });
+            }
+
+            return new Proxy(value, traceHandler);
+        }
+    }]);
+
+    return Proxies;
+}();
 
 module.exports.Proxies = Proxies;
 
@@ -63316,54 +66239,59 @@ module.exports.Proxies = Proxies;
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-const { MutationTypes } = __webpack_require__(/*! ./MutationTypes */ "./web/js/proxies/MutationTypes.js");
+"use strict";
+
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var _require = __webpack_require__(/*! ./MutationTypes */ "./web/js/proxies/MutationTypes.js"),
+    MutationTypes = _require.MutationTypes;
 
 /**
  * Listen to a mutation and we're given a list of names and types.
  */
-class TraceEvent {
 
-  constructor(opts) {
 
-    /**
-     * @type {string} The path in the object tree of the object being mutated.
-     */
-    this.path = undefined;
+var TraceEvent = function TraceEvent(opts) {
+  _classCallCheck(this, TraceEvent);
 
-    /**
-     * @type {MutationType} The type of the mutation.
-     */
-    this.mutationType = undefined;
+  /**
+   * @type {string} The path in the object tree of the object being mutated.
+   */
+  this.path = undefined;
 
-    /**
-     * @type {Object} The object being mutated.
-     */
-    this.target = undefined;
+  /**
+   * @type {MutationType} The type of the mutation.
+   */
+  this.mutationType = undefined;
 
-    /**
-     * @type {string} The name of the field in the object.
-     */
-    this.property = undefined;
+  /**
+   * @type {Object} The object being mutated.
+   */
+  this.target = undefined;
 
-    /**
-     * @type {Object} The new value of the field or undefined if it's a delete operation.
-     */
-    this.value = undefined;
+  /**
+   * @type {string} The name of the field in the object.
+   */
+  this.property = undefined;
 
-    /**
-     * @type {Object} The previous value of the field before the operation.
-     */
-    this.previousValue = undefined;
+  /**
+   * @type {Object} The new value of the field or undefined if it's a delete operation.
+   */
+  this.value = undefined;
 
-    Object.assign(this, opts);
+  /**
+   * @type {Object} The previous value of the field before the operation.
+   */
+  this.previousValue = undefined;
 
-    /**
-     * @type {MutationState} A high level
-     */
-    this.mutationState = MutationTypes.toMutationState(this.mutationType);
-  }
+  Object.assign(this, opts);
 
-}
+  /**
+   * @type {MutationState} A high level
+   */
+  this.mutationState = MutationTypes.toMutationState(this.mutationType);
+};
 
 module.exports.TraceEvent = TraceEvent;
 
@@ -63376,18 +66304,42 @@ module.exports.TraceEvent = TraceEvent;
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-const { TraceListenerExecutor } = __webpack_require__(/*! ./TraceListenerExecutor */ "./web/js/proxies/TraceListenerExecutor.js");
-const { TraceEvent } = __webpack_require__(/*! ./TraceEvent */ "./web/js/proxies/TraceEvent.js");
-const { Preconditions } = __webpack_require__(/*! ../Preconditions */ "./web/js/Preconditions.js");
-const { MutationType } = __webpack_require__(/*! ./MutationType */ "./web/js/proxies/MutationType.js");
-const { FunctionalInterface } = __webpack_require__(/*! ../util/FunctionalInterface */ "./web/js/util/FunctionalInterface.js");
-const { Reactor } = __webpack_require__(/*! ../reactor/Reactor */ "./web/js/reactor/Reactor.js");
-const { TraceListeners } = __webpack_require__(/*! ./TraceListeners */ "./web/js/proxies/TraceListeners.js");
-const { Paths } = __webpack_require__(/*! ../util/Paths */ "./web/js/util/Paths.js");
+"use strict";
 
-const EVENT_NAME = "onMutation";
 
-class TraceHandler {
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var _require = __webpack_require__(/*! ./TraceListenerExecutor */ "./web/js/proxies/TraceListenerExecutor.js"),
+    TraceListenerExecutor = _require.TraceListenerExecutor;
+
+var _require2 = __webpack_require__(/*! ./TraceEvent */ "./web/js/proxies/TraceEvent.js"),
+    TraceEvent = _require2.TraceEvent;
+
+var _require3 = __webpack_require__(/*! ../Preconditions */ "./web/js/Preconditions.js"),
+    Preconditions = _require3.Preconditions;
+
+var _require4 = __webpack_require__(/*! ./MutationType */ "./web/js/proxies/MutationType.js"),
+    MutationType = _require4.MutationType;
+
+var _require5 = __webpack_require__(/*! ../util/FunctionalInterface */ "./web/js/util/FunctionalInterface.js"),
+    FunctionalInterface = _require5.FunctionalInterface;
+
+var _require6 = __webpack_require__(/*! ../reactor/Reactor */ "./web/js/reactor/Reactor.js"),
+    Reactor = _require6.Reactor;
+
+var _require7 = __webpack_require__(/*! ./TraceListeners */ "./web/js/proxies/TraceListeners.js"),
+    TraceListeners = _require7.TraceListeners;
+
+var _require8 = __webpack_require__(/*! ../util/Paths */ "./web/js/util/Paths.js"),
+    Paths = _require8.Paths;
+
+var EVENT_NAME = "onMutation";
+
+var TraceHandler = function () {
 
     /**
      *
@@ -63402,7 +66354,8 @@ class TraceHandler {
      * @param proxies {Proxies} class for creating new traced objects.
      * Referenced here to avoid cyclical dependencies.
      */
-    constructor(path, traceListeners, target, traceIdentifier, proxies) {
+    function TraceHandler(path, traceListeners, target, traceIdentifier, proxies) {
+        _classCallCheck(this, TraceHandler);
 
         this.path = Preconditions.assertNotNull(path, "path");
         this.target = Preconditions.assertNotNull(target, "target");
@@ -63419,113 +66372,124 @@ class TraceHandler {
      * you can also narrow it down to a specific property by specifying a given
      * property to monitor.
      */
-    addTraceListener(traceListeners, options) {
 
-        if (!options) {
-            options = {};
-        }
 
-        traceListeners = TraceListeners.asArray(traceListeners);
+    _createClass(TraceHandler, [{
+        key: "addTraceListener",
+        value: function addTraceListener(traceListeners, options) {
+            var _this = this;
 
-        let eventName = EVENT_NAME;
+            if (!options) {
+                options = {};
+            }
 
-        if (options.property) {
-            eventName = `${eventName}:${options.property}`;
-        }
+            traceListeners = TraceListeners.asArray(traceListeners);
 
-        traceListeners.forEach(traceListener => {
+            var eventName = EVENT_NAME;
 
-            traceListener = FunctionalInterface.create(EVENT_NAME, traceListener);
+            if (options.property) {
+                eventName = eventName + ":" + options.property;
+            }
 
-            this.reactor.addEventListener(eventName, traceEvent => {
-                traceListener.onMutation(traceEvent);
+            traceListeners.forEach(function (traceListener) {
+
+                traceListener = FunctionalInterface.create(EVENT_NAME, traceListener);
+
+                _this.reactor.addEventListener(eventName, function (traceEvent) {
+                    traceListener.onMutation(traceEvent);
+                });
             });
-        });
 
-        return new TraceListenerExecutor(traceListeners, this);
-    }
-
-    getTraceListeners() {
-        return this.reactor.getEventListeners(EVENT_NAME);
-    }
-
-    get(target, property, receiver) {
-
-        switch (property) {
-
-            // provide some default / hidden fields that can be used for debug
-            // reasons.
-
-            case "__path":
-                return this.path;
-
-            case "__traceIdentifier":
-                return this.traceIdentifier;
-
-            case "__traceListeners":
-                return this.getTraceListeners();
-
-            default:
-                return Reflect.get(...arguments);
+            return new TraceListenerExecutor(traceListeners, this);
         }
-    }
-
-    set(target, property, value, receiver) {
-
-        // TODO: before we change the value, also trace the new input values
-        // if we are given an object.
-
-        let traceListeners = this.reactor.getEventListeners(EVENT_NAME);
-
-        if (typeof value === "object") {
-
-            // we have to proxy this object since it would mean adding a new
-            // sub-graph that isn't traced.
-
-            let pathPrefix = Paths.create(this.path, property);
-
-            value = this.proxies.create(value, traceListeners, { pathPrefix });
+    }, {
+        key: "getTraceListeners",
+        value: function getTraceListeners() {
+            return this.reactor.getEventListeners(EVENT_NAME);
         }
+    }, {
+        key: "get",
+        value: function get(target, property, receiver) {
 
-        let previousValue = target[property];
+            switch (property) {
 
-        let result = Reflect.set(target, property, value, receiver);
+                // provide some default / hidden fields that can be used for debug
+                // reasons.
 
-        let traceEvent = new TraceEvent({
-            path: this.path,
-            mutationType: MutationType.SET,
-            target,
-            property,
-            value,
-            previousValue
-        });
+                case "__path":
+                    return this.path;
 
-        // TODO/FIXME: what if these mutation listeners throw exceptions?
-        this.reactor.dispatchEvent(EVENT_NAME, traceEvent);
-        return result;
-    }
+                case "__traceIdentifier":
+                    return this.traceIdentifier;
 
-    deleteProperty(target, property) {
+                case "__traceListeners":
+                    return this.getTraceListeners();
 
-        let previousValue = target[property];
+                default:
+                    return Reflect.get.apply(Reflect, arguments);
+            }
+        }
+    }, {
+        key: "set",
+        value: function set(target, property, value, receiver) {
 
-        let result = Reflect.deleteProperty(...arguments);
+            // TODO: before we change the value, also trace the new input values
+            // if we are given an object.
 
-        let traceEvent = new TraceEvent({
-            path: this.path,
-            mutationType: MutationType.DELETE,
-            target,
-            property,
-            value: undefined,
-            previousValue
-        });
+            var traceListeners = this.reactor.getEventListeners(EVENT_NAME);
 
-        // TODO/FIXME: what if these mutation listeners throw exceptions?
-        this.reactor.dispatchEvent(EVENT_NAME, traceEvent);
-        return result;
-    }
+            if ((typeof value === "undefined" ? "undefined" : _typeof(value)) === "object") {
 
-}
+                // we have to proxy this object since it would mean adding a new
+                // sub-graph that isn't traced.
+
+                var pathPrefix = Paths.create(this.path, property);
+
+                value = this.proxies.create(value, traceListeners, { pathPrefix: pathPrefix });
+            }
+
+            var previousValue = target[property];
+
+            var result = Reflect.set(target, property, value, receiver);
+
+            var traceEvent = new TraceEvent({
+                path: this.path,
+                mutationType: MutationType.SET,
+                target: target,
+                property: property,
+                value: value,
+                previousValue: previousValue
+            });
+
+            // TODO/FIXME: what if these mutation listeners throw exceptions?
+            this.reactor.dispatchEvent(EVENT_NAME, traceEvent);
+            return result;
+        }
+    }, {
+        key: "deleteProperty",
+        value: function deleteProperty(target, property) {
+
+            var previousValue = target[property];
+
+            var result = Reflect.deleteProperty.apply(Reflect, arguments);
+
+            var traceEvent = new TraceEvent({
+                path: this.path,
+                mutationType: MutationType.DELETE,
+                target: target,
+                property: property,
+                value: undefined,
+                previousValue: previousValue
+            });
+
+            // TODO/FIXME: what if these mutation listeners throw exceptions?
+            this.reactor.dispatchEvent(EVENT_NAME, traceEvent);
+            return result;
+        }
+    }]);
+
+    return TraceHandler;
+}();
 
 module.exports.TraceHandler = TraceHandler;
 
@@ -63538,17 +66502,31 @@ module.exports.TraceHandler = TraceHandler;
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-const { FunctionalInterface } = __webpack_require__(/*! ../util/FunctionalInterface */ "./web/js/util/FunctionalInterface.js");
-const { TraceEvent } = __webpack_require__(/*! ./TraceEvent */ "./web/js/proxies/TraceEvent.js");
-const { MutationType } = __webpack_require__(/*! ./MutationType */ "./web/js/proxies/MutationType.js");
+"use strict";
 
-class TraceListenerExecutor {
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var _require = __webpack_require__(/*! ../util/FunctionalInterface */ "./web/js/util/FunctionalInterface.js"),
+    FunctionalInterface = _require.FunctionalInterface;
+
+var _require2 = __webpack_require__(/*! ./TraceEvent */ "./web/js/proxies/TraceEvent.js"),
+    TraceEvent = _require2.TraceEvent;
+
+var _require3 = __webpack_require__(/*! ./MutationType */ "./web/js/proxies/MutationType.js"),
+    MutationType = _require3.MutationType;
+
+var TraceListenerExecutor = function () {
 
     /**
      * @param traceListeners The specific traceListener we're working with.
      * @param traceHandler The TraceHandler that this traceListener is registered with.
      */
-    constructor(traceListeners, traceHandler) {
+    function TraceListenerExecutor(traceListeners, traceHandler) {
+        _classCallCheck(this, TraceListenerExecutor);
+
         this.traceListeners = traceListeners;
         this.traceHandler = traceHandler;
     }
@@ -63556,38 +66534,46 @@ class TraceListenerExecutor {
     /**
      * Synchronize event listeners with the current state of the model.
      */
-    sync() {
 
-        // REFACTOR: this should not be onMutation because the initial value is
-        // not a mutation.
 
-        let path = this.traceHandler.path;
-        let target = this.traceHandler.target;
+    _createClass(TraceListenerExecutor, [{
+        key: "sync",
+        value: function sync() {
 
-        this.traceListeners.forEach(traceListener => {
+            // REFACTOR: this should not be onMutation because the initial value is
+            // not a mutation.
 
-            traceListener = FunctionalInterface.create("onMutation", traceListener);
+            var path = this.traceHandler.path;
+            var target = this.traceHandler.target;
 
-            for (let key in target) {
+            this.traceListeners.forEach(function (traceListener) {
 
-                if (target.hasOwnProperty(key)) {
-                    let val = target[key];
+                traceListener = FunctionalInterface.create("onMutation", traceListener);
 
-                    let traceEvent = new TraceEvent({
-                        path,
-                        mutationType: MutationType.INITIAL,
-                        target,
-                        property: key,
-                        value: val
-                    });
+                for (var key in target) {
 
-                    traceListener.onMutation(traceEvent);
+                    if (target.hasOwnProperty(key)) {
+                        var val = target[key];
+
+                        var traceEvent = new TraceEvent({
+                            path: path,
+                            mutationType: MutationType.INITIAL,
+                            target: target,
+                            property: key,
+                            value: val
+                        });
+
+                        traceListener.onMutation(traceEvent);
+                    }
                 }
-            }
-        });
-    }
+            });
+        }
+    }]);
 
-};
+    return TraceListenerExecutor;
+}();
+
+;
 
 module.exports.TraceListenerExecutor = TraceListenerExecutor;
 
@@ -63598,29 +66584,45 @@ module.exports.TraceListenerExecutor = TraceListenerExecutor;
   !*** ./web/js/proxies/TraceListeners.js ***!
   \******************************************/
 /*! no static exports found */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
 
-class TraceListeners {
+"use strict";
 
-    /**
-     * Convert this to an array so that we're always working with an array.
-     *
-     * @param traceListeners
-     */
-    static asArray(traceListeners) {
 
-        if (!traceListeners) {
-            return [];
-        }
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-        if (!Array.isArray(traceListeners)) {
-            return [traceListeners];
-        }
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-        return traceListeners;
+var TraceListeners = function () {
+    function TraceListeners() {
+        _classCallCheck(this, TraceListeners);
     }
 
-}
+    _createClass(TraceListeners, null, [{
+        key: "asArray",
+
+
+        /**
+         * Convert this to an array so that we're always working with an array.
+         *
+         * @param traceListeners
+         */
+        value: function asArray(traceListeners) {
+
+            if (!traceListeners) {
+                return [];
+            }
+
+            if (!Array.isArray(traceListeners)) {
+                return [traceListeners];
+            }
+
+            return traceListeners;
+        }
+    }]);
+
+    return TraceListeners;
+}();
 
 module.exports.TraceListeners = TraceListeners;
 
@@ -63631,27 +66633,41 @@ module.exports.TraceListeners = TraceListeners;
   !*** ./web/js/reactor/Event.js ***!
   \*********************************/
 /*! no static exports found */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
 
+"use strict";
+
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 // https://stackoverflow.com/questions/15308371/custom-events-model-without-using-dom-events-in-javascript
 
-class Event {
+var Event = function () {
+    function Event(name) {
+        _classCallCheck(this, Event);
 
-    constructor(name) {
         this.name = name;
         this.callbacks = [];
     }
 
-    registerCallback(callback) {
-        this.callbacks.push(callback);
-    }
+    _createClass(Event, [{
+        key: "registerCallback",
+        value: function registerCallback(callback) {
+            this.callbacks.push(callback);
+        }
+    }, {
+        key: "getCallbacks",
+        value: function getCallbacks() {
+            return this.callbacks;
+        }
+    }]);
 
-    getCallbacks() {
-        return this.callbacks;
-    }
+    return Event;
+}();
 
-};
+;
 
 module.exports.Event = Event;
 
@@ -63664,12 +66680,25 @@ module.exports.Event = Event;
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-const { Event } = __webpack_require__(/*! ./Event */ "./web/js/reactor/Event.js");
-const { Preconditions } = __webpack_require__(/*! ../Preconditions */ "./web/js/Preconditions.js");
+"use strict";
 
-class Reactor {
 
-    constructor() {
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var _require = __webpack_require__(/*! ./Event */ "./web/js/reactor/Event.js"),
+    Event = _require.Event;
+
+var _require2 = __webpack_require__(/*! ../Preconditions */ "./web/js/Preconditions.js"),
+    Preconditions = _require2.Preconditions;
+
+var Reactor = function () {
+    function Reactor() {
+        _classCallCheck(this, Reactor);
+
         this.events = {};
     }
 
@@ -63677,72 +66706,94 @@ class Reactor {
      * @param eventName {String}
      * @return {Reactor}
      */
-    registerEvent(eventName) {
-        Preconditions.assertNotNull(eventName, "eventName");
 
-        if (this.events[eventName]) {
-            // already registered so don't double register which would kill
-            // the existing listeners.
+
+    _createClass(Reactor, [{
+        key: "registerEvent",
+        value: function registerEvent(eventName) {
+            Preconditions.assertNotNull(eventName, "eventName");
+
+            if (this.events[eventName]) {
+                // already registered so don't double register which would kill
+                // the existing listeners.
+                return this;
+            }
+
+            var event = new Event(eventName);
+            this.events[eventName] = event;
+            return this;
+        }
+    }, {
+        key: "clearEvent",
+        value: function clearEvent(eventName) {
+            // replace it with a new event to clear the previous listeners.
+            var event = new Event(eventName);
+            this.events[eventName] = event;
             return this;
         }
 
-        let event = new Event(eventName);
-        this.events[eventName] = event;
-        return this;
-    }
+        /**
+         *
+         * @param eventName {String}
+         * @param eventArgs {...Object} The list of events that are raised.
+         * @return {Reactor}
+         */
 
-    clearEvent(eventName) {
-        // replace it with a new event to clear the previous listeners.
-        let event = new Event(eventName);
-        this.events[eventName] = event;
-        return this;
-    }
+    }, {
+        key: "dispatchEvent",
+        value: function dispatchEvent(eventName) {
+            for (var _len = arguments.length, eventArgs = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+                eventArgs[_key - 1] = arguments[_key];
+            }
 
-    /**
-     *
-     * @param eventName {String}
-     * @param eventArgs {...Object} The list of events that are raised.
-     * @return {Reactor}
-     */
-    dispatchEvent(eventName, ...eventArgs) {
-        Preconditions.assertNotNull(eventName, "eventName");
+            Preconditions.assertNotNull(eventName, "eventName");
 
-        this.events[eventName].callbacks.forEach(function (callback) {
-            // TODO: what if these throw exceptions?
-            callback(...eventArgs);
-        });
-        return this;
-    }
-
-    /**
-     *
-     * @param eventName {String}
-     * @param callback {function}
-     * @return {Reactor}
-     */
-    addEventListener(eventName, callback) {
-        Preconditions.assertNotNull(eventName, "eventName");
-
-        if (typeof callback !== "function") {
-            throw new Error("Callback is not a function: " + typeof callback);
+            this.events[eventName].callbacks.forEach(function (callback) {
+                // TODO: what if these throw exceptions?
+                callback.apply(undefined, eventArgs);
+            });
+            return this;
         }
 
-        this.events[eventName].registerCallback(callback);
-        return this;
-    }
+        /**
+         *
+         * @param eventName {String}
+         * @param callback {function}
+         * @return {Reactor}
+         */
 
-    /**
-     *
-     * @param eventName {String} The name of the event for the listeners.
-     * @return {Array}
-     */
-    getEventListeners(eventName) {
-        Preconditions.assertNotNull(eventName, "eventName");
+    }, {
+        key: "addEventListener",
+        value: function addEventListener(eventName, callback) {
+            Preconditions.assertNotNull(eventName, "eventName");
 
-        return this.events[eventName].callbacks;
-    }
+            if (typeof callback !== "function") {
+                throw new Error("Callback is not a function: " + (typeof callback === "undefined" ? "undefined" : _typeof(callback)));
+            }
 
-};
+            this.events[eventName].registerCallback(callback);
+            return this;
+        }
+
+        /**
+         *
+         * @param eventName {String} The name of the event for the listeners.
+         * @return {Array}
+         */
+
+    }, {
+        key: "getEventListeners",
+        value: function getEventListeners(eventName) {
+            Preconditions.assertNotNull(eventName, "eventName");
+
+            return this.events[eventName].callbacks;
+        }
+    }]);
+
+    return Reactor;
+}();
+
+;
 
 module.exports.Reactor = Reactor;
 
@@ -63753,16 +66804,32 @@ module.exports.Reactor = Reactor;
   !*** ./web/js/time/Clock.js ***!
   \******************************/
 /*! no static exports found */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
 
-class Clock {
+"use strict";
 
-  /**
-   * @return a new Date object representing the current time.
-   */
-  getDate() {}
 
-}
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var Clock = function () {
+  function Clock() {
+    _classCallCheck(this, Clock);
+  }
+
+  _createClass(Clock, [{
+    key: "getDate",
+
+
+    /**
+     * @return a new Date object representing the current time.
+     */
+    value: function getDate() {}
+  }]);
+
+  return Clock;
+}();
 
 module.exports.Clock = Clock;
 
@@ -63775,15 +66842,38 @@ module.exports.Clock = Clock;
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-const { Clock } = __webpack_require__(/*! ./Clock.js */ "./web/js/time/Clock.js");
+"use strict";
 
-class SystemClock extends Clock {
 
-    getDate() {
-        return new Date();
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var _require = __webpack_require__(/*! ./Clock.js */ "./web/js/time/Clock.js"),
+    Clock = _require.Clock;
+
+var SystemClock = function (_Clock) {
+    _inherits(SystemClock, _Clock);
+
+    function SystemClock() {
+        _classCallCheck(this, SystemClock);
+
+        return _possibleConstructorReturn(this, (SystemClock.__proto__ || Object.getPrototypeOf(SystemClock)).apply(this, arguments));
     }
 
-}
+    _createClass(SystemClock, [{
+        key: "getDate",
+        value: function getDate() {
+            return new Date();
+        }
+    }]);
+
+    return SystemClock;
+}(Clock);
 
 module.exports.SystemClock = SystemClock;
 
@@ -63794,34 +66884,52 @@ module.exports.SystemClock = SystemClock;
   !*** ./web/js/util/Arrays.js ***!
   \*******************************/
 /*! no static exports found */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
 
-class Arrays {
+"use strict";
 
-    /**
-     * Convert an array to a dictionary.
-     */
-    static toDict(arr) {
 
-        if (typeof arr === "object" && !arr instanceof Array) {
-            // already done.
-            return arr;
-        }
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
-        if (!arr instanceof Array) {
-            throw new Error("Not an array");
-        }
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-        let result = {};
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-        for (let idx = 0; idx < arr.length; ++idx) {
-            result[idx] = arr[idx];
-        }
-
-        return result;
+var Arrays = function () {
+    function Arrays() {
+        _classCallCheck(this, Arrays);
     }
 
-}
+    _createClass(Arrays, null, [{
+        key: "toDict",
+
+
+        /**
+         * Convert an array to a dictionary.
+         */
+        value: function toDict(arr) {
+
+            if ((typeof arr === "undefined" ? "undefined" : _typeof(arr)) === "object" && !arr instanceof Array) {
+                // already done.
+                return arr;
+            }
+
+            if (!arr instanceof Array) {
+                throw new Error("Not an array");
+            }
+
+            var result = {};
+
+            for (var idx = 0; idx < arr.length; ++idx) {
+                result[idx] = arr[idx];
+            }
+
+            return result;
+        }
+    }]);
+
+    return Arrays;
+}();
 
 module.exports.Arrays = Arrays;
 
@@ -63834,36 +66942,57 @@ module.exports.Arrays = Arrays;
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-const { Tokens } = __webpack_require__(/*! ./Tokens */ "./web/js/util/Tokens.js");
-const { Strings } = __webpack_require__(/*! ./Strings */ "./web/js/util/Strings.js");
-const { Preconditions } = __webpack_require__(/*! ../Preconditions */ "./web/js/Preconditions.js");
+"use strict";
 
-class Attributes {
 
-    /**
-     * Extract data attributes on an element as a map.
-     *
-     */
-    static dataToMap(element) {
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-        let result = {};
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-        Preconditions.assertNotNull(element, "element");
+var _require = __webpack_require__(/*! ./Tokens */ "./web/js/util/Tokens.js"),
+    Tokens = _require.Tokens;
 
-        Array.from(element.attributes).forEach(attr => {
+var _require2 = __webpack_require__(/*! ./Strings */ "./web/js/util/Strings.js"),
+    Strings = _require2.Strings;
 
-            if (attr.name.startsWith("data-")) {
-                let key = attr.name;
-                key = key.replace("data-", "");
-                key = Tokens.hyphenToCamelCase(key);
-                result[key] = Strings.toPrimitive(attr.value);
-            }
-        });
+var _require3 = __webpack_require__(/*! ../Preconditions */ "./web/js/Preconditions.js"),
+    Preconditions = _require3.Preconditions;
 
-        return result;
+var Attributes = function () {
+    function Attributes() {
+        _classCallCheck(this, Attributes);
     }
 
-}
+    _createClass(Attributes, null, [{
+        key: "dataToMap",
+
+
+        /**
+         * Extract data attributes on an element as a map.
+         *
+         */
+        value: function dataToMap(element) {
+
+            var result = {};
+
+            Preconditions.assertNotNull(element, "element");
+
+            Array.from(element.attributes).forEach(function (attr) {
+
+                if (attr.name.startsWith("data-")) {
+                    var key = attr.name;
+                    key = key.replace("data-", "");
+                    key = Tokens.hyphenToCamelCase(key);
+                    result[key] = Strings.toPrimitive(attr.value);
+                }
+            });
+
+            return result;
+        }
+    }]);
+
+    return Attributes;
+}();
 
 module.exports.Attributes = Attributes;
 
@@ -63876,13 +67005,23 @@ module.exports.Attributes = Attributes;
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-const { Preconditions } = __webpack_require__(/*! ../Preconditions */ "./web/js/Preconditions.js");
+"use strict";
+
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var _require = __webpack_require__(/*! ../Preconditions */ "./web/js/Preconditions.js"),
+    Preconditions = _require.Preconditions;
 /**
  * Simple dimension of a Rect.
  */
-class Dimensions {
 
-    constructor(obj) {
+
+var Dimensions = function () {
+    function Dimensions(obj) {
+        _classCallCheck(this, Dimensions);
 
         /**
          * This width of this rect.
@@ -63904,15 +67043,20 @@ class Dimensions {
         Preconditions.assertNumber(this.width, "width");
     }
 
-    get area() {
-        return this.width * this.height;
-    }
+    _createClass(Dimensions, [{
+        key: "toString",
+        value: function toString() {
+            return this.width + "x" + this.height;
+        }
+    }, {
+        key: "area",
+        get: function get() {
+            return this.width * this.height;
+        }
+    }]);
 
-    toString() {
-        return `${this.width}x${this.height}`;
-    }
-
-}
+    return Dimensions;
+}();
 
 module.exports.Dimensions = Dimensions;
 
@@ -63925,182 +67069,216 @@ module.exports.Dimensions = Dimensions;
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-const $ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
-const { Preconditions } = __webpack_require__(/*! ../Preconditions */ "./web/js/Preconditions.js");
-const { Rects } = __webpack_require__(/*! ../Rects */ "./web/js/Rects.js");
+"use strict";
 
-class Elements {
 
-    /**
-     *
-     * Compute the offset relative to another parent element.  This can be used
-     * to compute the absolute position of an element on a page.
-     *
-     * @param element
-     * @param [parentElement] {HTMLElement} relative to this parentElement.
-     *        By default we are relative to the document root (documentElement).
-     * @return {Rect}
-     */
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-    // FIXME: this should be getPageOffsetRect and have a relativeToParentElement which is optional.
-    static getRelativeOffsetRect(element, parentElement) {
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-        Preconditions.assertNotNull(element, "element");
+var $ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
 
-        if (!parentElement) {
-            parentElement = element.ownerDocument.documentElement;
+var _require = __webpack_require__(/*! ../Preconditions */ "./web/js/Preconditions.js"),
+    Preconditions = _require.Preconditions;
+
+var _require2 = __webpack_require__(/*! ../Rects */ "./web/js/Rects.js"),
+    Rects = _require2.Rects;
+
+var Elements = function () {
+    function Elements() {
+        _classCallCheck(this, Elements);
+    }
+
+    _createClass(Elements, null, [{
+        key: "getRelativeOffsetRect",
+
+
+        /**
+         *
+         * Compute the offset relative to another parent element.  This can be used
+         * to compute the absolute position of an element on a page.
+         *
+         * @param element
+         * @param [parentElement] {HTMLElement} relative to this parentElement.
+         *        By default we are relative to the document root (documentElement).
+         * @return {Rect}
+         */
+
+        // FIXME: this should be getPageOffsetRect and have a relativeToParentElement which is optional.
+        value: function getRelativeOffsetRect(element, parentElement) {
+
+            Preconditions.assertNotNull(element, "element");
+
+            if (!parentElement) {
+                parentElement = element.ownerDocument.documentElement;
+            }
+
+            var offsetRect = { left: 0, top: 0, width: 0, height: 0 };
+
+            function toInt(value) {
+
+                if (isNaN(value)) {
+                    return 0;
+                }
+
+                return value;
+            }
+
+            offsetRect.width = toInt(element.offsetWidth);
+            offsetRect.height = toInt(element.offsetHeight);
+
+            while (element !== null) {
+
+                offsetRect.left += toInt(element.offsetLeft);
+                offsetRect.top += toInt(element.offsetTop);
+
+                // FIXME: I have to factor in scrollTop here.. this is insane.
+
+                //offsetRect.left += toInt(element.scrollLeft);
+                //offsetRect.top += toInt(element.scrollTop);
+
+                if (element === parentElement) break;
+
+                element = element.offsetParent;
+            }
+
+            return Rects.createFromBasicRect(offsetRect);
         }
 
-        let offsetRect = { left: 0, top: 0, width: 0, height: 0 };
+        /**
+         * Create a div from the given innerHTML and return it.
+         *
+         * @param innerHTML
+         * @return {HTMLDivElement}
+         */
 
-        function toInt(value) {
+    }, {
+        key: "createElementHTML",
+        value: function createElementHTML(innerHTML) {
 
-            if (isNaN(value)) {
+            var div = document.createElement("div");
+            div.innerHTML = innerHTML;
+
+            return div;
+        }
+    }, {
+        key: "offset",
+        value: function offset(element) {
+
+            var result = {
+                left: element.offsetLeft,
+                top: element.offsetTop,
+                width: element.offsetWidth,
+                height: element.offsetHeight
+            };
+
+            result.right = result.left + result.width;
+            result.bottom = result.top + result.height;
+
+            return Rects.validate(result);
+        }
+
+        /**
+         * Require that the element have the given classname.
+         */
+
+    }, {
+        key: "requireClass",
+        value: function requireClass(element, clazz) {
+
+            var classValue = element.getAttribute("class");
+
+            if (!classValue || classValue.indexOf(clazz) === -1) {
+
+                // element isn't the proper class we're expecting.
+                throw new Error("Element does not have the proper class: " + clazz);
+            }
+        }
+
+        /**
+         *
+         * @param element
+         * @param parentElement
+         * @return {number}
+         * @deprecated
+         */
+
+    }, {
+        key: "offsetRelative",
+        value: function offsetRelative(element, parentElement) {
+
+            var offsetLeft = 0;
+
+            do {
+
+                if (!isNaN(elem.offsetLeft)) {
+                    offsetLeft += elem.offsetLeft;
+                }
+            } while (element = elem.offsetParent && element !== parentElement);
+
+            return offsetLeft;
+        }
+
+        /**
+         * Keep searching parent notes until we find an element matching the selector,
+         * or return null when one was not found.
+         *
+         * @param selector
+         */
+
+    }, {
+        key: "untilRoot",
+        value: function untilRoot(element, selector) {
+
+            if (!element) throw new Error("element required");
+
+            if (!selector) throw new Error("selector required");
+
+            if (element.matches(selector)) {
+                return element;
+            }
+
+            if (element.parentElement == null) {
+                // we have hit the root.
+                return null;
+            }
+
+            return Elements.untilRoot(element.parentElement, selector);
+        }
+    }, {
+        key: "calculateVisibilityForDiv",
+        value: function calculateVisibilityForDiv(div) {
+
+            if (div == null) throw Error("Not given a div");
+
+            var windowHeight = $(window).height(),
+                docScroll = $(document).scrollTop(),
+                divPosition = $(div).offset().top,
+                divHeight = $(div).height();
+
+            var hiddenBefore = docScroll - divPosition,
+                hiddenAfter = divPosition + divHeight - (docScroll + windowHeight);
+
+            if (docScroll > divPosition + divHeight || divPosition > docScroll + windowHeight) {
                 return 0;
+            } else {
+                var result = 100;
+
+                if (hiddenBefore > 0) {
+                    result -= hiddenBefore * 100 / divHeight;
+                }
+
+                if (hiddenAfter > 0) {
+                    result -= hiddenAfter * 100 / divHeight;
+                }
+
+                return result;
             }
-
-            return value;
         }
+    }]);
 
-        offsetRect.width = toInt(element.offsetWidth);
-        offsetRect.height = toInt(element.offsetHeight);
-
-        while (element !== null) {
-
-            offsetRect.left += toInt(element.offsetLeft);
-            offsetRect.top += toInt(element.offsetTop);
-
-            // FIXME: I have to factor in scrollTop here.. this is insane.
-
-            //offsetRect.left += toInt(element.scrollLeft);
-            //offsetRect.top += toInt(element.scrollTop);
-
-            if (element === parentElement) break;
-
-            element = element.offsetParent;
-        }
-
-        return Rects.createFromBasicRect(offsetRect);
-    }
-
-    /**
-     * Create a div from the given innerHTML and return it.
-     *
-     * @param innerHTML
-     * @return {HTMLDivElement}
-     */
-    static createElementHTML(innerHTML) {
-
-        let div = document.createElement("div");
-        div.innerHTML = innerHTML;
-
-        return div;
-    }
-
-    static offset(element) {
-
-        let result = {
-            left: element.offsetLeft,
-            top: element.offsetTop,
-            width: element.offsetWidth,
-            height: element.offsetHeight
-        };
-
-        result.right = result.left + result.width;
-        result.bottom = result.top + result.height;
-
-        return Rects.validate(result);
-    }
-
-    /**
-     * Require that the element have the given classname.
-     */
-    static requireClass(element, clazz) {
-
-        let classValue = element.getAttribute("class");
-
-        if (!classValue || classValue.indexOf(clazz) === -1) {
-
-            // element isn't the proper class we're expecting.
-            throw new Error("Element does not have the proper class: " + clazz);
-        }
-    }
-
-    /**
-     *
-     * @param element
-     * @param parentElement
-     * @return {number}
-     * @deprecated
-     */
-    static offsetRelative(element, parentElement) {
-
-        let offsetLeft = 0;
-
-        do {
-
-            if (!isNaN(elem.offsetLeft)) {
-                offsetLeft += elem.offsetLeft;
-            }
-        } while (element = elem.offsetParent && element !== parentElement);
-
-        return offsetLeft;
-    }
-
-    /**
-     * Keep searching parent notes until we find an element matching the selector,
-     * or return null when one was not found.
-     *
-     * @param selector
-     */
-    static untilRoot(element, selector) {
-
-        if (!element) throw new Error("element required");
-
-        if (!selector) throw new Error("selector required");
-
-        if (element.matches(selector)) {
-            return element;
-        }
-
-        if (element.parentElement == null) {
-            // we have hit the root.
-            return null;
-        }
-
-        return Elements.untilRoot(element.parentElement, selector);
-    }
-
-    static calculateVisibilityForDiv(div) {
-
-        if (div == null) throw Error("Not given a div");
-
-        let windowHeight = $(window).height(),
-            docScroll = $(document).scrollTop(),
-            divPosition = $(div).offset().top,
-            divHeight = $(div).height();
-
-        let hiddenBefore = docScroll - divPosition,
-            hiddenAfter = divPosition + divHeight - (docScroll + windowHeight);
-
-        if (docScroll > divPosition + divHeight || divPosition > docScroll + windowHeight) {
-            return 0;
-        } else {
-            let result = 100;
-
-            if (hiddenBefore > 0) {
-                result -= hiddenBefore * 100 / divHeight;
-            }
-
-            if (hiddenAfter > 0) {
-                result -= hiddenAfter * 100 / divHeight;
-            }
-
-            return result;
-        }
-    }
-
-}
+    return Elements;
+}();
 
 module.exports.Elements = Elements;
 
@@ -64113,14 +67291,20 @@ module.exports.Elements = Elements;
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
+"use strict";
 
-const util = __webpack_require__(/*! util */ "util");
-const fs = __webpack_require__(/*! fs */ "fs");
 
-class Files {
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-    constructor() {
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var util = __webpack_require__(/*! util */ "util");
+var fs = __webpack_require__(/*! fs */ "fs");
+
+var Files = function () {
+    function Files() {
+        _classCallCheck(this, Files);
+
         this.readFileAsync = util.promisify(fs.readFile);
         this.writeFileAsync = util.promisify(fs.writeFile);
         this.mkdirAsync = util.promisify(fs.mkdir);
@@ -64137,43 +67321,41 @@ class Files {
      * @param path {String}
      * @return {Promise<Buffer>}
      */
-    readFileAsync(path) {
-        return _asyncToGenerator(function* () {
+
+
+    _createClass(Files, [{
+        key: 'readFileAsync',
+        value: async function readFileAsync(path) {
             throw new Error("Not replaced via promisify");
-        })();
-    }
+        }
 
-    // https://nodejs.org/api/fs.html#fs_fs_writefile_file_data_options_callback
-    writeFileAsync(path, data) {
-        return _asyncToGenerator(function* () {
+        // https://nodejs.org/api/fs.html#fs_fs_writefile_file_data_options_callback
+
+    }, {
+        key: 'writeFileAsync',
+        value: async function writeFileAsync(path, data) {
             throw new Error("Not replaced via promisify");
-        })();
-    }
+        }
+    }, {
+        key: 'createDirAsync',
+        value: async function createDirAsync(dir) {
 
-    createDirAsync(dir) {
-        var _this = this;
-
-        return _asyncToGenerator(function* () {
-
-            let result = {
-                dir
+            var result = {
+                dir: dir
             };
 
-            if (yield _this.existsAsync(dir)) {
+            if (await this.existsAsync(dir)) {
                 result.exists = true;
             } else {
                 result.created = true;
-                yield _this.mkdirAsync(dir);
+                await this.mkdirAsync(dir);
             }
 
             return result;
-        })();
-    }
-
-    existsAsync(path) {
-        var _this2 = this;
-
-        return _asyncToGenerator(function* () {
+        }
+    }, {
+        key: 'existsAsync',
+        value: async function existsAsync(path) {
 
             return new Promise(function (resolve, reject) {
 
@@ -64187,35 +67369,36 @@ class Files {
                         reject(err);
                     }
                 });
-            }.bind(_this2));
-        })();
-    }
+            }.bind(this));
+        }
 
-    /**
-     *  Remove a file, whether it is present or not.  Make sure it's not there.
-     */
-    removeAsync(path) {
-        var _this3 = this;
+        /**
+         *  Remove a file, whether it is present or not.  Make sure it's not there.
+         */
 
-        return _asyncToGenerator(function* () {
-            if (yield _this3.existsAsync(path)) {
-                yield _this3.unlinkAsync(path);
+    }, {
+        key: 'removeAsync',
+        value: async function removeAsync(path) {
+            if (await this.existsAsync(path)) {
+                await this.unlinkAsync(path);
             }
-        })();
-    }
+        }
 
-    // static readFileAsync = util.promisify(fs.readFile);
-    // static writeFileAsync = util.promisify(fs.writeFile);
+        // static readFileAsync = util.promisify(fs.readFile);
+        // static writeFileAsync = util.promisify(fs.writeFile);
 
-    //
-    // this.writeFileAsync = util.promisify(fs.writeFile);
-    // this.mkdirAsync = util.promisify(fs.mkdir);
-    // this.accessAsync = util.promisify(fs.access);
-    // this.statAsync = util.promisify(fs.stat);
-    // this.unlinkAsync = util.promisify(fs.unlink);
-    // this.rmdirAsync = util.promisify(fs.rmdir);
+        //
+        // this.writeFileAsync = util.promisify(fs.writeFile);
+        // this.mkdirAsync = util.promisify(fs.mkdir);
+        // this.accessAsync = util.promisify(fs.access);
+        // this.statAsync = util.promisify(fs.stat);
+        // this.unlinkAsync = util.promisify(fs.unlink);
+        // this.rmdirAsync = util.promisify(fs.rmdir);
 
-}
+    }]);
+
+    return Files;
+}();
 
 module.exports.Files = new Files();
 
@@ -64226,27 +67409,43 @@ module.exports.Files = new Files();
   !*** ./web/js/util/FunctionalInterface.js ***!
   \********************************************/
 /*! no static exports found */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
 
-class FunctionalInterface {
+"use strict";
 
-    /**
-     * Create a functional interface for the given object so that a function OR
-     * an object can be used.  We prefer the object form.
-     */
-    static create(name, object) {
 
-        if (!object[name] && typeof object === "function") {
-            let functionalInterface = {};
-            functionalInterface[name] = object;
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-            return functionalInterface;
-        }
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-        return object;
+var FunctionalInterface = function () {
+    function FunctionalInterface() {
+        _classCallCheck(this, FunctionalInterface);
     }
 
-}
+    _createClass(FunctionalInterface, null, [{
+        key: "create",
+
+
+        /**
+         * Create a functional interface for the given object so that a function OR
+         * an object can be used.  We prefer the object form.
+         */
+        value: function create(name, object) {
+
+            if (!object[name] && typeof object === "function") {
+                var functionalInterface = {};
+                functionalInterface[name] = object;
+
+                return functionalInterface;
+            }
+
+            return object;
+        }
+    }]);
+
+    return FunctionalInterface;
+}();
 
 module.exports.FunctionalInterface = FunctionalInterface;
 
@@ -64259,86 +67458,107 @@ module.exports.FunctionalInterface = FunctionalInterface;
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
+"use strict";
 
-const { Preconditions } = __webpack_require__(/*! ../Preconditions */ "./web/js/Preconditions.js");
-const { Optional } = __webpack_require__(/*! ../Optional */ "./web/js/Optional.js");
 
-class Functions {
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-    /**
-     * Take a function and make it an external script we can pass to an external
-     * javascript interpreter. This can be used with the electron renderer, chrome
-     * headless, etc.
-     *
-     * @param _function
-     * @param _opts
-     * @return {string}
-     */
-    static functionToScript(_function, _opts) {
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-        let result = "";
-        result += _function.toString();
-        result += "\n";
+var _require = __webpack_require__(/*! ../Preconditions */ "./web/js/Preconditions.js"),
+    Preconditions = _require.Preconditions;
 
-        // TODO: expand _opts to varargs... not just one opts.  This way the
-        // function can be an ordinary function.
-        if (_opts) {
-            result += `${_function.name}(${JSON.stringify(_opts)});`;
-        } else {
-            result += `${_function.name}();`;
+var _require2 = __webpack_require__(/*! ../Optional */ "./web/js/Optional.js"),
+    Optional = _require2.Optional;
+
+var Functions = function () {
+    function Functions() {
+        _classCallCheck(this, Functions);
+    }
+
+    _createClass(Functions, null, [{
+        key: "functionToScript",
+
+
+        /**
+         * Take a function and make it an external script we can pass to an external
+         * javascript interpreter. This can be used with the electron renderer, chrome
+         * headless, etc.
+         *
+         * @param _function
+         * @param _opts
+         * @return {string}
+         */
+        value: function functionToScript(_function, _opts) {
+
+            var result = "";
+            result += _function.toString();
+            result += "\n";
+
+            // TODO: expand _opts to varargs... not just one opts.  This way the
+            // function can be an ordinary function.
+            if (_opts) {
+                result += _function.name + "(" + JSON.stringify(_opts) + ");";
+            } else {
+                result += _function.name + "();";
+            }
+            return result;
         }
-        return result;
-    }
 
-    /**
-     * We iterate over all keys in the dictionary.  Even inherited keys.
-     *
-     * @param dict
-     * @param callback
-     */
-    static forDict(dict, callback) {
+        /**
+         * We iterate over all keys in the dictionary.  Even inherited keys.
+         *
+         * @param dict
+         * @param callback
+         */
 
-        Preconditions.assertNotNull(dict, "dict");
-        Preconditions.assertNotNull(callback, "callback");
-
-        // get the keys first, that way we can mutate the dictionary while iterating
-        // through it if necessary.
-        let keys = Object.keys(dict);
-
-        keys.forEach(function (key) {
-            let value = dict[key];
-            callback(key, value);
-        });
-    }
-
-    /**
-     * We iterate over all keys in the dictionary.  Even inherited keys.
-     *
-     * @param dict
-     * @param callback
-     */
-    static forOwnKeys(dict, callback) {
-        return _asyncToGenerator(function* () {
+    }, {
+        key: "forDict",
+        value: function forDict(dict, callback) {
 
             Preconditions.assertNotNull(dict, "dict");
             Preconditions.assertNotNull(callback, "callback");
 
-            for (let key in dict) {
+            // get the keys first, that way we can mutate the dictionary while iterating
+            // through it if necessary.
+            var keys = Object.keys(dict);
+
+            keys.forEach(function (key) {
+                var value = dict[key];
+                callback(key, value);
+            });
+        }
+    }, {
+        key: "forOwnKeys",
+
+
+        /**
+         * We iterate over all keys in the dictionary.  Even inherited keys.
+         *
+         * @param dict
+         * @param callback
+         */
+        value: async function forOwnKeys(dict, callback) {
+
+            Preconditions.assertNotNull(dict, "dict");
+            Preconditions.assertNotNull(callback, "callback");
+
+            for (var key in dict) {
 
                 if (dict.hasOwnProperty(key)) {
-                    let value = dict[key];
-                    yield callback(key, value);
+                    var value = dict[key];
+                    await callback(key, value);
                 }
             }
-        })();
-    }
+        }
+    }, {
+        key: "withTimeout",
 
-    /**
-     * Calls the given callback as a promise which we can await.
-     */
-    static withTimeout(timeout, callback) {
-        return _asyncToGenerator(function* () {
+
+        /**
+         * Calls the given callback as a promise which we can await.
+         */
+        value: async function withTimeout(timeout, callback) {
 
             return new Promise(function (resolve, reject) {
 
@@ -64350,19 +67570,20 @@ class Functions {
                     });
                 }, timeout);
             });
-        })();
-    }
+        }
 
-    /**
-     * A promise based timeout.  This just returns a promise which returns
-     * once the timeout has expired. You can then call .then() or just await
-     * the timeout.
-     *
-     * @param timeout
-     * @return {Promise<void>}
-     */
-    static waitFor(timeout) {
-        return _asyncToGenerator(function* () {
+        /**
+         * A promise based timeout.  This just returns a promise which returns
+         * once the timeout has expired. You can then call .then() or just await
+         * the timeout.
+         *
+         * @param timeout
+         * @return {Promise<void>}
+         */
+
+    }, {
+        key: "waitFor",
+        value: async function waitFor(timeout) {
 
             return new Promise(function (resolve) {
 
@@ -64370,51 +67591,59 @@ class Functions {
                     resolve();
                 }, timeout);
             });
-        })();
-    }
-
-    /**
-     *
-     * @Deprecated use createSiblings as createSiblingTuples implies that this
-     * is a tuple and it's actually a triple.
-     */
-    static createSiblingTuples(arrayLikeObject) {
-        return Functions.createSiblings(arrayLikeObject);
-    }
-
-    /**
-     * Go over the array-like object and return tuples with prev, curr, and next
-     * properties so that we can peek at siblings easily.  If the prev and / or
-     * next are not present these values are null.
-     *
-     * This can be used for algorithms that need to peek ahead or behind
-     * inside an iterative algorithm
-     *
-     * @param arrayLikeObject {Array<any>}
-     * @return {Array<ArrayPosition>}
-     */
-    static createSiblings(arrayLikeObject) {
-
-        Preconditions.assertNotNull(arrayLikeObject, "arrayLikeObject");
-
-        /**
-         * {Array<ArrayPosition>}
-         * @type {Array}
-         */
-        let result = [];
-
-        for (let idx = 0; idx < arrayLikeObject.length; ++idx) {
-
-            result.push(new ArrayPosition({
-                curr: arrayLikeObject[idx],
-                prev: Optional.of(arrayLikeObject[idx - 1]).getOrElse(null),
-                next: Optional.of(arrayLikeObject[idx + 1]).getOrElse(null)
-            }));
         }
 
-        return result;
-    }
-}
+        /**
+         *
+         * @Deprecated use createSiblings as createSiblingTuples implies that this
+         * is a tuple and it's actually a triple.
+         */
+
+    }, {
+        key: "createSiblingTuples",
+        value: function createSiblingTuples(arrayLikeObject) {
+            return Functions.createSiblings(arrayLikeObject);
+        }
+
+        /**
+         * Go over the array-like object and return tuples with prev, curr, and next
+         * properties so that we can peek at siblings easily.  If the prev and / or
+         * next are not present these values are null.
+         *
+         * This can be used for algorithms that need to peek ahead or behind
+         * inside an iterative algorithm
+         *
+         * @param arrayLikeObject {Array<any>}
+         * @return {Array<ArrayPosition>}
+         */
+
+    }, {
+        key: "createSiblings",
+        value: function createSiblings(arrayLikeObject) {
+
+            Preconditions.assertNotNull(arrayLikeObject, "arrayLikeObject");
+
+            /**
+             * {Array<ArrayPosition>}
+             * @type {Array}
+             */
+            var result = [];
+
+            for (var idx = 0; idx < arrayLikeObject.length; ++idx) {
+
+                result.push(new ArrayPosition({
+                    curr: arrayLikeObject[idx],
+                    prev: Optional.of(arrayLikeObject[idx - 1]).getOrElse(null),
+                    next: Optional.of(arrayLikeObject[idx + 1]).getOrElse(null)
+                }));
+            }
+
+            return result;
+        }
+    }]);
+
+    return Functions;
+}();
 
 /**
  * Represents a 'position' object for createSiblings() that has a curr (current),
@@ -64422,20 +67651,19 @@ class Functions {
  * position allow sus to know where we currently are but also the previous and
  * future states.
  */
-class ArrayPosition {
 
-    constructor(obj) {
 
-        this.curr = null;
+var ArrayPosition = function ArrayPosition(obj) {
+    _classCallCheck(this, ArrayPosition);
 
-        this.prev = null;
+    this.curr = null;
 
-        this.next = null;
+    this.prev = null;
 
-        Object.assign(this, obj);
-    }
+    this.next = null;
 
-}
+    Object.assign(this, obj);
+};
 
 module.exports.forDict = Functions.forDict;
 module.exports.forOwnKeys = Functions.forOwnKeys;
@@ -64452,13 +67680,22 @@ module.exports.Functions = Functions;
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
+"use strict";
 
-const { Preconditions } = __webpack_require__(/*! ../Preconditions */ "./web/js/Preconditions.js");
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var _require = __webpack_require__(/*! ../Preconditions */ "./web/js/Preconditions.js"),
+    Preconditions = _require.Preconditions;
 
 /**
  * Simple line with just a start and end.
  */
-class Line {
+
+
+var Line = function () {
 
     /**
      *
@@ -64466,7 +67703,9 @@ class Line {
      * @param end {number}
      * @param [axis] {string} Optional axis parameter ('x' or 'y')
      */
-    constructor(start, end, axis) {
+    function Line(start, end, axis) {
+        _classCallCheck(this, Line);
+
         this.start = Preconditions.assertNumber(start, "start");
         this.end = Preconditions.assertNumber(end, "end");
         this.axis = axis; // TODO validate
@@ -64480,110 +67719,139 @@ class Line {
      * instead.
      * @return {number}
      */
-    get width() {
-        return this.end - this.start;
-    }
 
-    get length() {
-        return this.end - this.start;
-    }
 
-    /**
-     * Return true if the given point is between the start and end position
-     * of the line (inclusive)
-     *
-     * @param pt {number}
-     * @return {boolean}
-     */
-    containsPoint(pt) {
-        return this.within(pt);
-    }
+    _createClass(Line, [{
+        key: "containsPoint",
 
-    /**
-     * Return true if the point is within the start and end points of this line.
-     *
-     * @param pt {number}
-     */
-    within(pt) {
-        return this.start <= pt && pt <= this.end;
-    }
 
-    /**
-     * Return true if the given line overlaps the current line.  IE either the start
-     * or end point on the given line is between the start and end points of the
-     * current line.
-     *
-     * @param line {Line}
-     * @return {boolean}
-     */
-    overlaps(line) {
-        Preconditions.assertNotNull(line, "line");
-
-        //console.log("DEBUG: %s vs %s", this.toString("interval"), line.toString("interval"));
-
-        return this.containsPoint(line.start) || this.containsPoint(line.end);
-    }
-
-    /**
-     *
-     * @param [fmt] optional format parameter. May be 'interval' for interval notation.
-     * @return {string}
-     */
-    toString(fmt) {
-
-        if (fmt === "interval") {
-            return `[${this.start},${this.end}]`;
+        /**
+         * Return true if the given point is between the start and end position
+         * of the line (inclusive)
+         *
+         * @param pt {number}
+         * @return {boolean}
+         */
+        value: function containsPoint(pt) {
+            return this.within(pt);
         }
 
-        return `{start: ${this.start}, end: ${this.end}}`;
-    }
+        /**
+         * Return true if the point is within the start and end points of this line.
+         *
+         * @param pt {number}
+         */
 
-    /**
-     * Build a new line based on the given scalar.  Essentially this models
-     * the line as a vector with zero as the origin and length as the magnitude
-     * and we just apply the scalar to build the new vector with a different
-     * start origin.
-     *
-     * @param scalar {number}
-     */
-    multiply(scalar) {
+    }, {
+        key: "within",
+        value: function within(pt) {
+            return this.start <= pt && pt <= this.end;
+        }
 
-        return new Line(this.start * scalar, this.end * scalar, this.axis);
-    }
+        /**
+         * Return true if the given line overlaps the current line.  IE either the start
+         * or end point on the given line is between the start and end points of the
+         * current line.
+         *
+         * @param line {Line}
+         * @return {boolean}
+         */
 
-    toJSON() {
+    }, {
+        key: "overlaps",
+        value: function overlaps(line) {
+            Preconditions.assertNotNull(line, "line");
 
-        return {
-            axis: this.axis,
-            start: this.start,
-            end: this.end,
-            length: this.length
-        };
-    }
+            //console.log("DEBUG: %s vs %s", this.toString("interval"), line.toString("interval"));
 
-    /**
-     *
-     * @param start {number}
-     * @param pt {number}
-     * @param end {number}
-     * @return {boolean}
-     */
-    static interval(start, pt, end) {
-        return start <= pt && pt <= end;
-    }
+            return this.containsPoint(line.start) || this.containsPoint(line.end);
+        }
 
-    /**
-     * @return {LineBuilder}
-     */
-    static builder() {
-        return new LineBuilder();
-    }
+        /**
+         *
+         * @param [fmt] optional format parameter. May be 'interval' for interval notation.
+         * @return {string}
+         */
 
-}
+    }, {
+        key: "toString",
+        value: function toString(fmt) {
 
-class LineBuilder {
+            if (fmt === "interval") {
+                return "[" + this.start + "," + this.end + "]";
+            }
 
-    constructor() {
+            return "{start: " + this.start + ", end: " + this.end + "}";
+        }
+
+        /**
+         * Build a new line based on the given scalar.  Essentially this models
+         * the line as a vector with zero as the origin and length as the magnitude
+         * and we just apply the scalar to build the new vector with a different
+         * start origin.
+         *
+         * @param scalar {number}
+         */
+
+    }, {
+        key: "multiply",
+        value: function multiply(scalar) {
+
+            return new Line(this.start * scalar, this.end * scalar, this.axis);
+        }
+    }, {
+        key: "toJSON",
+        value: function toJSON() {
+
+            return {
+                axis: this.axis,
+                start: this.start,
+                end: this.end,
+                length: this.length
+            };
+        }
+
+        /**
+         *
+         * @param start {number}
+         * @param pt {number}
+         * @param end {number}
+         * @return {boolean}
+         */
+
+    }, {
+        key: "width",
+        get: function get() {
+            return this.end - this.start;
+        }
+    }, {
+        key: "length",
+        get: function get() {
+            return this.end - this.start;
+        }
+    }], [{
+        key: "interval",
+        value: function interval(start, pt, end) {
+            return start <= pt && pt <= end;
+        }
+
+        /**
+         * @return {LineBuilder}
+         */
+
+    }, {
+        key: "builder",
+        value: function builder() {
+            return new LineBuilder();
+        }
+    }]);
+
+    return Line;
+}();
+
+var LineBuilder = function () {
+    function LineBuilder() {
+        _classCallCheck(this, LineBuilder);
 
         /**
          * @type {number}
@@ -64610,60 +67878,78 @@ class LineBuilder {
      * @param value {number}
      * @return {LineBuilder}
      */
-    setStart(value) {
-        Preconditions.assertNumber(value, "value");
-        this.start = value;
-        return this;
-    }
 
-    /**
-     * @param value {number}
-     * @return {LineBuilder}
-     */
-    setEnd(value) {
-        Preconditions.assertNumber(value, "value");
-        this.end = value;
-        return this;
-    }
 
-    /**
-     * @param value {number}
-     * @return {LineBuilder}
-     */
-    setLength(value) {
-        Preconditions.assertNumber(value, "value");
-        this.length = value;
-        return this;
-    }
-
-    /**
-     * @param value {number}
-     * @return {LineBuilder}
-     */
-    setAxis(value) {
-        Preconditions.assertNotNull(axis, "value");
-        this.axis = value;
-        return this;
-    }
-
-    /**
-     *
-     * @return {Line}
-     */
-    build() {
-
-        Preconditions.assertNumber(this._start, "start");
-
-        if (!this._end && this._length) {
-            this._end = this._start + this._length;
+    _createClass(LineBuilder, [{
+        key: "setStart",
+        value: function setStart(value) {
+            Preconditions.assertNumber(value, "value");
+            this.start = value;
+            return this;
         }
 
-        Preconditions.assertNumber(this._end, "end");
+        /**
+         * @param value {number}
+         * @return {LineBuilder}
+         */
 
-        return new Line(this._start, this._end);
-    }
+    }, {
+        key: "setEnd",
+        value: function setEnd(value) {
+            Preconditions.assertNumber(value, "value");
+            this.end = value;
+            return this;
+        }
 
-}
+        /**
+         * @param value {number}
+         * @return {LineBuilder}
+         */
+
+    }, {
+        key: "setLength",
+        value: function setLength(value) {
+            Preconditions.assertNumber(value, "value");
+            this.length = value;
+            return this;
+        }
+
+        /**
+         * @param value {number}
+         * @return {LineBuilder}
+         */
+
+    }, {
+        key: "setAxis",
+        value: function setAxis(value) {
+            Preconditions.assertNotNull(axis, "value");
+            this.axis = value;
+            return this;
+        }
+
+        /**
+         *
+         * @return {Line}
+         */
+
+    }, {
+        key: "build",
+        value: function build() {
+
+            Preconditions.assertNumber(this._start, "start");
+
+            if (!this._end && this._length) {
+                this._end = this._start + this._length;
+            }
+
+            Preconditions.assertNumber(this._end, "end");
+
+            return new Line(this._start, this._end);
+        }
+    }]);
+
+    return LineBuilder;
+}();
 
 module.exports.Line = Line;
 
@@ -64674,65 +67960,88 @@ module.exports.Line = Line;
   !*** ./web/js/util/Objects.js ***!
   \********************************/
 /*! no static exports found */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
 
 
-class Objects {
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
-    /**
-     * Take the current object, and use given object as a set of defaults.
-     */
-    static defaults(current, defaults) {
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-        let result = current;
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-        if (!result) {
-            result = {};
-        }
-
-        for (let key in defaults) {
-            if (defaults.hasOwnProperty(key) && !result.hasOwnProperty(key)) {
-                result[key] = defaults[key];
-            }
-        }
-
-        return result;
+var Objects = function () {
+    function Objects() {
+        _classCallCheck(this, Objects);
     }
 
-    /**
-     * Clear an array or dictionary of all its values so it is reset.
-     * This modifies the object directly.
-     *
-     * @param obj
-     */
-    static clear(obj) {
+    _createClass(Objects, null, [{
+        key: "defaults",
 
-        if (obj instanceof Array) {
 
-            for (let idx = 0; idx < obj.length; ++idx) {
-                obj.pop();
+        /**
+         * Take the current object, and use given object as a set of defaults.
+         */
+        value: function defaults(current, _defaults) {
+
+            var result = current;
+
+            if (!result) {
+                result = {};
             }
 
-            return obj;
-        }
-
-        if (typeof obj === "object") {
-
-            for (let key in obj) {
-                delete obj[key];
+            for (var key in _defaults) {
+                if (_defaults.hasOwnProperty(key) && !result.hasOwnProperty(key)) {
+                    result[key] = _defaults[key];
+                }
             }
 
-            return obj;
+            return result;
         }
 
-        throw new Error("Only works for arrays or objects");
-    }
+        /**
+         * Clear an array or dictionary of all its values so it is reset.
+         * This modifies the object directly.
+         *
+         * @param obj
+         */
 
-    static duplicate(obj) {
-        return JSON.parse(JSON.stringify(obj));
-    }
+    }, {
+        key: "clear",
+        value: function clear(obj) {
 
-};
+            if (obj instanceof Array) {
+
+                for (var idx = 0; idx < obj.length; ++idx) {
+                    obj.pop();
+                }
+
+                return obj;
+            }
+
+            if ((typeof obj === "undefined" ? "undefined" : _typeof(obj)) === "object") {
+
+                for (var key in obj) {
+                    delete obj[key];
+                }
+
+                return obj;
+            }
+
+            throw new Error("Only works for arrays or objects");
+        }
+    }, {
+        key: "duplicate",
+        value: function duplicate(obj) {
+            return JSON.parse(JSON.stringify(obj));
+        }
+    }]);
+
+    return Objects;
+}();
+
+;
 
 module.exports.Objects = Objects;
 
@@ -64743,53 +68052,71 @@ module.exports.Objects = Objects;
   !*** ./web/js/util/Paths.js ***!
   \******************************/
 /*! no static exports found */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
 
 
-class Paths {
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-    /**
-     * Create a path from the given parts regardless of their structure.
-     *
-     * Don't allow double // or trailing /.  The output is always sane.
-     *
-     * @param dirname
-     * @param basename
-     */
-    static create(dirname, basename) {
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-        if (!dirname) throw new Error("Dirname required");
-
-        if (!basename) throw new Error("Basename required");
-
-        if (dirname.indexOf("//") !== -1 || basename.indexOf("//") !== -1) {
-            // don't allow // in dirname already as we would corrupt
-            throw new Error("No // in dirname");
-        }
-
-        let result = dirname + "/" + basename;
-
-        // replace multiple slashes in directory parts
-        result = result.replace(/\/\/+/g, "/");
-
-        // remove any trailing slashes
-        result = result.replace(/\/$/g, "");
-
-        return result;
+var Paths = function () {
+    function Paths() {
+        _classCallCheck(this, Paths);
     }
 
-    static basename(data) {
+    _createClass(Paths, null, [{
+        key: "create",
 
-        let end = data.lastIndexOf("/");
 
-        if (end <= -1) {
-            return null;
+        /**
+         * Create a path from the given parts regardless of their structure.
+         *
+         * Don't allow double // or trailing /.  The output is always sane.
+         *
+         * @param dirname
+         * @param basename
+         */
+        value: function create(dirname, basename) {
+
+            if (!dirname) throw new Error("Dirname required");
+
+            if (!basename) throw new Error("Basename required");
+
+            if (dirname.indexOf("//") !== -1 || basename.indexOf("//") !== -1) {
+                // don't allow // in dirname already as we would corrupt
+                throw new Error("No // in dirname");
+            }
+
+            var result = dirname + "/" + basename;
+
+            // replace multiple slashes in directory parts
+            result = result.replace(/\/\/+/g, "/");
+
+            // remove any trailing slashes
+            result = result.replace(/\/$/g, "");
+
+            return result;
         }
+    }, {
+        key: "basename",
+        value: function basename(data) {
 
-        return data.substring(end + 1, data.length);
-    }
+            var end = data.lastIndexOf("/");
 
-};
+            if (end <= -1) {
+                return null;
+            }
+
+            return data.substring(end + 1, data.length);
+        }
+    }]);
+
+    return Paths;
+}();
+
+;
 
 module.exports.Paths = Paths;
 
@@ -64800,20 +68127,36 @@ module.exports.Paths = Paths;
   !*** ./web/js/util/Percentages.js ***!
   \************************************/
 /*! no static exports found */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
 
-class Percentages {
+"use strict";
 
-    /**
-     *
-     * @param perc {number}
-     * @return {number}
-     */
-    static round(perc) {
-        return Math.round(perc * 100) / 100;
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var Percentages = function () {
+    function Percentages() {
+        _classCallCheck(this, Percentages);
     }
 
-}
+    _createClass(Percentages, null, [{
+        key: "round",
+
+
+        /**
+         *
+         * @param perc {number}
+         * @return {number}
+         */
+        value: function round(perc) {
+            return Math.round(perc * 100) / 100;
+        }
+    }]);
+
+    return Percentages;
+}();
 
 module.exports.round = Percentages.round;
 module.exports.Percentages = Percentages;
@@ -64825,29 +68168,42 @@ module.exports.Percentages = Percentages;
   !*** ./web/js/util/Strings.js ***!
   \********************************/
 /*! no static exports found */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
 
 
-class Strings {
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-    static toPrimitive(value) {
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-        if (value === "true" || value === "false") {
-            return value === "true";
-        }
-
-        if (value.match(/^[0-9]+$/)) {
-            return parseInt(value);
-        }
-
-        if (value.match(/^[0-9]+\.[0-9]+$/)) {
-            return parseFloat(value);
-        }
-
-        return value;
+var Strings = function () {
+    function Strings() {
+        _classCallCheck(this, Strings);
     }
 
-}
+    _createClass(Strings, null, [{
+        key: "toPrimitive",
+        value: function toPrimitive(value) {
+
+            if (value === "true" || value === "false") {
+                return value === "true";
+            }
+
+            if (value.match(/^[0-9]+$/)) {
+                return parseInt(value);
+            }
+
+            if (value.match(/^[0-9]+\.[0-9]+$/)) {
+                return parseFloat(value);
+            }
+
+            return value;
+        }
+    }]);
+
+    return Strings;
+}();
 
 module.exports.Strings = Strings;
 
@@ -64860,81 +68216,108 @@ module.exports.Strings = Strings;
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-const { Preconditions } = __webpack_require__(/*! ../Preconditions */ "./web/js/Preconditions.js");
-const { Optional } = __webpack_require__(/*! ../Optional */ "./web/js/Optional.js");
+"use strict";
 
-class Styles {
 
-    /**
-     * Parse the amount of pixels from the given value.  Right now we only
-     * support px but in the future we could support other types.
-     *
-     * @param value {string}
-     * @return {number}
-     */
-    static parsePX(value) {
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-        Preconditions.assertNotNull(value, "value");
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-        if (value === "") {
-            throw new Error("Empty string given");
-        }
+var _require = __webpack_require__(/*! ../Preconditions */ "./web/js/Preconditions.js"),
+    Preconditions = _require.Preconditions;
 
-        return parseInt(value.replace("px", ""));
+var _require2 = __webpack_require__(/*! ../Optional */ "./web/js/Optional.js"),
+    Optional = _require2.Optional;
+
+var Styles = function () {
+    function Styles() {
+        _classCallCheck(this, Styles);
     }
 
-    /**
-     * Return the top, left, width, and height of the given element.
-     *
-     * @param element {HTMLElement}
-     */
-    static positioning(element) {
+    _createClass(Styles, null, [{
+        key: "parsePX",
 
-        let result = {
-            left: undefined,
-            top: undefined,
-            right: undefined,
-            bottom: undefined,
-            width: undefined,
-            height: undefined
-        };
 
-        for (let key in result) {
+        /**
+         * Parse the amount of pixels from the given value.  Right now we only
+         * support px but in the future we could support other types.
+         *
+         * @param value {string}
+         * @return {number}
+         */
+        value: function parsePX(value) {
 
-            if (!result.hasOwnProperty(key)) {
-                continue;
+            Preconditions.assertNotNull(value, "value");
+
+            if (value === "") {
+                throw new Error("Empty string given");
             }
 
-            result[key] = Optional.of(element.style[key]).filter(current => current !== null && current !== "").getOrElse(undefined);
+            return parseInt(value.replace("px", ""));
         }
 
-        return result;
-    }
+        /**
+         * Return the top, left, width, and height of the given element.
+         *
+         * @param element {HTMLElement}
+         */
 
-    /**
-     * Return all the positioning keys to pixels.
-     */
-    static positioningToPX(positioning) {
+    }, {
+        key: "positioning",
+        value: function positioning(element) {
 
-        let result = Object.assign({}, positioning);
+            var result = {
+                left: undefined,
+                top: undefined,
+                right: undefined,
+                bottom: undefined,
+                width: undefined,
+                height: undefined
+            };
 
-        for (let key in result) {
+            for (var key in result) {
 
-            if (!result.hasOwnProperty(key)) {
-                continue;
+                if (!result.hasOwnProperty(key)) {
+                    continue;
+                }
+
+                result[key] = Optional.of(element.style[key]).filter(function (current) {
+                    return current !== null && current !== "";
+                }).getOrElse(undefined);
             }
 
-            if (result[key] === null || result[key] === undefined) {
-                continue;
-            }
-
-            result[key] = Styles.parsePX(result[key]);
+            return result;
         }
 
-        return result;
-    }
+        /**
+         * Return all the positioning keys to pixels.
+         */
 
-}
+    }, {
+        key: "positioningToPX",
+        value: function positioningToPX(positioning) {
+
+            var result = Object.assign({}, positioning);
+
+            for (var key in result) {
+
+                if (!result.hasOwnProperty(key)) {
+                    continue;
+                }
+
+                if (result[key] === null || result[key] === undefined) {
+                    continue;
+                }
+
+                result[key] = Styles.parsePX(result[key]);
+            }
+
+            return result;
+        }
+    }]);
+
+    return Styles;
+}();
 
 module.exports.Styles = Styles;
 
@@ -64945,48 +68328,68 @@ module.exports.Styles = Styles;
   !*** ./web/js/util/Text.js ***!
   \*****************************/
 /*! no static exports found */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
 
-class Text {
+"use strict";
 
-    /**
-     * Indent the lines in the given text with the given prefix.
-     *
-     * @param text {string}
-     * @param prefix {string}
-     * @return {string}
-     *
-     */
-    static indent(text, prefix) {
 
-        let result = prefix + text;
-        return result.replace(/\n/g, `\n${prefix}`);
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var Text = function () {
+    function Text() {
+        _classCallCheck(this, Text);
     }
 
-    static isWhitespace(text) {
-        return (/^\s+$/.test(text)
-        );
-    }
+    _createClass(Text, null, [{
+        key: "indent",
 
-    /**
-     *
-     * @param ch {string} The char to duplicate.
-     * @param len {number} the amount of text.
-     */
-    static createDuplicateText(ch, len) {
 
-        if (ch.length !== 1) {
-            throw new Error("The ch char must be 1 char");
+        /**
+         * Indent the lines in the given text with the given prefix.
+         *
+         * @param text {string}
+         * @param prefix {string}
+         * @return {string}
+         *
+         */
+        value: function indent(text, prefix) {
+
+            var result = prefix + text;
+            return result.replace(/\n/g, "\n" + prefix);
+        }
+    }, {
+        key: "isWhitespace",
+        value: function isWhitespace(text) {
+            return (/^\s+$/.test(text)
+            );
         }
 
-        let arr = new Array(len);
+        /**
+         *
+         * @param ch {string} The char to duplicate.
+         * @param len {number} the amount of text.
+         */
 
-        arr.fill(ch);
+    }, {
+        key: "createDuplicateText",
+        value: function createDuplicateText(ch, len) {
 
-        return arr.join("");
-    }
+            if (ch.length !== 1) {
+                throw new Error("The ch char must be 1 char");
+            }
 
-}
+            var arr = new Array(len);
+
+            arr.fill(ch);
+
+            return arr.join("");
+        }
+    }]);
+
+    return Text;
+}();
 
 module.exports.Text = Text;
 
@@ -64997,20 +68400,34 @@ module.exports.Text = Text;
   !*** ./web/js/util/Tokens.js ***!
   \*******************************/
 /*! no static exports found */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
 
-class Tokens {
+"use strict";
 
-    static hyphenToCamelCase(key) {
 
-        key = key.replace(/-([a-zA-Z])/g, match => {
-            return match.replace("-", "").toUpperCase();
-        });
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-        return key;
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var Tokens = function () {
+    function Tokens() {
+        _classCallCheck(this, Tokens);
     }
 
-}
+    _createClass(Tokens, null, [{
+        key: "hyphenToCamelCase",
+        value: function hyphenToCamelCase(key) {
+
+            key = key.replace(/-([a-zA-Z])/g, function (match) {
+                return match.replace("-", "").toUpperCase();
+            });
+
+            return key;
+        }
+    }]);
+
+    return Tokens;
+}();
 
 module.exports.Tokens = Tokens;
 
@@ -65023,15 +68440,27 @@ module.exports.Tokens = Tokens;
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-const $ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
+"use strict";
 
-const { Preconditions } = __webpack_require__(/*! ./Preconditions */ "./web/js/Preconditions.js");
-const { Rects } = __webpack_require__(/*! ./Rects */ "./web/js/Rects.js");
-const { Functions } = __webpack_require__(/*! ./util/Functions */ "./web/js/util/Functions.js");
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var $ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
+
+var _require = __webpack_require__(/*! ./Preconditions */ "./web/js/Preconditions.js"),
+    Preconditions = _require.Preconditions;
+
+var _require2 = __webpack_require__(/*! ./Rects */ "./web/js/Rects.js"),
+    Rects = _require2.Rects;
+
+var _require3 = __webpack_require__(/*! ./util/Functions */ "./web/js/util/Functions.js"),
+    Functions = _require3.Functions;
 
 module.exports.injectScript = function (src, type) {
 
-    let script = document.createElement('script');
+    var script = document.createElement('script');
     script.src = src;
 
     // loading async is ugly but we're going to move to webpack and clean this
@@ -65059,27 +68488,34 @@ module.exports.injectScript = function (src, type) {
  * Apply a given function, with arguments, to a list of delegates which have
  * that function name defined.
  */
-module.exports.Delegator = class {
+module.exports.Delegator = function () {
+    function _class(delegates) {
+        _classCallCheck(this, _class);
 
-    constructor(delegates) {
         this.delegates = delegates;
     }
 
     /**
      * Apply the given function to all the delegates.
      */
-    apply(functionName) {
 
-        let args = Array.from(arguments);
-        args.splice(0, 1);
 
-        this.delegates.forEach(function (delegate) {
-            let func = delegate[functionName];
-            func.apply(delegate, args);
-        });
-    }
+    _createClass(_class, [{
+        key: "apply",
+        value: function apply(functionName) {
 
-};
+            var args = Array.from(arguments);
+            args.splice(0, 1);
+
+            this.delegates.forEach(function (delegate) {
+                var func = delegate[functionName];
+                func.apply(delegate, args);
+            });
+        }
+    }]);
+
+    return _class;
+}();
 
 // @Deprecated use Functions.forDict
 module.exports.forDict = function (dict, callback) {
@@ -65089,10 +68525,10 @@ module.exports.forDict = function (dict, callback) {
 
     // get the keys first, that way we can mutate the dictionary while iterating
     // through it if necessary.
-    let keys = Object.keys(dict);
+    var keys = Object.keys(dict);
 
     keys.forEach(function (key) {
-        let value = dict[key];
+        var value = dict[key];
         callback(key, value);
     });
 };
@@ -65103,7 +68539,7 @@ module.exports.forDict = function (dict, callback) {
  */
 module.exports.getBoundingClientRectFromElements = function (elements) {
 
-    let boundingClientRects = elements.map(Element.getBoundingClientRect);
+    var boundingClientRects = elements.map(Element.getBoundingClientRect);
     return getBoundingClientRectFromBCRs(boundingClientRects);
 };
 
@@ -65112,12 +68548,28 @@ module.exports.getBoundingClientRectFromElements = function (elements) {
  */
 module.exports.getBoundingClientRectFromBCRs = function (boundingClientRects) {
 
-    let left = boundingClientRects.map(brc => brc.left).reduce((a, b) => Math.min(a, b));
-    let top = boundingClientRects.map(brc => brc.top).reduce((a, b) => Math.min(a, b));
-    let bottom = boundingClientRects.map(brc => brc.bottom).reduce((a, b) => Math.max(a, b));
-    let right = boundingClientRects.map(brc => brc.right).reduce((a, b) => Math.max(a, b));
+    var left = boundingClientRects.map(function (brc) {
+        return brc.left;
+    }).reduce(function (a, b) {
+        return Math.min(a, b);
+    });
+    var top = boundingClientRects.map(function (brc) {
+        return brc.top;
+    }).reduce(function (a, b) {
+        return Math.min(a, b);
+    });
+    var bottom = boundingClientRects.map(function (brc) {
+        return brc.bottom;
+    }).reduce(function (a, b) {
+        return Math.max(a, b);
+    });
+    var right = boundingClientRects.map(function (brc) {
+        return brc.right;
+    }).reduce(function (a, b) {
+        return Math.max(a, b);
+    });
 
-    return { left, top, bottom, right };
+    return { left: left, top: top, bottom: bottom, right: right };
 };
 
 /**
@@ -65125,7 +68577,7 @@ module.exports.getBoundingClientRectFromBCRs = function (boundingClientRects) {
  */
 module.exports.elementOffset = function (element) {
 
-    let result = {
+    var result = {
         left: element.offsetLeft,
         top: element.offsetTop,
         width: element.offsetWidth,
@@ -65141,68 +68593,88 @@ module.exports.elementOffset = function (element) {
 /**
  * Support the ability to calculate an offset relative to another element.
  */
-module.exports.OffsetCalculator = class {
+module.exports.OffsetCalculator = function () {
+    function _class2() {
+        _classCallCheck(this, _class2);
+    }
 
-    // https://stackoverflow.com/questions/5598743/finding-elements-position-relative-to-the-document
-    static calculate(element, rootElement) {
+    _createClass(_class2, null, [{
+        key: "calculate",
 
-        let offset = { left: 0, top: 0, width: 0, height: 0 };
 
-        while (true) {
+        // https://stackoverflow.com/questions/5598743/finding-elements-position-relative-to-the-document
+        value: function calculate(element, rootElement) {
 
-            if (element == null) break;
+            var offset = { left: 0, top: 0, width: 0, height: 0 };
 
-            offset.left += this._toInt(element.offsetLeft);
-            offset.top += this._toInt(element.offsetTop);
-            offset.width = this._toInt(element.offsetWidth);
-            offset.height = this._toInt(element.offsetHeight);
+            while (true) {
 
-            if (element === rootElement) break;
+                if (element == null) break;
 
-            element = element.offsetParent;
+                offset.left += this._toInt(element.offsetLeft);
+                offset.top += this._toInt(element.offsetTop);
+                offset.width = this._toInt(element.offsetWidth);
+                offset.height = this._toInt(element.offsetHeight);
+
+                if (element === rootElement) break;
+
+                element = element.offsetParent;
+            }
+
+            offset.right = offset.left + offset.width;
+            offset.bottom = offset.top + offset.height;
+
+            return Rects.validate(offset);
+        }
+    }, {
+        key: "_toInt",
+        value: function _toInt(value) {
+
+            if (isNaN(value)) {
+                return 0;
+            }
+
+            return value;
+        }
+    }]);
+
+    return _class2;
+}();
+
+module.exports.Styles = function () {
+    function _class3() {
+        _classCallCheck(this, _class3);
+    }
+
+    _createClass(_class3, null, [{
+        key: "parseTransformScaleX",
+        value: function parseTransformScaleX(transform) {
+
+            var result = transform;
+
+            if (!result) return null;
+
+            result = result.replace("scaleX(", "");
+            result = result.replace(")", "");
+
+            return parseFloat(result);
         }
 
-        offset.right = offset.left + offset.width;
-        offset.bottom = offset.top + offset.height;
+        /**
+         * Take a string of '50px' and return a number of just the pixel count.
+         */
 
-        return Rects.validate(offset);
-    }
+    }, {
+        key: "parsePixels",
+        value: function parsePixels(value) {
 
-    static _toInt(value) {
-
-        if (isNaN(value)) {
-            return 0;
+            value = value.replace("px", "");
+            return parseInt(value);
         }
+    }]);
 
-        return value;
-    }
-
-};
-
-module.exports.Styles = class {
-
-    static parseTransformScaleX(transform) {
-
-        let result = transform;
-
-        if (!result) return null;
-
-        result = result.replace("scaleX(", "");
-        result = result.replace(")", "");
-
-        return parseFloat(result);
-    }
-
-    /**
-     * Take a string of '50px' and return a number of just the pixel count.
-     */
-    static parsePixels(value) {
-
-        value = value.replace("px", "");
-        return parseInt(value);
-    }
-
-};
+    return _class3;
+}();
 
 module.exports.createSiblingTuples = Functions.createSiblingTuples;
 
@@ -65219,20 +68691,26 @@ module.exports.Elements = __webpack_require__(/*! ./util/Elements.js */ "./web/j
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
+"use strict";
 
-const { Model } = __webpack_require__(/*! ../Model */ "./web/js/Model.js");
 
-class View {
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-    /**
-     * @param model {Model}
-     */
-    constructor(model) {
+var _require = __webpack_require__(/*! ../Model */ "./web/js/Model.js"),
+    Model = _require.Model;
 
-        this.model = model;
-    }
+var View =
 
+/**
+ * @param model {Model}
+ */
+function View(model) {
+    _classCallCheck(this, View);
+
+    this.model = model;
 };
+
+;
 
 module.exports.View = View;
 
@@ -65245,153 +68723,203 @@ module.exports.View = View;
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
+"use strict";
 
-const { Styles, forDict } = __webpack_require__(/*! ../utils.js */ "./web/js/utils.js");
-const { DocMetaDescriber } = __webpack_require__(/*! ../metadata/DocMetaDescriber */ "./web/js/metadata/DocMetaDescriber.js");
-const { DocFormatFactory } = __webpack_require__(/*! ../docformat/DocFormatFactory */ "./web/js/docformat/DocFormatFactory.js");
-const { CompositePagemarkRedrawer } = __webpack_require__(/*! ../pagemarks/view/redrawer/CompositePagemarkRedrawer */ "./web/js/pagemarks/view/redrawer/CompositePagemarkRedrawer.js");
-const { MainPagemarkRedrawer } = __webpack_require__(/*! ../pagemarks/view/redrawer/MainPagemarkRedrawer */ "./web/js/pagemarks/view/redrawer/MainPagemarkRedrawer.js");
-const { ThumbnailPagemarkRedrawer } = __webpack_require__(/*! ../pagemarks/view/redrawer/ThumbnailPagemarkRedrawer */ "./web/js/pagemarks/view/redrawer/ThumbnailPagemarkRedrawer.js");
-const { Preconditions } = __webpack_require__(/*! ../Preconditions */ "./web/js/Preconditions.js");
-const { View } = __webpack_require__(/*! ./View.js */ "./web/js/view/View.js");
-const { PAGEMARK_VIEW_ENABLED } = __webpack_require__(/*! ../pagemarks/view/PagemarkView */ "./web/js/pagemarks/view/PagemarkView.js");
 
-class WebView extends View {
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var _require = __webpack_require__(/*! ../utils.js */ "./web/js/utils.js"),
+    Styles = _require.Styles,
+    forDict = _require.forDict;
+
+var _require2 = __webpack_require__(/*! ../metadata/DocMetaDescriber */ "./web/js/metadata/DocMetaDescriber.js"),
+    DocMetaDescriber = _require2.DocMetaDescriber;
+
+var _require3 = __webpack_require__(/*! ../docformat/DocFormatFactory */ "./web/js/docformat/DocFormatFactory.js"),
+    DocFormatFactory = _require3.DocFormatFactory;
+
+var _require4 = __webpack_require__(/*! ../pagemarks/view/redrawer/CompositePagemarkRedrawer */ "./web/js/pagemarks/view/redrawer/CompositePagemarkRedrawer.js"),
+    CompositePagemarkRedrawer = _require4.CompositePagemarkRedrawer;
+
+var _require5 = __webpack_require__(/*! ../pagemarks/view/redrawer/MainPagemarkRedrawer */ "./web/js/pagemarks/view/redrawer/MainPagemarkRedrawer.js"),
+    MainPagemarkRedrawer = _require5.MainPagemarkRedrawer;
+
+var _require6 = __webpack_require__(/*! ../pagemarks/view/redrawer/ThumbnailPagemarkRedrawer */ "./web/js/pagemarks/view/redrawer/ThumbnailPagemarkRedrawer.js"),
+    ThumbnailPagemarkRedrawer = _require6.ThumbnailPagemarkRedrawer;
+
+var _require7 = __webpack_require__(/*! ../Preconditions */ "./web/js/Preconditions.js"),
+    Preconditions = _require7.Preconditions;
+
+var _require8 = __webpack_require__(/*! ./View.js */ "./web/js/view/View.js"),
+    View = _require8.View;
+
+var _require9 = __webpack_require__(/*! ../pagemarks/view/PagemarkView */ "./web/js/pagemarks/view/PagemarkView.js"),
+    PAGEMARK_VIEW_ENABLED = _require9.PAGEMARK_VIEW_ENABLED;
+
+var WebView = function (_View) {
+    _inherits(WebView, _View);
 
     /**
      *
      * @param model {Model}
      */
-    constructor(model) {
-        super(model);
+    function WebView(model) {
+        _classCallCheck(this, WebView);
 
         /**
          * The currently defined renderer for pagemarks.
          */
-        this.pagemarkRedrawer = null;
-        this.docFormat = DocFormatFactory.getInstance();
+        var _this = _possibleConstructorReturn(this, (WebView.__proto__ || Object.getPrototypeOf(WebView)).call(this, model));
+
+        _this.pagemarkRedrawer = null;
+        _this.docFormat = DocFormatFactory.getInstance();
+
+        return _this;
     }
 
-    start() {
+    _createClass(WebView, [{
+        key: "start",
+        value: function start() {
 
-        if (!PAGEMARK_VIEW_ENABLED) {
-            this.model.registerListenerForCreatePagemark(this.onCreatePagemark.bind(this));
-            this.model.registerListenerForErasePagemark(this.onErasePagemark.bind(this));
-        }
-
-        this.model.registerListenerForDocumentLoaded(this.onDocumentLoaded.bind(this));
-
-        return this;
-    }
-
-    /**
-     * @deprecated Moved to pagemark.ProgressView... remove this code.
-     */
-    updateProgress() {
-
-        // TODO: this should listen directly to the model and the pagemarks
-        // themselves.
-
-        let perc = this.computeProgress(this.model.docMeta);
-
-        console.log("Percentage is now: " + perc);
-
-        document.querySelector("#polar-progress progress").value = perc;
-
-        // now update the description of the doc at the bottom.
-
-        let description = DocMetaDescriber.describe(this.model.docMeta);
-
-        let docOverview = document.querySelector("#polar-doc-overview");
-
-        if (docOverview) {
-            docOverview.textContent = description;
-        }
-    }
-
-    /**
-     * @deprecated Moved to pagemark.ProgressView... remove this code.
-     */
-    computeProgress(docMeta) {
-
-        // I think this is an issue of being async maybel?
-
-        let total = 0;
-
-        forDict(docMeta.pageMetas, function (key, pageMeta) {
-
-            forDict(pageMeta.pagemarks, function (column, pagemark) {
-
-                total += pagemark.percentage;
-            }.bind(this));
-        }.bind(this));
-
-        let perc = total / (docMeta.docInfo.nrPages * 100);
-
-        return perc;
-    }
-
-    /**
-     * Setup a document once we detect that a new one has been loaded.
-     */
-    onDocumentLoaded() {
-
-        console.log("WebView.onDocumentLoaded: ", this.model.docMeta);
-
-        if (!PAGEMARK_VIEW_ENABLED) {
-
-            let pagemarkRedrawerDelegates = [new MainPagemarkRedrawer(this)];
-
-            if (this.docFormat.supportThumbnails()) {
-                // only support rendering thumbnails for documents that have thumbnail
-                // support.
-                pagemarkRedrawerDelegates.push(new ThumbnailPagemarkRedrawer(this));
-            } else {
-                console.warn("Thumbnails not enabled.");
+            if (!PAGEMARK_VIEW_ENABLED) {
+                this.model.registerListenerForCreatePagemark(this.onCreatePagemark.bind(this));
+                this.model.registerListenerForErasePagemark(this.onErasePagemark.bind(this));
             }
 
-            this.pagemarkRedrawer = new CompositePagemarkRedrawer(this, pagemarkRedrawerDelegates);
-            this.pagemarkRedrawer.setup();
+            this.model.registerListenerForDocumentLoaded(this.onDocumentLoaded.bind(this));
+
+            return this;
         }
 
-        this.updateProgress();
-    }
+        /**
+         * @deprecated Moved to pagemark.ProgressView... remove this code.
+         */
 
-    /**
-     * @deprecated Moved to pagemark.ProgressView... remove this code.
-     */
-    onCreatePagemark(pagemarkEvent) {
-        console.log("WebView.onCreatePagemark");
+    }, {
+        key: "updateProgress",
+        value: function updateProgress() {
 
-        console.log("Creating pagemark on page: " + pagemarkEvent.pageNum);
+            // TODO: this should listen directly to the model and the pagemarks
+            // themselves.
 
-        this.pagemarkRedrawer.create(pagemarkEvent.pageNum, pagemarkEvent.pagemark);
-        this.updateProgress();
-    }
+            var perc = this.computeProgress(this.model.docMeta);
 
-    /**
-     * @deprecated Moved to pagemark.ProgressView... remove this code.
-     */
-    onErasePagemark(pagemarkEvent) {
-        console.log("WebView.onErasePagemark");
+            console.log("Percentage is now: " + perc);
 
-        this.pagemarkRedrawer.erase(pagemarkEvent.pageNum);
-        this.updateProgress();
-    }
+            document.querySelector("#polar-progress progress").value = perc;
 
-    /**
-     * @deprecated Remove in favor of new PagemarkView code
-     * @param pageElement
-     * @param options
-     * @return {Promise<void>}
-     */
-    recreatePagemarksFromPageElement(pageElement, options) {
-        var _this = this;
+            // now update the description of the doc at the bottom.
 
-        return _asyncToGenerator(function* () {
+            var description = DocMetaDescriber.describe(this.model.docMeta);
 
-            let pageNum = _this.docFormat.getPageNumFromPageElement(pageElement);
+            var docOverview = document.querySelector("#polar-doc-overview");
+
+            if (docOverview) {
+                docOverview.textContent = description;
+            }
+        }
+
+        /**
+         * @deprecated Moved to pagemark.ProgressView... remove this code.
+         */
+
+    }, {
+        key: "computeProgress",
+        value: function computeProgress(docMeta) {
+
+            // I think this is an issue of being async maybel?
+
+            var total = 0;
+
+            forDict(docMeta.pageMetas, function (key, pageMeta) {
+
+                forDict(pageMeta.pagemarks, function (column, pagemark) {
+
+                    total += pagemark.percentage;
+                }.bind(this));
+            }.bind(this));
+
+            var perc = total / (docMeta.docInfo.nrPages * 100);
+
+            return perc;
+        }
+
+        /**
+         * Setup a document once we detect that a new one has been loaded.
+         */
+
+    }, {
+        key: "onDocumentLoaded",
+        value: function onDocumentLoaded() {
+
+            console.log("WebView.onDocumentLoaded: ", this.model.docMeta);
+
+            if (!PAGEMARK_VIEW_ENABLED) {
+
+                var pagemarkRedrawerDelegates = [new MainPagemarkRedrawer(this)];
+
+                if (this.docFormat.supportThumbnails()) {
+                    // only support rendering thumbnails for documents that have thumbnail
+                    // support.
+                    pagemarkRedrawerDelegates.push(new ThumbnailPagemarkRedrawer(this));
+                } else {
+                    console.warn("Thumbnails not enabled.");
+                }
+
+                this.pagemarkRedrawer = new CompositePagemarkRedrawer(this, pagemarkRedrawerDelegates);
+                this.pagemarkRedrawer.setup();
+            }
+
+            this.updateProgress();
+        }
+
+        /**
+         * @deprecated Moved to pagemark.ProgressView... remove this code.
+         */
+
+    }, {
+        key: "onCreatePagemark",
+        value: function onCreatePagemark(pagemarkEvent) {
+            console.log("WebView.onCreatePagemark");
+
+            console.log("Creating pagemark on page: " + pagemarkEvent.pageNum);
+
+            this.pagemarkRedrawer.create(pagemarkEvent.pageNum, pagemarkEvent.pagemark);
+            this.updateProgress();
+        }
+
+        /**
+         * @deprecated Moved to pagemark.ProgressView... remove this code.
+         */
+
+    }, {
+        key: "onErasePagemark",
+        value: function onErasePagemark(pagemarkEvent) {
+            console.log("WebView.onErasePagemark");
+
+            this.pagemarkRedrawer.erase(pagemarkEvent.pageNum);
+            this.updateProgress();
+        }
+
+        /**
+         * @deprecated Remove in favor of new PagemarkView code
+         * @param pageElement
+         * @param options
+         * @return {Promise<void>}
+         */
+
+    }, {
+        key: "recreatePagemarksFromPageElement",
+        value: async function recreatePagemarksFromPageElement(pageElement, options) {
+            var _this2 = this;
+
+            var pageNum = this.docFormat.getPageNumFromPageElement(pageElement);
 
             Preconditions.assertNotNull(pageNum, "pageNum");
             Preconditions.assertNumber(pageNum, "pageNum");
@@ -65400,9 +68928,9 @@ class WebView extends View {
                 throw new Error("Page numbers must be >= 1: " + pageNum);
             }
 
-            let docMeta = _this.model.docMeta;
+            var docMeta = this.model.docMeta;
 
-            let pageMeta = docMeta.pageMetas[pageNum];
+            var pageMeta = docMeta.pageMetas[pageNum];
 
             Preconditions.assertNotNull(pageMeta, "pageMeta");
 
@@ -65410,179 +68938,191 @@ class WebView extends View {
 
                 console.log("Creating pagemarks for page: " + pageNum);
 
-                let recreatePagemarkOptions = Object.assign({}, options);
+                var recreatePagemarkOptions = Object.assign({}, options);
 
                 recreatePagemarkOptions.pagemark = pagemark;
 
-                _this.recreatePagemark(pageElement, recreatePagemarkOptions);
+                _this2.recreatePagemark(pageElement, recreatePagemarkOptions);
             });
 
             //this.recreatePagemark(pageElement);
-        })();
-    }
-
-    /**
-     * @deprecated Remove in favor of new PagemarkView code
-     * @param pageElement
-     * @param options
-     */
-    recreatePagemark(pageElement, options) {
-
-        if (!options.pagemark) {
-            throw new Error("No pagemark.");
         }
 
-        if (pageElement.querySelector(".pagemark") != null && pageElement.querySelector(".canvasWrapper") != null && pageElement.querySelector(".textLayer") != null) {
+        /**
+         * @deprecated Remove in favor of new PagemarkView code
+         * @param pageElement
+         * @param options
+         */
 
-            // Do not recreate the pagemark if:
-            //   - we have a .pagemark element
-            //   - we also have a .canvasWrapper and a .textLayer
+    }, {
+        key: "recreatePagemark",
+        value: function recreatePagemark(pageElement, options) {
 
-            return;
+            if (!options.pagemark) {
+                throw new Error("No pagemark.");
+            }
+
+            if (pageElement.querySelector(".pagemark") != null && pageElement.querySelector(".canvasWrapper") != null && pageElement.querySelector(".textLayer") != null) {
+
+                // Do not recreate the pagemark if:
+                //   - we have a .pagemark element
+                //   - we also have a .canvasWrapper and a .textLayer
+
+                return;
+            }
+
+            // make sure to first remove all the existing pagemarks if there
+            // are any
+            this.erasePagemarks(pageElement);
+
+            // we're done all the canvas and text nodes... so place the pagemark
+            // back in again.
+
+            this.createPagemark(pageElement, options);
         }
 
-        // make sure to first remove all the existing pagemarks if there
-        // are any
-        this.erasePagemarks(pageElement);
+        /**
+         * Create a pagemark on the given page which marks it read.
+         * @deprecated Remove in favor of new PagemarkView code
+         * @param pageElement {HTMLElement}
+         * @param options {Object}
+         */
 
-        // we're done all the canvas and text nodes... so place the pagemark
-        // back in again.
+    }, {
+        key: "createPagemark",
+        value: function createPagemark(pageElement) {
+            var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
 
-        this.createPagemark(pageElement, options);
-    }
 
-    /**
-     * Create a pagemark on the given page which marks it read.
-     * @deprecated Remove in favor of new PagemarkView code
-     * @param pageElement {HTMLElement}
-     * @param options {Object}
-     */
-    createPagemark(pageElement, options = {}) {
+            // FIXME: migrate this to a proper view that listens to the DocMeta
+            // change
 
-        // FIXME: migrate this to a proper view that listens to the DocMeta
-        // change
+            // TODO: this code is ugly, can't be tested, etc.
+            //
+            // - the options building can't be reliably tested
+            //
+            // - there are too many ways to compute the options
+            //
+            // - we PLACE the element as part of this function.  Have a secondary
+            //   way to just CREATE the element so that we can test the settings
+            //   properly.
 
-        // TODO: this code is ugly, can't be tested, etc.
-        //
-        // - the options building can't be reliably tested
-        //
-        // - there are too many ways to compute the options
-        //
-        // - we PLACE the element as part of this function.  Have a secondary
-        //   way to just CREATE the element so that we can test the settings
-        //   properly.
+            if (!options.pagemark) {
+                throw new Error("Pagemark is required");
+            }
 
-        if (!options.pagemark) {
-            throw new Error("Pagemark is required");
-        }
+            if (!options.pagemark.percentage) {
+                throw new Error("Pagemark has no percentage");
+            }
 
-        if (!options.pagemark.percentage) {
-            throw new Error("Pagemark has no percentage");
-        }
+            if (!options.zIndex) options.zIndex = 1;
 
-        if (!options.zIndex) options.zIndex = 1;
+            if (!options.templateElement) {
+                options.templateElement = pageElement;
+            }
 
-        if (!options.templateElement) {
-            options.templateElement = pageElement;
-        }
+            if (!options.placementElement) {
+                // TODO: move this to the object dealing with pages only.
+                options.placementElement = pageElement.querySelector(".canvasWrapper, .iframeWrapper");
+            }
 
-        if (!options.placementElement) {
-            // TODO: move this to the object dealing with pages only.
-            options.placementElement = pageElement.querySelector(".canvasWrapper, .iframeWrapper");
-        }
+            if (!options.templateElement) {
+                throw new Error("No templateElement");
+            }
 
-        if (!options.templateElement) {
-            throw new Error("No templateElement");
-        }
+            if (!options.placementElement) {
+                throw new Error("No placementElement");
+            }
 
-        if (!options.placementElement) {
-            throw new Error("No placementElement");
-        }
+            if (pageElement.querySelector(".pagemark")) {
+                // do nothing if the current page already has a pagemark.
+                console.warn("Pagemark already exists");
+                return;
+            }
 
-        if (pageElement.querySelector(".pagemark")) {
-            // do nothing if the current page already has a pagemark.
-            console.warn("Pagemark already exists");
-            return;
-        }
+            var pagemarkElement = document.createElement("div");
 
-        let pagemarkElement = document.createElement("div");
+            // set a pagemark-id in the DOM so that we can work with it when we use
+            // the context menu, etc.
+            pagemarkElement.setAttribute("id", options.pagemark.id);
+            pagemarkElement.setAttribute("data-pagemark-id", options.pagemark.id);
 
-        // set a pagemark-id in the DOM so that we can work with it when we use
-        // the context menu, etc.
-        pagemarkElement.setAttribute("id", options.pagemark.id);
-        pagemarkElement.setAttribute("data-pagemark-id", options.pagemark.id);
+            // make sure we have a reliable CSS classname to work with.
+            pagemarkElement.className = "pagemark annotation";
 
-        // make sure we have a reliable CSS classname to work with.
-        pagemarkElement.className = "pagemark annotation";
+            //pagemark.style.backgroundColor="rgb(198, 198, 198)";
+            pagemarkElement.style.backgroundColor = "#00CCFF";
+            pagemarkElement.style.opacity = "0.3";
 
-        //pagemark.style.backgroundColor="rgb(198, 198, 198)";
-        pagemarkElement.style.backgroundColor = "#00CCFF";
-        pagemarkElement.style.opacity = "0.3";
+            pagemarkElement.style.position = "absolute";
 
-        pagemarkElement.style.position = "absolute";
+            var usePlacedPagemark = true;
 
-        let usePlacedPagemark = true;
-
-        // FIXME: this needs to be a function of the PlacedPagemarkCalculator
-        pagemarkElement.style.left = options.templateElement.offsetLeft;
-
-        // FIXME: this needs to be a function of the PlacedPagemarkCalculator
-        pagemarkElement.style.top = options.templateElement.offsetTop;
-
-        // FIXME: this needs to be a function of the PlacedPagemarkCalculator
-        pagemarkElement.style.width = options.templateElement.style.width;
-
-        // FIXME: this needs to be a function of the PlacedPagemarkCalculator
-        let height = Styles.parsePixels(options.templateElement.style.height);
-
-        if (!height) {
             // FIXME: this needs to be a function of the PlacedPagemarkCalculator
-            height = options.templateElement.offsetHeight;
+            pagemarkElement.style.left = options.templateElement.offsetLeft;
+
+            // FIXME: this needs to be a function of the PlacedPagemarkCalculator
+            pagemarkElement.style.top = options.templateElement.offsetTop;
+
+            // FIXME: this needs to be a function of the PlacedPagemarkCalculator
+            pagemarkElement.style.width = options.templateElement.style.width;
+
+            // FIXME: this needs to be a function of the PlacedPagemarkCalculator
+            var height = Styles.parsePixels(options.templateElement.style.height);
+
+            if (!height) {
+                // FIXME: this needs to be a function of the PlacedPagemarkCalculator
+                height = options.templateElement.offsetHeight;
+            }
+
+            // read the percentage coverage from the pagemark and adjust the height
+            // to reflect the portion we've actually read.
+            // FIXME: this needs to be a function of the PlacedPagemarkCalculator
+            height = height * (options.pagemark.percentage / 100);
+
+            pagemarkElement.style.height = height + "px";
+
+            pagemarkElement.style.zIndex = "" + options.zIndex;
+
+            if (!pagemarkElement.style.width) {
+                throw new Error("Could not determine width");
+            }
+
+            options.placementElement.parentElement.insertBefore(pagemarkElement, options.placementElement);
+
+            // TODO: this enables resize but we don't yet support updating the
+            // pagemark data itself.  We're probably going to have to implement
+            // mutation listeners there.
         }
 
-        // read the percentage coverage from the pagemark and adjust the height
-        // to reflect the portion we've actually read.
-        // FIXME: this needs to be a function of the PlacedPagemarkCalculator
-        height = height * (options.pagemark.percentage / 100);
+        /**
+         * @deprecated Remove in favor of new PagemarkView code
+         * @param pageElement
+         */
 
-        pagemarkElement.style.height = `${height}px`;
+    }, {
+        key: "erasePagemarks",
+        value: function erasePagemarks(pageElement) {
 
-        pagemarkElement.style.zIndex = `${options.zIndex}`;
+            if (!pageElement) {
+                throw new Error("No pageElement");
+            }
 
-        if (!pagemarkElement.style.width) {
-            throw new Error("Could not determine width");
+            console.log("Erasing pagemarks...");
+
+            var pagemarks = pageElement.querySelectorAll(".pagemark");
+
+            pagemarks.forEach(function (pagemark) {
+                pagemark.parentElement.removeChild(pagemark);
+                console.log("Erased pagemark.");
+            });
+
+            console.log("Erasing pagemarks...done");
         }
+    }]);
 
-        options.placementElement.parentElement.insertBefore(pagemarkElement, options.placementElement);
-
-        // TODO: this enables resize but we don't yet support updating the
-        // pagemark data itself.  We're probably going to have to implement
-        // mutation listeners there.
-    }
-
-    /**
-     * @deprecated Remove in favor of new PagemarkView code
-     * @param pageElement
-     */
-    erasePagemarks(pageElement) {
-
-        if (!pageElement) {
-            throw new Error("No pageElement");
-        }
-
-        console.log("Erasing pagemarks...");
-
-        let pagemarks = pageElement.querySelectorAll(".pagemark");
-
-        pagemarks.forEach(function (pagemark) {
-            pagemark.parentElement.removeChild(pagemark);
-            console.log("Erased pagemark.");
-        });
-
-        console.log("Erasing pagemarks...done");
-    }
-
-}
+    return WebView;
+}(View);
 
 module.exports.WebView = WebView;
 
@@ -65593,17 +69133,32 @@ module.exports.WebView = WebView;
   !*** ./web/js/viewer/Viewer.js ***!
   \*********************************/
 /*! no static exports found */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
 
-class Viewer {
+"use strict";
 
-    start() {}
 
-    changeScale(scale) {
-        throw new Error("Not supported by this viewer.");
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var Viewer = function () {
+    function Viewer() {
+        _classCallCheck(this, Viewer);
     }
 
-}
+    _createClass(Viewer, [{
+        key: "start",
+        value: function start() {}
+    }, {
+        key: "changeScale",
+        value: function changeScale(scale) {
+            throw new Error("Not supported by this viewer.");
+        }
+    }]);
+
+    return Viewer;
+}();
 
 module.exports.Viewer = Viewer;
 
@@ -65616,27 +69171,46 @@ module.exports.Viewer = Viewer;
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-const { DocFormats } = __webpack_require__(/*! ../docformat/DocFormats */ "./web/js/docformat/DocFormats.js");
-const { HTMLViewer } = __webpack_require__(/*! ./html/HTMLViewer */ "./web/js/viewer/html/HTMLViewer.js");
-const { PDFViewer } = __webpack_require__(/*! ./pdf/PDFViewer */ "./web/js/viewer/pdf/PDFViewer.js");
+"use strict";
 
-class ViewerFactory {
 
-    static create() {
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-        switch (DocFormats.getFormat()) {
-            case "html":
-                return new HTMLViewer();
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-            case "pdf":
-                return new PDFViewer();
+var _require = __webpack_require__(/*! ../docformat/DocFormats */ "./web/js/docformat/DocFormats.js"),
+    DocFormats = _require.DocFormats;
 
-            default:
-                return null;
-        }
+var _require2 = __webpack_require__(/*! ./html/HTMLViewer */ "./web/js/viewer/html/HTMLViewer.js"),
+    HTMLViewer = _require2.HTMLViewer;
+
+var _require3 = __webpack_require__(/*! ./pdf/PDFViewer */ "./web/js/viewer/pdf/PDFViewer.js"),
+    PDFViewer = _require3.PDFViewer;
+
+var ViewerFactory = function () {
+    function ViewerFactory() {
+        _classCallCheck(this, ViewerFactory);
     }
 
-}
+    _createClass(ViewerFactory, null, [{
+        key: "create",
+        value: function create() {
+
+            switch (DocFormats.getFormat()) {
+                case "html":
+                    return new HTMLViewer();
+
+                case "pdf":
+                    return new PDFViewer();
+
+                default:
+                    return null;
+            }
+        }
+    }]);
+
+    return ViewerFactory;
+}();
 
 module.exports.ViewerFactory = ViewerFactory;
 
@@ -65649,22 +69223,34 @@ module.exports.ViewerFactory = ViewerFactory;
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-const { FrameEvents } = __webpack_require__(/*! ./FrameEvents */ "./web/js/viewer/html/FrameEvents.js");
-const log = __webpack_require__(/*! ../../logger/Logger */ "./web/js/logger/Logger.js").create();
+"use strict";
+
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var _require = __webpack_require__(/*! ./FrameEvents */ "./web/js/viewer/html/FrameEvents.js"),
+    FrameEvents = _require.FrameEvents;
+
+var log = __webpack_require__(/*! ../../logger/Logger */ "./web/js/logger/Logger.js").create();
 
 /**
  * Moves events from the iframe, into the target document. This allows the event
  * listeners to see the event as if it was called inside the parent .page
  * in the parent DOM window.
  */
-class EventBridge {
+
+var EventBridge = function () {
 
     /**
      *
      * @param targetElement
      * @param iframe {HTMLIFrameElement}
      */
-    constructor(targetElement, iframe) {
+    function EventBridge(targetElement, iframe) {
+        _classCallCheck(this, EventBridge);
+
         this.targetElement = targetElement;
 
         /**
@@ -65673,120 +69259,137 @@ class EventBridge {
         this.iframe = iframe;
     }
 
-    start() {
+    _createClass(EventBridge, [{
+        key: "start",
+        value: function start() {
+            var _this = this;
 
-        // TODO/FIXME: the child iframes within this iframe / recursively also
-        // need to be configured.
+            // TODO/FIXME: the child iframes within this iframe / recursively also
+            // need to be configured.
 
-        this.iframe.addEventListener("load", () => this.addListeners(this.iframe));
+            this.iframe.addEventListener("load", function () {
+                return _this.addListeners(_this.iframe);
+            });
 
-        this.iframe.parentElement.addEventListener('DOMNodeInserted', event => this.elementInsertedListener(event), false);
+            this.iframe.parentElement.addEventListener('DOMNodeInserted', function (event) {
+                return _this.elementInsertedListener(event);
+            }, false);
 
-        //this.addListeners(this.iframe);
+            //this.addListeners(this.iframe);
 
-        log.info("Event bridge started on: ", this.iframe.contentDocument.location.href);
-    }
-
-    elementInsertedListener(event) {
-
-        log.info("elementInsertedListener event: ", event);
-
-        if (event && event.target && event.target.tagName === "IFRAME") {
-            log.info("Main iframe re-added.  Registering event listeners again");
-            let iframe = event.target;
-            this.addListeners(iframe);
+            log.info("Event bridge started on: ", this.iframe.contentDocument.location.href);
         }
-    }
+    }, {
+        key: "elementInsertedListener",
+        value: function elementInsertedListener(event) {
 
-    addListeners(iframe) {
+            log.info("elementInsertedListener event: ", event);
 
-        if (!iframe.contentDocument) {
-            return;
-        }
-
-        iframe.contentDocument.body.addEventListener("keyup", this.keyListener.bind(this));
-        iframe.contentDocument.body.addEventListener("keydown", this.keyListener.bind(this));
-
-        iframe.contentDocument.body.addEventListener("mouseup", this.mouseListener.bind(this));
-        iframe.contentDocument.body.addEventListener("mousedown", this.mouseListener.bind(this));
-        iframe.contentDocument.body.addEventListener("contextmenu", this.mouseListener.bind(this));
-
-        iframe.contentDocument.body.addEventListener("click", event => {
-
-            let anchor = this.getAnchor(event.target);
-
-            // TODO: this needs to be reworked. This isn't the appropriate way
-            // to handle this.  I'm going to have to think about which "actions"
-            // must be handled by Polar and which ones we allow to be handled
-            // by the PHZ.  All Polar actions should call preventDefault and
-            // should preventDefault and not sent to the PHZ.
-
-            if (anchor) {
-                log.info("Link click prevented.");
-                event.preventDefault();
-
-                let href = anchor.href;
-
-                if (href && (href.startsWith("http:") || href.startsWith("https:"))) {
-                    // this is a bit of a hack but basically we listen for URLs
-                    // in the iframe and change the main page. This triggers our
-                    // electron 'will-navigate' which which prevents it and then
-                    // opens the URL in the native browser.
-                    document.location.href = href;
-                }
-            } else {
-                this.mouseListener(event);
+            if (event && event.target && event.target.tagName === "IFRAME") {
+                log.info("Main iframe re-added.  Registering event listeners again");
+                var iframe = event.target;
+                this.addListeners(iframe);
             }
-        });
-    }
+        }
+    }, {
+        key: "addListeners",
+        value: function addListeners(iframe) {
+            var _this2 = this;
 
-    /**
-     * Get the anchor for an element. An event target might be nested in an
-     * anchor.
-     */
-    getAnchor(element) {
+            if (!iframe.contentDocument) {
+                return;
+            }
 
-        if (element == null) {
-            return null;
+            iframe.contentDocument.body.addEventListener("keyup", this.keyListener.bind(this));
+            iframe.contentDocument.body.addEventListener("keydown", this.keyListener.bind(this));
+
+            iframe.contentDocument.body.addEventListener("mouseup", this.mouseListener.bind(this));
+            iframe.contentDocument.body.addEventListener("mousedown", this.mouseListener.bind(this));
+            iframe.contentDocument.body.addEventListener("contextmenu", this.mouseListener.bind(this));
+
+            iframe.contentDocument.body.addEventListener("click", function (event) {
+
+                var anchor = _this2.getAnchor(event.target);
+
+                // TODO: this needs to be reworked. This isn't the appropriate way
+                // to handle this.  I'm going to have to think about which "actions"
+                // must be handled by Polar and which ones we allow to be handled
+                // by the PHZ.  All Polar actions should call preventDefault and
+                // should preventDefault and not sent to the PHZ.
+
+                if (anchor) {
+                    log.info("Link click prevented.");
+                    event.preventDefault();
+
+                    var href = anchor.href;
+
+                    if (href && (href.startsWith("http:") || href.startsWith("https:"))) {
+                        // this is a bit of a hack but basically we listen for URLs
+                        // in the iframe and change the main page. This triggers our
+                        // electron 'will-navigate' which which prevents it and then
+                        // opens the URL in the native browser.
+                        document.location.href = href;
+                    }
+                } else {
+                    _this2.mouseListener(event);
+                }
+            });
         }
 
-        if (element.tagName === "A") {
-            return element;
+        /**
+         * Get the anchor for an element. An event target might be nested in an
+         * anchor.
+         */
+
+    }, {
+        key: "getAnchor",
+        value: function getAnchor(element) {
+
+            if (element == null) {
+                return null;
+            }
+
+            if (element.tagName === "A") {
+                return element;
+            }
+
+            return this.getAnchor(element.parentElement);
         }
+    }, {
+        key: "mouseListener",
+        value: function mouseListener(event) {
 
-        return this.getAnchor(element.parentElement);
-    }
+            var eventPoints = FrameEvents.calculatePoints(this.iframe, event);
 
-    mouseListener(event) {
+            var newEvent = new event.constructor(event.type, event);
 
-        let eventPoints = FrameEvents.calculatePoints(this.iframe, event);
+            Object.defineProperty(newEvent, "pageX", { value: eventPoints.page.x });
+            Object.defineProperty(newEvent, "pageY", { value: eventPoints.page.y });
 
-        let newEvent = new event.constructor(event.type, event);
+            Object.defineProperty(newEvent, "clientX", { value: eventPoints.client.x });
+            Object.defineProperty(newEvent, "clientY", { value: eventPoints.client.y });
 
-        Object.defineProperty(newEvent, "pageX", { value: eventPoints.page.x });
-        Object.defineProperty(newEvent, "pageY", { value: eventPoints.page.y });
+            Object.defineProperty(newEvent, "offsetX", { value: eventPoints.offset.x });
+            Object.defineProperty(newEvent, "offsetY", { value: eventPoints.offset.y });
 
-        Object.defineProperty(newEvent, "clientX", { value: eventPoints.client.x });
-        Object.defineProperty(newEvent, "clientY", { value: eventPoints.client.y });
+            if (newEvent.pageX !== eventPoints.page.x) {
+                throw new Error("Define of properties failed");
+            }
 
-        Object.defineProperty(newEvent, "offsetX", { value: eventPoints.offset.x });
-        Object.defineProperty(newEvent, "offsetY", { value: eventPoints.offset.y });
-
-        if (newEvent.pageX !== eventPoints.page.x) {
-            throw new Error("Define of properties failed");
+            this.targetElement.dispatchEvent(newEvent);
         }
+    }, {
+        key: "keyListener",
+        value: function keyListener(event) {
 
-        this.targetElement.dispatchEvent(newEvent);
-    }
+            var newEvent = new event.constructor(event.type, event);
 
-    keyListener(event) {
+            this.targetElement.dispatchEvent(newEvent);
+        }
+    }]);
 
-        let newEvent = new event.constructor(event.type, event);
-
-        this.targetElement.dispatchEvent(newEvent);
-    }
-
-}
+    return EventBridge;
+}();
 
 module.exports.EventBridge = EventBridge;
 
@@ -65799,77 +69402,96 @@ module.exports.EventBridge = EventBridge;
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-const { Elements } = __webpack_require__(/*! ../../util/Elements */ "./web/js/util/Elements.js");
-const { Preconditions } = __webpack_require__(/*! ../../Preconditions */ "./web/js/Preconditions.js");
+"use strict";
 
-class FrameEvents {
 
-    /**
-     * Calculate the points of an mouseEvent in the current window relative to the
-     * frame which originated the mouseEvent.
-     *
-     * @param iframe {HTMLIFrameElement}
-     * @param mouseEvent {MouseEvent}
-     */
-    static calculatePoints(iframe, mouseEvent) {
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-        // FIXME: make sure the mouseEvent ACTUALLY happened in the iframe because
-        // if it didn't then the calculations here won't make any sense.
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-        Preconditions.assertNotNull(iframe, "iframe");
+var _require = __webpack_require__(/*! ../../util/Elements */ "./web/js/util/Elements.js"),
+    Elements = _require.Elements;
 
-        if (mouseEvent.target.ownerDocument !== iframe.contentDocument) {
-            throw new Error("Event did not occur in specified iframe");
-        }
+var _require2 = __webpack_require__(/*! ../../Preconditions */ "./web/js/Preconditions.js"),
+    Preconditions = _require2.Preconditions;
 
-        let result = {
-
-            page: {
-                x: undefined,
-                y: undefined
-            },
-            client: {
-                x: undefined,
-                y: undefined
-            },
-            offset: {
-                x: undefined,
-                y: undefined
-            }
-
-        };
-
-        // We need a frame of reference to translate the two coordinate systems.
-        // using screenX and screenY solve this problem for us.  We can
-        // translate the the screen position to the client (viewport) position,
-        // and then based on the scrolling positions of the document translate
-        // that into the page positions.
-        //
-
-        result.client.x = mouseEvent.screenX - window.screenX;
-
-        // we have to adjust by window.screen.availTop to account for the electron
-        // navbar.  This isn't standardized though and might not be portable in
-        // the future but it works for now.
-        result.client.y = mouseEvent.screenY - window.screenY - window.screen.availTop;
-
-        // FIXME: removing these two below fixes pagemarks for PHZ files but
-        // I'm pretty sure that scrollX MUST be used to get the right position.
-        // it might be that my code is incorrect here.
-
-        result.page.x = result.client.x + window.scrollX;
-        result.page.y = result.client.y + window.scrollY;
-
-        result.offset.x = mouseEvent.pageX;
-        result.offset.y = mouseEvent.pageY;
-
-        // result.page.x = result.client.x;
-        // result.page.y = result.client.y;
-
-        return result;
+var FrameEvents = function () {
+    function FrameEvents() {
+        _classCallCheck(this, FrameEvents);
     }
 
-}
+    _createClass(FrameEvents, null, [{
+        key: "calculatePoints",
+
+
+        /**
+         * Calculate the points of an mouseEvent in the current window relative to the
+         * frame which originated the mouseEvent.
+         *
+         * @param iframe {HTMLIFrameElement}
+         * @param mouseEvent {MouseEvent}
+         */
+        value: function calculatePoints(iframe, mouseEvent) {
+
+            // FIXME: make sure the mouseEvent ACTUALLY happened in the iframe because
+            // if it didn't then the calculations here won't make any sense.
+
+            Preconditions.assertNotNull(iframe, "iframe");
+
+            if (mouseEvent.target.ownerDocument !== iframe.contentDocument) {
+                throw new Error("Event did not occur in specified iframe");
+            }
+
+            var result = {
+
+                page: {
+                    x: undefined,
+                    y: undefined
+                },
+                client: {
+                    x: undefined,
+                    y: undefined
+                },
+                offset: {
+                    x: undefined,
+                    y: undefined
+                }
+
+            };
+
+            // We need a frame of reference to translate the two coordinate systems.
+            // using screenX and screenY solve this problem for us.  We can
+            // translate the the screen position to the client (viewport) position,
+            // and then based on the scrolling positions of the document translate
+            // that into the page positions.
+            //
+
+            result.client.x = mouseEvent.screenX - window.screenX;
+
+            // we have to adjust by window.screen.availTop to account for the electron
+            // navbar.  This isn't standardized though and might not be portable in
+            // the future but it works for now.
+            result.client.y = mouseEvent.screenY - window.screenY - window.screen.availTop;
+
+            // FIXME: removing these two below fixes pagemarks for PHZ files but
+            // I'm pretty sure that scrollX MUST be used to get the right position.
+            // it might be that my code is incorrect here.
+
+            result.page.x = result.client.x + window.scrollX;
+            result.page.y = result.client.y + window.scrollY;
+
+            result.offset.x = mouseEvent.pageX;
+            result.offset.y = mouseEvent.pageY;
+
+            // result.page.x = result.client.x;
+            // result.page.y = result.client.y;
+
+            return result;
+        }
+    }]);
+
+    return FrameEvents;
+}();
 
 module.exports.FrameEvents = FrameEvents;
 
@@ -65882,16 +69504,26 @@ module.exports.FrameEvents = FrameEvents;
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-const { EventBridge } = __webpack_require__(/*! ./EventBridge */ "./web/js/viewer/html/EventBridge.js");
+"use strict";
+
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var _require = __webpack_require__(/*! ./EventBridge */ "./web/js/viewer/html/EventBridge.js"),
+    EventBridge = _require.EventBridge;
 
 /**
  * Listens for the iframe to load and then sends the events to target objects
  * so that that the page started , and then finished loading.  We then
  * dispatched two callbacks onIFrameLoading and onIFrameLoaded.
  */
-class FrameInitializer {
 
-    constructor(iframe, textLayer) {
+
+var FrameInitializer = function () {
+    function FrameInitializer(iframe, textLayer) {
+        _classCallCheck(this, FrameInitializer);
 
         if (!iframe) {
             throw new Error("No iframe");
@@ -65902,63 +69534,76 @@ class FrameInitializer {
         this.loaded = false;
     }
 
-    start() {
+    _createClass(FrameInitializer, [{
+        key: "start",
+        value: function start() {
 
-        this.iframe.contentDocument.addEventListener("readystatechange", this.onReadyStateChange.bind(this));
+            this.iframe.contentDocument.addEventListener("readystatechange", this.onReadyStateChange.bind(this));
 
-        this._checkLoaded();
-    }
-
-    _checkLoaded() {
-
-        if (!this.loaded) {
-            this.loaded = true;
-            this.onLoad();
-            console.log("FrameInitializer: Document has finished loading");
-        }
-    }
-
-    onReadyStateChange() {
-
-        if (this.iframe.contentDocument.readyState === "complete") {
             this._checkLoaded();
         }
-    }
+    }, {
+        key: "_checkLoaded",
+        value: function _checkLoaded() {
 
-    /**
-     *
-     */
-    onLoad() {
+            if (!this.loaded) {
+                this.loaded = true;
+                this.onLoad();
+                console.log("FrameInitializer: Document has finished loading");
+            }
+        }
+    }, {
+        key: "onReadyStateChange",
+        value: function onReadyStateChange() {
 
-        console.log("Frame loaded.  Sending pagesinit on .page");
-        this.dispatchPagesInit();
-        this.startEventBridge();
-        this.updateDocTitle();
-    }
+            if (this.iframe.contentDocument.readyState === "complete") {
+                this._checkLoaded();
+            }
+        }
 
-    updateDocTitle() {
-        let title = this.iframe.contentDocument.title;
-        console.log("Setting title: " + title);
-        document.title = title;
-    }
+        /**
+         *
+         */
 
-    dispatchPagesInit() {
+    }, {
+        key: "onLoad",
+        value: function onLoad() {
 
-        let event = new Event('pagesinit', { bubbles: true });
+            console.log("Frame loaded.  Sending pagesinit on .page");
+            this.dispatchPagesInit();
+            this.startEventBridge();
+            this.updateDocTitle();
+        }
+    }, {
+        key: "updateDocTitle",
+        value: function updateDocTitle() {
+            var title = this.iframe.contentDocument.title;
+            console.log("Setting title: " + title);
+            document.title = title;
+        }
+    }, {
+        key: "dispatchPagesInit",
+        value: function dispatchPagesInit() {
 
-        // Dispatch the event.
-        document.querySelector(".page").dispatchEvent(event);
-    }
+            var event = new Event('pagesinit', { bubbles: true });
 
-    startEventBridge() {
+            // Dispatch the event.
+            document.querySelector(".page").dispatchEvent(event);
+        }
+    }, {
+        key: "startEventBridge",
+        value: function startEventBridge() {
+            var _this = this;
 
-        document.querySelectorAll(".page").forEach(pageElement => {
-            let eventBridge = new EventBridge(pageElement, this.iframe);
-            eventBridge.start();
-        });
-    }
+            document.querySelectorAll(".page").forEach(function (pageElement) {
+                var eventBridge = new EventBridge(pageElement, _this.iframe);
+                eventBridge.start();
+            });
+        }
+    }]);
 
-}
+    return FrameInitializer;
+}();
 
 module.exports.FrameInitializer = FrameInitializer;
 
@@ -65971,10 +69616,20 @@ module.exports.FrameInitializer = FrameInitializer;
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-const { Styles } = __webpack_require__(/*! ../../util/Styles */ "./web/js/util/Styles.js");
-const { Optional } = __webpack_require__(/*! ../../Optional */ "./web/js/Optional.js");
+"use strict";
 
-const MAX_RESIZES = 25;
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var _require = __webpack_require__(/*! ../../util/Styles */ "./web/js/util/Styles.js"),
+    Styles = _require.Styles;
+
+var _require2 = __webpack_require__(/*! ../../Optional */ "./web/js/Optional.js"),
+    Optional = _require2.Optional;
+
+var MAX_RESIZES = 25;
 
 /**
  * Listens to the main iframe load and resizes it appropriately based on the
@@ -65985,7 +69640,8 @@ const MAX_RESIZES = 25;
  * way to get loading 'progress' so the trick is to just poll fast enough to get
  * the document size so that the user never notices.
  */
-class FrameResizer {
+
+var FrameResizer = function () {
 
     // TODO:
     //
@@ -65993,7 +69649,8 @@ class FrameResizer {
     //
     // https://stackoverflow.com/questions/1835219/is-there-an-event-that-fires-on-changes-to-scrollheight-or-scrollwidth-in-jquery
 
-    constructor(parent, iframe) {
+    function FrameResizer(parent, iframe) {
+        _classCallCheck(this, FrameResizer);
 
         if (!parent) {
             throw new Error("No parent");
@@ -66017,77 +69674,87 @@ class FrameResizer {
         this.resizes = 0;
     }
 
-    start() {
-        this.resizeParentInBackground();
-    }
+    _createClass(FrameResizer, [{
+        key: "start",
+        value: function start() {
+            this.resizeParentInBackground();
+        }
+    }, {
+        key: "resizeParentInBackground",
+        value: function resizeParentInBackground() {
 
-    resizeParentInBackground() {
+            if (this.resizes > MAX_RESIZES) {
+                console.log("Hit MAX_RESIZES: " + MAX_RESIZES);
+                this.doResize(true);
+                return;
+            } else {
+                this.doResize(false);
+            }
 
-        if (this.resizes > MAX_RESIZES) {
-            console.log("Hit MAX_RESIZES: " + MAX_RESIZES);
-            this.doResize(true);
-            return;
-        } else {
-            this.doResize(false);
+            setTimeout(this.resizeParentInBackground.bind(this), this.timeoutInterval);
         }
 
-        setTimeout(this.resizeParentInBackground.bind(this), this.timeoutInterval);
-    }
+        /**
+         * Perform the resize now.
+         *
+         * @param final {boolean} True when this is the final resize before
+         * terminating.  This way, if we're doing any sort of caching or throttling
+         * of resize, we can just force it one last time.
+         */
 
-    /**
-     * Perform the resize now.
-     *
-     * @param final {boolean} True when this is the final resize before
-     * terminating.  This way, if we're doing any sort of caching or throttling
-     * of resize, we can just force it one last time.
-     */
-    doResize(final) {
+    }, {
+        key: "doResize",
+        value: function doResize(final) {
 
-        ++this.resizes;
+            ++this.resizes;
 
-        // TODO: accidental horizontal overflow...
-        //
-        // - I can see if the CSS is done rendering.. there might still be CSS
-        //   transitions and other issues.
-        //
-        // - I could see if the CSS is loaded, and that no more images or other
-        //   resources have changed and then fix the page to that dimension.
-        //
-        // - I could back off significantly in duration if only a small percentage
-        //   of the page height has changed.  For example, if we're less than 1%
-        //   I can just wait until the final rendering.  We are often only off
-        //   by a few px.
-        //
+            // TODO: accidental horizontal overflow...
+            //
+            // - I can see if the CSS is done rendering.. there might still be CSS
+            //   transitions and other issues.
+            //
+            // - I could see if the CSS is loaded, and that no more images or other
+            //   resources have changed and then fix the page to that dimension.
+            //
+            // - I could back off significantly in duration if only a small percentage
+            //   of the page height has changed.  For example, if we're less than 1%
+            //   I can just wait until the final rendering.  We are often only off
+            //   by a few px.
+            //
 
-        let contentDocument = this.iframe.contentDocument;
+            var contentDocument = this.iframe.contentDocument;
 
-        if (!contentDocument) return;
+            if (!contentDocument) return;
 
-        if (!contentDocument.body) return;
+            if (!contentDocument.body) return;
 
-        let height = Styles.parsePX(Optional.of(this.iframe.style.height).filter(current => current !== "").getOrElse("0px"));
+            var height = Styles.parsePX(Optional.of(this.iframe.style.height).filter(function (current) {
+                return current !== "";
+            }).getOrElse("0px"));
 
-        let newHeight = contentDocument.body.scrollHeight;
+            var newHeight = contentDocument.body.scrollHeight;
 
-        let delta = Math.abs(newHeight - height);
+            var delta = Math.abs(newHeight - height);
 
-        //delta as a percentage of total height.
-        let deltaPerc = 100 * (delta / height);
+            //delta as a percentage of total height.
+            var deltaPerc = 100 * (delta / height);
 
-        if (!final && deltaPerc < 5) {
-            //console.log(`Skipping resize as delta is too small (deltaPerc=${deltaPerc}, height=${height}, newHeight=${newHeight})`)
-            return;
+            if (!final && deltaPerc < 5) {
+                //console.log(`Skipping resize as delta is too small (deltaPerc=${deltaPerc}, height=${height}, newHeight=${newHeight})`)
+                return;
+            }
+
+            // we basically keep polling.
+            if (height !== newHeight) {
+                //console.log(`Setting new height to: ${newHeight} vs previous ${this.iframe.style.height}`);
+                this.iframe.style.height = newHeight;
+                this.height = newHeight;
+            }
         }
+    }]);
 
-        // we basically keep polling.
-        if (height !== newHeight) {
-            //console.log(`Setting new height to: ${newHeight} vs previous ${this.iframe.style.height}`);
-            this.iframe.style.height = newHeight;
-            this.height = newHeight;
-        }
-    }
-
-}
+    return FrameResizer;
+}();
 
 module.exports.FrameResizer = FrameResizer;
 
@@ -66100,241 +69767,291 @@ module.exports.FrameResizer = FrameResizer;
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-const $ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
-const { Viewer } = __webpack_require__(/*! ../Viewer */ "./web/js/viewer/Viewer.js");
-const { FrameResizer } = __webpack_require__(/*! ./FrameResizer */ "./web/js/viewer/html/FrameResizer.js");
-const { FrameInitializer } = __webpack_require__(/*! ./FrameInitializer */ "./web/js/viewer/html/FrameInitializer.js");
-const { IFrameWatcher } = __webpack_require__(/*! ./IFrameWatcher */ "./web/js/viewer/html/IFrameWatcher.js");
-const { HTMLFormat } = __webpack_require__(/*! ../../docformat/HTMLFormat */ "./web/js/docformat/HTMLFormat.js");
-const log = __webpack_require__(/*! ../../logger/Logger */ "./web/js/logger/Logger.js").create();
+"use strict";
 
-class HTMLViewer extends Viewer {
 
-    start() {
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-        console.log("Starting HTMLViewer");
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-        this.content = document.querySelector("#content");
-        this.contentParent = document.querySelector("#content-parent");
-        this.textLayer = document.querySelector(".textLayer");
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
-        this.htmlFormat = new HTMLFormat();
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-        // *** start the resizer and initializer before setting the iframe
+var $ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
 
-        $(document).ready(() => {
+var _require = __webpack_require__(/*! ../Viewer */ "./web/js/viewer/Viewer.js"),
+    Viewer = _require.Viewer;
 
-            this._captureBrowserZoom();
+var _require2 = __webpack_require__(/*! ./FrameResizer */ "./web/js/viewer/html/FrameResizer.js"),
+    FrameResizer = _require2.FrameResizer;
 
-            this._loadRequestData();
+var _require3 = __webpack_require__(/*! ./FrameInitializer */ "./web/js/viewer/html/FrameInitializer.js"),
+    FrameInitializer = _require3.FrameInitializer;
 
-            this._configurePageWidth();
+var _require4 = __webpack_require__(/*! ./IFrameWatcher */ "./web/js/viewer/html/IFrameWatcher.js"),
+    IFrameWatcher = _require4.IFrameWatcher;
 
-            new IFrameWatcher(this.content, () => {
+var _require5 = __webpack_require__(/*! ../../docformat/HTMLFormat */ "./web/js/docformat/HTMLFormat.js"),
+    HTMLFormat = _require5.HTMLFormat;
 
-                console.log("Loading page now...");
+var log = __webpack_require__(/*! ../../logger/Logger */ "./web/js/logger/Logger.js").create();
 
-                let frameResizer = new FrameResizer(this.contentParent, this.content);
-                frameResizer.start();
+var HTMLViewer = function (_Viewer) {
+    _inherits(HTMLViewer, _Viewer);
 
-                let frameInitializer = new FrameInitializer(this.content, this.textLayer);
-                frameInitializer.start();
+    function HTMLViewer() {
+        _classCallCheck(this, HTMLViewer);
 
-                this.startHandlingZoom();
-            }).start();
-        });
+        return _possibleConstructorReturn(this, (HTMLViewer.__proto__ || Object.getPrototypeOf(HTMLViewer)).apply(this, arguments));
     }
 
-    _captureBrowserZoom() {
+    _createClass(HTMLViewer, [{
+        key: "start",
+        value: function start() {
+            var _this2 = this;
 
-        // TODO: for now this is used to just capture and disable zoom but
-        // we should enable it in the future so we can handle zoom ourselves.
+            console.log("Starting HTMLViewer");
 
-        $(document).keydown(function (event) {
-            if (event.ctrlKey === true && (event.which === '61' || event.which === '107' || event.which === '173' || event.which === '109' || event.which === '187' || event.which === '189')) {
+            this.content = document.querySelector("#content");
+            this.contentParent = document.querySelector("#content-parent");
+            this.textLayer = document.querySelector(".textLayer");
 
-                console.log("Browser zoom detected. Preventing.");
-                event.preventDefault();
-            }
-            // 107 Num Key  +
-            // 109 Num Key  -
-            // 173 Min Key  hyphen/underscor Hey
-            // 61 Plus key  +/= key
-        });
+            this.htmlFormat = new HTMLFormat();
 
-        $(window).bind('mousewheel DOMMouseScroll', function (event) {
-            if (event.ctrlKey === true) {
+            // *** start the resizer and initializer before setting the iframe
 
-                console.log("Browser zoom detected. Preventing.");
-                event.preventDefault();
-            }
-        });
-    }
+            $(document).ready(function () {
 
-    startHandlingZoom() {
+                _this2._captureBrowserZoom();
 
-        let htmlViewer = this;
+                _this2._loadRequestData();
 
-        $(".polar-zoom-select").change(function () {
-            $("select option:selected").each(function () {
-                let zoom = $(this).val();
+                _this2._configurePageWidth();
 
-                htmlViewer.changeScale(parseFloat(zoom));
+                new IFrameWatcher(_this2.content, function () {
+
+                    console.log("Loading page now...");
+
+                    var frameResizer = new FrameResizer(_this2.contentParent, _this2.content);
+                    frameResizer.start();
+
+                    var frameInitializer = new FrameInitializer(_this2.content, _this2.textLayer);
+                    frameInitializer.start();
+
+                    _this2.startHandlingZoom();
+                }).start();
+            });
+        }
+    }, {
+        key: "_captureBrowserZoom",
+        value: function _captureBrowserZoom() {
+
+            // TODO: for now this is used to just capture and disable zoom but
+            // we should enable it in the future so we can handle zoom ourselves.
+
+            $(document).keydown(function (event) {
+                if (event.ctrlKey === true && (event.which === '61' || event.which === '107' || event.which === '173' || event.which === '109' || event.which === '187' || event.which === '189')) {
+
+                    console.log("Browser zoom detected. Preventing.");
+                    event.preventDefault();
+                }
+                // 107 Num Key  +
+                // 109 Num Key  -
+                // 173 Min Key  hyphen/underscor Hey
+                // 61 Plus key  +/= key
             });
 
-            // make sure the select doesn't have focus so that we can scroll.
-            console.log("Blurring the select to allow keyboard/mouse nav.");
-            $(this).blur();
-        });
-    }
+            $(window).bind('mousewheel DOMMouseScroll', function (event) {
+                if (event.ctrlKey === true) {
 
-    /**
-     * Get the page width from the descriptor if it's present and use that.
-     *
-     * Otherwise, use the defaults.
-     */
-    _configurePageWidth() {
+                    console.log("Browser zoom detected. Preventing.");
+                    event.preventDefault();
+                }
+            });
+        }
+    }, {
+        key: "startHandlingZoom",
+        value: function startHandlingZoom() {
 
-        let params = this._requestParams();
+            var htmlViewer = this;
 
-        // the default width
-        let width = 750;
+            $(".polar-zoom-select").change(function () {
+                $("select option:selected").each(function () {
+                    var zoom = $(this).val();
 
-        let descriptor = params.descriptor;
+                    htmlViewer.changeScale(parseFloat(zoom));
+                });
 
-        if (descriptor && descriptor.browser) {
-
-            // use the screen width from the emulated device
-            width = descriptor.browser.deviceEmulation.screenSize.width;
-
-            log.info("Setting width from device emulation: " + width);
+                // make sure the select doesn't have focus so that we can scroll.
+                console.log("Blurring the select to allow keyboard/mouse nav.");
+                $(this).blur();
+            });
         }
 
-        if ("scroll" in descriptor && typeof descriptor.scroll.width === "number" && descriptor.scroll.width > width) {
+        /**
+         * Get the page width from the descriptor if it's present and use that.
+         *
+         * Otherwise, use the defaults.
+         */
 
-            // we have a document that isn't mobile aware and hard coded to a
-            // specific width greater than our default width.  This is a new
-            // setting so we have to make sure the key is in the descriptor.
+    }, {
+        key: "_configurePageWidth",
+        value: function _configurePageWidth() {
 
-            width = descriptor.scroll.width;
+            var params = this._requestParams();
 
-            log.info("Setting width from scroll settings: " + width);
+            // the default width
+            var width = 750;
+
+            var descriptor = params.descriptor;
+
+            if (descriptor && descriptor.browser) {
+
+                // use the screen width from the emulated device
+                width = descriptor.browser.deviceEmulation.screenSize.width;
+
+                log.info("Setting width from device emulation: " + width);
+            }
+
+            if ("scroll" in descriptor && typeof descriptor.scroll.width === "number" && descriptor.scroll.width > width) {
+
+                // we have a document that isn't mobile aware and hard coded to a
+                // specific width greater than our default width.  This is a new
+                // setting so we have to make sure the key is in the descriptor.
+
+                width = descriptor.scroll.width;
+
+                log.info("Setting width from scroll settings: " + width);
+            }
+
+            // page height size should be a function of 8.5x11
+
+            var minHeight = 11 / 8.5 * width;
+
+            console.log("Configuring page with width=" + width + " and minHeight=" + minHeight);
+
+            document.querySelectorAll("#content-parent, .page, iframe").forEach(function (element) {
+                element.style.width = width + "px";
+            });
+
+            document.querySelectorAll(".page, iframe").forEach(function (element) {
+                element.style.minHeight = minHeight + "px";
+            });
+        }
+    }, {
+        key: "changeScale",
+        value: function changeScale(scale) {
+
+            console.log("Changing scale to: " + scale);
+
+            this._changeScaleMeta(scale);
+            this._changeScale(scale);
+            this._removeAnnotations();
+            this._signalScale();
+        }
+    }, {
+        key: "_changeScaleMeta",
+        value: function _changeScaleMeta(scale) {
+            document.querySelector("meta[name='polar-scale']").setAttribute("content", scale);
+        }
+    }, {
+        key: "_changeScale",
+        value: function _changeScale(scale) {
+
+            // NOTE: removing the iframe and adding it back in fixed a major problem
+            // with font fuzziness on Chrome/Electron.  Technically it should be
+            // possible to resize the iframe via scale alone but I don't think
+            // chrome re-renders the fonts unless significant scale changes are
+            // made.
+
+            var iframe = document.querySelector("iframe");
+            var iframeParentElement = iframe.parentElement;
+
+            // TODO: we were experimenting with adding+removing the child iframes
+            // but decided to back out the code as it was de-activating the iframes
+            // and I couldn't click on them.
+
+            //iframeParentElement.removeChild(iframe);
+
+            var contentParent = document.querySelector("#content-parent");
+            contentParent.style.transform = "scale(" + scale + ")";
+
+            //iframeParentElement.appendChild(iframe);
+        }
+    }, {
+        key: "_removeAnnotations",
+        value: function _removeAnnotations() {
+            // remove all annotations from the .page. they will be re-created by
+            // all the views. The PDF viewer does this for us automatically.
+
+            document.querySelectorAll(".page .annotation").forEach(function (annotation) {
+                annotation.parentElement.removeChild(annotation);
+            });
         }
 
-        // page height size should be a function of 8.5x11
+        // remove and re-inject an endOfContent element to trigger the view to
+        // re-draw pagemarks.
 
-        let minHeight = 11 / 8.5 * width;
+    }, {
+        key: "_signalScale",
+        value: function _signalScale() {
 
-        console.log(`Configuring page with width=${width} and minHeight=${minHeight}`);
+            console.log("HTMLViewer: Signaling rescale.");
 
-        document.querySelectorAll("#content-parent, .page, iframe").forEach(element => {
-            element.style.width = `${width}px`;
-        });
+            var pageElement = document.querySelector(".page");
+            var endOfContent = pageElement.querySelector(".endOfContent");
+            endOfContent.parentElement.removeChild(endOfContent);
 
-        document.querySelectorAll(".page, iframe").forEach(element => {
-            element.style.minHeight = `${minHeight}px`;
-        });
-    }
+            endOfContent = document.createElement("div");
+            endOfContent.setAttribute("class", "endOfContent");
 
-    changeScale(scale) {
-
-        console.log("Changing scale to: " + scale);
-
-        this._changeScaleMeta(scale);
-        this._changeScale(scale);
-        this._removeAnnotations();
-        this._signalScale();
-    }
-
-    _changeScaleMeta(scale) {
-        document.querySelector("meta[name='polar-scale']").setAttribute("content", scale);
-    }
-
-    _changeScale(scale) {
-
-        // NOTE: removing the iframe and adding it back in fixed a major problem
-        // with font fuzziness on Chrome/Electron.  Technically it should be
-        // possible to resize the iframe via scale alone but I don't think
-        // chrome re-renders the fonts unless significant scale changes are
-        // made.
-
-        let iframe = document.querySelector("iframe");
-        let iframeParentElement = iframe.parentElement;
-
-        // TODO: we were experimenting with adding+removing the child iframes
-        // but decided to back out the code as it was de-activating the iframes
-        // and I couldn't click on them.
-
-        //iframeParentElement.removeChild(iframe);
-
-        let contentParent = document.querySelector("#content-parent");
-        contentParent.style.transform = `scale(${scale})`;
-
-        //iframeParentElement.appendChild(iframe);
-    }
-
-    _removeAnnotations() {
-        // remove all annotations from the .page. they will be re-created by
-        // all the views. The PDF viewer does this for us automatically.
-
-        document.querySelectorAll(".page .annotation").forEach(function (annotation) {
-            annotation.parentElement.removeChild(annotation);
-        });
-    }
-
-    // remove and re-inject an endOfContent element to trigger the view to
-    // re-draw pagemarks.
-    _signalScale() {
-
-        console.log("HTMLViewer: Signaling rescale.");
-
-        let pageElement = document.querySelector(".page");
-        let endOfContent = pageElement.querySelector(".endOfContent");
-        endOfContent.parentElement.removeChild(endOfContent);
-
-        endOfContent = document.createElement("div");
-        endOfContent.setAttribute("class", "endOfContent");
-
-        pageElement.appendChild(endOfContent);
-    }
-
-    /**
-     * Get the request params as a dictionary.
-     */
-    _requestParams() {
-
-        let url = new URL(window.location.href);
-
-        return {
-            file: url.searchParams.get("file"),
-            descriptor: JSON.parse(url.searchParams.get("descriptor")),
-            fingerprint: url.searchParams.get("fingerprint")
-        };
-    }
-
-    _loadRequestData() {
-
-        // *** now setup the iframe
-
-        let params = this._requestParams();
-
-        let file = params.file;
-
-        if (!file) {
-            file = "example1.html";
+            pageElement.appendChild(endOfContent);
         }
 
-        this.content.src = file;
+        /**
+         * Get the request params as a dictionary.
+         */
 
-        let fingerprint = params.fingerprint;
-        if (!fingerprint) {
-            throw new Error("Fingerprint is required");
+    }, {
+        key: "_requestParams",
+        value: function _requestParams() {
+
+            var url = new URL(window.location.href);
+
+            return {
+                file: url.searchParams.get("file"),
+                descriptor: JSON.parse(url.searchParams.get("descriptor")),
+                fingerprint: url.searchParams.get("fingerprint")
+            };
         }
+    }, {
+        key: "_loadRequestData",
+        value: function _loadRequestData() {
 
-        this.htmlFormat.setCurrentDocFingerprint(fingerprint);
-    }
+            // *** now setup the iframe
 
-}
+            var params = this._requestParams();
+
+            var file = params.file;
+
+            if (!file) {
+                file = "example1.html";
+            }
+
+            this.content.src = file;
+
+            var fingerprint = params.fingerprint;
+            if (!fingerprint) {
+                throw new Error("Fingerprint is required");
+            }
+
+            this.htmlFormat.setCurrentDocFingerprint(fingerprint);
+        }
+    }]);
+
+    return HTMLViewer;
+}(Viewer);
 
 module.exports.HTMLViewer = HTMLViewer;
 
@@ -66347,22 +70064,36 @@ module.exports.HTMLViewer = HTMLViewer;
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-const $ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
+"use strict";
 
-const { Preconditions } = __webpack_require__(/*! ../../Preconditions */ "./web/js/Preconditions.js");
-const { Objects } = __webpack_require__(/*! ../../util/Objects */ "./web/js/util/Objects.js");
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var $ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
+
+var _require = __webpack_require__(/*! ../../Preconditions */ "./web/js/Preconditions.js"),
+    Preconditions = _require.Preconditions;
+
+var _require2 = __webpack_require__(/*! ../../util/Objects */ "./web/js/util/Objects.js"),
+    Objects = _require2.Objects;
 
 /**
  * Assumes that you have tried to change the URL for an iframe and watches for
  * it to start loading properly.
  */
-class IFrameWatcher {
+
+
+var IFrameWatcher = function () {
 
     // TODO: right now we look for the URL not being about:blank which is kind
     // of a hack but works for now.  Technically we should listen to the
     // iframe src attribute changing.
 
-    constructor(iframe, callback, options) {
+    function IFrameWatcher(iframe, callback, options) {
+        _classCallCheck(this, IFrameWatcher);
+
         this.iframe = Preconditions.assertNotNull(iframe, "iframe");
         this.options = Objects.defaults(options, {
             timeoutInterval: 100,
@@ -66373,23 +70104,28 @@ class IFrameWatcher {
         this.completed = false;
     }
 
-    start() {
-        this.watchInBackground();
-    }
-
-    watchInBackground() {
-
-        if (this.iframe.contentDocument && this.iframe.contentDocument.location.href !== this.options.currentURL) {
-
-            console.log("Detected iframe URL loading (calling callback now): ", this.iframe.contentDocument.location.href);
-            this.callback();
-            return;
+    _createClass(IFrameWatcher, [{
+        key: "start",
+        value: function start() {
+            this.watchInBackground();
         }
+    }, {
+        key: "watchInBackground",
+        value: function watchInBackground() {
 
-        setTimeout(this.watchInBackground.bind(this), this.options.timeoutInterval);
-    }
+            if (this.iframe.contentDocument && this.iframe.contentDocument.location.href !== this.options.currentURL) {
 
-}
+                console.log("Detected iframe URL loading (calling callback now): ", this.iframe.contentDocument.location.href);
+                this.callback();
+                return;
+            }
+
+            setTimeout(this.watchInBackground.bind(this), this.options.timeoutInterval);
+        }
+    }]);
+
+    return IFrameWatcher;
+}();
 
 module.exports.IFrameWatcher = IFrameWatcher;
 
@@ -66402,15 +70138,38 @@ module.exports.IFrameWatcher = IFrameWatcher;
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-const { Viewer } = __webpack_require__(/*! ../Viewer */ "./web/js/viewer/Viewer.js");
+"use strict";
 
-class PDFViewer extends Viewer {
 
-    start() {
-        console.log("Starting PDFViewer");
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var _require = __webpack_require__(/*! ../Viewer */ "./web/js/viewer/Viewer.js"),
+    Viewer = _require.Viewer;
+
+var PDFViewer = function (_Viewer) {
+    _inherits(PDFViewer, _Viewer);
+
+    function PDFViewer() {
+        _classCallCheck(this, PDFViewer);
+
+        return _possibleConstructorReturn(this, (PDFViewer.__proto__ || Object.getPrototypeOf(PDFViewer)).apply(this, arguments));
     }
 
-}
+    _createClass(PDFViewer, [{
+        key: "start",
+        value: function start() {
+            console.log("Starting PDFViewer");
+        }
+    }]);
+
+    return PDFViewer;
+}(Viewer);
 
 module.exports.PDFViewer = PDFViewer;
 
