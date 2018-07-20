@@ -22,8 +22,6 @@ import SimpleMDE from 'react-simplemde-editor';
 
 import ReactSummernote from 'react-summernote';
 
-//import {ImagePasteHandler} from "../paste/ImagePasteHandler";
-
 /**
  * Code to accept new input for flashcards, notes, comments, etc.
  */

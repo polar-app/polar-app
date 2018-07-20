@@ -104,32 +104,10 @@ module.exports = [
             publicPath: '/web/js/apps'
         }
 
-    },
-    {
-        mode: 'development',
-        entry: {
-            injector: ["./web/js/apps/injector.js"]
-        },
-        module: {
-            rules: [
-                {
-                    test: /\.js$/,
-                    exclude: /node_modules/,
-                    use: {
-                        loader: "babel-loader"
-                    }
-                }
-            ],
-        },
-        devtool: "source-map",
-        output: {
-            path: path.resolve(__dirname, 'web/dist'),
-            filename: '[name]-bundle.js',
-            publicPath: '/web/js/apps'
-        }
-    },
-
+    }
 ];
+
+module.exports.push(createElectronRendererProfile("injector", "web/js/apps/injector.js", "web/dist"));
 
 module.exports.push(createElectronRendererProfile("start-capture", "apps/capture/start-capture/js/entry.js", "apps/capture/start-capture/dist"));
 module.exports.push(createElectronRendererProfile("progress", "apps/capture/progress/js/entry.js", "apps/capture/progress/dist"));

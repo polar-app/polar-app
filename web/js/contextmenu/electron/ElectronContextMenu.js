@@ -80,7 +80,7 @@ class ElectronContextMenu extends ContextMenu {
 
         let contextJSON = JSON.stringify(context);
 
-        let url = `http://${DEFAULT_HOST}:${WEBSERVER_PORT}/card-creator/index.html?context=${encodeURIComponent(contextJSON)}`;
+        let url = `http://${DEFAULT_HOST}:${WEBSERVER_PORT}/apps/card-creator/index.html?context=${encodeURIComponent(contextJSON)}`;
 
         DialogWindow.create({url});
 
