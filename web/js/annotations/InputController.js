@@ -126,25 +126,48 @@ class RichTextEditor extends Component {
         console.log('onChange', content);
     }
 
+    onImageUpload(images, insertImage) {
+
+        console.log('onImageUpload', images);
+        /* FileList does not support ordinary array methods */
+        for (let i = 0; i < images.length; i++) {
+            /* Stores as bas64enc string in the text.
+             * Should potentially be stored separately and include just the url
+             */
+            const reader = new FileReader();
+
+            reader.onloadend = () => {
+                insertImage(reader.result);
+            };
+
+            reader.readAsDataURL(images[i]);
+        }
+    };
+
     render() {
+
+        // https://github.com/summernote/react-summernote/issues/38
+        //
+
         return (
             <ReactSummernote
-                value="Default value"
+                value=""
                 options={{
-                    lang: 'ru-RU',
-                    height: 350,
+                    lang: 'en-US',
+                    height: 150,
                     dialogsInBody: true,
-                    toolbar: [
-                        ['style', ['style']],
-                        ['font', ['bold', 'underline', 'clear']],
-                        ['fontname', ['fontname']],
-                        ['para', ['ul', 'ol', 'paragraph']],
-                        ['table', ['table']],
-                        ['insert', ['link', 'picture', 'video']],
-                        ['view', ['fullscreen', 'codeview']]
-                    ]
+                    // toolbar: [
+                    //     ['style', ['style']],
+                    //     ['font', ['bold', 'underline', 'clear']],
+                    //     ['fontname', ['fontname']],
+                    //     ['para', ['ul', 'ol', 'paragraph']],
+                    //     ['table', ['table']],
+                    //     ['insert', ['link', 'picture', 'video']],
+                    //     ['view', ['fullscreen', 'codeview']]
+                    // ]
                 }}
                 onChange={this.onChange}
+                onImageUpload={this.onImageUpload}
             />
         );
     }
