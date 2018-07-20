@@ -14,4 +14,12 @@ import 'bootstrap/js/src/tooltip';
 // require('summernote/dist/summernote.css');
 require('summernote/dist/summernote-bs4');
 
-$('.summernote').summernote();
+// this disables tab input so that we can go back and forth between editor
+// controls easily.
+delete $.summernote.options.keyMap.pc.TAB;
+delete $.summernote.options.keyMap.mac.TAB;
+
+$('.summernote').summernote({
+    height: 300,
+    minHeight: 150
+});
