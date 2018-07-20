@@ -20,10 +20,6 @@ function createElectronRendererProfile(name, entryPath, distPath) {
                     use: {
                         loader: "babel-loader"
                     }
-                    // tell babel to NOT use .babelrc so we can define our
-                    // configuration here.  then tell it modules:false per
-                    //
-                    // https://insights.untapt.com/webpack-import-require-and-you-3fd7f5ea93c0
 
                 }
             ],
@@ -37,59 +33,6 @@ function createElectronRendererProfile(name, entryPath, distPath) {
     }
 
 }
-
-/**
- *
- * @param name
- * @param entryPath
- * @param distPath
- * @param [outputFilename] {string} The filename to use when writing the output.
- * @return {Object} An object describing our webpack configuration.
- */
-function createElectronRendererProfile2(name, entryPath, distPath, outputFilename) {
-
-    entryPath = path.resolve(__dirname, entryPath);
-    distPath = path.resolve(__dirname, distPath);
-
-    if(! outputFilename) {
-        outputFilename = `${name}-bundle.js`;
-    }
-
-    return {
-        mode: 'development',
-        target: "electron-renderer",
-        entry: {
-            name: [ entryPath ]
-        },
-        module: {
-            rules: [
-                {
-                    test: /\.jsx?$/,
-                    exclude: /node_modules/,
-                    loader: "babel-loader",
-                    options: {
-                        presets: ['react']
-                    }
-                        // tell babel to NOT use .babelrc so we can define our
-                    // configuration here.  then tell it modules:false per
-                    //
-                    // https://insights.untapt.com/webpack-import-require-and-you-3fd7f5ea93c0
-
-                }
-            ],
-        },
-        devtool: "source-map",
-        output: {
-            path: distPath,
-            filename: outputFilename,
-        },
-        resolve: {
-            extensions: ['.js', '.json', '.jsx']
-        }
-    }
-
-}
-
 
 module.exports = [
     {
@@ -182,6 +125,3 @@ module.exports = [
 module.exports.push(createElectronRendererProfile("start-capture", "apps/capture/start-capture/js/entry.js", "apps/capture/start-capture/dist"));
 module.exports.push(createElectronRendererProfile("progress", "apps/capture/progress/js/entry.js", "apps/capture/progress/dist"));
 module.exports.push(createElectronRendererProfile("card-creator", "apps/card-creator/js/entry.js", "apps/card-creator/dist"));
-
-module.exports.push(createElectronRendererProfile2("card-creator", "apps/card-creator/js/entry.js", "apps/card-creator/dist", "card-creator-bundle2.js"));
-module.exports.push(createElectronRendererProfile2("electron", "./web/js/apps/electron.js", "web/dist", "electron-bundle2.js"));

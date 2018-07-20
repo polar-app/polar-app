@@ -53265,6 +53265,8 @@ module.exports.KeyEvents = KeyEvents;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
+function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 var _require = __webpack_require__(/*! ./proxies/Proxies */ "./web/js/proxies/Proxies.js"),
@@ -53330,54 +53332,80 @@ var Model = function () {
 
     _createClass(Model, [{
         key: "documentLoaded",
-        value: async function documentLoaded(fingerprint, nrPages, currentPageNumber) {
+        value: function () {
+            var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(fingerprint, nrPages, currentPageNumber) {
+                var documentLoadedEvent;
+                return regeneratorRuntime.wrap(function _callee$(_context) {
+                    while (1) {
+                        switch (_context.prev = _context.next) {
+                            case 0:
 
-            // docMetaPromise is used for future readers after the document is loaded
-            this.docMetaPromise = this.persistenceLayer.getDocMeta(fingerprint);
+                                // docMetaPromise is used for future readers after the document is loaded
+                                this.docMetaPromise = this.persistenceLayer.getDocMeta(fingerprint);
 
-            this.docMeta = await this.docMetaPromise;
+                                _context.next = 3;
+                                return this.docMetaPromise;
 
-            if (this.docMeta == null) {
+                            case 3:
+                                this.docMeta = _context.sent;
 
-                console.warn("New document found. Creating initial DocMeta");
 
-                // this is a new document...
-                //this.docMeta = DocMeta.createWithinInitialPagemarks(fingerprint, nrPages);
-                this.docMeta = DocMetas.create(fingerprint, nrPages);
-                this.persistenceLayer.sync(fingerprint, this.docMeta);
+                                if (this.docMeta == null) {
 
-                // I'm not sure this is the best way to resolve this as swapping in
-                // the docMetaPromise without any synchronization seems like we're
-                // asking for a race condition.
+                                    console.warn("New document found. Creating initial DocMeta");
+
+                                    // this is a new document...
+                                    //this.docMeta = DocMeta.createWithinInitialPagemarks(fingerprint, nrPages);
+                                    this.docMeta = DocMetas.create(fingerprint, nrPages);
+                                    this.persistenceLayer.sync(fingerprint, this.docMeta);
+
+                                    // I'm not sure this is the best way to resolve this as swapping in
+                                    // the docMetaPromise without any synchronization seems like we're
+                                    // asking for a race condition.
+                                }
+
+                                console.log("Description of doc loaded: " + DocMetaDescriber.describe(this.docMeta));
+                                console.log("Document loaded: ", this.docMeta);
+
+                                this.docMeta = Proxies.create(this.docMeta, function (traceEvent) {
+
+                                    // right now we just sync the datastore on mutation.  We do not
+                                    // attempt to use a journal yet.
+
+                                    console.log("sync of persistence layer via deep trace... ");
+                                    this.persistenceLayer.sync(this.docMeta.docInfo.fingerprint, this.docMeta);
+
+                                    return true;
+                                }.bind(this));
+
+                                this.docMetaPromise = new Promise(function (resolve, reject) {
+                                    // always provide this promise for the metadata.  For NEW documents
+                                    // we have to provide the promise but we ALSO have to provide it
+                                    // to swap out the docMeta with the right version.
+                                    resolve(this.docMeta);
+                                }.bind(this));
+
+                                // TODO: make this into an object..
+                                documentLoadedEvent = { fingerprint: fingerprint, nrPages: nrPages, currentPageNumber: currentPageNumber, docMeta: this.docMeta };
+
+                                this.reactor.dispatchEvent('documentLoaded', documentLoadedEvent);
+
+                                return _context.abrupt("return", this.docMeta);
+
+                            case 12:
+                            case "end":
+                                return _context.stop();
+                        }
+                    }
+                }, _callee, this);
+            }));
+
+            function documentLoaded(_x, _x2, _x3) {
+                return _ref.apply(this, arguments);
             }
 
-            console.log("Description of doc loaded: " + DocMetaDescriber.describe(this.docMeta));
-            console.log("Document loaded: ", this.docMeta);
-
-            this.docMeta = Proxies.create(this.docMeta, function (traceEvent) {
-
-                // right now we just sync the datastore on mutation.  We do not
-                // attempt to use a journal yet.
-
-                console.log("sync of persistence layer via deep trace... ");
-                this.persistenceLayer.sync(this.docMeta.docInfo.fingerprint, this.docMeta);
-
-                return true;
-            }.bind(this));
-
-            this.docMetaPromise = new Promise(function (resolve, reject) {
-                // always provide this promise for the metadata.  For NEW documents
-                // we have to provide the promise but we ALSO have to provide it
-                // to swap out the docMeta with the right version.
-                resolve(this.docMeta);
-            }.bind(this));
-
-            // TODO: make this into an object..
-            var documentLoadedEvent = { fingerprint: fingerprint, nrPages: nrPages, currentPageNumber: currentPageNumber, docMeta: this.docMeta };
-            this.reactor.dispatchEvent('documentLoaded', documentLoadedEvent);
-
-            return this.docMeta;
-        }
+            return documentLoaded;
+        }()
     }, {
         key: "registerListenerForDocumentLoaded",
         value: function registerListenerForDocumentLoaded(eventListener) {
@@ -53392,40 +53420,62 @@ var Model = function () {
 
     }, {
         key: "createPagemark",
-        value: async function createPagemark(pageNum) {
-            var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+        value: function () {
+            var _ref2 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2(pageNum) {
+                var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+                var pagemark, docMeta, pageMeta;
+                return regeneratorRuntime.wrap(function _callee2$(_context2) {
+                    while (1) {
+                        switch (_context2.prev = _context2.next) {
+                            case 0:
 
+                                if (!options.percentage) {
+                                    options.percentage = 100;
+                                }
 
-            if (!options.percentage) {
-                options.percentage = 100;
+                                console.log("Model sees createPagemark");
+
+                                this.assertPageNum(pageNum);
+
+                                pagemark = Pagemarks.create({
+
+                                    // just set docMeta pageMarkType = PagemarkType.SINGLE_COLUMN by
+                                    // default for now until we add multiple column types and handle
+                                    // them properly.
+
+                                    type: PagemarkType.SINGLE_COLUMN,
+                                    percentage: options.percentage,
+                                    column: 0
+
+                                });
+                                _context2.next = 6;
+                                return this.docMetaPromise;
+
+                            case 6:
+                                docMeta = _context2.sent;
+                                pageMeta = docMeta.getPageMeta(pageNum);
+
+                                // set the pagemark that we just created into the map.
+
+                                pageMeta.pagemarks[pagemark.id] = pagemark;
+
+                                // TODO: this can be done with a mutation listener now
+                                this.reactor.dispatchEvent('createPagemark', { pageNum: pageNum, pagemark: pagemark });
+
+                            case 10:
+                            case "end":
+                                return _context2.stop();
+                        }
+                    }
+                }, _callee2, this);
+            }));
+
+            function createPagemark(_x5) {
+                return _ref2.apply(this, arguments);
             }
 
-            console.log("Model sees createPagemark");
-
-            this.assertPageNum(pageNum);
-
-            var pagemark = Pagemarks.create({
-
-                // just set docMeta pageMarkType = PagemarkType.SINGLE_COLUMN by
-                // default for now until we add multiple column types and handle
-                // them properly.
-
-                type: PagemarkType.SINGLE_COLUMN,
-                percentage: options.percentage,
-                column: 0
-
-            });
-
-            var docMeta = await this.docMetaPromise;
-
-            var pageMeta = docMeta.getPageMeta(pageNum);
-
-            // set the pagemark that we just created into the map.
-            pageMeta.pagemarks[pagemark.id] = pagemark;
-
-            // TODO: this can be done with a mutation listener now
-            this.reactor.dispatchEvent('createPagemark', { pageNum: pageNum, pagemark: pagemark });
-        }
+            return createPagemark;
+        }()
 
         /**
          * @refactor This code should be in its own dedicated helper class
@@ -54589,6 +54639,8 @@ module.exports.AnnotationEvent = AnnotationEvent;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
+function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 var _require = __webpack_require__(/*! ../time/SystemClock.js */ "./web/js/time/SystemClock.js"),
@@ -54647,40 +54699,93 @@ var Launcher = function () {
 
     _createClass(Launcher, [{
         key: "trigger",
-        value: async function trigger() {
+        value: function () {
+            var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
+                var persistenceLayer, clock, model;
+                return regeneratorRuntime.wrap(function _callee$(_context) {
+                    while (1) {
+                        switch (_context.prev = _context.next) {
+                            case 0:
+                                _context.next = 2;
+                                return this.persistenceLayerFactory();
 
-            var persistenceLayer = await this.persistenceLayerFactory();
+                            case 2:
+                                persistenceLayer = _context.sent;
+                                clock = new SystemClock();
+                                model = new Model(persistenceLayer, clock);
 
-            var clock = new SystemClock();
-            var model = new Model(persistenceLayer, clock);
-            new WebView(model).start();
-            //new TextHighlightView(model).start();
-            new TextHighlightView2(model).start();
+                                new WebView(model).start();
+                                //new TextHighlightView(model).start();
+                                new TextHighlightView2(model).start();
 
-            if (PAGEMARK_VIEW_ENABLED) {
-                new PagemarkView(model).start();
+                                if (PAGEMARK_VIEW_ENABLED) {
+                                    new PagemarkView(model).start();
+                                }
+
+                                ViewerFactory.create().start();
+
+                                _context.next = 11;
+                                return persistenceLayer.init();
+
+                            case 11:
+
+                                new PagemarkController(model).start();
+
+                                new WebController(model).start();
+
+                            case 13:
+                            case "end":
+                                return _context.stop();
+                        }
+                    }
+                }, _callee, this);
+            }));
+
+            function trigger() {
+                return _ref.apply(this, arguments);
             }
 
-            ViewerFactory.create().start();
-
-            await persistenceLayer.init();
-
-            new PagemarkController(model).start();
-
-            new WebController(model).start();
-        }
+            return trigger;
+        }()
     }, {
         key: "launch",
-        value: async function launch() {
+        value: function () {
+            var _ref2 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2() {
+                return regeneratorRuntime.wrap(function _callee2$(_context2) {
+                    while (1) {
+                        switch (_context2.prev = _context2.next) {
+                            case 0:
+                                if (!(document.readyState === "complete" || document.readyState === "loaded" || document.readyState === "interactive")) {
+                                    _context2.next = 6;
+                                    break;
+                                }
 
-            if (document.readyState === "complete" || document.readyState === "loaded" || document.readyState === "interactive") {
-                console.log("Already completed loading.");
-                await this.trigger();
-            } else {
-                console.log("Waiting for DOM content to load");
-                document.addEventListener('DOMContentLoaded', this.trigger.bind(this), true);
+                                console.log("Already completed loading.");
+                                _context2.next = 4;
+                                return this.trigger();
+
+                            case 4:
+                                _context2.next = 8;
+                                break;
+
+                            case 6:
+                                console.log("Waiting for DOM content to load");
+                                document.addEventListener('DOMContentLoaded', this.trigger.bind(this), true);
+
+                            case 8:
+                            case "end":
+                                return _context2.stop();
+                        }
+                    }
+                }, _callee2, this);
+            }));
+
+            function launch() {
+                return _ref2.apply(this, arguments);
             }
-        }
+
+            return launch;
+        }()
     }]);
 
     return Launcher;
@@ -54700,24 +54805,46 @@ module.exports.Launcher = Launcher;
 "use strict";
 
 
+var persistenceLayerFactory = function () {
+    var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
+        var remote, datastore;
+        return regeneratorRuntime.wrap(function _callee$(_context) {
+            while (1) {
+                switch (_context.prev = _context.next) {
+                    case 0:
+
+                        console.log("Using electron persistence layer and disk store");
+
+                        remote = __webpack_require__(/*! electron */ "electron").remote;
+
+
+                        console.log("Accessing datastore...");
+                        datastore = remote.getGlobal("datastore");
+
+                        console.log("Accessing datastore...done");
+
+                        return _context.abrupt("return", new PersistenceLayer(datastore));
+
+                    case 6:
+                    case "end":
+                        return _context.stop();
+                }
+            }
+        }, _callee, this);
+    }));
+
+    return function persistenceLayerFactory() {
+        return _ref.apply(this, arguments);
+    };
+}();
+
+function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
+
 var _require = __webpack_require__(/*! ../datastore/PersistenceLayer.js */ "./web/js/datastore/PersistenceLayer.js"),
     PersistenceLayer = _require.PersistenceLayer;
 
 var _require2 = __webpack_require__(/*! ./Launcher */ "./web/js/apps/Launcher.js"),
     Launcher = _require2.Launcher;
-
-async function persistenceLayerFactory() {
-
-    console.log("Using electron persistence layer and disk store");
-
-    var remote = __webpack_require__(/*! electron */ "electron").remote;
-
-    console.log("Accessing datastore...");
-    var datastore = remote.getGlobal("datastore");
-    console.log("Accessing datastore...done");
-
-    return new PersistenceLayer(datastore);
-}
 
 new Launcher(persistenceLayerFactory).launch().then(function () {
     console.log("App now loaded.");
@@ -56028,6 +56155,8 @@ module.exports.RendererContextMenu = RendererContextMenu;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
+function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 var Controller = function () {
@@ -56057,9 +56186,29 @@ var Controller = function () {
 
     _createClass(Controller, [{
         key: "onDocumentLoaded",
-        value: async function onDocumentLoaded(fingerprint, nrPages, currentlySelectedPageNum) {
-            await this.model.documentLoaded(fingerprint, nrPages, currentlySelectedPageNum);
-        }
+        value: function () {
+            var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(fingerprint, nrPages, currentlySelectedPageNum) {
+                return regeneratorRuntime.wrap(function _callee$(_context) {
+                    while (1) {
+                        switch (_context.prev = _context.next) {
+                            case 0:
+                                _context.next = 2;
+                                return this.model.documentLoaded(fingerprint, nrPages, currentlySelectedPageNum);
+
+                            case 2:
+                            case "end":
+                                return _context.stop();
+                        }
+                    }
+                }, _callee, this);
+            }));
+
+            function onDocumentLoaded(_x, _x2, _x3) {
+                return _ref.apply(this, arguments);
+            }
+
+            return onDocumentLoaded;
+        }()
 
         /**
          * Mark the given page number as read.
@@ -56067,10 +56216,30 @@ var Controller = function () {
 
     }, {
         key: "createPagemark",
-        value: async function createPagemark(pageNum, options) {
-            console.log("Controller sees pagemark created: " + pageNum, options);
-            await this.model.createPagemark(pageNum, options);
-        }
+        value: function () {
+            var _ref2 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2(pageNum, options) {
+                return regeneratorRuntime.wrap(function _callee2$(_context2) {
+                    while (1) {
+                        switch (_context2.prev = _context2.next) {
+                            case 0:
+                                console.log("Controller sees pagemark created: " + pageNum, options);
+                                _context2.next = 3;
+                                return this.model.createPagemark(pageNum, options);
+
+                            case 3:
+                            case "end":
+                                return _context2.stop();
+                        }
+                    }
+                }, _callee2, this);
+            }));
+
+            function createPagemark(_x4, _x5) {
+                return _ref2.apply(this, arguments);
+            }
+
+            return createPagemark;
+        }()
     }, {
         key: "erasePagemarks",
         value: function erasePagemarks(pageNum, options) {
@@ -56115,6 +56284,8 @@ module.exports.Controller = Controller;
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+
+function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -56240,23 +56411,52 @@ var WebController = function (_Controller) {
 
     }, {
         key: "keyBindingPagemarkEntirePage",
-        value: async function keyBindingPagemarkEntirePage(event) {
+        value: function () {
+            var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(event) {
+                var pageElement, pageNum;
+                return regeneratorRuntime.wrap(function _callee$(_context) {
+                    while (1) {
+                        switch (_context.prev = _context.next) {
+                            case 0:
 
-            log.info("Marking entire page as read.");
+                                log.info("Marking entire page as read.");
 
-            var pageElement = this.docFormat.getCurrentPageElement();
+                                pageElement = this.docFormat.getCurrentPageElement();
 
-            if (pageElement) {
+                                if (!pageElement) {
+                                    _context.next = 9;
+                                    break;
+                                }
 
-                var pageNum = this.docFormat.getPageNumFromPageElement(pageElement);
+                                pageNum = this.docFormat.getPageNumFromPageElement(pageElement);
 
-                this.erasePagemarks(pageNum);
-                await this.createPagemark(pageNum);
-            } else {
 
-                log.warn("No current pageElement to create pagemark.");
+                                this.erasePagemarks(pageNum);
+                                _context.next = 7;
+                                return this.createPagemark(pageNum);
+
+                            case 7:
+                                _context.next = 10;
+                                break;
+
+                            case 9:
+
+                                log.warn("No current pageElement to create pagemark.");
+
+                            case 10:
+                            case "end":
+                                return _context.stop();
+                        }
+                    }
+                }, _callee, this);
+            }));
+
+            function keyBindingPagemarkEntirePage(_x) {
+                return _ref.apply(this, arguments);
             }
-        }
+
+            return keyBindingPagemarkEntirePage;
+        }()
     }, {
         key: "keyBindingPagemarkUpToMouse",
         value: function keyBindingPagemarkUpToMouse(event) {
@@ -56272,32 +56472,58 @@ var WebController = function (_Controller) {
         }
     }, {
         key: "keyBindingListener",
-        value: async function keyBindingListener(event) {
+        value: function () {
+            var _ref2 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2(event) {
+                return regeneratorRuntime.wrap(function _callee2$(_context2) {
+                    while (1) {
+                        switch (_context2.prev = _context2.next) {
+                            case 0:
+                                if (!KeyEvents.isKeyMetaActive(event)) {
+                                    _context2.next = 13;
+                                    break;
+                                }
 
-            if (KeyEvents.isKeyMetaActive(event)) {
+                                if (!event.key) {
+                                    _context2.next = 11;
+                                    break;
+                                }
 
-                if (event.key) {
+                                _context2.t0 = event.code;
+                                _context2.next = _context2.t0 === "KeyE" ? 5 : _context2.t0 === "KeyN" ? 7 : 10;
+                                break;
 
-                    // TODO: we should not use 'code' but should use 'key'... The
-                    // problem is that on OS X the key code returned 'Dead' but was
-                    // working before.  Not sure why it started breaking.
-                    switch (event.code) {
+                            case 5:
+                                this.keyBindingErasePagemark(event);
+                                return _context2.abrupt("break", 11);
 
-                        case "KeyE":
-                            this.keyBindingErasePagemark(event);
-                            break;
+                            case 7:
+                                _context2.next = 9;
+                                return this.keyBindingPagemarkEntirePage(event);
 
-                        case "KeyN":
-                            await this.keyBindingPagemarkEntirePage(event);
-                            break;
+                            case 9:
+                                return _context2.abrupt("break", 11);
 
-                        default:
-                            break;
+                            case 10:
+                                return _context2.abrupt("break", 11);
 
+                            case 11:
+                                _context2.next = 13;
+                                break;
+
+                            case 13:
+                            case "end":
+                                return _context2.stop();
+                        }
                     }
-                }
-            } else {}
-        }
+                }, _callee2, this);
+            }));
+
+            function keyBindingListener(_x2) {
+                return _ref2.apply(this, arguments);
+            }
+
+            return keyBindingListener;
+        }()
     }, {
         key: "listenForKeyBindings",
         value: function listenForKeyBindings() {
@@ -56333,6 +56559,8 @@ module.exports.WebController = WebController;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
+function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 // A datastore that supports ledgers and checkpoints.
@@ -56348,7 +56576,25 @@ var Datastore = function () {
     /**
      * Init the datastore, potentially reading files of disk, the network, etc.
      */
-    value: async function init() {}
+    value: function () {
+      var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
+        return regeneratorRuntime.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee, this);
+      }));
+
+      function init() {
+        return _ref.apply(this, arguments);
+      }
+
+      return init;
+    }()
 
     /**
      * Get the data for the DocMeta object we currently in the datastore for
@@ -56359,7 +56605,25 @@ var Datastore = function () {
 
   }, {
     key: "getDocMeta",
-    value: async function getDocMeta(fingerprint) {}
+    value: function () {
+      var _ref2 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2(fingerprint) {
+        return regeneratorRuntime.wrap(function _callee2$(_context2) {
+          while (1) {
+            switch (_context2.prev = _context2.next) {
+              case 0:
+              case "end":
+                return _context2.stop();
+            }
+          }
+        }, _callee2, this);
+      }));
+
+      function getDocMeta(_x) {
+        return _ref2.apply(this, arguments);
+      }
+
+      return getDocMeta;
+    }()
 
     /**
      * Write the datastore to disk.
@@ -56370,7 +56634,25 @@ var Datastore = function () {
 
   }, {
     key: "sync",
-    value: async function sync(fingerprint, data) {}
+    value: function () {
+      var _ref3 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee3(fingerprint, data) {
+        return regeneratorRuntime.wrap(function _callee3$(_context3) {
+          while (1) {
+            switch (_context3.prev = _context3.next) {
+              case 0:
+              case "end":
+                return _context3.stop();
+            }
+          }
+        }, _callee3, this);
+      }));
+
+      function sync(_x2, _x3) {
+        return _ref3.apply(this, arguments);
+      }
+
+      return sync;
+    }()
   }]);
 
   return Datastore;
@@ -56395,6 +56677,8 @@ module.exports.Datastore = Datastore;
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -56442,9 +56726,29 @@ var PersistenceLayer = function () {
 
     _createClass(PersistenceLayer, [{
         key: "init",
-        value: async function init() {
-            await this.datastore.init();
-        }
+        value: function () {
+            var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
+                return regeneratorRuntime.wrap(function _callee$(_context) {
+                    while (1) {
+                        switch (_context.prev = _context.next) {
+                            case 0:
+                                _context.next = 2;
+                                return this.datastore.init();
+
+                            case 2:
+                            case "end":
+                                return _context.stop();
+                        }
+                    }
+                }, _callee, this);
+            }));
+
+            function init() {
+                return _ref.apply(this, arguments);
+            }
+
+            return init;
+        }()
 
         /**
          * Get the DocMeta object we currently in the datastore for this given
@@ -56453,20 +56757,51 @@ var PersistenceLayer = function () {
 
     }, {
         key: "getDocMeta",
-        value: async function getDocMeta(fingerprint) {
+        value: function () {
+            var _ref2 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2(fingerprint) {
+                var data;
+                return regeneratorRuntime.wrap(function _callee2$(_context2) {
+                    while (1) {
+                        switch (_context2.prev = _context2.next) {
+                            case 0:
+                                _context2.next = 2;
+                                return this.datastore.getDocMeta(fingerprint);
 
-            var data = await this.datastore.getDocMeta(fingerprint);
+                            case 2:
+                                data = _context2.sent;
 
-            if (!data) {
-                return null;
+                                if (data) {
+                                    _context2.next = 5;
+                                    break;
+                                }
+
+                                return _context2.abrupt("return", null);
+
+                            case 5:
+                                if (typeof data === "string") {
+                                    _context2.next = 7;
+                                    break;
+                                }
+
+                                throw new Error("Expected string and received: " + (typeof data === "undefined" ? "undefined" : _typeof(data)));
+
+                            case 7:
+                                return _context2.abrupt("return", DocMetas.deserialize(data));
+
+                            case 8:
+                            case "end":
+                                return _context2.stop();
+                        }
+                    }
+                }, _callee2, this);
+            }));
+
+            function getDocMeta(_x) {
+                return _ref2.apply(this, arguments);
             }
 
-            if (!(typeof data === "string")) {
-                throw new Error("Expected string and received: " + (typeof data === "undefined" ? "undefined" : _typeof(data)));
-            }
-
-            return DocMetas.deserialize(data);
-        }
+            return getDocMeta;
+        }()
 
         /**
          * Convenience method to not require the fingerprint.
@@ -56474,9 +56809,28 @@ var PersistenceLayer = function () {
 
     }, {
         key: "syncDocMeta",
-        value: async function syncDocMeta(docMeta) {
-            return this.sync(docMeta.docInfo.fingerprint, docMeta);
-        }
+        value: function () {
+            var _ref3 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee3(docMeta) {
+                return regeneratorRuntime.wrap(function _callee3$(_context3) {
+                    while (1) {
+                        switch (_context3.prev = _context3.next) {
+                            case 0:
+                                return _context3.abrupt("return", this.sync(docMeta.docInfo.fingerprint, docMeta));
+
+                            case 1:
+                            case "end":
+                                return _context3.stop();
+                        }
+                    }
+                }, _callee3, this);
+            }));
+
+            function syncDocMeta(_x2) {
+                return _ref3.apply(this, arguments);
+            }
+
+            return syncDocMeta;
+        }()
 
         /**
          * Write the datastore to disk.
@@ -56484,24 +56838,49 @@ var PersistenceLayer = function () {
 
     }, {
         key: "sync",
-        value: async function sync(fingerprint, docMeta) {
+        value: function () {
+            var _ref4 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee4(fingerprint, docMeta) {
+                var data;
+                return regeneratorRuntime.wrap(function _callee4$(_context4) {
+                    while (1) {
+                        switch (_context4.prev = _context4.next) {
+                            case 0:
 
-            Preconditions.assertNotNull(fingerprint, "fingerprint");
-            Preconditions.assertNotNull(docMeta, "docMeta");
+                                Preconditions.assertNotNull(fingerprint, "fingerprint");
+                                Preconditions.assertNotNull(docMeta, "docMeta");
 
-            console.log("Sync of docMeta with fingerprint: ", fingerprint);
+                                console.log("Sync of docMeta with fingerprint: ", fingerprint);
 
-            if (!docMeta instanceof DocMeta) {
-                throw new Error("Can not sync anything other than DocMeta.");
+                                if (!(!docMeta instanceof DocMeta)) {
+                                    _context4.next = 5;
+                                    break;
+                                }
+
+                                throw new Error("Can not sync anything other than DocMeta.");
+
+                            case 5:
+
+                                // NOTE that we always write the state with JSON pretty printing.
+                                // Otherwise tools like git diff , etc will be impossible to deal with
+                                // in practice.
+                                data = DocMetas.serialize(docMeta, "  ");
+                                _context4.next = 8;
+                                return this.datastore.sync(fingerprint, data);
+
+                            case 8:
+                            case "end":
+                                return _context4.stop();
+                        }
+                    }
+                }, _callee4, this);
+            }));
+
+            function sync(_x3, _x4) {
+                return _ref4.apply(this, arguments);
             }
 
-            // NOTE that we always write the state with JSON pretty printing.
-            // Otherwise tools like git diff , etc will be impossible to deal with
-            // in practice.
-            var data = DocMetas.serialize(docMeta, "  ");
-
-            await this.datastore.sync(fingerprint, data);
-        }
+            return sync;
+        }()
     }]);
 
     return PersistenceLayer;
@@ -59896,6 +60275,8 @@ module.exports.ConsoleLogger = ConsoleLogger;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
+function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 // Simple logger that meets the requirements we have for Polar.
@@ -59953,47 +60334,84 @@ var Logger = function () {
 
     }, {
         key: "init",
-        value: async function init(logsDir, options) {
+        value: function () {
+            var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(logsDir, options) {
+                return regeneratorRuntime.wrap(function _callee$(_context) {
+                    while (1) {
+                        switch (_context.prev = _context.next) {
+                            case 0:
+                                if (!initialized) {
+                                    _context.next = 2;
+                                    break;
+                                }
 
-            if (initialized) {
-                throw new Error("Already initialized");
+                                throw new Error("Already initialized");
+
+                            case 2:
+                                if (process) {
+                                    _context.next = 4;
+                                    break;
+                                }
+
+                                throw new Error("No process");
+
+                            case 4:
+                                if (!(process.type === "renderer")) {
+                                    _context.next = 6;
+                                    break;
+                                }
+
+                                throw new Error("Must initialize from the main electron process (process=" + process.type + ")");
+
+                            case 6:
+
+                                options = Objects.defaults(options, { createDir: true });
+
+                                if (!options.createDir) {
+                                    _context.next = 10;
+                                    break;
+                                }
+
+                                _context.next = 10;
+                                return Files.createDirAsync(logsDir);
+
+                            case 10:
+
+                                // *** configure console
+                                log.transports.console.level = "info";
+                                log.transports.console.format = "[{y}-{m}-{d} {h}:{i}:{s}.{ms} {z}] [{level}] {text}";
+
+                                // *** configure file
+
+                                // set the directory name properly
+                                log.transports.file.file = logsDir + "/polar.log";
+                                log.transports.file.format = "[{y}-{m}-{d} {h}:{i}:{s}.{ms} {z}] [{level}] {text}";
+
+                                log.transports.file.level = "info";
+                                log.transports.file.appName = "polar";
+
+                                // make the target use the new configured log (not the console).
+                                Logger.setLoggerDelegate(log);
+
+                                // FIXME: this won't work globally... nor is this needed any more since
+                                // we have DelegatedLogger. It might be nice to actually support swapping
+                                // this out at runtime.
+                                initialized = true;
+
+                            case 18:
+                            case "end":
+                                return _context.stop();
+                        }
+                    }
+                }, _callee, this);
+            }));
+
+            function init(_x, _x2) {
+                return _ref.apply(this, arguments);
             }
 
-            if (!process) {
-                throw new Error("No process");
-            }
-
-            if (process.type === "renderer") {
-                throw new Error("Must initialize from the main electron process (process=" + process.type + ")");
-            }
-
-            options = Objects.defaults(options, { createDir: true });
-
-            if (options.createDir) {
-                await Files.createDirAsync(logsDir);
-            }
-
-            // *** configure console
-            log.transports.console.level = "info";
-            log.transports.console.format = "[{y}-{m}-{d} {h}:{i}:{s}.{ms} {z}] [{level}] {text}";
-
-            // *** configure file
-
-            // set the directory name properly
-            log.transports.file.file = logsDir + "/polar.log";
-            log.transports.file.format = "[{y}-{m}-{d} {h}:{i}:{s}.{ms} {z}] [{level}] {text}";
-
-            log.transports.file.level = "info";
-            log.transports.file.appName = "polar";
-
-            // make the target use the new configured log (not the console).
-            Logger.setLoggerDelegate(log);
-
-            // FIXME: this won't work globally... nor is this needed any more since
-            // we have DelegatedLogger. It might be nice to actually support swapping
-            // this out at runtime.
-            initialized = true;
-        }
+            return init;
+        }()
     }]);
 
     return Logger;
@@ -63341,6 +63759,8 @@ module.exports.PagemarkController = PagemarkController;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
+function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 var $ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
@@ -63406,37 +63826,84 @@ var PagemarkCoverageEventListener = function () {
         }
     }, {
         key: "mouseListener",
-        value: async function mouseListener(event) {
+        value: function () {
+            var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(event) {
+                return regeneratorRuntime.wrap(function _callee$(_context) {
+                    while (1) {
+                        switch (_context.prev = _context.next) {
+                            case 0:
+                                if (event) {
+                                    _context.next = 2;
+                                    break;
+                                }
 
-            if (!event) {
-                throw new Error("no event");
+                                throw new Error("no event");
+
+                            case 2:
+                                if (this.keyActivated) {
+                                    _context.next = 4;
+                                    break;
+                                }
+
+                                return _context.abrupt("return");
+
+                            case 4:
+                                _context.next = 6;
+                                return this.onActivated(event);
+
+                            case 6:
+                            case "end":
+                                return _context.stop();
+                        }
+                    }
+                }, _callee, this);
+            }));
+
+            function mouseListener(_x) {
+                return _ref.apply(this, arguments);
             }
 
-            if (!this.keyActivated) {
-                return;
-            }
-
-            await this.onActivated(event);
-        }
+            return mouseListener;
+        }()
 
         // https://stackoverflow.com/questions/3234256/find-mouse-position-relative-to-element
 
     }, {
         key: "onActivated",
-        value: async function onActivated(event) {
+        value: function () {
+            var _ref2 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2(event) {
+                var pageElement, height, percentage, pageNum;
+                return regeneratorRuntime.wrap(function _callee2$(_context2) {
+                    while (1) {
+                        switch (_context2.prev = _context2.next) {
+                            case 0:
+                                pageElement = Elements.untilRoot(event.target, ".page");
+                                height = pageElement.clientHeight;
+                                percentage = event.offsetY / height * 100;
 
-            var pageElement = Elements.untilRoot(event.target, ".page");
 
-            var height = pageElement.clientHeight;
+                                log.info("percentage: ", percentage);
 
-            var percentage = event.offsetY / height * 100;
+                                pageNum = this.docFormat.getPageNumFromPageElement(pageElement);
 
-            log.info("percentage: ", percentage);
+                                this.controller.erasePagemark(pageNum);
+                                _context2.next = 8;
+                                return this.controller.createPagemark(pageNum, { percentage: percentage });
 
-            var pageNum = this.docFormat.getPageNumFromPageElement(pageElement);
-            this.controller.erasePagemark(pageNum);
-            await this.controller.createPagemark(pageNum, { percentage: percentage });
-        }
+                            case 8:
+                            case "end":
+                                return _context2.stop();
+                        }
+                    }
+                }, _callee2, this);
+            }));
+
+            function onActivated(_x2) {
+                return _ref2.apply(this, arguments);
+            }
+
+            return onActivated;
+        }()
     }]);
 
     return PagemarkCoverageEventListener;
@@ -65465,6 +65932,8 @@ module.exports.CompositePagemarkRedrawer = CompositePagemarkRedrawer;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
+function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
@@ -65514,18 +65983,58 @@ var MainPagemarkRedrawer = function (_PagemarkRedrawer) {
 
             // TODO: migrate to using PageRedrawHandler
 
-            pageElement.addEventListener('DOMNodeInserted', async function (event) {
+            pageElement.addEventListener('DOMNodeInserted', function () {
+                var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(event) {
+                    return regeneratorRuntime.wrap(function _callee$(_context) {
+                        while (1) {
+                            switch (_context.prev = _context.next) {
+                                case 0:
+                                    if (!(event.target && event.target.className === "endOfContent")) {
+                                        _context.next = 3;
+                                        break;
+                                    }
 
-                if (event.target && event.target.className === "endOfContent") {
-                    await _this2.__render(pageElement);
-                }
-            }, false);
+                                    _context.next = 3;
+                                    return _this2.__render(pageElement);
+
+                                case 3:
+                                case "end":
+                                    return _context.stop();
+                            }
+                        }
+                    }, _callee, _this2);
+                }));
+
+                return function (_x) {
+                    return _ref.apply(this, arguments);
+                };
+            }(), false);
         }
     }, {
         key: "__render",
-        value: async function __render(pageElement) {
-            await this.view.recreatePagemarksFromPageElement(pageElement);
-        }
+        value: function () {
+            var _ref2 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2(pageElement) {
+                return regeneratorRuntime.wrap(function _callee2$(_context2) {
+                    while (1) {
+                        switch (_context2.prev = _context2.next) {
+                            case 0:
+                                _context2.next = 2;
+                                return this.view.recreatePagemarksFromPageElement(pageElement);
+
+                            case 2:
+                            case "end":
+                                return _context2.stop();
+                        }
+                    }
+                }, _callee2, this);
+            }));
+
+            function __render(_x2) {
+                return _ref2.apply(this, arguments);
+            }
+
+            return __render;
+        }()
     }]);
 
     return MainPagemarkRedrawer;
@@ -67296,6 +67805,8 @@ module.exports.Elements = Elements;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
+function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 var util = __webpack_require__(/*! util */ "util");
@@ -67325,52 +67836,138 @@ var Files = function () {
 
     _createClass(Files, [{
         key: 'readFileAsync',
-        value: async function readFileAsync(path) {
-            throw new Error("Not replaced via promisify");
-        }
+        value: function () {
+            var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(path) {
+                return regeneratorRuntime.wrap(function _callee$(_context) {
+                    while (1) {
+                        switch (_context.prev = _context.next) {
+                            case 0:
+                                throw new Error("Not replaced via promisify");
+
+                            case 1:
+                            case 'end':
+                                return _context.stop();
+                        }
+                    }
+                }, _callee, this);
+            }));
+
+            function readFileAsync(_x) {
+                return _ref.apply(this, arguments);
+            }
+
+            return readFileAsync;
+        }()
 
         // https://nodejs.org/api/fs.html#fs_fs_writefile_file_data_options_callback
 
     }, {
         key: 'writeFileAsync',
-        value: async function writeFileAsync(path, data) {
-            throw new Error("Not replaced via promisify");
-        }
-    }, {
-        key: 'createDirAsync',
-        value: async function createDirAsync(dir) {
+        value: function () {
+            var _ref2 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2(path, data) {
+                return regeneratorRuntime.wrap(function _callee2$(_context2) {
+                    while (1) {
+                        switch (_context2.prev = _context2.next) {
+                            case 0:
+                                throw new Error("Not replaced via promisify");
 
-            var result = {
-                dir: dir
-            };
+                            case 1:
+                            case 'end':
+                                return _context2.stop();
+                        }
+                    }
+                }, _callee2, this);
+            }));
 
-            if (await this.existsAsync(dir)) {
-                result.exists = true;
-            } else {
-                result.created = true;
-                await this.mkdirAsync(dir);
+            function writeFileAsync(_x2, _x3) {
+                return _ref2.apply(this, arguments);
             }
 
-            return result;
-        }
+            return writeFileAsync;
+        }()
+    }, {
+        key: 'createDirAsync',
+        value: function () {
+            var _ref3 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee3(dir) {
+                var result;
+                return regeneratorRuntime.wrap(function _callee3$(_context3) {
+                    while (1) {
+                        switch (_context3.prev = _context3.next) {
+                            case 0:
+                                result = {
+                                    dir: dir
+                                };
+                                _context3.next = 3;
+                                return this.existsAsync(dir);
+
+                            case 3:
+                                if (!_context3.sent) {
+                                    _context3.next = 7;
+                                    break;
+                                }
+
+                                result.exists = true;
+                                _context3.next = 10;
+                                break;
+
+                            case 7:
+                                result.created = true;
+                                _context3.next = 10;
+                                return this.mkdirAsync(dir);
+
+                            case 10:
+                                return _context3.abrupt('return', result);
+
+                            case 11:
+                            case 'end':
+                                return _context3.stop();
+                        }
+                    }
+                }, _callee3, this);
+            }));
+
+            function createDirAsync(_x4) {
+                return _ref3.apply(this, arguments);
+            }
+
+            return createDirAsync;
+        }()
     }, {
         key: 'existsAsync',
-        value: async function existsAsync(path) {
+        value: function () {
+            var _ref4 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee4(path) {
+                return regeneratorRuntime.wrap(function _callee4$(_context4) {
+                    while (1) {
+                        switch (_context4.prev = _context4.next) {
+                            case 0:
+                                return _context4.abrupt('return', new Promise(function (resolve, reject) {
 
-            return new Promise(function (resolve, reject) {
+                                    this.statAsync(path).then(function () {
+                                        resolve(true);
+                                    }).catch(function (err) {
+                                        if (err.code === 'ENOENT') {
+                                            resolve(false);
+                                        } else {
+                                            // some other error
+                                            reject(err);
+                                        }
+                                    });
+                                }.bind(this)));
 
-                this.statAsync(path).then(function () {
-                    resolve(true);
-                }).catch(function (err) {
-                    if (err.code === 'ENOENT') {
-                        resolve(false);
-                    } else {
-                        // some other error
-                        reject(err);
+                            case 1:
+                            case 'end':
+                                return _context4.stop();
+                        }
                     }
-                });
-            }.bind(this));
-        }
+                }, _callee4, this);
+            }));
+
+            function existsAsync(_x5) {
+                return _ref4.apply(this, arguments);
+            }
+
+            return existsAsync;
+        }()
 
         /**
          *  Remove a file, whether it is present or not.  Make sure it's not there.
@@ -67378,11 +67975,38 @@ var Files = function () {
 
     }, {
         key: 'removeAsync',
-        value: async function removeAsync(path) {
-            if (await this.existsAsync(path)) {
-                await this.unlinkAsync(path);
+        value: function () {
+            var _ref5 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee5(path) {
+                return regeneratorRuntime.wrap(function _callee5$(_context5) {
+                    while (1) {
+                        switch (_context5.prev = _context5.next) {
+                            case 0:
+                                _context5.next = 2;
+                                return this.existsAsync(path);
+
+                            case 2:
+                                if (!_context5.sent) {
+                                    _context5.next = 5;
+                                    break;
+                                }
+
+                                _context5.next = 5;
+                                return this.unlinkAsync(path);
+
+                            case 5:
+                            case 'end':
+                                return _context5.stop();
+                        }
+                    }
+                }, _callee5, this);
+            }));
+
+            function removeAsync(_x6) {
+                return _ref5.apply(this, arguments);
             }
-        }
+
+            return removeAsync;
+        }()
 
         // static readFileAsync = util.promisify(fs.readFile);
         // static writeFileAsync = util.promisify(fs.writeFile);
@@ -67463,6 +68087,8 @@ module.exports.FunctionalInterface = FunctionalInterface;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
+function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 var _require = __webpack_require__(/*! ../Preconditions */ "./web/js/Preconditions.js"),
@@ -67538,19 +68164,54 @@ var Functions = function () {
          * @param dict
          * @param callback
          */
-        value: async function forOwnKeys(dict, callback) {
+        value: function () {
+            var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(dict, callback) {
+                var key, value;
+                return regeneratorRuntime.wrap(function _callee$(_context) {
+                    while (1) {
+                        switch (_context.prev = _context.next) {
+                            case 0:
 
-            Preconditions.assertNotNull(dict, "dict");
-            Preconditions.assertNotNull(callback, "callback");
+                                Preconditions.assertNotNull(dict, "dict");
+                                Preconditions.assertNotNull(callback, "callback");
 
-            for (var key in dict) {
+                                _context.t0 = regeneratorRuntime.keys(dict);
 
-                if (dict.hasOwnProperty(key)) {
-                    var value = dict[key];
-                    await callback(key, value);
-                }
+                            case 3:
+                                if ((_context.t1 = _context.t0()).done) {
+                                    _context.next = 11;
+                                    break;
+                                }
+
+                                key = _context.t1.value;
+
+                                if (!dict.hasOwnProperty(key)) {
+                                    _context.next = 9;
+                                    break;
+                                }
+
+                                value = dict[key];
+                                _context.next = 9;
+                                return callback(key, value);
+
+                            case 9:
+                                _context.next = 3;
+                                break;
+
+                            case 11:
+                            case "end":
+                                return _context.stop();
+                        }
+                    }
+                }, _callee, this);
+            }));
+
+            function forOwnKeys(_x, _x2) {
+                return _ref.apply(this, arguments);
             }
-        }
+
+            return forOwnKeys;
+        }()
     }, {
         key: "withTimeout",
 
@@ -67558,19 +68219,37 @@ var Functions = function () {
         /**
          * Calls the given callback as a promise which we can await.
          */
-        value: async function withTimeout(timeout, callback) {
+        value: function () {
+            var _ref2 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2(timeout, callback) {
+                return regeneratorRuntime.wrap(function _callee2$(_context2) {
+                    while (1) {
+                        switch (_context2.prev = _context2.next) {
+                            case 0:
+                                return _context2.abrupt("return", new Promise(function (resolve, reject) {
 
-            return new Promise(function (resolve, reject) {
+                                    setTimeout(function () {
+                                        callback().then(function (result) {
+                                            return resolve(result);
+                                        }).catch(function (err) {
+                                            return reject(err);
+                                        });
+                                    }, timeout);
+                                }));
 
-                setTimeout(function () {
-                    callback().then(function (result) {
-                        return resolve(result);
-                    }).catch(function (err) {
-                        return reject(err);
-                    });
-                }, timeout);
-            });
-        }
+                            case 1:
+                            case "end":
+                                return _context2.stop();
+                        }
+                    }
+                }, _callee2, this);
+            }));
+
+            function withTimeout(_x3, _x4) {
+                return _ref2.apply(this, arguments);
+            }
+
+            return withTimeout;
+        }()
 
         /**
          * A promise based timeout.  This just returns a promise which returns
@@ -67583,15 +68262,33 @@ var Functions = function () {
 
     }, {
         key: "waitFor",
-        value: async function waitFor(timeout) {
+        value: function () {
+            var _ref3 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee3(timeout) {
+                return regeneratorRuntime.wrap(function _callee3$(_context3) {
+                    while (1) {
+                        switch (_context3.prev = _context3.next) {
+                            case 0:
+                                return _context3.abrupt("return", new Promise(function (resolve) {
 
-            return new Promise(function (resolve) {
+                                    setTimeout(function () {
+                                        resolve();
+                                    }, timeout);
+                                }));
 
-                setTimeout(function () {
-                    resolve();
-                }, timeout);
-            });
-        }
+                            case 1:
+                            case "end":
+                                return _context3.stop();
+                        }
+                    }
+                }, _callee3, this);
+            }));
+
+            function waitFor(_x5) {
+                return _ref3.apply(this, arguments);
+            }
+
+            return waitFor;
+        }()
 
         /**
          *
@@ -68728,6 +69425,8 @@ module.exports.View = View;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
+function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
@@ -68916,37 +69615,62 @@ var WebView = function (_View) {
 
     }, {
         key: "recreatePagemarksFromPageElement",
-        value: async function recreatePagemarksFromPageElement(pageElement, options) {
-            var _this2 = this;
+        value: function () {
+            var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(pageElement, options) {
+                var _this2 = this;
 
-            var pageNum = this.docFormat.getPageNumFromPageElement(pageElement);
+                var pageNum, docMeta, pageMeta;
+                return regeneratorRuntime.wrap(function _callee$(_context) {
+                    while (1) {
+                        switch (_context.prev = _context.next) {
+                            case 0:
+                                pageNum = this.docFormat.getPageNumFromPageElement(pageElement);
 
-            Preconditions.assertNotNull(pageNum, "pageNum");
-            Preconditions.assertNumber(pageNum, "pageNum");
 
-            if (pageNum <= 0) {
-                throw new Error("Page numbers must be >= 1: " + pageNum);
+                                Preconditions.assertNotNull(pageNum, "pageNum");
+                                Preconditions.assertNumber(pageNum, "pageNum");
+
+                                if (!(pageNum <= 0)) {
+                                    _context.next = 5;
+                                    break;
+                                }
+
+                                throw new Error("Page numbers must be >= 1: " + pageNum);
+
+                            case 5:
+                                docMeta = this.model.docMeta;
+                                pageMeta = docMeta.pageMetas[pageNum];
+
+
+                                Preconditions.assertNotNull(pageMeta, "pageMeta");
+
+                                forDict(pageMeta.pagemarks, function (column, pagemark) {
+
+                                    console.log("Creating pagemarks for page: " + pageNum);
+
+                                    var recreatePagemarkOptions = Object.assign({}, options);
+
+                                    recreatePagemarkOptions.pagemark = pagemark;
+
+                                    _this2.recreatePagemark(pageElement, recreatePagemarkOptions);
+                                });
+
+                                //this.recreatePagemark(pageElement);
+
+                            case 9:
+                            case "end":
+                                return _context.stop();
+                        }
+                    }
+                }, _callee, this);
+            }));
+
+            function recreatePagemarksFromPageElement(_x, _x2) {
+                return _ref.apply(this, arguments);
             }
 
-            var docMeta = this.model.docMeta;
-
-            var pageMeta = docMeta.pageMetas[pageNum];
-
-            Preconditions.assertNotNull(pageMeta, "pageMeta");
-
-            forDict(pageMeta.pagemarks, function (column, pagemark) {
-
-                console.log("Creating pagemarks for page: " + pageNum);
-
-                var recreatePagemarkOptions = Object.assign({}, options);
-
-                recreatePagemarkOptions.pagemark = pagemark;
-
-                _this2.recreatePagemark(pageElement, recreatePagemarkOptions);
-            });
-
-            //this.recreatePagemark(pageElement);
-        }
+            return recreatePagemarksFromPageElement;
+        }()
 
         /**
          * @deprecated Remove in favor of new PagemarkView code

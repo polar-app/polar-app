@@ -11725,6 +11725,8 @@ module.exports.Elements = Elements;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
+function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 var _require = __webpack_require__(/*! ../Preconditions */ "./web/js/Preconditions.js"),
@@ -11800,19 +11802,54 @@ var Functions = function () {
          * @param dict
          * @param callback
          */
-        value: async function forOwnKeys(dict, callback) {
+        value: function () {
+            var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(dict, callback) {
+                var key, value;
+                return regeneratorRuntime.wrap(function _callee$(_context) {
+                    while (1) {
+                        switch (_context.prev = _context.next) {
+                            case 0:
 
-            Preconditions.assertNotNull(dict, "dict");
-            Preconditions.assertNotNull(callback, "callback");
+                                Preconditions.assertNotNull(dict, "dict");
+                                Preconditions.assertNotNull(callback, "callback");
 
-            for (var key in dict) {
+                                _context.t0 = regeneratorRuntime.keys(dict);
 
-                if (dict.hasOwnProperty(key)) {
-                    var value = dict[key];
-                    await callback(key, value);
-                }
+                            case 3:
+                                if ((_context.t1 = _context.t0()).done) {
+                                    _context.next = 11;
+                                    break;
+                                }
+
+                                key = _context.t1.value;
+
+                                if (!dict.hasOwnProperty(key)) {
+                                    _context.next = 9;
+                                    break;
+                                }
+
+                                value = dict[key];
+                                _context.next = 9;
+                                return callback(key, value);
+
+                            case 9:
+                                _context.next = 3;
+                                break;
+
+                            case 11:
+                            case "end":
+                                return _context.stop();
+                        }
+                    }
+                }, _callee, this);
+            }));
+
+            function forOwnKeys(_x, _x2) {
+                return _ref.apply(this, arguments);
             }
-        }
+
+            return forOwnKeys;
+        }()
     }, {
         key: "withTimeout",
 
@@ -11820,19 +11857,37 @@ var Functions = function () {
         /**
          * Calls the given callback as a promise which we can await.
          */
-        value: async function withTimeout(timeout, callback) {
+        value: function () {
+            var _ref2 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2(timeout, callback) {
+                return regeneratorRuntime.wrap(function _callee2$(_context2) {
+                    while (1) {
+                        switch (_context2.prev = _context2.next) {
+                            case 0:
+                                return _context2.abrupt("return", new Promise(function (resolve, reject) {
 
-            return new Promise(function (resolve, reject) {
+                                    setTimeout(function () {
+                                        callback().then(function (result) {
+                                            return resolve(result);
+                                        }).catch(function (err) {
+                                            return reject(err);
+                                        });
+                                    }, timeout);
+                                }));
 
-                setTimeout(function () {
-                    callback().then(function (result) {
-                        return resolve(result);
-                    }).catch(function (err) {
-                        return reject(err);
-                    });
-                }, timeout);
-            });
-        }
+                            case 1:
+                            case "end":
+                                return _context2.stop();
+                        }
+                    }
+                }, _callee2, this);
+            }));
+
+            function withTimeout(_x3, _x4) {
+                return _ref2.apply(this, arguments);
+            }
+
+            return withTimeout;
+        }()
 
         /**
          * A promise based timeout.  This just returns a promise which returns
@@ -11845,15 +11900,33 @@ var Functions = function () {
 
     }, {
         key: "waitFor",
-        value: async function waitFor(timeout) {
+        value: function () {
+            var _ref3 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee3(timeout) {
+                return regeneratorRuntime.wrap(function _callee3$(_context3) {
+                    while (1) {
+                        switch (_context3.prev = _context3.next) {
+                            case 0:
+                                return _context3.abrupt("return", new Promise(function (resolve) {
 
-            return new Promise(function (resolve) {
+                                    setTimeout(function () {
+                                        resolve();
+                                    }, timeout);
+                                }));
 
-                setTimeout(function () {
-                    resolve();
-                }, timeout);
-            });
-        }
+                            case 1:
+                            case "end":
+                                return _context3.stop();
+                        }
+                    }
+                }, _callee3, this);
+            }));
+
+            function waitFor(_x5) {
+                return _ref3.apply(this, arguments);
+            }
+
+            return waitFor;
+        }()
 
         /**
          *
