@@ -1,37 +1,44 @@
 const $ = require('jquery');
 
-const {OffsetCalculator} = require("../../utils.js");
 const {KeyEvents} = require("../../KeyEvents.js");
 const {Elements} = require("../../util/Elements");
-const {DocFormats} = require("../../docformat/DocFormats");
 const {DocFormatFactory} = require("../../docformat/DocFormatFactory");
 const log = require("../../logger/Logger").create();
-
-const BORDER_PADDING = 0;
 
 class PagemarkCoverageEventListener {
 
     /**
      * @param controller {WebController}
+     * @param model {Model}
      */
-    constructor(controller) {
+    constructor(controller, model) {
         this.controller = controller;
+        this.model = model;
         this.keyActivated = false;
         this.docFormat = DocFormatFactory.getInstance();
     }
 
     start() {
+
+        this.model.registerListenerForDocumentLoaded(this.onDocumentLoaded.bind(this));
+
+    }
+
+    onDocumentLoaded() {
+
         document.addEventListener("keyup", this.keyListener.bind(this));
         document.addEventListener("keydown", this.keyListener.bind(this));
-        document.addEventListener("click", this.mouseListener.bind(this));
+
+        document.querySelectorAll(".page").forEach(pageElement => {
+            pageElement.addEventListener("click", this.mouseListener.bind(this));
+        });
+
     }
 
     /**
      * Track that we've selected 'e' on the keyboard,
      */
     keyListener(event) {
-
-        //console.log(event);
 
         if(!event) {
             throw new Error("no event");
@@ -58,102 +65,17 @@ class PagemarkCoverageEventListener {
     // https://stackoverflow.com/questions/3234256/find-mouse-position-relative-to-element
     async onActivated(event) {
 
-        let state = this.getPointerState(event);
+        let pageElement = Elements.untilRoot(event.target, ".page");
 
-        if(state.error) {
-            console.error(state.error);
-            return;
-        }
+        let height = pageElement.clientHeight;
 
-        console.log("Pointer state: ", JSON.stringify(state, null, "  "));
+        let percentage = (event.offsetY / height) * 100;
 
-        // FIXME: based on the pageType and other settings determine the width
-        // and height of the new pagemark. Also, refactor this to make it
-        // testable and throw plenty of tests at this...
+        log.info("percentage: ", percentage);
 
-        if(state.pageOffset.top <= state.mouseTop && state.mouseTop <= state.pageOffset.bottom) {
-
-            // TODO/FIXME: we're not testing whether we're within the page by
-            // looking at the x coordinates.. just the y coordinates.
-
-            // TODO: if I just add the event listeners on the .page elements
-            // I don't need to validate that we're within a page.  The event
-            // listeners will do that for us.
-
-            // make sure the current mouse position is within a page.
-
-            let percentage = (state.mousePageY / state.pageOffset.height) * 100;
-
-            console.log("percentage: ", percentage);
-
-            let pageNum = this.docFormat.getPageNumFromPageElement(state.pageElement);
-            this.controller.erasePagemark(pageNum);
-            await this.controller.createPagemark(pageNum, {percentage});
-
-        } else {
-            console.log("Mouse click was outside of page.")
-        }
-
-    }
-
-    /**
-     * Get the state of the pointer.
-     */
-    getPointerState(event) {
-
-        log.info("Creating pagemark coverage from mouse event: ", event);
-
-        let state = {
-            error: null,
-            pageElement: null,
-            textLayerElement: null,
-            viewport: null,
-            pageOffset: null,
-            mouseTop: null,
-            mousePageY: null
-
-        };
-
-        log.info("Building pagemark for target: ", event.target);
-
-        state.pageElement = Elements.untilRoot(event.target, ".page");
-
-        if(! state.pageElement) {
-            state.error = "Not within a pageElement";
-            return state;
-        }
-
-        state.textLayerElement = state.pageElement.querySelector(".textLayer");
-
-        if(!state.textLayerElement) {
-            state.error = "No text layer";
-            return state;
-        }
-
-        state.viewport = document.getElementById("viewerContainer");
-
-        state.pageOffset = Elements.getRelativeOffsetRect(state.textLayerElement, state.viewport.pageElement);
-
-        log.info("Using page offset: " , state.pageOffset);
-
-        // this is lame.. this is for the border padding.  I don't like hard coding it.
-        state.pageOffset.top += BORDER_PADDING;
-
-        // manually adjust the offsets with correct jquery data.
-        state.pageOffset.height = $(state.textLayerElement).height();
-        state.pageOffset.bottom = state.pageOffset.top + state.pageOffset.height;
-
-        state.mouseTop = event.pageY + state.viewport.scrollTop;
-
-        if(DocFormats.getFormat() === "html") {
-            // the html viewer doesn't need page offset factored in since it
-            // is within an iframe.
-            state.mousePageY = state.mouseTop;
-        } else {
-            state.mousePageY = state.mouseTop - state.pageOffset.top;
-        }
-
-        return state;
+        let pageNum = this.docFormat.getPageNumFromPageElement(pageElement);
+        this.controller.erasePagemark(pageNum);
+        await this.controller.createPagemark(pageNum, {percentage});
 
     }
 

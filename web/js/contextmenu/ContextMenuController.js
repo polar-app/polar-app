@@ -39,8 +39,6 @@ class ContextMenuController {
 
         document.querySelectorAll(".page").forEach((targetElement) => {
 
-            console.log("Adding contextmenu listener on", targetElement);
-
             targetElement.addEventListener("contextmenu", /** @type {MouseEvent} */ (event) => {
 
                 let annotationSelectors = [ ".text-highlight", ".area-highlight", ".pagemark", ".page" ];

@@ -33,7 +33,7 @@ class WebController extends Controller {
         this.listenForDocumentLoad();
         this.listenForKeyBindings();
 
-        new MouseTracer(document).start();
+        //new MouseTracer(document).start();
 
     }
 
@@ -164,7 +164,7 @@ class WebController extends Controller {
 
         new TextHighlightController(this.model).start();
 
-        new PagemarkCoverageEventListener(this).start();
+        new PagemarkCoverageEventListener(this, this.model).start();
 
         new FlashcardsController(this.model).start();
 

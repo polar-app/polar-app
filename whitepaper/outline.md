@@ -100,9 +100,11 @@
 
 # Competitors
 
-- duolingo
 - evernote
-- quizlet
+
+https://www.duolingo.com/
+https://quizlet.com/
+https://www.mendeley.com/
 
 # Business Model
 
@@ -123,3 +125,5 @@
 - firefox extension support
 
 -
+
+#

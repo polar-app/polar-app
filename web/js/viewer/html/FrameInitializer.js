@@ -73,8 +73,11 @@ class FrameInitializer {
     }
 
     startEventBridge() {
-        let eventBridge = new EventBridge(this.textLayer, this.iframe);
-        eventBridge.start();
+
+        document.querySelectorAll(".page").forEach(pageElement => {
+            let eventBridge = new EventBridge(pageElement, this.iframe);
+            eventBridge.start();
+        });
     }
 
 }
