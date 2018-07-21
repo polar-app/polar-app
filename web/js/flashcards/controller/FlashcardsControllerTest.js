@@ -56,18 +56,18 @@ describe('FlashcardsControllerTest', function() {
         let flashcards = model.docMeta.getPageMeta(1).textHighlights["12pNUv1Y9S"].flashcards;
 
         let expected = {
-            "12RiVkVhHR": {
-                "id": "12RiVkVhHR",
+            "1tDRjUqxJA": {
+                "id": "1tDRjUqxJA",
                 "created": "2012-03-02T11:38:49.321Z",
                 "lastUpdated": "2012-03-02T11:38:49.321Z",
                 "author": null,
                 "type": "BASIC_FRONT_BACK",
                 "fields": {
                     "back": {
-                        "MARKDOWN": "This is the back"
+                        "HTML": "This is the back"
                     },
                     "front": {
-                        "MARKDOWN": "This is the front"
+                        "HTML": "This is the front"
                     }
                 }
             }
