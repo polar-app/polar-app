@@ -3,6 +3,7 @@ const shell = electron.shell;
 const BrowserWindow = electron.BrowserWindow;
 
 const BROWSER_WINDOW_OPTIONS = {
+    backgroundColor: '#FFF',
     width: 800,
     height: 600,
     webPreferences: {

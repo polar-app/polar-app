@@ -39,6 +39,7 @@ const options = { extraHeaders: 'pragma: no-cache\nreferer: http://cnn.com\n' };
 const log = Logger.create();
 
 const BROWSER_WINDOW_OPTIONS = {
+    backgroundColor: '#FFF',
     minWidth: 400,
     minHeight: 300,
     width: 1280,

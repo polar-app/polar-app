@@ -3,10 +3,11 @@ const app = electron.app;
 const BrowserWindow = electron.BrowserWindow;
 
 const BROWSER_OPTIONS = {
+    backgroundColor: '#FFF',
     webPreferences: {
         webSecurity: false
     }
-}
+};
 
 class SpectronRenderer {
 
@@ -24,8 +25,8 @@ class SpectronRenderer {
 
                 console.log("Ready!  Creating main window.");
 
-                let mainWindow = new BrowserWindow();
-                mainWindow.loadURL('about:blank')
+                let mainWindow = new BrowserWindow(BROWSER_OPTIONS);
+                mainWindow.loadURL('about:blank');
                 resolve(mainWindow);
 
             });

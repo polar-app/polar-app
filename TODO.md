@@ -8,24 +8,44 @@
 
 - wikipedia pages look poor at 150%
 
-- area highlights
+    - part of it has to do with the source document. my test.html looks better
+      vs the same captured page.  It could be due to font issues I think.
 
-- flashcards
+    - I'm 90% certain that the page is not anti-aliased properly in my polar
+      version vs my simulated electron version. The text looks like its subpixel
+      antialiased in one but not the other.  These bugs are impossible to detect
+      ...  I might be able to thumbnail the page and look ad the hashcode of the
+      binary image data to see if its rendered differently.
 
-- can't create pagemark lower down on the page... elementsFromPage is supposed
+        - I can probably fix this bug easily though... I'm going to have to write
+          down all the gotchas that manifest this problem.
+
+        - FIRST fix this problem as I have NO idea what's happening with this
+          other problem and it might just be SPAA issues...
+
+        - I can disable EVERYTHING but it won't work BUT if I load it as a .html
+          file from the filesystem THEN it works.
+
+    - the Ubuntu AA issues are fixed but they are not resolved on iframe resize!!!
+        - it's even if the DEFAULT scale is 1.5 without JS reload
+        - try it with my minimal test...
+        - my standalone MINIMAL test works when the text is 1.5 by default.. and
+          looks fine.
+
+    - OK.. the bug looks to be an issue if the iframe has its src attribute
+      changed after already being in the DOM previously.. this might also impact
+      resizing it too.  Experiment with injecting a NEW one and see if that
+      fixes the problem.
+
+
+- area highlights implemented
+
+- flashcards implemented
+
+- DONE: can't create pagemark lower down on the page... elementsFromPage is supposed
   to be based on the viewport but neither client nor page seems to fix it.
 
-    - I think this is because the offset position isn't within the parent page.
-
-    - any child iframes in the host iframe ALSO need the proper event offset...
-      I guess I just need a set of events all the way down the tree.
-
-    - wow.. in PDF.js the pageX CHANGES as I move elemtns around the page?  How
-      is that possible?
-
-        MUST be element scroll!!!
-
-- create an AnnotationsController in the rendered that listens to postMessage
+- DONE: create an AnnotationsController in the renderer that listens to postMessage
   for "create-pagemark" , then starts a dialog box to prompt for a flashcard
   text input...
 
