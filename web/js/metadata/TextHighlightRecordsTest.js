@@ -43,7 +43,7 @@ describe('TextHighlightRecords', function() {
                     "notes": {},
                     "questions": {},
                     "flashcards": {},
-                    "thumbnail": null
+                    "image": null
                 }
             };
 

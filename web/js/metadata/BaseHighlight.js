@@ -5,6 +5,7 @@ const {ExtendedAnnotation} = require("./ExtendedAnnotation");
 class BaseHighlight extends ExtendedAnnotation {
 
     constructor(val) {
+
         super(val);
 
         /**
@@ -15,10 +16,11 @@ class BaseHighlight extends ExtendedAnnotation {
         this.rects = {};
 
         /**
-         * Optional thumbnail for this highlight.
+         * Optional image for this highlight.
+         *
          * @type {null}
          */
-        this.thumbnail = null;
+        this.image = null;
 
     }
 

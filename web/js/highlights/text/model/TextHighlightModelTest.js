@@ -51,7 +51,7 @@ describe('TextHighlightModel', function() {
                         "notes": {},
                         "questions": {},
                         "flashcards": {},
-                        "thumbnail": null
+                        "image": null
                     },
                     "mutationType": "INITIAL"
                 }
@@ -104,7 +104,7 @@ describe('TextHighlightModel', function() {
                         "notes": {},
                         "questions": {},
                         "flashcards": {},
-                        "thumbnail": null
+                        "image": null
                     },
                     "mutationType": "SET"
                 }

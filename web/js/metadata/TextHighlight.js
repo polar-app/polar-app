@@ -30,6 +30,8 @@ class TextHighlight extends BaseHighlight {
         // context we also need to include images as well as the format (markdown,
         // html, etc).  It should probably be a map of each snippet type...
         //
+        // There should be one with no context, one with context.
+        //
         // FIXME: text selections should also / probably be a snippet.  Each
         // snippet should also have a rect associated with it.  The 'text'
         // snippet should have a rect for the boundary of the text.

@@ -46,17 +46,17 @@ describe('Flashcards', function() {
             let flashcard = Flashcards.createFromSchemaFormData(CARD_CREATOR_JSON);
 
             let expected = {
-                "id": "12RiVkVhHR",
+                "id": "1tDRjUqxJA",
                 "created": "2012-03-02T11:38:49.321Z",
                 "lastUpdated": "2012-03-02T11:38:49.321Z",
                 "author": null,
                 "type": "BASIC_FRONT_BACK",
                 "fields": {
                     "back": {
-                        "MARKDOWN": "This is the back"
+                        "HTML": "This is the back"
                     },
                     "front": {
-                        "MARKDOWN": "This is the front"
+                        "HTML": "This is the front"
                     }
                 }
             };
