@@ -10,7 +10,7 @@ function createElectronRendererProfile(name, entryPath, distPath) {
         mode: 'development',
         target: "electron-renderer",
         entry: {
-            name: [ "babel-polyfill", entryPath ]
+            name: [ "idempotent-babel-polyfill", entryPath ]
         },
         module: {
             rules: [
@@ -50,7 +50,7 @@ module.exports = [
     {
         mode: 'development',
         entry: {
-            "chrome": [ "babel-polyfill", "./web/js/apps/chrome.js"],
+            "chrome": [ "idempotent-babel-polyfill", "./web/js/apps/chrome.js"],
         },
         module: {
             rules: [
