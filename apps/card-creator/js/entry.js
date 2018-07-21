@@ -98,35 +98,4 @@ $(document).ready(function() {
 
     inputController.createNewFlashcard(schemaFormElement, postMessageFormHandler);
 
-    // if(!schemaFormElement) {
-    //     throw new Error("No schemaFormElement");
-    // }
-    //
-    // render((
-    //     <Form schema={schema}
-    //           autocomplete="off"
-    //           uiSchema={uiSchema}
-    //           onChange={log("changed")}
-    //           onSubmit={log("submitted")}
-    //           onError={log("errors")} />
-    // ), schemaFormElement);
-    //
-    // // ok.. this is a bit of a hack but we need to do it to get required text
-    // // input areas to work
-    // //
-    // document.querySelectorAll(".simplemde-control").forEach(function (controlElement) {
-    //
-    //     let required = controlElement.getAttribute("data-required");
-    //     let textareaId = controlElement.getAttribute("data-textarea-id");
-    //
-    //     // FIXME: there are multiple elements here to work with..
-    //     controlElement.querySelectorAll("#" + textareaId).forEach(function (textareaElement) {
-    //         //textareaElement.setAttribute("style", "display: inline;  ");
-    //         textareaElement.setAttribute("style", "display: inline; margin: 0; padding: 0; height: 0; resize: none; border: 1px solid transparent; position:absolute; top: 100px; ");
-    //
-    //         // FIXME: fuck it.. required doesn't work properly but I don't care..
-    //         //textareaElement.setAttribute("required", required);
-    //     });
-
-
 });
