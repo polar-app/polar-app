@@ -11,6 +11,7 @@ const {Preconditions} = require("../../Preconditions");
 const {Broadcaster} = require("../../ipc/Broadcaster");
 const {createSiblings} = require("../../util/Functions");
 const {Messenger} = require("../../electron/messenger/Messenger");
+const log = require("../../logger/Logger").create();
 
 const WEBSERVER_PORT = 8500;
 const DEFAULT_HOST = "127.0.0.1";
@@ -107,6 +108,31 @@ class ElectronContextMenu extends ContextMenu {
         await this.messenger.postMessage({
             message: {
                 type: "create-pagemark",
+                points: triggerEvent.points
+            }
+        })
+
+    }
+
+    async cmdCreatePagemark(triggerEvent, sender) {
+
+        await this.cmdPostContextMenuMessage(triggerEvent, "create-pagemark");
+
+    }
+
+    async cmdCreateAreaHighlight(triggerEvent, sender) {
+
+        await this.cmdPostContextMenuMessage(triggerEvent, "create-area-highlight");
+
+    }
+
+    async cmdPostContextMenuMessage(triggerEvent, name) {
+
+        log.info("cmdPostContextMenuMessage: " + name);
+
+        await this.messenger.postMessage({
+            message: {
+                type: name,
                 points: triggerEvent.points
             }
         })
@@ -242,6 +268,11 @@ class ElectronContextMenu extends ContextMenu {
         ctxMenu.append(new MenuItem({
             label: 'Create Pagemark',
             click: () => this.cmdCreatePagemark(triggerEvent, sender)
+        }));
+
+        ctxMenu.append(new MenuItem({
+            label: 'Create Area Highlight',
+            click: () => this.cmdCreateAreaHighlight(triggerEvent, sender)
         }));
 
         return ctxMenu;

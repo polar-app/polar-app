@@ -1,5 +1,6 @@
 
 const {TextHighlightController} = require("../highlights/text/controller/TextHighlightController");
+const {AreaHighlightController} = require("../highlights/area/controller/AreaHighlightController");
 const {PagemarkCoverageEventListener} = require("../pagemarks/controller/PagemarkCoverageEventListener.js");
 const {KeyEvents} = require("../KeyEvents.js");
 const {Preconditions} = require("../Preconditions.js");
@@ -170,6 +171,8 @@ class WebController extends Controller {
         new FlashcardsController(this.model).start();
 
         new AnnotationsController().start();
+
+        new AreaHighlightController(this.model).start();
 
     }
 

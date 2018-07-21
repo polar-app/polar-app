@@ -19,6 +19,8 @@ class TextHighlightController {
         this.model = Preconditions.assertNotNull(model, "model");
         this.docFormat = DocFormatFactory.getInstance();
 
+        // TODO: migrate this to Messenger and postMessage so that it's easily
+        // tested outside of electron.
         ipcRenderer.on('context-menu-command', (event, arg) => {
 
             switch(arg.command) {

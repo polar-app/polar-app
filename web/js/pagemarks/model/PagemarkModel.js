@@ -1,9 +1,10 @@
+const {DocMetaModel} = require("../../metadata/DocMetaModel");
 const {PageMetas} = require("../../metadata/PageMetas");
 
 /**
  *
  */
-class PagemarkModel {
+class PagemarkModel extends DocMetaModel {
 
     registerListener(docMeta, callback) {
         PageMetas.createModel(docMeta, "pagemarks", callback);
