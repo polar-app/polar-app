@@ -51,15 +51,15 @@ class TextHighlightComponent extends Component {
 
     /**
      * @Override
-     * @param componentEvent
+     * @param annotationEvent
      */
-    init(componentEvent) {
+    init(annotationEvent) {
 
         // TODO: we should a specific event class for this data which is captured
-        // within a higher level componentEvent.
-        this.docMeta = componentEvent.docMeta;
-        this.textHighlight = componentEvent.textHighlight;
-        this.pageMeta = componentEvent.pageMeta;
+        // within a higher level annotationEvent.
+        this.docMeta = annotationEvent.docMeta;
+        this.textHighlight = annotationEvent.value;
+        this.pageMeta = annotationEvent.pageMeta;
 
         this.pageNum = this.pageMeta.pageInfo.num;
         this.pageElement = this.docFormat.getPageElementFromPageNum(this.pageNum);

@@ -1,7 +1,11 @@
 const {Pagemarks} = require("./Pagemarks.js");
 const {forDict} = require("../util/Functions");
+const {Preconditions} = require("../Preconditions");
 const {Hashcodes} = require("../Hashcodes");
+const {AnnotationEvent} = require("../annotations/components/AnnotationEvent");
+
 const log = require("../logger/Logger").create();
+
 
 class PageMetas {
 
@@ -43,6 +47,49 @@ class PageMetas {
         } );
 
         return pageMetas;
+
+    }
+
+    /**
+     * Create a model for a specific key within PageMetas.
+     *
+     * @param docMeta {DocMeta}
+     * @param memberName {string}
+     * @param callback {Function}
+     */
+    static createModel(docMeta, memberName, callback) {
+
+        Preconditions.assertNotNull(docMeta, "docMeta");
+        Preconditions.assertNotNull(memberName, "memberName");
+        Preconditions.assertNotNull(callback, "callback");
+
+        forDict(docMeta.pageMetas, (key, pageMeta) => {
+
+            let member = pageMeta[memberName];
+
+            if(! member) {
+                log.warn("No member for key: " + key, memberName);
+            }
+
+            member.addTraceListener(traceEvent => {
+
+                if(! traceEvent.path.endsWith("/" + memberName)) {
+                    return;
+                }
+
+                let annotationEvent = new AnnotationEvent(Object.assign({}, traceEvent, {
+                    docMeta,
+                    pageMeta,
+                }));
+
+                callback(annotationEvent);
+
+                return true;
+
+            }).sync();
+
+        });
+
 
     }
 
