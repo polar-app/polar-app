@@ -10,6 +10,9 @@ class Pagemark extends Annotation {
 
         super(val);
 
+        // TODO: should pagemarks support the full nesting model where we can
+        // have comments, notes, flashcards, etc?  Probably not but notes might
+        // make sense.
         /**
          * The note for this annotation.
          *

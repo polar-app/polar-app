@@ -295,7 +295,7 @@ describe('DocMetas', function() {
                         "notes": {},
                         "questions": {},
                         "flashcards": {},
-                        "thumbnail": null
+                        "image": null
                     }
                 };
 

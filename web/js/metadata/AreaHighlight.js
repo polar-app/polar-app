@@ -7,6 +7,15 @@ class AreaHighlight extends BaseHighlight {
 
         super(val);
 
+        /**
+         * The actual area for this highlight.
+         *
+         * @type {AreaHighlightRect}
+         */
+        this.rect = null;
+
+        this.init(val);
+
     }
 
 }
