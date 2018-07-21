@@ -20,6 +20,10 @@
 
         MUST be element scroll!!!
 
+- create an AnnotationsController in the rendered that listens to postMessage
+  for "create-pagemark" , then starts a dialog box to prompt for a flashcard
+  text input...
+
 ## Usability priorities:
 
 

@@ -33,8 +33,10 @@ function createElectronRendererProfile(name, entryPath, distPath) {
             new webpack.ProvidePlugin({
                 $: "jquery",
                 jQuery: "jquery",
+                jQueryUI: "jquery-ui",
                 "window.$": "jquery",
                 "window.jQuery": "jquery",
+                // popper is needed for summernote and jquery.
                 Popper: 'popper.js',
             })
         ]
@@ -79,37 +81,15 @@ module.exports = [
             })
         ]
 
-    },
-    {
-        mode: 'development',
-        target: "electron-renderer",
-        entry: {
-            "electron": ["babel-polyfill", "./web/js/apps/electron.js"],
-        },
-        module: {
-            rules: [
-                {
-                    test: /\.js$/,
-                    exclude: /node_modules/,
-                    use: {
-                        loader: "babel-loader"
-                    }
-                }
-            ],
-        },
-        devtool: "source-map",
-        output: {
-            path: path.resolve(__dirname, 'web/dist'),
-            filename: '[name]-bundle.js',
-            publicPath: '/web/js/apps'
-        }
-
     }
+
 ];
 
 module.exports.push(createElectronRendererProfile("injector", "web/js/apps/injector.js", "web/dist"));
+module.exports.push(createElectronRendererProfile("electron", "web/js/apps/electron.js", "web/dist"));
 
 module.exports.push(createElectronRendererProfile("start-capture", "apps/capture/start-capture/js/entry.js", "apps/capture/start-capture/dist"));
 module.exports.push(createElectronRendererProfile("progress", "apps/capture/progress/js/entry.js", "apps/capture/progress/dist"));
 module.exports.push(createElectronRendererProfile("card-creator", "apps/card-creator/js/entry.js", "apps/card-creator/dist"));
-module.exports.push(createElectronRendererProfile("summernote", "test/sandbox/summernote/js/entry.js", "test/sandbox/summernote/dist"));
+//module.exports.push(createElectronRendererProfile("summernote", "test/sandbox/summernote/js/entry.js", "test/sandbox/summernote/dist"));
+module.exports.push(createElectronRendererProfile("dialog", "test/sandbox/dialog/js/entry.js", "test/sandbox/dialog/dist"));

@@ -65,37 +65,38 @@ class ElectronContextMenu extends ContextMenu {
      * @param triggerEvent {TriggerEvent}
      * @param sender
      */
-    cmdAddFlashcard(triggerEvent, sender) {
+    async cmdAddFlashcard(triggerEvent, sender) {
 
-        Preconditions.assertNotNull(sender, "sender");
+        // Preconditions.assertNotNull(sender, "sender");
+        //
+        // sender.send('context-menu-create-flashcard', {
+        //     command: "add-flashcard"
+        // });
+        //
+        // let context = {
+        //     docDescriptor: triggerEvent.docDescriptor,
+        //     matchingSelectors: triggerEvent.matchingSelectors
+        // };
+        //
+        // let contextJSON = JSON.stringify(context);
+        //
+        // let url = `http://${DEFAULT_HOST}:${WEBSERVER_PORT}/apps/card-creator/index.html?context=${encodeURIComponent(contextJSON)}`;
+        //
+        // DialogWindow.create({url});
 
-        sender.send('context-menu-create-flashcard', {
-            command: "add-flashcard"
-        });
+        // FIXME: AnnotationsController now needs document.addEventListener("message");
 
         let context = {
             docDescriptor: triggerEvent.docDescriptor,
             matchingSelectors: triggerEvent.matchingSelectors
         };
 
-        let contextJSON = JSON.stringify(context);
-
-        let url = `http://${DEFAULT_HOST}:${WEBSERVER_PORT}/apps/card-creator/index.html?context=${encodeURIComponent(contextJSON)}`;
-
-        DialogWindow.create({url});
-
-        // // FIXME: it would be BETTER to send an event to the renderer to trigger this..
-        //
-        // let innerHTML = `<div id="add-flashcard" class="polar-lightbox">
-        //
-        //     <iframe src="/card-creator/index.html"></iframe>
-        //
-        // </div>
-        // `;
-        //
-        // let lightbox = Elements.createElementHTML(innerHTML);
-        //
-        // Modal.create(lightbox);
+        await this.messenger.postMessage({
+            message: {
+                type: "create-flashcard",
+                context
+            }
+        })
 
     }
 
@@ -109,6 +110,7 @@ class ElectronContextMenu extends ContextMenu {
                 points: triggerEvent.points
             }
         })
+
     }
 
     /**

@@ -10,6 +10,9 @@ class FlashcardsController {
 
     start() {
 
+        // TODO move this code to the AnnotationEvent system and test it
+        // along with form data.
+
         if(ipcRenderer) {
 
             console.log("IPC listener added for create-annotation")
@@ -69,9 +72,9 @@ class FlashcardsController {
 
             textHighlight.flashcards[flashcard.id] = flashcard;
         });
+
     }
 
-};
-
+}
 
 module.exports.FlashcardsController = FlashcardsController;
