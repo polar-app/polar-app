@@ -6,6 +6,7 @@ const {Attributes} = require("../util/Attributes");
 const {TriggerEvent} = require("./TriggerEvent");
 const {DocDescriptor} = require("../metadata/DocDescriptor");
 const {Preconditions} = require("../Preconditions");
+const {Elements} = require("../util/Elements");
 const log = require("../logger/Logger").create();
 
 /**
@@ -60,8 +61,24 @@ class ContextMenuController {
 
                 log.info("Creating context menu for contextMenuTypes: ", contextMenuTypes);
 
+                let pageElement = Elements.untilRoot(event.target, ".page");
+
+                let eventTargetOffset = Elements.getRelativeOffsetRect(event.target, pageElement);
+
+                // compute the offset of the event relative to the page we're
+                // viewing
+                let pageOffset = {
+
+                    x: eventTargetOffset.left + event.offsetX,
+                    y: eventTargetOffset.top + event.offsetY
+
+                };
+
                 ipcRenderer.send('context-menu-trigger', new TriggerEvent({
-                    point: {x: event.pageX, y: event.pageY },
+                    point: {
+                        x: event.pageX,
+                        y: event.pageY
+                    },
                     points: {
                         page: {
                             x: event.pageX,
@@ -74,7 +91,9 @@ class ContextMenuController {
                         offset: {
                             x: event.offsetX,
                             y: event.offsetY
-                        }
+                        },
+                        pageOffset
+
                     },
                     contextMenuTypes,
                     matchingSelectors,

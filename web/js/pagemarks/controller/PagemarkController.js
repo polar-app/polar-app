@@ -47,8 +47,12 @@ class PagemarkController {
 
             let pageNum = this.docFormat.getPageNumFromPageElement(pageElement);
 
+            // FIXME: this is wrong... we're getting the offset from the target
+            // and since we're called from the context menu we have no fucking
+            // idea where we are now.
+
             // get the point within the element itself..
-            let pageElementPoint = data.points.offset;
+            let pageElementPoint = data.points.pageOffset;
 
             let boxRect = Rects.createFromBasicRect({
                 left: pageElementPoint.x,
