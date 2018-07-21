@@ -1,6 +1,11 @@
 
 ## 1.0 b30 release
 
+- Create Pagemark on PDF doesn't work becuase we're not finding the offset vs the
+  parent element.  Share this code with the PagemarkCoverageEventListener
+
+- Finish the component for annotations...
+
 - wikipedia pages look poor at 150%
 
 - area highlights

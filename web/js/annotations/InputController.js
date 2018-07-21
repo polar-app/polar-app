@@ -227,7 +227,6 @@ function RichTextWidget(props) {
 
 }
 
-
 function MarkdownWidget(props) {
 
     const {id, classNames, label, help, required, description, errors, children} = props;
