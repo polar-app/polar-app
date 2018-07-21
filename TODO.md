@@ -1,6 +1,8 @@
 
 ## 1.0 b30 release
 
+- https://github.com/hokein/electron-sample-apps/tree/master/webview/browser
+
 - Create Pagemark on PDF doesn't work becuase we're not finding the offset vs the
   parent element.  Share this code with the PagemarkCoverageEventListener
 
@@ -59,6 +61,27 @@
           iframe-fuzzy-text test.
 
         - and i does NO tneed to be in the iframe.
+
+        - as SOON as the CSS properties for that page exist for transform we
+          lose anti-aliasing...
+
+            EITHER transform or will-change transform will disable SPAA ...
+
+            but I need to note that it does not ALWAYS trigger the problem..
+
+        - webview zoom might fix this problem completely... but would be harder
+          to implement I think.
+
+        - OK.. a workaround would be to use webview not iframe... iframe sucks and
+          opens us up to bugs WRT chrome and transform() ... it might be a hard
+          thing to impelement though so don't start it right away.
+
+        - the 2.x 'zoom' as a webview doesn't actually seem to correspond to 2.x
+          zoom of the page and we can't calculate the new width as it will reflow
+
+            - it might be that my attempts at zoom don't actually correspond with 2.0
+
+        - the proposal won't work if I can't access contentDocument.. will be 1000x easier
 
 
 - area highlights implemented
