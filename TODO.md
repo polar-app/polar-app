@@ -55,6 +55,11 @@
         - the AA works fine on this content when it's not scale(1.5) so it might
           be a chrome issue which we would need to track down...
 
+        - It is a CHROME bug. the text looks shitty on Chrome too with my
+          iframe-fuzzy-text test.
+
+        - and i does NO tneed to be in the iframe.
+
 
 - area highlights implemented
 
