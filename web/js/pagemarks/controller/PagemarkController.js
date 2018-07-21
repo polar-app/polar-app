@@ -80,7 +80,12 @@ class PagemarkController {
 
             log.info("Using pagemarkRect: ", pagemarkRect);
 
-            // TODO: do we somehow need to focus the new pagemark.
+            // TODO: do we somehow need to focus the new pagemark...
+
+            // the only way to do this is to wait until the component is added
+            // to the DOM and I think we can do this by adding an event
+            // listener that just fires once and then call focus() on the
+            // element.
 
             // update the DocMeta with a pagemark on this page..
 

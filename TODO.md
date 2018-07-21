@@ -3,9 +3,6 @@
 
 - https://github.com/hokein/electron-sample-apps/tree/master/webview/browser
 
-- Create Pagemark on PDF doesn't work becuase we're not finding the offset vs the
-  parent element.  Share this code with the PagemarkCoverageEventListener
-
 - Finish the component for annotations...
 
 - wikipedia pages look poor at 150%
@@ -101,6 +98,9 @@
 - DONE: create an AnnotationsController in the renderer that listens to postMessage
   for "create-pagemark" , then starts a dialog box to prompt for a flashcard
   text input...
+
+- DONE: Create Pagemark on PDF doesn't work becuase we're not finding the offset vs the
+  parent element.  Share this code with the PagemarkCoverageEventListener
 
 ## Usability priorities:
 
