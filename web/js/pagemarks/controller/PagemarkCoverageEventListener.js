@@ -65,11 +65,16 @@ class PagemarkCoverageEventListener {
     // https://stackoverflow.com/questions/3234256/find-mouse-position-relative-to-element
     async onActivated(event) {
 
-        let pageElement = Elements.untilRoot(event.target, ".page");
+        // this should always be .page since we're using currentTarget
+        let pageElement = Elements.untilRoot(event.currentTarget, ".page");
 
-        let height = pageElement.clientHeight;
+        let pageHeight = pageElement.clientHeight;
 
-        let percentage = (event.offsetY / height) * 100;
+        let eventTargetOffset = Elements.getRelativeOffsetRect(event.target, pageElement);
+
+        let mouseY = eventTargetOffset.top + event.offsetY;
+
+        let percentage = (mouseY / pageHeight) * 100;
 
         log.info("percentage: ", percentage);
 

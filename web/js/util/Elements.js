@@ -41,16 +41,18 @@ class Elements {
 
         while(element !== null) {
 
+            if(element === parentElement)
+                break;
+
             offsetRect.left += toInt(element.offsetLeft);
             offsetRect.top += toInt(element.offsetTop);
 
-            // FIXME: I have to factor in scrollTop here.. this is insane.
+            // TO: Do I have to factor in scrollTop here.. this is insane.
+            // I think this isn't true... I think the problem is that the page
+            // position changes WRT scrolling.
 
             //offsetRect.left += toInt(element.scrollLeft);
             //offsetRect.top += toInt(element.scrollTop);
-
-            if(element === parentElement)
-                break;
 
             element = element.offsetParent;
 

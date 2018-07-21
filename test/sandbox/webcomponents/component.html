@@ -3,6 +3,7 @@
 <head>
 
 </head>
+
 <body>
 
 <template>
@@ -13,26 +14,29 @@
 
 <script>
 
-    class HelloWorldElement extends HTMLDivElement {
+    class HelloWorldElement extends HTMLElement {
 
         constructor() {
+
             super();
 
-            let importDoc = document.currentScript.ownerDocument;
+            // let importDoc = document.currentScript.ownerDocument;
+            //
+            // let template = importDoc.querySelector("template");
+            //
+            // //let cloneElement = this.importNode(template.content, true);
+            let shadowRoot = this.attachShadow({mode: 'open'});
 
-            // FIXME: insert our template into ourself..
+            let textElement = document.createElement("div");
+            textElement.textContent = "hello world";
 
+            shadowRoot.appendChild(textElement);
 
         }
 
     }
 
-    function myComponentScript() {
-        console.log("Hello from imported script");
-    }
-
-    console.log("The document in component.html is: " + document.location.href);
-    console.log("The window in component.html is: " + window.location.href);
+    customElements.define('hello-world', HelloWorldElement);
 
 </script>
 
