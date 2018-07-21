@@ -84,6 +84,13 @@
         - the proposal won't work if I can't access contentDocument.. will be 1000x easier
 
 
+        - I can fix this by using Electron 3.0.. what I have to do is get the
+          webView from the iframe and call setZoomFactor directly instead of using
+          CSS scale.
+
+        - it might also be possible to use meta viewport BUT this doesn't seem
+          to work without emulating a mobile device.
+
 - area highlights implemented
 
 - flashcards implemented

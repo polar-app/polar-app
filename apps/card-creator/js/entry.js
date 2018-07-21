@@ -8,6 +8,7 @@ import React from "react";
 const electron = require('electron');
 const {ipcRenderer} = electron.ipcRenderer;
 const {InputController} = require("../../../web/js/annotations/InputController");
+const {CardCreatorElement} = require("../../../web/js/annotations/elements/CardCreatorElement");
 const {FormHandler} = require("../../../web/js/annotations/FormHandler");
 const {AnnotationType} = require("../../../web/js/metadata/AnnotationType");
 const {Objects} = require("../../../web/js/util/Objects");
@@ -86,16 +87,23 @@ class PostMessageFormHandler extends FormHandler {
 
 }
 
+console.log("FIXME hjere");
+
 $(document).ready(function() {
 
-    let requestParams = _requestParams();
+    console.log("FIXME hjere");
 
-    let inputController = new InputController();
+    // let requestParams = _requestParams();
+    //
+    // let inputController = new InputController();
+    //
+    // let schemaFormElement = document.getElementById("schema-form");
+    //
+    // let postMessageFormHandler = new PostMessageFormHandler(requestParams.context);
+    //
+    // inputController.createNewFlashcard(schemaFormElement, postMessageFormHandler);
 
-    let schemaFormElement = document.getElementById("schema-form");
-
-    let postMessageFormHandler = new PostMessageFormHandler(requestParams.context);
-
-    inputController.createNewFlashcard(schemaFormElement, postMessageFormHandler);
+    customElements.define('card-creator', CardCreatorElement);
 
 });
+

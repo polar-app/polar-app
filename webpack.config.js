@@ -10,7 +10,10 @@ function createElectronRendererProfile(name, entryPath, distPath) {
         mode: 'development',
         target: "electron-renderer",
         entry: {
-            name: [ "idempotent-babel-polyfill", entryPath ]
+            name: [
+                "idempotent-babel-polyfill",
+                entryPath
+            ]
         },
         module: {
             rules: [
