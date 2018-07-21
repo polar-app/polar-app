@@ -5,8 +5,8 @@ import React from "react";
 //
 // import Form from "react-jsonschema-form";
 // import SimpleMDE from 'react-simplemde-editor';
-
-const {ipcRenderer} = require('electron');
+const electron = require('electron');
+const {ipcRenderer} = electron.ipcRenderer;
 const {InputController} = require("../../../web/js/annotations/InputController");
 const {FormHandler} = require("../../../web/js/annotations/FormHandler");
 const {AnnotationType} = require("../../../web/js/metadata/AnnotationType");

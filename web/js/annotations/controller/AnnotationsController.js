@@ -27,7 +27,7 @@ class AnnotationsController {
 
             // FIXME: create a shadow root in the flashcard ...
 
-            let shadowRoot = createFlashcardDialog.createShadowRoot();
+            let shadowRoot = createFlashcardDialog.attachShadow({mode: 'open'});
 
             shadowRoot.appendChild(clone);
 

@@ -50,11 +50,14 @@ class TextHighlightController {
 
         if (KeyEvents.isKeyMetaActive(event)) {
 
-            if(event.key) {
+            if(event.code) {
 
-                switch (event.key.toLowerCase()) {
+                switch (event.code) {
 
-                    case "t":
+                    // TODO: we should not use 'code' but should use 'key'... The
+                    // problem is that on OS X the key code returned 'Dead' but was
+                    // working before.  Not sure why it started breaking.
+                    case "KeyT":
                         this.doHighlight();
                         break;
 
