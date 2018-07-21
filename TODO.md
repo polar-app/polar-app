@@ -37,6 +37,24 @@
       resizing it too.  Experiment with injecting a NEW one and see if that
       fixes the problem.
 
+    - OK.. now the issue is that he element WORKS if it's AA when first injected
+      as an iframe...
+
+    - OK... NOW it looks like ALL our code is correct... BUT the PHZ file is broken
+      and I DO NOT need to add/remove the HTML element.. it's just the PHZ file.
+      Maybe ALL documents need a default style.
+
+        - OK.. at this point I think it's nothing we're doing wrong.  The
+          problem has to do with the CSS of the document.  The CSS is fucking up
+          rendering of the page.  This has got to be an Elecron bug. We've
+          mitigated the problem a bit for many documents but I think if they
+          set any weird CSS it then triggers the Electron bug again. We can
+          duplicate this by re-loading the Wikipedia page and then seeing if the
+          problem manifests itself again.
+
+        - the AA works fine on this content when it's not scale(1.5) so it might
+          be a chrome issue which we would need to track down...
+
 
 - area highlights implemented
 
