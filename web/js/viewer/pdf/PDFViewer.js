@@ -1,9 +1,13 @@
 const {Viewer} = require("../Viewer");
+const log = require("../../logger/Logger").create();
 
 class PDFViewer extends Viewer {
 
     start() {
-        console.log("Starting PDFViewer");
+        super.start();
+
+        log.info("Starting PDFViewer");
+
     }
 
 }

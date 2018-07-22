@@ -4,15 +4,18 @@
 
 ## 1.0 b40 release
 
+- Context menu needs copy/paste
+
 - Electron 3.0 with new HTML iframe zoom.
 
--
+- Flashcard UI
 
-## 1.0 b30 release
+- Migrate to typescript
 
-- pulling a pagemark rect into an above pagemark rect gives an exception.
+- Look at borrowing some of this UI code for the capture system.
 
-- https://github.com/hokein/electron-sample-apps/tree/master/webview/browser
+   https://github.com/hokein/electron-sample-apps/tree/master/webview/browser
+
 
 - typescript might solve my issue with web components so I might as well try to
   migrate to it. See if it does...
@@ -101,6 +104,8 @@
           to work without emulating a mobile device.
 
 - flashcards implemented
+
+## 1.0 b30 release
 
 - DONE: area highlights implemented
 

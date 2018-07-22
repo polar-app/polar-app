@@ -60,7 +60,14 @@ const BROWSER_WINDOW_OPTIONS = {
         // when loading fonts.  Once we resolve this we can enable webSecurity
         // again.
         webSecurity: false,
-        webaudio: false
+        webaudio: false,
+
+        /**
+         * Use a persistent cookie session between restarts.  This is used so
+         * that we keep user cookies including Google Analytics cookies.
+         */
+        partition: "persist:polar"
+
     }
 };
 

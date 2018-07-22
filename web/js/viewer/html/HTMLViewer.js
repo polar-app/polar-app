@@ -10,6 +10,8 @@ class HTMLViewer extends Viewer {
 
     start() {
 
+        super.start();
+
         console.log("Starting HTMLViewer");
 
         this.content = document.querySelector("#content");

@@ -80,6 +80,7 @@
     "debug-stream": "^3.0.1",
     "editor.md": "^1.5.0",
     "editor.md.webpack": "^1.5.0",
+    "electron-google-analytics": "^0.1.0",
     "electron-in-page-search": "^1.3.2",
     "electron-log": "^2.2.15",
     "electron-prompt": "^1.0.0",
