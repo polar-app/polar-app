@@ -13,8 +13,8 @@ class AreaHighlightView {
 
         this.componentManager = new ComponentManager(model,
                                                      new DefaultContainerProvider(),
-                                                     () => new TextHighlightComponent(),
-                                                     () => new TextHighlightModel());
+                                                     () => new AreaHighlightComponent(),
+                                                     () => new AreaHighlightModel());
 
     }
 
@@ -24,4 +24,4 @@ class AreaHighlightView {
 
 }
 
-module.exports.TextHighlightView2 = AreaHighlightView;
+module.exports.AreaHighlightView = AreaHighlightView;

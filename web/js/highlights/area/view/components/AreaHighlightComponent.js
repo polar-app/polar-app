@@ -38,7 +38,7 @@ class AreaHighlightComponent extends Component {
         // TODO: we should a specific event class for this data which is captured
         // within a higher level annotationEvent.
         this.annotationEvent = annotationEvent;
-        this.textHighlight = annotationEvent.value;
+        this.areaHighlight = annotationEvent.value;
 
     }
 
@@ -53,16 +53,23 @@ class AreaHighlightComponent extends Component {
 
         forDict(this.areaHighlight.rects, (id, highlightRect) => {
 
+            // FIXME: this rect needs to be calculated to fit the current page
+            // like the way we handle pagemarks...
+
             log.info("Rendering annotation at: " + JSON.stringify(highlightRect, null, "  "));
 
             let highlightElement = document.createElement("div");
 
-            highlightElement.setAttribute("data-type", "area-highlight");
-            highlightElement.setAttribute("data-doc-fingerprint", this.docMeta.docInfo.fingerprint);
-            highlightElement.setAttribute("data-text-highlight-id", this.textHighlight.id);
-            highlightElement.setAttribute("data-page-num", `${this.pageMeta.pageInfo.num}`);
+            let docMeta = this.annotationEvent.docMeta;
+            let pageMeta = this.annotationEvent.pageMeta;
+            let docInfo = docMeta.docInfo;
 
-            highlightElement.className = `area-highlight annotation area-highlight-${this.textHighlight.id}`;
+            highlightElement.setAttribute("data-type", "area-highlight");
+            highlightElement.setAttribute("data-doc-fingerprint", docInfo.fingerprint);
+            highlightElement.setAttribute("data-text-highlight-id", this.areaHighlight.id);
+            highlightElement.setAttribute("data-page-num", `${pageMeta.pageInfo.num}`);
+
+            highlightElement.className = `area-highlight annotation area-highlight-${this.areaHighlight.id}`;
 
             highlightElement.style.position = "absolute";
             highlightElement.style.backgroundColor = `yellow`;

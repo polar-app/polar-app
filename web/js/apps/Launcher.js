@@ -6,6 +6,7 @@ const {TextHighlightView} = require("../highlights/text/view/TextHighlightView")
 const {TextHighlightView2} = require("../highlights/text/view/TextHighlightView2");
 const {PagemarkView, PAGEMARK_VIEW_ENABLED} = require("../pagemarks/view/PagemarkView");
 const {PagemarkController} = require("../pagemarks/controller/PagemarkController");
+const {AreaHighlightView} = require("../highlights/area/view/AreaHighlightView");
 
 const {ViewerFactory} = require("../viewer/ViewerFactory");
 
@@ -38,6 +39,7 @@ class Launcher {
         new WebView(model).start();
         //new TextHighlightView(model).start();
         new TextHighlightView2(model).start();
+        new AreaHighlightView(model).start();
 
         if(PAGEMARK_VIEW_ENABLED) {
             new PagemarkView(model).start();
