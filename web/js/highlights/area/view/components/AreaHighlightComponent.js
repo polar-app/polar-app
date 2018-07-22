@@ -9,6 +9,7 @@ const {AnnotationRects} = require("../../../../metadata/AnnotationRects");
 const {AreaHighlightRect} = require("../../../../metadata/AreaHighlightRect");
 const {AreaHighlightRects} = require("../../../../metadata/AreaHighlightRects");
 const {BoxController} = require("../../../../boxes/controller/BoxController");
+const {BoxOptions} = require("../../../../boxes/controller/BoxOptions");
 
 const log = require("../../../../logger/Logger").create();
 
@@ -65,8 +66,8 @@ class AreaHighlightComponent extends Component {
     onPagemarkMoved(boxMoveEvent) {
 
         // TODO: actually I think this belongs in the controller... not the view
-        //
-        //
+
+        // TODO: refactor / this code is shared with the AbstractPagemarkComponent
 
         console.log("Box moved to: ", boxMoveEvent);
 
@@ -105,8 +106,6 @@ class AreaHighlightComponent extends Component {
         let pageMeta = this.annotationEvent.pageMeta;
         let docInfo = docMeta.docInfo;
 
-        console.log("fixme: ", pageMeta.pageInfo);
-
         let pageElement = this.docFormat.getPageElementFromPageNum(pageMeta.pageInfo.num);
 
         let pageDimensions = new Dimensions({
@@ -115,11 +114,6 @@ class AreaHighlightComponent extends Component {
         });
 
         forDict(this.areaHighlight.rects, (key, rect) => {
-
-            // FIXME: this rect needs to be calculated to fit the current page
-            // like the way we handle pagemarks...
-
-            // FIXME need the container Rect..
 
             let areaHighlightRect = AreaHighlightRects.createFromRect(rect);
 
@@ -140,13 +134,16 @@ class AreaHighlightComponent extends Component {
                 pageElement.insertBefore(highlightElement, pageElement.firstChild);
 
                 log.info("Creating box controller for highlightElement: ", highlightElement);
-                this.boxController.register({
+
+                this.boxController.register(new BoxOptions({
                     target: highlightElement,
                     restrictionElement: pageElement,
                     intersectedElementsSelector: ".area-highlight"
-                });
+                }));
 
             }
+
+            // TODO: a lot of this code is shared with pagemarks.
 
             highlightElement.setAttribute("data-type", "area-highlight");
             highlightElement.setAttribute("data-doc-fingerprint", docInfo.fingerprint);

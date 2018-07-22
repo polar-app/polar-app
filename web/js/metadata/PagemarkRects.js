@@ -1,5 +1,7 @@
 const {PagemarkType} = require("./PagemarkType");
 const {PagemarkRect} = require("./PagemarkRect");
+const {Preconditions} = require("../Preconditions");
+const {Rect} = require("../Rect");
 const {Rects} = require("../Rects");
 
 class PagemarkRects {
@@ -83,6 +85,8 @@ class PagemarkRects {
      * @return {PagemarkRect}
      */
     static createFromPositionedRect(boxRect, containerRect) {
+
+        Preconditions.assertInstanceOf(boxRect, Rect, "boxRect");
 
         let xAxis = boxRect.toLine("x").multiply(100 / containerRect.width);
         let yAxis = boxRect.toLine("y").multiply(100 / containerRect.height);

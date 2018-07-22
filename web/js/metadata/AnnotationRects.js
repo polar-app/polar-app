@@ -1,6 +1,7 @@
 const {AnnotationRect} = require("./AnnotationRect");
 const {Rect} = require("../Rect");
 const {Rects} = require("../Rects");
+const {Preconditions} = require("../Preconditions");
 const log = require("../logger/Logger").create();
 
 class AnnotationRects {
@@ -60,6 +61,8 @@ class AnnotationRects {
      * @return {AnnotationRect}
      */
     static createFromPositionedRect(boxRect, containerRect) {
+
+        Preconditions.assertInstanceOf(boxRect, Rect, "boxRect");
 
         let xAxis = boxRect.toLine("x").multiply(100 / containerRect.width);
         let yAxis = boxRect.toLine("y").multiply(100 / containerRect.height);

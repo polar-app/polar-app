@@ -32,15 +32,9 @@ class BoxController {
 
         let boxOptions = new BoxOptions(opts);
 
-        // TODO: we need a callback with:
-        //
-        // the parentRect (the container dimensions of the parent)
-        // the boxRect (the position of the box after it was moved)
-        //
-
         // TODO: assert that the boxes for the selector are ALREADY absolutely
         // positioned before we accept them and they are done using style
-        // attributes.
+        // attributes because we're incompatible with them otherwise.
 
         let restrictionElement =
             Optional.of(boxOptions.restrictionElement)
@@ -210,7 +204,7 @@ class BoxController {
 
                 // before we resize, verify that we CAN resize..
 
-                let intersectedBoxes = this._calculateIntersectedBoxes(target, resizeRect);
+                let intersectedBoxes = this._calculateIntersectedBoxes(target, resizeRect, boxOptions.intersectedElementsSelector);
 
                 log.info("resizemove: deltaRect: " + JSON.stringify(deltaRect, null, "  "));
 
@@ -413,8 +407,8 @@ class BoxController {
     }
 
     _captureStartTargetRect(interactionEvent) {
-        // TODO: this modifies interactionEvent.interaction by side effect which
-        // I don't like.
+        // this modifies interactionEvent.interaction by side effect which I
+        // don't like.
         interactionEvent.interaction.startTargetRect = Rects.fromElementStyle(interactionEvent.target);
     }
 

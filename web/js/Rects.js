@@ -96,6 +96,7 @@ class Rects {
      * x and y plane.  The dir.x and dir.y specify how much to move the rect.
      * @param absolute {boolean} When true, move to the absolute position, not
      *                           relative.
+     * @return {Rect}
      */
     static move(rect, dir, absolute) {
 

@@ -11,8 +11,8 @@ class Datastore {
      * Get the data for the DocMeta object we currently in the datastore for
      * this given fingerprint or null if it does not exist.
 
-     * @return A JSON string representing the DocMeta which is decoded by the
-     * PersistenceLayer.
+     * @return {string} A JSON string representing the DocMeta which is decoded
+     * by the PersistenceLayer.
      */
     async getDocMeta(fingerprint) {
 

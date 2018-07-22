@@ -30,8 +30,7 @@ class MemoryDatastore extends Datastore {
     }
 
     /**
-     * Get the DocMeta object we currently in the datastore for this given
-     * fingerprint or null if it does not exist.
+     * @return {string}
      */
     async getDocMeta(fingerprint) {
 
@@ -47,7 +46,7 @@ class MemoryDatastore extends Datastore {
      */
     async sync(fingerprint, data) {
 
-        Preconditions.assertTypeof(data, "data", "string");
+        Preconditions.assertTypeOf(data, "string", "data");
 
         this.docMetas[fingerprint] = data;
     }

@@ -1,3 +1,6 @@
+const {Preconditions} = require("../../Preconditions");
+const {Rect} = require("../../Rect");
+
 class BoxMoveEvent {
 
     constructor(opts) {
@@ -51,6 +54,8 @@ class BoxMoveEvent {
         this.state = "pending";
 
         Object.assign(this, opts);
+
+        Preconditions.assertInstanceOf(this.boxRect, Rect, "boxRect");
 
     }
 

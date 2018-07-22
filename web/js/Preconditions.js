@@ -52,26 +52,43 @@ class Preconditions {
             throw new Error(`Precondition failure for ${name}: NaN`);
         }
 
-        Preconditions.assertTypeOf(value, name, "number");
+        Preconditions.assertTypeOf(value, "number", name);
 
         return value;
 
     }
 
-    static assertInstanceOf(value, name, instance) {
+    /**
+     *
+     * @param value {*}
+     * @param instance {class}
+     * @param name
+     * @return {*}
+     */
+    static assertInstanceOf(value, instance, name) {
 
-        if ((value instanceof instance)) {
-            throw new Error(`Precondition for instanceof '${name}' was not ${instance}.`);
+        Preconditions.assertNotNull(value, "value");
+        Preconditions.assertNotNull(instance, "instance");
+
+        if (! (value instanceof instance)) {
+            throw new Error(`Precondition for instanceof '${name}' was not ${instance.name}.`);
         }
 
         return value;
 
     }
 
-    static assertTypeOf(value, name, type) {
+    /**
+     *
+     * @param value {*}
+     * @param type {string}
+     * @param name {string}
+     * @return {*}
+     */
+    static assertTypeOf(value, type, name) {
 
-        if (!(typeof value === type)) {
-            throw new Error(`Precondition for typeof '${name}' was not ${type}.`);
+        if (typeof value !== type) {
+            throw new Error(`Precondition for typeof '${name}' was not ${expected} but actually: ` + typeof value);
         }
 
         return value;
@@ -106,16 +123,6 @@ class Preconditions {
 
         if (value instanceof instance) {
             throw new Error(`Precondition for instanceof '${name}' was ${instance} but not allowed`);
-        }
-
-        return value;
-
-    }
-
-    static assertTypeof(value, name, expected) {
-
-        if (typeof value !== expected ) {
-            throw new Error(`Precondition for typeof '${name}' was not ${expected} but actually: ` + typeof value);
         }
 
         return value;

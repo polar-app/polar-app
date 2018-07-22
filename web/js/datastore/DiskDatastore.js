@@ -133,7 +133,7 @@ class DiskDatastore extends Datastore {
      */
     async sync(fingerprint, data) {
 
-        Preconditions.assertTypeof(data, "data", "string");
+        Preconditions.assertTypeOf(data, "string", "data");
 
         log.info("Performing sync of content into disk datastore.");
 

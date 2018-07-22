@@ -33,10 +33,10 @@ class RectEdges {
 
         //  make sure we have all the values.
 
-        Preconditions.assertTypeof(this.left, "left", "boolean");
-        Preconditions.assertTypeof(this.top, "top", "boolean");
-        Preconditions.assertTypeof(this.right, "right", "boolean");
-        Preconditions.assertTypeof(this.bottom, "bottom", "boolean");
+        Preconditions.assertTypeOf(this.left, "boolean", "left");
+        Preconditions.assertTypeOf(this.top, "boolean", "top");
+        Preconditions.assertTypeOf(this.right, "boolean", "right");
+        Preconditions.assertTypeOf(this.bottom, "boolean", "bottom");
 
     }
 

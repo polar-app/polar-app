@@ -1,6 +1,8 @@
 
 ## 1.0 b30 release
 
+- pulling a pagemark rect into an above pagemark rect gives an exception.
+
 - https://github.com/hokein/electron-sample-apps/tree/master/webview/browser
 
 - Finish the component for annotations...

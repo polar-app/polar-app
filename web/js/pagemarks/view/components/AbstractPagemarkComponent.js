@@ -1,4 +1,5 @@
-const PagemarkRect = require("../../../metadata/PagemarkRect").PagemarkRect;
+const {PagemarkRect} = require("../../../metadata/PagemarkRect");
+const {AnnotationRects} = require("../../../metadata/AnnotationRects");
 const {PagemarkRects} = require("../../../metadata/PagemarkRects");
 const {Component} = require("../../../components/Component");
 const {DocFormatFactory} = require("../../../docformat/DocFormatFactory");
@@ -81,8 +82,10 @@ class AbstractPagemarkComponent extends Component {
 
         // boxRect, containerRect, pageRect...
 
-        let rect = PagemarkRects.createFromPositionedRect(boxMoveEvent.boxRect,
-                                                          boxMoveEvent.restrictionRect);
+        let annotationRect = AnnotationRects.createFromPositionedRect(boxMoveEvent.boxRect,
+                                                                      boxMoveEvent.restrictionRect);
+
+        let rect = new PagemarkRect(annotationRect);
 
         // FIXME: the lastUpdated here isn't being updated. I'm going to
         // have to change the setters I think..
