@@ -147,7 +147,8 @@ class AreaHighlightComponent extends Component {
 
             highlightElement.setAttribute("data-type", "area-highlight");
             highlightElement.setAttribute("data-doc-fingerprint", docInfo.fingerprint);
-            highlightElement.setAttribute("data-text-highlight-id", this.areaHighlight.id);
+            highlightElement.setAttribute("data-area-highlight-id", this.areaHighlight.id);
+            highlightElement.setAttribute("data-annotation-id", this.areaHighlight.id);
             highlightElement.setAttribute("data-page-num", `${pageMeta.pageInfo.num}`);
 
             highlightElement.className = `area-highlight annotation area-highlight-${this.areaHighlight.id}`;

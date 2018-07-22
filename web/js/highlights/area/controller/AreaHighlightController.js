@@ -17,7 +17,7 @@ class AreaHighlightController {
             switch (arg.command) {
 
                 case "delete-area-highlight":
-                    this.onDeleteAreaHighlight(arg);
+                    this.onDeleteAreaHighlight(event);
                     break;
 
                 default:
@@ -48,7 +48,7 @@ class AreaHighlightController {
         }
 
         if (event.data && event.data.type === "delete-area-highlight") {
-            this.onCreateAreaHighlight(event.data);
+            this.onDeleteAreaHighlight(event.data);
         }
 
     }
@@ -77,8 +77,20 @@ class AreaHighlightController {
 
     }
 
-    onDeleteAreaHighlight(arg) {
+    onDeleteAreaHighlight(contextMenuEvent) {
 
+        log.info("Deleting area highlight: ", contextMenuEvent);
+
+
+        // should we just send this event to all the the windows?
+        contextMenuEvent.matchingSelectors[".area-highlight"].annotationDescriptors.forEach(annotationDescriptor => {
+
+            log.info("Deleting annotationDescriptor: ", JSON.stringify(annotationDescriptor, null, "  "));
+
+            let pageMeta = this.model.docMeta.getPageMeta(annotationDescriptor.pageNum);
+            delete pageMeta.areaHighlights[annotationDescriptor.annotationId];
+
+        });
 
     }
 

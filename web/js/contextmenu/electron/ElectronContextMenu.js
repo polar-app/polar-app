@@ -101,27 +101,23 @@ class ElectronContextMenu extends ContextMenu {
 
     }
 
-    async cmdCreatePagemark(triggerEvent, sender) {
+    async postContextMenuMessage(name, triggerEvent) {
 
-        await this.cmdPostContextMenuMessage(triggerEvent, "create-pagemark");
-
-    }
-
-    async cmdCreateAreaHighlight(triggerEvent, sender) {
-
-        await this.cmdPostContextMenuMessage(triggerEvent, "create-area-highlight");
-
-    }
-
-    async cmdPostContextMenuMessage(triggerEvent, name) {
-
-        log.info("cmdPostContextMenuMessage: " + name);
+        log.info("postContextMenuMessage: " + name);
 
         // TODO: this should use its own type of ContextMenuMessage with the
         // ContextMenuLocation and a type field.
+
+        // TODO: just send the full TriggerEvent but rename it to
+        // ContextMenuSelectedEvent or something along those lines.
+
+        // FIXME: we can't actually do this because matchingSelectors has elements
+        // which will not be serialized as JSON to the renderer.
+
         await this.messenger.postMessage({
             message: {
                 type: name,
+                point: triggerEvent.point,
                 points: triggerEvent.points,
                 pageNum: triggerEvent.pageNum,
                 matchingSelectors: triggerEvent.matchingSelectors,
@@ -134,12 +130,12 @@ class ElectronContextMenu extends ContextMenu {
     /**
      * Send the annotation BACK to the sender with the specific actions to take.
      *
+     * @deprecated Move to postContextMenuMessage
      * @param command
      * @param triggerEvent
      * @param sender
      */
     cmdNotify(command, triggerEvent, sender) {
-
 
         // we're sending back LESS data because I think all of the original data
         // is probably not needed.
@@ -153,14 +149,12 @@ class ElectronContextMenu extends ContextMenu {
 
     }
 
-
     /**
      *
      * @param triggerEvent {TriggerEvent}
      * @param sender
      */
     createContextMenu(triggerEvent, sender) {
-
 
         Preconditions.assertNotNull(sender, "sender");
 
@@ -170,6 +164,10 @@ class ElectronContextMenu extends ContextMenu {
 
         if (triggerEvent.contextMenuTypes.includes(ContextMenuType.TEXT_HIGHLIGHT)) {
             contextMenus.push(this.createTextHighlightContextMenu(triggerEvent, sender));
+        }
+
+        if (triggerEvent.contextMenuTypes.includes(ContextMenuType.AREA_HIGHLIGHT)) {
+            contextMenus.push(this.createAreaHighlightContextMenu(triggerEvent, sender));
         }
 
         if (triggerEvent.contextMenuTypes.includes(ContextMenuType.PAGE)) {
@@ -234,6 +232,32 @@ class ElectronContextMenu extends ContextMenu {
      * @param sender
      * @return {Electron.Menu}
      */
+    createAreaHighlightContextMenu(triggerEvent, sender) {
+
+        const ctxMenu = new Menu();
+
+        ctxMenu.append(new MenuItem({
+            label: 'Add Flashcard',
+            //accelerator: 'CmdOrCtrl+A',
+            click: () => this.cmdAddFlashcard(triggerEvent, sender)
+        }));
+
+        ctxMenu.append(new MenuItem({
+            label: 'Delete Area Highlight',
+            //accelerator: 'CmdOrCtrl+A',
+            click: () => this.postContextMenuMessage("delete-area-highlight", triggerEvent)
+        }));
+
+        return ctxMenu;
+
+    }
+
+    /**
+     *
+     * @param triggerEvent {TriggerEvent}
+     * @param sender
+     * @return {Electron.Menu}
+     */
     createPagemarkContextMenu(triggerEvent, sender) {
 
         const ctxMenu = new Menu();
@@ -259,12 +283,12 @@ class ElectronContextMenu extends ContextMenu {
 
         ctxMenu.append(new MenuItem({
             label: 'Create Pagemark',
-            click: () => this.cmdCreatePagemark(triggerEvent, sender)
+            click: () => this.postContextMenuMessage("create-pagemark", triggerEvent)
         }));
 
         ctxMenu.append(new MenuItem({
             label: 'Create Area Highlight',
-            click: () => this.cmdCreateAreaHighlight(triggerEvent, sender)
+            click: () => this.postContextMenuMessage("create-area-highlight", triggerEvent)
         }));
 
         return ctxMenu;

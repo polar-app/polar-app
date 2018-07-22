@@ -31,6 +31,11 @@ module.exports.ContextMenuType = Object.freeze({
     TEXT_HIGHLIGHT: "TEXT_HIGHLIGHT",
 
     /**
+     * An area highlight is selected.
+     */
+    AREA_HIGHLIGHT: "AREA_HIGHLIGHT",
+
+    /**
      * We are hovering over a .page so add page specific options.
      */
     PAGE: "PAGE"
