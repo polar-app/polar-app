@@ -46,6 +46,10 @@ class Rects {
      * Make sure the given rect has all the correct properties and then return
      * the rect.
      *
+     * @param rect {Object} A rect-like object with the fields we need to work
+     *        with.  If it's not actually an instance of Rect we create a rect
+     *        and return that instead.
+     *
      * @return {Rect}
      */
     static validate(rect) {
