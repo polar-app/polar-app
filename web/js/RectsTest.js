@@ -59,10 +59,10 @@ describe('Rects', function() {
 
             let actual = Rects.scale(rect, 2.0);
             let expected = {
-                "top": 200,
                 "left": 200,
-                "bottom": 400,
+                "top": 200,
                 "right": 400,
+                "bottom": 400,
                 "width": 200,
                 "height": 200
             };
