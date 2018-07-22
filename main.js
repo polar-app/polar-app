@@ -31,6 +31,7 @@ const {Fingerprints} = require("./web/js/util/Fingerprints");
 const {Files} = require("./web/js/util/Files");
 const {ElectronContextMenu} = require("./web/js/contextmenu/electron/ElectronContextMenu");
 const {CaptureController} = require("./web/js/capture/controller/CaptureController");
+const {GA} = require("./web/js/ga/GA");
 
 const searchInPage = require('electron-in-page-search').default;
 
@@ -380,6 +381,8 @@ async function loadDoc(path, targetWindow) {
 
     if(path.endsWith(".pdf")) {
 
+        appAnalytics.screen("pdfviewer");
+
         // FIXME: Use a PHZ loader for this.
 
         url = `http://${DEFAULT_HOST}:${WEBSERVER_PORT}/pdfviewer/web/viewer.html?file=${fileParam}`;
@@ -421,6 +424,8 @@ async function loadDoc(path, targetWindow) {
         url = `http://${DEFAULT_HOST}:${WEBSERVER_PORT}/htmlviewer/index.html?file=${encodeURIComponent(cacheMeta.url)}&fingerprint=${fingerprint}&descriptor=${encodeURIComponent(descriptorJSON)}`;
 
     } else if(path.endsWith(".phz")) {
+
+        appAnalytics.screen("htmlviewer");
 
         // FIXME: this should use the new PHZLoader.  There's a duplication of code there otherwise.
 
@@ -601,6 +606,8 @@ const cacheRegistry = new CacheRegistry(proxyServerConfig);
 const directories = new Directories();
 
 let captureController = new CaptureController({directories, cacheRegistry});
+
+let appAnalytics = GA.getAppAnalytics();
 
 directories.init().then(async () => {
 

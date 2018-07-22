@@ -107,6 +107,8 @@
 
 ## 1.0 b30 release
 
+- DONE: google analytics support
+
 - DONE: area highlights implemented
 
 - DONE: fixed paste on MacOS
