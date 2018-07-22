@@ -98,6 +98,13 @@
 
     - work on a way for users to set the metadata for their documents.
 
+#
+
+- integrates into version control.. just commit
+- screenshots are part of annotations
+- text and html are part of annotations
+- hackable... REST API and chrome platform.
+
 # Competitors
 
 - evernote
@@ -127,3 +134,4 @@ https://www.mendeley.com/
 -
 
 #
+
