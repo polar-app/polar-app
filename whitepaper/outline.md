@@ -1,4 +1,10 @@
 
+- since it supports every platform (linux, mac, windows) you can move to any OS
+  you want.  You can have it for 30 years.  If Windows dies out.. or Mac... it 
+  doesn't matter.
+  
+- PDFs will be around forever.  HTML too.
+
 - goals:
 
     - LONG TERM retension of vast amounts of material

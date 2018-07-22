@@ -150,7 +150,9 @@ const MENU_TEMPLATE = [{
             // { type: 'separator' },
             // { label: 'Find', accelerator: 'CmdOrCtrl+f', click: cmdFind },
             { type: 'separator' },
-            { label: 'Copy', accelerator: 'CmdOrCtrl+C', role: 'copy' },
+            { label: "Cut", accelerator: "CmdOrCtrl+X", selector: "cut:" },
+            { label: 'Copy', accelerator: 'CmdOrCtrl+C', role: "copy:" },
+            { label: "Paste", accelerator: "CmdOrCtrl+V", selector: "paste:" },
             { label: 'Select All', accelerator: 'CmdOrCtrl+A', role: 'selectall' },
             { type: 'separator' },
             // {

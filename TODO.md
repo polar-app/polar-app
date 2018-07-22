@@ -92,6 +92,8 @@
 
 - flashcards implemented
 
+- DONE: fixed paste on MacOS
+
 - DONE: can't create pagemark lower down on the page... elementsFromPage is supposed
   to be based on the viewport but neither client nor page seems to fix it.
 
