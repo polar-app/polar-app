@@ -110,6 +110,8 @@ describe('TextHighlightModel', function() {
                 }
             ];
 
+            console.log(mutations);
+
             assertJSON(mutations, expected);
 
         });
@@ -121,7 +123,7 @@ describe('TextHighlightModel', function() {
 function summarize(textHighlightEvent) {
     return {
         pageNum: textHighlightEvent.pageMeta.pageInfo.num,
-        textHighlight: textHighlightEvent.textHighlight,
+        textHighlight: textHighlightEvent.value,
         mutationType: textHighlightEvent.mutationType
     };
 }
