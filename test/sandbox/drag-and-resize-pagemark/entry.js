@@ -9,7 +9,7 @@ const {Rect} = require("../../../web/js/Rect");
 const {ResizeRectAdjacencyCalculator} = require("../../../web/js/pagemarks/controller/interact/resize/ResizeRectAdjacencyCalculator");
 const {RectEdges} = require("../../../web/js/pagemarks/controller/interact/edges/RectEdges");
 const {Preconditions} = require("../../../web/js/Preconditions");
-const {BoxController} = require("../../../web/js/pagemarks/controller/interact/BoxController");
+const {BoxController} = require("../../../web/js/boxes/controller/BoxController");
 
 
 $(document).ready( () => {

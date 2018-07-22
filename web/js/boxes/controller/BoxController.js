@@ -1,15 +1,15 @@
 const interact = require("interactjs");
 const {BoxOptions} = require("./BoxOptions");
-const {Rects} = require("../../../Rects");
-const {Rect} = require("../../../Rect");
-const {Objects} = require("../../../util/Objects");
-const {DragRectAdjacencyCalculator} = require("./drag/DragRectAdjacencyCalculator");
-const {ResizeRectAdjacencyCalculator} = require("./resize/ResizeRectAdjacencyCalculator");
+const {Rects} = require("../../Rects");
+const {Rect} = require("../../Rect");
+const {Objects} = require("../../util/Objects");
+const {DragRectAdjacencyCalculator} = require("../../pagemarks/controller/interact/drag/DragRectAdjacencyCalculator");
+const {ResizeRectAdjacencyCalculator} = require("../../pagemarks/controller/interact/resize/ResizeRectAdjacencyCalculator");
 const {BoxMoveEvent} = require("./BoxMoveEvent");
-const {RectEdges} = require("./edges/RectEdges");
-const {Preconditions} = require("../../../Preconditions");
-const {Optional} = require("../../../Optional");
-const log = require("../../../logger/Logger").create();
+const {RectEdges} = require("../../pagemarks/controller/interact/edges/RectEdges");
+const {Preconditions} = require("../../Preconditions");
+const {Optional} = require("../../Optional");
+const log = require("../../logger/Logger").create();
 
 /**
  * A generic controller for dragging boxes (divs) which are resizeable and can
