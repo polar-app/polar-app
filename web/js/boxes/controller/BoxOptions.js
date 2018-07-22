@@ -16,6 +16,13 @@ class BoxOptions {
          */
         this.restrictionElement = undefined;
 
+        /**
+         * Specify the CSS selector for intersected elements.
+         *
+         * @type {undefined}
+         */
+        this.intersectedElementsSelector = undefined;
+
         Object.assign(this, opts);
 
     }

@@ -61,7 +61,6 @@ class PagemarkRects {
 
     }
 
-
     /**
      *
      * @deprecated Moving to AnnotationRects

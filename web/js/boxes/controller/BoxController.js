@@ -126,7 +126,7 @@ class BoxController {
                     top: origin.y,
                     width: targetRect.width,
                     height: targetRect.height
-                }));
+                }), boxOptions.intersectedElementsSelector);
 
                 let boxRect = Rects.createFromBasicRect({
                     left: origin.x,
@@ -312,10 +312,12 @@ class BoxController {
 
     /**
      */
-    _calculateIntersectedBoxes(element, resizeRect) {
+    _calculateIntersectedBoxes(element, resizeRect, intersectedElementsSelector) {
 
         Preconditions.assertNotNull(element, "element");
         Preconditions.assertNotNull(resizeRect, "resizeRect");
+        Preconditions.assertNotNull(intersectedElementsSelector, "intersectedElementsSelector");
+
 
         // // This is where we are NOW, now where we are GOING to be.
         // let elementRect = Rects.fromElementStyle(element);
@@ -323,9 +325,7 @@ class BoxController {
         // log.info(`x: ${x}: y: ${y}`);
         log.info("_calculateIntersectedBoxes: resizeRect is: " + JSON.stringify(resizeRect, null, "  "));
 
-        // TODO: the .pagemark selector must be configured
-
-        let boxes = Array.from(element.parentElement.querySelectorAll(".pagemark"))
+        let boxes = Array.from(element.parentElement.querySelectorAll(intersectedElementsSelector))
                              .filter( current => current !== element);
 
         // make sure that our boxes aren't the same ID as the element. we can
@@ -336,10 +336,10 @@ class BoxController {
 
         boxes.forEach(box => {
 
-            let pagemarkRect = Rects.fromElementStyle(box);
+            let boxRect = Rects.fromElementStyle(box);
 
-            if(Rects.intersect(pagemarkRect, resizeRect)) {
-                intersectedRects.push(pagemarkRect);
+            if(Rects.intersect(boxRect, resizeRect)) {
+                intersectedRects.push(boxRect);
             }
 
         });

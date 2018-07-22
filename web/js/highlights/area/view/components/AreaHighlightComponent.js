@@ -2,6 +2,14 @@ const {DocFormatFactory} = require("../../../../docformat/DocFormatFactory");
 const {Component} = require("../../../../components/Component");
 const {forDict} = require("../../../../util/Functions");
 const {Rects} = require("../../../../Rects");
+const {Dimensions} = require("../../../../util/Dimensions");
+const {AreaHighlights} = require("../../../../metadata/AreaHighlights");
+const {AnnotationRect} = require("../../../../metadata/AnnotationRect");
+const {AnnotationRects} = require("../../../../metadata/AnnotationRects");
+const {AreaHighlightRect} = require("../../../../metadata/AreaHighlightRect");
+const {AreaHighlightRects} = require("../../../../metadata/AreaHighlightRects");
+const {BoxController} = require("../../../../boxes/controller/BoxController");
+
 const log = require("../../../../logger/Logger").create();
 
 class AreaHighlightComponent extends Component {
@@ -27,6 +35,12 @@ class AreaHighlightComponent extends Component {
          */
         this.areaHighlight = undefined;
 
+        /**
+         *
+         * @type {BoxController}
+         */
+        this.boxController = undefined;
+
     }
 
     /**
@@ -40,6 +54,42 @@ class AreaHighlightComponent extends Component {
         this.annotationEvent = annotationEvent;
         this.areaHighlight = annotationEvent.value;
 
+        this.boxController = new BoxController(boxMoveEvent => this.onPagemarkMoved(boxMoveEvent));
+
+    }
+
+    /**
+     *
+     * @param boxMoveEvent {BoxMoveEvent}
+     */
+    onPagemarkMoved(boxMoveEvent) {
+
+        // TODO: actually I think this belongs in the controller... not the view
+        //
+        //
+
+        console.log("Box moved to: ", boxMoveEvent);
+
+        let annotationRect = AnnotationRects.createFromPositionedRect(boxMoveEvent.boxRect,
+                                                                      boxMoveEvent.restrictionRect);
+
+        let areaHighlightRect = new AreaHighlightRect(annotationRect);
+
+        // FIXME: the lastUpdated here isn't being updated. I'm going to
+        // have to change the setters I think..
+
+        if (boxMoveEvent.state === "completed") {
+
+            let areaHighlight = AreaHighlights.create({rect: areaHighlightRect})
+
+            log.info("New areaHighlight: ", JSON.stringify(areaHighlight, null, "  "));
+
+            this.annotationEvent.pageMeta.areaHighlights[areaHighlight.id] = areaHighlight;
+
+        } else {
+
+        }
+
     }
 
     /**
@@ -51,18 +101,52 @@ class AreaHighlightComponent extends Component {
 
         log.info("render()");
 
-        forDict(this.areaHighlight.rects, (id, highlightRect) => {
+        let docMeta = this.annotationEvent.docMeta;
+        let pageMeta = this.annotationEvent.pageMeta;
+        let docInfo = docMeta.docInfo;
+
+        console.log("fixme: ", pageMeta.pageInfo);
+
+        let pageElement = this.docFormat.getPageElementFromPageNum(pageMeta.pageInfo.num);
+
+        let pageDimensions = new Dimensions({
+            width: pageElement.clientWidth,
+            height: pageElement.clientHeight
+        });
+
+        forDict(this.areaHighlight.rects, (key, rect) => {
 
             // FIXME: this rect needs to be calculated to fit the current page
             // like the way we handle pagemarks...
 
-            log.info("Rendering annotation at: " + JSON.stringify(highlightRect, null, "  "));
+            // FIXME need the container Rect..
 
-            let highlightElement = document.createElement("div");
+            let areaHighlightRect = AreaHighlightRects.createFromRect(rect);
 
-            let docMeta = this.annotationEvent.docMeta;
-            let pageMeta = this.annotationEvent.pageMeta;
-            let docInfo = docMeta.docInfo;
+            let overlayRect = areaHighlightRect.toDimensions(pageDimensions);
+
+            log.info("Rendering annotation at: " + JSON.stringify(overlayRect, null, "  "));
+
+            let id = this.createID();
+
+            let highlightElement = document.getElementById(id);
+
+            if(highlightElement === null ) {
+
+                // only create the pagemark if it's missing.
+                highlightElement = document.createElement("div");
+                highlightElement.setAttribute("id", id);
+
+                pageElement.insertBefore(highlightElement, pageElement.firstChild);
+
+                log.info("Creating box controller for highlightElement: ", highlightElement);
+                this.boxController.register({
+                    target: highlightElement,
+                    restrictionElement: pageElement,
+                    intersectedElementsSelector: ".area-highlight"
+                });
+
+            }
 
             highlightElement.setAttribute("data-type", "area-highlight");
             highlightElement.setAttribute("data-doc-fingerprint", docInfo.fingerprint);
@@ -79,25 +163,24 @@ class AreaHighlightComponent extends Component {
                 // this is only needed for PDF and we might be able to use a transform
                 // in the future which would be easier.
                 let currentScale = this.docFormat.currentScale();
-                highlightRect = Rects.scale(highlightRect, currentScale);
+                overlayRect = Rects.scale(overlayRect, currentScale);
             }
 
-            highlightElement.style.left = `${highlightRect.left}px`;
-            highlightElement.style.top = `${highlightRect.top}px`;
+            highlightElement.style.left = `${overlayRect.left}px`;
+            highlightElement.style.top = `${overlayRect.top}px`;
 
-            highlightElement.style.width = `${highlightRect.width}px`;
-            highlightElement.style.height = `${highlightRect.height}px`;
-
-            // TODO: the problem with this strategy is that it inserts elements in the
-            // REVERSE order they are presented visually.  This isn't a problem but
-            // it might become confusing to debug this issue.  A quick fix is to
-            // just reverse the array before we render the elements.
-            let pageElement = this.annotationEvent.pageElement;
-
-            pageElement.insertBefore(highlightElement, pageElement.firstChild);
+            highlightElement.style.width = `${overlayRect.width}px`;
+            highlightElement.style.height = `${overlayRect.height}px`;
 
         });
 
+    }
+
+    /**
+     * Create a unique DOM ID for this pagemark.
+     */
+    createID() {
+        return `area-highlight-${this.areaHighlight.id}`;
     }
 
     /**

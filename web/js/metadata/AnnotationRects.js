@@ -51,7 +51,7 @@ class AnnotationRects {
     }
 
     /**
-     * Create a new PagemarkRect from a positioned rect.  We use this to take
+     * Create a new AnnotationRect from a positioned rect.  We use this to take
      * a dragged or resized rect / box on the screen then convert it to a
      * PagemarkRect with the correct coordinates.
      *

@@ -119,11 +119,14 @@ class AnnotationRect {
     }
 
     /**
+     * Convert to a new AnnotationRect of the specific dimensions.
      *
      * @param dimensions {Dimensions}
      * @return {Rect}
      */
     toDimensions(dimensions) {
+
+        Preconditions.assertNotNull(dimensions, "dimensions");
 
         let fractionalRect = this.toFractionalRect();
 
