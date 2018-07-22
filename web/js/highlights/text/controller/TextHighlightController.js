@@ -158,6 +158,9 @@ class TextHighlightController {
 
         log.info("Deleting text highlight from model: ", commandEvent);
 
+        // FIXME/TODO: migrate this to use AnnotationPointers like other
+        // components are now doing...
+
         // should we just send this event to all the the windows?
         commandEvent.matchingSelectors[".text-highlight"].annotationDescriptors.forEach(annotationDescriptor => {
 
