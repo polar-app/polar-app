@@ -147,7 +147,7 @@ class AreaHighlightComponent extends Component {
 
                 this.boxController.register(new BoxOptions({
                     target: highlightElement,
-                    restrictionElement: containerElement,
+                    restrictionElement: dimensionsElement,
                     intersectedElementsSelector: ".area-highlight"
                 }));
 
