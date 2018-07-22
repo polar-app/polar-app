@@ -2,6 +2,7 @@ const {AnnotationRects} = require("../../../metadata/AnnotationRects");
 const {AreaHighlights} = require("../../../metadata/AreaHighlights");
 const {Preconditions} = require("../../../Preconditions");
 const {DocFormatFactory} = require("../../../docformat/DocFormatFactory");
+const {AnnotationPointers} = require("../../../annotations/AnnotationPointers");
 const {ipcRenderer} = require('electron');
 
 const log = require("../../../logger/Logger").create();
@@ -74,22 +75,16 @@ class AreaHighlightController {
 
         pageMeta.areaHighlights[areaHighlight.id] = areaHighlight;
 
-
     }
 
     onDeleteAreaHighlight(contextMenuEvent) {
 
-        log.info("Deleting area highlight: ", contextMenuEvent);
+        let annotationPointers
+            = AnnotationPointers.toAnnotationPointers(".area-highlight", contextMenuEvent);
 
-
-        // should we just send this event to all the the windows?
-        contextMenuEvent.matchingSelectors[".area-highlight"].annotationDescriptors.forEach(annotationDescriptor => {
-
-            log.info("Deleting annotationDescriptor: ", JSON.stringify(annotationDescriptor, null, "  "));
-
-            let pageMeta = this.model.docMeta.getPageMeta(annotationDescriptor.pageNum);
-            delete pageMeta.areaHighlights[annotationDescriptor.annotationId];
-
+        annotationPointers.forEach(annotationPointer => {
+            let pageMeta = this.model.docMeta.getPageMeta(annotationPointer.pageNum);
+            delete pageMeta.areaHighlights[annotationPointer.id];
         });
 
     }

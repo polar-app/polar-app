@@ -193,7 +193,14 @@ class AbstractPagemarkComponent extends Component {
 
         // set a pagemark-id in the DOM so that we can work with it when we use
         // the context menu, etc.
+        // TODO: this is duplicated code across three places.. all major
+        // annotation components.
         pagemarkElement.setAttribute("data-pagemark-id", this.pagemark.id);
+        pagemarkElement.setAttribute("data-annotation-id", this.pagemark.id);
+        pagemarkElement.setAttribute("data-type", "pagemark");
+        pagemarkElement.setAttribute("data-doc-fingerprint", this.annotationEvent.docMeta.docInfo.fingerprint);
+        pagemarkElement.setAttribute("data-page-num", `${this.annotationEvent.pageMeta.pageInfo.num}`);
+
 
         // make sure we have a reliable CSS classname to work with.
         pagemarkElement.className="pagemark annotation";

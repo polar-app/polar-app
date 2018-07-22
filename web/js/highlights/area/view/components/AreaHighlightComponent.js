@@ -180,9 +180,6 @@ class AreaHighlightComponent extends Component {
             highlightElement.style.width = `${overlayRect.width}px`;
             highlightElement.style.height = `${overlayRect.height}px`;
 
-            // FIXME: this is the color we should use but it broke once we
-            // needed to resize the PDFs
-
             highlightElement.style.border = `1px solid #c6c6c6`;
 
             highlightElement.style.zIndex = '1';

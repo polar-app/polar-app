@@ -3,6 +3,7 @@ const {DocFormatFactory} = require("../../docformat/DocFormatFactory");
 const {Rects} = require("../../Rects");
 const {Pagemarks} = require("../../metadata/Pagemarks");
 const {PagemarkRects} = require("../../metadata/PagemarkRects");
+const {AnnotationPointers} = require("../../annotations/AnnotationPointers");
 const {Elements} = require("../../util/Elements");
 
 class PagemarkController {
@@ -24,8 +25,14 @@ class PagemarkController {
 
     onMessageReceived(event) {
 
+        let contextMenuEvent = event.data;
+
         if(event.data && event.data.type === "create-pagemark") {
-            this.onCreatePagemark(event.data);
+            this.onCreatePagemark(contextMenuEvent);
+        }
+
+        if (event.data && event.data.type === "delete-pagemark") {
+            this.onDeletePagemark(contextMenuEvent);
         }
 
     }
@@ -91,6 +98,21 @@ class PagemarkController {
         } else {
             log.warn("Wrong number of elements selected: " + elements.length);
         }
+
+    }
+
+
+    onDeletePagemark(contextMenuEvent) {
+
+        console.log("FIXME handling onDeletePagemark: " , contextMenuEvent)
+
+        let annotationPointers
+            = AnnotationPointers.toAnnotationPointers(".pagemark", contextMenuEvent);
+
+        annotationPointers.forEach(annotationPointer => {
+            let pageMeta = this.model.docMeta.getPageMeta(annotationPointer.pageNum);
+            delete pageMeta.pagemarks[annotationPointer.id];
+        });
 
     }
 

@@ -262,10 +262,11 @@ class ElectronContextMenu extends ContextMenu {
 
         const ctxMenu = new Menu();
 
-        // ctxMenu.append(new MenuItem({
-        //     label: 'Delete Pagemark',
-        //     click: () => this.cmdCreatePagemark(triggerEvent, sender)
-        // }));
+        ctxMenu.append(new MenuItem({
+            label: 'Delete Pagemark',
+            //accelerator: 'CmdOrCtrl+A',
+            click: () => this.postContextMenuMessage("delete-pagemark", triggerEvent)
+        }));
 
         return ctxMenu;
 
