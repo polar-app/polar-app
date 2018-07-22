@@ -62,7 +62,7 @@ class AbstractPagemarkComponent extends Component {
         this.annotationEvent = annotationEvent;
         this.pagemark = annotationEvent.value;
 
-        this.pagemarkBoxController = new BoxController(boxMoveEvent => this.onPagemarkMoved(boxMoveEvent));
+        this.pagemarkBoxController = new BoxController(boxMoveEvent => this.onBoxMoved(boxMoveEvent));
 
     }
 
@@ -70,7 +70,7 @@ class AbstractPagemarkComponent extends Component {
      *
      * @param boxMoveEvent {BoxMoveEvent}
      */
-    onPagemarkMoved(boxMoveEvent) {
+    onBoxMoved(boxMoveEvent) {
 
         // TODO: actually I think this belongs in the controller... not the view
         //
@@ -162,8 +162,8 @@ class AbstractPagemarkComponent extends Component {
             log.warn("Using a default placementElement from selector: ", placementElement);
         }
 
-        Preconditions.assertNotNull(templateElement, "templateElement")
-        Preconditions.assertNotNull(placementElement, "placementElement")
+        Preconditions.assertNotNull(templateElement, "templateElement");
+        Preconditions.assertNotNull(placementElement, "placementElement");
 
         console.log("Using templateElement: ", templateElement);
         console.log("Using placementElement: ", placementElement);
