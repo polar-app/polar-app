@@ -57,6 +57,8 @@ class LineAdjustment {
 
     /**
      * Apply the adjustment to the given rect and return the new rect.
+     *
+     * @return {Rect}
      */
     adjustRect(primaryRect) {
 

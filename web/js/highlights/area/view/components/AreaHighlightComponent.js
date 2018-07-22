@@ -168,6 +168,7 @@ class AreaHighlightComponent extends Component {
 
             highlightElement.style.width = `${overlayRect.width}px`;
             highlightElement.style.height = `${overlayRect.height}px`;
+            highlightElement.style.zIndex = '1';
 
         });
 

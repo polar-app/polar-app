@@ -1,5 +1,5 @@
 
-const {Objects} = require("../util/Objects");
+const {Browser} = require("./Browser");
 
 // TODO: anything greater than 10k triggers a bug on NVidia drivers on Linux
 // but many documents are larger than this 10k limit if they have 10 pages or
@@ -76,7 +76,7 @@ class Browsers {
      * @return {Browser}
      */
     static createDefault(browser, height) {
-        browser = Objects.duplicate(browser);
+        browser = Object.assign(new Browser(), browser);
 
         /**
          * The page height we should use when loading the document.  It

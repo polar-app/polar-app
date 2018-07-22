@@ -207,7 +207,7 @@ class TextHighlightRows {
         if (row.length == null || row.length === 0)
             throw new Error("Invalid row data");
 
-        // duplicate the first entry... we will keep maximixing the bounds.
+        // duplicate the first entry... we will keep maximizing the bounds.
         let result = Rects.validate(Objects.duplicate(row[0].rect));
 
         row.forEach(function (rectElement) {

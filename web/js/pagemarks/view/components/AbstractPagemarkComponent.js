@@ -216,7 +216,7 @@ class AbstractPagemarkComponent extends Component {
         pagemarkElement.style.top = `${pagemarkRect.top}px`;
         pagemarkElement.style.width = `${pagemarkRect.width}px`;
         pagemarkElement.style.height = `${pagemarkRect.height}px`;
-        pagemarkElement.style.zIndex = '1';
+        pagemarkElement.style.zIndex = '9';
 
     }
 

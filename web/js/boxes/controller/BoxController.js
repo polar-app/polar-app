@@ -156,6 +156,7 @@ class BoxController {
                     if(adjustedRect) {
                         this._moveTargetElement(adjustedRect.left, adjustedRect.top, target);
                         boxRect = adjustedRect;
+
                     } else {
                         // this should never happen but log it if there is a bug.
                         console.warn("Can't move due to no valid adjustedRect we can work with.");

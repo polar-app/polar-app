@@ -17,14 +17,17 @@ class Rects {
 
     /**
      * Scale the rect based on the current values and the given scale.
+     * @param rect {Rect}
+     * @param scale {number}
      */
     static scale(rect, scale) {
 
         Preconditions.assertNotNull(rect, "rect");
+
         // make sure the input is valid before we work on it.
         rect = Rects.validate(rect);
 
-        rect = Objects.duplicate(rect);
+        rect = Object.assign(new Rect(), rect);
 
         for(let key in rect) {
 
@@ -61,7 +64,11 @@ class Rects {
         Preconditions.assertNumber(rect.bottom, "bottom");
         Preconditions.assertNumber(rect.right, "right");
 
-        return rect;
+        if(! rect instanceof Rect) {
+            return new Rect(rect);
+        } else {
+            return rect;
+        }
 
     }
 
@@ -70,10 +77,12 @@ class Rects {
      * rect.
      *
      * @param point {Point}
+     * @param rect {Rect}
      */
     static relativeTo(point, rect) {
 
-        rect = Objects.duplicate(rect);
+        rect = Rects.validate(rect);
+        rect = Object.assign(new Rect(), rect);
 
         rect.left = rect.left + point.x;
         rect.top = rect.top + point.y;
@@ -100,7 +109,7 @@ class Rects {
      */
     static move(rect, dir, absolute) {
 
-        rect = Objects.duplicate(rect);
+        rect = Object.assign(new Rect(), rect);
 
         if(absolute) {
 
@@ -331,7 +340,7 @@ class Rects {
      */
     static createFromBasicRect(rect) {
 
-        rect = Objects.duplicate(rect);
+        rect = Object.assign(new Rect(), rect);
 
         // TODO: add x,y in the future.
 

@@ -1,4 +1,7 @@
 
+
+- BUG: we can't highlight code within iframes...
+
 ## 1.0 b30 release
 
 - pulling a pagemark rect into an above pagemark rect gives an exception.

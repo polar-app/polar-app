@@ -89,7 +89,7 @@ class Elements {
         result.right = result.left + result.width;
         result.bottom = result.top + result.height;
 
-        return Rects.validate(result)
+        return Rects.validate(Rects.createFromBasicRect(result));
 
     }
 
