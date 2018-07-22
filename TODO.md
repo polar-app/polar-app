@@ -2,13 +2,20 @@
 
 - BUG: we can't highlight code within iframes...
 
+## 1.0 b40 release
+
+- Electron 3.0 with new HTML iframe zoom.
+
+-
+
 ## 1.0 b30 release
 
 - pulling a pagemark rect into an above pagemark rect gives an exception.
 
 - https://github.com/hokein/electron-sample-apps/tree/master/webview/browser
 
-- Finish the component for annotations...
+- typescript might solve my issue with web components so I might as well try to
+  migrate to it. See if it does...
 
 - wikipedia pages look poor at 150%
 
@@ -93,9 +100,9 @@
         - it might also be possible to use meta viewport BUT this doesn't seem
           to work without emulating a mobile device.
 
-- area highlights implemented
-
 - flashcards implemented
+
+- DONE: area highlights implemented
 
 - DONE: fixed paste on MacOS
 

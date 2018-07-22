@@ -104,8 +104,6 @@ class PagemarkController {
 
     onDeletePagemark(contextMenuEvent) {
 
-        console.log("FIXME handling onDeletePagemark: " , contextMenuEvent)
-
         let annotationPointers
             = AnnotationPointers.toAnnotationPointers(".pagemark", contextMenuEvent);
 
