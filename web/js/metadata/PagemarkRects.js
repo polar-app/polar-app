@@ -64,7 +64,7 @@ class PagemarkRects {
 
     /**
      *
-     *
+     * @deprecated Moving to AnnotationRects
      * @param xAxis {Line}
      * @param yAxis {Line}
      * @return {PagemarkRect}
@@ -78,6 +78,7 @@ class PagemarkRects {
      * a dragged or resized rect / box on the screen then convert it to a
      * PagemarkRect with the correct coordinates.
      *
+     * @deprecated Moving to AnnotationRects
      * @param boxRect {Rect}
      * @param containerRect {Rect}
      * @return {PagemarkRect}

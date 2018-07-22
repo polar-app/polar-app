@@ -32,8 +32,11 @@ class PagemarkController {
 
     onCreatePagemark(data) {
 
-        // convert the point on the page to a pagemark and then save it into
-        // the model/docMeta... the view will do the rest.
+        // convert the point on the page and then save it into the
+        // model/docMeta... the view will do the rest.
+
+        // FIXME migrate this to AnnotationRects now as this shares a lot of code
+        // here...
 
         let elements = document.elementsFromPoint(data.points.client.x, data.points.client.y);
 
@@ -43,13 +46,9 @@ class PagemarkController {
 
             let pageElement = elements[0];
 
-            log.info("Creating pagemark on pageElement: ", pageElement);
+            log.info("Creating box on pageElement: ", pageElement);
 
             let pageNum = this.docFormat.getPageNumFromPageElement(pageElement);
-
-            // FIXME: this is wrong... we're getting the offset from the target
-            // and since we're called from the context menu we have no fucking
-            // idea where we are now.
 
             // get the point within the element itself..
             let pageElementPoint = data.points.pageOffset;
@@ -61,7 +60,7 @@ class PagemarkController {
                 height: 150
             });
 
-            log.info("Placing pagemark at: ", boxRect);
+            log.info("Placing box at: ", boxRect);
 
             // get a rect for the element... we really only need the dimensions
             // though.. not the width and height.

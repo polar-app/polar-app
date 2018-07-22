@@ -1,3 +1,5 @@
+const {AnnotationRects} = require("../../../metadata/AnnotationRects");
+const {AreaHighlights} = require("../../../metadata/AreaHighlights");
 const {Preconditions} = require("../../../Preconditions");
 const {DocFormatFactory} = require("../../../docformat/DocFormatFactory");
 const {ipcRenderer} = require('electron');
@@ -51,9 +53,27 @@ class AreaHighlightController {
 
     }
 
-    onCreateAreaHighlight(data) {
+    /**
+     *
+     * @param contextMenuLocation {ContextMenuLocation}
+     */
+    onCreateAreaHighlight(contextMenuLocation) {
 
-        log.info("Creating area highlight.");
+        log.info("Creating area highlight: ", contextMenuLocation);
+
+        let annotationRect = AnnotationRects.createFromEvent(contextMenuLocation);
+
+        log.info("annotationRect", annotationRect);
+
+        let areaHighlight = AreaHighlights.create({rect: annotationRect});
+
+        log.info("areaHighlight", areaHighlight);
+
+        let docMeta = this.model.docMeta;
+        let pageMeta = docMeta.getPageMeta(contextMenuLocation.pageNum);
+
+        pageMeta.areaHighlights[areaHighlight.id] = areaHighlight;
+
 
     }
 

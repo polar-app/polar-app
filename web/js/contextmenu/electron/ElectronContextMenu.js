@@ -103,19 +103,6 @@ class ElectronContextMenu extends ContextMenu {
 
     async cmdCreatePagemark(triggerEvent, sender) {
 
-        console.log("cmdCreatePagemark()")
-
-        await this.messenger.postMessage({
-            message: {
-                type: "create-pagemark",
-                points: triggerEvent.points
-            }
-        })
-
-    }
-
-    async cmdCreatePagemark(triggerEvent, sender) {
-
         await this.cmdPostContextMenuMessage(triggerEvent, "create-pagemark");
 
     }
@@ -130,10 +117,15 @@ class ElectronContextMenu extends ContextMenu {
 
         log.info("cmdPostContextMenuMessage: " + name);
 
+        // TODO: this should use its own type of ContextMenuMessage with the
+        // ContextMenuLocation and a type field.
         await this.messenger.postMessage({
             message: {
                 type: name,
-                points: triggerEvent.points
+                points: triggerEvent.points,
+                pageNum: triggerEvent.pageNum,
+                matchingSelectors: triggerEvent.matchingSelectors,
+                docDescriptor: triggerEvent.docDescriptor
             }
         })
 

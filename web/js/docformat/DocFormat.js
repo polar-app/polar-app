@@ -28,7 +28,7 @@ class DocFormat {
         // indexes.
         let pageElement = pageElements[pageNum - 1];
 
-        if(pageElement == null) {
+        if(! pageElement) {
             throw new Error("Unable to find page element for page num: " + pageNum);
         }
 

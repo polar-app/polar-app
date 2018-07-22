@@ -17,12 +17,10 @@ class Hashcodes {
 
     /**
      * Create a hashcode as a truncated SHA hashcode.
+     * @param obj {Object} The object to has to form the ID.
+     * @param [len] {number} The length of the hash you want to create.
      */
-    static createID(obj, len) {
-
-        if(! len) {
-            len = 10;
-        }
+    static createID(obj, len = 10) {
 
         let id = Hashcodes.create(JSON.stringify(obj));
 

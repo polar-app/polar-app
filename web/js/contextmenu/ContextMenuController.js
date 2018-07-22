@@ -4,6 +4,7 @@ const {ContextMenuType} = require("./ContextMenuType");
 const {forDict} = require("../utils");
 const {Attributes} = require("../util/Attributes");
 const {TriggerEvent} = require("./TriggerEvent");
+const {DocFormatFactory} = require("../docformat/DocFormatFactory");
 const {DocDescriptor} = require("../metadata/DocDescriptor");
 const {Preconditions} = require("../Preconditions");
 const {Elements} = require("../util/Elements");
@@ -63,6 +64,10 @@ class ContextMenuController {
 
                 let pageElement = Elements.untilRoot(event.target, ".page");
 
+                let docFormat = DocFormatFactory.getInstance();
+
+                let pageNum = docFormat.getPageNumFromPageElement(pageElement);
+
                 let eventTargetOffset = Elements.getRelativeOffsetRect(event.target, pageElement);
 
                 // compute the offset of the event relative to the page we're
@@ -93,8 +98,8 @@ class ContextMenuController {
                             y: event.offsetY
                         },
                         pageOffset
-
                     },
+                    pageNum,
                     contextMenuTypes,
                     matchingSelectors,
                     docDescriptor
