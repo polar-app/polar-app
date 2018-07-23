@@ -1,26 +1,37 @@
+const fs = require('fs');
 const path = require('path');
 const webpack = require('webpack');
 const nodeExternals = require('webpack-node-externals');
-var recursive = require("recursive-readdir");
 
-async function findFiles(path, suffix) {
+/**
+ * Sync find files with a given suffix.
+ *
+ * @param path {string} The directory path to search for files.
+ * @param suffix {string} Only find files with the given suffix.
+ */
+function findFiles(path, suffix) {
 
-    return new Promise((resolve, reject) => {
-        // create a config for each Test...
-        recursive(path, (err, files) => {
+    let result = [];
 
-            if(err) {
-                reject(err);
-                return;
+    fs.readdirSync(path).forEach(current => {
+
+        let currentPath = path + "/" + current;
+
+        let stat = fs.lstatSync(currentPath);
+
+        if (stat.isDirectory()) {
+            result.push(...findFiles(currentPath, suffix));
+        }
+
+        if (stat.isFile()) {
+            if(current.endsWith(suffix)) {
+                result.push(currentPath);
             }
-
-            files = files.filter( file => file.endsWith(suffix));
-
-            resolve(files);
-
-        });
+        }
 
     });
+
+    return result;
 
 }
 
@@ -96,46 +107,20 @@ function createWebpackConfig(name, entryPath, target = "electron-renderer") {
 
 }
 
-async function createConfigs() {
-
-    module.exports.push(createWebpackConfig("injector", "web/js/apps/injector.js"));
-    module.exports.push(createWebpackConfig("electron", "web/js/apps/electron.js"));
-    module.exports.push(createWebpackConfig("start-capture", "apps/capture/start-capture/js/entry.js"));
-    module.exports.push(createWebpackConfig("progress", "apps/capture/progress/js/entry.js"));
-    module.exports.push(createWebpackConfig("card-creator", "apps/card-creator/js/entry.js"));
-    module.exports.push(createWebpackConfig("dialog", "test/sandbox/dialog/js/entry.js"));
-    module.exports.push(createWebpackConfig("webcomponents", "test/sandbox/webcomponents/js/entry.js"));
-
-    module.exports.push(createWebpackConfig("main", "main.js", "electron-main"));
-    module.exports.push(createWebpackConfig("capture", "capture.js", "electron-main"));
-
-    let testFiles = await findFiles("web/js", "Test.js");
-
-    testFiles.forEach(file => {
-        console.log("Creating config for: " + file);
-        module.exports.push(createWebpackConfig("test", file, "node"));
-    });
-
-}
-
 module.exports = [];
 
-(async () => {
-    await createConfigs();
-})();
+module.exports.push(createWebpackConfig("injector", "web/js/apps/injector.js"));
+module.exports.push(createWebpackConfig("electron", "web/js/apps/electron.js"));
+module.exports.push(createWebpackConfig("start-capture", "apps/capture/start-capture/js/entry.js"));
+module.exports.push(createWebpackConfig("progress", "apps/capture/progress/js/entry.js"));
+module.exports.push(createWebpackConfig("card-creator", "apps/card-creator/js/entry.js"));
+module.exports.push(createWebpackConfig("dialog", "test/sandbox/dialog/js/entry.js"));
+module.exports.push(createWebpackConfig("webcomponents", "test/sandbox/webcomponents/js/entry.js"));
 
-//
-//
-// // create a config for each Test...
-// recursive("web/js", (err, files) => {
-//
-//     files = files.filter( file => file.endsWith("Test.js"));
-//
-//     files.forEach(file => {
-//         console.log("Creating config for: " + file);
-//         module.exports.push(createWebpackConfig("test", file, "node"));
-//     })
-//
-// });
+module.exports.push(createWebpackConfig("main", "main.js", "electron-main"));
+module.exports.push(createWebpackConfig("capture", "capture.js", "electron-main"));
 
-console.log(module.exports);
+findFiles("web/js", "Test.js").forEach(file => {
+    let name = path.basename(file).replace(".js", ""); // TODO support .ts tests.
+    module.exports.push(createWebpackConfig(name, file, "node"));
+});
