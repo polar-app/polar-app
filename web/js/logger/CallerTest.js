@@ -22,12 +22,15 @@ describe('Caller', function() {
 
 
         it("Parse a webpack frame", async function () {
-
             let frame = "    at Object../web/js/metadata/Pagemarks.js (http://127.0.0.1:8500/web/dist/electron-bundle.js:59471:86)\n";
-
             assert.deepEqual(Caller._parse(frame), { filename: "Pagemarks.js" });
         });
 
+
+        it("Parse a webpack frame with a question mark at the end", async function () {
+            let frame = "    at eval (webpack:///./web/js/metadata/Pagemarks.js?:11:86)\n";
+            assert.deepEqual(Caller._parse(frame), { filename: "Pagemarks.js" });
+        });
 
     });
 
