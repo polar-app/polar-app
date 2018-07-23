@@ -7,7 +7,8 @@ const {Preconditions} = require("./Preconditions");
  */
 class Rect {
 
-    // TODO: some rects have x,y ... should we add them here to be complete?
+    // TODO: some rects have x,y as well as left,top ... should we add them here
+    // to be complete and closer to a DOMRect?
 
     constructor(obj) {
 
