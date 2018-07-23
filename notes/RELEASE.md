@@ -56,7 +56,10 @@ Create account:
 
 https://snapcraft.io/account
 
+```
   snap install snapcraft
   snapcraft login
   snapcraft push --release stable polar-bookshelf_1.0.0-beta20_amd64.snap
 
+  snapcraft push --release beta polar-bookshelf_1.0.0-beta30_amd64.snap
+```
