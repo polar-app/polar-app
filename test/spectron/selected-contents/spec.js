@@ -485,15 +485,6 @@ describe('SelectContents of HTML entities.', function () {
 
         assert.equal(await this.app.client.getWindowCount(), 1);
 
-        /**
-         * @type {Electron.WebContents}
-         */
-        let webContents = this.app.webContents;
-
-        assert.ok(webContents);
-        assert.ok(webContents.executeJavaScript);
-
-
         let executed = await this.app.client.execute(() => {
 
             const {MockSelections} = require("../../../web/js/highlights/text/selection/MockSelections");

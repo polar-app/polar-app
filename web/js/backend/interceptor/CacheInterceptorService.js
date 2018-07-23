@@ -104,6 +104,8 @@ class CacheInterceptorService {
 
     async interceptRequest(request, callback) {
 
+        console.log("FIXME: here at least... ");
+
         log.info(`intercepted ${request.method} ${request.url}`);
 
         if(this.cacheRegistry.hasEntry(request.url)) {
