@@ -8,3 +8,5 @@ https://www.typescriptlang.org/docs/handbook/react-&-webpack.html
 
 - I think that we should just do -bundle.js for our webpacked files and not do
   /dist as it's going to get too confusing.
+
+- mocha-webpack won't work as it only supports one config.

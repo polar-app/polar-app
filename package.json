@@ -11,8 +11,7 @@
     "test": "./node_modules/.bin/mocha-parallel-tests --max-parallel=1 --exit --recursive 'web/js/**/*Test.js' 'test/**/*spec.js'",
     "webpack": "npx webpack --config=webpack.config.js",
     "webpack-watch": "npx webpack --config=webpack.config.js --watch",
-    "start-with-console": "./node_modules/.bin/electron --enable-remote-debugging --interactive --enable-console-logging .",
-    "mytest": "echo hello world && echo cat dog"
+    "start-with-console": "./node_modules/.bin/electron --enable-remote-debugging --interactive --enable-console-logging ."
   },
   "repository": "https://github.com/burtonator/polar-bookshelf",
   "keywords": [
@@ -60,12 +59,14 @@
     "mocha": "^5.2.0",
     "mocha-isolation": "^0.1.5",
     "mocha-parallel-tests": "^2.0.3",
+    "mocha-webpack": "^1.1.0",
     "source-map-loader": "^0.2.3",
     "spectron": "^3.8.0",
     "timekeeper": "^2.1.2",
     "ts-loader": "^4.4.2",
     "typescript": "^2.9.1",
     "webpack-cli": "^3.1.0",
+    "webpack-node-externals": "^1.7.2",
     "webpack-serve": "^1.0.4"
   },
   "dependencies": {

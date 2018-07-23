@@ -1,8 +1,8 @@
 const path = require('path');
 const webpack = require('webpack');
+const nodeExternals = require('webpack-node-externals');
 
 /**
- *
  *
  * @param name
  * @param entryPath {string} the path to the webpack entrypoint script.
@@ -13,7 +13,7 @@ function createWebpackConfig(name, entryPath, target = "electron-renderer") {
     entryPath = path.resolve(__dirname, entryPath);
     let outputDir = path.dirname(entryPath);
 
-    return {
+    let config = {
         mode: 'development',
         // TODO
         target: target,
@@ -61,7 +61,16 @@ function createWebpackConfig(name, entryPath, target = "electron-renderer") {
             extensions: [".ts", ".tsx", ".js"]
         },
 
+    };
+
+    if(target === "electron-main") {
+        // this saves about 10x when running in electron-main.  We don't need
+        // to statically link all the modules here.  It doesn't work with the
+        // electron renderer though. I thought it would be it appears to fail.
+        config.externals = [nodeExternals()];
     }
+
+    return config;
 
 }
 
