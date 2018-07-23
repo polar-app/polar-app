@@ -39,12 +39,15 @@ const options = { extraHeaders: 'pragma: no-cache\nreferer: http://cnn.com\n' };
 
 const log = Logger.create();
 
+const WIDTH = 800 * 1.2;
+const HEIGHT = 1100 * 1.2;
+
 const BROWSER_WINDOW_OPTIONS = {
     backgroundColor: '#FFF',
-    minWidth: 400,
-    minHeight: 300,
-    width: 1280,
-    height: 1024,
+    minWidth: WIDTH * 0.6,
+    minHeight: HEIGHT * 0.6,
+    width: WIDTH,
+    height: HEIGHT,
     show: false,
     // https://electronjs.org/docs/api/browser-window#new-browserwindowoptions
     icon: app_icon,
@@ -67,7 +70,7 @@ const BROWSER_WINDOW_OPTIONS = {
          * Use a persistent cookie session between restarts.  This is used so
          * that we keep user cookies including Google Analytics cookies.
          */
-        partition: "persist:polar"
+        //partition: "persist:polar"
 
     }
 };
