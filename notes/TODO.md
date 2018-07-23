@@ -4,6 +4,16 @@
 
 ## 1.0 b40 release
 
+- BUG:
+    - PHZ files are actually fucking broken on Electron now.  they WERE working
+      on the past version..
+
+- BUG:
+    - the pageElement for text highlights should be chosen based on the area
+      selection region elements and searching backwards for the .page. Otherwise
+      if we just use the visual percentage of the page we risk picking the
+      wrong page if we're highlighting towards teh bottom of the next page.
+
 - Context menu needs copy/paste
 
 - Electron 3.0 with new HTML iframe zoom.
