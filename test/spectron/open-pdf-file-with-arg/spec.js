@@ -15,7 +15,12 @@ describe('Open specific PDF file from command line', function () {
 
     it('PDF file loads', async function () {
 
+        // TODO: this test isn't very good as PDF.js maintains internal state
+        // and changes the default page when it reloads.
+
         await this.app.client.waitUntilTextExists('.textLayer', 'Trace-based Just-in-Time', 10000)
+
+        console.log("Yup!  Got it!");
 
         // TODO: build the source to the script we want to run, plus
         // dependencies, within java, then inject it.... but what do I do about
