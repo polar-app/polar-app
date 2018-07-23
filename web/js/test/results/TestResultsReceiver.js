@@ -12,8 +12,8 @@ class TestResultsReceiver {
     }
 
     async receive() {
-
-        // return this.app.client.waitUntil(this.app.client.execute(() => {
+        //
+        // let result = await this.app.client.waitUntil(this.app.client.execute(() => {
         //
         //     // let promise = new Promise(resolve => {
         //     //     setTimeout(() => resolve(true), 5000);
@@ -38,6 +38,8 @@ class TestResultsReceiver {
             return window.test_results;
 
         });
+
+        console.log("FIXME: got result: " + JSON.stringify(result, null, "  "));
 
         if(result.status === 0) {
             return result.value;

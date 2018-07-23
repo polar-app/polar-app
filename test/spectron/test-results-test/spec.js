@@ -13,12 +13,10 @@ describe('TestResults', function () {
     Spectron.setup(__dirname);
 
     it('Receive results', async function () {
+
         let testResultsReceiver = new TestResultsReceiver(this.app);
 
         assert.equal(await this.app.client.getWindowCount(), 1);
-
-        // FIXME: we have to make sure the service has successfully started before
-        // continuing...
 
         assert.equal(await testResultsReceiver.receive(), "hello");
 

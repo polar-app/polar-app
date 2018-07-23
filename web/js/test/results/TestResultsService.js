@@ -18,9 +18,17 @@ class TestResultsService {
          */
         this.result = undefined;
 
+        console.log("FIXME TestResultsServices: " + document.location.href);
+
+        window.test_results = "hello";
+        global.test_results = "hello";
+
+        var test_results = "asdf";
+
     }
 
     start() {
+        window.test_results = "hello";
 
         window.addEventListener("message", event => this.onMessageReceived(event.data), false);
 
@@ -49,4 +57,4 @@ class TestResultsService {
 
 }
 
-module.exports.TestResultService = TestResultsService;
+module.exports.TestResultsService = TestResultsService;
