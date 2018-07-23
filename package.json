@@ -6,7 +6,7 @@
   "scripts": {
     "start": "electron .",
     "dist-linux": "webpack --progress --config=webpack.config.js && electron-builder --config=electron-builder.yml --linux deb tar.gz snap --publish always --draft=false",
-    "dist-macos": "electron-builder --config=electron-builder.yml --macos dmg --publish always --draft=false",
+    "dist-macos": "webpack --progress --config=webpack.config.js && electron-builder --config=electron-builder.yml --macos dmg --publish always --draft=false",
     "dist-win": "electron-builder --config=electron-builder.yml --win nsis portable --publish always --draft=false",
     "test": "./node_modules/.bin/mocha-parallel-tests --max-parallel=1 --exit --recursive 'web/js/**/*Test.js' 'test/**/*spec.js'",
     "webpack": "npx webpack --config=webpack.config.js",
