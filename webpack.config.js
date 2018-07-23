@@ -3,18 +3,20 @@ const webpack = require('webpack');
 
 /**
  *
+ *
  * @param name
- * @param entryPath
- * @param distPath
+ * @param entryPath {string} the path to the webpack entrypoint script.
+ * @param target {string} The webpack target.  Either electron-main or electron-renderer.
  */
-function createElectronRendererProfile(name, entryPath) {
+function createWebpackConfig(name, entryPath, target = "electron-renderer") {
 
     entryPath = path.resolve(__dirname, entryPath);
     let outputDir = path.dirname(entryPath);
 
     return {
         mode: 'development',
-        target: "electron-renderer",
+        // TODO
+        target: target,
         entry: {
             name: [
                 "idempotent-babel-polyfill",
@@ -65,12 +67,13 @@ function createElectronRendererProfile(name, entryPath) {
 
 module.exports = [];
 
-module.exports.push(createElectronRendererProfile("injector", "web/js/apps/injector.js", "web/dist"));
-module.exports.push(createElectronRendererProfile("electron", "web/js/apps/electron.js", "web/dist"));
-module.exports.push(createElectronRendererProfile("start-capture", "apps/capture/start-capture/js/entry.js", "apps/capture/start-capture/dist"));
-module.exports.push(createElectronRendererProfile("progress", "apps/capture/progress/js/entry.js", "apps/capture/progress/dist"));
-module.exports.push(createElectronRendererProfile("card-creator", "apps/card-creator/js/entry.js", "apps/card-creator/dist"));
-module.exports.push(createElectronRendererProfile("dialog", "test/sandbox/dialog/js/entry.js", "test/sandbox/dialog/dist"));
-module.exports.push(createElectronRendererProfile("webcomponents", "test/sandbox/webcomponents/js/entry.js", "test/sandbox/webcomponents/dist"));
+module.exports.push(createWebpackConfig("injector", "web/js/apps/injector.js"));
+module.exports.push(createWebpackConfig("electron", "web/js/apps/electron.js"));
+module.exports.push(createWebpackConfig("start-capture", "apps/capture/start-capture/js/entry.js"));
+module.exports.push(createWebpackConfig("progress", "apps/capture/progress/js/entry.js"));
+module.exports.push(createWebpackConfig("card-creator", "apps/card-creator/js/entry.js"));
+module.exports.push(createWebpackConfig("dialog", "test/sandbox/dialog/js/entry.js"));
+module.exports.push(createWebpackConfig("webcomponents", "test/sandbox/webcomponents/js/entry.js"));
 
-module.exports.push(createElectronRendererProfile("main", "main.js"));
+module.exports.push(createWebpackConfig("main", "main.js", "electron-main"));
+module.exports.push(createWebpackConfig("capture", "capture.js", "electron-main"));
