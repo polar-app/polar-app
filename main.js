@@ -694,7 +694,6 @@ let shouldQuit = app.makeSingleInstance(function(commandLine, workingDirectory) 
 if (shouldQuit) {
     log.info("Quiting.  App is single instance.");
     app.quit();
-    return;
 }
 
 app.on('ready', async function() {

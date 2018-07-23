@@ -1,10 +1,16 @@
 const path = require('path');
 const webpack = require('webpack');
 
-function createElectronRendererProfile(name, entryPath, distPath) {
+/**
+ *
+ * @param name
+ * @param entryPath
+ * @param distPath
+ */
+function createElectronRendererProfile(name, entryPath) {
 
     entryPath = path.resolve(__dirname, entryPath);
-    distPath = path.resolve(__dirname, distPath);
+    let outputDir = path.dirname(entryPath);
 
     return {
         mode: 'development',
@@ -34,7 +40,7 @@ function createElectronRendererProfile(name, entryPath, distPath) {
         },
         devtool: "inline-source-map",
         output: {
-            path: distPath,
+            path: outputDir,
             filename: `${name}-bundle.js`,
         },
         plugins: [
@@ -57,52 +63,14 @@ function createElectronRendererProfile(name, entryPath, distPath) {
 
 }
 
-module.exports = [
-    {
-        mode: 'development',
-        entry: {
-            "chrome": [ "idempotent-babel-polyfill", "./web/js/apps/chrome.js"],
-        },
-        module: {
-            rules: [
-                {
-                    test: /\.js$/,
-                    exclude: /node_modules/,
-                    use: {
-                        loader: "babel-loader"
-                    }
-                }
-            ],
-        },
-        devtool: "source-map",
-        output: {
-            path: path.resolve(__dirname, 'web/dist'),
-            filename: '[name]-bundle.js',
-            publicPath: '/web/js/apps'
-        },
-        node: {
-            //needed to make webpack work on chrome
-            fs: 'empty'
-        },
-        plugins: [
-            new webpack.ProvidePlugin({
-                $: "jquery",
-                jQuery: "jquery",
-                "window.$": "jquery",
-                "window.jQuery": "jquery"
-            })
-        ]
-
-    }
-
-];
+module.exports = [];
 
 module.exports.push(createElectronRendererProfile("injector", "web/js/apps/injector.js", "web/dist"));
 module.exports.push(createElectronRendererProfile("electron", "web/js/apps/electron.js", "web/dist"));
-
 module.exports.push(createElectronRendererProfile("start-capture", "apps/capture/start-capture/js/entry.js", "apps/capture/start-capture/dist"));
 module.exports.push(createElectronRendererProfile("progress", "apps/capture/progress/js/entry.js", "apps/capture/progress/dist"));
 module.exports.push(createElectronRendererProfile("card-creator", "apps/card-creator/js/entry.js", "apps/card-creator/dist"));
 module.exports.push(createElectronRendererProfile("dialog", "test/sandbox/dialog/js/entry.js", "test/sandbox/dialog/dist"));
-
 module.exports.push(createElectronRendererProfile("webcomponents", "test/sandbox/webcomponents/js/entry.js", "test/sandbox/webcomponents/dist"));
+
+module.exports.push(createElectronRendererProfile("main", "main.js"));
