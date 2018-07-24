@@ -28,7 +28,7 @@ class ContentCapture {
      * @param [result] {Object} The result we are building.
      *
      */
-    static captureHTML(contentDoc, url, result) {
+    static captureHTML(contentDoc?, url?, result?) {
 
         const ENABLE_IFRAMES = true;
 
@@ -167,7 +167,7 @@ class ContentCapture {
 
     }
 
-    static captureDoc(cloneDoc, url) {
+    static captureDoc(cloneDoc: Document, url) {
 
         if(!cloneDoc) {
             throw new Error("No cloneDoc");
@@ -213,7 +213,12 @@ class ContentCapture {
                 eventAttributesRemoved: 0,
                 existingBaseRemoved: false,
                 baseAdded: false,
-                javascriptAnchorsRemoved: 0
+                javascriptAnchorsRemoved: 0,
+                cleanupRemoveScripts: null,
+                cleanupHead: null,
+                cleanupBase: null,
+                showAriaHidden: null
+
             }
 
         };
@@ -302,7 +307,7 @@ class ContentCapture {
 
     }
 
-    static cleanupHead(cloneDoc, url) {
+    static cleanupHead(cloneDoc, url): Object {
 
         // make sure the document has a head.
 
@@ -319,7 +324,7 @@ class ContentCapture {
 
     }
 
-    static cleanupRemoveScripts(cloneDoc, url) {
+    static cleanupRemoveScripts(cloneDoc, url): Object {
 
         let result = {
             scriptsRemoved: 0
@@ -341,9 +346,9 @@ class ContentCapture {
 
     }
 
-    static cleanupShowAriaHidden(cloneDoc) {
+    static cleanupShowAriaHidden(cloneDoc): number {
 
-        let mutations = 0;
+        let mutations : number = 0;
 
         cloneDoc.querySelectorAll("*").forEach(function (element) {
             if(element.getAttribute("aria-hidden") === "true") {
@@ -356,9 +361,9 @@ class ContentCapture {
 
     }
 
-    static cleanupFullStylesheetURLs(cloneDoc) {
+    static cleanupFullStylesheetURLs(cloneDoc): number {
 
-        let mutations = 0;
+        let mutations: number = 0;
 
         cloneDoc.querySelectorAll("a").forEach(function (element) {
 
@@ -499,12 +504,8 @@ class ContentCapture {
 
 }
 
-function debug() {
-
-    // try to capture the current HTML page...
-    return ContentCapture.captureHTML();
-
-}
+console.log("Content capture script loaded!");
 
 module.exports.ContentCapture = ContentCapture;
+
 

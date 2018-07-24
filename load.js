@@ -5,7 +5,7 @@ const BrowserWindow = electron.BrowserWindow;
 app.on('ready', async function() {
 
     let width = 800;
-    let height = 15000;
+    let height = 1000;
 
     let options = {
         minWidth: width,

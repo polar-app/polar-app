@@ -7,7 +7,6 @@ const app = electron.app;
 const shell = electron.shell;
 const BrowserWindow = electron.BrowserWindow;
 
-const {ContentCapture} = require("./ContentCapture");
 const {CaptureOpts} = require("./CaptureOpts");
 
 const {Preconditions} = require("../Preconditions");
@@ -200,7 +199,12 @@ class Capture {
 
         // define the content capture script.
         log.info("Defining ContentCapture...");
-        await webContents.executeJavaScript(ContentCapture.toString());
+
+        console.log("FIXME======== ");
+        //console.log(ContentCapture.toString());
+        console.log("FIXME======== ");
+
+        log.info("Defining ContentCapture...done");
 
         log.info("Retrieving HTML...");
 

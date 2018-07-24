@@ -1,3 +1,4 @@
+const path = require("path");
 
 // Investigate this as a way to adjust the screen size automatically:
 
@@ -24,6 +25,11 @@ class BrowserWindows {
             enableLargerThanScreen: true,
 
             webPreferences: {
+
+                // the path to our content capture bundle needs to be absolute
+                // for some strange reason and this is required by Electron.
+                preload:  path.resolve("./web/js/capture/renderer/ContentCapture-bundle.js"),
+
                 nodeIntegration: false,
                 defaultEncoding: 'UTF-8',
                 webaudio: false,
@@ -44,7 +50,7 @@ class BrowserWindows {
                  * Use a session per capture so that webRequests between capture
                  * instances aren't shared.
                  */
-                partition
+                partition: partition
 
             }
 

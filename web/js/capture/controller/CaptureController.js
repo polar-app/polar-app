@@ -127,7 +127,8 @@ class CaptureController {
         let browser = BrowserRegistry.DEFAULT;
 
         //browser = Browsers.toProfile(browser, "headless");
-        browser = Browsers.toProfile(browser, "hidden");
+        //browser = Browsers.toProfile(browser, "hidden");
+        browser = Browsers.toProfile(browser, "default");
 
         let capture = new Capture(url, browser, this.directories.stashDir, captureOpts);
 

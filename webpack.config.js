@@ -109,6 +109,9 @@ function createWebpackConfig(name, entryPath, target = "electron-renderer") {
 
 module.exports = [];
 
+// TODO: consider moving all of these to /apps/dist.  It's weird that they're
+// all over the filesystem now.
+
 module.exports.push(createWebpackConfig("injector", "web/js/apps/injector.js"));
 module.exports.push(createWebpackConfig("electron", "web/js/apps/electron.js"));
 module.exports.push(createWebpackConfig("start-capture", "apps/capture/start-capture/js/entry.js"));
@@ -116,6 +119,8 @@ module.exports.push(createWebpackConfig("progress", "apps/capture/progress/js/en
 module.exports.push(createWebpackConfig("card-creator", "apps/card-creator/js/entry.js"));
 module.exports.push(createWebpackConfig("dialog", "test/sandbox/dialog/js/entry.js"));
 module.exports.push(createWebpackConfig("webcomponents", "test/sandbox/webcomponents/js/entry.js"));
+module.exports.push(createWebpackConfig("ContentCapture", "web/js/capture/renderer/ContentCapture.js"));
+module.exports.push(createWebpackConfig("ContentCaptureApp", "web/js/capture/renderer/ContentCaptureApp.ts"));
 
 module.exports.push(createWebpackConfig("main", "main.js", "electron-main"));
 module.exports.push(createWebpackConfig("capture", "capture.js", "electron-main"));
