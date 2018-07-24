@@ -12,35 +12,25 @@ class TestResultsReceiver {
     }
 
     async receive() {
-        //
-        // let result = await this.app.client.waitUntil(this.app.client.execute(() => {
-        //
-        //     // let promise = new Promise(resolve => {
-        //     //     setTimeout(() => resolve(true), 5000);
-        //     // })
-        //     //
-        //     // return await promise;
-        //     //
-        //
-        //     return window.test_results;
-        //
-        // }, 15000));
 
-        let result = await this.app.client.execute(function() {
+        let result = await this.app.client.waitUntil(await this.app.client.execute(function () {
 
             // let promise = new Promise(resolve => {
             //     setTimeout(() => resolve(true), 5000);
             // })
             //
             // return await promise;
-            //
 
             return window.test_results;
 
-        });
+        }, 15000));
 
-        console.log("FIXME: got result: " + JSON.stringify(result, null, "  "));
-
+        // let result = await this.app.client.execute(function() {
+        //
+        //     return window.test_results;
+        //
+        // });
+        //
         if(result.status === 0) {
             return result.value;
         } else {
