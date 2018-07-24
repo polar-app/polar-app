@@ -1,9 +1,8 @@
 import {ContentCaptureController} from "./ContentCaptureController";
 
+export class ContentCaptureApp {
 
-class ContentCaptureApp {
-
-    static start() {
+    start() {
 
         console.log("Starting content capture app...");
 
@@ -14,4 +13,4 @@ class ContentCaptureApp {
 
 }
 
-ContentCaptureApp.start();
+new ContentCaptureApp().start();

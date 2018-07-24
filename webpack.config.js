@@ -119,13 +119,31 @@ module.exports.push(createWebpackConfig("progress", "apps/capture/progress/js/en
 module.exports.push(createWebpackConfig("card-creator", "apps/card-creator/js/entry.js"));
 module.exports.push(createWebpackConfig("dialog", "test/sandbox/dialog/js/entry.js"));
 module.exports.push(createWebpackConfig("webcomponents", "test/sandbox/webcomponents/js/entry.js"));
-module.exports.push(createWebpackConfig("ContentCapture", "web/js/capture/renderer/ContentCapture.js"));
 module.exports.push(createWebpackConfig("ContentCaptureApp", "web/js/capture/renderer/ContentCaptureApp.ts"));
 
 module.exports.push(createWebpackConfig("main", "main.js", "electron-main"));
 module.exports.push(createWebpackConfig("capture", "capture.js", "electron-main"));
 
 findFiles("web/js", "Test.js").forEach(file => {
+    let name = path.basename(file).replace(".js", ""); // TODO support .ts tests.
+    module.exports.push(createWebpackConfig(name, file, "node"));
+});
+
+// webpack each spectron index.js electron entrypoint
+findFiles("test/spectron", "index.js").forEach(file => {
+    let name = path.basename(file).replace(".js", ""); // TODO support .ts tests.
+    module.exports.push(createWebpackConfig(name, file, "electron-main"));
+});
+
+// webpack each spectron index.js electron entrypoint
+findFiles("test/spectron", "app.ts").forEach(file => {
+    let name = path.basename(file).replace(".ts", "");
+    module.exports.push(createWebpackConfig(name, file, "electron-renderer"));
+});
+
+
+// we need to webpack the spec file for spectron too
+findFiles("test/spectron", "spec.js").forEach(file => {
     let name = path.basename(file).replace(".js", ""); // TODO support .ts tests.
     module.exports.push(createWebpackConfig(name, file, "node"));
 });

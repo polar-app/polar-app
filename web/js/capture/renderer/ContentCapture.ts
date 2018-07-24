@@ -218,7 +218,6 @@ class ContentCapture {
                 cleanupHead: null,
                 cleanupBase: null,
                 showAriaHidden: null
-
             }
 
         };
