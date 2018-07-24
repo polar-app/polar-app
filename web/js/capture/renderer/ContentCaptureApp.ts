@@ -13,4 +13,7 @@ export class ContentCaptureApp {
 
 }
 
+// FIXME: I don't like this ... I need to have it start automatically so that
+// I can make it the entry point but at the same time I don't want it to start
+// just because I imported it.
 new ContentCaptureApp().start();

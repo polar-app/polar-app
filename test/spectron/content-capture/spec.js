@@ -9,13 +9,13 @@ describe('DebugWebRequestsListener', function () {
 
     this.timeout(TIMEOUT);
 
-    console.log("FIXME: __dirname: " + __dirname)
-
     Spectron.setup(__dirname);
 
     it('shows an initial window', async function () {
 
         assert.equal(await this.app.client.getWindowCount(), 1);
+
+        await Functions.waitFor(50000);
 
     });
 

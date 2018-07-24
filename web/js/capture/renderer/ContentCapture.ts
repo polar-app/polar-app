@@ -1,7 +1,9 @@
 /**
  * @RendererContext
  */
-class ContentCapture {
+import {Dict} from '../../util/Dict';
+
+export class ContentCapture {
 
     // FIXME: remove meta http-equiv Location redirects from the raw HTML.
 
@@ -28,7 +30,7 @@ class ContentCapture {
      * @param [result] {Object} The result we are building.
      *
      */
-    static captureHTML(contentDoc?, url?, result?) {
+    static captureHTML(contentDoc?: Document, url?: string, result?: any) {
 
         const ENABLE_IFRAMES = true;
 
@@ -79,7 +81,7 @@ class ContentCapture {
             return result;
         }
 
-        let cloneDoc = contentDoc.cloneNode(true);
+        let cloneDoc: Document = <Document>contentDoc.cloneNode(true);
 
         result.capturedDocuments[url]
             = ContentCapture.captureDoc(cloneDoc, contentDoc.location.href);
@@ -113,7 +115,7 @@ class ContentCapture {
 
                 let frameValidity = ContentCapture.computeFrameValidity(iframe);
 
-                if (frameValidity.valid) {
+                if (frameValidity.valid && iframe.contentDocument) {
 
                     let iframeHref = iframe.contentDocument.location.href;
 
@@ -141,9 +143,9 @@ class ContentCapture {
     /**
      * Return true if we should handle the given iframe.
      */
-    static computeFrameValidity(iframe) {
+    static computeFrameValidity(iframe: HTMLIFrameElement) {
 
-        let result = {
+        let result: any = {
             reason: null,
             valid: true
         };
@@ -167,7 +169,7 @@ class ContentCapture {
 
     }
 
-    static captureDoc(cloneDoc: Document, url) {
+    static captureDoc(cloneDoc: Document, url: string) {
 
         if(!cloneDoc) {
             throw new Error("No cloneDoc");
@@ -178,7 +180,7 @@ class ContentCapture {
 
         // TODO: store many of these fields in the HTML too because the iframes
         // need to have the same data
-        let result = {
+        let result : any = {
 
             // TODO: capture HTML metadata including twitter card information
             // which we could show in the UI.  Since we are capturing the whole
@@ -273,16 +275,16 @@ class ContentCapture {
 
     }
 
-    static cleanupBase(cloneDoc, url) {
+    static cleanupBase(cloneDoc: Document, url: string) {
 
-        let result = {
+        let result: any = {
             existingBaseRemoved: false,
             baseAdded: false
         };
 
         let base = cloneDoc.querySelector("base");
 
-        if(base) {
+        if(base && base.parentElement) {
             // remove the current 'base' if one exists...
             base.parentElement.removeChild(base);
             result.existingBaseRemoved = true;
@@ -306,7 +308,7 @@ class ContentCapture {
 
     }
 
-    static cleanupHead(cloneDoc, url): Object {
+    static cleanupHead(cloneDoc: Document, url: string): Object {
 
         // make sure the document has a head.
 
@@ -323,7 +325,7 @@ class ContentCapture {
 
     }
 
-    static cleanupRemoveScripts(cloneDoc, url): Object {
+    static cleanupRemoveScripts(cloneDoc: Document, url: string): Object {
 
         let result = {
             scriptsRemoved: 0
@@ -332,8 +334,12 @@ class ContentCapture {
         // remove the script elements as these are active and we do not want
         // them loaded in the future.
         cloneDoc.querySelectorAll("script").forEach(function (scriptElement) {
-            scriptElement.parentElement.removeChild(scriptElement);
-            ++result.scriptsRemoved;
+
+            if(scriptElement.parentElement) {
+                scriptElement.parentElement.removeChild(scriptElement);
+                ++result.scriptsRemoved;
+            }
+
         });
 
         // make sure the script removal worked
@@ -345,7 +351,7 @@ class ContentCapture {
 
     }
 
-    static cleanupShowAriaHidden(cloneDoc): number {
+    static cleanupShowAriaHidden(cloneDoc: Document): number {
 
         let mutations : number = 0;
 
@@ -360,7 +366,7 @@ class ContentCapture {
 
     }
 
-    static cleanupFullStylesheetURLs(cloneDoc): number {
+    static cleanupFullStylesheetURLs(cloneDoc: Document): number {
 
         let mutations: number = 0;
 
@@ -377,7 +383,7 @@ class ContentCapture {
 
     }
 
-    static doctypeToOuterHTML(doctype) {
+    static doctypeToOuterHTML(doctype: DocumentType) {
 
         return "<!DOCTYPE "
                + doctype.name
@@ -388,7 +394,7 @@ class ContentCapture {
 
     }
 
-    static createMeta(name,content) {
+    static createMeta(name: string, content: string) {
         let meta = document.createElement("meta");
         meta.setAttribute("name", name);
         meta.setAttribute("content", content);
@@ -405,7 +411,7 @@ class ContentCapture {
      *
      * @param doc
      */
-    static toOuterHTML(doc) {
+    static toOuterHTML(doc: Document) {
 
         // https://stackoverflow.com/questions/817218/how-to-get-the-entire-document-html-as-a-string
 
@@ -424,7 +430,7 @@ class ContentCapture {
 
     }
 
-    static createEventAttributes() {
+    static createEventAttributes(): Dict<number> {
 
         return Object.freeze({
             "onafterprint": 1,
@@ -505,6 +511,6 @@ class ContentCapture {
 
 console.log("Content capture script loaded!");
 
-module.exports.ContentCapture = ContentCapture;
+//module.exports.ContentCapture = ContentCapture;
 
 

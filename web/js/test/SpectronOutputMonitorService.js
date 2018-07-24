@@ -43,7 +43,18 @@ class SpectronOutputMonitorService {
             // via the javascript console.
             client.getRenderProcessLogs().then(function (logs) {
                 logs.forEach(function (log) {
-                    //console.log("render: " + JSON.stringify(log, null, "  "));
+                    console.log("render: " + JSON.stringify(log, null, "  "));
+
+                    // TODO: this is ALL we get for SEVERE.  We don't get an
+                    // exception.  I think if there are args given to log.info or
+                    // log.error they are not forwarded to us.
+
+                    // render: {
+                    //     "level": "SEVERE",
+                    //         "message": "file:///home/burton/projects/polar-bookshelf/test/spectron/content-capture/app-bundle.js 10697:8 \"FIXME2: \"",
+                    //         "source": "console-api",
+                    //         "timestamp": 1532448719491
+                    // }
 
                     // render: {
                     //     "level": "INFO",
@@ -52,7 +63,7 @@ class SpectronOutputMonitorService {
                     //         "timestamp": 1532443613553
                     // }
 
-                    console.log(`render: ${log.source} ${log.level}: ${log.message}` );
+                    //console.log(`render: ${log.timestamp} ${log.source} ${log.level}: ${log.message}` );
 
                 })
 

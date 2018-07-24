@@ -87,7 +87,7 @@ function createWebpackConfig(name, entryPath, target = "electron-renderer") {
                 "window.jQuery": "jquery",
 
                 // popper is needed for summernote and jquery-ui
-                Popper: 'popper.js',
+                Popper: 'popper.js'
             })
         ],
         resolve: {
@@ -99,7 +99,7 @@ function createWebpackConfig(name, entryPath, target = "electron-renderer") {
 
     };
 
-    if(target === "electron-main" || target === "node") {
+    if(target === "electron-main" || target === "node" || target === "electron-renderer") {
         // this saves about 10x when running in electron-main.  We don't need
         // to statically link all the modules here.  It doesn't work with the
         // electron renderer though. I thought it would be it appears to fail.

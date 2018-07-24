@@ -1,7 +1,9 @@
 {
     "compilerOptions": {
         "sourceMap": true,
-        "target": "ES6"
+        "target": "ES6",
+        "noImplicitAny": true,
+        "strictNullChecks": true
     }
 
 }

@@ -1,5 +1,10 @@
+import {ContentCapture} from './ContentCapture';
+import {Logger} from '../../logger/Logger';
+
 const electron = require("electron");
 const ipcRenderer = electron.ipcRenderer;
+
+const log = Logger.create();
 
 /**
  * Controller that intercepts events from the main Electron process, triggers
@@ -13,9 +18,9 @@ export class ContentCaptureController {
      */
     start(): void {
 
-        console.log("IPC listener added for create-annotation");
+        log.info("IPC listener added for content-capture at: " + new Date().toISOString());
 
-        ipcRenderer.on('content-capture', (event, data) => {
+        ipcRenderer.on('content-capture', (event: any, data: any) => {
 
             if(data.type ===  "request") {
                 this.onContentCaptureRequest();
@@ -23,13 +28,17 @@ export class ContentCaptureController {
 
         });
 
+        ipcRenderer.send("content-capture", {type: "content-capture-controller-started"});
+
     }
 
     onContentCaptureRequest() {
 
-        console.log("Received content capture request.");
+        log.info("Received content capture request.");
 
         let captured = ContentCapture.captureHTML();
+
+        log.info("Sending response");
 
         ipcRenderer.send("content-capture", {
             type: "response",

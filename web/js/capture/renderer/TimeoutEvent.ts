@@ -14,7 +14,7 @@ export class TimeoutEvent {
      */
     timeout: number;
 
-    constructor(opts) {
+    constructor(opts: any) {
         Object.assign(this, opts);
     }
 
