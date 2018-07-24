@@ -9,7 +9,7 @@ describe('DebugWebRequestsListener', function () {
 
     this.timeout(TIMEOUT);
 
-    console.log("FIXME: ")
+    console.log("FIXME: __dirname: " + __dirname)
 
     Spectron.setup(__dirname);
 

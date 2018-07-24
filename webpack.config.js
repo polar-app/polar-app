@@ -93,6 +93,9 @@ function createWebpackConfig(name, entryPath, target = "electron-renderer") {
         resolve: {
             extensions: [".ts", ".tsx", ".js"]
         },
+        node: {
+            __dirname: false
+        }
 
     };
 
@@ -106,6 +109,9 @@ function createWebpackConfig(name, entryPath, target = "electron-renderer") {
     return config;
 
 }
+
+// target is used to store our webpacked spectron and mocha tests..
+//fs.mkdirSync("./target");
 
 module.exports = [];
 

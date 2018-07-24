@@ -43,7 +43,17 @@ class SpectronOutputMonitorService {
             // via the javascript console.
             client.getRenderProcessLogs().then(function (logs) {
                 logs.forEach(function (log) {
-                    console.log("render: " + JSON.stringify(log, null, "  "));
+                    //console.log("render: " + JSON.stringify(log, null, "  "));
+
+                    // render: {
+                    //     "level": "INFO",
+                    //         "message": "file:///home/burton/projects/polar-bookshelf/test/spectron/content-capture/app-bundle.js 10750:16 \"IPC listener added for create-annotation\"",
+                    //         "source": "console-api",
+                    //         "timestamp": 1532443613553
+                    // }
+
+                    console.log(`render: ${log.source} ${log.level}: ${log.message}` );
+
                 })
 
             })

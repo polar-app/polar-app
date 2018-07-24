@@ -28,7 +28,6 @@ describe('CacheRegistryTest', function() {
 
             await cacheRegistry.registerFile(path);
 
-
         });
 
     });

@@ -7,6 +7,14 @@ module.exports = {
     devtool: "inline-source-map",
     module: {
         rules: [
+            {
+                test: /\.js$/,
+                exclude: /node_modules/,
+                use: {
+                    loader: "babel-loader"
+                }
+
+            },
             // all files with a '.ts' or '.tsx' extension will be handled by 'ts-loader'
             {
                 test: /\.tsx?$/,
