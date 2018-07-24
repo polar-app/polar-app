@@ -24,10 +24,15 @@ function createElectronRendererProfile(name, entryPath, distPath) {
                         loader: "babel-loader"
                     }
 
+                },
+                // all files with a '.ts' or '.tsx' extension will be handled by 'ts-loader'
+                {
+                    test: /\.tsx?$/,
+                    loader: "ts-loader"
                 }
-            ],
+            ]
         },
-        devtool: "source-map",
+        devtool: "inline-source-map",
         output: {
             path: distPath,
             filename: `${name}-bundle.js`,
@@ -43,7 +48,10 @@ function createElectronRendererProfile(name, entryPath, distPath) {
                 // popper is needed for summernote and jquery-ui
                 Popper: 'popper.js',
             })
-        ]
+        ],
+        resolve: {
+            extensions: [".ts", ".tsx", ".js"]
+        },
 
     }
 

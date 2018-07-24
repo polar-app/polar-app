@@ -4,9 +4,6 @@
 
 ## 1.0 b40 release
 
-- BUG:
-    - PHZ files are actually fucking broken on Electron now.  they WERE working
-      on the past version..
 
 - BUG:
     - the pageElement for text highlights should be chosen based on the area
@@ -26,9 +23,6 @@
 
    https://github.com/hokein/electron-sample-apps/tree/master/webview/browser
 
-
-- typescript might solve my issue with web components so I might as well try to
-  migrate to it. See if it does...
 
 - wikipedia pages look poor at 150%
 
@@ -137,13 +131,6 @@
 
 
 
-- there needs to be a 3rd pagemark type, IE informational.. bascially table of
-  content and appendix pages. They should not have a full pagemark over them.
-  and/or the pagemark should just be inactive.  If the pagemark obsctures / blocks
-  the UI then the table of contents won't be usable but at the same time I don't
-  want the ToC to count against our progress percentage.
-
-
 - metadata needs lastUpdate timestamps for pagemarks and for the document...
 
     - I can do this in Model when I syunc the data to disk but I'll need to
@@ -187,10 +174,6 @@
     https://lunrjs.com/
     http://fusejs.io/
 
-- change library to GPL
-
-    - figure out a grid control I should use... should be react based I think.
-
 - I definitely need the sidebar app that shows all highlights in the current
   PDF...
 
@@ -210,22 +193,6 @@
 
 - Exit doesn't actyually work..
 
-- Issues with resizeable pagemarks:
-
-    - when the box is rendered with interactjs in PDF.js the page is
-      permanently changed and it looks like we can resize everything.
-        - this ONLY happens when it breaks though.
-
-    - resizes immediately sets height=0 and break rendering
-
-    - placement won't work because left/right aren't being used
-        - thumbnails need a valid left/right, real pagemarks don't have one
-          currently.
-
-
-- Get PagemarkRect to work so that I can start using the new pagemark layout
-  engine with the drag and resize features I worked out. This would let me use
-  two column PDFs too.
 
 - Get the import UI to work.  Ideally I would build out a chrome extension but
   realistically that's a lot of work to get the chrome extension and the app
@@ -242,12 +209,6 @@
 - migrate to using react+redux ... redux should be the backend since it is very
   near to what I designed using proxies.  If I can implement everything with
   react + redux I should do so...
-
-- The logger should include the class that's calling it.  I can create a new
-  Error and parse the caller form that.
-
-- File a bug about text selecton on chrome vs firefox.  Filed. They are not
-  working on it though.
 
 - clean up the input page so that it uses whitespace better
     - also initial size should be better
@@ -273,13 +234,6 @@
   was actually opened.
 
     https://stackoverflow.com/questions/46949194/new-window-positioning-in-electron
-
-- implement a PROPER context menu!!!
-
-    https://www.youtube.com/watch?v=MkVLaM9JAxM
-        - I'm going to have to add the event listener in the renderer and then
-          use the electron API to popup the context menu for the various
-          modes.
 
 - 'open-file' event for mac and windows?
 

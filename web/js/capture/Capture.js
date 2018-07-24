@@ -64,7 +64,7 @@ class Capture {
         // and test this functionality.
 
         this.url = Preconditions.assertNotNull(url, "url");
-        this.browser = Preconditions.assertNotNull(browser, "browser");;
+        this.browser = Preconditions.assertNotNull(browser, "browser");
         this.stashDir = Preconditions.assertNotNull(stashDir, "stashDir");
         this.captureOpts = captureOpts;
 

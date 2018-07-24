@@ -104,7 +104,32 @@ let BrowserRegistry = {
 
         }
 
+    }),
+
+    CHROME_61: new Browser({
+
+        name: "CHROME_61",
+        description: "Default Chrome 61",
+        userAgent: "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.100 Safari/537.36",
+
+        /**
+         * @type Electron.Parameters
+         */
+        deviceEmulation: {
+            screenPosition: "desktop",
+            screenSize: {
+                width: 1024,
+                height: 768
+            },
+            viewSize: {
+                width: 1024,
+                height: 786
+            }
+
+        }
+
     })
+
 
 };
 
