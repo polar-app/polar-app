@@ -1,4 +1,4 @@
-import {HelloWorld} from "./HelloWorld.ts";
+import {HelloWorld} from "./HelloWorld";
 
 const assert = require('assert');
 
