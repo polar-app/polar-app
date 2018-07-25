@@ -1,5 +1,5 @@
 
-const {Datastore} = require("./Datastore.js");
+const {Datastore} = require("./Datastore");
 const {MetadataSerializer} = require("../metadata/MetadataSerializer");
 const {DocMeta} = require("../metadata/DocMeta");
 const {DocMetas} = require("../metadata/DocMetas");

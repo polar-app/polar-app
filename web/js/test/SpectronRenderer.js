@@ -13,7 +13,7 @@ class SpectronRenderer {
 
     /**
      *
-     * @return {Promise<MainWindow>}
+     * @return {Promise<BrowserWindow>}
      */
     static start() {
 

@@ -1,3 +1,4 @@
+"use strict";
 // Simple logger that meets the requirements we have for Polar.
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -7,13 +8,14 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+Object.defineProperty(exports, "__esModule", { value: true });
 const log = require('electron-log');
 const { Files } = require("../util/Files.js");
 const { Objects } = require("../util/Objects.js");
 const { ConsoleLogger } = require("./ConsoleLogger.js");
 const { Caller } = require("./Caller.js");
 const process = require("process");
-export class Logger {
+class Logger {
     /**
      * Create a new logger, delegating to the actual implementation we are
      * using.
@@ -65,6 +67,16 @@ export class Logger {
     }
 }
 Logger.initialized = false;
+exports.Logger = Logger;
+/**
+ * Simple create
+ *
+ * @return {DelegatedLogger}
+ */
+function create() {
+    return Logger.create();
+}
+exports.create = create;
 /**
  * Allows us to swap in delegates at runtime on anyone who calls create()
  * regardless of require() order.

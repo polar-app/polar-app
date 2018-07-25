@@ -4,7 +4,9 @@ class Streams {
     static isValidStream = (stream) => {
         if (!stream || !stream.readable) {
             return null;
-        } else return true;
+        } else {
+            return true;
+        }
     };
 
     static toArray = (stream) => {

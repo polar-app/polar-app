@@ -21,7 +21,8 @@ class DebugWebRequestsListener extends BaseWebRequestsListener {
 
         super();
 
-        /** The number of pending requests
+        /**
+         * The number of pending requests
          *
          * @type {number}
          */

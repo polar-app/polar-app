@@ -1,6 +1,7 @@
 
-const {PersistenceLayer} = require("../datastore/PersistenceLayer.js");
+console.log("FIXME: loading from __dirnanme: " + __dirname)
 const {Launcher} = require("./Launcher");
+const {PersistenceLayer} = require("../datastore/PersistenceLayer");
 
 async function persistenceLayerFactory() {
 

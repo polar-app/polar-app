@@ -1,3 +1,5 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 class ConsoleLogger {
     info(...args) {
         console.log(...args);

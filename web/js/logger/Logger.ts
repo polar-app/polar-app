@@ -82,6 +82,15 @@ export class Logger {
 }
 
 /**
+ * Simple create
+ *
+ * @return {DelegatedLogger}
+ */
+export function create() {
+    return Logger.create();
+}
+
+/**
  * Allows us to swap in delegates at runtime on anyone who calls create()
  * regardless of require() order.
  */

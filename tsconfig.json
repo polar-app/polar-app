@@ -1,9 +1,25 @@
 {
     "compilerOptions": {
+
+        "noImplicitAny": false,
+        "strictNullChecks": false,
+        "noImplicitThis": false,
+
+
         "sourceMap": true,
         "target": "ES6",
-        "noImplicitAny": true,
-        "strictNullChecks": true
-    }
+        "module": "commonjs",
+        "outDir": "dist",
+        "allowJs": true,
+        "stripInternal": true,
+        "checkJs": false,
 
+        "baseUrl": ".",
+        "paths": {
+            "*": ["node_modules/*"]
+        }
+    },
+    "include": [
+        "web/js/**/*"
+    ]
 }

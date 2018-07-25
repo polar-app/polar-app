@@ -2,7 +2,7 @@
   "name": "polar-bookshelf",
   "version": "1.0.0-beta40",
   "description": "Polar is a document reader for power users which supports PDF and web content and annotations and incremental reading powered by pagemarks.",
-  "main": "main-bundle.js",
+  "main": "main.js",
   "scripts": {
     "start": "electron .",
     "dist-linux": "webpack --progress --config=webpack.config.js && electron-builder --config=electron-builder.yml --linux deb tar.gz snap --publish always --draft=false",
@@ -53,7 +53,6 @@
     "babel-preset-stage-0": "^6.24.1",
     "chai": "^4.1.2",
     "chai-diff": "^1.0.1",
-    "electron": "^2.0.5",
     "electron-builder": "^20.15.1",
     "electron-mocha": "^6.0.4",
     "jsdom": "^11.11.0",
@@ -66,7 +65,7 @@
     "spectron": "^3.8.0",
     "timekeeper": "^2.1.2",
     "ts-loader": "^4.4.2",
-    "typescript": "^2.9.1",
+    "typescript": "^3.0.0-rc",
     "webpack-cli": "^3.1.0",
     "webpack-node-externals": "^1.7.2",
     "webpack-serve": "^1.0.4"
@@ -85,6 +84,7 @@
     "debug-stream": "^3.0.1",
     "editor.md": "^1.5.0",
     "editor.md.webpack": "^1.5.0",
+    "electron": "^2.0.5",
     "electron-google-analytics": "^0.1.0",
     "electron-in-page-search": "^1.3.2",
     "electron-log": "^2.2.15",
