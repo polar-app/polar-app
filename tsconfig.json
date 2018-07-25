@@ -10,7 +10,7 @@
         "target": "ES6",
         "module": "commonjs",
         "outDir": "web/js",
-        "allowJs": true,
+        "allowJs": false,
         "stripInternal": true,
         "checkJs": false,
 
