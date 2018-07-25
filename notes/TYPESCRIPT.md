@@ -103,6 +103,11 @@ compiler directly.
   the local filesystem. I might need to use a combination of webpack and
   typescript.  Webpack for my 'apps' and JS for everything else.
 
+- test if module loading and __dirname works if loading from the local FS.
+
+    - it DOES but the relative directory is the loader dir.. NOT the file where
+      the script was loaded.
+
 - TODO what prompted this migration... OH!! the issue of web components. If I'm
   still using webpack that might break our migration.  THAT and type safety of
   course.

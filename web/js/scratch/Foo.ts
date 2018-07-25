@@ -1,6 +1,5 @@
-import {HelloWorld} from "./HelloWorld";
-
-const assert = require('assert');
+import {HelloWorld} from './HelloWorld';
+import * as assert from 'assert';
 
 describe('HelloWorld', function() {
 
