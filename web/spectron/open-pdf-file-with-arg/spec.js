@@ -2,9 +2,9 @@ const {Application} = require('spectron');
 const assert = require('assert');
 const electronPath = require('electron');
 const path = require('path');
-const {Spectron} = require("../../../web/js/test/Spectron");
-const {MockSelections} = require("../../../web/js/highlights/text/selection/MockSelections");
-const {Functions} = require("../../../web/js/util/Functions");
+const {Spectron} = require("../../js/test/Spectron");
+const {MockSelections} = require("../../js/highlights/text/selection/MockSelections");
+const {Functions} = require("../../js/util/Functions");
 
 describe('Open specific PDF file from command line', function () {
     this.timeout(10000);

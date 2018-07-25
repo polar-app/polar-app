@@ -1,5 +1,5 @@
 const path = require('path');
-const {Spectron} = require("../../../web/js/test/Spectron");
+const {Spectron} = require("../../js/test/Spectron");
 
 describe('Open specific PHZ file from command line', function () {
     this.timeout(10000);

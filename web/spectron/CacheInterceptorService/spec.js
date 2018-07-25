@@ -1,6 +1,6 @@
 const assert = require('assert');
-const {Spectron} = require("../../../web/js/test/Spectron");
-const {MockPHZWriter} = require("../../../web/js/phz/MockPHZWriter");
+const {Spectron} = require("../../js/test/Spectron");
+const {MockPHZWriter} = require("../../js/phz/MockPHZWriter");
 
 describe("CacheInterceptorService", function () {
 

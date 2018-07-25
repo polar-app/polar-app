@@ -1,9 +1,9 @@
 const assert = require('assert');
-const {assertJSON} = require("../../../web/js/test/Assertions");
-const {Spectron} = require("../../../web/js/test/Spectron");
+const {assertJSON} = require("../../js/test/Assertions");
+const {Spectron} = require("../../js/test/Spectron");
 const electronPath = require('electron');
 const path = require('path');
-const {Files} = require("../../../web/js/util/Files.js");
+const {Files} = require("../../js/util/Files.js");
 
 describe('DebugWebRequestsListener', function () {
 

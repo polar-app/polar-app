@@ -2,9 +2,9 @@
 const electron = require('electron');
 const app = electron.app;
 const BrowserWindow = electron.BrowserWindow;
-const {DebugWebRequestsListener} = require("../../../web/js/webrequests/DebugWebRequestsListener.js");
-const {Logger} = require("../../../web/js/logger/Logger.js");
-const {WebRequestReactor} = require("../../../web/js/webrequests/WebRequestReactor");
+const {DebugWebRequestsListener} = require("../../js/webrequests/DebugWebRequestsListener.js");
+const {Logger} = require("../../js/logger/Logger.js");
+const {WebRequestReactor} = require("../../js/webrequests/WebRequestReactor");
 
 function createMainWindow() {
 

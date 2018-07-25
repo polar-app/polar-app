@@ -1,7 +1,7 @@
 const assert = require('assert');
-const {assertJSON} = require("../../../web/js/test/Assertions");
-const {Spectron} = require("../../../web/js/test/Spectron");
-const {Functions} = require("../../../web/js/util/Functions");
+const {assertJSON} = require("../../js/test/Assertions");
+const {Spectron} = require("../../js/test/Spectron");
+const {Functions} = require("../../js/util/Functions");
 
 const TIMEOUT = 10000;
 //const TIMEOUT = 12000000;
@@ -27,9 +27,9 @@ describe('SelectContents of HTML entities.', function () {
 
         let executed = await this.app.client.execute(() => {
 
-            const {MockSelections} = require("../../../web/js/highlights/text/selection/MockSelections");
-            const {SelectedContents} = require("../../../web/js/highlights/text/selection/SelectedContents");
-            const {SimpleHighlightRenderer} = require("../../../web/js/highlights/text/view/SimpleHighlightRenderer.js");
+            const {MockSelections} = require("../../js/highlights/text/selection/MockSelections");
+            const {SelectedContents} = require("../../js/highlights/text/selection/SelectedContents");
+            const {SimpleHighlightRenderer} = require("../../js/highlights/text/view/SimpleHighlightRenderer.js");
 
             MockSelections.createSyntheticSelection({ node: document.querySelector("#n4"), offset: 0},
                                                     { node: document.querySelector("#n7").firstChild, offset: 35});
@@ -285,9 +285,9 @@ describe('SelectContents of HTML entities.', function () {
 
         let executed = await this.app.client.execute(() => {
 
-            const {MockSelections} = require("../../../web/js/highlights/text/selection/MockSelections");
-            const {SelectedContents} = require("../../../web/js/highlights/text/selection/SelectedContents");
-            const {SimpleHighlightRenderer} = require("../../../web/js/highlights/text/view/SimpleHighlightRenderer.js");
+            const {MockSelections} = require("../../js/highlights/text/selection/MockSelections");
+            const {SelectedContents} = require("../../js/highlights/text/selection/SelectedContents");
+            const {SimpleHighlightRenderer} = require("../../js/highlights/text/view/SimpleHighlightRenderer.js");
 
             MockSelections.createSyntheticSelection({ node: document.querySelector("#n7").firstChild, offset: 0},
                                                     { node: document.querySelector("#n8"), offset: 0});
@@ -419,9 +419,9 @@ describe('SelectContents of HTML entities.', function () {
 
         let executed = await this.app.client.execute(() => {
 
-            const {MockSelections} = require("../../../web/js/highlights/text/selection/MockSelections");
-            const {SelectedContents} = require("../../../web/js/highlights/text/selection/SelectedContents");
-            const {SimpleHighlightRenderer} = require("../../../web/js/highlights/text/view/SimpleHighlightRenderer.js");
+            const {MockSelections} = require("../../js/highlights/text/selection/MockSelections");
+            const {SelectedContents} = require("../../js/highlights/text/selection/SelectedContents");
+            const {SimpleHighlightRenderer} = require("../../js/highlights/text/view/SimpleHighlightRenderer.js");
 
             MockSelections.createSyntheticSelection({ node: document.querySelector("#n7").firstChild, offset: 20},
                                                     { node: document.querySelector("#n7").firstChild, offset: 45});
@@ -487,9 +487,9 @@ describe('SelectContents of HTML entities.', function () {
 
         let executed = await this.app.client.execute(() => {
 
-            const {MockSelections} = require("../../../web/js/highlights/text/selection/MockSelections");
-            const {SelectedContents} = require("../../../web/js/highlights/text/selection/SelectedContents");
-            const {SimpleHighlightRenderer} = require("../../../web/js/highlights/text/view/SimpleHighlightRenderer.js");
+            const {MockSelections} = require("../../js/highlights/text/selection/MockSelections");
+            const {SelectedContents} = require("../../js/highlights/text/selection/SelectedContents");
+            const {SimpleHighlightRenderer} = require("../../js/highlights/text/view/SimpleHighlightRenderer.js");
 
             MockSelections.createSyntheticSelection({ node: document.querySelector("#n9").firstChild, offset: 13},
                                                     { node: document.querySelector("#n9").firstChild, offset: 243});

@@ -1,10 +1,10 @@
 
 const electron = require('electron');
-const {ProxyServerConfig} = require("../../../web/js/backend/proxyserver/ProxyServerConfig");
-const {CacheRegistry} = require("../../../web/js/backend/proxyserver/CacheRegistry");
-const {CacheInterceptorService} = require("../../../web/js/backend/interceptor/CacheInterceptorService");
-const {SpectronRenderer} = require("../../../web/js/test/SpectronRenderer");
-const {Logger} = require("../../../web/js/logger/Logger");
+const {ProxyServerConfig} = require("../../js/backend/proxyserver/ProxyServerConfig");
+const {CacheRegistry} = require("../../js/backend/proxyserver/CacheRegistry");
+const {CacheInterceptorService} = require("../../js/backend/interceptor/CacheInterceptorService");
+const {SpectronRenderer} = require("../../js/test/SpectronRenderer");
+const {Logger} = require("../../js/logger/Logger");
 const app = electron.app;
 
 async function start() {

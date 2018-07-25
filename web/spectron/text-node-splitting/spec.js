@@ -1,7 +1,7 @@
 const assert = require('assert');
-const {assertJSON} = require("../../../web/js/test/Assertions");
-const {Functions} = require("../../../web/js/util/Functions");
-const {Spectron} = require("../../../web/js/test/Spectron");
+const {assertJSON} = require("../../js/test/Assertions");
+const {Functions} = require("../../js/util/Functions");
+const {Spectron} = require("../../js/test/Spectron");
 
 const TIMEOUT = 10000
 
@@ -18,7 +18,7 @@ describe('Text Node Splitting', function () {
         // first check that we can split the basic nodes properly.
         let splitNodes = await this.app.client.execute(() => {
 
-            const {TextNodeRows} = require("../../../web/js/highlights/text/selection/TextNodeRows");
+            const {TextNodeRows} = require("../../js/highlights/text/selection/TextNodeRows");
 
             let p = document.querySelector("p");
 
@@ -37,7 +37,7 @@ describe('Text Node Splitting', function () {
         // first check that we can split the basic nodes properly.
         let textRegions = await this.app.client.execute(() => {
 
-            const {TextNodeRows, NodeArray} = require("../../../web/js/highlights/text/selection/TextNodeRows");
+            const {TextNodeRows, NodeArray} = require("../../js/highlights/text/selection/TextNodeRows");
 
             let p = document.querySelector("p");
 
@@ -96,7 +96,7 @@ describe('Text Node Splitting', function () {
         // first check that we can split the basic nodes properly.
         let textBlocks = await this.app.client.execute(() => {
 
-            const {TextNodeRows, NodeArray} = require("../../../web/js/highlights/text/selection/TextNodeRows");
+            const {TextNodeRows, NodeArray} = require("../../js/highlights/text/selection/TextNodeRows");
 
             let p = document.querySelector("p");
 
@@ -244,7 +244,7 @@ describe('Text Node Splitting', function () {
         // first check that we can split the basic nodes properly.
         let textBlocks = await this.app.client.execute(() => {
 
-            const {TextNodeRows, NodeArray} = require("../../../web/js/highlights/text/selection/TextNodeRows");
+            const {TextNodeRows, NodeArray} = require("../../js/highlights/text/selection/TextNodeRows");
 
             let p = document.querySelector("p");
 

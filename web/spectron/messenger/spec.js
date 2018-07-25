@@ -1,7 +1,7 @@
 const assert = require('assert');
-const {assertJSON} = require("../../../web/js/test/Assertions");
-const {Functions} = require("../../../web/js/util/Functions");
-const {Spectron} = require("../../../web/js/test/Spectron");
+const {assertJSON} = require("../../js/test/Assertions");
+const {Functions} = require("../../js/util/Functions");
+const {Spectron} = require("../../js/test/Spectron");
 
 const TIMEOUT = 10000;
 
