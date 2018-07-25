@@ -1,8 +1,8 @@
-var chai = require("chai");
-var chaiDiff = require("chai-diff");
+const chai = require("chai");
+const chaiDiff = require("chai-diff");
 
-var assert = chai.assert;
-var expect = chai.expect;
+const assert = chai.assert;
+const expect = chai.expect;
 
 chai.config.truncateThreshold = 0;
 chai.use(chaiDiff);
