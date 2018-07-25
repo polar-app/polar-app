@@ -99,6 +99,14 @@ compiler directly.
 
 ### TODO
 
+- The renderer is now the main problem because I'm loading from an HTTP URL not
+  the local filesystem. I might need to use a combination of webpack and
+  typescript.  Webpack for my 'apps' and JS for everything else.
+
+- TODO what prompted this migration... OH!! the issue of web components. If I'm
+  still using webpack that might break our migration.  THAT and type safety of
+  course.
+
 - see if I can compile directly in the same directory.  this would have the
   downside of leving extra files on disk but it would mean I have to rework a
   lot less code.
