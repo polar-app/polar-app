@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 var electron_1 = require("electron");
 var Logger_1 = require("../../logger/Logger");
+var TestResult_1 = require("./renderer/TestResult");
 var log = Logger_1.Logger.create();
 /**
  * Service to keep the result of a test result within
@@ -18,10 +19,10 @@ var TestResultsService = /** @class */ (function () {
         log.info("started");
         electron_1.ipcRenderer.on('test-results', function (event, data) {
             if (data.type === "write") {
-                if (!TestResultsService.get()) {
+                if (!TestResult_1.TestResult.get()) {
                     if (data.result) {
-                        TestResultsService.set(data.result);
-                        log.info("Received test result: ", TestResultsService.get());
+                        TestResult_1.TestResult.set(data.result);
+                        log.info("Received test result: ", TestResult_1.TestResult.get());
                     }
                     else if (data.err) {
                     }
@@ -35,12 +36,6 @@ var TestResultsService = /** @class */ (function () {
                 }
             }
         });
-    };
-    TestResultsService.set = function (value) {
-        window.TEST_RESULT = value;
-    };
-    TestResultsService.get = function () {
-        return window.TEST_RESULT;
     };
     return TestResultsService;
 }());

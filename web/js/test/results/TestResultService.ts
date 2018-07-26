@@ -2,22 +2,17 @@
 
 import {ipcRenderer} from "electron";
 import {Logger} from '../../logger/Logger';
+import {TestResult} from './renderer/TestResult';
 
 const log = Logger.create()
 
-/**
- * The current result that we have. Null means that we have no result. If you
- * need to store a null result wrap it in an object with a 'value'.  We make this
- * a global value so that spectron can easily read it.
- */
-declare var window: any;
 
 /**
  * Service to keep the result of a test result within
  *
  * @RendererContext This should be run in the renderer.
  */
-export class TestResultsService {
+export class TestResultService {
 
     constructor() {
 
@@ -34,13 +29,13 @@ export class TestResultsService {
 
             if(data.type === "write") {
 
-                if(! TestResultsService.get()) {
+                if(! TestResult.get()) {
 
                     if(data.result) {
 
-                        TestResultsService.set(data.result);
+                        TestResult.set(data.result);
 
-                        log.info("Received test result: ", TestResultsService.get());
+                        log.info("Received test result: ", TestResult.get());
 
                     } else if(data.err) {
 
@@ -57,14 +52,6 @@ export class TestResultsService {
 
         });
 
-    }
-
-    static set(value: any) {
-        window.TEST_RESULT = value;
-    }
-
-    static get(): any {
-        return window.TEST_RESULT;
     }
 
 }

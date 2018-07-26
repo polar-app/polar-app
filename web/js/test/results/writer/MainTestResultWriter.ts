@@ -1,10 +1,9 @@
-import {ipcMain} from 'electron';
-import {TestResultsWriter} from '../TestResultsWriter';
+import {TestResultWriter} from '../TestResultWriter';
 
 /**
  * Write data from the main Electron process.
  */
-export class MainTestResultsWriter implements TestResultsWriter {
+export class MainTestResultWriter implements TestResultWriter {
 
     private mainWindow: Electron.BrowserWindow;
 
@@ -18,7 +17,7 @@ export class MainTestResultsWriter implements TestResultsWriter {
             throw new Error("No result given!");
         }
 
-        // use ipcMain to send the results to the TestResultsService which is
+        // use ipcMain to send the results to the TestResultService which is
         // running in the renderer
         this.mainWindow.webContents.send("test-results", {
             type: "write",

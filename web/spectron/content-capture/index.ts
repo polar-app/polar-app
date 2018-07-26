@@ -1,6 +1,6 @@
 import {ContentCaptureClient} from '../../js/capture/renderer/ContentCaptureClient';
 import {SpectronMain} from '../../js/test/SpectronMain';
-import {MainTestResultsWriter} from '../../js/test/results/writer/MainTestResultsWriter';
+import {MainTestResultWriter} from '../../js/test/results/writer/MainTestResultWriter';
 
 async function start() {
 
@@ -25,7 +25,7 @@ async function start() {
 
     console.log("GOT IT!", captured);
 
-    let mainTestResultsWriter = new MainTestResultsWriter(mainWindow);
+    let mainTestResultsWriter = new MainTestResultWriter(mainWindow);
 
     mainTestResultsWriter.write(captured);
 

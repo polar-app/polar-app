@@ -1,9 +1,9 @@
-import {TestResultsReader} from '../TestResultsReader';
+import {TestResultReader} from '../TestResultReader';
 import {Result} from '../../../util/Result';
 
 declare var window: any;
 
-export class WebDriverTestResultReader extends TestResultsReader {
+export class WebDriverTestResultReader extends TestResultReader {
 
     private readonly app: any;
 

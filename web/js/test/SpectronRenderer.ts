@@ -1,9 +1,9 @@
-import {TestResultsService} from './results/TestResultsService';
+import {TestResultService} from './results/TestResultService';
 
 export class SpectronRenderer {
 
     static setup() {
-        new TestResultsService().start();
+        new TestResultService().start();
     }
 
 }

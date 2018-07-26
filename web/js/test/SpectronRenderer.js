@@ -1,11 +1,11 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var TestResultsService_1 = require("./results/TestResultsService");
+var TestResultService_1 = require("./results/TestResultService");
 var SpectronRenderer = /** @class */ (function () {
     function SpectronRenderer() {
     }
     SpectronRenderer.setup = function () {
-        new TestResultsService_1.TestResultsService().start();
+        new TestResultService_1.TestResultService().start();
     };
     return SpectronRenderer;
 }());

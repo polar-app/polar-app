@@ -4,7 +4,7 @@
  */
 import {Result} from '../../util/Result';
 
-export abstract class TestResultsReader {
+export abstract class TestResultReader {
 
     /**
      * Read the current value.
