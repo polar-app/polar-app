@@ -1,8 +1,11 @@
-//import {BrowserWindow, ipcMain} from "electron";
-
+import {ipcMain} from "electron";
+import {Logger} from '../../logger/Logger';
 import {BrowserWindow} from "electron";
+
+const log = Logger.create();
+
 /**
- * Client for controlling the ContentCaptureController.
+ * Client for controlling the {@link ContentCaptureController}.
  */
 export class ContentCaptureClient {
 
@@ -12,29 +15,54 @@ export class ContentCaptureClient {
         this.mainWindow = mainWindow;
     }
 
-    requestNewCapture() {
+    /**
+     * Wait until the controller has started.
+     *
+     * @return {Promise<void>}
+     */
+    async waitForController() {
+
+        return new Promise(resolve => {
+
+            ipcMain.once("content-capture", (event, message) => {
+
+                if(message.type === "started") {
+                    resolve();
+                }
+
+            });
+
+        })
+
+    }
+
+    async requestNewCapture(): Promise<any> {
+
+        let result = new Promise((resolve, reject) => {
+
+            ipcMain.once("content-capture", (event, message) => {
+
+                if(message.type === "response") {
+                    // we can now tell spectron what's up...
+
+                    if(message.result) {
+                        resolve(message.result);
+                    } else if(message.err) {
+                        reject(new Error(message.err));
+                    } else {
+                        log.error("Invalid message: ", message)
+                        reject("Unknown message type");
+                    }
+
+                }
+
+            });
+
+        });
 
         this.mainWindow.webContents.send("content-capture", {type: "request"});
 
-        // ipcMain.once("content-capture");
-        //
-        // electron.ipcMain.on("content-capture", (event, message) => {
-        //     console.log("FIXME: content-capture: ", message);
-        //
-        //     if(message.type === "content-capture-controller-started") {
-        //         console.log("Ready to rock and roll.")
-        //
-        //         console.log("Requesting that content capture start");
-        //         mainWindow.webContents.send("content-capture", {type: "request"});
-        //
-        //     }
-        //
-        //     if(message.type === "response") {
-        //         console.log("got our response!");
-        //         // we can now tell spectron what's up...
-        //     }
-        //
-        // });
+        return result;
 
     }
 

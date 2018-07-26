@@ -1,31 +1,29 @@
-import {ipcMain} from "electron";
+import {ContentCaptureClient} from '../../js/capture/renderer/ContentCaptureClient';
 
 const {SpectronRenderer} = require("../../js/test/SpectronRenderer");
 
 async function start() {
 
     let mainWindow = await SpectronRenderer.start();
+
+    let contentCaptureClient = new ContentCaptureClient(mainWindow);
+
+    let waitForControllerPromise = contentCaptureClient.waitForController();
+
     mainWindow.loadFile(__dirname + '/app.html');
 
-    // once the mainWindow is ready, tell it to capture the content.
+    console.log("Waiting for controller startup promise...");
+    await waitForControllerPromise;
+    console.log("Waiting for controller startup promise...done");
 
-    ipcMain.on("content-capture", (event, message) => {
-        console.log("FIXME: content-capture: ", message);
+    console.log("Waiting for new capture result now:");
 
-        if(message.type === "content-capture-controller-started") {
-            console.log("Ready to rock and roll.");
+    await contentCaptureClient.requestNewCapture();
 
-            console.log("Requesting that content capture start");
-            mainWindow.webContents.send("content-capture", {type: "request"});
+    console.log("GOT IT!");
 
-        }
-
-        if(message.type === "response") {
-            console.log("got our response!");
-            // we can now tell spectron what's up...
-        }
-
-    });
+    // now we need to tell spectron we have it... that's part of the challenge
+    // her.
 
 }
 

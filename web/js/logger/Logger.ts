@@ -12,24 +12,24 @@ const process = require("process");
 
 export class Logger {
 
-    static initialized: boolean = false;
+    private static initialized: boolean = false;
 
-    static loggerDelegate: any;
+    private static loggerDelegate: any;
 
     /**
      * Create a new logger, delegating to the actual implementation we are
      * using.
      */
-    static create() {
+    public static create() {
         let caller = Caller.getCaller();
         return new DelegatedLogger(caller.filename);
     }
 
-    static setLoggerDelegate(loggerDelegate: ILogger) {
+    public static setLoggerDelegate(loggerDelegate: ILogger) {
         Logger.loggerDelegate = loggerDelegate;
     }
 
-    static getLoggerDelegate(): ILogger {
+    public static getLoggerDelegate(): ILogger {
         return Logger.loggerDelegate;
     }
 
@@ -105,27 +105,27 @@ class DelegatedLogger {
      *
      * @param caller {string}
      */
-    constructor(caller: string) {
+    public constructor(caller: string) {
         this.caller = caller;
     }
 
-    info(...args: any[]) {
+    public info(...args: any[]) {
         Logger.getLoggerDelegate().info(this.caller, ...args);
     }
 
-    warn(...args: any[]) {
+    public warn(...args: any[]) {
         Logger.getLoggerDelegate().warn(this.caller, ...args);
     }
 
-    error(...args: any[]) {
+    public error(...args: any[]) {
         Logger.getLoggerDelegate().error(this.caller, ...args);
     }
 
-    verbose(...args: any[]) {
+    public verbose(...args: any[]) {
         Logger.getLoggerDelegate().debug(this.caller, ...args);
     }
 
-    debug(...args: any[]) {
+    public debug(...args: any[]) {
         Logger.getLoggerDelegate().info(this.caller, ...args);
     }
 

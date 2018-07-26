@@ -28,7 +28,8 @@ export class ContentCaptureController {
 
         });
 
-        ipcRenderer.send("content-capture", {type: "content-capture-controller-started"});
+        // tell everyone that we've started properly.
+        ipcRenderer.send("content-capture", {type: "started"});
 
     }
 
@@ -36,14 +37,27 @@ export class ContentCaptureController {
 
         log.info("Received content capture request.");
 
-        let captured = ContentCapture.captureHTML();
+        try{
 
-        log.info("Sending response");
+            let captured = ContentCapture.captureHTML();
 
-        ipcRenderer.send("content-capture", {
-            type: "response",
-            captured
-        });
+            log.info("Content captured successfully.  Sending response.")
+
+            ipcRenderer.send("content-capture", {
+                type: "response",
+                result: captured
+            });
+
+        } catch(e) {
+
+            log.error("Could not capture HTML: ", e);
+
+            ipcRenderer.send("content-capture", {
+                type: "response",
+                err: e.message
+            });
+
+        }
 
     }
 
