@@ -1,10 +1,12 @@
 import {ContentCaptureClient} from '../../js/capture/renderer/ContentCaptureClient';
-
-const {SpectronRenderer} = require("../../js/test/SpectronRenderer");
+import {SpectronMain} from '../../js/test/SpectronMain';
+import {MainTestResultsWriter} from '../../js/test/results/writer/MainTestResultsWriter';
 
 async function start() {
 
-    let mainWindow = await SpectronRenderer.start();
+    let mainWindow = await SpectronMain.setup();
+
+    mainWindow.webContents.toggleDevTools();
 
     let contentCaptureClient = new ContentCaptureClient(mainWindow);
 
@@ -18,9 +20,13 @@ async function start() {
 
     console.log("Waiting for new capture result now:");
 
-    await contentCaptureClient.requestNewCapture();
+    let captured = await contentCaptureClient.requestNewCapture();
 
-    console.log("GOT IT!");
+    console.log("GOT IT!", captured);
+
+    let mainTestResultsWriter = new MainTestResultsWriter(mainWindow);
+
+    mainTestResultsWriter.write(captured);
 
     // now we need to tell spectron we have it... that's part of the challenge
     // her.

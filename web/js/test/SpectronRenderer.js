@@ -1,40 +1,13 @@
-const electron = require('electron');
-const app = electron.app;
-const BrowserWindow = electron.BrowserWindow;
-
-const BROWSER_OPTIONS = {
-    backgroundColor: '#FFF',
-    webPreferences: {
-        webSecurity: false
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var TestResultsService_1 = require("./results/TestResultsService");
+var SpectronRenderer = /** @class */ (function () {
+    function SpectronRenderer() {
     }
-};
-
-class SpectronRenderer {
-
-    /**
-     *
-     * @return {Promise<BrowserWindow>}
-     */
-    static start() {
-
-        return new Promise(resolve => {
-
-            console.log("Electron app started. Waiting for it to be ready.");
-
-            app.on('ready', async function() {
-
-                console.log("Ready!  Creating main window.");
-
-                let mainWindow = new BrowserWindow(BROWSER_OPTIONS);
-                mainWindow.loadURL('about:blank');
-                resolve(mainWindow);
-
-            });
-
-        })
-
-    }
-
-}
-
-module.exports.SpectronRenderer = SpectronRenderer;
+    SpectronRenderer.setup = function () {
+        new TestResultsService_1.TestResultsService().start();
+    };
+    return SpectronRenderer;
+}());
+exports.SpectronRenderer = SpectronRenderer;
+//# sourceMappingURL=SpectronRenderer.js.map

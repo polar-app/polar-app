@@ -1,9 +1,9 @@
 
 const path = require("path");
-const {SpectronRenderer} = require("../../../web/js/test/SpectronRenderer");
+const {SpectronMain} = require("../../../web/js/test/SpectronRenderer");
 
 async function start() {
-    let mainWindow = await SpectronRenderer.start();
+    let mainWindow = await SpectronMain.setup();
     //mainWindow.loadURL("https://www.example.com");
 
     let url = 'file://' + path.resolve( __dirname + '/../../../apps/card-creator/index.html');

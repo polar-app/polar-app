@@ -1,4 +1,7 @@
 import {ContentCaptureApp} from '../../js/capture/renderer/ContentCaptureApp';
+import {SpectronRenderer} from '../../js/test/SpectronRenderer';
+
+SpectronRenderer.setup();
 
 let contentCaptureApp = new ContentCaptureApp();
 

@@ -1,7 +1,7 @@
-const {SpectronRenderer} = require("../../js/test/SpectronRenderer");
+const {SpectronMain} = require("../../js/test/SpectronRenderer");
 
 async function start() {
-    let mainWindow = await SpectronRenderer.start();
+    let mainWindow = await SpectronMain.setup();
     //mainWindow.loadURL("https://www.example.com");
     mainWindow.loadURL('file://' + __dirname + '/index.html')
 }
