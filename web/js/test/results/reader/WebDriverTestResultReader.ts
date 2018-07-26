@@ -14,7 +14,7 @@ export class WebDriverTestResultReader extends TestResultsReader {
 
     async read(): Promise<Result<any>> {
 
-        let result = await this.app.client.executeAsync((done) => {
+        let result = await this.app.client.executeAsync((done: Function) => {
 
             function poll() {
 

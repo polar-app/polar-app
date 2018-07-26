@@ -24,7 +24,7 @@ export class ContentCaptureClient {
 
         return new Promise(resolve => {
 
-            ipcMain.once("content-capture", (event, message) => {
+            ipcMain.once("content-capture", (event: any, message: any) => {
 
                 if(message.type === "started") {
                     resolve();
@@ -40,7 +40,7 @@ export class ContentCaptureClient {
 
         let result = new Promise((resolve, reject) => {
 
-            ipcMain.once("content-capture", (event, message) => {
+            ipcMain.once("content-capture", (event: any, message: any) => {
 
                 if(message.type === "response") {
                     // we can now tell spectron what's up...

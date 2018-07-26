@@ -30,7 +30,7 @@ export class TestResultsService {
 
         log.info("started");
 
-        ipcRenderer.on('test-results', (event, data) => {
+        ipcRenderer.on('test-results', (event: any, data: any) => {
 
             if(data.type === "write") {
 
