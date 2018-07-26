@@ -134,28 +134,26 @@ compiler directly.
 
 https://medium.com/@NetanelBasal/typescript-integrate-jquery-plugin-in-your-project-e28c6887d8dc
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 nodeIntegration must be true
 must be loaded via loadFile
 must be loaded via require()
+
+
+
+
+- TODO: I'm kind of stuck now;
+
+    - Electron requires loading from the filesystem to use this easy module
+      support.
+
+    - PDF.js WILL NOT work with remote URLs unless I change HOSTED_VIEWER_ORIGINS
+      which requires a recompile which would require me to update the app to the
+      latest version which is a pain.
+
+    - I could monkey patch HOSTED_VIEWER_ORIGUINS for now... _
+
+    - I could use a BLOB buit I don't want to waste memory when using HUGE PDFs
+      but that might actually already be the case...
+
+        - I thnk it MAY be using blobs even for remote URLs...  which if so
+          it just makes sense to use blobs anyway.
