@@ -8,7 +8,7 @@ const {Controller} = require("./Controller.js");
 const {DocFormatFactory} = require("../docformat/DocFormatFactory");
 const {ContextMenuController} = require("../contextmenu/ContextMenuController");
 const {FlashcardsController} = require("../flashcards/controller/FlashcardsController");
-const {AnnotationsController} = require("../annotations/controller/AnnotationsController");
+//const {AnnotationsController} = require("../annotations/controller/AnnotationsController");
 const {MouseTracer} = require("../mouse/MouseTracer");
 
 const log = require("../logger/Logger").create();
@@ -170,7 +170,7 @@ class WebController extends Controller {
 
         new FlashcardsController(this.model).start();
 
-        new AnnotationsController().start();
+        //new AnnotationsController().start();
 
         new AreaHighlightController(this.model).start();
 
