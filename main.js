@@ -84,7 +84,7 @@ const WEBSERVER_PORT = 8500;
 const PROXYSERVER_PORT = 8600;
 
 const DEFAULT_HOST = "127.0.0.1";
-const DEFAULT_URL = `http://${DEFAULT_HOST}:${WEBSERVER_PORT}/default.html`;
+const DEFAULT_FILE = `${__dirname}/default.html`;
 
 //creating menus for menu bar
 const MENU_TEMPLATE = [{
@@ -278,7 +278,7 @@ function createWindow() {
         shell.openExternal(url);
     });
 
-    newWindow.loadURL(DEFAULT_URL, options);
+    newWindow.loadFile(DEFAULT_FILE, options);
 
     newWindow.once('ready-to-show', () => {
         //newWindow.maximize();
