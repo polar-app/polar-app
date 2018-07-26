@@ -1,6 +1,6 @@
 
 const electron = require('electron');
-const ScreenshotService = require("../../js/screenshots/ScreenshotService").ScreenshotService;
+const {ScreenshotService} = require("../../js/screenshots/ScreenshotService");
 const app = electron.app;
 const BrowserWindow = electron.BrowserWindow;
 

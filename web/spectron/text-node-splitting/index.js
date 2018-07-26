@@ -1,4 +1,4 @@
-const {SpectronMain} = require("../../js/test/SpectronRenderer");
+const {SpectronMain} = require("../../js/test/SpectronMain");
 
 async function start() {
     let mainWindow = await SpectronMain.setup();

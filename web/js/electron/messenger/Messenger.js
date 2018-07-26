@@ -1,6 +1,5 @@
-import {BrowserWindow} from "electron";
-import {PostMessageRequest} from './PostMessageRequest';
-
+const {BrowserWindow} = require("electron");
+const {PostMessageRequest} = require("./PostMessageRequest");
 const {Functions} = require("../../util/Functions");
 
 /**

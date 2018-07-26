@@ -1,4 +1,4 @@
-const {SpectronMain} = require("../../js/test/SpectronRenderer");
+const {SpectronMain} = require("../../js/test/SpectronMain");
 const {Messenger} = require("../../js/electron/messenger/Messenger");
 
 async function start() {

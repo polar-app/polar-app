@@ -60,8 +60,8 @@ describe('content-capture', function () {
                 }
             },
             "scroll": {
-                "height": 975,
-                "width": 1000
+                "height": 575,
+                "width": 800
             },
             "title": "",
             "type": "chtml",

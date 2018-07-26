@@ -5,7 +5,7 @@ const {Spectron} = require("../../js/test/Spectron");
 
 const TIMEOUT = 10000;
 
-describe('DebugWebRequestsListener', function () {
+describe('messenger', function () {
 
     this.timeout(TIMEOUT);
 

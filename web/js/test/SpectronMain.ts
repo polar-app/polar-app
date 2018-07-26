@@ -2,8 +2,12 @@ import {app, BrowserWindow} from 'electron';
 
 const BROWSER_OPTIONS = {
     backgroundColor: '#FFF',
-    width: 1000,
-    height: 1000,
+
+    // NOTE: the default width and height shouldn't be changed here as it can
+    // break unit tests.
+
+    //width: 1000,
+    //height: 1000,
 
     webPreferences: {
         webSecurity: false,
