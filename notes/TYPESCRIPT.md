@@ -51,7 +51,9 @@ https://www.typescriptlang.org/docs/handbook/react-&-webpack.html
 
 ### Cons
 
-- doesn't work with our current electron setup.
+- It would make it harder for us to port to the web.
+
+- Does not work with our current electron setup (I think this is minimized now)
 
 - What do we do about mocha?  I don't think it's going to just work but maybe
   I can use ts-node with it.
@@ -99,6 +101,13 @@ compiler directly.
 
 ### TODO
 
+- the problems I'm having could be due to TS 2.0  and could explain why no one
+  else has these problems.
+
+    - nope.. my electron-compile-demo uses TS 2.9.2
+
+- try to turn nodeIntegration off
+
 - The renderer is now the main problem because I'm loading from an HTTP URL not
   the local filesystem. I might need to use a combination of webpack and
   typescript.  Webpack for my 'apps' and JS for everything else.
@@ -118,6 +127,8 @@ compiler directly.
     - typescript hides the .js and .js.map files
     - all of my spectron and mocha tests would work I think
     -
+
+
 
 # Library resolution issues
 
@@ -145,3 +156,6 @@ https://medium.com/@NetanelBasal/typescript-integrate-jquery-plugin-in-your-proj
 
 
 
+nodeIntegration must be true
+must be loaded via loadFile
+must be loaded via require()

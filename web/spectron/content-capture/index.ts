@@ -1,20 +1,19 @@
-const electron = require("electron");
+import {ipcMain} from "electron";
+
 const {SpectronRenderer} = require("../../js/test/SpectronRenderer");
 
 async function start() {
 
-    console.error("FIXME: ", new Error());
-
     let mainWindow = await SpectronRenderer.start();
-    mainWindow.loadURL('file://' + __dirname + '/app.html');
+    mainWindow.loadFile(__dirname + '/app.html');
 
     // once the mainWindow is ready, tell it to capture the content.
 
-    electron.ipcMain.on("content-capture", (event, message) => {
+    ipcMain.on("content-capture", (event, message) => {
         console.log("FIXME: content-capture: ", message);
 
         if(message.type === "content-capture-controller-started") {
-            console.log("Ready to rock and roll.")
+            console.log("Ready to rock and roll.");
 
             console.log("Requesting that content capture start");
             mainWindow.webContents.send("content-capture", {type: "request"});
