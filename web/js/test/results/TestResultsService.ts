@@ -6,18 +6,18 @@ import {Logger} from '../../logger/Logger';
 const log = Logger.create()
 
 /**
+ * The current result that we have. Null means that we have no result. If you
+ * need to store a null result wrap it in an object with a 'value'.  We make this
+ * a global value so that spectron can easily read it.
+ */
+declare var window: any;
+
+/**
  * Service to keep the result of a test result within
  *
  * @RendererContext This should be run in the renderer.
  */
 export class TestResultsService {
-
-    /**
-     * The current result that we have. Null means that we have no result.
-     * If you need to store a null result wrap it in an object with a
-     * 'value'
-     */
-    private result: any = null;
 
     constructor() {
 
@@ -34,13 +34,13 @@ export class TestResultsService {
 
             if(data.type === "write") {
 
-                if(! this.result) {
+                if(! TestResultsService.get()) {
 
                     if(data.result) {
 
-                        this.result = data.result;
+                        TestResultsService.set(data.result);
 
-                        log.info("Received test result: ", this.result);
+                        log.info("Received test result: ", TestResultsService.get());
 
                     } else if(data.err) {
 
@@ -55,14 +55,16 @@ export class TestResultsService {
 
             }
 
-            if(data.type === "read") {
-
-                event.sender.sendAsync()
-
-            }
-
         });
 
+    }
+
+    static set(value: any) {
+        window.TEST_RESULT = value;
+    }
+
+    static get(): any {
+        return window.TEST_RESULT;
     }
 
 }

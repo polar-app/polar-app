@@ -24,7 +24,6 @@ describe('SelectContents of HTML entities.', function () {
         assert.ok(webContents);
         assert.ok(webContents.executeJavaScript);
 
-
         let executed = await this.app.client.execute(() => {
 
             const {MockSelections} = require("../../js/highlights/text/selection/MockSelections");

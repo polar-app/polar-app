@@ -10,25 +10,18 @@ var log = Logger_1.Logger.create();
  */
 var TestResultsService = /** @class */ (function () {
     function TestResultsService() {
-        /**
-         * The current result that we have. Null means that we have no result.
-         * If you need to store a null result wrap it in an object with a
-         * 'value'
-         */
-        this.result = null;
     }
     /**
      * Start the service by listening to messages posted.
      */
     TestResultsService.prototype.start = function () {
-        var _this = this;
         log.info("started");
         electron_1.ipcRenderer.on('test-results', function (event, data) {
             if (data.type === "write") {
-                if (!_this.result) {
+                if (!TestResultsService.get()) {
                     if (data.result) {
-                        _this.result = data.result;
-                        log.info("Received test result: ", _this.result);
+                        TestResultsService.set(data.result);
+                        log.info("Received test result: ", TestResultsService.get());
                     }
                     else if (data.err) {
                     }
@@ -41,10 +34,13 @@ var TestResultsService = /** @class */ (function () {
                     log.error("Existing test results already defined.: ", data.value);
                 }
             }
-            if (data.type === "read") {
-                event.sender.sendAsync();
-            }
         });
+    };
+    TestResultsService.set = function (value) {
+        window.TEST_RESULT = value;
+    };
+    TestResultsService.get = function () {
+        return window.TEST_RESULT;
     };
     return TestResultsService;
 }());

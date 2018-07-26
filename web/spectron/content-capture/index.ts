@@ -6,7 +6,8 @@ async function start() {
 
     let mainWindow = await SpectronMain.setup();
 
-    mainWindow.webContents.toggleDevTools();
+    // FIXME: can't use devtools as it creates a seocnd window.
+    //mainWindow.webContents.toggleDevTools();
 
     let contentCaptureClient = new ContentCaptureClient(mainWindow);
 
