@@ -4,14 +4,7 @@ const { Elements } = require("../util/Elements");
 const { PDFFormat } = require("./PDFFormat");
 const { HTMLFormat } = require("./HTMLFormat");
 const { DocFormat } = require("./DocFormat");
-/**
- * Get the proper docFormat to work with.
- */
 class DocFormatFactory {
-    /**
-     *
-     * @return {DocFormat}
-     */
     static getInstance() {
         let polarDocFormat = DocFormatFactory.getPolarDocFormat();
         if (polarDocFormat === "html") {
