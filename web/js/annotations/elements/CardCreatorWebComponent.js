@@ -1,10 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var CardCreatorElement_1 = require("./CardCreatorElement");
-var CardCreatorWebComponent = /** @class */ (function () {
-    function CardCreatorWebComponent() {
-    }
-    CardCreatorWebComponent.register = function () {
+const CardCreatorElement_1 = require("./CardCreatorElement");
+class CardCreatorWebComponent {
+    static register() {
         // if (document.getElementById("card-creator-import")) {
         //     // we're already registered
         //     return;
@@ -17,8 +15,7 @@ var CardCreatorWebComponent = /** @class */ (function () {
         // link.setAttribute("href", "/apps/card-creator/webcomponent.html");
         customElements.define("card-creator", CardCreatorElement_1.CardCreatorElement, { extends: "div" });
         console.log("FIXME: registered card creator.");
-    };
-    return CardCreatorWebComponent;
-}());
+    }
+}
 exports.CardCreatorWebComponent = CardCreatorWebComponent;
 //# sourceMappingURL=CardCreatorWebComponent.js.map

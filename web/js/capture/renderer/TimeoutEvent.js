@@ -3,11 +3,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
 /**
  *
  */
-var TimeoutEvent = /** @class */ (function () {
-    function TimeoutEvent(opts) {
+class TimeoutEvent {
+    constructor(opts) {
         Object.assign(this, opts);
     }
-    return TimeoutEvent;
-}());
+}
 exports.TimeoutEvent = TimeoutEvent;
 //# sourceMappingURL=TimeoutEvent.js.map

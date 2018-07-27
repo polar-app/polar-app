@@ -7,7 +7,7 @@
 
 
         "sourceMap": true,
-        "target": "ES5",
+        "target": "ES2015",
         "module": "commonjs",
         "emitDecoratorMetadata": false,
         "experimentalDecorators": false,

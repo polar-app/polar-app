@@ -1,21 +1,19 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var Elements = require("../util/Elements").Elements;
-var PDFFormat = require("./PDFFormat").PDFFormat;
-var HTMLFormat = require("./HTMLFormat").HTMLFormat;
-var DocFormat = require("./DocFormat").DocFormat;
+const { Elements } = require("../util/Elements");
+const { PDFFormat } = require("./PDFFormat");
+const { HTMLFormat } = require("./HTMLFormat");
+const { DocFormat } = require("./DocFormat");
 /**
  * Get the proper docFormat to work with.
  */
-var DocFormatFactory = /** @class */ (function () {
-    function DocFormatFactory() {
-    }
+class DocFormatFactory {
     /**
      *
      * @return {DocFormat}
      */
-    DocFormatFactory.getInstance = function () {
-        var polarDocFormat = DocFormatFactory.getPolarDocFormat();
+    static getInstance() {
+        let polarDocFormat = DocFormatFactory.getPolarDocFormat();
         if (polarDocFormat === "html") {
             return new HTMLFormat();
         }
@@ -28,18 +26,17 @@ var DocFormatFactory = /** @class */ (function () {
         else {
             throw new Error("Unable to handle the given format: " + polarDocFormat);
         }
-    };
-    DocFormatFactory.getPolarDocFormat = function () {
-        var polarDocFormatElement = document.querySelector("meta[name='polar-doc-format']");
+    }
+    static getPolarDocFormat() {
+        let polarDocFormatElement = document.querySelector("meta[name='polar-doc-format']");
         if (polarDocFormatElement) {
-            var content = polarDocFormatElement.getAttribute("content");
+            let content = polarDocFormatElement.getAttribute("content");
             if (content) {
                 return content;
             }
         }
         return "none";
-    };
-    return DocFormatFactory;
-}());
+    }
+}
 exports.DocFormatFactory = DocFormatFactory;
 //# sourceMappingURL=DocFormatFactory.js.map
