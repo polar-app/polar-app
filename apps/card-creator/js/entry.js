@@ -103,7 +103,5 @@ $(document).ready(function() {
     //
     // inputController.createNewFlashcard(schemaFormElement, postMessageFormHandler);
 
-    customElements.define('card-creator', CardCreatorElement);
-
 });
 
