@@ -29,7 +29,8 @@ export class TestResultService {
 
             if(data.type === "write") {
 
-                if(TestResult.get() === null) {
+                // TODO: migrate to optional for this...
+                if(TestResult.get() === null || TestResult.get() == undefined) {
 
                     if(data.result !== null && data.result !== undefined) {
 
@@ -51,7 +52,7 @@ export class TestResultService {
 
                 } else {
                     // TODO consider telling the sender.
-                    log.error("Existing test results already defined.: ", data.value);
+                    log.error("Existing test results already defined.: " + data.value);
                 }
 
             }

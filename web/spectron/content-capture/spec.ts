@@ -1,9 +1,8 @@
 import {WebDriverTestResultReader} from '../../js/test/results/reader/WebDriverTestResultReader';
 import {assertJSON} from '../../js/test/Assertions';
+import {Spectron} from '../../js/test/Spectron';
 
 const assert = require('assert');
-const {Functions} = require("../../js/util/Functions");
-const {Spectron} = require("../../js/test/Spectron");
 
 const TIMEOUT = 10000;
 
