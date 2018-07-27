@@ -61,46 +61,6 @@ class ElectronContextMenu extends ContextMenu {
 
     }
 
-    /**
-     *
-     * @param triggerEvent {TriggerEvent}
-     * @param sender
-     */
-    async cmdAddFlashcard(triggerEvent, sender) {
-
-        // Preconditions.assertNotNull(sender, "sender");
-        //
-        // sender.send('context-menu-create-flashcard', {
-        //     command: "add-flashcard"
-        // });
-        //
-        // let context = {
-        //     docDescriptor: triggerEvent.docDescriptor,
-        //     matchingSelectors: triggerEvent.matchingSelectors
-        // };
-        //
-        // let contextJSON = JSON.stringify(context);
-        //
-        // let url = `http://${DEFAULT_HOST}:${WEBSERVER_PORT}/apps/card-creator/index.html?context=${encodeURIComponent(contextJSON)}`;
-        //
-        // DialogWindow.create({url});
-
-        // FIXME: AnnotationsController now needs document.addEventListener("message");
-
-        let context = {
-            docDescriptor: triggerEvent.docDescriptor,
-            matchingSelectors: triggerEvent.matchingSelectors
-        };
-
-        await this.messenger.postMessage({
-            message: {
-                type: "create-flashcard",
-                context
-            }
-        })
-
-    }
-
     async postContextMenuMessage(name, triggerEvent) {
 
         log.info("postContextMenuMessage: " + name);
@@ -213,7 +173,7 @@ class ElectronContextMenu extends ContextMenu {
         ctxMenu.append(new MenuItem({
             label: 'Add Flashcard',
             //accelerator: 'CmdOrCtrl+A',
-            click: () => this.cmdAddFlashcard(triggerEvent, sender)
+            click: () => this.postContextMenuMessage("create-flashcard", triggerEvent)
         }));
 
         ctxMenu.append(new MenuItem({
@@ -239,7 +199,7 @@ class ElectronContextMenu extends ContextMenu {
         ctxMenu.append(new MenuItem({
             label: 'Add Flashcard',
             //accelerator: 'CmdOrCtrl+A',
-            click: () => this.cmdAddFlashcard(triggerEvent, sender)
+            click: () => this.postContextMenuMessage("create-flashcard", triggerEvent)
         }));
 
         ctxMenu.append(new MenuItem({

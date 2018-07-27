@@ -1,21 +1,11 @@
-class Point {
-
-    constructor(obj) {
-
-        /**
-         * @type number
-         */
-        this.x = undefined;
-
-        /**
-         * @type number
-         */
-        this.y = undefined;
-
-        Object.assign(this, obj);
-
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var Point = /** @class */ (function () {
+    function Point(obj) {
+        this.x = obj.x;
+        this.y = obj.y;
     }
-
-}
-
-module.exports.Point = Point;
+    return Point;
+}());
+exports.Point = Point;
+//# sourceMappingURL=Point.js.map

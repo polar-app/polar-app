@@ -17,15 +17,11 @@ describe('content-capture', function () {
 
         console.log("mocha: Waiting for first window");
 
-        //assert.equal(await this.app.client.getWindowCount(), 2); // FIXME: is the second the tools window?
-
-        console.log("mocha: Got first window!");
+        assert.equal(await this.app.client.getWindowCount(), 1);
 
         let webDriverTestResultReader = new WebDriverTestResultReader(this.app);
 
         let result = await webDriverTestResultReader.read();
-
-        console.log("mocha: result in mocha is: " ,result);
 
         let expected = {
             "capturedDocuments": {
