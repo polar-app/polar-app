@@ -1,3 +1,5 @@
+import {Link} from '../link/Link';
+
 declare var global: any;
 global.$ = global.jQuery = require("jquery");
 require("jquery-ui-bundle");
@@ -18,6 +20,15 @@ export class Dialog {
      */
     constructor(target: any) {
         this.target = target;
+
+        // FIXME: don't use the full URL here...
+        // TODO: I'm sure there must be a fancier way to do and we should
+        // consider using webpack for each component.
+        let link = new Link("stylesheet",
+                            "https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css",
+                            "jquery-ui");
+        link.present();
+
     }
 
     show(): void {

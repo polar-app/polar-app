@@ -1,9 +1,8 @@
-import $ from 'jquery';
-import jqueryui from 'jqueryui';
-
 import {CardCreatorWebComponent} from '../elements/CardCreatorWebComponent';
-import {DocFormatFactory} from '../../docformat/DocFormatFactory';
+import {Dialog} from '../../ui/dialog/Dialog';
 import Point = Electron.Point;
+const {InputController} = require("../InputController");
+const {FormHandler} = require("../FormHandler");
 
 export class AnnotationsController {
 
@@ -15,36 +14,14 @@ export class AnnotationsController {
         let id = "create-flashcard";
         let createFlashcardDialog = document.getElementById(id);
 
-        let docFormat = DocFormatFactory.getInstance();
-
         if(! createFlashcardDialog) {
-
-            let pageElement = docFormat.getPageElementFromPageNum(pageNum);
-
-            // let boxRect = Rects.createFromBasicRect({
-            //     left: pageElementPoint.x,
-            //     top: pageElementPoint.y,
-            //     width: 150,
-            //     height: 150
-            // });
 
             createFlashcardDialog = document.createElement("div");
             createFlashcardDialog.setAttribute("id", id);
-            createFlashcardDialog.setAttribute("title", "Create Flashcard");
-            createFlashcardDialog.style.display = "none";
-            createFlashcardDialog.style.position = "absolute";
-
-            createFlashcardDialog.style.left = `${pageOffset.x}px`;
-            createFlashcardDialog.style.top = `${pageOffset.y}px`;
-
-            createFlashcardDialog.style.width = `800px`;
-            createFlashcardDialog.style.height = `800px`;
-
+            createFlashcardDialog.style.backgroundColor = `#FFF`;
             createFlashcardDialog.style.zIndex = `999`;
 
-            createFlashcardDialog.style.backgroundColor = `#FFF`;
-
-            pageElement.insertBefore(createFlashcardDialog, pageElement.firstChild);
+            document.body.appendChild(createFlashcardDialog);
 
             //now insert the card creator HTML content into it...
 
@@ -66,24 +43,18 @@ export class AnnotationsController {
 
         }
 
-        // $(createFlashcardDialog).show();
+        let dialog = new Dialog(createFlashcardDialog);
+        dialog.width = 800;
+        dialog.height = 800;
+        dialog.show();
 
-        createFlashcardDialog.style.display = 'block';
+        let inputController = new InputController();
 
-        $( function() {
-            $( createFlashcardDialog ).dialog({
-                width: 800,
-                height: 800
-            });
-        } );
+        let schemaFormElement = document.getElementById("schema-form");
 
+        let postMessageFormHandler = new PostMessageFormHandler();
 
-        // $( function() {
-        //     $( createFlashcardDialog ).dialog({
-        //         width: 800,
-        //         height: 800
-        //     });
-        // } );
+        inputController.createNewFlashcard(schemaFormElement, postMessageFormHandler);
 
     }
 
@@ -94,8 +65,6 @@ export class AnnotationsController {
     }
 
     onMessageReceived(event: any) {
-
-        console.log("FIXME: ", event);
 
         // get the page number
 
@@ -113,3 +82,48 @@ export class AnnotationsController {
 
 }
 
+
+
+class PostMessageFormHandler extends FormHandler {
+
+    onChange(data: any) {
+        console.log("onChange: ", data);
+        //window.postMessage({ type: "onChange", data: dataToExternal(data)}, "*");
+    }
+
+    onSubmit(data: any) {
+        //
+        // data = Objects.duplicate(data);
+        //
+        // // we have to include the docDescriptor for what we're working on so
+        // // that the recipient can decide if they want to act on this new data.
+        // data.context = this.context;
+        //
+        // // for now we (manually) support flashcards
+        // data.annotationType = AnnotationType.FLASHCARD;
+        //
+        // // the metadata for creating the flashcard type.  This should probably
+        // // move to the schema in the future.  The ID is really just so that
+        // // we can compile the schema properly.
+        // data.flashcard = {
+        //     id: "9d146db1-7c31-4bcf-866b-7b485c4e50ea"
+        // };
+        //
+        // console.log("onSubmit: ", data);
+        // //window.postMessage({ type: "onSubmit", data: dataToExternal(data)}, "*");
+        //
+        // // send this to the main process which then broadcasts it to all the renderers.
+        // ipcRenderer.send('create-annotation', data);
+        //
+        // // don't close when we're the only window and in dev mode.
+        // // FIXME: window.close();
+
+    }
+
+
+    onError(data: any) {
+        console.log("onError: ", data);
+        //window.postMessage({ type: "onError", data: dataToExternal(data)}, "*");
+    }
+
+}
