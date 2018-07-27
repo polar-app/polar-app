@@ -9,17 +9,19 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const WebDriverTestResultReader_1 = require("../../js/test/results/reader/WebDriverTestResultReader");
+const Spectron_1 = require("../../js/test/Spectron");
 const assert = require('assert');
 const { Functions } = require("../../js/util/Functions");
-const { Spectron } = require("../../js/test/Spectron");
 const TIMEOUT = 10000;
-describe('example-test', () => {
+describe('example-test', function () {
     this.timeout(TIMEOUT);
-    Spectron.setup(__dirname);
-    it('shows an basic initial window', () => __awaiter(this, void 0, void 0, function* () {
-        assert.equal(yield this.app.client.getWindowCount(), 1);
-        let testResultReader = new WebDriverTestResultReader_1.WebDriverTestResultReader(this.app);
-        assert.equal(yield testResultReader.read(), true);
-    }));
+    Spectron_1.Spectron.setup(__dirname);
+    it('shows an basic initial window', function () {
+        return __awaiter(this, void 0, void 0, function* () {
+            assert.equal(yield this.app.client.getWindowCount(), 1);
+            let testResultReader = new WebDriverTestResultReader_1.WebDriverTestResultReader(this.app);
+            assert.equal(yield testResultReader.read(), true);
+        });
+    });
 });
 //# sourceMappingURL=spec.js.map

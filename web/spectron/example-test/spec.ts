@@ -1,19 +1,19 @@
 import {WebDriverTestResultReader} from '../../js/test/results/reader/WebDriverTestResultReader';
+import {Spectron} from '../../js/test/Spectron';
+import {assertJSON} from '../../js/test/Assertions';
 
 const assert = require('assert');
 const {Functions} = require("../../js/util/Functions");
-const {Spectron} = require("../../js/test/Spectron");
-import {assertJSON} from '../../js/test/Assertions';
 
 const TIMEOUT = 10000;
 
-describe('example-test', () => {
+describe('example-test', function() {
 
     this.timeout(TIMEOUT);
 
     Spectron.setup(__dirname);
 
-    it('shows an basic initial window', async () => {
+    it('shows an basic initial window', async function() {
 
         assert.equal(await this.app.client.getWindowCount(), 1);
 

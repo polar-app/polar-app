@@ -1,5 +1,4 @@
 import {SpectronOutputMonitorService} from './SpectronOutputMonitorService';
-import {SpectronState} from './SpectronState';
 import {TestResultReader} from './results/TestResultReader';
 const {Application} = require('spectron');
 const electronPath = require('electron');
