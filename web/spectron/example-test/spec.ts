@@ -8,6 +8,7 @@ const {Functions} = require("../../js/util/Functions");
 describe('example-test', function() {
 
     Spectron.setup(__dirname);
+    this.timeout(10000);
 
     it('shows an basic initial window', async function() {
 

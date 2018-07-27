@@ -4,7 +4,7 @@ import {RendererTestResultWriter} from '../../js/test/results/writer/RendererTes
 
 declare var global: any;
 global.$ = global.jQuery = require("jquery");
-// require("jqueryui");
+require("jquery-ui-bundle");
 
 SpectronRenderer.run(async () => {
     console.log("Running within SpectronRenderer now.");
@@ -12,13 +12,17 @@ SpectronRenderer.run(async () => {
     assert.notEqual($("h1"), null);
 
     let testResultWriter = new RendererTestResultWriter();
-    testResultWriter.write(true);
 
-    // $( function() {
-    //     $( ".myDialog" ).dialog({
-    //         width: 800,
-    //         height: 800
-    //     });
-    // } );
+    $( function() {
+        $( "#myDialog" ).dialog({
+            width: 250,
+            height: 250
+        });
+    } );
+
+    // now make sure the DOM is updated
+    assert.notEqual($(".ui-dialog"), null);
+
+    testResultWriter.write(true);
 
 });

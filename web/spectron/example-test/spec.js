@@ -14,6 +14,7 @@ const assert = require('assert');
 const { Functions } = require("../../js/util/Functions");
 describe('example-test', function () {
     Spectron_1.Spectron.setup(__dirname);
+    this.timeout(10000);
     it('shows an basic initial window', function () {
         return __awaiter(this, void 0, void 0, function* () {
             assert.equal(yield this.app.client.getWindowCount(), 1);

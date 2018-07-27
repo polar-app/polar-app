@@ -29,8 +29,6 @@ export class Spectron {
 
         beforeEach(async function () {
 
-            this.timeout(TIMEOUT);
-
             console.log("Starting spectron with dir: " + dir);
 
             this.app = new Application({
@@ -44,7 +42,10 @@ export class Spectron {
 
                 // The following line tells spectron to look and use the main.js file
                 //args: [path.join(dir, '../../..')]
-                args: [dir, ...args]
+                args: [dir, ...args],
+
+                startTimeout: TIMEOUT,
+                waitTimeout: TIMEOUT
 
             });
 

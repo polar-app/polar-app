@@ -5,9 +5,10 @@ import {assertJSON} from '../../js/test/Assertions';
 const assert = require('assert');
 const {Functions} = require("../../js/util/Functions");
 
-describe('example-test', function() {
+describe('jquery-ui', function() {
 
     Spectron.setup(__dirname);
+    this.timeout(50000);
 
     it('shows an basic initial window', async function() {
 

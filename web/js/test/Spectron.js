@@ -18,11 +18,12 @@ class Spectron {
         let spectronOutputMonitorService;
         beforeEach(function () {
             return __awaiter(this, void 0, void 0, function* () {
-                this.timeout(TIMEOUT);
                 console.log("Starting spectron with dir: " + dir);
                 this.app = new Application({
                     path: electronPath,
-                    args: [dir, ...args]
+                    args: [dir, ...args],
+                    startTimeout: TIMEOUT,
+                    waitTimeout: TIMEOUT
                 });
                 console.log("Starting app...");
                 let app = yield this.app.start();
