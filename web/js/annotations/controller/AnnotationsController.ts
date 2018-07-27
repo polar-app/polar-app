@@ -58,7 +58,7 @@ export class AnnotationsController {
             //shadowRoot.appendChild(clone);
 
             let cardCreatorElement = document.createElement("card-creator");
-            //shadowRoot.appendChild(cardCreatorElement);
+            shadowRoot.appendChild(cardCreatorElement);
 
             console.log("Created it!")
 

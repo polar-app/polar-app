@@ -39,7 +39,7 @@ class AnnotationsController {
             let shadowRoot = createFlashcardDialog.attachShadow({ mode: 'open' });
             //shadowRoot.appendChild(clone);
             let cardCreatorElement = document.createElement("card-creator");
-            //shadowRoot.appendChild(cardCreatorElement);
+            shadowRoot.appendChild(cardCreatorElement);
             console.log("Created it!");
         }
         // $(createFlashcardDialog).show();

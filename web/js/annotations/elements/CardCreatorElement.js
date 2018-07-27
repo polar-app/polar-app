@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-class CardCreatorElement extends HTMLDivElement {
+class CardCreatorElement extends HTMLElement {
     constructor() {
         super();
         // let importDoc = document.currentScript.ownerDocument;

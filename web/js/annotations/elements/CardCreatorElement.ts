@@ -1,5 +1,5 @@
 
-export class CardCreatorElement extends HTMLDivElement {
+export class CardCreatorElement extends HTMLElement {
 
     constructor() {
 
