@@ -1,12 +1,12 @@
 import {ContentCaptureApp} from '../../js/capture/renderer/ContentCaptureApp';
 import {SpectronRenderer} from '../../js/test/SpectronRenderer';
 
-SpectronRenderer.setup();
+SpectronRenderer.run(async () => {
 
-let contentCaptureApp = new ContentCaptureApp();
+    let contentCaptureApp = new ContentCaptureApp();
 
-contentCaptureApp.start();
+    contentCaptureApp.start();
 
-console.log("App loaded now!!");
+    console.log("App loaded now!!");
 
-// now request that the
+});

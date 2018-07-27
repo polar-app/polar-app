@@ -5,11 +5,7 @@ import {assertJSON} from '../../js/test/Assertions';
 const assert = require('assert');
 const {Functions} = require("../../js/util/Functions");
 
-const TIMEOUT = 10000;
-
 describe('example-test', function() {
-
-    this.timeout(TIMEOUT);
 
     Spectron.setup(__dirname);
 

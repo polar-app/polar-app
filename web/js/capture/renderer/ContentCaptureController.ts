@@ -41,12 +41,14 @@ export class ContentCaptureController {
 
             let captured = ContentCapture.captureHTML();
 
-            log.info("Content captured successfully.  Sending response.")
+            log.info("Content captured successfully.  Sending response...");
 
             ipcRenderer.send("content-capture", {
                 type: "response",
                 result: captured
             });
+
+            log.info("Content captured successfully.  Sending response... done");
 
         } catch(e) {
 

@@ -44,11 +44,11 @@ export class SpectronMain {
 
     }
 
-    static async start(callback: StateCallback) {
+    static async start(callback: StateCallback): Promise<void> {
         let window = await SpectronMain.setup();
         let testResultWriter = new MainTestResultWriter(window);
 
-        callback(new SpectronMainState(window, testResultWriter));
+        return callback(new SpectronMainState(window, testResultWriter));
 
     }
 
@@ -78,5 +78,5 @@ export class SpectronMainState {
 }
 
 export interface StateCallback {
-    (state: SpectronMainState): void
+    (state: SpectronMainState): Promise<void>
 }

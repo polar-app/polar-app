@@ -1,10 +1,9 @@
 import {SpectronMain} from '../../js/test/SpectronMain';
 
-SpectronMain.run(state => {
-    
-    
+SpectronMain.run(async state => {
+
     state.window.loadFile(__dirname + '/app.html');
 
-    state.testResultWriter.write(true);
+    await state.testResultWriter.write(true);
 
 });

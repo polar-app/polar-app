@@ -3,6 +3,8 @@ import {TestResultReader} from './results/TestResultReader';
 const {Application} = require('spectron');
 const electronPath = require('electron');
 
+const TIMEOUT = 10000;
+
 /**
  * Basic spectron startup and teardown for our usage.  We also start an
  * app that monitors the main process logs and forwards them to the console.
@@ -13,11 +15,10 @@ export class Spectron {
 
     /**
      * The directory to run the specs from. Usually __dirname in your spec.
-     * @param dir
      */
     static setup(dir: string, ...args: any[]) {
 
-        console.log("Configuring spectron...")
+        console.log("Configuring spectron...");
 
         // TODO: since spectron requires a window to operate, we should ALWAYS
         // create a window and then return it to the user so that they can
@@ -27,6 +28,8 @@ export class Spectron {
         let spectronOutputMonitorService : SpectronOutputMonitorService;
 
         beforeEach(async function () {
+
+            this.timeout(TIMEOUT);
 
             console.log("Starting spectron with dir: " + dir);
 

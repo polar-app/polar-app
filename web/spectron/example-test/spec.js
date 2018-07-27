@@ -12,9 +12,7 @@ const WebDriverTestResultReader_1 = require("../../js/test/results/reader/WebDri
 const Spectron_1 = require("../../js/test/Spectron");
 const assert = require('assert');
 const { Functions } = require("../../js/util/Functions");
-const TIMEOUT = 10000;
 describe('example-test', function () {
-    this.timeout(TIMEOUT);
     Spectron_1.Spectron.setup(__dirname);
     it('shows an basic initial window', function () {
         return __awaiter(this, void 0, void 0, function* () {

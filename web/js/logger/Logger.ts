@@ -114,24 +114,47 @@ class DelegatedLogger {
     // with spectron instead of hacking it here.
 
     public info(...args: any[]) {
-        Logger.getLoggerDelegate().info(this.caller, ...args);
+        this.apply(Logger.getLoggerDelegate().info, args);
     }
 
     public warn(...args: any[]) {
-        Logger.getLoggerDelegate().warn(this.caller, ...args);
+        this.apply(Logger.getLoggerDelegate().warn, args);
     }
 
     public error(...args: any[]) {
-        Logger.getLoggerDelegate().error(this.caller, ...args);
+        this.apply(Logger.getLoggerDelegate().error, args);
     }
 
     public verbose(...args: any[]) {
-        Logger.getLoggerDelegate().debug(this.caller, ...args);
+        this.apply(Logger.getLoggerDelegate().verbose, args);
     }
 
     public debug(...args: any[]) {
-        Logger.getLoggerDelegate().info(this.caller, ...args);
+        this.apply(Logger.getLoggerDelegate().debug, args);
     }
+
+    /**
+     *
+     * @param {LogFunction} logFunction
+     * @param args
+     */
+    private apply(logFunction: LogFunction, ...args: any[]) {
+
+        let arg0 = this.caller;
+
+        if(args.length > 0) {
+            arg0 = arg0 + ": " + args.pop();
+        }
+
+        logFunction(arg0, args);
+
+    }
+
+}
+
+interface LogFunction {
+
+    (...args: any[]): void;
 
 }
 

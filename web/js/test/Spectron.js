@@ -11,12 +11,14 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const SpectronOutputMonitorService_1 = require("./SpectronOutputMonitorService");
 const { Application } = require('spectron');
 const electronPath = require('electron');
+const TIMEOUT = 10000;
 class Spectron {
     static setup(dir, ...args) {
         console.log("Configuring spectron...");
         let spectronOutputMonitorService;
         beforeEach(function () {
             return __awaiter(this, void 0, void 0, function* () {
+                this.timeout(TIMEOUT);
                 console.log("Starting spectron with dir: " + dir);
                 this.app = new Application({
                     path: electronPath,

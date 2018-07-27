@@ -1,19 +1,15 @@
 import {ContentCaptureClient} from '../../js/capture/renderer/ContentCaptureClient';
 import {SpectronMain} from '../../js/test/SpectronMain';
-import {MainTestResultWriter} from '../../js/test/results/writer/MainTestResultWriter';
 
-async function start() {
+SpectronMain.run(async state => {
 
-    let mainWindow = await SpectronMain.setup();
+    let window = state.window;
 
-    // FIXME: can't use devtools as it creates a seocnd window.
-    //mainWindow.webContents.toggleDevTools();
-
-    let contentCaptureClient = new ContentCaptureClient(mainWindow);
+    let contentCaptureClient = new ContentCaptureClient(window);
 
     let waitForControllerPromise = contentCaptureClient.waitForController();
 
-    mainWindow.loadFile(__dirname + '/app.html');
+    window.loadFile(__dirname + '/app.html');
 
     console.log("Waiting for controller startup promise...");
     await waitForControllerPromise;
@@ -25,13 +21,6 @@ async function start() {
 
     console.log("GOT IT!", captured);
 
-    let mainTestResultsWriter = new MainTestResultWriter(mainWindow);
+    await state.testResultWriter.write(captured);
 
-    mainTestResultsWriter.write(captured);
-
-    // now we need to tell spectron we have it... that's part of the challenge
-    // her.
-
-}
-
-start().catch(err => console.log(err));
+});
