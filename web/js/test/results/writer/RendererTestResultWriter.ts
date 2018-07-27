@@ -4,7 +4,7 @@ import {TestResult} from '../renderer/TestResult';
 /**
  * Write data from the main Electron process.
  */
-export class RendererTestResultsWriter implements TestResultWriter {
+export class RendererTestResultWriter implements TestResultWriter {
 
     write(result: any): void {
 

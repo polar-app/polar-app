@@ -42,6 +42,7 @@
   },
   "license": "MIT",
   "devDependencies": {
+    "@types/chai": "^4.1.4",
     "@types/jquery": "^3.3.5",
     "@types/jqueryui": "^1.12.2",
     "@types/mocha": "^5.2.5",
