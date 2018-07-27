@@ -18,7 +18,7 @@ export class WebDriverTestResultReader extends TestResultReader {
 
             function poll() {
 
-                if (window.TEST_RESULT) {
+                if (window.TEST_RESULT != null) {
                     done(window.TEST_RESULT);
                     return;
                 }

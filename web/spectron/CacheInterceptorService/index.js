@@ -1,11 +1,10 @@
 
-const electron = require('electron');
+const {app, electron} = require('electron');
 const {ProxyServerConfig} = require("../../js/backend/proxyserver/ProxyServerConfig");
 const {CacheRegistry} = require("../../js/backend/proxyserver/CacheRegistry");
 const {CacheInterceptorService} = require("../../js/backend/interceptor/CacheInterceptorService");
 const {SpectronMain} = require("../../js/test/SpectronMain");
 const {Logger} = require("../../js/logger/Logger");
-const app = electron.app;
 
 async function start() {
 

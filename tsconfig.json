@@ -22,6 +22,8 @@
         "noUnusedLocals": false,
         "noUnusedParameters": false,
 
+        "allowSyntheticDefaultImports": true,
+
         "baseUrl": ".",
         "paths": {
             "*": ["node_modules/*"]

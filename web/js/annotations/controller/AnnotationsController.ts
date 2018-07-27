@@ -1,3 +1,5 @@
+import $ from 'jquery';
+import jqueryui from 'jqueryui';
 
 import {CardCreatorWebComponent} from '../elements/CardCreatorWebComponent';
 import {DocFormatFactory} from '../../docformat/DocFormatFactory';
@@ -68,8 +70,14 @@ export class AnnotationsController {
 
         createFlashcardDialog.style.display = 'block';
 
-        //
-        //
+        $( function() {
+            $( createFlashcardDialog ).dialog({
+                width: 800,
+                height: 800
+            });
+        } );
+
+
         // $( function() {
         //     $( createFlashcardDialog ).dialog({
         //         width: 800,

@@ -13,7 +13,7 @@ export class MainTestResultWriter implements TestResultWriter {
 
     write(result: any): void {
 
-        if(! result) {
+        if(result === null || result === undefined) {
             throw new Error("No result given!");
         }
 

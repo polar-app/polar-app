@@ -1,4 +1,7 @@
 import {app, BrowserWindow} from 'electron';
+import {TestResultWriter} from './results/TestResultWriter';
+import {MainTestResultWriter} from './results/writer/MainTestResultWriter';
+import Spec = Mocha.reporters.Spec;
 
 const BROWSER_OPTIONS = {
     backgroundColor: '#FFF',
@@ -41,4 +44,38 @@ export class SpectronMain {
 
     }
 
+    static async start(callback: StateCallback) {
+        let window = await SpectronMain.setup();
+        let testResultWriter = new MainTestResultWriter(window);
+
+        callback(new SpectronMainState(window, testResultWriter));
+    }
+
+    /**
+     * Like start but not async and assume this is the entry point of your test
+     * and just print error messages to the console.
+     **/
+    static run(callback: StateCallback) {
+        SpectronMain.start(callback).catch(err => console.log(err));
+    }
+
+
+}
+
+export class SpectronMainState {
+
+    public readonly window: BrowserWindow;
+
+    public readonly testResultWriter: TestResultWriter;
+
+
+    constructor(window: Electron.BrowserWindow, testResultWriter: TestResultWriter) {
+        this.window = window;
+        this.testResultWriter = testResultWriter;
+    }
+
+}
+
+export interface StateCallback {
+    (state: SpectronMainState): void
 }

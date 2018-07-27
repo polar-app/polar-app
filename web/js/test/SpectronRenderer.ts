@@ -6,4 +6,14 @@ export class SpectronRenderer {
         new TestResultService().start();
     }
 
+    static run(callback: RunCallback) {
+        SpectronRenderer.setup();
+        callback();
+    }
+
 }
+
+export interface RunCallback {
+    (): void
+}
+

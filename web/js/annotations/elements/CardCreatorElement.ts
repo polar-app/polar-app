@@ -24,7 +24,7 @@ export class CardCreatorElement extends HTMLElement {
 
         const NODE_MODULES='../../node_modules';
 
-        `    
+        let template = `    
         <link rel="stylesheet" href="${NODE_MODULES}/font-awesome/css/font-awesome.min.css">
         <link rel="stylesheet" href="../../node_modules/bootstrap/dist/css/bootstrap.min.css">
         <link rel="stylesheet" href="../../node_modules/bootstrap/dist/css/bootstrap-grid.min.css">
@@ -45,7 +45,7 @@ export class CardCreatorElement extends HTMLElement {
             </div>
     
         </div>
-        `
+        `;
 
         shadowRoot.appendChild(textElement);
 

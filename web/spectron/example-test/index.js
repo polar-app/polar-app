@@ -1,9 +1,8 @@
-const {SpectronMain} = require("../../js/test/SpectronMain");
-
-async function start() {
-    let mainWindow = await SpectronMain.setup();
-    //mainWindow.loadURL("https://www.example.com");
-    mainWindow.loadURL('file://' + __dirname + '/index.html')
-}
-
-start().catch(err => console.log(err));
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const SpectronMain_1 = require("../../js/test/SpectronMain");
+SpectronMain_1.SpectronMain.run(state => {
+    state.window.loadFile(__dirname + '/app.html');
+    state.testResultWriter.write(true);
+});
+//# sourceMappingURL=index.js.map
