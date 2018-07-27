@@ -17,8 +17,15 @@ export class CardCreatorElement extends HTMLElement {
 
         // TODO: inject our template code here..
 
+        // FIXME:
+
+        // FIXME: this will change based on the component so I guess I have to
+        // find it via __dirname ?
+
+        const NODE_MODULES='../../node_modules';
+
         `    
-        <link rel="stylesheet" href="../../node_modules/font-awesome/css/font-awesome.min.css">
+        <link rel="stylesheet" href="${NODE_MODULES}/font-awesome/css/font-awesome.min.css">
         <link rel="stylesheet" href="../../node_modules/bootstrap/dist/css/bootstrap.min.css">
         <link rel="stylesheet" href="../../node_modules/bootstrap/dist/css/bootstrap-grid.min.css">
         <link rel="stylesheet" href="../../node_modules/bootstrap/dist/css/bootstrap-reboot.min.css">
