@@ -109,6 +109,10 @@ class DelegatedLogger {
         this.caller = caller;
     }
 
+    // TODO: spectron doesn't properly handle objects passed here but I don't
+    // think we should compromise on our design.  We should fix the problem
+    // with spectron instead of hacking it here.
+
     public info(...args: any[]) {
         Logger.getLoggerDelegate().info(this.caller, ...args);
     }

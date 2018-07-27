@@ -49,6 +49,7 @@ export class SpectronMain {
         let testResultWriter = new MainTestResultWriter(window);
 
         callback(new SpectronMainState(window, testResultWriter));
+
     }
 
     /**
@@ -66,10 +67,10 @@ export class SpectronMainState {
 
     public readonly window: BrowserWindow;
 
-    public readonly testResultWriter: TestResultWriter;
+    public readonly testResultWriter: MainTestResultWriter;
 
 
-    constructor(window: Electron.BrowserWindow, testResultWriter: TestResultWriter) {
+    constructor(window: Electron.BrowserWindow, testResultWriter: MainTestResultWriter) {
         this.window = window;
         this.testResultWriter = testResultWriter;
     }

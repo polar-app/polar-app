@@ -4,7 +4,7 @@ import {ipcRenderer} from "electron";
 import {Logger} from '../../logger/Logger';
 import {TestResult} from './renderer/TestResult';
 
-const log = Logger.create()
+const log = Logger.create();
 
 
 /**
@@ -25,7 +25,7 @@ export class TestResultService {
 
         log.info("started");
 
-        ipcRenderer.on('test-results', (event: any, data: any) => {
+        ipcRenderer.on("test-result", (event: any, data: any) => {
 
             if(data.type === "write") {
 
@@ -58,6 +58,9 @@ export class TestResultService {
             }
 
         });
+
+        // tell everyone we've started now
+        ipcRenderer.send("test-result", { type: "started" });
 
     }
 
