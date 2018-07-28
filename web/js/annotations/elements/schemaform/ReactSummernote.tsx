@@ -5,7 +5,6 @@ import 'summernote/dist/summernote';
 // import 'codemirror/lib/codemirror.css';
 
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 
 const randomUid = () => Math.floor(Math.random() * 100000);
 
