@@ -4,9 +4,10 @@ declare var global: any;
 global.$ = global.jQuery = require("jquery");
 
 import 'bootstrap/dist/js/bootstrap.bundle.js';
-//import React from 'react'
 
-const React = require("react");
+//const React = require("react");
+import React from 'react' // FIXME: th8is might be part of the problem.. I can't
+// import REact
 import { render } from "react-dom";
 import { JSONSchema6 } from "json-schema";
 import Form from "react-jsonschema-form";
@@ -17,6 +18,7 @@ require('summernote/dist/summernote-bs4');
 const {SchemaFactory} = require("./SchemaFactory");
 
 if( ! React) {
+    console.warn("FIXME: react: ", React);
     throw new Error("React is null!");
 }
 

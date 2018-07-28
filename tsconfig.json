@@ -20,6 +20,7 @@
         "stripInternal": true,
         "checkJs": false,
         "jsx": "react",
+        "esModuleInterop": true,
 
         "noUnusedLocals": false,
         "noUnusedParameters": false,

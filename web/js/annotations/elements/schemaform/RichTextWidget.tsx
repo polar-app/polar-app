@@ -1,5 +1,6 @@
-const React = require("react");
-const ReactSummernote = require('react-summernote');
+
+import React, { Component } from 'react';
+import ReactSummernote from "summernote-typescript";
 
 export function RichTextWidget(props: any) {
 

@@ -39,6 +39,7 @@ class SchemaFactory {
                 //     "minLength": 10
                 // }
             }
+
         };
 
     }
