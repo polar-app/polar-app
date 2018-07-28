@@ -8,7 +8,7 @@ require("bootstrap/dist/js/bootstrap.bundle.js");
 const react_1 = __importDefault(require("react"));
 const react_dom_1 = require("react-dom");
 const react_jsonschema_form_1 = __importDefault(require("react-jsonschema-form"));
-const TextareaWidget_1 = require("./TextareaWidget");
+const TextareaEditorComponent_1 = require("./TextareaEditorComponent");
 require('summernote/dist/summernote-bs4');
 const { SchemaFactory } = require("./SchemaFactory");
 if (!react_1.default) {
@@ -29,7 +29,7 @@ class InputController {
         }
         const uiSchema = {
             front: {
-                "ui:widget": TextareaWidget_1.TextareaWidget,
+                "ui:widget": TextareaEditorComponent_1.TextareaEditorComponent,
             },
         };
         let onChangeCallback = () => function (data) { formHandler.onChange(data); };
