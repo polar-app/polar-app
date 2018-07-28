@@ -3,16 +3,32 @@
  */
 import ReactSummernote from './ReactSummernote';
 import React from 'react';
+import {Logger} from '../../../logger/Logger';
+const log = Logger.create();
 
 export class TextWidget extends React.Component  {
 
-    constructor(props = {}) {
+    private readonly onChangeCallback: OnChangeCallback;
+
+    constructor(props: any = {}) {
         super(props);
+        this.onChangeCallback = props.onChange;
+
+        this.onChange = this.onChange.bind(this);
+        this.onImageUpload = this.onImageUpload.bind(this);
+
+        console.log("FIXME: this.onChangeCallbac: " + this.onChangeCallback)
     }
 
-    onChange(content: any) {
-        console.log('this', this);
-        console.log('onChange', content);
+    onChange(newValue: any) {
+        console.log('FIXME: this: ', this);
+        console.log('FIXME: this.onChangeCallback: ', this.onChangeCallback);
+        console.log('onChange: newValue: ', newValue);
+
+        log.debug('onChange', newValue);
+
+        //this.onChangeCallback("");
+
     }
 
     /**
@@ -22,9 +38,7 @@ export class TextWidget extends React.Component  {
      */
     onImageUpload(images: any[], insertImage: Function) {
 
-        console.log("FIXME: handling custom onImageUpload")
-
-        console.log('onImageUpload', images);
+        log.debug('onImageUpload', images);
         /* FileList does not support ordinary array methods */
         for (let i = 0; i < images.length; i++) {
             /* Stores as bas64enc string in the text.
@@ -63,10 +77,14 @@ export class TextWidget extends React.Component  {
                     // ]
                 }}
                 onChange={this.onChange}
+                //onSubmit={this.onSubmit}
                 onImageUpload={this.onImageUpload}
             />
         );
     }
 
+}
 
+interface OnChangeCallback {
+    (newValue: string): void;
 }

@@ -10,9 +10,9 @@ export class SchemaUIFactory {
             front: {
                 "ui:widget": TextWidget,
             },
-            // back: {
-            //     "ui:widget": RichTextWidget,
-            // }
+            back: {
+                "ui:widget": TextWidget,
+            }
 
         };
 
