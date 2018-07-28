@@ -26,14 +26,15 @@ export class CardCreatorElement extends HTMLElement {
              better with 3.3.6 -->
         <!--<link rel="stylesheet" id="theme" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">-->
         <link rel="stylesheet" href="${NODE_MODULES}/simplemde/dist/simplemde.min.css">
-        <link rel="stylesheet" href="css/card-creator.css">
+
+        <!--<link rel="stylesheet" href="css/card-creator.css">-->
     
-        <div id="card-creator">
+        <div id="app">
     
             <div id="schema-form">
                  schema form goes here...
             </div>
-    
+
         </div>
         `;
 

@@ -51,8 +51,6 @@ class ReactSummernote extends Component {
             this.uid = `react-summernote-${randomUid()}`;
         }
 
-        console.log("FIXME: using uid: " + this.uid);
-
         this.editor = {};
         this.noteEditable = null;
         this.notePlaceholder = null;

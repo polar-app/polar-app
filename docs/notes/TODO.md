@@ -1,5 +1,7 @@
 - flashcards
 
+    - the context menu is no longer working for 'inspet element' everywhere
+
     - placeholder text instead of title to save more space?
     - What about empty text..like <p></p>
         - there's a summernote isEmpty or something method calle in ReactSummernote.tsx
