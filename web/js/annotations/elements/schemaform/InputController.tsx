@@ -4,14 +4,21 @@ declare var global: any;
 global.$ = global.jQuery = require("jquery");
 
 import 'bootstrap/dist/js/bootstrap.bundle.js';
-import React from 'react'
+//import React from 'react'
+
+const React = require("react");
 import { render } from "react-dom";
 import { JSONSchema6 } from "json-schema";
 import Form from "react-jsonschema-form";
 import {RichTextWidget} from "./RichTextWidget";
+import {RichTextEditor} from './RichTextEditor';
 
 require('summernote/dist/summernote-bs4');
 const {SchemaFactory} = require("./SchemaFactory");
+
+if( ! React) {
+    throw new Error("React is null!");
+}
 
 /**
  * Code to accept new input for flashcards, notes, comments, etc.
@@ -21,10 +28,6 @@ export class InputController {
     createNewFlashcard(targetElement: HTMLElement, formHandler: FormHandler) {
 
         let schema: JSONSchema6 = SchemaFactory.create();
-
-        if( ! React) {
-            throw new Error("React is null!");
-        }
 
         if(!targetElement) {
             throw new Error("No schemaFormElement");
@@ -40,12 +43,12 @@ export class InputController {
 
         const uiSchema = {
 
-            front: {
-                "ui:widget": RichTextWidget,
-            },
-            back: {
-                "ui:widget": RichTextWidget,
-            }
+            // front: {
+            //     "ui:widget": RichTextEditor,
+            // },
+            // back: {
+            //     "ui:widget": RichTextWidget,
+            // }
 
         };
 

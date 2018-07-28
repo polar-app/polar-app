@@ -1,7 +1,11 @@
-import React, {Component} from "react";
-const {ReactSummernote} = require('react-summernote');
+// const React = require("react");
+// const ReactSummernote = require('react-summernote');
+import React, { Component } from 'react';
+//import ReactSummernote from 'summernote-react';
 
-export class RichTextEditor extends Component {
+//import {ReactSummernote} from 'react-summernote';
+
+export class RichTextEditor extends React.Component {
 
     constructor(props = {}) {
         super(props);
@@ -35,6 +39,10 @@ export class RichTextEditor extends Component {
 
         // https://github.com/summernote/react-summernote/issues/38
         //
+
+        // FIXME: import AND require are not working here...
+
+        console.warn("FIXME", ReactSummernote)
 
         return (
             <ReactSummernote
