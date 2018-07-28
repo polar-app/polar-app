@@ -18,8 +18,6 @@ class ReactSummernote extends Component {
 
     private notePlaceholder: any;
 
-    private readonly props: any;
-
     constructor(props: any) {
         super(props);
 
@@ -100,6 +98,7 @@ class ReactSummernote extends Component {
     }
 
     onInit() {
+
         const { disabled, onInit } = this.props;
 
         const $container = this.editor.parent();
