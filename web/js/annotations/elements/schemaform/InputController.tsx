@@ -13,6 +13,7 @@ import { JSONSchema6 } from "json-schema";
 import Form from "react-jsonschema-form";
 import {RichTextWidget} from "./RichTextWidget";
 import {RichTextEditor} from './RichTextEditor';
+import {TextareaWidget} from './TextareaWidget';
 
 require('summernote/dist/summernote-bs4');
 const {SchemaFactory} = require("./SchemaFactory");
@@ -45,9 +46,9 @@ export class InputController {
 
         const uiSchema = {
 
-            // front: {
-            //     "ui:widget": RichTextEditor,
-            // },
+            front: {
+                "ui:widget": TextareaWidget,
+            },
             // back: {
             //     "ui:widget": RichTextWidget,
             // }
