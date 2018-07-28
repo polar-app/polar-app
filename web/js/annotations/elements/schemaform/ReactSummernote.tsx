@@ -18,10 +18,12 @@ class ReactSummernote extends Component {
 
     private notePlaceholder: any;
 
-    constructor(props: any) {
-        super(props);
+    readonly props : any;
 
-        this.props = props;
+    constructor(_props: any) {
+        super(_props);
+
+        this.props = _props;
 
         this.uid = `react-summernote-${randomUid()}`;
         this.editor = {};
@@ -68,7 +70,8 @@ class ReactSummernote extends Component {
         }
     }
 
-    componentWillReceiveProps(nextProps) {
+    componentWillReceiveProps(nextProps: any) {
+
         const { props } = this;
 
         const codeview = nextProps.codeview;
