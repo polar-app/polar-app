@@ -157,3 +157,18 @@ must be loaded via require()
 
         - I thnk it MAY be using blobs even for remote URLs...  which if so
           it just makes sense to use blobs anyway.
+
+
+# NOTES
+
+    - try to migrate most code to
+
+        export default class
+
+        to make imports simplar / cleaner
+
+     - ./node_modules/.bin/dtsmake  -s web/js/Model.js
+
+        works well for creating an initial d.ts file.. might be a good idea to
+        go through and create a BUNCH of default which I can tweak once at a
+        time.
