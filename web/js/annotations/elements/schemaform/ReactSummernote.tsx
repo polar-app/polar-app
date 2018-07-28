@@ -53,31 +53,6 @@ class ReactSummernote extends Component {
         this.noteEditable = null;
         this.notePlaceholder = null;
 
-        this.onInit = this.onInit.bind(this);
-        this.onImageUpload = this.onImageUpload.bind(this);
-
-        // this.focus = this.focus.bind(this);
-        // this.isEmpty = this.isEmpty.bind(this);
-        // this.reset = this.reset.bind(this);
-        // this.replace = this.replace.bind(this);
-        // this.disable = this.disable.bind(this);
-        // this.enable = this.enable.bind(this);
-        // this.toggleState = this.toggleState.bind(this);
-        // this.insertImage = this.insertImage.bind(this);
-        // this.insertNode = this.insertNode.bind(this);
-        // this.insertText = this.insertText.bind(this);
-
-        // ReactSummernote.focus = this.focus.bind(this);
-        // ReactSummernote.isEmpty = this.isEmpty.bind(this);
-        // ReactSummernote.reset = this.reset.bind(this);
-        // ReactSummernote.replace = this.replace.bind(this);
-        // ReactSummernote.disable = this.disable.bind(this);
-        // ReactSummernote.enable = this.enable.bind(this);
-        // ReactSummernote.toggleState = this.toggleState.bind(this);
-        // ReactSummernote.insertImage = this.insertImage.bind(this);
-        // ReactSummernote.insertNode = this.insertNode.bind(this);
-        // ReactSummernote.insertText = this.insertText.bind(this);
-
     }
 
     componentDidMount() {
