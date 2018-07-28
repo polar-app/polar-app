@@ -1,8 +1,9 @@
 /* global $ */
 
 import 'summernote/dist/summernote';
-import 'summernote/dist/summernote.css';
-import 'codemirror/lib/codemirror.css';
+// import 'summernote/dist/summernote.css';
+// import 'codemirror/lib/codemirror.css';
+
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
@@ -20,10 +21,33 @@ class ReactSummernote extends Component {
 
     readonly props : any;
 
-    constructor(_props: any) {
-        super(_props);
 
-        this.props = _props;
+
+    // ReactSummernote.propTypes = {
+    //     value: PropTypes.string,
+    //     defaultValue: PropTypes.string,
+    //     codeview: PropTypes.bool,
+    //     className: PropTypes.string,
+    //     options: PropTypes.object,
+    //     disabled: PropTypes.bool,
+
+    //     onInit: PropTypes.func,
+    //     onEnter: PropTypes.func,
+    //     onFocus: PropTypes.func,
+    //     onBlur: PropTypes.func,
+    //     onKeyUp: PropTypes.func,
+    //     onKeyDown: PropTypes.func,
+    //     onPaste: PropTypes.func,
+    //     onChange: PropTypes.func,
+    //     onImageUpload: PropTypes.func
+    // };
+
+
+
+    constructor(props: any) {
+        super(props);
+
+        this.props = props;
 
         this.uid = `react-summernote-${randomUid()}`;
         this.editor = {};
@@ -33,27 +57,27 @@ class ReactSummernote extends Component {
         this.onInit = this.onInit.bind(this);
         this.onImageUpload = this.onImageUpload.bind(this);
 
-        this.focus = this.focus.bind(this);
-        this.isEmpty = this.isEmpty.bind(this);
-        this.reset = this.reset.bind(this);
-        this.replace = this.replace.bind(this);
-        this.disable = this.disable.bind(this);
-        this.enable = this.enable.bind(this);
-        this.toggleState = this.toggleState.bind(this);
-        this.insertImage = this.insertImage.bind(this);
-        this.insertNode = this.insertNode.bind(this);
-        this.insertText = this.insertText.bind(this);
+        // this.focus = this.focus.bind(this);
+        // this.isEmpty = this.isEmpty.bind(this);
+        // this.reset = this.reset.bind(this);
+        // this.replace = this.replace.bind(this);
+        // this.disable = this.disable.bind(this);
+        // this.enable = this.enable.bind(this);
+        // this.toggleState = this.toggleState.bind(this);
+        // this.insertImage = this.insertImage.bind(this);
+        // this.insertNode = this.insertNode.bind(this);
+        // this.insertText = this.insertText.bind(this);
 
-        ReactSummernote.focus = this.focus.bind(this);
-        ReactSummernote.isEmpty = this.isEmpty.bind(this);
-        ReactSummernote.reset = this.reset.bind(this);
-        ReactSummernote.replace = this.replace.bind(this);
-        ReactSummernote.disable = this.disable.bind(this);
-        ReactSummernote.enable = this.enable.bind(this);
-        ReactSummernote.toggleState = this.toggleState.bind(this);
-        ReactSummernote.insertImage = this.insertImage.bind(this);
-        ReactSummernote.insertNode = this.insertNode.bind(this);
-        ReactSummernote.insertText = this.insertText.bind(this);
+        // ReactSummernote.focus = this.focus.bind(this);
+        // ReactSummernote.isEmpty = this.isEmpty.bind(this);
+        // ReactSummernote.reset = this.reset.bind(this);
+        // ReactSummernote.replace = this.replace.bind(this);
+        // ReactSummernote.disable = this.disable.bind(this);
+        // ReactSummernote.enable = this.enable.bind(this);
+        // ReactSummernote.toggleState = this.toggleState.bind(this);
+        // ReactSummernote.insertImage = this.insertImage.bind(this);
+        // ReactSummernote.insertNode = this.insertNode.bind(this);
+        // ReactSummernote.insertText = this.insertText.bind(this);
 
     }
 
@@ -219,23 +243,5 @@ class ReactSummernote extends Component {
         );
     }
 }
-
-ReactSummernote.propTypes = {
-    value: PropTypes.string,
-    defaultValue: PropTypes.string,
-    codeview: PropTypes.bool,
-    className: PropTypes.string,
-    options: PropTypes.object,
-    disabled: PropTypes.bool,
-    onInit: PropTypes.func,
-    onEnter: PropTypes.func,
-    onFocus: PropTypes.func,
-    onBlur: PropTypes.func,
-    onKeyUp: PropTypes.func,
-    onKeyDown: PropTypes.func,
-    onPaste: PropTypes.func,
-    onChange: PropTypes.func,
-    onImageUpload: PropTypes.func
-};
 
 export default ReactSummernote;

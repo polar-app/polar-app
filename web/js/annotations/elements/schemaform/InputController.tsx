@@ -15,6 +15,7 @@ import {RichTextWidget} from "./RichTextWidget";
 import {RichTextEditor} from './RichTextEditor';
 import {TextareaWidget} from './TextareaWidget';
 import {TextareaEditorComponent} from './TextareaEditorComponent';
+import ReactSummernote from './ReactSummernote';
 
 require('summernote/dist/summernote-bs4');
 const {SchemaFactory} = require("./SchemaFactory");
@@ -48,7 +49,7 @@ export class InputController {
         const uiSchema = {
 
             front: {
-                "ui:widget": TextareaEditorComponent,
+                "ui:widget": ReactSummernote,
             },
             // back: {
             //     "ui:widget": RichTextWidget,
