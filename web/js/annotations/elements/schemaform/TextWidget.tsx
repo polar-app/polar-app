@@ -1,11 +1,10 @@
-// const React = require("react");
-const ReactSummernote = require('react-summernote');
-import React, { Component } from 'react';
-//import ReactSummernote from 'summernote-react';
+/**
+ * This is our main widget for handling text fields which are HTML.
+ */
+import ReactSummernote from './ReactSummernote';
+import React from 'react';
 
-//import {ReactSummernote} from 'react-summernote';
-
-export class RichTextEditor extends React.Component {
+export class TextWidget extends React.Component  {
 
     constructor(props = {}) {
         super(props);
@@ -16,7 +15,14 @@ export class RichTextEditor extends React.Component {
         console.log('onChange', content);
     }
 
+    /**
+     * This is a workaround documented here:
+     *
+     * https://github.com/summernote/react-summernote/issues/38
+     */
     onImageUpload(images: any[], insertImage: Function) {
+
+        console.log("FIXME: handling custom onImageUpload")
 
         console.log('onImageUpload', images);
         /* FileList does not support ordinary array methods */
@@ -38,7 +44,6 @@ export class RichTextEditor extends React.Component {
     render() {
 
         // https://github.com/summernote/react-summernote/issues/38
-        //
 
         return (
             <ReactSummernote
@@ -62,4 +67,6 @@ export class RichTextEditor extends React.Component {
             />
         );
     }
+
+
 }

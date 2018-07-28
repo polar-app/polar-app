@@ -16,6 +16,7 @@ import {RichTextEditor} from './RichTextEditor';
 import {TextareaWidget} from './TextareaWidget';
 import {TextareaEditorComponent} from './TextareaEditorComponent';
 import ReactSummernote from './ReactSummernote';
+import {SchemaUIFactory} from './SchemaUIFactory';
 
 require('summernote/dist/summernote-bs4');
 const {SchemaFactory} = require("./SchemaFactory");
@@ -33,6 +34,7 @@ export class InputController {
     createNewFlashcard(targetElement: HTMLElement, formHandler: FormHandler) {
 
         let schema: JSONSchema6 = SchemaFactory.create();
+        let schemaUI = SchemaUIFactory.create();
 
         if(!targetElement) {
             throw new Error("No schemaFormElement");
@@ -46,17 +48,6 @@ export class InputController {
             throw new Error("No formHandler");
         }
 
-        const uiSchema = {
-
-            front: {
-                "ui:widget": ReactSummernote,
-            },
-            // back: {
-            //     "ui:widget": RichTextWidget,
-            // }
-
-        };
-
         let onChangeCallback = () => function(data: any) { formHandler.onChange(data) };
         let onSubmitCallback = () => function(data: any) { formHandler.onSubmit(data) };
         let onErrorCallback = () => function(data: any) { formHandler.onError(data) };
@@ -64,7 +55,7 @@ export class InputController {
         render((
             <Form schema={schema}
                   autocomplete="off"
-                  uiSchema={uiSchema}
+                  uiSchema={schemaUI}
                   onChange={onChangeCallback()}
                   onSubmit={onSubmitCallback()}
                   onError={onErrorCallback()} />

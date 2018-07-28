@@ -49,6 +49,19 @@ class ReactSummernote extends Component {
         this.noteEditable = null;
         this.notePlaceholder = null;
 
+        this.onInit = this.onInit.bind(this);
+        this.onImageUpload = this.onImageUpload.bind(this);
+        this.focus = this.focus.bind(this);
+        this.isEmpty = this.isEmpty.bind(this);
+        this.reset = this.reset.bind(this);
+        this.replace = this.replace.bind(this);
+        this.disable = this.disable.bind(this);
+        this.enable = this.enable.bind(this);
+        this.toggleState = this.toggleState.bind(this);
+        this.insertImage = this.insertImage.bind(this);
+        this.insertNode = this.insertNode.bind(this);
+        this.insertText = this.insertText.bind(this);
+
     }
 
     componentDidMount() {
@@ -123,6 +136,8 @@ class ReactSummernote extends Component {
     }
 
     onImageUpload(images: any) {
+
+        console.log("FIXME: iamge upalad");
         const { onImageUpload } = this.props;
 
         if (typeof onImageUpload === 'function') {
@@ -212,6 +227,7 @@ class ReactSummernote extends Component {
             </div>
         );
     }
+
 }
 
 export default ReactSummernote;
