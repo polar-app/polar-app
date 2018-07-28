@@ -19,7 +19,7 @@
         "allowJs": false,
         "stripInternal": true,
         "checkJs": false,
-        "jsx": "React",
+        "jsx": "react",
 
         "noUnusedLocals": false,
         "noUnusedParameters": false,

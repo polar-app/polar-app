@@ -1,7 +1,7 @@
 import {CardCreatorWebComponent} from '../elements/CardCreatorWebComponent';
 import {Dialog} from '../../ui/dialog/Dialog';
 import Point = Electron.Point;
-const {InputController} = require("../InputController");
+const {InputController} = require("../elements/schemaform/InputController");
 const {FormHandler} = require("../FormHandler");
 
 export class AnnotationsController {

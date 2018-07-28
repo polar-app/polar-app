@@ -7,7 +7,7 @@ import React from "react";
 // import SimpleMDE from 'react-simplemde-editor';
 const electron = require('electron');
 const {ipcRenderer} = electron.ipcRenderer;
-const {InputController} = require("../../../web/js/annotations/InputController");
+const {InputController} = require("../../../web/js/annotations/elements/schemaform/InputController");
 const {CardCreatorElement} = require("../../../web/js/annotations/elements/CardCreatorElement");
 const {FormHandler} = require("../../../web/js/annotations/FormHandler");
 const {AnnotationType} = require("../../../web/js/metadata/AnnotationType");
