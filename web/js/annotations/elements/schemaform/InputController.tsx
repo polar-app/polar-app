@@ -5,26 +5,14 @@ global.$ = global.jQuery = require("jquery");
 
 import 'bootstrap/dist/js/bootstrap.bundle.js';
 
-//const React = require("react");
-import React from 'react' // FIXME: th8is might be part of the problem.. I can't
-// import REact
+import React from 'react'
 import { render } from "react-dom";
 import { JSONSchema6 } from "json-schema";
 import Form from "react-jsonschema-form";
-import {RichTextWidget} from "./RichTextWidget";
-import {RichTextEditor} from './RichTextEditor';
-import {TextareaWidget} from './TextareaWidget';
-import {TextareaEditorComponent} from './TextareaEditorComponent';
-import ReactSummernote from './ReactSummernote';
 import {SchemaUIFactory} from './SchemaUIFactory';
+import {SchemaFactory} from './SchemaFactory';
 
 require('summernote/dist/summernote-bs4');
-const {SchemaFactory} = require("./SchemaFactory");
-
-if( ! React) {
-    console.warn("FIXME: react: ", React);
-    throw new Error("React is null!");
-}
 
 /**
  * Code to accept new input for flashcards, notes, comments, etc.
@@ -50,12 +38,15 @@ export class InputController {
 
         let onChangeCallback = () => function(data: any) { formHandler.onChange(data) };
         let onSubmitCallback = () => function(data: any) { formHandler.onSubmit(data) };
+        //let onErrorCallback = () => function(data: any) { formHandler.onError(data) };
+
         let onErrorCallback = () => function(data: any) { formHandler.onError(data) };
 
         render((
             <Form schema={schema}
                   autocomplete="off"
                   uiSchema={schemaUI}
+                  showErrorList={false}
                   onChange={onChangeCallback()}
                   onSubmit={onSubmitCallback()}
                   onError={onErrorCallback()} />

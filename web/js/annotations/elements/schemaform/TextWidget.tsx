@@ -4,23 +4,51 @@
 import ReactSummernote from './ReactSummernote';
 import React from 'react';
 import {Logger} from '../../../logger/Logger';
+import {TypedWidgetProps} from './TypedWidgetProps';
 const log = Logger.create();
 
 export class TextWidget extends React.Component  {
 
     private readonly onChangeCallback: OnChangeCallback;
 
+    private readonly onBlurCallback: OnSelectionCallback;
+    private readonly onFocusCallback: OnSelectionCallback;
+
+    private readonly typedWidgetProps: TypedWidgetProps;
+
+    private value: string = "";
+
     constructor(props: any = {}) {
         super(props);
-        this.onChangeCallback = props.onChange;
 
+        this.onChangeCallback = props.onChange;
+        this.onBlurCallback = props.onBlur;
+        this.onFocusCallback = props.onFocus;
+
+        this.typedWidgetProps = new TypedWidgetProps(props);
+
+        console.log("Using ID: " + this.typedWidgetProps.id);
+
+        if(this.typedWidgetProps.value) {
+            this.value = this.typedWidgetProps.value;
+        }
+
+        // needed because React changes 'this' to the Element it created which
+        // is a bit confusing.
         this.onChange = this.onChange.bind(this);
         this.onImageUpload = this.onImageUpload.bind(this);
+        this.onBlur = this.onBlur.bind(this);
+        this.onFocus = this.onFocus.bind(this);
 
-        console.log("FIXME: this.onChangeCallbac: " + this.onChangeCallback)
     }
 
+    // FIXME: there is an errorSchema here too which I might want to look at.
     onChange(newValue: any) {
+
+
+
+        // FIXME: summernote has isEmpty...
+
         console.log('FIXME: this: ', this);
         console.log('FIXME: this.onChangeCallback: ', this.onChangeCallback);
         console.log('onChange: newValue: ', newValue);
@@ -29,6 +57,17 @@ export class TextWidget extends React.Component  {
 
         //this.onChangeCallback("");
 
+    }
+
+    onBlur() {
+        log.info("onBlur");
+        this.onBlurCallback(this.typedWidgetProps.id, this.value)
+
+    }
+
+    onFocus() {
+        log.info("onFocus");
+        this.onFocusCallback(this.typedWidgetProps.id, this.value)
     }
 
     /**
@@ -63,6 +102,7 @@ export class TextWidget extends React.Component  {
             <ReactSummernote
                 value=""
                 options={{
+                    id: this.typedWidgetProps.id,
                     lang: 'en-US',
                     height: 150,
                     dialogsInBody: true,
@@ -77,6 +117,8 @@ export class TextWidget extends React.Component  {
                     // ]
                 }}
                 onChange={this.onChange}
+                onBlur={this.onBlur}
+                onFocus={this.onFocus}
                 //onSubmit={this.onSubmit}
                 onImageUpload={this.onImageUpload}
             />
@@ -85,6 +127,17 @@ export class TextWidget extends React.Component  {
 
 }
 
+interface WidgetOpts {
+
+}
+
 interface OnChangeCallback {
     (newValue: string): void;
+}
+
+/**
+ * Used for onFocus and onBlur
+ */
+interface OnSelectionCallback {
+    (id: string, value: string): void;
 }

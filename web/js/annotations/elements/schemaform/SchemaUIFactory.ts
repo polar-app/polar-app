@@ -1,4 +1,3 @@
-import ReactSummernote from './ReactSummernote';
 import {TextWidget} from './TextWidget';
 
 export class SchemaUIFactory {

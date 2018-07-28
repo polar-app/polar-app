@@ -1,7 +1,14 @@
 - flashcards
 
     - placeholder text instead of title to save more space?
-    -
+    - What about empty text..like <p></p>
+        - there's a summernote isEmpty or something method calle in ReactSummernote.tsx
+
+    - Highlight the form element instead of abording... IE handle required
+      validation.
+        - I will need to handle the event
+        - there is some CSS I need to update
+
 
 - BUG: we can't highlight code within iframes...
 

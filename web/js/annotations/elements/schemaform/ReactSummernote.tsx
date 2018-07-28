@@ -5,6 +5,7 @@ import 'summernote/dist/summernote';
 // import 'codemirror/lib/codemirror.css';
 
 import React, { Component } from 'react';
+import ReactDOM from 'react-dom';
 
 const randomUid = () => Math.floor(Math.random() * 100000);
 
@@ -44,7 +45,14 @@ class ReactSummernote extends Component {
 
         this.props = props;
 
-        this.uid = `react-summernote-${randomUid()}`;
+        if(this.props.options.id) {
+            this.uid = this.props.options.id;
+        } else {
+            this.uid = `react-summernote-${randomUid()}`;
+        }
+
+        console.log("FIXME: using uid: " + this.uid);
+
         this.editor = {};
         this.noteEditable = null;
         this.notePlaceholder = null;
@@ -70,7 +78,15 @@ class ReactSummernote extends Component {
         // const codeviewCommand = codeview ? 'codeview.activate' : 'codeview.deactivate';
         options.callbacks = this.callbacks;
 
-        this.editor = $(`#${this.uid}`);
+
+        console.log("FIXME: componentDidMount this: ", this);
+
+        let domNode = ReactDOM.findDOMNode(this) as HTMLElement;
+
+        console.log("FIXME: componentDidMount domNode: ", domNode);
+
+        this.editor = $(domNode).find(`#${this.uid}`);
+
         this.editor.summernote(options);
         if (codeview) {
             this.editor.summernote('codeview.activate');
@@ -137,7 +153,6 @@ class ReactSummernote extends Component {
 
     onImageUpload(images: any) {
 
-        console.log("FIXME: iamge upalad");
         const { onImageUpload } = this.props;
 
         if (typeof onImageUpload === 'function') {

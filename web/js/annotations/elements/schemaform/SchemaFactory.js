@@ -1,7 +1,7 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 class SchemaFactory {
-
     static create() {
-
         return {
             "title": "Flashcard",
             "description": "",
@@ -19,31 +19,10 @@ class SchemaFactory {
                     "type": "string",
                     "title": "Back"
                 }
-                // },
-                // "age": {
-                //     "type": "integer",
-                //     "title": "Age"
-                // },
-                // "bio": {
-                //     "type": "string",
-                //     "title": "Bio"
-                // },
-                // "password": {
-                //     "type": "string",
-                //     "title": "Password",
-                //     "minLength": 3
-                // },
-                // "telephone": {
-                //     "type": "string",
-                //     "title": "Telephone",
-                //     "minLength": 10
-                // }
             }
-
         };
-
     }
-
 }
-
+exports.SchemaFactory = SchemaFactory;
 module.exports.SchemaFactory = SchemaFactory;
+//# sourceMappingURL=SchemaFactory.js.map
