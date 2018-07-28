@@ -1,5 +1,9 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
+const Elements_1 = __importDefault(require("../util/Elements"));
 const { ipcRenderer } = require('electron');
 const { ContextMenuType } = require("./ContextMenuType");
 const { forDict } = require("../utils");
@@ -8,7 +12,6 @@ const { TriggerEvent } = require("./TriggerEvent");
 const { DocFormatFactory } = require("../docformat/DocFormatFactory");
 const { DocDescriptor } = require("../metadata/DocDescriptor");
 const { Preconditions } = require("../Preconditions");
-const { Elements } = require("../util/Elements");
 const log = require("../logger/Logger").create();
 class ContextMenuController {
     constructor(model) {
@@ -32,10 +35,10 @@ class ContextMenuController {
                     fingerprint: this.model.docMeta.docInfo.fingerprint
                 });
                 log.info("Creating context menu for contextMenuTypes: ", contextMenuTypes);
-                let pageElement = Elements.untilRoot(event.target, ".page");
+                let pageElement = Elements_1.default.untilRoot(event.target, ".page");
                 let docFormat = DocFormatFactory.getInstance();
                 let pageNum = docFormat.getPageNumFromPageElement(pageElement);
-                let eventTargetOffset = Elements.getRelativeOffsetRect(event.target, pageElement);
+                let eventTargetOffset = Elements_1.default.getRelativeOffsetRect(event.target, pageElement);
                 let pageOffset = {
                     x: eventTargetOffset.left + event.offsetX,
                     y: eventTargetOffset.top + event.offsetY
@@ -100,5 +103,5 @@ class ContextMenuController {
         return result;
     }
 }
-module.exports.ContextMenuController = ContextMenuController;
+exports.ContextMenuController = ContextMenuController;
 //# sourceMappingURL=ContextMenuController.js.map

@@ -6,12 +6,12 @@ export class SchemaUIFactory {
 
         return {
 
-            // front: {
-            //     "ui:widget": TextWidget,
-            // },
-            // back: {
-            //     "ui:widget": TextWidget,
-            // }
+            front: {
+                "ui:widget": TextWidget,
+            },
+            back: {
+                "ui:widget": TextWidget,
+            }
 
         };
 

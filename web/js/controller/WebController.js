@@ -1,4 +1,5 @@
 
+const {ContextMenuController} = require("../contextmenu/ContextMenuController");
 const {TextHighlightController} = require("../highlights/text/controller/TextHighlightController");
 const {AreaHighlightController} = require("../highlights/area/controller/AreaHighlightController");
 const {PagemarkCoverageEventListener} = require("../pagemarks/controller/PagemarkCoverageEventListener.js");
@@ -6,7 +7,6 @@ const {KeyEvents} = require("../KeyEvents.js");
 const {Preconditions} = require("../Preconditions.js");
 const {Controller} = require("./Controller.js");
 const {DocFormatFactory} = require("../docformat/DocFormatFactory");
-const {ContextMenuController} = require("../contextmenu/ContextMenuController");
 const {FlashcardsController} = require("../flashcards/controller/FlashcardsController");
 const {AnnotationsController} = require("../annotations/controller/AnnotationsController");
 const {MouseTracer} = require("../mouse/MouseTracer");

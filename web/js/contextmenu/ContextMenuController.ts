@@ -1,4 +1,5 @@
 import Model from '../Model';
+import Elements from '../util/Elements';
 
 const {ipcRenderer} = require('electron')
 const {ContextMenuType} = require("./ContextMenuType");
@@ -8,7 +9,6 @@ const {TriggerEvent} = require("./TriggerEvent");
 const {DocFormatFactory} = require("../docformat/DocFormatFactory");
 const {DocDescriptor} = require("../metadata/DocDescriptor");
 const {Preconditions} = require("../Preconditions");
-const {Elements} = require("../util/Elements");
 const log = require("../logger/Logger").create();
 
 /**
@@ -18,7 +18,7 @@ const log = require("../logger/Logger").create();
  *
  * context-menu-create-flashcard: open the 'create flashcard' modal.
  */
-class ContextMenuController {
+export class ContextMenuController {
 
     private model: Model;
 
@@ -176,5 +176,3 @@ class ContextMenuController {
     }
 
 }
-
-module.exports.ContextMenuController = ContextMenuController;

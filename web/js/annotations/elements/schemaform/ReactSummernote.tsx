@@ -76,12 +76,7 @@ class ReactSummernote extends Component {
         // const codeviewCommand = codeview ? 'codeview.activate' : 'codeview.deactivate';
         options.callbacks = this.callbacks;
 
-
-        console.log("FIXME: componentDidMount this: ", this);
-
         let domNode = ReactDOM.findDOMNode(this) as HTMLElement;
-
-        console.log("FIXME: componentDidMount domNode: ", domNode);
 
         this.editor = $(domNode).find(`#${this.uid}`);
 
@@ -126,6 +121,9 @@ class ReactSummernote extends Component {
         const { disabled, onInit } = this.props;
 
         const $container = this.editor.parent();
+
+        console.log("FIXME: container is: ", $container);
+
         this.noteEditable = $container.find('.note-editable');
         this.notePlaceholder = $container.find('.note-placeholder');
 

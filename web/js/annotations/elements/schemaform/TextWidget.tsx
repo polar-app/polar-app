@@ -105,7 +105,18 @@ export class TextWidget extends React.Component  {
                     id: this.typedWidgetProps.id,
                     lang: 'en-US',
                     height: 150,
-                    dialogsInBody: true,
+                    dialogsInBody: false,
+                    // toolbar: [
+                    //     ['style', []],
+                    //     ['font', []],
+                    //     ['fontname', []],
+                    //     ['para', []],
+                    //     ['table', []],
+                    //     ['insert', []],
+                    //     ['view', []],
+                    //     ['image', []]
+                    // ]
+
                     // toolbar: [
                     //     ['style', ['style']],
                     //     ['font', ['bold', 'underline', 'clear']],
@@ -115,6 +126,7 @@ export class TextWidget extends React.Component  {
                     //     ['insert', ['link', 'picture', 'video']],
                     //     ['view', ['fullscreen', 'codeview']]
                     // ]
+
                 }}
                 onChange={this.onChange}
                 onBlur={this.onBlur}
@@ -124,10 +136,6 @@ export class TextWidget extends React.Component  {
             />
         );
     }
-
-}
-
-interface WidgetOpts {
 
 }
 

@@ -1,6 +1,15 @@
 - flashcards
 
-    - the context menu is no longer working for 'inspet element' everywhere
+    - CSS styles from the parent are bleeding into the shadow elements
+
+        - what could be causing this:
+            - document.createElement with the wrong DOM?
+            - this is the main problem
+
+    - the context menu is no longer working for 'inspect element' everywhere
+      which makes it hard to work with as a developer.
+
+
 
     - placeholder text instead of title to save more space?
     - What about empty text..like <p></p>
