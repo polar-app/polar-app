@@ -20,8 +20,6 @@ class ReactSummernote extends Component {
 
     readonly props : any;
 
-
-
     // ReactSummernote.propTypes = {
     //     value: PropTypes.string,
     //     defaultValue: PropTypes.string,
@@ -40,8 +38,6 @@ class ReactSummernote extends Component {
     //     onChange: PropTypes.func,
     //     onImageUpload: PropTypes.func
     // };
-
-
 
     constructor(props: any) {
         super(props);
