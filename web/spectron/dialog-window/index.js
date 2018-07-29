@@ -13,11 +13,13 @@ const DialogWindow_1 = require("../../js/ui/dialog_window/DialogWindow");
 let windowFactory = () => __awaiter(this, void 0, void 0, function* () {
     let resource = new DialogWindow_1.Resource(DialogWindow_1.ResourceType.FILE, __dirname + "/app.html");
     let dialogWindow = yield DialogWindow_1.DialogWindow.create(new DialogWindow_1.DialogWindowOptions(resource));
-    dialogWindow.window.webContents.toggleDevTools();
     return dialogWindow.window;
 });
-let options = new SpectronMain_1.SpectronMainOptions(windowFactory);
 SpectronMain_1.SpectronMain.run((state) => __awaiter(this, void 0, void 0, function* () {
+    console.log("it worked... writing results...");
     yield state.testResultWriter.write(true);
-}), options);
+    console.log("it worked... writing results...done");
+}), {
+    windowFactory
+});
 //# sourceMappingURL=index.js.map

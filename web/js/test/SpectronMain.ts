@@ -43,6 +43,8 @@ export class SpectronMain {
                 }
 
                 let mainWindow = await windowFactory();
+
+                console.log("Done.. resolving");
                 resolve(mainWindow);
 
             });
@@ -85,7 +87,7 @@ export class SpectronMainState {
 
 export class SpectronMainOptions {
 
-    readonly windowFactory?: WindowFactory;
+    public readonly windowFactory?: WindowFactory;
 
     constructor(windowFactory: WindowFactory) {
         this.windowFactory = windowFactory;

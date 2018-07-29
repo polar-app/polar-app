@@ -8,7 +8,9 @@ export class IPCMessage {
     public readonly value: any;
 
     /**
-     * A nonce representing this unique IPC request.
+     * A nonce representing this unique IPC channel via a request/response pair.
+     *
+     * The message is unique by combining the type + nonce.
      */
     public readonly nonce: number;
 
@@ -16,7 +18,9 @@ export class IPCMessage {
         this.type = type;
         this.value = value;
 
-        if(! nonce) {
+        if (nonce) {
+            this.nonce = nonce;
+        } else {
             this.nonce = new Date().getMilliseconds();
         }
 

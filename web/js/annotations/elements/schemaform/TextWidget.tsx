@@ -45,9 +45,8 @@ export class TextWidget extends React.Component  {
     // FIXME: there is an errorSchema here too which I might want to look at.
     onChange(newValue: any) {
 
-
-
-        // FIXME: summernote has isEmpty...
+        // FIXME: summernote has isEmpty and some other methods I need to use
+        // here.
 
         console.log('FIXME: this: ', this);
         console.log('FIXME: this.onChangeCallback: ', this.onChangeCallback);
@@ -55,7 +54,9 @@ export class TextWidget extends React.Component  {
 
         log.debug('onChange', newValue);
 
-        //this.onChangeCallback("");
+        this.value = newValue;
+
+        this.onChangeCallback(newValue);
 
     }
 

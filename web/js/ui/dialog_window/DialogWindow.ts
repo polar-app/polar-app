@@ -1,10 +1,14 @@
 import {BrowserWindow} from "electron";
 import {DialogWindowMenu} from './DialogWindowMenu';
+import {Logger} from '../../logger/Logger';
+
+const log = Logger.create();
 
 const BROWSER_WINDOW_OPTIONS = {
     backgroundColor: '#FFF',
     width: 800,
     height: 600,
+    show: false,
     webPreferences: {
         webSecurity: false,
         nodeIntegration: true,
@@ -40,9 +44,6 @@ export class DialogWindow {
 
         let browserWindowOptions = Object.assign({}, BROWSER_WINDOW_OPTIONS);
 
-        // browserWindowOptions.width = options.width;
-        // browserWindowOptions.height = options.height;
-
         // Create the browser window.
         let window = new BrowserWindow(browserWindowOptions);
         window.setMenu(DialogWindowMenu.create());
@@ -71,6 +72,7 @@ export class DialogWindow {
 
         return new Promise<DialogWindow>(resolve => {
             window.once('ready-to-show', () => {
+                log.info("Window is now ready to show.");
                 let dialogWindow = new DialogWindow(window);
                 dialogWindow.show();
                 resolve(dialogWindow);

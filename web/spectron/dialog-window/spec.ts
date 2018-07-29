@@ -5,12 +5,12 @@ import {assertJSON} from '../../js/test/Assertions';
 const assert = require('assert');
 const {Functions} = require("../../js/util/Functions");
 
-describe('example-test', function() {
+describe('dialog-window', function() {
 
     Spectron.setup(__dirname);
     this.timeout(10000);
 
-    it('shows an basic initial window', async function() {
+    it('create dialog window', async function() {
 
         assert.equal(await this.app.client.getWindowCount(), 1);
 

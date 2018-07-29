@@ -12,10 +12,10 @@ const WebDriverTestResultReader_1 = require("../../js/test/results/reader/WebDri
 const Spectron_1 = require("../../js/test/Spectron");
 const assert = require('assert');
 const { Functions } = require("../../js/util/Functions");
-describe('example-test', function () {
+describe('dialog-window', function () {
     Spectron_1.Spectron.setup(__dirname);
     this.timeout(10000);
-    it('shows an basic initial window', function () {
+    it('create dialog window', function () {
         return __awaiter(this, void 0, void 0, function* () {
             assert.equal(yield this.app.client.getWindowCount(), 1);
             let testResultReader = new WebDriverTestResultReader_1.WebDriverTestResultReader(this.app);

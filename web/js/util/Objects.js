@@ -58,6 +58,6 @@ class Objects {
         return JSON.parse(JSON.stringify(obj));
     }
 
-};
+}
 
 module.exports.Objects = Objects

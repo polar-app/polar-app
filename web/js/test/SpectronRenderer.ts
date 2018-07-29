@@ -1,6 +1,4 @@
 import {TestResultService} from './results/TestResultService';
-import {MainTestResultWriter} from './results/writer/MainTestResultWriter';
-import {BrowserWindow} from "electron";
 import {RendererTestResultWriter} from './results/writer/RendererTestResultWriter';
 
 export class SpectronRenderer {

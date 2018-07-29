@@ -1,6 +1,6 @@
-import {TestResultWriter} from '../TestResultWriter';
 import {Logger} from '../../../logger/Logger';
 import {ipcMain} from "electron";
+import {IPCMessage} from '../../../util/IPCMessage';
 
 const log = Logger.create();
 
@@ -11,32 +11,40 @@ export class MainTestResultWriter {
 
     private mainWindow: Electron.BrowserWindow;
 
-    private readonly waitForServicePromise: Promise<void>;
-
     constructor(mainWindow: Electron.BrowserWindow) {
         this.mainWindow = mainWindow;
-        this.waitForServicePromise = this.waitForService();
     }
 
-    waitForService(): Promise<void> {
+    private ping(): Promise<void> {
 
-        return new Promise(resolve => {
+        let pingMessage = new IPCMessage("ping", true);
 
-            ipcMain.once("test-result", (event: any, message: any) => {
+        let result = new Promise<void>(resolve => {
 
-                if(message.type === "started") {
-                    resolve();
+            ipcMain.once("test-result", (event: any, message: IPCMessage) => {
+
+                if(message.type === "pong") {
+
+                    if(message.nonce === pingMessage.nonce) {
+                        resolve();
+                    } else {
+                    }
                 }
 
             });
 
         });
 
+        this.mainWindow.webContents.send("test-result", pingMessage);
+
+        return result;
+
     }
 
     async write(result: any): Promise<void> {
 
-        await this.waitForServicePromise;
+        // we need to ping first to make sure we actually get a response.
+        await this.ping();
 
         if(result === null || result === undefined) {
             throw new Error("No result given!");
