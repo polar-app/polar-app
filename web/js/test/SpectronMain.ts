@@ -24,7 +24,7 @@ export class SpectronMain {
 
     /**
      */
-    static setup(): Promise<Electron.BrowserWindow> {
+    static setup(options?: SpectronMainOptions): Promise<Electron.BrowserWindow> {
 
         return new Promise(resolve => {
 
@@ -34,8 +34,17 @@ export class SpectronMain {
 
                 console.log("Ready!  Creating main window!!");
 
-                let mainWindow = new BrowserWindow(BROWSER_OPTIONS);
-                mainWindow.loadURL('about:blank');
+                let windowFactory: WindowFactory = () => {
+                    let mainWindow = new BrowserWindow(BROWSER_OPTIONS);
+                    mainWindow.loadURL('about:blank');
+                    return mainWindow;
+                };
+
+                if(options && options.windowFactory) {
+                    windowFactory = options.windowFactory;
+                }
+
+                let mainWindow = windowFactory();
                 resolve(mainWindow);
 
             });
@@ -44,8 +53,8 @@ export class SpectronMain {
 
     }
 
-    static async start(callback: StateCallback): Promise<void> {
-        let window = await SpectronMain.setup();
+    static async start(callback: StateCallback, options?: SpectronMainOptions): Promise<void> {
+        let window = await SpectronMain.setup(options);
         let testResultWriter = new MainTestResultWriter(window);
 
         return callback(new SpectronMainState(window, testResultWriter));
@@ -56,8 +65,8 @@ export class SpectronMain {
      * Like start but not async and assume this is the entry point of your test
      * and just print error messages to the console.
      **/
-    static run(callback: StateCallback) {
-        SpectronMain.start(callback).catch(err => console.log(err));
+    static run(callback: StateCallback, options?: SpectronMainOptions) {
+        SpectronMain.start(callback, options).catch(err => console.log(err));
     }
 
 
@@ -69,7 +78,6 @@ export class SpectronMainState {
 
     public readonly testResultWriter: MainTestResultWriter;
 
-
     constructor(window: Electron.BrowserWindow, testResultWriter: MainTestResultWriter) {
         this.window = window;
         this.testResultWriter = testResultWriter;
@@ -77,6 +85,20 @@ export class SpectronMainState {
 
 }
 
+export class SpectronMainOptions {
+
+    readonly windowFactory?: WindowFactory;
+
+    constructor(windowFactory: WindowFactory) {
+        this.windowFactory = windowFactory;
+    }
+
+}
+
 export interface StateCallback {
     (state: SpectronMainState): Promise<void>
+}
+
+export interface WindowFactory {
+    (): BrowserWindow;
 }

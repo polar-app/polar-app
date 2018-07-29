@@ -5,7 +5,7 @@ const BrowserWindow = electron.BrowserWindow;
 const ipcMain = electron.ipcMain;
 
 const {ContextMenuType} = require("../ContextMenuType");
-const {DialogWindow} = require("./DialogWindow");
+const {DialogWindow} = require("../../ui/dialog_window/DialogWindow");
 const {ContextMenu} = require("../ContextMenu");
 const {Preconditions} = require("../../Preconditions");
 const {Broadcaster} = require("../../ipc/Broadcaster");

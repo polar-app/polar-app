@@ -27,5 +27,26 @@ describe('Custom objects from JSON', function() {
         assertJSON(address, expected);
 
     });
+    //
+    // it("Test", function() {
+    //
+    //     interface Address {
+    //         readonly city: string;
+    //         readonly state: string;
+    //         readonly zip: string;
+    //
+    //     }
+    //
+    //     function myFunction(address: Address) {
+    //
+    //     }
+    //
+    //     myFunction(new Address(
+    //         city: "San Francisco",
+    //         state: "California",
+    //         zip: 94107
+    //     ));
+    //
+    // })
 
 });
