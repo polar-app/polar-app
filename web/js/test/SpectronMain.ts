@@ -1,7 +1,5 @@
 import {app, BrowserWindow} from 'electron';
-import {TestResultWriter} from './results/TestResultWriter';
 import {MainTestResultWriter} from './results/writer/MainTestResultWriter';
-import Spec = Mocha.reporters.Spec;
 
 const BROWSER_OPTIONS = {
     backgroundColor: '#FFF',
@@ -34,7 +32,7 @@ export class SpectronMain {
 
                 console.log("Ready!  Creating main window!!");
 
-                let windowFactory: WindowFactory = () => {
+                let windowFactory: WindowFactory = async () => {
                     let mainWindow = new BrowserWindow(BROWSER_OPTIONS);
                     mainWindow.loadURL('about:blank');
                     return mainWindow;
@@ -44,7 +42,7 @@ export class SpectronMain {
                     windowFactory = options.windowFactory;
                 }
 
-                let mainWindow = windowFactory();
+                let mainWindow = await windowFactory();
                 resolve(mainWindow);
 
             });
@@ -100,5 +98,5 @@ export interface StateCallback {
 }
 
 export interface WindowFactory {
-    (): BrowserWindow;
+    (): Promise<BrowserWindow>;
 }

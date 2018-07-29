@@ -1,58 +1,35 @@
-import {CardCreatorWebComponent} from '../elements/CardCreatorWebComponent';
-import {Dialog} from '../../ui/dialog/Dialog';
+import {
+    DialogWindow,
+    DialogWindowOptions,
+    Resource,
+    ResourceType
+} from '../../ui/dialog_window/DialogWindow';
 import Point = Electron.Point;
+
 const {FormHandler} = require("../FormHandler");
 
 export class AnnotationsController {
+
+    private dialogWindow: DialogWindow;
 
     /**
      * Create a new flashcard.
      */
     createFlashcard(context: any, pageNum: number, pageOffset: Point) {
-
-        let id = "create-flashcard";
-        let createFlashcardDialog = document.getElementById(id);
-
-        if(! createFlashcardDialog) {
-
-            createFlashcardDialog = document.createElement("div");
-            createFlashcardDialog.setAttribute("id", id);
-            createFlashcardDialog.style.backgroundColor = `#FFF`;
-            createFlashcardDialog.style.zIndex = `999`;
-
-            document.body.appendChild(createFlashcardDialog);
-
-            //now insert the card creator HTML content into it...
-
-            // let cardCreatorLink = document.querySelector("#card-creator-link");
-            //
-            // let template = cardCreatorLink.import.querySelector('template');
-            // let clone = document.importNode(template.content, true);
-
-            // FIXME: create a shadow root in the flashcard ...
-
-            let shadowRoot = createFlashcardDialog.attachShadow({mode: 'open'});
-
-            //shadowRoot.appendChild(clone);
-
-            let cardCreatorElement = document.createElement("card-creator");
-            shadowRoot.appendChild(cardCreatorElement);
-
-            console.log("Created it!")
-
-        }
-
-        let dialog = new Dialog(createFlashcardDialog);
-        dialog.width = 800;
-        dialog.height = 800;
-        dialog.show();
-
+        this.dialogWindow.show();
     }
 
-    start() {
+    async start() {
 
         window.addEventListener("message", event => this.onMessageReceived(event), false);
-        CardCreatorWebComponent.register();
+        //CardCreatorWebComponent.register();
+
+        let appPath = "./apps/card-creator/index.html";
+        let resource = new Resource(ResourceType.FILE, appPath);
+        let options = new DialogWindowOptions(resource);
+
+        this.dialogWindow = await DialogWindow.create(options);
+
     }
 
     onMessageReceived(event: any) {

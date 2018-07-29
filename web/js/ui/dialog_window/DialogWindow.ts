@@ -11,15 +11,31 @@ const BROWSER_WINDOW_OPTIONS = {
     }
 };
 
+/**
+ * @MainContext
+ */
 export class DialogWindow {
 
     public readonly window: BrowserWindow;
 
-    constructor(window: Electron.BrowserWindow) {
+    constructor(window: BrowserWindow) {
         this.window = window;
     }
 
-    static create(options: DialogWindowOptions) {
+    show(): void {
+        this.window.show();
+    }
+
+    hide(): void {
+        this.window.hide();
+    }
+
+    destroy(): void {
+        this.hide();
+        this.window.destroy();
+    }
+
+    static create(options: DialogWindowOptions): Promise<DialogWindow> {
 
         let browserWindowOptions = Object.assign({}, BROWSER_WINDOW_OPTIONS);
 
@@ -27,14 +43,20 @@ export class DialogWindow {
         // browserWindowOptions.height = options.height;
 
         // Create the browser window.
-        let window = new BrowserWindow(BROWSER_WINDOW_OPTIONS);
+        let window = new BrowserWindow(browserWindowOptions);
+        window.setMenu(null);
 
-        window.webContents.on('new-window', function(e, url) {
+        window.webContents.on('new-window', (e) => {
             e.preventDefault();
         });
 
-        window.webContents.on('will-navigate', function(e, url) {
+        window.webContents.on('will-navigate', (e) => {
             e.preventDefault();
+        });
+
+        window.on('close', (e) => {
+            e.preventDefault();
+            window.hide();
         });
 
         switch (options.resource.type) {
@@ -46,13 +68,13 @@ export class DialogWindow {
                 break;
         }
 
-        window.once('ready-to-show', () => {
-            window.show();
-        });
+        return new Promise<DialogWindow>(resolve => {
+            window.once('ready-to-show', () => {
+                let dialogWindow = new DialogWindow(window);
+                resolve(dialogWindow);
+            });
 
-        window.setMenu(null);
-
-        return new DialogWindow(window);
+        })
 
     }
 
@@ -79,14 +101,19 @@ export class DialogWindowOptions {
 
     public readonly resource: Resource;
 
-    public readonly width?: number = 800;
+    public readonly width: number = 800;
 
-    public readonly height?: number = 600;
+    public readonly height: number = 600;
 
     constructor(resource: Resource, width?: number, height?: number) {
         this.resource = resource;
-        this.width = width;
-        this.height = height;
+
+        if(width)
+            this.width = width;
+
+        if(height)
+            this.height = height;
+
     }
 
 }

@@ -5,10 +5,10 @@ import {
     Resource, ResourceType
 } from '../../js/ui/dialog_window/DialogWindow';
 
-let windowFactory: WindowFactory = () => {
+let windowFactory: WindowFactory = async () => {
 
     let resource = new Resource(ResourceType.FILE, __dirname + "/app.html");
-    let dialogWindow = DialogWindow.create(new DialogWindowOptions(resource));
+    let dialogWindow = await DialogWindow.create(new DialogWindowOptions(resource));
     dialogWindow.window.webContents.toggleDevTools();
     return dialogWindow.window;
 };
