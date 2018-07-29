@@ -1,15 +1,9 @@
-const $ = require("jquery");
+///const $ = require("jquery");
 
-import React from "react";
-// import { render } from "react-dom";
-//
-// import Form from "react-jsonschema-form";
-// import SimpleMDE from 'react-simplemde-editor';
-const electron = require('electron');
-const {ipcRenderer} = electron.ipcRenderer;
-const {InputController} = require("../../../web/js/annotations/elements/schemaform/InputController");
-const {CardCreatorElement} = require("../../../web/js/annotations/elements/CardCreatorElement");
-const {FormHandler} = require("../../../web/js/annotations/FormHandler");
+import {ipcRenderer} from 'electron';
+import {FormHandler} from '../../../web/js/annotations/FormHandler';
+import {InputController} from '../../../web/js/annotations/elements/schemaform/InputController';
+
 const {AnnotationType} = require("../../../web/js/metadata/AnnotationType");
 const {Objects} = require("../../../web/js/util/Objects");
 
@@ -19,7 +13,7 @@ const {Objects} = require("../../../web/js/util/Objects");
  *
  * @param data
  */
-function dataToExternal(data) {
+function dataToExternal(data: any) {
 
     let result = Object.assign({}, data);
     delete result.uiSchema;
@@ -31,26 +25,34 @@ function _requestParams() {
 
     let url = new URL(window.location.href);
 
-    return {
-        context: JSON.parse(url.searchParams.get("context")),
+    let contextJSON = url.searchParams.get("context");
+
+    if (contextJSON) {
+        return {
+            context: JSON.parse(contextJSON),
+        }
+    } else {
+        throw new Error("No context");
     }
 
 }
 
 class PostMessageFormHandler extends FormHandler {
 
-    constructor(context) {
+    private readonly context: any;
+
+    constructor(context: any) {
         super();
         this.context = context;
     }
 
-    onChange(data) {
+    onChange(data: any) {
         console.log("onChange: ", data);
         //window.postMessage({ type: "onChange", data: dataToExternal(data)}, "*");
     }
 
 
-    onSubmit(data) {
+    onSubmit(data: any) {
 
         data = Objects.duplicate(data);
 
@@ -79,29 +81,26 @@ class PostMessageFormHandler extends FormHandler {
 
     }
 
-
-    onError(data) {
+    onError(data: any) {
         console.log("onError: ", data);
         //window.postMessage({ type: "onError", data: dataToExternal(data)}, "*");
     }
 
 }
 
-console.log("FIXME hjere");
-
 $(document).ready(function() {
 
-    console.log("FIXME hjere");
+    console.log("Ready to create flash card!");
 
-    // let requestParams = _requestParams();
-    //
-    // let inputController = new InputController();
-    //
-    // let schemaFormElement = document.getElementById("schema-form");
-    //
-    // let postMessageFormHandler = new PostMessageFormHandler(requestParams.context);
-    //
-    // inputController.createNewFlashcard(schemaFormElement, postMessageFormHandler);
+    let requestParams = _requestParams();
+
+    let inputController = new InputController();
+
+    let schemaFormElement = <HTMLElement>document.getElementById("schema-form");
+
+    let postMessageFormHandler = new PostMessageFormHandler(requestParams.context);
+
+    inputController.createNewFlashcard(schemaFormElement, postMessageFormHandler);
 
 });
 
