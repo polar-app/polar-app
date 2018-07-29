@@ -15,7 +15,6 @@
         "moduleResolution": "node",
         "emitDecoratorMetadata": false,
         "experimentalDecorators": false,
-        "outDir": "web",
         "allowJs": false,
         "stripInternal": true,
         "checkJs": false,
@@ -35,7 +34,8 @@
 
     },
     "include": [
-        "web/**/*"
+        "web/**/*",
+        "apps/**/*"
     ],
     "exclude": [
 

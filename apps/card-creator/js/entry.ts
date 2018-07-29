@@ -21,19 +21,24 @@ function dataToExternal(data: any) {
 
 }
 
-function _requestParams() {
+function _requestParams(): any {
 
     let url = new URL(window.location.href);
 
     let contextJSON = url.searchParams.get("context");
 
+    let result = {
+        context: null
+    }
+
     if (contextJSON) {
-        return {
+        result = {
             context: JSON.parse(contextJSON),
         }
-    } else {
-        throw new Error("No context");
     }
+
+    return result;
+
 
 }
 
