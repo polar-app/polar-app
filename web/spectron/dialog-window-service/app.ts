@@ -6,7 +6,7 @@ import {
     ResourceType
 } from '../../js/ui/dialog_window/DialogWindow';
 
-SpectronRenderer.run(async () => {
+SpectronRenderer.run(async (state) => {
 
     console.log("Going to create dialog");
 
@@ -16,8 +16,8 @@ SpectronRenderer.run(async () => {
 
     let dialogWindowClient = new DialogWindowClient();
 
-    dialogWindowClient.create(dialogWindowOptions);
+    await dialogWindowClient.create(dialogWindowOptions);
 
-    console.log("Running within SpectronRenderer now.");
+    state.testResultWriter.write(true);
 
 });

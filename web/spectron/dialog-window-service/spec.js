@@ -17,7 +17,7 @@ describe('example-test', function () {
     this.timeout(10000);
     it('shows an basic initial window', function () {
         return __awaiter(this, void 0, void 0, function* () {
-            assert.equal(yield this.app.client.getWindowCount(), 1);
+            assert.equal(yield this.app.client.getWindowCount(), 2);
             let testResultReader = new WebDriverTestResultReader_1.WebDriverTestResultReader(this.app);
             assert.equal(yield testResultReader.read(), true);
         });
