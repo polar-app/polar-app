@@ -1,8 +1,7 @@
-import {ipcMain} from "electron";
+import {ipcMain, WebContents} from "electron";
 import {IPCMessage} from '../../util/IPCMessage';
 import {DialogWindow, DialogWindowOptions} from './DialogWindow';
 import {Logger} from '../../logger/Logger';
-import WebContents = Electron.WebContents;
 
 const log = Logger.create();
 

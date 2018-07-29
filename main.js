@@ -1,3 +1,4 @@
+
 const electron = require('electron');
 const fspath = require('path');
 const url = require('url');
@@ -34,6 +35,7 @@ const {CaptureController} = require("./web/js/capture/controller/CaptureControll
 const {GA} = require("./web/js/ga/GA");
 
 const searchInPage = require('electron-in-page-search').default;
+const {DialogWindowService} = require("./web/js/ui/dialog_window/DialogWindowService");
 
 const options = { extraHeaders: 'pragma: no-cache\nreferer: http://cnn.com\n' };
 
@@ -602,6 +604,8 @@ let quitapp, URL;
 let args = parseArgs();
 let datastore = null;
 
+// TODO: there needs to be a similar concept of the Loader for the main process.
+
 const webserverConfig = new WebserverConfig(app.getAppPath(), WEBSERVER_PORT);
 const fileRegistry = new FileRegistry(webserverConfig);
 
@@ -611,6 +615,8 @@ const cacheRegistry = new CacheRegistry(proxyServerConfig);
 const directories = new Directories();
 
 let captureController = new CaptureController({directories, cacheRegistry});
+
+let dialogWindowService = new DialogWindowService();
 
 let appAnalytics = GA.getAppAnalytics();
 
@@ -647,6 +653,7 @@ directories.init().then(async () => {
     await cacheInterceptorService.start();
 
     await captureController.start();
+    await dialogWindowService.start();
 
     log.info("Running with process.args: ", JSON.stringify(process.argv));
 

@@ -27,26 +27,54 @@ describe('Custom objects from JSON', function() {
         assertJSON(address, expected);
 
     });
-    //
-    // it("Test", function() {
-    //
-    //     interface Address {
-    //         readonly city: string;
-    //         readonly state: string;
-    //         readonly zip: string;
-    //
-    //     }
-    //
-    //     function myFunction(address: Address) {
-    //
-    //     }
-    //
-    //     myFunction(new Address(
-    //         city: "San Francisco",
-    //         state: "California",
-    //         zip: 94107
-    //     ));
-    //
-    // })
+
+    it("Test of single interface object from JSON", function() {
+
+        interface Address {
+            readonly city: string;
+            readonly state: string;
+            readonly zip: number;
+        }
+
+        let address: Address = {
+            city: "San Francisco",
+            state: "California",
+            zip: 94107
+        };
+
+        let expected = {
+            "city": "San Francisco",
+            "state": "California",
+            "zip": 94107
+        };
+
+        assertJSON(address, expected);
+
+    })
+
+    it("Test of single interface object from JSON", function() {
+
+        interface Address {
+            readonly city: string;
+            readonly state: string;
+            readonly zip: number;
+        }
+
+        let address: Address[] = [{
+            city: "San Francisco",
+            state: "California",
+            zip: 94107
+        }];
+
+        let expected = [{
+            "city": "San Francisco",
+            "state": "California",
+            "zip": 94107
+        }];
+
+        assertJSON(address, expected);
+
+    })
+
 
 });

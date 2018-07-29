@@ -1,4 +1,5 @@
 import {BrowserWindow} from "electron";
+import {DialogWindowMenu} from './DialogWindowMenu';
 
 const BROWSER_WINDOW_OPTIONS = {
     backgroundColor: '#FFF',
@@ -44,7 +45,7 @@ export class DialogWindow {
 
         // Create the browser window.
         let window = new BrowserWindow(browserWindowOptions);
-        window.setMenu(null);
+        window.setMenu(DialogWindowMenu.create());
 
         window.webContents.on('new-window', (e) => {
             e.preventDefault();
@@ -71,6 +72,7 @@ export class DialogWindow {
         return new Promise<DialogWindow>(resolve => {
             window.once('ready-to-show', () => {
                 let dialogWindow = new DialogWindow(window);
+                dialogWindow.show();
                 resolve(dialogWindow);
             });
 
