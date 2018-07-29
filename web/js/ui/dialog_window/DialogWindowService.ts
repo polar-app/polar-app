@@ -11,7 +11,7 @@ const log = Logger.create();
  *
  * @MainContext
  */
-class DialogWindowService {
+export class DialogWindowService {
 
     start() {
 
