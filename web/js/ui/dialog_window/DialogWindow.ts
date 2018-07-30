@@ -1,6 +1,8 @@
 import {BrowserWindow} from 'electron';
 import {DialogWindowMenu} from './DialogWindowMenu';
 import {Logger} from '../../logger/Logger';
+import {BrowserWindowPromises} from '../../electron/framework/BrowserWindowPromises';
+import {WebContentsPromises} from '../../electron/framework/WebContentsPromises';
 
 const log = Logger.create();
 
@@ -40,7 +42,7 @@ export class DialogWindow {
         this.window.destroy();
     }
 
-    static create(options: DialogWindowOptions): Promise<DialogWindow> {
+    static async create(options: DialogWindowOptions): Promise<DialogWindow> {
 
         let browserWindowOptions = Object.assign({}, BROWSER_WINDOW_OPTIONS);
 
@@ -61,6 +63,9 @@ export class DialogWindow {
             window.hide();
         });
 
+        let readyToShowPromise = BrowserWindowPromises.once(window).readyToShow();
+        let didFinishLoadPromise = WebContentsPromises.once(window.webContents).didFinishLoad();
+
         switch (options.resource.type) {
             case ResourceType.FILE:
                 window.loadFile(options.resource.value);
@@ -70,15 +75,16 @@ export class DialogWindow {
                 break;
         }
 
-        return new Promise<DialogWindow>(resolve => {
-            window.once('ready-to-show', () => {
-                log.info("Window is now ready to show.");
-                let dialogWindow = new DialogWindow(window);
-                dialogWindow.show();
-                resolve(dialogWindow);
-            });
+        await Promise.all([readyToShowPromise, didFinishLoadPromise]);
 
-        })
+        log.info("Window is now ready to show.");
+        let dialogWindow = new DialogWindow(window);
+
+        if(options.show) {
+            dialogWindow.show();
+        }
+
+        return dialogWindow;
 
     }
 
@@ -109,14 +115,20 @@ export class DialogWindowOptions {
 
     public readonly height: number = 600;
 
-    constructor(resource: Resource, width?: number, height?: number) {
+    public readonly show: boolean = true;
+
+    constructor(resource: Resource, width?: number, height?: number, show?: boolean) {
+
         this.resource = resource;
 
-        if(width)
+        if(width !== undefined)
             this.width = width;
 
-        if(height)
+        if(height !== undefined)
             this.height = height;
+
+        if(show !== undefined)
+            this.show = show;
 
     }
 

@@ -2,16 +2,18 @@ import {ipcRenderer} from 'electron';
 import {FormHandler} from "../FormHandler";
 import {AnnotationType} from "../../metadata/AnnotationType";
 import {Logger} from "../../logger/Logger";
+import {CreateFlashcardRequest} from '../../apps/card_creator/CreateFlashcardRequest';
+import {CreateAnnotationRequest} from '../../flashcards/controller/CreateAnnotationRequest';
 
 const log = Logger.create();
 
 export class PostMessageFormHandler extends FormHandler {
 
-    private readonly context: any;
+    private readonly createFlashcardRequest: CreateFlashcardRequest;
 
-    constructor(context: any) {
+    constructor(createFlashcardRequest: CreateFlashcardRequest) {
         super();
-        this.context = context;
+        this.createFlashcardRequest = createFlashcardRequest;
     }
 
     onChange(data: any) {
@@ -21,19 +23,18 @@ export class PostMessageFormHandler extends FormHandler {
 
     onSubmit(data: any) {
 
+        console.log("onSubmit: ", data);
+
         // FIXME: refactor this to send a typed data structure.
 
         data = Object.assign({}, data);
 
-        // we have to include the docDescriptor for what we're working on so
-        // that the recipient can decide if they want to act on this new data.
-        //
-        //
-        data.context = this.context;
+        let createAnnotationRequest
+            = new CreateAnnotationRequest(this.createFlashcardRequest.docDescriptor,
+                                          AnnotationType.FLASHCARD,
+                                          data);
 
-        // for now we (manually) support flashcards
-        data.annotationType = AnnotationType.FLASHCARD;
-
+        // FIXME: this is broken..
         // the metadata for creating the flashcard type.  This should probably
         // move to the schema in the future.  The ID is really just so that
         // we can compile the schema properly.
@@ -41,17 +42,10 @@ export class PostMessageFormHandler extends FormHandler {
             id: "9d146db1-7c31-4bcf-866b-7b485c4e50ea"
         };
 
-        console.log("onSubmit: ", data);
-        //window.postMessage({ type: "onSubmit", data: dataToExternal(data)},
-        // "*");
-
         // send this to the main process which then broadcasts it to all the
         // renderers
         ipcRenderer.send('create-annotation', data);
         log.info("Sent create-annotation message");
-
-        // don't close when we're the only window and in dev mode.
-        // FIXME: window.close();
 
     }
 

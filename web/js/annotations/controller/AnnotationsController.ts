@@ -1,8 +1,12 @@
-import {DialogWindow, DialogWindowOptions, Resource, ResourceType} from '../../ui/dialog_window/DialogWindow';
+import {
+    DialogWindowOptions,
+    Resource,
+    ResourceType
+} from '../../ui/dialog_window/DialogWindow';
 import {DialogWindowClient} from '../../ui/dialog_window/DialogWindowClient';
 import {Logger} from '../../logger/Logger';
-import {Point} from '../../Point';
 import {TriggerEvent} from '../../contextmenu/TriggerEvent';
+import {CreateFlashcardRequest} from '../../apps/card_creator/CreateFlashcardRequest';
 
 const log = Logger.create();
 
@@ -15,19 +19,7 @@ export class AnnotationsController {
 
     }
 
-    async createDialogWindow() {
-
-        // FIXME: we're not including the context that we need
-
-        let appPath = "./apps/card-creator/index.html";
-        let resource = new Resource(ResourceType.FILE, appPath);
-        let options = new DialogWindowOptions(resource);
-
-        let dialogWindowClient = new DialogWindowClient();
-        await  dialogWindowClient.create(options);
-    }
-
-    onMessageReceived(event: any) {
+    private onMessageReceived(event: any) {
 
         // get the page number
 
@@ -39,15 +31,9 @@ export class AnnotationsController {
 
                 let triggerEvent = TriggerEvent.create(event.data);
 
-                let matchingSelectors = triggerEvent.matchingSelectors;
-                let matchingSelector = matchingSelectors[".page"];
+                let createFlashcardRequest = new CreateFlashcardRequest(triggerEvent.docDescriptor);
 
-                let pageNum: number = matchingSelector.annotationDescriptors[0].pageNumber;
-
-                // FIXME: this is the bug... when the triggerEvent value is getting to
-                // createFlashcard it's just a plain {} with no data.
-
-                this.createFlashcard(triggerEvent, pageNum, data.points.pageOffset)
+                this.createFlashcard(createFlashcardRequest)
                     .catch(err => log.error("Could not create flashcard: ", err));
 
             }
@@ -59,8 +45,23 @@ export class AnnotationsController {
     /**
      * Create a new flashcard.
      */
-    async createFlashcard(triggerEvent: TriggerEvent, pageNum: number, pageOffset: Point) {
-        log.info("Creating flashcard with triggerEvent: ", triggerEvent);
+    private async createFlashcard(createFlashcardRequest: CreateFlashcardRequest) {
+        log.info("Creating flashcard with triggerEvent: ", createFlashcardRequest);
+        await this.createDialogWindow(createFlashcardRequest);
+    }
+
+    private async createDialogWindow(createFlashcardRequest: CreateFlashcardRequest) {
+
+        let createFlashcardRequestJSON = JSON.stringify(createFlashcardRequest);
+
+        // FIXME: this sucks because it can'd load a file with a query param..
+        let appPath = "./apps/card-creator/index.html?createFlashcardRequest=" + encodeURIComponent(createFlashcardRequestJSON);
+
+        let resource = new Resource(ResourceType.FILE, appPath);
+        let options = new DialogWindowOptions(resource);
+
+        let dialogWindowClient = new DialogWindowClient();
+        await dialogWindowClient.create(options);
     }
 
 }
