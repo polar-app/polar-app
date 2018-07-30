@@ -1,4 +1,4 @@
-import {ipcMain, ipcRenderer} from "electron";
+import {ipcRenderer} from 'electron';
 import {DialogWindowOptions} from './DialogWindow';
 import {IPCMessage} from '../../util/IPCMessage';
 
@@ -12,15 +12,15 @@ export class DialogWindowClient {
         //
         // TODO: we also need tests to verify tht this actually works.
 
-        let createRequest = new IPCMessage("create", options);
+        let createRequest = new IPCMessage('create', options);
 
         let result = new Promise<void>((resolve, reject) => {
 
             let channel = createRequest.computeResponseChannel();
 
-            ipcMain.once(channel, (event: any, message: IPCMessage) => {
+            ipcRenderer.once(channel, (event: any, message: IPCMessage) => {
 
-                if(message.type === "created") {
+                if(message.type === 'created') {
                     resolve();
                 } else {
                     reject();

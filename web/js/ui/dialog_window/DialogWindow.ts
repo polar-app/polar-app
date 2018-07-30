@@ -1,4 +1,4 @@
-import {BrowserWindow} from "electron";
+import {BrowserWindow} from 'electron';
 import {DialogWindowMenu} from './DialogWindowMenu';
 import {Logger} from '../../logger/Logger';
 
@@ -118,6 +118,12 @@ export class DialogWindowOptions {
         if(height)
             this.height = height;
 
+    }
+
+    public static create(obj: any) {
+        let result: DialogWindowOptions = Object.create(DialogWindowOptions.prototype);
+        Object.assign(result, obj);
+        return result;
     }
 
 }

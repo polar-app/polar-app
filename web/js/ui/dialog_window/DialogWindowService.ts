@@ -15,29 +15,32 @@ export class DialogWindowService {
 
     start() {
 
-        ipcMain.on('dialog-window', (event: Electron.Event, request: IPCMessage) => {
+        ipcMain.on('dialog-window', (event: Electron.Event, message: any) => {
 
-            if(request.type === "create") {
-                this.onCreate(<DialogWindowOptions>request.value, event.sender, request);
+            let ipcMessage = IPCMessage.create(message);
+
+            if(ipcMessage.type === "create") {
+                this.onCreate(DialogWindowOptions.create(ipcMessage.value), event.sender, ipcMessage);
             }
 
         });
 
     }
 
-    onCreate(options: DialogWindowOptions, sender: WebContents, request: IPCMessage ) {
+    onCreate(options: DialogWindowOptions, sender: WebContents, ipcMessage: IPCMessage ) {
 
         DialogWindow.create(options)
             .then(() => {
-                this.sendCreated(request, sender);
+                this.sendCreated(ipcMessage, sender);
             })
             .catch(err => log.error("Could not create dialog window: ", err));
 
     }
 
-    sendCreated(request: IPCMessage, sender: WebContents) {
+    sendCreated(ipcMessage: IPCMessage, sender: WebContents) {
+
         // create a dedicated channel with one possible message for the response.
-        sender.send(request.computeResponseChannel(), new IPCMessage("created", true));
+        sender.send(ipcMessage.computeResponseChannel(), new IPCMessage("created", true));
     }
 
 }

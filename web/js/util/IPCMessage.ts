@@ -14,20 +14,24 @@ export class IPCMessage {
      */
     public readonly nonce: number;
 
-    constructor(type: string, value: any, nonce?: number) {
+    constructor(type: string, value: any, nonce: number = IPCMessage.createNonce()) {
         this.type = type;
         this.value = value;
-
-        if (nonce) {
-            this.nonce = nonce;
-        } else {
-            this.nonce = new Date().getMilliseconds();
-        }
-
+        this.nonce = nonce;
     }
 
     computeResponseChannel() {
         return 'response:' + this.nonce;
+    }
+
+    private static createNonce() {
+        return new Date().getMilliseconds();
+    }
+
+    static create(obj: any): IPCMessage {
+        let result = Object.create(IPCMessage.prototype);
+        Object.assign(result, obj);
+        return result;
     }
 
 }

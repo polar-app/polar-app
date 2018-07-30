@@ -7,12 +7,12 @@ export class TimeoutEvent {
     /**
      * The total pending number of timeouts.
      */
-    pending: string;
+    pending: number = 0;
 
     /**
      * The timeout for this registered callback.
      */
-    timeout: number;
+    timeout: number = 0;
 
     constructor(opts: any) {
         Object.assign(this, opts);

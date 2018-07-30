@@ -18,8 +18,16 @@ export class TextWidget extends React.Component  {
 
     private value: string = "";
 
+    private id: string;
+
     constructor(props: any = {}) {
         super(props);
+
+        if(props.id) {
+            this.id = props.id;
+        } else {
+            throw new Error("No ID");
+        }
 
         this.onChangeCallback = props.onChange;
         this.onBlurCallback = props.onBlur;
@@ -62,13 +70,13 @@ export class TextWidget extends React.Component  {
 
     onBlur() {
         log.info("onBlur");
-        this.onBlurCallback(this.typedWidgetProps.id, this.value)
+        this.onBlurCallback(this.id, this.value)
 
     }
 
     onFocus() {
         log.info("onFocus");
-        this.onFocusCallback(this.typedWidgetProps.id, this.value)
+        this.onFocusCallback(this.id, this.value)
     }
 
     /**

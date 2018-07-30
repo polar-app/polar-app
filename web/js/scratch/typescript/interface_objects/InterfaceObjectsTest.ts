@@ -1,4 +1,6 @@
 import {assertJSON} from '../../../test/Assertions';
+import {func} from 'prop-types';
+import {assert} from 'chai';
 
 describe('Custom objects from JSON', function() {
 
@@ -6,9 +8,9 @@ describe('Custom objects from JSON', function() {
 
         class Address {
 
-            public readonly city: string;
-            public readonly state: string;
-            public readonly zip: string;
+            public readonly city?: string;
+            public readonly state?: string;
+            public readonly zip?: string;
 
         }
 
@@ -75,6 +77,47 @@ describe('Custom objects from JSON', function() {
         assertJSON(address, expected);
 
     })
+
+    it("type promotion and methods", function() {
+
+        class Address {
+
+            readonly city: string;
+            readonly state: string;
+            readonly zip: number;
+
+            constructor(city: string, state: string, zip: number) {
+                this.city = city;
+                this.state = state;
+                this.zip = zip;
+            }
+
+            format() {
+                return `${this.city}, ${this.state} ${this.zip}`;
+            }
+
+        }
+
+
+        let address: Address;
+
+
+        address = new Address("San Francisco", "CA", 94107);
+
+        assert.notEqual(address.format, null);
+
+        address = <Address> {
+            // city: "San Francisco",
+            // state: "CA",
+            // zip: 94107
+        };
+
+        console.log(address.city);
+
+        // It IS null so this is a flaw of the language unfortunately.
+        //assert.notEqual(address.format, null);
+
+    });
 
 
 });

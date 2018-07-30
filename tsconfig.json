@@ -1,6 +1,7 @@
 {
     "compilerOptions": {
 
+        "strict": true,
         "noImplicitAny": true,
         "strictNullChecks": true,
         "noImplicitThis": false,
@@ -23,6 +24,8 @@
 
         "noUnusedLocals": false,
         "noUnusedParameters": false,
+
+        "forceConsistentCasingInFileNames": true,
 
         "allowSyntheticDefaultImports": true,
 

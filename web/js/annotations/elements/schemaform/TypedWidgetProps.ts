@@ -17,7 +17,7 @@
 
 export class TypedWidgetProps {
 
-    public readonly id: string;
+    public readonly id?: string;
 
     public readonly value?: string;
 

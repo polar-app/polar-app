@@ -7,7 +7,7 @@ const log = Logger.create();
 
 export class AnnotationsController {
 
-    private dialogWindow: DialogWindow;
+    //private dialogWindow: DialogWindow;
 
     /**
      * Create a new flashcard.

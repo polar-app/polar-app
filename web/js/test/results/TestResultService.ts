@@ -26,12 +26,14 @@ export class TestResultService {
 
         ipcRenderer.on('test-result', (event: Electron.Event, data: any) => {
 
-            if(data.type === "write") {
-                this.onWrite(data);
+            let ipcMessage = IPCMessage.create(data);
+
+            if(ipcMessage.type === "write") {
+                this.onWrite(ipcMessage);
             }
 
-            if(data.type === "ping") {
-                this.onPing(event, data);
+            if(ipcMessage.type === "ping") {
+                this.onPing(event, ipcMessage);
             }
 
 
@@ -42,13 +44,11 @@ export class TestResultService {
 
     }
 
-    onPing(event: Electron.Event, data: any) {
+    onPing(event: Electron.Event, ipcMessage: IPCMessage) {
 
-        let pingMessage = <IPCMessage>data;
+        let pongMessage = new IPCMessage("pong", true);
 
-        let pongMessage = new IPCMessage("pong", true, pingMessage.nonce);
-
-        event.sender.send('test-result', pongMessage);
+        event.sender.send(ipcMessage.computeResponseChannel(), pongMessage);
 
     }
 

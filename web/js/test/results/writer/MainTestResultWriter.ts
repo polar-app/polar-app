@@ -21,16 +21,8 @@ export class MainTestResultWriter {
 
         let result = new Promise<void>(resolve => {
 
-            ipcMain.once("test-result", (event: any, message: IPCMessage) => {
-
-                if(message.type === "pong") {
-
-                    if(message.nonce === pingMessage.nonce) {
-                        resolve();
-                    } else {
-                    }
-                }
-
+            ipcMain.once(pingMessage.computeResponseChannel(), (event: any, message: IPCMessage) => {
+                resolve();
             });
 
         });
