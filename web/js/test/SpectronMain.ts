@@ -34,6 +34,7 @@ export class SpectronMain {
 
                 let windowFactory: WindowFactory = async () => {
                     let mainWindow = new BrowserWindow(BROWSER_OPTIONS);
+                    mainWindow.webContents.toggleDevTools();
                     mainWindow.loadURL('about:blank');
                     return mainWindow;
                 };

@@ -1,31 +1,17 @@
-const electron = require('electron');
-const ipcMain = electron.ipcMain;
-const BrowserWindow = electron.BrowserWindow;
-
-/**
- * When we receive a message, we broadcast it to all the renderers.  Anyone not
- * listening just drops the message.  This makes it easy to implement various
- * forms of message communication.
- */
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const electron_1 = require("electron");
 class Broadcaster {
-
-    /**
-     *
-     * @param name The name of the event we're listening to and going to broadcast.
-     */
     constructor(name) {
-
-        ipcMain.on(name, (event, arg) => {
-
-            BrowserWindow.getAllWindows().forEach(window => {
-                // FIXME: I don't think we can send event' ...
+        this.name = name;
+        electron_1.ipcMain.on(name, (event, arg) => {
+            console.log("Forwarding message: ", name, event);
+            let browserWindows = electron_1.BrowserWindow.getAllWindows();
+            browserWindows.forEach(window => {
                 window.webContents.send(name, arg);
             });
-
         });
-
     }
-
 }
-
 module.exports.Broadcaster = Broadcaster;
+//# sourceMappingURL=Broadcaster.js.map

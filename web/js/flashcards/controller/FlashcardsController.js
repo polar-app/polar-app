@@ -1,80 +1,48 @@
-const {ipcRenderer} = require('electron')
-const {AnnotationType} = require("../../metadata/AnnotationType");
-const {Flashcards} = require("../../metadata/Flashcards");
-
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const Logger_1 = require("../../logger/Logger");
+const { ipcRenderer } = require('electron');
+const { AnnotationType } = require("../../metadata/AnnotationType");
+const { Flashcards } = require("../../metadata/Flashcards");
+const log = Logger_1.Logger.create();
 class FlashcardsController {
-
     constructor(model) {
         this.model = model;
     }
-
     start() {
-
-        // TODO move this code to the AnnotationEvent system and test it
-        // along with form data.
-
-        if(ipcRenderer) {
-
-            console.log("IPC listener added for create-annotation")
-
+        if (ipcRenderer) {
+            log.info("IPC listener added for create-annotation");
             ipcRenderer.on('create-annotation', (event, data) => {
-
-                console.log("Received create-annotation event: ", data);
-
-                if(data.annotationType === AnnotationType.FLASHCARD) {
-
-                    console.log("Working with flashcard");
-
-                    if(data.context.docDescriptor.fingerprint === this.model.docMeta.docInfo.fingerprint) {
-
-                        console.log("Going to add this flashcard to the model");
+                log.info("Received create-annotation event: ", data);
+                if (data.annotationType === AnnotationType.FLASHCARD) {
+                    log.info("Working with flashcard: ", data);
+                    if (data.context.docDescriptor.fingerprint === this.model.docMeta.docInfo.fingerprint) {
+                        log.info("Going to add this flashcard to the model");
                         this.onCreateFlashcard(data);
-
-                    } else {
-                        console.log(`Ignoring flashcard.  ${data.context.docDescriptor.fingerprint} != ${this.model.docMeta.docInfo.fingerprint}`)
                     }
-
+                    else {
+                        log.info(`Ignoring flashcard.  ${data.context.docDescriptor.fingerprint} != ${this.model.docMeta.docInfo.fingerprint}`);
+                    }
                 }
-
-                // I don't think we need to listen to these here but rather in the
-                // specific controllers.
-
             });
-
-        } else {
+        }
+        else {
             console.warn("Not running within electron");
         }
-
     }
-
-    /**
-     * Called when we need to create a new flashcard.
-     */
     onCreateFlashcard(data) {
-
-        console.log("onCreateFlashcard: ", data);
-
+        log.info("onCreateFlashcard: ", data);
         let flashcard = Flashcards.createFromSchemaFormData(data);
-
-        let textHighlightAnnotationDescriptors =
-            data.context.matchingSelectors[".text-highlight"].annotationDescriptors;
-
-        // FIXME: if there are multiple visual annotations, each with the same ID
-        // which is currently a bug, then we need to filter them out to just ONE
-        // annotation.
-        textHighlightAnnotationDescriptors.forEach(annotationDescriptor => {
+        let textHighlightAnnotationDescriptors = data.context.matchingSelectors[".text-highlight"].annotationDescriptors;
+        textHighlightAnnotationDescriptors.forEach((annotationDescriptor) => {
             let pageMeta = this.model.docMeta.getPageMeta(annotationDescriptor.pageNum);
             let textHighlight = pageMeta.textHighlights[annotationDescriptor.textHighlightId];
-
-            if(!textHighlight) {
+            if (!textHighlight) {
                 throw new Error(`No text highlight for ID ${annotationDescriptor.textHighlightId} on page ${annotationDescriptor.pageNum}`);
             }
-
             textHighlight.flashcards[flashcard.id] = flashcard;
         });
-
     }
-
 }
-
-module.exports.FlashcardsController = FlashcardsController;
+exports.FlashcardsController = FlashcardsController;
+//# sourceMappingURL=FlashcardsController.js.map

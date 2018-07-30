@@ -46,7 +46,7 @@ export class DialogWindow {
 
         // Create the browser window.
         let window = new BrowserWindow(browserWindowOptions);
-        window.setMenu(DialogWindowMenu.create());
+        //window.setMenu(DialogWindowMenu.create());
 
         window.webContents.on('new-window', (e) => {
             e.preventDefault();
