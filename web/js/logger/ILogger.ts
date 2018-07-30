@@ -3,15 +3,15 @@
  */
 export interface ILogger {
 
-    info(...args: any[]): void;
+    info(msg: string, ...args: any[]): void;
 
-    warn(...args: any[]): void;
+    warn(msg: string, ...args: any[]): void;
 
-    error(...args: any[]): void;
+    error(msg: string, ...args: any[]): void;
 
-    verbose(...args: any[]): void;
+    verbose(msg: string, ...args: any[]): void;
 
-    debug(...args: any[]): void;
+    debug(msg: string, ...args: any[]): void;
 
 }
 

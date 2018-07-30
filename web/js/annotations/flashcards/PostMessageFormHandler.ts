@@ -21,10 +21,14 @@ export class PostMessageFormHandler extends FormHandler {
 
     onSubmit(data: any) {
 
+        // FIXME: refactor this to send a typed data structure.
+
         data = Object.assign({}, data);
 
         // we have to include the docDescriptor for what we're working on so
         // that the recipient can decide if they want to act on this new data.
+        //
+        //
         data.context = this.context;
 
         // for now we (manually) support flashcards

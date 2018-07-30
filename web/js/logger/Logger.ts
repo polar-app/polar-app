@@ -113,40 +113,40 @@ class DelegatedLogger {
     // think we should compromise on our design.  We should fix the problem
     // with spectron instead of hacking it here.
 
-    public info(...args: any[]) {
-        this.apply(Logger.getLoggerDelegate().info, args);
+    public info(msg: string, ...args: any[]) {
+        this.apply(Logger.getLoggerDelegate().info, msg, ...args);
     }
 
-    public warn(...args: any[]) {
-        this.apply(Logger.getLoggerDelegate().warn, args);
+    public warn(msg: string, ...args: any[]) {
+        this.apply(Logger.getLoggerDelegate().warn, msg, ...args);
     }
 
-    public error(...args: any[]) {
-        this.apply(Logger.getLoggerDelegate().error, args);
+    public error(msg: string, ...args: any[]) {
+        this.apply(Logger.getLoggerDelegate().error, msg, ...args);
     }
 
-    public verbose(...args: any[]) {
-        this.apply(Logger.getLoggerDelegate().verbose, args);
+    public verbose(msg: string, ...args: any[]) {
+        this.apply(Logger.getLoggerDelegate().verbose, msg, ...args);
     }
 
-    public debug(...args: any[]) {
-        this.apply(Logger.getLoggerDelegate().debug, args);
+    public debug(msg: string, ...args: any[]) {
+        this.apply(Logger.getLoggerDelegate().debug, msg, ...args);
     }
 
     /**
      *
-     * @param {LogFunction} logFunction
-     * @param args
      */
-    private apply(logFunction: LogFunction, ...args: any[]) {
+    private apply(logFunction: LogFunction, msg: string, ...args: any[]) {
 
-        let arg0 = this.caller;
+        msg = this.caller + ": " + msg;
 
         if(args.length > 0) {
-            arg0 = arg0 + ": " + args.pop();
+            logFunction(msg, args);
+        } else {
+            // don't pass 'args' as electron-logger will print [] if the args
+            // is zero.
+            logFunction(msg);
         }
-
-        logFunction(arg0, args);
 
     }
 
@@ -154,7 +154,7 @@ class DelegatedLogger {
 
 interface LogFunction {
 
-    (...args: any[]): void;
+    (msg: string, ...args: any[]): void;
 
 }
 

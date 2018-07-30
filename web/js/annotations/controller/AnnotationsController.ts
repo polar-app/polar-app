@@ -37,18 +37,12 @@ export class AnnotationsController {
 
             if(data.type === 'create-flashcard') {
 
-                console.log("FIXME: got event data" , event.data);
-
                 let triggerEvent = TriggerEvent.create(event.data);
-
-                console.log("FIXME: built trigger event: " , triggerEvent);
 
                 let matchingSelectors = triggerEvent.matchingSelectors;
                 let matchingSelector = matchingSelectors[".page"];
 
                 let pageNum: number = matchingSelector.annotationDescriptors[0].pageNumber;
-
-                console.log("FIXME: passing trigger event: " , triggerEvent);
 
                 // FIXME: this is the bug... when the triggerEvent value is getting to
                 // createFlashcard it's just a plain {} with no data.

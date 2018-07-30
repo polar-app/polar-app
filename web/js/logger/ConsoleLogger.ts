@@ -5,24 +5,24 @@ import {ILogger} from './ILogger';
 
 class ConsoleLogger implements ILogger{
 
-    info(...args: any[]) {
-        console.log(...args);
+    info(msg: string, ...args: any[]) {
+        console.log(msg, ...args);
     }
 
-    warn(...args: any[]) {
-        console.warn(...args);
+    warn(msg: string, ...args: any[]) {
+        console.warn(msg, ...args);
     }
 
-    error(...args: any[]) {
-        console.error(...args);
+    error(msg: string, ...args: any[]) {
+        console.error(msg, ...args);
     }
 
-    verbose(...args: any[]) {
-        console.log("VERBOSE: " , ...args);
+    verbose(msg: string, ...args: any[]) {
+        console.log(msg, " VERBOSE: ", ...args);
     }
 
-    debug(...args: any[]) {
-        console.log("DEBUG: " , ...args);
+    debug(msg: string, ...args: any[]) {
+        console.log(msg, " DEBUG: " , ...args);
     }
 
 }
