@@ -15,7 +15,7 @@ const { Functions } = require("../../js/util/Functions");
 describe('dialog-window', function () {
     Spectron_1.Spectron.setup(__dirname);
     this.timeout(10000);
-    it('create dialog window', function () {
+    xit('create dialog window', function () {
         return __awaiter(this, void 0, void 0, function* () {
             assert.equal(yield this.app.client.getWindowCount(), 1);
             let testResultReader = new WebDriverTestResultReader_1.WebDriverTestResultReader(this.app);

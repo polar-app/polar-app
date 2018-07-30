@@ -1,3 +1,5 @@
+
+import {ipcRenderer} from 'electron';
 import {TestResultService} from './results/TestResultService';
 import {RendererTestResultWriter} from './results/writer/RendererTestResultWriter';
 
@@ -11,7 +13,13 @@ export class SpectronRenderer {
         SpectronRenderer.setup();
         let testResultWriter = new RendererTestResultWriter();
         let state = new SpectronRendererState(testResultWriter);
-        return callback(state);
+
+        let result = callback(state);
+
+        ipcRenderer.send('spectron-renderer-started', true);
+
+        return result;
+
     }
 
     static run(callback: RunCallback) {

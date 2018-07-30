@@ -11,9 +11,29 @@ export class MainTestResultWriter {
 
     private mainWindow: Electron.BrowserWindow;
 
+    private readonly waitForServicePromise: Promise<void>;
+
     constructor(mainWindow: Electron.BrowserWindow) {
         this.mainWindow = mainWindow;
+        this.waitForServicePromise = this.waitForService();
     }
+
+    waitForService(): Promise<void> {
+
+        return new Promise(resolve => {
+
+            ipcMain.once("test-result", (event: any, message: any) => {
+
+                if(message.type === "started") {
+                    resolve();
+                }
+
+            });
+
+        });
+
+    }
+
 
     private ping(): Promise<void> {
 
@@ -34,6 +54,8 @@ export class MainTestResultWriter {
     }
 
     async write(result: any): Promise<void> {
+
+        await this.waitForServicePromise;
 
         // we need to ping first to make sure we actually get a response.
         await this.ping();
