@@ -1,7 +1,6 @@
 import $ from '../../ui/JQuery';
 
-import {InputController} from '../../annotations/elements/schemaform/InputController';
-import {PostMessageFormHandler} from '../../annotations/flashcards/PostMessageFormHandler';
+import {CreateFlashcardInputController} from '../../annotations/elements/schemaform/CreateFlashcardInputController';
 import {Logger} from '../../logger/Logger';
 import {CreateFlashcardRequest} from './CreateFlashcardRequest';
 
@@ -16,15 +15,16 @@ export class Entry {
 
                 console.log("Ready to create flash card!");
 
-                let createFlashcardRequest = Context.create();
-
-                let inputController = new InputController();
+                let createFlashcardInputController = new CreateFlashcardInputController();
 
                 let schemaFormElement = <HTMLElement>document.getElementById('schema-form');
 
-                let postMessageFormHandler = new PostMessageFormHandler(createFlashcardRequest);
+                // FIXME: allow us to start with a blank UI now...
 
-                inputController.createNewFlashcard(schemaFormElement, postMessageFormHandler);
+                // FIXME: we have to create one when we get a new request to create an annotation.
+                //let postMessageFormHandler = new PostMessageFormHandler(createFlashcardRequest);
+
+                createFlashcardInputController.createNewFlashcard(schemaFormElement);
 
                 resolve();
 

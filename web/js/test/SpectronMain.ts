@@ -13,6 +13,7 @@ const BROWSER_OPTIONS = {
     webPreferences: {
         webSecurity: false,
     }
+
 };
 
 /**
@@ -20,8 +21,6 @@ const BROWSER_OPTIONS = {
  */
 export class SpectronMain {
 
-    /**
-     */
     static setup(options?: SpectronMainOptions): Promise<Electron.BrowserWindow> {
 
         return new Promise(resolve => {

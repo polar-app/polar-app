@@ -1,4 +1,4 @@
-import {InputController} from './schemaform/InputController';
+import {CreateFlashcardInputController} from './schemaform/CreateFlashcardInputController';
 import {FormHandler} from '../FormHandler';
 
 export class CardCreatorElement extends HTMLElement {
@@ -42,13 +42,14 @@ export class CardCreatorElement extends HTMLElement {
 
         let mainElement = shadowRoot.appendChild(CardCreatorElement.createElementHTML(template));
 
-        let inputController = new InputController();
+        let inputController = new CreateFlashcardInputController();
 
         let schemaFormElement = <HTMLElement>shadowRoot.getElementById("schema-form");
 
         let postMessageFormHandler = new PostMessageFormHandler();
 
-        inputController.createNewFlashcard(schemaFormElement, postMessageFormHandler);
+        // TODO: removed while we refactor
+        // inputController.createNewFlashcard(schemaFormElement, postMessageFormHandler);
 
         shadowRoot.appendChild(mainElement);
 

@@ -44,7 +44,7 @@ export class TestResultService {
 
     }
 
-    onPing(event: Electron.Event, ipcMessage: IPCMessage) {
+    onPing(event: Electron.Event, ipcMessage: IPCMessage<any>) {
 
         let pongMessage = new IPCMessage("pong", true);
 

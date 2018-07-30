@@ -2,6 +2,7 @@ import {ipcMain, WebContents} from "electron";
 import {IPCMessage} from '../../util/IPCMessage';
 import {DialogWindow, DialogWindowOptions} from './DialogWindow';
 import {Logger} from '../../logger/Logger';
+import {DialogWindowReference} from './DialogWindowReference';
 
 const log = Logger.create();
 
@@ -17,30 +18,31 @@ export class DialogWindowService {
 
         ipcMain.on('dialog-window', (event: Electron.Event, message: any) => {
 
-            let ipcMessage = IPCMessage.create(message);
+            let ipcMessage = IPCMessage.create<DialogWindowOptions>(message);
 
             if(ipcMessage.type === "create") {
-                this.onCreate(DialogWindowOptions.create(ipcMessage.value), event.sender, ipcMessage);
+                let createWindowMessage = IPCMessage.create<DialogWindowOptions>(message);
+                this.onCreate(DialogWindowOptions.create(createWindowMessage.value), event.sender, createWindowMessage);
             }
 
         });
 
     }
 
-    onCreate(options: DialogWindowOptions, sender: WebContents, ipcMessage: IPCMessage ) {
+    onCreate(options: DialogWindowOptions, sender: WebContents, createWindowMessage: IPCMessage<DialogWindowOptions> ) {
 
         DialogWindow.create(options)
-            .then(() => {
-                this.sendCreated(ipcMessage, sender);
+            .then((dialogWindow: DialogWindow) => {
+                this.sendCreated(createWindowMessage, sender, dialogWindow.dialogWindowReference);
             })
             .catch(err => log.error("Could not create dialog window: ", err));
 
     }
 
-    sendCreated(ipcMessage: IPCMessage, sender: WebContents) {
-
+    sendCreated(createWindowMessage: IPCMessage<DialogWindowOptions>, sender: WebContents, dialogWindowReference: DialogWindowReference) {
         // create a dedicated channel with one possible message for the response.
-        sender.send(ipcMessage.computeResponseChannel(), new IPCMessage("created", true));
+        let createdWindowMessage = new IPCMessage<DialogWindowReference>("created", dialogWindowReference);
+        sender.send(createWindowMessage.computeResponseChannel(), createdWindowMessage);
     }
 
 }

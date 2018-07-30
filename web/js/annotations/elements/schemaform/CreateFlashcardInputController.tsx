@@ -17,9 +17,15 @@ require('summernote/dist/summernote-bs4');
 /**
  * Code to accept new input for flashcards, notes, comments, etc.
  */
-export class InputController {
+export class CreateFlashcardInputController {
 
-    createNewFlashcard(targetElement: HTMLElement, formHandler: FormHandler) {
+    /**
+     * The FormHandler we're going to use.  We have to change it when we get
+     * a new create flashcard request.
+     */
+    public formHandler: FormHandler = new FormHandler();
+
+    createNewFlashcard(targetElement: HTMLElement) {
 
         let schema: JSONSchema6 = SchemaFactory.create();
         let schemaUI = SchemaUIFactory.create();
@@ -32,15 +38,9 @@ export class InputController {
             throw new Error("No schema");
         }
 
-        if(!formHandler) {
-            throw new Error("No formHandler");
-        }
-
-        let onChangeCallback = () => function(data: any) { formHandler.onChange(data) };
-        let onSubmitCallback = () => function(data: any) { formHandler.onSubmit(data) };
-        //let onErrorCallback = () => function(data: any) { formHandler.onError(data) };
-
-        let onErrorCallback = () => function(data: any) { formHandler.onError(data) };
+        let onChangeCallback = () => (data: any) => { this.formHandler.onChange(data) };
+        let onSubmitCallback = () => (data: any) => { this.formHandler.onSubmit(data) };
+        let onErrorCallback = () => (data: any) => { this.formHandler.onError(data) };
 
         render((
             <Form schema={schema}

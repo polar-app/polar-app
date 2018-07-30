@@ -7,7 +7,7 @@ import Form from "react-jsonschema-form";
 import SimpleMDE from 'react-simplemde-editor';
 
 
-const {InputController} = require("../../web/js/input/InputController");
+const {InputController} = require("../../web/js/input/CreateFlashcardInputController");
 const {FormHandler} = require("../../web/js/input/FormHandler");
 
 const schema = {

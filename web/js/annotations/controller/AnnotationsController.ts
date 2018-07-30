@@ -12,10 +12,11 @@ const log = Logger.create();
 
 export class AnnotationsController {
 
-    //private dialogWindow: DialogWindow;
     async start() {
 
         window.addEventListener("message", event => this.onMessageReceived(event), false);
+
+        await this.createDialogWindow();
 
     }
 
@@ -47,21 +48,21 @@ export class AnnotationsController {
      */
     private async createFlashcard(createFlashcardRequest: CreateFlashcardRequest) {
         log.info("Creating flashcard with triggerEvent: ", createFlashcardRequest);
-        await this.createDialogWindow(createFlashcardRequest);
+
+        // FIXME: we now need to send a message to the other window telling it
+        // to create a new flashcard.  We also need to tell it to show itself.
     }
 
-    private async createDialogWindow(createFlashcardRequest: CreateFlashcardRequest) {
+    private async createDialogWindow(): Promise<DialogWindowClient> {
 
-        let createFlashcardRequestJSON = JSON.stringify(createFlashcardRequest);
-
-        // FIXME: this sucks because it can'd load a file with a query param..
-        let appPath = "./apps/card-creator/index.html?createFlashcardRequest=" + encodeURIComponent(createFlashcardRequestJSON);
+        let appPath = "./apps/card-creator/index.html";
 
         let resource = new Resource(ResourceType.FILE, appPath);
         let options = new DialogWindowOptions(resource);
+        options.show = true;
 
-        let dialogWindowClient = new DialogWindowClient();
-        await dialogWindowClient.create(options);
+        return await DialogWindowClient.create(options);
+
     }
 
 }

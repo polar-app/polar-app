@@ -41,7 +41,7 @@ export class MainTestResultWriter {
 
         let result = new Promise<void>(resolve => {
 
-            ipcMain.once(pingMessage.computeResponseChannel(), (event: any, message: IPCMessage) => {
+            ipcMain.once(pingMessage.computeResponseChannel(), (event: any, message: IPCMessage<any>) => {
                 resolve();
             });
 

@@ -1,4 +1,4 @@
-import {BrowserWindow, Event} from 'electron';
+import {BrowserWindow} from 'electron';
 
 
 export class BrowserWindowPromises {

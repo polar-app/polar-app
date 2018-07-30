@@ -1,8 +1,9 @@
 import {BrowserWindow} from 'electron';
-import {DialogWindowMenu} from './DialogWindowMenu';
 import {Logger} from '../../logger/Logger';
 import {BrowserWindowPromises} from '../../electron/framework/BrowserWindowPromises';
 import {WebContentsPromises} from '../../electron/framework/WebContentsPromises';
+import {DialogWindowReference} from './DialogWindowReference';
+import {DialogWindowMenu} from './DialogWindowMenu';
 
 const log = Logger.create();
 
@@ -25,8 +26,11 @@ export class DialogWindow {
 
     public readonly window: BrowserWindow;
 
-    constructor(window: BrowserWindow) {
+    public readonly dialogWindowReference: DialogWindowReference;
+
+    constructor(window: BrowserWindow, dialogWindowReference: DialogWindowReference) {
         this.window = window;
+        this.dialogWindowReference = dialogWindowReference;
     }
 
     show(): void {
@@ -48,7 +52,7 @@ export class DialogWindow {
 
         // Create the browser window.
         let window = new BrowserWindow(browserWindowOptions);
-        //window.setMenu(DialogWindowMenu.create());
+        window.setMenu(DialogWindowMenu.create());
 
         window.webContents.on('new-window', (e) => {
             e.preventDefault();
@@ -64,7 +68,8 @@ export class DialogWindow {
         });
 
         let readyToShowPromise = BrowserWindowPromises.once(window).readyToShow();
-        let didFinishLoadPromise = WebContentsPromises.once(window.webContents).didFinishLoad();
+
+        let loadPromise = WebContentsPromises.once(window.webContents).load();
 
         switch (options.resource.type) {
             case ResourceType.FILE:
@@ -75,10 +80,10 @@ export class DialogWindow {
                 break;
         }
 
-        await Promise.all([readyToShowPromise, didFinishLoadPromise]);
+        await Promise.all([readyToShowPromise, loadPromise]);
 
         log.info("Window is now ready to show.");
-        let dialogWindow = new DialogWindow(window);
+        let dialogWindow = new DialogWindow(window, new DialogWindowReference(window.id));
 
         if(options.show) {
             dialogWindow.show();
@@ -111,11 +116,11 @@ export class DialogWindowOptions {
 
     public readonly resource: Resource;
 
-    public readonly width: number = 800;
+    public width: number = 800;
 
-    public readonly height: number = 600;
+    public height: number = 600;
 
-    public readonly show: boolean = true;
+    public show: boolean = true;
 
     constructor(resource: Resource, width?: number, height?: number, show?: boolean) {
 
