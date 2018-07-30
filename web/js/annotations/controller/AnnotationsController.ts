@@ -1,30 +1,24 @@
 import {DialogWindow, DialogWindowOptions, Resource, ResourceType} from '../../ui/dialog_window/DialogWindow';
-import Point = Electron.Point;
 import {DialogWindowClient} from '../../ui/dialog_window/DialogWindowClient';
 import {Logger} from '../../logger/Logger';
+import {Point} from '../../Point';
+import {TriggerEvent} from '../../contextmenu/TriggerEvent';
 
 const log = Logger.create();
 
 export class AnnotationsController {
 
     //private dialogWindow: DialogWindow;
-
-    /**
-     * Create a new flashcard.
-     */
-    async createFlashcard(context: any, pageNum: number, pageOffset: Point) {
-        await this.createDialogWindow();
-    }
-
     async start() {
 
         window.addEventListener("message", event => this.onMessageReceived(event), false);
-        //CardCreatorWebComponent.register();
-
 
     }
 
     async createDialogWindow() {
+
+        // FIXME: we're not including the context that we need
+
         let appPath = "./apps/card-creator/index.html";
         let resource = new Resource(ResourceType.FILE, appPath);
         let options = new DialogWindowOptions(resource);
@@ -38,16 +32,41 @@ export class AnnotationsController {
         // get the page number
 
         let data = event.data;
-        let matchingSelectors = data.matchingSelectors;
-        let matchingSelector = matchingSelectors[".page"];
 
-        let pageNum: number = matchingSelector.annotationDescriptors[0].pageNumber;
+        if(data) {
 
-        if(data && data.type === "create-flashcard") {
-            this.createFlashcard(event.context, pageNum, data.points.pageOffset)
-                .catch(err => log.error("Could not create flashcard: ", err));
+            if(data.type === 'create-flashcard') {
+
+                console.log("FIXME: got event data" , event.data);
+
+                let triggerEvent = TriggerEvent.create(event.data);
+
+                console.log("FIXME: built trigger event: " , triggerEvent);
+
+                let matchingSelectors = triggerEvent.matchingSelectors;
+                let matchingSelector = matchingSelectors[".page"];
+
+                let pageNum: number = matchingSelector.annotationDescriptors[0].pageNumber;
+
+                console.log("FIXME: passing trigger event: " , triggerEvent);
+
+                // FIXME: this is the bug... when the triggerEvent value is getting to
+                // createFlashcard it's just a plain {} with no data.
+
+                this.createFlashcard(triggerEvent, pageNum, data.points.pageOffset)
+                    .catch(err => log.error("Could not create flashcard: ", err));
+
+            }
+
         }
 
+    }
+
+    /**
+     * Create a new flashcard.
+     */
+    async createFlashcard(triggerEvent: TriggerEvent, pageNum: number, pageOffset: Point) {
+        log.info("Creating flashcard with triggerEvent: ", triggerEvent);
     }
 
 }

@@ -16,8 +16,6 @@ export class PostMessageFormHandler extends FormHandler {
 
     onChange(data: any) {
         console.log("onChange: ", data);
-        //window.postMessage({ type: "onChange", data: dataToExternal(data)},
-        // "*");
     }
 
 

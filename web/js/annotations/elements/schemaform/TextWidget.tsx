@@ -126,6 +126,8 @@ export class TextWidget extends React.Component  {
                     //     ['image', []]
                     // ]
 
+                    // FIXME: add blockquote, code, and pre, and cite
+
                     // toolbar: [
                     //     ['style', ['style']],
                     //     ['font', ['bold', 'underline', 'clear']],

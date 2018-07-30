@@ -43,7 +43,7 @@ class ContextMenuController {
                     x: eventTargetOffset.left + event.offsetX,
                     y: eventTargetOffset.top + event.offsetY
                 };
-                ipcRenderer.send('context-menu-trigger', new TriggerEvent({
+                ipcRenderer.send('context-menu-trigger', TriggerEvent.create({
                     point: {
                         x: event.pageX,
                         y: event.pageY

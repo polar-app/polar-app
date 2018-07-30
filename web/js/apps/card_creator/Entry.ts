@@ -1,9 +1,10 @@
-///const $ = require("jquery");
+import $ from '../../ui/JQuery';
 
 import {InputController} from '../../annotations/elements/schemaform/InputController';
-import {FormHandler} from '../../annotations/FormHandler';
-import $ from '../../ui/JQuery';
-import {PostMessageFormHandler} from "../../annotations/flashcards/PostMessageFormHandler";
+import {PostMessageFormHandler} from '../../annotations/flashcards/PostMessageFormHandler';
+import {Logger} from '../../logger/Logger';
+
+const log = Logger.create();
 
 // FIXME: this is where we need to resume.
 //
@@ -44,20 +45,6 @@ export class Entry {
 
 }
 
-/**
- * Convert the data to an external form. The uiSchema includes functions which
- * can't be serialized.
- *
- * @param data
- */
-function dataToExternal(data: any) {
-
-    let result = Object.assign({}, data);
-    delete result.uiSchema;
-    return result;
-
-}
-
 function _requestParams(): any {
 
     let url = new URL(window.location.href);
@@ -72,7 +59,9 @@ function _requestParams(): any {
         result = {
             context: JSON.parse(contextJSON),
         }
-    };
+    } else {
+        log.error("No context");
+    }
 
     return result;
 

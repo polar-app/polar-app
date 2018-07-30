@@ -81,7 +81,7 @@ export class ContextMenuController {
 
                 };
 
-                ipcRenderer.send('context-menu-trigger', new TriggerEvent({
+                ipcRenderer.send('context-menu-trigger', TriggerEvent.create({
                     point: {
                         x: event.pageX,
                         y: event.pageY
