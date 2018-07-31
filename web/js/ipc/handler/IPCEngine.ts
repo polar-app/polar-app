@@ -1,35 +1,35 @@
 import {IPCMessage} from '../../util/IPCMessage';
 import {IPCRegistry} from './IPCRegistry';
 import {Logger} from '../../logger/Logger';
-import {Channel} from '../channels/Channel';
+import {Pipe, ReadablePipe} from '../channels/Pipe';
 
 const log = Logger.create();
 
 export class IPCEngine<E, M> {
 
-    private readonly channel: Channel<E,IPCMessage<M>>;
+    private readonly pipe: ReadablePipe<E,IPCMessage<M>>;
 
-    private readonly channelName: string;
+    private readonly channel: string;
 
     private readonly ipcRegistry: IPCRegistry<E>;
 
-    constructor(channel: Channel<E,IPCMessage<M>>, channelName: string, ipcRegistry: IPCRegistry<E>) {
+    constructor(pipe: Pipe<E,IPCMessage<M>>, channel: string, ipcRegistry: IPCRegistry<E>) {
+        this.pipe = pipe;
         this.channel = channel;
-        this.channelName = channelName;
         this.ipcRegistry = ipcRegistry;
     }
 
     start() {
 
-        this.channel.on(this.channelName, channelNotification => {
+        this.pipe.on(this.channel, pipeNotification => {
 
-            let ipcMessage = IPCMessage.create(channelNotification.message);
+            let ipcMessage = IPCMessage.create(pipeNotification.message);
 
             if(this.ipcRegistry.contains(ipcMessage.type)) {
 
                 let ipcHandler = this.ipcRegistry.get(ipcMessage.type);
 
-                ipcHandler.handle(channelNotification.event, ipcMessage);
+                ipcHandler.handle(pipeNotification.event, ipcMessage);
 
             } else {
                 log.warn("IPC handler type is not registered: " + ipcMessage.type);

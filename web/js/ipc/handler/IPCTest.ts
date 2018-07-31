@@ -1,13 +1,11 @@
-import {MockChannels} from '../channels/MockChannels';
 import {IPCRegistry} from './IPCRegistry';
 import {IPCHandler} from './IPCHandler';
 import {IPCMessage} from '../../util/IPCMessage';
 import {Objects} from '../../util/Objects';
 import {IPCEngine} from './IPCEngine';
 import {assertJSON} from '../../test/Assertions';
-import {TypedChannel} from '../channels/TypedChannel';
-import {Channel} from '../channels/Channel';
-import {IPCChannel} from './IPCChannel';
+import {MockPipes} from '../channels/MockPipes';
+import {IPCPipe} from './IPCPipe';
 
 describe('IPCTest', function() {
 
@@ -50,11 +48,11 @@ describe('IPCTest', function() {
 
         }
 
-        let mockChannels: MockChannels<PersonEvent, any> = MockChannels.create();
+        let mockChannels: MockPipes<PersonEvent, any> = MockPipes.create();
 
         // now convert our types for us...
 
-        let ipcChannel = new IPCChannel<PersonEvent>(mockChannels.left);
+        let ipcChannel = new IPCPipe<PersonEvent>(mockChannels.left);
 
         let ipcRegistry = new IPCRegistry<Person>();
 
