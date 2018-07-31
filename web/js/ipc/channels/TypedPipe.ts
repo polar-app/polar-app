@@ -9,7 +9,7 @@ export abstract class TypedPipe<E, M> implements ReadablePipe<any, any> {
 
     private readonly pipe: ReadablePipe<E,any>;
 
-    protected constructor(source: ReadablePipe<E,any>) {
+    public constructor(source: ReadablePipe<E,any>) {
         this.pipe = source;
     }
 
@@ -31,7 +31,8 @@ export abstract class TypedPipe<E, M> implements ReadablePipe<any, any> {
 
     convertChannelNotification(channelNotification: PipeNotification<any,any>) {
 
-        return new PipeNotification<E,M>(this.convertEvent(channelNotification.event),
+        return new PipeNotification<E,M>(channelNotification.channel,
+                                         this.convertEvent(channelNotification.event),
                                          this.convertMessage(channelNotification.message));
 
     }

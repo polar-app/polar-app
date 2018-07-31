@@ -5,13 +5,13 @@ export class MainReadablePipe implements ReadablePipe<Electron.Event, any> {
 
     on(channel: string, listener: PipeListener<Electron.Event, any>): void {
         ipcMain.on(channel, (event: Electron.Event, message: any) => {
-            listener(new PipeNotification(event, message));
+            listener(new PipeNotification(channel, event, message));
         });
     }
 
     once(channel: string, listener: PipeListener<Electron.Event, any>): void {
         ipcMain.once(channel, (event: Electron.Event, message: any) => {
-            listener(new PipeNotification(event, message));
+            listener(new PipeNotification(channel, event, message));
         });
     }
 

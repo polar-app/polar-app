@@ -27,10 +27,36 @@ export function when<E,M>(pipe: ReadablePipe<E,M>, channel: string) {
 /**
  * Like a pipe but we can only write.
  */
-export interface WritablePipe <M> {
+export interface WritablePipe<M> {
 
     write(channel: string, message: M): void;
 
+}
+
+export class WritablePipeFunction<M> implements WritablePipe<M> {
+
+    private readonly writableFunction: WritableFunction<M>
+
+    constructor(writableFunction: WritableFunction<M>) {
+        this.writableFunction = writableFunction;
+    }
+
+    write(channel: string, message: M): void {
+        this.writableFunction(channel, message);
+    }
+
+}
+
+export class WritablePipes {
+
+    static create<M>(writableFunction: WritableFunction<M>): WritablePipe<M> {
+        return new WritablePipeFunction(writableFunction);
+    }
+
+}
+
+export interface WritableFunction<M> {
+    (channel: string, message: M): void;
 }
 
 /**
@@ -56,10 +82,14 @@ export interface PipeListener<E,M> {
 
 export class PipeNotification<E,M> {
 
+    // TODO: we might want to include the channel on which this was generated.
+
+    public readonly channel: string;
     public readonly event: E;
     public readonly message: M;
 
-    constructor(event: E, message: M) {
+    constructor(channel: string, event: E, message: M) {
+        this.channel = channel;
         this.event = event;
         this.message = message;
     }

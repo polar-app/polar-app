@@ -45,7 +45,7 @@ export class MockPipe<E,M> extends Pipe<E,M> {
             throw new Error("No target");
         }
 
-        let notification = new PipeNotification<E,M>(<E>{}, msg);
+        let notification = new PipeNotification<E,M>(channel, <E>{}, msg);
 
         // deliver the messages to the target now...
 

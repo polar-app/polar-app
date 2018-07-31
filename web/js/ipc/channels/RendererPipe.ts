@@ -5,13 +5,13 @@ export class RendererPipe extends Pipe<Electron.Event, any> {
 
     on(channel: string, listener: PipeListener<Electron.Event, any>): void {
         ipcRenderer.on(channel, (event: Electron.Event, message: any) => {
-            listener(new PipeNotification(event, message));
+            listener(new PipeNotification(channel, event, message));
         });
     }
 
     once(channel: string, listener: PipeListener<Electron.Event, any>): void {
         ipcRenderer.once(channel, (event: Electron.Event, message: any) => {
-            listener(new PipeNotification(event, message));
+            listener(new PipeNotification(channel, event, message));
         });
     }
 

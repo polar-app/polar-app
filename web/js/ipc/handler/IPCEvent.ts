@@ -2,7 +2,7 @@ import {IPCMessage} from './IPCMessage';
 import {WritablePipe} from '../channels/Pipe';
 
 /**
- * Represents an event that we can respond to.
+ * Represents an event that we can respond with.
  */
 export class IPCEvent {
 

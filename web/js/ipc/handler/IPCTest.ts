@@ -6,6 +6,8 @@ import {IPCEngine} from './IPCEngine';
 import {assertJSON} from '../../test/Assertions';
 import {MockPipes} from '../channels/MockPipes';
 import {IPCPipe} from './IPCPipe';
+import {IPCEvent} from './IPCEvent';
+import {WritablePipes} from '../channels/Pipe';
 
 describe('IPCTest', function() {
 
@@ -48,11 +50,25 @@ describe('IPCTest', function() {
 
         }
 
+        let responses: IPCMessage<any>[] = [];
+
+        class HelloIPCPipe extends IPCPipe {
+
+            convertEvent(obj: any): IPCEvent {
+
+                let writablePipe = WritablePipes.create((channel: string, event: IPCMessage<any>) => responses.push(event));
+
+                return new IPCEvent(writablePipe);
+            }
+
+        }
+
+
         let mockChannels: MockPipes<PersonEvent, any> = MockPipes.create();
 
         // now convert our types for us...
 
-        let ipcChannel = new IPCPipe<PersonEvent>(mockChannels.left);
+        let ipcChannel = new HelloIPCPipe(mockChannels.left);
 
         let ipcRegistry = new IPCRegistry<Person>();
 
