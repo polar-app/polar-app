@@ -1,20 +1,19 @@
 import {IPCMessage} from './IPCMessage';
 import {IPCRegistry} from './IPCRegistry';
 import {Logger} from '../../logger/Logger';
-import {ReadablePipe} from '../channels/Pipe';
 import {IPCPipe} from './IPCPipe';
 
 const log = Logger.create();
 
 export class IPCEngine<E, M> {
 
-    private readonly pipe: ReadablePipe<E,IPCMessage<M>>;
+    private readonly pipe: IPCPipe;
 
     private readonly channel: string;
 
-    private readonly ipcRegistry: IPCRegistry<E>;
+    private readonly ipcRegistry: IPCRegistry;
 
-    constructor(pipe: IPCPipe, channel: string, ipcRegistry: IPCRegistry<E>) {
+    constructor(pipe: IPCPipe, channel: string, ipcRegistry: IPCRegistry) {
         this.pipe = pipe;
         this.channel = channel;
         this.ipcRegistry = ipcRegistry;

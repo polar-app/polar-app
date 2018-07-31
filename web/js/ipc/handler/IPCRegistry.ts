@@ -3,11 +3,11 @@
  */
 import {IPCHandler} from './IPCHandler';
 
-export class IPCRegistry<E> {
+export class IPCRegistry {
 
-    private backing: { [type: string]: IPCHandler<E, any> } = {};
+    private backing: { [type: string]: IPCHandler<any> } = {};
 
-    register(handler: IPCHandler<E, any>) {
+    register(handler: IPCHandler<any>) {
         this.backing[handler.getType()] = handler;
     }
 

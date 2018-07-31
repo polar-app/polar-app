@@ -13,6 +13,20 @@ describe('IPCTest', function() {
 
     it("Test proper handling of messages", async function () {
 
+        let people: Person[] = [];
+
+        let greetings: Hello[] = [];
+
+        class Hello {
+
+            public readonly person: Person;
+
+            constructor(person: Person) {
+                this.person = person;
+            }
+
+        }
+
         class Person {
 
             private readonly name: string;
@@ -31,9 +45,7 @@ describe('IPCTest', function() {
 
         }
 
-        let greetings: Person[] = [];
-
-        class HelloHandler extends IPCHandler<PersonEvent, Person> {
+        class HelloHandler extends IPCHandler<Person> {
 
             protected createValue(ipcMessage: IPCMessage<Person>): Person {
                 return Person.create(ipcMessage.value);
@@ -43,9 +55,10 @@ describe('IPCTest', function() {
                 return 'hello';
             }
 
-            protected handleIPC(event: PersonEvent, person: Person): void {
+            protected handleIPC(event: IPCEvent, person: Person): void {
                 console.log("say hello to: ", person);
-                greetings.push(person)
+                people.push(person);
+                greetings.push(new Hello(person));
             }
 
         }
@@ -63,14 +76,13 @@ describe('IPCTest', function() {
 
         }
 
-
         let mockChannels: MockPipes<PersonEvent, any> = MockPipes.create();
 
         // now convert our types for us...
 
         let ipcChannel = new HelloIPCPipe(mockChannels.left);
 
-        let ipcRegistry = new IPCRegistry<Person>();
+        let ipcRegistry = new IPCRegistry();
 
         ipcRegistry.register(new HelloHandler());
 
@@ -80,14 +92,28 @@ describe('IPCTest', function() {
 
         mockChannels.right.write('school', new IPCMessage('hello', new Person('Alice')));
 
-        let expected = [
+        let expectedPeople = [
             {
                 "name": "Alice"
             }
         ];
 
-        assertJSON(greetings, expected);
+        assertJSON(people, expectedPeople);
+
+        let expectedGreetings = [
+                {
+                    "person": {
+                        "name": "Alice"
+                    }
+                }
+            ]
+        ;
+
+        assertJSON(greetings, expectedGreetings);
+
 
     });
+
+
 
 });
