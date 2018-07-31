@@ -24,13 +24,14 @@ export class MockChannels<E,M> {
 
 }
 
-class MockChannel<E,M> implements Channel<E,M> {
+export class MockChannel<E,M> extends Channel<E,M> {
 
     private name: string;
 
     target?: MockChannel<E,M>;
 
     constructor(name: string) {
+        super();
         this.name = name;
     }
 

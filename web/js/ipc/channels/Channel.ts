@@ -1,16 +1,32 @@
 
-export interface Channel<E,M> {
+export abstract class Channel<E,M> implements WritableChannel<M> {
 
-    write(channel: string, message: M): void;
+    abstract write(channel: string, message: M): void;
 
-    on(channel: string, listener: ChannelListener<E,M>): void;
+    abstract on(channel: string, listener: ChannelListener<E,M>): void;
 
-    once(channel: string, listener: ChannelListener<E,M>): void;
+    abstract once(channel: string, listener: ChannelListener<E,M>): void;
 
     /**
      * Like once but uses a promise.  We return the value of the message
      */
-    when(channel: string): Promise<ChannelNotification<E,M>>;
+    when(channel: string): Promise<ChannelNotification<E,M>> {
+        return new Promise<ChannelNotification<E,M>>(resolve => {
+            this.once(channel, notification => {
+                resolve(notification);
+            })
+        })
+    }
+
+
+}
+
+/**
+ * Like a channel but we can only write.
+ */
+export interface WritableChannel <M> {
+
+    write(channel: string, message: M): void;
 
 }
 
