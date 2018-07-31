@@ -1,5 +1,5 @@
 import {IPCMessage} from './IPCMessage';
-import {WritablePipe} from '../channels/Pipe';
+import {WritablePipe} from '../pipes/Pipe';
 
 /**
  * Represents an event that we can respond with.

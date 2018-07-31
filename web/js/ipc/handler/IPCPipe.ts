@@ -1,6 +1,6 @@
 import {IPCMessage} from './IPCMessage';
-import {TypedPipe} from '../channels/TypedPipe';
 import {IPCEvent} from './IPCEvent';
+import {TypedPipe} from '../pipes/TypedPipe';
 
 /**
  * Takes a pipe and converts types to the types we need for IPC.

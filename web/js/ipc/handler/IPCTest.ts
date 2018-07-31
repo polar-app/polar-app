@@ -4,10 +4,10 @@ import {IPCMessage} from './IPCMessage';
 import {Objects} from '../../util/Objects';
 import {IPCEngine} from './IPCEngine';
 import {assertJSON} from '../../test/Assertions';
-import {MockPipes} from '../channels/MockPipes';
+import {MockPipes} from '../pipes/MockPipes';
 import {IPCPipe} from './IPCPipe';
 import {IPCEvent} from './IPCEvent';
-import {WritablePipes} from '../channels/Pipe';
+import {WritablePipes} from '../pipes/Pipe';
 
 describe('IPCTest', function() {
 

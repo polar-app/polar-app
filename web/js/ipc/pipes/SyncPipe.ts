@@ -1,8 +1,10 @@
-import {Pipe, PipeListener, PipeNotification} from './Pipe';
+import {Pipe} from './Pipe';
 
 /**
  * Provides a pipe that syncs with the remote pipe so that they are both
- * in the ready state.
+ * in the ready state.  This can be used to make sure both services are up and
+ * running before continuing to go forward sending message which may never be
+ * received.
  *
  */
 export class SyncPipe {
