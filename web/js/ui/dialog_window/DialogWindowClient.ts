@@ -22,13 +22,9 @@ export class DialogWindowClient {
 
     /**
      * Send a message to the ipcRenderer in the remote window.
-     *
-     * @param {void} message
-     * @return {Promise<void>}
      */
-    async send(message: void) {
-
-
+    send(channel: string, message: any) {
+        ipcRenderer.sendTo(this.dialogWindowReference.id, channel, message);
     }
 
     /**
@@ -38,11 +34,8 @@ export class DialogWindowClient {
      */
     static async create(options: DialogWindowOptions): Promise<DialogWindowClient> {
 
-        // TODO: make this async and await that the main process created the
-        // dialog properly by creating a unique ID and then having the main
-        // process reply with the ID...
-        //
-        // TODO: we also need tests to verify tht this actually works.
+        // TODO: it might be nice to have a framework for having
+        // request/response pair functions.
 
         let createRequest = new IPCMessage<DialogWindowOptions>('create', options);
 
