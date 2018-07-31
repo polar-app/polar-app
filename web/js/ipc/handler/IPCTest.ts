@@ -1,6 +1,6 @@
 import {IPCRegistry} from './IPCRegistry';
 import {IPCHandler} from './IPCHandler';
-import {IPCMessage} from '../../util/IPCMessage';
+import {IPCMessage} from './IPCMessage';
 import {Objects} from '../../util/Objects';
 import {IPCEngine} from './IPCEngine';
 import {assertJSON} from '../../test/Assertions';
@@ -37,7 +37,7 @@ describe('IPCTest', function() {
                 return Person.create(ipcMessage.value);
             }
 
-            protected getType(): string {
+            public getType(): string {
                 return 'hello';
             }
 
@@ -56,7 +56,7 @@ describe('IPCTest', function() {
 
         let ipcRegistry = new IPCRegistry<Person>();
 
-        ipcRegistry.register('hello', new HelloHandler());
+        ipcRegistry.register(new HelloHandler());
 
         let ipcEngine = new IPCEngine(ipcChannel, 'school', ipcRegistry);
 

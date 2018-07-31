@@ -1,10 +1,10 @@
 import {IPCMessage} from './IPCMessage';
-import {Objects} from './Objects';
+import {Objects} from '../../util/Objects';
 
 const assert = require('assert');
-const {assertJSON} = require("../test/Assertions");
+const {assertJSON} = require("../../test/Assertions");
 
-const {TextArray} = require("./TextArray");
+const {TextArray} = require("../../util/TextArray");
 
 describe('IPCMessage', function() {
 

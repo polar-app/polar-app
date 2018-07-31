@@ -1,42 +1,43 @@
-import {Pipe, PipeListener, PipeNotification} from './Pipe';
+import {PipeListener, PipeNotification, ReadablePipe} from './Pipe';
 
 /**
  * Like a regular channel but when someone writes to us we convert types from
  * 'any' to the required type and we push it to the delegate.
  *
  */
-export abstract class TypedPipe<E, M> implements Pipe<E, any> {
+export abstract class TypedPipe<E, M> implements ReadablePipe<any, any> {
 
-    private readonly channel: Pipe<E,any>;
+    private readonly pipe: ReadablePipe<E,any>;
 
-    protected constructor(source: Pipe<E,any>) {
-        this.channel = source;
+    protected constructor(source: ReadablePipe<E,any>) {
+        this.pipe = source;
     }
 
     on(channel: string, listener: PipeListener<E, M>): void {
-        this.channel.on(channel, (channelNotification) => {
+        this.pipe.on(channel, (channelNotification) => {
             listener(this.convertChannelNotification(channelNotification));
         });
     }
 
     once(channel: string, listener: PipeListener<E, any>): void {
-        this.channel.once(channel, (channelNotification) => {
+        this.pipe.once(channel, (channelNotification) => {
             listener(this.convertChannelNotification(channelNotification));
         });
     }
 
     async when(channel: string): Promise<PipeNotification<E, M>> {
-        return this.convertChannelNotification(await this.channel.when(channel))
+        return this.convertChannelNotification(await this.pipe.when(channel))
     }
 
-    write(channel: string, message: M): void {
-        this.channel.write(channel, message);
+    convertChannelNotification(channelNotification: PipeNotification<any,any>) {
+
+        return new PipeNotification<E,M>(this.convertEvent(channelNotification.event),
+                                         this.convertMessage(channelNotification.message));
+
     }
 
-    convertChannelNotification(channelNotification: PipeNotification<E,any>) {
-        return new PipeNotification<E,M>(channelNotification.event, this.convert(channelNotification.message));
-    }
+    abstract convertEvent(obj: any): E;
 
-    abstract convert(obj: any): M;
+    abstract convertMessage(obj: any): M;
 
 }

@@ -1,4 +1,4 @@
-import {IPCMessage} from '../../util/IPCMessage';
+import {IPCMessage} from './IPCMessage';
 import {IPCRegistry} from './IPCRegistry';
 import {Logger} from '../../logger/Logger';
 import {Pipe, ReadablePipe} from '../channels/Pipe';
@@ -13,7 +13,7 @@ export class IPCEngine<E, M> {
 
     private readonly ipcRegistry: IPCRegistry<E>;
 
-    constructor(pipe: Pipe<E,IPCMessage<M>>, channel: string, ipcRegistry: IPCRegistry<E>) {
+    constructor(pipe: ReadablePipe<E,IPCMessage<M>>, channel: string, ipcRegistry: IPCRegistry<E>) {
         this.pipe = pipe;
         this.channel = channel;
         this.ipcRegistry = ipcRegistry;

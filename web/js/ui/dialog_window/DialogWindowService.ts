@@ -1,5 +1,5 @@
 import {ipcMain, WebContents} from "electron";
-import {IPCMessage} from '../../util/IPCMessage';
+import {IPCMessage} from '../../ipc/handler/IPCMessage';
 import {DialogWindow, DialogWindowOptions} from './DialogWindow';
 import {Logger} from '../../logger/Logger';
 import {DialogWindowReference} from './DialogWindowReference';

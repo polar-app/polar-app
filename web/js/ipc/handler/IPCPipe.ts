@@ -1,14 +1,19 @@
-import {Pipe} from '../channels/Pipe';
-import {IPCMessage} from '../../util/IPCMessage';
+import {ReadablePipe} from '../channels/Pipe';
+import {IPCMessage} from './IPCMessage';
 import {TypedPipe} from '../channels/TypedPipe';
 
 export class IPCPipe<E> extends TypedPipe<E, IPCMessage<any>> {
 
-    constructor(source: Pipe<E, IPCMessage<any>>) {
+    constructor(source: ReadablePipe<E, any>) {
         super(source);
     }
 
-    convert(obj: any): IPCMessage<any> {
+    convertEvent(obj: any): E {
+        // FIXME: we need one for Electron...
+        return undefined;
+    }
+
+    convertMessage(obj: any): IPCMessage<any> {
         return IPCMessage.create(obj);
     }
 

@@ -1,7 +1,7 @@
 /**
  * A generic IPC request message with a type parameter.
  */
-import {Optional} from './ts/Optional';
+import {Optional} from '../../util/ts/Optional';
 
 export class IPCMessage<T> {
 

@@ -1,6 +1,6 @@
 import {ipcRenderer} from 'electron';
 import {DialogWindowOptions} from './DialogWindow';
-import {IPCMessage} from '../../util/IPCMessage';
+import {IPCMessage} from '../../ipc/handler/IPCMessage';
 import {DialogWindowReference} from './DialogWindowReference';
 import {IPCRendererPromises} from '../../electron/framework/IPCRenderPromises';
 

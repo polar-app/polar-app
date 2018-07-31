@@ -1,4 +1,4 @@
-import {IPCMessage} from '../../util/IPCMessage';
+import {IPCMessage} from './IPCMessage';
 
 export abstract class IPCHandler<E,M> {
 
@@ -11,7 +11,7 @@ export abstract class IPCHandler<E,M> {
      * Get the type of requests with which this handler works.
      *
      */
-    protected abstract getType(): string;
+    public abstract getType(): string;
 
     protected abstract handleIPC(event: E, message: M): void;
 

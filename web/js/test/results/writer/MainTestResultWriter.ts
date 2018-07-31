@@ -1,6 +1,6 @@
 import {Logger} from '../../../logger/Logger';
 import {ipcMain} from "electron";
-import {IPCMessage} from '../../../util/IPCMessage';
+import {IPCMessage} from '../../../ipc/handler/IPCMessage';
 
 const log = Logger.create();
 

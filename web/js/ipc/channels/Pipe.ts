@@ -9,16 +9,12 @@ export abstract class Pipe<E,M> implements WritablePipe<M>, ReadablePipe<E, M> {
     abstract once(channel: string, listener: PipeListener<E,M>): void;
 
     when(channel: string): Promise<PipeNotification<E,M>> {
-        return new Promise<PipeNotification<E,M>>(resolve => {
-            this.once(channel, notification => {
-                resolve(notification);
-            })
-        })
+        return when(this, channel);
     }
 
 }
 
-export function when<E,M>(pipe: Pipe<E,M>, channel: string) {
+export function when<E,M>(pipe: ReadablePipe<E,M>, channel: string) {
 
     return new Promise<PipeNotification<E,M>>(resolve => {
         pipe.once(channel, notification => {

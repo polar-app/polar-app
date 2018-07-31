@@ -7,8 +7,8 @@ export class IPCRegistry<E> {
 
     private backing: { [type: string]: IPCHandler<E, any> } = {};
 
-    register(type: string, handler: IPCHandler<E, any>) {
-        this.backing[type] = handler;
+    register(handler: IPCHandler<E, any>) {
+        this.backing[handler.getType()] = handler;
     }
 
     get(type: string) {

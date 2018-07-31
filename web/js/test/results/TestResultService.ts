@@ -3,7 +3,7 @@
 import {ipcRenderer} from "electron";
 import {Logger} from '../../logger/Logger';
 import {TestResult} from './renderer/TestResult';
-import {IPCMessage} from '../../util/IPCMessage';
+import {IPCMessage} from '../../ipc/handler/IPCMessage';
 
 const log = Logger.create();
 
