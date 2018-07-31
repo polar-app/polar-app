@@ -12,6 +12,7 @@ import {MainReadablePipe} from '../../ipc/channels/MainReadablePipe';
 import {IPCPipe} from '../../ipc/handler/IPCPipe';
 import {IPCRegistry} from '../../ipc/handler/IPCRegistry';
 import BrowserWindow = Electron.BrowserWindow;
+import {IPCEvent} from '../../ipc/handler/IPCEvent';
 
 const log = Logger.create();
 
@@ -40,7 +41,7 @@ export class DialogWindowService2 {
 
         let ipcPipe = new IPCPipe<Electron.Event>(mainReadablePipe);
 
-        let ipcRegistry = new IPCRegistry<Electron.Event>();
+        let ipcRegistry = new IPCRegistry();
 
         ipcRegistry.register(new GetParentWindowHandler(this.parentWindowRegistry));
 
@@ -83,7 +84,7 @@ export class DialogWindowService2 {
 
 }
 
-class GetParentWindowHandler extends IPCHandler<Electron.Event, GetParentWindowRequest> {
+class GetParentWindowHandler extends IPCHandler<GetParentWindowRequest> {
 
     private readonly parentWindowRegistry: ParentWindowRegistry;
 
@@ -100,13 +101,13 @@ class GetParentWindowHandler extends IPCHandler<Electron.Event, GetParentWindowR
         return 'get-parent-window';
     }
 
-    protected handleIPC(event: Electron.Event, getParentWindowRequest: GetParentWindowRequest): void {
+    protected handleIPC(event: IPCEvent, getParentWindowRequest: GetParentWindowRequest): void {
 
         let parentWindowReference = this.parentWindowRegistry.get(getParentWindowRequest.dialogWindowReference);
 
         let parentWindowReferenceMessage = new IPCMessage<DialogWindowReference>('parent-window-reference', parentWindowReference);
 
-        event.sender.send(CHANNEL_NAME, parentWindowReferenceMessage)
+        event.writeablePipe.write(CHANNEL_NAME, parentWindowReferenceMessage)
 
     }
 
