@@ -2,6 +2,7 @@ import {Channel, ChannelListener, ChannelNotification} from './Channel';
 
 /**
  * Provides a channel that syncs with the remote channel so that they are both
+ * in the ready state.
  *
  */
 export class SyncChannel {

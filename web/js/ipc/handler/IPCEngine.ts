@@ -11,10 +11,9 @@ export class IPCEngine<E, M> {
 
     private readonly channelName: string;
 
-    private readonly ipcRegistry: IPCRegistry;
+    private readonly ipcRegistry: IPCRegistry<E>;
 
-
-    constructor(channel: Channel<E,M>, channelName: string, ipcRegistry: IPCRegistry) {
+    constructor(channel: Channel<E,M>, channelName: string, ipcRegistry: IPCRegistry<E>) {
         this.channel = channel;
         this.channelName = channelName;
         this.ipcRegistry = ipcRegistry;
@@ -30,7 +29,7 @@ export class IPCEngine<E, M> {
 
                 let ipcHandler = this.ipcRegistry.get(ipcMessage.type);
 
-                ipcHandler.handle(channelNotification);
+                ipcHandler.handle(channelNotification.event, ipcMessage);
 
             } else {
                 log.warn("IPC handler type is not registered: " + ipcMessage.type);

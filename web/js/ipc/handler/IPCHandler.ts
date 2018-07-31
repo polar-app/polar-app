@@ -1,18 +1,12 @@
-import {WebContents} from "electron";
 import {IPCMessage} from '../../util/IPCMessage';
-import {ChannelNotification} from '../channels/Channel';
 
 export abstract class IPCHandler<E,M> {
 
-    handle(msg: any, sender: WebContents) {
+    handle(event: E, ipcMessage: IPCMessage<any>) {
 
-        let message = this.createMessage(msg);
-        this.handleIPC(message, sender);
+        let message = this.createValue(ipcMessage.value);
+        this.handleIPC(event, message);
 
-    }
-
-    createMessage(msg: any): IPCMessage<M> {
-        return IPCMessage.create(msg, this.createValue);
     }
 
     /**
@@ -21,8 +15,10 @@ export abstract class IPCHandler<E,M> {
      */
     protected abstract getType(): string;
 
-    protected abstract handleIPC(channelNotification: ChannelNotification<E,M>): void;
+    protected abstract handleIPC(event: E, message: M): void;
 
-    protected abstract createValue(): M;
+    protected abstract createValue(ipcMessage: IPCMessage<any>): M;
 
 }
+
+
