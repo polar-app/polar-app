@@ -3,6 +3,10 @@ import {IPCMessage} from '../../util/IPCMessage';
 import {DialogWindow, DialogWindowOptions} from './DialogWindow';
 import {Logger} from '../../logger/Logger';
 import {DialogWindowReference} from './DialogWindowReference';
+import {ParentWindowRegistry} from './ParentWindowRegistry';
+import {ParentWindowReference} from './ParentWindowReference';
+import BrowserWindow = Electron.BrowserWindow;
+import {GetParentWindowRequest} from './ipc/DialogWindows';
 
 const log = Logger.create();
 
@@ -14,14 +18,21 @@ const log = Logger.create();
  */
 export class DialogWindowService {
 
+    private parentWindowRegistry: ParentWindowRegistry = new ParentWindowRegistry();
+
     start() {
 
         ipcMain.on('dialog-window', (event: Electron.Event, message: any) => {
 
-            let ipcMessage = IPCMessage.create<DialogWindowOptions>(message);
+            let ipcMessage = IPCMessage.create(message);
 
-            if(ipcMessage.type === "create") {
+            if(ipcMessage.type === 'create') {
                 let createWindowMessage = IPCMessage.create<DialogWindowOptions>(message);
+                this.onCreate(DialogWindowOptions.create(createWindowMessage.value), event.sender, createWindowMessage);
+            }
+
+            if(ipcMessage.type === 'get-parent-window') {
+                let getParentWindowRequest = IPCMessage.create<GetParentWindowRequest>(message);
                 this.onCreate(DialogWindowOptions.create(createWindowMessage.value), event.sender, createWindowMessage);
             }
 
@@ -33,6 +44,12 @@ export class DialogWindowService {
 
         DialogWindow.create(options)
             .then((dialogWindow: DialogWindow) => {
+
+                let browserWindow = BrowserWindow.fromWebContents(sender);
+                let parentWindowReference = new ParentWindowReference(browserWindow.id);
+
+                this.parentWindowRegistry.register(dialogWindow.dialogWindowReference, parentWindowReference);
+
                 this.sendCreated(createWindowMessage, sender, dialogWindow.dialogWindowReference);
             })
             .catch(err => log.error("Could not create dialog window: ", err));

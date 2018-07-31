@@ -1,9 +1,6 @@
-export class DialogWindowReference {
+import {WindowReference} from './WindowReference';
 
-    id: number;
+export class DialogWindowReference extends WindowReference {
 
-    constructor(id: number) {
-        this.id = id;
-    }
 
 }

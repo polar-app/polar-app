@@ -1,63 +1,52 @@
-
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 class Objects {
-
-    /**
-     * Take the current object, and use given object as a set of defaults.
-     */
     static defaults(current, defaults) {
-
         let result = current;
-
         if (!result) {
             result = {};
         }
-
-        for(let key in defaults) {
-            if(defaults.hasOwnProperty(key) && ! result.hasOwnProperty(key)) {
+        for (let key in defaults) {
+            if (defaults.hasOwnProperty(key) && !result.hasOwnProperty(key)) {
                 result[key] = defaults[key];
             }
         }
-
         return result;
-
     }
-
-    /**
-     * Clear an array or dictionary of all its values so it is reset.
-     * This modifies the object directly.
-     *
-     * @param obj
-     */
     static clear(obj) {
-
-        if(obj instanceof Array) {
-
-            for(let idx = 0; idx < obj.length; ++idx) {
+        if (obj instanceof Array) {
+            for (let idx = 0; idx < obj.length; ++idx) {
                 obj.pop();
             }
-
             return obj;
-
         }
-
-        if(typeof obj === "object") {
-
-            for(let key in obj) {
+        if (typeof obj === "object") {
+            for (let key in obj) {
                 delete obj[key];
             }
-
             return obj;
-
         }
-
         throw new Error("Only works for arrays or objects");
-
     }
-
     static duplicate(obj) {
         return JSON.parse(JSON.stringify(obj));
     }
-
+    static create(proto) {
+        return Object.create(proto);
+    }
+    static createInstance(prototype, val) {
+        let result = Objects.create(prototype);
+        Object.assign(result, val);
+        return result;
+    }
 }
-
-module.exports.Objects = Objects
+exports.Objects = Objects;
+function create(proto) {
+    return Object.create(proto);
+}
+function createInstance(prototype, val) {
+    let result = create(prototype);
+    Object.assign(result, val);
+    return result;
+}
+//# sourceMappingURL=Objects.js.map

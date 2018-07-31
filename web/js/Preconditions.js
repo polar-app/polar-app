@@ -1,151 +1,69 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 class Preconditions {
-
-    /**
-     *
-     * @param value
-     * @param testFunction {Function} Assert that the test function returns true
-     * @param message
-     * @return {*} Return the value we've been given.
-     */
     static assert(value, testFunction, message) {
-
         Preconditions.assertNotNull(testFunction, "testFunction");
-
         let result = testFunction(value);
-
-        if(!result) {
+        if (!result) {
             throw new Error(`Assertion failed for value ${value}: ` + message);
         }
-
         return value;
-
     }
-
-    /**
-     * Assert that this value is defined , not-null, and also not NaN and also a number.
-     * @param value
-     * @param expected The expected value.
-     * @param name
-     * @return {number}
-     */
     static assertEqual(value, expected, name) {
-
-        if(value !== expected) {
+        if (value !== expected) {
             throw new Error(`Value of ${value} !==- ${expected}`);
         }
-
         return value;
-
     }
-
-    /**
-     * Assert that this value is defined , not-null, and also not NaN and also a number.
-     * @param value {number} The value we expect to be a number.
-     * @param name {string} The name of the number.
-     * @return {number}
-     */
     static assertNumber(value, name) {
-
         Preconditions.assertNotNull(value, name);
-
-        if(isNaN(value)) {
+        if (isNaN(value)) {
             throw new Error(`Precondition failure for ${name}: NaN`);
         }
-
         Preconditions.assertTypeOf(value, "number", name);
-
         return value;
-
     }
-
-    /**
-     *
-     * @param value {*}
-     * @param instance {class}
-     * @param name
-     * @return {*}
-     */
     static assertInstanceOf(value, instance, name) {
-
         Preconditions.assertNotNull(value, "value");
         Preconditions.assertNotNull(instance, "instance");
-
-        if (! (value instanceof instance)) {
+        if (!(value instanceof instance)) {
             throw new Error(`Precondition for instanceof '${name}' was not ${instance.name}.`);
         }
-
         return value;
-
     }
-
-    /**
-     *
-     * @param value {*}
-     * @param type {string}
-     * @param name {string}
-     * @return {*}
-     */
     static assertTypeOf(value, type, name) {
-
         if (typeof value !== type) {
-            throw new Error(`Precondition for typeof '${name}' was not ${expected} but actually: ` + typeof value);
+            throw new Error(`Precondition for typeof '${name}' was not ${type} but actually: ` + typeof value);
         }
-
         return value;
-
     }
-
     static assertNotNull(value, name) {
-
         if (value === null) {
-            throw new Error(`Precondition (argument) for '${name}' null.`)
+            throw new Error(`Precondition (argument) for '${name}' null.`);
         }
-
         if (value === undefined) {
-            throw new Error(`Precondition (argument) for '${name}' undefined.`)
+            throw new Error(`Precondition (argument) for '${name}' undefined.`);
         }
-
         return value;
-
     }
-
     static assertNotTypeOf(value, name, type) {
-
-        if (typeof value === type ) {
+        if (typeof value === type) {
             throw new Error(`Precondition for typeof '${name}' was ${type} but not allowed`);
         }
-
         return value;
-
     }
-
     static assertNotInstanceOf(value, name, instance) {
-
         if (value instanceof instance) {
             throw new Error(`Precondition for instanceof '${name}' was ${instance} but not allowed`);
         }
-
         return value;
-
     }
-
-    /**
-     * Use a default value if one is not specified.
-     *
-     * @param currentValue
-     * @param defaultValue
-     * @return {*}
-     */
     static defaultValue(currentValue, defaultValue) {
-
-        if(! currentValue) {
+        if (!currentValue) {
             return defaultValue;
         }
-
         return currentValue;
-
     }
-
-};
-
-module.exports.Preconditions = Preconditions;
+}
+exports.Preconditions = Preconditions;
+//# sourceMappingURL=Preconditions.js.map
