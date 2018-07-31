@@ -1,51 +1,50 @@
 import {Channel, ChannelListener, ChannelNotification} from './Channel';
-import {not} from 'rxjs/internal-compatibility';
 
-export class MockChannels {
+export class MockChannels<E,M> {
 
-    public readonly left: MockChannel;
-    public readonly right: MockChannel;
+    public readonly left: MockChannel<E,M>;
+    public readonly right: MockChannel<E,M>;
 
-    constructor(left: MockChannel, right: MockChannel) {
+    constructor(left: MockChannel<E,M>, right: MockChannel<E,M>) {
         this.left = left;
         this.right = right;
     }
 
-    static create(): MockChannels {
+    static create<E,M>(): MockChannels<E,M> {
 
-        let left = new MockChannel('left');
-        let right = new MockChannel('right');
+        let left = new MockChannel<E,M>('left');
+        let right = new MockChannel<E,M>('right');
 
         left.target=right;
         right.target=left;
 
-        return new MockChannels(left, right);
+        return new MockChannels<E,M>(left, right);
 
     }
 
 }
 
-class MockChannel implements Channel {
+class MockChannel<E,M> implements Channel<E,M> {
 
     private name: string;
 
-    target?: MockChannel;
+    target?: MockChannel<E,M>;
 
     constructor(name: string) {
         this.name = name;
     }
 
-    protected onListeners: ListenerMap = new ListenerMap();
+    protected onListeners: ListenerMap<E,M> = new ListenerMap();
 
-    protected onceListeners: ListenerMap = new ListenerMap();
+    protected onceListeners: ListenerMap<E,M> = new ListenerMap();
 
-    write(channel: string, msg: any): void {
+    write(channel: string, msg: M): void {
 
         if(! this.target) {
             throw new Error("No target");
         }
 
-        let notification = new ChannelNotification({}, msg);
+        let notification = new ChannelNotification<E,M>(<E>{}, msg);
 
         // deliver the messages to the target now...
 
@@ -61,16 +60,16 @@ class MockChannel implements Channel {
 
     }
 
-    on(channel: string, listener: ChannelListener) {
+    on(channel: string, listener: ChannelListener<E,M>) {
         this.onListeners.register(channel, listener);
     }
 
-    once(channel: string, listener: ChannelListener) {
+    once(channel: string, listener: ChannelListener<E,M>) {
         this.onceListeners.register(channel, listener);
     }
 
-    when(channel: string): Promise<ChannelNotification> {
-        return new Promise<ChannelNotification>(resolve => {
+    when(channel: string): Promise<ChannelNotification<E,M>> {
+        return new Promise<ChannelNotification<E,M>>(resolve => {
             this.once(channel, notification => {
                 resolve(notification);
             })
@@ -79,11 +78,11 @@ class MockChannel implements Channel {
 
 }
 
-class ListenerMap {
+class ListenerMap<E,M> {
 
-    private backing: { [index: string]: ChannelListener[] } = {};
+    private backing: { [index: string]: ChannelListener<E,M>[] } = {};
 
-    register(channel: string, listener: ChannelListener): void {
+    register(channel: string, listener: ChannelListener<E,M>): void {
 
         if(! (channel in this.backing)) {
             this.backing[channel] = [];
@@ -93,7 +92,7 @@ class ListenerMap {
 
     }
 
-    get(channel: string): ChannelListener[] {
+    get(channel: string): ChannelListener<E,M>[] {
 
         let result = this.backing[channel];
 

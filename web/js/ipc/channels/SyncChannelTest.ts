@@ -8,7 +8,7 @@ describe('SyncChannel', function() {
 
     it("create sync channels L->R", async function () {
 
-        let mockChannels = MockChannels.create();
+        let mockChannels: MockChannels<any, string> = MockChannels.create();
 
         let left = new SyncChannel(mockChannels.left);
         let right = new SyncChannel(mockChannels.right);
@@ -22,7 +22,7 @@ describe('SyncChannel', function() {
 
     it("create sync channels R->L", async function () {
 
-        let mockChannels = MockChannels.create();
+        let mockChannels: MockChannels<any, string> = MockChannels.create();
 
         let left = new SyncChannel(mockChannels.left);
         let right = new SyncChannel(mockChannels.right);
