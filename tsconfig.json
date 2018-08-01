@@ -33,7 +33,7 @@
         "paths": {
             "*": ["node_modules/*"]
         },
-        "lib": ["es2015", "dom"]
+        "lib": ["es2015", "dom", "es2017.object"]
 
     },
     "include": [

@@ -14,30 +14,30 @@ export abstract class TypedPipe<E, M> implements ReadablePipe<any, any> {
     }
 
     on(channel: string, listener: PipeListener<E, M>): void {
-        this.pipe.on(channel, (channelNotification) => {
-            listener(this.convertChannelNotification(channelNotification));
+        this.pipe.on(channel, (pipeNotification) => {
+            listener(this.convertPipeNotification(pipeNotification));
         });
     }
 
     once(channel: string, listener: PipeListener<E, M>): void {
-        this.pipe.once(channel, (channelNotification) => {
-            listener(this.convertChannelNotification(channelNotification));
+        this.pipe.once(channel, (pipeNotification) => {
+            listener(this.convertPipeNotification(pipeNotification));
         });
     }
 
     async when(channel: string): Promise<PipeNotification<E, M>> {
-        return this.convertChannelNotification(await this.pipe.when(channel))
+        return this.convertPipeNotification(await this.pipe.when(channel))
     }
 
-    convertChannelNotification(channelNotification: PipeNotification<any,any>) {
+    convertPipeNotification(pipeNotification: PipeNotification<any,any>) {
 
-        return new PipeNotification<E,M>(channelNotification.channel,
-                                         this.convertEvent(channelNotification.event),
-                                         this.convertMessage(channelNotification.message));
+        return new PipeNotification<E,M>(pipeNotification.channel,
+                                         this.convertEvent(pipeNotification),
+                                         this.convertMessage(pipeNotification.message));
 
     }
 
-    abstract convertEvent(obj: any): E;
+    abstract convertEvent(pipeNotification: PipeNotification<any,any>): E;
 
     abstract convertMessage(obj: any): M;
 

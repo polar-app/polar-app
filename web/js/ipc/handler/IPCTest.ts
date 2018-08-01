@@ -6,7 +6,7 @@ import {IPCEngine} from './IPCEngine';
 import {assertJSON} from '../../test/Assertions';
 import {IPCPipe} from './IPCPipe';
 import {IPCEvent} from './IPCEvent';
-import {WritablePipes} from '../pipes/Pipe';
+import {PipeNotification, WritablePipes} from '../pipes/Pipe';
 import {MockPipes} from '../pipes/MockPipes';
 
 describe('IPCTest', function() {
@@ -67,11 +67,12 @@ describe('IPCTest', function() {
 
         class HelloIPCPipe extends IPCPipe<IPCEvent> {
 
-            convertEvent(obj: any): IPCEvent {
+            convertEvent(pipeNotification: PipeNotification<any, any>): IPCEvent {
 
                 let writablePipe = WritablePipes.create((channel: string, event: IPCMessage<any>) => responses.push(event));
 
-                return new IPCEvent(writablePipe);
+                return new IPCEvent(writablePipe, IPCMessage.create(pipeNotification.message));
+
             }
 
         }
@@ -84,13 +85,13 @@ describe('IPCTest', function() {
 
         let ipcRegistry = new IPCRegistry();
 
-        ipcRegistry.register(new HelloHandler());
+        ipcRegistry.registerPath('/test/school/hello', new HelloHandler());
 
-        let ipcEngine = new IPCEngine(ipcChannel, 'school', ipcRegistry);
+        let ipcEngine = new IPCEngine(ipcChannel, ipcRegistry);
 
         ipcEngine.start();
 
-        mockChannels.right.write('school', new IPCMessage('hello', new Person('Alice')));
+        mockChannels.right.write('/test/school/hello', new IPCMessage('hello', new Person('Alice')));
 
         let expectedPeople = [
             {
@@ -111,9 +112,6 @@ describe('IPCTest', function() {
 
         assertJSON(greetings, expectedGreetings);
 
-
     });
-
-
 
 });

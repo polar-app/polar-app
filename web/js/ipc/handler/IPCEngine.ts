@@ -9,33 +9,26 @@ export class IPCEngine<E, M> {
 
     private readonly pipe: IPCPipe<E>;
 
-    private readonly channel: string;
+    public readonly ipcRegistry: IPCRegistry;
 
-    private readonly ipcRegistry: IPCRegistry;
-
-    constructor(pipe: IPCPipe<E>, channel: string, ipcRegistry: IPCRegistry) {
+    constructor(pipe: IPCPipe<E>, ipcRegistry: IPCRegistry) {
         this.pipe = pipe;
-        this.channel = channel;
         this.ipcRegistry = ipcRegistry;
     }
 
     start() {
 
-        this.pipe.on(this.channel, pipeNotification => {
+        this.ipcRegistry.entries().forEach(ipcRegistration => {
 
-            let ipcMessage = IPCMessage.create(pipeNotification.message);
+            this.pipe.on(ipcRegistration.path, pipeNotification => {
 
-            if(this.ipcRegistry.contains(ipcMessage.type)) {
+                let ipcMessage = IPCMessage.create(pipeNotification.message);
 
-                let ipcHandler = this.ipcRegistry.get(ipcMessage.type);
+                ipcRegistration.handler.handle(pipeNotification.event, ipcMessage);
 
-                ipcHandler.handle(pipeNotification.event, ipcMessage);
+            });
 
-            } else {
-                log.warn("IPC handler type is not registered: " + ipcMessage.type);
-            }
-
-        });
+        })
 
     }
 

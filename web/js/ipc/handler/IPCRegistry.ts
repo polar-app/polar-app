@@ -1,22 +1,36 @@
 /**
  * Index of handler by the IPC type.
  */
+import {IPCRegistration} from './IPCRegistration';
 import {IPCHandler} from './IPCHandler';
 
 export class IPCRegistry {
 
-    private backing: { [type: string]: IPCHandler<any> } = {};
+    private _backing: { [path: string]: IPCRegistration } = {};
 
-    register(handler: IPCHandler<any>) {
-        this.backing[handler.getType()] = handler;
+    private _entries: IPCRegistration[] = [];
+
+    register(registration: IPCRegistration): void {
+        this._backing[registration.path] = registration;
+        this._entries.push(registration);
     }
 
-    get(type: string) {
-        return this.backing[type];
+    registerPath(path: string, handler: IPCHandler<any>): void {
+        this.register(new IPCRegistration(path, handler));
     }
 
-    contains(type: string) {
-        return type in this.backing;
+    get(path: string): IPCRegistration {
+        return this._backing[path];
+    }
+
+    contains(path: string): boolean {
+        return path in this._backing;
+    }
+
+    entries(): IPCRegistration[] {
+        return this._entries;
     }
 
 }
+
+

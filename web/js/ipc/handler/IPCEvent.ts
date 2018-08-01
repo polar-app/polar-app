@@ -8,8 +8,11 @@ export class IPCEvent {
 
     public readonly writeablePipe: WritablePipe<IPCMessage<any>>;
 
-    constructor(writeablePipe: WritablePipe<IPCMessage<any>>) {
+    public readonly message: IPCMessage<any>;
+
+    constructor(writeablePipe: WritablePipe<IPCMessage<any>>, message: IPCMessage<any>) {
         this.writeablePipe = writeablePipe;
+        this.message = message;
     }
 
 }
