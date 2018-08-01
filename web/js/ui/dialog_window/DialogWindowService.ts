@@ -6,7 +6,6 @@ import {DialogWindowReference} from './DialogWindowReference';
 import {ParentWindowRegistry} from './ParentWindowRegistry';
 import {ParentWindowReference} from './ParentWindowReference';
 import BrowserWindow = Electron.BrowserWindow;
-import {ChannelListener} from '../../ipc/channels/Pipe';
 
 const log = Logger.create();
 

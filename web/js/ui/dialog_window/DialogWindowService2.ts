@@ -4,8 +4,8 @@ import {IPCEngine} from '../../ipc/handler/IPCEngine';
 import {IPCRegistry} from '../../ipc/handler/IPCRegistry';
 import {ElectronIPCPipe} from '../../ipc/handler/ElectronIPCPipe';
 import {MainReadablePipe} from '../../ipc/pipes/MainReadablePipe';
-import {GetParentWindowHandler} from './ipc/GetParentWindowHandler';
-import {CreateWindowHandler} from './ipc/CreateWindowHandler';
+import {GetParentWindowHandler} from './handlers/GetParentWindowHandler';
+import {CreateWindowHandler} from './handlers/CreateWindowHandler';
 
 const log = Logger.create();
 

@@ -57,13 +57,17 @@ export class TestResultService {
         // TODO: migrate to optional for this...
         if(TestResult.get() === null || TestResult.get() == undefined) {
 
-            if(data.result !== null && data.result !== undefined) {
+            console.log("FIXME: got datA: ", data)
+
+            let ipcMessage = IPCMessage.create(data);
+
+            if(ipcMessage.value !== null && ipcMessage.value !== undefined) {
 
                 // TODO: TestResult should be a Result and we should
                 // enforce it by type.  Otherwise we don't support err
                 // values.
 
-                TestResult.set(data.result);
+                TestResult.set(ipcMessage.value);
 
                 log.info("Received test result: ", TestResult.get());
 

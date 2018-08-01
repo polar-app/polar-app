@@ -141,7 +141,7 @@ class DelegatedLogger {
         msg = this.caller + ": " + msg;
 
         if(args.length > 0) {
-            logFunction(msg, args);
+            logFunction(msg, ...args);
         } else {
             // don't pass 'args' as electron-logger will print [] if the args
             // is zero.

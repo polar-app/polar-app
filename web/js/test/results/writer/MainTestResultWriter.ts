@@ -66,12 +66,11 @@ export class MainTestResultWriter {
 
         log.info("Writing test result: ", result);
 
+        let ipcMessage = new IPCMessage('write', result);
+
         // use ipcMain to send the results to the TestResultService which is
         // running in the renderer
-        this.mainWindow.webContents.send("test-result", {
-            type: "write",
-            result
-        });
+        this.mainWindow.webContents.send("test-result", ipcMessage);
 
     }
 

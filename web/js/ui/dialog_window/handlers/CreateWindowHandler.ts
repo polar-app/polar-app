@@ -1,10 +1,8 @@
 import {ElectronIPCEvent} from '../../../ipc/handler/ElectronIPCEvent';
 import {ParentWindowRegistry} from '../ParentWindowRegistry';
-import {WebContents} from "electron";
 import {IPCHandler} from '../../../ipc/handler/IPCHandler';
 import {DialogWindowReference} from '../DialogWindowReference';
 import {IPCMessage} from '../../../ipc/handler/IPCMessage';
-import {ParentWindowReference} from '../ParentWindowReference';
 import {DialogWindow, DialogWindowOptions} from '../DialogWindow';
 import {Logger} from '../../../logger/Logger';
 
@@ -21,10 +19,6 @@ export class CreateWindowHandler extends IPCHandler<DialogWindowOptions> {
 
     protected createValue(ipcMessage: IPCMessage<DialogWindowOptions>): DialogWindowOptions {
         return DialogWindowOptions.create(ipcMessage.value);
-    }
-
-    getType(): string {
-        return 'create-window';
     }
 
     protected handleIPC(event: ElectronIPCEvent, dialogWindowOptions: DialogWindowOptions): void {

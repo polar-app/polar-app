@@ -37,7 +37,7 @@ export class Optional<T> {
     get(): T {
 
         if(this.value === undefined) {
-            throw new Error("Value is undefined");
+            throw new Error("The value is undefined");
         } else {
             return this.value;
         }

@@ -8,15 +8,9 @@ export abstract class IPCHandler<M> {
         this.handleIPC(event, message);
     }
 
-    /**
-     * Get the type of requests with which this handler works.
-     *
-     */
-    public abstract getType(): string;
-
     protected abstract handleIPC(event: IPCEvent, message: M): void;
 
-    protected abstract createValue(ipcMessage: IPCMessage<M>): M;
+    protected abstract createValue(ipcMessage: IPCMessage<any>): M;
 
 }
 

@@ -1,11 +1,10 @@
 import {ParentWindowRegistry} from '../ParentWindowRegistry';
 import {IPCEvent} from '../../../ipc/handler/IPCEvent';
-import {IPCHandler} from '../../../ipc/handler/IPCHandler';
 import {DialogWindowReference} from '../DialogWindowReference';
-import {GetParentWindowRequest} from './GetParentWindowRequest';
 import {IPCMessage} from '../../../ipc/handler/IPCMessage';
+import {AbstractDialogWindowReferenceHandler} from './AbstractDialogWindowReferenceHandler';
 
-export class GetParentWindowHandler extends IPCHandler<GetParentWindowRequest> {
+export class GetParentWindowHandler extends AbstractDialogWindowReferenceHandler {
 
     private readonly parentWindowRegistry: ParentWindowRegistry;
 
@@ -14,17 +13,9 @@ export class GetParentWindowHandler extends IPCHandler<GetParentWindowRequest> {
         this.parentWindowRegistry = parentWindowRegistry;
     }
 
-    protected createValue(ipcMessage: IPCMessage<GetParentWindowRequest>): GetParentWindowRequest {
-        return GetParentWindowRequest.create(ipcMessage.value);
-    }
+    protected handleIPC(event: IPCEvent, dialogWindowReference: DialogWindowReference): void {
 
-    public getType(): string {
-        return 'get-parent-window';
-    }
-
-    protected handleIPC(event: IPCEvent, request: GetParentWindowRequest): void {
-
-        let parentWindowReference = this.parentWindowRegistry.get(request.dialogWindowReference);
+        let parentWindowReference = this.parentWindowRegistry.get(dialogWindowReference);
 
         let parentWindowReferenceMessage = new IPCMessage<DialogWindowReference>('parent-window-reference', parentWindowReference);
 
