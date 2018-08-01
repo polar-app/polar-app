@@ -9,8 +9,6 @@ import {CreateWindowHandler} from './ipc/CreateWindowHandler';
 
 const log = Logger.create();
 
-const CHANNEL_NAME = 'dialog-window';
-
 /**
  *
  * Service that runs in the main process that responds to requests to create
@@ -29,10 +27,13 @@ export class DialogWindowService2 {
 
         let ipcRegistry = new IPCRegistry();
 
-        ipcRegistry.register(new GetParentWindowHandler(this.parentWindowRegistry));
-        ipcRegistry.register(new CreateWindowHandler(this.parentWindowRegistry));
+        ipcRegistry.registerPath('/api/dialog-window/get-parent',
+                                 new GetParentWindowHandler(this.parentWindowRegistry));
 
-        let ipcEngine = new IPCEngine(ipcPipe, CHANNEL_NAME, ipcRegistry);
+        ipcRegistry.registerPath('/api/dialog-window/create-window',
+                                 new CreateWindowHandler(this.parentWindowRegistry));
+
+        let ipcEngine = new IPCEngine(ipcPipe, ipcRegistry);
 
         ipcEngine.start();
 

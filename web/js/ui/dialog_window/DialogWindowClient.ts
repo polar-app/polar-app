@@ -37,6 +37,8 @@ export class DialogWindowClient {
         // TODO: it might be nice to have a framework for having
         // request/response pair functions.
 
+        // FIXME: how do we start the pipe???
+
         let createRequest = new IPCMessage<DialogWindowOptions>('create', options);
 
         let channel = createRequest.computeResponseChannel();
