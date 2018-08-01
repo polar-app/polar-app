@@ -8,11 +8,11 @@ import {ParentWindowReference} from './ParentWindowReference';
 import {IPCHandler} from '../../ipc/handler/IPCHandler';
 import {GetParentWindowRequest} from './ipc/GetParentWindowRequest';
 import {IPCEngine} from '../../ipc/handler/IPCEngine';
-import {MainReadablePipe} from '../../ipc/channels/MainReadablePipe';
-import {IPCPipe} from '../../ipc/handler/IPCPipe';
 import {IPCRegistry} from '../../ipc/handler/IPCRegistry';
 import BrowserWindow = Electron.BrowserWindow;
 import {IPCEvent} from '../../ipc/handler/IPCEvent';
+import {ElectronIPCPipe} from '../../ipc/handler/ElectronIPCPipe';
+import {MainReadablePipe} from '../../ipc/pipes/MainReadablePipe';
 
 const log = Logger.create();
 
@@ -31,19 +31,14 @@ export class DialogWindowService2 {
 
     start() {
 
-        // FIXME:
-
-        // FIXME: take this in the constructor so we can test easily..
         let mainReadablePipe = new MainReadablePipe();
-
-        // FIXME: using Electron.Event isn't practical here because I can't
-        // easily test it.
-
-        let ipcPipe = new IPCPipe<Electron.Event>(mainReadablePipe);
+        let ipcPipe = new ElectronIPCPipe(mainReadablePipe);
 
         let ipcRegistry = new IPCRegistry();
 
         ipcRegistry.register(new GetParentWindowHandler(this.parentWindowRegistry));
+        ipcRegistry.register(new CreateHandler(this.parentWindowRegistry));
+
 
         let ipcEngine = new IPCEngine(ipcPipe, CHANNEL_NAME, ipcRegistry);
 
@@ -51,16 +46,26 @@ export class DialogWindowService2 {
 
     }
 
-    private onGetParentWindowRequest(request: IPCMessage<DialogWindowReference>, sender: WebContents) {
+}
 
-        let dialogWindowReference = request.value;
+class CreateHandler extends IPCHandler<DialogWindowOptions> {
 
+    private readonly parentWindowRegistry: ParentWindowRegistry;
 
+    constructor(parentWindowRegistry: ParentWindowRegistry) {
+        super();
+        this.parentWindowRegistry = parentWindowRegistry;
     }
 
-    private onCreateRequest(request: IPCMessage<DialogWindowOptions>, sender: WebContents ) {
+    protected createValue(ipcMessage: IPCMessage<DialogWindowOptions>): DialogWindowOptions {
+        return DialogWindowOptions.create(ipcMessage.value);
+    }
 
-        let dialogWindowOptions = request.value;
+    getType(): string {
+        return 'create';
+    }
+
+    protected handleIPC(event: IPCEvent, dialogWindowOptions: DialogWindowOptions): void {
 
         DialogWindow.create(dialogWindowOptions)
             .then((dialogWindow: DialogWindow) => {
@@ -83,6 +88,7 @@ export class DialogWindowService2 {
     }
 
 }
+
 
 class GetParentWindowHandler extends IPCHandler<GetParentWindowRequest> {
 

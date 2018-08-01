@@ -5,7 +5,7 @@ import {TypedPipe} from '../pipes/TypedPipe';
 /**
  * Takes a pipe and converts types to the types we need for IPC.
  */
-export abstract class IPCPipe extends TypedPipe<any, IPCMessage<any>> {
+export abstract class IPCPipe<E> extends TypedPipe<any, IPCMessage<any>> {
 
     abstract convertEvent(obj: any): IPCEvent;
 

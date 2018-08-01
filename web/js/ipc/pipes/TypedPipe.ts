@@ -7,9 +7,9 @@ import {PipeListener, PipeNotification, ReadablePipe} from './Pipe';
  */
 export abstract class TypedPipe<E, M> implements ReadablePipe<any, any> {
 
-    private readonly pipe: ReadablePipe<E,any>;
+    private readonly pipe: ReadablePipe<any,any>;
 
-    public constructor(source: ReadablePipe<E,any>) {
+    public constructor(source: ReadablePipe<any,any>) {
         this.pipe = source;
     }
 
@@ -19,7 +19,7 @@ export abstract class TypedPipe<E, M> implements ReadablePipe<any, any> {
         });
     }
 
-    once(channel: string, listener: PipeListener<E, any>): void {
+    once(channel: string, listener: PipeListener<E, M>): void {
         this.pipe.once(channel, (channelNotification) => {
             listener(this.convertChannelNotification(channelNotification));
         });

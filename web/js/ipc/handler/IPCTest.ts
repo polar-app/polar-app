@@ -4,10 +4,10 @@ import {IPCMessage} from './IPCMessage';
 import {Objects} from '../../util/Objects';
 import {IPCEngine} from './IPCEngine';
 import {assertJSON} from '../../test/Assertions';
-import {MockPipes} from '../pipes/MockPipes';
 import {IPCPipe} from './IPCPipe';
 import {IPCEvent} from './IPCEvent';
 import {WritablePipes} from '../pipes/Pipe';
+import {MockPipes} from '../pipes/MockPipes';
 
 describe('IPCTest', function() {
 
@@ -65,7 +65,7 @@ describe('IPCTest', function() {
 
         let responses: IPCMessage<any>[] = [];
 
-        class HelloIPCPipe extends IPCPipe {
+        class HelloIPCPipe extends IPCPipe<IPCEvent> {
 
             convertEvent(obj: any): IPCEvent {
 

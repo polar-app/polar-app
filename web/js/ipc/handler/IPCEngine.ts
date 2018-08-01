@@ -7,13 +7,13 @@ const log = Logger.create();
 
 export class IPCEngine<E, M> {
 
-    private readonly pipe: IPCPipe;
+    private readonly pipe: IPCPipe<E>;
 
     private readonly channel: string;
 
     private readonly ipcRegistry: IPCRegistry;
 
-    constructor(pipe: IPCPipe, channel: string, ipcRegistry: IPCRegistry) {
+    constructor(pipe: IPCPipe<E>, channel: string, ipcRegistry: IPCRegistry) {
         this.pipe = pipe;
         this.channel = channel;
         this.ipcRegistry = ipcRegistry;
