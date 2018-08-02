@@ -6,7 +6,7 @@ import {IPCEngine} from './IPCEngine';
 import {assertJSON} from '../../test/Assertions';
 import {IPCPipe} from './IPCPipe';
 import {IPCEvent} from './IPCEvent';
-import {Pipe, PipeNotification, WritablePipes} from '../pipes/Pipe';
+import {Pipe, PipeNotification} from '../pipes/Pipe';
 import {MockPipes} from '../pipes/MockPipes';
 import {IPCClient} from './IPCClient';
 
@@ -100,8 +100,9 @@ class HelloHandler extends IPCHandler<Person> {
 
     protected handleIPC(event: IPCEvent, person: Person): Hello {
         this.people.push(person);
-        return new Hello(person);
         this.greetings.push(new Hello(person));
+
+        return new Hello(person);
     }
 
 }

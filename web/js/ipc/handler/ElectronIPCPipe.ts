@@ -1,9 +1,13 @@
 import {IPCPipe} from './IPCPipe';
-import {PipeNotification, WritablePipes} from '../pipes/Pipe';
+import {Pipe, PipeNotification, WritablePipes} from '../pipes/Pipe';
 import {IPCMessage} from './IPCMessage';
 import {ElectronIPCEvent} from './ElectronIPCEvent';
 
 export class ElectronIPCPipe extends IPCPipe<ElectronIPCEvent> {
+
+    constructor(source: Pipe<any, any>) {
+        super(source);
+    }
 
     convertEvent(pipeNotification: PipeNotification<any,any>): ElectronIPCEvent {
 

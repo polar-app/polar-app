@@ -1,4 +1,3 @@
-import {Pipe} from '../pipes/Pipe';
 import {IPCMessage} from './IPCMessage';
 import {IPCEvent} from './IPCEvent';
 import {IPCPipe} from './IPCPipe';
