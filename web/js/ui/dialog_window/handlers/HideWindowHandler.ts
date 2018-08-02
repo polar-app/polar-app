@@ -5,10 +5,12 @@ import BrowserWindow = Electron.BrowserWindow;
 
 export class HideWindowHandler extends AbstractDialogWindowReferenceHandler {
 
-    protected handleIPC(event: IPCEvent, request: DialogWindowReference): void {
+    protected handleIPC(event: IPCEvent, request: DialogWindowReference): boolean {
 
         let browserWindow = BrowserWindow.fromId(request.id);
         browserWindow.hide();
+
+        return true;
 
     }
 

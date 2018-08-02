@@ -3,6 +3,7 @@ import {DialogWindowOptions} from './DialogWindow';
 import {IPCMessage} from '../../ipc/handler/IPCMessage';
 import {DialogWindowReference} from './DialogWindowReference';
 import {IPCRendererPromises} from '../../electron/framework/IPCRenderPromises';
+import {IPCClient} from '../../ipc/handler/IPCClient';
 
 export class DialogWindowClient {
 
@@ -17,6 +18,8 @@ export class DialogWindowClient {
     }
 
     hide(): void {
+
+        let ipcClient = new IPCClient()
 
     }
 

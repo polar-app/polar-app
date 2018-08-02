@@ -8,7 +8,7 @@ export class Result<T> {
 
     public readonly err: Error;
 
-    constructor(value: T, err: Error) {
+    public constructor(value: T, err: Error) {
         this.value = value;
         this.err = err;
     }

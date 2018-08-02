@@ -1,10 +1,11 @@
 import {Pipe} from '../pipes/Pipe';
 import {IPCMessage} from './IPCMessage';
+import {IPCEvent} from './IPCEvent';
 
 /**
- * A client which executes requests and waits for responses.  
+ * A client which executes requests and waits for responses.
  */
-export class IPCClient<E, R> {
+export class IPCClient<E extends IPCEvent, R> {
 
     private readonly path: string;
 
