@@ -28,22 +28,31 @@ export class IPCEngine<E extends IPCEvent, M> {
 
                 let ipcMessage = IPCMessage.create(pipeNotification.message);
 
+                let ipcResponse: IPCMessage<any>;
+
                 try {
 
                     let result = ipcRegistration.handler.handle(event, ipcMessage);
 
-                    event.writeablePipe.write(ipcMessage.computeResponseChannel(), result);
+                    if( ! result) {
+                        // we don't have a result given to us from the handler
+                        // we just return true in this situation.
+                        result = true;
+                    }
+
+                    ipcResponse = new IPCMessage('result', result);
+
 
                 } catch(err) {
 
                     // catch any exceptions so that handlers don't have to be
                     // responsible for error handling by default.
 
-                    let errMessage = IPCMessage.createError('error', new IPCError(err));
-
-                    event.writeablePipe.write(ipcMessage.computeResponseChannel(), errMessage);
+                    ipcResponse = IPCMessage.createError('error', new IPCError(err));
 
                 }
+
+                event.writeablePipe.write(ipcMessage.computeResponseChannel(), ipcResponse);
 
             });
 

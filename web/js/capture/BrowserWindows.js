@@ -10,7 +10,7 @@ class BrowserWindows {
 
     static toBrowserWindowOptions(browser) {
 
-        let partition = "part-" + new Date().getMilliseconds();
+        let partition = "part-" + Date.now();
 
         return {
             minWidth: browser.deviceEmulation.screenSize.width,

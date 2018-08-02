@@ -6,7 +6,7 @@ import {IPCEngine} from './IPCEngine';
 import {assertJSON} from '../../test/Assertions';
 import {IPCPipe} from './IPCPipe';
 import {IPCEvent} from './IPCEvent';
-import {PipeNotification, WritablePipes} from '../pipes/Pipe';
+import {Pipe, PipeNotification, WritablePipes} from '../pipes/Pipe';
 import {MockPipes} from '../pipes/MockPipes';
 import {IPCClient} from './IPCClient';
 
@@ -16,7 +16,7 @@ describe('IPCTest', function() {
 
         let icpClient = new IPCClient(rightIpcPipe);
 
-        await icpClient.execute('/test/school/hello', new IPCMessage('hello', new Person('Alice')));
+        await icpClient.execute('/test/school/hello', new Person('Alice'));
 
         //. FIXME: make a REST IPC call..
 
@@ -78,12 +78,12 @@ class HelloIPCPipe extends IPCPipe<IPCEvent> {
 
     public readonly responses: IPCMessage<any>[] = [];
 
+    constructor(pipe: Pipe<any,any>) {
+        super(pipe);
+    }
+
     convertEvent(pipeNotification: PipeNotification<any, any>): IPCEvent {
-
-        let writablePipe = WritablePipes.create((channel: string, event: IPCMessage<any>) => this.responses.push(event));
-
-        return new IPCEvent(writablePipe, IPCMessage.create(pipeNotification.message));
-
+        return new IPCEvent(this.pipe, IPCMessage.create(pipeNotification.message));
     }
 
 }
@@ -98,9 +98,19 @@ class HelloHandler extends IPCHandler<Person> {
         return Person.create(ipcMessage.value);
     }
 
-    protected handleIPC(event: IPCEvent, person: Person): void {
+    protected handleIPC(event: IPCEvent, person: Person): Hello {
         this.people.push(person);
+        return new Hello(person);
         this.greetings.push(new Hello(person));
+    }
+
+}
+
+class Greeting {
+    public readonly message: string;
+
+    constructor(message: string) {
+        this.message = message;
     }
 
 }

@@ -20,6 +20,11 @@ export class IPCMessage<T> {
     private readonly _error?: IPCError;
 
     constructor(type: string, value?: T, nonce: number = IPCMessage.createNonce(), error?: IPCError) {
+
+        if(value && value instanceof IPCMessage) {
+            throw new Error("Value is already an IPCMessage")
+        }
+
         this._type = type;
         this._value = value;
         this._nonce = nonce;
@@ -57,7 +62,7 @@ export class IPCMessage<T> {
     }
 
     private static createNonce() {
-        return new Date().getMilliseconds();
+        return Date.now();
     }
 
     static createError<T>(type: string, error: IPCError): IPCMessage<T> {

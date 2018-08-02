@@ -13,7 +13,7 @@ import {
  */
 export abstract class TypedPipe<E, M> implements ReadablePipe<E, M>, WritablePipe<M> {
 
-    private readonly pipe: Pipe<any,any>;
+    protected readonly pipe: Pipe<any,any>;
 
     public constructor(source: Pipe<any,any>) {
         this.pipe = source;

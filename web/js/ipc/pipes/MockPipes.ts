@@ -56,8 +56,8 @@ export class MockPipe<E,M> extends Pipe<E,M> {
         this.target.onceListeners.get(channel).forEach(listener => {
             listener(notification)
         });
-        this.target.onceListeners.clear(channel);
 
+        this.target.onceListeners.clear(channel);
 
     }
 
