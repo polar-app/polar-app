@@ -14,7 +14,6 @@ describe('IPCTest', function() {
 
     it("Test proper handling of messages", async function () {
 
-        // the pipe needs to be the riht.
         let icpClient = new IPCClient(rightIpcPipe);
 
         await icpClient.execute('/test/school/hello', new IPCMessage('hello', new Person('Alice')));
