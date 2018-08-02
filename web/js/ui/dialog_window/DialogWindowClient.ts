@@ -4,13 +4,19 @@ import {IPCMessage} from '../../ipc/handler/IPCMessage';
 import {DialogWindowReference} from './DialogWindowReference';
 import {IPCRendererPromises} from '../../electron/framework/IPCRenderPromises';
 import {IPCClient} from '../../ipc/handler/IPCClient';
+import {IPCPipe} from '../../ipc/handler/IPCPipe';
+import {ElectronIPCEvent} from '../../ipc/handler/ElectronIPCEvent';
+import {ElectronRendererPipe} from '../../ipc/pipes/RendererPipe';
 
 export class DialogWindowClient {
 
     private dialogWindowReference: DialogWindowReference;
 
+    private ipcPipe: IPCPipe<ElectronIPCEvent>;
+
     constructor(dialogWindowReference: DialogWindowReference) {
         this.dialogWindowReference = dialogWindowReference;
+        this.ipcPipe = new ElectronRendererPipe();
     }
 
     show(): void {

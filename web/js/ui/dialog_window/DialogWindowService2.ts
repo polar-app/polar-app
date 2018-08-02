@@ -3,7 +3,7 @@ import {ParentWindowRegistry} from './ParentWindowRegistry';
 import {IPCEngine} from '../../ipc/handler/IPCEngine';
 import {IPCRegistry} from '../../ipc/handler/IPCRegistry';
 import {ElectronIPCPipe} from '../../ipc/handler/ElectronIPCPipe';
-import {MainReadablePipe} from '../../ipc/pipes/MainReadablePipe';
+import {ElectronMainReadablePipe} from '../../ipc/pipes/MainReadablePipe';
 import {GetParentWindowHandler} from './handlers/GetParentWindowHandler';
 import {CreateWindowHandler} from './handlers/CreateWindowHandler';
 
@@ -22,7 +22,7 @@ export class DialogWindowService2 {
 
     start() {
 
-        let mainReadablePipe = new MainReadablePipe();
+        let mainReadablePipe = new ElectronMainReadablePipe();
         let ipcPipe = new ElectronIPCPipe(mainReadablePipe);
 
         let ipcRegistry = new IPCRegistry();

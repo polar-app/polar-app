@@ -1,28 +1,26 @@
 import {Pipe} from '../pipes/Pipe';
 import {IPCMessage} from './IPCMessage';
 import {IPCEvent} from './IPCEvent';
+import {IPCPipe} from './IPCPipe';
 
 /**
  * A client which executes requests and waits for responses.
  */
-export class IPCClient<E extends IPCEvent, R> {
+export class IPCClient<E extends IPCEvent> {
 
-    private readonly path: string;
+    private readonly pipe: IPCPipe<E>;
 
-    private readonly pipe: Pipe<E, IPCMessage<any>>;
-
-    constructor(path: string, pipe: Pipe<E, IPCMessage<any>>) {
-        this.path = path;
+    constructor(pipe: IPCPipe<E>) {
         this.pipe = pipe;
     }
 
-    async execute(path: string, request: R): Promise<IPCMessage<any>> {
+    async execute<R>(path: string, request: R): Promise<IPCMessage<any>> {
 
-        let ipcMessage = new IPCMessage('request', request);
+        let ipcMessage = new IPCMessage<any>('request', request);
 
-        let responsePromise = await this.pipe.when(ipcMessage.computeResponseChannel());
+        let responsePromise = this.pipe.when(ipcMessage.computeResponseChannel());
 
-        this.pipe.write(this.path, ipcMessage);
+        this.pipe.write(path, ipcMessage);
 
         let response = await responsePromise;
 

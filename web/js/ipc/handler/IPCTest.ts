@@ -8,13 +8,18 @@ import {IPCPipe} from './IPCPipe';
 import {IPCEvent} from './IPCEvent';
 import {PipeNotification, WritablePipes} from '../pipes/Pipe';
 import {MockPipes} from '../pipes/MockPipes';
+import {IPCClient} from './IPCClient';
 
 describe('IPCTest', function() {
 
-
     it("Test proper handling of messages", async function () {
 
-        mockChannels.right.write('/test/school/hello', new IPCMessage('hello', new Person('Alice')));
+        // the pipe needs to be the riht.
+        let icpClient = new IPCClient(rightIpcPipe);
+
+        await icpClient.execute('/test/school/hello', new IPCMessage('hello', new Person('Alice')));
+
+        //. FIXME: make a REST IPC call..
 
         let expectedPeople = [
             {
@@ -39,7 +44,9 @@ describe('IPCTest', function() {
 
     let mockChannels: MockPipes<PersonEvent, any>;
 
-    let ipcChannel: HelloIPCPipe;
+    let leftIpcPipe: HelloIPCPipe;
+
+    let rightIpcPipe: HelloIPCPipe;
 
     let ipcRegistry: IPCRegistry;
 
@@ -50,11 +57,18 @@ describe('IPCTest', function() {
     beforeEach(function () {
 
         mockChannels = MockPipes.create();
-        ipcChannel = new HelloIPCPipe(mockChannels.left);
+
+        leftIpcPipe = new HelloIPCPipe(mockChannels.left);
+        rightIpcPipe = new HelloIPCPipe(mockChannels.right);
+
         ipcRegistry = new IPCRegistry();
+
         helloHandler = new HelloHandler();
+
         ipcRegistry.registerPath('/test/school/hello', helloHandler);
-        ipcEngine = new IPCEngine(ipcChannel, ipcRegistry);
+
+        ipcEngine = new IPCEngine(leftIpcPipe, ipcRegistry);
+
         ipcEngine.start();
 
     });

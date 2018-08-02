@@ -1,35 +1,45 @@
-import {PipeListener, PipeNotification, ReadablePipe} from './Pipe';
+import {
+    Pipe,
+    PipeListener,
+    PipeNotification,
+    ReadablePipe,
+    WritablePipe
+} from './Pipe';
 
 /**
  * Like a regular channel but when someone writes to us we convert types from
  * 'any' to the required type and we push it to the delegate.
  *
  */
-export abstract class TypedPipe<E, M> implements ReadablePipe<any, any> {
+export abstract class TypedPipe<E, M> implements ReadablePipe<E, M>, WritablePipe<M> {
 
-    private readonly pipe: ReadablePipe<any,any>;
+    private readonly pipe: Pipe<any,any>;
 
-    public constructor(source: ReadablePipe<any,any>) {
+    public constructor(source: Pipe<any,any>) {
         this.pipe = source;
     }
 
-    on(channel: string, listener: PipeListener<E, M>): void {
+    public on(channel: string, listener: PipeListener<E, M>): void {
         this.pipe.on(channel, (pipeNotification) => {
             listener(this.convertPipeNotification(pipeNotification));
         });
     }
 
-    once(channel: string, listener: PipeListener<E, M>): void {
+    public once(channel: string, listener: PipeListener<E, M>): void {
         this.pipe.once(channel, (pipeNotification) => {
             listener(this.convertPipeNotification(pipeNotification));
         });
     }
 
-    async when(channel: string): Promise<PipeNotification<E, M>> {
+    public async when(channel: string): Promise<PipeNotification<E, M>> {
         return this.convertPipeNotification(await this.pipe.when(channel))
     }
 
-    convertPipeNotification(pipeNotification: PipeNotification<any,any>) {
+    public write(channel: string, message: M): void {
+        this.pipe.write(channel, message);
+    }
+
+    protected convertPipeNotification(pipeNotification: PipeNotification<any,any>) {
 
         return new PipeNotification<E,M>(pipeNotification.channel,
                                          this.convertEvent(pipeNotification),
@@ -37,8 +47,8 @@ export abstract class TypedPipe<E, M> implements ReadablePipe<any, any> {
 
     }
 
-    abstract convertEvent(pipeNotification: PipeNotification<any,any>): E;
+    protected abstract convertEvent(pipeNotification: PipeNotification<any,any>): E;
 
-    abstract convertMessage(obj: any): M;
+    protected abstract convertMessage(obj: any): M;
 
 }
