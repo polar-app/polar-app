@@ -5,16 +5,12 @@ const BrowserWindow = electron.BrowserWindow;
 const ipcMain = electron.ipcMain;
 
 const {ContextMenuType} = require("../ContextMenuType");
-const {DialogWindow} = require("../../ui/dialog_window/DialogWindow");
 const {ContextMenu} = require("../ContextMenu");
 const {Preconditions} = require("../../Preconditions");
 const {Broadcaster} = require("../../ipc/Broadcaster");
 const {createSiblings} = require("../../util/Functions");
 const {Messenger} = require("../../electron/messenger/Messenger");
 const log = require("../../logger/Logger").create();
-
-const WEBSERVER_PORT = 8500;
-const DEFAULT_HOST = "127.0.0.1";
 
 /**
  * Careful here as this is confusing.  We're using the REMOVE interface so the

@@ -2,8 +2,8 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const Logger_1 = require("../../logger/Logger");
 const electron_1 = require("electron");
-const AnnotationType_1 = require("../../metadata/AnnotationType");
 const Flashcards_1 = require("../../metadata/Flashcards");
+const AnnotationType_1 = require("../../metadata/AnnotationType");
 const log = Logger_1.Logger.create();
 class FlashcardsController {
     constructor(model) {

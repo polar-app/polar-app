@@ -1,4 +1,4 @@
-import Model from '../Model';
+import {Model} from '../Model';
 import Elements from '../util/Elements';
 
 const {ipcRenderer} = require('electron')

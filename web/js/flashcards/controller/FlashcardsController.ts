@@ -1,8 +1,8 @@
 import {Logger} from "../../logger/Logger";
 import {Model} from '../../Model';
 import {ipcRenderer} from 'electron';
-import {AnnotationType} from '../../metadata/AnnotationType';
 import {Flashcards} from '../../metadata/Flashcards';
+import {AnnotationType} from '../../metadata/AnnotationType';
 
 const log = Logger.create();
 
