@@ -22,12 +22,6 @@ SpectronRenderer.run(async (state) => {
 
     await dialogWindowClient.hide();
 
-    // FIXME: make sure we have two windows now.
-
-    // FIXME: now close the dialog window
-
-    // FIXME: now open the dialog window.
-
     state.testResultWriter.write(true);
 
 });
