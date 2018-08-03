@@ -689,6 +689,9 @@ let shouldQuit = app.makeSingleInstance(function(commandLine, workingDirectory) 
 
     log.info("Second instance asked to load.");
 
+    // TODO: I think this is wrong and we should open up a new window not
+    // focus the existing window.
+
     if(! handleCmdLinePDF(commandLine, true)) {
 
         if (mainWindow) {
@@ -732,7 +735,7 @@ app.on('ready', async function() {
     new ElectronContextMenu();
 
     if(args.enableDevTools) {
-        mainWindow.toggleDevTools();
+        mainWindow.webContents.toggleDevTools();
     }
 
     // if there is a PDF file to open, load that, otherwise, load the default URL.
