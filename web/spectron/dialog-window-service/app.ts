@@ -14,7 +14,7 @@ SpectronRenderer.run(async (state) => {
     let resource = new Resource(ResourceType.FILE, appPath);
     let dialogWindowOptions = new DialogWindowOptions(resource);
 
-    let dialogWindowClient = await DialogWindowClient.create(dialogWindowOptions);
+    await DialogWindowClient.create(dialogWindowOptions);
 
     state.testResultWriter.write(true);
 

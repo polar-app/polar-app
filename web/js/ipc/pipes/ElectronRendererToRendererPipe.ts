@@ -1,10 +1,18 @@
 import {ipcRenderer} from 'electron';
 import {Pipe, PipeListener, PipeNotification} from './Pipe';
+import {WindowReference} from '../../ui/dialog_window/WindowReference';
 
 /**
- * Pipe that communicates with the ipcMain one way.
+ * Pipe that communicates to another renderer.
  */
 export class ElectronRendererPipe extends Pipe<Electron.Event, any> {
+
+    public readonly windowReference: WindowReference;
+
+    constructor(windowReference: WindowReference) {
+        super();
+        this.windowReference = windowReference;
+    }
 
     on(channel: string, listener: PipeListener<Electron.Event, any>): void {
         ipcRenderer.on(channel, (event: Electron.Event, message: any) => {
@@ -19,7 +27,7 @@ export class ElectronRendererPipe extends Pipe<Electron.Event, any> {
     }
 
     write(channel: string, message: any): void {
-        ipcRenderer.send(channel, message);
+        ipcRenderer.sendTo(this.windowReference.id, channel, message);
     }
 
 }

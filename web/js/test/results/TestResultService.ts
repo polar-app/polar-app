@@ -4,6 +4,7 @@ import {ipcRenderer} from "electron";
 import {Logger} from '../../logger/Logger';
 import {TestResult} from './renderer/TestResult';
 import {IPCMessage} from '../../ipc/handler/IPCMessage';
+import {Optional} from '../../util/ts/Optional';
 
 const log = Logger.create();
 
@@ -54,18 +55,11 @@ export class TestResultService {
 
     onWrite(data: any) {
 
-        // TODO: migrate to optional for this...
-        if(TestResult.get() === null || TestResult.get() == undefined) {
-
-            console.log("FIXME: got datA: ", data)
+        if(! Optional.present(TestResult.get())) {
 
             let ipcMessage = IPCMessage.create(data);
 
-            if(ipcMessage.value !== null && ipcMessage.value !== undefined) {
-
-                // TODO: TestResult should be a Result and we should
-                // enforce it by type.  Otherwise we don't support err
-                // values.
+            if(Optional.present(ipcMessage.value)) {
 
                 TestResult.set(ipcMessage.value);
 

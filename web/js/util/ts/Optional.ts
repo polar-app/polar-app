@@ -52,9 +52,21 @@ export class Optional<T> {
         return value;
     };
 
+    isPresent(): boolean {
+        return this.value !== undefined;
+    }
+
     static of<T>(value: T, name?: string): Optional<T> {
         return new Optional<T>(value, name);
     };
+
+    /**
+     * Return true if the given object is present.
+     *
+     */
+    static present(obj?: any) {
+        return obj !== undefined && obj !== null;
+    }
 
 }
 

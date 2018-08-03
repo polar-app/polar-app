@@ -2,31 +2,27 @@ import {ipcRenderer} from 'electron';
 import {DialogWindowOptions} from './DialogWindow';
 import {IPCMessage} from '../../ipc/handler/IPCMessage';
 import {DialogWindowReference} from './DialogWindowReference';
-import {IPCRendererPromises} from '../../electron/framework/IPCRenderPromises';
 import {IPCClient} from '../../ipc/handler/IPCClient';
-import {IPCPipe} from '../../ipc/handler/IPCPipe';
-import {ElectronIPCEvent} from '../../ipc/handler/ElectronIPCEvent';
-import {ElectronRendererPipe} from '../../ipc/pipes/RendererPipe';
+import {ElectronRendererPipe} from '../../ipc/pipes/ElectronRendererPipe';
+import {ElectronIPCPipe} from '../../ipc/handler/ElectronIPCPipe';
+
+let ipcPipe = new ElectronIPCPipe(new ElectronRendererPipe());
+let ipcClient = new IPCClient(ipcPipe);
 
 export class DialogWindowClient {
 
-    private dialogWindowReference: DialogWindowReference;
-
-    private ipcPipe: IPCPipe<ElectronIPCEvent>;
+    private readonly dialogWindowReference: DialogWindowReference;
 
     constructor(dialogWindowReference: DialogWindowReference) {
         this.dialogWindowReference = dialogWindowReference;
-        this.ipcPipe = new ElectronRendererPipe();
     }
 
-    show(): void {
-
+    async show(): Promise<void> {
+        await ipcClient.execute("/api/dialog-service/show", this.dialogWindowReference);
     }
 
-    hide(): void {
-
-        let ipcClient = new IPCClient()
-
+    async hide(): Promise<void> {
+        await ipcClient.execute("/api/dialog-service/hide", this.dialogWindowReference);
     }
 
     /**
@@ -43,17 +39,11 @@ export class DialogWindowClient {
      */
     static async create(options: DialogWindowOptions): Promise<DialogWindowClient> {
 
-        let createRequest = new IPCMessage<DialogWindowOptions>('create', options);
+        let result = await ipcClient.execute("/api/dialog-service/create", options);
 
-        let channel = createRequest.computeResponseChannel();
-
-        let createdPromise = await IPCRendererPromises.once(channel);
-
-        ipcRenderer.send('dialog-window', createRequest);
-
-        let {message} = await createdPromise;
-
-        let createdWindowMessage = IPCMessage.create<DialogWindowReference>(message);
+        // TODO: we need to auto-marshal these to the correct objects but the
+        // IPC framework doesn't support this yet.
+        let createdWindowMessage = IPCMessage.create<DialogWindowReference>(result);
 
         return new DialogWindowClient(createdWindowMessage.value);
 

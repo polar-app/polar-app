@@ -10,15 +10,41 @@ import {Pipe, PipeNotification} from '../pipes/Pipe';
 import {MockPipes} from '../pipes/MockPipes';
 import {IPCClient} from './IPCClient';
 
+import assert from 'assert';
+
+//const assert = require('assert');
+
+let mockChannels: MockPipes<PersonEvent, any>;
+
+let leftIpcPipe: HelloIPCPipe;
+
+let rightIpcPipe: HelloIPCPipe;
+
+let ipcRegistry: IPCRegistry;
+
+let helloHandler: HelloHandler;
+
+let ipcEngine: IPCEngine<IPCEvent, Hello>;
+
 describe('IPCTest', function() {
 
     it("Test proper handling of messages", async function () {
 
         let icpClient = new IPCClient(rightIpcPipe);
 
-        await icpClient.execute('/test/school/hello', new Person('Alice'));
+        let response: any = await icpClient.execute('/test/school/hello', new Person('Alice'));
 
-        //. FIXME: make a REST IPC call..
+        response._nonce = 10101;
+
+        assertJSON(response, {
+            "_type": "result",
+            "_value": {
+                "person": {
+                    "name": "Alice"
+                }
+            },
+            "_nonce": 10101
+        });
 
         let expectedPeople = [
             {
@@ -41,23 +67,12 @@ describe('IPCTest', function() {
 
     });
 
-    let mockChannels: MockPipes<PersonEvent, any>;
-
-    let leftIpcPipe: HelloIPCPipe;
-
-    let rightIpcPipe: HelloIPCPipe;
-
-    let ipcRegistry: IPCRegistry;
-
-    let helloHandler: HelloHandler;
-
-    let ipcEngine: IPCEngine<IPCEvent, Hello>;
-
     beforeEach(function () {
 
         mockChannels = MockPipes.create();
 
         leftIpcPipe = new HelloIPCPipe(mockChannels.left);
+
         rightIpcPipe = new HelloIPCPipe(mockChannels.right);
 
         ipcRegistry = new IPCRegistry();

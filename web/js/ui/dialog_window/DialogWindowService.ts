@@ -1,15 +1,13 @@
-import {ipcMain, WebContents} from "electron";
-import {IPCMessage} from '../../ipc/handler/IPCMessage';
-import {DialogWindow, DialogWindowOptions} from './DialogWindow';
 import {Logger} from '../../logger/Logger';
-import {DialogWindowReference} from './DialogWindowReference';
 import {ParentWindowRegistry} from './ParentWindowRegistry';
-import {ParentWindowReference} from './ParentWindowReference';
-import BrowserWindow = Electron.BrowserWindow;
+import {IPCEngine} from '../../ipc/handler/IPCEngine';
+import {IPCRegistry} from '../../ipc/handler/IPCRegistry';
+import {ElectronIPCPipe} from '../../ipc/handler/ElectronIPCPipe';
+import {ElectronMainReadablePipe} from '../../ipc/pipes/ElectronMainReadablePipe';
+import {GetParentWindowHandler} from './handlers/GetParentWindowHandler';
+import {CreateWindowHandler} from './handlers/CreateWindowHandler';
 
 const log = Logger.create();
-
-const CHANNEL_NAME = 'dialog-window';
 
 /**
  *
@@ -24,61 +22,21 @@ export class DialogWindowService {
 
     start() {
 
-        ipcMain.on(CHANNEL_NAME, (event: Electron.Event, message: any) => {
+        let mainReadablePipe = new ElectronMainReadablePipe();
+        let ipcPipe = new ElectronIPCPipe(mainReadablePipe);
 
-            let ipcMessage = IPCMessage.create(message);
+        let ipcRegistry = new IPCRegistry();
 
-            let sender = event.sender;
+        ipcRegistry.registerPath('/api/dialog-window/get-parent',
+                                 new GetParentWindowHandler(this.parentWindowRegistry));
 
-            if(ipcMessage.type === 'create') {
-                let createWindowMessage = IPCMessage.create(message, DialogWindowOptions.create);
-                this.onCreateRequest(createWindowMessage, sender);
-            }
+        ipcRegistry.registerPath('/api/dialog-window/create',
+                                 new CreateWindowHandler(this.parentWindowRegistry));
 
-            if(ipcMessage.type === 'get-parent-window') {
-                let getParentWindowMessage = IPCMessage.create(message, DialogWindowReference.create);
-                this.onGetParentWindowRequest(getParentWindowMessage, sender);
-            }
+        let ipcEngine = new IPCEngine(ipcPipe, ipcRegistry);
 
-        });
+        ipcEngine.start();
 
-    }
-
-    private onGetParentWindowRequest(request: IPCMessage<DialogWindowReference>, sender: WebContents) {
-
-        let dialogWindowReference = request.value;
-
-        let parentWindowReference = this.parentWindowRegistry.get(dialogWindowReference);
-
-        let parentWindowReferenceMessage = new IPCMessage<DialogWindowReference>('parent-window-reference', parentWindowReference);
-
-        sender.send(CHANNEL_NAME, parentWindowReferenceMessage)
-
-    }
-
-    private onCreateRequest(request: IPCMessage<DialogWindowOptions>, sender: WebContents ) {
-
-        let dialogWindowOptions = request.value;
-
-        DialogWindow.create(dialogWindowOptions)
-            .then((dialogWindow: DialogWindow) => {
-
-                let browserWindow = BrowserWindow.fromWebContents(sender);
-                let parentWindowReference = new ParentWindowReference(browserWindow.id);
-
-                this.parentWindowRegistry.register(dialogWindow.dialogWindowReference, parentWindowReference);
-
-                this.sendCreated(request, sender, dialogWindow.dialogWindowReference);
-            })
-            .catch(err => log.error("Could not create dialog window: ", err));
-
-    }
-
-    private sendCreated(createWindowMessage: IPCMessage<DialogWindowOptions>, sender: WebContents, dialogWindowReference: DialogWindowReference) {
-        // create a dedicated channel with one possible message for the response.
-        let createdWindowMessage = new IPCMessage<DialogWindowReference>('created', dialogWindowReference);
-        sender.send(createWindowMessage.computeResponseChannel(), createdWindowMessage);
     }
 
 }
-
