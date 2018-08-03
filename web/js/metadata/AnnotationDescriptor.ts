@@ -1,4 +1,5 @@
 import {AnnotationType} from './AnnotationType';
+import {Preconditions} from '../Preconditions';
 
 /**
  * High level descriptor for an annotation.  Used so that we can references
@@ -13,10 +14,10 @@ export class AnnotationDescriptor {
     public readonly pageNum: number;
 
     constructor(type: AnnotationType, id: string, docFingerprint: string, pageNum: number) {
-        this.type = type;
-        this.id = id;
-        this.docFingerprint = docFingerprint;
-        this.pageNum = pageNum;
+        this.type = Preconditions.assertNotNull(type, "type");
+        this.id = Preconditions.assertNotNull(id, "id");
+        this.docFingerprint = Preconditions.assertNotNull(docFingerprint, "docFingerprint");
+        this.pageNum = Preconditions.assertNotNull(pageNum, "pageNum");
     }
 
 }

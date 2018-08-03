@@ -145,7 +145,7 @@ export class ContextMenuController {
 
         let result: {[key: string]: MatchingSelector} = {};
 
-        selectors.forEach(function (selector: any) {
+        selectors.forEach(selector => {
             result[selector] = new MatchingSelector(selector, [], []);
         });
 
@@ -153,7 +153,7 @@ export class ContextMenuController {
 
         elements.forEach((element: HTMLElement) => {
 
-            selectors.forEach((selector: string) => {
+            selectors.forEach(selector => {
 
                 if(element.matches(selector)) {
 
@@ -163,7 +163,9 @@ export class ContextMenuController {
 
                     let annotationDescriptor = AnnotationDescriptors.fromElement(element);
 
-                    matchingSelector.annotationDescriptors.push(annotationDescriptor);
+                    if(annotationDescriptor) {
+                        matchingSelector.annotationDescriptors.push(annotationDescriptor);
+                    }
                 }
 
             });

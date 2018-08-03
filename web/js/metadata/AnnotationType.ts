@@ -1,5 +1,8 @@
 export enum AnnotationType {
-    FLASHCARD = "flashcard"
+    FLASHCARD = "FLASHCARD",
+    PAGEMARK = "PAGEMARK",
+    TEXT_HIGHLIGHT = "TEXT_HIGHLIGHT",
+    AREA_HIGHLIGHT = "AREA_HIGHLIGHT"
 }
 
 export class AnnotationTypes {

@@ -4,14 +4,20 @@ import {Attributes} from '../util/Attributes';
 
 export class AnnotationDescriptors {
 
-    static fromElement(element: HTMLElement) {
+    static fromElement(element: HTMLElement): AnnotationDescriptor | undefined {
 
         let dataAttributes = Attributes.dataToStringMap(element);
 
-        let annotationType = AnnotationTypes.fromString(dataAttributes['annotation-type']);
-        let id = AnnotationTypes.fromString(dataAttributes['annotation-id']);
-        let docFingerprint = AnnotationTypes.fromString(dataAttributes['annotation-doc-fingerprint']);
-        let pageNum = parseInt(AnnotationTypes.fromString(dataAttributes['annotation-page-num']));
+        if(! dataAttributes['annotationType']) {
+            return undefined;
+        }
+
+        let annotationTypeStr = dataAttributes['annotationType'].replace("-", "_").toUpperCase();
+
+        let annotationType = AnnotationTypes.fromString(annotationTypeStr);
+        let id = dataAttributes['annotationId'];
+        let docFingerprint = dataAttributes['annotationDocFingerprint'];
+        let pageNum = parseInt(dataAttributes['annotationPageNum']);
 
         return new AnnotationDescriptor(annotationType, docFingerprint, id, pageNum);
 

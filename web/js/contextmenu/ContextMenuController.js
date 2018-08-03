@@ -86,17 +86,19 @@ class ContextMenuController {
     }
     static elementsFromEventMatchingSelectors(event, selectors) {
         let result = {};
-        selectors.forEach(function (selector) {
+        selectors.forEach(selector => {
             result[selector] = new MatchingSelector_1.MatchingSelector(selector, [], []);
         });
         let elements = ContextMenuController.elementsFromEvent(event);
         elements.forEach((element) => {
-            selectors.forEach((selector) => {
+            selectors.forEach(selector => {
                 if (element.matches(selector)) {
                     let matchingSelector = result[selector];
                     matchingSelector.elements.push(element);
                     let annotationDescriptor = AnnotationDescriptors_1.AnnotationDescriptors.fromElement(element);
-                    matchingSelector.annotationDescriptors.push(annotationDescriptor);
+                    if (annotationDescriptor) {
+                        matchingSelector.annotationDescriptors.push(annotationDescriptor);
+                    }
                 }
             });
         });
