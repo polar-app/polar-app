@@ -113,7 +113,7 @@ class HelloHandler extends IPCHandler<Person> {
         return Person.create(ipcMessage.value);
     }
 
-    protected handleIPC(event: IPCEvent, person: Person): Hello {
+    protected async handleIPC(event: IPCEvent, person: Person): Promise<Hello> {
         this.people.push(person);
         this.greetings.push(new Hello(person));
 

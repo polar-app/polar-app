@@ -21,23 +21,16 @@ export class CreateWindowHandler extends IPCHandler<DialogWindowOptions> {
         return DialogWindowOptions.create(ipcMessage.value);
     }
 
-    protected handleIPC(event: ElectronIPCEvent, dialogWindowOptions: DialogWindowOptions): void {
+    protected async handleIPC(event: ElectronIPCEvent, dialogWindowOptions: DialogWindowOptions): Promise<DialogWindowReference> {
 
-        DialogWindow.create(dialogWindowOptions)
-            .then((dialogWindow: DialogWindow) => {
+        let dialogWindow = await DialogWindow.create(dialogWindowOptions);
 
-                let parentWindowReference = event.senderWindowReference;
-                this.parentWindowRegistry.register(dialogWindow.dialogWindowReference, parentWindowReference);
-                this.sendCreated(event, dialogWindow.dialogWindowReference);
+        let parentWindowReference = event.senderWindowReference;
 
-            })
-            .catch(err => log.error("Could not create dialog window: ", err));
+        this.parentWindowRegistry.register(dialogWindow.dialogWindowReference, parentWindowReference);
 
-    }
+        return dialogWindow.dialogWindowReference;
 
-    private sendCreated(event: ElectronIPCEvent, dialogWindowReference: DialogWindowReference) {
-        let createdWindowMessage = new IPCMessage<DialogWindowReference>('created', dialogWindowReference);
-        event.writeablePipe.write(event.message.computeResponseChannel(), createdWindowMessage);
     }
 
 }

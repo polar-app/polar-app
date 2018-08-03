@@ -13,7 +13,7 @@ export class GetParentWindowHandler extends AbstractDialogWindowReferenceHandler
         this.parentWindowRegistry = parentWindowRegistry;
     }
 
-    protected handleIPC(event: IPCEvent, dialogWindowReference: DialogWindowReference): void {
+    protected async handleIPC(event: IPCEvent, dialogWindowReference: DialogWindowReference): Promise<void> {
 
         let parentWindowReference = this.parentWindowRegistry.get(dialogWindowReference);
 

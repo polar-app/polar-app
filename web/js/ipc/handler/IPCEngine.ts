@@ -24,35 +24,38 @@ export class IPCEngine<E extends IPCEvent, M> {
 
             this.pipe.on(ipcRegistration.path, pipeNotification => {
 
-                let event = pipeNotification.event;
+                (async () => {
 
-                let ipcMessage = IPCMessage.create(pipeNotification.message);
+                    let event = pipeNotification.event;
 
-                let ipcResponse: IPCMessage<any>;
+                    let ipcMessage = IPCMessage.create(pipeNotification.message);
 
-                try {
+                    let ipcResponse: IPCMessage<any>;
 
-                    let result = ipcRegistration.handler.handle(event, ipcMessage);
+                    try {
 
-                    if( ! result) {
-                        // we don't have a result given to us from the handler
-                        // we just return true in this situation.
-                        result = true;
+                        let result =  await ipcRegistration.handler.handle(event, ipcMessage);
+
+                        if( ! result) {
+                            // we don't have a result given to us from the handler
+                            // we just return true in this situation.
+                            result = true;
+                        }
+
+                        ipcResponse = new IPCMessage('result', result);
+
+                    } catch(err) {
+
+                        // catch any exceptions so that handlers don't have to be
+                        // responsible for error handling by default.
+
+                        ipcResponse = IPCMessage.createError('error', new IPCError(err));
+
                     }
 
-                    ipcResponse = new IPCMessage('result', result);
+                    event.writeablePipe.write(ipcMessage.computeResponseChannel(), ipcResponse);
 
-
-                } catch(err) {
-
-                    // catch any exceptions so that handlers don't have to be
-                    // responsible for error handling by default.
-
-                    ipcResponse = IPCMessage.createError('error', new IPCError(err));
-
-                }
-
-                event.writeablePipe.write(ipcMessage.computeResponseChannel(), ipcResponse);
+                })().catch(err => log.error(`Unable to handle IPC at ${ipcRegistration.path}: `, err));
 
             });
 

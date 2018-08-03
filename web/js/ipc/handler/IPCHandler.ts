@@ -3,12 +3,12 @@ import {IPCEvent} from './IPCEvent';
 
 export abstract class IPCHandler<M> {
 
-    public handle(event: IPCEvent, ipcMessage: IPCMessage<any>): any {
+    public async handle(event: IPCEvent, ipcMessage: IPCMessage<any>): Promise<any> {
         let message = this.createValue(ipcMessage);
         return this.handleIPC(event, message);
     }
 
-    protected abstract handleIPC(event: IPCEvent, message: M): any;
+    protected async abstract handleIPC(event: IPCEvent, message: M): Promise<any>;
 
     protected abstract createValue(ipcMessage: IPCMessage<any>): M;
 

@@ -1,5 +1,4 @@
 import {assertJSON} from '../../../test/Assertions';
-import {func} from 'prop-types';
 import {assert} from 'chai';
 
 describe('Custom objects from JSON', function() {
@@ -19,6 +18,8 @@ describe('Custom objects from JSON', function() {
             state: "California",
             zip: 94107
         });
+
+        assert.equal(address.constructor.name, "Address");
 
         let expected = {
             "city": "San Francisco",
@@ -103,6 +104,8 @@ describe('Custom objects from JSON', function() {
 
 
         address = new Address("San Francisco", "CA", 94107);
+
+        assert.equal(address.constructor.name, "Address");
 
         assert.notEqual(address.format, null);
 

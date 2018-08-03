@@ -6,6 +6,9 @@ import {ElectronIPCPipe} from '../../ipc/handler/ElectronIPCPipe';
 import {ElectronMainReadablePipe} from '../../ipc/pipes/ElectronMainReadablePipe';
 import {GetParentWindowHandler} from './handlers/GetParentWindowHandler';
 import {CreateWindowHandler} from './handlers/CreateWindowHandler';
+import {DialogWindowRegistry} from './DialogWindowRegistry';
+import {HideWindowHandler} from './handlers/HideWindowHandler';
+import {ShowWindowHandler} from './handlers/ShowWindowHandler';
 
 const log = Logger.create();
 
@@ -18,7 +21,7 @@ const log = Logger.create();
  */
 export class DialogWindowService {
 
-    private parentWindowRegistry: ParentWindowRegistry = new ParentWindowRegistry();
+    private readonly parentWindowRegistry: ParentWindowRegistry = new ParentWindowRegistry();
 
     start() {
 
@@ -32,6 +35,9 @@ export class DialogWindowService {
 
         ipcRegistry.registerPath('/api/dialog-window-service/create',
                                  new CreateWindowHandler(this.parentWindowRegistry));
+
+        ipcRegistry.registerPath('/api/dialog-window-service/hide', new HideWindowHandler());
+        ipcRegistry.registerPath('/api/dialog-window-service/show', new ShowWindowHandler());
 
         let ipcEngine = new IPCEngine(ipcPipe, ipcRegistry);
 

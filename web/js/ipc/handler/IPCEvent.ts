@@ -15,4 +15,9 @@ export class IPCEvent {
         this.message = message;
     }
 
+    sendResult<T>(result: T) {
+        let ipcMessage = new IPCMessage<T>('result', result);
+        this.writeablePipe.write(this.message.computeResponseChannel(), ipcMessage);
+    }
+
 }
