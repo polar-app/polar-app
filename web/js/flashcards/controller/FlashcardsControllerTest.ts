@@ -1,6 +1,6 @@
 import {FlashcardsController} from './FlashcardsController';
-import Model from '../../Model';
 import {assertJSON} from '../../test/Assertions';
+import {Model} from '../../Model';
 
 const assert = require('assert');
 const {MemoryDatastore} = require("../../datastore/MemoryDatastore");

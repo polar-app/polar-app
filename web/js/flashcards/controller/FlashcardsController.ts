@@ -1,9 +1,9 @@
 import {Logger} from "../../logger/Logger";
-import Model from "../../Model";
+import {Model} from '../../Model';
+import {ipcRenderer} from 'electron';
+import {AnnotationType} from '../../metadata/AnnotationType';
+import {Flashcards} from '../../metadata/Flashcards';
 
-const {ipcRenderer} = require('electron')
-const {AnnotationType} = require("../../metadata/AnnotationType");
-const {Flashcards} = require("../../metadata/Flashcards");
 const log = Logger.create();
 
 export class FlashcardsController {

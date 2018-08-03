@@ -7,13 +7,10 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 const FlashcardsController_1 = require("./FlashcardsController");
-const Model_1 = __importDefault(require("../../Model"));
 const Assertions_1 = require("../../test/Assertions");
+const Model_1 = require("../../Model");
 const assert = require('assert');
 const { MemoryDatastore } = require("../../datastore/MemoryDatastore");
 const { PersistenceLayer } = require("../../datastore/PersistenceLayer");
@@ -27,7 +24,7 @@ describe('FlashcardsControllerTest', function () {
             return __awaiter(this, void 0, void 0, function* () {
                 let memoryDatastore = new MemoryDatastore();
                 let persistenceLayer = new PersistenceLayer(memoryDatastore);
-                model = new Model_1.default(persistenceLayer);
+                model = new Model_1.Model(persistenceLayer);
                 flashcardsController = new FlashcardsController_1.FlashcardsController(model);
                 let docMeta = DocMetas.createMockDocMeta();
                 console.log("Testing with docMeta: ", JSON.stringify(docMeta, null, "  "));

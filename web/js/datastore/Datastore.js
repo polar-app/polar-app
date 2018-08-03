@@ -1,33 +1,26 @@
-// A datastore that supports ledgers and checkpoints.
-class Datastore {
-
-    /**
-     * Init the datastore, potentially reading files of disk, the network, etc.
-     */
-    async init() {
-    }
-
-    /**
-     * Get the data for the DocMeta object we currently in the datastore for
-     * this given fingerprint or null if it does not exist.
-
-     * @return {string} A JSON string representing the DocMeta which is decoded
-     * by the PersistenceLayer.
-     */
-    async getDocMeta(fingerprint) {
-
-    }
-
-    /**
-     * Write the datastore to disk.
-     *
-     * @param fingerprint The fingerprint of the data we should be working with.
-     * @param data The RAW data to decode by the PersistenceLayer
-     */
-    async sync(fingerprint, data) {
-
-    }
-
+"use strict";
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
 };
-
-module.exports.Datastore = Datastore;
+Object.defineProperty(exports, "__esModule", { value: true });
+class Datastore {
+    init() {
+        return __awaiter(this, void 0, void 0, function* () {
+        });
+    }
+    getDocMeta(fingerprint) {
+        return __awaiter(this, void 0, void 0, function* () {
+        });
+    }
+    sync(fingerprint, data) {
+        return __awaiter(this, void 0, void 0, function* () {
+        });
+    }
+}
+exports.Datastore = Datastore;
+//# sourceMappingURL=Datastore.js.map

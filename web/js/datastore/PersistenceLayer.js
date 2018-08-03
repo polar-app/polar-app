@@ -1,86 +1,54 @@
-
-const {Datastore} = require("./Datastore");
-const {MetadataSerializer} = require("../metadata/MetadataSerializer");
-const {DocMeta} = require("../metadata/DocMeta");
-const {DocMetas} = require("../metadata/DocMetas");
-const {DocMetaDescriber} = require("../metadata/DocMetaDescriber");
-const {Preconditions} = require("../Preconditions");
-
-
-const fs = require("fs");
-const os = require("os");
-const util = require('util');
-
-/**
- * First layer before the raw datastore. At one point we allowed the datastore
- * to perform all the data manipulation / serialization but we ran into problems
- * with node+chrome behaving differently so now we just make node work with raw
- * strings.
- */
+"use strict";
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const { DocMeta } = require("../metadata/DocMeta");
+const { DocMetas } = require("../metadata/DocMetas");
+const { Preconditions } = require("../Preconditions");
 class PersistenceLayer {
-
-    /**
-     */
     constructor(datastore) {
-        /**
-         * @type Datastore
-         */
         this.datastore = datastore;
     }
-
-    async init() {
-        await this.datastore.init();
+    init() {
+        return __awaiter(this, void 0, void 0, function* () {
+            yield this.datastore.init();
+        });
     }
-
-    /**
-     * Get the DocMeta object we currently in the datastore for this given
-     * fingerprint or null if it does not exist.
-     */
-    async getDocMeta(fingerprint) {
-
-        let data = await this.datastore.getDocMeta(fingerprint);
-
-        if(!data) {
-            return null;
-        }
-
-        if(! (typeof data === "string")) {
-            throw new Error("Expected string and received: " + typeof data);
-        }
-
-        return DocMetas.deserialize(data);
+    getDocMeta(fingerprint) {
+        return __awaiter(this, void 0, void 0, function* () {
+            let data = yield this.datastore.getDocMeta(fingerprint);
+            if (!data) {
+                return null;
+            }
+            if (!(typeof data === "string")) {
+                throw new Error("Expected string and received: " + typeof data);
+            }
+            return DocMetas.deserialize(data);
+        });
     }
-
-    /**
-     * Convenience method to not require the fingerprint.
-     */
-    async syncDocMeta(docMeta) {
-        return this.sync(docMeta.docInfo.fingerprint, docMeta);
+    syncDocMeta(docMeta) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return this.sync(docMeta.docInfo.fingerprint, docMeta);
+        });
     }
-
-    /**
-     * Write the datastore to disk.
-     */
-    async sync(fingerprint, docMeta) {
-
-        Preconditions.assertNotNull(fingerprint, "fingerprint");
-        Preconditions.assertNotNull(docMeta, "docMeta");
-
-        console.log("Sync of docMeta with fingerprint: ", fingerprint);
-
-        if(! docMeta instanceof DocMeta) {
-            throw new Error("Can not sync anything other than DocMeta.")
-        }
-
-        // NOTE that we always write the state with JSON pretty printing.
-        // Otherwise tools like git diff , etc will be impossible to deal with
-        // in practice.
-        let data = DocMetas.serialize(docMeta, "  ");
-
-        await this.datastore.sync(fingerprint, data);
-
+    sync(fingerprint, docMeta) {
+        return __awaiter(this, void 0, void 0, function* () {
+            Preconditions.assertNotNull(fingerprint, "fingerprint");
+            Preconditions.assertNotNull(docMeta, "docMeta");
+            console.log("Sync of docMeta with fingerprint: ", fingerprint);
+            if (!(docMeta instanceof DocMeta)) {
+                throw new Error("Can not sync anything other than DocMeta.");
+            }
+            let data = DocMetas.serialize(docMeta, "  ");
+            yield this.datastore.sync(fingerprint, data);
+        });
     }
-
-};
-
-module.exports.PersistenceLayer = PersistenceLayer;
+}
+exports.PersistenceLayer = PersistenceLayer;
+//# sourceMappingURL=PersistenceLayer.js.map
