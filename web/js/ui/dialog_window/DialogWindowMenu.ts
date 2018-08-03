@@ -13,28 +13,37 @@ export class DialogWindowMenu {
         const MENU_TEMPLATE: MenuItemConstructorOptions[] = [
             {
                 label: 'Edit',
+                role: 'edit',
                 submenu: [
-                    { label: 'Undo', accelerator: 'CmdOrCtrl+Z', role: 'undo' },
-                    { label: 'Redo', accelerator: 'Shift+CmdOrCtrl+Z', role: 'redo' },
+                    { role: 'undo' },
+                    { role: 'redo' },
                     { type: 'separator' },
-                    { label: "Cut", accelerator: "CmdOrCtrl+X",},
-                    { label: 'Copy', accelerator: 'CmdOrCtrl+C', role: "copy:" },
-                    { label: "Paste", accelerator: "CmdOrCtrl+V"},
-                    { label: 'Select All', accelerator: 'CmdOrCtrl+A', role: 'selectall' },
+                    { role: 'cut'},
+                    { role: 'copy' },
+                    { role: 'paste'},
+                    { role: 'selectall' },
+                ]
+            },
+            {
+                label: 'View',
+                role: 'view',
+                submenu: [
+                    { role: 'reload' },
+                    { role: 'togglefullscreen' },
                 ]
             },
             {
                 label: 'Window',
                 role: 'window',
                 submenu: [
-                    { label: 'Minimize', accelerator: 'CmdOrCtrl+M', role: 'minimize' },
-                    { label: 'Close', accelerator: 'CmdOrCtrl+W', role: 'close' },
+                    { role: 'minimize' },
+                    { role: 'close' },
                 ]
             },
             {
                 label: 'Tools',
                 submenu: [
-                    { label: 'Toggle Developer Tools', click: DialogWindowMenu.cmdToggleDevTools },
+                    { role: 'toggledevtools' },
                 ]
             }
         ];

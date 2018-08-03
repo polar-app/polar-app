@@ -22,6 +22,8 @@ SpectronRenderer.run(async (state) => {
 
     await dialogWindowClient.hide();
 
+    await dialogWindowClient.show();
+
     state.testResultWriter.write(true);
 
 });
