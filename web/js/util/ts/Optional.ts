@@ -52,6 +52,13 @@ export class Optional<T> {
         return value;
     }
 
+    /**
+     * Get the value or return undefined if it is absent.
+     */
+    getOrUndefined(): T | undefined {
+        return this.value;
+    }
+
     isPresent(): boolean {
         return this.value !== undefined;
     }

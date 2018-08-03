@@ -1,8 +1,9 @@
 import {Model} from '../Model';
 import Elements from '../util/Elements';
+import {ContextMenuType} from './ContextMenuType';
+import {MatchingSelector} from './MatchingSelector';
 
 const {ipcRenderer} = require('electron')
-const {ContextMenuType} = require("./ContextMenuType");
 const {forDict} = require("../utils");
 const {Attributes} = require("../util/Attributes");
 const {TriggerEvent} = require("./TriggerEvent");
@@ -50,7 +51,7 @@ export class ContextMenuController {
                 let matchingSelectors
                     = ContextMenuController.elementsFromEventMatchingSelectors(event, annotationSelectors );
 
-                let contextMenuTypes: any[] = [];
+                let contextMenuTypes: ContextMenuType[] = [];
 
                 forDict(matchingSelectors, function (selector: any, current: any) {
                     if(current.elements.length > 0) {
@@ -124,11 +125,11 @@ export class ContextMenuController {
 
     }
 
-    static toContextMenuType(selector: string) {
+    static toContextMenuType(selector: string): ContextMenuType {
         let result = selector.toUpperCase();
         result = result.replace(".", "");
         result = result.replace("-", "_");
-        return result;
+        return ContextMenuType[result as keyof typeof ContextMenuType];
     }
 
     /**
@@ -138,29 +139,19 @@ export class ContextMenuController {
      * @param event
      * @param selectors
      */
-     static elementsFromEventMatchingSelectors(event: any, selectors: any) {
+     static elementsFromEventMatchingSelectors(event: any, selectors: string[]) {
 
-        let result: any = {
+        let result: {[key: string]: MatchingSelector} = {};
 
-        };
-
-        // setup the selector result
         selectors.forEach(function (selector: any) {
-            result[selector] = {
-                selector,
-                elements: [],
-                /**
-                 * Includes metadata about each annotation that is selected.
-                 */
-                annotationDescriptors: []
-            }
+            result[selector] = new MatchingSelector(selector, [], []);
         });
 
         let elements = ContextMenuController.elementsFromEvent(event);
 
-        elements.forEach(function (element: any) {
+        elements.forEach((element: HTMLElement) => {
 
-            selectors.forEach(function (selector: any) {
+            selectors.forEach((selector: string) => {
 
                 if(element.matches(selector)) {
                     result[selector].elements.push(element);

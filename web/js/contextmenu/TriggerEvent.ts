@@ -1,6 +1,8 @@
 import {DocDescriptor} from '../metadata/DocDescriptor';
 import {Point} from '../Point';
 import {Points} from './Points';
+import {ContextMenuType} from './ContextMenuType';
+import {MatchingSelector} from './MatchingSelector';
 
 export class TriggerEvent {
 
@@ -10,38 +12,45 @@ export class TriggerEvent {
      *
      * @type {null}
      */
-    private point: Point;
+    public readonly point: Point;
 
-    private points: Points;
+    public readonly points: Points;
 
     /**
      * The page number on which this event was triggered.
      */
-    private pageNum: number;
+    public readonly pageNum: number;
 
     /**
      * The type of context menus to create based on what the user is clicking.
      */
-    private contextMenuTypes: any;
+    public readonly contextMenuTypes: ContextMenuType[];
 
     /**
      * A more complex data structure with the selectors and metadata
      * about the annotations that were selected.
      */
-    private matchingSelectors: any;
+    public readonly matchingSelectors: {[key: string]: MatchingSelector};
 
     /**
      * Basic metadata about the document with which we're interacting.
      */
-    private docDescriptor: DocDescriptor;
+    public readonly docDescriptor: DocDescriptor;
 
-    constructor(point: Point, points: Points, pageNum: number, contextMenuTypes: any, matchingSelectors: any, docDescriptor: DocDescriptor) {
+    constructor(point: Point,
+                points: Points,
+                pageNum: number,
+                contextMenuTypes: ContextMenuType[],
+                matchingSelectors: {[key: string]: MatchingSelector},
+                docDescriptor: DocDescriptor) {
+
         this.point = point;
         this.points = points;
         this.pageNum = pageNum;
         this.contextMenuTypes = contextMenuTypes;
         this.matchingSelectors = matchingSelectors;
         this.docDescriptor = docDescriptor;
+
     }
 
     public static create(opts: any) {

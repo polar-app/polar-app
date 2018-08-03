@@ -4,8 +4,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const Elements_1 = __importDefault(require("../util/Elements"));
+const ContextMenuType_1 = require("./ContextMenuType");
+const MatchingSelector_1 = require("./MatchingSelector");
 const { ipcRenderer } = require('electron');
-const { ContextMenuType } = require("./ContextMenuType");
 const { forDict } = require("../utils");
 const { Attributes } = require("../util/Attributes");
 const { TriggerEvent } = require("./TriggerEvent");
@@ -80,20 +81,16 @@ class ContextMenuController {
         let result = selector.toUpperCase();
         result = result.replace(".", "");
         result = result.replace("-", "_");
-        return result;
+        return ContextMenuType_1.ContextMenuType[result];
     }
     static elementsFromEventMatchingSelectors(event, selectors) {
         let result = {};
         selectors.forEach(function (selector) {
-            result[selector] = {
-                selector,
-                elements: [],
-                annotationDescriptors: []
-            };
+            result[selector] = new MatchingSelector_1.MatchingSelector(selector, [], []);
         });
         let elements = ContextMenuController.elementsFromEvent(event);
-        elements.forEach(function (element) {
-            selectors.forEach(function (selector) {
+        elements.forEach((element) => {
+            selectors.forEach((selector) => {
                 if (element.matches(selector)) {
                     result[selector].elements.push(element);
                     result[selector].annotationDescriptors.push(Attributes.dataToMap(element));

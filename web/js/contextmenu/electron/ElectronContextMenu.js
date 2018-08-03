@@ -1,298 +1,158 @@
-const electron = require('electron');
-const Menu = electron.Menu;
-const MenuItem = electron.MenuItem;
-const BrowserWindow = electron.BrowserWindow;
-const ipcMain = electron.ipcMain;
-
-const {ContextMenuType} = require("../ContextMenuType");
-const {ContextMenu} = require("../ContextMenu");
-const {Preconditions} = require("../../Preconditions");
-const {Broadcaster} = require("../../ipc/Broadcaster");
-const {createSiblings} = require("../../util/Functions");
-const {Messenger} = require("../../electron/messenger/Messenger");
-const log = require("../../logger/Logger").create();
-
-/**
- * Careful here as this is confusing.  We're using the REMOVE interface so the
- * context changes. This code is triggered from the renderer but then runs
- * in the main process.
- */
+"use strict";
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const TriggerEvent_1 = require("../TriggerEvent");
+const electron_1 = require("electron");
+const Logger_1 = require("../../logger/Logger");
+const Arrays_1 = require("../../util/Arrays");
+const { ContextMenuType } = require("../ContextMenuType");
+const { ContextMenu } = require("../ContextMenu");
+const { Preconditions } = require("../../Preconditions");
+const { Broadcaster } = require("../../ipc/Broadcaster");
+const { Messenger } = require("../../electron/messenger/Messenger");
+const log = Logger_1.Logger.create();
 class ElectronContextMenu extends ContextMenu {
-
     constructor() {
         super();
-
         this.messenger = new Messenger();
-
-        // TODO: move this to a start method.
-        ipcMain.on('context-menu-trigger', (event, triggerEvent) => {
-
+        electron_1.ipcMain.on('context-menu-trigger', (event, message) => {
+            let triggerEvent = TriggerEvent_1.TriggerEvent.create(message);
             this.trigger(triggerEvent, event.sender);
-
         });
-
         new Broadcaster('create-annotation');
-
     }
-
-    /**
-     *
-     * @param triggerEvent {TriggerEvent}
-     * @param sender
-     */
     trigger(triggerEvent, sender) {
-
         Preconditions.assertNotNull(sender, "sender");
-
-        let window = BrowserWindow.getFocusedWindow();
-
-        //console.log("GOT IT for: contextMenuTypes: " + contextMenuTypes)
-        //console.log("GOT IT for: matchingSelectors: " + JSON.stringify(matchingSelectors, null, "  "))
-
+        let window = electron_1.BrowserWindow.getFocusedWindow();
         const ctxMenu = this.createContextMenu(triggerEvent, sender);
-
-        // The documentation for this looks wrong and it actually takes three
-        // arguments not a object
-        ctxMenu.popup(window, triggerEvent.point.x, triggerEvent.point.y);
-
+        ctxMenu.popup({
+            window,
+            x: triggerEvent.point.x,
+            y: triggerEvent.point.y
+        });
     }
-
-    async postContextMenuMessage(name, triggerEvent) {
-
-        log.info("postContextMenuMessage: " + name);
-
-        // TODO: this should use its own type of ContextMenuMessage with the
-        // ContextMenuLocation and a type field.
-
-        // TODO: just send the full TriggerEvent but rename it to
-        // ContextMenuSelectedEvent or something along those lines.
-
-        // FIXME: we can't actually do this because matchingSelectors has elements
-        // which will not be serialized as JSON to the renderer.
-
-        await this.messenger.postMessage({
-            message: {
-                type: name,
-                point: triggerEvent.point,
-                points: triggerEvent.points,
-                pageNum: triggerEvent.pageNum,
-                matchingSelectors: triggerEvent.matchingSelectors,
-                docDescriptor: triggerEvent.docDescriptor
-            }
-        })
-
+    postContextMenuMessage(name, triggerEvent) {
+        return __awaiter(this, void 0, void 0, function* () {
+            log.info("postContextMenuMessage: " + name);
+            yield this.messenger.postMessage({
+                message: {
+                    type: name,
+                    point: triggerEvent.point,
+                    points: triggerEvent.points,
+                    pageNum: triggerEvent.pageNum,
+                    matchingSelectors: triggerEvent.matchingSelectors,
+                    docDescriptor: triggerEvent.docDescriptor
+                }
+            });
+        });
     }
-
-    /**
-     * Send the annotation BACK to the sender with the specific actions to take.
-     *
-     * @deprecated Move to postContextMenuMessage
-     * @param command
-     * @param triggerEvent
-     * @param sender
-     */
     cmdNotify(command, triggerEvent, sender) {
-
-        // we're sending back LESS data because I think all of the original data
-        // is probably not needed.
         let event = {
             command,
             matchingSelectors: triggerEvent.matchingSelectors,
             docDescriptor: triggerEvent.docDescriptor
         };
-
         sender.send("context-menu-command", event);
-
     }
-
-    /**
-     *
-     * @param triggerEvent {TriggerEvent}
-     * @param sender
-     */
     createContextMenu(triggerEvent, sender) {
-
         Preconditions.assertNotNull(sender, "sender");
-
-        // TODO: move this to a template as the code is cleaner
-
         let contextMenus = [];
-
         if (triggerEvent.contextMenuTypes.includes(ContextMenuType.TEXT_HIGHLIGHT)) {
             contextMenus.push(this.createTextHighlightContextMenu(triggerEvent, sender));
         }
-
         if (triggerEvent.contextMenuTypes.includes(ContextMenuType.AREA_HIGHLIGHT)) {
             contextMenus.push(this.createAreaHighlightContextMenu(triggerEvent, sender));
         }
-
         if (triggerEvent.contextMenuTypes.includes(ContextMenuType.PAGE)) {
             contextMenus.push(this.createPageContextMenu(triggerEvent, sender));
         }
-
         if (triggerEvent.contextMenuTypes.includes(ContextMenuType.PAGEMARK)) {
             contextMenus.push(this.createPagemarkContextMenu(triggerEvent, sender));
         }
-
         contextMenus.push(this.createDefaultContextMenu(triggerEvent, sender));
-
-        const ctxMenu = new Menu();
-
-        createSiblings(contextMenus).forEach(contextMenuCursor => {
-
+        const ctxMenu = new electron_1.Menu();
+        Arrays_1.Arrays.createSiblings(contextMenus).forEach(contextMenuCursor => {
             contextMenuCursor.curr.items.forEach(menuItem => {
                 ctxMenu.append(menuItem);
             });
-
-            if(contextMenuCursor.curr.items.length > 0 && contextMenuCursor.next) {
-                ctxMenu.append(new MenuItem({
+            if (contextMenuCursor.curr.items.length > 0 && contextMenuCursor.next) {
+                ctxMenu.append(new electron_1.MenuItem({
                     type: 'separator'
                 }));
             }
-
         });
-
         return ctxMenu;
-
     }
-
-    /**
-     *
-     * @param triggerEvent {TriggerEvent}
-     * @param sender
-     * @return {Electron.Menu}
-     */
     createTextHighlightContextMenu(triggerEvent, sender) {
-
-        const ctxMenu = new Menu();
-
-        ctxMenu.append(new MenuItem({
+        const ctxMenu = new electron_1.Menu();
+        ctxMenu.append(new electron_1.MenuItem({
             label: 'Add Flashcard',
-            //accelerator: 'CmdOrCtrl+A',
             click: () => this.postContextMenuMessage("create-flashcard", triggerEvent)
         }));
-
-        ctxMenu.append(new MenuItem({
+        ctxMenu.append(new electron_1.MenuItem({
             label: 'Delete Text Highlight',
-            //accelerator: 'CmdOrCtrl+A',
             click: () => this.cmdNotify("delete-text-highlight", triggerEvent, sender)
         }));
-
         return ctxMenu;
-
     }
-
-    /**
-     *
-     * @param triggerEvent {TriggerEvent}
-     * @param sender
-     * @return {Electron.Menu}
-     */
     createAreaHighlightContextMenu(triggerEvent, sender) {
-
-        const ctxMenu = new Menu();
-
-        ctxMenu.append(new MenuItem({
+        const ctxMenu = new electron_1.Menu();
+        ctxMenu.append(new electron_1.MenuItem({
             label: 'Add Flashcard',
-            //accelerator: 'CmdOrCtrl+A',
             click: () => this.postContextMenuMessage("create-flashcard", triggerEvent)
         }));
-
-        ctxMenu.append(new MenuItem({
+        ctxMenu.append(new electron_1.MenuItem({
             label: 'Delete Area Highlight',
-            //accelerator: 'CmdOrCtrl+A',
             click: () => this.postContextMenuMessage("delete-area-highlight", triggerEvent)
         }));
-
         return ctxMenu;
-
     }
-
-    /**
-     *
-     * @param triggerEvent {TriggerEvent}
-     * @param sender
-     * @return {Electron.Menu}
-     */
     createPagemarkContextMenu(triggerEvent, sender) {
-
-        const ctxMenu = new Menu();
-
-        ctxMenu.append(new MenuItem({
+        const ctxMenu = new electron_1.Menu();
+        ctxMenu.append(new electron_1.MenuItem({
             label: 'Delete Pagemark',
-            //accelerator: 'CmdOrCtrl+A',
             click: () => this.postContextMenuMessage("delete-pagemark", triggerEvent)
         }));
-
         return ctxMenu;
-
     }
-
-    /**
-     *
-     * @param triggerEvent {TriggerEvent}
-     * @param sender
-     * @return {Electron.Menu}
-     */
     createPageContextMenu(triggerEvent, sender) {
-
-        const ctxMenu = new Menu();
-
-        ctxMenu.append(new MenuItem({
+        const ctxMenu = new electron_1.Menu();
+        ctxMenu.append(new electron_1.MenuItem({
             label: 'Create Pagemark',
             click: () => this.postContextMenuMessage("create-pagemark", triggerEvent)
         }));
-
-        ctxMenu.append(new MenuItem({
+        ctxMenu.append(new electron_1.MenuItem({
             label: 'Create Area Highlight',
             click: () => this.postContextMenuMessage("create-area-highlight", triggerEvent)
         }));
-
         return ctxMenu;
-
     }
-
-    /**
-     *
-     * @param triggerEvent
-     * @param sender
-     * @return {Electron.Menu}
-     */
     createDefaultContextMenu(triggerEvent, sender) {
-
-        const ctxMenu = new Menu();
-
-        let window = BrowserWindow.getFocusedWindow();
-
-        // TODO: display this first and only if text is highlighted
-        // ctxMenu.append(new MenuItem({ label: 'Copy', accelerator: 'CmdOrCtrl+C', role: 'copy' }));
-
-        ctxMenu.append(new MenuItem({
+        const ctxMenu = new electron_1.Menu();
+        let window = electron_1.BrowserWindow.getFocusedWindow();
+        ctxMenu.append(new electron_1.MenuItem({
             label: 'Inspect Element',
             id: "inspect",
-            //accelerator: 'Ctrl+Shift+I',
             click: event => {
-
-                // the points are SLIGHTLY off for the iframe version which is
-                // very annoying.
-                window.inspectElement(triggerEvent.point.x, triggerEvent.point.y);
-
+                let window = electron_1.BrowserWindow.getFocusedWindow();
+                if (!window) {
+                    throw new Error("No current window");
+                }
+                window.webContents.inspectElement(triggerEvent.point.x, triggerEvent.point.y);
                 if (window.webContents.isDevToolsOpened()) {
                     window.webContents.devToolsWebContents.focus();
                 }
-
             }
-
         }));
-
-        // ctxMenu.append(new MenuItem({ label: 'Inspect Element', accelerator: 'Ctrl+Shift+I', click: function () {
-        //         window.inspectElement(screenX, screenY)
-        //     } }));
-
         return ctxMenu;
-
     }
-
 }
-
-module.exports.ElectronContextMenu = ElectronContextMenu;
+exports.ElectronContextMenu = ElectronContextMenu;
+//# sourceMappingURL=ElectronContextMenu.js.map

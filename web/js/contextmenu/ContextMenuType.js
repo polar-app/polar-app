@@ -1,43 +1,13 @@
-
-/**
- */
-module.exports.ContextMenuType = Object.freeze({
-
-    /**
-     * The default context menu.
-     */
-    DEFAULT: "DEFAULT",
-
-    /**
-     * A pagemark is selected.
-     */
-    PAGEMARK: "PAGEMARK",
-
-
-    /**
-     * Text is selected so we should have 'copy', 'create highlight', etc.
-     */
-    TEXT_SELECTED: "TEXT_SELECTED",
-
-
-    /**
-     * An annotation is selected.  We should have "add flashcard", etc.
-     */
-    ANNOTATION: "ANNOTATION",
-
-    /**
-     * A text highlight is selected.
-     */
-    TEXT_HIGHLIGHT: "TEXT_HIGHLIGHT",
-
-    /**
-     * An area highlight is selected.
-     */
-    AREA_HIGHLIGHT: "AREA_HIGHLIGHT",
-
-    /**
-     * We are hovering over a .page so add page specific options.
-     */
-    PAGE: "PAGE"
-
-});
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var ContextMenuType;
+(function (ContextMenuType) {
+    ContextMenuType["DEFAULT"] = "DEFAULT";
+    ContextMenuType["PAGEMARK"] = "PAGEMARK";
+    ContextMenuType["TEXT_SELECTED"] = "TEXT_SELECTED";
+    ContextMenuType["ANNOTATION"] = "ANNOTATION";
+    ContextMenuType["TEXT_HIGHLIGHT"] = "TEXT_HIGHLIGHT";
+    ContextMenuType["AREA_HIGHLIGHT"] = "AREA_HIGHLIGHT";
+    ContextMenuType["PAGE"] = "PAGE";
+})(ContextMenuType = exports.ContextMenuType || (exports.ContextMenuType = {}));
+//# sourceMappingURL=ContextMenuType.js.map
