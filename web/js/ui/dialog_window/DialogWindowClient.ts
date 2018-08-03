@@ -18,11 +18,11 @@ export class DialogWindowClient {
     }
 
     async show(): Promise<void> {
-        await ipcClient.execute("/api/dialog-service/show", this.dialogWindowReference);
+        await ipcClient.execute("/api/dialog-window-service/show", this.dialogWindowReference);
     }
 
     async hide(): Promise<void> {
-        await ipcClient.execute("/api/dialog-service/hide", this.dialogWindowReference);
+        await ipcClient.execute("/api/dialog-window-service/hide", this.dialogWindowReference);
     }
 
     /**
@@ -39,7 +39,7 @@ export class DialogWindowClient {
      */
     static async create(options: DialogWindowOptions): Promise<DialogWindowClient> {
 
-        let result = await ipcClient.execute("/api/dialog-service/create", options);
+        let result = await ipcClient.execute('/api/dialog-window-service/create', options);
 
         // TODO: we need to auto-marshal these to the correct objects but the
         // IPC framework doesn't support this yet.

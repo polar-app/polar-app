@@ -63,7 +63,7 @@ export class TestResultService {
 
                 TestResult.set(ipcMessage.value);
 
-                log.info("Received test result: ", TestResult.get());
+                log.info("Received test result: " + JSON.stringify(TestResult.get()));
 
             } else if(data.err) {
 

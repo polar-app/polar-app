@@ -7,7 +7,5 @@ SpectronMain.run(async state => {
     dialogWindowService.start();
 
     state.window.loadFile(__dirname + '/app.html');
-
-    await state.testResultWriter.write(true);
-
+    
 });

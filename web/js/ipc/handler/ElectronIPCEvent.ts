@@ -1,9 +1,9 @@
-import {BrowserWindow} from 'electron';
+import {BrowserWindow, WebContents} from 'electron';
 import {IPCEvent} from './IPCEvent';
 import {WritablePipe} from '../pipes/Pipe';
 import {IPCMessage} from './IPCMessage';
 import {WindowReference} from '../../ui/dialog_window/WindowReference';
-import WebContents = Electron.WebContents;
+import {Preconditions} from '../../Preconditions';
 
 export class ElectronIPCEvent extends IPCEvent {
 
@@ -12,8 +12,11 @@ export class ElectronIPCEvent extends IPCEvent {
     constructor(writeablePipe: WritablePipe<IPCMessage<any>>, message: IPCMessage<any>, sender: WebContents) {
         super(writeablePipe, message);
 
-        let browserWindow = BrowserWindow.fromWebContents(sender);
-        this.senderWindowReference = new WindowReference(browserWindow.id);
+        Preconditions.assertNotNull(sender, "sender");
+
+        //let browserWindow = BrowserWindow.fromWebContents(sender);
+        this.senderWindowReference = new WindowReference(sender.id);
+
     }
 
 }

@@ -9,12 +9,12 @@ export class SpectronRenderer {
         new TestResultService().start();
     }
 
-    static start(callback: RunCallback): Promise<void> {
+    static async start(callback: RunCallback): Promise<any> {
         SpectronRenderer.setup();
         let testResultWriter = new RendererTestResultWriter();
         let state = new SpectronRendererState(testResultWriter);
 
-        let result = callback(state);
+        let result = await callback(state);
 
         ipcRenderer.send('spectron-renderer-started', true);
 
@@ -30,7 +30,7 @@ export class SpectronRenderer {
 }
 
 export interface RunCallback {
-    (state: SpectronRendererState): Promise<void>
+    (state: SpectronRendererState): Promise<any>
 }
 
 

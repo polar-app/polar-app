@@ -27,10 +27,10 @@ export class DialogWindowService {
 
         let ipcRegistry = new IPCRegistry();
 
-        ipcRegistry.registerPath('/api/dialog-window/get-parent',
+        ipcRegistry.registerPath('/api/dialog-window-service/get-parent',
                                  new GetParentWindowHandler(this.parentWindowRegistry));
 
-        ipcRegistry.registerPath('/api/dialog-window/create',
+        ipcRegistry.registerPath('/api/dialog-window-service/create',
                                  new CreateWindowHandler(this.parentWindowRegistry));
 
         let ipcEngine = new IPCEngine(ipcPipe, ipcRegistry);

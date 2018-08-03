@@ -5,11 +5,11 @@ import {ElectronIPCEvent} from './ElectronIPCEvent';
 
 export class ElectronIPCPipe extends IPCPipe<ElectronIPCEvent> {
 
-    constructor(source: Pipe<any, any>) {
+    constructor(source: Pipe<Electron.Event, any>) {
         super(source);
     }
 
-    convertEvent(pipeNotification: PipeNotification<any,any>): ElectronIPCEvent {
+    convertEvent(pipeNotification: PipeNotification<Electron.Event, any>): ElectronIPCEvent {
 
         let writablePipe =
             WritablePipes.create((channel: string, event: IPCMessage<any>) =>
