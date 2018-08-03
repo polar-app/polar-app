@@ -61,7 +61,7 @@ export class Spectron {
         });
 
         afterEach(function () {
-
+            //
             console.log("Going to shutdown now... ");
 
             if(spectronOutputMonitorService) {
