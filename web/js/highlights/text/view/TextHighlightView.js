@@ -119,6 +119,12 @@ class TextHighlightView {
         highlightElement.setAttribute("data-text-highlight-id", textHighlightEvent.textHighlight.id);
         highlightElement.setAttribute("data-page-num", `${textHighlightEvent.pageMeta.pageInfo.num}`);
 
+        // annotation descriptor metadata.
+        highlightElement.setAttribute("data-annotation-type", "text-highlight");
+        highlightElement.setAttribute("data-annotation-id", textHighlightEvent.textHighlight.id);
+        highlightElement.setAttribute("data-annotation-page-num", `${textHighlightEvent.pageMeta.pageInfo.num}`);
+        highlightElement.setAttribute("data-annotation-doc-fingerprint", textHighlightEvent.docMeta.docInfo.fingerprint);
+
         highlightElement.className = `text-highlight annotation text-highlight-${textHighlightEvent.textHighlight.id}`;
 
         highlightElement.style.position = "absolute";

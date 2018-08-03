@@ -1,7 +1,9 @@
 import {Model} from '../Model';
 import Elements from '../util/Elements';
-import {ContextMenuType} from './ContextMenuType';
+import {ContextMenuType, ContextMenuTypes} from './ContextMenuType';
 import {MatchingSelector} from './MatchingSelector';
+import {AnnotationDescriptor} from '../metadata/AnnotationDescriptor';
+import {AnnotationDescriptors} from '../metadata/AnnotationDescriptors';
 
 const {ipcRenderer} = require('electron')
 const {forDict} = require("../utils");
@@ -129,7 +131,7 @@ export class ContextMenuController {
         let result = selector.toUpperCase();
         result = result.replace(".", "");
         result = result.replace("-", "_");
-        return ContextMenuType[result as keyof typeof ContextMenuType];
+        return ContextMenuTypes.fromString(result);
     }
 
     /**
@@ -154,8 +156,14 @@ export class ContextMenuController {
             selectors.forEach((selector: string) => {
 
                 if(element.matches(selector)) {
-                    result[selector].elements.push(element);
-                    result[selector].annotationDescriptors.push(Attributes.dataToMap(element));
+
+                    let matchingSelector = result[selector];
+
+                    matchingSelector.elements.push(element);
+
+                    let annotationDescriptor = AnnotationDescriptors.fromElement(element);
+
+                    matchingSelector.annotationDescriptors.push(annotationDescriptor);
                 }
 
             });

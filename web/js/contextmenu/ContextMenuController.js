@@ -6,6 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const Elements_1 = __importDefault(require("../util/Elements"));
 const ContextMenuType_1 = require("./ContextMenuType");
 const MatchingSelector_1 = require("./MatchingSelector");
+const AnnotationDescriptors_1 = require("../metadata/AnnotationDescriptors");
 const { ipcRenderer } = require('electron');
 const { forDict } = require("../utils");
 const { Attributes } = require("../util/Attributes");
@@ -81,7 +82,7 @@ class ContextMenuController {
         let result = selector.toUpperCase();
         result = result.replace(".", "");
         result = result.replace("-", "_");
-        return ContextMenuType_1.ContextMenuType[result];
+        return ContextMenuType_1.ContextMenuTypes.fromString(result);
     }
     static elementsFromEventMatchingSelectors(event, selectors) {
         let result = {};
@@ -92,8 +93,10 @@ class ContextMenuController {
         elements.forEach((element) => {
             selectors.forEach((selector) => {
                 if (element.matches(selector)) {
-                    result[selector].elements.push(element);
-                    result[selector].annotationDescriptors.push(Attributes.dataToMap(element));
+                    let matchingSelector = result[selector];
+                    matchingSelector.elements.push(element);
+                    let annotationDescriptor = AnnotationDescriptors_1.AnnotationDescriptors.fromElement(element);
+                    matchingSelector.annotationDescriptors.push(annotationDescriptor);
                 }
             });
         });

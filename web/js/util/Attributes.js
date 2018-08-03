@@ -1,34 +1,22 @@
-const {Tokens} = require("./Tokens");
-const {Strings} = require("./Strings");
-const {Preconditions} = require("../Preconditions");
-
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const Tokens_1 = require("./Tokens");
+const Preconditions_1 = require("../Preconditions");
+const Strings_1 = require("./Strings");
 class Attributes {
-
-    /**
-     * Extract data attributes on an element as a map.
-     *
-     */
     static dataToMap(element) {
-
         let result = {};
-
-        Preconditions.assertNotNull(element, "element");
-
+        Preconditions_1.Preconditions.assertNotNull(element, "element");
         Array.from(element.attributes).forEach((attr) => {
-
-            if(attr.name.startsWith("data-")) {
+            if (attr.name.startsWith("data-")) {
                 let key = attr.name;
                 key = key.replace("data-", "");
-                key = Tokens.hyphenToCamelCase(key);
-                result[key] = Strings.toPrimitive(attr.value);
+                key = Tokens_1.Tokens.hyphenToCamelCase(key);
+                result[key] = Strings_1.Strings.toPrimitive(attr.value);
             }
-
         });
-
         return result;
-
     }
-
 }
-
-module.exports.Attributes = Attributes;
+exports.Attributes = Attributes;
+//# sourceMappingURL=Attributes.js.map

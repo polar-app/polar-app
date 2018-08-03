@@ -9,11 +9,13 @@ export class AnnotationDescriptor {
 
     public readonly type: AnnotationType;
     public readonly id: string;
+    public readonly docFingerprint: string;
     public readonly pageNum: number;
 
-    constructor(type: AnnotationType, id: string, pageNum: number) {
+    constructor(type: AnnotationType, id: string, docFingerprint: string, pageNum: number) {
         this.type = type;
         this.id = id;
+        this.docFingerprint = docFingerprint;
         this.pageNum = pageNum;
     }
 

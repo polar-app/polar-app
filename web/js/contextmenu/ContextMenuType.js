@@ -10,4 +10,10 @@ var ContextMenuType;
     ContextMenuType["AREA_HIGHLIGHT"] = "AREA_HIGHLIGHT";
     ContextMenuType["PAGE"] = "PAGE";
 })(ContextMenuType = exports.ContextMenuType || (exports.ContextMenuType = {}));
+class ContextMenuTypes {
+    static fromString(val) {
+        return ContextMenuType[val];
+    }
+}
+exports.ContextMenuTypes = ContextMenuTypes;
 //# sourceMappingURL=ContextMenuType.js.map
