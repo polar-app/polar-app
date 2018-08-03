@@ -50,7 +50,7 @@ export class Optional<T> {
         }
 
         return value;
-    };
+    }
 
     isPresent(): boolean {
         return this.value !== undefined;
@@ -58,7 +58,7 @@ export class Optional<T> {
 
     static of<T>(value: T, name?: string): Optional<T> {
         return new Optional<T>(value, name);
-    };
+    }
 
     /**
      * Return true if the given object is present.

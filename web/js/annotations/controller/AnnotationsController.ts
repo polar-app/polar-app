@@ -7,22 +7,30 @@ import {DialogWindowClient} from '../../ui/dialog_window/DialogWindowClient';
 import {Logger} from '../../logger/Logger';
 import {TriggerEvent} from '../../contextmenu/TriggerEvent';
 import {CreateFlashcardRequest} from '../../apps/card_creator/CreateFlashcardRequest';
+import {Optional} from '../../util/ts/Optional';
+import {Nullable} from '../../util/ts/Nullable';
 
 const log = Logger.create();
 
+/**
+ * Controller used to listen for the context menu (and key bindings) for creating
+ * specific annotation types.
+ *
+ * @ElectronMainContext
+ */
 export class AnnotationsController {
 
-    async start() {
+    flashcardDialogWindow = new Nullable<DialogWindowClient>();
+
+    async start(): Promise<void> {
 
         window.addEventListener("message", event => this.onMessageReceived(event), false);
 
-        await this.createDialogWindow();
+        this.flashcardDialogWindow.set(await this.createFlashcardDialogWindow());
 
     }
 
     private onMessageReceived(event: any) {
-
-        // get the page number
 
         let data = event.data;
 
@@ -49,17 +57,17 @@ export class AnnotationsController {
     private async createFlashcard(createFlashcardRequest: CreateFlashcardRequest) {
         log.info("Creating flashcard with triggerEvent: ", createFlashcardRequest);
 
-        // FIXME: we now need to send a message to the other window telling it
-        // to create a new flashcard.  We also need to tell it to show itself.
+        await this.flashcardDialogWindow.get().show();
+
     }
 
-    private async createDialogWindow(): Promise<DialogWindowClient> {
+    private async createFlashcardDialogWindow(): Promise<DialogWindowClient> {
 
         let appPath = "./apps/card-creator/index.html";
 
         let resource = new Resource(ResourceType.FILE, appPath);
         let options = new DialogWindowOptions(resource);
-        options.show = true;
+        options.show = false;
 
         return await DialogWindowClient.create(options);
 

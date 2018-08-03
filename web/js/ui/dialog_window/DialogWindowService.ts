@@ -6,7 +6,6 @@ import {ElectronIPCPipe} from '../../ipc/handler/ElectronIPCPipe';
 import {ElectronMainReadablePipe} from '../../ipc/pipes/ElectronMainReadablePipe';
 import {GetParentWindowHandler} from './handlers/GetParentWindowHandler';
 import {CreateWindowHandler} from './handlers/CreateWindowHandler';
-import {DialogWindowRegistry} from './DialogWindowRegistry';
 import {HideWindowHandler} from './handlers/HideWindowHandler';
 import {ShowWindowHandler} from './handlers/ShowWindowHandler';
 
@@ -23,7 +22,7 @@ export class DialogWindowService {
 
     private readonly parentWindowRegistry: ParentWindowRegistry = new ParentWindowRegistry();
 
-    start() {
+    async start(): Promise<void> {
 
         let mainReadablePipe = new ElectronMainReadablePipe();
         let ipcPipe = new ElectronIPCPipe(mainReadablePipe);

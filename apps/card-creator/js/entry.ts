@@ -1,9 +1,9 @@
-import {Entry} from '../../../web/js/apps/card_creator/Entry';
+import {CardCreatorApp} from '../../../web/js/apps/card_creator/CardCreatorApp';
 import {Logger} from '../../../web/js/logger/Logger';
 
 const log = Logger.create();
 
-let entry = new Entry();
+let cardCreatorApp = new CardCreatorApp();
 
-entry.start()
+cardCreatorApp.start()
     .catch(err => log.error("Could not start app: ", err));

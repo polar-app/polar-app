@@ -6,7 +6,7 @@ import {CreateFlashcardRequest} from './CreateFlashcardRequest';
 
 const log = Logger.create();
 
-export class Entry {
+export class CardCreatorApp {
 
     async start() {
 
@@ -34,6 +34,8 @@ export class Entry {
 
 }
 
+// TODO: this could/should be removed as I think we are done taking the requests
+// via URL and now taking them via IPC.
 class Context {
 
     public readonly createFlashcardRequest: CreateFlashcardRequest;

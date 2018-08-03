@@ -51,7 +51,7 @@ class Launcher {
 
         new PagemarkController(model).start();
 
-        new WebController(model).start();
+        await new WebController(model).start();
 
     }
 
