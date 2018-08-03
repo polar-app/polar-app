@@ -1,11 +1,12 @@
 import {AnnotationDescriptor} from './AnnotationDescriptor';
 import {AnnotationTypes} from './AnnotationType';
+import {Attributes} from '../util/Attributes';
 
 export class AnnotationDescriptors {
 
     static fromElement(element: HTMLElement) {
 
-        let dataAttributes = Attributes.dataToMap(element);
+        let dataAttributes = Attributes.dataToStringMap(element);
 
         let annotationType = AnnotationTypes.fromString(dataAttributes['annotation-type']);
         let id = AnnotationTypes.fromString(dataAttributes['annotation-id']);

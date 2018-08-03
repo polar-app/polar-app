@@ -7,14 +7,13 @@ import {DialogWindowClient} from '../../ui/dialog_window/DialogWindowClient';
 import {Logger} from '../../logger/Logger';
 import {TriggerEvent} from '../../contextmenu/TriggerEvent';
 import {CreateFlashcardRequest} from '../../apps/card_creator/CreateFlashcardRequest';
-import {Optional} from '../../util/ts/Optional';
 import {Nullable} from '../../util/ts/Nullable';
 
 const log = Logger.create();
 
 /**
- * Controller used to listen for the context menu (and key bindings) for creating
- * specific annotation types.
+ * Controller used to listen for the context menu (and key bindings) for
+ * creating specific annotation types.
  *
  * @ElectronMainContext
  */
@@ -39,6 +38,8 @@ export class AnnotationsController {
             if(data.type === 'create-flashcard') {
 
                 let triggerEvent = TriggerEvent.create(event.data);
+
+                log.info("Creating flashcard from trigger event: ", triggerEvent);
 
                 let createFlashcardRequest = new CreateFlashcardRequest(triggerEvent.docDescriptor);
 

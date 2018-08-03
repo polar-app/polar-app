@@ -1,14 +1,10 @@
-/**
- * Represents a row of highlighted text including the rect around it, and the
- * elements it contains.
- */
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 class TextHighlightRow {
-
     constructor(rect, rectElements) {
         this.rect = rect;
         this.rectElements = rectElements;
     }
-
-};
-
-module.exports.TextHighlightRow = TextHighlightRow;
+}
+exports.TextHighlightRow = TextHighlightRow;
+//# sourceMappingURL=TextHighlightRow.js.map
