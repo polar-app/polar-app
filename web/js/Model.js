@@ -1,15 +1,10 @@
 
 const {Proxies} = require("./proxies/Proxies");
-const {Pagemark} = require("./metadata/Pagemark");
 const {Pagemarks} = require("./metadata/Pagemarks");
 const {PagemarkType} = require("./metadata/PagemarkType");
-const {DocMeta} = require("./metadata/DocMeta");
 const {DocMetas} = require("./metadata/DocMetas");
-const {ISODateTime} = require("./metadata/ISODateTime");
 const {DocMetaDescriber} = require("./metadata/DocMetaDescriber");
 const {Reactor} = require("./reactor/Reactor");
-const {Event} = require("./reactor/Event");
-const {forDict} = require("./utils");
 const {Objects} = require("./util/Objects");
 const {Preconditions} = require("./Preconditions");
 

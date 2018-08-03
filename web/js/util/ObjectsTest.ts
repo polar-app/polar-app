@@ -1,5 +1,5 @@
-const {Objects} = require("./Objects");
-const {assertJSON} = require("../test/Assertions");
+import {Objects} from './Objects';
+import {assertJSON} from '../test/Assertions';
 
 describe('Objects', function() {
 

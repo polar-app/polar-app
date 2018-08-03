@@ -1,14 +1,12 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 class Symbol {
-
     constructor(name) {
         this.name = name;
-        Object.freeze(this);
     }
-
     toJSON() {
         return this.name;
     }
-
-};
-
-module.exports.Symbol = Symbol
+}
+exports.Symbol = Symbol;
+//# sourceMappingURL=Symbol.js.map

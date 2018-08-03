@@ -1,46 +1,60 @@
-"use strict";
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-const FlashcardsController_1 = require("./FlashcardsController");
-const Model_1 = __importDefault(require("../../Model"));
-const Assertions_1 = require("../../test/Assertions");
+import {FlashcardsController} from './FlashcardsController';
+import Model from '../../Model';
+import {assertJSON} from '../../test/Assertions';
+
 const assert = require('assert');
-const { MemoryDatastore } = require("../../datastore/MemoryDatastore");
-const { PersistenceLayer } = require("../../datastore/PersistenceLayer");
-const { DocMetas } = require("../../metadata/DocMetas");
+const {MemoryDatastore} = require("../../datastore/MemoryDatastore");
+const {PersistenceLayer} = require("../../datastore/PersistenceLayer");
+const {DocMetas} = require("../../metadata/DocMetas");
+
 require("../../test/TestingTime").freeze();
-describe('FlashcardsControllerTest', function () {
-    let flashcardsController;
-    let model;
-    beforeEach(function (done) {
-        (function () {
-            return __awaiter(this, void 0, void 0, function* () {
-                let memoryDatastore = new MemoryDatastore();
-                let persistenceLayer = new PersistenceLayer(memoryDatastore);
-                model = new Model_1.default(persistenceLayer);
-                flashcardsController = new FlashcardsController_1.FlashcardsController(model);
-                let docMeta = DocMetas.createMockDocMeta();
-                console.log("Testing with docMeta: ", JSON.stringify(docMeta, null, "  "));
-                yield persistenceLayer.init();
-                yield persistenceLayer.syncDocMeta(docMeta);
-                yield model.documentLoaded(docMeta.docInfo.fingerprint, docMeta.docInfo.nrPages, 1);
-            });
-        })().then(() => done())
+
+describe('FlashcardsControllerTest', function() {
+
+    /**
+     */
+    let flashcardsController: FlashcardsController;
+    let model: Model;
+
+    beforeEach(function(done) {
+
+        // needed because by default mocha won't print the err
+        (async function() {
+
+            let memoryDatastore = new MemoryDatastore();
+            let persistenceLayer = new PersistenceLayer(memoryDatastore);
+
+            model = new Model(persistenceLayer);
+            flashcardsController = new FlashcardsController(model);
+
+            // create some fake DocMeta and trigger it in the model..D
+
+            let docMeta = DocMetas.createMockDocMeta();
+
+            console.log("Testing with docMeta: ", JSON.stringify(docMeta, null, "  "));
+
+            await persistenceLayer.init();
+
+            await persistenceLayer.syncDocMeta(docMeta);
+
+            await model.documentLoaded(docMeta.docInfo.fingerprint, docMeta.docInfo.nrPages, 1);
+
+        })().then(()=> done())
             .catch((err) => done(err));
+
     });
+
     it("basic", function () {
-        flashcardsController.onCreateFlashcard(FORM_DATA);
+
+        // create a flashcard from basic data and make sure the docMeta was
+        // properly updated.
+
+        flashcardsController.onCreateFlashcard(FORM_DATA)
+
+        // now verify that the docMeta has the proper text highlight.
+
         let flashcards = model.docMeta.getPageMeta(1).textHighlights["12pNUv1Y9S"].flashcards;
+
         let expected = {
             "1tDRjUqxJA": {
                 "id": "1tDRjUqxJA",
@@ -58,13 +72,18 @@ describe('FlashcardsControllerTest', function () {
                 }
             }
         };
-        Assertions_1.assertJSON(flashcards, expected);
+
+        assertJSON(flashcards, expected)
+
     });
+
 });
-const FORM_DATA = {
+
+const FORM_DATA: {[path: string]: string } = {
     "back": "This is the back",
     "front": "This is the front"
 };
+
 const CARD_CREATOR_JSON = {
     "annotationType": "flashcard",
     "context": {
@@ -141,5 +160,4 @@ const CARD_CREATOR_JSON = {
         "back": {},
         "front": {}
     }
-};
-//# sourceMappingURL=FlashcardsControllerTest.js.map
+}

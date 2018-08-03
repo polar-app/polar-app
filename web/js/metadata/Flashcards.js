@@ -1,24 +1,20 @@
-const {Preconditions} = require("../Preconditions");
-const {Flashcard} = require("./Flashcard");
-const {Text} = require("./Text");
-const {ISODateTime} = require("./ISODateTime");
-const {Hashcodes} = require("../Hashcodes");
-const {AnnotationType} = require("./AnnotationType");
-const {FlashcardType} = require("./FlashcardType");
-const {TextType} = require("./TextType");
-const {Texts} = require("./Texts");
-const {Functions} = require("../util/Functions");
-
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const Dicts_1 = require("../util/Dicts");
+const FlashcardType_1 = require("./FlashcardType");
+const Hashcodes_1 = require("../Hashcodes");
+const Preconditions_1 = require("../Preconditions");
+const { Flashcard } = require("./Flashcard");
+const { ISODateTime } = require("./ISODateTime");
+const { TextType } = require("./TextType");
+const { Texts } = require("./Texts");
+const { Functions } = require("../util/Functions");
 class Flashcards {
-
     static create(type, fields) {
-
-        Preconditions.assertNotNull(fields, "fields");
-
+        Preconditions_1.Preconditions.assertNotNull(fields, "fields");
         let now = new Date();
         let created = new ISODateTime(now);
-
-        let id = Hashcodes.createID({created, fields});
+        let id = Hashcodes_1.Hashcodes.createID({ created, fields });
         return new Flashcard({
             id,
             created,
@@ -26,35 +22,14 @@ class Flashcards {
             type,
             fields
         });
-
     }
-
-    /**
-     * Create a flashcard from the raw, completed, schema form data.
-     * @param data
-     */
-    static createFromSchemaFormData(data) {
-
-        // TODO: the markdown needs to be converted to HTML as well.  The text
-        // we get from the markdown widget is markdown. Not HTML and I confirmed
-        // this is the case.
-
-        // require that the annotation type is correct
-        if(data.annotationType !== AnnotationType.FLASHCARD) {
-            throw new Error("Annotation type is incorrect: " + data.annotationType);
-        }
-
+    static createFromSchemaFormData(formData) {
         let fields = {};
-
-        // now work with the formData to create the fields.
-        Functions.forDict(data.formData, (key,value) => {
+        Dicts_1.Dicts.ownKeys(formData, (key, value) => {
             fields[key] = Texts.create(value, TextType.HTML);
         });
-
-        return Flashcards.create(FlashcardType.BASIC_FRONT_BACK, fields);
-
+        return Flashcards.create(FlashcardType_1.FlashcardType.BASIC_FRONT_BACK, fields);
     }
-
 }
-
-module.exports.Flashcards = Flashcards;
+exports.Flashcards = Flashcards;
+//# sourceMappingURL=Flashcards.js.map

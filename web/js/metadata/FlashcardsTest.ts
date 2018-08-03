@@ -1,17 +1,24 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const Assertions_1 = require("../test/Assertions");
-const Flashcards_1 = require("./Flashcards");
-const { Texts } = require("./Texts");
-const { TextType } = require("./TextType");
-const { FlashcardType } = require("./FlashcardType");
+import {assertJSON} from '../test/Assertions';
+import {Flashcards} from './Flashcards';
+
+const {Texts} = require("./Texts");
+const {TextType} = require("./TextType");
+const {FlashcardType} = require("./FlashcardType");
+
 require("../test/TestingTime").freeze();
-describe('Flashcards', function () {
-    describe('create', function () {
+
+describe('Flashcards', function() {
+
+    describe('create', function() {
+
         it("basic", function () {
+
             let text = Texts.create("This is the text", TextType.MARKDOWN);
+
             let fields = { text };
-            let flashcard = Flashcards_1.Flashcards.create(FlashcardType.CLOZURE, fields);
+
+            let flashcard = Flashcards.create(FlashcardType.CLOZURE, fields);
+
             let expected = {
                 "id": "1HYhuRQ4tz",
                 "created": "2012-03-02T11:38:49.321Z",
@@ -24,12 +31,20 @@ describe('Flashcards', function () {
                     }
                 }
             };
-            Assertions_1.assertJSON(flashcard, expected);
+
+            assertJSON(flashcard, expected);
+
         });
+
     });
-    describe('createFromSchemaFormData', function () {
+
+
+    describe('createFromSchemaFormData', function() {
+
         it("basic", function () {
-            let flashcard = Flashcards_1.Flashcards.createFromSchemaFormData(FORM_DATA);
+
+            let flashcard = Flashcards.createFromSchemaFormData(FORM_DATA);
+
             let expected = {
                 "id": "1tDRjUqxJA",
                 "created": "2012-03-02T11:38:49.321Z",
@@ -45,14 +60,20 @@ describe('Flashcards', function () {
                     }
                 }
             };
-            Assertions_1.assertJSON(flashcard, expected);
+
+            assertJSON(flashcard, expected);
+
         });
+
     });
+
 });
-const FORM_DATA = {
+
+const FORM_DATA: {[path: string]: string } = {
     "back": "This is the back",
     "front": "This is the front"
 };
+
 const CARD_CREATOR_JSON = {
     "annotationType": "flashcard",
     "context": {
@@ -129,5 +150,4 @@ const CARD_CREATOR_JSON = {
         "back": {},
         "front": {}
     }
-};
-//# sourceMappingURL=FlashcardsTest.js.map
+}

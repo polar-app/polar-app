@@ -1,19 +1,10 @@
-const {Symbol} = require("./Symbol.js");
-
-/**
- * The type of the flashcard.
- */
-module.exports.FlashcardType = Object.freeze({
-
-    CLOZURE: new Symbol("CLOZURE"),
-
-    BASIC_FRONT_BACK: new Symbol("BASIC_FRONT_BACK"),
-
-    // Create two derived views.  The front and back and then the reverse
-    // (reverse with the back->front)
-    BASIC_FRONT_BACK_AND_REVERSE: new Symbol("BASIC_FRONT_BACK_AND_REVERSE"),
-
-    // the reverse is optional
-    BASIC_FRONT_BACK_OR_REVERSE: new Symbol("BASIC_FRONT_BACK_OR_REVERSE")
-
-});
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var FlashcardType;
+(function (FlashcardType) {
+    FlashcardType["CLOZURE"] = "CLOZURE";
+    FlashcardType["BASIC_FRONT_BACK"] = "BASIC_FRONT_BACK";
+    FlashcardType["BASIC_FRONT_BACK_AND_REVERSE"] = "BASIC_FRONT_BACK_AND_REVERSE";
+    FlashcardType["BASIC_FRONT_BACK_OR_REVERSE"] = "BASIC_FRONT_BACK_OR_REVERSE";
+})(FlashcardType = exports.FlashcardType || (exports.FlashcardType = {}));
+//# sourceMappingURL=FlashcardType.js.map

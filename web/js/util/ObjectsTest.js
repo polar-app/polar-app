@@ -1,19 +1,20 @@
 "use strict";
-const { Objects } = require("./Objects");
-const { assertJSON } = require("../test/Assertions");
+Object.defineProperty(exports, "__esModule", { value: true });
+const Objects_1 = require("./Objects");
+const Assertions_1 = require("../test/Assertions");
 describe('Objects', function () {
     describe('defaults', function () {
         it("with no current", function () {
-            let value = Objects.defaults(null, { hello: "world" });
-            assertJSON(value, { hello: "world" });
+            let value = Objects_1.Objects.defaults(null, { hello: "world" });
+            Assertions_1.assertJSON(value, { hello: "world" });
         });
         it("with no value", function () {
-            let value = Objects.defaults({}, { hello: "world" });
-            assertJSON(value, { hello: "world" });
+            let value = Objects_1.Objects.defaults({}, { hello: "world" });
+            Assertions_1.assertJSON(value, { hello: "world" });
         });
         it("with existing", function () {
-            let value = Objects.defaults({ hello: "buddy" }, { hello: "world" });
-            assertJSON(value, { hello: "buddy" });
+            let value = Objects_1.Objects.defaults({ hello: "buddy" }, { hello: "world" });
+            Assertions_1.assertJSON(value, { hello: "buddy" });
         });
     });
     describe('clear', function () {
@@ -21,15 +22,15 @@ describe('Objects', function () {
             let myDict = {
                 hello: "world"
             };
-            Objects.clear(myDict);
-            assertJSON(myDict, {});
+            Objects_1.Objects.clear(myDict);
+            Assertions_1.assertJSON(myDict, {});
         });
         it("clear array", function () {
             let myArr = [
                 "world"
             ];
-            Objects.clear(myArr);
-            assertJSON(myArr, []);
+            Objects_1.Objects.clear(myArr);
+            Assertions_1.assertJSON(myArr, []);
         });
     });
     describe('createInstance', function () {

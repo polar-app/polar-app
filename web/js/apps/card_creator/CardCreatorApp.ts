@@ -13,7 +13,7 @@ export class CardCreatorApp {
         return new Promise<void>( resolve => {
             $(document).ready(function () {
 
-                console.log("Ready to create flash card!");
+                log.info("Ready to create flash card!");
 
                 let createFlashcardInputController = new CreateFlashcardInputController();
 
@@ -27,6 +27,8 @@ export class CardCreatorApp {
                 createFlashcardInputController.createNewFlashcard(schemaFormElement);
 
                 resolve();
+
+                log.info("UI created.")
 
             })
         });

@@ -10,7 +10,7 @@ export default class Model {
 	 *
 	 * @param persistenceLayer
 	 */
-	new (persistenceLayer : any): Model;
+    constructor (persistenceLayer : any);
 
 	/**
 	 * Called when a new document has been loaded.
