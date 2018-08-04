@@ -3,8 +3,6 @@ import {Author} from './Author';
 import {SerializedObject} from './SerializedObject';
 import {Preconditions} from '../Preconditions';
 
-/**
- */
 export abstract class VersionedObject extends SerializedObject {
 
 

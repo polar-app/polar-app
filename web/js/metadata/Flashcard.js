@@ -1,32 +1,14 @@
-const {VersionedObject} = require("./VersionedObject");
-
-class Flashcard extends VersionedObject {
-
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const FlashcardType_1 = require("./FlashcardType");
+const VersionedObject_1 = require("./VersionedObject");
+class Flashcard extends VersionedObject_1.VersionedObject {
     constructor(val) {
-
         super(val);
-
-        /**
-         * The type of this flashcard.
-         *
-         * @type FlashcardType
-         */
-        this.type = null;
-
-        /**
-         * The content of this flashcard created by the user.
-         *
-         * @type map<String,Text> for each defined field.
-         */
+        this.type = FlashcardType_1.FlashcardType.BASIC_FRONT_BACK;
         this.fields = {};
-
         this.init(val);
-
-        // TODO: we don't have a way right now to attach these to specific
-        // secondary annotations do we?
-
-    };
-
+    }
 }
-
-module.exports.Flashcard = Flashcard;
+exports.Flashcard = Flashcard;
+//# sourceMappingURL=Flashcard.js.map
