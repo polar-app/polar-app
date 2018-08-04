@@ -4,7 +4,7 @@ import {Attributes} from '../util/Attributes';
 
 export class AnnotationDescriptors {
 
-    static fromElement(element: HTMLElement): AnnotationDescriptor | undefined {
+    static createFromElement(element: HTMLElement): AnnotationDescriptor | undefined {
 
         let dataAttributes = Attributes.dataToStringMap(element);
 
@@ -19,7 +19,15 @@ export class AnnotationDescriptors {
         let docFingerprint = dataAttributes['annotationDocFingerprint'];
         let pageNum = parseInt(dataAttributes['annotationPageNum']);
 
-        return new AnnotationDescriptor(annotationType, docFingerprint, id, pageNum);
+        return AnnotationDescriptor.newInstance(annotationType, docFingerprint, id, pageNum);
+
+    }
+
+    static createFromObject(obj: any): Readonly<AnnotationDescriptor> {
+
+        let result = new AnnotationDescriptor(<AnnotationDescriptor>obj);
+
+        return Object.freeze(result);
 
     }
 

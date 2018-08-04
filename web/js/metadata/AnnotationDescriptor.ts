@@ -23,7 +23,8 @@ export class AnnotationDescriptor {
     }
 
     public static newInstance(type: AnnotationType,
-                              id: string, docFingerprint: string,
+                              id: string,
+                              docFingerprint: string,
                               pageNum: number): Readonly<AnnotationDescriptor> {
 
         let result = new AnnotationDescriptor(<AnnotationDescriptor> {

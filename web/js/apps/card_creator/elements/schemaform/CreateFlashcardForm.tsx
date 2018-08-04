@@ -17,7 +17,7 @@ require('summernote/dist/summernote-bs4');
 /**
  * Code to accept new input for flashcards, notes, comments, etc.
  */
-export class CreateFlashcardInputController {
+export class CreateFlashcardForm {
 
     /**
      * The FormHandler we're going to use.  We have to change it when we get
@@ -25,7 +25,7 @@ export class CreateFlashcardInputController {
      */
     public formHandler: FormHandler = new FormHandler();
 
-    createNewFlashcard(targetElement: HTMLElement) {
+    create(targetElement: HTMLElement) {
 
         let schema: JSONSchema6 = SchemaFactory.create();
         let schemaUI = SchemaUIFactory.create();

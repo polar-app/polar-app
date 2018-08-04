@@ -16,6 +16,8 @@ const log = Logger.create();
  * Careful here as this is confusing.  We're using the REMOVE interface so the
  * context changes. This code is triggered from the renderer but then runs
  * in the main process.
+ *
+ * @ElectronMainContext
  */
 export class ElectronContextMenu extends ContextMenu {
 

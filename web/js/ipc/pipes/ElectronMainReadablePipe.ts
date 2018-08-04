@@ -1,5 +1,6 @@
 import {ipcMain} from 'electron';
-import {Pipe, PipeListener, PipeNotification, ReadablePipe, when} from './Pipe';
+import {Pipe, PipeListener, PipeNotification, ReadablePipe} from './Pipe';
+import {Pipes} from './Pipes';
 
 export class ElectronMainReadablePipe implements Pipe<Electron.Event, any> {
 
@@ -16,7 +17,7 @@ export class ElectronMainReadablePipe implements Pipe<Electron.Event, any> {
     }
 
     when(channel: string): Promise<PipeNotification<Electron.Event, any>> {
-        return when(this, channel);
+        return Pipes.when(this, channel);
     }
 
     write(channel: string, message: any): void {

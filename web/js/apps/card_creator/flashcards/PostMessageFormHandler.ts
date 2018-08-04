@@ -1,22 +1,21 @@
 import {ipcRenderer} from 'electron';
 import {SchemaFormFlashcardConverter} from './SchemaFormFlashcardConverter';
 import {FormHandler} from '../elements/schemaform/FormHandler';
-import {CreateFlashcardRequest} from '../CreateFlashcardRequest';
 import {AnnotationContainer} from '../../../metadata/AnnotationContainer';
 import {AnnotationDescriptor} from '../../../metadata/AnnotationDescriptor';
-import {SchemaFormData} from '../elements/schemaform/SchemaFormData';
 import {Logger} from '../../../logger/Logger';
 import {AnnotationType} from '../../../metadata/AnnotationType';
+import {SchemaFormData} from '../elements/schemaform/SchemaFormData';
 
 const log = Logger.create();
 
 export class PostMessageFormHandler extends FormHandler {
 
-    private readonly createFlashcardRequest: CreateFlashcardRequest;
+    private readonly annotationDescriptor: AnnotationDescriptor;
 
-    constructor(createFlashcardRequest: CreateFlashcardRequest) {
+    constructor(annotationDescriptor: AnnotationDescriptor) {
         super();
-        this.createFlashcardRequest = createFlashcardRequest;
+        this.annotationDescriptor = annotationDescriptor;
     }
 
     onChange(data: any) {
@@ -38,8 +37,8 @@ export class PostMessageFormHandler extends FormHandler {
         let annotationDescriptor
             = AnnotationDescriptor.newInstance(AnnotationType.FLASHCARD,
                                                flashcard.id,
-                                               this.createFlashcardRequest.docDescriptor.fingerprint,
-                                               this.createFlashcardRequest.pageNum);
+                                               this.annotationDescriptor.docFingerprint,
+                                               this.annotationDescriptor.pageNum);
 
         let annotationContainer = AnnotationContainer.newInstance(annotationDescriptor, flashcard);
 
@@ -63,7 +62,7 @@ export class PostMessageFormHandler extends FormHandler {
         // renderers
 
         // FIXME: use an IPC client here...
-        ipcRenderer.send('create-annotation', annotationContainer);
+        ipcRenderer.send('created-annotation', annotationContainer);
 
     }
 

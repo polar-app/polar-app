@@ -1,6 +1,6 @@
 import $ from '../../ui/JQuery';
 
-import {CreateFlashcardInputController} from './elements/schemaform/CreateFlashcardInputController';
+import {CreateFlashcardForm} from './elements/schemaform/CreateFlashcardForm';
 import {Logger} from '../../logger/Logger';
 import {CreateFlashcardRequest} from './CreateFlashcardRequest';
 
@@ -11,11 +11,12 @@ export class CardCreatorApp {
     async start() {
 
         return new Promise<void>( resolve => {
+
             $(document).ready(function () {
 
                 log.info("Ready to create flash card!");
 
-                let createFlashcardInputController = new CreateFlashcardInputController();
+                let createFlashcardForm = new CreateFlashcardForm();
 
                 let schemaFormElement = <HTMLElement>document.getElementById('schema-form');
 
@@ -24,13 +25,14 @@ export class CardCreatorApp {
                 // FIXME: we have to create one when we get a new request to create an annotation.
                 //let postMessageFormHandler = new PostMessageFormHandler(createFlashcardRequest);
 
-                createFlashcardInputController.createNewFlashcard(schemaFormElement);
+                createFlashcardForm.create(schemaFormElement);
 
                 resolve();
 
                 log.info("UI created.")
 
-            })
+            });
+
         });
     }
 

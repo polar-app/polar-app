@@ -161,7 +161,7 @@ export class ContextMenuController {
 
                     matchingSelector.elements.push(element);
 
-                    let annotationDescriptor = AnnotationDescriptors.fromElement(element);
+                    let annotationDescriptor = AnnotationDescriptors.createFromElement(element);
 
                     if(annotationDescriptor) {
                         matchingSelector.annotationDescriptors.push(annotationDescriptor);
