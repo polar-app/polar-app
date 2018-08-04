@@ -1,12 +1,12 @@
 import {ipcRenderer} from 'electron';
-import {FormHandler} from "../FormHandler";
-import {AnnotationType} from "../../metadata/AnnotationType";
-import {Logger} from "../../logger/Logger";
-import {SchemaFormData} from '../elements/schemaform/SchemaFormData';
 import {SchemaFormFlashcardConverter} from './SchemaFormFlashcardConverter';
-import {AnnotationDescriptor} from '../../metadata/AnnotationDescriptor';
-import {AnnotationContainer} from '../../metadata/AnnotationContainer';
-import {CreateFlashcardRequest} from '../../apps/card_creator/CreateFlashcardRequest';
+import {FormHandler} from '../elements/schemaform/FormHandler';
+import {CreateFlashcardRequest} from '../CreateFlashcardRequest';
+import {AnnotationContainer} from '../../../metadata/AnnotationContainer';
+import {AnnotationDescriptor} from '../../../metadata/AnnotationDescriptor';
+import {SchemaFormData} from '../elements/schemaform/SchemaFormData';
+import {Logger} from '../../../logger/Logger';
+import {AnnotationType} from '../../../metadata/AnnotationType';
 
 const log = Logger.create();
 

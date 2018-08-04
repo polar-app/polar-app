@@ -3,8 +3,8 @@
  */
 import ReactSummernote from './ReactSummernote';
 import React from 'react';
-import {Logger} from '../../../logger/Logger';
 import {TypedWidgetProps} from './TypedWidgetProps';
+import {Logger} from '../../../../logger/Logger';
 const log = Logger.create();
 
 export class TextWidget extends React.Component  {

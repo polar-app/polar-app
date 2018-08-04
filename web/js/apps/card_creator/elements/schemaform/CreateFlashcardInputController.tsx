@@ -1,4 +1,4 @@
-import {FormHandler} from '../../FormHandler';
+import {FormHandler} from './FormHandler';
 
 declare var global: any;
 global.$ = global.jQuery = require("jquery");

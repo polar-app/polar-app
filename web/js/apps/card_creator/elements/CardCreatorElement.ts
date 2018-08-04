@@ -1,5 +1,4 @@
 import {CreateFlashcardInputController} from './schemaform/CreateFlashcardInputController';
-import {FormHandler} from '../FormHandler';
 
 export class CardCreatorElement extends HTMLElement {
 

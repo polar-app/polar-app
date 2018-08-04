@@ -9,6 +9,10 @@ import {Model} from '../../../Model';
 
 const log = Logger.create();
 
+/**
+ * Called when the context menu told us to create a new flashcard.  Our job
+ * is to reset the form first.
+ */
 export class CreateAnnotationHandler extends IPCHandler<AnnotationContainer<Annotation>> {
 
     private readonly model: Model;

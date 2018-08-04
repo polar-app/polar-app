@@ -1,6 +1,6 @@
 import $ from '../../ui/JQuery';
 
-import {CreateFlashcardInputController} from '../../annotations/elements/schemaform/CreateFlashcardInputController';
+import {CreateFlashcardInputController} from './elements/schemaform/CreateFlashcardInputController';
 import {Logger} from '../../logger/Logger';
 import {CreateFlashcardRequest} from './CreateFlashcardRequest';
 

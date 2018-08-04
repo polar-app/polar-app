@@ -4,7 +4,6 @@ import 'summernote/dist/summernote';
 import 'summernote/dist/summernote.css';
 import 'codemirror/lib/codemirror.css';
 
-import $ from '../../../ui/JQuery';
 
 
 

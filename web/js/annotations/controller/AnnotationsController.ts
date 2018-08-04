@@ -46,7 +46,7 @@ export class AnnotationsController {
                 // TODO: narrow this down to the right annotation were creating
                 // this with and also attach the
 
-                this.createFlashcard()
+                this.createFlashcard(triggerEvent)
                     .catch(err => log.error("Could not create flashcard: ", err));
 
             }
@@ -58,7 +58,9 @@ export class AnnotationsController {
     /**
      * Create a new flashcard.
      */
-    private async createFlashcard() {
+    private async createFlashcard(triggerEvent: TriggerEvent) {
+
+        // find the text / area highlight this was created on...
 
         // FIXME: now send a message to the card creator that we're going to
         // create a new flashcard.

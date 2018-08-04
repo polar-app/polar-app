@@ -13,7 +13,7 @@ const log = Logger.create();
  */
 export class FlashcardsController {
 
-    private model: Model;
+    private readonly model: Model;
 
     constructor(model: Model) {
         this.model = model;

@@ -1,7 +1,7 @@
-import {Flashcards} from '../../metadata/Flashcards';
-import {Flashcard} from '../../metadata/Flashcard';
-import {Logger} from '../../logger/Logger';
+import {Logger} from '../../../logger/Logger';
 import {SchemaFormData} from '../elements/schemaform/SchemaFormData';
+import {Flashcard} from '../../../metadata/Flashcard';
+import {Flashcards} from '../../../metadata/Flashcards';
 
 const log = Logger.create();
 
