@@ -1,10 +1,11 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const VersionedObject_1 = require("./VersionedObject");
+const Preconditions_1 = require("../Preconditions");
 class Flashcard extends VersionedObject_1.VersionedObject {
     constructor(template) {
         super(template);
-        this.id = template.id;
+        this.id = Preconditions_1.Preconditions.assertNotNull(template.id);
         this.created = template.created;
         this.lastUpdated = template.lastUpdated;
         this.type = template.type;
@@ -16,11 +17,9 @@ class Flashcard extends VersionedObject_1.VersionedObject {
         super.validate();
     }
     static newInstance(id, created, lastUpdated, type, fields, archetype) {
-        let result = Object.create(Flashcard.prototype);
-        Object.assign(result, {
+        let result = new Flashcard({
             id, created, lastUpdated, type, fields, archetype
         });
-        result.init();
         return Object.freeze(result);
     }
 }

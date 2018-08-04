@@ -36,12 +36,12 @@ export class PostMessageFormHandler extends FormHandler {
         let flashcard = SchemaFormFlashcardConverter.convert(schemaFormData, archetype);
 
         let annotationDescriptor
-            = new AnnotationDescriptor(AnnotationType.FLASHCARD,
-                                       flashcard.id,
-                                       this.createFlashcardRequest.docDescriptor.fingerprint,
-                                       this.createFlashcardRequest.pageNum);
+            = AnnotationDescriptor.newInstance(AnnotationType.FLASHCARD,
+                                               flashcard.id,
+                                               this.createFlashcardRequest.docDescriptor.fingerprint,
+                                               this.createFlashcardRequest.pageNum);
 
-        let annotationContainer = new AnnotationContainer(annotationDescriptor, flashcard);
+        let annotationContainer = AnnotationContainer.newInstance(annotationDescriptor, flashcard);
 
         //
         // let createAnnotationRequest

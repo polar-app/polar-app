@@ -2,6 +2,7 @@ import {FlashcardType} from './FlashcardType';
 import {VersionedObject} from './VersionedObject';
 import {Text} from './Text';
 import {ISODateTime} from './ISODateTime';
+import {Preconditions} from '../Preconditions';
 
 export class Flashcard extends VersionedObject {
 
@@ -20,11 +21,14 @@ export class Flashcard extends VersionedObject {
      */
     public archetype: string;
 
+    // TODO: we don't have a way right now to attach these to specific
+    // annotations
+
     protected constructor(template: Flashcard) {
 
         super(template);
 
-        this.id = template.id;
+        this.id = Preconditions.assertNotNull(template.id);
         this.created = template.created;
         this.lastUpdated = template.lastUpdated;
         this.type = template.type;
@@ -32,9 +36,6 @@ export class Flashcard extends VersionedObject {
         this.archetype = template.archetype;
 
         this.init(template);
-
-        // TODO: we don't have a way right now to attach these to specific
-        // secondary annotations do we?
 
     }
 
@@ -50,13 +51,9 @@ export class Flashcard extends VersionedObject {
                               fields: {[key: string]: Text},
                               archetype: string): Readonly<Flashcard> {
 
-        let result = Object.create(Flashcard.prototype);
-
-        Object.assign(result, <Flashcard> {
+        let result = new Flashcard(<Flashcard> {
             id, created, lastUpdated, type, fields, archetype
         });
-
-        result.init();
 
         return Object.freeze(result);
 

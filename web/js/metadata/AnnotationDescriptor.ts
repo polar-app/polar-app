@@ -13,11 +13,25 @@ export class AnnotationDescriptor {
     public readonly docFingerprint: string;
     public readonly pageNum: number;
 
-    constructor(type: AnnotationType, id: string, docFingerprint: string, pageNum: number) {
-        this.type = Preconditions.assertNotNull(type, "type");
-        this.id = Preconditions.assertNotNull(id, "id");
-        this.docFingerprint = Preconditions.assertNotNull(docFingerprint, "docFingerprint");
-        this.pageNum = Preconditions.assertNotNull(pageNum, "pageNum");
+    public constructor(template: AnnotationDescriptor) {
+
+        this.type = Preconditions.assertNotNull(template.type, "type");
+        this.id = Preconditions.assertNotNull(template.id, "id");
+        this.docFingerprint = Preconditions.assertNotNull(template.docFingerprint, "docFingerprint");
+        this.pageNum = Preconditions.assertNotNull(template.pageNum, "pageNum");
+
+    }
+
+    public static newInstance(type: AnnotationType,
+                              id: string, docFingerprint: string,
+                              pageNum: number): Readonly<AnnotationDescriptor> {
+
+        let result = new AnnotationDescriptor(<AnnotationDescriptor> {
+            type, id, pageNum
+        });
+
+        return Object.freeze(result);
+
     }
 
 }

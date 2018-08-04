@@ -11,16 +11,16 @@ export class IPCEngine<E extends IPCEvent, M> {
 
     private readonly pipe: IPCPipe<E>;
 
-    public readonly ipcRegistry: IPCRegistry;
+    public readonly registry: IPCRegistry;
 
-    constructor(pipe: IPCPipe<E>, ipcRegistry: IPCRegistry) {
+    constructor(pipe: IPCPipe<E>, registry: IPCRegistry) {
         this.pipe = pipe;
-        this.ipcRegistry = ipcRegistry;
+        this.registry = registry;
     }
 
     start() {
 
-        this.ipcRegistry.entries().forEach(ipcRegistration => {
+        this.registry.entries().forEach(ipcRegistration => {
 
             this.pipe.on(ipcRegistration.path, pipeNotification => {
 
