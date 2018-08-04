@@ -16,7 +16,6 @@ describe('Flashcards', function () {
                 "id": "1HYhuRQ4tz",
                 "created": "2012-03-02T11:38:49.321Z",
                 "lastUpdated": "2012-03-02T11:38:49.321Z",
-                "author": null,
                 "type": "CLOZURE",
                 "fields": {
                     "text": {
@@ -34,7 +33,6 @@ describe('Flashcards', function () {
                 "id": "1tDRjUqxJA",
                 "created": "2012-03-02T11:38:49.321Z",
                 "lastUpdated": "2012-03-02T11:38:49.321Z",
-                "author": null,
                 "type": "BASIC_FRONT_BACK",
                 "fields": {
                     "back": {

@@ -1,10 +1,9 @@
-
 const {DocInfo} = require("./DocInfo");
 const {PageMeta} = require("./PageMeta");
 const {PageInfo} = require("./PageInfo");
 const {AnnotationInfo} = require("./AnnotationInfo");
 const {SerializedObject} = require("./SerializedObject.js");
-const {Preconditions} = require("../Preconditions.js");
+const {Preconditions} = require("../Preconditions");
 
 /**
  * Root metadata for a document including page metadata, and metadata for
@@ -61,12 +60,9 @@ class DocMeta extends SerializedObject {
     }
 
     validate() {
-
-        this.validateMembers([
-            {name: 'docInfo', instance: DocInfo},
-            {name: 'pageMetas', type: "object"},
-            {name: 'version', type: "number"}
-        ]);
+        Preconditions.assertInstanceOf(this.docInfo, DocInfo, "docInfo");
+        Preconditions.assertNotNull(this.pageMetas, "pageMetas");
+        Preconditions.assertNumber(this.version, "version");
     }
 
 };

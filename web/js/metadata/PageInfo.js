@@ -1,3 +1,4 @@
+const {Preconditions} = require("../Preconditions");
 const {SerializedObject} = require("./SerializedObject.js");
 
 class PageInfo extends SerializedObject {
@@ -18,9 +19,7 @@ class PageInfo extends SerializedObject {
     }
 
     validate() {
-        this.validateMembers([
-            {name: 'num', type: "number"}
-        ]);
+        Preconditions.assertNumber(this.num, "num");
     }
 
 }

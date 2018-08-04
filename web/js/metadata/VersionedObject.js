@@ -1,76 +1,25 @@
-const {SerializedObject} = require("./SerializedObject.js");
-const {ISODateTime} = require("./ISODateTime");
-
-
-/**
- * @abstract
- */
-class VersionedObject extends SerializedObject {
-
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const ISODateTime_1 = require("./ISODateTime");
+const SerializedObject_1 = require("./SerializedObject");
+const Preconditions_1 = require("../Preconditions");
+class VersionedObject extends SerializedObject_1.SerializedObject {
     constructor(val) {
-
         super(val);
-
-        /**
-         * The unique ID for this object.  Every object needs to have a unique
-         * ID so that we can reference it easily.
-         *
-         * @type {string}
-         */
-        this.id = undefined;
-
-        /**
-         * The time this object was created
-         *
-         * @type ISODateTime
-         */
-        this.created = null;
-
-        /**
-         * The last time this annotation was updated (note changed, moved, etc).
-         * @type ISODateTime
-         */
-        this.lastUpdated = null;
-
-        /**
-         * The author who created this.
-         *
-         * @type Author
-         */
-        this.author = null;
-
         this.init(val);
-
     }
-
     setup() {
         super.setup();
-
-        if(!this.lastUpdated && this.created) {
+        if (!this.lastUpdated && this.created) {
             this.lastUpdated = this.created;
         }
-
     }
-
     validate() {
-
         super.validate();
-
-        if(!this.created) {
-            throw new Error("Created is required");
-        }
-
-        // FIXME: move this to validateMembers
-        if(!this.created instanceof ISODateTime) {
-            throw new Error("Member created has wrong type: " + typeof this.created);
-        }
-
-        if(!this.lastUpdated instanceof ISODateTime) {
-            throw new Error("Member lastUpdated has wrong type: " + typeof this.lastUpdated);
-        }
-
+        Preconditions_1.Preconditions.assertNotNull(this.created, "created");
+        Preconditions_1.Preconditions.assertInstanceOf(this.created, ISODateTime_1.ISODateTime, "created");
+        Preconditions_1.Preconditions.assertInstanceOf(this.lastUpdated, ISODateTime_1.ISODateTime, "lastUpdated");
     }
-
 }
-
-module.exports.VersionedObject = VersionedObject;
+exports.VersionedObject = VersionedObject;
+//# sourceMappingURL=VersionedObject.js.map

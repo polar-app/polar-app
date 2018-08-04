@@ -1,4 +1,5 @@
-const {SerializedObject} = require("./SerializedObject.js");
+const {Preconditions} = require("../Preconditions");
+const {SerializedObject} = require("./SerializedObject");
 const {PagemarkType} = require("./PagemarkType.js");
 const {Symbol} = require("./Symbol.js");
 
@@ -69,10 +70,8 @@ class DocInfo extends SerializedObject {
     }
 
     validate() {
-        this.validateMembers([
-            {name: 'nrPages', type: "number"},
-            {name: 'fingerprint', type: "string"}
-        ]);
+        Preconditions.assertNumber(this.nrPages, "nrPages");
+        Preconditions.assertNotNull(this.fingerprint, "fingerprint");
     }
 
 }

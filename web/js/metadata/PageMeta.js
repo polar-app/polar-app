@@ -1,3 +1,4 @@
+const {Preconditions} = require("../Preconditions");
 const {SerializedObject} = require("./SerializedObject.js");
 const {PageInfo} = require("./PageInfo");
 
@@ -91,10 +92,7 @@ class PageMeta extends SerializedObject {
     validate() {
 
         super.validate();
-
-        this.validateMembers([
-            {name: 'pageInfo', instance: PageInfo}
-        ]);
+        Preconditions.assertInstanceOf(this.pageInfo, PageInfo, "pageInfo");
 
     }
 
