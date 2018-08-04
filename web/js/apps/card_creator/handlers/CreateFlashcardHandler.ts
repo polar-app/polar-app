@@ -25,6 +25,7 @@ export class CreateFlashcardHandler extends IPCHandler<AnnotationDescriptor> {
     protected async handleIPC(event: IPCEvent, annotationDescriptor: AnnotationDescriptor): Promise<any> {
         log.info("Creating new post message for connected to annotation annotationDescriptor: ", annotationDescriptor);
         this.createFlashcardForm.formHandler = new PostMessageFormHandler(annotationDescriptor);
+        return true;
     }
 
 }

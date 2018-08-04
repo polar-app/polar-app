@@ -79,12 +79,16 @@ export class AnnotationsController {
 
         // we need to tell the annotation controller about the new highlight.
 
-        await this.sendAnnotationDescriptor(triggerEvent);
         await this.showDialog();
+        await this.sendAnnotationDescriptor(triggerEvent);
+
+        log.info("Flashcard UI created successfully.");
 
     }
 
     private async sendAnnotationDescriptor(triggerEvent: TriggerEvent) {
+
+        log.info("Sending annotation descriptor...");
 
         let annotationDescriptors
             = AnnotationTriggerEvents.getAnnotationDescriptors(triggerEvent);
@@ -94,12 +98,18 @@ export class AnnotationsController {
 
         let annotationDescriptor = annotationDescriptors[0];
 
-        await this.ipcClient.get().execute('/create-flashcard/api/create', annotationDescriptor);
+        // TODO: we're not awaiting the response now because the IPC framework
+        // is somewhat broken regarding channels and I need to rethink them
+        // and write test frameworks for this functionality.
+        this.ipcClient.get().execute('/create-flashcard/api/create', annotationDescriptor);
+        log.info("Sending annotation descriptor...done");
 
     }
 
     private async showDialog() {
+        log.info("Showing dialog...");
         await this.flashcardDialogWindow.get().show();
+        log.info("Showing dialog...done");
     }
 
     private async createFlashcardDialogWindow(): Promise<DialogWindowClient> {
