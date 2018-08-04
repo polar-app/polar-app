@@ -36,9 +36,9 @@ class FlashcardsController {
         let textHighlightAnnotationDescriptors = data.context.matchingSelectors[".text-highlight"].annotationDescriptors;
         textHighlightAnnotationDescriptors.forEach((annotationDescriptor) => {
             let pageMeta = this.model.docMeta.getPageMeta(annotationDescriptor.pageNum);
-            let textHighlight = pageMeta.textHighlights[annotationDescriptor.textHighlightId];
+            let textHighlight = pageMeta.textHighlights[annotationDescriptor.id];
             if (!textHighlight) {
-                throw new Error(`No text highlight for ID ${annotationDescriptor.textHighlightId} on page ${annotationDescriptor.pageNum}`);
+                throw new Error(`No text highlight for ID ${annotationDescriptor.id} on page ${annotationDescriptor.pageNum}`);
             }
             textHighlight.flashcards[flashcard.id] = flashcard;
         });
