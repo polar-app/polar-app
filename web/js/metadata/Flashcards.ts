@@ -2,16 +2,15 @@ import {Dicts} from '../util/Dicts';
 import {FlashcardType} from './FlashcardType';
 import {Hashcodes} from '../Hashcodes';
 import {Preconditions} from '../Preconditions';
-
-const {Flashcard} = require("./Flashcard");
-const {ISODateTime} = require("./ISODateTime");
-const {TextType} = require("./TextType");
-const {Texts} = require("./Texts");
-const {Functions} = require("../util/Functions");
+import {ISODateTime} from './ISODateTime';
+import {Flashcard} from './Flashcard';
+import {Texts} from './Texts';
+import {Text} from './Text';
+import {TextType} from './TextType';
 
 export class Flashcards {
 
-    static create(type: FlashcardType, fields: {[key: string]: Text }) {
+    static create(type: FlashcardType, fields: {[key: string]: Text }, archetype: string) {
 
         Preconditions.assertNotNull(fields, "fields");
 
@@ -24,7 +23,8 @@ export class Flashcards {
             created,
             lastUpdated: new ISODateTime(now),
             type,
-            fields
+            fields,
+            archetype
         });
 
     }
@@ -33,7 +33,7 @@ export class Flashcards {
      * Create a flashcard from the raw, completed, schema form data.
      **
      */
-    static createFromSchemaFormData(formData: {[path: string]: string }) {
+    static createFromSchemaFormData(formData: {[key: string]: string }, archetype: string) {
 
         // TODO: the markdown needs to be converted to HTML as well.  The text
         // we get from the markdown widget is markdown. Not HTML and I confirmed
@@ -46,7 +46,7 @@ export class Flashcards {
             fields[key] = Texts.create(value, TextType.HTML);
         });
 
-        return Flashcards.create(FlashcardType.BASIC_FRONT_BACK, fields);
+        return Flashcards.create(FlashcardType.BASIC_FRONT_BACK, fields, archetype);
 
     }
 

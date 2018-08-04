@@ -4,31 +4,31 @@ const Dicts_1 = require("../util/Dicts");
 const FlashcardType_1 = require("./FlashcardType");
 const Hashcodes_1 = require("../Hashcodes");
 const Preconditions_1 = require("../Preconditions");
-const { Flashcard } = require("./Flashcard");
-const { ISODateTime } = require("./ISODateTime");
-const { TextType } = require("./TextType");
-const { Texts } = require("./Texts");
-const { Functions } = require("../util/Functions");
+const ISODateTime_1 = require("./ISODateTime");
+const Flashcard_1 = require("./Flashcard");
+const Texts_1 = require("./Texts");
+const TextType_1 = require("./TextType");
 class Flashcards {
-    static create(type, fields) {
+    static create(type, fields, archetype) {
         Preconditions_1.Preconditions.assertNotNull(fields, "fields");
         let now = new Date();
-        let created = new ISODateTime(now);
+        let created = new ISODateTime_1.ISODateTime(now);
         let id = Hashcodes_1.Hashcodes.createID({ created, fields });
-        return new Flashcard({
+        return new Flashcard_1.Flashcard({
             id,
             created,
-            lastUpdated: new ISODateTime(now),
+            lastUpdated: new ISODateTime_1.ISODateTime(now),
             type,
-            fields
+            fields,
+            archetype
         });
     }
-    static createFromSchemaFormData(formData) {
+    static createFromSchemaFormData(formData, archetype) {
         let fields = {};
         Dicts_1.Dicts.ownKeys(formData, (key, value) => {
-            fields[key] = Texts.create(value, TextType.HTML);
+            fields[key] = Texts_1.Texts.create(value, TextType_1.TextType.HTML);
         });
-        return Flashcards.create(FlashcardType_1.FlashcardType.BASIC_FRONT_BACK, fields);
+        return Flashcards.create(FlashcardType_1.FlashcardType.BASIC_FRONT_BACK, fields, archetype);
     }
 }
 exports.Flashcards = Flashcards;

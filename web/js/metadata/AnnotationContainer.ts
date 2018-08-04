@@ -1,14 +1,14 @@
 import {Annotation} from './Annotation';
-import {AnnotationType} from './AnnotationType';
+import {AnnotationDescriptor} from './AnnotationDescriptor';
 
-class AnnotationContainer<A extends Annotation> {
+export class AnnotationContainer<A extends Annotation> {
 
-    public readonly annotationType: AnnotationType = AnnotationType.FLASHCARD;
+    public readonly annotationDescriptor: AnnotationDescriptor;
 
     public readonly annotation: A;
 
-    constructor(annotationType: AnnotationType, annotation: A) {
-        this.annotationType = annotationType;
+    constructor(annotationDescriptor: AnnotationDescriptor, annotation: A) {
+        this.annotationDescriptor = annotationDescriptor;
         this.annotation = annotation;
     }
 

@@ -1,18 +1,12 @@
-const {Text} = require("./Text.js");
-
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const Text_1 = require("./Text");
 class Texts {
-
     static create(body, type) {
-
-        // TODO: if this is markdown, and we don't have the HTML version,
-        // we need to add the HTML version by converting the markdown to HTML.
-
-        let result = {};
-        result[type] = body;
-        return result;
-
+        let text = new Text_1.Text();
+        text[type] = body;
+        return Object.freeze(text);
     }
-
-};
-
-module.exports.Texts = Texts;
+}
+exports.Texts = Texts;
+//# sourceMappingURL=Texts.js.map

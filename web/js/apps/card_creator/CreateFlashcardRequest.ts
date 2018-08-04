@@ -1,12 +1,16 @@
 import {DocDescriptor} from '../../metadata/DocDescriptor';
+import {AnnotationDescriptor} from '../../metadata/AnnotationDescriptor';
 
 
 export class CreateFlashcardRequest {
 
     public readonly docDescriptor: DocDescriptor;
 
-    constructor(docDescriptor: DocDescriptor) {
+    public readonly pageNum: number;
+
+    constructor(docDescriptor: DocDescriptor, pageNum: number) {
         this.docDescriptor = docDescriptor;
+        this.pageNum = pageNum;
     }
 
     static create(opts: any): CreateFlashcardRequest {

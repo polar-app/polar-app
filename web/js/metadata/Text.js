@@ -1,12 +1,6 @@
-const {SerializedObject} = require("./SerializedObject");
-const {TextType} = require("./TextType");
-
-/**
- * Text mapping of TextType to string for each type of content generated which
- * represents this data.
- */
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 class Text {
-
-};
-
-module.exports.Text = Text;
+}
+exports.Text = Text;
+//# sourceMappingURL=Text.js.map
