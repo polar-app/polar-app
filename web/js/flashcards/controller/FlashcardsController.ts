@@ -3,9 +3,13 @@ import {Model} from '../../Model';
 import {ipcRenderer} from 'electron';
 import {Flashcards} from '../../metadata/Flashcards';
 import {AnnotationType} from '../../metadata/AnnotationType';
+import {AnnotationDescriptor} from '../../metadata/AnnotationDescriptor';
 
 const log = Logger.create();
 
+/**
+ * @ElectronRendererContext
+ */
 export class FlashcardsController {
 
     private model: Model;
@@ -68,12 +72,12 @@ export class FlashcardsController {
         // FIXME: if there are multiple visual annotations, each with the same ID
         // which is currently a bug, then we need to filter them out to just ONE
         // annotation.
-        textHighlightAnnotationDescriptors.forEach((annotationDescriptor: any) => {
+        textHighlightAnnotationDescriptors.forEach((annotationDescriptor: AnnotationDescriptor) => {
             let pageMeta = this.model.docMeta.getPageMeta(annotationDescriptor.pageNum);
-            let textHighlight = pageMeta.textHighlights[annotationDescriptor.textHighlightId];
+            let textHighlight = pageMeta.textHighlights[annotationDescriptor.id];
 
             if(!textHighlight) {
-                throw new Error(`No text highlight for ID ${annotationDescriptor.textHighlightId} on page ${annotationDescriptor.pageNum}`);
+                throw new Error(`No text highlight for ID ${annotationDescriptor.id} on page ${annotationDescriptor.pageNum}`);
             }
 
             textHighlight.flashcards[flashcard.id] = flashcard;

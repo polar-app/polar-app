@@ -43,6 +43,9 @@ export class AnnotationsController {
 
                 let createFlashcardRequest = new CreateFlashcardRequest(triggerEvent.docDescriptor);
 
+                // TODO: narrow this down to the right annotation were creating
+                // this with and also attach the
+
                 this.createFlashcard(createFlashcardRequest)
                     .catch(err => log.error("Could not create flashcard: ", err));
 
@@ -56,7 +59,10 @@ export class AnnotationsController {
      * Create a new flashcard.
      */
     private async createFlashcard(createFlashcardRequest: CreateFlashcardRequest) {
+
         log.info("Creating flashcard with triggerEvent: ", createFlashcardRequest);
+
+        // we need to tell the annotation controller about the new highlight.
 
         await this.flashcardDialogWindow.get().show();
 

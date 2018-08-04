@@ -22,8 +22,11 @@ class Flashcard extends VersionedObject {
 
         this.init(val);
 
+        // TODO: we don't have a way right now to attach these to specific
+        // secondary annotations do we?
+
     };
 
-};
+}
 
 module.exports.Flashcard = Flashcard;
