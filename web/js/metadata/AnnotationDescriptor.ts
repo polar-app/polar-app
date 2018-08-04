@@ -28,7 +28,7 @@ export class AnnotationDescriptor {
                               pageNum: number): Readonly<AnnotationDescriptor> {
 
         let result = new AnnotationDescriptor(<AnnotationDescriptor> {
-            type, id, pageNum
+            type, id, docFingerprint, pageNum
         });
 
         return Object.freeze(result);

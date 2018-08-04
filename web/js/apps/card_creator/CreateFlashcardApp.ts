@@ -3,20 +3,23 @@ import $ from '../../ui/JQuery';
 import {CreateFlashcardForm} from './elements/schemaform/CreateFlashcardForm';
 import {Logger} from '../../logger/Logger';
 import {CreateFlashcardRequest} from './CreateFlashcardRequest';
+import {CreateFlashcardService} from './CreateFlashcardService';
 
 const log = Logger.create();
 
-export class CardCreatorApp {
+export class CreateFlashcardApp {
 
     async start() {
 
         return new Promise<void>( resolve => {
 
-            $(document).ready(function () {
+            $(document).ready(async function () {
 
                 log.info("Ready to create flash card!");
 
                 let createFlashcardForm = new CreateFlashcardForm();
+
+                let createFlashcardService = new CreateFlashcardService(createFlashcardForm);
 
                 let schemaFormElement = <HTMLElement>document.getElementById('schema-form');
 
@@ -27,6 +30,7 @@ export class CardCreatorApp {
 
                 createFlashcardForm.create(schemaFormElement);
 
+                await createFlashcardService.start();
                 resolve();
 
                 log.info("UI created.")

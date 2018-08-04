@@ -1,8 +1,8 @@
-import {CardCreatorApp} from '../../js/apps/card_creator/CardCreatorApp';
+import {CreateFlashcardApp} from '../../js/apps/card_creator/CreateFlashcardApp';
 import {SpectronRenderer} from '../../js/test/SpectronRenderer';
 
 SpectronRenderer.run(async () => {
 
-    await new CardCreatorApp().start();
+    await new CreateFlashcardApp().start();
 
 });

@@ -9,7 +9,7 @@ export class SchemaFormFlashcardConverter {
 
     static convert(schemaFormData: SchemaFormData, archetype: string): Flashcard {
 
-        log.info("converting SchemaFormData: ", schemaFormData);
+        log.info("Converting SchemaFormData: ", schemaFormData);
 
         return Flashcards.createFromSchemaFormData(schemaFormData.formData, archetype);
 

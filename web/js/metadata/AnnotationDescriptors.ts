@@ -6,7 +6,10 @@ export class AnnotationDescriptors {
 
     static createFromElement(element: HTMLElement): AnnotationDescriptor | undefined {
 
+        console.log("FIXME: ", element)
+
         let dataAttributes = Attributes.dataToStringMap(element);
+        console.log("FIXME2: ", dataAttributes)
 
         if(! dataAttributes['annotationType']) {
             return undefined;

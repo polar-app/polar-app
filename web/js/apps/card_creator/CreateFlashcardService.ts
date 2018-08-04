@@ -4,6 +4,7 @@ import {IPCRegistry} from '../../ipc/handler/IPCRegistry';
 import {IPCEngine} from '../../ipc/handler/IPCEngine';
 import {CreateFlashcardForm} from './elements/schemaform/CreateFlashcardForm';
 import {CreateFlashcardHandler} from './handlers/CreateFlashcardHandler';
+import {ElectronRendererPipe} from '../../ipc/pipes/ElectronRendererPipe';
 
 export class CreateFlashcardService {
 
@@ -15,8 +16,8 @@ export class CreateFlashcardService {
 
     async start(): Promise<void> {
 
-        let mainReadablePipe = new ElectronMainReadablePipe();
-        let ipcPipe = new ElectronIPCPipe(mainReadablePipe);
+        let pipe = new ElectronRendererPipe();
+        let ipcPipe = new ElectronIPCPipe(pipe);
 
         let ipcRegistry = new IPCRegistry();
 
