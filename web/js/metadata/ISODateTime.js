@@ -25,5 +25,6 @@ class ISODateTime {
         return new ISODateTime(this.value);
     }
 }
+ISODateTime.EPOCH = new ISODateTime(new Date(0));
 exports.ISODateTime = ISODateTime;
 //# sourceMappingURL=ISODateTime.js.map

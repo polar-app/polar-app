@@ -1,14 +1,27 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const FlashcardType_1 = require("./FlashcardType");
 const VersionedObject_1 = require("./VersionedObject");
 class Flashcard extends VersionedObject_1.VersionedObject {
-    constructor(val) {
-        super(val);
-        this.type = FlashcardType_1.FlashcardType.BASIC_FRONT_BACK;
-        this.fields = {};
-        this.archetype = "9d146db1-7c31-4bcf-866b-7b485c4e50ea";
-        this.init(val);
+    constructor(template) {
+        super(template);
+        this.id = template.id;
+        this.created = template.created;
+        this.lastUpdated = template.lastUpdated;
+        this.type = template.type;
+        this.fields = template.fields;
+        this.archetype = template.archetype;
+        this.init(template);
+    }
+    validate() {
+        super.validate();
+    }
+    static newInstance(id, created, lastUpdated, type, fields, archetype) {
+        let result = Object.create(Flashcard.prototype);
+        Object.assign(result, {
+            id, created, lastUpdated, type, fields, archetype
+        });
+        result.init();
+        return Object.freeze(result);
     }
 }
 exports.Flashcard = Flashcard;

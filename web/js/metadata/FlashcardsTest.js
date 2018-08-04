@@ -2,16 +2,17 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const Assertions_1 = require("../test/Assertions");
 const Flashcards_1 = require("./Flashcards");
-const { Texts } = require("./Texts");
-const { TextType } = require("./TextType");
-const { FlashcardType } = require("./FlashcardType");
+const Texts_1 = require("./Texts");
+const TextType_1 = require("./TextType");
+const FlashcardType_1 = require("./FlashcardType");
 require("../test/TestingTime").freeze();
 describe('Flashcards', function () {
+    let archetype = "9d146db1-7c31-4bcf-866b-7b485c4e50ea";
     describe('create', function () {
         it("basic", function () {
-            let text = Texts.create("This is the text", TextType.MARKDOWN);
+            let text = Texts_1.Texts.create("This is the text", TextType_1.TextType.MARKDOWN);
             let fields = { text };
-            let flashcard = Flashcards_1.Flashcards.create(FlashcardType.CLOZURE, fields);
+            let flashcard = Flashcards_1.Flashcards.create(FlashcardType_1.FlashcardType.CLOZURE, fields, archetype);
             let expected = {
                 "id": "1HYhuRQ4tz",
                 "created": "2012-03-02T11:38:49.321Z",
@@ -21,14 +22,15 @@ describe('Flashcards', function () {
                     "text": {
                         "MARKDOWN": "This is the text"
                     }
-                }
+                },
+                "archetype": "9d146db1-7c31-4bcf-866b-7b485c4e50ea"
             };
             Assertions_1.assertJSON(flashcard, expected);
         });
     });
     describe('createFromSchemaFormData', function () {
         it("basic", function () {
-            let flashcard = Flashcards_1.Flashcards.createFromSchemaFormData(FORM_DATA);
+            let flashcard = Flashcards_1.Flashcards.createFromSchemaFormData(FORM_DATA, archetype);
             let expected = {
                 "id": "1tDRjUqxJA",
                 "created": "2012-03-02T11:38:49.321Z",
@@ -41,7 +43,8 @@ describe('Flashcards', function () {
                     "front": {
                         "HTML": "This is the front"
                     }
-                }
+                },
+                "archetype": "9d146db1-7c31-4bcf-866b-7b485c4e50ea"
             };
             Assertions_1.assertJSON(flashcard, expected);
         });

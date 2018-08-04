@@ -24,7 +24,7 @@ class Preconditions {
         return value;
     }
     static assertInstanceOf(value, instance, name) {
-        Preconditions.assertNotNull(value, "value");
+        Preconditions.assertNotNull(value, name);
         Preconditions.assertNotNull(instance, "instance");
         if (!(value instanceof instance)) {
             throw new Error(`Precondition for instanceof '${name}' was not ${instance.name}.`);
@@ -38,11 +38,15 @@ class Preconditions {
         return value;
     }
     static assertNotNull(value, name) {
+        let msgPrefix = "Precondition argument failed: ";
+        if (name) {
+            msgPrefix = `Precondition (argument) for '${name}' failed`;
+        }
         if (value === null) {
-            throw new Error(`Precondition (argument) for '${name}' null.`);
+            throw new Error(`${msgPrefix}: null`);
         }
         if (value === undefined) {
-            throw new Error(`Precondition (argument) for '${name}' undefined.`);
+            throw new Error(`${msgPrefix}: undefined`);
         }
         return value;
     }

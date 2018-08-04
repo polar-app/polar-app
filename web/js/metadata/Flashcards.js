@@ -14,14 +14,7 @@ class Flashcards {
         let now = new Date();
         let created = new ISODateTime_1.ISODateTime(now);
         let id = Hashcodes_1.Hashcodes.createID({ created, fields });
-        return new Flashcard_1.Flashcard({
-            id,
-            created,
-            lastUpdated: new ISODateTime_1.ISODateTime(now),
-            type,
-            fields,
-            archetype
-        });
+        return Flashcard_1.Flashcard.newInstance(id, created, new ISODateTime_1.ISODateTime(now), type, fields, archetype);
     }
     static createFromSchemaFormData(formData, archetype) {
         let fields = {};

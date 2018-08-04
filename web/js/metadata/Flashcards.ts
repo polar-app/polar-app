@@ -18,14 +18,8 @@ export class Flashcards {
         let created = new ISODateTime(now);
 
         let id = Hashcodes.createID({created, fields});
-        return new Flashcard({
-            id,
-            created,
-            lastUpdated: new ISODateTime(now),
-            type,
-            fields,
-            archetype
-        });
+
+        return Flashcard.newInstance(id, created, new ISODateTime(now), type, fields, archetype);
 
     }
 

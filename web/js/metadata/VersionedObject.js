@@ -4,9 +4,13 @@ const ISODateTime_1 = require("./ISODateTime");
 const SerializedObject_1 = require("./SerializedObject");
 const Preconditions_1 = require("../Preconditions");
 class VersionedObject extends SerializedObject_1.SerializedObject {
-    constructor(val) {
-        super(val);
-        this.init(val);
+    constructor(template) {
+        super(template);
+        this.id = template.id;
+        this.created = template.created;
+        this.lastUpdated = template.lastUpdated;
+        this.author = template.author;
+        this.init(template);
     }
     setup() {
         super.setup();
@@ -16,6 +20,7 @@ class VersionedObject extends SerializedObject_1.SerializedObject {
     }
     validate() {
         super.validate();
+        Preconditions_1.Preconditions.assertNotNull(this.id, "id");
         Preconditions_1.Preconditions.assertNotNull(this.created, "created");
         Preconditions_1.Preconditions.assertInstanceOf(this.created, ISODateTime_1.ISODateTime, "created");
         Preconditions_1.Preconditions.assertInstanceOf(this.lastUpdated, ISODateTime_1.ISODateTime, "lastUpdated");

@@ -84,6 +84,7 @@ describe('DocMetas', function() {
                                 "0": {
                                     "id": "12Vf1bAzeo",
                                     "created": "2012-03-02T11:38:49.321Z",
+                                    "lastUpdated": "2012-03-02T11:38:49.321Z",
                                     "type": "SINGLE_COLUMN",
                                     "percentage": 100,
                                     "column": 0,
@@ -93,7 +94,6 @@ describe('DocMetas', function() {
                                         "width": 100,
                                         "height": 100
                                     },
-                                    "lastUpdated": "2012-03-02T11:38:49.321Z",
                                     "notes": {}
                                 }
                             },
@@ -111,6 +111,7 @@ describe('DocMetas', function() {
                                 "0": {
                                     "id": "12Vf1bAzeo",
                                     "created": "2012-03-02T11:38:49.321Z",
+                                    "lastUpdated": "2012-03-02T11:38:49.321Z",
                                     "type": "SINGLE_COLUMN",
                                     "percentage": 100,
                                     "column": 0,
@@ -120,7 +121,6 @@ describe('DocMetas', function() {
                                         "width": 100,
                                         "height": 100
                                     },
-                                    "lastUpdated": "2012-03-02T11:38:49.321Z",
                                     "notes": {}
                                 }
                             },
@@ -187,10 +187,10 @@ describe('DocMetas', function() {
                         "0": {
                             "id": "12Vf1bAzeo",
                             "created": "2012-03-02T11:38:49.321Z",
+                            "lastUpdated": "2012-03-02T11:38:49.321Z",
                             "type": "SINGLE_COLUMN",
                             "percentage": 100,
                             "column": 0,
-                            "lastUpdated": "2012-03-02T11:38:49.321Z",
                             "notes": {},
                             "rect": {
                                 "left": 0,
@@ -241,6 +241,7 @@ describe('DocMetas', function() {
                         "0": {
                             "id": "12Vf1bAzeo",
                             "created": "2012-03-02T11:38:49.321Z",
+                            "lastUpdated": "2012-03-02T11:38:49.321Z",
                             "type": "SINGLE_COLUMN",
                             "percentage": 100,
                             "column": 0,
@@ -250,7 +251,6 @@ describe('DocMetas', function() {
                                 "width": 100,
                                 "height": 100
                             },
-                            "lastUpdated": "2012-03-02T11:38:49.321Z",
                             "notes": {}
                         }
                     }

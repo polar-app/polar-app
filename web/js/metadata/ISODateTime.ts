@@ -4,6 +4,8 @@
  */
 export class ISODateTime {
 
+    public static EPOCH: ISODateTime = new ISODateTime(new Date(0));
+
     public readonly value: string;
 
     constructor(val: any) {
