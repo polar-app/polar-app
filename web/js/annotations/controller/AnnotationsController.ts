@@ -3,6 +3,12 @@ import {DialogWindowClient} from '../../ui/dialog_window/DialogWindowClient';
 import {Logger} from '../../logger/Logger';
 import {TriggerEvent} from '../../contextmenu/TriggerEvent';
 import {Nullable} from '../../util/ts/Nullable';
+import {AnnotationTriggerEvents} from './AnnotationTriggerEvents';
+import {IPCEngine} from '../../ipc/handler/IPCEngine';
+import {IPCClient} from '../../ipc/handler/IPCClient';
+import {ElectronIPCEvent} from '../../ipc/handler/ElectronIPCEvent';
+import {IPCEvent} from '../../ipc/handler/IPCEvent';
+import {ElectronIPCPipe} from '../../ipc/handler/ElectronIPCPipe';
 
 const log = Logger.create();
 
@@ -16,12 +22,16 @@ export class AnnotationsController {
 
     flashcardDialogWindow = new Nullable<DialogWindowClient>();
 
+    ipcClient = new Nullable<IPCClient<IPCEvent>>();
+
     async start(): Promise<void> {
 
         window.addEventListener("message", event => this.onMessageReceived(event), false);
 
         let dialogWindowClient = await this.createFlashcardDialogWindow();
         this.flashcardDialogWindow.set(dialogWindowClient);
+
+        this.ipcClient.set(new IPCClient(new ElectronIPCPipe(dialogWindowClient.createPipe())));
 
     }
 
@@ -69,8 +79,27 @@ export class AnnotationsController {
 
         // we need to tell the annotation controller about the new highlight.
 
-        await this.flashcardDialogWindow.get().show();
+        await this.sendAnnotationDescriptor(triggerEvent);
+        await this.showDialog();
 
+    }
+
+    private async sendAnnotationDescriptor(triggerEvent: TriggerEvent) {
+
+        let annotationDescriptors
+            = AnnotationTriggerEvents.getAnnotationDescriptors(triggerEvent);
+
+        if(annotationDescriptors.length == 0)
+            return;
+
+        let annotationDescriptor = annotationDescriptors[0];
+
+        await this.ipcClient.get().execute('/create-flashcard/api/create', annotationDescriptor);
+
+    }
+
+    private async showDialog() {
+        await this.flashcardDialogWindow.get().show();
     }
 
     private async createFlashcardDialogWindow(): Promise<DialogWindowClient> {
