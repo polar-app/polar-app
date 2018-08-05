@@ -5,7 +5,7 @@ import {DialogWindowReference} from './DialogWindowReference';
 import {IPCClient} from '../../ipc/handler/IPCClient';
 import {ElectronRendererPipe} from '../../ipc/pipes/ElectronRendererPipe';
 import {ElectronIPCPipe} from '../../ipc/handler/ElectronIPCPipe';
-import {ElectronBrowserWindowPipe} from '../../ipc/pipes/ElectronBrowserWindowPipe';
+import {ElectronRenderToRendererPipe} from '../../ipc/pipes/ElectronBrowserWindowPipe';
 import {IPCPipe} from '../../ipc/handler/IPCPipe';
 import {IPCEvent} from '../../ipc/handler/IPCEvent';
 import {Pipe} from '../../ipc/pipes/Pipe';
@@ -40,7 +40,7 @@ export class DialogWindowClient {
      * Create a pipe to this BrowserWindow which can be used for IPC.
      */
     createPipe(): Pipe<Electron.Event, any> {
-        return new ElectronBrowserWindowPipe(this.dialogWindowReference);
+        return new ElectronRenderToRendererPipe(this.dialogWindowReference);
     }
 
     /**

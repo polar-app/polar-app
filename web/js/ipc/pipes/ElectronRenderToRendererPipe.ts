@@ -5,7 +5,7 @@ import {WindowReference} from '../../ui/dialog_window/WindowReference';
 /**
  * Pipe that communicates to BrowserWindow directly instead of the main process.
  */
-export class ElectronBrowserWindowPipe extends Pipe<Electron.Event, any> {
+export class ElectronRenderToRendererPipe extends Pipe<Electron.Event, any> {
 
     public readonly windowReference: WindowReference;
 
