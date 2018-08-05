@@ -3,12 +3,17 @@
  */
 import {Optional} from '../../util/ts/Optional';
 import {IPCError} from './IPCError';
+import {IPCSender} from './IPCSender';
+import {ElectronContext} from './ElectronContext';
+import {ElectronContexts} from './ElectronContexts';
 
 export class IPCMessage<T> {
 
     private readonly _type: string;
 
     private readonly _value?: T ;
+
+    private readonly _context: ElectronContext;
 
     /**
      * A nonce representing this unique IPC channel via a request/response pair.
@@ -19,7 +24,11 @@ export class IPCMessage<T> {
 
     private readonly _error?: IPCError;
 
-    constructor(type: string, value?: T, nonce: number = IPCMessage.createNonce(), error?: IPCError) {
+    constructor(type: string,
+                value?: T,
+                nonce = IPCMessage.createNonce(),
+                error?: IPCError,
+                context = ElectronContexts.create()) {
 
         if(value && value instanceof IPCMessage) {
             throw new Error("Value is already an IPCMessage")
@@ -28,6 +37,7 @@ export class IPCMessage<T> {
         this._type = type;
         this._value = value;
         this._nonce = nonce;
+        this._context = context;
         this._error = error;
     }
 
@@ -55,6 +65,10 @@ export class IPCMessage<T> {
 
     get error(): IPCError | undefined {
         return this._error;
+    }
+
+    get context(): ElectronContext {
+        return this._context;
     }
 
     computeResponseChannel() {

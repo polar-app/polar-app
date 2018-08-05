@@ -18,7 +18,7 @@ SpectronMain2.create().run(async state => {
 
     console.log("Executing request ...");
 
-    await ipcClient.execute('/hello', 'hey');
+    await ipcClient.execute('/ping', 'hey');
 
     console.log("Executing request ...done");
 

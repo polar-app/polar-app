@@ -1,6 +1,6 @@
 export class WindowReference {
 
-    id: number;
+    public readonly id: number;
 
     constructor(id: number) {
         this.id = id;

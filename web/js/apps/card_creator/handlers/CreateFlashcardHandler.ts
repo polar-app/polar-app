@@ -6,7 +6,6 @@ import {IPCMessage} from '../../../ipc/handler/IPCMessage';
 import {AnnotationDescriptors} from '../../../metadata/AnnotationDescriptors';
 import {PostMessageFormHandler} from '../flashcards/PostMessageFormHandler';
 import {Logger} from '../../../logger/Logger';
-import {WritablePipe} from '../../../ipc/pipes/Pipe';
 
 const log = Logger.create();
 

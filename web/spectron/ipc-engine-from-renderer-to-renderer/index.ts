@@ -1,12 +1,26 @@
+import {ipcMain, ipcRenderer, remote} from 'electron';
 import {SpectronMain2} from '../../js/test/SpectronMain2';
 import {SyncPipes} from '../../js/ipc/pipes/SyncPipes';
 
 SpectronMain2.create().run(async state => {
 
+    ipcMain.on('/main', (event: Electron.Event, message: any) => {
+    });
+
     // invoke a method on the renderer and get the response..
+
+    ipcMain.on('/ipc-trace', (event: Electron.Event, message: any) => {
+        console.log("IPC Trace Sender: ", event.sender.id);
+
+        console.log("Got IPC trace in main process: ", message);
+    });
+
 
     let serviceWindow = state.window;
     let clientWindow = await state.createWindow();
+
+    console.log("Service window ID: " + serviceWindow.id);
+    console.log("Client window ID: " + clientWindow.id);
 
     serviceWindow.loadFile(__dirname + '/service.html');
     clientWindow.loadFile(__dirname + '/client.html');

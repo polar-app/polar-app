@@ -22,19 +22,19 @@ export class IPCEngine<E extends IPCEvent> {
 
         this.registry.entries().forEach(ipcRegistration => {
 
-            this.pipe.on(ipcRegistration.path, pipeNotification => {
+            this.pipe.on(ipcRegistration.path, (pipeNotification) => {
 
                 (async () => {
 
                     let event = pipeNotification.event;
 
-                    let ipcMessage = IPCMessage.create(pipeNotification.message);
+                    let ipcRequest = IPCMessage.create(pipeNotification.message);
 
                     let ipcResponse: IPCMessage<any>;
 
                     try {
 
-                        let result =  await ipcRegistration.handler.handle(event, ipcMessage);
+                        let result =  await ipcRegistration.handler.handle(event, ipcRequest);
 
                         if( ! result) {
                             // we don't have a result given to us from the handler
@@ -53,7 +53,12 @@ export class IPCEngine<E extends IPCEvent> {
 
                     }
 
-                    event.responsePipe.write(ipcMessage.computeResponseChannel(), ipcResponse);
+                    // event.responsePipe.write('/ipc-trace', new IPCMessage('trace', {
+                    //     request: ipcRequest,
+                    //     response: ipcResponse
+                    // }));
+
+                    event.responsePipe.write(ipcRequest.computeResponseChannel(), ipcResponse);
 
                 })().catch(err => log.error(`Unable to handle IPC at ${ipcRegistration.path}: `, err));
 

@@ -37,6 +37,10 @@ export class SyncPipe {
 
     async sync(): Promise<void> {
 
+        // TODO: one issue if what happens if the SECOND client dies and comes
+        // back. then this service is still working and alive BUT new / resuming
+        // SyncPipe will not be able to work and will block.  Consider adding
+        // a permanent listener.
 
         // must use the create-then-await pattern or else there may be a chance
         // we miss the response notification event if we're the second waiter.

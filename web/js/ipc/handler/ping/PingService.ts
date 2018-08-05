@@ -12,7 +12,7 @@ export class PingService {
 
     async start(): Promise<void> {
 
-        this.ipcEngine.registry.registerPath('/hello', new PingHandler());
+        this.ipcEngine.registry.registerPath('/ping', new PingHandler());
         this.ipcEngine.start();
 
     }
