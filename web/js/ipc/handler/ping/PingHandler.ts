@@ -12,7 +12,6 @@ export class PingHandler extends IPCHandler<string> {
     }
 
     protected async handleIPC(event: IPCEvent, message: string): Promise<any> {
-        console.log("FIXME: here");
         log.info("Got ping.  Sending response. ")
         return event.response.send('pong');
     }

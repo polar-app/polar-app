@@ -5,10 +5,8 @@ import {DialogWindowReference} from './DialogWindowReference';
 import {IPCClient} from '../../ipc/handler/IPCClient';
 import {ElectronRendererPipe} from '../../ipc/pipes/ElectronRendererPipe';
 import {ElectronIPCPipe} from '../../ipc/handler/ElectronIPCPipe';
-import {ElectronRenderToRendererPipe} from '../../ipc/pipes/ElectronBrowserWindowPipe';
-import {IPCPipe} from '../../ipc/handler/IPCPipe';
-import {IPCEvent} from '../../ipc/handler/IPCEvent';
 import {Pipe} from '../../ipc/pipes/Pipe';
+import {ElectronRenderToRendererPipe} from '../../ipc/pipes/ElectronRenderToRendererPipe';
 
 let ipcPipe = new ElectronIPCPipe(new ElectronRendererPipe());
 let ipcClient = new IPCClient(ipcPipe);

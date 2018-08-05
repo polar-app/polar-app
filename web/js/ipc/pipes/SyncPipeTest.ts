@@ -1,5 +1,3 @@
-import {func} from 'prop-types';
-import {assert} from 'chai';
 import {Promises} from '../../util/Promises';
 import {MockPipes} from './MockPipes';
 import {SyncPipe} from './SyncPipe';
@@ -10,8 +8,8 @@ describe('SyncPipe', function() {
 
         let mockChannels: MockPipes<any, string> = MockPipes.create();
 
-        let left = new SyncPipe(mockChannels.left);
-        let right = new SyncPipe(mockChannels.right);
+        let left = new SyncPipe(mockChannels.left, 'left', 'test');
+        let right = new SyncPipe(mockChannels.right, 'right', 'test');
 
         let leftPromise = Promises.withTimeout(1, async () => await left.sync())
         let rightPromise = Promises.withTimeout(1, async () => await right.sync())
@@ -24,8 +22,8 @@ describe('SyncPipe', function() {
 
         let mockChannels: MockPipes<any, string> = MockPipes.create();
 
-        let left = new SyncPipe(mockChannels.left);
-        let right = new SyncPipe(mockChannels.right);
+        let left = new SyncPipe(mockChannels.left, 'left', 'test');
+        let right = new SyncPipe(mockChannels.right, 'right', 'test');
 
         let leftPromise = Promises.withTimeout(1, async () => await left.sync())
         let rightPromise = Promises.withTimeout(1, async () => await right.sync())

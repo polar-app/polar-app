@@ -1,4 +1,7 @@
-import {Pipe} from './Pipe';
+import {Pipe, PipeNotification} from './Pipe';
+import {Logger} from '../../logger/Logger';
+
+const log = Logger.create();
 
 /**
  * Provides a pipe that syncs with the remote pipe so that they are both
@@ -9,23 +12,60 @@ import {Pipe} from './Pipe';
  */
 export class SyncPipe {
 
-    private delegate: Pipe<any,string>;
+    private readonly delegate: Pipe<any,string>;
 
-    public constructor(delegate: Pipe<any,string>) {
+    private readonly type: string;
+
+    private readonly name: string;
+
+    /**
+     * The unique channel we're using to establish sync.
+     */
+    private readonly channel: string;
+
+    /**
+     *
+     * @param delegate
+     * @param type The type for the sync pipe instance. Used for tracing.
+     */
+    public constructor(delegate: Pipe<any,string>, type: string, name: string) {
         this.delegate = delegate;
+        this.type = type;
+        this.name = name;
+        this.channel = `/sync-establish#${name}`;
     }
 
     async sync(): Promise<void> {
 
+
         // must use the create-then-await pattern or else there may be a chance
         // we miss the response notification event if we're the second waiter.
-        let establishPromise = this.delegate.when('establish');
+        let establishPromise = this.delegate.when(this.channel);
 
-        this.delegate.write('establish', 'sync');
+        this.writeSync();
+
+        await this.awaitSync(establishPromise);
+
+        this.writeSync();
+
+    }
+
+    private writeSync() {
+
+        log.info(`${this.type} write ${this.channel} sync`);
+
+        this.delegate.write(this.channel, 'sync');
+
+    }
+
+    private async awaitSync(establishPromise: Promise<PipeNotification<any, string>>) {
+
+
+        log.info(`${this.type} await ${this.channel} sync promise...`);
 
         await establishPromise;
 
-        this.delegate.write('establish', 'sync');
+        log.info(`${this.type} await ${this.channel} sync promise...done`);
 
     }
 
