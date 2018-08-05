@@ -7,7 +7,7 @@ import {IPCEvent} from './IPCEvent';
 
 const log = Logger.create();
 
-export class IPCEngine<E extends IPCEvent, M> {
+export class IPCEngine<E extends IPCEvent> {
 
     private readonly pipe: IPCPipe<E>;
 

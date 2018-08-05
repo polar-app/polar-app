@@ -24,7 +24,7 @@ let ipcRegistry: IPCRegistry;
 
 let helloHandler: HelloHandler;
 
-let ipcEngine: IPCEngine<IPCEvent, Hello>;
+let ipcEngine: IPCEngine<IPCEvent>;
 
 describe('IPCTest', function() {
 

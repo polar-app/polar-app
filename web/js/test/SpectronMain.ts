@@ -21,6 +21,10 @@ const BROWSER_OPTIONS = {
  */
 export class SpectronMain {
 
+    static createWindow() {
+
+    }
+
     static setup(options?: SpectronMainOptions): Promise<Electron.BrowserWindow> {
 
         return new Promise(resolve => {

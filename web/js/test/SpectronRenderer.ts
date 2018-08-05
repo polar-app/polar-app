@@ -11,8 +11,7 @@ export class SpectronRenderer {
 
     static async start(callback: RunCallback): Promise<any> {
         SpectronRenderer.setup();
-        let testResultWriter = new RendererTestResultWriter();
-        let state = new SpectronRendererState(testResultWriter);
+        let state = new SpectronRendererState();
 
         let result = await callback(state);
 
@@ -36,10 +35,8 @@ export interface RunCallback {
 
 export class SpectronRendererState {
 
-    public readonly testResultWriter: RendererTestResultWriter;
-
-    constructor(testResultWriter: RendererTestResultWriter) {
-        this.testResultWriter = testResultWriter;
+    get testResultWriter() {
+        return new RendererTestResultWriter();
     }
 
 }

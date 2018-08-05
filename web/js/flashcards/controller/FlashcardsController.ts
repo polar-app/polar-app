@@ -21,7 +21,7 @@ export class FlashcardsController {
 
     start() {
 
-        let ipcEngine = IPCEngines.renderer();
+        let ipcEngine = IPCEngines.rendererProcess();
 
         ipcEngine.registry.registerPath('/api/annotations/create-annotation', new CreateAnnotationHandler(this.model));
 

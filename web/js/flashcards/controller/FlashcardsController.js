@@ -9,7 +9,7 @@ class FlashcardsController {
         this.model = model;
     }
     start() {
-        let ipcEngine = IPCEngines_1.IPCEngines.renderer();
+        let ipcEngine = IPCEngines_1.IPCEngines.rendererProcess();
         ipcEngine.registry.registerPath('/api/annotations/create-annotation', new CreateAnnotationHandler_1.CreateAnnotationHandler(this.model));
         ipcEngine.start();
     }
