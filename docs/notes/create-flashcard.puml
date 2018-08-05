@@ -24,9 +24,12 @@ participant "CreateFlashcardService \n(create-flashcard/renderer)" AS CreateFlas
 ContextMenuController -> ElectronContextMenu: TriggerEvent via IPC
 ElectronContextMenu -> AnnotationsController: 'create-flashcard' via postMessage
 
-AnnotationsController -> CreateFlashcardService: '/create-flashcard/api/create' via IPCEngine
+AnnotationsController -> CreateFlashcardService: '/create-flashcard/api/create' (AnnotationDescriptor) via IPCEngine
 
 AnnotationsController -> DialogService: '/api/dialog-window-service/show' via IPCEngine
 
+CreateFlashcardService -> PostMessageFormHandler: (attach new form)
+
+PostMessageFormHandler -> FlashcardsController: update JSON object
 
 @enduml

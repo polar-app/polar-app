@@ -53,7 +53,7 @@ export class IPCEngine<E extends IPCEvent, M> {
 
                     }
 
-                    event.writeablePipe.write(ipcMessage.computeResponseChannel(), ipcResponse);
+                    event.responsePipe.write(ipcMessage.computeResponseChannel(), ipcResponse);
 
                 })().catch(err => log.error(`Unable to handle IPC at ${ipcRegistration.path}: `, err));
 

@@ -19,7 +19,7 @@ export class GetParentWindowHandler extends AbstractDialogWindowReferenceHandler
 
         let parentWindowReferenceMessage = new IPCMessage<DialogWindowReference>('parent-window-reference', parentWindowReference);
 
-        event.writeablePipe.write(event.message.computeResponseChannel(), parentWindowReferenceMessage)
+        event.responsePipe.write(event.message.computeResponseChannel(), parentWindowReferenceMessage)
 
     }
 

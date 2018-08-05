@@ -27,7 +27,6 @@ export class FlashcardsController {
 
         ipcEngine.start();
 
-
         // // TODO move this code to the AnnotationEvent system and test it
         // // along with form data.
         //

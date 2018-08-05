@@ -31,6 +31,8 @@ export class AnnotationsController {
         let dialogWindowClient = await this.createFlashcardDialogWindow();
         this.flashcardDialogWindow.set(dialogWindowClient);
 
+        // TODO this doesn't work because the dialog window sends responses to
+        // its main process NOT the IPC client here.
         this.ipcClient.set(new IPCClient(new ElectronIPCPipe(dialogWindowClient.createPipe())));
 
     }

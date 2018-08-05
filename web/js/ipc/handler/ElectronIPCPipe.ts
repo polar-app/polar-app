@@ -11,13 +11,13 @@ export class ElectronIPCPipe extends IPCPipe<ElectronIPCEvent> {
 
     convertEvent(pipeNotification: PipeNotification<Electron.Event, any>): ElectronIPCEvent {
 
-        let writablePipe =
+        let responsePipe =
             WritablePipes.create((channel: string, event: IPCMessage<any>) =>
                 pipeNotification.event.sender.send(channel, event));
 
         let message = IPCMessage.create(pipeNotification.message);
 
-        return new ElectronIPCEvent(writablePipe, message, pipeNotification.event.sender);
+        return new ElectronIPCEvent(responsePipe, message, pipeNotification.event.sender);
 
     }
 

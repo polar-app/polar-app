@@ -144,7 +144,7 @@ class DelegatedLogger {
             logFunction(msg, ...args);
         } else {
             // don't pass 'args' as electron-logger will print [] if the args
-            // is zero.
+            // is zero which isn't helpful and is in fact confusing
             logFunction(msg);
         }
 

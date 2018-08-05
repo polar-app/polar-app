@@ -6,6 +6,7 @@ import {IPCMessage} from '../../../ipc/handler/IPCMessage';
 import {AnnotationDescriptors} from '../../../metadata/AnnotationDescriptors';
 import {PostMessageFormHandler} from '../flashcards/PostMessageFormHandler';
 import {Logger} from '../../../logger/Logger';
+import {WritablePipe} from '../../../ipc/pipes/Pipe';
 
 const log = Logger.create();
 
@@ -24,7 +25,7 @@ export class CreateFlashcardHandler extends IPCHandler<AnnotationDescriptor> {
 
     protected async handleIPC(event: IPCEvent, annotationDescriptor: AnnotationDescriptor): Promise<any> {
         log.info("Creating new post message for connected to annotation annotationDescriptor: ", annotationDescriptor);
-        this.createFlashcardForm.formHandler = new PostMessageFormHandler(annotationDescriptor);
+        this.createFlashcardForm.formHandler = new PostMessageFormHandler(annotationDescriptor, event.response);
         return true;
     }
 

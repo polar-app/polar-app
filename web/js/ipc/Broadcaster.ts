@@ -1,5 +1,8 @@
 
 import {BrowserWindow, ipcMain} from 'electron';
+import {Logger} from '../logger/Logger';
+
+const log = Logger.create();
 
 /**
  * When we receive a message, we broadcast it to all the renderers.  Anyone not
@@ -8,22 +11,22 @@ import {BrowserWindow, ipcMain} from 'electron';
  */
 class Broadcaster {
 
-    private name: string;
+    private channel: string;
 
     /**
      *
-     * @param name The name of the event we're listening to and going to broadcast.
+     * @param channel The channel of the event we're listening to and going to broadcast.
      */
-    constructor(name: string) {
-        this.name = name;
+    constructor(channel: string) {
+        this.channel = channel;
 
-        ipcMain.on(name, (event: any, arg: any) => {
+        ipcMain.on(channel, (event: any, arg: any) => {
 
-            console.log("Forwarding message: " , name, event);
+            log.info("Forwarding message: " , channel, event);
 
             let browserWindows = BrowserWindow.getAllWindows();
             browserWindows.forEach(window => {
-                window.webContents.send(name, arg);
+                window.webContents.send(channel, arg);
             });
 
         });

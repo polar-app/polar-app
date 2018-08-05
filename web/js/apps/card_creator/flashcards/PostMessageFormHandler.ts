@@ -6,6 +6,9 @@ import {AnnotationDescriptor} from '../../../metadata/AnnotationDescriptor';
 import {Logger} from '../../../logger/Logger';
 import {AnnotationType} from '../../../metadata/AnnotationType';
 import {SchemaFormData} from '../elements/schemaform/SchemaFormData';
+import {WritablePipe} from '../../../ipc/pipes/Pipe';
+import {IPCMessage} from '../../../ipc/handler/IPCMessage';
+import {IPCResponse} from '../../../ipc/handler/IPCResponse';
 
 const log = Logger.create();
 
@@ -13,9 +16,12 @@ export class PostMessageFormHandler extends FormHandler {
 
     private readonly annotationDescriptor: AnnotationDescriptor;
 
-    constructor(annotationDescriptor: AnnotationDescriptor) {
+    private readonly response: IPCResponse;
+
+    constructor(annotationDescriptor: AnnotationDescriptor, response: IPCResponse) {
         super();
         this.annotationDescriptor = annotationDescriptor;
+        this.response = response;
     }
 
     onChange(data: any) {
@@ -61,8 +67,11 @@ export class PostMessageFormHandler extends FormHandler {
         // send this to the main process which then broadcasts it to all the
         // renderers
 
+        // FIXME: this is a NEW request.. not a new response..
+        //this.response.send('/api/annotations/create-annotation', annotationContainer);
+
         // FIXME: use an IPC client here...
-        ipcRenderer.send('created-annotation', annotationContainer);
+        //ipcRenderer.send('created-annotation', annotationContainer);
 
     }
 

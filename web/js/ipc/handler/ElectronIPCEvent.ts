@@ -9,8 +9,8 @@ export class ElectronIPCEvent extends IPCEvent {
 
     public readonly senderWindowReference: WindowReference;
 
-    constructor(writeablePipe: WritablePipe<IPCMessage<any>>, message: IPCMessage<any>, sender: WebContents) {
-        super(writeablePipe, message);
+    constructor(responsePipe: WritablePipe<IPCMessage<any>>, message: IPCMessage<any>, sender: WebContents) {
+        super(responsePipe, message);
 
         Preconditions.assertNotNull(sender, "sender");
 
