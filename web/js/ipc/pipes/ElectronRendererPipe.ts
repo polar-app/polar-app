@@ -2,7 +2,7 @@ import {ipcRenderer} from 'electron';
 import {Pipe, PipeListener, PipeNotification} from './Pipe';
 
 /**
- * Pipe that communicates with the ipcMain one way.
+ * Pipe that listens to events send to event send to the renderer.
  */
 export class ElectronRendererPipe extends Pipe<Electron.Event, any> {
 
