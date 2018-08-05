@@ -3,7 +3,7 @@ import {IPCPipe} from './IPCPipe';
 import {Pipe, PipeNotification, WritablePipes} from '../pipes/Pipe';
 import {IPCMessage} from './IPCMessage';
 import {ElectronIPCEvent} from './ElectronIPCEvent';
-import {ElectronContext, ElectronContextType, ElectronRendererContext} from './ElectronContext';
+import {ElectronContextType, ElectronRendererContext} from './ElectronContext';
 import {ElectronContexts} from './ElectronContexts';
 
 export class ElectronIPCPipe extends IPCPipe<ElectronIPCEvent> {
