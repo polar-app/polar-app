@@ -1,6 +1,25 @@
 export class Promises {
 
     /**
+     * A promise based timeout.  This just returns a promise which returns
+     * once the timeout has expired. You can then call .then() or just await
+     * the timeout.
+     *
+     * @param timeout
+     */
+    static async waitFor(timeout: number) {
+
+        return new Promise(resolve => {
+
+            setTimeout(() => {
+                resolve();
+            }, timeout);
+
+        });
+
+    }
+
+    /**
      * Return a promise that returns a literal value.
      *
      * @param val

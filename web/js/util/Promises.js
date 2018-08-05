@@ -9,6 +9,15 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 class Promises {
+    static waitFor(timeout) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return new Promise(resolve => {
+                setTimeout(() => {
+                    resolve();
+                }, timeout);
+            });
+        });
+    }
     static of(val) {
         return new Promise(resolve => {
             resolve(val);

@@ -1,5 +1,6 @@
 import {SpectronMain2} from '../../js/test/SpectronMain2';
 import {IPCClients} from '../../js/ipc/handler/IPCClients';
+import {Promises} from '../../js/util/Promises';
 
 SpectronMain2.create().run(async state => {
 
@@ -8,6 +9,10 @@ SpectronMain2.create().run(async state => {
     state.window.loadFile(__dirname + '/app.html');
 
     let ipcClient = IPCClients.fromMainToRenderer(state.window);
+
+    // TODO : this isn't really a good test and we should use a SyncPipe to make
+    // sure both sides are up and online and communicating.
+    await Promises.waitFor(1000);
 
     //let ipcClient = IPCClients.mainProcess();
 
