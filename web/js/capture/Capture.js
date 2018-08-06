@@ -198,13 +198,9 @@ class Capture {
         log.info("Capturing the HTML...");
 
         // define the content capture script.
-        log.info("Defining ContentCapture...");
-
-        console.log("FIXME======== ");
+        //log.info("Defining ContentCapture...");
         //console.log(ContentCapture.toString());
-        console.log("FIXME======== ");
-
-        log.info("Defining ContentCapture...done");
+        //log.info("Defining ContentCapture...done");
 
         log.info("Retrieving HTML...");
 

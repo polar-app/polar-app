@@ -156,11 +156,11 @@ class CaptureController {
      */
     async loadPHZ(webContents, path) {
 
-        let url = await this.phzLoader.registerForLoad(path);
+        let webResource = await this.phzLoader.registerForLoad(path);
 
-        console.log("Loading PHZ URL: " + url);
+        console.log(`Loading PHZ URL via: `, webResource);
 
-        webContents.loadURL(url);
+        webResource.loadWebContents(webContents);
 
     }
 

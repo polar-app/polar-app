@@ -37,7 +37,7 @@ const {GA} = require("./web/js/ga/GA");
 const searchInPage = require('electron-in-page-search').default;
 const {DialogWindowService} = require("./web/js/ui/dialog_window/DialogWindowService");
 
-const options = { extraHeaders: 'pragma: no-cache\nreferer: http://cnn.com\n' };
+//const options = { extraHeaders: 'pragma: no-cache\nreferer: http://cnn.com\n' };
 
 const log = Logger.create();
 
@@ -280,7 +280,7 @@ function createWindow() {
         shell.openExternal(url);
     });
 
-    newWindow.loadFile(DEFAULT_FILE, options);
+    newWindow.loadFile(DEFAULT_FILE);
 
     newWindow.once('ready-to-show', () => {
         //newWindow.maximize();
@@ -379,7 +379,7 @@ async function loadDoc(path, targetWindow) {
 
     log.info("Loading doc via HTTP server: " + JSON.stringify(fileMeta));
 
-    let url = null;
+    let loadPath = null;
     let fileParam = encodeURIComponent(fileMeta.url);
 
     let descriptor = null;
@@ -390,7 +390,7 @@ async function loadDoc(path, targetWindow) {
 
         // FIXME: Use a PHZ loader for this.
 
-        url = `file://${__dirname}/pdfviewer/web/viewer.html?file=${fileParam}`;
+        loadPath = `file://${__dirname}/pdfviewer/web/viewer.html?file=${fileParam}`;
 
     } else if(path.endsWith(".chtml")) {
 
@@ -426,7 +426,7 @@ async function loadDoc(path, targetWindow) {
         // metadata / descriptors
         let fingerprint = Fingerprints.create(basename);
 
-        url = `file://${__dirname}/htmlviewer/index.html?file=${encodeURIComponent(cacheMeta.url)}&fingerprint=${fingerprint}&descriptor=${encodeURIComponent(descriptorJSON)}`;
+        loadPath = `file://${__dirname}/htmlviewer/index.html?file=${encodeURIComponent(cacheMeta.url)}&fingerprint=${fingerprint}&descriptor=${encodeURIComponent(descriptorJSON)}`;
 
     } else if(path.endsWith(".phz")) {
 
@@ -457,13 +457,13 @@ async function loadDoc(path, targetWindow) {
         // metadata / descriptors
         let fingerprint = Fingerprints.create(basename);
 
-        url = `file://${__dirname}/htmlviewer/index.html?file=${encodeURIComponent(cachedRequest.url)}&fingerprint=${fingerprint}&descriptor=${encodeURIComponent(descriptorJSON)}`;
-        //url = `http://${DEFAULT_HOST}:${WEBSERVER_PORT}/htmlviewer/index.html?file=${encodeURIComponent(cachedRequest.url)}&fingerprint=${fingerprint}&descriptor=${encodeURIComponent(descriptorJSON)}`;
+        loadPath = `file://${__dirname}/htmlviewer/index.html?file=${encodeURIComponent(cachedRequest.url)}&fingerprint=${fingerprint}&descriptor=${encodeURIComponent(descriptorJSON)}`;
+        //loadPath = `http://${DEFAULT_HOST}:${WEBSERVER_PORT}/htmlviewer/index.html?file=${encodeURIComponent(cachedRequest.loadPath)}&fingerprint=${fingerprint}&descriptor=${encodeURIComponent(descriptorJSON)}`;
 
 
     }
 
-    log.info("Loading URL: " + url);
+    log.info("Loading webapp at: " + loadPath);
 
     if(cacheMeta) {
 
@@ -479,7 +479,7 @@ async function loadDoc(path, targetWindow) {
     }
 
     //return;
-    targetWindow.loadURL(url, options);
+    targetWindow.loadFile(loadPath);
 
     if(args.enableConsoleLogging) {
         log.info("Console logging enabled.");

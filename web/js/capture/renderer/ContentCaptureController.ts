@@ -29,7 +29,7 @@ export class ContentCaptureController {
         });
 
         // tell everyone that we've started properly.
-        ipcRenderer.send("content-capture", {type: "started"});
+        ipcRenderer.send('content-capture', {type: "started"});
 
     }
 

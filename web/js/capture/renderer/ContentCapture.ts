@@ -511,6 +511,12 @@ export class ContentCapture {
 
 console.log("Content capture script loaded!");
 
-//module.exports.ContentCapture = ContentCapture;
+declare var global: any;
 
-
+process.once('loaded', () => {
+    // This is a workaround to make this available to the new process while
+    // nodeIntegration is false.  We're going to need some way to handle this
+    // in the future
+    console.log("Re-defining ContentCapture");
+    global.ContentCapture = ContentCapture;
+});

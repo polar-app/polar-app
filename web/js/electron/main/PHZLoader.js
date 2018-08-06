@@ -1,69 +1,38 @@
-const {Paths} = require("../../util/Paths");
-const {Fingerprints} = require("../../util/Fingerprints");
-const {Preconditions} = require("../../Preconditions");
-
+"use strict";
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const AppPaths_1 = require("../webresource/AppPaths");
+const WebResource_1 = require("../webresource/WebResource");
+const Preconditions_1 = require("../../Preconditions");
+const { Paths } = require("../../util/Paths");
+const { Fingerprints } = require("../../util/Fingerprints");
 const log = require("../../logger/Logger").create();
-
-const WEBSERVER_PORT = 8500;
-const DEFAULT_HOST = "127.0.0.1";
-
-/**
- *
- */
 class PHZLoader {
-
     constructor(opts) {
-
-        /**
-         *
-         * @type {CacheRegistry}
-         */
-        this.cacheRegistry = undefined;
-
         Object.assign(this, opts);
-
-        Preconditions.assertNotNull(this.cacheRegistry, "cacheRegistry");
-
+        Preconditions_1.Preconditions.assertNotNull(this.cacheRegistry, "cacheRegistry");
     }
-
-    /**
-     * Compute a URL to load a file in the UI a PHZ file and registers it
-     * with the CacheRegistry so it can be loaded properly.
-     *
-     * @param path {string}
-     * @return {string}
-     */
-    async registerForLoad(path) {
-
-        // FIXME: update main.js to use this loader moving forward...
-
-        // register the phz.  the cache interceptor should do the rest.
-        let cachedRequestsHolder = await this.cacheRegistry.registerFile(path);
-
-        log.info("cachedRequestsHolder: " + JSON.stringify(cachedRequestsHolder));
-
-        // get the cache metadata for the primary URL as it will work for the
-        // subsequent URLs too.
-
-        let cachedRequest = cachedRequestsHolder.cachedRequests[cachedRequestsHolder.metadata.url];
-
-        console.log("Going to load URL: " + cachedRequest.url);
-
-        let descriptor = cachedRequestsHolder.metadata;
-        let descriptorJSON = JSON.stringify(descriptor);
-
-        // we don't need the content represented twice.
-
-        let basename = Paths.basename(path);
-
-        // TODO: this is workaround until we enable zip files with embedded
-        // metadata / descriptors
-        let fingerprint = Fingerprints.create(basename);
-
-        return `http://${DEFAULT_HOST}:${WEBSERVER_PORT}/htmlviewer/index.html?file=${encodeURIComponent(cachedRequest.url)}&fingerprint=${fingerprint}&descriptor=${encodeURIComponent(descriptorJSON)}`;
-
+    registerForLoad(path) {
+        return __awaiter(this, void 0, void 0, function* () {
+            let cachedRequestsHolder = yield this.cacheRegistry.registerFile(path);
+            log.info("cachedRequestsHolder: " + JSON.stringify(cachedRequestsHolder));
+            let cachedRequest = cachedRequestsHolder.cachedRequests[cachedRequestsHolder.metadata.url];
+            console.log("Going to load URL: " + cachedRequest.url);
+            let descriptor = cachedRequestsHolder.metadata;
+            let descriptorJSON = JSON.stringify(descriptor);
+            let basename = Paths.basename(path);
+            let fingerprint = Fingerprints.create(basename);
+            let appPath = AppPaths_1.AppPaths.createFromRelative('./htmlviewer/index.html') + `#?file=${encodeURIComponent(cachedRequest.url)}&fingerprint=${fingerprint}&descriptor=${encodeURIComponent(descriptorJSON)}`;
+            return WebResource_1.WebResource.createFile(appPath);
+        });
     }
-
 }
-
 module.exports.PHZLoader = PHZLoader;
+//# sourceMappingURL=PHZLoader.js.map

@@ -28,11 +28,14 @@ class BrowserWindows {
 
                 // the path to our content capture bundle needs to be absolute
                 // for some strange reason and this is required by Electron.
-                preload:  path.resolve("./web/js/capture/renderer/ContentCaptureApp.js"),
+                preload:  path.resolve("./web/js/capture/renderer/ContentCapture.js"),
 
                 nodeIntegration: false,
+
                 defaultEncoding: 'UTF-8',
+
                 webaudio: false,
+
                 offscreen: browser.offscreen,
 
                 /**
