@@ -10,7 +10,7 @@ const log = require("../../logger/Logger").create();
 /**
  *
  */
-class PHZLoader {
+export class PHZLoader {
 
     private readonly cacheRegistry: any;
 
@@ -64,5 +64,3 @@ class PHZLoader {
     }
 
 }
-
-module.exports.PHZLoader = PHZLoader;

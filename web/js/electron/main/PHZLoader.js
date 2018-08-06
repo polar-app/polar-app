@@ -34,5 +34,5 @@ class PHZLoader {
         });
     }
 }
-module.exports.PHZLoader = PHZLoader;
+exports.PHZLoader = PHZLoader;
 //# sourceMappingURL=PHZLoader.js.map
