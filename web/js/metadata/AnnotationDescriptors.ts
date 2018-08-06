@@ -19,11 +19,11 @@ export class AnnotationDescriptors {
         let docFingerprint = dataAttributes['annotationDocFingerprint'];
         let pageNum = parseInt(dataAttributes['annotationPageNum']);
 
-        return AnnotationDescriptor.newInstance(annotationType, docFingerprint, id, pageNum);
+        return AnnotationDescriptor.newInstance(annotationType, id, docFingerprint, pageNum);
 
     }
 
-    static createFromObject(obj: any): Readonly<AnnotationDescriptor> {
+    static createFromObject(obj: any): AnnotationDescriptor {
 
         let result = new AnnotationDescriptor(<AnnotationDescriptor>obj);
 

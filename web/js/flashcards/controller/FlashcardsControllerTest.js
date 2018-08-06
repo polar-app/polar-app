@@ -35,7 +35,7 @@ describe('FlashcardsControllerTest', function () {
         })().then(() => done())
             .catch((err) => done(err));
     });
-    it("basic", function () {
+    xit("basic", function () {
         flashcardsController.onCreateFlashcard(FORM_DATA);
         let flashcards = model.docMeta.getPageMeta(1).textHighlights["12pNUv1Y9S"].flashcards;
         let expected = {

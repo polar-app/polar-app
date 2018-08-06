@@ -63,15 +63,6 @@ describe('DocMetas', function() {
             let json = DocMetas.serialize(docMeta, "  ");
 
             let expected = {
-                    "docInfo": {
-                        "title": null,
-                        "url": null,
-                        "nrPages": 2,
-                        "fingerprint": "0x001",
-                        "lastOpened": null,
-                        "progress": 0,
-                        "pagemarkType": "SINGLE_COLUMN"
-                    },
                     "annotationInfo": {
                         "lastAnnotated": null
                     },
@@ -131,7 +122,16 @@ describe('DocMetas', function() {
                             "areaHighlights": {}
                         }
                     },
-                    "version": 1
+                    "version": 1,
+                    "docInfo": {
+                        "title": null,
+                        "url": null,
+                        "nrPages": 2,
+                        "fingerprint": "0x001",
+                        "lastOpened": null,
+                        "progress": 0,
+                        "pagemarkType": "SINGLE_COLUMN"
+                    }
                 }
             ;
 

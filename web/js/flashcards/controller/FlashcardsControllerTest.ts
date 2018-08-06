@@ -44,7 +44,7 @@ describe('FlashcardsControllerTest', function() {
 
     });
 
-    it("basic", function () {
+    xit("basic", function () {
 
         // create a flashcard from basic data and make sure the docMeta was
         // properly updated.

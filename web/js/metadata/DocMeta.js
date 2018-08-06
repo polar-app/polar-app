@@ -1,70 +1,35 @@
-const {DocInfo} = require("./DocInfo");
-const {PageMeta} = require("./PageMeta");
-const {PageInfo} = require("./PageInfo");
-const {AnnotationInfo} = require("./AnnotationInfo");
-const {SerializedObject} = require("./SerializedObject.js");
-const {Preconditions} = require("../Preconditions");
-
-/**
- * Root metadata for a document including page metadata, and metadata for
- * the specific document.
- */
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const { DocInfo } = require("./DocInfo");
+const { PageMeta } = require("./PageMeta");
+const { PageInfo } = require("./PageInfo");
+const { AnnotationInfo } = require("./AnnotationInfo");
+const { SerializedObject } = require("./SerializedObject.js");
+const { Preconditions } = require("../Preconditions");
 class DocMeta extends SerializedObject {
-
-    constructor(val) {
-
-        super(val);
-
-        /**
-         * The DocInfo which includes information like title, nrPages, etc.
-         * @type DocInfo
-         */
-        this.docInfo = null;
-
-        /**
-         * The annotation info for this document including the last annotation
-         * time, progress, etc.
-         *
-         * @type {AnnotationInfo}
-         */
+    constructor(template) {
+        super(template);
         this.annotationInfo = new AnnotationInfo({});
-
-        /**
-         * A sparse dictionary of page number to page metadata.
-         *
-         * @type Object<int,PageMeta>
-         */
         this.pageMetas = {};
-
-        /**
-         * The version of this DocMeta version.
-         */
         this.version = 1;
-
-        this.init(val);
-
+        if (template) {
+            this.docInfo = Preconditions.assertNotNull(template.docInfo, "docInfo");
+            this.init(template);
+        }
     }
-
     getPageMeta(num) {
-
         num = Preconditions.assertNotNull(num, "num");
-
         let pageMeta = this.pageMetas[num];
-
         if (!pageMeta) {
             throw new Error("No pageMeta for page: " + num);
         }
-
         return pageMeta;
-
     }
-
     validate() {
         Preconditions.assertInstanceOf(this.docInfo, DocInfo, "docInfo");
         Preconditions.assertNotNull(this.pageMetas, "pageMetas");
         Preconditions.assertNumber(this.version, "version");
     }
-
-};
-
-module.exports.DocMeta = DocMeta;
+}
+exports.DocMeta = DocMeta;
+//# sourceMappingURL=DocMeta.js.map

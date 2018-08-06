@@ -42,6 +42,10 @@ export class CreateAnnotationHandler extends IPCHandler<AnnotationContainer<Anno
                 //this.onCreateFlashcard(data);
                 log.info("FIXME: we still need to write it to the store properly..")
 
+                let pageMeta = this.model.docMeta.
+
+                textHighlight.flashcards[flashcard.id] = flashcard;
+
                 // let textHighlightAnnotationDescriptors =
                 //     data.context.matchingSelectors[".text-highlight"].annotationDescriptors;
                 //
@@ -68,4 +72,5 @@ export class CreateAnnotationHandler extends IPCHandler<AnnotationContainer<Anno
         return undefined;
 
     }
+
 }

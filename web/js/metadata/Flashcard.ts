@@ -28,6 +28,11 @@ export class Flashcard extends VersionedObject {
 
         super(template);
 
+        // FIXME: this doesn't actually help here because init calls assign.
+        // It might make sense to just call template.validate() to do
+        // all the type checking but it might not have a method since it
+        // just JSON here...
+
         this.id = Preconditions.assertNotNull(template.id);
         this.created = template.created;
         this.lastUpdated = template.lastUpdated;
