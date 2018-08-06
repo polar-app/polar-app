@@ -54,10 +54,11 @@ export abstract class VersionedObject extends SerializedObject {
 
         super.validate();
 
+        this.created = new ISODateTime(Preconditions.assertNotNull(this.created));
+        this.lastUpdated = new ISODateTime(Preconditions.assertNotNull(this.lastUpdated));
+
         Preconditions.assertNotNull(this.id, "id");
         Preconditions.assertNotNull(this.created, "created");
-        Preconditions.assertInstanceOf(this.created, ISODateTime, "created");
-        Preconditions.assertInstanceOf(this.lastUpdated, ISODateTime, "lastUpdated");
 
     }
 

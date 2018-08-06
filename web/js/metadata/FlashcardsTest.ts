@@ -3,6 +3,7 @@ import {Flashcards} from './Flashcards';
 import {Texts} from './Texts';
 import {TextType} from './TextType';
 import {FlashcardType} from './FlashcardType';
+import {Flashcard} from './Flashcard';
 
 require("../test/TestingTime").freeze();
 
@@ -39,6 +40,38 @@ describe('Flashcards', function() {
 
     });
 
+    describe('JSON', function() {
+
+        it("serialize", function () {
+
+            let text = Texts.create("This is the text", TextType.MARKDOWN);
+
+            let fields = { text };
+
+            let flashcard = Flashcards.create(FlashcardType.CLOZURE, fields, archetype);
+
+            let expected = {
+                "id": "1HYhuRQ4tz",
+                "created": "2012-03-02T11:38:49.321Z",
+                "lastUpdated": "2012-03-02T11:38:49.321Z",
+                "type": "CLOZURE",
+                "fields": {
+                    "text": {
+                        "MARKDOWN": "This is the text"
+                    }
+                },
+                "archetype": "9d146db1-7c31-4bcf-866b-7b485c4e50ea"
+            };
+
+            assertJSON(flashcard, expected);
+
+            let parsed = JSON.parse(JSON.stringify(flashcard));
+
+            new Flashcard(<Flashcard>parsed);
+
+        });
+
+    });
 
     describe('createFromSchemaFormData', function() {
 

@@ -20,10 +20,10 @@ class VersionedObject extends SerializedObject_1.SerializedObject {
     }
     validate() {
         super.validate();
+        this.created = new ISODateTime_1.ISODateTime(Preconditions_1.Preconditions.assertNotNull(this.created));
+        this.lastUpdated = new ISODateTime_1.ISODateTime(Preconditions_1.Preconditions.assertNotNull(this.lastUpdated));
         Preconditions_1.Preconditions.assertNotNull(this.id, "id");
         Preconditions_1.Preconditions.assertNotNull(this.created, "created");
-        Preconditions_1.Preconditions.assertInstanceOf(this.created, ISODateTime_1.ISODateTime, "created");
-        Preconditions_1.Preconditions.assertInstanceOf(this.lastUpdated, ISODateTime_1.ISODateTime, "lastUpdated");
     }
 }
 exports.VersionedObject = VersionedObject;

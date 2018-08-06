@@ -5,6 +5,7 @@ const Flashcards_1 = require("./Flashcards");
 const Texts_1 = require("./Texts");
 const TextType_1 = require("./TextType");
 const FlashcardType_1 = require("./FlashcardType");
+const Flashcard_1 = require("./Flashcard");
 require("../test/TestingTime").freeze();
 describe('Flashcards', function () {
     let archetype = "9d146db1-7c31-4bcf-866b-7b485c4e50ea";
@@ -26,6 +27,28 @@ describe('Flashcards', function () {
                 "archetype": "9d146db1-7c31-4bcf-866b-7b485c4e50ea"
             };
             Assertions_1.assertJSON(flashcard, expected);
+        });
+    });
+    describe('JSON', function () {
+        it("serialize", function () {
+            let text = Texts_1.Texts.create("This is the text", TextType_1.TextType.MARKDOWN);
+            let fields = { text };
+            let flashcard = Flashcards_1.Flashcards.create(FlashcardType_1.FlashcardType.CLOZURE, fields, archetype);
+            let expected = {
+                "id": "1HYhuRQ4tz",
+                "created": "2012-03-02T11:38:49.321Z",
+                "lastUpdated": "2012-03-02T11:38:49.321Z",
+                "type": "CLOZURE",
+                "fields": {
+                    "text": {
+                        "MARKDOWN": "This is the text"
+                    }
+                },
+                "archetype": "9d146db1-7c31-4bcf-866b-7b485c4e50ea"
+            };
+            Assertions_1.assertJSON(flashcard, expected);
+            let parsed = JSON.parse(JSON.stringify(flashcard));
+            new Flashcard_1.Flashcard(parsed);
         });
     });
     describe('createFromSchemaFormData', function () {
