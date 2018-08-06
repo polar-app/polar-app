@@ -1,9 +1,9 @@
 import {PersistenceLayer} from './datastore/PersistenceLayer';
+import {DocMeta} from './metadata/DocMeta';
 
 const {Proxies} = require("./proxies/Proxies");
 const {Pagemarks} = require("./metadata/Pagemarks");
 const {PagemarkType} = require("./metadata/PagemarkType");
-const {DocMeta} = require("./metadata/DocMeta");
 const {DocMetas} = require("./metadata/DocMetas");
 const {DocMetaDescriber} = require("./metadata/DocMetaDescriber");
 const {Reactor} = require("./reactor/Reactor");
@@ -14,7 +14,9 @@ export class Model {
 
     private readonly persistenceLayer: PersistenceLayer;
 
-    docMeta: any; // TODO: type
+    // TODO: we should probably not set this via a global as it might not
+    // be loaded yet and / or might be invalidated if the document is closed.
+    docMeta: DocMeta = new DocMeta();
 
     reactor: any; // TODO: type
 
@@ -31,8 +33,6 @@ export class Model {
 
         // The currently loaded document.
         this.docMetaPromise = null;
-
-        this.docMeta = null;
 
     }
 
@@ -146,14 +146,18 @@ export class Model {
 
         this.assertPageNum(pageNum);
 
-        let pageMeta = this.docMeta.getPageMeta(pageNum);
+        if(this.docMeta) {
 
-        // FIXME: this is actually wrong because I need to delete the RIGHT
-        // pagemark. NOT just delete all of them.
-        Objects.clear(pageMeta.pagemarks);
+            let pageMeta = this.docMeta.getPageMeta(pageNum);
 
-        // FIXME: this can be done with a mutation listener now.
-        this.reactor.dispatchEvent('erasePagemark', {pageNum});
+            // FIXME: this is actually wrong because I need to delete the RIGHT
+            // pagemark. NOT just delete all of them.
+            Objects.clear(pageMeta.pagemarks);
+
+            // FIXME: this can be done with a mutation listener now.
+            this.reactor.dispatchEvent('erasePagemark', {pageNum});
+
+        }
 
     }
 

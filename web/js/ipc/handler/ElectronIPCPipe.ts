@@ -15,6 +15,8 @@ export class ElectronIPCPipe extends IPCPipe<ElectronIPCEvent> {
 
     convertEvent(pipeNotification: PipeNotification<Electron.Event, any>): ElectronIPCEvent {
 
+        console.log("FIXME: creating IPC message", pipeNotification.message)
+
         let request = IPCMessage.create(pipeNotification.message);
 
         let responsePipe =

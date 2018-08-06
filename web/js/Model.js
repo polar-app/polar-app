@@ -8,10 +8,10 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+const DocMeta_1 = require("./metadata/DocMeta");
 const { Proxies } = require("./proxies/Proxies");
 const { Pagemarks } = require("./metadata/Pagemarks");
 const { PagemarkType } = require("./metadata/PagemarkType");
-const { DocMeta } = require("./metadata/DocMeta");
 const { DocMetas } = require("./metadata/DocMetas");
 const { DocMetaDescriber } = require("./metadata/DocMetaDescriber");
 const { Reactor } = require("./reactor/Reactor");
@@ -19,13 +19,13 @@ const { Objects } = require("./util/Objects");
 const { Preconditions } = require("./Preconditions");
 class Model {
     constructor(persistenceLayer) {
+        this.docMeta = new DocMeta_1.DocMeta();
         this.persistenceLayer = persistenceLayer;
         this.reactor = new Reactor();
         this.reactor.registerEvent('documentLoaded');
         this.reactor.registerEvent('createPagemark');
         this.reactor.registerEvent('erasePagemark');
         this.docMetaPromise = null;
-        this.docMeta = null;
     }
     documentLoaded(fingerprint, nrPages, currentPageNumber) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -76,9 +76,11 @@ class Model {
         Preconditions.assertNumber(pageNum, "pageNum");
         console.log("Model sees erasePagemark");
         this.assertPageNum(pageNum);
-        let pageMeta = this.docMeta.getPageMeta(pageNum);
-        Objects.clear(pageMeta.pagemarks);
-        this.reactor.dispatchEvent('erasePagemark', { pageNum });
+        if (this.docMeta) {
+            let pageMeta = this.docMeta.getPageMeta(pageNum);
+            Objects.clear(pageMeta.pagemarks);
+            this.reactor.dispatchEvent('erasePagemark', { pageNum });
+        }
     }
     assertPageNum(pageNum) {
         if (pageNum == null)

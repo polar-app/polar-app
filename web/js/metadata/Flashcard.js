@@ -5,9 +5,6 @@ const Preconditions_1 = require("../Preconditions");
 class Flashcard extends VersionedObject_1.VersionedObject {
     constructor(template) {
         super(template);
-        this.id = Preconditions_1.Preconditions.assertNotNull(template.id);
-        this.created = template.created;
-        this.lastUpdated = template.lastUpdated;
         this.type = template.type;
         this.fields = template.fields;
         this.archetype = template.archetype;
@@ -15,6 +12,9 @@ class Flashcard extends VersionedObject_1.VersionedObject {
     }
     validate() {
         super.validate();
+        Preconditions_1.Preconditions.assertNotNull(this.type, "type");
+        Preconditions_1.Preconditions.assertNotNull(this.fields, "fields");
+        Preconditions_1.Preconditions.assertNotNull(this.archetype, "archetype");
     }
     static newInstance(id, created, lastUpdated, type, fields, archetype) {
         let result = new Flashcard({

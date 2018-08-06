@@ -46,6 +46,8 @@ export class IPCEngine<E extends IPCEvent> {
 
                     } catch(err) {
 
+                        log.error("Encountered error with handler: ", err);
+
                         // catch any exceptions so that handlers don't have to be
                         // responsible for error handling by default.
 

@@ -6,6 +6,7 @@ import {IPCEvent} from '../../../ipc/handler/IPCEvent';
 import {Logger} from '../../../logger/Logger';
 import {AnnotationType} from '../../../metadata/AnnotationType';
 import {Model} from '../../../Model';
+import {Flashcard} from '../../../metadata/Flashcard';
 
 const log = Logger.create();
 
@@ -34,7 +35,7 @@ export class CreateAnnotationHandler extends IPCHandler<AnnotationContainer<Anno
 
         if(descriptor.type === AnnotationType.FLASHCARD) {
 
-            log.info("Working with flashcard: ", annotationContainer.value);
+            let flashcard = new Flashcard(<Flashcard>annotationContainer.value);
 
             if(descriptor.docFingerprint === this.model.docMeta.docInfo.fingerprint) {
 
@@ -42,31 +43,22 @@ export class CreateAnnotationHandler extends IPCHandler<AnnotationContainer<Anno
                 //this.onCreateFlashcard(data);
                 log.info("FIXME: we still need to write it to the store properly..")
 
-                let pageMeta = this.model.docMeta.
+                let pageMeta = this.model.docMeta.getPageMeta(descriptor.pageNum);
 
-                textHighlight.flashcards[flashcard.id] = flashcard;
+                // FIXME: these need to be attached to the parent annotation not
+                // stored directly on the page...
 
-                // let textHighlightAnnotationDescriptors =
-                //     data.context.matchingSelectors[".text-highlight"].annotationDescriptors;
-                //
-                // // FIXME: if there are multiple visual annotations, each with the same ID
-                // // which is currently a bug, then we need to filter them out to just ONE
-                // // annotation.
-                // textHighlightAnnotationDescriptors.forEach((annotationDescriptor: AnnotationDescriptor) => {
-                //     let pageMeta = this.model.docMeta.getPageMeta(annotationDescriptor.pageNum);
-                //     let textHighlight = pageMeta.textHighlights[annotationDescriptor.id];
-                //
-                //     if(!textHighlight) {
-                //         throw new Error(`No text highlight for ID ${annotationDescriptor.id} on page ${annotationDescriptor.pageNum}`);
-                //     }
-                //
-                //     textHighlight.flashcards[flashcard.id] = flashcard;
+                pageMeta.flashcards[flashcard.id] = flashcard;
 
+                // FIXME: stick this on the proper parent .. this could either
+                // be a page directly or a
 
             } else {
                 log.info(`Ignoring flashcard.  ${descriptor.docFingerprint} != ${this.model.docMeta.docInfo.fingerprint}`)
             }
 
+        } else {
+            log.info("Wrong annotation type: ", descriptor.type);
         }
 
         return undefined;
