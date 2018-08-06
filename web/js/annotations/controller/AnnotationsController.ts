@@ -4,9 +4,7 @@ import {Logger} from '../../logger/Logger';
 import {TriggerEvent} from '../../contextmenu/TriggerEvent';
 import {Nullable} from '../../util/ts/Nullable';
 import {AnnotationTriggerEvents} from './AnnotationTriggerEvents';
-import {IPCEngine} from '../../ipc/handler/IPCEngine';
 import {IPCClient} from '../../ipc/handler/IPCClient';
-import {ElectronIPCEvent} from '../../ipc/handler/ElectronIPCEvent';
 import {IPCEvent} from '../../ipc/handler/IPCEvent';
 import {ElectronIPCPipe} from '../../ipc/handler/ElectronIPCPipe';
 
@@ -31,9 +29,7 @@ export class AnnotationsController {
         let dialogWindowClient = await this.createFlashcardDialogWindow();
         this.flashcardDialogWindow.set(dialogWindowClient);
 
-        // TODO this doesn't work because the dialog window sends responses to
-        // its main process NOT the IPC client here.
-        this.ipcClient.set(new IPCClient(new ElectronIPCPipe(dialogWindowClient.createPipe())));
+        this.ipcClient.set(dialogWindowClient.createClient());
 
     }
 
@@ -100,11 +96,12 @@ export class AnnotationsController {
 
         let annotationDescriptor = annotationDescriptors[0];
 
-        // TODO: we're not awaiting the response now because the IPC framework
-        // is somewhat broken regarding channels and I need to rethink them
-        // and write test frameworks for this functionality.
-        this.ipcClient.get().execute('/create-flashcard/api/create', annotationDescriptor);
-        log.info("Sending annotation descriptor...done");
+        this.ipcClient.get().execute('/create-flashcard/api/create', annotationDescriptor)
+            .then(() => {
+
+                log.info("Sending annotation descriptor...done");
+
+            });
 
     }
 

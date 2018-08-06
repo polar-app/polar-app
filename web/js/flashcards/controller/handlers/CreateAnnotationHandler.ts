@@ -28,6 +28,8 @@ export class CreateAnnotationHandler extends IPCHandler<AnnotationContainer<Anno
 
     protected async handleIPC(event: IPCEvent, annotationContainer: AnnotationContainer<Annotation>): Promise<any> {
 
+        log.info("Got create annotation message: ", annotationContainer );
+
         let descriptor = annotationContainer.descriptor;
 
         if(descriptor.type === AnnotationType.FLASHCARD) {
@@ -62,8 +64,6 @@ export class CreateAnnotationHandler extends IPCHandler<AnnotationContainer<Anno
             }
 
         }
-
-        log.info("Got create annotation message: ", annotationContainer );
 
         return undefined;
 

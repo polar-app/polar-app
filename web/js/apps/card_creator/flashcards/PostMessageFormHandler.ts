@@ -16,14 +16,14 @@ export class PostMessageFormHandler extends FormHandler {
 
     private readonly annotationDescriptor: AnnotationDescriptor;
 
-    private readonly context: ElectronContext;
+    private readonly targetContext: ElectronContext;
 
     private readonly client: IPCClient<IPCEvent>;
 
-    constructor(annotationDescriptor: AnnotationDescriptor, context: ElectronContext) {
+    constructor(annotationDescriptor: AnnotationDescriptor, targetContext: ElectronContext) {
         super();
         this.annotationDescriptor = annotationDescriptor;
-        this.context = context;
+        this.targetContext = targetContext;
         this.client = IPCClients.rendererProcess();
     }
 
@@ -53,8 +53,7 @@ export class PostMessageFormHandler extends FormHandler {
 
         (async () => {
 
-            // FIXME put the target context where we want the request to execute.
-            await this.client.execute('/api/annotations/create-annotation', annotationContainer)
+            await this.client.execute('/api/annotations/create-annotation', annotationContainer, this.targetContext)
 
         })().catch(err => log.error("Could not handle form", err));
 

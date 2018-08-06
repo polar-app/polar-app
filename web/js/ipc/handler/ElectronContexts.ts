@@ -10,7 +10,7 @@ export class ElectronContexts {
 
     static create() {
 
-        if(remote === null) {
+        if(! remote) {
             return new ElectronMainContext();
         } else {
             return new ElectronRendererContext(new WindowReference(remote.getCurrentWindow().id));

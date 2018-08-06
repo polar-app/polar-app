@@ -1,10 +1,12 @@
-import {ElectronMainReadablePipe} from '../../ipc/pipes/ElectronMainReadablePipe';
 import {ElectronIPCPipe} from '../../ipc/handler/ElectronIPCPipe';
 import {IPCRegistry} from '../../ipc/handler/IPCRegistry';
 import {IPCEngine} from '../../ipc/handler/IPCEngine';
 import {CreateFlashcardForm} from './elements/schemaform/CreateFlashcardForm';
 import {CreateFlashcardHandler} from './handlers/CreateFlashcardHandler';
 import {ElectronRendererPipe} from '../../ipc/pipes/ElectronRendererPipe';
+import {Logger} from '../../logger/Logger';
+
+const log = Logger.create();
 
 export class CreateFlashcardService {
 
@@ -16,6 +18,8 @@ export class CreateFlashcardService {
 
     async start(): Promise<void> {
 
+        log.info("Starting...");
+
         let pipe = new ElectronRendererPipe();
         let ipcPipe = new ElectronIPCPipe(pipe);
 
@@ -26,6 +30,8 @@ export class CreateFlashcardService {
         let ipcEngine = new IPCEngine(ipcPipe, ipcRegistry);
 
         ipcEngine.start();
+
+        log.info("Starting...done");
 
     }
 

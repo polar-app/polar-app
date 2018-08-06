@@ -13,13 +13,19 @@ export class IPCClients {
     }
 
     static fromMainToRenderer(browserWindow: Electron.BrowserWindow) {
-        return new IPCClient(new ElectronIPCPipe(new ElectronMainToBrowserWindowPipe(browserWindow)));
+        let electronMainToBrowserWindowPipe = new ElectronMainToBrowserWindowPipe(browserWindow);
+        let electronIPCPipe = new ElectronIPCPipe(electronMainToBrowserWindowPipe);
+
+        let targetContext = new ElectronRendererContext(new WindowReference(browserWindow.id));
+        return new IPCClient(electronIPCPipe, targetContext);
+
     }
 
     static fromRendererToRenderer(windowReference: WindowReference) {
-        let targetContext = new ElectronRendererContext(windowReference);
         let electronRenderToRendererPipe = new ElectronRenderToRendererPipe(windowReference);
         let electronIPCPipe = new ElectronIPCPipe(electronRenderToRendererPipe);
+
+        let targetContext = new ElectronRendererContext(windowReference);
         return new IPCClient(electronIPCPipe, targetContext);
     }
 

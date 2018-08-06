@@ -7,6 +7,7 @@ import {ElectronRendererPipe} from '../../ipc/pipes/ElectronRendererPipe';
 import {ElectronIPCPipe} from '../../ipc/handler/ElectronIPCPipe';
 import {Pipe} from '../../ipc/pipes/Pipe';
 import {ElectronRenderToRendererPipe} from '../../ipc/pipes/ElectronRenderToRendererPipe';
+import {ElectronRendererContext} from '../../ipc/handler/ElectronContext';
 
 let ipcPipe = new ElectronIPCPipe(new ElectronRendererPipe());
 let ipcClient = new IPCClient(ipcPipe);
@@ -39,6 +40,11 @@ export class DialogWindowClient {
      */
     createPipe(): Pipe<Electron.Event, any> {
         return new ElectronRenderToRendererPipe(this.dialogWindowReference);
+    }
+
+    createClient() {
+        let electronIPCPipe = new ElectronIPCPipe(this.createPipe());
+        return new IPCClient(electronIPCPipe, new ElectronRendererContext(this.dialogWindowReference));
     }
 
     /**
