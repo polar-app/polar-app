@@ -10,7 +10,15 @@ browser app to the JS file in the directory.  I guess I need to use path.resolve
 after fixing the file URL...
 
 -->
-<script>require("/home/burton/projects/polar-bookshelf/web/spectron/load-app-from-file-url/app.js");</script>
+<script>
+    let dir = document.location.href;
+    console.log("FIXME dir: ", dir);
+    dir = dir.replace('file://', '');
+    console.log("FIXME dir: ", dir);
+    dir = dir.replace(/[^/.]+\.html$/, '');
+    console.log("Loading from dir: " + dir)
+    require(`${dir}/app.js`);
+</script>
 
 </body>
 </html>
