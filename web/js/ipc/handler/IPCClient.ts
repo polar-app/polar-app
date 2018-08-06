@@ -1,6 +1,8 @@
 import {IPCMessage} from './IPCMessage';
 import {IPCEvent} from './IPCEvent';
 import {IPCPipe} from './IPCPipe';
+import {ElectronContext, ElectronMainContext} from './ElectronContext';
+import {WritablePipes} from './WritablePipes';
 
 /**
  * A client which executes requests and waits for responses.
@@ -9,26 +11,34 @@ export class IPCClient<E extends IPCEvent> {
 
     private readonly pipe: IPCPipe<E>;
 
-    constructor(pipe: IPCPipe<E>) {
+    private readonly targetContext: ElectronContext;
+
+    constructor(pipe: IPCPipe<E>, targetContext: ElectronContext = new ElectronMainContext()) {
         this.pipe = pipe;
+        this.targetContext = targetContext;
     }
 
-    async execute<R>(path: string, request: R): Promise<IPCMessage<any>> {
+    /**
+     *
+     * @param path The path URI to execute the request against.
+     *
+     * @param request The request object that is serialized and executed.
+     *
+     * @param targetContext The target where we should execute the request.  By
+     * default, the only target we support is main -> renderer which assumes you
+     * are calling from the renderer.  No other context can be inferred by
+     * default.
+     */
+    async execute<R>(path: string, request: R, targetContext: ElectronContext = this.targetContext): Promise<IPCMessage<any>> {
 
         let ipcMessage = new IPCMessage<any>('request', request);
 
-        // FIXME: this is the problem.. we're waiting for the response from the
-        // pipe not from the sender which we don't really have a channel to I
-        // think.  This would happen in ipcMain... if ipcMain is listening to a
-        // pipe and a response goes to another renderer then we never get the
-        // response...  but basically there's NO way for ipcMain to execute
-        // this way because if it writes to a remote window... no.. the
-        // response should come back because we're using the sender.  I just
-        // need to test it.
-
         let responsePromise = this.pipe.when(ipcMessage.computeResponseChannel());
 
-        this.pipe.write(path, ipcMessage);
+        let writablePipe = WritablePipes.createFromContext(targetContext);
+
+        writablePipe.write(path, ipcMessage);
+        //this.pipe.write(path, ipcMessage);
 
         let response = await responsePromise;
 

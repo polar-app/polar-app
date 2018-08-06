@@ -1,10 +1,11 @@
 import {ipcRenderer} from 'electron';
 import {IPCPipe} from './IPCPipe';
-import {Pipe, PipeNotification, WritablePipes} from '../pipes/Pipe';
+import {Pipe, PipeNotification} from '../pipes/Pipe';
 import {IPCMessage} from './IPCMessage';
 import {ElectronIPCEvent} from './ElectronIPCEvent';
 import {ElectronContextType, ElectronRendererContext} from './ElectronContext';
 import {ElectronContexts} from './ElectronContexts';
+import {WritablePipes} from './WritablePipes';
 
 export class ElectronIPCPipe extends IPCPipe<ElectronIPCEvent> {
 
@@ -17,7 +18,11 @@ export class ElectronIPCPipe extends IPCPipe<ElectronIPCEvent> {
         let request = IPCMessage.create(pipeNotification.message);
 
         let responsePipe =
-            WritablePipes.create((channel: string, message: IPCMessage<any>) => {
+            WritablePipes.createFromFunction((channel: string, message: IPCMessage<any>) => {
+
+                // TODO migrate this to use: WritablePipes.createFromContext
+
+                // create a response pipe based on the context of the request.
 
                 let electronContext = ElectronContexts.create();
 

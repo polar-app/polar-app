@@ -1,6 +1,7 @@
-import {Pipe, PipeListener, PipeNotification, WritablePipes} from './Pipe';
+import {Pipe, PipeListener, PipeNotification} from './Pipe';
 import {IPCEvent} from '../handler/IPCEvent';
 import {Pipes} from './Pipes';
+import {WritablePipes} from '../handler/WritablePipes';
 
 export class WindowMessagePipe implements Pipe<IPCEvent, any> {
 
@@ -45,7 +46,7 @@ export class WindowMessagePipe implements Pipe<IPCEvent, any> {
 
     static createWritablePipe(channel: string, event: any) {
 
-        return WritablePipes.create((channel, message: any) => {
+        return WritablePipes.createFromFunction((channel, message: any) => {
             event.sender.postMessage( {channel, message}, '*');
         });
 

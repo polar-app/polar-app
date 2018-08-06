@@ -1,4 +1,3 @@
-import {ipcRenderer} from 'electron';
 import {SchemaFormFlashcardConverter} from './SchemaFormFlashcardConverter';
 import {FormHandler} from '../elements/schemaform/FormHandler';
 import {AnnotationContainer} from '../../../metadata/AnnotationContainer';
@@ -6,9 +5,10 @@ import {AnnotationDescriptor} from '../../../metadata/AnnotationDescriptor';
 import {Logger} from '../../../logger/Logger';
 import {AnnotationType} from '../../../metadata/AnnotationType';
 import {SchemaFormData} from '../elements/schemaform/SchemaFormData';
-import {WritablePipe} from '../../../ipc/pipes/Pipe';
-import {IPCMessage} from '../../../ipc/handler/IPCMessage';
-import {IPCResponse} from '../../../ipc/handler/IPCResponse';
+import {ElectronContext} from '../../../ipc/handler/ElectronContext';
+import {IPCClient} from '../../../ipc/handler/IPCClient';
+import {IPCClients} from '../../../ipc/handler/IPCClients';
+import {IPCEvent} from '../../../ipc/handler/IPCEvent';
 
 const log = Logger.create();
 
@@ -16,12 +16,15 @@ export class PostMessageFormHandler extends FormHandler {
 
     private readonly annotationDescriptor: AnnotationDescriptor;
 
-    private readonly response: IPCResponse;
+    private readonly context: ElectronContext;
 
-    constructor(annotationDescriptor: AnnotationDescriptor, response: IPCResponse) {
+    private readonly client: IPCClient<IPCEvent>;
+
+    constructor(annotationDescriptor: AnnotationDescriptor, context: ElectronContext) {
         super();
         this.annotationDescriptor = annotationDescriptor;
-        this.response = response;
+        this.context = context;
+        this.client = IPCClients.rendererProcess();
     }
 
     onChange(data: any) {
@@ -48,30 +51,12 @@ export class PostMessageFormHandler extends FormHandler {
 
         let annotationContainer = AnnotationContainer.newInstance(annotationDescriptor, flashcard);
 
-        //
-        // let createAnnotationRequest
-        //     = new CreateAnnotationRequest(this.createFlashcardRequest.docDescriptor,
-        //                                   AnnotationType.FLASHCARD,
-        //                                   schemaFormData);
+        (async () => {
 
-        // // FIXME: ok.. we can't just use a generic
-        //
-        // // FIXME: this is broken..
-        // // the metadata for creating the flashcard type.  This should probably
-        // // move to the schema in the future.  The ID is really just so that
-        // // we can compile the schema properly.
-        // schemaFormData.flashcard = {
-        //     id: "9d146db1-7c31-4bcf-866b-7b485c4e50ea"
-        // };
+            // FIXME put the target context where we want the request to execute.
+            await this.client.execute('/api/annotations/create-annotation', annotationContainer)
 
-        // send this to the main process which then broadcasts it to all the
-        // renderers
-
-        // FIXME: this is a NEW request.. not a new response..
-        //this.response.send('/api/annotations/create-annotation', annotationContainer);
-
-        // FIXME: use an IPC client here...
-        //ipcRenderer.send('created-annotation', annotationContainer);
+        })().catch(err => log.error("Could not handle form", err));
 
     }
 

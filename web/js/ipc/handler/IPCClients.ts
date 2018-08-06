@@ -4,6 +4,7 @@ import {ElectronRendererPipe} from '../pipes/ElectronRendererPipe';
 import {ElectronRenderToRendererPipe} from '../pipes/ElectronRenderToRendererPipe';
 import {WindowReference} from '../../ui/dialog_window/WindowReference';
 import {ElectronMainToBrowserWindowPipe} from '../pipes/ElectronMainToBrowserWindowPipe';
+import {ElectronRendererContext} from './ElectronContext';
 
 export class IPCClients {
 
@@ -16,7 +17,10 @@ export class IPCClients {
     }
 
     static fromRendererToRenderer(windowReference: WindowReference) {
-        return new IPCClient(new ElectronIPCPipe(new ElectronRenderToRendererPipe(windowReference)));
+        let targetContext = new ElectronRendererContext(windowReference);
+        let electronRenderToRendererPipe = new ElectronRenderToRendererPipe(windowReference);
+        let electronIPCPipe = new ElectronIPCPipe(electronRenderToRendererPipe);
+        return new IPCClient(electronIPCPipe, targetContext);
     }
 
 }

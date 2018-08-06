@@ -7,6 +7,8 @@ import {Preconditions} from '../../Preconditions';
 
 export class ElectronIPCEvent extends IPCEvent {
 
+    // TODO: just refactor this into the main IPC Event and have it be a context
+    // so we don't need the Electron IPC Event system..
     public readonly senderWindowReference: WindowReference;
 
     constructor(responsePipe: WritablePipe<IPCMessage<any>>, message: IPCMessage<any>, sender: WebContents) {

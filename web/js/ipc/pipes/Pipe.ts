@@ -1,4 +1,5 @@
 import {Pipes} from './Pipes';
+import {WritableFunction} from '../handler/WritablePipes';
 
 export abstract class Pipe<E,M> implements WritablePipe<M>, ReadablePipe<E, M> {
 
@@ -37,17 +38,6 @@ export class WritablePipeFunction<M> implements WritablePipe<M> {
 
 }
 
-export class WritablePipes {
-
-    static create<M>(writableFunction: WritableFunction<M>): WritablePipe<M> {
-        return new WritablePipeFunction(writableFunction);
-    }
-
-}
-
-export interface WritableFunction<M> {
-    (channel: string, message: M): void;
-}
 
 /**
  * A read-only pipe.
