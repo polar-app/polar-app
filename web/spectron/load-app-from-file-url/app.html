@@ -11,12 +11,13 @@ after fixing the file URL...
 
 -->
 <script>
+    const path = require('path');
     let dir = document.location.href;
-    console.log("FIXME dir: ", dir);
     dir = dir.replace('file://', '');
-    console.log("FIXME dir: ", dir);
+    // FIXME: also replace any of the query data in the URL...
     dir = dir.replace(/[^/.]+\.html$/, '');
-    console.log("Loading from dir: " + dir)
+    console.log("FIXME: " + path.dirname(dir));
+    console.log("FIXME: " + path.dirname(document.location.href));
     require(`${dir}/app.js`);
 </script>
 
