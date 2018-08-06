@@ -547,8 +547,8 @@ async function cmdCaptureWebPage(item, focusedWindow) {
 
     let targetWindow = createWindow();
 
-    let url = 'http://127.0.0.1:8500/apps/capture/start-capture/index.html';
-    targetWindow.loadURL(url);
+    let url = './apps/capture/start-capture/index.html';
+    targetWindow.loadFile(url);
 
 }
 

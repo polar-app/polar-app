@@ -1,4 +1,3 @@
-const {SerializedObject} = require("./SerializedObject.js");
 const {Preconditions} = require("../Preconditions");
 const {ExtendedAnnotation} = require("./ExtendedAnnotation");
 
@@ -16,7 +15,9 @@ class BaseHighlight extends ExtendedAnnotation {
         this.rects = {};
 
         /**
-         * Optional image for this highlight.
+         * Optional image for this highlight taken when the highlight was
+         * created.  This is usually a screenshot of the annotation and what
+         * it looks like on screen.
          *
          * @type {null}
          */
@@ -25,10 +26,12 @@ class BaseHighlight extends ExtendedAnnotation {
     }
 
     validate() {
+
         super.validate();
 
         Preconditions.assertNotNull(this.rects, "rects");
         Preconditions.assertNotInstanceOf(this.rects, "rects", Array);
+
     };
 
 };

@@ -91,16 +91,24 @@ class CaptureController {
 
             // load the capture.html page
 
-            let pageURL = 'http://127.0.0.1:8500/apps/capture/progress/index.html?url=' + encodeURIComponent(url);
+            // FIXME: this is broken now...
+
+            let pageURL = '/apps/capture/progress/index.html';
 
             webContents.once("did-finish-load", () => {
+
+                // FIXME: now tell the webContents to render
+                //
+                // ?url=' + encodeURIComponent(url)
 
                 // our app finished loading...
                 resolve(webContents);
 
             });
 
-            webContents.loadURL(pageURL);
+            console.log("Loading app: ", pageURL);
+
+            webContents.loadFile(pageURL);
 
         });
 
