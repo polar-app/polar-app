@@ -7,7 +7,6 @@ export class CreateAnnotationRequest {
 
     public readonly annotationType: AnnotationType;
 
-    // FIXME: make this any for now but make it a real object in the future.
     public readonly schemaFormData: any;
 
     constructor(docDescriptor: DocDescriptor, annotationType: AnnotationType, schemaFormData: any) {

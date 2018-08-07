@@ -49,11 +49,6 @@ export class AnnotationsController {
 
                 log.info("Creating flashcard from trigger event: ", triggerEvent);
 
-                //FIXME: add this back in,... let createFlashcardRequest = new CreateFlashcardRequest(triggerEvent.docDescriptor);
-
-                // TODO: narrow this down to the right annotation were creating
-                // this with and also attach the
-
                 this.createFlashcard(triggerEvent)
                     .catch(err => log.error("Could not create flashcard: ", err));
 
@@ -67,15 +62,6 @@ export class AnnotationsController {
      * Create a new flashcard.
      */
     private async createFlashcard(triggerEvent: TriggerEvent) {
-
-        // find the text / area highlight this was created on...
-
-        // FIXME: now send a message to the card creator that we're going to
-        // create a new flashcard.
-
-        //log.info("Creating flashcard with triggerEvent: ", createFlashcardRequest);
-
-        // we need to tell the annotation controller about the new highlight.
 
         await this.showDialog();
         await this.sendAnnotationDescriptor(triggerEvent);

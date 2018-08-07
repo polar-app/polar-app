@@ -122,8 +122,6 @@ class ReactSummernote extends Component {
 
         const $container = this.editor.parent();
 
-        console.log("FIXME: container is: ", $container);
-
         this.noteEditable = $container.find('.note-editable');
         this.notePlaceholder = $container.find('.note-placeholder');
 

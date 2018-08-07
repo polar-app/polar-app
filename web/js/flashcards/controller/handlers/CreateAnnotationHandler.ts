@@ -40,8 +40,6 @@ export class CreateAnnotationHandler extends IPCHandler<AnnotationContainer<Anno
             if(descriptor.docFingerprint === this.model.docMeta.docInfo.fingerprint) {
 
                 log.info("Going to add this flashcard to the model");
-                //this.onCreateFlashcard(data);
-                log.info("FIXME: we still need to write it to the store properly..")
 
                 let pageMeta = this.model.docMeta.getPageMeta(descriptor.pageNum);
 

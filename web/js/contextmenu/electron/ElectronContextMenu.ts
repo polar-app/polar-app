@@ -75,9 +75,6 @@ export class ElectronContextMenu extends ContextMenu {
         // TODO: just send the full TriggerEvent but rename it to
         // ContextMenuSelectedEvent or something along those lines.
 
-        // FIXME: we can't actually do this because matchingSelectors has elements
-        // which will not be serialized as JSON to the renderer.
-
         await this.messenger.postMessage({
             message: {
                 type: name,
