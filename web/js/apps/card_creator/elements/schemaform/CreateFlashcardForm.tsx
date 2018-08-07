@@ -3,7 +3,7 @@ import {FormHandler} from './FormHandler';
 declare var global: any;
 global.$ = global.jQuery = require("jquery");
 
-import 'bootstrap/dist/js/bootstrap.bundle.js';
+import 'bootstrap/dist/js/bootstrap.min.js';
 
 import React from 'react'
 import { render } from "react-dom";

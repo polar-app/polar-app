@@ -81,7 +81,6 @@
     "webpack-serve": "^1.0.4"
   },
   "dependencies": {
-    "loader": "file:./web/loader",
     "@types/bootstrap": "^4.1.1",
     "@types/jsdom": "^11.0.6",
     "@types/react": "^16.3.17",
@@ -90,7 +89,7 @@
     "adm-zip": "^0.4.11",
     "babel-preset-es2017": "^6.24.1",
     "base58check": "^2.0.0",
-    "bootstrap": "^4.1.1",
+    "bootstrap": "^3.3.7",
     "codemirror": "^5.38.0",
     "convert-stream": "^1.0.2",
     "debug": "^3.1.0",
@@ -125,6 +124,7 @@
     "js-sha3": "^0.7.0",
     "jszip": "^3.1.5",
     "keccak": "^1.4.0",
+    "loader": "file:./web/loader",
     "markdown-plus": "^2.5.2",
     "marked": "^0.4.0",
     "micromodal": "^0.3.2",
