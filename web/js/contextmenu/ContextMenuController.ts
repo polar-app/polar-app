@@ -1,8 +1,7 @@
 import {Model} from '../Model';
-import Elements from '../util/Elements';
+import {Elements} from '../util/Elements';
 import {ContextMenuType, ContextMenuTypes} from './ContextMenuType';
 import {MatchingSelector} from './MatchingSelector';
-import {AnnotationDescriptor} from '../metadata/AnnotationDescriptor';
 import {AnnotationDescriptors} from '../metadata/AnnotationDescriptors';
 
 const {ipcRenderer} = require('electron')

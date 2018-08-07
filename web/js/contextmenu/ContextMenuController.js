@@ -1,9 +1,6 @@
 "use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-const Elements_1 = __importDefault(require("../util/Elements"));
+const Elements_1 = require("../util/Elements");
 const ContextMenuType_1 = require("./ContextMenuType");
 const MatchingSelector_1 = require("./MatchingSelector");
 const AnnotationDescriptors_1 = require("../metadata/AnnotationDescriptors");
@@ -37,10 +34,10 @@ class ContextMenuController {
                     fingerprint: this.model.docMeta.docInfo.fingerprint
                 });
                 log.info("Creating context menu for contextMenuTypes: ", contextMenuTypes);
-                let pageElement = Elements_1.default.untilRoot(event.target, ".page");
+                let pageElement = Elements_1.Elements.untilRoot(event.target, ".page");
                 let docFormat = DocFormatFactory.getInstance();
                 let pageNum = docFormat.getPageNumFromPageElement(pageElement);
-                let eventTargetOffset = Elements_1.default.getRelativeOffsetRect(event.target, pageElement);
+                let eventTargetOffset = Elements_1.Elements.getRelativeOffsetRect(event.target, pageElement);
                 let pageOffset = {
                     x: eventTargetOffset.left + event.offsetX,
                     y: eventTargetOffset.top + event.offsetY
