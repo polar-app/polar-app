@@ -9,12 +9,20 @@ test_orphan() {
 
 }
 
-for file in `find web -name '*.ts'`; do
-    #echo ${file}
-    id=$(dirname ${file})/$(basename -s '.ts' ${file})
-    #echo ${id}
+test_dir() {
+    dir=$1
 
-    test_orphan ${id}.js
-    test_orphan ${id}.js.map
+    for file in `find ${dir} -name '*.ts'`; do
+        #echo ${file}
+        id=$(dirname ${file})/$(basename -s '.ts' ${file})
+        #echo ${id}
 
-done
+        test_orphan ${id}.js
+        test_orphan ${id}.js.map
+
+    done
+
+}
+
+test_dir web
+test_dir apps
