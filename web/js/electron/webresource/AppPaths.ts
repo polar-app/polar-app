@@ -1,5 +1,6 @@
 
 import path from 'path';
+import fs from 'fs';
 
 /**
  * Given a relative path, return a full path to a local app resource.
@@ -11,7 +12,11 @@ import path from 'path';
 export class AppPaths {
 
     static createFromRelative(relative: string): string {
-        return path.resolve(process.cwd(), relative);
+        let absolutePath = path.resolve(process.cwd(), relative);
+        if(! fs.existsSync(absolutePath)) {
+            throw new Error("Absolute path does not exist: " + absolutePath);
+        }
+        return absolutePath;
     }
 
 }

@@ -16,7 +16,7 @@ export abstract class WebResource {
     }
 
     public static createURL(url: string): WebResource {
-        return new FileWebResource(url);
+        return new URLWebResource(url);
     }
 
 }

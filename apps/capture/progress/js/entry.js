@@ -1,9 +1,3 @@
-const {ProgressUI} = require("../../../../web/js/capture/controller/ProgressUI");
-const $ = require("jquery");
+import {ProgressApp} from "../../../../web/js/capture/controller/ProgressApp";
 
-$(document).ready(() => {
-    console.log("Starting progress UI");
-    let progressUI = new ProgressUI();
-    progressUI.init();
-});
-
+new ProgressApp().start();

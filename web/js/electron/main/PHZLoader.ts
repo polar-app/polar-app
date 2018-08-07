@@ -56,10 +56,12 @@ export class PHZLoader {
         // metadata / descriptors
         let fingerprint = Fingerprints.create(basename);
 
-        let appPath = AppPaths.createFromRelative('./htmlviewer/index.html') + `#?file=${encodeURIComponent(cachedRequest.url)}&fingerprint=${fingerprint}&descriptor=${encodeURIComponent(descriptorJSON)}`
+        let appPath = AppPaths.createFromRelative('./htmlviewer/index.html');
 
-        //let appPath = AppPaths.createFromRelative('./htmlviewer/index.html');
-        return WebResource.createFile(appPath);
+        let queryData = `#?file=${encodeURIComponent(cachedRequest.url)}&fingerprint=${fingerprint}&descriptor=${encodeURIComponent(descriptorJSON)}`;
+        let appURL = 'file://' + appPath + queryData
+
+        return WebResource.createURL(appURL);
 
     }
 

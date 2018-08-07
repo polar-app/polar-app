@@ -29,8 +29,10 @@ class PHZLoader {
             let descriptorJSON = JSON.stringify(descriptor);
             let basename = Paths.basename(path);
             let fingerprint = Fingerprints.create(basename);
-            let appPath = AppPaths_1.AppPaths.createFromRelative('./htmlviewer/index.html') + `#?file=${encodeURIComponent(cachedRequest.url)}&fingerprint=${fingerprint}&descriptor=${encodeURIComponent(descriptorJSON)}`;
-            return WebResource_1.WebResource.createFile(appPath);
+            let appPath = AppPaths_1.AppPaths.createFromRelative('./htmlviewer/index.html');
+            let queryData = `#?file=${encodeURIComponent(cachedRequest.url)}&fingerprint=${fingerprint}&descriptor=${encodeURIComponent(descriptorJSON)}`;
+            let appURL = 'file://' + appPath + queryData;
+            return WebResource_1.WebResource.createURL(appURL);
         });
     }
 }

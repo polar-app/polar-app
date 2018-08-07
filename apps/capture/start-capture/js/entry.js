@@ -1,7 +1,3 @@
-const {StartCaptureUI} = require("../../../../web/js/capture/controller/StartCaptureUI");
+import {StartCaptureApp} from "../../../../web/js/capture/controller/StartCaptureApp";
 
-let startCaptureUI = new StartCaptureUI();
-startCaptureUI.init();
-
-console.log("Ready to start capture..." + startCaptureUI);
-
+new StartCaptureApp().start();
