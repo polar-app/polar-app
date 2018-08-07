@@ -1,6 +1,7 @@
 import BrowserWindow = Electron.BrowserWindow;
 import WebContents = Electron.WebContents;
 import {Logger} from '../../logger/Logger';
+import fs from 'fs';
 
 const log = Logger.create();
 
@@ -32,7 +33,13 @@ class FileWebResource extends WebResource {
 
     constructor(file: string) {
         super();
+
+        if(! fs.existsSync(file)) {
+            throw new Error("File does not exist: " + file);
+        }
+
         this.file = file;
+
     }
 
     loadBrowserWindow(browserWindow: BrowserWindow): void {
@@ -41,8 +48,8 @@ class FileWebResource extends WebResource {
 
     loadWebContents(webContents: WebContents): void {
         log.info("Loading file: ", this.file);
-        webContents.loadFile(this.file);
-        //webContents.loadURL('http://cnn.com')
+        //webContents.loadFile(this.file);
+        webContents.loadURL('file://' + this.file);
     }
 
     toString(): string {

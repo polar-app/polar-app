@@ -3,22 +3,8 @@
 
 <h1>hello world</h1>
 
-<!-- FIXME
-
-this works but now we need to find a way to map the file URL of the current
-browser app to the JS file in the directory.  I guess I need to use path.resolve()
-after fixing the file URL...
-
--->
 <script>
-    const path = require('path');
-    let dir = document.location.href;
-    dir = dir.replace('file://', '');
-    // FIXME: also replace any of the query data in the URL...
-    dir = dir.replace(/[^/.]+\.html$/, '');
-    console.log("FIXME: " + path.dirname(dir));
-    console.log("FIXME: " + path.dirname(document.location.href));
-    require(`${dir}/app.js`);
+    require('loader').load('./app.js');
 </script>
 
 </body>

@@ -379,7 +379,7 @@ async function loadDoc(path, targetWindow) {
 
     log.info("Loading doc via HTTP server: " + JSON.stringify(fileMeta));
 
-    let loadPath = null;
+    let loadURL = null;
     let fileParam = encodeURIComponent(fileMeta.url);
 
     let descriptor = null;
@@ -390,7 +390,7 @@ async function loadDoc(path, targetWindow) {
 
         // FIXME: Use a PHZ loader for this.
 
-        loadPath = `file://${__dirname}/pdfviewer/web/viewer.html?file=${fileParam}`;
+        loadURL = `file://${__dirname}/pdfviewer/web/viewer.html?file=${fileParam}`;
 
     } else if(path.endsWith(".chtml")) {
 
@@ -426,7 +426,7 @@ async function loadDoc(path, targetWindow) {
         // metadata / descriptors
         let fingerprint = Fingerprints.create(basename);
 
-        loadPath = `file://${__dirname}/htmlviewer/index.html?file=${encodeURIComponent(cacheMeta.url)}&fingerprint=${fingerprint}&descriptor=${encodeURIComponent(descriptorJSON)}`;
+        loadURL = `file://${__dirname}/htmlviewer/index.html?file=${encodeURIComponent(cacheMeta.url)}&fingerprint=${fingerprint}&descriptor=${encodeURIComponent(descriptorJSON)}`;
 
     } else if(path.endsWith(".phz")) {
 
@@ -457,13 +457,11 @@ async function loadDoc(path, targetWindow) {
         // metadata / descriptors
         let fingerprint = Fingerprints.create(basename);
 
-        loadPath = `file://${__dirname}/htmlviewer/index.html?file=${encodeURIComponent(cachedRequest.url)}&fingerprint=${fingerprint}&descriptor=${encodeURIComponent(descriptorJSON)}`;
-        //loadPath = `http://${DEFAULT_HOST}:${WEBSERVER_PORT}/htmlviewer/index.html?file=${encodeURIComponent(cachedRequest.loadPath)}&fingerprint=${fingerprint}&descriptor=${encodeURIComponent(descriptorJSON)}`;
-
+        loadURL = `file://${__dirname}/htmlviewer/index.html?file=${encodeURIComponent(cachedRequest.url)}&fingerprint=${fingerprint}&descriptor=${encodeURIComponent(descriptorJSON)}`;
 
     }
 
-    log.info("Loading webapp at: " + loadPath);
+    log.info("Loading webapp at: " + loadURL);
 
     if(cacheMeta) {
 
@@ -479,7 +477,7 @@ async function loadDoc(path, targetWindow) {
     }
 
     //return;
-    targetWindow.loadFile(loadPath);
+    targetWindow.loadURL(loadURL);
 
     if(args.enableConsoleLogging) {
         log.info("Console logging enabled.");
