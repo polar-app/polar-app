@@ -4,14 +4,14 @@ const Elements_1 = require("../util/Elements");
 const ContextMenuType_1 = require("./ContextMenuType");
 const MatchingSelector_1 = require("./MatchingSelector");
 const AnnotationDescriptors_1 = require("../metadata/AnnotationDescriptors");
+const Logger_1 = require("../logger/Logger");
 const { ipcRenderer } = require('electron');
 const { forDict } = require("../utils");
 const { Attributes } = require("../util/Attributes");
 const { TriggerEvent } = require("./TriggerEvent");
 const { DocFormatFactory } = require("../docformat/DocFormatFactory");
 const { DocDescriptor } = require("../metadata/DocDescriptor");
-const { Preconditions } = require("../Preconditions");
-const log = require("../logger/Logger").create();
+const log = Logger_1.Logger.create();
 class ContextMenuController {
     constructor(model) {
         this.model = model;

@@ -1,44 +1,8 @@
-- flashcards
-
-    - CSS styles from the parent are bleeding into the shadow elements
-
-        - what could be causing this:
-            - document.createElement with the wrong DOM?
-            - this is the main problem
-
-    - the context menu is no longer working for 'inspect element' everywhere
-      which makes it hard to work with as a developer.
 
 
+## 1.0 b60
 
-    - placeholder text instead of title to save more space?
-    - What about empty text..like <p></p>
-        - there's a summernote isEmpty or something method calle in ReactSummernote.tsx
-
-    - Highlight the form element instead of abording... IE handle required
-      validation.
-        - I will need to handle the event
-        - there is some CSS I need to update
-
-
-- BUG: we can't highlight code within iframes...
-
-## 1.0 b40 release
-
-
-- BUG:
-    - the pageElement for text highlights should be chosen based on the area
-      selection region elements and searching backwards for the .page. Otherwise
-      if we just use the visual percentage of the page we risk picking the
-      wrong page if we're highlighting towards teh bottom of the next page.
-
-- Context menu needs copy/paste
-
-- Electron 3.0 with new HTML iframe zoom.
-
-- Flashcard UI
-
-- Migrate to typescript
+- Anki sync
 
 - Look at borrowing some of this UI code for the capture system.
 
@@ -51,10 +15,10 @@
       vs the same captured page.  It could be due to font issues I think.
 
     - I'm 90% certain that the page is not anti-aliased properly in my polar
-      version vs my simulated electron version. The text looks like its subpixel
-      antialiased in one but not the other.  These bugs are impossible to detect
-      ...  I might be able to thumbnail the page and look ad the hashcode of the
-      binary image data to see if its rendered differently.
+    version vs my simulated electron version. The text looks like its subpixel
+    antialiased in one but not the other.  These bugs are impossible to detect
+    via unit test  I might be able to thumbnail the page and look ad the
+    hashcode of the binary image data to see if its rendered differently.
 
         - I can probably fix this bug easily though... I'm going to have to write
           down all the gotchas that manifest this problem.
@@ -84,8 +48,8 @@
       Maybe ALL documents need a default style.
 
         - OK.. at this point I think it's nothing we're doing wrong.  The
-          problem has to do with the CSS of the document.  The CSS is fucking up
-          rendering of the page.  This has got to be an Elecron bug. We've
+          problem has to do with the CSS of the document.  The CSS is messing up
+          rendering of the page.  This has got to be an Electron bug. We've
           mitigated the problem a bit for many documents but I think if they
           set any weird CSS it then triggers the Electron bug again. We can
           duplicate this by re-loading the Wikipedia page and then seeing if the
@@ -122,13 +86,34 @@
 
 
         - I can fix this by using Electron 3.0.. what I have to do is get the
-          webView from the iframe and call setZoomFactor directly instead of using
-          CSS scale.
+          webContents from the iframe and call setZoomFactor directly instead of
+          using CSS scale.  THIS is the fix / workaround I was looking for... if I
+          can get the webView for the iframe I should be good.  I need to track
+          the URL and documentation for this.
+
+            https://github.com/electron/electron/pull/11607
 
         - it might also be possible to use meta viewport BUT this doesn't seem
           to work without emulating a mobile device.
 
-- flashcards implemented
+        - ANOTHER solution would be to rework the way the html viewer is designed.
+
+          We could do a webview wrapping an iframe for now.  The webview is what
+          would be scaled, not the iframe.  We would use the native HTML webview
+          zoom support and it wouldn't impact the rest of the UI.
+
+
+## 1.0 b50 release
+
+- (DONE) Context menu needs copy/paste
+
+- Electron 3.0
+
+- Flashcard UI and data input
+
+- Started migration to typescript
+
+- Flashcards input implemented
 
 ## 1.0 b30 release
 
