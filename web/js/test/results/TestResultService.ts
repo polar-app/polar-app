@@ -20,6 +20,7 @@ export class TestResultService {
 
     }
 
+
     /**
      * Start the service by listening to messages posted.
      */
