@@ -46,8 +46,8 @@ const HEIGHT = 1100 * 1.2;
 
 const BROWSER_WINDOW_OPTIONS = {
     backgroundColor: '#FFF',
-    minWidth: WIDTH * 0.6,
-    minHeight: HEIGHT * 0.6,
+    minWidth: WIDTH * 0.4,
+    minHeight: HEIGHT * 0.4,
     width: WIDTH,
     height: HEIGHT,
     show: false,
@@ -238,10 +238,14 @@ const MENU_TEMPLATE = [{
     },
 ];
 
-function createWindow() {
+function createWindow(browserWindowOptions) {
+
+    if(! browserWindowOptions) {
+        browserWindowOptions = BROWSER_WINDOW_OPTIONS;
+    }
 
     // Create the browser window.
-    let newWindow = new BrowserWindow(BROWSER_WINDOW_OPTIONS);
+    let newWindow = new BrowserWindow(browserWindowOptions);
 
     newWindow.on('close', function(e) {
         e.preventDefault();
@@ -543,7 +547,13 @@ async function cmdOpenInNewWindow(item, focusedWindow) {
 
 async function cmdCaptureWebPage(item, focusedWindow) {
 
-    let targetWindow = createWindow();
+    let browserWindowOptions = Object.assign({}, BROWSER_WINDOW_OPTIONS);
+
+    browserWindowOptions.width = browserWindowOptions.width * .9;
+    browserWindowOptions.height = browserWindowOptions.height * .9;
+    browserWindowOptions.center = true;
+
+    let targetWindow = createWindow(browserWindowOptions);
 
     let url = './apps/capture/start-capture/index.html';
     targetWindow.loadFile(url);

@@ -149,6 +149,4 @@ class BrowserMutator {
 
 }
 
-
-
 module.exports.Browsers = Browsers;

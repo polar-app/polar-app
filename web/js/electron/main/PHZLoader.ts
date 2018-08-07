@@ -59,7 +59,7 @@ export class PHZLoader {
         let appPath = AppPaths.createFromRelative('./htmlviewer/index.html');
 
         let queryData = `?file=${encodeURIComponent(cachedRequest.url)}&fingerprint=${fingerprint}&descriptor=${encodeURIComponent(descriptorJSON)}`;
-        let appURL = 'file://' + appPath + queryData
+        let appURL = 'file://' + appPath + queryData;
 
         return WebResource.createURL(appURL);
 
