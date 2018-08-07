@@ -81,6 +81,7 @@ class ReactSummernote extends Component {
         this.editor = $(domNode).find(`#${this.uid}`);
 
         this.editor.summernote(options);
+
         if (codeview) {
             this.editor.summernote('codeview.activate');
         }

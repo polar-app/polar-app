@@ -56,8 +56,6 @@ export class TextWidget extends React.Component  {
         // FIXME: summernote has isEmpty and some other methods I need to use
         // here.
 
-        console.log('FIXME: this: ', this);
-        console.log('FIXME: this.onChangeCallback: ', this.onChangeCallback);
         console.log('onChange: newValue: ', newValue);
 
         log.debug('onChange', newValue);
