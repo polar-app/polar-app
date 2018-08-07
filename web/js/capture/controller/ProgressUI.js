@@ -1,7 +1,5 @@
 const electron = require('electron')
 const ipcRenderer = electron.ipcRenderer;
-const BrowserWindow = electron.BrowserWindow;
-const {Preconditions} = require("../../Preconditions");
 const {Elements} = require("../../util/Elements");
 
 const log = require("../../logger/Logger").create();
@@ -47,7 +45,6 @@ class ProgressUI {
     }
 
     updateLogView(progressEvent) {
-
 
         let logElement = document.querySelector(".log");
 

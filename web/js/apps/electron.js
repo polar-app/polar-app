@@ -1,6 +1,6 @@
 
-const {PersistenceLayer} = require("../datastore/PersistenceLayer.js");
 const {Launcher} = require("./Launcher");
+const {PersistenceLayer} = require("../datastore/PersistenceLayer");
 
 async function persistenceLayerFactory() {
 

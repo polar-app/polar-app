@@ -1,4 +1,5 @@
 
+const {ContextMenuController} = require("../contextmenu/ContextMenuController");
 const {TextHighlightController} = require("../highlights/text/controller/TextHighlightController");
 const {AreaHighlightController} = require("../highlights/area/controller/AreaHighlightController");
 const {PagemarkCoverageEventListener} = require("../pagemarks/controller/PagemarkCoverageEventListener.js");
@@ -6,7 +7,6 @@ const {KeyEvents} = require("../KeyEvents.js");
 const {Preconditions} = require("../Preconditions.js");
 const {Controller} = require("./Controller.js");
 const {DocFormatFactory} = require("../docformat/DocFormatFactory");
-const {ContextMenuController} = require("../contextmenu/ContextMenuController");
 const {FlashcardsController} = require("../flashcards/controller/FlashcardsController");
 const {AnnotationsController} = require("../annotations/controller/AnnotationsController");
 const {MouseTracer} = require("../mouse/MouseTracer");
@@ -31,9 +31,10 @@ class WebController extends Controller {
 
     }
 
-    start() {
+    async start() {
+
         this.listenForDocumentLoad();
-        this.listenForKeyBindings();
+        await this.listenForKeyBindings();
 
         //new MouseTracer(document).start();
 
@@ -116,10 +117,6 @@ class WebController extends Controller {
 
     }
 
-    keyBindingPagemarkUpToMouse(event) {
-        log.info("Marking page as read up to mouse point");
-    }
-
     keyBindingErasePagemark(event) {
         log.info("Erasing pagemark.");
         let pageElement = this.docFormat.getCurrentPageElement();
@@ -158,7 +155,7 @@ class WebController extends Controller {
 
     }
 
-    listenForKeyBindings() {
+    async listenForKeyBindings() {
 
         document.addEventListener("keydown", this.keyBindingListener.bind(this));
 
@@ -170,7 +167,7 @@ class WebController extends Controller {
 
         new FlashcardsController(this.model).start();
 
-        new AnnotationsController().start();
+        await new AnnotationsController().start();
 
         new AreaHighlightController(this.model).start();
 

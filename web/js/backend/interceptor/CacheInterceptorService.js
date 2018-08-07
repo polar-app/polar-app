@@ -6,8 +6,10 @@ const convertStream = require("convert-stream");
 /** @type {Electron.Net} */
 const net = electron.net;
 const BrowserWindow = electron.BrowserWindow;
+const {Logger} = require("../../logger/Logger");
 
-const log = require("../../logger/Logger").create();
+const log = Logger.create();
+
 
 class CacheInterceptorService {
 

@@ -1,7 +1,7 @@
-const {SpectronRenderer} = require("../../../web/js/test/SpectronRenderer");
+const {SpectronMain} = require("../../../web/js/test/SpectronRenderer");
 
 async function start() {
-    let mainWindow = await SpectronRenderer.start();
+    let mainWindow = await SpectronMain.setup();
     //mainWindow.loadURL("https://www.example.com");
     mainWindow.loadURL('file://' + __dirname + '/iframe-fuzzy-text.html')
 }

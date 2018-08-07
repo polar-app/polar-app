@@ -101,7 +101,6 @@ class PagemarkController {
 
     }
 
-
     onDeletePagemark(contextMenuEvent) {
 
         let annotationPointers

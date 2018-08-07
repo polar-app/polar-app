@@ -67,7 +67,7 @@ describe('CachingPHZReader', function() {
 
     beforeEach(async function() {
 
-        await Files.unlinkAsync(path);
+        await Files.removeAsync(path);
 
         let phzWriter = new PHZWriter(path);
         let resource = ResourceFactory.create("http://example.com", "text/html");
@@ -103,7 +103,6 @@ describe('CachingPHZReader', function() {
         assert.equal(phzReader.reopened > 0, true);
 
     });
-
 
 });
 

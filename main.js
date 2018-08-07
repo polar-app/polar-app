@@ -1,3 +1,4 @@
+
 const electron = require('electron');
 const fspath = require('path');
 const url = require('url');
@@ -34,8 +35,9 @@ const {CaptureController} = require("./web/js/capture/controller/CaptureControll
 const {GA} = require("./web/js/ga/GA");
 
 const searchInPage = require('electron-in-page-search').default;
+const {DialogWindowService} = require("./web/js/ui/dialog_window/DialogWindowService");
 
-const options = { extraHeaders: 'pragma: no-cache\nreferer: http://cnn.com\n' };
+//const options = { extraHeaders: 'pragma: no-cache\nreferer: http://cnn.com\n' };
 
 const log = Logger.create();
 
@@ -44,8 +46,8 @@ const HEIGHT = 1100 * 1.2;
 
 const BROWSER_WINDOW_OPTIONS = {
     backgroundColor: '#FFF',
-    minWidth: WIDTH * 0.6,
-    minHeight: HEIGHT * 0.6,
+    minWidth: WIDTH * 0.4,
+    minHeight: HEIGHT * 0.4,
     width: WIDTH,
     height: HEIGHT,
     show: false,
@@ -84,7 +86,7 @@ const WEBSERVER_PORT = 8500;
 const PROXYSERVER_PORT = 8600;
 
 const DEFAULT_HOST = "127.0.0.1";
-const DEFAULT_URL = `http://${DEFAULT_HOST}:${WEBSERVER_PORT}/default.html`;
+const DEFAULT_FILE = `${__dirname}/apps/home/default.html`;
 
 //creating menus for menu bar
 const MENU_TEMPLATE = [{
@@ -236,10 +238,14 @@ const MENU_TEMPLATE = [{
     },
 ];
 
-function createWindow() {
+function createWindow(browserWindowOptions) {
+
+    if(! browserWindowOptions) {
+        browserWindowOptions = BROWSER_WINDOW_OPTIONS;
+    }
 
     // Create the browser window.
-    let newWindow = new BrowserWindow(BROWSER_WINDOW_OPTIONS);
+    let newWindow = new BrowserWindow(browserWindowOptions);
 
     newWindow.on('close', function(e) {
         e.preventDefault();
@@ -278,7 +284,7 @@ function createWindow() {
         shell.openExternal(url);
     });
 
-    newWindow.loadURL(DEFAULT_URL, options);
+    newWindow.loadFile(DEFAULT_FILE);
 
     newWindow.once('ready-to-show', () => {
         //newWindow.maximize();
@@ -377,7 +383,7 @@ async function loadDoc(path, targetWindow) {
 
     log.info("Loading doc via HTTP server: " + JSON.stringify(fileMeta));
 
-    let url = null;
+    let loadURL = null;
     let fileParam = encodeURIComponent(fileMeta.url);
 
     let descriptor = null;
@@ -388,7 +394,7 @@ async function loadDoc(path, targetWindow) {
 
         // FIXME: Use a PHZ loader for this.
 
-        url = `http://${DEFAULT_HOST}:${WEBSERVER_PORT}/pdfviewer/web/viewer.html?file=${fileParam}`;
+        loadURL = `file://${__dirname}/pdfviewer/web/viewer.html?file=${fileParam}`;
 
     } else if(path.endsWith(".chtml")) {
 
@@ -424,7 +430,7 @@ async function loadDoc(path, targetWindow) {
         // metadata / descriptors
         let fingerprint = Fingerprints.create(basename);
 
-        url = `http://${DEFAULT_HOST}:${WEBSERVER_PORT}/htmlviewer/index.html?file=${encodeURIComponent(cacheMeta.url)}&fingerprint=${fingerprint}&descriptor=${encodeURIComponent(descriptorJSON)}`;
+        loadURL = `file://${__dirname}/htmlviewer/index.html?file=${encodeURIComponent(cacheMeta.url)}&fingerprint=${fingerprint}&descriptor=${encodeURIComponent(descriptorJSON)}`;
 
     } else if(path.endsWith(".phz")) {
 
@@ -455,11 +461,11 @@ async function loadDoc(path, targetWindow) {
         // metadata / descriptors
         let fingerprint = Fingerprints.create(basename);
 
-        url = `http://${DEFAULT_HOST}:${WEBSERVER_PORT}/htmlviewer/index.html?file=${encodeURIComponent(cachedRequest.url)}&fingerprint=${fingerprint}&descriptor=${encodeURIComponent(descriptorJSON)}`;
+        loadURL = `file://${__dirname}/htmlviewer/index.html?file=${encodeURIComponent(cachedRequest.url)}&fingerprint=${fingerprint}&descriptor=${encodeURIComponent(descriptorJSON)}`;
 
     }
 
-    log.info("Loading URL: " + url);
+    log.info("Loading webapp at: " + loadURL);
 
     if(cacheMeta) {
 
@@ -475,7 +481,7 @@ async function loadDoc(path, targetWindow) {
     }
 
     //return;
-    targetWindow.loadURL(url, options);
+    targetWindow.loadURL(loadURL);
 
     if(args.enableConsoleLogging) {
         log.info("Console logging enabled.");
@@ -541,10 +547,16 @@ async function cmdOpenInNewWindow(item, focusedWindow) {
 
 async function cmdCaptureWebPage(item, focusedWindow) {
 
-    let targetWindow = createWindow();
+    let browserWindowOptions = Object.assign({}, BROWSER_WINDOW_OPTIONS);
 
-    let url = 'http://127.0.0.1:8500/apps/capture/start-capture/index.html';
-    targetWindow.loadURL(url);
+    browserWindowOptions.width = browserWindowOptions.width * .9;
+    browserWindowOptions.height = browserWindowOptions.height * .9;
+    browserWindowOptions.center = true;
+
+    let targetWindow = createWindow(browserWindowOptions);
+
+    let url = './apps/capture/start-capture/index.html';
+    targetWindow.loadFile(url);
 
 }
 
@@ -600,6 +612,8 @@ let quitapp, URL;
 let args = parseArgs();
 let datastore = null;
 
+// TODO: there needs to be a similar concept of the Loader for the main process.
+
 const webserverConfig = new WebserverConfig(app.getAppPath(), WEBSERVER_PORT);
 const fileRegistry = new FileRegistry(webserverConfig);
 
@@ -609,6 +623,8 @@ const cacheRegistry = new CacheRegistry(proxyServerConfig);
 const directories = new Directories();
 
 let captureController = new CaptureController({directories, cacheRegistry});
+
+let dialogWindowService = new DialogWindowService();
 
 let appAnalytics = GA.getAppAnalytics();
 
@@ -645,6 +661,7 @@ directories.init().then(async () => {
     await cacheInterceptorService.start();
 
     await captureController.start();
+    await dialogWindowService.start();
 
     log.info("Running with process.args: ", JSON.stringify(process.argv));
 
@@ -680,6 +697,9 @@ let shouldQuit = app.makeSingleInstance(function(commandLine, workingDirectory) 
 
     log.info("Second instance asked to load.");
 
+    // TODO: I think this is wrong and we should open up a new window not
+    // focus the existing window.
+
     if(! handleCmdLinePDF(commandLine, true)) {
 
         if (mainWindow) {
@@ -694,7 +714,6 @@ let shouldQuit = app.makeSingleInstance(function(commandLine, workingDirectory) 
 if (shouldQuit) {
     log.info("Quiting.  App is single instance.");
     app.quit();
-    return;
 }
 
 app.on('ready', async function() {
@@ -724,7 +743,7 @@ app.on('ready', async function() {
     new ElectronContextMenu();
 
     if(args.enableDevTools) {
-        mainWindow.toggleDevTools();
+        mainWindow.webContents.toggleDevTools();
     }
 
     // if there is a PDF file to open, load that, otherwise, load the default URL.

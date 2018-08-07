@@ -37,22 +37,23 @@ See https://github.com/adobe-type-tools/cmap-resources
       <meta name="polar-doc-format" content="pdf">
 
       <link rel="stylesheet" href="../../node_modules/font-awesome/css/font-awesome.min.css">
-      <link rel="stylesheet" href="../../node_modules/jquery-contextmenu/dist/jquery.contextMenu.min.css">
 
       <!--<link rel="stylesheet" href="../../node_modules/bootstrap/dist/css/bootstrap.min.css">-->
       <!--<link rel="stylesheet" href="../../web/css/bootswatch-slate.min.css">-->
 
       <link rel="stylesheet" href="../../pdfviewer-custom/polar.css">
-      <script src="../../web/dist/electron-bundle.js" ></script>
-      <!-- END polar customization -->
+
+      <script>
+          require('loader').load("../../web/js/apps/electron.js");
+      </script>
+
+    <!-- END polar customization -->
 
 
       <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 
       <!-- This snippet is used in production (included from viewer.html) -->
       <link rel="resource" type="application/l10n" href="locale/locale.properties">
-
-      <link rel="import" href="../../apps/card-creator/card-creator.html" id="card-creator-link">
 
       <script src="pdf.viewer.js"></script>
 

@@ -4,3 +4,4 @@ web/dist/
 *-bundle.js
 *-bundle.js.map
 dist/
+bower_components/

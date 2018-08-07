@@ -4,11 +4,8 @@ class Caller {
         let e = new Error();
         let stack = e.stack;
 
-        //console.error("FIXME: stack: ", stack);
         let frame = stack.split("\n")[3];
-        //console.error("FIXME: frame: ", frame);
         let result = Caller._parse(frame);
-        //console.error("FIXME: result: ", result);
         return result;
     }
 
@@ -19,10 +16,13 @@ class Caller {
      */
     static _parse(frame) {
 
+        // TODO: probably better to put this into a filter, execute all of them,
+        // and them return the results together.
+
         let javascriptCaller = Caller.parseRE(frame, /([^/.)]+\.(js|ts|tsx)):[0-9]+:[0-9]+\)$/g);
 
         // this returns the first match with a space at the end.
-        let webpackCaller = Caller.parseRE(frame, /([^/.)]+\.(js|ts|tsx)) /g);
+        let webpackCaller = Caller.parseRE(frame, /([^/.)]+\.(js|ts|tsx))( |\?)/g);
 
         if(webpackCaller) {
             return webpackCaller;
@@ -31,7 +31,7 @@ class Caller {
         if(javascriptCaller)
             return javascriptCaller;
 
-        throw new Error("Could not determine caller");
+        throw new Error(`Could not determine caller from frame: '${frame}'`);
 
     }
 

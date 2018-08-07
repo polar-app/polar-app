@@ -1,6 +1,4 @@
-const electron = require('electron');
-const BrowserWindow = electron.BrowserWindow;
-
+const {BrowserWindow} = require("electron");
 const {PostMessageRequest} = require("./PostMessageRequest");
 const {Functions} = require("../../util/Functions");
 
@@ -11,6 +9,8 @@ const {Functions} = require("../../util/Functions");
  * is more heavy and slower for testing.
  */
 class Messenger {
+
+    // TODO: This is going to be harder to migrate to typescript.
 
     async postMessage(postMessageRequest) {
 

@@ -1,4 +1,4 @@
-const $ = require('jquery');
+const $ = window.$ = window.jQuery = require('jquery');
 const {Viewer} = require("../Viewer");
 const {FrameResizer} = require("./FrameResizer");
 const {FrameInitializer} = require("./FrameInitializer");

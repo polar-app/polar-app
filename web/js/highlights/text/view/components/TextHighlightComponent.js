@@ -86,6 +86,12 @@ class TextHighlightComponent extends Component {
             highlightElement.setAttribute("data-text-highlight-id", this.textHighlight.id);
             highlightElement.setAttribute("data-page-num", `${this.pageMeta.pageInfo.num}`);
 
+            // annotation descriptor metadata.
+            highlightElement.setAttribute("data-annotation-type", "text-highlight");
+            highlightElement.setAttribute("data-annotation-id", this.textHighlight.id);
+            highlightElement.setAttribute("data-annotation-page-num", `${this.pageMeta.pageInfo.num}`);
+            highlightElement.setAttribute("data-annotation-doc-fingerprint", this.docMeta.docInfo.fingerprint);
+
             highlightElement.className = `text-highlight annotation text-highlight-${this.textHighlight.id}`;
 
             highlightElement.style.position = "absolute";
