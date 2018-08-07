@@ -30,7 +30,7 @@ class PHZLoader {
             let basename = Paths.basename(path);
             let fingerprint = Fingerprints.create(basename);
             let appPath = AppPaths_1.AppPaths.createFromRelative('./htmlviewer/index.html');
-            let queryData = `#?file=${encodeURIComponent(cachedRequest.url)}&fingerprint=${fingerprint}&descriptor=${encodeURIComponent(descriptorJSON)}`;
+            let queryData = `?file=${encodeURIComponent(cachedRequest.url)}&fingerprint=${fingerprint}&descriptor=${encodeURIComponent(descriptorJSON)}`;
             let appURL = 'file://' + appPath + queryData;
             return WebResource_1.WebResource.createURL(appURL);
         });
