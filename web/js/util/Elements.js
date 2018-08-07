@@ -1,11 +1,11 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const Preconditions_1 = require("../Preconditions");
 const $ = require('jquery');
-const { Preconditions } = require("../Preconditions");
 const { Rects } = require("../Rects");
 class Elements {
     static getRelativeOffsetRect(element, parentElement) {
-        Preconditions.assertNotNull(element, "element");
+        Preconditions_1.Preconditions.assertNotNull(element, "element");
         if (!parentElement) {
             parentElement = element.ownerDocument.documentElement;
         }
@@ -84,5 +84,5 @@ class Elements {
         }
     }
 }
-exports.default = Elements;
+exports.Elements = Elements;
 //# sourceMappingURL=Elements.js.map

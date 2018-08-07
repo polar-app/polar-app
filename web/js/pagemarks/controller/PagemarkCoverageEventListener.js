@@ -1,4 +1,3 @@
-const $ = require('jquery');
 
 const {KeyEvents} = require("../../KeyEvents.js");
 const {Elements} = require("../../util/Elements");

@@ -1,9 +1,9 @@
+import {Preconditions} from '../Preconditions';
 
 const $ = require('jquery');
-const {Preconditions} = require("../Preconditions");
 const {Rects} = require("../Rects");
 
-export default class Elements {
+export class Elements {
 
     /**
      *
