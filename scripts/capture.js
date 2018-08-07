@@ -4,16 +4,16 @@
 
 const electron = require('electron');
 const app = electron.app;
-const BrowserRegistry = require("./web/js/capture/BrowserRegistry");
+const BrowserRegistry = require("../web/js/capture/BrowserRegistry");
 const prompt = require('electron-prompt');
 
-const {Cmdline} = require("./web/js/electron/Cmdline");
-const {DiskDatastore} = require("./web/js/datastore/DiskDatastore");
-const {Args} = require("./web/js/electron/capture/Args");
-const {Capture} = require("./web/js/capture/Capture");
-const {CaptureOpts} = require("./web/js/capture/CaptureOpts");
-const {Logger} = require("./web/js/logger/Logger");
-const {Browsers} = require("./web/js/capture/Browsers");
+const {Cmdline} = require("../web/js/electron/Cmdline");
+const {DiskDatastore} = require("../web/js/datastore/DiskDatastore");
+const {Args} = require("../web/js/electron/capture/Args");
+const {Capture} = require("../web/js/capture/Capture");
+const {CaptureOpts} = require("../web/js/capture/CaptureOpts");
+const {Logger} = require("../web/js/logger/Logger");
+const {Browsers} = require("../web/js/capture/Browsers");
 const log = Logger.create();
 
 let diskDatastore = new DiskDatastore();
