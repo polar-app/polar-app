@@ -5,13 +5,6 @@ import {Dict} from '../../util/Dict';
 
 export class ContentCapture {
 
-    // FIXME: remove meta http-equiv Location redirects from the raw HTML.
-
-    // FIXME: don't allow meta charset and other ways to set the charset within the
-    // HTML file as we are ALWAYS UTF-8 since we're sending it to the caller
-    // in JSON.  For example, if the encoding is ISO-8859-4 from teh original
-    // source , and sent to use that way, we would store it that way but
-    // re-represent it as UTF-8 which is then invalid.
 
     // FIXME: <script> within SVG also needs to be stripped!
 
@@ -21,13 +14,13 @@ export class ContentCapture {
     /**
      * Capture the page as HTML so that we can render it static.
 
-     * @param [contentDoc] {Document}  The document to capture the HTML from.
-     * We default to the global 'document' object. when not given.
+     * @param [contentDoc] The document to capture the HTML from. We default to
+     * the global 'document' object. when not given.
      *
-     * @param [url] {string} The URL of the given document.  We default to
+     * @param [url] The URL of the given document.  We default to
      * contentDoc.location.href when not provided.
      *
-     * @param [result] {Object} The result we are building.
+     * @param [result] The result we are building.
      *
      */
     static captureHTML(contentDoc?: Document, url?: string, result?: any) {

@@ -1,105 +1,59 @@
-const {Reactor} = require("../reactor/Reactor");
-const {Preconditions} = require("../Preconditions");
-
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const Preconditions_1 = require("../Preconditions");
+const { Reactor } = require("../reactor/Reactor");
 class WebRequestReactor {
-
     constructor(webRequest) {
-        this.webRequest = Preconditions.assertNotNull(webRequest, "webRequest");
+        this.started = false;
+        this.webRequest = webRequest;
         this.reactor = new Reactor();
         this.started = false;
     }
-
-    /**
-     * Bind each webRequest event to go into the reactor.
-     */
     start() {
-
         const eventRegisterFunctions = this.toEventRegisterFunctions();
-
         let webRequestReactor = this;
-
         eventRegisterFunctions.forEach((eventRegisterFunction) => {
             let functionName = eventRegisterFunction.name;
             eventRegisterFunction = eventRegisterFunction.bind(this.webRequest);
-
             this.reactor.registerEvent(functionName);
-
             eventRegisterFunction((details, callback) => {
-
-                // the functionName needs to be here twice because the first is
-                // the event name and the second is the event name we're giving
-                // to the callback.
-
-                if(webRequestReactor.started) {
+                if (webRequestReactor.started) {
                     this.reactor.dispatchEvent(functionName, functionName, details, callback);
                 }
-
-            })
-
+            });
         });
-
         this.started = true;
-
     }
-
     stop() {
-
-        // TODO: I don't think this properly removes the event we're trying to
-        // remove.
-
         this.started = false;
-
         const eventRegisterFunctions = this.toEventRegisterFunctions();
-
         eventRegisterFunctions.forEach((eventRegisterFunction) => {
-
             let functionName = eventRegisterFunction.name;
             this.reactor.clearEvent(functionName);
-
             eventRegisterFunction = eventRegisterFunction.bind(this.webRequest);
             eventRegisterFunction((details, callback) => {
-
-                if(callback)
-                    callback({cancel: false})
-
+                if (callback)
+                    callback({ cancel: false });
             });
-
         });
-
     }
-
     register(callback) {
-
-        Preconditions.assertNotNull(callback, "callback");
-
-        if(! this.started) {
+        Preconditions_1.Preconditions.assertNotNull(callback, "callback");
+        if (!this.started) {
             throw new Error("Not started!");
         }
-
         const eventRegisterFunctions = this.toEventRegisterFunctions();
-
-        // now for each off the events, register a function to call...
         eventRegisterFunctions.forEach((eventRegisterFunction) => {
             let functionName = eventRegisterFunction.name;
             this.reactor.addEventListener(functionName, callback);
         });
-
     }
-
     toEventRegisterFunctions() {
-
         return [
-            this.webRequest.onBeforeRedirect,
-            this.webRequest.onBeforeRequest,
-            this.webRequest.onBeforeSendHeaders,
-            this.webRequest.onCompleted,
-            this.webRequest.onErrorOccurred,
-            this.webRequest.onResponseStarted,
-            this.webRequest.onSendHeaders
+            (listener) => this.webRequest.onBeforeRedirect(listener),
+            (listener) => this.webRequest.onBeforeRequest((details, callback) => { listener(details, callback); }),
         ];
-
     }
-
 }
-
-module.exports.WebRequestReactor = WebRequestReactor;
+exports.WebRequestReactor = WebRequestReactor;
+//# sourceMappingURL=WebRequestReactor.js.map

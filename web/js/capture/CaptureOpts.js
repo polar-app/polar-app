@@ -1,26 +1,11 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 class CaptureOpts {
-
-    constructor(opts) {
-
-        /**
-         * When true, do not use AMP pages.
-         *
-         * @type {boolean}
-         */
+    constructor(opts = {}) {
         this.amp = true;
-
-        /**
-         * A callback which receives updates about the pending web requests for
-         * updating the UI.
-         *
-         * @type {Function}
-         */
-        this.pendingWebRequestsCallback = null;
-
+        this.pendingWebRequestsCallback = opts.pendingWebRequestsCallback;
         Object.assign(this, opts);
-
     }
-
 }
-
-module.exports.CaptureOpts = CaptureOpts;
+exports.CaptureOpts = CaptureOpts;
+//# sourceMappingURL=CaptureOpts.js.map

@@ -1,18 +1,10 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 class CaptureResult {
-
-    constructor(opts) {
-
-        /**
-         * The path to the resulting PHZ file.
-         *
-         * @type {string}
-         */
-        this.path = undefined;
-
+    constructor(opts = {}) {
+        this.path = opts.path;
         Object.assign(this, opts);
-
     }
-
 }
-
-module.exports.CaptureResult = CaptureResult;
+exports.CaptureResult = CaptureResult;
+//# sourceMappingURL=CaptureResult.js.map
