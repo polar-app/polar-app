@@ -1,6 +1,6 @@
 {
   "name": "polar-bookshelf",
-  "version": "1.0.0-beta50",
+  "version": "1.0.0-beta51",
   "description": "Polar is a document reader for power users which supports PDF and web content and annotations and incremental reading powered by pagemarks.",
   "main": "main.js",
   "scripts": {
@@ -42,6 +42,7 @@
   },
   "license": "MIT",
   "devDependencies": {
+    "electron": "^3.0.0-beta.4",
     "@types/chai": "^4.1.4",
     "@types/expect": "^1.20.3",
     "@types/jquery": "^3.3.5",
@@ -96,7 +97,6 @@
     "debug-stream": "^3.0.1",
     "editor.md": "^1.5.0",
     "editor.md.webpack": "^1.5.0",
-    "electron": "^3.0.0-beta.4",
     "electron-google-analytics": "^0.1.0",
     "electron-in-page-search": "^1.3.2",
     "electron-log": "^2.2.15",
