@@ -29,10 +29,20 @@ function hrefToBasedir(href) {
     // now remove the filename and the query data.
     result = result.replace(/[^/.]+\.html([#?].*)?$/, '');
 
+    result = decodeURI(result);
+
     return result;
 
 }
 
+/**
+ * Performs the full resolution for us but does not do the require.
+ *
+ * @param href {string} The document.location.href
+ * @param loadPath {string} The path expression to load.
+ * @return {string}
+ * @private
+ */
 function _resolveFromHref(href, loadPath) {
 
     let basedir = hrefToBasedir(href);
