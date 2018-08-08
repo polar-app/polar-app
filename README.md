@@ -3,18 +3,21 @@
 
 # Polar Bookshelf
 
-Polar Bookshelf is an incremental reading platform for PDF and the Web created
-using the [Electron framework](https://electron.atom.io) and
-[PDF.js](https://mozilla.github.io/pdf.js)
+Polar Bookshelf is an incremental reading and personal knowledge repository for
+PDF and the Web created using the [Electron framework](https://electron.atom.io)
+and [PDF.js](https://mozilla.github.io/pdf.js)
 
-It includes support for features like pagemarks, text highlights, and progress
-tracking by keeping track of how much you've read including restoring pagemarks
-when you re-open documents.
+It allows you to keep all important reading material in one place including
+annotations and flashcards for spaced repetition.
 
-Pagemarks are a new proof of concept reading style inspired from [incremental
-reading](https://en.wikipedia.org/wiki/Incremental_reading).  They
-allow suspend and resume of reading for weeks and months in the future until
-you're ready to resume, without losing your place.
+It supports for features like pagemarks, text highlights, and progress tracking
+by keeping track of how much you've read including restoring pagemarks when you
+re-open documents.
+
+Pagemarks are a new concept for tracking your reading inspired from [incremental
+reading](https://en.wikipedia.org/wiki/Incremental_reading).  They allow suspend
+and resume of reading for weeks and months in the future until you're ready to
+resume, without losing your place.
 
 Since you can create multiple pagemarks they work even if you jump around in a
 book (which is often in technical or research work).
@@ -50,7 +53,7 @@ pagemarks without risk of the content changing.
 
 ### Capturing Pages
 
-To capture a new page just select ```File | Capture Web Page``` then enter a URL. 
+To capture a new page just select ```File | Capture Web Page``` then enter a URL.
 
 After that the page will be captured and then loaded.
 
