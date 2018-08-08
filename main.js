@@ -86,7 +86,7 @@ const WEBSERVER_PORT = 8500;
 const PROXYSERVER_PORT = 8600;
 
 const DEFAULT_HOST = "127.0.0.1";
-const DEFAULT_FILE = `${__dirname}/apps/home/default.html`;
+const DEFAULT_URL = `file://${__dirname}/apps/home/default.html`;
 
 //creating menus for menu bar
 const MENU_TEMPLATE = [{
@@ -238,11 +238,9 @@ const MENU_TEMPLATE = [{
     },
 ];
 
-function createWindow(browserWindowOptions) {
+function createWindow(browserWindowOptions = BROWSER_WINDOW_OPTIONS, url=DEFAULT_URL) {
 
-    if(! browserWindowOptions) {
-        browserWindowOptions = BROWSER_WINDOW_OPTIONS;
-    }
+    log.info("Creating window for URL: ", url);
 
     // Create the browser window.
     let newWindow = new BrowserWindow(browserWindowOptions);
@@ -260,7 +258,8 @@ function createWindow(browserWindowOptions) {
         if(BrowserWindow.getAllWindows().length === 0) {
             // determine if we need to quit:
             log.info("No windows left. Quitting app.");
-            app.quit();
+
+            exitApp();
 
         }
 
@@ -284,12 +283,10 @@ function createWindow(browserWindowOptions) {
         shell.openExternal(url);
     });
 
-    newWindow.loadFile(DEFAULT_FILE);
+    newWindow.loadURL(url);
 
     newWindow.once('ready-to-show', () => {
-        //newWindow.maximize();
         newWindow.show();
-
     });
 
     return newWindow;
@@ -319,6 +316,11 @@ function consoleListener(event, level, message, line, sourceId) {
 
 function cmdNewWindow(item, focusedWindow) {
     createWindow();
+}
+
+function exitApp() {
+    app.quit();
+    process.exit();
 }
 
 /**
@@ -383,7 +385,7 @@ async function loadDoc(path, targetWindow) {
 
     log.info("Loading doc via HTTP server: " + JSON.stringify(fileMeta));
 
-    let loadURL = null;
+    let url = null;
     let fileParam = encodeURIComponent(fileMeta.url);
 
     let descriptor = null;
@@ -394,7 +396,7 @@ async function loadDoc(path, targetWindow) {
 
         // FIXME: Use a PHZ loader for this.
 
-        loadURL = `file://${__dirname}/pdfviewer/web/viewer.html?file=${fileParam}`;
+        url = `file://${__dirname}/pdfviewer/web/viewer.html?file=${fileParam}`;
 
     } else if(path.endsWith(".chtml")) {
 
@@ -430,7 +432,7 @@ async function loadDoc(path, targetWindow) {
         // metadata / descriptors
         let fingerprint = Fingerprints.create(basename);
 
-        loadURL = `file://${__dirname}/htmlviewer/index.html?file=${encodeURIComponent(cacheMeta.url)}&fingerprint=${fingerprint}&descriptor=${encodeURIComponent(descriptorJSON)}`;
+        url = `file://${__dirname}/htmlviewer/index.html?file=${encodeURIComponent(cacheMeta.url)}&fingerprint=${fingerprint}&descriptor=${encodeURIComponent(descriptorJSON)}`;
 
     } else if(path.endsWith(".phz")) {
 
@@ -461,11 +463,11 @@ async function loadDoc(path, targetWindow) {
         // metadata / descriptors
         let fingerprint = Fingerprints.create(basename);
 
-        loadURL = `file://${__dirname}/htmlviewer/index.html?file=${encodeURIComponent(cachedRequest.url)}&fingerprint=${fingerprint}&descriptor=${encodeURIComponent(descriptorJSON)}`;
+        url = `file://${__dirname}/htmlviewer/index.html?file=${encodeURIComponent(cachedRequest.url)}&fingerprint=${fingerprint}&descriptor=${encodeURIComponent(descriptorJSON)}`;
 
     }
 
-    log.info("Loading webapp at: " + loadURL);
+    log.info("Loading webapp at: " + url);
 
     if(cacheMeta) {
 
@@ -480,8 +482,7 @@ async function loadDoc(path, targetWindow) {
 
     }
 
-    //return;
-    targetWindow.loadURL(loadURL);
+    targetWindow.loadURL(url);
 
     if(args.enableConsoleLogging) {
         log.info("Console logging enabled.");
@@ -490,10 +491,7 @@ async function loadDoc(path, targetWindow) {
 
     targetWindow.webContents.on('did-finish-load', function() {
 
-        log.info("Finished loading. Now injecting customizations.");
-        log.info("Toggling dev tools...");
-        //targetWindow.toggleDevTools();
-
+        // FIXME: this is supposed to load the new window I think...
 
         if(descriptor && descriptor.title) {
             // TODO: this should be driven from the DocMeta and the DocMeta
@@ -539,7 +537,7 @@ async function cmdOpenInNewWindow(item, focusedWindow) {
 
     let path = await promptDoc();
 
-    let targetWindow = createWindow();
+    let targetWindow = createWindow(BROWSER_WINDOW_OPTIONS, "about:blank");
 
     await loadDoc(path, targetWindow);
 
@@ -561,7 +559,7 @@ async function cmdCaptureWebPage(item, focusedWindow) {
 }
 
 function cmdExit() {
-    app.quit();
+    exitApp();
 }
 
 /**
@@ -713,7 +711,7 @@ let shouldQuit = app.makeSingleInstance(function(commandLine, workingDirectory) 
 
 if (shouldQuit) {
     log.info("Quiting.  App is single instance.");
-    app.quit();
+    exitApp();
 }
 
 app.on('ready', async function() {
@@ -754,7 +752,7 @@ app.on('ready', async function() {
 
 // Quit when all windows are closed.
 app.on('window-all-closed', function() {
-    if (process.platform !== 'darwin') { app.quit(); }
+    if (process.platform !== 'darwin') { exitApp(); }
 });
 
 app.on('activate', function() {
