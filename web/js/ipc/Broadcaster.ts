@@ -9,7 +9,7 @@ const log = Logger.create();
  * listening just drops the message.  This makes it easy to implement various
  * forms of message communication.
  */
-class Broadcaster {
+export class Broadcaster {
 
     private channel: string;
 
@@ -34,5 +34,3 @@ class Broadcaster {
     }
 
 }
-
-module.exports.Broadcaster = Broadcaster;

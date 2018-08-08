@@ -1,10 +1,11 @@
-const log = require("../../logger/Logger").create();
 const {DocFormatFactory} = require("../../docformat/DocFormatFactory");
 const {Rects} = require("../../Rects");
 const {Pagemarks} = require("../../metadata/Pagemarks");
 const {PagemarkRects} = require("../../metadata/PagemarkRects");
 const {AnnotationPointers} = require("../../annotations/AnnotationPointers");
 const {Elements} = require("../../util/Elements");
+
+const log = require("../../logger/Logger").create();
 
 class PagemarkController {
 
@@ -24,6 +25,8 @@ class PagemarkController {
     }
 
     onMessageReceived(event) {
+
+        log.info("Received message: ", event);
 
         let contextMenuEvent = event.data;
 
@@ -103,8 +106,12 @@ class PagemarkController {
 
     onDeletePagemark(contextMenuEvent) {
 
+        log.info("Deleting pagemark: ", contextMenuEvent);
+
         let annotationPointers
             = AnnotationPointers.toAnnotationPointers(".pagemark", contextMenuEvent);
+
+        log.info("Working with annotationPointers: ", annotationPointers);
 
         annotationPointers.forEach(annotationPointer => {
             let pageMeta = this.model.docMeta.getPageMeta(annotationPointer.pageNum);

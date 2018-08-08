@@ -1,21 +1,9 @@
-/**
- * Lightweight document descriptor representing documents easily without having
- * to pass around the full document.
- */
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 class DocDescriptor {
-
-    constructor(opts) {
-
-        /**
-         * The fingerprint representing the document we're working with.
-         * @type {null}
-         */
-        this.fingerprint = null;
-
-        Object.assign(this, opts);
-
+    constructor(obj) {
+        this.fingerprint = obj.fingerprint;
     }
-
 }
-
-module.exports.DocDescriptor = DocDescriptor;
+exports.DocDescriptor = DocDescriptor;
+//# sourceMappingURL=DocDescriptor.js.map
