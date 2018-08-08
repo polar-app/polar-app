@@ -2,6 +2,8 @@
  * Represents a row of highlighted text including the rect around it, and the
  * elements it contains.
  */
+import {RectElement} from './RectElement';
+
 export class TextHighlightRow {
 
     public readonly rect: any;
