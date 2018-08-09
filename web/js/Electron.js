@@ -1,10 +1,10 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 class Electron {
-
     static isElectron() {
-        var userAgent = navigator.userAgent.toLowerCase();
+        let userAgent = navigator.userAgent.toLowerCase();
         return userAgent.indexOf(' electron/') !== -1;
     }
-
 }
-
-module.exports.Electron = Electron;
+exports.Electron = Electron;
+//# sourceMappingURL=Electron.js.map
