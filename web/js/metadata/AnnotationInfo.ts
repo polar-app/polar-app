@@ -12,7 +12,7 @@ export class AnnotationInfo extends SerializedObject {
      * The last time this document was annotated (pagemarks updated, text
      * updated, etc).
      */
-    public lastAnnotated: ISODateTime;
+    public lastAnnotated?: ISODateTime;
 
     constructor(val: AnnotationInfo) {
 
@@ -27,6 +27,6 @@ export class AnnotationInfo extends SerializedObject {
 
     validate() {
         super.validate();
-        Preconditions.assertNotNull(this.lastAnnotated, "lastAnnotated");
     }
+
 }

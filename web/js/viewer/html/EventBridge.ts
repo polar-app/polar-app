@@ -129,6 +129,8 @@ export class EventBridge {
 
         let eventPoints = FrameEvents.calculatePoints(this.iframe, event);
 
+        console.log("FIXME: eventPoints from EventBridge: ", eventPoints);
+
         let newEvent = new event.constructor(event.type, event);
 
         // TODO: the issue now , I think, is that these values need to be updated

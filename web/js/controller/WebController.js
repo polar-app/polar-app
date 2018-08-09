@@ -36,7 +36,7 @@ class WebController extends Controller {
         this.listenForDocumentLoad();
         await this.listenForKeyBindings();
 
-        //new MouseTracer(document).start();
+        new MouseTracer(document).start();
 
     }
 

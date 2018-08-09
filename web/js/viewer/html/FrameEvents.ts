@@ -64,14 +64,14 @@ export class FrameEvents {
 
         // TODO: I think it's because we're IN the iframe so there is no scroll?
 
-        result.page.x = result.client.x + window.scrollX;
-        result.page.y = result.client.y + window.scrollY;
+        // result.page.x = result.client.x + window.scrollX;
+        // result.page.y = result.client.y + window.scrollY;
 
         // FIXME: this is better but if we then click on a element within the parent
         // window like a text highlight
 
-        // result.page.x = result.client.x;
-        // result.page.y = result.client.y;
+        result.page.x = result.client.x;
+        result.page.y = result.client.y;
 
         result.offset.x = mouseEvent.pageX;
         result.offset.y = mouseEvent.pageY;

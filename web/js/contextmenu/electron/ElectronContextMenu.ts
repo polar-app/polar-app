@@ -56,12 +56,12 @@ export class ElectronContextMenu extends ContextMenu {
         const ctxMenu = this.createContextMenu(triggerEvent, sender);
 
         // The documentation for this looks wrong and it actually takes three
-        // arguments not a object
+        // arguments not a object. Note that we should NOT include the mouse
+        // point as by default it uses the mouse point anyway which is almost
+        // always what we want.
         ctxMenu.popup(<PopupOptions>{
-            window,
-            x: triggerEvent.point.x,
-            y: triggerEvent.point.y}
-        );
+            window
+        });
 
     }
 
