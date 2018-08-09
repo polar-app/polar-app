@@ -1,4 +1,5 @@
 
+import {app} from 'electron';
 import path from 'path';
 import fs from 'fs';
 
@@ -11,8 +12,15 @@ import fs from 'fs';
  */
 export class AppPaths {
 
+    // /opt/Polar\ Bookshelf/resources/app ... FIXME: I think I have to use
+    // the logic from loader here...
+
     static createFromRelative(relative: string): string {
-        let absolutePath = path.resolve(process.cwd(), relative);
+
+        let baseDir = app.getAppPath();;
+        //let baseDir = process.cwd();
+
+        let absolutePath = path.resolve(baseDir, relative);
         if(! fs.existsSync(absolutePath)) {
             throw new Error("Absolute path does not exist: " + absolutePath);
         }

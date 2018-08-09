@@ -716,6 +716,8 @@ if (shouldQuit) {
 
 app.on('ready', async function() {
 
+    log.info("Loaded from: ", app.getAppPath());
+
     contextMenu = Menu.buildFromTemplate([
         { label: 'Minimize', type: 'radio', role: 'minimize' },
         { type: 'separator' },
