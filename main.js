@@ -450,7 +450,7 @@ async function loadDoc(path, targetWindow) {
 
         let cachedRequest = cachedRequestsHolder.cachedRequests[cachedRequestsHolder.metadata.url];
 
-        console.log("Going to load URL: " + cachedRequest.url);
+        log.info("Going to load URL: " + cachedRequest.url);
 
         descriptor = cachedRequestsHolder.metadata;
         let descriptorJSON = JSON.stringify(descriptor);
@@ -516,7 +516,7 @@ function cmdFind() {
 }
 
 function cmdToggleDevTools(item, focusedWindow) {
-    console.log("Toggling dev tools in: " + focusedWindow);
+    log.info("Toggling dev tools in: " + focusedWindow);
     focusedWindow.toggleDevTools();
 }
 
