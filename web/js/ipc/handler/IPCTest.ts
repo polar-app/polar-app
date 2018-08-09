@@ -10,10 +10,6 @@ import {Pipe, PipeNotification} from '../pipes/Pipe';
 import {MockPipes} from '../pipes/MockPipes';
 import {IPCClient} from './IPCClient';
 
-import assert from 'assert';
-
-//const assert = require('assert');
-
 let mockChannels: MockPipes<PersonEvent, any>;
 
 let leftIpcPipe: HelloIPCPipe;

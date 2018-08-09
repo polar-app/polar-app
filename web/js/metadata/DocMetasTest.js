@@ -124,13 +124,10 @@ describe('DocMetas', function() {
                     },
                     "version": 1,
                     "docInfo": {
-                        "title": null,
-                        "url": null,
-                        "nrPages": 2,
-                        "fingerprint": "0x001",
-                        "lastOpened": null,
                         "progress": 0,
-                        "pagemarkType": "SINGLE_COLUMN"
+                        "pagemarkType": "SINGLE_COLUMN",
+                        "nrPages": 2,
+                        "fingerprint": "0x001"
                     }
                 }
             ;
