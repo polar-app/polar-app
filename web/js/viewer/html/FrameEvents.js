@@ -28,8 +28,8 @@ class FrameEvents {
         result.client.x = mouseEvent.screenX - window.screenX;
         let electronScreen = window.screen;
         result.client.y = mouseEvent.screenY - window.screenY - electronScreen.availTop;
-        result.page.x = result.client.x + window.scrollX;
-        result.page.y = result.client.y + window.scrollY;
+        result.page.x = result.client.x;
+        result.page.y = result.client.y;
         result.offset.x = mouseEvent.pageX;
         result.offset.y = mouseEvent.pageY;
         return result;
