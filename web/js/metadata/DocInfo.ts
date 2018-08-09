@@ -16,28 +16,22 @@ export class DocInfo extends SerializedObject {
 
     /**
      * The network URL for the document where we originally fetched it.
-     * @type string
      */
     public url: String;
 
     /**
      * The number of pages in this document.
-     *
-     * @type number
      */
     public nrPages: number;
 
     /**
      * A fingerprint for the document created from PDF.js
-     * @type string
      */
     public fingerprint: string;
 
     /**
      * The last time this document was opened or null if it's never been
      * opened.
-     *
-     * @type ISODateTime
      */
     public lastOpened: ISODateTime;
 
@@ -59,7 +53,6 @@ export class DocInfo extends SerializedObject {
      * @type {Symbol}
      */
     public pagemarkType = PagemarkType.SINGLE_COLUMN;
-
 
     constructor(val: DocInfo) {
 
