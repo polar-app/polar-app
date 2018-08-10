@@ -129,7 +129,7 @@ Right now usage is only via keyboard bindings:
 
 ## Text Highlights
 
-<img src="https://i.imgur.com/xdhZsu3.png">
+![Text Highlight](https://raw.githubusercontent.com/burtonator/polar-bookshelf/master/docs/screenshots/text-highlight-shadow.png)
 
 Text highlights allow you to work with content like you're using a text
 highlighter in a book.
