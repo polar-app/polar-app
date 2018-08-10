@@ -1,11 +1,22 @@
+<p align="center">
+    <img src="https://github.com/burtonator/polar-bookshelf/blob/master/icon.ico" width="128" align="right">
+</p>
 
-<img src="https://github.com/burtonator/polar-bookshelf/blob/master/icon.ico" width="128" align="right">
+<div align="center">
+  <h1>Polar Bookshelf</h1>
 
-# Polar Bookshelf
+[![Discord](https://img.shields.io/discord/307605794680209409.svg?style=flat-square)](https://discord.gg/yAA8DdK)
+[![Travis](https://img.shields.io/travis/wexond/wexond.svg?style=flat-square)](https://travis-ci.org/wexond/wexond)
+[![AppVeyor](https://img.shields.io/appveyor/ci/Sential/wexond.svg?style=flat-square)](https://ci.appveyor.com/project/Sential/wexond)
 
 Polar Bookshelf is an incremental reading and personal knowledge repository for
 PDF and the Web created using the [Electron framework](https://electron.atom.io)
 and [PDF.js](https://mozilla.github.io/pdf.js)
+
+</div>
+
+# Polar Bookshelf
+
 
 It allows you to keep all important reading material in one place including
 annotations and flashcards for spaced repetition.

@@ -18,7 +18,6 @@ describe('Preconditions', function() {
             assert.equal(Preconditions.defaultValue("bye", "hello"), "bye");
         });
 
-
     });
 
 });
