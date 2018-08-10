@@ -48,6 +48,10 @@ research which is often stored as PDF.
     <b>Captured Web Content</b> Polar supports fetching and storing web content locally for annotating.
 </p>
 
+# [Downloads](https://github.com/burtonator/polar-bookshelf/releases)
+
+Packages for Windows, MacOS, and Linux are available in the [Releases](https://github.com/burtonator/polar-bookshelf/releases) page.
+
 # Polar Bookshelf
 
 It allows you to keep all important reading material in one place including
@@ -217,14 +221,6 @@ successful project.
   MacOS, and Windows.  You shouldn't have to pick a tool, which you might be
   using for the next 5-10 years, and then get stuck to a platform which may
   or may not exist in the future.
-
-# Installation
-
-Packages for MacOS and Linux are available in [Releases](https://github.com/burtonator/polar-bookshelf/releases)
-
-Windows builds are still alpha quality as I can't test them.  The builds work
-and generate .exe setup files but I need feedback from the community on whether
-they work and how well they work.
 
 ## Build from source
 
