@@ -179,7 +179,7 @@ Right click the highlight and select delete.
 
 # Flashcards
 
-![Flashcards](https://raw.githubusercontent.com/burtonator/polar-bookshelf/master/docs/screenshots/flashcard-shadow.png)
+![Flashcards](https://raw.githubusercontent.com/burtonator/polar-bookshelf/master/docs/screenshots/flashcard2-shadow.png)
 
 Flashcards allow you to retain information long term by using a spaced repetition 
 system like Anki to continually re-train yourself on material you want to retain.
