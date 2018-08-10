@@ -38,13 +38,13 @@ research which is often stored as PDF.
 ![PDF](https://raw.githubusercontent.com/burtonator/polar-bookshelf/master/docs/screenshots/pdf-loaded.png)
 
 <p align="center">
-    **PDF Document**: Polar has excellent PDF support.
+    <b>PDF Document</b> Polar has excellent PDF support.
 </p>
 
 ![Captured Web Content](https://raw.githubusercontent.com/burtonator/polar-bookshelf/master/docs/screenshots/captured-web-content.png)
 
 <p align="center">
-    **Captured Web Content**: Polar supports fetching and storing web content locally for annotating.
+    <b>Captured Web Content</b> Polar supports fetching and storing web content locally for annotating.
 </p>
 
 # Polar Bookshelf
