@@ -52,11 +52,17 @@ research which is often stored as PDF.
     <b>Captured Web Content</b> Polar supports fetching and storing web content locally for annotating.
 </p>
 
+![Annotations](https://raw.githubusercontent.com/burtonator/polar-bookshelf/master/docs/screenshots/annotations-shadow.png)
+
+<p align="center">
+    <b>Annotations</b> Annotating a PDF including pagemarks showing content already read, an area highlight, and a text highlight.
+</p>
+
 # [Downloads](https://github.com/burtonator/polar-bookshelf/releases)
 
 Packages for Windows, MacOS, and Linux are available in the [releases](https://github.com/burtonator/polar-bookshelf/releases) page.
 
-# Overview
+# Personal Knowledge Repository
 
 Polar is a document manager for PDF and web content as well as a personal
 knowledge repository.
