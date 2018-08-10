@@ -5,9 +5,11 @@
 <div align="center">
   <h1>Polar Bookshelf</h1>
 
+<!--
 [![Discord](https://img.shields.io/discord/307605794680209409.svg?style=flat-square)](https://discord.gg/yAA8DdK)
 [![Travis](https://img.shields.io/travis/wexond/wexond.svg?style=flat-square)](https://travis-ci.org/wexond/wexond)
 [![AppVeyor](https://img.shields.io/appveyor/ci/Sential/wexond.svg?style=flat-square)](https://ci.appveyor.com/project/Sential/wexond)
+-->
 
 Polar Bookshelf is an incremental reading and personal knowledge repository for
 PDF and the Web created using the [Electron framework](https://electron.atom.io)
