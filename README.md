@@ -5,9 +5,12 @@
 <div align="center">
   <h1>Polar Bookshelf</h1>
 
-[![Reddit](https://img.shields.io/discord/307605794680209409.svg?style=flat-square)](https://www.reddit.com/r/PolarBookshelf/)
+
+https://discord.gg/qp5FsY
 
 <!--
+[![Reddit](https://img.shields.io/discord/307605794680209409.svg?style=flat-square)](https://www.reddit.com/r/PolarBookshelf/)
+
 [![Discord](https://img.shields.io/discord/307605794680209409.svg?style=flat-square)](https://discord.gg/yAA8DdK)
 [![Travis](https://img.shields.io/travis/wexond/wexond.svg?style=flat-square)](https://travis-ci.org/wexond/wexond)
 [![AppVeyor](https://img.shields.io/appveyor/ci/Sential/wexond.svg?style=flat-square)](https://ci.appveyor.com/project/Sential/wexond)
@@ -38,7 +41,7 @@ research which is often stored as PDF.
 
 - **Standards Based** All content is stored as JSON in a well documented schema.  Annotations never mutate the original content.
 
-- **Portable** Run across any platform. Linux, MacOS, and Windows supported.
+- **Portable** Run across any platform. Linux, MacOS, and Windows supported.  We also product snaps which means you can install our .deb files on Ubuntu or Debian but also any Linux distribution that supports snaps!
 
 # Screenshots
 
