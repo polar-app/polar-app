@@ -14,7 +14,7 @@ export class AppPaths {
 
     static relative(relativePath: string) {
 
-        let baseDir = app.getAppPath();;
+        let baseDir = app.getAppPath();
 
         let absolutePath = path.resolve(baseDir, relativePath);
         if(! fs.existsSync(absolutePath)) {
