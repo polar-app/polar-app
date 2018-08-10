@@ -17,7 +17,6 @@ and [PDF.js](https://mozilla.github.io/pdf.js)
 
 </div>
 
-
 # Features
 
 - **PDF support** We have first-class PDF support thanks to <a href="https://mozilla.github.io/pdf.js/">PDF.js</a>.  PDFs work well when reading content in book format or when reading scientific
@@ -27,11 +26,11 @@ research which is often stored as PDF.
 
 - **Pagemarks** Easily keep track of what you're reading and the progress of each document.
 
-- **Text highlights** Highlight text in PDF and web pages.
+- **Text Highlights** Highlight text in PDF and web pages.
 
-- **Area highlights** Capture a region of the page as a highlight which can be a chart, figure, infographic, etc.  
+- **Area Highlights** Capture a region of the page as a highlight which can be a chart, figure, infographic, etc.  
 
-- **Local Storage** All content is stored locally. You can also use a system like Dropbox to transfer your repository across machines.
+- **Local Storage** All content is stored locally. You can also use a system like git or Dropbox to transfer your repository across machines.
 
 - **Hackable** The entire system is based on Electron, Node, pdf.js, React and other web standards.  If you're a developer - welcome home!
 
@@ -55,7 +54,7 @@ research which is often stored as PDF.
 
 # [Downloads](https://github.com/burtonator/polar-bookshelf/releases)
 
-Packages for Windows, MacOS, and Linux are available in the [Releases](https://github.com/burtonator/polar-bookshelf/releases) page.
+Packages for Windows, MacOS, and Linux are available in the [releases](https://github.com/burtonator/polar-bookshelf/releases) page.
 
 # Overview
 
