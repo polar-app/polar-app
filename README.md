@@ -12,10 +12,25 @@
 -->
 
 Polar Bookshelf is an incremental reading and personal knowledge repository for
-PDF and the Web created using the [Electron framework](https://electron.atom.io)
+PDF and the web created using the [Electron framework](https://electron.atom.io)
 and [PDF.js](https://mozilla.github.io/pdf.js)
 
 </div>
+
+
+# Features
+
+- **PDF support** We have first-class PDF support thanks to <a href="https://mozilla.github.io/pdf.js/">PDF.js</a>.  
+PDFs work well when reading content in book format or when reading scientific
+research which is often stored as PDF.
+
+- **Captured Web Pages** Download HTML content and save them as offline documents which can be annotated.
+
+- **Pagemarks** Easily keep track of what you're reading and the progress of each document.
+
+- **Text highlights** Highlight text in PDF and web pages.
+
+- **Area highlights** Capture a region of the page as a highlight which can be a chart, figure, infographic, etc.  
 
 # Polar Bookshelf
 
@@ -39,16 +54,8 @@ book (which is often in technical or research work).
 
 <a href="https://www.youtube.com/watch?v=OT3qLhMK6Zk"><img src="https://raw.githubusercontent.com/burtonator/polar-bookshelf/master/demo.png?1=2"></a>
 
-# Features
 
-## PDF support
-
-We have first-class PDF support thanks to <a href="https://mozilla.github.io/pdf.js/">PDF.js</a>
-
-PDFs work well when reading content in book format or when reading scientific
-research which is often stored as PDF.
-
-## Captured Web Pages
+### Capturing Pages
 
 PDF works well but we've found that many HTML pages don't convert to PDF well
 since they weren't intended to be printed.
@@ -63,8 +70,6 @@ directly to Electron.
 
 This means you have long term storage of your content, can annotate it and use
 pagemarks without risk of the content changing.
-
-### Capturing Pages
 
 To capture a new page just select ```File | Capture Web Page``` then enter a URL.
 
