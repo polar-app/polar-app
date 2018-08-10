@@ -177,6 +177,23 @@ Right click on a page and select "Create area highlight"
 
 Right click the highlight and select delete.
 
+# Flashcards
+
+![Flashcards](https://raw.githubusercontent.com/burtonator/polar-bookshelf/master/docs/screenshots/flashcard-shadow.png)
+
+Flashcards allow you to retain information long term by using a spaced repetition 
+system like Anki to continually re-train yourself on material you want to retain.
+
+Flashcards can be created by right clicking an annotation and selecting 
+"Create Flashcard".  The resulting flashcards are stored as annotations in your 
+repository.
+
+## Status:
+
+This is currently a beta feature and we're working on implementing Anki sync
+to enable spaced repetition. Any flashcards created now will be stored with
+Anki in the future.
+
 # REST API
 
 We're developing a REST API for interacting with Polar which is still in the
