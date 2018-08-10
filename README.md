@@ -41,13 +41,13 @@ research which is often stored as PDF.
 
 # Screenshots
 
-<img src="https://raw.githubusercontent.com/burtonator/polar-bookshelf/master/docs/screenshots/pdf-loaded.png" align="center" title="PDF" style="box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">
+<img src="https://raw.githubusercontent.com/burtonator/polar-bookshelf/master/docs/screenshots/pdf-loaded-shadow.png" align="center" title="PDF" style="box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">
 
 <p align="center">
     <b>PDF Document</b> Polar has excellent PDF support.
 </p>
 
-![Captured Web Content](https://raw.githubusercontent.com/burtonator/polar-bookshelf/master/docs/screenshots/captured-web-content.png)
+![Captured Web Content](https://raw.githubusercontent.com/burtonator/polar-bookshelf/master/docs/screenshots/captured-web-content-shadow.png)
 
 <p align="center">
     <b>Captured Web Content</b> Polar supports fetching and storing web content locally for annotating.
