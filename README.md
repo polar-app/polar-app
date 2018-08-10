@@ -6,9 +6,10 @@
   <h1>Polar Bookshelf</h1>
 
 
-https://discord.gg/qp5FsY
 
 <!--
+https://discord.gg/qp5FsY
+
 [![Reddit](https://img.shields.io/discord/307605794680209409.svg?style=flat-square)](https://www.reddit.com/r/PolarBookshelf/)
 
 [![Discord](https://img.shields.io/discord/307605794680209409.svg?style=flat-square)](https://discord.gg/yAA8DdK)
