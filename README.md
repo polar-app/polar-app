@@ -33,6 +33,10 @@ research which is often stored as PDF.
 
 - **Portable** Run across any platform. Linux, MacOS, and Windows supported.
 
+# Screenshots
+
+![PDF](https://raw.githubusercontent.com/burtonator/polar-bookshelf/master/screenshot.png)
+
 # Polar Bookshelf
 
 It allows you to keep all important reading material in one place including
@@ -50,7 +54,6 @@ resume, without losing your place.
 Since you can create multiple pagemarks they work even if you jump around in a
 book (which is often in technical or research work).
 
-<img src="https://raw.githubusercontent.com/burtonator/polar-bookshelf/master/screenshot.png" width="1200">
 
 <a href="https://www.youtube.com/watch?v=OT3qLhMK6Zk"><img src="https://raw.githubusercontent.com/burtonator/polar-bookshelf/master/demo.png?1=2"></a>
 
