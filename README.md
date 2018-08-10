@@ -146,6 +146,22 @@ Right click the highlight and select delete.
 
  - Ctrl-Alt-T - create a new text highlight from the current selected text.
 
+
+## Area Highlights
+
+![Area Highlight](https://raw.githubusercontent.com/burtonator/polar-bookshelf/master/docs/screenshots/area-highlight-shadow.png)
+
+Area highlights allow you highlight a figure, infographic, or anything visual 
+in a document. 
+
+### Create an area highlight.
+
+Right click on a page and select "Create area highlight"
+
+### Delete an highlight.
+
+Right click the highlight and select delete.
+
 ## REST API
 
 We're developing a REST API for interacting with Polar which is still in the
