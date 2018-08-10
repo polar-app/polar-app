@@ -8,6 +8,7 @@ const url = require('url');
  * loading file URLs and needing to access the filesystem.
  *
  * @param loadPath {string} The path to the file relative to document.location.href.
+ * @private
  */
 function load(loadPath) {
 
@@ -41,6 +42,7 @@ function _loadFromHref(href, loadPath, os_type) {
  * @param href  The URL we're currently working with in the browser.
  * @param os_type The os we're running under.
  * @return {string}
+ * @private
  */
 function _toPath(href, os_type) {
 
@@ -94,6 +96,7 @@ function _toPath(href, os_type) {
  * @param from The starting URL to resolve from.
  * @param to The path to resolve based on the from URL.
  * @return {string}
+ * @private
  */
 function _resolveURL(from, to) {
     return url.resolve(from, to);

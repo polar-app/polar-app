@@ -35,7 +35,7 @@ research which is often stored as PDF.
 
 # Screenshots
 
-![PDF](https://raw.githubusercontent.com/burtonator/polar-bookshelf/master/screenshot.png)
+![PDF](https://raw.githubusercontent.com/burtonator/polar-bookshelf/master/docs/screenshots/pdf-loaded.png)
 
 # Polar Bookshelf
 
