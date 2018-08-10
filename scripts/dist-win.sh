@@ -8,4 +8,4 @@ docker run --rm -ti \
    -v ${PWD##*/}-node-modules:/project/node_modules \
    -v ~/.cache/electron:/root/.cache/electron \
    -v ~/.cache/electron-builder:/root/.cache/electron-builder \
-   electronuserland/builder:wine bash -c 'yarn && ./node_modules/.bin/electron-builder --config=electron-builder.yml --win nsis portable --publish always'
+   electronuserland/builder:wine bash -c 'yarn && ./node_modules/.bin/electron-builder --x64 --ia32 --config=electron-builder.yml --win nsis portable --publish always'

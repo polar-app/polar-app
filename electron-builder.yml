@@ -30,9 +30,6 @@ linux:
 
 win:
   target: nsis, portable
-  arch:
-    - ia64
-    - ia32
   icon: ./icons/icon-512x512.png
   fileAssociations:
     - ext: "pdf"
