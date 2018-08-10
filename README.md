@@ -1,5 +1,5 @@
 <p align="center">
-    <img src="https://github.com/burtonator/polar-bookshelf/blob/master/icon.ico" width="128">
+    <img src="https://github.com/burtonator/polar-bookshelf/blob/master/icon.ico" width="256">
 </p>
 
 <div align="center">
@@ -20,8 +20,7 @@ and [PDF.js](https://mozilla.github.io/pdf.js)
 
 # Features
 
-- **PDF support** We have first-class PDF support thanks to <a href="https://mozilla.github.io/pdf.js/">PDF.js</a>.  
-PDFs work well when reading content in book format or when reading scientific
+- **PDF support** We have first-class PDF support thanks to <a href="https://mozilla.github.io/pdf.js/">PDF.js</a>.  PDFs work well when reading content in book format or when reading scientific
 research which is often stored as PDF.
 
 - **Captured Web Pages** Download HTML content and save them as offline documents which can be annotated.
@@ -32,8 +31,9 @@ research which is often stored as PDF.
 
 - **Area highlights** Capture a region of the page as a highlight which can be a chart, figure, infographic, etc.  
 
-# Polar Bookshelf
+- **Portable** Run across any platform. Linux, MacOS, and Windows supported.
 
+# Polar Bookshelf
 
 It allows you to keep all important reading material in one place including
 annotations and flashcards for spaced repetition.
