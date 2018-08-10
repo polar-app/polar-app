@@ -31,10 +31,15 @@ research which is often stored as PDF.
 
 - **Area highlights** Capture a region of the page as a highlight which can be a chart, figure, infographic, etc.  
 
+- **Local Storage** All content is stored locally. You can also use a system like Dropbox to transfer your repository across machines.
+
+- **Hackable** The entire system is based on Electron, Node, pdf.js, React and other web standards.  If you're a developer - welcome home!
+
+- **Standards Based** All content is stored as JSON in a well documented schema.  Annotations never mutate the original content.
+
 - **Portable** Run across any platform. Linux, MacOS, and Windows supported.
 
 # Screenshots
-
 
 <img src="https://raw.githubusercontent.com/burtonator/polar-bookshelf/master/docs/screenshots/pdf-loaded.png" align="center" title="PDF" style="box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">
 
@@ -52,7 +57,10 @@ research which is often stored as PDF.
 
 Packages for Windows, MacOS, and Linux are available in the [Releases](https://github.com/burtonator/polar-bookshelf/releases) page.
 
-# Polar Bookshelf
+# Overview
+
+Polar is a document manager for PDF and web content as well as a personal
+knowledge repository.
 
 It allows you to keep all important reading material in one place including
 annotations and flashcards for spaced repetition.
@@ -69,16 +77,14 @@ resume, without losing your place.
 Since you can create multiple pagemarks they work even if you jump around in a
 book (which is often in technical or research work).
 
-
 <a href="https://www.youtube.com/watch?v=OT3qLhMK6Zk"><img src="https://raw.githubusercontent.com/burtonator/polar-bookshelf/master/demo.png?1=2"></a>
 
+# Web Content
 
-### Capturing Pages
+PDF is an excellent document but we've found that many HTML pages don't convert
+to PDF well since they were not intended to be printed.
 
-PDF works well but we've found that many HTML pages don't convert to PDF well
-since they weren't intended to be printed.
-
-Captured pages are HTML content stored in ```phz``` (polar HTML zip) files.
+Captured pages contain HTML content stored in ```phz``` (polar HTML zip) files.
 
 We fetch all resources, render the page as DOM and apply CSS, then de-activate
 the page by removing all scripts.
@@ -86,10 +92,11 @@ the page by removing all scripts.
 We then store the content in the phz archive format and serve the content
 directly to Electron.
 
-This means you have long term storage of your content, can annotate it and use
-pagemarks without risk of the content changing.
+This means you have long term storage for all your content. You can annotate it
+and use pagemarks without risk of the content changing.
 
-To capture a new page just select ```File | Capture Web Page``` then enter a URL.
+To capture a new page just select ```File | Capture Web Page``` then enter a
+URL.
 
 After that the page will be captured and then loaded.
 
@@ -158,13 +165,6 @@ implemented including:
 
 - A rework of text highlights for PDFs
 
-- A new UI for working with pagemarks including dragging and resizing them.
-
-- Multiple pagemarks per page including fractional pagemarks that can be placed
-  anywhere.
-
-- Area highlights based on a text box.
-
 - Thumbnails of highlights (text + area) stored in .json
 
 - Flashcard integration with Anki support. The flashcard UI is mostly complete
@@ -183,11 +183,11 @@ The long term goal is to implement the following functionality:
     - Integration of https://github.com/burtonator/pdf-annotation-exporter to
       enable this functionality.
 
- - Additional annotation types like area highlight, plus a complex feature set
-   like notes and tags for these objects.
+ - Additional annotation types including a complex feature set like notes and
+tags for these objects.
 
  - Flashcards will be notes designed and marked specifically to be converted
-   to flashcards for usage in spaced repitition systems.  They will have extended
+   to flashcards for usage in spaced repetition systems.  They will have extended
    metadata including front and back of the card as well as support for cloze
    deletions, and the ability to include extended metadata like the source text
    to which the flashcard was attached.
@@ -206,7 +206,7 @@ The long term goal is to implement the following functionality:
 
  - Ability to pull down ISBN metadata for books
 
- - Abilty to pull down metadata by academic paper ID using various platform
+ - Ability to pull down metadata by academic paper ID using various platform
    APIs.
 
 # Principles
