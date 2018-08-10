@@ -37,6 +37,16 @@ research which is often stored as PDF.
 
 ![PDF](https://raw.githubusercontent.com/burtonator/polar-bookshelf/master/docs/screenshots/pdf-loaded.png)
 
+<p align="center">
+    **PDF Document**: Polar has excellent PDF support.
+</p>
+
+![Captured Web Content](https://raw.githubusercontent.com/burtonator/polar-bookshelf/master/docs/screenshots/captured-web-content.png)
+
+<p align="center">
+    **Captured Web Content**: Polar supports fetching and storing web content locally for annotating.
+</p>
+
 # Polar Bookshelf
 
 It allows you to keep all important reading material in one place including
