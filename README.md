@@ -5,6 +5,8 @@
 <div align="center">
   <h1>Polar Bookshelf</h1>
 
+[![Reddit](https://img.shields.io/discord/307605794680209409.svg?style=flat-square)](https://www.reddit.com/r/PolarBookshelf/)
+
 <!--
 [![Discord](https://img.shields.io/discord/307605794680209409.svg?style=flat-square)](https://discord.gg/yAA8DdK)
 [![Travis](https://img.shields.io/travis/wexond/wexond.svg?style=flat-square)](https://travis-ci.org/wexond/wexond)
@@ -105,73 +107,85 @@ URL.
 
 After that the page will be captured and then loaded.
 
-## Pagemarks
+# Local Storage
 
-The pagemarks are persisted on disk in your ```~/.polar``` directory and when
-you re-open a PDF your pagemarks are restored.
+All annotations, documents, PHZ files and other data are persisted on disk in
+your ```~/.polar``` directory (different on each platform) and when you re-open
+a PDF or PHZ file your pagemarks and other annotations are restored.
+
+Since storage is local you're not reliant on one specific cloud provider. You can 
+also use tools like git or Dropbox to synchronize across machines.
+
+# Pagemarks
+
+Pagemarks provide a way for you to keep track of your reading by marking portions
+of your document as 'read'.  You can have multiple pagemarks per document. 
 
 Additionally there is a progress bar that tracks the progress of the document
 based on the number of pagemarks you've created.
 
 Right now usage is only via keyboard bindings:
 
-### Linux / Windows key bindings
+## Linux / Windows key bindings
 
  - Control Alt N - create a new pagemark on the current page
  - Control Alt click - create a pagemark on the page up until the current mouse click
  - Control Alt E - erase the current pagemark
 
-### MacOS Key bindings
+## MacOS Key bindings
 
  - Meta-Command N - create a new pagemark on the current page
  - Meta-Command click - create a pagemark on the page up until the current mouse click
  - Meta-Command E - erase the current pagemark
 
-## Text Highlights
+# Text Highlights
 
 ![Text Highlight](https://raw.githubusercontent.com/burtonator/polar-bookshelf/master/docs/screenshots/text-highlight-shadow.png)
 
 Text highlights allow you to work with content like you're using a text
 highlighter in a book.
 
-### Create a text highlight.
+## Create a text highlight.
 
 Select text you want to highlight then hit Ctrl-Alt-T
 
-### Delete a text highlight.
+## Delete a text highlight.
 
 Right click the highlight and select delete.
 
-### Key bindings:
+## Key bindings:
 
  - Ctrl-Alt-T - create a new text highlight from the current selected text.
 
 
-## Area Highlights
+# Area Highlights
 
 ![Area Highlight](https://raw.githubusercontent.com/burtonator/polar-bookshelf/master/docs/screenshots/area-highlight-shadow.png)
 
 Area highlights allow you highlight a figure, infographic, or anything visual 
 in a document. 
 
-### Create an area highlight.
+## Create an area highlight.
 
 Right click on a page and select "Create area highlight"
 
-### Delete an highlight.
+## Delete an highlight.
 
 Right click the highlight and select delete.
 
-## REST API
+# REST API
 
 We're developing a REST API for interacting with Polar which is still in the
 beta stage.  Right now we use the REST backend for serving content to the Electron
 renderer via HTTP rather than loading documents from the filesystem.
 
-## Hackable
+# Hackable
 
 Since the entire platform is based on Electron (Node + Chromium) the platform
 is very easy to work with which means developers can contribute easily.
+
+Feel free to fork and send a pull request if there's some interesting feature 
+you would like to add.
 
 # Data
 
