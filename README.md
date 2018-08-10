@@ -1,5 +1,5 @@
 <p align="center">
-    <img src="https://github.com/burtonator/polar-bookshelf/blob/master/icon.ico" width="128" align="right">
+    <img src="https://github.com/burtonator/polar-bookshelf/blob/master/icon.ico" width="128">
 </p>
 
 <div align="center">
