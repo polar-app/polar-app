@@ -6,8 +6,8 @@
   <h1>Polar Bookshelf</h1>
 
 
-<a href="bitcoin:bc1q059asaaqjt5cultx993gfytjssj4g6fw3q8n7g"><img src="./docs/icons/bitcoin.svg" width="64" height="64"></a>
-<a href="https://discord.gg/GT8MhA6"><img src="./docs/icons/discord.svg" width="64" height="64"></a>
+<a href="bitcoin:bc1q059asaaqjt5cultx993gfytjssj4g6fw3q8n7g" title="Donate"><img src="./docs/icons/bitcoin.svg" width="100" height="100"></a>
+<a href="https://discord.gg/GT8MhA6" title="Discussion"><img src="./docs/icons/discord.svg" width="100" height="100"></a>
 
 
 <!--
@@ -311,6 +311,12 @@ $ npm install && npm start
 If you'd like to donate we accept Bitcoin at <a href="bc1q059asaaqjt5cultx993gfytjssj4g6fw3q8n7g">bc1q059asaaqjt5cultx993gfytjssj4g6fw3q8n7g</a>
 
 All donations go to supporting Polar which include website hosting costs, web designer costs, continual integration services, etc. 
+
+# Discussion
+
+We have a <a href="<a href="https://discord.gg/GT8MhA6">">Discord server</a> if you would like to discuss Polar with other users.
+
+You can also create a Github issue if you have something more complicated. 
 
 # License
 
