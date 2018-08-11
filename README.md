@@ -5,11 +5,16 @@
 <div align="center">
   <h1>Polar Bookshelf</h1>
 
+
+<a href="bc1q059asaaqjt5cultx993gfytjssj4g6fw3q8n7g"><img src="https://raw.githubusercontent.com/burtonator/polar-bookshelf/master/docs/icons/bitcoin.svg" width="32" height="32"></a>
+
+
+<!--
+
 <b>Bitcoin Donations: </b> <a href="bc1q059asaaqjt5cultx993gfytjssj4g6fw3q8n7g">bc1q059asaaqjt5cultx993gfytjssj4g6fw3q8n7g</a>
 <br>
 <a href="https://discord.gg/GT8MhA6">Discord Discussion</a>
 
-<!--
 https://discord.gg/qp5FsY
 
 [![Reddit](https://img.shields.io/discord/307605794680209409.svg?style=flat-square)](https://www.reddit.com/r/PolarBookshelf/)
