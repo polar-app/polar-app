@@ -6,6 +6,8 @@
   <h1>Polar Bookshelf</h1>
 
 <b>Bitcoin Donations: </b> <a href="bc1q059asaaqjt5cultx993gfytjssj4g6fw3q8n7g">bc1q059asaaqjt5cultx993gfytjssj4g6fw3q8n7g</a>
+<br>
+<a href="https://discord.gg/GT8MhA6">Discord Discussion</a>
 
 <!--
 https://discord.gg/qp5FsY
