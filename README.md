@@ -6,8 +6,8 @@
   <h1>Polar Bookshelf</h1>
 
 
-<a href="bitcoin:bc1q059asaaqjt5cultx993gfytjssj4g6fw3q8n7g" title="Donate"><img src="./docs/icons/bitcoin.svg" width="100" height="100"></a>
-<a href="https://discord.gg/GT8MhA6" title="Discussion"><img src="./docs/icons/discord.svg" width="100" height="100"></a>
+<a href="bitcoin:bc1q059asaaqjt5cultx993gfytjssj4g6fw3q8n7g" title="Donate"><img src="./docs/icons/bitcoin.svg" width="75" height="75"></a>
+<a href="https://discord.gg/GT8MhA6" title="Discussion"><img src="./docs/icons/discord.svg" width="75" height="75"></a>
 
 
 <!--
