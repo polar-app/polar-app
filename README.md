@@ -5,7 +5,7 @@
 <div align="center">
   <h1>Polar Bookshelf</h1>
 
-
+<b>Bitcoin Donations: </b> <a href="bc1q059asaaqjt5cultx993gfytjssj4g6fw3q8n7g">bc1q059asaaqjt5cultx993gfytjssj4g6fw3q8n7g</a>
 
 <!--
 https://discord.gg/qp5FsY
@@ -298,8 +298,16 @@ $ npm install && npm start
 ./node_modules/.bin/electron --interactive --enable-console-logging .
 ```
 
-License
-----------------
+# Donations
+
+If you'd like to donate we accept Bitcoin at <a href="bc1q059asaaqjt5cultx993gfytjssj4g6fw3q8n7g">bc1q059asaaqjt5cultx993gfytjssj4g6fw3q8n7g</a>
+
+All donations go to supporting Polar which include website hosting costs, web designer costs, continual integration services, etc. 
+
+# License
+
+Polar is distributed under the GPL license.  
+
 [PDF.js](https://github.com/mozilla/pdf.js) is available under  Apache License.
 [Electron](https://github.com/electron/electron) is released under MIT License.
 Rest of the code is MIT licensed.
