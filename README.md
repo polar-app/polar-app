@@ -188,7 +188,7 @@ Flashcards can be created by right clicking an annotation and selecting
 "Create Flashcard".  The resulting flashcards are stored as annotations in your 
 repository.
 
-## Status:
+## Status
 
 This is currently a beta feature and we're working on implementing Anki sync
 to enable spaced repetition. Any flashcards created now will be stored with
