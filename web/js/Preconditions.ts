@@ -1,6 +1,5 @@
 export class Preconditions {
 
-
     /**
      *
      * @param value  The value we're trying to assert.
@@ -95,7 +94,7 @@ export class Preconditions {
 
     }
 
-    static assertNotNull<T>(value: T, name?: string): T {
+    static assertNotNull<T>(value: T | null, name?: string): T {
 
         let msgPrefix = "Precondition argument failed: ";
 
@@ -156,3 +155,13 @@ export class Preconditions {
 interface AssertionFunction<T> {
     (val: T): boolean
 }
+
+export function defaultValue<T>(currentValue: T, defaultValue: T): T {
+    return Preconditions.defaultValue(currentValue, defaultValue);
+}
+
+export function notNull<T>(value: T | null, name?: string): T {
+    return Preconditions.assertNotNull(value, name);
+}
+
+//export { Preconditions.defaultValue as defaultValue };

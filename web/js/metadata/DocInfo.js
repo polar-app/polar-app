@@ -8,13 +8,15 @@ class DocInfo extends SerializedObject_1.SerializedObject {
         super(val);
         this.progress = 0;
         this.pagemarkType = PagemarkType_1.PagemarkType.SINGLE_COLUMN;
+        this.properties = {};
         this.title = val.title;
         this.url = val.url;
         this.nrPages = val.nrPages;
         this.fingerprint = val.fingerprint;
         this.lastOpened = val.lastOpened;
-        this.progress = val.progress || 0;
+        this.progress = Preconditions_1.Preconditions.defaultValue(val.progress, 0);
         this.pagemarkType = PagemarkType_1.PagemarkType.SINGLE_COLUMN;
+        this.properties = Preconditions_1.Preconditions.defaultValue(val.properties, {});
         this.init(val);
     }
     setup() {

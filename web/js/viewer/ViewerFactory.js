@@ -4,10 +4,10 @@ const { DocFormats } = require("../docformat/DocFormats");
 const { HTMLViewer } = require("./html/HTMLViewer");
 const { PDFViewer } = require("./pdf/PDFViewer");
 class ViewerFactory {
-    static create() {
+    static create(model) {
         switch (DocFormats.getFormat()) {
             case "html":
-                return new HTMLViewer();
+                return new HTMLViewer(model);
             case "pdf":
                 return new PDFViewer();
             default:

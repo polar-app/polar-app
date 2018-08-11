@@ -1,178 +1,116 @@
-
-const {ContextMenuController} = require("../contextmenu/ContextMenuController");
-const {TextHighlightController} = require("../highlights/text/controller/TextHighlightController");
-const {AreaHighlightController} = require("../highlights/area/controller/AreaHighlightController");
-const {PagemarkCoverageEventListener} = require("../pagemarks/controller/PagemarkCoverageEventListener.js");
-const {KeyEvents} = require("../KeyEvents.js");
-const {Preconditions} = require("../Preconditions.js");
-const {Controller} = require("./Controller.js");
-const {DocFormatFactory} = require("../docformat/DocFormatFactory");
-const {FlashcardsController} = require("../flashcards/controller/FlashcardsController");
-const {AnnotationsController} = require("../annotations/controller/AnnotationsController");
-const {MouseTracer} = require("../mouse/MouseTracer");
-
-const log = require("../logger/Logger").create();
-
+"use strict";
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const Preconditions_1 = require("../Preconditions");
+const DocFormatFactory_1 = require("../docformat/DocFormatFactory");
+const ContextMenuController_1 = require("../contextmenu/ContextMenuController");
+const KeyEvents_1 = require("../KeyEvents");
+const Logger_1 = require("../logger/Logger");
+const { TextHighlightController } = require("../highlights/text/controller/TextHighlightController");
+const { AreaHighlightController } = require("../highlights/area/controller/AreaHighlightController");
+const { PagemarkCoverageEventListener } = require("../pagemarks/controller/PagemarkCoverageEventListener.js");
+const { Controller } = require("./Controller.js");
+const { FlashcardsController } = require("../flashcards/controller/FlashcardsController");
+const { AnnotationsController } = require("../annotations/controller/AnnotationsController");
+const { MouseTracer } = require("../mouse/MouseTracer");
+const log = Logger_1.Logger.create();
 class WebController extends Controller {
-
     constructor(model) {
-        super(Preconditions.assertNotNull(model, "model"));
-
-        /**
-         * The document fingerprint that we have loaded to detect when the
-         * documents have changed.  Note that this isn't a secure fingerprint
-         * so we might want to change it in the future.
-         *
-         * @type string
-         */
+        super(Preconditions_1.Preconditions.assertNotNull(model, "model"));
         this.docFingerprint = null;
-
-        this.docFormat = DocFormatFactory.getInstance();
-
+        this.docFormat = Preconditions_1.notNull(DocFormatFactory_1.DocFormatFactory.getInstance());
     }
-
-    async start() {
-
-        this.listenForDocumentLoad();
-        await this.listenForKeyBindings();
-
-        //new MouseTracer(document).start();
-
+    start() {
+        return __awaiter(this, void 0, void 0, function* () {
+            this.listenForDocumentLoad();
+            yield this.listenForKeyBindings();
+        });
     }
-
-
     onDocumentLoaded(fingerprint, nrPages, currentlySelectedPageNum) {
-
-        // TODO: if I await super.onDocumentLoaded with webpack it breaks
         super.onDocumentLoaded(fingerprint, nrPages, currentlySelectedPageNum);
         this.setupContextMenu();
-
     }
-
     setupContextMenu() {
-
-        let contextMenuController = new ContextMenuController(this.model);
+        let contextMenuController = new ContextMenuController_1.ContextMenuController(this.model);
         contextMenuController.start();
-
     }
-
     listenForDocumentLoad() {
-
-        let container = document.getElementById('viewerContainer');
-
+        let container = Preconditions_1.notNull(document.getElementById('viewerContainer'));
         container.addEventListener('pagesinit', this.detectDocumentLoadedEventListener.bind(this));
         container.addEventListener('updateviewarea', this.detectDocumentLoadedEventListener.bind(this));
-
-        // run manually the first time in case we get lucky of we're running HTML
-        //this.detectDocumentLoadedEventListener();
-
     }
-
     detectDocumentLoadedEventListener(event) {
-
         let currentDocFingerprint = this.docFormat.currentDocFingerprint();
-
         if (currentDocFingerprint !== this.docFingerprint) {
-
             log.info("controller: New document loaded!");
-
             let newDocumentFingerprint = currentDocFingerprint;
-
             let currentDocState = this.docFormat.currentState(event);
-
             this.onNewDocumentFingerprint(newDocumentFingerprint, currentDocState.nrPages, currentDocState.currentPageNumber);
-
         }
-
     }
-
     onNewDocumentFingerprint(newDocumentFingerprint, nrPages, currentPageNumber) {
-
         log.info(`Detected new document fingerprint (fingerprint=${newDocumentFingerprint}, nrPages=${nrPages}, currentPageNumber=${currentPageNumber})`);
-
         this.docFingerprint = newDocumentFingerprint;
-
         this.onDocumentLoaded(newDocumentFingerprint, nrPages, currentPageNumber);
-
     }
-
-    // FIXME: remake this binding to CreatePagemarkEntirePage
-    async keyBindingPagemarkEntirePage(event) {
-
-        log.info("Marking entire page as read.");
-
-        let pageElement = this.docFormat.getCurrentPageElement();
-
-        if(pageElement) {
-
-            let pageNum = this.docFormat.getPageNumFromPageElement(pageElement);
-
-            this.erasePagemarks(pageNum);
-            await this.createPagemark(pageNum);
-
-        } else {
-
-            log.warn("No current pageElement to create pagemark.");
-        }
-
+    keyBindingPagemarkEntirePage(event) {
+        return __awaiter(this, void 0, void 0, function* () {
+            log.info("Marking entire page as read.");
+            let pageElement = this.docFormat.getCurrentPageElement();
+            if (pageElement) {
+                let pageNum = this.docFormat.getPageNumFromPageElement(pageElement);
+                this.erasePagemarks(pageNum);
+                yield this.createPagemark(pageNum);
+            }
+            else {
+                log.warn("No current pageElement to create pagemark.");
+            }
+        });
     }
-
-    keyBindingErasePagemark(event) {
+    keyBindingErasePagemark() {
         log.info("Erasing pagemark.");
         let pageElement = this.docFormat.getCurrentPageElement();
         let pageNum = this.docFormat.getPageNumFromPageElement(pageElement);
         this.erasePagemark(pageNum);
     }
-
-    async keyBindingListener(event) {
-
-        if (KeyEvents.isKeyMetaActive(event)) {
-
-            if (event.key) {
-
-                // TODO: we should not use 'code' but should use 'key'... The
-                // problem is that on OS X the key code returned 'Dead' but was
-                // working before.  Not sure why it started breaking.
-                switch (event.code) {
-
-                    case "KeyE":
-                        this.keyBindingErasePagemark(event);
-                        break;
-
-                    case "KeyN":
-                        await this.keyBindingPagemarkEntirePage(event);
-                        break;
-
-                    default:
-                        break;
-
+    keyBindingListener(event) {
+        return __awaiter(this, void 0, void 0, function* () {
+            if (KeyEvents_1.KeyEvents.isKeyMetaActive(event)) {
+                if (event.key) {
+                    switch (event.code) {
+                        case "KeyE":
+                            this.keyBindingErasePagemark();
+                            break;
+                        case "KeyN":
+                            yield this.keyBindingPagemarkEntirePage(event);
+                            break;
+                        default:
+                            break;
+                    }
                 }
-
             }
-
-        } else {
-        }
-
+            else {
+            }
+        });
     }
-
-    async listenForKeyBindings() {
-
-        document.addEventListener("keydown", this.keyBindingListener.bind(this));
-
-        log.info("Key bindings registered");
-
-        new TextHighlightController(this.model).start();
-
-        new PagemarkCoverageEventListener(this, this.model).start();
-
-        new FlashcardsController(this.model).start();
-
-        await new AnnotationsController().start();
-
-        new AreaHighlightController(this.model).start();
-
+    listenForKeyBindings() {
+        return __awaiter(this, void 0, void 0, function* () {
+            document.addEventListener("keydown", this.keyBindingListener.bind(this));
+            log.info("Key bindings registered");
+            new TextHighlightController(this.model).start();
+            new PagemarkCoverageEventListener(this, this.model).start();
+            new FlashcardsController(this.model).start();
+            yield new AnnotationsController().start();
+            new AreaHighlightController(this.model).start();
+        });
     }
-
 }
-
-module.exports.WebController = WebController;
+exports.WebController = WebController;
+//# sourceMappingURL=WebController.js.map
