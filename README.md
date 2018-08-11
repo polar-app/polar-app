@@ -288,9 +288,7 @@ successful project.
 
 ## Build from source
 
-```
 Install NodeJS and npm for your platform.
-```
 
 ### To run:
 
@@ -300,15 +298,9 @@ $ cd polar-bookshelf
 $ npm install && npm start
 ```
 
-### Run with advanced logging:
-
-```
-./node_modules/.bin/electron --interactive --enable-console-logging .
-```
-
 # Donations
 
-If you'd like to donate we accept Bitcoin at <a href="bc1q059asaaqjt5cultx993gfytjssj4g6fw3q8n7g">bc1q059asaaqjt5cultx993gfytjssj4g6fw3q8n7g</a>
+If you'd like to donate we accept Bitcoin at <a href="bitcoin:bc1q059asaaqjt5cultx993gfytjssj4g6fw3q8n7g">bc1q059asaaqjt5cultx993gfytjssj4g6fw3q8n7g</a>
 
 All donations go to supporting Polar which include website hosting costs, web designer costs, continual integration services, etc. 
 
