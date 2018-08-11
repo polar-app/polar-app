@@ -6,7 +6,7 @@
   <h1>Polar Bookshelf</h1>
 
 
-<a href="bitcoin:bc1q059asaaqjt5cultx993gfytjssj4g6fw3q8n7g"><img src="https://raw.githubusercontent.com/burtonator/polar-bookshelf/master/docs/icons/bitcoin.svg" width="32" height="32"></a>
+<a href="bitcoin:bc1q059asaaqjt5cultx993gfytjssj4g6fw3q8n7g"><img src="./docs/icons/bitcoin.svg" width="32" height="32"></a>
 <a href="https://discord.gg/GT8MhA6"><img src="https://raw.githubusercontent.com/burtonator/polar-bookshelf/master/docs/icons/discord.svg" width="32" height="32"></a>
 
 
