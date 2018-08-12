@@ -32,10 +32,11 @@ class Launcher {
             if (PAGEMARK_VIEW_ENABLED) {
                 new PagemarkView(model).start();
             }
-            ViewerFactory_1.ViewerFactory.create(model).start();
+            let viewer = ViewerFactory_1.ViewerFactory.create(model);
+            viewer.start();
             yield persistenceLayer.init();
             new PagemarkController(model).start();
-            yield new WebController(model).start();
+            yield new WebController(model, viewer).start();
         });
     }
     launch() {

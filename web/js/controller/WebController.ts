@@ -4,11 +4,12 @@ import {DocFormatFactory} from '../docformat/DocFormatFactory';
 import {ContextMenuController} from '../contextmenu/ContextMenuController';
 import {KeyEvents} from '../KeyEvents';
 import {Logger} from '../logger/Logger';
+import {Viewer} from '../viewer/Viewer';
 
 const {TextHighlightController} = require("../highlights/text/controller/TextHighlightController");
 const {AreaHighlightController} = require("../highlights/area/controller/AreaHighlightController");
-const {PagemarkCoverageEventListener} = require("../pagemarks/controller/PagemarkCoverageEventListener.js");
-const {Controller} = require("./Controller.js");
+const {PagemarkCoverageEventListener} = require("../pagemarks/controller/PagemarkCoverageEventListener");
+const {Controller} = require("./Controller");
 const {FlashcardsController} = require("../flashcards/controller/FlashcardsController");
 const {AnnotationsController} = require("../annotations/controller/AnnotationsController");
 const {MouseTracer} = require("../mouse/MouseTracer");
@@ -17,9 +18,13 @@ const log = Logger.create();
 
 export class WebController extends Controller {
 
-    constructor(model: Model) {
+    protected viewer: Viewer;
+
+    constructor(model: Model, viewer: Viewer) {
 
         super(Preconditions.assertNotNull(model, "model"));
+
+        this.viewer = Preconditions.assertNotNull(viewer, "viewer");
 
         /**
          * The document fingerprint that we have loaded to detect when the
@@ -48,6 +53,10 @@ export class WebController extends Controller {
 
         // TODO: if I await super.onDocumentLoaded with webpack it breaks
         super.onDocumentLoaded(fingerprint, nrPages, currentlySelectedPageNum)
+
+        let docDetails = this.viewer.docDetails();
+
+        log.info("Loaded with docDetails: ", docDetails);
 
         this.setupContextMenu();
 

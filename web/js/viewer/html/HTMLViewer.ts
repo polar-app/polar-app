@@ -48,6 +48,9 @@ export class HTMLViewer extends Viewer {
 
         $(document).ready(() => {
 
+            console.log("FIXME999");
+            this.requestParams = this._requestParams();
+
             this._captureBrowserZoom();
 
             this._loadRequestData();
@@ -134,8 +137,6 @@ export class HTMLViewer extends Viewer {
      * Otherwise, use the defaults.
      */
     _configurePageWidth() {
-
-        this.requestParams = this._requestParams();
 
         // the default width
         let width = 750;

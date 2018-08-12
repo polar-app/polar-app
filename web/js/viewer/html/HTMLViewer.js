@@ -29,6 +29,8 @@ class HTMLViewer extends Viewer_1.Viewer {
         this.textLayer = document.querySelector(".textLayer");
         this.htmlFormat = new HTMLFormat();
         JQuery_1.default(document).ready(() => {
+            console.log("FIXME999");
+            this.requestParams = this._requestParams();
             this._captureBrowserZoom();
             this._loadRequestData();
             this._configurePageWidth();
@@ -74,7 +76,6 @@ class HTMLViewer extends Viewer_1.Viewer {
         });
     }
     _configurePageWidth() {
-        this.requestParams = this._requestParams();
         let width = 750;
         let descriptor = Preconditions_1.notNull(this.requestParams).descriptor;
         if (descriptor && descriptor.browser) {

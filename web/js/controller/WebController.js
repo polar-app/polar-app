@@ -15,15 +15,16 @@ const KeyEvents_1 = require("../KeyEvents");
 const Logger_1 = require("../logger/Logger");
 const { TextHighlightController } = require("../highlights/text/controller/TextHighlightController");
 const { AreaHighlightController } = require("../highlights/area/controller/AreaHighlightController");
-const { PagemarkCoverageEventListener } = require("../pagemarks/controller/PagemarkCoverageEventListener.js");
-const { Controller } = require("./Controller.js");
+const { PagemarkCoverageEventListener } = require("../pagemarks/controller/PagemarkCoverageEventListener");
+const { Controller } = require("./Controller");
 const { FlashcardsController } = require("../flashcards/controller/FlashcardsController");
 const { AnnotationsController } = require("../annotations/controller/AnnotationsController");
 const { MouseTracer } = require("../mouse/MouseTracer");
 const log = Logger_1.Logger.create();
 class WebController extends Controller {
-    constructor(model) {
+    constructor(model, viewer) {
         super(Preconditions_1.Preconditions.assertNotNull(model, "model"));
+        this.viewer = Preconditions_1.Preconditions.assertNotNull(viewer, "viewer");
         this.docFingerprint = null;
         this.docFormat = Preconditions_1.notNull(DocFormatFactory_1.DocFormatFactory.getInstance());
     }
@@ -35,6 +36,8 @@ class WebController extends Controller {
     }
     onDocumentLoaded(fingerprint, nrPages, currentlySelectedPageNum) {
         super.onDocumentLoaded(fingerprint, nrPages, currentlySelectedPageNum);
+        let docDetails = this.viewer.docDetails();
+        log.info("Loaded with docDetails: ", docDetails);
         this.setupContextMenu();
     }
     setupContextMenu() {

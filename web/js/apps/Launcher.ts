@@ -48,13 +48,14 @@ export class Launcher {
             new PagemarkView(model).start();
         }
 
-        ViewerFactory.create(model).start();
+        let viewer = ViewerFactory.create(model);
+        viewer.start();
 
         await persistenceLayer.init();
 
         new PagemarkController(model).start();
 
-        await new WebController(model).start();
+        await new WebController(model, viewer).start();
 
     }
 
