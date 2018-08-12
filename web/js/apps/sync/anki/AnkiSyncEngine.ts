@@ -8,6 +8,9 @@ import {SyncProgressListener} from '../SyncProgressListener';
 import {SyncJob} from '../SyncJob';
 import {DocMeta} from '../../../metadata/DocMeta';
 import {Flashcard} from '../../../metadata/Flashcard';
+import {PageInfo} from '../../../metadata/PageInfo';
+import {Dictionaries} from '../../../util/Dictionaries';
+import * as _ from "lodash";
 
 export class AnkiSyncEngine implements SyncEngine {
 
@@ -27,14 +30,20 @@ export class AnkiSyncEngine implements SyncEngine {
         docMetaSet.docMetas.forEach(docMeta => {
             Object.values(docMeta.pageMetas).forEach(pageMeta => {
 
-                if(pageMeta.flashcards) {
+                let flashcards: Flashcard[] = [];
 
-                    Object.values(pageMeta.flashcards).forEach(flashcard => {
-                        let t: FlashcardHolder = { docMeta, flashcard};
-                        result.push(t);
-                    });
+                let textHighlights = pageMeta.textHighlights;
 
-                }
+                flashcards.push(...Dictionaries.values(pageMeta.flashcards));
+
+                //Dictionaries.values(pageMeta.textHighlights).ma
+
+                //flashcards.push(...Dictionaries.values(pageMeta.textHighlights.flashcards));
+                //
+                // Dictionaries.values(pageMeta.flashcards).forEach(flashcard => {
+                //     let t: FlashcardHolder = { docMeta, flashcard, pageInfo: pageMeta.pageInfo};
+                //     result.push(t);https://www.youtube.com/watch?v=lXQKOpQXuh8
+                // });
 
             })
         });
@@ -72,6 +81,8 @@ export class AnkiSyncEngine implements SyncEngine {
 interface FlashcardHolder {
 
     readonly docMeta: DocMeta;
+
+    readonly pageInfo: PageInfo;
 
     readonly flashcard: Flashcard;
 }

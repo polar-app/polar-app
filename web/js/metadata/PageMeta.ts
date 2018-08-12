@@ -2,6 +2,7 @@ import {SerializedObject} from './SerializedObject';
 import {PageInfo} from './PageInfo';
 import {Flashcard} from './Flashcard';
 import {Preconditions} from '../Preconditions';
+import {TextHighlight} from './TextHighlight';
 
 export class PageMeta extends SerializedObject {
 
@@ -39,7 +40,7 @@ export class PageMeta extends SerializedObject {
      * An index of test highlights for the page.
      *
      */
-    public textHighlights: {[id: string]: any} = {};
+    public textHighlights: {[id: string]: TextHighlight} = {};
 
 
     /**
