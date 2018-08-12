@@ -68,6 +68,7 @@ describe('Test', function() {
             "Baltimore",
             "Oakland"
         ];
+
         assertJSON(result, expected);
 
     });

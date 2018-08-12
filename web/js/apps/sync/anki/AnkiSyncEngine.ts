@@ -30,20 +30,31 @@ export class AnkiSyncEngine implements SyncEngine {
         docMetaSet.docMetas.forEach(docMeta => {
             Object.values(docMeta.pageMetas).forEach(pageMeta => {
 
+                // collect all flashcards for the current page.
+
                 let flashcards: Flashcard[] = [];
 
-                let textHighlights = pageMeta.textHighlights;
+                flashcards.push(... Dictionaries.values(pageMeta.flashcards));
 
-                flashcards.push(...Dictionaries.values(pageMeta.flashcards));
+                flashcards.push(... _.chain(pageMeta.textHighlights)
+                    .map(current => Dictionaries.values(current.flashcards))
+                    .flatten()
+                    .value());
 
-                //Dictionaries.values(pageMeta.textHighlights).ma
+                flashcards.push(... _.chain(pageMeta.areaHighlights)
+                    .map(current => Dictionaries.values(current.flashcards))
+                    .flatten()
+                    .value());
 
-                //flashcards.push(...Dictionaries.values(pageMeta.textHighlights.flashcards));
-                //
-                // Dictionaries.values(pageMeta.flashcards).forEach(flashcard => {
-                //     let t: FlashcardHolder = { docMeta, flashcard, pageInfo: pageMeta.pageInfo};
-                //     result.push(t);https://www.youtube.com/watch?v=lXQKOpQXuh8
-                // });
+                let flashcardHolders =_.chain(flashcards)
+                    .map(current => <FlashcardHolder> {
+                        docMeta,
+                        pageInfo: pageMeta.pageInfo,
+                        flashcard: current
+                    })
+                    .value();
+
+                result.push(...flashcardHolders);
 
             })
         });

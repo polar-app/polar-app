@@ -3,6 +3,7 @@ import {PageInfo} from './PageInfo';
 import {Flashcard} from './Flashcard';
 import {Preconditions} from '../Preconditions';
 import {TextHighlight} from './TextHighlight';
+import {AreaHighlight} from './AreaHighlight';
 
 export class PageMeta extends SerializedObject {
 
@@ -47,7 +48,7 @@ export class PageMeta extends SerializedObject {
      * An index of area highlights for the page.
      *
      */
-    public areaHighlights: {[id: string]: any} = {};
+    public areaHighlights: {[id: string]: AreaHighlight} = {};
 
     /**
      * The thumbnails for this page.  Usually, this is just one thumbnail

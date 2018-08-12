@@ -1,16 +1,11 @@
-
-const {BaseHighlight} = require("./BaseHighlight.js");
-
-class AreaHighlight extends BaseHighlight {
-
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const BaseHighlight_1 = require("./BaseHighlight");
+class AreaHighlight extends BaseHighlight_1.BaseHighlight {
     constructor(val) {
-
         super(val);
-
         this.init(val);
-
     }
-
 }
-
-module.exports.AreaHighlight = AreaHighlight;
+exports.AreaHighlight = AreaHighlight;
+//# sourceMappingURL=AreaHighlight.js.map
