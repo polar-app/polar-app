@@ -128,6 +128,7 @@
     "markdown-plus": "^2.5.2",
     "marked": "^0.4.0",
     "micromodal": "^0.3.2",
+    "node-fetch": "^2.2.0",
     "node-http-proxy": "^0.2.3",
     "npm": "^6.3.0",
     "popper.js": "^1.14.3",
