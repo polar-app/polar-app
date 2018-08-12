@@ -19,4 +19,10 @@ export class SyncState {
      */
     public readonly error: Error | undefined;
 
+    /**
+     * A message to display to the user.  Probably the last annotation and/or
+     * document synchronized.
+     */
+    public readonly message: string = "";
+
 }

@@ -16,7 +16,9 @@ export class Model {
 
     // TODO: we should probably not set this via a global as it might not
     // be loaded yet and / or might be invalidated if the document is closed.
-    docMeta: DocMeta = new DocMeta();
+    //
+    // TODO: we create a fake document which is eventually replaced.
+    docMeta: DocMeta = DocMetas.create('0x0001', 0);
 
     reactor: any; // TODO: type
 

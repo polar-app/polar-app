@@ -5,9 +5,9 @@ import {DocMeta} from './DocMeta';
  */
 export class DocMetaSet {
 
-    public readonly docMetas: DocMeta;
+    public readonly docMetas: DocMeta[];
 
-    public constructor(docMetas: DocMeta) {
+    public constructor(docMetas: DocMeta[]) {
         this.docMetas = docMetas;
     }
 

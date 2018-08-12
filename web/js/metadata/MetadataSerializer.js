@@ -62,6 +62,6 @@ class MetadataSerializer {
 
     }
 
-};
+}
 
 module.exports.MetadataSerializer = MetadataSerializer;

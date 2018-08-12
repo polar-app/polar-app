@@ -10,7 +10,7 @@ export class SerializedObject {
         // noop
     }
 
-    init(val: any) {
+    init(val: any): void {
 
         if(typeof val === "object") {
             Object.assign(this, val);
