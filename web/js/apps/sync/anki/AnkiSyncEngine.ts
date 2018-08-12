@@ -1,6 +1,3 @@
-/**
- *
- */
 import {SyncEngine} from '../SyncEngine';
 import {SyncEngineDescriptor} from '../SyncEngineDescriptor';
 import {DocMetaSet} from '../../../metadata/DocMetaSet';
@@ -12,6 +9,10 @@ import {PageInfo} from '../../../metadata/PageInfo';
 import {Dictionaries} from '../../../util/Dictionaries';
 import * as _ from "lodash";
 
+/**
+ * Sync engine for Anki.  Takes cards registered in a DocMeta and then transfers
+ * them over to Anki.
+ */
 export class AnkiSyncEngine implements SyncEngine {
 
     readonly descriptor: SyncEngineDescriptor = new AnkiSyncEngineDescriptor();
