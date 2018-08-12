@@ -63,9 +63,7 @@ describe('DocMetas', function() {
             let json = DocMetas.serialize(docMeta, "  ");
 
             let expected = {
-                    "annotationInfo": {
-                        "lastAnnotated": null
-                    },
+                    "annotationInfo": {},
                     "pageMetas": {
                         "1": {
                             "pageInfo": {
@@ -126,6 +124,7 @@ describe('DocMetas', function() {
                     "docInfo": {
                         "progress": 0,
                         "pagemarkType": "SINGLE_COLUMN",
+                        "properties": {},
                         "nrPages": 2,
                         "fingerprint": "0x001"
                     }
