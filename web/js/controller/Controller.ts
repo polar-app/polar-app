@@ -10,7 +10,6 @@ export class Controller {
 
     /**
      *
-     * @param model {Model}
      */
     constructor(model: Model) {
         this.model = Preconditions.assertNotNull(model, "model");

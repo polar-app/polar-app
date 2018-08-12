@@ -124,7 +124,6 @@ export class WebController extends Controller {
             await this.createPagemark(pageNum);
 
         } else {
-
             log.warn("No current pageElement to create pagemark.");
         }
 
