@@ -135,12 +135,12 @@ export class HTMLViewer extends Viewer {
      */
     _configurePageWidth() {
 
-        let params = this._requestParams();
+        this.requestParams = this._requestParams();
 
         // the default width
         let width = 750;
 
-        let descriptor = params.descriptor;
+        let descriptor = notNull(this.requestParams).descriptor;
 
         if(descriptor && descriptor.browser) {
 
@@ -292,7 +292,14 @@ export class HTMLViewer extends Viewer {
     }
 
     docDetails(): DocDetails {
-        return { }
+
+        let requestParams = notNull(this.requestParams);
+
+        return {
+            url: requestParams.descriptor.url,
+            title: requestParams.descriptor.title
+        }
+
     }
 
 }

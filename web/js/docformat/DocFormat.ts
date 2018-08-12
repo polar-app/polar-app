@@ -2,7 +2,6 @@ import {notNull, Preconditions} from '../Preconditions';
 import {Elements} from '../util/Elements';
 import {DocDetails} from '../metadata/DocDetails';
 
-
 /**
  * Get the proper docFormat to work with.
  */

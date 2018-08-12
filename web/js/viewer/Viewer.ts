@@ -1,17 +1,17 @@
-import $ from '../ui/JQuery';
+import {DocDetails} from '../metadata/DocDetails';
 
 export class Viewer {
 
     start() {
 
-        $(document).ready(() => {
-
-        });
-
     }
 
     changeScale(scale: number) {
         throw new Error("Not supported by this viewer.")
+    }
+
+    docDetails(): DocDetails {
+        return {}
     }
 
 }

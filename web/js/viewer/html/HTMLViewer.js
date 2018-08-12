@@ -74,9 +74,9 @@ class HTMLViewer extends Viewer_1.Viewer {
         });
     }
     _configurePageWidth() {
-        let params = this._requestParams();
+        this.requestParams = this._requestParams();
         let width = 750;
-        let descriptor = params.descriptor;
+        let descriptor = Preconditions_1.notNull(this.requestParams).descriptor;
         if (descriptor && descriptor.browser) {
             width = descriptor.browser.deviceEmulation.screenSize.width;
             log.info("Setting width from device emulation: " + width);
@@ -149,7 +149,11 @@ class HTMLViewer extends Viewer_1.Viewer {
         this.htmlFormat.setCurrentDocFingerprint(fingerprint);
     }
     docDetails() {
-        return {};
+        let requestParams = Preconditions_1.notNull(this.requestParams);
+        return {
+            url: requestParams.descriptor.url,
+            title: requestParams.descriptor.title
+        };
     }
 }
 exports.HTMLViewer = HTMLViewer;
