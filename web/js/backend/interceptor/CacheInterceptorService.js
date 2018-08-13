@@ -33,7 +33,7 @@ class CacheInterceptorService {
 
         ++this.cacheStats.hits;
 
-        log.info("Going to handle with cache: ", request.url);
+        log.info("HIT Going to handle with cache: ", request.url);
 
         let cacheEntry = this.cacheRegistry.get(request.url);
 
@@ -59,7 +59,7 @@ class CacheInterceptorService {
             url: request.url,
         };
 
-        log.info("Going to handle with net.request: " + request.url);
+        log.info("MISS Going to handle with net.request: " + request.url);
 
         let netRequest = net.request(options)
             .on('response', async (response) => {

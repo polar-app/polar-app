@@ -238,7 +238,7 @@ const MENU_TEMPLATE = [{
     },
 ];
 
-function createWindow(browserWindowOptions = BROWSER_WINDOW_OPTIONS, url=DEFAULT_URL) {
+async function createWindow(browserWindowOptions = BROWSER_WINDOW_OPTIONS, url=DEFAULT_URL) {
 
     log.info("Creating window for URL: ", url);
 
@@ -277,19 +277,26 @@ function createWindow(browserWindowOptions = BROWSER_WINDOW_OPTIONS, url=DEFAULT
     // });
 
     newWindow.webContents.on('will-navigate', function(e, url) {
+        log.info("Attempt to navigate to new URL: ", url);
         // required to force the URLs clicked to open in a new browser.  The
         // user probably / certainly wants to use their main browser.
         e.preventDefault();
         shell.openExternal(url);
     });
 
+    log.info("Loading URL: ", url);
     newWindow.loadURL(url);
 
-    newWindow.once('ready-to-show', () => {
-        newWindow.show();
-    });
+    return new Promise(resolve => {
 
-    return newWindow;
+        newWindow.once('ready-to-show', () => {
+            newWindow.show();
+
+            resolve(newWindow);
+
+        });
+
+    })
 
 }
 
@@ -314,8 +321,8 @@ function consoleListener(event, level, message, line, sourceId) {
     log.info(`level=${level} ${sourceId}:${line}: ${message}`);
 }
 
-function cmdNewWindow(item, focusedWindow) {
-    createWindow();
+async function cmdNewWindow(item, focusedWindow) {
+    await createWindow();
 }
 
 function exitApp() {
@@ -467,7 +474,6 @@ async function loadDoc(path, targetWindow) {
 
     }
 
-    log.info("Loading webapp at: " + url);
 
     if(cacheMeta) {
 
@@ -482,6 +488,7 @@ async function loadDoc(path, targetWindow) {
 
     }
 
+    log.info("Loading webapp at: " + url);
     targetWindow.loadURL(url);
 
     if(args.enableConsoleLogging) {
@@ -537,7 +544,7 @@ async function cmdOpenInNewWindow(item, focusedWindow) {
 
     let path = await promptDoc();
 
-    let targetWindow = createWindow(BROWSER_WINDOW_OPTIONS, "about:blank");
+    let targetWindow = await createWindow(BROWSER_WINDOW_OPTIONS, "about:blank");
 
     await loadDoc(path, targetWindow);
 
@@ -551,7 +558,7 @@ async function cmdCaptureWebPage(item, focusedWindow) {
     browserWindowOptions.height = browserWindowOptions.height * .9;
     browserWindowOptions.center = true;
 
-    let targetWindow = createWindow(browserWindowOptions);
+    let targetWindow = await createWindow(browserWindowOptions);
 
     let url = './apps/capture/start-capture/index.html';
     targetWindow.loadFile(url);
@@ -572,7 +579,7 @@ async function openFileCmdline(path, createNewWindow) {
     log.info("Opening file given on the command line: " + path);
 
     if(createNewWindow) {
-        await loadDoc(path, createWindow());
+        await loadDoc(path, await createWindow());
     } else {
         await loadDoc(path, mainWindow);
     }
@@ -737,7 +744,7 @@ app.on('ready', async function() {
     //appIcon.setToolTip('Polar Bookshelf');
     //appIcon.setContextMenu(contextMenu);
 
-    mainWindow = createWindow();
+    mainWindow = await createWindow();
 
     // start the context menu system.
     new ElectronContextMenu();
@@ -757,10 +764,10 @@ app.on('window-all-closed', function() {
     if (process.platform !== 'darwin') { exitApp(); }
 });
 
-app.on('activate', function() {
+app.on('activate', async function() {
     // On OS X it's common to re-create a window in the app when the
     // dock icon is clicked and there are no other windows open.
-    if (mainWindow === null) { createWindow(); }
+    if (mainWindow === null) { await createWindow(); }
 });
 
 app.on('open-file', function() {

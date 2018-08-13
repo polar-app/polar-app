@@ -29,7 +29,6 @@ class HTMLViewer extends Viewer_1.Viewer {
         this.textLayer = document.querySelector(".textLayer");
         this.htmlFormat = new HTMLFormat();
         JQuery_1.default(document).ready(() => {
-            console.log("FIXME999");
             this.requestParams = this._requestParams();
             this._captureBrowserZoom();
             this._loadRequestData();
