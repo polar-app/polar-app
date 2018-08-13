@@ -48,7 +48,6 @@ export class HTMLViewer extends Viewer {
 
         $(document).ready(() => {
 
-            console.log("FIXME999");
             this.requestParams = this._requestParams();
 
             this._captureBrowserZoom();
