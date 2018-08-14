@@ -5,7 +5,6 @@ const convertStream = require("convert-stream");
 
 /** @type {Electron.Net} */
 const net = electron.net;
-const BrowserWindow = electron.BrowserWindow;
 const {Logger} = require("../../logger/Logger");
 
 const log = Logger.create();
