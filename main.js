@@ -233,6 +233,8 @@ const MENU_TEMPLATE = [{
                     });
                 }
             },
+            { label: 'Discord', click: function() { shell.openExternal('https://discord.gg/GT8MhA6'); } },
+            { label: 'Reddit', click: function() { shell.openExternal('https://www.reddit.com/r/PolarBookshelf/'); } },
             { label: 'Learn More', click: function() { shell.openExternal('https://github.com/burtonator/polar-bookshelf'); } },
         ]
     },
@@ -290,6 +292,7 @@ async function createWindow(browserWindowOptions = BROWSER_WINDOW_OPTIONS, url=D
     return new Promise(resolve => {
 
         newWindow.once('ready-to-show', () => {
+
             newWindow.show();
 
             resolve(newWindow);
@@ -496,9 +499,7 @@ async function loadDoc(path, targetWindow) {
         targetWindow.webContents.on("console-message", consoleListener);
     }
 
-    targetWindow.webContents.on('did-finish-load', function() {
-
-        // FIXME: this is supposed to load the new window I think...
+    targetWindow.webContents.once('did-finish-load', function() {
 
         if(descriptor && descriptor.title) {
             // TODO: this should be driven from the DocMeta and the DocMeta
@@ -559,6 +560,8 @@ async function cmdCaptureWebPage(item, focusedWindow) {
     browserWindowOptions.center = true;
 
     let targetWindow = await createWindow(browserWindowOptions);
+
+    // TODO: move to AppPaths here... loadFile does not work reliably.
 
     let url = './apps/capture/start-capture/index.html';
     targetWindow.loadFile(url);

@@ -234,44 +234,15 @@ implemented including:
 - Flashcard integration with Anki support. The flashcard UI is mostly complete
   but I need feedback on the design.
 
-# Roadmap
+# [Roadmap](./docs/ROADMAP.md)
 
-The long term goal is to implement the following functionality:
+Check our our [roadmap](./docs/ROADMAP.md) to see if there are any features you 
+need pending for a future release.  
 
- - Automatic metadata extraction of thumbnails, marked up text, and notes and
-   support migration into 3rd party spaced repetition systems like Anki.
+Feel free to jump on any of these issues if you're a developer and would like
+to implement them yourself.
 
-    - We have a proof of concept of this using chrome headless which needs to be
-      ported here.
-
-    - Integration of https://github.com/burtonator/pdf-annotation-exporter to
-      enable this functionality.
-
- - Additional annotation types including a complex feature set like notes and
-tags for these objects.
-
- - Flashcards will be notes designed and marked specifically to be converted
-   to flashcards for usage in spaced repetition systems.  They will have extended
-   metadata including front and back of the card as well as support for cloze
-   deletions, and the ability to include extended metadata like the source text
-   to which the flashcard was attached.
-
- - Fully distributed. You control your notes. You can export them to Evernote,
-   Google Drive, etc but Polar keeps track of your notes for you.
-
- - Distributed collaboration with other Polar users.
-
- - Tagging system and the ability to perform advanced functions on the tags.
-
- - Native cloud sync across devices.
-
- - Management UI for all the notes you've worked on (editing, changing them,
-   adding metadata, etc).
-
- - Ability to pull down ISBN metadata for books
-
- - Ability to pull down metadata by academic paper ID using various platform
-   APIs.
+Donations also help to support the project and encourage specific features.
 
 # Principles
 
