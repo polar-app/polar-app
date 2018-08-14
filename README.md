@@ -202,11 +202,10 @@ This is currently a beta feature and we're working on implementing Anki sync
 to enable spaced repetition. Any flashcards created now will be stored with
 Anki in the future.
 
-# REST API
+Polar is very reliable to use for day to day PDF and web content annotation.
 
-We're developing a REST API for interacting with Polar which is still in the
-beta stage.  Right now we use the REST backend for serving content to the Electron
-renderer via HTTP rather than loading documents from the filesystem.
+We're expecting to release a 1.0 in Sept 2018 with Anki sync support and initial
+annotation support.
 
 # Hackable
 
