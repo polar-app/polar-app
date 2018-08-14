@@ -19,7 +19,6 @@ SpectronRenderer.run(async () => {
     //console.log("FIXME: webFrame findFrameByName('foo'): " , webFrame.findFrameByName('foo'));
     //console.log("FIXME: webFrame findFrameByName('foo2'): " , webFrame.findFrameByName('foo2'));
 
-
     // FIXME this works!!!! but it doesn't seem like I can communicat ewith it.
     let iframeWebFrame = webFrame.getFrameForSelector('iframe');
 

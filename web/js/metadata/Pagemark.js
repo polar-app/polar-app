@@ -1,98 +1,39 @@
-
-const {Annotation} = require("./Annotation");
-const {PagemarkType} = require("./PagemarkType");
-const {MetadataSerializer} = require("./MetadataSerializer");
-const {ISODateTime} = require("./ISODateTime");
-
-class Pagemark extends Annotation {
-
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const Annotation_1 = require("./Annotation");
+const PagemarkType_1 = require("./PagemarkType");
+const MetadataSerializer_1 = require("./MetadataSerializer");
+class Pagemark extends Annotation_1.Annotation {
     constructor(val) {
-
         super(val);
-
-        // TODO: should pagemarks support the full nesting model where we can
-        // have comments, notes, flashcards, etc?  Probably not but notes might
-        // make sense.
-        /**
-         * The note for this annotation.
-         *
-         * @type {Object<String,Note>}
-         */
-        this.notes = {};
-
-        /**
-         * The type of pagemark.
-         *
-         * @type {PagemarkType}
-         */
-        this.type = null;
-
-        /**
-         * The total percentage of the page that is covered with the page mark.
-         * From 0 to 100.  This factors in the total rows and columns on the
-         * page and is the raw percentage value of the page.
-         *
-         * @type number
-         */
-        this.percentage = null;
-
-        /**
-         * The column number on which this pagemark is rendered.  This is mostly
-         * metadata and we should be migrating to PagemarkRect and PagemarkRange
-         * which supports raw rendering of the pagemarks.
-         *
-         * @type {number}
-         */
-        this.column = null;
-
-        /**
-         * The PagemarkRect for this pagemark. When not specified we use a box of
-         *
-         * { top: 0, left: 0, width: 100, height: 100 }
-         *
-         * or the whole page.
-         *
-         * @type {PagemarkRect}
-         */
-        this.rect = null;
-
-        // TODO: support 'range' in the future which is a PagemarkRange so that
-        // we can start off reading within a smaller page.
-
+        this.notes = val.notes;
+        this.type = val.type;
+        this.percentage = val.percentage;
+        this.column = val.percentage;
+        this.rect = val.rect;
         this.init(val);
-
     }
-
     setup() {
-
         super.setup();
-
-        if(!this.notes) {
-            this.notes = {}
+        if (!this.notes) {
+            this.notes = {};
         }
-
-        if(!this.type) {
-            this.type = PagemarkType.SINGLE_COLUMN;
+        if (!this.type) {
+            this.type = PagemarkType_1.PagemarkType.SINGLE_COLUMN;
         }
-
-        if(!this.percentage) {
+        if (!this.percentage) {
             this.percentage = 100;
         }
-
-        if(!this.column) {
+        if (!this.column) {
             this.column = 0;
         }
-
     }
-
     validate() {
         super.validate();
     }
-
     toString() {
-        return MetadataSerializer.serialize(this);
+        return MetadataSerializer_1.MetadataSerializer.serialize(this);
     }
-
 }
-
-module.exports.Pagemark = Pagemark;
+exports.Pagemark = Pagemark;
+//# sourceMappingURL=Pagemark.js.map
