@@ -771,8 +771,17 @@ app.on('activate', async function() {
     // On OS X it's common to re-create a window in the app when the
     // dock icon is clicked and there are no other windows open.
     if (mainWindow === null) { await createWindow(); }
+
 });
 
-app.on('open-file', function() {
-    log.info("Open file called.");
+app.on('open-file', (event, path) {
+
+    // TODO: the OS requested a file opened.  We're not testing this right
+    // now but it should work.
+
+    log.info("Open file called for: ", path);
+
+    handleCmdLinePDF(path, false)
+        .catch((err) => log.error(err));
+
 });

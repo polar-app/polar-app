@@ -50,7 +50,7 @@ research which is often stored as PDF.
 
 - **Standards Based** All content is stored as JSON in a well documented schema.  Annotations never mutate the original content.
 
-- **Portable** Run across any platform. ```Linux```, ```MacOS```, and ```Windows``` supported.  We also product snaps which means you can install our .deb files on Ubuntu or Debian but also any Linux distribution that supports snaps!
+- **Portable** Run across any platform. ```Linux```, ```MacOS```, and ```Windows``` supported.  We also product snaps which means you can install our ```.deb``` files on ```Ubuntu``` or ```Debian``` but also any ```Linux``` distribution that supports snaps!
 
 # Screenshots
 

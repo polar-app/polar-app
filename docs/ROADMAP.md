@@ -1,7 +1,7 @@
 
 # Overview
 
-Polar is a very ambitious project but since it's based on Electron and used a
+Polar is a very ambitious project but since it's based on Electron and uses a
 lot of technology from other projects we're moving forward very rapidly.
 
 Anything on the 'short term' feature list below will probably be implemented 
@@ -52,6 +52,10 @@ Electron or another API on which we're blocked.
 
 - Migrate back to Bootstrap 3.3.x since both react and summernote prefer the 
   3.3.x series. 
+  
+- Cryptographically signed releases for Windows, Linux and Mac
+
+- Automatic package distribution / updates for all platforms.
   
 # Long Term
 
