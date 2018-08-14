@@ -22,7 +22,12 @@ Electron or another API on which we're blocked.
 
 # Medium Term
 
-- sidebar for the main reader which shows all the annotations on a page and 
+- Support native platform integration for file extensions. *.pdf and *.phz. 
+  This is a good project for someone else on MacOS or Windows to take on as we
+  just need to augment electron-builder to implement support for the extension
+  and then update main.js to handle the event when the file is opened.  
+
+- Sidebar for the main reader which shows all the annotations on a page and 
   provides the ability preview them, scroll through and then navigate to the
   annotation on the doc.
 
