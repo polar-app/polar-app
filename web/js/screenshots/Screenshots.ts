@@ -1,4 +1,5 @@
 import {IXYRect} from '../util/rects/IXYRect';
+import {IXYRects} from '../util/rects/IXYRects';
 
 const electron = require('electron');
 const Logger = require("../logger/Logger").Logger;
@@ -17,8 +18,7 @@ export class Screenshots {
      *
      * https://github.com/electron/electron/blob/master/docs/api/native-image.md
      *
-     * @param screenshotRequest.  Specify either rect or element to capture as
-     *                            properties.
+     * @param target.  Specify either rect or element to capture as properties.
      *
      * @return {Promise} for {NativeImage}. You can call toDateURL on the image
      *         with scaleFactor as an option.
@@ -29,12 +29,12 @@ export class Screenshots {
         let rect: IXYRect;
 
         if(target instanceof HTMLElement) {
-            rect = target.getBoundingClientRect();
+
+            rect = IXYRects.createFromClientRect(target.getBoundingClientRect());
+
         } else {
             rect = target;
         }
-
-
 
         // now send the screenshotRequest IPC message and wait for the response
         return ipcRenderer.sendSync('create-screenshot', {rect});
