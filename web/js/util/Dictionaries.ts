@@ -7,6 +7,7 @@ export class Dictionaries {
         let result: T[] = [];
 
         if(! dict) {
+            // TODO: this can go away once we migrate to typescript everywhere
             return result;
         }
 
