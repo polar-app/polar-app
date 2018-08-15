@@ -17,6 +17,10 @@ Electron or another API on which we're blocked.
 
 - Ability to change color of highlights. 
 
+- Right click to create text highlight if a selection is active.
+
+- Right click on text in the document and 'set title' on the result.  
+
 - Simple 'About' webapp that includes the version of the project. Where to find
   more resources, donation links, etc.
 
@@ -60,7 +64,18 @@ Electron or another API on which we're blocked.
 - Migrate to using JSON schema for validation of all the JSON before we commit 
   to disk or read content from disk. 
   
+- Support 'archive' in the bookshelf app which would enable you to hide a document
+  which is completed or no longer of interest.  
+  
+- Improve our protocol interception support on Electron so that we can implement
+  a progress bar while a document is rendering and enable smooth rendering of 
+  pages while they are loading. 
+  
 # Long Term
+
+- Support annotation on video and audio with links back to the original.  Video
+  and audio support would need to be integrated into Polar but since it's based
+  on Electron this shouldn't be a problem. 
 
 - Implement ad blocking and consider working with Wexond on this functionality.
 
