@@ -57,6 +57,9 @@ Electron or another API on which we're blocked.
 
 - Automatic package distribution / updates for all platforms.
   
+- Migrate to using JSON schema for validation of all the JSON before we commit 
+  to disk or read content from disk. 
+  
 # Long Term
 
 - Implement ad blocking and consider working with Wexond on this functionality.

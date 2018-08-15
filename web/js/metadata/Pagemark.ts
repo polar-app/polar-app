@@ -4,7 +4,6 @@ import {PagemarkType} from './PagemarkType';
 import {PagemarkRect} from './PagemarkRect';
 import {MetadataSerializer} from './MetadataSerializer';
 
-
 export class Pagemark extends Annotation {
 
     // TODO: should pagemarks support the full nesting model where we can
@@ -48,7 +47,7 @@ export class Pagemark extends Annotation {
      */
     public rect: PagemarkRect;
 
-    constructor(val: Pagemark) {
+    constructor(val: any) {
 
         super(val);
 

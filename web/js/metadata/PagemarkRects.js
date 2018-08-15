@@ -1,100 +1,47 @@
-const {PagemarkType} = require("./PagemarkType");
-const {PagemarkRect} = require("./PagemarkRect");
-const {Preconditions} = require("../Preconditions");
-const {Rect} = require("../Rect");
-const {Rects} = require("../Rects");
-
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const PagemarkType_1 = require("./PagemarkType");
+const PagemarkRect_1 = require("./PagemarkRect");
+const Preconditions_1 = require("../Preconditions");
+const { Rect } = require("../Rect");
+const { Rects } = require("../Rects");
 class PagemarkRects {
-
-    /**
-     *
-     * Create a default PagemarkRect from a Pagemark that might be legacy.
-     *
-     * @param pagemark {Pagemark}
-     * @return {PagemarkRect}
-     */
     static createDefault(pagemark) {
-
-        if(pagemark.type === PagemarkType.SINGLE_COLUMN && "percentage" in pagemark) {
-
-            return new PagemarkRect({
+        if (pagemark.type === PagemarkType_1.PagemarkType.SINGLE_COLUMN && "percentage" in pagemark) {
+            return new PagemarkRect_1.PagemarkRect({
                 left: 0,
                 top: 0,
                 width: 100,
                 height: pagemark.percentage
             });
-
         }
-
         throw new Error("Can not create default");
-
     }
-
-    /**
-     *
-     * @param percentage {number}
-     * @return {PagemarkRect}
-     */
     static createFromPercentage(percentage) {
-
-        return new PagemarkRect({
+        return new PagemarkRect_1.PagemarkRect({
             left: 0,
             top: 0,
             width: 100,
             height: percentage
         });
     }
-
-
-    /**
-     *
-     *
-     * @param rect {Rect}
-     * @return {PagemarkRect}
-     */
     static createFromRect(rect) {
-
-        return new PagemarkRect({
+        return new PagemarkRect_1.PagemarkRect({
             left: rect.left,
             top: rect.top,
             width: rect.width,
             height: rect.height
         });
-
     }
-
-    /**
-     *
-     * @deprecated Moving to AnnotationRects
-     * @param xAxis {Line}
-     * @param yAxis {Line}
-     * @return {PagemarkRect}
-     */
     static createFromLines(xAxis, yAxis) {
         return PagemarkRects.createFromRect(Rects.createFromLines(xAxis, yAxis));
     }
-
-    /**
-     * Create a new PagemarkRect from a positioned rect.  We use this to take
-     * a dragged or resized rect / box on the screen then convert it to a
-     * PagemarkRect with the correct coordinates.
-     *
-     * @deprecated Moving to AnnotationRects
-     * @param boxRect {Rect}
-     * @param containerRect {Rect}
-     * @return {PagemarkRect}
-     */
     static createFromPositionedRect(boxRect, containerRect) {
-
-        Preconditions.assertInstanceOf(boxRect, Rect, "boxRect");
-
+        Preconditions_1.Preconditions.assertInstanceOf(boxRect, Rect, "boxRect");
         let xAxis = boxRect.toLine("x").multiply(100 / containerRect.width);
         let yAxis = boxRect.toLine("y").multiply(100 / containerRect.height);
-
         return this.createFromLines(xAxis, yAxis);
-
     }
-
 }
-
-module.exports.PagemarkRects = PagemarkRects;
+exports.PagemarkRects = PagemarkRects;
+//# sourceMappingURL=PagemarkRects.js.map

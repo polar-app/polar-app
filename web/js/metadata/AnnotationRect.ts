@@ -63,7 +63,7 @@ export class AnnotationRect {
      */
     public height: number;
 
-    constructor(obj: AnnotationRect) {
+    constructor(obj: any) {
 
         this.left = obj.left;
         this.top = obj.top;
@@ -80,9 +80,8 @@ export class AnnotationRect {
      * Make sure we are in a valid state and that the intervals are within
      * proper values.
      *
-     * @private
      */
-    _validate() {
+    private _validate() {
 
         let interval = new Interval(0,100);
 

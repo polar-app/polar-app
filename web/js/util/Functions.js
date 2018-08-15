@@ -53,7 +53,7 @@ class Functions {
 
 
     /**
-     * We iterate over all keys in the dictionary.  Even inherited keys.
+     * We iterate over all keys in the dictionary.
      *
      * @param dict
      * @param callback
