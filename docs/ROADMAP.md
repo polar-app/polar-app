@@ -46,9 +46,9 @@ Electron or another API on which we're blocked.
 
 - Better integration testing of core functionality?
 
-- 'Repository' view for all the documents you've loaded, their progress, 
-  thumbnails, titles, etc.  I might have to create a mockup of this and get 
-  feedback from the community.
+- 'Repository' view (bookshelf) for all the documents you've loaded, their
+  progress, thumbnails, titles, etc.  I might have to create a mockup of this and
+  get feedback from the community.
 
 - Migrate back to Bootstrap 3.3.x since both react and summernote prefer the 
   3.3.x series. 

@@ -4,8 +4,7 @@ export class Optional<T> {
     private readonly value?: T = undefined;
 
     /**
-     * An optional name for this optional which can be used when generating
-     * errors.
+     * An name for this Optional which can be used when generating errors.
      */
     public readonly name?: string = undefined;
 
@@ -14,19 +13,19 @@ export class Optional<T> {
         this.name = name;
     }
 
-    map(mapFunction: MapFunction<T>): Optional<T> {
+    map(mapFunction: MapFunction<NonNullable<T>>): Optional<any> {
 
-        if (this.value !== undefined) {
-            return new Optional(mapFunction(this.value), this.name);
+        if (this.isPresent()) {
+            return new Optional(mapFunction(this.value!), this.name);
         }
 
         return new Optional<T>(undefined, this.name);
 
     };
 
-    filter(filterFunction: FilterFunction<T>): Optional<T> {
+    filter(filterFunction: FilterFunction<NonNullable<T>>): Optional<T> {
 
-        if (this.value !== undefined && filterFunction(this.value)) {
+        if (this.isPresent() && filterFunction(this.value!)) {
             return new Optional(this.value);
         }
 
@@ -34,19 +33,20 @@ export class Optional<T> {
 
     }
 
-    get(): T {
+    get(): NonNullable<T> {
 
-        if(this.value === undefined) {
-            throw new Error("The value is undefined");
+        if(this.isPresent()) {
+            return this.value!;
         } else {
-            return this.value;
+            throw new Error("The value is undefined");
         }
 
     }
 
-    getOrElse(value: T): T {
-        if (this.value !== undefined) {
-            return this.value;
+    getOrElse(value: NonNullable<T>): NonNullable<T> {
+
+        if (this.isPresent()) {
+            return this.value!;
         }
 
         return value;
@@ -60,7 +60,7 @@ export class Optional<T> {
     }
 
     isPresent(): boolean {
-        return this.value !== undefined;
+        return this.value !== undefined && this.value !== null;
     }
 
     static of<T>(value: T, name?: string): Optional<T> {
@@ -78,7 +78,7 @@ export class Optional<T> {
 }
 
 export interface MapFunction<T> {
-    (value: T): T;
+    (value: T): any;
 }
 
 export interface FilterFunction<T> {

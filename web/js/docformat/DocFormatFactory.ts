@@ -1,7 +1,6 @@
-const {Elements} = require("../util/Elements");
+import {HTMLFormat} from './HTMLFormat';
+
 const {PDFFormat} = require("./PDFFormat");
-const {HTMLFormat} = require("./HTMLFormat");
-const {DocFormat} = require("./DocFormat");
 
 /**
  * Get the proper docFormat to work with.
