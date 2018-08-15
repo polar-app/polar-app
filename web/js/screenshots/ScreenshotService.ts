@@ -1,7 +1,5 @@
-import {ipcMain} from 'electron';
+import {ipcMain, BrowserWindow, WebContents} from 'electron';
 import {ScreenshotRequest} from './ScreenshotRequest';
-import BrowserWindow = Electron.BrowserWindow;
-import WebContents = Electron.WebContents;
 import {Screenshot} from './Screenshot';
 
 /**
@@ -20,8 +18,7 @@ export class ScreenshotService {
 
     start() {
 
-        // add an IPC listener for screenshot requests
-
+        // add an IPC listener for screenshot requests that we can respond with.
         ipcMain.on('create-screenshot', async (event: Electron.Event, screenshotRequest: ScreenshotRequest) => {
 
             let webContents = BrowserWindow.getFocusedWindow()!.webContents;
