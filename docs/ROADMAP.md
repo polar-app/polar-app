@@ -17,9 +17,9 @@ Electron or another API on which we're blocked.
 
 - Ability to change color of highlights. 
 
-- Right click to create text highlight if a selection is active.
+- Right click context menu to create text highlight if a selection is active.
 
-- Right click on text in the document and 'set title' on the result.  
+- Right click context menu on text in the document and 'set title' on the result.  
 
 - Simple 'About' webapp that includes the version of the project. Where to find
   more resources, donation links, etc.
