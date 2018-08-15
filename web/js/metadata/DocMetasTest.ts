@@ -5,17 +5,8 @@ import {MetadataSerializer} from './MetadataSerializer';
 import {assertJSON} from '../test/Assertions';
 import {PagemarkType} from './PagemarkType';
 
-// const {DocMeta} = require("./DocMeta");
-// const {DocMetas} = require("./DocMetas");
-// const {PageMeta} = require("./PageMeta");
 const {Proxies} = require("../proxies/Proxies");
-
-// const {MetadataSerializer} = require("./MetadataSerializer");
-// const {TextHighlightRecords} = require("./TextHighlightRecords");
 const {TextHighlights} = require("./TextHighlights");
-// const {PagemarkType} = require("./PagemarkType");
-
-// const {assertJSON} = require("../test/Assertions");
 const {TestingTime} = require("../test/TestingTime");
 
 TestingTime.freeze();
