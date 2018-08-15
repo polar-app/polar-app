@@ -86,3 +86,10 @@ curl -X POST "http://127.0.0.1:8765" -H 'Content-Type: application/json' -d'
 # findNotes
 
 - we add a custom field for the polar ID so that we can update the metadata.. 
+
+
+# TODO: 
+
+    - how do we delete flashcards that have been deleted in Polar?
+    - how do we delete polar decks from anki?
+    - how do we rename decks? 
