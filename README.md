@@ -76,6 +76,14 @@ research which is often stored as PDF.
 
 Packages for Windows, MacOS, and Linux are available in the [releases](https://github.com/burtonator/polar-bookshelf/releases) page.
 
+# Discussion
+
+We have both a [Discord](https://discord.gg/GT8MhA6) group and
+[Reddit](https://www.reddit.com/r/PolarBookshelf/) group if you want to discuss
+Polar.
+
+If it's a very technical issue it might be best to [create a Github Issue](https://github.com/burtonator/polar-bookshelf/issues/new). 
+
 # Personal Knowledge Repository
 
 Polar is a document manager for PDF and web content as well as a personal
