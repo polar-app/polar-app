@@ -9,13 +9,12 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const electron_1 = require("electron");
-var BrowserWindow = Electron.BrowserWindow;
 class ScreenshotService {
     constructor() {
     }
     start() {
         electron_1.ipcMain.on('create-screenshot', (event, screenshotRequest) => __awaiter(this, void 0, void 0, function* () {
-            let webContents = BrowserWindow.getFocusedWindow().webContents;
+            let webContents = electron_1.BrowserWindow.getFocusedWindow().webContents;
             let image = yield ScreenshotService.capture(webContents, screenshotRequest);
             let dataURL = image.toDataURL();
             let size = image.getSize();
