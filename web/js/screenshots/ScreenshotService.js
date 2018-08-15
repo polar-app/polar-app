@@ -18,8 +18,13 @@ class ScreenshotService {
             let webContents = BrowserWindow.getFocusedWindow().webContents;
             let image = yield ScreenshotService.capture(webContents, screenshotRequest);
             let dataURL = image.toDataURL();
+            let size = image.getSize();
             let screenshotResult = {
-                dataURL
+                dataURL,
+                dimensions: {
+                    width: size.width,
+                    height: size.height
+                }
             };
             event.sender.send("screenshot-created", screenshotResult);
         }));

@@ -29,9 +29,14 @@ export class ScreenshotService {
             let image = await ScreenshotService.capture(webContents, screenshotRequest);
 
             let dataURL = image.toDataURL();
+            let size = image.getSize();
 
             let screenshotResult: Screenshot = {
-                dataURL
+                dataURL,
+                dimensions: {
+                    width: size.width,
+                    height: size.height
+                }
             };
 
             // the sender is the app that request the screenshot
