@@ -93,3 +93,5 @@ curl -X POST "http://127.0.0.1:8765" -H 'Content-Type: application/json' -d'
     - how do we delete flashcards that have been deleted in Polar?
     - how do we delete polar decks from anki?
     - how do we rename decks? 
+
+- FIXME: just need addNote and updateNote now.

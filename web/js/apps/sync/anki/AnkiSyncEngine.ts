@@ -119,6 +119,12 @@ class AnkiSyncJob implements SyncJob {
 
     abort(): void {
 
+        // get the decks
+        // if any decks are missing create them
+        // see which notes are in the decks
+        // if they are updated, update them
+        // if they are missing, create them.
+
     }
 
 }
