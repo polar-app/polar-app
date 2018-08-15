@@ -3,6 +3,7 @@ import {Note} from './Note';
 import {PagemarkType} from './PagemarkType';
 import {PagemarkRect} from './PagemarkRect';
 import {MetadataSerializer} from './MetadataSerializer';
+import {PagemarkMode} from './PagemarkMode';
 
 export class Pagemark extends Annotation {
 
@@ -47,6 +48,11 @@ export class Pagemark extends Annotation {
      */
     public rect: PagemarkRect;
 
+    /**
+     * The mode of this pagemark (read, ignored, etc).
+     */
+    public mode: PagemarkMode;
+
     constructor(val: any) {
 
         super(val);
@@ -60,6 +66,7 @@ export class Pagemark extends Annotation {
         this.percentage = val.percentage;
         this.column = val.percentage;
         this.rect = val.rect;
+        this.mode = val.mode;
 
         // TODO: support 'range' in the future which is a PagemarkRange so that
         // we can start off reading within a smaller page.
@@ -78,6 +85,10 @@ export class Pagemark extends Annotation {
 
         if(!this.type) {
             this.type = PagemarkType.SINGLE_COLUMN;
+        }
+
+        if(!this.mode) {
+            this.mode = PagemarkMode.READ;
         }
 
         if(!this.percentage) {

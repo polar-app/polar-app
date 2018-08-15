@@ -10,6 +10,7 @@ const PagemarkType_1 = require("./PagemarkType");
 const PagemarkRects_1 = require("./PagemarkRects");
 const Dictionaries_1 = require("../util/Dictionaries");
 const Percentages_1 = require("../util/Percentages");
+const PagemarkMode_1 = require("./PagemarkMode");
 const log = Logger_1.Logger.create();
 const DEFAULT_PAGEMARK_RECT = new PagemarkRect_1.PagemarkRect({
     left: 0,
@@ -82,6 +83,9 @@ class Pagemarks {
             if (!pagemark.id) {
                 log.warn("Pagemark given ID");
                 pagemark.id = Pagemarks.createID(pagemark.created);
+            }
+            if (!pagemark.mode) {
+                pagemark.mode = PagemarkMode_1.PagemarkMode.READ;
             }
         });
         return result;

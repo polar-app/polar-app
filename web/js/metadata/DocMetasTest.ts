@@ -1,16 +1,21 @@
 import assert from 'assert';
+import {DocMeta} from './DocMeta';
+import {DocMetas} from './DocMetas';
+import {MetadataSerializer} from './MetadataSerializer';
+import {assertJSON} from '../test/Assertions';
+import {PagemarkType} from './PagemarkType';
 
-const {DocMeta} = require("./DocMeta");
-const {DocMetas} = require("./DocMetas");
-const {PageMeta} = require("./PageMeta");
+// const {DocMeta} = require("./DocMeta");
+// const {DocMetas} = require("./DocMetas");
+// const {PageMeta} = require("./PageMeta");
 const {Proxies} = require("../proxies/Proxies");
 
-const {MetadataSerializer} = require("./MetadataSerializer");
-const {TextHighlightRecords} = require("./TextHighlightRecords");
+// const {MetadataSerializer} = require("./MetadataSerializer");
+// const {TextHighlightRecords} = require("./TextHighlightRecords");
 const {TextHighlights} = require("./TextHighlights");
-const {PagemarkType} = require("./PagemarkType");
+// const {PagemarkType} = require("./PagemarkType");
 
-const {assertJSON} = require("../test/Assertions");
+// const {assertJSON} = require("../test/Assertions");
 const {TestingTime} = require("../test/TestingTime");
 
 TestingTime.freeze();
@@ -88,7 +93,8 @@ describe('DocMetas', function() {
                                         "width": 100,
                                         "height": 100
                                     },
-                                    "notes": {}
+                                    "notes": {},
+                                    "mode": "READ"
                                 }
                             },
                             "notes": {},
@@ -115,7 +121,8 @@ describe('DocMetas', function() {
                                         "width": 100,
                                         "height": 100
                                     },
-                                    "notes": {}
+                                    "notes": {},
+                                    "mode": "READ"
                                 }
                             },
                             "notes": {},
@@ -163,9 +170,9 @@ describe('DocMetas', function() {
                 let docMeta = createUpgradeDoc();
 
                 assert.notEqual(docMeta.docInfo, null);
-                docMeta.getPageMeta(1).textHighlights = null;
+                delete docMeta.getPageMeta(1).textHighlights;
 
-                docMeta.docInfo.pagemarkType = null;
+                delete docMeta.docInfo.pagemarkType;
 
                 docMeta = DocMetas.upgrade(docMeta)
 
@@ -189,6 +196,7 @@ describe('DocMetas', function() {
                             "percentage": 100,
                             "column": 0,
                             "notes": {},
+                            "mode": "READ",
                             "rect": {
                                 "left": 0,
                                 "top": 0,
@@ -206,7 +214,7 @@ describe('DocMetas', function() {
 
                 let docMeta = createUpgradeDoc();
 
-                docMeta.getPageMeta(1).textHighlights = null;
+                delete docMeta.getPageMeta(1).textHighlights;
 
                 docMeta = DocMetas.upgrade(docMeta)
 
@@ -218,7 +226,7 @@ describe('DocMetas', function() {
 
                 let docMeta = createUpgradeDoc();
 
-                docMeta.getPageMeta(1).pagemarks = null;
+                delete docMeta.getPageMeta(1).pagemarks;
 
                 docMeta = DocMetas.upgrade(docMeta)
 
@@ -248,7 +256,9 @@ describe('DocMetas', function() {
                                 "width": 100,
                                 "height": 100
                             },
-                            "notes": {}
+                            "notes": {},
+                            "mode": "READ"
+
                         }
                     }
                 ;
@@ -261,13 +271,12 @@ describe('DocMetas', function() {
 
                 let docMeta = createUpgradeDoc();
 
-                docMeta.getPageMeta(1).textHighlights["12pNUv1Y9S"].id = null;
+                delete docMeta.getPageMeta(1).textHighlights["12pNUv1Y9S"].id;
 
                 docMeta = DocMetas.upgrade(docMeta)
 
                 let expected = {
                     "12pNUv1Y9S": {
-                        "id": "1cAbqEAHny",
                         "created": "2012-03-02T11:38:49.321Z",
                         "lastUpdated": "2012-03-02T11:38:49.321Z",
                         "rects": {
@@ -286,7 +295,8 @@ describe('DocMetas', function() {
                         "text": "hello world",
                         "notes": {},
                         "questions": {},
-                        "flashcards": {}
+                        "flashcards": {},
+                        "id": "1cAbqEAHny",
                     }
                 };
 

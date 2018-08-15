@@ -4,40 +4,38 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const assert_1 = __importDefault(require("assert"));
-const { DocMeta } = require("./DocMeta");
-const { DocMetas } = require("./DocMetas");
-const { PageMeta } = require("./PageMeta");
+const DocMeta_1 = require("./DocMeta");
+const DocMetas_1 = require("./DocMetas");
+const MetadataSerializer_1 = require("./MetadataSerializer");
+const Assertions_1 = require("../test/Assertions");
+const PagemarkType_1 = require("./PagemarkType");
 const { Proxies } = require("../proxies/Proxies");
-const { MetadataSerializer } = require("./MetadataSerializer");
-const { TextHighlightRecords } = require("./TextHighlightRecords");
 const { TextHighlights } = require("./TextHighlights");
-const { PagemarkType } = require("./PagemarkType");
-const { assertJSON } = require("../test/Assertions");
 const { TestingTime } = require("../test/TestingTime");
 TestingTime.freeze();
 describe('DocMetas', function () {
     describe('JSON', function () {
         it("Test basic JSON encoding and decoding", function () {
             let fingerprint = "0x001";
-            let docMeta = DocMetas.createWithinInitialPagemarks(fingerprint, 14);
-            DocMetas.addPagemarks(docMeta, { nrPages: 1, offsetPage: 4, percentage: 50 });
-            let json = MetadataSerializer.serialize(docMeta, "  ");
-            let actual = DocMetas.deserialize(json);
-            assertJSON(docMeta, actual);
-            assert_1.default.equal(actual instanceof DocMeta, true);
+            let docMeta = DocMetas_1.DocMetas.createWithinInitialPagemarks(fingerprint, 14);
+            DocMetas_1.DocMetas.addPagemarks(docMeta, { nrPages: 1, offsetPage: 4, percentage: 50 });
+            let json = MetadataSerializer_1.MetadataSerializer.serialize(docMeta, "  ");
+            let actual = DocMetas_1.DocMetas.deserialize(json);
+            Assertions_1.assertJSON(docMeta, actual);
+            assert_1.default.equal(actual instanceof DocMeta_1.DocMeta, true);
         });
         it("Test with default values for serialized data", function () {
             let json = "{}";
-            let docMeta = DocMetas.deserialize(json);
-            assert_1.default.equal(docMeta instanceof DocMeta, true);
+            let docMeta = DocMetas_1.DocMetas.deserialize(json);
+            assert_1.default.equal(docMeta instanceof DocMeta_1.DocMeta, true);
         });
     });
     describe('Deserialize', function () {
         it("Test Deserializing and then updating some pagemarks", function () {
             let fingerprint = "0x001";
             let nrPages = 2;
-            let docMeta = DocMetas.createWithinInitialPagemarks(fingerprint, nrPages);
-            let json = DocMetas.serialize(docMeta, "  ");
+            let docMeta = DocMetas_1.DocMetas.createWithinInitialPagemarks(fingerprint, nrPages);
+            let json = DocMetas_1.DocMetas.serialize(docMeta, "  ");
             let expected = {
                 "annotationInfo": {},
                 "version": 1,
@@ -64,7 +62,8 @@ describe('DocMetas', function () {
                                     "width": 100,
                                     "height": 100
                                 },
-                                "notes": {}
+                                "notes": {},
+                                "mode": "READ"
                             }
                         },
                         "notes": {},
@@ -91,7 +90,8 @@ describe('DocMetas', function () {
                                     "width": 100,
                                     "height": 100
                                 },
-                                "notes": {}
+                                "notes": {},
+                                "mode": "READ"
                             }
                         },
                         "notes": {},
@@ -106,10 +106,10 @@ describe('DocMetas', function () {
                 }
             };
             assert_1.default.equal(typeof json, "string");
-            assertJSON(json, expected);
-            docMeta = DocMetas.deserialize(json);
+            Assertions_1.assertJSON(json, expected);
+            docMeta = DocMetas_1.DocMetas.deserialize(json);
             docMeta = Proxies.create(docMeta);
-            assertJSON(docMeta, expected);
+            Assertions_1.assertJSON(docMeta, expected);
             let pageMeta = docMeta.getPageMeta(1);
             pageMeta.pagemarks = {};
             assert_1.default.deepEqual(docMeta.getPageMeta(1).pagemarks, {});
@@ -120,15 +120,15 @@ describe('DocMetas', function () {
             it("No DocInfo.pagemarkType", function () {
                 let docMeta = createUpgradeDoc();
                 assert_1.default.notEqual(docMeta.docInfo, null);
-                docMeta.getPageMeta(1).textHighlights = null;
-                docMeta.docInfo.pagemarkType = null;
-                docMeta = DocMetas.upgrade(docMeta);
-                assert_1.default.deepEqual(docMeta.docInfo.pagemarkType, PagemarkType.SINGLE_COLUMN);
+                delete docMeta.getPageMeta(1).textHighlights;
+                delete docMeta.docInfo.pagemarkType;
+                docMeta = DocMetas_1.DocMetas.upgrade(docMeta);
+                assert_1.default.deepEqual(docMeta.docInfo.pagemarkType, PagemarkType_1.PagemarkType.SINGLE_COLUMN);
             });
             it("Pagemark without rect", function () {
                 let docMeta = createUpgradeDoc();
                 delete docMeta.getPageMeta(1).pagemarks["0"].rect;
-                docMeta = DocMetas.upgrade(docMeta);
+                docMeta = DocMetas_1.DocMetas.upgrade(docMeta);
                 let expected = {
                     "0": {
                         "id": "12Vf1bAzeo",
@@ -138,6 +138,7 @@ describe('DocMetas', function () {
                         "percentage": 100,
                         "column": 0,
                         "notes": {},
+                        "mode": "READ",
                         "rect": {
                             "left": 0,
                             "top": 0,
@@ -146,24 +147,24 @@ describe('DocMetas', function () {
                         }
                     }
                 };
-                assertJSON(docMeta.getPageMeta(1).pagemarks, expected);
+                Assertions_1.assertJSON(docMeta.getPageMeta(1).pagemarks, expected);
             });
             it("No text highlights", function () {
                 let docMeta = createUpgradeDoc();
-                docMeta.getPageMeta(1).textHighlights = null;
-                docMeta = DocMetas.upgrade(docMeta);
+                delete docMeta.getPageMeta(1).textHighlights;
+                docMeta = DocMetas_1.DocMetas.upgrade(docMeta);
                 assert_1.default.deepEqual(docMeta.getPageMeta(1).textHighlights, {});
             });
             it("No pagemarks", function () {
                 let docMeta = createUpgradeDoc();
-                docMeta.getPageMeta(1).pagemarks = null;
-                docMeta = DocMetas.upgrade(docMeta);
+                delete docMeta.getPageMeta(1).pagemarks;
+                docMeta = DocMetas_1.DocMetas.upgrade(docMeta);
                 assert_1.default.deepEqual(docMeta.getPageMeta(1).pagemarks, {});
             });
             it("No id on pagemarks", function () {
                 let docMeta = createUpgradeDoc();
                 docMeta.getPageMeta(1).pagemarks["0"].id = null;
-                docMeta = DocMetas.upgrade(docMeta);
+                docMeta = DocMetas_1.DocMetas.upgrade(docMeta);
                 let expected = {
                     "0": {
                         "id": "12Vf1bAzeo",
@@ -178,18 +179,18 @@ describe('DocMetas', function () {
                             "width": 100,
                             "height": 100
                         },
-                        "notes": {}
+                        "notes": {},
+                        "mode": "READ"
                     }
                 };
-                assertJSON(docMeta.getPageMeta(1).pagemarks, expected);
+                Assertions_1.assertJSON(docMeta.getPageMeta(1).pagemarks, expected);
             });
             it("No id on text highlights", function () {
                 let docMeta = createUpgradeDoc();
-                docMeta.getPageMeta(1).textHighlights["12pNUv1Y9S"].id = null;
-                docMeta = DocMetas.upgrade(docMeta);
+                delete docMeta.getPageMeta(1).textHighlights["12pNUv1Y9S"].id;
+                docMeta = DocMetas_1.DocMetas.upgrade(docMeta);
                 let expected = {
                     "12pNUv1Y9S": {
-                        "id": "1cAbqEAHny",
                         "created": "2012-03-02T11:38:49.321Z",
                         "lastUpdated": "2012-03-02T11:38:49.321Z",
                         "rects": {
@@ -208,10 +209,11 @@ describe('DocMetas', function () {
                         "text": "hello world",
                         "notes": {},
                         "questions": {},
-                        "flashcards": {}
+                        "flashcards": {},
+                        "id": "1cAbqEAHny",
                     }
                 };
-                assertJSON(docMeta.getPageMeta(1).textHighlights, expected);
+                Assertions_1.assertJSON(docMeta.getPageMeta(1).textHighlights, expected);
             });
         });
     });
@@ -219,7 +221,7 @@ describe('DocMetas', function () {
 function createUpgradeDoc() {
     let fingerprint = "0x001";
     let nrPages = 1;
-    let docMeta = DocMetas.createWithinInitialPagemarks(fingerprint, nrPages);
+    let docMeta = DocMetas_1.DocMetas.createWithinInitialPagemarks(fingerprint, nrPages);
     let textHighlight = TextHighlights.createMockTextHighlight();
     docMeta.getPageMeta(1).textHighlights[textHighlight.id] = textHighlight;
     return docMeta;

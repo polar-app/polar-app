@@ -8,6 +8,7 @@ import {PagemarkType} from './PagemarkType';
 import {PagemarkRects} from './PagemarkRects';
 import {Dictionaries} from '../util/Dictionaries';
 import {round} from '../util/Percentages';
+import {PagemarkMode} from './PagemarkMode';
 
 const log = Logger.create();
 
@@ -148,6 +149,10 @@ export class Pagemarks {
             if(! pagemark.id) {
                 log.warn("Pagemark given ID");
                 pagemark.id = Pagemarks.createID(pagemark.created);
+            }
+
+            if( ! pagemark.mode) {
+                pagemark.mode = PagemarkMode.READ;
             }
 
         });

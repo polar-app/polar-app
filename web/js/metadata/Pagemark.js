@@ -3,6 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const Annotation_1 = require("./Annotation");
 const PagemarkType_1 = require("./PagemarkType");
 const MetadataSerializer_1 = require("./MetadataSerializer");
+const PagemarkMode_1 = require("./PagemarkMode");
 class Pagemark extends Annotation_1.Annotation {
     constructor(val) {
         super(val);
@@ -11,6 +12,7 @@ class Pagemark extends Annotation_1.Annotation {
         this.percentage = val.percentage;
         this.column = val.percentage;
         this.rect = val.rect;
+        this.mode = val.mode;
         this.init(val);
     }
     setup() {
@@ -20,6 +22,9 @@ class Pagemark extends Annotation_1.Annotation {
         }
         if (!this.type) {
             this.type = PagemarkType_1.PagemarkType.SINGLE_COLUMN;
+        }
+        if (!this.mode) {
+            this.mode = PagemarkMode_1.PagemarkMode.READ;
         }
         if (!this.percentage) {
             this.percentage = 100;
