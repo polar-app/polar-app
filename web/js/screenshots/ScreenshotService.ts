@@ -2,6 +2,7 @@ import {ipcMain} from 'electron';
 import {ScreenshotRequest} from './ScreenshotRequest';
 import BrowserWindow = Electron.BrowserWindow;
 import WebContents = Electron.WebContents;
+import {Screenshot} from './Screenshot';
 
 /**
  * Service that runs in the Electron main context which listens to IPC events
@@ -29,7 +30,7 @@ export class ScreenshotService {
 
             let dataURL = image.toDataURL();
 
-            let screenshotResult = {
+            let screenshotResult: Screenshot = {
                 dataURL
             };
 

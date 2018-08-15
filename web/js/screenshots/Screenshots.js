@@ -8,6 +8,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+const IXYRects_1 = require("../util/rects/IXYRects");
 const electron = require('electron');
 const Logger = require("../logger/Logger").Logger;
 const ipcRenderer = electron.ipcRenderer;
@@ -17,12 +18,12 @@ class Screenshots {
         return __awaiter(this, void 0, void 0, function* () {
             let rect;
             if (target instanceof HTMLElement) {
-                rect = target.getBoundingClientRect();
+                rect = IXYRects_1.IXYRects.createFromClientRect(target.getBoundingClientRect());
             }
             else {
                 rect = target;
             }
-            return ipcRenderer.sendSync('create-screenshot', { rect });
+            return yield ipcRenderer.sendSync('create-screenshot', { rect });
         });
     }
 }

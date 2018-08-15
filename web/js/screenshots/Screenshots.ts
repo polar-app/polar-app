@@ -1,5 +1,6 @@
 import {IXYRect} from '../util/rects/IXYRect';
 import {IXYRects} from '../util/rects/IXYRects';
+import {Screenshot} from './Screenshot';
 
 const electron = require('electron');
 const Logger = require("../logger/Logger").Logger;
@@ -24,7 +25,7 @@ export class Screenshots {
      *         with scaleFactor as an option.
      *
      */
-    static async capture(target: IXYRect | HTMLElement) {
+    static async capture(target: IXYRect | HTMLElement): Promise<Screenshot> {
 
         let rect: IXYRect;
 
@@ -37,7 +38,7 @@ export class Screenshots {
         }
 
         // now send the screenshotRequest IPC message and wait for the response
-        return ipcRenderer.sendSync('create-screenshot', {rect});
+        return await ipcRenderer.sendSync('create-screenshot', {rect});
 
     }
 
