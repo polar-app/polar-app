@@ -25,3 +25,40 @@
 // ],
 //     "error": null
 // }
+
+import {AnkiConnectFetch} from '../AnkiConnectFetch';
+
+/**
+ *
+ */
+export class NotesInfoClient {
+
+    static async execute(notes: number[]): Promise<NoteInfo[]> {
+
+        let body = {
+            action: "notesInfo",
+            version: 6,
+            params: {
+                notes
+            }
+        };
+
+        let init = { method: 'POST', body: JSON.stringify(body) };
+
+        return <NoteInfo[]> await AnkiConnectFetch.fetch(init);
+
+    }
+
+}
+
+interface NoteInfo {
+    noteId: number;
+    modelName: string;
+    tags: string[];
+    fields: {[name: string]: Field}
+}
+
+interface Field {
+    value: string,
+    order: number;
+}
