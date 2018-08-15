@@ -1,7 +1,8 @@
-
 import {AnkiConnectFetch} from '../AnkiConnectFetch';
+import * as TypeMoq from "typemoq";
 
-// Create a new empty deck. Will not overwrite a deck that exists with the same name.
+// Create a new empty deck. Will not overwrite a deck that exists with the same
+// name.
 //
 //     Sample request:
 //
@@ -23,9 +24,9 @@ import {AnkiConnectFetch} from '../AnkiConnectFetch';
 /**
  *
  */
-export class CreateDeckClient {
+export class CreateDeckClient implements ICreateDeckClient {
 
-    static async execute(deck: string): Promise<number> {
+    public async execute(deck: string): Promise<number> {
 
         let body = {
             action: "createDeck",
@@ -40,5 +41,20 @@ export class CreateDeckClient {
         return <number> await AnkiConnectFetch.fetch(init);
 
     }
+
+    /**
+     * Create a mock that returns the given result.
+     */
+    static createMock(result: number) {
+        let client = TypeMoq.Mock.ofType<ICreateDeckClient>();
+        client.setup(x => x.execute(TypeMoq.It.isAny())).returns(() => Promise.resolve(result));
+        return client.object;
+    }
+
+}
+
+export interface ICreateDeckClient {
+
+    execute(deck: string): Promise<number>;
 
 }

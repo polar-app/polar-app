@@ -1,8 +1,9 @@
 import {AnkiConnectFetch} from '../AnkiConnectFetch';
+import * as TypeMoq from "typemoq";
 
-export class DeckNamesAndIdsClient {
+export class DeckNamesAndIdsClient implements IDeckNamesAndIdsClient {
 
-    static async execute(): Promise<DeckNamesAndIds> {
+    async execute(): Promise<DeckNamesAndIds> {
 
         let body = {
             action: "deckNamesAndIds",
@@ -15,6 +16,21 @@ export class DeckNamesAndIdsClient {
 
     }
 
+    /**
+     * Create a mock that returns the given result.
+     */
+    static createMock(result: DeckNamesAndIds) {
+        let client = TypeMoq.Mock.ofType<IDeckNamesAndIdsClient>();
+        client.setup(x => x.execute()).returns(() => Promise.resolve(result));
+        return client.object;
+    }
+
 }
 
 export type DeckNamesAndIds = {[deck: string]: number};
+
+export interface IDeckNamesAndIdsClient {
+
+    execute(): Promise<DeckNamesAndIds>;
+
+}
