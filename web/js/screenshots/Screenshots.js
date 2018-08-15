@@ -8,11 +8,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+const electron_1 = require("electron");
 const IXYRects_1 = require("../util/rects/IXYRects");
-const electron = require('electron');
-const Logger = require("../logger/Logger").Logger;
-const ipcRenderer = electron.ipcRenderer;
-const log = Logger.create();
 class Screenshots {
     static capture(target) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -23,7 +20,10 @@ class Screenshots {
             else {
                 rect = target;
             }
-            return yield ipcRenderer.sendSync('create-screenshot', { rect });
+            let screenshotRequest = {
+                rect
+            };
+            return yield electron_1.ipcRenderer.sendSync('create-screenshot', screenshotRequest);
         });
     }
 }

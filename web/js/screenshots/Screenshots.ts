@@ -1,11 +1,8 @@
+import {ipcRenderer} from 'electron';
 import {IXYRect} from '../util/rects/IXYRect';
 import {IXYRects} from '../util/rects/IXYRects';
 import {Screenshot} from './Screenshot';
 import {ScreenshotRequest} from './ScreenshotRequest';
-
-const electron = require('electron');
-const Logger = require("../logger/Logger").Logger;
-const ipcRenderer = electron.ipcRenderer;
 
 /**
  * Create a screenshot of the display.
