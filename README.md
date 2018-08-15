@@ -282,12 +282,6 @@ If you'd like to donate we accept Bitcoin at <a href="bitcoin:bc1q059asaaqjt5cul
 
 All donations go to supporting Polar which include website hosting costs, web designer costs, continual integration services, etc. 
 
-# Discussion
-
-We have a <a href="<a href="https://discord.gg/GT8MhA6">">Discord server</a> if you would like to discuss Polar with other users.
-
-You can also create a Github issue if you have something more complicated. 
-
 # License
 
 Polar is distributed under the GPL license.  
