@@ -1,11 +1,11 @@
 import {IXYRect} from '../util/rects/IXYRect';
 import {IXYRects} from '../util/rects/IXYRects';
 import {Screenshot} from './Screenshot';
+import {ScreenshotRequest} from './ScreenshotRequest';
 
 const electron = require('electron');
 const Logger = require("../logger/Logger").Logger;
 const ipcRenderer = electron.ipcRenderer;
-const log = Logger.create();
 
 /**
  * Create a screenshot of the display.
@@ -37,8 +37,12 @@ export class Screenshots {
             rect = target;
         }
 
+        let screenshotRequest = <ScreenshotRequest> {
+            rect
+        };
+
         // now send the screenshotRequest IPC message and wait for the response
-        return await ipcRenderer.sendSync('create-screenshot', {rect});
+        return await ipcRenderer.sendSync('create-screenshot', screenshotRequest);
 
     }
 
