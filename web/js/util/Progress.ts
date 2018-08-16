@@ -4,7 +4,7 @@
 export class Progress {
 
     private _value: number = 0;
-    private _total: number;
+    private readonly _total: number;
 
     constructor(total: number) {
         if(! (total > 0)) {
