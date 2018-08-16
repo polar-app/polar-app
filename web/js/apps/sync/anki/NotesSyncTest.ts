@@ -1,34 +1,35 @@
-import {DecksSync} from './DecksSync';
-import {DeckDescriptor} from './DeckDescriptor';
 import {assertJSON} from '../../../test/Assertions';
-import {CreateDeckClient} from './clients/CreateDeckClient';
-import {DeckNamesAndIdsClient} from './clients/DeckNamesAndIdsClient';
+import {NotesSync} from './NotesSync';
+import {NoteDescriptor} from './NoteDescriptor';
+import {AddNoteClient} from './clients/AddNoteClient';
+import {FindNotesClient} from './clients/FindNotesClient';
 
 
 describe('NotesSyncTest', function() {
 
-    let deckSync = new DecksSync();
-
-    deckSync.createDeckClient = CreateDeckClient.createMock(1);
-    deckSync.deckNamesAndIdsClient = DeckNamesAndIdsClient.createMock({});
+    let notesSync = new NotesSync();
 
     it("basic sync", async function () {
 
-        let deckDescriptors: DeckDescriptor[] = [
+        // ****
+        // create mocks where we have no initial notes, and we allow
+        // a new note to be created.
+        notesSync.addNoteClient = AddNoteClient.createMock(1);
+        notesSync.findNotesClient = FindNotesClient.createMock([]);
+
+        let noteDescriptors: NoteDescriptor[] = [
             {
-                name: "Test Deck"
+                guid: "101",
+                deckName: "test",
+                modelName: "test",
+                fields: {},
+                tags: []
             }
         ];
 
-        let createdDescriptors = await deckSync.sync(deckDescriptors);
+        let notesSynchronized = await notesSync.sync(noteDescriptors);
 
-        let expected = [
-            {
-                "name": "Test Deck"
-            }
-        ];
-
-        assertJSON(createdDescriptors, expected)
+        assertJSON(notesSynchronized.created, noteDescriptors);
 
     });
 

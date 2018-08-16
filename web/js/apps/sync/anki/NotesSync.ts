@@ -16,9 +16,14 @@ export class NotesSync {
      *
      * @param noteDescriptors The notes we need to sync.
      */
-    async sync(noteDescriptors: NoteDescriptor[]) {
+    async sync(noteDescriptors: NoteDescriptor[]): Promise<NotesSynchronized> {
 
-        await noteDescriptors.forEach(async noteDescriptor => {
+        let result: NotesSynchronized = {
+            created: []
+        };
+
+        for (let i = 0; i < noteDescriptors.length; i++) {
+            const noteDescriptor = noteDescriptors[i];
 
             let polarGUID = NotesSync.createPolarID(noteDescriptor.guid);
 
@@ -33,9 +38,13 @@ export class NotesSync {
 
                 await this.addNoteClient.execute(noteDescriptor);
 
+                result.created.push(noteDescriptor);
+
             }
 
-        });
+        }
+
+        return result;
 
     }
 
@@ -70,3 +79,8 @@ export class Tag implements ITag {
 
 }
 
+export interface NotesSynchronized {
+
+    readonly created: NoteDescriptor[];
+
+}
