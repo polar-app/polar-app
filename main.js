@@ -329,6 +329,7 @@ async function cmdNewWindow(item, focusedWindow) {
 }
 
 function exitApp() {
+    log.info("Exiting app");
     app.quit();
     process.exit();
 }

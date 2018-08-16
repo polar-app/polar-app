@@ -100,27 +100,13 @@ export interface FlashcardHolder {
 }
 
 
-/*
-class FlashcardHolder {
-
-    public readonly docMeta: DocMeta;
-
-    public readonly flashcard: Flashcard;
-
-    constructor(docMeta: DocMeta, flashcard: Flashcard) {
-        this.docMeta = docMeta;
-        this.flashcard = flashcard;
-    }
-
-}
-*/
-
 class AnkiSyncJob implements SyncJob {
 
     abort(): void {
 
-        // get the decks
-        // if any decks are missing create them
+        // run DecksSync
+        // run NotesSync
+
         // see which notes are in the decks
         // if they are updated, update them
         // if they are missing, create them.
