@@ -7,7 +7,6 @@ import {FindNotesClient, IFindNotesClient} from './clients/FindNotesClient';
  */
 export class NotesSync {
 
-
     public addNoteClient: IAddNoteClient = new AddNoteClient();
 
     public findNotesClient: IFindNotesClient = new FindNotesClient();
@@ -21,12 +20,19 @@ export class NotesSync {
 
         await noteDescriptors.forEach(async noteDescriptor => {
 
-            let polarID = NotesSync.createPolarID(noteDescriptor.guid);
+            let polarGUID = NotesSync.createPolarID(noteDescriptor.guid);
 
-            let existingIDs = await this.findNotesClient.execute(`${polarID.name}:${polarID.value}`);
+            let existingIDs = await this.findNotesClient.execute(`tag:${polarGUID.format()}`);
 
             if(existingIDs.length == 0) {
+
+                if(! noteDescriptor.tags.includes(polarGUID.format())) {
+                    //  make sure the noteDescriptor has the proper tag.
+                    noteDescriptor.tags.push(polarGUID.format());
+                }
+
                 await this.addNoteClient.execute(noteDescriptor);
+
             }
 
         });
@@ -35,12 +41,32 @@ export class NotesSync {
 
     public static createPolarID(guid: string): Tag {
 
-        return {name: 'polar_guid', value: guid}
+        return new Tag('polar_guid', guid);
 
     }
 
 }
-export interface Tag {
+export interface ITag {
+
     readonly name: string;
+
     readonly value: string;
+
 }
+
+export class Tag implements ITag {
+
+    public readonly name: string;
+    public readonly value: string;
+
+    constructor(name: string, value: string) {
+        this.name = name;
+        this.value = value;
+    }
+
+    public format(): string {
+        return `${this.name}:${this.value}`;
+    }
+
+}
+
