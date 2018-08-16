@@ -9,7 +9,7 @@ describe('NotesSyncTest', function() {
 
     let notesSync = new NotesSync();
 
-    it("basic sync", async function () {
+    it("full initial sync", async function () {
 
         // ****
         // create mocks where we have no initial notes, and we allow
@@ -32,5 +32,30 @@ describe('NotesSyncTest', function() {
         assertJSON(notesSynchronized.created, noteDescriptors);
 
     });
+
+    it("sync with pre-existing notes that are skipped", async function () {
+
+        // ****
+        // create mocks where we have no initial notes, and we allow
+        // a new note to be created.
+        notesSync.addNoteClient = AddNoteClient.createMock(1);
+        notesSync.findNotesClient = FindNotesClient.createMock([1]);
+
+        let noteDescriptors: NoteDescriptor[] = [
+            {
+                guid: "101",
+                deckName: "test",
+                modelName: "test",
+                fields: {},
+                tags: []
+            }
+        ];
+
+        let notesSynchronized = await notesSync.sync(noteDescriptors);
+
+        assertJSON(notesSynchronized.created, []);
+
+    });
+
 
 });
