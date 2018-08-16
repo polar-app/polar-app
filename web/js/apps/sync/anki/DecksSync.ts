@@ -7,7 +7,10 @@ import {DeckNamesAndIdsClient, IDeckNamesAndIdsClient} from './functions/DeckNam
 import {Sets} from '../../../util/Sets';
 import {CreateDeckClient, ICreateDeckClient} from './functions/CreateDeckClient';
 
-export class DeckSync {
+/**
+ * Sync decks to Anki.
+ */
+export class DecksSync {
 
     public createDeckClient: ICreateDeckClient = new CreateDeckClient();
 

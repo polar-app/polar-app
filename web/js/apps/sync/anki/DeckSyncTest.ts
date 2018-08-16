@@ -1,13 +1,13 @@
-import {DeckSync} from './DeckSync';
+import {DecksSync} from './DecksSync';
 import {DeckDescriptor} from './DeckDescriptor';
 import {DeckNamesAndIdsClient} from './functions/DeckNamesAndIdsClient';
 import {CreateDeckClient} from './functions/CreateDeckClient';
 import {assertJSON} from '../../../test/Assertions';
 
 
-describe('DeskSync', function() {
+describe('DesksSync', function() {
 
-    let deckSync = new DeckSync();
+    let deckSync = new DecksSync();
 
     deckSync.createDeckClient = CreateDeckClient.createMock(1);
     deckSync.deckNamesAndIdsClient = DeckNamesAndIdsClient.createMock({});
