@@ -24,12 +24,12 @@ export class Flashcard extends VersionedObject {
     /**
      * When a flashcard is created it has an id just like every other annotation
      * object however, we can update the flashcard over time and when it's
-     * updated we need to generate a new id.  This allows us to reference a
+     * updated we need to generate a new id.  The guid allows us to reference a
      * flashcard as it changes over time.  If the user updates the flashcard we
-     * keep the same reference so we have a unique handle on the flashcard as
-     * it's edited.
+     * keep the same guid so we have a unique handle on the flashcard as
+     * it's edited and the initial guid never changes.
      */
-    public reference: string;
+    public guid: string;
 
     // TODO: we don't have a way right now to attach these to specific
     // annotations
@@ -41,7 +41,7 @@ export class Flashcard extends VersionedObject {
         this.type = template.type;
         this.fields = template.fields;
         this.archetype = template.archetype;
-        this.reference = template.reference;
+        this.guid = template.guid;
 
         this.init(template);
 
@@ -53,6 +53,8 @@ export class Flashcard extends VersionedObject {
         Preconditions.assertNotNull(this.type, "type");
         Preconditions.assertNotNull(this.fields, "fields");
         Preconditions.assertNotNull(this.archetype, "archetype");
+
+        // TODO: assert that the guid is not null.
 
     }
 

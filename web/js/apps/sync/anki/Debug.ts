@@ -1,6 +1,6 @@
 import {Logger} from '../../../logger/Logger';
 import {AnkiConnectFetch} from './AnkiConnectFetch';
-import {DeckNamesAndIdsClient} from './functions/DeckNamesAndIdsClient';
+import {DeckNamesAndIdsClient} from './clients/DeckNamesAndIdsClient';
 
 const log = Logger.create();
 
@@ -15,7 +15,7 @@ async function exec() {
 
     //let response = await AnkiConnectFetch.fetch({ method: 'POST', body: JSON.stringify(body) });
 
-    let deckNamesAndIds = await DeckNamesAndIdsClient.execute();
+    let deckNamesAndIds = await new DeckNamesAndIdsClient().execute();
 
     console.log("deckNamesAndIds: " , deckNamesAndIds)
 

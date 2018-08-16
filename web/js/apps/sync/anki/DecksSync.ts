@@ -3,9 +3,9 @@
  * are missing.
  */
 import {DeckDescriptor} from './DeckDescriptor';
-import {DeckNamesAndIdsClient, IDeckNamesAndIdsClient} from './functions/DeckNamesAndIdsClient';
 import {Sets} from '../../../util/Sets';
-import {CreateDeckClient, ICreateDeckClient} from './functions/CreateDeckClient';
+import {CreateDeckClient, ICreateDeckClient} from './clients/CreateDeckClient';
+import {DeckNamesAndIdsClient, IDeckNamesAndIdsClient} from './clients/DeckNamesAndIdsClient';
 
 /**
  * Sync decks to Anki.

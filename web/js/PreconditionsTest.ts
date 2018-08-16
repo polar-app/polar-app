@@ -1,7 +1,6 @@
 import assert from 'assert';
 import {Preconditions} from './Preconditions';
 
-
 describe('Preconditions', function() {
 
     describe('defaultValue', function() {
