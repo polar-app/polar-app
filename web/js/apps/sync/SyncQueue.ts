@@ -11,6 +11,7 @@ import {SyncProgress} from './SyncProgress';
 import {SyncState} from './SyncState';
 import {Progress} from '../../util/Progress';
 import {Logger} from '../../logger/Logger';
+import {Percentages} from '../../util/Percentages';
 
 const log = Logger.create();
 
@@ -51,11 +52,11 @@ export class SyncQueue {
             error: undefined
         };
 
-        let progress = new Progress(this.total + this.pending.length, this.total);
+        for (let idx = 0; idx < this.size(); idx++) {
 
-        for (let idx = 0; idx < this.pending.length; idx++) {
+            console.log("FIXME: EXEC")
 
-            const syncTask = this.pending.pop()!;
+            const syncTask = this.pending.shift()!;
 
             if(this.abortable.aborted) {
                 log.info("Aborting sync.");
@@ -76,14 +77,14 @@ export class SyncQueue {
                 break;
             }
 
-            progress.incr();
-
-            syncProgress.percentage = progress.percentage();
+            syncProgress.percentage = Percentages.calculate(idx, this.pending.length);
 
             this.syncProgressListener(Object.freeze(syncProgress));
 
         }
 
+
+        console.log("FIXME:done" + this.pending.length);
 
     }
 

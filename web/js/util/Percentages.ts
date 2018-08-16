@@ -1,5 +1,9 @@
 export class Percentages {
 
+    static calculate(value: number, total: number) {
+        return Percentages.round( 100 * (value / total));
+    }
+
     /**
      *
      */

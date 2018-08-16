@@ -45,12 +45,14 @@ export class DecksSync {
 
         // TODO: decompose these into batches...
 
-        let syncRunner = new SyncRunner(abortable, syncProgressListener);
+        let syncQueue = new SyncQueue(abortable, syncProgressListener);
 
         let missingDecks: string[] = [];
         let missingDeckDescriptors: DeckDescriptor[] = [];
 
-        await syncRunner.execute(async () => {
+        syncQueue.add(async () => {
+
+            log.info("Fetching existing decks.");
 
             let deckNamesAndIds = await this.deckNamesAndIdsClient.execute();
 
@@ -62,17 +64,28 @@ export class DecksSync {
 
             missingDecks = Sets.difference(expectedDecks, currentDecks);
 
+            log.info(`Found ${missingDecks.length} missing decks`);
+
             missingDeckDescriptors = missingDecks.map(name => <DeckDescriptor>{name});
 
         });
 
-        let createDeckTasks = missingDecks.map(missingDeck => {
-            return async () => {
-                await this.createDeckClient.execute(missingDeck);
-            };
+        syncQueue.add(async () => {
+
+            log.info("FIXME N missing decks: " + missingDecks.length)
+
+            let createDeckTasks = missingDecks.map(missingDeck => {
+                return async () => {
+                    log.info("Creating missing deck: ", missingDeck);
+                    await this.createDeckClient.execute(missingDeck);
+                };
+            });
+
+            syncQueue.add(...createDeckTasks);
+
         });
 
-        await syncRunner.execute(...createDeckTasks);
+        await syncQueue.execute();
 
         return missingDeckDescriptors;
 

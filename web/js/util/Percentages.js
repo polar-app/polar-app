@@ -1,6 +1,9 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 class Percentages {
+    static calculate(value, total) {
+        return Percentages.round(100 * (value / total));
+    }
     static round(perc) {
         return Math.round(perc * 100) / 100;
     }
