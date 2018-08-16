@@ -1,4 +1,4 @@
-import {SyncState} from './SyncState';
+import {SyncProgress} from './SyncProgress';
 
 
 /**
@@ -6,6 +6,6 @@ import {SyncState} from './SyncState';
  */
 export interface SyncProgressListener {
 
-    (state: SyncState): void;
+    (state: SyncProgress): void;
 
 }

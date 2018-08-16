@@ -1,28 +1,32 @@
 /**
- * Keeps track of the overall sync state and allows for state transitions
- * including the ability to abort a sync.
+ * The status of a job as state transitions.
  *
+ *                      +--> COMPLETED
+ * PENDING --> STARTED--|
+ *                      +--> FAILED
  */
-import {SyncStatus} from './SyncStatus';
-
-export class SyncState {
+export enum SyncState {
 
     /**
-     * The completion percentage over the interval [0,100]
+     * The job has not yet started and is still pending.
      */
-    public readonly progress: number | undefined;
-
-    public readonly status = SyncStatus.PENDING;
+    PENDING = "PENDING",
 
     /**
-     * The error for the sync when the status is failed.
+     * The job has started.
      */
-    public readonly error: Error | undefined;
+    STARTED = "STARTED",
+
+    COMPLETED = "COMPLETED",
 
     /**
-     * A message to display to the user.  Probably the last annotation and/or
-     * document synchronized.
+     * Failed with an error.
      */
-    public readonly message: string = "";
+    FAILED = "FAILED",
+
+    /**
+     * Aborted by the user.
+     */
+    ABORTED = "ABORTED"
 
 }

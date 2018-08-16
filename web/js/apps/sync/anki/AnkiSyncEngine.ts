@@ -2,12 +2,15 @@ import {SyncEngine} from '../SyncEngine';
 import {SyncEngineDescriptor} from '../SyncEngineDescriptor';
 import {DocMetaSet} from '../../../metadata/DocMetaSet';
 import {SyncProgressListener} from '../SyncProgressListener';
-import {SyncJob} from '../SyncJob';
+import {PendingSyncJob, StartedSyncJob} from '../SyncJob';
 import {DocMeta} from '../../../metadata/DocMeta';
 import {Flashcard} from '../../../metadata/Flashcard';
 import {PageInfo} from '../../../metadata/PageInfo';
 import {Dictionaries} from '../../../util/Dictionaries';
 import * as _ from "lodash";
+import {DeckDescriptor} from './DeckDescriptor';
+import {NoteDescriptor} from './NoteDescriptor';
+import {Optional} from '../../../util/ts/Optional';
 
 /**
  * Sync engine for Anki.  Takes cards registered in a DocMeta and then transfers
@@ -17,16 +20,59 @@ export class AnkiSyncEngine implements SyncEngine {
 
     readonly descriptor: SyncEngineDescriptor = new AnkiSyncEngineDescriptor();
 
+    public sync(docMetaSet: DocMetaSet, progress: SyncProgressListener): PendingSyncJob {
 
-    public sync(docMetaSet: DocMetaSet, progress: SyncProgressListener): SyncJob {
-
-        return new AnkiSyncJob();
+        return new PendingAnkiSyncJob(docMetaSet, progress);
 
     }
 
-    protected toFlashcardHolders(docMetaSet: DocMetaSet): FlashcardHolder[] {
+    protected toDeckDescriptors(docMetaSet: DocMetaSet) {
 
-        let result: FlashcardHolder[] = [];
+        let result: DeckDescriptor[] = [];
+
+        docMetaSet.docMetas.forEach(docMeta => {
+
+            let name = docMeta.docInfo.title;
+
+            if(! name) {
+                throw new Error("No name for docMeta: "  + docMeta.docInfo.fingerprint);
+            }
+
+            result.push({
+                name
+            });
+
+        });
+
+        return result;
+
+    }
+
+    protected toNoteDescriptors(docMetaSet: DocMetaSet): NoteDescriptor[] {
+
+        return this.toFlashcardDescriptors(docMetaSet).map(current => {
+
+            let deckName = Optional.of(current.docMeta.docInfo.title, 'title').get();
+
+            let fields: {[name: string]: string} = {};
+
+
+            return {
+                guid: current.flashcard.guid,
+                deckName: deckName,
+                // FIXME: we need to handle the model name for now...
+                modelName: "unknown",
+                fields,
+                tags: []
+            };
+
+        });
+
+    }
+
+    protected toFlashcardDescriptors(docMetaSet: DocMetaSet): FlashcardDescriptor[] {
+
+        let result: FlashcardDescriptor[] = [];
 
         docMetaSet.docMetas.forEach(docMeta => {
             Object.values(docMeta.pageMetas).forEach(pageMeta => {
@@ -47,15 +93,15 @@ export class AnkiSyncEngine implements SyncEngine {
                     .flatten()
                     .value());
 
-                let flashcardHolders =_.chain(flashcards)
-                    .map(current => <FlashcardHolder> {
+                let flashcardDescriptors =_.chain(flashcards)
+                    .map(current => <FlashcardDescriptor> {
                         docMeta,
                         pageInfo: pageMeta.pageInfo,
                         flashcard: current
                     })
                     .value();
 
-                result.push(...flashcardHolders);
+                result.push(...flashcardDescriptors);
 
             })
         });
@@ -69,11 +115,11 @@ export class AnkiSyncEngine implements SyncEngine {
      * correct progress and Flashcards are the only thing we're syncing here.
      *
      */
-    protected syncFlashcards(docMetas: DocMetaSet, progress: SyncProgressListener): SyncJob {
-
-        return new AnkiSyncJob();
-
-    }
+    // protected syncFlashcards(docMetas: DocMetaSet, progress: SyncProgressListener): SyncJob {
+    //
+    //     return new AnkiSyncJob();
+    //
+    // }
 
     // https://github.com/FooSoft/anki-connect
 
@@ -90,7 +136,7 @@ export class AnkiSyncEngine implements SyncEngine {
 
 }
 
-export interface FlashcardHolder {
+export interface FlashcardDescriptor {
 
     readonly docMeta: DocMeta;
 
@@ -100,9 +146,37 @@ export interface FlashcardHolder {
 }
 
 
-class AnkiSyncJob implements SyncJob {
+abstract class AnkiSyncJob {
+
+    protected readonly docMetaSet: DocMetaSet;
+    protected readonly progress: SyncProgressListener;
+
+    constructor(docMetaSet: DocMetaSet, progress: SyncProgressListener) {
+        this.docMetaSet = docMetaSet;
+        this.progress = progress;
+    }
+
+}
+
+class PendingAnkiSyncJob extends AnkiSyncJob implements PendingSyncJob {
+
+    start(): StartedSyncJob {
+
+        return new StartedAnkiSyncJob(this.docMetaSet, this.progress).run();
+
+    }
+
+}
+
+class StartedAnkiSyncJob extends AnkiSyncJob implements StartedSyncJob {
+
+    private aborted = false;
 
     abort(): void {
+        this.aborted = true;
+    }
+
+    run(): this {
 
         // run DecksSync
         // run NotesSync
@@ -110,6 +184,8 @@ class AnkiSyncJob implements SyncJob {
         // see which notes are in the decks
         // if they are updated, update them
         // if they are missing, create them.
+
+        return this;
 
     }
 

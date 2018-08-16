@@ -4,16 +4,18 @@
 import {DocMetaSet} from '../../metadata/DocMetaSet';
 import {SyncProgressListener} from './SyncProgressListener';
 import {SyncEngineDescriptor} from './SyncEngineDescriptor';
-import {SyncJob} from './SyncJob';
+import {PendingSyncJob, SyncJob} from './SyncJob';
 
 export interface SyncEngine {
 
     readonly descriptor: SyncEngineDescriptor;
 
     /**
-     * Start a sync against this engine. We receive callbacks on the progress
-     * via the SyncProgressListener and the job can be aborted via the SyncJob.
+     * Create a new sync against this engine. We receive callbacks on the
+     * progress via the SyncProgressListener and the job can be aborted via the
+     * SyncJob.  Note that the job is not initially started and start() must be
+     * called manually.
      */
-    sync(docMetas: DocMetaSet, progress: SyncProgressListener): SyncJob;
+    sync(docMetas: DocMetaSet, progress: SyncProgressListener): PendingSyncJob;
 
 }
