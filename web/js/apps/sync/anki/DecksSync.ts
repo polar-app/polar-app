@@ -12,6 +12,8 @@ import {Logger} from '../../../logger/Logger';
 import {SyncProgress} from '../SyncProgress';
 import {SyncState} from '../SyncState';
 import {Progress} from '../../../util/Progress';
+import {SyncQueue} from '../SyncQueue';
+import {SyncRunner} from '../SyncRunner';
 
 const log = Logger.create();
 
@@ -43,49 +45,34 @@ export class DecksSync {
 
         // TODO: decompose these into batches...
 
-        let deckNamesAndIds = await this.deckNamesAndIdsClient.execute();
+        let syncRunner = new SyncRunner(abortable, syncProgressListener);
 
-        // now I just need to compute the set difference deckDescriptors / deckNamesAndIds
-        // for all decks that are not in deckNamesAndIds
+        let missingDecks: string[] = [];
+        let missingDeckDescriptors: DeckDescriptor[] = [];
 
-        let currentDecks: string[] = Object.keys(deckNamesAndIds);
-        let expectedDecks = deckDescriptors.map(current => current.name);
+        await syncRunner.execute(async () => {
 
-        let missingDecks = Sets.difference(expectedDecks, currentDecks);
+            let deckNamesAndIds = await this.deckNamesAndIdsClient.execute();
 
-        let missingDeckDescriptors = missingDecks.map(name => <DeckDescriptor>{name});
+            // now I just need to compute the set difference deckDescriptors / deckNamesAndIds
+            // for all decks that are not in deckNamesAndIds
 
-        // TODO: doing this in bulk might be better but we would need to batch
-        // them out so we can measure progress easily and also not overwhelm
-        // anki.
+            let currentDecks: string[] = Object.keys(deckNamesAndIds);
+            let expectedDecks = deckDescriptors.map(current => current.name);
 
-        // FIXME: only do this if missingDecks.length > 0
+            missingDecks = Sets.difference(expectedDecks, currentDecks);
 
-        let syncProgress: SyncProgress = {
-            percentage: 0,
-            state: SyncState.STARTED,
-            error: undefined
-        };
+            missingDeckDescriptors = missingDecks.map(name => <DeckDescriptor>{name});
 
-        let progress = new Progress(missingDecks.length);
+        });
 
-        for (let idx = 0; idx < missingDecks.length; idx++) {
-            const missingDeck = missingDecks[idx];
+        let createDeckTasks = missingDecks.map(missingDeck => {
+            return async () => {
+                await this.createDeckClient.execute(missingDeck);
+            };
+        });
 
-            if(abortable.aborted) {
-                log.info("Aborting sync.");
-                return;
-            }
-
-            await this.createDeckClient.execute(missingDeck);
-
-            progress.incr();
-
-            syncProgress.percentage = progress.percentage();
-
-            syncProgressListener(Object.freeze(syncProgress));
-
-        }
+        await syncRunner.execute(...createDeckTasks);
 
         return missingDeckDescriptors;
 

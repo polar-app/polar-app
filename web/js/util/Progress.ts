@@ -6,10 +6,17 @@ export class Progress {
     private _value: number = 0;
     private readonly _total: number;
 
-    constructor(total: number) {
+    /**
+     *
+     * @param total
+     * @param initial The initial value of the progress counter.
+     */
+    constructor(total: number, initial: number = 0) {
         if(! (total > 0)) {
             throw new Error("The total must be > 0");
         }
+
+        this._value = initial;
         this._total = total;
     }
 

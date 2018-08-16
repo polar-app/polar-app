@@ -1,0 +1,3 @@
+interface SyncTask {
+    (): Promise<void>;
+}
