@@ -90,7 +90,7 @@ export class AnkiSyncEngine implements SyncEngine {
 
 }
 
-interface FlashcardHolder {
+export interface FlashcardHolder {
 
     readonly docMeta: DocMeta;
 

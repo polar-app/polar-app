@@ -1,5 +1,6 @@
 import {AnkiConnectFetch} from '../AnkiConnectFetch';
 import * as TypeMoq from "typemoq";
+import {NoteDescriptor} from '../NoteDescriptor';
 
 /**
  * addNote
@@ -53,7 +54,7 @@ import * as TypeMoq from "typemoq";
  */
 export class AddNoteClient implements IAddNoteClient {
 
-    public async execute(note: Note): Promise<number> {
+    public async execute(note: NoteDescriptor): Promise<number> {
 
             let body = {
                 action: "addNote",
@@ -80,17 +81,8 @@ export class AddNoteClient implements IAddNoteClient {
 
 }
 
-export interface Note {
-
-    readonly deckName: string;
-    readonly modelName: string;
-    readonly fields: {[name: string]: string};
-    readonly tags: string[];
-
-}
-
 export interface IAddNoteClient {
 
-    execute(notes: Note): Promise<number>;
+    execute(notes: NoteDescriptor): Promise<number>;
 
 }
