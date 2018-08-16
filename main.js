@@ -28,6 +28,7 @@ const {CacheRegistry} = require("./web/js/backend/proxyserver/CacheRegistry");
 
 const {Cmdline} = require("./web/js/electron/Cmdline");
 const {Paths} = require("./web/js/util/Paths");
+const {Services} = require("./web/js/util/services/Services");
 const {Fingerprints} = require("./web/js/util/Fingerprints");
 const {Files} = require("./web/js/util/Files");
 const {ElectronContextMenu} = require("./web/js/contextmenu/electron/ElectronContextMenu");
@@ -329,9 +330,18 @@ async function cmdNewWindow(item, focusedWindow) {
 }
 
 function exitApp() {
-    log.info("Exiting app");
+
+    log.info("Exiting app...");
+
+    Services.stop({ webserver, proxyServer });
+
+    log.info("Exiting electron...");
+
     app.quit();
+
+    log.info("Exiting main...");
     process.exit();
+
 }
 
 /**
@@ -637,6 +647,10 @@ let dialogWindowService = new DialogWindowService();
 
 let appAnalytics = GA.getAppAnalytics();
 
+let webserver;
+
+let proxyServer;
+
 directories.init().then(async () => {
 
     // TODO don't use directory logging now as it is broken.
@@ -658,12 +672,12 @@ directories.init().then(async () => {
 
     // *** start the webserver
 
-    const webserver = new Webserver(webserverConfig, fileRegistry);
+    webserver = new Webserver(webserverConfig, fileRegistry);
     webserver.start();
 
     // *** start the proxy server
 
-    const proxyServer = new ProxyServer(proxyServerConfig, cacheRegistry);
+    proxyServer = new ProxyServer(proxyServerConfig, cacheRegistry);
     proxyServer.start();
 
     let cacheInterceptorService = new CacheInterceptorService(cacheRegistry);
@@ -775,7 +789,7 @@ app.on('activate', async function() {
 
 });
 
-app.on('open-file', (event, path) {
+app.on('open-file', (event, path) => {
 
     // TODO: the OS requested a file opened.  We're not testing this right
     // now but it should work.

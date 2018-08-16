@@ -70,7 +70,6 @@ class Webserver {
         this.server.close();
     }
 
-
 }
 
 module.exports.Webserver = Webserver;
