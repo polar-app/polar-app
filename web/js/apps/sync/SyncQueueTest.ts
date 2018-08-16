@@ -16,7 +16,6 @@ describe('SyncQueueTest', function() {
 
     let syncQueue = new SyncQueue(abortable, syncProgressListener);
 
-
     it("basic test", async function () {
 
         let results: number[] = [];
@@ -30,5 +29,26 @@ describe('SyncQueueTest', function() {
         assert.deepEqual(results, [0]);
 
     });
+
+
+    it("with one level of generators", async function () {
+
+        let results: number[] = [];
+
+        syncQueue.add(async() => {
+            results.push(0);
+
+            syncQueue.add(async() => {
+                results.push(1);
+            });
+
+        });
+
+        await syncQueue.execute();
+
+        assert.deepEqual(results, [0, 1]);
+
+    });
+
 
 });

@@ -52,11 +52,11 @@ export class SyncQueue {
             error: undefined
         };
 
-        for (let idx = 0; idx < this.size(); idx++) {
+        let syncTask: SyncTask | undefined;
 
-            console.log("FIXME: EXEC")
+        let idx = 0;
 
-            const syncTask = this.pending.shift()!;
+        while((syncTask = this.pending.shift()) !== undefined) {
 
             if(this.abortable.aborted) {
                 log.info("Aborting sync.");
@@ -72,19 +72,18 @@ export class SyncQueue {
                 syncProgress.error = e;
                 syncProgress.state = SyncState.FAILED;
 
-                this.syncProgressListener(Object.freeze(syncProgress));
+                this.syncProgressListener(Object.freeze(Object.assign({}, syncProgress)));
 
                 break;
             }
 
-            syncProgress.percentage = Percentages.calculate(idx, this.pending.length);
+            ++idx;
+            syncProgress.percentage = Percentages.calculate(idx, this.total);
 
-            this.syncProgressListener(Object.freeze(syncProgress));
+            this.syncProgressListener(Object.freeze(Object.assign({}, syncProgress)));
+
 
         }
-
-
-        console.log("FIXME:done" + this.pending.length);
 
     }
 
