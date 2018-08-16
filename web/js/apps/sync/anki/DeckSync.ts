@@ -20,6 +20,8 @@ export class DeckSync {
      */
     async sync(deckDescriptors: DeckDescriptor[]) {
 
+        // TODO: decompose these into batches...
+
         let deckNamesAndIds = await this.deckNamesAndIdsClient.execute();
 
         // now I just need to compute the set difference deckDescriptors / deckNamesAndIds
