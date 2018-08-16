@@ -32,6 +32,11 @@ export class DeckSync {
 
         let missingDeckDescriptors = missingDecks.map(name => <DeckDescriptor>{name});
 
+        // TODO: doing this in bulk might be better but we would need to batch
+        // them out so we can measure progress easily and also not overwhelm
+        // anki.
+        missingDecks.forEach(deck => this.createDeckClient.execute(deck));
+
         return missingDeckDescriptors;
 
     }

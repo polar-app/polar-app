@@ -1,28 +1,26 @@
 import {AnkiConnectFetch} from '../AnkiConnectFetch';
 import * as TypeMoq from "typemoq";
 
-// Create a new empty deck. Will not overwrite a deck that exists with the same
-// name.
-//
-//     Sample request:
-//
-// {
-//     "action": "createDeck",
-//     "version": 6,
-//     "params": {
-//     "deck": "Japanese::Tokyo"
-// }
-// }
-// Sample result:
-//
-// {
-//     "result": 1519323742721,
-//     "error": null
-// }
-
-
 /**
- *
+ Create a new empty deck. Will not overwrite a deck that exists with the same
+ name.
+
+ Sample request:
+
+ {
+    "action": "createDeck",
+    "version": 6,
+    "params": {
+    "deck": "Japanese::Tokyo"
+}
+}
+ Sample result:
+
+ {
+    "result": 1519323742721,
+    "error": null
+}
+
  */
 export class CreateDeckClient implements ICreateDeckClient {
 
@@ -58,3 +56,4 @@ export interface ICreateDeckClient {
     execute(deck: string): Promise<number>;
 
 }
+
