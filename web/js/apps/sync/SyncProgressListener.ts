@@ -6,6 +6,6 @@ import {SyncProgress} from './SyncProgress';
  */
 export interface SyncProgressListener {
 
-    (state: SyncProgress): void;
+    (syncProgress: Readonly<SyncProgress>): void;
 
 }

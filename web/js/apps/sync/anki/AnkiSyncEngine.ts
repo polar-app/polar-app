@@ -11,6 +11,7 @@ import * as _ from "lodash";
 import {DeckDescriptor} from './DeckDescriptor';
 import {NoteDescriptor} from './NoteDescriptor';
 import {Optional} from '../../../util/ts/Optional';
+import {PendingAnkiSyncJob} from './AnkiSyncJob';
 
 /**
  * Sync engine for Anki.  Takes cards registered in a DocMeta and then transfers
@@ -22,7 +23,10 @@ export class AnkiSyncEngine implements SyncEngine {
 
     public sync(docMetaSet: DocMetaSet, progress: SyncProgressListener): PendingSyncJob {
 
-        return new PendingAnkiSyncJob(docMetaSet, progress);
+        let deckDescriptors = this.toDeckDescriptors(docMetaSet);
+        let noteDescriptors = this.toNoteDescriptors(docMetaSet);
+
+        return new PendingAnkiSyncJob(docMetaSet, progress, deckDescriptors, noteDescriptors);
 
     }
 
@@ -146,50 +150,6 @@ export interface FlashcardDescriptor {
 }
 
 
-abstract class AnkiSyncJob {
-
-    protected readonly docMetaSet: DocMetaSet;
-    protected readonly progress: SyncProgressListener;
-
-    constructor(docMetaSet: DocMetaSet, progress: SyncProgressListener) {
-        this.docMetaSet = docMetaSet;
-        this.progress = progress;
-    }
-
-}
-
-class PendingAnkiSyncJob extends AnkiSyncJob implements PendingSyncJob {
-
-    start(): StartedSyncJob {
-
-        return new StartedAnkiSyncJob(this.docMetaSet, this.progress).run();
-
-    }
-
-}
-
-class StartedAnkiSyncJob extends AnkiSyncJob implements StartedSyncJob {
-
-    private aborted = false;
-
-    abort(): void {
-        this.aborted = true;
-    }
-
-    run(): this {
-
-        // run DecksSync
-        // run NotesSync
-
-        // see which notes are in the decks
-        // if they are updated, update them
-        // if they are missing, create them.
-
-        return this;
-
-    }
-
-}
 
 class AnkiSyncEngineDescriptor implements SyncEngineDescriptor {
 

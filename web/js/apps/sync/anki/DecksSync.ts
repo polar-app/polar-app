@@ -6,6 +6,14 @@ import {DeckDescriptor} from './DeckDescriptor';
 import {Sets} from '../../../util/Sets';
 import {CreateDeckClient, ICreateDeckClient} from './clients/CreateDeckClient';
 import {DeckNamesAndIdsClient, IDeckNamesAndIdsClient} from './clients/DeckNamesAndIdsClient';
+import {SyncProgressListener} from '../SyncProgressListener';
+import {Abortable} from '../Abortable';
+import {Logger} from '../../../logger/Logger';
+import {SyncProgress} from '../SyncProgress';
+import {SyncState} from '../SyncState';
+import {Progress} from '../../../util/Progress';
+
+const log = Logger.create();
 
 /**
  * Sync decks to Anki.
@@ -20,8 +28,18 @@ export class DecksSync {
      * Make sure all decks are properly setup in Anki.
      *
      * @param deckDescriptors The decks we need created.
+     *
+     * @param abortable The abortable service running the sync. When aborted is
+     * true we need to stop the sync.
+     *
+     * @param syncProgressListener A callback for the state while we're
+     *     executing.
      */
-    async sync(deckDescriptors: DeckDescriptor[]) {
+    async sync(deckDescriptors: DeckDescriptor[],
+               abortable: Abortable,
+               syncProgressListener: SyncProgressListener) {
+
+        // TODO: how do we detect if we're aborted...
 
         // TODO: decompose these into batches...
 
@@ -40,7 +58,34 @@ export class DecksSync {
         // TODO: doing this in bulk might be better but we would need to batch
         // them out so we can measure progress easily and also not overwhelm
         // anki.
-        missingDecks.forEach(deck => this.createDeckClient.execute(deck));
+
+        // FIXME: only do this if missingDecks.length > 0
+
+        let syncProgress: SyncProgress = {
+            percentage: 0,
+            state: SyncState.STARTED,
+            error: undefined
+        };
+
+        let progress = new Progress(missingDecks.length);
+
+        for (let idx = 0; idx < missingDecks.length; idx++) {
+            const missingDeck = missingDecks[idx];
+
+            if(abortable.aborted) {
+                log.info("Aborting sync.");
+                return;
+            }
+
+            await this.createDeckClient.execute(missingDeck);
+
+            progress.incr();
+
+            syncProgress.percentage = progress.percentage();
+
+            syncProgressListener(Object.freeze(syncProgress));
+
+        }
 
         return missingDeckDescriptors;
 

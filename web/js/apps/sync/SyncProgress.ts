@@ -5,19 +5,19 @@
  */
 import {SyncState} from './SyncState';
 
-export class SyncProgress {
+export interface SyncProgress {
 
     /**
      * The completion percentage over the interval [0,100]
      */
-    public readonly percentage: number | undefined;
+    percentage: number;
 
-    public readonly state = SyncState.PENDING;
+    state: SyncState;
 
     /**
      * The error for the sync when the status is failed.
      */
-    public readonly error: Error | undefined;
+    error?: Error;
 
     // TODO: not sure if we should expose this.
     //
@@ -26,11 +26,5 @@ export class SyncProgress {
     //  * document synchronized.
     //  */
     // public readonly message: string = "";
-
-    constructor(percentage: number | undefined, state: SyncState.PENDING, error: Error | undefined) {
-        this.percentage = percentage;
-        this.state = state;
-        this.error = error;
-    }
 
 }

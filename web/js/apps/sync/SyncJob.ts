@@ -2,6 +2,7 @@
  * A job to perform a sync.  Jobs are started in running state and can be
  * aborted.
  */
+import {Abortable} from './Abortable';
 
 export interface SyncJob {
 
@@ -12,14 +13,14 @@ export interface SyncJob {
  */
 export interface PendingSyncJob extends SyncJob {
 
-    start(): StartedSyncJob;
+    start(): Promise<StartedSyncJob>;
 
 }
 
 /**
  * Abort a job that has been started.
  */
-export interface StartedSyncJob extends SyncJob {
+export interface StartedSyncJob extends SyncJob, Abortable{
 
     abort(): void;
 
