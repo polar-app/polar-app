@@ -8,7 +8,7 @@ import $ from '../ui/JQuery';
  */
 export class Toaster {
 
-    static success(message: string, title: string, options: ToasterOptions = {timeOut: 99999999}) {
+    static success(message: string, title: string, options: ToasterOptions = {}) {
         Toastr.success(message, title, options);
     }
 
