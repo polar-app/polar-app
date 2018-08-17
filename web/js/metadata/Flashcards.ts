@@ -60,7 +60,7 @@ export class MockFlashcards {
 
             let archetype = "9d146db1-7c31-4bcf-866b-7b485c4e50ea";
 
-            let front = Texts.create("What is the capital of California? " + idx, TextType.TEXT);
+            let front = Texts.create("What is the capital of California? <img src=\"data:image/gif;base64,R0lGODlhEAAQAMQAAORHHOVSKudfOulrSOp3WOyDZu6QdvCchPGolfO0o/XBs/fNwfjZ0frl3/zy7////wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACH5BAkAABAALAAAAAAQABAAAAVVICSOZGlCQAosJ6mu7fiyZeKqNKToQGDsM8hBADgUXoGAiqhSvp5QAnQKGIgUhwFUYLCVDFCrKUE1lBavAViFIDlTImbKC5Gm2hB0SlBCBMQiB0UjIQA7\" />\n" + idx, TextType.HTML);
             let back = Texts.create("Sacramento", TextType.TEXT);
 
             let fields = {
