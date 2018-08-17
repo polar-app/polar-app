@@ -95,3 +95,8 @@ curl -X POST "http://127.0.0.1:8765" -H 'Content-Type: application/json' -d'
     - how do we rename decks? 
 
 - FIXME: just need addNote and updateNote now.
+
+
+
+curl -X POST "http://127.0.0.1:8765" -H 'Content-Type: application/json' -d'
+{"action":"findNotes","version":6,"params":{"query":"tag:polar_guid:12fakzucrT"}}'

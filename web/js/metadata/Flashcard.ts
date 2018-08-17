@@ -50,7 +50,9 @@ export class Flashcard extends VersionedObject {
     validate(): void {
         super.validate();
 
+        Preconditions.assertNotNull(this.id, "id");
         Preconditions.assertNotNull(this.type, "type");
+        Preconditions.assertNotNull(this.guid, "guid");
         Preconditions.assertNotNull(this.fields, "fields");
         Preconditions.assertNotNull(this.archetype, "archetype");
 
@@ -59,6 +61,7 @@ export class Flashcard extends VersionedObject {
     }
 
     public static newInstance(id: string,
+                              guid: string,
                               created: ISODateTime,
                               lastUpdated: ISODateTime,
                               type: FlashcardType,
@@ -66,7 +69,7 @@ export class Flashcard extends VersionedObject {
                               archetype: string): Readonly<Flashcard> {
 
         let result = new Flashcard(<Flashcard> {
-            id, created, lastUpdated, type, fields, archetype
+            id, guid, created, lastUpdated, type, fields, archetype
         });
 
         return Object.freeze(result);

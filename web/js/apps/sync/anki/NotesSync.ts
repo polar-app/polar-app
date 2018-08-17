@@ -36,7 +36,7 @@ export class NotesSync {
 
                 let existingIDs = await this.findNotesClient.execute(`tag:${polarGUID.format()}`);
 
-                if(existingIDs.length == 0) {
+                if(existingIDs.length === 0) {
 
                     if(! noteDescriptor.tags.includes(polarGUID.format())) {
                         //  make sure the noteDescriptor has the proper tag.

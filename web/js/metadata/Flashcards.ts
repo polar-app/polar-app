@@ -20,7 +20,7 @@ export class Flashcards {
 
         let id = Hashcodes.createID({created, fields});
 
-        return Flashcard.newInstance(id, created, new ISODateTime(now), type, fields, archetype);
+        return Flashcard.newInstance(id, id, created, new ISODateTime(now), type, fields, archetype);
 
     }
 
@@ -54,11 +54,13 @@ export class MockFlashcards {
      */
     public static attachFlashcards(docMeta: DocMeta) {
 
+        let idx = 0;
+
         Object.values(docMeta.pageMetas).forEach(pageMeta => {
 
             let archetype = "9d146db1-7c31-4bcf-866b-7b485c4e50ea";
 
-            let front = Texts.create("What is the capital of California?", TextType.TEXT);
+            let front = Texts.create("What is the capital of California? " + idx, TextType.TEXT);
             let back = Texts.create("Sacramento", TextType.TEXT);
 
             let fields = {
@@ -69,6 +71,8 @@ export class MockFlashcards {
             let flashcard = Flashcards.create(FlashcardType.CLOZURE, fields, archetype);
 
             pageMeta.flashcards[flashcard.id] = flashcard;
+
+            ++idx;
 
         });
 
