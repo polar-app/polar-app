@@ -9,11 +9,7 @@ import {DeckNamesAndIdsClient, IDeckNamesAndIdsClient} from './clients/DeckNames
 import {SyncProgressListener} from '../SyncProgressListener';
 import {Abortable} from '../Abortable';
 import {Logger} from '../../../logger/Logger';
-import {SyncProgress} from '../SyncProgress';
-import {SyncState} from '../SyncState';
-import {Progress} from '../../../util/Progress';
 import {SyncQueue} from '../SyncQueue';
-import {SyncRunner} from '../SyncRunner';
 
 const log = Logger.create();
 
@@ -29,23 +25,13 @@ export class DecksSync {
     /**
      * Make sure all decks are properly setup in Anki.
      *
+     * @param syncQueue The queue to use for async operations.
+     *
      * @param deckDescriptors The decks we need created.
      *
-     * @param abortable The abortable service running the sync. When aborted is
-     * true we need to stop the sync.
-     *
-     * @param syncProgressListener A callback for the state while we're
-     *     executing.
      */
-    async sync(deckDescriptors: DeckDescriptor[],
-               abortable: Abortable,
-               syncProgressListener: SyncProgressListener) {
-
-        // TODO: how do we detect if we're aborted...
-
-        // TODO: decompose these into batches...
-
-        let syncQueue = new SyncQueue(abortable, syncProgressListener);
+    enqueue(syncQueue: SyncQueue,
+            deckDescriptors: DeckDescriptor[]) {
 
         let missingDecks: string[] = [];
         let missingDeckDescriptors: DeckDescriptor[] = [];
@@ -66,13 +52,11 @@ export class DecksSync {
 
             log.info(`Found ${missingDecks.length} missing decks`);
 
-            missingDeckDescriptors = missingDecks.map(name => <DeckDescriptor>{name});
+            missingDeckDescriptors.push(... missingDecks.map(name => <DeckDescriptor>{name}));
 
         });
 
         syncQueue.add(async () => {
-
-            log.info("FIXME N missing decks: " + missingDecks.length)
 
             let createDeckTasks = missingDecks.map(missingDeck => {
                 return async () => {
@@ -84,8 +68,6 @@ export class DecksSync {
             syncQueue.add(...createDeckTasks);
 
         });
-
-        await syncQueue.execute();
 
         return missingDeckDescriptors;
 

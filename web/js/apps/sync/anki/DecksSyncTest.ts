@@ -6,14 +6,36 @@ import {CreateDeckClient} from './clients/CreateDeckClient';
 import {Abortable} from '../Abortable';
 import {SyncProgressListener} from '../SyncProgressListener';
 import {SyncProgress} from '../SyncProgress';
+import {SyncQueue} from '../SyncQueue';
 
 
-describe('DesksSync', function() {
+describe('DecksSync', function() {
 
     let deckSync = new DecksSync();
 
     deckSync.createDeckClient = CreateDeckClient.createMock(1);
     deckSync.deckNamesAndIdsClient = DeckNamesAndIdsClient.createMock({});
+
+    let abortable: Abortable;
+
+    let syncProgress: SyncProgress | undefined;
+
+    let syncProgressListener: SyncProgressListener = _syncProgress => {
+        console.log(syncProgress);
+        syncProgress = _syncProgress;
+    };
+
+    let syncQueue: SyncQueue;
+
+    beforeEach(function () {
+
+        abortable = {
+            aborted: false
+        };
+
+        syncQueue = new SyncQueue(abortable, syncProgressListener);
+
+    });
 
     it("basic sync", async function () {
 
@@ -23,18 +45,9 @@ describe('DesksSync', function() {
             }
         ];
 
-        let abortable: Abortable = {
-            aborted: false
-        };
+        let createdDescriptors = deckSync.enqueue(syncQueue, deckDescriptors);
 
-        let _syncProgress: SyncProgress | undefined = undefined;
-
-        let syncProgressListener: SyncProgressListener = (syncProgress: Readonly<SyncProgress>) => {
-            console.log("Sync state: ", syncProgress);
-            _syncProgress = syncProgress;
-        };
-
-        let createdDescriptors = await deckSync.sync(deckDescriptors, abortable, syncProgressListener);
+        await syncQueue.execute();
 
         assertJSON(createdDescriptors, [
             {
@@ -42,7 +55,7 @@ describe('DesksSync', function() {
             }
         ]);
 
-        assertJSON(_syncProgress, {
+        assertJSON(syncProgress, {
             "percentage": 100,
             "state": "STARTED"
         });

@@ -4,6 +4,8 @@ import {PendingSyncJob, StartedSyncJob} from '../SyncJob';
 import {DeckDescriptor} from './DeckDescriptor';
 import {NoteDescriptor} from './NoteDescriptor';
 import {DecksSync} from './DecksSync';
+import {SyncQueue} from '../SyncQueue';
+import {NotesSync} from './NotesSync';
 
 abstract class AnkiSyncJob {
 
@@ -48,16 +50,17 @@ export class StartedAnkiSyncJob extends AnkiSyncJob implements StartedSyncJob {
 
     async run(): Promise<this> {
 
+        let syncQueue = new SyncQueue(this, this.syncProgressListener);
+
         let decksSync = new DecksSync();
 
-        await decksSync.sync(this.deckDescriptors, this, this.syncProgressListener);
+        decksSync.enqueue(syncQueue, this.deckDescriptors);
 
-        // run DecksSync
-        // run NotesSync
+        let notesSync = new NotesSync();
 
-        // see which notes are in the decks
-        // if they are updated, update them
-        // if they are missing, create them.
+        notesSync.enqueue(syncQueue, this.noteDescriptors);
+
+        await syncQueue.execute();
 
         return this;
 

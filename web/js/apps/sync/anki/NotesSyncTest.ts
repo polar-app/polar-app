@@ -3,11 +3,36 @@ import {NotesSync} from './NotesSync';
 import {NoteDescriptor} from './NoteDescriptor';
 import {AddNoteClient} from './clients/AddNoteClient';
 import {FindNotesClient} from './clients/FindNotesClient';
+import {Abortable} from '../Abortable';
+import {SyncProgress} from '../SyncProgress';
+import {SyncProgressListener} from '../SyncProgressListener';
+import {SyncQueue} from '../SyncQueue';
 
 
-describe('NotesSyncTest', function() {
+describe('NotesSync', function() {
 
     let notesSync = new NotesSync();
+
+    let abortable: Abortable;
+
+    let syncProgress: SyncProgress | undefined;
+
+    let syncProgressListener: SyncProgressListener = _syncProgress => {
+        console.log(syncProgress);
+        syncProgress = _syncProgress;
+    };
+
+    let syncQueue: SyncQueue;
+
+    beforeEach(function () {
+
+        abortable = {
+            aborted: false
+        };
+
+        syncQueue = new SyncQueue(abortable, syncProgressListener);
+
+    });
 
     it("full initial sync", async function () {
 
@@ -27,7 +52,9 @@ describe('NotesSyncTest', function() {
             }
         ];
 
-        let notesSynchronized = await notesSync.sync(noteDescriptors);
+        let notesSynchronized = notesSync.enqueue(syncQueue, noteDescriptors);
+
+        await syncQueue.execute();
 
         assertJSON(notesSynchronized.created, noteDescriptors);
 
@@ -51,7 +78,9 @@ describe('NotesSyncTest', function() {
             }
         ];
 
-        let notesSynchronized = await notesSync.sync(noteDescriptors);
+        let notesSynchronized = notesSync.enqueue(syncQueue, noteDescriptors);
+
+        await syncQueue.execute();
 
         assertJSON(notesSynchronized.created, []);
 

@@ -28,6 +28,14 @@ export class SyncQueue {
 
     private readonly syncProgressListener: SyncProgressListener;
 
+    /**
+     *
+     * @param abortable The abortable service running the sync. When aborted is
+     * true we need to stop the sync.
+     *
+     * @param syncProgressListener A callback for the state while we're
+     *     executing.
+     */
     constructor(abortable: Abortable, syncProgressListener: SyncProgressListener) {
         this.abortable = abortable;
         this.syncProgressListener = syncProgressListener;
