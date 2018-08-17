@@ -1,5 +1,4 @@
 import {SyncEngine} from './SyncEngine';
-import {SyncEngineDescriptor} from './SyncEngineDescriptor';
 
 export class SyncEngineRegistry {
 

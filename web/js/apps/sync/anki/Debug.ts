@@ -1,26 +1,16 @@
 import {Logger} from '../../../logger/Logger';
-import {AnkiConnectFetch} from './AnkiConnectFetch';
-import {DeckNamesAndIdsClient} from './clients/DeckNamesAndIdsClient';
+import {AnkiSyncEngine} from './AnkiSyncEngine';
 
 const log = Logger.create();
 
 async function exec() {
 
-    log.info("Running anki debug test code...");
+    // create a fake DocMeta with flashcards and sync it to Anki and see if it
+    // works
 
-    let body = {
-        "action": "deckNamesAndIds",
-        "version": 6
-    };
 
-    //let response = await AnkiConnectFetch.fetch({ method: 'POST', body: JSON.stringify(body) });
 
-    let deckNamesAndIds = await new DeckNamesAndIdsClient().execute();
-
-    console.log("deckNamesAndIds: " , deckNamesAndIds)
-
-        // .then(res => res.json())
-        // .then(json => console.log(json));
+    new AnkiSyncEngine()
 
 }
 

@@ -4,7 +4,7 @@
 import {DocMetaSet} from '../../metadata/DocMetaSet';
 import {SyncProgressListener} from './SyncProgressListener';
 import {SyncEngineDescriptor} from './SyncEngineDescriptor';
-import {PendingSyncJob, SyncJob} from './SyncJob';
+import {PendingSyncJob} from './SyncJob';
 
 export interface SyncEngine {
 

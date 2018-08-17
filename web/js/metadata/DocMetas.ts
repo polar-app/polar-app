@@ -5,7 +5,6 @@ import {PagemarkType} from './PagemarkType';
 import {PageInfo} from './PageInfo';
 import {DocInfos} from './DocInfos';
 import {AnnotationInfos} from './AnnotationInfos';
-import {DocInfo} from './DocInfo';
 
 const {Pagemarks} = require("./Pagemarks");
 const {MetadataSerializer} = require("./MetadataSerializer");

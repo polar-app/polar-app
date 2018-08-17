@@ -2,7 +2,7 @@ import {SyncEngine} from '../SyncEngine';
 import {SyncEngineDescriptor} from '../SyncEngineDescriptor';
 import {DocMetaSet} from '../../../metadata/DocMetaSet';
 import {SyncProgressListener} from '../SyncProgressListener';
-import {PendingSyncJob, StartedSyncJob} from '../SyncJob';
+import {PendingSyncJob} from '../SyncJob';
 import {DocMeta} from '../../../metadata/DocMeta';
 import {Flashcard} from '../../../metadata/Flashcard';
 import {PageInfo} from '../../../metadata/PageInfo';
@@ -113,30 +113,6 @@ export class AnkiSyncEngine implements SyncEngine {
         return result;
 
     }
-
-    /**
-     * We need to decompose this into flashcards so that we can compute the
-     * correct progress and Flashcards are the only thing we're syncing here.
-     *
-     */
-    // protected syncFlashcards(docMetas: DocMetaSet, progress: SyncProgressListener): SyncJob {
-    //
-    //     return new AnkiSyncJob();
-    //
-    // }
-
-    // https://github.com/FooSoft/anki-connect
-
-    // initial design:
-    //
-    // always write to a deck named for the document.  No support for rename or
-    // anything else fancy in the first version.
-    //
-    // call getNote
-    //
-    // TODO: which model to use to write with???
-
-    // getDecks.
 
 }
 
