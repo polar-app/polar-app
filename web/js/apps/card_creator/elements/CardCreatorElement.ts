@@ -66,4 +66,5 @@ export class CardCreatorElement extends HTMLElement {
         return div;
 
     }
+
 }
