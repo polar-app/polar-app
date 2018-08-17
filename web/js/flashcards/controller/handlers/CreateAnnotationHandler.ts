@@ -52,8 +52,6 @@ export class CreateAnnotationHandler extends IPCHandler<AnnotationContainer<Anno
                 // FIXME: stick this on the proper parent .. this could either
                 // be a page directly or a
 
-                Toaster.success("New flashcard created.", "New flashcard");
-
             } else {
                 log.info(`Ignoring flashcard.  ${descriptor.docFingerprint} != ${this.model.docMeta.docInfo.fingerprint}`)
             }

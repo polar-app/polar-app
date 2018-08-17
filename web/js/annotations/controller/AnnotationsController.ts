@@ -7,6 +7,7 @@ import {AnnotationTriggerEvents} from './AnnotationTriggerEvents';
 import {IPCClient} from '../../ipc/handler/IPCClient';
 import {IPCEvent} from '../../ipc/handler/IPCEvent';
 import {ElectronIPCPipe} from '../../ipc/handler/ElectronIPCPipe';
+import {Toaster} from '../../toaster/Toaster';
 
 const log = Logger.create();
 
@@ -87,6 +88,8 @@ export class AnnotationsController {
         log.info("Flashcard created!");
 
         await this.hideDialog();
+
+        Toaster.success("New flashcard created.", "New flashcard");
 
     }
 
