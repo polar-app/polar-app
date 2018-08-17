@@ -41,9 +41,13 @@ export class AnnotationsController {
         // /api/context-menu in it so that it's obvious that we're responding
         // to context menu events
 
+        console.log("FIXME: ", data)
+
         if(data) {
 
-            if(data.type === 'create-flashcard') {
+
+
+            if(data.type === 'add-flashcard') {
 
                 let triggerEvent = TriggerEvent.create(event.data);
 

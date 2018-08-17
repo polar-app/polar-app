@@ -175,7 +175,7 @@ export class ElectronContextMenu extends ContextMenu {
             new MenuItem({
                 label: 'Add Flashcard',
                 //accelerator: 'CmdOrCtrl+A',
-                click: () => this.postContextMenuMessage("create-flashcard", triggerEvent)
+                click: () => this.postContextMenuMessage("add-flashcard", triggerEvent)
             }),
             new MenuItem({
                 label: 'Delete',
@@ -201,7 +201,7 @@ export class ElectronContextMenu extends ContextMenu {
         ctxMenu.append(this.createSubmenu('Area Highlight', [
             new MenuItem({
                 label: 'Add Flashcard',
-                click: () => this.postContextMenuMessage("create-flashcard", triggerEvent)
+                click: () => this.postContextMenuMessage("add-flashcard", triggerEvent)
             }),
             new MenuItem({
                 label: 'Delete',
