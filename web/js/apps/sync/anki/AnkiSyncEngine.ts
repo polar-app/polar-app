@@ -12,6 +12,7 @@ import {DeckDescriptor} from './DeckDescriptor';
 import {NoteDescriptor} from './NoteDescriptor';
 import {Optional} from '../../../util/ts/Optional';
 import {PendingAnkiSyncJob} from './AnkiSyncJob';
+import {notNull} from '../../../Preconditions';
 
 /**
  * Sync engine for Anki.  Takes cards registered in a DocMeta and then transfers
@@ -54,18 +55,22 @@ export class AnkiSyncEngine implements SyncEngine {
 
     protected toNoteDescriptors(docMetaSet: DocMetaSet): NoteDescriptor[] {
 
-        return this.toFlashcardDescriptors(docMetaSet).map(current => {
+        return this.toFlashcardDescriptors(docMetaSet).map(flashcardDescriptor => {
 
-            let deckName = Optional.of(current.docMeta.docInfo.title, 'title').get();
+            let deckName = Optional.of(flashcardDescriptor.docMeta.docInfo.title, 'title').get();
 
             let fields: {[name: string]: string} = {};
 
+            // need to create the fields 'front' and 'Back'
+
+            Dictionaries.forDict(flashcardDescriptor.flashcard.fields, (key, value) => {
+                fields[key] = Optional.of(value.HTML || value.TEXT || value.MARKDOWN).get();
+            });
 
             return {
-                guid: current.flashcard.guid,
+                guid: flashcardDescriptor.flashcard.guid,
                 deckName: deckName,
-                // FIXME: we need to handle the model name for now...
-                modelName: "unknown",
+                modelName: "Basic",
                 fields,
                 tags: []
             };

@@ -58,9 +58,13 @@ export class MockFlashcards {
 
             let archetype = "9d146db1-7c31-4bcf-866b-7b485c4e50ea";
 
-            let text = Texts.create("This is the text", TextType.MARKDOWN);
+            let front = Texts.create("What is the capital of California?", TextType.TEXT);
+            let back = Texts.create("Sacramento", TextType.TEXT);
 
-            let fields = { text };
+            let fields = {
+                'Front': front,
+                'Back': back,
+            };
 
             let flashcard = Flashcards.create(FlashcardType.CLOZURE, fields, archetype);
 

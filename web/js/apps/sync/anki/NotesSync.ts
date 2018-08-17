@@ -2,6 +2,9 @@ import {NoteDescriptor} from './NoteDescriptor';
 import {AddNoteClient, IAddNoteClient} from './clients/AddNoteClient';
 import {FindNotesClient, IFindNotesClient} from './clients/FindNotesClient';
 import {SyncQueue} from '../SyncQueue';
+import {Logger} from '../../../logger/Logger';
+
+const log = Logger.create();
 
 /**
  * Performs sync of notes once we are certain the decks are created.
@@ -42,7 +45,12 @@ export class NotesSync {
 
                     syncQueue.add(async () => {
 
-                        await this.addNoteClient.execute(noteDescriptor);
+                        try {
+                            await this.addNoteClient.execute(noteDescriptor);
+                        } catch (e) {
+                            log.error("Failed to create note: ", noteDescriptor);
+                            throw e;
+                        }
 
                         result.created.push(noteDescriptor);
 

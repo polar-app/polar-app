@@ -15,7 +15,7 @@ async function exec() {
     let docMeta = MockDocMetas.createMockDocMeta();
     docMeta.docInfo.title = 'Mock document';
 
-    docMeta = MockFlashcards.attachFlashcards(docMeta)
+    docMeta = MockFlashcards.attachFlashcards(docMeta);
 
     let ankiSyncEngine = new AnkiSyncEngine();
 
