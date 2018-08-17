@@ -9,6 +9,7 @@ import {ElectronContext} from '../../../ipc/handler/ElectronContext';
 import {IPCClient} from '../../../ipc/handler/IPCClient';
 import {IPCClients} from '../../../ipc/handler/IPCClients';
 import {IPCEvent} from '../../../ipc/handler/IPCEvent';
+import {Completion} from '../../../util/Promises';
 
 const log = Logger.create();
 
@@ -19,11 +20,13 @@ export class PostMessageFormHandler extends FormHandler {
     private readonly targetContext: ElectronContext;
 
     private readonly client: IPCClient<IPCEvent>;
+    private completion: Completion<boolean>;
 
-    constructor(annotationDescriptor: AnnotationDescriptor, targetContext: ElectronContext) {
+    constructor(annotationDescriptor: AnnotationDescriptor, targetContext: ElectronContext, completion: Completion<boolean>) {
         super();
         this.annotationDescriptor = annotationDescriptor;
         this.targetContext = targetContext;
+        this.completion = completion;
         this.client = IPCClients.rendererProcess();
     }
 
@@ -58,7 +61,7 @@ export class PostMessageFormHandler extends FormHandler {
 
             // TODO: clear the schema form
 
-            // TODO: hide the window now.
+            this.completion.resolve(true);
 
         })().catch(err => log.error("Could not handle form", err));
 
@@ -69,10 +72,9 @@ export class PostMessageFormHandler extends FormHandler {
     onError(data: any) {
 
         log.info("onError: ", data);
-        //window.postMessage({ type: "onError", data: dataToExternal(data)},
-        // "*");
 
         return true;
+
     }
 
 }

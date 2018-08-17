@@ -44,39 +44,6 @@ describe('FlashcardsControllerTest', function() {
 
     });
 
-    xit("basic", function () {
-
-        // create a flashcard from basic data and make sure the docMeta was
-        // properly updated.
-
-        flashcardsController.onCreateFlashcard(FORM_DATA)
-
-        // now verify that the docMeta has the proper text highlight.
-
-        let flashcards = model.docMeta.getPageMeta(1).textHighlights["12pNUv1Y9S"].flashcards;
-
-        let expected = {
-            "1tDRjUqxJA": {
-                "id": "1tDRjUqxJA",
-                "created": "2012-03-02T11:38:49.321Z",
-                "lastUpdated": "2012-03-02T11:38:49.321Z",
-                "author": null,
-                "type": "BASIC_FRONT_BACK",
-                "fields": {
-                    "back": {
-                        "HTML": "This is the back"
-                    },
-                    "front": {
-                        "HTML": "This is the front"
-                    }
-                }
-            }
-        };
-
-        assertJSON(flashcards, expected)
-
-    });
-
 });
 
 const FORM_DATA: {[path: string]: string } = {

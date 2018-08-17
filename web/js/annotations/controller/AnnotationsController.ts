@@ -26,7 +26,7 @@ export class AnnotationsController {
 
         window.addEventListener("message", event => this.onMessageReceived(event), false);
 
-        let dialogWindowClient = await this.createFlashcardDialogWindow();
+        let dialogWindowClient = await this.createDialogWindow();
         this.flashcardDialogWindow.set(dialogWindowClient);
 
         this.ipcClient.set(dialogWindowClient.createClient());
@@ -82,12 +82,11 @@ export class AnnotationsController {
 
         let annotationDescriptor = annotationDescriptors[0];
 
-        this.ipcClient.get().execute('/create-flashcard/api/create', annotationDescriptor)
-            .then(() => {
+        await this.ipcClient.get().execute('/create-flashcard/api/create', annotationDescriptor);
 
-                log.info("Sending annotation descriptor...done");
+        log.info("Flashcard created!");
 
-            });
+        await this.hideDialog();
 
     }
 
@@ -97,7 +96,13 @@ export class AnnotationsController {
         log.info("Showing dialog...done");
     }
 
-    private async createFlashcardDialogWindow(): Promise<DialogWindowClient> {
+    private async hideDialog() {
+        log.info("Hiding dialog...");
+        await this.flashcardDialogWindow.get().hide();
+        log.info("Hiding dialog...done");
+    }
+
+    private async createDialogWindow(): Promise<DialogWindowClient> {
 
         let appPath = "./apps/card-creator/index.html";
 

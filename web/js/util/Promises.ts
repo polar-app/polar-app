@@ -50,3 +50,18 @@ export class Promises {
     }
 
 }
+
+export interface Completion<T> {
+
+    readonly resolve: ResolveFunction<T>;
+    readonly reject: RejectFunction;
+
+}
+
+export interface ResolveFunction<T> {
+    (value: T): void
+}
+
+export interface RejectFunction {
+    (error: Error): void
+}
