@@ -1,16 +1,15 @@
 import {FormHandler} from './FormHandler';
-
-declare var global: any;
-global.$ = global.jQuery = require("jquery");
-
 import 'bootstrap/dist/js/bootstrap.bundle.js';
 
 import React from 'react'
-import { render } from "react-dom";
-import { JSONSchema6 } from "json-schema";
-import Form from "react-jsonschema-form";
+import {render} from 'react-dom';
+import {JSONSchema6} from 'json-schema';
+import Form from 'react-jsonschema-form';
 import {SchemaUIFactory} from './SchemaUIFactory';
 import {SchemaFactory} from './SchemaFactory';
+
+declare var global: any;
+global.$ = global.jQuery = require("jquery");
 
 require('summernote/dist/summernote-bs4');
 
@@ -25,12 +24,22 @@ export class CreateFlashcardForm {
      */
     public formHandler: FormHandler = new FormHandler();
 
-    create(targetElement: HTMLElement) {
+    private readonly targetElement: HTMLElement;
+
+    constructor(targetElement: HTMLElement) {
+
+        this.targetElement = targetElement;
+
+        this.render();
+
+    }
+
+    render() {
 
         let schema: JSONSchema6 = SchemaFactory.create();
         let schemaUI = SchemaUIFactory.create();
 
-        if(!targetElement) {
+        if(!this.targetElement) {
             throw new Error("No schemaFormElement");
         }
 
@@ -42,15 +51,15 @@ export class CreateFlashcardForm {
         let onSubmitCallback = () => (data: any) => { return this.formHandler.onSubmit(data) };
         let onErrorCallback = () => (data: any) => { return this.formHandler.onError(data) };
 
-        render((
-            <Form schema={schema}
-                  autocomplete="off"
-                  uiSchema={schemaUI}
-                  showErrorList={false}
-                  onChange={onChangeCallback()}
-                  onSubmit={onSubmitCallback()}
-                  onError={onErrorCallback()} />
-        ), targetElement);
+        let form = <Form schema={schema}
+                         autocomplete="off"
+                         uiSchema={schemaUI}
+                         showErrorList={false}
+                         onChange={onChangeCallback()}
+                         onSubmit={onSubmitCallback()}
+                         onError={onErrorCallback()} />;
+
+        render((form), this.targetElement);
 
     }
 

@@ -38,6 +38,8 @@ export class CreateFlashcardHandler extends IPCHandler<IPCMessage<AnnotationDesc
 
             this.createFlashcardForm.formHandler = new PostMessageFormHandler(annotationDescriptor, context, completion);
 
+            this.createFlashcardForm.render();
+
         });
 
     }

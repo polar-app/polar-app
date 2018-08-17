@@ -16,13 +16,11 @@ export class CreateFlashcardApp {
 
                 log.info("Ready to create flash card!");
 
-                let createFlashcardForm = new CreateFlashcardForm();
-
-                let createFlashcardService = new CreateFlashcardService(createFlashcardForm);
-
                 let schemaFormElement = <HTMLElement>document.getElementById('schema-form');
 
-                createFlashcardForm.create(schemaFormElement);
+                let createFlashcardForm = new CreateFlashcardForm(schemaFormElement);
+
+                let createFlashcardService = new CreateFlashcardService(createFlashcardForm);
 
                 await createFlashcardService.start();
                 resolve();
