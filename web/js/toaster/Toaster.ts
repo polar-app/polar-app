@@ -1,19 +1,29 @@
-import toastr from 'toastr';
+import Toastr from 'toastr';
 
-export class Toastr {
+// needed to enforce that jquery is working.
+import $ from '../ui/JQuery';
 
-    static success(message: string, title: string | undefined = undefined) {
+/**
+ * High level interface to create toaster UI popups for messages.
+ */
+export class Toaster {
 
-
-
-        if(title) {
-            toastr.success(message, title);
-        }
-
-        toastr.success(message);
-
+    static success(message: string, title: string, options: ToasterOptions = {timeOut: 99999999}) {
+        Toastr.success(message, title, options);
     }
 
+    static warning(message: string, title: string, options: ToasterOptions = {}) {
+        Toastr.warning(message, title, options);
+    }
+
+    static error(message: string, title: string, options: ToasterOptions = {}) {
+        Toastr.error(message, title, options);
+    }
+
+}
+
+export interface ToasterOptions {
+    timeOut?: number;
 }
 
 export enum ToastrType {

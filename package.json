@@ -74,6 +74,7 @@
     "@types/react": "^16.4.9",
     "@types/react-dom": "^16.0.7",
     "@types/summernote": "^0.8.0",
+    "@types/toastr": "^2.1.35",
     "adm-zip": "^0.4.11",
     "babel-preset-es2017": "^6.24.1",
     "base58check": "^2.0.0",
@@ -137,6 +138,7 @@
     "summernote": "^0.8.10",
     "text-encoding": "^0.6.4",
     "texthighlighter": "^1.2.4",
+    "toastr": "^2.1.4",
     "tooltip.js": "^1.2.0",
     "underscore": "^1.9.1"
   }

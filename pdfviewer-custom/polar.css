@@ -108,5 +108,10 @@
 
 }
 
-
-
+div#toast-container {
+    position: absolute;
+    z-index: 9999999;
+    top: 90px;
+    right: 70px;
+    opacity: 1 !important;
+}
