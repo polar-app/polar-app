@@ -29,6 +29,7 @@ export class PostMessageFormHandler extends FormHandler {
 
     onChange(data: any) {
         log.info("onChange: ", data);
+        return true;
     }
 
     /**
@@ -55,14 +56,23 @@ export class PostMessageFormHandler extends FormHandler {
 
             await this.client.execute('/api/annotations/create-annotation', annotationContainer, this.targetContext)
 
+            // TODO: clear the schema form
+
+            // TODO: hide the window now.
+
         })().catch(err => log.error("Could not handle form", err));
+
+        return true;
 
     }
 
     onError(data: any) {
+
         log.info("onError: ", data);
         //window.postMessage({ type: "onError", data: dataToExternal(data)},
         // "*");
+
+        return true;
     }
 
 }

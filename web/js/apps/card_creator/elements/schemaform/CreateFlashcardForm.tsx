@@ -38,9 +38,9 @@ export class CreateFlashcardForm {
             throw new Error("No schema");
         }
 
-        let onChangeCallback = () => (data: any) => { this.formHandler.onChange(data) };
-        let onSubmitCallback = () => (data: any) => { this.formHandler.onSubmit(data) };
-        let onErrorCallback = () => (data: any) => { this.formHandler.onError(data) };
+        let onChangeCallback = () => (data: any) => { return this.formHandler.onChange(data) };
+        let onSubmitCallback = () => (data: any) => { return this.formHandler.onSubmit(data) };
+        let onErrorCallback = () => (data: any) => { return this.formHandler.onError(data) };
 
         render((
             <Form schema={schema}

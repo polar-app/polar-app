@@ -93,7 +93,6 @@
     display: none;
 }
 
-
 #polarCreatePagemarksAcrossPages:before {
 
     display: inline-block;
@@ -113,5 +112,9 @@ div#toast-container {
     z-index: 9999999;
     top: 90px;
     right: 70px;
+    opacity: 1 !important;
+}
+
+.toast {
     opacity: 1 !important;
 }
