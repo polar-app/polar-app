@@ -48,44 +48,17 @@ export class DocMetas {
     /**
      * Create a DocMeta object but place initial pagemarks on it. This is useful
      * for testing.
+     * @deprecated use MockDocMetas
      */
     static createWithinInitialPagemarks(fingerprint: string, nrPages: number) {
-
-        let result = this.create(fingerprint, nrPages);
-
-        let maxPages = 3;
-        for(let pageNum = 1; pageNum <= Math.min(nrPages, maxPages); ++pageNum ) {
-
-            let pagemark = Pagemarks.create({
-                type: PagemarkType.SINGLE_COLUMN,
-                percentage: 100,
-                column: 0
-            });
-
-            let pageMeta = result.getPageMeta(pageNum);
-
-            // set the pagemark that we just created.
-            // TODO: this should be pagemark.id as the key not pagemark.column
-            pageMeta.pagemarks[pagemark.column] = pagemark;
-
-        }
-
-        return result;
-
+        return MockDocMetas.createWithinInitialPagemarks(fingerprint, nrPages);
     }
 
+    /**
+     * @deprecated use MockDocMetas
+     */
     static createMockDocMeta() {
-
-        let fingerprint = "0x001";
-        let nrPages = 4;
-        let docMeta = DocMetas.createWithinInitialPagemarks(fingerprint, nrPages);
-
-        let textHighlight = TextHighlights.createMockTextHighlight();
-
-        docMeta.getPageMeta(1).textHighlights[textHighlight.id] = textHighlight;
-
-        return docMeta;
-
+        return MockDocMetas.createMockDocMeta();
     }
 
     /**
@@ -179,6 +152,55 @@ export class DocMetas {
             }
 
         }
+
+        return docMeta;
+
+    }
+
+}
+
+export class MockDocMetas {
+
+
+    /**
+     * Create a DocMeta object but place initial pagemarks on it. This is useful
+     * for testing.
+     *
+     */
+    static createWithinInitialPagemarks(fingerprint: string, nrPages: number) {
+
+        let result = DocMetas.create(fingerprint, nrPages);
+
+        let maxPages = 3;
+        for(let pageNum = 1; pageNum <= Math.min(nrPages, maxPages); ++pageNum ) {
+
+            let pagemark = Pagemarks.create({
+                                                type: PagemarkType.SINGLE_COLUMN,
+                                                percentage: 100,
+                                                column: 0
+                                            });
+
+            let pageMeta = result.getPageMeta(pageNum);
+
+            // set the pagemark that we just created.
+            // TODO: this should be pagemark.id as the key not pagemark.column
+            pageMeta.pagemarks[pagemark.column] = pagemark;
+
+        }
+
+        return result;
+
+    }
+
+    static createMockDocMeta() {
+
+        let fingerprint = "0x001";
+        let nrPages = 4;
+        let docMeta = DocMetas.createWithinInitialPagemarks(fingerprint, nrPages);
+
+        let textHighlight = TextHighlights.createMockTextHighlight();
+
+        docMeta.getPageMeta(1).textHighlights[textHighlight.id] = textHighlight;
 
         return docMeta;
 

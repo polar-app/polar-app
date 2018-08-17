@@ -24,26 +24,10 @@ class DocMetas {
         return new DocMeta_1.DocMeta(docInfo, pageMetas);
     }
     static createWithinInitialPagemarks(fingerprint, nrPages) {
-        let result = this.create(fingerprint, nrPages);
-        let maxPages = 3;
-        for (let pageNum = 1; pageNum <= Math.min(nrPages, maxPages); ++pageNum) {
-            let pagemark = Pagemarks.create({
-                type: PagemarkType_1.PagemarkType.SINGLE_COLUMN,
-                percentage: 100,
-                column: 0
-            });
-            let pageMeta = result.getPageMeta(pageNum);
-            pageMeta.pagemarks[pagemark.column] = pagemark;
-        }
-        return result;
+        return MockDocMetas.createWithinInitialPagemarks(fingerprint, nrPages);
     }
     static createMockDocMeta() {
-        let fingerprint = "0x001";
-        let nrPages = 4;
-        let docMeta = DocMetas.createWithinInitialPagemarks(fingerprint, nrPages);
-        let textHighlight = TextHighlights.createMockTextHighlight();
-        docMeta.getPageMeta(1).textHighlights[textHighlight.id] = textHighlight;
-        return docMeta;
+        return MockDocMetas.createMockDocMeta();
     }
     static addPagemarks(docMeta, options) {
         if (!options) {
@@ -96,4 +80,29 @@ class DocMetas {
     }
 }
 exports.DocMetas = DocMetas;
+class MockDocMetas {
+    static createWithinInitialPagemarks(fingerprint, nrPages) {
+        let result = DocMetas.create(fingerprint, nrPages);
+        let maxPages = 3;
+        for (let pageNum = 1; pageNum <= Math.min(nrPages, maxPages); ++pageNum) {
+            let pagemark = Pagemarks.create({
+                type: PagemarkType_1.PagemarkType.SINGLE_COLUMN,
+                percentage: 100,
+                column: 0
+            });
+            let pageMeta = result.getPageMeta(pageNum);
+            pageMeta.pagemarks[pagemark.column] = pagemark;
+        }
+        return result;
+    }
+    static createMockDocMeta() {
+        let fingerprint = "0x001";
+        let nrPages = 4;
+        let docMeta = DocMetas.createWithinInitialPagemarks(fingerprint, nrPages);
+        let textHighlight = TextHighlights.createMockTextHighlight();
+        docMeta.getPageMeta(1).textHighlights[textHighlight.id] = textHighlight;
+        return docMeta;
+    }
+}
+exports.MockDocMetas = MockDocMetas;
 //# sourceMappingURL=DocMetas.js.map

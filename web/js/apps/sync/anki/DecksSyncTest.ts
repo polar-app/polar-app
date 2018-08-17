@@ -21,7 +21,7 @@ describe('DecksSync', function() {
     let syncProgress: SyncProgress | undefined;
 
     let syncProgressListener: SyncProgressListener = _syncProgress => {
-        console.log(syncProgress);
+        console.log(_syncProgress);
         syncProgress = _syncProgress;
     };
 

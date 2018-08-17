@@ -7,6 +7,7 @@ import {Flashcard} from './Flashcard';
 import {Texts} from './Texts';
 import {Text} from './Text';
 import {TextType} from './TextType';
+import {DocMeta} from './DocMeta';
 
 export class Flashcards {
 
@@ -41,6 +42,33 @@ export class Flashcards {
         });
 
         return Flashcards.create(FlashcardType.BASIC_FRONT_BACK, fields, archetype);
+
+    }
+
+}
+
+export class MockFlashcards {
+
+    /**
+     * Attach mock flashcards on the given DocMeta for testing
+     */
+    public static attachFlashcards(docMeta: DocMeta) {
+
+        Object.values(docMeta.pageMetas).forEach(pageMeta => {
+
+            let archetype = "9d146db1-7c31-4bcf-866b-7b485c4e50ea";
+
+            let text = Texts.create("This is the text", TextType.MARKDOWN);
+
+            let fields = { text };
+
+            let flashcard = Flashcards.create(FlashcardType.CLOZURE, fields, archetype);
+
+            pageMeta.flashcards[flashcard.id] = flashcard;
+
+        });
+
+        return docMeta;
 
     }
 
