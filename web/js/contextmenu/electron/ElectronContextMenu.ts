@@ -198,17 +198,17 @@ export class ElectronContextMenu extends ContextMenu {
 
         const ctxMenu = new Menu();
 
-        ctxMenu.append(new MenuItem({
-            label: 'Add Flashcard',
-            //accelerator: 'CmdOrCtrl+A',
-            click: () => this.postContextMenuMessage("create-flashcard", triggerEvent)
-        }));
-
-        ctxMenu.append(new MenuItem({
-            label: 'Delete Area Highlight',
-            //accelerator: 'CmdOrCtrl+A',
-            click: () => this.postContextMenuMessage("delete-area-highlight", triggerEvent)
-        }));
+        ctxMenu.append(this.createSubmenu('Area Highlight', [
+            new MenuItem({
+                label: 'Add Flashcard',
+                click: () => this.postContextMenuMessage("create-flashcard", triggerEvent)
+            }),
+            new MenuItem({
+                label: 'Delete',
+                //accelerator: 'CmdOrCtrl+A',
+                click: () => this.postContextMenuMessage("delete-area-highlight", triggerEvent)
+            })
+        ]));
 
         return ctxMenu;
 
@@ -224,11 +224,13 @@ export class ElectronContextMenu extends ContextMenu {
 
         const ctxMenu = new Menu();
 
-        ctxMenu.append(new MenuItem({
-            label: 'Delete Pagemark',
-            //accelerator: 'CmdOrCtrl+A',
-            click: () => this.postContextMenuMessage("delete-pagemark", triggerEvent)
-        }));
+        ctxMenu.append(this.createSubmenu('Pagemark', [
+            new MenuItem({
+                label: 'Delete Pagemark',
+                //accelerator: 'CmdOrCtrl+A',
+                click: () => this.postContextMenuMessage("delete-pagemark", triggerEvent)
+            })
+        ]));
 
         return ctxMenu;
 
