@@ -13,6 +13,9 @@
 
     margin-bottom: 10px;
 
+    /* not initially visible */
+    display: none;
+
 }
 
 #set-title-form {

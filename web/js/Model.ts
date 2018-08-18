@@ -93,7 +93,7 @@ export class Model {
 
     }
 
-    registerListenerForDocumentLoaded(eventListener: any) {
+    registerListenerForDocumentLoaded(eventListener: DocumentLoadedCallback) {
         this.reactor.addEventListener('documentLoaded', eventListener);
     }
 
@@ -190,4 +190,16 @@ export class Model {
         this.reactor.addEventListener('erasePagemark', eventListener);
     }
 
+}
+
+export interface DocumentLoadedEvent {
+    readonly fingerprint: string;
+    readonly nrPages: number;
+    readonly currentPageNumber: number;
+    readonly docMeta: DocMeta
+}
+
+
+export interface DocumentLoadedCallback {
+    (event: DocumentLoadedEvent): void;
 }

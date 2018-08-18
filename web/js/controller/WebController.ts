@@ -5,6 +5,7 @@ import {ContextMenuController} from '../contextmenu/ContextMenuController';
 import {KeyEvents} from '../KeyEvents';
 import {Logger} from '../logger/Logger';
 import {Viewer} from '../viewer/Viewer';
+import {DocTitleController} from './DocTitleController';
 
 const {TextHighlightController} = require("../highlights/text/controller/TextHighlightController");
 const {AreaHighlightController} = require("../highlights/area/controller/AreaHighlightController");
@@ -36,6 +37,8 @@ export class WebController extends Controller {
         this.docFingerprint = null;
 
         this.docFormat = notNull(DocFormatFactory.getInstance());
+
+        new DocTitleController(this.model).start();
 
     }
 

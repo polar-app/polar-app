@@ -13,6 +13,7 @@ const DocFormatFactory_1 = require("../docformat/DocFormatFactory");
 const ContextMenuController_1 = require("../contextmenu/ContextMenuController");
 const KeyEvents_1 = require("../KeyEvents");
 const Logger_1 = require("../logger/Logger");
+const DocTitleController_1 = require("./DocTitleController");
 const { TextHighlightController } = require("../highlights/text/controller/TextHighlightController");
 const { AreaHighlightController } = require("../highlights/area/controller/AreaHighlightController");
 const { PagemarkCoverageEventListener } = require("../pagemarks/controller/PagemarkCoverageEventListener");
@@ -27,6 +28,7 @@ class WebController extends Controller {
         this.viewer = Preconditions_1.Preconditions.assertNotNull(viewer, "viewer");
         this.docFingerprint = null;
         this.docFormat = Preconditions_1.notNull(DocFormatFactory_1.DocFormatFactory.getInstance());
+        new DocTitleController_1.DocTitleController(this.model).start();
     }
     start() {
         return __awaiter(this, void 0, void 0, function* () {
