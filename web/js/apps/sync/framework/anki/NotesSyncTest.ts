@@ -8,6 +8,7 @@ import {SyncProgress} from '../SyncProgress';
 import {SyncProgressListener} from '../SyncProgressListener';
 import {SyncQueue} from '../SyncQueue';
 import {StoreMediaFileClient} from './clients/StoreMediaFileClient';
+import {CanAddNotesClient} from './clients/CanAddNotesClient';
 
 describe('NotesSync', function() {
 
@@ -42,6 +43,7 @@ describe('NotesSync', function() {
         // create mocks where we have no initial notes, and we allow
         // a new note to be created.
         notesSync.addNoteClient = AddNoteClient.createMock(1);
+        notesSync.canAddNotesClient = CanAddNotesClient.createMock([true]);
         notesSync.storeMediaFileClient = StoreMediaFileClient.createMock();
         notesSync.findNotesClient = FindNotesClient.createMock([]);
 

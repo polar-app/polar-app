@@ -8,6 +8,7 @@ import {Dictionaries} from '../../../../util/Dictionaries';
 import {MediaContents} from './MediaContents';
 import {AnkiFields} from './AnkiFields';
 import {Arrays} from '../../../../util/Arrays';
+import {CanAddNotesClient, ICanAddNotesClient} from './clients/CanAddNotesClient';
 
 const log = Logger.create();
 
@@ -17,6 +18,8 @@ const log = Logger.create();
 export class NotesSync {
 
     public addNoteClient: IAddNoteClient = new AddNoteClient();
+
+    public canAddNotesClient: ICanAddNotesClient = new CanAddNotesClient();
 
     public findNotesClient: IFindNotesClient = new FindNotesClient();
 
@@ -70,17 +73,36 @@ export class NotesSync {
                 normalizedNote.noteDescriptor.tags.push(polarGUID.format());
             }
 
-            this.syncQueue.add(async () => {
-                await this.addNote(normalizedNote);
-            });
+            // FIXME: now we have to call CanAddNotesClient to see if this CAN
+            // be added and if it would yield a new note.
+
+            this.syncQueue.add(async () => await this.canAddNote(normalizedNote));
 
         }
 
     }
 
+    private async canAddNote(normalizedNote: NormalizedNote) {
+
+        let canAddNotes = await this.canAddNotesClient.execute([normalizedNote.noteDescriptor]);
+
+        if(canAddNotes.length > 0 && canAddNotes[0]) {
+            this.syncQueue.add(async () => await this.addNote(normalizedNote));
+        }
+
+    }
+
+    private async storeMediaFile(mediaFile: MediaFile) {
+        await this.storeMediaFileClient.execute(mediaFile.filename, mediaFile.data);
+    }
+
     private async addNote(normalizedNote: NormalizedNote) {
 
         try {
+
+            normalizedNote.mediaFiles.forEach(current => {
+                this.syncQueue.add(async () => this.storeMediaFile(current));
+            });
 
             await this.addNoteClient.execute(normalizedNote.noteDescriptor);
 
@@ -94,9 +116,6 @@ export class NotesSync {
     }
 
     private normalize(noteDescriptor: NoteDescriptor): NormalizedNote {
-
-        let result: NormalizedNote[] = [];
-
 
         let mediaFiles: MediaFile[] = [];
         let fields: {[name: string]: string} = {};
@@ -122,10 +141,6 @@ export class NotesSync {
             mediaFiles
         };
 
-    }
-
-    private async storeMediaFile(mediaFile: MediaFile) {
-        await this.storeMediaFileClient.execute(mediaFile.filename, mediaFile.data);
     }
 
     public static createPolarID(guid: string): Tag {
