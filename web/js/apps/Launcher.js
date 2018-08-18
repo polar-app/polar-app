@@ -35,7 +35,6 @@ class Launcher {
             let viewer = ViewerFactory_1.ViewerFactory.create(model);
             viewer.start();
             yield persistenceLayer.init();
-            new PagemarkController(model).start();
             yield new WebController(model, viewer).start();
         });
     }

@@ -40,7 +40,7 @@ export class DocTitleController {
         inputElement.addEventListener('keydown', (event: KeyboardEvent) => {
 
             if( event.key === 'Enter') {
-                log.info("Updating document metadata now")
+                log.info("Updating document metadata now");
                 this.doUpdateTitle();
                 this.hideTitlePrompt();
             }

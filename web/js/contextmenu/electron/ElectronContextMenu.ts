@@ -262,6 +262,12 @@ export class ElectronContextMenu extends ContextMenu {
             click: () => this.postContextMenuMessage("create-area-highlight", triggerEvent)
         }));
 
+        ctxMenu.append(new MenuItem({
+            label: 'Sync',
+            click: () => this.postContextMenuMessage("start-sync", triggerEvent)
+        }));
+
+
         // ctxMenu.append(new MenuItem({
         //     label: 'Create Annotation',
         //     click: () => this.postContextMenuMessage("create-annotation", triggerEvent)

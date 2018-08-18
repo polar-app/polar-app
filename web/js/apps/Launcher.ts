@@ -53,8 +53,6 @@ export class Launcher {
 
         await persistenceLayer.init();
 
-        new PagemarkController(model).start();
-
         await new WebController(model, viewer).start();
 
     }

@@ -6,6 +6,8 @@ import {KeyEvents} from '../KeyEvents';
 import {Logger} from '../logger/Logger';
 import {Viewer} from '../viewer/Viewer';
 import {DocTitleController} from './DocTitleController';
+import {PagemarkController} from '../pagemarks/controller/PagemarkController';
+import {SyncController} from './SyncController';
 
 const {TextHighlightController} = require("../highlights/text/controller/TextHighlightController");
 const {AreaHighlightController} = require("../highlights/area/controller/AreaHighlightController");
@@ -38,7 +40,9 @@ export class WebController extends Controller {
 
         this.docFormat = notNull(DocFormatFactory.getInstance());
 
+        new PagemarkController(model).start();
         new DocTitleController(this.model).start();
+        new SyncController().start();
 
     }
 
