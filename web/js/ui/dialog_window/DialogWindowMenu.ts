@@ -1,12 +1,7 @@
-import {BrowserWindow, MenuItem, Menu} from 'electron';
+import {Menu} from 'electron';
 import MenuItemConstructorOptions = Electron.MenuItemConstructorOptions;
 
 export class DialogWindowMenu {
-
-    static cmdToggleDevTools(item: MenuItem, window: BrowserWindow) {
-        console.log("Toggling dev tools in: ", window);
-        window.webContents.toggleDevTools();
-    }
 
     static create(): Menu {
 
