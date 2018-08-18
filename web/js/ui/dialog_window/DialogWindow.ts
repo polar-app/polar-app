@@ -50,6 +50,10 @@ export class DialogWindow {
 
         let browserWindowOptions = Object.assign({}, BROWSER_WINDOW_OPTIONS);
 
+        browserWindowOptions.width = options.width;
+        browserWindowOptions.height = options.height;
+        browserWindowOptions.show = options.show;
+
         // Create the browser window.
         let window = new BrowserWindow(browserWindowOptions);
         window.setMenu(DialogWindowMenu.create());
@@ -120,7 +124,7 @@ export class DialogWindowOptions {
 
     public height: number = 600;
 
-    public show: boolean = true;
+    public show: boolean = false;
 
     constructor(resource: Resource, width?: number, height?: number, show?: boolean) {
 

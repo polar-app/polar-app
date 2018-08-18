@@ -7,10 +7,12 @@ import {JSONSchema6} from 'json-schema';
 import Form from 'react-jsonschema-form';
 import {SchemaUIFactory} from './SchemaUIFactory';
 import {SchemaFactory} from './SchemaFactory';
+import ReactDOM from 'react-dom';
 
 declare var global: any;
 global.$ = global.jQuery = require("jquery");
 
+// TODO: this should move to the summerform specific widget
 require('summernote/dist/summernote-bs4');
 
 /**
@@ -35,6 +37,10 @@ export class CreateFlashcardForm {
     }
 
     render() {
+
+        // this allows us to have a fresh form each time. It seems very fast and
+        // there appears to be no lag or issue with doing this.
+        ReactDOM.unmountComponentAtNode(this.targetElement);
 
         let schema: JSONSchema6 = SchemaFactory.create();
         let schemaUI = SchemaUIFactory.create();

@@ -110,7 +110,7 @@ export class AnnotationsController {
         let appPath = "./apps/card-creator/index.html";
 
         let resource = new Resource(ResourceType.FILE, appPath);
-        let options = new DialogWindowOptions(resource);
+        let options = new DialogWindowOptions(resource, 700, 900);
         options.show = false;
 
         return await DialogWindowClient.create(options);
