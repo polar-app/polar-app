@@ -1,5 +1,4 @@
 import {AnkiConnectFetch} from '../AnkiConnectFetch';
-import {DeckNamesAndIds, IDeckNamesAndIdsClient} from './DeckNamesAndIdsClient';
 import * as TypeMoq from "typemoq";
 
 /**

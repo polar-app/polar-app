@@ -18,7 +18,10 @@ export class Flashcards {
         let now = new Date();
         let created = new ISODateTime(now);
 
-        let id = Hashcodes.createID({created, fields});
+        // TODO: implement 'machine codes' here where we have a unique code per
+        // physical device.  This way two people can create the same flashcard
+        // and never conflict.  This way we support distributed behavior.
+        let id = Hashcodes.createID({fields});
 
         return Flashcard.newInstance(id, id, created, new ISODateTime(now), type, fields, archetype);
 
