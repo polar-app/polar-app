@@ -41,7 +41,7 @@ export class SyncController {
         // TODO: verify that the document has a title.
 
         if(Strings.empty(this.model.docMeta.docInfo.title)) {
-            Toaster.error("Documents must have titles before we can synchronize." , "Sync Error");
+            Toaster.error("Documents must have titles before we can synchronize.");
         }
 
         console.log("Sync started...");

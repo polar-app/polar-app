@@ -6,7 +6,6 @@ import {Nullable} from '../../util/ts/Nullable';
 import {AnnotationTriggerEvents} from './AnnotationTriggerEvents';
 import {IPCClient} from '../../ipc/handler/IPCClient';
 import {IPCEvent} from '../../ipc/handler/IPCEvent';
-import {ElectronIPCPipe} from '../../ipc/handler/ElectronIPCPipe';
 import {Toaster} from '../../toaster/Toaster';
 
 const log = Logger.create();
@@ -67,8 +66,6 @@ export class AnnotationsController {
         await this.showDialog();
         await this.sendAnnotationDescriptor(triggerEvent);
 
-        log.info("Flashcard UI created successfully.");
-
     }
 
     private async sendAnnotationDescriptor(triggerEvent: TriggerEvent) {
@@ -78,8 +75,10 @@ export class AnnotationsController {
         let annotationDescriptors
             = AnnotationTriggerEvents.getAnnotationDescriptors(triggerEvent);
 
-        if(annotationDescriptors.length == 0)
+        if(annotationDescriptors.length == 0) {
+            log.warn("No annotation descriptors.")
             return;
+        }
 
         let annotationDescriptor = annotationDescriptors[0];
 
@@ -89,7 +88,7 @@ export class AnnotationsController {
 
         await this.hideDialog();
 
-        Toaster.success("New flashcard created.", "New flashcard");
+        Toaster.success("New flashcard created.");
 
     }
 

@@ -8,15 +8,15 @@ import $ from '../ui/JQuery';
  */
 export class Toaster {
 
-    static success(message: string, title: string, options: ToasterOptions = {}) {
+    static success(message: string, title: string = "", options: ToasterOptions = {}) {
         Toastr.success(message, title, options);
     }
 
-    static warning(message: string, title: string, options: ToasterOptions = {}) {
+    static warning(message: string, title: string = "", options: ToasterOptions = {}) {
         Toastr.warning(message, title, options);
     }
 
-    static error(message: string, title: string, options: ToasterOptions = {}) {
+    static error(message: string, title: string = "", options: ToasterOptions = {}) {
         Toastr.error(message, title, options);
     }
 

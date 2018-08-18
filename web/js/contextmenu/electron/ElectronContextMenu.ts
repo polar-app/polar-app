@@ -246,11 +246,13 @@ export class ElectronContextMenu extends ContextMenu {
 
         const ctxMenu = new Menu();
 
-        ctxMenu.append(new MenuItem({
-            label: 'Add Flashcard',
-            //accelerator: 'CmdOrCtrl+A',
-            click: () => this.postContextMenuMessage("add-flashcard", triggerEvent)
-        }));
+        // TODO: page highlights don't work right now as we need an annotation
+        // to base it off of.
+        // ctxMenu.append(new MenuItem({
+        //     label: 'Add Flashcard',
+        //     //accelerator: 'CmdOrCtrl+A',
+        //     click: () => this.postContextMenuMessage("add-flashcard", triggerEvent)
+        // }));
 
         ctxMenu.append(new MenuItem({
             label: 'Create Pagemark',

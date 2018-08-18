@@ -12,6 +12,7 @@ export class AnnotationTriggerEvents {
 
         annotationDescriptors.push(...triggerEvent.matchingSelectors['.text-highlight'].annotationDescriptors);
         annotationDescriptors.push(...triggerEvent.matchingSelectors['.area-highlight'].annotationDescriptors);
+        annotationDescriptors.push(...triggerEvent.matchingSelectors['.page'].annotationDescriptors);
 
         return annotationDescriptors;
 

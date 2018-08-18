@@ -68,7 +68,7 @@ export class DocTitleController {
 
         this.model.docMeta.docInfo.title = title;
 
-        Toaster.success("Document title successfully updated", "Document title");
+        Toaster.success("Document title successfully updated");
 
     }
 
