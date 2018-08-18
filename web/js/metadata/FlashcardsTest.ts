@@ -22,10 +22,10 @@ describe('Flashcards', function() {
             let flashcard = Flashcards.create(FlashcardType.CLOZURE, fields, archetype);
 
             let expected = {
-                "id": "1HYhuRQ4tz",
+                "id": "1uWrt4yLYp",
                 "created": "2012-03-02T11:38:49.321Z",
                 "lastUpdated": "2012-03-02T11:38:49.321Z",
-                "guid": "1HYhuRQ4tz",
+                "guid": "1uWrt4yLYp",
                 "type": "CLOZURE",
                 "fields": {
                     "text": {
@@ -52,10 +52,10 @@ describe('Flashcards', function() {
             let flashcard = Flashcards.create(FlashcardType.CLOZURE, fields, archetype);
 
             let expected = {
-                "id": "1HYhuRQ4tz",
+                "id": "1uWrt4yLYp",
                 "created": "2012-03-02T11:38:49.321Z",
                 "lastUpdated": "2012-03-02T11:38:49.321Z",
-                "guid": "1HYhuRQ4tz",
+                "guid": "1uWrt4yLYp",
                 "type": "CLOZURE",
                 "fields": {
                     "text": {
@@ -82,10 +82,10 @@ describe('Flashcards', function() {
             let flashcard = Flashcards.createFromSchemaFormData(FORM_DATA, archetype);
 
             let expected = {
-                    "id": "1tDRjUqxJA",
+                    "id": "1p2utfePaW",
                     "created": "2012-03-02T11:38:49.321Z",
                     "lastUpdated": "2012-03-02T11:38:49.321Z",
-                    "guid": "1tDRjUqxJA",
+                    "guid": "1p2utfePaW",
                     "type": "BASIC_FRONT_BACK",
                     "fields": {
                         "back": {

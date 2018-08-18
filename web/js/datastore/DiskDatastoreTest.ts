@@ -2,10 +2,10 @@
 import assert from 'assert';
 import {assertJSON} from '../test/Assertions';
 import {DocMetas} from '../metadata/DocMetas';
+import {DiskDatastore} from './DiskDatastore';
+import {PersistenceLayer} from './PersistenceLayer';
 
 const fs = require('fs');
-const {DiskDatastore} = require("./DiskDatastore");
-const {PersistenceLayer} = require("./PersistenceLayer");
 const rimraf = require('rimraf');
 
 
@@ -52,16 +52,19 @@ describe('DiskDatastore', function() {
 
         let expected: any = {
             "dataDir": {
-                "dir": "/tmp/disk-datastore.test",
-                "created": true
+                "exists": false,
+                "created": true,
+                "dir": "/tmp/disk-datastore.test"
             },
             "stashDir": {
-                "dir": "/tmp/disk-datastore.test/stash",
-                "created": true
+                "exists": false,
+                "created": true,
+                "dir": "/tmp/disk-datastore.test/stash"
             },
             "logsDir": {
-                "dir": "/tmp/disk-datastore.test/logs",
-                "created": true
+                "exists": false,
+                "created": true,
+                "dir": "/tmp/disk-datastore.test/logs"
             }
         };
 
@@ -70,16 +73,19 @@ describe('DiskDatastore', function() {
 
         expected = {
             "dataDir": {
-                "dir": "/tmp/disk-datastore.test",
-                "exists": true
+                "exists": true,
+                "created": false,
+                "dir": "/tmp/disk-datastore.test"
             },
             "stashDir": {
-                "dir": "/tmp/disk-datastore.test/stash",
-                "exists": true
+                "exists": true,
+                "created": false,
+                "dir": "/tmp/disk-datastore.test/stash"
             },
             "logsDir": {
-                "dir": "/tmp/disk-datastore.test/logs",
-                "exists": true
+                "exists": true,
+                "created": false,
+                "dir": "/tmp/disk-datastore.test/logs"
             }
         };
 
