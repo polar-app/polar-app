@@ -133,7 +133,7 @@ export class TextWidget extends React.Component  {
                     toolbar: [
                         ['style', ['style']],
                         ['font', ['bold', 'italic', 'underline', 'clear', 'color', 'superscript', 'subscript']],
-                        ['fontname', ['fontname']],
+                        //['fontname', ['fontname']],
                         ['para', ['ul', 'ol', 'paragraph']],
                         ['table', ['table']],
                         ['insert', ['link', 'picture', 'video']],
