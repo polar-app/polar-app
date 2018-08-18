@@ -67,6 +67,10 @@ export class Optional<T> {
         return new Optional<T>(value, name);
     }
 
+    static empty<T>(): Optional<T> {
+        return new Optional<T>(undefined);
+    }
+
     /**
      * Return true if the given object is present.
      *
