@@ -1,8 +1,7 @@
 import {Datastore} from './Datastore';
-
-const {DocMeta} = require("../metadata/DocMeta");
-const {DocMetas} = require("../metadata/DocMetas");
-const {Preconditions} = require("../Preconditions");
+import {DocMeta} from '../metadata/DocMeta';
+import {DocMetas} from '../metadata/DocMetas';
+import {Preconditions} from '../Preconditions';
 
 /**
  * First layer before the raw datastore. At one point we allowed the datastore
@@ -27,12 +26,12 @@ export class PersistenceLayer {
      * Get the DocMeta object we currently in the datastore for this given
      * fingerprint or null if it does not exist.
      */
-    async getDocMeta(fingerprint: string) {
+    async getDocMeta(fingerprint: string): Promise<DocMeta | undefined> {
 
         let data = await this.datastore.getDocMeta(fingerprint);
 
         if(!data) {
-            return null;
+            return undefined;
         }
 
         if(! (typeof data === "string")) {

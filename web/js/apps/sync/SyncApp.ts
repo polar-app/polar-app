@@ -11,9 +11,6 @@ export class SyncApp {
 
     async start() {
 
-        // load the document
-        // start the sync
-
         let fingerprint = '';
 
         let ankiSyncEngine = new AnkiSyncEngine();
@@ -27,6 +24,10 @@ export class SyncApp {
         await persistenceLayer.init();
 
         let docMeta = await persistenceLayer.getDocMeta(fingerprint);
+
+        if(! docMeta) {
+            throw new Error("No DocMeta for fingerprint: " + fingerprint);
+        }
 
         let docMetaSet = new DocMetaSet(docMeta);
 

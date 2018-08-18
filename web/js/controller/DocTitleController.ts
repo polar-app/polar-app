@@ -4,6 +4,7 @@
 import {DocumentLoadedEvent, Model} from '../Model';
 import {Strings} from '../util/Strings';
 import {Logger} from '../logger/Logger';
+import {Toaster} from '../toaster/Toaster';
 
 const log = Logger.create();
 
@@ -66,6 +67,8 @@ export class DocTitleController {
         log.info("Setting title to: " + title);
 
         this.model.docMeta.docInfo.title = title;
+
+        Toaster.success("Document title successfully updated", "Document title");
 
     }
 
