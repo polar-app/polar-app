@@ -1,5 +1,5 @@
 import {MediaContents} from './MediaContents';
-import {assertJSON} from '../../../test/Assertions';
+import {assertJSON} from '../../../../test/Assertions';
 
 describe('MediaContents', function() {
 

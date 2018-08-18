@@ -1,10 +1,10 @@
 /**
  * A SyncTarget provides a way to integrate with 3rd party sync implementations.
  */
-import {DocMetaSet} from '../../metadata/DocMetaSet';
 import {SyncProgressListener} from './SyncProgressListener';
 import {SyncEngineDescriptor} from './SyncEngineDescriptor';
 import {PendingSyncJob} from './SyncJob';
+import {DocMetaSet} from '../../../metadata/DocMetaSet';
 
 export interface SyncEngine {
 

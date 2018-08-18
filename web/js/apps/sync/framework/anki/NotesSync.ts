@@ -2,9 +2,9 @@ import {NoteDescriptor} from './NoteDescriptor';
 import {AddNoteClient, IAddNoteClient} from './clients/AddNoteClient';
 import {FindNotesClient, IFindNotesClient} from './clients/FindNotesClient';
 import {SyncQueue} from '../SyncQueue';
-import {Logger} from '../../../logger/Logger';
+import {Logger} from '../../../../logger/Logger';
 import {IStoreMediaFileClient, MediaFile, StoreMediaFileClient} from './clients/StoreMediaFileClient';
-import {Dictionaries} from '../../../util/Dictionaries';
+import {Dictionaries} from '../../../../util/Dictionaries';
 import {MediaContents} from './MediaContents';
 
 const log = Logger.create();

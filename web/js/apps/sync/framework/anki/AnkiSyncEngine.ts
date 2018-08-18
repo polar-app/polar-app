@@ -1,18 +1,17 @@
 import {SyncEngine} from '../SyncEngine';
 import {SyncEngineDescriptor} from '../SyncEngineDescriptor';
-import {DocMetaSet} from '../../../metadata/DocMetaSet';
+import {DocMetaSet} from '../../../../metadata/DocMetaSet';
 import {SyncProgressListener} from '../SyncProgressListener';
 import {PendingSyncJob} from '../SyncJob';
-import {DocMeta} from '../../../metadata/DocMeta';
-import {Flashcard} from '../../../metadata/Flashcard';
-import {PageInfo} from '../../../metadata/PageInfo';
-import {Dictionaries} from '../../../util/Dictionaries';
+import {DocMeta} from '../../../../metadata/DocMeta';
+import {Flashcard} from '../../../../metadata/Flashcard';
+import {PageInfo} from '../../../../metadata/PageInfo';
+import {Dictionaries} from '../../../../util/Dictionaries';
 import * as _ from "lodash";
 import {DeckDescriptor} from './DeckDescriptor';
 import {NoteDescriptor} from './NoteDescriptor';
-import {Optional} from '../../../util/ts/Optional';
+import {Optional} from '../../../../util/ts/Optional';
 import {PendingAnkiSyncJob} from './AnkiSyncJob';
-import {notNull} from '../../../Preconditions';
 
 /**
  * Sync engine for Anki.  Takes cards registered in a DocMeta and then transfers

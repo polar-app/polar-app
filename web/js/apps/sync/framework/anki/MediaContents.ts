@@ -1,5 +1,5 @@
-import {Optional} from '../../../util/ts/Optional';
-import {Hashcodes} from '../../../Hashcodes';
+import {Optional} from '../../../../util/ts/Optional';
+import {Hashcodes} from '../../../../Hashcodes';
 import {MediaFile} from './clients/StoreMediaFileClient';
 import {MediaContent} from './MediaContent';
 

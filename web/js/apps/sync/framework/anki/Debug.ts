@@ -1,8 +1,8 @@
-import {Logger} from '../../../logger/Logger';
+import {Logger} from '../../../../logger/Logger';
 import {AnkiSyncEngine} from './AnkiSyncEngine';
-import {MockDocMetas} from '../../../metadata/DocMetas';
-import {MockFlashcards} from '../../../metadata/Flashcards';
-import {DocMetaSet} from '../../../metadata/DocMetaSet';
+import {MockDocMetas} from '../../../../metadata/DocMetas';
+import {MockFlashcards} from '../../../../metadata/Flashcards';
+import {DocMetaSet} from '../../../../metadata/DocMetaSet';
 import {SyncProgressListener} from '../SyncProgressListener';
 
 const log = Logger.create();

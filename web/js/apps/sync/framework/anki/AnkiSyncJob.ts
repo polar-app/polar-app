@@ -1,4 +1,4 @@
-import {DocMetaSet} from '../../../metadata/DocMetaSet';
+import {DocMetaSet} from '../../../../metadata/DocMetaSet';
 import {SyncProgressListener} from '../SyncProgressListener';
 import {PendingSyncJob, StartedSyncJob} from '../SyncJob';
 import {DeckDescriptor} from './DeckDescriptor';

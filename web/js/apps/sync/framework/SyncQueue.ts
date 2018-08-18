@@ -9,9 +9,8 @@ import {SyncProgressListener} from './SyncProgressListener';
 import {Abortable} from './Abortable';
 import {SyncProgress} from './SyncProgress';
 import {SyncState} from './SyncState';
-import {Progress} from '../../util/Progress';
-import {Logger} from '../../logger/Logger';
-import {Percentages} from '../../util/Percentages';
+import {Logger} from '../../../logger/Logger';
+import {Percentages} from '../../../util/Percentages';
 
 const log = Logger.create();
 
