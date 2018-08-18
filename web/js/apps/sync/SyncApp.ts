@@ -11,7 +11,7 @@ export class SyncApp {
 
     async start() {
 
-        let fingerprint = '';
+        let fingerprint = '1QFx7Rhi6hvdQLMS9Lem';
 
         let ankiSyncEngine = new AnkiSyncEngine();
 
