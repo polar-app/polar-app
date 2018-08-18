@@ -32,7 +32,7 @@ class WebController extends Controller {
         this.docFormat = Preconditions_1.notNull(DocFormatFactory_1.DocFormatFactory.getInstance());
         new PagemarkController_1.PagemarkController(model).start();
         new DocTitleController_1.DocTitleController(this.model).start();
-        new SyncController_1.SyncController().start();
+        new SyncController_1.SyncController(this.model).start();
     }
     start() {
         return __awaiter(this, void 0, void 0, function* () {

@@ -42,7 +42,7 @@ export class WebController extends Controller {
 
         new PagemarkController(model).start();
         new DocTitleController(this.model).start();
-        new SyncController().start();
+        new SyncController(this.model).start();
 
     }
 
