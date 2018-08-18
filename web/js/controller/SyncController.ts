@@ -4,7 +4,6 @@ import {Model} from '../Model';
 import {Strings} from '../util/Strings';
 import {Toaster} from '../toaster/Toaster';
 import {DialogWindowClient} from '../ui/dialog_window/DialogWindowClient';
-import {AppPaths} from '../electron/webresource/AppPaths';
 import {DialogWindowOptions, Resource, ResourceType} from '../ui/dialog_window/DialogWindow';
 
 const log = Logger.create();
