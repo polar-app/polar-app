@@ -159,15 +159,16 @@ const MENU_TEMPLATE = [{
     {
         label: 'Edit',
         submenu: [
-            { label: 'Undo', accelerator: 'CmdOrCtrl+Z', role: 'undo' },
-            { label: 'Redo', accelerator: 'Shift+CmdOrCtrl+Z', role: 'redo' },
+            { role: 'undo' },
+            { role: 'redo' },
             // { type: 'separator' },
             // { label: 'Find', accelerator: 'CmdOrCtrl+f', click: cmdFind },
             { type: 'separator' },
-            { label: "Cut", accelerator: "CmdOrCtrl+X", selector: "cut:" },
-            { label: 'Copy', accelerator: 'CmdOrCtrl+C', role: "copy:" },
-            { label: "Paste", accelerator: "CmdOrCtrl+V", selector: "paste:" },
-            { label: 'Select All', accelerator: 'CmdOrCtrl+A', role: 'selectall' },
+            { role: 'cut'},
+            { role: 'copy' },
+            { role: 'paste' },
+            { role: 'pasteandmatchstyle' },
+            { role: 'selectall' },
             { type: 'separator' },
             // {
             //     label: 'Change Pagemark Column Type',
