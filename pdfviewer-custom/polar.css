@@ -1,3 +1,7 @@
+
+@import url('./set-title.css');
+
+
 /*#secondaryToolbarButtonContainer > .polar-fa-button {*/
     /*font-size: 25px;*/
 /*}*/
@@ -20,25 +24,31 @@
 
 }
 
-.polar-htmlviewer #polar-header {
-    position: fixed;
-}
-
-.polar-htmlviewer #polar-progress {
+/*.polar-htmlviewer #polar-header {*/
     /*position: fixed;*/
-    width: 100%;
-    background-color: rgb(71, 71, 71);
+/*}*/
+
+/*.polar-htmlviewer #polar-progress {*/
+    /*!*position: fixed;*!*/
+    /*width: 100%;*/
+    /*background-color: rgb(71, 71, 71);*/
+/*}*/
+
+#polar-header-body {
+    width: calc(100% - 10px);
+    margin-left: 5px;
 }
 
 #polar-progress {
     margin-top: 10px;
     margin-bottom: 10px;
+    width: 100%;
 }
 
 #polar-header progress {
     /*position: absolute;;*/
+    width: 100%;
     /*left: 5px;*/
-    width: calc(100% - 10px);
     height: 12px;
 }
 
@@ -109,46 +119,3 @@ div#toast-container {
     opacity: 1 !important;
 }
 
-
-#set-title {
-
-    background-color: rgb(71, 71, 71);
-    width: 100%;
-    vertical-align: middle;
-
-    z-index: 999;
-
-    margin-bottom: 10px;
-
-    /*padding-top: 5px;*/
-    /*padding-bottom: 6px;*/
-    /*padding-left: 5px;*/
-    /*padding-right: 5px;*/
-
-}
-
-#set-title input[type=text] {
-    width: calc(100% - 10px);
-    /*margin: 0 15px 5px 0px;*/
-    /*margin-left: 5px;*/
-    /*margin-bottom: 5px;*/
-    /*padding: 0.3em;*/
-    font-size: 12px;
-}
-
-#set-title input[type=text], textarea {
-    -webkit-transition: all 0.30s ease-in-out;
-    -moz-transition: all 0.30s ease-in-out;
-    -o-transition: all 0.30s ease-in-out;
-    outline: none;
-    /*padding: 3px 0px 3px 3px;*/
-    /*margin: 5px 1px 3px 0px;*/
-    border: 1px solid #DDDDDD;
-}
-
-#set-title input[type=text]:focus, textarea:focus {
-    box-shadow: 0 0 5px rgba(81, 203, 238, 1);
-    /*padding: 3px 0px 3px 3px;*/
-    /*margin: 5px 1px 3px 0px;*/
-    border: 1px solid rgba(81, 203, 238, 1);
-}
