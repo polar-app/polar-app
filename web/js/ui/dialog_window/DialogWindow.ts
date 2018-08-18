@@ -4,6 +4,7 @@ import {BrowserWindowPromises} from '../../electron/framework/BrowserWindowPromi
 import {WebContentsPromises} from '../../electron/framework/WebContentsPromises';
 import {DialogWindowReference} from './DialogWindowReference';
 import {DialogWindowMenu} from './DialogWindowMenu';
+import {AppPaths} from '../../electron/webresource/AppPaths';
 
 const log = Logger.create();
 
@@ -82,6 +83,15 @@ export class DialogWindow {
             case ResourceType.URL:
                 window.loadURL(options.resource.value, {});
                 break;
+
+            case ResourceType.APP:
+
+                let appPath = AppPaths.relative(options.resource.value);
+                let url = 'file:' + appPath;
+                log.info("Loading app URL:" , url);
+                window.loadURL(url, {});
+                break
+
         }
 
         await Promise.all([readyToShowPromise, loadPromise]);
@@ -101,7 +111,8 @@ export class DialogWindow {
 
 export enum ResourceType {
     FILE,
-    URL
+    URL,
+    APP
 }
 
 export class Resource {
@@ -126,7 +137,7 @@ export class DialogWindowOptions {
 
     public show: boolean = false;
 
-    constructor(resource: Resource, width?: number, height?: number, show?: boolean) {
+    constructor(resource: Resource, width: number = 800, height: number = 600, show?: boolean) {
 
         this.resource = resource;
 

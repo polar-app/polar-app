@@ -3,6 +3,9 @@ import {Logger} from '../logger/Logger';
 import {Model} from '../Model';
 import {Strings} from '../util/Strings';
 import {Toaster} from '../toaster/Toaster';
+import {DialogWindowClient} from '../ui/dialog_window/DialogWindowClient';
+import {AppPaths} from '../electron/webresource/AppPaths';
+import {DialogWindowOptions, Resource, ResourceType} from '../ui/dialog_window/DialogWindow';
 
 const log = Logger.create();
 
@@ -36,7 +39,7 @@ export class SyncController {
 
     }
 
-    onStartSync(triggerEvent: TriggerEvent){
+    async onStartSync(triggerEvent: TriggerEvent) {
 
         // TODO: verify that the document has a title.
 
@@ -44,7 +47,11 @@ export class SyncController {
             Toaster.error("Documents must have titles before we can synchronize.");
         }
 
-        console.log("Sync started...");
+        let resource = new Resource(ResourceType.APP, "./apps/sync/index.html");
+
+        let dialogWindowClient = await DialogWindowClient.create(new DialogWindowOptions(resource));
+        await dialogWindowClient.show();
+
     }
 
 }
