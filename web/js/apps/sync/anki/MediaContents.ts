@@ -1,28 +1,29 @@
 import {Optional} from '../../../util/ts/Optional';
 import {Hashcodes} from '../../../Hashcodes';
 import {MediaFile} from './clients/StoreMediaFileClient';
+import {MediaContent} from './MediaContent';
 
 export class MediaContents {
 
-    // <img src="data:image/gif;base64,R0lGODlhEAAQAMQAA"
-    // public static parse(content: string): MediaContent {
-    //
-    //
-    //
-    // }
+    public static parse(content: string): MediaContent {
 
-    public static parseDataURLs(content: string): string[] {
-
-        let result: string[] = [];
+        let mediaFiles: MediaFile[] = [];
 
         let re = /src=["'](data:image\/(gif|jpg|png);base64,[^"']+)/g;
-        let m;
 
-        while (m = re.exec(content)) {
-            result.push(m[1]);
+        content = content.replace(re, (match, p1) => {
+
+            let mediaFile = MediaContents.toMediaFile(p1);
+
+            mediaFiles.push(mediaFile.get());
+
+            return match.replace(p1, mediaFile.get().filename);
+
+        });
+
+        return {
+            content, mediaFiles
         }
-
-        return result;
 
     }
 
