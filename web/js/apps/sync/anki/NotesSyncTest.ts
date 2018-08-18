@@ -7,11 +7,11 @@ import {Abortable} from '../Abortable';
 import {SyncProgress} from '../SyncProgress';
 import {SyncProgressListener} from '../SyncProgressListener';
 import {SyncQueue} from '../SyncQueue';
-
+import {StoreMediaFileClient} from './clients/StoreMediaFileClient';
 
 describe('NotesSync', function() {
 
-    let notesSync = new NotesSync();
+    let notesSync: NotesSync;
 
     let abortable: Abortable;
 
@@ -32,6 +32,8 @@ describe('NotesSync', function() {
 
         syncQueue = new SyncQueue(abortable, syncProgressListener);
 
+        notesSync = new NotesSync(syncQueue);
+
     });
 
     it("full initial sync", async function () {
@@ -40,6 +42,7 @@ describe('NotesSync', function() {
         // create mocks where we have no initial notes, and we allow
         // a new note to be created.
         notesSync.addNoteClient = AddNoteClient.createMock(1);
+        notesSync.storeMediaFileClient = StoreMediaFileClient.createMock();
         notesSync.findNotesClient = FindNotesClient.createMock([]);
 
         let noteDescriptors: NoteDescriptor[] = [
@@ -52,7 +55,7 @@ describe('NotesSync', function() {
             }
         ];
 
-        let notesSynchronized = notesSync.enqueue(syncQueue, noteDescriptors);
+        let notesSynchronized = notesSync.enqueue(noteDescriptors);
 
         await syncQueue.execute();
 
@@ -78,13 +81,12 @@ describe('NotesSync', function() {
             }
         ];
 
-        let notesSynchronized = notesSync.enqueue(syncQueue, noteDescriptors);
+        let notesSynchronized = notesSync.enqueue(noteDescriptors);
 
         await syncQueue.execute();
 
         assertJSON(notesSynchronized.created, []);
 
     });
-
 
 });

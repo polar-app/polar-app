@@ -56,9 +56,9 @@ export class StartedAnkiSyncJob extends AnkiSyncJob implements StartedSyncJob {
 
         decksSync.enqueue(syncQueue, this.deckDescriptors);
 
-        let notesSync = new NotesSync();
+        let notesSync = new NotesSync(syncQueue);
 
-        notesSync.enqueue(syncQueue, this.noteDescriptors);
+        notesSync.enqueue(this.noteDescriptors);
 
         await syncQueue.execute();
 

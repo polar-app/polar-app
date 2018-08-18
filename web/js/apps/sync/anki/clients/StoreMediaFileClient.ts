@@ -35,7 +35,7 @@ export class StoreMediaFileClient implements IStoreMediaFileClient {
     public async execute(filename: string, data: string): Promise<void> {
 
             let body = {
-                action: "addNote",
+                action: "storeMediaFile",
                 version: 6,
                 params: {
                     filename, data
