@@ -1,5 +1,5 @@
-// import {RequestInit} from 'node-fetch';
-// import fetch from './Fetch';
+//import {RequestInit} from 'node-fetch';
+import fetch, {RequestInit} from './Fetch';
 import {AnkiConnectResponse} from './AnkiConnectResponse';
 
 /**
@@ -9,7 +9,7 @@ export class AnkiConnectFetch {
 
     // TODO: since the response is wrapped in a closure, we can handle errors
     // properly here.
-    static async fetch<T>(init: RequestInit ): Promise<any> {
+    static async fetch<T>(init: RequestInit): Promise<any> {
 
         try {
 
@@ -20,7 +20,7 @@ export class AnkiConnectFetch {
                 'Content-Type': 'application/json'
             };
 
-            let response = await fetch('http://127.0.0.1:12345', init);
+            let response = await fetch('http://127.0.0.1:8765', init);
             let result: AnkiConnectResponse = await response.json();
 
             if (result.error) {

@@ -6,6 +6,8 @@ import {Logger} from '../../../../logger/Logger';
 import {IStoreMediaFileClient, MediaFile, StoreMediaFileClient} from './clients/StoreMediaFileClient';
 import {Dictionaries} from '../../../../util/Dictionaries';
 import {MediaContents} from './MediaContents';
+import {AnkiFields} from './AnkiFields';
+import {Arrays} from '../../../../util/Arrays';
 
 const log = Logger.create();
 
@@ -41,76 +43,84 @@ export class NotesSync {
      */
     enqueue(noteDescriptors: NoteDescriptor[]): NotesSynchronized {
 
-        for (let i = 0; i < noteDescriptors.length; i++) {
-            const noteDescriptor = noteDescriptors[i];
+        let normalizedNotes = noteDescriptors.map(current => this.normalize(current));
+
+        normalizedNotes.forEach(normalizedNote => {
 
             this.syncQueue.add(async () => {
-                await this.findNote(noteDescriptor);
+                await this.findNote(normalizedNote);
             });
 
-        }
+        });
 
         return this.results;
 
     }
 
-    private async findNote(noteDescriptor: NoteDescriptor) {
+    private async findNote(normalizedNote: NormalizedNote) {
 
-        let polarGUID = NotesSync.createPolarID(noteDescriptor.guid);
+        let polarGUID = NotesSync.createPolarID(normalizedNote.noteDescriptor.guid);
 
         let existingIDs = await this.findNotesClient.execute(`tag:${polarGUID.format()}`);
 
         if(existingIDs.length === 0) {
 
-            if(! noteDescriptor.tags.includes(polarGUID.format())) {
+            if(! normalizedNote.noteDescriptor.tags.includes(polarGUID.format())) {
                 //  make sure the noteDescriptor has the proper tag.
-                noteDescriptor.tags.push(polarGUID.format());
+                normalizedNote.noteDescriptor.tags.push(polarGUID.format());
             }
 
             this.syncQueue.add(async () => {
-                await this.addNote(noteDescriptor);
+                await this.addNote(normalizedNote);
             });
 
         }
 
     }
 
-    private async addNote(noteDescriptor: NoteDescriptor) {
+    private async addNote(normalizedNote: NormalizedNote) {
 
         try {
 
-            // TODO: we have to convert every field to MediaContent
-            //MediaContents.parse(noteDescriptor.modelName)
-
-            let mediaFiles: MediaFile[] = [];
-            let fields: {[name: string]: string} = {};
-
-            Dictionaries.forDict(noteDescriptor.fields, (key, value) => {
-                let mediaContent = MediaContents.parse(value);
-                fields[key] = mediaContent.content;
-                mediaFiles.push(...mediaContent.mediaFiles);
-            });
-
-            mediaFiles.forEach(mediaFile => {
-                this.syncQueue.add(async () => {
-                    await this.storeMediaFile(mediaFile);
-                });
-            });
-
-            await this.addNoteClient.execute({
-                guid: noteDescriptor.guid,
-                deckName: noteDescriptor.deckName,
-                modelName: noteDescriptor.modelName,
-                fields,
-                tags: noteDescriptor.tags
-            });
+            await this.addNoteClient.execute(normalizedNote.noteDescriptor);
 
         } catch (e) {
-            log.error("Failed to create note: ", noteDescriptor);
+            log.error("Failed to create note: ", normalizedNote.noteDescriptor);
             throw e;
         }
 
-        this.results.created.push(noteDescriptor);
+        this.results.created.push(normalizedNote.noteDescriptor);
+
+    }
+
+    private normalize(noteDescriptor: NoteDescriptor): NormalizedNote {
+
+        let result: NormalizedNote[] = [];
+
+
+        let mediaFiles: MediaFile[] = [];
+        let fields: {[name: string]: string} = {};
+
+        Dictionaries.forDict(noteDescriptor.fields, (key, value) => {
+            let mediaContent = MediaContents.parse(value);
+            fields[key] = mediaContent.content;
+            mediaFiles.push(...mediaContent.mediaFiles);
+        });
+
+        fields = AnkiFields.normalize(fields);
+
+        let normalizedNoteDescriptor: NoteDescriptor = {
+            guid: noteDescriptor.guid,
+            deckName: noteDescriptor.deckName,
+            modelName: noteDescriptor.modelName,
+            fields,
+            tags: noteDescriptor.tags
+        };
+
+        return {
+            noteDescriptor: normalizedNoteDescriptor,
+            mediaFiles
+        };
 
     }
 
@@ -123,6 +133,19 @@ export class NotesSync {
     }
 
 }
+
+/**
+ * A NoteDescriptor container which includes the normalize descriptor and also
+ * the media.
+ */
+export interface NormalizedNote {
+
+    readonly noteDescriptor: NoteDescriptor;
+
+    readonly mediaFiles: MediaFile[];
+
+}
+
 export interface ITag {
 
     readonly name: string;
