@@ -9,9 +9,10 @@ import {SyncProgressListener} from './SyncProgressListener';
 import {Abortable} from './Abortable';
 import {SyncProgress} from './SyncProgress';
 import {SyncState} from './SyncState';
-import {SyncTask} from './SyncTask';
+import {SyncTask, SyncTaskResult} from './SyncTask';
 import {Logger} from '../../../logger/Logger';
 import {Percentages} from '../../../util/Percentages';
+import {Optional} from '../../../util/ts/Optional';
 
 const log = Logger.create();
 
@@ -57,7 +58,8 @@ export class SyncQueue {
         let syncProgress: SyncProgress = {
             percentage: 0,
             state: SyncState.STARTED,
-            error: undefined
+            error: undefined,
+            taskResult: Optional.empty()
         };
 
         let syncTask: SyncTask | undefined;
@@ -73,7 +75,7 @@ export class SyncQueue {
 
             try {
 
-                await syncTask();
+                syncProgress.taskResult = await syncTask();
 
             } catch (e) {
 

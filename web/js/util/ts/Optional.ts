@@ -21,7 +21,15 @@ export class Optional<T> {
 
         return new Optional<T>(undefined, this.name);
 
-    };
+    }
+
+    when(consumeFunction: ConsumeFunction<NonNullable<T>>) {
+
+        if (this.isPresent()) {
+            consumeFunction(this.value!);
+        }
+
+    }
 
     filter(filterFunction: FilterFunction<NonNullable<T>>): Optional<T> {
 
@@ -79,6 +87,13 @@ export class Optional<T> {
         return obj !== undefined && obj !== null;
     }
 
+}
+
+/**
+ * Just consume a value with no need to return any result.
+ */
+export interface ConsumeFunction<T> {
+    (value: T): void;
 }
 
 export interface MapFunction<T> {

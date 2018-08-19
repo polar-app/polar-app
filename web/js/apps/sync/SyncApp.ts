@@ -17,7 +17,12 @@ export class SyncApp {
 
         let url = new URL(window.location.href);
 
-        let fingerprint = notNull(url.searchParams.get("fingerprint"));
+        let fingerprint = url.searchParams.get("fingerprint");
+
+        if(! fingerprint) {
+            // TODO: for now just sync the default / example document for testing
+            fingerprint = '110dd61fd57444010b1ab5ff38782f0f'
+        }
 
         let ankiSyncEngine = new AnkiSyncEngine();
 
@@ -41,8 +46,14 @@ export class SyncApp {
         let docMetaSet = new DocMetaSet(docMeta);
 
         let syncProgressListener: SyncProgressListener = syncProgress => {
-
             log.info("Sync progress: ", syncProgress);
+
+            syncProgress.taskResult.when(taskResult => {
+                this.progressLog.update({
+                    percentage: syncProgress.percentage,
+                    message: taskResult.message
+                })
+            });
 
         };
 

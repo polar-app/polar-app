@@ -4,6 +4,8 @@
  *
  */
 import {SyncState} from './SyncState';
+import {SyncTaskResult} from './SyncTask';
+import {Optional} from '../../../util/ts/Optional';
 
 export interface SyncProgress {
 
@@ -18,6 +20,11 @@ export interface SyncProgress {
      * The error for the sync when the status is failed.
      */
     error?: Error;
+
+    /**
+     * An optional task result from the last task executed.
+     */
+    taskResult: Optional<SyncTaskResult>;
 
     // TODO: not sure if we should expose this.
     //
