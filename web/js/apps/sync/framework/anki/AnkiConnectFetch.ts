@@ -1,4 +1,3 @@
-//import {RequestInit} from 'node-fetch';
 import fetch, {RequestInit} from './Fetch';
 import {AnkiConnectResponse} from './AnkiConnectResponse';
 

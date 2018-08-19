@@ -96,6 +96,15 @@ class CacheInterceptorService {
             netRequest.setHeader(header, request.headers[header]);
         });
 
+        if(request.uploadData) {
+
+            log.info("Writing data to request");
+            request.uploadData.forEach(current => {
+                netRequest.write(current.bytes);
+            });
+
+        }
+
         // TODO: we have to call netRequest.write on all the request.uploadData.
         // not urgent because this isn't really a use case we must support.
 

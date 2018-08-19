@@ -51,6 +51,8 @@ export class DialogWindow {
 
         let browserWindowOptions = Object.assign({}, BROWSER_WINDOW_OPTIONS);
 
+        log.info("Starting with browser options: ", browserWindowOptions);
+
         browserWindowOptions.width = options.width;
         browserWindowOptions.height = options.height;
         browserWindowOptions.show = options.show;
