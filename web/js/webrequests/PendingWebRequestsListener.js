@@ -17,7 +17,7 @@ class PendingWebRequestsListener extends BaseWebRequestsListener {
         let { details, callback } = event;
         let pendingChange = null;
         if (name === "onBeforeRequest") {
-            this.pendingRequests[details.url] = details;
+            this.pendingRequests[details.id] = details;
             this.startedRequests[details.id] = {
                 event: name,
                 id: details.id,
@@ -27,7 +27,7 @@ class PendingWebRequestsListener extends BaseWebRequestsListener {
             this.requestState.markStarted(details.id, details.url);
         }
         if (name === "onCompleted" || name === "onErrorOccurred" || name === "onBeforeRedirect" || name === "onAuthRequired") {
-            delete this.pendingRequests[details.url];
+            delete this.pendingRequests[details.id];
             this.finishedRequests[details.id] = {
                 event: name,
                 id: details.id,
