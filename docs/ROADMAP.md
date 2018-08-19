@@ -29,6 +29,10 @@ Electron or another API on which we're blocked.
 
 # Medium Term
 
+- Annotation sidebar that shows the annotations you've created in the document 
+  and allows you to scroll through them and clicking on them should bring that 
+  item into the scroll.
+
 - Redo the HTML app so that it scrolls via overflow not via the page scrolling.
   This way the PDF viewer and HTML viewer have the same general layout which 
   should reduce bugs.

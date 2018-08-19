@@ -105,9 +105,10 @@ export class NotesSync {
 
         if(canAddNotes.length > 0 && canAddNotes[0]) {
             this.syncQueue.add(async () => await this.addNote(normalizedNote));
+            return Optional.of({message: 'Note can be added'});
+        } else {
+            return Optional.of({message: 'Note already exists'});
         }
-
-        return Optional.empty();
 
     }
 
