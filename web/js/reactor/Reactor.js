@@ -15,6 +15,9 @@ class Reactor {
         this.events[eventName] = event;
         return this;
     }
+    eventNames() {
+        return Object.keys(this.events);
+    }
     clearEvent(eventName) {
         let event = new Event_1.Event(eventName);
         this.events[eventName] = event;
