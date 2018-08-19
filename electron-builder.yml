@@ -1,5 +1,5 @@
 productName: Polar Bookshelf
-electronVersion: 2.0.2
+#electronVersion: 3.0.0-beta.4
 appId: io.inputneuron/polar
 compression: store
 npmRebuild: false
@@ -17,6 +17,7 @@ mac:
       role: "Viewer"
 
 linux:
+  artifactName: ${name}-${version}-${arch}
   synopsis: Polar Bookshelf PDF reader
   description: Polar Bookshelf PDF reader
   category: Reference
@@ -28,8 +29,15 @@ linux:
   fileAssociations:
     - ext: "pdf"
 
+nsis:
+  artifactName: ${name}-${version}-${arch}
+
+
 win:
-  target: nsis, portable
+  artifactName: ${name}-${version}-${arch}
+  target:
+    - target: nsis
+    - target: portable
   icon: ./icons/icon-512x512.png
   fileAssociations:
     - ext: "pdf"

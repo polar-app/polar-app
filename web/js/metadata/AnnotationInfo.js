@@ -1,29 +1,15 @@
-const {SerializedObject} = require("./SerializedObject.js");
-
-/**
- * High level information about the annotations in this document.
- *
- * @type {AnnotationInfo}
- */
-class AnnotationInfo extends SerializedObject {
-
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const SerializedObject_1 = require("./SerializedObject");
+class AnnotationInfo extends SerializedObject_1.SerializedObject {
     constructor(val) {
-
         super(val);
-
-        /**
-         * The last time this document was annotated (pagemarks updated, text
-         * updated, etc).
-         *
-         * @type {ISODateTime}
-         */
-        this.lastAnnotated = null;
-
+        this.lastAnnotated = val.lastAnnotated;
         this.init(val);
-
     }
-
-};
-
-
-module.exports.AnnotationInfo = AnnotationInfo;
+    validate() {
+        super.validate();
+    }
+}
+exports.AnnotationInfo = AnnotationInfo;
+//# sourceMappingURL=AnnotationInfo.js.map

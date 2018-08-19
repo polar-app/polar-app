@@ -1,16 +1,15 @@
+import {ipcRenderer} from 'electron';
 import {Model} from '../Model';
 import {Elements} from '../util/Elements';
 import {ContextMenuType, ContextMenuTypes} from './ContextMenuType';
 import {MatchingSelector} from './MatchingSelector';
 import {AnnotationDescriptors} from '../metadata/AnnotationDescriptors';
 import {Logger} from '../logger/Logger';
+import {TriggerEvent} from './TriggerEvent';
+import {DocDescriptor} from '../metadata/DocDescriptor';
 
-const {ipcRenderer} = require('electron')
 const {forDict} = require("../utils");
-const {Attributes} = require("../util/Attributes");
-const {TriggerEvent} = require("./TriggerEvent");
 const {DocFormatFactory} = require("../docformat/DocFormatFactory");
-const {DocDescriptor} = require("../metadata/DocDescriptor");
 const log = Logger.create();
 
 /**

@@ -1,5 +1,7 @@
 
-// TODO: migrate to Dimensions
+/**
+ * @deprecated migrate to Dimensions
+ */
 class BasicBox {
 
     /**

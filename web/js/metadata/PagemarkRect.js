@@ -1,10 +1,7 @@
-const {AnnotationRect} = require("./AnnotationRect");
-
-/**
- *
- */
-class PagemarkRect extends AnnotationRect {
-
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const AnnotationRect_1 = require("./AnnotationRect");
+class PagemarkRect extends AnnotationRect_1.AnnotationRect {
 }
-
-module.exports.PagemarkRect = PagemarkRect;
+exports.PagemarkRect = PagemarkRect;
+//# sourceMappingURL=PagemarkRect.js.map

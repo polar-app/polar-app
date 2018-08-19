@@ -41,9 +41,10 @@ export class CardCreatorElement extends HTMLElement {
 
         let mainElement = shadowRoot.appendChild(CardCreatorElement.createElementHTML(template));
 
-        let inputController = new CreateFlashcardForm();
-
         let schemaFormElement = <HTMLElement>shadowRoot.getElementById("schema-form");
+
+        let inputController = new CreateFlashcardForm(schemaFormElement);
+
 
         //let postMessageFormHandler = new PostMessageFormHandler();
 
@@ -65,4 +66,5 @@ export class CardCreatorElement extends HTMLElement {
         return div;
 
     }
+
 }

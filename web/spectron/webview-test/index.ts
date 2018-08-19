@@ -17,8 +17,6 @@ SpectronMain.run(async state => {
         console.log("Found webContents ID: ", current.id);
         console.log("Found webContents:", current);
         console.log("FIXME location: ", await current.executeJavaScript('document.location.href;'));
-
-
     });
 
     await state.testResultWriter.write(true);

@@ -1,4 +1,5 @@
 
+import {app} from 'electron';
 import path from 'path';
 import fs from 'fs';
 
@@ -11,12 +12,37 @@ import fs from 'fs';
  */
 export class AppPaths {
 
-    static createFromRelative(relative: string): string {
-        let absolutePath = path.resolve(process.cwd(), relative);
+    static relative(relativePath: string) {
+
+        let baseDir = app.getAppPath();
+
+        let absolutePath = path.resolve(baseDir, relativePath);
         if(! fs.existsSync(absolutePath)) {
             throw new Error("Absolute path does not exist: " + absolutePath);
         }
         return absolutePath;
+
+    }
+
+    /**
+     * Build a full resource URL from a given relative URL.
+     *
+     * @param relativeURI
+     */
+    static resource(relativeURI: string): string {
+
+        let relativePath = relativeURI;
+        let queryData = "";
+
+        if(relativeURI.indexOf("?") !== -1) {
+            relativePath = relativeURI.substring(0, relativeURI.indexOf("?") -1);
+            queryData = relativeURI.substring(relativeURI.indexOf("?"));
+        }
+
+        let path = AppPaths.relative(relativePath);
+
+        return 'file://' + path + queryData;
+
     }
 
 }

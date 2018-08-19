@@ -1,7 +1,7 @@
 import {app, BrowserWindow} from 'electron';
 import {MainTestResultWriter} from './results/writer/MainTestResultWriter';
 
-const BROWSER_OPTIONS = {
+export const BROWSER_OPTIONS = {
     backgroundColor: '#FFF',
 
     // NOTE: the default width and height shouldn't be changed here as it can
@@ -89,13 +89,9 @@ export class SpectronMainState {
 
 }
 
-export class SpectronMainOptions {
+export interface SpectronMainOptions {
 
-    public readonly windowFactory?: WindowFactory;
-
-    constructor(windowFactory: WindowFactory) {
-        this.windowFactory = windowFactory;
-    }
+    readonly windowFactory?: WindowFactory;
 
 }
 
@@ -106,3 +102,4 @@ export interface StateCallback {
 export interface WindowFactory {
     (): Promise<BrowserWindow>;
 }
+

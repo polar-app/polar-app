@@ -7,6 +7,7 @@ import {Flashcard} from './Flashcard';
 import {Texts} from './Texts';
 import {Text} from './Text';
 import {TextType} from './TextType';
+import {DocMeta} from './DocMeta';
 
 export class Flashcards {
 
@@ -17,9 +18,12 @@ export class Flashcards {
         let now = new Date();
         let created = new ISODateTime(now);
 
-        let id = Hashcodes.createID({created, fields});
+        // TODO: implement 'machine codes' here where we have a unique code per
+        // physical device.  This way two people can create the same flashcard
+        // and never conflict.  This way we support distributed behavior.
+        let id = Hashcodes.createID({fields});
 
-        return Flashcard.newInstance(id, created, new ISODateTime(now), type, fields, archetype);
+        return Flashcard.newInstance(id, id, created, new ISODateTime(now), type, fields, archetype);
 
     }
 
@@ -41,6 +45,41 @@ export class Flashcards {
         });
 
         return Flashcards.create(FlashcardType.BASIC_FRONT_BACK, fields, archetype);
+
+    }
+
+}
+
+export class MockFlashcards {
+
+    /**
+     * Attach mock flashcards on the given DocMeta for testing
+     */
+    public static attachFlashcards(docMeta: DocMeta) {
+
+        let idx = 0;
+
+        Object.values(docMeta.pageMetas).forEach(pageMeta => {
+
+            let archetype = "9d146db1-7c31-4bcf-866b-7b485c4e50ea";
+
+            let front = Texts.create("What is the capital of California? <img src=\"data:image/gif;base64,R0lGODlhEAAQAMQAAORHHOVSKudfOulrSOp3WOyDZu6QdvCchPGolfO0o/XBs/fNwfjZ0frl3/zy7////wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACH5BAkAABAALAAAAAAQABAAAAVVICSOZGlCQAosJ6mu7fiyZeKqNKToQGDsM8hBADgUXoGAiqhSvp5QAnQKGIgUhwFUYLCVDFCrKUE1lBavAViFIDlTImbKC5Gm2hB0SlBCBMQiB0UjIQA7\" />\n" + idx, TextType.HTML);
+            let back = Texts.create("Sacramento", TextType.TEXT);
+
+            let fields = {
+                'Front': front,
+                'Back': back,
+            };
+
+            let flashcard = Flashcards.create(FlashcardType.CLOZURE, fields, archetype);
+
+            pageMeta.flashcards[flashcard.id] = flashcard;
+
+            ++idx;
+
+        });
+
+        return docMeta;
 
     }
 

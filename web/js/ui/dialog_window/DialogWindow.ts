@@ -4,6 +4,7 @@ import {BrowserWindowPromises} from '../../electron/framework/BrowserWindowPromi
 import {WebContentsPromises} from '../../electron/framework/WebContentsPromises';
 import {DialogWindowReference} from './DialogWindowReference';
 import {DialogWindowMenu} from './DialogWindowMenu';
+import {AppPaths} from '../../electron/webresource/AppPaths';
 
 const log = Logger.create();
 
@@ -50,6 +51,12 @@ export class DialogWindow {
 
         let browserWindowOptions = Object.assign({}, BROWSER_WINDOW_OPTIONS);
 
+        log.info("Starting with browser options: ", browserWindowOptions);
+
+        browserWindowOptions.width = options.width;
+        browserWindowOptions.height = options.height;
+        browserWindowOptions.show = options.show;
+
         // Create the browser window.
         let window = new BrowserWindow(browserWindowOptions);
         window.setMenu(DialogWindowMenu.create());
@@ -78,6 +85,14 @@ export class DialogWindow {
             case ResourceType.URL:
                 window.loadURL(options.resource.value, {});
                 break;
+
+            case ResourceType.APP:
+
+                let appURL = AppPaths.resource(options.resource.value);
+                log.info("Loading app URL:" , appURL);
+                window.loadURL(appURL, {});
+                break
+
         }
 
         await Promise.all([readyToShowPromise, loadPromise]);
@@ -97,7 +112,8 @@ export class DialogWindow {
 
 export enum ResourceType {
     FILE,
-    URL
+    URL,
+    APP
 }
 
 export class Resource {
@@ -120,9 +136,9 @@ export class DialogWindowOptions {
 
     public height: number = 600;
 
-    public show: boolean = true;
+    public show: boolean = false;
 
-    constructor(resource: Resource, width?: number, height?: number, show?: boolean) {
+    constructor(resource: Resource, width: number = 800, height: number = 600, show?: boolean) {
 
         this.resource = resource;
 

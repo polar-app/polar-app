@@ -1,10 +1,9 @@
-const {Symbol} = require("./Symbol.js");
-
-/**
- *
- */
-module.exports.PagemarkType = Object.freeze({
-    SINGLE_COLUMN: new Symbol("SINGLE_COLUMN"),
-    DOUBLE_COLUMN: new Symbol("DOUBLE_COLUMN"),
-    TRIPLE_COLUMN: new Symbol("TRIPLE_COLUMN")
-});
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var PagemarkType;
+(function (PagemarkType) {
+    PagemarkType["SINGLE_COLUMN"] = "SINGLE_COLUMN";
+    PagemarkType["DOUBLE_COLUMN"] = "DOUBLE_COLUMN";
+    PagemarkType["TRIPLE_COLUMN"] = "TRIPLE_COLUMN";
+})(PagemarkType = exports.PagemarkType || (exports.PagemarkType = {}));
+//# sourceMappingURL=PagemarkType.js.map

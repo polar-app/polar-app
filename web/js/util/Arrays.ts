@@ -6,7 +6,7 @@ export class Arrays {
     /**
      * Convert an array to a dictionary.
      */
-    static toDict(val: {} | any[]): {[key: string]: any} {
+    public static toDict(val: {} | any[]): {[key: string]: any} {
 
         let isObject = typeof val === "object";
         let isArray = val instanceof Array;
@@ -47,7 +47,7 @@ export class Arrays {
      * This can be used for algorithms that need to peek ahead or behind
      * inside an iterative algorithm
      */
-    static createSiblings<T>(arrayLikeObject: T[]) {
+    public static createSiblings<T>(arrayLikeObject: T[]) {
 
         Preconditions.assertNotNull(arrayLikeObject, "arrayLikeObject");
 
@@ -69,15 +69,67 @@ export class Arrays {
 
         return result;
 
-    };
+    }
+
+    /**
+     * Take the input and return it as batch of lists based on the size.
+     *
+     * For example, if the batchSize is 2, and the input is a array of
+     * integers,
+     * and we're given [1, 2, 3, 4, 5] we will return [[1,2],[3,4],[5]]
+     *
+     * If trailing is false we only return collections that are full, not
+     * partial. This is the last few if they don't equal the size.
+     *
+     */
+    public static createBatches<T>(input: T[], batchSize: number): T[][] {
+
+        let result: T[][] = [];
+
+        let batch: T[] = [];
+
+        input.forEach(current => {
+
+            if(batch.length === batchSize) {
+                result.push(batch);
+                batch = [];
+            }
+
+            batch.push(current);
+
+        });
+
+        if(batch.length > 0) {
+            result.push(batch);
+        }
+
+        return result;
+
+    }
+
+    /**
+     * Like forEach but sequentially executes each function.
+     */
+    public static async asyncForEach<T>(items: T[], callback: AsyncCallback<T>) {
+
+        for (let i = 0; i < items.length; i++) {
+            const item = items[i];
+            await callback(item);
+        }
+
+    }
 
 }
 
+export interface AsyncCallback<T> {
+    (current: T): Promise<void>;
+}
+
 /**
- * Represents a 'position' object for createSiblings() that has a curr (current),
- * prev (previous), and next references for working with lists of objects.  The
- * position allow sus to know where we currently are but also the previous and
- * future states.
+ * Represents a 'position' object for createSiblings() that has a curr
+ * (current), prev (previous), and next references for working with lists of
+ * objects.  The position allow sus to know where we currently are but also the
+ * previous and future states.
  */
 class ArrayPosition<T> {
 

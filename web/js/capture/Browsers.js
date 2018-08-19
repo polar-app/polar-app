@@ -39,7 +39,7 @@ class Browsers {
             case "headless":
                 return new BrowserMutator(browser)
                     .setHeight(35000)
-                    .setShow(false)
+                    .setShow(true)
                     .setOffscreen(true)
                     .build();
 

@@ -1,205 +1,95 @@
-const {Hashcodes} = require("../Hashcodes");
-const {Pagemark} = require("./Pagemark");
-const {PagemarkType} = require("./PagemarkType");
-const {PagemarkRect} = require("./PagemarkRect");
-const {PagemarkRects} = require("./PagemarkRects");
-const {ISODateTime} = require("./ISODateTime");
-const {Objects} = require("../util/Objects");
-const {round} = require("../util/Percentages");
-const {forDict} = require("../util/Functions");
-
-const log = require("../logger/Logger").create();
-
-const DEFAULT_PAGEMARK_RECT = new PagemarkRect({
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const ISODateTime_1 = require("./ISODateTime");
+const PagemarkRect_1 = require("./PagemarkRect");
+const Pagemark_1 = require("./Pagemark");
+const Logger_1 = require("../logger/Logger");
+const Hashcodes_1 = require("../Hashcodes");
+const Objects_1 = require("../util/Objects");
+const PagemarkType_1 = require("./PagemarkType");
+const PagemarkRects_1 = require("./PagemarkRects");
+const Dictionaries_1 = require("../util/Dictionaries");
+const Percentages_1 = require("../util/Percentages");
+const PagemarkMode_1 = require("./PagemarkMode");
+const log = Logger_1.Logger.create();
+const DEFAULT_PAGEMARK_RECT = new PagemarkRect_1.PagemarkRect({
     left: 0,
     top: 0,
     width: 100,
     height: 100
 });
-
 class Pagemarks {
-
     static createID(created) {
-
-        let id = Hashcodes.create(JSON.stringify(created));
-
-        // truncate.  We don't need that much precision against collision.
-        return id.substring(0,10);
-
+        let id = Hashcodes_1.Hashcodes.create(JSON.stringify(created));
+        return id.substring(0, 10);
     }
-
-    /**
-     * Create a new pagemark with the created time, and other mandatory fields
-     * added.
-     *
-     * @param options
-     * @return {Pagemark}
-     */
     static create(options = {}) {
-
-        options = Objects.defaults( options, {
-
-            // just set docMeta pageMarkType = PagemarkType.SINGLE_COLUMN by
-            // default for now until we add multiple column types and handle
-            // them properly.
-
-            // TODO: this needs to be read from the docInfo setting for this
-            // document and the default here
-
-            /**
-             * @type {Symbol}
-             */
-            type: PagemarkType.SINGLE_COLUMN,
-
-            /**
-             * @type {number}
-             */
+        options = Objects_1.Objects.defaults(options, {
+            type: PagemarkType_1.PagemarkType.SINGLE_COLUMN,
             column: 0,
-
         });
-
-        let keyOptions= Pagemarks.createKeyOptions(options);
-
-        if(keyOptions.count === 0) {
+        let keyOptions = Pagemarks.createKeyOptions(options);
+        if (keyOptions.count === 0) {
             throw new Error("Must specify either rect or percentage.");
         }
-
-        if(keyOptions.count === 1) {
-
-            if(keyOptions.hasPercentage) {
-                keyOptions.rect = PagemarkRects.createFromPercentage(keyOptions.percentage);
+        if (keyOptions.count === 1) {
+            if (keyOptions.hasPercentage) {
+                keyOptions.rect = PagemarkRects_1.PagemarkRects.createFromPercentage(keyOptions.percentage);
             }
-
-            if(keyOptions.hasRect) {
+            if (keyOptions.hasRect) {
                 keyOptions.percentage = keyOptions.rect.toPercentage();
             }
-
         }
-
-        if(round(keyOptions.percentage) !== round(keyOptions.rect.toPercentage())) {
+        if (Percentages_1.round(keyOptions.percentage) !== Percentages_1.round(keyOptions.rect.toPercentage())) {
             let msg = "Percentage and rect are not the same";
             log.warn(msg, keyOptions.percentage, keyOptions.rect, keyOptions.rect.toPercentage());
             throw new Error(msg);
         }
-
-        let created = new ISODateTime(new Date());
-
-        return new Pagemark({
-
-            // per-pagemark fields.
+        let created = new ISODateTime_1.ISODateTime(new Date());
+        return new Pagemark_1.Pagemark({
             id: Pagemarks.createID(created),
             created,
-
-            // the rest are from options.
             type: options.type,
             percentage: keyOptions.percentage,
             column: options.column,
             rect: keyOptions.rect
-
         });
-
     }
-
-    /**
-     *
-     * @param options
-     * @return {KeyOptions}
-     */
     static createKeyOptions(options) {
-
-        let keyOptions = new KeyOptions();
-
+        let keyOptions = {
+            count: 0,
+            hasPercentage: false,
+            hasRect: false,
+            rect: options.rect,
+            percentage: options.percentage
+        };
         keyOptions.hasPercentage = "percentage" in options;
         keyOptions.hasRect = "rect" in options;
-
-        if(keyOptions.hasPercentage)
+        if (keyOptions.hasPercentage)
             ++keyOptions.count;
-
-        if(keyOptions.hasRect)
+        if (keyOptions.hasRect)
             ++keyOptions.count;
-
-        keyOptions.rect = options.rect;
-        keyOptions.percentage = options.percentage;
-
         return keyOptions;
-
     }
-
-    /**
-     *
-     * @param pagemarks {Object<?,pagemark>}
-     * @return {Object<?,pagemark>}
-     */
     static upgrade(pagemarks) {
-
-        pagemarks = Object.assign({}, pagemarks);
-
-        forDict(pagemarks, function (key, pagemark) {
-
-            if(! pagemark.rect) {
-
-                if(pagemark.percentage >= 0 && pagemark.percentage <= 100) {
-
-                    // now rect but we can build one from the percentage.
-                    pagemark.rect = PagemarkRects.createFromPercentage(pagemark.percentage);
-
+        let result = {};
+        Object.assign(result, pagemarks);
+        Dictionaries_1.Dictionaries.forDict(result, (key, pagemark) => {
+            if (!pagemark.rect) {
+                if (pagemark.percentage >= 0 && pagemark.percentage <= 100) {
+                    pagemark.rect = PagemarkRects_1.PagemarkRects.createFromPercentage(pagemark.percentage);
                 }
-
             }
-
-            if(! pagemark.id) {
+            if (!pagemark.id) {
                 log.warn("Pagemark given ID");
                 pagemark.id = Pagemarks.createID(pagemark.created);
             }
-
+            if (!pagemark.mode) {
+                pagemark.mode = PagemarkMode_1.PagemarkMode.READ;
+            }
         });
-
-        return pagemarks;
-
+        return result;
     }
-
 }
-
-/**
- * The key / important options when creating a Pagemark.
- */
-class KeyOptions {
-
-    constructor() {
-
-        /**
-         * The total number of key options.
-         *
-         * @type {number}
-         */
-        this.count = 0;
-
-        /**
-         * True when we have the percentage.
-         *
-         * @type {boolean}
-         */
-        this.hasPercentage = undefined;
-
-        /**
-         * True when we have the rect.
-         *
-         * @type {boolean}
-         */
-        this.hasRect = undefined;
-
-        /**
-         * @type {PagemarkRect}
-         */
-        this.rect = undefined;
-
-        /**
-         * @type {number}
-         */
-        this.percentage = undefined;
-
-    }
-
-}
-
-module.exports.Pagemarks = Pagemarks;
+exports.Pagemarks = Pagemarks;
+//# sourceMappingURL=Pagemarks.js.map

@@ -37,8 +37,9 @@ See https://github.com/adobe-type-tools/cmap-resources
       <meta name="polar-doc-format" content="pdf">
 
       <link rel="stylesheet" href="../../node_modules/font-awesome/css/font-awesome.min.css">
+      <link rel="stylesheet" href="../../node_modules/toastr/build/toastr.min.css">
 
-      <!--<link rel="stylesheet" href="../../node_modules/bootstrap/dist/css/bootstrap.min.css">-->
+    <!--<link rel="stylesheet" href="../../node_modules/bootstrap/dist/css/bootstrap.min.css">-->
       <!--<link rel="stylesheet" href="../../web/css/bootswatch-slate.min.css">-->
 
       <link rel="stylesheet" href="../../pdfviewer-custom/polar.css">
@@ -321,12 +322,24 @@ See https://github.com/adobe-type-tools/cmap-resources
             <!-- BEGIN polar customization -->
             <div id="polar-header" class="polar-pdf-header">
 
-              <div id="polar-progress">
-                <progress value="0.0"></progress>
+              <div id="polar-header-body">
+
+                <div id="polar-progress">
+                  <progress value="0.0"></progress>
+                </div>
+
+                <div id="set-title">
+                  <div id="set-title-form">
+                    <input id="set-title-input" type="text" placeholder="Untitled" autocomplete="false">
+
+                  </div>
+                </div>
+
               </div>
 
             </div>
-            <!-- END polar customization -->
+
+          <!-- END polar customization -->
 
             <div>
 

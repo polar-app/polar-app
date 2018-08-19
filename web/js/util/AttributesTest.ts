@@ -1,5 +1,5 @@
-const assert = require('assert');
-const {Attributes} = require("./Attributes");
+import assert from 'assert';
+import {Attributes} from './Attributes';
 const {JSDOM} = require("jsdom");
 
 describe('Attributes', function() {

@@ -19,4 +19,8 @@ export class Strings {
 
     }
 
+    static empty(value?: string): boolean {
+        return ! value || value.trim() === "";
+    }
+
 }

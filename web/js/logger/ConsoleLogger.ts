@@ -3,7 +3,7 @@
  */
 import {ILogger} from './ILogger';
 
-class ConsoleLogger implements ILogger{
+export class ConsoleLogger implements ILogger {
 
     info(msg: string, ...args: any[]) {
         console.log(msg, ...args);
@@ -26,5 +26,3 @@ class ConsoleLogger implements ILogger{
     }
 
 }
-
-module.exports.ConsoleLogger = ConsoleLogger;

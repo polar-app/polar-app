@@ -1,38 +1,31 @@
-const electron = require('electron');
-const Logger = require("../logger/Logger").Logger;
-const ipcRenderer = electron.ipcRenderer;
-const log = Logger.create();
-
-/**
-  */
+"use strict";
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const electron_1 = require("electron");
+const IXYRects_1 = require("../util/rects/IXYRects");
 class Screenshots {
-
-    /**
-     * Create a screenshot and return a NativeImage of the result.
-     *
-     * https://github.com/electron/electron/blob/master/docs/api/native-image.md
-     *
-     * @param screenshotRequest.  Specify either rect or element to capture as
-     *                            properties.
-     *
-     * @return {Promise} for {NativeImage}. You can call toDateURL on the image
-     *         with scaleFactor as an option.
-     *
-     */
-    static async capture(screenshotRequest) {
-
-        if(! screenshotRequest.rect && screenshotRequest.element) {
-            screenshotRequest.rect = screenshotRequest.element.getBoundingClientRect();
-        }
-
-        // the element is invalid when sent to the main process.
-        delete screenshotRequest.element;
-
-        // now send the screenshotRequest IPC message and wait for the response
-        return ipcRenderer.sendSync('create-screenshot', screenshotRequest);
-
+    static capture(target) {
+        return __awaiter(this, void 0, void 0, function* () {
+            let rect;
+            if (target instanceof HTMLElement) {
+                rect = IXYRects_1.IXYRects.createFromClientRect(target.getBoundingClientRect());
+            }
+            else {
+                rect = target;
+            }
+            let screenshotRequest = {
+                rect
+            };
+            return yield electron_1.ipcRenderer.sendSync('create-screenshot', screenshotRequest);
+        });
     }
-
 }
-
-module.exports.Screenshots = Screenshots;
+exports.Screenshots = Screenshots;
+//# sourceMappingURL=Screenshots.js.map

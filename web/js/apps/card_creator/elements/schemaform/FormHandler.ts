@@ -6,18 +6,21 @@ const log = Logger.create();
  */
 export class FormHandler {
 
-    onChange(data: any) {
+    onChange(data: any): boolean {
         log.info("onChange: ", data);
+        return true;
     }
 
 
-    onSubmit(data: any) {
+    onSubmit(data: any): boolean {
         log.info("onSubmit: ", data);
+        return true;
     }
 
 
-    onError(data: any) {
+    onError(data: any): boolean {
         log.info("onError: ", data);
+        return true;
     }
 
 }

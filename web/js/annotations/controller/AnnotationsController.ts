@@ -6,7 +6,7 @@ import {Nullable} from '../../util/ts/Nullable';
 import {AnnotationTriggerEvents} from './AnnotationTriggerEvents';
 import {IPCClient} from '../../ipc/handler/IPCClient';
 import {IPCEvent} from '../../ipc/handler/IPCEvent';
-import {ElectronIPCPipe} from '../../ipc/handler/ElectronIPCPipe';
+import {Toaster} from '../../toaster/Toaster';
 
 const log = Logger.create();
 
@@ -26,7 +26,7 @@ export class AnnotationsController {
 
         window.addEventListener("message", event => this.onMessageReceived(event), false);
 
-        let dialogWindowClient = await this.createFlashcardDialogWindow();
+        let dialogWindowClient = await this.createDialogWindow();
         this.flashcardDialogWindow.set(dialogWindowClient);
 
         this.ipcClient.set(dialogWindowClient.createClient());
@@ -43,7 +43,7 @@ export class AnnotationsController {
 
         if(data) {
 
-            if(data.type === 'create-flashcard') {
+            if(data.type === 'add-flashcard') {
 
                 let triggerEvent = TriggerEvent.create(event.data);
 
@@ -66,8 +66,6 @@ export class AnnotationsController {
         await this.showDialog();
         await this.sendAnnotationDescriptor(triggerEvent);
 
-        log.info("Flashcard UI created successfully.");
-
     }
 
     private async sendAnnotationDescriptor(triggerEvent: TriggerEvent) {
@@ -77,17 +75,20 @@ export class AnnotationsController {
         let annotationDescriptors
             = AnnotationTriggerEvents.getAnnotationDescriptors(triggerEvent);
 
-        if(annotationDescriptors.length == 0)
+        if(annotationDescriptors.length == 0) {
+            log.warn("No annotation descriptors.")
             return;
+        }
 
         let annotationDescriptor = annotationDescriptors[0];
 
-        this.ipcClient.get().execute('/create-flashcard/api/create', annotationDescriptor)
-            .then(() => {
+        await this.ipcClient.get().execute('/create-flashcard/api/create', annotationDescriptor);
 
-                log.info("Sending annotation descriptor...done");
+        log.info("Flashcard created!");
 
-            });
+        await this.hideDialog();
+
+        Toaster.success("New flashcard created.");
 
     }
 
@@ -97,12 +98,18 @@ export class AnnotationsController {
         log.info("Showing dialog...done");
     }
 
-    private async createFlashcardDialogWindow(): Promise<DialogWindowClient> {
+    private async hideDialog() {
+        log.info("Hiding dialog...");
+        await this.flashcardDialogWindow.get().hide();
+        log.info("Hiding dialog...done");
+    }
+
+    private async createDialogWindow(): Promise<DialogWindowClient> {
 
         let appPath = "./apps/card-creator/index.html";
 
         let resource = new Resource(ResourceType.FILE, appPath);
-        let options = new DialogWindowOptions(resource);
+        let options = new DialogWindowOptions(resource, 700, 900);
         options.show = false;
 
         return await DialogWindowClient.create(options);

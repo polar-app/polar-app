@@ -111,8 +111,10 @@ export class TextWidget extends React.Component  {
                 options={{
                     id: this.typedWidgetProps.id,
                     lang: 'en-US',
-                    height: 150,
+                    height: 280,
+                    //placeholder: "this is a placeholder",
                     dialogsInBody: false,
+                    //airMode: true,
                     // toolbar: [
                     //     ['style', []],
                     //     ['font', []],
@@ -126,15 +128,17 @@ export class TextWidget extends React.Component  {
 
                     // FIXME: add blockquote, code, and pre, and cite
 
-                    // toolbar: [
-                    //     ['style', ['style']],
-                    //     ['font', ['bold', 'underline', 'clear']],
-                    //     ['fontname', ['fontname']],
-                    //     ['para', ['ul', 'ol', 'paragraph']],
-                    //     ['table', ['table']],
-                    //     ['insert', ['link', 'picture', 'video']],
-                    //     ['view', ['fullscreen', 'codeview']]
-                    // ]
+                    // missing the highlight color pulldown...
+
+                    toolbar: [
+                        ['style', ['style']],
+                        ['font', ['bold', 'italic', 'underline', 'clear', 'color', 'superscript', 'subscript']],
+                        //['fontname', ['fontname']],
+                        ['para', ['ul', 'ol', 'paragraph']],
+                        ['table', ['table']],
+                        ['insert', ['link', 'picture', 'video']],
+                        ['view', []]
+                    ]
 
                 }}
                 onChange={this.onChange}

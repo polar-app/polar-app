@@ -1,7 +1,7 @@
 /**
  * A rect and element pair.
  */
-class RectElement {
+export class RectElement {
 
     public readonly rect: any;
 

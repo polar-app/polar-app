@@ -1,29 +1,13 @@
-const {Elements} = require("../util/Elements");
-const {PDFFormat} = require("./PDFFormat");
-const {HTMLFormat} = require("./HTMLFormat");
-const {DocFormat} = require("./DocFormat");
-
-/**
- *
- */
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 class DocFormats {
-
-    /**
-     * Get the doc format we're using (html, pdf, etc). Otherwise return null.
-     * @return {*}
-     */
     static getFormat() {
-
         let polarDocFormat = document.querySelector("meta[name='polar-doc-format']");
-
-        if(polarDocFormat) {
+        if (polarDocFormat) {
             return polarDocFormat.getAttribute("content");
         }
-
         return null;
-
     }
-
 }
-
-module.exports.DocFormats = DocFormats;
+exports.DocFormats = DocFormats;
+//# sourceMappingURL=DocFormats.js.map

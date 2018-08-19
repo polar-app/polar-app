@@ -197,6 +197,11 @@ class AbstractPagemarkComponent extends Component {
         // annotation components.
         pagemarkElement.setAttribute("data-pagemark-id", this.pagemark.id);
         pagemarkElement.setAttribute("data-annotation-id", this.pagemark.id);
+        pagemarkElement.setAttribute("data-annotation-type", "pagemark");
+        pagemarkElement.setAttribute("data-annotation-doc-fingerprint", this.annotationEvent.docMeta.docInfo.fingerprint);
+        pagemarkElement.setAttribute("data-annotation-page-num", `${this.annotationEvent.pageMeta.pageInfo.num}`);
+
+
         pagemarkElement.setAttribute("data-type", "pagemark");
         pagemarkElement.setAttribute("data-doc-fingerprint", this.annotationEvent.docMeta.docInfo.fingerprint);
         pagemarkElement.setAttribute("data-page-num", `${this.annotationEvent.pageMeta.pageInfo.num}`);

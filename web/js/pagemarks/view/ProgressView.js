@@ -7,6 +7,8 @@ const log = require("../../logger/Logger").create();
  */
 class ProgressView {
 
+    // TODO: this should actually be PagemarkProgressView
+
     /**
      * @param model {Model}
      */

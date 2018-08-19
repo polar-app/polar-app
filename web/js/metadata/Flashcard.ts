@@ -21,6 +21,16 @@ export class Flashcard extends VersionedObject {
      */
     public archetype: string;
 
+    /**
+     * When a flashcard is created it has an id just like every other annotation
+     * object however, we can update the flashcard over time and when it's
+     * updated we need to generate a new id.  The guid allows us to reference a
+     * flashcard as it changes over time.  If the user updates the flashcard we
+     * keep the same guid so we have a unique handle on the flashcard as
+     * it's edited and the initial guid never changes.
+     */
+    public guid: string;
+
     // TODO: we don't have a way right now to attach these to specific
     // annotations
 
@@ -31,6 +41,7 @@ export class Flashcard extends VersionedObject {
         this.type = template.type;
         this.fields = template.fields;
         this.archetype = template.archetype;
+        this.guid = template.guid;
 
         this.init(template);
 
@@ -39,13 +50,18 @@ export class Flashcard extends VersionedObject {
     validate(): void {
         super.validate();
 
+        Preconditions.assertNotNull(this.id, "id");
         Preconditions.assertNotNull(this.type, "type");
+        Preconditions.assertNotNull(this.guid, "guid");
         Preconditions.assertNotNull(this.fields, "fields");
         Preconditions.assertNotNull(this.archetype, "archetype");
+
+        // TODO: assert that the guid is not null.
 
     }
 
     public static newInstance(id: string,
+                              guid: string,
                               created: ISODateTime,
                               lastUpdated: ISODateTime,
                               type: FlashcardType,
@@ -53,7 +69,7 @@ export class Flashcard extends VersionedObject {
                               archetype: string): Readonly<Flashcard> {
 
         let result = new Flashcard(<Flashcard> {
-            id, created, lastUpdated, type, fields, archetype
+            id, guid, created, lastUpdated, type, fields, archetype
         });
 
         return Object.freeze(result);

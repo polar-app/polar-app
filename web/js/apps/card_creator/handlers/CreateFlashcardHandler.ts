@@ -5,6 +5,7 @@ import {IPCEvent} from '../../../ipc/handler/IPCEvent';
 import {IPCMessage} from '../../../ipc/handler/IPCMessage';
 import {PostMessageFormHandler} from '../flashcards/PostMessageFormHandler';
 import {Logger} from '../../../logger/Logger';
+import {Completion} from '../../../util/Promises';
 
 const log = Logger.create();
 
@@ -26,9 +27,20 @@ export class CreateFlashcardHandler extends IPCHandler<IPCMessage<AnnotationDesc
         let context = request.context;
         let annotationDescriptor = request.value;
 
-        log.info("Creating new post message for connected to annotation annotationDescriptor: ", annotationDescriptor);
-        this.createFlashcardForm.formHandler = new PostMessageFormHandler(annotationDescriptor, context);
-        return true;
+        return new Promise<boolean>((resolve, reject) => {
+
+            log.info("Creating new post message for connected to annotation annotationDescriptor: ", annotationDescriptor);
+
+            let completion: Completion<boolean> = {
+                resolve,
+                reject
+            };
+
+            this.createFlashcardForm.formHandler = new PostMessageFormHandler(annotationDescriptor, context, completion);
+
+            this.createFlashcardForm.render();
+
+        });
 
     }
 

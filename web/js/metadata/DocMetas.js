@@ -1,183 +1,108 @@
-
-const {Pagemarks} = require("./Pagemarks");
-const {Pagemark} = require("./Pagemark");
-const {DocMeta} = require("./DocMeta");
-const {DocInfo} = require("./DocInfo");
-const {PageInfo} = require("./PageInfo");
-const {PageMeta} = require("./PageMeta");
-const {PagemarkType} = require("./PagemarkType");
-const {ISODateTime} = require("./ISODateTime");
-const {AnnotationInfo} = require("./AnnotationInfo");
-const {MetadataSerializer} = require("./MetadataSerializer");
-const {PageMetas} = require("./PageMetas");
-const {TextHighlightRecords} = require("./TextHighlightRecords");
-const {TextHighlights} = require("./TextHighlights");
-const {Hashcodes} = require("../Hashcodes");
-const {forDict} = require("../util/Functions");
-const log = require("../logger/Logger").create();
-
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const PageMeta_1 = require("./PageMeta");
+const Logger_1 = require("../logger/Logger");
+const DocMeta_1 = require("./DocMeta");
+const PagemarkType_1 = require("./PagemarkType");
+const PageInfo_1 = require("./PageInfo");
+const DocInfos_1 = require("./DocInfos");
+const AnnotationInfos_1 = require("./AnnotationInfos");
+const { Pagemarks } = require("./Pagemarks");
+const { MetadataSerializer } = require("./MetadataSerializer");
+const { PageMetas } = require("./PageMetas");
+const { TextHighlights } = require("./TextHighlights");
+const log = Logger_1.Logger.create();
 class DocMetas {
-
-    /**
-     * Create the basic DocInfo structure that we can use with required / basic
-     * field structure.
-     * @param fingerprint The fingerprint
-     * @param nrPages The number of pages in this document.
-     * @returns {DocMeta}
-     */
     static create(fingerprint, nrPages) {
-
-        let docInfo = new DocInfo({fingerprint, nrPages});
-
+        let docInfo = DocInfos_1.DocInfos.create(fingerprint, nrPages);
         let pageMetas = {};
-
-        for(let idx = 1; idx <= nrPages; ++idx) {
-            let pageInfo = new PageInfo({num: idx});
-            let pageMeta = new PageMeta({pageInfo: pageInfo});
+        for (let idx = 1; idx <= nrPages; ++idx) {
+            let pageInfo = new PageInfo_1.PageInfo({ num: idx });
+            let pageMeta = new PageMeta_1.PageMeta({ pageInfo: pageInfo });
             pageMetas[idx] = pageMeta;
         }
-
-        return new DocMeta({docInfo, pageMetas});
-
+        return new DocMeta_1.DocMeta(docInfo, pageMetas);
     }
-
-    /**
-     * Create a DocMeta object but place initial pagemarks on it. This is useful
-     * for testing.
-     */
     static createWithinInitialPagemarks(fingerprint, nrPages) {
-
-        let result = this.create(fingerprint, nrPages);
-
-        let maxPages = 3;
-        for(let pageNum = 1; pageNum <= Math.min(nrPages, maxPages); ++pageNum ) {
-
-            let pagemark = Pagemarks.create({
-                type: PagemarkType.SINGLE_COLUMN,
-                percentage: 100,
-                column: 0
-            });
-
-            let pageMeta = result.getPageMeta(pageNum);
-
-            // set the pagemark that we just created.
-            // TODO: this should be pagemark.id as the key not pagemark.column
-            pageMeta.pagemarks[pagemark.column] = pagemark;
-
-        }
-
-        return result;
-
+        return MockDocMetas.createWithinInitialPagemarks(fingerprint, nrPages);
     }
-
     static createMockDocMeta() {
-
-        let fingerprint = "0x001";
-        let nrPages = 4;
-        let docMeta = DocMetas.createWithinInitialPagemarks(fingerprint, nrPages);
-
-        let textHighlight = TextHighlights.createMockTextHighlight();
-
-        docMeta.getPageMeta(1).textHighlights[textHighlight.id] = textHighlight;
-
-        return docMeta;
-
+        return MockDocMetas.createMockDocMeta();
     }
-
-    /**
-     */
     static addPagemarks(docMeta, options) {
-
         if (!options) {
             options = {};
         }
-
         if (!options.nrPages) {
             options.nrPages = 3;
         }
-
         if (!options.offsetPage) {
-            // the starting page
             options.offsetPage = 1;
         }
-
         if (!options.percentage) {
-            // the percentage value from 0-100
             options.percentage = 100;
         }
-
-        let maxPageNum = Math.min(options.offsetPage + options.nrPages -1, docMeta.docInfo.nrPages);
-
-        for(let pageNum = options.offsetPage; pageNum <= maxPageNum; ++pageNum ) {
-
+        let maxPageNum = Math.min(options.offsetPage + options.nrPages - 1, docMeta.docInfo.nrPages);
+        for (let pageNum = options.offsetPage; pageNum <= maxPageNum; ++pageNum) {
             let pagemark = Pagemarks.create({
-                type: PagemarkType.SINGLE_COLUMN,
+                type: PagemarkType_1.PagemarkType.SINGLE_COLUMN,
                 percentage: 100,
                 column: 0
             });
-
             let pageMeta = docMeta.getPageMeta(pageNum);
-
-            // set the pagemark that we just created.
             pageMeta.pagemarks[pagemark.column] = pagemark;
-
         }
-
     }
-
     static serialize(docMeta, spacing) {
         return MetadataSerializer.serialize(docMeta, spacing);
     }
-
-    /**
-     * @return {DocMeta}
-     */
     static deserialize(data) {
-
-        if(! (typeof data === "string")) {
+        if (!(typeof data === "string")) {
             throw new Error("We can only deserialize strings: " + typeof data);
         }
-
-        let docMeta = MetadataSerializer.deserialize(new DocMeta(), data);
-
+        let docMeta = Object.create(DocMeta_1.DocMeta.prototype);
+        docMeta = MetadataSerializer.deserialize(docMeta, data);
         return DocMetas.upgrade(docMeta);
-
     }
-
-    /**
-     *
-     * @param docMeta {DocMeta}
-     * @return {DocMeta}
-     */
     static upgrade(docMeta) {
-
-        // validate the JSON data and set defaults. In the future we should migrate
-        // to using something like AJV to provide these defaults and also perform
-        // type assertion.
-
         docMeta.pageMetas = PageMetas.upgrade(docMeta.pageMetas);
-
-        // TODO: go through and upgrade the pagemarks. I should probably have
-        // an upgrade function for each object type...
-
-        if(!docMeta.annotationInfo) {
-            log.warn("No annotation info.. Adding default.")
-            docMeta.annotationInfo = new AnnotationInfo();
+        if (!docMeta.annotationInfo) {
+            log.warn("No annotation info.. Adding default.");
+            docMeta.annotationInfo = AnnotationInfos_1.AnnotationInfos.create();
         }
-
-        if(docMeta.docInfo) {
-
-            if(!docMeta.docInfo.pagemarkType) {
-                log.warn("DocInfo has no pagemarkType... Adding default of SINGLE_COLUMN")
-                docMeta.docInfo.pagemarkType = PagemarkType.SINGLE_COLUMN;
+        if (docMeta.docInfo) {
+            if (!docMeta.docInfo.pagemarkType) {
+                log.warn("DocInfo has no pagemarkType... Adding default of SINGLE_COLUMN");
+                docMeta.docInfo.pagemarkType = PagemarkType_1.PagemarkType.SINGLE_COLUMN;
             }
-
         }
-
         return docMeta;
-
     }
-
 }
-
-module.exports.DocMetas = DocMetas;
+exports.DocMetas = DocMetas;
+class MockDocMetas {
+    static createWithinInitialPagemarks(fingerprint, nrPages) {
+        let result = DocMetas.create(fingerprint, nrPages);
+        let maxPages = 3;
+        for (let pageNum = 1; pageNum <= Math.min(nrPages, maxPages); ++pageNum) {
+            let pagemark = Pagemarks.create({
+                type: PagemarkType_1.PagemarkType.SINGLE_COLUMN,
+                percentage: 100,
+                column: 0
+            });
+            let pageMeta = result.getPageMeta(pageNum);
+            pageMeta.pagemarks[pagemark.column] = pagemark;
+        }
+        return result;
+    }
+    static createMockDocMeta() {
+        let fingerprint = "0x001";
+        let nrPages = 4;
+        let docMeta = DocMetas.createWithinInitialPagemarks(fingerprint, nrPages);
+        let textHighlight = TextHighlights.createMockTextHighlight();
+        docMeta.getPageMeta(1).textHighlights[textHighlight.id] = textHighlight;
+        return docMeta;
+    }
+}
+exports.MockDocMetas = MockDocMetas;
+//# sourceMappingURL=DocMetas.js.map

@@ -5,7 +5,6 @@ const convertStream = require("convert-stream");
 
 /** @type {Electron.Net} */
 const net = electron.net;
-const BrowserWindow = electron.BrowserWindow;
 const {Logger} = require("../../logger/Logger");
 
 const log = Logger.create();
@@ -33,7 +32,7 @@ class CacheInterceptorService {
 
         ++this.cacheStats.hits;
 
-        log.info("Going to handle with cache: ", request.url);
+        log.info("HIT Going to handle with cache: ", request.url);
 
         let cacheEntry = this.cacheRegistry.get(request.url);
 
@@ -59,7 +58,7 @@ class CacheInterceptorService {
             url: request.url,
         };
 
-        log.info("Going to handle with net.request: " + request.url);
+        log.info("MISS Going to handle with net.request: " + request.url);
 
         let netRequest = net.request(options)
             .on('response', async (response) => {
@@ -96,6 +95,15 @@ class CacheInterceptorService {
             log.info("Setting request header: ", header);
             netRequest.setHeader(header, request.headers[header]);
         });
+
+        if(request.uploadData) {
+
+            log.info("Writing data to request");
+            request.uploadData.forEach(current => {
+                netRequest.write(current.bytes);
+            });
+
+        }
 
         // TODO: we have to call netRequest.write on all the request.uploadData.
         // not urgent because this isn't really a use case we must support.

@@ -1,22 +1,14 @@
-//const {GA} = require("../ga/GA");
-const log = require("../logger/Logger").create();
-const {Hashcodes} = require("../Hashcodes");
-const os = require("os");
-
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 class Viewer {
-
     start() {
-
-        $(document).ready(() => {
-
-        });
-
     }
-
     changeScale(scale) {
-        throw new Error("Not supported by this viewer.")
+        throw new Error("Not supported by this viewer.");
     }
-
+    docDetails() {
+        return {};
+    }
 }
-
-module.exports.Viewer = Viewer;
+exports.Viewer = Viewer;
+//# sourceMappingURL=Viewer.js.map

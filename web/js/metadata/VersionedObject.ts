@@ -6,8 +6,9 @@ import {Preconditions} from '../Preconditions';
 export abstract class VersionedObject extends SerializedObject {
 
     /**
-     * The unique ID for this object.  Every object needs to have a unique
-     * ID so that we can reference it easily.
+     * The unique ID for this object.  Every object needs to have a unique ID so
+     * that we can reference it easily.  The ID should represent the immutable
+     * form of this object. If the object is mutated the id should change.
      */
     public id: string;
 
@@ -23,7 +24,7 @@ export abstract class VersionedObject extends SerializedObject {
     public lastUpdated: ISODateTime;
 
     /**
-     * The author who created this.
+     * The author who created this object.
      */
     public author?: Author;
 
