@@ -42,7 +42,6 @@ export class SyncApp {
 
         log.info("Syncing document with title: ", docMeta.docInfo.title);
 
-
         let docMetaSet = new DocMetaSet(docMeta);
 
         let syncProgressListener: SyncProgressListener = syncProgress => {
@@ -64,6 +63,8 @@ export class SyncApp {
         let pendingSyncJob = ankiSyncEngine.sync(docMetaSet, syncProgressListener);
 
         await pendingSyncJob.start();
+
+        this.progressLog.update({ percentage: 100, message: 'Sync complete' });
 
     }
 

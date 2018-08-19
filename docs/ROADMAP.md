@@ -23,8 +23,15 @@ Electron or another API on which we're blocked.
 
 - Simple 'About' webapp that includes the version of the project. Where to find
   more resources, donation links, etc.
+  
+- Capture needs to use a webview. The current way we're capturing content is 
+  actually causing us to lockup.  
 
 # Medium Term
+
+- Redo the HTML app so that it scrolls via overflow not via the page scrolling.
+  This way the PDF viewer and HTML viewer have the same general layout which 
+  should reduce bugs.
 
 - Support native platform integration for file extensions. *.pdf and *.phz. 
   This is a good project for someone else on MacOS or Windows to take on as we
@@ -71,7 +78,19 @@ Electron or another API on which we're blocked.
   a progress bar while a document is rendering and enable smooth rendering of 
   pages while they are loading. 
   
+- Undo, Redo support.
+  
 # Long Term
+
+- Repository app that shows all documents, allows you to sort them, open them
+  view stats on the repository, etc.
+
+- Transactional JSON write ahead log across machines which is merged to the 
+  on-disk store. It should support time travel so that the user can recover their
+  store/repository at a given point in time.  This would also support apps
+  listening to the log to discover new files written between machines.  We should
+  support filtering the log so that certain clients can perform sub-replication
+  of only a reduce set of data.  
 
 - Support annotation on video and audio with links back to the original.  Video
   and audio support would need to be integrated into Polar but since it's based
