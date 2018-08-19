@@ -28,7 +28,6 @@ export class WebRequestReactor {
 
         eventRegisterFunctions.forEach((eventRegisterFunction) => {
 
-
             // FIXME: this won't work as we need to keep the function mame
             let functionName = eventRegisterFunction.name;
 
@@ -81,8 +80,7 @@ export class WebRequestReactor {
     }
 
 
-    // FIXME: this should be a listener...
-    register(callback) {
+    register(callback: RegisterCallback) {
 
         Preconditions.assertNotNull(callback, "callback");
 
@@ -100,28 +98,36 @@ export class WebRequestReactor {
 
     }
 
-    toEventRegisterFunctions(): WebRequestEventFunction[] {
+    toEventRegisterFunctions(): {[name: string]: WebRequestEventCallback} {
 
         // FIXME: this won't work as we need to keep the function mame
 
-        return [
+        // FIXME: refactor this into a GenericCallback method with an optional
+        // callback and a Details object that's standardized.
+
+        return {
             //(listener: WebRequestEventListener) => this.webRequest.onBeforeRedirect((details: any) => {listener(details)}),
-            (listener: WebRequestEventListener) => this.webRequest.onBeforeRedirect(listener),
-            (listener: WebRequestEventListener) => this.webRequest.onBeforeRequest((details: any, callback) => {listener(details, callback)}),
+            'onBeforeRedirect': (listener: WebRequestEventListener) => this.webRequest.onBeforeRedirect(listener),
+            'onBeforeRequest': (listener: WebRequestEventListener) => this.webRequest.onBeforeRequest((details: any, callback) => {listener(details, callback)}),
             // this.webRequest.onBeforeRequest,
             // this.webRequest.onBeforeSendHeaders,
             // this.webRequest.onCompleted,
             // this.webRequest.onErrorOccurred,
             // this.webRequest.onResponseStarted,
             // this.webRequest.onSendHeaders
-        ];
+        };
 
     }
 
 }
 
-export interface WebRequestEventFunction {
-    (listener: WebRequestEventListener ): void;
+export interface RegisterCallback {
+    // FIXME: correct details and callback
+    (name: string, details: any, callback: any): void;
+}
+
+export interface WebRequestEventCallback {
+    (listener: WebRequestEventListener): void;
 }
 
 export interface WebRequestEventListener {

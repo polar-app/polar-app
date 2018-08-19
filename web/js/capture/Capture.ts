@@ -4,20 +4,20 @@ import {shell, app, BrowserWindow, WebRequest} from 'electron';
 import {CaptureResult} from './CaptureResult';
 import {Logger} from '../logger/Logger';
 import {Preconditions} from '../Preconditions';
+import {BrowserWindows} from './BrowserWindows';
+import {Dimensions} from '../util/Dimensions';
 
 const debug = require('debug');
 
 const {Filenames} = require("../util/Filenames");
 const {Files} = require("../util/Files");
 const {Functions} = require("../util/Functions");
-const {BrowserWindows} = require("./BrowserWindows");
 const {WebRequestReactor} = require("../webrequests/WebRequestReactor");
 const {CapturedPHZWriter} = require("./CapturedPHZWriter");
 const {DefaultPagingBrowser} = require("../electron/capture/pagination/DefaultPagingBrowser");
 const {PagingLoader} = require("../electron/capture/pagination/PagingLoader");
 const {PendingWebRequestsListener} = require("../webrequests/PendingWebRequestsListener");
 const {DebugWebRequestsListener} = require("../webrequests/DebugWebRequestsListener");
-const {Dimensions} = require("../util/Dimensions");
 
 const log = Logger.create();
 
@@ -459,11 +459,8 @@ export class Capture {
     /**
      * Get back the dimensions of the given window.
      *
-     * @param window
-     * @return {Dimensions}
-     * @private
      */
-    __calculateWindowDimensions(window: BrowserWindow) {
+    private __calculateWindowDimensions(window: BrowserWindow): Dimensions {
 
         let size = window.getSize();
 

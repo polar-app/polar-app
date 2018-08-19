@@ -1,82 +1,44 @@
-const {Event} = require("./Event");
-const {Preconditions} = require("../Preconditions");
-
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const Preconditions_1 = require("../Preconditions");
+const Event_1 = require("./Event");
 class Reactor {
-
     constructor() {
         this.events = {};
     }
-
-    /**
-     * @param eventName {String}
-     * @return {Reactor}
-     */
-    registerEvent(eventName){
-        Preconditions.assertNotNull(eventName, "eventName");
-
-        if(this.events[eventName]) {
-            // already registered so don't double register which would kill
-            // the existing listeners.
+    registerEvent(eventName) {
+        Preconditions_1.Preconditions.assertNotNull(eventName, "eventName");
+        if (this.events[eventName]) {
             return this;
         }
-
-        let event = new Event(eventName);
+        let event = new Event_1.Event(eventName);
         this.events[eventName] = event;
         return this;
-
     }
-
     clearEvent(eventName) {
-        // replace it with a new event to clear the previous listeners.
-        let event = new Event(eventName);
+        let event = new Event_1.Event(eventName);
         this.events[eventName] = event;
         return this;
     }
-
-    /**
-     *
-     * @param eventName {String}
-     * @param eventArgs {...Object} The list of events that are raised.
-     * @return {Reactor}
-     */
-    dispatchEvent(eventName, ...eventArgs){
-        Preconditions.assertNotNull(eventName, "eventName");
-
-        this.events[eventName].callbacks.forEach(function(callback){
-            // TODO: what if these throw exceptions?
-            callback(...eventArgs);
+    dispatchEvent(eventName, value) {
+        Preconditions_1.Preconditions.assertNotNull(eventName, "eventName");
+        this.events[eventName].getCallbacks().forEach(function (callback) {
+            callback(value);
         });
         return this;
     }
-
-    /**
-     *
-     * @param eventName {String}
-     * @param callback {function}
-     * @return {Reactor}
-     */
-    addEventListener(eventName, callback){
-        Preconditions.assertNotNull(eventName, "eventName");
-
-        if(typeof callback !== "function") {
+    addEventListener(eventName, callback) {
+        Preconditions_1.Preconditions.assertNotNull(eventName, "eventName");
+        if (typeof callback !== "function") {
             throw new Error("Callback is not a function: " + typeof callback);
         }
-
         this.events[eventName].registerCallback(callback);
         return this;
     }
-
-    /**
-     *
-     * @param eventName {String} The name of the event for the listeners.
-     * @return {Array}
-     */
-    getEventListeners(eventName){
-        Preconditions.assertNotNull(eventName, "eventName");
-
-        return this.events[eventName].callbacks;
+    getEventListeners(eventName) {
+        Preconditions_1.Preconditions.assertNotNull(eventName, "eventName");
+        return this.events[eventName].getCallbacks();
     }
-
-};
-
-module.exports.Reactor = Reactor;
+}
+exports.Reactor = Reactor;
+//# sourceMappingURL=Reactor.js.map
