@@ -88,10 +88,9 @@ export class DialogWindow {
 
             case ResourceType.APP:
 
-                let appPath = AppPaths.relative(options.resource.value);
-                let url = 'file:' + appPath;
-                log.info("Loading app URL:" , url);
-                window.loadURL(url, {});
+                let appURL = AppPaths.resource(options.resource.value);
+                log.info("Loading app URL:" , appURL);
+                window.loadURL(appURL, {});
                 break
 
         }

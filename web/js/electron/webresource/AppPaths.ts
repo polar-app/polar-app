@@ -25,11 +25,24 @@ export class AppPaths {
     }
 
     /**
+     * Build a full resource URL from a given relative URL.
      *
-     * @deprecated Use relative() instead.
+     * @param relativeURI
      */
-    static createFromRelative(relativePath: string): string {
-        return AppPaths.relative(relativePath);
+    static resource(relativeURI: string): string {
+
+        let relativePath = relativeURI;
+        let queryData = "";
+
+        if(relativeURI.indexOf("?") !== -1) {
+            relativePath = relativeURI.substring(0, relativeURI.indexOf("?") -1);
+            queryData = relativeURI.substring(relativeURI.indexOf("?"));
+        }
+
+        let path = AppPaths.relative(relativePath);
+
+        return 'file://' + path + queryData;
+
     }
 
 }

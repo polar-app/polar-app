@@ -4,6 +4,7 @@ import {SyncProgressListener} from './framework/SyncProgressListener';
 import {Logger} from '../../logger/Logger';
 import {PersistenceLayer} from '../../datastore/PersistenceLayer';
 import {DiskDatastore} from '../../datastore/DiskDatastore';
+import {notNull} from '../../Preconditions';
 
 const log = Logger.create();
 
@@ -11,7 +12,9 @@ export class SyncApp {
 
     async start() {
 
-        let fingerprint = '1QFx7Rhi6hvdQLMS9Lem';
+        let url = new URL(window.location.href);
+
+        let fingerprint = notNull(url.searchParams.get("fingerprint"));
 
         let ankiSyncEngine = new AnkiSyncEngine();
 
@@ -28,6 +31,9 @@ export class SyncApp {
         if(! docMeta) {
             throw new Error("No DocMeta for fingerprint: " + fingerprint);
         }
+
+        log.info("Syncing document with title: ", docMeta.docInfo.title);
+
 
         let docMetaSet = new DocMetaSet(docMeta);
 

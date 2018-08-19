@@ -44,9 +44,10 @@ export class SyncController {
 
         if(Strings.empty(this.model.docMeta.docInfo.title)) {
             Toaster.error("Documents must have titles before we can synchronize.");
+            return;
         }
 
-        let resource = new Resource(ResourceType.APP, "./apps/sync/index.html");
+        let resource = new Resource(ResourceType.APP, "./apps/sync/index.html#?fingerprint=" + this.model.docMeta.docInfo.fingerprint);
 
         let dialogWindowClient = await DialogWindowClient.create(new DialogWindowOptions(resource));
         await dialogWindowClient.show();
