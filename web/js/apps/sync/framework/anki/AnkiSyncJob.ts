@@ -52,9 +52,9 @@ export class StartedAnkiSyncJob extends AnkiSyncJob implements StartedSyncJob {
 
         let syncQueue = new SyncQueue(this, this.syncProgressListener);
 
-        let decksSync = new DecksSync();
+        let decksSync = new DecksSync(syncQueue);
 
-        decksSync.enqueue(syncQueue, this.deckDescriptors);
+        decksSync.enqueue(this.deckDescriptors);
 
         let notesSync = new NotesSync(syncQueue);
 

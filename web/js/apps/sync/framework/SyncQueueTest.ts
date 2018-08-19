@@ -2,6 +2,7 @@ import assert from 'assert';
 import {SyncQueue} from './SyncQueue';
 import {Abortable} from './Abortable';
 import {SyncProgressListener} from './SyncProgressListener';
+import {Optional} from '../../../util/ts/Optional';
 
 
 describe('SyncQueueTest', function() {
@@ -22,6 +23,7 @@ describe('SyncQueueTest', function() {
 
         syncQueue.add(async() => {
             results.push(0);
+            return Optional.empty();
         });
 
         await syncQueue.execute();
@@ -40,7 +42,10 @@ describe('SyncQueueTest', function() {
 
             syncQueue.add(async() => {
                 results.push(1);
+                return Optional.empty();
             });
+
+            return Optional.empty();
 
         });
 

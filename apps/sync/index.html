@@ -1,9 +1,7 @@
-<!DOCTYPE html>
+<!doctype html>
 
 <html lang="en">
 <head>
-
-    <title>Polar: Sync</title>
 
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
@@ -12,21 +10,35 @@
     <link rel="stylesheet" href="../../node_modules/bootstrap/dist/css/bootstrap-grid.min.css">
     <link rel="stylesheet" href="../../node_modules/bootstrap/dist/css/bootstrap-reboot.min.css">
 
-    <style>
-        body {
-            font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
-            font-style: normal;
-        }
-    </style>
-
-    <script>
-        require('loader').load("./js/entry.js");
-
-    </script>
+    <link rel="stylesheet" href="css/style.css">
 
 </head>
 
 <body>
+
+<div id="app" class="container-fluid">
+
+    <div class="row">
+        <div class="log">
+
+        </div>
+    </div>
+
+</div>
+
+<footer class="footer">
+
+    <div class="progress-wrapper">
+
+        <progress value="0" max="100"/>
+
+    </div>
+
+</footer>
+
+<script>
+    require('loader').load("./js/entry.js");
+</script>
 
 </body>
 </html>

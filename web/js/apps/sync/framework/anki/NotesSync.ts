@@ -7,8 +7,9 @@ import {IStoreMediaFileClient, MediaFile, StoreMediaFileClient} from './clients/
 import {Dictionaries} from '../../../../util/Dictionaries';
 import {MediaContents} from './MediaContents';
 import {AnkiFields} from './AnkiFields';
-import {Arrays} from '../../../../util/Arrays';
 import {CanAddNotesClient, ICanAddNotesClient} from './clients/CanAddNotesClient';
+import {SyncTaskResult} from '../SyncTask';
+import {Optional} from '../../../../util/ts/Optional';
 
 const log = Logger.create();
 
@@ -51,7 +52,7 @@ export class NotesSync {
         normalizedNotes.forEach(normalizedNote => {
 
             this.syncQueue.add(async () => {
-                await this.findNote(normalizedNote);
+                return await this.findNote(normalizedNote);
             });
 
         });
@@ -60,7 +61,7 @@ export class NotesSync {
 
     }
 
-    private async findNote(normalizedNote: NormalizedNote) {
+    private async findNote(normalizedNote: NormalizedNote): Promise<Optional<SyncTaskResult>> {
 
         let polarGUID = NotesSync.createPolarID(normalizedNote.noteDescriptor.guid);
 
@@ -80,9 +81,11 @@ export class NotesSync {
 
         }
 
+        return Optional.empty();
+
     }
 
-    private async canAddNote(normalizedNote: NormalizedNote) {
+    private async canAddNote(normalizedNote: NormalizedNote): Promise<Optional<SyncTaskResult>> {
 
         let canAddNotes = await this.canAddNotesClient.execute([normalizedNote.noteDescriptor]);
 
@@ -90,13 +93,18 @@ export class NotesSync {
             this.syncQueue.add(async () => await this.addNote(normalizedNote));
         }
 
+        return Optional.empty();
+
     }
 
-    private async storeMediaFile(mediaFile: MediaFile) {
+    private async storeMediaFile(mediaFile: MediaFile): Promise<Optional<SyncTaskResult>>  {
         await this.storeMediaFileClient.execute(mediaFile.filename, mediaFile.data);
+        return Optional.of({message: `Sync'd media file: ${mediaFile.filename}`})
     }
 
-    private async addNote(normalizedNote: NormalizedNote) {
+    private async addNote(normalizedNote: NormalizedNote): Promise<Optional<SyncTaskResult>> {
+
+        let message = `Added note and ${normalizedNote.mediaFiles.length} media files.`;
 
         try {
 
@@ -106,12 +114,15 @@ export class NotesSync {
 
             await this.addNoteClient.execute(normalizedNote.noteDescriptor);
 
+            this.results.created.push(normalizedNote.noteDescriptor);
+
         } catch (e) {
-            log.error("Failed to create note: ", normalizedNote.noteDescriptor);
+            message = `Failed to create note: ${normalizedNote.noteDescriptor}`;
+            log.error(message);
             throw e;
         }
 
-        this.results.created.push(normalizedNote.noteDescriptor);
+        return Optional.of({message});
 
     }
 

@@ -5,10 +5,13 @@ import {Logger} from '../../logger/Logger';
 import {PersistenceLayer} from '../../datastore/PersistenceLayer';
 import {DiskDatastore} from '../../datastore/DiskDatastore';
 import {notNull} from '../../Preconditions';
+import {ProgressLog} from '../../ui/progress_log/ProgressLog';
 
 const log = Logger.create();
 
 export class SyncApp {
+
+    private progressLog: ProgressLog = new ProgressLog();
 
     async start() {
 
@@ -38,7 +41,9 @@ export class SyncApp {
         let docMetaSet = new DocMetaSet(docMeta);
 
         let syncProgressListener: SyncProgressListener = syncProgress => {
+
             log.info("Sync progress: ", syncProgress);
+
         };
 
         let pendingSyncJob = ankiSyncEngine.sync(docMetaSet, syncProgressListener);

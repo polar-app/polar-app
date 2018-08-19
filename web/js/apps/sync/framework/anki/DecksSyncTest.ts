@@ -11,10 +11,7 @@ import {SyncQueue} from '../SyncQueue';
 
 describe('DecksSync', function() {
 
-    let deckSync = new DecksSync();
-
-    deckSync.createDeckClient = CreateDeckClient.createMock(1);
-    deckSync.deckNamesAndIdsClient = DeckNamesAndIdsClient.createMock({});
+    let decksSync: DecksSync;
 
     let abortable: Abortable;
 
@@ -35,6 +32,11 @@ describe('DecksSync', function() {
 
         syncQueue = new SyncQueue(abortable, syncProgressListener);
 
+        decksSync = new DecksSync(syncQueue);
+
+        decksSync.createDeckClient = CreateDeckClient.createMock(1);
+        decksSync.deckNamesAndIdsClient = DeckNamesAndIdsClient.createMock({});
+
     });
 
     it("basic sync", async function () {
@@ -45,7 +47,7 @@ describe('DecksSync', function() {
             }
         ];
 
-        let createdDescriptors = deckSync.enqueue(syncQueue, deckDescriptors);
+        let createdDescriptors = decksSync.enqueue(deckDescriptors);
 
         await syncQueue.execute();
 
