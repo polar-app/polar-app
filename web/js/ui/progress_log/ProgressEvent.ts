@@ -5,6 +5,6 @@ export interface ProgressEvent {
      */
     readonly percentage: number;
 
-    readonly message: string;
+    readonly message?: string;
 
 }

@@ -74,7 +74,7 @@ export class DecksSync {
 
         this.missingDecks.push(... Sets.difference(expectedDecks, currentDecks));
 
-        let message = `Found ${this.missingDecks.length} missing decks`;
+        let message = `Found ${this.missingDecks.length} missing decks from a total of ${currentDecks.length}`;
         log.info(message);
 
         this.missingDeckDescriptors.push(... this.missingDecks.map(name => <DeckDescriptor>{ name }));

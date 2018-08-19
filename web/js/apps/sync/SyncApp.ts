@@ -48,11 +48,15 @@ export class SyncApp {
         let syncProgressListener: SyncProgressListener = syncProgress => {
             log.info("Sync progress: ", syncProgress);
 
+            let message: string | undefined;
+
             syncProgress.taskResult.when(taskResult => {
-                this.progressLog.update({
-                    percentage: syncProgress.percentage,
-                    message: taskResult.message
-                })
+                message = taskResult.message;
+            });
+
+            this.progressLog.update({
+                percentage: syncProgress.percentage,
+                message
             });
 
         };

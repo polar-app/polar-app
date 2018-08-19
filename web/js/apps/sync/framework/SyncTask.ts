@@ -10,6 +10,6 @@ export interface SyncTask {
 
 export interface SyncTaskResult {
 
-    readonly message: string;
+    readonly message?: string;
 
 }

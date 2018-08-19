@@ -2,6 +2,7 @@ import {Logger} from '../../logger/Logger';
 import {Elements} from '../../util/Elements';
 import {notNull} from '../../Preconditions';
 import {ProgressEvent} from './ProgressEvent';
+import {Strings} from '../../util/Strings';
 
 const log = Logger.create();
 
@@ -37,6 +38,10 @@ export class ProgressLog {
     }
 
     private updateLogView(progressEvent: ProgressEvent) {
+
+        if(Strings.empty(progressEvent.message)) {
+            return;
+        }
 
         let logElement = notNull(document.querySelector(".log"));
 

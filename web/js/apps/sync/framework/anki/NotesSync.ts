@@ -47,6 +47,16 @@ export class NotesSync {
      */
     enqueue(noteDescriptors: NoteDescriptor[]): NotesSynchronized {
 
+        this.syncQueue.add(async () => {
+            return await this.findNotes(noteDescriptors);
+        });
+
+        return this.results;
+
+    }
+
+    private async findNotes(noteDescriptors: NoteDescriptor[]): Promise<Optional<SyncTaskResult>> {
+
         let normalizedNotes = noteDescriptors.map(current => this.normalize(current));
 
         normalizedNotes.forEach(normalizedNote => {
@@ -57,7 +67,9 @@ export class NotesSync {
 
         });
 
-        return this.results;
+        let message = `Performing sync on ${noteDescriptors.length} notes.`;
+
+        return Optional.of({message})
 
     }
 
@@ -79,9 +91,11 @@ export class NotesSync {
 
             this.syncQueue.add(async () => await this.canAddNote(normalizedNote));
 
-        }
+            return Optional.of({ message: `Note note found.  Checking if we can add.`});
 
-        return Optional.empty();
+        } else {
+            return Optional.of({message: 'Note already found. Skipping.'});
+        }
 
     }
 
