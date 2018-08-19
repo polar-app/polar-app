@@ -5,19 +5,18 @@ import {CaptureResult} from './CaptureResult';
 import {Logger} from '../logger/Logger';
 import {Preconditions} from '../Preconditions';
 import {BrowserWindows} from './BrowserWindows';
-import {Dimensions} from '../util/Dimensions';
-
-const debug = require('debug');
+import {Dimensions, IDimensions} from '../util/Dimensions';
+import {PendingWebRequestsListener} from '../webrequests/PendingWebRequestsListener';
+import {DebugWebRequestsListener} from '../webrequests/DebugWebRequestsListener';
+import {WebRequestReactor} from '../webrequests/WebRequestReactor';
+import {configureBrowserWindowSize} from './renderer/ContentCaptureFunctions';
 
 const {Filenames} = require("../util/Filenames");
 const {Files} = require("../util/Files");
 const {Functions} = require("../util/Functions");
-const {WebRequestReactor} = require("../webrequests/WebRequestReactor");
 const {CapturedPHZWriter} = require("./CapturedPHZWriter");
 const {DefaultPagingBrowser} = require("../electron/capture/pagination/DefaultPagingBrowser");
 const {PagingLoader} = require("../electron/capture/pagination/PagingLoader");
-const {PendingWebRequestsListener} = require("../webrequests/PendingWebRequestsListener");
-const {DebugWebRequestsListener} = require("../webrequests/DebugWebRequestsListener");
 
 const log = Logger.create();
 
@@ -43,10 +42,10 @@ export class Capture {
     public readonly stashDir: string;
     public readonly captureOpts: CaptureOpts;
 
-    public readonly pendingWebRequestsListener: any;
-    public readonly debugWebRequestsListener: any;
+    public readonly pendingWebRequestsListener: PendingWebRequestsListener;
+    public readonly debugWebRequestsListener: DebugWebRequestsListener;
 
-    public readonly webRequestReactors = [];
+    public readonly webRequestReactors: WebRequestReactor[] = [];
 
     /**
      * The resolve function to call when we have completed .
@@ -60,7 +59,7 @@ export class Capture {
     /**
      *
      */
-    constructor(url: string, browser: Browser, stashDir: string, captureOpts = new CaptureOpts()) {
+    constructor(url: string, browser: Browser, stashDir: string, captureOpts: CaptureOpts = {amp: true}) {
 
         // FIXME: don't allow named anchors in the URL like #foo... strip them
         // and test this functionality.
@@ -411,44 +410,12 @@ export class Capture {
 
         //let windowDimensions = this.__calculateWindowDimensions(window);
 
-        let windowDimensions = {
+        let windowDimensions: IDimensions = {
             width: deviceEmulation.screenSize.width,
             height: deviceEmulation.screenSize.height,
         };
 
         log.info("Using window dimensions: " + JSON.stringify(windowDimensions, null, "  "));
-
-        /** @ElectronRendererContext */
-        function configureBrowserWindowSize(windowDimensions: any) {
-
-            // TODO: see if I have already redefined it.  the second time fails
-            // because I can't redefine a property.  I don't think there is a way
-            // to find out if it's already defined though.
-
-            let definitions = [
-                {key: "width",       value: windowDimensions.width},
-                {key: "availWidth",  value: windowDimensions.width},
-                {key: "height",      value: windowDimensions.height},
-                {key: "availHeight", value: windowDimensions.height}
-            ];
-
-            definitions.forEach((definition) => {
-
-                console.log(`Defining ${definition.key} as: ${definition.value}`);
-
-                try {
-                    Object.defineProperty(window.screen, definition.key, {
-                        get: function () {
-                            return definition.value
-                        }
-                    });
-                } catch(e) {
-                    console.warn(`Unable to define ${definition.key}`, e);
-                }
-
-            });
-
-        }
 
         let screenDimensionScript = Functions.functionToScript(configureBrowserWindowSize, windowDimensions);
 

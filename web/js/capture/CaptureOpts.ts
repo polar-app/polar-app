@@ -1,24 +1,16 @@
-export class CaptureOpts {
+import {PendingWebRequestsCallback} from '../webrequests/PendingWebRequestsListener';
 
-    /**
-     * When true, do not use AMP pages.
-     *
-     * @type {boolean}
-     */
-    public readonly amp = true;
+export interface CaptureOpts {
 
     /**
      * A callback which receives updates about the pending web requests for
      * updating the UI.
      */
-    public readonly pendingWebRequestsCallback: Function;
+    readonly pendingWebRequestsCallback?: PendingWebRequestsCallback;
 
-    constructor(opts: any = {}) {
-
-        this.pendingWebRequestsCallback = opts.pendingWebRequestsCallback;
-
-        Object.assign(this, opts);
-
-    }
+    /**
+     * When true, do not use AMP pages.
+     */
+    readonly amp: boolean;
 
 }

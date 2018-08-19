@@ -154,8 +154,14 @@ export interface RegisterCallback {
 export interface NamedWebRequestEvent {
     readonly name: string;
 
-    // FIXME: correct details and callback
-    readonly details: any;
+    readonly details: WebRequestDetails;
+
     readonly callback?: (response: Electron.Response) => void;
 }
 
+export interface WebRequestDetails {
+
+    readonly id: number;
+    readonly url: string;
+
+}
