@@ -1,12 +1,12 @@
-//
-// import {webContents} from "electron";
-// import {SpectronMain} from '../../js/test/SpectronMain';
-// import {Promises} from '../../js/util/Promises';
-//
-// SpectronMain.run(async state => {
-//
-//     state.window.loadFile(__dirname + '/app.html');
-//
-//     await state.testResultWriter.write(true);
-//
-// });
+
+import {SpectronMain} from '../../web/js/test/SpectronMain';
+
+SpectronMain.run(async state => {
+
+    state.window.loadFile(__dirname + '/index.html');
+
+    state.window.setProgressBar(0.5);
+
+    await state.testResultWriter.write(true);
+
+});
