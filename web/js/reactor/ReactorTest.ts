@@ -1,6 +1,5 @@
 import {Reactor} from './Reactor';
 import assert from 'assert';
-import {Message} from 'js-sha3';
 import {assertJSON} from '../test/Assertions';
 
 describe('Reactor', function() {

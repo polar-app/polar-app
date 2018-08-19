@@ -26,6 +26,10 @@ export class Reactor<V> {
 
     }
 
+    eventNames(): string[] {
+        return Object.keys(this.events);
+    }
+
     clearEvent(eventName: string) {
         // replace it with a new event to clear the previous listeners.
         let event = new Event<V>(eventName);

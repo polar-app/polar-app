@@ -1,13 +1,19 @@
 import {WebRequest} from 'electron';
 import {Preconditions} from '../Preconditions';
+import {Reactor} from '../reactor/Reactor';
+import OnBeforeRedirectDetails = Electron.OnBeforeRedirectDetails;
+import OnBeforeRequestDetails = Electron.OnBeforeRequestDetails;
+import OnCompletedDetails = Electron.OnCompletedDetails;
+import OnErrorOccurredDetails = Electron.OnErrorOccurredDetails;
+import OnResponseStartedDetails = Electron.OnResponseStartedDetails;
+import OnSendHeadersDetails = Electron.OnSendHeadersDetails;
 
-const {Reactor} = require("../reactor/Reactor");
 
 export class WebRequestReactor {
 
     public readonly webRequest: WebRequest;
 
-    public readonly reactor: any;
+    public readonly reactor: Reactor<NamedWebRequestEvent>;
 
     public started = false;
 
@@ -22,60 +28,25 @@ export class WebRequestReactor {
      */
     start() {
 
-        const eventRegisterFunctions = this.toEventRegisterFunctions();
-
-        let webRequestReactor = this;
-
-        eventRegisterFunctions.forEach((eventRegisterFunction) => {
-
-            // FIXME: this won't work as we need to keep the function mame
-            let functionName = eventRegisterFunction.name;
-
-            eventRegisterFunction = eventRegisterFunction.bind(this.webRequest);
-
-            this.reactor.registerEvent(functionName);
-
-            eventRegisterFunction((details, callback) => {
-
-                // the functionName needs to be here twice because the first is
-                // the event name and the second is the event name we're giving
-                // to the callback.
-
-                if(webRequestReactor.started) {
-                    this.reactor.dispatchEvent(functionName, functionName, details, callback);
-                }
-
-            })
-
-        });
+        this.webRequest.onBeforeRedirect(this.handleBeforeRedirect.bind(this));
+        this.webRequest.onBeforeRequest(this.handleBeforeRequest.bind(this));
+        this.webRequest.onBeforeSendHeaders(this.handleBeforeSendHeaders.bind(this));
+        this.webRequest.onCompleted(this.handleCompleted.bind(this));
+        this.webRequest.onErrorOccurred(this.handleErrorOccurred.bind(this));
+        this.webRequest.onResponseStarted(this.handleResponseStarted.bind(this));
+        this.webRequest.onSendHeaders(this.handleSendHeaders.bind(this));
 
         this.started = true;
+
+        // FIXME: our methods needc to call callback({cancel: false})
 
     }
 
     stop() {
 
-        // TODO: I don't think this properly removes the event we're trying to
-        // remove.
-
         this.started = false;
 
-        const eventRegisterFunctions = this.toEventRegisterFunctions();
-
-        eventRegisterFunctions.forEach((eventRegisterFunction) => {
-
-            let functionName = eventRegisterFunction.name;
-            this.reactor.clearEvent(functionName);
-
-            eventRegisterFunction = eventRegisterFunction.bind(this.webRequest);
-            eventRegisterFunction((details, callback) => {
-
-                if(callback)
-                    callback({cancel: false})
-
-            });
-
-        });
+        // TODO: consider clearing the reactor too.
 
     }
 
@@ -88,60 +59,103 @@ export class WebRequestReactor {
             throw new Error("Not started!");
         }
 
-        const eventRegisterFunctions = this.toEventRegisterFunctions();
-
-        // now for each off the events, register a function to call...
-        eventRegisterFunctions.forEach((eventRegisterFunction) => {
-            let functionName = eventRegisterFunction.name;
-            this.reactor.addEventListener(functionName, callback);
+        this.reactor.eventNames().forEach(eventName => {
+            this.reactor.addEventListener(eventName, callback);
         });
 
     }
 
-    toEventRegisterFunctions(): {[name: string]: WebRequestEventCallback} {
+    private handleBeforeRequest(details: OnBeforeRequestDetails, callback: (response: Electron.Response) => void): void {
 
-        // FIXME: this won't work as we need to keep the function mame
+        this.handleEvent({
+            name: 'onBeforeRequest',
+            details,
+            callback,
+        });
 
-        // FIXME: refactor this into a GenericCallback method with an optional
-        // callback and a Details object that's standardized.
+    }
 
-        return {
-            //(listener: WebRequestEventListener) => this.webRequest.onBeforeRedirect((details: any) => {listener(details)}),
-            'onBeforeRedirect': (listener: WebRequestEventListener) => this.webRequest.onBeforeRedirect(listener),
-            'onBeforeRequest': (listener: WebRequestEventListener) => this.webRequest.onBeforeRequest((details: any, callback) => {listener(details, callback)}),
-            // this.webRequest.onBeforeRequest,
-            // this.webRequest.onBeforeSendHeaders,
-            // this.webRequest.onCompleted,
-            // this.webRequest.onErrorOccurred,
-            // this.webRequest.onResponseStarted,
-            // this.webRequest.onSendHeaders
-        };
+    private handleBeforeSendHeaders(details: OnBeforeRequestDetails, callback: (response: Electron.Response) => void): void {
+
+        this.handleEvent({
+            name: 'onBeforeSendHeaders',
+            details,
+            callback,
+        });
+
+    }
+
+    private handleBeforeRedirect(details: OnBeforeRedirectDetails): void {
+
+        this.handleEvent({
+            name: 'onBeforeRedirect',
+            details
+        });
+
+    }
+
+    private handleCompleted(details: OnCompletedDetails): void {
+
+        this.handleEvent({
+            name: 'onCompleted',
+            details,
+        });
+
+    }
+
+    private handleErrorOccurred(details: OnErrorOccurredDetails): void {
+
+        this.handleEvent({
+            name: 'onErrorOccurred',
+            details,
+        });
+
+    }
+
+    private handleResponseStarted(details: OnResponseStartedDetails): void {
+
+        this.handleEvent({
+            name: 'onResponseStarted',
+            details,
+        });
+
+    }
+
+     private handleSendHeaders(details: OnSendHeadersDetails): void {
+
+        this.handleEvent({
+            name: 'onSendHeaders',
+            details,
+        });
+
+    }
+
+    private handleEvent(event: NamedWebRequestEvent, callback?: (response: Electron.Response) => void) {
+
+        if(! this.started) {
+
+            if(callback) {
+                callback({cancel: false});
+            }
+
+            return;
+        }
+
+        this.reactor.dispatchEvent(event.name, event);
 
     }
 
 }
 
 export interface RegisterCallback {
+    (event: NamedWebRequestEvent): void;
+}
+
+export interface NamedWebRequestEvent {
+    readonly name: string;
+
     // FIXME: correct details and callback
-    (name: string, details: any, callback: any): void;
+    readonly details: any;
+    readonly callback?: (response: Electron.Response) => void;
 }
 
-export interface WebRequestEventCallback {
-    (listener: WebRequestEventListener): void;
-}
-
-export interface WebRequestEventListener {
-    (details: any, callback?: WebRequestCallbackFunction): void;
-}
-
-export interface WebRequestCallbackFunction {
-    (response?: Electron.Response): void
-}
-
-export interface CallbackResponse {
-
-    readonly cancel?: boolean;
-
-    readonly redirectURL?: String;
-
-}

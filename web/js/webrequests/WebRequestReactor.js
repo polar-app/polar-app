@@ -1,58 +1,88 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const Preconditions_1 = require("../Preconditions");
-const { Reactor } = require("../reactor/Reactor");
+const Reactor_1 = require("../reactor/Reactor");
 class WebRequestReactor {
     constructor(webRequest) {
         this.started = false;
         this.webRequest = webRequest;
-        this.reactor = new Reactor();
+        this.reactor = new Reactor_1.Reactor();
         this.started = false;
     }
     start() {
-        const eventRegisterFunctions = this.toEventRegisterFunctions();
-        let webRequestReactor = this;
-        eventRegisterFunctions.forEach((eventRegisterFunction) => {
-            let functionName = eventRegisterFunction.name;
-            eventRegisterFunction = eventRegisterFunction.bind(this.webRequest);
-            this.reactor.registerEvent(functionName);
-            eventRegisterFunction((details, callback) => {
-                if (webRequestReactor.started) {
-                    this.reactor.dispatchEvent(functionName, functionName, details, callback);
-                }
-            });
-        });
+        this.webRequest.onBeforeRedirect(this.handleBeforeRedirect.bind(this));
+        this.webRequest.onBeforeRequest(this.handleBeforeRequest.bind(this));
+        this.webRequest.onBeforeSendHeaders(this.handleBeforeSendHeaders.bind(this));
+        this.webRequest.onCompleted(this.handleCompleted.bind(this));
+        this.webRequest.onErrorOccurred(this.handleErrorOccurred.bind(this));
+        this.webRequest.onResponseStarted(this.handleResponseStarted.bind(this));
+        this.webRequest.onSendHeaders(this.handleSendHeaders.bind(this));
         this.started = true;
     }
     stop() {
         this.started = false;
-        const eventRegisterFunctions = this.toEventRegisterFunctions();
-        eventRegisterFunctions.forEach((eventRegisterFunction) => {
-            let functionName = eventRegisterFunction.name;
-            this.reactor.clearEvent(functionName);
-            eventRegisterFunction = eventRegisterFunction.bind(this.webRequest);
-            eventRegisterFunction((details, callback) => {
-                if (callback)
-                    callback({ cancel: false });
-            });
-        });
     }
     register(callback) {
         Preconditions_1.Preconditions.assertNotNull(callback, "callback");
         if (!this.started) {
             throw new Error("Not started!");
         }
-        const eventRegisterFunctions = this.toEventRegisterFunctions();
-        eventRegisterFunctions.forEach((eventRegisterFunction) => {
-            let functionName = eventRegisterFunction.name;
-            this.reactor.addEventListener(functionName, callback);
+        this.reactor.eventNames().forEach(eventName => {
+            this.reactor.addEventListener(eventName, callback);
         });
     }
-    toEventRegisterFunctions() {
-        return [
-            (listener) => this.webRequest.onBeforeRedirect(listener),
-            (listener) => this.webRequest.onBeforeRequest((details, callback) => { listener(details, callback); }),
-        ];
+    handleBeforeRequest(details, callback) {
+        this.handleEvent({
+            name: 'onBeforeRequest',
+            details,
+            callback,
+        });
+    }
+    handleBeforeSendHeaders(details, callback) {
+        this.handleEvent({
+            name: 'onBeforeSendHeaders',
+            details,
+            callback,
+        });
+    }
+    handleBeforeRedirect(details) {
+        this.handleEvent({
+            name: 'onBeforeRedirect',
+            details
+        });
+    }
+    handleCompleted(details) {
+        this.handleEvent({
+            name: 'onCompleted',
+            details,
+        });
+    }
+    handleErrorOccurred(details) {
+        this.handleEvent({
+            name: 'onErrorOccurred',
+            details,
+        });
+    }
+    handleResponseStarted(details) {
+        this.handleEvent({
+            name: 'onResponseStarted',
+            details,
+        });
+    }
+    handleSendHeaders(details) {
+        this.handleEvent({
+            name: 'onSendHeaders',
+            details,
+        });
+    }
+    handleEvent(event, callback) {
+        if (!this.started) {
+            if (callback) {
+                callback({ cancel: false });
+            }
+            return;
+        }
+        this.reactor.dispatchEvent(event.name, event);
     }
 }
 exports.WebRequestReactor = WebRequestReactor;
