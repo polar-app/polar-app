@@ -7,7 +7,17 @@ SpectronRenderer.run(async () => {
     // setZoomLevel on teh iframe seems to change the root webFrame
 
     console.log("FIXME: webContents: ", webContents);
-    //console.log("FIXME: webFrame: ", webFrame);
+
+    console.log("FIXME: webFrame: ", webFrame);
+
+    let iframe = webFrame.findFrameByName('iframe');
+    console.log("FIXME: webFrame by name: ", iframe);
+
+    // TODO: now can I get webContents for it?
+
+    //console.log("FIXME: webFrame by name: ", iframe);
+
+
 
 });
 
