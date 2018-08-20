@@ -8,12 +8,14 @@
 import {AppPaths} from '../electron/webresource/AppPaths';
 import {Logger} from '../logger/Logger';
 import {BrowserProfile} from './BrowserProfile';
+import BrowserWindowConstructorOptions = Electron.BrowserWindowConstructorOptions;
+import BrowserWindow = Electron.BrowserWindow;
 
 const log = Logger.create();
 
 export class BrowserWindows {
 
-    static toBrowserWindowOptions(browserProfile: BrowserProfile) {
+    static toBrowserWindowOptions(browserProfile: BrowserProfile): BrowserWindowConstructorOptions {
 
         let partition = "part-" + Date.now();
 
@@ -67,6 +69,18 @@ export class BrowserWindows {
             }
 
         }
+
+    }
+
+    static async onceReadyToShow(window: BrowserWindow): Promise<BrowserWindow> {
+
+        return new Promise<BrowserWindow>(resolve => {
+
+            window.once('ready-to-show', () => {
+                return resolve(window);
+            });
+
+        });
 
     }
 

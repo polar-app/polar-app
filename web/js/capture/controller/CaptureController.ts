@@ -6,7 +6,7 @@ import {Logger} from '../../logger/Logger';
 
 const {CaptureOpts} = require("../CaptureOpts");
 const {Capture} = require("../Capture");
-const {Browsers} = require("../../capture/Browsers");
+const {BrowserProfiles} = require("../../capture/Browsers");
 const BrowserRegistry = require("../../capture/BrowserRegistry");
 
 const log = Logger.create();
@@ -20,7 +20,6 @@ export class CaptureController {
 
     /**
      *
-     * @type {CacheRegistry} The cache registry we are going to use to
      * register the resulting phz file.
      */
     private readonly cacheRegistry: any;
@@ -125,7 +124,7 @@ export class CaptureController {
         let browser = BrowserRegistry.DEFAULT;
 
         //browser = Browsers.toProfile(browser, "headless");
-        browser = Browsers.toBrowserProfile(browser, "hidden");
+        browser = BrowserProfiles.toBrowserProfile(browser, "hidden");
         //browser = Browsers.toProfile(browser, "default");
 
         let capture = new Capture(url, browser, this.directories.stashDir, captureOpts);

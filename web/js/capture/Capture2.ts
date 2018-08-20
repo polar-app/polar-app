@@ -1,15 +1,15 @@
-import {Browser} from './Browser';
 import {CaptureOpts} from './CaptureOpts';
-import {BrowserWindow, WebRequest} from 'electron';
+import {WebRequest, WebContents, BrowserWindow} from 'electron';
 import {CaptureResult} from './CaptureResult';
 import {Logger} from '../logger/Logger';
-import {Preconditions} from '../Preconditions';
+import {notNull, Preconditions} from '../Preconditions';
 import {PendingWebRequestsListener} from '../webrequests/PendingWebRequestsListener';
 import {DebugWebRequestsListener} from '../webrequests/DebugWebRequestsListener';
 import {WebRequestReactor} from '../webrequests/WebRequestReactor';
-import {WebContentsDriverFactory} from './drivers/WebContentsDriver';
-import WebContents = Electron.WebContents;
+import {WebContentsDriver, WebContentsDriverFactory} from './drivers/WebContentsDriver';
 import {BrowserProfile} from './BrowserProfile';
+import {Strings} from '../util/Strings';
+import {Optional} from '../util/ts/Optional';
 
 const {Filenames} = require("../util/Filenames");
 const {Files} = require("../util/Files");
@@ -32,9 +32,6 @@ const USE_PAGING_LOADER = false;
  */
 const EXECUTE_CAPTURE_DELAY = 1500;
 
-// TODO: this code is distributed across two packages.. capture and
-// electron.capture... pick one!
-
 export class Capture2 {
 
     public url: string;
@@ -54,6 +51,8 @@ export class Capture2 {
 
     private webContents?: WebContents;
 
+    private driver?: WebContentsDriver;
+
     /**
      *
      */
@@ -63,6 +62,11 @@ export class Capture2 {
         // and test this functionality.
 
         this.url = Preconditions.assertNotNull(url, "url");
+
+        if(Strings.empty(this.url)) {
+            throw new Error("URL may not be empty")
+        }
+
         this.browserProfile = Preconditions.assertNotNull(browserProfile, "browser");
         this.stashDir = Preconditions.assertNotNull(stashDir, "stashDir");
         this.captureOpts = captureOpts;
@@ -76,14 +80,33 @@ export class Capture2 {
 
     }
 
+    // async test() {
+    //
+    //     console.log("FIXME")
+    //
+    //     let window = new BrowserWindow({show: false});
+    //
+    //     window.loadURL('about:blank');
+    //
+    //     window.on('ready-to-show', () => {
+    //         log.info("FIXME ready to show");
+    //     });
+    //
+    // }
+
     async start() {
+
+        // await this.test();
 
         let driver = await WebContentsDriverFactory.create(this.browserProfile);
 
+        this.driver = driver;
+
         this.webContents = await driver.getWebContents();
 
-        // TODO: this should actually be once not 'on'
         this.webContents.once('did-finish-load', async () => {
+
+            // FIXME this amp stuff is probably broken
 
             log.info("did-finish-load: ", arguments);
 
@@ -117,6 +140,9 @@ export class Capture2 {
 
         this.onWebRequest(this.webContents.session.webRequest);
 
+
+        log.info("Telling WebContents to load: ", this.url);
+        //
         this.webContents.loadURL(this.url);
 
         return new Promise(resolve => {
@@ -266,7 +292,7 @@ export class Capture2 {
 
         log.info("Capturing the HTML...done");
 
-        window.close();
+        Optional.of(this.driver).when(driver => driver.destroy());
 
         this.resolve(new CaptureResult({
             path: phzPath

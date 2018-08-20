@@ -12,7 +12,7 @@ import {BrowserProfile} from './BrowserProfile';
 // It's also an issue that this will use more memory. About 100MB for large
 // documents that need rendering with full windows.
 
-export class Browsers {
+export class BrowserProfiles {
 
     /**
      * Migrate this to a profile of setting we then use to create the browser
@@ -51,6 +51,15 @@ export class Browsers {
                     .setHeight(500)
                     .setShow(false)
                     .setOffscreen(true)
+                    .build();
+
+
+            case "default":
+                return new BrowserProfileBuilder(browser)
+                    .setProfile(name)
+                    .setHeight(500)
+                    .setShow(true)
+                    .setOffscreen(false)
                     .build();
 
             // case "default_500":

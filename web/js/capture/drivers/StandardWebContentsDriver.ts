@@ -2,7 +2,6 @@ import {BrowserWindow} from 'electron';
 import {WebContentsDriver} from './WebContentsDriver';
 import {BrowserWindows} from '../BrowserWindows';
 import {Logger} from '../../logger/Logger';
-import {Browser} from '../Browser';
 import {Optional} from '../../util/ts/Optional';
 import {IDimensions} from '../../util/Dimensions';
 import {configureBrowserWindowSize} from '../renderer/ContentCaptureFunctions';
@@ -17,8 +16,6 @@ const log = Logger.create();
 export class StandardWebContentsDriver implements WebContentsDriver {
 
     private readonly browserProfile: BrowserProfile;
-
-    private windowConfigured: boolean = false;
 
     private window?: BrowserWindow;
 
@@ -41,6 +38,7 @@ export class StandardWebContentsDriver implements WebContentsDriver {
         });
 
         this.window.on('close', (event) => {
+            log.info("Handling window close");
             event.preventDefault();
             window.webContents.clearHistory();
             window.webContents.session.clearCache(function() {
@@ -49,7 +47,7 @@ export class StandardWebContentsDriver implements WebContentsDriver {
         });
 
         window.on('closed', function() {
-
+            log.info("Window closed");
         });
 
         window.webContents.on('new-window', function(e, url) {
@@ -59,41 +57,22 @@ export class StandardWebContentsDriver implements WebContentsDriver {
             e.preventDefault();
         });
 
-        window.once('ready-to-show', () => {
-        });
-
         window.webContents.on('did-fail-load', (event, errorCode, errorDescription, validateURL, isMainFrame) => {
 
             log.info("did-fail-load: " , {event, errorCode, errorDescription, validateURL, isMainFrame}, event);
 
-            // FIXME: figure out how to fail properly and have unit tests
-            // setup for this situation.
-
         });
 
-        window.webContents.on('did-start-loading', (event: Electron.Event) => {
+        // if a URL is NEVER loaded we never get ready-to-show show load
+        // about:blank by default.
+        window.loadURL('about:blank');
 
-            log.info("Registering new webRequest listeners");
+        if( ! browserWindowOptions.show) {
+            await BrowserWindows.onceReadyToShow(window);
+        }
 
-            // We get one webContents per frame so we have to listen to their
-            // events too..
-
-            let webContents = event.sender;
-
-            log.info("Detected new loading page: " + webContents.getURL());
-
-            if(! this.windowConfigured) {
-
-                this.configureWindow(window)
-                    .catch(err => log.error(err));
-
-                this.windowConfigured = true;
-
-            }
-
-        });
-
-        return window;
+        this.configureWindow(window)
+            .catch(err => log.error(err));
 
     }
 
@@ -102,8 +81,10 @@ export class StandardWebContentsDriver implements WebContentsDriver {
     }
 
     public async destroy() {
+        log.info("Destroying window...");
+        Optional.of(this.window).when(window => window.close());
+        log.info("Destroying window...done");
     }
-
 
     private async configureWindow(window: BrowserWindow) {
 
@@ -130,6 +111,7 @@ export class StandardWebContentsDriver implements WebContentsDriver {
         log.info("Using window dimensions: " + JSON.stringify(windowDimensions, null, "  "));
 
         let screenDimensionScript = Functions.functionToScript(configureBrowserWindowSize, windowDimensions);
+
 
         await window.webContents.executeJavaScript(screenDimensionScript);
 

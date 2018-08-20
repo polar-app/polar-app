@@ -1,7 +1,7 @@
 
 import {Logger} from '../web/js/logger/Logger';
 import {Capture} from '../web/js/capture/Capture';
-import {Browsers} from '../web/js/capture/Browsers';
+import {BrowserProfiles} from '../web/js/capture/BrowserProfiles';
 import {DiskDatastore} from '../web/js/datastore/DiskDatastore';
 import {Args} from '../web/js/electron/capture/Args';
 import {Capture2} from '../web/js/capture/Capture2';
@@ -25,7 +25,7 @@ if(! browser) {
 }
 
 log.info("Using browser profile: " + args.profile);
-let browserProfile = Browsers.toBrowserProfile(browser, args.profile);
+let browserProfile = BrowserProfiles.toBrowserProfile(browser, args.profile);
 
 app.on('ready', function() {
 

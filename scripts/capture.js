@@ -7,27 +7,28 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 const Logger_1 = require("../web/js/logger/Logger");
-const Capture_1 = require("../web/js/capture/Capture");
-const Browsers_1 = require("../web/js/capture/Browsers");
+const BrowserProfiles_1 = require("../web/js/capture/BrowserProfiles");
 const DiskDatastore_1 = require("../web/js/datastore/DiskDatastore");
 const Args_1 = require("../web/js/electron/capture/Args");
+const Capture2_1 = require("../web/js/capture/Capture2");
+const BrowserRegistry_1 = __importDefault(require("../web/js/capture/BrowserRegistry"));
 const electron = require('electron');
 const app = electron.app;
-const BrowserRegistry = require("../web/js/capture/BrowserRegistry");
 const { Cmdline } = require("../web/js/electron/Cmdline");
 const log = Logger_1.Logger.create();
 let diskDatastore = new DiskDatastore_1.DiskDatastore();
 let args = Args_1.Args.parse(process.argv);
-let browser = BrowserRegistry[args.browser];
+let browser = BrowserRegistry_1.default[args.browser];
 if (!browser) {
     throw new Error("No browser defined for: " + args.browser);
 }
-if (args.profile) {
-    log.info("Using browser profile: " + args.profile);
-    browser = Browsers_1.Browsers.toProfile(browser, args.profile);
-}
+log.info("Using browser profile: " + args.profile);
+let browserProfile = BrowserProfiles_1.BrowserProfiles.toBrowserProfile(browser, args.profile);
 app.on('ready', function () {
     (() => __awaiter(this, void 0, void 0, function* () {
         yield diskDatastore.init();
@@ -44,7 +45,7 @@ app.on('ready', function () {
         let captureOpts = {
             amp: args.amp
         };
-        let capture = new Capture_1.Capture(url, browser, diskDatastore.stashDir, captureOpts);
+        let capture = new Capture2_1.Capture2(url, browserProfile, diskDatastore.stashDir, captureOpts);
         yield capture.start();
         if (args.quit) {
             log.info("Capture finished.  Quitting now");
