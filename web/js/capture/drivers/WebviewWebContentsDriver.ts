@@ -4,6 +4,7 @@ import {StandardWebContentsDriver} from './StandardWebContentsDriver';
 import {AppPaths} from '../../electron/webresource/AppPaths';
 import {notNull} from '../../Preconditions';
 import {Promises} from '../../util/Promises';
+import WebContents = Electron.WebContents;
 
 const log = Logger.create();
 
@@ -26,24 +27,16 @@ export class WebviewWebContentsDriver extends StandardWebContentsDriver {
         // FIXME: we're not loading the webview...
         notNull(this.window).loadURL(resourceURL);
 
-        // FIXME it takes a bit of time for the webview to become available
+        this.webContents = await this.waitForWebview();
 
-        await Promises.waitFor(5000);
+    }
 
-        let allWebContents = webContents.getAllWebContents();
-
-        allWebContents.forEach(current => {
-
-            if(current.getURL().endsWith('capture-webview/blank.html')) {
-                this.webContents = current;
-            }
-
+    public async waitForWebview(): Promise<WebContents> {
+        return new Promise<WebContents>(resolve => {
+            this.window!.webContents.once('did-attach-webview', (event, webContents: WebContents) => {
+                resolve(webContents);
+            });
         });
-
-        this.webContents!.loadURL('http://example.com');
-
-        await Promises.waitFor(5000);
-
     }
 
 }
