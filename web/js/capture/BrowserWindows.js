@@ -25,7 +25,7 @@ class BrowserWindows {
             enableLargerThanScreen: true,
             webPreferences: {
                 preload,
-                nodeIntegration: false,
+                nodeIntegration: browserProfile.nodeIntegration,
                 defaultEncoding: 'UTF-8',
                 webaudio: false,
                 offscreen: browserProfile.offscreen,

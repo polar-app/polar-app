@@ -18,9 +18,6 @@ export class BrowserProfiles {
      * Migrate this to a profile of setting we then use to create the browser
      * window options.
      *
-     * @param browser {BrowserProfile}
-     * @param name {string} The name of the profile to use.
-     * @return {BrowserProfile}
      */
     static toBrowserProfile(browser: Browser, name: string): BrowserProfile {
 
@@ -53,6 +50,14 @@ export class BrowserProfiles {
                     .setOffscreen(true)
                     .build();
 
+            case "webview":
+                return new BrowserProfileBuilder(browser)
+                    .setProfile(name)
+                    .setHeight(500)
+                    .setShow(true)
+                    .setOffscreen(false)
+                    .setNodeIntegration(true)
+                    .build();
 
             case "default":
                 return new BrowserProfileBuilder(browser)
@@ -81,12 +86,6 @@ export class BrowserProfiles {
 
     }
 
-    /**
-     *
-     * @param browser {BrowserProfile}
-     * @param height {number}
-     * @return {BrowserProfile}
-     */
     static createDefault(browser: Browser, height: number) {
         browser = Object.assign({}, browser);
 

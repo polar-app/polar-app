@@ -1,8 +1,11 @@
 import WebContents = Electron.WebContents;
 import {StandardWebContentsDriver} from './StandardWebContentsDriver';
 import {BrowserProfile} from '../BrowserProfile';
+import {WebviewWebContentsDriver} from './WebviewWebContentsDriver';
 
 export interface WebContentsDriver {
+
+    init(): Promise<void>;
 
     getWebContents(): Promise<WebContents>;
 
@@ -16,9 +19,17 @@ export interface WebContentsDriver {
 export class WebContentsDriverFactory {
 
     static async create(browserProfile: BrowserProfile): Promise<WebContentsDriver> {
-        let standardWebContentsDriver = new StandardWebContentsDriver(browserProfile);
-        await standardWebContentsDriver.init();
-        return standardWebContentsDriver;
+
+        let webContentsDriver: WebContentsDriver;
+
+        if(browserProfile.profile === DriverType.WEBVIEW) {
+            webContentsDriver = new WebviewWebContentsDriver(browserProfile);
+        } else {
+            webContentsDriver = new StandardWebContentsDriver(browserProfile);
+        }
+
+        await webContentsDriver.init();
+        return webContentsDriver;
     }
 
 }

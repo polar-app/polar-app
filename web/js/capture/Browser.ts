@@ -43,6 +43,7 @@ export class BrowserProfileBuilder implements BrowserProfile {
     offscreen: boolean = false;
     show: boolean = true;
     userAgent: string;
+    nodeIntegration: boolean = false;
 
     /**
      */
@@ -74,6 +75,11 @@ export class BrowserProfileBuilder implements BrowserProfile {
 
     setProfile(profile: string) {
         this.profile = profile;
+        return this;
+    }
+
+    setNodeIntegration(value: boolean) {
+        this.nodeIntegration = value;
         return this;
     }
 

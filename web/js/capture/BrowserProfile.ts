@@ -19,5 +19,6 @@ export interface BrowserProfile extends IBrowser {
      */
     offscreen: boolean;
 
+    nodeIntegration: boolean;
 
 }

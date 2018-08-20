@@ -16,11 +16,11 @@ const log = Logger.create();
  */
 export class StandardWebContentsDriver implements WebContentsDriver {
 
-    private readonly browserProfile: BrowserProfile;
+    protected readonly browserProfile: BrowserProfile;
 
-    private window?: BrowserWindow;
+    protected window?: BrowserWindow;
 
-    private webContents?: WebContents;
+    protected webContents?: WebContents;
 
     constructor(browserProfile: BrowserProfile) {
         this.browserProfile = browserProfile;

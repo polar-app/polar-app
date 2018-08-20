@@ -41,7 +41,7 @@ export class BrowserWindows {
                 // for some strange reason and this is required by Electron.
                 preload,
 
-                nodeIntegration: false,
+                nodeIntegration: browserProfile.nodeIntegration,
 
                 defaultEncoding: 'UTF-8',
 
