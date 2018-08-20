@@ -88,7 +88,7 @@ export class StandardWebContentsDriver implements WebContentsDriver {
     }
 
     public async getWebContents(): Promise<Electron.WebContents> {
-        return Optional.of(this.window).get().webContents;
+        return Optional.of(this.webContents).get();
     }
 
     public async destroy() {

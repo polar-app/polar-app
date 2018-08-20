@@ -26,6 +26,8 @@ export class WebviewWebContentsDriver extends StandardWebContentsDriver {
         // FIXME: we're not loading the webview...
         notNull(this.window).loadURL(resourceURL);
 
+        // FIXME it takes a bit of time for the webview to become available
+
         await Promises.waitFor(5000);
 
         let allWebContents = webContents.getAllWebContents();
@@ -37,6 +39,8 @@ export class WebviewWebContentsDriver extends StandardWebContentsDriver {
             }
 
         });
+
+        this.webContents!.loadURL('http://example.com');
 
         await Promises.waitFor(5000);
 
