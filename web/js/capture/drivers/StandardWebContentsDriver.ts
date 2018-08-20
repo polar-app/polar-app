@@ -27,6 +27,10 @@ export class StandardWebContentsDriver implements WebContentsDriver {
     }
 
     public async init() {
+        await this.doInit();
+    }
+
+    protected async doInit() {
 
         // Create the browser window.
         let browserWindowOptions = BrowserWindows.toBrowserWindowOptions(this.browserProfile);
@@ -82,7 +86,7 @@ export class StandardWebContentsDriver implements WebContentsDriver {
             await BrowserWindows.onceReadyToShow(window);
         }
 
-        this.configureWindow(window)
+        this.configureWindow(window.webContents)
             .catch(err => log.error(err));
 
     }
@@ -97,36 +101,34 @@ export class StandardWebContentsDriver implements WebContentsDriver {
         log.info("Destroying window...done");
     }
 
-    private async configureWindow(window: BrowserWindow) {
+    protected async configureWindow(webContents: WebContents) {
 
-        log.info("Emulating browser: " + JSON.stringify(this.browserProfile, null, "  " ));
+        log.info("Emulating browser: ", this.browserProfile);
 
         // we need to mute by default especially if the window is hidden.
         log.info("Muting audio...");
-        window.webContents.setAudioMuted(true);
+        webContents.setAudioMuted(true);
 
         let deviceEmulation = this.browserProfile.deviceEmulation;
 
         deviceEmulation = Object.assign({}, deviceEmulation);
 
         log.info("Emulating device...");
-        window.webContents.enableDeviceEmulation(deviceEmulation);
+        webContents.enableDeviceEmulation(deviceEmulation);
 
-        window.webContents.setUserAgent(this.browserProfile.userAgent);
+        webContents.setUserAgent(this.browserProfile.userAgent);
 
         let windowDimensions: IDimensions = {
             width: deviceEmulation.screenSize.width,
             height: deviceEmulation.screenSize.height,
         };
 
-        log.info("Using window dimensions: " + JSON.stringify(windowDimensions, null, "  "));
+        log.info("Using window dimensions: ", windowDimensions);
 
         let screenDimensionScript = Functions.functionToScript(configureBrowserWindowSize, windowDimensions);
 
-
-        await window.webContents.executeJavaScript(screenDimensionScript);
+        await webContents.executeJavaScript(screenDimensionScript);
 
     }
-
 
 }

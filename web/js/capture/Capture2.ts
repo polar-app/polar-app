@@ -80,23 +80,7 @@ export class Capture2 {
 
     }
 
-    // async test() {
-    //
-    //     console.log("FIXME")
-    //
-    //     let window = new BrowserWindow({show: false});
-    //
-    //     window.loadURL('about:blank');
-    //
-    //     window.on('ready-to-show', () => {
-    //         log.info("FIXME ready to show");
-    //     });
-    //
-    // }
-
     async start() {
-
-        // await this.test();
 
         let driver = await WebContentsDriverFactory.create(this.browserProfile);
 
