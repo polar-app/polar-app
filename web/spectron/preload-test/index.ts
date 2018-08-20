@@ -14,7 +14,9 @@ export const BROWSER_OPTIONS = {
     webPreferences: {
         webSecurity: false,
         // can NOT be loaded from file URLs
-        preload: "file:///home/burton/projects/polar-bookshelf/web/spectron/preload-test/preload.js"
+        //preloadURL: "file:///home/burton/projects/polar-bookshelf/web/spectron/preload-test/preload.js"
+        //preloadURL: "./preload.js"
+        //preloadURL: "./preload.js"
     }
 
 };

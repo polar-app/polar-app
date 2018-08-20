@@ -46,7 +46,13 @@ export class Reactor<V> {
     dispatchEvent(eventName: string, value: V){
         Preconditions.assertNotNull(eventName, "eventName");
 
-        this.events[eventName].getCallbacks().forEach(function(callback){
+        let event = this.events[eventName];
+
+        if(! event) {
+            throw new Error("No events for event name: " + eventName);
+        }
+
+        event.getCallbacks().forEach(function(callback){
             // TODO: what if these throw exceptions?
             callback(value);
         });

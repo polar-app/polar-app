@@ -36,9 +36,24 @@ export class WebRequestReactor {
         this.webRequest.onResponseStarted(this.handleResponseStarted.bind(this));
         this.webRequest.onSendHeaders(this.handleSendHeaders.bind(this));
 
-        this.started = true;
+        // TODO: this is a bit ugly to duplicate this but it might be possible
+        // to refactor in the future to make it a bit cleaner.
 
-        // FIXME: our methods needc to call callback({cancel: false})
+        let eventNames = [
+            "onBeforeRedirect",
+            "onBeforeRequest",
+            "onBeforeSendHeaders",
+            "onCompleted",
+            "onErrorOccurred",
+            "onResponseStarted",
+            "onSendHeaders",
+        ];
+
+        eventNames.forEach(eventName => {
+            this.reactor.registerEvent(eventName);
+        });
+
+        this.started = true;
 
     }
 
@@ -58,6 +73,8 @@ export class WebRequestReactor {
         if(! this.started) {
             throw new Error("Not started!");
         }
+
+        // FIXME: this isnt' goign to have any event names to register..
 
         this.reactor.eventNames().forEach(eventName => {
             this.reactor.addEventListener(eventName, callback);

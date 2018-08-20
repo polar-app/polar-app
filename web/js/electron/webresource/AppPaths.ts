@@ -2,6 +2,7 @@
 import {app} from 'electron';
 import path from 'path';
 import fs from 'fs';
+import process from 'process';
 
 /**
  * Given a relative path, return a full path to a local app resource.
@@ -12,15 +13,30 @@ import fs from 'fs';
  */
 export class AppPaths {
 
-    static relative(relativePath: string) {
+    public static relative(relativePath: string) {
 
-        let baseDir = app.getAppPath();
+        // TODO: sometimes appPath is an ASAR file and that really confuses
+        // us and we're going to need a strategy to handle that situation.
+
+        let baseDir = AppPaths.getBaseDir()
 
         let absolutePath = path.resolve(baseDir, relativePath);
+
         if(! fs.existsSync(absolutePath)) {
             throw new Error("Absolute path does not exist: " + absolutePath);
         }
         return absolutePath;
+
+    }
+
+    protected static getBaseDir() {
+        let baseDir = app.getAppPath();
+
+        if(! baseDir.indexOf(".asar")) {
+            return baseDir;
+        } else {
+            return process.cwd();
+        }
 
     }
 

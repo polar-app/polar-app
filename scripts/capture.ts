@@ -5,14 +5,15 @@
 import {Logger} from '../web/js/logger/Logger';
 import {Capture} from '../web/js/capture/Capture';
 import {Browsers} from '../web/js/capture/Browsers';
+import {DiskDatastore} from '../web/js/datastore/DiskDatastore';
+import {Args} from '../web/js/electron/capture/Args';
 
 const electron = require('electron');
 const app = electron.app;
 const BrowserRegistry = require("../web/js/capture/BrowserRegistry");
 
 const {Cmdline} = require("../web/js/electron/Cmdline");
-const {DiskDatastore} = require("../web/js/datastore/DiskDatastore");
-const {Args} = require("../web/js/electron/capture/Args");
+
 const log = Logger.create();
 
 let diskDatastore = new DiskDatastore();

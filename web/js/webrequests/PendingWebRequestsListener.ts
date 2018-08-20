@@ -43,7 +43,7 @@ export class PendingWebRequestsListener extends BaseWebRequestsListener {
      */
     onWebRequestEvent(event: NamedWebRequestEvent) {
 
-        let {details, callback} = event;
+        let {name, details, callback} = event;
 
         // WARNING: this code behaves VERY strangely and we DO NOT receive events
         // in the proper order for some reason.  I would expect to receive them
