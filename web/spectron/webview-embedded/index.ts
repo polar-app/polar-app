@@ -27,7 +27,6 @@ SpectronMain.run(async state => {
 
     console.log("====================\n\n\nFIXME:" , webContents.fromId(1234));
 
-
     await state.testResultWriter.write(true);
 
 });
