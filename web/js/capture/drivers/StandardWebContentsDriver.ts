@@ -1,4 +1,4 @@
-import {BrowserWindow} from 'electron';
+import {BrowserWindow, WebContents} from 'electron';
 import {WebContentsDriver} from './WebContentsDriver';
 import {BrowserWindows} from '../BrowserWindows';
 import {Logger} from '../../logger/Logger';
@@ -7,6 +7,7 @@ import {IDimensions} from '../../util/Dimensions';
 import {configureBrowserWindowSize} from '../renderer/ContentCaptureFunctions';
 import {Functions} from '../../util/Functions';
 import {BrowserProfile} from '../BrowserProfile';
+import BrowserWindowConstructorOptions = Electron.BrowserWindowConstructorOptions;
 
 const log = Logger.create();
 
@@ -18,6 +19,8 @@ export class StandardWebContentsDriver implements WebContentsDriver {
     private readonly browserProfile: BrowserProfile;
 
     private window?: BrowserWindow;
+
+    private webContents?: WebContents;
 
     constructor(browserProfile: BrowserProfile) {
         this.browserProfile = browserProfile;
@@ -31,17 +34,27 @@ export class StandardWebContentsDriver implements WebContentsDriver {
         log.info("Using browserWindowOptions: ", browserWindowOptions);
 
         let window = new BrowserWindow(browserWindowOptions);
-        this.window = window;
 
-        this.window.webContents.on('dom-ready', function(e) {
+        await this.initWebContents(window, window.webContents, browserWindowOptions);
+
+    }
+
+    protected async initWebContents(window: BrowserWindow,
+                                    webContents: WebContents,
+                                    browserWindowOptions: BrowserWindowConstructorOptions) {
+
+        this.window = window;
+        this.webContents = webContents;
+
+        webContents.on('dom-ready', function(e) {
             log.info("dom-ready: ", e);
         });
 
         this.window.on('close', (event) => {
             log.info("Handling window close");
             event.preventDefault();
-            window.webContents.clearHistory();
-            window.webContents.session.clearCache(function() {
+            webContents.clearHistory();
+            webContents.session.clearCache(function() {
                 window.destroy();
             });
         });
@@ -50,22 +63,20 @@ export class StandardWebContentsDriver implements WebContentsDriver {
             log.info("Window closed");
         });
 
-        window.webContents.on('new-window', function(e, url) {
+        webContents.on('new-window', function(e, url) {
         });
 
-        window.webContents.on('will-navigate', function(e, url) {
+        webContents.on('will-navigate', function(e, url) {
             e.preventDefault();
         });
 
-        window.webContents.on('did-fail-load', (event, errorCode, errorDescription, validateURL, isMainFrame) => {
-
+        webContents.on('did-fail-load', (event, errorCode, errorDescription, validateURL, isMainFrame) => {
             log.info("did-fail-load: " , {event, errorCode, errorDescription, validateURL, isMainFrame}, event);
-
         });
 
         // if a URL is NEVER loaded we never get ready-to-show show load
         // about:blank by default.
-        window.loadURL('about:blank');
+        webContents.loadURL('about:blank');
 
         if( ! browserWindowOptions.show) {
             await BrowserWindows.onceReadyToShow(window);

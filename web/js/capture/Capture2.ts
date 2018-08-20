@@ -112,6 +112,12 @@ export class Capture2 {
 
             // see if we first need to handle the page in any special manner.
 
+            // FIXME: make this into some type of content handlers system
+            // so that we can add one off extensions like reloading the apage
+            // when AMP or other features are detected.  We could also do AMP
+            // earlier I thin like on-dom-ready.
+            //
+
             let ampURL = await this.getAmpURL();
 
             // TODO: if we end up handling multiple types of URLs in the future
