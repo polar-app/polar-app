@@ -6,6 +6,8 @@ import WebContents = Electron.WebContents;
 import {BrowserWindows} from '../BrowserWindows';
 import {BrowserWindow} from "electron";
 import {Promises} from '../../util/Promises';
+import BrowserWindowConstructorOptions = Electron.BrowserWindowConstructorOptions;
+import {Functions} from '../../util/Functions';
 
 const log = Logger.create();
 
@@ -30,17 +32,9 @@ export class WebviewWebContentsDriver extends StandardWebContentsDriver {
      */
     protected async doInit() {
 
-        // Create the browser window.
-        let browserWindowOptions = BrowserWindows.toBrowserWindowOptions(this.browserProfile);
-
-        browserWindowOptions.height = Math.round(notNull(browserWindowOptions.width) * (11/8.5));
-
-        // TODO: make this part of the profile.
-        browserWindowOptions.enableLargerThanScreen = false;
+        let browserWindowOptions = this.computeAdjustedBrowserWindowOptions();
 
         log.info("Using browserWindowOptions: ", browserWindowOptions);
-
-        // FIXME: set the height of the internal webView
 
         let window = new BrowserWindow(browserWindowOptions);
 
@@ -50,16 +44,44 @@ export class WebviewWebContentsDriver extends StandardWebContentsDriver {
 
     protected async doInitWebview() {
 
+        let browserWindowOptions = this.computeBrowserWindowOptions();
+
+        let window = notNull(this.window);
+
         // ok... now the page isn't setup properly and we need to load the app
         // and then adjust the webview properly.
 
         let resourceURL = AppPaths.resource("./apps/capture-webview/index.html");
 
-        notNull(this.window).loadURL(resourceURL);
+        window.loadURL(resourceURL);
 
         this.webContents = await this.waitForWebview();
 
         await this.configureWindow(this.webContents);
+
+        await this.doInitWebviewHeight(browserWindowOptions);
+
+        // FIXME: Defining width as: undefined
+
+    }
+
+    private async doInitWebviewHeight(browserWindowOptions: BrowserWindowConstructorOptions) {
+
+        let window = notNull(this.window);
+
+        function setWebviewHeight(browserWindowOptions: BrowserWindowConstructorOptions) {
+
+            let querySelector = <HTMLElement>document.querySelector('webview')!;
+
+            console.log("browserWindowOptions: ", browserWindowOptions);
+
+            console.log("Webview height before: ", querySelector.style.height);
+            querySelector.style.height = `${browserWindowOptions.height}px`;
+            console.log("Webview height after: ", querySelector.style.height);
+
+        }
+
+        await window.webContents.executeJavaScript(Functions.functionToScript(setWebviewHeight, browserWindowOptions));
 
     }
 
@@ -69,6 +91,21 @@ export class WebviewWebContentsDriver extends StandardWebContentsDriver {
                 resolve(webContents);
             });
         });
+    }
+
+    protected computeAdjustedBrowserWindowOptions() {
+
+        // Create the browser window.
+        let browserWindowOptions = BrowserWindows.toBrowserWindowOptions(this.browserProfile);
+
+        browserWindowOptions.height = Math.round(notNull(browserWindowOptions.width) * (11/8.5));
+        browserWindowOptions.minHeight = browserWindowOptions.height;
+
+        // TODO: make this part of the profile.
+        browserWindowOptions.enableLargerThanScreen = false;
+
+        return browserWindowOptions;
+
     }
 
 }

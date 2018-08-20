@@ -8,6 +8,7 @@ import {configureBrowserWindowSize} from '../renderer/ContentCaptureFunctions';
 import {Functions} from '../../util/Functions';
 import {BrowserProfile} from '../BrowserProfile';
 import BrowserWindowConstructorOptions = Electron.BrowserWindowConstructorOptions;
+import {notNull} from '../../Preconditions';
 
 const log = Logger.create();
 
@@ -27,13 +28,18 @@ export class StandardWebContentsDriver implements WebContentsDriver {
     }
 
     public async init() {
-        await this.doInit();
+
+        let browserWindowOptions = this.computeBrowserWindowOptions();
+
+        await this.doInit(browserWindowOptions);
+
     }
 
-    protected async doInit() {
+    protected computeBrowserWindowOptions() {
+        return BrowserWindows.toBrowserWindowOptions(this.browserProfile);
+    }
 
-        // Create the browser window.
-        let browserWindowOptions = BrowserWindows.toBrowserWindowOptions(this.browserProfile);
+    protected async doInit(browserWindowOptions: BrowserWindowConstructorOptions) {
 
         log.info("Using browserWindowOptions: ", browserWindowOptions);
 

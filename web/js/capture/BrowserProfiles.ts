@@ -53,7 +53,7 @@ export class BrowserProfiles {
             case "webview":
                 return new BrowserProfileBuilder(browser)
                     .setProfile(name)
-                    .setHeight(500)
+                    .setHeight(35000)
                     .setShow(true)
                     .setOffscreen(false)
                     .setNodeIntegration(true)

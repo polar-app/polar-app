@@ -12,7 +12,7 @@ export class Functions {
      * @param _opts
      * @return {string}
      */
-    static functionToScript(_function: Function, ... _opts: any[]) {
+    static functionToScript(_function: Function, ..._opts: any[]) {
 
         let result = "";
         result += _function.toString();
@@ -21,7 +21,14 @@ export class Functions {
         // TODO: expand _opts to varargs... not just one opts.  This way the
         // function can be an ordinary function.
         if(_opts) {
-            result += `${_function.name}(${JSON.stringify(_opts)});`;
+
+            let funcArgs = JSON.stringify(_opts);
+
+            funcArgs = funcArgs.substring(1, funcArgs.length);
+            funcArgs = funcArgs.substring(0, funcArgs.length- 1);
+
+            result += `${_function.name}(${funcArgs});`;
+
         } else {
             result += `${_function.name}();`;
         }
