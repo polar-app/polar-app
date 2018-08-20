@@ -1,4 +1,5 @@
-import {Browser, BrowserBuilder} from './Browser';
+import {Browser, BrowserProfileBuilder} from './Browser';
+import {BrowserProfile} from './BrowserProfile';
 
 // TODO: anything greater than 10k triggers a bug on NVidia drivers on Linux
 // but many documents are larger than this 10k limit if they have 10 pages or
@@ -17,11 +18,11 @@ export class Browsers {
      * Migrate this to a profile of setting we then use to create the browser
      * window options.
      *
-     * @param browser {Browser}
+     * @param browser {BrowserProfile}
      * @param name {string} The name of the profile to use.
-     * @return {Browser}
+     * @return {BrowserProfile}
      */
-    static toProfile(browser: Browser, name: string) {
+    static toBrowserProfile(browser: Browser, name: string): BrowserProfile {
 
         // support offscreen rendering (similar to chrome headless)
         //
@@ -30,36 +31,39 @@ export class Browsers {
         switch (name) {
 
             case "hidden":
-                return new BrowserBuilder(browser)
+                return new BrowserProfileBuilder(browser)
+                    .setProfile(name)
                     .setHeight(35000)
                     .setShow(false)
                     .build();
 
             case "headless":
-                return new BrowserBuilder(browser)
+                return new BrowserProfileBuilder(browser)
+                    .setProfile(name)
                     .setHeight(35000)
                     .setShow(true)
                     .setOffscreen(true)
                     .build();
 
             case "headless_500":
-                return new BrowserBuilder(browser)
+                return new BrowserProfileBuilder(browser)
+                    .setProfile(name)
                     .setHeight(500)
                     .setShow(false)
                     .setOffscreen(true)
                     .build();
 
-            case "default_500":
-                return Browsers.createDefault(browser, 500);
-
-            case "test":
-                return Browsers.createDefault(browser, 10000);
-
-            case "default_5000":
-                return Browsers.createDefault(browser, 5000);
-
-            case "default":
-                return browser;
+            // case "default_500":
+            //     return Browsers.createDefault(browser, 500);
+            //
+            // case "test":
+            //     return Browsers.createDefault(browser, 10000);
+            //
+            // case "default_5000":
+            //     return Browsers.createDefault(browser, 5000);
+            //
+            // case "default":
+            //     return browser;
 
             default:
                 throw new Error("Incorrect profile name: " + name);
@@ -70,9 +74,9 @@ export class Browsers {
 
     /**
      *
-     * @param browser {Browser}
+     * @param browser {BrowserProfile}
      * @param height {number}
-     * @return {Browser}
+     * @return {BrowserProfile}
      */
     static createDefault(browser: Browser, height: number) {
         browser = Object.assign({}, browser);

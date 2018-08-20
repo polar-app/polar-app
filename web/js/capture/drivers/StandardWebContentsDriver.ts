@@ -7,6 +7,7 @@ import {Optional} from '../../util/ts/Optional';
 import {IDimensions} from '../../util/Dimensions';
 import {configureBrowserWindowSize} from '../renderer/ContentCaptureFunctions';
 import {Functions} from '../../util/Functions';
+import {BrowserProfile} from '../BrowserProfile';
 
 const log = Logger.create();
 
@@ -15,31 +16,25 @@ const log = Logger.create();
  */
 export class StandardWebContentsDriver implements WebContentsDriver {
 
-    private readonly browser: Browser;
+    private readonly browserProfile: BrowserProfile;
 
     private windowConfigured: boolean = false;
 
     private window?: BrowserWindow;
 
-    constructor(browser: Browser) {
-        this.browser = browser;
+    constructor(browserProfile: BrowserProfile) {
+        this.browserProfile = browserProfile;
     }
-
 
     public async init() {
 
         // Create the browser window.
-        let browserWindowOptions = BrowserWindows.toBrowserWindowOptions(this.browser);
+        let browserWindowOptions = BrowserWindows.toBrowserWindowOptions(this.browserProfile);
 
         log.info("Using browserWindowOptions: ", browserWindowOptions);
 
         let window = new BrowserWindow(browserWindowOptions);
         this.window = window;
-
-        // TODO: make this a command line argument
-        //newWindow.webContents.toggleDevTools();
-
-        //this.onWebRequest(this.window.webContents.session.webRequest);
 
         this.window.webContents.on('dom-ready', function(e) {
             log.info("dom-ready: ", e);
@@ -98,43 +93,6 @@ export class StandardWebContentsDriver implements WebContentsDriver {
 
         });
 
-        // TODO: this should actually be once not 'on'
-        // window.webContents.on('did-finish-load', async () => {
-        //
-        //     log.info("did-finish-load: ", arguments);
-        //
-        //     // see if we first need to handle the page in any special manner.
-        //
-        //     let ampURL = await this.getAmpURL();
-        //
-        //     // TODO: if we end up handling multiple types of URLs in the future
-        //     // we might want to build up a history to prevent endless loops or
-        //     // just keep track of the redirect count.
-        //     if(this.captureOpts.amp && ampURL && ampURL !== this.url) {
-        //
-        //         log.info("Found AMP URL.  Redirecting then loading: " + ampURL);
-        //
-        //         // redirect us to the amp URL as this will render better.
-        //         this.loadURL(ampURL);
-        //         return;
-        //
-        //     }
-        //
-        //     setTimeout(() => {
-        //
-        //         // capture within timeout just for debug purposes.
-        //
-        //         if(! this.window) {
-        //             throw new Error("No window");
-        //         }
-        //
-        //         this.startCapture(this.window)
-        //             .catch(err => log.error(err));
-        //
-        //     }, 1);
-        //
-        // });
-
         return window;
 
     }
@@ -149,20 +107,20 @@ export class StandardWebContentsDriver implements WebContentsDriver {
 
     private async configureWindow(window: BrowserWindow) {
 
-        log.info("Emulating browser: " + JSON.stringify(this.browser, null, "  " ));
+        log.info("Emulating browser: " + JSON.stringify(this.browserProfile, null, "  " ));
 
         // we need to mute by default especially if the window is hidden.
         log.info("Muting audio...");
         window.webContents.setAudioMuted(true);
 
-        let deviceEmulation = this.browser.deviceEmulation;
+        let deviceEmulation = this.browserProfile.deviceEmulation;
 
         deviceEmulation = Object.assign({}, deviceEmulation);
 
         log.info("Emulating device...");
         window.webContents.enableDeviceEmulation(deviceEmulation);
 
-        window.webContents.setUserAgent(this.browser.userAgent);
+        window.webContents.setUserAgent(this.browserProfile.userAgent);
 
         let windowDimensions: IDimensions = {
             width: deviceEmulation.screenSize.width,

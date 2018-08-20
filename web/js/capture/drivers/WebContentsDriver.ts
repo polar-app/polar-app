@@ -1,6 +1,6 @@
 import WebContents = Electron.WebContents;
 import {StandardWebContentsDriver} from './StandardWebContentsDriver';
-import {Browser} from '../Browser';
+import {BrowserProfile} from '../BrowserProfile';
 
 export interface WebContentsDriver {
 
@@ -15,8 +15,8 @@ export interface WebContentsDriver {
 
 export class WebContentsDriverFactory {
 
-    static async create(browser: Browser): Promise<WebContentsDriver> {
-        let standardWebContentsDriver = new StandardWebContentsDriver(browser);
+    static async create(browserProfile: BrowserProfile): Promise<WebContentsDriver> {
+        let standardWebContentsDriver = new StandardWebContentsDriver(browserProfile);
         await standardWebContentsDriver.init();
         return standardWebContentsDriver;
     }

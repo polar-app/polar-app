@@ -4,10 +4,11 @@ import {Capture} from '../web/js/capture/Capture';
 import {Browsers} from '../web/js/capture/Browsers';
 import {DiskDatastore} from '../web/js/datastore/DiskDatastore';
 import {Args} from '../web/js/electron/capture/Args';
+import {Capture2} from '../web/js/capture/Capture2';
+import BrowserRegistry from '../web/js/capture/BrowserRegistry';
 
 const electron = require('electron');
 const app = electron.app;
-const BrowserRegistry = require("../web/js/capture/BrowserRegistry");
 
 const {Cmdline} = require("../web/js/electron/Cmdline");
 
@@ -23,10 +24,8 @@ if(! browser) {
     throw new Error("No browser defined for: " + args.browser);
 }
 
-if(args.profile) {
-    log.info("Using browser profile: " + args.profile);
-    browser = Browsers.toProfile(browser, args.profile);
-}
+log.info("Using browser profile: " + args.profile);
+let browserProfile = Browsers.toBrowserProfile(browser, args.profile);
 
 app.on('ready', function() {
 
@@ -58,7 +57,7 @@ app.on('ready', function() {
             amp: args.amp
         };
 
-        let capture = new Capture(url, browser, diskDatastore.stashDir, captureOpts);
+        let capture = new Capture2(url, browserProfile, diskDatastore.stashDir, captureOpts);
 
         await capture.start();
 

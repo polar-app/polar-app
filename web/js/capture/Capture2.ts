@@ -1,15 +1,14 @@
 import {Browser} from './Browser';
 import {CaptureOpts} from './CaptureOpts';
-import {shell, app, BrowserWindow, WebRequest} from 'electron';
+import {BrowserWindow, WebRequest} from 'electron';
 import {CaptureResult} from './CaptureResult';
 import {Logger} from '../logger/Logger';
 import {Preconditions} from '../Preconditions';
-import {BrowserWindows} from './BrowserWindows';
-import {Dimensions, IDimensions} from '../util/Dimensions';
 import {PendingWebRequestsListener} from '../webrequests/PendingWebRequestsListener';
 import {DebugWebRequestsListener} from '../webrequests/DebugWebRequestsListener';
 import {WebRequestReactor} from '../webrequests/WebRequestReactor';
-import {configureBrowserWindowSize} from './renderer/ContentCaptureFunctions';
+import {WebContentsDriverFactory} from './drivers/WebContentsDriver';
+import WebContents = Electron.WebContents;
 import {BrowserProfile} from './BrowserProfile';
 
 const {Filenames} = require("../util/Filenames");
@@ -36,7 +35,7 @@ const EXECUTE_CAPTURE_DELAY = 1500;
 // TODO: this code is distributed across two packages.. capture and
 // electron.capture... pick one!
 
-export class Capture {
+export class Capture2 {
 
     public url: string;
     public readonly browserProfile: BrowserProfile;
@@ -53,9 +52,7 @@ export class Capture {
      */
     public resolve: CaptureResultCallback = () => {};
 
-    public window?: BrowserWindow;
-
-    public windowConfigured = false;
+    private webContents?: WebContents;
 
     /**
      *
@@ -66,7 +63,7 @@ export class Capture {
         // and test this functionality.
 
         this.url = Preconditions.assertNotNull(url, "url");
-        this.browserProfile = Preconditions.assertNotNull(browserProfile, "browserProfile");
+        this.browserProfile = Preconditions.assertNotNull(browserProfile, "browser");
         this.stashDir = Preconditions.assertNotNull(stashDir, "stashDir");
         this.captureOpts = captureOpts;
 
@@ -81,9 +78,46 @@ export class Capture {
 
     async start() {
 
-        this.window = await this.createWindow();
+        let driver = await WebContentsDriverFactory.create(this.browserProfile);
 
-        this.loadURL(this.url);
+        this.webContents = await driver.getWebContents();
+
+        // TODO: this should actually be once not 'on'
+        this.webContents.once('did-finish-load', async () => {
+
+            log.info("did-finish-load: ", arguments);
+
+            // see if we first need to handle the page in any special manner.
+
+            let ampURL = await this.getAmpURL();
+
+            // TODO: if we end up handling multiple types of URLs in the future
+            // we might want to build up a history to prevent endless loops or
+            // just keep track of the redirect count.
+            if(this.captureOpts.amp && ampURL && ampURL !== this.url) {
+
+                log.info("Found AMP URL.  Redirecting then loading: " + ampURL);
+
+                // redirect us to the amp URL as this will render better.
+                this.loadURL(ampURL);
+                return;
+
+            }
+
+            setTimeout(() => {
+
+                // capture within timeout just for debug purposes.
+
+                this.startCapture()
+                    .catch(err => log.error(err));
+
+            }, 1);
+
+        });
+
+        this.onWebRequest(this.webContents.session.webRequest);
+
+        this.webContents.loadURL(this.url);
 
         return new Promise(resolve => {
             this.resolve = resolve;
@@ -92,10 +126,6 @@ export class Capture {
     }
 
     loadURL(url: string) {
-
-        if(! this.window) {
-            throw new Error("No window");
-        }
 
         // change the global URL we're loading...
         this.url = url;
@@ -111,7 +141,7 @@ export class Capture {
 
         };
 
-        this.window.loadURL(url, loadURLOptions);
+        this.webContents!.loadURL(url, loadURLOptions);
 
     }
 
@@ -119,11 +149,11 @@ export class Capture {
      * Called when the onLoad handler is executed and we're ready to start the
      * capture.
      */
-    async startCapture(window: BrowserWindow) {
+    async startCapture() {
 
         if(USE_PAGING_LOADER) {
 
-            let pagingBrowser = new DefaultPagingBrowser(window.webContents);
+            let pagingBrowser = new DefaultPagingBrowser(this.webContents);
 
             let pagingLoader = new PagingLoader(pagingBrowser, async () => {
                 log.info("Paging loader finished.")
@@ -160,10 +190,6 @@ export class Capture {
      */
     private async getAmpURL() {
 
-        if(! this.window) {
-            throw new Error("No window");
-        }
-
         /** @RendererContext */
         function fetchAmpURL() {
 
@@ -177,7 +203,7 @@ export class Capture {
 
         }
 
-        return await this.window.webContents.executeJavaScript(Functions.functionToScript(fetchAmpURL));
+        return await this.webContents!.executeJavaScript(Functions.functionToScript(fetchAmpURL));
 
     }
 
@@ -186,11 +212,7 @@ export class Capture {
         // TODO: this function should be cleaned up a bit.. it has too many moving
         // parts now and should be moved into smaller functions.
 
-        if(! this.window || ! this.window.webContents)
-            throw new Error("No window");
-
-        let window = this.window;
-        let webContents = window.webContents;
+        let webContents = this.webContents!;
 
         log.info("Capturing the HTML...");
 
@@ -267,158 +289,6 @@ export class Capture {
 
         //this.debugWebRequestsListener.register(webRequestReactor);
         this.pendingWebRequestsListener.register(webRequestReactor);
-
-    }
-
-    async createWindow() {
-
-        // Create the browser window.
-        let browserWindowOptions = BrowserWindows.toBrowserWindowOptions(this.browserProfile);
-
-        log.info("Using browserWindowOptions: ", browserWindowOptions);
-
-        let newWindow = new BrowserWindow(browserWindowOptions);
-
-        // TODO: make this a command line argument
-        //newWindow.webContents.toggleDevTools();
-
-        this.onWebRequest(newWindow.webContents.session.webRequest);
-
-        newWindow.webContents.on('dom-ready', function(e) {
-            log.info("dom-ready: ", e);
-        });
-
-        newWindow.on('close', function(e) {
-            e.preventDefault();
-            newWindow.webContents.clearHistory();
-            newWindow.webContents.session.clearCache(function() {
-                newWindow.destroy();
-            });
-        });
-
-        newWindow.on('closed', function() {
-
-        });
-
-        newWindow.webContents.on('new-window', function(e, url) {
-        });
-
-        newWindow.webContents.on('will-navigate', function(e, url) {
-            e.preventDefault();
-        });
-
-        newWindow.once('ready-to-show', () => {
-        });
-
-        newWindow.webContents.on('did-fail-load', function(event, errorCode, errorDescription, validateURL, isMainFrame) {
-
-            log.info("did-fail-load: " , {event, errorCode, errorDescription, validateURL, isMainFrame}, event);
-
-            // FIXME: figure out how to fail properly and have unit tests
-            // setup for this situation.
-
-        });
-
-        /**
-         */
-        newWindow.webContents.on('did-start-loading', (event: Electron.Event) => {
-
-            log.info("Registering new webRequest listeners");
-
-            // We get one webContents per frame so we have to listen to their
-            // events too..
-
-            /**
-             * @type {Electron.WebContents}
-             */
-            let webContents = event.sender;
-
-            log.info("Detected new loading page: " + webContents.getURL());
-
-            if(! this.windowConfigured) {
-
-                this.configureWindow(newWindow)
-                    .catch(err => log.error(err));
-
-                this.windowConfigured = true;
-
-            }
-
-        });
-
-        newWindow.webContents.on('did-finish-load', async () => {
-
-            log.info("did-finish-load: ", arguments);
-
-            // see if we first need to handle the page in any special manner.
-
-            let ampURL = await this.getAmpURL();
-
-            // TODO: if we end up handling multiple types of URLs in the future
-            // we might want to build up a history to prevent endless loops or
-            // just keep track of the redirect count.
-            if(this.captureOpts.amp && ampURL && ampURL !== this.url) {
-
-                log.info("Found AMP URL.  Redirecting then loading: " + ampURL);
-
-                // redirect us to the amp URL as this will render better.
-                this.loadURL(ampURL);
-                return;
-
-            }
-
-            setTimeout(() => {
-
-                // capture within timeout just for debug purposes.
-
-                if(! this.window) {
-                    throw new Error("No window");
-                }
-
-                this.startCapture(this.window)
-                    .catch(err => log.error(err));
-
-            }, 1);
-
-        });
-
-        return newWindow;
-
-    }
-
-    async configureWindow(window: BrowserWindow) {
-
-        // TODO maybe inject this via a preload script so we know that it's always
-        // running
-
-        log.info("Emulating browser: " + JSON.stringify(this.browserProfile, null, "  " ));
-
-        // we need to mute by default especially if the window is hidden.
-        log.info("Muting audio...");
-        window.webContents.setAudioMuted(true);
-
-        /**
-         * @type {Electron.Parameters}
-         */
-        let deviceEmulation = this.browserProfile.deviceEmulation;
-
-        deviceEmulation = Object.assign({}, deviceEmulation);
-
-        log.info("Emulating device...");
-        window.webContents.enableDeviceEmulation(deviceEmulation);
-
-        window.webContents.setUserAgent(this.browserProfile.userAgent);
-
-        let windowDimensions: IDimensions = {
-            width: deviceEmulation.screenSize.width,
-            height: deviceEmulation.screenSize.height,
-        };
-
-        log.info("Using window dimensions: " + JSON.stringify(windowDimensions, null, "  "));
-
-        let screenDimensionScript = Functions.functionToScript(configureBrowserWindowSize, windowDimensions);
-
-        await window.webContents.executeJavaScript(screenDimensionScript);
 
     }
 
