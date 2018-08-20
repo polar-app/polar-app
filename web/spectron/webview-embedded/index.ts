@@ -5,7 +5,6 @@ import {Promises} from '../../js/util/Promises';
 
 SpectronMain.run(async state => {
 
-
     state.window.loadFile(__dirname + '/app.html');
 
     // FIXME: this works, just not from the main process.. only the renderer.. .
