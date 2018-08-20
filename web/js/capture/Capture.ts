@@ -408,8 +408,6 @@ export class Capture {
 
         window.webContents.setUserAgent(this.browser.userAgent);
 
-        //let windowDimensions = this.__calculateWindowDimensions(window);
-
         let windowDimensions: IDimensions = {
             width: deviceEmulation.screenSize.width,
             height: deviceEmulation.screenSize.height,
@@ -422,22 +420,6 @@ export class Capture {
         await window.webContents.executeJavaScript(screenDimensionScript);
 
     }
-
-    /**
-     * Get back the dimensions of the given window.
-     *
-     */
-    private __calculateWindowDimensions(window: BrowserWindow): Dimensions {
-
-        let size = window.getSize();
-
-        return new Dimensions({
-            width: size[0],
-            height: size[1]
-        });
-
-    }
-
 
 }
 
