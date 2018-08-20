@@ -80,7 +80,7 @@ export class Capture2 {
 
     }
 
-    async start() {
+    async start(): Promise<CaptureResult> {
 
         let driver = await WebContentsDriverFactory.create(this.browserProfile);
 
@@ -135,7 +135,7 @@ export class Capture2 {
         //
         this.webContents.loadURL(this.url);
 
-        return new Promise(resolve => {
+        return new Promise<CaptureResult>(resolve => {
             this.resolve = resolve;
         });
 
@@ -284,9 +284,9 @@ export class Capture2 {
 
         Optional.of(this.driver).when(driver => driver.destroy());
 
-        this.resolve(new CaptureResult({
+        this.resolve({
             path: phzPath
-        }));
+        });
 
     }
 

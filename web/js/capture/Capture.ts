@@ -246,9 +246,9 @@ export class Capture {
 
         window.close();
 
-        this.resolve(new CaptureResult({
+        this.resolve({
             path: phzPath
-        }));
+        });
 
     }
 

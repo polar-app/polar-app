@@ -16,7 +16,10 @@ class Functions {
         result += _function.toString();
         result += "\n";
         if (_opts) {
-            result += `${_function.name}(${JSON.stringify(_opts)});`;
+            let funcArgs = JSON.stringify(_opts);
+            funcArgs = funcArgs.substring(1, funcArgs.length);
+            funcArgs = funcArgs.substring(0, funcArgs.length - 1);
+            result += `${_function.name}(${funcArgs});`;
         }
         else {
             result += `${_function.name}();`;

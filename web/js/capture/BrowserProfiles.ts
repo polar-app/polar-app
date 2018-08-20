@@ -21,6 +21,10 @@ export class BrowserProfiles {
      */
     static toBrowserProfile(browser: Browser, name: string): BrowserProfile {
 
+        if(name === 'default') {
+            return BrowserProfiles.toBrowserProfile(browser, 'webview');
+        }
+
         // support offscreen rendering (similar to chrome headless)
         //
         // https://electronjs.org/docs/tutorial/offscreen-rendering
@@ -57,14 +61,6 @@ export class BrowserProfiles {
                     .setShow(true)
                     .setOffscreen(false)
                     .setNodeIntegration(true)
-                    .build();
-
-            case "default":
-                return new BrowserProfileBuilder(browser)
-                    .setProfile(name)
-                    .setHeight(500)
-                    .setShow(true)
-                    .setOffscreen(false)
                     .build();
 
             // case "default_500":
