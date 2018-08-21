@@ -4,9 +4,9 @@ import {FrameEvents} from './FrameEvents';
 const log = Logger.create();
 
 /**
- * Moves events from the iframe, into the target document. This allows the event
- * listeners to see the event as if it was called inside the parent .page
- * in the parent DOM window.
+ * Moves events from the iframe, into the target element. This allows the event
+ * listeners to see the event as if it was called inside the parent .page in the
+ * parent DOM window.
  */
 export class EventBridge {
 

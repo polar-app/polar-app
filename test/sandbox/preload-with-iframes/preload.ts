@@ -6,4 +6,5 @@ document.addEventListener("DOMContentLoaded", function(event){
     element.innerHTML = `<b>this is the from the preload.</b>`;
 
     document.body.appendChild(element);
+
 });
