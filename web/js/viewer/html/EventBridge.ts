@@ -1,5 +1,6 @@
 import {Logger} from '../../logger/Logger';
 import {FrameEvents} from './FrameEvents';
+import {Events} from '../../util/dom/Events';
 
 const log = Logger.create();
 
@@ -69,7 +70,7 @@ export class EventBridge {
 
         iframe.contentDocument.body.addEventListener("click", event => {
 
-            let anchor = this.getAnchor(event.target);
+            let anchor = Events.getAnchor(event.target);
 
             // TODO: this needs to be reworked. This isn't the appropriate way
             // to handle this.  I'm going to have to think about which "actions"
@@ -99,31 +100,7 @@ export class EventBridge {
 
     }
 
-    /**
-     * Get the anchor for an element. An event target might be nested in an
-     * anchor.
-     */
-    getAnchor(target: EventTarget | null): HTMLAnchorElement | undefined {
 
-        if(target === null || target === undefined) {
-            return undefined;
-        }
-
-        if(target instanceof HTMLElement) {
-
-            let element = <HTMLElement>target;
-
-            if(target.tagName === "A") {
-                return <HTMLAnchorElement>element;
-            }
-
-            return this.getAnchor(element.parentElement);
-
-        } else {
-            return undefined;
-        }
-
-    }
 
     mouseListener(event: any) {
 

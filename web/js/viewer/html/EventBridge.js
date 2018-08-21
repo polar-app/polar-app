@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const Logger_1 = require("../../logger/Logger");
 const FrameEvents_1 = require("./FrameEvents");
+const Events_1 = require("../../util/dom/Events");
 const log = Logger_1.Logger.create();
 class EventBridge {
     constructor(targetElement, iframe) {
@@ -37,7 +38,7 @@ class EventBridge {
         iframe.contentDocument.body.addEventListener("mousedown", this.mouseListener.bind(this));
         iframe.contentDocument.body.addEventListener("contextmenu", this.mouseListener.bind(this));
         iframe.contentDocument.body.addEventListener("click", event => {
-            let anchor = this.getAnchor(event.target);
+            let anchor = Events_1.Events.getAnchor(event.target);
             if (anchor) {
                 log.info("Link click prevented.");
                 event.preventDefault();
@@ -50,21 +51,6 @@ class EventBridge {
                 this.mouseListener(event);
             }
         });
-    }
-    getAnchor(target) {
-        if (target === null || target === undefined) {
-            return undefined;
-        }
-        if (target instanceof HTMLElement) {
-            let element = target;
-            if (target.tagName === "A") {
-                return element;
-            }
-            return this.getAnchor(element.parentElement);
-        }
-        else {
-            return undefined;
-        }
     }
     mouseListener(event) {
         let eventPoints = FrameEvents_1.FrameEvents.calculatePoints(this.iframe, event);

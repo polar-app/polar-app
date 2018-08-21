@@ -1,4 +1,12 @@
 "use strict";
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -7,6 +15,8 @@ const JQuery_1 = __importDefault(require("../../ui/JQuery"));
 const Viewer_1 = require("../Viewer");
 const Logger_1 = require("../../logger/Logger");
 const Preconditions_1 = require("../../Preconditions");
+const LinkHandler_1 = require("./LinkHandler");
+const Services_1 = require("../../util/services/Services");
 const { FrameResizer } = require("./FrameResizer");
 const { FrameInitializer } = require("./FrameInitializer");
 const { IFrameWatcher } = require("./IFrameWatcher");
@@ -28,20 +38,21 @@ class HTMLViewer extends Viewer_1.Viewer {
         this.contentParent = document.querySelector("#content-parent");
         this.textLayer = document.querySelector(".textLayer");
         this.htmlFormat = new HTMLFormat();
-        JQuery_1.default(document).ready(() => {
+        JQuery_1.default(document).ready(() => __awaiter(this, void 0, void 0, function* () {
             this.requestParams = this._requestParams();
             this._captureBrowserZoom();
             this._loadRequestData();
             this._configurePageWidth();
             new IFrameWatcher(this.content, () => {
-                console.log("Loading page now...");
+                log.info("Loading page now...");
                 let frameResizer = new FrameResizer(this.contentParent, this.content);
                 frameResizer.start();
                 let frameInitializer = new FrameInitializer(this.content, this.textLayer);
                 frameInitializer.start();
                 this.startHandlingZoom();
             }).start();
-        });
+            yield Services_1.Services.start(new LinkHandler_1.LinkHandler(this.content));
+        }));
     }
     _captureBrowserZoom() {
         JQuery_1.default(document).keydown(function (event) {

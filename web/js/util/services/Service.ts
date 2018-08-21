@@ -10,6 +10,6 @@ export interface StoppableService {
 
 export interface StartableService {
 
-    start(): void;
+    start(): Promise<void>;
 
 }

@@ -5,6 +5,8 @@ import {notNull} from '../../Preconditions';
 import {Model} from '../../Model';
 import {PHZMetadata} from '../../phz/PHZMetadata';
 import {DocDetails} from '../../metadata/DocDetails';
+import {LinkHandler} from './LinkHandler';
+import {Services} from '../../util/services/Services';
 
 const {FrameResizer} = require("./FrameResizer");
 const {FrameInitializer} = require("./FrameInitializer");
@@ -46,7 +48,7 @@ export class HTMLViewer extends Viewer {
 
         // *** start the resizer and initializer before setting the iframe
 
-        $(document).ready(() => {
+        $(document).ready(async () => {
 
             this.requestParams = this._requestParams();
 
@@ -56,9 +58,10 @@ export class HTMLViewer extends Viewer {
 
             this._configurePageWidth();
 
+            // TODO migrate to IFrames.waitForContentDocument()
             new IFrameWatcher(this.content, () => {
 
-                console.log("Loading page now...");
+                log.info("Loading page now...");
 
                 let frameResizer = new FrameResizer(this.contentParent, this.content);
                 frameResizer.start();
@@ -69,6 +72,8 @@ export class HTMLViewer extends Viewer {
                 this.startHandlingZoom();
 
             }).start();
+
+            await Services.start(new LinkHandler(this.content));
 
         });
 
