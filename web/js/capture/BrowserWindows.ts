@@ -5,15 +5,17 @@
 // page's size, which means the actual window's size will include window frame's
 // size and be slightly larger. Default is false.
 
-import {Browser} from './Browser';
 import {AppPaths} from '../electron/webresource/AppPaths';
 import {Logger} from '../logger/Logger';
+import {BrowserProfile} from './BrowserProfile';
+import BrowserWindowConstructorOptions = Electron.BrowserWindowConstructorOptions;
+import BrowserWindow = Electron.BrowserWindow;
 
 const log = Logger.create();
 
 export class BrowserWindows {
 
-    static toBrowserWindowOptions(browser: Browser) {
+    static toBrowserWindowOptions(browserProfile: BrowserProfile): BrowserWindowConstructorOptions {
 
         let partition = "part-" + Date.now();
 
@@ -22,13 +24,13 @@ export class BrowserWindows {
         log.info("Loading with preload: ", preload);
 
         return {
-            minWidth: browser.deviceEmulation.screenSize.width,
-            minHeight: browser.deviceEmulation.screenSize.height,
-            width: browser.deviceEmulation.screenSize.width,
-            height: browser.deviceEmulation.screenSize.height,
+            minWidth: browserProfile.deviceEmulation.screenSize.width,
+            minHeight: browserProfile.deviceEmulation.screenSize.height,
+            width: browserProfile.deviceEmulation.screenSize.width,
+            height: browserProfile.deviceEmulation.screenSize.height,
             //maxWidth: WIDTH,
             //maxHeight: HEIGHT,
-            show: browser.show,
+            show: browserProfile.show,
 
             // Enable the window to be resized larger than screen. Default is false.
             enableLargerThanScreen: true,
@@ -39,22 +41,22 @@ export class BrowserWindows {
                 // for some strange reason and this is required by Electron.
                 preload,
 
-                nodeIntegration: false,
+                nodeIntegration: browserProfile.nodeIntegration,
 
                 defaultEncoding: 'UTF-8',
 
                 webaudio: false,
 
-                offscreen: browser.offscreen,
+                offscreen: browserProfile.offscreen,
 
                 /**
                  * This is needed for now because we have to access the iframe
-                 * content from the frame and that might not be possible otherwise.
-                 * There is not necessarily anything to steal here yet as we're
-                 * not using any type of cookie sharing but we might in the future
-                 * so need to be careful here.  As soon as we can get access
-                 * to the iframe documents from electron we should move to
-                 * a more secure solution.
+                 * content from the frame and that might not be possible
+                 * otherwise. There is not necessarily anything to steal here
+                 * yet as we're not using any type of cookie sharing but we
+                 * might in the future so need to be careful here.  As soon as
+                 * we can get access to the iframe documents from electron we
+                 * should move to a more secure solution.
                  */
                 webSecurity: false,
 
@@ -67,6 +69,18 @@ export class BrowserWindows {
             }
 
         }
+
+    }
+
+    static async onceReadyToShow(window: BrowserWindow): Promise<BrowserWindow> {
+
+        return new Promise<BrowserWindow>(resolve => {
+
+            window.once('ready-to-show', () => {
+                return resolve(window);
+            });
+
+        });
 
     }
 

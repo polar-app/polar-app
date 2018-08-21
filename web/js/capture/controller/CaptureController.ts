@@ -3,11 +3,11 @@ import {PHZLoader} from '../../electron/main/PHZLoader';
 import {BrowserWindow, ipcMain} from 'electron';
 import {Preconditions} from '../../Preconditions';
 import {Logger} from '../../logger/Logger';
+import BrowserRegistry from '../BrowserRegistry';
+import {BrowserProfiles} from '../BrowserProfiles';
+import {Capture} from '../Capture';
+import {Capture2} from '../Capture2';
 
-const {CaptureOpts} = require("../CaptureOpts");
-const {Capture} = require("../Capture");
-const {Browsers} = require("../../capture/Browsers");
-const BrowserRegistry = require("../../capture/BrowserRegistry");
 
 const log = Logger.create();
 
@@ -20,7 +20,6 @@ export class CaptureController {
 
     /**
      *
-     * @type {CacheRegistry} The cache registry we are going to use to
      * register the resulting phz file.
      */
     private readonly cacheRegistry: any;
@@ -110,7 +109,6 @@ export class CaptureController {
      * should be updated with our progress.
      *
      * @param url {string}
-     * @return {Promise<CaptureResult>}
      */
     async runCapture(webContents: Electron.WebContents, url: string) {
 
@@ -118,19 +116,21 @@ export class CaptureController {
 
         let progressForwarder = new ProgressForwarder({webContents});
 
-        let captureOpts = new CaptureOpts({
-            pendingWebRequestsCallback: (event: any) => progressForwarder.pendingWebRequestsCallback(event)
-        });
+        let captureOpts = {
+            pendingWebRequestsCallback: (event: any) => progressForwarder.pendingWebRequestsCallback(event),
+            amp: true
+        };
 
         let browser = BrowserRegistry.DEFAULT;
 
         //browser = Browsers.toProfile(browser, "headless");
-        browser = Browsers.toProfile(browser, "hidden");
+        browser = BrowserProfiles.toBrowserProfile(browser, "hidden");
         //browser = Browsers.toProfile(browser, "default");
+        let browserProfile = BrowserProfiles.toBrowserProfile(browser, "default");
 
-        let capture = new Capture(url, browser, this.directories.stashDir, captureOpts);
+        let capture = new Capture2(url, browserProfile, this.directories.stashDir, captureOpts);
 
-        let captureResult = await capture.execute();
+        let captureResult = await capture.start();
 
         log.info("captureResult: ", captureResult);
 
@@ -142,7 +142,6 @@ export class CaptureController {
      *
      * @param webContents {Electron.WebContents}
      * @param path {string} The path to our phz file.
-     * @return {Promise<void>}
      */
     async loadPHZ(webContents: Electron.WebContents, path: string) {
 

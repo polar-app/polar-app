@@ -94,7 +94,7 @@ export class Preconditions {
 
     }
 
-    static assertNotNull<T>(value: T | null, name?: string): T {
+    static assertNotNull<T>(value: T | null, name?: string): NonNullable<T> {
 
         let msgPrefix = "Precondition argument failed: ";
 
@@ -110,7 +110,7 @@ export class Preconditions {
             throw new Error(`${msgPrefix}: undefined`)
         }
 
-        return value;
+        return value!;
 
     }
 
@@ -160,7 +160,7 @@ export function defaultValue<T>(currentValue: T, defaultValue: T): T {
     return Preconditions.defaultValue(currentValue, defaultValue);
 }
 
-export function notNull<T>(value: T | null, name?: string): T {
+export function notNull<T>(value: T | null, name?: string): NonNullable<T> {
     return Preconditions.assertNotNull(value, name);
 }
 

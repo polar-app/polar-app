@@ -1,34 +1,23 @@
+import {Browser} from './Browser';
+import {CaptureOpts} from './CaptureOpts';
+import {shell, app, BrowserWindow, WebRequest} from 'electron';
+import {CaptureResult} from './CaptureResult';
+import {Logger} from '../logger/Logger';
+import {Preconditions} from '../Preconditions';
+import {BrowserWindows} from './BrowserWindows';
+import {Dimensions, IDimensions} from '../util/Dimensions';
+import {PendingWebRequestsListener} from '../webrequests/PendingWebRequestsListener';
+import {DebugWebRequestsListener} from '../webrequests/DebugWebRequestsListener';
+import {WebRequestReactor} from '../webrequests/WebRequestReactor';
+import {configureBrowserWindowSize} from './renderer/ContentCaptureFunctions';
+import {BrowserProfile} from './BrowserProfile';
 
-const electron = require('electron');
-const debug = require('debug');
-const CaptureResult = require("./CaptureResult").CaptureResult;
-
-const app = electron.app;
-const shell = electron.shell;
-const BrowserWindow = electron.BrowserWindow;
-
-const {CaptureOpts} = require("./CaptureOpts");
-
-const {Preconditions} = require("../Preconditions");
-const {Cmdline} = require("../electron/Cmdline");
 const {Filenames} = require("../util/Filenames");
 const {Files} = require("../util/Files");
 const {Functions} = require("../util/Functions");
-const {DiskDatastore} = require("../datastore/DiskDatastore");
-const {Args} = require("../electron/capture/Args");
-const {BrowserWindows} = require("./BrowserWindows");
-const {WebRequestReactor} = require("../webrequests/WebRequestReactor");
 const {CapturedPHZWriter} = require("./CapturedPHZWriter");
 const {DefaultPagingBrowser} = require("../electron/capture/pagination/DefaultPagingBrowser");
 const {PagingLoader} = require("../electron/capture/pagination/PagingLoader");
-const Logger = require("../logger/Logger").Logger;
-const {PendingWebRequestsListener} = require("../webrequests/PendingWebRequestsListener");
-const {DebugWebRequestsListener} = require("../webrequests/DebugWebRequestsListener");
-const {Dimensions} = require("../util/Dimensions");
-const {Objects} = require("../util/Objects");
-
-// TODO: this code is distributed across two packages.. capture and
-// electron.capture... pick one!
 
 const log = Logger.create();
 
@@ -44,55 +33,53 @@ const USE_PAGING_LOADER = false;
  */
 const EXECUTE_CAPTURE_DELAY = 1500;
 
-// TODO: migrate this to use Electron offscreen rendering (like chrome headless)
-//
-// https://electronjs.org/docs/tutorial/offscreen-rendering
+// TODO: this code is distributed across two packages.. capture and
+// electron.capture... pick one!
 
-class Capture {
+export class Capture {
+
+    public url: string;
+    public readonly browserProfile: BrowserProfile;
+    public readonly stashDir: string;
+    public readonly captureOpts: CaptureOpts;
+
+    public readonly pendingWebRequestsListener: PendingWebRequestsListener;
+    public readonly debugWebRequestsListener: DebugWebRequestsListener;
+
+    public readonly webRequestReactors: WebRequestReactor[] = [];
+
+    /**
+     * The resolve function to call when we have completed .
+     */
+    public resolve: CaptureResultCallback = () => {};
+
+    public window?: BrowserWindow;
+
+    public windowConfigured = false;
 
     /**
      *
-     * @param url {string} The URL to capture.
-     * @param browser {Browser}
-     * @param stashDir {string}
-     * @param captureOpts {CaptureOpts}
      */
-    constructor(url, browser, stashDir, captureOpts = new CaptureOpts()) {
+    constructor(url: string, browserProfile: BrowserProfile, stashDir: string, captureOpts: CaptureOpts = {amp: true}) {
 
         // FIXME: don't allow named anchors in the URL like #foo... strip them
         // and test this functionality.
 
         this.url = Preconditions.assertNotNull(url, "url");
-        this.browser = Preconditions.assertNotNull(browser, "browser");
+        this.browserProfile = Preconditions.assertNotNull(browserProfile, "browserProfile");
         this.stashDir = Preconditions.assertNotNull(stashDir, "stashDir");
         this.captureOpts = captureOpts;
 
-        /**
-         * The resolve function to call when we have completed .
-         *
-         * @type {Function}
-         */
-        this.resolve = null;
-
-        this.webRequestReactors = [];
         this.pendingWebRequestsListener = new PendingWebRequestsListener();
         this.debugWebRequestsListener = new DebugWebRequestsListener();
-
 
         if(captureOpts.pendingWebRequestsCallback) {
             this.pendingWebRequestsListener.addEventListener(captureOpts.pendingWebRequestsCallback);
         }
 
-        /**
-         * @type {Electron.BrowserWindow}
-         */
-        this.window = null;
-
-        this.windowConfigured = false;
-
     }
 
-    async execute() {
+    async start() {
 
         this.window = await this.createWindow();
 
@@ -104,7 +91,11 @@ class Capture {
 
     }
 
-    loadURL(url) {
+    loadURL(url: string) {
+
+        if(! this.window) {
+            throw new Error("No window");
+        }
 
         // change the global URL we're loading...
         this.url = url;
@@ -116,7 +107,7 @@ class Capture {
             // but then make it an option later.
 
             extraHeaders: `pragma: no-cache\nreferer: ${url}\n`,
-            userAgent: this.browser.userAgent
+            userAgent: this.browserProfile.userAgent
 
         };
 
@@ -128,24 +119,26 @@ class Capture {
      * Called when the onLoad handler is executed and we're ready to start the
      * capture.
      */
-    async startCapture() {
+    async startCapture(window: BrowserWindow) {
 
         if(USE_PAGING_LOADER) {
 
-            let pagingBrowser = new DefaultPagingBrowser(this.window.webContents);
+            let pagingBrowser = new DefaultPagingBrowser(window.webContents);
 
             let pagingLoader = new PagingLoader(pagingBrowser, async () => {
                 log.info("Paging loader finished.")
             } );
 
-            this.pendingWebRequestsListener.addEventListener(pendingRequestEvent => {
-                pagingLoader.onPendingRequestsUpdate(pendingRequestEvent);
-            });
+            // WARN: this was removed as part of the TS migration and would need
+            // to be enabled if we want this to work again.
+            //
+            //this.pendingWebRequestsListener.addEventListener(pendingRequestEvent => {
+            //    pagingLoader.onPendingRequestsUpdate(pendingRequestEvent);
+            //});
 
             await pagingLoader.onLoad();
 
         }
-
 
         this.webRequestReactors.forEach(webRequestReactor => {
             log.info("Stopping webRequestReactor...");
@@ -165,12 +158,16 @@ class Capture {
      *
      * @return {Promise<string>}
      */
-    async getAmpURL() {
+    private async getAmpURL() {
+
+        if(! this.window) {
+            throw new Error("No window");
+        }
 
         /** @RendererContext */
         function fetchAmpURL() {
 
-            let link = document.querySelector("link[rel='amphtml']");
+            let link = <HTMLLinkElement>document.querySelector("link[rel='amphtml']");
 
             if(link) {
                 return link.href;
@@ -189,11 +186,11 @@ class Capture {
         // TODO: this function should be cleaned up a bit.. it has too many moving
         // parts now and should be moved into smaller functions.
 
-        Preconditions.assertNotNull(this.window);
-        Preconditions.assertNotNull(this.window.webContents);
+        if(! this.window || ! this.window.webContents)
+            throw new Error("No window");
 
         let window = this.window;
-        let webContents = this.window.webContents;
+        let webContents = window.webContents;
 
         log.info("Capturing the HTML...");
 
@@ -226,7 +223,7 @@ class Capture {
         log.info("Retrieving HTML...done");
 
         // record the browser that was used to render this page.
-        captured.browser = this.browser;
+        captured.browser = this.browserProfile;
 
         let stashDir = this.stashDir;
         let filename = Filenames.sanitize(captured.title);
@@ -249,9 +246,9 @@ class Capture {
 
         window.close();
 
-        this.resolve(new CaptureResult({
+        this.resolve({
             path: phzPath
-        }));
+        });
 
     }
 
@@ -261,7 +258,7 @@ class Capture {
      *
      * @param webRequest
      */
-    onWebRequest(webRequest) {
+    onWebRequest(webRequest: WebRequest) {
 
         let webRequestReactor = new WebRequestReactor(webRequest);
         webRequestReactor.start();
@@ -276,14 +273,14 @@ class Capture {
     async createWindow() {
 
         // Create the browser window.
-        let browserWindowOptions = BrowserWindows.toBrowserWindowOptions(this.browser);
+        let browserWindowOptions = BrowserWindows.toBrowserWindowOptions(this.browserProfile);
 
         log.info("Using browserWindowOptions: ", browserWindowOptions);
 
         let newWindow = new BrowserWindow(browserWindowOptions);
 
         // TODO: make this a command line argument
-        newWindow.toggleDevTools();
+        //newWindow.webContents.toggleDevTools();
 
         this.onWebRequest(newWindow.webContents.session.webRequest);
 
@@ -324,7 +321,7 @@ class Capture {
 
         /**
          */
-        newWindow.webContents.on('did-start-loading', (event) => {
+        newWindow.webContents.on('did-start-loading', (event: Electron.Event) => {
 
             log.info("Registering new webRequest listeners");
 
@@ -334,13 +331,9 @@ class Capture {
             /**
              * @type {Electron.WebContents}
              */
-            let webContents = event.sender.webContents;
+            let webContents = event.sender;
 
             log.info("Detected new loading page: " + webContents.getURL());
-
-            // FIXME: this might be a bug.  Just because we get a new start loading
-            // request doesn't mean it's in a new webContents ...
-            //this.onWebRequest(webContents.session.webRequest);
 
             if(! this.windowConfigured) {
 
@@ -354,6 +347,7 @@ class Capture {
         });
 
         newWindow.webContents.on('did-finish-load', async () => {
+
             log.info("did-finish-load: ", arguments);
 
             // see if we first need to handle the page in any special manner.
@@ -377,7 +371,11 @@ class Capture {
 
                 // capture within timeout just for debug purposes.
 
-                this.startCapture()
+                if(! this.window) {
+                    throw new Error("No window");
+                }
+
+                this.startCapture(this.window)
                     .catch(err => log.error(err));
 
             }, 1);
@@ -388,12 +386,12 @@ class Capture {
 
     }
 
-    async configureWindow(window) {
+    async configureWindow(window: BrowserWindow) {
 
         // TODO maybe inject this via a preload script so we know that it's always
         // running
 
-        log.info("Emulating browser: " + JSON.stringify(this.browser, null, "  " ));
+        log.info("Emulating browser: " + JSON.stringify(this.browserProfile, null, "  " ));
 
         // we need to mute by default especially if the window is hidden.
         log.info("Muting audio...");
@@ -402,55 +400,21 @@ class Capture {
         /**
          * @type {Electron.Parameters}
          */
-        let deviceEmulation = this.browser.deviceEmulation;
+        let deviceEmulation = this.browserProfile.deviceEmulation;
 
-        deviceEmulation = Objects.duplicate(deviceEmulation);
+        deviceEmulation = Object.assign({}, deviceEmulation);
 
         log.info("Emulating device...");
         window.webContents.enableDeviceEmulation(deviceEmulation);
 
-        window.webContents.setUserAgent(this.browser.userAgent);
+        window.webContents.setUserAgent(this.browserProfile.userAgent);
 
-        //let windowDimensions = this.__calculateWindowDimensions(window);
-
-        let windowDimensions = {
+        let windowDimensions: IDimensions = {
             width: deviceEmulation.screenSize.width,
             height: deviceEmulation.screenSize.height,
         };
 
         log.info("Using window dimensions: " + JSON.stringify(windowDimensions, null, "  "));
-
-        /** @RendererContext */
-        function configureBrowserWindowSize(windowDimensions) {
-
-            // TODO: see if I have already redefined it.  the second time fails
-            // because I can't redefine a property.  I don't think there is a way
-            // to find out if it's already defined though.
-
-            let definitions = [
-                {key: "width",       value: windowDimensions.width},
-                {key: "availWidth",  value: windowDimensions.width},
-                {key: "height",      value: windowDimensions.height},
-                {key: "availHeight", value: windowDimensions.height}
-            ];
-
-            definitions.forEach((definition) => {
-
-                console.log(`Defining ${definition.key} as: ${definition.value}`);
-
-                try {
-                    Object.defineProperty(window.screen, definition.key, {
-                        get: function () {
-                            return definition.value
-                        }
-                    });
-                } catch(e) {
-                    console.warn(`Unable to define ${definition.key}`, e);
-                }
-
-            });
-
-        }
 
         let screenDimensionScript = Functions.functionToScript(configureBrowserWindowSize, windowDimensions);
 
@@ -458,25 +422,8 @@ class Capture {
 
     }
 
-    /**
-     * Get back the dimensions of the given window.
-     *
-     * @param window
-     * @return {Dimensions}
-     * @private
-     */
-    __calculateWindowDimensions(window) {
-
-        let size = window.getSize();
-
-        return new Dimensions({
-            width: size[0],
-            height: size[1]
-        });
-
-    }
-
-
 }
 
-module.exports.Capture = Capture;
+export interface CaptureResultCallback {
+    (captureResult: CaptureResult): void;
+}

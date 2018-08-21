@@ -1,5 +1,5 @@
-
-const {Browser} = require("./Browser");
+import {Browser, BrowserProfileBuilder} from './Browser';
+import {BrowserProfile} from './BrowserProfile';
 
 // TODO: anything greater than 10k triggers a bug on NVidia drivers on Linux
 // but many documents are larger than this 10k limit if they have 10 pages or
@@ -12,17 +12,18 @@ const {Browser} = require("./Browser");
 // It's also an issue that this will use more memory. About 100MB for large
 // documents that need rendering with full windows.
 
-class Browsers {
+export class BrowserProfiles {
 
     /**
      * Migrate this to a profile of setting we then use to create the browser
      * window options.
      *
-     * @param browser {Browser}
-     * @param name {string} The name of the profile to use.
-     * @return {Browser}
      */
-    static toProfile(browser, name) {
+    static toBrowserProfile(browser: Browser, name: string): BrowserProfile {
+
+        if(name === 'default') {
+            return BrowserProfiles.toBrowserProfile(browser, 'webview');
+        }
 
         // support offscreen rendering (similar to chrome headless)
         //
@@ -31,36 +32,48 @@ class Browsers {
         switch (name) {
 
             case "hidden":
-                return new BrowserMutator(browser)
+                return new BrowserProfileBuilder(browser)
+                    .setProfile(name)
                     .setHeight(35000)
                     .setShow(false)
                     .build();
 
             case "headless":
-                return new BrowserMutator(browser)
+                return new BrowserProfileBuilder(browser)
+                    .setProfile(name)
                     .setHeight(35000)
                     .setShow(true)
                     .setOffscreen(true)
                     .build();
 
             case "headless_500":
-                return new BrowserMutator(browser)
+                return new BrowserProfileBuilder(browser)
+                    .setProfile(name)
                     .setHeight(500)
                     .setShow(false)
                     .setOffscreen(true)
                     .build();
 
-            case "default_500":
-                return Browsers.createDefault(browser, 500);
+            case "webview":
+                return new BrowserProfileBuilder(browser)
+                    .setProfile(name)
+                    .setHeight(35000)
+                    .setShow(true)
+                    .setOffscreen(false)
+                    .setNodeIntegration(true)
+                    .build();
 
-            case "test":
-                return Browsers.createDefault(browser, 10000);
-
-            case "default_5000":
-                return Browsers.createDefault(browser, 5000);
-
-            case "default":
-                return browser;
+            // case "default_500":
+            //     return Browsers.createDefault(browser, 500);
+            //
+            // case "test":
+            //     return Browsers.createDefault(browser, 10000);
+            //
+            // case "default_5000":
+            //     return Browsers.createDefault(browser, 5000);
+            //
+            // case "default":
+            //     return browser;
 
             default:
                 throw new Error("Incorrect profile name: " + name);
@@ -69,14 +82,8 @@ class Browsers {
 
     }
 
-    /**
-     *
-     * @param browser {Browser}
-     * @param height {number}
-     * @return {Browser}
-     */
-    static createDefault(browser, height) {
-        browser = Object.assign(new Browser(), browser);
+    static createDefault(browser: Browser, height: number) {
+        browser = Object.assign({}, browser);
 
         /**
          * The page height we should use when loading the document.  It
@@ -96,57 +103,3 @@ class Browsers {
 }
 
 
-class BrowserMutator {
-
-
-    /**
-     * @param browser {Browser}
-     */
-    constructor(browser) {
-        this.browser = Object.assign({}, browser);
-    }
-
-    /**
-     * @param height {number}
-     * @return {BrowserMutator}
-     */
-    setHeight(height) {
-
-        this.browser.deviceEmulation.screenSize.height = height;
-        this.browser.deviceEmulation.viewSize.height = height;
-
-        return this;
-
-    }
-
-    /**
-     * @param show {boolean}
-     * @return {BrowserMutator}
-     */
-    setShow(show) {
-
-        this.browser.show = show;
-
-        return this;
-
-    }
-
-    /**
-     * @param offscreen {boolean}
-     * @return {BrowserMutator}
-     */
-    setOffscreen(offscreen) {
-
-        this.browser.offscreen = true;
-
-        return this;
-
-    }
-
-    build() {
-        return this.browser;
-    }
-
-}
-
-module.exports.Browsers = Browsers;

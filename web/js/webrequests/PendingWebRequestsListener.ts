@@ -1,3 +1,5 @@
+import {NamedWebRequestEvent, WebRequestDetails} from './WebRequestReactor';
+
 const {BaseWebRequestsListener} = require("./BaseWebRequestsListener");
 const {Logger} = require("../logger/Logger");
 const {RequestState} = require("./RequestState");
@@ -7,41 +9,31 @@ const log = Logger.create();
  * Tracks the number of pending requests.
  *
  */
-class PendingWebRequestsListener extends BaseWebRequestsListener {
+export class PendingWebRequestsListener extends BaseWebRequestsListener {
+
+    /**
+     * The actual events we've seen for tracking purposes.
+     */
+    private pendingRequests: {[id: number]: any} = {};
+
+    /**
+     * Registered event listeners that we would need to dispatch.
+     */
+    private eventListeners: PendingWebRequestsCallback[] = [];
+
+    /**
+     * Keeps track of metadata for each request to help detect errors.
+     */
+    private requestState = new RequestState();
+
+    private startedRequests: {[id: number]: any} = {};
+
+    private finishedRequests: {[id: number]: any} = {};
 
     constructor() {
 
         super();
 
-        /**
-         * The actual events we've seen for tracking purposes.
-         *
-         * @type {Object<String,Object>}
-         */
-        this.pendingRequests = {};
-
-        /**
-         * The map of all states for all URLs.
-         */
-        this.requests = {};
-
-        /**
-         * Registered event listeners that we would need to dispatch.
-         *
-         * @type {Array<Function>}
-         */
-        this.eventListeners = [];
-
-        /**
-         * Keeps track of metadata for each request to help detect errors.
-         *
-         * @type {RequestState}
-         */
-        this.requestState = new RequestState();
-
-        this.startedRequests = {};
-
-        this.finishedRequests = {};
 
     }
 
@@ -49,7 +41,9 @@ class PendingWebRequestsListener extends BaseWebRequestsListener {
      * Called when we receive an event.  All the events give us a 'details'
      * object about the request.
      */
-    onWebRequestEvent(name, details, callback) {
+    onWebRequestEvent(event: NamedWebRequestEvent) {
+
+        let {name, details, callback} = event;
 
         // WARNING: this code behaves VERY strangely and we DO NOT receive events
         // in the proper order for some reason.  I would expect to receive them
@@ -83,7 +77,7 @@ class PendingWebRequestsListener extends BaseWebRequestsListener {
         if(name === "onBeforeRequest") {
             // after this request the pending will be incremented.
 
-            this.pendingRequests[details.url] = details;
+            this.pendingRequests[details.id] = details;
 
             this.startedRequests[details.id] = {
                 // the event used to mark the request started
@@ -105,7 +99,7 @@ class PendingWebRequestsListener extends BaseWebRequestsListener {
             // this request has already completed so is not considered against
             // pending any longer
 
-            delete this.pendingRequests[details.url];
+            delete this.pendingRequests[details.id];
 
             this.finishedRequests[details.id] = {
                 // the name of the event that we used to mark finished.
@@ -184,7 +178,7 @@ class PendingWebRequestsListener extends BaseWebRequestsListener {
      *
      * @return {number}
      */
-    calculateProgress(started, finished) {
+    calculateProgress(started: number, finished: number) {
         return 100 * (finished / started);
     }
 
@@ -209,11 +203,11 @@ class PendingWebRequestsListener extends BaseWebRequestsListener {
      *
      * @param eventListener {Function}
      */
-    addEventListener(eventListener) {
+    addEventListener(eventListener: PendingWebRequestsCallback) {
         this.eventListeners.push(eventListener);
     }
 
-    dispatchEventListeners(event) {
+    dispatchEventListeners(event: PendingWebRequestsEvent) {
         this.eventListeners.forEach(eventListener => {
             eventListener(event);
         })
@@ -221,4 +215,16 @@ class PendingWebRequestsListener extends BaseWebRequestsListener {
 
 }
 
-module.exports.PendingWebRequestsListener = PendingWebRequestsListener;
+export interface PendingWebRequestsCallback {
+    (event: PendingWebRequestsEvent): void;
+}
+
+export interface PendingWebRequestsEvent {
+    readonly name: string,
+    readonly details: WebRequestDetails,
+    readonly pending: number,
+    readonly started: number;
+    readonly finished: number;
+    readonly progress: number
+
+}

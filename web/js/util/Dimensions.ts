@@ -15,7 +15,7 @@ export class Dimensions {
      */
     public height: number;
 
-    constructor(obj: Dimensions) {
+    constructor(obj: IDimensions) {
 
         /**
          * This width of this rect.

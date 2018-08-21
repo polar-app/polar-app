@@ -7,6 +7,10 @@ export class WebContentsPromises {
         return new Once(webContents);
     }
 
+    static executeJavaScript<T>(webContents: WebContents, code: string, userGesture?: boolean) {
+        return webContents.executeJavaScript(code, userGesture);
+    }
+
 }
 
 class Once {

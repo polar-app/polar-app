@@ -31,7 +31,7 @@ export class HTMLFormat extends DocFormat {
         polarFingerprint.setAttribute("content", fingerprint);
     }
 
-    _queryFingerprintElement(): HTMLElement {
+    _queryFingerprintElement(): Element {
         return notNull(document.querySelector("meta[name='polar-fingerprint']"));
     }
 

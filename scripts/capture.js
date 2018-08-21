@@ -1,86 +1,59 @@
-// This file is required by the index.html file and will
-// be executed in the renderer process for that window.
-// All of the Node.js APIs are available in this process.
-
+"use strict";
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const Logger_1 = require("../web/js/logger/Logger");
+const BrowserProfiles_1 = require("../web/js/capture/BrowserProfiles");
+const DiskDatastore_1 = require("../web/js/datastore/DiskDatastore");
+const Args_1 = require("../web/js/electron/capture/Args");
+const Capture2_1 = require("../web/js/capture/Capture2");
+const BrowserRegistry_1 = __importDefault(require("../web/js/capture/BrowserRegistry"));
 const electron = require('electron');
 const app = electron.app;
-const BrowserRegistry = require("../web/js/capture/BrowserRegistry");
-const prompt = require('electron-prompt');
-
-const {Cmdline} = require("../web/js/electron/Cmdline");
-const {DiskDatastore} = require("../web/js/datastore/DiskDatastore");
-const {Args} = require("../web/js/electron/capture/Args");
-const {Capture} = require("../web/js/capture/Capture");
-const {CaptureOpts} = require("../web/js/capture/CaptureOpts");
-const {Logger} = require("../web/js/logger/Logger");
-const {Browsers} = require("../web/js/capture/Browsers");
-const log = Logger.create();
-
-let diskDatastore = new DiskDatastore();
-
-let args = Args.parse(process.argv);
-
-let browser = BrowserRegistry[args.browser];
-
-if(! browser) {
+const { Cmdline } = require("../web/js/electron/Cmdline");
+const log = Logger_1.Logger.create();
+let diskDatastore = new DiskDatastore_1.DiskDatastore();
+let args = Args_1.Args.parse(process.argv);
+let browser = BrowserRegistry_1.default[args.browser];
+if (!browser) {
     throw new Error("No browser defined for: " + args.browser);
 }
-
-if(args.profile) {
-    log.info("Using browser profile: " + args.profile);
-    browser = Browsers.toProfile(browser, args.profile);
-}
-
-app.on('ready', function() {
-
-    (async () => {
-
-        await diskDatastore.init();
-
-        // TODO don't use directory logging now as it is broken.
-        //await Logger.init(diskDatastore.logsDir);
-
+log.info("Using browser profile: " + args.profile);
+let browserProfile = BrowserProfiles_1.BrowserProfiles.toBrowserProfile(browser, args.profile);
+app.on('ready', function () {
+    (() => __awaiter(this, void 0, void 0, function* () {
+        yield diskDatastore.init();
         let url = Cmdline.getURLArg(process.argv);
-
-        if(! url) {
-
-            url = await prompt({
-                title: 'Enter a URL to Capture',
-                label: 'URL: ',
-                value: '',
-                inputAttrs: {
-                    type: 'url'
-                },
-            });
-
-            if(! url) {
+        if (!url) {
+            if (!url) {
                 console.warn("URL is required.");
                 app.quit();
                 return;
             }
-
-            url = "https://www.example.com"
-
+            url = "https://www.example.com";
         }
-
         console.log("Going to capture URL: " + url);
-
-        // TODO: sync up args + CaptureOpts
-        let captureOpts = new CaptureOpts({
+        let captureOpts = {
             amp: args.amp
-        });
-
-        let capture = new Capture(url, browser, diskDatastore.stashDir, captureOpts);
-
-        await capture.execute();
-
-        if(args.quit) {
+        };
+        let capture = new Capture2_1.Capture2(url, browserProfile, diskDatastore.stashDir, captureOpts);
+        yield capture.start();
+        if (args.quit) {
             log.info("Capture finished.  Quitting now");
             app.quit();
-        } else {
-            log.info("Not quitting (yielding to --no-quit=true).")
         }
-
-    })().catch(err => console.error(err));
-
+        else {
+            log.info("Not quitting (yielding to --no-quit=true).");
+        }
+    }))().catch(err => console.error(err));
 });
+//# sourceMappingURL=capture.js.map
