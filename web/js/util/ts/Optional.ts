@@ -13,13 +13,13 @@ export class Optional<T> {
         this.name = name;
     }
 
-    map(mapFunction: MapFunction<NonNullable<T>>): Optional<any> {
+    map<V>(mapFunction: MapFunction<NonNullable<T>, V>): Optional<V> {
 
         if (this.isPresent()) {
             return new Optional(mapFunction(this.value!), this.name);
         }
 
-        return new Optional<T>(undefined, this.name);
+        return new Optional<V>(undefined, this.name);
 
     }
 
@@ -96,10 +96,10 @@ export interface ConsumeFunction<T> {
     (value: T): void;
 }
 
-export interface MapFunction<T> {
-    (value: T): any;
+export interface MapFunction<T, V> {
+    (value: T): V;
 }
 
 export interface FilterFunction<T> {
-    (value?: T): T;
+    (value: T): boolean;
 }

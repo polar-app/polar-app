@@ -25,4 +25,16 @@ describe('Optional', function() {
 
     });
 
+    it("Change type within map function", function () {
+
+        let value = Optional.of('100')
+            .map(current => parseInt(current))
+            .filter(current => current === 100)
+            .get();
+
+        assert.equal(value, 100);
+
+    });
+
+
 });
