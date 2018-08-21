@@ -60,15 +60,6 @@ export class StandardWebContentsDriver implements WebContentsDriver {
             log.info("dom-ready: ", e);
         });
 
-        this.window.on('close', (event) => {
-            log.info("Handling window close");
-            event.preventDefault();
-            webContents.clearHistory();
-            webContents.session.clearCache(function() {
-                window.destroy();
-            });
-        });
-
         window.on('closed', function() {
             log.info("Window closed");
         });
