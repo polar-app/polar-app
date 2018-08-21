@@ -53,10 +53,10 @@ export class Capture2 {
 
     private driver?: WebContentsDriver;
 
-    /**
-     *
-     */
-    constructor(url: string, browserProfile: BrowserProfile, stashDir: string, captureOpts: CaptureOpts = {amp: true}) {
+    constructor(url: string,
+                browserProfile: BrowserProfile,
+                stashDir: string,
+                captureOpts: CaptureOpts = {amp: false}) {
 
         // FIXME: don't allow named anchors in the URL like #foo... strip them
         // and test this functionality.

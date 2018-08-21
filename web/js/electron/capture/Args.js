@@ -8,8 +8,8 @@ class Args {
         result = Objects_1.Objects.defaults(result, {
             quit: true,
             browser: "MOBILE_GALAXY_S8_WITH_CHROME_61_WIDTH_750",
-            profile: "hidden",
-            amp: true
+            profile: "default",
+            amp: false
         });
         return result;
     }
