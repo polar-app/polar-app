@@ -1,5 +1,4 @@
 productName: Polar Bookshelf
-#electronVersion: 3.0.0-beta.4
 appId: io.inputneuron/polar
 compression: store
 npmRebuild: false
@@ -17,9 +16,9 @@ mac:
       role: "Viewer"
 
 linux:
-  artifactName: ${name}-${version}-${arch}
-  synopsis: Polar Bookshelf PDF reader
-  description: Polar Bookshelf PDF reader
+  artifactName: ${name}-${version}-${arch}.${ext}
+  synopsis: Polar Bookshelf
+  description: Polar Bookshelf
   category: Reference
 
   # WARNING: 'icon' is NOT supported well or at all on Linux. the only way to
@@ -30,11 +29,10 @@ linux:
     - ext: "pdf"
 
 nsis:
-  artifactName: ${name}-${version}-${arch}
-
+  artifactName: ${name}-${version}-${arch}.${ext}
 
 win:
-  artifactName: ${name}-${version}-${arch}
+  artifactName: ${name}-${version}-${arch}.${ext}
   target:
     - target: nsis
     - target: portable
@@ -46,4 +44,4 @@ win:
 # https://help.github.com/articles/creating-a-personal-access-token-for-the-command-line/
 publish: github
 
-asar: false
+asar: true

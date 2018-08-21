@@ -1,7 +1,7 @@
 {
   "name": "polar-bookshelf",
   "version": "1.0.0-beta58",
-  "description": "Polar is a document reader for power users which supports PDF and web content and annotations and incremental reading powered by pagemarks.",
+  "description": "Polar Bookshelf",
   "main": "main.js",
   "scripts": {
     "start": "tsc && electron .",
