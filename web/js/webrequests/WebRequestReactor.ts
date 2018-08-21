@@ -61,6 +61,15 @@ export class WebRequestReactor {
 
         this.started = false;
 
+        this.webRequest.onBeforeRedirect(null!);
+        this.webRequest.onBeforeRequest(null!);
+        this.webRequest.onBeforeSendHeaders(null!);
+        this.webRequest.onCompleted(null!);
+        this.webRequest.onErrorOccurred(null!);
+        this.webRequest.onResponseStarted(null!);
+        this.webRequest.onSendHeaders(null!);
+
+
         // TODO: consider clearing the reactor too.
 
     }

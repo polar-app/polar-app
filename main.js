@@ -25,6 +25,7 @@ const {FileRegistry} = require("./web/js/backend/webserver/FileRegistry");
 const {ProxyServerConfig} = require("./web/js/backend/proxyserver/ProxyServerConfig");
 const {ProxyServer} = require("./web/js/backend/proxyserver/ProxyServer");
 const {CacheRegistry} = require("./web/js/backend/proxyserver/CacheRegistry");
+const {AppPaths} = require("./web/js/electron/webresource/AppPaths");
 
 const {Cmdline} = require("./web/js/electron/Cmdline");
 const {Paths} = require("./web/js/util/Paths");
@@ -571,12 +572,12 @@ async function cmdCaptureWebPage(item, focusedWindow) {
     browserWindowOptions.height = browserWindowOptions.height * .9;
     browserWindowOptions.center = true;
 
-    let targetWindow = await createWindow(browserWindowOptions);
+    let url = AppPaths.resource('./apps/capture/start-capture/index.html')
+
+    await createWindow(browserWindowOptions, url);
 
     // TODO: move to AppPaths here... loadFile does not work reliably.
 
-    let url = './apps/capture/start-capture/index.html';
-    targetWindow.loadFile(url);
 
 }
 
