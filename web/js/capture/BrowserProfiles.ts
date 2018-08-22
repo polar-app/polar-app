@@ -58,7 +58,7 @@ export class BrowserProfiles {
                 return new BrowserProfileBuilder(browser)
                     .setProfile(name)
                     .setHeight(35000)
-                    .setShow(true)
+                    .setShow(false)
                     .setOffscreen(false)
                     .setNodeIntegration(true)
                     .build();
