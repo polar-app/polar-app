@@ -9,7 +9,7 @@ import {SyncProgressListener} from './SyncProgressListener';
 import {Abortable} from './Abortable';
 import {SyncProgress} from './SyncProgress';
 import {SyncState} from './SyncState';
-import {SyncTask, SyncTaskResult} from './SyncTask';
+import {SyncTask} from './SyncTask';
 import {Logger} from '../../../logger/Logger';
 import {Percentages} from '../../../util/Percentages';
 import {Optional} from '../../../util/ts/Optional';
@@ -28,6 +28,13 @@ export class SyncQueue {
     private readonly abortable: Abortable;
 
     private readonly syncProgressListener: SyncProgressListener;
+
+    private readonly syncProgress: SyncProgress = {
+        percentage: 0,
+        state: SyncState.STARTED,
+        error: undefined,
+        taskResult: Optional.empty()
+    };
 
     /**
      *
@@ -55,13 +62,6 @@ export class SyncQueue {
      */
     async execute() {
 
-        let syncProgress: SyncProgress = {
-            percentage: 0,
-            state: SyncState.STARTED,
-            error: undefined,
-            taskResult: Optional.empty()
-        };
-
         let syncTask: SyncTask | undefined;
 
         let idx = 0;
@@ -75,25 +75,34 @@ export class SyncQueue {
 
             try {
 
-                syncProgress.taskResult = await syncTask();
+                this.syncProgress.taskResult = await syncTask();
 
             } catch (e) {
 
-                syncProgress.error = e;
-                syncProgress.state = SyncState.FAILED;
+                this.syncProgress.error = e;
+                this.syncProgress.state = SyncState.FAILED;
 
-                this.syncProgressListener(Object.freeze(Object.assign({}, syncProgress)));
+                this.fireSyncProgress();
 
                 break;
             }
 
             ++idx;
-            syncProgress.percentage = Percentages.calculate(idx, this.total);
+            this.syncProgress.percentage = Percentages.calculate(idx, this.total);
 
-            this.syncProgressListener(Object.freeze(Object.assign({}, syncProgress)));
-
+            this.fireSyncProgress();
 
         }
+
+    }
+
+    fireSyncProgress() {
+
+        if(this.syncProgress.percentage === 100) {
+            this.syncProgress.state = SyncState.COMPLETED;
+        }
+
+        this.syncProgressListener(Object.freeze(Object.assign({}, this.syncProgress)));
 
     }
 

@@ -9,6 +9,7 @@ class DocInfo extends SerializedObject_1.SerializedObject {
         this.progress = 0;
         this.pagemarkType = PagemarkType_1.PagemarkType.SINGLE_COLUMN;
         this.properties = {};
+        this.archived = false;
         this.nrPages = val.nrPages;
         this.fingerprint = val.fingerprint;
         this.init(val);

@@ -65,6 +65,7 @@ describe('DocMetas', function() {
                         "progress": 0,
                         "pagemarkType": "SINGLE_COLUMN",
                         "properties": {},
+                        "archived": false,
                         "nrPages": 2,
                         "fingerprint": "0x001"
                     },

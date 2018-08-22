@@ -59,7 +59,12 @@ describe('DecksSync', function() {
 
         assertJSON(syncProgress, {
             "percentage": 100,
-            "state": "STARTED"
+            "state": "COMPLETED",
+            "taskResult": {
+                "value": {
+                    "message": "Creating missing deck: Test Deck"
+                }
+            }
         });
 
     });

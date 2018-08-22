@@ -58,6 +58,13 @@ export class DocInfo extends SerializedObject {
      */
     public properties: {[id: string]: string} = {};
 
+    /**
+     * True if this document is marked 'archived'.  The user has completed
+     * reading it and no longer wants it to appear front and center in the
+     * repository UI.
+     */
+    public archived: boolean = false;
+
     constructor(val: DocInfo) {
 
         super(val);
