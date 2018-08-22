@@ -76,6 +76,8 @@ research which is often stored as PDF.
 
 Packages for Windows, MacOS, and Linux are available in the [releases](https://github.com/burtonator/polar-bookshelf/releases) page.
 
+We also have a [CHANGELOG](./docs/CHANGELOG.md) available if you're interested into what went into each release.
+
 # Discussion
 
 We have both a [Discord](https://discord.gg/GT8MhA6) group and
