@@ -35,7 +35,7 @@ win:
   artifactName: ${name}-${version}-${arch}.${ext}
   target:
     - target: nsis
-    - target: portable
+  #  - target: portable
   icon: ./icons/icon-512x512.png
   fileAssociations:
     - ext: "pdf"
