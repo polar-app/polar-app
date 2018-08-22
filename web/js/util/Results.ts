@@ -1,4 +1,4 @@
-import {IResult, Result} from './Result';
+import {Result} from './Result';
 
 export class Results {
 

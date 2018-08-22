@@ -6,23 +6,23 @@ import {assertJSON} from '../test/Assertions';
 const log = Logger.create();
 describe('Results', function() {
 
-    async function hello() {
+    function hello() {
         return "hello";
     }
 
-    async function helloAny(): Promise<any> {
+    function helloAny(): any {
         return "hello";
     }
 
-    it("Execute basic", async function () {
+    it("Execute basic", function () {
 
-        assert.equal((await Results.execute(() => hello())).get(), 'hello');
+        assert.equal((Results.execute(() => hello())).get(), 'hello');
 
     });
 
-    it("Execute any", async function () {
+    it("Execute any", function () {
 
-        assert.equal((await Results.execute(() => helloAny())).get(), 'hello');
+        assert.equal((Results.execute(() => helloAny())).get(), 'hello');
 
     });
 
