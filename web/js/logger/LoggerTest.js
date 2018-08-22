@@ -31,4 +31,16 @@ describe('Logger', function() {
     });
 
 
+    it("with exception", function () {
+
+        // FIXME: we can't capture console output I think but maybe I can figure
+        // out in the future how to write it to a specific file.
+
+        const log = Logger.create();
+
+        log.error("This is an error: ", new Error('asdf'));
+
+    });
+
+
 });

@@ -10,6 +10,8 @@ import {WebContentsDriver, WebContentsDriverFactory} from './drivers/WebContents
 import {BrowserProfile} from './BrowserProfile';
 import {Strings} from '../util/Strings';
 import {Optional} from '../util/ts/Optional';
+import {IResult, Result} from '../util/Result';
+import {Results} from '../util/Results';
 
 const {Filenames} = require("../util/Filenames");
 const {Files} = require("../util/Files");
@@ -246,7 +248,8 @@ export class Capture2 {
         // this more aggressively.
         try {
 
-            captured = await webContents.executeJavaScript("ContentCapture.captureHTML()");
+            let result: IResult<any> = await webContents.executeJavaScript("ContentCapture.execute()");
+            captured = Results.create<any>(result).get();
 
         } catch (e) {
 
@@ -255,7 +258,7 @@ export class Capture2 {
             // this with a closure that is an 'either' err or content.
 
             log.error("Could not capture HTML: ", e);
-
+            throw e;
         }
 
         log.info("Retrieving HTML...done");

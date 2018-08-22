@@ -2,8 +2,16 @@
  * @RendererContext
  */
 import {Dict} from '../../util/Dict';
+import {Result} from '../../util/Result';
+import {CapturedDoc} from './CaptureResults';
+import {Results} from '../../util/Results';
 
 export class ContentCapture {
+
+
+    static execute(): Result<any> {
+        return Results.execute(() => ContentCapture.captureHTML());
+    }
 
 
     // FIXME: <script> within SVG also needs to be stripped!
@@ -23,7 +31,7 @@ export class ContentCapture {
      * @param [result] The result we are building.
      *
      */
-    static captureHTML(contentDoc?: Document, url?: string, result?: any) {
+    static captureHTML(contentDoc?: Document, url?: string, result?: any): any {
 
         const ENABLE_IFRAMES = true;
 
@@ -49,9 +57,9 @@ export class ContentCapture {
                 // TODO: this should be something other chan chtml now.  This
                 // actually represents the format of the captured representation
                 // not the actual storage value on disk.
-                type: "chtml",
+                type: "phz",
 
-                version: "3.0.0",
+                version: "4.0.0",
 
                 title: contentDoc.title,
 
@@ -162,7 +170,7 @@ export class ContentCapture {
 
     }
 
-    static captureDoc(cloneDoc: Document, url: string) {
+    static captureDoc(cloneDoc: Document, url: string): CapturedDoc {
 
         if(!cloneDoc) {
             throw new Error("No cloneDoc");
@@ -173,7 +181,7 @@ export class ContentCapture {
 
         // TODO: store many of these fields in the HTML too because the iframes
         // need to have the same data
-        let result : any = {
+        let result : CapturedDoc = {
 
             // TODO: capture HTML metadata including twitter card information
             // which we could show in the UI.  Since we are capturing the whole
@@ -196,13 +204,13 @@ export class ContentCapture {
             },
 
             // The content as an HTML string
-            content: null,
+            content: "",
 
             /**
              * The length of the content in number of characters.  This is NOT
              * the content length which would be the number of bytes.
              */
-            contentTextLength: null,
+            contentTextLength: 0,
 
             mutations: {
                 eventAttributesRemoved: 0,
@@ -212,7 +220,7 @@ export class ContentCapture {
                 cleanupRemoveScripts: null,
                 cleanupHead: null,
                 cleanupBase: null,
-                showAriaHidden: null
+                showAriaHidden: 0
             }
 
         };
@@ -395,9 +403,11 @@ export class ContentCapture {
     }
 
     /**
-     * Convert the given doc to outerHTML including the DocType and other information.
+     * Convert the given doc to outerHTML including the DocType and other
+     * information.
      *
-     * We return the original doc in near original condition. No major mutations.
+     * We return the original doc in near original condition. No major
+     * mutations.
      *
      * Note that new XMLSerializer().serializeToString(document) includes the
      * canonical form not the source form.
