@@ -41,7 +41,7 @@ app.on('ready', async function() {
 
     //mainWindow.loadURL('about:blank')
 
-    let url = 'https://en.m.wikipedia.org/wiki/Multiple_inheritance';
+    let url = 'http://www.whatsmyua.info/';
     mainWindow.loadURL(url)
 
 });

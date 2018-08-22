@@ -128,4 +128,29 @@ export class StandardWebContentsDriver implements WebContentsDriver {
 
     }
 
+    loadURL(url: string): Promise<void> {
+
+        let result = new Promise<void>(resolve => {
+
+            this.webContents!.once('did-finish-load', async () => {
+                resolve();
+            });
+
+        });
+
+        const opts = {
+
+            extraHeaders: `pragma: no-cache\nreferer: ${url}\n`,
+            userAgent: this.browserProfile.userAgent
+
+        };
+
+        this.webContents!.loadURL(url, opts);
+
+        return result;
+
+    }
+
 }
+
+

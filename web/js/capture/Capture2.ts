@@ -58,7 +58,7 @@ export class Capture2 {
     constructor(url: string,
                 browserProfile: BrowserProfile,
                 stashDir: string,
-                captureOpts: CaptureOpts = {amp: false}) {
+                captureOpts: CaptureOpts = {amp: true}) {
 
         // FIXME: don't allow named anchors in the URL like #foo... strip them
         // and test this functionality.
@@ -90,52 +90,11 @@ export class Capture2 {
 
         this.webContents = await driver.getWebContents();
 
-        this.webContents.once('did-finish-load', async () => {
-
-            // FIXME this amp stuff is probably broken
-
-            log.info("did-finish-load: ", arguments);
-
-            // see if we first need to handle the page in any special manner.
-
-            // FIXME: make this into some type of content handlers system
-            // so that we can add one off extensions like reloading the apage
-            // when AMP or other features are detected.  We could also do AMP
-            // earlier I thin like on-dom-ready.
-            //
-
-            let ampURL = await this.getAmpURL();
-
-            // TODO: if we end up handling multiple types of URLs in the future
-            // we might want to build up a history to prevent endless loops or
-            // just keep track of the redirect count.
-            if(this.captureOpts.amp && ampURL && ampURL !== this.url) {
-
-                log.info("Found AMP URL.  Redirecting then loading: " + ampURL);
-
-                // redirect us to the amp URL as this will render better.
-                this.loadURL(ampURL);
-                return;
-
-            }
-
-            setTimeout(() => {
-
-                // capture within timeout just for debug purposes.
-
-                this.startCapture()
-                    .catch(err => log.error(err));
-
-            }, 1);
-
-        });
-
         this.onWebRequest(this.webContents.session.webRequest);
 
+        await this.driver.loadURL(this.url);
 
-        log.info("Telling WebContents to load: ", this.url);
-        //
-        this.webContents.loadURL(this.url);
+        await this.handleLoad();
 
         return new Promise<CaptureResult>(resolve => {
             this.resolve = resolve;
@@ -143,23 +102,41 @@ export class Capture2 {
 
     }
 
-    loadURL(url: string) {
+    async handleLoad() {
 
-        // change the global URL we're loading...
-        this.url = url;
+        // see if we first need to handle the page in any special manner.
 
-        const loadURLOptions = {
+        // FIXME: make this into some type of content handlers system
+        // so that we can add one off extensions like reloading the apage
+        // when AMP or other features are detected.  We could also do AMP
+        // earlier I thin like on-dom-ready.
+        //
 
-            // TODO: I don't think we should use no-cache or at least make it
-            // a command line option. Probably best to not use it by default
-            // but then make it an option later.
+        let ampURL = await this.getAmpURL();
 
-            extraHeaders: `pragma: no-cache\nreferer: ${url}\n`,
-            userAgent: this.browserProfile.userAgent
+        // TODO: if we end up handling multiple types of URLs in the future
+        // we might want to build up a history to prevent endless loops or
+        // just keep track of the redirect count.
+        if(this.captureOpts.amp && ampURL && ampURL !== this.url) {
 
-        };
+            log.info("Found AMP URL.  Redirecting then loading: " + ampURL);
 
-        this.webContents!.loadURL(url, loadURLOptions);
+            // redirect us to the amp URL as this will render better.
+            await this.driver!.loadURL(ampURL);
+            await this.handleLoad();
+
+            return;
+
+        }
+
+        setTimeout(() => {
+
+            // capture within timeout just for debug purposes.
+
+            this.startCapture()
+                .catch(err => log.error(err));
+
+        }, 1);
 
     }
 

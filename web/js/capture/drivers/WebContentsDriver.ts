@@ -14,6 +14,8 @@ export interface WebContentsDriver {
      */
     destroy(): void;
 
+    loadURL(url: string): Promise<void>
+
 }
 
 export class WebContentsDriverFactory {
