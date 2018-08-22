@@ -8,7 +8,7 @@ import {configureBrowserWindowSize} from '../renderer/ContentCaptureFunctions';
 import {Functions} from '../../util/Functions';
 import {BrowserProfile} from '../BrowserProfile';
 import BrowserWindowConstructorOptions = Electron.BrowserWindowConstructorOptions;
-import {notNull} from '../../Preconditions';
+import {Reactor} from '../../reactor/Reactor';
 
 const log = Logger.create();
 
@@ -23,6 +23,8 @@ export class StandardWebContentsDriver implements WebContentsDriver {
 
     protected webContents?: WebContents;
 
+    protected reactor = new Reactor<WebContentsEvent>();
+
     constructor(browserProfile: BrowserProfile) {
         this.browserProfile = browserProfile;
     }
@@ -32,6 +34,8 @@ export class StandardWebContentsDriver implements WebContentsDriver {
         let browserWindowOptions = this.computeBrowserWindowOptions();
 
         await this.doInit(browserWindowOptions);
+
+        this.initReactor();
 
     }
 
@@ -60,14 +64,18 @@ export class StandardWebContentsDriver implements WebContentsDriver {
             log.info("dom-ready: ", e);
         });
 
-        window.on('closed', function() {
+        window.on('close', () => {
+            log.info("Window close");
+        });
+
+        window.on('closed', () => {
             log.info("Window closed");
         });
 
-        webContents.on('new-window', function(e, url) {
+        webContents.on('new-window', (e, url) => {
         });
 
-        webContents.on('will-navigate', function(e, url) {
+        webContents.on('will-navigate', (e, url) => {
             e.preventDefault();
         });
 
@@ -86,16 +94,6 @@ export class StandardWebContentsDriver implements WebContentsDriver {
         this.configureWindow(window.webContents)
             .catch(err => log.error(err));
 
-    }
-
-    public async getWebContents(): Promise<Electron.WebContents> {
-        return Optional.of(this.webContents).get();
-    }
-
-    public async destroy() {
-        log.info("Destroying window...");
-        Optional.of(this.window).when(window => window.close());
-        log.info("Destroying window...done");
     }
 
     protected async configureWindow(webContents: WebContents) {
@@ -128,7 +126,28 @@ export class StandardWebContentsDriver implements WebContentsDriver {
 
     }
 
-    loadURL(url: string): Promise<void> {
+    private initReactor() {
+
+        this.reactor.registerEvent('close')
+
+        this.window!.on('close', () => {
+            this.reactor.dispatchEvent('close', {});
+        });
+
+    }
+
+    public async getWebContents(): Promise<Electron.WebContents> {
+        return Optional.of(this.webContents).get();
+    }
+
+    public async destroy() {
+        log.info("Destroying window...");
+        Optional.of(this.window).when(window => window.close());
+        log.info("Destroying window...done");
+    }
+
+
+    public loadURL(url: string): Promise<void> {
 
         let result = new Promise<void>(resolve => {
 
@@ -151,6 +170,14 @@ export class StandardWebContentsDriver implements WebContentsDriver {
 
     }
 
+    public addEventListener(eventName: WebContentsEventName, eventListener: () => void): void {
+        this.reactor.addEventListener(eventName, eventListener);
+    }
+
 }
 
+type WebContentsEventName = 'close';
 
+interface WebContentsEvent {
+
+}
