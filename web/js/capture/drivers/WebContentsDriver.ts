@@ -16,6 +16,8 @@ export interface WebContentsDriver {
 
     loadURL(url: string): Promise<void>
 
+    addEventListener(eventName: WebContentsEventName, eventListener: () => void): void;
+
 }
 
 export class WebContentsDriverFactory {
@@ -40,4 +42,10 @@ export enum DriverType {
     HEADLESS = 'headless',
     HIDDEN = 'hidden',
     WEBVIEW = 'webview'
+}
+
+export type WebContentsEventName = 'close';
+
+export interface WebContentsEvent {
+
 }

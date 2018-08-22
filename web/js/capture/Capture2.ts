@@ -90,6 +90,10 @@ export class Capture2 {
 
         this.webContents = await driver.getWebContents();
 
+        this.driver!.addEventListener('close', () => {
+            this.stop();
+        });
+
         this.onWebRequest(this.webContents.session.webRequest);
 
         await this.driver.loadURL(this.url);
@@ -133,10 +137,22 @@ export class Capture2 {
 
             // capture within timeout just for debug purposes.
 
-            this.startCapture()
+            this.stop();
+
+            this.capture()
                 .catch(err => log.error(err));
 
         }, 1);
+
+    }
+
+    stop() {
+
+        this.webRequestReactors.forEach(webRequestReactor => {
+            log.info("Stopping webRequestReactor...");
+            webRequestReactor.stop();
+            log.info("Stopping webRequestReactor...done");
+        });
 
     }
 
@@ -144,7 +160,7 @@ export class Capture2 {
      * Called when the onLoad handler is executed and we're ready to start the
      * capture.
      */
-    async startCapture() {
+    async capture() {
 
         if(USE_PAGING_LOADER) {
 
@@ -164,12 +180,6 @@ export class Capture2 {
             await pagingLoader.onLoad();
 
         }
-
-        this.webRequestReactors.forEach(webRequestReactor => {
-            log.info("Stopping webRequestReactor...");
-            webRequestReactor.stop();
-            log.info("Stopping webRequestReactor...done");
-        });
 
         await Functions.waitFor(EXECUTE_CAPTURE_DELAY);
 

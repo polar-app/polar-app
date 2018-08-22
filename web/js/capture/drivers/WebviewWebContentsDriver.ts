@@ -40,6 +40,8 @@ export class WebviewWebContentsDriver extends StandardWebContentsDriver {
 
         await this.initWebContents(window, window.webContents, browserWindowOptions);
 
+        this.initReactor();
+
     }
 
     protected async doInitWebview() {

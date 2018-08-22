@@ -74,6 +74,10 @@ export class Reactor<V> {
             throw new Error("Callback is not a function: " + typeof callback);
         }
 
+        if(this.events[eventName] === undefined) {
+            throw new Error("No registered event for event name: " + eventName);
+        }
+
         this.events[eventName].registerCallback(callback);
         return this;
     }

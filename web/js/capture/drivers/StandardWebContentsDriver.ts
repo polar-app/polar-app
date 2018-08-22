@@ -1,5 +1,5 @@
 import {BrowserWindow, WebContents} from 'electron';
-import {WebContentsDriver} from './WebContentsDriver';
+import {WebContentsDriver, WebContentsEvent, WebContentsEventName} from './WebContentsDriver';
 import {BrowserWindows} from '../BrowserWindows';
 import {Logger} from '../../logger/Logger';
 import {Optional} from '../../util/ts/Optional';
@@ -35,8 +35,6 @@ export class StandardWebContentsDriver implements WebContentsDriver {
 
         await this.doInit(browserWindowOptions);
 
-        this.initReactor();
-
     }
 
     protected computeBrowserWindowOptions() {
@@ -50,6 +48,8 @@ export class StandardWebContentsDriver implements WebContentsDriver {
         let window = new BrowserWindow(browserWindowOptions);
 
         await this.initWebContents(window, window.webContents, browserWindowOptions);
+
+        this.initReactor();
 
     }
 
@@ -91,8 +91,7 @@ export class StandardWebContentsDriver implements WebContentsDriver {
             await BrowserWindows.onceReadyToShow(window);
         }
 
-        this.configureWindow(window.webContents)
-            .catch(err => log.error(err));
+        await this.configureWindow(window.webContents);
 
     }
 
@@ -126,11 +125,14 @@ export class StandardWebContentsDriver implements WebContentsDriver {
 
     }
 
-    private initReactor() {
+    protected initReactor() {
 
-        this.reactor.registerEvent('close')
+        log.info("Initializing reactor for 'close'");
+
+        this.reactor.registerEvent('close');
 
         this.window!.on('close', () => {
+            log.info("Firing event listener 'close'");
             this.reactor.dispatchEvent('close', {});
         });
 
@@ -173,11 +175,5 @@ export class StandardWebContentsDriver implements WebContentsDriver {
     public addEventListener(eventName: WebContentsEventName, eventListener: () => void): void {
         this.reactor.addEventListener(eventName, eventListener);
     }
-
-}
-
-type WebContentsEventName = 'close';
-
-interface WebContentsEvent {
 
 }
