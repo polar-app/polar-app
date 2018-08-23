@@ -18,13 +18,25 @@ export class AppPaths {
         // TODO: sometimes appPath is an ASAR file and that really confuses
         // us and we're going to need a strategy to handle that situation.
 
-        let baseDir = AppPaths.getBaseDir()
+        let baseDir = AppPaths.getBaseDir();
 
         let absolutePath = path.resolve(baseDir, relativePath);
 
-        if(! fs.existsSync(absolutePath)) {
-            throw new Error("Absolute path does not exist: " + absolutePath);
+        try {
+
+            fs.readFileSync(absolutePath);
+
+        } catch( e ) {
+
+            // We use readFileSync here because we need to we need to peek into
+            // .asar files which do not support exists but DO support reading
+            // the file.  If this fails we will get an exception about not
+            // finding the file.
+
+            throw new AppPathException("Unable to create app path: " + absolutePath + " - " + e.message);
+
         }
+
         return absolutePath;
 
     }
@@ -60,5 +72,9 @@ export class AppPaths {
         return 'file://' + path + queryData;
 
     }
+
+}
+
+export class AppPathException extends Error {
 
 }
