@@ -1,6 +1,5 @@
 
 const base58check = require("base58check");
-//const createKeccakHash = require("keccak");
 import {Preconditions} from './Preconditions';
 import {sha3_256, keccak256} from 'js-sha3';
 

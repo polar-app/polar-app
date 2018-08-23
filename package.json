@@ -109,7 +109,6 @@
     "jquery.flowchart": "^1.1.0",
     "js-sha3": "^0.7.0",
     "jszip": "^3.1.5",
-    "keccak": "^1.4.0",
     "loader": "file:./web/loader",
     "lodash": "^4.17.10",
     "markdown-plus": "^2.5.2",
