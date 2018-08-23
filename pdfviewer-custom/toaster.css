@@ -1,0 +1,14 @@
+
+div#toast-container {
+    position: fixed;
+    z-index: 9999999;
+    top: 90px;
+    right: 70px;
+    opacity: 1 !important;
+    font-size: 12px;
+}
+
+.toast {
+    opacity: 1 !important;
+}
+

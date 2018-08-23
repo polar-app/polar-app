@@ -5,6 +5,7 @@ import {WebContentsPromises} from '../../electron/framework/WebContentsPromises'
 import {DialogWindowReference} from './DialogWindowReference';
 import {DialogWindowMenu} from './DialogWindowMenu';
 import {AppPaths} from '../../electron/webresource/AppPaths';
+import {Preconditions} from '../../Preconditions';
 
 const log = Logger.create();
 
@@ -139,6 +140,8 @@ export class DialogWindowOptions {
     public show: boolean = false;
 
     constructor(resource: Resource, width: number = 800, height: number = 600, show?: boolean) {
+
+        Preconditions.assertNotNull(resource);
 
         this.resource = resource;
 

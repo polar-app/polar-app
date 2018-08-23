@@ -3,9 +3,11 @@
  */
 import {Optional} from '../../util/ts/Optional';
 import {IPCError} from './IPCError';
-import {IPCSender} from './IPCSender';
 import {ElectronContext} from './ElectronContext';
 import {ElectronContexts} from './ElectronContexts';
+import {Logger} from '../../logger/Logger';
+
+const log = Logger.create();
 
 export class IPCMessage<T> {
 
@@ -84,6 +86,10 @@ export class IPCMessage<T> {
     }
 
     static create<T>(obj: any, valueFactory?: ValueFactory<T> ): IPCMessage<T> {
+
+        if(obj._value === undefined) {
+            log.error("IPC message missing value: ", obj);
+        }
 
         // require the value.
         obj._value = Optional.of(obj._value, "value").get();

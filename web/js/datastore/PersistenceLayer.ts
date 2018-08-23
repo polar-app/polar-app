@@ -13,7 +13,6 @@ export class PersistenceLayer {
 
     private readonly datastore: Datastore;
 
-
     constructor(datastore: Datastore) {
         this.datastore = datastore;
     }

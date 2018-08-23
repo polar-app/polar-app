@@ -1,5 +1,6 @@
 
 @import url('./set-title.css');
+@import url('./toaster.css');
 
 
 /*#secondaryToolbarButtonContainer > .polar-fa-button {*/
@@ -117,16 +118,3 @@
     font-size: 13px;
 
 }
-
-div#toast-container {
-    position: absolute;
-    z-index: 9999999;
-    top: 90px;
-    right: 70px;
-    opacity: 1 !important;
-}
-
-.toast {
-    opacity: 1 !important;
-}
-

@@ -40,6 +40,8 @@ export class SyncController {
 
     async onStartSync(triggerEvent: TriggerEvent) {
 
+        log.info("Starting sync...");
+
         // TODO: verify that the document has a title.
 
         if(Strings.empty(this.model.docMeta.docInfo.title)) {
