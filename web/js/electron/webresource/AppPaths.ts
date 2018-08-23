@@ -42,14 +42,7 @@ export class AppPaths {
     }
 
     protected static getBaseDir() {
-        let baseDir = app.getAppPath();
-
-        if(! baseDir.indexOf(".asar")) {
-            return baseDir;
-        } else {
-            return process.cwd();
-        }
-
+        return app.getAppPath();
     }
 
     /**
