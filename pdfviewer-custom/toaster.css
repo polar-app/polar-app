@@ -5,7 +5,7 @@ div#toast-container {
     top: 90px;
     right: 70px;
     opacity: 1 !important;
-    font-size: 12px;
+    font-size: 14px;
 }
 
 .toast {

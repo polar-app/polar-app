@@ -1,3 +1,16 @@
+
+# 1.0.0-beta103
+
+- deleted some of the pdf.js nav links as they were broken for the most part.
+
+- Removed errant link to jquery-ui which was being fetched and probably slowing
+  down the initial page load.
+
+# 1.0.0-beta102
+
+- Fixed Windows builds to have proper files for the .exe. Setup tested and it 
+  works properly now. 
+
 # 1.0.0-beta100
 
 - Capture now using webview by default for captured content. Should be much much
