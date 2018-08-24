@@ -36,6 +36,9 @@ const EXECUTE_CAPTURE_DELAY = 1500;
 // TODO: this code is distributed across two packages.. capture and
 // electron.capture... pick one!
 
+/**
+ * @Deprecate remove after 10/2018 once Capture2 is proven to work.
+ */
 export class Capture {
 
     public url: string;

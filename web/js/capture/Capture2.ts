@@ -1,8 +1,8 @@
 import {CaptureOpts} from './CaptureOpts';
-import {WebRequest, WebContents, BrowserWindow} from 'electron';
+import {WebContents, WebRequest} from 'electron';
 import {CaptureResult} from './CaptureResult';
 import {Logger} from '../logger/Logger';
-import {notNull, Preconditions} from '../Preconditions';
+import {Preconditions} from '../Preconditions';
 import {PendingWebRequestsListener} from '../webrequests/PendingWebRequestsListener';
 import {DebugWebRequestsListener} from '../webrequests/DebugWebRequestsListener';
 import {WebRequestReactor} from '../webrequests/WebRequestReactor';
@@ -10,13 +10,13 @@ import {WebContentsDriver, WebContentsDriverFactory} from './drivers/WebContents
 import {BrowserProfile} from './BrowserProfile';
 import {Strings} from '../util/Strings';
 import {Optional} from '../util/ts/Optional';
-import {IResult, Result} from '../util/Result';
+import {IResult} from '../util/Result';
 import {Results} from '../util/Results';
+import {Functions} from '../util/Functions';
+import {Files} from '../util/Files';
+import {Filenames} from '../util/Filenames';
+import {CapturedPHZWriter} from './CapturedPHZWriter';
 
-const {Filenames} = require("../util/Filenames");
-const {Files} = require("../util/Files");
-const {Functions} = require("../util/Functions");
-const {CapturedPHZWriter} = require("./CapturedPHZWriter");
 const {DefaultPagingBrowser} = require("../electron/capture/pagination/DefaultPagingBrowser");
 const {PagingLoader} = require("../electron/capture/pagination/PagingLoader");
 

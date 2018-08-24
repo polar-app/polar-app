@@ -1,6 +1,4 @@
-
 import {Logger} from '../web/js/logger/Logger';
-import {Capture} from '../web/js/capture/Capture';
 import {BrowserProfiles} from '../web/js/capture/BrowserProfiles';
 import {DiskDatastore} from '../web/js/datastore/DiskDatastore';
 import {Args} from '../web/js/electron/capture/Args';
