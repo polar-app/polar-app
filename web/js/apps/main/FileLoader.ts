@@ -1,4 +1,4 @@
-import {WebResource} from '../webresource/WebResource';
+import {WebResource} from '../../electron/webresource/WebResource';
 
 /**
  * A File Loader handles loading a file in the cache registry and returning a
@@ -7,6 +7,7 @@ import {WebResource} from '../webresource/WebResource';
  *
  * @abstract
  */
+
 export interface FileLoader {
 
     /**

@@ -1,9 +1,9 @@
 import {FileLoader} from './FileLoader';
-import {WebResource} from '../webresource/WebResource';
 import {CacheRegistry} from '../../backend/proxyserver/CacheRegistry';
 import {PHZLoader} from './PHZLoader';
 import {FileRegistry} from '../../backend/webserver/FileRegistry';
 import {PDFLoader} from './PDFLoader';
+import {WebResource} from '../../electron/webresource/WebResource';
 
 export class DefaultFileLoader implements FileLoader {
 

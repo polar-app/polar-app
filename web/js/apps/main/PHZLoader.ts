@@ -1,11 +1,11 @@
-import {AppPaths} from '../webresource/AppPaths';
-import {WebResource} from '../webresource/WebResource';
 import {Preconditions} from '../../Preconditions';
 import {Paths} from '../../util/Paths';
 import {Fingerprints} from '../../util/Fingerprints';
 import {Logger} from '../../logger/Logger';
 import {FileLoader} from './FileLoader';
 import {CacheRegistry} from '../../backend/proxyserver/CacheRegistry';
+import {WebResource} from '../../electron/webresource/WebResource';
+import {AppPaths} from '../../electron/webresource/AppPaths';
 
 const log = Logger.create();
 

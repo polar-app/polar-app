@@ -1,7 +1,7 @@
 import {FileLoader} from './FileLoader';
-import {WebResource} from '../webresource/WebResource';
-import {AppPaths} from '../webresource/AppPaths';
+import {WebResource} from '../../electron/webresource/WebResource';
 import {FileRegistry} from '../../backend/webserver/FileRegistry';
+import {AppPaths} from '../../electron/webresource/AppPaths';
 
 export class PDFLoader implements FileLoader {
 

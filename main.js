@@ -404,7 +404,6 @@ async function loadDoc(path, targetWindow) {
     }
 
     let fileMeta = fileRegistry.registerFile(path);
-    let cacheMeta = null;
 
     log.info("Loading doc via HTTP server: " + JSON.stringify(fileMeta));
 
@@ -420,42 +419,6 @@ async function loadDoc(path, targetWindow) {
         // FIXME: Use a PHZ loader for this.
 
         url = `file://${__dirname}/pdfviewer/web/viewer.html?file=${fileParam}`;
-
-    } else if(path.endsWith(".chtml")) {
-
-        // FIXME: CHTML Can go away and this block should be removed.
-
-        let cacheMetas = await cacheRegistry.registerFile(path);
-
-        log.info("Cache metas: " + JSON.stringify(cacheMetas));
-
-        // we only need the first one because this is really just used for the
-        // proxy configuration and the first / main URL
-        let cacheMeta = cacheMetas[0];
-
-        // FIXME for phz we should handle this differently and read the metadata from the PHZ file...
-
-        let descriptorPath = path.replace(/\.chtml$/, ".json");
-        let descriptorJSON = await Files.readFileAsync(descriptorPath);
-
-        descriptor = JSON.parse(descriptorJSON);
-        delete descriptor.content;
-        delete descriptor.capturedDocuments;
-
-        // convert it BACK to a JSON object so that we can keep the content stripped
-        descriptorJSON = JSON.stringify(descriptor);
-
-        log.info("Loaded descriptor from: " + descriptorPath);
-
-        // we don't need the content represented twice.
-
-        let basename = Paths.basename(path);
-
-        // TODO: this is workaround until we enable zip files with embedded
-        // metadata / descriptors
-        let fingerprint = Fingerprints.create(basename);
-
-        url = `file://${__dirname}/htmlviewer/index.html?file=${encodeURIComponent(cacheMeta.url)}&fingerprint=${fingerprint}&descriptor=${encodeURIComponent(descriptorJSON)}`;
 
     } else if(path.endsWith(".phz")) {
 
@@ -487,19 +450,6 @@ async function loadDoc(path, targetWindow) {
         let fingerprint = Fingerprints.create(basename);
 
         url = `file://${__dirname}/htmlviewer/index.html?file=${encodeURIComponent(cachedRequest.url)}&fingerprint=${fingerprint}&descriptor=${encodeURIComponent(descriptorJSON)}`;
-
-    }
-
-    if(cacheMeta) {
-
-        // log.info("Using proxy config: ", cacheMeta.requestConfig);
-        //
-        // await new Promise((resolve => {
-        //     targetWindow.webContents.session.setProxy(cacheMeta.requestConfig, () => {
-        //         log.info("Proxy configured: ", arguments);
-        //         resolve();
-        //     });
-        // }))
 
     }
 
