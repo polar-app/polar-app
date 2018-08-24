@@ -7,27 +7,23 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-const http = require('http');
-const fs = require('fs');
-const assert = require('assert');
-const url = require('url');
-const { ProxyServerConfig } = require("./ProxyServerConfig");
-const { CacheRegistry } = require("./CacheRegistry");
-const { CapturedPHZWriter } = require("../../capture/CapturedPHZWriter");
-const { MockCapturedContent } = require("../../capture/MockCapturedContent");
-const { assertJSON } = require('../../test/Assertions');
-const { CacheEntriesFactory } = require('./CacheEntriesFactory');
-require("../../test/TestingTime").freeze();
+Object.defineProperty(exports, "__esModule", { value: true });
+const TestingTime_1 = require("../../test/TestingTime");
+const CapturedPHZWriter_1 = require("../../capture/CapturedPHZWriter");
+const ProxyServerConfig_1 = require("./ProxyServerConfig");
+const CacheRegistry_1 = require("./CacheRegistry");
+const MockCapturedContent_1 = require("../../capture/MockCapturedContent");
+TestingTime_1.TestingTime.freeze();
 describe('CacheRegistryTest', function () {
     describe('Load PHZ', function () {
         it("registerFile", function () {
             return __awaiter(this, void 0, void 0, function* () {
-                let captured = MockCapturedContent.create();
+                let captured = MockCapturedContent_1.MockCapturedContent.create();
                 let path = "/tmp/cached-entries-factory.phz";
-                let capturedPHZWriter = new CapturedPHZWriter(path);
+                let capturedPHZWriter = new CapturedPHZWriter_1.CapturedPHZWriter(path);
                 yield capturedPHZWriter.convert(captured);
-                let proxyServerConfig = new ProxyServerConfig(12345);
-                let cacheRegistry = new CacheRegistry(proxyServerConfig);
+                let proxyServerConfig = new ProxyServerConfig_1.ProxyServerConfig(12345);
+                let cacheRegistry = new CacheRegistry_1.CacheRegistry(proxyServerConfig);
                 yield cacheRegistry.registerFile(path);
             });
         });

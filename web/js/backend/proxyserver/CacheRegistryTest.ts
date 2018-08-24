@@ -1,14 +1,10 @@
-const http = require('http');
-const fs = require('fs');
-const assert = require('assert');
-const url = require('url');
-const {ProxyServerConfig} = require("./ProxyServerConfig");
-const {CacheRegistry} = require("./CacheRegistry");
-const {CapturedPHZWriter} = require("../../capture/CapturedPHZWriter");
-const {MockCapturedContent} = require("../../capture/MockCapturedContent");
-const {assertJSON} = require('../../test/Assertions');
-const {CacheEntriesFactory} = require('./CacheEntriesFactory');
-require("../../test/TestingTime").freeze();
+import {TestingTime} from '../../test/TestingTime';
+import {CapturedPHZWriter} from '../../capture/CapturedPHZWriter';
+import {ProxyServerConfig} from './ProxyServerConfig';
+import {CacheRegistry} from './CacheRegistry';
+import {MockCapturedContent} from '../../capture/MockCapturedContent';
+
+TestingTime.freeze();
 
 describe('CacheRegistryTest', function() {
 
