@@ -39,7 +39,8 @@ export class Paths {
         let end = data.lastIndexOf("/");
 
         if(end <= -1) {
-            return null;
+            // TODO: might want to return an Optional here.
+            throw new Error("No basename");
         }
 
         return data.substring(end+1, data.length);

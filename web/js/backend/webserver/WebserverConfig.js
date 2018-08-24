@@ -1,12 +1,11 @@
-const {Preconditions} = require("../../Preconditions");
-
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const Preconditions_1 = require("../../Preconditions");
 class WebserverConfig {
-
     constructor(dir, port) {
-        this.dir = Preconditions.assertNotNull(dir, "dir");
-        this.port = Preconditions.assertNotNull(port, "port");
+        this.dir = Preconditions_1.Preconditions.assertNotNull(dir, "dir");
+        this.port = Preconditions_1.Preconditions.assertNotNull(port, "port");
     }
-
 }
-
-module.exports.WebserverConfig = WebserverConfig;
+exports.WebserverConfig = WebserverConfig;
+//# sourceMappingURL=WebserverConfig.js.map

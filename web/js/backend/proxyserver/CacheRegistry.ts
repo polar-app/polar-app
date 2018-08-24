@@ -6,8 +6,6 @@ import {CachedRequest} from './CachedRequest';
 import {CacheEntriesFactory} from './CacheEntriesFactory';
 import {forDict} from '../../util/Functions';
 
-const path = require('path');
-
 export class CacheRegistry {
 
     private readonly proxyServerConfig: ProxyServerConfig;

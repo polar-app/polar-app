@@ -11,6 +11,8 @@ export abstract class WebResource {
 
     public abstract loadWebContents(webContents: WebContents): void;
 
+    public abstract load(loader: URLLoader): void;
+
     public static createFile(path: string): WebResource {
         return new FileWebResource(path);
     }
@@ -42,17 +44,22 @@ class FileWebResource extends WebResource {
 
     }
 
-    loadBrowserWindow(browserWindow: BrowserWindow): void {
+    public loadBrowserWindow(browserWindow: BrowserWindow): void {
         browserWindow.loadFile(this.file);
     }
 
-    loadWebContents(webContents: WebContents): void {
+    public loadWebContents(webContents: WebContents): void {
         log.info("Loading file: ", this.file);
         //webContents.loadFile(this.file);
         webContents.loadURL('file://' + this.file);
     }
 
-    toString(): string {
+    public load(loader: URLLoader): void {
+        log.info("Loading file: ", this.file);
+        loader.loadURL('file://' + this.file);
+    }
+
+    public toString(): string {
         return `${this.type}: ${this.file}`;
     }
 
@@ -69,17 +76,26 @@ class URLWebResource extends WebResource {
         this.url = url;
     }
 
-    loadBrowserWindow(browserWindow: BrowserWindow): void {
+    public loadBrowserWindow(browserWindow: BrowserWindow): void {
         browserWindow.loadURL(this.url);
     }
 
-    loadWebContents(webContents: WebContents): void {
+    public loadWebContents(webContents: WebContents): void {
         log.info("Loading URL: ", this.url);
         webContents.loadURL(this.url);
     }
 
-    toString(): string {
+    public load(loader: URLLoader): void {
+        log.info("Loading URL: ", this.url);
+        loader.loadURL(this.url);
+    }
+
+    public toString(): string {
         return `${this.type}: ${this.url}`;
     }
 
+}
+
+export interface URLLoader {
+    loadURL(url: string): void;
 }

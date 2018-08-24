@@ -5,7 +5,7 @@ import {CachedRequest} from './CachedRequest';
 
 export class CachedRequestsHolder {
 
-    public metadata = {};
+    public metadata: any = {};
 
     public cachedRequests: {[key: string]: CachedRequest} = {};
 

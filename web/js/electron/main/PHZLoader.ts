@@ -1,34 +1,25 @@
 import {AppPaths} from '../webresource/AppPaths';
 import {WebResource} from '../webresource/WebResource';
 import {Preconditions} from '../../Preconditions';
+import {Paths} from '../../util/Paths';
+import {Fingerprints} from '../../util/Fingerprints';
+import {Logger} from '../../logger/Logger';
+import {FileLoader} from './FileLoader';
+import {CacheRegistry} from '../../backend/proxyserver/CacheRegistry';
 
-const {Paths} = require("../../util/Paths");
-const {Fingerprints} = require("../../util/Fingerprints");
-
-const log = require("../../logger/Logger").create();
+const log = Logger.create();
 
 /**
  *
  */
-export class PHZLoader {
+export class PHZLoader implements FileLoader {
 
-    private readonly cacheRegistry: any;
+    private readonly cacheRegistry: CacheRegistry;
 
-    constructor(opts: any) {
-
-        Object.assign(this, opts);
-
-        Preconditions.assertNotNull(this.cacheRegistry, "cacheRegistry");
-
+    constructor(opts: PHZLoaderOptions) {
+        this.cacheRegistry = Preconditions.assertNotNull(opts.cacheRegistry);
     }
 
-    /**
-     * Compute a URL to load a file in the UI a PHZ file and registers it
-     * with the CacheRegistry so it can be loaded properly.
-     *
-     * @param path {string}
-     * @return {string}
-     */
     async registerForLoad(path: string): Promise<WebResource> {
 
         // FIXME: update main.js to use this loader moving forward...
@@ -65,4 +56,8 @@ export class PHZLoader {
 
     }
 
+}
+
+export interface PHZLoaderOptions {
+    readonly cacheRegistry: CacheRegistry;
 }
