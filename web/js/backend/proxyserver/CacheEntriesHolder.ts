@@ -7,7 +7,7 @@ export class CacheEntriesHolder {
 
     public cacheEntries: {[key: string]: CacheEntry} = {};
 
-    public metadata: {} = {};
+    public metadata: any = {};
 
     constructor(opts: any) {
 

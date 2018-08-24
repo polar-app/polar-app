@@ -1,11 +1,12 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-class MockCapturedContent {
+export class MockCapturedContent {
+
     static create() {
         return CAPTURED;
     }
+
 }
-exports.MockCapturedContent = MockCapturedContent;
+
+// raw captured JSON for testing writing to our archives.
 const CAPTURED = {
     "capturedDocuments": {
         "https://journal.artfuldev.com/media/076fa5fbed4eb57c0501fa4cbf5855b3?postId=384ef05f32b2": {
@@ -464,5 +465,4 @@ const CAPTURED = {
             }
         }
     }
-};
-//# sourceMappingURL=MockCapturedContent.js.map
+}
