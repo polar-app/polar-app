@@ -37,17 +37,27 @@ export class PHZReader {
 
     }
 
-    /**
-     */
-    async getMetadata(): Promise<any> {
-        return await this.getCached("metadata.json", "metadata");
+    async getMetadata(): Promise<any | null> {
+
+        try {
+            return await this.getCached("metadata.json", "metadata");
+        } catch (e) {
+            return Promise.resolve(null);
+        }
+
     }
 
     /**
      * Get just the resources from the metadata.
      */
     async getResources(): Promise<Resources> {
-        return await this.getCached("resources.json", "resources");
+
+        try {
+            return await this.getCached("resources.json", "resources");
+        } catch (e) {
+            return Promise.resolve(new Resources());
+        }
+
     }
 
     async getCached(path: string, key: string): Promise<any> {
@@ -86,7 +96,7 @@ export class PHZReader {
         let zipFile = await this.zip.file(path);
 
         if(!zipFile) {
-            throw new Error("No zip entry for path: " + path);
+            throw new CachingException("No zip entry for path: " + path);
         }
 
         let arrayBuffer = await zipFile.async('arraybuffer');
@@ -110,6 +120,14 @@ export class PHZReader {
     async close() {
         // we just have to let it GC
         this.zip = undefined;
+    }
+
+}
+
+export class CachingException extends Error {
+
+    public constructor(message: string) {
+        super(message);
     }
 
 }

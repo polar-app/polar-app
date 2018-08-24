@@ -30,12 +30,22 @@ class PHZReader {
     }
     getMetadata() {
         return __awaiter(this, void 0, void 0, function* () {
-            return yield this.getCached("metadata.json", "metadata");
+            try {
+                return yield this.getCached("metadata.json", "metadata");
+            }
+            catch (e) {
+                return Promise.resolve(null);
+            }
         });
     }
     getResources() {
         return __awaiter(this, void 0, void 0, function* () {
-            return yield this.getCached("resources.json", "resources");
+            try {
+                return yield this.getCached("resources.json", "resources");
+            }
+            catch (e) {
+                return Promise.resolve(new Resources_1.Resources());
+            }
         });
     }
     getCached(path, key) {
@@ -58,7 +68,7 @@ class PHZReader {
                 throw new Error("No zip.");
             let zipFile = yield this.zip.file(path);
             if (!zipFile) {
-                throw new Error("No zip entry for path: " + path);
+                throw new CachingException("No zip entry for path: " + path);
             }
             let arrayBuffer = yield zipFile.async('arraybuffer');
             return Buffer.from(arrayBuffer);
@@ -76,4 +86,10 @@ class PHZReader {
     }
 }
 exports.PHZReader = PHZReader;
+class CachingException extends Error {
+    constructor(message) {
+        super(message);
+    }
+}
+exports.CachingException = CachingException;
 //# sourceMappingURL=PHZReader.js.map
