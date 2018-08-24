@@ -3,7 +3,7 @@ import {CacheRegistry} from '../../backend/proxyserver/CacheRegistry';
 import {PHZLoader} from './PHZLoader';
 import {FileRegistry} from '../../backend/webserver/FileRegistry';
 import {PDFLoader} from './PDFLoader';
-import {WebResource} from '../../electron/webresource/WebResource';
+import {LoadedFile} from './LoadedFile';
 
 export class DefaultFileLoader implements FileLoader {
 
@@ -22,7 +22,7 @@ export class DefaultFileLoader implements FileLoader {
         this.phzLoader = new PHZLoader({cacheRegistry});
     }
 
-    async registerForLoad(path: string): Promise<WebResource> {
+    async registerForLoad(path: string): Promise<LoadedFile> {
 
         if(path.endsWith(".pdf")) {
             return this.pdfLoader.registerForLoad(path);

@@ -6,6 +6,7 @@ import {FileLoader} from './FileLoader';
 import {CacheRegistry} from '../../backend/proxyserver/CacheRegistry';
 import {WebResource} from '../../electron/webresource/WebResource';
 import {AppPaths} from '../../electron/webresource/AppPaths';
+import {LoadedFile} from './LoadedFile';
 
 const log = Logger.create();
 
@@ -20,7 +21,7 @@ export class PHZLoader implements FileLoader {
         this.cacheRegistry = Preconditions.assertNotNull(opts.cacheRegistry);
     }
 
-    async registerForLoad(path: string): Promise<WebResource> {
+    async registerForLoad(path: string): Promise<LoadedFile> {
 
         // FIXME: update main.js to use this loader moving forward...
 
@@ -52,7 +53,10 @@ export class PHZLoader implements FileLoader {
         let queryData = `?file=${encodeURIComponent(cachedRequest.url)}&fingerprint=${fingerprint}&descriptor=${encodeURIComponent(descriptorJSON)}`;
         let appURL = 'file://' + appPath + queryData;
 
-        return WebResource.createURL(appURL);
+        return {
+            webResource: WebResource.createURL(appURL),
+            title: descriptor.title
+        };
 
     }
 

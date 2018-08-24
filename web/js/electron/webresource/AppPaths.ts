@@ -56,7 +56,7 @@ export class AppPaths {
         let queryData = "";
 
         if(relativeURI.indexOf("?") !== -1) {
-            relativePath = relativeURI.substring(0, relativeURI.indexOf("?") -1);
+            relativePath = relativeURI.substring(0, relativeURI.indexOf("?"));
             queryData = relativeURI.substring(relativeURI.indexOf("?"));
         }
 

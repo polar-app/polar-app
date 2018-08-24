@@ -35,6 +35,8 @@ const {Files} = require("./web/js/util/Files");
 const {ElectronContextMenu} = require("./web/js/contextmenu/electron/ElectronContextMenu");
 const {CaptureController} = require("./web/js/capture/controller/CaptureController");
 const {GA} = require("./web/js/ga/GA");
+const {DefaultFileLoader} = require("./web/js/apps/main/DefaultFileLoader");
+const {AnalyticsFileLoader} = require("./web/js/apps/main/AnalyticsFileLoader");
 
 const searchInPage = require('electron-in-page-search').default;
 const {DialogWindowService} = require("./web/js/ui/dialog_window/DialogWindowService");
@@ -403,58 +405,11 @@ async function loadDoc(path, targetWindow) {
         throw new Error("No target window given");
     }
 
-    let fileMeta = fileRegistry.registerFile(path);
+    let loadedFile = await fileLoader.registerForLoad(path);
 
-    log.info("Loading doc via HTTP server: " + JSON.stringify(fileMeta));
+    log.info("Loading webapp at: " + loadedFile.webResource);
 
-    let url = null;
-    let fileParam = encodeURIComponent(fileMeta.url);
-
-    let descriptor = null;
-
-    if(path.endsWith(".pdf")) {
-
-        appAnalytics.screen("pdfviewer");
-
-        // FIXME: Use a PHZ loader for this.
-
-        url = `file://${__dirname}/pdfviewer/web/viewer.html?file=${fileParam}`;
-
-    } else if(path.endsWith(".phz")) {
-
-        appAnalytics.screen("htmlviewer");
-
-        // FIXME: this should use the new PHZLoader.  There's a duplication of code there otherwise.
-
-        // register the phz.  the cache interceptor should do the rest.
-        let cachedRequestsHolder = await cacheRegistry.registerFile(path);
-
-        log.info("cachedRequestsHolder: " + JSON.stringify(cachedRequestsHolder));
-
-        // get the cache metadata for the primary URL as it will work for the
-        // subsequent URLs too.
-
-        let cachedRequest = cachedRequestsHolder.cachedRequests[cachedRequestsHolder.metadata.url];
-
-        log.info("Going to load URL: " + cachedRequest.url);
-
-        descriptor = cachedRequestsHolder.metadata;
-        let descriptorJSON = JSON.stringify(descriptor);
-
-        // we don't need the content represented twice.
-
-        let basename = Paths.basename(path);
-
-        // TODO: this is workaround until we enable zip files with embedded
-        // metadata / descriptors
-        let fingerprint = Fingerprints.create(basename);
-
-        url = `file://${__dirname}/htmlviewer/index.html?file=${encodeURIComponent(cachedRequest.url)}&fingerprint=${fingerprint}&descriptor=${encodeURIComponent(descriptorJSON)}`;
-
-    }
-
-    log.info("Loading webapp at: " + url);
-    targetWindow.loadURL(url);
+    loadedFile.webResource.load(targetWindow);
 
     // TODO: now that we know the app name, call
     // targetWindow.webContents.getUserAgent() to get the UA I think...
@@ -468,10 +423,10 @@ async function loadDoc(path, targetWindow) {
 
     targetWindow.webContents.once('did-finish-load', function() {
 
-        if(descriptor && descriptor.title) {
+        if(loadedFile.title) {
             // TODO: this should be driven from the DocMeta and the DocMeta
             // should be initialized from the descriptor.
-            targetWindow.setTitle(descriptor.title);
+            targetWindow.setTitle(loadedFile.title);
         }
 
     });
@@ -601,50 +556,13 @@ let captureController = new CaptureController({directories, cacheRegistry});
 
 let dialogWindowService = new DialogWindowService();
 
-let appAnalytics = GA.getAppAnalytics();
+let defaultFileLoader = new DefaultFileLoader(fileRegistry, cacheRegistry);
+
+let fileLoader;
 
 let webserver;
 
 let proxyServer;
-
-directories.init().then(async () => {
-
-    // TODO don't use directory logging now as it is broken.
-    //await Logger.init(directories.logsDir);
-
-    if(args.enableMemoryDatastore) {
-        datastore = new MemoryDatastore();
-    } else {
-        datastore = new DiskDatastore();
-    }
-
-    await datastore.init();
-
-    // share the disk datastore with the remote.
-
-    global.datastore = datastore;
-
-    log.info("Electron app path is: " + app.getAppPath());
-
-    // *** start the webserver
-
-    webserver = new Webserver(webserverConfig, fileRegistry);
-    webserver.start();
-
-    // *** start the proxy server
-
-    proxyServer = new ProxyServer(proxyServerConfig, cacheRegistry);
-    proxyServer.start();
-
-    let cacheInterceptorService = new CacheInterceptorService(cacheRegistry);
-    await cacheInterceptorService.start();
-
-    await captureController.start();
-    await dialogWindowService.start();
-
-    log.info("Running with process.args: ", JSON.stringify(process.argv));
-
-}).catch((err) => log.error(err));
 
 if (args.enableRemoteDebugging) {
 
@@ -695,9 +613,7 @@ if (shouldQuit) {
     exitApp();
 }
 
-app.on('ready', async function() {
-
-    log.info("Loaded from: ", app.getAppPath());
+function configureMenu() {
 
     contextMenu = Menu.buildFromTemplate([
         { label: 'Minimize', type: 'radio', role: 'minimize' },
@@ -713,6 +629,17 @@ app.on('ready', async function() {
 
     Menu.setApplicationMenu(menu);
 
+    // start the context menu system.
+    new ElectronContextMenu();
+
+}
+
+app.on('ready', async function() {
+
+    log.info("Loaded from: ", app.getAppPath());
+
+    configureMenu();
+
     // NOTE: removing the next three lines removes the colors in the toolbar.
     //const appIcon = new Tray(app_icon);
     //appIcon.setToolTip('Polar Bookshelf');
@@ -720,8 +647,44 @@ app.on('ready', async function() {
 
     mainWindow = await createWindow();
 
-    // start the context menu system.
-    new ElectronContextMenu();
+    await directories.init();
+
+    // TODO don't use directory logging now as it is broken.
+    //await Logger.init(directories.logsDir);
+
+    if(args.enableMemoryDatastore) {
+        datastore = new MemoryDatastore();
+    } else {
+        datastore = new DiskDatastore();
+    }
+
+    await datastore.init();
+
+    // share the disk datastore with the remote.
+
+    global.datastore = datastore;
+
+    log.info("Electron app path is: " + app.getAppPath());
+
+    // *** start the webserver
+
+    webserver = new Webserver(webserverConfig, fileRegistry);
+    webserver.start();
+
+    // *** start the proxy server
+
+    proxyServer = new ProxyServer(proxyServerConfig, cacheRegistry);
+    proxyServer.start();
+
+    let cacheInterceptorService = new CacheInterceptorService(cacheRegistry);
+    await cacheInterceptorService.start();
+
+    await captureController.start();
+    await dialogWindowService.start();
+
+    fileLoader = new AnalyticsFileLoader(mainWindow.webContents.getUserAgent(), defaultFileLoader);
+
+    log.info("Running with process.args: ", JSON.stringify(process.argv));
 
     if(args.enableDevTools) {
         mainWindow.webContents.toggleDevTools();

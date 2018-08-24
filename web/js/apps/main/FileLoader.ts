@@ -1,4 +1,5 @@
 import {WebResource} from '../../electron/webresource/WebResource';
+import {LoadedFile} from './LoadedFile';
 
 /**
  * A File Loader handles loading a file in the cache registry and returning a
@@ -17,6 +18,6 @@ export interface FileLoader {
      * @param path {string}
      * @return {string}
      */
-    registerForLoad(path: string): Promise<WebResource>;
+    registerForLoad(path: string): Promise<LoadedFile>;
 
 }

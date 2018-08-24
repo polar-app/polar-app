@@ -2,6 +2,7 @@ import {FileLoader} from './FileLoader';
 import {WebResource} from '../../electron/webresource/WebResource';
 import {FileRegistry} from '../../backend/webserver/FileRegistry';
 import {AppPaths} from '../../electron/webresource/AppPaths';
+import {LoadedFile} from './LoadedFile';
 
 export class PDFLoader implements FileLoader {
 
@@ -11,7 +12,7 @@ export class PDFLoader implements FileLoader {
         this.fileRegistry = fileRegistry;
     }
 
-    async registerForLoad(path: string): Promise<WebResource> {
+    async registerForLoad(path: string): Promise<LoadedFile> {
 
         let fileMeta = this.fileRegistry.registerFile(path);
 
@@ -19,7 +20,9 @@ export class PDFLoader implements FileLoader {
 
         let appURL = AppPaths.resource(`./pdfviewer/web/viewer.html?file=${fileParam}`);
 
-        return WebResource.createURL(appURL);
+        return {
+            webResource: WebResource.createURL(appURL)
+        };
 
     }
 
