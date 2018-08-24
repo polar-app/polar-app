@@ -1,3 +1,5 @@
+import {Preconditions} from '../Preconditions';
+
 const {AppAnalytics} = require("./AppAnalytics");
 const Analytics: IAnalytics = require('electron-google-analytics').default;
 
@@ -10,6 +12,8 @@ export class GA {
     static analytics?: IAnalytics;
 
     static getInstance(userAgent: string) {
+
+        Preconditions.assertNotNull(userAgent, "userAgent");
 
         if(this.analytics === undefined) {
             this.analytics = new Analytics('UA-122721184-1', {userAgent});
