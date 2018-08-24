@@ -1,15 +1,9 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 class Resources {
-
     constructor() {
-
-        /**
-         *
-         * @type {Object<String,ResourceEntry>}
-         */
         this.entries = {};
-
     }
-
 }
-
-module.exports.Resources = Resources;
+exports.Resources = Resources;
+//# sourceMappingURL=Resources.js.map

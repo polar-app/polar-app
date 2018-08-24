@@ -1,19 +1,15 @@
-
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 const tk = require('timekeeper');
 const time = new Date(1330688329321);
-
 class TestingTime {
-
     static freeze() {
-
-        // freeze time for testing...
         tk.freeze(time);
     }
-
 }
-
-module.exports.TestingTime = TestingTime;
-
-module.exports.freeze = function() {
+exports.TestingTime = TestingTime;
+function freeze() {
     TestingTime.freeze();
-};
+}
+exports.freeze = freeze;
+//# sourceMappingURL=TestingTime.js.map

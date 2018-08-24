@@ -1,14 +1,14 @@
-
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 class ContentTypes {
-
     static contentTypeToExtension(contentType) {
-        if(contentType === "text/html") {
+        if (contentType === "text/html") {
             return "html";
-        } else {
+        }
+        else {
             return "dat";
         }
     }
-
 }
-
-module.exports.ContentTypes = ContentTypes;
+exports.ContentTypes = ContentTypes;
+//# sourceMappingURL=ContentTypes.js.map

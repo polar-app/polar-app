@@ -19,3 +19,5 @@
 - the comments would go into those time chunks as would the flashcards.  We 
   could use the sidebar annotation UI for them and just put it in reverse
   order at the bottom of the video.         
+
+- there's actually an API for this...

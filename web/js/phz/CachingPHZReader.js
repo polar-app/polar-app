@@ -1,111 +1,66 @@
-const JSZip = require("jszip");
-const {PHZReader} = require("./PHZReader");
-const {Files} = require("../util/Files");
-const {Logger} = require("../logger/Logger");
-
-const log = Logger.create();
-
+"use strict";
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const PHZReader_1 = require("./PHZReader");
+const Logger_1 = require("../logger/Logger");
+const log = Logger_1.Logger.create();
 class CachingPHZReader {
-
-    constructor(path, timeout) {
-
-        if(!timeout) {
-            timeout = 60000;
-        }
-
-        this.path = path;
-
-        /**
-         * The delegate PHZReader that actually performs the IO.
-         *
-         * @type {PHZReader}
-         */
-        this.delegate = null;
-
-        /**
-         * The amount of time we should wait after init to close the file.
-         *
-         * @type {number}
-         */
-        this.timeout = timeout;
-
-        /**
-         * The number of times the reader has been re-opened.
-         * @type {number}
-         */
+    constructor(path, timeout = 60000) {
         this.reopened = 0;
-
+        this.path = path;
+        this.timeout = timeout;
     }
-
-    /**
-     * Init must be called to load the entries which we can work with.
-     *
-     * @return {Promise<void>}
-     */
-    async init() {
-
-        this.delegate = new PHZReader(this.path);
-        await this.delegate.init();
-
-        setTimeout(async () => {
-
-            await this.close();
-
-        }, this.timeout);
-
+    init() {
+        return __awaiter(this, void 0, void 0, function* () {
+            this.delegate = new PHZReader_1.PHZReader(this.path);
+            yield this.delegate.init();
+            setTimeout(() => __awaiter(this, void 0, void 0, function* () {
+                yield this.close();
+            }), this.timeout);
+        });
     }
-
-    async getMetadata() {
-        await this.openWhenNecessary();
-        return await this.delegate.getMetadata();
+    getMetadata() {
+        return __awaiter(this, void 0, void 0, function* () {
+            yield this.openWhenNecessary();
+            return yield this.delegate.getMetadata();
+        });
     }
-
-    /**
-     * Get just the resources from the metadata.
-     * @return {Promise<Resources>}
-     */
-    async getResources() {
-        await this.openWhenNecessary();
-        return await this.delegate.getResources();
+    getResources() {
+        return __awaiter(this, void 0, void 0, function* () {
+            yield this.openWhenNecessary();
+            return yield this.delegate.getResources();
+        });
     }
-
-    /**
-     * Read a resource from disk and call the callback with the new content once
-     * it's ready for usage.
-     *
-     * @param resourceEntry {ResourceEntry}
-     * @return {Promise<Buffer>}
-     */
-    async getResource(resourceEntry) {
-        await this.openWhenNecessary();
-        return await this.delegate.getResource(resourceEntry);
+    getResource(resourceEntry) {
+        return __awaiter(this, void 0, void 0, function* () {
+            yield this.openWhenNecessary();
+            return yield this.delegate.getResource(resourceEntry);
+        });
     }
-
-    async openWhenNecessary() {
-
-        if(this.delegate) {
-            // we are done.  There is already a delegate we can use.
-            return;
-        }
-
-        log.info("Caching PHZReader being re-opened: " + this.path);
-        ++this.reopened;
-
-        await this.init();
-
+    openWhenNecessary() {
+        return __awaiter(this, void 0, void 0, function* () {
+            if (this.delegate) {
+                return;
+            }
+            log.info("Caching PHZReader being re-opened: " + this.path);
+            ++this.reopened;
+            yield this.init();
+        });
     }
-
-    async close() {
-
-        // copy the delegate so that nothing can see this.delegate as being
-        // non-null while we close else we would have a race.
-        let delegate = this.delegate;
-        this.delegate = null;
-
-        await delegate.close();
-
+    close() {
+        return __awaiter(this, void 0, void 0, function* () {
+            let delegate = this.delegate;
+            this.delegate = undefined;
+            yield delegate.close();
+        });
     }
-
 }
-
-module.exports.CachingPHZReader = CachingPHZReader;
+exports.CachingPHZReader = CachingPHZReader;
+//# sourceMappingURL=CachingPHZReader.js.map

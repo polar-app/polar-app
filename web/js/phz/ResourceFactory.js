@@ -1,32 +1,23 @@
-const {Resource} = require("./Resource");
-const {Hashcodes} = require("../Hashcodes");
-
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const Hashcodes_1 = require("../Hashcodes");
+const Resource_1 = require("./Resource");
 class ResourceFactory {
-
-    /**
-     *
-     * @param url {String}
-     * @param contentType {String}
-     * @return {Resource}
-     */
     static create(url, contentType) {
-
-        let id = Hashcodes.createID(url, 20);
+        let id = Hashcodes_1.Hashcodes.createID(url, 20);
         let created = new Date().toISOString();
         let meta = {};
         let headers = {};
-        return new Resource({id, url, created, meta, contentType, headers});
-
+        return new Resource_1.Resource({ id, url, created, meta, contentType, headers });
     }
-
     static contentTypeToExtension(contentType) {
-        if(contentType === "text/html") {
+        if (contentType === "text/html") {
             return "html";
-        } else {
+        }
+        else {
             return "dat";
         }
     }
-
 }
-
-module.exports.ResourceFactory = ResourceFactory;
+exports.ResourceFactory = ResourceFactory;
+//# sourceMappingURL=ResourceFactory.js.map

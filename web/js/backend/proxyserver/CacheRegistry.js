@@ -1,106 +1,64 @@
+"use strict";
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const Preconditions_1 = require("../../Preconditions");
+const CachedRequestsHolder_1 = require("./CachedRequestsHolder");
+const CachedRequest_1 = require("./CachedRequest");
+const CacheEntriesFactory_1 = require("./CacheEntriesFactory");
+const Functions_1 = require("../../util/Functions");
 const path = require('path');
-const CachedRequestsHolder = require("./CachedRequestsHolder").CachedRequestsHolder;
-const {Preconditions} = require("../../Preconditions");
-const {Hashcodes} = require('../../Hashcodes');
-const {CacheEntriesFactory} = require('./CacheEntriesFactory');
-const {CacheMeta} = require('./CacheMeta');
-const {CachedRequest} = require('./CachedRequest');
-const {forDict} = require('../../util/Functions');
-
 class CacheRegistry {
-
-    /**
-     *
-     * @param proxyServerConfig {ProxyServerConfig}
-     */
     constructor(proxyServerConfig) {
-
-        this.proxyServerConfig = Preconditions.assertNotNull(proxyServerConfig);
-
         this.registry = {};
-
+        this.proxyServerConfig = Preconditions_1.Preconditions.assertNotNull(proxyServerConfig);
+        this.registry = {};
     }
-
-    /**
-     *
-     * @param path
-     * @return {Promise<CachedRequestsHolder>}
-     */
-    async registerFile(path) {
-
-        let cacheEntriesHolder = await CacheEntriesFactory.createEntriesFromFile(path);
-
-        let cachedRequestsHolder = new CachedRequestsHolder({
-            metadata: cacheEntriesHolder.metadata
+    registerFile(path) {
+        return __awaiter(this, void 0, void 0, function* () {
+            let cacheEntriesHolder = yield CacheEntriesFactory_1.CacheEntriesFactory.createEntriesFromFile(path);
+            let cachedRequestsHolder = new CachedRequestsHolder_1.CachedRequestsHolder({
+                metadata: cacheEntriesHolder.metadata
+            });
+            if (!cacheEntriesHolder.cacheEntries) {
+                throw new Error("No cache entries!");
+            }
+            Functions_1.forDict(cacheEntriesHolder.cacheEntries, (key, cacheEntry) => {
+                let cacheMeta = this.register(cacheEntry);
+                cachedRequestsHolder.cachedRequests[cacheMeta.url] = cacheMeta;
+            });
+            return cachedRequestsHolder;
         });
-
-        if(! cacheEntriesHolder.cacheEntries) {
-            throw new Error("No cache entries!");
-        }
-
-        forDict(cacheEntriesHolder.cacheEntries, (key, cacheEntry) => {
-            let cacheMeta = this.register(cacheEntry);
-            cachedRequestsHolder.cachedRequests[cacheMeta.url] = cacheMeta;
-        });
-
-        return cachedRequestsHolder;
-
     }
-
-
-    /**
-     * Register a file to be served with the given checksum.  Then return
-     * metadata about what we registered including how to fetch the file we
-     * registered.
-     *
-     * @return {CachedRequest}
-     */
     register(cacheEntry) {
-
-        Preconditions.assertNotNull(cacheEntry, "cacheEntry");
-        Preconditions.assertNotNull(cacheEntry.statusCode, "cacheEntry.statusCode");
-        Preconditions.assertNotNull(cacheEntry.headers, "cacheEntry.headers");
-
+        Preconditions_1.Preconditions.assertNotNull(cacheEntry, "cacheEntry");
+        Preconditions_1.Preconditions.assertNotNull(cacheEntry.statusCode, "cacheEntry.statusCode");
+        Preconditions_1.Preconditions.assertNotNull(cacheEntry.headers, "cacheEntry.headers");
         let url = cacheEntry.url;
-
-        Preconditions.assertNotNull(url, "url");
-
+        Preconditions_1.Preconditions.assertNotNull(url, "url");
         console.log(`Registered new cache entry at: ${url}`);
-
         this.registry[url] = cacheEntry;
-
-        return new CachedRequest({
+        return new CachedRequest_1.CachedRequest({
             url,
             proxyRules: `http=localhost:${this.proxyServerConfig.port}`,
             proxyBypassRules: "<local>"
         });
-
     }
-
-    /**
-     * Return true if the given hashcode is registered.
-     *
-     * @param key The key we should fetch.
-     */
     hasEntry(url) {
         return url in this.registry;
     }
-
-    /**
-     * Get metadata about the given key.
-     *
-     * @return {CacheEntry}
-     */
     get(url) {
-
-        if(!this.hasEntry(url)) {
+        if (!this.hasEntry(url)) {
             throw new Error("URL not registered: " + url);
         }
-
         return this.registry[url];
-
     }
-
 }
-
-module.exports.CacheRegistry = CacheRegistry;
+exports.CacheRegistry = CacheRegistry;
+//# sourceMappingURL=CacheRegistry.js.map

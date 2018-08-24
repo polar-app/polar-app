@@ -1,108 +1,90 @@
-const assert = require('assert');
-const url = require('url');
-const fs = require('fs');
-const {PHZWriter} = require("./PHZWriter");
-const {CachingPHZReader} = require("./CachingPHZReader");
-const {Resource} = require("./Resource");
-const {ResourceFactory} = require("./ResourceFactory");
-const {Files} = require("../util/Files");
-const {assertJSON} = require("../test/Assertions");
-const {Time} = require("../util/Time");
-
-require("../test/TestingTime").freeze();
-
-describe('CachingPHZReader', function() {
-
+"use strict";
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const assert_1 = __importDefault(require("assert"));
+const Assertions_1 = require("../test/Assertions");
+const Files_1 = require("../util/Files");
+const ResourceFactory_1 = require("./ResourceFactory");
+const CachingPHZReader_1 = require("./CachingPHZReader");
+const PHZWriter_1 = require("./PHZWriter");
+const TestingTime_1 = require("../test/TestingTime");
+const Time_1 = require("../util/Time");
+const Dictionaries_1 = require("../util/Dictionaries");
+TestingTime_1.TestingTime.freeze();
+describe('CachingPHZReader', function () {
     let path = "/tmp/test.phz";
-
-    async function assertPHZReader(phzReader) {
-
-        let resources = await phzReader.getResources();
-
-        let expected = {
-            "entries": {
-                "1XKZEWhTwbtoPFSkR2TJ": {
-                    "id": "1XKZEWhTwbtoPFSkR2TJ",
-                    "path": "1XKZEWhTwbtoPFSkR2TJ.html",
-                    "resource": {
+    function assertPHZReader(phzReader) {
+        return __awaiter(this, void 0, void 0, function* () {
+            let resources = yield phzReader.getResources();
+            let expected = {
+                "entries": {
+                    "1XKZEWhTwbtoPFSkR2TJ": {
                         "id": "1XKZEWhTwbtoPFSkR2TJ",
-                        "created": "2012-03-02T11:38:49.321Z",
-                        "meta": {},
-                        "url": "http://example.com",
-                        "contentType": "text/html",
-                        "mimeType": "text/html",
-                        "encoding": "UTF-8",
-                        "method": "GET",
-                        "statusCode": 200,
-                        "contentLength": null,
-                        "headers": {},
-                        "title": null,
-                        "description": null
+                        "path": "1XKZEWhTwbtoPFSkR2TJ.html",
+                        "resource": {
+                            "id": "1XKZEWhTwbtoPFSkR2TJ",
+                            "created": "2012-03-02T11:38:49.321Z",
+                            "meta": {},
+                            "url": "http://example.com",
+                            "contentType": "text/html",
+                            "mimeType": "text/html",
+                            "encoding": "UTF-8",
+                            "method": "GET",
+                            "statusCode": 200,
+                            "headers": {},
+                        }
                     }
                 }
-            }
-        };
-
-        assertJSON(resources, expected);
-
-        let resourceEntry = resources.entries["1XKZEWhTwbtoPFSkR2TJ"];
-
-        let buffer = await phzReader.getResource(resourceEntry);
-
-        let content = buffer.toString("UTF-8");
-
-        assert.equal(content, "<html></html>");
-
-        // test getting the metadata (when there isn't any)
-
-        let metadata = await phzReader.getMetadata();
-
-        expected = {
-            "title": "this is the title"
-        };
-        assertJSON(metadata, expected);
-
-
-    }
-
-    beforeEach(async function() {
-
-        await Files.removeAsync(path);
-
-        let phzWriter = new PHZWriter(path);
-        let resource = ResourceFactory.create("http://example.com", "text/html");
-
-        phzWriter.writeMetadata({
-            title: "this is the title"
+            };
+            Assertions_1.assertJSON(Dictionaries_1.Dictionaries.sorted(resources), Dictionaries_1.Dictionaries.sorted(expected));
+            let resourceEntry = resources.entries["1XKZEWhTwbtoPFSkR2TJ"];
+            let buffer = yield phzReader.getResource(resourceEntry);
+            let content = buffer.toString("UTF-8");
+            assert_1.default.equal(content, "<html></html>");
+            let metadata = yield phzReader.getMetadata();
+            expected = {
+                "title": "this is the title"
+            };
+            Assertions_1.assertJSON(Dictionaries_1.Dictionaries.sorted(metadata), Dictionaries_1.Dictionaries.sorted(expected));
         });
-
-        phzWriter.writeResource(resource, "<html></html>");
-        await phzWriter.close();
-
+    }
+    beforeEach(function () {
+        return __awaiter(this, void 0, void 0, function* () {
+            yield Files_1.Files.removeAsync(path);
+            let phzWriter = new PHZWriter_1.PHZWriter(path);
+            let resource = ResourceFactory_1.ResourceFactory.create("http://example.com", "text/html");
+            yield phzWriter.writeMetadata({
+                title: "this is the title"
+            });
+            yield phzWriter.writeResource(resource, "<html></html>");
+            yield phzWriter.close();
+        });
     });
-
-    it("Reading from a new caching reader (not closed)", async function () {
-
-        let phzReader = new CachingPHZReader(path);
-        await phzReader.init();
-
-        await assertPHZReader(phzReader);
-
+    it("Reading from a new caching reader (not closed)", function () {
+        return __awaiter(this, void 0, void 0, function* () {
+            let phzReader = new CachingPHZReader_1.CachingPHZReader(path);
+            yield phzReader.init();
+            yield assertPHZReader(phzReader);
+        });
     });
-
-    it("Reading from a new caching reader (closed)", async function () {
-
-        let phzReader = new CachingPHZReader(path, 1);
-        await phzReader.init();
-
-        // we told the reader to only wait for 1ms ...
-        await Time.sleep(100);
-
-        await assertPHZReader(phzReader);
-
-        assert.equal(phzReader.reopened > 0, true);
-
+    it("Reading from a new caching reader (closed)", function () {
+        return __awaiter(this, void 0, void 0, function* () {
+            let phzReader = new CachingPHZReader_1.CachingPHZReader(path, 1);
+            yield phzReader.init();
+            yield Time_1.Time.sleep(100);
+            yield assertPHZReader(phzReader);
+            assert_1.default.equal(phzReader.reopened > 0, true);
+        });
     });
-
 });
-
+//# sourceMappingURL=CachingPHZReaderTest.js.map

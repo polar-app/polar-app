@@ -37,6 +37,37 @@ export class Dictionaries {
 
     }
 
+    /**
+     * Returns a dictionary with sorted keys. Dictionaries by definition aren't
+     * sorted by they're implemented internally as linked hash tables.  We return
+     * the same set-theoretic dictionaries where the key set are identical, just
+     * in a different key order.
+     *
+     * This is primarily used for testing.
+     *
+     */
+    static sorted(dict: any): any {
+
+        if(dict === undefined || dict === null) {
+            // nothing to do here.
+            return dict;
+        }
+
+        if(! (typeof dict == 'object')) {
+            // if we're not a dictionary we're just return the default dictionary.
+            return dict;
+        }
+
+        let result: any = {};
+
+        Object.keys(dict).sort().forEach(key => {
+            result[key] = this.sorted(dict[key]);
+        });
+
+        return result;
+
+    }
+
 }
 
 interface ForDictCallbackFunction<T> {

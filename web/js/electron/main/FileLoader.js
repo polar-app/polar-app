@@ -1,11 +1,6 @@
-/**
- * A File Loader handles loading a file in the cache registry and returning a
- * URL that the user can work with.  The user then loads that URL into the
- * renderer.
- *
- * @abstract
- */
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 class FileLoader {
-
-
 }
+exports.FileLoader = FileLoader;
+//# sourceMappingURL=FileLoader.js.map

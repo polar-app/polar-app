@@ -1,21 +1,12 @@
-/**
- * Holds the cached requests plus other metadata.
- */
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 class CacheEntriesHolder {
-
-    constructor(options) {
-
-        /**
-         *
-         * @type {Object<String, CacheEntry>}
-         */
+    constructor(opts) {
         this.cacheEntries = {};
-
         this.metadata = {};
-
-        Object.assign(this, options);
+        this.metadata = {};
+        Object.assign(this, opts);
     }
-
 }
-
-module.exports.CacheEntriesHolder = CacheEntriesHolder;
+exports.CacheEntriesHolder = CacheEntriesHolder;
+//# sourceMappingURL=CacheEntriesHolder.js.map

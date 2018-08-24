@@ -1,112 +1,79 @@
-const JSZip = require("jszip");
-const {Files} = require("../util/Files");
-
+"use strict";
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const jszip_1 = __importDefault(require("jszip"));
+const Resources_1 = require("./Resources");
+const Files_1 = require("../util/Files");
 class PHZReader {
-
     constructor(path) {
+        this.metadata = {};
+        this.resources = new Resources_1.Resources();
+        this.cache = {};
         this.path = path;
-        this.zip = null;
-
-        this.metadata = null;
-
-        /**
-         *
-         * @type {Resources}
-         */
-        this.resources = null;
-
     }
-
-    /**
-     * Init must be called to load the entries which we can work with.
-     *
-     * @return {Promise<void>}
-     */
-    async init() {
-
-        // FIXME: migrate this to fs.createReadStream even though this is async it reads all
-        // the data into memory. Make sure this method is completely async though.
-        let data = Files.readFileAsync(this.path);
-
-        this.zip = new JSZip();
-
-        await this.zip.loadAsync(data);
-
+    init() {
+        return __awaiter(this, void 0, void 0, function* () {
+            let data = yield Files_1.Files.readFileAsync(this.path);
+            this.zip = new jszip_1.default();
+            yield this.zip.loadAsync(data);
+        });
     }
-
-    /**
-     * @return {Promise<Object>}
-     */
-    async getMetadata() {
-        return await this.getCached("metadata.json", "metadata");
+    getMetadata() {
+        return __awaiter(this, void 0, void 0, function* () {
+            return yield this.getCached("metadata.json", "metadata");
+        });
     }
-
-    /**
-     * Get just the resources from the metadata.
-     * @return {Promise<Resources>}
-     */
-    async getResources() {
-        return await this.getCached("resources.json", "resources");
+    getResources() {
+        return __awaiter(this, void 0, void 0, function* () {
+            return yield this.getCached("resources.json", "resources");
+        });
     }
-
-    async getCached(path, key) {
-
-        if(this[key] !== null) {
-            // return the cache version if it's already read properly.
-            return this[key];
-        }
-
-        let buffer = await this._readAsBuffer(path);
-
-        if(! buffer)
-            return null;
-
-        this[key] = JSON.parse(buffer.toString("UTF-8"));
-
-        return this[key];
-
+    getCached(path, key) {
+        return __awaiter(this, void 0, void 0, function* () {
+            let cached = this.cache[key];
+            if (cached !== undefined && cached !== null) {
+                return cached;
+            }
+            let buffer = yield this._readAsBuffer(path);
+            if (!buffer)
+                throw new Error("No buffer for path: " + path);
+            cached = JSON.parse(buffer.toString("UTF-8"));
+            this.cache[key] = cached;
+            return cached;
+        });
     }
-
-    /**
-     * Return a raw buffer with no encoding.
-     *
-     * @param path
-     * @return {Promise<Buffer>}
-     * @private
-     */
-    async _readAsBuffer(path) {
-
-        let zipFile = await this.zip.file(path);
-
-        if(!zipFile) {
-            return null;
-        }
-
-        let arrayBuffer = await zipFile.async("ArrayBuffer");
-        return Buffer.from(arrayBuffer);
-
+    _readAsBuffer(path) {
+        return __awaiter(this, void 0, void 0, function* () {
+            if (this.zip === undefined)
+                throw new Error("No zip.");
+            let zipFile = yield this.zip.file(path);
+            if (!zipFile) {
+                throw new Error("No zip entry for path: " + path);
+            }
+            let arrayBuffer = yield zipFile.async('arraybuffer');
+            return Buffer.from(arrayBuffer);
+        });
     }
-
-    /**
-     * Read a resource from disk and call the callback with the new content once
-     * it's ready for usage.
-     *
-     * @param resourceEntry {ResourceEntry}
-     * @return {Promise<Buffer>}
-     */
-    async getResource(resourceEntry) {
-
-        // FIXME: I think we can call nodeStream to get this in chunks for less
-        // UI latency.  We should probably move in that directly.
-
-        return await this._readAsBuffer(resourceEntry.path);
+    getResource(resourceEntry) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return yield this._readAsBuffer(resourceEntry.path);
+        });
     }
-
-    async close() {
-        // we just have to let it GC
-        this.zip = null;
+    close() {
+        return __awaiter(this, void 0, void 0, function* () {
+            this.zip = undefined;
+        });
     }
-
 }
-
-module.exports.PHZReader = PHZReader;
+exports.PHZReader = PHZReader;
+//# sourceMappingURL=PHZReader.js.map

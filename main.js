@@ -490,7 +490,6 @@ async function loadDoc(path, targetWindow) {
 
     }
 
-
     if(cacheMeta) {
 
         // log.info("Using proxy config: ", cacheMeta.requestConfig);
@@ -506,6 +505,11 @@ async function loadDoc(path, targetWindow) {
 
     log.info("Loading webapp at: " + url);
     targetWindow.loadURL(url);
+
+    // TODO: now that we know the app name, call
+    // targetWindow.webContents.getUserAgent() to get the UA I think...
+    // TODO: we can actually do this withh init.. since we start a browser
+    // window almost immediately
 
     if(args.enableConsoleLogging) {
         log.info("Console logging enabled.");
