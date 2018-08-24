@@ -1,5 +1,5 @@
 import {AppPaths} from "../../electron/webresource/AppPaths";
-import {PHZLoader} from '../../electron/main/PHZLoader';
+import {PHZLoader} from '../../apps/main/PHZLoader';
 import {BrowserWindow, ipcMain} from 'electron';
 import {Preconditions} from '../../Preconditions';
 import {Logger} from '../../logger/Logger';

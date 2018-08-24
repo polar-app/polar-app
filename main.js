@@ -613,7 +613,7 @@ async function openFileCmdline(path, createNewWindow) {
  */
 function parseArgs() {
 
-    // FIXME: move this to electron.main.Args
+    // FIXME: move this to apps.main.Args
 
     return {
 
