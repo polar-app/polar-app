@@ -1,4 +1,15 @@
 
+# 1.0.0-beta110
+
+- now using electron-log as our logger by default.  We now log to .polar/logs 
+  and consolidate all the window log lines into one location.  This way users
+  can debug their problems easier.
+
+- big refactor of the main app into smaller components. Code is much more 
+  manageable now.
+  
+- update electron-log version      
+
 # 1.0.0-beta103
 
 - deleted some of the pdf.js nav links as they were broken for the most part.
