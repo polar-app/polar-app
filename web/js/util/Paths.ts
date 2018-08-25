@@ -1,3 +1,4 @@
+import {isPresent} from '../Preconditions';
 
 export class Paths {
 
@@ -11,10 +12,10 @@ export class Paths {
      */
     static create(dirname: string, basename: string) {
 
-        if(!dirname)
+        if(! isPresent(dirname))
             throw new Error("Dirname required");
 
-        if(!basename)
+        if(! isPresent(basename))
             throw new Error("Basename required");
 
         if(dirname.indexOf("//") !== -1 || basename.indexOf("//") !== -1  ) {
@@ -34,13 +35,17 @@ export class Paths {
 
     }
 
+    /**
+     * Return the last portion of the path.
+     *
+     */
     static basename(data: string) {
 
         let end = data.lastIndexOf("/");
 
         if(end <= -1) {
             // TODO: might want to return an Optional here.
-            throw new Error("No basename");
+            return data;
         }
 
         return data.substring(end+1, data.length);

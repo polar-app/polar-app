@@ -150,6 +150,15 @@ export class Preconditions {
 
     }
 
+    /**
+     * Return true if the given value is present. Not undefined and not null.
+     *
+     * @param val
+     */
+    static isPresent(val: any): boolean {
+        return val !== undefined && val !== null;
+    }
+
 }
 
 interface AssertionFunction<T> {
@@ -163,5 +172,10 @@ export function defaultValue<T>(currentValue: T, defaultValue: T): T {
 export function notNull<T>(value: T | null, name?: string): NonNullable<T> {
     return Preconditions.assertNotNull(value, name);
 }
+
+export function isPresent(val: any): boolean {
+    return Preconditions.isPresent(val);
+}
+
 
 //export { Preconditions.defaultValue as defaultValue };
