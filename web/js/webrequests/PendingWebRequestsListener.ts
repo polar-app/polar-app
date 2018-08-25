@@ -1,8 +1,8 @@
 import {NamedWebRequestEvent, WebRequestDetails} from './WebRequestReactor';
+import {Logger} from '../logger/Logger';
+import {BaseWebRequestsListener} from './BaseWebRequestsListener';
+import {RequestState} from './RequestState';
 
-const {BaseWebRequestsListener} = require("./BaseWebRequestsListener");
-const {Logger} = require("../logger/Logger");
-const {RequestState} = require("./RequestState");
 const log = Logger.create();
 
 /**

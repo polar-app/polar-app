@@ -1,13 +1,13 @@
 import {FlashcardsController} from './FlashcardsController';
-import {assertJSON} from '../../test/Assertions';
 import {Model} from '../../Model';
+import {TestingTime} from '../../test/TestingTime';
+import {MemoryDatastore} from '../../datastore/MemoryDatastore';
+import {PersistenceLayer} from '../../datastore/PersistenceLayer';
+import {DocMetas} from '../../metadata/DocMetas';
 
 const assert = require('assert');
-const {MemoryDatastore} = require("../../datastore/MemoryDatastore");
-const {PersistenceLayer} = require("../../datastore/PersistenceLayer");
-const {DocMetas} = require("../../metadata/DocMetas");
 
-require("../../test/TestingTime").freeze();
+TestingTime.freeze();
 
 describe('FlashcardsControllerTest', function() {
 

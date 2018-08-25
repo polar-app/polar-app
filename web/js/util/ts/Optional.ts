@@ -1,14 +1,15 @@
+import undefinedError = Mocha.utils.undefinedError;
 
 export class Optional<T> {
 
-    private readonly value?: T = undefined;
+    private readonly value: T | null | undefined = undefined;
 
     /**
      * An name for this Optional which can be used when generating errors.
      */
     public readonly name?: string = undefined;
 
-    constructor(value?: T, name?: string) {
+    constructor(value: T | undefined | null, name?: string) {
         this.value = value;
         this.name = name;
     }
@@ -64,6 +65,11 @@ export class Optional<T> {
      * Get the value or return undefined if it is absent.
      */
     getOrUndefined(): T | undefined {
+
+        if(this.value === null) {
+            return undefined;
+        }
+
         return this.value;
     }
 
@@ -71,7 +77,7 @@ export class Optional<T> {
         return this.value !== undefined && this.value !== null;
     }
 
-    static of<T>(value: T, name?: string): Optional<T> {
+    static of<T>(value: T | null | undefined, name?: string): Optional<T> {
         return new Optional<T>(value, name);
     }
 

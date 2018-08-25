@@ -6,14 +6,14 @@ import {Logger} from '../../../logger/Logger';
 
 import $ from '../../../ui/JQuery';
 import {TextHighlightRow} from './TextHighlightRow';
+import {Preconditions} from '../../../Preconditions';
+import {DocFormatFactory} from '../../../docformat/DocFormatFactory';
 
 const {TextHighlightRecords} = require("../../../metadata/TextHighlightRecords");
 const {TextHighlighterFactory} = require("./TextHighlighterFactory");
 const {TextHighlightRows} = require("./TextHighlightRows");
-const {Preconditions} = require("../../../Preconditions");
 const {TextExtracter} = require("./TextExtracter");
 const {KeyEvents} = require("../../../KeyEvents.js");
-const {DocFormatFactory} = require("../../../docformat/DocFormatFactory");
 
 const {SelectedContents} = require("../selection/SelectedContents");
 const {TextSelections} = require("./TextSelections");

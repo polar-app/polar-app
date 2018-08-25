@@ -1,5 +1,5 @@
 import {Model} from '../Model';
-import {notNull, Preconditions} from '../Preconditions';
+import {isPresent, notNull, Preconditions} from '../Preconditions';
 import {DocFormatFactory} from '../docformat/DocFormatFactory';
 import {ContextMenuController} from '../contextmenu/ContextMenuController';
 import {KeyEvents} from '../KeyEvents';
@@ -8,14 +8,14 @@ import {Viewer} from '../viewer/Viewer';
 import {DocTitleController} from './DocTitleController';
 import {PagemarkController} from '../pagemarks/controller/PagemarkController';
 import {SyncController} from './SyncController';
+import {Controller} from './Controller';
+import {TextHighlightController} from '../highlights/text/controller/TextHighlightController';
+import {FlashcardsController} from '../flashcards/controller/FlashcardsController';
+import {AnnotationsController} from '../annotations/controller/AnnotationsController';
+import {DocFormat} from '../docformat/DocFormat';
 
-const {TextHighlightController} = require("../highlights/text/controller/TextHighlightController");
 const {AreaHighlightController} = require("../highlights/area/controller/AreaHighlightController");
 const {PagemarkCoverageEventListener} = require("../pagemarks/controller/PagemarkCoverageEventListener");
-const {Controller} = require("./Controller");
-const {FlashcardsController} = require("../flashcards/controller/FlashcardsController");
-const {AnnotationsController} = require("../annotations/controller/AnnotationsController");
-const {MouseTracer} = require("../mouse/MouseTracer");
 
 const log = Logger.create();
 
@@ -23,20 +23,20 @@ export class WebController extends Controller {
 
     protected viewer: Viewer;
 
+    /**
+     * The document fingerprint that we have loaded to detect when the
+     * documents have changed.  Note that this isn't a secure fingerprint
+     * so we might want to change it in the future.
+     */
+    private docFingerprint?: string;
+
+    private readonly docFormat: DocFormat;
+
     constructor(model: Model, viewer: Viewer) {
 
         super(Preconditions.assertNotNull(model, "model"));
 
         this.viewer = Preconditions.assertNotNull(viewer, "viewer");
-
-        /**
-         * The document fingerprint that we have loaded to detect when the
-         * documents have changed.  Note that this isn't a secure fingerprint
-         * so we might want to change it in the future.
-         *
-         * @type string
-         */
-        this.docFingerprint = null;
 
         this.docFormat = notNull(DocFormatFactory.getInstance());
 
@@ -55,8 +55,7 @@ export class WebController extends Controller {
 
     }
 
-
-    onDocumentLoaded(fingerprint: string, nrPages: number, currentlySelectedPageNum: number) {
+    async onDocumentLoaded(fingerprint: string, nrPages: number, currentlySelectedPageNum: number) {
 
         // TODO: if I await super.onDocumentLoaded with webpack it breaks
         super.onDocumentLoaded(fingerprint, nrPages, currentlySelectedPageNum)
@@ -92,7 +91,7 @@ export class WebController extends Controller {
 
         let currentDocFingerprint = this.docFormat.currentDocFingerprint();
 
-        if (currentDocFingerprint !== this.docFingerprint) {
+        if (currentDocFingerprint !== undefined && currentDocFingerprint !== this.docFingerprint) {
 
             log.info("controller: New document loaded!");
 
@@ -138,9 +137,13 @@ export class WebController extends Controller {
 
     keyBindingErasePagemark() {
         log.info("Erasing pagemark.");
-        let pageElement = this.docFormat.getCurrentPageElement();
-        let pageNum = this.docFormat.getPageNumFromPageElement(pageElement);
-        this.erasePagemark(pageNum);
+        let pageElement = <HTMLElement>this.docFormat.getCurrentPageElement();
+
+        if(isPresent(pageElement)) {
+            let pageNum = this.docFormat.getPageNumFromPageElement(pageElement);
+            this.erasePagemark(pageNum);
+        }
+        
     }
 
     async keyBindingListener(event: KeyboardEvent) {

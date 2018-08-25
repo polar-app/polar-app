@@ -1,14 +1,14 @@
 import {Model} from '../Model';
-
-const {DocFormats} = require("../docformat/DocFormats");
-const {HTMLViewer} = require("./html/HTMLViewer");
-const {PDFViewer} = require("./pdf/PDFViewer");
+import {DocFormats} from '../docformat/DocFormats';
+import {HTMLViewer} from './html/HTMLViewer';
+import {PDFViewer} from './pdf/PDFViewer';
 
 export class ViewerFactory {
 
     static create(model: Model) {
 
-        switch(DocFormats.getFormat()) {
+        let format = DocFormats.getFormat();
+        switch(format) {
             case "html":
                 return new HTMLViewer(model);
 
@@ -16,7 +16,7 @@ export class ViewerFactory {
                 return new PDFViewer();
 
             default:
-                return null;
+                throw new Error("Unknown doc format: " + format);
         }
 
     }

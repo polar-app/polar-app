@@ -1,29 +1,20 @@
-
-const {forDict} = require("../utils.js");
-
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const Functions_1 = require("../util/Functions");
 class DocMetaDescriber {
-
     static describe(docMeta) {
-
         let nrPagemarks = 0;
         let nrTextHighlights = 0;
-
-        forDict(docMeta.pageMetas, function (key, pageMeta) {
-
-            forDict(pageMeta.pagemarks, function (id, pagemark) {
+        Functions_1.forDict(docMeta.pageMetas, (key, pageMeta) => {
+            Functions_1.forDict(pageMeta.pagemarks, (id, pagemark) => {
                 ++nrPagemarks;
-            }.bind(this));
-
-            forDict(pageMeta.textHighlights, function (id, textHighlight) {
+            });
+            Functions_1.forDict(pageMeta.textHighlights, (id, textHighlight) => {
                 ++nrTextHighlights;
-            }.bind(this));
-
-        }.bind(this));
-
+            });
+        });
         return `PDF with ${docMeta.docInfo.nrPages} pages with ${nrTextHighlights} text highlights and ${nrPagemarks} pagemarks.`;
-
     }
-
 }
-
-module.exports.DocMetaDescriber = DocMetaDescriber;
+exports.DocMetaDescriber = DocMetaDescriber;
+//# sourceMappingURL=DocMetaDescriber.js.map

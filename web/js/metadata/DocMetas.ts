@@ -5,9 +5,9 @@ import {PagemarkType} from './PagemarkType';
 import {PageInfo} from './PageInfo';
 import {DocInfos} from './DocInfos';
 import {AnnotationInfos} from './AnnotationInfos';
+import {Pagemarks} from './Pagemarks';
+import {MetadataSerializer} from './MetadataSerializer';
 
-const {Pagemarks} = require("./Pagemarks");
-const {MetadataSerializer} = require("./MetadataSerializer");
 const {PageMetas} = require("./PageMetas");
 const {TextHighlights} = require("./TextHighlights");
 
@@ -42,8 +42,6 @@ export class DocMetas {
     // result.fingerprint = fingerprint;
     // result.nrPages = nrPages;
     // result.init(result);
-
-
 
     /**
      * Create a DocMeta object but place initial pagemarks on it. This is useful

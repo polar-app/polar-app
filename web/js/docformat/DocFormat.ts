@@ -5,7 +5,7 @@ import {DocDetails} from '../metadata/DocDetails';
 /**
  * Get the proper docFormat to work with.
  */
-export class DocFormat {
+export abstract class DocFormat {
 
     currentScale() {
         return 1.0;
@@ -92,16 +92,12 @@ export class DocFormat {
     /**
      * Get the current doc fingerprint or null if it hasn't been loaded yet.
      */
-    currentDocFingerprint() {
-
-    }
+    abstract currentDocFingerprint(): string | undefined;
 
     /**
      * Get the current state of the doc.
      */
-    currentState(event: any) {
-
-    }
+    abstract currentState(event: any): CurrentState;
 
     supportThumbnails() {
         return false;
@@ -124,4 +120,9 @@ export class DocFormat {
 interface CurrentPageElement {
     element: HTMLElement | null;
     visibility: number;
+}
+
+interface CurrentState {
+    readonly nrPages: number;
+    readonly currentPageNumber: number
 }

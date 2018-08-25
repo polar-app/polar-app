@@ -1,6 +1,6 @@
 import {notNull} from '../../Preconditions';
+import {EventBridge} from './EventBridge';
 
-const {EventBridge} = require("./EventBridge");
 
 /**
  * Listens for the iframe to load and then sends the events to target objects
@@ -82,7 +82,7 @@ export class FrameInitializer {
     startEventBridge() {
 
         document.querySelectorAll(".page").forEach(pageElement => {
-            let eventBridge = new EventBridge(pageElement, this.iframe);
+            let eventBridge = new EventBridge(<HTMLElement>pageElement, this.iframe);
             eventBridge.start();
         });
     }

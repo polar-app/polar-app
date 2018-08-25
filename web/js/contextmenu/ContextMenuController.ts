@@ -7,9 +7,9 @@ import {AnnotationDescriptors} from '../metadata/AnnotationDescriptors';
 import {Logger} from '../logger/Logger';
 import {TriggerEvent} from './TriggerEvent';
 import {DocDescriptor} from '../metadata/DocDescriptor';
+import {DocFormatFactory} from '../docformat/DocFormatFactory';
 
 const {forDict} = require("../utils");
-const {DocFormatFactory} = require("../docformat/DocFormatFactory");
 const log = Logger.create();
 
 /**

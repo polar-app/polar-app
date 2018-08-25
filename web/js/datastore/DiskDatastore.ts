@@ -1,13 +1,13 @@
-import {DocMeta} from '../metadata/DocMeta';
 import {Datastore} from './Datastore';
 import {Paths} from '../util/Paths';
 import {Preconditions} from '../Preconditions';
+import {Logger} from '../logger/Logger';
 
 const fs = require("fs");
 const os = require("os");
 const util = require('util');
 
-const log = require("../logger/Logger").create();
+const log = Logger.create();
 
 export class DiskDatastore implements Datastore {
 

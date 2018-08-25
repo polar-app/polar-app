@@ -4,8 +4,9 @@ import {Texts} from './Texts';
 import {TextType} from './TextType';
 import {FlashcardType} from './FlashcardType';
 import {Flashcard} from './Flashcard';
+import {TestingTime} from '../test/TestingTime';
 
-require("../test/TestingTime").freeze();
+TestingTime.freeze();
 
 describe('Flashcards', function() {
 

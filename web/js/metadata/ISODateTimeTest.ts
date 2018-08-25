@@ -1,8 +1,9 @@
 import {Flashcards} from './Flashcards';
 import {ISODateTime} from './ISODateTime';
 import assert from 'assert';
+import {TestingTime} from '../test/TestingTime';
 
-require("../test/TestingTime").freeze();
+TestingTime.freeze();
 
 describe('Flashcards', function() {
 

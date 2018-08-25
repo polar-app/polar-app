@@ -3,11 +3,11 @@ import {WebContents, Menu, MenuItem, BrowserWindow, ipcMain} from 'electron';
 import {Logger} from '../../logger/Logger';
 import PopupOptions = Electron.PopupOptions;
 import {Arrays} from '../../util/Arrays';
+import {Broadcaster} from '../../ipc/Broadcaster';
+import {Preconditions} from '../../Preconditions';
+import {ContextMenuType} from '../ContextMenuType';
 
-const {ContextMenuType} = require("../ContextMenuType");
 const {ContextMenu} = require("../ContextMenu");
-const {Preconditions} = require("../../Preconditions");
-const {Broadcaster} = require("../../ipc/Broadcaster");
 const {Messenger} = require("../../electron/messenger/Messenger");
 
 const log = Logger.create();

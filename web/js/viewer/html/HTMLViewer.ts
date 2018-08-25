@@ -7,11 +7,11 @@ import {PHZMetadata} from '../../phz/PHZMetadata';
 import {DocDetails} from '../../metadata/DocDetails';
 import {LinkHandler} from './LinkHandler';
 import {Services} from '../../util/services/Services';
+import {HTMLFormat} from '../../docformat/HTMLFormat';
+import {FrameInitializer} from './FrameInitializer';
+import {FrameResizer} from './FrameResizer';
 
-const {FrameResizer} = require("./FrameResizer");
-const {FrameInitializer} = require("./FrameInitializer");
 const {IFrameWatcher} = require("./IFrameWatcher");
-const {HTMLFormat} = require("../../docformat/HTMLFormat");
 
 const log = Logger.create();
 

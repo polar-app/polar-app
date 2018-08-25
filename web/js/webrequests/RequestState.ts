@@ -1,4 +1,6 @@
-const log = require("../logger/Logger").create();
+import {Logger} from '../logger/Logger';
+
+const log = Logger.create();
 
 const STATE_STARTED = "STARTED";
 const STATE_FINISHED = "FINISHED";

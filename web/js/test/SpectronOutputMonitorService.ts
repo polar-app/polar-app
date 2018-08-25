@@ -1,4 +1,4 @@
-const {Preconditions} = require("../Preconditions");
+import {Preconditions} from '../Preconditions';
 
 const TIMEOUT = 250;
 

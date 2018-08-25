@@ -1,6 +1,6 @@
 import {Preconditions} from '../Preconditions';
+import {AppAnalytics} from './AppAnalytics';
 
-const {AppAnalytics} = require("./AppAnalytics");
 const Analytics: IAnalytics = require('electron-google-analytics').default;
 
 // TODO: we MUST specify the userAgent here at some point so we can record the

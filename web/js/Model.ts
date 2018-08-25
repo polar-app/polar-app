@@ -1,14 +1,14 @@
 import {PersistenceLayer} from './datastore/PersistenceLayer';
 import {DocMeta} from './metadata/DocMeta';
+import {DocMetas} from './metadata/DocMetas';
+import {Reactor} from './reactor/Reactor';
+import {PagemarkType} from './metadata/PagemarkType';
+import {Preconditions} from './Preconditions';
+import {Pagemarks} from './metadata/Pagemarks';
+import {Objects} from './util/Objects';
+import {DocMetaDescriber} from './metadata/DocMetaDescriber';
 
 const {Proxies} = require("./proxies/Proxies");
-const {Pagemarks} = require("./metadata/Pagemarks");
-const {PagemarkType} = require("./metadata/PagemarkType");
-const {DocMetas} = require("./metadata/DocMetas");
-const {DocMetaDescriber} = require("./metadata/DocMetaDescriber");
-const {Reactor} = require("./reactor/Reactor");
-const {Objects} = require("./util/Objects");
-const {Preconditions} = require("./Preconditions");
 
 export class Model {
 

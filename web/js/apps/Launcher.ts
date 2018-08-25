@@ -1,16 +1,12 @@
 import {PersistenceLayer} from '../datastore/PersistenceLayer';
 import {Model} from '../Model';
 import {ViewerFactory} from '../viewer/ViewerFactory';
+import {WebController} from '../controller/WebController';
 
-const {SystemClock} = require("../time/SystemClock.js");
-const {WebController} = require("../controller/WebController.js");
 const {WebView} = require("../view/WebView.js");
-const {TextHighlightView} = require("../highlights/text/view/TextHighlightView");
 const {TextHighlightView2} = require("../highlights/text/view/TextHighlightView2");
 const {PagemarkView, PAGEMARK_VIEW_ENABLED} = require("../pagemarks/view/PagemarkView");
-const {PagemarkController} = require("../pagemarks/controller/PagemarkController");
 const {AreaHighlightView} = require("../highlights/area/view/AreaHighlightView");
-
 
 /**
  * Basic class for connecting event listeners and then running a launchFunction

@@ -1,12 +1,8 @@
-const fs = require('fs');
-const assert = require('assert');
-const http = require('http');
+import {WebserverConfig} from './WebserverConfig';
+import {FileRegistry} from './FileRegistry';
+import {assertJSON} from '../../test/Assertions';
 
-const {Webserver} = require('./Webserver');
-const {Hashcodes} = require('../../Hashcodes');
-const {FileRegistry} = require('./FileRegistry');
-const {WebserverConfig} = require('./WebserverConfig');
-const {assertJSON} = require("../../test/Assertions");
+const assert = require('assert');
 
 const webserverConfig = new WebserverConfig(".", 8080);
 

@@ -25,7 +25,7 @@ export class Controller {
     /**
      * Mark the given page number as read.
      */
-    async createPagemark(pageNum: number, options: any) {
+    async createPagemark(pageNum: number, options: any = {}) {
         log.info("Controller sees pagemark created: " + pageNum, options);
         await this.model.createPagemark(pageNum, options);
     }

@@ -14,15 +14,15 @@ export class HTMLFormat extends DocFormat {
     /**
      * Get the current doc fingerprint or null if it hasn't been loaded yet.
      */
-    currentDocFingerprint() {
+    currentDocFingerprint(): string | undefined {
 
         let polarFingerprint = this._queryFingerprintElement();
 
         if (polarFingerprint !== null) {
-            return polarFingerprint.getAttribute("content");
+            return Optional.of(polarFingerprint.getAttribute("content")!).getOrUndefined();
         }
 
-        return null;
+        return undefined;
 
     }
 

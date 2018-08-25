@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const assert_1 = __importDefault(require("assert"));
-const { Caller } = require('./Caller');
+const Caller_1 = require("./Caller");
 describe('Caller', function () {
     describe('Test basic caller', () => {
         it("call method and to make sure we get the right caller", function () {
@@ -25,24 +25,24 @@ describe('Caller', function () {
         it("Parse a basic frame", function () {
             return __awaiter(this, void 0, void 0, function* () {
                 let frame = "     at Function.getCaller (/home/burton/projects/polar-bookshelf/web/js/test/MyTest.js:5:17)";
-                assert_1.default.deepEqual(Caller._parse(frame), { filename: "MyTest.js" });
+                assert_1.default.deepEqual(Caller_1.Caller._parse(frame), { filename: "MyTest.js" });
             });
         });
         it("Parse a webpack frame", function () {
             return __awaiter(this, void 0, void 0, function* () {
                 let frame = "    at Object../web/js/metadata/Pagemarks.js (http://127.0.0.1:8500/web/dist/electron-bundle.js:59471:86)\n";
-                assert_1.default.deepEqual(Caller._parse(frame), { filename: "Pagemarks.js" });
+                assert_1.default.deepEqual(Caller_1.Caller._parse(frame), { filename: "Pagemarks.js" });
             });
         });
         it("Parse a webpack frame with a question mark at the end", function () {
             return __awaiter(this, void 0, void 0, function* () {
                 let frame = "    at eval (webpack:///./web/js/metadata/Pagemarks.js?:11:86)\n";
-                assert_1.default.deepEqual(Caller._parse(frame), { filename: "Pagemarks.js" });
+                assert_1.default.deepEqual(Caller_1.Caller._parse(frame), { filename: "Pagemarks.js" });
             });
         });
     });
 });
 function myCaller() {
-    return Caller.getCaller();
+    return Caller_1.Caller.getCaller();
 }
 //# sourceMappingURL=CallerTest.js.map

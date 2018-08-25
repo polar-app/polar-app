@@ -1,8 +1,5 @@
 import {Functions} from './Functions';
-
-const assert = require('assert');
-const {Fingerprints} = require("./Fingerprints");
-
+import assert from 'assert';
 
 describe('Functions', function() {
 

@@ -1,5 +1,5 @@
 import assert from 'assert';
-const {Caller} = require('./Caller');
+import {Caller} from './Caller';
 
 describe('Caller', function() {
 

@@ -110,7 +110,7 @@ export class MainApp {
         // FIXME: ... there's a catch/22 here creating the main window... we need
         // the main Window created so that we can init the loader...
 
-        let mainAppController = new MainAppController(fileLoader, datastore, webserver, proxyServer);
+        let mainAppController = new MainAppController(fileLoader, this.datastore, webserver, proxyServer);
 
         // TODO: handle the command line here.. IE if someone opens up a file via
         // argument.
