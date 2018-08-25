@@ -1,14 +1,10 @@
-/**
- * Basically just like a note but it's a comment in a discussion stream.
- */
-const {Note} = require("./Note");
-
-class Comment extends Note {
-
-    constructor() {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const Note_1 = require("./Note");
+class Comment extends Note_1.Note {
+    constructor(val) {
         super(val);
     }
-
 }
-
-module.exports.Comment = Comment;
+exports.Comment = Comment;
+//# sourceMappingURL=Comment.js.map

@@ -1,10 +1,7 @@
-const {AnnotationRect} = require("./AnnotationRect");
-
-/**
- *
- */
-class AreaHighlightRect extends AnnotationRect {
-
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const AnnotationRect_1 = require("./AnnotationRect");
+class AreaHighlightRect extends AnnotationRect_1.AnnotationRect {
 }
-
-module.exports.AreaHighlightRect = AreaHighlightRect;
+exports.AreaHighlightRect = AreaHighlightRect;
+//# sourceMappingURL=AreaHighlightRect.js.map
