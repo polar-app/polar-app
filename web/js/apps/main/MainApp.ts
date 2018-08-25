@@ -58,16 +58,9 @@ export class MainApp {
 
         let defaultFileLoader = new DefaultFileLoader(fileRegistry, cacheRegistry);
 
-        let fileLoader;
-
-        let webserver;
-
-        let proxyServer;
-
-
-        // FIXME: move this to MainApp
-
-        log.info("Loaded from: ", app.getAppPath());
+        log.info("App loaded from: ", app.getAppPath());
+        log.info("Stash dir: ", this.datastore.stashDir);
+        log.info("Logs dir: ", this.datastore.logsDir);
 
         // NOTE: removing the next three lines removes the colors in the toolbar.
         //const appIcon = new Tray(app_icon);
@@ -85,12 +78,12 @@ export class MainApp {
 
         // *** start the webserver
 
-        webserver = new Webserver(webserverConfig, fileRegistry);
+        let webserver = new Webserver(webserverConfig, fileRegistry);
         webserver.start();
 
         // *** start the proxy server
 
-        proxyServer = new ProxyServer(proxyServerConfig, cacheRegistry);
+        let proxyServer = new ProxyServer(proxyServerConfig, cacheRegistry);
         proxyServer.start();
 
         let cacheInterceptorService = new CacheInterceptorService(cacheRegistry);
@@ -99,7 +92,7 @@ export class MainApp {
         await captureController.start();
         await dialogWindowService.start();
 
-        fileLoader = new AnalyticsFileLoader(mainWindow.webContents.getUserAgent(), defaultFileLoader);
+        let fileLoader = new AnalyticsFileLoader(mainWindow.webContents.getUserAgent(), defaultFileLoader);
 
         log.info("Running with process.args: ", JSON.stringify(process.argv));
 

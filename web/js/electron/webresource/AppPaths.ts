@@ -7,8 +7,8 @@ import process from 'process';
 /**
  * Given a relative path, return a full path to a local app resource.
  *
- * Each module has a unique __dirname so with this mechanism we can find an
- * path to a file as if we were int he root.
+ * Each module has a unique __dirname so with this mechanism we can reliably find
+ * an path to a file as if we were in the root of the webapp.
  *
  */
 export class AppPaths {

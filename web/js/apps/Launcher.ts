@@ -2,11 +2,14 @@ import {PersistenceLayer} from '../datastore/PersistenceLayer';
 import {Model} from '../Model';
 import {ViewerFactory} from '../viewer/ViewerFactory';
 import {WebController} from '../controller/WebController';
+import {Logger} from '../logger/Logger';
 
-const {WebView} = require("../view/WebView.js");
+const {WebView} = require("../view/WebView");
 const {TextHighlightView2} = require("../highlights/text/view/TextHighlightView2");
 const {PagemarkView, PAGEMARK_VIEW_ENABLED} = require("../pagemarks/view/PagemarkView");
 const {AreaHighlightView} = require("../highlights/area/view/AreaHighlightView");
+
+const log = Logger.create();
 
 /**
  * Basic class for connecting event listeners and then running a launchFunction
@@ -48,6 +51,9 @@ export class Launcher {
         viewer.start();
 
         await persistenceLayer.init();
+
+        log.info("Stash dir: ", persistenceLayer.datastore.stashDir);
+        log.info("Logs dir: ", persistenceLayer.datastore.logsDir);
 
         await new WebController(model, viewer).start();
 

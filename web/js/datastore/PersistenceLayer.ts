@@ -11,7 +11,7 @@ import {Preconditions} from '../Preconditions';
  */
 export class PersistenceLayer {
 
-    private readonly datastore: Datastore;
+    public readonly datastore: Datastore;
 
     constructor(datastore: Datastore) {
         this.datastore = datastore;
