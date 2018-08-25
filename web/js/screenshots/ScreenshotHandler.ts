@@ -3,10 +3,7 @@ import {ScreenshotRequest} from './ScreenshotRequest';
 import {IPCMessage} from '../ipc/handler/IPCMessage';
 import {IPCEvent} from '../ipc/handler/IPCEvent';
 import {Screenshot} from './Screenshot';
-import {BrowserWindow, WebContents} from "electron";
-import {Logger} from '../logger/Logger';
-
-const log = Logger.create();
+import {WebContents} from "electron";
 
 export class ScreenshotHandler extends IPCHandler<ScreenshotRequest> {
 
@@ -52,7 +49,7 @@ export class ScreenshotHandler extends IPCHandler<ScreenshotRequest> {
      *         with scaleFactor as an option.
      *
      */
-    static async capture(webContents: WebContents, screenshotRequest: ScreenshotRequest): Promise<Electron.NativeImage>   {
+    static async capture(webContents: WebContents, screenshotRequest: ScreenshotRequest): Promise<Electron.NativeImage> {
 
         if(! screenshotRequest) {
             throw new Error("screenshotRequest required");
