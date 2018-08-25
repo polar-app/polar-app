@@ -1,5 +1,5 @@
-const {Functions} = require("../../../web/js/util/Functions");
-const {SpectronRenderer} = require("../../../web/js/test/SpectronRenderer");
+const {Functions} = require("../../../js/util/Functions");
+const {SpectronRenderer} = require("../../../js/test/SpectronRenderer");
 const {TestResultsService} = require("../../../web/js/test/results/TestResultsService");
 
 async function start() {

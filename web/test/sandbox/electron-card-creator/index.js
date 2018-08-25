@@ -1,6 +1,6 @@
 
 const path = require("path");
-const {SpectronMain} = require("../../../web/js/test/SpectronRenderer");
+const {SpectronMain} = require("../../../js/test/SpectronRenderer");
 
 async function start() {
     let mainWindow = await SpectronMain.setup();

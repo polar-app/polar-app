@@ -1,4 +1,4 @@
-require("../../../../../lib/TextHighlighter.js");
+require("../../../../lib/TextHighlighter.js");
 module.exports.TextHighlighterFactory = class {
 
     static newInstance(element, options) {

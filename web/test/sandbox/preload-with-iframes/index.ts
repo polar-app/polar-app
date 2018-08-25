@@ -1,5 +1,5 @@
 import {BrowserWindow} from 'electron';
-import {SpectronMain, WindowFactory} from '../../../web/js/test/SpectronMain';
+import {SpectronMain, WindowFactory} from '../../../js/test/SpectronMain';
 
 export const BROWSER_OPTIONS = {
 
