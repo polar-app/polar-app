@@ -1,10 +1,12 @@
 // A datastore that supports ledgers and checkpoints.
-export abstract class Datastore {
+export interface Datastore {
+
+    readonly stashDir: string;
 
     /**
      * Init the datastore, potentially reading files of disk, the network, etc.
      */
-    async abstract init(): Promise<any>;
+    init(): Promise<any>;
 
     /**
      * Get the data for the DocMeta object we currently in the datastore for
@@ -13,7 +15,7 @@ export abstract class Datastore {
      * @return {string} A JSON string representing the DocMeta which is decoded
      * by the PersistenceLayer.
      */
-    abstract async getDocMeta(fingerprint: string): Promise<string | null>;
+    getDocMeta(fingerprint: string): Promise<string | null>;
 
     /**
      * Write the datastore to disk.
@@ -21,6 +23,6 @@ export abstract class Datastore {
      * @param fingerprint The fingerprint of the data we should be working with.
      * @param data The RAW data to decode by the PersistenceLayer
      */
-    abstract async sync(fingerprint: string, data: any): Promise<void>;
+    sync(fingerprint: string, data: any): Promise<void>;
 
 }

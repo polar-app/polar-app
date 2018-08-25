@@ -1,4 +1,4 @@
-import {WebResource} from '../../electron/webresource/WebResource';
+import {WebResource} from '../../../electron/webresource/WebResource';
 
 export interface LoadedFile {
 

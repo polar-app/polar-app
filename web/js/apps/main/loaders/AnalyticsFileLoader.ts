@@ -1,6 +1,6 @@
 import {FileLoader} from './FileLoader';
 import {FileTypes} from './FileTypes';
-import {GA} from '../../ga/GA';
+import {GA} from '../../../ga/GA';
 import {LoadedFile} from './LoadedFile';
 
 export class AnalyticsFileLoader implements FileLoader {

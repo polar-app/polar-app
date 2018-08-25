@@ -9,7 +9,7 @@ const util = require('util');
 
 const log = require("../logger/Logger").create();
 
-export class DiskDatastore extends Datastore {
+export class DiskDatastore implements Datastore {
 
     public readonly dataDir: string;
 
@@ -34,8 +34,6 @@ export class DiskDatastore extends Datastore {
     constructor(dataDir?: string) {
 
         // TODO: migrate this to use Directories
-
-        super();
 
         if(dataDir) {
             // use a configured dataDir for testing.

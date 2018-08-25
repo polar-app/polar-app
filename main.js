@@ -35,8 +35,8 @@ const {Files} = require("./web/js/util/Files");
 const {ElectronContextMenu} = require("./web/js/contextmenu/electron/ElectronContextMenu");
 const {CaptureController} = require("./web/js/capture/controller/CaptureController");
 const {GA} = require("./web/js/ga/GA");
-const {DefaultFileLoader} = require("./web/js/apps/main/DefaultFileLoader");
-const {AnalyticsFileLoader} = require("./web/js/apps/main/AnalyticsFileLoader");
+const {DefaultFileLoader} = require("./web/js/apps/main/loaders/DefaultFileLoader");
+const {AnalyticsFileLoader} = require("./web/js/apps/main/loaders/AnalyticsFileLoader");
 
 const searchInPage = require('electron-in-page-search').default;
 const {DialogWindowService} = require("./web/js/ui/dialog_window/DialogWindowService");

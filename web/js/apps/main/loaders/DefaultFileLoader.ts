@@ -1,7 +1,7 @@
 import {FileLoader} from './FileLoader';
-import {CacheRegistry} from '../../backend/proxyserver/CacheRegistry';
+import {CacheRegistry} from '../../../backend/proxyserver/CacheRegistry';
 import {PHZLoader} from './PHZLoader';
-import {FileRegistry} from '../../backend/webserver/FileRegistry';
+import {FileRegistry} from '../../../backend/webserver/FileRegistry';
 import {PDFLoader} from './PDFLoader';
 import {LoadedFile} from './LoadedFile';
 

@@ -6,17 +6,15 @@ import {DiskDatastore} from './DiskDatastore';
 import {Datastore} from './Datastore';
 import {Preconditions} from '../Preconditions';
 
-export class MemoryDatastore extends Datastore {
+export class MemoryDatastore implements Datastore {
+
+    public readonly stashDir: string;
 
     private readonly dataDir: string;
-
-    private readonly stashDir: string;
 
     private readonly docMetas: {[fingerprint: string]: string} = {};
 
     constructor() {
-
-        super();
 
         // these dir values are used in the UI and other places so we need to
         // actually have values for them.
