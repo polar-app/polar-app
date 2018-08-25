@@ -19,6 +19,7 @@ import {MainAppMenu} from './MainAppMenu';
 import {Cmdline} from '../../electron/Cmdline';
 import {Logger} from '../../logger/Logger';
 import {Datastore} from '../../datastore/Datastore';
+import {ScreenshotService} from '../../screenshots/ScreenshotService';
 
 declare var global: any;
 
@@ -57,6 +58,9 @@ export class MainApp {
         let dialogWindowService = new DialogWindowService();
 
         let defaultFileLoader = new DefaultFileLoader(fileRegistry, cacheRegistry);
+
+        let screenshotService = new ScreenshotService();
+        screenshotService.start();
 
         log.info("App loaded from: ", app.getAppPath());
         log.info("Stash dir: ", this.datastore.stashDir);

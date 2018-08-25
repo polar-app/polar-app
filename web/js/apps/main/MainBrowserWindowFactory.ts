@@ -10,7 +10,6 @@ const WIDTH = 800 * 1.2;
 const HEIGHT = 1100 * 1.2;
 
 const DEFAULT_URL = AppPaths.resource(`./apps/home/default.html`);
-//const DEFAULT_URL =  'about:blank';
 
 export const APP_ICON = nativeImage.createFromPath(fspath.join(process.cwd(), 'icon.png'));
 
