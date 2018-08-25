@@ -3,6 +3,8 @@ export interface Datastore {
 
     readonly stashDir: string;
 
+    readonly logsDir: string;
+
     /**
      * Init the datastore, potentially reading files of disk, the network, etc.
      */

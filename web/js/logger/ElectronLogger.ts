@@ -8,7 +8,7 @@ import {ElectronContextType} from '../electron/context/ElectronContextType';
 
 const delegate = require('electron-log');
 
-export class ElectronLogger implements ILogger {
+class ElectronLogger implements ILogger {
 
     info(msg: string, ...args: any[]) {
         delegate.log(msg, ...args);
@@ -37,6 +37,7 @@ export class ElectronLoggers {
 
         if(config.createDir) {
             await Files.createDirAsync(logsDir);
+            console.log("Created log dir: " + logsDir);
         }
 
         if (ElectronContextTypes.create() === ElectronContextType.MAIN) {
@@ -54,7 +55,13 @@ export class ElectronLoggers {
             delegate.transports.file.level = "info";
             delegate.transports.file.appName = "polar";
 
+            console.log("Configured main electron logger writing to: " + logsDir);
+
+        } else {
+            console.log("Skipping ElectronLogger initialization (running in renderer)");
         }
+
+        return new ElectronLogger();
 
     }
 

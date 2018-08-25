@@ -10,7 +10,9 @@ export class MemoryDatastore implements Datastore {
 
     public readonly stashDir: string;
 
-    private readonly dataDir: string;
+    public readonly dataDir: string;
+
+    public readonly logsDir: string;
 
     private readonly docMetas: {[fingerprint: string]: string} = {};
 
@@ -20,6 +22,7 @@ export class MemoryDatastore implements Datastore {
         // actually have values for them.
         this.dataDir = DiskDatastore.getDataDir();
         this.stashDir = Paths.create(this.dataDir, "stash");
+        this.logsDir = Paths.create(this.dataDir, "logs");
 
         this.docMetas = {};
 
