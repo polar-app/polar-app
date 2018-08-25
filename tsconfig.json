@@ -37,6 +37,7 @@
 
     },
     "include": [
+        "main.ts",
         "test/sandbox/**/*",
         "scripts/**/*",
         "web/**/*",
