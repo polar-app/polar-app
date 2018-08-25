@@ -22,7 +22,7 @@ export class Files {
         throw new Error("Not replaced via promisify");
     }
 
-    public static async createDirAsync(dir: string, mode: number | string | undefined | null) {
+    public static async createDirAsync(dir: string, mode?: number | string | undefined | null) {
 
         let result: any = {
             dir

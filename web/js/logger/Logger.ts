@@ -1,12 +1,12 @@
 // Simple logger that meets the requirements we have for Polar.
 
 import {ILogger} from './ILogger';
+import {Objects} from '../util/Objects';
+import {Files} from '../util/Files';
+import {ConsoleLogger} from './ConsoleLogger';
+import {Caller} from './Caller';
 
 const log = require('electron-log');
-const {Files} = require("../util/Files.js");
-const {Objects} = require("../util/Objects.js");
-const {ConsoleLogger} = require("./ConsoleLogger.js");
-const {Caller} = require("./Caller.js");
 
 const process = require("process");
 
