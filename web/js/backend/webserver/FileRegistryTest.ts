@@ -1,8 +1,8 @@
 import {WebserverConfig} from './WebserverConfig';
+
+import assert from 'assert';
 import {FileRegistry} from './FileRegistry';
 import {assertJSON} from '../../test/Assertions';
-
-const assert = require('assert');
 
 const webserverConfig = new WebserverConfig(".", 8080);
 

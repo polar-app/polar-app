@@ -123,6 +123,11 @@ interface CurrentPageElement {
 }
 
 interface CurrentState {
+
     readonly nrPages: number;
-    readonly currentPageNumber: number
+
+    readonly currentPageNumber: number;
+
+    readonly pageElement: HTMLElement;
+
 }

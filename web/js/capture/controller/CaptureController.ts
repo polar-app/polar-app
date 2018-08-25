@@ -1,13 +1,11 @@
 import {AppPaths} from "../../electron/webresource/AppPaths";
 import {PHZLoader} from '../../apps/main/loaders/PHZLoader';
-import {BrowserWindow, ipcMain} from 'electron';
+import {ipcMain} from 'electron';
 import {Preconditions} from '../../Preconditions';
 import {Logger} from '../../logger/Logger';
 import BrowserRegistry from '../BrowserRegistry';
 import {BrowserProfiles} from '../BrowserProfiles';
 import {Capture} from '../Capture';
-import {Capture2} from '../Capture2';
-
 
 const log = Logger.create();
 
@@ -128,7 +126,7 @@ export class CaptureController {
         //browser = Browsers.toProfile(browser, "default");
         let browserProfile = BrowserProfiles.toBrowserProfile(browser, "default");
 
-        let capture = new Capture2(url, browserProfile, this.directories.stashDir, captureOpts);
+        let capture = new Capture(url, browserProfile, this.directories.stashDir, captureOpts);
 
         let captureResult = await capture.start();
 

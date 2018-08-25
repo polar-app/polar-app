@@ -2,7 +2,7 @@ import {Logger} from '../web/js/logger/Logger';
 import {BrowserProfiles} from '../web/js/capture/BrowserProfiles';
 import {DiskDatastore} from '../web/js/datastore/DiskDatastore';
 import {Args} from '../web/js/electron/capture/Args';
-import {Capture2} from '../web/js/capture/Capture2';
+import {Capture} from '../web/js/capture/Capture';
 import BrowserRegistry from '../web/js/capture/BrowserRegistry';
 
 const electron = require('electron');
@@ -55,7 +55,7 @@ app.on('ready', function() {
             amp: args.amp
         };
 
-        let capture = new Capture2(url, browserProfile, diskDatastore.stashDir, captureOpts);
+        let capture = new Capture(url, browserProfile, diskDatastore.stashDir, captureOpts);
 
         await capture.start();
 

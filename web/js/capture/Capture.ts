@@ -1,21 +1,22 @@
-import {Browser} from './Browser';
 import {CaptureOpts} from './CaptureOpts';
-import {shell, app, BrowserWindow, WebRequest} from 'electron';
+import {WebContents, WebRequest} from 'electron';
 import {CaptureResult} from './CaptureResult';
 import {Logger} from '../logger/Logger';
 import {Preconditions} from '../Preconditions';
-import {BrowserWindows} from './BrowserWindows';
-import {Dimensions, IDimensions} from '../util/Dimensions';
 import {PendingWebRequestsListener} from '../webrequests/PendingWebRequestsListener';
 import {DebugWebRequestsListener} from '../webrequests/DebugWebRequestsListener';
 import {WebRequestReactor} from '../webrequests/WebRequestReactor';
-import {configureBrowserWindowSize} from './renderer/ContentCaptureFunctions';
+import {WebContentsDriver, WebContentsDriverFactory} from './drivers/WebContentsDriver';
 import {BrowserProfile} from './BrowserProfile';
+import {Strings} from '../util/Strings';
+import {Optional} from '../util/ts/Optional';
+import {IResult} from '../util/Result';
+import {Results} from '../util/Results';
+import {Functions} from '../util/Functions';
+import {Files} from '../util/Files';
+import {Filenames} from '../util/Filenames';
+import {CapturedPHZWriter} from './CapturedPHZWriter';
 
-const {Filenames} = require("../util/Filenames");
-const {Files} = require("../util/Files");
-const {Functions} = require("../util/Functions");
-const {CapturedPHZWriter} = require("./CapturedPHZWriter");
 const {DefaultPagingBrowser} = require("../electron/capture/pagination/DefaultPagingBrowser");
 const {PagingLoader} = require("../electron/capture/pagination/PagingLoader");
 
@@ -33,12 +34,6 @@ const USE_PAGING_LOADER = false;
  */
 const EXECUTE_CAPTURE_DELAY = 1500;
 
-// TODO: this code is distributed across two packages.. capture and
-// electron.capture... pick one!
-
-/**
- * @Deprecate remove after 10/2018 once Capture2 is proven to work.
- */
 export class Capture {
 
     public url: string;
@@ -56,20 +51,25 @@ export class Capture {
      */
     public resolve: CaptureResultCallback = () => {};
 
-    public window?: BrowserWindow;
+    private webContents?: WebContents;
 
-    public windowConfigured = false;
+    private driver?: WebContentsDriver;
 
-    /**
-     *
-     */
-    constructor(url: string, browserProfile: BrowserProfile, stashDir: string, captureOpts: CaptureOpts = {amp: true}) {
+    constructor(url: string,
+                browserProfile: BrowserProfile,
+                stashDir: string,
+                captureOpts: CaptureOpts = {amp: true}) {
 
         // FIXME: don't allow named anchors in the URL like #foo... strip them
         // and test this functionality.
 
         this.url = Preconditions.assertNotNull(url, "url");
-        this.browserProfile = Preconditions.assertNotNull(browserProfile, "browserProfile");
+
+        if(Strings.empty(this.url)) {
+            throw new Error("URL may not be empty")
+        }
+
+        this.browserProfile = Preconditions.assertNotNull(browserProfile, "browser");
         this.stashDir = Preconditions.assertNotNull(stashDir, "stashDir");
         this.captureOpts = captureOpts;
 
@@ -82,39 +82,77 @@ export class Capture {
 
     }
 
-    async start() {
+    async start(): Promise<CaptureResult> {
 
-        this.window = await this.createWindow();
+        let driver = await WebContentsDriverFactory.create(this.browserProfile);
 
-        this.loadURL(this.url);
+        this.driver = driver;
 
-        return new Promise(resolve => {
+        this.webContents = await driver.getWebContents();
+
+        this.driver!.addEventListener('close', () => {
+            this.stop();
+        });
+
+        this.onWebRequest(this.webContents.session.webRequest);
+
+        await this.driver.loadURL(this.url);
+
+        await this.handleLoad();
+
+        return new Promise<CaptureResult>(resolve => {
             this.resolve = resolve;
         });
 
     }
 
-    loadURL(url: string) {
+    async handleLoad() {
 
-        if(! this.window) {
-            throw new Error("No window");
+        // see if we first need to handle the page in any special manner.
+
+        // FIXME: make this into some type of content handlers system
+        // so that we can add one off extensions like reloading the a page
+        // when AMP or other features are detected.  We could also do AMP
+        // earlier I thin like on-dom-ready.
+        //
+
+        let ampURL = await this.getAmpURL();
+
+        // TODO: if we end up handling multiple types of URLs in the future
+        // we might want to build up a history to prevent endless loops or
+        // just keep track of the redirect count.
+        if(this.captureOpts.amp && ampURL && ampURL !== this.url) {
+
+            log.info("Found AMP URL.  Redirecting then loading: " + ampURL);
+
+            // redirect us to the amp URL as this will render better.
+            await this.driver!.loadURL(ampURL);
+            await this.handleLoad();
+
+            return;
+
         }
 
-        // change the global URL we're loading...
-        this.url = url;
+        setTimeout(() => {
 
-        const loadURLOptions = {
+            // capture within timeout just for debug purposes.
 
-            // TODO: I don't think we should use no-cache or at least make it
-            // a command line option. Probably best to not use it by default
-            // but then make it an option later.
+            this.stop();
 
-            extraHeaders: `pragma: no-cache\nreferer: ${url}\n`,
-            userAgent: this.browserProfile.userAgent
+            this.capture()
+                .catch(err => log.error(err));
 
-        };
+        }, 1);
 
-        this.window.loadURL(url, loadURLOptions);
+    }
+
+    stop() {
+
+        this.webRequestReactors.forEach(webRequestReactor => {
+            log.info("Stopping webRequestReactor...");
+            webRequestReactor.stop();
+            log.info("Stopping webRequestReactor...done");
+        });
 
     }
 
@@ -122,11 +160,11 @@ export class Capture {
      * Called when the onLoad handler is executed and we're ready to start the
      * capture.
      */
-    async startCapture(window: BrowserWindow) {
+    async capture() {
 
         if(USE_PAGING_LOADER) {
 
-            let pagingBrowser = new DefaultPagingBrowser(window.webContents);
+            let pagingBrowser = new DefaultPagingBrowser(this.webContents);
 
             let pagingLoader = new PagingLoader(pagingBrowser, async () => {
                 log.info("Paging loader finished.")
@@ -143,12 +181,6 @@ export class Capture {
 
         }
 
-        this.webRequestReactors.forEach(webRequestReactor => {
-            log.info("Stopping webRequestReactor...");
-            webRequestReactor.stop();
-            log.info("Stopping webRequestReactor...done");
-        });
-
         await Functions.waitFor(EXECUTE_CAPTURE_DELAY);
 
         this.executeContentCapture()
@@ -163,10 +195,6 @@ export class Capture {
      */
     private async getAmpURL() {
 
-        if(! this.window) {
-            throw new Error("No window");
-        }
-
         /** @RendererContext */
         function fetchAmpURL() {
 
@@ -180,7 +208,7 @@ export class Capture {
 
         }
 
-        return await this.window.webContents.executeJavaScript(Functions.functionToScript(fetchAmpURL));
+        return await this.webContents!.executeJavaScript(Functions.functionToScript(fetchAmpURL));
 
     }
 
@@ -189,11 +217,7 @@ export class Capture {
         // TODO: this function should be cleaned up a bit.. it has too many moving
         // parts now and should be moved into smaller functions.
 
-        if(! this.window || ! this.window.webContents)
-            throw new Error("No window");
-
-        let window = this.window;
-        let webContents = window.webContents;
+        let webContents = this.webContents!;
 
         log.info("Capturing the HTML...");
 
@@ -211,7 +235,8 @@ export class Capture {
         // this more aggressively.
         try {
 
-            captured = await webContents.executeJavaScript("ContentCapture.captureHTML()");
+            let result: IResult<any> = await webContents.executeJavaScript("ContentCapture.execute()");
+            captured = Results.create<any>(result).get();
 
         } catch (e) {
 
@@ -220,7 +245,7 @@ export class Capture {
             // this with a closure that is an 'either' err or content.
 
             log.error("Could not capture HTML: ", e);
-
+            throw e;
         }
 
         log.info("Retrieving HTML...done");
@@ -247,7 +272,7 @@ export class Capture {
 
         log.info("Capturing the HTML...done");
 
-        window.close();
+        Optional.of(this.driver).when(driver => driver.destroy());
 
         this.resolve({
             path: phzPath
@@ -270,158 +295,6 @@ export class Capture {
 
         //this.debugWebRequestsListener.register(webRequestReactor);
         this.pendingWebRequestsListener.register(webRequestReactor);
-
-    }
-
-    async createWindow() {
-
-        // Create the browser window.
-        let browserWindowOptions = BrowserWindows.toBrowserWindowOptions(this.browserProfile);
-
-        log.info("Using browserWindowOptions: ", browserWindowOptions);
-
-        let newWindow = new BrowserWindow(browserWindowOptions);
-
-        // TODO: make this a command line argument
-        //newWindow.webContents.toggleDevTools();
-
-        this.onWebRequest(newWindow.webContents.session.webRequest);
-
-        newWindow.webContents.on('dom-ready', function(e) {
-            log.info("dom-ready: ", e);
-        });
-
-        newWindow.on('close', function(e) {
-            e.preventDefault();
-            newWindow.webContents.clearHistory();
-            newWindow.webContents.session.clearCache(function() {
-                newWindow.destroy();
-            });
-        });
-
-        newWindow.on('closed', function() {
-
-        });
-
-        newWindow.webContents.on('new-window', function(e, url) {
-        });
-
-        newWindow.webContents.on('will-navigate', function(e, url) {
-            e.preventDefault();
-        });
-
-        newWindow.once('ready-to-show', () => {
-        });
-
-        newWindow.webContents.on('did-fail-load', function(event, errorCode, errorDescription, validateURL, isMainFrame) {
-
-            log.info("did-fail-load: " , {event, errorCode, errorDescription, validateURL, isMainFrame}, event);
-
-            // FIXME: figure out how to fail properly and have unit tests
-            // setup for this situation.
-
-        });
-
-        /**
-         */
-        newWindow.webContents.on('did-start-loading', (event: Electron.Event) => {
-
-            log.info("Registering new webRequest listeners");
-
-            // We get one webContents per frame so we have to listen to their
-            // events too..
-
-            /**
-             * @type {Electron.WebContents}
-             */
-            let webContents = event.sender;
-
-            log.info("Detected new loading page: " + webContents.getURL());
-
-            if(! this.windowConfigured) {
-
-                this.configureWindow(newWindow)
-                    .catch(err => log.error(err));
-
-                this.windowConfigured = true;
-
-            }
-
-        });
-
-        newWindow.webContents.on('did-finish-load', async () => {
-
-            log.info("did-finish-load: ", arguments);
-
-            // see if we first need to handle the page in any special manner.
-
-            let ampURL = await this.getAmpURL();
-
-            // TODO: if we end up handling multiple types of URLs in the future
-            // we might want to build up a history to prevent endless loops or
-            // just keep track of the redirect count.
-            if(this.captureOpts.amp && ampURL && ampURL !== this.url) {
-
-                log.info("Found AMP URL.  Redirecting then loading: " + ampURL);
-
-                // redirect us to the amp URL as this will render better.
-                this.loadURL(ampURL);
-                return;
-
-            }
-
-            setTimeout(() => {
-
-                // capture within timeout just for debug purposes.
-
-                if(! this.window) {
-                    throw new Error("No window");
-                }
-
-                this.startCapture(this.window)
-                    .catch(err => log.error(err));
-
-            }, 1);
-
-        });
-
-        return newWindow;
-
-    }
-
-    async configureWindow(window: BrowserWindow) {
-
-        // TODO maybe inject this via a preload script so we know that it's always
-        // running
-
-        log.info("Emulating browser: " + JSON.stringify(this.browserProfile, null, "  " ));
-
-        // we need to mute by default especially if the window is hidden.
-        log.info("Muting audio...");
-        window.webContents.setAudioMuted(true);
-
-        /**
-         * @type {Electron.Parameters}
-         */
-        let deviceEmulation = this.browserProfile.deviceEmulation;
-
-        deviceEmulation = Object.assign({}, deviceEmulation);
-
-        log.info("Emulating device...");
-        window.webContents.enableDeviceEmulation(deviceEmulation);
-
-        window.webContents.setUserAgent(this.browserProfile.userAgent);
-
-        let windowDimensions: IDimensions = {
-            width: deviceEmulation.screenSize.width,
-            height: deviceEmulation.screenSize.height,
-        };
-
-        log.info("Using window dimensions: " + JSON.stringify(windowDimensions, null, "  "));
-
-        let screenDimensionScript = Functions.functionToScript(configureBrowserWindowSize, windowDimensions);
-
-        await window.webContents.executeJavaScript(screenDimensionScript);
 
     }
 

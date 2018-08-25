@@ -43,7 +43,7 @@ export class HTMLFormat extends DocFormat {
         return {
             nrPages: 1,
             currentPageNumber: 1,
-            pageElement: document.querySelector(".page")
+            pageElement: <HTMLElement>document.querySelector(".page")
         }
 
     }

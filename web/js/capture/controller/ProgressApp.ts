@@ -1,6 +1,5 @@
 import $ from '../../ui/JQuery';
-
-const {ProgressUI} = require("./ProgressUI");
+import {ProgressUI} from './ProgressUI';
 
 export class ProgressApp {
 

@@ -15,7 +15,7 @@ const Logger_1 = require("../web/js/logger/Logger");
 const BrowserProfiles_1 = require("../web/js/capture/BrowserProfiles");
 const DiskDatastore_1 = require("../web/js/datastore/DiskDatastore");
 const Args_1 = require("../web/js/electron/capture/Args");
-const Capture2_1 = require("../web/js/capture/Capture2");
+const Capture_1 = require("../web/js/capture/Capture");
 const BrowserRegistry_1 = __importDefault(require("../web/js/capture/BrowserRegistry"));
 const electron = require('electron');
 const app = electron.app;
@@ -45,7 +45,7 @@ app.on('ready', function () {
         let captureOpts = {
             amp: args.amp
         };
-        let capture = new Capture2_1.Capture2(url, browserProfile, diskDatastore.stashDir, captureOpts);
+        let capture = new Capture_1.Capture(url, browserProfile, diskDatastore.stashDir, captureOpts);
         yield capture.start();
         if (args.quit) {
             log.info("Capture finished.  Quitting now");
