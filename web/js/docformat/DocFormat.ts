@@ -7,11 +7,13 @@ import {DocDetails} from '../metadata/DocDetails';
  */
 export abstract class DocFormat {
 
-    currentScale() {
+    public abstract readonly name: string;
+
+    currentScale(): number {
         return 1.0;
     }
 
-    getPageNumFromPageElement(pageElement: HTMLElement) {
+    getPageNumFromPageElement(pageElement: HTMLElement): number {
         Preconditions.assertNotNull(pageElement, "pageElement");
         let dataPageNum = notNull(pageElement.getAttribute("data-page-number"));
         return parseInt(dataPageNum);
@@ -107,7 +109,7 @@ export abstract class DocFormat {
         return {};
     }
 
-    targetDocument() {
+    targetDocument(): HTMLDocument | null {
         throw new Error("Not implemented");
     }
 

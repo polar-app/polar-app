@@ -47,7 +47,7 @@ export class PDFFormat extends DocFormat {
         return true;
     }
 
-    targetDocument() {
+    targetDocument(): HTMLDocument | null {
         return document;
     }
 

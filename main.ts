@@ -52,7 +52,7 @@ app.on('ready', async () => {
 
     await datastore.init();
 
-    Logger.setLoggerDelegate(await ElectronLoggers.create(datastore.logsDir));
+    //Logger.setLoggerDelegate(await ElectronLoggers.create(datastore.logsDir));
 
     let mainApp = new MainApp(datastore);
     await mainApp.start();

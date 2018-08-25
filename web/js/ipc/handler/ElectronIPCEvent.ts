@@ -1,4 +1,4 @@
-import {BrowserWindow, WebContents} from 'electron';
+import {WebContents} from 'electron';
 import {IPCEvent} from './IPCEvent';
 import {WritablePipe} from '../pipes/Pipe';
 import {IPCMessage} from './IPCMessage';
@@ -12,7 +12,7 @@ export class ElectronIPCEvent extends IPCEvent {
     public readonly senderWindowReference: WindowReference;
 
     constructor(responsePipe: WritablePipe<IPCMessage<any>>, message: IPCMessage<any>, sender: WebContents) {
-        super(responsePipe, message);
+        super(responsePipe, message, sender);
 
         Preconditions.assertNotNull(sender, "sender");
 

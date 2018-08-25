@@ -33,6 +33,7 @@ export class WindowMessagePipe implements Pipe<IPCEvent, any> {
         return (event: any) => {
 
             if(event && event.data && event.data.channel && event.data.channel == channel) {
+
                 let data = event.data;
                 let writablePipe = WindowMessagePipe.createWritablePipe(channel, event);
                 let ipcEvent = new IPCEvent(writablePipe, data.message);

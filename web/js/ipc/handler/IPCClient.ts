@@ -46,4 +46,9 @@ export class IPCClient<E extends IPCEvent> {
 
     }
 
+    async call<R, T>(path: string, request: R, targetContext: ElectronContext = this.targetContext): Promise<T> {
+        let ipcMessage = await this.execute(path, request, targetContext);
+        return ipcMessage.value;
+    }
+
 }

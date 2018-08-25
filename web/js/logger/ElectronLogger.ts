@@ -10,6 +10,8 @@ const delegate = require('electron-log');
 
 class ElectronLogger implements ILogger {
 
+    readonly name: string = 'electron-logger';
+
     info(msg: string, ...args: any[]) {
         delegate.log(msg, ...args);
     }

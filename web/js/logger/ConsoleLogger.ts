@@ -5,6 +5,8 @@ import {ILogger} from './ILogger';
 
 export class ConsoleLogger implements ILogger {
 
+    readonly name: string = 'console-logger';
+
     info(msg: string, ...args: any[]) {
         console.log(msg, ...args);
     }

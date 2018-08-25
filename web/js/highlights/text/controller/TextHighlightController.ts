@@ -6,14 +6,16 @@ import {Logger} from '../../../logger/Logger';
 
 import $ from '../../../ui/JQuery';
 import {TextHighlightRow} from './TextHighlightRow';
-import {Preconditions} from '../../../Preconditions';
+import {notNull, Preconditions} from '../../../Preconditions';
 import {DocFormatFactory} from '../../../docformat/DocFormatFactory';
+import {DocFormat} from '../../../docformat/DocFormat';
+import {KeyEvents} from '../../../KeyEvents';
+import {TextHighlighterFactory} from './TextHighlighterFactory';
+import {Screenshots} from '../../../screenshots/Screenshots';
 
 const {TextHighlightRecords} = require("../../../metadata/TextHighlightRecords");
-const {TextHighlighterFactory} = require("./TextHighlighterFactory");
 const {TextHighlightRows} = require("./TextHighlightRows");
 const {TextExtracter} = require("./TextExtracter");
-const {KeyEvents} = require("../../../KeyEvents.js");
 
 const {SelectedContents} = require("../selection/SelectedContents");
 const {TextSelections} = require("./TextSelections");
@@ -24,7 +26,7 @@ export class TextHighlightController {
 
     private readonly model: Model;
 
-    private readonly docFormat: any;
+    private readonly docFormat: DocFormat;
 
     private textHighlighter: any;
 
@@ -61,7 +63,7 @@ export class TextHighlightController {
         this.model.registerListenerForDocumentLoaded(this.onDocumentLoaded.bind(this));
     }
 
-    keyBindingListener(event: any) {
+    async keyBindingListener(event: any) {
 
         if (KeyEvents.isKeyMetaActive(event)) {
 
@@ -73,7 +75,7 @@ export class TextHighlightController {
                     // problem is that on OS X the key code returned 'Dead' but was
                     // working before.  Not sure why it started breaking.
                     case "KeyT":
-                        this.doHighlight();
+                        await this.doHighlight();
                         break;
 
                     default:
@@ -87,10 +89,10 @@ export class TextHighlightController {
 
     }
 
-    doHighlight() {
+    async doHighlight() {
 
         if(this.docFormat.name === "html") {
-            this.doHighlightModern();
+            await this.doHighlightModern();
         } else {
             this.doHighlightLegacy();
         }
@@ -102,10 +104,10 @@ export class TextHighlightController {
 
     }
 
-    doHighlightModern() {
+    async doHighlightModern() {
 
         console.log("Doing modern text highlight");
-        this.onTextHighlightCreatedModern();
+        await this.onTextHighlightCreatedModern();
 
     }
 
@@ -159,7 +161,7 @@ export class TextHighlightController {
 
         let targetDocument = this.docFormat.targetDocument();
 
-        return TextHighlighterFactory.newInstance(targetDocument.body, textHighlighterOptions);
+        return TextHighlighterFactory.newInstance(targetDocument!.body, textHighlighterOptions);
 
     }
 
@@ -232,17 +234,28 @@ export class TextHighlightController {
      * Called by the controller when we have a new highlight created so that
      * we can update the model.
      */
-    onTextHighlightCreatedModern() {
+    async onTextHighlightCreatedModern() {
 
         // FIXME: get the new highlighter working FIRST without text and without
         // rows , or other advanced features.
+
+        let win = notNull(this.docFormat.targetDocument()).defaultView;
+
+        let clientRectForScreenshot = this.getClientRectForScreenshot(win);
+
+        let screenshot = await Screenshots.capture(clientRectForScreenshot);
+
+        // FIXME: this isn't going to work because it's relative to the IFRAME
+        // nwo the entire window / browser... which is weird becuae I though it
+        // WAS for the viewport! but maybe it's the viewport for the iframe not
+        // the viewport for the browser..
+
+        log.info("FIXME: got screenshot: " , screenshot);
 
         log.info("TextHighlightController.onTextHighlightCreatedModern");
 
         // right now we're not implementing rows...
         //let textHighlightRows = TextHighlightRows.createFromSelector(selector);
-
-        let win = this.docFormat.targetDocument().defaultView;
 
         let selectedContent = SelectedContents.compute(win);
 
@@ -292,6 +305,12 @@ export class TextHighlightController {
         //
         // log.info("Added text highlight to model");
 
+    }
+
+    getClientRectForScreenshot(win: Window) {
+        let sel = win.getSelection();
+        let range = sel.getRangeAt(0);
+        return range.getBoundingClientRect();
     }
 
     extractText(selector: string) {

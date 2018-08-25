@@ -13,10 +13,17 @@ export class IPCEvent {
 
     public readonly response: IPCResponse;
 
-    constructor(responsePipe: WritablePipe<IPCMessage<any>>, message: IPCMessage<any>) {
+    /**
+     * An optional sender of this IPC message. Since it could be the main that
+     * is sending the event (or test code) this is optional.
+     */
+    public readonly webContents?: Electron.WebContents;
+
+    constructor(responsePipe: WritablePipe<IPCMessage<any>>, message: IPCMessage<any>, webContents?: Electron.WebContents) {
         this.responsePipe = responsePipe;
         this.message = message;
         this.response = new IPCResponse(responsePipe, message);
+        this.webContents = webContents;
     }
 
     // sendResult<T>(result: T) {

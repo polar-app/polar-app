@@ -13,4 +13,13 @@ export class IXYRects {
 
     }
 
+    static instanceOf(val: any): val is IXYRect {
+
+        return val.x !== undefined &&
+            val.y !== undefined &&
+            val.width !== undefined &&
+            val.height !== undefined;
+
+    }
+
 }

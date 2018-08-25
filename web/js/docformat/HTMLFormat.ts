@@ -83,7 +83,7 @@ export class HTMLFormat extends DocFormat {
 
     }
 
-    targetDocument() {
+    targetDocument(): HTMLDocument | null {
         return Optional.of(document.querySelector("iframe")).get().contentDocument;
     }
 
