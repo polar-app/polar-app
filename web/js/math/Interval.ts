@@ -3,7 +3,7 @@ const {Line} = require("../util/Line");
 /**
  * Represents a mathematical interval between two values.
  */
-class Interval {
+export class Interval {
 
     public line: any;
 
@@ -16,6 +16,3 @@ class Interval {
     }
 
 }
-
-
-module.exports.Interval = Interval;

@@ -1,5 +1,6 @@
 import {Preconditions} from '../Preconditions';
 import {Dimensions} from '../util/Dimensions';
+import {Interval} from '../math/Interval';
 
 const {Rects} = require("../Rects");
 
