@@ -15,7 +15,6 @@ const log = Logger.create();
  * Basic class for connecting event listeners and then running a launchFunction
  * once the browser is ready.
  *
- * @type {Launcher}
  */
 export class Launcher {
 
@@ -24,7 +23,6 @@ export class Launcher {
     /**
      * Launch the app with the given launch function.
      *
-     * @param persistenceLayerFactory
      */
     constructor(persistenceLayerFactory: PersistenceLayerFactory) {
         this.persistenceLayerFactory = persistenceLayerFactory;
