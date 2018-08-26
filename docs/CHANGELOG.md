@@ -1,9 +1,13 @@
 
 # 1.0.0-beta110
 
-- 
+- re-enabled opening a file from the command line.
 
-- Went through and ugpraded all apps to make sure electron-log was enable and 
+- Started work on screenshots which are now disabled by default.  When you take
+  a highlight the screenshots are stored as part of the annotation for future
+  reference.   
+
+- Went through and upgraded all apps to make sure electron-log was enable and 
   working properly.
 
 - now using electron-log as our logger by default.  We now log to .polar/logs 

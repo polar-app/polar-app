@@ -3,7 +3,7 @@ import {DocMeta} from './metadata/DocMeta';
 import {DocMetas} from './metadata/DocMetas';
 import {Reactor} from './reactor/Reactor';
 import {PagemarkType} from './metadata/PagemarkType';
-import {Preconditions} from './Preconditions';
+import {isPresent, Preconditions} from './Preconditions';
 import {Pagemarks} from './metadata/Pagemarks';
 import {Objects} from './util/Objects';
 import {DocMetaDescriber} from './metadata/DocMetaDescriber';
@@ -13,6 +13,8 @@ const {Proxies} = require("./proxies/Proxies");
 
 const log = Logger.create();
 
+const NULL_DOCMETA = DocMetas.create('0x0001', 0);
+
 export class Model {
 
     private readonly persistenceLayer: IPersistenceLayer;
@@ -21,11 +23,11 @@ export class Model {
     // be loaded yet and / or might be invalidated if the document is closed.
     //
     // TODO: we create a fake document which is eventually replaced.
-    docMeta: DocMeta = DocMetas.create('0x0001', 0);
+    docMeta: DocMeta = NULL_DOCMETA;
 
     reactor: any; // TODO: type
 
-    docMetaPromise: any; // TODO: type
+    docMetaPromise: Promise<DocMeta> = Promise.resolve(NULL_DOCMETA);
 
     constructor(persistenceLayer: IPersistenceLayer) {
 
@@ -36,9 +38,6 @@ export class Model {
         this.reactor.registerEvent('createPagemark');
         this.reactor.registerEvent('erasePagemark');
 
-        // The currently loaded document.
-        this.docMetaPromise = null;
-
     }
 
     /**
@@ -46,25 +45,24 @@ export class Model {
      */
     async documentLoaded(fingerprint: string, nrPages: number, currentPageNumber: number) {
 
-        // docMetaPromise is used for future readers after the document is loaded
-        this.docMetaPromise = this.persistenceLayer.getDocMeta(fingerprint);
+        let docMeta = await this.persistenceLayer.getDocMeta(fingerprint);
 
-        this.docMeta = await this.docMetaPromise;
-
-        if(this.docMeta == null) {
+        if(docMeta === undefined) {
 
             console.warn("New document found. Creating initial DocMeta");
 
             // this is a new document...
             //this.docMeta = DocMeta.createWithinInitialPagemarks(fingerprint, nrPages);
-            this.docMeta = DocMetas.create(fingerprint, nrPages);
-            await this.persistenceLayer.sync(fingerprint, this.docMeta);
+            docMeta = DocMetas.create(fingerprint, nrPages);
+            await this.persistenceLayer.sync(fingerprint, docMeta);
 
             // I'm not sure this is the best way to resolve this as swapping in
             // the docMetaPromise without any synchronization seems like we're
             // asking for a race condition.
 
         }
+
+        this.docMeta = docMeta;
 
         log.info("Description of doc loaded: " + DocMetaDescriber.describe(this.docMeta));
         log.info("Document loaded: ", this.docMeta);
@@ -81,12 +79,10 @@ export class Model {
 
         });
 
-        this.docMetaPromise = new Promise(function (resolve: Function, reject: Function) {
-            // always provide this promise for the metadata.  For NEW documents
-            // we have to provide the promise but we ALSO have to provide it
-            // to swap out the docMeta with the right version.
-            resolve(this.docMeta);
-        }.bind(this));
+        // always provide this promise for the metadata.  For NEW documents
+        // we have to provide the promise but we ALSO have to provide it
+        // to swap out the docMeta with the right version.
+        this.docMetaPromise = Promise.resolve(docMeta);
 
         // TODO: make this into an object..
         let documentLoadedEvent = {fingerprint, nrPages, currentPageNumber, docMeta: this.docMeta};
