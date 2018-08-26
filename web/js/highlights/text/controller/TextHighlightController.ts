@@ -12,6 +12,8 @@ import {DocFormat} from '../../../docformat/DocFormat';
 import {KeyEvents} from '../../../KeyEvents';
 import {TextHighlighterFactory} from './TextHighlighterFactory';
 import {Screenshots} from '../../../screenshots/Screenshots';
+import {IFrames} from '../../../util/dom/IFrames';
+import {SelectionScreenshots} from './SelectionScreenshots';
 
 const {TextHighlightRecords} = require("../../../metadata/TextHighlightRecords");
 const {TextHighlightRows} = require("./TextHighlightRows");
@@ -241,17 +243,9 @@ export class TextHighlightController {
 
         let win = notNull(this.docFormat.targetDocument()).defaultView;
 
-        let clientRectForScreenshot = this.getClientRectForScreenshot(win);
+        let selectionScreenshot = await SelectionScreenshots.capture(win);
 
-        let screenshot = await Screenshots.capture(clientRectForScreenshot);
-
-        // FIXME: this isn't going to work because it's relative to the IFRAME
-        // nwo the entire window / browser... which is weird becuae I though it
-        // WAS for the viewport! but maybe it's the viewport for the iframe not
-        // the viewport for the browser..
-
-        log.info("FIXME: got screenshot: " , screenshot);
-
+        console.log("FIXME: ", selectionScreenshot);
         log.info("TextHighlightController.onTextHighlightCreatedModern");
 
         // right now we're not implementing rows...
@@ -304,6 +298,10 @@ export class TextHighlightController {
         // pageMeta.textHighlights[textHighlightRecord.id] = textHighlightRecord.value;
         //
         // log.info("Added text highlight to model");
+
+    }
+
+    createScreenshotForSelection() {
 
     }
 

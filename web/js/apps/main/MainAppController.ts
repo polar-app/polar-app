@@ -1,4 +1,4 @@
-import {app, BrowserWindow, dialog, shell} from 'electron';
+import {app, BrowserWindow, dialog} from 'electron';
 import {AppPaths} from '../../electron/webresource/AppPaths';
 import {Logger} from '../../logger/Logger';
 import {Services} from '../../util/services/Services';
@@ -6,7 +6,7 @@ import {FileLoader} from './loaders/FileLoader';
 import {Datastore} from '../../datastore/Datastore';
 import {Webserver} from '../../backend/webserver/Webserver';
 import {ProxyServer} from '../../backend/proxyserver/ProxyServer';
-import {APP_ICON, BROWSER_WINDOW_OPTIONS, MainBrowserWindowFactory} from './MainBrowserWindowFactory';
+import {BROWSER_WINDOW_OPTIONS, MainBrowserWindowFactory} from './MainBrowserWindowFactory';
 import MenuItem = Electron.MenuItem;
 
 const process = require('process');
@@ -30,7 +30,7 @@ export class MainAppController {
         this.proxyServer = proxyServer;
     }
 
-    public async cmdCaptureWebPage(item: MenuItem, focusedWindow: BrowserWindow) {
+    public async cmdCaptureWebPage() {
 
         let browserWindowOptions = Object.assign({}, BROWSER_WINDOW_OPTIONS);
 
@@ -60,11 +60,11 @@ export class MainAppController {
 
     }
 
-    public async cmdNewWindow(item: MenuItem, focusedWindow: BrowserWindow) {
+    public async cmdNewWindow() {
         await MainBrowserWindowFactory.createWindow();
     }
 
-    public async cmdOpenInNewWindow(item: MenuItem, focusedWindow: BrowserWindow) {
+    public async cmdOpenInNewWindow() {
 
         let path = await this.promptDoc();
 
@@ -105,8 +105,6 @@ export class MainAppController {
      * The user asked to open a file from the command line or via OS event.
      */
     public async handleLoadDoc(path: string) {
-
-        log.info("Opening file given on the command line: " + path);
 
         await this.loadDoc(path, await MainBrowserWindowFactory.createWindow());
 

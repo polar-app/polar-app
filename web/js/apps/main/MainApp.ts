@@ -39,7 +39,7 @@ export class MainApp {
         this.opts = opts;
     }
 
-    public async start() {
+    public async start(): Promise<MainAppController> {
 
         // share the disk datastore with the remote.
 
@@ -123,7 +123,7 @@ export class MainApp {
 
         });
 
-        app.on('second-instance', async (event, commandLine, workingDirectory) => {
+        app.on('second-instance', async (event, commandLine) => {
 
             // FIXME: focus the window now...
 
@@ -157,6 +157,8 @@ export class MainApp {
             await MainBrowserWindowFactory.createWindow();
 
         });
+
+        return mainAppController;
 
     }
 

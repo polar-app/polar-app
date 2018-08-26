@@ -1,10 +1,10 @@
 import {app} from 'electron';
 import {Logger} from './web/js/logger/Logger';
 import {MainApp} from './web/js/apps/main/MainApp';
-import {ElectronLoggers} from './web/js/logger/ElectronLogger';
 import {Datastore} from './web/js/datastore/Datastore';
 import {MemoryDatastore} from './web/js/datastore/MemoryDatastore';
 import {DiskDatastore} from './web/js/datastore/DiskDatastore';
+import {Cmdline} from './web/js/electron/Cmdline';
 
 const log = Logger.create();
 
@@ -52,9 +52,18 @@ app.on('ready', async () => {
 
     await datastore.init();
 
+    // FIXME: add this back in...
     //Logger.setLoggerDelegate(await ElectronLoggers.create(datastore.logsDir));
 
     let mainApp = new MainApp(datastore);
-    await mainApp.start();
+    let mainAppController = await mainApp.start();
+
+    let fileArg = Cmdline.getDocArg(process.argv);
+
+    if(fileArg) {
+        log.info("Opening file given on the command line: " + fileArg);
+        await mainAppController.handleLoadDoc(fileArg);
+    }
+
 
 });
