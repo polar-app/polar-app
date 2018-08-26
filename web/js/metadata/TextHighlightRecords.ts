@@ -16,7 +16,7 @@ export class TextHighlightRecords {
      * @return an object with an "id" for a unique hash and a "value" of the
      * TextHighlight to use.                                                                                                                                                                                                         np
      */
-    static create(rects: Rect[], textSelections: TextRect[], text: string) {
+    static create(rects: Rect[], textSelections: TextRect[], text: string): TextHighlightRecord {
 
         let id = Hashcodes.createID(rects);
 
@@ -36,4 +36,9 @@ export class TextHighlightRecords {
 
     }
 
+}
+
+export interface TextHighlightRecord {
+    readonly id: string;
+    readonly value: TextHighlight
 }

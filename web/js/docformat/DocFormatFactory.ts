@@ -9,7 +9,6 @@ export class DocFormatFactory {
 
     /**
      *
-     * @return {DocFormat}
      */
     static getInstance() {
 

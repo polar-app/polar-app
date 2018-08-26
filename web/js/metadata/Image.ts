@@ -6,7 +6,7 @@ export class Image extends SerializedObject {
     /**
      * The type of this image.
      */
-    public type: string;
+    public type?: string;
 
     /**
      * The src of this image.  Either an HTTP/HTTPS URL or a data: URL.
@@ -37,16 +37,17 @@ export class Image extends SerializedObject {
      */
     public rel?: string;
 
-    constructor(val: Image) {
+    constructor(opts: any) {
 
-        super(val);
+        super(opts);
 
-        this.type = val.type;
-        this.src = val.src;
-        this.width = val.width;
-        this.height = val.height;
+        this.type = opts.type;
+        this.src = opts.src;
+        this.width = opts.width;
+        this.height = opts.height;
+        this.rel = opts.rel;
 
-        this.init(val);
+        this.init(opts);
 
     }
 
@@ -55,8 +56,9 @@ export class Image extends SerializedObject {
 
         super.validate();
 
-        Preconditions.assertNotNull(this.type, "type");
+        //Preconditions.assertNotNull(this.type, "type");
         Preconditions.assertNotNull(this.src, "src");
 
     }
+
 }

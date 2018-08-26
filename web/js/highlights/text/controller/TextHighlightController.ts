@@ -1,10 +1,7 @@
-
 import {Model} from '../../../Model';
 import {TriggerEvent} from '../../../contextmenu/TriggerEvent';
 import {ipcRenderer} from 'electron';
 import {Logger} from '../../../logger/Logger';
-
-import $ from '../../../ui/JQuery';
 import {TextHighlightRow} from './TextHighlightRow';
 import {notNull, Preconditions} from '../../../Preconditions';
 import {DocFormatFactory} from '../../../docformat/DocFormatFactory';
@@ -12,10 +9,14 @@ import {DocFormat} from '../../../docformat/DocFormat';
 import {KeyEvents} from '../../../KeyEvents';
 import {TextHighlighterFactory} from './TextHighlighterFactory';
 import {Screenshots} from '../../../screenshots/Screenshots';
-import {IFrames} from '../../../util/dom/IFrames';
 import {SelectionScreenshots} from './SelectionScreenshots';
 import {TextExtracter} from './TextExtracter';
-import {TextHighlightRecords} from '../../../metadata/TextHighlightRecords';
+import {TextHighlightRecord, TextHighlightRecords} from '../../../metadata/TextHighlightRecords';
+import {Screenshot} from '../../../screenshots/Screenshot';
+import {Image} from '../../../metadata/Image';
+
+import $ from '../../../ui/JQuery';
+import {TextHighlight} from '../../../metadata/TextHighlight';
 
 const {TextHighlightRows} = require("./TextHighlightRows");
 
@@ -197,38 +198,32 @@ export class TextHighlightController {
      * Called by the controller when we have a new highlight created so that
      * we can update the model.
      */
-    onTextHighlightCreatedLegacy(selector: string) {
+    async onTextHighlightCreatedLegacy(selector: string) {
 
-        // FIXME: get the new highlighter working FIRST without text and without
-        // rows , or other advanced features.
+        await this.createTextHighlight(async () => {
 
-        log.info("TextHighlightController.onTextHighlightCreatedLegacy");
+            // FIXME: get the new highlighter working FIRST without text and without
+            // rows , or other advanced features.
 
-        let textHighlightRows: TextHighlightRow[] = TextHighlightRows.createFromSelector(selector);
+            log.info("TextHighlightController.onTextHighlightCreatedLegacy");
 
-        let rects = textHighlightRows.map(current => current.rect);
+            let textHighlightRows: TextHighlightRow[] = TextHighlightRows.createFromSelector(selector);
 
-        // TODO: don't do this from the selector because the textHighlightRows
-        // would be a lot better since we have the raw elements to work with.
+            let rects = textHighlightRows.map(current => current.rect);
 
-        // FIXME: I can call selection.toString() to get the value as a string.
-        // I don't need to use extractText on the selector any more.
+            // TODO: don't do this from the selector because the textHighlightRows
+            // would be a lot better since we have the raw elements to work with.
 
-        let text = this.extractText(selector);
+            // FIXME: I can call selection.toString() to get the value as a string.
+            // I don't need to use extractText on the selector any more.
 
-        let textSelections = TextExtracter.toTextSelections(textHighlightRows);
+            let text = this.extractText(selector);
 
-        let textHighlightRecord = TextHighlightRecords.create(rects, textSelections, text);
+            let textSelections = TextExtracter.toTextSelections(textHighlightRows);
 
-        // now update the mode based on the current page metadata
+            return TextHighlightRecords.create(rects, textSelections, text);
 
-        let currentPageMeta = this.docFormat.getCurrentPageMeta();
-
-        let pageMeta = this.model.docMeta.getPageMeta(currentPageMeta.pageNum);
-
-        pageMeta.textHighlights[textHighlightRecord.id] = textHighlightRecord.value;
-
-        log.info("Added text highlight to model");
+        });
 
     }
 
@@ -241,39 +236,32 @@ export class TextHighlightController {
         // FIXME: get the new highlighter working FIRST without text and without
         // rows , or other advanced features.
 
-        let win = notNull(this.docFormat.targetDocument()).defaultView;
+        await this.createTextHighlight(async () => {
 
-        let selectionScreenshot = await SelectionScreenshots.capture(win);
+            let win = notNull(this.docFormat.targetDocument()).defaultView;
 
-        console.log("FIXME: ", selectionScreenshot);
-        log.info("TextHighlightController.onTextHighlightCreatedModern");
+            log.info("TextHighlightController.onTextHighlightCreatedModern");
 
-        // right now we're not implementing rows...
-        //let textHighlightRows = TextHighlightRows.createFromSelector(selector);
+            // right now we're not implementing rows...
+            //let textHighlightRows = TextHighlightRows.createFromSelector(selector);
 
-        let selectedContent = SelectedContents.compute(win);
+            let selectedContent = SelectedContents.compute(win);
 
-        console.log("Working with: " + JSON.stringify(selectedContent, null, "  "));
+            console.log("Working with: " + JSON.stringify(selectedContent, null, "  "));
 
-        let rectTexts: any[] = selectedContent.rectTexts;
-        let rects = rectTexts.map(current => current.boundingPageRect);
+            let rectTexts: any[] = selectedContent.rectTexts;
+            let rects = rectTexts.map(current => current.boundingPageRect);
 
-        let text = selectedContent.text;
+            let text = selectedContent.text;
 
-        let textSelections = TextSelections.compute(selectedContent);
+            let textSelections = TextSelections.compute(selectedContent);
 
-        let textHighlightRecord = TextHighlightRecords.create(rects, textSelections, text);
+            // now clear the selection since we just highlighted it.
+            win.getSelection().empty();
 
-        let currentPageMeta = this.docFormat.getCurrentPageMeta();
+            return TextHighlightRecords.create(rects, textSelections, text);
 
-        let pageMeta = this.model.docMeta.getPageMeta(currentPageMeta.pageNum);
-
-        pageMeta.textHighlights[textHighlightRecord.id] = textHighlightRecord.value;
-
-        log.info("Added text highlight to model");
-
-        // now clear the selection since we just highlighted it.
-        win.getSelection().empty();
+        });
 
         // let rects = textHighlightRows.map(current => current.rect);
         //
@@ -301,14 +289,46 @@ export class TextHighlightController {
 
     }
 
-    createScreenshotForSelection() {
+    async createTextHighlight(factory: () => Promise<TextHighlightRecord>): Promise<TextHighlightRecord> {
+
+        let win = notNull(this.docFormat.targetDocument()).defaultView;
+
+        let selectionScreenshot = await SelectionScreenshots.capture(win);
+
+        let textHighlightRecord = await factory();
+
+        let highlightScreenshot = await Screenshots.capture(selectionScreenshot.clientRect)
+
+        this.attachScreenshot(textHighlightRecord.value, 'screenshot', selectionScreenshot.screenshot);
+        this.attachScreenshot(textHighlightRecord.value, 'screenshot-with-highlight', highlightScreenshot);
+
+        let currentPageMeta = this.docFormat.getCurrentPageMeta();
+
+        let pageMeta = this.model.docMeta.getPageMeta(currentPageMeta.pageNum);
+
+        pageMeta.textHighlights[textHighlightRecord.id] = textHighlightRecord.value;
+
+        log.info("Added text highlight to model");
+
+        return textHighlightRecord;
 
     }
 
-    getClientRectForScreenshot(win: Window) {
-        let sel = win.getSelection();
-        let range = sel.getRangeAt(0);
-        return range.getBoundingClientRect();
+    private attachScreenshot(textHighlight: TextHighlight,
+                             rel: string,
+                             screenshot: Screenshot) {
+
+        textHighlight.images[rel] = this.toImage(rel, screenshot);
+
+    }
+
+    private toImage(rel: string, screenshot: Screenshot) {
+        return new Image({
+            src: screenshot.dataURL,
+            width: screenshot.dimensions.width,
+            height: screenshot.dimensions.height,
+            rel
+        })
     }
 
     extractText(selector: string) {

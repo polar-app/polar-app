@@ -19,8 +19,6 @@ export class ScreenshotHandler extends IPCHandler<ScreenshotRequest> {
             throw new Error("Must be sent called from a renderer.");
         }
 
-        console.log("FIXME: capturing from web contents: " + webContents.getURL() );
-
         let image = await ScreenshotHandler.capture(webContents, screenshotRequest);
 
         let dataURL = image.toDataURL();
