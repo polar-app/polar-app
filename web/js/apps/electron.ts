@@ -9,7 +9,8 @@ const log = Logger.create();
 
 function persistenceLayerFactory(): IPersistenceLayer {
     let electronPersistenceLayer = ElectronPersistenceLayerFactory.create();
-    return new PersistenceLayerDispatcher(PersistenceLayerWorkers.create(), electronPersistenceLayer);
+    //return new PersistenceLayerDispatcher(PersistenceLayerWorkers.create(), electronPersistenceLayer);
+    return electronPersistenceLayer;
 }
 
 new Launcher(persistenceLayerFactory).launch()

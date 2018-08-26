@@ -25,6 +25,8 @@ const {TextSelections} = require("./TextSelections");
 
 const log = Logger.create();
 
+const ENABLE_SCREENSHOTS = false;
+
 export class TextHighlightController {
 
     private readonly model: Model;
@@ -305,9 +307,11 @@ export class TextHighlightController {
 
         let textHighlightRecord = await factory();
 
-        // FUCK.. this is actually difficult because this screenshot is SLOW and
+        // TODO this is actually difficult because this screenshot is SLOW and
         // if I could move it AFTER we updated the UI would be much better but
-        // it takes like 50ms to pull it out.
+        // it takes like 50ms-150ms and TWO of them are a big problem.  It would
+        // be better to do this AFTER I've taken the screenshots.
+
         // let highlightScreenshot = await Screenshots.capture(selectionScreenshot.clientRect)
         //
         // this.attachScreenshot(textHighlightRecord.value, 'screenshot', selectionScreenshot.screenshot);
@@ -319,19 +323,12 @@ export class TextHighlightController {
 
         log.info("Added text highlight to model");
 
-        let sel = win.getSelection();
-        //let range = sel.getRangeAt(0);
-
         // now clear the selection since we just highlighted it.
         win.getSelection().empty();
 
         pageMeta.textHighlights[textHighlightRecord.id] = textHighlightRecord.value;
 
-        //let selectionScreenshot = await
-
-        await Screenshots.capture({x: 0, y:0, width: 200, height: 200});
-
-        delete pageMeta.textHighlights[textHighlightRecord.id];
+        // delete pageMeta.textHighlights[textHighlightRecord.id];
         // pageMeta.textHighlights[textHighlightRecord.id] = textHighlightRecord.value;
 
         return textHighlightRecord;
