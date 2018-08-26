@@ -1,11 +1,12 @@
 import {StartCaptureApp} from "../../../../web/js/capture/controller/StartCaptureApp";
 import {Logger} from '../../../../web/js/logger/Logger';
+import {Logging} from '../../../../web/js/logger/Logging';
 
 const log = Logger.create();
 
 async function start() {
 
-    await Logger.init();
+    await Logging.init();
 
     new StartCaptureApp().start();
 

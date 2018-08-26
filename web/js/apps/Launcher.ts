@@ -4,6 +4,7 @@ import {ViewerFactory} from '../viewer/ViewerFactory';
 import {WebController} from '../controller/WebController';
 import {Logger} from '../logger/Logger';
 import {ElectronLoggers} from '../logger/ElectronLogger';
+import {Logging} from '../logger/Logging';
 
 const {WebView} = require("../view/WebView");
 const {TextHighlightView2} = require("../highlights/text/view/TextHighlightView2");
@@ -37,7 +38,7 @@ export class Launcher {
         let persistenceLayer = await this.persistenceLayerFactory();
         await persistenceLayer.init();
 
-        await Logger.init();
+        await Logging.init();
 
         let model = new Model(persistenceLayer);
         new WebView(model).start();

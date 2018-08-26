@@ -1,22 +1,9 @@
 // Simple logger that meets the requirements we have for Polar.
 
-import {ILogger} from './ILogger';
-import {Objects} from '../util/Objects';
-import {Files} from '../util/Files';
-import {ConsoleLogger} from './ConsoleLogger';
 import {Caller} from './Caller';
-import {ElectronLoggers} from './ElectronLogger';
-import {Directories} from '../datastore/Directories';
-
-const log = require('electron-log');
-
-const process = require("process");
+import {LoggerDelegate} from './LoggerDelegate';
 
 export class Logger {
-
-    private static initialized: boolean = false;
-
-    private static loggerDelegate: any;
 
     /**
      * Create a new logger, delegating to the actual implementation we are
@@ -25,26 +12,6 @@ export class Logger {
     public static create() {
         let caller = Caller.getCaller();
         return new DelegatedLogger(caller.filename);
-    }
-
-    public static setLoggerDelegate(loggerDelegate: ILogger) {
-        Logger.loggerDelegate = loggerDelegate;
-    }
-
-    public static getLoggerDelegate(): ILogger {
-        return Logger.loggerDelegate;
-    }
-
-    /**
-     * Initialize the logger to write to a specific directory.
-     *
-     */
-    static async init() {
-
-        let directories = new Directories();
-
-        Logger.setLoggerDelegate(await ElectronLoggers.create(directories.logsDir));
-        Logger.initialized = true;
     }
 
 }
@@ -82,23 +49,23 @@ class DelegatedLogger {
     // with spectron instead of hacking it here.
 
     public info(msg: string, ...args: any[]) {
-        this.apply(Logger.getLoggerDelegate().info, msg, ...args);
+        this.apply(LoggerDelegate.get().info, msg, ...args);
     }
 
     public warn(msg: string, ...args: any[]) {
-        this.apply(Logger.getLoggerDelegate().warn, msg, ...args);
+        this.apply(LoggerDelegate.get().warn, msg, ...args);
     }
 
     public error(msg: string, ...args: any[]) {
-        this.apply(Logger.getLoggerDelegate().error, msg, ...args);
+        this.apply(LoggerDelegate.get().error, msg, ...args);
     }
 
     public verbose(msg: string, ...args: any[]) {
-        this.apply(Logger.getLoggerDelegate().verbose, msg, ...args);
+        this.apply(LoggerDelegate.get().verbose, msg, ...args);
     }
 
     public debug(msg: string, ...args: any[]) {
-        this.apply(Logger.getLoggerDelegate().debug, msg, ...args);
+        this.apply(LoggerDelegate.get().debug, msg, ...args);
     }
 
     /**
@@ -125,10 +92,3 @@ interface LogFunction {
     (msg: string, ...args: any[]): void;
 
 }
-
-/**
- * When true use a simple console log.  We have to do this for now because there
- * is a bug with getting stuck in a loop while logging and then choking the
- * renderer.
- */
-Logger.setLoggerDelegate(new ConsoleLogger());

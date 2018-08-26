@@ -1,6 +1,11 @@
 
 # 1.0.0-beta110
 
+- 
+
+- Went through and ugpraded all apps to make sure electron-log was enable and 
+  working properly.
+
 - now using electron-log as our logger by default.  We now log to .polar/logs 
   and consolidate all the window log lines into one location.  This way users
   can debug their problems easier.
