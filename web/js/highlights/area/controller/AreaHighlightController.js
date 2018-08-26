@@ -5,7 +5,7 @@ const {DocFormatFactory} = require("../../../docformat/DocFormatFactory");
 const {AnnotationPointers} = require("../../../annotations/AnnotationPointers");
 const {ipcRenderer} = require('electron');
 
-const log = require("../../../logger/Logger").create();
+const log = require("../../../logger/Logger").Logger.create();
 
 class AreaHighlightController {
 

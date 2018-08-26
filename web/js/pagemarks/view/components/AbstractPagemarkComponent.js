@@ -8,7 +8,7 @@ const {Preconditions} = require("../../../Preconditions");
 const {BoxController} = require("../../../boxes/controller/BoxController");
 const {Rects} = require("../../../Rects");
 const {Optional} = require("../../../Optional");
-const log = require("../../../logger/Logger").create();
+const log = require("../../../logger/Logger").Logger.create();
 
 const ENABLE_BOX_CONTROLLER = true;
 

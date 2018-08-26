@@ -2,7 +2,7 @@
 const {KeyEvents} = require("../../KeyEvents.js");
 const {Elements} = require("../../util/Elements");
 const {DocFormatFactory} = require("../../docformat/DocFormatFactory");
-const log = require("../../logger/Logger").create();
+const log = require("../../logger/Logger").Logger.create();
 
 class PagemarkCoverageEventListener {
 

@@ -1,6 +1,6 @@
 const {DocMetaDescriber} = require("../../metadata/DocMetaDescriber");
 const {forDict} = require("../../util/Functions");
-const log = require("../../logger/Logger").create();
+const log = require("../../logger/Logger").Logger.create();
 
 /**
  * Updates our progress as we read the doc.

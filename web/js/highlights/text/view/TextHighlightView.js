@@ -110,7 +110,7 @@ class TextHighlightView {
 
         let docFormat = DocFormatFactory.getInstance();
 
-        log.info("Rendering annotation at: " + JSON.stringify(highlightRect, null, "  "));
+        log.debug("Rendering annotation at: " + JSON.stringify(highlightRect, null, "  "));
 
         let highlightElement = document.createElement("div");
 

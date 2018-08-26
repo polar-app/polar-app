@@ -1,4 +1,4 @@
-export class Caller {
+export class Callers {
 
     static getCaller() {
         let e = new Error();
@@ -9,7 +9,8 @@ export class Caller {
         }
 
         let frame = stack.split("\n")[3];
-        let result = Caller._parse(frame);
+        let result = Callers._parse(frame);
+
         return result;
     }
 
@@ -22,10 +23,10 @@ export class Caller {
         // TODO: probably better to put this into a filter, execute all of them,
         // and them return the results together.
 
-        let javascriptCaller = Caller.parseRE(frame, /([^/.)]+\.(js|ts|tsx)):[0-9]+:[0-9]+\)?$/g);
+        let javascriptCaller = Callers.parseRE(frame, /([^/.)]+\.(js|ts|tsx)):[0-9]+:[0-9]+\)?$/g);
 
         // this returns the first match with a space at the end.
-        let webpackCaller = Caller.parseRE(frame, /([^/.)]+\.(js|ts|tsx))( |\?)/g);
+        let webpackCaller = Callers.parseRE(frame, /([^/.)]+\.(js|ts|tsx))( |\?)/g);
 
         if(webpackCaller) {
             return webpackCaller;
@@ -38,16 +39,21 @@ export class Caller {
 
     }
 
-    static parseRE(frame: string, re: RegExp) {
+    static parseRE(frame: string, re: RegExp): Caller | undefined {
 
         let m = re.exec(frame);
 
         if(m) {
             return { filename: m[1] };
         } else {
-            return null;
+            return undefined;
         }
 
     }
 
 }
+
+export interface Caller {
+    filename: string;
+}
+

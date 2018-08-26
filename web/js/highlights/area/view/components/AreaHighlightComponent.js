@@ -12,7 +12,7 @@ const {AreaHighlightRects} = require("../../../../metadata/AreaHighlightRects");
 const {BoxController} = require("../../../../boxes/controller/BoxController");
 const {BoxOptions} = require("../../../../boxes/controller/BoxOptions");
 
-const log = require("../../../../logger/Logger").create();
+const log = require("../../../../logger/Logger").Logger.create();
 
 class AreaHighlightComponent extends Component {
 
@@ -129,7 +129,7 @@ class AreaHighlightComponent extends Component {
 
             let overlayRect = areaHighlightRect.toDimensions(pageDimensions);
 
-            log.info("Rendering annotation at: " + JSON.stringify(overlayRect, null, "  "));
+            log.debug("Rendering annotation at: " + JSON.stringify(overlayRect, null, "  "));
 
             let id = this.createID();
 

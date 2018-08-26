@@ -2,7 +2,7 @@ const {DocFormatFactory} = require("../../../../docformat/DocFormatFactory");
 const {Component} = require("../../../../components/Component");
 const {forDict} = require("../../../../util/Functions");
 const {Rects} = require("../../../../Rects");
-const log = require("../../../../logger/Logger").create();
+const log = require("../../../../logger/Logger").Logger.create();
 
 class TextHighlightComponent extends Component {
 
@@ -77,7 +77,7 @@ class TextHighlightComponent extends Component {
 
         forDict(this.textHighlight.rects, (id, highlightRect) => {
 
-            log.info("Rendering annotation at: " + JSON.stringify(highlightRect, null, "  "));
+            log.debug("Rendering annotation at: " + JSON.stringify(highlightRect, null, "  "));
 
             let highlightElement = document.createElement("div");
 

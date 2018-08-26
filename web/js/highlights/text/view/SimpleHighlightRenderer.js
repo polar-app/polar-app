@@ -14,7 +14,7 @@ class SimpleHighlightRenderer {
 
     static render(parentElement, highlightRect) {
 
-        console.log("Rendering annotation at: ", highlightRect);
+        console.debug("Rendering annotation at: ", highlightRect);
 
         let highlightElement = document.createElement("div");
 

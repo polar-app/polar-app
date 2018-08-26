@@ -3,7 +3,7 @@ const {DocFormatFactory} = require("../docformat/DocFormatFactory");
 const {MutationState} = require("../proxies/MutationState");
 const {Preconditions} = require("../Preconditions");
 
-const log = require("../logger/Logger").create();
+const log = require("../logger/Logger").Logger.create();
 
 class ComponentManager {
 
@@ -56,7 +56,7 @@ class ComponentManager {
 
         this.containers = this.containerProvider.getContainers();
 
-        log.info("Working with containers: ", this.containers);
+        log.debug("Working with containers: ", this.containers);
 
         // Listen for changes from the model as objects are PRESENT or ABSENT
         // for the specific objects we're interested in and then call
@@ -73,7 +73,7 @@ class ComponentManager {
         // within AnnotationEvent - not here.  This should just be a ComponentEvent
         // and not know anything about annotations.
 
-        log.info("onComponentEvent: ", componentEvent);
+        log.debug("onComponentEvent: ", componentEvent);
 
         let containerID = componentEvent.pageMeta.pageInfo.num;
 

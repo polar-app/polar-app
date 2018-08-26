@@ -9,7 +9,7 @@ const {BoxMoveEvent} = require("./BoxMoveEvent");
 const {RectEdges} = require("../../pagemarks/controller/interact/edges/RectEdges");
 const {Preconditions} = require("../../Preconditions");
 const {Optional} = require("../../Optional");
-const log = require("../../logger/Logger").create();
+const log = require("../../logger/Logger").Logger.create();
 
 /**
  * A generic controller for dragging boxes (divs) which are resizeable and can

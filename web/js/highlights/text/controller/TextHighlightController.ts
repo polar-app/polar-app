@@ -59,7 +59,7 @@ export class TextHighlightController {
     }
 
     onDocumentLoaded() {
-        log.info("TextHighlightController.onDocumentLoaded: ", this.model.docMeta);
+        log.debug("TextHighlightController.onDocumentLoaded: ", this.model.docMeta);
         this.textHighlighter = this.createTextHighlighter();
     }
 

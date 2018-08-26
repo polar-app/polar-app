@@ -1,6 +1,6 @@
 // Simple logger that meets the requirements we have for Polar.
 
-import {Caller} from './Caller';
+import {Callers} from './Callers';
 import {LoggerDelegate} from './LoggerDelegate';
 
 export class Logger {
@@ -10,19 +10,14 @@ export class Logger {
      * using.
      */
     public static create() {
-        let caller = Caller.getCaller();
+        let caller = Callers.getCaller();
+        if(caller.filename === 'Logger.js') {
+            throw new Error("Wrong caller: " + caller.filename);
+        }
+
         return new DelegatedLogger(caller.filename);
     }
 
-}
-
-/**
- * Simple create
- *
- * @return {DelegatedLogger}
- */
-export function create() {
-    return Logger.create();
 }
 
 /**
