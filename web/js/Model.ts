@@ -1,4 +1,4 @@
-import {PersistenceLayer} from './datastore/PersistenceLayer';
+import {IPersistenceLayer, PersistenceLayer} from './datastore/PersistenceLayer';
 import {DocMeta} from './metadata/DocMeta';
 import {DocMetas} from './metadata/DocMetas';
 import {Reactor} from './reactor/Reactor';
@@ -7,12 +7,15 @@ import {Preconditions} from './Preconditions';
 import {Pagemarks} from './metadata/Pagemarks';
 import {Objects} from './util/Objects';
 import {DocMetaDescriber} from './metadata/DocMetaDescriber';
+import {Logger} from './logger/Logger';
 
 const {Proxies} = require("./proxies/Proxies");
 
+const log = Logger.create();
+
 export class Model {
 
-    private readonly persistenceLayer: PersistenceLayer;
+    private readonly persistenceLayer: IPersistenceLayer;
 
     // TODO: we should probably not set this via a global as it might not
     // be loaded yet and / or might be invalidated if the document is closed.
@@ -24,7 +27,7 @@ export class Model {
 
     docMetaPromise: any; // TODO: type
 
-    constructor(persistenceLayer: PersistenceLayer) {
+    constructor(persistenceLayer: IPersistenceLayer) {
 
         this.persistenceLayer = persistenceLayer;
 
@@ -63,20 +66,20 @@ export class Model {
 
         }
 
-        console.log("Description of doc loaded: " + DocMetaDescriber.describe(this.docMeta));
-        console.log("Document loaded: ", this.docMeta);
+        log.info("Description of doc loaded: " + DocMetaDescriber.describe(this.docMeta));
+        log.info("Document loaded: ", this.docMeta);
 
-        this.docMeta = Proxies.create(this.docMeta, function (traceEvent: any) {
+        this.docMeta = Proxies.create(this.docMeta, (traceEvent: any) => {
 
             // right now we just sync the datastore on mutation.  We do not
             // attempt to use a journal yet.
 
-            console.log("sync of persistence layer via deep trace... ");
+            log.info("sync of persistence layer via deep trace... ");
             this.persistenceLayer.sync(this.docMeta.docInfo.fingerprint, this.docMeta);
 
             return true;
 
-        }.bind(this));
+        });
 
         this.docMetaPromise = new Promise(function (resolve: Function, reject: Function) {
             // always provide this promise for the metadata.  For NEW documents
@@ -108,7 +111,7 @@ export class Model {
             options.percentage = 100;
         }
 
-        console.log("Model sees createPagemark");
+        log.info("Model sees createPagemark");
 
         this.assertPageNum(pageNum);
 
@@ -144,7 +147,7 @@ export class Model {
 
         Preconditions.assertNumber(pageNum, "pageNum");
 
-        console.log("Model sees erasePagemark");
+        log.info("Model sees erasePagemark");
 
         this.assertPageNum(pageNum);
 

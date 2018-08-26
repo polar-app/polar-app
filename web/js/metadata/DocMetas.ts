@@ -100,14 +100,14 @@ export class DocMetas {
 
     }
 
-    static serialize(docMeta: DocMeta, spacing: string) {
+    static serialize(docMeta: DocMeta, spacing: string = "") {
         return MetadataSerializer.serialize(docMeta, spacing);
     }
 
     /**
      * @return {DocMeta}
      */
-    static deserialize(data: any) {
+    static deserialize(data: string): DocMeta {
 
         if(! (typeof data === "string")) {
             throw new Error("We can only deserialize strings: " + typeof data);

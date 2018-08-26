@@ -1,21 +1,15 @@
-import {PersistenceLayer} from '../datastore/PersistenceLayer';
+import {IPersistenceLayer, PersistenceLayer} from '../datastore/PersistenceLayer';
 import {Launcher} from './Launcher';
 import {Logger} from '../logger/Logger';
+import {ElectronPersistenceLayerFactory} from '../datastore/ElectronPersistenceLayerFactory';
+import {PersistenceLayerDispatcher} from '../datastore/dispatcher/PersistenceLayerDispatcher';
+import {PersistenceLayerWorkers} from '../datastore/dispatcher/PersistenceLayerWorkers';
 
 const log = Logger.create();
 
-function persistenceLayerFactory(): PersistenceLayer {
-
-    console.log("Using electron persistence layer and disk store");
-
-    const remote = require('electron').remote;
-
-    console.log("Accessing datastore...");
-    let datastore = remote.getGlobal("datastore" );
-    console.log("Accessing datastore...done");
-
-    return new PersistenceLayer(datastore);
-
+function persistenceLayerFactory(): IPersistenceLayer {
+    let electronPersistenceLayer = ElectronPersistenceLayerFactory.create();
+    return new PersistenceLayerDispatcher(PersistenceLayerWorkers.create(), electronPersistenceLayer);
 }
 
 new Launcher(persistenceLayerFactory).launch()

@@ -296,25 +296,43 @@ export class TextHighlightController {
 
         let win = notNull(this.docFormat.targetDocument()).defaultView;
 
-        let selectionScreenshot = await SelectionScreenshots.capture(win);
+        // TODO: refactor this..
+        //
+        // .. one strategy.. create TWO highlights... replacing the highlight
+        // should be insanely fast.. might not even see it happen.
+
+        //let selectionScreenshot = await SelectionScreenshots.capture(win);
 
         let textHighlightRecord = await factory();
 
-        let highlightScreenshot = await Screenshots.capture(selectionScreenshot.clientRect)
-
-        this.attachScreenshot(textHighlightRecord.value, 'screenshot', selectionScreenshot.screenshot);
-        this.attachScreenshot(textHighlightRecord.value, 'screenshot-with-highlight', highlightScreenshot);
+        // FUCK.. this is actually difficult because this screenshot is SLOW and
+        // if I could move it AFTER we updated the UI would be much better but
+        // it takes like 50ms to pull it out.
+        // let highlightScreenshot = await Screenshots.capture(selectionScreenshot.clientRect)
+        //
+        // this.attachScreenshot(textHighlightRecord.value, 'screenshot', selectionScreenshot.screenshot);
+        // this.attachScreenshot(textHighlightRecord.value, 'screenshot-with-highlight', highlightScreenshot);
 
         let currentPageMeta = this.docFormat.getCurrentPageMeta();
 
         let pageMeta = this.model.docMeta.getPageMeta(currentPageMeta.pageNum);
 
-        pageMeta.textHighlights[textHighlightRecord.id] = textHighlightRecord.value;
-
         log.info("Added text highlight to model");
+
+        let sel = win.getSelection();
+        //let range = sel.getRangeAt(0);
 
         // now clear the selection since we just highlighted it.
         win.getSelection().empty();
+
+        pageMeta.textHighlights[textHighlightRecord.id] = textHighlightRecord.value;
+
+        //let selectionScreenshot = await
+
+        await Screenshots.capture({x: 0, y:0, width: 200, height: 200});
+
+        delete pageMeta.textHighlights[textHighlightRecord.id];
+        // pageMeta.textHighlights[textHighlightRecord.id] = textHighlightRecord.value;
 
         return textHighlightRecord;
 

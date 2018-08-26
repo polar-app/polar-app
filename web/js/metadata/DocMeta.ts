@@ -3,35 +3,18 @@ import {PageMeta} from './PageMeta';
 import {SerializedObject} from './SerializedObject';
 import {Preconditions} from '../Preconditions';
 import {AnnotationInfos} from './AnnotationInfos';
+import {AnnotationInfo} from './AnnotationInfo';
 
 
 /**
  * Root metadata for a document including page metadata, and metadata for
  * the specific document.
  */
-export class DocMeta extends SerializedObject {
+export class DocMeta extends SerializedObject implements  IDocMeta {
 
-    /**
-     * The DocInfo which includes information like title, nrPages, etc.
-     */
     public docInfo: DocInfo;
-
-
-    /**
-     * A sparse dictionary of page number to page metadata.
-     *
-     */
     public pageMetas: {[id: number]: PageMeta};
-
-    /**
-     * The annotation info for this document including the last annotation
-     * time, progress, etc.
-     */
     public annotationInfo = AnnotationInfos.create();
-
-    /**
-     * The version of this DocMeta version.
-     */
     public version = 1;
 
     // constructor(template?: DocMeta) {
@@ -73,5 +56,32 @@ export class DocMeta extends SerializedObject {
         Preconditions.assertNotNull(this.pageMetas, "pageMetas");
         Preconditions.assertNumber(this.version, "version");
     }
+
+}
+
+export interface IDocMeta {
+
+    /**
+     * The DocInfo which includes information like title, nrPages, etc.
+     */
+    docInfo: DocInfo;
+
+
+    /**
+     * A sparse dictionary of page number to page metadata.
+     *
+     */
+    pageMetas: {[id: number]: PageMeta};
+
+    /**
+     * The annotation info for this document including the last annotation
+     * time, progress, etc.
+     */
+    annotationInfo: AnnotationInfo;
+
+    /**
+     * The version of this DocMeta version.
+     */
+    version: number;
 
 }

@@ -9,12 +9,18 @@ import {Preconditions} from '../Preconditions';
  * with node+chrome behaving differently so now we just make node work with raw
  * strings.
  */
-export class PersistenceLayer {
+export class PersistenceLayer implements IPersistenceLayer {
+
+    public readonly stashDir: string;
+
+    public readonly logsDir: string;
 
     public readonly datastore: Datastore;
 
     constructor(datastore: Datastore) {
         this.datastore = datastore;
+        this.stashDir = this.datastore.stashDir;
+        this.logsDir = this.datastore.logsDir;
     }
 
     async init() {
@@ -43,14 +49,14 @@ export class PersistenceLayer {
     /**
      * Convenience method to not require the fingerprint.
      */
-    async syncDocMeta(docMeta: any) {
+    async syncDocMeta(docMeta: DocMeta) {
         return this.sync(docMeta.docInfo.fingerprint, docMeta);
     }
 
     /**
      * Write the datastore to disk.
      */
-    async sync(fingerprint: string, docMeta: any) {
+    async sync(fingerprint: string, docMeta: DocMeta) {
 
         Preconditions.assertNotNull(fingerprint, "fingerprint");
         Preconditions.assertNotNull(docMeta, "docMeta");
@@ -70,4 +76,16 @@ export class PersistenceLayer {
 
     }
 
+}
+
+export interface IPersistenceLayer {
+
+    readonly stashDir: string;
+
+    readonly logsDir: string;
+
+    init(): Promise<void>;
+    getDocMeta(fingerprint: string): Promise<DocMeta | undefined>;
+    syncDocMeta(docMeta: DocMeta): Promise<void>;
+    sync(fingerprint: string, docMeta: DocMeta): Promise<void>;
 }

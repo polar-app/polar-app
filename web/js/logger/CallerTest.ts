@@ -32,6 +32,13 @@ describe('Caller', function() {
             assert.deepEqual(Caller._parse(frame), { filename: "Pagemarks.js" });
         });
 
+        //
+
+        it("Parse from web worker", async function () {
+            let frame = '    at file:///home/burton/projects/polar-bookshelf/web/js/datastore/dispatcher/PersistenceLayerWorker.js:12:29';
+            assert.deepEqual(Caller._parse(frame), { filename: "PersistenceLayerWorker.js" });
+        });
+
     });
 
 });

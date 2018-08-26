@@ -1,4 +1,4 @@
-import {PersistenceLayer} from '../datastore/PersistenceLayer';
+import {IPersistenceLayer, PersistenceLayer} from '../datastore/PersistenceLayer';
 import {Model} from '../Model';
 import {ViewerFactory} from '../viewer/ViewerFactory';
 import {WebController} from '../controller/WebController';
@@ -38,7 +38,7 @@ export class Launcher {
         let persistenceLayer = await this.persistenceLayerFactory();
         await persistenceLayer.init();
 
-        await Logging.init();
+        //await Logging.init();
 
         let model = new Model(persistenceLayer);
         new WebView(model).start();
@@ -54,8 +54,8 @@ export class Launcher {
         viewer.start();
 
 
-        log.info("Stash dir: ", persistenceLayer.datastore.stashDir);
-        log.info("Logs dir: ", persistenceLayer.datastore.logsDir);
+        log.info("Stash dir: ", persistenceLayer.stashDir);
+        log.info("Logs dir: ", persistenceLayer.logsDir);
 
         await new WebController(model, viewer).start();
 
@@ -76,5 +76,5 @@ export class Launcher {
 }
 
 export interface PersistenceLayerFactory {
-    (): PersistenceLayer;
+    (): IPersistenceLayer;
 }

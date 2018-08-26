@@ -25,11 +25,11 @@ class ElectronLogger implements ILogger {
     }
 
     verbose(msg: string, ...args: any[]) {
-        delegate.log(msg, " VERBOSE: ", ...args);
+        delegate.verbose(msg, ...args);
     }
 
     debug(msg: string, ...args: any[]) {
-        delegate.log(msg, " DEBUG: " , ...args);
+        delegate.debug(msg, ...args);
     }
 }
 

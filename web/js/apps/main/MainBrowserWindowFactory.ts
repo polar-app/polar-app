@@ -29,12 +29,18 @@ export const BROWSER_WINDOW_OPTIONS: Electron.BrowserWindowConstructorOptions = 
         // reconsider using nodeIntegration here as this might be a security
         // issue
         nodeIntegration: true,
+
+        nodeIntegrationInWorker: true,
+
+        sandbox: false,
+
         defaultEncoding: 'UTF-8',
 
         // We are disabling web security now as a work around for CORS issues
         // when loading fonts.  Once we resolve this we can enable webSecurity
         // again.
         webSecurity: false,
+
         webaudio: false,
 
         /**

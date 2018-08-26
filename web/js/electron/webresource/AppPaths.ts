@@ -1,8 +1,9 @@
 
-import {app} from 'electron';
+import {app, remote} from 'electron';
 import path from 'path';
 import fs from 'fs';
-import process from 'process';
+import {isPresent} from '../../Preconditions';
+
 
 /**
  * Given a relative path, return a full path to a local app resource.
@@ -41,8 +42,17 @@ export class AppPaths {
 
     }
 
+    /**
+     * Get the basedir of the current webapp.
+     */
     protected static getBaseDir() {
-        return app.getAppPath();
+
+        if(! isPresent(app)) {
+            return remote.app.getAppPath();
+        } else {
+            return app.getAppPath();
+        }
+
     }
 
     /**

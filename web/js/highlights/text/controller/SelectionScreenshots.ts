@@ -11,14 +11,18 @@ export class SelectionScreenshots {
 
         return await this.withoutRange(win, async range => {
 
-            let clientRect = this.getClientRect(range);
-            clientRect = IFrames.computeTopLevelClientRect(clientRect, win);
-
-            let screenshot = await Screenshots.capture(clientRect);
-            return {clientRect, screenshot};
+            return this.captureRange(win, range);
 
         });
 
+    }
+
+    public static async captureRange(win: Window, range: Range) {
+        let clientRect = this.getClientRect(range);
+        clientRect = IFrames.computeTopLevelClientRect(clientRect, win);
+
+        let screenshot = await Screenshots.capture(clientRect);
+        return {clientRect, screenshot};
     }
 
     static getClientRect(range: Range) {
