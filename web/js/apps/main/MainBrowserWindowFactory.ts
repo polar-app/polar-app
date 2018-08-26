@@ -9,9 +9,9 @@ const fspath = require('path');
 const WIDTH = 800 * 1.2;
 const HEIGHT = 1100 * 1.2;
 
-const DEFAULT_URL = AppPaths.resource(`./apps/home/default.html`);
+const DEFAULT_URL = AppPaths.resource('./apps/home/default.html');
 
-export const APP_ICON = nativeImage.createFromPath(fspath.join(process.cwd(), 'icon.png'));
+export const APP_ICON = AppPaths.resource('./icon.png');
 
 export const BROWSER_WINDOW_OPTIONS: Electron.BrowserWindowConstructorOptions = {
     backgroundColor: '#FFF',
@@ -21,6 +21,8 @@ export const BROWSER_WINDOW_OPTIONS: Electron.BrowserWindowConstructorOptions = 
     height: HEIGHT,
     show: false,
     // https://electronjs.org/docs/api/browser-window#new-browserwindowoptions
+
+    // TODO: the AppIcon CAN be a file URL
     icon: APP_ICON,
     webPreferences: {
         // TODO:

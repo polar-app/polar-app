@@ -13,7 +13,7 @@ const {Proxies} = require("./proxies/Proxies");
 
 const log = Logger.create();
 
-const NULL_DOCMETA = DocMetas.create('0x0001', 0);
+const NULL_DOC_META = DocMetas.create('0x0001', 0);
 
 export class Model {
 
@@ -23,11 +23,11 @@ export class Model {
     // be loaded yet and / or might be invalidated if the document is closed.
     //
     // TODO: we create a fake document which is eventually replaced.
-    docMeta: DocMeta = NULL_DOCMETA;
+    docMeta: DocMeta = NULL_DOC_META;
 
     reactor: any; // TODO: type
 
-    docMetaPromise: Promise<DocMeta> = Promise.resolve(NULL_DOCMETA);
+    docMetaPromise: Promise<DocMeta> = Promise.resolve(NULL_DOC_META);
 
     constructor(persistenceLayer: IPersistenceLayer) {
 
@@ -67,7 +67,7 @@ export class Model {
         log.info("Description of doc loaded: " + DocMetaDescriber.describe(this.docMeta));
         log.info("Document loaded: ", this.docMeta);
 
-        this.docMeta = Proxies.create(this.docMeta, (traceEvent: any) => {
+        this.docMeta = Proxies.create(this.docMeta, () => {
 
             // right now we just sync the datastore on mutation.  We do not
             // attempt to use a journal yet.

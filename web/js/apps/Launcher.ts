@@ -38,7 +38,7 @@ export class Launcher {
         let persistenceLayer = await this.persistenceLayerFactory();
         await persistenceLayer.init();
 
-        //await Logging.init();
+        await Logging.init();
 
         let model = new Model(persistenceLayer);
         new WebView(model).start();
@@ -52,7 +52,6 @@ export class Launcher {
 
         let viewer = ViewerFactory.create(model);
         viewer.start();
-
 
         log.info("Stash dir: ", persistenceLayer.stashDir);
         log.info("Logs dir: ", persistenceLayer.logsDir);
