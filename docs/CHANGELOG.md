@@ -1,6 +1,9 @@
 
 # 1.0.0-beta110
 
+- AppAnalytics now sends userAgent to Google Analytics so we can track OS, 
+  Browser version, app version, etc.  
+
 - re-enabled opening a file from the command line.
 
 - Started work on screenshots which are now disabled by default.  When you take
