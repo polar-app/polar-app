@@ -1,6 +1,6 @@
 import {HTMLFormat} from './HTMLFormat';
+import {PDFFormat} from './PDFFormat';
 
-const {PDFFormat} = require("./PDFFormat");
 
 /**
  * Get the proper docFormat to work with.

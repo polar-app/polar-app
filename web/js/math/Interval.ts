@@ -1,8 +1,8 @@
-const {Line} = require("../util/Line");
-
 /**
  * Represents a mathematical interval between two values.
  */
+import {Line} from '../util/Line';
+
 export class Interval {
 
     public line: any;

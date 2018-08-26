@@ -7,8 +7,8 @@ import {DocInfos} from './DocInfos';
 import {AnnotationInfos} from './AnnotationInfos';
 import {Pagemarks} from './Pagemarks';
 import {MetadataSerializer} from './MetadataSerializer';
+import {PageMetas} from './PageMetas';
 
-const {PageMetas} = require("./PageMetas");
 const {TextHighlights} = require("./TextHighlights");
 
 const log = Logger.create();

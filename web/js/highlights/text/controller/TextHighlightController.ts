@@ -15,8 +15,8 @@ import {Screenshots} from '../../../screenshots/Screenshots';
 import {IFrames} from '../../../util/dom/IFrames';
 import {SelectionScreenshots} from './SelectionScreenshots';
 import {TextExtracter} from './TextExtracter';
+import {TextHighlightRecords} from '../../../metadata/TextHighlightRecords';
 
-const {TextHighlightRecords} = require("../../../metadata/TextHighlightRecords");
 const {TextHighlightRows} = require("./TextHighlightRows");
 
 const {SelectedContents} = require("../selection/SelectedContents");
