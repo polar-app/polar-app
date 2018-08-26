@@ -164,7 +164,7 @@ export class MainAppMenu {
                             title: 'Polar Bookshelf',
                             message: 'Version 1.0',
                             detail: '',
-                            icon: APP_ICON
+                            //icon: APP_ICON
                         });
                     }
                 },
@@ -178,3 +178,4 @@ export class MainAppMenu {
     }
 
 }
+
