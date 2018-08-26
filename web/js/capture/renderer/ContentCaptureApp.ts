@@ -2,7 +2,7 @@ import {ContentCaptureController} from "./ContentCaptureController";
 
 export class ContentCaptureApp {
 
-    start() {
+    async start() {
 
         console.log("Starting content capture app...");
 

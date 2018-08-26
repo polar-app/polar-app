@@ -3,6 +3,7 @@ import {Model} from '../Model';
 import {ViewerFactory} from '../viewer/ViewerFactory';
 import {WebController} from '../controller/WebController';
 import {Logger} from '../logger/Logger';
+import {ElectronLoggers} from '../logger/ElectronLogger';
 
 const {WebView} = require("../view/WebView");
 const {TextHighlightView2} = require("../highlights/text/view/TextHighlightView2");
@@ -34,6 +35,9 @@ export class Launcher {
     async trigger() {
 
         let persistenceLayer = await this.persistenceLayerFactory();
+        await persistenceLayer.init();
+
+        await Logger.init();
 
         let model = new Model(persistenceLayer);
         new WebView(model).start();
@@ -48,7 +52,6 @@ export class Launcher {
         let viewer = ViewerFactory.create(model);
         viewer.start();
 
-        await persistenceLayer.init();
 
         log.info("Stash dir: ", persistenceLayer.datastore.stashDir);
         log.info("Logs dir: ", persistenceLayer.datastore.logsDir);

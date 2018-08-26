@@ -5,7 +5,7 @@ SpectronRenderer.run(async () => {
 
     let contentCaptureApp = new ContentCaptureApp();
 
-    contentCaptureApp.start();
+    await contentCaptureApp.start();
 
     console.log("App loaded now!!");
 

@@ -10,8 +10,6 @@ async function start() {
 
     let mainWindow = await SpectronMain.setup();
 
-    await Logger.init("/tmp/cache-interceptor-service-logs");
-
     let proxyServerConfig = new ProxyServerConfig(1234);
 
     let cacheRegistry = new CacheRegistry(proxyServerConfig);

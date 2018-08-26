@@ -23,7 +23,6 @@ function createMainWindow() {
 
 app.on('ready', async function() {
 
-    await Logger.init("/tmp/DebugWebRequestsListener");
     createMainWindow();
 
 });

@@ -52,8 +52,7 @@ app.on('ready', async () => {
 
     await datastore.init();
 
-    // FIXME: add this back in...
-    //Logger.setLoggerDelegate(await ElectronLoggers.create(datastore.logsDir));
+    await Logger.init();
 
     let mainApp = new MainApp(datastore);
     let mainAppController = await mainApp.start();
@@ -64,6 +63,5 @@ app.on('ready', async () => {
         log.info("Opening file given on the command line: " + fileArg);
         await mainAppController.handleLoadDoc(fileArg);
     }
-
 
 });

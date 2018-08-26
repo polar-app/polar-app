@@ -3,7 +3,13 @@ import {Logger} from '../../../web/js/logger/Logger';
 
 const log = Logger.create();
 
-let cardCreatorApp = new CreateFlashcardApp();
+async function start() {
 
-cardCreatorApp.start()
-    .catch(err => log.error("Could not start app: ", err));
+    await Logger.init();
+
+    let cardCreatorApp = new CreateFlashcardApp();
+    await cardCreatorApp.start();
+
+}
+
+start().catch(err => log.error("Could not start app: ", err));

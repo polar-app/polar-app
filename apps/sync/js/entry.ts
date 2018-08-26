@@ -3,7 +3,13 @@ import {SyncApp} from "../../../web/js/apps/sync/SyncApp";
 
 const log = Logger.create();
 
-let app = new SyncApp();
+async function start() {
 
-app.start()
-   .catch(err => log.error("Could not start app: ", err));
+    await Logger.init();
+
+    let app = new SyncApp();
+    await app.start()
+
+}
+
+start().catch(err => log.error("Could not start app: ", err));

@@ -5,6 +5,8 @@ import {Objects} from '../util/Objects';
 import {Files} from '../util/Files';
 import {ConsoleLogger} from './ConsoleLogger';
 import {Caller} from './Caller';
+import {ElectronLoggers} from './ElectronLogger';
+import {Directories} from '../datastore/Directories';
 
 const log = require('electron-log');
 
@@ -36,47 +38,13 @@ export class Logger {
     /**
      * Initialize the logger to write to a specific directory.
      *
-     * @param logsDir {String} The directory to use to store logs.
-     * @param options
      */
-    static async init(logsDir: string, options: any) {
+    static async init() {
 
-        if(Logger.initialized) {
-            throw new Error("Already initialized");
-        }
+        let directories = new Directories();
 
-        if(! process) {
-            throw new Error("No process");
-        }
-
-        if(process.type === "renderer") {
-            throw new Error(`Must initialize from the main electron process (process=${process.type})`);
-        }
-
-        options = Objects.defaults(options, {createDir: true});
-
-        if(options.createDir) {
-            await Files.createDirAsync(logsDir);
-        }
-
-        // *** configure console
-        log.transports.console.level = "info";
-        log.transports.console.format="[{y}-{m}-{d} {h}:{i}:{s}.{ms} {z}] [{level}] {text}";
-
-        // *** configure file
-
-        // set the directory name properly
-        log.transports.file.file = `${logsDir}/polar.log`;
-        log.transports.file.format="[{y}-{m}-{d} {h}:{i}:{s}.{ms} {z}] [{level}] {text}";
-
-        log.transports.file.level = "info";
-        log.transports.file.appName = "polar";
-
-        // make the target use the new configured log (not the console).
-        Logger.setLoggerDelegate(log);
-
+        Logger.setLoggerDelegate(await ElectronLoggers.create(directories.logsDir));
         Logger.initialized = true;
-
     }
 
 }
@@ -138,7 +106,7 @@ class DelegatedLogger {
      */
     private apply(logFunction: LogFunction, msg: string, ...args: any[]) {
 
-        msg = this.caller + ": " + msg;
+        msg = "[" + this.caller + "] " + msg;
 
         if(args.length > 0) {
             logFunction(msg, ...args);
