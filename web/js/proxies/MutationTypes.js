@@ -1,25 +1,20 @@
-const{MutationType} = require("./MutationType");
-const{MutationState} = require("./MutationState");
-
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const MutationType_1 = require("./MutationType");
+const MutationState_1 = require("./MutationState");
 class MutationTypes {
-
     static toMutationState(mutationType) {
-
-        switch(mutationType) {
-            case MutationType.INITIAL:
-                return MutationState.PRESENT;
-            case MutationType.SET:
-                return MutationState.PRESENT;
-            case MutationType.DELETE:
-                return MutationState.ABSENT;
-
+        switch (mutationType) {
+            case MutationType_1.MutationType.INITIAL:
+                return MutationState_1.MutationState.PRESENT;
+            case MutationType_1.MutationType.SET:
+                return MutationState_1.MutationState.PRESENT;
+            case MutationType_1.MutationType.DELETE:
+                return MutationState_1.MutationState.ABSENT;
             default:
                 throw new Error("Invalid mutationType: " + mutationType);
-
         }
-
     }
-
 }
-
-module.exports.MutationTypes = MutationTypes;
+exports.MutationTypes = MutationTypes;
+//# sourceMappingURL=MutationTypes.js.map

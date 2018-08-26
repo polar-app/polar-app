@@ -14,10 +14,10 @@ import {TextHighlighterFactory} from './TextHighlighterFactory';
 import {Screenshots} from '../../../screenshots/Screenshots';
 import {IFrames} from '../../../util/dom/IFrames';
 import {SelectionScreenshots} from './SelectionScreenshots';
+import {TextExtracter} from './TextExtracter';
 
 const {TextHighlightRecords} = require("../../../metadata/TextHighlightRecords");
 const {TextHighlightRows} = require("./TextHighlightRows");
-const {TextExtracter} = require("./TextExtracter");
 
 const {SelectedContents} = require("../selection/SelectedContents");
 const {TextSelections} = require("./TextSelections");

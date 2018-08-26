@@ -3,10 +3,11 @@
  * elements it contains.
  */
 import {RectElement} from './RectElement';
+import {Rect} from '../../../Rect';
 
 export class TextHighlightRow {
 
-    public readonly rect: any;
+    public readonly rect: Rect;
 
     public readonly rectElements: RectElement[];
 

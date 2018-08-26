@@ -1,20 +1,8 @@
-/**
- *
- * Allows us to register events and listen for specific events on a given DocMeta.
- *
- * @abstract
- */
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 class DocMetaModel {
-
-    /**
-     *
-     * @param docMeta {DocMeta}
-     * @param callback
-     */
     registerListener(docMeta, callback) {
-
     }
-
 }
-
-module.exports.DocMetaModel = DocMetaModel;
+exports.DocMetaModel = DocMetaModel;
+//# sourceMappingURL=DocMetaModel.js.map

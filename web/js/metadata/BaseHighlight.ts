@@ -19,6 +19,11 @@ export class BaseHighlight extends ExtendedAnnotation {
      */
     public image?: Image;
 
+    /**
+     * Images for this highlight.  By default there are none.
+     */
+    public images: {[key: string]: Image} = {};
+
     constructor(val: any) {
 
         super(val);

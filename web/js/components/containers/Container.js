@@ -1,49 +1,18 @@
-
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 class Container {
-
-    constructor(opts) {
-
-        /**
-         * The ID for this container.
-         *
-         * @type {number}
-         */
-        this.id = undefined;
-
-        /**
-         * The element representing this container. Usually a .page or a .thumbnail.
-         *
-         * @type {undefined}
-         */
-        this.element = undefined;
-
-        /**
-         * The components that this container hosts.
-         *
-         * @type {Array<Component>}
-         */
+    constructor(opts = {}) {
         this.components = [];
-
-        Object.assign(this, opts);
-
+        this.id = opts.id;
+        this.element = opts.element;
+        this.components = opts.components || [];
     }
-
-    /**
-     *
-     * @param component {Component}
-     */
     addComponent(component) {
         this.components.push(component);
     }
-
-    /**
-     *
-     * @return {Array<Component>}
-     */
     getComponents() {
         return this.components;
     }
-
 }
-
-module.exports.Container = Container;
+exports.Container = Container;
+//# sourceMappingURL=Container.js.map

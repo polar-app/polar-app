@@ -1,66 +1,24 @@
-const {TraceEvent} = require("../../proxies/TraceEvent");
-const {DocFormatFactory} = require("../../docformat/DocFormatFactory");
-const {Preconditions} = require("../../Preconditions");
-
-
-class AnnotationEvent extends TraceEvent {
-
-    constructor(opts) {
-
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const TraceEvent_1 = require("../../proxies/TraceEvent");
+const Preconditions_1 = require("../../Preconditions");
+class AnnotationEvent extends TraceEvent_1.TraceEvent {
+    constructor(opts = {}) {
         super(opts);
-
-        /**
-         * The ID for this annotation.
-         *
-         * @type {string}
-         */
-        this.id = undefined;
-
-        /**
-         *
-         * @type {DocMeta}
-         */
-        this.docMeta = undefined;
-
-        /**
-         *
-         * @type {PageMeta}
-         */
-        this.pageMeta = undefined;
-
-        /**
-         * The page we're working with.
-         *
-         * @type {number}
-         */
-        this.pageNum = undefined;
-
-        /**
-         * The raw TraceEvent for this annotation.
-         *
-         * @type {TraceEvent}
-         */
-        this.traceEvent = undefined;
-
-        /**
-         * The container which holds this annotation.
-         *
-         * @type {Container}
-         */
-        this.container = undefined;
-
-        Object.assign(this, opts);
-
-        if(this.value) {
+        this.id = opts.id;
+        this.docMeta = opts.docMeta;
+        this.pageMeta = opts.pageMeta;
+        this.pageNum = opts.pageNum;
+        this.traceEvent = opts.traceEvent;
+        this.container = opts.container;
+        if (this.value) {
             this.id = this.value.id;
-        } else {
+        }
+        else {
             this.id = this.previousValue.id;
         }
-
-        Preconditions.assertNotNull(this.pageMeta, "pageMeta");
-
+        Preconditions_1.Preconditions.assertNotNull(this.pageMeta, "pageMeta");
     }
-
 }
-
-module.exports.AnnotationEvent = AnnotationEvent;
+exports.AnnotationEvent = AnnotationEvent;
+//# sourceMappingURL=AnnotationEvent.js.map

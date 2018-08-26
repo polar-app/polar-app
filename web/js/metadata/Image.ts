@@ -25,6 +25,18 @@ export class Image extends SerializedObject {
      */
     public height?: number;
 
+    /**
+     * A per image 'relation' similar to the HTML rel attribute with links.
+     * This allow us to attach an image to an annotation and give it a relation.
+     *
+     * For example.  We could have 'screenshot', 'thumbnail', 'highlight', etc.
+     *
+     * These relations are free form so any relation type can be designed by
+     * the developer and still compatible with the schema.  Standard relations
+     * are and will be defined and future relations can be added at any point.
+     */
+    public rel?: string;
+
     constructor(val: Image) {
 
         super(val);
