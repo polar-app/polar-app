@@ -134,7 +134,7 @@ export class TextHighlightController {
                 return true;
             },
 
-            onAfterHighlight: function (range: any, highlightElements: any) {
+            onAfterHighlight: (range: any, highlightElements: any) => {
                 // log.info("onAfterHighlight range: ", range);
                 // log.info("onAfterHighlight hlts: ", highlightElements);
 
@@ -146,14 +146,19 @@ export class TextHighlightController {
                     highlightElement.className = highlightElement.className + " " + highlightClazz;
                 });
 
-                controller.onTextHighlightCreatedLegacy("." + highlightClazz)
+                (async() =>  {
 
-                // the underlying <span> highlights need to be removed now.
+                    await controller.onTextHighlightCreatedLegacy("." + highlightClazz)
 
-                log.info("Removing highlights now");
-                this.textHighlighter.removeHighlights();
+                    // the underlying <span> highlights need to be removed now.
 
-            }.bind(this),
+                    this.textHighlighter.removeHighlights();
+
+                    log.info("Highlight completed.");
+
+                })().catch(err => log.error("Unable to highlight: ", err))
+
+            },
 
             onRemoveHighlight: function (hlt: any) {
                 log.info("onRemoveHighlight hlt: ", hlt);
@@ -256,8 +261,6 @@ export class TextHighlightController {
 
             let textSelections = TextSelections.compute(selectedContent);
 
-            // now clear the selection since we just highlighted it.
-            win.getSelection().empty();
 
             return TextHighlightRecords.create(rects, textSelections, text);
 
@@ -309,6 +312,9 @@ export class TextHighlightController {
         pageMeta.textHighlights[textHighlightRecord.id] = textHighlightRecord.value;
 
         log.info("Added text highlight to model");
+
+        // now clear the selection since we just highlighted it.
+        win.getSelection().empty();
 
         return textHighlightRecord;
 
