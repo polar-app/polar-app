@@ -1,0 +1,19 @@
+@import "./App.css";
+
+@import "../../../node_modules/bootstrap/dist/css/bootstrap.min.css";
+/* @import "../../node_modules/bootstrap/dist/css/bootstrap-theme.min.css"; */
+@import "../../../node_modules/font-awesome/css/font-awesome.min.css";
+
+html, body {
+  margin: 0;
+  padding: 0;
+  font-family: sans-serif;
+}
+
+.rounded {
+  border-radius: .25rem!important;
+}
+
+.shadow {
+  box-shadow: 0 .5rem 1rem rgba(0,0,0,.15)!important;
+}
