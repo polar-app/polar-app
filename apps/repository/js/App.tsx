@@ -1,4 +1,5 @@
 import * as React from 'react';
+import {DocDetail} from '../../../web/js/metadata/DocDetail';
 //import '../css/App.css';
 
 // import logo from './logo.svg';
@@ -6,7 +7,7 @@ import * as React from 'react';
 
 interface IAppState {
 
-    docs: IDoc[];
+    docs: DocDetail[];
 
 }
 
@@ -18,11 +19,11 @@ class App<P> extends React.Component<{}, IAppState> {
       this.state = {
           docs: [
               {
-                  id: '4e81fc6e-bfb6-419b-93e5-0242fb6f3f6a',
+                  fingerprint: '4e81fc6e-bfb6-419b-93e5-0242fb6f3f6a',
                   title: 'Mastering Bitcoin'
               },
               {
-                  id: '11bbffc8-5891-4b45-b9ea-5c99aadf870f',
+                  fingerprint: '11bbffc8-5891-4b45-b9ea-5c99aadf870f',
                   title: 'Etherium Whitepaper'
               }
           ]
@@ -43,7 +44,7 @@ class App<P> extends React.Component<{}, IAppState> {
 
                     {this.state.docs.map(doc =>
 
-                        <div className="doc rounded" key={doc.id}>
+                        <div className="doc rounded" key={doc.fingerprint}>
 
                             <div className="left">
 
@@ -111,7 +112,7 @@ class App<P> extends React.Component<{}, IAppState> {
         setTimeout(() => {
 
             this.state.docs.push({
-                 id: "10101",
+                 fingerprint: "10101",
                  title: 'asdf'
              });
 

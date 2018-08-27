@@ -1,17 +1,15 @@
-import {DocDetails} from '../metadata/DocDetails';
+import {DocDetail} from '../metadata/DocDetail';
 
-export class Viewer {
+export abstract class Viewer {
 
-    start() {
+    public start() {
 
     }
 
-    changeScale(scale: number) {
+    public changeScale(scale: number) {
         throw new Error("Not supported by this viewer.")
     }
 
-    docDetails(): DocDetails {
-        return {}
-    }
+    public abstract docDetail(): DocDetail;
 
 }

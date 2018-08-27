@@ -5,7 +5,7 @@
 import {Image} from './Image';
 import {Author} from './Author';
 
-export interface DocDetails {
+export interface DocDetail {
 
     /**
      * A fingerprint for the document.
@@ -31,7 +31,7 @@ export interface DocDetails {
      */
     nrPages?: number;
 
-    thumbnail: Image;
+    thumbnail?: Image;
 
     author?: Author;
 

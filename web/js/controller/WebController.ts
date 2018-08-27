@@ -60,9 +60,9 @@ export class WebController extends Controller {
         // TODO: if I await super.onDocumentLoaded with webpack it breaks
         super.onDocumentLoaded(fingerprint, nrPages, currentlySelectedPageNum)
 
-        let docDetails = this.viewer.docDetails();
+        let docDetail = this.viewer.docDetail();
 
-        log.info("Loaded with docDetails: ", docDetails);
+        log.info("Loaded with docDetail: ", docDetail);
 
         this.setupContextMenu();
 
@@ -143,7 +143,7 @@ export class WebController extends Controller {
             let pageNum = this.docFormat.getPageNumFromPageElement(pageElement);
             this.erasePagemark(pageNum);
         }
-        
+
     }
 
     async keyBindingListener(event: KeyboardEvent) {

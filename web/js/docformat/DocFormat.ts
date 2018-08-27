@@ -1,6 +1,6 @@
 import {notNull, Preconditions} from '../Preconditions';
 import {Elements} from '../util/Elements';
-import {DocDetails} from '../metadata/DocDetails';
+import {DocDetail} from '../metadata/DocDetail';
 
 /**
  * Get the proper docFormat to work with.
@@ -113,8 +113,16 @@ export abstract class DocFormat {
         throw new Error("Not implemented");
     }
 
-    docDetails(): DocDetails {
-        return { }
+    docDetail(): DocDetail {
+
+        let fingerprint = this.currentDocFingerprint();
+
+        if( ! fingerprint) {
+            throw new Error("No document loaded");
+        }
+
+        return { fingerprint };
+
     }
 
 }

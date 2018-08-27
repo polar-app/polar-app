@@ -4,7 +4,7 @@ import {Logger} from '../../logger/Logger';
 import {notNull} from '../../Preconditions';
 import {Model} from '../../Model';
 import {PHZMetadata} from '../../phz/PHZMetadata';
-import {DocDetails} from '../../metadata/DocDetails';
+import {DocDetail} from '../../metadata/DocDetail';
 import {LinkHandler} from './LinkHandler';
 import {Services} from '../../util/services/Services';
 import {HTMLFormat} from '../../docformat/HTMLFormat';
@@ -296,7 +296,7 @@ export class HTMLViewer extends Viewer {
 
     }
 
-    docDetails(): DocDetails {
+    docDetail(): DocDetail {
 
         let requestParams = notNull(this.requestParams);
 
