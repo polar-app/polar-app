@@ -1,6 +1,7 @@
 import {Directories} from '../datastore/Directories';
 import {ElectronLoggers} from './ElectronLogger';
 import {LoggerDelegate} from './LoggerDelegate';
+import {FilteredLogger} from './FilteredLogger';
 
 /**
  * Maintains our general logging infrastructure.  Differentiated from Logger
@@ -17,7 +18,11 @@ export class Logging {
 
         let directories = new Directories();
 
-        LoggerDelegate.set(await ElectronLoggers.create(directories.logsDir));
+        let delegate = await ElectronLoggers.create(directories.logsDir);
+
+        delegate = new FilteredLogger(delegate);
+
+        LoggerDelegate.set(delegate);
         this.initialized = true;
 
     }

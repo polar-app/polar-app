@@ -1,3 +1,0 @@
-# Overview
-
-Polar is a

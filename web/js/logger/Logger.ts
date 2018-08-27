@@ -44,23 +44,23 @@ class DelegatedLogger {
     // with spectron instead of hacking it here.
 
     public info(msg: string, ...args: any[]) {
-        this.apply(LoggerDelegate.get().info, msg, ...args);
+        this.apply(LoggerDelegate.get().info.bind(LoggerDelegate.get()), msg, ...args);
     }
 
     public warn(msg: string, ...args: any[]) {
-        this.apply(LoggerDelegate.get().warn, msg, ...args);
+        this.apply(LoggerDelegate.get().warn.bind(LoggerDelegate.get()), msg, ...args);
     }
 
     public error(msg: string, ...args: any[]) {
-        this.apply(LoggerDelegate.get().error, msg, ...args);
+        this.apply(LoggerDelegate.get().error.bind(LoggerDelegate.get()), msg, ...args);
     }
 
     public verbose(msg: string, ...args: any[]) {
-        this.apply(LoggerDelegate.get().verbose, msg, ...args);
+        this.apply(LoggerDelegate.get().verbose.bind(LoggerDelegate.get()), msg, ...args);
     }
 
     public debug(msg: string, ...args: any[]) {
-        this.apply(LoggerDelegate.get().debug, msg, ...args);
+        this.apply(LoggerDelegate.get().debug.bind(LoggerDelegate.get()), msg, ...args);
     }
 
     /**
