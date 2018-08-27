@@ -1,5 +1,6 @@
 import {Preconditions} from '../Preconditions';
 import {Optional} from './ts/Optional';
+import {Strings} from './Strings';
 
 export class Styles {
 
@@ -8,15 +9,15 @@ export class Styles {
      * support px but in the future we could support other types.
      *
      */
-    static parsePX(value: string): number {
+    static parsePX(value: string | null | undefined): number {
 
         Preconditions.assertNotNull(value, "value");
 
-        if(value === "") {
+        if(Strings.empty(value)) {
             throw new Error("Empty string given");
         }
 
-        return parseInt(value.replace("px", ""));
+        return parseInt(value!.replace("px", ""));
     }
 
     /**

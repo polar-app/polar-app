@@ -19,8 +19,8 @@ export class Strings {
 
     }
 
-    static empty(value?: string): boolean {
-        return ! value || value.trim() === "";
+    static empty(value: string | null | undefined): boolean {
+        return value === null || value === undefined || value.trim() === "";
     }
 
 }

@@ -288,6 +288,7 @@ describe('DocMetas', function() {
                         "notes": {},
                         "questions": {},
                         "flashcards": {},
+                        "images": {},
                         "id": "1cAbqEAHny",
                     }
                 };
