@@ -3,8 +3,7 @@ import {PagemarkType} from './PagemarkType';
 import {PagemarkRect} from './PagemarkRect';
 import {Preconditions} from '../Preconditions';
 import {Rect} from '../Rect';
-
-const {Rects} = require("../Rects");
+import {Rects} from '../Rects';
 
 export class PagemarkRects {
 

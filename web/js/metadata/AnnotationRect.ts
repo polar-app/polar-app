@@ -1,8 +1,7 @@
 import {Preconditions} from '../Preconditions';
 import {Dimensions} from '../util/Dimensions';
 import {Interval} from '../math/Interval';
-
-const {Rects} = require("../Rects");
+import {Rects} from '../Rects';
 
 const ENTIRE_PAGE = Rects.createFromBasicRect({ left: 0, top: 0, width: 100, height: 100});
 

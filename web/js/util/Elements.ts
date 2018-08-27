@@ -1,7 +1,7 @@
 import {Preconditions} from '../Preconditions';
+import {Rects} from '../Rects';
 
 const $ = require('jquery');
-const {Rects} = require("../Rects");
 
 export class Elements {
 

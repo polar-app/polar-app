@@ -4,9 +4,7 @@ import {Preconditions} from '../Preconditions';
 import {Rect} from '../Rect';
 import {AnnotationRect} from './AnnotationRect';
 import {Line} from '../util/Line';
-
-const {Rects} = require("../Rects");
-
+import {Rects} from '../Rects';
 const log = Logger.create();
 
 export class AnnotationRects {

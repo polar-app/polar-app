@@ -7,8 +7,7 @@ import {Logger} from '../../logger/Logger';
 import {Pagemarks} from '../../metadata/Pagemarks';
 import {PagemarkRects} from '../../metadata/PagemarkRects';
 import {PagemarkMode} from '../../metadata/PagemarkMode';
-
-const {Rects} = require("../../Rects");
+import {Rects} from '../../Rects';
 
 const log = Logger.create();
 
