@@ -140,3 +140,11 @@ Electron or another API on which we're blocked.
 
  - Native cloud sync across devices.
    
+ - 'Add to Polar' chrome extension
+ 
+ - 'Add to Polar' android app
+ 
+ - Polar Android App for spaced repitition
+    - Maybe make it a PWA or react native.
+
+ - Sidebar for annotations.

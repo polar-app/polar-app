@@ -53,7 +53,7 @@ app.on('ready', async () => {
 
     await datastore.init();
 
-    await Logging.init();
+    //await Logging.init();
 
     let mainApp = new MainApp(datastore);
     let mainAppController = await mainApp.start();

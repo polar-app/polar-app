@@ -1,9 +1,11 @@
 
 - PDFS and HTML content
-- Long term storage
-- Your documents aren't modified
+- Long term storage of your important documents
+- Your documents aren't modified and are stored in aconsistent archive.
     - Many PDF anotations corrupt PDFs when annotations are added
     -
+
+- readability 
 
 - Easy storage
     - JSON
@@ -14,6 +16,7 @@
     - your content stored as HTML
 
 - support for all platforms
+    - portable in the future
 - based on electron + javascript so it's hackable
 - Git + Dropbox supported
 - annotation types
@@ -21,5 +24,3 @@
     - pagemarks
     - text highlights
     - area highlights
-- Roadmap
-    - JSON schema

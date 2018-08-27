@@ -38,7 +38,7 @@ export class Launcher {
         let persistenceLayer = await this.persistenceLayerFactory();
         await persistenceLayer.init();
 
-        await Logging.init();
+        //await Logging.init();
 
         let model = new Model(persistenceLayer);
         new WebView(model).start();

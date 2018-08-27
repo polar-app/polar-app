@@ -1,35 +1,12 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 class ContextMenuPoints {
-
     constructor(opts) {
-
-        /**
-         *
-         * @type {Point}
-         */
-        this.page = undefined;
-
-        /**
-         *
-         * @type {Point}
-         */
-        this.client = undefined;
-
-        /**
-         *
-         * @type {Point}
-         */
-        this.offset = undefined;
-
-        /**
-         *
-         * @type {Point}
-         */
-        this.pageOffset = undefined;
-
-        Object.assign(this, opts);
-
+        this.page = opts.page;
+        this.client = opts.client;
+        this.offset = opts.offset;
+        this.pageOffset = opts.pageOffset;
     }
-
 }
-
-module.exports.ContextMenuPoints = ContextMenuPoints;
+exports.ContextMenuPoints = ContextMenuPoints;
+//# sourceMappingURL=ContextMenuPoints.js.map

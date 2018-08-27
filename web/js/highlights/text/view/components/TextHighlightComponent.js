@@ -73,7 +73,7 @@ class TextHighlightComponent extends Component {
 
         this.destroy();
 
-        log.info("render()");
+        log.debug("render()");
 
         forDict(this.textHighlight.rects, (id, highlightRect) => {
 
@@ -129,7 +129,7 @@ class TextHighlightComponent extends Component {
         let selector = `.text-highlight-${this.textHighlight.id}`;
         let highlightElements = document.querySelectorAll(selector);
 
-        log.info(`Found N elements for selector ${selector}: ` + highlightElements.length);
+        log.debug(`Found N elements for selector ${selector}: ` + highlightElements.length);
 
         highlightElements.forEach(highlightElement => {
             highlightElement.parentElement.removeChild(highlightElement);

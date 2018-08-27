@@ -65,7 +65,7 @@ export class Model {
         this.docMeta = docMeta;
 
         log.info("Description of doc loaded: " + DocMetaDescriber.describe(this.docMeta));
-        log.info("Document loaded: ", this.docMeta);
+        log.info("Document loaded: ", fingerprint);
 
         this.docMeta = Proxies.create(this.docMeta, () => {
 

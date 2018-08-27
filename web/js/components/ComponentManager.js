@@ -50,7 +50,7 @@ class ComponentManager {
 
     onDocumentLoaded(documentLoadedEvent) {
 
-        log.info("onDocumentLoaded: ", documentLoadedEvent.fingerprint);
+        log.debug("onDocumentLoaded: ", documentLoadedEvent.fingerprint);
 
         let docMetaModel = this.createDocMetaModel();
 
@@ -83,7 +83,7 @@ class ComponentManager {
 
         if(componentEvent.mutationState === MutationState.PRESENT) {
 
-            log.info("PRESENT");
+            log.debug("PRESENT");
 
             let container = this.containers[containerID];
 
@@ -133,7 +133,7 @@ class ComponentManager {
 
         } else if(componentEvent.mutationState === MutationState.ABSENT) {
 
-            log.info("ABSENT");
+            log.debug("ABSENT");
 
             let componentEntry = this.components[componentEvent.id];
 
@@ -142,7 +142,7 @@ class ComponentManager {
                 componentEntry.containerLifecycleListener.unregister();
                 componentEntry.component.destroy();
 
-                log.info("Destroyed component: " + componentEvent.id);
+                log.debug("Destroyed component: " + componentEvent.id);
 
                 delete this.components[componentEvent.id];
 

@@ -87,7 +87,7 @@ class AreaHighlightComponent extends Component {
             this.areaHighlight = new AreaHighlight(this.areaHighlight);
             this.areaHighlight.rects["0"] = areaHighlightRect;
 
-            log.info("New areaHighlight: ", JSON.stringify(this.areaHighlight, null, "  "));
+            log.debug("New areaHighlight: ", JSON.stringify(this.areaHighlight, null, "  "));
 
             delete this.annotationEvent.pageMeta.areaHighlights[this.areaHighlight.id];
             this.annotationEvent.pageMeta.areaHighlights[this.areaHighlight.id] = this.areaHighlight;
@@ -105,7 +105,7 @@ class AreaHighlightComponent extends Component {
 
         this.destroy();
 
-        log.info("render()");
+        log.debug("render()");
 
         let docMeta = this.annotationEvent.docMeta;
         let pageMeta = this.annotationEvent.pageMeta;
@@ -143,7 +143,7 @@ class AreaHighlightComponent extends Component {
 
                 containerElement.insertBefore(highlightElement, containerElement.firstChild);
 
-                log.info("Creating box controller for highlightElement: ", highlightElement);
+                log.debug("Creating box controller for highlightElement: ", highlightElement);
 
                 this.boxController.register(new BoxOptions({
                     target: highlightElement,
@@ -209,7 +209,7 @@ class AreaHighlightComponent extends Component {
         let selector = `.area-highlight-${this.areaHighlight.id}`;
         let elements = document.querySelectorAll(selector);
 
-        log.info(`Found N elements for selector ${selector}: ` + elements.length);
+        log.debug(`Found N elements for selector ${selector}: ` + elements.length);
 
         elements.forEach(highlightElement => {
             highlightElement.parentElement.removeChild(highlightElement);
