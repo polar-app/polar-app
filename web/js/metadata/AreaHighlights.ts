@@ -3,7 +3,7 @@ import {Preconditions} from '../Preconditions';
 import {ISODateTime} from './ISODateTime';
 import {AreaHighlight} from './AreaHighlight';
 
-class AreaHighlights {
+export class AreaHighlights {
 
     static createID(created: ISODateTime) {
         return Hashcodes.createID(created);
