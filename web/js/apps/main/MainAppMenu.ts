@@ -1,7 +1,7 @@
 import {MainAppController} from './MainAppController';
 import {BrowserWindow, dialog, Menu, shell} from "electron";
-import {APP_ICON} from './MainBrowserWindowFactory';
 import {ElectronContextMenu} from '../../contextmenu/electron/ElectronContextMenu';
+import {Version} from '../../ga/Version';
 
 export class MainAppMenu {
 
@@ -162,7 +162,7 @@ export class MainAppMenu {
                             type: 'info',
                             buttons: ['OK'],
                             title: 'Polar Bookshelf',
-                            message: 'Version 1.0',
+                            message: 'Version ' + Version.get(),
                             detail: '',
                             //icon: APP_ICON
                         });
