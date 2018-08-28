@@ -17,3 +17,16 @@ html, body {
 .shadow {
   box-shadow: 0 .5rem 1rem rgba(0,0,0,.15)!important;
 }
+
+#doc-table {
+  margin: 5px;
+}
+
+#doc-repository header {
+  margin: 5px;
+}
+
+#doc-repository header h1 {
+  font-size: 18px;
+  font-weight: bold;
+}

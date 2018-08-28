@@ -44,6 +44,7 @@ class App<P> extends React.Component<{}, IAppState> {
             data: makeData()
         };
     }
+
     // public render() {
     //
     //     return (
@@ -119,7 +120,14 @@ class App<P> extends React.Component<{}, IAppState> {
     render() {
         const { data } = this.state;
         return (
-            <div>
+
+            <div id="doc-repository">
+
+                <header>
+                    <h1>Document Repository</h1>
+                </header>
+
+                <div id="doc-table">
                 <ReactTable
                     data={data}
                     columns={[{
@@ -180,12 +188,13 @@ class App<P> extends React.Component<{}, IAppState> {
                             )
                         }]
                     }]}
-                    defaultPageSize={10}
+                    defaultPageSize={50}
                     className="-striped -highlight"
                 />
                 <br />
                 <Tips />
                 <Logo />
+                </div>
             </div>
         );
     }
