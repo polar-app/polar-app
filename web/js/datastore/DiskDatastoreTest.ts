@@ -4,6 +4,8 @@ import {assertJSON} from '../test/Assertions';
 import {DocMetas} from '../metadata/DocMetas';
 import {DiskDatastore} from './DiskDatastore';
 import {PersistenceLayer} from './PersistenceLayer';
+import {DocMeta} from '../metadata/DocMeta';
+import {isPresent} from '../Preconditions';
 
 const fs = require('fs');
 const rimraf = require('rimraf');
@@ -99,27 +101,52 @@ describe('DiskDatastore', function() {
 
     });
 
-    it("write and read data to disk", async function () {
+    describe('Write and discovery documents', function() {
 
         let fingerprint = "0x001";
 
         let dataDir = "/tmp/test-data-dir";
 
-        let diskDatastore = new DiskDatastore(dataDir);
-        let persistenceLayer = new PersistenceLayer(diskDatastore);
+        let diskDatastore: DiskDatastore;
+        let persistenceLayer: PersistenceLayer;
 
-        await persistenceLayer.init();
+        let docMeta: DocMeta;
 
-        let docMeta = DocMetas.createWithinInitialPagemarks(fingerprint, 14);
+        beforeEach(async function () {
 
-        await persistenceLayer.sync(fingerprint, docMeta);
+            diskDatastore = new DiskDatastore(dataDir);
+            persistenceLayer = new PersistenceLayer(diskDatastore);
 
-        let docMeta0 = await persistenceLayer.getDocMeta(fingerprint);
+            await persistenceLayer.init();
 
-        assertJSON(docMeta, docMeta0);
+            docMeta = DocMetas.createWithinInitialPagemarks(fingerprint, 14);
+
+            await persistenceLayer.sync(fingerprint, docMeta);
+
+        });
+
+        it("write and read data to disk", async function () {
+
+            let docMeta0 = await persistenceLayer.getDocMeta(fingerprint);
+
+            assert.equal(isPresent(docMeta0), true);
+
+            assertJSON(docMeta, docMeta0);
+
+        });
+
+
+        it("getDocMetaFiles", async function () {
+
+            let docMetaFiles = await diskDatastore.getDocMetaFiles();
+
+            assert.equal(docMetaFiles.length > 0, true);
+
+            assert.equal(docMetaFiles.map(current => current.fingerprint).includes(fingerprint), true);
+
+        });
 
     });
-
 
     //     diskDatastore.init();
 //     diskDatastore.init();
