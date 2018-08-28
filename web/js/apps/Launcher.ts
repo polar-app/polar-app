@@ -1,10 +1,8 @@
-import {IPersistenceLayer, PersistenceLayer} from '../datastore/PersistenceLayer';
+import {IPersistenceLayer} from '../datastore/PersistenceLayer';
 import {Model} from '../Model';
 import {ViewerFactory} from '../viewer/ViewerFactory';
 import {WebController} from '../controller/WebController';
 import {Logger} from '../logger/Logger';
-import {ElectronLoggers} from '../logger/ElectronLogger';
-import {Logging} from '../logger/Logging';
 
 const {WebView} = require("../view/WebView");
 const {TextHighlightView2} = require("../highlights/text/view/TextHighlightView2");
