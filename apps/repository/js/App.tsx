@@ -45,78 +45,6 @@ class App<P> extends React.Component<{}, IAppState> {
         };
     }
 
-    // public render() {
-    //
-    //     return (
-    //         <div className="App">
-    //
-    //             <div className="docs">
-    //
-    //                 {this.state.docs.map(doc =>
-    //
-    //                     <div className="doc rounded" key={doc.fingerprint}>
-    //
-    //                         <div className="left">
-    //
-    //                             <div className="doc-thumb">
-    //                                 <img src="..." alt="" className="doc-image img-thumbnail doc-image"/>
-    //                             </div>
-    //
-    //                         </div>
-    //
-    //                         <div className="doc-right">
-    //                             <h3 className="doc-title">{doc.title}</h3>
-    //
-    //                             <div className="doc-meta">
-    //
-    //                                 <div className="doc-meta-overview">
-    //                                     <div className="doc-progress">
-    //                                         <progress max="100" value="10"/>
-    //                                     </div>
-    //                                 </div>
-    //
-    //                                 <div className="doc-meta-actions">
-    //                                     <div className="doc-actions">
-    //                                         <a className="fa fa-check"/>
-    //                                         {/*<a className="fa fa-share-alt"/>*/}
-    //                                     </div>
-    //                                 </div>
-    //
-    //                             </div>
-    //
-    //                             {/*<div className="doc-footer">*/}
-    //
-    //                                 {/*<div className="doc-left">*/}
-    //
-    //                                     {/*<div className="doc-progress">*/}
-    //                                         {/*<progress max="100" value="10"/>*/}
-    //                                     {/*</div>*/}
-    //
-    //                                 {/*</div>*/}
-    //
-    //                                 {/*<div className="doc-right">*/}
-    //                                     {/*<div className="doc-actions">*/}
-    //                                         {/*<a className="fa fa-check"/>*/}
-    //                                         {/*/!*<a className="fa fa-share-alt"/>*!/*/}
-    //                                     {/*</div>*/}
-    //                                 {/*</div>*/}
-    //
-    //                             {/*</div>*/}
-    //
-    //                         </div>
-    //
-    //                    </div>
-    //
-    //                 )}
-    //
-    //             </div>
-    //
-    //         </div>
-    //
-    //
-    //     );
-    // }
-
     render() {
         const { data } = this.state;
         return (
@@ -132,42 +60,48 @@ class App<P> extends React.Component<{}, IAppState> {
                     data={data}
                     columns={
                         [
-                                {
-                                    Header: 'First Name',
-                                    accessor: 'firstName'
-                                }, {
-                                    Header: 'Last Name',
-                                    id: 'lastName',
-                                    accessor: (d: any) => d.lastName
-                                },
-                                {
-                                    Header: 'Progress',
-                                    accessor: 'progress',
-                                    Cell: (row: any) => (
-                                        <div
-                                            style={{
-                                                width: '100%',
-                                                height: '100%',
-                                                backgroundColor: '#dadada',
-                                                borderRadius: '2px'
-                                            }}
-                                        >
-                                            <div
-                                                style={{
-                                                    width: `${row.value}%`,
-                                                    height: '100%',
-                                                    backgroundColor: row.value > 66 ? '#85cc00'
-                                                        : row.value > 33 ? '#ffbf00'
-                                                            : '#ff2e00',
-                                                    borderRadius: '2px',
-                                                    transition: 'all .2s ease-out'
-                                                }}
-                                            />
-                                        </div>
-                                    )
-                                }
+                            {
+                                Header: 'Title',
+                                accessor: 'title'
+                            },
+                            // {
+                            //     Header: 'Last Name',
+                            //     id: 'lastName',
+                            //     accessor: (d: any) => d.lastName
+                            // },
+                            {
+                                Header: 'Progress',
+                                accessor: 'progress',
+                                Cell: (row: any) => (
+
+                                    <progress max="100" value={ row.value } style={{
+                                        width: '100%'
+                                    }} />
+
+                                    // <div
+                                    //     style={{
+                                    //         width: '100%',
+                                    //         height: '100%',
+                                    //         backgroundColor: '#dadada',
+                                    //         borderRadius: '2px'
+                                    //     }}
+                                    // >
+                                    //     <div
+                                    //         style={{
+                                    //             width: `${row.value}%`,
+                                    //             height: '100%',
+                                    //             backgroundColor: row.value > 66 ? '#85cc00'
+                                    //                 : row.value > 33 ? '#ffbf00'
+                                    //                     : '#ff2e00',
+                                    //             borderRadius: '2px',
+                                    //             transition: 'all .2s ease-out'
+                                    //         }}
+                                    //     />
+                                    // </div>
+                                )
+                            }
                     ]}
-                    defaultPageSize={50}
+                    defaultPageSize={25}
                     className="-striped -highlight"
                 />
                 <br />
@@ -178,27 +112,6 @@ class App<P> extends React.Component<{}, IAppState> {
         );
     }
 }
-//
-//   private addItems() {
-//
-//         setTimeout(() => {
-//
-//             this.state.docs.push({
-//                  fingerprint: "10101",
-//                  title: 'asdf'
-//              });
-//
-//
-//             this.setState(this.state);
-//
-//             this.addItems();
-//
-//         }, 1000)
-//
-//     }
-//
-//
-// }
 
 export default App;
 
@@ -221,6 +134,8 @@ export interface IDoc {
     link?: string;
 
     source?: ISource;
+
+    progress?: number
 
 }
 

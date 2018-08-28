@@ -12,8 +12,8 @@ function range(len: number) {
 const newPerson = () => {
     const statusChance = Math.random();
     return {
-        firstName: 'John',
-        lastName: 'Smith',
+        title: 'John',
+        //lastName: 'Smith',
         age: Math.floor(Math.random() * 30),
         visits: Math.floor(Math.random() * 100),
         progress: Math.floor(Math.random() * 100),
