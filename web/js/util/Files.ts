@@ -91,6 +91,10 @@ export class Files {
         throw new Error("Not replaced via promisify");
     }
 
+    public static async readdirAsync(path: string): Promise<string[]> {
+        throw new Error("Not replaced via promisify");
+    }
+
 }
 
 Files.readFileAsync = promisify(fs.readFile);
@@ -100,3 +104,4 @@ Files.accessAsync = promisify(fs.access);
 Files.statAsync = promisify(fs.stat);
 Files.unlinkAsync = promisify(fs.unlink);
 Files.rmdirAsync = promisify(fs.rmdir);
+Files.readdirAsync = promisify(fs.readdir);

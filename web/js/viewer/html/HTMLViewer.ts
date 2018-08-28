@@ -302,7 +302,8 @@ export class HTMLViewer extends Viewer {
 
         return {
             url: requestParams.descriptor.url,
-            title: requestParams.descriptor.title
+            title: requestParams.descriptor.title,
+            fingerprint: requestParams.fingerprint
         }
 
     }

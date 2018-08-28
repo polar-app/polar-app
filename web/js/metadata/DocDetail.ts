@@ -10,29 +10,36 @@ export interface DocDetail {
     /**
      * A fingerprint for the document.
      */
-    fingerprint: string;
+    readonly fingerprint: string;
 
     /**
      * The title for the document.
      */
-    title?: string;
+    readonly title?: string;
 
-    subtitle?: string;
+    readonly subtitle?: string;
 
-    description?: string;
+    readonly description?: string;
 
     /**
      * The network URL for the document where we originally fetched it.
      */
-    url?: String;
+    readonly url?: String;
 
     /**
      * The number of pages in this document.
      */
-    nrPages?: number;
+    readonly nrPages?: number;
 
-    thumbnail?: Image;
+    readonly thumbnail?: Image;
 
-    author?: Author;
+    readonly author?: Author;
+
+    /**
+     * The progress of this document (until completion) from 0 to 100.
+     *
+     * By default the document is zero percent complete.
+     */
+    readonly progress?: number;
 
 }

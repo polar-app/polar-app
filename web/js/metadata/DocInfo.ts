@@ -23,7 +23,6 @@ export class DocInfo extends SerializedObject {
      * The progress of this document (until completion) from 0 to 100.
      *
      * By default the document is zero percent complete.
-     *
      */
     public progress: number = 0;
 

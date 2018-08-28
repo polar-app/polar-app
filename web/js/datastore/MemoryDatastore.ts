@@ -5,6 +5,7 @@ import {Paths} from '../util/Paths';
 import {DiskDatastore} from './DiskDatastore';
 import {Datastore} from './Datastore';
 import {Preconditions} from '../Preconditions';
+import {DocMetaRef} from './DocMetaRef';
 
 export class MemoryDatastore implements Datastore {
 
@@ -53,4 +54,11 @@ export class MemoryDatastore implements Datastore {
         this.docMetas[fingerprint] = data;
     }
 
-};
+    async getDocMetaFiles(): Promise<DocMetaRef[]> {
+
+        return Object.keys(this.docMetas)
+            .map(fingerprint => <DocMetaRef>{fingerprint});
+
+    }
+
+}

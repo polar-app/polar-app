@@ -2,6 +2,8 @@ import {Datastore} from './Datastore';
 import {Paths} from '../util/Paths';
 import {Preconditions} from '../Preconditions';
 import {Logger} from '../logger/Logger';
+import {DocMetaRef} from './DocMetaRef';
+import {Files} from '../util/Files';
 
 const fs = require("fs");
 const os = require("os");
@@ -181,6 +183,25 @@ export class DiskDatastore implements Datastore {
 
         return await this.writeFileAsync(statePath, data);
 
+    }
+
+    async getDocMetaFiles(): Promise<DocMetaRef[]> {
+
+        let dirs = await Files.readdirAsync(this.dataDir);
+
+        let result: DocMetaRef[] = [];
+
+        for (let i = 0; i < dirs.length; i++) {
+            const dir = dirs[i];
+            let stateFile = `${this.dataDir}/${dir}/state.json`;
+            let exists = await Files.existsAsync(stateFile);
+            if (exists) {
+                result.push({fingerprint: dir});
+            }
+
+        }
+
+        return result;
     }
 
     static getUserHome() {

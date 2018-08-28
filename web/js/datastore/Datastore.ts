@@ -1,4 +1,6 @@
 // A datastore that supports ledgers and checkpoints.
+import {DocMetaRef} from './DocMetaRef';
+
 export interface Datastore {
 
     readonly stashDir: string;
@@ -26,5 +28,10 @@ export interface Datastore {
      * @param data The RAW data to decode by the PersistenceLayer
      */
     sync(fingerprint: string, data: any): Promise<void>;
+
+    /**
+     * Return an array of DocMetaFiles currently in the repository.
+     */
+    getDocMetaFiles(): Promise<DocMetaRef[]>;
 
 }

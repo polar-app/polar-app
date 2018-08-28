@@ -1,5 +1,6 @@
 import assert from 'assert';
 import {Files} from './Files';
+import {assertJSON} from '../test/Assertions';
 
 describe('Files', function() {
 
@@ -26,5 +27,38 @@ describe('Files', function() {
 
     });
 
+
+    describe('readdirAsync', function() {
+
+        it("basic", async function () {
+
+            let files = await Files.readdirAsync(__dirname);
+
+            assert.equal(files.includes("FilesTest.ts"), true);
+
+        });
+
+    });
+
+    describe('statAsync', function() {
+
+        it("basic", async function () {
+
+            let stat = await Files.statAsync(__dirname + '/FilesTest.ts');
+
+            assert.equal(stat !== null, true);
+            assert.equal(stat.isFile(), true);
+            assert.equal(stat.isDirectory(), false);
+
+        });
+
+        it("isDirectory", async function () {
+
+            let stat = await Files.statAsync(__dirname);
+            assert.equal(stat.isDirectory(), true);
+
+        });
+
+    });
 
 });

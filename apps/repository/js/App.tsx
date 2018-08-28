@@ -29,9 +29,7 @@ class App<P> extends React.Component<{}, IAppState> {
           ]
       };
 
-
-      this.addItems();
-
+      //this.addItems();
 
   }
 
