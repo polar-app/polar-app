@@ -7,6 +7,7 @@ import {Logger} from '../../../web/js/logger/Logger';
 import {PersistenceLayer} from '../../../web/js/datastore/PersistenceLayer';
 import {isPresent} from '../../../web/js/Preconditions';
 import {Optional} from '../../../web/js/util/ts/Optional';
+import {DefaultFileLoader} from '../../../web/js/apps/main/loaders/DefaultFileLoader';
 
 const log = Logger.create();
 
@@ -189,6 +190,11 @@ class App<P> extends React.Component<{}, IAppState> {
                             //     this.setState(state);
                             //     console.log("on click")
                             // },
+
+
+                            onClick: (e: any) => {
+                                console.log(rowInfo);
+                            },
 
                             onDoubleClick: (e: any) => {
                                 console.log(rowInfo);
