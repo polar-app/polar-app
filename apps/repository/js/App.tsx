@@ -111,7 +111,19 @@ class App<P> extends React.Component<{}, IAppState> {
             <div id="doc-repository">
 
                 <header>
-                    <h1>Document Repository</h1>
+
+                    <div id="header-logo">
+                        <img src="./img/icon.svg" height="25"/>
+                    </div>
+
+                    <div id="header-title">
+                        <h1>Document Repository</h1>
+                    </div>
+
+                    <div id="header-filter">
+                        <input type="text" placeholder="Filter by title"></input>
+                    </div>
+
                 </header>
 
                 <div id="doc-table">
@@ -139,7 +151,9 @@ class App<P> extends React.Component<{}, IAppState> {
                                 )
                             }
                     ]}
+
                     defaultPageSize={25}
+                    noDataText="No documents available."
                     className="-striped -highlight"
                 />
                 <br />

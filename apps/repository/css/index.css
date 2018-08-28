@@ -4,10 +4,17 @@
 /* @import "../../node_modules/bootstrap/dist/css/bootstrap-theme.min.css"; */
 @import "../../../node_modules/font-awesome/css/font-awesome.min.css";
 
+body {
+  font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+  font-weight: 300;
+  font-size: 14px;
+}
+
 html, body {
   margin: 0;
   padding: 0;
   font-family: sans-serif;
+  overflow-x: hidden;
 }
 
 .rounded {
@@ -24,9 +31,38 @@ html, body {
 
 #doc-repository header {
   margin: 5px;
+
+}
+
+#doc-repository header img {
+  height: 50px;
 }
 
 #doc-repository header h1 {
   font-size: 18px;
   font-weight: bold;
+}
+
+#doc-repository header {
+  display: table;
+  width: 100%;
+}
+
+#doc-repository header div {
+  display: table-cell;
+  vertical-align: middle;
+}
+
+#header-logo {
+  width: 55px;
+}
+
+#header-filter {
+  text-align: right;
+  padding-right: 10px;
+}
+
+#header-filter input[type=text] {
+  width: 350px;
+  padding: 3px;
 }
