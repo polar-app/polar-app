@@ -127,12 +127,12 @@ export abstract class DocFormat {
 
 }
 
-interface CurrentPageElement {
+export interface CurrentPageElement {
     element: HTMLElement | null;
     visibility: number;
 }
 
-interface CurrentState {
+export interface CurrentState {
 
     readonly nrPages: number;
 

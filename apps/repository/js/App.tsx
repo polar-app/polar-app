@@ -6,6 +6,7 @@ import {DiskDatastore} from '../../../web/js/datastore/DiskDatastore';
 import {Logger} from '../../../web/js/logger/Logger';
 import {PersistenceLayer} from '../../../web/js/datastore/PersistenceLayer';
 import {isPresent} from '../../../web/js/Preconditions';
+import {Optional} from '../../../web/js/util/ts/Optional';
 
 const log = Logger.create();
 
@@ -37,6 +38,9 @@ class App<P> extends React.Component<{}, IAppState> {
   //
   // }
 
+    private diskDatastore?: DiskDatastore;
+    private persistenceLayer?: PersistenceLayer;
+
     constructor(props: P, context: any) {
         super(props, context);
 
@@ -44,57 +48,74 @@ class App<P> extends React.Component<{}, IAppState> {
             data: []
         };
 
-        let diskDatastore = new DiskDatastore();
-
         (async () => {
 
-            await diskDatastore.init();
+            await this.init();
+            let docDetails = await this.load();
 
-            let persistenceLayer = new PersistenceLayer(diskDatastore);
+            docDetails = docDetails.filter(current => isPresent(current.filename));
 
-            await persistenceLayer.init();
+            this.state.data.push(...docDetails);
 
-            let docMetaFiles = await diskDatastore.getDocMetaFiles();
-
-            for (let i = 0; i < docMetaFiles.length; i++) {
-                const docMetaFile = docMetaFiles[i];
-
-                let docMeta = await persistenceLayer.getDocMeta(docMetaFile.fingerprint);
-
-                if(docMeta !== undefined) {
-
-                    let title = 'Untitled';
-
-                    let progress = 0;
-
-                    if(docMeta.docInfo) {
-
-                        if(isPresent(docMeta.docInfo.title)) {
-                            title = docMeta.docInfo.title!;
-                        }
-
-                        if(isPresent(docMeta.docInfo.progress)) {
-                            progress = docMeta.docInfo.progress!;
-                        }
-
-                    }
-
-                    let doc = {
-                        fingerprint: docMetaFile.fingerprint,
-                        title,
-                        progress
-                    };
-
-                    this.state.data.push(doc)
-
-                }
-
-            }
-
-            console.log("Loadign done...");
             this.setState(this.state);
 
         })().catch(err => log.error("Could not load disk store: ", err));
+
+    }
+
+    private async init(): Promise<void> {
+
+        let diskDatastore: DiskDatastore;
+        let persistenceLayer: PersistenceLayer;
+
+        this.diskDatastore = diskDatastore = new DiskDatastore();
+        this.persistenceLayer = persistenceLayer = new PersistenceLayer(diskDatastore);
+
+        await diskDatastore.init();
+
+        await persistenceLayer.init();
+
+    }
+
+    private async load(): Promise<DocDetail[]> {
+
+        let result: DocDetail[] = [];
+
+        let docMetaFiles = await this.diskDatastore!.getDocMetaFiles();
+
+        for (let i = 0; i < docMetaFiles.length; i++) {
+            const docMetaFile = docMetaFiles[i];
+
+            let docMeta = await this.persistenceLayer!.getDocMeta(docMetaFile.fingerprint);
+
+            if(docMeta !== undefined) {
+
+                let title: string = 'Untitled';
+                let progress: number = 0;
+                let filename: string | undefined;
+
+                if(docMeta.docInfo) {
+
+                    title = Optional.of(docMeta.docInfo.title).getOrElse('Untitled');
+                    progress = Optional.of(docMeta.docInfo.progress).getOrElse(0);
+                    filename = Optional.of(docMeta.docInfo.filename).getOrUndefined();
+
+                }
+
+                let doc = {
+                    fingerprint: docMetaFile.fingerprint,
+                    title,
+                    progress,
+                    filename
+                };
+
+                result.push(doc)
+
+            }
+
+        }
+
+        return result;
 
     }
 

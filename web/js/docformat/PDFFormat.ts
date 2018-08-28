@@ -1,4 +1,4 @@
-import {DocFormat} from './DocFormat';
+import {CurrentState, DocFormat} from './DocFormat';
 import {Preconditions} from '../Preconditions';
 
 declare var window: any;
@@ -31,7 +31,7 @@ export class PDFFormat extends DocFormat {
     /**
      * Get the current state of the doc.
      */
-    currentState(event: any) {
+    currentState(event: any): CurrentState {
 
         Preconditions.assertNotNull(event, "event");
 

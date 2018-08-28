@@ -42,4 +42,9 @@ export interface DocDetail {
      */
     readonly progress?: number;
 
+    /**
+     * The filename of this doc in the .stash directory.
+     */
+    readonly filename?: string;
+
 }

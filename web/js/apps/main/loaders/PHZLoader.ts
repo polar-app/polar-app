@@ -22,6 +22,7 @@ export class PHZLoader implements FileLoader {
     }
 
     async registerForLoad(path: string): Promise<LoadedFile> {
+        let filename = Paths.basename(path);
 
         // FIXME: update main.js to use this loader moving forward...
 
@@ -50,7 +51,9 @@ export class PHZLoader implements FileLoader {
 
         let appPath = AppPaths.relative('./htmlviewer/index.html');
 
-        let queryData = `?file=${encodeURIComponent(cachedRequest.url)}&fingerprint=${fingerprint}&descriptor=${encodeURIComponent(descriptorJSON)}`;
+        let filenameParam = encodeURIComponent(filename);
+
+        let queryData = `?file=${encodeURIComponent(cachedRequest.url)}&fingerprint=${fingerprint}&descriptor=${encodeURIComponent(descriptorJSON)}&filename=${filenameParam}`;
         let appURL = 'file://' + appPath + queryData;
 
         return {

@@ -1,4 +1,5 @@
 import {DocDetail} from '../metadata/DocDetail';
+import {notNull} from '../Preconditions';
 
 export abstract class Viewer {
 
@@ -11,5 +12,10 @@ export abstract class Viewer {
     }
 
     public abstract docDetail(): DocDetail | undefined;
+
+    protected getFilename(): string {
+        let url = new URL(window.location.href);
+        return notNull(url.searchParams.get("filename"));
+    }
 
 }

@@ -301,9 +301,11 @@ export class HTMLViewer extends Viewer {
         let requestParams = notNull(this.requestParams);
 
         return {
-            url: requestParams.descriptor.url,
+            fingerprint: requestParams.fingerprint,
             title: requestParams.descriptor.title,
-            fingerprint: requestParams.fingerprint
+            url: requestParams.descriptor.url,
+            nrPages: 1,
+            filename: this.getFilename()
         }
 
     }

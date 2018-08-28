@@ -57,14 +57,24 @@ export class WebController extends Controller {
 
     async onDocumentLoaded(fingerprint: string, nrPages: number, currentlySelectedPageNum: number) {
 
-        // NOTE: don't await this as I think it causes some issues with Electron
-        // blocking. 
-        super.onDocumentLoaded(fingerprint, nrPages, currentlySelectedPageNum)
+        await super.onDocumentLoaded(fingerprint, nrPages, currentlySelectedPageNum)
 
         let docDetail = this.viewer.docDetail();
 
+        // we basically now need to 'gift' additional fields to the doc model
+        // here including title, filename, etc.
         if(docDetail) {
+
             log.info("Loaded with docDetail: ", docDetail);
+
+            if( ! this.model.docMeta.docInfo.title) {
+                this.model.docMeta.docInfo.title = docDetail.title;
+            }
+
+            if( ! this.model.docMeta.docInfo.filename) {
+                this.model.docMeta.docInfo.filename = docDetail.filename;
+            }
+
         }
 
         this.setupContextMenu();
