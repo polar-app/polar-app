@@ -130,64 +130,43 @@ class App<P> extends React.Component<{}, IAppState> {
                 <div id="doc-table">
                 <ReactTable
                     data={data}
-                    columns={[{
-                        Header: 'Name',
-                        columns: [{
-                            Header: 'First Name',
-                            accessor: 'firstName'
-                        }, {
-                            Header: 'Last Name',
-                            id: 'lastName',
-                            accessor: (d: any) => d.lastName
-                        }]
-                    }, {
-                        Header: 'Info',
-                        columns: [{
-                            Header: 'Profile Progress',
-                            accessor: 'progress',
-                            Cell: (row: any) => (
-                                <div
-                                    style={{
-                                        width: '100%',
-                                        height: '100%',
-                                        backgroundColor: '#dadada',
-                                        borderRadius: '2px'
-                                    }}
-                                >
-                                    <div
-                                        style={{
-                                            width: `${row.value}%`,
-                                            height: '100%',
-                                            backgroundColor: row.value > 66 ? '#85cc00'
-                                                : row.value > 33 ? '#ffbf00'
-                                                    : '#ff2e00',
-                                            borderRadius: '2px',
-                                            transition: 'all .2s ease-out'
-                                        }}
-                                    />
-                                </div>
-                            )
-                        }, {
-                            Header: 'Status',
-                            accessor: 'status',
-                            Cell: (row: any) => (
-                                <span>
-            <span style={{
-                color: row.value === 'relationship' ? '#ff2e00'
-                    : row.value === 'complicated' ? '#ffbf00'
-                        : '#57d500',
-                transition: 'all .3s ease'
-            }}>
-              &#x25cf;
-            </span> {
-                                    row.value === 'relationship' ? 'In a relationship'
-                                        : row.value === 'complicated' ? `It's complicated`
-                                        : 'Single'
+                    columns={
+                        [
+                                {
+                                    Header: 'First Name',
+                                    accessor: 'firstName'
+                                }, {
+                                    Header: 'Last Name',
+                                    id: 'lastName',
+                                    accessor: (d: any) => d.lastName
+                                },
+                                {
+                                    Header: 'Progress',
+                                    accessor: 'progress',
+                                    Cell: (row: any) => (
+                                        <div
+                                            style={{
+                                                width: '100%',
+                                                height: '100%',
+                                                backgroundColor: '#dadada',
+                                                borderRadius: '2px'
+                                            }}
+                                        >
+                                            <div
+                                                style={{
+                                                    width: `${row.value}%`,
+                                                    height: '100%',
+                                                    backgroundColor: row.value > 66 ? '#85cc00'
+                                                        : row.value > 33 ? '#ffbf00'
+                                                            : '#ff2e00',
+                                                    borderRadius: '2px',
+                                                    transition: 'all .2s ease-out'
+                                                }}
+                                            />
+                                        </div>
+                                    )
                                 }
-          </span>
-                            )
-                        }]
-                    }]}
+                    ]}
                     defaultPageSize={50}
                     className="-striped -highlight"
                 />
