@@ -12,15 +12,11 @@ function range(len: number) {
 const newPerson = () => {
     const statusChance = Math.random();
     return {
-        title: 'John',
+        title: 'Mastering Bitcoin',
         //lastName: 'Smith',
-        age: Math.floor(Math.random() * 30),
-        visits: Math.floor(Math.random() * 100),
+        //age: Math.floor(Math.random() * 30),
+        //visits: Math.floor(Math.random() * 100),
         progress: Math.floor(Math.random() * 100),
-        status:
-            statusChance > 0.66
-                ? "relationship"
-                : statusChance > 0.33 ? "complicated" : "single"
     };
 };
 
