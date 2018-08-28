@@ -125,10 +125,7 @@ export class Model {
 
         let docMeta = await this.docMetaPromise;
 
-        let pageMeta = docMeta.getPageMeta(pageNum);
-
-        // set the pagemark that we just created into the map.
-        pageMeta.pagemarks[pagemark.id] = pagemark;
+        Pagemarks.updatePagemark(docMeta, pageNum, pagemark);
 
         // TODO: this can be done with a mutation listener now
         this.reactor.dispatchEvent('createPagemark', {pageNum, pagemark});

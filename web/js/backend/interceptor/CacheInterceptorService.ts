@@ -30,13 +30,13 @@ export class CacheInterceptorService {
 
         ++this.cacheStats.hits;
 
-        log.info("HIT Going to handle with cache: ", request.url);
+        log.debug("HIT Going to handle with cache: ", request.url);
 
         let cacheEntry = this.cacheRegistry.get(request.url);
 
         let buffer = await cacheEntry.toBuffer();
 
-        log.info(`Calling callback now for: ${request.url} (${buffer.byteLength} bytes)`);
+        log.debug(`Calling callback now for: ${request.url} (${buffer.byteLength} bytes)`);
 
         callback({
             mimeType: cacheEntry.mimeType,
@@ -47,7 +47,7 @@ export class CacheInterceptorService {
 
     async handleWithNetRequest(request: Request, callback: BufferCallback) {
 
-        log.info("Handling request: ", request.url);
+        log.debug("Handling request: ", request.url);
 
         ++this.cacheStats.misses;
 
@@ -56,7 +56,7 @@ export class CacheInterceptorService {
             url: request.url,
         };
 
-        log.info("MISS Going to handle with net.request: " + request.url);
+        log.debug("MISS Going to handle with net.request: " + request.url);
 
         let netRequest = net.request(options)
             .on('response', async (response) => {
@@ -90,13 +90,13 @@ export class CacheInterceptorService {
 
         Object.keys(request.headers).forEach(header => {
             // call setHeader for each header needed.
-            log.info("Setting request header: ", header);
+            log.debug("Setting request header: ", header);
             netRequest.setHeader(header, request.headers[header]);
         });
 
         if(request.uploadData) {
 
-            log.info("Writing data to request");
+            log.debug("Writing data to request");
             request.uploadData.forEach(current => {
                 netRequest.write(current.bytes);
             });
@@ -112,7 +112,7 @@ export class CacheInterceptorService {
 
     async interceptRequest(request: Request, callback: BufferCallback) {
 
-        log.info(`intercepted ${request.method} ${request.url}`);
+        log.debug(`intercepted ${request.method} ${request.url}`);
 
         if(this.cacheRegistry.hasEntry(request.url)) {
             await this.handleWithCache(request, callback);
@@ -142,7 +142,7 @@ export class CacheInterceptorService {
 
     async start() {
 
-        log.info("Starting service and registering protocol interceptors.");
+        log.debug("Starting service and registering protocol interceptors.");
 
         await this.interceptBufferProtocol('http', this.interceptRequest.bind(this));
         await this.interceptBufferProtocol('https', this.interceptRequest.bind(this));

@@ -8,6 +8,7 @@ import {AnnotationInfos} from './AnnotationInfos';
 import {Pagemarks} from './Pagemarks';
 import {MetadataSerializer} from './MetadataSerializer';
 import {PageMetas} from './PageMetas';
+import {forDict} from '../util/Functions';
 
 const {TextHighlights} = require("./TextHighlights");
 
@@ -155,6 +156,27 @@ export class DocMetas {
 
     }
 
+    /**
+     * Compute the progress of a document based on the pagemarks.
+     */
+    public static computeProgress(docMeta: DocMeta): number {
+
+        let total = 0;
+
+        forDict(docMeta.pageMetas, (key, pageMeta) => {
+
+            forDict(pageMeta.pagemarks, (column, pagemark) => {
+
+                total += pagemark.percentage;
+
+            });
+
+        });
+
+        return total / (docMeta.docInfo.nrPages * 100);
+
+    }
+
 }
 
 export class MockDocMetas {
@@ -173,10 +195,10 @@ export class MockDocMetas {
         for(let pageNum = 1; pageNum <= Math.min(nrPages, maxPages); ++pageNum ) {
 
             let pagemark = Pagemarks.create({
-                                                type: PagemarkType.SINGLE_COLUMN,
-                                                percentage: 100,
-                                                column: 0
-                                            });
+                type: PagemarkType.SINGLE_COLUMN,
+                percentage: 100,
+                column: 0
+            });
 
             let pageMeta = result.getPageMeta(pageNum);
 
@@ -203,5 +225,6 @@ export class MockDocMetas {
         return docMeta;
 
     }
+
 
 }

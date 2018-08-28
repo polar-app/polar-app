@@ -9,6 +9,8 @@ import {PagemarkRects} from './PagemarkRects';
 import {Dictionaries} from '../util/Dictionaries';
 import {round} from '../util/Percentages';
 import {PagemarkMode} from './PagemarkMode';
+import {DocMeta} from './DocMeta';
+import {DocMetas} from './DocMetas';
 
 const log = Logger.create();
 
@@ -158,6 +160,21 @@ export class Pagemarks {
         });
 
         return result;
+
+    }
+
+    static updatePagemark(docMeta: DocMeta, pageNum: number, pagemark: Pagemark) {
+        let pageMeta = docMeta.getPageMeta(pageNum);
+
+        // TODO: this actually requires TWO disk syncs and we're going to
+        // need a way to resolve this in the future. It would be nice to
+        // elide these to one somehow by hinting to the persistenceLayer
+        // used in the model to start a batch around these objects then
+        // commit just the last one.
+        docMeta.docInfo.progress = DocMetas.computeProgress(docMeta) * 100;
+
+        // set the pagemark that we just created into the map.
+        pageMeta.pagemarks[pagemark.id] = pagemark;
 
     }
 

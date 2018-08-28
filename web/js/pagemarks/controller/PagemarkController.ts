@@ -8,6 +8,7 @@ import {Pagemarks} from '../../metadata/Pagemarks';
 import {PagemarkRects} from '../../metadata/PagemarkRects';
 import {PagemarkMode} from '../../metadata/PagemarkMode';
 import {Rects} from '../../Rects';
+import {DocMetas} from '../../metadata/DocMetas';
 
 const log = Logger.create();
 
@@ -106,7 +107,7 @@ export class PagemarkController {
 
             let pagemark = Pagemarks.create({rect: pagemarkRect});
 
-            this.model.docMeta.getPageMeta(pageNum).pagemarks[pagemark.id] = pagemark;
+            Pagemarks.updatePagemark(this.model.docMeta, pageNum, pagemark);
 
             log.info("Using pagemarkRect: ", pagemarkRect);
 

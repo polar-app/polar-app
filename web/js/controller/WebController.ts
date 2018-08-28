@@ -57,12 +57,13 @@ export class WebController extends Controller {
 
     async onDocumentLoaded(fingerprint: string, nrPages: number, currentlySelectedPageNum: number) {
 
-        // TODO: if I await super.onDocumentLoaded with webpack it breaks
-        super.onDocumentLoaded(fingerprint, nrPages, currentlySelectedPageNum)
+        await super.onDocumentLoaded(fingerprint, nrPages, currentlySelectedPageNum)
 
         let docDetail = this.viewer.docDetail();
 
-        log.info("Loaded with docDetail: ", docDetail);
+        if(docDetail) {
+            log.info("Loaded with docDetail: ", docDetail);
+        }
 
         this.setupContextMenu();
 

@@ -1,84 +1,37 @@
-const {DocMetaDescriber} = require("../../metadata/DocMetaDescriber");
-const {forDict} = require("../../util/Functions");
-const log = require("../../logger/Logger").Logger.create();
-
-/**
- * Updates our progress as we read the doc.
- */
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const Logger_1 = require("../../logger/Logger");
+const Functions_1 = require("../../util/Functions");
+const DocMetaDescriber_1 = require("../../metadata/DocMetaDescriber");
+const DocMetas_1 = require("../../metadata/DocMetas");
+const log = Logger_1.Logger.create();
 class ProgressView {
-
-    // TODO: this should actually be PagemarkProgressView
-
-    /**
-     * @param model {Model}
-     */
     constructor(model) {
         this.model = model;
     }
-
     start() {
-
         log.info("Starting...");
-
         this.model.registerListenerForDocumentLoaded(documentLoadedEvent => {
-
             log.info("onDocumentLoaded");
-
             let docMeta = documentLoadedEvent.docMeta;
-
-            forDict(docMeta.pageMetas, (key, pageMeta) => {
-
-                pageMeta.pagemarks.addTraceListener(traceEvent => {
+            Functions_1.forDict(docMeta.pageMetas, (key, pageMeta) => {
+                pageMeta.pagemarks.addTraceListener(() => {
                     this.update();
                 });
-
             });
-
         });
-
     }
-
     update() {
-
-        // TODO: this should listen directly to the model and the pagemarks
-        // themselves.
-
-        let perc = this.computeProgress(this.model.docMeta);
-
+        let perc = DocMetas_1.DocMetas.computeProgress(this.model.docMeta);
         log.info("Percentage is now: " + perc);
-
-        document.querySelector("#polar-progress progress").value = perc;
-
-        // now update the description of the doc at the bottom.
-
-        let description = DocMetaDescriber.describe(this.model.docMeta);
-
+        let progressElement = document.querySelector("#polar-progress progress");
+        progressElement.value = perc;
+        let description = DocMetaDescriber_1.DocMetaDescriber.describe(this.model.docMeta);
         let docOverview = document.querySelector("#polar-doc-overview");
-
-        if(docOverview) {
+        if (docOverview) {
             docOverview.textContent = description;
         }
-
     }
-
-    computeProgress(docMeta) {
-
-        let total = 0;
-
-        forDict(docMeta.pageMetas, (key, pageMeta) => {
-
-            forDict(pageMeta.pagemarks, (column, pagemark) => {
-
-                total += pagemark.percentage;
-
-            });
-
-        });
-
-        return total / (docMeta.docInfo.nrPages * 100);
-
-    }
-
 }
-
-module.exports.ProgressView = ProgressView;
+exports.ProgressView = ProgressView;
+//# sourceMappingURL=ProgressView.js.map

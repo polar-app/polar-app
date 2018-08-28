@@ -1,6 +1,7 @@
 import {Logger} from '../../logger/Logger';
 import {Viewer} from '../Viewer';
 import {DocDetail} from '../../metadata/DocDetail';
+import undefinedError = Mocha.utils.undefinedError;
 
 const log = Logger.create();
 
@@ -14,9 +15,8 @@ export class PDFViewer extends Viewer {
 
     }
 
-    docDetail(): DocDetail {
-        // TODO: this should go into DocFormat
-        throw new Error("Not implemented");
+    docDetail(): DocDetail | undefined{
+        return undefined;
     }
 
 }

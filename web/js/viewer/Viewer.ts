@@ -10,6 +10,6 @@ export abstract class Viewer {
         throw new Error("Not supported by this viewer.")
     }
 
-    public abstract docDetail(): DocDetail;
+    public abstract docDetail(): DocDetail | undefined;
 
 }
