@@ -92,10 +92,7 @@ export class DocMetas {
                 column: 0
             });
 
-            let pageMeta = docMeta.getPageMeta(pageNum);
-
-            // set the pagemark that we just created.
-            pageMeta.pagemarks[pagemark.column] = pagemark;
+            Pagemarks.updatePagemark(docMeta, pageNum, pagemark);
 
         }
 
@@ -200,11 +197,7 @@ export class MockDocMetas {
                 column: 0
             });
 
-            let pageMeta = result.getPageMeta(pageNum);
-
-            // set the pagemark that we just created.
-            // TODO: this should be pagemark.id as the key not pagemark.column
-            pageMeta.pagemarks[pagemark.column] = pagemark;
+            Pagemarks.updatePagemark(result, pageNum, pagemark);
 
         }
 

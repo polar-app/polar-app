@@ -14,12 +14,6 @@ const log = Logger.create();
 // import logo from './logo.svg';
 
 
-interface IAppState {
-
-    //docs: DocDetail[];
-
-    data: DocDetail[];
-}
 
 class App<P> extends React.Component<{}, IAppState> {
 
@@ -134,6 +128,7 @@ class App<P> extends React.Component<{}, IAppState> {
                             {
                                 Header: 'Title',
                                 accessor: 'title'
+                                //style:
                             },
                             // {
                             //     Header: 'Last Name',
@@ -143,6 +138,7 @@ class App<P> extends React.Component<{}, IAppState> {
                             {
                                 Header: 'Progress',
                                 accessor: 'progress',
+                                maxWidth: 200,
                                 Cell: (row: any) => (
 
                                     <progress max="100" value={ row.value } style={{
@@ -155,6 +151,43 @@ class App<P> extends React.Component<{}, IAppState> {
                     defaultPageSize={25}
                     noDataText="No documents available."
                     className="-striped -highlight"
+                    defaultSorted={[
+                        {
+                            id: "progress",
+                            desc: true
+                        }
+                    ]}
+                    getTrProps={(state: any, rowInfo: any) => {
+                        return {
+                            // onClick: (e: any) => {
+                            //     console.log(rowInfo);
+                            //
+                            //     let state: IAppState = Object.assign({}, this.state);
+                            //     state.selected = rowInfo.index as number;
+                            //
+                            //     this.setState(state);
+                            //     console.log("on click")
+                            // },
+
+                            onDoubleClick: (e: any) => {
+                                console.log(rowInfo);
+
+                                console.log("Going to open " + rowInfo.original.fingerprint);
+
+                                // let state: IAppState = Object.assign({}, this.state);
+                                // state.selected = rowInfo.index as number;
+                                //
+                                // this.setState(state);
+                                // console.log("on click")
+                            },
+
+                            // style: {
+                            //     background: rowInfo.index === this.state.selected ? '#00afec' : 'white',
+                            //     color: rowInfo.index === this.state.selected ? 'white' : 'black'
+                            // }
+                        }
+                    }}
+
                 />
                 <br />
                 <Tips />
@@ -197,4 +230,12 @@ export interface IDoc {
 export interface ISource {
     title: string;
     link: string;
+}
+
+interface IAppState {
+
+    //docs: DocDetail[];
+
+    data: DocDetail[];
+    selected?: number;
 }

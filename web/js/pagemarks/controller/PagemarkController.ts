@@ -138,6 +138,7 @@ export class PagemarkController {
         annotationPointers.forEach(annotationPointer => {
             let pageMeta = this.model.docMeta.getPageMeta(annotationPointer.pageNum);
             delete pageMeta.pagemarks[annotationPointer.id];
+            Pagemarks.updatePagemark(this.model.docMeta, annotationPointer.pageNum);
         });
 
     }

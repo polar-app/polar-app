@@ -8,6 +8,7 @@ import {Pagemarks} from './metadata/Pagemarks';
 import {Objects} from './util/Objects';
 import {DocMetaDescriber} from './metadata/DocMetaDescriber';
 import {Logger} from './logger/Logger';
+import {TraceEvent} from './proxies/TraceEvent';
 
 const {Proxies} = require("./proxies/Proxies");
 
@@ -67,12 +68,12 @@ export class Model {
         log.info("Description of doc loaded: " + DocMetaDescriber.describe(this.docMeta));
         log.info("Document loaded: ", fingerprint);
 
-        this.docMeta = Proxies.create(this.docMeta, () => {
+        this.docMeta = Proxies.create(this.docMeta, (traceEvent: TraceEvent) => {
 
             // right now we just sync the datastore on mutation.  We do not
             // attempt to use a journal yet.
 
-            log.info("sync of persistence layer via deep trace... ");
+            log.info(`sync of persistence layer via deep trace due to path ${traceEvent.path} and property ${traceEvent.property}"`);
             this.persistenceLayer.sync(this.docMeta.docInfo.fingerprint, this.docMeta);
 
             return true;

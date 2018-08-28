@@ -57,7 +57,9 @@ export class WebController extends Controller {
 
     async onDocumentLoaded(fingerprint: string, nrPages: number, currentlySelectedPageNum: number) {
 
-        await super.onDocumentLoaded(fingerprint, nrPages, currentlySelectedPageNum)
+        // NOTE: don't await this as I think it causes some issues with Electron
+        // blocking. 
+        super.onDocumentLoaded(fingerprint, nrPages, currentlySelectedPageNum)
 
         let docDetail = this.viewer.docDetail();
 

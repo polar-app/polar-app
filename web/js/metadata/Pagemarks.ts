@@ -163,18 +163,29 @@ export class Pagemarks {
 
     }
 
-    static updatePagemark(docMeta: DocMeta, pageNum: number, pagemark: Pagemark) {
+    /**
+     *
+     * @param docMeta
+     * @param pageNum
+     *
+     * @param pagemark An optional pagemark to update.  If the pagemark isn't specified
+     * then we just assume it's deleted and update the document progress.
+     */
+    static updatePagemark(docMeta: DocMeta, pageNum: number, pagemark?: Pagemark) {
+
         let pageMeta = docMeta.getPageMeta(pageNum);
+
+        if(pagemark) {
+            // set the pagemark that we just created into the map.
+            pageMeta.pagemarks[pagemark.id] = pagemark;
+        }
 
         // TODO: this actually requires TWO disk syncs and we're going to
         // need a way to resolve this in the future. It would be nice to
         // elide these to one somehow by hinting to the persistenceLayer
         // used in the model to start a batch around these objects then
         // commit just the last one.
-        docMeta.docInfo.progress = DocMetas.computeProgress(docMeta) * 100;
-
-        // set the pagemark that we just created into the map.
-        pageMeta.pagemarks[pagemark.id] = pagemark;
+        docMeta.docInfo.progress = (DocMetas.computeProgress(docMeta) * 100);
 
     }
 

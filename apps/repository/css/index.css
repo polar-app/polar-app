@@ -53,6 +53,10 @@ html, body {
   vertical-align: middle;
 }
 
+#header-title h1 {
+  margin-top: auto;
+  margin-bottom: auto;
+}
 #header-logo {
   width: 55px;
 }
@@ -65,4 +69,11 @@ html, body {
 #header-filter input[type=text] {
   width: 350px;
   padding: 3px;
+}
+
+.rt-td {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
