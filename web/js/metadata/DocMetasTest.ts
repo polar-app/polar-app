@@ -62,7 +62,7 @@ describe('DocMetas', function() {
                     "annotationInfo": {},
                     "version": 1,
                     "docInfo": {
-                        "progress": 0,
+                        "progress": 100,
                         "pagemarkType": "SINGLE_COLUMN",
                         "properties": {},
                         "archived": false,
@@ -72,7 +72,7 @@ describe('DocMetas', function() {
                     "pageMetas": {
                         "1": {
                             "pagemarks": {
-                                "0": {
+                                "12Vf1bAzeo": {
                                     "id": "12Vf1bAzeo",
                                     "created": "2012-03-02T11:38:49.321Z",
                                     "lastUpdated": "2012-03-02T11:38:49.321Z",
@@ -100,7 +100,7 @@ describe('DocMetas', function() {
                         },
                         "2": {
                             "pagemarks": {
-                                "0": {
+                                "12Vf1bAzeo": {
                                     "id": "12Vf1bAzeo",
                                     "created": "2012-03-02T11:38:49.321Z",
                                     "lastUpdated": "2012-03-02T11:38:49.321Z",
@@ -175,12 +175,12 @@ describe('DocMetas', function() {
             it("Pagemark without rect", function () {
                 let docMeta = createUpgradeDoc();
 
-                delete docMeta.getPageMeta(1).pagemarks["0"].rect ;
+                delete docMeta.getPageMeta(1).pagemarks["12Vf1bAzeo"].rect ;
 
                 docMeta = DocMetas.upgrade(docMeta);
 
                 let expected = {
-                        "0": {
+                        "12Vf1bAzeo": {
                             "id": "12Vf1bAzeo",
                             "created": "2012-03-02T11:38:49.321Z",
                             "lastUpdated": "2012-03-02T11:38:49.321Z",
@@ -230,12 +230,12 @@ describe('DocMetas', function() {
 
                 let docMeta = createUpgradeDoc();
 
-                docMeta.getPageMeta(1).pagemarks["0"].id = null;
+                docMeta.getPageMeta(1).pagemarks["12Vf1bAzeo"].id = null;
 
                 docMeta = DocMetas.upgrade(docMeta);
 
                 let expected = {
-                        "0": {
+                        "12Vf1bAzeo": {
                             "id": "12Vf1bAzeo",
                             "created": "2012-03-02T11:38:49.321Z",
                             "lastUpdated": "2012-03-02T11:38:49.321Z",

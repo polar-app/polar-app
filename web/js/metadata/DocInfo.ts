@@ -64,6 +64,11 @@ export class DocInfo extends SerializedObject {
      */
     public archived: boolean = false;
 
+    /**
+     * The filename of this doc in the .stash directory.
+     */
+    public filename?: string;
+
     constructor(val: DocInfo) {
 
         super(val);
