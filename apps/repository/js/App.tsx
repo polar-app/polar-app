@@ -2,6 +2,12 @@ import * as React from 'react';
 import {DocDetail} from '../../../web/js/metadata/DocDetail';
 import ReactTable from "react-table";
 import {Logo, makeData, Tips} from './Utils';
+import {DiskDatastore} from '../../../web/js/datastore/DiskDatastore';
+import {Logger} from '../../../web/js/logger/Logger';
+import {PersistenceLayer} from '../../../web/js/datastore/PersistenceLayer';
+import {isPresent} from '../../../web/js/Preconditions';
+
+const log = Logger.create();
 
 //import '../css/App.css';
 
@@ -12,7 +18,7 @@ interface IAppState {
 
     //docs: DocDetail[];
 
-    data: any;
+    data: DocDetail[];
 }
 
 class App<P> extends React.Component<{}, IAppState> {
@@ -41,8 +47,61 @@ class App<P> extends React.Component<{}, IAppState> {
         super(props, context);
 
         this.state = {
-            data: makeData()
+            data: []
         };
+
+        let diskDatastore = new DiskDatastore();
+
+        (async () => {
+
+            await diskDatastore.init();
+
+            let persistenceLayer = new PersistenceLayer(diskDatastore);
+
+            await persistenceLayer.init();
+
+            let docMetaFiles = await diskDatastore.getDocMetaFiles();
+
+            for (let i = 0; i < docMetaFiles.length; i++) {
+                const docMetaFile = docMetaFiles[i];
+
+                let docMeta = await persistenceLayer.getDocMeta(docMetaFile.fingerprint);
+
+                if(docMeta !== undefined) {
+
+                    let title = 'Untitled';
+
+                    let progress = 0;
+
+                    if(docMeta.docInfo) {
+
+                        if(isPresent(docMeta.docInfo.title)) {
+                            title = docMeta.docInfo.title!;
+                        }
+
+                        if(isPresent(docMeta.docInfo.progress)) {
+                            progress = docMeta.docInfo.progress!;
+                        }
+
+                    }
+
+                    let doc = {
+                        fingerprint: docMetaFile.fingerprint,
+                        title,
+                        progress
+                    };
+
+                    this.state.data.push(doc)
+
+                }
+
+            }
+
+            console.log("Loadign done...");
+            this.setState(this.state);
+
+        })().catch(err => log.error("Could not load disk store: ", err));
+
     }
 
     render() {
@@ -100,12 +159,12 @@ export default App;
  */
 export interface IDoc {
 
-    id: string,
+    fingerprint: string,
 
     /**
      * The title of this document.
      */
-    title: string;
+    title?: string;
 
     /**
      * The link back to the original document, when available.

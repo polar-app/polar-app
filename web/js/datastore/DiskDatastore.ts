@@ -187,16 +187,23 @@ export class DiskDatastore implements Datastore {
 
     async getDocMetaFiles(): Promise<DocMetaRef[]> {
 
-        let dirs = await Files.readdirAsync(this.dataDir);
+        let fileNames = await Files.readdirAsync(this.dataDir);
 
         let result: DocMetaRef[] = [];
 
-        for (let i = 0; i < dirs.length; i++) {
-            const dir = dirs[i];
-            let stateFile = `${this.dataDir}/${dir}/state.json`;
-            let exists = await Files.existsAsync(stateFile);
-            if (exists) {
-                result.push({fingerprint: dir});
+        for (let i = 0; i < fileNames.length; i++) {
+            const fileName = fileNames[i];
+
+            const fileStat = await Files.statAsync(`${this.dataDir}/${fileName}`);
+
+            if(fileStat.isDirectory()) {
+
+                let stateFile = `${this.dataDir}/${fileName}/state.json`;
+                let exists = await Files.existsAsync(stateFile);
+                if (exists) {
+                    result.push({fingerprint: fileName});
+                }
+
             }
 
         }
