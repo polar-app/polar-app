@@ -3,7 +3,7 @@ import {isPresent} from '../../Preconditions';
 export class IFrames {
 
     public static async waitForContentDocument(iframe: HTMLIFrameElement,
-                                        options: WaitForContentDocumentOptions = { currentURL: 'about:blank'}): Promise<HTMLDocument> {
+                                               options: WaitForContentDocumentOptions = { currentURL: 'about:blank'}): Promise<HTMLDocument> {
 
         return new Promise<HTMLDocument>(resolve => {
 

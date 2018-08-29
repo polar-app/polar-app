@@ -43,8 +43,9 @@ export class DocumentReadyStates {
     public static meetsRequiredState(requiredReadyState: DocumentReadyState, currentReadyState: DocumentReadyState) {
 
         let requiredReadyStateCode = this.toReadyStateCode(requiredReadyState);
+        let currentReadyStateCode = this.toReadyStateCode(currentReadyState);
 
-        return this.toReadyStateCode(currentReadyState) >= requiredReadyStateCode;
+        return currentReadyStateCode >= requiredReadyStateCode;
 
     }
 
@@ -115,9 +116,10 @@ export class DocumentReadyStateChanger implements ReadyStateChanger {
 
             };
 
-            document.addEventListener('readystatechange', listener);
+            this.doc.addEventListener('readystatechange', listener);
 
         })
+
 
     }
 

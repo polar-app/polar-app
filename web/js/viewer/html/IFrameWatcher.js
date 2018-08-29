@@ -1,49 +1,37 @@
-const $ = require('jquery')
-
-const {Preconditions} = require("../../Preconditions");
-const {Objects} = require("../../util/Objects");
-
-/**
- * Assumes that you have tried to change the URL for an iframe and watches for
- * it to start loading properly.
- */
+"use strict";
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const Preconditions_1 = require("../../Preconditions");
+const IFrames_1 = require("../../util/dom/IFrames");
+const Logger_1 = require("../../logger/Logger");
+const DocumentReadyStates_1 = require("../../util/dom/DocumentReadyStates");
+const log = Logger_1.Logger.create();
 class IFrameWatcher {
-
-    // TODO: right now we look for the URL not being about:blank which is kind
-    // of a hack but works for now.  Technically we should listen to the
-    // iframe src attribute changing.
-
-    constructor(iframe, callback, options ) {
-        this.iframe = Preconditions.assertNotNull(iframe, "iframe");
-        this.options = Objects.defaults(options, {
-            timeoutInterval: 100,
-            currentURL: "about:blank"
-        });
-        this.callback = Preconditions.assertNotNull(callback, "callback");
-
-        this.completed = false;
-
+    constructor(iframe, callback) {
+        this.iframe = Preconditions_1.Preconditions.assertNotNull(iframe, "iframe");
+        this.callback = Preconditions_1.Preconditions.assertNotNull(callback, "callback");
     }
-
     start() {
-        this.watchInBackground();
+        this.execute()
+            .catch(err => log.error("Failed watching for iframe: ", err));
     }
-
-    watchInBackground() {
-
-        if(this.iframe.contentDocument &&
-           this.iframe.contentDocument.location.href !== this.options.currentURL) {
-
-            console.log("Detected iframe URL loading (calling callback now): ", this.iframe.contentDocument.location.href);
+    execute() {
+        return __awaiter(this, void 0, void 0, function* () {
+            console.log("FIXME1");
+            yield IFrames_1.IFrames.waitForContentDocument(this.iframe);
+            console.log("FIXME2");
+            yield DocumentReadyStates_1.DocumentReadyStates.waitFor(this.iframe.contentDocument, 'complete');
+            console.log("FIXME3");
             this.callback();
-            return;
-
-        }
-
-        setTimeout(this.watchInBackground.bind(this), this.options.timeoutInterval);
-
+        });
     }
-
 }
-
-module.exports.IFrameWatcher = IFrameWatcher;
+exports.IFrameWatcher = IFrameWatcher;
+//# sourceMappingURL=IFrameWatcher.js.map
