@@ -1,6 +1,11 @@
 
 # 1.0.0-beta110
 
+- Snap file distribution disabled at the moment. They don't work properly and 
+  I need to take the time to build them correctly.  We have tar.
+
+- Offset given to new windows so that it's not confused with the previous window.
+
 - Better logging for additional performance. Default log level is INFO bug we 
   can change it later to WARN.  Include the source of the log event and the log
   level in messages now.  

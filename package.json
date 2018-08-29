@@ -1,11 +1,11 @@
 {
   "name": "polar-bookshelf",
-  "version": "1.0.0-beta103",
+  "version": "1.0.0-beta110",
   "description": "Polar Bookshelf",
   "main": "main.js",
   "scripts": {
     "start": "tsc && electron .",
-    "dist-linux": "tsc && electron-builder --config=electron-builder.yml --linux deb tar.gz snap --publish always",
+    "dist-linux": "tsc && electron-builder --config=electron-builder.yml --linux deb tar.gz --publish always",
     "dist-macos": "tsc && electron-builder --config=electron-builder.yml --macos dmg --publish always",
     "dist-win": "tsc && ./scripts/dist-win.sh",
     "test": "./node_modules/.bin/mocha-parallel-tests --max-parallel=1 --exit --recursive 'web/js/**/*Test.js' 'web/spectron/**/*spec.js'",
