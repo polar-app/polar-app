@@ -13,7 +13,7 @@ export class TimeAnnotatingLogger implements ILogger {
 
     constructor(delegate: ILogger) {
         this.delegate = delegate;
-        this.name = `annotating-logger -> ${delegate.name}`;
+        this.name = `time-annotating-logger -> ${delegate.name}`;
     }
 
     info(msg: string, ...args: any[]) {

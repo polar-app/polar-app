@@ -1,7 +1,7 @@
 import {MainAppController} from './MainAppController';
 import {BrowserWindow, dialog, Menu, shell} from "electron";
 import {ElectronContextMenu} from '../../contextmenu/electron/ElectronContextMenu';
-import {Version} from '../../ga/Version';
+import {Version} from '../../util/Version';
 
 export class MainAppMenu {
 

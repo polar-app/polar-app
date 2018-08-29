@@ -14,7 +14,7 @@ export class LevelAnnotatingLogger implements ILogger {
 
     constructor(delegate: ILogger) {
         this.delegate = delegate;
-        this.name = `annotating-logger -> ${delegate.name}`;
+        this.name = `level-annotating-logger -> ${delegate.name}`;
     }
 
     info(msg: string, ...args: any[]) {

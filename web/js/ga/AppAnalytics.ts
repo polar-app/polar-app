@@ -1,7 +1,7 @@
 import {Logger} from '../logger/Logger';
 import {Hashcodes} from '../Hashcodes';
 import {IAnalytics} from './GA';
-import {Version} from './Version';
+import {Version} from '../util/Version';
 const os = require("os");
 
 const log = Logger.create();

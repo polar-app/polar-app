@@ -2,6 +2,7 @@ import {LoggerDelegate} from './LoggerDelegate';
 import {FilteredLogger} from './FilteredLogger';
 import {ConsoleLogger} from './ConsoleLogger';
 import {LevelAnnotatingLogger} from './annotating/LevelAnnotatingLogger';
+import {VersionAnnotatingLogger} from './annotating/VersionAnnotatingLogger';
 
 /**
  * Maintains our general logging infrastructure.  Differentiated from Logger
@@ -19,11 +20,13 @@ export class Logging {
         //let directories = new Directories();
         //let delegate = await ElectronLoggers.create(directories.logsDir);
 
-        let consoleDelegate = new ConsoleLogger();
-        let annotatingLogger = new LevelAnnotatingLogger(consoleDelegate);
-        let filteredDelegate = new FilteredLogger(annotatingLogger);
+        let delegate =
+            new FilteredLogger(
+                new VersionAnnotatingLogger(
+                    new LevelAnnotatingLogger(
+                        new ConsoleLogger())));
 
-        LoggerDelegate.set(filteredDelegate);
+        LoggerDelegate.set(delegate);
         this.initialized = true;
 
         let logger = LoggerDelegate.get();
