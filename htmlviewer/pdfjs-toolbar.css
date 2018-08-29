@@ -37,7 +37,7 @@
     width: 100%;
     perspective-origin: 290.5px 16px;
     transform-origin: 290.5px 16px;
-    background: url("http://localhost:63342/polar-bookshelf/polar-ebook-reader/pdfviewer/web/images/texture.png") repeat scroll 0% 0% / auto padding-box border-box, rgb(71, 71, 71) linear-gradient(rgba(82, 82, 82, 0.99), rgba(69, 69, 69, 0.95)) repeat scroll 0% 0% / auto padding-box border-box;
+    background: url("../pdfviewer/web/images/texture.png") repeat scroll 0% 0% / auto padding-box border-box, rgb(71, 71, 71) linear-gradient(rgba(82, 82, 82, 0.99), rgba(69, 69, 69, 0.95)) repeat scroll 0% 0% / auto padding-box border-box;
     font: normal normal 400 normal 16px / normal Arial;
 }/*#DIV_2*/
 
@@ -159,7 +159,7 @@
 #BUTTON_6:before {
     bottom: -1px;
     color: rgba(255, 255, 255, 0.8);
-    content: url("http://localhost:63342/polar-bookshelf/polar-ebook-reader/pdfviewer/web/images/toolbarButton-zoomOut.png");
+    content: url("../pdfviewer/web/images/toolbarButton-zoomOut.png");
     display: block;
     height: 20px;
     left: 7px;
@@ -289,7 +289,7 @@
 #BUTTON_9:before {
     bottom: -1px;
     color: rgba(255, 255, 255, 0.8);
-    content: url("http://localhost:63342/polar-bookshelf/polar-ebook-reader/pdfviewer/web/images/toolbarButton-zoomIn.png");
+    content: url("../pdfviewer/web/images/toolbarButton-zoomIn.png");
     display: block;
     height: 20px;
     left: 7px;
@@ -330,7 +330,7 @@
     transform-origin: 61px 10.5px;
     user-select: none;
     caret-color: rgba(255, 255, 255, 0.8);
-    background: rgba(0, 0, 0, 0) url("http://localhost:63342/polar-bookshelf/polar-ebook-reader/pdfviewer/web/images/toolbarButton-menuArrows.png") no-repeat scroll 95% 50% / auto padding-box border-box;
+    background: rgba(0, 0, 0, 0) url("../pdfviewer/web/images/toolbarButton-menuArrows.png") no-repeat scroll 95% 50% / auto padding-box border-box;
     border-top: 1px solid rgba(0, 0, 0, 0.32);
     border-right: 1px solid rgba(0, 0, 0, 0.38);
     border-bottom: 1px solid rgba(0, 0, 0, 0.42);

@@ -193,6 +193,7 @@ class App<P> extends React.Component<{}, IAppState> {
                                 Header: 'Added',
                                 accessor: 'added',
                                 maxWidth: 200,
+                                defaultSortDesc: true
                             },
                             //
                             // d => {
@@ -210,6 +211,7 @@ class App<P> extends React.Component<{}, IAppState> {
                                 Header: 'Progress',
                                 accessor: 'progress',
                                 maxWidth: 200,
+                                defaultSortDesc: true,
                                 Cell: (row: any) => (
 
                                     <progress max="100" value={ row.value } style={{
@@ -228,6 +230,10 @@ class App<P> extends React.Component<{}, IAppState> {
                             desc: true
                         }
                     ]}
+                    // sorted={[{
+                    //     id: 'added',
+                    //     desc: true
+                    // }]}
                     getTrProps={(state: any, rowInfo: any) => {
                         return {
                             onClick: (e: any) => {
