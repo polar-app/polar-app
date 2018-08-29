@@ -23,4 +23,13 @@ export class Strings {
         return value === null || value === undefined || value.trim() === "";
     }
 
+    static lpad = function(str: string, padd: string, length: number) {
+
+        while (str.length < length)
+            str = padd + str;
+
+        return str;
+
+    }
+
 }
