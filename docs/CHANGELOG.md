@@ -1,6 +1,15 @@
 
 # 1.0.0-beta110
 
+- Better logging for additional performance. Default log level is INFO bug we 
+  can change it later to WARN.  Include the source of the log event and the log
+  level in messages now.  
+
+- new document repository UI as standard. Supports viewing your documents as a 
+  queue based on time, progress, filtering by document title, sorting by document,
+  pagination of the documents in your repository, and double clicking to open 
+  a document.
+
 - AppAnalytics now sends userAgent to Google Analytics so we can track OS, 
   Browser version, app version, etc.  
 

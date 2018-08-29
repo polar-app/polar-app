@@ -1,13 +1,13 @@
 /**
  * Simple logger that just writes to the console.
  */
-import {ILogger} from './ILogger';
+import {ILogger} from '../ILogger';
 
 /**
  * Annotates log calls with the level.  Helpful when the target is the
  * console logger.
  */
-export class AnnotatingLogger implements ILogger {
+export class LevelAnnotatingLogger implements ILogger {
 
     public readonly name: string;
     private readonly delegate: ILogger;
