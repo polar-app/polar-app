@@ -2,6 +2,7 @@ import {MainAppController} from './MainAppController';
 import {BrowserWindow, dialog, Menu, shell} from "electron";
 import {ElectronContextMenu} from '../../contextmenu/electron/ElectronContextMenu';
 import {Version} from '../../util/Version';
+import {AppLauncher} from './AppLauncher';
 
 export class MainAppMenu {
 
@@ -149,6 +150,7 @@ export class MainAppMenu {
             {
                 label: 'Tools',
                 submenu: [
+                    { label: 'Document Repository', click: AppLauncher.launchRepositoryApp },
                     { label: 'Toggle Developer Tools', click: this.mainAppController.cmdToggleDevTools },
                 ]
             },

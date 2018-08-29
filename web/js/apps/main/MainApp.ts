@@ -21,6 +21,7 @@ import {Logger} from '../../logger/Logger';
 import {Datastore} from '../../datastore/Datastore';
 import {ScreenshotService} from '../../screenshots/ScreenshotService';
 import {MainAppService} from './ipc/MainAppService';
+import {AppLauncher} from './AppLauncher';
 
 declare var global: any;
 
@@ -72,7 +73,7 @@ export class MainApp {
         //appIcon.setToolTip('Polar Bookshelf');
         //appIcon.setContextMenu(contextMenu);
 
-        let mainWindow = await MainBrowserWindowFactory.createWindow();
+        let mainWindow = await AppLauncher.launchRepositoryApp();
 
         await directories.init();
 
