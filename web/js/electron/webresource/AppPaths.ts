@@ -8,8 +8,8 @@ import {isPresent} from '../../Preconditions';
 /**
  * Given a relative path, return a full path to a local app resource.
  *
- * Each module has a unique __dirname so with this mechanism we can reliably find
- * an path to a file as if we were in the root of the webapp.
+ * Each module has a unique __dirname so with this mechanism we can reliably
+ * find an path to a file as if we were in the root of the webapp.
  *
  */
 export class AppPaths {
@@ -19,39 +19,49 @@ export class AppPaths {
         // TODO: sometimes appPath is an ASAR file and that really confuses
         // us and we're going to need a strategy to handle that situation.
 
-        let baseDir = AppPaths.getBaseDir();
+        let baseDirs = AppPaths.getBaseDirs();
 
-        let absolutePath = path.resolve(baseDir, relativePath);
+        for (let i = 0; i < baseDirs.length; i++) {
+            const baseDir = baseDirs[i];
 
-        try {
+            let absolutePath = path.resolve(baseDir, relativePath);
 
-            fs.readFileSync(absolutePath);
+            try {
 
-        } catch( e ) {
+                // We use readFileSync here because we need to we need to peek into
+                // .asar files which do not support exists but DO support reading
+                // the file.  If this fails we will get an exception about not
+                // finding the file.
 
-            // We use readFileSync here because we need to we need to peek into
-            // .asar files which do not support exists but DO support reading
-            // the file.  If this fails we will get an exception about not
-            // finding the file.
+                fs.readFileSync(absolutePath);
+                return absolutePath;
 
-            throw new AppPathException("Unable to create app path: " + absolutePath + " - " + e.message);
+            } catch( e ) {
+
+            }
 
         }
 
-        return absolutePath;
+        throw new Error("No path found in baseDirs: " + JSON.stringify(baseDirs));
 
     }
 
     /**
      * Get the basedir of the current webapp.
      */
-    protected static getBaseDir() {
+    protected static getBaseDirs(): string[] {
+
+        let baseDirs: string[] = [];
 
         if(! isPresent(app)) {
-            return remote.app.getAppPath();
+            baseDirs.push(remote.app.getAppPath());
         } else {
-            return app.getAppPath();
+            baseDirs.push(app.getAppPath());
         }
+
+        baseDirs.push(process.cwd());
+
+        return baseDirs;
 
     }
 

@@ -34,14 +34,15 @@ export class BrowserProfiles {
             case "hidden":
                 return new BrowserProfileBuilder(browser)
                     .setProfile(name)
-                    .setHeight(35000)
+                    .setHeight(10000)
                     .setShow(false)
+                    //.setShow(true)
                     .build();
 
             case "headless":
                 return new BrowserProfileBuilder(browser)
                     .setProfile(name)
-                    .setHeight(35000)
+                    .setHeight(10000)
                     .setShow(true)
                     .setOffscreen(true)
                     .build();
