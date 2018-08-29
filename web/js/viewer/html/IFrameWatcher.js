@@ -24,11 +24,8 @@ class IFrameWatcher {
     }
     execute() {
         return __awaiter(this, void 0, void 0, function* () {
-            console.log("FIXME1");
             yield IFrames_1.IFrames.waitForContentDocument(this.iframe);
-            console.log("FIXME2");
             yield DocumentReadyStates_1.DocumentReadyStates.waitFor(this.iframe.contentDocument, 'complete');
-            console.log("FIXME3");
             this.callback();
         });
     }

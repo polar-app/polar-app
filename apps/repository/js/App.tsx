@@ -102,6 +102,7 @@ class App<P> extends React.Component<{}, IAppState> {
 
                 if(docMeta.docInfo) {
 
+                    // TODO: consider using the filename if title absent.
                     title = Optional.of(docMeta.docInfo.title).getOrElse('Untitled');
                     progress = Optional.of(docMeta.docInfo.progress).getOrElse(0);
                     filename = Optional.of(docMeta.docInfo.filename).getOrUndefined();

@@ -20,11 +20,11 @@ export class ConsoleLogger implements ILogger {
     }
 
     verbose(msg: string, ...args: any[]) {
-        console.log(msg, " VERBOSE: ", ...args);
+        console.log(msg, ...args);
     }
 
     debug(msg: string, ...args: any[]) {
-        console.log(msg, " DEBUG: " , ...args);
+        console.log(msg, ...args);
     }
 
 }

@@ -12,7 +12,7 @@ export class FilteredLogger implements ILogger {
     constructor(delegate: ILogger, level: LogLevel = LogLevel.INFO) {
         this.delegate = delegate;
         this.level = level;
-        this.name = delegate.name + '(filtered)';
+        this.name = `filtered-logger -> ${delegate.name}`;
     }
 
     debug(msg: string, ...args: any[]) {
