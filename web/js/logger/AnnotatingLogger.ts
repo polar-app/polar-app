@@ -18,23 +18,23 @@ export class AnnotatingLogger implements ILogger {
     }
 
     info(msg: string, ...args: any[]) {
-        this.delegate.info(msg, "[info] ", ...args);
+        this.delegate.info(`[info] ${msg}`, ...args);
     }
 
     warn(msg: string, ...args: any[]) {
-        this.delegate.warn(msg, "[warn] ", ...args);
+        this.delegate.warn(`[warn] ${msg}`, ...args);
     }
 
     error(msg: string, ...args: any[]) {
-        this.delegate.error(msg, "[error] ", ...args);
+        this.delegate.error(`[error] ${msg}`, ...args);
     }
 
     verbose(msg: string, ...args: any[]) {
-        this.delegate.verbose(msg, "[verbose] ", ...args);
+        this.delegate.verbose(`[verbose] ${msg}`, ...args);
     }
 
     debug(msg: string, ...args: any[]) {
-        this.delegate.debug(msg, "[debug]" , ...args);
+        this.delegate.debug(`[debug] ${msg}`, ...args);
     }
 
 }

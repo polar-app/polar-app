@@ -68,7 +68,9 @@ class DelegatedLogger {
      */
     private apply(logFunction: LogFunction, msg: string, ...args: any[]) {
 
-        msg = "[" + this.caller + "] " + msg;
+        //msg = "[" + this.caller + "] " + msg;
+
+        msg = `[${this.caller}] ${msg}`;
 
         if(args.length > 0) {
             logFunction(msg, ...args);
