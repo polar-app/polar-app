@@ -109,7 +109,7 @@ export class MainAppController {
         let window;
 
         if(newWindow) {
-            window = await MainBrowserWindowFactory.createWindow();
+            window = await MainBrowserWindowFactory.createWindow(BROWSER_WINDOW_OPTIONS, 'about:blank');
         } else {
             window = BrowserWindow.getFocusedWindow()!;
         }

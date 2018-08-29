@@ -58,7 +58,7 @@ class App<P> extends React.Component<{}, IAppState> {
             await this.init();
             this.docDetails = await this.load();
 
-            //docDetails = docDetails.filter(current => isPresent(current.filename));
+            this.docDetails = this.docDetails.filter(current => isPresent(current.filename));
 
             this.state.data.push(...this.docDetails);
 
@@ -230,20 +230,19 @@ class App<P> extends React.Component<{}, IAppState> {
                     ]}
                     getTrProps={(state: any, rowInfo: any) => {
                         return {
-                            // onClick: (e: any) => {
-                            //     console.log(rowInfo);
-                            //
-                            //     let state: IAppState = Object.assign({}, this.state);
-                            //     state.selected = rowInfo.index as number;
-                            //
-                            //     this.setState(state);
-                            //     console.log("on click")
-                            // },
-
-
                             onClick: (e: any) => {
                                 console.log(rowInfo);
+
+                                let state: IAppState = Object.assign({}, this.state);
+                                state.selected = rowInfo.index as number;
+
+                                this.setState(state);
+                                console.log("on click")
                             },
+                            //
+                            // onClick: (e: any) => {
+                            //     console.log(rowInfo);
+                            // },
 
                             onDoubleClick: (e: any) => {
                                 console.log(rowInfo);
@@ -263,10 +262,10 @@ class App<P> extends React.Component<{}, IAppState> {
                                 // console.log("on click")
                             },
 
-                            // style: {
-                            //     background: rowInfo.index === this.state.selected ? '#00afec' : 'white',
-                            //     color: rowInfo.index === this.state.selected ? 'white' : 'black'
-                            // }
+                            style: {
+                                background: rowInfo && rowInfo.index === this.state.selected ? '#00afec' : 'white',
+                                color: rowInfo && rowInfo.index === this.state.selected ? 'white' : 'black'
+                            }
                         }
                     }}
 
