@@ -8,6 +8,7 @@ import {PersistenceLayer} from '../../../web/js/datastore/PersistenceLayer';
 import {isPresent} from '../../../web/js/Preconditions';
 import {Optional} from '../../../web/js/util/ts/Optional';
 import {DefaultFileLoader} from '../../../web/js/apps/main/loaders/DefaultFileLoader';
+import {DocLoader} from '../../../web/js/apps/main/ipc/DocLoader';
 
 const log = Logger.create();
 
@@ -200,6 +201,12 @@ class App<P> extends React.Component<{}, IAppState> {
                                 console.log(rowInfo);
 
                                 console.log("Going to open " + rowInfo.original.fingerprint);
+
+                                DocLoader.load({
+                                    fingerprint: rowInfo.original.fingerprint,
+                                    filename: rowInfo.original.filename,
+                                    newWindow: true
+                                }).catch(err => log.error("Unable to load doc: ", err));
 
                                 // let state: IAppState = Object.assign({}, this.state);
                                 // state.selected = rowInfo.index as number;

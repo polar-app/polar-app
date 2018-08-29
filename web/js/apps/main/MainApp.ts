@@ -20,6 +20,7 @@ import {Cmdline} from '../../electron/Cmdline';
 import {Logger} from '../../logger/Logger';
 import {Datastore} from '../../datastore/Datastore';
 import {ScreenshotService} from '../../screenshots/ScreenshotService';
+import {MainAppService} from './ipc/MainAppService';
 
 declare var global: any;
 
@@ -108,6 +109,9 @@ export class MainApp {
         // the main Window created so that we can init the loader...
 
         let mainAppController = new MainAppController(fileLoader, this.datastore, webserver, proxyServer);
+
+        let mainAppService = new MainAppService(mainAppController);
+        mainAppService.start();
 
         // TODO: handle the command line here.. IE if someone opens up a file via
         // argument.

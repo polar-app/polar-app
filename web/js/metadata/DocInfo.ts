@@ -69,6 +69,11 @@ export class DocInfo extends SerializedObject {
      */
     public filename?: string;
 
+    /**
+     * The time this document was added to the repository.
+     */
+    public added?: ISODateTime;
+
     constructor(val: DocInfo) {
 
         super(val);

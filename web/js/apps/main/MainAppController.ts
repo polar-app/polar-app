@@ -104,9 +104,17 @@ export class MainAppController {
     /**
      * The user asked to open a file from the command line or via OS event.
      */
-    public async handleLoadDoc(path: string) {
+    public async handleLoadDoc(path: string, newWindow: boolean = true) {
 
-        await this.loadDoc(path, await MainBrowserWindowFactory.createWindow());
+        let window;
+
+        if(newWindow) {
+            window = await MainBrowserWindowFactory.createWindow();
+        } else {
+            window = BrowserWindow.getFocusedWindow()!;
+        }
+
+        await this.loadDoc(path, window);
 
     }
 
