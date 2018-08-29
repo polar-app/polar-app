@@ -11,6 +11,7 @@ import {round} from '../util/Percentages';
 import {PagemarkMode} from './PagemarkMode';
 import {DocMeta} from './DocMeta';
 import {DocMetas} from './DocMetas';
+import {Preconditions} from '../Preconditions';
 
 const log = Logger.create();
 
@@ -172,6 +173,8 @@ export class Pagemarks {
      * then we just assume it's deleted and update the document progress.
      */
     static updatePagemark(docMeta: DocMeta, pageNum: number, pagemark?: Pagemark) {
+
+        Preconditions.assertPresent(pageNum, "pageNum");
 
         let pageMeta = docMeta.getPageMeta(pageNum);
 

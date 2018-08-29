@@ -94,7 +94,15 @@ export class Preconditions {
 
     }
 
+    /**
+     * @deprecated Use assertPresent instead
+     */
     static assertNotNull<T>(value: T | null, name?: string): NonNullable<T> {
+        return Preconditions.assertPresent(value, name);
+    }
+
+
+    static assertPresent<T>(value: T | null, name?: string): NonNullable<T> {
 
         let msgPrefix = "Precondition argument failed: ";
 

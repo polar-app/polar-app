@@ -96,8 +96,10 @@ export class AbstractPagemarkComponent extends Component {
 
             let annotationEvent = this.annotationEvent!;
 
+            let pageNum = annotationEvent.pageMeta.pageInfo.num;
+
             log.info("New pagemark: ", JSON.stringify(this.pagemark, null, "  "));
-            Pagemarks.updatePagemark(annotationEvent.docMeta, annotationEvent.pageNum, pagemark);
+            Pagemarks.updatePagemark(annotationEvent.docMeta, pageNum, pagemark);
 
         } else {
 
