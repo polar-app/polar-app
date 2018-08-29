@@ -1,6 +1,7 @@
 import {BrowserWindow, nativeImage, shell} from "electron";
 import {Logger} from '../../logger/Logger';
 import {AppPaths} from '../../electron/webresource/AppPaths';
+import {of} from 'rxjs';
 
 const log = Logger.create();
 
@@ -9,6 +10,8 @@ const HEIGHT = 1100 * 1.2;
 
 const DEFAULT_URL = AppPaths.resource('./apps/home/default.html');
 
+// TODO: files in the root are always kept in the package we can just load
+// this as a native_image directly.
 export const APP_ICON = AppPaths.resource('./icon.png');
 
 export const BROWSER_WINDOW_OPTIONS: Electron.BrowserWindowConstructorOptions = {
@@ -61,6 +64,20 @@ export class MainBrowserWindowFactory {
 
         log.info("Creating window for URL: ", url);
 
+        // TODO: offset the window vs the currently focused window
+
+        browserWindowOptions = Object.assign({}, browserWindowOptions);
+
+        let position = this.computeXY();
+
+        if(position) {
+            // add some offset to this window so that the previous window and the
+            // current one don't line up perfectly or else it seems like nothing
+            // happened or that the new window replaced the old one.
+            browserWindowOptions.x = position.x;
+            browserWindowOptions.y = position.y;
+        }
+
         // Create the browser window.
         let newWindow = new BrowserWindow(browserWindowOptions);
 
@@ -102,4 +119,31 @@ export class MainBrowserWindowFactory {
 
     }
 
+    private static computeXY(): Position | undefined {
+
+        let offset = 35;
+
+        let focusedWindow = BrowserWindow.getFocusedWindow();
+
+        if(focusedWindow) {
+            let position = focusedWindow.getPosition();
+            let x = position[0];
+            let y = position[1];
+
+            x += offset;
+            y += offset;
+
+            return {x,y}
+
+        }
+
+        return undefined;
+
+    }
+
+}
+
+interface Position {
+    x: number,
+    y: number;
 }
