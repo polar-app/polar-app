@@ -30,11 +30,8 @@ export class IFrameWatcher {
 
     private async execute(): Promise<void> {
 
-        console.log("FIXME1");
         await IFrames.waitForContentDocument(this.iframe);
-        console.log("FIXME2");
         await DocumentReadyStates.waitFor(this.iframe.contentDocument!, 'complete');
-        console.log("FIXME3");
         this.callback();
 
     }

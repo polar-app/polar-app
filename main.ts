@@ -5,6 +5,7 @@ import {Datastore} from './web/js/datastore/Datastore';
 import {MemoryDatastore} from './web/js/datastore/MemoryDatastore';
 import {DiskDatastore} from './web/js/datastore/DiskDatastore';
 import {Cmdline} from './web/js/electron/Cmdline';
+import {Logging} from './web/js/logger/Logging';
 
 const log = Logger.create();
 
@@ -52,7 +53,7 @@ app.on('ready', async () => {
 
     await datastore.init();
 
-    //await Logging.init();
+    await Logging.init();
 
     let mainApp = new MainApp(datastore);
     let mainAppController = await mainApp.start();
