@@ -67,7 +67,8 @@ describe('DocMetas', function() {
                         "properties": {},
                         "archived": false,
                         "nrPages": 2,
-                        "fingerprint": "0x001"
+                        "fingerprint": "0x001",
+                        "added": "2012-03-02T11:38:49.321Z"
                     },
                     "pageMetas": {
                         "1": {

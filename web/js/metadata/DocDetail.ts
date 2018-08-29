@@ -4,6 +4,7 @@
  */
 import {Image} from './Image';
 import {Author} from './Author';
+import {ISODateTime} from './ISODateTime';
 
 export interface DocDetail {
 
@@ -46,5 +47,10 @@ export interface DocDetail {
      * The filename of this doc in the .stash directory.
      */
     readonly filename?: string;
+
+    /**
+     * The time this file was added to the repository.
+     */
+    readonly added?: ISODateTime;
 
 }

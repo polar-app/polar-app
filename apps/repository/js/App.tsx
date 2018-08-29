@@ -9,6 +9,7 @@ import {isPresent} from '../../../web/js/Preconditions';
 import {Optional} from '../../../web/js/util/ts/Optional';
 import {DefaultFileLoader} from '../../../web/js/apps/main/loaders/DefaultFileLoader';
 import {DocLoader} from '../../../web/js/apps/main/ipc/DocLoader';
+import {ISODateTime} from '../../../web/js/metadata/ISODateTime';
 
 const log = Logger.create();
 
@@ -55,7 +56,7 @@ class App<P> extends React.Component<{}, IAppState> {
             await this.init();
             let docDetails = await this.load();
 
-            docDetails = docDetails.filter(current => isPresent(current.filename));
+            //docDetails = docDetails.filter(current => isPresent(current.filename));
 
             this.state.data.push(...docDetails);
 
@@ -95,12 +96,15 @@ class App<P> extends React.Component<{}, IAppState> {
                 let title: string = 'Untitled';
                 let progress: number = 0;
                 let filename: string | undefined;
+                let added: ISODateTime | undefined;
 
                 if(docMeta.docInfo) {
 
                     title = Optional.of(docMeta.docInfo.title).getOrElse('Untitled');
                     progress = Optional.of(docMeta.docInfo.progress).getOrElse(0);
                     filename = Optional.of(docMeta.docInfo.filename).getOrUndefined();
+                    added = Optional.of(docMeta.docInfo.added).getOrUndefined();
+                    //added = "asdf"
 
                 }
 
@@ -108,7 +112,8 @@ class App<P> extends React.Component<{}, IAppState> {
                     fingerprint: docMetaFile.fingerprint,
                     title,
                     progress,
-                    filename
+                    filename,
+                    added
                 };
 
                 result.push(doc)
@@ -153,6 +158,18 @@ class App<P> extends React.Component<{}, IAppState> {
                                 accessor: 'title'
                                 //style:
                             },
+                            {
+                                Header: 'Added',
+                                accessor: 'added',
+                                maxWidth: 200,
+                            },
+                            //
+                            // d => {
+                            //     return Moment(d.updated_at)
+                            //         .local()
+                            //         .format("DD-MM-YYYY hh:mm:ss a")
+                            // }
+
                             // {
                             //     Header: 'Last Name',
                             //     id: 'lastName',
