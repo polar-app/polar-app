@@ -42,8 +42,6 @@ export class MainAppController {
 
         await MainBrowserWindowFactory.createWindow(browserWindowOptions, url);
 
-        // TODO: move to AppPaths here... loadFile does not work reliably.
-
 
     }
 
@@ -132,12 +130,6 @@ export class MainAppController {
         log.info("Loading webapp at: " + loadedFile.webResource);
 
         loadedFile.webResource.load(targetWindow);
-
-        // TODO: now that we know the app name, call
-        // targetWindow.webContents.getUserAgent() to get the UA I think...
-
-        // TODO: we can actually do this withh init.. since we start a browser
-        // window almost immediately
 
         targetWindow.webContents.once('did-finish-load', function() {
 

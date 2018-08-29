@@ -22,6 +22,7 @@ export class DocTitleController {
         this.listenForTitle();
 
         // TODO listen to paste so that if they paste \n so we escape it...
+        // I think we can do this if we listen to 'change' not 'keydown'.
 
     }
 
