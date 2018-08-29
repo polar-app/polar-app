@@ -4,8 +4,6 @@ import {AppPaths} from '../../electron/webresource/AppPaths';
 
 const log = Logger.create();
 
-const fspath = require('path');
-
 const WIDTH = 800 * 1.2;
 const HEIGHT = 1100 * 1.2;
 
