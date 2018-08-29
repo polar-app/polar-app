@@ -44,6 +44,8 @@ class App<P> extends React.Component<{}, IAppState> {
     private diskDatastore?: DiskDatastore;
     private persistenceLayer?: PersistenceLayer;
 
+    private docDetails: DocDetail[] = [];
+
     constructor(props: P, context: any) {
         super(props, context);
 
@@ -54,11 +56,11 @@ class App<P> extends React.Component<{}, IAppState> {
         (async () => {
 
             await this.init();
-            let docDetails = await this.load();
+            this.docDetails = await this.load();
 
             //docDetails = docDetails.filter(current => isPresent(current.filename));
 
-            this.state.data.push(...docDetails);
+            this.state.data.push(...this.docDetails);
 
             this.setState(this.state);
 
@@ -126,6 +128,35 @@ class App<P> extends React.Component<{}, IAppState> {
 
     }
 
+    doFilterByTitle() {
+
+        console.log("filtering by title");
+
+        let input = document.querySelector("#filter") as HTMLInputElement;
+
+        let filterText = input.value;
+
+        let state: IAppState = Object.assign({}, this.state);
+
+        state.data = [];
+
+        if(filterText === null || filterText === '') {
+            // no filter
+            state.data.push(...this.docDetails);
+        } else {
+
+            let filteredDocDetails =
+                this.docDetails.filter(current => current.title && current.title.toLowerCase().indexOf(filterText!.toLowerCase()) >= 0 )
+
+            state.data.push(...filteredDocDetails);
+
+        }
+
+
+        this.setState(state);
+
+    }
+
     render() {
         const { data } = this.state;
         return (
@@ -143,7 +174,7 @@ class App<P> extends React.Component<{}, IAppState> {
                     </div>
 
                     <div id="header-filter">
-                        <input type="text" placeholder="Filter by title"></input>
+                        <input id="filter" type="text" placeholder="Filter by title" onChange={() => this.doFilterByTitle()}></input>
                     </div>
 
                 </header>
