@@ -9,7 +9,7 @@ const fspath = require('path');
 const WIDTH = 800 * 1.2;
 const HEIGHT = 1100 * 1.2;
 
-const DEFAULT_URL = AppPaths.resource('./apps/repository/index.html');
+const DEFAULT_URL = AppPaths.resource('./apps/home/default.html');
 
 export const APP_ICON = AppPaths.resource('./icon.png');
 

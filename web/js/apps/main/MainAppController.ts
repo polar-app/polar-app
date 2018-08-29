@@ -174,7 +174,7 @@ export class MainAppController {
 
         let browserWindows = BrowserWindow.getAllWindows();
 
-        browserWindows = browserWindows.filter( browserWindow => browserWindow.isVisible())
+        browserWindows = browserWindows.filter( browserWindow => browserWindow.isVisible());
 
         if(browserWindows.length === 0) {
             return;
