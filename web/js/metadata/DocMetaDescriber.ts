@@ -20,7 +20,7 @@ export class DocMetaDescriber {
 
         });
 
-        return `PDF with ${docMeta.docInfo.nrPages} pages with ${nrTextHighlights} text highlights and ${nrPagemarks} pagemarks.`;
+        return `Doc with ${docMeta.docInfo.nrPages} pages with ${nrTextHighlights} text highlights and ${nrPagemarks} pagemarks.`;
 
     }
 

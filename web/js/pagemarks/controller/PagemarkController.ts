@@ -8,7 +8,6 @@ import {Pagemarks} from '../../metadata/Pagemarks';
 import {PagemarkRects} from '../../metadata/PagemarkRects';
 import {PagemarkMode} from '../../metadata/PagemarkMode';
 import {Rects} from '../../Rects';
-import {DocMetas} from '../../metadata/DocMetas';
 
 const log = Logger.create();
 

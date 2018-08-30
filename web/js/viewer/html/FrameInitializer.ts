@@ -1,6 +1,8 @@
 import {notNull} from '../../Preconditions';
 import {EventBridge} from './EventBridge';
+import {Logger} from '../../logger/Logger';
 
+const log = Logger.create();
 
 /**
  * Listens for the iframe to load and then sends the events to target objects
@@ -39,7 +41,7 @@ export class FrameInitializer {
         if(!this.loaded) {
             this.loaded = true;
             this.onLoad();
-            console.log("FrameInitializer: Document has finished loading");
+            log.info("FrameInitializer: Document has finished loading");
         }
 
     }
@@ -57,7 +59,7 @@ export class FrameInitializer {
      */
     onLoad() {
 
-        console.log("Frame loaded.  Sending pagesinit on .page");
+        log.info("Frame loaded.  Sending pagesinit on .page");
         this.dispatchPagesInit();
         this.startEventBridge();
         this.updateDocTitle();
@@ -66,7 +68,7 @@ export class FrameInitializer {
 
     updateDocTitle() {
         let title = notNull(this.iframe.contentDocument).title;
-        console.log("Setting title: " + title);
+        log.info("Setting title: " + title);
         document.title = title;
     }
 

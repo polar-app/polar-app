@@ -40,7 +40,7 @@ export class ContextMenuController {
         // TODO: this should be refactored to make it testable with jsdom once
         // I get it working.
 
-        console.log("Starting ContextMenuController");
+        log.info("Starting ContextMenuController");
 
         document.querySelectorAll(".page").forEach((targetElement) => {
 

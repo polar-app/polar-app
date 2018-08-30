@@ -1,45 +1,18 @@
 import * as React from 'react';
 import {DocDetail} from '../../../web/js/metadata/DocDetail';
 import ReactTable from "react-table";
-import {Logo, makeData, Tips} from './Utils';
+import {Logo, Tips} from './Utils';
 import {DiskDatastore} from '../../../web/js/datastore/DiskDatastore';
 import {Logger} from '../../../web/js/logger/Logger';
 import {PersistenceLayer} from '../../../web/js/datastore/PersistenceLayer';
 import {isPresent} from '../../../web/js/Preconditions';
 import {Optional} from '../../../web/js/util/ts/Optional';
-import {DefaultFileLoader} from '../../../web/js/apps/main/loaders/DefaultFileLoader';
 import {DocLoader} from '../../../web/js/apps/main/ipc/DocLoader';
 import {ISODateTime} from '../../../web/js/metadata/ISODateTime';
 
 const log = Logger.create();
 
-//import '../css/App.css';
-
-// import logo from './logo.svg';
-
-
-
 class App<P> extends React.Component<{}, IAppState> {
-
-  // constructor(props: P, context: any) {
-  //       super(props, context);
-  //
-  //     this.state = {
-  //         docs: [
-  //             {
-  //                 fingerprint: '4e81fc6e-bfb6-419b-93e5-0242fb6f3f6a',
-  //                 title: 'Mastering Bitcoin'
-  //             },
-  //             {
-  //                 fingerprint: '11bbffc8-5891-4b45-b9ea-5c99aadf870f',
-  //                 title: 'Etherium Whitepaper'
-  //             }
-  //         ]
-  //     };
-  //
-  //     //this.addItems();
-  //
-  // }
 
     private diskDatastore?: DiskDatastore;
     private persistenceLayer?: PersistenceLayer;
@@ -279,7 +252,6 @@ class App<P> extends React.Component<{}, IAppState> {
                 />
                 <br />
                 <Tips />
-                <Logo />
                 </div>
             </div>
         );

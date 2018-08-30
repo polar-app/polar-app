@@ -10,7 +10,7 @@ describe('Reactor', function() {
 
         let messageEvent: MessageEvent = {
             message: 'hello world'
-        }
+        };
 
         let events: MessageEvent[] = [];
 
@@ -29,6 +29,27 @@ describe('Reactor', function() {
         ])
 
     });
+
+    it("ordering", function () {
+
+        let reactor = new Reactor<String>();
+
+        let sources: string[] = [];
+
+        assert.notEqual(reactor.registerEvent("messages"), undefined);
+
+        reactor.addEventListener("messages", (messageEvent) => {
+            console.log('first');
+        });
+
+        reactor.addEventListener("messages", (messageEvent) => {
+            console.log('second');
+        });
+
+        reactor.dispatchEvent("messages", 'hello');
+
+    });
+
 
 });
 
