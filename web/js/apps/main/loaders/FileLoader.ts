@@ -1,4 +1,3 @@
-import {WebResource} from '../../../electron/webresource/WebResource';
 import {LoadedFile} from './LoadedFile';
 
 /**

@@ -1,6 +1,9 @@
 
 # 1.0.0-beta110
 
+- If the PHZ file is wider than the window we're loading in we now expand the 
+  window.
+
 - Snap file distribution disabled at the moment. They don't work properly and 
   I need to take the time to build them correctly.  We have tar.
 
