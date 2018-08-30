@@ -1,4 +1,3 @@
-
 import assert from 'assert';
 import {TestingTime} from '../test/TestingTime';
 import {Logger} from './Logger';
@@ -42,6 +41,5 @@ describe('Logger', function() {
         log.error("This is an error: ", new Error('Something broke'));
 
     });
-
 
 });

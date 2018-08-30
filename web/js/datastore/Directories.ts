@@ -3,13 +3,16 @@
  */
 import {DiskDatastore} from './DiskDatastore';
 import {Paths} from '../util/Paths';
-import {Files} from '../util/Files';
+import {CreateDirResult, Files} from '../util/Files';
 
 export class Directories {
 
     public readonly dataDir: string;
     public readonly stashDir: string;
     public readonly logsDir: string;
+    public readonly configDir: string;
+
+    public initialization?: Initialization;
 
     constructor(dataDir?: string) {
 
@@ -23,17 +26,31 @@ export class Directories {
         // the path to the stash directory
         this.stashDir = Paths.create(this.dataDir, "stash");
         this.logsDir = Paths.create(this.dataDir, "logs");
+        this.configDir = Paths.create(this.dataDir, "config");
 
     }
 
     async init() {
 
-        return {
+        this.initialization = {
             dataDir: await Files.createDirAsync(this.dataDir),
             stashDir: await Files.createDirAsync(this.stashDir),
-            logsDir: await Files.createDirAsync(this.logsDir)
+            logsDir: await Files.createDirAsync(this.logsDir),
+            configDir: await Files.createDirAsync(this.configDir)
         };
+
+        return this;
 
     }
 
+}
+
+/**
+ * Results of initialization:
+ */
+export interface Initialization {
+    readonly dataDir: CreateDirResult
+    readonly stashDir: CreateDirResult
+    readonly logsDir: CreateDirResult
+    readonly configDir: CreateDirResult
 }

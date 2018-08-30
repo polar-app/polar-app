@@ -24,7 +24,7 @@ export class Files {
 
     public static async createDirAsync(dir: string, mode?: number | string | undefined | null) {
 
-        let result: any = {
+        let result: CreateDirResult = {
             dir
         };
 
@@ -105,3 +105,9 @@ Files.statAsync = promisify(fs.stat);
 Files.unlinkAsync = promisify(fs.unlink);
 Files.rmdirAsync = promisify(fs.rmdir);
 Files.readdirAsync = promisify(fs.readdir);
+
+export interface CreateDirResult {
+    dir: string;
+    exists?: boolean;
+    created?: boolean;
+}
