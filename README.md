@@ -72,6 +72,14 @@ research which is often stored as PDF.
     <b>Annotations</b> Annotating a PDF including pagemarks showing content already read, an area highlight, and a text highlight.
 </p>
 
+![Repository](https://raw.githubusercontent.com/burtonator/polar-bookshelf/master/docs/screenshots/repository-shadow.png)
+
+<p align="center">
+    <b>Repository</b> Polar includes a document repository manager to manage all
+    your documents, open up a new editor, sort them as a queue or by priority,
+    etc.
+</p>
+
 # [Downloads](https://github.com/burtonator/polar-bookshelf/releases)
 
 Packages for Windows, MacOS, and Linux are available in the [releases](https://github.com/burtonator/polar-bookshelf/releases) page.
