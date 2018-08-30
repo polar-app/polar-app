@@ -39,7 +39,7 @@ export class HTMLViewer extends Viewer {
 
         super.start();
 
-        console.log("Starting HTMLViewer");
+        log.info("Starting HTMLViewer");
 
         this.content = <HTMLIFrameElement>document.querySelector("#content");
         this.contentParent = <HTMLElement>document.querySelector("#content-parent");
@@ -94,7 +94,7 @@ export class HTMLViewer extends Viewer {
                                   event.which === 187 ||
                                   event.which === 189 ) ) {
 
-                console.log("Browser zoom detected. Preventing.");
+                log.info("Browser zoom detected. Preventing.");
                 event.preventDefault();
 
             }
@@ -108,7 +108,7 @@ export class HTMLViewer extends Viewer {
 
             if (event.ctrlKey) {
 
-                console.log("Browser zoom detected. Preventing.");
+                log.info("Browser zoom detected. Preventing.");
                 event.preventDefault();
 
             }
@@ -130,7 +130,7 @@ export class HTMLViewer extends Viewer {
                 });
 
                 // make sure the select doesn't have focus so that we can scroll.
-                console.log("Blurring the select to allow keyboard/mouse nav.");
+                log.info("Blurring the select to allow keyboard/mouse nav.");
                 $(this).blur();
 
             })
@@ -148,7 +148,7 @@ export class HTMLViewer extends Viewer {
 
         let docDimensions = Descriptors.calculateDocDimensions(descriptor);
 
-        console.log(`Configuring page with width=${docDimensions.width} and minHeight=${docDimensions.minHeight}`);
+        log.info(`Configuring page with width=${docDimensions.width} and minHeight=${docDimensions.minHeight}`);
 
         document.querySelectorAll("#content-parent, .page, iframe").forEach(element => {
             (element as HTMLElement).style.width = `${docDimensions.width}px`;
@@ -162,7 +162,7 @@ export class HTMLViewer extends Viewer {
 
     changeScale(scale: number) {
 
-        console.log("Changing scale to: " + scale);
+        log.info("Changing scale to: " + scale);
 
         this._changeScaleMeta(scale);
         this._changeScale(scale);
@@ -217,7 +217,7 @@ export class HTMLViewer extends Viewer {
     // re-draw pagemarks.
     _signalScale() {
 
-        console.log("HTMLViewer: Signaling rescale.");
+        log.info("HTMLViewer: Signaling rescale.");
 
         let pageElement = notNull(document.querySelector(".page"));
         let endOfContent = notNull(pageElement.querySelector(".endOfContent"));

@@ -5,6 +5,9 @@ import {CacheEntry} from './CacheEntry';
 import {CachedRequest} from './CachedRequest';
 import {CacheEntriesFactory} from './CacheEntriesFactory';
 import {forDict} from '../../util/Functions';
+import {Logger} from '../../logger/Logger';
+
+const log = Logger.create();
 
 export class CacheRegistry {
 
@@ -66,7 +69,7 @@ export class CacheRegistry {
 
         Preconditions.assertNotNull(url, "url");
 
-        console.log(`Registered new cache entry at: ${url}`);
+        log.info(`Registered new cache entry at: ${url}`);
 
         this.registry[url] = cacheEntry;
 

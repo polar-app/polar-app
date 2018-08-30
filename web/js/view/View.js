@@ -1,17 +1,9 @@
-
-const {Model} = require("../Model");
-
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 class View {
-
-    /**
-     * @param model {Model}
-     */
     constructor(model) {
-
         this.model = model;
-
     }
-
-};
-
-module.exports.View = View;
+}
+exports.View = View;
+//# sourceMappingURL=View.js.map
