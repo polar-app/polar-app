@@ -12,5 +12,5 @@ function persistenceLayerFactory(): IPersistenceLayer {
 }
 
 new Launcher(persistenceLayerFactory).launch()
-    .then(() => console.log("App now loaded."))
+    .then(() => log.info("App now loaded."))
     .catch(err => log.error(err));

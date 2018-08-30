@@ -74,7 +74,7 @@ export class AbstractPagemarkComponent extends Component {
 
         // TODO: remove the pagemark, then recreate it...
 
-        console.log("Box moved to: ", boxMoveEvent);
+        log.info("Box moved to: ", boxMoveEvent);
 
         // boxRect, containerRect, pageRect...
 
@@ -164,8 +164,8 @@ export class AbstractPagemarkComponent extends Component {
         Preconditions.assertNotNull(templateElement, "templateElement");
         Preconditions.assertNotNull(placementElement, "placementElement");
 
-        console.log("Using templateElement: ", templateElement);
-        console.log("Using placementElement: ", placementElement);
+        log.info("Using templateElement: ", templateElement);
+        log.info("Using placementElement: ", placementElement);
 
         // a unique ID in the DOM for this element.
         let id = this.createID();
@@ -180,7 +180,7 @@ export class AbstractPagemarkComponent extends Component {
             placementElement.parentElement!.insertBefore(pagemarkElement, placementElement);
 
             if(ENABLE_BOX_CONTROLLER) {
-                console.log("Creating box controller for pagemarkElement: ", pagemarkElement);
+                log.info("Creating box controller for pagemarkElement: ", pagemarkElement);
                 this.pagemarkBoxController.register({
                     target: pagemarkElement,
                     restrictionElement: placementElement,

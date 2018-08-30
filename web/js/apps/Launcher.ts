@@ -62,10 +62,10 @@ export class Launcher {
     async launch() {
 
         if (document.readyState === "interactive" || document.readyState === "complete") {
-            console.log("Already completed loading.");
+            log.info("Already completed loading.");
             await this.trigger();
         } else {
-            console.log("Waiting for DOM content to load");
+            log.info("Waiting for DOM content to load");
             document.addEventListener('DOMContentLoaded', this.trigger.bind(this), true);
         }
 

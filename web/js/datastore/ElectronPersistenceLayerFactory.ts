@@ -1,16 +1,19 @@
 import {PersistenceLayer} from './PersistenceLayer';
+import {Logger} from '../logger/Logger';
+
+const log = Logger.create();
 
 export class ElectronPersistenceLayerFactory {
 
     public static create(): PersistenceLayer {
 
-        console.log("Using electron persistence layer and disk store");
+        log.info("Using electron persistence layer and disk store");
 
         const remote = require('electron').remote;
 
-        console.log("Accessing datastore...");
+        log.info("Accessing datastore...");
         let datastore = remote.getGlobal("datastore" );
-        console.log("Accessing datastore...done");
+        log.info("Accessing datastore...done");
 
         return new PersistenceLayer(datastore);
 

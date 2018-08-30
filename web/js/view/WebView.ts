@@ -5,6 +5,9 @@ import {DocFormat} from '../docformat/DocFormat';
 import {DocMetaDescriber} from '../metadata/DocMetaDescriber';
 import {forDict} from '../util/Functions';
 import {DocMeta} from '../metadata/DocMeta';
+import {Logger} from '../logger/Logger';
+
+const log = Logger.create();
 
 export class WebView extends View {
 
@@ -39,7 +42,7 @@ export class WebView extends View {
 
         let perc = this.computeProgress(this.model.docMeta);
 
-        console.log("Percentage is now: " + perc);
+        log.info("Percentage is now: " + perc);
 
         let progressElement = <HTMLProgressElement>document.querySelector("#polar-progress progress");
         progressElement.value = perc;
@@ -85,7 +88,7 @@ export class WebView extends View {
      */
     onDocumentLoaded() {
 
-        console.log("WebView.onDocumentLoaded: ", this.model.docMeta);
+        log.info("WebView.onDocumentLoaded: ", this.model.docMeta);
 
         this.updateProgress();
 

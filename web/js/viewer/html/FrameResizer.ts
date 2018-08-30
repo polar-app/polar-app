@@ -1,5 +1,8 @@
 import {Optional} from '../../util/ts/Optional';
 import {Styles} from '../../util/Styles';
+import {Logger} from '../../logger/Logger';
+
+const log = Logger.create();
 
 const MAX_RESIZES = 25;
 
@@ -55,7 +58,7 @@ export class FrameResizer {
     resizeParentInBackground() {
 
         if(this.resizes > MAX_RESIZES) {
-            console.log("Hit MAX_RESIZES: " + MAX_RESIZES);
+            log.info("Hit MAX_RESIZES: " + MAX_RESIZES);
             this.doResize(true);
             return;
         } else {
@@ -112,13 +115,13 @@ export class FrameResizer {
         let deltaPerc = 100 *(delta / height);
 
         if(! final && deltaPerc < 5) {
-            //console.log(`Skipping resize as delta is too small (deltaPerc=${deltaPerc}, height=${height}, newHeight=${newHeight})`)
+            //log.info(`Skipping resize as delta is too small (deltaPerc=${deltaPerc}, height=${height}, newHeight=${newHeight})`)
             return;
         }
 
         // we basically keep polling.
         if(height !== newHeight) {
-            //console.log(`Setting new height to: ${newHeight} vs previous ${this.iframe.style.height}`);
+            //log.info(`Setting new height to: ${newHeight} vs previous ${this.iframe.style.height}`);
             this.iframe.style.height = `${newHeight}px`;
             this.height = newHeight;
         }
