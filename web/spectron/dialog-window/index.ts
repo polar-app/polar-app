@@ -19,6 +19,4 @@ SpectronMain.run(async state => {
     await state.testResultWriter.write(true);
     console.log("it worked... writing results...done");
 
-}, <SpectronMainOptions> {
-    windowFactory
-});
+}, {windowFactory});
