@@ -4,6 +4,11 @@ import {FileRegistry} from '../../../backend/webserver/FileRegistry';
 import {AppPaths} from '../../../electron/webresource/AppPaths';
 import {LoadedFile} from './LoadedFile';
 import {Paths} from '../../../util/Paths';
+import {Directories} from '../../../datastore/Directories';
+import {Files} from '../../../util/Files';
+import {Logger} from '../../../logger/Logger';
+
+const log = Logger.create();
 
 export class PDFLoader implements FileLoader {
 
@@ -14,6 +19,8 @@ export class PDFLoader implements FileLoader {
     }
 
     async registerForLoad(path: string): Promise<LoadedFile> {
+
+        path = await this.importToStore(path);
 
         let filename = Paths.basename(path);
 
@@ -27,6 +34,34 @@ export class PDFLoader implements FileLoader {
         return {
             webResource: WebResource.createURL(appURL)
         };
+
+    }
+
+    /**
+     * Import a PDF file to the store if it's not already in the store so that
+     * it opens for the next time.
+     *
+     * @param path
+     */
+    private async importToStore(path: string) {
+
+        let currentDirname = await Files.realpathAsync(Paths.dirname(path));
+
+        let directories = new Directories();
+
+        let stashDir = await Files.realpathAsync(directories.stashDir);
+
+        if(currentDirname != stashDir) {
+            let fileName = Paths.basename(path);
+            let newPath = `${stashDir}/${fileName}`;
+
+            log.info("Importing PDF file from ${path} to ${newPath}");
+
+            await Files.copyFileAsync(path, newPath);
+            return newPath;
+        }
+
+        return path;
 
     }
 

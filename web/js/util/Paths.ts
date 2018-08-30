@@ -1,5 +1,7 @@
 import {isPresent} from '../Preconditions';
 
+const libpath = require('path');
+
 export class Paths {
 
     /**
@@ -50,6 +52,10 @@ export class Paths {
 
         return data.substring(end+1, data.length);
 
+    }
+
+    static dirname(path: string) {
+        return libpath.dirname(path);
     }
 
 }

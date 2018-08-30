@@ -95,6 +95,14 @@ export class Files {
         throw new Error("Not replaced via promisify");
     }
 
+    public static async realpathAsync(path: string): Promise<string> {
+        throw new Error("Not replaced via promisify");
+    }
+
+    public static async copyFileAsync(src: string, dest: string, flags: number = 0): Promise<string> {
+        throw new Error("Not replaced via promisify");
+    }
+
 }
 
 Files.readFileAsync = promisify(fs.readFile);
@@ -105,6 +113,8 @@ Files.statAsync = promisify(fs.stat);
 Files.unlinkAsync = promisify(fs.unlink);
 Files.rmdirAsync = promisify(fs.rmdir);
 Files.readdirAsync = promisify(fs.readdir);
+Files.realpathAsync = promisify(fs.realpath);
+Files.copyFileAsync = promisify(fs.copyFile);
 
 export interface CreateDirResult {
     dir: string;
