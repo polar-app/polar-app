@@ -1,4 +1,40 @@
+
+# How do I enable advanced logging?
+
+Create a file in your ```.polar/config``` directory named ```logging.json``` 
+with the following content:
+
+```json
+{
+  "level": "DEBUG",
+  "target": "CONSOLE"
+} 
+```
+
+By default we use logging level WARN to improve performance and also so it does
+not log pointless messages to the console which would just be confusing to an
+end user.
+
+The available log levels are:
+
+```text
+DEBUG
+VERBOSE
+INFO
+WARN
+ERROR
+```
+
+We currently only support a log target of ```CONSOLE``` due to performance reasons.
+
+There IS an on-disk version enabled but it usually ends up locking up Electron
+essentially defeating the point.  
+
+We plan on implementing a logger implemented on Websockets in the future.
+
 # Aren't Electron Apps Bloated?
+
+## RAM
 
 A default install of Polar uses about 350MB of RAM after a fresh start.
 
@@ -21,3 +57,6 @@ features we can remove but right now it's not a priority.
 
 Just spend the extra $5...
  
+## Disk 
+
+The binary download is only 100MB. Fairly reasonable for modern apps.

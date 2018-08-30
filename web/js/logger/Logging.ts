@@ -80,7 +80,7 @@ export class Logging {
 
         return {
             target: LoggerTarget.CONSOLE,
-            level: LogLevel.INFO,
+            level: LogLevel.WARN,
         }
 
     }
