@@ -13,7 +13,10 @@ Electron or another API on which we're blocked.
 
 # Short Term
 
-- Initial / basic Anki sync.  
+- Annotation sidebar that shows the annotations you've created in the document 
+  and allows you to scroll through them and clicking on them should bring that 
+  item into the scroll.
+
 
 - Ability to change color of highlights. 
 
@@ -24,27 +27,22 @@ Electron or another API on which we're blocked.
 - Simple 'About' webapp that includes the version of the project. Where to find
   more resources, donation links, etc.
   
-- Capture needs to use a webview. The current way we're capturing content is 
-  actually causing us to lockup.  
+- build out some sort of loading icon icon. At least for the htmlviewer which 
+  really needs it.
+  
+    https://www-static-blogs.operacdn.com/multi/wp-content/uploads/sites/3/2018/01/spins.gif
 
-# Medium Term
-
-- Annotation sidebar that shows the annotations you've created in the document 
-  and allows you to scroll through them and clicking on them should bring that 
-  item into the scroll.
 
 - Redo the HTML app so that it scrolls via overflow not via the page scrolling.
   This way the PDF viewer and HTML viewer have the same general layout which 
   should reduce bugs.
 
+# Medium Term
+
 - Support native platform integration for file extensions. *.pdf and *.phz. 
   This is a good project for someone else on MacOS or Windows to take on as we
   just need to augment electron-builder to implement support for the extension
   and then update main.js to handle the event when the file is opened.  
-
-- Sidebar for the main reader which shows all the annotations on a page and 
-  provides the ability preview them, scroll through and then navigate to the
-  annotation on the doc.
 
 - Chrome extension to take the rendered page and load it into polar, possibly
   with the option to re-generate the PHZ if it didn't render properly once 
