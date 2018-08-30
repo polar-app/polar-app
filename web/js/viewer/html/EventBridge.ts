@@ -1,6 +1,8 @@
 import {Logger} from '../../logger/Logger';
 import {FrameEvents} from './FrameEvents';
 import {Events} from '../../util/dom/Events';
+import {IFrames} from '../../util/dom/IFrames';
+import {DocumentReadyStates} from '../../util/dom/DocumentReadyStates';
 
 const log = Logger.create();
 
@@ -20,7 +22,7 @@ export class EventBridge {
         this.iframe = iframe;
     }
 
-    start() {
+    async start() {
 
         if(! this.iframe.parentElement) {
             throw new Error("No parent for iframe");
@@ -30,28 +32,12 @@ export class EventBridge {
             throw new Error("No contentDocument for iframe");
         }
 
-        // TODO/FIXME: the child iframes within this iframe / recursively also
-        // need to be configured.
+        await IFrames.waitForContentDocument(this.iframe);
+        await DocumentReadyStates.waitFor(this.iframe.contentDocument!, 'interactive');
 
-        this.iframe.addEventListener("load", () => this.addListeners(this.iframe));
-
-        this.iframe.parentElement.addEventListener('DOMNodeInserted', (event) => this.elementInsertedListener(event), false);
-
-        //this.addListeners(this.iframe);
+        this.addListeners(this.iframe);
 
         log.info("Event bridge started on: ", this.iframe.contentDocument.location.href);
-
-    }
-
-    elementInsertedListener(event: any) {
-
-        log.info("elementInsertedListener event: " , event)
-
-        if (event && event.target && event.target.tagName === "IFRAME") {
-            log.info("Main iframe re-added.  Registering event listeners again");
-            let iframe = event.target;
-            this.addListeners(iframe);
-        }
 
     }
 

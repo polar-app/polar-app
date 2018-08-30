@@ -35,12 +35,24 @@ export class PagemarkCoverageEventListener {
 
     onDocumentLoaded() {
 
+        log.info("Document loaded... installing listeners...");
+
         document.addEventListener("keyup", this.keyListener.bind(this));
         document.addEventListener("keydown", this.keyListener.bind(this));
 
-        document.querySelectorAll(".page").forEach(pageElement => {
+
+        let pages = document.querySelectorAll(".page");
+        pages.forEach(pageElement => {
             pageElement.addEventListener("click", this.mouseListener.bind(this));
         });
+
+        if(pages.length === 0) {
+            log.warn("No pages found for click listener.");
+        } else {
+            log.debug("Added click listener to N pages: " + pages.length);
+        }
+
+        log.info("Document loaded... installing listeners...done");
 
     }
 

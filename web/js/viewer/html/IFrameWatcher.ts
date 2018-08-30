@@ -30,8 +30,17 @@ export class IFrameWatcher {
 
     private async execute(): Promise<void> {
 
+        log.debug("Waiting for iframe to load...");
+
+        log.debug("Waiting for content document...")
         await IFrames.waitForContentDocument(this.iframe);
+
+        log.debug("Waiting for 'complete'")
+
         await DocumentReadyStates.waitFor(this.iframe.contentDocument!, 'complete');
+
+        log.debug("Waiting for iframe to load...done");
+
         this.callback();
 
     }
