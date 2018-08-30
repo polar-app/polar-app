@@ -134,6 +134,7 @@ class App<P> extends React.Component<{}, IAppState> {
         return (
 
             <div id="doc-repository">
+
                 <header>
 
                     <div id="header-logo">
@@ -145,7 +146,7 @@ class App<P> extends React.Component<{}, IAppState> {
                     </div>
 
                     <div id="header-filter">
-                        <input id="filter" type="text" placeholder="Filter by title" onChange={() => this.doFilterByTitle()}></input>
+                        <input id="filter" type="text" placeholder="Filter by title" onChange={() => this.doFilterByTitle()}/>
                     </div>
 
                 </header>
@@ -258,38 +259,6 @@ class App<P> extends React.Component<{}, IAppState> {
 }
 
 export default App;
-
-/**
- * High level document representation extracted from DocInfo and DocMeta in the
- * repository but simpler for the UI.
- */
-export interface IDoc {
-
-    fingerprint: string,
-
-    /**
-     * The title of this document.
-     */
-    title?: string;
-
-    /**
-     * The link back to the original document, when available.
-     */
-    link?: string;
-
-    source?: ISource;
-
-    progress?: number
-
-}
-
-/**
- * The source of a document.  Specifically the title and link.
- */
-export interface ISource {
-    title: string;
-    link: string;
-}
 
 interface IAppState {
 
