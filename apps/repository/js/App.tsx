@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {DocDetail} from '../../../web/js/metadata/DocDetail';
 import ReactTable from "react-table";
-import {Logo, Tips} from './Utils';
+import {Footer, Logo, Tips} from './Utils';
 import {DiskDatastore} from '../../../web/js/datastore/DiskDatastore';
 import {Logger} from '../../../web/js/logger/Logger';
 import {PersistenceLayer} from '../../../web/js/datastore/PersistenceLayer';
@@ -104,8 +104,6 @@ class App<P> extends React.Component<{}, IAppState> {
 
     doFilterByTitle() {
 
-        console.log("filtering by title");
-
         let input = document.querySelector("#filter") as HTMLInputElement;
 
         let filterText = input.value;
@@ -136,7 +134,6 @@ class App<P> extends React.Component<{}, IAppState> {
         return (
 
             <div id="doc-repository">
-
                 <header>
 
                     <div id="header-logo">
@@ -252,6 +249,8 @@ class App<P> extends React.Component<{}, IAppState> {
                 />
                 <br />
                 <Tips />
+                <Footer/>
+
                 </div>
             </div>
         );

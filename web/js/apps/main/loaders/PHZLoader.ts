@@ -7,6 +7,7 @@ import {CacheRegistry} from '../../../backend/proxyserver/CacheRegistry';
 import {WebResource} from '../../../electron/webresource/WebResource';
 import {AppPaths} from '../../../electron/webresource/AppPaths';
 import {LoadedFile} from './LoadedFile';
+import {Descriptors} from '../../../viewer/html/Descriptors';
 
 const log = Logger.create();
 
@@ -36,7 +37,7 @@ export class PHZLoader implements FileLoader {
 
         let cachedRequest = cachedRequestsHolder.cachedRequests[cachedRequestsHolder.metadata.url];
 
-        console.log("Going to load URL: " + cachedRequest.url);
+        log.info("Going to load URL: " + cachedRequest.url);
 
         let descriptor = cachedRequestsHolder.metadata;
         let descriptorJSON = JSON.stringify(descriptor);
@@ -56,9 +57,12 @@ export class PHZLoader implements FileLoader {
         let queryData = `?file=${encodeURIComponent(cachedRequest.url)}&fingerprint=${fingerprint}&descriptor=${encodeURIComponent(descriptorJSON)}&filename=${filenameParam}`;
         let appURL = 'file://' + appPath + queryData;
 
+        let docDimensions = Descriptors.calculateDocDimensions(descriptor);
+
         return {
             webResource: WebResource.createURL(appURL),
-            title: descriptor.title
+            title: descriptor.title,
+            docDimensions
         };
 
     }

@@ -139,6 +139,20 @@ export class MainAppController {
                 targetWindow.setTitle(loadedFile.title);
             }
 
+            if(loadedFile.docDimensions) {
+
+                let [width, height] = targetWindow.getSize();
+
+                // compute the ideal width plus a small buffer for the sides.
+                let idealWidth = loadedFile.docDimensions.width + 100;
+
+                if(width < idealWidth) {
+                    log.info("Adjusting window width");
+                    targetWindow.setSize(idealWidth, height);
+                }
+
+            }
+
         });
 
     }

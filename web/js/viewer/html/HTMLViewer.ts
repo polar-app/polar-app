@@ -10,6 +10,7 @@ import {Services} from '../../util/services/Services';
 import {HTMLFormat} from '../../docformat/HTMLFormat';
 import {FrameInitializer} from './FrameInitializer';
 import {FrameResizer} from './FrameResizer';
+import {Descriptors} from './Descriptors';
 
 const {IFrameWatcher} = require("./IFrameWatcher");
 
@@ -142,46 +143,19 @@ export class HTMLViewer extends Viewer {
      */
     _configurePageWidth() {
 
-        // the default width
-        let width = 750;
 
         let descriptor = notNull(this.requestParams).descriptor;
 
-        if(descriptor && descriptor.browser) {
+        let docDimensions = Descriptors.calculateDocDimensions(descriptor);
 
-            // use the screen width from the emulated device
-            width = descriptor.browser.deviceEmulation.screenSize.width;
-
-            log.info("Setting width from device emulation: " + width);
-
-        }
-
-        if( "scroll" in descriptor &&
-            typeof descriptor.scroll.width === "number" &&
-            descriptor.scroll.width > width ) {
-
-            // we have a document that isn't mobile aware and hard coded to a
-            // specific width greater than our default width.  This is a new
-            // setting so we have to make sure the key is in the descriptor.
-
-            width = descriptor.scroll.width;
-
-            log.info("Setting width from scroll settings: " + width);
-
-        }
-
-        // page height size should be a function of 8.5x11
-
-        let minHeight = (11/8.5) * width;
-
-        console.log(`Configuring page with width=${width} and minHeight=${minHeight}`);
+        console.log(`Configuring page with width=${docDimensions.width} and minHeight=${docDimensions.minHeight}`);
 
         document.querySelectorAll("#content-parent, .page, iframe").forEach(element => {
-            (element as HTMLElement).style.width = `${width}px`;
+            (element as HTMLElement).style.width = `${docDimensions.width}px`;
         });
 
         document.querySelectorAll(".page, iframe").forEach((element) => {
-            (element as HTMLElement).style.minHeight = `${minHeight}px`;
+            (element as HTMLElement).style.minHeight = `${docDimensions.minHeight}px`;
         });
 
     }
