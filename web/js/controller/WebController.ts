@@ -13,9 +13,9 @@ import {TextHighlightController} from '../highlights/text/controller/TextHighlig
 import {FlashcardsController} from '../flashcards/controller/FlashcardsController';
 import {AnnotationsController} from '../annotations/controller/AnnotationsController';
 import {DocFormat} from '../docformat/DocFormat';
+import {AreaHighlightController} from '../highlights/area/controller/AreaHighlightController';
+import {PagemarkCoverageEventListener} from '../pagemarks/controller/PagemarkCoverageEventListener';
 
-const {AreaHighlightController} = require("../highlights/area/controller/AreaHighlightController");
-const {PagemarkCoverageEventListener} = require("../pagemarks/controller/PagemarkCoverageEventListener");
 
 const log = Logger.create();
 

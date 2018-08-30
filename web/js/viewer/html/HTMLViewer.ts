@@ -11,8 +11,7 @@ import {HTMLFormat} from '../../docformat/HTMLFormat';
 import {FrameInitializer} from './FrameInitializer';
 import {FrameResizer} from './FrameResizer';
 import {Descriptors} from './Descriptors';
-
-const {IFrameWatcher} = require("./IFrameWatcher");
+import {IFrameWatcher} from './IFrameWatcher';
 
 const log = Logger.create();
 

@@ -4,8 +4,8 @@ import {ViewerFactory} from '../viewer/ViewerFactory';
 import {WebController} from '../controller/WebController';
 import {Logger} from '../logger/Logger';
 import {Logging} from '../logger/Logging';
+import {WebView} from '../view/WebView';
 
-const {WebView} = require("../view/WebView");
 const {TextHighlightView2} = require("../highlights/text/view/TextHighlightView2");
 const {PagemarkView, PAGEMARK_VIEW_ENABLED} = require("../pagemarks/view/PagemarkView");
 const {AreaHighlightView} = require("../highlights/area/view/AreaHighlightView");
