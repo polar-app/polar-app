@@ -15,7 +15,6 @@ describe('example-test', function() {
 
         assert.equal(await this.app.client.getWindowCount(), 1);
 
-
         let testResultReader = new WebDriverTestResultReader(this.app);
 
         assert.equal(await testResultReader.read(), true);

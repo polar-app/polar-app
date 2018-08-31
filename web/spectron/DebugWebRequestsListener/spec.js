@@ -1,42 +1,37 @@
+"use strict";
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const WebDriverTestResultReader_1 = require("../../js/test/results/reader/WebDriverTestResultReader");
 const assert = require('assert');
-const {assertJSON} = require("../../js/test/Assertions");
-const {Spectron} = require("../../js/test/Spectron");
+const { assertJSON } = require("../../js/test/Assertions");
+const { Spectron } = require("../../js/test/Spectron");
 const electronPath = require('electron');
 const path = require('path');
-const {Files} = require("../../js/util/Files.js");
-
+const { Files } = require("../../js/util/Files.js");
 describe('DebugWebRequestsListener', function () {
-
     this.timeout(10000);
-
-    before(async function () {
-        let logsDir = "/tmp/DebugWebRequestsListener";
-        await Files.createDirAsync(logsDir);
-        await Files.removeAsync(logsDir + "/polar.log");
+    before(function () {
+        return __awaiter(this, void 0, void 0, function* () {
+            let logsDir = "/tmp/DebugWebRequestsListener";
+            yield Files.createDirAsync(logsDir);
+            yield Files.removeAsync(logsDir + "/polar.log");
+        });
     });
-
     Spectron.setup(__dirname);
-
-    it('Make sure they are written to the log.', async function () {
-
-        assert.equal(await this.app.client.getWindowCount(), 1);
-
-        // now make sure the log data is properly stored.
-
-        let logData = await Files.readFileAsync("/tmp/DebugWebRequestsListener/polar.log")
-        logData = logData.toString("UTF-8");
-
-        // make sure we have all the events we need.  We could probably test
-        // this more by asserting the entire JSON output but that might
-        // be a bit heavy.
-        assert.equal(logData.indexOf("onBeforeRequest") !== -1, true);
-        assert.equal(logData.indexOf("onBeforeSendHeaders") !== -1, true);
-        assert.equal(logData.indexOf("onSendHeaders") !== -1, true);
-        assert.equal(logData.indexOf("onResponseStarted") !== -1, true);
-        assert.equal(logData.indexOf("onCompleted") !== -1, true);
-
-        return true;
-
+    it('Make sure they are written to the log.', function () {
+        return __awaiter(this, void 0, void 0, function* () {
+            assert.equal(yield this.app.client.getWindowCount(), 1);
+            let testResultReader = new WebDriverTestResultReader_1.WebDriverTestResultReader(this.app);
+            assert.equal(yield testResultReader.read(), true);
+            return true;
+        });
     });
-
 });
+//# sourceMappingURL=spec.js.map

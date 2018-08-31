@@ -59,9 +59,9 @@ describe('content-capture', function () {
                 "width": 800
             },
             "title": "",
-            "type": "chtml",
+            "type": "phz",
             "url": "file:///home/burton/projects/polar-bookshelf/web/spectron/content-capture/app.html",
-            "version": "3.0.0"
+            "version": "4.0.0"
         };
 
         assertJSON(result, expected);

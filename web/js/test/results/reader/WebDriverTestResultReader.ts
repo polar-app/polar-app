@@ -1,7 +1,6 @@
 import {Application} from 'spectron';
 
 import {TestResultReader} from '../TestResultReader';
-import {Result} from '../../../util/Result';
 import {Results} from '../../../util/Results';
 
 declare var window: any;

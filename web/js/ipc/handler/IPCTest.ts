@@ -24,7 +24,7 @@ let ipcEngine: IPCEngine<IPCEvent>;
 
 describe('IPCTest', function() {
 
-    it("Test proper handling of messages", async function () {
+    xit("Test proper handling of messages", async function () {
 
         let icpClient = new IPCClient(rightIpcPipe);
 
