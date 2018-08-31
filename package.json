@@ -42,7 +42,6 @@
   "devDependencies": {
     "@types/chai": "^4.1.4",
     "@types/expect": "^1.20.3",
-    "@types/jquery": "^3.3.6",
     "@types/jqueryui": "^1.12.4",
     "@types/jszip": "^3.1.4",
     "@types/mocha": "^5.2.5",
