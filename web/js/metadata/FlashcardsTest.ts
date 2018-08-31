@@ -24,9 +24,9 @@ describe('Flashcards', function() {
 
             let expected = {
                 "id": "1uWrt4yLYp",
+                "guid": "1uWrt4yLYp",
                 "created": "2012-03-02T11:38:49.321Z",
                 "lastUpdated": "2012-03-02T11:38:49.321Z",
-                "guid": "1uWrt4yLYp",
                 "type": "CLOZURE",
                 "fields": {
                     "text": {
@@ -54,9 +54,9 @@ describe('Flashcards', function() {
 
             let expected = {
                 "id": "1uWrt4yLYp",
+                "guid": "1uWrt4yLYp",
                 "created": "2012-03-02T11:38:49.321Z",
                 "lastUpdated": "2012-03-02T11:38:49.321Z",
-                "guid": "1uWrt4yLYp",
                 "type": "CLOZURE",
                 "fields": {
                     "text": {
@@ -84,9 +84,9 @@ describe('Flashcards', function() {
 
             let expected = {
                     "id": "1p2utfePaW",
+                    "guid": "1p2utfePaW",
                     "created": "2012-03-02T11:38:49.321Z",
                     "lastUpdated": "2012-03-02T11:38:49.321Z",
-                    "guid": "1p2utfePaW",
                     "type": "BASIC_FRONT_BACK",
                     "fields": {
                         "back": {
