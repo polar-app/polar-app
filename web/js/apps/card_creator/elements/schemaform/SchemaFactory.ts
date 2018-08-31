@@ -45,5 +45,3 @@ export class SchemaFactory {
     }
 
 }
-
-module.exports.SchemaFactory = SchemaFactory;

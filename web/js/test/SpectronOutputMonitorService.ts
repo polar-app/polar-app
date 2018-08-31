@@ -1,3 +1,4 @@
+import {Application} from 'spectron';
 import {Preconditions} from '../Preconditions';
 
 const TIMEOUT = 250;
@@ -11,7 +12,7 @@ export class SpectronOutputMonitorService {
 
     private stopped: boolean = false;
 
-    constructor(app: any) {
+    constructor(app: Application) {
         this.app = Preconditions.assertNotNull(app, "app");
         this.stopped = false;
     }
@@ -103,5 +104,3 @@ export class SpectronOutputMonitorService {
     }
 
 }
-
-module.exports.SpectronOutputMonitorService = SpectronOutputMonitorService;
