@@ -2,12 +2,14 @@ import {IPersistenceLayer} from '../datastore/PersistenceLayer';
 import {Launcher} from './Launcher';
 import {Logger} from '../logger/Logger';
 import {ElectronPersistenceLayerFactory} from '../datastore/ElectronPersistenceLayerFactory';
+import {ElectronRendererPersistenceLayerFactory} from '../datastore/ElectronRendererPersistenceLayerFactory';
 
 const log = Logger.create();
 
-function persistenceLayerFactory(): IPersistenceLayer {
-    let electronPersistenceLayer = ElectronPersistenceLayerFactory.create();
-    //return new PersistenceLayerDispatcher(PersistenceLayerWorkers.create(), electronPersistenceLayer);
+async function persistenceLayerFactory(): Promise<IPersistenceLayer> {
+    //let electronPersistenceLayer = ElectronPersistenceLayerFactory.create();
+    let electronPersistenceLayer = await ElectronRendererPersistenceLayerFactory.create();
+        //return new PersistenceLayerDispatcher(PersistenceLayerWorkers.create(), electronPersistenceLayer);
     return electronPersistenceLayer;
 }
 

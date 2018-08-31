@@ -8,8 +8,6 @@ import {CaptureController} from '../../capture/controller/CaptureController';
 import {DialogWindowService} from '../../ui/dialog_window/DialogWindowService';
 import {DefaultFileLoader} from './loaders/DefaultFileLoader';
 import {MainBrowserWindowFactory} from './MainBrowserWindowFactory';
-import {MemoryDatastore} from '../../datastore/MemoryDatastore';
-import {DiskDatastore} from '../../datastore/DiskDatastore';
 import {Webserver} from '../../backend/webserver/Webserver';
 import {ProxyServer} from '../../backend/proxyserver/ProxyServer';
 import {CacheInterceptorService} from '../../backend/interceptor/CacheInterceptorService';

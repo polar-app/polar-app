@@ -74,5 +74,5 @@ export class Launcher {
 }
 
 export interface PersistenceLayerFactory {
-    (): IPersistenceLayer;
+    (): Promise<IPersistenceLayer>;
 }
