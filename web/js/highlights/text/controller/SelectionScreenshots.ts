@@ -17,7 +17,7 @@ export class SelectionScreenshots {
 
     }
 
-    public static async captureRange(win: Window, range: Range) {
+    public static async captureRange(win: Window, range: Range): Promise<SelectionScreenshot> {
         let clientRect = this.getClientRect(range);
         clientRect = IFrames.computeTopLevelClientRect(clientRect, win);
 

@@ -9,7 +9,7 @@ import {DocFormat} from '../../../docformat/DocFormat';
 import {KeyEvents} from '../../../KeyEvents';
 import {TextHighlighterFactory} from './TextHighlighterFactory';
 import {Screenshots} from '../../../screenshots/Screenshots';
-import {SelectionScreenshots} from './SelectionScreenshots';
+import {SelectionScreenshot, SelectionScreenshots} from './SelectionScreenshots';
 import {TextExtracter} from './TextExtracter';
 import {TextHighlightRecord, TextHighlightRecords} from '../../../metadata/TextHighlightRecords';
 import {Screenshot} from '../../../screenshots/Screenshot';
@@ -17,6 +17,7 @@ import {Image} from '../../../metadata/Image';
 
 import $ from '../../../ui/JQuery';
 import {TextHighlight} from '../../../metadata/TextHighlight';
+import {ExecutionTimer} from '../../../util/ExecutionTimer';
 
 const {TextHighlightRows} = require("./TextHighlightRows");
 
@@ -177,7 +178,6 @@ export class TextHighlightController {
 
     /**
      * A text highlight was deleted so update the model now.
-     * @param event
      */
     onTextHighlightDeleted(triggerEvent: TriggerEvent) {
 
@@ -263,7 +263,6 @@ export class TextHighlightController {
 
             let textSelections = TextSelections.compute(selectedContent);
 
-
             return TextHighlightRecords.create(rects, textSelections, text);
 
         });
@@ -296,6 +295,12 @@ export class TextHighlightController {
 
     async createTextHighlight(factory: () => Promise<TextHighlightRecord>): Promise<TextHighlightRecord> {
 
+        // FIXME: rework this by having a set of images captured in the main document
+        // and support a URL oir ref:ID which links to the ID of the image.
+        // The problem though is that if we STILL ait for the screenshot at the
+        // beginning it's STILL going to take like 300ms and feel fucking
+        // sluggish.
+
         let win = notNull(this.docFormat.targetDocument()).defaultView;
 
         // TODO: refactor this..
@@ -315,7 +320,7 @@ export class TextHighlightController {
         // let highlightScreenshot = await Screenshots.capture(selectionScreenshot.clientRect)
         //
         // this.attachScreenshot(textHighlightRecord.value, 'screenshot', selectionScreenshot.screenshot);
-        // this.attachScreenshot(textHighlightRecord.value, 'screenshot-with-highlight', highlightScreenshot);
+        //this.attachScreenshot(textHighlightRecord.value, 'screenshot-with-highlight', highlightScreenshot);
 
         let currentPageMeta = this.docFormat.getCurrentPageMeta();
 
