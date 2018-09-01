@@ -52,7 +52,6 @@
     "dtsmake": "0.0.10",
     "electron": "^3.0.0-beta.8",
     "electron-builder": "^20.27.1",
-    "electron-chromedriver": "^3.0.0-beta.1",
     "electron-mocha": "^6.0.4",
     "jsdom": "^11.12.0",
     "mocha": "^5.2.0",
