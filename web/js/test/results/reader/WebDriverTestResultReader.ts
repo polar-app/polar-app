@@ -2,14 +2,15 @@
 
 import {TestResultReader} from '../TestResultReader';
 import {Results} from '../../../util/Results';
+import {TApplication} from '../../Spectron';
 
 declare var window: any;
 
 export class WebDriverTestResultReader extends TestResultReader {
 
-    private readonly app: any;
+    private readonly app: TApplication;
 
-    constructor(app: any) {
+    constructor(app: TApplication) {
         super();
         this.app = app;
     }

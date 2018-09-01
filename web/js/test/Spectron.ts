@@ -107,6 +107,8 @@ export interface TApplication {
 
 export interface TBrowser {
 
+    getWindowCount(): Promise<number>;
+
     windowHandle(): string;
 
     windowHandles(): WindowHandle[];
@@ -115,6 +117,13 @@ export interface TBrowser {
 
     getTitle(): string;
 
+    executeAsync<T>(callback: ExecuteAsyncFunction<T>): Promise<T>;
+
+}
+
+export interface ExecuteAsyncFunction<T> {
+    (done: (val: T) => void): void;
 }
 
 type WindowHandle = string;
+
