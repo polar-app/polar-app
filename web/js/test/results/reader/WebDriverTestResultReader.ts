@@ -1,4 +1,4 @@
-import {Application} from 'spectron';
+//import {Application} from 'spectron';
 
 import {TestResultReader} from '../TestResultReader';
 import {Results} from '../../../util/Results';
@@ -7,7 +7,7 @@ declare var window: any;
 
 export class WebDriverTestResultReader extends TestResultReader {
 
-    private readonly app: Application;
+    private readonly app: any;
 
     constructor(app: any) {
         super();
