@@ -41,6 +41,16 @@ export class DocInfo extends SerializedObject {
     public title?: string;
 
     /**
+     * The subtitle for the document.
+     */
+    public subtitle?: string;
+
+    /**
+     * The description for the document.
+     */
+    public description?: string;
+
+    /**
      * The network URL for the document where we originally fetched it.
      */
     public url?: String;

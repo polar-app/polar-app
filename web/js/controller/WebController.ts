@@ -15,6 +15,10 @@ import {AnnotationsController} from '../annotations/controller/AnnotationsContro
 import {DocFormat} from '../docformat/DocFormat';
 import {AreaHighlightController} from '../highlights/area/controller/AreaHighlightController';
 import {PagemarkCoverageEventListener} from '../pagemarks/controller/PagemarkCoverageEventListener';
+import {DocDetail, UpdatableDocDetails} from '../metadata/DocDetail';
+import {Objects} from '../util/Objects';
+import {UpdateNoteFieldsClient} from '../apps/sync/framework/anki/clients/UpdateNoteFieldsClient';
+import {DocDetails} from '../metadata/DocDetails';
 
 
 const log = Logger.create();
@@ -61,21 +65,9 @@ export class WebController extends Controller {
 
         let docDetail = this.viewer.docDetail();
 
-        // we basically now need to 'gift' additional fields to the doc model
-        // here including title, filename, etc.
-        if(docDetail) {
-
-            log.info("Loaded with docDetail: ", docDetail);
-
-            if( ! this.model.docMeta.docInfo.title) {
-                this.model.docMeta.docInfo.title = docDetail.title;
-            }
-
-            if( ! this.model.docMeta.docInfo.filename) {
-                this.model.docMeta.docInfo.filename = docDetail.filename;
-            }
-
-        }
+        // TODO: move this into the importer to create the DocMeta once the
+        // PHZ is created which also means this can be tested easily.
+        DocDetails.merge(this.model.docMeta.docInfo, docDetail);
 
         this.setupContextMenu();
 

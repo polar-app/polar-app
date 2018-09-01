@@ -54,3 +54,32 @@ export interface DocDetail {
     readonly added?: ISODateTime;
 
 }
+
+
+export interface UpdatableDocDetails {
+
+    /**
+     * The title for the document.
+     */
+    title?: string;
+
+    subtitle?: string;
+
+    description?: string;
+
+    /**
+     * The network URL for the document where we originally fetched it.
+     */
+    url?: String;
+
+    /**
+     * The filename of this doc in the .stash directory.
+     */
+    filename?: string;
+
+    /**
+     * The number of pages in this document.
+     */
+    nrPages?: number;
+
+}
