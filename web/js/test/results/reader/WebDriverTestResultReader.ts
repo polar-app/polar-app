@@ -1,4 +1,3 @@
-//import {Application} from 'spectron';
 
 import {TestResultReader} from '../TestResultReader';
 import {Results} from '../../../util/Results';
@@ -15,9 +14,6 @@ export class WebDriverTestResultReader implements TestResultReader {
     }
 
     async read<T>(): Promise<T> {
-
-        // TODO: maybe just write these to ALL windows... that's probably the
-        // easiest and most expedient way to move forward.
 
         let result = await this.app.client.executeAsync((done: (val: any) => void ) => {
 

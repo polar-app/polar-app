@@ -9,12 +9,14 @@ import {isPresent} from '../../../web/js/Preconditions';
 import {Optional} from '../../../web/js/util/ts/Optional';
 import {DocLoader} from '../../../web/js/apps/main/ipc/DocLoader';
 import {ISODateTime} from '../../../web/js/metadata/ISODateTime';
+import {Datastores} from '../../../web/js/datastore/Datastores';
+import {Datastore} from '../../../web/js/datastore/Datastore';
 
 const log = Logger.create();
 
 class App<P> extends React.Component<{}, IAppState> {
 
-    private diskDatastore?: DiskDatastore;
+    private datastore?: Datastore;
     private persistenceLayer?: PersistenceLayer;
 
     private docDetails: DocDetail[] = [];
@@ -43,13 +45,13 @@ class App<P> extends React.Component<{}, IAppState> {
 
     private async init(): Promise<void> {
 
-        let diskDatastore: DiskDatastore;
+        let datastore: Datastore;
         let persistenceLayer: PersistenceLayer;
 
-        this.diskDatastore = diskDatastore = new DiskDatastore();
-        this.persistenceLayer = persistenceLayer = new PersistenceLayer(diskDatastore);
+        this.datastore = datastore = Datastores.create();
+        this.persistenceLayer = persistenceLayer = new PersistenceLayer(datastore);
 
-        await diskDatastore.init();
+        await datastore.init();
 
         await persistenceLayer.init();
 
@@ -59,7 +61,7 @@ class App<P> extends React.Component<{}, IAppState> {
 
         let result: DocDetail[] = [];
 
-        let docMetaFiles = await this.diskDatastore!.getDocMetaFiles();
+        let docMetaFiles = await this.datastore!.getDocMetaFiles();
 
         for (let i = 0; i < docMetaFiles.length; i++) {
             const docMetaFile = docMetaFiles[i];

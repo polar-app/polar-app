@@ -3,6 +3,7 @@ import {Logger} from '../logger/Logger';
 import {Datastore} from './Datastore';
 import {MemoryDatastore} from './MemoryDatastore';
 import {DiskDatastore} from './DiskDatastore';
+import {Datastores} from './Datastores';
 
 const log = Logger.create();
 
@@ -16,7 +17,7 @@ export class ElectronRendererPersistenceLayerFactory {
 
         log.info("Using persistence layer from renderer process.");
 
-        let datastore = new DiskDatastore();
+        let datastore = Datastores.create();
         await datastore.init();
 
         return new PersistenceLayer(datastore);

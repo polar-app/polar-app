@@ -1,11 +1,9 @@
 import {app} from 'electron';
 import {Logger} from './web/js/logger/Logger';
 import {MainApp} from './web/js/apps/main/MainApp';
-import {Datastore} from './web/js/datastore/Datastore';
-import {MemoryDatastore} from './web/js/datastore/MemoryDatastore';
-import {DiskDatastore} from './web/js/datastore/DiskDatastore';
 import {Cmdline} from './web/js/electron/Cmdline';
 import {Logging} from './web/js/logger/Logging';
+import {Datastores} from './web/js/datastore/Datastores';
 
 const log = Logger.create();
 
@@ -16,40 +14,9 @@ if( ! hasSingleInstanceLock) {
     app.quit();
 }
 
-/**
- * Process app command line args and return an object to work with them
- * directly.
- */
-function parseArgs() {
-
-    // TODO: these are mostly disabled for now.  Need to rework these.
-
-    return {
-
-        enableConsoleLogging: process.argv.includes("--enable-console-logging"),
-
-        enableRemoteDebugging: process.argv.includes("--enable-remote-debugging"),
-        enableDevTools: process.argv.includes("--enable-dev-tools"),
-
-        // use this option to write to the MEMORY datastore. not the disk
-        // datastore.. This way we can test without impacting persistence.
-        enableMemoryDatastore: process.argv.includes("--enable-memory-datastore")
-
-    };
-
-}
-
-let args = parseArgs();
-
 app.on('ready', async () => {
 
-    let datastore: Datastore;
-
-    if(args.enableMemoryDatastore) {
-        datastore = new MemoryDatastore();
-    } else {
-        datastore = new DiskDatastore();
-    }
+    let datastore = Datastores.create();
 
     await datastore.init();
 
