@@ -1,13 +1,14 @@
 import {Logger} from '../../../logger/Logger';
 import {ipcMain} from "electron";
 import {IPCMessage} from '../../../ipc/handler/IPCMessage';
+import {TestResultWriter} from '../TestResultWriter';
 
 const log = Logger.create();
 
 /**
  * Write data from the main Electron process.
  */
-export class MainTestResultWriter {
+export class MainTestResultWriter implements TestResultWriter {
 
     private mainWindow: Electron.BrowserWindow;
 

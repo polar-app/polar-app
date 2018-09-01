@@ -6,23 +6,25 @@ import {TApplication} from '../../Spectron';
 
 declare var window: any;
 
-export class WebDriverTestResultReader extends TestResultReader {
+export class WebDriverTestResultReader implements TestResultReader {
 
     private readonly app: TApplication;
 
     constructor(app: TApplication) {
-        super();
         this.app = app;
     }
 
     async read<T>(): Promise<T> {
 
+        // TODO: maybe just write these to ALL windows... that's probably the
+        // easiest and most expedient way to move forward.
+
         let result = await this.app.client.executeAsync((done: (val: any) => void ) => {
 
             function poll() {
 
-                if (window.TEST_RESULT != null) {
-                    done(window.TEST_RESULT);
+                if (window.SPECTRON_TEST_RESULT !== null) {
+                    done(window.SPECTRON_TEST_RESULT);
                 }
 
                 setTimeout(poll, 250);

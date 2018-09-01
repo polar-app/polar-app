@@ -1,7 +1,5 @@
-export abstract class TestResultWriter {
+export interface TestResultWriter {
 
-    //abstract async write(result: any): Promise<void>;
-
-    //abstract waitForService(): Promise<void>;
+    write(result: any): Promise<void>;
 
 }

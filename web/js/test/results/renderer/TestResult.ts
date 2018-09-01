@@ -8,12 +8,12 @@ export class TestResult {
      * a global value so that spectron can easily read it.
      */
     static set(value: any) {
-        window.TEST_RESULT = value;
+        window.SPECTRON_TEST_RESULT = value;
     }
 
 
     static get(): any {
-        return window.TEST_RESULT;
+        return window.SPECTRON_TEST_RESULT;
     }
 
 }

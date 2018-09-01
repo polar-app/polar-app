@@ -21,6 +21,10 @@ export class Result<T> implements IResult<T> {
         this.err = opts.err;
     }
 
+    public hasValue(): boolean {
+        return this.value !== undefined;
+    }
+
     public get(): T {
 
         if(this.value !== undefined) {

@@ -8,7 +8,7 @@ const log = Logger.create();
  */
 export class RendererTestResultWriter implements TestResultWriter {
 
-    write(result: any): void {
+    async write(result: any) {
 
         log.info("Got result from renderer: ", result);
 
