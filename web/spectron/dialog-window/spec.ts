@@ -10,9 +10,7 @@ describe('dialog-window', function() {
     Spectron.setup(__dirname);
     this.timeout(10000);
 
-    // FIXME: this test is broken because it doesn't use SpectronRenderer
-
-    xit('create dialog window', async function() {
+    it('create dialog window', async function() {
 
         assert.equal(await this.app.client.getWindowCount(), 1);
 

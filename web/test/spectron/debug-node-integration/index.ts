@@ -1,4 +1,4 @@
-import {SpectronMain, WindowFactory} from '../../js/test/SpectronMain';
+import {SpectronMain, WindowFactory} from '../../../js/test/SpectronMain';
 import {BrowserWindow} from "electron";
 
 

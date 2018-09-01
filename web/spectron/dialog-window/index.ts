@@ -13,10 +13,6 @@ let windowFactory: WindowFactory = async () => {
     return dialogWindow.window;
 };
 
-SpectronMain.run(async state => {
-
-    console.log("it worked... writing results...");
-    await state.testResultWriter.write(true);
-    console.log("it worked... writing results...done");
+SpectronMain.run(async () => {
 
 }, {windowFactory});

@@ -1,9 +1,9 @@
 import {WebDriverTestResultReader} from '../../js/test/results/reader/WebDriverTestResultReader';
 import {Spectron} from '../../js/test/Spectron';
 import {assertJSON} from '../../js/test/Assertions';
+import {SpectronSpec} from '../../js/test/SpectronSpec';
 
 const assert = require('assert');
-const {Functions} = require("../../js/util/Functions");
 
 describe('example-test', function() {
 
@@ -12,11 +12,7 @@ describe('example-test', function() {
 
     it('shows an basic initial window', async function() {
 
-        assert.equal(await this.app.client.getWindowCount(), 2);
-
-        let testResultReader = new WebDriverTestResultReader(this.app);
-
-        assert.equal(await testResultReader.read(), true);
+        await SpectronSpec.create(this.app).waitFor(true);
 
     });
 
