@@ -1,7 +1,9 @@
 import {Logger} from '../../../logger/Logger';
-import {ipcMain} from "electron";
+import {BrowserWindow, ipcMain} from "electron";
 import {IPCMessage} from '../../../ipc/handler/IPCMessage';
 import {TestResultWriter} from '../TestResultWriter';
+import {Functions} from '../../../util/Functions';
+import {TestResult} from '../renderer/TestResult';
 
 const log = Logger.create();
 
@@ -67,11 +69,16 @@ export class MainTestResultWriter implements TestResultWriter {
 
         log.info("Writing test result: ", result);
 
-        let ipcMessage = new IPCMessage('write', result);
+        let browserWindows = BrowserWindow.getAllWindows();
 
-        // use ipcMain to send the results to the TestResultService which is
-        // running in the renderer
-        this.mainWindow.webContents.send("test-result", ipcMessage);
+        for (let idx = 0; idx < browserWindows.length; idx++) {
+            const browserWindow = browserWindows[idx];
+
+            let script = Functions.toScript(TestResult.set, result);
+
+            await browserWindow.webContents.executeJavaScript(script);
+
+        }
 
     }
 

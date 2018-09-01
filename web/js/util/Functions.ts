@@ -1,4 +1,4 @@
-import {Preconditions} from '../Preconditions';
+import {isPresent, Preconditions} from '../Preconditions';
 import {Optional} from './ts/Optional';
 
 export class Functions {
@@ -8,33 +8,54 @@ export class Functions {
      * javascript interpreter. This can be used with the electron renderer, chrome
      * headless, etc.
      *
-     * @param _function
-     * @param _opts
-     * @return {string}
      */
-    static functionToScript(_function: Function, ..._opts: any[]) {
+    static functionToScript(func: (...args: any[]) => void, ...args: any[]): string {
+        return this.toScript(func, ...args);
 
-        let result = "";
-        result += _function.toString();
+    }
+
+    static toScript(func: (...args: any[]) => void, ...args: any[]): string {
+
+        // TODO: this doesn't yet support lambda functions.
+
+        // TODO: the functions should not be bound with names.  They should be
+        // anon to avoid conflicts with existing functions.
+
+        if(!isPresent(func.name)) {
+            throw new Error("Don't currently work with unnamed functions");
+        }
+
+        let result = "(";
+
+        let functionBody = this._anonymizeFunction(func.toString());;
+
+        functionBody = functionBody.replace(/\) {/, ') => {');
+
+        result += functionBody;
         result += "\n";
 
-        // TODO: expand _opts to varargs... not just one opts.  This way the
-        // function can be an ordinary function.
-        if(_opts) {
+        if(args) {
 
-            let funcArgs = JSON.stringify(_opts);
+            let funcArgs = JSON.stringify(args);
 
             funcArgs = funcArgs.substring(1, funcArgs.length);
-            funcArgs = funcArgs.substring(0, funcArgs.length- 1);
+            funcArgs = funcArgs.substring(0, funcArgs.length - 1);
 
-            result += `${_function.name}(${funcArgs});`;
+            result += `)(${funcArgs});`;
 
         } else {
-            result += `${_function.name}();`;
+            result += `)();`;
         }
+
         return result;
 
     }
+
+
+    public static _anonymizeFunction(func: string) {
+        return func.substring(func.indexOf('('), func.length);
+    }
+
 
     /**
      * We iterate over all keys in the dictionary.  Even inherited keys.
