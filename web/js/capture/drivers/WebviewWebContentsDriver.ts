@@ -105,6 +105,7 @@ export class WebviewWebContentsDriver extends StandardWebContentsDriver {
 
         // TODO: make this part of the profile.
         browserWindowOptions.enableLargerThanScreen = false;
+        //browserWindowOptions.webPreferences!.zoomFactor = 1.0
 
         return browserWindowOptions;
 

@@ -21,10 +21,6 @@ export const BROWSER_OPTIONS = {
  */
 export class SpectronMain {
 
-    static createWindow() {
-
-    }
-
     static setup(options?: SpectronMainOptions): Promise<Electron.BrowserWindow> {
 
         return new Promise(resolve => {
@@ -58,6 +54,7 @@ export class SpectronMain {
     }
 
     static async start(callback: StateCallback, options?: SpectronMainOptions): Promise<void> {
+
         let window = await SpectronMain.setup(options);
         let testResultWriter = new MainTestResultWriter(window);
 

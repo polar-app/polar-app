@@ -1,5 +1,5 @@
 import {BrowserWindow} from "electron";
-import {BROWSER_WINDOW_OPTIONS, MainBrowserWindowFactory} from './MainBrowserWindowFactory';
+import {BROWSER_WINDOW_OPTIONS, MainAppBrowserWindowFactory} from './MainAppBrowserWindowFactory';
 import {AppPaths} from '../../electron/webresource/AppPaths';
 
 export class AppLauncher {
@@ -8,7 +8,7 @@ export class AppLauncher {
 
         const url = AppPaths.resource('./apps/repository/index.html');
 
-        return MainBrowserWindowFactory.createWindow(BROWSER_WINDOW_OPTIONS, url);
+        return MainAppBrowserWindowFactory.createWindow(BROWSER_WINDOW_OPTIONS, url);
     }
 
 }

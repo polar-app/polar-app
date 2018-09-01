@@ -58,7 +58,7 @@ export const BROWSER_WINDOW_OPTIONS: Electron.BrowserWindowConstructorOptions = 
     }
 };
 
-export class MainBrowserWindowFactory {
+export class MainAppBrowserWindowFactory {
 
     public static createWindow(browserWindowOptions: Electron.BrowserWindowConstructorOptions = BROWSER_WINDOW_OPTIONS, url=DEFAULT_URL): Promise<BrowserWindow> {
 
@@ -108,6 +108,12 @@ export class MainBrowserWindowFactory {
         return new Promise<BrowserWindow>(resolve => {
 
             newWindow.once('ready-to-show', () => {
+
+                // As of Electron 3.0 beta8 there appears to be a bug where
+                // it persists teh zoom factor between restarts and restores
+                // the zoom factor for the user but this can break / confuse
+                // PHZ loading so we always want them to start at 1.0
+                newWindow.webContents.setZoomFactor(1.0);
 
                 newWindow.show();
 

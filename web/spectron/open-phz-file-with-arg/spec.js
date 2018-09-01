@@ -2,9 +2,10 @@ const path = require('path');
 const {Spectron} = require("../../js/test/Spectron");
 
 describe('Open specific PHZ file from command line', function () {
+
     this.timeout(10000);
 
-    let examplePHZ = path.join(__dirname, "../../../example.phz");
+    let examplePHZ = path.join(__dirname, "../../../docs/example.phz");
 
     Spectron.setup(path.join(__dirname, '../../..'), examplePHZ);
 

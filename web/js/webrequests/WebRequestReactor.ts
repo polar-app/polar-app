@@ -189,5 +189,8 @@ export interface WebRequestDetails {
 
     readonly id: number;
     readonly url: string;
+    readonly method: string;
+    readonly webContentsId?: number;
+    readonly resourceType: string;
 
 }

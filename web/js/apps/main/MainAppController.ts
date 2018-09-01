@@ -6,7 +6,7 @@ import {FileLoader} from './loaders/FileLoader';
 import {Datastore} from '../../datastore/Datastore';
 import {Webserver} from '../../backend/webserver/Webserver';
 import {ProxyServer} from '../../backend/proxyserver/ProxyServer';
-import {BROWSER_WINDOW_OPTIONS, MainBrowserWindowFactory} from './MainBrowserWindowFactory';
+import {BROWSER_WINDOW_OPTIONS, MainAppBrowserWindowFactory} from './MainAppBrowserWindowFactory';
 import MenuItem = Electron.MenuItem;
 
 const process = require('process');
@@ -40,7 +40,7 @@ export class MainAppController {
 
         let url = AppPaths.resource('./apps/capture/start-capture/index.html')
 
-        await MainBrowserWindowFactory.createWindow(browserWindowOptions, url);
+        await MainAppBrowserWindowFactory.createWindow(browserWindowOptions, url);
 
 
     }
@@ -59,14 +59,14 @@ export class MainAppController {
     }
 
     public async cmdNewWindow() {
-        await MainBrowserWindowFactory.createWindow();
+        await MainAppBrowserWindowFactory.createWindow();
     }
 
     public async cmdOpenInNewWindow() {
 
         let path = await this.promptDoc();
 
-        let targetWindow = await MainBrowserWindowFactory.createWindow(BROWSER_WINDOW_OPTIONS, "about:blank");
+        let targetWindow = await MainAppBrowserWindowFactory.createWindow(BROWSER_WINDOW_OPTIONS, "about:blank");
 
         await this.loadDoc(path, targetWindow);
 
@@ -107,7 +107,7 @@ export class MainAppController {
         let window;
 
         if(newWindow) {
-            window = await MainBrowserWindowFactory.createWindow(BROWSER_WINDOW_OPTIONS, 'about:blank');
+            window = await MainAppBrowserWindowFactory.createWindow(BROWSER_WINDOW_OPTIONS, 'about:blank');
         } else {
             window = BrowserWindow.getFocusedWindow()!;
         }

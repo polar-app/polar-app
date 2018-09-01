@@ -43,6 +43,8 @@ export class PendingWebRequestsListener extends BaseWebRequestsListener {
      */
     onWebRequestEvent(event: NamedWebRequestEvent) {
 
+        //console.log(`event data: ${event.name}\t${event.details.id}\t${event.details.url}\t${event.details.resourceType}\t${event.details.webContentsId}`);
+
         let {name, details, callback} = event;
 
         // WARNING: this code behaves VERY strangely and we DO NOT receive events

@@ -54,8 +54,10 @@ export class PDFLoader implements FileLoader {
         if(currentDirname != stashDir) {
             let fileName = Paths.basename(path);
             let newPath = `${stashDir}/${fileName}`;
+            path = await Files.realpathAsync(path);
 
-            log.info("Importing PDF file from ${path} to ${newPath}");
+            log.info(`Importing PDF file from ${path} to ${newPath}`);
+
 
             await Files.copyFileAsync(path, newPath);
             return newPath;

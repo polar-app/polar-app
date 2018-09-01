@@ -1,5 +1,6 @@
 import {SpectronOutputMonitorService} from './SpectronOutputMonitorService';
 import {TestResultReader} from './results/TestResultReader';
+
 const {Application} = require('spectron');
 const electronPath = require('electron');
 
@@ -92,3 +93,28 @@ export interface RunCallback {
     (testResultReader: TestResultReader): void;
 
 }
+
+
+/**
+ * The Spectron Application object with our custom type annotations.  We had
+ * to add this as around for Typescript causing Spectron and jquery to collide.
+ */
+export interface TApplication {
+
+    client: TBrowser;
+
+}
+
+export interface TBrowser {
+
+    windowHandle(): string;
+
+    windowHandles(): WindowHandle[];
+
+    window(windowHandle: WindowHandle): void;
+
+    getTitle(): string;
+
+}
+
+type WindowHandle = string;

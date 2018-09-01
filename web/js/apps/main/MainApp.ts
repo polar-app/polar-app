@@ -7,7 +7,7 @@ import {Directories} from '../../datastore/Directories';
 import {CaptureController} from '../../capture/controller/CaptureController';
 import {DialogWindowService} from '../../ui/dialog_window/DialogWindowService';
 import {DefaultFileLoader} from './loaders/DefaultFileLoader';
-import {MainBrowserWindowFactory} from './MainBrowserWindowFactory';
+import {MainAppBrowserWindowFactory} from './MainAppBrowserWindowFactory';
 import {Webserver} from '../../backend/webserver/Webserver';
 import {ProxyServer} from '../../backend/proxyserver/ProxyServer';
 import {CacheInterceptorService} from '../../backend/interceptor/CacheInterceptorService';
@@ -157,7 +157,7 @@ export class MainApp {
             // On OS X it's common to re-create a window in the app when the
             // dock icon is clicked and there are no other windows open.
 
-            await MainBrowserWindowFactory.createWindow();
+            await MainAppBrowserWindowFactory.createWindow();
 
         });
 
