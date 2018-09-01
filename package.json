@@ -47,7 +47,6 @@
     "@types/mocha": "^5.2.5",
     "@types/prop-types": "^15.5.5",
     "@types/react-jsonschema-form": "^1.0.8",
-    "@types/webdriverio": "^4.10.3",
     "chai": "^4.1.2",
     "chai-diff": "^1.0.1",
     "dtsmake": "0.0.10",
