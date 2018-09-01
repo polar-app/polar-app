@@ -25,7 +25,7 @@ describe('DebugWebRequestsListener', function () {
         });
     });
     Spectron.setup(__dirname);
-    it('Make sure they are written to the log.', function () {
+    xit('Make sure they are written to the log.', function () {
         return __awaiter(this, void 0, void 0, function* () {
             assert.equal(yield this.app.client.getWindowCount(), 1);
             let testResultReader = new WebDriverTestResultReader_1.WebDriverTestResultReader(this.app);

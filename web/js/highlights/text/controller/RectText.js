@@ -1,38 +1,12 @@
-/**
- *
- */
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 class RectText {
-
     constructor(obj) {
-
-        /**
-         *
-         * @type {Rect}
-         */
-        this.clientRects = undefined;
-
-        /**
-         *
-         * @type {Rect}
-         */
-        this.boundingClientRect = undefined;
-
-        /**
-         *
-         * @type {Rect}
-         */
-        this.boundingPageRect = undefined;
-
-        /**
-         *
-         * @type {String}
-         */
-        this.text = undefined;
-
-        Object.assign(this, obj);
-
+        this.text = obj.text;
+        this.clientRects = obj.clientRects;
+        this.boundingClientRect = obj.boundingClientRect;
+        this.boundingPageRect = obj.boundingPageRect;
     }
-
 }
-
-module.exports.RectText = RectText;
+exports.RectText = RectText;
+//# sourceMappingURL=RectText.js.map

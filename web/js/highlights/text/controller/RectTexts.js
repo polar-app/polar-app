@@ -1,55 +1,31 @@
-const {Point} = require("../../../Point");
-const {Objects} = require("../../../util/Objects");
-const {Rect} = require("../../../Rect");
-const {Rects} = require("../../../Rects");
-const {RectText} = require("./RectText");
-const {TextNodes} = require("../selection/TextNodes");
-
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const Point_1 = require("../../../Point");
+const Rects_1 = require("../../../Rects");
+const RectText_1 = require("./RectText");
+const TextNodes_1 = require("../selection/TextNodes");
 class RectTexts {
-
-    /**
-     *
-     * @param textNodes
-     */
     static toRectTexts(textNodes) {
         return textNodes.map(RectTexts.toRectText)
-                        .filter(current => current.boundingPageRect.width > 0 && current.boundingPageRect.height > 0);
+            .filter(current => current.boundingPageRect.width > 0 && current.boundingPageRect.height > 0);
     }
-
-    /**
-     * Take a Node of type TEXT and build a RectText including the the text,
-     * the rects, etc.
-     *
-     * @param textNode {Node}
-     * @return {RectText}
-     */
     static toRectText(textNode) {
-
-        let range = TextNodes.getRange(textNode);
-
-        // FIXME: this is wrong and we are using teh wrong scroll position.
-
+        let range = TextNodes_1.TextNodes.getRange(textNode);
         let win = textNode.ownerDocument.defaultView;
-
-        let scrollPoint = new Point({
+        let scrollPoint = new Point_1.Point({
             x: win.scrollX,
             y: win.scrollY
         });
-
         let boundingClientRect = range.getBoundingClientRect();
-
-        let boundingPageRect = new Rect(Objects.duplicate(boundingClientRect));
-        boundingPageRect = Rects.relativeTo(scrollPoint, boundingPageRect);
-
-        return new RectText({
+        let boundingPageRect = Rects_1.Rects.validate(boundingClientRect);
+        boundingPageRect = Rects_1.Rects.relativeTo(scrollPoint, boundingPageRect);
+        return new RectText_1.RectText({
             clientRects: range.getClientRects(),
             boundingClientRect,
             boundingPageRect,
             text: textNode.textContent
         });
-
     }
-
 }
-
-module.exports.RectTexts = RectTexts;
+exports.RectTexts = RectTexts;
+//# sourceMappingURL=RectTexts.js.map

@@ -19,7 +19,7 @@ describe('DebugWebRequestsListener', function () {
 
     Spectron.setup(__dirname);
 
-    it('Make sure they are written to the log.', async function () {
+    xit('Make sure they are written to the log.', async function () {
 
         assert.equal(await this.app.client.getWindowCount(), 1);
 

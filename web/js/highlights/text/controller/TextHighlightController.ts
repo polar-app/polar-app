@@ -8,8 +8,6 @@ import {DocFormatFactory} from '../../../docformat/DocFormatFactory';
 import {DocFormat} from '../../../docformat/DocFormat';
 import {KeyEvents} from '../../../KeyEvents';
 import {TextHighlighterFactory} from './TextHighlighterFactory';
-import {Screenshots} from '../../../screenshots/Screenshots';
-import {SelectionScreenshot, SelectionScreenshots} from './SelectionScreenshots';
 import {TextExtracter} from './TextExtracter';
 import {TextHighlightRecord, TextHighlightRecords} from '../../../metadata/TextHighlightRecords';
 import {Screenshot} from '../../../screenshots/Screenshot';
@@ -17,11 +15,10 @@ import {Image} from '../../../metadata/Image';
 
 import $ from '../../../ui/JQuery';
 import {TextHighlight} from '../../../metadata/TextHighlight';
-import {ExecutionTimer} from '../../../util/ExecutionTimer';
+import {SelectedContents} from '../selection/SelectedContents';
 
 const {TextHighlightRows} = require("./TextHighlightRows");
 
-const {SelectedContents} = require("../selection/SelectedContents");
 const {TextSelections} = require("./TextSelections");
 
 const log = Logger.create();

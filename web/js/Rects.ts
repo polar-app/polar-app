@@ -29,7 +29,7 @@ export class Rects {
         // make sure the input is valid before we work on it.
         rect = Rects.validate(rect);
 
-        rect = Object.assign(new Rect(), rect);
+        rect = new Rect(rect);
 
         let result: any = {};
 
@@ -85,7 +85,7 @@ export class Rects {
     static relativeTo(point: Point, rect: Rect) {
 
         rect = Rects.validate(rect);
-        rect = Object.assign(new Rect(), rect);
+        rect = new Rect(rect);
 
         rect.left = rect.left + point.x;
         rect.top = rect.top + point.y;
@@ -112,7 +112,7 @@ export class Rects {
      */
     static move(rect: Rect, dir: Direction, absolute: boolean) {
 
-        rect = Object.assign(new Rect(), rect);
+        rect = new Rect(rect);
 
         if(absolute) {
 
@@ -343,7 +343,7 @@ export class Rects {
      */
     static createFromBasicRect(rect: any): Rect {
 
-        rect = Object.assign(new Rect(), rect);
+        rect = new Rect(rect);
 
         // TODO: add x,y in the future.
 
