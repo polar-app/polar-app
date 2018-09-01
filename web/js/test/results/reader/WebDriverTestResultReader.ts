@@ -23,8 +23,11 @@ export class WebDriverTestResultReader implements TestResultReader {
 
             function poll() {
 
-                if (window.SPECTRON_TEST_RESULT !== null) {
+                if (window.SPECTRON_TEST_RESULT !== null &&
+                    window.SPECTRON_TEST_RESULT !== undefined) {
+
                     done(window.SPECTRON_TEST_RESULT);
+
                 }
 
                 setTimeout(poll, 250);

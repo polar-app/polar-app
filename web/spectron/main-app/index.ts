@@ -22,5 +22,6 @@ async function createWindow(): Promise<BrowserWindow> {
 
 SpectronMain2.create({windowFactory: createWindow}).run(async state => {
 
+    await state.testResultWriter.write(true);
 
 });
