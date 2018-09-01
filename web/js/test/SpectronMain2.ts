@@ -17,7 +17,8 @@ const BROWSER_OPTIONS = {
 };
 
 /**
- * Code for reliably working with the main process in Spectron.
+ * Code for reliably working with the main process in Spectron.  Waits for app
+ * 'ready', sets up windows, etc.
  */
 export class SpectronMain2 {
 

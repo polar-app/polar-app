@@ -1,12 +1,9 @@
-
-import {SpectronMain} from '../../js/test/SpectronMain';
 import {ProxyServerConfig} from '../../js/backend/proxyserver/ProxyServerConfig';
 import {CacheRegistry} from '../../js/backend/proxyserver/CacheRegistry';
 import {CacheInterceptorService} from '../../js/backend/interceptor/CacheInterceptorService';
+import {SpectronMain2} from '../../js/test/SpectronMain2';
 
-async function start() {
-
-    let mainWindow = await SpectronMain.setup();
+SpectronMain2.create().run(async state => {
 
     let proxyServerConfig = new ProxyServerConfig(1234);
 
@@ -18,16 +15,20 @@ async function start() {
 
     // add our phz file to the cache registry...
     await cacheRegistry.registerFile('/tmp/cache-interceptor-service.phz');
-    //.catch(err => console.log(err));
 
     console.log("Interceptor service started...");
 
     let url = "https://journal.artfuldev.com/unit-testing-node-applications-with-typescript-using-mocha-and-chai-384ef05f32b2";
 
-    mainWindow.loadURL(url);
+    //state.window.loadURL(url);
 
-    console.log("Loaded main URL")
+    console.log("Loaded main URL");
 
-}
+    //await Time.sleep(5000);
 
-start().catch(err => console.log(err));
+    await state.testResultWriter.write(true);
+
+    console.log("Wrote results to test writer!");
+
+});
+

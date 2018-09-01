@@ -1,6 +1,6 @@
-import {SpectronMain} from '../../js/test/SpectronMain';
+import {SpectronMain2} from '../../js/test/SpectronMain2';
 
-SpectronMain.run(async state => {
+SpectronMain2.create().run(async state => {
 
     state.window.loadFile(__dirname + '/app.html');
 

@@ -80,7 +80,10 @@ class App<P> extends React.Component<{}, IAppState> {
                     progress = Optional.of(docMeta.docInfo.progress).getOrElse(0);
                     filename = Optional.of(docMeta.docInfo.filename).getOrUndefined();
                     added = Optional.of(docMeta.docInfo.added).getOrUndefined();
-                    //added = "asdf"
+
+                    // added = Optional.of(docMeta.docInfo.added)
+                    //     .map(value => new ISODateTime(value))
+                    //     .getOrUndefined();
 
                 }
 
@@ -163,9 +166,13 @@ class App<P> extends React.Component<{}, IAppState> {
                             },
                             {
                                 Header: 'Added',
+                                //accessor: (row: any) => row.added,
                                 accessor: 'added',
                                 maxWidth: 200,
-                                defaultSortDesc: true
+                                defaultSortDesc: true,
+                                // Cell: (data: any) => (
+                                //     <div>{Optional.of(data.value).getOrElse('')}</div>
+                                // )
                             },
                             //
                             // d => {
