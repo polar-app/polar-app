@@ -20,7 +20,7 @@ describe("CacheInterceptorService", function () {
             yield MockPHZWriter_1.MockPHZWriter.write(path);
         });
     });
-    it('Load PHZ file via cache', function () {
+    xit('Load PHZ file via cache', function () {
         return __awaiter(this, void 0, void 0, function* () {
             yield SpectronSpec_1.SpectronSpec.create(this.app).waitFor(true);
         });

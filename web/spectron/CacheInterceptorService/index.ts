@@ -4,23 +4,29 @@ import {CacheInterceptorService} from '../../js/backend/interceptor/CacheInterce
 import {SpectronMain2} from '../../js/test/SpectronMain2';
 
 SpectronMain2.create().run(async state => {
+    //
+    // let proxyServerConfig = new ProxyServerConfig(1234);
+    //
+    // let cacheRegistry = new CacheRegistry(proxyServerConfig);
+    //
+    // let cacheInterceptorService = new CacheInterceptorService(cacheRegistry);
+    //
+    // await cacheInterceptorService.start();
+    //
+    // // add our phz file to the cache registry...
+    // await cacheRegistry.registerFile('/tmp/cache-interceptor-service.phz');
+    //
+    // console.log("Interceptor service started...");
+    //
+    // let url = "https://journal.artfuldev.com/unit-testing-node-applications-with-typescript-using-mocha-and-chai-384ef05f32b2";
+    //
+    // state.window.loadURL(url);
 
-    let proxyServerConfig = new ProxyServerConfig(1234);
+    // FIXME: ok.. this will NOT work because the app we're loading does not run
+    // SpectronRenderer so we don't have any way to rendezvous around the result
+    // of the test.
 
-    let cacheRegistry = new CacheRegistry(proxyServerConfig);
-
-    let cacheInterceptorService = new CacheInterceptorService(cacheRegistry);
-
-    await cacheInterceptorService.start();
-
-    // add our phz file to the cache registry...
-    await cacheRegistry.registerFile('/tmp/cache-interceptor-service.phz');
-
-    console.log("Interceptor service started...");
-
-    let url = "https://journal.artfuldev.com/unit-testing-node-applications-with-typescript-using-mocha-and-chai-384ef05f32b2";
-
-    //state.window.loadURL(url);
+    state.window.loadURL(`file://${__dirname}/app.html`);
 
     console.log("Loaded main URL");
 

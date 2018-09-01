@@ -17,7 +17,7 @@ describe("CacheInterceptorService", function () {
 
     });
 
-    it('Load PHZ file via cache', async function () {
+    xit('Load PHZ file via cache', async function () {
 
         await SpectronSpec.create(this.app).waitFor(true);
 
