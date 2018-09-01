@@ -56,7 +56,7 @@ app.on('ready', async () => {
     await Logging.init();
 
     let mainApp = new MainApp(datastore);
-    let mainAppController = await mainApp.start();
+    let {mainAppController} = await mainApp.start();
 
     let fileArg = Cmdline.getDocArg(process.argv);
 

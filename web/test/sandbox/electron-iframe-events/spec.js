@@ -5,13 +5,13 @@ const {Spectron} = require("../../../js/test/Spectron");
 
 const TIMEOUT = 10000;
 
-describe('DebugWebRequestsListener', function () {
+describe('electron-iframe-events', function () {
 
     this.timeout(TIMEOUT);
 
     Spectron.setup(__dirname);
 
-    it('shows an initial window', async function () {
+    it('basic', async function () {
 
         assert.equal(await this.app.client.getWindowCount(), 1);
 

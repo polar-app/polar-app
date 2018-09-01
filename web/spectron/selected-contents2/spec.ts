@@ -11,7 +11,7 @@ describe('selected-contents2', function() {
     Spectron.setup(__dirname);
     this.timeout(10000);
 
-    it('basic test', async function() {
+    xit('basic test', async function() {
 
         assert.equal(await this.app.client.getWindowCount(), 1);
 

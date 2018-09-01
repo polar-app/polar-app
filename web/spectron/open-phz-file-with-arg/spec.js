@@ -9,7 +9,9 @@ describe('Open specific PHZ file from command line', function () {
 
     Spectron.setup(path.join(__dirname, '../../..'), examplePHZ);
 
-    it('PDF file loads', async function () {
+    // TODO: disabling this right now as command line file loading isn't a priority.
+
+    xit('PDF file loads', async function () {
 
         // FIXME: we have to verify that the PHZ is actually loaded... not sure
         // how to do this yet.

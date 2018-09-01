@@ -20,6 +20,7 @@ import {Datastore} from '../../datastore/Datastore';
 import {ScreenshotService} from '../../screenshots/ScreenshotService';
 import {MainAppService} from './ipc/MainAppService';
 import {AppLauncher} from './AppLauncher';
+import BrowserWindow = Electron.BrowserWindow;
 
 declare var global: any;
 
@@ -39,7 +40,7 @@ export class MainApp {
         this.opts = opts;
     }
 
-    public async start(): Promise<MainAppController> {
+    public async start(): Promise<MainAppStarted> {
 
         // share the disk datastore with the remote.
 
@@ -161,7 +162,7 @@ export class MainApp {
 
         });
 
-        return mainAppController;
+        return {mainWindow, mainAppController};
 
     }
 
@@ -170,4 +171,9 @@ export class MainApp {
 export interface MainAppOpts {
 
 
+}
+
+export interface MainAppStarted {
+    mainWindow: BrowserWindow,
+    mainAppController: MainAppController;
 }

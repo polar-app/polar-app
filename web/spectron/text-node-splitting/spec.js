@@ -11,7 +11,7 @@ describe('Text Node Splitting', function () {
 
     Spectron.setup(__dirname);
 
-    it('splitNode', async function () {
+    xit('splitNode', async function () {
 
         assert.equal(await this.app.client.getWindowCount(), 1);
 
@@ -30,7 +30,7 @@ describe('Text Node Splitting', function () {
 
     });
 
-    it('computeTextRegions', async function () {
+    xit('computeTextRegions', async function () {
 
         assert.equal(await this.app.client.getWindowCount(), 1);
 
@@ -89,7 +89,7 @@ describe('Text Node Splitting', function () {
 
     });
 
-    it('computeTextBlocks', async function () {
+    xit('computeTextBlocks', async function () {
 
         assert.equal(await this.app.client.getWindowCount(), 1);
 
@@ -237,7 +237,7 @@ describe('Text Node Splitting', function () {
 
     });
 
-    it('mergeTextBlocks', async function () {
+    xit('mergeTextBlocks', async function () {
 
         assert.equal(await this.app.client.getWindowCount(), 1);
 

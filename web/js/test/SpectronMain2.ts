@@ -22,9 +22,9 @@ const BROWSER_OPTIONS = {
  */
 export class SpectronMain2 {
 
-    private readonly options: Readonly<SpectronMainOptions>;
+    private readonly options: Readonly<ISpectronMainOptions>;
 
-    private constructor(options: Readonly<SpectronMainOptions>) {
+    private constructor(options: Readonly<ISpectronMainOptions>) {
         this.options = options;
     }
 
@@ -72,7 +72,7 @@ export class SpectronMain2 {
         this.start(callback).catch(err => console.log(err));
     }
 
-    static create(options: SpectronMainOptions = new SpectronMainOptions().build()) {
+    static create(options: ISpectronMainOptions = new SpectronMainOptions().build()) {
         return new SpectronMain2(options);
     }
 
@@ -108,7 +108,7 @@ export class SpectronMainState {
 
 }
 
-export class SpectronMainOptions {
+export class SpectronMainOptions implements ISpectronMainOptions {
 
     public windowFactory: WindowFactory = defaultWindowFactory;
 
@@ -122,6 +122,17 @@ export class SpectronMainOptions {
         return Object.freeze(this);
     }
 
+}
+
+export interface ISpectronMainOptions {
+
+    windowFactory: WindowFactory;
+
+    /**
+     * True to automatically start dev tools on each window when using the
+     * default window factory.
+     */
+    enableDevTools?: boolean;
 }
 
 export interface StateCallback {

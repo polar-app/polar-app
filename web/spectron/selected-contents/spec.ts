@@ -9,7 +9,7 @@ describe('SelectContents of HTML entities.', function () {
 
     Spectron.setup(__dirname);
 
-    it('Test of select contents... ', async function () {
+    xit('Test of select contents... ', async function () {
 
         assert.equal(await this.app.client.getWindowCount(), 1);
 

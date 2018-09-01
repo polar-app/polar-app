@@ -17,7 +17,7 @@ const TIMEOUT = 10000;
 describe('SelectContents of HTML entities.', function () {
     this.timeout(TIMEOUT);
     Spectron_1.Spectron.setup(__dirname);
-    it('Test of select contents... ', function () {
+    xit('Test of select contents... ', function () {
         return __awaiter(this, void 0, void 0, function* () {
             assert_1.default.equal(yield this.app.client.getWindowCount(), 1);
             let webContents = this.app.webContents;

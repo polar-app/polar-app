@@ -1,8 +1,11 @@
 import {SpectronOutputMonitorService} from './SpectronOutputMonitorService';
 import {TestResultReader} from './results/TestResultReader';
+import {Logger} from '../logger/Logger';
 
 const {Application} = require('spectron');
 const electronPath = require('electron');
+
+const log = Logger.create();
 
 const TIMEOUT = 10000;
 
@@ -19,7 +22,7 @@ export class Spectron {
      */
     static setup(dir: string, ...args: any[]) {
 
-        console.log("Configuring spectron...");
+        log.info("Configuring spectron...");
 
         // TODO: since spectron requires a window to operate, we should ALWAYS
         // create a window and then return it to the user so that they can
@@ -30,7 +33,7 @@ export class Spectron {
 
         beforeEach(async function () {
 
-            console.log("Starting spectron with dir: " + dir);
+            log.info("Starting spectron with dir: " + dir);
 
             this.app = new Application({
 
@@ -50,9 +53,9 @@ export class Spectron {
 
             });
 
-            console.log("Starting app...");
+            log.info("Starting app...");
             let app = await this.app.start();
-            console.log("Starting app...done");
+            log.info("Starting app...done");
 
             spectronOutputMonitorService = new SpectronOutputMonitorService(app);
             spectronOutputMonitorService.start();
@@ -63,7 +66,7 @@ export class Spectron {
 
         afterEach(function () {
             //
-            console.log("Going to shutdown now... ");
+            log.info("Going to shutdown now... ");
 
             if(spectronOutputMonitorService) {
                 spectronOutputMonitorService.stop();
@@ -71,10 +74,10 @@ export class Spectron {
             }
 
             if (this.app && this.app.isRunning()) {
-                console.log("Telling app to stop");
+                log.info("Telling app to stop");
                 return this.app.stop()
             } else {
-                console.log("App already stopped.");
+                log.info("App already stopped.");
             }
 
         });

@@ -11,7 +11,9 @@ describe('Open specific PDF file from command line', function () {
 
     Spectron.setup(path.join(__dirname, '../../..'), examplePDF);
 
-    it('PDF file loads', async function () {
+    // TODO: disabling this right now as command line file loading isn't a priority.
+
+    xit('PDF file loads', async function () {
 
         assert.ok(await Files.existsAsync(examplePDF));
 
@@ -19,7 +21,7 @@ describe('Open specific PDF file from command line', function () {
 
         let client: TBrowser = this.app.client;
 
-        console.log("FIXME: " + client.getTitle());
+        //console.log("FIXME: " + client.getTitle());
 
         console.log("OK.. both windows are up.");
 
