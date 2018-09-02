@@ -124,7 +124,7 @@ export class ComponentManager {
 
             let containerState = containerLifecycleListener.getState();
 
-            if(containerState.visible) {
+            if(containerState && containerState.visible) {
                 // draw it manually the first time.
                 callback(containerState);
             }

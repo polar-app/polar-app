@@ -17,7 +17,6 @@ export interface ContainerLifecycleListener {
      * Get the current state from an event.
      *
      * @param event
-     * @return {ContainerLifecycleState | null}
      */
     getStateFromEvent(event: any): ContainerLifecycleState | undefined;
 
@@ -25,8 +24,7 @@ export interface ContainerLifecycleListener {
     /**
      * Get the current state.
      *
-     * @return {ContainerLifecycleState}
      */
-    getState(): ContainerLifecycleState;
+    getState(): ContainerLifecycleState | undefined;
 
 }

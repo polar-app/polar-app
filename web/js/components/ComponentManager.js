@@ -50,7 +50,7 @@ class ComponentManager {
             let containerLifecycleListener = this.containerProvider.createContainerLifecycleListener(container);
             containerLifecycleListener.register(callback);
             let containerState = containerLifecycleListener.getState();
-            if (containerState.visible) {
+            if (containerState && containerState.visible) {
                 callback(containerState);
             }
             this.components[componentEvent.id] = new ComponentEntry(containerLifecycleListener, component);

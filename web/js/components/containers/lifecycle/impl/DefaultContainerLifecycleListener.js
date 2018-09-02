@@ -21,7 +21,7 @@ class DefaultContainerLifecycleListener extends AbstractContainerLifecycleListen
         if (this.container.element.querySelector(".loadingIcon") !== null) {
             return this._createContainerLifecycleEvent(false);
         }
-        throw new Error("Unable to determine state.");
+        return undefined;
     }
 }
 exports.DefaultContainerLifecycleListener = DefaultContainerLifecycleListener;

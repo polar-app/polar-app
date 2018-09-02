@@ -15,7 +15,6 @@ export class DefaultContainerLifecycleListener extends AbstractContainerLifecycl
      * Get the current state from an event.
      *
      * @param event
-     * @return {ContainerLifecycleState | null}
      */
     getStateFromEvent(event: any) {
 
@@ -34,7 +33,6 @@ export class DefaultContainerLifecycleListener extends AbstractContainerLifecycl
     /**
      * Get the current state.
      *
-     * @return {ContainerLifecycleState}
      */
     getState() {
 
@@ -46,7 +44,7 @@ export class DefaultContainerLifecycleListener extends AbstractContainerLifecycl
             return this._createContainerLifecycleEvent(false);
         }
 
-        throw new Error("Unable to determine state.")
+        return undefined;
 
     }
 

@@ -55,9 +55,9 @@ export abstract class AbstractContainerLifecycleListener implements ContainerLif
 
     }
 
-    abstract getStateFromEvent(event: any): ContainerLifecycleState | undefined ;
+    abstract getStateFromEvent(event: any): ContainerLifecycleState | undefined;
 
-    abstract getState(): ContainerLifecycleState ;
+    abstract getState(): ContainerLifecycleState | undefined;
 
     unregister() {
 
