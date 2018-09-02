@@ -1,11 +1,8 @@
 import {WebDriverTestResultReader} from '../../js/test/results/reader/WebDriverTestResultReader';
+import {Files} from '../../js/util/Files';
 
 const assert = require('assert');
-const {assertJSON} = require("../../js/test/Assertions");
 const {Spectron} = require("../../js/test/Spectron");
-const electronPath = require('electron');
-const path = require('path');
-const {Files} = require("../../js/util/Files.js");
 
 describe('DebugWebRequestsListener', function () {
 

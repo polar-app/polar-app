@@ -4,7 +4,6 @@ import {assertJSON} from '../../js/test/Assertions';
 import {Dictionaries} from '../../js/util/Dictionaries';
 
 const assert = require('assert');
-const {Functions} = require("../../js/util/Functions");
 
 describe('selected-contents2', function() {
 

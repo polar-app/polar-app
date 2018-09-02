@@ -4,9 +4,9 @@
 import {Ranges} from './Ranges';
 import {SelectedContent} from './SelectedContent';
 import {Selections} from './Selections';
+import {RectTexts} from '../controller/RectTexts';
 
 const {TextNodeRows} = require("./TextNodeRows");
-const {RectTexts} = require("../controller/RectTexts");
 const sanitizeHtml = require("sanitize-html");
 
 export class SelectedContents {
