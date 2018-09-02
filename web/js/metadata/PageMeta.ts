@@ -109,7 +109,7 @@ export class PageMeta extends SerializedObject {
     validate() {
 
         super.validate();
-        Preconditions.assertInstanceOf(this.pageInfo, PageInfo, "pageInfo");
+        //Preconditions.assertInstanceOf(this.pageInfo, PageInfo, "pageInfo");
 
     }
 

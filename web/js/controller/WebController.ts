@@ -15,9 +15,6 @@ import {AnnotationsController} from '../annotations/controller/AnnotationsContro
 import {DocFormat} from '../docformat/DocFormat';
 import {AreaHighlightController} from '../highlights/area/controller/AreaHighlightController';
 import {PagemarkCoverageEventListener} from '../pagemarks/controller/PagemarkCoverageEventListener';
-import {DocDetail, UpdatableDocDetails} from '../metadata/DocDetail';
-import {Objects} from '../util/Objects';
-import {UpdateNoteFieldsClient} from '../apps/sync/framework/anki/clients/UpdateNoteFieldsClient';
 import {DocDetails} from '../metadata/DocDetails';
 
 

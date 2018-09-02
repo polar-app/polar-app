@@ -23,4 +23,16 @@ export class Screenshots {
 
     }
 
+    public static parseURI(value: string): ScreenshotURI {
+        return {
+            value,
+            id: value.split(":")[1]
+        }
+    }
+
+}
+
+export interface ScreenshotURI {
+    value: string;
+    id: string;
 }

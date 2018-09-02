@@ -2,9 +2,10 @@ import {TextHighlightRecords} from './TextHighlightRecords';
 import {IRect} from '../util/rects/IRect';
 import {TextRect} from './TextRect';
 import {TextHighlight} from './TextHighlight';
-import {IDimensions} from '../util/Dimensions';
 import {Image} from './Image';
 import {notNull} from '../Preconditions';
+import {PageMeta} from './PageMeta';
+import {Screenshots} from './Screenshots';
 
 export class TextHighlights {
 
@@ -26,6 +27,22 @@ export class TextHighlights {
 
     public static attachImage(textHighlight: TextHighlight, image: Image) {
         textHighlight.images[notNull(image.rel)] = image;
+    }
+
+    public static deleteTextHighlight(pageMeta: PageMeta, textHighlight: TextHighlight) {
+
+        Object.values(textHighlight.images).forEach(image => {
+
+            if( image.src.startsWith('screenshot:')) {
+                // delete the image this screenshot references
+                let screenshotURI = Screenshots.parseURI(image.src);
+                delete pageMeta.screenshots[screenshotURI.id];
+            }
+
+        });
+
+        delete pageMeta.textHighlights[textHighlight.id];
+
     }
 
 }

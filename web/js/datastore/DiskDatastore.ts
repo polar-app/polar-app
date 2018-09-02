@@ -103,14 +103,21 @@ export class DiskDatastore implements Datastore {
         let docDir = this.dataDir + "/" + fingerprint;
 
         if(! await this.existsAsync(docDir)) {
+            log.error("Document dir is missing: " + docDir);
             return null;
         }
 
         let statePath = docDir + "/state.json";
 
+        if(! await this.existsAsync(statePath)) {
+            log.error("File does not exist: " + statePath);
+            return null;
+        }
+
         let statePathStat = await this.statAsync(statePath);
 
         if( ! statePathStat.isFile() ) {
+            log.error("Path is not a file: " + statePath);
             return null;
         }
 
@@ -120,6 +127,7 @@ export class DiskDatastore implements Datastore {
                       .catch(() => false);
 
         if(! canAccess) {
+            log.error("No access: " + statePath);
             return null;
         }
 

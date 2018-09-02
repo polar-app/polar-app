@@ -11,7 +11,6 @@ import {TextHighlighterFactory} from './TextHighlighterFactory';
 import {TextExtracter} from './TextExtracter';
 import {TextHighlightRecord, TextHighlightRecords} from '../../../metadata/TextHighlightRecords';
 import {Image} from '../../../metadata/Image';
-import {TextHighlight} from '../../../metadata/TextHighlight';
 import {SelectedContents} from '../selection/SelectedContents';
 import {SelectionScreenshots} from './SelectionScreenshots';
 import {Hashcodes} from '../../../Hashcodes';
@@ -20,7 +19,6 @@ import {ImageType} from '../../../metadata/ImageType';
 
 import $ from '../../../ui/JQuery';
 import {TextHighlights} from '../../../metadata/TextHighlights';
-import {Screenshot} from '../../../metadata/Screenshot';
 import {Screenshots} from '../../../metadata/Screenshots';
 
 const {TextHighlightRows} = require("./TextHighlightRows");
@@ -28,8 +26,6 @@ const {TextHighlightRows} = require("./TextHighlightRows");
 const {TextSelections} = require("./TextSelections");
 
 const log = Logger.create();
-
-const ENABLE_SCREENSHOTS = false;
 
 export class TextHighlightController {
 
@@ -195,7 +191,11 @@ export class TextHighlightController {
             log.info("Deleting annotationDescriptor: ", JSON.stringify(annotationDescriptor, null, "  "));
 
             let pageMeta = this.model.docMeta.getPageMeta(annotationDescriptor.pageNum);
-            delete pageMeta.textHighlights[annotationDescriptor.id];
+
+            // keep the current highlight.
+            let textHighlight = pageMeta.textHighlights[annotationDescriptor.id];
+
+            TextHighlights.deleteTextHighlight(pageMeta, textHighlight);
 
         });
 
