@@ -268,7 +268,7 @@ export class Capture {
         // write the captured HTML to /tmp for debug purposes.  We can enable this
         // as a command line switch later.
 
-        await Files.writeFileAsync(`/tmp/${filename}.json`, JSON.stringify(captured, null, "  "));
+        //await Files.writeFileAsync(`/tmp/${filename}.json`, JSON.stringify(captured, null, "  "));
 
         log.info("Capturing the HTML...done");
 

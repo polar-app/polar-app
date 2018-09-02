@@ -15,7 +15,7 @@ export class MemoryDatastore implements Datastore {
 
     public readonly logsDir: string;
 
-    private readonly docMetas: {[fingerprint: string]: string} = {};
+    protected readonly docMetas: {[fingerprint: string]: string} = {};
 
     constructor() {
 

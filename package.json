@@ -9,6 +9,7 @@
     "dist-macos": "tsc && electron-builder --config=electron-builder.yml --macos dmg --publish always",
     "dist-win": "tsc && ./scripts/dist-win.sh",
     "test": "./node_modules/.bin/mocha-parallel-tests --max-parallel=1 --exit --recursive 'web/js/**/*Test.js' 'web/spectron/**/*spec.js'",
+    "e2e": "mocha web/spectron/main-app/spec.js",
     "start-with-console": "./node_modules/.bin/electron --enable-remote-debugging --interactive --enable-console-logging ."
   },
   "repository": "https://github.com/burtonator/polar-bookshelf",
