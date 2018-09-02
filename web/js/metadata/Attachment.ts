@@ -7,23 +7,23 @@ export class Attachment extends SerializedObject {
     /**
      * The unique ID for this object.
      */
-    public id: string;
+    public readonly id: string;
 
     /**
      * The mime type of this attachment. image/png, etc
      */
-    public type: string;
+    public readonly type: string;
 
     /**
      * The base64 encoded data for this attachment.
      */
-    public data: string;
+    public readonly data: string;
 
     /**
      * The time this object was created
      *
      */
-    public created: ISODateTime;
+    public readonly created: ISODateTime;
 
     public constructor(opts: any) {
 

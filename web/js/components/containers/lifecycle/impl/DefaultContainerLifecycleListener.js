@@ -1,59 +1,28 @@
-const {AbstractContainerLifecycleListener} = require("./AbstractContainerLifecycleListener");
-const {ContainerLifecycleListener} = require("../ContainerLifecycleListener");
-const {ContainerLifecycleState} = require("../ContainerLifecycleState");
-
-/**
- * Listens to the lifecycle of .page
- */
-class DefaultContainerLifecycleListener extends AbstractContainerLifecycleListener {
-
-    /**
-     * @param container {Container}
-     */
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const AbstractContainerLifecycleListener_1 = require("./AbstractContainerLifecycleListener");
+class DefaultContainerLifecycleListener extends AbstractContainerLifecycleListener_1.AbstractContainerLifecycleListener {
     constructor(container) {
         super(container);
     }
-
-    /**
-     * Get the current state from an event.
-     *
-     * @param event
-     * @return {ContainerLifecycleState | null}
-     */
     getStateFromEvent(event) {
-
         if (event.target && event.target.className === "endOfContent") {
             return this._createContainerLifecycleEvent(true);
         }
-
         if (event.target && event.target.className === "loadingIcon") {
             return this._createContainerLifecycleEvent(false);
         }
-
-        return null;
-
+        return undefined;
     }
-
-    /**
-     * Get the current state.
-     *
-     * @return {ContainerLifecycleState}
-     */
     getState() {
-
-        if(this.container.element.querySelector(".endOfContent") !== null) {
+        if (this.container.element.querySelector(".endOfContent") !== null) {
             return this._createContainerLifecycleEvent(true);
         }
-
-        if(this.container.element.querySelector(".loadingIcon") !== null) {
+        if (this.container.element.querySelector(".loadingIcon") !== null) {
             return this._createContainerLifecycleEvent(false);
         }
-
-        throw new Error("Unable to determine state.")
-
+        throw new Error("Unable to determine state.");
     }
-
-
 }
-
-module.exports.DefaultContainerLifecycleListener = DefaultContainerLifecycleListener;
+exports.DefaultContainerLifecycleListener = DefaultContainerLifecycleListener;
+//# sourceMappingURL=DefaultContainerLifecycleListener.js.map

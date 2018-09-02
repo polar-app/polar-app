@@ -5,9 +5,9 @@ import {Ranges} from './Ranges';
 import {SelectedContent} from './SelectedContent';
 import {Selections} from './Selections';
 import {RectTexts} from '../controller/RectTexts';
+import {HTMLSanitizer} from './HTMLSanitizer';
 
 const {TextNodeRows} = require("./TextNodeRows");
-const sanitizeHtml = require("sanitize-html");
 
 export class SelectedContents {
 
@@ -28,7 +28,7 @@ export class SelectedContents {
 
         // now get the text and the sanitized HTML
         let text = selection.toString();
-        let html = sanitizeHtml(SelectedContents.toHTML(ranges));
+        let html =  HTMLSanitizer.sanitize(SelectedContents.toHTML(ranges));
 
         let textNodes: Node[] = [];
 

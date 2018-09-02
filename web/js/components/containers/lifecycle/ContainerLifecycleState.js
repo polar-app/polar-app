@@ -1,28 +1,10 @@
-/**
- * The state of the container.
- */
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 class ContainerLifecycleState {
-
     constructor(opts) {
-
-        /**
-         * True if this container is now visible.
-         *
-         * @type {boolean}
-         */
-        this.visible = undefined;
-
-        /**
-         * The container we're working with.
-         *
-         * @type {Container}
-         */
-        this.container = undefined;
-
-        Object.assign(this, opts);
-
+        this.visible = opts.visible;
+        this.container = opts.container;
     }
-
 }
-
-module.exports.ContainerLifecycleState = ContainerLifecycleState;
+exports.ContainerLifecycleState = ContainerLifecycleState;
+//# sourceMappingURL=ContainerLifecycleState.js.map

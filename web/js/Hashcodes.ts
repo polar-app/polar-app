@@ -1,8 +1,8 @@
+import {Preconditions} from './Preconditions';
+import {keccak256} from 'js-sha3';
+import uuid from 'uuid';
 
 const base58check = require("base58check");
-import {Preconditions} from './Preconditions';
-import {sha3_256, keccak256} from 'js-sha3';
-
 
 /**
  * Create hashcodes from string data to be used as identifiers in keys.
@@ -31,4 +31,11 @@ export class Hashcodes {
 
     }
 
-};
+    /**
+     * Create a random ID which is the the same format as createID() (opaque).
+     */
+    static createRandomID(len = 10) {
+        return this.createID({uuid: uuid.v4()}, len);
+    }
+
+}

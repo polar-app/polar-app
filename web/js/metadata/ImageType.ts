@@ -1,6 +1,6 @@
-export class ImageType {
-    PNG = 'png';
-    JPEG = 'jpeg';
-    SVG = 'svg';
-    GIF = 'gif';
+export enum ImageType {
+    PNG = 'png',
+    JPEG = 'jpeg',
+    SVG = 'svg',
+    GIF = 'gif'
 }

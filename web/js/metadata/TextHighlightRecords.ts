@@ -1,9 +1,9 @@
-import {Rect} from '../Rect';
 import {Hashcodes} from '../Hashcodes';
 import {ISODateTime} from './ISODateTime';
 import {TextHighlight} from './TextHighlight';
 import {Arrays} from '../util/Arrays';
 import {TextRect} from './TextRect';
+import {IRect} from '../util/rects/IRect';
 
 export class TextHighlightRecords {
 
@@ -14,9 +14,10 @@ export class TextHighlightRecords {
      * object as we're working with it.
      *
      * @return an object with an "id" for a unique hash and a "value" of the
-     * TextHighlight to use.                                                                                                                                                                                                         np
+     * TextHighlight to use.
+     *                                                                                                                                                          np
      */
-    static create(rects: Rect[], textSelections: TextRect[], text: string): TextHighlightRecord {
+    static create(rects: IRect[], textSelections: TextRect[], text: string): TextHighlightRecord {
 
         let id = Hashcodes.createID(rects);
 

@@ -10,14 +10,18 @@ import {KeyEvents} from '../../../KeyEvents';
 import {TextHighlighterFactory} from './TextHighlighterFactory';
 import {TextExtracter} from './TextExtracter';
 import {TextHighlightRecord, TextHighlightRecords} from '../../../metadata/TextHighlightRecords';
-import {Screenshot} from '../../../screenshots/Screenshot';
 import {Image} from '../../../metadata/Image';
-
-import $ from '../../../ui/JQuery';
 import {TextHighlight} from '../../../metadata/TextHighlight';
 import {SelectedContents} from '../selection/SelectedContents';
-import {Screenshots} from '../../../screenshots/Screenshots';
 import {SelectionScreenshots} from './SelectionScreenshots';
+import {Hashcodes} from '../../../Hashcodes';
+import {IDimensions} from '../../../util/Dimensions';
+import {ImageType} from '../../../metadata/ImageType';
+
+import $ from '../../../ui/JQuery';
+import {TextHighlights} from '../../../metadata/TextHighlights';
+import {Screenshot} from '../../../metadata/Screenshot';
+import {Screenshots} from '../../../metadata/Screenshots';
 
 const {TextHighlightRows} = require("./TextHighlightRows");
 
@@ -294,21 +298,17 @@ export class TextHighlightController {
 
     async createTextHighlight(factory: () => Promise<TextHighlightRecord>): Promise<TextHighlightRecord> {
 
-        // FIXME: rework this by having a set of images captured in the main document
-        // and support a URL oir ref:ID which links to the ID of the image.
-        // The problem though is that if we STILL ait for the screenshot at the
-        // beginning it's STILL going to take like 300ms and feel fucking
-        // sluggish.
+        // TODO: this really needs to be reworked so I can test it properly with
+        // some sort of screenshot provider
 
         let doc = notNull(this.docFormat.targetDocument());
         let win = doc.defaultView;
 
-        // TODO: refactor this..
-        //
-        // .. one strategy.. create TWO highlights... replacing the highlight
-        // should be insanely fast.. might not even see it happen.
+        let screenshotID = Hashcodes.createRandomID();
 
-        //let selectionScreenshotPromise = SelectionScreenshots.capture(doc, win);
+        // start the screenshot now but don't await it yet.  this way we're not
+        // blocking the creation of the screenshot in the UI.
+        let selectionScreenshot = SelectionScreenshots.capture(doc, win);
 
         let textHighlightRecord = await factory();
 
@@ -318,8 +318,15 @@ export class TextHighlightController {
         // be better to do this AFTER I've taken the screenshots.
 
         //let highlightScreenshot = await Screenshots.capture(selectionScreenshot.clientRect)
-        //
-        // this.attachScreenshot(textHighlightRecord.value, 'screenshot', selectionScreenshot.screenshot);
+
+        let screenshotDimensions = {
+            width: selectionScreenshot.clientRect.width,
+            height: selectionScreenshot.clientRect.height
+        };
+        let screenshotImageRef = this.toImage(screenshotID, 'screenshot', screenshotDimensions);
+
+        TextHighlights.attachImage(textHighlightRecord.value, screenshotImageRef);
+
         // this.attachScreenshot(textHighlightRecord.value, 'screenshot-with-highlight', highlightScreenshot);
 
         let currentPageMeta = this.docFormat.getCurrentPageMeta();
@@ -331,30 +338,41 @@ export class TextHighlightController {
         // now clear the selection since we just highlighted it.
         win.getSelection().empty();
 
+        // FIXME: delete ALSO needs to remove the screenshot reference we created...
+
         pageMeta.textHighlights[textHighlightRecord.id] = textHighlightRecord.value;
 
-        // delete pageMeta.textHighlights[textHighlightRecord.id];
-        // pageMeta.textHighlights[textHighlightRecord.id] = textHighlightRecord.value;
+        let capturedScreenshot = await selectionScreenshot.capturedScreenshotPromise;
+
+        let screenshot = this.toScreenshot(screenshotID, capturedScreenshot.dataURL, 'screenshot', screenshotDimensions);
+
+        pageMeta.screenshots[screenshot.id] = screenshot;
 
         return textHighlightRecord;
 
     }
 
-    private attachScreenshot(textHighlight: TextHighlight,
-                             rel: string,
-                             screenshot: Screenshot) {
+    private toImage(screenshotID: string, rel: string, dimensions: IDimensions) {
 
-        textHighlight.images[rel] = this.toImage(rel, screenshot);
+        return new Image({
+            src: `screenshot:${screenshotID}`,
+            width: dimensions.width,
+            height: dimensions.height,
+            rel,
+            type: ImageType.PNG
+        });
 
     }
 
-    private toImage(rel: string, screenshot: Screenshot) {
-        return new Image({
-            src: screenshot.dataURL,
-            width: screenshot.dimensions.width,
-            height: screenshot.dimensions.height,
-            rel
-        })
+    private toScreenshot(id: string, src: string, rel: string, dimensions: IDimensions) {
+
+        return Screenshots.create(src, {
+                             width: dimensions.width,
+                             height: dimensions.height,
+                             type: ImageType.PNG,
+                             rel
+                         }, id);
+
     }
 
     extractText(selector: string) {

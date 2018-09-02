@@ -2,7 +2,7 @@ import {IPCHandler} from '../ipc/handler/IPCHandler';
 import {ScreenshotRequest} from './ScreenshotRequest';
 import {IPCMessage} from '../ipc/handler/IPCMessage';
 import {IPCEvent} from '../ipc/handler/IPCEvent';
-import {Screenshot} from './Screenshot';
+import {CapturedScreenshot} from './CapturedScreenshot';
 import {WebContents} from "electron";
 
 export class ScreenshotHandler extends IPCHandler<ScreenshotRequest> {
@@ -11,7 +11,7 @@ export class ScreenshotHandler extends IPCHandler<ScreenshotRequest> {
         return ipcMessage.value;
     }
 
-    protected async handleIPC(event: IPCEvent, screenshotRequest: ScreenshotRequest): Promise<Screenshot> {
+    protected async handleIPC(event: IPCEvent, screenshotRequest: ScreenshotRequest): Promise<CapturedScreenshot> {
 
         let webContents = event.webContents;
 
@@ -24,7 +24,7 @@ export class ScreenshotHandler extends IPCHandler<ScreenshotRequest> {
         let dataURL = image.toDataURL();
         let size = image.getSize();
 
-        let screenshot: Screenshot = {
+        let capturedScreenshot: CapturedScreenshot = {
             dataURL,
             dimensions: {
                 width: size.width,
@@ -32,7 +32,7 @@ export class ScreenshotHandler extends IPCHandler<ScreenshotRequest> {
             }
         };
 
-        return screenshot;
+        return capturedScreenshot;
 
     }
 

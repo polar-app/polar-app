@@ -39,7 +39,7 @@ export class Ranges {
     }
 
     /**
-     * Return HTML content of the range.
+     * Return HTML content of the range selected.
      *
      * @param range
      */
@@ -54,7 +54,7 @@ export class Ranges {
             if(childNode.nodeType === Node.TEXT_NODE) {
                 result += childNode.textContent;
             } else {
-                result += (<HTMLElement>childNode).innerHTML;
+                result += (<HTMLElement>childNode).outerHTML;
             }
 
         });

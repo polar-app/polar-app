@@ -9,8 +9,7 @@ import {Pagemarks} from './Pagemarks';
 import {MetadataSerializer} from './MetadataSerializer';
 import {PageMetas} from './PageMetas';
 import {forDict} from '../util/Functions';
-
-const {TextHighlights} = require("./TextHighlights");
+import {TextHighlights} from './TextHighlights';
 
 const log = Logger.create();
 

@@ -1,15 +1,15 @@
-import {Screenshots} from '../../../screenshots/Screenshots';
+import {CapturedScreenshots} from '../../../screenshots/CapturedScreenshots';
 import {IFrames} from '../../../util/dom/IFrames';
-import {Screenshot} from '../../../screenshots/Screenshot';
+import {CapturedScreenshot} from '../../../screenshots/CapturedScreenshot';
 
 /**
  * Remove the selection, take a screenshot, then restore it.
  */
 export class SelectionScreenshots {
 
-    public static async capture(doc: Document, win: Window) {
+    public static capture(doc: Document, win: Window) {
 
-        return await this.withoutRange(doc, win, async range => {
+        return this.withoutRange(doc, win, range => {
 
             return this.captureRange(win, range);
 
@@ -17,26 +17,27 @@ export class SelectionScreenshots {
 
     }
 
-    public static async captureRange(win: Window, range: Range): Promise<SelectionScreenshot> {
+    public static captureRange(win: Window, range: Range): SelectionScreenshot {
         let clientRect = this.getClientRect(range);
         clientRect = IFrames.computeTopLevelClientRect(clientRect, win);
 
-        let screenshot = await Screenshots.capture(clientRect);
-        return {clientRect, screenshot};
+        let capturedScreenshotPromise = CapturedScreenshots.capture(clientRect);
+
+        return {clientRect, capturedScreenshotPromise};
     }
 
     static getClientRect(range: Range) {
         return range.getBoundingClientRect();
     }
 
-    static async withoutRange<T>(doc: Document, win: Window, handler: (range: Range) => Promise<T>): Promise<T> {
+    static withoutRange<T>(doc: Document, win: Window, handler: (range: Range) => T): T {
 
         let sel = win.getSelection();
         let range = sel.getRangeAt(0);
 
         doc.body.classList.toggle('selection-disabled', true);
 
-        let result = await handler(range);
+        let result = handler(range);
 
         doc.body.classList.toggle('selection-disabled', false);
 
@@ -53,6 +54,6 @@ export interface SelectionScreenshot {
      */
     readonly clientRect: ClientRect;
 
-    readonly screenshot: Screenshot;
+    readonly capturedScreenshotPromise: Promise<CapturedScreenshot>;
 
 }

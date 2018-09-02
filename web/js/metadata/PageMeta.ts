@@ -5,6 +5,8 @@ import {Preconditions} from '../Preconditions';
 import {TextHighlight} from './TextHighlight';
 import {AreaHighlight} from './AreaHighlight';
 import {Image} from './Image';
+import {Screenshot} from './Screenshot';
+import {Thumbnail} from './Thumbnail';
 
 export class PageMeta extends SerializedObject {
 
@@ -54,15 +56,14 @@ export class PageMeta extends SerializedObject {
     /**
      * Screenshots we've taken of this page while performing annotations.
      */
-    public readonly screenshots: {[id: string]: Image} = {};
+    public readonly screenshots: {[id: string]: Screenshot} = {};
 
     /**
      * The thumbnails for this page.  Usually, this is just one thumbnail
      * but there might be multiple.  If we want a specific noe we can just
      * look at the width and height.
-     *
      */
-    public readonly thumbnails: {[id: string]: Image} = {};
+    public readonly thumbnails: {[id: string]: Thumbnail} = {};
 
     constructor(val: any) {
 

@@ -75,9 +75,11 @@
     "@types/react": "^16.4.13",
     "@types/react-dom": "^16.0.7",
     "@types/react-table": "^6.7.12",
+    "@types/sanitize-html": "^1.18.0",
     "@types/serve-static": "^1.13.2",
     "@types/summernote": "^0.8.0",
     "@types/toastr": "^2.1.35",
+    "@types/uuid": "^3.4.4",
     "adm-zip": "^0.4.11",
     "babel-preset-es2017": "^6.24.1",
     "base58check": "^2.0.0",
@@ -144,6 +146,7 @@
     "texthighlighter": "^1.2.4",
     "toastr": "^2.1.4",
     "tooltip.js": "^1.2.0",
-    "underscore": "^1.9.1"
+    "underscore": "^1.9.1",
+    "uuid": "^3.3.2"
   }
 }

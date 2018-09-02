@@ -5,9 +5,9 @@ import {MetadataSerializer} from './MetadataSerializer';
 import {assertJSON} from '../test/Assertions';
 import {PagemarkType} from './PagemarkType';
 import {TestingTime} from '../test/TestingTime';
+import {TextHighlights} from './TextHighlights';
 
 const {Proxies} = require("../proxies/Proxies");
-const {TextHighlights} = require("./TextHighlights");
 
 TestingTime.freeze();
 

@@ -1,12 +1,15 @@
 import {IXYRect} from '../util/rects/IXYRect';
 import {IXYRects} from '../util/rects/IXYRects';
-import {Screenshot} from './Screenshot';
+import {CapturedScreenshot} from './CapturedScreenshot';
 import {ScreenshotRequest} from './ScreenshotRequest';
 import {ClientRects} from '../util/rects/ClientRects';
 import {Logger} from '../logger/Logger';
 import {ElectronIPCPipe} from '../ipc/handler/ElectronIPCPipe';
 import {ElectronRendererPipe} from '../ipc/pipes/ElectronRendererPipe';
 import {IPCClient} from '../ipc/handler/IPCClient';
+import {Screenshot} from '../metadata/Screenshot';
+import {Screenshots} from '../metadata/Screenshots';
+import {ImageType} from '../metadata/ImageType';
 
 const log = Logger.create();
 
@@ -18,20 +21,20 @@ let ipcClient = new IPCClient(ipcPipe);
  *
  * @ElectronRendererContext
  */
-export class Screenshots {
+export class CapturedScreenshots {
 
     /**
      * Create a screenshot and return a NativeImage of the result.
      *
      * https://github.com/electron/electron/blob/master/docs/api/native-image.md
      *
-     * @param target.  Specify either rect or element to capture as properties.
+     * @param target Specify either rect or element to capture as properties.
      *
      * @return {Promise} for {NativeImage}. You can call toDateURL on the image
      *         with scaleFactor as an option.
      *
      */
-    static async capture(target: IXYRect | HTMLElement | ClientRect): Promise<Screenshot> {
+    static async capture(target: IXYRect | HTMLElement | ClientRect): Promise<CapturedScreenshot> {
 
         let rect: IXYRect;
 
@@ -65,7 +68,17 @@ export class Screenshots {
 
         log.info("Sending screenshot request: ", screenshotRequest);
 
-        return await ipcClient.call<ScreenshotRequest, Screenshot>('/screenshots/create-screenshot', screenshotRequest);
+        return await ipcClient.call<ScreenshotRequest, CapturedScreenshot>('/screenshots/create-screenshot', screenshotRequest);
+
+    }
+
+    public static toScreenshot(capturedScreenshot: CapturedScreenshot): Screenshot {
+
+        return Screenshots.create(capturedScreenshot.dataURL, {
+            width: capturedScreenshot.dimensions.width,
+            height: capturedScreenshot.dimensions.height,
+            type: ImageType.PNG
+        });
 
     }
 
