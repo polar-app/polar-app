@@ -1,0 +1,3 @@
+.selection-disabled ::selection {
+    background-color: transparent;
+}

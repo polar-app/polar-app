@@ -4,6 +4,7 @@ import {SerializedObject} from './SerializedObject';
 import {Preconditions} from '../Preconditions';
 import {AnnotationInfos} from './AnnotationInfos';
 import {AnnotationInfo} from './AnnotationInfo';
+import {Attachment} from './Attachment';
 
 
 /**
@@ -16,6 +17,8 @@ export class DocMeta extends SerializedObject implements  IDocMeta {
     public pageMetas: {[id: number]: PageMeta};
     public annotationInfo = AnnotationInfos.create();
     public version = 1;
+
+    public attachments: {[id: string]: Attachment} = {};
 
     // constructor(template?: DocMeta) {
     //

@@ -16,6 +16,8 @@ import {Image} from '../../../metadata/Image';
 import $ from '../../../ui/JQuery';
 import {TextHighlight} from '../../../metadata/TextHighlight';
 import {SelectedContents} from '../selection/SelectedContents';
+import {Screenshots} from '../../../screenshots/Screenshots';
+import {SelectionScreenshots} from './SelectionScreenshots';
 
 const {TextHighlightRows} = require("./TextHighlightRows");
 
@@ -298,14 +300,15 @@ export class TextHighlightController {
         // beginning it's STILL going to take like 300ms and feel fucking
         // sluggish.
 
-        let win = notNull(this.docFormat.targetDocument()).defaultView;
+        let doc = notNull(this.docFormat.targetDocument());
+        let win = doc.defaultView;
 
         // TODO: refactor this..
         //
         // .. one strategy.. create TWO highlights... replacing the highlight
         // should be insanely fast.. might not even see it happen.
 
-        //let selectionScreenshot = await SelectionScreenshots.capture(win);
+        //let selectionScreenshotPromise = SelectionScreenshots.capture(doc, win);
 
         let textHighlightRecord = await factory();
 
@@ -314,10 +317,10 @@ export class TextHighlightController {
         // it takes like 50ms-150ms and TWO of them are a big problem.  It would
         // be better to do this AFTER I've taken the screenshots.
 
-        // let highlightScreenshot = await Screenshots.capture(selectionScreenshot.clientRect)
+        //let highlightScreenshot = await Screenshots.capture(selectionScreenshot.clientRect)
         //
         // this.attachScreenshot(textHighlightRecord.value, 'screenshot', selectionScreenshot.screenshot);
-        //this.attachScreenshot(textHighlightRecord.value, 'screenshot-with-highlight', highlightScreenshot);
+        // this.attachScreenshot(textHighlightRecord.value, 'screenshot-with-highlight', highlightScreenshot);
 
         let currentPageMeta = this.docFormat.getCurrentPageMeta();
 

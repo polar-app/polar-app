@@ -150,7 +150,7 @@ export class Pagemarks {
             }
 
             if(! pagemark.id) {
-                log.warn("Pagemark given ID");
+                log.debug("Pagemark given ID");
                 pagemark.id = Pagemarks.createID(pagemark.created);
             }
 

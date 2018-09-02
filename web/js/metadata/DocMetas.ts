@@ -136,14 +136,19 @@ export class DocMetas {
         // an upgrade function for each object type...
 
         if(!docMeta.annotationInfo) {
-            log.warn("No annotation info.. Adding default.");
+            log.debug("No annotation info.. Adding default.");
+            docMeta.annotationInfo = AnnotationInfos.create();
+        }
+
+        if(!docMeta.attachments) {
+            log.debug("No attachments. Adding empty map.");
             docMeta.annotationInfo = AnnotationInfos.create();
         }
 
         if(docMeta.docInfo) {
 
             if(!docMeta.docInfo.pagemarkType) {
-                log.warn("DocInfo has no pagemarkType... Adding default of SINGLE_COLUMN")
+                log.debug("DocInfo has no pagemarkType... Adding default of SINGLE_COLUMN")
                 docMeta.docInfo.pagemarkType = PagemarkType.SINGLE_COLUMN;
             }
 

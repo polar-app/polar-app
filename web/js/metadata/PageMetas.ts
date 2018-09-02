@@ -23,25 +23,25 @@ export class PageMetas {
         forDict(pageMetas, function (key, pageMeta) {
 
             if(!pageMeta.textHighlights) {
-                log.warn("No textHighlights.  Assigning default.");
+                log.debug("No textHighlights.  Assigning default.");
                 pageMeta.textHighlights = {};
             }
 
             // make sure legacy / old text highlights are given IDs.
             forDict(pageMeta.textHighlights, function (key, textHighlight) {
                 if(! textHighlight.id) {
-                    log.warn("Text highlight given ID");
+                    log.debug("Text highlight given ID");
                     textHighlight.id = Hashcodes.createID(textHighlight.rects);
                 }
             });
 
             if(!pageMeta.areaHighlights) {
-                log.warn("No areaHighlights.  Assigning default.");
+                log.debug("No areaHighlights.  Assigning default.");
                 pageMeta.areaHighlights = {};
             }
 
             if(!pageMeta.pagemarks) {
-                log.warn("No pagemarks.  Assigning default (empty map)");
+                log.debug("No pagemarks.  Assigning default (empty map)");
                 pageMeta.pagemarks = {};
             }
 

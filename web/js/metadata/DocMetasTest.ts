@@ -61,6 +61,7 @@ describe('DocMetas', function() {
             let expected = {
                     "annotationInfo": {},
                     "version": 1,
+                    "attachments": {},
                     "docInfo": {
                         "progress": 100,
                         "pagemarkType": "SINGLE_COLUMN",
