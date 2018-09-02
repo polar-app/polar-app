@@ -1,25 +1,14 @@
-const {ThumbnailContainerLifecycleListener} = require("../../lifecycle/impl/ThumbnailContainerLifecycleListener");
-const {ContainerProvider} = require("../ContainerProvider");
-
-class ThumbnailContainerProvider extends ContainerProvider {
-
-    /**
-     *
-     * @return {Object<number,Container>}
-     */
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const ContainerProvider_1 = require("../ContainerProvider");
+const ThumbnailContainerLifecycleListener_1 = require("../../lifecycle/impl/ThumbnailContainerLifecycleListener");
+class ThumbnailContainerProvider extends ContainerProvider_1.ContainerProvider {
     getContainers() {
         return super._getContainers(".thumbnail");
     }
-
-    /**
-     * @Override
-     * @param container {Container}
-     * @return {ContainerLifecycleListener}
-     */
     createContainerLifecycleListener(container) {
-        return new ThumbnailContainerLifecycleListener(container);
+        return new ThumbnailContainerLifecycleListener_1.ThumbnailContainerLifecycleListener(container);
     }
-
 }
-
-module.exports.ThumbnailContainerProvider = ThumbnailContainerProvider;
+exports.ThumbnailContainerProvider = ThumbnailContainerProvider;
+//# sourceMappingURL=ThumbnailContainerProvider.js.map

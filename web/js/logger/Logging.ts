@@ -8,7 +8,6 @@ import {Directories} from '../datastore/Directories';
 import {LogLevel} from './LogLevel';
 import {Files} from '../util/Files';
 import {LogLevels} from './LogLevels';
-import {isPresent} from '../Preconditions';
 import {Optional} from '../util/ts/Optional';
 
 /**
@@ -17,8 +16,6 @@ import {Optional} from '../util/ts/Optional';
  */
 export class Logging {
 
-    private static initialized: boolean = false;
-
     /**
      * Initialize the logger to write to a specific directory.
      */
@@ -26,7 +23,15 @@ export class Logging {
 
         let loggingConfig = await this.loggingConfig();
 
-        let target: ILogger = await this.createTarget(loggingConfig.target);
+        let target: ILogger = await this.createPrimaryTarget(loggingConfig.target);
+
+        await this.initWithTarget(target);
+
+    }
+
+    public static async initWithTarget(target: ILogger) {
+
+        let loggingConfig = await this.loggingConfig();
 
         let delegate =
             new FilteredLogger(
@@ -34,14 +39,13 @@ export class Logging {
                     new LevelAnnotatingLogger(target)), loggingConfig.level);
 
         LoggerDelegate.set(delegate);
-        this.initialized = true;
 
         let logger = LoggerDelegate.get();
         logger.info(`Using logger: ${logger.name}: target=${loggingConfig.target}, level=${LogLevel[loggingConfig.level]}`);
 
     }
 
-    public static async createTarget(loggerTarget: LoggerTarget): Promise<ILogger> {
+    public static async createPrimaryTarget(loggerTarget: LoggerTarget): Promise<ILogger> {
 
         if(loggerTarget === LoggerTarget.CONSOLE) {
             return new ConsoleLogger();

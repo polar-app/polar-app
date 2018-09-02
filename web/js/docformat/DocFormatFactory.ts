@@ -1,5 +1,6 @@
 import {HTMLFormat} from './HTMLFormat';
 import {PDFFormat} from './PDFFormat';
+import {DocFormat} from './DocFormat';
 
 
 /**
@@ -10,7 +11,7 @@ export class DocFormatFactory {
     /**
      *
      */
-    static getInstance() {
+    static getInstance(): DocFormat {
 
         let polarDocFormat = DocFormatFactory.getPolarDocFormat();
 
