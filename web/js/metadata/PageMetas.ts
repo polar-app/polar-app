@@ -12,15 +12,11 @@ const log = Logger.create();
 
 export class PageMetas {
 
-    /**
-     * @param pageMetas {Object<int,PageMeta>}
-     * @return {Object<int,PageMeta>}
-     */
     static upgrade(pageMetas: {[key: number]: PageMeta}) {
 
         pageMetas = Object.assign({}, pageMetas);
 
-        forDict(pageMetas, function (key, pageMeta) {
+        forDict(pageMetas, (key, pageMeta) => {
 
             if(!pageMeta.textHighlights) {
                 log.debug("No textHighlights.  Assigning default.");
@@ -45,6 +41,12 @@ export class PageMetas {
                 pageMeta.pagemarks = {};
             }
 
+            if(!pageMeta.screenshots) {
+                log.debug("No screenshots.  Assigning default (empty map)");
+                pageMeta.screenshots = {};
+            }
+
+
             pageMeta.pagemarks = Pagemarks.upgrade(pageMeta.pagemarks);
 
         } );
@@ -56,9 +58,6 @@ export class PageMetas {
     /**
      * Create a model for a specific key within PageMetas.
      *
-     * @param docMeta {DocMeta}
-     * @param memberName {string}
-     * @param callback {Function}
      */
     static createModel(docMeta: DocMeta, memberName: string, callback: (annotationEvent: AnnotationEvent) => void) {
 

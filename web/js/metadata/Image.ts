@@ -1,12 +1,19 @@
 import {SerializedObject} from './SerializedObject';
 import {Preconditions} from '../Preconditions';
+import {ImageType} from './ImageType';
 
 export class Image extends SerializedObject {
 
     /**
-     * The type of this image.
+     * The unique ID for this object.
      */
-    public type?: string;
+    public id: string;
+
+    /**
+     * The type of this image.  This is optional because for a remote URL
+     * we might not know the type.
+     */
+    public type?: ImageType;
 
     /**
      * The src of this image.  Either an HTTP/HTTPS URL or a data: URL.
@@ -41,6 +48,7 @@ export class Image extends SerializedObject {
 
         super(opts);
 
+        this.id = opts.id;
         this.type = opts.type;
         this.src = opts.src;
         this.width = opts.width;

@@ -96,6 +96,8 @@ describe('DocMetas', function() {
                             "flashcards": {},
                             "textHighlights": {},
                             "areaHighlights": {},
+                            "screenshots": {},
+                            "thumbnails": {},
                             "pageInfo": {
                                 "num": 1
                             },
@@ -124,6 +126,8 @@ describe('DocMetas', function() {
                             "flashcards": {},
                             "textHighlights": {},
                             "areaHighlights": {},
+                            "screenshots": {},
+                            "thumbnails": {},
                             "pageInfo": {
                                 "num": 2
                             },
@@ -146,7 +150,7 @@ describe('DocMetas', function() {
 
             let pageMeta = docMeta.getPageMeta(1);
 
-            pageMeta.pagemarks = {};
+            (<any>pageMeta).pagemarks = {};
 
             assert.deepEqual(docMeta.getPageMeta(1).pagemarks, {})
 
@@ -164,7 +168,7 @@ describe('DocMetas', function() {
                 let docMeta = createUpgradeDoc();
 
                 assert.notEqual(docMeta.docInfo, null);
-                delete docMeta.getPageMeta(1).textHighlights;
+                delete (<any>docMeta.getPageMeta(1)).textHighlights;
 
                 delete docMeta.docInfo.pagemarkType;
 
@@ -208,7 +212,7 @@ describe('DocMetas', function() {
 
                 let docMeta = createUpgradeDoc();
 
-                delete docMeta.getPageMeta(1).textHighlights;
+                delete (<any>docMeta.getPageMeta(1)).textHighlights;
 
                 docMeta = DocMetas.upgrade(docMeta)
 
@@ -220,7 +224,7 @@ describe('DocMetas', function() {
 
                 let docMeta = createUpgradeDoc();
 
-                delete docMeta.getPageMeta(1).pagemarks;
+                delete (<any>docMeta.getPageMeta(1)).pagemarks;
 
                 docMeta = DocMetas.upgrade(docMeta)
 

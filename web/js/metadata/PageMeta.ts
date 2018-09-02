@@ -4,6 +4,7 @@ import {Flashcard} from './Flashcard';
 import {Preconditions} from '../Preconditions';
 import {TextHighlight} from './TextHighlight';
 import {AreaHighlight} from './AreaHighlight';
+import {Image} from './Image';
 
 export class PageMeta extends SerializedObject {
 
@@ -18,7 +19,7 @@ export class PageMeta extends SerializedObject {
      * for keeping track of pagemarks.  The index is the pagemark column.
      *
      */
-    public pagemarks: {[id: string]: any} = {};
+    public readonly pagemarks: {[id: string]: any} = {};
 
     /**
      * The note for this annotation.
@@ -41,23 +42,27 @@ export class PageMeta extends SerializedObject {
      * An index of test highlights for the page.
      *
      */
-    public textHighlights: {[id: string]: TextHighlight} = {};
+    public readonly textHighlights: {[id: string]: TextHighlight} = {};
 
 
     /**
      * An index of area highlights for the page.
      *
      */
-    public areaHighlights: {[id: string]: AreaHighlight} = {};
+    public readonly areaHighlights: {[id: string]: AreaHighlight} = {};
+
+    /**
+     * Screenshots we've taken of this page while performing annotations.
+     */
+    public readonly screenshots: {[id: string]: Image} = {};
 
     /**
      * The thumbnails for this page.  Usually, this is just one thumbnail
      * but there might be multiple.  If we want a specific noe we can just
      * look at the width and height.
      *
-     * @type {{}}
      */
-    //this.thumbails = {};
+    public readonly thumbnails: {[id: string]: Image} = {};
 
     constructor(val: any) {
 
@@ -75,17 +80,27 @@ export class PageMeta extends SerializedObject {
 
         if (!this.pagemarks) {
             // this could happen when serializing from old file formats
-            this.pagemarks = {};
+            (<any>this).pagemarks = {};
         }
 
         if (!this.textHighlights) {
             // this could happen when serializing from old file formats
-            this.textHighlights = {};
+            (<any>this).textHighlights = {};
         }
 
         if (!this.areaHighlights) {
             // this could happen when serializing from old file formats
-            this.areaHighlights = {};
+            (<any>this).areaHighlights = {};
+        }
+
+        if (!this.screenshots) {
+            // this could happen when serializing from old file formats
+            (<any>this).screenshots = {};
+        }
+
+        if (!this.thumbnails) {
+            // this could happen when serializing from old file formats
+            (<any>this).thumbnails = {};
         }
 
     }

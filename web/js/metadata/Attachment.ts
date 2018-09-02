@@ -25,7 +25,7 @@ export class Attachment extends SerializedObject {
      */
     public created: ISODateTime;
 
-    protected constructor(opts: any) {
+    public constructor(opts: any) {
 
         super(opts);
 
