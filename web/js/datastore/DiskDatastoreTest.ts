@@ -7,23 +7,27 @@ import {PersistenceLayer} from './PersistenceLayer';
 import {DocMeta} from '../metadata/DocMeta';
 import {isPresent} from '../Preconditions';
 
+import os from 'os';
+
 const fs = require('fs');
+
 const rimraf = require('rimraf');
 
+const tmpdir = os.tmpdir();
 
 describe('DiskDatastore', function() {
 
     it("init and test paths", async function () {
 
-        let dataDir = "/tmp/test-paths";
+        let dataDir = `${tmpdir}/test-paths`;
 
         let diskDatastore = new DiskDatastore(dataDir);
 
         await diskDatastore.init();
 
-        assert.equal(diskDatastore.dataDir, "/tmp/test-paths");
+        assert.equal(diskDatastore.dataDir, `${tmpdir}/test-paths`);
 
-        assert.equal(diskDatastore.stashDir, "/tmp/test-paths/stash");
+        assert.equal(diskDatastore.stashDir, `${tmpdir}/test-paths/stash`);
 
         // now create it and
 
@@ -32,41 +36,39 @@ describe('DiskDatastore', function() {
 
     it("test async exists function", async function () {
 
-        let dataDir = "/tmp/this-file-does-not-exist";
+        let dataDir = `${tmpdir}/this-file-does-not-exist`;
 
         let diskDatastore = new DiskDatastore(dataDir);
 
         assert.equal(fs.existsSync(dataDir), false);
         assert.equal(await diskDatastore.existsAsync(dataDir), false)
 
-        // now create it and
-
     });
 
     it("init dataDir directory on init()", async function () {
 
-        let dataDir = "/tmp/disk-datastore.test";
+        let dataDir = `${tmpdir}/disk-datastore.test`;
         rimraf.sync(dataDir);
 
         let diskDatastore = new DiskDatastore(dataDir);
 
-        assert.equal(await diskDatastore.existsAsync(dataDir), false)
+        assert.equal(await diskDatastore.existsAsync(dataDir), false);
 
         let expected: any = {
             "dataDir": {
                 "exists": false,
                 "created": true,
-                "dir": "/tmp/disk-datastore.test"
+                "dir": `${tmpdir}/disk-datastore.test`
             },
             "stashDir": {
                 "exists": false,
                 "created": true,
-                "dir": "/tmp/disk-datastore.test/stash"
+                "dir": `${tmpdir}/disk-datastore.test/stash`
             },
             "logsDir": {
                 "exists": false,
                 "created": true,
-                "dir": "/tmp/disk-datastore.test/logs"
+                "dir": `${tmpdir}/disk-datastore.test/logs`
             }
         };
 
@@ -77,17 +79,17 @@ describe('DiskDatastore', function() {
             "dataDir": {
                 "exists": true,
                 "created": false,
-                "dir": "/tmp/disk-datastore.test"
+                "dir": `${tmpdir}/disk-datastore.test`
             },
             "stashDir": {
                 "exists": true,
                 "created": false,
-                "dir": "/tmp/disk-datastore.test/stash"
+                "dir": `${tmpdir}/disk-datastore.test/stash`
             },
             "logsDir": {
                 "exists": true,
                 "created": false,
-                "dir": "/tmp/disk-datastore.test/logs"
+                "dir": `${tmpdir}/disk-datastore.test/logs`
             }
         };
 
@@ -105,7 +107,7 @@ describe('DiskDatastore', function() {
 
         let fingerprint = "0x001";
 
-        let dataDir = "/tmp/test-data-dir";
+        let dataDir = `${tmpdir}/test-data-dir`;
 
         let diskDatastore: DiskDatastore;
         let persistenceLayer: PersistenceLayer;
@@ -166,8 +168,8 @@ describe('DiskDatastore', function() {
 //
 // async function testBasicFileOperations() {
 //
-//     let testFilePath = "/tmp/test.write";
-//     let testDirPath = "/tmp/test.dir";
+//     let testFilePath = `${tmpdir}/test.write";
+//     let testDirPath = `${tmpdir}/test.dir";
 //
 //     // test removing files
 //     await diskDatastore.unlinkAsync(testFilePath)
@@ -211,9 +213,9 @@ describe('DiskDatastore', function() {
 //     assert.equal(stat.isDirectory(), true);
 //
 //     // now test existsAsync
-//     assert.equal(await diskDatastore.existsAsync("/tmp"), true );
+//     assert.equal(await diskDatastore.existsAsync(`${tmpdir}"), true );
 //
-//     assert.equal(await diskDatastore.existsAsync("/tmpasdf"), false );
+//     assert.equal(await diskDatastore.existsAsync(`${tmpdir}asdf"), false );
 //
 //     assert.equal(await diskDatastore.existsAsync("/home/burton/.polar/0xmissing"), false );
 //

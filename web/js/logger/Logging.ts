@@ -8,6 +8,8 @@ import {Directories} from '../datastore/Directories';
 import {LogLevel} from './LogLevel';
 import {Files} from '../util/Files';
 import {LogLevels} from './LogLevels';
+import {isPresent} from '../Preconditions';
+import {Optional} from '../util/ts/Optional';
 
 /**
  * Maintains our general logging infrastructure.  Differentiated from Logger
@@ -57,6 +59,7 @@ export class Logging {
         let directories = await new Directories().init();
 
         let path = `${directories.configDir}/logging.json`;
+
         if(await Files.existsAsync(path)) {
 
             let buffer = await Files.readFileAsync(path);
@@ -79,9 +82,13 @@ export class Logging {
         }
 
         return {
+
             target: LoggerTarget.CONSOLE,
-            level: LogLevel.WARN,
-        }
+
+            level: Optional.of(process.env['POLAR_LOG_LEVEL'])
+                    .map(level => LogLevels.fromName(level))
+                    .getOrElse(LogLevel.WARN)
+        };
 
     }
 
