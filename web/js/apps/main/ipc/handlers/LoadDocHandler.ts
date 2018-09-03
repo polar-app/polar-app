@@ -4,6 +4,7 @@ import {IPCEvent} from '../../../../ipc/handler/IPCEvent';
 import {LoadDocRequest} from '../LoadDocRequest';
 import {Directories} from '../../../../datastore/Directories';
 import {MainAppController} from '../../MainAppController';
+import {Paths} from '../../../../util/Paths';
 
 export class LoadDocHandler  extends IPCHandler<LoadDocRequest> {
 
@@ -22,7 +23,7 @@ export class LoadDocHandler  extends IPCHandler<LoadDocRequest> {
 
     protected async handleIPC(event: IPCEvent, loadDocRequest: LoadDocRequest): Promise<void> {
 
-        let path = `${this.directories.stashDir}/${loadDocRequest.filename}`;
+        let path = Paths.join(this.directories.stashDir, loadDocRequest.filename);
 
         await this.mainAppController.handleLoadDoc(path, loadDocRequest.newWindow);
 
