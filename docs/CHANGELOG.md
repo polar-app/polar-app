@@ -1,3 +1,5 @@
+# 1.0.0-beta129
+
 - Improved how we create TextHighlight to avoid type issues.
 
 - Notes and Questions properly typed
