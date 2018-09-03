@@ -1,28 +1,10 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 class PostMessageRequest {
-
-    /**
-     *
-     */
     constructor(opts) {
-
-        /**
-         * The BrowserWindow running the app to receive the message.
-         *
-         * @type {Electron.BrowserWindow}
-         */
-        this.window = undefined;
-
-        /**
-         * The message to send the remote window.
-         *
-         * @type {Object}
-         */
-        this.message = undefined;
-
-        Object.assign(this, opts);
-
+        this.window = opts.window;
+        this.message = opts.message;
     }
-
 }
-
-module.exports.PostMessageRequest = PostMessageRequest;
+exports.PostMessageRequest = PostMessageRequest;
+//# sourceMappingURL=PostMessageRequest.js.map

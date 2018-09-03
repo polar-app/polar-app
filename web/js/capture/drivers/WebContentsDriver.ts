@@ -2,6 +2,7 @@ import WebContents = Electron.WebContents;
 import {StandardWebContentsDriver} from './StandardWebContentsDriver';
 import {BrowserProfile} from '../BrowserProfile';
 import {WebviewWebContentsDriver} from './WebviewWebContentsDriver';
+import {PendingWebRequestsEvent} from '../../webrequests/PendingWebRequestsListener';
 
 export interface WebContentsDriver {
 
@@ -16,6 +17,14 @@ export interface WebContentsDriver {
 
     loadURL(url: string): Promise<void>
 
+    /**
+     * Called when progress for the loading page has been updated.
+     */
+    progressUpdated(event: PendingWebRequestsEvent): void;
+
+    /**
+     * Allows us to listen to close, etc.
+     */
     addEventListener(eventName: WebContentsEventName, eventListener: () => void): void;
 
 }

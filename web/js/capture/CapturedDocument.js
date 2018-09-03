@@ -1,10 +1,8 @@
-
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 class CapturedDocument {
-
     constructor() {
-
     }
-
 }
-
-module.exports.CapturedDocument = CapturedDocument;
+exports.CapturedDocument = CapturedDocument;
+//# sourceMappingURL=CapturedDocument.js.map

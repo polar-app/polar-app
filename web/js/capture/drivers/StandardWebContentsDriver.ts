@@ -9,6 +9,7 @@ import {Functions} from '../../util/Functions';
 import {BrowserProfile} from '../BrowserProfile';
 import BrowserWindowConstructorOptions = Electron.BrowserWindowConstructorOptions;
 import {Reactor} from '../../reactor/Reactor';
+import {PendingWebRequestsEvent} from '../../webrequests/PendingWebRequestsListener';
 
 const log = Logger.create();
 
@@ -170,6 +171,9 @@ export class StandardWebContentsDriver implements WebContentsDriver {
 
         return result;
 
+    }
+
+    public progressUpdated(event: PendingWebRequestsEvent): void {
     }
 
     public addEventListener(eventName: WebContentsEventName, eventListener: () => void): void {

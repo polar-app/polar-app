@@ -2,7 +2,8 @@ const {TimeoutEvent} = require("./TimeoutEvent");
 
 /**
  * Creates a way to handle callbacks on setTimeout and listen to the state of
- * which are pending.
+ * which are pending.  We're planning on using this in the future to keep track
+ * of page loads that are pending.
  */
 class TimeoutManager {
 

@@ -1,37 +1,35 @@
-const {BrowserWindow} = require("electron");
-const {PostMessageRequest} = require("./PostMessageRequest");
-const {Functions} = require("../../util/Functions");
-
-/**
- * Messenger is a class for using postMessage within the renderer to communicate
- * with apps using web standards, and not Electron IPC. This makes our code
- * more testable via simple mocha / node and doesn't require Spectron which
- * is more heavy and slower for testing.
- */
+"use strict";
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const electron_1 = require("electron");
+const PostMessageRequest_1 = require("./PostMessageRequest");
+const Functions_1 = require("../../util/Functions");
+const Preconditions_1 = require("../../Preconditions");
 class Messenger {
-
-    // TODO: This is going to be harder to migrate to typescript.
-
-    async postMessage(postMessageRequest) {
-
-        postMessageRequest = new PostMessageRequest(postMessageRequest);
-
-        function postMessageFunction(message) {
-            window.postMessage(message, "*");
-        }
-
-        let script = Functions.functionToScript(postMessageFunction, postMessageRequest.message);
-
-        let window = postMessageRequest.window;
-
-        if(! window) {
-            window = BrowserWindow.getFocusedWindow();
-        }
-
-        await window.webContents.executeJavaScript(script);
-
+    postMessage(postMessageRequest) {
+        return __awaiter(this, void 0, void 0, function* () {
+            postMessageRequest = new PostMessageRequest_1.PostMessageRequest(postMessageRequest);
+            function postMessageFunction(message) {
+                window.postMessage(message, "*");
+            }
+            let script = Functions_1.Functions.functionToScript(postMessageFunction, postMessageRequest.message);
+            let targetBrowserWindow = postMessageRequest.window;
+            if (!Preconditions_1.isPresent(targetBrowserWindow)) {
+                targetBrowserWindow = electron_1.BrowserWindow.getFocusedWindow();
+            }
+            if (!Preconditions_1.isPresent(targetBrowserWindow)) {
+                throw new Error("No target browser window found");
+            }
+            yield targetBrowserWindow.webContents.executeJavaScript(script);
+        });
     }
-
 }
-
-module.exports.Messenger = Messenger;
+exports.Messenger = Messenger;
+//# sourceMappingURL=Messenger.js.map

@@ -222,6 +222,7 @@ export interface PendingWebRequestsCallback {
 }
 
 export interface PendingWebRequestsEvent {
+
     readonly name: string,
     readonly details: WebRequestDetails,
     readonly pending: number,

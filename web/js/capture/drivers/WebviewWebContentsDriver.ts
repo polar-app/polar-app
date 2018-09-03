@@ -2,12 +2,11 @@ import {Logger} from '../../logger/Logger';
 import {StandardWebContentsDriver} from './StandardWebContentsDriver';
 import {AppPaths} from '../../electron/webresource/AppPaths';
 import {notNull} from '../../Preconditions';
-import WebContents = Electron.WebContents;
 import {BrowserWindows} from '../BrowserWindows';
 import {BrowserWindow} from "electron";
-import {Promises} from '../../util/Promises';
-import BrowserWindowConstructorOptions = Electron.BrowserWindowConstructorOptions;
 import {Functions} from '../../util/Functions';
+import WebContents = Electron.WebContents;
+import {PendingWebRequestsEvent} from '../../webrequests/PendingWebRequestsListener';
 
 const log = Logger.create();
 
@@ -67,11 +66,11 @@ export class WebviewWebContentsDriver extends StandardWebContentsDriver {
 
     }
 
-    private async doInitWebviewHeight(browserWindowOptions: BrowserWindowConstructorOptions) {
+    private async doInitWebviewHeight(browserWindowOptions: Electron.BrowserWindowConstructorOptions) {
 
         let window = notNull(this.window);
 
-        function setWebviewHeight(browserWindowOptions: BrowserWindowConstructorOptions) {
+        function setWebviewHeight(browserWindowOptions: Electron.BrowserWindowConstructorOptions) {
 
             let querySelector = <HTMLElement>document.querySelector('webview')!;
 
@@ -109,6 +108,9 @@ export class WebviewWebContentsDriver extends StandardWebContentsDriver {
 
         return browserWindowOptions;
 
+    }
+
+    public progressUpdated(event: PendingWebRequestsEvent): void {
     }
 
 }
