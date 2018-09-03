@@ -1,4 +1,28 @@
 
+# 1.0.0-beta120
+
+- Fixed a number of important bugs with Windows
+
+- Screenshots are now taken when text highlights are created.
+
+- Improvements to HTML content generation when copying from the document.
+
+- new Screenshots and Attachment support for object model. 
+
+- crash reporter enabled for backtrace.io but only in a basic scenario.
+
+- the renderer can write directly to disk now which improves performance
+
+- Updated to beta 8 of Electron 3.0
+
+- Spectron tests sort of working again.
+
+- More data copied from the PHZ to the DocMeta including URL and filename.
+
+- If you open a PDF file off disk it's imported into the stash now.
+
+- Major logging system improvements. 
+
 # 1.0.0-beta110
 
 - If the PHZ file is wider than the window we're loading in we now expand the 
