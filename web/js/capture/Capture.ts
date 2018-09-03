@@ -16,6 +16,7 @@ import {Functions} from '../util/Functions';
 import {Files} from '../util/Files';
 import {Filenames} from '../util/Filenames';
 import {CapturedPHZWriter} from './CapturedPHZWriter';
+import {Paths} from '../util/Paths';
 
 const {DefaultPagingBrowser} = require("../electron/capture/pagination/DefaultPagingBrowser");
 const {PagingLoader} = require("../electron/capture/pagination/PagingLoader");
@@ -256,9 +257,7 @@ export class Capture {
         let stashDir = this.stashDir;
         let filename = Filenames.sanitize(captured.title);
 
-        // TODO convert the captured JSON to a phz file...
-
-        let phzPath = `${stashDir}/${filename}.phz`;
+        let phzPath = Paths.join(stashDir, filename) + '.phz';
 
         log.info("Writing PHZ to: " + phzPath);
 

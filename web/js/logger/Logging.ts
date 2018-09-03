@@ -11,6 +11,7 @@ import {LogLevels} from './LogLevels';
 import {Optional} from '../util/ts/Optional';
 import {MultiLogger} from './MultiLogger';
 import {SentryLogger} from './SentryLogger';
+import {Paths} from '../util/Paths';
 
 /**
  * Maintains our general logging infrastructure.  Differentiated from Logger
@@ -70,7 +71,7 @@ export class Logging {
 
         let directories = await new Directories().init();
 
-        let path = `${directories.configDir}/logging.json`;
+        let path = Paths.join(directories.configDir, 'logging.json');
 
         if(await Files.existsAsync(path)) {
 
