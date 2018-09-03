@@ -1,6 +1,6 @@
 {
   "name": "polar-bookshelf",
-  "version": "1.0.0-beta127",
+  "version": "1.0.0-beta128",
   "description": "Polar Bookshelf",
   "main": "main.js",
   "scripts": {
