@@ -1,18 +1,11 @@
-const {Note} = require("./Note.js");
-
-/**
- * Some type of follow up on content that we need to analyze.
- */
-class Question extends Note {
-
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const Note_1 = require("./Note");
+class Question extends Note_1.Note {
     constructor(val) {
-
         super(val);
-
         this.init(val);
-
-    };
-
-};
-
-module.exports.Question = Question;
+    }
+}
+exports.Question = Question;
+//# sourceMappingURL=Question.js.map

@@ -231,7 +231,7 @@ export class TextHighlightController {
 
             let textSelections = TextExtracter.toTextSelections(textHighlightRows);
 
-            return TextHighlightRecords.create(rects, textSelections, text);
+            return TextHighlightRecords.create(rects, textSelections, {TEXT: text});
 
         });
 
@@ -266,7 +266,7 @@ export class TextHighlightController {
 
             let textSelections = TextSelections.compute(selectedContent);
 
-            return TextHighlightRecords.create(rects, textSelections, text);
+            return TextHighlightRecords.create(rects, textSelections, {TEXT: text});
 
         });
 
@@ -320,8 +320,8 @@ export class TextHighlightController {
         //let highlightScreenshot = await Screenshots.capture(selectionScreenshot.clientRect)
 
         let screenshotDimensions = {
-            width: selectionScreenshot.clientRect.width,
-            height: selectionScreenshot.clientRect.height
+            width: Math.floor(selectionScreenshot.clientRect.width),
+            height: Math.floor(selectionScreenshot.clientRect.height)
         };
         let screenshotImageRef = this.toImage(screenshotID, 'screenshot', screenshotDimensions);
 

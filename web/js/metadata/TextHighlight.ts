@@ -4,7 +4,13 @@ import {Texts} from './Texts';
 import {TextType} from './TextType';
 import {BaseHighlight} from './BaseHighlight';
 import {Preconditions} from '../Preconditions';
-
+import {Rect} from '../Rect';
+import {Image} from './Image';
+import {Note} from './Note';
+import {Question} from './Question';
+import {Flashcard} from './Flashcard';
+import {ISODateTime} from './ISODateTime';
+import {Author} from './Author';
 
 export class TextHighlight extends BaseHighlight {
 
@@ -18,12 +24,15 @@ export class TextHighlight extends BaseHighlight {
     public textSelections: {[id: number]: TextRect} = {}
 
     /**
-     * The text selections converted to a text string which may or may not
-     * be human readable.
+     * The text selections converted to a text string which may or may not be
+     * human readable.  Some of the PDF text are actually lists of figures with
+     * special characters that might be placed absolutely around the screen.
+     *
+     * When this is just a plain string we assume it's text and not HTML.
      */
-    public text: Text = Texts.create("", TextType.HTML);
+    public text: Text | string = Texts.create("", TextType.HTML);
 
-    constructor(val: any) {
+    constructor(val: ITextHighlight) {
 
         super(val);
 
@@ -63,5 +72,23 @@ export class TextHighlight extends BaseHighlight {
         super.validate();
         Preconditions.assertNotInstanceOf(this.textSelections, "textSelections", Array);
     };
+
+}
+
+export interface ITextHighlight {
+
+    readonly textSelections: {[id: number]: TextRect};
+    readonly text: Text | string;
+    readonly rects: {[key: number]: Rect}
+    readonly image?: Image;
+    readonly images: {[key: string]: Image};
+    readonly notes: {[key: string]: Note};
+    readonly questions: {[key: string]: Question};
+    readonly flashcards: {[key: string]: Flashcard};
+    readonly id: string;
+    readonly guid: string;
+    readonly created: ISODateTime;
+    readonly lastUpdated: ISODateTime;
+    readonly author?: Author;
 
 }

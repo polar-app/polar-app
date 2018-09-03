@@ -162,7 +162,8 @@ export class WebController extends Controller {
 
         this.docFingerprint = newDocumentFingerprint;
 
-        this.onDocumentLoaded(newDocumentFingerprint, nrPages, currentPageNumber);
+        this.onDocumentLoaded(newDocumentFingerprint, nrPages, currentPageNumber)
+            .catch(err => log.error("Could not handle onDocumentLoaded: ", err));
 
     }
 

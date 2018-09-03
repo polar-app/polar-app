@@ -1,6 +1,7 @@
 import {Hashcodes} from '../Hashcodes';
 import {ISODateTime} from './ISODateTime';
 import {TextHighlight} from './TextHighlight';
+import {Text} from './Text';
 import {Arrays} from '../util/Arrays';
 import {TextRect} from './TextRect';
 import {IRect} from '../util/rects/IRect';
@@ -17,7 +18,7 @@ export class TextHighlightRecords {
      * TextHighlight to use.
      *                                                                                                                                                          np
      */
-    static create(rects: IRect[], textSelections: TextRect[], text: string): TextHighlightRecord {
+    static create(rects: IRect[], textSelections: TextRect[], text: Text): TextHighlightRecord {
 
         let id = Hashcodes.createID(rects);
 
@@ -30,7 +31,12 @@ export class TextHighlightRecords {
             lastUpdated,
             rects: Arrays.toDict(rects),
             textSelections: Arrays.toDict(textSelections),
-            text
+            text,
+            images: {},
+            notes: {},
+            questions: {},
+            flashcards: {},
+            guid: id
         });
 
         return {id, value: textHighlight};

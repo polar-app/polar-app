@@ -142,7 +142,6 @@ export class ActiveBatch implements Batch  {
     /**
      * Apply once batch iteration.
      */
-
     async iter() {
 
         let nrTicketsToExecute = this.tickets.length;

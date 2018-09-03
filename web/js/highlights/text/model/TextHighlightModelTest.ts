@@ -159,6 +159,6 @@ function createTextHighlightRecord() {
     let textSelections: TextRect[] = [new TextRect({text: "hello world"})];
     let text = "hello world";
 
-    return TextHighlightRecords.create(rects, textSelections, text);
+    return TextHighlightRecords.create(rects, textSelections, {TEXT: text});
 
 }

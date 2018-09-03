@@ -1,3 +1,17 @@
+- Improved how we create TextHighlight to avoid type issues.
+
+- Notes and Questions properly typed
+
+- BaseHighlight.rects properly typed now. 
+
+- TextHighlight properly using string | Text for the text of a highlight.
+
+- FAQ updated for how to enable advanced logging.
+
+- FAQ updated to build from source. 
+
+- Fixed logging issue where we might have been swallowing an uncaught exception.
+
 - Fixed bug where Polar is running and the user double clicks on the app again
   and nothing happens.
 

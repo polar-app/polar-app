@@ -18,7 +18,7 @@ describe('TextHighlightRecords', function() {
             let text = "hello world";
 
             // create a basic TextHighlight object..
-            let textHighlightRecord = TextHighlightRecords.create(rects, textSelections, text);
+            let textHighlightRecord = TextHighlightRecords.create(rects, textSelections, {TEXT: text});
 
             let expected = {
                 "id": "1Af41QXbBH",

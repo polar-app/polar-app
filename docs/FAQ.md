@@ -1,5 +1,32 @@
+# How do I build and run from source:
+
+- Install NodeJS 10.9.x which should install the latest npm. Should be >= 6.4.1.
+
+- Clone a copy of the polar git repo locally.
+
+- Run the following:
+
+```bash
+npm install 
+npm start
+``` 
 
 # How do I enable advanced logging?
+
+There are two ways to enable advanced logging:
+
+## Update environment (temporary)
+
+Set the ```POLAR_LOG_LEVEL``` environment variable.
+
+Linux/Mac run ```export POLAR_LOG_LEVEL=DEBUG```
+
+Windows run ```set POLAR_LOG_LEVEL=DEBUG``` 
+
+then run Polar either via ```npm start``` for source builds or run the binary
+directly.
+
+## Update your config (permanent)
 
 Create a file in your ```.polar/config``` directory named ```logging.json``` 
 with the following content:

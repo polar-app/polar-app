@@ -1,6 +1,7 @@
 import {Image} from './Image';
 import {ExtendedAnnotation} from './ExtendedAnnotation';
 import {Preconditions} from '../Preconditions';
+import {Rect} from '../Rect';
 
 
 export class BaseHighlight extends ExtendedAnnotation {
@@ -8,7 +9,7 @@ export class BaseHighlight extends ExtendedAnnotation {
     /**
      * The rectangles where we need to place content for this highlights.
      */
-    public rects = {};
+    public rects: {[key: number]: Rect} = {};
 
     /**
      * Optional image for this highlight taken when the highlight was

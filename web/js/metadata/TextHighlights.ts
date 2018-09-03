@@ -20,7 +20,7 @@ export class TextHighlights {
         let text = "hello world";
 
         // create a basic TextHighlight object..
-        return TextHighlightRecords.create(rects, textSelections, text).value;
+        return TextHighlightRecords.create(rects, textSelections, {TEXT: text}).value;
 
     }
 

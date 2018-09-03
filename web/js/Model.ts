@@ -117,6 +117,7 @@ export class Model {
      * @refactor This code should be in its own dedicated helper class
      *
      * @param pageNum The page num to use for our created pagemark.
+     * @param options Options for creating the pagemark.
      */
     async createPagemark(pageNum: number, options: any = {}) {
 
