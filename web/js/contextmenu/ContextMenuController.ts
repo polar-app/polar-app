@@ -46,7 +46,10 @@ export class ContextMenuController {
 
             targetElement.addEventListener("contextmenu", /** @type {MouseEvent} */ (event: any) => {
 
-                let annotationSelectors = [ ".text-highlight", ".area-highlight", ".pagemark", ".page" ];
+                let annotationSelectors = [ ".text-highlight",
+                                            ".area-highlight",
+                                            ".pagemark",
+                                            ".page"];
 
                 let matchingSelectors
                     = ContextMenuController.elementsFromEventMatchingSelectors(event, annotationSelectors );
