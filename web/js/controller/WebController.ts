@@ -69,11 +69,50 @@ export class WebController extends Controller {
         // PHZ is created which also means this can be tested easily.
         DocDetails.merge(this.model.docMeta.docInfo, docDetail);
 
+        this.setupWindowWidth();
+
+        this.setupDocumentTitle();
+
+        this.setupContextMenu();
+
+    }
+
+    setupWindowWidth() {
+
+        let viewerClientWidth = Optional.of(document.querySelector("#viewerContainer"))
+            .map(current => current.clientWidth)
+            .getOrElse(0);
+
+
+        let viewerScrollWidth = Optional.of(document.querySelector("#viewerContainer"))
+            .map(current => current.scrollWidth)
+            .getOrElse(0);
+
+        let needsResize = viewerScrollWidth > viewerClientWidth;
+
+        if(needsResize) {
+
+            let sidebarScrollWidth = Optional.of(document.querySelector("#sidebarContainer"))
+                .map(current => current.scrollWidth)
+                .getOrElse(0);
+
+            let bufferWidth = 50;
+
+            let newWidth = sidebarScrollWidth + viewerScrollWidth + bufferWidth;
+
+            if(newWidth > window.outerWidth) {
+                window.resizeTo(newWidth, window.outerHeight);
+            }
+
+        }
+
+    }
+
+    setupDocumentTitle() {
+
         let title = Optional.of(this.model.docMeta.docInfo.title).getOrElse("Untitled");
 
         document.title = `${title}`;
-
-        this.setupContextMenu();
 
     }
 
