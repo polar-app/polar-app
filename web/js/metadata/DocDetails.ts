@@ -26,7 +26,7 @@ export class DocDetails {
 
                 if(! isPresent(targetDocDetails[typedKey]) && isPresent(sourceDocDetails[typedKey])) {
                     let newValue = sourceDocDetails[typedKey];
-                    log.info(`Setting ${typedKey} to ${newValue}`)
+                    log.debug(`Setting ${typedKey} to ${newValue}`)
                     targetDocDetails[typedKey] = newValue;
                 }
 
