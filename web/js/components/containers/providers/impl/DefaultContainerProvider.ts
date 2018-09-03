@@ -9,11 +9,6 @@ export class DefaultContainerProvider extends ContainerProvider {
         return super._getContainers(".page");
     }
 
-    /**
-     * @Override
-     * @param container {Container}
-     * @return {ContainerLifecycleListener}
-     */
     createContainerLifecycleListener(container: Container) {
         return new DefaultContainerLifecycleListener(container);
     }

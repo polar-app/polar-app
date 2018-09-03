@@ -6,7 +6,7 @@ export class HTMLSanitizer {
 
         return sanitizeHtml(html, {
 
-            // FIXME: add all of these below.. to allowedAttributes.
+            // TODO: add all of these below.. to allowedAttributes.
             allowedTags: [ 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'blockquote',
                            'cite', 'p', 'a', 'ul', 'ol', 'nl', 'li', 'b', 'i',
                            'strong', 'em', 'strike', 'code', 'hr', 'br', 'div',
@@ -34,7 +34,7 @@ export class HTMLSanitizer {
             allowedStyles: {
                 '*': {
 
-                    // FIXME: top,bottom,left,right versions of many of these
+                    // TODO: top,bottom,left,right versions of many of these
 
                     'color': [/.*/],
                     'background-color': [/.*/],

@@ -288,14 +288,17 @@ describe('DocMetas', function() {
                             }
                         },
                         "textSelections": {
-                            "0": "hello world"
+                            "0": {
+                                "text": "hello world",
+                                "rect": null
+                            }
                         },
                         "text": "hello world",
                         "notes": {},
                         "questions": {},
                         "flashcards": {},
                         "images": {},
-                        "id": "1cAbqEAHny",
+                        "id": "1cAbqEAHny"
                     }
                 };
 

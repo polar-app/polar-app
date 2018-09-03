@@ -338,8 +338,6 @@ export class TextHighlightController {
         // now clear the selection since we just highlighted it.
         win.getSelection().empty();
 
-        // FIXME: delete ALSO needs to remove the screenshot reference we created...
-
         pageMeta.textHighlights[textHighlightRecord.id] = textHighlightRecord.value;
 
         let capturedScreenshot = await selectionScreenshot.capturedScreenshotPromise;

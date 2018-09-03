@@ -41,7 +41,6 @@ export class Ranges {
     /**
      * Return HTML content of the range selected.
      *
-     * @param range
      */
     static toHTML(range: Range) {
 
