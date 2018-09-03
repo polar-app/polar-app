@@ -1,8 +1,6 @@
 import {Logger} from '../../logger/Logger';
 import {Viewer} from '../Viewer';
 import {DocDetail} from '../../metadata/DocDetail';
-import {CurrentState} from '../../docformat/DocFormat';
-import {Preconditions} from '../../Preconditions';
 
 declare var window: any;
 

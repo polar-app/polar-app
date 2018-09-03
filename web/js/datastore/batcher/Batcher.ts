@@ -1,6 +1,4 @@
 /**
- * Smart batching system which accepts work and only executes once very T ms or
- * every N batch items.
  *
  * This is used to prevent duplicate writes in a chain from the event store and
  * only write the first and the last. It doesn't make sense to write
@@ -16,13 +14,18 @@ export class Batcher {
 
     private readonly runnable: AsyncRunnable;
 
-    private tickets: boolean[] = [];
+    private tickets: Ticket[] = [];
 
     constructor(runnable: AsyncRunnable) {
         this.runnable = runnable;
     }
 
-    public async execute(): Promise<Execution> {
+    /**
+     * Enqueue the runnable to be executed again as part of a batch.
+     */
+    public enqueue(): Batch {
+
+        let ticket = new Ticket(this.runnable());
 
         if (this.tickets.length > 0) {
 
@@ -47,74 +50,133 @@ export class Batcher {
 
             let pending = this.tickets.length;
 
-            this.tickets.push(true);
+            this.tickets.push(ticket);
 
-            return <DelayedExecution>{pending}
+            return new PassiveBatch(pending, ticket)
 
         }
 
-        let batched = 0;
+        this.tickets.push(ticket);
 
-        let batches = 0;
-
-        let ticketsPerBatch: number[] = [];
-
-        // keep writing while we have tickets. The other tickets are when people
-        // have been writing while we were blocked.
-        while (this.tickets.length > 0) {
-            let nrTickets = this.tickets.length;
-            log.debug("Executing request for N tickets: ", nrTickets);
-            this.tickets.splice(0, nrTickets);
-
-            ticketsPerBatch.push(nrTickets);
-            batched += nrTickets;
-
-            await this.runnable();
-            ++batches;
-        }
-
-        return <HandledExecution>{ batched, batches, ticketsPerBatch };
+        return new ActiveBatch(this.tickets, this.runnable, ticket);
 
     }
 
 }
 
-export interface Execution {
+export interface Batch {
+
+    readonly ticket: Ticket;
+
+    run(): Promise<void>;
 
 }
 
 /**
- * Metadata around the a delayed execution.  IE no work was completed but instead
- * scheduled.
+ * Metadata around the a delayed execution.  IE no work was completed but
+ * instead scheduled.
  */
-export interface DelayedExecution {
+export class PassiveBatch implements Batch {
+
+    public readonly ticket: Ticket;
 
     /**
      * The number of tickets in the queue at the time this was executed.
      */
-    readonly pending: number;
+    public readonly pending: number;
+
+    constructor(pending: number, ticket: Ticket) {
+        this.pending = pending;
+        this.ticket = ticket;
+
+    }
+
+    run(): Promise<void> {
+        return Promise.resolve();
+    }
 
 }
 
 /**
  * Metdata around the last execution of this batch. Mostly for testing purposes.
  */
-export interface HandledExecution extends Execution {
+export class ActiveBatch implements Batch  {
 
     /**
      * The total number of batched records written across all batches.
      */
-    readonly batched: number;
+    public batched: number = 0;
 
     /**
      * The total number of batches executed in the last call to execute()
      */
-    readonly batches: number;
+    public batches: number = 0;
 
     /**
      * For each batch, the number of tickets executed within that batch.
      */
-    readonly ticketsPerBatch: number[];
+    public ticketsPerBatch: number[] = [];
+
+    private readonly tickets: Ticket[];
+
+    private readonly runnable: AsyncRunnable;
+
+    public readonly ticket: Ticket;
+
+    constructor(tickets: Ticket[], runnable: AsyncRunnable, ticket: Ticket) {
+        this.tickets = tickets;
+        this.runnable = runnable;
+        this.ticket = ticket;
+    }
+
+    async run(): Promise<void> {
+
+        while (this.tickets.length > 0) {
+            // keep writing while we have tickets. The other tickets are when
+            // people have been writing while we were blocked.
+
+            await this.iter();
+
+        }
+
+    }
+
+    /**
+     * Apply once batch iteration.
+     */
+
+    async iter() {
+
+        let nrTickets = this.tickets.length;
+        log.debug("Executing request for N tickets: ", nrTickets);
+
+        let tickets = this.tickets.splice(0, nrTickets);
+
+        tickets.forEach(ticket => ticket.executed = true);
+
+        this.ticketsPerBatch.push(nrTickets);
+        this.batched += nrTickets;
+
+        await tickets[0].promise;
+        ++this.batches;
+
+    }
+
+}
+
+export class Ticket {
+
+
+    /**
+     * True when the runnable was executed as requested.
+     */
+    public executed: boolean = false;
+
+    public readonly promise: Promise<void>;
+
+    constructor(promise: Promise<void>) {
+        this.promise = promise;
+    }
 
 }
 
