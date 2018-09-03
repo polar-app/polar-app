@@ -24,6 +24,9 @@ export class ProgressBar {
 
         let element = document.createElement('progress');
 
+        //element.value = 0;
+        //element.max = 100;
+
         element.id = ID;
         element.style.height=`5px`;
         element.style.width=`100%`;

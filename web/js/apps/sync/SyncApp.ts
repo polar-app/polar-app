@@ -4,7 +4,6 @@ import {SyncProgressListener} from './framework/SyncProgressListener';
 import {Logger} from '../../logger/Logger';
 import {PersistenceLayer} from '../../datastore/PersistenceLayer';
 import {DiskDatastore} from '../../datastore/DiskDatastore';
-import {notNull} from '../../Preconditions';
 import {ProgressLog} from '../../ui/progress_log/ProgressLog';
 
 const log = Logger.create();
