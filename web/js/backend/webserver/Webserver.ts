@@ -22,7 +22,7 @@ export class Webserver {
     constructor(webserverConfig: WebserverConfig, fileRegistry: FileRegistry) {
 
         this.webserverConfig = Preconditions.assertNotNull(webserverConfig, "webserverConfig");
-        this.fileRegistry = Preconditions.assertNotNull(fileRegistry, "fileRegistry");;
+        this.fileRegistry = Preconditions.assertNotNull(fileRegistry, "fileRegistry");
 
     }
 
@@ -45,11 +45,11 @@ export class Webserver {
 
                 if(! hashcode) {
                     let msg = "No key given for /file";
-                    console.error(msg);
+                    log.error(msg);
                     res.status(404).send(msg);
                 } else if (!this.fileRegistry.hasKey(hashcode)) {
                     let msg = "File not found with hashcode: " + hashcode;
-                    console.error(msg);
+                    log.error(msg);
                     res.status(404).send(msg);
                 } else {
 
@@ -63,7 +63,7 @@ export class Webserver {
                 }
 
             } catch (e) {
-                console.error(e);
+                log.error(`Could not handle serving file. (req.path=${req.path})`, e);
             }
 
         });

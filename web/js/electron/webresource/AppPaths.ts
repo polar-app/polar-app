@@ -37,12 +37,13 @@ export class AppPaths {
                 return absolutePath;
 
             } catch( e ) {
-
+                // we know this happens because I can't tests for file exists
+                // since .asar files have to be read to check for existence.
             }
 
         }
 
-        throw new Error("No path found in baseDirs: " + JSON.stringify(baseDirs));
+        throw new Error(`No file found for ${relativePath} in baseDirs: ` + JSON.stringify(baseDirs));
 
     }
 

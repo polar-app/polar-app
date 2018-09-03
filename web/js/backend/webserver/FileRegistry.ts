@@ -34,7 +34,7 @@ export class FileRegistry {
      * registered.
      *
      */
-    register(key: string, filename: string) {
+    register(key: string, filename: string): RegisterEntry {
 
         filename = path.resolve(filename);
 
@@ -60,7 +60,7 @@ export class FileRegistry {
      * Get metadata about the given key.
      *
      */
-    get(key: string) {
+    get(key: string): FileEntry {
 
         if(!this.hasKey(key)) {
             throw new Error("Key not registered: " + key);
@@ -73,4 +73,14 @@ export class FileRegistry {
 
     }
 
+}
+
+export interface FileEntry {
+    readonly key: string;
+    readonly filename: string;
+
+}
+
+export interface RegisterEntry extends FileEntry {
+    readonly url: string;
 }

@@ -1,5 +1,8 @@
 import fetch, {RequestInit} from './Fetch';
 import {AnkiConnectResponse} from './AnkiConnectResponse';
+import {Logger} from '../../../../logger/Logger';
+
+const log = Logger.create();
 
 /**
  * Fetch implementation that always uses the proper Anki local URL.
@@ -28,7 +31,7 @@ export class AnkiConnectFetch {
 
             return result.result;
         } catch (e) {
-            console.error(e);
+            log.error(e);
             throw e;
         }
 

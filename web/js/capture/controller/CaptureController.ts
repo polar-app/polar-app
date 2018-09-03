@@ -42,7 +42,7 @@ export class CaptureController {
         ipcMain.on('capture-controller-start-capture', (event: Electron.Event, message: any) => {
 
             this.startCapture(event.sender, message.url)
-                .catch( err => console.error(err));
+                .catch( err => log.error("Could not start capture: ", err));
 
         });
 
