@@ -1,3 +1,6 @@
+- Fixed potential Windows bug when importing PDF files into the repo and working
+  with files in general.
+
 # 1.0.0-beta126
 
 - Sending error traces to Sentry

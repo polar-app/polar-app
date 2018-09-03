@@ -137,6 +137,9 @@ export class WebController extends Controller {
 
     detectDocumentLoadedEventListener(event: Event) {
 
+        // FIXME: technically we're detecting a new document LOADING not LOADED...
+        // fix this so that I get a distinct onDocumentLoaded event too...
+
         let currentDocFingerprint = this.docFormat.currentDocFingerprint();
 
         if (currentDocFingerprint !== undefined && currentDocFingerprint !== this.docFingerprint) {

@@ -1,8 +1,11 @@
-import {isPresent} from '../Preconditions';
-
-const libpath = require('path');
+import * as libpath from 'path';
 
 export class Paths {
+
+    /**
+     * The OS specific file separator.
+     */
+    public static readonly sep = libpath.sep;
 
     /**
      * Create a path from the given parts regardless of their structure.
@@ -13,45 +16,60 @@ export class Paths {
      * @param basename
      */
     static create(dirname: string, basename: string) {
+        let result = this.join(dirname, basename);
 
-        if(! isPresent(dirname))
-            throw new Error("Dirname required");
-
-        if(! isPresent(basename))
-            throw new Error("Basename required");
-
-        if(dirname.indexOf("//") !== -1 || basename.indexOf("//") !== -1  ) {
-            // don't allow // in dirname already as we would corrupt
-            throw new Error("No // in dirname");
+        if(result.endsWith(libpath.sep)) {
+            result = result.substring(0, result.length - 1);
         }
 
-        let result = dirname + "/" + basename;
-
-        // replace multiple slashes in directory parts
-        result = result.replace(/\/\/+/g, "/");
-
-        // remove any trailing slashes
-        result = result.replace(/\/$/g, "");
-
         return result;
-
     }
 
     /**
-     * Return the last portion of the path.
+     * Join all arguments together and normalize the resulting path.
      *
+     * Arguments must be strings. In v0.8, non-string arguments were silently
+     * ignored. In v0.10 and up, an exception is thrown.
+     *
+     * @param paths paths to join.
      */
-    static basename(data: string) {
+    static join(...paths: string[]): string {
+        return libpath.join(...paths);
+    }
 
-        let end = data.lastIndexOf("/");
+    /**
+     * The right-most parameter is considered {to}.  Other parameters are
+     * considered an array of {from}.
+     *
+     * Starting from leftmost {from} paramter, resolves {to} to an absolute
+     * path.
+     *
+     * If {to} isn't already absolute, {from} arguments are prepended in right
+     * to left order, until an absolute path is found. If after using all
+     * {from} paths still no absolute path is found, the current working
+     * directory is used as well. The resulting path is normalized, and
+     * trailing slashes are removed unless the path gets resolved to the root
+     * directory.
+     *
+     * @param pathSegments string paths to join.  Non-string arguments are
+     *     ignored.
+     */
+    static resolve(...pathSegments: string[]) {
+        return libpath.resolve(...pathSegments);
+    }
 
-        if(end <= -1) {
-            // TODO: might want to return an Optional here.
-            return data;
-        }
-
-        return data.substring(end+1, data.length);
-
+    /**
+     * Return the last portion of a path. Similar to the Unix basename command.
+     * Often used to extract the file name from a fully qualified path.
+     *
+     * Note that this behaves differently on Windows vs Linux.  The path
+     * separator is changed and different values are returned for the platform.
+     *
+     * @param p the path to evaluate.
+     * @param ext optionally, an extension to remove from the result.
+     */
+    static basename(p: string, ext?: string) {
+        return libpath.basename(p, ext)
     }
 
     static dirname(path: string) {

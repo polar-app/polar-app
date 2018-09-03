@@ -3,7 +3,7 @@ import {Paths} from './Paths';
 
 describe('Paths', function() {
 
-    describe('basic tests', function() {
+    describe('create()', function() {
 
         it("no dirname", function () {
 
@@ -21,12 +21,8 @@ describe('Paths', function() {
 
         });
 
-        it("invalid basename", function () {
-
-            assert.throws(function () {
-                Paths.create("/", "//");
-            })
-
+        it("no trailing /", function () {
+            assert.equal(Paths.create("/", "first/"), "/first");
         });
 
         it("two basic paths", function () {
@@ -46,6 +42,48 @@ describe('Paths', function() {
         });
 
     });
+
+
+    describe('join()', function() {
+
+        it("no dirname", function () {
+
+            assert.throws(function () {
+                Paths.join(null!, "subdir");
+            })
+
+        });
+
+        it("no basename", function () {
+
+            assert.throws(function () {
+                Paths.join("/", null!);
+            })
+
+        });
+
+        it("two basic paths", function () {
+            assert.equal(Paths.join("/", "first"), "/first");
+        });
+
+        it("two leading slashes", function () {
+            assert.equal(Paths.join("/", "/first"), "/first");
+        });
+
+        it("two leading and one trailing slash", function () {
+            assert.equal(Paths.join("/cat/", "/dog"), "/cat/dog");
+        });
+
+        it("four slashes", function () {
+            assert.equal(Paths.join("/cat/", "/dog/"), "/cat/dog/");
+        });
+
+        it("too many slashes", function () {
+            assert.equal(Paths.join("/cat//", "//dog/"), "/cat/dog/");
+        });
+
+    });
+
 
     describe('basename', function() {
 

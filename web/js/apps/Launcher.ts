@@ -41,7 +41,6 @@ export class Launcher {
 
         let model = new Model(persistenceLayer);
         new WebView(model).start();
-        //new TextHighlightView(model).start();
         new TextHighlightView2(model).start();
         new AreaHighlightView(model).start();
 

@@ -1,9 +1,9 @@
-import {IPersistenceLayer, PersistenceLayer} from './datastore/PersistenceLayer';
+import {IPersistenceLayer} from './datastore/PersistenceLayer';
 import {DocMeta} from './metadata/DocMeta';
 import {DocMetas} from './metadata/DocMetas';
 import {Reactor} from './reactor/Reactor';
 import {PagemarkType} from './metadata/PagemarkType';
-import {isPresent, Preconditions} from './Preconditions';
+import {Preconditions} from './Preconditions';
 import {Pagemarks} from './metadata/Pagemarks';
 import {Objects} from './util/Objects';
 import {DocMetaDescriber} from './metadata/DocMetaDescriber';
@@ -185,22 +185,6 @@ export class Model {
             throw new Error("Page numbers begin at 1");
         }
 
-    }
-
-    /**
-     * @deprecated
-     * @param eventListener
-     */
-    registerListenerForCreatePagemark(eventListener: any) {
-        this.reactor.addEventListener('createPagemark', eventListener);
-    }
-
-    /**
-     * @deprecated
-     * @param eventListener
-     */
-    registerListenerForErasePagemark(eventListener: any) {
-        this.reactor.addEventListener('erasePagemark', eventListener);
     }
 
 }

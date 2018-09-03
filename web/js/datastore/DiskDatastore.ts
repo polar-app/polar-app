@@ -100,14 +100,14 @@ export class DiskDatastore implements Datastore {
      */
     async getDocMeta(fingerprint: string): Promise<string | null> {
 
-        let docDir = this.dataDir + "/" + fingerprint;
+        let docDir = Paths.join(this.dataDir, fingerprint);
 
         if(! await this.existsAsync(docDir)) {
             log.error("Document dir is missing: " + docDir);
             return null;
         }
 
-        let statePath = docDir + "/state.json";
+        let statePath = Paths.join(docDir, 'state.json');
 
         if(! await this.existsAsync(statePath)) {
             log.error("File does not exist: " + statePath);
@@ -170,12 +170,12 @@ export class DiskDatastore implements Datastore {
 
         log.info("Performing sync of content into disk datastore.");
 
-        let docDir = this.dataDir + "/" + fingerprint;
+        let docDir = Paths.join(this.dataDir, fingerprint);
 
         let dirExists =
             await this.statAsync(docDir)
                       .then(() => true)
-                      .catch(() => false)
+                      .catch(() => false);
 
         if ( ! dirExists) {
             // the directory for this file is missing.
@@ -183,7 +183,7 @@ export class DiskDatastore implements Datastore {
             await this.mkdirAsync(docDir)
         }
 
-        let statePath = docDir + "/state.json";
+        let statePath = Paths.join(docDir, "state.json");
 
         log.info(`Writing data to state file: ${statePath}`);
 
@@ -202,11 +202,11 @@ export class DiskDatastore implements Datastore {
         for (let i = 0; i < fileNames.length; i++) {
             const fileName = fileNames[i];
 
-            const fileStat = await Files.statAsync(`${this.dataDir}/${fileName}`);
+            const fileStat = await Files.statAsync(Paths.join(this.dataDir, fileName));
 
             if(fileStat.isDirectory()) {
 
-                let stateFile = `${this.dataDir}/${fileName}/state.json`;
+                let stateFile = Paths.join(this.dataDir, fileName, 'state.json');
                 let exists = await Files.existsAsync(stateFile);
                 if (exists) {
                     result.push({fingerprint: fileName});
@@ -231,7 +231,7 @@ export class DiskDatastore implements Datastore {
     }
 
     static getDataDir() {
-        return DiskDatastore.getUserHome() + "/.polar";
+        return Paths.join(DiskDatastore.getUserHome()!, ".polar");
     }
 
 }
