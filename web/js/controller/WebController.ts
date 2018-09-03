@@ -16,6 +16,7 @@ import {DocFormat} from '../docformat/DocFormat';
 import {AreaHighlightController} from '../highlights/area/controller/AreaHighlightController';
 import {PagemarkCoverageEventListener} from '../pagemarks/controller/PagemarkCoverageEventListener';
 import {DocDetails} from '../metadata/DocDetails';
+import {Optional} from '../util/ts/Optional';
 
 
 const log = Logger.create();
@@ -67,6 +68,10 @@ export class WebController extends Controller {
         // TODO: move this into the importer to create the DocMeta once the
         // PHZ is created which also means this can be tested easily.
         DocDetails.merge(this.model.docMeta.docInfo, docDetail);
+
+        let title = Optional.of(this.model.docMeta.docInfo.title).getOrElse("Untitled");
+
+        document.title = `${title}`;
 
         this.setupContextMenu();
 
