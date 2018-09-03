@@ -41,5 +41,15 @@ export const Tips = () =>
 export const Footer = () =>
     <footer style={{ textAlign: "center" }}>
     {/*Like Polar?  Show your love by giving us a Github star!*/}
-    <a className="github-button" href="https://github.com/burtonator/polar-bookshelf" data-icon="octicon-star" data-size="large" data-show-count="true" aria-label="Star burtonator/polar-bookshelf on GitHub">Star</a>
+
+    <div className="buttons">
+
+        <div className="button">
+            <a className="github-button" href="https://github.com/burtonator/polar-bookshelf" data-icon="octicon-star" data-size="large" data-show-count="true" aria-label="Star burtonator/polar-bookshelf on GitHub">Star</a>
+        </div>
+
+        <div className="button">
+            <a href="https://twitter.com/getpolarized?ref_src=twsrc%5Etfw" className="twitter-follow-button" data-show-count="false">Follow @getpolarized</a>
+        </div>
+    </div>
     </footer>;

@@ -78,3 +78,15 @@ html, body {
   user-select: none;
   vertical-align: middle;
 }
+
+footer .buttons {
+  text-align: center;
+  vertical-align: middle;
+  /*display: table-cell;*/
+  width: 100%;
+}
+
+footer .buttons .button {
+  padding: 5px;
+  display: inline;
+}
