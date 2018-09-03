@@ -1,3 +1,8 @@
+# 1.0.0-beta130
+
+- AHA.. We were not using Electron 3.0 beta8.. we were still stuck on beta5 
+  due to an electron-builder issue. 
+
 # 1.0.0-beta129
 
 - Improved how we create TextHighlight to avoid type issues.
