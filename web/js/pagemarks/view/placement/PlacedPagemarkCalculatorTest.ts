@@ -45,7 +45,6 @@ describe('PlacedPagemarkCalculator', function() {
 
         });
 
-
     });
 
 });
