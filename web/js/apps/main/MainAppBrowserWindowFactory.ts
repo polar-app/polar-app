@@ -79,22 +79,28 @@ export class MainAppBrowserWindowFactory {
         }
 
         // Create the browser window.
-        let newWindow = new BrowserWindow(browserWindowOptions);
+        let browserWindow = new BrowserWindow(browserWindowOptions);
 
-        newWindow.on('close', function(e) {
+        browserWindow.on('close', function(e) {
             e.preventDefault();
-            newWindow.webContents.clearHistory();
-            newWindow.webContents.session.clearCache(function() {
-                newWindow.destroy();
-            });
+
+            if(browserWindow.webContents) {
+
+                browserWindow.webContents.clearHistory();
+                browserWindow.webContents.session.clearCache(() => {
+                    browserWindow.destroy();
+                });
+
+            }
+
         });
 
-        newWindow.webContents.on('new-window', (e, url) => {
+        browserWindow.webContents.on('new-window', (e, url) => {
             e.preventDefault();
             shell.openExternal(url);
         });
 
-        newWindow.webContents.on('will-navigate', (e, url) => {
+        browserWindow.webContents.on('will-navigate', (e, url) => {
             log.info("Attempt to navigate to new URL: ", url);
             // required to force the URLs clicked to open in a new browser.  The
             // user probably / certainly wants to use their main browser.
@@ -103,21 +109,21 @@ export class MainAppBrowserWindowFactory {
         });
 
         log.info("Loading URL: ", url);
-        newWindow.loadURL(url);
+        browserWindow.loadURL(url);
 
         return new Promise<BrowserWindow>(resolve => {
 
-            newWindow.once('ready-to-show', () => {
+            browserWindow.once('ready-to-show', () => {
 
                 // As of Electron 3.0 beta8 there appears to be a bug where
                 // it persists teh zoom factor between restarts and restores
                 // the zoom factor for the user but this can break / confuse
                 // PHZ loading so we always want them to start at 1.0
-                newWindow.webContents.setZoomFactor(1.0);
+                browserWindow.webContents.setZoomFactor(1.0);
 
-                newWindow.show();
+                browserWindow.show();
 
-                resolve(newWindow);
+                resolve(browserWindow);
 
             });
 

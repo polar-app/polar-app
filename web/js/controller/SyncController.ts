@@ -49,7 +49,7 @@ export class SyncController {
             return;
         }
 
-        let resource = new Resource(ResourceType.APP, "./apps/sync/index.html#?fingerprint=" + this.model.docMeta.docInfo.fingerprint);
+        let resource = new Resource(ResourceType.APP, "./apps/sync/index.html?fingerprint=" + this.model.docMeta.docInfo.fingerprint);
 
         let dialogWindowClient = await DialogWindowClient.create(new DialogWindowOptions(resource));
         await dialogWindowClient.show();

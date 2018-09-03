@@ -8,6 +8,7 @@ import {Webserver} from '../../backend/webserver/Webserver';
 import {ProxyServer} from '../../backend/proxyserver/ProxyServer';
 import {BROWSER_WINDOW_OPTIONS, MainAppBrowserWindowFactory} from './MainAppBrowserWindowFactory';
 import MenuItem = Electron.MenuItem;
+import {AppLauncher} from './AppLauncher';
 
 const process = require('process');
 
@@ -200,6 +201,10 @@ export class MainAppController {
         browserWindows = browserWindows.filter( browserWindow => browserWindow.isVisible());
 
         if(browserWindows.length === 0) {
+
+            AppLauncher.launchRepositoryApp()
+                .catch(err => log.error("Unable to open repository app: ", err));
+
             return;
         }
 

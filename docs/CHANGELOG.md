@@ -1,3 +1,15 @@
+- Fixed bug where Polar is running and the user double clicks on the app again
+  and nothing happens.
+
+- Removed # in URL for sync app since it's no longer needed and prevented
+  execution on Windows.
+
+- Re-launch the app repository if polar is already running and the user clicks
+  on the desktop icon.
+
+# 1.0.0-beta128
+
+- Updated logging to include the path when we can't open an AppPaths relative file.  
 
 # 1.0.0-beta127
  
