@@ -28,7 +28,7 @@ export class AbstractPagemarkComponent extends Component {
 
     private readonly docFormat: DocFormat;
 
-    private pagemark?: Pagemark
+    private pagemark?: Pagemark;
 
     private annotationEvent?: AnnotationEvent;
 

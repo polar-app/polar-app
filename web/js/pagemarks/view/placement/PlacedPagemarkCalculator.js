@@ -1,65 +1,32 @@
-const {Preconditions} = require("../../../Preconditions");
-const {Line} = require("../../../util/Line");
-const {Rects} = require("../../../Rects");
-const {PlacedPagemark} = require("./PlacedPagemark");
-const {PagemarkRects} = require("../../../metadata/PagemarkRects");
-
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const PagemarkRects_1 = require("../../../metadata/PagemarkRects");
+const Preconditions_1 = require("../../../Preconditions");
+const Rects_1 = require("../../../Rects");
+const PlacedPagemark_1 = require("./PlacedPagemark");
+const Line_1 = require("../../../util/Line");
 class PlacedPagemarkCalculator {
-
-    /**
-     * Compute a Rect for rendering the pagemarkRect onto the parentRect.
-     *
-     * @param parentRect {Rect}
-     * @param pagemark {Pagemark}
-     * @return {PlacedPagemark}
-     */
     calculate(parentRect, pagemark) {
-
         let pagemarkRect = pagemark.rect;
-
-        if(! pagemarkRect) {
-            pagemarkRect = PagemarkRects.createDefault(pagemark);
+        if (!pagemarkRect) {
+            pagemarkRect = PagemarkRects_1.PagemarkRects.createDefault(pagemark);
         }
-
-        Preconditions.assertNotNull(parentRect, "parentRect");
-        Preconditions.assertNotNull(pagemarkRect, "pagemarkRect");
-
+        Preconditions_1.Preconditions.assertNotNull(parentRect, "parentRect");
+        Preconditions_1.Preconditions.assertNotNull(pagemarkRect, "pagemarkRect");
         let fractionalRect = pagemarkRect.toFractionalRect();
-
         let resultX = this._scaleAxis(parentRect, fractionalRect, "x");
         let resultY = this._scaleAxis(parentRect, fractionalRect, "y");
-
-        let rect = Rects.createFromLines(resultX, resultY);
-
-        return new PlacedPagemark({rect});
-
+        let rect = Rects_1.Rects.createFromLines(resultX, resultY);
+        return new PlacedPagemark_1.PlacedPagemark({ rect });
     }
-
-    /**
-     *
-     * @param parentRect {Rect}
-     * @param fractionalRect {Rect}
-     * @param axis {string}
-     * @private
-     * @return {Line}
-     */
     _scaleAxis(parentRect, fractionalRect, axis) {
-        return this._scaleLine(parentRect.toLine(axis), fractionalRect.toLine(axis))
+        return this._scaleLine(parentRect.toLine(axis), fractionalRect.toLine(axis));
     }
-
-    /**
-     *
-     * @param parentLine
-     * @param fractionalLine
-     * @return {Line}
-     * @private
-     */
     _scaleLine(parentLine, fractionalLine) {
         let start = parentLine.start * fractionalLine.start;
         let end = parentLine.end * fractionalLine.end;
-        return new Line(start, end, parentLine.axis);
+        return new Line_1.Line(start, end, parentLine.axis);
     }
-
 }
-
-module.exports.PlacedPagemarkCalculator = PlacedPagemarkCalculator;
+exports.PlacedPagemarkCalculator = PlacedPagemarkCalculator;
+//# sourceMappingURL=PlacedPagemarkCalculator.js.map

@@ -1,19 +1,9 @@
-
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 class PlacedPagemark {
-
     constructor(opts) {
-
-        /**
-         * The place on the page to place this pagemark.
-         *
-         * @type {Rect}
-         */
-        this.rect = undefined;
-
-        Object.assign(this, opts);
-
+        this.rect = opts.rect;
     }
-
 }
-
-module.exports.PlacedPagemark = PlacedPagemark;
+exports.PlacedPagemark = PlacedPagemark;
+//# sourceMappingURL=PlacedPagemark.js.map

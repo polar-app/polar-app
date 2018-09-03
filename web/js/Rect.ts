@@ -35,7 +35,7 @@ export class Rect {
      * @param axis {String} The axis to use (x or y)
      * @return {Line}
      */
-    toLine(axis: string) {
+    toLine(axis: Axis) {
 
         if(axis === "x") {
             return new Line(this.left, this.right, axis);
@@ -96,3 +96,5 @@ export class Rect {
     }
 
 }
+
+export type Axis = 'x' | 'y';
