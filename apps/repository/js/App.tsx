@@ -10,6 +10,9 @@ import {DocLoader} from '../../../web/js/apps/main/ipc/DocLoader';
 import {ISODateTime} from '../../../web/js/metadata/ISODateTime';
 import {Datastores} from '../../../web/js/datastore/Datastores';
 import {Datastore} from '../../../web/js/datastore/Datastore';
+import {Progress} from '../../../web/js/util/Progress';
+import {DocMetaRef} from '../../../web/js/datastore/DocMetaRef';
+import {ProgressBar} from '../../../web/js/ui/progress_bar/ProgressBar';
 
 const log = Logger.create();
 
@@ -62,47 +65,65 @@ class App<P> extends React.Component<{}, IAppState> {
 
         let docMetaFiles = await this.datastore!.getDocMetaFiles();
 
+        let progress = new Progress(docMetaFiles.length);
+
+        let progressBar = ProgressBar.create(false);
+
         for (let i = 0; i < docMetaFiles.length; i++) {
             const docMetaFile = docMetaFiles[i];
 
-            let docMeta = await this.persistenceLayer!.getDocMeta(docMetaFile.fingerprint);
+            let docDetail = await this.loadDocDetail(docMetaFile);
+            if(docDetail) {
+                result.push(docDetail)
+            }
 
-            if(docMeta !== undefined) {
+            progress.incr();
+            progressBar.update(progress.percentage());
 
-                let title: string = 'Untitled';
-                let progress: number = 0;
-                let filename: string | undefined;
-                let added: ISODateTime | undefined;
+        }
 
-                if(docMeta.docInfo) {
+        progressBar.destroy();
 
-                    // TODO: consider using the filename if title absent.
-                    title = Optional.of(docMeta.docInfo.title).getOrElse('Untitled');
-                    progress = Optional.of(docMeta.docInfo.progress).getOrElse(0);
-                    filename = Optional.of(docMeta.docInfo.filename).getOrUndefined();
-                    added = Optional.of(docMeta.docInfo.added).getOrUndefined();
+        return result;
 
-                    // added = Optional.of(docMeta.docInfo.added)
-                    //     .map(value => new ISODateTime(value))
-                    //     .getOrUndefined();
+    }
 
-                }
+    private async loadDocDetail(docMetaFile: DocMetaRef): Promise<DocDetail | undefined> {
 
-                let doc = {
-                    fingerprint: docMetaFile.fingerprint,
-                    title,
-                    progress,
-                    filename,
-                    added
-                };
+        let docMeta = await this.persistenceLayer!.getDocMeta(docMetaFile.fingerprint);
 
-                result.push(doc)
+        if(docMeta !== undefined) {
 
+            let title: string = 'Untitled';
+            let progress: number = 0;
+            let filename: string | undefined;
+            let added: ISODateTime | undefined;
+
+            if (docMeta.docInfo) {
+
+                // TODO: consider using the filename if title absent.
+                title = Optional.of(docMeta.docInfo.title).getOrElse('Untitled');
+                progress = Optional.of(docMeta.docInfo.progress).getOrElse(0);
+                filename = Optional.of(docMeta.docInfo.filename).getOrUndefined();
+                added = Optional.of(docMeta.docInfo.added).getOrUndefined();
+
+                // added = Optional.of(docMeta.docInfo.added)
+                //     .map(value => new ISODateTime(value))
+                //     .getOrUndefined();
+
+            }
+
+            return {
+                fingerprint: docMetaFile.fingerprint,
+                title,
+                progress,
+                filename,
+                added
             }
 
         }
 
-        return result;
+        return undefined;
 
     }
 

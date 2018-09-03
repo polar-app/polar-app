@@ -20,17 +20,18 @@ export class ProgressBar {
 
     }
 
-    public static create(): ProgressBar {
+    public static create(indeterminate: boolean = true): ProgressBar {
 
         let element = document.createElement('progress');
 
-        //element.value = 0;
-        //element.max = 100;
+        if(! indeterminate) {
+            element.value = 0;
+            element.max = 100;
+        }
 
         element.id = ID;
         element.style.height=`5px`;
         element.style.width=`100%`;
-
 
         ///progress.style.backgroundColor='#89ADFD';
         //progress.style.color='#89ADFD';
@@ -46,3 +47,4 @@ export class ProgressBar {
     }
 
 }
+
