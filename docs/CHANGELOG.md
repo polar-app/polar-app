@@ -1,3 +1,10 @@
+# 1.0.0-beta126
+
+- Sending error traces to Sentry
+
+# 1.0.0-beta125
+
+- Fixed more platform issues on Windows
 
 # 1.0.0-beta120
 
