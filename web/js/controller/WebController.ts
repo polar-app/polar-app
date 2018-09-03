@@ -58,13 +58,15 @@ export class WebController extends Controller {
 
     async onDocumentLoaded(fingerprint: string, nrPages: number, currentlySelectedPageNum: number) {
 
+        await super.onDocumentLoaded(fingerprint, nrPages, currentlySelectedPageNum);
+
         let docDetail = this.viewer.docDetail();
+
+        log.info("Merging docDetail: ", docDetail);
 
         // TODO: move this into the importer to create the DocMeta once the
         // PHZ is created which also means this can be tested easily.
         DocDetails.merge(this.model.docMeta.docInfo, docDetail);
-
-        await super.onDocumentLoaded(fingerprint, nrPages, currentlySelectedPageNum)
 
         this.setupContextMenu();
 

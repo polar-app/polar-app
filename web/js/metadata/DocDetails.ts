@@ -1,5 +1,4 @@
 import {DocDetail, UpdatableDocDetails} from './DocDetail';
-import {Objects} from '../util/Objects';
 import {isPresent} from '../Preconditions';
 import {Logger} from '../logger/Logger';
 import {DocInfo} from './DocInfo';
@@ -26,13 +25,17 @@ export class DocDetails {
             typedKeys.forEach(typedKey => {
 
                 if(! isPresent(targetDocDetails[typedKey]) && isPresent(sourceDocDetails[typedKey])) {
-                    targetDocDetails[typedKey] = sourceDocDetails[typedKey];
+                    let newValue = sourceDocDetails[typedKey];
+                    log.info(`Setting ${typedKey} to ${newValue}`)
+                    targetDocDetails[typedKey] = newValue;
                 }
 
             });
 
             return targetDocDetails;
 
+        } else {
+            log.warn("No docDetail to merge");
         }
 
         return undefined;

@@ -90,6 +90,15 @@ export class MainAppController {
             proxyServer: this.proxyServer
         });
 
+        log.info("Closing all windows...");
+
+        BrowserWindow.getAllWindows().forEach(window => {
+            log.info("Closing window: " + window.id);
+            window.close()
+        });
+
+        log.info("Closing all windows...done");
+
         log.info("Exiting electron...");
 
         app.quit();

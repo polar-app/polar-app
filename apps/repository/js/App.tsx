@@ -1,8 +1,7 @@
 import * as React from 'react';
 import {DocDetail} from '../../../web/js/metadata/DocDetail';
 import ReactTable from "react-table";
-import {Footer, Logo, Tips} from './Utils';
-import {DiskDatastore} from '../../../web/js/datastore/DiskDatastore';
+import {Footer, Tips} from './Utils';
 import {Logger} from '../../../web/js/logger/Logger';
 import {PersistenceLayer} from '../../../web/js/datastore/PersistenceLayer';
 import {isPresent} from '../../../web/js/Preconditions';
