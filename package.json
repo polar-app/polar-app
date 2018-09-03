@@ -121,7 +121,6 @@
     "micromodal": "^0.3.2",
     "namor": "^1.0.1",
     "node-fetch": "^2.2.0",
-    "node-http-proxy": "^0.2.3",
     "npm": "^6.3.0",
     "popper.js": "^1.14.4",
     "prettify": "^0.1.7",
