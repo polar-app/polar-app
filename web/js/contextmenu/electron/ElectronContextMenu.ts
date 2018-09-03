@@ -6,9 +6,9 @@ import {Arrays} from '../../util/Arrays';
 import {Broadcaster} from '../../ipc/Broadcaster';
 import {Preconditions} from '../../Preconditions';
 import {ContextMenuType} from '../ContextMenuType';
+import {Messenger} from '../../electron/messenger/Messenger';
 
 const {ContextMenu} = require("../ContextMenu");
-const {Messenger} = require("../../electron/messenger/Messenger");
 
 const log = Logger.create();
 

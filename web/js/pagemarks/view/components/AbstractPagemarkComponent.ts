@@ -34,7 +34,7 @@ export class AbstractPagemarkComponent extends Component {
 
     private pagemarkBoxController: any;
 
-    private options: ElementOptions;
+    protected options: ElementOptions;
 
     constructor(type: PagemarkComponentType) {
         super();

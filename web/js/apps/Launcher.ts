@@ -5,9 +5,9 @@ import {WebController} from '../controller/WebController';
 import {Logger} from '../logger/Logger';
 import {Logging} from '../logger/Logging';
 import {WebView} from '../view/WebView';
+import {PAGEMARK_VIEW_ENABLED, PagemarkView} from '../pagemarks/view/PagemarkView';
 
 const {TextHighlightView2} = require("../highlights/text/view/TextHighlightView2");
-const {PagemarkView, PAGEMARK_VIEW_ENABLED} = require("../pagemarks/view/PagemarkView");
 const {AreaHighlightView} = require("../highlights/area/view/AreaHighlightView");
 
 const log = Logger.create();
@@ -43,10 +43,7 @@ export class Launcher {
         new WebView(model).start();
         new TextHighlightView2(model).start();
         new AreaHighlightView(model).start();
-
-        if(PAGEMARK_VIEW_ENABLED) {
-            new PagemarkView(model).start();
-        }
+        new PagemarkView(model).start();
 
         let viewer = ViewerFactory.create(model);
         viewer.start();

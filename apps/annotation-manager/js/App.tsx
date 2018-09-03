@@ -8,6 +8,7 @@ import {Text} from '../../../web/js/metadata/Text';
 import {Screenshot} from '../../../web/js/metadata/Screenshot';
 import {AnnotationType} from '../../../web/js/metadata/AnnotationType';
 import {Elements} from '../../../web/js/util/Elements';
+import {Screenshots} from '../../../web/js/metadata/Screenshots';
 
 const log = Logger.create();
 
@@ -98,8 +99,25 @@ class App<P> extends React.Component<{}, IAppState> {
 
                 }
 
+                let screenshot: Screenshot | undefined;
+
+                Object.values(textHighlight.images).forEach( image => {
+
+                    if(image.rel && image.rel === 'screenshot') {
+
+                        let screenshotURI = Screenshots.parseURI(image.src);
+
+                        if(screenshotURI) {
+                            screenshot = pageMeta.screenshots[screenshotURI.id];
+                        }
+
+                    }
+
+                });
+
                 result.push({
                     annotationType: AnnotationType.TEXT_HIGHLIGHT,
+                    screenshot,
                     html
                 })
 
@@ -115,13 +133,17 @@ class App<P> extends React.Component<{}, IAppState> {
 
         // https://blog.cloudboost.io/for-loops-in-react-render-no-you-didnt-6c9f4aa73778
         //
-        // let result = []
-        //
-        // annotations.map(annotation => {
-        //     result.push(<div>hello world</div>);
-        // });
-        //
-        // return result;
+        let result: any = []
+
+
+
+        annotations.map(annotation => {
+            //result.push(React.createElement( 'div', [], Elements.createElementHTML(annotation.html)));
+
+            result.push(<div dangerouslySetInnerHTML={{__html: annotation.html}}></div>);
+        });
+
+        return result;
 
         {/*{annotations.map((annotation, idx) =>*/}
         {/*<div className="annotation">*/}
@@ -150,6 +172,7 @@ class App<P> extends React.Component<{}, IAppState> {
 
             <div id="annotation-manager">
 
+                {this.createHTML(annotations)}
                 {/*{annotations.map((annotation, idx) =>*/}
                     {/*<div className="annotation">*/}
                         {/*{Elements.createElementHTML(annotation.html)}*/}

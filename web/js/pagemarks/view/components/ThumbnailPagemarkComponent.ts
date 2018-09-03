@@ -1,9 +1,11 @@
-const {AbstractPagemarkComponent} = require("./AbstractPagemarkComponent");
+import {AnnotationEvent} from '../../../annotations/components/AnnotationEvent';
+import {AbstractPagemarkComponent} from './AbstractPagemarkComponent';
+
 
 /**
  * A pagemark for thumbnails.
  */
-class ThumbnailPagemarkComponent extends AbstractPagemarkComponent {
+export class ThumbnailPagemarkComponent extends AbstractPagemarkComponent {
 
     constructor() {
         super("thumbnail");
@@ -13,7 +15,7 @@ class ThumbnailPagemarkComponent extends AbstractPagemarkComponent {
      *
      * @param annotationEvent {AnnotationEvent}
      */
-    init(annotationEvent) {
+    init(annotationEvent: AnnotationEvent) {
 
         super.init(annotationEvent);
 
@@ -34,5 +36,3 @@ class ThumbnailPagemarkComponent extends AbstractPagemarkComponent {
     }
 
 }
-
-module.exports.ThumbnailPagemarkComponent = ThumbnailPagemarkComponent;
