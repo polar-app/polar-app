@@ -1,3 +1,8 @@
+
+# 1.0.0-beta127
+ 
+- Fixed a half dozen path separator bugs on Windows.
+
 - Fixed potential Windows bug when importing PDF files into the repo and working
   with files in general.
 
