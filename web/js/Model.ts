@@ -9,6 +9,7 @@ import {Objects} from './util/Objects';
 import {DocMetaDescriber} from './metadata/DocMetaDescriber';
 import {Logger} from './logger/Logger';
 import {TraceEvent} from './proxies/TraceEvent';
+import {Batcher} from './datastore/batcher/Batcher';
 
 const {Proxies} = require("./proxies/Proxies");
 
@@ -68,13 +69,28 @@ export class Model {
         log.info("Description of doc loaded: " + DocMetaDescriber.describe(this.docMeta));
         log.info("Document loaded: ", fingerprint);
 
-        this.docMeta = Proxies.create(this.docMeta, (traceEvent: TraceEvent) => {
+        let batcher = new Batcher(async () => {
 
             // right now we just sync the datastore on mutation.  We do not
             // attempt to use a journal yet.
 
+            await this.persistenceLayer.sync(this.docMeta.docInfo.fingerprint, this.docMeta);
+
+        });
+
+        this.docMeta = Proxies.create(this.docMeta, (traceEvent: TraceEvent) => {
+
             log.info(`sync of persistence layer via deep trace due to path ${traceEvent.path} and property ${traceEvent.property}"`);
-            this.persistenceLayer.sync(this.docMeta.docInfo.fingerprint, this.docMeta);
+
+            setTimeout(() => {
+
+                // use setTimeout so that we function in the same thread which
+                // avoids concurrency issues with the batcher.
+
+                batcher.enqueue().run()
+                    .catch(err => log.error("Unable to commit to disk: ", err));
+
+            }, 0);
 
             return true;
 

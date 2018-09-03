@@ -27,7 +27,9 @@ export class Batcher {
 
         let ticket = new Ticket(this.runnable());
 
-        if (this.tickets.length > 0) {
+        this.tickets.push(ticket);
+
+        if (this.tickets.length > 1) {
 
             // Push a ticket on so that the worker thread handling this IO
             // can complete my work for me when it finishes the next write.
@@ -50,13 +52,9 @@ export class Batcher {
 
             let pending = this.tickets.length;
 
-            this.tickets.push(ticket);
-
             return new PassiveBatch(pending, ticket)
 
         }
-
-        this.tickets.push(ticket);
 
         return new ActiveBatch(this.tickets, this.runnable, ticket);
 
@@ -147,17 +145,18 @@ export class ActiveBatch implements Batch  {
 
     async iter() {
 
-        let nrTickets = this.tickets.length;
-        log.debug("Executing request for N tickets: ", nrTickets);
+        let nrTicketsToExecute = this.tickets.length;
+        log.debug("Executing request for N tickets: ", nrTicketsToExecute);
 
-        let tickets = this.tickets.splice(0, nrTickets);
+        await this.tickets[0].promise;
+
+        let tickets = this.tickets.splice(0, nrTicketsToExecute);
 
         tickets.forEach(ticket => ticket.executed = true);
 
-        this.ticketsPerBatch.push(nrTickets);
-        this.batched += nrTickets;
+        this.ticketsPerBatch.push(nrTicketsToExecute);
+        this.batched += nrTicketsToExecute;
 
-        await tickets[0].promise;
         ++this.batches;
 
     }
