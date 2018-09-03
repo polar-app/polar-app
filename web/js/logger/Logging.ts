@@ -9,6 +9,8 @@ import {LogLevel} from './LogLevel';
 import {Files} from '../util/Files';
 import {LogLevels} from './LogLevels';
 import {Optional} from '../util/ts/Optional';
+import {MultiLogger} from './MultiLogger';
+import {SentryLogger} from './SentryLogger';
 
 /**
  * Maintains our general logging infrastructure.  Differentiated from Logger
@@ -21,9 +23,7 @@ export class Logging {
      */
     public static async init() {
 
-        let loggingConfig = await this.loggingConfig();
-
-        let target: ILogger = await this.createPrimaryTarget(loggingConfig.target);
+        let target: ILogger = await this.createTarget();
 
         await this.initWithTarget(target);
 
@@ -45,15 +45,23 @@ export class Logging {
 
     }
 
-    public static async createPrimaryTarget(loggerTarget: LoggerTarget): Promise<ILogger> {
+    public static async createTarget(): Promise<ILogger> {
 
-        if(loggerTarget === LoggerTarget.CONSOLE) {
+        return new MultiLogger(new SentryLogger(), await this.createPrimaryTarget());
+
+    }
+
+    public static async createPrimaryTarget(): Promise<ILogger> {
+
+        let loggingConfig = await this.loggingConfig();
+
+        if(loggingConfig.target === LoggerTarget.CONSOLE) {
             return new ConsoleLogger();
         // } else if(loggerTarget === LoggerTarget.DISK) {
         //     let directories = new Directories();
         //     return await ElectronLoggers.create(directories.logsDir);
         } else {
-            throw new Error("Invalid target: " + loggerTarget);
+            throw new Error("Invalid target: " + loggingConfig.target);
         }
 
     }

@@ -21,7 +21,7 @@ export class Ranges {
 
             if(offset > 0) {
                 // I don't think this is actually a real-world case.
-                throw new Error("We don't know how to deal with non-zero yet.");
+                throw new Error("We don't know how to deal with non-zero yet: " + offset);
             }
 
             return container;

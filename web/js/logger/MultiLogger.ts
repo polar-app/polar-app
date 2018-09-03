@@ -12,7 +12,7 @@ export class MultiLogger implements ILogger {
 
     private readonly delegates: ILogger[];
 
-    constructor(delegates: ILogger[]) {
+    constructor(...delegates: ILogger[]) {
         this.delegates = delegates;
 
         this.name = 'multi-logger|'
