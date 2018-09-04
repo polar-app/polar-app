@@ -1,6 +1,11 @@
 import assert from 'assert';
 import {Files} from './Files';
-import {assertJSON} from '../test/Assertions';
+import {FilePaths} from './FilePaths';
+import os from "os";
+
+const tmpdir = os.tmpdir();
+
+const rimraf = require('rimraf');
 
 describe('Files', function() {
 
@@ -8,7 +13,7 @@ describe('Files', function() {
 
         it("basic", async function () {
 
-            await Files.writeFileAsync("/tmp/write-file-async.txt", "hello world");
+            await Files.writeFileAsync(FilePaths.join(tmpdir, "write-file-async.txt"), "hello world");
 
         });
 
@@ -18,8 +23,11 @@ describe('Files', function() {
 
         it("basic", async function () {
 
-            await Files.writeFileAsync("/tmp/write-file-async.txt", "hello world");
-            let data = await Files.readFileAsync("/tmp/write-file-async.txt");
+            let path = FilePaths.join(tmpdir, "write-file-async.txt");
+
+            await Files.writeFileAsync(path, "hello world");
+
+            let data = await Files.readFileAsync(path);
 
             assert.equal(data, "hello world")
 
@@ -32,9 +40,14 @@ describe('Files', function() {
 
         it("basic", async function () {
 
-            let files = await Files.readdirAsync(__dirname);
+            let filename = "write-file-async.txt";
+            let path = FilePaths.join(tmpdir, filename);
 
-            assert.equal(files.includes("FilesTest.ts"), true);
+            await Files.writeFileAsync(path, "hello world");
+
+            let files = await Files.readdirAsync(tmpdir);
+
+            assert.equal(files.includes(filename), true);
 
         });
 
@@ -44,7 +57,10 @@ describe('Files', function() {
 
         it("basic", async function () {
 
-            let stat = await Files.statAsync(__dirname + '/FilesTest.ts');
+            let filename = "write-file-async.txt";
+            let path = FilePaths.join(tmpdir, filename);
+
+            let stat = await Files.statAsync(path);
 
             assert.equal(stat !== null, true);
             assert.equal(stat.isFile(), true);
@@ -54,11 +70,39 @@ describe('Files', function() {
 
         it("isDirectory", async function () {
 
-            let stat = await Files.statAsync(__dirname);
+            let stat = await Files.statAsync(tmpdir);
             assert.equal(stat.isDirectory(), true);
 
         });
 
     });
 
+    describe('mkdirAsync', function() {
+
+        it("basic", async function () {
+
+            let path = FilePaths.join(tmpdir, '/test.dir');
+
+            removeDirectory(path);
+
+            await Files.mkdirAsync(path);
+
+            assert.ok(await Files.existsAsync(path));
+
+            let stat = await Files.statAsync(path);
+
+            assert.equal(stat !== null, true);
+            assert.equal(stat.isFile(), false);
+            assert.equal(stat.isDirectory(), true);
+
+        });
+
+    });
+
+
 });
+
+
+function removeDirectory(path: string) {
+    rimraf.sync(path);
+}

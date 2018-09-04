@@ -8,10 +8,9 @@ import {DocMeta} from '../metadata/DocMeta';
 import {isPresent} from '../Preconditions';
 
 import os from 'os';
+import fs from 'fs';
 import {Files} from '../util/Files';
 import {FilePaths} from '../util/FilePaths';
-
-const fs = require('fs');
 
 const rimraf = require('rimraf');
 
@@ -22,6 +21,7 @@ describe('DiskDatastore', function() {
     it("init and test paths", async function () {
 
         let dataDir = FilePaths.join(tmpdir, 'test-paths');
+        removeDirectory(dataDir);
 
         let diskDatastore = new DiskDatastore(dataDir);
 
@@ -39,6 +39,7 @@ describe('DiskDatastore', function() {
     it("test async exists function", async function () {
 
         let dataDir = FilePaths.join(tmpdir, 'this-file-does-not-exist');
+        removeDirectory(dataDir);
 
         let diskDatastore = new DiskDatastore(dataDir);
 
@@ -50,7 +51,7 @@ describe('DiskDatastore', function() {
     it("init dataDir directory on init()", async function () {
 
         let dataDir = FilePaths.join(tmpdir, 'disk-datastore.test');
-        rimraf.sync(dataDir);
+        removeDirectory(dataDir);
 
         let diskDatastore = new DiskDatastore(dataDir);
 
@@ -112,6 +113,8 @@ describe('DiskDatastore', function() {
 
         beforeEach(async function () {
 
+            removeDirectory(dataDir);
+
             diskDatastore = new DiskDatastore(dataDir);
             persistenceLayer = new PersistenceLayer(diskDatastore);
 
@@ -119,11 +122,21 @@ describe('DiskDatastore', function() {
 
             docMeta = DocMetas.createWithinInitialPagemarks(fingerprint, 14);
 
+            let contains = await persistenceLayer.contains(fingerprint);
+
+            assert.equal(contains, false);
+
             await persistenceLayer.sync(fingerprint, docMeta);
 
         });
 
         it("write and read data to disk", async function () {
+            //
+            // let contains = await persistenceLayer.contains(fingerprint);
+            //
+            // assert.ok(! contains);
+
+            console.log("FIXME0")
 
             let docMeta0 = await persistenceLayer.getDocMeta(fingerprint);
 
@@ -158,6 +171,10 @@ describe('DiskDatastore', function() {
 
 
 });
+
+function removeDirectory(path: string) {
+    rimraf.sync(path);
+}
 
 //
 //

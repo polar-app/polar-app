@@ -4,9 +4,8 @@ import {Logger} from '../logger/Logger';
 import {DocMetaRef} from './DocMetaRef';
 import {Files} from '../util/Files';
 import {FilePaths} from '../util/FilePaths';
-
-const fs = require("fs");
-const os = require("os");
+import fs from 'fs';
+import os from 'os';
 
 const log = Logger.create();
 
@@ -115,7 +114,7 @@ export class DiskDatastore implements Datastore {
         if ( ! dirExists) {
             // the directory for this file is missing.
             log.info(`Doc dir does not exist. Creating ${docDir}`);
-            await Files.mkdirAsync(docDir)
+            await Files.mkdirAsync(docDir);// FIXME: this isn't working!!!
         }
 
         let stat = await Files.statAsync(docDir);

@@ -1,9 +1,5 @@
 import fs, {PathLike, Stats} from "fs";
-
-//import {promisify} from 'util';
-
-// we tried to use import and @types with promisify but they were broken.
-const {promisify} = require('util');
+import {promisify} from 'util';
 
 export class Files {
 
@@ -98,7 +94,7 @@ export class Files {
         throw new Error("Not replaced via promisify");
     }
 
-    public static async copyFileAsync(src: string, dest: string, flags: number = 0): Promise<string> {
+    public static async copyFileAsync(src: string, dest: string, flags: number | undefined): Promise<void> {
         throw new Error("Not replaced via promisify");
     }
 
