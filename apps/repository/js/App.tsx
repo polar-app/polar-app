@@ -35,7 +35,17 @@ class App<P> extends React.Component<{}, IAppState> {
             await this.init();
             this.docDetails = await this.load();
 
-            this.docDetails = this.docDetails.filter(current => isPresent(current.filename));
+            this.docDetails = this.docDetails.filter(current => {
+
+                if(isPresent(current.filename)) {
+                    return true;
+                } else {
+                    log.warn("Document filtered from repository view due to no filename: ",
+                             current.fingerprint);
+                    return false;
+                }
+
+            } );
 
             this.state.data.push(...this.docDetails);
 
@@ -111,6 +121,8 @@ class App<P> extends React.Component<{}, IAppState> {
                 //     .map(value => new ISODateTime(value))
                 //     .getOrUndefined();
 
+            } else {
+                log.warn("No docInfo for file: ", docMetaFile.fingerprint);
             }
 
             return {
@@ -295,4 +307,12 @@ interface IAppState {
 
     data: DocDetail[];
     selected?: number;
+}
+
+/**
+ * Just like a DocDetail but designed to be used for in the UI so we replace
+ * missing titles with Untitled and define other default values.
+ */
+interface RepoDocDetail extends DocDetail {
+
 }

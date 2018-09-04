@@ -177,9 +177,7 @@ class App<P> extends React.Component<{}, IAppState> {
 
         // https://blog.cloudboost.io/for-loops-in-react-render-no-you-didnt-6c9f4aa73778
         //
-        let result: any = []
-
-
+        let result: any = [];
 
         annotations.map(annotation => {
             //result.push(React.createElement( 'div', [], Elements.createElementHTML(annotation.html)));
@@ -196,6 +194,14 @@ class App<P> extends React.Component<{}, IAppState> {
                 }
 
             } else {
+
+                if(annotation.screenshot) {
+                    result.push(
+                        <div className='area-highlight'>
+                            <img src={annotation.screenshot.src}/>
+                        </div>);
+                }
+
                 result.push(<div className='text-highlight' dangerouslySetInnerHTML={{__html: html}}></div>);
             }
 

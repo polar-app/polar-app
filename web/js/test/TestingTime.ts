@@ -1,13 +1,20 @@
 
-const tk = require('timekeeper');
+import timekeeper from 'timekeeper';
+
 const time = new Date(1330688329321);
 
 export class TestingTime {
 
+    /**
+     * Freeze time for testing...
+     */
     static freeze() {
 
-        // freeze time for testing...
-        tk.freeze(time);
+        timekeeper.freeze(time);
+    }
+
+    static forward(durationMS: number) {
+        timekeeper.freeze(new Date(Date.now() + durationMS));
     }
 
 }

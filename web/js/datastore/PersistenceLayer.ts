@@ -2,6 +2,11 @@ import {Datastore} from './Datastore';
 import {DocMeta} from '../metadata/DocMeta';
 import {DocMetas} from '../metadata/DocMetas';
 import {Preconditions} from '../Preconditions';
+import {ISODateTimes} from '../metadata/ISODateTimes';
+import {Logger} from '../logger/Logger';
+import {ISODateTime} from '../metadata/ISODateTime';
+
+const log = Logger.create();
 
 /**
  * First layer before the raw datastore. At one point we allowed the datastore
@@ -61,7 +66,18 @@ export class PersistenceLayer implements IPersistenceLayer {
         Preconditions.assertNotNull(fingerprint, "fingerprint");
         Preconditions.assertNotNull(docMeta, "docMeta");
 
-        console.log("Sync of docMeta with fingerprint: ", fingerprint);
+        // create a copy of docMeta so we can mutate it without the risk of
+        // firing event listeners via proxies and then we can update the
+        // lastUpdated time.  We're also going to have to fire and advertisement
+        // that it's been updated.
+        docMeta = Object.assign(Object.create(docMeta), docMeta);
+        docMeta.docInfo.lastUpdated = ISODateTimes.create();
+
+        if(docMeta.docInfo.added === undefined) {
+            docMeta.docInfo.added = new ISODateTime(new Date());
+        }
+
+        log.info("Sync of docMeta with fingerprint: ", fingerprint);
 
         if(! (docMeta instanceof DocMeta)) {
             throw new Error("Can not sync anything other than DocMeta.")
@@ -88,4 +104,5 @@ export interface IPersistenceLayer {
     getDocMeta(fingerprint: string): Promise<DocMeta | undefined>;
     syncDocMeta(docMeta: DocMeta): Promise<void>;
     sync(fingerprint: string, docMeta: DocMeta): Promise<void>;
+
 }

@@ -62,6 +62,12 @@ export class DocInfo extends SerializedObject {
     public lastOpened?: ISODateTime;
 
     /**
+     * The last time this document was opened or null if it's never been
+     * opened.
+     */
+    public lastUpdated?: ISODateTime;
+
+    /**
      * Arbitrary name/value properties set by 3rd party extensions for this
      * document.  Anki, etc may set these properties directly.
      */
@@ -73,6 +79,11 @@ export class DocInfo extends SerializedObject {
      * repository UI.
      */
     public archived: boolean = false;
+
+    /**
+     * True if this document was starred for prioritization.
+     */
+    public flagged: boolean = false;
 
     /**
      * The filename of this doc in the .stash directory.

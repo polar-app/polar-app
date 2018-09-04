@@ -67,9 +67,9 @@ describe('DocMetas', function() {
                         "pagemarkType": "SINGLE_COLUMN",
                         "properties": {},
                         "archived": false,
+                        "flagged": false,
                         "nrPages": 2,
-                        "fingerprint": "0x001",
-                        "added": "2012-03-02T11:38:49.321Z"
+                        "fingerprint": "0x001"
                     },
                     "pageMetas": {
                         "1": {
