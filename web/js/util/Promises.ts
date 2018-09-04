@@ -1,3 +1,7 @@
+import {Logger} from '../logger/Logger';
+
+const log = Logger.create();
+
 export class Promises {
 
     /**
@@ -47,6 +51,18 @@ export class Promises {
 
         });
 
+    }
+
+    /**
+     * Execute a function which is async and log any errors it generates.
+     *
+     * This is helpful if we don't care about the result but do want to know
+     * if it has failed.
+     *
+     * @param func
+     */
+    static executeLogged(func: () => Promise<any>) {
+        func().catch(err => log.error("Caught error: ", err))
     }
 
 }

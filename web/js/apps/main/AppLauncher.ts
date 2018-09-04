@@ -1,35 +1,21 @@
 import {BrowserWindow} from "electron";
 import {BROWSER_WINDOW_OPTIONS, MainAppBrowserWindowFactory} from './MainAppBrowserWindowFactory';
 import {AppPaths} from '../../electron/webresource/AppPaths';
-import {BrowserWindowRegistry} from '../../electron/framework/BrowserWindowRegistry';
-import {Logger} from '../../logger/Logger';
-
-const log = Logger.create();
+import {SingletonBrowserWindow} from '../../electron/framework/SingletonBrowserWindow';
 
 export class AppLauncher {
 
     public static async launchRepositoryApp(): Promise<BrowserWindow> {
 
-        const url = AppPaths.resource('./apps/repository/index.html');
+        let browserWindowTag = {name: 'app', value: 'repository'};
 
-        let existing = BrowserWindowRegistry.tagged('name', 'repository');
+        return await SingletonBrowserWindow.getInstance(browserWindowTag,async () => {
 
-        if(existing.length === 1) {
+            const url = AppPaths.resource('./apps/repository/index.html');
 
-            log.info("Found existing repository UI. Focusing.");
+            return await MainAppBrowserWindowFactory.createWindow(BROWSER_WINDOW_OPTIONS, url);
 
-            let id = existing[0];
-
-            let browserWindow = BrowserWindow.fromId(id);
-            browserWindow.focus();
-            return browserWindow;
-        }
-
-        let result = await MainAppBrowserWindowFactory.createWindow(BROWSER_WINDOW_OPTIONS, url);
-
-        BrowserWindowRegistry.tag(result.id, {name: 'repository'});
-
-        return result;
+        });
 
     }
 

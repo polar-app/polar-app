@@ -3,6 +3,10 @@ import {BrowserWindow, dialog, Menu, shell} from "electron";
 import {ElectronContextMenu} from '../../contextmenu/electron/ElectronContextMenu';
 import {Version} from '../../util/Version';
 import {AppLauncher} from './AppLauncher';
+import {Logger} from '../../logger/Logger';
+import {Promises} from '../../util/Promises';
+
+const log = Logger.create();
 
 export class MainAppMenu {
 
@@ -150,8 +154,10 @@ export class MainAppMenu {
             {
                 label: 'Tools',
                 submenu: [
-                    { label: 'Document Repository', click: AppLauncher.launchRepositoryApp },
+                    { label: 'Document Repository', click: () => Promises.executeLogged(AppLauncher.launchRepositoryApp) },
+
                     { label: 'Toggle Developer Tools', click: this.mainAppController.cmdToggleDevTools },
+
                 ]
             },
             {

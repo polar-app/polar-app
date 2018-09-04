@@ -77,16 +77,14 @@ export class BrowserWindowRegistry {
     /**
      * Find a window ID with the given tag.
      */
-    public static tagged(name: string, value: string): ID[] {
+    public static tagged(tag: BrowserWindowTag): ID[] {
         this.gc();
 
         let result: ID[] = [];
 
         Dictionaries.forDict(this.registry, (id, meta) => {
 
-            console.log("...")
-
-            if(meta.tags[name] === value) {
+            if(meta.tags[tag.name] === tag.value) {
                 result.push(parseInt(id));
             }
 
@@ -112,4 +110,9 @@ export class BrowserWindowRegistry {
 
     }
 
+}
+
+export interface BrowserWindowTag {
+    name: string;
+    value: string;
 }

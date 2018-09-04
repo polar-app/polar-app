@@ -9,6 +9,8 @@ import {ProxyServer} from '../../backend/proxyserver/ProxyServer';
 import {BROWSER_WINDOW_OPTIONS, MainAppBrowserWindowFactory} from './MainAppBrowserWindowFactory';
 import MenuItem = Electron.MenuItem;
 import {AppLauncher} from './AppLauncher';
+import {Hashcodes} from '../../Hashcodes';
+import {SingletonBrowserWindow} from '../../electron/framework/SingletonBrowserWindow';
 
 const process = require('process');
 
@@ -112,24 +114,30 @@ export class MainAppController {
     /**
      * The user asked to open a file from the command line or via OS event.
      */
-    public async handleLoadDoc(path: string, newWindow: boolean = true) {
+    public async handleLoadDoc(path: string, newWindow: boolean = true): Promise<BrowserWindow> {
 
-        let window;
+        let browserWindowTag = {name: 'viewer:', value: Hashcodes.createID(path)};
 
-        if(newWindow) {
-            window = await MainAppBrowserWindowFactory.createWindow(BROWSER_WINDOW_OPTIONS, 'about:blank');
-        } else {
-            window = BrowserWindow.getFocusedWindow()!;
-        }
+        return await SingletonBrowserWindow.getInstance(browserWindowTag,async () => {
 
-        await this.loadDoc(path, window);
+            let window;
+
+            if(newWindow) {
+                window = await MainAppBrowserWindowFactory.createWindow(BROWSER_WINDOW_OPTIONS, 'about:blank');
+            } else {
+                window = BrowserWindow.getFocusedWindow()!;
+            }
+
+            return await this.loadDoc(path, window);
+
+        });
 
     }
 
     /**
      * Load the given PDF file in the given target window.
      */
-    public async loadDoc(path: string, targetWindow: BrowserWindow) {
+    public async loadDoc(path: string, targetWindow: BrowserWindow): Promise<BrowserWindow> {
 
         if(!targetWindow) {
             throw new Error("No target window given");
@@ -164,6 +172,8 @@ export class MainAppController {
             }
 
         });
+
+        return targetWindow;
 
     }
 

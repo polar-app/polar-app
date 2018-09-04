@@ -57,7 +57,7 @@ describe('BrowserWindowRegistry', function() {
 
         assertJSON(BrowserWindowRegistry.get(1), expected);
 
-        assertJSON(BrowserWindowRegistry.tagged('name', 'test'), [1]);
+        assertJSON(BrowserWindowRegistry.tagged({name: 'name', value: 'test'}), [1]);
 
     });
 
