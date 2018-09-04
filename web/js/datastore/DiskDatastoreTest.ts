@@ -9,6 +9,7 @@ import {isPresent} from '../Preconditions';
 
 import os from 'os';
 import {Files} from '../util/Files';
+import {FilePaths} from '../util/FilePaths';
 
 const fs = require('fs');
 
@@ -20,15 +21,15 @@ describe('DiskDatastore', function() {
 
     it("init and test paths", async function () {
 
-        let dataDir = `${tmpdir}/test-paths`;
+        let dataDir = FilePaths.join(tmpdir, 'test-paths');
 
         let diskDatastore = new DiskDatastore(dataDir);
 
         await diskDatastore.init();
 
-        assert.equal(diskDatastore.dataDir, `${tmpdir}/test-paths`);
+        assert.equal(diskDatastore.dataDir, FilePaths.join(tmpdir, 'test-paths'));
 
-        assert.equal(diskDatastore.stashDir, `${tmpdir}/test-paths/stash`);
+        assert.equal(diskDatastore.stashDir, FilePaths.join(tmpdir, 'test-paths', 'stash'));
 
         // now create it and
 
@@ -37,7 +38,7 @@ describe('DiskDatastore', function() {
 
     it("test async exists function", async function () {
 
-        let dataDir = `${tmpdir}/this-file-does-not-exist`;
+        let dataDir = FilePaths.join(tmpdir, 'this-file-does-not-exist');
 
         let diskDatastore = new DiskDatastore(dataDir);
 
@@ -48,7 +49,7 @@ describe('DiskDatastore', function() {
 
     it("init dataDir directory on init()", async function () {
 
-        let dataDir = `${tmpdir}/disk-datastore.test`;
+        let dataDir = FilePaths.join(tmpdir, 'disk-datastore.test');
         rimraf.sync(dataDir);
 
         let diskDatastore = new DiskDatastore(dataDir);
@@ -57,15 +58,15 @@ describe('DiskDatastore', function() {
 
         let expected: any = {
             "dataDir": {
-                "dir": `${tmpdir}/disk-datastore.test`,
+                "dir": FilePaths.join(tmpdir, 'disk-datastore.test'),
                 "created": true,
             },
             "stashDir": {
-                "dir": `${tmpdir}/disk-datastore.test/stash`,
+                "dir": FilePaths.join(tmpdir, 'disk-datastore.test', 'stash'),
                 "created": true,
             },
             "logsDir": {
-                "dir": `${tmpdir}/disk-datastore.test/logs`,
+                "dir": FilePaths.join(tmpdir, 'disk-datastore.test', 'logs'),
                 "created": true,
             }
         };
@@ -75,15 +76,15 @@ describe('DiskDatastore', function() {
 
         expected = {
             "dataDir": {
-                "dir": `${tmpdir}/disk-datastore.test`,
+                "dir": FilePaths.join(tmpdir, 'disk-datastore.test'),
                 "exists": true,
             },
             "stashDir": {
-                "dir": `${tmpdir}/disk-datastore.test/stash`,
+                "dir": FilePaths.join(tmpdir, 'disk-datastore.test', 'stash'),
                 "exists": true,
             },
             "logsDir": {
-                "dir": `${tmpdir}/disk-datastore.test/logs`,
+                "dir": FilePaths.join(tmpdir, 'disk-datastore.test', 'logs'),
                 "exists": true,
             }
         };
@@ -102,7 +103,7 @@ describe('DiskDatastore', function() {
 
         let fingerprint = "0x001";
 
-        let dataDir = `${tmpdir}/test-data-dir`;
+        let dataDir = FilePaths.join(tmpdir, 'test-data-dir');
 
         let diskDatastore: DiskDatastore;
         let persistenceLayer: PersistenceLayer;

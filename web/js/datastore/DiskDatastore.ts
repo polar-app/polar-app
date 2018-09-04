@@ -106,7 +106,7 @@ export class DiskDatastore implements Datastore {
 
         Preconditions.assertTypeOf(data, "string", "data");
 
-        log.info("Performing sync of content into disk datastore.");
+        log.info("Performing sync of content into disk datastore");
 
         let docDir = FilePaths.join(this.dataDir, fingerprint);
 
