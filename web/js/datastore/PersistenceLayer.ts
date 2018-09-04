@@ -1,7 +1,7 @@
 import {Datastore} from './Datastore';
 import {DocMeta} from '../metadata/DocMeta';
 import {DocMetas} from '../metadata/DocMetas';
-import {Preconditions} from '../Preconditions';
+import {isPresent, Preconditions} from '../Preconditions';
 import {ISODateTimes} from '../metadata/ISODateTimes';
 import {Logger} from '../logger/Logger';
 import {ISODateTime} from '../metadata/ISODateTime';
@@ -32,15 +32,19 @@ export class PersistenceLayer implements IPersistenceLayer {
         await this.datastore.init();
     }
 
+    public contains(fingerprint: string): Promise<boolean> {
+        return this.datastore.contains(fingerprint);
+    }
+
     /**
      * Get the DocMeta object we currently in the datastore for this given
      * fingerprint or null if it does not exist.
      */
-    async getDocMeta(fingerprint: string): Promise<DocMeta | undefined> {
+    public async getDocMeta(fingerprint: string): Promise<DocMeta | undefined> {
 
         let data = await this.datastore.getDocMeta(fingerprint);
 
-        if(!data) {
+        if(!isPresent(data)) {
             return undefined;
         }
 
@@ -54,14 +58,14 @@ export class PersistenceLayer implements IPersistenceLayer {
     /**
      * Convenience method to not require the fingerprint.
      */
-    async syncDocMeta(docMeta: DocMeta) {
+    public async syncDocMeta(docMeta: DocMeta) {
         return this.sync(docMeta.docInfo.fingerprint, docMeta);
     }
 
     /**
      * Write the datastore to disk.
      */
-    async sync(fingerprint: string, docMeta: DocMeta) {
+    public async sync(fingerprint: string, docMeta: DocMeta) {
 
         Preconditions.assertNotNull(fingerprint, "fingerprint");
         Preconditions.assertNotNull(docMeta, "docMeta");
@@ -101,8 +105,17 @@ export interface IPersistenceLayer {
     readonly logsDir: string;
 
     init(): Promise<void>;
+
+    /**
+     * Return true if the DiskDatastore contains a document for the given
+     * fingerprint.
+     */
+    contains(fingerprint: string): Promise<boolean>;
+
     getDocMeta(fingerprint: string): Promise<DocMeta | undefined>;
+
     syncDocMeta(docMeta: DocMeta): Promise<void>;
+
     sync(fingerprint: string, docMeta: DocMeta): Promise<void>;
 
 }

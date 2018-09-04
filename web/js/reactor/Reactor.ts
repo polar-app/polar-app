@@ -1,6 +1,9 @@
 import {Preconditions} from '../Preconditions';
 import {Event} from './Event';
 import {Listener} from './Listener';
+import {Logger} from '../logger/Logger';
+
+const log = Logger.create();
 
 export class Reactor<V> {
 
@@ -53,8 +56,16 @@ export class Reactor<V> {
         }
 
         event.getCallbacks().forEach(function(callback){
-            // TODO: what if these throw exceptions?
-            callback(value);
+
+            try {
+
+                callback(value);
+
+            } catch(e) {
+                log.error("Callback generated unhandled exception: ", e);
+            }
+
+
         });
 
         return this;

@@ -13,6 +13,12 @@ export interface Datastore {
     init(): Promise<any>;
 
     /**
+     * Return true if the DiskDatastore contains a document for the given
+     * fingerprint.
+     */
+    contains(fingerprint: string): Promise<boolean>;
+
+    /**
      * Get the data for the DocMeta object we currently in the datastore for
      * this given fingerprint or null if it does not exist.
 

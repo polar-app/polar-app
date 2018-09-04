@@ -46,29 +46,40 @@ export class DiskDatastore implements Datastore {
     }
 
     /**
+     * Return true if the DiskDatastore contains a document for the given fingerprint
+     */
+    async contains(fingerprint: string): Promise<boolean> {
+
+        let docDir = FilePaths.join(this.dataDir, fingerprint);
+
+        if( ! await Files.existsAsync(docDir)) {
+            return false;
+        }
+
+        let statePath = FilePaths.join(docDir, 'state.json');
+
+        return await Files.existsAsync(statePath);
+
+    }
+
+    /**
      * Get the DocMeta object we currently in the datastore for this given
      * fingerprint or null if it does not exist.
      */
     async getDocMeta(fingerprint: string): Promise<string | null> {
 
         let docDir = FilePaths.join(this.dataDir, fingerprint);
-
-        if(! await Files.existsAsync(docDir)) {
-            log.error("Document dir is missing: " + docDir);
-            return null;
-        }
-
         let statePath = FilePaths.join(docDir, 'state.json');
 
-        if(! await Files.existsAsync(statePath)) {
-            log.error("File does not exist: " + statePath);
+        if(! this.contains(fingerprint)) {
+            log.error("Datastore does not contain document: ", fingerprint);
             return null;
         }
 
         let statePathStat = await Files.statAsync(statePath);
 
         if( ! statePathStat.isFile() ) {
-            log.error("Path is not a file: " + statePath);
+            log.error("Path is not a file: ", statePath);
             return null;
         }
 
@@ -78,7 +89,7 @@ export class DiskDatastore implements Datastore {
                       .catch(() => false);
 
         if(! canAccess) {
-            log.error("No access: " + statePath);
+            log.error("No access: ", statePath);
             return null;
         }
 

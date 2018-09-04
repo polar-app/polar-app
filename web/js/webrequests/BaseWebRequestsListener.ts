@@ -1,7 +1,4 @@
 import {NamedWebRequestEvent, WebRequestReactor} from './WebRequestReactor';
-import {Logger} from '../logger/Logger';
-
-const log = Logger.create();
 
 
 /**

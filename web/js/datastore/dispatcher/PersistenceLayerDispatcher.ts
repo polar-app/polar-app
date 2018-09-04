@@ -27,6 +27,11 @@ export class PersistenceLayerDispatcher implements IPersistenceLayerDispatcher, 
         this.logsDir = this.persistenceLayer.logsDir;
     }
 
+    public async contains(fingerprint: string): Promise<boolean> {
+        return this.persistenceLayer.contains(fingerprint);
+    }
+
+
     async getDocMeta(fingerprint: string): Promise<DocMeta | undefined> {
         return await this.persistenceLayer.getDocMeta(fingerprint);
     }

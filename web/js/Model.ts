@@ -47,14 +47,13 @@ export class Model {
      */
     async documentLoaded(fingerprint: string, nrPages: number, currentPageNumber: number) {
 
-        let docMeta = await this.persistenceLayer.getDocMeta(fingerprint);
+        let docMeta: DocMeta | undefined;
 
-        if(docMeta === undefined) {
+        if(! this.persistenceLayer.contains(fingerprint)) {
 
             console.warn("New document found. Creating initial DocMeta");
 
             // this is a new document...
-            //this.docMeta = DocMeta.createWithinInitialPagemarks(fingerprint, nrPages);
             docMeta = DocMetas.create(fingerprint, nrPages);
             await this.persistenceLayer.sync(fingerprint, docMeta);
 
@@ -62,6 +61,12 @@ export class Model {
             // the docMetaPromise without any synchronization seems like we're
             // asking for a race condition.
 
+        }
+
+        docMeta = await this.persistenceLayer.getDocMeta(fingerprint);
+
+        if(docMeta === undefined) {
+            throw new Error("Unable to load DocMeta: " + fingerprint);
         }
 
         this.docMeta = docMeta;

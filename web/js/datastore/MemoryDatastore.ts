@@ -33,6 +33,10 @@ export class MemoryDatastore implements Datastore {
 
     }
 
+    public async contains(fingerprint: string): Promise<boolean> {
+        return fingerprint in this.docMetas;
+    }
+
     /**
      */
     async getDocMeta(fingerprint: string): Promise<string | null> {
