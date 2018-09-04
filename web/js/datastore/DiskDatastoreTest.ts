@@ -136,8 +136,6 @@ describe('DiskDatastore', function() {
             //
             // assert.ok(! contains);
 
-            console.log("FIXME0")
-
             let docMeta0 = await persistenceLayer.getDocMeta(fingerprint);
 
             assert.equal(isPresent(docMeta0), true);

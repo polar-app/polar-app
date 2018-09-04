@@ -109,12 +109,12 @@ export class DiskDatastore implements Datastore {
 
         let docDir = FilePaths.join(this.dataDir, fingerprint);
 
-        let dirExists = Files.existsAsync(docDir);
+        let dirExists = await Files.existsAsync(docDir);
 
         if ( ! dirExists) {
             // the directory for this file is missing.
             log.info(`Doc dir does not exist. Creating ${docDir}`);
-            await Files.mkdirAsync(docDir);// FIXME: this isn't working!!!
+            await Files.mkdirAsync(docDir);
         }
 
         let stat = await Files.statAsync(docDir);
