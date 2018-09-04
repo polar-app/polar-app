@@ -8,6 +8,7 @@ import {DocMeta} from '../metadata/DocMeta';
 import {isPresent} from '../Preconditions';
 
 import os from 'os';
+import {Files} from '../util/Files';
 
 const fs = require('fs');
 
@@ -41,7 +42,7 @@ describe('DiskDatastore', function() {
         let diskDatastore = new DiskDatastore(dataDir);
 
         assert.equal(fs.existsSync(dataDir), false);
-        assert.equal(await diskDatastore.existsAsync(dataDir), false)
+        assert.equal(await Files.existsAsync(dataDir), false)
 
     });
 
@@ -52,23 +53,20 @@ describe('DiskDatastore', function() {
 
         let diskDatastore = new DiskDatastore(dataDir);
 
-        assert.equal(await diskDatastore.existsAsync(dataDir), false);
+        assert.equal(await Files.existsAsync(dataDir), false);
 
         let expected: any = {
             "dataDir": {
-                "exists": false,
+                "dir": `${tmpdir}/disk-datastore.test`,
                 "created": true,
-                "dir": `${tmpdir}/disk-datastore.test`
             },
             "stashDir": {
-                "exists": false,
+                "dir": `${tmpdir}/disk-datastore.test/stash`,
                 "created": true,
-                "dir": `${tmpdir}/disk-datastore.test/stash`
             },
             "logsDir": {
-                "exists": false,
+                "dir": `${tmpdir}/disk-datastore.test/logs`,
                 "created": true,
-                "dir": `${tmpdir}/disk-datastore.test/logs`
             }
         };
 
@@ -77,19 +75,16 @@ describe('DiskDatastore', function() {
 
         expected = {
             "dataDir": {
+                "dir": `${tmpdir}/disk-datastore.test`,
                 "exists": true,
-                "created": false,
-                "dir": `${tmpdir}/disk-datastore.test`
             },
             "stashDir": {
+                "dir": `${tmpdir}/disk-datastore.test/stash`,
                 "exists": true,
-                "created": false,
-                "dir": `${tmpdir}/disk-datastore.test/stash`
             },
             "logsDir": {
+                "dir": `${tmpdir}/disk-datastore.test/logs`,
                 "exists": true,
-                "created": false,
-                "dir": `${tmpdir}/disk-datastore.test/logs`
             }
         };
 

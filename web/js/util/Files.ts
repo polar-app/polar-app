@@ -1,10 +1,9 @@
-import {PathLike, Stats} from "fs";
+import fs, {PathLike, Stats} from "fs";
+
 //import {promisify} from 'util';
 
 // we tried to use import and @types with promisify but they were broken.
 const {promisify} = require('util');
-
-const fs = require('fs');
 
 export class Files {
 
@@ -44,10 +43,10 @@ export class Files {
         return new Promise<boolean>((resolve, reject) =>  {
 
             this.statAsync(path)
-                .then(function() {
+                .then(() => {
                     resolve(true);
                 })
-                .catch(function(err) {
+                .catch((err) => {
                     if(err.code === 'ENOENT') {
                         resolve(false);
                     } else {
@@ -75,7 +74,7 @@ export class Files {
         throw new Error("Not replaced via promisify");
     }
 
-    public static async mkdirAsync(path: string, mode: number | string | undefined | null): Promise<void> {
+    public static async mkdirAsync(path: string, mode?: number | string | undefined | null): Promise<void> {
         throw new Error("Not replaced via promisify");
     }
 
