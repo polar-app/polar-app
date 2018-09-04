@@ -168,7 +168,10 @@ export class PendingWebRequestsListener extends BaseWebRequestsListener {
             log.warn(msg);
         }
 
-        log.debug(`Pending requests: ${pending}, started=${started}, finished=${finished}, progress=${progress}: ${name}: ` + JSON.stringify(details, null, "  "));
+        // TODO: we removed logging the full details object because the
+        // uploadData was just too much content.
+
+        log.debug(`Pending requests: ${pending}, started=${started}, finished=${finished}, progress=${progress}: ${name}`);
 
         this.dispatchEventListeners({
                                         name,
