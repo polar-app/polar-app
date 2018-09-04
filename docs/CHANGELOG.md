@@ -1,3 +1,7 @@
+# 1.0.0-beta131
+
+- Fixed a major Windows regression in pagemarks.
+
 # 1.0.0-beta130
 
 - AHA.. We were not using Electron 3.0 beta8.. we were still stuck on beta5 
