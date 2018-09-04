@@ -80,16 +80,22 @@ class Proxies {
         traceListeners = TraceListeners.asArray(traceListeners);
 
         if(Object.isFrozen(value)) {
+
             // Do not handle frozen objects but might have to in the future for
             // the initial value.
+
+            // TODO: it's probably best to throw an error here because we've
+            // been asked to trace but we're not tracing.  This is an API flaw.
+
             return value;
+
         }
 
         let traceIdentifier = sequence++;
 
         // for this to work, I need to keep track of ALL TraceHandlers in the
         // object itself by possibly having a __traceHandlers or some other
-        // strategy or __paths and then dispatch that way...  
+        // strategy or __paths and then dispatch that way...
 
         let traceHandler = new TraceHandler(path, traceListeners, value, traceIdentifier, Proxies);
 

@@ -16,6 +16,13 @@ without corrupting the repository data via too many writes.
 
 - the repository writes DocInfo results itself  
 
+# easiest way...
+
+    - the primary client updates itself
+    - then writes to disk
+    - then advertises that it has written
+    - any viewer will see the new value, and MIGHT write out to disk but that's
+      ok
 
 
 # Future
