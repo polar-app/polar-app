@@ -11,8 +11,7 @@ import MenuItem = Electron.MenuItem;
 import {AppLauncher} from './AppLauncher';
 import {Hashcodes} from '../../Hashcodes';
 import {SingletonBrowserWindow} from '../../electron/framework/SingletonBrowserWindow';
-
-const process = require('process');
+import process from 'process';
 
 const log = Logger.create();
 
@@ -44,7 +43,6 @@ export class MainAppController {
         let url = AppPaths.resource('./apps/capture/start-capture/index.html')
 
         await MainAppBrowserWindowFactory.createWindow(browserWindowOptions, url);
-
 
     }
 

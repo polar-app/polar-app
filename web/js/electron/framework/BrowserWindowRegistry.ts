@@ -1,6 +1,5 @@
 import {BrowserWindow} from 'electron';
 import {Sets} from '../../util/Sets';
-import {Objects} from '../../util/Objects';
 import {Dictionaries} from '../../util/Dictionaries';
 
 
@@ -31,7 +30,7 @@ export class DefaultLiveWindowsProvider implements LiveWindowsProvider {
 }
 
 /**
- * the ID if ao
+ * the ID if a window.
  */
 export type ID = number;
 

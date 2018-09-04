@@ -23,6 +23,7 @@ export class SingletonBrowserWindow {
             let browserWindow = BrowserWindow.fromId(id);
             browserWindow.focus();
             return browserWindow;
+
         }
 
         let result = await browserWindowFactory();

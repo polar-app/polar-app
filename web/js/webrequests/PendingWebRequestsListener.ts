@@ -2,6 +2,7 @@ import {NamedWebRequestEvent, WebRequestDetails} from './WebRequestReactor';
 import {Logger} from '../logger/Logger';
 import {BaseWebRequestsListener} from './BaseWebRequestsListener';
 import {RequestState} from './RequestState';
+import {Progress} from '../util/Progress';
 
 const log = Logger.create();
 
@@ -42,6 +43,16 @@ export class PendingWebRequestsListener extends BaseWebRequestsListener {
      * object about the request.
      */
     onWebRequestEvent(event: NamedWebRequestEvent) {
+
+        setTimeout(() => {
+
+            this.processWebRequestEvent(event);
+
+        }, 0);
+
+    }
+
+    processWebRequestEvent(event: NamedWebRequestEvent) {
 
         //console.log(`event data: ${event.name}\t${event.details.id}\t${event.details.url}\t${event.details.resourceType}\t${event.details.webContentsId}`);
 
@@ -146,7 +157,7 @@ export class PendingWebRequestsListener extends BaseWebRequestsListener {
          *
          * @type {number}
          */
-        let progress = this.calculateProgress(started, finished);
+        let progress = Progress.calculate(started, finished);
 
         if(pending < 5) {
             log.debug("The following pending requests remain: ", this.pendingRequests);
@@ -160,44 +171,19 @@ export class PendingWebRequestsListener extends BaseWebRequestsListener {
         log.debug(`Pending requests: ${pending}, started=${started}, finished=${finished}, progress=${progress}: ${name}: ` + JSON.stringify(details, null, "  "));
 
         this.dispatchEventListeners({
-            name,
-            details,
-            pending,
-            started,
-            finished,
-            progress
-        });
+                                        name,
+                                        details,
+                                        pending,
+                                        started,
+                                        finished,
+                                        progress
+                                    });
 
         if(callback) {
             // the callback always has to be used or the requests will be
             // cancelled.
             callback({cancel: false});
         }
-
-    }
-
-    /**
-     *
-     * @return {number}
-     */
-    calculateProgress(started: number, finished: number) {
-        return 100 * (finished / started);
-    }
-
-    /**
-     * Go through all the started and finished requests and write a report about them.
-     */
-    captureRequestState() {
-
-        let state = "";
-
-        state += "==== started =====\n";
-        state += JSON.stringify(this.startedRequests, null, "  ");
-
-        state += "==== finished =====\n";
-        state += JSON.stringify(this.finishedRequests, null, "  ");
-
-        return state;
 
     }
 

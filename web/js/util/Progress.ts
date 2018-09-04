@@ -36,4 +36,8 @@ export class Progress {
         return 100 * (this._value / this._total);
     }
 
+    public static calculate(count: number, total: number) {
+        return 100 * (count / total);
+    }
+
 }
