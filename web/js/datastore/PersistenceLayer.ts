@@ -5,6 +5,7 @@ import {isPresent, Preconditions} from '../Preconditions';
 import {ISODateTimes} from '../metadata/ISODateTimes';
 import {Logger} from '../logger/Logger';
 import {ISODateTime} from '../metadata/ISODateTime';
+import {Dictionaries} from '../util/Dictionaries';
 
 const log = Logger.create();
 
@@ -70,11 +71,19 @@ export class PersistenceLayer implements IPersistenceLayer {
         Preconditions.assertNotNull(fingerprint, "fingerprint");
         Preconditions.assertNotNull(docMeta, "docMeta");
 
+        if(! (docMeta instanceof DocMeta)) {
+            throw new Error("Can not sync anything other than DocMeta.")
+        }
+
+
         // create a copy of docMeta so we can mutate it without the risk of
         // firing event listeners via proxies and then we can update the
         // lastUpdated time.  We're also going to have to fire and advertisement
         // that it's been updated.
-        docMeta = Object.assign(Object.create(docMeta), docMeta);
+
+        docMeta = Dictionaries.copyOf(docMeta);
+
+        // now update the lastUpdated times before we commit to disk.
         docMeta.docInfo.lastUpdated = ISODateTimes.create();
 
         if(docMeta.docInfo.added === undefined) {
@@ -82,10 +91,6 @@ export class PersistenceLayer implements IPersistenceLayer {
         }
 
         log.info("Sync of docMeta with fingerprint: ", fingerprint);
-
-        if(! (docMeta instanceof DocMeta)) {
-            throw new Error("Can not sync anything other than DocMeta.")
-        }
 
         // NOTE that we always write the state with JSON pretty printing.
         // Otherwise tools like git diff , etc will be impossible to deal with

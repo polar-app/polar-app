@@ -1,4 +1,5 @@
 import {DocInfo} from './DocInfo';
+import {ISODateTimes} from './ISODateTimes';
 
 export class DocInfos {
 
@@ -8,6 +9,7 @@ export class DocInfos {
 
         tmp.fingerprint = fingerprint;
         tmp.nrPages = nrPages;
+        tmp.added = ISODateTimes.create();
 
         return new DocInfo(tmp);
 
