@@ -1,5 +1,9 @@
 import fs, {PathLike, Stats} from "fs";
 import {promisify} from 'util';
+import ErrnoException = NodeJS.ErrnoException;
+import {Logger} from '../logger/Logger';
+
+const log = Logger.create();
 
 export class Files {
 
@@ -40,12 +44,15 @@ export class Files {
 
             this.statAsync(path)
                 .then(() => {
+                    log.debug("Path exists: " + path);
                     resolve(true);
                 })
-                .catch((err) => {
+                .catch((err: ErrnoException) => {
                     if(err.code === 'ENOENT') {
+                        log.debug("Path does not exist due to ENOENT: " + path, err);
                         resolve(false);
                     } else {
+                        log.debug("Received err within existsAsync: "+ path, err);
                         // some other error
                         reject(err);
                     }

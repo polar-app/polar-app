@@ -109,18 +109,20 @@ export class DiskDatastore implements Datastore {
 
         let docDir = FilePaths.join(this.dataDir, fingerprint);
 
-        let dirExists = await Files.existsAsync(docDir);
+        let docDirExists = await Files.existsAsync(docDir);
 
-        if ( ! dirExists) {
-            // the directory for this file is missing.
-            log.info(`Doc dir does not exist. Creating ${docDir}`);
+        log.debug(`Doc dir ${docDir} exists: ${docDirExists}`);
+
+        if ( ! docDirExists) {
+            log.debug(`Doc dir does not exist. Creating ${docDir}`);
             await Files.mkdirAsync(docDir);
         }
 
+        log.debug("Calling stat on docDir: " + docDir);
         let stat = await Files.statAsync(docDir);
 
         if(! stat.isDirectory()) {
-            throw new Error("File is not a directory: " + docDir);;
+            throw new Error("Path is not a directory: " + docDir);
         }
 
         let statePath = FilePaths.join(docDir, "state.json");
