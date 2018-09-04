@@ -48,7 +48,12 @@ export class Logging {
 
     public static async createTarget(): Promise<ILogger> {
 
-        return new MultiLogger(new SentryLogger(), await this.createPrimaryTarget());
+        let loggers: ILogger[] = [];
+
+        loggers.push(new SentryLogger());
+        loggers.push(await this.createPrimaryTarget());
+
+        return new MultiLogger(...loggers);
 
     }
 
