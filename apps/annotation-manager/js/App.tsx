@@ -7,8 +7,10 @@ import {DocMeta} from '../../../web/js/metadata/DocMeta';
 import {Text} from '../../../web/js/metadata/Text';
 import {Screenshot} from '../../../web/js/metadata/Screenshot';
 import {AnnotationType} from '../../../web/js/metadata/AnnotationType';
-import {Elements} from '../../../web/js/util/Elements';
 import {Screenshots} from '../../../web/js/metadata/Screenshots';
+import {BaseHighlight} from '../../../web/js/metadata/BaseHighlight';
+import {PageMeta} from '../../../web/js/metadata/PageMeta';
+import {Optional} from '../../../web/js/util/ts/Optional';
 
 const log = Logger.create();
 
@@ -73,59 +75,101 @@ class App<P> extends React.Component<{}, IAppState> {
 
         let result: IAnnotation[] = [];
 
-        log.info("Loading docMeta...")
+        log.info("Loading docMeta...");
 
         Object.values(docMeta.pageMetas).forEach(pageMeta => {
+            result.push(...this.getTextHighlights(pageMeta));
+            result.push(...this.getAreaHighlights(pageMeta));
+        });
 
-            Object.values(pageMeta.textHighlights).forEach(textHighlight => {
+        return result;
 
-                console.log("FIXME: ", textHighlight);
+    }
 
-                let html: string = "";
+    getTextHighlights(pageMeta: PageMeta): IAnnotation[] {
 
-                if(typeof textHighlight.text === 'string') {
-                    html = `<p>${textHighlight.text}</p>`
+        let result: IAnnotation[] = [];
+
+        log.info("Loading docMeta...");
+
+        Object.values(pageMeta.textHighlights).forEach(textHighlight => {
+
+            let html: string = "";
+
+            if(typeof textHighlight.text === 'string') {
+                html = `<p>${textHighlight.text}</p>`
+            }
+
+            if(textHighlight.text instanceof Text) {
+
+                if(textHighlight.text.TEXT) {
+                    html = `<p>${textHighlight.text.TEXT}</p>`
                 }
 
-                if(textHighlight.text instanceof Text) {
-
-                    if(textHighlight.text.TEXT) {
-                        html = `<p>${textHighlight.text.TEXT}</p>`
-                    }
-
-                    if(textHighlight.text.HTML) {
-                        html = textHighlight.text.HTML;
-                    }
-
+                if(textHighlight.text.HTML) {
+                    html = textHighlight.text.HTML;
                 }
 
-                let screenshot: Screenshot | undefined;
+            }
 
-                Object.values(textHighlight.images).forEach( image => {
+            let screenshot = this.getScreenshot(pageMeta, textHighlight);
 
-                    if(image.rel && image.rel === 'screenshot') {
-
-                        let screenshotURI = Screenshots.parseURI(image.src);
-
-                        if(screenshotURI) {
-                            screenshot = pageMeta.screenshots[screenshotURI.id];
-                        }
-
-                    }
-
-                });
-
-                result.push({
-                    annotationType: AnnotationType.TEXT_HIGHLIGHT,
-                    screenshot,
-                    html
-                })
-
-            });
+            result.push({
+                annotationType: AnnotationType.TEXT_HIGHLIGHT,
+                screenshot,
+                html
+            })
 
         });
 
         return result;
+
+    }
+
+    getAreaHighlights(pageMeta: PageMeta): IAnnotation[] {
+
+        let result: IAnnotation[] = [];
+
+        log.info("Loading docMeta...");
+
+        Object.values(pageMeta.areaHighlights).forEach(areaHighlight => {
+
+            console.log('FIXME: areaHighlight', areaHighlight)
+
+            let screenshot = this.getScreenshot(pageMeta, areaHighlight);
+
+            result.push({
+                annotationType: AnnotationType.AREA_HIGHLIGHT,
+                screenshot,
+                html: undefined
+            })
+
+        });
+
+        return result;
+
+    }
+
+
+    getScreenshot(pageMeta: PageMeta, highlight: BaseHighlight): Screenshot | undefined {
+
+        let screenshot: Screenshot | undefined = undefined;
+
+        Object.values(highlight.images).forEach( image => {
+
+            if(image.rel && image.rel === 'screenshot') {
+
+                let screenshotURI = Screenshots.parseURI(image.src);
+
+                if(screenshotURI) {
+                    screenshot = pageMeta.screenshots[screenshotURI.id];
+                }
+
+            }
+
+        });
+
+        return screenshot;
 
     }
 
@@ -140,7 +184,21 @@ class App<P> extends React.Component<{}, IAppState> {
         annotations.map(annotation => {
             //result.push(React.createElement( 'div', [], Elements.createElementHTML(annotation.html)));
 
-            result.push(<div dangerouslySetInnerHTML={{__html: annotation.html}}></div>);
+            let html = Optional.of(annotation.html).getOrElse('');
+
+            if(annotation.annotationType == AnnotationType.AREA_HIGHLIGHT) {
+
+                if(annotation.screenshot) {
+                    result.push(
+                        <div className='area-highlight'>
+                            <img src={annotation.screenshot.src}/>
+                        </div>);
+                }
+
+            } else {
+                result.push(<div className='text-highlight' dangerouslySetInnerHTML={{__html: html}}></div>);
+            }
+
         });
 
         return result;
@@ -196,6 +254,6 @@ interface IAppState {
 
 interface IAnnotation {
     annotationType: AnnotationType,
-    html: string
+    html?: string
     screenshot?: Screenshot;
 }

@@ -79,3 +79,9 @@ html, body {
   user-select: none;
   vertical-align: middle;
 }
+
+.text-highlight {
+  background-color: yellow;
+  margin: 5px;
+  border: 1px solid #000000;
+}
