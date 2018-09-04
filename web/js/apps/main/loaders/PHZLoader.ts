@@ -1,5 +1,4 @@
 import {Preconditions} from '../../../Preconditions';
-import {Paths} from '../../../util/Paths';
 import {Fingerprints} from '../../../util/Fingerprints';
 import {Logger} from '../../../logger/Logger';
 import {FileLoader} from './FileLoader';
@@ -8,6 +7,7 @@ import {WebResource} from '../../../electron/webresource/WebResource';
 import {AppPaths} from '../../../electron/webresource/AppPaths';
 import {LoadedFile} from './LoadedFile';
 import {Descriptors} from '../../../viewer/html/Descriptors';
+import {FilePaths} from '../../../util/FilePaths';
 
 const log = Logger.create();
 
@@ -23,7 +23,8 @@ export class PHZLoader implements FileLoader {
     }
 
     async registerForLoad(path: string): Promise<LoadedFile> {
-        let filename = Paths.basename(path);
+
+        let filename = FilePaths.basename(path);
 
         // FIXME: update main.js to use this loader moving forward...
 
@@ -44,7 +45,7 @@ export class PHZLoader implements FileLoader {
 
         // we don't need the content represented twice.
 
-        let basename = Paths.basename(path);
+        let basename = FilePaths.basename(path);
 
         // TODO: this is workaround until we enable zip files with embedded
         // metadata / descriptors

@@ -24,7 +24,6 @@ export class TextHighlights {
 
     }
 
-
     public static attachImage(textHighlight: TextHighlight, image: Image) {
         textHighlight.images[notNull(image.rel)] = image;
     }
@@ -33,9 +32,9 @@ export class TextHighlights {
 
         Object.values(textHighlight.images).forEach(image => {
 
-            if( image.src.startsWith('screenshot:')) {
-                // delete the image this screenshot references
-                let screenshotURI = Screenshots.parseURI(image.src);
+            let screenshotURI = Screenshots.parseURI(image.src);
+
+            if(screenshotURI) {
                 delete pageMeta.screenshots[screenshotURI.id];
             }
 

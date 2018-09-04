@@ -1,11 +1,11 @@
 /**
  * Datastore just in memory with no on disk persistence.
  */
-import {Paths} from '../util/Paths';
 import {DiskDatastore} from './DiskDatastore';
 import {Datastore} from './Datastore';
 import {Preconditions} from '../Preconditions';
 import {DocMetaRef} from './DocMetaRef';
+import {FilePaths} from '../util/FilePaths';
 
 export class MemoryDatastore implements Datastore {
 
@@ -22,8 +22,8 @@ export class MemoryDatastore implements Datastore {
         // these dir values are used in the UI and other places so we need to
         // actually have values for them.
         this.dataDir = DiskDatastore.getDataDir();
-        this.stashDir = Paths.create(this.dataDir, "stash");
-        this.logsDir = Paths.create(this.dataDir, "logs");
+        this.stashDir = FilePaths.create(this.dataDir, "stash");
+        this.logsDir = FilePaths.create(this.dataDir, "logs");
 
         this.docMetas = {};
 

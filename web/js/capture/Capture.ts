@@ -13,10 +13,9 @@ import {Optional} from '../util/ts/Optional';
 import {IResult} from '../util/Result';
 import {Results} from '../util/Results';
 import {Functions} from '../util/Functions';
-import {Files} from '../util/Files';
 import {Filenames} from '../util/Filenames';
 import {CapturedPHZWriter} from './CapturedPHZWriter';
-import {Paths} from '../util/Paths';
+import {FilePaths} from '../util/FilePaths';
 
 const {DefaultPagingBrowser} = require("../electron/capture/pagination/DefaultPagingBrowser");
 const {PagingLoader} = require("../electron/capture/pagination/PagingLoader");
@@ -257,7 +256,7 @@ export class Capture {
         let stashDir = this.stashDir;
         let filename = Filenames.sanitize(captured.title);
 
-        let phzPath = Paths.join(stashDir, filename) + '.phz';
+        let phzPath = FilePaths.join(stashDir, filename) + '.phz';
 
         log.info("Writing PHZ to: " + phzPath);
 

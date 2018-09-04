@@ -1,4 +1,3 @@
-import assert from 'assert';
 import {TextHighlightModel} from './TextHighlightModel';
 import {AnnotationEvent} from '../../../annotations/components/AnnotationEvent';
 import {assertJSON} from '../../../test/Assertions';
@@ -35,6 +34,7 @@ describe('TextHighlightModel', function() {
                     "pageNum": 1,
                     "textHighlight": {
                         "id": "1Af41QXbBH",
+                        "guid": "1Af41QXbBH",
                         "created": "2012-03-02T11:38:49.321Z",
                         "lastUpdated": "2012-03-02T11:38:49.321Z",
                         "rects": {
@@ -53,11 +53,13 @@ describe('TextHighlightModel', function() {
                                 "rect": null
                             }
                         },
-                        "text": "hello world",
+                        "text": {
+                            "TEXT": "hello world"
+                        },
+                        "images": {},
                         "notes": {},
                         "questions": {},
-                        "flashcards": {},
-                        "images": {}
+                        "flashcards": {}
                     },
                     "mutationType": "INITIAL"
                 }
@@ -90,6 +92,7 @@ describe('TextHighlightModel', function() {
                     "pageNum": 3,
                     "textHighlight": {
                         "id": "1Af41QXbBH",
+                        "guid": "1Af41QXbBH",
                         "created": "2012-03-02T11:38:49.321Z",
                         "lastUpdated": "2012-03-02T11:38:49.321Z",
                         "rects": {
@@ -108,11 +111,13 @@ describe('TextHighlightModel', function() {
                                 "rect": null
                             }
                         },
-                        "text": "hello world",
+                        "text": {
+                            "TEXT": "hello world"
+                        },
+                        "images": {},
                         "notes": {},
                         "questions": {},
                         "flashcards": {},
-                        "images": {}
                     },
                     "mutationType": "SET"
                 }

@@ -3,10 +3,10 @@ import {WebResource} from '../../../electron/webresource/WebResource';
 import {FileRegistry} from '../../../backend/webserver/FileRegistry';
 import {AppPaths} from '../../../electron/webresource/AppPaths';
 import {LoadedFile} from './LoadedFile';
-import {Paths} from '../../../util/Paths';
 import {Directories} from '../../../datastore/Directories';
 import {Files} from '../../../util/Files';
 import {Logger} from '../../../logger/Logger';
+import {FilePaths} from '../../../util/FilePaths';
 
 const log = Logger.create();
 
@@ -22,7 +22,7 @@ export class PDFLoader implements FileLoader {
 
         path = await this.importToStore(path);
 
-        let filename = Paths.basename(path);
+        let filename = FilePaths.basename(path);
 
         let fileMeta = this.fileRegistry.registerFile(path);
 
@@ -45,16 +45,16 @@ export class PDFLoader implements FileLoader {
      */
     private async importToStore(path: string) {
 
-        let currentDirname = await Files.realpathAsync(Paths.dirname(path));
+        let currentDirname = await Files.realpathAsync(FilePaths.dirname(path));
 
         let directories = new Directories();
 
         let stashDir = await Files.realpathAsync(directories.stashDir);
 
         if(currentDirname != stashDir) {
-            let fileName = Paths.basename(path);
+            let fileName = FilePaths.basename(path);
 
-            let newPath = Paths.join(stashDir, fileName);
+            let newPath = FilePaths.join(stashDir, fileName);
 
             path = await Files.realpathAsync(path);
 

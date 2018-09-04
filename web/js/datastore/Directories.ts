@@ -2,8 +2,8 @@
  * Represents key local directories for Polar when running locally.
  */
 import {DiskDatastore} from './DiskDatastore';
-import {Paths} from '../util/Paths';
 import {CreateDirResult, Files} from '../util/Files';
+import {FilePaths} from '../util/FilePaths';
 
 export class Directories {
 
@@ -24,9 +24,9 @@ export class Directories {
         }
 
         // the path to the stash directory
-        this.stashDir = Paths.create(this.dataDir, "stash");
-        this.logsDir = Paths.create(this.dataDir, "logs");
-        this.configDir = Paths.create(this.dataDir, "config");
+        this.stashDir = FilePaths.create(this.dataDir, "stash");
+        this.logsDir = FilePaths.create(this.dataDir, "logs");
+        this.configDir = FilePaths.create(this.dataDir, "config");
 
     }
 

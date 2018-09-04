@@ -275,6 +275,7 @@ describe('DocMetas', function() {
 
                 let expected = {
                     "12pNUv1Y9S": {
+                        "guid": "12pNUv1Y9S",
                         "created": "2012-03-02T11:38:49.321Z",
                         "lastUpdated": "2012-03-02T11:38:49.321Z",
                         "rects": {
@@ -293,11 +294,13 @@ describe('DocMetas', function() {
                                 "rect": null
                             }
                         },
-                        "text": "hello world",
+                        "text": {
+                            "TEXT": "hello world"
+                        },
+                        "images": {},
                         "notes": {},
                         "questions": {},
                         "flashcards": {},
-                        "images": {},
                         "id": "1cAbqEAHny"
                     }
                 };

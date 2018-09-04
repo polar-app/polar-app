@@ -3,7 +3,6 @@ import {TextHighlightRecords} from './TextHighlightRecords';
 import {assertJSON} from '../test/Assertions';
 import {Rect} from '../Rect';
 import {TextRect} from './TextRect';
-import {Dictionaries} from '../util/Dictionaries';
 
 TestingTime.freeze();
 
@@ -24,6 +23,7 @@ describe('TextHighlightRecords', function() {
                 "id": "1Af41QXbBH",
                 "value": {
                     "id": "1Af41QXbBH",
+                    "guid": "1Af41QXbBH",
                     "created": "2012-03-02T11:38:49.321Z",
                     "lastUpdated": "2012-03-02T11:38:49.321Z",
                     "rects": {
@@ -41,11 +41,13 @@ describe('TextHighlightRecords', function() {
                             "text": "hello world"
                         }
                     },
-                    "text": "hello world",
+                    "text": {
+                        "TEXT": "hello world"
+                    },
+                    "images": {},
                     "notes": {},
                     "questions": {},
-                    "flashcards": {},
-                    "images": {}
+                    "flashcards": {}
                 }
             };
 
