@@ -94,7 +94,7 @@ export class Files {
         throw new Error("Not replaced via promisify");
     }
 
-    public static async copyFileAsync(src: string, dest: string, flags: number | undefined): Promise<void> {
+    public static async copyFileAsync(src: string, dest: string, flags?: number): Promise<void> {
         throw new Error("Not replaced via promisify");
     }
 
