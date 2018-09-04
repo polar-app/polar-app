@@ -81,6 +81,7 @@
     "@types/summernote": "^0.8.0",
     "@types/toastr": "^2.1.35",
     "@types/uuid": "^3.4.4",
+    "@types/ws": "^6.0.0",
     "adm-zip": "^0.4.11",
     "babel-preset-es2017": "^6.24.1",
     "base58check": "^2.0.0",
@@ -147,6 +148,7 @@
     "toastr": "^2.1.4",
     "tooltip.js": "^1.2.0",
     "underscore": "^1.9.1",
-    "uuid": "^3.3.2"
+    "uuid": "^3.3.2",
+    "ws": "^6.0.0"
   }
 }
