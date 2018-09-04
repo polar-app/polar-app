@@ -49,7 +49,7 @@ export class Model {
 
         let docMeta: DocMeta | undefined;
 
-        if(! this.persistenceLayer.contains(fingerprint)) {
+        if(! await this.persistenceLayer.contains(fingerprint)) {
 
             console.warn("New document found. Creating initial DocMeta");
 
