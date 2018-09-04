@@ -14,7 +14,7 @@ if( ! hasSingleInstanceLock) {
     app.quit();
 }
 
-app.on('ready', async () => {
+async function launch() {
 
     let datastore = Datastores.create();
 
@@ -32,11 +32,10 @@ app.on('ready', async () => {
         await mainAppController.handleLoadDoc(fileArg);
     }
 
-    crashReporter.start({
-        productName: "polar",
-        companyName: "polar",
-        submitURL: "https://polar.sp.backtrace.io:8443/post?format=minidump&token=70d81628b1f662962cc7afc25bc4fd0449677693809737577067ed72a78f6848",
-        uploadToServer: true
-    });
+}
+
+app.on('ready', async () => {
+
+    launch().catch(err => log.error("Unable to launch app: ", err));
 
 });

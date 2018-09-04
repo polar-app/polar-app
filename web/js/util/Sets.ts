@@ -14,4 +14,13 @@ export class Sets {
 
     }
 
+    static union<T>(a: T[], b: T[]): T[] {
+
+        let set = new Set<T>();
+        a.forEach( current => set.add(current));
+        b.forEach( current => set.add(current));
+        return Array.from(set);
+
+    }
+
 }

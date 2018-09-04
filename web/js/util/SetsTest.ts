@@ -3,33 +3,48 @@ import {Sets} from './Sets';
 
 describe('Sets', function() {
 
-    it("Empty sets", function () {
+    describe('difference', function() {
 
-        assert.deepEqual(Sets.difference([], []), []);
+        it("Empty sets", function () {
+
+            assert.deepEqual(Sets.difference([], []), []);
+
+        });
+
+        it("One element", function () {
+
+            assert.deepEqual(Sets.difference(['a'], []), ['a']);
+
+        });
+
+        it("Equivalent", function () {
+
+            assert.deepEqual(Sets.difference(['a'], ['a']), []);
+
+        });
+
+        it("Extra", function () {
+
+            assert.deepEqual(Sets.difference(['a'], ['a', 'b']), []);
+
+        });
+
+        it("Complex", function () {
+
+            assert.deepEqual(Sets.difference(['a', 'b'], ['a']), ['b']);
+
+        });
 
     });
 
-    it("One element", function () {
+    describe('union', function() {
 
-        assert.deepEqual(Sets.difference(['a'], []), ['a']);
+        it("duplicates", function () {
 
-    });
+            assert.deepEqual(Sets.union([1], [1,2]), [1,2]);
 
-    it("Equivalent", function () {
+        });
 
-        assert.deepEqual(Sets.difference(['a'], ['a']), []);
-
-    });
-
-    it("Extra", function () {
-
-        assert.deepEqual(Sets.difference(['a'], ['a', 'b']), []);
-
-    });
-
-    it("Complex", function () {
-
-        assert.deepEqual(Sets.difference(['a', 'b'], ['a']), ['b']);
 
     });
 
