@@ -1,14 +1,18 @@
+
+import fs from 'fs';
+import os from 'os';
+import {assert} from 'chai';
 import {TestingTime} from '../../test/TestingTime';
 import {CacheEntriesFactory} from './CacheEntriesFactory';
 import {assertJSON} from '../../test/Assertions';
 import {MockCapturedContent} from '../../capture/MockCapturedContent';
 import {CapturedPHZWriter} from '../../capture/CapturedPHZWriter';
 import {Dictionaries} from '../../util/Dictionaries';
-
-const fs = require('fs');
-const assert = require('assert');
+import {FilePaths} from '../../util/FilePaths';
 
 TestingTime.freeze();
+
+const tmpdir = os.tmpdir();
 
 describe('CacheEntriesFactory', function() {
 
@@ -33,9 +37,9 @@ describe('CacheEntriesFactory', function() {
                 "url": "https://jakearchibald.com/2016/streams-ftw/"
             };
 
-            fs.writeFileSync("/tmp/test-load.json", JSON.stringify(data, null, "  "));
+            fs.writeFileSync(FilePaths.join(tmpdir, "test-load.json"), JSON.stringify(data, null, "  "));
 
-            fs.writeFileSync("/tmp/test-load.chtml", "<html></html>")
+            fs.writeFileSync(FilePaths.join(tmpdir, "test-load.chtml"), "<html></html>")
 
             done();
 
@@ -58,7 +62,7 @@ describe('CacheEntriesFactory', function() {
                         "contentType": "text/html",
                         "mimeType": "text/html",
                         "encoding": "UTF-8",
-                        "path": "/tmp/test-load.chtml"
+                        "path": FilePaths.join(tmpdir, "test-load.chtml")
                     }
                 },
                 "metadata": {
@@ -90,7 +94,7 @@ describe('CacheEntriesFactory', function() {
                         "contentType": "text/html",
                         "mimeType": "text/html",
                         "encoding": "UTF-8",
-                        "path": "/tmp/test-load.chtml"
+                        "path": FilePaths.join(tmpdir, "test-load.chtml")
                     }
                 },
                 "metadata": {

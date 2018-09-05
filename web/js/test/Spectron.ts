@@ -1,9 +1,10 @@
+
+import electronPath from 'electron';
 import {SpectronOutputMonitorService} from './SpectronOutputMonitorService';
 import {TestResultReader} from './results/TestResultReader';
 import {Logger} from '../logger/Logger';
 
 const {Application} = require('spectron');
-const electronPath = require('electron');
 
 const log = Logger.create();
 

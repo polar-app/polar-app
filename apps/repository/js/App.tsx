@@ -166,6 +166,27 @@ class App<P> extends React.Component<{}, IAppState> {
 
     }
 
+    public highlightRow(selected: number) {
+
+        let state: IAppState = Object.assign({}, this.state);
+        state.selected = selected;
+
+        this.setState(state);
+
+    }
+
+    public loadDocument(fingerprint: string, filename: string ){
+
+        console.log("Going to open " + fingerprint);
+
+        DocLoader.load({
+            fingerprint: fingerprint,
+            filename: filename,
+            newWindow: true
+        }).catch(err => log.error("Unable to load doc: ", err));
+
+    }
+
     render() {
         const { data } = this.state;
         return (
@@ -249,36 +270,13 @@ class App<P> extends React.Component<{}, IAppState> {
                     // }]}
                     getTrProps={(state: any, rowInfo: any) => {
                         return {
+
                             onClick: (e: any) => {
-                                console.log(rowInfo);
-
-                                let state: IAppState = Object.assign({}, this.state);
-                                state.selected = rowInfo.index as number;
-
-                                this.setState(state);
-                                console.log("on click")
+                                this.highlightRow(rowInfo.index as number);
                             },
-                            //
-                            // onClick: (e: any) => {
-                            //     console.log(rowInfo);
-                            // },
 
                             onDoubleClick: (e: any) => {
-                                console.log(rowInfo);
-
-                                console.log("Going to open " + rowInfo.original.fingerprint);
-
-                                DocLoader.load({
-                                    fingerprint: rowInfo.original.fingerprint,
-                                    filename: rowInfo.original.filename,
-                                    newWindow: true
-                                }).catch(err => log.error("Unable to load doc: ", err));
-
-                                // let state: IAppState = Object.assign({}, this.state);
-                                // state.selected = rowInfo.index as number;
-                                //
-                                // this.setState(state);
-                                // console.log("on click")
+                                this.loadDocument(rowInfo.original.fingerprint,rowInfo.original.filename);
                             },
 
                             style: {

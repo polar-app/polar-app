@@ -1,8 +1,16 @@
 import * as React from 'react';
-import * as ReactDOM from 'react-dom';
-import App from './App';
+import {RepositoryApp} from '../../../web/js/apps/repository/RepositoryApp';
+import {Logging} from '../../../web/js/logger/Logging';
+import {Logger} from '../../../web/js/logger/Logger';
 
-ReactDOM.render(
-  <App />,
-  document.getElementById('root') as HTMLElement
-);
+const log = Logger.create();
+
+async function start() {
+
+    await Logging.init();
+
+    await new RepositoryApp().start();
+
+}
+
+start().catch(err => log.error("Could not start app: ", err));

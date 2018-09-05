@@ -1,4 +1,5 @@
 import * as libpath from 'path';
+import * as os from 'os';
 
 /**
  * Work with file paths cross platform and work with the file separator using
@@ -84,6 +85,14 @@ export class FilePaths {
 
     static dirname(path: string) {
         return libpath.dirname(path);
+    }
+
+    static tmpdir() {
+        return os.tmpdir();
+    }
+
+    static tmpfile(name: string) {
+        return this.join(os.tmpdir(), name);
     }
 
 }

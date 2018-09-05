@@ -10,7 +10,6 @@ export class MemoryLogger implements ILogger {
     public readonly buffer: {}[] = [];
 
     info(msg: string, ...args: any[]) {
-        console.log("FIXMEinfp")
         this.buffer.push({level: 'info', msg, args});
     }
 
@@ -27,7 +26,6 @@ export class MemoryLogger implements ILogger {
     }
 
     debug(msg: string, ...args: any[]) {
-        console.log("FIXME debug")
         this.buffer.push({level: 'debug', msg, args});
     }
 

@@ -6,6 +6,7 @@ import {Files} from '../util/Files';
 import {PHZWriter} from './PHZWriter';
 import {PHZReader} from './PHZReader';
 import {Dictionaries} from '../util/Dictionaries';
+import {FilePaths} from '../util/FilePaths';
 
 TestingTime.freeze();
 
@@ -34,7 +35,7 @@ describe('PHZ functionality', function() {
 
     it("Writing with no data", async function () {
 
-        let path = "/tmp/test.phz";
+        let path = FilePaths.tmpfile("test.phz");
 
         await Files.unlinkAsync(path);
 
@@ -48,7 +49,7 @@ describe('PHZ functionality', function() {
 
     it("Writing one resource", async function () {
 
-        let path = "/tmp/test.phz";
+        let path = FilePaths.tmpfile("test.phz");
 
         await Files.unlinkAsync(path);
 
@@ -66,7 +67,7 @@ describe('PHZ functionality', function() {
 
     it("Reading", async function () {
 
-        let path = "/tmp/test.phz";
+        let path = FilePaths.tmpfile("test.phz");
 
         await Files.unlinkAsync(path);
 
@@ -129,7 +130,7 @@ describe('PHZ functionality', function() {
 
     it("Reading with no metadata or resources", async function () {
 
-        let path = "/tmp/test.phz";
+        let path = FilePaths.tmpfile("test.phz");
 
         await Files.unlinkAsync(path);
 

@@ -8,12 +8,13 @@ import {PHZWriter} from './PHZWriter';
 import {TestingTime} from '../test/TestingTime';
 import {Time} from '../util/Time';
 import {Dictionaries} from '../util/Dictionaries';
+import {FilePaths} from '../util/FilePaths';
 
 TestingTime.freeze();
 
 describe('CachingPHZReader', function() {
 
-    let path = "/tmp/test.phz";
+    let path = FilePaths.tmpfile("test.phz");
 
     async function assertPHZReader(phzReader: CachingPHZReader) {
 

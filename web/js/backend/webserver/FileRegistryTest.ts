@@ -3,6 +3,8 @@ import {WebserverConfig} from './WebserverConfig';
 import assert from 'assert';
 import {FileRegistry} from './FileRegistry';
 import {assertJSON} from '../../test/Assertions';
+import {Files} from '../../util/Files';
+import {FilePaths} from '../../util/FilePaths';
 
 const webserverConfig = new WebserverConfig(".", 8080);
 
@@ -10,17 +12,20 @@ describe('FileRegistry', function() {
 
     describe('create', function() {
 
-        it("basic", function () {
+        it("basic", async function () {
 
             let fileRegistry = new FileRegistry(webserverConfig);
 
             assert.equal(fileRegistry.hasKey("0x0001"), false);
 
-            let registerData = fileRegistry.register("0x0001", "./package.json");
+            let path = FilePaths.tmpfile('file-registry.html');
+            await Files.writeFileAsync(path, 'hello world');
+
+            let registerData = fileRegistry.register("0x0001", path);
 
             let expected = {
                 "key": "0x0001",
-                "filename": "/home/burton/projects/polar-bookshelf/package.json",
+                "filename": path,
                 "url": "http://127.0.0.1:8080/files/0x0001"
             };
 

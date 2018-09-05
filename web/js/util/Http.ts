@@ -2,6 +2,7 @@
 import http, {ClientRequest, IncomingMessage, RequestOptions} from 'http';
 import https from 'https';
 import {URL} from "url";
+import * as url from 'url';
 
 export class Http {
 
@@ -15,7 +16,11 @@ export class Http {
      *
      * @param options
      */
-    static async fetchContent(options: any): Promise<Buffer> {
+    static async fetchContent(options: RequestOptions | string): Promise<Buffer> {
+
+        if (typeof options === 'string') {
+            options = url.parse(options);
+        }
 
         let provider: Requester;
 
@@ -65,7 +70,11 @@ export class Http {
      * @param options
      * @return {Promise<any>}
      */
-    static async execute(options: any): Promise<Executed> {
+    static async execute(options: RequestOptions | string): Promise<Executed> {
+
+        if (typeof options === 'string') {
+            options = url.parse(options);
+        }
 
         let provider: Requester;
 
