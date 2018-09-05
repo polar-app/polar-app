@@ -110,7 +110,7 @@ export class FilePaths {
      */
     public static textToWindowsPath(text: string) {
 
-        return text.replace(/(\/[a-zA-Z0-9]+)+(\/[a-zA-Z0-9]+\.[a-z]{3})/g, (substr: string) => {
+        return text.replace(/(\/[a-zA-Z0-9_-]+)+(\/[a-zA-Z0-9_-]+\.[a-z]{2,3})/g, (substr: string) => {
             return this.toWindowsPath(substr);
         });
 

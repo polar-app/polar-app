@@ -23,10 +23,10 @@ export class Callers {
         // TODO: probably better to put this into a filter, execute all of them,
         // and them return the results together.
 
-        let javascriptCaller = Callers.parseRE(frame, /([^/.)]+\.(js|ts|tsx)):[0-9]+:[0-9]+\)?$/g);
+        let javascriptCaller = Callers.parseRE(frame, /([^/.\\)]+\.(js|ts|tsx|jsx)):[0-9]+:[0-9]+\)?$/g);
 
         // this returns the first match with a space at the end.
-        let webpackCaller = Callers.parseRE(frame, /([^/.)]+\.(js|ts|tsx))( |\?)/g);
+        let webpackCaller = Callers.parseRE(frame, /([^/.\\)]+\.(js|ts|tsx|jsx))( |\?)/g);
 
         if(webpackCaller) {
             return webpackCaller;

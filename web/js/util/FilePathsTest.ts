@@ -21,6 +21,15 @@ describe('FilePaths', function() {
 
         });
 
+        it("real world", async function () {
+
+            let text = '     at Function.getCaller (/home/burton/projects/polar-bookshelf/web/js/test/MyTest.jsx:5:17)';
+            let expected = '     at Function.getCaller (C:\\home\\burton\\projects\\polar-bookshelf\\web\\js\\test\\MyTest.jsx:5:17)';
+
+            assert.equal(FilePaths.textToWindowsPath(text), expected);
+
+        });
+
     });
 
 
