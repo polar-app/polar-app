@@ -1,3 +1,9 @@
+# 1.0.0-beta133
+
+- improved spectron tests
+- migrated to chai everywhere for assert
+- more windows bug fixes.
+
 # 1.0.0-beta132
 
 - Fixed hopefully the last Windows issue. This was due to not awaiting a promise
