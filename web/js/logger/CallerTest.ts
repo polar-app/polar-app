@@ -6,7 +6,13 @@ describe('Callers', function() {
     describe('Test basic caller', () => {
 
         it("call method and to make sure we get the right caller", async function () {
-            assert.deepEqual(myCaller(), { filename: "CallerTest.js" });
+
+
+            let actual = myCaller();
+            actual.filename = actual.filename.replace(/\.(js|ts)/, '.js');
+
+            assert.deepEqual(actual, { filename: "CallerTest.js" });
+
         });
 
     });
