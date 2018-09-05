@@ -13,7 +13,7 @@ export class WebRequestReactor {
 
     public readonly webRequest: WebRequest;
 
-    public readonly reactor: Reactor<NamedWebRequestEvent>;
+    public readonly reactor: Reactor<INamedWebRequestEvent>;
 
     public started = false;
 
@@ -26,7 +26,7 @@ export class WebRequestReactor {
     /**
      * Bind each webRequest event to go into the reactor.
      */
-    start() {
+    public start() {
 
         this.webRequest.onBeforeRedirect(this.handleBeforeRedirect.bind(this));
         this.webRequest.onBeforeRequest(this.handleBeforeRequest.bind(this));
@@ -39,7 +39,7 @@ export class WebRequestReactor {
         // TODO: this is a bit ugly to duplicate this but it might be possible
         // to refactor in the future to make it a bit cleaner.
 
-        let eventNames = [
+        const eventNames = [
             "onBeforeRedirect",
             "onBeforeRequest",
             "onBeforeSendHeaders",
@@ -49,7 +49,7 @@ export class WebRequestReactor {
             "onSendHeaders",
         ];
 
-        eventNames.forEach(eventName => {
+        eventNames.forEach((eventName) => {
             this.reactor.registerEvent(eventName);
         });
 
@@ -57,7 +57,7 @@ export class WebRequestReactor {
 
     }
 
-    stop() {
+    public stop() {
 
         this.started = false;
 
@@ -75,23 +75,22 @@ export class WebRequestReactor {
     }
 
 
-    register(callback: RegisterCallback) {
+    public register(callback: IRegisterCallback) {
 
         Preconditions.assertNotNull(callback, "callback");
 
-        if(! this.started) {
+        if (! this.started) {
             throw new Error("Not started!");
         }
 
-        // FIXME: this isnt' goign to have any event names to register..
-
-        this.reactor.eventNames().forEach(eventName => {
+        this.reactor.eventNames().forEach((eventName) => {
             this.reactor.addEventListener(eventName, callback);
         });
 
     }
 
-    private handleBeforeRequest(details: OnBeforeRequestDetails, callback: (response: Electron.Response) => void): void {
+    private handleBeforeRequest(details: OnBeforeRequestDetails,
+                                callback: (response: Electron.Response) => void): void {
 
         this.handleEvent({
             name: 'onBeforeRequest',
@@ -101,7 +100,8 @@ export class WebRequestReactor {
 
     }
 
-    private handleBeforeSendHeaders(details: OnBeforeRequestDetails, callback: (response: Electron.Response) => void): void {
+    private handleBeforeSendHeaders(details: OnBeforeRequestDetails,
+                                    callback: (response: Electron.Response) => void): void {
 
         this.handleEvent({
             name: 'onBeforeSendHeaders',
@@ -115,7 +115,7 @@ export class WebRequestReactor {
 
         this.handleEvent({
             name: 'onBeforeRedirect',
-            details
+            details,
         });
 
     }
@@ -156,11 +156,11 @@ export class WebRequestReactor {
 
     }
 
-    private handleEvent(event: NamedWebRequestEvent, callback?: (response: Electron.Response) => void) {
+    private handleEvent(event: INamedWebRequestEvent, callback?: (response: Electron.Response) => void) {
 
-        if(! this.started) {
+        if (! this.started) {
 
-            if(callback) {
+            if (callback) {
                 callback({cancel: false});
             }
 
@@ -173,19 +173,17 @@ export class WebRequestReactor {
 
 }
 
-export interface RegisterCallback {
-    (event: NamedWebRequestEvent): void;
-}
+export type IRegisterCallback = (event: INamedWebRequestEvent) => void;
 
-export interface NamedWebRequestEvent {
+export interface INamedWebRequestEvent {
     readonly name: string;
 
-    readonly details: WebRequestDetails;
+    readonly details: IWebRequestDetails;
 
     readonly callback?: (response: Electron.Response) => void;
 }
 
-export interface WebRequestDetails {
+export interface IWebRequestDetails {
 
     readonly id: number;
     readonly url: string;

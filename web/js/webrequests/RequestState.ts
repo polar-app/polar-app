@@ -11,7 +11,7 @@ const STATE_FINISHED = "FINISHED";
  */
 export class RequestState {
 
-    private readonly map: {[id: number]: RequestEntry} = {};
+    private readonly map: {[id: number]: IRequestEntry} = {};
 
     constructor() {
         log.info("Tracking request state...");
@@ -19,11 +19,11 @@ export class RequestState {
 
     // check for double started and double finished too..
 
-    markStarted(id: number, url: string) {
+    public markStarted(id: number, url: string) {
 
-        let requestEntry: RequestEntry = {id, url, state: STATE_STARTED};
+        const requestEntry: IRequestEntry = {id, url, state: STATE_STARTED};
 
-        if(id in this.map) {
+        if (id in this.map) {
             log.warn("Request was started but already present in map." + this.map[id]);
             return;
         }
@@ -32,16 +32,16 @@ export class RequestState {
 
     }
 
-    markFinished(id: number, url: string) {
+    public markFinished(id: number, url: string) {
 
-        let requestEntry: RequestEntry = {id, url, state: STATE_FINISHED};
+        const requestEntry: IRequestEntry = {id, url, state: STATE_FINISHED};
 
-        if(! (id in this.map)) {
+        if (! (id in this.map)) {
             log.warn("Request was marked finished but never marked started.");
             return;
         }
 
-        if(this.map[id].state !== STATE_STARTED) {
+        if (this.map[id].state !== STATE_STARTED) {
             log.warn("Request was marked finished but is not currently started: " + this.map[id]);
             return;
         }
@@ -55,7 +55,7 @@ export class RequestState {
 /**
  * Represents a request stored in the backing map.
  */
-export interface RequestEntry {
+export interface IRequestEntry {
 
     readonly id: number;
     readonly url: string;

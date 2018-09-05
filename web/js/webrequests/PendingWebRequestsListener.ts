@@ -1,4 +1,4 @@
-import {NamedWebRequestEvent, WebRequestDetails} from './WebRequestReactor';
+import {INamedWebRequestEvent, IWebRequestDetails} from './WebRequestReactor';
 import {Logger} from '../logger/Logger';
 import {BaseWebRequestsListener} from './BaseWebRequestsListener';
 import {RequestState} from './RequestState';
@@ -42,7 +42,7 @@ export class PendingWebRequestsListener extends BaseWebRequestsListener {
      * Called when we receive an event.  All the events give us a 'details'
      * object about the request.
      */
-    onWebRequestEvent(event: NamedWebRequestEvent) {
+    onWebRequestEvent(event: INamedWebRequestEvent) {
 
         setTimeout(() => {
 
@@ -52,7 +52,7 @@ export class PendingWebRequestsListener extends BaseWebRequestsListener {
 
     }
 
-    processWebRequestEvent(event: NamedWebRequestEvent) {
+    processWebRequestEvent(event: INamedWebRequestEvent) {
 
         //console.log(`event data: ${event.name}\t${event.details.id}\t${event.details.url}\t${event.details.resourceType}\t${event.details.webContentsId}`);
 
@@ -213,7 +213,7 @@ export interface PendingWebRequestsCallback {
 export interface PendingWebRequestsEvent {
 
     readonly name: string,
-    readonly details: WebRequestDetails,
+    readonly details: IWebRequestDetails,
     readonly pending: number,
     readonly started: number;
     readonly finished: number;

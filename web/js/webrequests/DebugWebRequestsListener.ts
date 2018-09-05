@@ -1,4 +1,4 @@
-import {NamedWebRequestEvent} from './WebRequestReactor';
+import {INamedWebRequestEvent} from './WebRequestReactor';
 import {Logger} from '../logger/Logger';
 import {BaseWebRequestsListener} from './BaseWebRequestsListener';
 
@@ -32,11 +32,11 @@ export class DebugWebRequestsListener extends BaseWebRequestsListener {
      * Called when we receive an event.  All the events give us a 'details'
      * object.
      */
-    onWebRequestEvent(event: NamedWebRequestEvent) {
+    public onWebRequestEvent(event: INamedWebRequestEvent) {
 
-        let {name, details, callback} = event;
+        const {name, details, callback} = event;
 
-        if(name === "onCompleted" || name === "onErrorOccurred") {
+        if (name === "onCompleted" || name === "onErrorOccurred") {
             // this request has already completed so is not considered against
             // pending any longer
             --this.pending;
@@ -44,12 +44,12 @@ export class DebugWebRequestsListener extends BaseWebRequestsListener {
 
         log.info(`${name} (pending=${this.pending}): `, JSON.stringify(details, null, "  "));
 
-        if(name === "onBeforeRequest") {
+        if (name === "onBeforeRequest") {
             // after this request the pending will be incremented.
             ++this.pending;
         }
 
-        if(callback) {
+        if (callback) {
             // the callback always has to be used or the requests will be
             // cancelled.
             callback({cancel: false});

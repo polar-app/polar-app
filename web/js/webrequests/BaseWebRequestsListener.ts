@@ -1,4 +1,4 @@
-import {NamedWebRequestEvent, WebRequestReactor} from './WebRequestReactor';
+import {INamedWebRequestEvent, WebRequestReactor} from './WebRequestReactor';
 
 
 /**
@@ -16,7 +16,7 @@ export class BaseWebRequestsListener {
      * Called when we receive an event.  All the events give us a 'details'
      * object.
      */
-    onWebRequestEvent(event: NamedWebRequestEvent) {
+    onWebRequestEvent(event: INamedWebRequestEvent) {
 
     }
 
