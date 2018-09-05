@@ -4,7 +4,7 @@ import {PingService} from '../../../js/ipc/handler/ping/PingService';
 import {IPCEngines} from '../../../js/ipc/handler/IPCEngines';
 import {SyncPipes} from '../../../js/ipc/pipes/SyncPipes';
 import {IPCClients} from '../../../js/ipc/handler/IPCClients';
-import {WindowReference} from '../../../js/ui/dialog_window/WindowReference';
+import {BrowserWindowReference} from '../../../js/ui/dialog_window/BrowserWindowReference';
 
 SpectronRenderer.run(async (state) => {
 
@@ -33,7 +33,7 @@ SpectronRenderer.run(async (state) => {
 
         console.log("Using target window: " + target_window);
 
-        let ipcClient = IPCClients.fromRendererToRenderer(new WindowReference(message.target_window));
+        let ipcClient = IPCClients.fromRendererToRenderer(new BrowserWindowReference(message.target_window));
 
         console.log("Executing ping...");
 

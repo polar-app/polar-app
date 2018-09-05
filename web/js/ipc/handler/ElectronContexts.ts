@@ -3,7 +3,7 @@ import {remote} from 'electron';
 /**
  * Determine the electron context we're running within.
  */
-import {WindowReference} from '../../ui/dialog_window/WindowReference';
+import {BrowserWindowReference} from '../../ui/dialog_window/BrowserWindowReference';
 import {ElectronMainContext, ElectronRendererContext} from './ElectronContext';
 
 export class ElectronContexts {
@@ -13,7 +13,7 @@ export class ElectronContexts {
         if(! remote) {
             return new ElectronMainContext();
         } else {
-            return new ElectronRendererContext(new WindowReference(remote.getCurrentWindow().id));
+            return new ElectronRendererContext(new BrowserWindowReference(remote.getCurrentWindow().id));
         }
 
     }

@@ -1,4 +1,4 @@
-export class WindowReference {
+export class BrowserWindowReference {
 
     public readonly id: number;
 

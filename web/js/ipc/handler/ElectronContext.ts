@@ -1,7 +1,7 @@
 /**
  * Determine the electron context we're running within.
  */
-import {WindowReference} from '../../ui/dialog_window/WindowReference';
+import {BrowserWindowReference} from '../../ui/dialog_window/BrowserWindowReference';
 
 export interface ElectronContext {
 
@@ -22,9 +22,9 @@ export class ElectronRendererContext implements ElectronContext {
 
     public readonly type = ElectronContextType.RENDERER;
 
-    public readonly windowReference: WindowReference;
+    public readonly windowReference: BrowserWindowReference;
 
-    constructor(windowReference: WindowReference) {
+    constructor(windowReference: BrowserWindowReference) {
         this.windowReference = windowReference;
     }
 

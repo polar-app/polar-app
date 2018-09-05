@@ -2,6 +2,7 @@
 import {BrowserWindow, ipcMain} from 'electron';
 import {Logger} from '../logger/Logger';
 import {Broadcasters} from './Broadcasters';
+import {BrowserWindowReference} from '../ui/dialog_window/BrowserWindowReference';
 
 const log = Logger.create();
 
@@ -22,11 +23,14 @@ export class Broadcaster {
 
         this.channel = channel;
 
-        ipcMain.on(channel, (event: any, arg: any) => {
+        ipcMain.on(channel, (event: Electron.Event, arg: any) => {
 
             log.info("Forwarding message: " , channel, event);
 
-            Broadcasters.send(channel, arg);
+            const senderBrowserWindowReference
+                = new BrowserWindowReference(BrowserWindow.fromWebContents(event.sender).id);
+
+            Broadcasters.send(channel, arg, senderBrowserWindowReference);
 
         });
 

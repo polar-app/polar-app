@@ -1,6 +1,6 @@
 import {DocInfo} from '../../metadata/DocInfo';
 
-export interface DocInfoAdvertisement {
+export interface IDocInfoAdvertisement {
     readonly docInfo: DocInfo;
     readonly advertisementType: AdvertisementType;
 }

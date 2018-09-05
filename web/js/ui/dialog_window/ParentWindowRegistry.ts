@@ -1,4 +1,4 @@
-import {WindowReference} from './WindowReference';
+import {BrowserWindowReference} from './BrowserWindowReference';
 import {ParentWindowReference} from './ParentWindowReference';
 import {DialogWindowReference} from './DialogWindowReference';
 
@@ -6,11 +6,11 @@ export class ParentWindowRegistry {
 
     private backing: { [index: number]: ParentWindowReference } = {};
 
-    register(dialogWindowReference: DialogWindowReference, parentWindowReference: WindowReference) {
+    public register(dialogWindowReference: DialogWindowReference, parentWindowReference: BrowserWindowReference) {
         this.backing[dialogWindowReference.id] = parentWindowReference;
     }
 
-    get(dialogWindowReference: DialogWindowReference) {
+    public get(dialogWindowReference: DialogWindowReference) {
         return this.backing[dialogWindowReference.id];
     }
 
