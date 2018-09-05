@@ -11,7 +11,7 @@ import {LogLevels} from './LogLevels';
 import {Optional} from '../util/ts/Optional';
 import {MultiLogger} from './MultiLogger';
 import {SentryLogger} from './SentryLogger';
-import {Paths} from '../util/Paths';
+import {FilePaths} from '../util/FilePaths';
 
 /**
  * Maintains our general logging infrastructure.  Differentiated from Logger
@@ -24,7 +24,7 @@ export class Logging {
      */
     public static async init() {
 
-        let target: ILogger = await this.createTarget();
+        const target: ILogger = await this.createTarget();
 
         await this.initWithTarget(target);
 
@@ -32,23 +32,23 @@ export class Logging {
 
     public static async initWithTarget(target: ILogger) {
 
-        let loggingConfig = await this.loggingConfig();
+        const loggingConfig = await this.loggingConfig();
 
-        let delegate =
+        const delegate =
             new FilteredLogger(
                 new VersionAnnotatingLogger(
                     new LevelAnnotatingLogger(target)), loggingConfig.level);
 
         LoggerDelegate.set(delegate);
 
-        let logger = LoggerDelegate.get();
+        const logger = LoggerDelegate.get();
         logger.info(`Using logger: ${logger.name}: target=${loggingConfig.target}, level=${LogLevel[loggingConfig.level]}`);
 
     }
 
     public static async createTarget(): Promise<ILogger> {
 
-        let loggers: ILogger[] = [];
+        const loggers: ILogger[] = [];
 
         loggers.push(new SentryLogger());
         loggers.push(await this.createPrimaryTarget());
@@ -59,9 +59,9 @@ export class Logging {
 
     public static async createPrimaryTarget(): Promise<ILogger> {
 
-        let loggingConfig = await this.loggingConfig();
+        const loggingConfig = await this.loggingConfig();
 
-        if(loggingConfig.target === LoggerTarget.CONSOLE) {
+        if (loggingConfig.target === LoggerTarget.CONSOLE) {
             return new ConsoleLogger();
         // } else if(loggerTarget === LoggerTarget.DISK) {
         //     let directories = new Directories();
@@ -74,24 +74,24 @@ export class Logging {
 
     private static async loggingConfig(): Promise<LoggingConfig> {
 
-        let directories = await new Directories().init();
+        const directories = await new Directories().init();
 
-        let path = Paths.join(directories.configDir, 'logging.json');
+        const path = FilePaths.join(directories.configDir, 'logging.json');
 
-        if(await Files.existsAsync(path)) {
+        if (await Files.existsAsync(path)) {
 
-            let buffer = await Files.readFileAsync(path);
-            let json = buffer.toString('utf8');
-            let config = <LoggingConfig>JSON.parse(json);
+            const buffer = await Files.readFileAsync(path);
+            const json = buffer.toString('utf8');
+            let config = JSON.parse(json) as LoggingConfig;
 
-            if(typeof config.level === 'string') {
+            if (typeof config.level === 'string') {
 
                 // needed to convert the symbol back to the enum.  Not sure
                 // this is very clean though and wish there was a better way
                 // to do this.
 
                 config = { level: LogLevels.fromName(config.level),
-                           target: config.target }
+                           target: config.target };
 
             }
 
@@ -103,7 +103,7 @@ export class Logging {
 
             target: LoggerTarget.CONSOLE,
 
-            level: Optional.of(process.env['POLAR_LOG_LEVEL'])
+            level: Optional.of(process.env.POLAR_LOG_LEVEL)
                     .map(level => LogLevels.fromName(level))
                     .getOrElse(LogLevel.WARN)
         };
@@ -114,7 +114,7 @@ export class Logging {
 
 enum LoggerTarget {
     CONSOLE = 'CONSOLE',
-    //DISK = 'DISK'
+    // DISK = 'DISK'
 }
 
 /**
