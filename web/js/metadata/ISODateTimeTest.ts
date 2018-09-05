@@ -1,6 +1,6 @@
 import {Flashcards} from './Flashcards';
 import {ISODateTime} from './ISODateTime';
-import assert from 'assert';
+import {assert} from 'chai';
 import {TestingTime} from '../test/TestingTime';
 
 TestingTime.freeze();

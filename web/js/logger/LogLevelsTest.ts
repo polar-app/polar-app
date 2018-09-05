@@ -1,6 +1,6 @@
 import {LogLevel} from './LogLevel';
 
-import assert from 'assert';
+import {assert} from 'chai';
 import {LogLevels} from './LogLevels';
 
 describe('LogLevels', function() {

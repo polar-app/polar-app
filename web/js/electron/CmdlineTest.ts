@@ -1,4 +1,4 @@
-import assert from 'assert';
+import {assert} from 'chai';
 import {TestingTime} from '../test/TestingTime';
 import {Cmdline} from './Cmdline';
 

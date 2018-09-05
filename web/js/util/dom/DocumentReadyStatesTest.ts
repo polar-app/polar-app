@@ -1,6 +1,6 @@
 import {DocumentReadyStates, MockReadyStateChanger, ReadyStateResolution} from './DocumentReadyStates';
 import {JSDOM} from 'jsdom';
-import assert from 'assert';
+import {assert} from 'chai';
 
 describe('DocumentReadyStates', function() {
 

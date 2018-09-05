@@ -1,4 +1,4 @@
-import assert from 'assert';
+import {assert} from 'chai';
 import {Files} from './Files';
 import {FilePaths} from './FilePaths';
 import os from "os";

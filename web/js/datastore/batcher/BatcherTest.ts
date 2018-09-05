@@ -1,4 +1,4 @@
-import assert from 'assert';
+import {assert} from 'chai';
 import {ActiveBatch, Batcher, PassiveBatch} from './Batcher';
 import {assertJSON} from '../../test/Assertions';
 

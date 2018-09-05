@@ -1,4 +1,4 @@
-import assert from 'assert';
+import {assert} from 'chai';
 import {Results} from './Results';
 import {Logger} from '../logger/Logger';
 import {assertJSON} from '../test/Assertions';

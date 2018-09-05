@@ -1,4 +1,4 @@
-import assert from 'assert';
+import {assert} from 'chai';
 import {Rects} from './Rects';
 import {assertJSON} from './test/Assertions';
 import {Rect} from './Rect';

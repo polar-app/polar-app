@@ -1,4 +1,4 @@
-import assert from 'assert';
+import {assert} from 'chai';
 import {DocMeta} from './DocMeta';
 import {DocMetas} from './DocMetas';
 import {MetadataSerializer} from './MetadataSerializer';

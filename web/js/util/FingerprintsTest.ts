@@ -1,6 +1,6 @@
 import {Fingerprints} from './Fingerprints';
 
-import assert from 'assert';
+import {assert} from 'chai';
 
 describe('Fingerprints', function() {
 

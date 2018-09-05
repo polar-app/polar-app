@@ -1,4 +1,4 @@
-import assert from 'assert';
+import {assert} from 'chai';
 import {TApplication} from './Spectron';
 import {WebDriverTestResultReader} from './results/reader/WebDriverTestResultReader';
 import {Concurrently} from '../util/Concurrently';

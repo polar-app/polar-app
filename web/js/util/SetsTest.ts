@@ -1,4 +1,4 @@
-import assert from 'assert';
+import {assert} from 'chai';
 import {Sets} from './Sets';
 
 describe('Sets', function() {

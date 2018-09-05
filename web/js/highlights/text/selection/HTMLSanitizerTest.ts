@@ -1,4 +1,4 @@
-import assert from 'assert';
+import {assert} from 'chai';
 import {HTMLSanitizer} from './HTMLSanitizer';
 
 describe('HTMLSanitizer', function () {

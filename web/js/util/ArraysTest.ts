@@ -1,6 +1,6 @@
 import {Arrays} from './Arrays';
 
-import assert from 'assert';
+import {assert} from 'chai';
 import {assertJSON} from '../test/Assertions';
 
 describe('Arrays', function() {

@@ -1,5 +1,5 @@
 import {Reactor} from './Reactor';
-import assert from 'assert';
+import {assert} from 'chai';
 import {assertJSON} from '../test/Assertions';
 
 describe('Reactor', function() {

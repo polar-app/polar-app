@@ -1,4 +1,4 @@
-import assert from 'assert';
+import {assert} from 'chai';
 import {SyncQueue} from './SyncQueue';
 import {Abortable} from './Abortable';
 import {SyncProgressListener} from './SyncProgressListener';

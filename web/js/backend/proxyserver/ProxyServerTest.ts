@@ -1,4 +1,4 @@
-import assert from 'assert';
+import {assert} from 'chai';
 import {ProxyServerConfig} from './ProxyServerConfig';
 import {CacheRegistry} from './CacheRegistry';
 import {ProxyServer} from './ProxyServer';

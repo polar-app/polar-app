@@ -1,5 +1,5 @@
 import {Functions} from './Functions';
-import assert from 'assert';
+import {assert} from 'chai';
 import {Strings} from './Strings';
 
 describe('Functions', function() {

@@ -1,4 +1,4 @@
-import assert from 'assert';
+import {assert} from 'chai';
 import {JSDOM} from 'jsdom';
 import {WindowMessagePipe} from './WindowMessagePipe';
 import {assertJSON} from '../../test/Assertions';

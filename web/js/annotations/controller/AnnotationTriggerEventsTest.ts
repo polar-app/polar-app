@@ -1,4 +1,4 @@
-import assert from 'assert';
+import {assert} from 'chai';
 import {TriggerEvent} from '../../contextmenu/TriggerEvent';
 import {AnnotationTriggerEvents} from './AnnotationTriggerEvents';
 import {assertJSON} from '../../test/Assertions';

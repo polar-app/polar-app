@@ -1,4 +1,4 @@
-import assert from 'assert';
+import {assert} from 'chai';
 import {Attributes} from './Attributes';
 const {JSDOM} = require("jsdom");
 

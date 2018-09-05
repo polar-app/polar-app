@@ -1,6 +1,6 @@
 import {WebserverConfig} from './WebserverConfig';
 
-import assert from 'assert';
+import {assert} from 'chai';
 import {FileRegistry} from './FileRegistry';
 import {assertJSON} from '../../test/Assertions';
 import {Files} from '../../util/Files';

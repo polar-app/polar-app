@@ -1,4 +1,4 @@
-import assert from 'assert';
+import {assert} from 'chai';
 import {Paths} from './Paths';
 
 describe('Paths', function() {

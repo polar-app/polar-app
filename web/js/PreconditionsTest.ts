@@ -1,4 +1,4 @@
-import assert from 'assert';
+import {assert} from 'chai';
 import {Preconditions} from './Preconditions';
 
 describe('Preconditions', function() {
