@@ -1,8 +1,9 @@
 import {FilePaths} from '../util/FilePaths';
 import {MockCapturedContent} from './MockCapturedContent';
 import {CapturedPHZWriter} from './CapturedPHZWriter';
+import {TestingTime} from '../test/TestingTime';
 
-require("../test/TestingTime").freeze();
+TestingTime.freeze();
 
 describe('CapturedPHZWriter', function() {
 

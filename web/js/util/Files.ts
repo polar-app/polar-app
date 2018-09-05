@@ -44,15 +44,15 @@ export class Files {
 
             this.statAsync(path)
                 .then(() => {
-                    log.debug("Path exists: " + path);
+                    //log.debug("Path exists: " + path);
                     resolve(true);
                 })
                 .catch((err: ErrnoException) => {
                     if(err.code === 'ENOENT') {
-                        log.debug("Path does not exist due to ENOENT: " + path, err);
+                        //log.debug("Path does not exist due to ENOENT: " + path, err);
                         resolve(false);
                     } else {
-                        log.debug("Received err within existsAsync: "+ path, err);
+                        //log.debug("Received err within existsAsync: "+ path, err);
                         // some other error
                         reject(err);
                     }

@@ -6,6 +6,7 @@ import {ISODateTimes} from '../metadata/ISODateTimes';
 import {Logger} from '../logger/Logger';
 import {ISODateTime} from '../metadata/ISODateTime';
 import {Dictionaries} from '../util/Dictionaries';
+import {DocMetaRef} from './DocMetaRef';
 
 const log = Logger.create();
 
@@ -101,6 +102,10 @@ export class PersistenceLayer implements IPersistenceLayer {
 
     }
 
+    getDocMetaFiles(): Promise<DocMetaRef[]> {
+        return this.datastore.getDocMetaFiles();
+    }
+
 }
 
 export interface IPersistenceLayer {
@@ -122,5 +127,7 @@ export interface IPersistenceLayer {
     syncDocMeta(docMeta: DocMeta): Promise<void>;
 
     sync(fingerprint: string, docMeta: DocMeta): Promise<void>;
+
+    getDocMetaFiles(): Promise<DocMetaRef[]>;
 
 }

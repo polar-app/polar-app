@@ -137,6 +137,11 @@ export class DiskDatastore implements Datastore {
 
     async getDocMetaFiles(): Promise<DocMetaRef[]> {
 
+        if( ! await Files.existsAsync(this.dataDir)) {
+            // no data dir but this should rarely happen.
+            return [];
+        }
+
         let fileNames = await Files.readdirAsync(this.dataDir);
 
         let result: DocMetaRef[] = [];
@@ -144,11 +149,13 @@ export class DiskDatastore implements Datastore {
         for (let i = 0; i < fileNames.length; i++) {
             const fileName = fileNames[i];
 
-            const fileStat = await Files.statAsync(FilePaths.join(this.dataDir, fileName));
+            let docMetaDir = FilePaths.join(this.dataDir, fileName);
+            const docMetaDirStat = await Files.statAsync(docMetaDir);
 
-            if(fileStat.isDirectory()) {
+            if(docMetaDirStat.isDirectory()) {
 
                 let stateFile = FilePaths.join(this.dataDir, fileName, 'state.json');
+
                 let exists = await Files.existsAsync(stateFile);
                 if (exists) {
                     result.push({fingerprint: fileName});
