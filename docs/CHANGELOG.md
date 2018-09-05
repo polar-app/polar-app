@@ -1,3 +1,8 @@
+# 1.0.0-beta132
+
+- Fixed hopefully the last Windows issue. This was due to not awaiting a promise
+  where on Linux it was unnecessary.
+
 # 1.0.0-beta131
 
 - Fixed a major Windows regression in pagemarks.
