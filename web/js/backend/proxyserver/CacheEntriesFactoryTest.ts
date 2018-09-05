@@ -1,4 +1,3 @@
-
 import fs from 'fs';
 import os from 'os';
 import {assert} from 'chai';
@@ -18,7 +17,7 @@ describe('CacheEntriesFactory', function() {
 
     describe('Load CHTML', function() {
 
-        let path = "/tmp/test-load.chtml";
+        let path = FilePaths.tmpfile("test-load.chtml");
 
         beforeEach(function(done) {
 
@@ -114,7 +113,7 @@ describe('CacheEntriesFactory', function() {
 
             let captured = MockCapturedContent.create();
 
-            let path = "/tmp/cached-entries-factory.phz";
+            let path = FilePaths.tmpfile("cached-entries-factory.phz");
             let capturedPHZWriter = new CapturedPHZWriter(path);
             await capturedPHZWriter.convert(captured);
 

@@ -25,4 +25,15 @@ describe('Strings', function() {
 
     });
 
+
+    describe('toUnixLineNewLines', function() {
+
+        it("basic", function () {
+
+            assert.equal(Strings.toUnixLineNewLines('this\r\nis\r\nlong\r\n'), 'this\nis\nlong\n')
+        });
+
+    });
+
+
 });

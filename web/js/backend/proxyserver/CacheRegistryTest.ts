@@ -3,6 +3,7 @@ import {CapturedPHZWriter} from '../../capture/CapturedPHZWriter';
 import {ProxyServerConfig} from './ProxyServerConfig';
 import {CacheRegistry} from './CacheRegistry';
 import {MockCapturedContent} from '../../capture/MockCapturedContent';
+import {FilePaths} from '../../util/FilePaths';
 
 TestingTime.freeze();
 
@@ -14,7 +15,7 @@ describe('CacheRegistryTest', function() {
 
             let captured = MockCapturedContent.create();
 
-            let path = "/tmp/cached-entries-factory.phz";
+            let path = FilePaths.tmpfile("cached-entries-factory.phz");
             let capturedPHZWriter = new CapturedPHZWriter(path);
             await capturedPHZWriter.convert(captured);
 

@@ -1,6 +1,6 @@
 import {Functions} from './Functions';
 import assert from 'assert';
-import {assertJSON} from '../test/Assertions';
+import {Strings} from './Strings';
 
 describe('Functions', function() {
 
@@ -16,7 +16,7 @@ describe('Functions', function() {
 
         assert.equal('hello', eval(script));
 
-        assert.equal(script, "((arg) => {\n" +
+        assert.equal(Strings.toUnixLineNewLines(script), "((arg) => {\n" +
             "                return arg;\n" +
             "            }\n" +
             ")(\"hello\");");
@@ -34,7 +34,7 @@ describe('Functions', function() {
 
         console.log(script);
 
-        assert.equal(script, "((arg) => {\n" +
+        assert.equal(Strings.toUnixLineNewLines(script), "((arg) => {\n" +
             "                return arg;\n" +
             "            }\n" +
             ")(\"hello\");");
@@ -49,7 +49,7 @@ describe('Functions', function() {
 
         console.log(script);
 
-        assert.equal(script, "((val) => {\n" +
+        assert.equal(Strings.toUnixLineNewLines(script), "((val) => {\n" +
             "        return val;\n" +
             "    }\n" +
             ")(\"hello\");");
@@ -58,7 +58,7 @@ describe('Functions', function() {
 
     it("basic function", async function () {
 
-        assert.equal(basicFunction.toString(),
+        assert.equal(Strings.toUnixLineNewLines(basicFunction.toString()),
                      "function basicFunction(val) {\n" +
                          "    return val;\n" +
                          "}");
@@ -67,7 +67,7 @@ describe('Functions', function() {
 
     it("lambda function", async function () {
 
-        assert.equal(lambaFunction.toString(),
+        assert.equal(Strings.toUnixLineNewLines(lambaFunction.toString()),
                      "(val) => {\n" +
                          "    return val;\n" +
                          "}");
@@ -77,12 +77,12 @@ describe('Functions', function() {
 
     it("anonymize static function", async function () {
 
-        assert.equal(MyClass.staticFunction.toString(),
+        assert.equal(Strings.toUnixLineNewLines(MyClass.staticFunction.toString()),
                      "staticFunction(val) {\n" +
                          "        return val;\n" +
                          "    }");
 
-        assert.equal(Functions._anonymizeFunction(MyClass.staticFunction.toString()),
+        assert.equal(Strings.toUnixLineNewLines(Functions._anonymizeFunction(MyClass.staticFunction.toString())),
                      "(val) {\n" +
                          "        return val;\n" +
                          "    }");

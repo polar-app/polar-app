@@ -32,4 +32,8 @@ export class Strings {
 
     }
 
+    static toUnixLineNewLines(str: string) {
+        return str.replace(/\r\n/g, '\n');
+    }
+
 }
