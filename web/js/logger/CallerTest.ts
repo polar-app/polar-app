@@ -1,5 +1,6 @@
 import assert from 'assert';
 import {Callers} from './Callers';
+import {FilePaths} from '../util/FilePaths';
 
 describe('Callers', function() {
 
@@ -15,6 +16,8 @@ describe('Callers', function() {
 
         });
 
+        // (C:\\Users\\admin\\polar-bookshelf\\web\\js\\logger\\CallerTest.js
+
     });
 
     describe('__parse', () => {
@@ -24,18 +27,22 @@ describe('Callers', function() {
             let frame = "     at Function.getCaller (/home/burton/projects/polar-bookshelf/web/js/test/MyTest.js:5:17)";
 
             assert.deepEqual(Callers._parse(frame), { filename: "MyTest.js" });
+            assert.deepEqual(Callers._parse(FilePaths.textToWindowsPath(frame)), { filename: "MyTest.js" });
+
         });
 
 
         it("Parse a webpack frame", async function () {
             let frame = "    at Object../web/js/metadata/Pagemarks.js (http://127.0.0.1:8500/web/dist/electron-bundle.js:59471:86)\n";
             assert.deepEqual(Callers._parse(frame), { filename: "Pagemarks.js" });
+            assert.deepEqual(Callers._parse(FilePaths.textToWindowsPath(frame)), { filename: "Pagemarks.js" });
         });
 
 
         it("Parse a webpack frame with a question mark at the end", async function () {
             let frame = "    at eval (webpack:///./web/js/metadata/Pagemarks.js?:11:86)\n";
             assert.deepEqual(Callers._parse(frame), { filename: "Pagemarks.js" });
+            assert.deepEqual(Callers._parse(FilePaths.textToWindowsPath(frame)), { filename: "Pagemarks.js" });
         });
 
         //
@@ -43,6 +50,7 @@ describe('Callers', function() {
         it("Parse from web worker", async function () {
             let frame = '    at file:///home/burton/projects/polar-bookshelf/web/js/datastore/dispatcher/PersistenceLayerWorker.js:12:29';
             assert.deepEqual(Callers._parse(frame), { filename: "PersistenceLayerWorker.js" });
+            assert.deepEqual(Callers._parse(FilePaths.textToWindowsPath(frame)), { filename: "PersistenceLayerWorker.js" });
         });
 
     });

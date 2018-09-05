@@ -91,8 +91,29 @@ export class FilePaths {
         return os.tmpdir();
     }
 
-    static tmpfile(name: string) {
+    public static tmpfile(name: string) {
         return this.join(os.tmpdir(), name);
+    }
+
+    /**
+     * Create a windows path from unix path.  Mostly used for testing.
+     */
+    public static toWindowsPath(path: string) {
+        path = path.replace(/\//g, '\\' );
+        return 'C:' + path;
+    }
+
+    /**
+     * Find unix path strings in text and replace them with windows-like paths.
+     *
+     * Used for testing.
+     */
+    public static textToWindowsPath(text: string) {
+
+        return text.replace(/(\/[a-zA-Z0-9]+)+(\/[a-zA-Z0-9]+\.[a-z]{3})/g, (substr: string) => {
+            return this.toWindowsPath(substr);
+        });
+
     }
 
 }
