@@ -21,6 +21,8 @@ SpectronMain.run(async state => {
 
     console.log("GOT IT!", captured);
 
+    captured.url = '...removed...';
+
     await state.testResultWriter.write(captured);
 
 });

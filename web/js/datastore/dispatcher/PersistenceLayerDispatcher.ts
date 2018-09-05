@@ -4,6 +4,7 @@ import {IPCMessage} from '../../ipc/handler/IPCMessage';
 import {DocMetaSync} from './DocMetaSync';
 import {MetadataSerializer} from '../../metadata/MetadataSerializer';
 import {Logger} from '../../logger/Logger';
+import {DocMetaRef} from '../DocMetaRef';
 
 const log = Logger.create();
 
@@ -31,6 +32,9 @@ export class PersistenceLayerDispatcher implements IPersistenceLayerDispatcher, 
         return this.persistenceLayer.contains(fingerprint);
     }
 
+    getDocMetaFiles(): Promise<DocMetaRef[]> {
+        return this.persistenceLayer.getDocMetaFiles();
+    }
 
     async getDocMeta(fingerprint: string): Promise<DocMeta | undefined> {
         return await this.persistenceLayer.getDocMeta(fingerprint);

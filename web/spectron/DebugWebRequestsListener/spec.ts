@@ -1,5 +1,6 @@
 import {WebDriverTestResultReader} from '../../js/test/results/reader/WebDriverTestResultReader';
 import {Files} from '../../js/util/Files';
+import {FilePaths} from '../../js/util/FilePaths';
 
 const assert = require('assert');
 const {Spectron} = require("../../js/test/Spectron");
@@ -9,9 +10,9 @@ describe('DebugWebRequestsListener', function () {
     this.timeout(10000);
 
     before(async function () {
-        let logsDir = "/tmp/DebugWebRequestsListener";
+        let logsDir = FilePaths.tmpfile("DebugWebRequestsListener");
         await Files.createDirAsync(logsDir);
-        await Files.removeAsync(logsDir + "/polar.log");
+        await Files.removeAsync(FilePaths.join(logsDir, "polar.log"));
     });
 
     Spectron.setup(__dirname);
