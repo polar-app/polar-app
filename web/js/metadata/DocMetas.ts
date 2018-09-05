@@ -21,15 +21,15 @@ export class DocMetas {
      * @param fingerprint The fingerprint of the document
      * @param nrPages The number of pages in this document.
      */
-    static create(fingerprint: string, nrPages: number) {
+    public static create(fingerprint: string, nrPages: number) {
 
-        let docInfo = DocInfos.create(fingerprint, nrPages);
+        const docInfo = DocInfos.create(fingerprint, nrPages);
 
-        let pageMetas: {[id: string]: PageMeta} = {};
+        const pageMetas: {[id: string]: PageMeta} = {};
 
-        for(let idx = 1; idx <= nrPages; ++idx) {
-            let pageInfo = new PageInfo({num: idx});
-            let pageMeta = new PageMeta({pageInfo: pageInfo});
+        for (let idx = 1; idx <= nrPages; ++idx) {
+            const pageInfo = new PageInfo({num: idx});
+            const pageMeta = new PageMeta({pageInfo});
             pageMetas[idx] = pageMeta;
         }
 
@@ -48,20 +48,20 @@ export class DocMetas {
      * for testing.
      * @deprecated use MockDocMetas
      */
-    static createWithinInitialPagemarks(fingerprint: string, nrPages: number) {
+    public static createWithinInitialPagemarks(fingerprint: string, nrPages: number) {
         return MockDocMetas.createWithinInitialPagemarks(fingerprint, nrPages);
     }
 
     /**
      * @deprecated use MockDocMetas
      */
-    static createMockDocMeta() {
+    public static createMockDocMeta() {
         return MockDocMetas.createMockDocMeta();
     }
 
     /**
      */
-    static addPagemarks(docMeta: DocMeta, options: any) {
+    public static addPagemarks(docMeta: DocMeta, options: any) {
 
         if (!options) {
             options = {};
@@ -81,11 +81,11 @@ export class DocMetas {
             options.percentage = 100;
         }
 
-        let maxPageNum = Math.min(options.offsetPage + options.nrPages -1, docMeta.docInfo.nrPages);
+        const maxPageNum = Math.min(options.offsetPage + options.nrPages - 1, docMeta.docInfo.nrPages);
 
-        for(let pageNum = options.offsetPage; pageNum <= maxPageNum; ++pageNum ) {
+        for (let pageNum = options.offsetPage; pageNum <= maxPageNum; ++pageNum ) {
 
-            let pagemark = Pagemarks.create({
+            const pagemark = Pagemarks.create({
                 type: PagemarkType.SINGLE_COLUMN,
                 percentage: 100,
                 column: 0
@@ -97,16 +97,16 @@ export class DocMetas {
 
     }
 
-    static serialize(docMeta: DocMeta, spacing: string = "") {
+    public static serialize(docMeta: DocMeta, spacing: string = "") {
         return MetadataSerializer.serialize(docMeta, spacing);
     }
 
     /**
      * @return {DocMeta}
      */
-    static deserialize(data: string): DocMeta {
+    public static deserialize(data: string): DocMeta {
 
-        if(! (typeof data === "string")) {
+        if (! (typeof data === "string")) {
             throw new Error("We can only deserialize strings: " + typeof data);
         }
 
@@ -123,7 +123,7 @@ export class DocMetas {
      * @param docMeta {DocMeta}
      * @return {DocMeta}
      */
-    static upgrade(docMeta: DocMeta) {
+    public static upgrade(docMeta: DocMeta) {
 
         // validate the JSON data and set defaults. In the future we should migrate
         // to using something like AJV to provide these defaults and also perform
@@ -134,20 +134,20 @@ export class DocMetas {
         // TODO: go through and upgrade the pagemarks. I should probably have
         // an upgrade function for each object type...
 
-        if(!docMeta.annotationInfo) {
+        if (!docMeta.annotationInfo) {
             log.debug("No annotation info.. Adding default.");
             docMeta.annotationInfo = AnnotationInfos.create();
         }
 
-        if(!docMeta.attachments) {
+        if (!docMeta.attachments) {
             log.debug("No attachments. Adding empty map.");
             docMeta.annotationInfo = AnnotationInfos.create();
         }
 
-        if(docMeta.docInfo) {
+        if (docMeta.docInfo) {
 
-            if(!docMeta.docInfo.pagemarkType) {
-                log.debug("DocInfo has no pagemarkType... Adding default of SINGLE_COLUMN")
+            if (!docMeta.docInfo.pagemarkType) {
+                log.debug("DocInfo has no pagemarkType... Adding default of SINGLE_COLUMN");
                 docMeta.docInfo.pagemarkType = PagemarkType.SINGLE_COLUMN;
             }
 
@@ -188,14 +188,14 @@ export class MockDocMetas {
      * for testing.
      *
      */
-    static createWithinInitialPagemarks(fingerprint: string, nrPages: number) {
+    public static createWithinInitialPagemarks(fingerprint: string, nrPages: number) {
 
-        let result = DocMetas.create(fingerprint, nrPages);
+        const result = DocMetas.create(fingerprint, nrPages);
 
-        let maxPages = 3;
-        for(let pageNum = 1; pageNum <= Math.min(nrPages, maxPages); ++pageNum ) {
+        const maxPages = 3;
+        for (let pageNum = 1; pageNum <= Math.min(nrPages, maxPages); ++pageNum ) {
 
-            let pagemark = Pagemarks.create({
+            const pagemark = Pagemarks.create({
                 type: PagemarkType.SINGLE_COLUMN,
                 percentage: 100,
                 column: 0
@@ -209,19 +209,18 @@ export class MockDocMetas {
 
     }
 
-    static createMockDocMeta() {
+    public static createMockDocMeta() {
 
-        let fingerprint = "0x001";
-        let nrPages = 4;
-        let docMeta = DocMetas.createWithinInitialPagemarks(fingerprint, nrPages);
+        const fingerprint = "0x001";
+        const nrPages = 4;
+        const docMeta = DocMetas.createWithinInitialPagemarks(fingerprint, nrPages);
 
-        let textHighlight = TextHighlights.createMockTextHighlight();
+        const textHighlight = TextHighlights.createMockTextHighlight();
 
         docMeta.getPageMeta(1).textHighlights[textHighlight.id] = textHighlight;
 
         return docMeta;
 
     }
-
 
 }

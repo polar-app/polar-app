@@ -28,6 +28,22 @@ rules:
 
   ordered-imports: false
 
+  only-arrow-functions: false
+
+  object-literal-key-quotes: false
+
+  trailing-comma: false
+
+  no-trailing-whitespace: false
+#    options:
+#      ignore-comments
+
+  # can't enable this until we're on typescript everywhere
+  no-var-requires: false
+
+  max-classes-per-file: false
+
+
 jsRules:
   max-line-length:
     options: [120]

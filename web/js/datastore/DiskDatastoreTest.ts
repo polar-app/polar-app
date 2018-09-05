@@ -1,7 +1,7 @@
 
-import assert from 'assert';
+import {assert} from 'chai';
 import {assertJSON} from '../test/Assertions';
-import {DocMetas} from '../metadata/DocMetas';
+import {DocMetas, MockDocMetas} from '../metadata/DocMetas';
 import {DiskDatastore} from './DiskDatastore';
 import {PersistenceLayer} from './PersistenceLayer';
 import {DocMeta} from '../metadata/DocMeta';
@@ -11,6 +11,7 @@ import os from 'os';
 import fs from 'fs';
 import {Files} from '../util/Files';
 import {FilePaths} from '../util/FilePaths';
+import {Dictionaries} from '../util/Dictionaries';
 
 const rimraf = require('rimraf');
 
@@ -18,12 +19,12 @@ const tmpdir = os.tmpdir();
 
 describe('DiskDatastore', function() {
 
-    it("init and test paths", async function () {
+    it("init and test paths", async function() {
 
-        let dataDir = FilePaths.join(tmpdir, 'test-paths');
+        const dataDir = FilePaths.join(tmpdir, 'test-paths');
         removeDirectory(dataDir);
 
-        let diskDatastore = new DiskDatastore(dataDir);
+        const diskDatastore = new DiskDatastore(dataDir);
 
         await diskDatastore.init();
 
@@ -36,24 +37,24 @@ describe('DiskDatastore', function() {
     });
 
 
-    it("test async exists function", async function () {
+    it("test async exists function", async function() {
 
-        let dataDir = FilePaths.join(tmpdir, 'this-file-does-not-exist');
+        const dataDir = FilePaths.join(tmpdir, 'this-file-does-not-exist');
         removeDirectory(dataDir);
 
-        let diskDatastore = new DiskDatastore(dataDir);
+        const diskDatastore = new DiskDatastore(dataDir);
 
         assert.equal(fs.existsSync(dataDir), false);
-        assert.equal(await Files.existsAsync(dataDir), false)
+        assert.equal(await Files.existsAsync(dataDir), false);
 
     });
 
-    it("init dataDir directory on init()", async function () {
+    it("init dataDir directory on init()", async function() {
 
-        let dataDir = FilePaths.join(tmpdir, 'disk-datastore.test');
+        const dataDir = FilePaths.join(tmpdir, 'disk-datastore.test');
         removeDirectory(dataDir);
 
-        let diskDatastore = new DiskDatastore(dataDir);
+        const diskDatastore = new DiskDatastore(dataDir);
 
         assert.equal(await Files.existsAsync(dataDir), false);
 
@@ -94,7 +95,7 @@ describe('DiskDatastore', function() {
 
     });
 
-    it("getDataDir", function () {
+    it("getDataDir", function() {
 
         assert.notEqual(DiskDatastore.getDataDir(), null);
 
@@ -102,16 +103,16 @@ describe('DiskDatastore', function() {
 
     describe('Write and discovery documents', function() {
 
-        let fingerprint = "0x001";
+        const fingerprint = "0x001";
 
-        let dataDir = FilePaths.join(tmpdir, 'test-data-dir');
+        const dataDir = FilePaths.join(tmpdir, 'test-data-dir');
 
         let diskDatastore: DiskDatastore;
         let persistenceLayer: PersistenceLayer;
 
         let docMeta: DocMeta;
 
-        beforeEach(async function () {
+        beforeEach(async function() {
 
             removeDirectory(dataDir);
 
@@ -120,9 +121,9 @@ describe('DiskDatastore', function() {
 
             await persistenceLayer.init();
 
-            docMeta = DocMetas.createWithinInitialPagemarks(fingerprint, 14);
+            docMeta = MockDocMetas.createWithinInitialPagemarks(fingerprint, 14);
 
-            let contains = await persistenceLayer.contains(fingerprint);
+            const contains = await persistenceLayer.contains(fingerprint);
 
             assert.equal(contains, false);
 
@@ -130,28 +131,32 @@ describe('DiskDatastore', function() {
 
         });
 
-        it("write and read data to disk", async function () {
+        it("write and read data to disk", async function() {
             //
             // let contains = await persistenceLayer.contains(fingerprint);
             //
             // assert.ok(! contains);
 
-            let docMeta0 = await persistenceLayer.getDocMeta(fingerprint);
+            const docMeta0 = await persistenceLayer.getDocMeta(fingerprint);
+
+            assert.ok(docMeta0!.docInfo.lastUpdated !== undefined);
+
+            delete docMeta0!.docInfo.lastUpdated;
 
             assert.equal(isPresent(docMeta0), true);
 
-            assertJSON(docMeta, docMeta0);
+            assertJSON(Dictionaries.sorted(docMeta), Dictionaries.sorted(docMeta0));
 
         });
 
 
-        it("getDocMetaFiles", async function () {
+        it("getDocMetaFiles", async function() {
 
-            let docMetaFiles = await diskDatastore.getDocMetaFiles();
+            const docMetaFiles = await diskDatastore.getDocMetaFiles();
 
             assert.equal(docMetaFiles.length > 0, true);
 
-            assert.equal(docMetaFiles.map(current => current.fingerprint).includes(fingerprint), true);
+            assert.equal(docMetaFiles.map((current) => current.fingerprint).includes(fingerprint), true);
 
         });
 

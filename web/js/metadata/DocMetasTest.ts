@@ -15,29 +15,29 @@ describe('DocMetas', function() {
 
     describe('JSON', function() {
 
-        it("Test basic JSON encoding and decoding", function () {
+        it("Test basic JSON encoding and decoding", function() {
 
-            let fingerprint = "0x001";
+            const fingerprint = "0x001";
 
-            let docMeta = DocMetas.createWithinInitialPagemarks(fingerprint, 14);
-            DocMetas.addPagemarks(docMeta, {nrPages: 1, offsetPage: 4, percentage: 50})
+            const docMeta = DocMetas.createWithinInitialPagemarks(fingerprint, 14);
+            DocMetas.addPagemarks(docMeta, {nrPages: 1, offsetPage: 4, percentage: 50});
 
-            let json = MetadataSerializer.serialize(docMeta, "  ");
+            const json = MetadataSerializer.serialize(docMeta, "  ");
 
-            let actual = DocMetas.deserialize(json);
+            const actual = DocMetas.deserialize(json);
 
             assertJSON(docMeta, actual);
 
-            assert.equal(actual instanceof DocMeta, true)
+            assert.equal(actual instanceof DocMeta, true);
 
 
         });
 
-        it("Test with default values for serialized data", function () {
+        it("Test with default values for serialized data", function() {
 
-            let json = "{}";
+            const json = "{}";
 
-            let docMeta = DocMetas.deserialize(json);
+            const docMeta = DocMetas.deserialize(json);
 
             assert.equal(docMeta instanceof DocMeta, true);
 
@@ -49,16 +49,16 @@ describe('DocMetas', function() {
 
     describe('Deserialize', function() {
 
-        it("Test Deserializing and then updating some pagemarks", function () {
+        it("Test Deserializing and then updating some pagemarks", function() {
 
-            let fingerprint = "0x001";
+            const fingerprint = "0x001";
 
-            let nrPages = 2;
+            const nrPages = 2;
             let docMeta = DocMetas.createWithinInitialPagemarks(fingerprint, nrPages);
 
-            let json = DocMetas.serialize(docMeta, "  ");
+            const json = DocMetas.serialize(docMeta, "  ");
 
-            let expected = {
+            const expected = {
                     "annotationInfo": {},
                     "version": 1,
                     "attachments": {},
@@ -69,7 +69,8 @@ describe('DocMetas', function() {
                         "archived": false,
                         "flagged": false,
                         "nrPages": 2,
-                        "fingerprint": "0x001"
+                        "fingerprint": "0x001",
+                        "added": "2012-03-02T11:38:49.321Z"
                     },
                     "pageMetas": {
                         "1": {
@@ -148,11 +149,11 @@ describe('DocMetas', function() {
 
             assertJSON(docMeta, expected);
 
-            let pageMeta = docMeta.getPageMeta(1);
+            const pageMeta = docMeta.getPageMeta(1);
 
-            (<any>pageMeta).pagemarks = {};
+            (pageMeta as any).pagemarks = {};
 
-            assert.deepEqual(docMeta.getPageMeta(1).pagemarks, {})
+            assert.deepEqual(docMeta.getPageMeta(1).pagemarks, {});
 
         });
 
@@ -161,31 +162,31 @@ describe('DocMetas', function() {
 
     describe('Upgrade', function() {
 
-        describe("Test upgrading the metadata if it is missing fields.", function () {
+        describe("Test upgrading the metadata if it is missing fields.", function() {
 
-            it("No DocInfo.pagemarkType", function () {
+            it("No DocInfo.pagemarkType", function() {
 
                 let docMeta = createUpgradeDoc();
 
                 assert.notEqual(docMeta.docInfo, null);
-                delete (<any>docMeta.getPageMeta(1)).textHighlights;
+                delete (docMeta.getPageMeta(1) as any).textHighlights;
 
                 delete docMeta.docInfo.pagemarkType;
 
-                docMeta = DocMetas.upgrade(docMeta)
+                docMeta = DocMetas.upgrade(docMeta);
 
                 assert.deepEqual(docMeta.docInfo.pagemarkType, PagemarkType.SINGLE_COLUMN);
 
             });
 
-            it("Pagemark without rect", function () {
+            it("Pagemark without rect", function() {
                 let docMeta = createUpgradeDoc();
 
                 delete docMeta.getPageMeta(1).pagemarks["12Vf1bAzeo"].rect ;
 
                 docMeta = DocMetas.upgrade(docMeta);
 
-                let expected = {
+                const expected = {
                         "12Vf1bAzeo": {
                             "id": "12Vf1bAzeo",
                             "created": "2012-03-02T11:38:49.321Z",
@@ -208,31 +209,31 @@ describe('DocMetas', function() {
 
             });
 
-            it("No text highlights", function () {
+            it("No text highlights", function() {
 
                 let docMeta = createUpgradeDoc();
 
-                delete (<any>docMeta.getPageMeta(1)).textHighlights;
+                delete (docMeta.getPageMeta(1) as any).textHighlights;
 
-                docMeta = DocMetas.upgrade(docMeta)
+                docMeta = DocMetas.upgrade(docMeta);
 
                 assert.deepEqual(docMeta.getPageMeta(1).textHighlights, {});
 
             });
 
-            it("No pagemarks", function () {
+            it("No pagemarks", function() {
 
                 let docMeta = createUpgradeDoc();
 
-                delete (<any>docMeta.getPageMeta(1)).pagemarks;
+                delete (docMeta.getPageMeta(1) as any).pagemarks;
 
-                docMeta = DocMetas.upgrade(docMeta)
+                docMeta = DocMetas.upgrade(docMeta);
 
                 assert.deepEqual(docMeta.getPageMeta(1).pagemarks, {});
 
             });
 
-            it("No id on pagemarks", function () {
+            it("No id on pagemarks", function() {
 
                 let docMeta = createUpgradeDoc();
 
@@ -240,7 +241,7 @@ describe('DocMetas', function() {
 
                 docMeta = DocMetas.upgrade(docMeta);
 
-                let expected = {
+                const expected = {
                         "12Vf1bAzeo": {
                             "id": "12Vf1bAzeo",
                             "created": "2012-03-02T11:38:49.321Z",
@@ -265,15 +266,15 @@ describe('DocMetas', function() {
 
             });
 
-            it("No id on text highlights", function () {
+            it("No id on text highlights", function() {
 
                 let docMeta = createUpgradeDoc();
 
                 delete docMeta.getPageMeta(1).textHighlights["12pNUv1Y9S"].id;
 
-                docMeta = DocMetas.upgrade(docMeta)
+                docMeta = DocMetas.upgrade(docMeta);
 
-                let expected = {
+                const expected = {
                     "12pNUv1Y9S": {
                         "guid": "12pNUv1Y9S",
                         "created": "2012-03-02T11:38:49.321Z",
@@ -317,11 +318,11 @@ describe('DocMetas', function() {
 
 function createUpgradeDoc() {
 
-    let fingerprint = "0x001";
-    let nrPages = 1;
-    let docMeta = DocMetas.createWithinInitialPagemarks(fingerprint, nrPages);
+    const fingerprint = "0x001";
+    const nrPages = 1;
+    const docMeta = DocMetas.createWithinInitialPagemarks(fingerprint, nrPages);
 
-    let textHighlight = TextHighlights.createMockTextHighlight();
+    const textHighlight = TextHighlights.createMockTextHighlight();
 
     docMeta.getPageMeta(1).textHighlights[textHighlight.id] = textHighlight;
 

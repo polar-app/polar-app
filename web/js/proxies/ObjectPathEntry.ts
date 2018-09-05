@@ -32,10 +32,10 @@ export class ObjectPathEntry {
 
     constructor(path: string, value: any, parent: any, parentKey: string | null) {
 
-        this.path = path;
-        this.value = value;
         this.parent = parent;
         this.parentKey = parentKey;
+        this.path = path;
+        this.value = value;
 
     }
 

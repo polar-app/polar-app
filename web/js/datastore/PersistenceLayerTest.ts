@@ -1,4 +1,4 @@
-import assert from 'assert';
+import {assert} from 'chai';
 import {MockDocMetas} from '../metadata/DocMetas';
 import {MemoryDatastore} from './MemoryDatastore';
 import {PersistenceLayer} from './PersistenceLayer';
@@ -7,54 +7,66 @@ import {TestingTime} from '../test/TestingTime';
 
 describe('PersistenceLayer', function() {
 
-    it("verify that lastUpdated was written", async function () {
+    const fingerprint = '0x0001';
 
-        let memoryDatastore = new MemoryDatastore();
-        let persistenceLayer = new PersistenceLayer(memoryDatastore);
+    it("verify that lastUpdated was written", async function() {
 
-        let docMeta = MockDocMetas.createWithinInitialPagemarks('0x0001', 1);
+        const memoryDatastore = new MemoryDatastore();
+        const persistenceLayer = new PersistenceLayer(memoryDatastore);
+
+        const docMeta = MockDocMetas.createWithinInitialPagemarks(fingerprint, 1);
 
         assert.ok(docMeta.docInfo.lastUpdated === undefined);
-        assert.ok(docMeta.docInfo.added === undefined);
 
         await persistenceLayer.syncDocMeta(docMeta);
 
-        assert.ok(docMeta.docInfo.lastUpdated !== undefined);
+        // verify that the original object was not mutated
+        assert.ok(docMeta.docInfo.lastUpdated === undefined);
 
-        let current = docMeta.docInfo.lastUpdated!;
+        const writtenDocMeta1 = await persistenceLayer.getDocMeta(fingerprint);
+
+        assert.ok(writtenDocMeta1 !== undefined);
+
+        const current = writtenDocMeta1!.docInfo.lastUpdated!;
 
         TestingTime.forward(1000);
 
         await persistenceLayer.syncDocMeta(docMeta);
 
-        let now = docMeta.docInfo.lastUpdated!;
+        const writtenDocMeta2 = await persistenceLayer.getDocMeta(fingerprint);
+
+        assert.ok(writtenDocMeta2 !== undefined);
+
+        const now = writtenDocMeta2!.docInfo.lastUpdated!;
 
         assert.ok(current.toString() !== now.toString());
 
-
     });
 
-
-    it("verify that added was written", async function () {
+    it("verify that added was written", async function() {
 
         TestingTime.freeze();
 
-        let memoryDatastore = new MemoryDatastore();
-        let persistenceLayer = new PersistenceLayer(memoryDatastore);
+        const memoryDatastore = new MemoryDatastore();
+        const persistenceLayer = new PersistenceLayer(memoryDatastore);
 
-        let docMeta = MockDocMetas.createWithinInitialPagemarks('0x0001', 1);
+        const docMeta = MockDocMetas.createWithinInitialPagemarks(fingerprint, 1);
 
-        assert.ok(docMeta.docInfo.added === undefined);
         await persistenceLayer.syncDocMeta(docMeta);
-        assert.ok(docMeta.docInfo.added !== undefined);
 
-        let current = docMeta.docInfo.added!;
+        const writtenDocMeta1 = await persistenceLayer.getDocMeta(fingerprint);
+
+        assert.ok(writtenDocMeta1!.docInfo.added !== undefined);
+
+        const current = writtenDocMeta1!.docInfo.added!;
 
         TestingTime.forward(1000);
 
         await persistenceLayer.syncDocMeta(docMeta);
 
-        let now = docMeta.docInfo.added!;
+        const writtenDocMeta2 = await persistenceLayer.getDocMeta(fingerprint);
+
+        const now = writtenDocMeta2!.docInfo.added!;
 
         assert.ok(current.toString() === now.toString());
 
