@@ -1,5 +1,5 @@
 import {Datastore} from './Datastore';
-import {Preconditions} from '../Preconditions';
+import {isPresent, Preconditions} from '../Preconditions';
 import {Logger} from '../logger/Logger';
 import {DocMetaRef} from './DocMetaRef';
 import {Files} from '../util/Files';
@@ -129,9 +129,7 @@ export class DiskDatastore implements Datastore {
 
         log.info(`Writing data to state file: ${statePath}`);
 
-        // FIXME: is this UTF-8 ??
-
-        return await Files.writeFileAsync(statePath, data);
+        return await Files.writeFileAsync(statePath, data, {encoding: 'utf8'});
 
     }
 
@@ -179,8 +177,17 @@ export class DiskDatastore implements Datastore {
         return result;
     }
 
-    static getDataDir() {
-        return FilePaths.join(DiskDatastore.getUserHome()!, ".polar");
+    static getDataDir(): string {
+
+        let dataDirs: (string | undefined | null)[] = [
+            process.env['POLAR_DATA_DIR'],
+            FilePaths.join(DiskDatastore.getUserHome(), ".polar")
+        ];
+
+        dataDirs = dataDirs.filter(current => isPresent(current));
+
+        return dataDirs[0]!;
+
     }
 
 }

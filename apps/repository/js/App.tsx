@@ -1,5 +1,4 @@
 import * as React from 'react';
-import {DocDetail} from '../../../web/js/metadata/DocDetail';
 import ReactTable from "react-table";
 import {Footer, Tips} from './Utils';
 import {Logger} from '../../../web/js/logger/Logger';
@@ -7,7 +6,6 @@ import {PersistenceLayer} from '../../../web/js/datastore/PersistenceLayer';
 import {isPresent} from '../../../web/js/Preconditions';
 import {Optional} from '../../../web/js/util/ts/Optional';
 import {DocLoader} from '../../../web/js/apps/main/ipc/DocLoader';
-import {ISODateTime} from '../../../web/js/metadata/ISODateTime';
 import {Datastores} from '../../../web/js/datastore/Datastores';
 import {Datastore} from '../../../web/js/datastore/Datastore';
 import {Progress} from '../../../web/js/util/Progress';
@@ -21,7 +19,7 @@ class App<P> extends React.Component<{}, IAppState> {
     private datastore?: Datastore;
     private persistenceLayer?: PersistenceLayer;
 
-    private docDetails: DocDetail[] = [];
+    private repoDocs: RepoDocInfo[] = [];
 
     constructor(props: P, context: any) {
         super(props, context);
@@ -33,9 +31,9 @@ class App<P> extends React.Component<{}, IAppState> {
         (async () => {
 
             await this.init();
-            this.docDetails = await this.load();
+            this.repoDocs = await this.load();
 
-            this.docDetails = this.docDetails.filter(current => {
+            this.repoDocs = this.repoDocs.filter(current => {
 
                 if(isPresent(current.filename)) {
                     return true;
@@ -47,7 +45,7 @@ class App<P> extends React.Component<{}, IAppState> {
 
             } );
 
-            this.state.data.push(...this.docDetails);
+            this.state.data.push(...this.repoDocs);
 
             this.setState(this.state);
 
@@ -69,9 +67,9 @@ class App<P> extends React.Component<{}, IAppState> {
 
     }
 
-    private async load(): Promise<DocDetail[]> {
+    private async load(): Promise<RepoDocInfo[]> {
 
-        let result: DocDetail[] = [];
+        let result: RepoDocInfo[] = [];
 
         let docMetaFiles = await this.datastore!.getDocMetaFiles();
 
@@ -82,9 +80,9 @@ class App<P> extends React.Component<{}, IAppState> {
         for (let i = 0; i < docMetaFiles.length; i++) {
             const docMetaFile = docMetaFiles[i];
 
-            let docDetail = await this.loadDocDetail(docMetaFile);
-            if(docDetail) {
-                result.push(docDetail)
+            let repoDocInfo = await this.loadDocMeta(docMetaFile);
+            if(repoDocInfo) {
+                result.push(repoDocInfo)
             }
 
             progress.incr();
@@ -98,41 +96,28 @@ class App<P> extends React.Component<{}, IAppState> {
 
     }
 
-    private async loadDocDetail(docMetaFile: DocMetaRef): Promise<DocDetail | undefined> {
+    private async loadDocMeta(docMetaFile: DocMetaRef): Promise<RepoDocInfo | undefined> {
 
         let docMeta = await this.persistenceLayer!.getDocMeta(docMetaFile.fingerprint);
 
         if(docMeta !== undefined) {
 
-            let title: string = 'Untitled';
-            let progress: number = 0;
-            let filename: string | undefined;
-            let added: ISODateTime | undefined;
-
             if (docMeta.docInfo) {
 
-                // TODO: consider using the filename if title absent.
-                title = Optional.of(docMeta.docInfo.title).getOrElse('Untitled');
-                progress = Optional.of(docMeta.docInfo.progress).getOrElse(0);
-                filename = Optional.of(docMeta.docInfo.filename).getOrUndefined();
-                added = Optional.of(docMeta.docInfo.added).getOrUndefined();
-
-                // added = Optional.of(docMeta.docInfo.added)
-                //     .map(value => new ISODateTime(value))
-                //     .getOrUndefined();
+                return {
+                    fingerprint: docMetaFile.fingerprint,
+                    title: Optional.of(docMeta.docInfo.title).getOrElse('Untitled'),
+                    progress: Optional.of(docMeta.docInfo.progress).getOrElse(0),
+                    filename: Optional.of(docMeta.docInfo.filename).getOrUndefined(),
+                    added: Optional.of(docMeta.docInfo.added).map(current => current.value).getOrUndefined(),
+                };
 
             } else {
                 log.warn("No docInfo for file: ", docMetaFile.fingerprint);
             }
 
-            return {
-                fingerprint: docMetaFile.fingerprint,
-                title,
-                progress,
-                filename,
-                added
-            }
-
+        } else {
+            log.warn("No DocMeta for fingerprint: " + docMetaFile.fingerprint);
         }
 
         return undefined;
@@ -151,11 +136,11 @@ class App<P> extends React.Component<{}, IAppState> {
 
         if(filterText === null || filterText === '') {
             // no filter
-            state.data.push(...this.docDetails);
+            state.data.push(...this.repoDocs);
         } else {
 
             let filteredDocDetails =
-                this.docDetails.filter(current => current.title && current.title.toLowerCase().indexOf(filterText!.toLowerCase()) >= 0 )
+                this.repoDocs.filter(current => current.title && current.title.toLowerCase().indexOf(filterText!.toLowerCase()) >= 0 )
 
             state.data.push(...filteredDocDetails);
 
@@ -303,14 +288,7 @@ interface IAppState {
 
     //docs: DocDetail[];
 
-    data: DocDetail[];
+    data: RepoDocInfo[];
     selected?: number;
 }
 
-/**
- * Just like a DocDetail but designed to be used for in the UI so we replace
- * missing titles with Untitled and define other default values.
- */
-interface RepoDocDetail extends DocDetail {
-
-}
