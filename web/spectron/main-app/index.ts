@@ -9,10 +9,16 @@ import {wait} from 'dom-testing-library';
 import {assert} from 'chai';
 import waitForExpect from 'wait-for-expect';
 import {Logger} from '../../js/logger/Logger';
+import process from "process";
+import {FilePaths} from '../../js/util/FilePaths';
+import {Files} from '../../js/util/Files';
 
 const log = Logger.create();
 
+
 async function createWindow(): Promise<BrowserWindow> {
+
+    await setupNewDataDir();
 
     const datastore: Datastore = new MemoryDatastore();
 
@@ -46,3 +52,31 @@ SpectronMain2.create({windowFactory: createWindow}).run(async state => {
     await state.testResultWriter.write(true);
 
 });
+
+async function setupNewDataDir() {
+
+    const ENV_POLAR_DATA_DIR = 'POLAR_DATA_DIR';
+
+    const dataDir = FilePaths.createTempName('.polar');
+    log.info("Using new dataDir: " + dataDir);
+
+    process.env[ENV_POLAR_DATA_DIR] = dataDir;
+
+    await Files.removeDirectoryRecursively(dataDir);
+    await Files.mkdirAsync(dataDir);
+
+    const stashDir = FilePaths.create(dataDir, 'stash');
+
+    log.info("Creating new dataDir: " + stashDir);
+
+    await Files.mkdirAsync(stashDir);
+
+    const filenames = ['example.pdf', 'example.phz'];
+
+    for (const filename of filenames) {
+
+        await Files.copyFileAsync(FilePaths.join(__dirname, 'files', filename),
+                                  FilePaths.join(stashDir, filename));
+    }
+
+}

@@ -26,10 +26,10 @@ export class FilePaths {
      * @param dirname
      * @param basename
      */
-    static create(dirname: string, basename: string) {
+    public static create(dirname: string, basename: string) {
         let result = this.join(dirname, basename);
 
-        if(result.endsWith(libpath.sep)) {
+        if (result.endsWith(libpath.sep)) {
             result = result.substring(0, result.length - 1);
         }
 
@@ -44,7 +44,7 @@ export class FilePaths {
      *
      * @param paths paths to join.
      */
-    static join(...paths: string[]): string {
+    public static join(...paths: string[]): string {
         return libpath.join(...paths);
     }
 
@@ -65,7 +65,7 @@ export class FilePaths {
      * @param pathSegments string paths to join.  Non-string arguments are
      *     ignored.
      */
-    static resolve(...pathSegments: string[]) {
+    public static resolve(...pathSegments: string[]) {
         return libpath.resolve(...pathSegments);
     }
 
@@ -79,19 +79,29 @@ export class FilePaths {
      * @param p the path to evaluate.
      * @param ext optionally, an extension to remove from the result.
      */
-    static basename(p: string, ext?: string) {
-        return libpath.basename(p, ext)
+    public static basename(p: string, ext?: string) {
+        return libpath.basename(p, ext);
     }
 
-    static dirname(path: string) {
+    public static dirname(path: string) {
         return libpath.dirname(path);
     }
 
-    static tmpdir() {
+    public static tmpdir() {
         return os.tmpdir();
     }
 
+    /**
+     * @deprecated use createTempName
+     */
     public static tmpfile(name: string) {
+        return this.join(os.tmpdir(), name);
+    }
+
+    /**
+     * Create a named path entry in /tmp
+     */
+    public static createTempName(name: string) {
         return this.join(os.tmpdir(), name);
     }
 

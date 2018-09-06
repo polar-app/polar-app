@@ -1,5 +1,8 @@
 import {app, BrowserWindow} from 'electron';
 import {MainTestResultWriter} from './results/writer/MainTestResultWriter';
+import {Logger} from '../logger/Logger';
+
+const log = Logger.create();
 
 const BROWSER_OPTIONS = {
     backgroundColor: '#FFF',
@@ -7,8 +10,8 @@ const BROWSER_OPTIONS = {
     // NOTE: the default width and height shouldn't be changed here as it can
     // break unit tests.
 
-    //width: 1000,
-    //height: 1000,
+    // width: 1000,
+    // height: 1000,
 
     webPreferences: {
         webSecurity: false,
@@ -31,34 +34,34 @@ export class SpectronMain2 {
     /**
      * Create a window using the current window constructor function.
      */
-    async createWindow(): Promise<BrowserWindow> {
+    public async createWindow(): Promise<BrowserWindow> {
         return await this.options.windowFactory();
     }
 
-    setup(): Promise<BrowserWindow> {
+    public setup(): Promise<BrowserWindow> {
 
         return new Promise(resolve => {
 
-            console.log("Electron app started. Waiting for it to be ready.");
+            log.info("Electron app started. Waiting for it to be ready.");
 
             app.on('ready', async () => {
 
-                console.log("Ready!  Creating main window!!");
+                log.info("Ready!  Creating main window!!");
 
-                let mainWindow = await this.options.windowFactory();
+                const mainWindow = await this.options.windowFactory();
 
-                console.log("Done.. resolving");
+                log.info("Done.. resolving");
                 resolve(mainWindow);
 
             });
 
-        })
+        });
 
     }
 
-    async start(callback: StateCallback): Promise<void> {
-        let window = await this.setup();
-        let testResultWriter = new MainTestResultWriter(window);
+    public async start(callback: StateCallback): Promise<void> {
+        const window = await this.setup();
+        const testResultWriter = new MainTestResultWriter(window);
 
         return callback(new SpectronMainState(this, window, testResultWriter));
 
@@ -67,20 +70,21 @@ export class SpectronMain2 {
     /**
      * Like start but not async and assume this is the entry point of your test
      * and just print error messages to the console.
-     **/
-    run(callback: StateCallback) {
-        this.start(callback).catch(err => console.log(err));
+     */
+    public run(callback: StateCallback) {
+        this.start(callback)
+            .catch(err => log.error("Could not run spectron:", err));
     }
 
-    static create(options: ISpectronMainOptions = new SpectronMainOptions().build()) {
+    public static create(options: ISpectronMainOptions = new SpectronMainOptions().build()) {
         return new SpectronMain2(options);
     }
 
 }
 
 async function defaultWindowFactory(): Promise<BrowserWindow> {
-    let mainWindow = new BrowserWindow(BROWSER_OPTIONS);
-    //mainWindow.webContents.toggleDevTools();
+    const mainWindow = new BrowserWindow(BROWSER_OPTIONS);
+    // mainWindow.webContents.toggleDevTools();
     mainWindow.loadURL('about:blank');
     return mainWindow;
 }
@@ -102,7 +106,7 @@ export class SpectronMainState {
     /**
      * Create a window with the same WindowFactory that SpectronMain is using.
      */
-    async createWindow() {
+    public async createWindow() {
         return this.spectronMain.createWindow();
     }
 
@@ -118,7 +122,7 @@ export class SpectronMainOptions implements ISpectronMainOptions {
      */
     public enableDevTools = false;
 
-    build(): Readonly<SpectronMainOptions> {
+    public build(): Readonly<SpectronMainOptions> {
         return Object.freeze(this);
     }
 
@@ -135,10 +139,6 @@ export interface ISpectronMainOptions {
     enableDevTools?: boolean;
 }
 
-export interface StateCallback {
-    (state: SpectronMainState): Promise<void>
-}
+export type StateCallback = (state: SpectronMainState) => Promise<void>;
 
-export interface WindowFactory {
-    (): Promise<BrowserWindow>;
-}
+export type WindowFactory = () => Promise<BrowserWindow>;

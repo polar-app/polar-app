@@ -5,6 +5,8 @@ import {Logger} from '../logger/Logger';
 
 const log = Logger.create();
 
+const rimraf = require('rimraf');
+
 export class Files {
 
     /**
@@ -37,7 +39,7 @@ export class Files {
 
     public static async createDirAsync(dir: string, mode?: number | string | undefined | null) {
 
-        let result: CreateDirResult = {
+        const result: CreateDirResult = {
             dir
         };
 
@@ -117,6 +119,24 @@ export class Files {
 
     public static async copyFileAsync(src: string, dest: string, flags?: number): Promise<void> {
         throw new Error("Not replaced via promisify");
+    }
+
+    public static async removeDirectoryRecursively(path: string) {
+
+        return new Promise((resolve, reject) => {
+
+            rimraf(path, (err: Error) => {
+
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve();
+                }
+
+            });
+
+        });
+
     }
 
 }
