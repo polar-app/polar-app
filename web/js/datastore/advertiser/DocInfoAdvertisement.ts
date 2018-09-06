@@ -6,3 +6,5 @@ export interface DocInfoAdvertisement {
 }
 
 export type AdvertisementType = 'created' | 'updated' | 'deleted';
+
+export type DocInfoAdvertisementListener = (docInfoAdvertisement: DocInfoAdvertisement) => void;

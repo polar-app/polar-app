@@ -9,33 +9,30 @@ export class Reactor<V> {
 
     private readonly events: {[name: string]: Event<V>} = {};
 
-    constructor() {
-    }
-
-    registerEvent(eventName: string): this {
+    public registerEvent(eventName: string): this {
 
         Preconditions.assertNotNull(eventName, "eventName");
 
-        if(this.events[eventName]) {
+        if (this.events[eventName]) {
             // already registered so don't double register which would kill
             // the existing listeners.
             return this;
         }
 
-        let event = new Event<V>(eventName);
+        const event = new Event<V>(eventName);
         this.events[eventName] = event;
 
         return this;
 
     }
 
-    eventNames(): string[] {
+    public eventNames(): string[] {
         return Object.keys(this.events);
     }
 
-    clearEvent(eventName: string) {
+    public clearEvent(eventName: string) {
         // replace it with a new event to clear the previous listeners.
-        let event = new Event<V>(eventName);
+        const event = new Event<V>(eventName);
         this.events[eventName] = event;
         return this;
     }
@@ -46,22 +43,22 @@ export class Reactor<V> {
      * @param value The event value to dispatch to listeners of that event name.
      * @return {Reactor}
      */
-    dispatchEvent(eventName: string, value: V){
+    public dispatchEvent(eventName: string, value: V) {
         Preconditions.assertNotNull(eventName, "eventName");
 
-        let event = this.events[eventName];
+        const event = this.events[eventName];
 
-        if(! event) {
+        if (! event) {
             throw new Error("No events for event name: " + eventName);
         }
 
-        event.getCallbacks().forEach(function(callback){
+        event.getCallbacks().forEach(function(callback) {
 
             try {
 
                 callback(value);
 
-            } catch(e) {
+            } catch (e) {
                 log.error("Callback generated unhandled exception: ", e);
             }
 
@@ -78,14 +75,14 @@ export class Reactor<V> {
      * @param callback {function}
      * @return {Reactor}
      */
-    addEventListener(eventName: string, callback: Listener<V>){
+    public addEventListener(eventName: string, callback: Listener<V>) {
         Preconditions.assertNotNull(eventName, "eventName");
 
-        if(typeof callback !== "function") {
+        if (typeof callback !== "function") {
             throw new Error("Callback is not a function: " + typeof callback);
         }
 
-        if(this.events[eventName] === undefined) {
+        if (this.events[eventName] === undefined) {
             throw new Error("No registered event for event name: " + eventName);
         }
 
@@ -98,7 +95,7 @@ export class Reactor<V> {
      * @param eventName {String} The name of the event for the listeners.
      * @return {Array}
      */
-    getEventListeners(eventName: string){
+    public getEventListeners(eventName: string) {
         Preconditions.assertNotNull(eventName, "eventName");
 
         return this.events[eventName].getCallbacks();

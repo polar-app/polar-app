@@ -1,10 +1,11 @@
 import {IListenablePersistenceLayer, IPersistenceLayer, PersistenceLayerEvent, PersistenceLayerListener} from '../PersistenceLayer';
 import {DocMetaFileRef, DocMetaRef} from '../DocMetaRef';
 import {DocMeta} from '../../metadata/DocMeta';
-import {AdvertisementType, DocInfoAdvertisement} from './DocInfoAdvertisement';
+import {AdvertisementType} from './DocInfoAdvertisement';
 import {DocInfoAdvertiser} from './DocInfoAdvertiser';
-import {Reactor} from '../../reactor/Reactor';
 import {DeleteResult} from '../DiskDatastore';
+import {DocInfoAdvertisementListenerService} from './DocInfoAdvertisementListenerService';
+import {SimpleReactor} from '../../reactor/SimpleReactor';
 
 export class AdvertisingPersistenceLayer implements IListenablePersistenceLayer {
 
@@ -19,7 +20,9 @@ export class AdvertisingPersistenceLayer implements IListenablePersistenceLayer 
      */
     private readonly persistenceLayer: IPersistenceLayer;
 
-    private readonly reactor = new Reactor<PersistenceLayerEvent>();
+    private readonly reactor = new SimpleReactor<PersistenceLayerEvent>();
+
+    private readonly docInfoAdvertisementListenerService = new DocInfoAdvertisementListenerService();
 
     constructor(worker: Worker, persistenceLayer: IPersistenceLayer) {
         this.worker = worker;
@@ -49,7 +52,23 @@ export class AdvertisingPersistenceLayer implements IListenablePersistenceLayer 
     }
 
     public async init(): Promise<void> {
+
+        this.docInfoAdvertisementListenerService.addEventListener((docInfoAdvertisement) => {
+            this.reactor.dispatchEvent({
+
+                docMetaRef: <DocMetaRef> {
+                    fingerprint: docInfoAdvertisement.docInfo.fingerprint,
+                    filename: docInfoAdvertisement.docInfo.filename,
+                    docInfo: docInfoAdvertisement.docInfo
+                },
+                docInfo: docInfoAdvertisement.docInfo,
+                eventType: docInfoAdvertisement.advertisementType
+            });
+        });
+
+        this.docInfoAdvertisementListenerService.start();
         return this.persistenceLayer.init();
+
     }
 
     public async syncDocMeta(docMeta: DocMeta): Promise<void> {
@@ -75,7 +94,7 @@ export class AdvertisingPersistenceLayer implements IListenablePersistenceLayer 
     }
 
     public addEventListener(listener: PersistenceLayerListener): void {
-        this.reactor.addEventListener('event', listener);
+        this.reactor.addEventListener(listener);
     }
 
 }

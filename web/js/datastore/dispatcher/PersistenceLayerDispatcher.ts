@@ -1,5 +1,5 @@
 import {DocMeta} from '../../metadata/DocMeta';
-import {IPersistenceLayer, PersistenceLayer} from '../PersistenceLayer';
+import {IPersistenceLayer} from '../PersistenceLayer';
 import {IPCMessage} from '../../ipc/handler/IPCMessage';
 import {DocMetaSync} from './DocMetaSync';
 import {MetadataSerializer} from '../../metadata/MetadataSerializer';
