@@ -48,7 +48,11 @@ SpectronMain2.create({windowFactory: createWindow}).run(async state => {
 
     });
 
+    await mainAppController!.handleLoadDoc(polarDir!.files[0]);
+
     await mainAppController!.handleLoadDoc(polarDir!.files[1]);
+
+    // TODO: now make sure their metadata appears in the repo
 
     // TODO: make sure the flashcard app is ready and running in the background
 

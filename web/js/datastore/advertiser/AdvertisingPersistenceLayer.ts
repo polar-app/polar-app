@@ -1,15 +1,12 @@
-import {DocMeta} from '../../metadata/DocMeta';
-import {IPersistenceLayer, PersistenceLayer} from '../PersistenceLayer';
-import {IPCMessage} from '../../ipc/handler/IPCMessage';
-import {DocMetaSync} from './DocMetaSync';
-import {MetadataSerializer} from '../../metadata/MetadataSerializer';
-import {Logger} from '../../logger/Logger';
+import {IListenablePersistenceLayer, IPersistenceLayer, PersistenceLayerEvent, PersistenceLayerListener} from '../PersistenceLayer';
 import {DocMetaFileRef, DocMetaRef} from '../DocMetaRef';
+import {DocMeta} from '../../metadata/DocMeta';
+import {AdvertisementType, DocInfoAdvertisement} from './DocInfoAdvertisement';
+import {DocInfoAdvertiser} from './DocInfoAdvertiser';
+import {Reactor} from '../../reactor/Reactor';
 import {DeleteResult} from '../DiskDatastore';
 
-const log = Logger.create();
-
-export class PersistenceLayerDispatcher implements IPersistenceLayerDispatcher, IPersistenceLayer {
+export class AdvertisingPersistenceLayer implements IListenablePersistenceLayer {
 
     public readonly stashDir: string;
 
@@ -21,6 +18,8 @@ export class PersistenceLayerDispatcher implements IPersistenceLayerDispatcher, 
      * A PersistenceLayer for the non-dispatched methods (for now).
      */
     private readonly persistenceLayer: IPersistenceLayer;
+
+    private readonly reactor = new Reactor<PersistenceLayerEvent>();
 
     constructor(worker: Worker, persistenceLayer: IPersistenceLayer) {
         this.worker = worker;
@@ -38,7 +37,11 @@ export class PersistenceLayerDispatcher implements IPersistenceLayerDispatcher, 
     }
 
     public delete(docMetaFileRef: DocMetaFileRef): Promise<DeleteResult> {
-        return this.persistenceLayer.delete(docMetaFileRef);
+        const result = this.persistenceLayer.delete(docMetaFileRef);
+
+        DocInfoAdvertiser.send({docInfo: docMetaFileRef.docInfo, advertisementType: 'deleted'});
+
+        return result;
     }
 
     public async getDocMeta(fingerprint: string): Promise<DocMeta | undefined> {
@@ -55,29 +58,24 @@ export class PersistenceLayerDispatcher implements IPersistenceLayerDispatcher, 
 
     public async sync(fingerprint: string, docMeta: DocMeta) {
 
-        log.info("Dispatching sync!");
+        const result = this.persistenceLayer.sync(fingerprint, docMeta);
 
-        // these have to be deserialized and then re-serialized because they
-        // have methods. Consider moving to IDocMeta and us interfaced everywhere
-        // in our code so that we don't have to serialized and de-serialize
-        // like this.  It's just a waste of CPU otherwise.
+        let advertisementType: AdvertisementType;
 
-        let safeDocMeta: DocMeta = Object.create(DocMeta.prototype);
+        if (this.contains(fingerprint)) {
+            advertisementType = 'updated';
+        } else {
+            advertisementType = 'created';
+        }
 
-        safeDocMeta = MetadataSerializer.deserialize(safeDocMeta, MetadataSerializer.serialize(docMeta));
+        DocInfoAdvertiser.send({docInfo: docMeta.docInfo, advertisementType});
 
-        const ipcMessage = new IPCMessage('sync', <DocMetaSync> {
-            fingerprint, docMeta: safeDocMeta
-        });
-
-        this.worker.postMessage(ipcMessage);
+        return result;
 
     }
 
-}
-
-
-// noinspection TsLint:no-empty-interface
-export interface IPersistenceLayerDispatcher {
+    public addEventListener(listener: PersistenceLayerListener): void {
+        this.reactor.addEventListener('event', listener);
+    }
 
 }

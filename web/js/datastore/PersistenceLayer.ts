@@ -6,7 +6,9 @@ import {ISODateTimes} from '../metadata/ISODateTimes';
 import {Logger} from '../logger/Logger';
 import {ISODateTime} from '../metadata/ISODateTime';
 import {Dictionaries} from '../util/Dictionaries';
-import {DocMetaRef} from './DocMetaRef';
+import {DocMetaFileRef, DocMetaRef} from './DocMetaRef';
+import {DeleteResult} from './DiskDatastore';
+import {DocInfo} from '../metadata/DocInfo';
 
 const log = Logger.create();
 
@@ -30,12 +32,16 @@ export class PersistenceLayer implements IPersistenceLayer {
         this.logsDir = this.datastore.logsDir;
     }
 
-    async init() {
+    public async init() {
         await this.datastore.init();
     }
 
     public contains(fingerprint: string): Promise<boolean> {
         return this.datastore.contains(fingerprint);
+    }
+
+    public delete(docMetaFileRef: DocMetaFileRef): Promise<DeleteResult> {
+        return this.datastore.delete(docMetaFileRef);
     }
 
     /**
@@ -44,13 +50,13 @@ export class PersistenceLayer implements IPersistenceLayer {
      */
     public async getDocMeta(fingerprint: string): Promise<DocMeta | undefined> {
 
-        let data = await this.datastore.getDocMeta(fingerprint);
+        const data = await this.datastore.getDocMeta(fingerprint);
 
-        if(!isPresent(data)) {
+        if (!isPresent(data)) {
             return undefined;
         }
 
-        if(! (typeof data === "string")) {
+        if (! (typeof data === "string")) {
             throw new Error("Expected string and received: " + typeof data);
         }
 
@@ -72,10 +78,10 @@ export class PersistenceLayer implements IPersistenceLayer {
         Preconditions.assertNotNull(fingerprint, "fingerprint");
         Preconditions.assertNotNull(docMeta, "docMeta");
 
-        if(! (docMeta instanceof DocMeta)) {
-            throw new Error("Can not sync anything other than DocMeta.")
+        if (! (docMeta instanceof DocMeta)) {
+            // check to make sure nothing from JS-land can call this incorrectly.
+            throw new Error("Can not sync anything other than DocMeta.");
         }
-
 
         // create a copy of docMeta so we can mutate it without the risk of
         // firing event listeners via proxies and then we can update the
@@ -87,7 +93,7 @@ export class PersistenceLayer implements IPersistenceLayer {
         // now update the lastUpdated times before we commit to disk.
         docMeta.docInfo.lastUpdated = ISODateTimes.create();
 
-        if(docMeta.docInfo.added === undefined) {
+        if (docMeta.docInfo.added === undefined) {
             docMeta.docInfo.added = new ISODateTime(new Date());
         }
 
@@ -96,13 +102,13 @@ export class PersistenceLayer implements IPersistenceLayer {
         // NOTE that we always write the state with JSON pretty printing.
         // Otherwise tools like git diff , etc will be impossible to deal with
         // in practice.
-        let data = DocMetas.serialize(docMeta, "  ");
+        const data = DocMetas.serialize(docMeta, "  ");
 
         await this.datastore.sync(fingerprint, data);
 
     }
 
-    getDocMetaFiles(): Promise<DocMetaRef[]> {
+    public getDocMetaFiles(): Promise<DocMetaRef[]> {
         return this.datastore.getDocMetaFiles();
     }
 
@@ -122,6 +128,13 @@ export interface IPersistenceLayer {
      */
     contains(fingerprint: string): Promise<boolean>;
 
+    /**
+     * Delete a file from PersistenceLayer.
+     *
+     * @param docMetaFileRef The file to delete.
+     */
+    delete(docMetaFileRef: DocMetaFileRef): Promise<DeleteResult>;
+
     getDocMeta(fingerprint: string): Promise<DocMeta | undefined>;
 
     syncDocMeta(docMeta: DocMeta): Promise<void>;
@@ -131,3 +144,22 @@ export interface IPersistenceLayer {
     getDocMetaFiles(): Promise<DocMetaRef[]>;
 
 }
+
+/**
+ * Persistence layer that allows us to listen to changes in the backing store
+ * including deletes, updates, and creates of DocMeta and provides details about
+ * which files have been updated and their DocInfo.
+ */
+export interface IListenablePersistenceLayer extends IPersistenceLayer {
+    addEventListener(listener: PersistenceLayerListener): void;
+}
+
+export type PersistenceLayerListener = (event: PersistenceLayerEvent) => void;
+
+export interface PersistenceLayerEvent {
+    docInfo: DocInfo;
+    docMetaRef: DocMetaRef;
+    eventType: PersistenceEventType;
+}
+
+export type PersistenceEventType = 'created' | 'updated' | 'deleted';

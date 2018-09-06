@@ -17,20 +17,21 @@ export class Broadcaster {
 
     /**
      *
-     * @param channel The channel of the event we're listening to and going to broadcast.
+     * @param inputChannel The channel of the event we're listening to for new message
+     * @param outputChannel The channel to re-send the event on to other renderer processes.
      */
-    constructor(channel: string) {
+    constructor(inputChannel: string, outputChannel: string = inputChannel) {
 
-        this.channel = channel;
+        this.channel = inputChannel;
 
-        ipcMain.on(channel, (event: Electron.Event, arg: any) => {
+        ipcMain.on(inputChannel, (event: Electron.Event, arg: any) => {
 
-            log.info("Forwarding message: " , channel, event);
+            log.info("Forwarding message: " , inputChannel, event);
 
             const senderBrowserWindowReference
                 = new BrowserWindowReference(BrowserWindow.fromWebContents(event.sender).id);
 
-            Broadcasters.send(channel, arg, senderBrowserWindowReference);
+            Broadcasters.send(outputChannel, arg, senderBrowserWindowReference);
 
         });
 

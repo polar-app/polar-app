@@ -1,5 +1,6 @@
 ---
 extends: "tslint:recommended"
+#defaultSeverity: warn
 rulesDirectory:
 #- path/to/custom/rules/directory/
 #- another/path/

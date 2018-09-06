@@ -1,20 +1,20 @@
-import undefinedError = Mocha.utils.undefinedError;
+
 
 export class Optional<T> {
-
-    private readonly value: T | null | undefined = undefined;
-
-    /**
-     * An name for this Optional which can be used when generating errors.
-     */
-    public readonly name?: string = undefined;
 
     constructor(value: T | undefined | null, name?: string) {
         this.value = value;
         this.name = name;
     }
 
-    map<V>(mapFunction: MapFunction<NonNullable<T>, V>): Optional<V> {
+    /**
+     * An name for this Optional which can be used when generating errors.
+     */
+    public readonly name?: string = undefined;
+
+    private readonly value: T | null | undefined = undefined;
+
+    public map<V>(mapFunction: MapFunction<NonNullable<T>, V>): Optional<V> {
 
         if (this.isPresent()) {
             return new Optional(mapFunction(this.value!), this.name);
@@ -24,7 +24,7 @@ export class Optional<T> {
 
     }
 
-    when(consumeFunction: ConsumeFunction<NonNullable<T>>) {
+    public when(consumeFunction: ConsumeFunction<NonNullable<T>>) {
 
         if (this.isPresent()) {
             consumeFunction(this.value!);
@@ -32,7 +32,7 @@ export class Optional<T> {
 
     }
 
-    filter(filterFunction: FilterFunction<NonNullable<T>>): Optional<T> {
+    public filter(filterFunction: FilterFunction<NonNullable<T>>): Optional<T> {
 
         if (this.isPresent() && filterFunction(this.value!)) {
             return new Optional(this.value);
@@ -42,9 +42,9 @@ export class Optional<T> {
 
     }
 
-    get(): NonNullable<T> {
+    public get(): NonNullable<T> {
 
-        if(this.isPresent()) {
+        if (this.isPresent()) {
             return this.value!;
         } else {
             throw new Error("The value is undefined");
@@ -52,7 +52,7 @@ export class Optional<T> {
 
     }
 
-    getOrElse(value: NonNullable<T>): NonNullable<T> {
+    public getOrElse(value: NonNullable<T>): NonNullable<T> {
 
         if (this.isPresent()) {
             return this.value!;
@@ -64,24 +64,24 @@ export class Optional<T> {
     /**
      * Get the value or return undefined if it is absent.
      */
-    getOrUndefined(): T | undefined {
+    public getOrUndefined(): T | undefined {
 
-        if(this.value === null) {
+        if (this.value === null) {
             return undefined;
         }
 
         return this.value;
     }
 
-    isPresent(): boolean {
+    public isPresent(): boolean {
         return this.value !== undefined && this.value !== null;
     }
 
-    static of<T>(value: T | null | undefined, name?: string): Optional<T> {
+    public static of<T>(value: T | null | undefined, name?: string): Optional<T> {
         return new Optional<T>(value, name);
     }
 
-    static empty<T>(): Optional<T> {
+    public static empty<T>(): Optional<T> {
         return new Optional<T>(undefined);
     }
 
@@ -89,7 +89,7 @@ export class Optional<T> {
      * Return true if the given object is present.
      *
      */
-    static present(obj?: any) {
+    public static present(obj?: any) {
         return obj !== undefined && obj !== null;
     }
 
@@ -98,14 +98,8 @@ export class Optional<T> {
 /**
  * Just consume a value with no need to return any result.
  */
-export interface ConsumeFunction<T> {
-    (value: T): void;
-}
+export type ConsumeFunction<T> = (value: T) => void;
 
-export interface MapFunction<T, V> {
-    (value: T): V;
-}
+export type MapFunction<T, V> = (value: T) => V;
 
-export interface FilterFunction<T> {
-    (value: T): boolean;
-}
+export type FilterFunction<T> = (value: T) => boolean;

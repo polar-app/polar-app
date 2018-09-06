@@ -3,10 +3,12 @@
  */
 import {Datastore} from './Datastore';
 import {Preconditions} from '../Preconditions';
-import {DocMetaRef} from './DocMetaRef';
+import {DocMetaFileRef, DocMetaRef} from './DocMetaRef';
 import {FilePaths} from '../util/FilePaths';
 import {Directories} from './Directories';
 import {Logger} from '../logger/Logger';
+import {DeleteResult} from './DiskDatastore';
+import {FileDeleted} from '../util/Files';
 
 const log = Logger.create();
 
@@ -39,6 +41,28 @@ export class MemoryDatastore implements Datastore {
 
     public async contains(fingerprint: string): Promise<boolean> {
         return fingerprint in this.docMetas;
+    }
+
+    public async delete(docMetaFileRef: DocMetaFileRef): Promise<Readonly<DeleteResult>> {
+
+        const result: any = {
+            docMetaFile: {
+                path: `/${docMetaFileRef.fingerprint}.json`,
+                deleted: false
+            },
+            dataFile: {
+                path: `/${docMetaFileRef.filename}`,
+                deleted: false
+            }
+        };
+
+        if (await this.contains(docMetaFileRef.fingerprint)) {
+            result.docMetaFile.deleted = true;
+            result.dataFile.deleted = true;
+        }
+
+        return result;
+
     }
 
     /**

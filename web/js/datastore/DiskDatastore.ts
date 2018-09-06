@@ -1,8 +1,8 @@
 import {Datastore} from './Datastore';
-import {isPresent, Preconditions} from '../Preconditions';
+import {Preconditions} from '../Preconditions';
 import {Logger} from '../logger/Logger';
-import {DocMetaRef} from './DocMetaRef';
-import {Files} from '../util/Files';
+import {DocMetaFileRef, DocMetaRef} from './DocMetaRef';
+import {FileDeleted, Files} from '../util/Files';
 import {FilePaths} from '../util/FilePaths';
 import fs from 'fs';
 import os from 'os';
@@ -41,7 +41,8 @@ export class DiskDatastore implements Datastore {
     }
 
     /**
-     * Return true if the DiskDatastore contains a document for the given fingerprint
+     * Return true if the DiskDatastore contains a document for the given
+     * fingerprint
      */
     public async contains(fingerprint: string): Promise<boolean> {
 
@@ -54,6 +55,22 @@ export class DiskDatastore implements Datastore {
         const statePath = FilePaths.join(docDir, 'state.json');
 
         return await Files.existsAsync(statePath);
+
+    }
+
+    /**
+     * Delete the DocMeta file and the underlying doc from the stash.
+     *
+     */
+    public async delete(docMetaFileRef: DocMetaFileRef): Promise<Readonly<DeleteResult>> {
+
+        const docDir = FilePaths.join(this.dataDir, docMetaFileRef.fingerprint);
+        const statePath = FilePaths.join(docDir, 'state.json');
+
+        return {
+            docMetaFile: await Files.deleteAsync(statePath),
+            dataFile: await Files.deleteAsync(docMetaFileRef.filename)
+        };
 
     }
 
@@ -78,7 +95,7 @@ export class DiskDatastore implements Datastore {
             return null;
         }
 
-        // noinspection TsLint
+        // noinspection TsLint:no-bitwise
         const canAccess =
             await Files.accessAsync(statePath, fs.constants.R_OK | fs.constants.W_OK)
                       .then(() => true)
@@ -197,5 +214,13 @@ export interface DataDirConfig {
      * How the data dir was configured.
      */
     strategy: 'env' | 'home' | 'manual';
+
+}
+
+export interface DeleteResult {
+
+    docMetaFile: Readonly<FileDeleted>;
+
+    dataFile: Readonly<FileDeleted>;
 
 }

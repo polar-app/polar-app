@@ -1,5 +1,6 @@
 // A datastore that supports ledgers and checkpoints.
-import {DocMetaRef} from './DocMetaRef';
+import {DocMetaFileRef, DocMetaRef} from './DocMetaRef';
+import {DeleteResult} from './DiskDatastore';
 
 export interface Datastore {
 
@@ -18,10 +19,11 @@ export interface Datastore {
      */
     contains(fingerprint: string): Promise<boolean>;
 
+    delete(docMetaFileRef: DocMetaFileRef): Promise<Readonly<DeleteResult>>;
+
     /**
      * Get the data for the DocMeta object we currently in the datastore for
      * this given fingerprint or null if it does not exist.
-
      * @return {string} A JSON string representing the DocMeta which is decoded
      * by the PersistenceLayer.
      */

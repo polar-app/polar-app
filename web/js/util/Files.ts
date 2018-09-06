@@ -20,20 +20,27 @@ export class Files {
 
     // https://nodejs.org/api/fs.html#fs_fs_writefile_file_data_options_callback
 
-
     /**
-     * Asynchronously writes data to a file, replacing the file if it already exists.
-     * @param path A path to a file. If a URL is provided, it must use the `file:` protocol.
-     * URL support is _experimental_.
-     * If a file descriptor is provided, the underlying file will _not_ be closed automatically.
-     * @param data The data to write. If something other than a Buffer or Uint8Array is provided, the value is coerced to a string.
-     * @param options Either the encoding for the file, or an object optionally specifying the encoding, file mode, and flag.
+     * Asynchronously writes data to a file, replacing the file if it already
+     * exists.
+     *
+     * @param path A path to a file. If a URL is provided, it must use the
+     * `file:` protocol. URL support is _experimental_. If a file descriptor is
+     * provided, the underlying file will _not_ be closed automatically.
+     *
+     * @param data The data to write. If something other than a Buffer or
+     * Uint8Array is provided, the value is coerced to a string.
+     *
+     * @param options Either the encoding for the file, or an object optionally
+     * specifying the encoding, file mode, and flag.
      * If `encoding` is not supplied, the default of `'utf8'` is used.
      * If `mode` is not supplied, the default of `0o666` is used.
      * If `mode` is a string, it is parsed as an octal integer.
      * If `flag` is not supplied, the default of `'w'` is used.
      */
-    public static async writeFileAsync(path: string, data: Buffer | string, options?: { encoding?: string | null; mode?: number | string; flag?: string; } | string | undefined | null) {
+    public static async writeFileAsync(path: string,
+                                       data: Buffer | string,
+                                       options?: WriteFileAsyncOptions | string | undefined | null) {
         throw new Error("Not replaced via promisify");
     }
 
@@ -43,7 +50,7 @@ export class Files {
             dir
         };
 
-        if(await this.existsAsync(dir)) {
+        if (await this.existsAsync(dir)) {
             result.exists = true;
         } else {
             result.created = true;
@@ -60,15 +67,15 @@ export class Files {
 
             this.statAsync(path)
                 .then(() => {
-                    //log.debug("Path exists: " + path);
+                    // log.debug("Path exists: " + path);
                     resolve(true);
                 })
                 .catch((err: ErrnoException) => {
-                    if(err.code === 'ENOENT') {
-                        //log.debug("Path does not exist due to ENOENT: " + path, err);
+                    if (err.code === 'ENOENT') {
+                        // log.debug("Path does not exist due to ENOENT: " + path, err);
                         resolve(false);
                     } else {
-                        //log.debug("Received err within existsAsync: "+ path, err);
+                        // log.debug("Received err within existsAsync: "+ path, err);
                         // some other error
                         reject(err);
                     }
@@ -83,9 +90,26 @@ export class Files {
      */
     public static async removeAsync(path: string) {
 
-        if(await this.existsAsync(path)) {
+        if (await this.existsAsync(path)) {
             await this.unlinkAsync(path);
         }
+
+    }
+
+    /**
+     * Like unlinkAsync but only calls unlinkAsync if the file exists and we
+     * return a result object about the action performed.
+     *
+     * @param path The path to delete.
+     */
+    public static async deleteAsync(path: string): Promise<Readonly<FileDeleted>> {
+
+        if ( await this.existsAsync(path)) {
+            await this.unlinkAsync(path);
+            return { path, deleted: true};
+        }
+
+        return { path, deleted: false};
 
     }
 
@@ -156,4 +180,18 @@ export interface CreateDirResult {
     dir: string;
     exists?: boolean;
     created?: boolean;
+}
+
+export interface WriteFileAsyncOptions {
+    encoding?: string | null;
+    mode?: number | string;
+    flag?: string;
+}
+
+export interface FileDeleted {
+
+    path: string;
+
+    deleted: boolean;
+
 }

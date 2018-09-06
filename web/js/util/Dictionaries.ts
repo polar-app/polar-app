@@ -68,21 +68,21 @@ export class Dictionaries {
 
     }
 
-    static copyOf(dict: any): any {
+    public static copyOf(dict: any): any {
 
-        if(dict === undefined || dict === null) {
+        if (dict === undefined || dict === null) {
             // nothing to do here.
             return dict;
         }
 
-        if(! (typeof dict == 'object')) {
+        if (typeof dict !== 'object') {
             // if we're not a dictionary we're just return the default dictionary.
             return dict;
         }
 
-        let result: any = {};
+        const result: any = {};
 
-        Object.keys(dict).sort().forEach(key => {
+        Object.keys(dict).forEach(key => {
             result[key] = this.copyOf(dict[key]);
         });
 
