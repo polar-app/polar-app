@@ -3,38 +3,50 @@ import {Optional} from './Optional';
 
 describe('Optional', function() {
 
-    it("Test nullable object", function () {
+    it("Test nullable object", function() {
 
         // test to make sure we can pass in a nullable option defined as part
         // of the type and that we can map it without any type issues.
 
         interface State {
-            zip: string
+            zip: string;
         }
 
-        let state: State | null = {
+        const state: State | null = {
             zip: "94107"
         };
 
-        let zip = Optional.of(state)
+        const zip = Optional.of(state)
             .map(current => current.zip)
-            .map(current => parseInt(current))
+            .map(current => parseInt(current, 10))
             .get();
 
         assert.equal(zip, 94107);
 
     });
 
-    it("Change type within map function", function () {
+    it("Change type within map function", function() {
 
-        let value = Optional.of('100')
-            .map(current => parseInt(current))
+        const value = Optional.of('100')
+            .map(current => parseInt(current, 10))
             .filter(current => current === 100)
             .get();
 
         assert.equal(value, 100);
 
     });
+
+
+    it("first", function() {
+
+        assert.equal(Optional.first(undefined, 'second').get(), 'second');
+        assert.equal(Optional.first('first', undefined).get(), 'first');
+
+        assert.equal(Optional.first(null, 'second').get(), 'second');
+        assert.equal(Optional.first('first', null).get(), 'first');
+
+    });
+
 
 
 });

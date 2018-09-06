@@ -1,3 +1,4 @@
+import {isPresent} from '../../Preconditions';
 
 
 export class Optional<T> {
@@ -81,8 +82,24 @@ export class Optional<T> {
         return new Optional<T>(value, name);
     }
 
-    public static empty<T>(): Optional<T> {
-        return new Optional<T>(undefined);
+    /**
+     * Get the first value in a set of values.  This is a common pattern and
+     * we could use lodash or a stream-like API but it's a bit easier to just
+     * do it this way.
+     */
+    public static first<T>(...values: Array<T | null | undefined>): Optional<T> {
+
+        for (const value of values) {
+            if (isPresent(value)) {
+                return Optional.of(value);
+            }
+        }
+
+        return Optional.empty();
+    }
+
+    public static empty<T>(name?: string): Optional<T> {
+        return new Optional<T>(undefined, name);
     }
 
     /**

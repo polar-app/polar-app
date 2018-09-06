@@ -11,6 +11,7 @@ import {Datastore} from '../../../web/js/datastore/Datastore';
 import {Progress} from '../../../web/js/util/Progress';
 import {DocMetaRef} from '../../../web/js/datastore/DocMetaRef';
 import {ProgressBar} from '../../../web/js/ui/progress_bar/ProgressBar';
+import {Strings} from '../../../web/js/util/Strings';
 
 const log = Logger.create();
 
@@ -35,11 +36,11 @@ class App<P> extends React.Component<{}, IAppState> {
 
             this.repoDocs = this.repoDocs.filter(current => {
 
-                if(isPresent(current.filename)) {
+                if (isPresent(current.filename)) {
                     return true;
                 } else {
-                    log.warn("Document filtered from repository view due to no filename: ",
-                             current.fingerprint);
+                    // log.warn("Document filtered from repository view due to no filename: ",
+                    //         current.fingerprint);
                     return false;
                 }
 
@@ -53,94 +54,24 @@ class App<P> extends React.Component<{}, IAppState> {
 
     }
 
-    private async init(): Promise<void> {
 
-        let datastore: Datastore;
-        let persistenceLayer: PersistenceLayer;
+    public doFilterByTitle() {
 
-        this.datastore = datastore = Datastores.create();
-        this.persistenceLayer = persistenceLayer = new PersistenceLayer(datastore);
+        const input = document.querySelector("#filter") as HTMLInputElement;
 
-        await datastore.init();
+        const filterText = input.value;
 
-        await persistenceLayer.init();
-
-    }
-
-    private async load(): Promise<RepoDocInfo[]> {
-
-        let result: RepoDocInfo[] = [];
-
-        let docMetaFiles = await this.datastore!.getDocMetaFiles();
-
-        let progress = new Progress(docMetaFiles.length);
-
-        let progressBar = ProgressBar.create(false);
-
-        for (let i = 0; i < docMetaFiles.length; i++) {
-            const docMetaFile = docMetaFiles[i];
-
-            let repoDocInfo = await this.loadDocMeta(docMetaFile);
-            if(repoDocInfo) {
-                result.push(repoDocInfo)
-            }
-
-            progress.incr();
-            progressBar.update(progress.percentage());
-
-        }
-
-        progressBar.destroy();
-
-        return result;
-
-    }
-
-    private async loadDocMeta(docMetaFile: DocMetaRef): Promise<RepoDocInfo | undefined> {
-
-        let docMeta = await this.persistenceLayer!.getDocMeta(docMetaFile.fingerprint);
-
-        if(docMeta !== undefined) {
-
-            if (docMeta.docInfo) {
-
-                return {
-                    fingerprint: docMetaFile.fingerprint,
-                    title: Optional.of(docMeta.docInfo.title).getOrElse('Untitled'),
-                    progress: Optional.of(docMeta.docInfo.progress).getOrElse(0),
-                    filename: Optional.of(docMeta.docInfo.filename).getOrUndefined(),
-                    added: Optional.of(docMeta.docInfo.added).map(current => current.value).getOrUndefined(),
-                };
-
-            } else {
-                log.warn("No docInfo for file: ", docMetaFile.fingerprint);
-            }
-
-        } else {
-            log.warn("No DocMeta for fingerprint: " + docMetaFile.fingerprint);
-        }
-
-        return undefined;
-
-    }
-
-    doFilterByTitle() {
-
-        let input = document.querySelector("#filter") as HTMLInputElement;
-
-        let filterText = input.value;
-
-        let state: IAppState = Object.assign({}, this.state);
+        const state: IAppState = Object.assign({}, this.state);
 
         state.data = [];
 
-        if(filterText === null || filterText === '') {
+        if (Strings.empty(filterText)) {
             // no filter
             state.data.push(...this.repoDocs);
         } else {
 
-            let filteredDocDetails =
-                this.repoDocs.filter(current => current.title && current.title.toLowerCase().indexOf(filterText!.toLowerCase()) >= 0 )
+            const filteredDocDetails =
+                this.repoDocs.filter(current => current.title && current.title.toLowerCase().indexOf(filterText!.toLowerCase()) >= 0 );
 
             state.data.push(...filteredDocDetails);
 
@@ -153,26 +84,26 @@ class App<P> extends React.Component<{}, IAppState> {
 
     public highlightRow(selected: number) {
 
-        let state: IAppState = Object.assign({}, this.state);
+        const state: IAppState = Object.assign({}, this.state);
         state.selected = selected;
 
         this.setState(state);
 
     }
 
-    public loadDocument(fingerprint: string, filename: string ){
+    public loadDocument(fingerprint: string, filename: string ) {
 
         console.log("Going to open " + fingerprint);
 
         DocLoader.load({
-            fingerprint: fingerprint,
-            filename: filename,
+            fingerprint,
+            filename,
             newWindow: true
         }).catch(err => log.error("Unable to load doc: ", err));
 
     }
 
-    render() {
+    public render() {
         const { data } = this.state;
         return (
 
@@ -202,11 +133,11 @@ class App<P> extends React.Component<{}, IAppState> {
                             {
                                 Header: 'Title',
                                 accessor: 'title'
-                                //style:
+                                // style:
                             },
                             {
                                 Header: 'Added',
-                                //accessor: (row: any) => row.added,
+                                // accessor: (row: any) => row.added,
                                 accessor: 'added',
                                 maxWidth: 200,
                                 defaultSortDesc: true,
@@ -261,14 +192,14 @@ class App<P> extends React.Component<{}, IAppState> {
                             },
 
                             onDoubleClick: (e: any) => {
-                                this.loadDocument(rowInfo.original.fingerprint,rowInfo.original.filename);
+                                this.loadDocument(rowInfo.original.fingerprint, rowInfo.original.filename);
                             },
 
                             style: {
                                 background: rowInfo && rowInfo.index === this.state.selected ? '#00afec' : 'white',
                                 color: rowInfo && rowInfo.index === this.state.selected ? 'white' : 'black'
                             }
-                        }
+                        };
                     }}
 
                 />
@@ -280,13 +211,109 @@ class App<P> extends React.Component<{}, IAppState> {
             </div>
         );
     }
+
+    private async init(): Promise<void> {
+
+        let datastore: Datastore;
+        let persistenceLayer: PersistenceLayer;
+
+        this.datastore = datastore = Datastores.create();
+        this.persistenceLayer = persistenceLayer = new PersistenceLayer(datastore);
+
+        await datastore.init();
+
+        await persistenceLayer.init();
+
+    }
+
+    private async load(): Promise<RepoDocInfo[]> {
+
+        const result: RepoDocInfo[] = [];
+
+        const docMetaFiles = await this.datastore!.getDocMetaFiles();
+
+        const progress = new Progress(docMetaFiles.length);
+
+        const progressBar = ProgressBar.create(false);
+
+        for (let i = 0; i < docMetaFiles.length; i++) {
+            const docMetaFile = docMetaFiles[i];
+
+            const repoDocInfo = await this.loadDocMeta(docMetaFile);
+            if (repoDocInfo) {
+                result.push(repoDocInfo);
+            }
+
+            progress.incr();
+            progressBar.update(progress.percentage());
+
+        }
+
+        progressBar.destroy();
+
+        return result;
+
+    }
+
+    private async loadDocMeta(docMetaFile: DocMetaRef): Promise<RepoDocInfo | undefined> {
+
+        const docMeta = await this.persistenceLayer!.getDocMeta(docMetaFile.fingerprint);
+
+        if (docMeta !== undefined) {
+
+            if (docMeta.docInfo) {
+
+                return {
+
+                    fingerprint: docMetaFile.fingerprint,
+
+                    // TODO: we should map this to also filter out '' and ' '
+                    // from the list of strings.
+                    title: Optional.first(docMeta.docInfo.title,
+                                          docMeta.docInfo.filename)
+                        .getOrElse('Untitled'),
+
+                    progress: Optional.of(docMeta.docInfo.progress)
+                        .getOrElse(0),
+
+                    filename: Optional.of(docMeta.docInfo.filename)
+                        .getOrUndefined(),
+
+                    added: Optional.of(docMeta.docInfo.added)
+                        .map(current => {
+
+                            // this is a pragmatic workaround for JSON
+                            // serialization issues with typescript.
+
+                            if ( typeof current === 'string') {
+                                return current;
+                            }
+
+                            return current.value;
+
+                        })
+                        .getOrUndefined(),
+
+                };
+
+            } else {
+                log.warn("No docInfo for file: ", docMetaFile.fingerprint);
+            }
+
+        } else {
+            log.warn("No DocMeta for fingerprint: " + docMetaFile.fingerprint);
+        }
+
+        return undefined;
+
+    }
 }
 
 export default App;
 
 interface IAppState {
 
-    //docs: DocDetail[];
+    // docs: DocDetail[];
 
     data: RepoDocInfo[];
     selected?: number;
