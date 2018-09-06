@@ -12,13 +12,16 @@ import {Logger} from '../../js/logger/Logger';
 import process from "process";
 import {FilePaths} from '../../js/util/FilePaths';
 import {Files} from '../../js/util/Files';
+import {MainAppController} from '../../js/apps/main/MainAppController';
 
 const log = Logger.create();
 
+let polarDir: PolarDir | undefined;
+let mainAppController: MainAppController | undefined;
 
 async function createWindow(): Promise<BrowserWindow> {
 
-    await setupNewDataDir();
+    polarDir = await setupNewDataDir();
 
     const datastore: Datastore = new MemoryDatastore();
 
@@ -27,9 +30,11 @@ async function createWindow(): Promise<BrowserWindow> {
     await Logging.init();
 
     const mainApp = new MainApp(datastore);
-    const {mainWindow} = await mainApp.start();
 
-    return mainWindow;
+    const mainAppState = await mainApp.start();
+    mainAppController = mainAppState.mainAppController;
+
+    return mainAppState.mainWindow;
 
 }
 
@@ -43,6 +48,8 @@ SpectronMain2.create({windowFactory: createWindow}).run(async state => {
 
     });
 
+    await mainAppController!.handleLoadDoc(polarDir!.files[1]);
+
     // TODO: make sure the flashcard app is ready and running in the background
 
     // TODO: switch to the main repository app and double click on a document.
@@ -53,7 +60,7 @@ SpectronMain2.create({windowFactory: createWindow}).run(async state => {
 
 });
 
-async function setupNewDataDir() {
+async function setupNewDataDir(): Promise<PolarDir> {
 
     const ENV_POLAR_DATA_DIR = 'POLAR_DATA_DIR';
 
@@ -73,10 +80,25 @@ async function setupNewDataDir() {
 
     const filenames = ['example.pdf', 'example.phz'];
 
+    const files: string[] = [];
+
     for (const filename of filenames) {
 
-        await Files.copyFileAsync(FilePaths.join(__dirname, 'files', filename),
-                                  FilePaths.join(stashDir, filename));
+        const srcPath = FilePaths.join(__dirname, 'files', filename);
+        const targetPath = FilePaths.join(stashDir, filename);
+
+        await Files.copyFileAsync(srcPath, targetPath);
+
+        files.push(targetPath);
     }
 
+    return {
+        files
+    };
+
+}
+
+interface PolarDir {
+    // the files we can open...
+    files: string[];
 }

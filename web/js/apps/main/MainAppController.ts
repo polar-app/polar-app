@@ -17,6 +17,13 @@ const log = Logger.create();
 
 export class MainAppController {
 
+    constructor(fileLoader: FileLoader, datastore: Datastore, webserver: Webserver, proxyServer: ProxyServer) {
+        this.fileLoader = fileLoader;
+        this.datastore = datastore;
+        this.webserver = webserver;
+        this.proxyServer = proxyServer;
+    }
+
     private readonly fileLoader: FileLoader;
 
     private readonly datastore: Datastore;
@@ -25,22 +32,15 @@ export class MainAppController {
 
     private readonly proxyServer: ProxyServer;
 
-    constructor(fileLoader: FileLoader, datastore: Datastore, webserver: Webserver, proxyServer: ProxyServer) {
-        this.fileLoader = fileLoader;
-        this.datastore = datastore;
-        this.webserver = webserver;
-        this.proxyServer = proxyServer;
-    }
-
     public async cmdCaptureWebPage() {
 
-        let browserWindowOptions = Object.assign({}, BROWSER_WINDOW_OPTIONS);
+        const browserWindowOptions = Object.assign({}, BROWSER_WINDOW_OPTIONS);
 
         browserWindowOptions.width = browserWindowOptions.width! * .9;
         browserWindowOptions.height = browserWindowOptions.height! * .9;
         browserWindowOptions.center = true;
 
-        let url = AppPaths.resource('./apps/capture/start-capture/index.html')
+        const url = AppPaths.resource('./apps/capture/start-capture/index.html');
 
         await MainAppBrowserWindowFactory.createWindow(browserWindowOptions, url);
 
@@ -51,9 +51,9 @@ export class MainAppController {
      */
     public async cmdOpen(item: MenuItem, focusedWindow: BrowserWindow) {
 
-        let targetWindow = focusedWindow;
+        const targetWindow = focusedWindow;
 
-        let path = await this.promptDoc();
+        const path = await this.promptDoc();
 
         await this.loadDoc(path, targetWindow);
 
@@ -65,9 +65,9 @@ export class MainAppController {
 
     public async cmdOpenInNewWindow() {
 
-        let path = await this.promptDoc();
+        const path = await this.promptDoc();
 
-        let targetWindow = await MainAppBrowserWindowFactory.createWindow(BROWSER_WINDOW_OPTIONS, "about:blank");
+        const targetWindow = await MainAppBrowserWindowFactory.createWindow(BROWSER_WINDOW_OPTIONS, "about:blank");
 
         await this.loadDoc(path, targetWindow);
 
@@ -95,7 +95,7 @@ export class MainAppController {
 
         BrowserWindow.getAllWindows().forEach(window => {
             log.info("Closing window: " + window.id);
-            window.close()
+            window.close();
         });
 
         log.info("Closing all windows...done");
@@ -114,13 +114,13 @@ export class MainAppController {
      */
     public async handleLoadDoc(path: string, newWindow: boolean = true): Promise<BrowserWindow> {
 
-        let browserWindowTag = {name: 'viewer:', value: Hashcodes.createID(path)};
+        const browserWindowTag = {name: 'viewer:', value: Hashcodes.createID(path)};
 
-        return await SingletonBrowserWindow.getInstance(browserWindowTag,async () => {
+        return await SingletonBrowserWindow.getInstance(browserWindowTag, async () => {
 
             let window;
 
-            if(newWindow) {
+            if (newWindow) {
                 window = await MainAppBrowserWindowFactory.createWindow(BROWSER_WINDOW_OPTIONS, 'about:blank');
             } else {
                 window = BrowserWindow.getFocusedWindow()!;
@@ -137,11 +137,11 @@ export class MainAppController {
      */
     public async loadDoc(path: string, targetWindow: BrowserWindow): Promise<BrowserWindow> {
 
-        if(!targetWindow) {
+        if (!targetWindow) {
             throw new Error("No target window given");
         }
 
-        let loadedFile = await this.fileLoader.registerForLoad(path);
+        const loadedFile = await this.fileLoader.registerForLoad(path);
 
         log.info("Loading webapp at: " + loadedFile.webResource);
 
@@ -149,20 +149,20 @@ export class MainAppController {
 
         targetWindow.webContents.once('did-finish-load', function() {
 
-            if(loadedFile.title) {
+            if (loadedFile.title) {
                 // TODO: this should be driven from the DocMeta and the DocMeta
                 // should be initialized from the descriptor.
                 targetWindow.setTitle(loadedFile.title);
             }
 
-            if(loadedFile.docDimensions) {
+            if (loadedFile.docDimensions) {
 
-                let [width, height] = targetWindow.getSize();
+                const [width, height] = targetWindow.getSize();
 
                 // compute the ideal width plus a small buffer for the sides.
-                let idealWidth = loadedFile.docDimensions.width + 100;
+                const idealWidth = loadedFile.docDimensions.width + 100;
 
-                if(width < idealWidth) {
+                if (width < idealWidth) {
                     log.info("Adjusting window width");
                     targetWindow.setSize(idealWidth, height);
                 }
@@ -172,6 +172,30 @@ export class MainAppController {
         });
 
         return targetWindow;
+
+    }
+
+    public activateMainWindow() {
+
+        let browserWindows = BrowserWindow.getAllWindows();
+
+        browserWindows = browserWindows.filter( browserWindow => browserWindow.isVisible());
+
+        if (browserWindows.length === 0) {
+
+            AppLauncher.launchRepositoryApp()
+                .catch(err => log.error("Unable to open repository app: ", err));
+
+            return;
+        }
+
+        const mainWindow = browserWindows[0];
+
+        if (mainWindow.isMinimized()) {
+            mainWindow.restore();
+        }
+
+        mainWindow.focus();
 
     }
 
@@ -199,29 +223,6 @@ export class MainAppController {
             });
 
         });
-
-    }
-
-    public activateMainWindow() {
-
-        let browserWindows = BrowserWindow.getAllWindows();
-
-        browserWindows = browserWindows.filter( browserWindow => browserWindow.isVisible());
-
-        if(browserWindows.length === 0) {
-
-            AppLauncher.launchRepositoryApp()
-                .catch(err => log.error("Unable to open repository app: ", err));
-
-            return;
-        }
-
-        let mainWindow = browserWindows[0];
-
-        if (mainWindow.isMinimized())
-            mainWindow.restore();
-
-        mainWindow.focus();
 
     }
 
