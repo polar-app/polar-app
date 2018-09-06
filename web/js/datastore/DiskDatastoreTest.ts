@@ -60,35 +60,71 @@ describe('DiskDatastore', function() {
         assert.equal(await Files.existsAsync(dataDir), false);
 
         let expected: any = {
-            "dataDir": {
-                "dir": FilePaths.join(tmpdir, 'disk-datastore.test'),
-                "created": true,
+
+            "dataDirConfig": {
+                "path": FilePaths.join(tmpdir, "disk-datastore.test"),
+                "strategy": "manual"
             },
-            "stashDir": {
-                "dir": FilePaths.join(tmpdir, 'disk-datastore.test', 'stash'),
-                "created": true,
+            "dataDir": FilePaths.join(tmpdir, "disk-datastore.test"),
+            "stashDir": FilePaths.join(tmpdir, "disk-datastore.test/stash"),
+            "logsDir": FilePaths.join(tmpdir, "disk-datastore.test/logs"),
+            "configDir": FilePaths.join(tmpdir, "disk-datastore.test/config"),
+
+            "initialization": {
+
+                "dataDir": {
+                    "dir": FilePaths.join(tmpdir, 'disk-datastore.test'),
+                    "created": true,
+                },
+                "stashDir": {
+                    "dir": FilePaths.join(tmpdir, 'disk-datastore.test', 'stash'),
+                    "created": true,
+                },
+                "logsDir": {
+                    "dir": FilePaths.join(tmpdir, 'disk-datastore.test', 'logs'),
+                    "created": true,
+                },
+                "configDir": {
+                    "dir": FilePaths.join(tmpdir, 'disk-datastore.test', 'config'),
+                    "created": true,
+                }
+
             },
-            "logsDir": {
-                "dir": FilePaths.join(tmpdir, 'disk-datastore.test', 'logs'),
-                "created": true,
-            }
         };
+
+
 
         // test double init...
         assertJSON(await diskDatastore.init(), expected );
 
         expected = {
-            "dataDir": {
-                "dir": FilePaths.join(tmpdir, 'disk-datastore.test'),
-                "exists": true,
+            "dataDirConfig": {
+                "path": FilePaths.join(tmpdir, "disk-datastore.test"),
+                "strategy": "manual"
             },
-            "stashDir": {
-                "dir": FilePaths.join(tmpdir, 'disk-datastore.test', 'stash'),
-                "exists": true,
-            },
-            "logsDir": {
-                "dir": FilePaths.join(tmpdir, 'disk-datastore.test', 'logs'),
-                "exists": true,
+            "dataDir": FilePaths.join(tmpdir, "disk-datastore.test"),
+            "stashDir": FilePaths.join(tmpdir, "disk-datastore.test/stash"),
+            "logsDir": FilePaths.join(tmpdir, "disk-datastore.test/logs"),
+            "configDir": FilePaths.join(tmpdir, "disk-datastore.test/config"),
+
+            "initialization": {
+
+                "dataDir": {
+                    "dir": FilePaths.join(tmpdir, 'disk-datastore.test'),
+                    "exists": true,
+                },
+                "stashDir": {
+                    "dir": FilePaths.join(tmpdir, 'disk-datastore.test', 'stash'),
+                    "exists": true,
+                },
+                "logsDir": {
+                    "dir": FilePaths.join(tmpdir, 'disk-datastore.test', 'logs'),
+                    "exists": true,
+                },
+                "configDir": {
+                    "dir": FilePaths.join(tmpdir, 'disk-datastore.test', 'config'),
+                    "exists": true,
+                }
             }
         };
 
