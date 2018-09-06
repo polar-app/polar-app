@@ -162,14 +162,38 @@ class App<P> extends React.Component<{}, IAppState> {
                                 accessor: 'progress',
                                 maxWidth: 200,
                                 defaultSortDesc: true,
+                                resizable: false,
                                 Cell: (row: any) => (
 
                                     <progress max="100" value={ row.value } style={{
                                         width: '100%'
                                     }} />
                                 )
+                            },
+                            {
+                                Header: '',
+                                accessor: 'flagged',
+                                maxWidth: 25,
+                                defaultSortDesc: true,
+                                resizable: false,
+                                Cell: (row: any) => (
+                                    <i className="fa fa-flag doc-button doc-button-inactive"/>
+                                )
+                            },
+                            {
+                                Header: '',
+                                accessor: 'archived',
+                                maxWidth: 25,
+                                defaultSortDesc: true,
+                                resizable: false,
+                                Cell: (row: any) => (
+                                    <i className="fa fa-check doc-button doc-button-inactive"/>
+                                )
                             }
-                    ]}
+
+
+
+                        ]}
 
                     defaultPageSize={25}
                     noDataText="No documents available."
@@ -293,6 +317,9 @@ class App<P> extends React.Component<{}, IAppState> {
 
                         })
                         .getOrUndefined(),
+
+                    flagged: false,
+                    archived: false,
 
                 };
 

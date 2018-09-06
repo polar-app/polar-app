@@ -10,5 +10,6 @@ interface RepoDocInfo {
     progress: number;
     filename: string | undefined;
     added: string | undefined;
-
+    flagged: boolean;
+    archived: boolean;
 }

@@ -90,3 +90,20 @@ footer .buttons .button {
   padding: 5px;
   display: inline;
 }
+.doc-button:hover {
+  cursor: pointer;
+}
+
+/*.doc-button:hover {*/
+  /*!*color: black;*!*/
+  /*cursor: hand !important;*/
+/*}*/
+
+.doc-button-inactive {
+  color: lightgrey;
+}
+
+
+.doc-button-inactive:hover {
+  color: grey;
+}

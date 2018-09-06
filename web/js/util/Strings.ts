@@ -1,14 +1,15 @@
 
+
 export class Strings {
 
-    static toPrimitive(value: string): string | number | boolean {
+    public static toPrimitive(value: string): string | number | boolean {
 
         if (value === "true" || value === "false") {
             return value === "true";
         }
 
         if (value.match(/^[0-9]+$/)) {
-            return parseInt(value);
+            return parseInt(value, 10);
         }
 
         if (value.match(/^[0-9]+\.[0-9]+$/)) {
@@ -19,20 +20,31 @@ export class Strings {
 
     }
 
-    static empty(value: string | null | undefined): boolean {
+    public static empty(value: string | null | undefined): boolean {
         return value === null || value === undefined || value.trim() === "";
     }
 
-    static lpad = function(str: string, padd: string, length: number) {
+    public static filterEmpty(value: string | null | undefined): string | undefined {
 
-        while (str.length < length)
-            str = padd + str;
+        if (this.empty(value)) {
+            return undefined;
+        }
 
-        return str;
+        return value!;
 
     }
 
-    static toUnixLineNewLines(str: string) {
+    public static lpad = function(str: string, padd: string, length: number) {
+
+        while (str.length < length) {
+            str = padd + str;
+        }
+
+        return str;
+
+    };
+
+    public static toUnixLineNewLines(str: string) {
         return str.replace(/\r\n/g, '\n');
     }
 
