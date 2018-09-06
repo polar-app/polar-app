@@ -8,7 +8,7 @@ import {ISODateTime} from '../metadata/ISODateTime';
 import {Dictionaries} from '../util/Dictionaries';
 import {DocMetaFileRef, DocMetaRef} from './DocMetaRef';
 import {DeleteResult} from './DiskDatastore';
-import {DocInfo} from '../metadata/DocInfo';
+import {DocInfo, IDocInfo} from '../metadata/DocInfo';
 
 const log = Logger.create();
 
@@ -157,7 +157,7 @@ export interface IListenablePersistenceLayer extends IPersistenceLayer {
 export type PersistenceLayerListener = (event: PersistenceLayerEvent) => void;
 
 export interface PersistenceLayerEvent {
-    docInfo: DocInfo;
+    docInfo: IDocInfo;
     docMetaRef: DocMetaRef;
     eventType: PersistenceEventType;
 }

@@ -5,10 +5,9 @@ import {Broadcaster} from '../../ipc/Broadcaster';
  */
 export class DocInfoBroadcasterService {
 
-
     public async start() {
         // noinspection TsLint
-        new Broadcaster('doc-info-advertisement:broadcast');
+        new Broadcaster('doc-info-advertisement:broadcast', 'doc-info-advertisement');
     }
 
 }
