@@ -12,6 +12,7 @@ import {Progress} from '../../../web/js/util/Progress';
 import {DocMetaRef} from '../../../web/js/datastore/DocMetaRef';
 import {ProgressBar} from '../../../web/js/ui/progress_bar/ProgressBar';
 import {Strings} from '../../../web/js/util/Strings';
+import Header = Electron.Header;
 
 const log = Logger.create();
 
@@ -93,13 +94,27 @@ class App<P> extends React.Component<{}, IAppState> {
 
     public loadDocument(fingerprint: string, filename: string ) {
 
-        console.log("Going to open " + fingerprint);
-
         DocLoader.load({
             fingerprint,
             filename,
             newWindow: true
         }).catch(err => log.error("Unable to load doc: ", err));
+
+    }
+
+    private handleToggleField(repoDocInfo: RepoDocInfo, field: string) {
+
+        if (field === 'archived') {
+            repoDocInfo.archived = !repoDocInfo.archived;
+        }
+
+        if (field === 'flagged') {
+            console.log("toggled");
+            repoDocInfo.flagged = !repoDocInfo.flagged;
+        }
+
+
+        this.setState(this.state);
 
     }
 
@@ -176,9 +191,19 @@ class App<P> extends React.Component<{}, IAppState> {
                                 maxWidth: 25,
                                 defaultSortDesc: true,
                                 resizable: false,
-                                Cell: (row: any) => (
-                                    <i className="fa fa-flag doc-button doc-button-inactive"/>
-                                )
+                                Cell: (row: any) => {
+
+                                    if (row.original.flagged) {
+                                        return (
+                                            <i className="fa fa-flag doc-button doc-button-active"/>
+                                        );
+                                    } else {
+                                        return (
+                                            <i className="fa fa-flag doc-button doc-button-inactive"/>
+                                        );
+                                    }
+
+                                }
                             },
                             {
                                 Header: '',
@@ -186,9 +211,19 @@ class App<P> extends React.Component<{}, IAppState> {
                                 maxWidth: 25,
                                 defaultSortDesc: true,
                                 resizable: false,
-                                Cell: (row: any) => (
-                                    <i className="fa fa-check doc-button doc-button-inactive"/>
-                                )
+                                Cell: (row: any) => {
+
+                                    if (row.original.archived) {
+                                        return (
+                                            <i className="fa fa-check doc-button doc-button-active"/>
+                                        );
+                                    } else {
+                                        return (
+                                            <i className="fa fa-check doc-button doc-button-inactive"/>
+                                        );
+                                    }
+
+                                }
                             }
 
 
@@ -224,6 +259,48 @@ class App<P> extends React.Component<{}, IAppState> {
                                 color: rowInfo && rowInfo.index === this.state.selected ? 'white' : 'black'
                             }
                         };
+                    }}
+                    getTdProps={(state: any, rowInfo: any, column: any, instance: any) => {
+
+                        if (column.id === 'flagged' || column.id === 'archived') {
+
+                            return {
+
+                                onClick: ((e: any, handleOriginal?: () => void) => {
+                                    console.log("Cell - clicked", {
+                                        state,
+                                        rowInfo,
+                                        column,
+                                        instance,
+                                        event: e
+                                    });
+
+                                    this.handleToggleField(rowInfo.original, column.id);
+
+                                    if (handleOriginal) {
+                                        handleOriginal();
+                                    }
+
+                                })
+
+                            };
+
+                        }
+                        //
+                        // return {
+                        //     onMouseEnter: ((e: any) => {
+                        //         console.log("Cell - onMouseEnter", {
+                        //             state,
+                        //             rowInfo,
+                        //             column,
+                        //             instance,
+                        //             event: e
+                        //         });
+                        //     })
+                        // };
+
+                        return {};
+
                     }}
 
                 />

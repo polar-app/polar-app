@@ -103,6 +103,10 @@ footer .buttons .button {
   color: lightgrey;
 }
 
+.doc-button-active {
+    color: #222222;
+}
+
 
 .doc-button-inactive:hover {
   color: grey;
