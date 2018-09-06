@@ -45,6 +45,26 @@ rules:
 
   arrow-parens: false
 
+  member-ordering:
+    options:
+      order:
+        - public-instance-field
+        - protected-instance-field
+        - private-instance-field
+        - public-instance-method
+        - protected-instance-method
+        - private-instance-method
+        - public-static-field
+        - protected-static-field
+        - private-static-field
+        - public-static-method
+        - protected-static-method
+        - private-static-method
+
+  interface-name: false
+
+  no-angle-bracket-type-assertion: false
+
 jsRules:
   max-line-length:
     options: [120]

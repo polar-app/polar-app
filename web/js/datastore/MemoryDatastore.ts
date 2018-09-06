@@ -1,11 +1,14 @@
 /**
  * Datastore just in memory with no on disk persistence.
  */
-import {DiskDatastore} from './DiskDatastore';
 import {Datastore} from './Datastore';
 import {Preconditions} from '../Preconditions';
 import {DocMetaRef} from './DocMetaRef';
 import {FilePaths} from '../util/FilePaths';
+import {Directories} from './Directories';
+import {Logger} from '../logger/Logger';
+
+const log = Logger.create();
 
 export class MemoryDatastore implements Datastore {
 
@@ -21,7 +24,7 @@ export class MemoryDatastore implements Datastore {
 
         // these dir values are used in the UI and other places so we need to
         // actually have values for them.
-        this.dataDir = DiskDatastore.getDataDir();
+        this.dataDir = Directories.getDataDir().path;
         this.stashDir = FilePaths.create(this.dataDir, "stash");
         this.logsDir = FilePaths.create(this.dataDir, "logs");
 
@@ -29,7 +32,8 @@ export class MemoryDatastore implements Datastore {
 
     }
 
-    async init() {
+    // noinspection TsLint
+    public async init() {
 
     }
 
@@ -39,11 +43,11 @@ export class MemoryDatastore implements Datastore {
 
     /**
      */
-    async getDocMeta(fingerprint: string): Promise<string | null> {
+    public async getDocMeta(fingerprint: string): Promise<string | null> {
 
-        let nrDocs = Object.keys(this.docMetas).length;
+        const nrDocs = Object.keys(this.docMetas).length;
 
-        console.log(`Fetching document from datastore with fingerprint ${fingerprint} of ${nrDocs} docs.`)
+        log.info(`Fetching document from datastore with fingerprint ${fingerprint} of ${nrDocs} docs.`);
 
         return this.docMetas[fingerprint];
     }
@@ -51,17 +55,17 @@ export class MemoryDatastore implements Datastore {
     /**
      * Write the datastore to disk.
      */
-    async sync(fingerprint: string, data: string) {
+    public async sync(fingerprint: string, data: string) {
 
         Preconditions.assertTypeOf(data, "string", "data");
 
         this.docMetas[fingerprint] = data;
     }
 
-    async getDocMetaFiles(): Promise<DocMetaRef[]> {
+    public async getDocMetaFiles(): Promise<DocMetaRef[]> {
 
         return Object.keys(this.docMetas)
-            .map(fingerprint => <DocMetaRef>{fingerprint});
+            .map(fingerprint => <DocMetaRef> {fingerprint});
 
     }
 

@@ -31,13 +31,10 @@ const PROXYSERVER_PORT = 8600;
 
 export class MainApp {
 
-    private readonly opts: MainAppOpts;
-
     private readonly datastore: Datastore;
 
-    constructor(datastore: Datastore, opts: MainAppOpts = {}) {
+    constructor(datastore: Datastore) {
         this.datastore = datastore;
-        this.opts = opts;
     }
 
     public async start(): Promise<MainAppStarted> {
@@ -54,13 +51,13 @@ export class MainApp {
 
         const directories = new Directories();
 
-        let captureController = new CaptureController({directories, cacheRegistry});
+        const captureController = new CaptureController({directories, cacheRegistry});
 
-        let dialogWindowService = new DialogWindowService();
+        const dialogWindowService = new DialogWindowService();
 
-        let defaultFileLoader = new DefaultFileLoader(fileRegistry, cacheRegistry);
+        const defaultFileLoader = new DefaultFileLoader(fileRegistry, cacheRegistry);
 
-        let screenshotService = new ScreenshotService();
+        const screenshotService = new ScreenshotService();
         screenshotService.start();
 
         log.info("App loaded from: ", app.getAppPath());
@@ -68,36 +65,36 @@ export class MainApp {
         log.info("Logs dir: ", this.datastore.logsDir);
 
         // NOTE: removing the next three lines removes the colors in the toolbar.
-        //const appIcon = new Tray(app_icon);
-        //appIcon.setToolTip('Polar Bookshelf');
-        //appIcon.setContextMenu(contextMenu);
+        // const appIcon = new Tray(app_icon);
+        // appIcon.setToolTip('Polar Bookshelf');
+        // appIcon.setContextMenu(contextMenu);
 
-        let mainWindow = await AppLauncher.launchRepositoryApp();
+        const mainWindow = await AppLauncher.launchRepositoryApp();
 
         await directories.init();
 
         // TODO don't use directory logging now as it is broken.
-        //await Logger.init(directories.logsDir);
+        // await Logger.init(directories.logsDir);
 
         log.info("Electron app path is: " + app.getAppPath());
 
         // *** start the webserver
 
-        let webserver = new Webserver(webserverConfig, fileRegistry);
+        const webserver = new Webserver(webserverConfig, fileRegistry);
         webserver.start();
 
         // *** start the proxy server
 
-        let proxyServer = new ProxyServer(proxyServerConfig, cacheRegistry);
+        const proxyServer = new ProxyServer(proxyServerConfig, cacheRegistry);
         proxyServer.start();
 
-        let cacheInterceptorService = new CacheInterceptorService(cacheRegistry);
+        const cacheInterceptorService = new CacheInterceptorService(cacheRegistry);
         await cacheInterceptorService.start();
 
         await captureController.start();
         await dialogWindowService.start();
 
-        let fileLoader = new AnalyticsFileLoader(mainWindow.webContents.getUserAgent(), defaultFileLoader);
+        const fileLoader = new AnalyticsFileLoader(mainWindow.webContents.getUserAgent(), defaultFileLoader);
 
         log.info("Running with process.args: ", JSON.stringify(process.argv));
 
@@ -108,15 +105,15 @@ export class MainApp {
         // FIXME: ... there's a catch/22 here creating the main window... we need
         // the main Window created so that we can init the loader...
 
-        let mainAppController = new MainAppController(fileLoader, this.datastore, webserver, proxyServer);
+        const mainAppController = new MainAppController(fileLoader, this.datastore, webserver, proxyServer);
 
-        let mainAppService = new MainAppService(mainAppController);
+        const mainAppService = new MainAppService(mainAppController);
         mainAppService.start();
 
         // TODO: handle the command line here.. IE if someone opens up a file via
         // argument.
 
-        let mainAppMenu = new MainAppMenu(mainAppController);
+        const mainAppMenu = new MainAppMenu(mainAppController);
         mainAppMenu.setup();
 
         app.on('open-file', async (event, path) => {
@@ -133,9 +130,9 @@ export class MainApp {
 
             log.info("Someone opened a second instance.");
 
-            let fileArg = Cmdline.getDocArg(commandLine);
+            const fileArg = Cmdline.getDocArg(commandLine);
 
-            if(fileArg) {
+            if (fileArg) {
                 await mainAppController.handleLoadDoc(fileArg);
             } else {
                 mainAppController.activateMainWindow();
@@ -168,12 +165,7 @@ export class MainApp {
 
 }
 
-export interface MainAppOpts {
-
-
-}
-
 export interface MainAppStarted {
-    mainWindow: BrowserWindow,
+    mainWindow: BrowserWindow;
     mainAppController: MainAppController;
 }

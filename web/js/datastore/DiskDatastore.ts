@@ -6,6 +6,7 @@ import {Files} from '../util/Files';
 import {FilePaths} from '../util/FilePaths';
 import fs from 'fs';
 import os from 'os';
+import {Directories} from './Directories';
 
 const log = Logger.create();
 
@@ -17,45 +18,40 @@ export class DiskDatastore implements Datastore {
 
     public readonly logsDir: string;
 
+    public readonly dataDirConfig: DataDirConfig;
+
+    private readonly directories: Directories;
+
     constructor(dataDir?: string) {
 
         // TODO: migrate this to use Directories
 
-        if(dataDir) {
-            // use a configured dataDir for testing.
-            this.dataDir = dataDir;
-        } else {
-            this.dataDir = DiskDatastore.getDataDir();
-        }
+        this.directories = new Directories(dataDir);
 
         // the path to the stash directory
-        this.stashDir = FilePaths.create(this.dataDir, "stash");
-        this.logsDir = FilePaths.create(this.dataDir, "logs");
+        this.dataDir = this.directories.dataDir;
+        this.dataDirConfig = this.directories.dataDirConfig;
+        this.stashDir = this.directories.stashDir;
+        this.logsDir = this.directories.logsDir;
 
     }
 
-    async init() {
-
-        return {
-            dataDir: await Files.createDirAsync(this.dataDir),
-            stashDir: await Files.createDirAsync(this.stashDir),
-            logsDir: await Files.createDirAsync(this.logsDir),
-        };
-
+    public async init() {
+        return await this.directories.init();
     }
 
     /**
      * Return true if the DiskDatastore contains a document for the given fingerprint
      */
-    async contains(fingerprint: string): Promise<boolean> {
+    public async contains(fingerprint: string): Promise<boolean> {
 
-        let docDir = FilePaths.join(this.dataDir, fingerprint);
+        const docDir = FilePaths.join(this.dataDir, fingerprint);
 
-        if( ! await Files.existsAsync(docDir)) {
+        if ( ! await Files.existsAsync(docDir)) {
             return false;
         }
 
-        let statePath = FilePaths.join(docDir, 'state.json');
+        const statePath = FilePaths.join(docDir, 'state.json');
 
         return await Files.existsAsync(statePath);
 
@@ -65,34 +61,35 @@ export class DiskDatastore implements Datastore {
      * Get the DocMeta object we currently in the datastore for this given
      * fingerprint or null if it does not exist.
      */
-    async getDocMeta(fingerprint: string): Promise<string | null> {
+    public async getDocMeta(fingerprint: string): Promise<string | null> {
 
-        let docDir = FilePaths.join(this.dataDir, fingerprint);
-        let statePath = FilePaths.join(docDir, 'state.json');
+        const docDir = FilePaths.join(this.dataDir, fingerprint);
+        const statePath = FilePaths.join(docDir, 'state.json');
 
-        if(! this.contains(fingerprint)) {
+        if (! this.contains(fingerprint)) {
             log.error("Datastore does not contain document: ", fingerprint);
             return null;
         }
 
-        let statePathStat = await Files.statAsync(statePath);
+        const statePathStat = await Files.statAsync(statePath);
 
-        if( ! statePathStat.isFile() ) {
+        if ( ! statePathStat.isFile() ) {
             log.error("Path is not a file: ", statePath);
             return null;
         }
 
-        let canAccess =
+        // noinspection TsLint
+        const canAccess =
             await Files.accessAsync(statePath, fs.constants.R_OK | fs.constants.W_OK)
                       .then(() => true)
                       .catch(() => false);
 
-        if(! canAccess) {
+        if (! canAccess) {
             log.error("No access: ", statePath);
             return null;
         }
 
-        let buffer = await Files.readFileAsync(statePath);
+        const buffer = await Files.readFileAsync(statePath);
 
         return buffer.toString('utf8');
 
@@ -101,15 +98,15 @@ export class DiskDatastore implements Datastore {
     /**
      * Write the datastore to disk.
      */
-    async sync(fingerprint: string, data: string) {
+    public async sync(fingerprint: string, data: string) {
 
         Preconditions.assertTypeOf(data, "string", "data");
 
         log.info("Performing sync of content into disk datastore");
 
-        let docDir = FilePaths.join(this.dataDir, fingerprint);
+        const docDir = FilePaths.join(this.dataDir, fingerprint);
 
-        let docDirExists = await Files.existsAsync(docDir);
+        const docDirExists = await Files.existsAsync(docDir);
 
         log.debug(`Doc dir ${docDir} exists: ${docDirExists}`);
 
@@ -119,13 +116,13 @@ export class DiskDatastore implements Datastore {
         }
 
         log.debug("Calling stat on docDir: " + docDir);
-        let stat = await Files.statAsync(docDir);
+        const stat = await Files.statAsync(docDir);
 
-        if(! stat.isDirectory()) {
+        if (! stat.isDirectory()) {
             throw new Error("Path is not a directory: " + docDir);
         }
 
-        let statePath = FilePaths.join(docDir, "state.json");
+        const statePath = FilePaths.join(docDir, "state.json");
 
         log.info(`Writing data to state file: ${statePath}`);
 
@@ -133,28 +130,27 @@ export class DiskDatastore implements Datastore {
 
     }
 
-    async getDocMetaFiles(): Promise<DocMetaRef[]> {
+    public async getDocMetaFiles(): Promise<DocMetaRef[]> {
 
-        if( ! await Files.existsAsync(this.dataDir)) {
+        if ( ! await Files.existsAsync(this.dataDir)) {
             // no data dir but this should rarely happen.
             return [];
         }
 
-        let fileNames = await Files.readdirAsync(this.dataDir);
+        const fileNames = await Files.readdirAsync(this.dataDir);
 
-        let result: DocMetaRef[] = [];
+        const result: DocMetaRef[] = [];
 
-        for (let i = 0; i < fileNames.length; i++) {
-            const fileName = fileNames[i];
+        for ( const fileName of fileNames) {
 
-            let docMetaDir = FilePaths.join(this.dataDir, fileName);
+            const docMetaDir = FilePaths.join(this.dataDir, fileName);
             const docMetaDirStat = await Files.statAsync(docMetaDir);
 
-            if(docMetaDirStat.isDirectory()) {
+            if (docMetaDirStat.isDirectory()) {
 
-                let stateFile = FilePaths.join(this.dataDir, fileName, 'state.json');
+                const stateFile = FilePaths.join(this.dataDir, fileName, 'state.json');
 
-                let exists = await Files.existsAsync(stateFile);
+                const exists = await Files.existsAsync(stateFile);
                 if (exists) {
                     result.push({fingerprint: fileName});
                 }
@@ -166,28 +162,40 @@ export class DiskDatastore implements Datastore {
         return result;
     }
 
-    static getUserHome() {
+    public static getUserHome() {
 
         let result = process.env[(process.platform === 'win32') ? 'USERPROFILE' : 'HOME'];
 
-        if(!result) {
+        if (!result) {
             result = os.homedir();
         }
 
         return result;
     }
 
-    static getDataDir(): string {
+}
 
-        let dataDirs: (string | undefined | null)[] = [
-            process.env['POLAR_DATA_DIR'],
-            FilePaths.join(DiskDatastore.getUserHome(), ".polar")
-        ];
+export interface DataDir {
 
-        dataDirs = dataDirs.filter(current => isPresent(current));
+    /**
+     * The path to the data dir.
+     */
+    path: string | undefined | null;
 
-        return dataDirs[0]!;
+    /**
+     * How the data dir was configured.
+     */
+    strategy: 'env' | 'home';
 
-    }
+}
+
+export interface DataDirConfig {
+
+    path: string;
+
+    /**
+     * How the data dir was configured.
+     */
+    strategy: 'env' | 'home' | 'manual';
 
 }

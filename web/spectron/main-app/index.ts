@@ -8,17 +8,20 @@ import {BrowserWindowRegistry} from '../../js/electron/framework/BrowserWindowRe
 import {wait} from 'dom-testing-library';
 import {assert} from 'chai';
 import waitForExpect from 'wait-for-expect';
+import {Logger} from '../../js/logger/Logger';
+
+const log = Logger.create();
 
 async function createWindow(): Promise<BrowserWindow> {
 
-    let datastore: Datastore = new MemoryDatastore();
+    const datastore: Datastore = new MemoryDatastore();
 
     await datastore.init();
 
     await Logging.init();
 
-    let mainApp = new MainApp(datastore);
-    let {mainWindow} = await mainApp.start();
+    const mainApp = new MainApp(datastore);
+    const {mainWindow} = await mainApp.start();
 
     return mainWindow;
 
@@ -26,8 +29,10 @@ async function createWindow(): Promise<BrowserWindow> {
 
 SpectronMain2.create({windowFactory: createWindow}).run(async state => {
 
+    log.info("Waiting for repository to show...");
+
     await waitForExpect(() => {
-        let windows = BrowserWindowRegistry.tagged({name: 'app', value: 'repository'});
+        const windows = BrowserWindowRegistry.tagged({name: 'app', value: 'repository'});
         assert.ok(windows.length === 1);
 
     });

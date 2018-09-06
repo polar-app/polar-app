@@ -12,6 +12,7 @@ import fs from 'fs';
 import {Files} from '../util/Files';
 import {FilePaths} from '../util/FilePaths';
 import {Dictionaries} from '../util/Dictionaries';
+import {Directories} from './Directories';
 
 const rimraf = require('rimraf');
 
@@ -97,7 +98,7 @@ describe('DiskDatastore', function() {
 
     it("getDataDir", function() {
 
-        assert.notEqual(DiskDatastore.getDataDir(), null);
+        assert.notEqual(Directories.getDataDir(), null);
 
     });
 
