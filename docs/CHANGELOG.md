@@ -1,3 +1,12 @@
+# 1.0.0-beta135
+
+- Document Repository now supports the following features:
+
+    - flagging files 
+    - archiving files
+    - filtering files by flagged only
+    - filtering files to hide archived files.
+
 # 1.0.0-beta133
 
 - improved spectron tests
