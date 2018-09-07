@@ -12,7 +12,7 @@ import {Progress} from '../../../web/js/util/Progress';
 import {DocMetaRef} from '../../../web/js/datastore/DocMetaRef';
 import {ProgressBar} from '../../../web/js/ui/progress_bar/ProgressBar';
 import {Strings} from '../../../web/js/util/Strings';
-import Header = Electron.Header;
+import {number, string} from 'prop-types';
 
 const log = Logger.create();
 
@@ -47,41 +47,82 @@ class App<P> extends React.Component<{}, IAppState> {
 
             } );
 
-            this.state.data.push(...this.repoDocs);
-
-            this.setState(this.state);
+            this.doFilter();
 
         })().catch(err => log.error("Could not load disk store: ", err));
 
     }
 
-
-    public doFilterByTitle() {
-
-        const input = document.querySelector("#filter") as HTMLInputElement;
-
-        const filterText = input.value;
+    public doFilter() {
 
         const state: IAppState = Object.assign({}, this.state);
 
-        state.data = [];
+        state.data = this.doFilterDocs(this.repoDocs);
 
-        if (Strings.empty(filterText)) {
-            // no filter
-            state.data.push(...this.repoDocs);
-        } else {
+        setTimeout(() => {
 
-            const filteredDocDetails =
-                this.repoDocs.filter(current => current.title && current.title.toLowerCase().indexOf(filterText!.toLowerCase()) >= 0 );
+            // The react table will not update when I change the state from within
+            // the event listener
+            this.setState(state);
 
-            state.data.push(...filteredDocDetails);
+        }, 0);
+
+
+    }
+
+    private doFilterDocs(repoDocs: RepoDocInfo[]): RepoDocInfo[] {
+        repoDocs = this.doFilterByTitle(repoDocs);
+        repoDocs = this.doFilterFlaggedOnly(repoDocs);
+        repoDocs = this.doFilterHideArchived(repoDocs);
+        return repoDocs;
+    }
+
+
+    private doFilterByTitle(repoDocs: RepoDocInfo[]): RepoDocInfo[] {
+
+        const filterElement = document.querySelector("#filter_title") as HTMLInputElement;
+
+        const filterText = filterElement.value;
+
+        if (! Strings.empty(filterText)) {
+
+            return repoDocs.filter(current => current.title &&
+                                              current.title.toLowerCase().indexOf(filterText!.toLowerCase()) >= 0 );
 
         }
 
-
-        this.setState(state);
+        return repoDocs;
 
     }
+
+    private doFilterFlaggedOnly(repoDocs: RepoDocInfo[]): RepoDocInfo[] {
+
+        const filterElement = document.querySelector("#filter_flagged") as HTMLInputElement;
+
+        if (filterElement.checked) {
+            return repoDocs.filter(current => current.flagged);
+        }
+
+        return repoDocs;
+
+    }
+
+
+
+    private doFilterHideArchived(repoDocs: RepoDocInfo[]): RepoDocInfo[] {
+
+        const filterElement = document.querySelector("#filter_archived") as HTMLInputElement;
+
+        if (filterElement.checked) {
+            log.info("Applying archived filter");
+
+            return repoDocs.filter(current => !current.archived);
+        }
+
+        return repoDocs;
+
+    }
+
 
     public highlightRow(selected: number) {
 
@@ -113,8 +154,7 @@ class App<P> extends React.Component<{}, IAppState> {
             repoDocInfo.flagged = !repoDocInfo.flagged;
         }
 
-
-        this.setState(this.state);
+        this.doFilter();
 
     }
 
@@ -123,6 +163,7 @@ class App<P> extends React.Component<{}, IAppState> {
         return (
 
             <div id="doc-repository">
+
 
                 <header>
 
@@ -135,8 +176,40 @@ class App<P> extends React.Component<{}, IAppState> {
                     </div>
 
                     <div id="header-filter">
-                        <input id="filter" type="text" placeholder="Filter by title" onChange={() => this.doFilterByTitle()}/>
+
+                        <div className="header-filter-boxes">
+
+                            <div className="header-filter-box">
+                                <div className="checkbox-group">
+                                    <input id="filter_flagged"
+                                           type="checkbox"
+                                           onChange={() => this.doFilter()}/>
+                                    <label htmlFor="filter_flagged">flagged only</label>
+                                </div>
+                            </div>
+
+                            <div className="header-filter-box">
+                                <div className="checkbox-group">
+                                    <input id="filter_archived"
+                                           defaultChecked
+                                           type="checkbox"
+                                           onChange={() => this.doFilter()}/>
+
+                                    <label htmlFor="filter_archived">hide archived</label>
+                                </div>
+                            </div>
+
+                            <div className="header-filter-box">
+                                <input id="filter_title"
+                                       type="text"
+                                       placeholder="Filter by title"
+                                       onChange={() => this.doFilter()}/>
+                            </div>
+
+                        </div>
+
                     </div>
+
 
                 </header>
 
@@ -267,13 +340,6 @@ class App<P> extends React.Component<{}, IAppState> {
                             return {
 
                                 onClick: ((e: any, handleOriginal?: () => void) => {
-                                    console.log("Cell - clicked", {
-                                        state,
-                                        rowInfo,
-                                        column,
-                                        instance,
-                                        event: e
-                                    });
 
                                     this.handleToggleField(rowInfo.original, column.id);
 
@@ -286,18 +352,6 @@ class App<P> extends React.Component<{}, IAppState> {
                             };
 
                         }
-                        //
-                        // return {
-                        //     onMouseEnter: ((e: any) => {
-                        //         console.log("Cell - onMouseEnter", {
-                        //             state,
-                        //             rowInfo,
-                        //             column,
-                        //             instance,
-                        //             event: e
-                        //         });
-                        //     })
-                        // };
 
                         return {};
 
