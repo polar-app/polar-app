@@ -1,4 +1,3 @@
-# 1.0.0-beta135
 
 - Document Repository now supports the following features:
 

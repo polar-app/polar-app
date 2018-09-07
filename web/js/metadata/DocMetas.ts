@@ -10,6 +10,7 @@ import {MetadataSerializer} from './MetadataSerializer';
 import {PageMetas} from './PageMetas';
 import {forDict} from '../util/Functions';
 import {TextHighlights} from './TextHighlights';
+import {Preconditions} from '../Preconditions';
 
 const log = Logger.create();
 
@@ -105,6 +106,8 @@ export class DocMetas {
      * @return {DocMeta}
      */
     public static deserialize(data: string): DocMeta {
+
+        Preconditions.assertPresent(data, 'data');
 
         if (! (typeof data === "string")) {
             throw new Error("We can only deserialize strings: " + typeof data);

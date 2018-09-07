@@ -132,7 +132,7 @@ export class Preconditions {
 
     }
 
-    static assertNotInstanceOf<T>(value: T, name: string, instance: any): T {
+    public static assertNotInstanceOf<T>(value: T, name: string, instance: any): T {
 
         if (value instanceof instance) {
             throw new Error(`Precondition for instanceof '${name}' was ${instance} but not allowed`);
@@ -145,16 +145,15 @@ export class Preconditions {
     /**
      * Use a default value if one is not specified.
      *
-     * @param currentValue
-     * @param defaultValue
+     *
      */
-    static defaultValue<T>(currentValue: T, defaultValue: T): T {
+    public static defaultValue<T>(argCurrentValue: T, argDefaultValue: T): T {
 
-        if(! currentValue) {
-            return defaultValue;
+        if(! argCurrentValue) {
+            return argDefaultValue;
         }
 
-        return currentValue;
+        return argCurrentValue;
 
     }
 
@@ -163,7 +162,7 @@ export class Preconditions {
      *
      * @param val
      */
-    static isPresent(val: any): boolean {
+    public static isPresent(val: any): boolean {
         return val !== undefined && val !== null;
     }
 
@@ -173,8 +172,10 @@ interface AssertionFunction<T> {
     (val: T): boolean
 }
 
-export function defaultValue<T>(currentValue: T, defaultValue: T): T {
-    return Preconditions.defaultValue(currentValue, defaultValue);
+
+// noinspection TsLint: variable-name
+export function defaultValue<T>(_currentValue: T, _defaultValue: T): T {
+    return Preconditions.defaultValue(_currentValue, _defaultValue);
 }
 
 export function notNull<T>(value: T | null, name?: string): NonNullable<T> {
@@ -185,5 +186,3 @@ export function isPresent(val: any): boolean {
     return Preconditions.isPresent(val);
 }
 
-
-//export { Preconditions.defaultValue as defaultValue };
