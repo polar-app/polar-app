@@ -19,6 +19,7 @@ SpectronRenderer.run(async () => {
 
     const advertisingPersistenceLayer = new AdvertisingPersistenceLayer(persistenceLayer);
 
+    await advertisingPersistenceLayer.init();
     await advertisingPersistenceLayer.syncDocMeta(docMeta);
 
 });
