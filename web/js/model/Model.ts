@@ -1,18 +1,18 @@
+import {DocMeta} from '../metadata/DocMeta';
+import {DocMetas} from '../metadata/DocMetas';
+import {Reactor} from '../reactor/Reactor';
+import {PagemarkType} from '../metadata/PagemarkType';
+import {Preconditions} from '../Preconditions';
+import {Pagemarks} from '../metadata/Pagemarks';
+import {Objects} from '../util/Objects';
+import {DocMetaDescriber} from '../metadata/DocMetaDescriber';
+import {Logger} from '../logger/Logger';
+import {TraceEvent} from '../proxies/TraceEvent';
+import {Batcher} from '../datastore/batcher/Batcher';
+import {IListenablePersistenceLayer} from '../datastore/IListenablePersistenceLayer';
+import {ModelPersisterFactory} from './ModelPersisterFactory';
 
-import {DocMeta} from './metadata/DocMeta';
-import {DocMetas} from './metadata/DocMetas';
-import {Reactor} from './reactor/Reactor';
-import {PagemarkType} from './metadata/PagemarkType';
-import {Preconditions} from './Preconditions';
-import {Pagemarks} from './metadata/Pagemarks';
-import {Objects} from './util/Objects';
-import {DocMetaDescriber} from './metadata/DocMetaDescriber';
-import {Logger} from './logger/Logger';
-import {TraceEvent} from './proxies/TraceEvent';
-import {Batcher} from './datastore/batcher/Batcher';
-import {IPersistenceLayer} from './datastore/IPersistenceLayer';
-
-const {Proxies} = require("./proxies/Proxies");
+const {Proxies} = require("../proxies/Proxies");
 
 const log = Logger.create();
 
@@ -20,21 +20,24 @@ const NULL_DOC_META = DocMetas.create('0x0001', 0);
 
 export class Model {
 
-    private readonly persistenceLayer: IPersistenceLayer;
-
     // TODO: we should probably not set this via a global as it might not
     // be loaded yet and / or might be invalidated if the document is closed.
     //
     // TODO: we create a fake document which is eventually replaced.
-    docMeta: DocMeta = NULL_DOC_META;
+    public docMeta: DocMeta = NULL_DOC_META;
 
-    reactor: any; // TODO: type
+    private readonly persistenceLayer: IListenablePersistenceLayer;
 
-    docMetaPromise: Promise<DocMeta> = Promise.resolve(NULL_DOC_META);
+    private readonly modelPersisterFactory: ModelPersisterFactory;
 
-    constructor(persistenceLayer: IPersistenceLayer) {
+    private reactor: Reactor<any>;
+
+    private docMetaPromise: Promise<DocMeta> = Promise.resolve(NULL_DOC_META);
+
+    constructor(persistenceLayer: IListenablePersistenceLayer) {
 
         this.persistenceLayer = persistenceLayer;
+        this.modelPersisterFactory = new ModelPersisterFactory(persistenceLayer);
 
         this.reactor = new Reactor();
         this.reactor.registerEvent('documentLoaded');
@@ -46,7 +49,7 @@ export class Model {
     /**
      * Called when a new document has been loaded.
      */
-    async documentLoaded(fingerprint: string, nrPages: number, currentPageNumber: number) {
+    public async documentLoaded(fingerprint: string, nrPages: number, currentPageNumber: number) {
 
         let docMeta: DocMeta | undefined;
 
@@ -75,47 +78,27 @@ export class Model {
         log.info("Description of doc loaded: " + DocMetaDescriber.describe(this.docMeta));
         log.info("Document loaded: ", fingerprint);
 
-        let batcher = new Batcher(async () => {
+        const modelPersister = this.modelPersisterFactory.create(docMeta);
 
-            // right now we just sync the datastore on mutation.  We do not
-            // attempt to use a journal yet.
-
-            await this.persistenceLayer.sync(this.docMeta.docInfo.fingerprint, this.docMeta);
-
-        });
-
-        this.docMeta = Proxies.create(this.docMeta, (traceEvent: TraceEvent) => {
-
-            log.info(`sync of persistence layer via deep trace due to path ${traceEvent.path} and property ${traceEvent.property}"`);
-
-            setTimeout(() => {
-
-                // use setTimeout so that we function in the same thread which
-                // avoids concurrency issues with the batcher.
-
-                batcher.enqueue().run()
-                    .catch(err => log.error("Unable to commit to disk: ", err));
-
-            }, 0);
-
-            return true;
-
-        });
+        this.docMeta = modelPersister.docMeta;
 
         // always provide this promise for the metadata.  For NEW documents
         // we have to provide the promise but we ALSO have to provide it
         // to swap out the docMeta with the right version.
         this.docMetaPromise = Promise.resolve(docMeta);
 
-        // TODO: make this into an object..
-        let documentLoadedEvent = {fingerprint, nrPages, currentPageNumber, docMeta: this.docMeta};
-        this.reactor.dispatchEvent('documentLoaded', documentLoadedEvent);
+        this.reactor.dispatchEvent('documentLoaded', {
+            fingerprint,
+            nrPages,
+            currentPageNumber,
+            docMeta: this.docMeta
+        });
 
         return this.docMeta;
 
     }
 
-    registerListenerForDocumentLoaded(eventListener: DocumentLoadedCallback) {
+    public registerListenerForDocumentLoaded(eventListener: DocumentLoadedCallback) {
         this.reactor.addEventListener('documentLoaded', eventListener);
     }
 
@@ -125,9 +108,9 @@ export class Model {
      * @param pageNum The page num to use for our created pagemark.
      * @param options Options for creating the pagemark.
      */
-    async createPagemark(pageNum: number, options: any = {}) {
+    public async createPagemark(pageNum: number, options: any = {}) {
 
-        if(!options.percentage) {
+        if (!options.percentage) {
             options.percentage = 100;
         }
 

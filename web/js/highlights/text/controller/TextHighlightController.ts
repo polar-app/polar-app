@@ -1,4 +1,4 @@
-import {Model} from '../../../Model';
+import {Model} from '../../../model/Model';
 import {TriggerEvent} from '../../../contextmenu/TriggerEvent';
 import {ipcRenderer} from 'electron';
 import {Logger} from '../../../logger/Logger';

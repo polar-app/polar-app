@@ -1,4 +1,4 @@
-import {Model} from '../Model';
+import {Model} from '../model/Model';
 import {View} from './View';
 import {DocFormatFactory} from '../docformat/DocFormatFactory';
 import {DocFormat} from '../docformat/DocFormat';

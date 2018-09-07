@@ -1,6 +1,6 @@
 import {DocFormatFactory} from '../docformat/DocFormatFactory';
 import {Logger} from '../logger/Logger';
-import {DocumentLoadedEvent, Model} from '../Model';
+import {DocumentLoadedEvent, Model} from '../model/Model';
 import {ContainerProvider} from './containers/providers/ContainerProvider';
 import {Component} from './Component';
 import {DocMetaModel} from '../metadata/DocMetaModel';

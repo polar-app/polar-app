@@ -1,5 +1,5 @@
 
-import {Model} from '../../Model';
+import {Model} from '../../model/Model';
 import {ComponentManager} from '../../components/ComponentManager';
 import {DefaultContainerProvider} from '../../components/containers/providers/impl/DefaultContainerProvider';
 import {PagemarkModel} from '../model/PagemarkModel';

@@ -1,4 +1,4 @@
-import {Model} from '../Model';
+import {Model} from '../model/Model';
 import {DocFormats} from '../docformat/DocFormats';
 import {HTMLViewer} from './html/HTMLViewer';
 import {PDFViewer} from './pdf/PDFViewer';

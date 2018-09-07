@@ -6,13 +6,7 @@ import {RepoDocInfo} from './RepoDocInfo';
 export class RepoDocInfos {
 
     public static isValid(repoDocInfo: RepoDocInfo) {
-
-        if (isPresent(repoDocInfo.filename)) {
-            return true;
-        } else {
-            return false;
-        }
-
+        return isPresent(repoDocInfo.filename);
     }
 
     public static convertFromDocInfo(docInfo: IDocInfo): RepoDocInfo {

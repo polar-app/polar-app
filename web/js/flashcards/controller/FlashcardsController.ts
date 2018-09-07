@@ -1,5 +1,5 @@
 import {Logger} from "../../logger/Logger";
-import {Model} from '../../Model';
+import {Model} from '../../model/Model';
 import {IPCEngines} from '../../ipc/handler/IPCEngines';
 import {CreateAnnotationHandler} from './handlers/CreateAnnotationHandler';
 

@@ -1,5 +1,5 @@
 import {ipcRenderer} from 'electron';
-import {Model} from '../Model';
+import {Model} from '../model/Model';
 import {Elements} from '../util/Elements';
 import {ContextMenuType, ContextMenuTypes} from './ContextMenuType';
 import {MatchingSelector} from './MatchingSelector';

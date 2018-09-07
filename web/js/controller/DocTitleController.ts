@@ -1,7 +1,7 @@
 /**
  * Handles attaching events to the title UI and prompting for new titles.
  */
-import {DocumentLoadedEvent, Model} from '../Model';
+import {DocumentLoadedEvent, Model} from '../model/Model';
 import {Strings} from '../util/Strings';
 import {Logger} from '../logger/Logger';
 import {Toaster} from '../toaster/Toaster';

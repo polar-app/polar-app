@@ -1,48 +1,49 @@
 import {FlashcardsController} from './FlashcardsController';
-import {Model} from '../../Model';
+import {Model} from '../../model/Model';
 import {TestingTime} from '../../test/TestingTime';
 import {MemoryDatastore} from '../../datastore/MemoryDatastore';
 import {DefaultPersistenceLayer} from '../../datastore/DefaultPersistenceLayer';
 import {DocMetas} from '../../metadata/DocMetas';
+import {AdvertisingPersistenceLayer} from '../../datastore/advertiser/AdvertisingPersistenceLayer';
 
 const assert = require('assert');
 
 TestingTime.freeze();
 
 describe('FlashcardsControllerTest', function() {
-
-    /**
-     */
-    let flashcardsController: FlashcardsController;
-    let model: Model;
-
-    beforeEach(function(done) {
-
-        // needed because by default mocha won't print the err
-        (async function() {
-
-            let memoryDatastore = new MemoryDatastore();
-            let persistenceLayer = new DefaultPersistenceLayer(memoryDatastore);
-
-            model = new Model(persistenceLayer);
-            flashcardsController = new FlashcardsController(model);
-
-            // create some fake DocMeta and trigger it in the model..D
-
-            let docMeta = DocMetas.createMockDocMeta();
-
-            console.log("Testing with docMeta: ", JSON.stringify(docMeta, null, "  "));
-
-            await persistenceLayer.init();
-
-            await persistenceLayer.syncDocMeta(docMeta);
-
-            await model.documentLoaded(docMeta.docInfo.fingerprint, docMeta.docInfo.nrPages, 1);
-
-        })().then(()=> done())
-            .catch((err) => done(err));
-
-    });
+    //
+    // /**
+    //  */
+    // let flashcardsController: FlashcardsController;
+    // let model: Model;
+    //
+    // beforeEach(function(done) {
+    //
+    //     // needed because by default mocha won't print the err
+    //     (async function() {
+    //
+    //         let memoryDatastore = new MemoryDatastore();
+    //         let persistenceLayer = new AdvertisingPersistenceLayer(new DefaultPersistenceLayer(memoryDatastore));
+    //
+    //         model = new Model(persistenceLayer);
+    //         flashcardsController = new FlashcardsController(model);
+    //
+    //         // create some fake DocMeta and trigger it in the model..D
+    //
+    //         let docMeta = DocMetas.createMockDocMeta();
+    //
+    //         console.log("Testing with docMeta: ", JSON.stringify(docMeta, null, "  "));
+    //
+    //         await persistenceLayer.init();
+    //
+    //         await persistenceLayer.syncDocMeta(docMeta);
+    //
+    //         await model.documentLoaded(docMeta.docInfo.fingerprint, docMeta.docInfo.nrPages, 1);
+    //
+    //     })().then(()=> done())
+    //         .catch((err) => done(err));
+    //
+    // });
 
 });
 

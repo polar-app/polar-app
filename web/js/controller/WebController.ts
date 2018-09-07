@@ -1,4 +1,4 @@
-import {Model} from '../Model';
+import {Model} from '../model/Model';
 import {isPresent, notNull, Preconditions} from '../Preconditions';
 import {DocFormatFactory} from '../docformat/DocFormatFactory';
 import {ContextMenuController} from '../contextmenu/ContextMenuController';

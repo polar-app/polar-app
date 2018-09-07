@@ -2,7 +2,7 @@ import $ from '../../ui/JQuery';
 import {Viewer} from '../Viewer';
 import {Logger} from '../../logger/Logger';
 import {notNull} from '../../Preconditions';
-import {Model} from '../../Model';
+import {Model} from '../../model/Model';
 import {PHZMetadata} from '../../phz/PHZMetadata';
 import {DocDetail} from '../../metadata/DocDetail';
 import {LinkHandler} from './LinkHandler';

@@ -1,4 +1,4 @@
-import {Model} from '../../../Model';
+import {Model} from '../../../model/Model';
 import {DocFormat} from '../../../docformat/DocFormat';
 import {Logger} from '../../../logger/Logger';
 import {Preconditions} from '../../../Preconditions';

@@ -1,4 +1,4 @@
-import {Model} from '../Model';
+import {Model} from '../model/Model';
 import {ViewerFactory} from '../viewer/ViewerFactory';
 import {WebController} from '../controller/WebController';
 import {Logger} from '../logger/Logger';
@@ -6,6 +6,7 @@ import {Logging} from '../logger/Logging';
 import {WebView} from '../view/WebView';
 import {PagemarkView} from '../pagemarks/view/PagemarkView';
 import {IPersistenceLayer} from '../datastore/IPersistenceLayer';
+import {IListenablePersistenceLayer} from '../datastore/IListenablePersistenceLayer';
 
 const {TextHighlightView2} = require("../highlights/text/view/TextHighlightView2");
 const {AreaHighlightView} = require("../highlights/area/view/AreaHighlightView");
@@ -32,20 +33,20 @@ export class Launcher {
     /**
      * Trigger the launch function.
      */
-    async trigger() {
+    public async trigger() {
 
-        let persistenceLayer = await this.persistenceLayerFactory();
+        const persistenceLayer = await this.persistenceLayerFactory();
         await persistenceLayer.init();
 
         await Logging.init();
 
-        let model = new Model(persistenceLayer);
+        const model = new Model(persistenceLayer);
         new WebView(model).start();
         new TextHighlightView2(model).start();
         new AreaHighlightView(model).start();
         new PagemarkView(model).start();
 
-        let viewer = ViewerFactory.create(model);
+        const viewer = ViewerFactory.create(model);
         viewer.start();
 
         log.info("Stash dir: ", persistenceLayer.stashDir);
@@ -55,7 +56,7 @@ export class Launcher {
 
     }
 
-    async launch() {
+    public async launch() {
 
         if (document.readyState === "interactive" || document.readyState === "complete") {
             log.info("Already completed loading.");
@@ -69,6 +70,4 @@ export class Launcher {
 
 }
 
-export interface PersistenceLayerFactory {
-    (): Promise<IPersistenceLayer>;
-}
+export type PersistenceLayerFactory = () => Promise<IListenablePersistenceLayer>;

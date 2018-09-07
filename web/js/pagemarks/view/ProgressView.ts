@@ -1,4 +1,4 @@
-import {Model} from '../../Model';
+import {Model} from '../../model/Model';
 import {Logger} from '../../logger/Logger';
 import {forDict} from '../../util/Functions';
 import {DocMetaDescriber} from '../../metadata/DocMetaDescriber';

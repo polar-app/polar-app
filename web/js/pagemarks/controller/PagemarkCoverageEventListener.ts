@@ -1,5 +1,5 @@
 import {WebController} from '../../controller/WebController';
-import {Model} from '../../Model';
+import {Model} from '../../model/Model';
 import {DocFormat} from '../../docformat/DocFormat';
 import {Logger} from '../../logger/Logger';
 import {DocFormatFactory} from '../../docformat/DocFormatFactory';

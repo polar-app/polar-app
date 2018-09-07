@@ -1,6 +1,6 @@
 import {TriggerEvent} from '../contextmenu/TriggerEvent';
 import {Logger} from '../logger/Logger';
-import {Model} from '../Model';
+import {Model} from '../model/Model';
 import {Strings} from '../util/Strings';
 import {Toaster} from '../toaster/Toaster';
 import {DialogWindowClient} from '../ui/dialog_window/DialogWindowClient';

@@ -1,4 +1,4 @@
-import {Model} from '../../Model';
+import {Model} from '../../model/Model';
 import {DocFormatFactory} from '../../docformat/DocFormatFactory';
 import {DocFormat} from '../../docformat/DocFormat';
 import {TriggerEvent} from '../../contextmenu/TriggerEvent';
