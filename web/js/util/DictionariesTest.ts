@@ -1,6 +1,8 @@
 import {Dictionaries} from './Dictionaries';
 import {assertJSON} from '../test/Assertions';
 
+import * as _ from "lodash";
+
 describe('Dictionaries', function() {
 
     it("basic", async function () {
@@ -57,6 +59,25 @@ describe('Dictionaries', function() {
         assertJSON(Dictionaries.sorted(dict), expected);
 
     });
+
+    // it("toDict", function() {
+    //
+    //     interface Name {
+    //         first: string;
+    //         last: string;
+    //     }
+    //
+    //     const names: Name[] = [
+    //         { first: 'alice', last: 'smith' },
+    //         { first: 'bob', last: 'smith' },
+    //     ];
+    //
+    //     _.chain(names)
+    //         .reduce((accumulator: any, value: any, initial: any) => {
+    //         console.log("here");
+    //     }).value();
+    //
+    // });
 
 });
 

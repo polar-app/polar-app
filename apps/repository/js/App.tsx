@@ -2,25 +2,25 @@ import * as React from 'react';
 import ReactTable from "react-table";
 import {Footer, Tips} from './Utils';
 import {Logger} from '../../../web/js/logger/Logger';
-import {DefaultPersistenceLayer} from '../../../web/js/datastore/DefaultPersistenceLayer';
-import {isPresent} from '../../../web/js/Preconditions';
-import {Optional} from '../../../web/js/util/ts/Optional';
 import {DocLoader} from '../../../web/js/apps/main/ipc/DocLoader';
-import {Datastores} from '../../../web/js/datastore/Datastores';
-import {Datastore} from '../../../web/js/datastore/Datastore';
 import {Progress} from '../../../web/js/util/Progress';
-import {DocMetaRef} from '../../../web/js/datastore/DocMetaRef';
-import {ProgressBar} from '../../../web/js/ui/progress_bar/ProgressBar';
 import {Strings} from '../../../web/js/util/Strings';
+import {IListenablePersistenceLayer} from '../../../web/js/datastore/IListenablePersistenceLayer';
+import {RepoDocInfoLoader} from './RepoDocInfoLoader';
+// noinspection TsLint: max-line-length
+import {ElectronRendererPersistenceLayerFactory} from '../../../web/js/datastore/ElectronRendererPersistenceLayerFactory';
+import {IAppState} from './IAppState';
+import {RepoDocInfoIndex} from './RepoDocInfoIndex';
 
 const log = Logger.create();
 
-class App<P> extends React.Component<{}, IAppState> {
+export default class App<P> extends React.Component<{}, IAppState> {
 
-    private datastore?: Datastore;
-    private persistenceLayer?: DefaultPersistenceLayer;
+    private persistenceLayer?: IListenablePersistenceLayer;
 
-    private repoDocs: RepoDocInfo[] = [];
+    private repoDocInfoLoader?: RepoDocInfoLoader;
+
+    private repoDocs: RepoDocInfoIndex = {};
 
     constructor(props: P, context: any) {
         super(props, context);
@@ -32,19 +32,7 @@ class App<P> extends React.Component<{}, IAppState> {
         (async () => {
 
             await this.init();
-            this.repoDocs = await this.load();
-
-            this.repoDocs = this.repoDocs.filter(current => {
-
-                if (isPresent(current.filename)) {
-                    return true;
-                } else {
-                    // log.warn("Document filtered from repository view due to no filename: ",
-                    //         current.fingerprint);
-                    return false;
-                }
-
-            } );
+            this.repoDocs = await this.repoDocInfoLoader!.load();
 
             this.doFilter();
 
@@ -56,7 +44,7 @@ class App<P> extends React.Component<{}, IAppState> {
 
         const state: IAppState = Object.assign({}, this.state);
 
-        state.data = this.doFilterDocs(this.repoDocs);
+        state.data = this.filterRepoDocInfos(Object.values(this.repoDocs));
 
         setTimeout(() => {
 
@@ -69,7 +57,7 @@ class App<P> extends React.Component<{}, IAppState> {
 
     }
 
-    private doFilterDocs(repoDocs: RepoDocInfo[]): RepoDocInfo[] {
+    private filterRepoDocInfos(repoDocs: RepoDocInfo[]): RepoDocInfo[] {
         repoDocs = this.doFilterByTitle(repoDocs);
         repoDocs = this.doFilterFlaggedOnly(repoDocs);
         repoDocs = this.doFilterHideArchived(repoDocs);
@@ -132,7 +120,7 @@ class App<P> extends React.Component<{}, IAppState> {
 
     }
 
-    public loadDocument(fingerprint: string, filename: string ) {
+    private onDocumentLoadRequested(fingerprint: string, filename: string ) {
 
         DocLoader.load({
             fingerprint,
@@ -149,7 +137,6 @@ class App<P> extends React.Component<{}, IAppState> {
         }
 
         if (field === 'flagged') {
-            console.log("toggled");
             repoDocInfo.flagged = !repoDocInfo.flagged;
         }
 
@@ -323,7 +310,7 @@ class App<P> extends React.Component<{}, IAppState> {
                             },
 
                             onDoubleClick: (e: any) => {
-                                this.loadDocument(rowInfo.original.fingerprint, rowInfo.original.filename);
+                                this.onDocumentLoadRequested(rowInfo.original.fingerprint, rowInfo.original.filename);
                             },
 
                             style: {
@@ -368,111 +355,9 @@ class App<P> extends React.Component<{}, IAppState> {
 
     private async init(): Promise<void> {
 
-        let datastore: Datastore;
-        let persistenceLayer: DefaultPersistenceLayer;
-
-        this.datastore = datastore = Datastores.create();
-        this.persistenceLayer = persistenceLayer = new DefaultPersistenceLayer(datastore);
-
-        await datastore.init();
-
-        await persistenceLayer.init();
+        this.persistenceLayer = await ElectronRendererPersistenceLayerFactory.create();
+        this.repoDocInfoLoader = new RepoDocInfoLoader(this.persistenceLayer);
 
     }
 
-    private async load(): Promise<RepoDocInfo[]> {
-
-        const result: RepoDocInfo[] = [];
-
-        const docMetaFiles = await this.datastore!.getDocMetaFiles();
-
-        const progress = new Progress(docMetaFiles.length);
-
-        const progressBar = ProgressBar.create(false);
-
-        for (let i = 0; i < docMetaFiles.length; i++) {
-            const docMetaFile = docMetaFiles[i];
-
-            const repoDocInfo = await this.loadDocMeta(docMetaFile);
-            if (repoDocInfo) {
-                result.push(repoDocInfo);
-            }
-
-            progress.incr();
-            progressBar.update(progress.percentage());
-
-        }
-
-        progressBar.destroy();
-
-        return result;
-
-    }
-
-    private async loadDocMeta(docMetaFile: DocMetaRef): Promise<RepoDocInfo | undefined> {
-
-        const docMeta = await this.persistenceLayer!.getDocMeta(docMetaFile.fingerprint);
-
-        if (docMeta !== undefined) {
-
-            if (docMeta.docInfo) {
-
-                return {
-
-                    fingerprint: docMetaFile.fingerprint,
-
-                    // TODO: we should map this to also filter out '' and ' '
-                    // from the list of strings.
-                    title: Optional.first(docMeta.docInfo.title,
-                                          docMeta.docInfo.filename)
-                        .getOrElse('Untitled'),
-
-                    progress: Optional.of(docMeta.docInfo.progress)
-                        .getOrElse(0),
-
-                    filename: Optional.of(docMeta.docInfo.filename)
-                        .getOrUndefined(),
-
-                    added: Optional.of(docMeta.docInfo.added)
-                        .map(current => {
-
-                            // this is a pragmatic workaround for JSON
-                            // serialization issues with typescript.
-
-                            if ( typeof current === 'string') {
-                                return current;
-                            }
-
-                            return current.value;
-
-                        })
-                        .getOrUndefined(),
-
-                    flagged: false,
-                    archived: false,
-
-                };
-
-            } else {
-                log.warn("No docInfo for file: ", docMetaFile.fingerprint);
-            }
-
-        } else {
-            log.warn("No DocMeta for fingerprint: " + docMetaFile.fingerprint);
-        }
-
-        return undefined;
-
-    }
 }
-
-export default App;
-
-interface IAppState {
-
-    // docs: DocDetail[];
-
-    data: RepoDocInfo[];
-    selected?: number;
-}
-

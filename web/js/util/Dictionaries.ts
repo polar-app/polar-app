@@ -21,12 +21,12 @@ export class Dictionaries {
      * @param dict
      * @param callback
      */
-    static forDict<T>(dict: {[key: string]: T}, callback: ForDictCallbackFunction<T> ) {
+    public static forDict<T>(dict: {[key: string]: T}, callback: ForDictCallbackFunction<T> ) {
 
         Preconditions.assertNotNull(dict, "dict");
         Preconditions.assertNotNull(callback, "callback");
 
-        for(let key in dict) {
+        for(const key in dict) {
 
             if(dict.hasOwnProperty(key)) {
                 let value = dict[key];
@@ -90,6 +90,20 @@ export class Dictionaries {
 
     }
 
+    /**
+     * Easily convert an array to a dict.
+     */
+    public static toDict<V>(values: V[], converter: (value: V) => string): {[key: string]: V} {
+
+        const result: {[key: string]: V} = {};
+
+        values.forEach(value => {
+            result[converter(value)] = value;
+        });
+
+        return result;
+
+    }
 
 }
 
