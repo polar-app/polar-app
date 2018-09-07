@@ -11,6 +11,9 @@ import {RepoDocInfoLoader} from './RepoDocInfoLoader';
 import {ElectronRendererPersistenceLayerFactory} from '../../../web/js/datastore/ElectronRendererPersistenceLayerFactory';
 import {IAppState} from './IAppState';
 import {RepoDocInfoIndex} from './RepoDocInfoIndex';
+import {RepoDocInfo} from './RepoDocInfo';
+import {RepoDocInfos} from './RepoDocInfos';
+import {RepositoryUpdater} from './RepositoryUpdater';
 
 const log = Logger.create();
 
@@ -19,6 +22,8 @@ export default class App<P> extends React.Component<{}, IAppState> {
     private persistenceLayer?: IListenablePersistenceLayer;
 
     private repoDocInfoLoader?: RepoDocInfoLoader;
+
+    private repositoryUpdater?: RepositoryUpdater;
 
     private repoDocs: RepoDocInfoIndex = {};
 
@@ -34,17 +39,21 @@ export default class App<P> extends React.Component<{}, IAppState> {
             await this.init();
             this.repoDocs = await this.repoDocInfoLoader!.load();
 
-            this.doFilter();
+            this.refresh();
 
         })().catch(err => log.error("Could not load disk store: ", err));
 
     }
 
-    public doFilter() {
+    public refresh() {
+        this.refreshState(this.filterRepoDocInfos(Object.values(this.repoDocs)));
+    }
+
+    private refreshState(repoDocs: RepoDocInfo[]) {
 
         const state: IAppState = Object.assign({}, this.state);
 
-        state.data = this.filterRepoDocInfos(Object.values(this.repoDocs));
+        state.data = repoDocs;
 
         setTimeout(() => {
 
@@ -53,7 +62,6 @@ export default class App<P> extends React.Component<{}, IAppState> {
             this.setState(state);
 
         }, 0);
-
 
     }
 
@@ -130,17 +138,21 @@ export default class App<P> extends React.Component<{}, IAppState> {
 
     }
 
-    private handleToggleField(repoDocInfo: RepoDocInfo, field: string) {
+    private async handleToggleField(repoDocInfo: RepoDocInfo, field: string) {
 
         if (field === 'archived') {
             repoDocInfo.archived = !repoDocInfo.archived;
+            repoDocInfo.docInfo.archived = repoDocInfo.archived;
         }
 
         if (field === 'flagged') {
             repoDocInfo.flagged = !repoDocInfo.flagged;
+            repoDocInfo.docInfo.flagged = repoDocInfo.flagged;
         }
 
-        this.doFilter();
+        await this.repositoryUpdater!.sync(repoDocInfo.docInfo);
+
+        this.refresh();
 
     }
 
@@ -169,7 +181,7 @@ export default class App<P> extends React.Component<{}, IAppState> {
                                 <div className="checkbox-group">
                                     <input id="filter_flagged"
                                            type="checkbox"
-                                           onChange={() => this.doFilter()}/>
+                                           onChange={() => this.refresh()}/>
                                     <label htmlFor="filter_flagged">flagged only</label>
                                 </div>
                             </div>
@@ -179,7 +191,7 @@ export default class App<P> extends React.Component<{}, IAppState> {
                                     <input id="filter_archived"
                                            defaultChecked
                                            type="checkbox"
-                                           onChange={() => this.doFilter()}/>
+                                           onChange={() => this.refresh()}/>
 
                                     <label htmlFor="filter_archived">hide archived</label>
                                 </div>
@@ -189,7 +201,7 @@ export default class App<P> extends React.Component<{}, IAppState> {
                                 <input id="filter_title"
                                        type="text"
                                        placeholder="Filter by title"
-                                       onChange={() => this.doFilter()}/>
+                                       onChange={() => this.refresh()}/>
                             </div>
 
                         </div>
@@ -357,6 +369,19 @@ export default class App<P> extends React.Component<{}, IAppState> {
 
         this.persistenceLayer = await ElectronRendererPersistenceLayerFactory.create();
         this.repoDocInfoLoader = new RepoDocInfoLoader(this.persistenceLayer);
+        this.repositoryUpdater = new RepositoryUpdater(this.persistenceLayer);
+
+        this.persistenceLayer.addEventListener((event) => {
+
+            log.info("Received DocInfo update");
+
+            const repoDocInfo = RepoDocInfos.convertFromDocInfo(event.docInfo);
+
+            this.repoDocs[repoDocInfo.fingerprint] = repoDocInfo;
+
+            this.refresh();
+
+        });
 
     }
 

@@ -7,6 +7,7 @@ import {ProgressBar} from '../../../web/js/ui/progress_bar/ProgressBar';
 import {RepoDocInfoIndex} from './RepoDocInfoIndex';
 import {RepoDocInfos} from './RepoDocInfos';
 import {Dictionaries} from '../../../web/js/util/Dictionaries';
+import {RepoDocInfo} from './RepoDocInfo';
 
 const log = Logger.create();
 
@@ -35,41 +36,7 @@ export class RepoDocInfoLoader {
 
             if (docMeta.docInfo) {
 
-                return {
-
-                    fingerprint: docMetaFile.fingerprint,
-
-                    // TODO: we should map this to also filter out '' and ' '
-                    // from the list of strings.
-                    title: Optional.first(docMeta.docInfo.title,
-                                          docMeta.docInfo.filename)
-                        .getOrElse('Untitled'),
-
-                    progress: Optional.of(docMeta.docInfo.progress)
-                        .getOrElse(0),
-
-                    filename: Optional.of(docMeta.docInfo.filename)
-                        .getOrUndefined(),
-
-                    added: Optional.of(docMeta.docInfo.added)
-                        .map(current => {
-
-                            // this is a pragmatic workaround for JSON
-                            // serialization issues with typescript.
-
-                            if ( typeof current === 'string') {
-                                return current;
-                            }
-
-                            return current.value;
-
-                        })
-                        .getOrUndefined(),
-
-                    flagged: false,
-                    archived: false,
-
-                };
+                return RepoDocInfos.convertFromDocInfo(docMeta.docInfo);
 
             } else {
                 log.warn("No docInfo for file: ", docMetaFile.fingerprint);

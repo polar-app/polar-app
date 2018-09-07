@@ -1,3 +1,4 @@
+import {RepoDocInfo} from './RepoDocInfo';
 
 export interface IAppState {
 

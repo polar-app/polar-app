@@ -25,7 +25,7 @@ export class DocInfo extends SerializedObject implements IDocInfo {
     public filename?: string;
     public added?: ISODateTime;
 
-    constructor(val: DocInfo) {
+    constructor(val: any) {
 
         super(val);
 

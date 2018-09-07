@@ -2,8 +2,9 @@
  * Just like a DocDetail or DocInfo but designed to be used for in the UI so we
  * replace missing titles with Untitled and define other default values.
  */
+import {IDocInfo} from '../../../web/js/metadata/DocInfo';
 
-interface RepoDocInfo {
+export interface RepoDocInfo {
 
     fingerprint: string;
     title: string;
@@ -12,4 +13,12 @@ interface RepoDocInfo {
     added: string | undefined;
     flagged: boolean;
     archived: boolean;
+
+    /**
+     * The original DocInfo used to construct this RepoDocInfo.
+     */
+    docInfo: IDocInfo;
+
 }
+
+
