@@ -11,11 +11,11 @@ export class Broadcasters {
 
         const excludingIDs = excluding.map(current => current.id);
 
-        const browserWindows =
-            BrowserWindow.getAllWindows()
-                // now filter out the excluding windows so that we don't
-                // re-broadcast to them.
-                .filter(current => ! excludingIDs.includes(current.id));
+        let browserWindows = BrowserWindow.getAllWindows();
+
+        // now filter out the excluding windows so that we don't
+        // re-broadcast to them.
+        browserWindows = browserWindows.filter(current => ! excludingIDs.includes(current.id));
 
         browserWindows.forEach((window) => {
             window.webContents.send(channel, message);

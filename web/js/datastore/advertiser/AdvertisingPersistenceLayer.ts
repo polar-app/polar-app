@@ -81,7 +81,9 @@ export class AdvertisingPersistenceLayer implements IListenablePersistenceLayer 
             advertisementType = 'created';
         }
 
-        DocInfoAdvertiser.send({docInfo: docMeta.docInfo, advertisementType});
+        const docInfoAdvertisement = {docInfo: docMeta.docInfo, advertisementType};
+
+        DocInfoAdvertiser.send(docInfoAdvertisement);
 
         return result;
 

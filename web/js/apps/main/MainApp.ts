@@ -21,6 +21,7 @@ import {ScreenshotService} from '../../screenshots/ScreenshotService';
 import {MainAppService} from './ipc/MainAppService';
 import {AppLauncher} from './AppLauncher';
 import BrowserWindow = Electron.BrowserWindow;
+import {DocInfoBroadcasterService} from '../../datastore/advertiser/DocInfoBroadcasterService';
 
 declare var global: any;
 
@@ -95,6 +96,8 @@ export class MainApp {
         await dialogWindowService.start();
 
         const fileLoader = new AnalyticsFileLoader(mainWindow.webContents.getUserAgent(), defaultFileLoader);
+
+        await new DocInfoBroadcasterService().start();
 
         log.info("Running with process.args: ", JSON.stringify(process.argv));
 

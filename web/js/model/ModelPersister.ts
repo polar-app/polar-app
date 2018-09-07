@@ -3,6 +3,7 @@ import {IListenablePersistenceLayer} from '../datastore/IListenablePersistenceLa
 import {Batcher} from '../datastore/batcher/Batcher';
 import {TraceEvent} from '../proxies/TraceEvent';
 import {Logger} from '../logger/Logger';
+import {DocInfo} from '../metadata/DocInfo';
 
 const {Proxies} = require("../proxies/Proxies");
 
@@ -46,7 +47,8 @@ export class ModelPersister {
         });
 
         this.persistenceLayer.addEventListener(event => {
-
+            log.debug("Received updated DocInfo.");
+            this.docMeta.docInfo = new DocInfo(event.docInfo);
         });
 
     }
