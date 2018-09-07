@@ -1,11 +1,11 @@
 import {DocMeta} from '../../metadata/DocMeta';
-import {IPersistenceLayer} from '../PersistenceLayer';
 import {IPCMessage} from '../../ipc/handler/IPCMessage';
 import {DocMetaSync} from './DocMetaSync';
 import {MetadataSerializer} from '../../metadata/MetadataSerializer';
 import {Logger} from '../../logger/Logger';
 import {DocMetaFileRef, DocMetaRef} from '../DocMetaRef';
 import {DeleteResult} from '../DiskDatastore';
+import {IPersistenceLayer} from '../IPersistenceLayer';
 
 const log = Logger.create();
 

@@ -2,7 +2,7 @@ import * as React from 'react';
 import ReactTable from "react-table";
 import {Footer, Tips} from './Utils';
 import {Logger} from '../../../web/js/logger/Logger';
-import {PersistenceLayer} from '../../../web/js/datastore/PersistenceLayer';
+import {DefaultPersistenceLayer} from '../../../web/js/datastore/DefaultPersistenceLayer';
 import {isPresent} from '../../../web/js/Preconditions';
 import {Optional} from '../../../web/js/util/ts/Optional';
 import {DocLoader} from '../../../web/js/apps/main/ipc/DocLoader';
@@ -12,14 +12,13 @@ import {Progress} from '../../../web/js/util/Progress';
 import {DocMetaRef} from '../../../web/js/datastore/DocMetaRef';
 import {ProgressBar} from '../../../web/js/ui/progress_bar/ProgressBar';
 import {Strings} from '../../../web/js/util/Strings';
-import {number, string} from 'prop-types';
 
 const log = Logger.create();
 
 class App<P> extends React.Component<{}, IAppState> {
 
     private datastore?: Datastore;
-    private persistenceLayer?: PersistenceLayer;
+    private persistenceLayer?: DefaultPersistenceLayer;
 
     private repoDocs: RepoDocInfo[] = [];
 
@@ -370,10 +369,10 @@ class App<P> extends React.Component<{}, IAppState> {
     private async init(): Promise<void> {
 
         let datastore: Datastore;
-        let persistenceLayer: PersistenceLayer;
+        let persistenceLayer: DefaultPersistenceLayer;
 
         this.datastore = datastore = Datastores.create();
-        this.persistenceLayer = persistenceLayer = new PersistenceLayer(datastore);
+        this.persistenceLayer = persistenceLayer = new DefaultPersistenceLayer(datastore);
 
         await datastore.init();
 

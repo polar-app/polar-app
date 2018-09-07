@@ -1,8 +1,5 @@
-import {PersistenceLayer} from './PersistenceLayer';
+import {DefaultPersistenceLayer} from './DefaultPersistenceLayer';
 import {Logger} from '../logger/Logger';
-import {Datastore} from './Datastore';
-import {MemoryDatastore} from './MemoryDatastore';
-import {DiskDatastore} from './DiskDatastore';
 import {Datastores} from './Datastores';
 
 const log = Logger.create();
@@ -13,14 +10,14 @@ const log = Logger.create();
  */
 export class ElectronRendererPersistenceLayerFactory {
 
-    public static async create(): Promise<PersistenceLayer> {
+    public static async create(): Promise<DefaultPersistenceLayer> {
 
         log.info("Using persistence layer from renderer process.");
 
         let datastore = Datastores.create();
         await datastore.init();
 
-        return new PersistenceLayer(datastore);
+        return new DefaultPersistenceLayer(datastore);
 
     }
 

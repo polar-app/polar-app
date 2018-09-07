@@ -2,7 +2,7 @@ import {FlashcardsController} from './FlashcardsController';
 import {Model} from '../../Model';
 import {TestingTime} from '../../test/TestingTime';
 import {MemoryDatastore} from '../../datastore/MemoryDatastore';
-import {PersistenceLayer} from '../../datastore/PersistenceLayer';
+import {DefaultPersistenceLayer} from '../../datastore/DefaultPersistenceLayer';
 import {DocMetas} from '../../metadata/DocMetas';
 
 const assert = require('assert');
@@ -22,7 +22,7 @@ describe('FlashcardsControllerTest', function() {
         (async function() {
 
             let memoryDatastore = new MemoryDatastore();
-            let persistenceLayer = new PersistenceLayer(memoryDatastore);
+            let persistenceLayer = new DefaultPersistenceLayer(memoryDatastore);
 
             model = new Model(persistenceLayer);
             flashcardsController = new FlashcardsController(model);

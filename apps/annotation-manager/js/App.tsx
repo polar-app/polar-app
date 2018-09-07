@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {Logger} from '../../../web/js/logger/Logger';
 import {Datastore} from '../../../web/js/datastore/Datastore';
-import {PersistenceLayer} from '../../../web/js/datastore/PersistenceLayer';
+import {DefaultPersistenceLayer} from '../../../web/js/datastore/DefaultPersistenceLayer';
 import {Datastores} from '../../../web/js/datastore/Datastores';
 import {DocMeta} from '../../../web/js/metadata/DocMeta';
 import {Text} from '../../../web/js/metadata/Text';
@@ -17,7 +17,7 @@ const log = Logger.create();
 class App<P> extends React.Component<{}, IAppState> {
 
     private datastore?: Datastore;
-    private persistenceLayer?: PersistenceLayer;
+    private persistenceLayer?: DefaultPersistenceLayer;
 
     constructor(props: P, context: any) {
         super(props, context);
@@ -61,10 +61,10 @@ class App<P> extends React.Component<{}, IAppState> {
     private async init(): Promise<void> {
 
         let datastore: Datastore;
-        let persistenceLayer: PersistenceLayer;
+        let persistenceLayer: DefaultPersistenceLayer;
 
         this.datastore = datastore = Datastores.create();
-        this.persistenceLayer = persistenceLayer = new PersistenceLayer(datastore);
+        this.persistenceLayer = persistenceLayer = new DefaultPersistenceLayer(datastore);
 
         await datastore.init();
         await persistenceLayer.init();

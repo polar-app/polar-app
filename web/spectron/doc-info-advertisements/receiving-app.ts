@@ -1,8 +1,7 @@
 import {SpectronRenderer} from '../../js/test/SpectronRenderer';
-import {DocInfoAdvertisementListenerService} from '../../js/datastore/advertiser/DocInfoAdvertisementListenerService';
 import {Logger} from '../../js/logger/Logger';
 import {MemoryDatastore} from '../../js/datastore/MemoryDatastore';
-import {PersistenceLayer} from '../../js/datastore/PersistenceLayer';
+import {DefaultPersistenceLayer} from '../../js/datastore/DefaultPersistenceLayer';
 import {AdvertisingPersistenceLayer} from '../../js/datastore/advertiser/AdvertisingPersistenceLayer';
 
 const log = Logger.create();
@@ -12,7 +11,7 @@ SpectronRenderer.run(async (state) => {
 
     const memoryDatastore = new MemoryDatastore();
 
-    const persistenceLayer = new PersistenceLayer(memoryDatastore);
+    const persistenceLayer = new DefaultPersistenceLayer(memoryDatastore);
 
     const advertisingPersistenceLayer = new AdvertisingPersistenceLayer(persistenceLayer);
 

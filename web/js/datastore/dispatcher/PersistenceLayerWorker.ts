@@ -1,4 +1,4 @@
-import {PersistenceLayer} from '../PersistenceLayer';
+import {DefaultPersistenceLayer} from '../DefaultPersistenceLayer';
 import {ElectronPersistenceLayerFactory} from '../ElectronPersistenceLayerFactory';
 import {IPCMessage} from '../../ipc/handler/IPCMessage';
 import {DocMetaSync} from './DocMetaSync';

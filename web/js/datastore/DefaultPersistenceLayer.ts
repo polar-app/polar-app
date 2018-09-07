@@ -8,7 +8,7 @@ import {ISODateTime} from '../metadata/ISODateTime';
 import {Dictionaries} from '../util/Dictionaries';
 import {DocMetaFileRef, DocMetaRef} from './DocMetaRef';
 import {DeleteResult} from './DiskDatastore';
-import {DocInfo, IDocInfo} from '../metadata/DocInfo';
+import {IPersistenceLayer} from './IPersistenceLayer';
 
 const log = Logger.create();
 
@@ -18,7 +18,7 @@ const log = Logger.create();
  * with node+chrome behaving differently so now we just make node work with raw
  * strings.
  */
-export class PersistenceLayer implements IPersistenceLayer {
+export class DefaultPersistenceLayer implements IPersistenceLayer {
 
     public readonly stashDir: string;
 
@@ -114,52 +114,3 @@ export class PersistenceLayer implements IPersistenceLayer {
 
 }
 
-export interface IPersistenceLayer {
-
-    readonly stashDir: string;
-
-    readonly logsDir: string;
-
-    init(): Promise<void>;
-
-    /**
-     * Return true if the DiskDatastore contains a document for the given
-     * fingerprint.
-     */
-    contains(fingerprint: string): Promise<boolean>;
-
-    /**
-     * Delete a file from PersistenceLayer.
-     *
-     * @param docMetaFileRef The file to delete.
-     */
-    delete(docMetaFileRef: DocMetaFileRef): Promise<DeleteResult>;
-
-    getDocMeta(fingerprint: string): Promise<DocMeta | undefined>;
-
-    syncDocMeta(docMeta: DocMeta): Promise<void>;
-
-    sync(fingerprint: string, docMeta: DocMeta): Promise<void>;
-
-    getDocMetaFiles(): Promise<DocMetaRef[]>;
-
-}
-
-/**
- * Persistence layer that allows us to listen to changes in the backing store
- * including deletes, updates, and creates of DocMeta and provides details about
- * which files have been updated and their DocInfo.
- */
-export interface IListenablePersistenceLayer extends IPersistenceLayer {
-    addEventListener(listener: PersistenceLayerListener): void;
-}
-
-export type PersistenceLayerListener = (event: PersistenceLayerEvent) => void;
-
-export interface PersistenceLayerEvent {
-    docInfo: IDocInfo;
-    docMetaRef: DocMetaRef;
-    eventType: PersistenceEventType;
-}
-
-export type PersistenceEventType = 'created' | 'updated' | 'deleted';

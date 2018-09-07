@@ -1,11 +1,11 @@
-import {PersistenceLayer} from './PersistenceLayer';
+import {DefaultPersistenceLayer} from './DefaultPersistenceLayer';
 import {Logger} from '../logger/Logger';
 
 const log = Logger.create();
 
 export class ElectronPersistenceLayerFactory {
 
-    public static create(): PersistenceLayer {
+    public static create(): DefaultPersistenceLayer {
 
         log.info("Using electron persistence layer and disk store");
 
@@ -15,7 +15,7 @@ export class ElectronPersistenceLayerFactory {
         let datastore = remote.getGlobal("datastore" );
         log.info("Accessing datastore...done");
 
-        return new PersistenceLayer(datastore);
+        return new DefaultPersistenceLayer(datastore);
 
     }
 

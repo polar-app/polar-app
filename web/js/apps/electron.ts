@@ -1,8 +1,9 @@
-import {IPersistenceLayer} from '../datastore/PersistenceLayer';
+
 import {Launcher} from './Launcher';
 import {Logger} from '../logger/Logger';
 import {ElectronPersistenceLayerFactory} from '../datastore/ElectronPersistenceLayerFactory';
 import {ElectronRendererPersistenceLayerFactory} from '../datastore/ElectronRendererPersistenceLayerFactory';
+import {IPersistenceLayer} from '../datastore/IPersistenceLayer';
 
 const log = Logger.create();
 

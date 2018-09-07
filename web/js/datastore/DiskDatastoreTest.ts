@@ -3,7 +3,7 @@ import {assert} from 'chai';
 import {assertJSON} from '../test/Assertions';
 import {DocMetas, MockDocMetas} from '../metadata/DocMetas';
 import {DiskDatastore} from './DiskDatastore';
-import {PersistenceLayer} from './PersistenceLayer';
+import {DefaultPersistenceLayer} from './DefaultPersistenceLayer';
 import {DocMeta} from '../metadata/DocMeta';
 import {isPresent} from '../Preconditions';
 
@@ -145,7 +145,7 @@ describe('DiskDatastore', function() {
         const dataDir = FilePaths.join(tmpdir, 'test-data-dir');
 
         let diskDatastore: DiskDatastore;
-        let persistenceLayer: PersistenceLayer;
+        let persistenceLayer: DefaultPersistenceLayer;
 
         let docMeta: DocMeta;
 
@@ -154,7 +154,7 @@ describe('DiskDatastore', function() {
             removeDirectory(dataDir);
 
             diskDatastore = new DiskDatastore(dataDir);
-            persistenceLayer = new PersistenceLayer(diskDatastore);
+            persistenceLayer = new DefaultPersistenceLayer(diskDatastore);
 
             await persistenceLayer.init();
 

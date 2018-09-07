@@ -1,18 +1,18 @@
 import {assert} from 'chai';
 import {MockDocMetas} from '../metadata/DocMetas';
 import {MemoryDatastore} from './MemoryDatastore';
-import {PersistenceLayer} from './PersistenceLayer';
+import {DefaultPersistenceLayer} from './DefaultPersistenceLayer';
 import {TestingTime} from '../test/TestingTime';
 
 
-describe('PersistenceLayer', function() {
+describe('DefaultPersistenceLayer', function() {
 
     const fingerprint = '0x0001';
 
     it("verify that lastUpdated was written", async function() {
 
         const memoryDatastore = new MemoryDatastore();
-        const persistenceLayer = new PersistenceLayer(memoryDatastore);
+        const persistenceLayer = new DefaultPersistenceLayer(memoryDatastore);
 
         const docMeta = MockDocMetas.createWithinInitialPagemarks(fingerprint, 1);
 
@@ -48,7 +48,7 @@ describe('PersistenceLayer', function() {
         TestingTime.freeze();
 
         const memoryDatastore = new MemoryDatastore();
-        const persistenceLayer = new PersistenceLayer(memoryDatastore);
+        const persistenceLayer = new DefaultPersistenceLayer(memoryDatastore);
 
         const docMeta = MockDocMetas.createWithinInitialPagemarks(fingerprint, 1);
 

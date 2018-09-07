@@ -1,4 +1,3 @@
-import {IListenablePersistenceLayer, IPersistenceLayer, PersistenceLayerEvent, PersistenceLayerListener} from '../PersistenceLayer';
 import {DocMetaFileRef, DocMetaRef} from '../DocMetaRef';
 import {DocMeta} from '../../metadata/DocMeta';
 import {AdvertisementType, DocInfoAdvertisement} from './DocInfoAdvertisement';
@@ -6,12 +5,16 @@ import {DocInfoAdvertiser} from './DocInfoAdvertiser';
 import {DeleteResult} from '../DiskDatastore';
 import {DocInfoAdvertisementListenerService} from './DocInfoAdvertisementListenerService';
 import {SimpleReactor} from '../../reactor/SimpleReactor';
+import {ListenablePersistenceLayer} from '../ListenablePersistenceLayer';
+import {PersistenceLayerEvent} from '../PersistenceLayerEvent';
+import {PersistenceLayerListener} from '../PersistenceLayerListener';
+import {IPersistenceLayer} from '../IPersistenceLayer';
 
 /**
  * A PersistenceLayer that allows the user to receive advertisements regarding
  * updates to the internal data.
  */
-export class AdvertisingPersistenceLayer implements IListenablePersistenceLayer {
+export class AdvertisingPersistenceLayer implements ListenablePersistenceLayer {
 
     public readonly stashDir: string;
 

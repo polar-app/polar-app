@@ -1,4 +1,4 @@
-import {IPersistenceLayer} from './datastore/PersistenceLayer';
+
 import {DocMeta} from './metadata/DocMeta';
 import {DocMetas} from './metadata/DocMetas';
 import {Reactor} from './reactor/Reactor';
@@ -10,6 +10,7 @@ import {DocMetaDescriber} from './metadata/DocMetaDescriber';
 import {Logger} from './logger/Logger';
 import {TraceEvent} from './proxies/TraceEvent';
 import {Batcher} from './datastore/batcher/Batcher';
+import {IPersistenceLayer} from './datastore/IPersistenceLayer';
 
 const {Proxies} = require("./proxies/Proxies");
 

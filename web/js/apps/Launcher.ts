@@ -1,11 +1,11 @@
-import {IPersistenceLayer} from '../datastore/PersistenceLayer';
 import {Model} from '../Model';
 import {ViewerFactory} from '../viewer/ViewerFactory';
 import {WebController} from '../controller/WebController';
 import {Logger} from '../logger/Logger';
 import {Logging} from '../logger/Logging';
 import {WebView} from '../view/WebView';
-import {PAGEMARK_VIEW_ENABLED, PagemarkView} from '../pagemarks/view/PagemarkView';
+import {PagemarkView} from '../pagemarks/view/PagemarkView';
+import {IPersistenceLayer} from '../datastore/IPersistenceLayer';
 
 const {TextHighlightView2} = require("../highlights/text/view/TextHighlightView2");
 const {AreaHighlightView} = require("../highlights/area/view/AreaHighlightView");

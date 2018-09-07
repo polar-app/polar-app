@@ -2,7 +2,7 @@ import {AnkiSyncEngine} from './framework/anki/AnkiSyncEngine';
 import {DocMetaSet} from '../../metadata/DocMetaSet';
 import {SyncProgressListener} from './framework/SyncProgressListener';
 import {Logger} from '../../logger/Logger';
-import {PersistenceLayer} from '../../datastore/PersistenceLayer';
+import {DefaultPersistenceLayer} from '../../datastore/DefaultPersistenceLayer';
 import {DiskDatastore} from '../../datastore/DiskDatastore';
 import {ProgressLog} from '../../ui/progress_log/ProgressLog';
 
@@ -29,7 +29,7 @@ export class SyncApp {
 
         await datastore.init();
 
-        let persistenceLayer = new PersistenceLayer(datastore);
+        let persistenceLayer = new DefaultPersistenceLayer(datastore);
 
         await persistenceLayer.init();
 
