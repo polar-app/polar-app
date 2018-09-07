@@ -11,23 +11,29 @@ import {Toaster} from '../toaster/Toaster';
  */
 export class ToasterLogger implements ILogger {
 
-    readonly name: string = 'toaster-logger';
+    public readonly name: string = 'toaster-logger';
 
-    warn(msg: string, ...args: any[]) {
-        Toaster.warning(msg)
+    public warn(msg: string, ...args: any[]) {
+        Toaster.warning(msg);
     }
 
-    error(msg: string, ...args: any[]) {
-        Toaster.error(msg)
+    public error(msg: string, ...args: any[]) {
+
+        if (args.length > 0 && args[0] instanceof Error) {
+            Toaster.persistentError("An internal error has occurred.");
+        } else {
+            Toaster.error(msg);
+        }
+
     }
 
-    info(msg: string, ...args: any[]) {
+    public info(msg: string, ...args: any[]) {
     }
 
-    verbose(msg: string, ...args: any[]) {
+    public verbose(msg: string, ...args: any[]) {
     }
 
-    debug(msg: string, ...args: any[]) {
+    public debug(msg: string, ...args: any[]) {
     }
 
 }

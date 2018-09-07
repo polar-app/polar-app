@@ -1,29 +1,28 @@
 import {SpectronRenderer} from '../../js/test/SpectronRenderer';
-import {Toaster} from '../../js/toaster/Toaster';
 
 import {assert} from 'chai';
 import {wait} from 'dom-testing-library';
+import {ToasterLogger} from '../../js/logger/ToasterLogger';
 
 SpectronRenderer.run(async (state) => {
     console.log("Running within SpectronRenderer now.");
 
-    Toaster.success('hello', 'world');
+    const toasterLogger = new ToasterLogger();
+    toasterLogger.error("Something bad", new Error("it broke"));
 
     await wait(() => {
         return assert.notEqual(document.querySelector('#toast-container'), null);
     });
 
+    console.log("Got the container");
 
     await wait(() => {
 
-        const toastTitle = document.querySelector('.toast-title');
         const toastMessage = document.querySelector('.toast-message');
 
-        assert.notEqual(toastTitle, null);
         assert.notEqual(toastMessage, null);
 
-        assert.equal(toastTitle!.textContent, 'world');
-        assert.equal(toastMessage!.textContent, 'hello');
+        assert.equal(toastMessage!.textContent, 'An internal error has occurred.');
 
     });
 
