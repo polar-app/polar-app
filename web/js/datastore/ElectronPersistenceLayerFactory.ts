@@ -12,7 +12,7 @@ export class ElectronPersistenceLayerFactory {
         const remote = require('electron').remote;
 
         log.info("Accessing datastore...");
-        let datastore = remote.getGlobal("datastore" );
+        const datastore = remote.getGlobal("datastore" );
         log.info("Accessing datastore...done");
 
         return new DefaultPersistenceLayer(datastore);
