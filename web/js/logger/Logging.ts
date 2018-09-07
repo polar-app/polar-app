@@ -42,6 +42,8 @@ export class Logging {
         LoggerDelegate.set(delegate);
 
         const logger = LoggerDelegate.get();
+
+        // noinspection TsLint: max-line-length
         logger.info(`Using logger: ${logger.name}: target=${loggingConfig.target}, level=${LogLevel[loggingConfig.level]}`);
 
     }

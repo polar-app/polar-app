@@ -1,19 +1,21 @@
 import {IListenablePersistenceLayer, IPersistenceLayer, PersistenceLayerEvent, PersistenceLayerListener} from '../PersistenceLayer';
 import {DocMetaFileRef, DocMetaRef} from '../DocMetaRef';
 import {DocMeta} from '../../metadata/DocMeta';
-import {AdvertisementType} from './DocInfoAdvertisement';
+import {AdvertisementType, DocInfoAdvertisement} from './DocInfoAdvertisement';
 import {DocInfoAdvertiser} from './DocInfoAdvertiser';
 import {DeleteResult} from '../DiskDatastore';
 import {DocInfoAdvertisementListenerService} from './DocInfoAdvertisementListenerService';
 import {SimpleReactor} from '../../reactor/SimpleReactor';
 
+/**
+ * A PersistenceLayer that allows the user to receive advertisements regarding
+ * updates to the internal data.
+ */
 export class AdvertisingPersistenceLayer implements IListenablePersistenceLayer {
 
     public readonly stashDir: string;
 
     public readonly logsDir: string;
-
-    private readonly worker: Worker;
 
     /**
      * A PersistenceLayer for the non-dispatched methods (for now).
@@ -24,8 +26,7 @@ export class AdvertisingPersistenceLayer implements IListenablePersistenceLayer 
 
     private readonly docInfoAdvertisementListenerService = new DocInfoAdvertisementListenerService();
 
-    constructor(worker: Worker, persistenceLayer: IPersistenceLayer) {
-        this.worker = worker;
+    constructor(persistenceLayer: IPersistenceLayer) {
         this.persistenceLayer = persistenceLayer;
         this.stashDir = this.persistenceLayer.stashDir;
         this.logsDir = this.persistenceLayer.logsDir;
@@ -53,18 +54,8 @@ export class AdvertisingPersistenceLayer implements IListenablePersistenceLayer 
 
     public async init(): Promise<void> {
 
-        this.docInfoAdvertisementListenerService.addEventListener((docInfoAdvertisement) => {
-            this.reactor.dispatchEvent({
-
-                docMetaRef: <DocMetaRef> {
-                    fingerprint: docInfoAdvertisement.docInfo.fingerprint,
-                    filename: docInfoAdvertisement.docInfo.filename,
-                    docInfo: docInfoAdvertisement.docInfo
-                },
-                docInfo: docInfoAdvertisement.docInfo,
-                eventType: docInfoAdvertisement.advertisementType
-            });
-        });
+        this.docInfoAdvertisementListenerService
+            .addEventListener((adv) => this.onDocInfoAdvertisement(adv));
 
         this.docInfoAdvertisementListenerService.start();
         return this.persistenceLayer.init();
@@ -95,6 +86,22 @@ export class AdvertisingPersistenceLayer implements IListenablePersistenceLayer 
 
     public addEventListener(listener: PersistenceLayerListener): void {
         this.reactor.addEventListener(listener);
+    }
+
+    private onDocInfoAdvertisement(docInfoAdvertisement: DocInfoAdvertisement) {
+
+        this.reactor.dispatchEvent({
+
+           docMetaRef: <DocMetaRef> {
+               fingerprint: docInfoAdvertisement.docInfo.fingerprint,
+               filename: docInfoAdvertisement.docInfo.filename,
+               docInfo: docInfoAdvertisement.docInfo
+           },
+           docInfo: docInfoAdvertisement.docInfo,
+           eventType: docInfoAdvertisement.advertisementType
+
+       });
+
     }
 
 }

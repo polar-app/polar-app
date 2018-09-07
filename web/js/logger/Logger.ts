@@ -10,8 +10,8 @@ export class Logger {
      * using.
      */
     public static create() {
-        let caller = Callers.getCaller();
-        if(caller.filename === 'Logger.js') {
+        const caller = Callers.getCaller();
+        if (caller.filename === 'Logger.js') {
             throw new Error("Wrong caller: " + caller.filename);
         }
 
@@ -29,7 +29,7 @@ class DelegatedLogger {
     /**
      * The caller for this logger.
      */
-    caller: string;
+    public caller: string;
 
     /**
      *
@@ -68,11 +68,11 @@ class DelegatedLogger {
      */
     private apply(logFunction: LogFunction, msg: string, ...args: any[]) {
 
-        //msg = "[" + this.caller + "] " + msg;
+        // msg = "[" + this.caller + "] " + msg;
 
         msg = `[${this.caller}] ${msg}`;
 
-        if(args.length > 0) {
+        if (args.length > 0) {
             logFunction(msg, ...args);
         } else {
             // don't pass 'args' as electron-logger will print [] if the args
@@ -84,8 +84,4 @@ class DelegatedLogger {
 
 }
 
-interface LogFunction {
-
-    (msg: string, ...args: any[]): void;
-
-}
+type LogFunction = (msg: string, ...args: any[]) => void;
