@@ -101,7 +101,7 @@ export class PendingWebRequestsListener extends BaseWebRequestsListener {
 
             pendingChange = "INCREMENTED";
 
-            this.requestState.markStarted(details.id, details.url);
+            this.requestState.markStarted(details.id, details.url, name);
 
         }
 
@@ -123,7 +123,7 @@ export class PendingWebRequestsListener extends BaseWebRequestsListener {
 
             pendingChange = "DECREMENTED";
 
-            this.requestState.markFinished(details.id, details.url);
+            this.requestState.markFinished(details.id, details.url, name);
 
         }
 
@@ -157,10 +157,10 @@ export class PendingWebRequestsListener extends BaseWebRequestsListener {
          *
          * @type {number}
          */
-        let progress = Progress.calculate(started, finished);
+        let progress = Progress.calculate(finished, started);
 
         if(pending < 5) {
-            log.debug("The following pending requests remain: ", this.pendingRequests);
+            log.debug("The following pending requests remain: \n", this.pendingRequests);
         }
 
         if(pending < 0) {
@@ -174,13 +174,13 @@ export class PendingWebRequestsListener extends BaseWebRequestsListener {
         log.debug(`Pending requests: ${pending}, started=${started}, finished=${finished}, progress=${progress}: ${name}`);
 
         this.dispatchEventListeners({
-                                        name,
-                                        details,
-                                        pending,
-                                        started,
-                                        finished,
-                                        progress
-                                    });
+            name,
+            details,
+            pending,
+            started,
+            finished,
+            progress
+        });
 
         if(callback) {
             // the callback always has to be used or the requests will be
@@ -194,14 +194,14 @@ export class PendingWebRequestsListener extends BaseWebRequestsListener {
      *
      * @param eventListener {Function}
      */
-    addEventListener(eventListener: PendingWebRequestsCallback) {
+    public addEventListener(eventListener: PendingWebRequestsCallback) {
         this.eventListeners.push(eventListener);
     }
 
-    dispatchEventListeners(event: PendingWebRequestsEvent) {
+    public dispatchEventListeners(event: PendingWebRequestsEvent) {
         this.eventListeners.forEach(eventListener => {
             eventListener(event);
-        })
+        });
     }
 
 }
