@@ -78,6 +78,67 @@ export class Optional<T> {
         return this.value !== undefined && this.value !== null;
     }
 
+
+    /**
+     *
+     * @see {validateTypeof}
+     */
+    public validateString(): Optional<string> {
+
+        return this.validateTypeof('string')
+            .map(current => current as any);
+
+    }
+
+    /**
+     *
+     * @see {validateTypeof}
+     */
+    public validateBoolean(): Optional<boolean> {
+
+        return this.validateTypeof('boolean')
+            .map(current => current as any);
+
+    }
+
+    /**
+     *
+     * @see {validateTypeof}
+     */
+    public validateNumber(): Optional<number> {
+
+        return this.validateTypeof('number')
+            .map(current => current as any);
+
+    }
+
+    /**
+     * Convert this to an 'any' type.  This is helpful in some situations as
+     * Typescript doesn't like forced typing of generified types like
+     * NonNullable and calling a simple method like toAny is cleaner than
+     * doing a map in your code.
+     */
+    public toAny(): Optional<any> {
+        return this.map(current => current as any);
+    }
+
+    /**
+     * Validate the 'typeof' the value. This is helpful when we have an unsafe
+     * data source like a JSON decoder where have a Typescript declared type of
+     * X but the JSON decoder pulled out type Y.  This way we can guard the value
+     * before we work with it and just return an empty Optional.
+     *
+     */
+    public validateTypeof(typeOf: JavascriptType): Optional<T> {
+
+        if (this.isPresent() && typeof this.value === typeOf) {
+            return this;
+        }
+
+        return Optional.empty();
+
+    }
+
     public static of<T>(value: T | null | undefined, name?: string): Optional<T> {
         return new Optional<T>(value, name);
     }
@@ -120,3 +181,5 @@ export type ConsumeFunction<T> = (value: T) => void;
 export type MapFunction<T, V> = (value: T) => V;
 
 export type FilterFunction<T> = (value: T) => boolean;
+
+export type JavascriptType = 'string' | 'number' | 'boolean' | 'object';

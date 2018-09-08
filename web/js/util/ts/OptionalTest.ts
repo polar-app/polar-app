@@ -47,6 +47,42 @@ describe('Optional', function() {
 
     });
 
+    describe('validateString', function() {
+
+        it("valid data", function() {
+            assert.equal(Optional.of('hello').validateString().get(), 'hello');
+        });
+
+        it("invalid data", function() {
+            assert.equal(Optional.of(666).validateString().getOrUndefined(), undefined);
+        });
+
+    });
+
+    describe('validateNumber', function() {
+
+        it("valid data", function() {
+            assert.equal(Optional.of(101).validateNumber().get(), 101);
+        });
+
+        it("invalid data", function() {
+            assert.equal(Optional.of('asdf').validateNumber().getOrUndefined(), undefined);
+        });
+
+    });
+
+
+    describe('validateBoolean', function() {
+
+        it("valid data", function() {
+            assert.equal(Optional.of(false).validateBoolean().get(), false);
+        });
+
+        it("invalid data", function() {
+            assert.equal(Optional.of('hello').validateBoolean().getOrUndefined(), undefined);
+        });
+
+    });
 
 
 });

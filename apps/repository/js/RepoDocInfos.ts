@@ -19,12 +19,15 @@ export class RepoDocInfos {
             // from the list of strings.
             title: Optional.first(docInfo.title,
                                   docInfo.filename)
+                .validateString()
                 .getOrElse('Untitled'),
 
             progress: Optional.of(docInfo.progress)
+                .validateNumber()
                 .getOrElse(0),
 
             filename: Optional.of(docInfo.filename)
+                .validateString()
                 .getOrUndefined(),
 
             added: Optional.of(docInfo.added)
@@ -49,10 +52,16 @@ export class RepoDocInfos {
                     return current;
 
                 })
+                .validateString()
                 .getOrUndefined(),
-            flagged: Optional.of(docInfo.flagged).getOrElse(false),
 
-            archived: Optional.of(docInfo.archived).getOrElse(false),
+            flagged: Optional.of(docInfo.flagged)
+                .validateBoolean()
+                .getOrElse(false),
+
+            archived: Optional.of(docInfo.archived)
+                .validateBoolean()
+                .getOrElse(false),
 
             docInfo
 
