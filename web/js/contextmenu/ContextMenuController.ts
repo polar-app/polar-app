@@ -8,8 +8,8 @@ import {Logger} from '../logger/Logger';
 import {TriggerEvent} from './TriggerEvent';
 import {DocDescriptor} from '../metadata/DocDescriptor';
 import {DocFormatFactory} from '../docformat/DocFormatFactory';
+import {forDict} from '../util/Functions';
 
-const {forDict} = require("../utils");
 const log = Logger.create();
 
 /**

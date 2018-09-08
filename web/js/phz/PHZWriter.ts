@@ -4,7 +4,7 @@ import {ResourceEntry} from './ResourceEntry';
 import {ContentTypes} from './ContentTypes';
 import {Resource} from './Resource';
 
-const fs = require('fs');
+import fs from 'fs';
 
 /**
  * Write to a new zip output stream.

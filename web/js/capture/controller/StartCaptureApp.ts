@@ -1,11 +1,11 @@
 
 export class StartCaptureApp {
 
-    start() {
+    public start() {
 
         const {StartCaptureUI} = require("./StartCaptureUI");
 
-        let startCaptureUI = new StartCaptureUI();
+        const startCaptureUI = new StartCaptureUI();
         startCaptureUI.init();
 
         console.log("Ready to start capture..." + startCaptureUI);

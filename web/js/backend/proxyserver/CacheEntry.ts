@@ -73,5 +73,5 @@ export abstract class CacheEntry {
 }
 
 export interface DataCallback {
-    (data: Buffer): void
+    (data: Buffer): void;
 }

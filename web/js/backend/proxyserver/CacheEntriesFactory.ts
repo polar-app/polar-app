@@ -4,7 +4,7 @@ import {DiskCacheEntry} from './DiskCacheEntry';
 import {PHZCacheEntry} from './PHZCacheEntry';
 import {CachingPHZReader} from '../../phz/CachingPHZReader';
 
-const fs = require("fs");
+import fs from 'fs';
 
 /**
  * Cache entry which is just buffered in memory.

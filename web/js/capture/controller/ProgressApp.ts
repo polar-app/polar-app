@@ -3,11 +3,11 @@ import {ProgressUI} from './ProgressUI';
 
 export class ProgressApp {
 
-    start() {
+    public start() {
 
         $(document).ready(() => {
             console.log("Starting progress UI");
-            let progressUI = new ProgressUI();
+            const progressUI = new ProgressUI();
             progressUI.init();
         });
 

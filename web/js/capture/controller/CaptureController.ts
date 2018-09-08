@@ -6,6 +6,7 @@ import {Logger} from '../../logger/Logger';
 import BrowserRegistry from '../BrowserRegistry';
 import {BrowserProfiles} from '../BrowserProfiles';
 import {Capture} from '../Capture';
+import {StartCaptureMessage} from './StartCaptureUI';
 
 const log = Logger.create();
 
@@ -39,7 +40,7 @@ export class CaptureController {
      */
     start() {
 
-        ipcMain.on('capture-controller-start-capture', (event: Electron.Event, message: any) => {
+        ipcMain.on('capture-controller-start-capture', (event: Electron.Event, message: StartCaptureMessage) => {
 
             this.startCapture(event.sender, message.url)
                 .catch( err => log.error("Could not start capture: ", err));

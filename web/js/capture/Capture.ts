@@ -17,12 +17,7 @@ import {Filenames} from '../util/Filenames';
 import {CapturedPHZWriter} from './CapturedPHZWriter';
 import {FilePaths} from '../util/FilePaths';
 
-const {DefaultPagingBrowser} = require("../electron/capture/pagination/DefaultPagingBrowser");
-const {PagingLoader} = require("../electron/capture/pagination/PagingLoader");
-
 const log = Logger.create();
-
-const USE_PAGING_LOADER = false;
 
 /**
  * This is a hard coded delay to hold off capturing the content until the page
@@ -161,25 +156,6 @@ export class Capture {
      * capture.
      */
     async capture() {
-
-        if(USE_PAGING_LOADER) {
-
-            let pagingBrowser = new DefaultPagingBrowser(this.webContents);
-
-            let pagingLoader = new PagingLoader(pagingBrowser, async () => {
-                log.info("Paging loader finished.")
-            } );
-
-            // WARN: this was removed as part of the TS migration and would need
-            // to be enabled if we want this to work again.
-            //
-            //this.pendingWebRequestsListener.addEventListener(pendingRequestEvent => {
-            //    pagingLoader.onPendingRequestsUpdate(pendingRequestEvent);
-            //});
-
-            await pagingLoader.onLoad();
-
-        }
 
         await Functions.waitFor(EXECUTE_CAPTURE_DELAY);
 
