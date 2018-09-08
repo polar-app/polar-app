@@ -28,7 +28,7 @@ export class PHZWriter {
      * Write user provided metadata which applies to all files in the archive.
      *
      */
-    async writeMetadata(metadata: any): Promise<PHZWriter> {
+    public async writeMetadata(metadata: any): Promise<PHZWriter> {
         this.__write("metadata.json", JSON.stringify(metadata, null, "  "), "metadata");
         return this;
     }
@@ -36,7 +36,7 @@ export class PHZWriter {
     /**
      *
      */
-    async writeResource(resource: Resource, content: string, comment?: string): Promise<PHZWriter> {
+    public async writeResource(resource: Resource, content: string, comment?: string): Promise<PHZWriter> {
 
         // TODO: when writing the content  update the contentLength with the
         // binary storage used to represent the data as UTF-8...
@@ -47,8 +47,8 @@ export class PHZWriter {
             comment = "";
         }
 
-        let ext = ContentTypes.contentTypeToExtension(resource.contentType);
-        let path = `${resource.id}.${ext}`;
+        const ext = ContentTypes.contentTypeToExtension(resource.contentType);
+        const path = `${resource.id}.${ext}`;
 
         const resourceEntry = new ResourceEntry({id: resource.id, path, resource});
 
@@ -67,12 +67,12 @@ export class PHZWriter {
 
     }
 
-    __writeResources() {
+    public __writeResources() {
         this.__write("resources.json", JSON.stringify(this.resources, null, "  "), "resources");
         return this;
     }
 
-    __write(path: string, content: string, comment: string) {
+    public __write(path: string, content: string, comment: string) {
 
         // FIXME: comment and how do I handle binary data??
 
@@ -85,22 +85,22 @@ export class PHZWriter {
      * Save the new zip file to disk.
      * @return {Promise<void>}
      */
-    async close() {
+    public async close() {
 
         this.__writeResources();
 
-        return new Promise((resolve,reject) => {
+        return new Promise((resolve, reject) => {
 
-            this.zip.generateNodeStream({type:'nodebuffer',streamFiles:true})
+            this.zip.generateNodeStream({type: 'nodebuffer', streamFiles: true})
                 .pipe(fs.createWriteStream(this.path))
-                .on('error', function (err: Error) {
+                .on('error', function(err: Error) {
                     reject(err);
                 })
-                .on('finish', function () {
+                .on('finish', function() {
                     resolve();
                 });
 
-        })
+        });
 
     }
 

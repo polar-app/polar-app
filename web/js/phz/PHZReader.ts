@@ -23,13 +23,12 @@ export class PHZReader {
     /**
      * Init must be called to load the entries which we can work with.
      *
-     * @return {Promise<void>}
      */
-    async init() {
+    public async init() {
 
         // FIXME: migrate this to fs.createReadStream even though this is async it reads all
         // the data into memory. Make sure this method is completely async though.
-        let data = await Files.readFileAsync(this.path);
+        const data = await Files.readFileAsync(this.path);
 
         this.zip = new JSZip();
 
@@ -37,7 +36,7 @@ export class PHZReader {
 
     }
 
-    async getMetadata(): Promise<any | null> {
+    public async getMetadata(): Promise<any | null> {
 
         try {
             return await this.getCached("metadata.json", "metadata");
@@ -50,7 +49,7 @@ export class PHZReader {
     /**
      * Get just the resources from the metadata.
      */
-    async getResources(): Promise<Resources> {
+    public async getResources(): Promise<Resources> {
 
         try {
             return await this.getCached("resources.json", "resources");
@@ -60,18 +59,19 @@ export class PHZReader {
 
     }
 
-    async getCached(path: string, key: string): Promise<any> {
+    public async getCached(path: string, key: string): Promise<any> {
 
         let cached = this.cache[key];
-        if(cached !== undefined && cached !== null) {
+        if (cached !== undefined && cached !== null) {
             // return the cache version if it's already read properly.
             return cached;
         }
 
-        let buffer = await this._readAsBuffer(path);
+        const buffer = await this._readAsBuffer(path);
 
-        if(! buffer)
+        if (! buffer) {
             throw new Error("No buffer for path: " + path);
+        }
 
         cached = JSON.parse(buffer.toString("UTF-8"));
 
@@ -88,18 +88,19 @@ export class PHZReader {
      * @return {Promise<Buffer>}
      * @private
      */
-    async _readAsBuffer(path: string): Promise<Buffer> {
+    public async _readAsBuffer(path: string): Promise<Buffer> {
 
-        if(this.zip === undefined)
+        if (this.zip === undefined) {
             throw new Error("No zip.");
+        }
 
-        let zipFile = await this.zip.file(path);
+        const zipFile = await this.zip.file(path);
 
-        if(!zipFile) {
+        if (!zipFile) {
             throw new CachingException("No zip entry for path: " + path);
         }
 
-        let arrayBuffer = await zipFile.async('arraybuffer');
+        const arrayBuffer = await zipFile.async('arraybuffer');
         return Buffer.from(arrayBuffer);
 
     }
@@ -117,7 +118,7 @@ export class PHZReader {
         return await this._readAsBuffer(resourceEntry.path);
     }
 
-    async close() {
+    public async close() {
         // we just have to let it GC
         this.zip = undefined;
     }
