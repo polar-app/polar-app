@@ -2,7 +2,7 @@ import {Preconditions} from '../../Preconditions';
 import {WebserverConfig} from './WebserverConfig';
 import {Hashcodes} from '../../Hashcodes';
 
-const path = require('path');
+import path from 'path';
 
 export class FileRegistry {
 

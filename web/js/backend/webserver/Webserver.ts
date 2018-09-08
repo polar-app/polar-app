@@ -6,8 +6,8 @@ import {Logger} from '../../logger/Logger';
 import {Preconditions} from '../../Preconditions';
 import {Paths} from '../../util/Paths';
 
-const express = require("express");
-const serveStatic = require("serve-static");
+import express from 'express';
+import serveStatic from 'serve-static';
 
 const log = Logger.create();
 
@@ -26,7 +26,7 @@ export class Webserver {
 
     }
 
-    start() {
+    public start() {
 
         express.static.mime.define({'text/html': ['chtml']});
 
@@ -41,20 +41,20 @@ export class Webserver {
 
                 log.info("Handling data at path: " + req.path);
 
-                let hashcode = Paths.basename(req.path);
+                const hashcode = Paths.basename(req.path);
 
-                if(! hashcode) {
-                    let msg = "No key given for /file";
+                if (! hashcode) {
+                    const msg = "No key given for /file";
                     log.error(msg);
                     res.status(404).send(msg);
                 } else if (!this.fileRegistry.hasKey(hashcode)) {
-                    let msg = "File not found with hashcode: " + hashcode;
+                    const msg = "File not found with hashcode: " + hashcode;
                     log.error(msg);
                     res.status(404).send(msg);
                 } else {
 
-                    let keyMeta = this.fileRegistry.get(hashcode);
-                    let filename = keyMeta.filename;
+                    const keyMeta = this.fileRegistry.get(hashcode);
+                    const filename = keyMeta.filename;
 
                     log.info(`Serving file at ${req.path} from ${filename}`);
 
@@ -72,7 +72,7 @@ export class Webserver {
 
     }
 
-    stop() {
+    public stop() {
         this.server.close();
     }
 
