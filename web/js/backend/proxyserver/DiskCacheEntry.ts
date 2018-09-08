@@ -18,7 +18,7 @@ export class DiskCacheEntry extends CacheEntry {
 
         this.path = options.path;
 
-        if(this.path === undefined) {
+        if (this.path === undefined) {
             throw new Error("No path");
         }
 
@@ -33,7 +33,7 @@ export class DiskCacheEntry extends CacheEntry {
             fs.readFile(this.path, (err: NodeJS.ErrnoException, data: Buffer) => {
 
                 if (err) {
-                    reject(err)
+                    reject(err);
                 }
 
                 callback(data);

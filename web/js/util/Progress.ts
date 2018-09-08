@@ -36,7 +36,12 @@ export class Progress {
         return 100 * (this._value / this._total);
     }
 
-    public static calculate(count: number, total: number) {
+    public static calculate(count: number, total: number, defaultValue: number = 0) {
+
+        if (total === 0) {
+            return defaultValue;
+        }
+
         return 100 * (count / total);
     }
 

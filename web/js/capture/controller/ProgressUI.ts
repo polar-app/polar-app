@@ -2,6 +2,7 @@ import {ipcRenderer} from 'electron';
 import {Logger} from '../../logger/Logger';
 import {Elements} from '../../util/Elements';
 import {notNull} from '../../Preconditions';
+import {PendingWebRequestsEvent} from '../../webrequests/PendingWebRequestsListener';
 
 const log = Logger.create();
 
@@ -20,30 +21,30 @@ export class ProgressUI {
 
         log.info("Listening for progress updates...");
 
-        ipcRenderer.on('capture-progress-update', (event: Electron.Event, progressEvent: any) => {
+        ipcRenderer.on('capture-progress-update', (event: Electron.Event, progressEvent: PendingWebRequestsEvent) => {
             this.onProgressEvent(progressEvent);
         });
 
 
     }
 
-    onProgressEvent(progressEvent: any) {
+    onProgressEvent(progressEvent: PendingWebRequestsEvent) {
 
-        console.log("Got progress update: ", progressEvent.progress);
+        log.info("Got progress update: ", progressEvent.progress);
 
         this.updateProgress(progressEvent);
         this.updateLogView(progressEvent);
 
     }
 
-    updateProgress(progressEvent: any) {
+    updateProgress(progressEvent: PendingWebRequestsEvent) {
 
         let progressElement = <HTMLProgressElement>document.querySelector("progress");
         progressElement.value = progressEvent.progress;
 
     }
 
-    updateLogView(progressEvent: any) {
+    updateLogView(progressEvent: PendingWebRequestsEvent) {
 
         let logElement = notNull(document.querySelector(".log"));
 

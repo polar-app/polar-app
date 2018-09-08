@@ -7,6 +7,8 @@ import BrowserRegistry from '../BrowserRegistry';
 import {BrowserProfiles} from '../BrowserProfiles';
 import {Capture} from '../Capture';
 import {StartCaptureMessage} from './StartCaptureUI';
+import {PendingWebRequestsEvent} from '../../webrequests/PendingWebRequestsListener';
+import {CaptureOpts} from '../CaptureOpts';
 
 const log = Logger.create();
 
@@ -107,24 +109,24 @@ export class CaptureController {
      * @param webContents {Electron.WebContents} The webContents page that
      * should be updated with our progress.
      *
-     * @param url {string}
+     * @param url {string} The URL to capture.
      */
-    async runCapture(webContents: Electron.WebContents, url: string) {
+    public async runCapture(webContents: Electron.WebContents, url: string) {
 
         Preconditions.assertNotNull(webContents, "webContents");
 
-        let progressForwarder = new ProgressForwarder({webContents});
+        const progressForwarder = new ProgressForwarder({webContents});
 
-        let captureOpts = {
-            pendingWebRequestsCallback: (event: any) => progressForwarder.pendingWebRequestsCallback(event),
+        const captureOpts: CaptureOpts = {
+            pendingWebRequestsCallback: (event) => progressForwarder.pendingWebRequestsCallback(event),
             amp: true
         };
 
         let browser = BrowserRegistry.DEFAULT;
 
-        //browser = Browsers.toProfile(browser, "headless");
+        // browser = Browsers.toProfile(browser, "headless");
         browser = BrowserProfiles.toBrowserProfile(browser, "hidden");
-        //browser = Browsers.toProfile(browser, "default");
+        // browser = Browsers.toProfile(browser, "default");
         let browserProfile = BrowserProfiles.toBrowserProfile(browser, "default");
 
         let capture = new Capture(url, browserProfile, this.directories.stashDir, captureOpts);
@@ -167,7 +169,7 @@ class ProgressForwarder {
 
     }
 
-    pendingWebRequestsCallback(event: any) {
+    pendingWebRequestsCallback(event: PendingWebRequestsEvent) {
 
         this.webContents.send("capture-progress-update", event);
 

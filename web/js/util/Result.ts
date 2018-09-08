@@ -12,9 +12,9 @@ export interface IResult<T> {
 
 export class Result<T> implements IResult<T> {
 
-    readonly value?: T;
+    public readonly value?: T;
 
-    readonly err?: Error;
+    public readonly err?: Error;
 
     constructor(opts: IResult<T>) {
         this.value = opts.value;
@@ -27,7 +27,7 @@ export class Result<T> implements IResult<T> {
 
     public get(): T {
 
-        if(this.value !== undefined) {
+        if (this.value !== undefined) {
             return this.value;
         }
 
@@ -37,13 +37,13 @@ export class Result<T> implements IResult<T> {
 
     public toJSON(): any {
 
-        if(this.value !== undefined) {
+        if (this.value !== undefined) {
 
             return {
                 value: this.value
-            }
+            };
 
-        } else if(this.err !== undefined) {
+        } else if (this.err !== undefined) {
 
             return {
                 err: {
@@ -51,7 +51,7 @@ export class Result<T> implements IResult<T> {
                     message: this.err.message,
                     stack: this.err.stack
                 }
-            }
+            };
 
         } else {
             throw new Error("Neither value nor err");

@@ -31,13 +31,12 @@ export interface ScrollBox {
 }
 
 export interface Mutations {
-    eventAttributesRemoved: number,
-    existingBaseRemoved: boolean,
-    baseAdded: boolean,
-    javascriptAnchorsRemoved: number,
-    cleanupRemoveScripts: any,
-    cleanupHead: any,
-    cleanupBase: any,
-    showAriaHidden: number
-
+    eventAttributesRemoved: number;
+    existingBaseRemoved: boolean;
+    baseAdded: boolean;
+    javascriptAnchorsRemoved: number;
+    cleanupRemoveScripts: any;
+    cleanupHead: any;
+    cleanupBase: any;
+    showAriaHidden: number;
 }

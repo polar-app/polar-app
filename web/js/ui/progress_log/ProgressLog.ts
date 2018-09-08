@@ -23,7 +23,7 @@ export class ProgressLog {
      */
     update(progressEvent: ProgressEvent) {
 
-        console.log("Got progress update: ", progressEvent.percentage);
+        log.info("Got progress update: ", progressEvent.percentage);
 
         this.updateProgress(progressEvent);
         this.updateLogView(progressEvent);

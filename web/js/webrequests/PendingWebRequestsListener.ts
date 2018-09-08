@@ -42,7 +42,7 @@ export class PendingWebRequestsListener extends BaseWebRequestsListener {
      * Called when we receive an event.  All the events give us a 'details'
      * object about the request.
      */
-    onWebRequestEvent(event: INamedWebRequestEvent) {
+    public onWebRequestEvent(event: INamedWebRequestEvent) {
 
         setTimeout(() => {
 
@@ -52,11 +52,11 @@ export class PendingWebRequestsListener extends BaseWebRequestsListener {
 
     }
 
-    processWebRequestEvent(event: INamedWebRequestEvent) {
+    public processWebRequestEvent(event: INamedWebRequestEvent) {
 
-        //console.log(`event data: ${event.name}\t${event.details.id}\t${event.details.url}\t${event.details.resourceType}\t${event.details.webContentsId}`);
+        // console.log(`event data: ${event.name}\t${event.details.id}\t${event.details.url}\t${event.details.resourceType}\t${event.details.webContentsId}`);
 
-        let {name, details, callback} = event;
+        const {name, details, callback} = event;
 
         // WARNING: this code behaves VERY strangely and we DO NOT receive events
         // in the proper order for some reason.  I would expect to receive them
@@ -87,7 +87,7 @@ export class PendingWebRequestsListener extends BaseWebRequestsListener {
         // per iframe.  Either way using dictionaries avoided a -1 pending
         // count.
 
-        if(name === "onBeforeRequest") {
+        if (name === "onBeforeRequest") {
             // after this request the pending will be incremented.
 
             this.pendingRequests[details.id] = details;
@@ -107,7 +107,10 @@ export class PendingWebRequestsListener extends BaseWebRequestsListener {
 
 
         // NOTE onErrorOccurred is a fail through for many of these I think.
-        if(name === "onCompleted" || name === "onErrorOccurred" || name === "onBeforeRedirect" || name === "onAuthRequired") {
+        if (name === "onCompleted" ||
+            name === "onErrorOccurred" ||
+            name === "onBeforeRedirect" ||
+            name === "onAuthRequired") {
 
             // this request has already completed so is not considered against
             // pending any longer
@@ -132,23 +135,23 @@ export class PendingWebRequestsListener extends BaseWebRequestsListener {
          *
          * @type {number}
          */
-        let started = Object.keys(this.startedRequests).length;
+        const started = Object.keys(this.startedRequests).length;
 
         /**
          * The total number of finished requests (either completed, or failed)
          *
          * @type {number}
          */
-        let finished = Object.keys(this.finishedRequests).length;
+        const finished = Object.keys(this.finishedRequests).length;
 
         /**
          * The number of pending requests that have not yet finished.
          *
          * @type {number}
          */
-        let pending = started - finished;
+        const pending = started - finished;
 
-        if(pendingChange) {
+        if (pendingChange) {
             log.info(`Pending state ${pendingChange} for request id=${details.id} to ${pending} on ${name} for URL: ${details.url}`);
         }
 
@@ -157,32 +160,37 @@ export class PendingWebRequestsListener extends BaseWebRequestsListener {
          *
          * @type {number}
          */
-        let progress = Progress.calculate(started, finished);
+        const progress = Progress.calculate(started, finished);
 
-        if(pending < 5) {
+        if (pending < 5) {
             log.debug("The following pending requests remain: ", this.pendingRequests);
         }
 
-        if(pending < 0) {
-            let msg = `Pending request count is negative: ${pending} (started=${started}, finished=${finished})`;
+        if (pending < 0) {
+            const msg = `Pending request count is negative: ${pending} (started=${started}, finished=${finished})`;
             log.warn(msg);
         }
 
         // TODO: we removed logging the full details object because the
         // uploadData was just too much content.
 
-        log.debug(`Pending requests: ${pending}, started=${started}, finished=${finished}, progress=${progress}: ${name}`);
+        log.debug(`Pending requests on ${name}: `, {
+            pending,
+            started,
+            finished,
+            progress
+        });
 
         this.dispatchEventListeners({
-                                        name,
-                                        details,
-                                        pending,
-                                        started,
-                                        finished,
-                                        progress
-                                    });
+            name,
+            details,
+            pending,
+            started,
+            finished,
+            progress
+        });
 
-        if(callback) {
+        if (callback) {
             // the callback always has to be used or the requests will be
             // cancelled.
             callback({cancel: false});
@@ -194,29 +202,27 @@ export class PendingWebRequestsListener extends BaseWebRequestsListener {
      *
      * @param eventListener {Function}
      */
-    addEventListener(eventListener: PendingWebRequestsCallback) {
+    public addEventListener(eventListener: PendingWebRequestsCallback) {
         this.eventListeners.push(eventListener);
     }
 
-    dispatchEventListeners(event: PendingWebRequestsEvent) {
+    public dispatchEventListeners(event: PendingWebRequestsEvent) {
         this.eventListeners.forEach(eventListener => {
             eventListener(event);
-        })
+        });
     }
 
 }
 
-export interface PendingWebRequestsCallback {
-    (event: PendingWebRequestsEvent): void;
-}
+export type PendingWebRequestsCallback = (event: PendingWebRequestsEvent) => void;
 
 export interface PendingWebRequestsEvent {
 
-    readonly name: string,
-    readonly details: IWebRequestDetails,
-    readonly pending: number,
+    readonly name: string;
+    readonly details: IWebRequestDetails;
+    readonly pending: number;
     readonly started: number;
     readonly finished: number;
-    readonly progress: number
+    readonly progress: number;
 
 }

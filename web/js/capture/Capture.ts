@@ -71,7 +71,7 @@ export class Capture {
         this.pendingWebRequestsListener = new PendingWebRequestsListener();
         this.debugWebRequestsListener = new DebugWebRequestsListener();
 
-        if(captureOpts.pendingWebRequestsCallback) {
+        if (captureOpts.pendingWebRequestsCallback) {
             this.pendingWebRequestsListener.addEventListener(captureOpts.pendingWebRequestsCallback);
         }
 
@@ -93,6 +93,7 @@ export class Capture {
 
         await this.driver.loadURL(this.url);
 
+        // the page loaded now... capture the content.
         await this.handleLoad();
 
         return new Promise<CaptureResult>(resolve => {
@@ -101,7 +102,7 @@ export class Capture {
 
     }
 
-    async handleLoad() {
+    private async handleLoad() {
 
         // see if we first need to handle the page in any special manner.
 
@@ -111,7 +112,7 @@ export class Capture {
         // earlier I thin like on-dom-ready.
         //
 
-        let ampURL = await this.getAmpURL();
+        const ampURL = await this.getAmpURL();
 
         // TODO: if we end up handling multiple types of URLs in the future
         // we might want to build up a history to prevent endless loops or
@@ -141,7 +142,7 @@ export class Capture {
 
     }
 
-    stop() {
+    public stop() {
 
         this.webRequestReactors.forEach(webRequestReactor => {
             log.info("Stopping webRequestReactor...");
@@ -155,7 +156,7 @@ export class Capture {
      * Called when the onLoad handler is executed and we're ready to start the
      * capture.
      */
-    async capture() {
+    public async capture() {
 
         await Functions.waitFor(EXECUTE_CAPTURE_DELAY);
 
@@ -174,9 +175,9 @@ export class Capture {
         /** @RendererContext */
         function fetchAmpURL() {
 
-            let link = <HTMLLinkElement>document.querySelector("link[rel='amphtml']");
+            const link = <HTMLLinkElement>document.querySelector("link[rel='amphtml']");
 
-            if(link) {
+            if (link) {
                 return link.href;
             }
 
@@ -188,19 +189,14 @@ export class Capture {
 
     }
 
-    async executeContentCapture() {
+    public async executeContentCapture() {
 
         // TODO: this function should be cleaned up a bit.. it has too many moving
         // parts now and should be moved into smaller functions.
 
-        let webContents = this.webContents!;
+        const webContents = this.webContents!;
 
         log.info("Capturing the HTML...");
-
-        // define the content capture script.
-        //log.info("Defining ContentCapture...");
-        //console.log(ContentCapture.toString());
-        //log.info("Defining ContentCapture...done");
 
         log.info("Retrieving HTML...");
 
@@ -211,7 +207,7 @@ export class Capture {
         // this more aggressively.
         try {
 
-            let result: IResult<any> = await webContents.executeJavaScript("ContentCapture.execute()");
+            const result: IResult<any> = await webContents.executeJavaScript("ContentCapture.execute()");
             captured = Results.create<any>(result).get();
 
         } catch (e) {
@@ -229,20 +225,20 @@ export class Capture {
         // record the browser that was used to render this page.
         captured.browser = this.browserProfile;
 
-        let stashDir = this.stashDir;
-        let filename = Filenames.sanitize(captured.title);
+        const stashDir = this.stashDir;
+        const filename = Filenames.sanitize(captured.title);
 
-        let phzPath = FilePaths.join(stashDir, filename) + '.phz';
+        const phzPath = FilePaths.join(stashDir, filename) + '.phz';
 
         log.info("Writing PHZ to: " + phzPath);
 
-        let capturedPHZWriter = new CapturedPHZWriter(phzPath);
+        const capturedPHZWriter = new CapturedPHZWriter(phzPath);
         await capturedPHZWriter.convert(captured);
 
         // write the captured HTML to /tmp for debug purposes.  We can enable this
         // as a command line switch later.
 
-        //await Files.writeFileAsync(`/tmp/${filename}.json`, JSON.stringify(captured, null, "  "));
+        // await Files.writeFileAsync(`/tmp/${filename}.json`, JSON.stringify(captured, null, "  "));
 
         log.info("Capturing the HTML...done");
 
@@ -260,7 +256,7 @@ export class Capture {
      *
      * @param webRequest
      */
-    onWebRequest(webRequest: WebRequest) {
+    public onWebRequest(webRequest: WebRequest) {
 
         let webRequestReactor = new WebRequestReactor(webRequest);
         webRequestReactor.start();

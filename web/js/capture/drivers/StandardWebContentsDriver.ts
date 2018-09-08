@@ -32,11 +32,54 @@ export class StandardWebContentsDriver implements WebContentsDriver {
 
     public async init() {
 
-        let browserWindowOptions = this.computeBrowserWindowOptions();
+        const browserWindowOptions = this.computeBrowserWindowOptions();
 
         await this.doInit(browserWindowOptions);
 
     }
+
+
+    public async getWebContents(): Promise<Electron.WebContents> {
+        return Optional.of(this.webContents).get();
+    }
+
+    public async destroy() {
+        log.info("Destroying window...");
+        Optional.of(this.window).when(window => window.close());
+        log.info("Destroying window...done");
+    }
+
+
+    public loadURL(url: string): Promise<void> {
+
+        let result = new Promise<void>(resolve => {
+
+            this.webContents!.once('did-finish-load', async () => {
+                resolve();
+            });
+
+        });
+
+        const opts = {
+
+            extraHeaders: `pragma: no-cache\nreferer: ${url}\n`,
+            userAgent: this.browserProfile.userAgent
+
+        };
+
+        this.webContents!.loadURL(url, opts);
+
+        return result;
+
+    }
+
+    public progressUpdated(event: PendingWebRequestsEvent): void {
+    }
+
+    public addEventListener(eventName: WebContentsEventName, eventListener: () => void): void {
+        this.reactor.addEventListener(eventName, eventListener);
+    }
+
 
     protected computeBrowserWindowOptions() {
         return BrowserWindows.toBrowserWindowOptions(this.browserProfile);
@@ -137,47 +180,6 @@ export class StandardWebContentsDriver implements WebContentsDriver {
             this.reactor.dispatchEvent('close', {});
         });
 
-    }
-
-    public async getWebContents(): Promise<Electron.WebContents> {
-        return Optional.of(this.webContents).get();
-    }
-
-    public async destroy() {
-        log.info("Destroying window...");
-        Optional.of(this.window).when(window => window.close());
-        log.info("Destroying window...done");
-    }
-
-
-    public loadURL(url: string): Promise<void> {
-
-        let result = new Promise<void>(resolve => {
-
-            this.webContents!.once('did-finish-load', async () => {
-                resolve();
-            });
-
-        });
-
-        const opts = {
-
-            extraHeaders: `pragma: no-cache\nreferer: ${url}\n`,
-            userAgent: this.browserProfile.userAgent
-
-        };
-
-        this.webContents!.loadURL(url, opts);
-
-        return result;
-
-    }
-
-    public progressUpdated(event: PendingWebRequestsEvent): void {
-    }
-
-    public addEventListener(eventName: WebContentsEventName, eventListener: () => void): void {
-        this.reactor.addEventListener(eventName, eventListener);
     }
 
 }
