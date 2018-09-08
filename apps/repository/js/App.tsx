@@ -340,9 +340,11 @@ export default class App<P> extends React.Component<{}, IAppState> {
 
                                 onClick: ((e: any, handleOriginal?: () => void) => {
 
-                                    this.handleToggleField(rowInfo.original, column.id);
+                                    this.handleToggleField(rowInfo.original, column.id)
+                                        .catch(err => log.error("Could not handle toggle: ", err));
 
                                     if (handleOriginal) {
+                                        // needed for react table to function properly.
                                         handleOriginal();
                                     }
 

@@ -35,19 +35,18 @@ export class Logging {
 
     public static async initWithTarget(target: ILogger) {
 
-        const loggingConfig = await this.loggingConfig();
+        const lc = await this.loggingConfig();
 
         const delegate =
             new FilteredLogger(
                 new VersionAnnotatingLogger(
-                    new LevelAnnotatingLogger(target)), loggingConfig.level);
+                    new LevelAnnotatingLogger(target)), lc.level);
 
         LoggerDelegate.set(delegate);
 
         const logger = LoggerDelegate.get();
 
-        // noinspection TsLint: max-line-length
-        logger.info(`Using logger: ${logger.name}: target=${loggingConfig.target}, level=${LogLevel[loggingConfig.level]}`);
+        logger.info(`Using logger: ${logger.name}: target=${lc.target}, level=${LogLevel[lc.level]}`);
 
     }
 

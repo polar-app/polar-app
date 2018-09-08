@@ -9,8 +9,8 @@ import {Image} from './Image';
 import {Note} from './Note';
 import {Question} from './Question';
 import {Flashcard} from './Flashcard';
-import {ISODateTime} from './ISODateTime';
 import {Author} from './Author';
+import {ISODateTimeString} from './ISODateTimeStrings';
 
 export class TextHighlight extends BaseHighlight {
 
@@ -79,7 +79,7 @@ export interface ITextHighlight {
 
     readonly textSelections: {[id: number]: TextRect};
     readonly text: Text | string;
-    readonly rects: {[key: number]: Rect}
+    readonly rects: {[key: number]: Rect};
     readonly image?: Image;
     readonly images: {[key: string]: Image};
     readonly notes: {[key: string]: Note};
@@ -87,8 +87,8 @@ export interface ITextHighlight {
     readonly flashcards: {[key: string]: Flashcard};
     readonly id: string;
     readonly guid: string;
-    readonly created: ISODateTime;
-    readonly lastUpdated: ISODateTime;
+    readonly created: ISODateTimeString;
+    readonly lastUpdated: ISODateTimeString;
     readonly author?: Author;
 
 }

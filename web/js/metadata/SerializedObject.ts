@@ -10,7 +10,7 @@ export class SerializedObject {
         // noop
     }
 
-    init(val: any): void {
+    public init(val: any): void {
 
         if(typeof val === "object") {
             Object.assign(this, val);
@@ -20,11 +20,11 @@ export class SerializedObject {
 
     }
 
-    setup() {
+    public setup() {
 
     }
 
-    validate() {
+    public validate() {
 
     }
 

@@ -1,6 +1,6 @@
 import {Preconditions} from '../Preconditions';
 import {Image} from './Image';
-import {ISODateTime} from './ISODateTime';
+import {ISODateTimeString} from './ISODateTimeStrings';
 
 export class Screenshot extends Image {
 
@@ -13,7 +13,7 @@ export class Screenshot extends Image {
      * The time this object was created
      *
      */
-    public created: ISODateTime;
+    public created: ISODateTimeString;
 
     constructor(opts: any) {
 
@@ -26,7 +26,7 @@ export class Screenshot extends Image {
 
     }
 
-    validate() {
+    public validate() {
 
         super.validate();
 

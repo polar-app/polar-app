@@ -1,7 +1,7 @@
-import {ISODateTime} from './ISODateTime';
 import {Author} from './Author';
 import {SerializedObject} from './SerializedObject';
 import {Preconditions} from '../Preconditions';
+import {ISODateTimeString} from './ISODateTimeStrings';
 
 export abstract class VersionedObject extends SerializedObject {
 
@@ -26,12 +26,12 @@ export abstract class VersionedObject extends SerializedObject {
      * The time this object was created
      *
      */
-    public created: ISODateTime;
+    public created: ISODateTimeString;
 
     /**
      * The last time this annotation was updated (note changed, moved, etc).
      */
-    public lastUpdated: ISODateTime;
+    public lastUpdated: ISODateTimeString;
 
     /**
      * The author who created this object.
@@ -52,7 +52,7 @@ export abstract class VersionedObject extends SerializedObject {
 
     }
 
-    setup() {
+    public setup() {
 
         super.setup();
 
@@ -62,12 +62,12 @@ export abstract class VersionedObject extends SerializedObject {
 
     }
 
-    validate() {
+    public validate() {
 
         super.validate();
 
-        this.created = new ISODateTime(Preconditions.assertNotNull(this.created));
-        this.lastUpdated = new ISODateTime(Preconditions.assertNotNull(this.lastUpdated));
+        this.created = Preconditions.assertNotNull(this.created);
+        this.lastUpdated = Preconditions.assertNotNull(this.lastUpdated);
 
         Preconditions.assertNotNull(this.id, "id");
         Preconditions.assertNotNull(this.created, "created");

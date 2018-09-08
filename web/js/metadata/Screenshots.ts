@@ -1,26 +1,25 @@
 import {Screenshot} from './Screenshot';
 import {Hashcodes} from '../Hashcodes';
-import {ISODateTimes} from './ISODateTimes';
 import {ImageOpts} from './Image';
-import undefinedError = Mocha.utils.undefinedError;
+import {ISODateTimeStrings} from './ISODateTimeStrings';
 
 export class Screenshots {
 
     public static create(src: string, opts: ImageOpts, id?: string) {
 
         if(id === undefined) {
-            id = Hashcodes.createRandomID()
+            id = Hashcodes.createRandomID();
         }
 
         return new Screenshot({
             id,
-            created: ISODateTimes.create(),
+            created: ISODateTimeStrings.create(),
             src,
             width: opts.width,
             height: opts.height,
             type: opts.type,
             rel: opts.rel
-        })
+        });
 
     }
 
@@ -33,7 +32,7 @@ export class Screenshots {
         return {
             value,
             id: value.split(":")[1]
-        }
+        };
 
     }
 

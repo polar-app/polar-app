@@ -3,29 +3,28 @@
  * added.
  *
  */
-import {ISODateTime} from './ISODateTime';
 import {Hashcodes} from '../Hashcodes';
 import {Attachment} from './Attachment';
-import {ISODateTimes} from './ISODateTimes';
+import {ISODateTimeString, ISODateTimeStrings} from './ISODateTimeStrings';
 
 // used to avoid collision if we create multiple too fast.
 let sequence = 0;
 
 export class Attachments {
 
-    static createID(created: ISODateTime) {
+    public static createID(created: ISODateTimeString) {
 
-        let id = Hashcodes.create(JSON.stringify({created, sequence: sequence++}));
+        const id = Hashcodes.create(JSON.stringify({created, sequence: sequence++}));
 
         // truncate.  We don't need that much precision against collision.
-        return id.substring(0,10);
+        return id.substring(0, 10);
 
     }
 
-    static create(type: string, data: string): Attachment {
+    public static create(type: string, data: string): Attachment {
 
-        let created = ISODateTimes.create();
-        let id = this.createID(created);
+        const created = ISODateTimeStrings.create();
+        const id = this.createID(created);
 
         return new Attachment({
             id,

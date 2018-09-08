@@ -1,6 +1,6 @@
 import {SerializedObject} from './SerializedObject';
 import {Preconditions} from '../Preconditions';
-import {ISODateTime} from './ISODateTime';
+import {ISODateTimeString} from './ISODateTimeStrings';
 
 export class Attachment extends SerializedObject {
 
@@ -23,7 +23,7 @@ export class Attachment extends SerializedObject {
      * The time this object was created
      *
      */
-    public readonly created: ISODateTime;
+    public readonly created: ISODateTimeString;
 
     public constructor(opts: any) {
 
@@ -39,7 +39,7 @@ export class Attachment extends SerializedObject {
     }
 
 
-    validate() {
+    public validate() {
 
         super.validate();
 

@@ -6,14 +6,14 @@ const time = new Date(1330688329321);
 export class TestingTime {
 
     /**
-     * Freeze time for testing...
+     * Freeze time for testing at '2012-03-02T11:38:49.321Z'
      */
-    static freeze() {
+    public static freeze() {
 
         timekeeper.freeze(time);
     }
 
-    static forward(durationMS: number) {
+    public static forward(durationMS: number) {
         timekeeper.freeze(new Date(Date.now() + durationMS));
     }
 

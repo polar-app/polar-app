@@ -1,4 +1,3 @@
-import {ISODateTime} from './ISODateTime';
 import {PagemarkRect} from './PagemarkRect';
 import {Pagemark} from './Pagemark';
 import {Logger} from '../logger/Logger';
@@ -12,6 +11,7 @@ import {PagemarkMode} from './PagemarkMode';
 import {DocMeta} from './DocMeta';
 import {DocMetas} from './DocMetas';
 import {Preconditions} from '../Preconditions';
+import {ISODateTimeString, ISODateTimeStrings} from './ISODateTimeStrings';
 
 const log = Logger.create();
 
@@ -24,12 +24,12 @@ const DEFAULT_PAGEMARK_RECT = new PagemarkRect({
 
 export class Pagemarks {
 
-    static createID(created: ISODateTime) {
+    public static createID(created: ISODateTimeString) {
 
-        let id = Hashcodes.create(JSON.stringify(created));
+        const id = Hashcodes.create(JSON.stringify(created));
 
         // truncate.  We don't need that much precision against collision.
-        return id.substring(0,10);
+        return id.substring(0, 10);
 
     }
 
@@ -38,7 +38,7 @@ export class Pagemarks {
      * added.
      *
      */
-    static create(options: any = {}): Pagemark {
+    public static create(options: any = {}): Pagemark {
 
         options = Objects.defaults( options, {
 
@@ -79,7 +79,7 @@ export class Pagemarks {
             throw new Error(msg);
         }
 
-        let created = new ISODateTime(new Date());
+        const created = ISODateTimeStrings.create();
 
         return new Pagemark({
 
@@ -169,8 +169,9 @@ export class Pagemarks {
      * @param docMeta
      * @param pageNum
      *
-     * @param pagemark An optional pagemark to update.  If the pagemark isn't specified
-     * then we just assume it's deleted and update the document progress.
+     * @param pagemark An optional pagemark to update.  If the pagemark isn't
+     *     specified then we just assume it's deleted and update the document
+     *     progress.
      */
     static updatePagemark(docMeta: DocMeta, pageNum: number, pagemark?: Pagemark) {
 

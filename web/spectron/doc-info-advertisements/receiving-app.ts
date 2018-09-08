@@ -3,11 +3,13 @@ import {Logger} from '../../js/logger/Logger';
 import {MemoryDatastore} from '../../js/datastore/MemoryDatastore';
 import {DefaultPersistenceLayer} from '../../js/datastore/DefaultPersistenceLayer';
 import {AdvertisingPersistenceLayer} from '../../js/datastore/advertiser/AdvertisingPersistenceLayer';
+import {assertJSON} from '../../js/test/Assertions';
+import {TestingTime} from '../../js/test/TestingTime';
+import {Dictionaries} from '../../js/util/Dictionaries';
 
 const log = Logger.create();
 
 SpectronRenderer.run(async (state) => {
-
 
     const memoryDatastore = new MemoryDatastore();
 
@@ -20,6 +22,19 @@ SpectronRenderer.run(async (state) => {
     advertisingPersistenceLayer.addEventListener(adv => {
 
         console.log("Got the advertisement");
+
+        const expected = {
+            "progress": 100,
+            "pagemarkType": "SINGLE_COLUMN",
+            "properties": {},
+            "archived": false,
+            "flagged": false,
+            "nrPages": 1,
+            "fingerprint": "0x0001",
+            "added": "2012-03-02T11:38:49.321Z"
+        };
+
+        assertJSON(Dictionaries.sorted(adv.docInfo), Dictionaries.sorted(expected));
 
         state.testResultWriter.write(true)
             .catch((err: Error) => {

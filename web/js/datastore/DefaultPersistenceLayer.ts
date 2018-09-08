@@ -2,13 +2,12 @@ import {Datastore} from './Datastore';
 import {DocMeta} from '../metadata/DocMeta';
 import {DocMetas} from '../metadata/DocMetas';
 import {isPresent, Preconditions} from '../Preconditions';
-import {ISODateTimes} from '../metadata/ISODateTimes';
 import {Logger} from '../logger/Logger';
-import {ISODateTime} from '../metadata/ISODateTime';
 import {Dictionaries} from '../util/Dictionaries';
 import {DocMetaFileRef, DocMetaRef} from './DocMetaRef';
 import {DeleteResult} from './DiskDatastore';
 import {IPersistenceLayer} from './IPersistenceLayer';
+import {ISODateTimeStrings} from '../metadata/ISODateTimeStrings';
 
 const log = Logger.create();
 
@@ -91,10 +90,10 @@ export class DefaultPersistenceLayer implements IPersistenceLayer {
         docMeta = Dictionaries.copyOf(docMeta);
 
         // now update the lastUpdated times before we commit to disk.
-        docMeta.docInfo.lastUpdated = ISODateTimes.create();
+        docMeta.docInfo.lastUpdated = ISODateTimeStrings.create();
 
         if (docMeta.docInfo.added === undefined) {
-            docMeta.docInfo.added = new ISODateTime(new Date());
+            docMeta.docInfo.added = ISODateTimeStrings.create();
         }
 
         log.info("Sync of docMeta with fingerprint: ", fingerprint);

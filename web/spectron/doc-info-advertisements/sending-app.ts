@@ -4,8 +4,13 @@ import {MockDocMetas} from '../../js/metadata/DocMetas';
 import {AdvertisingPersistenceLayer} from '../../js/datastore/advertiser/AdvertisingPersistenceLayer';
 import {MemoryDatastore} from '../../js/datastore/MemoryDatastore';
 import {DefaultPersistenceLayer} from '../../js/datastore/DefaultPersistenceLayer';
+import {assertJSON} from '../../js/test/Assertions';
+import {TestingTime} from '../../js/test/TestingTime';
+import {Dictionaries} from '../../js/util/Dictionaries';
 
 const log = Logger.create();
+
+TestingTime.freeze();
 
 SpectronRenderer.run(async () => {
 
@@ -20,6 +25,20 @@ SpectronRenderer.run(async () => {
     const advertisingPersistenceLayer = new AdvertisingPersistenceLayer(persistenceLayer);
 
     await advertisingPersistenceLayer.init();
+
+    const expected = {
+        "progress": 100,
+        "pagemarkType": "SINGLE_COLUMN",
+        "properties": {},
+        "archived": false,
+        "flagged": false,
+        "nrPages": 1,
+        "fingerprint": "0x0001",
+        "added": "2012-03-02T11:38:49.321Z"
+    };
+
+    assertJSON(Dictionaries.sorted(docMeta.docInfo), Dictionaries.sorted(expected));
+
     await advertisingPersistenceLayer.syncDocMeta(docMeta);
 
 });

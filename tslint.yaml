@@ -55,9 +55,11 @@ rules:
         - public-instance-method
         - protected-instance-method
         - private-instance-method
+
         - public-static-field
         - protected-static-field
         - private-static-field
+
         - public-static-method
         - protected-static-method
         - private-static-method

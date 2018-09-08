@@ -1,11 +1,11 @@
 import {Hashcodes} from '../Hashcodes';
 import {Preconditions} from '../Preconditions';
-import {ISODateTime} from './ISODateTime';
 import {AreaHighlight} from './AreaHighlight';
+import {ISODateTimeString, ISODateTimeStrings} from './ISODateTimeStrings';
 
 export class AreaHighlights {
 
-    static createID(created: ISODateTime) {
+    public static createID(created: ISODateTimeString) {
         return Hashcodes.createID(created);
     }
 
@@ -16,11 +16,11 @@ export class AreaHighlights {
      * @param opts
      * @return {AreaHighlight}
      */
-    static create(opts: IAreaHighlightOpts = {}) {
+    public static create(opts: IAreaHighlightOpts = {}) {
 
         Preconditions.assertNotNull(opts.rect, "rect");
 
-        let created = new ISODateTime(new Date());
+        const created = ISODateTimeStrings.create();
 
         return new AreaHighlight({
 

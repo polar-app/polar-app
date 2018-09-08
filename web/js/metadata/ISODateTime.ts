@@ -4,19 +4,17 @@
  */
 export class ISODateTime {
 
-    public static EPOCH: ISODateTime = new ISODateTime(new Date(0));
-
     public readonly value: string;
 
     constructor(val: any) {
 
         if (typeof val === "string") {
             this.value = val;
-        } else if(val instanceof Date) {
+        } else if (val instanceof Date) {
             this.value = val.toISOString();
-        } else if(val instanceof ISODateTime) {
+        } else if (val instanceof ISODateTime) {
             this.value = val.value;
-        } else if(typeof val === "object" && typeof val.value === "string") {
+        } else if (typeof val === "object" && typeof val.value === "string") {
             // typescript serialized objects.
             this.value = val.value;
         } else {
@@ -25,21 +23,21 @@ export class ISODateTime {
 
     }
 
-    toDate(): Date {
+    public toDate(): Date {
         return new Date(Date.parse(this.value));
     }
 
-    toJSON(): string {
+    public toJSON(): string {
         return this.value;
     }
 
-    toString(): string {
+    public toString(): string {
         return this.value;
     }
 
-    equals(obj: any): boolean {
+    public equals(obj: any): boolean {
 
-        if(! (obj instanceof ISODateTime)) {
+        if (! (obj instanceof ISODateTime)) {
             return false;
         }
 
@@ -50,8 +48,10 @@ export class ISODateTime {
     /**
      * Create a duplicate version of this object.
      */
-    duplicate(): ISODateTime {
+    public duplicate(): ISODateTime {
         return new ISODateTime(this.value);
     }
+
+    public static EPOCH: ISODateTime = new ISODateTime(new Date(0));
 
 }

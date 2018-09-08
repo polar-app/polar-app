@@ -4,7 +4,7 @@
  */
 import {Image} from './Image';
 import {Author} from './Author';
-import {ISODateTime} from './ISODateTime';
+import {ISODateTimeString} from './ISODateTimeStrings';
 
 export interface DocDetail {
 
@@ -51,7 +51,7 @@ export interface DocDetail {
     /**
      * The time this file was added to the repository.
      */
-    readonly added?: ISODateTime;
+    readonly added?: ISODateTimeString;
 
 }
 
@@ -70,7 +70,7 @@ export interface UpdatableDocDetails {
     /**
      * The network URL for the document where we originally fetched it.
      */
-    url?: String;
+    url?: string;
 
     /**
      * The filename of this doc in the .stash directory.

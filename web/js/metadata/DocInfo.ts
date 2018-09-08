@@ -4,8 +4,8 @@
  */
 import {SerializedObject} from './SerializedObject';
 import {PagemarkType} from './PagemarkType';
-import {ISODateTime} from './ISODateTime';
 import {Preconditions} from '../Preconditions';
+import {ISODateTimeString} from './ISODateTimeStrings';
 
 export class DocInfo extends SerializedObject implements IDocInfo {
 
@@ -17,17 +17,17 @@ export class DocInfo extends SerializedObject implements IDocInfo {
     public subtitle?: string;
     public description?: string;
     public url?: string;
-    public lastOpened?: ISODateTime;
-    public lastUpdated?: ISODateTime;
+    public lastOpened?: ISODateTimeString;
+    public lastUpdated?: ISODateTimeString;
     public properties: {[id: string]: string} = {};
     public archived: boolean = false;
     public flagged: boolean = false;
     public filename?: string;
-    public added?: ISODateTime;
+    public added?: ISODateTimeString;
 
-    constructor(val: any) {
+    constructor(val: IDocInfo) {
 
-        super(val);
+        super();
 
         this.nrPages = val.nrPages;
         this.fingerprint = val.fingerprint;
@@ -103,13 +103,13 @@ export interface IDocInfo {
      * The last time this document was opened or null if it's never been
      * opened.
      */
-    lastOpened?: ISODateTime;
+    lastOpened?: ISODateTimeString;
 
     /**
      * The last time this document was opened or null if it's never been
      * opened.
      */
-    lastUpdated?: ISODateTime;
+    lastUpdated?: ISODateTimeString;
 
     /**
      * Arbitrary name/value properties set by 3rd party extensions for this
@@ -137,6 +137,6 @@ export interface IDocInfo {
     /**
      * The time this document was added to the repository.
      */
-    added?: ISODateTime;
+    added?: ISODateTimeString;
 
 }

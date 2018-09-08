@@ -1,10 +1,10 @@
 import {Hashcodes} from '../Hashcodes';
-import {ISODateTime} from './ISODateTime';
 import {TextHighlight} from './TextHighlight';
 import {Text} from './Text';
 import {Arrays} from '../util/Arrays';
 import {TextRect} from './TextRect';
 import {IRect} from '../util/rects/IRect';
+import {ISODateTimeStrings} from './ISODateTimeStrings';
 
 export class TextHighlightRecords {
 
@@ -16,16 +16,15 @@ export class TextHighlightRecords {
      *
      * @return an object with an "id" for a unique hash and a "value" of the
      * TextHighlight to use.
-     *                                                                                                                                                          np
      */
-    static create(rects: IRect[], textSelections: TextRect[], text: Text): TextHighlightRecord {
+    public static create(rects: IRect[], textSelections: TextRect[], text: Text): TextHighlightRecord {
 
-        let id = Hashcodes.createID(rects);
+        const id = Hashcodes.createID(rects);
 
-        let created = new ISODateTime(new Date());
-        let lastUpdated = created.duplicate();
+        const created = ISODateTimeStrings.create();
+        const lastUpdated = created;
 
-        let textHighlight = new TextHighlight({
+        const textHighlight = new TextHighlight({
             id,
             created,
             lastUpdated,
@@ -47,5 +46,5 @@ export class TextHighlightRecords {
 
 export interface TextHighlightRecord {
     readonly id: string;
-    readonly value: TextHighlight
+    readonly value: TextHighlight;
 }

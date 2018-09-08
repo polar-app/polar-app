@@ -1,6 +1,6 @@
-import {ISODateTime} from './ISODateTime';
 import {SerializedObject} from './SerializedObject';
 import {Preconditions} from '../Preconditions';
+import {ISODateTimeString} from './ISODateTimeStrings';
 
 /**
  * Used so that we can track the history of the document as we're reading it
@@ -8,15 +8,15 @@ import {Preconditions} from '../Preconditions';
  */
 export class ProgressChange extends SerializedObject {
 
-    readonly id: string;
+    public readonly id: string;
 
-    readonly changed: ISODateTime;
+    public readonly changed: ISODateTimeString;
 
     /**
      * Percentage of how complete we are on the document at the given change
      * timestamp.
      */
-    readonly percentage: number;
+    public readonly percentage: number;
 
     constructor(obj: any) {
         super(obj);
@@ -27,13 +27,13 @@ export class ProgressChange extends SerializedObject {
 
     }
 
-    setup() {
+    public setup() {
 
         super.setup();
 
     }
 
-    validate() {
+    public validate() {
 
         super.validate();
 

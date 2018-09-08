@@ -1,8 +1,8 @@
 import {FlashcardType} from './FlashcardType';
 import {VersionedObject} from './VersionedObject';
 import {Text} from './Text';
-import {ISODateTime} from './ISODateTime';
 import {Preconditions} from '../Preconditions';
+import {ISODateTimeString} from './ISODateTimeStrings';
 
 export class Flashcard extends VersionedObject {
 
@@ -52,8 +52,8 @@ export class Flashcard extends VersionedObject {
 
     public static newInstance(id: string,
                               guid: string,
-                              created: ISODateTime,
-                              lastUpdated: ISODateTime,
+                              created: ISODateTimeString,
+                              lastUpdated: ISODateTimeString,
                               type: FlashcardType,
                               fields: {[key: string]: Text},
                               archetype: string): Readonly<Flashcard> {
