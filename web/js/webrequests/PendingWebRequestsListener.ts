@@ -101,7 +101,7 @@ export class PendingWebRequestsListener extends BaseWebRequestsListener {
 
             pendingChange = "INCREMENTED";
 
-            this.requestState.markStarted(details.id, details.url);
+            this.requestState.markStarted(details.id, details.url, name);
 
         }
 
@@ -126,7 +126,7 @@ export class PendingWebRequestsListener extends BaseWebRequestsListener {
 
             pendingChange = "DECREMENTED";
 
-            this.requestState.markFinished(details.id, details.url);
+            this.requestState.markFinished(details.id, details.url, name);
 
         }
 
@@ -160,10 +160,10 @@ export class PendingWebRequestsListener extends BaseWebRequestsListener {
          *
          * @type {number}
          */
-        const progress = Progress.calculate(started, finished);
+        const progress = Progress.calculate(finished, started);
 
         if (pending < 5) {
-            log.debug("The following pending requests remain: ", this.pendingRequests);
+            log.debug("The following pending requests remain: \n", this.pendingRequests);
         }
 
         if (pending < 0) {
