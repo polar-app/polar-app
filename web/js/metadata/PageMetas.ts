@@ -4,7 +4,7 @@ import {forDict} from '../util/Functions';
 import {Hashcodes} from '../Hashcodes';
 import {Pagemarks} from './Pagemarks';
 import {DocMeta} from './DocMeta';
-import {Preconditions} from '../Preconditions';
+import {isPresent, Preconditions} from '../Preconditions';
 import {AnnotationEvent} from '../annotations/components/AnnotationEvent';
 import {TraceEvent} from '../proxies/TraceEvent';
 
@@ -12,26 +12,26 @@ const log = Logger.create();
 
 export class PageMetas {
 
-    static upgrade(pageMetas: {[key: number]: PageMeta}) {
+    public static upgrade(pageMetas: {[key: number]: PageMeta}) {
 
         pageMetas = Object.assign({}, pageMetas);
 
         forDict(pageMetas, (key, pageMeta) => {
 
-            if(!pageMeta.textHighlights) {
+            if (! isPresent(pageMeta.textHighlights)) {
                 log.debug("No textHighlights.  Assigning default.");
                 pageMeta.textHighlights = {};
             }
 
             // make sure legacy / old text highlights are given IDs.
-            forDict(pageMeta.textHighlights, function (key, textHighlight) {
-                if(! textHighlight.id) {
+            forDict(pageMeta.textHighlights, (_, textHighlight) => {
+                if (! textHighlight.id) {
                     log.debug("Text highlight given ID");
                     textHighlight.id = Hashcodes.createID(textHighlight.rects);
                 }
             });
 
-            if(!pageMeta.areaHighlights) {
+            if (! isPresent(pageMeta.areaHighlights)) {
                 log.debug("No areaHighlights.  Assigning default.");
                 pageMeta.areaHighlights = {};
             }

@@ -11,22 +11,22 @@ export class DocDetails {
 
         // we basically now need to 'gift' additional fields to the doc model
         // here including title, filename, etc.
-        if(docDetail !== undefined) {
+        if (docDetail !== undefined) {
 
             log.debug("Merging docDetail: ", docDetail);
 
-            let targetDocDetails: UpdatableDocDetails = docInfo;
+            const targetDocDetails: UpdatableDocDetails = docInfo;
 
-            let typedKeys: (keyof UpdatableDocDetails)[]
+            const typedKeys: Array<keyof UpdatableDocDetails>
                 = ['title', 'subtitle', 'description', 'url', 'filename'];
 
-            let sourceDocDetails: UpdatableDocDetails = docDetail;
+            const sourceDocDetails: UpdatableDocDetails = docDetail;
 
             typedKeys.forEach(typedKey => {
 
-                if(! isPresent(targetDocDetails[typedKey]) && isPresent(sourceDocDetails[typedKey])) {
-                    let newValue = sourceDocDetails[typedKey];
-                    log.debug(`Setting ${typedKey} to ${newValue}`)
+                if (! isPresent(targetDocDetails[typedKey]) && isPresent(sourceDocDetails[typedKey])) {
+                    const newValue = sourceDocDetails[typedKey];
+                    log.debug(`Setting ${typedKey} to ${newValue}`);
                     targetDocDetails[typedKey] = newValue;
                 }
 

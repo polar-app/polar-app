@@ -119,6 +119,14 @@ export class DiskDatastore implements Datastore {
 
         Preconditions.assertTypeOf(data, "string", "data");
 
+        if (data.length === 0) {
+            throw new Error("Invalid data");
+        }
+
+        if (data[0] !== '{') {
+            throw new Error("Not JSON");
+        }
+
         log.info("Performing sync of content into disk datastore");
 
         const docDir = FilePaths.join(this.dataDir, fingerprint);

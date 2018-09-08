@@ -25,7 +25,7 @@ export interface DocDetail {
     /**
      * The network URL for the document where we originally fetched it.
      */
-    readonly url?: String;
+    readonly url?: string;
 
     /**
      * The number of pages in this document.
@@ -54,7 +54,6 @@ export interface DocDetail {
     readonly added?: ISODateTimeString;
 
 }
-
 
 export interface UpdatableDocDetails {
 

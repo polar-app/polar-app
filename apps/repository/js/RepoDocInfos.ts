@@ -33,15 +33,23 @@ export class RepoDocInfos {
                     // this is a pragmatic workaround for JSON
                     // serialization issues with typescript.
 
-                    if ( typeof current === 'string') {
-                        return current;
+                    if ( typeof current === 'object') {
+
+                        // this is a bug fix/workaround for corrupt stores that
+                        // accidentally had and ISODateTime stored in them.
+
+                        const obj = <any> current;
+
+                        if (isPresent(obj.value) && typeof obj.value === 'string') {
+                            return obj.value;
+                        }
+
                     }
 
-                    return current.value;
+                    return current;
 
                 })
                 .getOrUndefined(),
-
             flagged: Optional.of(docInfo.flagged).getOrElse(false),
 
             archived: Optional.of(docInfo.archived).getOrElse(false),

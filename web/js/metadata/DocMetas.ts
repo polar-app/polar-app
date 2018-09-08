@@ -144,7 +144,7 @@ export class DocMetas {
 
         if (!docMeta.attachments) {
             log.debug("No attachments. Adding empty map.");
-            docMeta.annotationInfo = AnnotationInfos.create();
+            docMeta.attachments = {};
         }
 
         if (docMeta.docInfo) {

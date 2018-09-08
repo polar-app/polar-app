@@ -9,7 +9,6 @@ const {DocInfo} = require("./metadata/DocInfo");
 const {PageInfo} = require("./metadata/PageInfo");
 const {PageMeta} = require("./metadata/PageMeta");
 const {DocMetas} = require("./metadata/DocMetas");
-const {ISODateTime} = require("./metadata/ISODateTime");
 const {MetadataSerializer} = require("./metadata/MetadataSerializer");
 const {Text} = require("./metadata/Text");
 const {Pagemark} = require("./metadata/Pagemark");
@@ -483,44 +482,6 @@ describe('Testing progress computation', function() {
     });
 
 });
-
-describe('testing metadata', function() {
-
-    it('Test ISO8601 date/time serialization and deserialization', function() {
-
-        expect(new ISODateTime(date).toJSON()).to.equal("2018-05-30T02:47:44.411Z");
-
-    });
-
-    xit('Note serialization', function() {
-
-        var note = new Note(
-            {
-                text: new Text("hello"),
-                created: new ISODateTime(date)
-            });
-
-        assert.deepJSON(note, {
-            "text": {
-                "body": "",
-                "type": "MARKDOWN"
-            },
-            "created": "2018-05-30T02:47:44.411Z",
-            "author": null
-        });
-
-        note = MetadataSerializer.deserialize(new Note(), `{"text":"hello","created":"2018-05-30T02:47:44.411Z"}`);
-
-        assert.deepJSON(note, {
-            "text": "hello",
-            "created": "2018-05-30T02:47:44.411Z",
-            "author": null
-        });
-
-    });
-
-});
-
 
 describe('testing data serialization', function() {
 
