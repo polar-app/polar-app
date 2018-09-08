@@ -12,6 +12,9 @@ import {Optional} from '../util/ts/Optional';
 import {MultiLogger} from './MultiLogger';
 import {SentryLogger} from './SentryLogger';
 import {FilePaths} from '../util/FilePaths';
+import {ElectronContextType} from '../electron/context/ElectronContextType';
+import {ElectronContextTypes} from '../electron/context/ElectronContextTypes';
+import {ToasterLogger} from './ToasterLogger';
 
 /**
  * Maintains our general logging infrastructure.  Differentiated from Logger
@@ -53,6 +56,13 @@ export class Logging {
         const loggers: ILogger[] = [];
 
         loggers.push(new SentryLogger());
+
+        if (ElectronContextTypes.create() === ElectronContextType.RENDERER) {
+            // use a ToasterLogger when running in the renderer context so that
+            // we can bring up error messages for the user.
+            loggers.push(new ToasterLogger());
+        }
+
         loggers.push(await this.createPrimaryTarget());
 
         return new MultiLogger(...loggers);

@@ -1,8 +1,6 @@
-import {DefaultPersistenceLayer} from '../DefaultPersistenceLayer';
-import {ElectronPersistenceLayerFactory} from '../ElectronPersistenceLayerFactory';
 import {IPCMessage} from '../../ipc/handler/IPCMessage';
-import {DocMetaSync} from './DocMetaSync';
 import {Logger} from '../../logger/Logger';
+import {RemotePersistenceLayerFactory} from '../factories/RemotePersistenceLayerFactory';
 
 const log = Logger.create();
 //
@@ -16,7 +14,7 @@ process.dlopen = () => {
     throw new Error('Load native module is not safe');
 };
 
-        ElectronPersistenceLayerFactory.create();
+RemotePersistenceLayerFactory.create();
 
 // class PersistenceLayerWorker {
 //
@@ -36,9 +34,9 @@ process.dlopen = () => {
 //
 addEventListener('message', (messageEvent) => {
 
-    let ipcMessage: IPCMessage<any> = messageEvent.data;
+    const ipcMessage: IPCMessage<any> = messageEvent.data;
 
-    if(ipcMessage.type === 'sync') {
+    if (ipcMessage.type === 'sync') {
 
         // persistenceLayerWorker.sync(messageEvent.data)
         //     .catch(err => log.error("Unable to write docMeta: ", err))

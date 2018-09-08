@@ -7,7 +7,7 @@ import {Datastores} from './web/js/datastore/Datastores';
 
 const log = Logger.create();
 
-let hasSingleInstanceLock = app.requestSingleInstanceLock();
+const hasSingleInstanceLock = app.requestSingleInstanceLock();
 
 if( ! hasSingleInstanceLock) {
     log.info("Quiting.  App is single instance.");
@@ -16,16 +16,18 @@ if( ! hasSingleInstanceLock) {
 
 async function launch() {
 
-    let datastore = Datastores.create();
+    const datastore = Datastores.create();
+
+
 
     await datastore.init();
 
     await Logging.init();
 
-    let mainApp = new MainApp(datastore);
-    let {mainAppController} = await mainApp.start();
+    const mainApp = new MainApp(datastore);
+    const {mainAppController} = await mainApp.start();
 
-    let fileArg = Cmdline.getDocArg(process.argv);
+    const fileArg = Cmdline.getDocArg(process.argv);
 
     if(fileArg) {
         log.info("Opening file given on the command line: " + fileArg);

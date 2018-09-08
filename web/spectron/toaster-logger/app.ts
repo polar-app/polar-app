@@ -5,6 +5,7 @@ import {wait} from 'dom-testing-library';
 import {ToasterLogger} from '../../js/logger/ToasterLogger';
 
 SpectronRenderer.run(async (state) => {
+
     console.log("Running within SpectronRenderer now.");
 
     const toasterLogger = new ToasterLogger();

@@ -7,7 +7,7 @@ import {ElectronContextType} from './ElectronContextType';
 
 export class ElectronContextTypes {
 
-    static create() {
+    public static create() {
 
         if (remote) {
             return ElectronContextType.RENDERER;

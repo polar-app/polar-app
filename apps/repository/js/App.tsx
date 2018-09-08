@@ -8,12 +8,13 @@ import {Strings} from '../../../web/js/util/Strings';
 import {IListenablePersistenceLayer} from '../../../web/js/datastore/IListenablePersistenceLayer';
 import {RepoDocInfoLoader} from './RepoDocInfoLoader';
 // noinspection TsLint: max-line-length
-import {ElectronRendererPersistenceLayerFactory} from '../../../web/js/datastore/ElectronRendererPersistenceLayerFactory';
+
 import {IAppState} from './IAppState';
 import {RepoDocInfoIndex} from './RepoDocInfoIndex';
 import {RepoDocInfo} from './RepoDocInfo';
 import {RepoDocInfos} from './RepoDocInfos';
 import {RepositoryUpdater} from './RepositoryUpdater';
+import {DefaultPersistenceLayerFactory} from '../../../web/js/datastore/factories/DefaultPersistenceLayerFactory';
 
 const log = Logger.create();
 
@@ -367,7 +368,7 @@ export default class App<P> extends React.Component<{}, IAppState> {
 
     private async init(): Promise<void> {
 
-        this.persistenceLayer = await ElectronRendererPersistenceLayerFactory.create();
+        this.persistenceLayer = await DefaultPersistenceLayerFactory.create();
         this.repoDocInfoLoader = new RepoDocInfoLoader(this.persistenceLayer);
         this.repositoryUpdater = new RepositoryUpdater(this.persistenceLayer);
 

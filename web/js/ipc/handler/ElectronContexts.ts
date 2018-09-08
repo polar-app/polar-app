@@ -8,12 +8,17 @@ import {ElectronMainContext, ElectronRendererContext} from './ElectronContext';
 
 export class ElectronContexts {
 
-    static create() {
+    public static create() {
 
-        if(! remote) {
-            return new ElectronMainContext();
+        if (remote) {
+
+            const browserWindowReference
+                = new BrowserWindowReference(remote.getCurrentWindow().id);
+
+            return new ElectronRendererContext(browserWindowReference);
+
         } else {
-            return new ElectronRendererContext(new BrowserWindowReference(remote.getCurrentWindow().id));
+            return new ElectronMainContext();
         }
 
     }
