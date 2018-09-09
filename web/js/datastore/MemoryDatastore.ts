@@ -20,9 +20,12 @@ export class MemoryDatastore implements Datastore {
 
     public readonly logsDir: string;
 
+    public readonly directories: Directories;
+
     protected readonly docMetas: {[fingerprint: string]: string} = {};
 
     constructor() {
+        this.directories = new Directories();
 
         // these dir values are used in the UI and other places so we need to
         // actually have values for them.
@@ -36,7 +39,7 @@ export class MemoryDatastore implements Datastore {
 
     // noinspection TsLint
     public async init() {
-
+        await this.directories.init();
     }
 
     public async contains(fingerprint: string): Promise<boolean> {

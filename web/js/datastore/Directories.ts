@@ -12,7 +12,10 @@ export class Directories {
     public readonly stashDir: string;
     public readonly logsDir: string;
     public readonly configDir: string;
+
     /**
+     *
+     *
      * Expose the DataDirConfig so tests and other systems can see how the
      * dataDir was setup for the DiskDatastore.
      */
@@ -20,14 +23,9 @@ export class Directories {
 
     public initialization?: Initialization;
 
-    constructor(dataDir?: string) {
+    constructor() {
 
-        if (dataDir) {
-            // use a configured dataDir for testing.
-            this.dataDirConfig = {path: dataDir, strategy: 'manual'};
-        } else {
-            this.dataDirConfig = Directories.getDataDir();
-        }
+        this.dataDirConfig = Directories.getDataDir();
 
         this.dataDir = this.dataDirConfig.path;
 
@@ -55,6 +53,10 @@ export class Directories {
 
         let dataDirs: DataDir[] = [
             {
+                path: GlobalDataDir.get(),
+                strategy: 'manual'
+            },
+            {
                 path: process.env.POLAR_DATA_DIR,
                 strategy: 'env'
             },
@@ -73,6 +75,25 @@ export class Directories {
             strategy: dataDir.strategy
         };
 
+    }
+
+}
+
+
+/**
+ * Allows us to override the data dir internally for testing rather than setting
+ * an environment variable.
+ */
+export class GlobalDataDir {
+
+    private static value: string | undefined = undefined;
+
+    public static set(value: string | undefined) {
+        this.value = value;
+    }
+
+    public static get() {
+        return this.value;
     }
 
 }

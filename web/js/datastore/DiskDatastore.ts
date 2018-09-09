@@ -4,9 +4,10 @@ import {Logger} from '../logger/Logger';
 import {DocMetaFileRef, DocMetaRef} from './DocMetaRef';
 import {FileDeleted, Files} from '../util/Files';
 import {FilePaths} from '../util/FilePaths';
+import {Directories} from './Directories';
+
 import fs from 'fs';
 import os from 'os';
-import {Directories} from './Directories';
 
 const log = Logger.create();
 
@@ -20,13 +21,13 @@ export class DiskDatastore implements Datastore {
 
     public readonly dataDirConfig: DataDirConfig;
 
-    private readonly directories: Directories;
+    public readonly directories: Directories;
 
-    constructor(dataDir?: string) {
+    constructor() {
 
         // TODO: migrate this to use Directories
 
-        this.directories = new Directories(dataDir);
+        this.directories = new Directories();
 
         // the path to the stash directory
         this.dataDir = this.directories.dataDir;
@@ -210,7 +211,7 @@ export interface DataDir {
     /**
      * How the data dir was configured.
      */
-    strategy: 'env' | 'home';
+    strategy: DirStrategy;
 
 }
 
@@ -221,7 +222,7 @@ export interface DataDirConfig {
     /**
      * How the data dir was configured.
      */
-    strategy: 'env' | 'home' | 'manual';
+    strategy: DirStrategy;
 
 }
 
@@ -232,3 +233,5 @@ export interface DeleteResult {
     dataFile: Readonly<FileDeleted>;
 
 }
+
+type DirStrategy = 'env' | 'home' | 'manual';

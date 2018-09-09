@@ -12,7 +12,7 @@ import fs from 'fs';
 import {Files} from '../util/Files';
 import {FilePaths} from '../util/FilePaths';
 import {Dictionaries} from '../util/Dictionaries';
-import {Directories} from './Directories';
+import {Directories, GlobalDataDir} from './Directories';
 
 const rimraf = require('rimraf');
 
@@ -25,7 +25,8 @@ describe('DiskDatastore', function() {
         const dataDir = FilePaths.join(tmpdir, 'test-paths');
         removeDirectory(dataDir);
 
-        const diskDatastore = new DiskDatastore(dataDir);
+        GlobalDataDir.set(dataDir);
+        const diskDatastore = new DiskDatastore();
 
         await diskDatastore.init();
 
@@ -43,8 +44,6 @@ describe('DiskDatastore', function() {
         const dataDir = FilePaths.join(tmpdir, 'this-file-does-not-exist');
         removeDirectory(dataDir);
 
-        const diskDatastore = new DiskDatastore(dataDir);
-
         assert.equal(fs.existsSync(dataDir), false);
         assert.equal(await Files.existsAsync(dataDir), false);
 
@@ -55,7 +54,8 @@ describe('DiskDatastore', function() {
         const dataDir = FilePaths.join(tmpdir, 'disk-datastore.test');
         removeDirectory(dataDir);
 
-        const diskDatastore = new DiskDatastore(dataDir);
+        GlobalDataDir.set(dataDir);
+        const diskDatastore = new DiskDatastore();
 
         assert.equal(await Files.existsAsync(dataDir), false);
 
@@ -153,7 +153,8 @@ describe('DiskDatastore', function() {
 
             removeDirectory(dataDir);
 
-            diskDatastore = new DiskDatastore(dataDir);
+            GlobalDataDir.set(dataDir);
+            diskDatastore = new DiskDatastore();
             persistenceLayer = new DefaultPersistenceLayer(diskDatastore);
 
             await persistenceLayer.init();

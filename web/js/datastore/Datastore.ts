@@ -1,12 +1,15 @@
 // A datastore that supports ledgers and checkpoints.
 import {DocMetaFileRef, DocMetaRef} from './DocMetaRef';
 import {DeleteResult} from './DiskDatastore';
+import {Directories} from './Directories';
 
 export interface Datastore {
 
     readonly stashDir: string;
 
     readonly logsDir: string;
+
+    readonly directories: Directories;
 
     /**
      * Init the datastore, potentially reading files of disk, the network, etc.

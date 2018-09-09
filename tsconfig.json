@@ -48,7 +48,8 @@
     ],
     "types": [
         "mocha",
-        "electron"
+        "electron",
+        "reflect-metadata"
     ],
     "typeRoots": [
         "./node_modules/@types"
