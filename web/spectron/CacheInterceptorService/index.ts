@@ -3,6 +3,7 @@ import {CacheRegistry} from '../../js/backend/proxyserver/CacheRegistry';
 import {CacheInterceptorService} from '../../js/backend/interceptor/CacheInterceptorService';
 import {SpectronMain2} from '../../js/test/SpectronMain2';
 import {WebContentsPromises} from '../../js/electron/framework/WebContentsPromises';
+import {FilePaths} from '../../js/util/FilePaths';
 
 SpectronMain2.create().run(async state => {
     //
@@ -15,7 +16,12 @@ SpectronMain2.create().run(async state => {
     await cacheInterceptorService.start();
     //
     // // add our phz file to the cache registry...
-    await cacheRegistry.registerFile('/tmp/cache-interceptor-service.phz');
+
+    // FIXME: this won't work on Windows.
+
+    const path = FilePaths.createTempName("cache-interceptor-service.phz");
+
+    await cacheRegistry.registerFile(path);
 
     console.log("Interceptor service started...");
 
