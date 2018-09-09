@@ -11,7 +11,7 @@
         }
 
         #container {
-            pointer-events: none;
+            /*pointer-events: none;*/
         }
 
         #overlay {
@@ -47,6 +47,9 @@
         }
 
     </style>
+
+    <link rel="stylesheet" href="../../node_modules/font-awesome/css/font-awesome.min.css">
+
 </head>
 
 <body>
@@ -56,7 +59,12 @@
 <!--</div>-->
 
 <div id="container">
-    <div id="overlay"></div>
+    <!--<div id="overlay"></div>-->
+
+    <div class="navbar">
+        <input type="text" value="">
+    </div>
+
 
     <webview name="content" id="content" src="./blank.html" disablewebsecurity nodeintegration="false" preload="../../web/js/capture/renderer/ContentCapture.js"></webview>
 

@@ -1,0 +1,80 @@
+<html>
+
+<head>
+    <link rel="stylesheet" href="../../node_modules/font-awesome/css/font-awesome.min.css">
+
+    <style>
+
+        html, body {
+            margin: 0;
+            padding: 0;
+        }
+
+        .linkbar {
+            background-color: #EEEEEE;
+            padding: 3px 0 3px 0;
+            border-bottom: 1px solid darkgrey;
+            width: 100%;
+            overflow: hidden;
+            height: 30px;
+        }
+
+        .linkbar input[type='text'] {
+            margin: 0 3px 0 3px;
+            padding: 3px;
+            width: calc(100% );
+            /*border-radius: 1px;*/
+
+
+        }
+
+        .linkbar {
+            display: table;
+        }
+
+        .linkbar > .linkbar-block {
+            display: table-cell;
+            vertical-align: middle;
+            text-align: center;
+        }
+
+        .linkbar-right {
+            width: 40px;
+        }
+
+        .linkbar-left {
+            width: 30px;
+        }
+
+        .linkbar-center {
+            /*padding: 0 3px 0 3px;*/
+        }
+
+        .linkbar .fa {
+            color: #444444;
+        }
+
+    </style>
+
+</head>
+<body>
+
+<div class="linkbar">
+
+    <div class="linkbar-block linkbar-left">
+        <i class="fa fa-refresh fa-rotate-180"></i>
+    </div>
+
+    <div class="linkbar-block linkbar-center">
+        <input type="text" value="" spellcheck="false">
+    </div>
+
+    <div class="linkbar-block linkbar-right">
+        <i class="fa fa-cloud-download"></i>
+
+    </div>
+
+</div>
+
+</body>
+</html>

@@ -14,7 +14,7 @@ export class ProgressBar {
 
     public destroy() {
 
-        if(this.element.parentElement !== null) {
+        if (this.element.parentElement !== null) {
             this.element.parentElement.removeChild(this.element);
         }
 
@@ -22,23 +22,23 @@ export class ProgressBar {
 
     public static create(indeterminate: boolean = true): ProgressBar {
 
-        let element = document.createElement('progress');
+        const element = document.createElement('progress');
 
-        if(! indeterminate) {
+        if (! indeterminate) {
             element.value = 0;
             element.max = 100;
         }
 
         element.id = ID;
-        element.style.height=`5px`;
-        element.style.width=`100%`;
+        element.style.height = `5px`;
+        element.style.width = `100%`;
 
-        ///progress.style.backgroundColor='#89ADFD';
-        //progress.style.color='#89ADFD';
-        element.style.position='absolute';
-        element.style.top='0';
-        element.style.left='0';
-        element.style.zIndex='99999999999';
+        /// progress.style.backgroundColor='#89ADFD';
+        // progress.style.color='#89ADFD';
+        element.style.position = 'fixed';
+        element.style.top = '0';
+        element.style.left = '0';
+        element.style.zIndex = '99999999999';
 
         document.body.appendChild(element);
 

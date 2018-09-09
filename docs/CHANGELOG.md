@@ -1,4 +1,7 @@
 
+- Fixed a bad initial bug where if you didn't have any documents in you repository
+  you would get an error. 
+
 # 1.0.0-beta140
 
 - Electron 3.0 beta 10

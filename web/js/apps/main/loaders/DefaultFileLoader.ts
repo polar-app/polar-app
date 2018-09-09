@@ -22,9 +22,9 @@ export class DefaultFileLoader implements FileLoader {
         this.phzLoader = new PHZLoader({cacheRegistry});
     }
 
-    async registerForLoad(path: string): Promise<LoadedFile> {
+    public async registerForLoad(path: string): Promise<LoadedFile> {
 
-        if(path.endsWith(".pdf")) {
+        if (path.endsWith(".pdf")) {
             return this.pdfLoader.registerForLoad(path);
         } else if (path.endsWith(".phz")) {
             return this.phzLoader.registerForLoad(path);
