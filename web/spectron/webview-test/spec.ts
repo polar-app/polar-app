@@ -5,7 +5,7 @@ import {assertJSON} from '../../js/test/Assertions';
 const assert = require('assert');
 const {Functions} = require("../../js/util/Functions");
 
-describe('example-test', function() {
+xdescribe('webview-test', function() {
 
     Spectron.setup(__dirname);
     this.timeout(10000);
@@ -14,7 +14,7 @@ describe('example-test', function() {
 
         assert.equal(await this.app.client.getWindowCount(), 1);
 
-        let testResultReader = new WebDriverTestResultReader(this.app);
+        const testResultReader = new WebDriverTestResultReader(this.app);
 
         assert.equal(await testResultReader.read(), true);
 

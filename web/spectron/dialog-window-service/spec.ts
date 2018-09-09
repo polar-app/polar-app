@@ -5,12 +5,12 @@ import {SpectronSpec} from '../../js/test/SpectronSpec';
 
 const assert = require('assert');
 
-describe('example-test', function() {
+describe('dialog-window-service', function() {
 
     Spectron.setup(__dirname);
     this.timeout(10000);
 
-    it('shows an basic initial window', async function() {
+    it('create dialog window and hide/show it multiple times', async function() {
 
         await SpectronSpec.create(this.app).waitFor(true);
 

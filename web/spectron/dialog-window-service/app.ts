@@ -10,11 +10,11 @@ SpectronRenderer.run(async (state) => {
 
     console.log("Going to create dialog");
 
-    let appPath = __dirname + "/dialog.html";
-    let resource = new Resource(ResourceType.FILE, appPath);
-    let dialogWindowOptions = new DialogWindowOptions(resource);
+    const appPath = __dirname + "/dialog.html";
+    const resource = new Resource(ResourceType.FILE, appPath);
+    const dialogWindowOptions = new DialogWindowOptions(resource);
 
-    let dialogWindowClient = await DialogWindowClient.create(dialogWindowOptions);
+    const dialogWindowClient = await DialogWindowClient.create(dialogWindowOptions);
 
     await dialogWindowClient.hide();
 

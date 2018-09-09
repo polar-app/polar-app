@@ -10,7 +10,7 @@ describe('create-flashcard', function() {
     Spectron.setup(__dirname);
     this.timeout(10000);
 
-    it('shows an basic initial window', async function() {
+    it('Create flashcard window and make sure they render properly', async function() {
 
         assert.equal(await this.app.client.getWindowCount(), 1);
 

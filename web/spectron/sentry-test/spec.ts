@@ -1,12 +1,12 @@
 import {Spectron} from '../../js/test/Spectron';
 import {SpectronSpec} from '../../js/test/SpectronSpec';
 
-describe('example-test', function() {
+describe('sentry', function() {
 
     Spectron.setup(__dirname);
     this.timeout(10000);
 
-    xit('shows an basic initial window', async function() {
+    xit('test sentry support', async function() {
 
         await SpectronSpec.create(this.app).waitFor(true);
 

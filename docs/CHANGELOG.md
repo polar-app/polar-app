@@ -1,4 +1,8 @@
 
+
+
+- Electron 3.0 beta 10
+
 - Document Repository now supports the following features:
 
     - flagging files 
