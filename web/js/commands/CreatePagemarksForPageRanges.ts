@@ -9,7 +9,7 @@ export class CreatePagemarksForPageRanges {
         this.docMeta = docMeta;
     }
 
-    execute(options: any) {
+    public execute(options: any) {
 
         if(! options) {
             options = {};
