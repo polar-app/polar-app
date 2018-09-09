@@ -10,7 +10,7 @@ import {round} from '../util/Percentages';
 import {PagemarkMode} from './PagemarkMode';
 import {DocMeta} from './DocMeta';
 import {DocMetas} from './DocMetas';
-import {Preconditions} from '../Preconditions';
+import {isPresent, Preconditions} from '../Preconditions';
 import {ISODateTimeString, ISODateTimeStrings} from './ISODateTimeStrings';
 
 const log = Logger.create();
@@ -127,20 +127,18 @@ export class Pagemarks {
 
     /**
      *
-     * @param pagemarks {Object<?,pagemark>}
-     * @return {Object<?,pagemark>}
      */
-    static upgrade(pagemarks: {[id: string]: Pagemark}) {
+    public static upgrade(pagemarks: {[id: string]: Pagemark}) {
 
-        let result: {[id: string]: Pagemark} = {};
+        const result: {[id: string]: Pagemark} = {};
 
         Object.assign(result, pagemarks);
 
         Dictionaries.forDict(result, (key, pagemark) => {
 
-            if(! pagemark.rect) {
+            if (! pagemark.rect) {
 
-                if(pagemark.percentage >= 0 && pagemark.percentage <= 100) {
+                if (pagemark.percentage >= 0 && pagemark.percentage <= 100) {
 
                     // now rect but we can build one from the percentage.
                     pagemark.rect = PagemarkRects.createFromPercentage(pagemark.percentage);
@@ -149,13 +147,19 @@ export class Pagemarks {
 
             }
 
-            if(! pagemark.id) {
+            if (! pagemark.id) {
                 log.debug("Pagemark given ID");
                 pagemark.id = Pagemarks.createID(pagemark.created);
             }
 
-            if( ! pagemark.mode) {
+            if ( ! pagemark.mode) {
+                log.debug("Using default pagemark mode.");
                 pagemark.mode = PagemarkMode.READ;
+            }
+
+            if ( ! isPresent(pagemark.percentage)) {
+                log.debug("No pagemark percentage. Assigning zero.");
+                pagemark.percentage = 0;
             }
 
         });

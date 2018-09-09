@@ -75,6 +75,15 @@ describe('Files', function() {
 
         });
 
+        xit("missing file", async function () {
+
+            assert.throw(async function() {
+                await Files.statAsync(FilePaths.createTempName('invalid-file-name'));
+            });
+
+        });
+
+
     });
 
     describe('mkdirAsync', function() {
