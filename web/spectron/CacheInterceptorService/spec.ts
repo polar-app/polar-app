@@ -1,6 +1,7 @@
 import {SpectronSpec} from '../../js/test/SpectronSpec';
 import {Spectron} from '../../js/test/Spectron';
 import {MockPHZWriter} from '../../js/phz/MockPHZWriter';
+import {FilePaths} from '../../js/util/FilePaths';
 
 
 describe("CacheInterceptorService", function () {
@@ -9,15 +10,15 @@ describe("CacheInterceptorService", function () {
 
     Spectron.setup(__dirname);
 
-    let path = "/tmp/cache-interceptor-service.phz";
+    const path = FilePaths.createTempName("cache-interceptor-service.phz");
 
-    before(async function () {
+    before(async function() {
 
-        await MockPHZWriter.write(path)
+        await MockPHZWriter.write(path);
 
     });
 
-    xit('Load PHZ file via cache', async function () {
+    it('Load PHZ file via cache', async function() {
 
         await SpectronSpec.create(this.app).waitFor(true);
 

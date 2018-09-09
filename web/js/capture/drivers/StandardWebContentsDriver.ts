@@ -10,6 +10,7 @@ import {BrowserProfile} from '../BrowserProfile';
 import BrowserWindowConstructorOptions = Electron.BrowserWindowConstructorOptions;
 import {Reactor} from '../../reactor/Reactor';
 import {PendingWebRequestsEvent} from '../../webrequests/PendingWebRequestsListener';
+import {WebContentsPromises} from '../../electron/framework/WebContentsPromises';
 
 const log = Logger.create();
 
@@ -52,13 +53,7 @@ export class StandardWebContentsDriver implements WebContentsDriver {
 
     public loadURL(url: string): Promise<void> {
 
-        let result = new Promise<void>(resolve => {
-
-            this.webContents!.once('did-finish-load', async () => {
-                resolve();
-            });
-
-        });
+        const result = WebContentsPromises.once(this.webContents!).didFinishLoad();
 
         const opts = {
 

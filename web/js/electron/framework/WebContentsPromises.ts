@@ -2,12 +2,12 @@ import {WebContents, Event} from 'electron';
 
 export class WebContentsPromises {
 
-    static once(webContents: WebContents): Once {
+    public static once(webContents: WebContents): Once {
 
         return new Once(webContents);
     }
 
-    static executeJavaScript<T>(webContents: WebContents, code: string, userGesture?: boolean) {
+    public static executeJavaScript<T>(webContents: WebContents, code: string, userGesture?: boolean) {
         return webContents.executeJavaScript(code, userGesture);
     }
 
@@ -21,7 +21,7 @@ class Once {
         this.webContents = webContents;
     }
 
-    load(): Promise<void> {
+    public load(): Promise<void> {
 
         return new Promise<void>((resolve, reject) => {
 
@@ -33,17 +33,17 @@ class Once {
 
     }
 
-    didFinishLoad(): Promise<void> {
+    public didFinishLoad(): Promise<void> {
 
         return new Promise<void>(resolve => {
             this.webContents.once('did-finish-load', () => {
                 resolve();
-            })
+            });
         });
 
     }
 
-    didFailLoad(): Promise<FailLoad> {
+    public didFailLoad(): Promise<FailLoad> {
 
         return new Promise<FailLoad>(resolve => {
             this.webContents.once('did-fail-load', (event: Event,
@@ -55,10 +55,10 @@ class Once {
                 // TODO: would be nice if there were a way to take method arguments
                 // and make them an object.
 
-                let failLoad = new FailLoad(event, errorCode, errorDescription, validatedURL, isMainFrame);
+                const failLoad = new FailLoad(event, errorCode, errorDescription, validatedURL, isMainFrame);
                 resolve(failLoad);
 
-            })
+            });
 
         });
 
@@ -68,11 +68,11 @@ class Once {
 
 export class FailLoad {
 
-    event: Event;
-    errorCode: number;
-    errorDescription: string;
-    validatedURL: string;
-    isMainFrame: boolean;
+    public event: Event;
+    public errorCode: number;
+    public errorDescription: string;
+    public validatedURL: string;
+    public isMainFrame: boolean;
 
     constructor(event: Electron.Event, errorCode: number, errorDescription: string, validatedURL: string, isMainFrame: boolean) {
         this.event = event;

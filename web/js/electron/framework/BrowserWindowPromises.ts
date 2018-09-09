@@ -3,7 +3,7 @@ import {BrowserWindow} from 'electron';
 
 export class BrowserWindowPromises {
 
-    static once(browserWindow: BrowserWindow): Once {
+    public static once(browserWindow: BrowserWindow): Once {
         return new Once(browserWindow);
     }
 
@@ -22,7 +22,7 @@ class Once {
         return new Promise<void>(resolve => {
             this.browserWindow.once('ready-to-show', () => {
                 resolve();
-            })
+            });
         });
 
     }
