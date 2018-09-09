@@ -54,11 +54,11 @@ export class DialogWindowClient {
      */
     static async create(options: DialogWindowOptions): Promise<DialogWindowClient> {
 
-        let result = await ipcClient.execute('/api/dialog-window-service/create', options);
+        const result = await ipcClient.execute('/api/dialog-window-service/create', options);
 
         // TODO: we need to auto-marshal these to the correct objects but the
         // IPC framework doesn't support this yet.
-        let createdWindowMessage = IPCMessage.create<DialogWindowReference>(result);
+        const createdWindowMessage = IPCMessage.create<DialogWindowReference>(result);
 
         return new DialogWindowClient(createdWindowMessage.value);
 

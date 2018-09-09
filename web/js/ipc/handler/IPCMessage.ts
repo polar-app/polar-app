@@ -6,6 +6,7 @@ import {IPCError} from './IPCError';
 import {ElectronContext} from './ElectronContext';
 import {ElectronContexts} from './ElectronContexts';
 import {Logger} from '../../logger/Logger';
+import {isPresent} from '../../Preconditions';
 
 const log = Logger.create();
 
@@ -85,25 +86,26 @@ export class IPCMessage<T> {
         return new IPCMessage<T>(type, undefined, IPCMessage.createNonce(), error);
     }
 
-    static create<T>(obj: any, valueFactory?: ValueFactory<T> ): IPCMessage<T> {
+    public static create<T>(obj: any, valueFactory?: ValueFactory<T> ): IPCMessage<T> {
 
-        if(obj._value === undefined) {
-            log.error("IPC message missing value: ", obj);
+        if (obj._value === undefined) {
+            log.warn("IPC message missing value: ", obj);
         }
 
-        // require the value.
-        obj._value = Optional.of(obj._value, "value").get();
+        obj._value = Optional.of(obj._value, "value")
+            .getOrUndefined();
 
-        if(valueFactory) {
+        if (isPresent(obj._value) && valueFactory) {
             obj._value = valueFactory(obj._value);
         }
 
-        let result: IPCMessage<T> = Object.create(IPCMessage.prototype);
+        const result: IPCMessage<T> = Object.create(IPCMessage.prototype);
         Object.assign(result, obj);
 
         return result;
 
     }
+
 
 }
 

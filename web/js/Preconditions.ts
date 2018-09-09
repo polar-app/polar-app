@@ -77,6 +77,10 @@ export class Preconditions {
 
     }
 
+    public static assertString(value: any, name: string): string {
+        return this.assertTypeOf(value, 'string', name);
+    }
+
     /**
      *
      * @param value
@@ -84,7 +88,7 @@ export class Preconditions {
      * @param name
      * @return value
      */
-    static assertTypeOf(value: any, type: string, name: string): any {
+    public static assertTypeOf(value: any, type: string, name: string): any {
 
         if (typeof value !== type) {
             throw new Error(`Precondition for typeof '${name}' was not ${type} but actually: ` + typeof value);

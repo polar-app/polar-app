@@ -1,5 +1,6 @@
 import {IPCMessage} from './IPCMessage';
 import {Objects} from '../../util/Objects';
+import {IPCError} from './IPCError';
 
 const assert = require('assert');
 
@@ -56,6 +57,24 @@ describe('IPCMessage', function() {
         assert.equal(name instanceof Name, true);
         assert.equal(name.first, "Alice");
         assert.equal(name.last, "Smith");
+
+    });
+
+
+    it("Create an IPC message from an error IPC message", function() {
+
+        let errMessage: IPCMessage<any> =
+            IPCMessage.createError('fake', IPCError.create(new Error("Fake error")));
+
+        errMessage = IPCMessage.create(errMessage);
+
+        assert.throws(() => {
+            errMessage.value();
+        });
+
+        assert.throws(() => {
+            errMessage.value;
+        });
 
     });
 
