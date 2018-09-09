@@ -12,10 +12,6 @@ export class Progress {
      * @param initial The initial value of the progress counter.
      */
     constructor(total: number, initial: number = 0) {
-        if(! (total > 0)) {
-            throw new Error("The total must be > 0");
-        }
-
         this._value = initial;
         this._total = total;
     }
@@ -33,6 +29,11 @@ export class Progress {
     }
 
     public percentage(): number {
+
+        if (this._total === 0) {
+            return 100;
+        }
+
         return 100 * (this._value / this._total);
     }
 
