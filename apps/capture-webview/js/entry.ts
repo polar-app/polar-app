@@ -8,8 +8,8 @@ async function start() {
 
     await Logging.init();
 
-    let app = new CaptureWebviewApp();
-    await app.start()
+    const app = new CaptureWebviewApp();
+    await app.start();
 
 }
 

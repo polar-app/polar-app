@@ -10,3 +10,4 @@ SpectronMain.run(async state => {
     await state.testResultWriter.write(true);
 
 });
+

@@ -11,7 +11,7 @@ export class Promises {
      *
      * @param timeout
      */
-    static async waitFor(timeout: number) {
+    public static async waitFor(timeout: number) {
 
         return new Promise(resolve => {
 
@@ -29,7 +29,7 @@ export class Promises {
      * @param val
      * @return {Promise<any>}
      */
-    static of(val: any) {
+    public static of(val: any) {
         return new Promise(resolve => {
             resolve(val);
         });
@@ -40,7 +40,7 @@ export class Promises {
      * Calls the given callback as a promise which we can await but runs it with
      * a background thread via timeout.
      */
-    static async withTimeout<T>(timeout: number, callback: () => Promise<T> ) {
+    public static async withTimeout<T>(timeout: number, callback: () => Promise<T> ) {
 
         return new Promise((resolve,reject) => {
 
@@ -61,7 +61,7 @@ export class Promises {
      *
      * @param func
      */
-    static executeLogged(func: () => Promise<any>) {
+    public static executeLogged(func: () => Promise<any>) {
         func().catch(err => log.error("Caught error: ", err))
     }
 
@@ -75,9 +75,9 @@ export interface Completion<T> {
 }
 
 export interface ResolveFunction<T> {
-    (value: T): void
+    (value: T): void;
 }
 
 export interface RejectFunction {
-    (error: Error): void
+    (error: Error): void;
 }

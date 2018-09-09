@@ -4,8 +4,6 @@ import {BrowserAppWindowFactory} from '../web/js/apps/browser/BrowserAppWindowFa
 
 let url = process.argv[2];
 
-//console.log("Config dir: ", app.getPath())
-
 console.log("Loading url: " + url);
 
 app.on('ready', async function() {
@@ -45,7 +43,7 @@ app.on('ready', async function() {
     //
     // let mainWindow = new BrowserWindow(options);
 
-    let browserWindow = await BrowserAppWindowFactory.createWindow(url);
+    const browserWindow = await BrowserAppWindowFactory.createWindow(url);
     browserWindow.webContents.setZoomFactor(1.0);
 
     //mainWindow.loadURL('about:blank')

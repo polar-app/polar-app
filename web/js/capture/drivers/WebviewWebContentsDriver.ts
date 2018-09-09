@@ -31,11 +31,11 @@ export class WebviewWebContentsDriver extends StandardWebContentsDriver {
      */
     protected async doInit() {
 
-        let browserWindowOptions = this.computeAdjustedBrowserWindowOptions();
+        const browserWindowOptions = this.computeAdjustedBrowserWindowOptions();
 
         log.info("Using browserWindowOptions: ", browserWindowOptions);
 
-        let window = new BrowserWindow(browserWindowOptions);
+        const window = new BrowserWindow(browserWindowOptions);
 
         await this.initWebContents(window, window.webContents, browserWindowOptions);
 
@@ -45,14 +45,14 @@ export class WebviewWebContentsDriver extends StandardWebContentsDriver {
 
     protected async doInitWebview() {
 
-        let browserWindowOptions = this.computeBrowserWindowOptions();
+        const browserWindowOptions = this.computeBrowserWindowOptions();
 
-        let window = notNull(this.window);
+        const window = notNull(this.window);
 
         // ok... now the page isn't setup properly and we need to load the app
         // and then adjust the webview properly.
 
-        let resourceURL = AppPaths.resource("./apps/capture-webview/index.html");
+        const resourceURL = AppPaths.resource("./apps/capture-webview/index.html");
 
         window.loadURL(resourceURL);
 
@@ -68,11 +68,11 @@ export class WebviewWebContentsDriver extends StandardWebContentsDriver {
 
     private async doInitWebviewHeight(browserWindowOptions: Electron.BrowserWindowConstructorOptions) {
 
-        let window = notNull(this.window);
+        const window = notNull(this.window);
 
         function setWebviewHeight(browserWindowOptions: Electron.BrowserWindowConstructorOptions) {
 
-            let querySelector = <HTMLElement>document.querySelector('webview')!;
+            const querySelector = <HTMLElement> document.querySelector('webview')!;
 
             console.log("browserWindowOptions: ", browserWindowOptions);
 

@@ -16,6 +16,7 @@ import {Functions} from '../util/Functions';
 import {Filenames} from '../util/Filenames';
 import {CapturedPHZWriter} from './CapturedPHZWriter';
 import {FilePaths} from '../util/FilePaths';
+import {Promises} from '../util/Promises';
 
 const log = Logger.create();
 
@@ -41,14 +42,14 @@ export class Capture {
 
     public readonly webRequestReactors: WebRequestReactor[] = [];
 
+    private webContents?: WebContents;
+
+    private driver?: WebContentsDriver;
+
     /**
      * The resolve function to call when we have completed .
      */
     public resolve: CaptureResultCallback = () => {};
-
-    private webContents?: WebContents;
-
-    private driver?: WebContentsDriver;
 
     constructor(url: string,
                 browserProfile: BrowserProfile,
@@ -91,14 +92,27 @@ export class Capture {
 
         this.onWebRequest(this.webContents.session.webRequest);
 
-        await this.driver.loadURL(this.url);
-
-        // the page loaded now... capture the content.
-        await this.handleLoad();
+        await this.loadURL(this.url);
 
         return new Promise<CaptureResult>(resolve => {
             this.resolve = resolve;
         });
+
+    }
+
+    private async loadURL(url: string) {
+
+        // wait until the main URL loads.
+        const loadURLPromise = this.driver!.loadURL(this.url);
+
+        // wait a minimum amount of time for the page to load so that we can
+        // make sure that all static content has executed.
+        const minDelayPromise = Promises.waitFor(EXECUTE_CAPTURE_DELAY);
+
+        await Promise.all([ loadURLPromise, minDelayPromise ]);
+
+        // the page loaded now... capture the content.
+        await this.handleLoad();
 
     }
 
@@ -121,10 +135,7 @@ export class Capture {
 
             log.info("Found AMP URL.  Redirecting then loading: " + ampURL);
 
-            // redirect us to the amp URL as this will render better.
-            await this.driver!.loadURL(ampURL);
-            await this.handleLoad();
-
+            await this.loadURL(ampURL);
             return;
 
         }
@@ -158,8 +169,6 @@ export class Capture {
      */
     public async capture() {
 
-        await Functions.waitFor(EXECUTE_CAPTURE_DELAY);
-
         this.executeContentCapture()
             .catch(err => log.error(err));
 
@@ -175,7 +184,7 @@ export class Capture {
         /** @RendererContext */
         function fetchAmpURL() {
 
-            const link = <HTMLLinkElement>document.querySelector("link[rel='amphtml']");
+            const link = <HTMLLinkElement> document.querySelector("link[rel='amphtml']");
 
             if (link) {
                 return link.href;
