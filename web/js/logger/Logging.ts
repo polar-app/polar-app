@@ -15,6 +15,7 @@ import {FilePaths} from '../util/FilePaths';
 import {ElectronContextType} from '../electron/context/ElectronContextType';
 import {ElectronContextTypes} from '../electron/context/ElectronContextTypes';
 import {ToasterLogger} from './ToasterLogger';
+import {PersistentErrorLogger} from './PersistentErrorLogger';
 
 /**
  * Maintains our general logging infrastructure.  Differentiated from Logger
@@ -54,13 +55,22 @@ export class Logging {
 
         const loggers: ILogger[] = [];
 
+        // *** first logger is sentry...
         loggers.push(new SentryLogger());
 
+        // *** next up is the Toaster Logger to visually show errors.
         if (ElectronContextTypes.create() === ElectronContextType.RENDERER) {
             // use a ToasterLogger when running in the renderer context so that
             // we can bring up error messages for the user.
             loggers.push(new ToasterLogger());
         }
+
+        // *** now include the persistent error log so that we can get error
+        // reports from users.
+
+        loggers.push(new PersistentErrorLogger());
+
+        // *** last is the primary log. Either disk or the console.
 
         loggers.push(await this.createPrimaryTarget());
 

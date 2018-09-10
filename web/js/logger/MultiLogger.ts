@@ -8,7 +8,7 @@ import {ILogger} from './ILogger';
  */
 export class MultiLogger implements ILogger {
 
-    readonly name: string ;
+    public readonly name: string ;
 
     private readonly delegates: ILogger[];
 
@@ -19,23 +19,23 @@ export class MultiLogger implements ILogger {
             + this.delegates.map(delegate => delegate.name).join("+");
     }
 
-    warn(msg: string, ...args: any[]) {
+    public warn(msg: string, ...args: any[]) {
         this.delegates.forEach(delegate => delegate.warn(msg, ...args));
     }
 
-    error(msg: string, ...args: any[]) {
+    public error(msg: string, ...args: any[]) {
         this.delegates.forEach(delegate => delegate.error(msg, ...args));
     }
 
-    info(msg: string, ...args: any[]) {
+    public info(msg: string, ...args: any[]) {
         this.delegates.forEach(delegate => delegate.info(msg, ...args));
     }
 
-    verbose(msg: string, ...args: any[]) {
+    public verbose(msg: string, ...args: any[]) {
         this.delegates.forEach(delegate => delegate.verbose(msg, ...args));
     }
 
-    debug(msg: string, ...args: any[]) {
+    public debug(msg: string, ...args: any[]) {
         this.delegates.forEach(delegate => delegate.debug(msg, ...args));
     }
 
