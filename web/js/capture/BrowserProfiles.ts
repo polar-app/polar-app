@@ -19,9 +19,9 @@ export class BrowserProfiles {
      * window options.
      *
      */
-    static toBrowserProfile(browser: Browser, name: string): BrowserProfile {
+    public static toBrowserProfile(browser: Browser, name: string): BrowserProfile {
 
-        if(name === 'default') {
+        if (name === 'default') {
             return BrowserProfiles.toBrowserProfile(browser, 'webview');
         }
 
