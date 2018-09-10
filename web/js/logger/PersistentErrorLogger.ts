@@ -13,6 +13,7 @@ export class PersistentErrorLogger implements ILogger {
     public readonly name: string = 'persistent-error-logger';
 
     public error(msg: string, ...args: any[]) {
+        console.log("FIXME: here 1")
         PersistentErrorLogger.delegate.error(msg, ...args);
     }
 
