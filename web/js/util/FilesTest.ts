@@ -30,7 +30,7 @@ describe('Files', function() {
 
             let data = await Files.readFileAsync(path);
 
-            assert.equal(data.toString('utf8'), "hello world")
+            assert.equal(data.toString('utf8'), "hello world");
 
         });
 

@@ -9,8 +9,11 @@ const rimraf = require('rimraf');
 
 export class Files {
 
+    public static removeDirectoryRecursively(path: string) {
+        rimraf.sync(path);
+    }
 
-    public static async removeDirectoryRecursively(path: string) {
+    public static async removeDirectoryRecursivelyAsync(path: string) {
 
         return new Promise((resolve, reject) => {
 
@@ -77,6 +80,23 @@ export class Files {
                 });
 
         });
+
+    }
+
+    public static createDirSync(dir: string,  mode?: number | string | undefined | null) {
+
+        const result: CreateDirResult = {
+            dir
+        };
+
+        if (fs.existsSync(dir)) {
+            result.exists = true;
+        } else {
+            result.created = true;
+            fs.mkdirSync(dir, mode);
+        }
+
+        return result;
 
     }
 

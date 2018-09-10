@@ -1,6 +1,5 @@
 import {SpectronMain2} from '../../js/test/SpectronMain2';
 import {Logger} from '../../js/logger/Logger';
-import waitForExpect from 'wait-for-expect';
 import {assert} from "chai";
 import {FilePaths} from '../../js/util/FilePaths';
 import {Files} from '../../js/util/Files';

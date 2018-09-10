@@ -1,15 +1,13 @@
 import {Spectron} from '../../js/test/Spectron';
 import {SpectronSpec} from '../../js/test/SpectronSpec';
+import {PolarDataDir} from '../../js/test/PolarDataDir';
 
-import process from 'process';
-import {FilePaths} from '../../js/util/FilePaths';
+PolarDataDir.useFreshDirectory('.polar-main-app-with-empty-repo');
 
-describe('main-app', function() {
+describe('main-app-with-empty-repo', function() {
 
     Spectron.setup(__dirname);
     this.timeout(10000);
-
-    process.env.POLAR_DATA_DIR = FilePaths.createTempName(".polar-test2121");
 
     it('create the repository view', async function() {
 

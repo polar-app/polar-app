@@ -13,8 +13,11 @@ import process from "process";
 import {FilePaths} from '../../js/util/FilePaths';
 import {Files} from '../../js/util/Files';
 import {MainAppController} from '../../js/apps/main/MainAppController';
+import {PolarDataDir} from '../../js/test/PolarDataDir';
 
 const log = Logger.create();
+
+PolarDataDir.useFreshDirectory('.polar-main-app');
 
 let polarDir: PolarDir | undefined;
 let mainAppController: MainAppController | undefined;
@@ -66,14 +69,11 @@ SpectronMain2.create({windowFactory: createWindow}).run(async state => {
 
 async function setupNewDataDir(): Promise<PolarDir> {
 
-    const ENV_POLAR_DATA_DIR = 'POLAR_DATA_DIR';
+    const dataDir = PolarDataDir.get()!;
 
-    const dataDir = FilePaths.createTempName('.polar');
     log.info("Using new dataDir: " + dataDir);
 
-    process.env[ENV_POLAR_DATA_DIR] = dataDir;
-
-    await Files.removeDirectoryRecursively(dataDir);
+    await Files.removeDirectoryRecursivelyAsync(dataDir);
     await Files.mkdirAsync(dataDir);
 
     const stashDir = FilePaths.create(dataDir, 'stash');
