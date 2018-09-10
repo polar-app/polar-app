@@ -47,7 +47,6 @@ export class PersistentErrorLogger implements ILogger {
     public static async create(): Promise<PersistentErrorLogger> {
         const directories = new Directories();
         const path = FilePaths.create(directories.logsDir, "error.log");
-        console.log("FIXME: " + path);
         const fileLogger = await FileLogger.create(path);
         return new PersistentErrorLogger(fileLogger);
     }
