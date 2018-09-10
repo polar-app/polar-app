@@ -23,7 +23,6 @@ export class FileLogger implements ILogger {
     }
 
     public error(msg: string, ...args: any[]): void {
-        console.log("FIXME2")
         this.append('error', msg, ...args);
     }
 
@@ -40,7 +39,8 @@ export class FileLogger implements ILogger {
     }
 
     public async sync() {
-        await Files.fdatasyncAsync(this.fd);
+
+        return Files.fsyncAsync(this.fd);
     }
 
     public async close() {
@@ -52,8 +52,11 @@ export class FileLogger implements ILogger {
         const line = FileLogger.format(level, msg, ...args);
 
         Files.appendFileAsync(this.fd, line)
-            .then(async () => await this.sync())
-            .catch((err) => console.error("Could not write to file logger"));
+            // TODO: it might be a good idea to add support for auto-sync in the
+            // future but for now I disabled it due to an issue with fsync not
+            // working as expected.
+            // .then(async () => await this.sync())
+            .catch((err) => console.error("Could not write to file logger: ", err));
 
     }
 

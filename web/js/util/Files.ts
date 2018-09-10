@@ -218,6 +218,10 @@ export class Files {
         return this.withProperException(() => this.Promised.fdatasyncAsync(fd));
     }
 
+    public static async fsyncAsync(fd: number): Promise<void> {
+        return this.withProperException(() => this.Promised.fsyncAsync(fd));
+    }
+
     private static async withProperException<T>(func: () => Promise<T>): Promise<T> {
 
         // the only way to get this to work with node is to create an 'anchor'
@@ -265,6 +269,7 @@ export class Files {
         openAsync: promisify(fs.open),
         closeAsync: promisify(fs.close),
         fdatasyncAsync: promisify(fs.fdatasync),
+        fsyncAsync: promisify(fs.fsync),
 
     };
 

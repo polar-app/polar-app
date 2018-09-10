@@ -21,6 +21,7 @@ describe('FileLogger', function() {
 
         fileLogger.error("This is an error: ", new Error("Fake error"));
 
+        await fileLogger.sync();
         await fileLogger.close();
 
         const data = await Files.readFileAsync(path);
