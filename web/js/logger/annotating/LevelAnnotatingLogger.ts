@@ -17,24 +17,29 @@ export class LevelAnnotatingLogger implements ILogger {
         this.name = `level-annotating-logger -> ${delegate.name}`;
     }
 
-    info(msg: string, ...args: any[]) {
+    public info(msg: string, ...args: any[]) {
         this.delegate.info(`[info] ${msg}`, ...args);
     }
 
-    warn(msg: string, ...args: any[]) {
+    public warn(msg: string, ...args: any[]) {
         this.delegate.warn(`[warn] ${msg}`, ...args);
     }
 
-    error(msg: string, ...args: any[]) {
+    public error(msg: string, ...args: any[]) {
         this.delegate.error(`[error] ${msg}`, ...args);
     }
 
-    verbose(msg: string, ...args: any[]) {
+    public verbose(msg: string, ...args: any[]) {
         this.delegate.verbose(`[verbose] ${msg}`, ...args);
     }
 
-    debug(msg: string, ...args: any[]) {
+    public debug(msg: string, ...args: any[]) {
         this.delegate.debug(`[debug] ${msg}`, ...args);
     }
+
+    public async sync(): Promise<void> {
+        await this.delegate.sync();
+    }
+
 
 }

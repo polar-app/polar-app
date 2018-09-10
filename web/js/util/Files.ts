@@ -1,7 +1,7 @@
 import fs, {PathLike, Stats} from "fs";
 import {promisify} from 'util';
-import ErrnoException = NodeJS.ErrnoException;
 import {Logger} from '../logger/Logger';
+import ErrnoException = NodeJS.ErrnoException;
 
 const log = Logger.create();
 
@@ -14,8 +14,38 @@ export class Files {
      * https://nodejs.org/api/fs.html#fs_fs_readfile_path_options_callback
      *
      */
-    public static async readFileAsync(path: string): Promise<Buffer> {
-        throw new Error("Not replaced via promisify");
+    public static async readFileAsync(path: PathLike | number): Promise<Buffer> {
+        return this.withProperException(() => this.Promised.readFileAsync(path));
+    }
+
+    private static async withProperException<T>(func: () => Promise<T>): Promise<T> {
+
+        // the only way to get this to work with node is to create an 'anchor'
+        // exception on the entry before we call the method. The downside of
+        // this is that each FS call creates an exception which is excess CPU
+        // but is still a fraction of the actual IO workload.
+        const anchor = new Error("anchor");
+
+        try {
+            return await func();
+        } catch (err) {
+            throw this.createProperException(anchor, err);
+        }
+
+    }
+
+    private static createProperException(err: Error, source: ErrnoException ) {
+
+        // strip the first line of the stack err, and add the message from source.
+
+        if (err.stack) {
+            const stackArr = err.stack.split('\n');
+            stackArr.shift();
+            stackArr.unshift(source.message);
+            source.stack = stackArr.join('\n');
+        }
+
+        return source;
     }
 
     // https://nodejs.org/api/fs.html#fs_fs_writefile_file_data_options_callback
@@ -145,6 +175,35 @@ export class Files {
         throw new Error("Not replaced via promisify");
     }
 
+    public static async appendFileAsync(path: string | Buffer | number,
+                                        data: string | Buffer,
+                                        options?: AppendFileOptions): Promise<void> {
+
+        throw new Error("Not replaced via promisify");
+
+    }
+
+    /**
+     *
+     * @param flags https://nodejs.org/api/fs.html#fs_file_system_flags
+     */
+    public static async openAsync(path: string | Buffer,
+                                  flags: string | number,
+                                  mode?: number): Promise<number> {
+        throw new Error("Not replaced via promisify");
+    }
+
+    /**
+     *
+     */
+    public static async closeAsync(fd: number): Promise<void> {
+        throw new Error("Not replaced via promisify");
+    }
+
+    public static async fdatasyncAsync(fd: number): Promise<void> {
+        throw new Error("Not replaced via promisify");
+    }
+
     public static async removeDirectoryRecursively(path: string) {
 
         return new Promise((resolve, reject) => {
@@ -163,9 +222,13 @@ export class Files {
 
     }
 
+    private static readonly Promised = {
+        readFileAsync: promisify(fs.readFile)
+    };
+
 }
 
-Files.readFileAsync = promisify(fs.readFile);
+//Files.readFileAsync = promisify(fs.readFile);
 Files.writeFileAsync = promisify(fs.writeFile);
 Files.mkdirAsync = promisify(fs.mkdir);
 Files.accessAsync = promisify(fs.access);
@@ -175,6 +238,16 @@ Files.rmdirAsync = promisify(fs.rmdir);
 Files.readdirAsync = promisify(fs.readdir);
 Files.realpathAsync = promisify(fs.realpath);
 Files.copyFileAsync = promisify(fs.copyFile);
+Files.appendFileAsync = promisify(fs.appendFile);
+Files.openAsync = promisify(fs.open);
+Files.closeAsync = promisify(fs.close);
+Files.fdatasyncAsync = promisify(fs.fdatasync);
+
+export class PromisedFunctions {
+
+    public readonly readFileAsync = promisify(fs.readFile);
+
+}
 
 export interface CreateDirResult {
     dir: string;
@@ -186,6 +259,12 @@ export interface WriteFileAsyncOptions {
     encoding?: string | null;
     mode?: number | string;
     flag?: string;
+}
+
+export interface AppendFileOptions {
+    encoding?: string | null;
+    mode: number;
+    flag: string;
 }
 
 export interface FileDeleted {

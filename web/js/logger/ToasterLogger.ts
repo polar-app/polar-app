@@ -36,4 +36,8 @@ export class ToasterLogger implements ILogger {
     public debug(msg: string, ...args: any[]) {
     }
 
+    public async sync(): Promise<void> {
+        // noop
+    }
+
 }

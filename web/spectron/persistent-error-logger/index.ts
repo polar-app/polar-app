@@ -3,32 +3,32 @@ import {Logger} from '../../js/logger/Logger';
 import waitForExpect from 'wait-for-expect';
 import {assert} from "chai";
 import {FilePaths} from '../../js/util/FilePaths';
-
-import process from 'process';
 import {Files} from '../../js/util/Files';
 import {Logging} from '../../js/logger/Logging';
+import {PolarDataDir} from '../../js/test/PolarDataDir';
 
 const log = Logger.create();
 
-process.env.POLAR_DATA_DIR = FilePaths.createTempName('.polar-persistent-error-logger');
-
 SpectronMain2.create().run(async state => {
 
+    await PolarDataDir.reuseDirectory('.polar-persistent-error-logger');
+
+    assert.ok(PolarDataDir.get(), "There is no POLAR_DATA_DIR defined");
+
+    const path = FilePaths.join(PolarDataDir.get()!, "logs", "error.log");
+
+    assert.ok( ! await Files.existsAsync(path), "File still exists for some reason: " + path);
+
     await Logging.init();
+
+    assert.ok(await Files.existsAsync(path), "The error.log file does not exist at: " + path);
 
     state.window.loadURL(`file://${__dirname}/app.html`);
 
     log.error("This is from the main process: ", new Error("Fake error in main process"));
 
-    assert.ok(process.env.POLAR_DATA_DIR, "There is no POLAR_DATA_DIR defined");
+    // FIXME: make sure we have the data now.
 
-    await waitForExpect(async () => {
-
-        const path = FilePaths.join(process.env.POLAR_DATA_DIR!, "logs", "polar.log");
-        assert.ok(await Files.existsAsync(path), "The polar.log file does not exist at: " + path);
-
-    });
-
-    await state.testResultWriter.write(true);
+    await log.sync();
 
 });

@@ -10,24 +10,28 @@ export class StatsLogger implements ILogger {
 
     public readonly stats = new FilteredStats();
 
-    debug(msg: string, ...args: any[]) {
+    public debug(msg: string, ...args: any[]) {
         ++this.stats.debug;
     }
 
-    verbose(msg: string, ...args: any[]) {
+    public verbose(msg: string, ...args: any[]) {
         ++this.stats.verbose;
     }
 
-    info(msg: string, ...args: any[]) {
+    public info(msg: string, ...args: any[]) {
         ++this.stats.info;
     }
 
-    warn(msg: string, ...args: any[]) {
+    public warn(msg: string, ...args: any[]) {
         ++this.stats.warn;
     }
 
-    error(msg: string, ...args: any[]) {
+    public error(msg: string, ...args: any[]) {
         ++this.stats.error;
+    }
+
+    public async sync(): Promise<void> {
+        // noop
     }
 
 }

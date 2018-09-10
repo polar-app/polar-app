@@ -40,4 +40,8 @@ export class FilteredLogger implements ILogger {
         this.delegate.error(msg, ...args);
     }
 
+    public async sync(): Promise<void> {
+        await this.delegate.sync();
+    }
+
 }

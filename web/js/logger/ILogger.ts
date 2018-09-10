@@ -18,5 +18,7 @@ export interface ILogger {
 
     debug(msg: string, ...args: any[]): void;
 
+    sync(): Promise<void>;
+
 }
 

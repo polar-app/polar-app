@@ -27,4 +27,8 @@ export class ConsoleLogger implements ILogger {
         console.log(msg, ...args);
     }
 
+    public async sync(): Promise<void> {
+        // noop
+    }
+
 }

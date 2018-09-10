@@ -39,4 +39,12 @@ export class MultiLogger implements ILogger {
         this.delegates.forEach(delegate => delegate.debug(msg, ...args));
     }
 
+    public async sync(): Promise<void> {
+
+        for (const delegate of this.delegates) {
+            await delegate.sync();
+        }
+
+    }
+
 }

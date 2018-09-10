@@ -68,7 +68,7 @@ export class Logging {
         // *** now include the persistent error log so that we can get error
         // reports from users.
 
-        loggers.push(new PersistentErrorLogger());
+        loggers.push(await PersistentErrorLogger.create());
 
         // *** last is the primary log. Either disk or the console.
 
@@ -77,6 +77,7 @@ export class Logging {
         return new MultiLogger(...loggers);
 
     }
+
 
     public static async createPrimaryTarget(): Promise<ILogger> {
 

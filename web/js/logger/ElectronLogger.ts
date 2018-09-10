@@ -32,6 +32,11 @@ class ElectronLogger implements ILogger {
     public debug(msg: string, ...args: any[]) {
         delegate.debug(msg, ...args);
     }
+
+    public async sync(): Promise<void> {
+        // noop
+    }
+
 }
 
 export class ElectronLoggers {
