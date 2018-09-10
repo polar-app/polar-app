@@ -3,6 +3,10 @@
 <head>
     <link rel="stylesheet" href="../../node_modules/font-awesome/css/font-awesome.min.css">
 
+    <link rel="stylesheet" href="../../node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../../node_modules/bootstrap/dist/css/bootstrap-grid.min.css">
+    <link rel="stylesheet" href="../../node_modules/bootstrap/dist/css/bootstrap-reboot.min.css">
+
     <style>
 
         html, body {
@@ -24,8 +28,9 @@
             padding: 3px;
             width: calc(100% );
             /*border-radius: 1px;*/
-
-
+            font-size: 14px;
+            line-height: 1em;
+            color: #333333;
         }
 
         .linkbar {
@@ -52,6 +57,11 @@
 
         .linkbar .fa {
             color: #444444;
+            font-size: 18px;
+        }
+
+        .linkbar-button:hover {
+            background-color: #CCCCCC;
         }
 
     </style>
@@ -62,7 +72,9 @@
 <div class="linkbar">
 
     <div class="linkbar-block linkbar-left">
-        <i class="fa fa-refresh fa-rotate-180"></i>
+
+        <i class="linkbar-button fa fa-refresh fa-rotate-180"></i>
+
     </div>
 
     <div class="linkbar-block linkbar-center">
@@ -70,7 +82,7 @@
     </div>
 
     <div class="linkbar-block linkbar-right">
-        <i class="fa fa-cloud-download"></i>
+        <i class="linkbar-button fa fa-cloud-download"></i>
 
     </div>
 

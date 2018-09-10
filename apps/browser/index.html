@@ -1,0 +1,118 @@
+<html>
+<head>
+    <style>
+
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        webview {
+            height: 35000px;
+            width: 750px;
+            margin: 0 auto;
+
+        }
+
+        .linkbar {
+            background-color: #EEEEEE;
+            padding: 3px 0 3px 0;
+            border-bottom: 1px solid darkgrey;
+            width: 100%;
+            overflow: hidden;
+            height: 30px;
+            position: fixed;
+            top: 0;
+        }
+
+        .linkbar input[type='text'] {
+            margin: 0 3px 0 3px;
+            padding: 3px;
+            width: calc(100% );
+            /*border-radius: 1px;*/
+            font-size: 14px;
+            line-height: 1em;
+            color: #333333;
+        }
+
+        .linkbar {
+            display: table;
+        }
+
+        .linkbar > .linkbar-block {
+            display: table-cell;
+            vertical-align: middle;
+            text-align: center;
+        }
+
+        .linkbar-right {
+            width: 40px;
+        }
+
+        .linkbar-left {
+            width: 30px;
+        }
+
+        .linkbar-center {
+            /*padding: 0 3px 0 3px;*/
+        }
+
+        .linkbar .fa {
+            color: #444444;
+            font-size: 18px;
+        }
+
+        .linkbar-button {
+            padding: 3px;
+        }
+
+        .linkbar-button:hover {
+            background-color: #CCCCCC;
+        }
+
+        #content {
+            margin-top: 30px;
+        }
+
+    </style>
+
+    <link rel="stylesheet" href="../../node_modules/font-awesome/css/font-awesome.min.css">
+
+</head>
+
+<body>
+
+
+<div id="container">
+
+
+    <div class="linkbar">
+
+        <div class="linkbar-block linkbar-left">
+
+            <i id="refresh" class="linkbar-button fa fa-refresh fa-rotate-180"></i>
+
+        </div>
+
+        <div class="linkbar-block linkbar-center">
+            <input id="link" type="text" value="" spellcheck="false">
+        </div>
+
+        <div class="linkbar-block linkbar-right">
+            <i id="capture" class="linkbar-button fa fa-cloud-download"></i>
+
+        </div>
+
+    </div>
+
+    <webview autosize="true" name="content" id="content" src="http://www.nytimes.com/2018/09/07/technology/monopoly-antitrust-lina-khan-amazon.html" disablewebsecurity nodeintegration="false" preload="../../web/js/capture/renderer/ContentCapture.js"></webview>
+
+</div>
+
+<script>require('loader').load("./js/entry.js");</script>
+
+</body>
+</html>

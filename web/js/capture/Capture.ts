@@ -10,13 +10,9 @@ import {WebContentsDriver, WebContentsDriverFactory} from './drivers/WebContents
 import {BrowserProfile} from './BrowserProfile';
 import {Strings} from '../util/Strings';
 import {Optional} from '../util/ts/Optional';
-import {IResult} from '../util/Result';
-import {Results} from '../util/Results';
 import {Functions} from '../util/Functions';
-import {Filenames} from '../util/Filenames';
-import {CapturedPHZWriter} from './CapturedPHZWriter';
-import {FilePaths} from '../util/FilePaths';
 import {Promises} from '../util/Promises';
+import {ContentCaptureExecutor} from './ContentCaptureExecutor';
 
 const log = Logger.create();
 
@@ -78,9 +74,9 @@ export class Capture {
 
     }
 
-    async start(): Promise<CaptureResult> {
+    public async start(): Promise<CaptureResult> {
 
-        let driver = await WebContentsDriverFactory.create(this.browserProfile);
+        const driver = await WebContentsDriverFactory.create(this.browserProfile);
 
         this.driver = driver;
 
@@ -200,62 +196,11 @@ export class Capture {
 
     public async executeContentCapture() {
 
-        // TODO: this function should be cleaned up a bit.. it has too many moving
-        // parts now and should be moved into smaller functions.
-
-        const webContents = this.webContents!;
-
-        log.info("Capturing the HTML...");
-
-        log.info("Retrieving HTML...");
-
-        let captured;
-
-        // TODO: I don't think executeJavascript actually handles exceptions
-        // properly and they also suggest using the callback so we should test
-        // this more aggressively.
-        try {
-
-            const result: IResult<any> = await webContents.executeJavaScript("ContentCapture.execute()");
-            captured = Results.create<any>(result).get();
-
-        } catch (e) {
-
-            // TODO: this isn't actually called because executeJavascript doesn't
-            // handle exceptions. You just block there forever. I need to wrap
-            // this with a closure that is an 'either' err or content.
-
-            log.error("Could not capture HTML: ", e);
-            throw e;
-        }
-
-        log.info("Retrieving HTML...done");
-
-        // record the browser that was used to render this page.
-        captured.browser = this.browserProfile;
-
-        const stashDir = this.stashDir;
-        const filename = Filenames.sanitize(captured.title);
-
-        const phzPath = FilePaths.join(stashDir, filename) + '.phz';
-
-        log.info("Writing PHZ to: " + phzPath);
-
-        const capturedPHZWriter = new CapturedPHZWriter(phzPath);
-        await capturedPHZWriter.convert(captured);
-
-        // write the captured HTML to /tmp for debug purposes.  We can enable this
-        // as a command line switch later.
-
-        // await Files.writeFileAsync(`/tmp/${filename}.json`, JSON.stringify(captured, null, "  "));
-
-        log.info("Capturing the HTML...done");
+        const result = await ContentCaptureExecutor.execute(this.webContents!, this.browserProfile);
 
         Optional.of(this.driver).when(driver => driver.destroy());
 
-        this.resolve({
-            path: phzPath
-        });
+        this.resolve(result);
 
     }
 
@@ -267,12 +212,11 @@ export class Capture {
      */
     public onWebRequest(webRequest: WebRequest) {
 
-        let webRequestReactor = new WebRequestReactor(webRequest);
+        const webRequestReactor = new WebRequestReactor(webRequest);
         webRequestReactor.start();
 
         this.webRequestReactors.push(webRequestReactor);
 
-        //this.debugWebRequestsListener.register(webRequestReactor);
         this.pendingWebRequestsListener.register(webRequestReactor);
 
     }

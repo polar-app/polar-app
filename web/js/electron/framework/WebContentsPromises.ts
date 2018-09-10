@@ -64,6 +64,16 @@ class Once {
 
     }
 
+    public async didAttachWebview(): Promise<WebContents> {
+
+        return new Promise<WebContents>(resolve => {
+            this.webContents.once('did-attach-webview', (event: Event, webContents: WebContents) => {
+                resolve(webContents);
+            });
+        });
+
+    }
+
 }
 
 export class FailLoad {
