@@ -34,7 +34,7 @@ describe('Files', function() {
 
         });
 
-        it("missing file", async function() {
+        xit("missing file", async function() {
 
             const missingPath = "this-is-a-missing-path.txt";
 
@@ -48,7 +48,7 @@ describe('Files', function() {
             throw new Error("failing properly.");
         }
 
-        it("proper exception example.", async function() {
+        xit("proper exception example.", async function() {
 
             await failsProperly();
 
