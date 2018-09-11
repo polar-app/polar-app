@@ -12,23 +12,23 @@ export class SingletonBrowserWindow {
 
     public static async getInstance(tag: BrowserWindowTag, browserWindowFactory: BrowserWindowFactory) {
 
-        let existing = BrowserWindowRegistry.tagged(tag);
+        const existing = BrowserWindowRegistry.tagged(tag);
 
-        if(existing.length === 1) {
+        if (existing.length === 1) {
 
             log.info("Found existing repository UI. Focusing.");
 
-            let id = existing[0];
+            const id = existing[0];
 
-            let browserWindow = BrowserWindow.fromId(id);
+            const browserWindow = BrowserWindow.fromId(id);
             browserWindow.focus();
             return browserWindow;
 
         }
 
-        let result = await browserWindowFactory();
+        const result = await browserWindowFactory();
 
-        let tags: {[name: string] : string} = {};
+        const tags: {[name: string]: string} = {};
         tags[tag.name] = tag.value;
 
         BrowserWindowRegistry.tag(result.id, tags);
@@ -39,6 +39,4 @@ export class SingletonBrowserWindow {
 
 }
 
-export interface BrowserWindowFactory {
-    (): Promise<BrowserWindow>
-}
+export type BrowserWindowFactory = () => Promise<BrowserWindow>;

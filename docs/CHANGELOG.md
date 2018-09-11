@@ -1,4 +1,6 @@
 
+- Fixed bug where we could accidentally put the user in a situation where they
+  can lock themselves out of the document repository.
 
 # 1.0.0-beta141
 

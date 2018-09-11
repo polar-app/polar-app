@@ -7,9 +7,9 @@ export class AppLauncher {
 
     public static async launchRepositoryApp(): Promise<BrowserWindow> {
 
-        let browserWindowTag = {name: 'app', value: 'repository'};
+        const browserWindowTag = {name: 'app', value: 'repository'};
 
-        return await SingletonBrowserWindow.getInstance(browserWindowTag,async () => {
+        return await SingletonBrowserWindow.getInstance(browserWindowTag, async () => {
 
             const url = AppPaths.resource('./apps/repository/index.html');
 
