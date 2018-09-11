@@ -2,7 +2,7 @@ import {ipcRenderer} from 'electron';
 
 export class IPCRendererPromises {
 
-    static async once(channel: string): Promise<RendererEvent> {
+    public static async once(channel: string): Promise<RendererEvent> {
 
         return new Promise<RendererEvent>((resolve) => {
 

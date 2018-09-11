@@ -5,8 +5,8 @@ import {notNull} from '../../Preconditions';
 import {BrowserWindows} from '../BrowserWindows';
 import {BrowserWindow} from "electron";
 import {Functions} from '../../util/Functions';
-import WebContents = Electron.WebContents;
 import {PendingWebRequestsEvent} from '../../webrequests/PendingWebRequestsListener';
+import WebContents = Electron.WebContents;
 
 const log = Logger.create();
 
@@ -21,6 +21,19 @@ export class WebviewWebContentsDriver extends StandardWebContentsDriver {
         await this.doInit();
 
         await this.doInitWebview();
+
+    }
+
+
+    public async waitForWebview(): Promise<WebContents> {
+        return new Promise<WebContents>(resolve => {
+            this.window!.webContents.once('did-attach-webview', (event, webContents: WebContents) => {
+                resolve(webContents);
+            });
+        });
+    }
+
+    public progressUpdated(event: PendingWebRequestsEvent): void {
 
     }
 
@@ -66,34 +79,6 @@ export class WebviewWebContentsDriver extends StandardWebContentsDriver {
 
     }
 
-    private async doInitWebviewHeight(browserWindowOptions: Electron.BrowserWindowConstructorOptions) {
-
-        const window = notNull(this.window);
-
-        function setWebviewHeight(browserWindowOptions: Electron.BrowserWindowConstructorOptions) {
-
-            const querySelector = <HTMLElement> document.querySelector('webview')!;
-
-            console.log("browserWindowOptions: ", browserWindowOptions);
-
-            console.log("Webview height before: ", querySelector.style.height);
-            querySelector.style.height = `${browserWindowOptions.height}px`;
-            console.log("Webview height after: ", querySelector.style.height);
-
-        }
-
-        await window.webContents.executeJavaScript(Functions.functionToScript(setWebviewHeight, browserWindowOptions));
-
-    }
-
-    public async waitForWebview(): Promise<WebContents> {
-        return new Promise<WebContents>(resolve => {
-            this.window!.webContents.once('did-attach-webview', (event, webContents: WebContents) => {
-                resolve(webContents);
-            });
-        });
-    }
-
     protected computeAdjustedBrowserWindowOptions() {
 
         // Create the browser window.
@@ -110,7 +95,26 @@ export class WebviewWebContentsDriver extends StandardWebContentsDriver {
 
     }
 
-    public progressUpdated(event: PendingWebRequestsEvent): void {
+
+    private async doInitWebviewHeight(browserWindowOptions: Electron.BrowserWindowConstructorOptions) {
+
+        const window = notNull(this.window);
+
+        // @ElectronRendererContext
+        function setWebviewHeight(browserWindowOptions: Electron.BrowserWindowConstructorOptions) {
+
+            const querySelector = <HTMLElement> document.querySelector('webview')!;
+
+            console.log("browserWindowOptions: ", browserWindowOptions);
+
+            console.log("Webview height before: ", querySelector.style.height);
+            querySelector.style.height = `${browserWindowOptions.height}px`;
+            console.log("Webview height after: ", querySelector.style.height);
+
+        }
+
+        await window.webContents.executeJavaScript(Functions.functionToScript(setWebviewHeight, browserWindowOptions));
+
     }
 
 }

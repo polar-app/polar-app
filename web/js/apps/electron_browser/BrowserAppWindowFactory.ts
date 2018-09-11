@@ -28,7 +28,7 @@ export const BROWSER_WINDOW_OPTIONS: Electron.BrowserWindowConstructorOptions = 
 
         webaudio: false,
 
-        //zoomFactor: 1.0
+        // zoomFactor: 1.0
 
         /**
          *
@@ -36,7 +36,7 @@ export const BROWSER_WINDOW_OPTIONS: Electron.BrowserWindowConstructorOptions = 
          * Use a persistent cookie session between restarts.  This is used so
          * that we keep user cookies including Google Analytics cookies.
          */
-        //partition: "persist:polar"
+        // partition: "persist:polar"
 
     }
 };
