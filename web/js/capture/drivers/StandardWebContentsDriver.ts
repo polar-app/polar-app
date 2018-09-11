@@ -31,7 +31,7 @@ export class StandardWebContentsDriver implements WebContentsDriver {
         this.browserProfile = browserProfile;
     }
 
-    public async init() {
+    public async init(webContents?: WebContents) {
 
         const browserWindowOptions = this.computeBrowserWindowOptions();
 
@@ -97,7 +97,7 @@ export class StandardWebContentsDriver implements WebContentsDriver {
 
         log.info("Using browserWindowOptions: ", browserWindowOptions);
 
-        let window = new BrowserWindow(browserWindowOptions);
+        const window = new BrowserWindow(browserWindowOptions);
 
         await this.initWebContents(window, window.webContents, browserWindowOptions);
 
@@ -139,7 +139,7 @@ export class StandardWebContentsDriver implements WebContentsDriver {
         // about:blank by default.
         webContents.loadURL('about:blank');
 
-        if( ! browserWindowOptions.show) {
+        if ( ! browserWindowOptions.show) {
             await BrowserWindows.onceReadyToShow(window);
         }
 
@@ -164,14 +164,14 @@ export class StandardWebContentsDriver implements WebContentsDriver {
 
         webContents.setUserAgent(this.browserProfile.userAgent);
 
-        let windowDimensions: IDimensions = {
+        const windowDimensions: IDimensions = {
             width: deviceEmulation.screenSize.width,
             height: deviceEmulation.screenSize.height,
         };
 
         log.info("Using window dimensions: ", windowDimensions);
 
-        let screenDimensionScript = Functions.functionToScript(configureBrowserWindowSize, windowDimensions);
+        const screenDimensionScript = Functions.functionToScript(configureBrowserWindowSize, windowDimensions);
 
         await webContents.executeJavaScript(screenDimensionScript);
 

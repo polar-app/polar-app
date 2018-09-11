@@ -7,6 +7,9 @@ import {BrowserWebContentsDriver} from './BrowserWebContentsDriver';
 
 export interface WebContentsDriver {
 
+    /**
+     *
+     */
     init(): Promise<void>;
 
     getWebContents(): Promise<WebContents>;

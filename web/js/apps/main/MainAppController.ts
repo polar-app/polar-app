@@ -12,6 +12,7 @@ import {AppLauncher} from './AppLauncher';
 import {Hashcodes} from '../../Hashcodes';
 import {SingletonBrowserWindow} from '../../electron/framework/SingletonBrowserWindow';
 import process from 'process';
+import {BrowserApp} from '../browser/BrowserApp';
 
 const log = Logger.create();
 
@@ -41,6 +42,20 @@ export class MainAppController {
         browserWindowOptions.center = true;
 
         const url = AppPaths.resource('./apps/capture/start-capture/index.html');
+
+        await MainAppBrowserWindowFactory.createWindow(browserWindowOptions, url);
+
+    }
+
+    public async cmdCaptureWebPageWithBrowser() {
+
+        const browserWindowOptions = Object.assign({}, BROWSER_WINDOW_OPTIONS);
+
+        browserWindowOptions.width = browserWindowOptions.width! * .9;
+        browserWindowOptions.height = browserWindowOptions.height! * .9;
+        browserWindowOptions.center = true;
+
+        const url = AppPaths.resource('./apps/browser/index.html');
 
         await MainAppBrowserWindowFactory.createWindow(browserWindowOptions, url);
 

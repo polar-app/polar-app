@@ -28,15 +28,21 @@ const EXECUTE_CAPTURE_DELAY = 1500;
 
 export class Capture {
 
-    public url: string;
+    public url?: string;
+
     public readonly browserProfile: BrowserProfile;
+
     public readonly stashDir: string;
+
     public readonly captureOpts: CaptureOpts;
 
     public readonly pendingWebRequestsListener: PendingWebRequestsListener;
+
     public readonly debugWebRequestsListener: DebugWebRequestsListener;
 
     public readonly webRequestReactors: WebRequestReactor[] = [];
+
+    private urlPromise: Promise<string>;
 
     private webContents?: WebContents;
 
@@ -47,7 +53,7 @@ export class Capture {
      */
     public resolve: CaptureResultCallback = () => {};
 
-    constructor(url: string,
+    constructor(urlPromise: Promise<string>,
                 browserProfile: BrowserProfile,
                 stashDir: string,
                 captureOpts: CaptureOpts = {amp: true}) {
@@ -55,11 +61,7 @@ export class Capture {
         // FIXME: don't allow named anchors in the URL like #foo... strip them
         // and test this functionality.
 
-        this.url = Preconditions.assertNotNull(url, "url");
-
-        if(Strings.empty(this.url)) {
-            throw new Error("URL may not be empty")
-        }
+        this.urlPromise = Preconditions.assertNotNull(urlPromise, "urlPromise");
 
         this.browserProfile = Preconditions.assertNotNull(browserProfile, "browser");
         this.stashDir = Preconditions.assertNotNull(stashDir, "stashDir");
@@ -75,6 +77,12 @@ export class Capture {
     }
 
     public async start(): Promise<CaptureResult> {
+
+        this.url = await this.urlPromise;
+
+        if (Strings.empty(this.url)) {
+            throw new Error("URL may not be empty");
+        }
 
         const driver = await WebContentsDriverFactory.create(this.browserProfile);
 
@@ -99,7 +107,7 @@ export class Capture {
     private async loadURL(url: string) {
 
         // wait until the main URL loads.
-        const loadURLPromise = this.driver!.loadURL(this.url);
+        const loadURLPromise = this.driver!.loadURL(this.url!);
 
         // wait a minimum amount of time for the page to load so that we can
         // make sure that all static content has executed.
@@ -127,7 +135,7 @@ export class Capture {
         // TODO: if we end up handling multiple types of URLs in the future
         // we might want to build up a history to prevent endless loops or
         // just keep track of the redirect count.
-        if(this.captureOpts.amp && ampURL && ampURL !== this.url) {
+        if (this.captureOpts.amp && ampURL && ampURL !== this.url) {
 
             log.info("Found AMP URL.  Redirecting then loading: " + ampURL);
 

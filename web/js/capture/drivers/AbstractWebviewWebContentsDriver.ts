@@ -34,8 +34,7 @@ export abstract class AbstractWebviewWebContentsDriver extends StandardWebConten
 
     }
 
-
-    public async waitForWebview(): Promise<WebContents> {
+    protected async waitForWebview(): Promise<WebContents> {
         return new Promise<WebContents>(resolve => {
             this.window!.webContents.once('did-attach-webview', (event, webContents: WebContents) => {
                 resolve(webContents);
