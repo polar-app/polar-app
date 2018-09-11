@@ -25,5 +25,6 @@ export class CaptureClient {
 
 
 export interface StartCaptureMessage {
-    readonly url?: string;
+    readonly url: string;
+    readonly webContentsID?: number;
 }
