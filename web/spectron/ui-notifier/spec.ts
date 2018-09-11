@@ -4,12 +4,12 @@ import {SpectronSpec} from '../../js/test/SpectronSpec';
 // we can change the polar data dir with the following
 // PolarDataDir.useFreshDirectory('.polar-persistent-error-logger');
 
-describe('TODO change this describe', function() {
+describe('ui-notifier', function() {
 
     Spectron.setup(__dirname);
     this.timeout(10000);
 
-    it('TODO change this test description', async function() {
+    it('Verify that messages are sent and received properly', async function() {
 
         await SpectronSpec.create(this.app).waitFor(true);
 
