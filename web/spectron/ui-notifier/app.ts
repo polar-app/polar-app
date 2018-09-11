@@ -1,6 +1,6 @@
 import {SpectronRenderer} from '../../js/test/SpectronRenderer';
-import {UINotifiers} from '../../js/electron/ui_notifier/UINotifiers';
+import {WebContentsNotifiers} from '../../js/electron/web_contents_notifier/WebContentsNotifiers';
 
 SpectronRenderer.run(async () => {
-    UINotifiers.dispatchEvent('hello', 'world');
+    WebContentsNotifiers.dispatchEvent('hello', 'world');
 });

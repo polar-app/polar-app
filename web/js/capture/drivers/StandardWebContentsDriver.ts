@@ -51,9 +51,16 @@ export class StandardWebContentsDriver implements WebContentsDriver {
     }
 
 
-    public loadURL(url: string): Promise<void> {
-
-        const result = WebContentsPromises.once(this.webContents!).didFinishLoad();
+    /**
+     *
+     * @param url The URL to load.
+     *
+     * @param waitForFinishLoad When true, wait for the 'did-finish-load' event
+     * which is the default since the old capture system was based on the browser
+     * loading event stream and we assumed the load event would mean the page
+     * was finished rendering - which is not really true.
+     */
+    public async loadURL(url: string, waitForFinishLoad: boolean = true): Promise<void> {
 
         const opts = {
 
@@ -62,9 +69,15 @@ export class StandardWebContentsDriver implements WebContentsDriver {
 
         };
 
+        const result = WebContentsPromises.once(this.webContents!).didFinishLoad();
+
         this.webContents!.loadURL(url, opts);
 
-        return result;
+        if (waitForFinishLoad) {
+            return result;
+        } else {
+            return Promise.resolve();
+        }
 
     }
 

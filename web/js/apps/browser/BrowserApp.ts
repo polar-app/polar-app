@@ -1,3 +1,9 @@
+import {Logger} from '../../logger/Logger';
+import {isPresent} from '../../Preconditions';
+import {CaptureClient} from '../../capture/controller/CaptureClient';
+
+const log = Logger.create();
+
 export class BrowserApp {
 
     public start(): void {
@@ -6,7 +12,7 @@ export class BrowserApp {
 
         element.addEventListener('keypress', (event) => this.onLinkKeyPress(event));
 
-        console.log("started");
+        log.info("started");
 
     }
 
@@ -14,6 +20,8 @@ export class BrowserApp {
     private onLinkKeyPress(event: Event) {
 
         if (event instanceof KeyboardEvent && event.which === 13) {
+
+            console.log("GOT enter");
 
             const element = <HTMLInputElement> document.querySelector("#link")!;
 
@@ -25,13 +33,14 @@ export class BrowserApp {
 
     private onLinkChange(value: string) {
 
-        if (! value.startsWith("http:") && ! value.startsWith("https:")) {
+        if (isPresent(value) && ! value.startsWith("http:") && ! value.startsWith("https:")) {
+            log.debug("Not a URL: " + value);
             return;
         }
 
-        const element = document.querySelector("#content")!;
+        log.debug("Starting capture on URL: " + value);
 
-        element.setAttribute('src', value);
+        CaptureClient.startCapture(value);
 
     }
 

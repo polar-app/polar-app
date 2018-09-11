@@ -1,7 +1,5 @@
-import {ipcRenderer} from 'electron';
 import {Logger} from '../../logger/Logger';
-
-const log = Logger.create();
+import {CaptureClient} from './CaptureClient';
 
 /**
  * @renderer
@@ -29,9 +27,7 @@ export class StartCaptureUI {
             const urlElement = <HTMLInputElement> document.getElementById("url")!;
             const url = urlElement.value;
 
-            this.requestStartCapture({
-                url
-            });
+            CaptureClient.startCapture(url);
 
         } catch (e) {
             console.error(e);
@@ -41,19 +37,4 @@ export class StartCaptureUI {
 
     }
 
-    /**
-     * Send a message to the main process to start the capture for us.
-     *
-     */
-    public requestStartCapture(message: StartCaptureMessage) {
-
-        log.info("Sending message to start capture: ", message);
-        ipcRenderer.send('capture-controller-start-capture', message);
-
-    }
-
-}
-
-export interface StartCaptureMessage {
-    readonly url: string;
 }

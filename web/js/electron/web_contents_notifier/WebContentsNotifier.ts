@@ -11,7 +11,7 @@ import {IPCMainPromises, MainIPCEvent} from '../framework/IPCMainPromises';
  *
  * @ElectronMainContext
  */
-export class UINotifier {
+export class WebContentsNotifier {
 
     public static on(webContents: WebContents,
                      channel: string,

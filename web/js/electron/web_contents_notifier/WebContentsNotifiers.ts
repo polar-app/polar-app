@@ -1,7 +1,7 @@
 import {ipcRenderer, remote} from 'electron';
 import {WindowChannels} from './WindowChannels';
 
-export class UINotifiers {
+export class WebContentsNotifiers {
 
     public static dispatchEvent<M>(channel: string, message: M) {
 

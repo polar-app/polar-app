@@ -65,7 +65,7 @@ export class BrowserWindowRegistry {
             this.registry[`${id}`] = new BrowserWindowMeta();
         }
 
-        let meta = this.registry[`${id}`];
+        const meta = this.registry[`${id}`];
 
         Dictionaries.forDict(tags, (name, value) => {
             meta.tags[name] = value;
@@ -79,7 +79,7 @@ export class BrowserWindowRegistry {
     public static tagged(tag: BrowserWindowTag): ID[] {
         this.gc();
 
-        let result: ID[] = [];
+        const result: ID[] = [];
 
         Dictionaries.forDict(this.registry, (id, meta) => {
 

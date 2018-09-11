@@ -19,6 +19,8 @@ export abstract class AbstractWebviewWebContentsDriver extends StandardWebConten
 
     private readonly appPath: string;
 
+    private browserWindow?: BrowserWindow;
+
     protected constructor(browserProfile: BrowserProfile, appPath: string) {
         super(browserProfile);
         this.appPath = appPath;
@@ -56,9 +58,9 @@ export abstract class AbstractWebviewWebContentsDriver extends StandardWebConten
 
         log.info("Using browserWindowOptions: ", browserWindowOptions);
 
-        const window = new BrowserWindow(browserWindowOptions);
+        this.browserWindow = new BrowserWindow(browserWindowOptions);
 
-        await this.initWebContents(window, window.webContents, browserWindowOptions);
+        await this.initWebContents(this.browserWindow, this.browserWindow.webContents, browserWindowOptions);
 
         this.initReactor();
 
@@ -103,6 +105,9 @@ export abstract class AbstractWebviewWebContentsDriver extends StandardWebConten
 
     }
 
+    protected getBrowserWindow(): BrowserWindow | undefined {
+        return this.browserWindow;
+    }
 
     private async doInitWebviewHeight(browserWindowOptions: Electron.BrowserWindowConstructorOptions) {
 
