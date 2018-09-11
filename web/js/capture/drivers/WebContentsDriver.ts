@@ -1,8 +1,8 @@
 import WebContents = Electron.WebContents;
 import {StandardWebContentsDriver} from './StandardWebContentsDriver';
 import {BrowserProfile} from '../BrowserProfile';
-import {WebviewWebContentsDriver} from './WebviewWebContentsDriver';
 import {PendingWebRequestsEvent} from '../../webrequests/PendingWebRequestsListener';
+import {CaptureWebviewWebContentsDriver} from './CaptureWebviewWebContentsDriver';
 
 export interface WebContentsDriver {
 
@@ -15,7 +15,7 @@ export interface WebContentsDriver {
      */
     destroy(): void;
 
-    loadURL(url: string): Promise<void>
+    loadURL(url: string): Promise<void>;
 
     /**
      * Called when progress for the loading page has been updated.
@@ -31,12 +31,12 @@ export interface WebContentsDriver {
 
 export class WebContentsDriverFactory {
 
-    static async create(browserProfile: BrowserProfile): Promise<WebContentsDriver> {
+    public static async create(browserProfile: BrowserProfile): Promise<WebContentsDriver> {
 
         let webContentsDriver: WebContentsDriver;
 
         if(browserProfile.profile === DriverType.WEBVIEW) {
-            webContentsDriver = new WebviewWebContentsDriver(browserProfile);
+            webContentsDriver = new CaptureWebviewWebContentsDriver(browserProfile);
         } else {
             webContentsDriver = new StandardWebContentsDriver(browserProfile);
         }

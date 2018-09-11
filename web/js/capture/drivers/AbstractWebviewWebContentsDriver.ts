@@ -7,6 +7,7 @@ import {BrowserWindow} from "electron";
 import {Functions} from '../../util/Functions';
 import {PendingWebRequestsEvent} from '../../webrequests/PendingWebRequestsListener';
 import WebContents = Electron.WebContents;
+import {BrowserProfile} from '../BrowserProfile';
 
 const log = Logger.create();
 
@@ -14,7 +15,14 @@ const log = Logger.create();
  * A driver which creates an app that uses a <webview> host control for our
  * content.
  */
-export class WebviewWebContentsDriver extends StandardWebContentsDriver {
+export abstract class AbstractWebviewWebContentsDriver extends StandardWebContentsDriver {
+
+    private readonly appPath: string;
+
+    protected constructor(browserProfile: BrowserProfile, appPath: string) {
+        super(browserProfile);
+        this.appPath = appPath;
+    }
 
     public async init() {
 
@@ -65,7 +73,7 @@ export class WebviewWebContentsDriver extends StandardWebContentsDriver {
         // ok... now the page isn't setup properly and we need to load the app
         // and then adjust the webview properly.
 
-        const resourceURL = AppPaths.resource("./apps/capture-webview/index.html");
+        const resourceURL = AppPaths.resource(this.appPath);
 
         window.loadURL(resourceURL);
 
@@ -82,14 +90,14 @@ export class WebviewWebContentsDriver extends StandardWebContentsDriver {
     protected computeAdjustedBrowserWindowOptions() {
 
         // Create the browser window.
-        let browserWindowOptions = BrowserWindows.toBrowserWindowOptions(this.browserProfile);
+        const browserWindowOptions = BrowserWindows.toBrowserWindowOptions(this.browserProfile);
 
-        browserWindowOptions.height = Math.round(notNull(browserWindowOptions.width) * (11/8.5));
+        browserWindowOptions.height = Math.round(notNull(browserWindowOptions.width) * (11 / 8.5));
         browserWindowOptions.minHeight = browserWindowOptions.height;
 
         // TODO: make this part of the profile.
         browserWindowOptions.enableLargerThanScreen = false;
-        //browserWindowOptions.webPreferences!.zoomFactor = 1.0
+        // browserWindowOptions.webPreferences!.zoomFactor = 1.0
 
         return browserWindowOptions;
 

@@ -1,8 +1,8 @@
 
 import {app, BrowserWindow} from 'electron';
-import {BrowserAppWindowFactory} from '../web/js/apps/browser/BrowserAppWindowFactory';
+import {BrowserAppWindowFactory} from '../web/js/apps/electron_browser/BrowserAppWindowFactory';
 
-let url = process.argv[2];
+const url = process.argv[2];
 
 console.log("Loading url: " + url);
 
