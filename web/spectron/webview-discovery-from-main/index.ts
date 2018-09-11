@@ -2,6 +2,8 @@ import {assert, expect} from 'chai';
 import {webContents} from "electron";
 import {SpectronMain} from '../../js/test/SpectronMain';
 import waitForExpect from 'wait-for-expect';
+import BrowserWindow = Electron.BrowserWindow;
+import {BrowserWindows} from '../../js/electron/framework/BrowserWindows';
 
 SpectronMain.run(async state => {
 
@@ -22,14 +24,17 @@ SpectronMain.run(async state => {
     assert.ok(webContents.fromId(allWebContents[1].id));
 
     await waitForExpect(() => {
-        expect(allWebContents[0].getURL())
-            .to.satisfy((current: string) => current.endsWith('webview-discovery/example.html'));
+
+        const links = allWebContents.map(current => current.getURL()).sort();
+
+        expect(links[0]).to.satisfy((current: string) => current.endsWith('/app.html'));
+        expect(links[1]).to.satisfy((current: string) => current.endsWith('/example.html'));
+
     });
 
-    await waitForExpect(() => {
-        expect(allWebContents[1].getURL())
-            .to.satisfy((current: string) => current.endsWith('webview-discovery/app.html'));
-    });
+    const webContentsHostIndex = BrowserWindows.computeWebContentsToHostIndex();
+
+    assert.equal(webContentsHostIndex.keys.length, 1);
 
     await state.testResultWriter.write(true);
 
