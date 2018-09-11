@@ -21,4 +21,10 @@ export interface BrowserProfile extends IBrowser {
 
     nodeIntegration: boolean;
 
+    /**
+     * If we already have a browser window open for this BrowserProfile just
+     * use this when capturing the content.
+     */
+    webContentsId?: number;
+
 }

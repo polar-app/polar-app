@@ -36,14 +36,15 @@ export interface IBrowser {
 
 export class BrowserProfileBuilder implements BrowserProfile {
 
-    profile: string = "unknown";
-    description: string;
-    deviceEmulation: Electron.Parameters;
-    name: string;
-    offscreen: boolean = false;
-    show: boolean = true;
-    userAgent: string;
-    nodeIntegration: boolean = false;
+    private profile: string = "unknown";
+    private description: string;
+    private deviceEmulation: Electron.Parameters;
+    private name: string;
+    private offscreen: boolean = false;
+    private show: boolean = true;
+    private userAgent: string;
+    private nodeIntegration: boolean = false;
+    private webContentsId?: number;
 
     /**
      */
@@ -54,7 +55,7 @@ export class BrowserProfileBuilder implements BrowserProfile {
         this.userAgent = browser.userAgent;
     }
 
-    setHeight(height: number) {
+    public setHeight(height: number) {
 
         this.deviceEmulation.screenSize.height = height;
         this.deviceEmulation.viewSize.height = height;
@@ -63,27 +64,32 @@ export class BrowserProfileBuilder implements BrowserProfile {
 
     }
 
-    setShow(show: boolean) {
+    public setShow(show: boolean) {
         this.show = show;
         return this;
     }
 
-    setOffscreen(offscreen: boolean) {
+    public setOffscreen(offscreen: boolean) {
         this.offscreen = offscreen;
         return this;
     }
 
-    setProfile(profile: string) {
+    public setProfile(profile: string) {
         this.profile = profile;
         return this;
     }
 
-    setNodeIntegration(value: boolean) {
+    public setNodeIntegration(value: boolean) {
         this.nodeIntegration = value;
         return this;
     }
 
-    build(): Readonly<BrowserProfile> {
+    public setWebContentsId(webContentsId?: number) {
+        this.webContentsId = webContentsId;
+        return this;
+    }
+
+    public build(): Readonly<BrowserProfile> {
         return Object.freeze(this);
     }
 

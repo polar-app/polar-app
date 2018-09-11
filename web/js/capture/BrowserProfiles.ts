@@ -19,7 +19,9 @@ export class BrowserProfiles {
      * window options.
      *
      */
-    public static toBrowserProfile(browser: Browser, name: string): BrowserProfile {
+    public static toBrowserProfile(browser: Browser,
+                                   name: string,
+                                   webContentsId?: number): BrowserProfile {
 
         if (name === 'default') {
             return BrowserProfiles.toBrowserProfile(browser, 'browser');
@@ -71,6 +73,7 @@ export class BrowserProfiles {
                     .setShow(true)
                     .setOffscreen(false)
                     .setNodeIntegration(true)
+                    .setWebContentsId(webContentsId)
                     .build();
 
             // case "default_500":

@@ -37,7 +37,7 @@ export class CaptureController {
 
         ipcMain.on('capture-controller-start-capture', (event: Electron.Event, message: StartCaptureMessage) => {
 
-            this.startCapture(event.sender, message.url)
+            this.startCapture(event.sender, message.url, message.webContentsID)
                 .catch( err => log.error("Could not start capture: ", err));
 
         });
@@ -50,8 +50,10 @@ export class CaptureController {
      * box that started the whole capture.
      *
      * @param url {string}
+     *
+     * @param webContentsId A specific WebContents to use (by id)
      */
-    protected async startCapture(webContents: Electron.WebContents, url: string) {
+    protected async startCapture(webContents: Electron.WebContents, url: string, webContentsId?: number) {
 
         webContents = await this.loadApp(webContents, url);
 
@@ -63,7 +65,7 @@ export class CaptureController {
         // to just rework the capture system entirely so that the code is
         // more orthogonal to what we're trying to actually accomplish...
 
-        const captureResult = await this.runCapture(webContents, url);
+        const captureResult = await this.runCapture(webContents, url, webContentsId);
         //
         // let captureResult = {
         //     path: "/home/burton/.polar/stash/UK_unveils_new_Tempest_fighter_jet_model___BBC_News.phz"
@@ -105,12 +107,16 @@ export class CaptureController {
 
     /**
      *
-     * @param webContents {Electron.WebContents} The webContents page that
-     * should be updated with our progress.
+     * @param webContents The webContents page that should be updated with our
+     * progress.
      *
-     * @param url {string} The URL to capture.
+     * @param url The URL to capture.
+     *
+     * @param webContentsId A specific WebContents to use (by id)
      */
-    private async runCapture(webContents: Electron.WebContents, url: string) {
+    private async runCapture(webContents: Electron.WebContents,
+                             url: string,
+                             webContentsId?: number) {
 
         Preconditions.assertNotNull(webContents, "webContents");
 
@@ -124,9 +130,10 @@ export class CaptureController {
         let browser = BrowserRegistry.DEFAULT;
 
         // browser = Browsers.toProfile(browser, "headless");
+        // TODO: this should be 'default' not 'hidden'
         browser = BrowserProfiles.toBrowserProfile(browser, "hidden");
         // browser = Browsers.toProfile(browser, "default");
-        const browserProfile = BrowserProfiles.toBrowserProfile(browser, "default");
+        const browserProfile = BrowserProfiles.toBrowserProfile(browser, "default", webContentsId);
 
         const capture = new Capture(url, browserProfile, this.directories.stashDir, captureOpts);
 

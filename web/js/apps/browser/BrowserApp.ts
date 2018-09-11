@@ -8,6 +8,10 @@ export class BrowserApp {
 
     public start(): void {
 
+        // FIXME: wait until we get document dom ready and web contents dom ready.
+
+        // content.addEventListener('dom-ready', async () => {
+
         const element = <HTMLInputElement> document.querySelector("#link")!;
 
         element.addEventListener('keypress', (event) => this.onLinkKeyPress(event));
@@ -40,7 +44,16 @@ export class BrowserApp {
 
         log.debug("Starting capture on URL: " + value);
 
-        CaptureClient.startCapture(value);
+        CaptureClient.startCapture(value, this.getWebContentsId());
+
+    }
+
+
+    private getWebContentsId() {
+
+        const content = <Electron.WebviewTag> document.querySelector("#content")!;
+        const webContents = content.getWebContents();
+        return webContents.id;
 
     }
 

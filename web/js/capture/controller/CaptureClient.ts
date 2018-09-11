@@ -10,10 +10,11 @@ export class CaptureClient {
      * Send a message to the main process to start the capture for us.
      *
      */
-    public static startCapture(url: string) {
+    public static startCapture(url: string, webContentsId?: number) {
 
         const startCaptureMessage: StartCaptureMessage = {
-            url
+            url,
+            webContentsId
         };
 
         log.info("Sending message to start capture: ", startCaptureMessage);
@@ -25,6 +26,6 @@ export class CaptureClient {
 
 export interface StartCaptureMessage {
     readonly url: string;
-    readonly webContentsID?: number;
+    readonly webContentsId?: number;
 }
 

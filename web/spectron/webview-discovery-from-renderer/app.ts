@@ -4,19 +4,24 @@ import {SpectronRenderer} from '../../js/test/SpectronRenderer';
 
 SpectronRenderer.run(async (state) => {
 
-    console.log("Running within SpectronRenderer now.");
+    const content = <Electron.WebviewTag> document.querySelector("#content")!;
 
-    try {
-        const webView = webFrame.findFrameByName('content');
+    assert.ok(content);
 
+    content.addEventListener('dom-ready', async () => {
 
-    } catch (e) {
-        console.log("FIXME: ", e);
-    }
-    //
-    // assert.ok(webView);
-    //
-    // await state.testResultWriter.write(true);
+        const webContents = content.getWebContents();
+
+        assert.ok(webContents);
+
+        assert.ok(webContents.id);
+
+        assert.ok(typeof webContents.id === 'number');
+
+        await state.testResultWriter.write(true);
+
+    });
+
 
 });
 
