@@ -3,6 +3,7 @@ import {StandardWebContentsDriver} from './StandardWebContentsDriver';
 import {BrowserProfile} from '../BrowserProfile';
 import {PendingWebRequestsEvent} from '../../webrequests/PendingWebRequestsListener';
 import {CaptureWebviewWebContentsDriver} from './CaptureWebviewWebContentsDriver';
+import {BrowserWebContentsDriver} from './BrowserWebContentsDriver';
 
 export interface WebContentsDriver {
 
@@ -35,8 +36,10 @@ export class WebContentsDriverFactory {
 
         let webContentsDriver: WebContentsDriver;
 
-        if(browserProfile.profile === DriverType.WEBVIEW) {
+        if (browserProfile.profile === DriverType.WEBVIEW) {
             webContentsDriver = new CaptureWebviewWebContentsDriver(browserProfile);
+        } else if (browserProfile.profile === DriverType.BROWSER) {
+            webContentsDriver = new BrowserWebContentsDriver(browserProfile);
         } else {
             webContentsDriver = new StandardWebContentsDriver(browserProfile);
         }
@@ -48,9 +51,19 @@ export class WebContentsDriverFactory {
 }
 
 export enum DriverType {
+
     HEADLESS = 'headless',
+
     HIDDEN = 'hidden',
-    WEBVIEW = 'webview'
+
+    // a hidden page with a hosted webview control.
+    WEBVIEW = 'webview',
+
+    // a full browser view that enables the user to click a capture button and
+    // interact with the page.
+
+    BROWSER = 'browser',
+
 }
 
 export type WebContentsEventName = 'close';

@@ -22,7 +22,7 @@ export class BrowserProfiles {
     public static toBrowserProfile(browser: Browser, name: string): BrowserProfile {
 
         if (name === 'default') {
-            return BrowserProfiles.toBrowserProfile(browser, 'webview');
+            return BrowserProfiles.toBrowserProfile(browser, 'browser');
         }
 
         // support offscreen rendering (similar to chrome headless)
@@ -36,7 +36,7 @@ export class BrowserProfiles {
                     .setProfile(name)
                     .setHeight(10000)
                     .setShow(false)
-                    //.setShow(true)
+                    // .setShow(true)
                     .build();
 
             case "headless":
@@ -60,6 +60,15 @@ export class BrowserProfiles {
                     .setProfile(name)
                     .setHeight(35000)
                     .setShow(false)
+                    .setOffscreen(false)
+                    .setNodeIntegration(true)
+                    .build();
+
+            case "browser":
+                return new BrowserProfileBuilder(browser)
+                    .setProfile(name)
+                    .setHeight(35000)
+                    .setShow(true)
                     .setOffscreen(false)
                     .setNodeIntegration(true)
                     .build();
