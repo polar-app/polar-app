@@ -28,7 +28,7 @@ const EXECUTE_CAPTURE_DELAY = 1500;
 
 export class Capture {
 
-    public url?: string;
+    public url: string;
 
     public readonly browserProfile: BrowserProfile;
 
@@ -42,8 +42,6 @@ export class Capture {
 
     public readonly webRequestReactors: WebRequestReactor[] = [];
 
-    private urlPromise: Promise<string>;
-
     private webContents?: WebContents;
 
     private driver?: WebContentsDriver;
@@ -53,7 +51,7 @@ export class Capture {
      */
     public resolve: CaptureResultCallback = () => {};
 
-    constructor(urlPromise: Promise<string>,
+    constructor(url: string,
                 browserProfile: BrowserProfile,
                 stashDir: string,
                 captureOpts: CaptureOpts = {amp: true}) {
@@ -61,7 +59,11 @@ export class Capture {
         // FIXME: don't allow named anchors in the URL like #foo... strip them
         // and test this functionality.
 
-        this.urlPromise = Preconditions.assertNotNull(urlPromise, "urlPromise");
+        this.url = Preconditions.assertNotNull(url, "url");
+
+        if(Strings.empty(this.url)) {
+            throw new Error("URL may not be empty")
+        }
 
         this.browserProfile = Preconditions.assertNotNull(browserProfile, "browser");
         this.stashDir = Preconditions.assertNotNull(stashDir, "stashDir");
@@ -77,8 +79,6 @@ export class Capture {
     }
 
     public async start(): Promise<CaptureResult> {
-
-        this.url = await this.urlPromise;
 
         if (Strings.empty(this.url)) {
             throw new Error("URL may not be empty");
@@ -107,7 +107,7 @@ export class Capture {
     private async loadURL(url: string) {
 
         // wait until the main URL loads.
-        const loadURLPromise = this.driver!.loadURL(this.url!);
+        const loadURLPromise = this.driver!.loadURL(this.url);
 
         // wait a minimum amount of time for the page to load so that we can
         // make sure that all static content has executed.
