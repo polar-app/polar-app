@@ -1,9 +1,8 @@
+import {StartCaptureUI} from './StartCaptureUI';
 
 export class StartCaptureApp {
 
     public start() {
-
-        const {StartCaptureUI} = require("./StartCaptureUI");
 
         const startCaptureUI = new StartCaptureUI();
         startCaptureUI.init();

@@ -1,5 +1,4 @@
-
-import {ipcRenderer, BrowserWindow} from 'electron';
+import {ipcRenderer} from 'electron';
 import {Logger} from '../../logger/Logger';
 
 const log = Logger.create();

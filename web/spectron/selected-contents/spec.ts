@@ -1,9 +1,9 @@
-import assert from 'assert'
+import assert from 'assert';
 import {Spectron} from '../../js/test/Spectron';
 
 const TIMEOUT = 10000;
 
-describe('SelectContents of HTML entities.', function () {
+xdescribe('SelectContents of HTML entities.', function () {
 
     this.timeout(TIMEOUT);
 

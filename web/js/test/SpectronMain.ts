@@ -7,8 +7,8 @@ export const BROWSER_OPTIONS = {
     // NOTE: the default width and height shouldn't be changed here as it can
     // break unit tests.
 
-    //width: 1000,
-    //height: 1000,
+    // width: 1000,
+    // height: 1000,
 
     webPreferences: {
         webSecurity: false,
@@ -21,7 +21,7 @@ export const BROWSER_OPTIONS = {
  */
 export class SpectronMain {
 
-    static setup(options?: SpectronMainOptions): Promise<Electron.BrowserWindow> {
+    public static setup(options?: SpectronMainOptions): Promise<Electron.BrowserWindow> {
 
         return new Promise(resolve => {
 
@@ -32,17 +32,17 @@ export class SpectronMain {
                 console.log("Ready!  Creating main window!!");
 
                 let windowFactory: WindowFactory = async () => {
-                    let mainWindow = new BrowserWindow(BROWSER_OPTIONS);
-                    //mainWindow.webContents.toggleDevTools();
+                    const mainWindow = new BrowserWindow(BROWSER_OPTIONS);
+                    // mainWindow.webContents.toggleDevTools();
                     mainWindow.loadURL('about:blank');
                     return mainWindow;
                 };
 
-                if(options && options.windowFactory) {
+                if (options && options.windowFactory) {
                     windowFactory = options.windowFactory;
                 }
 
-                let mainWindow = await windowFactory();
+                const mainWindow = await windowFactory();
 
                 console.log("Done.. resolving");
                 resolve(mainWindow);
@@ -53,10 +53,10 @@ export class SpectronMain {
 
     }
 
-    static async start(callback: StateCallback, options?: SpectronMainOptions): Promise<void> {
+    public static async start(callback: StateCallback, options?: SpectronMainOptions): Promise<void> {
 
-        let window = await SpectronMain.setup(options);
-        let testResultWriter = new MainTestResultWriter(window);
+        const window = await SpectronMain.setup(options);
+        const testResultWriter = new MainTestResultWriter(window);
 
         return callback(new SpectronMainState(window, testResultWriter));
 
@@ -65,8 +65,8 @@ export class SpectronMain {
     /**
      * Like start but not async and assume this is the entry point of your test
      * and just print error messages to the console.
-     **/
-    static run(callback: StateCallback, options?: SpectronMainOptions) {
+     */
+    public static run(callback: StateCallback, options?: SpectronMainOptions) {
         SpectronMain.start(callback, options).catch(err => console.log(err));
     }
 
@@ -93,7 +93,7 @@ export interface SpectronMainOptions {
 }
 
 export interface StateCallback {
-    (state: SpectronMainState): Promise<void>
+    (state: SpectronMainState): Promise<void>;
 }
 
 export interface WindowFactory {
