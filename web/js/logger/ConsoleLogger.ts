@@ -5,26 +5,30 @@ import {ILogger} from './ILogger';
 
 export class ConsoleLogger implements ILogger {
 
-    readonly name: string = 'console-logger';
+    public readonly name: string = 'console-logger';
 
-    info(msg: string, ...args: any[]) {
+    public info(msg: string, ...args: any[]) {
         console.log(msg, ...args);
     }
 
-    warn(msg: string, ...args: any[]) {
+    public warn(msg: string, ...args: any[]) {
         console.warn(msg, ...args);
     }
 
-    error(msg: string, ...args: any[]) {
+    public error(msg: string, ...args: any[]) {
         console.error(msg, ...args);
     }
 
-    verbose(msg: string, ...args: any[]) {
+    public verbose(msg: string, ...args: any[]) {
         console.log(msg, ...args);
     }
 
-    debug(msg: string, ...args: any[]) {
+    public debug(msg: string, ...args: any[]) {
         console.log(msg, ...args);
+    }
+
+    public async sync(): Promise<void> {
+        // noop
     }
 
 }

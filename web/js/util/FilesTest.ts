@@ -2,6 +2,7 @@ import {assert} from 'chai';
 import {Files} from './Files';
 import {FilePaths} from './FilePaths';
 import os from "os";
+import fs from 'fs';
 
 const tmpdir = os.tmpdir();
 
@@ -21,7 +22,7 @@ describe('Files', function() {
 
     describe('readFileAsync', function() {
 
-        it("basic", async function () {
+        it("basic", async function() {
 
             let path = FilePaths.join(tmpdir, "write-file-async.txt");
 
@@ -29,7 +30,27 @@ describe('Files', function() {
 
             let data = await Files.readFileAsync(path);
 
-            assert.equal(data.toString('utf8'), "hello world")
+            assert.equal(data.toString('utf8'), "hello world");
+
+        });
+
+        xit("missing file", async function() {
+
+            const missingPath = "this-is-a-missing-path.txt";
+
+            await Files.readFileAsync(missingPath);
+
+            // fs.readFile(missingPath, () => {});
+
+        });
+
+        async function failsProperly() {
+            throw new Error("failing properly.");
+        }
+
+        xit("proper exception example.", async function() {
+
+            await failsProperly();
 
         });
 

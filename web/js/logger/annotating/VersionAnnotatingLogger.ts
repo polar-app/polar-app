@@ -17,30 +17,34 @@ export class VersionAnnotatingLogger implements ILogger {
     constructor(delegate: ILogger) {
         this.delegate = delegate;
         this.name = `version-annotating-logger -> ${delegate.name}`;
-        let packageManifest = new PackageManifest();
-        //this.versionAnnotation = `[${packageManifest.name()}-${packageManifest.version()}]`;
+        const packageManifest = new PackageManifest();
+        // this.versionAnnotation = `[${packageManifest.name()}-${packageManifest.version()}]`;
         this.versionAnnotation = `[${packageManifest.version()}]`;
 
     }
 
-    info(msg: string, ...args: any[]) {
+    public info(msg: string, ...args: any[]) {
         this.delegate.info(this.versionAnnotation + ` ${msg}`, ...args);
     }
 
-    warn(msg: string, ...args: any[]) {
+    public warn(msg: string, ...args: any[]) {
         this.delegate.warn(this.versionAnnotation + ` ${msg}`, ...args);
     }
 
-    error(msg: string, ...args: any[]) {
+    public error(msg: string, ...args: any[]) {
         this.delegate.error(this.versionAnnotation + ` ${msg}`, ...args);
     }
 
-    verbose(msg: string, ...args: any[]) {
+    public verbose(msg: string, ...args: any[]) {
         this.delegate.verbose(this.versionAnnotation + ` ${msg}`, ...args);
     }
 
-    debug(msg: string, ...args: any[]) {
+    public debug(msg: string, ...args: any[]) {
         this.delegate.debug(this.versionAnnotation + ` ${msg}`, ...args);
+    }
+
+    public async sync(): Promise<void> {
+        await this.delegate.sync();
     }
 
 }

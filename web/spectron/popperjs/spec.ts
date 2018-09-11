@@ -2,17 +2,20 @@ import {Spectron} from '../../js/test/Spectron';
 import {SpectronSpec} from '../../js/test/SpectronSpec';
 import {PolarDataDir} from '../../js/test/PolarDataDir';
 
-PolarDataDir.useFreshDirectory('.polar-main-app-with-empty-repo');
+// we can change the polar data dir with the following
+// PolarDataDir.useFreshDirectory('.polar-persistent-error-logger');
 
-describe('main-app-with-empty-repo', function() {
+xdescribe('TODO change this describe', function() {
 
     Spectron.setup(__dirname);
     this.timeout(10000);
 
-    it('create the repository view', async function() {
+    xit('TODO change this test description', async function() {
 
         await SpectronSpec.create(this.app).waitFor(true);
 
     });
 
 });
+
+

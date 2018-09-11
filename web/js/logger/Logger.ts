@@ -2,6 +2,7 @@
 
 import {Callers} from './Callers';
 import {LoggerDelegate} from './LoggerDelegate';
+import {ILogger} from './ILogger';
 
 export class Logger {
 
@@ -24,12 +25,14 @@ export class Logger {
  * Allows us to swap in delegates at runtime on anyone who calls create()
  * regardless of require() order.
  */
-class DelegatedLogger {
+class DelegatedLogger implements ILogger {
 
     /**
      * The caller for this logger.
      */
     public caller: string;
+
+    public readonly name: string = 'delegated';
 
     /**
      *
@@ -62,6 +65,11 @@ class DelegatedLogger {
     public debug(msg: string, ...args: any[]) {
         this.apply(LoggerDelegate.get().debug.bind(LoggerDelegate.get()), msg, ...args);
     }
+
+    public async sync(): Promise<void> {
+        return await LoggerDelegate.get().sync();
+    }
+
 
     /**
      *

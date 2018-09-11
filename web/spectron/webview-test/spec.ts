@@ -1,9 +1,6 @@
+import {assert} from 'chai';
 import {WebDriverTestResultReader} from '../../js/test/results/reader/WebDriverTestResultReader';
 import {Spectron} from '../../js/test/Spectron';
-import {assertJSON} from '../../js/test/Assertions';
-
-const assert = require('assert');
-const {Functions} = require("../../js/util/Functions");
 
 xdescribe('webview-test', function() {
 

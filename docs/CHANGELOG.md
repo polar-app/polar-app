@@ -1,6 +1,16 @@
 
-- Fixed a bad initial bug where if you didn't have any documents in you repository
-  you would get an error. 
+- Fixed bug where we could accidentally put the user in a situation where they
+  can lock themselves out of the document repository.
+
+# 1.0.0-beta141
+
+- Fixed issue with repository generating errors when no files were in the repo
+
+- Fixed issue with Files API returning empty exceptions which prevented debugging
+  when in production.
+  
+- We now write errors to ~/.polar/logs/error.log which should make it easier for 
+  users to help us find problems in production.
 
 # 1.0.0-beta140
 

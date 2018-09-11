@@ -14,16 +14,16 @@ init({
 
 export class SentryLogger implements ILogger {
 
-    readonly name: string = 'sentry-logger';
+    public readonly name: string = 'sentry-logger';
 
-    warn(msg: string, ...args: any[]) {
+    public warn(msg: string, ...args: any[]) {
     }
 
-    error(msg: string, ...args: any[]) {
+    public error(msg: string, ...args: any[]) {
 
         args.forEach(arg => {
 
-            if( arg instanceof Error) {
+            if ( arg instanceof Error) {
 
                 // This captures 'handles' exceptions as Sentry wouldn't actually
                 // capture these as they aren't surfaced to Electron.
@@ -34,13 +34,17 @@ export class SentryLogger implements ILogger {
 
     }
 
-    info(msg: string, ...args: any[]) {
+    public info(msg: string, ...args: any[]) {
     }
 
-    verbose(msg: string, ...args: any[]) {
+    public verbose(msg: string, ...args: any[]) {
     }
 
-    debug(msg: string, ...args: any[]) {
+    public debug(msg: string, ...args: any[]) {
+    }
+
+    public async sync(): Promise<void> {
+        // noop
     }
 
 }

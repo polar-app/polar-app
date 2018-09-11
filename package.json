@@ -1,6 +1,6 @@
 {
   "name": "polar-bookshelf",
-  "version": "1.0.0-beta140",
+  "version": "1.0.0-beta141",
   "description": "Polar Bookshelf",
   "main": "main.js",
   "scripts": {
@@ -27,9 +27,6 @@
     "email": "noone@example.com"
   },
   "contributors": [
-    {
-      "name": "Praharsh Jain"
-    },
     {
       "name": "Kevin Burton"
     }
