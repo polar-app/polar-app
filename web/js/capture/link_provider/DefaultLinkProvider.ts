@@ -1,4 +1,5 @@
 import {LinkProvider} from './LinkProvider';
+import {BrowserProfileID} from '../BrowserProfile';
 
 /**
  * Basic LinkProvider that's already satisfied externally.
@@ -11,7 +12,7 @@ export class DefaultLinkProvider implements LinkProvider {
         this.link = link;
     }
 
-    public get(): Promise<string> {
+    public get(browserProfileID: BrowserProfileID): Promise<string> {
         return Promise.resolve(this.link);
     }
 

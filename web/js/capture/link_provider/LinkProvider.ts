@@ -1,5 +1,7 @@
+import {BrowserProfileID} from '../BrowserProfile';
+
 export interface LinkProvider {
 
-    get(): Promise<string>;
+    get(browserProfileID: BrowserProfileID): Promise<string>;
 
 }

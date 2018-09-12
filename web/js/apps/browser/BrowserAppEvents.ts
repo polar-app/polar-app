@@ -1,3 +1,7 @@
 export enum BrowserAppEvents {
-    TRIGGER_CAPTURE = 'trigger-capture'
+
+    PROVIDE_URL = 'PROVIDE_URL',
+
+    TRIGGER_CAPTURE = 'TRIGGER_CAPTURE'
+
 }

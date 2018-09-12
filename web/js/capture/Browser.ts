@@ -1,4 +1,4 @@
-import {BrowserProfile} from './BrowserProfile';
+import {BrowserProfile, BrowserProfileID} from './BrowserProfile';
 import {LinkProvider} from './link_provider/LinkProvider';
 
 export class Browser implements Readonly<IBrowser> {
@@ -35,6 +35,8 @@ export interface IBrowser {
 }
 
 export class BrowserProfileBuilder implements BrowserProfile {
+
+    public id: BrowserProfileID = BrowserProfileBuilder.sequence++;
 
     public profile: string = "unknown";
 
@@ -96,5 +98,7 @@ export class BrowserProfileBuilder implements BrowserProfile {
     public build(): Readonly<BrowserProfile> {
         return Object.freeze(this);
     }
+
+    private static sequence: number = 0;
 
 }

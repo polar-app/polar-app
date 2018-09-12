@@ -76,7 +76,7 @@ export class Capture {
 
         this.onWebRequest(this.webContents.session.webRequest);
 
-        const url = await this.browserProfile.linkProvider.get();
+        const url = await this.browserProfile.linkProvider.get(this.browserProfile.id);
 
         Preconditions.assertNotNull(url, "url");
 

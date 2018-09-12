@@ -4,6 +4,11 @@ import {LinkProvider} from './link_provider/LinkProvider';
 export interface BrowserProfile extends IBrowser {
 
     /**
+     * A unique instance ID for this browser profile.
+     */
+    id: BrowserProfileID;
+
+    /**
      * The name of this profile.
      */
     profile: string;
@@ -25,3 +30,5 @@ export interface BrowserProfile extends IBrowser {
     linkProvider: LinkProvider;
 
 }
+
+export type BrowserProfileID = number;

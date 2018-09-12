@@ -1,6 +1,8 @@
 import {Logger} from '../../logger/Logger';
 import {isPresent} from '../../Preconditions';
 import {CaptureClient} from '../../capture/controller/CaptureClient';
+import {WebContentsNotifiers} from '../../electron/web_contents_notifier/WebContentsNotifiers';
+import {BrowserAppEvents} from './BrowserAppEvents';
 
 const log = Logger.create();
 
@@ -44,9 +46,11 @@ export class BrowserApp {
 
         log.debug("Starting capture on URL: " + value);
 
-        const webContentsId = this.getWebContentsId();
-        log.info("Working with web contents: " + webContentsId);
-        CaptureClient.startCapture(value, webContentsId);
+        // const webContentsId = this.getWebContentsId();
+        // log.info("Working with web contents: " + webContentsId);
+        // CaptureClient.startCapture(value, webContentsId);
+
+        WebContentsNotifiers.dispatchEvent(BrowserAppEvents.PROVIDE_URL, value);
 
     }
 

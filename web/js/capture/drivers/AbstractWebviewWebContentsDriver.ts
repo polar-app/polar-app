@@ -8,6 +8,11 @@ import {Functions} from '../../util/Functions';
 import {PendingWebRequestsEvent} from '../../webrequests/PendingWebRequestsListener';
 import WebContents = Electron.WebContents;
 import {BrowserProfile} from '../BrowserProfile';
+import {BrowserWindowRegistry} from '../../electron/framework/BrowserWindowRegistry';
+import {WebContentsNotifier} from '../../electron/web_contents_notifier/WebContentsNotifier';
+import {ResolveableLinkProvider} from '../link_provider/ResolveableLinkProvider';
+import {MainIPCEvent} from '../../electron/framework/IPCMainPromises';
+import {BrowserAppEvents} from '../../apps/browser/BrowserAppEvents';
 
 const log = Logger.create();
 
@@ -58,6 +63,20 @@ export abstract class AbstractWebviewWebContentsDriver extends StandardWebConten
         log.info("Using browserWindowOptions: ", browserWindowOptions);
 
         this.browserWindow = new BrowserWindow(browserWindowOptions);
+
+        if (this.browserProfile.linkProvider instanceof ResolveableLinkProvider) {
+
+            const linkProvider: ResolveableLinkProvider = this.browserProfile.linkProvider;
+
+            WebContentsNotifier.once<string>(this.browserWindow.webContents, BrowserAppEvents.PROVIDE_URL)
+                .then((event: MainIPCEvent<string>) => {
+
+                    log.info("Got link URL to render: " + event.message);
+                    linkProvider.set(event.message);
+
+                });
+
+        }
 
         await this.initWebContents(this.browserWindow, this.browserWindow.webContents, browserWindowOptions);
 
