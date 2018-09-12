@@ -4,7 +4,6 @@ import {DiskDatastore} from '../web/js/datastore/DiskDatastore';
 import {Args} from '../web/js/electron/capture/Args';
 import {Capture} from '../web/js/capture/Capture';
 import BrowserRegistry from '../web/js/capture/BrowserRegistry';
-import {DefaultLinkProvider} from '../web/js/capture/navigation/DefaultLinkProvider';
 import {Cmdline} from '../web/js/electron/Cmdline';
 
 const electron = require('electron');

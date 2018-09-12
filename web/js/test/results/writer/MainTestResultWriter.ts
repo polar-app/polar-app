@@ -18,20 +18,19 @@ export class MainTestResultWriter implements TestResultWriter {
         this.mainWindow = mainWindow;
     }
 
-    async write(result: any): Promise<void> {
+    public async write(result: any): Promise<void> {
 
-        if(result === null || result === undefined) {
+        if (result === null || result === undefined) {
             throw new Error("No result given!");
         }
 
         log.info("Writing test result: ", result);
 
-        let browserWindows = BrowserWindow.getAllWindows();
+        const browserWindows = BrowserWindow.getAllWindows();
 
-        for (let idx = 0; idx < browserWindows.length; idx++) {
-            const browserWindow = browserWindows[idx];
+        for (const browserWindow of browserWindows) {
 
-            let script = Functions.toScript(TestResult.set, result);
+            const script = Functions.toScript(TestResult.set, result);
 
             await browserWindow.webContents.executeJavaScript(script);
 

@@ -20,7 +20,7 @@ export class SpectronSpec {
         await Concurrently.waitForPredicate(() => this.app.client.getWindowCount(),
                                             (windowCount: number) => windowCount >= 1 );
 
-        let testResultReader = new WebDriverTestResultReader(this.app);
+        const testResultReader = new WebDriverTestResultReader(this.app);
         assert.equal(await testResultReader.read(), val);
 
     }

@@ -13,17 +13,18 @@ export class WebDriverTestResultReader implements TestResultReader {
         this.app = app;
     }
 
-    async read<T>(): Promise<T> {
+    public async read<T>(): Promise<T> {
 
-        let result = await this.app.client.executeAsync((done: (val: any) => void ) => {
+        const result = await this.app.client.executeAsync((done: (val: any) => void ) => {
 
             function poll() {
 
                 if (window.SPECTRON_TEST_RESULT !== null &&
                     window.SPECTRON_TEST_RESULT !== undefined) {
 
+                    console.log("FIXME: got value: " + window.SPECTRON_TEST_RESULTq);
                     done(window.SPECTRON_TEST_RESULT);
-
+                    return;
                 }
 
                 setTimeout(poll, 250);

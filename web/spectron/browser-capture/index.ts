@@ -17,20 +17,15 @@ SpectronMain2.create().run(async state => {
 
     const capture = new Capture(browserProfile);
 
-    await capture.start();
+    console.log("FIXME1")
 
-    // const proxyServerConfig = new ProxyServerConfig();
-    // const cacheRegistry = new CacheRegistry(proxyServerConfig);
-    //
-    // const captureController = new CaptureController(cacheRegistry);
-    //
-    // captureController.start();
-    //
-    // const appPath = AppPaths.resource("./apps/browser/index.html");
-    //
-    // console.log("Loading app: " + appPath);
-    //
-    // state.window.loadURL(appPath);
+    try {
+        await capture.start();
+    } catch (e) {
+        console.log("error: ", e)
+    }
+
+    console.log("FIXME2")
 
     await state.testResultWriter.write(true);
 

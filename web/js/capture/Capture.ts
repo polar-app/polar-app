@@ -13,6 +13,7 @@ import {Optional} from '../util/ts/Optional';
 import {Functions} from '../util/Functions';
 import {Promises} from '../util/Promises';
 import {ContentCaptureExecutor} from './ContentCaptureExecutor';
+import {ResolvablePromise} from '../util/ResolvablePromise';
 
 const log = Logger.create();
 
@@ -38,14 +39,11 @@ export class Capture {
 
     public readonly webRequestReactors: WebRequestReactor[] = [];
 
+    private result = new ResolvablePromise<CaptureResult>();
+
     private webContents?: WebContents;
 
     private driver?: WebContentsDriver;
-
-    /**
-     * The resolve function to call when we have completed .
-     */
-    public resolve: CaptureResultCallback = () => {};
 
     constructor(browserProfile: BrowserProfile,
                 captureOpts: CaptureOpts = {amp: true}) {
@@ -91,9 +89,8 @@ export class Capture {
             throw new Error("URL may not be empty");
         }
 
-        return new Promise<CaptureResult>(resolve => {
-            this.resolve = resolve;
-        });
+
+        return this.result;
 
     }
 
@@ -137,16 +134,7 @@ export class Capture {
 
         }
 
-        setTimeout(() => {
-
-            // capture within timeout just for debug purposes.
-
-            this.stop();
-
-            this.capture()
-                .catch(err => log.error(err));
-
-        }, 1);
+        return await this.capture();
 
     }
 
@@ -170,8 +158,7 @@ export class Capture {
 
         await this.browserProfile.navigation.captured.once();
 
-        this.executeContentCapture()
-            .catch(err => log.error(err));
+        return this.executeContentCapture();
 
     }
 
@@ -203,9 +190,12 @@ export class Capture {
 
         const result = await ContentCaptureExecutor.execute(this.webContents!, this.browserProfile);
 
-        Optional.of(this.driver).when(driver => driver.destroy());
+        console.log("FIXME3")
 
-        this.resolve(result);
+        //FIXME: Optional.of(this.driver).when(driver => driver.destroy());
+
+        console.log("FIXME4")
+        this.result.resolve(result);
 
     }
 

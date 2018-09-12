@@ -50,7 +50,6 @@ export class StandardWebContentsDriver implements WebContentsDriver {
         log.info("Destroying window...done");
     }
 
-
     /**
      *
      * @param url The URL to load.
