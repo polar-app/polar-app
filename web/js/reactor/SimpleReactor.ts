@@ -1,16 +1,17 @@
 /**
  * A Reactor that only sends one type of event.
  */
-import {Reactor} from './Reactor';
+import {IMutableReactor, IReactor, Reactor} from './Reactor';
 import {Listener} from './Listener';
 
 const EVENT_NAME = 'event';
 
 export class SimpleReactor<V> implements ISimpleReactor<V> {
 
-    private readonly delegate = new Reactor<V>();
+    private readonly delegate: IMutableReactor<V>;
 
-    constructor() {
+    constructor(delegate: IMutableReactor<V> = new Reactor<V>()) {
+        this.delegate = delegate;
         this.delegate.registerEvent(EVENT_NAME);
     }
 

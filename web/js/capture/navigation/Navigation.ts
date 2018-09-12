@@ -1,4 +1,5 @@
 import {ISimpleReactor, SimpleReactor} from '../../reactor/SimpleReactor';
+import {QueuedReactor} from '../../reactor/QueuedReactor';
 
 export interface Navigation {
 
@@ -9,9 +10,11 @@ export interface Navigation {
 
 export class DefaultNavigation implements Navigation {
 
-    public readonly navigated = new SimpleReactor<NavigatedEvent>();
+    public readonly navigated
+        = new SimpleReactor<NavigatedEvent>(new QueuedReactor());
 
-    public readonly captured = new SimpleReactor<CapturedEvent>();
+    public readonly captured
+        = new SimpleReactor<CapturedEvent>(new QueuedReactor());
 
 }
 

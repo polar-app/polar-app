@@ -21,6 +21,10 @@ export class Event<V> {
         return this.listeners;
     }
 
+    public hasListeners() {
+        return this.listeners.length > 0;
+    }
+
     public removeListener(listener: Listener<V>): boolean {
 
         const index = this.listeners.indexOf(listener);

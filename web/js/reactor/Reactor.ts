@@ -1,4 +1,4 @@
-import {Preconditions} from '../Preconditions';
+import {isPresent, Preconditions} from '../Preconditions';
 import {Event} from './Event';
 import {Listener} from './Listener';
 import {Logger} from '../logger/Logger';
@@ -13,7 +13,7 @@ export class Reactor<V> implements IReactor<V> {
 
         Preconditions.assertNotNull(eventName, "eventName");
 
-        if (this.events[eventName]) {
+        if (isPresent(this.events[eventName])) {
             // already registered so don't double register which would kill
             // the existing listeners.
             return this;
@@ -24,6 +24,10 @@ export class Reactor<V> implements IReactor<V> {
 
         return this;
 
+    }
+
+    public hasRegisteredEvent(eventName: string): boolean {
+        return isPresent(this.events[eventName]);
     }
 
     public eventNames(): string[] {
@@ -117,7 +121,6 @@ export class Reactor<V> implements IReactor<V> {
     /**
      *
      * @param eventName {String} The name of the event for the listeners.
-     * @return {Array}
      */
     public getEventListeners(eventName: string) {
         Preconditions.assertNotNull(eventName, "eventName");
@@ -125,8 +128,23 @@ export class Reactor<V> implements IReactor<V> {
         return this.events[eventName].getListeners();
     }
 
+    public hasEventListeners(eventName: string) {
+        return this.hasRegisteredEvent(eventName) && this.events[eventName].hasListeners();
+    }
+
 }
 
 export interface IReactor<V> {
     once(eventName: string): Promise<V>;
+    addEventListener(eventName: string, listener: Listener<V>): void;
+    dispatchEvent(eventName: string, value: V): void;
+    hasRegisteredEvent(eventName: string): boolean;
+    hasEventListeners(eventName: string): boolean;
+    registerEvent(eventName: string): IReactor<V>;
+}
+
+export interface IMutableReactor<V> extends IReactor<V> {
+    clearEvent(eventName: string): void;
+    removeEventListener(eventName: string, listener: Listener<V>): boolean;
+    getEventListeners(eventName: string): Array<Listener<V>>;
 }
