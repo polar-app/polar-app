@@ -7,15 +7,14 @@ import {Datastore} from '../../datastore/Datastore';
 import {Webserver} from '../../backend/webserver/Webserver';
 import {ProxyServer} from '../../backend/proxyserver/ProxyServer';
 import {BROWSER_WINDOW_OPTIONS, MainAppBrowserWindowFactory} from './MainAppBrowserWindowFactory';
-import MenuItem = Electron.MenuItem;
 import {AppLauncher} from './AppLauncher';
 import {Hashcodes} from '../../Hashcodes';
 import {SingletonBrowserWindow} from '../../electron/framework/SingletonBrowserWindow';
 import process from 'process';
-import {BrowserApp} from '../browser/BrowserApp';
 import BrowserRegistry from '../../capture/BrowserRegistry';
 import {BrowserProfiles} from '../../capture/BrowserProfiles';
 import {Capture} from '../../capture/Capture';
+import MenuItem = Electron.MenuItem;
 
 const log = Logger.create();
 

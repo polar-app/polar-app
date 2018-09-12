@@ -51,16 +51,16 @@ export class MainAppMenu {
                     accelerator: 'CmdOrCtrl+O',
                     click: this.mainAppController.cmdOpenInNewWindow.bind(this.mainAppController)
                 },
+                // {
+                //     label: 'Capture Web Page',
+                //     // accelerator: 'CmdOrCtrl+O',
+                //     click: () => {
+                //         this.mainAppController.cmdCaptureWebPage()
+                //             .catch((err: Error) => log.error("Could not capture page: ", err));
+                //     }
+                // },
                 {
                     label: 'Capture Web Page',
-                    // accelerator: 'CmdOrCtrl+O',
-                    click: () => {
-                        this.mainAppController.cmdCaptureWebPage()
-                            .catch((err: Error) => log.error("Could not capture page: ", err));
-                    }
-                },
-                {
-                    label: 'Capture Web Page (Browser)',
                     // accelerator: 'CmdOrCtrl+O',
                     click: () => {
                         this.mainAppController.cmdCaptureWebPageWithBrowser()
