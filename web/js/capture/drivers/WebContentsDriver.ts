@@ -55,17 +55,17 @@ export class WebContentsDriverFactory {
 
 export enum DriverType {
 
-    HEADLESS = 'headless',
+    HEADLESS = 'HEADLESS',
 
-    HIDDEN = 'hidden',
+    HIDDEN = 'HIDDEN',
 
     // a hidden page with a hosted webview control.
-    WEBVIEW = 'webview',
+    WEBVIEW = 'WEBVIEW',
 
     // a full browser view that enables the user to click a capture button and
     // interact with the page.
 
-    BROWSER = 'browser',
+    BROWSER = 'BROWSER',
 
 }
 

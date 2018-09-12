@@ -1,4 +1,5 @@
 import {IBrowser} from './Browser';
+import {LinkProvider} from './link_provider/LinkProvider';
 
 export interface BrowserProfile extends IBrowser {
 
@@ -21,10 +22,6 @@ export interface BrowserProfile extends IBrowser {
 
     nodeIntegration: boolean;
 
-    /**
-     * If we already have a browser window open for this BrowserProfile just
-     * use this when capturing the content.
-     */
-    webContentsId?: number;
+    linkProvider: LinkProvider;
 
 }

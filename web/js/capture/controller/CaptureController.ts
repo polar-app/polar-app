@@ -11,6 +11,7 @@ import {CaptureOpts} from '../CaptureOpts';
 import {StartCaptureMessage} from './CaptureClient';
 import {Directories} from '../../datastore/Directories';
 import {CacheRegistry} from '../../backend/proxyserver/CacheRegistry';
+import {DefaultLinkProvider} from '../link_provider/DefaultLinkProvider';
 
 const log = Logger.create();
 
@@ -37,7 +38,7 @@ export class CaptureController {
 
         ipcMain.on('capture-controller-start-capture', (event: Electron.Event, message: StartCaptureMessage) => {
 
-            this.startCapture(event.sender, message.url, message.webContentsID)
+            this.startCapture(event.sender, message.url)
                 .catch( err => log.error("Could not start capture: ", err));
 
         });
@@ -50,10 +51,8 @@ export class CaptureController {
      * box that started the whole capture.
      *
      * @param url {string}
-     *
-     * @param webContentsId A specific WebContents to use (by id)
      */
-    protected async startCapture(webContents: Electron.WebContents, url: string, webContentsId?: number) {
+    protected async startCapture(webContents: Electron.WebContents, url: string) {
 
         webContents = await this.loadApp(webContents, url);
 
@@ -65,7 +64,7 @@ export class CaptureController {
         // to just rework the capture system entirely so that the code is
         // more orthogonal to what we're trying to actually accomplish...
 
-        const captureResult = await this.runCapture(webContents, url, webContentsId);
+        const captureResult = await this.runCapture(webContents, url);
         //
         // let captureResult = {
         //     path: "/home/burton/.polar/stash/UK_unveils_new_Tempest_fighter_jet_model___BBC_News.phz"
@@ -112,11 +111,8 @@ export class CaptureController {
      *
      * @param url The URL to capture.
      *
-     * @param webContentsId A specific WebContents to use (by id)
      */
-    private async runCapture(webContents: Electron.WebContents,
-                             url: string,
-                             webContentsId?: number) {
+    private async runCapture(webContents: Electron.WebContents, url: string) {
 
         Preconditions.assertNotNull(webContents, "webContents");
 
@@ -129,13 +125,17 @@ export class CaptureController {
 
         let browser = BrowserRegistry.DEFAULT;
 
+        const linkProvider = new DefaultLinkProvider(url);
+
         // browser = Browsers.toProfile(browser, "headless");
         // TODO: this should be 'default' not 'hidden'
-        browser = BrowserProfiles.toBrowserProfile(browser, "hidden");
-        // browser = Browsers.toProfile(browser, "default");
-        const browserProfile = BrowserProfiles.toBrowserProfile(browser, "default", webContentsId);
 
-        const capture = new Capture(url, browserProfile, this.directories.stashDir, captureOpts);
+        browser = BrowserProfiles.toBrowserProfile(browser, "HIDDEN", linkProvider);
+
+        // browser = Browsers.toProfile(browser, "default");
+        const browserProfile = BrowserProfiles.toBrowserProfile(browser, "DEFAULT", linkProvider);
+
+        const capture = new Capture(browserProfile, captureOpts);
 
         const captureResult = await capture.start();
 

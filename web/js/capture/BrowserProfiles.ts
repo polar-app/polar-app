@@ -1,5 +1,7 @@
 import {Browser, BrowserProfileBuilder} from './Browser';
 import {BrowserProfile} from './BrowserProfile';
+import {LinkProvider} from './link_provider/LinkProvider';
+import {DefaultLinkProvider} from './link_provider/DefaultLinkProvider';
 
 // TODO: anything greater than 10k triggers a bug on NVidia drivers on Linux
 // but many documents are larger than this 10k limit if they have 10 pages or
@@ -21,59 +23,58 @@ export class BrowserProfiles {
      */
     public static toBrowserProfile(browser: Browser,
                                    name: string,
-                                   webContentsId?: number): BrowserProfile {
+                                   linkProvider: LinkProvider): BrowserProfile {
 
-        if (name === 'default') {
-            return BrowserProfiles.toBrowserProfile(browser, 'browser');
+        if (name.toUpperCase() === 'DEFAULT') {
+            return BrowserProfiles.toBrowserProfile(browser, 'BROWSER', linkProvider);
         }
 
         // support offscreen rendering (similar to chrome headless)
         //
         // https://electronjs.org/docs/tutorial/offscreen-rendering
 
-        switch (name) {
+        switch (name.toUpperCase()) {
 
-            case "hidden":
-                return new BrowserProfileBuilder(browser)
+            case "HIDDEN":
+                return new BrowserProfileBuilder(browser, linkProvider)
                     .setProfile(name)
-                    .setHeight(10000)
+                    .setHeight(1000)
                     .setShow(false)
                     // .setShow(true)
                     .build();
 
-            case "headless":
-                return new BrowserProfileBuilder(browser)
+            case "HEADLESS":
+                return new BrowserProfileBuilder(browser, linkProvider)
                     .setProfile(name)
-                    .setHeight(10000)
+                    .setHeight(1000)
                     .setShow(true)
                     .setOffscreen(true)
                     .build();
 
-            case "headless_500":
-                return new BrowserProfileBuilder(browser)
+            case "HEADLESS_500":
+                return new BrowserProfileBuilder(browser, linkProvider)
                     .setProfile(name)
                     .setHeight(500)
                     .setShow(false)
                     .setOffscreen(true)
                     .build();
 
-            case "webview":
-                return new BrowserProfileBuilder(browser)
+            case "WEBVIEW":
+                return new BrowserProfileBuilder(browser, linkProvider)
                     .setProfile(name)
-                    .setHeight(35000)
+                    .setHeight(1000)
                     .setShow(false)
                     .setOffscreen(false)
                     .setNodeIntegration(true)
                     .build();
 
-            case "browser":
-                return new BrowserProfileBuilder(browser)
+            case "BROWSER":
+                return new BrowserProfileBuilder(browser, linkProvider)
                     .setProfile(name)
-                    .setHeight(35000)
+                    .setHeight(1000)
                     .setShow(true)
                     .setOffscreen(false)
                     .setNodeIntegration(true)
-                    .setWebContentsId(webContentsId)
                     .build();
 
             // case "default_500":
@@ -95,7 +96,7 @@ export class BrowserProfiles {
 
     }
 
-    static createDefault(browser: Browser, height: number) {
+    public static createDefault(browser: Browser, height: number) {
         browser = Object.assign({}, browser);
 
         /**

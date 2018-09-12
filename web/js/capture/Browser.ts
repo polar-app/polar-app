@@ -1,4 +1,5 @@
 import {BrowserProfile} from './BrowserProfile';
+import {LinkProvider} from './link_provider/LinkProvider';
 
 export class Browser implements Readonly<IBrowser> {
 
@@ -9,7 +10,6 @@ export class Browser implements Readonly<IBrowser> {
     public readonly userAgent: string;
 
     public readonly deviceEmulation: Electron.Parameters;
-
 
     // TODO: this can just become an interface but the default values are the
     // problem
@@ -37,22 +37,31 @@ export interface IBrowser {
 export class BrowserProfileBuilder implements BrowserProfile {
 
     public profile: string = "unknown";
+
     public description: string;
+
     public deviceEmulation: Electron.Parameters;
+
     public name: string;
+
     public offscreen: boolean = false;
+
     public show: boolean = true;
+
     public userAgent: string;
+
     public nodeIntegration: boolean = false;
-    public webContentsId?: number;
+
+    public linkProvider: LinkProvider;
 
     /**
      */
-    constructor(browser: Browser) {
+    constructor(browser: Browser, linkProvider: LinkProvider) {
         this.description = browser.description;
         this.deviceEmulation = browser.deviceEmulation;
         this.name = browser.name;
         this.userAgent = browser.userAgent;
+        this.linkProvider = linkProvider;
     }
 
     public setHeight(height: number) {
@@ -81,11 +90,6 @@ export class BrowserProfileBuilder implements BrowserProfile {
 
     public setNodeIntegration(value: boolean) {
         this.nodeIntegration = value;
-        return this;
-    }
-
-    public setWebContentsId(webContentsId?: number) {
-        this.webContentsId = webContentsId;
         return this;
     }
 

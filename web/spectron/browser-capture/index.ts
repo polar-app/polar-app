@@ -1,23 +1,33 @@
 import {SpectronMain2} from '../../js/test/SpectronMain2';
-import {CaptureController} from '../../js/capture/controller/CaptureController';
-import {CacheRegistry} from '../../js/backend/proxyserver/CacheRegistry';
-import {ProxyServerConfig} from '../../js/backend/proxyserver/ProxyServerConfig';
-import {AppPaths} from '../../js/electron/webresource/AppPaths';
+import {Capture} from '../../js/capture/Capture';
+import {BrowserProfiles} from '../../js/capture/BrowserProfiles';
+import BrowserRegistry from '../../js/capture/BrowserRegistry';
+import {DefaultLinkProvider} from '../../js/capture/link_provider/DefaultLinkProvider';
 
 SpectronMain2.create().run(async state => {
 
-    const proxyServerConfig = new ProxyServerConfig();
-    const cacheRegistry = new CacheRegistry(proxyServerConfig);
+    const browser = BrowserRegistry.DEFAULT;
 
-    const captureController = new CaptureController(cacheRegistry);
+    const linkProvider = new DefaultLinkProvider('http://www.example.com');
 
-    captureController.start();
+    const browserProfile = BrowserProfiles.toBrowserProfile(browser, 'DEFAULT', linkProvider);
 
-    const appPath = AppPaths.resource("./apps/browser/index.html");
+    const capture = new Capture(browserProfile);
 
-    console.log("Loading app: " + appPath);
+    await capture.start();
 
-    state.window.loadURL(appPath);
+    // const proxyServerConfig = new ProxyServerConfig();
+    // const cacheRegistry = new CacheRegistry(proxyServerConfig);
+    //
+    // const captureController = new CaptureController(cacheRegistry);
+    //
+    // captureController.start();
+    //
+    // const appPath = AppPaths.resource("./apps/browser/index.html");
+    //
+    // console.log("Loading app: " + appPath);
+    //
+    // state.window.loadURL(appPath);
 
     await state.testResultWriter.write(true);
 
