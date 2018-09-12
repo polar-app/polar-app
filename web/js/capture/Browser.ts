@@ -1,5 +1,4 @@
 import {BrowserProfile, BrowserProfileID} from './BrowserProfile';
-import {LinkProvider} from './navigation/LinkProvider';
 import {DefaultNavigation, Navigation} from './navigation/Navigation';
 
 export class Browser implements Readonly<IBrowser> {
@@ -55,19 +54,15 @@ export class BrowserProfileBuilder implements BrowserProfile {
 
     public nodeIntegration: boolean = false;
 
-    public linkProvider: LinkProvider;
-
     public navigation: Navigation = new DefaultNavigation();
 
     /**
      */
-    constructor(browser: Browser, linkProvider: LinkProvider) {
+    constructor(browser: Browser) {
         this.description = browser.description;
         this.deviceEmulation = browser.deviceEmulation;
         this.name = browser.name;
         this.userAgent = browser.userAgent;
-        this.linkProvider = linkProvider;
-
     }
 
     public setHeight(height: number) {

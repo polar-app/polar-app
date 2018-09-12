@@ -11,7 +11,6 @@ import {CaptureOpts} from '../CaptureOpts';
 import {StartCaptureMessage} from './CaptureClient';
 import {Directories} from '../../datastore/Directories';
 import {CacheRegistry} from '../../backend/proxyserver/CacheRegistry';
-import {DefaultLinkProvider} from '../navigation/DefaultLinkProvider';
 
 const log = Logger.create();
 
@@ -125,15 +124,15 @@ export class CaptureController {
 
         let browser = BrowserRegistry.DEFAULT;
 
-        const linkProvider = new DefaultLinkProvider(url);
-
         // browser = Browsers.toProfile(browser, "headless");
         // TODO: this should be 'default' not 'hidden'
 
-        browser = BrowserProfiles.toBrowserProfile(browser, "HIDDEN", linkProvider);
+        browser = BrowserProfiles.toBrowserProfile(browser, "HIDDEN");
 
         // browser = Browsers.toProfile(browser, "default");
-        const browserProfile = BrowserProfiles.toBrowserProfile(browser, "DEFAULT", linkProvider);
+        const browserProfile = BrowserProfiles.toBrowserProfile(browser, "DEFAULT");
+
+        browserProfile.navigation.navigated.dispatchEvent({link: url});
 
         const capture = new Capture(browserProfile, captureOpts);
 

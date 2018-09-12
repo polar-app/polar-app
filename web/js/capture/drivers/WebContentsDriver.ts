@@ -31,11 +31,6 @@ export interface WebContentsDriver {
      */
     addEventListener(eventName: WebContentsEventName, eventListener: () => void): void;
 
-    /**
-     * A promise that the document is ready for capture.
-     */
-    readyForCapture(): Promise<void>;
-
 }
 
 export class WebContentsDriverFactory {

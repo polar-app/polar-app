@@ -1,7 +1,7 @@
 import {ipcMain} from 'electron';
 import {WindowChannels} from './WindowChannels';
 import WebContents = Electron.WebContents;
-import {IPCMainPromises, MainIPCEvent} from '../framework/IPCMainPromises';
+import {IPCMainPromises, MainIPCEvent, MainIPCEventListener} from '../framework/IPCMainPromises';
 
 /**
  * A UINotifier allows main to wait for an event in the UI triggered by the
@@ -13,12 +13,12 @@ import {IPCMainPromises, MainIPCEvent} from '../framework/IPCMainPromises';
  */
 export class WebContentsNotifier {
 
-    public static on(webContents: WebContents,
-                     channel: string,
-                     listener: (event: Electron.Event) => void) {
+    public static on<M>(webContents: WebContents,
+                        channel: string,
+                        listener: MainIPCEventListener<M>) {
 
         const windowChannel = WindowChannels.create(webContents, channel);
-        ipcMain.on(windowChannel, listener);
+        IPCMainPromises.on(windowChannel, listener);
 
     }
 

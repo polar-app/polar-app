@@ -7,7 +7,7 @@ export class Event<V> {
 
     public readonly name: string;
 
-    private readonly listeners: Listener<V>[] = [];
+    private readonly listeners: Array<Listener<V>> = [];
 
     constructor(name: string) {
         this.name = name;

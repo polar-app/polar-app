@@ -1,7 +1,5 @@
 import {Browser, BrowserProfileBuilder} from './Browser';
 import {BrowserProfile} from './BrowserProfile';
-import {LinkProvider} from './navigation/LinkProvider';
-import {DefaultLinkProvider} from './navigation/DefaultLinkProvider';
 
 // TODO: anything greater than 10k triggers a bug on NVidia drivers on Linux
 // but many documents are larger than this 10k limit if they have 10 pages or
@@ -22,11 +20,10 @@ export class BrowserProfiles {
      *
      */
     public static toBrowserProfile(browser: Browser,
-                                   name: string,
-                                   linkProvider: LinkProvider): BrowserProfile {
+                                   name: string): BrowserProfile {
 
         if (name.toUpperCase() === 'DEFAULT') {
-            return BrowserProfiles.toBrowserProfile(browser, 'BROWSER', linkProvider);
+            return BrowserProfiles.toBrowserProfile(browser, 'BROWSER');
         }
 
         // support offscreen rendering (similar to chrome headless)
@@ -36,7 +33,7 @@ export class BrowserProfiles {
         switch (name.toUpperCase()) {
 
             case "HIDDEN":
-                return new BrowserProfileBuilder(browser, linkProvider)
+                return new BrowserProfileBuilder(browser)
                     .setProfile(name)
                     .setHeight(1000)
                     .setShow(false)
@@ -44,7 +41,7 @@ export class BrowserProfiles {
                     .build();
 
             case "HEADLESS":
-                return new BrowserProfileBuilder(browser, linkProvider)
+                return new BrowserProfileBuilder(browser)
                     .setProfile(name)
                     .setHeight(1000)
                     .setShow(true)
@@ -52,7 +49,7 @@ export class BrowserProfiles {
                     .build();
 
             case "HEADLESS_500":
-                return new BrowserProfileBuilder(browser, linkProvider)
+                return new BrowserProfileBuilder(browser)
                     .setProfile(name)
                     .setHeight(500)
                     .setShow(false)
@@ -60,7 +57,7 @@ export class BrowserProfiles {
                     .build();
 
             case "WEBVIEW":
-                return new BrowserProfileBuilder(browser, linkProvider)
+                return new BrowserProfileBuilder(browser)
                     .setProfile(name)
                     .setHeight(1000)
                     .setShow(false)
@@ -69,7 +66,7 @@ export class BrowserProfiles {
                     .build();
 
             case "BROWSER":
-                return new BrowserProfileBuilder(browser, linkProvider)
+                return new BrowserProfileBuilder(browser)
                     .setProfile(name)
                     .setHeight(1000)
                     .setShow(true)

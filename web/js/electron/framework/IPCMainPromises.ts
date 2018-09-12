@@ -13,7 +13,19 @@ export class IPCMainPromises {
         });
 
     }
+    public static on<M>(channel: string, listener: MainIPCEventListener<M>) {
 
+        ipcMain.on(channel, (event: Electron.Event, message: M) => {
+            listener(new MainIPCEvent(event, message));
+        });
+
+    }
+
+
+}
+
+export interface MainIPCEventListener<M> {
+    (event: MainIPCEvent<M>): void;
 }
 
 export class MainIPCEvent<M> {

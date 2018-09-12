@@ -88,10 +88,6 @@ export class StandardWebContentsDriver implements WebContentsDriver {
         this.reactor.addEventListener(eventName, eventListener);
     }
 
-    public readyForCapture(): Promise<void> {
-        return Promise.resolve();
-    }
-
     protected computeBrowserWindowOptions() {
         return BrowserWindows.toBrowserWindowOptions(this.browserProfile);
     }

@@ -76,15 +76,20 @@ export class Capture {
 
         this.onWebRequest(this.webContents.session.webRequest);
 
-        const url = await this.browserProfile.linkProvider.get(this.browserProfile.id);
+        this.browserProfile.navigation.navigated.addEventListener(event => {
+            this.loadURL(event.link)
+                .catch(err => log.error("Could not load URL: " + url, err));
+        });
+
+        const navigatedEvent = await this.browserProfile.navigation.navigated.once();
+
+        const url = navigatedEvent.link;
 
         Preconditions.assertNotNull(url, "url");
 
         if ( Strings.empty(url)) {
             throw new Error("URL may not be empty");
         }
-
-        await this.loadURL(url);
 
         return new Promise<CaptureResult>(resolve => {
             this.resolve = resolve;
@@ -161,8 +166,9 @@ export class Capture {
      */
     public async capture() {
 
-        log.debug("Awaiting readyForCapture");
-        await this.driver!.readyForCapture();
+        log.debug("Awaiting captured");
+
+        await this.browserProfile.navigation.captured.once()
 
         this.executeContentCapture()
             .catch(err => log.error(err));

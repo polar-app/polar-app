@@ -2,16 +2,12 @@ import {SpectronMain2} from '../../js/test/SpectronMain2';
 import {Capture} from '../../js/capture/Capture';
 import {BrowserProfiles} from '../../js/capture/BrowserProfiles';
 import BrowserRegistry from '../../js/capture/BrowserRegistry';
-import {DefaultLinkProvider} from '../../js/capture/navigation/DefaultLinkProvider';
-import {ResolveableLinkProvider} from '../../js/capture/navigation/ResolveableLinkProvider';
 
 SpectronMain2.create().run(async state => {
 
     const browser = BrowserRegistry.DEFAULT;
 
-    const linkProvider = new ResolveableLinkProvider()
-
-    const browserProfile = BrowserProfiles.toBrowserProfile(browser, 'DEFAULT', linkProvider);
+    const browserProfile = BrowserProfiles.toBrowserProfile(browser, 'DEFAULT');
 
     const capture = new Capture(browserProfile);
 

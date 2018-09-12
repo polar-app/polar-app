@@ -49,7 +49,11 @@ app.on('ready', function() {
         log.info("Using browser profile: " + args.profile);
         const linkProvider = new DefaultLinkProvider(url);
 
-        const browserProfile = BrowserProfiles.toBrowserProfile(browser, args.profile, linkProvider);
+        const browserProfile = BrowserProfiles.toBrowserProfile(browser, args.profile);
+
+        // we already know all the inputs here...
+        browserProfile.navigation.navigated.dispatchEvent({link: url});
+        browserProfile.navigation.captured.dispatchEvent({link: url});
 
         console.log("Going to capture URL: " + url);
 

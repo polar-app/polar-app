@@ -22,15 +22,10 @@ export class DefaultNavigation implements Navigation {
  * Represents the navigation to a new URL.
  */
 export interface NavigatedEvent {
-    url: string;
+    link: string;
 }
 
 export interface CapturedEvent {
-
-    /**
-     * The current URL that is being captured.
-     */
-    url: string;
 
 }
 
