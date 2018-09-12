@@ -25,6 +25,8 @@ export class BrowserApp {
 
         content.addEventListener('dom-ready', async () => {
 
+            content.insertCSS('html,body{ overflow: hidden !important; }');
+
             content.addEventListener('will-navigate', (event: Electron.WillNavigateEvent) => {
                 this.webviewNavigated(event.url);
             });
