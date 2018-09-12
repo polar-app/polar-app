@@ -13,6 +13,9 @@ import {Hashcodes} from '../../Hashcodes';
 import {SingletonBrowserWindow} from '../../electron/framework/SingletonBrowserWindow';
 import process from 'process';
 import {BrowserApp} from '../browser/BrowserApp';
+import BrowserRegistry from '../../capture/BrowserRegistry';
+import {BrowserProfiles} from '../../capture/BrowserProfiles';
+import {Capture} from '../../capture/Capture';
 
 const log = Logger.create();
 
@@ -49,15 +52,15 @@ export class MainAppController {
 
     public async cmdCaptureWebPageWithBrowser() {
 
-        const browserWindowOptions = Object.assign({}, BROWSER_WINDOW_OPTIONS);
+        const browser = BrowserRegistry.DEFAULT;
 
-        browserWindowOptions.width = browserWindowOptions.width! * .9;
-        browserWindowOptions.height = browserWindowOptions.height! * .9;
-        browserWindowOptions.center = true;
+        const browserProfile = BrowserProfiles.toBrowserProfile(browser, 'DEFAULT');
 
-        const url = AppPaths.resource('./apps/browser/index.html');
+        const capture = new Capture(browserProfile);
 
-        await MainAppBrowserWindowFactory.createWindow(browserWindowOptions, url);
+        const captureResult = await capture.start();
+
+        await this.handleLoadDoc(captureResult.path);
 
     }
 

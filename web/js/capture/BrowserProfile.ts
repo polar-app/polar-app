@@ -29,6 +29,10 @@ export interface BrowserProfile extends IBrowser {
 
     navigation: Navigation;
 
+    useReactor: boolean;
+
+    webaudio: boolean;
+
 }
 
 export type BrowserProfileID = number;

@@ -168,7 +168,7 @@ export class Capture {
 
         log.debug("Awaiting captured");
 
-        await this.browserProfile.navigation.captured.once()
+        await this.browserProfile.navigation.captured.once();
 
         this.executeContentCapture()
             .catch(err => log.error(err));
@@ -217,12 +217,16 @@ export class Capture {
      */
     public onWebRequest(webRequest: WebRequest) {
 
-        const webRequestReactor = new WebRequestReactor(webRequest);
-        webRequestReactor.start();
+        if (this.browserProfile.useReactor) {
 
-        this.webRequestReactors.push(webRequestReactor);
+            const webRequestReactor = new WebRequestReactor(webRequest);
+            webRequestReactor.start();
 
-        this.pendingWebRequestsListener.register(webRequestReactor);
+            this.webRequestReactors.push(webRequestReactor);
+
+            this.pendingWebRequestsListener.register(webRequestReactor);
+
+        }
 
     }
 

@@ -59,7 +59,7 @@ export class BrowserProfiles {
             case "WEBVIEW":
                 return new BrowserProfileBuilder(browser)
                     .setProfile(name)
-                    .setHeight(1000)
+                    .setHeight(35000)
                     .setShow(false)
                     .setOffscreen(false)
                     .setNodeIntegration(true)
@@ -68,10 +68,12 @@ export class BrowserProfiles {
             case "BROWSER":
                 return new BrowserProfileBuilder(browser)
                     .setProfile(name)
-                    .setHeight(1000)
+                    .setHeight(35000)
                     .setShow(true)
                     .setOffscreen(false)
                     .setNodeIntegration(true)
+                    .setUseReactor(false)
+                    .setWebaudio(true)
                     .build();
 
             // case "default_500":

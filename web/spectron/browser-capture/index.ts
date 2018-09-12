@@ -9,6 +9,12 @@ SpectronMain2.create().run(async state => {
 
     const browserProfile = BrowserProfiles.toBrowserProfile(browser, 'DEFAULT');
 
+    const url = "http://www.example.com";
+
+    browserProfile.navigation.navigated.dispatchEvent({link: url});
+
+    browserProfile.navigation.captured.dispatchEvent({});
+
     const capture = new Capture(browserProfile);
 
     await capture.start();

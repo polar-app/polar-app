@@ -19,7 +19,6 @@ export class SimpleReactor<V> implements ISimpleReactor<V> {
         this.delegate.dispatchEvent(EVENT_NAME, value);
     }
 
-
     public clear() {
         this.delegate.clearEvent(EVENT_NAME);
     }

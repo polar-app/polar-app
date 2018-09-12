@@ -33,6 +33,22 @@ export class QueuedReactor<V> implements IReactor<V>, IMutableReactor<V> {
 
     }
 
+
+    public once(eventName: string): Promise<V> {
+
+        return new Promise<V>((resolve => {
+
+            const listener = (event: V) => {
+                resolve(event);
+                this.removeEventListener(eventName, listener);
+            };
+
+            this.addEventListener(eventName, listener);
+
+        }));
+
+    }
+
     public dispatchEvent(eventName: string, value: V): void {
 
         if (this.delegate.hasEventListeners(eventName)) {
@@ -60,10 +76,6 @@ export class QueuedReactor<V> implements IReactor<V>, IMutableReactor<V> {
     public registerEvent(eventName: string): this {
         this.delegate.registerEvent(eventName);
         return this;
-    }
-
-    public once(eventName: string): Promise<V> {
-        return this.delegate.once(eventName);
     }
 
     public hasRegisteredEvent(eventName: string): boolean {

@@ -11,8 +11,6 @@ export class BrowserApp {
 
         // FIXME: wait until we get document dom ready and web contents dom ready.
 
-        // content.addEventListener('dom-ready', async () => {
-
         const linkInputElement = <HTMLInputElement> document.querySelector("#link")!;
 
         linkInputElement.addEventListener('keypress', (event) => this.onLinkKeyPress(event));
@@ -22,6 +20,30 @@ export class BrowserApp {
         captureButtonElement.addEventListener('click', (event) => this.onTriggerCapture());
 
         log.info("started");
+
+        const content = <Electron.WebviewTag> document.querySelector("#content")!;
+
+        content.addEventListener('dom-ready', async () => {
+
+            content.addEventListener('will-navigate', (event: Electron.WillNavigateEvent) => {
+                this.webviewNavigated(event.url);
+            });
+
+            content.addEventListener('did-start-loading', () => {
+                console.log("started loading");
+                document.body.scrollTo(0, 0);
+            });
+
+
+            // webContents.on('will-navigate', function(event, url) {
+            //     if (isExternal(url)) {
+            //         event.preventDefault();
+            //         openInExternalPage(url);
+            //     }
+            // });
+
+        });
+
 
     }
 
@@ -72,4 +94,10 @@ export class BrowserApp {
 
     }
 
+    private webviewNavigated(url: string) {
+
+        const element = <HTMLInputElement> document.querySelector("#link")!;
+        element.value = url;
+
+    }
 }

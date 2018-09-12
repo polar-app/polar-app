@@ -56,6 +56,10 @@ export class BrowserProfileBuilder implements BrowserProfile {
 
     public navigation: Navigation = new DefaultNavigation();
 
+    public useReactor: boolean = true;
+
+    public webaudio: boolean = false;
+
     /**
      */
     constructor(browser: Browser) {
@@ -91,6 +95,16 @@ export class BrowserProfileBuilder implements BrowserProfile {
 
     public setNodeIntegration(value: boolean) {
         this.nodeIntegration = value;
+        return this;
+    }
+
+    public setUseReactor(value: boolean) {
+        this.useReactor = value;
+        return this;
+    }
+
+    public setWebaudio(value: boolean) {
+        this.webaudio = value;
         return this;
     }
 

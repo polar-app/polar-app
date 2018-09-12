@@ -74,11 +74,14 @@ export abstract class AbstractWebviewWebContentsDriver extends StandardWebConten
 
         });
 
-        WebContentsNotifier.once<void>(this.browserWindow.webContents, BrowserAppEvents.TRIGGER_CAPTURE)
-            .then(event => {
-                log.info("Content was captured!");
-                this.browserProfile.navigation.captured.dispatchEvent({});
-            });
+        WebContentsNotifier.on(this.browserWindow.webContents,
+                               BrowserAppEvents.TRIGGER_CAPTURE,
+                               (event: MainIPCEvent<void>) => {
+
+           log.info("Content was captured!");
+           this.browserProfile.navigation.captured.dispatchEvent({});
+
+        });
 
         await this.initWebContents(this.browserWindow, this.browserWindow.webContents, browserWindowOptions);
 
