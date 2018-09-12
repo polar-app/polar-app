@@ -36,15 +36,15 @@ export interface IBrowser {
 
 export class BrowserProfileBuilder implements BrowserProfile {
 
-    private profile: string = "unknown";
-    private description: string;
-    private deviceEmulation: Electron.Parameters;
-    private name: string;
-    private offscreen: boolean = false;
-    private show: boolean = true;
-    private userAgent: string;
-    private nodeIntegration: boolean = false;
-    private webContentsId?: number;
+    public profile: string = "unknown";
+    public description: string;
+    public deviceEmulation: Electron.Parameters;
+    public name: string;
+    public offscreen: boolean = false;
+    public show: boolean = true;
+    public userAgent: string;
+    public nodeIntegration: boolean = false;
+    public webContentsId?: number;
 
     /**
      */

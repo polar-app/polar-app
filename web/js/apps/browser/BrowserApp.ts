@@ -44,7 +44,9 @@ export class BrowserApp {
 
         log.debug("Starting capture on URL: " + value);
 
-        CaptureClient.startCapture(value, this.getWebContentsId());
+        const webContentsId = this.getWebContentsId();
+        log.info("Working with web contents: " + webContentsId);
+        CaptureClient.startCapture(value, webContentsId);
 
     }
 

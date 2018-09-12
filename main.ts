@@ -18,8 +18,6 @@ async function launch() {
 
     const datastore = Datastores.create();
 
-
-
     await datastore.init();
 
     await Logging.init();
