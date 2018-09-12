@@ -1,5 +1,6 @@
 import {IBrowser} from './Browser';
-import {LinkProvider} from './link_provider/LinkProvider';
+import {LinkProvider} from './navigation/LinkProvider';
+import {Navigation} from './navigation/Navigation';
 
 export interface BrowserProfile extends IBrowser {
 
@@ -28,6 +29,8 @@ export interface BrowserProfile extends IBrowser {
     nodeIntegration: boolean;
 
     linkProvider: LinkProvider;
+
+    navigation: Navigation;
 
 }
 

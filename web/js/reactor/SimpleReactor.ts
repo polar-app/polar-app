@@ -4,33 +4,49 @@
 import {Reactor} from './Reactor';
 import {Listener} from './Listener';
 
-export class SimpleReactor<T> {
+const EVENT_NAME = 'event';
 
-    private readonly delegate = new Reactor<T>();
+export class SimpleReactor<V> implements ISimpleReactor<V> {
+
+    private readonly delegate = new Reactor<V>();
 
     constructor() {
-        this.delegate.registerEvent('event');
+        this.delegate.registerEvent(EVENT_NAME);
     }
 
-    public dispatchEvent(value: T) {
-        this.delegate.dispatchEvent('event', value);
+    public dispatchEvent(value: V) {
+        this.delegate.dispatchEvent(EVENT_NAME, value);
     }
 
 
     public clear() {
-        this.delegate.clearEvent('event');
+        this.delegate.clearEvent(EVENT_NAME);
     }
 
-    public addEventListener(callback: Listener<T>) {
-        this.delegate.addEventListener('event', callback);
+    public addEventListener(listener: Listener<V>) {
+        this.delegate.addEventListener(EVENT_NAME, listener);
+    }
+
+    public once(eventName: string): Promise<V> {
+        return this.delegate.once(EVENT_NAME);
+    }
+
+    public removeEventListener(listener: Listener<V>): boolean {
+        return this.delegate.removeEventListener(EVENT_NAME, listener);
     }
 
     /**
      *
      */
     public getEventListeners() {
-        return this.delegate.getEventListeners('event');
+        return this.delegate.getEventListeners(EVENT_NAME);
     }
 
 }
 
+export interface ISimpleReactor<V> {
+    once(eventName: string): Promise<V>;
+    addEventListener(listener: Listener<V>): void;
+    removeEventListener(listener: Listener<V>): boolean;
+    dispatchEvent(value: V): void;
+}

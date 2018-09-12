@@ -30,11 +30,11 @@ describe('Reactor', function() {
 
     });
 
-    it("ordering", function () {
+    it("ordering", function() {
 
-        let reactor = new Reactor<String>();
+        const reactor = new Reactor<string>();
 
-        let sources: string[] = [];
+        const sources: string[] = [];
 
         assert.notEqual(reactor.registerEvent("messages"), undefined);
 
@@ -47,6 +47,54 @@ describe('Reactor', function() {
         });
 
         reactor.dispatchEvent("messages", 'hello');
+
+    });
+
+
+    it("removeEventListener", function() {
+
+        const reactor = new Reactor<string>();
+
+        const eventName = "messages";
+        assert.notEqual(reactor.registerEvent(eventName), undefined);
+
+        assert.equal(reactor.getEventListeners(eventName).length, 0);
+
+        const listener = (messageEvent: string) => {
+            console.log('first');
+        };
+
+        reactor.addEventListener(eventName, listener);
+
+        assert.equal(reactor.getEventListeners(eventName).length, 1);
+
+        assert.equal(reactor.removeEventListener(eventName, listener), true);
+
+        assert.equal(reactor.getEventListeners(eventName).length, 0);
+
+    });
+
+
+    it("once", async function() {
+
+        const reactor = new Reactor<string>();
+
+        const eventName = "messages";
+        assert.notEqual(reactor.registerEvent(eventName), undefined);
+
+        assert.equal(reactor.getEventListeners(eventName).length, 0);
+
+        const messagePromise = reactor.once(eventName)
+        assert.equal(reactor.getEventListeners(eventName).length, 1);
+
+        reactor.dispatchEvent(eventName, 'hello');
+        reactor.dispatchEvent(eventName, 'world');
+
+        const message = await messagePromise;
+
+        assert.equal(message, 'hello');
+
+        assert.equal(reactor.getEventListeners(eventName).length, 0);
 
     });
 

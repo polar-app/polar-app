@@ -7,18 +7,31 @@ export class Event<V> {
 
     public readonly name: string;
 
-    private readonly callbacks: Listener<V>[] = [];
+    private readonly listeners: Listener<V>[] = [];
 
     constructor(name: string) {
         this.name = name;
     }
 
-    registerCallback(callback: Listener<V>){
-        this.callbacks.push(callback);
+    public registerListener(listener: Listener<V>) {
+        this.listeners.push(listener);
     }
 
-    getCallbacks() {
-        return this.callbacks;
+    public getListeners() {
+        return this.listeners;
+    }
+
+    public removeListener(listener: Listener<V>): boolean {
+
+        const index = this.listeners.indexOf(listener);
+
+        if (index > -1) {
+            this.listeners.splice(index, 1);
+            return true;
+        }
+
+        return false;
+
     }
 
 }

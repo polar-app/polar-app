@@ -2,8 +2,8 @@ import {SpectronMain2} from '../../js/test/SpectronMain2';
 import {Capture} from '../../js/capture/Capture';
 import {BrowserProfiles} from '../../js/capture/BrowserProfiles';
 import BrowserRegistry from '../../js/capture/BrowserRegistry';
-import {DefaultLinkProvider} from '../../js/capture/link_provider/DefaultLinkProvider';
-import {ResolveableLinkProvider} from '../../js/capture/link_provider/ResolveableLinkProvider';
+import {DefaultLinkProvider} from '../../js/capture/navigation/DefaultLinkProvider';
+import {ResolveableLinkProvider} from '../../js/capture/navigation/ResolveableLinkProvider';
 
 SpectronMain2.create().run(async state => {
 

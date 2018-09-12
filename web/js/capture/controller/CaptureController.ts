@@ -11,7 +11,7 @@ import {CaptureOpts} from '../CaptureOpts';
 import {StartCaptureMessage} from './CaptureClient';
 import {Directories} from '../../datastore/Directories';
 import {CacheRegistry} from '../../backend/proxyserver/CacheRegistry';
-import {DefaultLinkProvider} from '../link_provider/DefaultLinkProvider';
+import {DefaultLinkProvider} from '../navigation/DefaultLinkProvider';
 
 const log = Logger.create();
 

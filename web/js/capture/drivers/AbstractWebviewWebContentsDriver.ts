@@ -6,13 +6,13 @@ import {BrowserWindows} from '../BrowserWindows';
 import {BrowserWindow} from "electron";
 import {Functions} from '../../util/Functions';
 import {PendingWebRequestsEvent} from '../../webrequests/PendingWebRequestsListener';
-import WebContents = Electron.WebContents;
 import {BrowserProfile} from '../BrowserProfile';
-import {BrowserWindowRegistry} from '../../electron/framework/BrowserWindowRegistry';
 import {WebContentsNotifier} from '../../electron/web_contents_notifier/WebContentsNotifier';
-import {ResolveableLinkProvider} from '../link_provider/ResolveableLinkProvider';
+import {ResolveableLinkProvider} from '../navigation/ResolveableLinkProvider';
 import {MainIPCEvent} from '../../electron/framework/IPCMainPromises';
 import {BrowserAppEvents} from '../../apps/browser/BrowserAppEvents';
+import WebContents = Electron.WebContents;
+import {ResolvablePromise} from '../../util/ResolvablePromise';
 
 const log = Logger.create();
 
@@ -25,6 +25,8 @@ export abstract class AbstractWebviewWebContentsDriver extends StandardWebConten
     private readonly appPath: string;
 
     private browserWindow?: BrowserWindow;
+
+    private readyForCapturePromise: ResolvablePromise<void> = new ResolvablePromise<void>();
 
     protected constructor(browserProfile: BrowserProfile, appPath: string) {
         super(browserProfile);
@@ -39,6 +41,10 @@ export abstract class AbstractWebviewWebContentsDriver extends StandardWebConten
 
     }
 
+    public readyForCapture(): Promise<void> {
+        return this.readyForCapturePromise;
+    }
+
     protected async waitForWebview(): Promise<WebContents> {
         return new Promise<WebContents>(resolve => {
             this.window!.webContents.once('did-attach-webview', (event, webContents: WebContents) => {
@@ -46,6 +52,7 @@ export abstract class AbstractWebviewWebContentsDriver extends StandardWebConten
             });
         });
     }
+
 
     public progressUpdated(event: PendingWebRequestsEvent): void {
 
@@ -75,6 +82,9 @@ export abstract class AbstractWebviewWebContentsDriver extends StandardWebConten
                     linkProvider.set(event.message);
 
                 });
+
+            WebContentsNotifier.once<void>(this.browserWindow.webContents, BrowserAppEvents.TRIGGER_CAPTURE)
+                    .then(event => this.readyForCapturePromise.resolve());
 
         }
 

@@ -5,7 +5,7 @@ import {Logger} from '../logger/Logger';
 
 const log = Logger.create();
 
-export class Reactor<V> {
+export class Reactor<V> implements IReactor<V> {
 
     private readonly events: {[name: string]: Event<V>} = {};
 
@@ -44,6 +44,7 @@ export class Reactor<V> {
      * @return {Reactor}
      */
     public dispatchEvent(eventName: string, value: V) {
+
         Preconditions.assertNotNull(eventName, "eventName");
 
         const event = this.events[eventName];
@@ -52,16 +53,15 @@ export class Reactor<V> {
             throw new Error("No events for event name: " + eventName);
         }
 
-        event.getCallbacks().forEach(function(callback) {
+        event.getListeners().forEach((listener) => {
 
             try {
 
-                callback(value);
+                listener(value);
 
             } catch (e) {
-                log.error("Callback generated unhandled exception: ", e);
+                log.error("listener generated unhandled exception: ", e);
             }
-
 
         });
 
@@ -71,23 +71,47 @@ export class Reactor<V> {
 
     /**
      *
-     * @param eventName {String}
-     * @param callback {function}
-     * @return {Reactor}
      */
-    public addEventListener(eventName: string, callback: Listener<V>) {
+    public addEventListener(eventName: string, listener: Listener<V>) {
+
         Preconditions.assertNotNull(eventName, "eventName");
 
-        if (typeof callback !== "function") {
-            throw new Error("Callback is not a function: " + typeof callback);
+        if (typeof listener !== "function") {
+            throw new Error("listener is not a function: " + typeof listener);
         }
 
         if (this.events[eventName] === undefined) {
             throw new Error("No registered event for event name: " + eventName);
         }
 
-        this.events[eventName].registerCallback(callback);
+        this.events[eventName].registerListener(listener);
         return this;
+
+    }
+
+    public removeEventListener(eventName: string, listener: Listener<V>): boolean {
+
+        if (this.events[eventName]) {
+            return this.events[eventName].removeListener(listener);
+        }
+
+        return false;
+
+    }
+
+    public once(eventName: string): Promise<V> {
+
+        return new Promise<V>((resolve => {
+
+            const listener = (event: V) => {
+                resolve(event);
+                this.removeEventListener(eventName, listener);
+            };
+
+            this.addEventListener(eventName, listener);
+
+        }));
+
     }
 
     /**
@@ -98,7 +122,11 @@ export class Reactor<V> {
     public getEventListeners(eventName: string) {
         Preconditions.assertNotNull(eventName, "eventName");
 
-        return this.events[eventName].getCallbacks();
+        return this.events[eventName].getListeners();
     }
 
+}
+
+export interface IReactor<V> {
+    once(eventName: string): Promise<V>;
 }

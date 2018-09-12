@@ -1,6 +1,5 @@
 import {Logger} from '../../logger/Logger';
 import {isPresent} from '../../Preconditions';
-import {CaptureClient} from '../../capture/controller/CaptureClient';
 import {WebContentsNotifiers} from '../../electron/web_contents_notifier/WebContentsNotifiers';
 import {BrowserAppEvents} from './BrowserAppEvents';
 
@@ -14,9 +13,13 @@ export class BrowserApp {
 
         // content.addEventListener('dom-ready', async () => {
 
-        const element = <HTMLInputElement> document.querySelector("#link")!;
+        const linkInputElement = <HTMLInputElement> document.querySelector("#link")!;
 
-        element.addEventListener('keypress', (event) => this.onLinkKeyPress(event));
+        linkInputElement.addEventListener('keypress', (event) => this.onLinkKeyPress(event));
+
+        const captureButtonElement = <HTMLInputElement> document.querySelector("#capture")!;
+
+        captureButtonElement.addEventListener('click', (event) => this.onTriggerCapture());
 
         log.info("started");
 
@@ -54,6 +57,12 @@ export class BrowserApp {
 
     }
 
+
+    private onTriggerCapture() {
+
+        WebContentsNotifiers.dispatchEvent(BrowserAppEvents.TRIGGER_CAPTURE, {});
+
+    }
 
     private getWebContentsId() {
 

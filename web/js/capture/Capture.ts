@@ -161,6 +161,9 @@ export class Capture {
      */
     public async capture() {
 
+        log.debug("Awaiting readyForCapture");
+        await this.driver!.readyForCapture();
+
         this.executeContentCapture()
             .catch(err => log.error(err));
 
