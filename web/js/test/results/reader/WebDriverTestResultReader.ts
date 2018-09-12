@@ -22,9 +22,9 @@ export class WebDriverTestResultReader implements TestResultReader {
                 if (window.SPECTRON_TEST_RESULT !== null &&
                     window.SPECTRON_TEST_RESULT !== undefined) {
 
-                    console.log("FIXME: got value: " + window.SPECTRON_TEST_RESULTq);
                     done(window.SPECTRON_TEST_RESULT);
                     return;
+
                 }
 
                 setTimeout(poll, 250);
