@@ -42,11 +42,11 @@ describe('QueuedReactor', function() {
 
         assert.equal(reactor.getEventListeners(eventName).length, 0);
 
-        const messagePromise = reactor.once(eventName);
-        assert.equal(reactor.getEventListeners(eventName).length, 1);
-
+        // nothing is listening now.
         reactor.dispatchEvent(eventName, 'hello');
         reactor.dispatchEvent(eventName, 'world');
+
+        const messagePromise = reactor.once(eventName);
 
         const message = await messagePromise;
 

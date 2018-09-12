@@ -39,9 +39,7 @@ export class Capture {
 
     public readonly webRequestReactors: WebRequestReactor[] = [];
 
-    // private result = new ResolvablePromise<CaptureResult>();
-
-    private result = Promise.resolve<CaptureResult>({path: 'asdf'});
+    private result = new ResolvablePromise<CaptureResult>();
 
     private webContents?: WebContents;
 
@@ -77,19 +75,19 @@ export class Capture {
         this.onWebRequest(this.webContents.session.webRequest);
 
         this.browserProfile.navigation.navigated.addEventListener(event => {
+
+            const url = event.link;
+
+            Preconditions.assertNotNull(url, "url");
+
+            if ( Strings.empty(url)) {
+                throw new Error("URL may not be empty");
+            }
+
             this.loadURL(event.link)
                 .catch(err => log.error("Could not load URL: " + event.link, err));
+
         });
-
-        const navigatedEvent = await this.browserProfile.navigation.navigated.once();
-
-        const url = navigatedEvent.link;
-
-        Preconditions.assertNotNull(url, "url");
-
-        if ( Strings.empty(url)) {
-            throw new Error("URL may not be empty");
-        }
 
         return this.result;
 
@@ -191,13 +189,9 @@ export class Capture {
 
         const result = await ContentCaptureExecutor.execute(this.webContents!, this.browserProfile);
 
-        console.log("FIXME3")
+        Optional.of(this.driver).when(driver => driver.destroy());
 
-        // FIXME: Optional.of(this.driver).when(driver => driver.destroy());
-
-        console.log("FIXME4")
-        //FIXME: this.result.resolve(result);
-        console.log("FIXME5")
+        this.result.resolve(result);
 
     }
 

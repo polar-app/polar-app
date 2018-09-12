@@ -40,11 +40,11 @@ describe('SimpleQueuedReactor', function() {
 
         assert.equal(reactor.getEventListeners().length, 0);
 
-        const messagePromise = reactor.once();
-        assert.equal(reactor.getEventListeners().length, 1);
-
         reactor.dispatchEvent('hello');
         reactor.dispatchEvent('world');
+
+        const messagePromise = reactor.once();
+        assert.equal(reactor.getEventListeners().length, 1);
 
         const message = await messagePromise;
 
