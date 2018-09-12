@@ -14,7 +14,7 @@ export class Args {
         result = Objects.defaults(result, {
             quit: true,
             browser: "DEFAULT",
-            profile: "DEFAULT",
+            profile: "WEBVIEW",
             amp: true
         });
 

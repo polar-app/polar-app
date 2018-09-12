@@ -117,8 +117,13 @@ export abstract class AbstractWebviewWebContentsDriver extends StandardWebConten
         // Create the browser window.
         const browserWindowOptions = BrowserWindows.toBrowserWindowOptions(this.browserProfile);
 
+        if (this.browserProfile.hosted) {
+            // increase our hosted browser slightly
+            browserWindowOptions.width = notNull(browserWindowOptions.width) * 1.35;
+        }
+
         browserWindowOptions.height = Math.round(notNull(browserWindowOptions.width) * (11 / 8.5));
-        browserWindowOptions.minHeight = browserWindowOptions.height;
+        browserWindowOptions.minHeight = (browserWindowOptions.height / 2);
 
         // TODO: make this part of the profile.
         browserWindowOptions.enableLargerThanScreen = false;

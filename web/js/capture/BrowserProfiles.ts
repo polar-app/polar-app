@@ -74,6 +74,7 @@ export class BrowserProfiles {
                     .setNodeIntegration(true)
                     .setUseReactor(false)
                     .setWebaudio(true)
+                    .setHosted(true)
                     .build();
 
             // case "default_500":

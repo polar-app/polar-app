@@ -122,17 +122,16 @@ export class CaptureController {
             amp: true
         };
 
-        let browser = BrowserRegistry.DEFAULT;
+        const browser = BrowserRegistry.DEFAULT;
 
         // browser = Browsers.toProfile(browser, "headless");
         // TODO: this should be 'default' not 'hidden'
 
-        browser = BrowserProfiles.toBrowserProfile(browser, "HIDDEN");
-
         // browser = Browsers.toProfile(browser, "default");
-        const browserProfile = BrowserProfiles.toBrowserProfile(browser, "DEFAULT");
+        const browserProfile = BrowserProfiles.toBrowserProfile(browser, "WEBVIEW");
 
         browserProfile.navigation.navigated.dispatchEvent({link: url});
+        browserProfile.navigation.captured.dispatchEvent({});
 
         const capture = new Capture(browserProfile, captureOpts);
 

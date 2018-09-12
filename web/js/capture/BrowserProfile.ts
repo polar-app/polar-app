@@ -33,6 +33,13 @@ export interface BrowserProfile extends IBrowser {
 
     webaudio: boolean;
 
+    /**
+     * When true the webview control is hosted in another window so it would be
+     * best to increase the host window size slightly and make other
+     * optimizations.
+     */
+    hosted: boolean;
+
 }
 
 export type BrowserProfileID = number;

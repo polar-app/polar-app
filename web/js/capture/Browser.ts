@@ -60,6 +60,8 @@ export class BrowserProfileBuilder implements BrowserProfile {
 
     public webaudio: boolean = false;
 
+    public hosted: boolean = false;
+
     /**
      */
     constructor(browser: Browser) {
@@ -105,6 +107,11 @@ export class BrowserProfileBuilder implements BrowserProfile {
 
     public setWebaudio(value: boolean) {
         this.webaudio = value;
+        return this;
+    }
+
+    public setHosted(value: boolean) {
+        this.hosted = value;
         return this;
     }
 
