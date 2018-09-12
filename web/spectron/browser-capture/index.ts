@@ -22,7 +22,8 @@ SpectronMain2.create().run(async state => {
     try {
         await capture.start();
     } catch (e) {
-        console.log("error: ", e)
+        console.log("FIXME1.5")
+        console.log("error: ", e);
     }
 
     console.log("FIXME2")

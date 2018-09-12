@@ -39,7 +39,9 @@ export class Capture {
 
     public readonly webRequestReactors: WebRequestReactor[] = [];
 
-    private result = new ResolvablePromise<CaptureResult>();
+    // private result = new ResolvablePromise<CaptureResult>();
+
+    private result = Promise.resolve<CaptureResult>({path: 'asdf'});
 
     private webContents?: WebContents;
 
@@ -76,7 +78,7 @@ export class Capture {
 
         this.browserProfile.navigation.navigated.addEventListener(event => {
             this.loadURL(event.link)
-                .catch(err => log.error("Could not load URL: " + url, err));
+                .catch(err => log.error("Could not load URL: " + event.link, err));
         });
 
         const navigatedEvent = await this.browserProfile.navigation.navigated.once();
@@ -88,7 +90,6 @@ export class Capture {
         if ( Strings.empty(url)) {
             throw new Error("URL may not be empty");
         }
-
 
         return this.result;
 
@@ -192,10 +193,11 @@ export class Capture {
 
         console.log("FIXME3")
 
-        //FIXME: Optional.of(this.driver).when(driver => driver.destroy());
+        // FIXME: Optional.of(this.driver).when(driver => driver.destroy());
 
         console.log("FIXME4")
-        this.result.resolve(result);
+        //FIXME: this.result.resolve(result);
+        console.log("FIXME5")
 
     }
 
