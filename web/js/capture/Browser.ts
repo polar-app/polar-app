@@ -62,6 +62,8 @@ export class BrowserProfileBuilder implements BrowserProfile {
 
     public hosted: boolean = false;
 
+    public destroy: boolean = true;
+
     /**
      */
     constructor(browser: Browser) {

@@ -40,6 +40,12 @@ export interface BrowserProfile extends IBrowser {
      */
     hosted: boolean;
 
+    /**
+     * When true (the default) we should destroy the driver when done.  Normally
+     * it should be destroyed but for testing this might be problematic.
+     */
+    destroy: boolean;
+
 }
 
 export type BrowserProfileID = number;

@@ -20,7 +20,7 @@ export class BrowserProfiles {
      *
      */
     public static toBrowserProfile(browser: Browser,
-                                   name: string): BrowserProfile {
+                                   name: string): Readonly<BrowserProfile> {
 
         if (name.toUpperCase() === 'DEFAULT') {
             return BrowserProfiles.toBrowserProfile(browser, 'BROWSER');
