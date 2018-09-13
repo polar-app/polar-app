@@ -15,6 +15,7 @@ import {RepoDocInfo} from './RepoDocInfo';
 import {RepoDocInfos} from './RepoDocInfos';
 import {RepositoryUpdater} from './RepositoryUpdater';
 import {DefaultPersistenceLayerFactory} from '../../../web/js/datastore/factories/DefaultPersistenceLayerFactory';
+import {RemotePersistenceLayerFactory} from '../../../web/js/datastore/factories/RemotePersistenceLayerFactory';
 
 const log = Logger.create();
 
@@ -370,7 +371,7 @@ export default class App<P> extends React.Component<{}, IAppState> {
 
     private async init(): Promise<void> {
 
-        this.persistenceLayer = await DefaultPersistenceLayerFactory.create();
+        this.persistenceLayer = await RemotePersistenceLayerFactory.create();
         this.repoDocInfoLoader = new RepoDocInfoLoader(this.persistenceLayer);
         this.repositoryUpdater = new RepositoryUpdater(this.persistenceLayer);
 
