@@ -141,7 +141,7 @@ describe('Files', function() {
 
         it("basic", async function () {
 
-            let path = FilePaths.join(tmpdir, 'test-mkdir.dir');
+            const path = FilePaths.join(tmpdir, 'test-mkdir.dir');
 
             removeDirectory(path);
 
@@ -149,7 +149,7 @@ describe('Files', function() {
 
             assert.ok(await Files.existsAsync(path));
 
-            let stat = await Files.statAsync(path);
+            const stat = await Files.statAsync(path);
 
             assert.equal(stat !== null, true);
             assert.equal(stat.isFile(), false);

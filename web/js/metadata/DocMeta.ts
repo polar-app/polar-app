@@ -16,7 +16,7 @@ export class DocMeta extends SerializedObject implements  IDocMeta {
     public docInfo: DocInfo;
     public pageMetas: {[id: number]: PageMeta};
     public annotationInfo = AnnotationInfos.create();
-    public version = 1;
+    public version = 2;
 
     public attachments: {[id: string]: Attachment} = {};
 
