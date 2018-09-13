@@ -11,7 +11,7 @@ describe('Args', function() {
             assertJSON(Args.parse([]), {
                     "quit": true,
                     "browser": "DEFAULT",
-                    "profile": "default",
+                    "profile": "WEBVIEW",
                     "amp": true
                 }
             );
@@ -22,7 +22,7 @@ describe('Args', function() {
             assertJSON(Args.parse(["--browser=TEST_BROWSER"]), {
                 "browser": "TEST_BROWSER",
                 "quit": true,
-                "profile": "default",
+                "profile": "WEBVIEW",
                 "amp": true
             });
         });

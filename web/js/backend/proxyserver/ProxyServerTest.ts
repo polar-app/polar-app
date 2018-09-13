@@ -10,7 +10,7 @@ const url = require('url');
 const HttpProxyAgent = require('http-proxy-agent');
 const HttpsProxyAgent = require('https-proxy-agent');
 
-describe('ProxyServer', function() {
+xdescribe('ProxyServer', function() {
 
     let proxyServer: ProxyServer | undefined = undefined;
     let cacheRegistry: CacheRegistry | undefined;
