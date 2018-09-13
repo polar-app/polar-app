@@ -1,4 +1,8 @@
 
+- Fixed potential race creating directories
+
+- new build targets to make a new / local deb/snap without pushing them.
+
 - Fixed bug if a single DocMeta file is broken
 
 - Update to Electron 3.0 beta 12.

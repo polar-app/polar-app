@@ -107,11 +107,41 @@ describe('Files', function() {
 
     });
 
+    describe('createDirAsync', function() {
+
+        it("basic", async function() {
+
+            const path = FilePaths.join(tmpdir, 'test-createDirAsync.dir');
+
+            removeDirectory(path);
+
+            await Files.createDirAsync(path);
+
+            assert.ok(await Files.existsAsync(path));
+
+            const stat = await Files.statAsync(path);
+
+            assert.equal(stat !== null, true);
+            assert.equal(stat.isFile(), false);
+            assert.equal(stat.isDirectory(), true);
+
+            await Files.createDirAsync(path);
+
+        });
+
+        it("test EEXIST", async function() {
+
+            // TODO test what happens if we get an EEXIST in mkdir using mocks.
+
+        });
+
+    });
+
     describe('mkdirAsync', function() {
 
         it("basic", async function () {
 
-            let path = FilePaths.join(tmpdir, '/test.dir');
+            let path = FilePaths.join(tmpdir, 'test-mkdir.dir');
 
             removeDirectory(path);
 
@@ -124,6 +154,38 @@ describe('Files', function() {
             assert.equal(stat !== null, true);
             assert.equal(stat.isFile(), false);
             assert.equal(stat.isDirectory(), true);
+
+        });
+
+
+        it("test errno on second call", async function() {
+
+            const path = FilePaths.join(tmpdir, 'test-mkdir-second-call.dir');
+
+            removeDirectory(path);
+
+            assert.ok(!await Files.existsAsync(path));
+
+            await Files.mkdirAsync(path);
+
+            assert.ok(await Files.existsAsync(path));
+
+            const stat = await Files.statAsync(path);
+
+            assert.equal(stat !== null, true);
+            assert.equal(stat.isFile(), false);
+            assert.equal(stat.isDirectory(), true);
+
+            try {
+
+                await Files.mkdirAsync(path);
+
+                assert.ok(false, "This should not have worked");
+
+            } catch (e) {
+                assert.equal(e.code, "EEXIST");
+                assert.ok(e.message.indexOf("EEXIST:") === 0);
+            }
 
         });
 

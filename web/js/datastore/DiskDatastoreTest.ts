@@ -138,7 +138,7 @@ describe('DiskDatastore', function() {
 
     });
 
-    describe('Write and discovery documents', function() {
+    describe('Write and discover documents', function() {
 
         const fingerprint = "0x001";
 

@@ -100,6 +100,13 @@ export class Files {
 
     }
 
+    /**
+     *
+     * Create a dir 'safely' by skipping the mkdirAsync if it already exists.
+     *
+     * @param dir
+     * @param mode
+     */
     public static async createDirAsync(dir: string, mode?: number | string | undefined | null) {
 
         const result: CreateDirResult = {
@@ -110,12 +117,27 @@ export class Files {
             result.exists = true;
         } else {
             result.created = true;
-            await this.mkdirAsync(dir, mode);
+
+            try {
+                await this.mkdirAsync(dir, mode);
+            } catch (e) {
+
+                if (e.code && e.code === 'EEXIST') {
+                    // this is acceptable as the file already exists and there
+                    // may have been a race creating it.
+                    result.exists = true;
+                } else {
+                    throw e;
+                }
+
+            }
+
         }
 
         return result;
 
     }
+
     /**
      *
      * https://nodejs.org/api/fs.html#fs_fs_readfile_path_options_callback
@@ -274,6 +296,8 @@ export class Files {
     };
 
 }
+
+
 
 export interface CreateDirResult {
     dir: string;

@@ -1,10 +1,13 @@
 {
   "name": "polar-bookshelf",
-  "version": "1.0.0-beta150",
+  "version": "1.0.0-beta151-dev",
   "description": "Polar Bookshelf",
   "main": "main.js",
   "scripts": {
     "start": "tsc && electron .",
+    "make-targz": "tsc && electron-builder --config=electron-builder.yml --linux tar.gz",
+    "make-snap": "tsc && electron-builder --config=electron-builder.yml --linux snap",
+    "make-deb": "tsc && electron-builder --config=electron-builder.yml --linux deb",
     "dist-linux": "tsc && electron-builder --config=electron-builder.yml --linux deb tar.gz --publish always",
     "dist-macos": "tsc && electron-builder --config=electron-builder.yml --macos dmg --publish always",
     "dist-win": "tsc && ./scripts/dist-win.sh",
