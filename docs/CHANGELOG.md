@@ -1,4 +1,8 @@
 
+# 1.0.0-beta150
+
+- new browser based capture system.
+
 - Fixed bug where we could accidentally put the user in a situation where they
   can lock themselves out of the document repository.
 
