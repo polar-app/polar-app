@@ -8,6 +8,7 @@ import {RepoDocInfoIndex} from './RepoDocInfoIndex';
 import {RepoDocInfos} from './RepoDocInfos';
 import {Dictionaries} from '../../../web/js/util/Dictionaries';
 import {RepoDocInfo} from './RepoDocInfo';
+import {DocMeta} from '../../../web/js/metadata/DocMeta';
 
 const log = Logger.create();
 
@@ -28,9 +29,15 @@ export class RepoDocInfoLoader {
 
     }
 
-    public async loadDocMetaFile(docMetaFile: DocMetaRef): Promise<RepoDocInfo | undefined> {
+    public async loadDocMetaFile(docMetaRef: DocMetaRef): Promise<RepoDocInfo | undefined> {
 
-        const docMeta = await this.persistenceLayer!.getDocMeta(docMetaFile.fingerprint);
+        let docMeta: DocMeta | undefined;
+
+        try {
+            docMeta = await this.persistenceLayer!.getDocMeta(docMetaRef.fingerprint);
+        } catch (e) {
+            log.error("Unable to load DocMeta for " + docMetaRef.fingerprint, e);
+        }
 
         if (docMeta !== undefined) {
 
@@ -39,11 +46,11 @@ export class RepoDocInfoLoader {
                 return RepoDocInfos.convertFromDocInfo(docMeta.docInfo);
 
             } else {
-                log.warn("No docInfo for file: ", docMetaFile.fingerprint);
+                log.warn("No docInfo for file: ", docMetaRef.fingerprint);
             }
 
         } else {
-            log.warn("No DocMeta for fingerprint: " + docMetaFile.fingerprint);
+            log.warn("No DocMeta for fingerprint: " + docMetaRef.fingerprint);
         }
 
         return undefined;

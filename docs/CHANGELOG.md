@@ -1,4 +1,8 @@
 
+- Fixed bug if a single DocMeta file is broken
+
+- Update to Electron 3.0 beta 12.
+
 # 1.0.0-beta150
 
 - new browser based capture system.
