@@ -117,7 +117,7 @@ resume, without losing your place.
 Since you can create multiple pagemarks they work even if you jump around in a
 book (which is often in technical or research work).
 
-<a href="https://www.youtube.com/watch?v=OT3qLhMK6Zk"><img src="https://raw.githubusercontent.com/burtonator/polar-bookshelf/master/docs/demo.png?1=2"></a>
+<a href="https://www.youtube.com/watch?v=h5ZY2z_vgOg&feature=youtu.be"><img src="https://raw.githubusercontent.com/burtonator/polar-bookshelf/master/docs/demo.png?1=2"></a>
 
 # Web Content
 
