@@ -16,11 +16,11 @@ export class CacheEntriesFactory {
      * @param path
      * @return {Promise<CacheEntriesHolder>}
      */
-    static async createEntriesFromFile(path: string) {
+    public static async createEntriesFromFile(path: string) {
 
-        if(path.endsWith(".chtml")) {
+        if (path.endsWith(".chtml")) {
             return CacheEntriesFactory.createFromCHTML(path);
-        } else if(path.endsWith(".phz")) {
+        } else if (path.endsWith(".phz")) {
             return CacheEntriesFactory.createFromPHZ(path);
         } else {
             throw new Error("Unable to handle file type for path: " + path);

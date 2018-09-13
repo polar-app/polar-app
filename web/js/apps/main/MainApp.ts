@@ -9,7 +9,6 @@ import {DialogWindowService} from '../../ui/dialog_window/DialogWindowService';
 import {DefaultFileLoader} from './loaders/DefaultFileLoader';
 import {MainAppBrowserWindowFactory} from './MainAppBrowserWindowFactory';
 import {Webserver} from '../../backend/webserver/Webserver';
-import {ProxyServer} from '../../backend/proxyserver/ProxyServer';
 import {CacheInterceptorService} from '../../backend/interceptor/CacheInterceptorService';
 import {AnalyticsFileLoader} from './loaders/AnalyticsFileLoader';
 import {MainAppController} from './MainAppController';
@@ -20,8 +19,8 @@ import {Datastore} from '../../datastore/Datastore';
 import {ScreenshotService} from '../../screenshots/ScreenshotService';
 import {MainAppService} from './ipc/MainAppService';
 import {AppLauncher} from './AppLauncher';
-import BrowserWindow = Electron.BrowserWindow;
 import {DocInfoBroadcasterService} from '../../datastore/advertiser/DocInfoBroadcasterService';
+import BrowserWindow = Electron.BrowserWindow;
 
 declare var global: any;
 
@@ -84,11 +83,6 @@ export class MainApp {
         const webserver = new Webserver(webserverConfig, fileRegistry);
         webserver.start();
 
-        // *** start the proxy server
-
-        const proxyServer = new ProxyServer(proxyServerConfig, cacheRegistry);
-        proxyServer.start();
-
         const cacheInterceptorService = new CacheInterceptorService(cacheRegistry);
         await cacheInterceptorService.start();
 
@@ -108,7 +102,7 @@ export class MainApp {
         // FIXME: ... there's a catch/22 here creating the main window... we need
         // the main Window created so that we can init the loader...
 
-        const mainAppController = new MainAppController(fileLoader, this.datastore, webserver, proxyServer);
+        const mainAppController = new MainAppController(fileLoader, this.datastore, webserver);
 
         const mainAppService = new MainAppService(mainAppController);
         mainAppService.start();

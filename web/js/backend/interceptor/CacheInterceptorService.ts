@@ -26,15 +26,15 @@ export class CacheInterceptorService {
 
     }
 
-    async handleWithCache(request: InterceptBufferProtocolRequest, callback: BufferCallback) {
+    public async handleWithCache(request: InterceptBufferProtocolRequest, callback: BufferCallback) {
 
         ++this.cacheStats.hits;
 
         log.debug("HIT Going to handle with cache: ", request.url);
 
-        let cacheEntry = this.cacheRegistry.get(request.url);
+        const cacheEntry = this.cacheRegistry.get(request.url);
 
-        let buffer = await cacheEntry.toBuffer();
+        const buffer = await cacheEntry.toBuffer();
 
         log.debug(`Calling callback now for: ${request.url} (${buffer.byteLength} bytes)`);
 
@@ -45,29 +45,29 @@ export class CacheInterceptorService {
 
     }
 
-    async handleWithNetRequest(request: Request, callback: BufferCallback) {
+    public async handleWithNetRequest(request: Request, callback: BufferCallback) {
 
         log.debug("Handling request: ", request.url);
 
         ++this.cacheStats.misses;
 
-        let options = {
+        const options = {
             method: request.method,
             url: request.url,
         };
 
         log.debug("MISS Going to handle with net.request: " + request.url);
 
-        let netRequest = net.request(options)
+        const netRequest = net.request(options)
             .on('response', async (response) => {
 
-                let buffer = await convertStream.toBuffer(response);
+                const buffer = await convertStream.toBuffer(response);
 
                 // FIXME: we're currently handling charset encoding improperly and
                 // stripping the encoding if it's specified in the charset.  This will be
                 // resolved when we migrate to interceptStreamProtocol
 
-                let contentType = CacheInterceptorService.parseContentType(response.headers["content-type"]);
+                const contentType = CacheInterceptorService.parseContentType(response.headers["content-type"]);
 
                 log.debug(`Using mimeType=${contentType.mimeType} for ${request.url}`)
 
@@ -94,7 +94,7 @@ export class CacheInterceptorService {
             netRequest.setHeader(header, request.headers[header]);
         });
 
-        if(request.uploadData) {
+        if (request.uploadData) {
 
             log.debug("Writing data to request");
             request.uploadData.forEach(current => {

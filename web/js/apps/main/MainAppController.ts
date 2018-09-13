@@ -5,7 +5,6 @@ import {Services} from '../../util/services/Services';
 import {FileLoader} from './loaders/FileLoader';
 import {Datastore} from '../../datastore/Datastore';
 import {Webserver} from '../../backend/webserver/Webserver';
-import {ProxyServer} from '../../backend/proxyserver/ProxyServer';
 import {BROWSER_WINDOW_OPTIONS, MainAppBrowserWindowFactory} from './MainAppBrowserWindowFactory';
 import {AppLauncher} from './AppLauncher';
 import {Hashcodes} from '../../Hashcodes';
@@ -20,11 +19,10 @@ const log = Logger.create();
 
 export class MainAppController {
 
-    constructor(fileLoader: FileLoader, datastore: Datastore, webserver: Webserver, proxyServer: ProxyServer) {
+    constructor(fileLoader: FileLoader, datastore: Datastore, webserver: Webserver) {
         this.fileLoader = fileLoader;
         this.datastore = datastore;
         this.webserver = webserver;
-        this.proxyServer = proxyServer;
     }
 
     private readonly fileLoader: FileLoader;
@@ -32,8 +30,6 @@ export class MainAppController {
     private readonly datastore: Datastore;
 
     private readonly webserver: Webserver;
-
-    private readonly proxyServer: ProxyServer;
 
     public async cmdCaptureWebPage() {
 
@@ -105,7 +101,6 @@ export class MainAppController {
 
         Services.stop({
             webserver: this.webserver,
-            proxyServer: this.proxyServer
         });
 
         log.info("Closing all windows...");

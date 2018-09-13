@@ -33,9 +33,9 @@ export class CacheRegistry {
      */
     async registerFile(path: string) {
 
-        let cacheEntriesHolder = await CacheEntriesFactory.createEntriesFromFile(path);
+        const cacheEntriesHolder = await CacheEntriesFactory.createEntriesFromFile(path);
 
-        let cachedRequestsHolder = new CachedRequestsHolder({
+        const cachedRequestsHolder = new CachedRequestsHolder({
             metadata: cacheEntriesHolder.metadata
         });
 

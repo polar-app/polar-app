@@ -100,6 +100,9 @@ export class PHZReader {
             throw new CachingException("No zip entry for path: " + path);
         }
 
+        // we can call nodeStream('nodebuffer') to read the data as a stream of
+        // bytes
+
         const arrayBuffer = await zipFile.async('arraybuffer');
         return Buffer.from(arrayBuffer);
 
