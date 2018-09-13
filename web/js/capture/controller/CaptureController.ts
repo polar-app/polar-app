@@ -55,14 +55,6 @@ export class CaptureController {
 
         webContents = await this.loadApp(webContents, url);
 
-        // FIXME: make this its own function
-
-        // FIXME: this is the main problem.. we don't have the URL yet.. instead
-        // we have to generate a way to GET the URL and THEN re-use the existing
-        // Browser Window.. this is kind of ugly though and it might be better
-        // to just rework the capture system entirely so that the code is
-        // more orthogonal to what we're trying to actually accomplish...
-
         const captureResult = await this.runCapture(webContents, url);
         //
         // let captureResult = {
