@@ -60,7 +60,7 @@ describe('DocMetas', function() {
 
             const expected = {
                     "annotationInfo": {},
-                    "version": 1,
+                    "version": 2,
                     "attachments": {},
                     "docInfo": {
                         "progress": 100,
