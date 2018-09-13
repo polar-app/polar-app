@@ -320,6 +320,10 @@ class BoxController {
         // log.info(`x: ${x}: y: ${y}`);
         log.info("_calculateIntersectedBoxes: resizeRect is: " + JSON.stringify(resizeRect, null, "  "));
 
+        // TODO: it looks like there's an issue with parentElement being missing
+        // here.  If the parentElement is missing I probably need to ignore the
+        // intersected boxes?
+
         let boxes = Array.from(element.parentElement.querySelectorAll(intersectedElementsSelector))
                              .filter( current => current !== element);
 
