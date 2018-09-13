@@ -44,7 +44,6 @@ describe('SimpleQueuedReactor', function() {
         reactor.dispatchEvent('world');
 
         const messagePromise = reactor.once();
-        assert.equal(reactor.getEventListeners().length, 1);
 
         const message = await messagePromise;
 
