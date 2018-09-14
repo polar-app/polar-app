@@ -86,7 +86,7 @@ export class CacheRegistry {
      *
      * @param url The key we should fetch.
      */
-    hasEntry(url: string) {
+    public hasEntry(url: string) {
         return url in this.registry;
     }
 
@@ -95,9 +95,9 @@ export class CacheRegistry {
      *
      * @return {CacheEntry}
      */
-    get(url: string): CacheEntry {
+    public get(url: string): CacheEntry {
 
-        if(!this.hasEntry(url)) {
+        if (!this.hasEntry(url)) {
             throw new Error("URL not registered: " + url);
         }
 

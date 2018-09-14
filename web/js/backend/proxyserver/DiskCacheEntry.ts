@@ -62,6 +62,11 @@ export class DiskCacheEntry extends CacheEntry {
             });
 
         });
+
+    }
+
+    public async toStream(): Promise<NodeJS.ReadableStream> {
+        return fs.createReadStream(this.path);
     }
 
 }

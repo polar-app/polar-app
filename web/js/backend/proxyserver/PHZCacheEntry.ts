@@ -27,14 +27,13 @@ export class PHZCacheEntry extends CacheEntry {
         Object.defineProperty(this, 'phzReader', {
             value: this.phzReader,
             enumerable: false
-        })
+        });
 
     }
 
     public async handleData(callback: DataCallback): Promise<boolean> {
 
-        let buffer = await this.phzReader.getResource(this.resourceEntry);
-        //buffer.toString("UTF-8")
+        const buffer = await this.phzReader.getResource(this.resourceEntry);
         callback(buffer);
         return false;
 
@@ -42,6 +41,10 @@ export class PHZCacheEntry extends CacheEntry {
 
     public async toBuffer(): Promise<Buffer> {
         return await this.phzReader.getResource(this.resourceEntry);
+    }
+
+    public async toStream(): Promise<NodeJS.ReadableStream> {
+        return await this.phzReader.getResourceAsStream(this.resourceEntry);
     }
 
 }

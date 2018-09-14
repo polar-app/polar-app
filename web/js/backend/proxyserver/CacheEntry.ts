@@ -69,6 +69,7 @@ export abstract class CacheEntry {
      */
     public abstract async toBuffer(): Promise<Buffer>;
 
+    public abstract async toStream(): Promise<NodeJS.ReadableStream>;
 
 }
 
