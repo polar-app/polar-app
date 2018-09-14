@@ -5,6 +5,8 @@ import {Logger} from '../../logger/Logger';
 
 const convertStream = require("convert-stream");
 
+// import convertStream from 'convert-stream'
+
 /** @type {Electron.Net} */
 
 const log = Logger.create();
@@ -61,7 +63,16 @@ export class CacheInterceptorService {
         const netRequest = net.request(options)
             .on('response', async (response) => {
 
+                // TODO: this might actually be broken as I imagine we aren't
+                // handling HTTP chunks properly.
+
                 const buffer = await convertStream.toBuffer(response);
+
+                // we need to handle this properly by doing the following:
+                //
+                // response.on('data', (chunk) => {
+                //    console.log(`BODY: ${chunk}`)
+                // })
 
                 // FIXME: we're currently handling charset encoding improperly and
                 // stripping the encoding if it's specified in the charset.  This will be
@@ -69,7 +80,7 @@ export class CacheInterceptorService {
 
                 const contentType = CacheInterceptorService.parseContentType(response.headers["content-type"]);
 
-                log.debug(`Using mimeType=${contentType.mimeType} for ${request.url}`)
+                log.debug(`Using mimeType=${contentType.mimeType} for ${request.url}`);
 
                 callback({
                     mimeType: contentType.mimeType,
@@ -77,6 +88,7 @@ export class CacheInterceptorService {
                 });
 
             })
+
             .on('abort', () => {
                 log.error(`Request aborted: ${request.url}`);
                 callback(-1);
@@ -110,19 +122,19 @@ export class CacheInterceptorService {
 
     }
 
-    async interceptRequest(request: Request, callback: BufferCallback) {
+    public async interceptRequest(request: Request, callback: BufferCallback) {
 
         log.debug(`intercepted ${request.method} ${request.url}`);
 
-        if(this.cacheRegistry.hasEntry(request.url)) {
+        if (this.cacheRegistry.hasEntry(request.url)) {
             await this.handleWithCache(request, callback);
         } else {
             await this.handleWithNetRequest(request, callback);
         }
 
-    };
+    }
 
-    async interceptBufferProtocol(scheme: string, handler: any) {
+    public async interceptBufferProtocol(scheme: string, handler: any) {
 
         return new Promise((resolve, reject) => {
 
@@ -140,7 +152,7 @@ export class CacheInterceptorService {
 
     }
 
-    async start() {
+    public async start() {
 
         log.debug("Starting service and registering protocol interceptors.");
 
@@ -149,7 +161,7 @@ export class CacheInterceptorService {
 
     }
 
-    async stop() {
+    public async stop() {
 
         // we have to call protocol.uninterceptProtocol()
         throw new Error("not implemented");
@@ -159,7 +171,7 @@ export class CacheInterceptorService {
     /**
      * Parse the content-type header and include information about the charset too.
      */
-    static parseContentType(contentType: string | string[]) {
+    public static parseContentType(contentType: string | string[]) {
 
         // https://www.w3schools.com/html/html_charset.asp
 
@@ -173,7 +185,7 @@ export class CacheInterceptorService {
 
         let value: string;
 
-        if(contentType instanceof Array) {
+        if (contentType instanceof Array) {
             // when given as response headers we're given an array of strings
             // since headers can have multiple values but there's no reason
             // contentType should have more than one.
@@ -182,25 +194,27 @@ export class CacheInterceptorService {
             value = contentType;
         }
 
-        if(! value) {
+        if (! value) {
             value = mimeType;
         }
 
         let charset;
         let match;
 
-        if(match = value.match("^([a-zA-Z]+/[a-zA-Z+]+)")) {
+        // noinspection TsLint
+        if (match = value.match("^([a-zA-Z]+/[a-zA-Z+]+)")) {
             mimeType = match[1];
         }
 
-        if(match = value.match("; charset=([^ ;]+)")) {
+        // noinspection TsLint
+        if (match = value.match("; charset=([^ ;]+)")) {
             charset = match[1];
         }
 
         return {
             mimeType,
             charset
-        }
+        };
 
     }
 
@@ -212,17 +226,13 @@ class CacheStats {
 
 }
 
-interface BufferProtocolHandler {
-    (request: InterceptBufferProtocolRequest, callback: BufferCallback): void;
-}
+type BufferProtocolHandler = (request: InterceptBufferProtocolRequest, callback: BufferCallback) => void;
 
-interface BufferCallback {
-    (buffer?: Buffer | CallbackData | number): void
-}
+export type BufferCallback = (buffer?: Buffer | CallbackData | number) => void;
 
 interface CallbackData {
-    mimeType: string,
-    data: Buffer
+    mimeType: string;
+    data: Buffer;
 }
 
 // NOTE that Electron says that buffer protocols don't send headers but I think
@@ -234,4 +244,5 @@ interface Request {
     method: string;
     uploadData: Electron.UploadData[];
 }
+
 
