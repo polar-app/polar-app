@@ -17,8 +17,6 @@ SpectronMain2.create().run(async state => {
     //
     // // add our phz file to the cache registry...
 
-    // FIXME: this won't work on Windows.
-
     const path = FilePaths.createTempName("cache-interceptor-service.phz");
 
     await cacheRegistry.registerFile(path);

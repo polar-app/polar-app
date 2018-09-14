@@ -21,6 +21,7 @@ import {MainAppService} from './ipc/MainAppService';
 import {AppLauncher} from './AppLauncher';
 import {DocInfoBroadcasterService} from '../../datastore/advertiser/DocInfoBroadcasterService';
 import BrowserWindow = Electron.BrowserWindow;
+import {CachingStreamInterceptorService} from '../../backend/interceptor/CachingStreamInterceptorService';
 
 declare var global: any;
 
@@ -83,7 +84,8 @@ export class MainApp {
         const webserver = new Webserver(webserverConfig, fileRegistry);
         webserver.start();
 
-        const cacheInterceptorService = new CacheInterceptorService(cacheRegistry);
+        // const cacheInterceptorService = new CacheInterceptorService(cacheRegistry);
+        const cacheInterceptorService = new CachingStreamInterceptorService(cacheRegistry);
         await cacheInterceptorService.start();
 
         await captureController.start();
