@@ -82,7 +82,7 @@ export class ProxyServer {
                 throw new Error("No cache entry for: " + req.url);
             }
 
-            let headers: {[key: string]: string} = Object.assign({}, cacheEntry.headers);
+            const headers: {[key: string]: string | string[]} = Object.assign({}, cacheEntry.headers);
 
             headers["X-polar-cache"] = "hit";
 

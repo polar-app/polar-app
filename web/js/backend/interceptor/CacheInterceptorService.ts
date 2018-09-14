@@ -2,21 +2,19 @@ import {net, protocol} from 'electron';
 import {CacheRegistry} from '../proxyserver/CacheRegistry';
 import InterceptBufferProtocolRequest = Electron.InterceptBufferProtocolRequest;
 import {Logger} from '../../logger/Logger';
+import {CacheStats} from './CacheStats';
 
 const convertStream = require("convert-stream");
 
 // import convertStream from 'convert-stream'
 
-/** @type {Electron.Net} */
-
 const log = Logger.create();
-
 
 export class CacheInterceptorService {
 
-    private readonly cacheRegistry: CacheRegistry;
+    public readonly cacheStats = new CacheStats();
 
-    private readonly cacheStats = new CacheStats();
+    private readonly cacheRegistry: CacheRegistry;
 
     /**
      *
@@ -217,12 +215,6 @@ export class CacheInterceptorService {
         };
 
     }
-
-}
-
-export class CacheStats {
-    public hits = 0;
-    public misses = 0;
 
 }
 

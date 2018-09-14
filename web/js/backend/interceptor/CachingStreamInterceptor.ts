@@ -1,34 +1,41 @@
-import {BufferCallback, CacheStats} from './CacheInterceptorService';
 import {Logger} from '../../logger/Logger';
 import {CacheRegistry} from '../proxyserver/CacheRegistry';
 import {CorrectStreamProtocolResponse, StreamInterceptors, StreamProtocolCallback} from './StreamInterceptors';
 import InterceptStreamProtocolRequest = Electron.InterceptStreamProtocolRequest;
+import {CacheStats} from './CacheStats';
 
 const log = Logger.create();
 
-export class CachingStreamHandler {
-
-    private readonly cacheStats = new CacheStats();
+export class CachingStreamInterceptor {
 
     private readonly cacheRegistry: CacheRegistry;
+    private readonly cacheStats: CacheStats;
 
-    constructor(cacheRegistry: CacheRegistry) {
+    constructor(cacheRegistry: CacheRegistry, cacheStats: CacheStats) {
         this.cacheRegistry = cacheRegistry;
+        this.cacheStats = cacheStats;
     }
 
-    public async intercept(request: InterceptStreamProtocolRequest, callback: StreamProtocolCallback) {
+    public intercept(request: InterceptStreamProtocolRequest, callback: StreamProtocolCallback) {
 
         log.debug(`intercepted ${request.method} ${request.url}`);
 
         if (this.cacheRegistry.hasEntry(request.url)) {
-            await this.interceptWithCache(request, callback);
+
+            ++this.cacheStats.hits;
+
+            this.interceptWithCache(request, callback)
+                .catch(err => log.error("Unable to handle request: ", err));
+
         } else {
-            await StreamInterceptors.handleWithNetRequest(request, callback);
+            ++this.cacheStats.misses;
+
+            StreamInterceptors.handleWithNetRequest(request, callback);
         }
 
     }
 
-    public async interceptWithCache(request: InterceptStreamProtocolRequest, callback: StreamProtocolCallback) {
+    private async interceptWithCache(request: InterceptStreamProtocolRequest, callback: StreamProtocolCallback) {
 
         log.debug("HIT Going to handle with cache: ", request.url);
 
