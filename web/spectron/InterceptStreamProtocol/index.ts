@@ -5,13 +5,13 @@ import {StreamInterceptors} from '../../js/backend/interceptor/StreamInterceptor
 
 SpectronMain2.create().run(async state => {
 
-
     for (const scheme of ['http', 'https']) {
+
         await Protocols.interceptStreamProtocol(scheme, (request, callback) => {
 
-            setTimeout(() => {
+            StreamInterceptors.withSetTimeout(() => {
                 StreamInterceptors.handleWithNetRequest(request, callback);
-            }, 0);
+            });
 
         });
 

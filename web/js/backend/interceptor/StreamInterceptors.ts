@@ -3,8 +3,6 @@ import {Logger} from '../../logger/Logger';
 import {PassThrough, Readable} from 'stream';
 import InterceptStreamProtocolRequest = Electron.InterceptStreamProtocolRequest;
 import StreamProtocolResponse = Electron.StreamProtocolResponse;
-import {StreamProtocolHandler} from './Protocols';
-import {decode} from 'punycode';
 
 const log = Logger.create();
 
@@ -18,6 +16,22 @@ export class StreamInterceptors {
             },
             data: createStream('HTTP 200 OK\r\n<h5>Response</h5>')
         });
+    }
+
+    /**
+     * Call the given lambda with setTimeout so it doesn't execute in the
+     * foreground.
+     *
+     * This is a workaround to fix an Electron lockup issue.
+     *
+     * @param delegate
+     */
+    public static withSetTimeout(delegate: () => void) {
+
+        setTimeout(() => {
+            delegate();
+        }, 0);
+
     }
 
     public static handleWithNetRequest(request: InterceptStreamProtocolRequest, callback: StreamCallback) {
