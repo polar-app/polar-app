@@ -1,5 +1,5 @@
 import {protocol} from "electron";
-import {StreamCallback} from './StreamInterceptors';
+import {StreamProtocolCallback} from './StreamInterceptors';
 import InterceptStreamProtocolRequest = Electron.InterceptStreamProtocolRequest;
 
 export class Protocols {
@@ -101,5 +101,5 @@ export class Protocols {
 
 
 export interface StreamProtocolHandler {
-    (request: InterceptStreamProtocolRequest, callback: StreamCallback): void;
+    (request: InterceptStreamProtocolRequest, callback: StreamProtocolCallback): void;
 }

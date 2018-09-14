@@ -8,7 +8,7 @@ const log = Logger.create();
 
 export class StreamInterceptors {
 
-    public static mockInterceptor(request: InterceptStreamProtocolRequest, callback: StreamCallback) {
+    public static mockInterceptor(request: InterceptStreamProtocolRequest, callback: StreamProtocolCallback) {
         callback( <any> {
             statusCode: 200,
             headers: {
@@ -34,7 +34,7 @@ export class StreamInterceptors {
 
     }
 
-    public static handleWithNetRequest(request: InterceptStreamProtocolRequest, callback: StreamCallback) {
+    public static handleWithNetRequest(request: InterceptStreamProtocolRequest, callback: StreamProtocolCallback) {
 
         log.debug("Handling request: ", request.url);
 
@@ -125,7 +125,7 @@ export class StreamInterceptors {
 }
 
 
-export type StreamCallback = (stream?: ReadableStream | StreamProtocolResponse | CorrectStreamProtocolResponse) => void;
+export type StreamProtocolCallback = (stream?: ReadableStream | StreamProtocolResponse | CorrectStreamProtocolResponse) => void;
 
 export interface CorrectStreamProtocolResponse {
 
@@ -135,7 +135,7 @@ export interface CorrectStreamProtocolResponse {
     /**
      * A Node.js readable stream representing the response body
      */
-    data: ReadableStream | Readable;
+    data: ReadableStream | Readable | NodeJS.ReadableStream;
     /**
      * An object containing the response headers
      */

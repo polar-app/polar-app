@@ -16,7 +16,7 @@ export abstract class CacheEntry {
      *
      * @type {{}}
      */
-    public headers: {[key: string]: string} = {};
+    public headers: {[key: string]: string | string[]} = {};
 
     /**
      * The status code for this cache entry.
