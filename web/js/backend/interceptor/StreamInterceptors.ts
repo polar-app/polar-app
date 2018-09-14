@@ -49,43 +49,20 @@ export class StreamInterceptors {
             .on('response', async (response) => {
 
                 response.on('data', chunk => {
-                    console.log("FIXME: chunk", chunk);
                     responseStream.push(chunk);
                 });
 
                 response.on('end', () => {
-                    console.log("FIXME: end");
                     responseStream.push(null);
                 });
 
-                // FIXME this response.headers thing is fucked...
-
-                console.log("FIXME: response ehaders: ", response.headers);
-                console.log("FIXME: response ehaders constructor: ", response.headers.constructor);
-
                 const headers = this.decodeBrokenResponseHeaders(response.headers);
 
-                console.log("FIXME: singleton ehaders: ", headers);
-
-                // FIXME: the problem is that they're single quoted...
-
                 const streamProtocolResponse: CorrectStreamProtocolResponse = {
-                    // headers,
-
-                    // FIXME: ok.. the headers aer wrong here... but what do we do when there are MULTIPLE
-                    // headers..?
-                    //
-
-                    // FIXME: double valued entries are actually fine..
-                    headers: <any> {
-                        'content-type': [ 'text/html' ]
-                    },
-
+                    headers,
                     data: responseStream,
                     statusCode: response.statusCode
                 };
-
-                console.log("Callback called");
 
                 callback(streamProtocolResponse);
 
@@ -108,6 +85,8 @@ export class StreamInterceptors {
 
         if (request.uploadData) {
 
+            // We have to call netRequest.write on all the request.uploadData.
+
             log.debug("Writing data to request");
             request.uploadData.forEach(current => {
                 netRequest.write(current.bytes);
@@ -115,33 +94,7 @@ export class StreamInterceptors {
 
         }
 
-        // TODO: we have to call netRequest.write on all the request.uploadData.
-        // not urgent because this isn't really a use case we must support.
-
         netRequest.end();
-
-    }
-
-    private static toSingletonDict(input: {[key: string]: string[]}): {[key: string]: string} {
-
-        const result: {[key: string]: string} = {};
-
-        for (const key of Object.keys(input)) {
-
-            const values = input[key];
-
-            if (values.length >= 1) {
-
-                result[key] = values[0];
-
-                if (values.length > 1) {
-                    log.warn("Key had too many input values: " + key, values);
-                }
-
-            }
-        }
-
-        return result;
 
     }
 

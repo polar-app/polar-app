@@ -3,8 +3,9 @@ import JSZip from 'jszip';
 import {Resources} from './Resources';
 import {ResourceEntry} from './ResourceEntry';
 import {Files} from '../util/Files';
+import {CompressedReader} from './CompressedReader';
 
-export class PHZReader {
+export class PHZReader implements CompressedReader {
 
     public path: string;
 
@@ -14,7 +15,7 @@ export class PHZReader {
 
     public resources: Resources = new Resources();
 
-    private cache: {[key: string]: string} = {};
+    private cache: {[key: string]: any} = {};
 
     constructor(path: string) {
         this.path = path;
@@ -31,6 +32,12 @@ export class PHZReader {
         const data = await Files.readFileAsync(this.path);
 
         this.zip = new JSZip();
+        // this.zip.support = {
+        //     arraybuffer: true,
+        //     uint8array: true,
+        //     blob: true,
+        //     nodebuffer: true
+        // };
 
         await this.zip.loadAsync(data);
 
@@ -82,13 +89,49 @@ export class PHZReader {
     }
 
     /**
+     * Read a resource from disk and call the callback with the new content once
+     * it's ready for usage.
+     *
+     */
+    public async getResource(resourceEntry: ResourceEntry): Promise<Buffer> {
+        return await this._readAsBuffer(resourceEntry.path);
+    }
+
+    public async getResourceAsStream(resourceEntry: ResourceEntry): Promise<NodeJS.ReadableStream> {
+        return await this._readAsStream(resourceEntry.path);
+    }
+
+
+    public async close() {
+        // we just have to let it GC
+        this.zip = undefined;
+    }
+
+    /**
      * Return a raw buffer with no encoding.
      *
      * @param path
      * @return {Promise<Buffer>}
      * @private
      */
-    public async _readAsBuffer(path: string): Promise<Buffer> {
+    private async _readAsBuffer(path: string): Promise<Buffer> {
+
+        const zipFile = await this.getZipFile(path);
+
+        const arrayBuffer = await zipFile.async('arraybuffer');
+        return Buffer.from(arrayBuffer);
+
+    }
+
+    private async _readAsStream(path: string): Promise<NodeJS.ReadableStream> {
+
+        const zipFile = await this.getZipFile(path);
+
+        return await zipFile.nodeStream();
+
+    }
+
+    private async getZipFile(path: string): Promise<JSZip.JSZipObject>  {
 
         if (this.zip === undefined) {
             throw new Error("No zip.");
@@ -96,34 +139,13 @@ export class PHZReader {
 
         const zipFile = await this.zip.file(path);
 
+
         if (!zipFile) {
             throw new CachingException("No zip entry for path: " + path);
         }
 
-        // we can call nodeStream('nodebuffer') to read the data as a stream of
-        // bytes
+        return zipFile;
 
-        const arrayBuffer = await zipFile.async('arraybuffer');
-        return Buffer.from(arrayBuffer);
-
-    }
-
-    /**
-     * Read a resource from disk and call the callback with the new content once
-     * it's ready for usage.
-     *
-     */
-    public async getResource(resourceEntry: ResourceEntry): Promise<Buffer> {
-
-        // FIXME: I think we can call nodeStream to get this in chunks for less
-        // UI latency.  We should probably move in that directly.
-
-        return await this._readAsBuffer(resourceEntry.path);
-    }
-
-    public async close() {
-        // we just have to let it GC
-        this.zip = undefined;
     }
 
 }

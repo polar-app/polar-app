@@ -1,10 +1,11 @@
 import {PHZReader} from './PHZReader';
 import {ResourceEntry} from './ResourceEntry';
 import {Logger} from '../logger/Logger';
+import {CompressedReader} from './CompressedReader';
 
 const log = Logger.create();
 
-export class CachingPHZReader {
+export class CachingPHZReader implements CompressedReader {
 
     public path: string;
 
@@ -36,7 +37,7 @@ export class CachingPHZReader {
      *
      * @return {Promise<void>}
      */
-    async init() {
+    public async init() {
 
         this.delegate = new PHZReader(this.path);
         await this.delegate!.init();
@@ -49,16 +50,15 @@ export class CachingPHZReader {
 
     }
 
-    async getMetadata() {
+    public async getMetadata() {
         await this.openWhenNecessary();
         return await this.delegate!.getMetadata();
     }
 
     /**
      * Get just the resources from the metadata.
-     * @return {Promise<Resources>}
      */
-    async getResources() {
+    public async getResources() {
         await this.openWhenNecessary();
         return await this.delegate!.getResources();
     }
@@ -68,9 +68,14 @@ export class CachingPHZReader {
      * it's ready for usage.
      *
      */
-    async getResource(resourceEntry: ResourceEntry): Promise<Buffer> {
+    public async getResource(resourceEntry: ResourceEntry): Promise<Buffer> {
         await this.openWhenNecessary();
         return await this.delegate!.getResource(resourceEntry);
+    }
+
+    public async getResourceAsStream(resourceEntry: ResourceEntry): Promise<NodeJS.ReadableStream> {
+        await this.openWhenNecessary();
+        return await this.delegate!.getResourceAsStream(resourceEntry);
     }
 
     async openWhenNecessary() {
@@ -87,11 +92,11 @@ export class CachingPHZReader {
 
     }
 
-    async close() {
+    public async close() {
 
         // copy the delegate so that nothing can see this.delegate as being
         // non-null while we close else we would have a race.
-        let delegate = this.delegate;
+        const delegate = this.delegate;
 
         this.delegate = undefined;
 

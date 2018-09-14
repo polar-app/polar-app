@@ -25,7 +25,6 @@ export class ResourceEntry {
      */
     public resource: Resource;
 
-
     constructor(opts: any) {
 
         this.id = opts.id;

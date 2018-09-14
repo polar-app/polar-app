@@ -9,11 +9,11 @@ describe('DiskCacheEntry', function() {
 
         it("basic", async function () {
 
-            let path = FilePaths.tmpfile("test.txt");
-            let testData = "this is some data";
+            const path = FilePaths.tmpfile("test.txt");
+            const testData = "this is some data";
             fs.writeFileSync(path, testData);
 
-            let diskCacheEntry = new DiskCacheEntry({
+            const diskCacheEntry = new DiskCacheEntry({
                 url: "http://foo.com/second.txt",
                 method: "GET",
                 headers: {

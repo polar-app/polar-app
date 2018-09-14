@@ -7,10 +7,16 @@ import {PHZWriter} from './PHZWriter';
 import {PHZReader} from './PHZReader';
 import {Dictionaries} from '../util/Dictionaries';
 import {FilePaths} from '../util/FilePaths';
+import JSZip from 'jszip';
+import {Streams} from '../util/Streams';
 
 TestingTime.freeze();
 
 describe('PHZ functionality', function() {
+
+    it("JSZIP support", function () {
+        console.log("FIXME: " , JSZip.support);
+    });
 
     it("ResourceFactory", function () {
 
@@ -67,6 +73,8 @@ describe('PHZ functionality', function() {
 
     it("Reading", async function () {
 
+
+
         let path = FilePaths.tmpfile("test.phz");
 
         await Files.unlinkAsync(path);
@@ -109,21 +117,27 @@ describe('PHZ functionality', function() {
 
         assertJSON(Dictionaries.sorted(resources), Dictionaries.sorted(expected));
 
-        let resourceEntry = resources.entries["1XKZEWhTwbtoPFSkR2TJ"];
+        const resourceEntry = resources.entries["1XKZEWhTwbtoPFSkR2TJ"];
 
-        let buffer = await phzReader.getResource(resourceEntry);
+        const buffer = await phzReader.getResource(resourceEntry);
 
-        let content = buffer.toString("UTF-8");
+        const content = buffer.toString("UTF-8");
 
         assert.equal(content, "<html></html>");
 
+        const stream = await phzReader.getResourceAsStream(resourceEntry);
+        assert.ok(stream);
+
+        assert.equal((await Streams.toBuffer(stream)).toString("UTF-8"), "<html></html>")
+
         // test getting the metadata (when there isn't any)
 
-        let metadata = await phzReader.getMetadata();
+        const metadata = await phzReader.getMetadata();
 
         expected = {
             "title": "this is the title"
         };
+
         assertJSON(metadata, expected);
 
     });
@@ -150,7 +164,7 @@ describe('PHZ functionality', function() {
         assertJSON(resources, expected);
 
         let metadata = await phzReader.getMetadata();
-        assert.equal(metadata, null)
+        assert.equal(metadata, null);
 
     });
 
