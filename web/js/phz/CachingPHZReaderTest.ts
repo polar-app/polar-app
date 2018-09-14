@@ -80,7 +80,7 @@ describe('CachingPHZReader', function() {
 
     });
 
-    it("Reading from a new caching reader (not closed)", async function () {
+    it("Reading from a new caching reader (not closed)", async function() {
 
         let phzReader = new CachingPHZReader(path);
         await phzReader.init();

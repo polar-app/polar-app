@@ -65,7 +65,7 @@ export class Resource {
     /**
      *
      */
-    public headers: {[key: string]: string} = {};
+    public headers: {[key: string]: string | string[]} = {};
 
     constructor(opts: any) {
 

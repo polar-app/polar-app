@@ -3,18 +3,18 @@ import {Resource} from './Resource';
 
 export class ResourceFactory {
 
-    static create(url: string, contentType: string) {
+    public static create(url: string, contentType: string) {
 
-        let id = Hashcodes.createID(url, 20);
-        let created = new Date().toISOString();
-        let meta = {};
-        let headers = {};
+        const id = Hashcodes.createID(url, 20);
+        const created = new Date().toISOString();
+        const meta = {};
+        const headers = {};
         return new Resource({id, url, created, meta, contentType, headers});
 
     }
 
-    static contentTypeToExtension(contentType: string) {
-        if(contentType === "text/html") {
+    public static contentTypeToExtension(contentType: string) {
+        if (contentType === "text/html") {
             return "html";
         } else {
             return "dat";
