@@ -12,7 +12,7 @@ import {isPresent} from '../../Preconditions';
  */
 export class Messenger {
 
-    async postMessage(postMessageRequest: PostMessageRequest) {
+    public async postMessage(postMessageRequest: PostMessageRequest) {
 
         postMessageRequest = new PostMessageRequest(postMessageRequest);
 
@@ -20,7 +20,7 @@ export class Messenger {
             window.postMessage(message, "*");
         }
 
-        let script = Functions.functionToScript(postMessageFunction, postMessageRequest.message);
+        const script = Functions.functionToScript(postMessageFunction, postMessageRequest.message);
 
         let targetBrowserWindow = postMessageRequest.window;
 

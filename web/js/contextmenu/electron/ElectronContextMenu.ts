@@ -7,7 +7,6 @@ import {Broadcaster} from '../../ipc/Broadcaster';
 import {Preconditions} from '../../Preconditions';
 import {ContextMenuType} from '../ContextMenuType';
 import {Messenger} from '../../electron/messenger/Messenger';
-const {ContextMenu} = require("../ContextMenu");
 
 const log = Logger.create();
 
@@ -18,13 +17,12 @@ const log = Logger.create();
  *
  * @ElectronMainContext
  */
-export class ElectronContextMenu extends ContextMenu {
+export class ElectronContextMenu {
 
     private readonly messenger: Messenger;
 
     constructor() {
 
-        super();
         this.messenger = new Messenger();
 
         // TODO: move this to a start method.
@@ -50,9 +48,6 @@ export class ElectronContextMenu extends ContextMenu {
         Preconditions.assertNotNull(sender, "sender");
 
         let window = BrowserWindow.getFocusedWindow();
-
-        //console.log("GOT IT for: contextMenuTypes: " + contextMenuTypes)
-        //console.log("GOT IT for: matchingSelectors: " + JSON.stringify(matchingSelectors, null, "  "))
 
         const ctxMenu = this.createContextMenu(triggerEvent, sender);
 
@@ -85,7 +80,7 @@ export class ElectronContextMenu extends ContextMenu {
                 matchingSelectors: triggerEvent.matchingSelectors,
                 docDescriptor: triggerEvent.docDescriptor
             }
-        })
+        });
 
     }
 
@@ -342,3 +337,4 @@ export class ElectronContextMenu extends ContextMenu {
     }
 
 }
+
