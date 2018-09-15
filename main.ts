@@ -1,4 +1,4 @@
-import {app, crashReporter} from 'electron';
+import {app} from 'electron';
 import {Logger} from './web/js/logger/Logger';
 import {MainApp} from './web/js/apps/main/MainApp';
 import {Cmdline} from './web/js/electron/Cmdline';

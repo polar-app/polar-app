@@ -7,7 +7,6 @@ import {Broadcaster} from '../../ipc/Broadcaster';
 import {Preconditions} from '../../Preconditions';
 import {ContextMenuType} from '../ContextMenuType';
 import {Messenger} from '../../electron/messenger/Messenger';
-
 const {ContextMenu} = require("../ContextMenu");
 
 const log = Logger.create();
@@ -21,15 +20,17 @@ const log = Logger.create();
  */
 export class ElectronContextMenu extends ContextMenu {
 
-    constructor() {
-        super();
+    private readonly messenger: Messenger;
 
+    constructor() {
+
+        super();
         this.messenger = new Messenger();
 
         // TODO: move this to a start method.
         ipcMain.on('context-menu-trigger', (event: Electron.Event, message: any) => {
 
-            let triggerEvent = TriggerEvent.create(message);
+            const triggerEvent = TriggerEvent.create(message);
 
             this.trigger(triggerEvent, event.sender);
 
