@@ -97,13 +97,6 @@ export class MainApp {
 
         log.info("Running with process.args: ", JSON.stringify(process.argv));
 
-        // if there is a PDF file to open, load that, otherwise, load the default URL.
-
-        // FIXME: handleCmdLinePDF(process.argv, false).catch((err) => log.error(err));
-
-        // FIXME: ... there's a catch/22 here creating the main window... we need
-        // the main Window created so that we can init the loader...
-
         const mainAppController = new MainAppController(fileLoader, this.datastore, webserver);
 
         const mainAppService = new MainAppService(mainAppController);
@@ -124,8 +117,6 @@ export class MainApp {
         });
 
         app.on('second-instance', async (event, commandLine) => {
-
-            // FIXME: focus the window now...
 
             log.info("Someone opened a second instance.");
 

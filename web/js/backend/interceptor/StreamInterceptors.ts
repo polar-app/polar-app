@@ -87,10 +87,13 @@ export class StreamInterceptors {
 
             // We have to call netRequest.write on all the request.uploadData.
 
-            log.debug("Writing data to request");
+            log.debug(`Writing data to request with method ${request.method}`);
+
             request.uploadData.forEach(current => {
-                netRequest.write(current.bytes);
+                netRequest.write(this.assertChunk(current.bytes));
             });
+
+            // throw new TypeError('First argument must be a string or Buffer.')
 
         }
 
@@ -120,6 +123,28 @@ export class StreamInterceptors {
         }
 
         return result;
+    }
+
+    private static assertChunk(chunk: Buffer): Buffer {
+
+        if (chunk === undefined) {
+            throw new TypeError('Must not be undefined.');
+        }
+
+        if (chunk === null) {
+            throw new TypeError('Must not be null.');
+        }
+
+        const chunkIsString = typeof chunk === 'string';
+        const chunkIsBuffer = chunk instanceof Buffer;
+
+        if (!chunkIsString && !chunkIsBuffer) {
+            log.error("Invalid data given: ", chunk);
+            throw new TypeError('Must be a string or Buffer.');
+        }
+
+        return chunk;
+
     }
 
 }
