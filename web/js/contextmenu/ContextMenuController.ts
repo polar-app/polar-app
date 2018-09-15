@@ -35,7 +35,7 @@ export class ContextMenuController {
 
     }
 
-    start() {
+    public start() {
 
         // TODO: this should be refactored to make it testable with jsdom once
         // I get it working.
@@ -44,41 +44,41 @@ export class ContextMenuController {
 
         document.querySelectorAll(".page").forEach((targetElement) => {
 
-            targetElement.addEventListener("contextmenu", /** @type {MouseEvent} */ (event: any) => {
+            targetElement.addEventListener("contextmenu", (event: any) => {
 
-                let annotationSelectors = [ ".text-highlight",
-                                            ".area-highlight",
-                                            ".pagemark",
-                                            ".page"];
+                const annotationSelectors = [ ".text-highlight",
+                                              ".area-highlight",
+                                              ".pagemark",
+                                              ".page"];
 
-                let matchingSelectors
+                const matchingSelectors
                     = ContextMenuController.elementsFromEventMatchingSelectors(event, annotationSelectors );
 
-                let contextMenuTypes: ContextMenuType[] = [];
+                const contextMenuTypes: ContextMenuType[] = [];
 
-                forDict(matchingSelectors, function (selector: any, current: any) {
-                    if(current.elements.length > 0) {
+                forDict(matchingSelectors, (selector: any, current: any) => {
+                    if (current.elements.length > 0) {
                         contextMenuTypes.push(ContextMenuController.toContextMenuType(current.selector));
                     }
                 });
 
-                let docDescriptor = new DocDescriptor({
+                const docDescriptor = new DocDescriptor({
                     fingerprint: this.model.docMeta.docInfo.fingerprint
                 });
 
                 log.info("Creating context menu for contextMenuTypes: ", contextMenuTypes);
 
-                let pageElement = Elements.untilRoot(event.target, ".page");
+                const pageElement = Elements.untilRoot(event.target, ".page");
 
-                let docFormat = DocFormatFactory.getInstance();
+                const docFormat = DocFormatFactory.getInstance();
 
-                let pageNum = docFormat.getPageNumFromPageElement(pageElement);
+                const pageNum = docFormat.getPageNumFromPageElement(pageElement);
 
-                let eventTargetOffset = Elements.getRelativeOffsetRect(event.target, pageElement);
+                const eventTargetOffset = Elements.getRelativeOffsetRect(event.target, pageElement);
 
                 // compute the offset of the event relative to the page we're
                 // viewing
-                let pageOffset = {
+                const pageOffset = {
 
                     x: eventTargetOffset.left + event.offsetX,
                     y: eventTargetOffset.top + event.offsetY
@@ -117,18 +117,18 @@ export class ContextMenuController {
 
     }
 
-    static elementsFromEvent(event: any) {
+    public static elementsFromEvent(event: any) {
 
         // the point must be relative to the viewport
-        let point = {x: event.clientX, y: event.clientY};
+        const point = {x: event.clientX, y: event.clientY};
 
-        let doc = event.target.ownerDocument;
+        const doc = event.target.ownerDocument;
 
         return doc.elementsFromPoint(point.x, point.y);
 
     }
 
-    static toContextMenuType(selector: string): ContextMenuType {
+    public static toContextMenuType(selector: string): ContextMenuType {
         let result = selector.toUpperCase();
         result = result.replace(".", "");
         result = result.replace("-", "_");
@@ -142,29 +142,29 @@ export class ContextMenuController {
      * @param event
      * @param selectors
      */
-     static elementsFromEventMatchingSelectors(event: any, selectors: string[]) {
+     public static elementsFromEventMatchingSelectors(event: any, selectors: string[]): MatchingSelectorMap {
 
-        let result: {[key: string]: MatchingSelector} = {};
+        const result: MatchingSelectorMap = {};
 
         selectors.forEach(selector => {
             result[selector] = new MatchingSelector(selector, [], []);
         });
 
-        let elements = ContextMenuController.elementsFromEvent(event);
+        const elements = ContextMenuController.elementsFromEvent(event);
 
         elements.forEach((element: HTMLElement) => {
 
             selectors.forEach(selector => {
 
-                if(element.matches(selector)) {
+                if (element.matches(selector)) {
 
-                    let matchingSelector = result[selector];
+                    const matchingSelector = result[selector];
 
                     matchingSelector.elements.push(element);
 
-                    let annotationDescriptor = AnnotationDescriptors.createFromElement(element);
+                    const annotationDescriptor = AnnotationDescriptors.createFromElement(element);
 
-                    if(annotationDescriptor) {
+                    if (annotationDescriptor) {
                         matchingSelector.annotationDescriptors.push(annotationDescriptor);
                     }
                 }
@@ -178,3 +178,6 @@ export class ContextMenuController {
     }
 
 }
+
+// noinspection TsLint
+export type MatchingSelectorMap = {[key: string]: MatchingSelector};

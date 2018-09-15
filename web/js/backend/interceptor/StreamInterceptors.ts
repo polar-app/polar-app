@@ -1,6 +1,6 @@
 import {net} from "electron";
 import {Logger} from '../../logger/Logger';
-import {PassThrough, Readable} from 'stream';
+import {Duplex, PassThrough, Readable, Stream} from 'stream';
 import InterceptStreamProtocolRequest = Electron.InterceptStreamProtocolRequest;
 import StreamProtocolResponse = Electron.StreamProtocolResponse;
 
@@ -48,15 +48,28 @@ export class StreamInterceptors {
         const netRequest = net.request(options)
             .on('response', async (response) => {
 
-                response.on('data', chunk => {
-                    responseStream.push(chunk);
-                });
+                response
+                    .on('data', chunk => {
+                        responseStream.push(chunk);
+                    })
+                    .on('end', () => {
+                        responseStream.push(null);
+                    })
+                    .on('aborted', () => {
+                        log.error(`Response aborted: ${request.url}`);
+                        callback(undefined); // TODO test this.
+                    })
+                    .on('error', () => {
+                        log.error(`Response error: ${request.url}`);
+                        callback(undefined); // TODO test this.
+                    });
 
-                response.on('end', () => {
-                    responseStream.push(null);
-                });
+                const headers = Object.assign({}, response.headers);
 
-                const headers = this.decodeBrokenResponseHeaders(response.headers);
+                // we have to delete the content-encoding HTTP header becaue
+                // the net.request API already performs the gzip/deflate encoding
+                // FOR us and Chrome attempts to double decode it and then breaks.
+                delete headers['content-encoding'];
 
                 const streamProtocolResponse: CorrectStreamProtocolResponse = {
                     headers,
@@ -68,7 +81,7 @@ export class StreamInterceptors {
 
             })
             .on('abort', () => {
-                log.error(`Request aborted: ${request.url}`);
+                log.error(`Request abort: ${request.url}`);
                 callback(undefined); // TODO test this.
             })
             .on('error', (error) => {
@@ -101,30 +114,6 @@ export class StreamInterceptors {
 
     }
 
-    /**
-     * As of 3.0-beta12 (and previous versions of Electron) the header keys and
-     * values are all mangled.
-     */
-    private static decodeBrokenResponseHeaders(input: {[key: string]: string[]}): {[key: string]: string[]} {
-
-        function decodeBrokenString(value: string): string {
-            return value.substring(1, value.length - 1);
-        }
-
-        const result: {[key: string]: string[]} = {};
-
-        for (const key of Object.keys(input)) {
-
-            const newKey = decodeBrokenString(key);
-            const newValue = input[key].map(current => decodeBrokenString(current));
-
-            result[newKey] = newValue;
-
-        }
-
-        return result;
-    }
-
     private static assertChunk(chunk: Buffer): Buffer {
 
         if (chunk === undefined) {
@@ -150,6 +139,7 @@ export class StreamInterceptors {
 }
 
 
+// noinspection TsLint
 export type StreamProtocolCallback = (stream?: ReadableStream | StreamProtocolResponse | CorrectStreamProtocolResponse) => void;
 
 export interface CorrectStreamProtocolResponse {
