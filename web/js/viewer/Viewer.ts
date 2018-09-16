@@ -14,7 +14,7 @@ export abstract class Viewer {
     public abstract docDetail(): DocDetail | undefined;
 
     protected getFilename(): string {
-        let url = new URL(window.location.href);
+        const url = new URL(window.location.href);
         return notNull(url.searchParams.get("filename"));
     }
 

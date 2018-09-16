@@ -3,10 +3,33 @@
 
     <style>
 
-        #popup {
+        #popupOlde {
             background-color: orange;
             padding: 5px;
             z-index: 999999999;
+        }
+
+        #popup {
+            background-color: #ffffff;
+            padding: 15px;
+            z-index: 999999999;
+            border: #bbbbbb solid 1px;
+        }
+
+        #popup .title {
+            font-weight: bold;
+            font-size: 25px;
+            padding: 10px;
+        }
+
+        #popup .popup-buttons {
+
+            text-align: center;
+            padding: 5px;
+        }
+
+        #popup .popup-buttons button {
+            margin: 5px;
         }
 
     </style>
@@ -19,9 +42,23 @@
 
 <div id="wrapper">
     <div class="blocker"></div>
+
     <div id="popup">
-        Popper.js Tutorial!
+
+        <div class="title">
+            Are you sure?
+        </div>
+
+        <div class="popup-buttons">
+
+            <button value="">Cancel</button>
+
+            <button value="">Delete</button>
+
+        </div>
+
     </div>
+
     <button id="button-a">button</button>
     <div class="blocker"></div>
 

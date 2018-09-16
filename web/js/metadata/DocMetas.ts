@@ -22,9 +22,9 @@ export class DocMetas {
      * @param fingerprint The fingerprint of the document
      * @param nrPages The number of pages in this document.
      */
-    public static create(fingerprint: string, nrPages: number) {
+    public static create(fingerprint: string, nrPages: number, filename?: string) {
 
-        const docInfo = DocInfos.create(fingerprint, nrPages);
+        const docInfo = DocInfos.create(fingerprint, nrPages, filename);
 
         const pageMetas: {[id: string]: PageMeta} = {};
 

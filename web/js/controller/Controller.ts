@@ -1,6 +1,8 @@
 import {Model} from '../model/Model';
 import {Preconditions} from '../Preconditions';
 import {Logger} from '../logger/Logger';
+import {DocDetails} from '../metadata/DocDetails';
+import {DocDetail} from '../metadata/DocDetail';
 
 const log = Logger.create();
 
@@ -18,14 +20,19 @@ export class Controller {
     /**
      * Called when a new document has been loaded.
      */
-    async onDocumentLoaded(fingerprint: string, nrPages: number, currentlySelectedPageNum: number) {
-        await this.model.documentLoaded(fingerprint, nrPages, currentlySelectedPageNum);
+    public async onDocumentLoaded(fingerprint: string,
+                                  nrPages: number,
+                                  currentlySelectedPageNum: number,
+                                  docDetail: DocDetail | undefined) {
+
+        await this.model.documentLoaded(fingerprint, nrPages, currentlySelectedPageNum, docDetail);
+
     }
 
     /**
      * Mark the given page number as read.
      */
-    async createPagemark(pageNum: number, options: any = {}) {
+    public async createPagemark(pageNum: number, options: any = {}) {
         log.info("Controller sees pagemark created: " + pageNum, options);
         await this.model.createPagemark(pageNum, options);
     }

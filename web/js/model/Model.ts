@@ -7,12 +7,10 @@ import {Pagemarks} from '../metadata/Pagemarks';
 import {Objects} from '../util/Objects';
 import {DocMetaDescriber} from '../metadata/DocMetaDescriber';
 import {Logger} from '../logger/Logger';
-import {TraceEvent} from '../proxies/TraceEvent';
-import {Batcher} from '../datastore/batcher/Batcher';
 import {IListenablePersistenceLayer} from '../datastore/IListenablePersistenceLayer';
 import {ModelPersisterFactory} from './ModelPersisterFactory';
-
-const {Proxies} = require("../proxies/Proxies");
+import {DocDetail} from '../metadata/DocDetail';
+import {Optional} from '../util/ts/Optional';
 
 const log = Logger.create();
 
@@ -49,7 +47,10 @@ export class Model {
     /**
      * Called when a new document has been loaded.
      */
-    public async documentLoaded(fingerprint: string, nrPages: number, currentPageNumber: number) {
+    public async documentLoaded(fingerprint: string,
+                                nrPages: number,
+                                currentPageNumber: number,
+                                docDetail: DocDetail | undefined) {
 
         let docMeta: DocMeta | undefined;
 
@@ -58,7 +59,12 @@ export class Model {
             console.warn("New document found. Creating initial DocMeta");
 
             // this is a new document...
-            docMeta = DocMetas.create(fingerprint, nrPages);
+
+            docMeta = DocMetas.create(fingerprint,
+                                      nrPages,
+                                      Optional.of(docDetail).map(current => current.filename)
+                                          .getOrUndefined());
+
             await this.persistenceLayer.sync(fingerprint, docMeta);
 
             // I'm not sure this is the best way to resolve this as swapping in

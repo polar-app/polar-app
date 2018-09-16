@@ -23,7 +23,7 @@ export class LoadDocHandler  extends IPCHandler<LoadDocRequest> {
 
     protected async handleIPC(event: IPCEvent, loadDocRequest: LoadDocRequest): Promise<void> {
 
-        let path = FilePaths.join(this.directories.stashDir, loadDocRequest.filename);
+        const path = FilePaths.join(this.directories.stashDir, loadDocRequest.filename);
 
         await this.mainAppController.handleLoadDoc(path, loadDocRequest.newWindow);
 

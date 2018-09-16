@@ -48,20 +48,25 @@ export class WebController extends Controller {
 
     }
 
-    async start() {
+    public async start() {
 
         this.listenForDocumentLoad();
         await this.listenForKeyBindings();
 
-        //new MouseTracer(document).start();
+        // new MouseTracer(document).start();
 
     }
 
-    async onDocumentLoaded(fingerprint: string, nrPages: number, currentlySelectedPageNum: number) {
+    public async dispatchDocumentLoaded(fingerprint: string,
+                                        nrPages: number,
+                                        currentlySelectedPageNum: number) {
 
-        await super.onDocumentLoaded(fingerprint, nrPages, currentlySelectedPageNum);
+        const docDetail = this.viewer.docDetail();
 
-        let docDetail = this.viewer.docDetail();
+        await super.onDocumentLoaded(fingerprint,
+                                     nrPages,
+                                     currentlySelectedPageNum,
+                                     docDetail);
 
         log.info("Merging docDetail: ", docDetail);
 
@@ -77,30 +82,30 @@ export class WebController extends Controller {
 
     }
 
-    setupWindowWidth() {
+    public setupWindowWidth() {
 
-        let viewerClientWidth = Optional.of(document.querySelector("#viewerContainer"))
+        const viewerClientWidth = Optional.of(document.querySelector("#viewerContainer"))
             .map(current => current.clientWidth)
             .getOrElse(0);
 
 
-        let viewerScrollWidth = Optional.of(document.querySelector("#viewerContainer"))
+        const viewerScrollWidth = Optional.of(document.querySelector("#viewerContainer"))
             .map(current => current.scrollWidth)
             .getOrElse(0);
 
-        let needsResize = viewerScrollWidth > viewerClientWidth;
+        const needsResize = viewerScrollWidth > viewerClientWidth;
 
-        if(needsResize) {
+        if (needsResize) {
 
-            let sidebarScrollWidth = Optional.of(document.querySelector("#sidebarContainer"))
+            const sidebarScrollWidth = Optional.of(document.querySelector("#sidebarContainer"))
                 .map(current => current.scrollWidth)
                 .getOrElse(0);
 
-            let bufferWidth = 50;
+            const bufferWidth = 50;
 
-            let newWidth = sidebarScrollWidth + viewerScrollWidth + bufferWidth;
+            const newWidth = sidebarScrollWidth + viewerScrollWidth + bufferWidth;
 
-            if(newWidth > window.outerWidth) {
+            if (newWidth > window.outerWidth) {
                 window.resizeTo(newWidth, window.outerHeight);
             }
 
@@ -108,47 +113,47 @@ export class WebController extends Controller {
 
     }
 
-    setupDocumentTitle() {
+    public setupDocumentTitle() {
 
-        let title = Optional.of(this.model.docMeta.docInfo.title).getOrElse("Untitled");
+        const title = Optional.of(this.model.docMeta.docInfo.title).getOrElse("Untitled");
 
         document.title = `${title}`;
 
     }
 
-    setupContextMenu() {
+    public setupContextMenu() {
 
-        let contextMenuController = new ContextMenuController(this.model);
+        const contextMenuController = new ContextMenuController(this.model);
         contextMenuController.start();
 
     }
 
-    listenForDocumentLoad() {
+    public listenForDocumentLoad() {
 
-        let container = notNull(document.getElementById('viewerContainer'));
+        const container = notNull(document.getElementById('viewerContainer'));
 
         container.addEventListener('pagesinit', this.detectDocumentLoadedEventListener.bind(this));
         container.addEventListener('updateviewarea', this.detectDocumentLoadedEventListener.bind(this));
 
         // run manually the first time in case we get lucky of we're running HTML
-        //this.detectDocumentLoadedEventListener();
+        // this.detectDocumentLoadedEventListener();
 
     }
 
-    detectDocumentLoadedEventListener(event: Event) {
+    public detectDocumentLoadedEventListener(event: Event) {
 
         // FIXME: technically we're detecting a new document LOADING not LOADED...
         // fix this so that I get a distinct onDocumentLoaded event too...
 
-        let currentDocFingerprint = this.docFormat.currentDocFingerprint();
+        const currentDocFingerprint = this.docFormat.currentDocFingerprint();
 
         if (currentDocFingerprint !== undefined && currentDocFingerprint !== this.docFingerprint) {
 
             log.info("controller: New document loaded!");
 
-            let newDocumentFingerprint = currentDocFingerprint;
+            const newDocumentFingerprint = currentDocFingerprint;
 
-            let currentDocState = this.docFormat.currentState(event);
+            const currentDocState = this.docFormat.currentState(event);
 
             this.onNewDocumentFingerprint(newDocumentFingerprint, currentDocState.nrPages, currentDocState.currentPageNumber);
 
@@ -156,27 +161,27 @@ export class WebController extends Controller {
 
     }
 
-    onNewDocumentFingerprint(newDocumentFingerprint: string, nrPages: number, currentPageNumber: number) {
+    public onNewDocumentFingerprint(newDocumentFingerprint: string, nrPages: number, currentPageNumber: number) {
 
         log.info(`Detected new document fingerprint (fingerprint=${newDocumentFingerprint}, nrPages=${nrPages}, currentPageNumber=${currentPageNumber})`);
 
         this.docFingerprint = newDocumentFingerprint;
 
-        this.onDocumentLoaded(newDocumentFingerprint, nrPages, currentPageNumber)
+        this.dispatchDocumentLoaded(newDocumentFingerprint, nrPages, currentPageNumber)
             .catch(err => log.error("Could not handle onDocumentLoaded: ", err));
 
     }
 
     // FIXME: remake this binding to CreatePagemarkEntirePage
-    async keyBindingPagemarkEntirePage(event: KeyboardEvent) {
+    public async keyBindingPagemarkEntirePage(event: KeyboardEvent) {
 
         log.info("Marking entire page as read.");
 
-        let pageElement = this.docFormat.getCurrentPageElement();
+        const pageElement = this.docFormat.getCurrentPageElement();
 
-        if(pageElement) {
+        if (pageElement) {
 
-            let pageNum = this.docFormat.getPageNumFromPageElement(pageElement);
+            const pageNum = this.docFormat.getPageNumFromPageElement(pageElement);
 
             this.erasePagemarks(pageNum);
             await this.createPagemark(pageNum);
@@ -187,18 +192,18 @@ export class WebController extends Controller {
 
     }
 
-    keyBindingErasePagemark() {
+    public keyBindingErasePagemark() {
         log.info("Erasing pagemark.");
-        let pageElement = <HTMLElement>this.docFormat.getCurrentPageElement();
+        const pageElement = <HTMLElement> this.docFormat.getCurrentPageElement();
 
-        if(isPresent(pageElement)) {
-            let pageNum = this.docFormat.getPageNumFromPageElement(pageElement);
+        if (isPresent(pageElement)) {
+            const pageNum = this.docFormat.getPageNumFromPageElement(pageElement);
             this.erasePagemark(pageNum);
         }
 
     }
 
-    async keyBindingListener(event: KeyboardEvent) {
+    public async keyBindingListener(event: KeyboardEvent) {
 
         if (KeyEvents.isKeyMetaActive(event)) {
 
@@ -229,7 +234,7 @@ export class WebController extends Controller {
 
     }
 
-    async listenForKeyBindings() {
+    public async listenForKeyBindings() {
 
         document.addEventListener("keydown", this.keyBindingListener.bind(this));
 

@@ -2,17 +2,20 @@ import {ElectronIPCPipe} from '../../../ipc/handler/ElectronIPCPipe';
 import {ElectronRendererPipe} from '../../../ipc/pipes/ElectronRendererPipe';
 import {IPCClient} from '../../../ipc/handler/IPCClient';
 import {LoadDocRequest} from './LoadDocRequest';
+import {Preconditions} from '../../../Preconditions';
 
-let ipcPipe = new ElectronIPCPipe(new ElectronRendererPipe());
-let ipcClient = new IPCClient(ipcPipe);
+const ipcPipe = new ElectronIPCPipe(new ElectronRendererPipe());
+const ipcClient = new IPCClient(ipcPipe);
 
 export class DocLoader {
 
-    /**
-     *
-     */
-    static async load(loadDocRequest: LoadDocRequest): Promise<void> {
+    public static async load(loadDocRequest: LoadDocRequest): Promise<void> {
+
+        Preconditions.assertPresent(loadDocRequest.fingerprint, "fingerprint");
+        Preconditions.assertPresent(loadDocRequest.filename, "filename");
+
         await ipcClient.execute('/main/load-doc', loadDocRequest);
+
     }
 
 }
