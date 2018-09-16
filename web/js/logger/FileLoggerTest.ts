@@ -26,8 +26,10 @@ describe('FileLogger', function() {
 
         const data = await Files.readFileAsync(path);
 
+        console.log("data: ", data.toString("UTF8"));
+
         assert.ok(data.indexOf("[info] Hello world") !== -1);
-        assert.ok(data.indexOf("[info] This is an object: {\"hello\":\"world\"}") !== -1);
+        assert.ok(data.indexOf("[info] This is an object: { hello: 'world' }") !== -1);
         assert.ok(data.indexOf("[info] This is a basic string: basic string") !== -1);
         assert.ok(data.indexOf("[error] This is an error: \n" +
                                    "Error: Fake error\n" +
