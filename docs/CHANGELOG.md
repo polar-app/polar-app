@@ -1,3 +1,14 @@
+# 1.0.0-beta160
+
+- Fixed corruption issue regarding the store when two documents are open and one
+  is updated.
+  
+- Using intercept stream protocol instead of intercept buffer protocol. Should
+  fix a number of major problems regarding capture.
+  
+- Fixed capture issue around document corruption and some races after capture
+  launched.
+
 # 1.0.0-beta152
 
 - Fixed potential race creating directories
