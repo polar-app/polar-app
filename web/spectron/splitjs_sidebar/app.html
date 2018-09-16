@@ -41,17 +41,23 @@
             height: 100%;
             float: left;
         }
+
+        #a, #b, #c, #d {
+            /*height: 100%;*/
+            /*width: 100%;*/
+        }
+
     </style>
 </head>
 <body>
-<div id="a" class="split split-horizontal">
-    <div id="c" class="split content"></div>
-    <div id="d" class="split content"></div>
+<div id="a" class="split split-vertical">
+    <div id="c" class="split content">c</div>
+    <div id="d" class="split content">d</div>
 </div>
-<div id="b" class="split split-horizontal">
-    <div id="e" class="split content"></div>
-    <div id="f" class="split content"></div>
-</div>
+<!--<div id="b" class="split split-horizontal">-->
+    <!--<div id="e" class="split content">e</div>-->
+    <!--<div id="f" class="split content">f</div>-->
+<!--</div>-->
 
 <script>require("./app");</script>
 
