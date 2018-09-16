@@ -8,4 +8,3 @@ SpectronMain2.create().run(async state => {
 
 });
 
-
