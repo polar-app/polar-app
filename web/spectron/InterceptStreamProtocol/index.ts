@@ -17,8 +17,7 @@ SpectronMain2.create().run(async state => {
 
     }
 
-    // noinspection TsLint
-    const url = "http://www.cnn.com";
+    const url = "http://www.example.com";
 
     const didFinishLoadPromise = WebContentsPromises.once(state.window.webContents).didFinishLoad();
 
