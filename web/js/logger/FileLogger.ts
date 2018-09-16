@@ -3,6 +3,7 @@
  */
 import {ILogger} from './ILogger';
 import {Files} from '../util/Files';
+import * as util from 'util';
 
 export class FileLogger implements ILogger {
 
@@ -92,7 +93,9 @@ export class FileLogger implements ILogger {
                     line += arg.toString();
 
                 } else {
-                    line += JSON.stringify(arg);
+                    // convert the object to a string. Do not use JSON.stringify
+                    // as it doesn't handle circular references.
+                    line += util.inspect(arg, false, undefined, false);
                 }
 
             });

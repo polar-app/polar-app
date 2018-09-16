@@ -7,14 +7,11 @@ import {Progress} from '../../../web/js/util/Progress';
 import {Strings} from '../../../web/js/util/Strings';
 import {IListenablePersistenceLayer} from '../../../web/js/datastore/IListenablePersistenceLayer';
 import {RepoDocInfoLoader} from './RepoDocInfoLoader';
-// noinspection TsLint: max-line-length
-
 import {IAppState} from './IAppState';
 import {RepoDocInfoIndex} from './RepoDocInfoIndex';
 import {RepoDocInfo} from './RepoDocInfo';
 import {RepoDocInfos} from './RepoDocInfos';
 import {RepositoryUpdater} from './RepositoryUpdater';
-import {DefaultPersistenceLayerFactory} from '../../../web/js/datastore/factories/DefaultPersistenceLayerFactory';
 import {RemotePersistenceLayerFactory} from '../../../web/js/datastore/factories/RemotePersistenceLayerFactory';
 
 const log = Logger.create();
