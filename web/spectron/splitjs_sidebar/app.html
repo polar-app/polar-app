@@ -1,16 +1,48 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <title>Split.js</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/3.0.3/normalize.css">
+    <!--<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/3.0.3/normalize.css">-->
+    <!--<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.css">-->
+    <!--<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.8.0/styles/github.min.css">-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.8.0/highlight.min.js"></script>
+
     <style>
-        html, body {
-            height: 100%;
-        }
+
         body {
-            padding: 8px;
-            background-color: #F6F6F6;
-            box-sizing: border-box;
+            margin: 0;
+        }
+
+        td {
+            padding: 8px 10px;
+        }
+
+        td:first-child {
+            font-family: monospace;
+        }
+        h3 {
+            margin-top: 100px;
+        }
+        h5 {
+            margin-bottom: 0;
+        }
+        hr {
+            margin-top: 2px;
+        }
+
+        .api {
+            height: 250px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+
+        }
+
+        .example-4, .example-5 {
+            height: 400px;
+        }
+        .split p {
+            padding: 20px;
         }
         .split {
             -webkit-box-sizing: border-box;
@@ -19,46 +51,42 @@
             overflow-y: auto;
             overflow-x: hidden;
         }
-        .content {
-            border: 1px solid #C0C0C0;
-            box-shadow: inset 0 1px 2px #e4e4e4;
-            background-color: #fff;
+
+        .gutter.gutter-horizontal {
+            background-image: url('../grips/vertical.png');
+            cursor: ew-resize;
         }
+        .gutter.gutter-vertical {
+            background-image: url('../grips/horizontal.png');
+            cursor: ns-resize;
+        }
+
         .gutter {
-            background-color: transparent;
+            background-color: #eee;
             background-repeat: no-repeat;
             background-position: 50%;
         }
-        .gutter.gutter-horizontal {
-            cursor: col-resize;
-            background-image: url('../grips/vertical.png');
-        }
-        .gutter.gutter-vertical {
-            cursor: row-resize;
-            background-image: url('../grips/horizontal.png');
-        }
+
         .split.split-horizontal, .gutter.gutter-horizontal {
             height: 100%;
             float: left;
         }
-
-        #a, #b, #c, #d {
-            /*height: 100%;*/
-            /*width: 100%;*/
-        }
-
     </style>
 </head>
 <body>
-<div id="a" class="split split-vertical">
-    <div id="c" class="split content">c</div>
-    <div id="d" class="split content">d</div>
-</div>
-<!--<div id="b" class="split split-horizontal">-->
-    <!--<div id="e" class="split content">e</div>-->
-    <!--<div id="f" class="split content">f</div>-->
-<!--</div>-->
+<div class="container">
 
+    <div class="api">
+        <div id="three" class="split split-horizontal">
+            <p>Bacon ipsum dolor amet beef ribs meatloaf picanha pork loin pork chop rump pig sausage bacon shank boudin beef fatback. Pork loin turducken t-bone chicken.</p>
+        </div>
+        <div id="four" class="split split-horizontal">
+            <p>Brisket andouille cow ball tip. Ham ground round short loin tri-tip ribeye t-bone boudin, pork loin turkey drumstick tongue pork chop. Kielbasa doner picanha turducken, swine bacon shank pastrami andouille. Hamburger tongue tenderloin meatball picanha. Rump bresaola chicken bacon, ground round corned beef ribeye salami. Turkey fatback short ribs andouille meatball, brisket pork belly cow t-bone turducken pig beef ribs.</p>
+        </div>
+    </div>
+
+</div>
+</body>
 <script>require("./app");</script>
 
 </body>

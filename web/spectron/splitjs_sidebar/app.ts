@@ -3,23 +3,11 @@ import Split from 'split.js';
 
 SpectronRenderer.run(async () => {
 
-
-    // Split(['#a', '#b'], {
-    //     gutterSize: 4,
-    //     cursor: 'col-resize'
-    // });
-    Split(['#c', '#d'], {
-        direction: 'horizontal',
-        sizes: [25, 75],
-        gutterSize: 4,
-        cursor: 'row-resize'
+    var split = Split(['#three', '#four'], {
+        sizes: [50, 50],
+        minSize: 100,
+        gutterSize: 5
     });
-    // Split(['#e', '#f'], {
-    //     direction: 'vertical',
-    //     sizes: [25, 75],
-    //     gutterSize: 4,
-    //     cursor: 'row-resize'
-    // });
 
 });
 
