@@ -68,12 +68,19 @@ export default class App<P> extends React.Component<{}, IAppState> {
     }
 
     private filterRepoDocInfos(repoDocs: RepoDocInfo[]): RepoDocInfo[] {
+
+        // always filter valid to make sure nothing corrupts the state.  Some
+        // other bug might inject a problem otherwise.
+        repoDocs = this.doFilterValid(repoDocs);
         repoDocs = this.doFilterByTitle(repoDocs);
         repoDocs = this.doFilterFlaggedOnly(repoDocs);
         repoDocs = this.doFilterHideArchived(repoDocs);
         return repoDocs;
     }
 
+    private doFilterValid(repoDocs: RepoDocInfo[]): RepoDocInfo[] {
+        return repoDocs.filter(current => RepoDocInfos.isValid(current));
+    }
 
     private doFilterByTitle(repoDocs: RepoDocInfo[]): RepoDocInfo[] {
 
@@ -381,9 +388,17 @@ export default class App<P> extends React.Component<{}, IAppState> {
 
             const repoDocInfo = RepoDocInfos.convertFromDocInfo(event.docInfo);
 
-            this.repoDocs[repoDocInfo.fingerprint] = repoDocInfo;
+            if (RepoDocInfos.isValid(repoDocInfo)) {
 
-            this.refresh();
+                this.repoDocs[repoDocInfo.fingerprint] = repoDocInfo;
+                this.refresh();
+
+            } else {
+
+                log.warn("We were given an invalid DocInfo which yielded a broken RepoDocInfo: ",
+                         event.docInfo, repoDocInfo);
+
+            }
 
         });
 

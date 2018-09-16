@@ -93,7 +93,8 @@ export class RepoDocInfoLoader {
      */
     private async filterInvalid(repoDocInfoIndex: RepoDocInfoIndex) {
 
-        const filtered = Object.values(repoDocInfoIndex).filter(current => RepoDocInfos.isValid(current));
+        const filtered = Object.values(repoDocInfoIndex)
+            .filter(current => RepoDocInfos.isValid(current));
 
         return Dictionaries.toDict(filtered, (value) => value.fingerprint);
 

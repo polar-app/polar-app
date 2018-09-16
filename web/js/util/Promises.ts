@@ -38,11 +38,12 @@ export class Promises {
 
     /**
      * Calls the given callback as a promise which we can await but runs it with
-     * a background thread via timeout.
+     * the background event loop via timeout to avoid locking up the UI with longer
+     * running tasks.
      */
     public static async withTimeout<T>(timeout: number, callback: () => Promise<T> ) {
 
-        return new Promise((resolve,reject) => {
+        return new Promise((resolve, reject) => {
 
             setTimeout(() => {
                 callback().then(result => resolve(result))
