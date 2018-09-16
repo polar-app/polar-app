@@ -46,7 +46,8 @@ export class ModelPersister {
 
         });
 
-        this.persistenceLayer.addEventListener(event => {
+        // only accept DocInfo updates from the document we've opened.
+        this.persistenceLayer.addEventListenerForDoc(this.docMeta.docInfo.fingerprint, event => {
             log.debug("Received updated DocInfo.");
             this.docMeta.docInfo = new DocInfo(event.docInfo);
         });

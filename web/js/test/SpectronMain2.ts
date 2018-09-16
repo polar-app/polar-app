@@ -1,23 +1,9 @@
 import {app, BrowserWindow} from 'electron';
 import {MainTestResultWriter} from './results/writer/MainTestResultWriter';
 import {Logger} from '../logger/Logger';
+import {SpectronBrowserWindowOptions} from './SpectronBrowserWindowOptions';
 
 const log = Logger.create();
-
-const BROWSER_OPTIONS = {
-    backgroundColor: '#FFF',
-
-    // NOTE: the default width and height shouldn't be changed here as it can
-    // break unit tests.
-
-    // width: 1000,
-    // height: 1000,
-
-    webPreferences: {
-        webSecurity: false,
-    }
-
-};
 
 /**
  * Code for reliably working with the main process in Spectron.  Waits for app
@@ -83,7 +69,7 @@ export class SpectronMain2 {
 }
 
 async function defaultWindowFactory(): Promise<BrowserWindow> {
-    const mainWindow = new BrowserWindow(BROWSER_OPTIONS);
+    const mainWindow = new BrowserWindow(SpectronBrowserWindowOptions.create());
     // mainWindow.webContents.toggleDevTools();
     mainWindow.loadURL('about:blank');
     return mainWindow;

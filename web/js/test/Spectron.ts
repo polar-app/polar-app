@@ -32,7 +32,7 @@ export class Spectron {
 
         let spectronOutputMonitorService : SpectronOutputMonitorService;
 
-        beforeEach(async function () {
+        beforeEach(async function() {
 
             log.info("Starting spectron with dir: " + dir);
 
@@ -46,7 +46,7 @@ export class Spectron {
                 // Assuming you have the following directory structure
 
                 // The following line tells spectron to look and use the main.js file
-                //args: [path.join(dir, '../../..')]
+                // args: [path.join(dir, '../../..')]
                 args: [dir, ...args],
 
                 startTimeout: TIMEOUT,

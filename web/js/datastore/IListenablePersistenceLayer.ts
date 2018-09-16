@@ -8,4 +8,5 @@ import {IPersistenceLayer} from './IPersistenceLayer';
  */
 export interface IListenablePersistenceLayer extends IPersistenceLayer {
     addEventListener(listener: PersistenceLayerListener): void;
+    addEventListenerForDoc(fingerprint: string, listener: PersistenceLayerListener): void;
 }

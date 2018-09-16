@@ -1,58 +1,25 @@
-import {DocMetaFileRef, DocMetaRef} from '../DocMetaRef';
-import {DocMeta} from '../../metadata/DocMeta';
-import {AdvertisementType, DocInfoAdvertisement} from './DocInfoAdvertisement';
+import {DocMetaRef} from '../DocMetaRef';
+import {DocInfoAdvertisement} from './DocInfoAdvertisement';
 import {DocInfoAdvertiser} from './DocInfoAdvertiser';
-import {DeleteResult} from '../DiskDatastore';
 import {DocInfoAdvertisementListenerService} from './DocInfoAdvertisementListenerService';
-import {SimpleReactor} from '../../reactor/SimpleReactor';
 import {PersistenceLayerEvent} from '../PersistenceLayerEvent';
-import {PersistenceLayerListener} from '../PersistenceLayerListener';
 import {IPersistenceLayer} from '../IPersistenceLayer';
 import {IListenablePersistenceLayer} from '../IListenablePersistenceLayer';
+import {AbstractAdvertisingPersistenceLayer} from './AbstractAdvertisingPersistenceLayer';
 
 /**
  * A PersistenceLayer that allows the user to receive advertisements regarding
  * updates to the internal data.
  */
-export class AdvertisingPersistenceLayer implements IListenablePersistenceLayer {
+export class AdvertisingPersistenceLayer
+    extends AbstractAdvertisingPersistenceLayer
+    implements IListenablePersistenceLayer {
 
-    public readonly stashDir: string;
-
-    public readonly logsDir: string;
-
-    /**
-     * A PersistenceLayer for the non-dispatched methods (for now).
-     */
-    private readonly persistenceLayer: IPersistenceLayer;
-
-    private readonly reactor = new SimpleReactor<PersistenceLayerEvent>();
 
     private readonly docInfoAdvertisementListenerService = new DocInfoAdvertisementListenerService();
 
     constructor(persistenceLayer: IPersistenceLayer) {
-        this.persistenceLayer = persistenceLayer;
-        this.stashDir = this.persistenceLayer.stashDir;
-        this.logsDir = this.persistenceLayer.logsDir;
-    }
-
-    public async contains(fingerprint: string): Promise<boolean> {
-        return this.persistenceLayer.contains(fingerprint);
-    }
-
-    public getDocMetaFiles(): Promise<DocMetaRef[]> {
-        return this.persistenceLayer.getDocMetaFiles();
-    }
-
-    public delete(docMetaFileRef: DocMetaFileRef): Promise<DeleteResult> {
-        const result = this.persistenceLayer.delete(docMetaFileRef);
-
-        DocInfoAdvertiser.send({docInfo: docMetaFileRef.docInfo, advertisementType: 'deleted'});
-
-        return result;
-    }
-
-    public async getDocMeta(fingerprint: string): Promise<DocMeta | undefined> {
-        return await this.persistenceLayer.getDocMeta(fingerprint);
+        super(persistenceLayer);
     }
 
     public async init(): Promise<void> {
@@ -65,37 +32,18 @@ export class AdvertisingPersistenceLayer implements IListenablePersistenceLayer 
 
     }
 
-    public async syncDocMeta(docMeta: DocMeta): Promise<void> {
-        return await this.sync(docMeta.docInfo.fingerprint, docMeta);
-    }
+    public broadcastEvent(event: PersistenceLayerEvent): void {
 
-    public async sync(fingerprint: string, docMeta: DocMeta) {
+        DocInfoAdvertiser.send({
+            docInfo: event.docInfo,
+            advertisementType: event.eventType
+        });
 
-        const result = this.persistenceLayer.sync(fingerprint, docMeta);
-
-        let advertisementType: AdvertisementType;
-
-        if (this.contains(fingerprint)) {
-            advertisementType = 'updated';
-        } else {
-            advertisementType = 'created';
-        }
-
-        const docInfoAdvertisement = {docInfo: docMeta.docInfo, advertisementType};
-
-        DocInfoAdvertiser.send(docInfoAdvertisement);
-
-        return result;
-
-    }
-
-    public addEventListener(listener: PersistenceLayerListener): void {
-        this.reactor.addEventListener(listener);
     }
 
     private onDocInfoAdvertisement(docInfoAdvertisement: DocInfoAdvertisement) {
 
-        this.reactor.dispatchEvent({
+        this.dispatchEvent({
 
            docMetaRef: <DocMetaRef> {
                fingerprint: docInfoAdvertisement.docInfo.fingerprint,

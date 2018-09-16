@@ -38,7 +38,7 @@ SpectronMain2.create().run(async state => {
         assert.equal(service.cacheStats.hits, 15, "Invalid number of hits");
     });
 
-    // await state.testResultWriter.write(true);
+    await state.testResultWriter.write(true);
 
     console.log("Wrote results to test writer!");
 
