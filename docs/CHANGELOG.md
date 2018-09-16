@@ -1,3 +1,6 @@
+
+- Fixed issue with circular structure when logging.
+
 # 1.0.0-beta160
 
 - Fixed corruption issue regarding the store when two documents are open and one

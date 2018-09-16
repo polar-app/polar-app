@@ -2,6 +2,7 @@
  * Simple logger that just writes to the console.
  */
 import {ILogger} from './ILogger';
+import {SafeLogger} from './SafeLogger';
 
 /**
  * Allows us to log to multiple delegates at once.
@@ -13,6 +14,11 @@ export class MultiLogger implements ILogger {
     private readonly delegates: ILogger[];
 
     constructor(...delegates: ILogger[]) {
+
+        // Make the delegates use safe loggers so that if any one fails the
+        // exceptions are handled gracefully and don't choke other loggers.
+        delegates = MultiLogger.toSafeLoggers(delegates);
+
         this.delegates = delegates;
 
         this.name = 'multi-logger|'
@@ -46,5 +52,19 @@ export class MultiLogger implements ILogger {
         }
 
     }
+
+    private static toSafeLoggers(delegates: ILogger[]) {
+
+        return delegates.map(current => {
+            if (current instanceof SafeLogger) {
+                return current;
+            } else {
+                return new SafeLogger(current);
+            }
+        });
+
+    }
+
+
 
 }
