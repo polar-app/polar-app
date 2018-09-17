@@ -9,5 +9,8 @@ SpectronRenderer.run(async () => {
         gutterSize: 5
     });
 
+    // this will collapse it:
+    // split.collapse(1);
+
 });
 
