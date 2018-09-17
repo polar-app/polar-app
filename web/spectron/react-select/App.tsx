@@ -19,7 +19,7 @@ class App<P> extends React.Component<{}, IAppState> {
         return (
 
             <div id="myapp">
-                hello world
+
                 <Select
                     isMulti
                     className="basic-multi-select"
