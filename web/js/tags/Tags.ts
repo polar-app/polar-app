@@ -1,14 +1,34 @@
-import {Preconditions} from '../Preconditions';
+import twitter_txt from 'twitter-text';
+import {isPresent} from '../Preconditions';
+import {Optional} from '../util/ts/Optional';
 
 export class Tags {
-    //
-    // public static validate(label: string) {
-    //
-    //     // not ONLY numbers or starting with numbers
-    //
-    //     return label.match(/[a-zA-Z0-9_-+]/g);
-    //
-    // }
+
+    public static assertValid(label: string) {
+
+        if (! this.validate(label).isPresent()) {
+            throw new Error("Invalid tag: " + label);
+        }
+
+    }
+
+    public static validate(label: string): Optional<string> {
+
+        if (! isPresent(label)) {
+            return Optional.empty();
+        }
+
+        if (! label.startsWith('#')) {
+            label = '#' + label;
+        }
+
+        if (twitter_txt.isValidHashtag(label)) {
+            return Optional.of(label);
+        }
+
+        return Optional.empty();
+
+    }
 
 }
 
