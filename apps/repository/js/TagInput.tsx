@@ -2,10 +2,10 @@ import * as React from 'react';
 import {Popover, PopoverBody} from 'reactstrap';
 import CreatableSelect from 'react-select/lib/Creatable';
 import {Blackout} from './Blackout';
-import {Optional} from '../../../web/js/util/ts/Optional';
 import {RepoDocInfo} from './RepoDocInfo';
 import {Tag} from '../../../web/js/tags/Tag';
 import {Preconditions} from '../../../web/js/Preconditions';
+import {TagsDB} from './TagsDB';
 
 let SEQUENCE = 0;
 
@@ -30,7 +30,12 @@ export class TagInput extends React.Component<TagInputProps, TagInputState> {
     public render() {
 
         const options: TagOption[] =
-            Optional.of(this.props.options).getOrElse([]);
+            this.props.tagsDB.tags().map( current => {
+                return {
+                    value: current.id,
+                    label: current.label
+                };
+            });
 
         return (
 
@@ -128,9 +133,9 @@ export interface TagInputProps {
 
     repoDocInfo: RepoDocInfo;
 
-    onChange?: (repoDocInfo: RepoDocInfo, values: Tag[]) => void;
+    tagsDB: TagsDB;
 
-    options?: TagOption[];
+    onChange?: (repoDocInfo: RepoDocInfo, values: Tag[]) => void;
 
 }
 

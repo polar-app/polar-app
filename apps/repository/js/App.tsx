@@ -7,13 +7,11 @@ import {Strings} from '../../../web/js/util/Strings';
 import {IListenablePersistenceLayer} from '../../../web/js/datastore/IListenablePersistenceLayer';
 import {RepoDocInfoLoader} from './RepoDocInfoLoader';
 import {IAppState} from './IAppState';
-import {RepoDocInfoIndex} from './RepoDocInfoIndex';
 import {RepoDocInfo} from './RepoDocInfo';
 import {RepoDocInfos} from './RepoDocInfos';
-import {RepositoryUpdater} from './RepositoryUpdater';
+import {DocRepository} from './DocRepository';
 import {RemotePersistenceLayerFactory} from '../../../web/js/datastore/factories/RemotePersistenceLayerFactory';
-import {TagInput, TagOption} from './TagInput';
-import {TagsDB} from './TagsDB';
+import {TagInput} from './TagInput';
 
 const log = Logger.create();
 
@@ -23,11 +21,7 @@ export default class App<P> extends React.Component<{}, IAppState> {
 
     private repoDocInfoLoader?: RepoDocInfoLoader;
 
-    private repositoryUpdater?: RepositoryUpdater;
-
-    private repoDocs: RepoDocInfoIndex = {};
-
-    private tagsDB: TagsDB = new TagsDB();
+    private docRepository?: DocRepository;
 
     constructor(props: P, context: any) {
         super(props, context);
@@ -39,7 +33,6 @@ export default class App<P> extends React.Component<{}, IAppState> {
         (async () => {
 
             await this.init();
-            this.repoDocs = await this.repoDocInfoLoader!.load();
 
             this.refresh();
 
@@ -48,85 +41,8 @@ export default class App<P> extends React.Component<{}, IAppState> {
     }
 
     public refresh() {
-        this.refreshState(this.filterRepoDocInfos(Object.values(this.repoDocs)));
+        this.refreshState(this.filterRepoDocInfos(Object.values(this.docRepository!.repoDocs)));
     }
-
-    private refreshState(repoDocs: RepoDocInfo[]) {
-
-        const state: IAppState = Object.assign({}, this.state);
-
-        state.data = repoDocs;
-
-        setTimeout(() => {
-
-            // The react table will not update when I change the state from within
-            // the event listener
-            this.setState(state);
-
-        }, 0);
-
-    }
-
-    private filterRepoDocInfos(repoDocs: RepoDocInfo[]): RepoDocInfo[] {
-
-        // always filter valid to make sure nothing corrupts the state.  Some
-        // other bug might inject a problem otherwise.
-        repoDocs = this.doFilterValid(repoDocs);
-        repoDocs = this.doFilterByTitle(repoDocs);
-        repoDocs = this.doFilterFlaggedOnly(repoDocs);
-        repoDocs = this.doFilterHideArchived(repoDocs);
-        return repoDocs;
-    }
-
-    private doFilterValid(repoDocs: RepoDocInfo[]): RepoDocInfo[] {
-        return repoDocs.filter(current => RepoDocInfos.isValid(current));
-    }
-
-    private doFilterByTitle(repoDocs: RepoDocInfo[]): RepoDocInfo[] {
-
-        const filterElement = document.querySelector("#filter_title") as HTMLInputElement;
-
-        const filterText = filterElement.value;
-
-        if (! Strings.empty(filterText)) {
-
-            return repoDocs.filter(current => current.title &&
-                                              current.title.toLowerCase().indexOf(filterText!.toLowerCase()) >= 0 );
-
-        }
-
-        return repoDocs;
-
-    }
-
-    private doFilterFlaggedOnly(repoDocs: RepoDocInfo[]): RepoDocInfo[] {
-
-        const filterElement = document.querySelector("#filter_flagged") as HTMLInputElement;
-
-        if (filterElement.checked) {
-            return repoDocs.filter(current => current.flagged);
-        }
-
-        return repoDocs;
-
-    }
-
-
-
-    private doFilterHideArchived(repoDocs: RepoDocInfo[]): RepoDocInfo[] {
-
-        const filterElement = document.querySelector("#filter_archived") as HTMLInputElement;
-
-        if (filterElement.checked) {
-            log.info("Applying archived filter");
-
-            return repoDocs.filter(current => !current.archived);
-        }
-
-        return repoDocs;
-
-    }
-
 
     public highlightRow(selected: number) {
 
@@ -134,34 +50,6 @@ export default class App<P> extends React.Component<{}, IAppState> {
         state.selected = selected;
 
         this.setState(state);
-
-    }
-
-    private onDocumentLoadRequested(fingerprint: string, filename: string ) {
-
-        DocLoader.load({
-            fingerprint,
-            filename,
-            newWindow: true
-        }).catch(err => log.error("Unable to load doc: ", err));
-
-    }
-
-    private async handleToggleField(repoDocInfo: RepoDocInfo, field: string) {
-
-        if (field === 'archived') {
-            repoDocInfo.archived = !repoDocInfo.archived;
-            repoDocInfo.docInfo.archived = repoDocInfo.archived;
-        }
-
-        if (field === 'flagged') {
-            repoDocInfo.flagged = !repoDocInfo.flagged;
-            repoDocInfo.docInfo.flagged = repoDocInfo.flagged;
-        }
-
-        await this.repositoryUpdater!.updateDocInfo(repoDocInfo.docInfo);
-
-        this.refresh();
 
     }
 
@@ -275,17 +163,11 @@ export default class App<P> extends React.Component<{}, IAppState> {
 
                                     const repoDocInfo: RepoDocInfo = row.original;
 
-                                    const options: TagOption[] = [
-                                        { value: 'chocolate', label: 'Chocolate' },
-                                        { value: 'strawberry', label: 'Strawberry' },
-                                        { value: 'vanilla', label: 'Vanilla' }
-                                    ];
-
                                     return (
                                         <TagInput repoDocInfo={repoDocInfo}
-                                                  options={options}
+                                                  tagsDB={this.docRepository!.tagsDB}
                                                   onChange={(_, tags) =>
-                                                      this.repositoryUpdater!.updateTags(repoDocInfo, tags)
+                                                      this.docRepository!.syncDocInfoTags(repoDocInfo, tags)
                                                           .catch(err => log.error("Unable to update tags: ", err))} />
                                     );
 
@@ -402,13 +284,116 @@ export default class App<P> extends React.Component<{}, IAppState> {
         );
     }
 
-    // private updateTags(docMetaRef: DocMetaRef, TagInput)
+
+    private refreshState(repoDocs: RepoDocInfo[]) {
+
+        const state: IAppState = Object.assign({}, this.state);
+
+        state.data = repoDocs;
+
+        setTimeout(() => {
+
+            // The react table will not update when I change the state from within
+            // the event listener
+            this.setState(state);
+
+        }, 0);
+
+    }
+
+    private filterRepoDocInfos(repoDocs: RepoDocInfo[]): RepoDocInfo[] {
+
+        // always filter valid to make sure nothing corrupts the state.  Some
+        // other bug might inject a problem otherwise.
+        repoDocs = this.doFilterValid(repoDocs);
+        repoDocs = this.doFilterByTitle(repoDocs);
+        repoDocs = this.doFilterFlaggedOnly(repoDocs);
+        repoDocs = this.doFilterHideArchived(repoDocs);
+        return repoDocs;
+    }
+
+    private doFilterValid(repoDocs: RepoDocInfo[]): RepoDocInfo[] {
+        return repoDocs.filter(current => RepoDocInfos.isValid(current));
+    }
+
+    private doFilterByTitle(repoDocs: RepoDocInfo[]): RepoDocInfo[] {
+
+        const filterElement = document.querySelector("#filter_title") as HTMLInputElement;
+
+        const filterText = filterElement.value;
+
+        if (! Strings.empty(filterText)) {
+
+            return repoDocs.filter(current => current.title &&
+                current.title.toLowerCase().indexOf(filterText!.toLowerCase()) >= 0 );
+
+        }
+
+        return repoDocs;
+
+    }
+
+    private doFilterFlaggedOnly(repoDocs: RepoDocInfo[]): RepoDocInfo[] {
+
+        const filterElement = document.querySelector("#filter_flagged") as HTMLInputElement;
+
+        if (filterElement.checked) {
+            return repoDocs.filter(current => current.flagged);
+        }
+
+        return repoDocs;
+
+    }
+
+
+
+    private doFilterHideArchived(repoDocs: RepoDocInfo[]): RepoDocInfo[] {
+
+        const filterElement = document.querySelector("#filter_archived") as HTMLInputElement;
+
+        if (filterElement.checked) {
+            log.info("Applying archived filter");
+
+            return repoDocs.filter(current => !current.archived);
+        }
+
+        return repoDocs;
+
+    }
+
+    private onDocumentLoadRequested(fingerprint: string, filename: string ) {
+
+        DocLoader.load({
+            fingerprint,
+            filename,
+            newWindow: true
+        }).catch(err => log.error("Unable to load doc: ", err));
+
+    }
+
+    private async handleToggleField(repoDocInfo: RepoDocInfo, field: string) {
+
+        if (field === 'archived') {
+            repoDocInfo.archived = !repoDocInfo.archived;
+            repoDocInfo.docInfo.archived = repoDocInfo.archived;
+        }
+
+        if (field === 'flagged') {
+            repoDocInfo.flagged = !repoDocInfo.flagged;
+            repoDocInfo.docInfo.flagged = repoDocInfo.flagged;
+        }
+
+        await this.docRepository!.syncDocInfo(repoDocInfo.docInfo);
+
+        this.refresh();
+
+    }
 
     private async init(): Promise<void> {
 
         this.persistenceLayer = await RemotePersistenceLayerFactory.create();
+
         this.repoDocInfoLoader = new RepoDocInfoLoader(this.persistenceLayer);
-        this.repositoryUpdater = new RepositoryUpdater(this.persistenceLayer);
 
         this.persistenceLayer.addEventListener((event) => {
 
@@ -418,7 +403,7 @@ export default class App<P> extends React.Component<{}, IAppState> {
 
             if (RepoDocInfos.isValid(repoDocInfo)) {
 
-                this.repoDocs[repoDocInfo.fingerprint] = repoDocInfo;
+                this.docRepository!.updateDocInfo(repoDocInfo);
                 this.refresh();
 
             } else {
@@ -429,6 +414,10 @@ export default class App<P> extends React.Component<{}, IAppState> {
             }
 
         });
+
+        const repoDocs = await this.repoDocInfoLoader!.load();
+
+        this.docRepository = new DocRepository(this.persistenceLayer, repoDocs);
 
     }
 
