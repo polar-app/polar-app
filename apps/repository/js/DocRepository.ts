@@ -17,15 +17,14 @@ const log = Logger.create();
  */
 export class DocRepository {
 
-    public readonly repoDocs: RepoDocInfoIndex;
+    public readonly repoDocs: RepoDocInfoIndex = {};
 
     public readonly tagsDB: TagsDB = new TagsDB();
 
     private readonly persistenceLayer: IListenablePersistenceLayer;
 
-    constructor(persistenceLayer: IListenablePersistenceLayer, repoDocs: RepoDocInfoIndex) {
+    constructor(persistenceLayer: IListenablePersistenceLayer) {
         this.persistenceLayer = persistenceLayer;
-        this.repoDocs = repoDocs;
         this.init();
     }
 
@@ -33,18 +32,19 @@ export class DocRepository {
     /**
      * Update the in-memory representation of this doc.
      *
-     * @param repoDocInfo
      */
-    public updateDocInfo(repoDocInfo: RepoDocInfo) {
-        this.repoDocs[repoDocInfo.fingerprint] = repoDocInfo;
-        this.updateTagsDB(repoDocInfo);
+    public updateDocInfo(...repoDocInfos: RepoDocInfo[]) {
 
+        for (const repoDocInfo of repoDocInfos) {
+            this.repoDocs[repoDocInfo.fingerprint] = repoDocInfo;
+        }
+
+        this.updateTagsDB(...repoDocInfos);
     }
 
     /**
      * Sync the docInfo to disk.
      *
-     * @param docInfo
      */
     public async syncDocInfo(docInfo: IDocInfo) {
 
@@ -69,8 +69,6 @@ export class DocRepository {
 
     /**
      *
-     * @param repoDocInfo
-     * @param tags
      */
     public async syncDocInfoTags(repoDocInfo: RepoDocInfo, tags: Tag[]) {
 
@@ -98,13 +96,17 @@ export class DocRepository {
 
     }
 
-    private updateTagsDB(repoDocInfo: RepoDocInfo) {
+    private updateTagsDB(...repoDocInfos: RepoDocInfo[]) {
 
-        // update the tags data.
-        Optional.of(repoDocInfo.docInfo.tags)
-            .map(tags => {
-                 this.tagsDB.register(...Object.values(tags));
-            });
+        for (const repoDocInfo of repoDocInfos) {
+
+            // update the tags data.
+            Optional.of(repoDocInfo.docInfo.tags)
+                .map(tags => {
+                    this.tagsDB.register(...Object.values(tags));
+                });
+
+        }
 
     }
 

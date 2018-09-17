@@ -6,28 +6,32 @@ import {DocLoader} from '../../../web/js/apps/main/ipc/DocLoader';
 import {Strings} from '../../../web/js/util/Strings';
 import {IListenablePersistenceLayer} from '../../../web/js/datastore/IListenablePersistenceLayer';
 import {RepoDocInfoLoader} from './RepoDocInfoLoader';
-import {IAppState} from './IAppState';
+import {AppState} from './AppState';
 import {RepoDocInfo} from './RepoDocInfo';
 import {RepoDocInfos} from './RepoDocInfos';
 import {DocRepository} from './DocRepository';
-import {RemotePersistenceLayerFactory} from '../../../web/js/datastore/factories/RemotePersistenceLayerFactory';
 import {TagInput} from './TagInput';
 import {Optional} from '../../../web/js/util/ts/Optional';
 import {Tag} from '../../../web/js/tags/Tag';
 import {FilterTagInput} from './FilterTagInput';
+import {AppProps} from './AppProps';
 
 const log = Logger.create();
 
-export default class App<P> extends React.Component<{}, IAppState> {
+export default class App extends React.Component<AppProps, AppState> {
 
-    private persistenceLayer?: IListenablePersistenceLayer;
+    private readonly persistenceLayer: IListenablePersistenceLayer;
 
-    private repoDocInfoLoader?: RepoDocInfoLoader;
+    private readonly docRepository: DocRepository;
 
-    private docRepository?: DocRepository;
+    private readonly repoDocInfoLoader: RepoDocInfoLoader;
 
-    constructor(props: P, context: any) {
+    constructor(props: AppProps, context: any) {
         super(props, context);
+
+        this.persistenceLayer = props.persistenceLayer;
+        this.docRepository = new DocRepository(this.persistenceLayer);
+        this.repoDocInfoLoader = new RepoDocInfoLoader(this.persistenceLayer);
 
         this.state = {
             data: []
@@ -49,7 +53,7 @@ export default class App<P> extends React.Component<{}, IAppState> {
 
     public highlightRow(selected: number) {
 
-        const state: IAppState = Object.assign({}, this.state);
+        const state: AppState = Object.assign({}, this.state);
         state.selected = selected;
 
         this.setState(state);
@@ -299,7 +303,7 @@ export default class App<P> extends React.Component<{}, IAppState> {
 
     private refreshState(repoDocs: RepoDocInfo[]) {
 
-        const state: IAppState = Object.assign({}, this.state);
+        const state: AppState = Object.assign({}, this.state);
 
         state.data = repoDocs;
 
@@ -403,10 +407,6 @@ export default class App<P> extends React.Component<{}, IAppState> {
 
     private async init(): Promise<void> {
 
-        this.persistenceLayer = await RemotePersistenceLayerFactory.create();
-
-        this.repoDocInfoLoader = new RepoDocInfoLoader(this.persistenceLayer);
-
         this.persistenceLayer.addEventListener((event) => {
 
             log.info("Received DocInfo update");
@@ -429,8 +429,9 @@ export default class App<P> extends React.Component<{}, IAppState> {
 
         const repoDocs = await this.repoDocInfoLoader!.load();
 
-        this.docRepository = new DocRepository(this.persistenceLayer, repoDocs);
+        this.docRepository.updateDocInfo(...Object.values(repoDocs));
 
     }
 
 }
+

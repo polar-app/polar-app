@@ -1,6 +1,6 @@
 import {RepoDocInfo} from './RepoDocInfo';
 
-export interface IAppState {
+export interface AppState {
 
     // docs: DocDetail[];
 
