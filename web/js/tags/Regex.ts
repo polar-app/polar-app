@@ -1,26 +1,44 @@
+
 import {TldLists} from './TldLists';
+
+// namespace Regex {
 
 function join(input: string[]) {
     return input.join("|");
 }
 
-const URL_VALID_GTLD: string =
+/**
+ * Parse the given regexp string and return it if it validates properly.  This
+ * way we catch regexp errors on startup easier.
+ * @param regex
+ */
+function validatedRE(regex: string): string {
+    // noinspection TsLint: no-unused-expression
+    new RegExp(regex);
+    return regex;
+}
+
+const URL_VALID_GTLD: string = validatedRE(
     "(?:(?:" +
     join(TldLists.GTLDS) +
-    ")(?=[^a-z0-9@]|$))";
+    ")(?=[^a-z0-9@]|$))"
+);
 
-const URL_VALID_CCTLD: string =
+const URL_VALID_CCTLD: string = validatedRE(
     "(?:(?:" +
     join(TldLists.CTLDS) +
-    ")(?=[^a-z0-9@]|$))";
+    ")(?=[^a-z0-9@]|$))"
+);
 
-const INVALID_CHARACTERS: string =
+const INVALID_CHARACTERS: string = validatedRE(
     "\\uFFFE" +           // BOM
     "\\uFEFF" +           // BOM
     "\\uFFFF" +           // Special
-    "\\u202A-\\u202E";    // Direction change
+    "\\u202A-\\u202E"    // Direction change
+);
 
-const UNICODE_SPACES: string = "[" +
+const UNICODE_SPACES: string = validatedRE(
+    "[" +
     "\\u0009-\\u000d" +     //  # White_Space # Cc   [5] <control-0009>..<control-000D>
     "\\u0020" +             // White_Space # Zs       SPACE
     "\\u0085" +             // White_Space # Cc       <control-0085>
@@ -33,9 +51,10 @@ const UNICODE_SPACES: string = "[" +
     "\\u202F" +             // White_Space # Zs       NARROW NO-BREAK SPACE
     "\\u205F" +             // White_Space # Zs       MEDIUM MATHEMATICAL SPACE
     "\\u3000" +             // White_Space # Zs       IDEOGRAPHIC SPACE
-    "]";
+    "]"
+);
 
-const LATIN_ACCENTS_CHARS: string =
+const LATIN_ACCENTS_CHARS: string = validatedRE(
     // Latin-1
     "\\u00c0-\\u00d6\\u00d8-\\u00f6\\u00f8-\\u00ff" +
     // Latin Extended A and B
@@ -47,12 +66,14 @@ const LATIN_ACCENTS_CHARS: string =
     // Combining diacritics
     "\\u0300-\\u036f" +
     // Latin Extended Additional (mostly for Vietnamese)
-    "\\u1e00-\\u1eff";
+    "\\u1e00-\\u1eff"
+);
 
-const CYRILLIC_CHARS: string = "\\u0400-\\u04ff";
+const CYRILLIC_CHARS: string = validatedRE( "\\u0400-\\u04ff" );
 
 // Generated from unicode_regex/unicode_regex_groups.scala, more inclusive than Java's \p{L}\p{M}
-const HASHTAG_LETTERS_AND_MARKS: string = "\\p{L}\\p{M}" +
+const HASHTAG_LETTERS_AND_MARKS: string = validatedRE(
+    "\\p{L}\\p{M}" +
     "\\u037f\\u0528-\\u052f\\u08a0-\\u08b2\\u08e4-\\u08ff\\u0978\\u0980\\u0c00\\u0c34\\u0c81" +
     "\\u0d01\\u0ede\\u0edf\\u10c7\\u10cd\\u10fd-\\u10ff\\u16f1-\\u16f8\\u17b4\\u17b5\\u191d" +
     "\\u191e\\u1ab0-\\u1abe\\u1bab-\\u1bad\\u1bba-\\u1bbf\\u1cf3-\\u1cf6\\u1cf8\\u1cf9" +
@@ -89,16 +110,20 @@ const HASHTAG_LETTERS_AND_MARKS: string = "\\p{L}\\p{M}" +
     "\\ude5d\\ud83b\\ude5f\\ud83b\\ude61\\ud83b\\ude62\\ud83b\\ude64\\ud83b\\ude67-\\ud83b" +
     "\\ude6a\\ud83b\\ude6c-\\ud83b\\ude72\\ud83b\\ude74-\\ud83b\\ude77\\ud83b\\ude79-\\ud83b" +
     "\\ude7c\\ud83b\\ude7e\\ud83b\\ude80-\\ud83b\\ude89\\ud83b\\ude8b-\\ud83b\\ude9b\\ud83b" +
-    "\\udea1-\\ud83b\\udea3\\ud83b\\udea5-\\ud83b\\udea9\\ud83b\\udeab-\\ud83b\\udebb";
+    "\\udea1-\\ud83b\\udea3\\ud83b\\udea5-\\ud83b\\udea9\\ud83b\\udeab-\\ud83b\\udebb"
+);
 
 // Generated from unicode_regex/unicode_regex_groups.scala, more inclusive than Java's \p{Nd}
-const HASHTAG_NUMERALS: string = "\\p{Nd}" +
+const HASHTAG_NUMERALS: string = validatedRE(
+    "\\p{Nd}" +
     "\\u0de6-\\u0def\\ua9f0-\\ua9f9\\ud804\\udcf0-\\ud804\\udcf9\\ud804\\udd36-\\ud804" +
     "\\udd3f\\ud804\\uddd0-\\ud804\\uddd9\\ud804\\udef0-\\ud804\\udef9\\ud805\\udcd0-\\ud805" +
     "\\udcd9\\ud805\\ude50-\\ud805\\ude59\\ud805\\udec0-\\ud805\\udec9\\ud806\\udce0-\\ud806" +
-    "\\udce9\\ud81a\\ude60-\\ud81a\\ude69\\ud81a\\udf50-\\ud81a\\udf59";
+    "\\udce9\\ud81a\\ude60-\\ud81a\\ude69\\ud81a\\udf50-\\ud81a\\udf59"
+);
 
-const HASHTAG_SPECIAL_CHARS: string = "_" + // underscore
+const HASHTAG_SPECIAL_CHARS: string = validatedRE(
+    "_" + // underscore
     "\\u200c" + // ZERO WIDTH NON-JOINER (ZWNJ)
     "\\u200d" + // ZERO WIDTH JOINER (ZWJ)
     "\\ua67e" + // CYRILLIC KAVYKA
@@ -114,37 +139,58 @@ const HASHTAG_SPECIAL_CHARS: string = "_" + // underscore
     "\\u3003" + // DITTO MARK
     "\\u0f0b" + // TIBETAN MARK INTERSYLLABIC TSHEG
     "\\u0f0c" + // TIBETAN MARK DELIMITER TSHEG BSTAR
-    "\\u00b7";  // MIDDLE DOT
+    "\\u00b7" // MIDDLE DOT
+);
 
-const HASHTAG_LETTERS_NUMERALS: string =
-    HASHTAG_LETTERS_AND_MARKS + HASHTAG_NUMERALS + HASHTAG_SPECIAL_CHARS;
+const HASHTAG_LETTERS_NUMERALS: string = validatedRE(
+    HASHTAG_LETTERS_AND_MARKS + HASHTAG_NUMERALS + HASHTAG_SPECIAL_CHARS
+);
 
-const HASHTAG_LETTERS_SET: string = "[" + HASHTAG_LETTERS_AND_MARKS + "]";
-const HASHTAG_LETTERS_NUMERALS_SET: string = "[" + HASHTAG_LETTERS_NUMERALS + "]";
+const HASHTAG_LETTERS_SET: string = validatedRE(
+    "[" + HASHTAG_LETTERS_AND_MARKS + "]"
+);
+
+const HASHTAG_LETTERS_NUMERALS_SET: string = validatedRE(
+    "[" + HASHTAG_LETTERS_NUMERALS + "]"
+);
 
 /* URL related hash regex collection */
-const URL_VALID_PRECEEDING_CHARS: string =
-    "(?:[^a-z0-9@＠$#＃" + INVALID_CHARACTERS + "]|^)";
+const URL_VALID_PRECEEDING_CHARS: string = validatedRE(
+    "(?:[^a-z0-9@＠$#＃" + INVALID_CHARACTERS + "]|^)"
+);
 
-const URL_VALID_CHARS: string = "[a-z0-9" + LATIN_ACCENTS_CHARS + "]";
-const URL_VALID_SUBDOMAIN: string =
-    "(?>(?:" + URL_VALID_CHARS + "[" + URL_VALID_CHARS + "\\-_]*)?" + URL_VALID_CHARS + "\\.)";
-const URL_VALID_DOMAIN_NAME: string =
-    "(?:(?:" + URL_VALID_CHARS + "[" + URL_VALID_CHARS + "\\-]*)?" + URL_VALID_CHARS + "\\.)";
+const URL_VALID_CHARS: string = validatedRE(
+    "[a-z0-9" + LATIN_ACCENTS_CHARS + "]"
+);
 
-const PUNCTUATION_CHARS: string = "-_!\"#$%&'\\(\\)*+,./:;<=>?@\\[\\]^`\\{|}~";
+const URL_VALID_SUBDOMAIN: string = validatedRE(
+    "(?>(?:" + URL_VALID_CHARS + "[" + URL_VALID_CHARS + "\\-_]*)?" + URL_VALID_CHARS + "\\.)"
+);
+
+const URL_VALID_DOMAIN_NAME: string = validatedRE(
+    "(?:(?:" + URL_VALID_CHARS + "[" + URL_VALID_CHARS + "\\-]*)?" + URL_VALID_CHARS + "\\.)"
+);
+
+const PUNCTUATION_CHARS: string = validatedRE(
+    "-_!\"#$%&'\\(\\)*+,./:;<=>?@\\[\\]^`\\{|}~"
+);
 
 // Any non-space, non-punctuation characters.
 // \p{Z} = any kind of whitespace or invisible separator.
-const URL_VALID_UNICODE_CHARS: string =
-    "[^" + PUNCTUATION_CHARS + "\\s\\p{Z}\\p{InGeneralPunctuation}]";
-const URL_VALID_UNICODE_DOMAIN_NAME: string =
+const URL_VALID_UNICODE_CHARS: string = validatedRE(
+    "[^" + PUNCTUATION_CHARS + "\\s\\p{Z}\\p{InGeneralPunctuation}]"
+);
+
+const URL_VALID_UNICODE_DOMAIN_NAME: string = validatedRE(
     "(?:(?:" + URL_VALID_UNICODE_CHARS + "[" + URL_VALID_UNICODE_CHARS + "\\-]*)?" +
-    URL_VALID_UNICODE_CHARS + "\\.)";
+    URL_VALID_UNICODE_CHARS + "\\.)"
+);
 
-const URL_PUNYCODE: string = "(?:xn--[-0-9a-z]+)";
+const URL_PUNYCODE: string = validatedRE(
+    "(?:xn--[-0-9a-z]+)"
+);
 
-const URL_VALID_DOMAIN: string =
+const URL_VALID_DOMAIN: string = validatedRE(
     "(?:" +                                                   // optional sub-domain + domain + TLD
     URL_VALID_SUBDOMAIN + "*" + URL_VALID_DOMAIN_NAME +   // e.g. twitter.com, foo.co.jp ...
     "(?:" + URL_VALID_GTLD + "|" + URL_VALID_CCTLD + "|" + URL_PUNYCODE + ")" +
@@ -160,13 +206,17 @@ const URL_VALID_DOMAIN: string =
     ")" +
     "|(?:" +                                                  // domain + ccTLD + '/'
     URL_VALID_DOMAIN_NAME + URL_VALID_CCTLD + "(?=/)" +     // e.g. t.co/
-    ")";
+    ")"
+);
 
-const URL_VALID_PORT_NUMBER: string = "[0-9]++";
+const URL_VALID_PORT_NUMBER: string = validatedRE(
+    "[0-9]++"
+);
 
-const URL_VALID_GENERAL_PATH_CHARS: string =
+const URL_VALID_GENERAL_PATH_CHARS: string = validatedRE(
     "[a-z0-9!\\*';:=\\+,.\\$/%#\\[\\]\\-\\u2013_~\\|&@" +
-    LATIN_ACCENTS_CHARS + CYRILLIC_CHARS + "]";
+    LATIN_ACCENTS_CHARS + CYRILLIC_CHARS + "]"
+);
 
 /**
  * Allow URL paths to contain up to two nested levels of balanced parens
@@ -174,7 +224,8 @@ const URL_VALID_GENERAL_PATH_CHARS: string =
  *  2. Used in IIS sessions like /S(dfd346)/
  *  3. Used in Rdio URLs like /track/We_Up_(Album_Version_(Edited))/
  */
-const URL_BALANCED_PARENS: string = "\\(" +
+const URL_BALANCED_PARENS: string = validatedRE(
+    "\\(" +
     "(?:" +
     URL_VALID_GENERAL_PATH_CHARS + "+" +
     "|" +
@@ -187,7 +238,8 @@ const URL_BALANCED_PARENS: string = "\\(" +
     URL_VALID_GENERAL_PATH_CHARS + "*" +
     ")" +
     ")" +
-    "\\)";
+    "\\)"
+);
 
 /**
  * Valid end-of-path characters (so /foo. does not gobble the period).
@@ -227,27 +279,27 @@ const AT_SIGNS_CHARS: string = "@\uFF20";
 const DOLLAR_SIGN_CHAR: string = "\\$";
 const CASHTAG: string = "[a-z]{1,6}(?:[._][a-z]{1,2})?";
 
-    /* Begin public constants */
-    //
-    // public static final Pattern INVALID_CHARACTERS_PATTERN;
-    // public static final Pattern VALID_HASHTAG;
-    // public static final int VALID_HASHTAG_GROUP_BEFORE = 1;
-    // public static final int VALID_HASHTAG_GROUP_HASH = 2;
-    // public static final int VALID_HASHTAG_GROUP_TAG = 3;
-    // public static final Pattern INVALID_HASHTAG_MATCH_END;
-    // public static final Pattern RTL_CHARACTERS;
-    //
-    // public static final Pattern AT_SIGNS;
-    // public static final Pattern VALID_MENTION_OR_LIST;
-    // public static final int VALID_MENTION_OR_LIST_GROUP_BEFORE = 1;
-    // public static final int VALID_MENTION_OR_LIST_GROUP_AT = 2;
-    // public static final int VALID_MENTION_OR_LIST_GROUP_USERNAME = 3;
-    // public static final int VALID_MENTION_OR_LIST_GROUP_LIST = 4;
-    //
-    // public static final Pattern VALID_REPLY;
-    // public static final int VALID_REPLY_GROUP_USERNAME = 1;
-    //
-    // public static final Pattern INVALID_MENTION_MATCH_END;
+/* Begin public constants */
+//
+// public static final Pattern INVALID_CHARACTERS_PATTERN;
+// public static final Pattern VALID_HASHTAG;
+// public static final int VALID_HASHTAG_GROUP_BEFORE = 1;
+// public static final int VALID_HASHTAG_GROUP_HASH = 2;
+// public static final int VALID_HASHTAG_GROUP_TAG = 3;
+// public static final Pattern INVALID_HASHTAG_MATCH_END;
+// public static final Pattern RTL_CHARACTERS;
+//
+// public static final Pattern AT_SIGNS;
+// public static final Pattern VALID_MENTION_OR_LIST;
+// public static final int VALID_MENTION_OR_LIST_GROUP_BEFORE = 1;
+// public static final int VALID_MENTION_OR_LIST_GROUP_AT = 2;
+// public static final int VALID_MENTION_OR_LIST_GROUP_USERNAME = 3;
+// public static final int VALID_MENTION_OR_LIST_GROUP_LIST = 4;
+//
+// public static final Pattern VALID_REPLY;
+// public static final int VALID_REPLY_GROUP_USERNAME = 1;
+//
+// public static final Pattern INVALID_MENTION_MATCH_END;
 
 export const VALID_URL_GROUP_ALL: number          = 1;
 export const VALID_URL_GROUP_BEFORE: number       = 2;
@@ -262,14 +314,14 @@ export const VALID_CASHTAG_GROUP_BEFORE: number = 1;
 export const VALID_CASHTAG_GROUP_DOLLAR: number = 2;
 export const VALID_CASHTAG_GROUP_CASHTAG: number = 3;
 
-    // initializing in a static synchronized block,
-    // there appears to be thread safety issues with Pattern.compile in android
+// initializing in a static synchronized block,
+// there appears to be thread safety issues with Pattern.compile in android
 
 export const INVALID_CHARACTERS_PATTERN: RegExp = new RegExp(".*[" + INVALID_CHARACTERS + "].*");
 
 export const VALID_HASHTAG: RegExp = new RegExp("(^|\\uFE0E|\\uFE0F|[^&" + HASHTAG_LETTERS_NUMERALS +
-                                        "])([#\uFF03])(?![\uFE0F\u20E3])(" + HASHTAG_LETTERS_NUMERALS_SET + "*" +
-                                        HASHTAG_LETTERS_SET + HASHTAG_LETTERS_NUMERALS_SET + "*)", "i");
+                                                    "])([#\uFF03])(?![\uFE0F\u20E3])(" + HASHTAG_LETTERS_NUMERALS_SET + "*" +
+                                                    HASHTAG_LETTERS_SET + HASHTAG_LETTERS_NUMERALS_SET + "*)", "i");
 
 export const INVALID_HASHTAG_MATCH_END = new RegExp("^(?:[#＃]|://)");
 export const RTL_CHARACTERS = new RegExp("[\u0600-\u06FF\u0750-\u077F\u0590-\u05FF\uFE70-\uFEFF]");
@@ -277,13 +329,13 @@ export const RTL_CHARACTERS = new RegExp("[\u0600-\u06FF\u0750-\u077F\u0590-\u05
 export const AT_SIGNS = new RegExp("[" + AT_SIGNS_CHARS + "]");
 
 export const VALID_MENTION_OR_LIST: RegExp = new RegExp("([^a-z0-9_!#$%&*" + AT_SIGNS_CHARS +
-                                            "]|^|(?:^|[^a-z0-9_+~.-])RT:?)(" + AT_SIGNS +
-                                            "+)([a-z0-9_]{1,20})(/[a-z][a-z0-9_\\-]{0,24})?", "i");
+                                                            "]|^|(?:^|[^a-z0-9_+~.-])RT:?)(" + AT_SIGNS +
+                                                            "+)([a-z0-9_]{1,20})(/[a-z][a-z0-9_\\-]{0,24})?", "i");
 
 export const VALID_REPLY = new RegExp("^(?:" + UNICODE_SPACES + ")*" + AT_SIGNS + "([a-z0-9_]{1,20})", "i");
 
 export const INVALID_MENTION_MATCH_END =
-        new RegExp("^(?:[" + AT_SIGNS_CHARS + LATIN_ACCENTS_CHARS + "]|://)");
+    new RegExp("^(?:[" + AT_SIGNS_CHARS + LATIN_ACCENTS_CHARS + "]|://)");
 
 export const INVALID_URL_WITHOUT_PROTOCOL_MATCH_BEGIN = new RegExp("[-_./]$");
 
@@ -302,8 +354,6 @@ export const VALID_URL = new RegExp(VALID_URL_PATTERN_STRING, 'i');
 export const VALID_TCO_URL = new RegExp("^https?://t\\.co/([a-z0-9]+)", 'i');
 
 export const VALID_CASHTAG = new RegExp("(^|" + UNICODE_SPACES + ")(" + DOLLAR_SIGN_CHAR + ")(" +
-                                        CASHTAG + ")" + "(?=$|\\s|\\p{Punct})", 'i');
+                                            CASHTAG + ")" + "(?=$|\\s|\\p{Punct})", 'i');
 
 export const VALID_DOMAIN = new RegExp(URL_VALID_DOMAIN, 'i');
-
-

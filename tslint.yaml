@@ -46,6 +46,8 @@ rules:
 
   arrow-parens: false
 
+  no-namespace: false
+
   member-ordering:
     options:
       order:
