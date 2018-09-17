@@ -16,6 +16,7 @@ import {RemotePersistenceLayerFactory} from '../../../web/js/datastore/factories
 import {Popover, PopoverBody} from 'reactstrap';
 import CreatableSelect from 'react-select/lib/Creatable';
 import {TagInput} from './TagInput';
+import {TagsDB} from './TagsDB';
 
 const log = Logger.create();
 
@@ -28,6 +29,8 @@ export default class App<P> extends React.Component<{}, IAppState> {
     private repositoryUpdater?: RepositoryUpdater;
 
     private repoDocs: RepoDocInfoIndex = {};
+
+    private tagsDB: TagsDB = new TagsDB();
 
     constructor(props: P, context: any) {
         super(props, context);
