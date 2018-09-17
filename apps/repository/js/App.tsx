@@ -101,15 +101,15 @@ export default class App extends React.Component<AppProps, AppState> {
                                 </div>
                             </div>
 
+                            <div className="header-filter-box header-filter-tags">
+                                <FilterTagInput tagsDBProvider={() => this.docRepository!.tagsDB} />
+                            </div>
+
                             <div className="header-filter-box">
                                 <input id="filter_title"
                                        type="text"
                                        placeholder="Filter by title"
                                        onChange={() => this.refresh()}/>
-                            </div>
-
-                            <div className="header-filter-box">
-                                <FilterTagInput tagsDBProvider={() => this.docRepository!.tagsDB} />
                             </div>
 
 

@@ -6,7 +6,6 @@ import {RepoDocInfo} from './RepoDocInfo';
 import {Tag} from '../../../web/js/tags/Tag';
 import {Preconditions} from '../../../web/js/Preconditions';
 import {TagsDB} from './TagsDB';
-import {Tags} from '../../../web/js/tags/Tags';
 import {Optional} from '../../../web/js/util/ts/Optional';
 
 let SEQUENCE = 0;

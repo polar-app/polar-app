@@ -1,15 +1,20 @@
 import * as React from 'react';
 import {Tag} from '../../../web/js/tags/Tag';
 import {TagsDB} from './TagsDB';
-import Select from 'react-select/lib/Select';
-
+import {TagSelectOption} from './TagInput';
+import Select from 'react-select';
+import {Popover, PopoverBody} from 'reactstrap';
+import {Blackout} from './Blackout';
 
 // noinspection TsLint
 export class FilterTagInput extends React.Component<FilterTagInputProps, FilterTagInputState> {
 
+    private readonly id = "filter-tag-input";
+
     constructor(props: FilterTagInputProps, context: any) {
         super(props, context);
 
+        this.toggle = this.toggle.bind(this);
         this.handleChange = this.handleChange.bind(this);
         this.state = {
             popoverOpen: false
@@ -28,16 +33,17 @@ export class FilterTagInput extends React.Component<FilterTagInputProps, FilterT
     }
     public render() {
         //
-        // const options: TagSelectOption[] =
-        //     this.props.tagsDBProvider().tags().map( current => {
-        //         return {
-        //             value: current.id,
-        //             label: current.label
-        //         };
-        //     });
+        const options: TagSelectOption[] =
+            this.props.tagsDBProvider().tags().map( current => {
+                return {
+                    value: current.id,
+                    label: current.label
+                };
+        });
+
         //
         // // FIXME: need to keep the current value between iterations
-        // const defaultValue: TagSelectOption[] = [];
+        const defaultValue: TagSelectOption[] = [];
             // existingTags.map(current => {
             //         return {
             //             value: current.id,
@@ -49,23 +55,53 @@ export class FilterTagInput extends React.Component<FilterTagInputProps, FilterT
 
             <div>
 
-                <Select
-                    isMulti
-                    isClearable
-                    className="basic-multi-select"
-                    classNamePrefix="select"
-                    onChange={this.handleChange}
-                    //defaultValue={defaultValue}
-                    // options={options}
-                />
+                <label id={this.id} onClick={this.toggle}>
+                    Tags:
+                    <i className="fa fa-tag doc-button doc-button-selectable"/>
+                </label>
 
-                {/*<Button onClick={this.save}>*/}
-                {/*Save*/}
-                {/*</Button>*/}
+                <Popover placement="bottom"
+                         isOpen={this.state.popoverOpen}
+                         target={this.id}
+                         toggle={this.toggle}
+                         className="tag-input-popover">
+
+                    <PopoverBody>
+
+                        <Select
+                            isMulti
+                            isClearable
+                            className="filter-tag-input"
+                            classNamePrefix="select"
+                            // onChange={this.handleChange}
+                            defaultValue={defaultValue}
+                            options={options}
+                        />
+
+                    </PopoverBody>
+
+                </Popover>
 
             </div>
 
         );
+
+    }
+
+    private toggle() {
+
+        const open = !this.state.popoverOpen;
+
+        if (open) {
+            Blackout.enable();
+        } else {
+            Blackout.disable();
+
+        }
+
+        this.setState({
+                          popoverOpen: open
+                      });
 
     }
 
@@ -87,7 +123,7 @@ export class FilterTagInput extends React.Component<FilterTagInputProps, FilterT
 }
 
 interface FilterTagInputState {
-
+    popoverOpen: boolean;
 }
 
 export interface FilterTagInputProps {

@@ -1,4 +1,5 @@
 @import "./App.css";
+@import "./App.css";
 
 @import "../../../node_modules/bootstrap/dist/css/bootstrap.min.css";
 /* @import "../../node_modules/bootstrap/dist/css/bootstrap-theme.min.css"; */
@@ -67,8 +68,12 @@ html, body {
 }
 
 #header-filter input[type=text] {
-  width: 350px;
+  width: 200px;
   padding: 3px;
+}
+
+.filter-tag-input {
+    /*width: 150px;*/
 }
 
 .rt-td {
@@ -107,6 +112,9 @@ footer .buttons .button {
     color: #222222;
 }
 
+.doc-button-selectable {
+    color: grey;
+}
 
 .doc-button-inactive:hover {
   color: grey;
