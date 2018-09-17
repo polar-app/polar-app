@@ -1,6 +1,7 @@
 import * as React from 'react';
 import {Button, Popover, PopoverBody} from 'reactstrap';
 import CreatableSelect from 'react-select/lib/Creatable';
+import {Blackout} from './Blackout';
 
 const options = [
     { value: 'chocolate', label: 'Chocolate' },
@@ -25,8 +26,18 @@ export class TagInput<P> extends React.Component<{}, IAppState> {
     }
 
     private toggle() {
+
+        const open = !this.state.popoverOpen;
+
+        if(open) {
+            Blackout.enable();
+        } else {
+            Blackout.disable();
+
+        }
+
         this.setState({
-            popoverOpen: !this.state.popoverOpen
+            popoverOpen: open
         });
     }
 

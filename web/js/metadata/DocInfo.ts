@@ -139,4 +139,10 @@ export interface IDocInfo {
      */
     added?: ISODateTimeString;
 
+    /**
+     * Singular key/value pairs where the id is the lowercase representation
+     * of a tag and value is the human/string representation.
+     */
+    tags?: {[id: string]: string};
+
 }
