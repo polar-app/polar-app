@@ -32,13 +32,13 @@ export class BaseHighlight extends ExtendedAnnotation {
 
     }
 
-    validate() {
+    public validate() {
 
         super.validate();
 
         Preconditions.assertNotNull(this.rects, "rects");
         Preconditions.assertNotInstanceOf(this.rects, "rects", Array);
 
-    };
+    }
 
 }

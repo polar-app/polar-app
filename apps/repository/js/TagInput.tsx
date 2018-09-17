@@ -2,46 +2,29 @@ import * as React from 'react';
 import {Button, Popover, PopoverBody} from 'reactstrap';
 import CreatableSelect from 'react-select/lib/Creatable';
 import {Blackout} from './Blackout';
-
-const options = [
-    { value: 'chocolate', label: 'Chocolate' },
-    { value: 'strawberry', label: 'Strawberry' },
-    { value: 'vanilla', label: 'Vanilla' }
-];
+import {Optional} from '../../../web/js/util/ts/Optional';
 
 let SEQUENCE = 0;
 
-export class TagInput<P> extends React.Component<{}, IAppState> {
+// noinspection TsLint
+export class TagInput extends React.Component<TagInputProps, TagInputState> {
 
     private readonly id = "popover-" + SEQUENCE++;
 
-    constructor(props: P, context: any) {
+    constructor(props: TagInputProps, context: any) {
         super(props, context);
 
         this.toggle = this.toggle.bind(this);
+        this.handleChange = this.handleChange.bind(this);
         this.state = {
             popoverOpen: false
         };
 
     }
-
-    private toggle() {
-
-        const open = !this.state.popoverOpen;
-
-        if(open) {
-            Blackout.enable();
-        } else {
-            Blackout.disable();
-
-        }
-
-        this.setState({
-            popoverOpen: open
-        });
-    }
-
     public render() {
+
+        const options: TagOption[] =
+            Optional.of(this.props.options).getOrElse([]);
 
         return (
 
@@ -64,6 +47,7 @@ export class TagInput<P> extends React.Component<{}, IAppState> {
                             isClearable
                             className="basic-multi-select"
                             classNamePrefix="select"
+                            onChange={this.handleChange}
                             options={options} />
 
                         {/*<Button onClick={this.save}>*/}
@@ -84,10 +68,40 @@ export class TagInput<P> extends React.Component<{}, IAppState> {
         // noop
     }
 
+    private toggle() {
+
+        const open = !this.state.popoverOpen;
+
+        if (open) {
+            Blackout.enable();
+        } else {
+            Blackout.disable();
+
+        }
+
+        this.setState({
+                          popoverOpen: open
+                      });
+    }
+
+    private handleChange(selectedOptions: any[]) {
+        console.log(`Options selected:`, selectedOptions);
+    }
+
 }
 
-interface IAppState {
+interface TagInputState {
     popoverOpen: boolean;
 }
 
+export interface TagInputProps {
 
+    onSelected?: (values: string[]) => void;
+    options?: TagOption[];
+
+}
+
+export interface TagOption {
+    readonly value: string;
+    readonly label: string;
+}

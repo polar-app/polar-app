@@ -15,7 +15,7 @@ import {RepositoryUpdater} from './RepositoryUpdater';
 import {RemotePersistenceLayerFactory} from '../../../web/js/datastore/factories/RemotePersistenceLayerFactory';
 import {Popover, PopoverBody} from 'reactstrap';
 import CreatableSelect from 'react-select/lib/Creatable';
-import {TagInput} from './TagInput';
+import {TagInput, TagOption} from './TagInput';
 import {TagsDB} from './TagsDB';
 
 const log = Logger.create();
@@ -276,8 +276,14 @@ export default class App<P> extends React.Component<{}, IAppState> {
                                 resizable: false,
                                 Cell: (row: any) => {
 
+                                    const options: TagOption[] = [
+                                        { value: 'chocolate', label: 'Chocolate' },
+                                        { value: 'strawberry', label: 'Strawberry' },
+                                        { value: 'vanilla', label: 'Vanilla' }
+                                    ];
+
                                     return (
-                                        <TagInput/>
+                                        <TagInput options={options}/>
                                     );
 
                                 }

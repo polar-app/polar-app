@@ -21,7 +21,7 @@ export class TextHighlight extends BaseHighlight {
      * in the specific regions they selected.
      *
      */
-    public textSelections: {[id: number]: TextRect} = {}
+    public textSelections: {[id: number]: TextRect} = {};
 
     /**
      * The text selections converted to a text string which may or may not be
@@ -68,10 +68,10 @@ export class TextHighlight extends BaseHighlight {
 
     }
 
-    validate() {
+    public validate() {
         super.validate();
         Preconditions.assertNotInstanceOf(this.textSelections, "textSelections", Array);
-    };
+    }
 
 }
 
