@@ -26,7 +26,9 @@ export class DocRepository {
     constructor(persistenceLayer: IListenablePersistenceLayer, repoDocs: RepoDocInfoIndex) {
         this.persistenceLayer = persistenceLayer;
         this.repoDocs = repoDocs;
+        this.init();
     }
+
 
     /**
      * Update the in-memory representation of this doc.
@@ -35,12 +37,7 @@ export class DocRepository {
      */
     public updateDocInfo(repoDocInfo: RepoDocInfo) {
         this.repoDocs[repoDocInfo.fingerprint] = repoDocInfo;
-
-        // update the tags data.
-        Optional.of(repoDocInfo.docInfo.tags)
-            .map(tags => {
-                Object.values(tags).forEach(tag => this.tagsDB.register(tag));
-            });
+        this.updateTagsDB(repoDocInfo);
 
     }
 
@@ -89,6 +86,25 @@ export class DocRepository {
         this.updateDocInfo(repoDocInfo);
 
         return this.syncDocInfo(repoDocInfo.docInfo);
+
+    }
+
+
+    private init() {
+
+        for (const repoDoc of Object.values(this.repoDocs)) {
+            this.updateTagsDB(repoDoc);
+        }
+
+    }
+
+    private updateTagsDB(repoDocInfo: RepoDocInfo) {
+
+        // update the tags data.
+        Optional.of(repoDocInfo.docInfo.tags)
+            .map(tags => {
+                Object.values(tags).forEach(tag => this.tagsDB.register(tag));
+            });
 
     }
 

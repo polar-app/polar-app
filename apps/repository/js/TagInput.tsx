@@ -6,6 +6,8 @@ import {RepoDocInfo} from './RepoDocInfo';
 import {Tag} from '../../../web/js/tags/Tag';
 import {Preconditions} from '../../../web/js/Preconditions';
 import {TagsDB} from './TagsDB';
+import {Tags} from '../../../web/js/tags/Tags';
+import {Optional} from '../../../web/js/util/ts/Optional';
 
 let SEQUENCE = 0;
 
@@ -37,6 +39,16 @@ export class TagInput extends React.Component<TagInputProps, TagInputState> {
                 };
             });
 
+        const existingTags: Tag[] = Optional.of(this.props.existingTags).getOrElse([]);
+
+        const defaultValue: TagOption[] =
+            existingTags.map(current => {
+                    return {
+                        value: current.id,
+                        label: current.label
+                    };
+                });
+
         return (
 
             <div>
@@ -59,6 +71,7 @@ export class TagInput extends React.Component<TagInputProps, TagInputState> {
                             className="basic-multi-select"
                             classNamePrefix="select"
                             onChange={this.handleChange}
+                            defaultValue={defaultValue}
                             options={options} />
 
                         {/*<Button onClick={this.save}>*/}
@@ -134,6 +147,8 @@ export interface TagInputProps {
     repoDocInfo: RepoDocInfo;
 
     tagsDB: TagsDB;
+
+    existingTags?: Tag[];
 
     onChange?: (repoDocInfo: RepoDocInfo, values: Tag[]) => void;
 

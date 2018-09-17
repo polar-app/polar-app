@@ -12,6 +12,8 @@ import {RepoDocInfos} from './RepoDocInfos';
 import {DocRepository} from './DocRepository';
 import {RemotePersistenceLayerFactory} from '../../../web/js/datastore/factories/RemotePersistenceLayerFactory';
 import {TagInput} from './TagInput';
+import {Optional} from '../../../web/js/util/ts/Optional';
+import {Tag} from '../../../web/js/tags/Tag';
 
 const log = Logger.create();
 
@@ -163,9 +165,13 @@ export default class App<P> extends React.Component<{}, IAppState> {
 
                                     const repoDocInfo: RepoDocInfo = row.original;
 
+                                    const existingTags: Tag[]
+                                        = Object.values(Optional.of(repoDocInfo.docInfo.tags).getOrElse({}));
+
                                     return (
                                         <TagInput repoDocInfo={repoDocInfo}
                                                   tagsDB={this.docRepository!.tagsDB}
+                                                  existingTags={existingTags}
                                                   onChange={(_, tags) =>
                                                       this.docRepository!.syncDocInfoTags(repoDocInfo, tags)
                                                           .catch(err => log.error("Unable to update tags: ", err))} />
