@@ -103,7 +103,7 @@ export class DocRepository {
         // update the tags data.
         Optional.of(repoDocInfo.docInfo.tags)
             .map(tags => {
-                Object.values(tags).forEach(tag => this.tagsDB.register(tag));
+                 this.tagsDB.register(...Object.values(tags));
             });
 
     }

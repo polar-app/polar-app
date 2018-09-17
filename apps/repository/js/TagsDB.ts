@@ -14,13 +14,15 @@ export class TagsDB {
      */
     private readonly index: {[id: string]: Tag} = {};
 
+    public register(...tags: Tag[]): void {
 
+        tags.forEach(tag => {
 
-    public register(tag: Tag): void {
+            if (! this.index[tag.id]) {
+                this.index[tag.id] = tag;
+            }
 
-        if (! this.index[tag.id]) {
-            this.index[tag.id] = tag;
-        }
+        });
 
     }
 

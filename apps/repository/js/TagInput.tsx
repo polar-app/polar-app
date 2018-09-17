@@ -31,7 +31,7 @@ export class TagInput extends React.Component<TagInputProps, TagInputState> {
     }
     public render() {
 
-        const options: TagOption[] =
+        const options: TagSelectOption[] =
             this.props.tagsDB.tags().map( current => {
                 return {
                     value: current.id,
@@ -41,7 +41,7 @@ export class TagInput extends React.Component<TagInputProps, TagInputState> {
 
         const existingTags: Tag[] = Optional.of(this.props.existingTags).getOrElse([]);
 
-        const defaultValue: TagOption[] =
+        const defaultValue: TagSelectOption[] =
             existingTags.map(current => {
                     return {
                         value: current.id,
@@ -123,9 +123,9 @@ export class TagInput extends React.Component<TagInputProps, TagInputState> {
 
     }
 
-    private toTags(tagOptions: TagOption[]): Tag[] {
+    private toTags(tagSelectOptions: TagSelectOption[]): Tag[] {
 
-        return tagOptions.map((current): Tag => {
+        return tagSelectOptions.map((current): Tag => {
 
             return {
                 id: current.value,
@@ -154,7 +154,7 @@ export interface TagInputProps {
 
 }
 
-export interface TagOption {
+export interface TagSelectOption {
     readonly value: string;
     readonly label: string;
 }

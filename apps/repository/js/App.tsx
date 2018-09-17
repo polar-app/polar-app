@@ -14,6 +14,7 @@ import {RemotePersistenceLayerFactory} from '../../../web/js/datastore/factories
 import {TagInput} from './TagInput';
 import {Optional} from '../../../web/js/util/ts/Optional';
 import {Tag} from '../../../web/js/tags/Tag';
+import {FilterTagInput} from './FilterTagInput';
 
 const log = Logger.create();
 
@@ -102,6 +103,11 @@ export default class App<P> extends React.Component<{}, IAppState> {
                                        placeholder="Filter by title"
                                        onChange={() => this.refresh()}/>
                             </div>
+
+                            <div className="header-filter-box">
+                                <FilterTagInput tagsDBProvider={() => this.docRepository!.tagsDB} />
+                            </div>
+
 
                         </div>
 
