@@ -13,6 +13,9 @@ import {RepoDocInfo} from './RepoDocInfo';
 import {RepoDocInfos} from './RepoDocInfos';
 import {RepositoryUpdater} from './RepositoryUpdater';
 import {RemotePersistenceLayerFactory} from '../../../web/js/datastore/factories/RemotePersistenceLayerFactory';
+import {Popover, PopoverBody} from 'reactstrap';
+import CreatableSelect from 'react-select/lib/Creatable';
+import {TagInput} from './TagInput';
 
 const log = Logger.create();
 
@@ -261,6 +264,20 @@ export default class App<P> extends React.Component<{}, IAppState> {
                                         width: '100%'
                                     }} />
                                 )
+                            },
+                            {
+                                Header: '',
+                                accessor: '',
+                                maxWidth: 25,
+                                defaultSortDesc: true,
+                                resizable: false,
+                                Cell: (row: any) => {
+
+                                    return (
+                                        <TagInput/>
+                                    );
+
+                                }
                             },
                             {
                                 Header: '',

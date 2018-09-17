@@ -7,6 +7,7 @@ const options = [
     { value: 'strawberry', label: 'Strawberry' },
     { value: 'vanilla', label: 'Vanilla' }
 ]
+
 class App<P> extends React.Component<{}, IAppState> {
 
 
