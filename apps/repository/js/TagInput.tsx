@@ -7,6 +7,8 @@ import {Tag} from '../../../web/js/tags/Tag';
 import {Preconditions} from '../../../web/js/Preconditions';
 import {TagsDB} from './TagsDB';
 import {Optional} from '../../../web/js/util/ts/Optional';
+import {TagSelectOption} from './TagSelectOption';
+import {TagSelectOptions} from './TagSelectOptions';
 
 let SEQUENCE = 0;
 
@@ -30,23 +32,12 @@ export class TagInput extends React.Component<TagInputProps, TagInputState> {
     }
     public render() {
 
-        const options: TagSelectOption[] =
-            this.props.tagsDB.tags().map( current => {
-                return {
-                    value: current.id,
-                    label: current.label
-                };
-            });
+        const options: TagSelectOption[]
+            = TagSelectOptions.fromTags(this.props.tagsDB.tags());
 
         const existingTags: Tag[] = Optional.of(this.props.existingTags).getOrElse([]);
 
-        const defaultValue: TagSelectOption[] =
-            existingTags.map(current => {
-                    return {
-                        value: current.id,
-                        label: current.label
-                    };
-                });
+        const defaultValue: TagSelectOption[] = TagSelectOptions.fromTags(existingTags);
 
         return (
 
@@ -109,29 +100,14 @@ export class TagInput extends React.Component<TagInputProps, TagInputState> {
 
     private handleChange(selectedOptions: any) {
 
-        // TODO: couldn't figure out the input type situation here.
-
         console.log(`Options selected:`, selectedOptions);
 
         if (this.props.onChange) {
 
-            const tags = this.toTags(selectedOptions);
+            const tags = TagSelectOptions.toTags(selectedOptions);
 
             this.props.onChange(this.props.repoDocInfo, tags);
         }
-
-    }
-
-    private toTags(tagSelectOptions: TagSelectOption[]): Tag[] {
-
-        return tagSelectOptions.map((current): Tag => {
-
-            return {
-                id: current.value,
-                label: current.label
-            };
-
-        });
 
     }
 
@@ -151,9 +127,4 @@ export interface TagInputProps {
 
     onChange?: (repoDocInfo: RepoDocInfo, values: Tag[]) => void;
 
-}
-
-export interface TagSelectOption {
-    readonly value: string;
-    readonly label: string;
 }

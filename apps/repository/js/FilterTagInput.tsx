@@ -1,10 +1,11 @@
 import * as React from 'react';
 import {Tag} from '../../../web/js/tags/Tag';
 import {TagsDB} from './TagsDB';
-import {TagSelectOption} from './TagInput';
 import Select from 'react-select';
 import {Popover, PopoverBody} from 'reactstrap';
 import {Blackout} from './Blackout';
+import {TagSelectOptions} from './TagSelectOptions';
+import {TagSelectOption} from './TagSelectOption';
 
 // noinspection TsLint
 export class FilterTagInput extends React.Component<FilterTagInputProps, FilterTagInputState> {
@@ -17,7 +18,8 @@ export class FilterTagInput extends React.Component<FilterTagInputProps, FilterT
         this.toggle = this.toggle.bind(this);
         this.handleChange = this.handleChange.bind(this);
         this.state = {
-            popoverOpen: false
+            popoverOpen: false,
+            defaultValue: []
         };
 
         // FIXME: next steps:
@@ -41,16 +43,6 @@ export class FilterTagInput extends React.Component<FilterTagInputProps, FilterT
                 };
         });
 
-        //
-        // // FIXME: need to keep the current value between iterations
-        const defaultValue: TagSelectOption[] = [];
-            // existingTags.map(current => {
-            //         return {
-            //             value: current.id,
-            //             label: current.label
-            //         };
-            //     });
-
         return (
 
             <div>
@@ -73,8 +65,8 @@ export class FilterTagInput extends React.Component<FilterTagInputProps, FilterT
                             isClearable
                             className="filter-tag-input"
                             classNamePrefix="select"
-                            // onChange={this.handleChange}
-                            defaultValue={defaultValue}
+                            onChange={this.handleChange}
+                            defaultValue={this.state.defaultValue}
                             options={options}
                         />
 
@@ -90,33 +82,34 @@ export class FilterTagInput extends React.Component<FilterTagInputProps, FilterT
 
     private toggle() {
 
-        const open = !this.state.popoverOpen;
+        this.state = Object.assign(this.state, {
+            popoverOpen: !this.state.popoverOpen
+        });
 
-        if (open) {
+        if (this.state.popoverOpen) {
             Blackout.enable();
         } else {
             Blackout.disable();
 
         }
 
-        this.setState({
-                          popoverOpen: open
-                      });
+        this.setState(this.state);
 
     }
 
     private handleChange(selectedOptions: any) {
 
-        // TODO: couldn't figure out the input type situation here.
+        // as so as we handle the change we toggle off
 
-        console.log(`Options selected:`, selectedOptions);
-        //
-        // if (this.props.onChange) {
-        //
-        //     const tags = this.toTags(selectedOptions);
-        //
-        //     this.props.onChange(this.props.repoDocInfo, tags);
-        // }
+        this.toggle();
+
+        const defaultValue: TagSelectOptions[] = selectedOptions;
+
+        this.state = Object.assign(this.state, {
+            defaultValue
+        });
+
+        this.setState(this.state);
 
     }
 
@@ -124,6 +117,7 @@ export class FilterTagInput extends React.Component<FilterTagInputProps, FilterT
 
 interface FilterTagInputState {
     popoverOpen: boolean;
+    defaultValue: TagSelectOption[];
 }
 
 export interface FilterTagInputProps {
