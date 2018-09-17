@@ -1,6 +1,8 @@
 /**
  * A simple in-memory database of tags.
  */
+import {Tag} from '../../../web/js/tags/Tag';
+
 export class TagsDB {
 
     /**
