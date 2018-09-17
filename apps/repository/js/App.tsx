@@ -3,7 +3,6 @@ import ReactTable from "react-table";
 import {Footer, Tips} from './Utils';
 import {Logger} from '../../../web/js/logger/Logger';
 import {DocLoader} from '../../../web/js/apps/main/ipc/DocLoader';
-import {Progress} from '../../../web/js/util/Progress';
 import {Strings} from '../../../web/js/util/Strings';
 import {IListenablePersistenceLayer} from '../../../web/js/datastore/IListenablePersistenceLayer';
 import {RepoDocInfoLoader} from './RepoDocInfoLoader';
@@ -13,8 +12,6 @@ import {RepoDocInfo} from './RepoDocInfo';
 import {RepoDocInfos} from './RepoDocInfos';
 import {RepositoryUpdater} from './RepositoryUpdater';
 import {RemotePersistenceLayerFactory} from '../../../web/js/datastore/factories/RemotePersistenceLayerFactory';
-import {Popover, PopoverBody} from 'reactstrap';
-import CreatableSelect from 'react-select/lib/Creatable';
 import {TagInput, TagOption} from './TagInput';
 import {TagsDB} from './TagsDB';
 
@@ -162,7 +159,7 @@ export default class App<P> extends React.Component<{}, IAppState> {
             repoDocInfo.docInfo.flagged = repoDocInfo.flagged;
         }
 
-        await this.repositoryUpdater!.sync(repoDocInfo.docInfo);
+        await this.repositoryUpdater!.updateDocInfo(repoDocInfo.docInfo);
 
         this.refresh();
 
@@ -276,6 +273,8 @@ export default class App<P> extends React.Component<{}, IAppState> {
                                 resizable: false,
                                 Cell: (row: any) => {
 
+                                    const repoDocInfo: RepoDocInfo = row.original;
+
                                     const options: TagOption[] = [
                                         { value: 'chocolate', label: 'Chocolate' },
                                         { value: 'strawberry', label: 'Strawberry' },
@@ -283,7 +282,11 @@ export default class App<P> extends React.Component<{}, IAppState> {
                                     ];
 
                                     return (
-                                        <TagInput options={options}/>
+                                        <TagInput repoDocInfo={repoDocInfo}
+                                                  options={options}
+                                                  onChange={(_, tags) =>
+                                                      this.repositoryUpdater!.updateTags(repoDocInfo, tags)
+                                                          .catch(err => log.error("Unable to update tags: ", err))} />
                                     );
 
                                 }
@@ -398,6 +401,8 @@ export default class App<P> extends React.Component<{}, IAppState> {
             </div>
         );
     }
+
+    // private updateTags(docMetaRef: DocMetaRef, TagInput)
 
     private async init(): Promise<void> {
 

@@ -1,6 +1,7 @@
 import twitter_txt from 'twitter-text';
 import {isPresent} from '../Preconditions';
 import {Optional} from '../util/ts/Optional';
+import {Tag} from './Tag';
 
 export class Tags {
 
@@ -27,6 +28,18 @@ export class Tags {
         }
 
         return Optional.empty();
+
+    }
+
+    public static toMap(tags: Tag[]) {
+
+        const result: {[id: string]: Tag} = {};
+
+        for (const tag of tags) {
+            result[tag.id] = tag;
+        }
+
+        return result;
 
     }
 

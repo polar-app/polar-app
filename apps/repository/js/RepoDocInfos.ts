@@ -1,4 +1,4 @@
-import {isPresent} from '../../../web/js/Preconditions';
+import {isPresent, Preconditions} from '../../../web/js/Preconditions';
 import {IDocInfo} from '../../../web/js/metadata/DocInfo';
 import {Optional} from '../../../web/js/util/ts/Optional';
 import {RepoDocInfo} from './RepoDocInfo';
@@ -10,6 +10,8 @@ export class RepoDocInfos {
     }
 
     public static convertFromDocInfo(docInfo: IDocInfo): RepoDocInfo {
+
+        Preconditions.assertPresent(docInfo, "docInfo");
 
         return {
 

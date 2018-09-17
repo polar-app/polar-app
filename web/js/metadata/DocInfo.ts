@@ -6,6 +6,7 @@ import {SerializedObject} from './SerializedObject';
 import {PagemarkType} from './PagemarkType';
 import {Preconditions} from '../Preconditions';
 import {ISODateTimeString} from './ISODateTimeStrings';
+import {Tag} from '../tags/Tag';
 
 export class DocInfo extends SerializedObject implements IDocInfo {
 
@@ -24,7 +25,7 @@ export class DocInfo extends SerializedObject implements IDocInfo {
     public flagged: boolean = false;
     public filename?: string;
     public added?: ISODateTimeString;
-    public tags?: {[id: string]: string} = {};
+    public tags?: {[id: string]: Tag} = {};
 
     constructor(val: IDocInfo) {
 
@@ -144,6 +145,6 @@ export interface IDocInfo {
      * Singular key/value pairs where the id is the lowercase representation
      * of a tag and value is the human/string representation.
      */
-    tags?: {[id: string]: string};
+    tags?: {[id: string]: Tag};
 
 }

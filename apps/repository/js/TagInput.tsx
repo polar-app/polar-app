@@ -1,8 +1,11 @@
 import * as React from 'react';
-import {Button, Popover, PopoverBody} from 'reactstrap';
+import {Popover, PopoverBody} from 'reactstrap';
 import CreatableSelect from 'react-select/lib/Creatable';
 import {Blackout} from './Blackout';
 import {Optional} from '../../../web/js/util/ts/Optional';
+import {RepoDocInfo} from './RepoDocInfo';
+import {Tag} from '../../../web/js/tags/Tag';
+import {Preconditions} from '../../../web/js/Preconditions';
 
 let SEQUENCE = 0;
 
@@ -13,6 +16,9 @@ export class TagInput extends React.Component<TagInputProps, TagInputState> {
 
     constructor(props: TagInputProps, context: any) {
         super(props, context);
+
+        Preconditions.assertPresent(props.repoDocInfo);
+        Preconditions.assertPresent(props.repoDocInfo.docInfo, "repoDocInfo.docInfo");
 
         this.toggle = this.toggle.bind(this);
         this.handleChange = this.handleChange.bind(this);
@@ -57,7 +63,6 @@ export class TagInput extends React.Component<TagInputProps, TagInputState> {
                     </PopoverBody>
                 </Popover>
 
-
             </div>
 
         );
@@ -80,12 +85,37 @@ export class TagInput extends React.Component<TagInputProps, TagInputState> {
         }
 
         this.setState({
-                          popoverOpen: open
-                      });
+            popoverOpen: open
+        });
+
     }
 
-    private handleChange(selectedOptions: any[]) {
+    private handleChange(selectedOptions: any) {
+
+        // TODO: couldn't figure out the input type situation here.
+
         console.log(`Options selected:`, selectedOptions);
+
+        if (this.props.onChange) {
+
+            const tags = this.toTags(selectedOptions);
+
+            this.props.onChange(this.props.repoDocInfo, tags);
+        }
+
+    }
+
+    private toTags(tagOptions: TagOption[]): Tag[] {
+
+        return tagOptions.map((current): Tag => {
+
+            return {
+                id: current.value,
+                label: current.label
+            };
+
+        });
+
     }
 
 }
@@ -96,7 +126,10 @@ interface TagInputState {
 
 export interface TagInputProps {
 
-    onSelected?: (values: string[]) => void;
+    repoDocInfo: RepoDocInfo;
+
+    onChange?: (repoDocInfo: RepoDocInfo, values: Tag[]) => void;
+
     options?: TagOption[];
 
 }

@@ -1,6 +1,10 @@
 import {IListenablePersistenceLayer} from '../../../web/js/datastore/IListenablePersistenceLayer';
 import {Logger} from '../../../web/js/logger/Logger';
 import {DocInfo, IDocInfo} from '../../../web/js/metadata/DocInfo';
+import {RepoDocInfo} from './RepoDocInfo';
+import {Tag} from '../../../web/js/tags/Tag';
+import {Tags} from '../../../web/js/tags/Tags';
+import {Preconditions} from '../../../web/js/Preconditions';
 
 const log = Logger.create();
 
@@ -15,7 +19,7 @@ export class RepositoryUpdater {
         this.persistenceLayer = persistenceLayer;
     }
 
-    public async sync(docInfo: IDocInfo) {
+    public async updateDocInfo(docInfo: IDocInfo) {
 
         if (await this.persistenceLayer.contains(docInfo.fingerprint)) {
 
@@ -33,6 +37,21 @@ export class RepositoryUpdater {
             await this.persistenceLayer.syncDocMeta(docMeta);
 
         }
+
+    }
+
+    public async updateTags(repoDocInfo: RepoDocInfo, tags: Tag[]) {
+
+        Preconditions.assertPresent(repoDocInfo);
+        Preconditions.assertPresent(repoDocInfo.docInfo);
+        Preconditions.assertPresent(tags);
+
+        const docInfo: IDocInfo = Object.assign({}, repoDocInfo.docInfo);
+        docInfo.tags = Tags.toMap(tags);
+
+        console.log("FIXME", docInfo);
+
+        return this.updateDocInfo(docInfo);
 
     }
 
