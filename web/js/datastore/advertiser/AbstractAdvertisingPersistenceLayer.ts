@@ -39,7 +39,7 @@ export abstract class AbstractAdvertisingPersistenceLayer implements IListenable
 
         this.addEventListener((event) => {
 
-            if (fingerprint !== event.docInfo.fingerprint) {
+            if (fingerprint === event.docInfo.fingerprint) {
                 listener(event);
             }
 

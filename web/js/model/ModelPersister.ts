@@ -49,7 +49,14 @@ export class ModelPersister {
         // only accept DocInfo updates from the document we've opened.
         this.persistenceLayer.addEventListenerForDoc(this.docMeta.docInfo.fingerprint, event => {
             log.debug("Received updated DocInfo.");
+
+            if (this.docMeta.docInfo.fingerprint !== event.docInfo.fingerprint) {
+                const detail = `${this.docMeta.docInfo.fingerprint} vs ${event.docInfo.fingerprint}`;
+                throw new Error(`Attempt to update incorrect fingerprint: ` + detail);
+            }
+
             this.docMeta.docInfo = new DocInfo(event.docInfo);
+
         });
 
     }

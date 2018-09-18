@@ -40,8 +40,9 @@ describe('AdvertisingPersistenceLayer', function() {
                 "properties": {},
                 "archived": false,
                 "flagged": false,
+                "tags": {},
                 "nrPages": 1,
-                "fingerprint": "0x002",
+                "fingerprint": "0x001",
                 "added": "2012-03-02T11:38:49.321Z"
             }
         ];
