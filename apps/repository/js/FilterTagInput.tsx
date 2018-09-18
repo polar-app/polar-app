@@ -6,6 +6,7 @@ import {Popover, PopoverBody} from 'reactstrap';
 import {Blackout} from './Blackout';
 import {TagSelectOptions} from './TagSelectOptions';
 import {TagSelectOption} from './TagSelectOption';
+import {FilteredTags} from './FilteredTags';
 
 // noinspection TsLint
 export class FilterTagInput extends React.Component<FilterTagInputProps, FilterTagInputState> {
@@ -100,6 +101,10 @@ export class FilterTagInput extends React.Component<FilterTagInputProps, FilterT
             defaultValue
         });
 
+        this.props.filteredTags.set(TagSelectOptions.toTags(selectedOptions));
+
+        this.props.refresher();
+
         this.setState(this.state);
 
     }
@@ -116,5 +121,9 @@ export interface FilterTagInputProps {
     tagsDBProvider: () => TagsDB;
 
     onChange?: (values: Tag[]) => void;
+
+    refresher: () => void;
+
+    filteredTags: FilteredTags;
 
 }

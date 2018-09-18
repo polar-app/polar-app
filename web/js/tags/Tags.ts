@@ -7,7 +7,7 @@ export class Tags {
 
     public static assertValid(label: string) {
 
-        if (! this.validate(label).isPresent()) {
+        if (!this.validate(label).isPresent()) {
             throw new Error("Invalid tag: " + label);
         }
 
@@ -15,11 +15,11 @@ export class Tags {
 
     public static validate(label: string): Optional<string> {
 
-        if (! isPresent(label)) {
+        if (!isPresent(label)) {
             return Optional.empty();
         }
 
-        if (! label.startsWith('#')) {
+        if (!label.startsWith('#')) {
             label = '#' + label;
         }
 
@@ -33,7 +33,7 @@ export class Tags {
 
     public static toMap(tags: Tag[]) {
 
-        const result: {[id: string]: Tag} = {};
+        const result: { [id: string]: Tag } = {};
 
         for (const tag of tags) {
             result[tag.id] = tag;
@@ -43,5 +43,8 @@ export class Tags {
 
     }
 
-}
+    public static toIDs(tags: Tag[]) {
+        return tags.map(current => current.id);
+    }
 
+}

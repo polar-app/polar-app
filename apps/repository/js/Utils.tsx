@@ -1,5 +1,4 @@
 import React from "react";
-//import namor from "namor"
 
 function range(len: number) {
     const arr = [];
@@ -13,9 +12,6 @@ const newPerson = () => {
     const statusChance = Math.random();
     return {
         title: 'Mastering Bitcoin',
-        //lastName: 'Smith',
-        //age: Math.floor(Math.random() * 30),
-        //visits: Math.floor(Math.random() * 100),
         progress: Math.floor(Math.random() * 100),
     };
 };

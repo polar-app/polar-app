@@ -15,6 +15,10 @@ import {Optional} from '../../../web/js/util/ts/Optional';
 import {Tag} from '../../../web/js/tags/Tag';
 import {FilterTagInput} from './FilterTagInput';
 import {AppProps} from './AppProps';
+import {FilteredTags} from './FilteredTags';
+import {isPresent} from '../../../web/js/Preconditions';
+import {Sets} from '../../../web/js/util/Sets';
+import {Tags} from '../../../web/js/tags/Tags';
 
 const log = Logger.create();
 
@@ -25,6 +29,8 @@ export default class App extends React.Component<AppProps, AppState> {
     private readonly docRepository: DocRepository;
 
     private readonly repoDocInfoLoader: RepoDocInfoLoader;
+
+    private readonly filteredTags = new FilteredTags();
 
     constructor(props: AppProps, context: any) {
         super(props, context);
@@ -102,7 +108,11 @@ export default class App extends React.Component<AppProps, AppState> {
                             </div>
 
                             <div className="header-filter-box header-filter-tags">
-                                <FilterTagInput tagsDBProvider={() => this.docRepository!.tagsDB} />
+
+                                <FilterTagInput tagsDBProvider={() => this.docRepository!.tagsDB}
+                                                refresher={() => this.refresh()}
+                                                filteredTags={this.filteredTags} />
+
                             </div>
 
                             <div className="header-filter-box">
@@ -325,7 +335,10 @@ export default class App extends React.Component<AppProps, AppState> {
         repoDocs = this.doFilterByTitle(repoDocs);
         repoDocs = this.doFilterFlaggedOnly(repoDocs);
         repoDocs = this.doFilterHideArchived(repoDocs);
+        repoDocs = this.doFilterByTags(repoDocs);
+
         return repoDocs;
+
     }
 
     private doFilterValid(repoDocs: RepoDocInfo[]): RepoDocInfo[] {
@@ -372,6 +385,32 @@ export default class App extends React.Component<AppProps, AppState> {
         }
 
         return repoDocs;
+
+    }
+
+    private doFilterByTags(repoDocs: RepoDocInfo[]): RepoDocInfo[] {
+
+        const tags = Tags.toIDs(this.filteredTags.get());
+
+        return repoDocs.filter(current => {
+
+            if (tags.length === 0) {
+                // there is no filter in place...
+                return true;
+            }
+
+            if (! isPresent(current.docInfo.tags)) {
+                // the document we're searching over has not tags.
+                return false;
+            }
+
+            const intersection =
+                Sets.intersection(tags, Tags.toIDs(Object.values(current.docInfo.tags!)));
+
+            return intersection.length === tags.length;
+
+
+        });
 
     }
 

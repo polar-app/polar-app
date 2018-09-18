@@ -56,7 +56,7 @@ export class Model {
 
         let docMeta: DocMeta | undefined;
 
-        if(! await this.persistenceLayer.contains(fingerprint)) {
+        if (! await this.persistenceLayer.contains(fingerprint)) {
 
             console.warn("New document found. Creating initial DocMeta");
 
@@ -77,7 +77,7 @@ export class Model {
 
         docMeta = await this.persistenceLayer.getDocMeta(fingerprint);
 
-        if(docMeta === undefined) {
+        if (docMeta === undefined) {
             throw new Error("Unable to load DocMeta: " + fingerprint);
         }
 
