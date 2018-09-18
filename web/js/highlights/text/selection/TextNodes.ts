@@ -11,15 +11,15 @@ export class TextNodes {
      * @param length
      * @return {Range}
      */
-    static getRange(textNode: Node, offset: number = 0, length?: number) {
+    public static getRange(textNode: Node, offset: number = 0, length?: number) {
 
         Preconditions.assertPresent(textNode, "textNode");
 
-        if(! length) {
+        if (! length) {
             length = textNode.textContent!.length;
         }
 
-        let range = document.createRange();
+        const range = document.createRange();
 
         range.setStart(textNode, offset);
         range.setEnd(textNode, length);

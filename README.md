@@ -19,6 +19,14 @@
     <img src="https://img.shields.io/twitter/follow/getpolarized.svg?style=social&label=Follow"/>
 </a>
 
+<!--
+
+FIXME: include our github release download count:
+
+https://img.shields.io/github/downloads-pre/burtonator/polar-bookshelf/total.svg?maxAge=2592000
+
+-->
+
 <br/>
 <br/>
 

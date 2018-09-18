@@ -42,7 +42,7 @@ export class Ranges {
      * Return HTML content of the range selected.
      *
      */
-    static toHTML(range: Range) {
+    public static toHTML(range: Range) {
 
         let result = "";
 
