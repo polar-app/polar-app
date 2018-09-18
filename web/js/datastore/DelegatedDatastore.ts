@@ -2,6 +2,7 @@ import {Datastore} from './Datastore';
 import {Directories} from './Directories';
 import {DocMetaFileRef, DocMetaRef} from './DocMetaRef';
 import {DeleteResult} from './DiskDatastore';
+import {Preconditions} from '../Preconditions';
 
 /**
  * A datastore that just forwards events to the given delegate.
@@ -17,6 +18,7 @@ export class DelegatedDatastore implements Datastore {
     private readonly delegate: Datastore;
 
     constructor(delegate: Datastore) {
+        Preconditions.assertPresent(delegate, 'delegate');
         this.delegate = delegate;
         this.directories = new Directories();
         this.logsDir = delegate.logsDir;

@@ -30,6 +30,7 @@ SpectronRenderer.run(async () => {
         "progress": 100,
         "pagemarkType": "SINGLE_COLUMN",
         "properties": {},
+        "tags": {},
         "archived": false,
         "flagged": false,
         "nrPages": 1,

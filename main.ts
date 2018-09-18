@@ -27,7 +27,7 @@ async function launch() {
 
     const fileArg = Cmdline.getDocArg(process.argv);
 
-    if(fileArg) {
+    if (fileArg) {
         log.info("Opening file given on the command line: " + fileArg);
         await mainAppController.handleLoadDoc(fileArg);
     }
