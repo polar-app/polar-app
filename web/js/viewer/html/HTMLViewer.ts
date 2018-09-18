@@ -9,9 +9,10 @@ import {LinkHandler} from './LinkHandler';
 import {Services} from '../../util/services/Services';
 import {HTMLFormat} from '../../docformat/HTMLFormat';
 import {FrameInitializer} from './FrameInitializer';
-import {FrameResizer} from './FrameResizer';
+import {BackgroundFrameResizer} from './BackgroundFrameResizer';
 import {Descriptors} from './Descriptors';
 import {IFrameWatcher} from './IFrameWatcher';
+import {Splitter} from '../../ui/splitter/Splitter';
 
 const log = Logger.create();
 
@@ -27,6 +28,8 @@ export class HTMLViewer extends Viewer {
 
     private htmlFormat: any;
 
+    private splitter?: Splitter;
+
     private readonly model: Model;
 
     constructor(model: Model) {
@@ -34,21 +37,23 @@ export class HTMLViewer extends Viewer {
         this.model = model;
     }
 
-    start() {
+    public start() {
 
         super.start();
 
         log.info("Starting HTMLViewer");
 
-        this.content = <HTMLIFrameElement>document.querySelector("#content");
-        this.contentParent = <HTMLElement>document.querySelector("#content-parent");
-        this.textLayer = <HTMLElement>document.querySelector(".textLayer");
+        this.content = <HTMLIFrameElement> document.querySelector("#content");
+        this.contentParent = <HTMLElement> document.querySelector("#content-parent");
+        this.textLayer = <HTMLElement> document.querySelector(".textLayer");
 
         this.htmlFormat = new HTMLFormat();
 
         // *** start the resizer and initializer before setting the iframe
 
         $(document).ready(async () => {
+
+            this.splitter = new Splitter('#polar-viewer', '#polar-sidebar');
 
             this.requestParams = this._requestParams();
 
@@ -63,10 +68,10 @@ export class HTMLViewer extends Viewer {
 
                 log.info("Loading page now...");
 
-                let frameResizer = new FrameResizer(this.contentParent, this.content);
+                const frameResizer = new BackgroundFrameResizer(this.contentParent, this.content);
                 frameResizer.start();
 
-                let frameInitializer = new FrameInitializer(this.content, this.textLayer);
+                const frameInitializer = new FrameInitializer(this.content, this.textLayer);
                 frameInitializer.start();
 
                 this.startHandlingZoom();
@@ -79,7 +84,7 @@ export class HTMLViewer extends Viewer {
 
     }
 
-    _captureBrowserZoom() {
+    public _captureBrowserZoom() {
 
         // TODO: for now this is used to just capture and disable zoom but
         // we should enable it in the future so we can handle zoom ourselves.
@@ -103,7 +108,7 @@ export class HTMLViewer extends Viewer {
             // 61 Plus key  +/= key
         });
 
-        $(window).bind('mousewheel DOMMouseScroll', function (event: MouseEvent) {
+        $(window).bind('mousewheel DOMMouseScroll', function(event: MouseEvent) {
 
             if (event.ctrlKey) {
 
@@ -115,14 +120,14 @@ export class HTMLViewer extends Viewer {
         });
     }
 
-    startHandlingZoom() {
+    public startHandlingZoom() {
 
-        let htmlViewer = this;
+        const htmlViewer = this;
 
         $(".polar-zoom-select")
             .change(function() {
                 $( "select option:selected" ).each(function() {
-                    let zoom = $( this ).val();
+                    const zoom = $( this ).val();
 
                     htmlViewer.changeScale(parseFloat(zoom));
 
@@ -132,7 +137,7 @@ export class HTMLViewer extends Viewer {
                 log.info("Blurring the select to allow keyboard/mouse nav.");
                 $(this).blur();
 
-            })
+            });
     }
 
     /**
@@ -140,12 +145,12 @@ export class HTMLViewer extends Viewer {
      *
      * Otherwise, use the defaults.
      */
-    _configurePageWidth() {
+    public _configurePageWidth() {
 
 
-        let descriptor = notNull(this.requestParams).descriptor;
+        const descriptor = notNull(this.requestParams).descriptor;
 
-        let docDimensions = Descriptors.calculateDocDimensions(descriptor);
+        const docDimensions = Descriptors.calculateDocDimensions(descriptor);
 
         log.info(`Configuring page with width=${docDimensions.width} and minHeight=${docDimensions.minHeight}`);
 
@@ -159,7 +164,7 @@ export class HTMLViewer extends Viewer {
 
     }
 
-    changeScale(scale: number) {
+    public changeScale(scale: number) {
 
         log.info("Changing scale to: " + scale);
 
@@ -168,17 +173,20 @@ export class HTMLViewer extends Viewer {
         this._removeAnnotations();
         this._signalScale();
 
+        // FIXME: perform a resize on the iframe since the hosted content
+        // should be larger and we need to expand its size.
+
     }
 
-    _changeScaleMeta(scale: number) {
+    public _changeScaleMeta(scale: number) {
 
-        let metaElement = notNull(document.querySelector("meta[name='polar-scale']"));
+        const metaElement = notNull(document.querySelector("meta[name='polar-scale']"));
 
         metaElement.setAttribute("content", `${scale}`);
 
     }
 
-    _changeScale(scale: number) {
+    public _changeScale(scale: number) {
 
         // NOTE: removing the iframe and adding it back in fixed a major problem
         // with font fuzziness on Chrome/Electron.  Technically it should be
@@ -186,23 +194,23 @@ export class HTMLViewer extends Viewer {
         // chrome re-renders the fonts unless significant scale changes are
         // made.
 
-        let iframe = notNull(document.querySelector("iframe"));
-        let iframeParentElement = iframe.parentElement;
+        const iframe = notNull(document.querySelector("iframe"));
+        const iframeParentElement = iframe.parentElement;
 
         // TODO: we were experimenting with adding+removing the child iframes
         // but decided to back out the code as it was de-activating the iframes
         // and I couldn't click on them.
 
-        //iframeParentElement.removeChild(iframe);
+        // iframeParentElement.removeChild(iframe);
 
-        let contentParent = notNull(document.querySelector("#content-parent"));
+        const contentParent = notNull(document.querySelector("#content-parent"));
         (contentParent as HTMLElement).style.transform = `scale(${scale})`;
 
-        //iframeParentElement.appendChild(iframe);
+        // iframeParentElement.appendChild(iframe);
 
     }
 
-    _removeAnnotations() {
+    public _removeAnnotations() {
         // remove all annotations from the .page. they will be re-created by
         // all the views. The PDF viewer does this for us automatically.
 
@@ -214,11 +222,11 @@ export class HTMLViewer extends Viewer {
 
     // remove and re-inject an endOfContent element to trigger the view to
     // re-draw pagemarks.
-    _signalScale() {
+    public _signalScale() {
 
         log.info("HTMLViewer: Signaling rescale.");
 
-        let pageElement = notNull(document.querySelector(".page"));
+        const pageElement = notNull(document.querySelector(".page"));
         let endOfContent = notNull(pageElement.querySelector(".endOfContent"));
 
         notNull(notNull(endOfContent).parentElement).removeChild(endOfContent);
@@ -233,35 +241,35 @@ export class HTMLViewer extends Viewer {
     /**
      * Get the request params as a dictionary.
      */
-    _requestParams(): RequestParams {
+    public _requestParams(): RequestParams {
 
-        let url = new URL(window.location.href);
+        const url = new URL(window.location.href);
 
         return {
             file: notNull(url.searchParams.get("file")),
             descriptor: JSON.parse(notNull(url.searchParams.get("descriptor"))),
             fingerprint: notNull(url.searchParams.get("fingerprint"))
-        }
+        };
 
     }
 
 
-    _loadRequestData() {
+    public _loadRequestData() {
 
         // *** now setup the iframe
 
-        let params = this._requestParams();
+        const params = this._requestParams();
 
         let file = params.file;
 
-        if(!file) {
+        if (!file) {
             file = "example1.html";
         }
 
         this.content.src = file;
 
-        let fingerprint = params.fingerprint;
-        if(!fingerprint) {
+        const fingerprint = params.fingerprint;
+        if (!fingerprint) {
             throw new Error("Fingerprint is required");
         }
 
@@ -269,9 +277,9 @@ export class HTMLViewer extends Viewer {
 
     }
 
-    docDetail(): DocDetail {
+    public docDetail(): DocDetail {
 
-        let requestParams = notNull(this.requestParams);
+        const requestParams = notNull(this.requestParams);
 
         return {
             fingerprint: requestParams.fingerprint,
@@ -279,7 +287,7 @@ export class HTMLViewer extends Viewer {
             url: requestParams.descriptor.url,
             nrPages: 1,
             filename: this.getFilename()
-        }
+        };
 
     }
 

@@ -6,7 +6,7 @@ SpectronRenderer.run(async () => {
     var split = Split(['#three', '#four'], {
         sizes: [50, 50],
         minSize: 100,
-        gutterSize: 5
+        gutterSize: 7
     });
 
     // this will collapse it:
