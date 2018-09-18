@@ -25,6 +25,10 @@ export class MultiLogger implements ILogger {
             + this.delegates.map(delegate => delegate.name).join("+");
     }
 
+    public notice(msg: string, ...args: any[]) {
+        this.delegates.forEach(delegate => delegate.notice(msg, ...args));
+    }
+
     public warn(msg: string, ...args: any[]) {
         this.delegates.forEach(delegate => delegate.warn(msg, ...args));
     }

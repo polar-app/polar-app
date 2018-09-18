@@ -10,6 +10,10 @@ export class StatsLogger implements ILogger {
 
     public readonly stats = new FilteredStats();
 
+    public notice(msg: string, ...args: any[]) {
+        ++this.stats.notice;
+    }
+
     public debug(msg: string, ...args: any[]) {
         ++this.stats.debug;
     }
@@ -37,6 +41,7 @@ export class StatsLogger implements ILogger {
 }
 
 export class FilteredStats {
+    public notice: number = 0;
     public debug: number = 0;
     public verbose: number = 0;
     public info: number = 0;

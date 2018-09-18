@@ -52,6 +52,8 @@ export class Model {
                                 currentPageNumber: number,
                                 docDetail: DocDetail | undefined) {
 
+        log.notice("Document loaded with fingerprint: " + fingerprint)
+
         let docMeta: DocMeta | undefined;
 
         if(! await this.persistenceLayer.contains(fingerprint)) {

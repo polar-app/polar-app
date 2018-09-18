@@ -13,6 +13,10 @@ class ElectronLogger implements ILogger {
 
     public readonly name: string = 'electron-logger';
 
+    public notice(msg: string, ...args: any[]) {
+        delegate.log(msg, ...args);
+    }
+
     public info(msg: string, ...args: any[]) {
         delegate.log(msg, ...args);
     }

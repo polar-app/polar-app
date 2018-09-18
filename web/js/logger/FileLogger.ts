@@ -19,6 +19,10 @@ export class FileLogger implements ILogger {
         this.name = 'file-logger:' + path;
     }
 
+    public notice(msg: string, ...args: any[]): void {
+        this.append('notice', msg, ...args);
+    }
+
     public debug(msg: string, ...args: any[]): void {
         this.append('debug', msg, ...args);
     }

@@ -9,6 +9,10 @@ export class MemoryLogger implements ILogger {
 
     public readonly buffer: Array<{}> = [];
 
+    public notice(msg: string, ...args: any[]) {
+        this.buffer.push({level: 'notice', msg, args});
+    }
+
     public info(msg: string, ...args: any[]) {
         this.buffer.push({level: 'info', msg, args});
     }

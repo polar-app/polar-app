@@ -46,6 +46,10 @@ class DelegatedLogger implements ILogger {
     // think we should compromise on our design.  We should fix the problem
     // with spectron instead of hacking it here.
 
+    public notice(msg: string, ...args: any[]) {
+        this.apply(LoggerDelegate.get().notice.bind(LoggerDelegate.get()), msg, ...args);
+    }
+
     public info(msg: string, ...args: any[]) {
         this.apply(LoggerDelegate.get().info.bind(LoggerDelegate.get()), msg, ...args);
     }

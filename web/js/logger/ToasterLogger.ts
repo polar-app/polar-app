@@ -13,6 +13,9 @@ export class ToasterLogger implements ILogger {
 
     public readonly name: string = 'toaster-logger';
 
+    public notice(msg: string, ...args: any[]) {
+    }
+
     public warn(msg: string, ...args: any[]) {
         // Toaster.warning(msg);
     }

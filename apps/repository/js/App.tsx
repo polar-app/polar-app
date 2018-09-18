@@ -361,8 +361,6 @@ export default class App extends React.Component<AppProps, AppState> {
 
     }
 
-
-
     private doFilterHideArchived(repoDocs: RepoDocInfo[]): RepoDocInfo[] {
 
         const filterElement = document.querySelector("#filter_archived") as HTMLInputElement;

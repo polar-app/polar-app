@@ -23,6 +23,10 @@ export class VersionAnnotatingLogger implements ILogger {
 
     }
 
+    public notice(msg: string, ...args: any[]) {
+        this.delegate.notice(this.versionAnnotation + ` ${msg}`, ...args);
+    }
+
     public info(msg: string, ...args: any[]) {
         this.delegate.info(this.versionAnnotation + ` ${msg}`, ...args);
     }

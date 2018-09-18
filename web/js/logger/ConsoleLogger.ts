@@ -7,6 +7,10 @@ export class ConsoleLogger implements ILogger {
 
     public readonly name: string = 'console-logger';
 
+    public notice(msg: string, ...args: any[]) {
+        console.log(msg, ...args);
+    }
+
     public info(msg: string, ...args: any[]) {
         console.log(msg, ...args);
     }

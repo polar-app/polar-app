@@ -22,17 +22,8 @@ export class FilterTagInput extends React.Component<FilterTagInputProps, FilterT
             defaultValue: []
         };
 
-        // FIXME: next steps:
-
-        // make DocRepository non-nullable and always available
-        // add an update handler on TagsDB so that we can refresh teh state
-        // of the FilterTagInput when that's change.
-        //
-        // Then I just need to build out filtering so that if tags are picked
-        // we can show just a subset.
-        //
-
     }
+
     public render() {
         //
         const options: TagSelectOption[] =

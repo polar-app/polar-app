@@ -16,6 +16,10 @@ export class TimeAnnotatingLogger implements ILogger {
         this.name = `time-annotating-logger -> ${delegate.name}`;
     }
 
+    public notice(msg: string, ...args: any[]) {
+        this.delegate.notice(this.createTimestamp() + `: ${msg}`, ...args);
+    }
+
     public info(msg: string, ...args: any[]) {
         this.delegate.info(this.createTimestamp() + `: ${msg}`, ...args);
     }

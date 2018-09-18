@@ -16,6 +16,9 @@ export class SentryLogger implements ILogger {
 
     public readonly name: string = 'sentry-logger';
 
+    public notice(msg: string, ...args: any[]) {
+    }
+
     public warn(msg: string, ...args: any[]) {
     }
 

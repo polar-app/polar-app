@@ -20,6 +20,10 @@ export class PersistentErrorLogger implements ILogger {
         this.delegate = delegate;
     }
 
+    public notice(msg: string, ...args: any[]) {
+        this.delegate.notice(msg, ...args);
+    }
+
     public error(msg: string, ...args: any[]) {
         this.delegate.error(msg, ...args);
     }
