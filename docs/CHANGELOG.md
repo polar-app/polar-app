@@ -1,5 +1,12 @@
 
+# 1.0.0-beta170
+
+- New tagging UI for the repository. Documents can have tags and and properly 
+  filter them.  Tags follow twitter hashtag constraints.  
+
 - Fixed issue with circular structure when logging.
+
+- Fixed document repository corruption bug
 
 # 1.0.0-beta160
 
