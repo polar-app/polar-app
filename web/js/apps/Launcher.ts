@@ -5,10 +5,10 @@ import {Logger} from '../logger/Logger';
 import {Logging} from '../logger/Logging';
 import {WebView} from '../view/WebView';
 import {PagemarkView} from '../pagemarks/view/PagemarkView';
-import {IPersistenceLayer} from '../datastore/IPersistenceLayer';
 import {IListenablePersistenceLayer} from '../datastore/IListenablePersistenceLayer';
+import {TextHighlightView2} from '../highlights/text/view/TextHighlightView2';
+import {AnnotationSidebarService} from '../annotation_sidebar/AnnotationSidebarService';
 
-const {TextHighlightView2} = require("../highlights/text/view/TextHighlightView2");
 const {AreaHighlightView} = require("../highlights/area/view/AreaHighlightView");
 
 const log = Logger.create();
@@ -45,6 +45,7 @@ export class Launcher {
         new TextHighlightView2(model).start();
         new AreaHighlightView(model).start();
         new PagemarkView(model).start();
+        new AnnotationSidebarService(model).start();
 
         const viewer = ViewerFactory.create(model);
         viewer.start();

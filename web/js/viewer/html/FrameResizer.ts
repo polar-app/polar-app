@@ -10,7 +10,6 @@ const log = Logger.create();
  * Resize the iframe base on the internal content document. This way the iframe
  * size in the host window has the size of the content and there is no scroll
  * bar present.
-
  */
 export class FrameResizer {
 
@@ -94,3 +93,4 @@ export class FrameResizer {
     }
 
 }
+

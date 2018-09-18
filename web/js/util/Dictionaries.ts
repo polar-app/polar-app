@@ -29,8 +29,8 @@ export class Dictionaries {
         for(const key in dict) {
 
             if(dict.hasOwnProperty(key)) {
-                let value = dict[key];
-                callback(key,value);
+                const value = dict[key];
+                callback(key, value);
             }
 
         }

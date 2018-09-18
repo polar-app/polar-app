@@ -1,6 +1,6 @@
 export abstract class Component {
 
-    abstract init(componentEvent: any): void;
+    public abstract init(componentEvent: any): void;
 
     /**
      * Render the component to the DOM. Note that the component should handle
@@ -8,8 +8,8 @@ export abstract class Component {
      * could be done by just calling destroy() itself or its own internal update
      * mechanism.
      */
-    abstract render(): void;
+    public abstract render(): void;
 
-    abstract destroy(): void;
+    public abstract destroy(): void;
 
 }

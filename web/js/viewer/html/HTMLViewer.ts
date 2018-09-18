@@ -13,6 +13,7 @@ import {BackgroundFrameResizer} from './BackgroundFrameResizer';
 import {Descriptors} from './Descriptors';
 import {IFrameWatcher} from './IFrameWatcher';
 import {Splitter} from '../../ui/splitter/Splitter';
+import {FrameResizer} from './FrameResizer';
 
 const log = Logger.create();
 
@@ -29,6 +30,8 @@ export class HTMLViewer extends Viewer {
     private htmlFormat: any;
 
     private splitter?: Splitter;
+
+    private frameResizer?: FrameResizer;
 
     private readonly model: Model;
 
@@ -53,8 +56,6 @@ export class HTMLViewer extends Viewer {
 
         $(document).ready(async () => {
 
-            this.splitter = new Splitter('#polar-viewer', '#polar-sidebar');
-
             this.requestParams = this._requestParams();
 
             this._captureBrowserZoom();
@@ -63,13 +64,15 @@ export class HTMLViewer extends Viewer {
 
             this._configurePageWidth();
 
+            this.frameResizer = new FrameResizer(this.contentParent, this.content);
+
             // TODO migrate to IFrames.waitForContentDocument()
             new IFrameWatcher(this.content, () => {
 
                 log.info("Loading page now...");
 
-                const frameResizer = new BackgroundFrameResizer(this.contentParent, this.content);
-                frameResizer.start();
+                const backgroundFrameResizer = new BackgroundFrameResizer(this.contentParent, this.content);
+                backgroundFrameResizer.start();
 
                 const frameInitializer = new FrameInitializer(this.content, this.textLayer);
                 frameInitializer.start();
@@ -170,6 +173,7 @@ export class HTMLViewer extends Viewer {
 
         this._changeScaleMeta(scale);
         this._changeScale(scale);
+        this._resizeFrame();
         this._removeAnnotations();
         this._signalScale();
 
@@ -194,8 +198,8 @@ export class HTMLViewer extends Viewer {
         // chrome re-renders the fonts unless significant scale changes are
         // made.
 
-        const iframe = notNull(document.querySelector("iframe"));
-        const iframeParentElement = iframe.parentElement;
+        // const iframe = notNull(document.querySelector("iframe"));
+        // const iframeParentElement = iframe.parentElement;
 
         // TODO: we were experimenting with adding+removing the child iframes
         // but decided to back out the code as it was de-activating the iframes
@@ -203,14 +207,32 @@ export class HTMLViewer extends Viewer {
 
         // iframeParentElement.removeChild(iframe);
 
+        // FIXME: run an algorithm to maek sure there aer no elements between two
+        // paths in the DOM that have any scrollHeight > their height.
+
         const contentParent = notNull(document.querySelector("#content-parent"));
         (contentParent as HTMLElement).style.transform = `scale(${scale})`;
+
+        const host = contentParent.parentElement!;
+        const scrollHeight = host.parentElement!.scrollHeight;
+
+        host.style.height = `${scrollHeight}px`;
 
         // iframeParentElement.appendChild(iframe);
 
     }
 
-    public _removeAnnotations() {
+    private _resizeFrame() {
+        // console.log("FIXME goign to resizing");
+        //
+        // setTimeout(() => {
+        //     console.log("FIXME resizing");
+        //     this.frameResizer!.resize(true);
+        // }, 1000);
+
+    }
+
+    private _removeAnnotations() {
         // remove all annotations from the .page. they will be re-created by
         // all the views. The PDF viewer does this for us automatically.
 
@@ -222,7 +244,7 @@ export class HTMLViewer extends Viewer {
 
     // remove and re-inject an endOfContent element to trigger the view to
     // re-draw pagemarks.
-    public _signalScale() {
+    private _signalScale() {
 
         log.info("HTMLViewer: Signaling rescale.");
 

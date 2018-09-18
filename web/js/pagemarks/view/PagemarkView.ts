@@ -41,13 +41,15 @@ export class PagemarkView {
 
     }
 
-    start() {
+    public start() {
 
-        if (this.primaryPagemarkComponentManager)
+        if (this.primaryPagemarkComponentManager) {
             this.primaryPagemarkComponentManager.start();
+        }
 
-        if (this.thumbnailPagemarkComponentManager)
+        if (this.thumbnailPagemarkComponentManager) {
             this.thumbnailPagemarkComponentManager.start();
+        }
 
         this.progressView.start();
 

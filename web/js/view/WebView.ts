@@ -24,7 +24,7 @@ export class WebView extends View {
 
     }
 
-    start() {
+    public start() {
 
         this.model.registerListenerForDocumentLoaded(this.onDocumentLoaded.bind(this));
 
