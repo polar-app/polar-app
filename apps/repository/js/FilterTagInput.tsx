@@ -55,6 +55,7 @@ export class FilterTagInput extends React.Component<FilterTagInputProps, FilterT
                         <Select
                             isMulti
                             isClearable
+                            autoFocus
                             className="filter-tag-input"
                             classNamePrefix="select"
                             onChange={this.handleChange}

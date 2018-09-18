@@ -9,6 +9,7 @@ import {TagsDB} from './TagsDB';
 import {Optional} from '../../../web/js/util/ts/Optional';
 import {TagSelectOption} from './TagSelectOption';
 import {TagSelectOptions} from './TagSelectOptions';
+import Select from 'react-select';
 
 let SEQUENCE = 0;
 
@@ -58,6 +59,7 @@ export class TagInput extends React.Component<TagInputProps, TagInputState> {
                         <CreatableSelect
                             isMulti
                             isClearable
+                            autoFocus
                             className="basic-multi-select"
                             classNamePrefix="select"
                             onChange={this.handleChange}
