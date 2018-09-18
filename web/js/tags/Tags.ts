@@ -31,6 +31,35 @@ export class Tags {
 
     }
 
+    public static validateTag(tag: Tag): Optional<Tag> {
+
+        if (this.validate(tag.label).isPresent()) {
+            return Optional.of(tag);
+        }
+
+        return Optional.empty();
+
+    }
+
+    /**
+     * Return true if all the tags are valid.  If no tags are given we return
+     * true as the input set had no valid tags.
+     */
+    public static validateTags(...tags: Tag[]): boolean {
+
+        return tags.map(tag => this.validateTag(tag).isPresent())
+                   .reduce((acc, curr) => ! acc ? false : curr, true);
+
+    }
+
+    /**
+     * Return tags that are invalid.
+     * @param tags
+     */
+    public static invalidTags(...tags: Tag[]): Tag[] {
+        return tags.filter(tag => ! this.validateTag(tag).isPresent());
+    }
+
     public static toMap(tags: Tag[]) {
 
         const result: { [id: string]: Tag } = {};

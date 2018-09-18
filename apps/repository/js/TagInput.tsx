@@ -9,7 +9,7 @@ import {TagsDB} from './TagsDB';
 import {Optional} from '../../../web/js/util/ts/Optional';
 import {TagSelectOption} from './TagSelectOption';
 import {TagSelectOptions} from './TagSelectOptions';
-import Select from 'react-select';
+import {Tags} from '../../../web/js/tags/Tags';
 
 let SEQUENCE = 0;
 
@@ -31,6 +31,24 @@ export class TagInput extends React.Component<TagInputProps, TagInputState> {
         };
 
     }
+
+    public toggle() {
+
+        const open = !this.state.popoverOpen;
+
+        if (open) {
+            Blackout.enable();
+        } else {
+            Blackout.disable();
+
+        }
+
+        this.setState({
+            popoverOpen: open
+        });
+
+    }
+
     public render() {
 
         const options: TagSelectOption[]
@@ -39,6 +57,8 @@ export class TagInput extends React.Component<TagInputProps, TagInputState> {
         const existingTags: Tag[] = Optional.of(this.props.existingTags).getOrElse([]);
 
         const defaultValue: TagSelectOption[] = TagSelectOptions.fromTags(existingTags);
+
+        // const foo: SyntheticEvent
 
         return (
 
@@ -50,8 +70,11 @@ export class TagInput extends React.Component<TagInputProps, TagInputState> {
                          isOpen={this.state.popoverOpen}
                          target={this.id}
                          toggle={this.toggle}
+
                          className="tag-input-popover">
                     {/*<PopoverHeader>Popover Title</PopoverHeader>*/}
+
+                    {/*style={{borderWidth: '1px', backgroundColor: true ? "#b94a48" : "#aaa"}}*/}
                     <PopoverBody>
 
                         <strong>Enter tags:</strong>
@@ -60,11 +83,18 @@ export class TagInput extends React.Component<TagInputProps, TagInputState> {
                             isMulti
                             isClearable
                             autoFocus
+
                             className="basic-multi-select"
                             classNamePrefix="select"
                             onChange={this.handleChange}
                             defaultValue={defaultValue}
-                            options={options} />
+                            placeholder="Create or select tags ..."
+
+                            options={options} >
+
+                            <div>this is the error</div>
+
+                        </CreatableSelect>
 
                         {/*<Button onClick={this.save}>*/}
                         {/*Save*/}
@@ -83,32 +113,18 @@ export class TagInput extends React.Component<TagInputProps, TagInputState> {
         // noop
     }
 
-    private toggle() {
-
-        const open = !this.state.popoverOpen;
-
-        if (open) {
-            Blackout.enable();
-        } else {
-            Blackout.disable();
-
-        }
-
-        this.setState({
-            popoverOpen: open
-        });
-
-    }
-
     private handleChange(selectedOptions: any) {
 
-        console.log(`Options selected:`, selectedOptions);
-
         if (this.props.onChange) {
-
             const tags = TagSelectOptions.toTags(selectedOptions);
 
-            this.props.onChange(this.props.repoDocInfo, tags);
+            if (Tags.validateTags(...tags)) {
+                this.props.onChange(this.props.repoDocInfo, tags);
+            } else {
+                const invalidTags = Tags.invalidTags(...tags);
+                console.log("Tags are invalid", invalidTags);
+            }
+
         }
 
     }
@@ -130,3 +146,8 @@ export interface TagInputProps {
     onChange?: (repoDocInfo: RepoDocInfo, values: Tag[]) => void;
 
 }
+
+
+
+
+
