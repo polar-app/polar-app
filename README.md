@@ -6,25 +6,18 @@
   <h1>Polar Bookshelf</h1>
 
 
-
-<div className="button">
-    <a href="https://discord.gg/GT8MhA6">
-        <img src="https://img.shields.io/discord/477560964334747668.svg?logo=discord"/>
-    </a>
-</div>
+<a href="https://discord.gg/GT8MhA6">
+    <img src="https://img.shields.io/discord/477560964334747668.svg?logo=discord"/>
+</a>
 
 
-<div className="button">
-    <a href="https://github.com/burtonator/polar-bookshelf">
-        <img src="https://img.shields.io/github/stars/burtonator/polar-bookshelf.svg?style=social&label=Star"/>
-    </a>
-</div>
+<a href="https://github.com/burtonator/polar-bookshelf">
+    <img src="https://img.shields.io/github/stars/burtonator/polar-bookshelf.svg?style=social&label=Star"/>
+</a>
 
-<div className="button">
-    <a href="https://twitter.com/getpolarized?ref_src=twsrc%5Etfw">
-        <img src="https://img.shields.io/twitter/follow/getpolarized.svg?style=social&label=Follow"/>
-    </a>
-</div>
+<a href="https://twitter.com/getpolarized?ref_src=twsrc%5Etfw">
+    <img src="https://img.shields.io/twitter/follow/getpolarized.svg?style=social&label=Follow"/>
+</a>
 
 
 <!--
