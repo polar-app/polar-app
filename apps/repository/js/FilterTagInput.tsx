@@ -39,10 +39,13 @@ export class FilterTagInput extends React.Component<FilterTagInputProps, FilterT
 
             <div>
 
-                <label id={this.id} onClick={this.toggle}>
-                    Tags:
+                <div id={this.id} onClick={this.toggle} className="header-filter-clickable">
+
+                    <label>Tags: </label>
+
                     <i className="fa fa-tag doc-button doc-button-selectable"/>
-                </label>
+
+                </div>
 
                 <Popover placement="bottom"
                          isOpen={this.state.popoverOpen}

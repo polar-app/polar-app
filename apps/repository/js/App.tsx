@@ -91,20 +91,27 @@ export default class App extends React.Component<AppProps, AppState> {
                                 <div className="checkbox-group">
                                     <input id="filter_flagged"
                                            type="checkbox"
+                                           className="header-filter-clickable"
                                            onChange={() => this.refresh()}/>
-                                    <label htmlFor="filter_flagged">flagged only</label>
+                                    <label className="header-filter-clickable"
+                                           htmlFor="filter_flagged">flagged only</label>
                                 </div>
                             </div>
 
                             <div className="header-filter-box">
                                 <div className="checkbox-group">
+
                                     <input id="filter_archived"
                                            defaultChecked
                                            type="checkbox"
+                                           className="header-filter-clickable"
                                            onChange={() => this.refresh()}/>
 
-                                    <label htmlFor="filter_archived">hide archived</label>
+                                    <label className="header-filter-clickable"
+                                           htmlFor="filter_archived">hide archived</label>
+
                                 </div>
+
                             </div>
 
                             <div className="header-filter-box header-filter-tags">

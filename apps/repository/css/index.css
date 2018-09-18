@@ -85,10 +85,11 @@ html, body {
 }
 
 footer .buttons {
-  text-align: center;
-  vertical-align: middle;
-  /*display: table-cell;*/
-  width: 100%;
+    text-align: center;
+    vertical-align: middle;
+    /*display: table-cell;*/
+    width: 100%;
+    padding-top:5px;
 }
 
 footer .buttons .button {
@@ -140,8 +141,17 @@ footer .buttons .button {
 
 .header-filter-box label {
     user-select: none;
+    margin-right: 5px;
 }
 
+.header-filter-clickable,
+.header-filter-clickable * {
+    cursor: pointer !important;
+}
+
+#filter-tag-input {
+    padding-top: 0.5em;
+}
 
 .checkbox-group {
     display: table-cell;
