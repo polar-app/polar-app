@@ -1,24 +1,15 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 class TraceListeners {
-
-    /**
-     * Convert this to an array so that we're always working with an array.
-     *
-     * @param traceListeners
-     */
-    static asArray(traceListeners) {
-
-        if(! traceListeners) {
+    static asArray(input) {
+        if (!input) {
             return [];
         }
-
-        if(! Array.isArray(traceListeners)) {
-            return [traceListeners];
+        if (!Array.isArray(input)) {
+            return [input];
         }
-
-        return traceListeners;
-
+        return input;
     }
-
 }
-
-module.exports.TraceListeners = TraceListeners;
+exports.TraceListeners = TraceListeners;
+//# sourceMappingURL=TraceListeners.js.map

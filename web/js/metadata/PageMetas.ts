@@ -59,7 +59,14 @@ export class PageMetas {
      * Create a model for a specific key within PageMetas.
      *
      */
-    static createModel(docMeta: DocMeta, memberName: string, callback: (annotationEvent: AnnotationEvent) => void) {
+    public static createModel(docMeta: DocMeta,
+                              memberName: string,
+                              callback: (annotationEvent: AnnotationEvent) => void) {
+
+        // TODO: it might be better to have this return an array of all
+        // currently known values this way on startup I can send everything I
+        // know about without having to restort indexes or update maps multiple
+        // times.
 
         Preconditions.assertNotNull(docMeta, "docMeta");
         Preconditions.assertNotNull(memberName, "memberName");
@@ -67,19 +74,19 @@ export class PageMetas {
 
         forDict(docMeta.pageMetas, (key, pageMeta) => {
 
-            let member = pageMeta[memberName];
+            const member = pageMeta[memberName];
 
-            if(! member) {
+            if (! member) {
                 log.warn("No member for key: " + key, memberName);
             }
 
             member.addTraceListener((traceEvent: TraceEvent) => {
 
-                if(! traceEvent.path.endsWith("/" + memberName)) {
+                if (! traceEvent.path.endsWith("/" + memberName)) {
                     return;
                 }
 
-                let annotationEvent = new AnnotationEvent(Object.assign({}, traceEvent, {
+                const annotationEvent = new AnnotationEvent(Object.assign({}, traceEvent, {
                     docMeta,
                     pageMeta,
                 }));

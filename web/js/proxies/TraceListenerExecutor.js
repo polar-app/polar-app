@@ -1,55 +1,34 @@
-const {FunctionalInterface} = require("../util/FunctionalInterface");
-const {TraceEvent} = require("./TraceEvent");
-const {MutationType} = require("./MutationType");
-
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const MutationType_1 = require("./MutationType");
+const TraceEvent_1 = require("./TraceEvent");
+const FunctionalInterface_1 = require("../util/FunctionalInterface");
 class TraceListenerExecutor {
-
-    /**
-     * @param traceListeners The specific traceListener we're working with.
-     * @param traceHandler The TraceHandler that this traceListener is registered with.
-     */
     constructor(traceListeners, traceHandler) {
         this.traceListeners = traceListeners;
         this.traceHandler = traceHandler;
     }
-
-    /**
-     * Synchronize event listeners with the current state of the model.
-     */
     sync() {
-
-        // REFACTOR: this should not be onMutation because the initial value is
-        // not a mutation.
-
-        let path = this.traceHandler.path;
-        let target = this.traceHandler.target;
-
+        const path = this.traceHandler.path;
+        const target = this.traceHandler.target;
         this.traceListeners.forEach(traceListener => {
-
-            traceListener = FunctionalInterface.create("onMutation", traceListener);
-
-            for (let key in target) {
-
+            traceListener = FunctionalInterface_1.FunctionalInterface.create("onMutation", traceListener);
+            for (const key in target) {
                 if (target.hasOwnProperty(key)) {
-                    let val = target[key];
-
-                    let traceEvent = new TraceEvent({
+                    const val = target[key];
+                    const traceEvent = new TraceEvent_1.TraceEvent({
                         path,
-                        mutationType: MutationType.INITIAL,
+                        mutationType: MutationType_1.MutationType.INITIAL,
                         target,
                         property: key,
                         value: val
                     });
-
                     traceListener.onMutation(traceEvent);
                 }
-
             }
-
         });
-
     }
-
-};
-
-module.exports.TraceListenerExecutor = TraceListenerExecutor;
+}
+exports.TraceListenerExecutor = TraceListenerExecutor;
+;
+//# sourceMappingURL=TraceListenerExecutor.js.map
