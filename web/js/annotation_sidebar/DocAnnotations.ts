@@ -10,8 +10,9 @@ import {Text} from '../metadata/Text';
 
 export class DocAnnotations {
 
-
     public static getAnnotationsForPage(docMeta: DocMeta): IAnnotation[] {
+
+        // FIXME these must be sorted by their position in the document.
 
         const result: IAnnotation[] = [];
 
@@ -61,7 +62,7 @@ export class DocAnnotations {
                 id: textHighlight.id,
                 annotationType: AnnotationType.TEXT_HIGHLIGHT,
                 screenshot,
-                html
+                html,
             });
 
         });

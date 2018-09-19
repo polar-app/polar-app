@@ -3,6 +3,8 @@
 @import url('./toaster.css');
 @import url('./selection.css');
 @import url('./sidebar.css');
+@import url('./annotation-sidebar.css');
+
 
 /*#secondaryToolbarButtonContainer > .polar-fa-button {*/
     /*font-size: 25px;*/

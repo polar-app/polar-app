@@ -1,14 +1,14 @@
 import {AnnotationDescriptor} from './AnnotationDescriptor';
-import {AnnotationTypes} from './AnnotationType';
+import {AnnotationTypes} from './AnnotationTypes';
 import {Attributes} from '../util/Attributes';
 
 export class AnnotationDescriptors {
 
-    static createFromElement(element: HTMLElement): AnnotationDescriptor | undefined {
+    public static createFromElement(element: HTMLElement): AnnotationDescriptor | undefined {
 
-        let dataAttributes = Attributes.dataToStringMap(element);
+        const dataAttributes = Attributes.dataToStringMap(element);
 
-        if(! dataAttributes['annotationType']) {
+        if (! dataAttributes['annotationType']) {
             return undefined;
         }
 
@@ -23,9 +23,9 @@ export class AnnotationDescriptors {
 
     }
 
-    static createFromObject(obj: any): AnnotationDescriptor {
+    public static createFromObject(obj: any): AnnotationDescriptor {
 
-        let result = new AnnotationDescriptor(<AnnotationDescriptor>obj);
+        const result = new AnnotationDescriptor(<AnnotationDescriptor> obj);
 
         return Object.freeze(result);
 

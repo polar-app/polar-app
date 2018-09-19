@@ -5,6 +5,7 @@ import {AnnotationType} from '../metadata/AnnotationType';
 import {Screenshot} from '../metadata/Screenshot';
 import {Optional} from '../util/ts/Optional';
 import {DocAnnotations} from './DocAnnotations';
+import {AnnotationTypes} from '../metadata/AnnotationTypes';
 
 const log = Logger.create();
 
@@ -47,14 +48,18 @@ export class AnnotationSidebar extends React.Component<AnnotationSidebarProps, A
 
             } else {
 
-                if (annotation.screenshot) {
-                    result.push(
-                        <div key={`screenshot:${annotation.id}`} className='area-highlight'>
-                            <img src={annotation.screenshot.src}/>
-                        </div>);
-                }
-
-                result.push(<div key={annotation.id} className='text-highlight' dangerouslySetInnerHTML={{__html: html}}></div>);
+                // if (annotation.screenshot) {
+                //     result.push(
+                //         <div key={`screenshot:${annotation.id}`} className='area-highlight'>
+                //             <img src={annotation.screenshot.src}/>
+                //         </div>);
+                // }
+                //
+                result.push(<div key={annotation.id}
+                                 data-annotation-id={annotation.id}
+                                 data-annotation-type={AnnotationTypes.toDataAttribute(annotation.annotationType)}
+                                 className="text-highlight"
+                                 dangerouslySetInnerHTML={{__html: html}}></div>);
 
             }
 
@@ -68,7 +73,7 @@ export class AnnotationSidebar extends React.Component<AnnotationSidebarProps, A
         const { annotations } = this.state;
         return (
 
-            <div id="annotation-manager">
+            <div id="annotation-manager" className="annotation-sidebar">
 
                 {this.createHTML(annotations)}
 
@@ -94,3 +99,4 @@ export interface IAnnotation {
 export interface AnnotationSidebarProps {
     readonly docMeta: DocMeta;
 }
+

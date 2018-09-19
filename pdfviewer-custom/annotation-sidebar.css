@@ -1,0 +1,17 @@
+.annotation-sidebar {
+    margin-top: 75px;
+    font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+    font-weight: 300;
+    font-size: 16px;
+}
+
+.annotation-sidebar .text-highlight {
+    margin-top: 5px;
+    border-left: yellow solid 5px;
+    margin-left: 5px;
+    padding-left: 5px;
+}
+
+.annotation-sidebar .text-highlight p {
+    padding: 5px;
+}
