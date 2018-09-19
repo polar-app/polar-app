@@ -2,10 +2,10 @@ import * as React from 'react';
 import {Logger} from '../logger/Logger';
 import {DocMeta} from '../metadata/DocMeta';
 import {AnnotationType} from '../metadata/AnnotationType';
-import {Screenshot} from '../metadata/Screenshot';
 import {Optional} from '../util/ts/Optional';
 import {DocAnnotations} from './DocAnnotations';
 import {AnnotationTypes} from '../metadata/AnnotationTypes';
+import {DocAnnotation} from './DocAnnotation';
 
 const log = Logger.create();
 
@@ -24,7 +24,7 @@ export class AnnotationSidebar extends React.Component<AnnotationSidebarProps, A
 
 
 
-    private createHTML(annotations: IAnnotation[]) {
+    private createHTML(annotations: DocAnnotation[]) {
 
         // https://blog.cloudboost.io/for-loops-in-react-render-no-you-didnt-6c9f4aa73778
 
@@ -55,11 +55,14 @@ export class AnnotationSidebar extends React.Component<AnnotationSidebarProps, A
                 //         </div>);
                 // }
                 //
+
+                const attrType = AnnotationTypes.toDataAttribute(annotation.annotationType);
+
                 result.push(<div key={annotation.id}
                                  data-annotation-id={annotation.id}
-                                 data-annotation-type={AnnotationTypes.toDataAttribute(annotation.annotationType)}
-                                 className="text-highlight"
-                                 dangerouslySetInnerHTML={{__html: html}}></div>);
+                                 data-annotation-type={attrType}
+                                 className={attrType}
+                                 dangerouslySetInnerHTML={{__html: html}}/>);
 
             }
 
@@ -86,15 +89,9 @@ export class AnnotationSidebar extends React.Component<AnnotationSidebarProps, A
 
 export interface AnnotationSidebarState {
 
-    annotations: IAnnotation[];
+    annotations: DocAnnotation[];
 }
 
-export interface IAnnotation {
-    id: string;
-    annotationType: AnnotationType;
-    html?: string;
-    screenshot?: Screenshot;
-}
 
 export interface AnnotationSidebarProps {
     readonly docMeta: DocMeta;

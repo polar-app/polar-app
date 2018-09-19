@@ -34,7 +34,6 @@ export class TextHighlightComponent extends Component {
 
     /**
      * The page we're working with.
-     *
      */
     private pageNum?: number;
 

@@ -2,19 +2,19 @@ import {DocMeta} from '../metadata/DocMeta';
 import {PageMeta} from '../metadata/PageMeta';
 import {isPresent} from '../Preconditions';
 import {AnnotationType} from '../metadata/AnnotationType';
-import {IAnnotation} from './AnnotationSidebar';
 import {BaseHighlight} from '../metadata/BaseHighlight';
 import {Screenshot} from '../metadata/Screenshot';
 import {Screenshots} from '../metadata/Screenshots';
 import {Text} from '../metadata/Text';
+import {DocAnnotation} from './DocAnnotation';
 
 export class DocAnnotations {
 
-    public static getAnnotationsForPage(docMeta: DocMeta): IAnnotation[] {
+    public static getAnnotationsForPage(docMeta: DocMeta): DocAnnotation[] {
 
         // FIXME these must be sorted by their position in the document.
 
-        const result: IAnnotation[] = [];
+        const result: DocAnnotation[] = [];
 
         Object.values(docMeta.pageMetas).forEach(pageMeta => {
             result.push(...this.getTextHighlights(pageMeta));
@@ -25,9 +25,9 @@ export class DocAnnotations {
 
     }
 
-    private static getTextHighlights(pageMeta: PageMeta): IAnnotation[] {
+    private static getTextHighlights(pageMeta: PageMeta): DocAnnotation[] {
 
-        const result: IAnnotation[] = [];
+        const result: DocAnnotation[] = [];
 
         Object.values(pageMeta.textHighlights).forEach(textHighlight => {
 
@@ -63,6 +63,12 @@ export class DocAnnotations {
                 annotationType: AnnotationType.TEXT_HIGHLIGHT,
                 screenshot,
                 html,
+                pageNum: pageMeta.pageInfo.num,
+                // FIXME MUST get the right position.
+                position: {
+                    x: 0,
+                    y: 0
+                }
             });
 
         });
@@ -73,9 +79,9 @@ export class DocAnnotations {
 
 
 
-    private static getAreaHighlights(pageMeta: PageMeta): IAnnotation[] {
+    private static getAreaHighlights(pageMeta: PageMeta): DocAnnotation[] {
 
-        const result: IAnnotation[] = [];
+        const result: DocAnnotation[] = [];
 
         Object.values(pageMeta.areaHighlights).forEach(areaHighlight => {
 
@@ -85,7 +91,13 @@ export class DocAnnotations {
                 id: areaHighlight.id,
                 annotationType: AnnotationType.AREA_HIGHLIGHT,
                 screenshot,
-                html: undefined
+                html: undefined,
+                pageNum: pageMeta.pageInfo.num,
+                // FIXME MUST get the right position.
+                position: {
+                    x: 0,
+                    y: 0
+                }
             });
 
         });
