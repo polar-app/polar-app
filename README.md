@@ -5,11 +5,13 @@
 <div align="center">
   <h1>Polar Bookshelf</h1>
 
+<a href="https://github.com/burtonator/polar-bookshelf/releases">
+    https://img.shields.io/github/downloads-pre/burtonator/polar-bookshelf/total.svg?maxAge=2592000
+</a>
 
 <a href="https://discord.gg/GT8MhA6">
     <img src="https://img.shields.io/discord/477560964334747668.svg?logo=discord"/>
 </a>
-
 
 <a href="https://github.com/burtonator/polar-bookshelf">
     <img src="https://img.shields.io/github/stars/burtonator/polar-bookshelf.svg?style=social&label=Star"/>
@@ -19,11 +21,11 @@
     <img src="https://img.shields.io/twitter/follow/getpolarized.svg?style=social&label=Follow"/>
 </a>
 
+
 <!--
 
 FIXME: include our github release download count:
 
-https://img.shields.io/github/downloads-pre/burtonator/polar-bookshelf/total.svg?maxAge=2592000
 
 -->
 
