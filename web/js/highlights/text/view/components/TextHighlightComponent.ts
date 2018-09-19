@@ -9,8 +9,9 @@ import {Rect} from '../../../../Rect';
 import {Component} from '../../../../components/Component';
 import {DocFormatFactory} from '../../../../docformat/DocFormatFactory';
 import {Rects} from '../../../../Rects';
+import {Logger} from '../../../../logger/Logger';
 
-const log = require("../../../../logger/Logger").Logger.create();
+const log = Logger.create();
 
 export class TextHighlightComponent extends Component {
 
