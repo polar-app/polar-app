@@ -3,7 +3,7 @@ import {forDict} from '../util/Functions';
 
 export class DocMetaDescriber {
 
-    static describe(docMeta: DocMeta) {
+    public static describe(docMeta: DocMeta) {
 
         let nrPagemarks = 0;
         let nrTextHighlights = 0;
@@ -20,7 +20,8 @@ export class DocMetaDescriber {
 
         });
 
-        return `Doc with ${docMeta.docInfo.nrPages} pages with ${nrTextHighlights} text highlights and ${nrPagemarks} pagemarks.`;
+        // just quickly fixed the way we present stats to address pluralization issues.
+        return `Doc stats - pages: ${docMeta.docInfo.nrPages}, text highlights: ${nrTextHighlights}, pagemarks: ${nrPagemarks}`;
 
     }
 
