@@ -20,7 +20,6 @@ export class DocMetaDescriber {
 
         });
 
-        // just quickly fixed the way we present stats to address pluralization issues.
         return `Doc stats - pages: ${docMeta.docInfo.nrPages}, text highlights: ${nrTextHighlights}, pagemarks: ${nrPagemarks}`;
 
     }
