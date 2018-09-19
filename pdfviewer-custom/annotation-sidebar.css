@@ -1,17 +1,35 @@
 .annotation-sidebar {
     margin-top: 75px;
-    font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+    /*font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;*/
     /*font-weight: 300;*/
-    font-size: 16px;
+    font-size: 14px;
+    font-family: sans-serif;
 }
 
 .annotation-sidebar .text-highlight {
-    margin-top: 5px;
-    border-left: yellow solid 5px;
-    margin-left: 5px;
-    padding-left: 5px;
+    margin: 5px;
+    margin-bottom: 10px;
+    padding-bottom: 5px;
+}
+
+.annotation-sidebar .text-highlight p {
+    margin: 0;
 }
 
 .annotation-sidebar .text-highlight p {
     padding: 5px;
 }
+
+
+.annotation-sidebar .text-highlight,
+.annotation-sidebar .area-highlight {
+
+    border-bottom: lightgrey solid 1px;
+
+}
+
+.annotation-sidebar .text-highlight blockquote {
+    border-left: #FFD700 solid 3px;
+    margin: 0 0 0 0;
+}
+

@@ -58,11 +58,17 @@ export class AnnotationSidebar extends React.Component<AnnotationSidebarProps, A
 
                 const attrType = AnnotationTypes.toDataAttribute(annotation.annotationType);
 
-                result.push(<div key={annotation.id}
+                result.push(
+                    <div key={annotation.id}
                                  data-annotation-id={annotation.id}
                                  data-annotation-type={attrType}
-                                 className={attrType}
-                                 dangerouslySetInnerHTML={{__html: html}}/>);
+                                 className={attrType}>
+
+                        <blockquote dangerouslySetInnerHTML={{__html: html}}>
+
+                        </blockquote>
+
+                    </div>);
 
             }
 
