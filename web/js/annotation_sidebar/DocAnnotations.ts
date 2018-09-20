@@ -54,7 +54,7 @@ export class DocAnnotations {
             html = `<p>${textHighlight.text}</p>`;
         }
 
-        if (isPresent(textHighlight.text)) {
+        if (isPresent(textHighlight.text) && typeof textHighlight.text === 'object') {
 
             // TODO: move this to an isInstanceOf in Texts
             if ('TEXT' in <any> (textHighlight.text) || 'HTML' in <any> (textHighlight.text)) {
@@ -121,19 +121,23 @@ export class DocAnnotations {
 
         let screenshot: Screenshot | undefined;
 
-        Object.values(highlight.images).forEach( image => {
+        if (highlight.images) {
 
-            if (image.rel && image.rel === 'screenshot') {
+            Object.values(highlight.images).forEach( image => {
 
-                const screenshotURI = Screenshots.parseURI(image.src);
+                if (image.rel && image.rel === 'screenshot') {
 
-                if (screenshotURI) {
-                    screenshot = pageMeta.screenshots[screenshotURI.id];
+                    const screenshotURI = Screenshots.parseURI(image.src);
+
+                    if (screenshotURI) {
+                        screenshot = pageMeta.screenshots[screenshotURI.id];
+                    }
+
                 }
 
-            }
+            });
 
-        });
+        }
 
         return screenshot;
 

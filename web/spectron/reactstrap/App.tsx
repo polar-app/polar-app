@@ -15,6 +15,7 @@ class App<P> extends React.Component<{}, IAppState> {
             splitButtonOpen: false
         };
     }
+
     public render() {
         return (
 
@@ -49,6 +50,7 @@ class App<P> extends React.Component<{}, IAppState> {
                             {/*</UncontrolledDropdown>*/}
                         {/*</Nav>*/}
                     {/*</Collapse>*/}
+
                 <Navbar light expand="md" className="p-2 border-bottom link-navbar">
 
                     <InputGroup size="sm" className="">
@@ -59,11 +61,13 @@ class App<P> extends React.Component<{}, IAppState> {
                                     className="btn btn-outline-secondary"
                                     title="Capture HTML page"
                                     aria-label="">
+
                                 <span className="fa fa-refresh fa-lg" aria-hidden="true"></span>
+
                             </Button>
 
                         </InputGroupAddon>
-                        <Input className="px-0" />
+                        <Input className="px-2" />
                         <InputGroupAddon addonType="append">
                             {/*<i className="fa fa-close"></i>*/}
 
@@ -72,7 +76,9 @@ class App<P> extends React.Component<{}, IAppState> {
                                     title="Capture the HTML page and save locally"
                                     aria-label=""
                                     disabled>
+
                                 <span className="fa fa-cloud-download fa-lg" aria-hidden="true"></span>
+
                             </Button>
 
                         </InputGroupAddon>
@@ -140,15 +146,18 @@ class App<P> extends React.Component<{}, IAppState> {
     private toggleDropDown() {
 
         this.setState({
-                          splitButtonOpen: this.state.splitButtonOpen,
-                          dropdownOpen: !this.state.dropdownOpen
-                      });
+            splitButtonOpen: this.state.splitButtonOpen,
+            dropdownOpen: !this.state.dropdownOpen
+        });
+
     }
 
     private toggleSplit() {
+
         this.setState({
-                          splitButtonOpen: !this.state.splitButtonOpen
-                      });
+            splitButtonOpen: !this.state.splitButtonOpen
+        });
+
     }
 
 
