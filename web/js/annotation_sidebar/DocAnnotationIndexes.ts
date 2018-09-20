@@ -9,7 +9,7 @@ export class DocAnnotationIndexes {
         const docAnnotationMap = Object.assign({}, docAnnotationIndex.docAnnotationMap);
         const sortedDocAnnotations: SortedDocAnnotations = [];
 
-        const result = new DocAnnotationIndex(docAnnotationMap, []);
+        const result = new DocAnnotationIndex(docAnnotationMap, sortedDocAnnotations);
 
         for (const docAnnotation of docAnnotations) {
             docAnnotationMap[docAnnotation.id] = docAnnotation;

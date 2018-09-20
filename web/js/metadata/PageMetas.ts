@@ -89,6 +89,7 @@ export class PageMetas {
                 const annotationEvent = new AnnotationEvent(Object.assign({}, traceEvent, {
                     docMeta,
                     pageMeta,
+                    traceEvent,
                 }));
 
                 callback(annotationEvent);

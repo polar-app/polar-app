@@ -6,7 +6,7 @@ import {AnnotationEvent} from '../../../annotations/components/AnnotationEvent';
 
 export class AreaHighlightModel extends DocMetaModel {
 
-    registerListener(docMeta: DocMeta, callback: (componentEvent: AnnotationEvent) => void) {
+    public registerListener(docMeta: DocMeta, callback: (componentEvent: AnnotationEvent) => void) {
         PageMetas.createModel(docMeta, "areaHighlights", callback);
     }
 

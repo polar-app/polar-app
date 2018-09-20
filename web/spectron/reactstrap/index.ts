@@ -4,6 +4,6 @@ SpectronMain2.create().run(async state => {
 
     state.window.loadURL(`file://${__dirname}/content.html`);
 
-    await state.testResultWriter.write(true);
+    // await state.testResultWriter.write(true);
 
 });

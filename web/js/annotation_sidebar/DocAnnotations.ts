@@ -7,6 +7,8 @@ import {Screenshot} from '../metadata/Screenshot';
 import {Screenshots} from '../metadata/Screenshots';
 import {Text} from '../metadata/Text';
 import {DocAnnotation} from './DocAnnotation';
+import {AreaHighlight} from '../metadata/AreaHighlight';
+import {TextHighlight} from '../metadata/TextHighlight';
 
 export class DocAnnotations {
 
@@ -25,52 +27,75 @@ export class DocAnnotations {
 
     }
 
+    public static createFromAreaHighlight(areaHighlight: AreaHighlight, pageMeta: PageMeta): DocAnnotation {
+
+        const screenshot = this.getScreenshot(pageMeta, areaHighlight);
+
+        return {
+            id: areaHighlight.id,
+            annotationType: AnnotationType.AREA_HIGHLIGHT,
+            screenshot,
+            html: undefined,
+            pageNum: pageMeta.pageInfo.num,
+            // FIXME MUST get the right position.
+            position: {
+                x: 0,
+                y: 0
+            }
+        };
+
+    }
+
+    public static createFromTextHighlight(textHighlight: TextHighlight, pageMeta: PageMeta): DocAnnotation {
+
+        let html: string = "";
+
+        if (typeof textHighlight.text === 'string') {
+            html = `<p>${textHighlight.text}</p>`;
+        }
+
+        if (isPresent(textHighlight.text)) {
+
+            // TODO: move this to an isInstanceOf in Texts
+            if ('TEXT' in <any> (textHighlight.text) || 'HTML' in <any> (textHighlight.text)) {
+
+                const text = <Text> textHighlight.text;
+
+                if (text.TEXT) {
+                    html = `<p>${text.TEXT}</p>`;
+                }
+
+                if (text.HTML) {
+                    html = text.HTML;
+                }
+
+            }
+
+        }
+
+        const screenshot = this.getScreenshot(pageMeta, textHighlight);
+
+        return {
+            id: textHighlight.id,
+            annotationType: AnnotationType.TEXT_HIGHLIGHT,
+            screenshot,
+            html,
+            pageNum: pageMeta.pageInfo.num,
+            // FIXME MUST get the right position.
+            position: {
+                x: 0,
+                y: 0
+            }
+        };
+
+    }
+
     private static getTextHighlights(pageMeta: PageMeta): DocAnnotation[] {
 
         const result: DocAnnotation[] = [];
 
         Object.values(pageMeta.textHighlights).forEach(textHighlight => {
-
-            let html: string = "";
-
-            if (typeof textHighlight.text === 'string') {
-                html = `<p>${textHighlight.text}</p>`;
-            }
-
-            if (isPresent(textHighlight.text)) {
-
-                // TODO: move this to an isInstanceOf in Texts
-                if ('TEXT' in <any> (textHighlight.text) || 'HTML' in <any> (textHighlight.text)) {
-
-                    const text = <Text> textHighlight.text;
-
-                    if (text.TEXT) {
-                        html = `<p>${text.TEXT}</p>`;
-                    }
-
-                    if (text.HTML) {
-                        html = text.HTML;
-                    }
-
-                }
-
-            }
-
-            const screenshot = this.getScreenshot(pageMeta, textHighlight);
-
-            result.push({
-                id: textHighlight.id,
-                annotationType: AnnotationType.TEXT_HIGHLIGHT,
-                screenshot,
-                html,
-                pageNum: pageMeta.pageInfo.num,
-                // FIXME MUST get the right position.
-                position: {
-                    x: 0,
-                    y: 0
-                }
-            });
-
+            result.push(this.createFromTextHighlight(textHighlight, pageMeta));
         });
 
         return result;
@@ -84,22 +109,7 @@ export class DocAnnotations {
         const result: DocAnnotation[] = [];
 
         Object.values(pageMeta.areaHighlights).forEach(areaHighlight => {
-
-            const screenshot = this.getScreenshot(pageMeta, areaHighlight);
-
-            result.push({
-                id: areaHighlight.id,
-                annotationType: AnnotationType.AREA_HIGHLIGHT,
-                screenshot,
-                html: undefined,
-                pageNum: pageMeta.pageInfo.num,
-                // FIXME MUST get the right position.
-                position: {
-                    x: 0,
-                    y: 0
-                }
-            });
-
+            result.push(this.createFromAreaHighlight(areaHighlight, pageMeta));
         });
 
         return result;

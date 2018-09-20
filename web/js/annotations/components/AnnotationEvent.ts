@@ -45,7 +45,7 @@ export class AnnotationEvent extends TraceEvent {
      *
      * @type {Container}
      */
-    container: Container;
+    public container: Container;
 
 
     constructor(opts: any = {}) {
