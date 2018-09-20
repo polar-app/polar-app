@@ -56,7 +56,7 @@ class App<P> extends React.Component<{}, IAppState> {
                             {/*<i className="fa fa-close"></i>*/}
 
                             <Button type="button"
-                                    className="btn btn-default"
+                                    className="btn btn-outline-secondary"
                                     title="Capture HTML page"
                                     aria-label="">
                                 <span className="fa fa-refresh fa-lg" aria-hidden="true"></span>
@@ -68,7 +68,7 @@ class App<P> extends React.Component<{}, IAppState> {
                             {/*<i className="fa fa-close"></i>*/}
 
                             <Button type="button"
-                                    className="btn btn-default"
+                                    className="btn btn-outline-secondary"
                                     title="Capture the HTML page and save locally"
                                     aria-label=""
                                     disabled>
