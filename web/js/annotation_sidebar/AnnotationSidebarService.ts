@@ -13,7 +13,6 @@ export class AnnotationSidebarService {
 
     public constructor(model: Model) {
         this.model = model;
-
     }
 
     public start() {

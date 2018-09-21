@@ -5,6 +5,7 @@ import {Version} from '../../util/Version';
 import {AppLauncher} from './AppLauncher';
 import {Logger} from '../../logger/Logger';
 import {Promises} from '../../util/Promises';
+import {InPageSearch} from './InPageSearch';
 
 const log = Logger.create();
 
@@ -182,7 +183,7 @@ export class MainAppMenu {
                 { role: 'undo' },
                 { role: 'redo' },
                 // { type: 'separator' },
-                // { label: 'Find', accelerator: 'CmdOrCtrl+f', click: cmdFind },
+                // { label: 'Find', accelerator: 'CmdOrCtrl+f', click: () => InPageSearch.execute() },
                 { type: 'separator' },
                 { role: 'cut'},
                 { role: 'copy' },

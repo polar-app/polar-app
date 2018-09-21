@@ -8,6 +8,7 @@ import {PagemarkView} from '../pagemarks/view/PagemarkView';
 import {IListenablePersistenceLayer} from '../datastore/IListenablePersistenceLayer';
 import {TextHighlightView2} from '../highlights/text/view/TextHighlightView2';
 import {AnnotationSidebarService} from '../annotation_sidebar/AnnotationSidebarService';
+import {PageSearchController} from '../page_search/PageSearchController';
 
 const {AreaHighlightView} = require("../highlights/area/view/AreaHighlightView");
 
@@ -46,6 +47,7 @@ export class Launcher {
         new AreaHighlightView(model).start();
         new PagemarkView(model).start();
         new AnnotationSidebarService(model).start();
+        new PageSearchController(model).start();
 
         const viewer = ViewerFactory.create(model);
         viewer.start();
