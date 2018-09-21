@@ -12,7 +12,6 @@ import {FrameInitializer} from './FrameInitializer';
 import {BackgroundFrameResizer} from './BackgroundFrameResizer';
 import {Descriptors} from './Descriptors';
 import {IFrameWatcher} from './IFrameWatcher';
-import {Splitter} from '../../ui/splitter/Splitter';
 import {FrameResizer} from './FrameResizer';
 
 const log = Logger.create();
@@ -28,8 +27,6 @@ export class HTMLViewer extends Viewer {
     private requestParams: RequestParams | null = null;
 
     private htmlFormat: any;
-
-    private splitter?: Splitter;
 
     private frameResizer?: FrameResizer;
 
@@ -223,8 +220,7 @@ export class HTMLViewer extends Viewer {
     }
 
     private _resizeFrame() {
-        // console.log("FIXME goign to resizing");
-        //
+
         // setTimeout(() => {
         //     console.log("FIXME resizing");
         //     this.frameResizer!.resize(true);

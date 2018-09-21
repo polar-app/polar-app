@@ -4,6 +4,7 @@
 @import url('./selection.css');
 @import url('./sidebar.css');
 @import url('./annotation-sidebar.css');
+@import url('./htmlviewer.css');
 
 body {
     height: 100%;
