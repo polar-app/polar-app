@@ -1,4 +1,13 @@
 
+# 1.0.0-beta175
+
+- Updated large number of dependencies
+
+- Electron 3.0.0
+
+- new (initial) annotation sidebar for navigating and creating additional 
+  annotations. 
+
 # 1.0.0-beta170
 
 - New tagging UI for the repository. Documents can have tags and and properly 
