@@ -9,10 +9,10 @@ import {DocAnnotation} from './DocAnnotation';
 import {DocAnnotationIndex} from './DocAnnotationIndex';
 import {DocAnnotationIndexes} from './DocAnnotationIndexes';
 import {AreaHighlightModel} from '../highlights/area/model/AreaHighlightModel';
-import {AreaHighlight} from '../metadata/AreaHighlight';
-import {TextHighlight} from '../metadata/TextHighlight';
 import {MutationType} from '../proxies/MutationType';
 import {TextHighlightModel} from '../highlights/text/model/TextHighlightModel';
+import {isPresent} from '../Preconditions';
+import {Simulate} from 'react-dom/test-utils';
 
 const log = Logger.create();
 
@@ -32,30 +32,64 @@ export class AnnotationSidebar extends React.Component<AnnotationSidebarProps, A
 
         new AreaHighlightModel().registerListener(this.props.docMeta, annotationEvent => {
 
-            if (annotationEvent.traceEvent.mutationType === MutationType.INITIAL) {
-                return;
-            }
+            const docAnnotation =
+                this.convertAnnotation(annotationEvent.value,
+                                       annotationValue => DocAnnotations.createFromAreaHighlight(annotationValue,
+                                                                                                 annotationEvent.pageMeta));
 
-            const areaHighlight: AreaHighlight = annotationEvent.value;
-            const docAnnotation = DocAnnotations.createFromAreaHighlight(areaHighlight, annotationEvent.pageMeta);
-            this.refresh(docAnnotation);
+            this.handleAnnotationEvent(annotationEvent.id,
+                                       annotationEvent.traceEvent.mutationType,
+                                       docAnnotation);
 
         });
 
         new TextHighlightModel().registerListener(this.props.docMeta, annotationEvent => {
 
-            if (annotationEvent.traceEvent.mutationType === MutationType.INITIAL) {
-                return;
-            }
+            console.log("FIXMEL: converting annotation: ", annotationEvent.value)
 
-            const textHighlight: TextHighlight = annotationEvent.value;
-            const docAnnotation = DocAnnotations.createFromTextHighlight(textHighlight, annotationEvent.pageMeta);
-            this.refresh(docAnnotation);
+            const docAnnotation =
+                this.convertAnnotation(annotationEvent.value,
+                                       annotationValue => DocAnnotations.createFromTextHighlight(annotationValue,
+                                                                                                 annotationEvent.pageMeta));
+
+            this.handleAnnotationEvent(annotationEvent.id,
+                                       annotationEvent.traceEvent.mutationType,
+                                       docAnnotation);
         });
 
         this.state = {
             annotations: this.docAnnotationIndex.sortedDocAnnotation
         };
+
+    }
+
+    private convertAnnotation<T>(value: any | undefined | null, converter: (input: any) => T) {
+
+        if (! isPresent(value)) {
+            return undefined;
+        }
+
+        return converter(value);
+
+    }
+
+    private handleAnnotationEvent(id: string,
+                                  mutationType: MutationType,
+                                  docAnnotation: DocAnnotation | undefined) {
+
+        if (mutationType === MutationType.INITIAL) {
+            // we already have the data properly.
+            return;
+        } else if (mutationType === MutationType.DELETE) {
+
+            this.docAnnotationIndex
+                = DocAnnotationIndexes.delete(this.docAnnotationIndex, id);
+
+            this.reload();
+
+        } else {
+            this.refresh(docAnnotation!);
+        }
 
     }
 
@@ -170,7 +204,15 @@ export class AnnotationSidebar extends React.Component<AnnotationSidebarProps, A
 
         annotations.map(annotation => {
 
+            if (! isPresent(annotation.id)) {
+                log.warn("No annotation id!", annotation);
+                return;
+            }
+
             const html = Optional.of(annotation.html).getOrElse('');
+
+            // FIXME: these still do not render properly as we dont' get the
+            // data from the store properly.
 
             if (annotation.annotationType === AnnotationType.AREA_HIGHLIGHT) {
 

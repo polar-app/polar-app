@@ -30,15 +30,19 @@ export class TextHighlights {
 
     public static deleteTextHighlight(pageMeta: PageMeta, textHighlight: TextHighlight) {
 
-        Object.values(textHighlight.images).forEach(image => {
+        if (textHighlight.images) {
 
-            let screenshotURI = Screenshots.parseURI(image.src);
+            Object.values(textHighlight.images).forEach(image => {
 
-            if(screenshotURI) {
-                delete pageMeta.screenshots[screenshotURI.id];
-            }
+                const screenshotURI = Screenshots.parseURI(image.src);
 
-        });
+                if (screenshotURI) {
+                    delete pageMeta.screenshots[screenshotURI.id];
+                }
+
+            });
+
+        }
 
         delete pageMeta.textHighlights[textHighlight.id];
 

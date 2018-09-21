@@ -3,6 +3,20 @@ import {DocAnnotation, SortedDocAnnotations} from './DocAnnotation';
 
 export class DocAnnotationIndexes {
 
+    public static delete(docAnnotationIndex: DocAnnotationIndex,
+                         ...ids: string[]): DocAnnotationIndex {
+
+        const docAnnotationMap = Object.assign({}, docAnnotationIndex.docAnnotationMap);
+
+        for (const id of ids) {
+            delete docAnnotationMap[id];
+        }
+
+        const tmpIndex = new DocAnnotationIndex(docAnnotationMap, Object.values(docAnnotationMap));
+        return this.rebuild(tmpIndex);
+
+    }
+
     public static rebuild(docAnnotationIndex: DocAnnotationIndex,
                           ...docAnnotations: DocAnnotation[]): DocAnnotationIndex {
 

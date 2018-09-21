@@ -1,12 +1,12 @@
 import {DocMeta} from '../../../metadata/DocMeta';
 import {DocMetaModel} from '../../../metadata/DocMetaModel';
 import {PageMetas} from '../../../metadata/PageMetas';
-import {AnnotationEvent} from '../../../annotations/components/AnnotationEvent';
+import {AnnotationEventListener} from '../../../annotations/components/AnnotationEventListener';
 
 export class TextHighlightModel extends DocMetaModel {
 
-    public registerListener(docMeta: DocMeta, callback: (annotationEvent: AnnotationEvent) => void) {
-        PageMetas.createModel(docMeta, "textHighlights", callback);
+    public registerListener(docMeta: DocMeta, annotationEventListener: AnnotationEventListener) {
+        PageMetas.createModel(docMeta, "textHighlights", annotationEventListener);
     }
 
 }
