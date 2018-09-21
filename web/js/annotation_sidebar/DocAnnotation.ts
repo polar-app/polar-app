@@ -9,6 +9,7 @@ export interface DocAnnotation {
     screenshot?: Screenshot;
     pageNum: number;
     position: Point;
+    //created: number;
 }
 
 /**

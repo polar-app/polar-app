@@ -143,14 +143,14 @@ function summarize(textHighlightEvent: AnnotationEvent): any {
 
 function createDocMeta() {
 
-    let fingerprint = "110dd61fd57444010b1ab5ff38782f0f";
+    const fingerprint = "110dd61fd57444010b1ab5ff38782f0f";
 
-    let docMeta = DocMetas.createWithinInitialPagemarks(fingerprint, 14);
+    const docMeta = DocMetas.createWithinInitialPagemarks(fingerprint, 14);
     DocMetas.addPagemarks(docMeta, {nrPages: 1, offsetPage: 4, percentage: 50})
 
     // create some initial highlights.
 
-    let textHighlightRecord = createTextHighlightRecord();
+    const textHighlightRecord = createTextHighlightRecord();
 
     docMeta.getPageMeta(1).textHighlights[textHighlightRecord.id] = textHighlightRecord.value;
 

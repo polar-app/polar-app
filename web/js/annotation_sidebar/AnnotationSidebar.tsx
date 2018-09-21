@@ -12,7 +12,6 @@ import {AreaHighlightModel} from '../highlights/area/model/AreaHighlightModel';
 import {MutationType} from '../proxies/MutationType';
 import {TextHighlightModel} from '../highlights/text/model/TextHighlightModel';
 import {isPresent} from '../Preconditions';
-import {Simulate} from 'react-dom/test-utils';
 
 const log = Logger.create();
 
@@ -44,8 +43,6 @@ export class AnnotationSidebar extends React.Component<AnnotationSidebarProps, A
         });
 
         new TextHighlightModel().registerListener(this.props.docMeta, annotationEvent => {
-
-            console.log("FIXMEL: converting annotation: ", annotationEvent.value)
 
             const docAnnotation =
                 this.convertAnnotation(annotationEvent.value,

@@ -9,6 +9,8 @@ import {Text} from '../metadata/Text';
 import {DocAnnotation} from './DocAnnotation';
 import {AreaHighlight} from '../metadata/AreaHighlight';
 import {TextHighlight} from '../metadata/TextHighlight';
+import {Optional} from '../util/ts/Optional';
+import {Rect} from '../Rect';
 
 export class DocAnnotations {
 
@@ -37,10 +39,9 @@ export class DocAnnotations {
             screenshot,
             html: undefined,
             pageNum: pageMeta.pageInfo.num,
-            // FIXME MUST get the right position.
             position: {
-                x: 0,
-                y: 0
+                x: this.firstRect(areaHighlight).map(current => current.left).getOrElse(0),
+                y: this.firstRect(areaHighlight).map(current => current.top).getOrElse(0),
             }
         };
 
@@ -81,10 +82,9 @@ export class DocAnnotations {
             screenshot,
             html,
             pageNum: pageMeta.pageInfo.num,
-            // FIXME MUST get the right position.
             position: {
-                x: 0,
-                y: 0
+                x: this.firstRect(textHighlight).map(current => current.left).getOrElse(0),
+                y: this.firstRect(textHighlight).map(current => current.top).getOrElse(0),
             }
         };
 
@@ -141,6 +141,12 @@ export class DocAnnotations {
 
         return screenshot;
 
+    }
+
+    private static firstRect(highlight: BaseHighlight): Optional<Rect> {
+        return Optional.of(highlight)
+            .map(current => current.rects)
+            .map(current => current[0]);
     }
 
 }

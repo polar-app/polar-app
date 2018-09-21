@@ -2,6 +2,8 @@ import {DocAnnotation, DocAnnotationMap} from './DocAnnotation';
 import {AnnotationType} from '../metadata/AnnotationType';
 import {Arrays} from '../util/Arrays';
 import {DocAnnotationIndexes} from './DocAnnotationIndexes';
+import {DocAnnotationIndex} from './DocAnnotationIndex';
+import {assertJSON} from '../test/Assertions';
 
 describe('DocAnnotationIndexes', function() {
 
@@ -11,11 +13,94 @@ describe('DocAnnotationIndexes', function() {
         const a1: DocAnnotation = createAnnotation('0002', 1, 0, 0 );
         const a2: DocAnnotation = createAnnotation('0003', 1, 0, 0 );
 
-        const docAnnotationMap = createIndex(a0, a1);
+        const docAnnotationMap = createDocAnnotationMap(a0, a1);
 
-        DocAnnotationIndexes.rebuild(docAnnotationMap, a2);
+        const docAnnotationIndex = new DocAnnotationIndex(docAnnotationMap,
+                                                          Object.values(docAnnotationMap));
+
+        const rebuiltDocAnnotationIndex = DocAnnotationIndexes.rebuild(docAnnotationIndex, a2);
+
+        const expected: any = [
+            {
+                "id": "0001",
+                "annotationType": "TEXT_HIGHLIGHT",
+                "pageNum": 1,
+                "position": {
+                    "x": 0,
+                    "y": 0
+                }
+            },
+            {
+                "id": "0002",
+                "annotationType": "TEXT_HIGHLIGHT",
+                "pageNum": 1,
+                "position": {
+                    "x": 0,
+                    "y": 0
+                }
+            },
+            {
+                "id": "0003",
+                "annotationType": "TEXT_HIGHLIGHT",
+                "pageNum": 1,
+                "position": {
+                    "x": 0,
+                    "y": 0
+                }
+            }
+        ];
+
+        assertJSON(rebuiltDocAnnotationIndex.sortedDocAnnotation, expected);
 
     });
+
+    it("complex sorting", function() {
+
+        const a0: DocAnnotation = createAnnotation('0001', 3, 0, 100 );
+        const a1: DocAnnotation = createAnnotation('0002', 2, 100, 0 );
+        const a2: DocAnnotation = createAnnotation('0003', 1, 25, 50);
+
+        const docAnnotationMap = createDocAnnotationMap(a0, a1);
+
+        const docAnnotationIndex = new DocAnnotationIndex(docAnnotationMap,
+                                                          Object.values(docAnnotationMap));
+
+        const rebuiltDocAnnotationIndex = DocAnnotationIndexes.rebuild(docAnnotationIndex, a2);
+
+        const expected: any = [
+            {
+                "id": "0003",
+                "annotationType": "TEXT_HIGHLIGHT",
+                "pageNum": 1,
+                "position": {
+                    "x": 25,
+                    "y": 50
+                }
+            },
+            {
+                "id": "0002",
+                "annotationType": "TEXT_HIGHLIGHT",
+                "pageNum": 2,
+                "position": {
+                    "x": 100,
+                    "y": 0
+                }
+            },
+            {
+                "id": "0001",
+                "annotationType": "TEXT_HIGHLIGHT",
+                "pageNum": 3,
+                "position": {
+                    "x": 0,
+                    "y": 100
+                }
+            }
+        ];
+
+        assertJSON(rebuiltDocAnnotationIndex.sortedDocAnnotation, expected);
+
+    });
+
 
 });
 
@@ -36,7 +121,7 @@ function createAnnotation(id: string,
 
 }
 
-function createIndex(...docAnnotations: DocAnnotation[]) {
+function createDocAnnotationMap(...docAnnotations: DocAnnotation[]): DocAnnotationMap {
 
     const result: DocAnnotationMap = {};
 
