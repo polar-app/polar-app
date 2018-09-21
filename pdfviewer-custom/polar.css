@@ -28,7 +28,6 @@ body {
     overflow: hidden;
     z-index: 99;
     width: 100%;
-    height: 65px;
 }
 
 /*.polar-htmlviewer #polar-header {*/
@@ -40,6 +39,7 @@ body {
 
 .polar-htmlviewer #polar-header {
     position: fixed;
+    height: 65px;
 }
 
 .polar-htmlviewer #viewerContainer {
