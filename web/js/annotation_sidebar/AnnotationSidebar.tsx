@@ -232,7 +232,7 @@ export class AnnotationSidebar extends React.Component<AnnotationSidebarProps, A
 
                 const attrType = AnnotationTypes.toDataAttribute(annotation.annotationType);
 
-                // TODO: move this to a formatter function
+                // TODO: move this to a formatter function so this is a big cleaner.
                 result.push(
                     <div key={annotation.id}
                                  data-annotation-id={annotation.id}
@@ -286,43 +286,3 @@ export interface AnnotationSidebarProps {
     readonly docMeta: DocMeta;
 }
 
-
-
-
-//
-// function scrollIntoView(t) {
-//     if (typeof(t) != 'object') return;
-//
-//     if (t.getRangeAt) {
-//         // we have a Selection object
-//         if (t.rangeCount == 0) return;
-//         t = t.getRangeAt(0);
-//     }
-//
-//     if (t.cloneRange) {
-//         // we have a Range object
-//         var r = t.cloneRange();	// do not modify the source range
-//         r.collapse(true);		// collapse to start
-//         var t = r.startContainer;
-//         // if start is an element then startOffset is the child number
-//         // in which the range starts
-//         if (t.nodeType == 1) t = t.childNodes[r.startOffset];
-//     }
-//
-//     if (t.nodeType == 1) {
-//         var o = t;
-//         // if we have a BR element then we want to skip back
-//         // or otherwise when we scroll into view the browser
-//         // will scroll past the BR
-//         while (o && o.nodeType == 1 && o.tagName == 'BR') o = o.previousSibling;
-//         if (o) t = o; // we may have reached the first element
-//     }
-//
-//     // if t is not an element node then we need to skip back until we find the
-//     // previous element with which we can call scrollIntoView()
-//     o = t;
-//     while (o && o.nodeType != 1) o = o.previousSibling;
-//     t = o || t.parentNode;
-//     if (t) t.scrollIntoView();
-// }
-//

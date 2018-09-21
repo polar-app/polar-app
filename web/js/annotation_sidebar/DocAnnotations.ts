@@ -16,8 +16,6 @@ export class DocAnnotations {
 
     public static getAnnotationsForPage(docMeta: DocMeta): DocAnnotation[] {
 
-        // FIXME these must be sorted by their position in the document.
-
         const result: DocAnnotation[] = [];
 
         Object.values(docMeta.pageMetas).forEach(pageMeta => {

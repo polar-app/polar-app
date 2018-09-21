@@ -1,4 +1,4 @@
-import {DocAnnotation, DocAnnotationMap, SortedDocAnnotations} from './DocAnnotation';
+import {DocAnnotationMap, SortedDocAnnotations} from './DocAnnotation';
 
 export class DocAnnotationIndex {
 

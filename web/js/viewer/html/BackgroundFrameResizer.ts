@@ -1,5 +1,3 @@
-import {Optional} from '../../util/ts/Optional';
-import {Styles} from '../../util/Styles';
 import {Logger} from '../../logger/Logger';
 import {Preconditions} from '../../Preconditions';
 import {FrameResizer} from './FrameResizer';

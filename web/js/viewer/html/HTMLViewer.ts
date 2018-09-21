@@ -84,7 +84,7 @@ export class HTMLViewer extends Viewer {
 
     }
 
-    public _captureBrowserZoom() {
+    private _captureBrowserZoom() {
 
         // TODO: for now this is used to just capture and disable zoom but
         // we should enable it in the future so we can handle zoom ourselves.
@@ -120,7 +120,7 @@ export class HTMLViewer extends Viewer {
         });
     }
 
-    public startHandlingZoom() {
+    private startHandlingZoom() {
 
         const htmlViewer = this;
 
@@ -145,7 +145,7 @@ export class HTMLViewer extends Viewer {
      *
      * Otherwise, use the defaults.
      */
-    public _configurePageWidth() {
+    private _configurePageWidth() {
 
 
         const descriptor = notNull(this.requestParams).descriptor;
@@ -164,7 +164,7 @@ export class HTMLViewer extends Viewer {
 
     }
 
-    public changeScale(scale: number) {
+    private changeScale(scale: number) {
 
         log.info("Changing scale to: " + scale);
 
@@ -179,7 +179,7 @@ export class HTMLViewer extends Viewer {
 
     }
 
-    public _changeScaleMeta(scale: number) {
+    private _changeScaleMeta(scale: number) {
 
         const metaElement = notNull(document.querySelector("meta[name='polar-scale']"));
 
@@ -187,7 +187,7 @@ export class HTMLViewer extends Viewer {
 
     }
 
-    public _changeScale(scale: number) {
+    private _changeScale(scale: number) {
 
         // NOTE: removing the iframe and adding it back in fixed a major problem
         // with font fuzziness on Chrome/Electron.  Technically it should be
@@ -204,7 +204,7 @@ export class HTMLViewer extends Viewer {
 
         // iframeParentElement.removeChild(iframe);
 
-        // FIXME: run an algorithm to maek sure there aer no elements between two
+        // FIXME: run an algorithm to maek sure there are no elements between two
         // paths in the DOM that have any scrollHeight > their height.
 
         const contentParent = notNull(document.querySelector("#content-parent"));
@@ -259,7 +259,7 @@ export class HTMLViewer extends Viewer {
     /**
      * Get the request params as a dictionary.
      */
-    public _requestParams(): RequestParams {
+    private _requestParams(): RequestParams {
 
         const url = new URL(window.location.href);
 
@@ -272,7 +272,7 @@ export class HTMLViewer extends Viewer {
     }
 
 
-    public _loadRequestData() {
+    private _loadRequestData() {
 
         // *** now setup the iframe
 
@@ -295,7 +295,7 @@ export class HTMLViewer extends Viewer {
 
     }
 
-    public docDetail(): DocDetail {
+    private docDetail(): DocDetail {
 
         const requestParams = notNull(this.requestParams);
 
