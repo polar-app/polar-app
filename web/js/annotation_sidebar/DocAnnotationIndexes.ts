@@ -32,7 +32,7 @@ export class DocAnnotationIndexes {
         sortedDocAnnotations.push(...Object.values(docAnnotationMap));
 
         function sortScore(item: DocAnnotation) {
-            return item.pageNum * item.position.x * item.position.y;
+            return (item.pageNum * 100000) * (item.position.x * 100) * item.position.y;
         }
 
         // now sort the doc annotations so that they're in the order we need them.
