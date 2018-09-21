@@ -136,6 +136,143 @@ class App<P> extends React.Component<{}, IAppState> {
                             <Button color="secondary">I'm a button</Button>
                         </InputGroupAddon>
                     </InputGroup>
+
+
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+
+                    <div id="hoverbar" style={{width: '250px'}} className="shadow-lg p-1 m-1 bg-white rounded" >
+
+                        <Button size="sm"
+                                type="button"
+                                className="btn btn-outline-secondary p-2 m-1 rounded-circle"
+                                title="Capture HTML page"
+                                aria-label=""
+                                style={{backgroundColor: 'rgba(255,255,0,0.5)'}} >
+
+                        </Button>
+
+                        <Button size="sm"
+                                type="button"
+                                className="btn btn-outline-secondary p-2 m-1 rounded-circle"
+                                title="Capture HTML page"
+                                aria-label=""
+                                style={{backgroundColor: 'rgba(255,0,0,0.5)'}} >
+
+                        </Button>
+
+                        <Button size="sm"
+                                type="button"
+                                className="btn btn-outline-secondary p-2 m-1 rounded-circle"
+                                title="Capture HTML page"
+                                aria-label=""
+                                style={{backgroundColor: 'rgba(0,255,0,0.5)'}} >
+
+                        </Button>
+
+
+                        <Button size="sm"
+                                type="button"
+                                className="btn btn-outline-secondary p-2 m-1 rounded-circle"
+                                title="Capture HTML page"
+                                aria-label=""
+                                style={{backgroundColor: 'rgba(0,0,255,0.5)'}} >
+
+                        </Button>
+
+                        <Button size="sm"
+                                type="button"
+                                className="btn btn-outline-secondary p-1 m-1 "
+                                title="Capture HTML page"
+                                aria-label=""
+                                style={{backgroundColor: 'yellow'}} >
+
+                            <span className="fa fa-tag" aria-hidden="true"></span>
+
+                        </Button>
+
+
+
+                        <Button size="sm"
+                                type="button"
+                                className="btn btn-outline-secondary p-1 m-1"
+                                title="Capture HTML page"
+                                aria-label=""
+                                style={{backgroundColor: 'yellow'}} >
+
+                            <span className="fa fa-tag" aria-hidden="true"></span>
+
+                        </Button>
+
+
+                        <InputGroup size="sm" style={{width: '100%'}} >
+
+                            <InputGroupAddon addonType="prepend">
+                                {/*<i className="fa fa-close"></i>*/}
+
+                                <Button type="button"
+                                        className="btn btn-outline-secondary"
+                                        title="Capture HTML page"
+                                        aria-label=""
+                                        style={{backgroundColor: 'yellow'}} >
+
+                                    <span className="fa fa-tag fa-lg" aria-hidden="true"></span>
+
+                                </Button>
+
+                                <Button type="button"
+                                        className="btn btn-outline-secondary"
+                                        title="Capture HTML page"
+                                        aria-label=""
+                                        style={{backgroundColor: 'red'}} >
+
+                                    <span className="fa fa-tag fa-lg" aria-hidden="true"></span>
+
+                                </Button>
+
+
+                                <Button type="button"
+                                        className="btn btn-outline-secondary"
+                                        title="Capture HTML page"
+                                        aria-label="" >
+
+                                    <span className="fa fa-comment-o fa-lg" aria-hidden="true"></span>
+
+                                </Button>
+
+                            </InputGroupAddon>
+                            <InputGroupAddon addonType="append">
+                                <Button color="secondary">I'm a button</Button>
+                            </InputGroupAddon>
+                        </InputGroup>
+                    </div>
+
+
+                    <div style={{backgroundColor: 'rgba(0,0,255,0.5)'}}>
+                        this is the first
+                    </div>
+
+
+                    <InputGroupButtonDropdown addonType="append"
+                                              size="sm"
+                                              isOpen={this.state.dropdownOpen}
+                                              toggle={this.toggleDropDown}>
+                        <DropdownToggle caret>
+                            Button Dropdown
+                        </DropdownToggle>
+                        <DropdownMenu>
+                            <DropdownItem header>Header</DropdownItem>
+                            <DropdownItem disabled>Action</DropdownItem>
+                            <DropdownItem>Another Action</DropdownItem>
+                            <DropdownItem divider />
+                            <DropdownItem>Another Action</DropdownItem>
+                        </DropdownMenu>
+                    </InputGroupButtonDropdown>
+
+
                 </div>
 
             </div>

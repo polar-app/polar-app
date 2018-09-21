@@ -90,7 +90,7 @@ export class AnnotationSidebar extends React.Component<AnnotationSidebarProps, A
         // scrollParent!.scrollBy(0, 50);
 
 
-        scrollIntoView(annotationElement);
+        // scrollIntoView(annotationElement);
 
         // annotationElement.scrollIntoView({behavior: "instant", block: "end", inline: "nearest"});
 
@@ -204,9 +204,9 @@ export class AnnotationSidebar extends React.Component<AnnotationSidebarProps, A
 
                         </blockquote>
 
-                        <div className="annotation-buttons">
-                            <a href="#" onClick={() => this.scrollToAnnotation(annotation.id)}>context</a>
-                        </div>
+                        {/*<div className="annotation-buttons">*/}
+                            {/*<a href="#" onClick={() => this.scrollToAnnotation(annotation.id)}>context</a>*/}
+                        {/*</div>*/}
 
 
                     </div>);
@@ -226,7 +226,9 @@ export class AnnotationSidebar extends React.Component<AnnotationSidebarProps, A
 
             <div id="annotation-manager" className="annotation-sidebar">
 
-                {this.createHTML(annotations)}
+                <div className="annotations">
+                    {this.createHTML(annotations)}
+                </div>
 
             </div>
 

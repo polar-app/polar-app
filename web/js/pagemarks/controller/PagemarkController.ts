@@ -26,19 +26,19 @@ export class PagemarkController {
         this.docFormat = DocFormatFactory.getInstance();
     }
 
-    start() {
+    public start() {
 
         window.addEventListener("message", event => this.onMessageReceived(event), false);
 
     }
 
-    onMessageReceived(event: any) {
+    private onMessageReceived(event: any) {
 
         log.info("Received message: ", event);
 
-        let triggerEvent = event.data;
+        const triggerEvent = event.data;
 
-        switch(event.data.type) {
+        switch (event.data.type) {
 
             case "create-pagemark":
                 this.onCreatePagemark(triggerEvent);

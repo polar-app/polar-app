@@ -10,6 +10,8 @@ export class AnnotationSidebars {
 
         const splitter = new Splitter('#polar-viewer', '#polar-sidebar');
 
+        splitter.collapse();
+
         ReactDOM.render(
             <AnnotationSidebar docMeta={docMeta} />,
             document.querySelector('#polar-sidebar') as HTMLElement

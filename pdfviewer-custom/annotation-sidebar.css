@@ -7,7 +7,7 @@
 }
 
 .annotation-sidebar .text-highlight {
-    margin: 5px;
+    /*margin: 5px;*/
     margin-bottom: 10px;
     padding-bottom: 5px;
 }
@@ -23,16 +23,37 @@
 
 .annotation-sidebar .text-highlight,
 .annotation-sidebar .area-highlight {
-
-    border-bottom: lightgrey solid 1px;
-
+    margin: 5px;
 }
 
 .annotation-sidebar .text-highlight blockquote {
-    border-left: #FFD700 solid 3px;
-    margin: 0 0 0 0;
+
+    /*border-left: #FFD700 solid 3px;*/
+    /*margin: 0 0 0 0;*/
+
+    background-color: rgba(256, 256, 0, 0.5);
+    margin: 0;
+    padding: 0;
+
+    /*background-color: rgb(256, 256, 256);*/
+    /*color: rgba(0, 0, 0, 1);*/
+    /*opacity: 0.3;*/
+
+    border: lightgrey solid 1px;
+
 }
 
-.annotation-sidebar .annotation-buttons {
+#annotation-manager .annotation-sidebar .annotation-buttons {
     margin-top: 5px;
+}
+
+#annotation-manager .annotations:empty:before {
+    content: "No annotations";
+    height: 100px;
+    text-align: center;
+    font-size: 20px;
+    color: grey;
+    width: 100%;
+    display: block;
+    margin: 10px;
 }

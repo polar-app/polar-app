@@ -11,14 +11,19 @@ const log = Logger.create();
 export class MainAppMenu {
 
     private readonly mainAppController: MainAppController;
+    private mode: MainMenuMode;
 
-    constructor(mainAppController: MainAppController) {
+    constructor(mainAppController: MainAppController,
+                mode: MainMenuMode = MainMenuMode.DOC_REPO_APP) {
+
         this.mainAppController = mainAppController;
+        this.mode = mode;
+
     }
 
     public setup(): void {
 
-        let menu = Menu.buildFromTemplate(this.createMenuTemplate());
+        const menu = Menu.buildFromTemplate(this.createMenuTemplate());
 
         Menu.setApplicationMenu(menu);
 
@@ -28,7 +33,66 @@ export class MainAppMenu {
     }
 
     private createMenuTemplate(): any {
-        return [{
+        return [
+            this.createFileMenuTemplate(),
+            this.createEditMenuTemplate(),
+            this.createViewMenuTemplate(),
+            {
+                label: 'Window',
+                role: 'window',
+                submenu: [
+                    { label: 'Minimize', accelerator: 'CmdOrCtrl+M', role: 'minimize' },
+                    { label: 'Close', accelerator: 'CmdOrCtrl+W', role: 'close' },
+                ]
+            },
+            {
+                label: 'Tools',
+                submenu: [
+                    {
+                        label: 'Document Repository',
+                        click: () => Promises.executeLogged(AppLauncher.launchRepositoryApp)
+                    },
+                    {
+                        label: 'Toggle Developer Tools',
+                        click: this.mainAppController.cmdToggleDevTools
+                    },
+
+                ]
+            },
+            {
+                label: 'Help',
+                role: 'help',
+                submenu: [{
+                    label: 'About',
+                    click: (item: Electron.MenuItem, focusedWindow: BrowserWindow) => {
+                        dialog.showMessageBox(focusedWindow, {
+                            type: 'info',
+                            buttons: ['OK'],
+                            title: 'Polar Bookshelf',
+                            message: 'Version ' + Version.get(),
+                            detail: '',
+                            // icon: APP_ICON
+                        });
+                    }
+                },
+                    { label: 'Discord',
+                      click: () => shell.openExternal('https://discord.gg/GT8MhA6') },
+
+                    { label: 'Reddit',
+                      click: () => shell.openExternal('https://www.reddit.com/r/PolarBookshelf/') },
+
+                    { label: 'Learn More',
+                      click: () => shell.openExternal('https://github.com/burtonator/polar-bookshelf') },
+
+                ]
+            },
+        ];
+
+    }
+
+    private createFileMenuTemplate() {
+
+        return {
             label: 'File',
             submenu: [
 
@@ -106,97 +170,84 @@ export class MainAppMenu {
                     click: this.mainAppController.cmdExit.bind(this.mainAppController)
                 },
             ]
-        },
-            {
-                label: 'Edit',
-                submenu: [
-                    { role: 'undo' },
-                    { role: 'redo' },
-                    // { type: 'separator' },
-                    // { label: 'Find', accelerator: 'CmdOrCtrl+f', click: cmdFind },
-                    { type: 'separator' },
-                    { role: 'cut'},
-                    { role: 'copy' },
-                    { role: 'paste' },
-                    { role: 'pasteandmatchstyle' },
-                    { role: 'selectall' },
-                    { type: 'separator' },
-                    // {
-                    //     label: 'Change Pagemark Column Type',
-                    //     submenu: [
-                    //         { label: 'Single', },
-                    //         { label: 'Double', },
-                    //         { label: 'Triple', },
-                    //     ]
-                    // },
-                ]
-            },
-            {
-                label: 'View',
-                submenu: [{
-                    label: 'Reload',
-                    accelerator: 'CmdOrCtrl+R',
-                    click: function(item: Electron.MenuItem, focusedWindow: BrowserWindow) {
-                        if (focusedWindow)
-                            focusedWindow.webContents.reloadIgnoringCache();
-                    }
-                },
-                    {
-                        label: 'Toggle Full Screen',
-                        accelerator: (function() {
-                            if (process.platform === 'darwin')
-                                return 'Ctrl+Command+F';
-                            else
-                                return 'F11';
-                        })(),
-                        click: function(item: Electron.MenuItem, focusedWindow: BrowserWindow) {
-                            if (focusedWindow)
-                                focusedWindow.setFullScreen(!focusedWindow.isFullScreen());
-                        }
-                    },
-                ]
-            },
-            {
-                label: 'Window',
-                role: 'window',
-                submenu: [
-                    { label: 'Minimize', accelerator: 'CmdOrCtrl+M', role: 'minimize' },
-                    { label: 'Close', accelerator: 'CmdOrCtrl+W', role: 'close' },
-                ]
-            },
-            {
-                label: 'Tools',
-                submenu: [
-                    { label: 'Document Repository', click: () => Promises.executeLogged(AppLauncher.launchRepositoryApp) },
-
-                    { label: 'Toggle Developer Tools', click: this.mainAppController.cmdToggleDevTools },
-
-                ]
-            },
-            {
-                label: 'Help',
-                role: 'help',
-                submenu: [{
-                    label: 'About',
-                    click: function(item: Electron.MenuItem, focusedWindow: BrowserWindow) {
-                        dialog.showMessageBox(focusedWindow, {
-                            type: 'info',
-                            buttons: ['OK'],
-                            title: 'Polar Bookshelf',
-                            message: 'Version ' + Version.get(),
-                            detail: '',
-                            //icon: APP_ICON
-                        });
-                    }
-                },
-                    { label: 'Discord', click: function() { shell.openExternal('https://discord.gg/GT8MhA6'); } },
-                    { label: 'Reddit', click: function() { shell.openExternal('https://www.reddit.com/r/PolarBookshelf/'); } },
-                    { label: 'Learn More', click: function() { shell.openExternal('https://github.com/burtonator/polar-bookshelf'); } },
-                ]
-            },
-        ];
+        };
 
     }
 
+
+    private createEditMenuTemplate() {
+        return {
+            label: 'Edit',
+            submenu: [
+                { role: 'undo' },
+                { role: 'redo' },
+                // { type: 'separator' },
+                // { label: 'Find', accelerator: 'CmdOrCtrl+f', click: cmdFind },
+                { type: 'separator' },
+                { role: 'cut'},
+                { role: 'copy' },
+                { role: 'paste' },
+                { role: 'pasteandmatchstyle' },
+                { role: 'selectall' },
+                { type: 'separator' },
+                // {
+                //     label: 'Change Pagemark Column Type',
+                //     submenu: [
+                //         { label: 'Single', },
+                //         { label: 'Double', },
+                //         { label: 'Triple', },
+                //     ]
+                // },
+            ]
+        };
+    }
+
+    private createViewMenuTemplate() {
+        return {
+            label: 'View',
+            submenu: [
+                {
+                    label: 'Reload',
+                    accelerator: 'CmdOrCtrl+R',
+                    click: (item: Electron.MenuItem, focusedWindow: BrowserWindow) => {
+                        if (focusedWindow) {
+                            focusedWindow.webContents.reloadIgnoringCache();
+                        }
+                    }
+                },
+                // {
+                //     label: 'Annotations Sidebar',
+                //     type: 'checkbox',
+                //     click: (item: Electron.MenuItem, focusedWindow: BrowserWindow) => {
+                //         if (focusedWindow) {
+                //             focusedWindow.setFullScreen(!focusedWindow.isFullScreen());
+                //         }
+                //     }
+                // },
+                {
+                    label: 'Toggle Full Screen',
+                    accelerator: (function() {
+                        if (process.platform === 'darwin') {
+                            return 'Ctrl+Command+F';
+                        } else {
+                            return 'F11';
+                        }
+                    })(),
+                    click: (item: Electron.MenuItem, focusedWindow: BrowserWindow) => {
+                        if (focusedWindow) {
+                            focusedWindow.setFullScreen(!focusedWindow.isFullScreen());
+                        }
+                    }
+                },
+            ]
+        };
+    }
 }
 
+
+// TODO: this is a short term work around to enable selected options from JUST
+// the editor window.
+export enum MainMenuMode {
+    DOC_REPO_APP,
+    VIEWER_APP
+}

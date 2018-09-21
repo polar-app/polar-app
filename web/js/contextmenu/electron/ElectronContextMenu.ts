@@ -43,11 +43,11 @@ export class ElectronContextMenu {
      * @param triggerEvent {TriggerEvent}
      * @param sender
      */
-    trigger(triggerEvent: TriggerEvent, sender: WebContents) {
+    public trigger(triggerEvent: TriggerEvent, sender: WebContents) {
 
         Preconditions.assertNotNull(sender, "sender");
 
-        let window = BrowserWindow.getFocusedWindow();
+        const window = BrowserWindow.getFocusedWindow();
 
         const ctxMenu = this.createContextMenu(triggerEvent, sender);
 
@@ -117,7 +117,7 @@ export class ElectronContextMenu {
 
         // TODO: move this to a template as the code is cleaner
 
-        let contextMenus: Menu[] = [];
+        const contextMenus: Menu[] = [];
 
         if (triggerEvent.contextMenuTypes.includes(ContextMenuType.PAGE)) {
             contextMenus.push(this.createPageContextMenu(triggerEvent, sender));
@@ -163,19 +163,19 @@ export class ElectronContextMenu {
      * @param sender
      * @return {Electron.Menu}
      */
-    createTextHighlightContextMenu(triggerEvent: TriggerEvent, sender: WebContents): Menu {
+    public createTextHighlightContextMenu(triggerEvent: TriggerEvent, sender: WebContents): Menu {
 
         const ctxMenu = new Menu();
 
         ctxMenu.append(this.createSubmenu('Text Highlight', [
             new MenuItem({
                 label: 'Add Flashcard',
-                //accelerator: 'CmdOrCtrl+A',
+                // accelerator: 'CmdOrCtrl+A',
                 click: () => this.postContextMenuMessage("add-flashcard", triggerEvent)
             }),
             new MenuItem({
                 label: 'Delete',
-                //accelerator: 'CmdOrCtrl+A',
+                // accelerator: 'CmdOrCtrl+A',
                 click: () => this.cmdNotify("delete-text-highlight", triggerEvent, sender)
             })
         ]));
@@ -190,7 +190,7 @@ export class ElectronContextMenu {
      * @param sender
      * @return {Electron.Menu}
      */
-    createAreaHighlightContextMenu(triggerEvent: TriggerEvent, sender: WebContents): Menu {
+    private createAreaHighlightContextMenu(triggerEvent: TriggerEvent, sender: WebContents): Menu {
 
         const ctxMenu = new Menu();
 
@@ -201,7 +201,7 @@ export class ElectronContextMenu {
             }),
             new MenuItem({
                 label: 'Delete',
-                //accelerator: 'CmdOrCtrl+A',
+                // accelerator: 'CmdOrCtrl+A',
                 click: () => this.postContextMenuMessage("delete-area-highlight", triggerEvent)
             })
         ]));
@@ -216,14 +216,14 @@ export class ElectronContextMenu {
      * @param sender
      * @return {Electron.Menu}
      */
-    createPagemarkContextMenu(triggerEvent: TriggerEvent, sender: WebContents): Menu {
+    private createPagemarkContextMenu(triggerEvent: TriggerEvent, sender: WebContents): Menu {
 
         const ctxMenu = new Menu();
 
         ctxMenu.append(this.createSubmenu('Pagemark', [
             new MenuItem({
                 label: 'Delete Pagemark',
-                //accelerator: 'CmdOrCtrl+A',
+                // accelerator: 'CmdOrCtrl+A',
                 click: () => this.postContextMenuMessage("delete-pagemark", triggerEvent)
             })
         ]));
@@ -238,7 +238,7 @@ export class ElectronContextMenu {
      * @param sender
      * @return {Electron.Menu}
      */
-    createPageContextMenu(triggerEvent: TriggerEvent, sender: WebContents): Menu {
+    private createPageContextMenu(triggerEvent: TriggerEvent, sender: WebContents): Menu {
 
         const ctxMenu = new Menu();
 
@@ -281,24 +281,29 @@ export class ElectronContextMenu {
      * @param sender
      * @return {Electron.Menu}
      */
-    createDefaultContextMenu(triggerEvent: TriggerEvent, sender: WebContents): Menu {
+    private createDefaultContextMenu(triggerEvent: TriggerEvent, sender: WebContents): Menu {
 
         const ctxMenu = new Menu();
-
-        let window = BrowserWindow.getFocusedWindow();
 
         // TODO: display this first and only if text is highlighted
         // ctxMenu.append(new MenuItem({ label: 'Copy', accelerator: 'CmdOrCtrl+C', role: 'copy' }));
 
         ctxMenu.append(new MenuItem({
+            label: 'Toggle Annotation Sidebar',
+            id: "toggle-annotation-sidebar",
+            click: () => this.postContextMenuMessage('toggle-annotation-sidebar', triggerEvent)
+
+        }));
+
+        ctxMenu.append(new MenuItem({
             label: 'Inspect Element',
             id: "inspect",
-            //accelerator: 'Ctrl+Shift+I',
+            // accelerator: 'Ctrl+Shift+I',
             click: event => {
 
-                let window = BrowserWindow.getFocusedWindow();
+                const window = BrowserWindow.getFocusedWindow();
 
-                if(! window) {
+                if (! window) {
                     throw new Error("No current window");
                 }
 
@@ -313,6 +318,7 @@ export class ElectronContextMenu {
             }
 
         }));
+
 
         return ctxMenu;
 
