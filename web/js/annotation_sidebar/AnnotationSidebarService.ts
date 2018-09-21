@@ -46,7 +46,6 @@ export class AnnotationSidebarService {
     }
 
     private toggleAnnotationSidebar() {
-        console.log("FIXME: toggling");
         this.splitter!.toggle();
     }
 

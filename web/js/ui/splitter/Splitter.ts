@@ -14,8 +14,6 @@ export class Splitter {
     private readonly split: Split.Instance;
     private readonly sidebarSide: Side;
 
-    private collapsed: boolean = false;
-
     private sizes: number[];
 
     constructor(left: CSSSelector | HTMLElement,
@@ -38,7 +36,7 @@ export class Splitter {
 
     public toggle() {
 
-        if (this.collapsed) {
+        if (this.isCollapsed()) {
             this.expand();
         } else {
             this.collapse();
@@ -59,14 +57,14 @@ export class Splitter {
             this.split.collapse(1);
         }
 
-        this.collapsed = true;
+    }
 
+    public isCollapsed() {
+        return Math.floor(this.split.getSizes()[1]) <= 0;
     }
 
     private expand() {
-
         this.split.setSizes(this.sizes);
-        this.collapsed = false;
 
     }
 
