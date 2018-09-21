@@ -1,5 +1,5 @@
 .annotation-sidebar {
-    margin-top: 75px;
+    padding-top: 5px;
     /*font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;*/
     /*font-weight: 300;*/
     font-size: 14px;
@@ -33,3 +33,6 @@
     margin: 0 0 0 0;
 }
 
+.annotation-sidebar .annotation-buttons {
+    margin-top: 5px;
+}

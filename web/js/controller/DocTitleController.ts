@@ -16,9 +16,9 @@ export class DocTitleController {
         this.model = model;
     }
 
-    start() {
+    public start() {
 
-        this.listenForDocumentLoad();
+        // this.listenForDocumentLoad();
         this.listenForTitle();
 
         // TODO listen to paste so that if they paste \n so we escape it...
@@ -26,7 +26,7 @@ export class DocTitleController {
 
     }
 
-    listenForDocumentLoad() {
+    private listenForDocumentLoad() {
 
         this.model.registerListenerForDocumentLoaded(async event => {
             await this.onDocumentLoaded(event);
@@ -34,11 +34,11 @@ export class DocTitleController {
 
     }
 
-    listenForTitle() {
+    private listenForTitle() {
 
         // bind to keyDown so I can listen for enter to change the title
 
-        let inputElement = <HTMLElement>document.querySelector("#set-title input")!;
+        const inputElement = <HTMLElement> document.querySelector("#set-title input")!;
         inputElement.addEventListener('keydown', (event: KeyboardEvent) => {
 
             if( event.key === 'Enter') {
@@ -51,7 +51,7 @@ export class DocTitleController {
 
     }
 
-    async onDocumentLoaded(event: DocumentLoadedEvent) {
+    private async onDocumentLoaded(event: DocumentLoadedEvent) {
 
         if(Strings.empty(event.docMeta.docInfo.title)) {
             this.triggerTitlePrompt();
@@ -59,11 +59,11 @@ export class DocTitleController {
 
     }
 
-    doUpdateTitle() {
+    private doUpdateTitle() {
 
-        let inputElement = <HTMLInputElement>document.querySelector("#set-title input")!;
+        const inputElement = <HTMLInputElement> document.querySelector("#set-title input")!;
 
-        let title = inputElement.value;
+        const title = inputElement.value;
 
         log.info("Setting title to: " + title);
 
@@ -73,19 +73,19 @@ export class DocTitleController {
 
     }
 
-    triggerTitlePrompt() {
+    private triggerTitlePrompt() {
 
         log.info("Triggering title prompt");
         this.showTitlePrompt();
 
     }
 
-    hideTitlePrompt() {
+    private hideTitlePrompt() {
         $('#set-title').hide();
 
     }
 
-    showTitlePrompt() {
+    private showTitlePrompt() {
         $('#set-title').show();
     }
 

@@ -67,7 +67,7 @@ class App<P> extends React.Component<{}, IAppState> {
                             </Button>
 
                         </InputGroupAddon>
-                        <Input className="px-2" />
+                        <Input className="px-2 mx-1" />
                         <InputGroupAddon addonType="append">
                             {/*<i className="fa fa-close"></i>*/}
 

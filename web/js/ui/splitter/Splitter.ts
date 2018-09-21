@@ -16,8 +16,8 @@ export class Splitter {
         this.right = right;
 
         this.split = Split([this.left, this.right], {
-            sizes: [50, 50],
-            minSize: 100,
+            sizes: [70, 30],
+            minSize: 250,
             gutterSize: 7
         });
 

@@ -23,6 +23,8 @@ export class AnnotationSidebar extends React.Component<AnnotationSidebarProps, A
     constructor(props: AnnotationSidebarProps, context: any) {
         super(props, context);
 
+        this.scrollToAnnotation = this.scrollToAnnotation.bind(this);
+
         const annotations = DocAnnotations.getAnnotationsForPage(props.docMeta);
 
         this.docAnnotationIndex
@@ -74,6 +76,89 @@ export class AnnotationSidebar extends React.Component<AnnotationSidebarProps, A
 
     }
 
+    private scrollToAnnotation(id: string) {
+
+        const annotationElement =
+            document.querySelector(`div[data-annotation-id='${id}']`)! as HTMLElement;
+
+        // annotationElement.scrollIntoView({
+        //     behavior: 'smooth'
+        // });
+
+        // const scrollParent = this.getScrollParent(annotationElement);
+        // console.log("FIXME: ", scrollParent)
+        // scrollParent!.scrollBy(0, 50);
+
+
+        scrollIntoView(annotationElement);
+
+        // annotationElement.scrollIntoView({behavior: "instant", block: "end", inline: "nearest"});
+
+        // annotationElement.scrollIntoView(false);
+
+        // this.scrollToElementMiddle(annotationElement);
+
+    }
+
+    //
+    // private getScrollParent(node: HTMLElement | null | undefined): HTMLElement | undefined {
+    //
+    //     if (node === null || node === undefined) {
+    //         return undefined;
+    //     }
+    //
+    //     if (node.scrollHeight > node.clientHeight) {
+    //         return node;
+    //     } else {
+    //         return this.getScrollParent(node.parentElement);
+    //     }
+    // }
+
+    // private getScrollParent(element: HTMLElement, includeHidden: boolean = false) {
+    //
+    //     let style = getComputedStyle(element);
+    //     const excludeStaticParent = style.position === "absolute";
+    //     const overflowRegex = includeHidden ? /(auto|scroll|hidden)/ : /(auto|scroll)/;
+    //
+    //     if (style.position === "fixed") {
+    //         return document.body;
+    //     }
+    //
+    //     // noinspection TsLint
+    //     for (let parent: HTMLElement | null = element; (parent = parent.parentElement);) {
+    //
+    //         style = getComputedStyle(parent)!;
+    //
+    //         if (excludeStaticParent && style.position === "static") {
+    //             continue;
+    //         }
+    //
+    //         if (overflowRegex.test(style.overflow! + style.overflowY + style.overflowX)) {
+    //             return parent;
+    //         }
+    //
+    //     }
+    //
+    //     return document.body;
+    // }
+
+    private scrollToElementMiddle(element: HTMLElement) {
+        const elementRect = element.getBoundingClientRect();
+        const absoluteElementTop = elementRect.top;
+        // align type
+        const middleDiff = (elementRect.height / 2);
+        // 要素の中心のY座標
+        const scrollTopOfElement = absoluteElementTop + middleDiff;
+        // 画面半分を引くと、要素の中心が、画面の中央になる
+        const scrollY = Math.floor(scrollTopOfElement - (window.innerHeight / 2));
+
+        element.parentElement!.scrollTo(0, scrollY);
+        // window.scrollTo();
+        console.log("scrolled to : " + scrollY)
+
+    }
+
+
     private createHTML(annotations: DocAnnotation[]) {
 
         // https://blog.cloudboost.io/for-loops-in-react-render-no-you-didnt-6c9f4aa73778
@@ -119,6 +204,11 @@ export class AnnotationSidebar extends React.Component<AnnotationSidebarProps, A
 
                         </blockquote>
 
+                        <div className="annotation-buttons">
+                            <a href="#" onClick={() => this.scrollToAnnotation(annotation.id)}>context</a>
+                        </div>
+
+
                     </div>);
 
             }
@@ -155,3 +245,43 @@ export interface AnnotationSidebarProps {
     readonly docMeta: DocMeta;
 }
 
+
+
+
+//
+// function scrollIntoView(t) {
+//     if (typeof(t) != 'object') return;
+//
+//     if (t.getRangeAt) {
+//         // we have a Selection object
+//         if (t.rangeCount == 0) return;
+//         t = t.getRangeAt(0);
+//     }
+//
+//     if (t.cloneRange) {
+//         // we have a Range object
+//         var r = t.cloneRange();	// do not modify the source range
+//         r.collapse(true);		// collapse to start
+//         var t = r.startContainer;
+//         // if start is an element then startOffset is the child number
+//         // in which the range starts
+//         if (t.nodeType == 1) t = t.childNodes[r.startOffset];
+//     }
+//
+//     if (t.nodeType == 1) {
+//         var o = t;
+//         // if we have a BR element then we want to skip back
+//         // or otherwise when we scroll into view the browser
+//         // will scroll past the BR
+//         while (o && o.nodeType == 1 && o.tagName == 'BR') o = o.previousSibling;
+//         if (o) t = o; // we may have reached the first element
+//     }
+//
+//     // if t is not an element node then we need to skip back until we find the
+//     // previous element with which we can call scrollIntoView()
+//     o = t;
+//     while (o && o.nodeType != 1) o = o.previousSibling;
+//     t = o || t.parentNode;
+//     if (t) t.scrollIntoView();
+// }
+//
