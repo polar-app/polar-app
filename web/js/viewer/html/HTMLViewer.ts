@@ -39,8 +39,6 @@ export class HTMLViewer extends Viewer {
 
     public start() {
 
-        super.start();
-
         log.info("Starting HTMLViewer");
 
         this.content = <HTMLIFrameElement> document.querySelector("#content");
@@ -164,7 +162,7 @@ export class HTMLViewer extends Viewer {
 
     }
 
-    private changeScale(scale: number) {
+    public changeScale(scale: number) {
 
         log.info("Changing scale to: " + scale);
 
@@ -295,7 +293,7 @@ export class HTMLViewer extends Viewer {
 
     }
 
-    private docDetail(): DocDetail {
+    public docDetail(): DocDetail {
 
         const requestParams = notNull(this.requestParams);
 

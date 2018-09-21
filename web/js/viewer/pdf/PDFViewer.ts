@@ -8,9 +8,7 @@ const log = Logger.create();
 
 export class PDFViewer extends Viewer {
 
-    start() {
-
-        super.start();
+    public start() {
 
         log.info("Starting PDFViewer");
 
@@ -32,7 +30,7 @@ export class PDFViewer extends Viewer {
 
     }
 
-    docDetail(): DocDetail | undefined {
+    public docDetail(): DocDetail | undefined {
 
         return {
             fingerprint: this.currentDocFingerprint(),
