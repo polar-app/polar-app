@@ -1,64 +1,19 @@
-const {Preconditions} = require("../../Preconditions");
-const {Rect} = require("../../Rect");
-
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const Rect_1 = require("../../Rect");
+const Preconditions_1 = require("../../Preconditions");
 class BoxMoveEvent {
-
     constructor(opts) {
-
-        /**
-         * The type of the event.  Either 'resize' or 'drag'
-         * @type {string}
-         */
-        this.type = undefined;
-
-        /**
-         * The restrictionRect Rect of the box we moved.  This is the parent
-         * Rect.
-         *
-         * @type {Rect}
-         */
-        this.restrictionRect = undefined;
-
-        /**
-         * The Rect of the box we moved.  This is the final position of the box
-         * once we're done moving it.
-         *
-         * @type {Rect}
-         */
-        this.boxRect = undefined;
-
-        /**
-         * The ID of the box we moved.
-         *
-         * @type {string}
-         */
-        this.id = undefined;
-
-        /**
-         * The element being moved.
-         *
-         * @type {HTMLElement}
-         */
-        this.target = undefined;
-
-        /**
-         * The state of the box movement. States are:
-         *
-         * pending: The box is still being drawn but the user hasn't finished
-         * moving it:
-         *
-         * completed: The box move operation is completed and is in its final position.
-         *
-         * @type {string}
-         */
         this.state = "pending";
-
+        this.type = opts.type;
+        this.restrictionRect = opts.restrictionRect;
+        this.boxRect = opts.boxRect;
+        this.id = opts.id;
+        this.target = opts.target;
+        this.state = "pending";
         Object.assign(this, opts);
-
-        Preconditions.assertInstanceOf(this.boxRect, Rect, "boxRect");
-
+        Preconditions_1.Preconditions.assertInstanceOf(this.boxRect, Rect_1.Rect, "boxRect");
     }
-
 }
-
-module.exports.BoxMoveEvent = BoxMoveEvent;
+exports.BoxMoveEvent = BoxMoveEvent;
+//# sourceMappingURL=BoxMoveEvent.js.map

@@ -1,32 +1,11 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 class BoxOptions {
-
     constructor(opts) {
-
-        /**
-         * The element or selector to define boxes.
-         *
-         * @type {HTMLElement}
-         */
-        this.target = undefined;
-
-        /**
-         * The element used to define the restrictionRect.
-         *
-         * @type {HTMLElement}
-         */
-        this.restrictionElement = undefined;
-
-        /**
-         * Specify the CSS selector for intersected elements.
-         *
-         * @type {undefined}
-         */
-        this.intersectedElementsSelector = undefined;
-
-        Object.assign(this, opts);
-
+        this.target = opts.target;
+        this.restrictionElement = opts.restrictionElement;
+        this.intersectedElementsSelector = opts.intersectedElementsSelector;
     }
-
 }
-
-module.exports.BoxOptions = BoxOptions;
+exports.BoxOptions = BoxOptions;
+//# sourceMappingURL=BoxOptions.js.map
