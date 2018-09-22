@@ -1,44 +1,9 @@
 <html>
 <head>
-    <style>
 
-        body {
-            background-color: #3f3f3f;
-            margin: 0;
-            padding: 0;
-        }
-
-        #viewerContainer {
-            /*margin-top: 75px;*/
-            margin-bottom: 10px;
-        }
-
-        #content-parent {
-            margin: 0 auto;
-        }
-
-        iframe {
-            display: block;
-            /* z-index: -1; */
-            margin-bottom: 10px;
-            background-color: #ffffff;
-        }
-
-		/* CSS borrowed from the pdf.js CSS */
-		#content-parent {
-			border: 9px solid transparent;
-			background-clip: content-box;
-			-o-border-image: url(../pdfviewer/web/images/shadow.png) 9 9 repeat;
-			border-image: url(../pdfviewer/web/images/shadow.png) 9 9 repeat;
-			background-color: white;
-		}
-
-    </style>
-
-
-	<!--<link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.min.css">-->
-	<!--<link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap-grid.min.css">-->
-	<!--<link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap-reboot.min.css">-->
+	<link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.min.css">
+	<link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap-grid.min.css">
+	<link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap-reboot.min.css">
 
 	<link rel="stylesheet" href="../node_modules/font-awesome/css/font-awesome.min.css">
 	<link rel="stylesheet" href="../node_modules/toastr/build/toastr.min.css">
@@ -65,9 +30,42 @@
 	</script>
 
     <style>
+
         iframe {
             z-index: -1;
         }
+
+        body {
+            background-color: #3f3f3f;
+            margin: 0;
+            padding: 0;
+        }
+
+        #viewerContainer {
+            /*margin-top: 75px;*/
+            margin-bottom: 10px;
+        }
+
+        #content-parent {
+            margin: 0 auto;
+        }
+
+        iframe {
+            display: block;
+            /* z-index: -1; */
+            margin-bottom: 10px;
+            background-color: #ffffff;
+        }
+
+        /* CSS borrowed from the pdf.js CSS */
+        #content-parent {
+            border: 9px solid transparent;
+            background-clip: content-box;
+            -o-border-image: url(../pdfviewer/web/images/shadow.png) 9 9 repeat;
+            border-image: url(../pdfviewer/web/images/shadow.png) 9 9 repeat;
+            background-color: white;
+        }
+
     </style>
 
 </head>
