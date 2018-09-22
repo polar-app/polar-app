@@ -72,49 +72,65 @@ class App<P> extends React.Component<{}, IAppState> {
 
                         </Button>
 
-                        <div>
-                            <ReactSummernote
-                                value=""
-                                options={{
-                                    id: 'my-summernote',
-                                    lang: 'en-US',
-                                    height: 280,
-                                    placeholder: "Enter a comment",
-                                    dialogsInBody: false,
-                                    //airMode: true,
-                                    // toolbar: [
-                                    //     ['style', []],
-                                    //     ['font', []],
-                                    //     ['fontname', []],
-                                    //     ['para', []],
-                                    //     ['table', []],
-                                    //     ['insert', []],
-                                    //     ['view', []],
-                                    //     ['image', []]
-                                    // ]
+                        {/*<InputGroupButtonDropdown size="sm"*/}
+                                                  {/*addonType="append"*/}
+                                                  {/*isOpen={this.state.dropdownOpen}*/}
+                                                  {/*toggle={this.toggleDropDown}>*/}
+                            {/*<DropdownToggle caret>*/}
 
-                                    // FIXME: add blockquote, code, and pre, and cite
+                            {/*</DropdownToggle>*/}
+                            {/*<DropdownMenu>*/}
+                                {/*<DropdownItem header>Header</DropdownItem>*/}
+                                {/*<DropdownItem disabled>Action</DropdownItem>*/}
+                                {/*<DropdownItem>Another Action</DropdownItem>*/}
+                                {/*<DropdownItem divider />*/}
+                                {/*<DropdownItem>Another Action</DropdownItem>*/}
+                            {/*</DropdownMenu>*/}
+                        {/*</InputGroupButtonDropdown>*/}
 
-                                    // missing the highlight color pulldown...
+                        {/*<div>*/}
+                            {/*<ReactSummernote*/}
+                                {/*value=""*/}
+                                {/*options={{*/}
+                                    {/*id: 'my-summernote',*/}
+                                    {/*lang: 'en-US',*/}
+                                    {/*height: 280,*/}
+                                    {/*placeholder: "Enter a comment",*/}
+                                    {/*dialogsInBody: false,*/}
+                                    {/*//airMode: true,*/}
+                                    {/*// toolbar: [*/}
+                                    {/*//     ['style', []],*/}
+                                    {/*//     ['font', []],*/}
+                                    {/*//     ['fontname', []],*/}
+                                    {/*//     ['para', []],*/}
+                                    {/*//     ['table', []],*/}
+                                    {/*//     ['insert', []],*/}
+                                    {/*//     ['view', []],*/}
+                                    {/*//     ['image', []]*/}
+                                    {/*// ]*/}
 
-                                    toolbar: [
-                                        ['style', ['style']],
-                                        ['font', ['bold', 'italic', 'underline', 'clear', 'color', 'superscript', 'subscript']],
-                                        // ['fontname', ['fontname']],
-                                        ['para', ['ul', 'ol', 'paragraph']],
-                                        ['table', ['table']],
-                                        ['insert', ['link', 'picture', 'video']],
-                                        ['view', []]
-                                    ]
+                                    {/*// FIXME: add blockquote, code, and pre, and cite*/}
 
-                                }}
-                                // onChange={this.onChange}
-                                // onBlur={this.onBlur}
-                                // onFocus={this.onFocus}
-                                // onSubmit={this.onSubmit}
-                                // onImageUpload={this.onImageUpload}
-                            />
-                        </div>
+                                    {/*// missing the highlight color pulldown...*/}
+
+                                    {/*toolbar: [*/}
+                                        {/*['style', ['style']],*/}
+                                        {/*['font', ['bold', 'italic', 'underline', 'clear', 'color', 'superscript', 'subscript']],*/}
+                                        {/*// ['fontname', ['fontname']],*/}
+                                        {/*['para', ['ul', 'ol', 'paragraph']],*/}
+                                        {/*['table', ['table']],*/}
+                                        {/*['insert', ['link', 'picture', 'video']],*/}
+                                        {/*['view', []]*/}
+                                    {/*]*/}
+
+                                {/*}}*/}
+                                {/*// onChange={this.onChange}*/}
+                                {/*// onBlur={this.onBlur}*/}
+                                {/*// onFocus={this.onFocus}*/}
+                                {/*// onSubmit={this.onSubmit}*/}
+                                {/*// onImageUpload={this.onImageUpload}*/}
+                            {/*/>*/}
+                        {/*</div>*/}
 
                         {/*<Button size="sm"*/}
                                 {/*type="button"*/}
