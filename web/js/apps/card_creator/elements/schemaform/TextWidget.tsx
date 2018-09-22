@@ -35,9 +35,7 @@ export class TextWidget extends React.Component  {
 
         this.typedWidgetProps = new TypedWidgetProps(props);
 
-        console.log("Using ID: " + this.typedWidgetProps.id);
-
-        if(this.typedWidgetProps.value) {
+        if( this.typedWidgetProps.value) {
             this.value = this.typedWidgetProps.value;
         }
 

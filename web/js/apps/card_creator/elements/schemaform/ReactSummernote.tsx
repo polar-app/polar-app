@@ -1,8 +1,8 @@
 /* global $ */
 
+import $ from '../../../../ui/JQuery';
+import 'bootstrap';
 import 'summernote/dist/summernote';
-// import 'summernote/dist/summernote.css';
-// import 'codemirror/lib/codemirror.css';
 
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
