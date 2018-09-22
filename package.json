@@ -127,7 +127,6 @@
     "loader": "file:./web/loader",
     "lodash": "^4.17.10",
     "markdown-plus": "^2.5.2",
-    "marked": "^0.4.0",
     "micromodal": "^0.3.2",
     "namor": "^1.0.1",
     "node-fetch": "^2.2.0",
