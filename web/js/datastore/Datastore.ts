@@ -2,6 +2,8 @@
 import {DocMetaFileRef, DocMetaRef} from './DocMetaRef';
 import {DeleteResult} from './DiskDatastore';
 import {Directories} from './Directories';
+import {BackingStore} from './BackingStore';
+import {DatastoreFile} from './DatastoreFile';
 
 export interface Datastore {
 
@@ -23,6 +25,15 @@ export interface Datastore {
     contains(fingerprint: string): Promise<boolean>;
 
     delete(docMetaFileRef: DocMetaFileRef): Promise<Readonly<DeleteResult>>;
+
+    /**
+     * Add file data to the datastore.  This is used for binary data or other
+     * data types that need to be stored. This is primarily designed for video,
+     * audio, and documents like PDF, ePub, etc.
+     */
+    // addFile(store: BackingStore, name: string): Promise<DatastoreFile>
+
+    // containsFile(store: BackingStore, name: string): Promise<boolean>;
 
     /**
      * Get the data for the DocMeta object we currently in the datastore for

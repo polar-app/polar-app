@@ -17,15 +17,11 @@ Electron or another API on which we're blocked.
   and allows you to scroll through them and clicking on them should bring that 
   item into the scroll.
 
-
 - Ability to change color of highlights. 
 
 - Right click context menu to create text highlight if a selection is active.
 
 - Right click context menu on text in the document and 'set title' on the result.  
-
-- Simple 'About' webapp that includes the version of the project. Where to find
-  more resources, donation links, etc.
   
 - build out some sort of loading icon icon. At least for the htmlviewer which 
   really needs it.
