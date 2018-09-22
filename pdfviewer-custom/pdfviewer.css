@@ -1,11 +1,11 @@
 
 
 .polar-pdfviewer #polar-header {
-    position: absolute;
+    position: sticky;
     top: 0;
-    height: 30px;
+    height: 33px;
 }
 
 .polar-pdfviewer #viewer {
-    padding-top: 40px;
+    padding-top: 10px;
 }
