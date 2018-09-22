@@ -1,4 +1,11 @@
 
+.polar-htmlviewer #polar-header {
+    position: fixed;
+    height: 65px;
+}
+
+
+
 /*.polar-htmlviewer,*/
 /*.polar-htmlviewer #polar-viewer*/
 /*.polar-htmlviewer .page,*/
@@ -27,3 +34,4 @@
 /**::-webkit-scrollbar {*/
     /*display: none;*/
 /*}*/
+

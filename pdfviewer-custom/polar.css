@@ -5,6 +5,8 @@
 @import url('./sidebar.css');
 @import url('./annotation-sidebar.css');
 @import url('./htmlviewer.css');
+@import url('./pdfviewer.css');
+@import url('./twitter-bootstrap.css');
 
 body {
     height: 100%;
@@ -38,10 +40,6 @@ body {
     /*height: 50px;*/
 /*}*/
 
-.polar-htmlviewer #polar-header {
-    position: fixed;
-    height: 65px;
-}
 
 .polar-htmlviewer #viewerContainer {
     margin-top: 20px;

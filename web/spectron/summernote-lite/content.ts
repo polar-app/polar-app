@@ -27,7 +27,8 @@ SpectronRenderer.run(async () => {
 
     $('.summernote').summernote({
         height: 300,
-        minHeight: 150
+        minHeight: 150,
+        airMode: true
     });
 
 });
