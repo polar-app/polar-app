@@ -22,6 +22,12 @@ export class TraceListenerExecutor {
 
     /**
      * Synchronize event listeners with the current state of the model.
+     *
+     * TODO: refactor this to snapshot() as sync() is too generic and could
+     * be confused with sync of disk or some other async/synchronous method.
+     *
+     * TODO: refactor this to take multiple events at once in the onMutation
+     *       method.
      */
     public sync() {
 

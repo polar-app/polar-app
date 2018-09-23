@@ -6,6 +6,7 @@ import {AppLauncher} from './AppLauncher';
 import {Logger} from '../../logger/Logger';
 import {Promises} from '../../util/Promises';
 import {InPageSearch} from './InPageSearch';
+import MenuItem = Electron.MenuItem;
 
 const log = Logger.create();
 
@@ -37,6 +38,7 @@ export class MainAppMenu {
         return [
             this.createFileMenuTemplate(),
             this.createEditMenuTemplate(),
+            this.createAnnotateMenuTemplate(),
             this.createViewMenuTemplate(),
             {
                 label: 'Window',
@@ -202,6 +204,42 @@ export class MainAppMenu {
             ]
         };
     }
+
+    private createAnnotateMenuTemplate() {
+
+        // TODO: create pagemark
+        //       Mark current page read
+        //       Create new pagemark
+        //
+
+        return {
+            label: 'Annotate',
+            enabled: false,
+            visible: false,
+            submenu: [
+                { role: 'undo', enabled: false },
+                { role: 'redo' },
+                // { type: 'separator' },
+                // { label: 'Find', accelerator: 'CmdOrCtrl+f', click: () => InPageSearch.execute() },
+                { type: 'separator' },
+                { role: 'cut'},
+                { role: 'copy' },
+                { role: 'paste' },
+                { role: 'pasteandmatchstyle' },
+                { role: 'selectall' },
+                { type: 'separator' },
+                // {
+                //     label: 'Change Pagemark Column Type',
+                //     submenu: [
+                //         { label: 'Single', },
+                //         { label: 'Double', },
+                //         { label: 'Triple', },
+                //     ]
+                // },
+            ]
+        };
+    }
+
 
     private createViewMenuTemplate() {
         return {

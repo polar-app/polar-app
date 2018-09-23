@@ -20,6 +20,8 @@ import {ImageType} from '../../../metadata/ImageType';
 import $ from '../../../ui/JQuery';
 import {TextHighlights} from '../../../metadata/TextHighlights';
 import {Screenshots} from '../../../metadata/Screenshots';
+import {AnnotationPointers} from '../../../annotations/AnnotationPointers';
+import {Optional} from '../../../util/ts/Optional';
 
 const {TextHighlightRows} = require("./TextHighlightRows");
 
@@ -178,22 +180,22 @@ export class TextHighlightController {
     /**
      * A text highlight was deleted so update the model now.
      */
-    onTextHighlightDeleted(triggerEvent: TriggerEvent) {
+    private onTextHighlightDeleted(triggerEvent: TriggerEvent) {
 
         log.info("Deleting text highlight from model: ", triggerEvent);
 
-        // FIXME/TODO: migrate this to use AnnotationPointers like other
-        // components are now doing...
+        const annotationPointers
+            = AnnotationPointers.toAnnotationPointers(".text-highlight", triggerEvent);
 
         // should we just send this event to all the the windows?
-        triggerEvent.matchingSelectors[".text-highlight"].annotationDescriptors.forEach(annotationDescriptor => {
+        Optional.first(...annotationPointers).map(annotationDescriptor => {
 
             log.info("Deleting annotationDescriptor: ", JSON.stringify(annotationDescriptor, null, "  "));
 
-            let pageMeta = this.model.docMeta.getPageMeta(annotationDescriptor.pageNum);
+            const pageMeta = this.model.docMeta.getPageMeta(annotationDescriptor.pageNum);
 
             // keep the current highlight.
-            let textHighlight = pageMeta.textHighlights[annotationDescriptor.id];
+            const textHighlight = pageMeta.textHighlights[annotationDescriptor.id];
 
             TextHighlights.deleteTextHighlight(pageMeta, textHighlight);
 

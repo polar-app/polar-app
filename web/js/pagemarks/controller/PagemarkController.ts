@@ -8,6 +8,7 @@ import {Pagemarks} from '../../metadata/Pagemarks';
 import {PagemarkRects} from '../../metadata/PagemarkRects';
 import {PagemarkMode} from '../../metadata/PagemarkMode';
 import {Rects} from '../../Rects';
+import {Optional} from '../../util/ts/Optional';
 
 const log = Logger.create();
 
@@ -73,9 +74,9 @@ export class PagemarkController {
 
         elements = elements.filter(element => element.matches(".page"));
 
-        if(elements.length === 1) {
+        if (elements.length === 1) {
 
-            let pageElement = <HTMLElement>elements[0];
+            const pageElement = <HTMLElement> elements[0];
 
             log.info("Creating box on pageElement: ", pageElement);
 
@@ -87,8 +88,8 @@ export class PagemarkController {
             let boxRect = Rects.createFromBasicRect({
                 left: pageElementPoint.x,
                 top: pageElementPoint.y,
-                width: 150,
-                height: 150
+                width: 300,
+                height: 300
             });
 
             log.info("Placing box at: ", boxRect);
@@ -125,24 +126,24 @@ export class PagemarkController {
 
     }
 
-    onDeletePagemark(triggerEvent: TriggerEvent) {
+    private onDeletePagemark(triggerEvent: TriggerEvent) {
 
         log.info("Deleting pagemark: ", triggerEvent);
 
-        let annotationPointers
+        const annotationPointers
             = AnnotationPointers.toAnnotationPointers(".pagemark", triggerEvent);
 
         log.info("Working with annotationPointers: ", annotationPointers);
 
-        annotationPointers.forEach(annotationPointer => {
-            let pageMeta = this.model.docMeta.getPageMeta(annotationPointer.pageNum);
+        Optional.first(...annotationPointers).map(annotationPointer => {
+            const pageMeta = this.model.docMeta.getPageMeta(annotationPointer.pageNum);
             delete pageMeta.pagemarks[annotationPointer.id];
             Pagemarks.updatePagemark(this.model.docMeta, annotationPointer.pageNum);
         });
 
     }
 
-    onSetPagemarkMode(triggerEvent: TriggerEvent, mode: PagemarkMode) {
+    private onSetPagemarkMode(triggerEvent: TriggerEvent, mode: PagemarkMode) {
         log.info("Setting pagemark mode: ", triggerEvent);
 
     }

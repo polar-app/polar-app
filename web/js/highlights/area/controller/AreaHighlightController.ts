@@ -8,6 +8,7 @@ import {AnnotationRects} from '../../../metadata/AnnotationRects';
 import {AreaHighlights} from '../../../metadata/AreaHighlights';
 import {AnnotationPointers} from '../../../annotations/AnnotationPointers';
 import {TriggerEvent} from '../../../contextmenu/TriggerEvent';
+import {Optional} from '../../../util/ts/Optional';
 
 
 const log = Logger.create();
@@ -66,7 +67,7 @@ export class AreaHighlightController {
     /**
      *
      */
-    onCreateAreaHighlight(contextMenuLocation: ContextMenuLocation) {
+    private onCreateAreaHighlight(contextMenuLocation: ContextMenuLocation) {
 
         log.info("Creating area highlight: ", contextMenuLocation);
 
@@ -85,13 +86,13 @@ export class AreaHighlightController {
 
     }
 
-    onDeleteAreaHighlight(triggerEvent: TriggerEvent) {
+    private onDeleteAreaHighlight(triggerEvent: TriggerEvent) {
 
-        let annotationPointers
+        const annotationPointers
             = AnnotationPointers.toAnnotationPointers(".area-highlight", triggerEvent);
 
-        annotationPointers.forEach(annotationPointer => {
-            let pageMeta = this.model.docMeta.getPageMeta(annotationPointer.pageNum);
+        Optional.first(...annotationPointers).map(annotationPointer => {
+            const pageMeta = this.model.docMeta.getPageMeta(annotationPointer.pageNum);
             delete pageMeta.areaHighlights[annotationPointer.id];
         });
 
