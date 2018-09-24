@@ -8,7 +8,7 @@ export abstract class Viewer {
     public abstract docDetail(): DocDetail | undefined;
 
     public changeScale(scale: number) {
-        throw new Error("Not supported by this viewer.")
+        throw new Error("Not supported by this viewer.");
     }
 
     protected getFilename(): string {

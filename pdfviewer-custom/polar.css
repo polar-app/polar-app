@@ -112,7 +112,7 @@ body {
  * We have to disable the PDF.js file upload button now.  It doesn't work when
  * being served via file URLs. It's not that big of a deal either way.
  */
-#openFile, #presentationMode, #download, #viewBookmark {
+#openFile, #presentationMode, #download, #viewBookmark, #secondaryToolbarToggle {
     display: none;
 }
 

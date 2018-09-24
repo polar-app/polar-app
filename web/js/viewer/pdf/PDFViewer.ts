@@ -14,10 +14,22 @@ export class PDFViewer extends Viewer {
 
     }
 
+    public docDetail(): DocDetail | undefined {
+
+        return {
+            fingerprint: this.currentDocFingerprint(),
+            title: window.PDFViewerApplication.pdfDocument.pdfInfo.title,
+            nrPages: window.PDFViewerApplication.pagesCount,
+            filename: this.getFilename()
+        };
+
+    }
+
+
     /**
      * Get the current doc fingerprint or null if it hasn't been loaded yet.
      */
-    currentDocFingerprint() {
+    private currentDocFingerprint() {
 
         if (window.PDFViewerApplication &&
             window.PDFViewerApplication.pdfDocument &&
@@ -27,17 +39,6 @@ export class PDFViewer extends Viewer {
             return window.PDFViewerApplication.pdfDocument.pdfInfo.fingerprint;
 
         }
-
-    }
-
-    public docDetail(): DocDetail | undefined {
-
-        return {
-            fingerprint: this.currentDocFingerprint(),
-            title: window.PDFViewerApplication.pdfDocument.pdfInfo.title,
-            nrPages: window.PDFViewerApplication.pagesCount,
-            filename: this.getFilename()
-        };
 
     }
 
