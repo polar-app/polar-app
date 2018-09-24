@@ -4,6 +4,9 @@ import Navbar from 'reactstrap/lib/Navbar';
 import {BrowserConfigurationInputGroup} from './BrowserConfigurationInputGroup';
 import {CaptureButton} from './CaptureButton';
 import {URLBar} from './URLBar';
+import {ISimpleReactor} from '../../../reactor/SimpleReactor';
+import {NavigationEventType} from '../BrowserApp';
+import {RefreshButton} from './RefreshButton';
 
 export class BrowserNavBar extends React.Component<Props, State> {
 
@@ -20,18 +23,7 @@ export class BrowserNavBar extends React.Component<Props, State> {
 
                     <InputGroup size="sm" className="">
 
-                        <InputGroupAddon addonType="prepend"
-                                         title="Refresh the current page">
-
-                            <Button type="button"
-                                    className="btn btn-outline-secondary"
-                                    aria-label="">
-
-                                <span className="fa fa-refresh fa-lg" aria-hidden="true"></span>
-
-                            </Button>
-
-                        </InputGroupAddon>
+                        <RefreshButton navigationReactor={this.props.navigationReactor}/>
 
                         <URLBar onLoadURL={this.props.onLoadURL}/>
 
@@ -61,5 +53,6 @@ interface Props {
     onLoadURL?: (url: string) => void;
     onTriggerCapture?: () => void;
     onBrowserChanged?: (browserName: string) => void;
+    navigationReactor: ISimpleReactor<NavigationEventType>;
 
 }

@@ -7,6 +7,7 @@ import {BrowserNavBar} from './react/BrowserNavBar';
 import {DocumentReadyStates} from '../../util/dom/DocumentReadyStates';
 import {isPresent} from '../../Preconditions';
 import BrowserRegistry from '../../capture/BrowserRegistry';
+import {SimpleReactor} from '../../reactor/SimpleReactor';
 
 const log = Logger.create();
 
@@ -24,10 +25,13 @@ export class BrowserApp {
         //
         // - change the icon when the page is loading
 
+        const navigationReactor = new SimpleReactor<NavigationEventType>();
+
         ReactDOM.render(
             <BrowserNavBar onLoadURL={this.onLoadURL}
                            onBrowserChanged={this.onBrowserChanged}
-                           onTriggerCapture={this.onTriggerCapture} />,
+                           onTriggerCapture={this.onTriggerCapture}
+                           navigationReactor={navigationReactor} />,
             document.getElementById('browser-navbar-parent') as HTMLElement
         );
 
@@ -35,19 +39,27 @@ export class BrowserApp {
 
         content.addEventListener('dom-ready', async () => {
 
-            content.insertCSS('html,body{ overflow: hidden !important; }');
+            content.insertCSS('html, body { overflow: hidden !important; }');
 
             content.addEventListener('will-navigate', (event: Electron.WillNavigateEvent) => {
                 this.webviewNavigated(event.url);
             });
 
+            // Corresponds to the points in time when the spinner of the tab starts spinning.
             content.addEventListener('did-start-loading', () => {
                 console.log("started loading");
                 document.body.scrollTo(0, 0);
+                navigationReactor.dispatchEvent('did-start-loading');
             });
 
-            content.addEventListener('did-finish-loading', () => {
+            // Corresponds to the points in time when the spinner of the tab stops spinning.
+            content.addEventListener('did-stop-loading', () => {
                 console.log("finished loading");
+                navigationReactor.dispatchEvent('did-stop-loading');
+            });
+
+            content.addEventListener('did-fail-load', () => {
+                // console.log();
             });
 
         });
@@ -93,3 +105,6 @@ export class BrowserApp {
     }
 
 }
+
+export type NavigationEventType = 'did-start-loading' | 'did-stop-loading';
+

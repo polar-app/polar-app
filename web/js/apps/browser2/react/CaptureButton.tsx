@@ -11,7 +11,7 @@ export class CaptureButton extends React.Component<Props, any> {
 
     public render() {
 
-        // FIXME: auto-disable it...
+        // FIXME: keep it disabled until we have actually started the capture.
         return (
 
             <InputGroupAddon addonType="append">
