@@ -37,7 +37,7 @@ export class BrowserNavBar extends React.Component<Props, State> {
 
                         <CaptureButton onTriggerCapture={this.props.onTriggerCapture}/>
 
-                        <BrowserConfigurationInputGroup/>
+                        <BrowserConfigurationInputGroup onBrowserChanged={this.props.onBrowserChanged} />
 
                     </InputGroup>
 
@@ -60,5 +60,6 @@ interface Props {
      */
     onLoadURL?: (url: string) => void;
     onTriggerCapture?: () => void;
+    onBrowserChanged?: (browserName: string) => void;
 
 }

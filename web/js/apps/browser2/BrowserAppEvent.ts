@@ -1,4 +1,4 @@
-export enum BrowserAppEvents {
+export enum BrowserAppEvent {
 
     PROVIDE_URL = 'PROVIDE_URL',
 

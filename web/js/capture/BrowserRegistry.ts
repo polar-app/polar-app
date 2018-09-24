@@ -150,4 +150,8 @@ const BrowserRegistry: {[name: string]: Browser} = {
 // setup a default browser...
 BrowserRegistry.DEFAULT = BrowserRegistry.MOBILE_GALAXY_S8_WITH_CHROME_66_WIDTH_750;
 
+// BrowserRegistry.DEFAULT = BrowserRegistry.MOBILE_GALAXY_S8;
+
+
+
 export default BrowserRegistry;

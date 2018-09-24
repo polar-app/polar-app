@@ -1,11 +1,12 @@
 import {Logger} from '../../logger/Logger';
 import {WebContentsNotifiers} from '../../electron/web_contents_notifier/WebContentsNotifiers';
-import {BrowserAppEvents} from './BrowserAppEvents';
+import {BrowserAppEvent} from './BrowserAppEvent';
 import * as ReactDOM from 'react-dom';
 import * as React from 'react';
 import {BrowserNavBar} from './react/BrowserNavBar';
 import {DocumentReadyStates} from '../../util/dom/DocumentReadyStates';
 import {isPresent} from '../../Preconditions';
+import BrowserRegistry from '../../capture/BrowserRegistry';
 
 const log = Logger.create();
 
@@ -25,6 +26,7 @@ export class BrowserApp {
 
         ReactDOM.render(
             <BrowserNavBar onLoadURL={this.onLoadURL}
+                           onBrowserChanged={this.onBrowserChanged}
                            onTriggerCapture={this.onTriggerCapture} />,
             document.getElementById('browser-navbar-parent') as HTMLElement
         );
@@ -62,13 +64,24 @@ export class BrowserApp {
 
         log.debug("Starting capture on URL: " + value);
 
-        WebContentsNotifiers.dispatchEvent(BrowserAppEvents.PROVIDE_URL, value);
+        WebContentsNotifiers.dispatchEvent(BrowserAppEvent.PROVIDE_URL, value);
 
     }
 
     private onTriggerCapture() {
 
-        WebContentsNotifiers.dispatchEvent(BrowserAppEvents.TRIGGER_CAPTURE, {});
+        WebContentsNotifiers.dispatchEvent(BrowserAppEvent.TRIGGER_CAPTURE, {});
+
+    }
+
+    private onBrowserChanged(browserName: string) {
+        console.log("Browser changed to: " + browserName);
+
+        const browser = BrowserRegistry[browserName];
+
+        // TODO: make methods for each events type adn call BrowserAppEvents.configureWindow
+        WebContentsNotifiers.dispatchEvent(BrowserAppEvent.CONFIGURE_WINDOW, browser);
+
 
     }
 

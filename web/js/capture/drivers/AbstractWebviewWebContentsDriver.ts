@@ -10,8 +10,8 @@ import {BrowserProfile} from '../BrowserProfile';
 import {WebContentsNotifier} from '../../electron/web_contents_notifier/WebContentsNotifier';
 import {MainIPCEvent} from '../../electron/framework/IPCMainPromises';
 import {BrowserAppEvents} from '../../apps/browser/BrowserAppEvents';
-import WebContents = Electron.WebContents;
 import {Browser} from '../Browser';
+import WebContents = Electron.WebContents;
 
 const log = Logger.create();
 
@@ -24,6 +24,10 @@ export abstract class AbstractWebviewWebContentsDriver extends StandardWebConten
     private readonly appPath: string;
 
     private browserWindow?: BrowserWindow;
+
+    private browserWindowOptions?: Electron.BrowserWindowConstructorOptions;
+
+    private browserView?: BrowserView;
 
     protected constructor(browserProfile: BrowserProfile, appPath: string) {
         super(browserProfile);
@@ -58,11 +62,19 @@ export abstract class AbstractWebviewWebContentsDriver extends StandardWebConten
      */
     protected async doInit() {
 
-        const browserWindowOptions = this.computeAdjustedBrowserWindowOptions();
+        this.browserWindowOptions = BrowserWindows.toBrowserWindowOptions(this.browserProfile);
 
-        log.info("Using browserWindowOptions: ", browserWindowOptions);
+        const hostBrowserWindowOptions = this.computeHostBrowserWindowOptions();
 
-        this.browserWindow = new BrowserWindow(browserWindowOptions);
+        log.info("Using hostBrowserWindowOptions: ", hostBrowserWindowOptions);
+
+        this.browserWindow = new BrowserWindow(hostBrowserWindowOptions);
+
+        const hostBrowserView = new HostBrowserView(this, this.browserWindow);
+        const guestBrowserView = new GuestBrowserView(this, this.browserWindow);
+
+        this.browserView =
+            new DelegatedBrowserView([hostBrowserView, guestBrowserView]);
 
         WebContentsNotifier.on(this.browserWindow.webContents,
                                BrowserAppEvents.PROVIDE_URL,
@@ -90,25 +102,38 @@ export abstract class AbstractWebviewWebContentsDriver extends StandardWebConten
 
             const browser = event.message;
 
-            this.browserProfile = Object.assign(this.browserProfile, browser);
+            this.browserProfile = Object.assign({}, this.browserProfile, browser);
+            this.browserWindowOptions = this.computeHostBrowserWindowOptions();
 
             log.info("Changing browser profile to: ", browser);
 
-            this.configureWindow(this.webContents!, this.browserProfile)
-                .catch((err: Error) => log.error("Unable to configure: ", err));
+
+            this.browserView!.configure(this.browserProfile)
+                   .catch((err: Error) => log.error("Unable to configure: ", err));
 
         });
 
 
-        await this.initWebContents(this.browserWindow, this.browserWindow.webContents, browserWindowOptions);
+        await this.initWebContents(this.browserWindow,
+                                   this.browserWindow.webContents,
+                                   this.browserWindowOptions);
+
+        // await this.browserView.configure(this.browserProfile);
 
         this.initReactor();
 
     }
 
-    protected async doInitWebview() {
+    protected async handleConfigureWindow() {
 
-        const browserWindowOptions = this.computeBrowserWindowOptions();
+        log.info("Changing browser profile to: ", this.browserProfile);
+
+        await this.configureWebContents(this.webContents!);
+        await this.doInitGuestWebviewDimensions();
+
+    }
+
+    protected async doInitWebview() {
 
         const window = notNull(this.window);
 
@@ -121,15 +146,14 @@ export abstract class AbstractWebviewWebContentsDriver extends StandardWebConten
 
         this.webContents = await this.waitForWebview();
 
-        await this.configureWindow(this.webContents, this.browserProfile);
+        // FIXME: this configures the host
+        await this.configureWebContents(this.webContents);
 
-        await this.doInitWebviewHeight(browserWindowOptions);
-
-        // FIXME: Defining width as: undefined
+        await this.doInitGuestWebviewDimensions();
 
     }
 
-    protected computeAdjustedBrowserWindowOptions() {
+    protected computeHostBrowserWindowOptions() {
 
         // Create the browser window.
         const browserWindowOptions = BrowserWindows.toBrowserWindowOptions(this.browserProfile);
@@ -154,13 +178,13 @@ export abstract class AbstractWebviewWebContentsDriver extends StandardWebConten
         return this.browserWindow;
     }
 
-    private async doInitWebviewHeight(browserWindowOptions: Electron.BrowserWindowConstructorOptions) {
+    private async doInitGuestWebviewDimensions() {
 
         const window = notNull(this.window);
 
         // @ElectronRendererContext
         // noinspection TsLint: no-shadowed-variable
-        function setWebviewHeight(browserWindowOptions: Electron.BrowserWindowConstructorOptions) {
+        function setWebviewDimensions(browserWindowOptions: Electron.BrowserWindowConstructorOptions) {
 
             const querySelector = <HTMLElement> document.querySelector('webview')!;
 
@@ -169,12 +193,116 @@ export abstract class AbstractWebviewWebContentsDriver extends StandardWebConten
             // console.log("Webview height before: ", querySelector.style.height);
 
             querySelector.style.height = `${browserWindowOptions.height}px`;
+            querySelector.style.width = `${browserWindowOptions.width}px`;
 
             // console.log("Webview height after: ", querySelector.style.height);
 
         }
 
-        await window.webContents.executeJavaScript(Functions.functionToScript(setWebviewHeight, browserWindowOptions));
+        await window.webContents.executeJavaScript(Functions.functionToScript(setWebviewDimensions, this.browserWindowOptions));
+
+    }
+
+}
+
+interface BrowserView {
+    configure(browserProfile: BrowserProfile): Promise<void>;
+}
+
+class DelegatedBrowserView implements BrowserView {
+
+    private readonly delegates: BrowserView[];
+
+    constructor(delegates: BrowserView[]) {
+        this.delegates = delegates;
+    }
+
+    public async configure(browserProfile: BrowserProfile): Promise<void> {
+
+        for (const delegate of this.delegates) {
+            await delegate.configure(browserProfile);
+        }
+
+    }
+
+}
+
+class HostBrowserView implements BrowserView {
+
+    private readonly driver: AbstractWebviewWebContentsDriver;
+    private readonly window: BrowserWindow;
+
+    private browserProfile?: BrowserProfile;
+    private browserWindowOptions?: Electron.BrowserWindowConstructorOptions;
+
+    constructor(driver: AbstractWebviewWebContentsDriver,
+                window: Electron.BrowserWindow) {
+        this.driver = driver;
+        this.window = window;
+
+    }
+
+    public async configure(browserProfile: BrowserProfile) {
+
+        this.browserProfile = browserProfile;
+        this.browserWindowOptions = BrowserWindows.toBrowserWindowOptions(this.browserProfile!);
+
+        await this.doInitGuestWebviewDimensions();
+    }
+
+    /**
+     * This configures the <webview> element width and height properly.
+     */
+    private async doInitGuestWebviewDimensions() {
+
+        const window = notNull(this.window);
+
+        // @ElectronRendererContext
+        // noinspection TsLint: no-shadowed-variable
+        function setWebviewDimensions(browserWindowOptions: Electron.BrowserWindowConstructorOptions) {
+
+            const querySelector = <HTMLElement> document.querySelector('webview')!;
+
+            // console.log("browserWindowOptions: ", browserWindowOptions);
+
+            // console.log("Webview height before: ", querySelector.style.height);
+
+            querySelector.style.height = `${browserWindowOptions.height}px`;
+            querySelector.style.width = `${browserWindowOptions.width}px`;
+
+            // console.log("Webview height after: ", querySelector.style.height);
+
+        }
+
+        const script = Functions.functionToScript(setWebviewDimensions, this.browserWindowOptions);
+
+        await this.window.webContents.executeJavaScript(script);
+
+    }
+
+}
+
+class GuestBrowserView implements BrowserView {
+
+    private readonly driver: AbstractWebviewWebContentsDriver;
+    private readonly window: BrowserWindow;
+
+    private browserProfile?: BrowserProfile;
+    private browserWindowOptions?: Electron.BrowserWindowConstructorOptions;
+
+    constructor(driver: AbstractWebviewWebContentsDriver,
+                window: Electron.BrowserWindow) {
+        this.driver = driver;
+        this.window = window;
+    }
+
+    public async configure(browserProfile: BrowserProfile) {
+        this.browserProfile = browserProfile;
+        this.browserWindowOptions = BrowserWindows.toBrowserWindowOptions(this.browserProfile!);
+
+        // this configures the guest web contents which loads the website we're
+        // capturing and tells it about browser emulation, width, etc.
+        await this.driver.configureWebContents(this.driver.webContents!);
 
     }
 

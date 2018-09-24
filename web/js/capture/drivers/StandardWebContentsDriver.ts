@@ -19,11 +19,11 @@ const log = Logger.create();
  */
 export class StandardWebContentsDriver implements WebContentsDriver {
 
-    protected browserProfile: BrowserProfile;
+    public webContents?: WebContents;
+
+    public browserProfile: BrowserProfile;
 
     protected window?: BrowserWindow;
-
-    protected webContents?: WebContents;
 
     protected reactor = new Reactor<WebContentsEvent>();
 
@@ -141,24 +141,26 @@ export class StandardWebContentsDriver implements WebContentsDriver {
             await BrowserWindows.onceReadyToShow(window);
         }
 
-        await this.configureWindow(window.webContents, this.browserProfile);
+        await this.configureWebContents(window.webContents);
 
     }
 
-    protected async configureWindow(webContents: WebContents, browserProfile: BrowserProfile) {
+    public async configureWebContents(webContents: WebContents) {
+
+        log.info("Configuring window with browser: ", this.browserProfile);
 
         // we need to mute by default especially if the window is hidden.
         log.info("Muting audio...");
         webContents.setAudioMuted(true);
 
-        let deviceEmulation = browserProfile.deviceEmulation;
+        let deviceEmulation = this.browserProfile.deviceEmulation;
 
         deviceEmulation = Object.assign({}, deviceEmulation);
 
         log.info("Emulating device...");
         webContents.enableDeviceEmulation(deviceEmulation);
 
-        webContents.setUserAgent(browserProfile.userAgent);
+        webContents.setUserAgent(this.browserProfile.userAgent);
 
         const windowDimensions: IDimensions = {
             width: deviceEmulation.screenSize.width,
