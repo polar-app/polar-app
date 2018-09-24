@@ -117,7 +117,7 @@ function _resolveFromHref(href, loadPath, os_type) {
     let resolvedPath = _toPath(resolvedURL, os_type);
 
     if(! fs.existsSync(resolvedPath)) {
-        throw new Error(`Could not find ${loadPath} from basedir ${basedir} (not found): ${resolvedPath}`);
+        throw new Error(`Could not find ${loadPath} (not found): ${resolvedPath}`);
     }
 
     return resolvedPath;

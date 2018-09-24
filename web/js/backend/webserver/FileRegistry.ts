@@ -4,22 +4,23 @@ import {Hashcodes} from '../../Hashcodes';
 
 import path from 'path';
 
+/**
+ * A registry of binary / local files to serve via HTTP so that pdf.js and
+ * other apps can be served via URLs.
+ */
 export class FileRegistry {
 
     private readonly webserverConfig: WebserverConfig;
 
+    /**
+     * The registry of hashcodes to the file path it should be served from.
+     *
+     */
     private readonly registry: {[key: string]: string} = {}
 
     constructor(webserverConfig: WebserverConfig) {
 
         this.webserverConfig = Preconditions.assertNotNull(webserverConfig);
-
-        /**
-         * The registry of hashcodes to the file path it should be served from.
-         *
-         * @type {{}}
-         */
-        this.registry = {};
 
     }
 

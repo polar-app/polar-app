@@ -7,6 +7,7 @@ import {Hashcodes} from '../../Hashcodes';
 import {assertJSON} from '../../test/Assertions';
 import {Http} from '../../util/Http';
 import {assert} from 'chai';
+import {ResourceRegistry} from './ResourceRegistry';
 
 
 describe('Webserver', function() {
@@ -24,7 +25,7 @@ describe('Webserver', function() {
 
         });
 
-        it("registerFile", async function () {
+        it("serving files", async function () {
 
             let webserverConfig = new WebserverConfig("..", 8095);
             let fileRegistry = new FileRegistry(webserverConfig);
@@ -54,6 +55,31 @@ describe('Webserver', function() {
             let response = await Http.execute(fileMeta.url);
 
             assertJSON(hashcode, Hashcodes.create(response.data.toString('utf8')));
+
+            webserver.stop();
+
+        });
+
+        it("serving resources", async function () {
+
+            let webserverConfig = new WebserverConfig("..", 8095);
+            let fileRegistry = new FileRegistry(webserverConfig);
+            let resourceRegistry = new ResourceRegistry();
+            let webserver = new Webserver(webserverConfig, fileRegistry, resourceRegistry);
+
+            webserver.start();
+
+            const path = FilePaths.tmpfile('helloworld.html');
+            await Files.writeFileAsync(path, 'hello world');
+
+            resourceRegistry.register("/helloworld.html", path);
+
+            const buffer = await Files.readFileAsync(path);
+
+            const response = await Http.execute('http://localhost:8095/helloworld.html');
+
+            assert.equal(response.response.headers['content-type'], 'text/html; charset=UTF-8');
+            assert.equal('hello world', response.data.toString('utf8'));
 
             webserver.stop();
 

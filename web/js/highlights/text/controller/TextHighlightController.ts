@@ -344,7 +344,10 @@ export class TextHighlightController {
 
         let capturedScreenshot = await selectionScreenshot.capturedScreenshotPromise;
 
-        let screenshot = this.toScreenshot(screenshotID, capturedScreenshot.dataURL, 'screenshot', screenshotDimensions);
+        let screenshot = this.toScreenshot(screenshotID,
+                                           capturedScreenshot.dataURL,
+                                           'screenshot',
+                                           screenshotDimensions);
 
         pageMeta.screenshots[screenshot.id] = screenshot;
 

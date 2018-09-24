@@ -86,6 +86,9 @@ export class PagemarkCoverageEventListener {
     // https://stackoverflow.com/questions/3234256/find-mouse-position-relative-to-element
     async onActivated(event: MouseEvent) {
 
+        // FIXME: move this to a static function that's also covered by the
+        // context menu
+
         // this should always be .page since we're using currentTarget
         let pageElement = Elements.untilRoot(event.currentTarget, ".page");
 
