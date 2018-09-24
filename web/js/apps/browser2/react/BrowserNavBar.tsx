@@ -4,7 +4,7 @@ import Navbar from 'reactstrap/lib/Navbar';
 import {BrowserConfigurationInputGroup} from './BrowserConfigurationInputGroup';
 import {CaptureButton} from './CaptureButton';
 
-export class BrowserNavBar extends React.Component<any, IAppState> {
+export class BrowserNavBar extends React.Component<Props, State> {
 
     constructor(props: any, context: any) {
         super(props, context);
@@ -48,9 +48,15 @@ export class BrowserNavBar extends React.Component<any, IAppState> {
 
 }
 
-interface IAppState {
-    dropdownOpen: boolean;
-    splitButtonOpen: boolean;
+interface State {
 
 }
 
+interface Props {
+
+    /**
+     * Called when need to load a URL that the navbar selected.
+     */
+    loadURL?: (url: string) => void;
+
+}
