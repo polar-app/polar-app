@@ -8,6 +8,7 @@ import {DocumentReadyStates} from '../../util/dom/DocumentReadyStates';
 import {isPresent} from '../../Preconditions';
 import BrowserRegistry from '../../capture/BrowserRegistry';
 import {SimpleReactor} from '../../reactor/SimpleReactor';
+import {ProgressBar} from '../../ui/progress_bar/ProgressBar';
 
 const log = Logger.create();
 
@@ -46,15 +47,23 @@ export class BrowserApp {
                 this.webviewNavigated(event.url);
             });
 
+            let progressBar: ProgressBar | undefined;
+
             // Corresponds to the points in time when the spinner of the tab starts spinning.
             content.addEventListener('did-start-loading', () => {
                 console.log("started loading");
+                progressBar = ProgressBar.create(true);
                 document.body.scrollTo(0, 0);
                 navigationReactor.dispatchEvent('did-start-loading');
             });
 
             // Corresponds to the points in time when the spinner of the tab stops spinning.
             content.addEventListener('did-stop-loading', () => {
+
+                if (progressBar) {
+                    progressBar.destroy();
+                }
+
                 console.log("finished loading");
                 navigationReactor.dispatchEvent('did-stop-loading');
             });
@@ -99,7 +108,9 @@ export class BrowserApp {
 
     private webviewNavigated(url: string) {
 
-        const element = document.querySelector("#url-bar input")! as HTMLInputElement;
+        // FIXME: use a method to get this data..
+
+        const element = document.querySelector("#url-bar")! as HTMLInputElement;
         element.value = url;
 
     }

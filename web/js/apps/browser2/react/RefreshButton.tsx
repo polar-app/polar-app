@@ -56,8 +56,6 @@ export class RefreshButton extends React.Component<Props, State> {
                 break;
         }
 
-        console.log("FIXME: disabled is" + disabled)
-
         return (
 
             <InputGroupAddon addonType="prepend"
