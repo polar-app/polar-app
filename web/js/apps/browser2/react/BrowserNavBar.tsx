@@ -23,7 +23,7 @@ export class BrowserNavBar extends React.Component<Props, State> {
 
                     <InputGroup size="sm" className="">
 
-                        <RefreshButton navigationReactor={this.props.navigationReactor}/>
+                        <RefreshButton navigationReactor={this.props.navigationReactor} onReload={this.props.onReload}/>
 
                         <URLBar onLoadURL={this.props.onLoadURL}/>
 
@@ -54,5 +54,10 @@ interface Props {
     onTriggerCapture?: () => void;
     onBrowserChanged?: (browserName: string) => void;
     navigationReactor: ISimpleReactor<NavigationEventType>;
+
+    /**
+     * Called when the reload button was clicked.
+     */
+    onReload: () => void;
 
 }

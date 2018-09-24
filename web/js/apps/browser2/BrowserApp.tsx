@@ -29,8 +29,9 @@ export class BrowserApp {
 
         ReactDOM.render(
             <BrowserNavBar onLoadURL={this.onLoadURL}
-                           onBrowserChanged={this.onBrowserChanged}
-                           onTriggerCapture={this.onTriggerCapture}
+                           onBrowserChanged={(browserName: string) => this.onBrowserChanged(browserName)}
+                           onTriggerCapture={() => this.onTriggerCapture()}
+                           onReload={() => this.onReload()}
                            navigationReactor={navigationReactor} />,
             document.getElementById('browser-navbar-parent') as HTMLElement
         );
@@ -74,7 +75,7 @@ export class BrowserApp {
             return;
         }
 
-        log.debug("Starting capture on URL: " + value);
+        log.debug("Loading URL: " + value);
 
         WebContentsNotifiers.dispatchEvent(BrowserAppEvent.PROVIDE_URL, value);
 
@@ -87,7 +88,6 @@ export class BrowserApp {
     }
 
     private onBrowserChanged(browserName: string) {
-        console.log("Browser changed to: " + browserName);
 
         const browser = BrowserRegistry[browserName];
 
@@ -104,6 +104,13 @@ export class BrowserApp {
 
     }
 
+    private onReload() {
+
+        const content = document.querySelector("#content")! as Electron.WebviewTag;
+
+        this.onLoadURL(content.getURL());
+
+    }
 }
 
 export type NavigationEventType = 'did-start-loading' | 'did-stop-loading';

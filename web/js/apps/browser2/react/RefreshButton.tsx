@@ -66,7 +66,8 @@ export class RefreshButton extends React.Component<Props, State> {
                 <Button type="button"
                         className="btn btn-outline-secondary"
                         aria-label=""
-                        disabled={disabled}>
+                        disabled={disabled}
+                        onClick={this.props.onReload}>
 
                     <span className={navButtonClassName} aria-hidden="true"></span>
 
@@ -82,6 +83,8 @@ export class RefreshButton extends React.Component<Props, State> {
 
 interface Props {
     navigationReactor: ISimpleReactor<NavigationEventType>;
+    onReload: () => void;
+
 }
 
 interface State {
