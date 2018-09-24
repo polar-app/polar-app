@@ -36,6 +36,11 @@ export class BrowserConfigurationInputGroup extends React.Component<Props, State
                         Mobile Galaxy S8 (412x846)
                     </DropdownItem>
 
+                    <DropdownItem data-browser-name="MOBILE_GALAXY_S8_WITH_CHROME_66_WIDTH_700"
+                                  onClick={(event: React.MouseEvent<HTMLElement>) => this.onClick(event)}>
+                        Mobile Galaxy S8 (700x970)
+                    </DropdownItem>
+
                     <DropdownItem data-browser-name="MOBILE_GALAXY_S8_WITH_CHROME_66_WIDTH_750"
                                   onClick={(event: React.MouseEvent<HTMLElement>) => this.onClick(event)}>
                         Mobile Galaxy S8 (750x970)
