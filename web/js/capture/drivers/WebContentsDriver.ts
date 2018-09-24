@@ -7,6 +7,8 @@ import {BrowserWebContentsDriver} from './BrowserWebContentsDriver';
 
 export interface WebContentsDriver {
 
+    browserProfile: BrowserProfile;
+
     /**
      *
      */

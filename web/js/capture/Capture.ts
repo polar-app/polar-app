@@ -187,7 +187,7 @@ export class Capture {
 
     public async executeContentCapture() {
 
-        const result = await ContentCaptureExecutor.execute(this.webContents!, this.browserProfile);
+        const result = await ContentCaptureExecutor.execute(this.webContents!, this.driver!.browserProfile);
 
         if (this.browserProfile.destroy) {
             Optional.of(this.driver).when(driver => driver.destroy());

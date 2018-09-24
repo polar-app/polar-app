@@ -145,8 +145,9 @@ export class HTMLViewer extends Viewer {
      */
     private _configurePageWidth() {
 
-
         const descriptor = notNull(this.requestParams).descriptor;
+
+        log.info("Loading with descriptor: ", descriptor);
 
         const docDimensions = Descriptors.calculateDocDimensions(descriptor);
 
