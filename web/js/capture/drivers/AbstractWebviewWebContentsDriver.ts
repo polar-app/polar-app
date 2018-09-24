@@ -12,6 +12,7 @@ import {MainIPCEvent} from '../../electron/framework/IPCMainPromises';
 import {BrowserAppEvents} from '../../apps/browser/BrowserAppEvents';
 import {Browser} from '../Browser';
 import WebContents = Electron.WebContents;
+import {BrowserProfiles} from '../BrowserProfiles';
 
 const log = Logger.create();
 
@@ -91,7 +92,7 @@ export abstract class AbstractWebviewWebContentsDriver extends StandardWebConten
                                BrowserAppEvents.TRIGGER_CAPTURE,
                                (event: MainIPCEvent<void>) => {
 
-           log.info("Content was captured!");
+           log.info("Got content capture click");
            this.browserProfile.navigation.captured.dispatchEvent({});
 
         });
@@ -102,23 +103,25 @@ export abstract class AbstractWebviewWebContentsDriver extends StandardWebConten
 
             const browser = event.message;
 
-            this.browserProfile = Object.assign({}, this.browserProfile, browser);
+            const navigation = this.browserProfile.navigation;
+            this.browserProfile = BrowserProfiles.toBrowserProfile(browser, this.browserProfile.profile);
+            // need to preserve the navigation object so that notifications work properly.
+            this.browserProfile =
+                Object.freeze(
+                    Object.assign({}, this.browserProfile, {navigation}));
+
             this.browserWindowOptions = this.computeHostBrowserWindowOptions();
 
             log.info("Changing browser profile to: ", browser);
-
 
             this.browserView!.configure(this.browserProfile)
                    .catch((err: Error) => log.error("Unable to configure: ", err));
 
         });
 
-
         await this.initWebContents(this.browserWindow,
                                    this.browserWindow.webContents,
                                    this.browserWindowOptions);
-
-        // await this.browserView.configure(this.browserProfile);
 
         this.initReactor();
 
