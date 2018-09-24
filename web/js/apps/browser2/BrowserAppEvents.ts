@@ -7,3 +7,4 @@ export enum BrowserAppEvents {
     CONFIGURE_WINDOW = 'CONFIGURE_WINDOW'
 
 }
+

@@ -1,12 +1,13 @@
 import * as React from 'react';
-import {Button, Input, InputGroup, InputGroupAddon} from 'reactstrap';
+import {Button, InputGroup, InputGroupAddon} from 'reactstrap';
 import Navbar from 'reactstrap/lib/Navbar';
 import {BrowserConfigurationInputGroup} from './BrowserConfigurationInputGroup';
 import {CaptureButton} from './CaptureButton';
+import {URLBar} from './URLBar';
 
 export class BrowserNavBar extends React.Component<Props, State> {
 
-    constructor(props: any, context: any) {
+    constructor(props: Props, context: State) {
         super(props, context);
     }
 
@@ -32,14 +33,14 @@ export class BrowserNavBar extends React.Component<Props, State> {
 
                         </InputGroupAddon>
 
-                        <Input className="px-2 mx-1" name="url" />
+                        <URLBar onLoadURL={this.props.onLoadURL}/>
 
-                        <CaptureButton/>
-
+                        <CaptureButton onTriggerCapture={this.props.onTriggerCapture}/>
 
                         <BrowserConfigurationInputGroup/>
 
                     </InputGroup>
+
                 </Navbar>
 
             </div>
@@ -57,6 +58,7 @@ interface Props {
     /**
      * Called when need to load a URL that the navbar selected.
      */
-    loadURL?: (url: string) => void;
+    onLoadURL?: (url: string) => void;
+    onTriggerCapture?: () => void;
 
 }

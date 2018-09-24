@@ -4,20 +4,12 @@ import {CaptureController} from '../../web/js/capture/controller/CaptureControll
 import {CacheRegistry} from '../../web/js/backend/proxyserver/CacheRegistry';
 import {ProxyServerConfig} from '../../web/js/backend/proxyserver/ProxyServerConfig';
 import {BrowserWindow} from "electron";
-import {SpectronBrowserWindowOptions} from '../../web/js/test/SpectronBrowserWindowOptions';
+import BrowserRegistry from '../../web/js/capture/BrowserRegistry';
+import {BrowserProfiles} from '../../web/js/capture/BrowserProfiles';
+import {Capture} from '../../web/js/capture/Capture';
 
 
 const windowFactory: WindowFactory = async () => {
-
-    const mainWindow = new BrowserWindow(SpectronBrowserWindowOptions.create());
-    mainWindow.loadURL('file://' + __dirname + '/index.html');
-
-    return mainWindow;
-
-
-};
-
-SpectronMain.run(async state => {
 
     await Logging.init();
 
@@ -28,6 +20,22 @@ SpectronMain.run(async state => {
     const captureController = new CaptureController(cacheRegistry);
 
     captureController.start();
+
+    const browser = BrowserRegistry.DEFAULT;
+
+    const browserProfile = BrowserProfiles.toBrowserProfile(browser, 'DEFAULT');
+
+    const capture = new Capture(browserProfile);
+
+    capture.start()
+        .catch(err => console.error(err));
+
+    return BrowserWindow.getFocusedWindow()!;
+
+};
+
+SpectronMain.run(async state => {
+
 
     await state.testResultWriter.write(true);
 

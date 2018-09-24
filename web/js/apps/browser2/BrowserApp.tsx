@@ -5,6 +5,7 @@ import * as ReactDOM from 'react-dom';
 import * as React from 'react';
 import {BrowserNavBar} from './react/BrowserNavBar';
 import {DocumentReadyStates} from '../../util/dom/DocumentReadyStates';
+import {isPresent} from '../../Preconditions';
 
 const log = Logger.create();
 
@@ -15,7 +16,8 @@ export class BrowserApp {
         await DocumentReadyStates.waitFor(document, 'complete');
 
         ReactDOM.render(
-            <BrowserNavBar />,
+            <BrowserNavBar onLoadURL={this.onLoadURL}
+                           onTriggerCapture={this.onTriggerCapture} />,
             document.getElementById('browser-navbar-parent') as HTMLElement
         );
 
@@ -30,31 +32,23 @@ export class BrowserApp {
         //
         // log.info("started");
         //
-        // const content = <Electron.WebviewTag> document.querySelector("#content")!;
-        //
-        // content.addEventListener('dom-ready', async () => {
-        //
-        //     content.insertCSS('html,body{ overflow: hidden !important; }');
-        //
-        //     content.addEventListener('will-navigate', (event: Electron.WillNavigateEvent) => {
-        //         this.webviewNavigated(event.url);
-        //     });
-        //
-        //     content.addEventListener('did-start-loading', () => {
-        //         console.log("started loading");
-        //         document.body.scrollTo(0, 0);
-        //     });
-        //
-        //
-        //     // webContents.on('will-navigate', function(event, url) {
-        //     //     if (isExternal(url)) {
-        //     //         event.preventDefault();
-        //     //         openInExternalPage(url);
-        //     //     }
-        //     // });
-        //
-        // });
-        //
+        const content = document.querySelector("#content")! as Electron.WebviewTag;
+
+        content.addEventListener('dom-ready', async () => {
+
+            content.insertCSS('html,body{ overflow: hidden !important; }');
+
+            content.addEventListener('will-navigate', (event: Electron.WillNavigateEvent) => {
+                this.webviewNavigated(event.url);
+            });
+
+            content.addEventListener('did-start-loading', () => {
+                console.log("started loading");
+                document.body.scrollTo(0, 0);
+            });
+
+        });
+
 
     }
     //
@@ -73,29 +67,29 @@ export class BrowserApp {
     //
     // }
     //
-    // private onLinkChange(value: string) {
+    private onLoadURL(value: string) {
+
+        if (isPresent(value) && ! value.startsWith("http:") && ! value.startsWith("https:")) {
+            log.debug("Not a URL: " + value);
+            return;
+        }
+
+        log.debug("Starting capture on URL: " + value);
+
+        // const webContentsId = this.getWebContentsId();
+        // log.info("Working with web contents: " + webContentsId);
+        // CaptureClient.startCapture(value, webContentsId);
+
+        WebContentsNotifiers.dispatchEvent(BrowserAppEvents.PROVIDE_URL, value);
+
+    }
     //
-    //     if (isPresent(value) && ! value.startsWith("http:") && ! value.startsWith("https:")) {
-    //         log.debug("Not a URL: " + value);
-    //         return;
-    //     }
     //
-    //     log.debug("Starting capture on URL: " + value);
-    //
-    //     // const webContentsId = this.getWebContentsId();
-    //     // log.info("Working with web contents: " + webContentsId);
-    //     // CaptureClient.startCapture(value, webContentsId);
-    //
-    //     WebContentsNotifiers.dispatchEvent(BrowserAppEvents.PROVIDE_URL, value);
-    //
-    // }
-    //
-    //
-    // private onTriggerCapture() {
-    //
-    //     WebContentsNotifiers.dispatchEvent(BrowserAppEvents.TRIGGER_CAPTURE, {});
-    //
-    // }
+    private onTriggerCapture() {
+
+        WebContentsNotifiers.dispatchEvent(BrowserAppEvents.TRIGGER_CAPTURE, {});
+
+    }
     //
     // private getWebContentsId() {
     //
@@ -105,10 +99,12 @@ export class BrowserApp {
     //
     // }
     //
-    // private webviewNavigated(url: string) {
-    //
-    //     const element = <HTMLInputElement> document.querySelector("#link")!;
-    //     element.value = url;
-    //
-    // }
+
+    private webviewNavigated(url: string) {
+
+        const element = document.querySelector("#url-bar input")! as HTMLInputElement;
+        element.value = url;
+
+    }
+
 }
