@@ -39,6 +39,10 @@ must be enabled.  Dismiss
 
 # Questions
 
+- how do I prevent orphan files in google storage?
+
+- 
+
 - review bolt:
 
     https://github.com/firebase/bolt

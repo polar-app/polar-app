@@ -11,6 +11,7 @@ import {WebContentsNotifier} from '../../electron/web_contents_notifier/WebConte
 import {MainIPCEvent} from '../../electron/framework/IPCMainPromises';
 import {BrowserAppEvents} from '../../apps/browser/BrowserAppEvents';
 import WebContents = Electron.WebContents;
+import {Browser} from '../Browser';
 
 const log = Logger.create();
 
@@ -83,6 +84,22 @@ export abstract class AbstractWebviewWebContentsDriver extends StandardWebConten
 
         });
 
+        WebContentsNotifier.on(this.browserWindow.webContents,
+                               BrowserAppEvents.CONFIGURE_WINDOW,
+                               (event: MainIPCEvent<Browser>) => {
+
+            const browser = event.message;
+
+            this.browserProfile = Object.assign(this.browserProfile, browser);
+
+            log.info("Changing browser profile to: ", browser);
+
+            this.configureWindow(this.webContents!, this.browserProfile)
+                .catch((err: Error) => log.error("Unable to configure: ", err));
+
+        });
+
+
         await this.initWebContents(this.browserWindow, this.browserWindow.webContents, browserWindowOptions);
 
         this.initReactor();
@@ -104,7 +121,7 @@ export abstract class AbstractWebviewWebContentsDriver extends StandardWebConten
 
         this.webContents = await this.waitForWebview();
 
-        await this.configureWindow(this.webContents);
+        await this.configureWindow(this.webContents, this.browserProfile);
 
         await this.doInitWebviewHeight(browserWindowOptions);
 
@@ -142,15 +159,18 @@ export abstract class AbstractWebviewWebContentsDriver extends StandardWebConten
         const window = notNull(this.window);
 
         // @ElectronRendererContext
+        // noinspection TsLint: no-shadowed-variable
         function setWebviewHeight(browserWindowOptions: Electron.BrowserWindowConstructorOptions) {
 
             const querySelector = <HTMLElement> document.querySelector('webview')!;
 
-            console.log("browserWindowOptions: ", browserWindowOptions);
+            // console.log("browserWindowOptions: ", browserWindowOptions);
 
-            console.log("Webview height before: ", querySelector.style.height);
+            // console.log("Webview height before: ", querySelector.style.height);
+
             querySelector.style.height = `${browserWindowOptions.height}px`;
-            console.log("Webview height after: ", querySelector.style.height);
+
+            // console.log("Webview height after: ", querySelector.style.height);
 
         }
 

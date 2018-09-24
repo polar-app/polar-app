@@ -6,7 +6,7 @@
 import {Browser} from './Browser';
 
 
-let BrowserRegistry: {[name: string]: Browser} = {
+const BrowserRegistry: {[name: string]: Browser} = {
 
     // Stock Electron UA is:
     //

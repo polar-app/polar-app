@@ -17,7 +17,7 @@ export class BrowserApp {
 
         const captureButtonElement = <HTMLInputElement> document.querySelector("#capture")!;
 
-        captureButtonElement.addEventListener('click', (event) => this.onTriggerCapture());
+        captureButtonElement.addEventListener('click', () => this.onTriggerCapture());
 
         log.info("started");
 

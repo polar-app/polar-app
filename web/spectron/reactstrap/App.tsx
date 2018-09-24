@@ -2,6 +2,7 @@ import * as React from 'react';
 import {Button, DropdownItem, DropdownToggle, Input, InputGroup, InputGroupAddon, InputGroupButtonDropdown} from 'reactstrap';
 import DropdownMenu from 'reactstrap/lib/DropdownMenu';
 import Navbar from 'reactstrap/lib/Navbar';
+import {BrowserConfigurationInputGroup} from './BrowserConfigurationInputGroup';
 
 class App<P> extends React.Component<{}, IAppState> {
 
@@ -54,12 +55,13 @@ class App<P> extends React.Component<{}, IAppState> {
                 <Navbar light expand="md" className="p-2 border-bottom link-navbar">
 
                     <InputGroup size="sm" className="">
-                        <InputGroupAddon addonType="prepend">
+
+                        <InputGroupAddon addonType="prepend"
+                                         title="Refresh the current page">
                             {/*<i className="fa fa-close"></i>*/}
 
                             <Button type="button"
                                     className="btn btn-outline-secondary"
-                                    title="Capture HTML page"
                                     aria-label="">
 
                                 <span className="fa fa-refresh fa-lg" aria-hidden="true"></span>
@@ -82,6 +84,9 @@ class App<P> extends React.Component<{}, IAppState> {
                             </Button>
 
                         </InputGroupAddon>
+
+                        <BrowserConfigurationInputGroup/>
+
                     </InputGroup>
                 </Navbar>
 
