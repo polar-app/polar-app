@@ -5,16 +5,32 @@ export class Browser implements Readonly<IBrowser> {
 
     public readonly name: string;
 
+    public readonly title: string;
+
+    public readonly type: BrowserType;
+
     public readonly description: string;
 
     public readonly userAgent: string;
 
     public readonly deviceEmulation: Electron.Parameters;
 
-    // TODO: this can just become an interface but the default values are the
-    // problem
-    constructor(opts: any) {
+    /**
+     * True whether this browser is visible to the user in the UI by default.
+     *
+     * We might want to have some hidden/test browsers that are only used for
+     * testing.
+     */
+    public readonly visible: boolean = true;
+
+    /**
+     *
+     * @param opts
+     */
+    constructor(opts: IBrowser) {
         this.name = opts.name;
+        this.title = opts.title;
+        this.type = opts.type;
         this.description = opts.description;
         this.userAgent = opts.userAgent;
         this.deviceEmulation = opts.deviceEmulation;
@@ -25,6 +41,10 @@ export class Browser implements Readonly<IBrowser> {
 export interface IBrowser {
 
     name: string;
+
+    title: string;
+
+    type: BrowserType;
 
     description: string;
 
@@ -45,6 +65,10 @@ export class BrowserProfileBuilder implements BrowserProfile {
     public deviceEmulation: Electron.Parameters;
 
     public name: string;
+
+    public type: BrowserType;
+
+    public title: string;
 
     public offscreen: boolean = false;
 
@@ -70,6 +94,8 @@ export class BrowserProfileBuilder implements BrowserProfile {
         this.description = browser.description;
         this.deviceEmulation = browser.deviceEmulation;
         this.name = browser.name;
+        this.type = browser.type;
+        this.title = browser.title;
         this.userAgent = browser.userAgent;
     }
 
@@ -124,3 +150,9 @@ export class BrowserProfileBuilder implements BrowserProfile {
     private static sequence: number = 0;
 
 }
+
+export interface DeviceEmulation {
+
+}
+
+export type BrowserType = 'desktop' | 'tablet' | 'phone';

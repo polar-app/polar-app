@@ -19,8 +19,8 @@ export class CaptureButton extends React.Component<Props, any> {
                         className="btn btn-outline-secondary"
                         title="Capture the HTML page and save locally"
                         aria-label=""
-                        onClick={this.onTriggerCapture}
-                        >
+                        // disabled
+                        onClick={this.onTriggerCapture}>
 
                     <span className="fa fa-cloud-download fa-lg" aria-hidden="true"></span>
 

@@ -1,5 +1,12 @@
 <html>
 <head>
+
+    <link rel="stylesheet" href="../../node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../../node_modules/bootstrap/dist/css/bootstrap-grid.min.css">
+    <link rel="stylesheet" href="../../node_modules/bootstrap/dist/css/bootstrap-reboot.min.css">
+
+    <link rel="stylesheet" href="../../node_modules/font-awesome/css/font-awesome.min.css">
+
     <style>
 
         html,
@@ -8,82 +15,93 @@
             padding: 0;
             width: 100%;
             height: 100%;
+            background-color: #3f3f3f;
         }
 
+        #browser-navbar-parent {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: #EEEEEE;
+        }
+
+        body {
+            margin-top: 60px;
+        }
+
+        #content-parent,
         webview {
             height: 35000px;
             width: 750px;
+        }
+
+        #content-parent {
             margin: 0 auto;
-
         }
 
-        .linkbar {
-            background-color: #EEEEEE;
-            padding: 3px 0 3px 0;
-            border-bottom: 1px solid darkgrey;
-            width: 100%;
-            overflow: hidden;
-            height: 30px;
-            position: fixed;
-            top: 0;
+        #content-parent {
+            border: 9px solid transparent;
+            background-clip: content-box;
+            -o-border-image: url(../../pdfviewer/web/images/shadow.png) 9 9 repeat;
+            border-image: url(../../pdfviewer/web/images/shadow.png) 9 9 repeat;
+            background-color: white;
         }
 
-        .linkbar input[type='text'] {
-            margin: 0 3px 0 3px;
-            padding: 3px;
-            width: calc(100% );
-            /*border-radius: 1px;*/
-            font-size: 14px;
-            line-height: 1em;
-            color: #333333;
-        }
+        /*.linkbar {*/
+        /*background-color: #EEEEEE;*/
+        /*padding: 3px 0 3px 0;*/
+        /*border-bottom: 1px solid darkgrey;*/
+        /*width: 100%;*/
+        /*overflow: hidden;*/
+        /*height: 30px;*/
+        /*}*/
 
-        .linkbar {
-            display: table;
-        }
+        /*.linkbar input[type='text'] {*/
+        /*margin: 0 3px 0 3px;*/
+        /*padding: 3px;*/
+        /*width: calc(100% );*/
+        /*!*border-radius: 1px;*!*/
+        /*font-size: 14px;*/
+        /*line-height: 1em;*/
+        /*color: #333333;*/
+        /*}*/
 
-        .linkbar > .linkbar-block {
-            display: table-cell;
-            vertical-align: middle;
-            text-align: center;
-        }
+        /*.linkbar {*/
+        /*display: table;*/
+        /*}*/
 
-        .linkbar-right {
-            width: 40px;
-        }
+        /*.linkbar > .linkbar-block {*/
+        /*display: table-cell;*/
+        /*vertical-align: middle;*/
+        /*text-align: center;*/
+        /*}*/
 
-        .linkbar-left {
-            width: 30px;
-        }
+        /*.linkbar-right {*/
+        /*width: 40px;*/
+        /*}*/
 
-        .linkbar-center {
-            /*padding: 0 3px 0 3px;*/
-        }
+        /*.linkbar-left {*/
+        /*width: 30px;*/
+        /*}*/
 
-        .linkbar .fa {
-            color: #444444;
-            font-size: 18px;
-        }
+        /*.linkbar-center {*/
+        /*!*padding: 0 3px 0 3px;*!*/
+        /*}*/
 
-        .linkbar-button {
-            padding: 3px;
-        }
+        /*.linkbar .fa {*/
+        /*color: #444444;*/
+        /*font-size: 18px;*/
+        /*}*/
 
-        .linkbar-button:hover {
-            background-color: #CCCCCC;
-        }
+        /*.linkbar-button {*/
+        /*padding: 3px;*/
+        /*}*/
 
-        #content {
-            margin-top: 30px;
-        }
+        /*.linkbar-button:hover {*/
+        /*background-color: #CCCCCC;*/
+        /*}*/
 
     </style>
-
-    <link rel="stylesheet" href="../../node_modules/bootstrap/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="../../node_modules/bootstrap/dist/css/bootstrap-grid.min.css">
-    <link rel="stylesheet" href="../../node_modules/bootstrap/dist/css/bootstrap-reboot.min.css">
-
-    <link rel="stylesheet" href="../../node_modules/font-awesome/css/font-awesome.min.css">
 
 </head>
 
@@ -97,7 +115,17 @@
 
     </div>
 
-    <webview autosize="true" name="content" id="content" src="./splash.html" disablewebsecurity nodeintegration="false" preload="../../web/js/capture/renderer/ContentCapture.js"></webview>
+    <div id="content-parent">
+
+        <webview autosize="true"
+                 name="content"
+                 id="content"
+                 src="./splash.html"
+                 disablewebsecurity
+                 nodeintegration="false"
+                 preload="../../web/js/capture/renderer/ContentCapture.js"></webview>
+    </div>
+
 
 </div>
 

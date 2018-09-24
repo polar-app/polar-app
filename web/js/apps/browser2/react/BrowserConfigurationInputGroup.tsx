@@ -1,7 +1,7 @@
 import React from 'react';
 import {DropdownItem, DropdownMenu, DropdownToggle, InputGroupButtonDropdown} from 'reactstrap';
 
-export class BrowserConfigurationInputGroup extends React.Component<any, InternalState> {
+export class BrowserConfigurationInputGroup extends React.Component<Props, State> {
 
     constructor(props: any) {
         super(props);
@@ -13,6 +13,9 @@ export class BrowserConfigurationInputGroup extends React.Component<any, Interna
     }
 
     public render() {
+
+        // TODO: go through all browser and show them in the UI...
+
         return (
             <InputGroupButtonDropdown
                 title="Configure browser settings for capture"
@@ -25,7 +28,7 @@ export class BrowserConfigurationInputGroup extends React.Component<any, Interna
                 <DropdownMenu>
                     <DropdownItem header>Browser:</DropdownItem>
                     <DropdownItem divider />
-                    <DropdownItem>Mobile Galaxy S8 (412x846)</DropdownItem>
+                    <DropdownItem data-browser-name="MOBILE_GALAXY_S8">Mobile Galaxy S8 (412x846)</DropdownItem>
                 </DropdownMenu>
             </InputGroupButtonDropdown>
         );
@@ -39,7 +42,11 @@ export class BrowserConfigurationInputGroup extends React.Component<any, Interna
 
 }
 
-interface InternalState {
+interface Props {
+    onBrowserChanged?: (browserName: string) => void;
+}
+
+interface State {
     open: boolean;
 }
 
