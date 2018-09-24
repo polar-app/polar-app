@@ -63,58 +63,6 @@ const BrowserRegistry: {[name: string]: Browser} = {
 
     }),
 
-MOBILE_GALAXY_S8_WITH_CHROME_66_WIDTH_700: new Browser({
-
-        name: "MOBILE_GALAXY_S8_WITH_CHROME_66_WIDTH_700",
-        title: "Galaxy S8",
-        type: 'phone',
-        description: "Galaxy S8 mobile device running Chrome 66 but with width at 700",
-        userAgent: "Mozilla/5.0 (Linux; Android 8.0.0; SM-G955U Build/R16NW) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.181 Mobile Safari/537.36",
-
-        deviceEmulation: {
-            screenPosition: "mobile",
-            screenSize: {
-                width: 700,
-                height: 970
-            },
-            viewSize: {
-                width: 700,
-                height: 970
-            },
-            viewPosition: {x: 0, y: 0},
-            deviceScaleFactor: 0,
-            scale: 1
-
-        }
-
-    }),
-
-
-    MOBILE_GALAXY_S8_WITH_CHROME_66_WIDTH_750: new Browser({
-
-        name: "MOBILE_GALAXY_S8_WITH_CHROME_66_WIDTH_750",
-        title: "Galaxy S8",
-        type: 'phone',
-        description: "Galaxy S8 mobile device running Chrome 66 but with width at 750",
-        userAgent: "Mozilla/5.0 (Linux; Android 8.0.0; SM-G955U Build/R16NW) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.181 Mobile Safari/537.36",
-
-        deviceEmulation: {
-            screenPosition: "mobile",
-            screenSize: {
-                width: 750,
-                height: 970
-            },
-            viewSize: {
-                width: 750,
-                height: 970
-            },
-            viewPosition: {x: 0, y: 0},
-            deviceScaleFactor: 0,
-            scale: 1
-
-        }
-
-    }),
 
     MOBILE_GALAXY_S8_WITH_CHROME_66_WIDTH_700: new Browser({
 
@@ -136,6 +84,32 @@ MOBILE_GALAXY_S8_WITH_CHROME_66_WIDTH_700: new Browser({
             viewSize: {
                 width: 700,
                 height: 905
+            },
+            viewPosition: {x: 0, y: 0},
+            deviceScaleFactor: 0,
+            scale: 1
+
+        }
+
+    }),
+
+    MOBILE_GALAXY_S8_WITH_CHROME_66_WIDTH_750: new Browser({
+
+        name: "MOBILE_GALAXY_S8_WITH_CHROME_66_WIDTH_750",
+        title: "Galaxy S8",
+        type: 'phone',
+        description: "Galaxy S8 mobile device running Chrome 66 but with width at 750",
+        userAgent: "Mozilla/5.0 (Linux; Android 8.0.0; SM-G955U Build/R16NW) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.181 Mobile Safari/537.36",
+
+        deviceEmulation: {
+            screenPosition: "mobile",
+            screenSize: {
+                width: 750,
+                height: 970
+            },
+            viewSize: {
+                width: 750,
+                height: 970
             },
             viewPosition: {x: 0, y: 0},
             deviceScaleFactor: 0,
