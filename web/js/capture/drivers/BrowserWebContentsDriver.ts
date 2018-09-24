@@ -7,7 +7,7 @@ const log = Logger.create();
 export class BrowserWebContentsDriver extends AbstractWebviewWebContentsDriver {
 
     constructor(browserProfile: BrowserProfile) {
-        super(browserProfile, "./apps/browser2/index.html");
+        super(browserProfile, "./apps/browser/index.html");
     }
 
 }

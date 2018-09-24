@@ -14,3 +14,4 @@ async function start() {
 }
 
 start().catch(err => log.error("Could not start app: ", err));
+

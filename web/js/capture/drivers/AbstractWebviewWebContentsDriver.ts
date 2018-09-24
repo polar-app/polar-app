@@ -9,7 +9,7 @@ import {PendingWebRequestsEvent} from '../../webrequests/PendingWebRequestsListe
 import {BrowserProfile} from '../BrowserProfile';
 import {WebContentsNotifier} from '../../electron/web_contents_notifier/WebContentsNotifier';
 import {MainIPCEvent} from '../../electron/framework/IPCMainPromises';
-import {BrowserAppEvents} from '../../apps/browser/BrowserAppEvents';
+import {BrowserAppEvent} from '../../apps/browser/BrowserAppEvent';
 import {Browser} from '../Browser';
 import WebContents = Electron.WebContents;
 import {BrowserProfiles} from '../BrowserProfiles';
@@ -78,7 +78,7 @@ export abstract class AbstractWebviewWebContentsDriver extends StandardWebConten
             new DelegatedBrowserView([hostBrowserView, guestBrowserView]);
 
         WebContentsNotifier.on(this.browserWindow.webContents,
-                               BrowserAppEvents.PROVIDE_URL,
+                               BrowserAppEvent.PROVIDE_URL,
                                (event: MainIPCEvent<string>) => {
 
             const link = event.message;
@@ -89,7 +89,7 @@ export abstract class AbstractWebviewWebContentsDriver extends StandardWebConten
         });
 
         WebContentsNotifier.on(this.browserWindow.webContents,
-                               BrowserAppEvents.TRIGGER_CAPTURE,
+                               BrowserAppEvent.TRIGGER_CAPTURE,
                                (event: MainIPCEvent<void>) => {
 
            log.info("Got content capture click");
@@ -98,7 +98,7 @@ export abstract class AbstractWebviewWebContentsDriver extends StandardWebConten
         });
 
         WebContentsNotifier.on(this.browserWindow.webContents,
-                               BrowserAppEvents.CONFIGURE_WINDOW,
+                               BrowserAppEvent.CONFIGURE_WINDOW,
                                (event: MainIPCEvent<Browser>) => {
 
             const browser = event.message;
