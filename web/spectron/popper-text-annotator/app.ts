@@ -68,12 +68,12 @@ export class MouseEventReferenceObject  implements Popper.ReferenceObject {
 
         switch (mouseDirection) {
             case 'up':
-                y = Math.min(boundingClientRect.top, mouseEvent.y);
+                y = boundingClientRect.top;
                 y -= buffer;
                 break;
 
             case 'down':
-                y = Math.max(boundingClientRect.top, mouseEvent.y);
+                y = boundingClientRect.bottom;
                 y += buffer;
                 break;
 
@@ -84,8 +84,8 @@ export class MouseEventReferenceObject  implements Popper.ReferenceObject {
             height: 0,
             top: y,
             bottom: y,
-            left: mouseEvent.x,
-            right: mouseEvent.x,
+            left: x,
+            right: x,
         };
 
     }
@@ -139,11 +139,16 @@ SpectronRenderer.run(async () => {
 
         if (! window.getSelection().isCollapsed) {
 
+            console.log("FIXME: originPoint: " , originPoint);
+
             // compute if the mouse is moving down or up to figure out the best
             // place to put the mouse
             const mouseDirection: Direction = event.y - originPoint!.y < 0 ? 'up' : 'down';
 
             const placement = mouseDirection === 'down' ? 'bottom' : 'top';
+
+            console.log("mouseDirection: " + mouseDirection)
+            console.log("placement: " + placement)
 
             console.log("selection active");
 
