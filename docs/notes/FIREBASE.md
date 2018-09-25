@@ -1,7 +1,14 @@
 # TODO
 
+- 
+
+- I'm going to have to break out some operations like follower counts into 
+  admin functions which are generated on the backend.  
+
 - how do I suspend a users account from uploading when they have hit their 
   quota?
+    - this can be part of the security profile for now.
+  
 
 https://stackoverflow.com/questions/37327515/using-firebase-with-electron
 
@@ -10,6 +17,12 @@ https://stackoverflow.com/questions/37327515/using-firebase-with-electron
 
 - do a demo of firebase analytics
 - 
+
+# Discovery
+
+ - take all the friends of users
+ - look at all their documents
+ - group by the friends  
 
 # First obstacles:
 

@@ -19,12 +19,12 @@ export class AppPaths {
         // TODO: sometimes appPath is an ASAR file and that really confuses
         // us and we're going to need a strategy to handle that situation.
 
-        let baseDirs = AppPaths.getBaseDirs();
+        const baseDirs = AppPaths.getBaseDirs();
 
         for (let i = 0; i < baseDirs.length; i++) {
             const baseDir = baseDirs[i];
 
-            let absolutePath = path.resolve(baseDir, relativePath);
+            const absolutePath = path.resolve(baseDir, relativePath);
 
             try {
 
@@ -36,7 +36,7 @@ export class AppPaths {
                 fs.readFileSync(absolutePath);
                 return absolutePath;
 
-            } catch( e ) {
+            } catch (e) {
                 // we know this happens because I can't tests for file exists
                 // since .asar files have to be read to check for existence.
             }
@@ -76,12 +76,12 @@ export class AppPaths {
         let relativePath = relativeURI;
         let queryData = "";
 
-        if(relativeURI.indexOf("?") !== -1) {
+        if (relativeURI.indexOf("?") !== -1) {
             relativePath = relativeURI.substring(0, relativeURI.indexOf("?"));
             queryData = relativeURI.substring(relativeURI.indexOf("?"));
         }
 
-        let path = AppPaths.relative(relativePath);
+        const path = AppPaths.relative(relativePath);
 
         return 'file://' + path + queryData;
 
