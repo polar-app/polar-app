@@ -46,6 +46,32 @@ export class RangeReferenceObject implements Popper.ReferenceObject {
 
 }
 
+export class MouseEventReferenceObject  implements Popper.ReferenceObject {
+
+    public readonly clientHeight: number;
+    public readonly clientWidth: number;
+    public readonly boundingClientRect: ClientRect;
+
+    constructor(mouseEvent: MouseEvent) {
+        this.clientHeight = 0;
+        this.clientWidth = 0;
+
+        this.boundingClientRect = {
+            width: 0,
+            height: 0,
+            top: mouseEvent.y,
+            bottom: mouseEvent.y,
+            left: mouseEvent.x,
+            right: mouseEvent.x,
+        };
+
+    }
+
+    public getBoundingClientRect(): ClientRect {
+        return this.boundingClientRect;
+    }
+}
+
 
 SpectronRenderer.run(async () => {
     console.log("Running within SpectronRenderer now.");
@@ -68,15 +94,23 @@ SpectronRenderer.run(async () => {
         popup.show();
     });
 
-    document.addEventListener('mouseup', (event) => {
+    // TODO: add TWO events.. one mouse down, and one mouse up.. then keep track
+    // of the delta between mouse up and mouse down to see where we should place
+    // the popper.
+
+
+    document.addEventListener('mouseup', (event: MouseEvent) => {
 
         if (! window.getSelection().isCollapsed) {
 
             console.log("selection active");
 
-            const popper = new Popper(new RangeReferenceObject(window.getSelection().getRangeAt(0)), popup , {
+            // const referenceObject = new RangeReferenceObject(window.getSelection().getRangeAt(0));
 
-                placement: 'bottom-end',
+            const referenceObject = new MouseEventReferenceObject(event);
+            const popper = new Popper(referenceObject, popup , {
+
+                placement: 'bottom',
                 onCreate: (data) => {
                     popup.show();
                     // TODO: automatically hide the popper if they click outside of the UI.
