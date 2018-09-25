@@ -2,6 +2,7 @@ import {SpectronRenderer} from '../../js/test/SpectronRenderer';
 import Popper, {ReferenceObject} from 'popper.js';
 import $ from '../../js/ui/JQuery';
 import {TextNodes} from '../../js/highlights/text/selection/TextNodes';
+import {Point} from '../../js/Point';
 
 
 export class TextNodeReferenceObject implements Popper.ReferenceObject {
@@ -52,15 +53,37 @@ export class MouseEventReferenceObject  implements Popper.ReferenceObject {
     public readonly clientWidth: number;
     public readonly boundingClientRect: ClientRect;
 
-    constructor(mouseEvent: MouseEvent) {
+    constructor(mouseEvent: MouseEvent, range: Range, mouseDirection: Direction) {
         this.clientHeight = 0;
         this.clientWidth = 0;
+
+        const boundingClientRect = range.getBoundingClientRect();
+
+        let y: number = 0;
+
+        // the x coord should always be from the mouse.
+        const x = mouseEvent.x;
+
+        const buffer = 5;
+
+        switch (mouseDirection) {
+            case 'up':
+                y = Math.min(boundingClientRect.top, mouseEvent.y);
+                y -= buffer;
+                break;
+
+            case 'down':
+                y = Math.max(boundingClientRect.top, mouseEvent.y);
+                y += buffer;
+                break;
+
+        }
 
         this.boundingClientRect = {
             width: 0,
             height: 0,
-            top: mouseEvent.y,
-            bottom: mouseEvent.y,
+            top: y,
+            bottom: y,
             left: mouseEvent.x,
             right: mouseEvent.x,
         };
@@ -70,6 +93,7 @@ export class MouseEventReferenceObject  implements Popper.ReferenceObject {
     public getBoundingClientRect(): ClientRect {
         return this.boundingClientRect;
     }
+
 }
 
 
@@ -80,7 +104,7 @@ SpectronRenderer.run(async () => {
 
     // FIXME: needs
     //
-    //    clientHeight: number;
+    //     clientHeight: number;
     //     clientWidth: number;
     //
     //     getBoundingClientRect(): ClientRect;
@@ -98,19 +122,38 @@ SpectronRenderer.run(async () => {
     // of the delta between mouse up and mouse down to see where we should place
     // the popper.
 
+    let originPoint: Point | undefined;
+
+    document.addEventListener('mousedown', (event: MouseEvent) => {
+
+        originPoint = {
+            x: event.x,
+            y: event.y
+        };
+
+    });
 
     document.addEventListener('mouseup', (event: MouseEvent) => {
 
+        // compute the direction...
+
         if (! window.getSelection().isCollapsed) {
+
+            // compute if the mouse is moving down or up to figure out the best
+            // place to put the mouse
+            const mouseDirection: Direction = event.y - originPoint!.y < 0 ? 'up' : 'down';
+
+            const placement = mouseDirection === 'down' ? 'bottom' : 'top';
 
             console.log("selection active");
 
-            // const referenceObject = new RangeReferenceObject(window.getSelection().getRangeAt(0));
+            // const referenceObject = new RangeReferenceObject();
 
-            const referenceObject = new MouseEventReferenceObject(event);
+            const range = window.getSelection().getRangeAt(0);
+            const referenceObject = new MouseEventReferenceObject(event, range, mouseDirection);
             const popper = new Popper(referenceObject, popup , {
 
-                placement: 'bottom',
+                placement,
                 onCreate: (data) => {
                     popup.show();
                     // TODO: automatically hide the popper if they click outside of the UI.
@@ -119,10 +162,10 @@ SpectronRenderer.run(async () => {
                     // flip: {
                     //     behavior: ['left', 'right', 'top', 'bottom']
                     // },
-                    // // offset: {
-                    // //     enabled: true,
-                    // //     offset: '0,10'
-                    // // }
+                    // offset: {
+                    //     enabled: true,
+                    //     offset: '10,0'
+                    // }
                     // arrow: {
                     //     enabled: true
                     // }
@@ -138,4 +181,4 @@ SpectronRenderer.run(async () => {
 
 });
 
-
+export type Direction = 'up' | 'down';
