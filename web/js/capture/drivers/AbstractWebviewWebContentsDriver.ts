@@ -149,7 +149,6 @@ export abstract class AbstractWebviewWebContentsDriver extends StandardWebConten
 
         this.webContents = await this.waitForWebview();
 
-        // FIXME: this configures the host
         await this.configureWebContents(this.webContents);
 
         await this.doInitGuestWebviewDimensions();

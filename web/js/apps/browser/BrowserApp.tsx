@@ -18,14 +18,6 @@ export class BrowserApp {
 
         await DocumentReadyStates.waitFor(document, 'complete');
 
-        // FIXME: what is left:
-
-        // - change the browser and reload the page when it's selected
-        //
-        // - ability to reload the page
-        //
-        // - change the icon when the page is loading
-
         const navigationReactor = new SimpleReactor<NavigationEventType>();
 
         ReactDOM.render(
