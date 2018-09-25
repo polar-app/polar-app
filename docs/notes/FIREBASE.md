@@ -1,5 +1,10 @@
 # TODO
 
+- how do I suspend a users account from uploading when they have hit their 
+  quota?
+
+https://stackoverflow.com/questions/37327515/using-firebase-with-electron
+
 - I need to REALLY grock firebase vs the realtime databse
 
 

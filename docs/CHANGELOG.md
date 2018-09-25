@@ -1,5 +1,11 @@
 
-# 1.0.0-beta175
+# 1.0.0-beta180
+
+- new capture browser bar that is much prettier and more usable than the current
+  browser bar and based on react.
+  
+- new / updated capture system allows the user to change the device being 
+  emulated for pages that are tricky to capture.
 
 - Updated large number of dependencies
 

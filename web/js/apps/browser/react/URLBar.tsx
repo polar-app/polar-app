@@ -15,7 +15,11 @@ export class URLBar extends React.Component<Props, State> {
 
         return (
 
-            <Input id="url-bar" className="px-2 mx-1" name="url" onKeyPress={(event) => this.onKeyPress(event)} />
+            <Input autoFocus
+                   id="url-bar"
+                   className="px-2 mx-1"
+                   name="url"
+                   onKeyPress={(event) => this.onKeyPress(event)} />
 
         );
 
