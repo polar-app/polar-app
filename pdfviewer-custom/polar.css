@@ -129,3 +129,9 @@ body {
     font-size: 13px;
 
 }
+
+#polar-toolbar #DIV_8,
+#polar-toolbar #DIV_5,
+#polar-toolbar button {
+    display: none;
+}
