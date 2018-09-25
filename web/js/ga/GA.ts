@@ -9,9 +9,9 @@ const Analytics: IAnalytics = require('electron-google-analytics').default;
 
 export class GA {
 
-    static analytics?: IAnalytics;
+    public static analytics?: IAnalytics;
 
-    static getInstance(userAgent: string) {
+    public static getInstance(userAgent: string) {
 
         Preconditions.assertNotNull(userAgent, "userAgent");
 
@@ -22,7 +22,7 @@ export class GA {
         return this.analytics;
     }
 
-    static getAppAnalytics(userAgent: string) {
+    public static getAppAnalytics(userAgent: string) {
         return new AppAnalytics(this.getInstance(userAgent));
     }
 
@@ -31,6 +31,8 @@ export class GA {
 export interface IAnalytics {
 
     new(trackingID: string, opts?: IAnalyticsOpts): IAnalytics;
+
+    set(key: string, value: number): Promise<IResponse>;
 
     screen(appName: string,
            appVer: string,

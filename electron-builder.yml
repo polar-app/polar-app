@@ -43,6 +43,18 @@ win:
   fileAssociations:
     - ext: "pdf"
 
+snap:
+
+  confinement: "strict"
+  grade: "stable"
+  stagePackages:
+    - "default"
+  plugs:
+    - "default"
+    - "home"
+    - "X11"
+    - "wayland"
+
 # https://www.electron.build/configuration/publish
 # https://help.github.com/articles/creating-a-personal-access-token-for-the-command-line/
 publish: github

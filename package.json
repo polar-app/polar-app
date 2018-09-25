@@ -8,7 +8,7 @@
     "make-targz": "tsc && electron-builder --config=electron-builder.yml --linux tar.gz",
     "make-snap": "tsc && electron-builder --config=electron-builder.yml --linux snap",
     "make-deb": "tsc && electron-builder --config=electron-builder.yml --linux deb",
-    "dist-linux": "tsc && electron-builder --config=electron-builder.yml --linux deb tar.gz --publish always",
+    "dist-linux": "tsc && electron-builder --config=electron-builder.yml --linux snap deb tar.gz --publish always",
     "dist-macos": "tsc && electron-builder --config=electron-builder.yml --macos dmg --publish always",
     "dist-win": "tsc && ./scripts/dist-win.sh",
     "compile": "tsc",

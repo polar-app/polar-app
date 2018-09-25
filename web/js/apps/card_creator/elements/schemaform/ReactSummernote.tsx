@@ -45,7 +45,7 @@ class ReactSummernote extends Component {
 
         this.props = props;
 
-        if(this.props.options.id) {
+        if (this.props.options.id) {
             this.uid = this.props.options.id;
         } else {
             this.uid = `react-summernote-${randomUid()}`;

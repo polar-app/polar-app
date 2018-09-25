@@ -63,3 +63,7 @@ https://snapcraft.io/account
 
   snapcraft push --release beta polar-bookshelf_1.0.0-beta30_amd64.snap
 ```
+
+## Install the snap manually to test: 
+
+snap install --dangerous ./dist/polar-bookshelf-1.0.0-beta180-amd64.snap
