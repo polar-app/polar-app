@@ -35,33 +35,83 @@
       <usages-collector id="statistics.lifecycle.project">
         <counts>
           <entry key="project.closed" value="2" />
+          <entry key="project.open.time.0" value="1" />
           <entry key="project.open.time.3" value="2" />
-          <entry key="project.opened" value="2" />
+          <entry key="project.opened" value="3" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
         <counts>
-          <entry key="html" value="1" />
+          <entry key="html" value="4" />
+          <entry key="md" value="1" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
-          <entry key="HTML" value="1" />
+          <entry key="HTML" value="4" />
+          <entry key="Markdown" value="1" />
         </counts>
       </usages-collector>
-      <usages-collector id="statistics.file.extensions.edit" />
+      <usages-collector id="statistics.file.extensions.edit">
+        <counts>
+          <entry key="md" value="52" />
+        </counts>
+      </usages-collector>
       <usages-collector id="statistics.go.postfix.template.usages.trigger" />
       <usages-collector id="statistics.js.language.service.starts" />
-      <usages-collector id="statistics.file.types.edit" />
+      <usages-collector id="statistics.file.types.edit">
+        <counts>
+          <entry key="Markdown" value="52" />
+        </counts>
+      </usages-collector>
     </session>
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/screenshots/test.html">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="153">
               <caret line="9" selection-start-line="9" selection-end-line="9" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/terms/privacy-policy.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="929">
+              <caret line="82" lean-forward="true" selection-start-line="82" selection-end-line="82" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/terms/terms-of-service.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="527">
+              <caret line="31" lean-forward="true" selection-start-line="31" selection-end-line="31" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/terms/cookie-policy.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="408">
+              <caret line="24" lean-forward="true" selection-start-line="24" selection-end-line="24" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/terms/README.md">
+          <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+            <state split_layout="FIRST">
+              <first_editor relative-caret-position="51">
+                <caret line="3" column="29" lean-forward="true" selection-start-line="3" selection-start-column="29" selection-end-line="3" selection-end-column="29" />
+              </first_editor>
+              <second_editor />
             </state>
           </provider>
         </entry>
@@ -78,6 +128,16 @@
       </map>
     </option>
   </component>
+  <component name="IdeDocumentHistory">
+    <option name="CHANGED_PATHS">
+      <list>
+        <option value="$PROJECT_DIR$/terms/privacy-policy.html" />
+        <option value="$PROJECT_DIR$/terms/terms-of-service.html" />
+        <option value="$PROJECT_DIR$/terms/README.md" />
+        <option value="$PROJECT_DIR$/terms/cookie-policy.html" />
+      </list>
+    </option>
+  </component>
   <component name="JsBuildToolGruntFileManager" detection-done="true" sorting="DEFINITION_ORDER" />
   <component name="JsBuildToolPackageJson" detection-done="true" sorting="DEFINITION_ORDER" />
   <component name="JsGulpfileManager">
@@ -90,7 +150,9 @@
     <option name="width" value="1354" />
     <option name="height" value="1107" />
   </component>
-  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="ProjectView">
     <navigator proportions="" version="1">
       <foldersAlwaysOnTop value="true" />
@@ -106,7 +168,7 @@
             <path>
               <item name="polar-assets" type="b2602c69:ProjectViewProjectNode" />
               <item name="polar-assets" type="462c0819:PsiDirectoryNode" />
-              <item name="screenshots" type="462c0819:PsiDirectoryNode" />
+              <item name="terms" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -178,16 +240,18 @@
       <updated>1536545557056</updated>
       <workItem from="1536545559689" duration="1557000" />
       <workItem from="1536587594764" duration="598000" />
+      <workItem from="1537881623349" duration="997000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="2155000" />
+    <option name="totallyTimeSpent" value="3152000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="499" y="376" width="1354" height="1107" extended-state="0" />
+    <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.3072378" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.31221375" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Designer" order="2" />
       <window_info id="Favorites" order="3" side_tool="true" />
@@ -219,24 +283,20 @@
     <option name="version" value="1" />
     <option name="exactExcludedFiles">
       <list>
-        <option value="$PROJECT_DIR$/../polar-bookshelf/web/js/apps/browser/BrowserAppWindowFactory.js.map" />
-        <option value="$PROJECT_DIR$/../polar-bookshelf/web/js/apps/browser/BrowserAppWindowFactory.js" />
-        <option value="$PROJECT_DIR$/../polar-bookshelf/web/js/logger/PersistentErrorLogger.js" />
-        <option value="$PROJECT_DIR$/../polar-bookshelf/web/js/logger/PersistentErrorLogger.js.map" />
-        <option value="$PROJECT_DIR$/../polar-bookshelf/web/spectron/persistent-error-logger/spec.js" />
-        <option value="$PROJECT_DIR$/../polar-bookshelf/web/spectron/persistent-error-logger/spec.js.map" />
-        <option value="$PROJECT_DIR$/../polar-bookshelf/web/spectron/persistent-error-logger/index.js.map" />
-        <option value="$PROJECT_DIR$/../polar-bookshelf/web/spectron/persistent-error-logger/index.js" />
-        <option value="$PROJECT_DIR$/../polar-bookshelf/web/spectron/persistent-error-logger/app.js.map" />
-        <option value="$PROJECT_DIR$/../polar-bookshelf/web/spectron/persistent-error-logger/app.js" />
         <option value="$PROJECT_DIR$/../polar-bookshelf/web/js/logger/FileLogger.js" />
-        <option value="$PROJECT_DIR$/../polar-bookshelf/web/js/logger/FileLogger.js.map" />
-        <option value="$PROJECT_DIR$/../polar-bookshelf/web/js/logger/FileLoggerTest.js.map" />
-        <option value="$PROJECT_DIR$/../polar-bookshelf/web/js/logger/FileLoggerTest.js" />
-        <option value="$PROJECT_DIR$/../polar-bookshelf/web/js/test/Testing.js" />
-        <option value="$PROJECT_DIR$/../polar-bookshelf/web/js/test/Testing.js.map" />
-        <option value="$PROJECT_DIR$/../polar-bookshelf/web/js/test/PolarDataDir.js.map" />
         <option value="$PROJECT_DIR$/../polar-bookshelf/web/js/test/PolarDataDir.js" />
+        <option value="$PROJECT_DIR$/../polar-bookshelf/web/js/logger/FileLoggerTest.js.map" />
+        <option value="$PROJECT_DIR$/../polar-bookshelf/web/js/test/PolarDataDir.js.map" />
+        <option value="$PROJECT_DIR$/../polar-bookshelf/web/spectron/persistent-error-logger/app.js" />
+        <option value="$PROJECT_DIR$/../polar-bookshelf/web/js/logger/PersistentErrorLogger.js.map" />
+        <option value="$PROJECT_DIR$/../polar-bookshelf/web/js/logger/FileLoggerTest.js" />
+        <option value="$PROJECT_DIR$/../polar-bookshelf/web/spectron/persistent-error-logger/index.js" />
+        <option value="$PROJECT_DIR$/../polar-bookshelf/web/js/logger/FileLogger.js.map" />
+        <option value="$PROJECT_DIR$/../polar-bookshelf/web/js/logger/PersistentErrorLogger.js" />
+        <option value="$PROJECT_DIR$/../polar-bookshelf/web/spectron/persistent-error-logger/index.js.map" />
+        <option value="$PROJECT_DIR$/../polar-bookshelf/web/spectron/persistent-error-logger/app.js.map" />
+        <option value="$PROJECT_DIR$/../polar-bookshelf/web/spectron/persistent-error-logger/spec.js.map" />
+        <option value="$PROJECT_DIR$/../polar-bookshelf/web/spectron/persistent-error-logger/spec.js" />
       </list>
     </option>
   </component>
@@ -248,6 +308,37 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="153">
           <caret line="9" selection-start-line="9" selection-end-line="9" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/terms/terms-of-service.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="527">
+          <caret line="31" lean-forward="true" selection-start-line="31" selection-end-line="31" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/terms/privacy-policy.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="929">
+          <caret line="82" lean-forward="true" selection-start-line="82" selection-end-line="82" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/terms/README.md">
+      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+        <state split_layout="FIRST">
+          <first_editor relative-caret-position="51">
+            <caret line="3" column="29" lean-forward="true" selection-start-line="3" selection-start-column="29" selection-end-line="3" selection-end-column="29" />
+          </first_editor>
+          <second_editor />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/terms/cookie-policy.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="408">
+          <caret line="24" lean-forward="true" selection-start-line="24" selection-end-line="24" />
         </state>
       </provider>
     </entry>
