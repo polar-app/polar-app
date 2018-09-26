@@ -1,0 +1,5 @@
+Comodo Code Signing Certificate:
+
+burton@spinn3r.com
+user: getpolarized
+pass: jzqopmzvixua6F
