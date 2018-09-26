@@ -43,7 +43,6 @@ export class BrowserApp {
 
             // Corresponds to the points in time when the spinner of the tab starts spinning.
             content.addEventListener('did-start-loading', () => {
-                console.log("started loading");
                 progressBar = ProgressBar.create(true);
                 document.body.scrollTo(0, 0);
                 navigationReactor.dispatchEvent('did-start-loading');
@@ -56,7 +55,6 @@ export class BrowserApp {
                     progressBar.destroy();
                 }
 
-                console.log("finished loading");
                 navigationReactor.dispatchEvent('did-stop-loading');
             });
 

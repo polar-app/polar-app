@@ -39,4 +39,5 @@ export interface Mutations {
     cleanupHead: any;
     cleanupBase: any;
     showAriaHidden: number;
+    adsBlocked: any;
 }

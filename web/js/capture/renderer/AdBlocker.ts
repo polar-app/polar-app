@@ -3,9 +3,9 @@
  */
 export class AdBlocker {
 
-    public static cleanse(contentDoc: Document) {
+    public static cleanse(contentDoc: Document, url: string) {
 
-        this.removeElements('amp-ad', contentDoc);
+        return this.removeElements('amp-ad', contentDoc);
 
     }
 

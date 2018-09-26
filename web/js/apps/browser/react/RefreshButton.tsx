@@ -11,7 +11,6 @@ export class RefreshButton extends React.Component<Props, State> {
         this.props.navigationReactor.addEventListener(event => {
 
             if (event === 'did-start-loading') {
-                console.log("started loading!");
 
                 this.setState( {
                     nav: 'loading'
@@ -20,7 +19,6 @@ export class RefreshButton extends React.Component<Props, State> {
             }
 
             if (event === 'did-stop-loading') {
-                console.log("stopped loading!");
 
                 this.setState( {
                     nav: 'loaded'

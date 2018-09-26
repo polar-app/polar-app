@@ -5,11 +5,12 @@ import {Dict} from '../../util/Dict';
 import {Result} from '../../util/Result';
 import {CapturedDoc} from './CaptureResults';
 import {Results} from '../../util/Results';
+import {AdBlocker} from './AdBlocker';
 
 export class ContentCapture {
 
 
-    static execute(): Result<any> {
+    public static execute(): Result<any> {
         return Results.execute(() => ContentCapture.captureHTML());
     }
 
@@ -21,7 +22,7 @@ export class ContentCapture {
 
     /**
      * Capture the page as HTML so that we can render it static.
-
+     *
      * @param [contentDoc] The document to capture the HTML from. We default to
      * the global 'document' object. when not given.
      *
@@ -31,7 +32,7 @@ export class ContentCapture {
      * @param [result] The result we are building.
      *
      */
-    static captureHTML(contentDoc?: Document, url?: string, result?: any): any {
+    public static captureHTML(contentDoc?: Document, url?: string, result?: any): any {
 
         const ENABLE_IFRAMES = true;
 
@@ -73,16 +74,16 @@ export class ContentCapture {
                     width: contentDoc.body.scrollWidth
                 }
 
-            }
+            };
 
         }
 
-        if(url in result.capturedDocuments) {
+        if (url in result.capturedDocuments) {
             console.warn("Skipping URL.  Already indexed: " + url);
             return result;
         }
 
-        let cloneDoc: Document = <Document>contentDoc.cloneNode(true);
+        const cloneDoc: Document = <Document> contentDoc.cloneNode(true);
 
         result.capturedDocuments[url]
             = ContentCapture.captureDoc(cloneDoc, contentDoc.location.href);
@@ -91,34 +92,21 @@ export class ContentCapture {
 
             console.log("Exporting iframes...");
 
-            // this doesn't always work and I think we need to fundamentally
-            // re-think our strategy here. I might have to keep track of all the
-            // webContents loaded and work with them directly.
-
-            // VM856:46 Uncaught DOMException: Failed to read the 'contentDocument' property from 'HTMLIFrameElement': Blocked a frame with origin "https://www.cnn.com" from accessing a cross-origin frame.
-            //     at <anonymous>:46:27
-            //     at NodeList.forEach (<anonymous>)
-            //     at Function.captureHTML (<anonymous>:42:51)
-            //     at <anonymous>:1:16
-            //     at EventEmitter.electron.ipcRenderer.on (/home/burton/projects/polar-bookshelf/node_modules/electron/dist/resources/electron.asar/renderer/init.js:75:28)
-            //     at emitMany (events.js:147:13)
-            //     at EventEmitter.emit (events.js:224:7)
-
             // now recurse into all the iframes in this doc and capture their HTML too.
-            let iframes = contentDoc.querySelectorAll("iframe");
+            const iframes = contentDoc.querySelectorAll("iframe");
 
             console.log("Found N iframes: " + iframes.length);
 
             let nrHandled = 0;
             let nrSkipped = 0;
 
-            iframes.forEach(function (iframe) {
+            iframes.forEach((iframe) => {
 
-                let frameValidity = ContentCapture.computeFrameValidity(iframe);
+                const frameValidity = ContentCapture.computeFrameValidity(iframe);
 
                 if (frameValidity.valid && iframe.contentDocument) {
 
-                    let iframeHref = iframe.contentDocument.location.href;
+                    const iframeHref = iframe.contentDocument.location.href;
 
                     console.log("Going to capture iframe: " + iframeHref);
                     console.log(iframe.outerHTML);
@@ -144,15 +132,15 @@ export class ContentCapture {
     /**
      * Return true if we should handle the given iframe.
      */
-    static computeFrameValidity(iframe: HTMLIFrameElement) {
+    private static computeFrameValidity(iframe: HTMLIFrameElement) {
 
-        let result: any = {
+        const result: any = {
             reason: null,
             valid: true
         };
 
         if (! iframe.contentDocument) {
-            return {reason: "NO_CONTENT_DOCUMENT", valid: false}
+            return {reason: "NO_CONTENT_DOCUMENT", valid: false};
         }
 
         // TODO: only work with http and https URLs or about:blank
@@ -163,16 +151,16 @@ export class ContentCapture {
             // are display none including visibility and calculated CSS and
             // off screen placement (top: -1000px, left: -1000px)
 
-            return {reason: "DISPLAY_NONE", valid: false}
+            return {reason: "DISPLAY_NONE", valid: false};
         }
 
         return result;
 
     }
 
-    static captureDoc(cloneDoc: Document, url: string): CapturedDoc {
+    private static captureDoc(cloneDoc: Document, url: string): CapturedDoc {
 
-        if(!cloneDoc) {
+        if (!cloneDoc) {
             throw new Error("No cloneDoc");
         }
 
@@ -181,7 +169,7 @@ export class ContentCapture {
 
         // TODO: store many of these fields in the HTML too because the iframes
         // need to have the same data
-        let result : CapturedDoc = {
+        const result: CapturedDoc = {
 
             // TODO: capture HTML metadata including twitter card information
             // which we could show in the UI.  Since we are capturing the whole
@@ -191,7 +179,7 @@ export class ContentCapture {
 
             // The document href / location as loaded.
             href: url,
-            url: url,
+            url,
 
             // The scroll height of the document as it is currently rendered.
             // This is used as a hint for loading the static form of the
@@ -220,7 +208,8 @@ export class ContentCapture {
                 cleanupRemoveScripts: null,
                 cleanupHead: null,
                 cleanupBase: null,
-                showAriaHidden: 0
+                showAriaHidden: 0,
+                adsBlocked: null
             }
 
         };
@@ -232,20 +221,20 @@ export class ContentCapture {
         result.mutations.cleanupRemoveScripts = ContentCapture.cleanupRemoveScripts(cloneDoc, url);
         result.mutations.cleanupHead = ContentCapture.cleanupHead(cloneDoc, url);
         result.mutations.cleanupBase = ContentCapture.cleanupBase(cloneDoc, url);
+        // result.mutations.adsBlocked = AdBlocker.cleanse(cloneDoc, url);
 
-
-        //***  add metadata into the HTML for polar
+        // ***  add metadata into the HTML for polar
 
         document.head.appendChild(ContentCapture.createMeta("polar-url", result.url));
 
-        //*** remove javascript html onX elements.
+        // *** remove javascript html onX elements.
 
         const EVENT_ATTRIBUTES = ContentCapture.createEventAttributes();
 
-        cloneDoc.querySelectorAll("*").forEach(function (element) {
+        cloneDoc.querySelectorAll("*").forEach((element) => {
 
-            Array.from(element.attributes).forEach(function(attr) {
-                if(EVENT_ATTRIBUTES[attr.name]) {
+            Array.from(element.attributes).forEach((attr) => {
+                if (EVENT_ATTRIBUTES[attr.name]) {
                     element.removeAttribute(attr.name);
                     ++result.mutations.eventAttributesRemoved;
                 }
@@ -255,10 +244,10 @@ export class ContentCapture {
 
         // *** remove javascript: anchors.
 
-        cloneDoc.querySelectorAll("a").forEach(function (element) {
+        cloneDoc.querySelectorAll("a").forEach((element) => {
 
-            let href = element.getAttribute("href");
-            if(href && href.indexOf("javascript:") === 0) {
+            const href = element.getAttribute("href");
+            if (href && href.indexOf("javascript:") === 0) {
                 element.removeAttribute("href");
                 ++result.mutations.javascriptAnchorsRemoved;
             }
@@ -276,16 +265,16 @@ export class ContentCapture {
 
     }
 
-    static cleanupBase(cloneDoc: Document, url: string) {
+    private static cleanupBase(cloneDoc: Document, url: string) {
 
-        let result: any = {
+        const result: any = {
             existingBaseRemoved: false,
             baseAdded: false
         };
 
         let base = cloneDoc.querySelector("base");
 
-        if(base && base.parentElement) {
+        if (base && base.parentElement) {
             // remove the current 'base' if one exists...
             base.parentElement.removeChild(base);
             result.existingBaseRemoved = true;
@@ -296,7 +285,7 @@ export class ContentCapture {
         base = cloneDoc.createElement("base");
         base.setAttribute("href", url);
 
-        if(cloneDoc.head.firstChild != null) {
+        if (cloneDoc.head.firstChild != null) {
             // base must be the first element
             cloneDoc.head.insertBefore(base, cloneDoc.head.firstChild);
         } else {

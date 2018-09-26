@@ -15,13 +15,7 @@ export class Browser implements Readonly<IBrowser> {
 
     public readonly deviceEmulation: Electron.Parameters;
 
-    /**
-     * True whether this browser is visible to the user in the UI by default.
-     *
-     * We might want to have some hidden/test browsers that are only used for
-     * testing.
-     */
-    public readonly visible: boolean = true;
+    public readonly inactive: boolean = false;
 
     /**
      *
@@ -51,6 +45,12 @@ export interface IBrowser {
     userAgent: string;
 
     deviceEmulation: Electron.Parameters;
+
+    /**
+     * True if this is currently inactive for user selection.  IE just a test
+     * profile.
+     */
+    inactive: boolean;
 
 }
 
@@ -87,6 +87,8 @@ export class BrowserProfileBuilder implements BrowserProfile {
     public hosted: boolean = false;
 
     public destroy: boolean = true;
+
+    public inactive: boolean = false;
 
     /**
      */
