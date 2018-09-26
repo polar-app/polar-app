@@ -1,9 +1,29 @@
 import Popper from 'popper.js';
 import {MouseEventReferenceObject} from './MouseEventReferenceObject';
+import {IPoint} from '../../Point';
+import {PointReferenceObject} from './PointReferenceObject';
 
 export class Popup {
 
-    public static createAtPoint() {
+    // TODO: automatically hide the popper if they click outside
+    // of the UI as an option.
+
+    public static createAtPoint(point: IPoint,
+                                placement: Popper.Placement,
+                                popupElement: HTMLElement): PopupInstance {
+
+
+        const referenceObject = new PointReferenceObject(point.x, point.y);
+        return new Popper(referenceObject, popupElement , {
+
+            placement,
+            onCreate: (data) => {
+                this.showElement(popupElement);
+            },
+            modifiers: {
+            }
+
+        });
 
     }
 
@@ -11,38 +31,40 @@ export class Popup {
                                     range: Range,
                                     mouseDirection: MouseDirection,
                                     placement: Popper.Placement,
-                                    popupElement: HTMLElement) {
+                                    popupElement: HTMLElement): PopupInstance {
 
         const referenceObject = new MouseEventReferenceObject(mouseEvent, range, mouseDirection);
-        const popper = new Popper(referenceObject, popupElement , {
+        return new Popper(referenceObject, popupElement , {
 
             placement,
             onCreate: (data) => {
-                // popup.show();
-                // TODO: restore what it was before it was hidden.
-                popupElement.style.display = 'block';
-                // TODO: automatically hide the popper if they click outside of the UI.
+                this.showElement(popupElement);
             },
             modifiers: {
-                // flip: {
-                //     behavior: ['left', 'right', 'top', 'bottom']
-                // },
-                // offset: {
-                //     enabled: true,
-                //     offset: '10,0'
-                // }
-                // arrow: {
-                //     enabled: true
-                // }
+
             }
 
         });
 
     }
 
+    private static showElement(element: HTMLElement) {
+
+        // mimics jquery popup.show() without jquery
+
+        // TODO: restore what it was before it was hidden.
+        element.style.display = 'block';
+
+    }
+
+}
+
+export interface PopupInstance {
+    destroy(): void;
 }
 
 /**
  * The direction the mouse is moving.
  */
 export type MouseDirection = 'up' | 'down';
+

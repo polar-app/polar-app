@@ -22,11 +22,11 @@ export class AnnotationsController {
 
     ipcClient = new Nullable<IPCClient<IPCEvent>>();
 
-    async start(): Promise<void> {
+    public async start(): Promise<void> {
 
         window.addEventListener("message", event => this.onMessageReceived(event), false);
 
-        let dialogWindowClient = await this.createDialogWindow();
+        const dialogWindowClient = await this.createDialogWindow();
         this.flashcardDialogWindow.set(dialogWindowClient);
 
         this.ipcClient.set(dialogWindowClient.createClient());
@@ -35,17 +35,17 @@ export class AnnotationsController {
 
     private onMessageReceived(event: any) {
 
-        let data = event.data;
+        const data = event.data;
 
         // TODO: refactor this to use IPC and make the api have
         // /api/context-menu in it so that it's obvious that we're responding
         // to context menu events
 
-        if(data) {
+        if (data) {
 
-            if(data.type === 'add-flashcard') {
+            if (data.type === 'add-flashcard') {
 
-                let triggerEvent = TriggerEvent.create(event.data);
+                const triggerEvent = TriggerEvent.create(event.data);
 
                 log.info("Creating flashcard from trigger event: ", triggerEvent);
 
