@@ -3,6 +3,9 @@ import {WebserverConfig} from './WebserverConfig';
 import {Hashcodes} from '../../Hashcodes';
 
 import path from 'path';
+import {Logger} from '../../logger/Logger';
+
+const log = Logger.create();
 
 /**
  * A registry of binary / local files to serve via HTTP so that pdf.js and
@@ -16,7 +19,7 @@ export class FileRegistry {
      * The registry of hashcodes to the file path it should be served from.
      *
      */
-    private readonly registry: {[key: string]: string} = {}
+    private readonly registry: {[key: string]: string} = {};
 
     constructor(webserverConfig: WebserverConfig) {
 
@@ -24,8 +27,8 @@ export class FileRegistry {
 
     }
 
-    registerFile(filename: string) {
-        let key = Hashcodes.create(filename);
+    public registerFile(filename: string) {
+        const key = Hashcodes.create(filename);
         return this.register(key, filename);
     }
 
@@ -35,14 +38,14 @@ export class FileRegistry {
      * registered.
      *
      */
-    register(key: string, filename: string): RegisterEntry {
+    public register(key: string, filename: string): RegisterEntry {
 
         filename = path.resolve(filename);
 
-        let reqPath = "/files/" + key;
+        const reqPath = "/files/" + key;
         this.registry[key] = filename;
 
-        console.log(`Registered new file at: ${reqPath} to ${filename}`)
+        log.info(`Registered new file at: ${reqPath} to ${filename}`);
 
         return { key, filename, url: `http://127.0.0.1:${this.webserverConfig.port}${reqPath}` };
 
@@ -53,7 +56,7 @@ export class FileRegistry {
      *
      * @param key The key we should fetch.
      */
-    hasKey(key: string) {
+    public hasKey(key: string) {
         return key in this.registry;
     }
 
@@ -61,16 +64,16 @@ export class FileRegistry {
      * Get metadata about the given key.
      *
      */
-    get(key: string): FileEntry {
+    public get(key: string): FileEntry {
 
-        if(!this.hasKey(key)) {
+        if (!this.hasKey(key)) {
             throw new Error("Key not registered: " + key);
         }
 
         return {
             key,
             filename: this.registry[key]
-        }
+        };
 
     }
 

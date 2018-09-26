@@ -45,7 +45,7 @@ export class ProgressLog {
 
         let logElement = notNull(document.querySelector(".log"));
 
-        let lineElement = Elements.createElementHTML(`<div class="">${progressEvent.message}</div>`);
+        let lineElement = Elements.createWrapperElementHTML(`<div class="">${progressEvent.message}</div>`);
 
         logElement.appendChild(lineElement);
 

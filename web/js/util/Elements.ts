@@ -17,15 +17,15 @@ export class Elements {
      */
 
     // FIXME: this should be getPageOffsetRect and have a relativeToParentElement which is optional.
-    static getRelativeOffsetRect(element: HTMLElement, parentElement?: HTMLElement): any {
+    public static getRelativeOffsetRect(element: HTMLElement, parentElement?: HTMLElement): any {
 
         Preconditions.assertNotNull(element, "element");
 
-        if(! parentElement) {
+        if (! parentElement) {
             parentElement = element.ownerDocument.documentElement;
         }
 
-        let offsetRect = {left: 0, top: 0, width: 0, height: 0};
+        const offsetRect = {left: 0, top: 0, width: 0, height: 0};
 
         function toInt(value: number) {
             if ( isNaN(value) ) {
@@ -37,10 +37,11 @@ export class Elements {
         offsetRect.width = toInt(element.offsetWidth);
         offsetRect.height = toInt(element.offsetHeight);
 
-        while(element !== null) {
+        while (element !== null) {
 
-            if(element === parentElement)
+            if (element === parentElement) {
                 break;
+            }
 
             offsetRect.left += toInt(element.offsetLeft);
             offsetRect.top += toInt(element.offsetTop);
@@ -49,10 +50,10 @@ export class Elements {
             // I think this isn't true... I think the problem is that the page
             // position changes WRT scrolling.
 
-            //offsetRect.left += toInt(element.scrollLeft);
-            //offsetRect.top += toInt(element.scrollTop);
+            // offsetRect.left += toInt(element.scrollLeft);
+            // offsetRect.top += toInt(element.scrollTop);
 
-            element = <HTMLElement>element.offsetParent;
+            element = <HTMLElement> element.offsetParent;
 
         }
 
@@ -61,23 +62,37 @@ export class Elements {
     }
 
     /**
-     * Create a div from the given innerHTML and return it.
+     * Create a div from the given innerHTML and return it with a wrapper.
      *
      * @param innerHTML
      * @return {HTMLDivElement}
      */
-    static createElementHTML(innerHTML: string) {
+    public static createWrapperElementHTML(innerHTML: string) {
 
-        let div = document.createElement("div");
+        const div = document.createElement("div");
         div.innerHTML = innerHTML;
 
         return div;
 
     }
 
-    static offset(element: HTMLElement) {
+    /**
+     * Create an element for the given HTML and return the element instance
+     *
+     * @param html The HTML element to create
+     */
+    public static createElementHTML(html: string): HTMLElement {
 
-        let result = {
+        const div = document.createElement("div");
+        div.innerHTML = html;
+
+        return <HTMLElement> div.firstChild!;
+
+    }
+
+    public static offset(element: HTMLElement) {
+
+        const result = {
             left: element.offsetLeft,
             top: element.offsetTop,
             width: element.offsetWidth,
@@ -96,14 +111,14 @@ export class Elements {
     /**
      * Require that the element have the given classname.
      */
-    static requireClass(element: HTMLElement, clazz: string) {
+    public static requireClass(element: HTMLElement, clazz: string) {
 
-        let classValue = element.getAttribute("class");
+        const classValue = element.getAttribute("class");
 
-        if( ! classValue || classValue.indexOf(clazz) === -1) {
+        if ( ! classValue || classValue.indexOf(clazz) === -1) {
 
             // element isn't the proper class we're expecting.
-            throw new Error("Element does not have the proper class: " + clazz)
+            throw new Error("Element does not have the proper class: " + clazz);
 
         }
 
@@ -114,17 +129,19 @@ export class Elements {
      * or return null when one was not found.
      *
      */
-    static untilRoot(element: any, selector: string): any {
+    public static untilRoot(element: any, selector: string): any {
 
         // TODO: refactor this for typescript
 
-        if (!element)
+        if (!element) {
             throw new Error("element required");
+        }
 
-        if (!selector)
+        if (!selector) {
             throw new Error("selector required");
+        }
 
-        if(element.matches(selector)) {
+        if (element.matches(selector)) {
             return element;
         }
 
@@ -137,17 +154,18 @@ export class Elements {
 
     }
 
-    static calculateVisibilityForDiv(div: HTMLElement): number {
+    public static calculateVisibilityForDiv(div: HTMLElement): number {
 
-        if(div == null)
+        if (div == null) {
             throw Error("Not given a div");
+        }
 
-        let windowHeight = $(window).height(),
+        const windowHeight = $(window).height(),
             docScroll = $(document).scrollTop(),
             divPosition = $(div).offset().top,
             divHeight = $(div).height();
 
-        let hiddenBefore = docScroll - divPosition,
+        const hiddenBefore = docScroll - divPosition,
             hiddenAfter = (divPosition + divHeight) - (docScroll + windowHeight);
 
         if ((docScroll > divPosition + divHeight) || (divPosition > docScroll + windowHeight)) {

@@ -4,8 +4,10 @@ export class Blackout {
 
     public static enable() {
 
+        const style = 'height:100%; width:100%; position:absolute; top:0; left:0; background-color:#000000; opacity: 0.2;';
+
         const blackoutElement =
-            Elements.createElementHTML(`<div id="blackout" style="height:100%; width:100%; position:absolute; top:0; left:0; background-color:#000000; opacity: 0.2;">`)
+            Elements.createWrapperElementHTML(`<div id="blackout" style="${style}">`)
                 .firstChild!;
 
         document.body.appendChild(blackoutElement);

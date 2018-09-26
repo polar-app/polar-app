@@ -48,7 +48,7 @@ export class ProgressUI {
 
         let logElement = notNull(document.querySelector(".log"));
 
-        let lineElement = Elements.createElementHTML(`<div class="">${progressEvent.details.url}</div>`);
+        let lineElement = Elements.createWrapperElementHTML(`<div class="">${progressEvent.details.url}</div>`);
 
         logElement.appendChild(lineElement);
 

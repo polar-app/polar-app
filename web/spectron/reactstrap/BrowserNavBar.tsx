@@ -4,7 +4,7 @@ import Navbar from 'reactstrap/lib/Navbar';
 import {BrowserConfigurationInputGroup} from './BrowserConfigurationInputGroup';
 import {CaptureButton} from './CaptureButton';
 
-class BrowserNavBar extends React.Component<any, IAppState> {
+class BrowserNavBar extends React.Component<any, IState> {
 
     constructor(props: any, context: any) {
         super(props, context);
@@ -48,7 +48,7 @@ class BrowserNavBar extends React.Component<any, IAppState> {
 
 }
 
-interface IAppState {
+interface IState {
     dropdownOpen: boolean;
     splitButtonOpen: boolean;
 
