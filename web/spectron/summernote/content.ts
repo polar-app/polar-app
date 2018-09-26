@@ -2,7 +2,7 @@
 
 import $ from '../../../web/js/ui/JQuery';
 import 'bootstrap';
-import 'summernote/dist/summernote';
+import 'summernote/dist/summernote-bs4';
 
 // import 'summernote/dist/summernote';
 // import 'bootstrap/dist/js/src/modal';
