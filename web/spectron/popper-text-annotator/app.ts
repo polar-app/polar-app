@@ -1,101 +1,9 @@
 import {SpectronRenderer} from '../../js/test/SpectronRenderer';
-import Popper, {ReferenceObject} from 'popper.js';
+import Popper from 'popper.js';
 import $ from '../../js/ui/JQuery';
-import {TextNodes} from '../../js/highlights/text/selection/TextNodes';
 import {Point} from '../../js/Point';
-
-
-export class TextNodeReferenceObject implements Popper.ReferenceObject {
-
-    public readonly clientHeight: number;
-    public readonly clientWidth: number;
-    private textNode: Node;
-
-    constructor(textNode: Node) {
-        this.textNode = textNode;
-
-        const boundingClientRect = TextNodes.getRange(this.textNode).getBoundingClientRect();
-
-        this.clientHeight = boundingClientRect.height;
-        this.clientWidth = boundingClientRect.width;
-    }
-
-    public getBoundingClientRect(): ClientRect {
-        return TextNodes.getRange(this.textNode).getBoundingClientRect();
-    }
-
-}
-
-export class RangeReferenceObject implements Popper.ReferenceObject {
-
-    public readonly clientHeight: number;
-    public readonly clientWidth: number;
-    private readonly range: Range;
-
-    constructor(range: Range) {
-        this.range = range;
-
-        const boundingClientRect = range.getBoundingClientRect();
-
-        this.clientHeight = boundingClientRect.height;
-        this.clientWidth = boundingClientRect.width;
-    }
-
-    public getBoundingClientRect(): ClientRect {
-        return this.range.getBoundingClientRect();
-    }
-
-}
-
-export class MouseEventReferenceObject  implements Popper.ReferenceObject {
-
-    public readonly clientHeight: number;
-    public readonly clientWidth: number;
-    public readonly boundingClientRect: ClientRect;
-
-    constructor(mouseEvent: MouseEvent, range: Range, mouseDirection: Direction) {
-        this.clientHeight = 0;
-        this.clientWidth = 0;
-
-        const boundingClientRect = range.getBoundingClientRect();
-
-        let y: number = 0;
-
-        // the x coord should always be from the mouse.
-        const x = mouseEvent.x;
-
-        const buffer = 5;
-
-        switch (mouseDirection) {
-            case 'up':
-                y = boundingClientRect.top;
-                y -= buffer;
-                break;
-
-            case 'down':
-                y = boundingClientRect.bottom;
-                y += buffer;
-                break;
-
-        }
-
-        this.boundingClientRect = {
-            width: 0,
-            height: 0,
-            top: y,
-            bottom: y,
-            left: x,
-            right: x,
-        };
-
-    }
-
-    public getBoundingClientRect(): ClientRect {
-        return this.boundingClientRect;
-    }
-
-}
-
+import {MouseDirection} from '../../js/ui/popup/Popup';
+import {MouseEventReferenceObject} from '../../js/ui/popup/MouseEventReferenceObject';
 
 SpectronRenderer.run(async () => {
     console.log("Running within SpectronRenderer now.");
@@ -139,18 +47,16 @@ SpectronRenderer.run(async () => {
 
         if (! window.getSelection().isCollapsed) {
 
-            console.log("FIXME: originPoint: " , originPoint);
-
             // compute if the mouse is moving down or up to figure out the best
             // place to put the mouse
-            const mouseDirection: Direction = event.y - originPoint!.y < 0 ? 'up' : 'down';
+            const mouseDirection: MouseDirection = event.y - originPoint!.y < 0 ? 'up' : 'down';
 
             const placement = mouseDirection === 'down' ? 'bottom' : 'top';
 
-            console.log("mouseDirection: " + mouseDirection)
-            console.log("placement: " + placement)
-
-            console.log("selection active");
+            // console.log("mouseDirection: " + mouseDirection)
+            // console.log("placement: " + placement)
+            //
+            // console.log("selection active");
 
             // const referenceObject = new RangeReferenceObject();
 
@@ -185,5 +91,3 @@ SpectronRenderer.run(async () => {
 
 
 });
-
-export type Direction = 'up' | 'down';
