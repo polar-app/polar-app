@@ -2,6 +2,7 @@ import {isPresent, Preconditions} from '../Preconditions';
 import {Event} from './Event';
 import {Listener} from './Listener';
 import {Logger} from '../logger/Logger';
+import {ISimpleReactor} from './SimpleReactor';
 
 const log = Logger.create();
 
@@ -147,4 +148,8 @@ export interface IMutableReactor<V> extends IReactor<V> {
     clearEvent(eventName: string): void;
     removeEventListener(eventName: string, listener: Listener<V>): boolean;
     getEventListeners(eventName: string): Array<Listener<V>>;
+}
+
+export interface INamedEventDispatcher<V> extends IReactor<V> {
+
 }

@@ -1,8 +1,8 @@
 import {TriggerEvent} from '../contextmenu/TriggerEvent';
 import {Logger} from '../logger/Logger';
-import {Elements} from '../util/Elements';
-import {Popup} from '../ui/popup/Popup';
-import {CommentsDOM} from './react/CommentsDOM';
+import {CommentPopupBoxes} from './react/CommentPopupBoxes';
+import {SimpleReactor} from '../reactor/SimpleReactor';
+import {CommentEvent} from './react/CommentEvent';
 
 const log = Logger.create();
 
@@ -10,15 +10,13 @@ export class CommentsController {
 
     private popupElement?: HTMLElement;
 
+    private readonly commentEventDispatcher = new SimpleReactor<CommentEvent>();
+
     public start(): void {
 
         window.addEventListener("message", event => this.onMessageReceived(event), false);
 
-        this.popupElement = CommentsDOM.createPopupElement();
-
-        document.body.appendChild(this.popupElement);
-
-        CommentsDOM.render(this.popupElement);
+        CommentPopupBoxes.create(this.commentEventDispatcher);
 
     }
 
@@ -45,9 +43,10 @@ export class CommentsController {
 
     private async createComment(triggerEvent: TriggerEvent) {
 
-        // TODO: create a popup around the given point in the TriggerEvent...
-
-        Popup.createAtPoint(triggerEvent.points.client, 'bottom', this.popupElement!);
+        this.commentEventDispatcher.dispatchEvent({
+            point: triggerEvent.points.client,
+            type: 'create'
+        });
 
     }
 

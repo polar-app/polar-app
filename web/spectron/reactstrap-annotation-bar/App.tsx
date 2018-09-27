@@ -19,6 +19,13 @@ class App<P> extends React.Component<{}, IAppState> {
     }
 
     public toggle() {
+
+        if (! this.state.popoverOpen) {
+            // this is a bit of a hack to position it exactly where we want it.
+            document.getElementById('Popover1')!.style.cssText
+                = 'position: absolute; top: 300px; left: 300px;';
+        }
+
         this.setState({
             popoverOpen: !this.state.popoverOpen
         });
@@ -30,7 +37,10 @@ class App<P> extends React.Component<{}, IAppState> {
                 <Button id="Popover1" onClick={this.toggle}>
                     Launch Popover
                 </Button>
-                <Popover placement="bottom" isOpen={this.state.popoverOpen} target="Popover1" toggle={this.toggle}>
+                <Popover placement="bottom"
+                         isOpen={this.state.popoverOpen}
+                         target="Popover1"
+                         toggle={this.toggle}>
                     {/*<PopoverHeader>Popover Title</PopoverHeader>*/}
                     <PopoverBody>
 

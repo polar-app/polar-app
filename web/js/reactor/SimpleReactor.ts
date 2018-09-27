@@ -50,3 +50,7 @@ export interface ISimpleReactor<V> {
     removeEventListener(listener: Listener<V>): boolean;
     dispatchEvent(value: V): void;
 }
+
+export interface IEventDispatcher<V> extends ISimpleReactor<V> {
+
+}

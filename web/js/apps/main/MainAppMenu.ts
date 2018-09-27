@@ -168,8 +168,8 @@ export class MainAppMenu {
                     type: 'separator'
                 },
                 {
-                    label: 'Exit',
-                    accelerator: 'Alt+F4',
+                    label: 'Quit',
+                    accelerator: 'CmdOrCtrl+Q',
                     click: this.mainAppController.cmdExit.bind(this.mainAppController)
                 },
             ]
