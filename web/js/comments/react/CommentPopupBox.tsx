@@ -6,6 +6,7 @@ import PopoverHeader from 'reactstrap/lib/PopoverHeader';
 import {CommentEvent} from './CommentEvent';
 import {IEventDispatcher} from '../../reactor/SimpleReactor';
 import {Point} from '../../Point';
+import {ReactSummernote4} from '../../apps/card_creator/elements/schemaform/ReactSummernote4';
 
 export class CommentPopupBox extends React.Component<IProps, IState> {
 
@@ -19,7 +20,6 @@ export class CommentPopupBox extends React.Component<IProps, IState> {
         };
 
         this.props.commentEventDispatcher.addEventListener(event => {
-            console.log("FIXME got comment event")
             this.show(event.point);
         });
 
@@ -46,23 +46,64 @@ export class CommentPopupBox extends React.Component<IProps, IState> {
 
             <div id="comment-popup-box">
 
-                <div id="comment-anchor"></div>
+                {/*<div id="comment-anchor"></div>*/}
+
+                <Button id="comment-anchor" onClick={this.toggle}>
+                    Launch Popover
+                </Button>
 
                 <Popover placement="bottom"
                          id="comment-popup-box-popover"
                          isOpen={this.state.popoverOpen}
                          target="comment-anchor"
                          toggle={this.toggle}
-                         style={{width: '400px'}}>
+                         style={{width: '650px'}}>
                     <PopoverHeader>Add Comment</PopoverHeader>
                     <PopoverBody>
 
-                         <textarea placeholder="Enter comment your comment here. Full HTML and images supported."
-                                   className="w-100">
+                        <div className="border rounded p-1">
+                            <ReactSummernote4 className="w-100"
 
-                         </textarea>
+                            value=""
+                            options={{
+                                id: 'my-summernote',
+                                lang: 'en-US',
+                                height: 400,
+                                placeholder: "Enter your comment.",
+                                dialogsInBody: false,
+                                airMode: true,
+                                // toolbar: [
+                                //     ['style', []],
+                                //     ['font', []],
+                                //     ['fontname', []],
+                                //     ['para', []],
+                                //     ['table', []],
+                                //     ['insert', []],
+                                //     ['view', []],
+                                //     ['image', []]
+                                // ]
 
-                         <Button size="sm" color="primary" className="mt-2">Add Comment</Button>
+                                // FIXME: add blockquote, code, and pre, and cite
+
+                                // missing the highlight color pulldown...
+
+                                toolbar: [
+                                    ['style', ['style']],
+                                    ['font', ['bold', 'italic', 'underline', 'clear', 'color', 'superscript', 'subscript']],
+                                    // ['fontname', ['fontname']],
+                                    ['para', ['ul', 'ol', 'paragraph']],
+                                    ['table', ['table']],
+                                    ['insert', ['link', 'picture', 'video']],
+                                    ['view', []]
+                                ]
+
+                            }}
+                        />
+                        </div>
+
+                         <Button size="sm" color="primary" className="mt-2">
+                             Add Comment
+                         </Button>
 
                     </PopoverBody>
 

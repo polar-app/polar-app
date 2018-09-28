@@ -135,3 +135,13 @@ body {
 #polar-toolbar button {
     display: none;
 }
+
+
+.popover {
+    max-width: 1024px;
+}
+
+.note-editing-area {
+    padding: 5px;
+    height: 250px;
+}
