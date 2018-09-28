@@ -214,13 +214,15 @@ export default class App extends React.Component<AppProps, AppState> {
                                 resizable: false,
                                 Cell: (row: any) => {
 
+                                    const title = 'Flag document';
+
                                     if (row.original.flagged) {
                                         return (
-                                            <i className="fa fa-flag doc-button doc-button-active"/>
+                                            <i className="fa fa-flag doc-button doc-button-active" title={title}/>
                                         );
                                     } else {
                                         return (
-                                            <i className="fa fa-flag doc-button doc-button-inactive"/>
+                                            <i className="fa fa-flag doc-button doc-button-inactive" title={title}/>
                                         );
                                     }
 
@@ -234,13 +236,15 @@ export default class App extends React.Component<AppProps, AppState> {
                                 resizable: false,
                                 Cell: (row: any) => {
 
+                                    const title = 'Archive document';
+
                                     if (row.original.archived) {
                                         return (
-                                            <i className="fa fa-check doc-button doc-button-active"/>
+                                            <i className="fa fa-check doc-button doc-button-active" title={title}/>
                                         );
                                     } else {
                                         return (
-                                            <i className="fa fa-check doc-button doc-button-inactive"/>
+                                            <i className="fa fa-check doc-button doc-button-inactive" title={title}/>
                                         );
                                     }
 

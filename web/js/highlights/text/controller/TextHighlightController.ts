@@ -255,11 +255,9 @@ export class TextHighlightController {
             log.info("TextHighlightController.onTextHighlightCreatedModern");
 
             // right now we're not implementing rows...
-            //let textHighlightRows = TextHighlightRows.createFromSelector(selector);
+            // let textHighlightRows = TextHighlightRows.createFromSelector(selector);
 
             let selectedContent = SelectedContents.compute(win);
-
-            console.log("Working with: " + JSON.stringify(selectedContent, null, "  "));
 
             let rectTexts: any[] = selectedContent.rectTexts;
             let rects = rectTexts.map(current => current.boundingPageRect);
