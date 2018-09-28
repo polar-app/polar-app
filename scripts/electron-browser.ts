@@ -46,9 +46,9 @@ app.on('ready', async function() {
     const browserWindow = await BrowserAppWindowFactory.createWindow(url);
     browserWindow.webContents.setZoomFactor(1.0);
 
-    //mainWindow.loadURL('about:blank')
+    // mainWindow.loadURL('about:blank')
 
-    //mainWindow.loadURL(url)
+    // mainWindow.loadURL(url)
 
 });
 

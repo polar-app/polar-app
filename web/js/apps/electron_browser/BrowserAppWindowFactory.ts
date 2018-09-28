@@ -28,6 +28,8 @@ export const BROWSER_WINDOW_OPTIONS: Electron.BrowserWindowConstructorOptions = 
 
         webaudio: false,
 
+        nodeIntegration: false,
+
         // zoomFactor: 1.0
 
         /**
