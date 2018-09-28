@@ -46,68 +46,68 @@ export class CommentPopupBox extends React.Component<IProps, IState> {
 
             <div id="comment-popup-box">
 
-                {/*<div id="comment-anchor"></div>*/}
+                {/*/!*<div id="comment-anchor"></div>*!/*/}
 
-                <Button id="comment-anchor" onClick={this.toggle}>
-                    Launch Popover
-                </Button>
+                {/*<Button id="comment-anchor" onClick={this.toggle}>*/}
+                    {/*Launch Popover*/}
+                {/*</Button>*/}
 
-                <Popover placement="bottom"
-                         id="comment-popup-box-popover"
-                         isOpen={this.state.popoverOpen}
-                         target="comment-anchor"
-                         toggle={this.toggle}
-                         style={{width: '650px'}}>
-                    <PopoverHeader>Add Comment</PopoverHeader>
-                    <PopoverBody>
+                {/*<Popover placement="bottom"*/}
+                         {/*id="comment-popup-box-popover"*/}
+                         {/*isOpen={this.state.popoverOpen}*/}
+                         {/*target="comment-anchor"*/}
+                         {/*toggle={this.toggle}*/}
+                         {/*style={{width: '650px'}}>*/}
+                    {/*<PopoverHeader>Add Comment</PopoverHeader>*/}
+                    {/*<PopoverBody>*/}
 
-                        <div className="border rounded p-1">
-                            <ReactSummernote4 className="w-100"
+                        {/*<div className="border rounded p-1">*/}
+                            {/*<ReactSummernote4 className="w-100"*/}
 
-                            value=""
-                            options={{
-                                id: 'my-summernote',
-                                lang: 'en-US',
-                                height: 400,
-                                placeholder: "Enter your comment.",
-                                dialogsInBody: false,
-                                airMode: true,
-                                // toolbar: [
-                                //     ['style', []],
-                                //     ['font', []],
-                                //     ['fontname', []],
-                                //     ['para', []],
-                                //     ['table', []],
-                                //     ['insert', []],
-                                //     ['view', []],
-                                //     ['image', []]
-                                // ]
+                            {/*value=""*/}
+                            {/*options={{*/}
+                                {/*id: 'my-summernote',*/}
+                                {/*lang: 'en-US',*/}
+                                {/*height: 400,*/}
+                                {/*placeholder: "Enter your comment.",*/}
+                                {/*dialogsInBody: false,*/}
+                                {/*airMode: true,*/}
+                                {/*// toolbar: [*/}
+                                {/*//     ['style', []],*/}
+                                {/*//     ['font', []],*/}
+                                {/*//     ['fontname', []],*/}
+                                {/*//     ['para', []],*/}
+                                {/*//     ['table', []],*/}
+                                {/*//     ['insert', []],*/}
+                                {/*//     ['view', []],*/}
+                                {/*//     ['image', []]*/}
+                                {/*// ]*/}
 
-                                // FIXME: add blockquote, code, and pre, and cite
+                                {/*// FIXME: add blockquote, code, and pre, and cite*/}
 
-                                // missing the highlight color pulldown...
+                                {/*// missing the highlight color pulldown...*/}
 
-                                toolbar: [
-                                    ['style', ['style']],
-                                    ['font', ['bold', 'italic', 'underline', 'clear', 'color', 'superscript', 'subscript']],
-                                    // ['fontname', ['fontname']],
-                                    ['para', ['ul', 'ol', 'paragraph']],
-                                    ['table', ['table']],
-                                    ['insert', ['link', 'picture', 'video']],
-                                    ['view', []]
-                                ]
+                                {/*toolbar: [*/}
+                                    {/*['style', ['style']],*/}
+                                    {/*['font', ['bold', 'italic', 'underline', 'clear', 'color', 'superscript', 'subscript']],*/}
+                                    {/*// ['fontname', ['fontname']],*/}
+                                    {/*['para', ['ul', 'ol', 'paragraph']],*/}
+                                    {/*['table', ['table']],*/}
+                                    {/*['insert', ['link', 'picture', 'video']],*/}
+                                    {/*['view', []]*/}
+                                {/*]*/}
 
-                            }}
-                        />
-                        </div>
+                            {/*}}*/}
+                        {/*/>*/}
+                        {/*</div>*/}
 
-                         <Button size="sm" color="primary" className="mt-2">
-                             Add Comment
-                         </Button>
+                         {/*<Button size="sm" color="primary" className="mt-2">*/}
+                             {/*Add Comment*/}
+                         {/*</Button>*/}
 
-                    </PopoverBody>
+                    {/*</PopoverBody>*/}
 
-                </Popover>
+                {/*</Popover>*/}
 
             </div>
             // <div className="border rounded p-2 shadow">
