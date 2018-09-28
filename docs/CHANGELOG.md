@@ -1,4 +1,10 @@
 
+# 1.0.0-beta190
+ 
+ - Fixed security issue. Please upgrade.  
+ 
+ - Windows binaries should now be signed!
+
 # 1.0.0-beta180
 
 - Mac OS builds are now signed.

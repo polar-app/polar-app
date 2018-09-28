@@ -7,6 +7,8 @@ const Analytics: IAnalytics = require('electron-google-analytics').default;
 // OS version but I don't think there is an easy way to get this from the main
 // process.
 
+const TRACKING_ID = 'UA-122721184-1';
+
 export class GA {
 
     public static analytics?: IAnalytics;
@@ -16,7 +18,7 @@ export class GA {
         Preconditions.assertNotNull(userAgent, "userAgent");
 
         if(this.analytics === undefined) {
-            this.analytics = new Analytics('UA-122721184-1', {userAgent});
+            this.analytics = new Analytics(TRACKING_ID, {userAgent});
         }
 
         return this.analytics;
@@ -40,6 +42,11 @@ export interface IAnalytics {
            appInstallerID: string,
            screenName: string,
            clientID: string): Promise<IResponse>;
+
+    pageview(hostname: string,
+             url: string,
+             title: string,
+             clientID: string): Promise<IResponse>;
 
 }
 

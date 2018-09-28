@@ -42,6 +42,7 @@ win:
   icon: ./icons/icon-512x512.png
   fileAssociations:
     - ext: "pdf"
+  publisherName: Spinn3r
 
 snap:
 

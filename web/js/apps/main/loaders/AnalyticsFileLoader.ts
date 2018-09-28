@@ -14,11 +14,11 @@ export class AnalyticsFileLoader implements FileLoader {
         this.delegate = delegate;
     }
 
-    registerForLoad(path: string): Promise<LoadedFile> {
+    public registerForLoad(path: string): Promise<LoadedFile> {
 
-        let appAnalytics = GA.getAppAnalytics(this.userAgent);
+        const appAnalytics = GA.getAppAnalytics(this.userAgent);
 
-        let fileType = FileTypes.create(path);
+        const fileType = FileTypes.create(path);
 
         appAnalytics.screen(`${fileType}viewer`);
 

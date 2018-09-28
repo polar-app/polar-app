@@ -6,7 +6,7 @@ import os from 'os';
 
 const log = Logger.create();
 
-const version = Version.get();
+const VERSION = Version.get();
 
 export class AppAnalytics {
 
@@ -16,6 +16,17 @@ export class AppAnalytics {
         this.analytics = analytics;
     }
 
+
+    /**
+     * Should be called on init to track state of the app. Product version, etc.
+     */
+    public async init() {
+
+        // this.analytics.set('version', VERSION)
+        //     .catch( err => log.error("Could not send tracking information: ", err));
+
+    }
+
     public screen(screenName: string) {
 
         // TODO: record OS too...
@@ -23,7 +34,7 @@ export class AppAnalytics {
         log.info("Viewer ready... ");
 
         const appName = "polar-bookshelf";
-        const appVer = version;
+        const appVer = VERSION;
         const appID = "io.inputneuron.polar";
 
         const appInstallerID = "unknown";
