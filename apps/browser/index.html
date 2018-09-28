@@ -117,13 +117,16 @@
 
     <!--<div id="content-parent">-->
 
+        <!-- NOTE do not set nodeintegration="false" as the presents of the
+             attribute is all that's used, not the actual value -->
+
         <webview autosize="true"
                  name="content"
                  id="content"
                  src="./splash.html"
                  disablewebsecurity
-                 nodeintegration="false"
                  preload="../../web/js/capture/renderer/ContentCapture.js"></webview>
+
     <!--</div>-->
 
 

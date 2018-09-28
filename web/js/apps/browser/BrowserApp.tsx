@@ -62,6 +62,32 @@ export class BrowserApp {
                 // console.log();
             });
 
+            content.addEventListener('console-message', (consoleMessageEvent: Electron.ConsoleMessageEvent) => {
+
+                const prefix = 'From webview: ';
+
+                switch (consoleMessageEvent.level) {
+
+                    case -1:
+                        log.debug(prefix + consoleMessageEvent.message);
+                        break;
+
+                    case 0:
+                        log.info(prefix + consoleMessageEvent.message);
+                        break;
+
+                    case 1:
+                        log.warn(prefix + consoleMessageEvent.message);
+                        break;
+
+                    case 2:
+                        log.error(prefix + consoleMessageEvent.message);
+                        break;
+
+                }
+
+            });
+
         });
 
 
