@@ -46,20 +46,20 @@ export class CommentPopupBox extends React.Component<IProps, IState> {
 
             <div id="comment-popup-box">
 
-                {/*/!*<div id="comment-anchor"></div>*!/*/}
+                <div id="comment-anchor"></div>
 
                 {/*<Button id="comment-anchor" onClick={this.toggle}>*/}
                     {/*Launch Popover*/}
                 {/*</Button>*/}
 
-                {/*<Popover placement="bottom"*/}
-                         {/*id="comment-popup-box-popover"*/}
-                         {/*isOpen={this.state.popoverOpen}*/}
-                         {/*target="comment-anchor"*/}
-                         {/*toggle={this.toggle}*/}
-                         {/*style={{width: '650px'}}>*/}
-                    {/*<PopoverHeader>Add Comment</PopoverHeader>*/}
-                    {/*<PopoverBody>*/}
+                <Popover placement="bottom"
+                         id="comment-popup-box-popover"
+                         isOpen={this.state.popoverOpen}
+                         target="comment-anchor"
+                         toggle={this.toggle}
+                         style={{width: '650px'}}>
+                    <PopoverHeader>Add Comment</PopoverHeader>
+                    <PopoverBody>
 
                         {/*<div className="border rounded p-1">*/}
                             {/*<ReactSummernote4 className="w-100"*/}
@@ -101,13 +101,15 @@ export class CommentPopupBox extends React.Component<IProps, IState> {
                         {/*/>*/}
                         {/*</div>*/}
 
-                         {/*<Button size="sm" color="primary" className="mt-2">*/}
-                             {/*Add Comment*/}
-                         {/*</Button>*/}
+                        <textarea></textarea>
 
-                    {/*</PopoverBody>*/}
+                         <Button size="sm" color="primary" className="mt-2">
 
-                {/*</Popover>*/}
+                         </Button>
+
+                    </PopoverBody>
+
+                </Popover>
 
             </div>
             // <div className="border rounded p-2 shadow">
