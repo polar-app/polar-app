@@ -1,19 +1,33 @@
 {
   "name": "polar-bookshelf",
-  "version": "1.0.0-beta180",
+  "version": "1.0.0-beta190",
   "description": "Polar Bookshelf",
   "main": "main.js",
   "scripts": {
     "start": "tsc && electron .",
-    "make-targz": "tsc && electron-builder --config=electron-builder.yml --linux tar.gz",
-    "make-snap": "tsc && electron-builder --config=electron-builder.yml --linux snap",
-    "make-deb": "tsc && electron-builder --config=electron-builder.yml --linux deb",
-    "dist-linux": "tsc && electron-builder --config=electron-builder.yml --linux snap deb tar.gz --publish always",
-    "dist-macos": "tsc && electron-builder --config=electron-builder.yml --macos dmg --publish always",
-    "dist-win": "tsc && ./scripts/dist-win.sh",
+
+    "testit": "echo ./dist/polar-bookshelf_${npm_package_version}_amd64.snap",
+
+    "publish-linux-snapcraft": "snapcraft push --release beta ./dist/polar-bookshelf-${npm_package_version}-amd64.snap",
+    "publish-linux": "electron-builder --config=electron-builder.yml --linux snap deb tar.gz --publish always",
+
+    "publish-macos": "electron-builder --config=electron-builder.yml --macos dmg --publish always",
+    "publish-win": "./scripts/dist-win.sh",
+
+    "make-linux-targz": "electron-builder --config=electron-builder.yml --linux tar.gz",
+    "make-linux-snap": "electron-builder --config=electron-builder.yml --linux snap",
+    "make-linux-deb": "electron-builder --config=electron-builder.yml --linux deb",
+
+    "dist-linux": "npm run-script compile && npm run-script publish-linux && npm run-script publish-linux-snapcraft",
+    "dist-macos": "npm run-script compile && npm run-script publish-macos",
+    "dist-win": "npm run-script compile && npm run-script publish-win",
+
     "compile": "tsc",
+
     "test": "mocha-parallel-tests --timeout 10000 --max-parallel=1 --exit --recursive web/js/**/*Test.js",
+
     "e2e": "mocha-parallel-tests --timeout 10000 --max-parallel=1 --exit --recursive  web/spectron/**/spec.js",
+
     "start-with-console": "./node_modules/.bin/electron --enable-remote-debugging --interactive --enable-console-logging ."
   },
   "repository": "https://github.com/burtonator/polar-bookshelf",
