@@ -1,6 +1,9 @@
-import firebase from 'firebase';
-import firebaseui from 'firebaseui';
-import AuthUI = firebaseui.auth.AuthUI;
+// import firebase from 'firebase';
+// import firebaseui from 'firebaseui';
+// import AuthUI = firebaseui.auth.AuthUI;
+
+declare var firebase: any;
+declare var firebaseui: any;
 
 // noinspection TsLint: max-line-length
 const SIGN_IN_SUCCESS_URL = 'http://localhost:63342/polar-bookshelf/web/spectron/firebase-auth/landing.html?_ijt=t1aqe160j9rhsv5u4d52e8o7to';
@@ -11,7 +14,7 @@ const PRIVACY_POLICY_URL = 'https://getpolarized.io/terms-of-service.html';
 
 export class FirebaseUIAuth {
 
-    public static start(containerSelector = '#firebaseui-auth-container'): AuthUI {
+    public static start(containerSelector = '#firebaseui-auth-container'): any {
 
         // FirebaseUI config.
         const uiConfig = {

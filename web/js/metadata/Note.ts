@@ -21,9 +21,9 @@ export class Note extends VersionedObject {
 
         this.init(val);
 
-    };
+    }
 
-    setup() {
+    public setup() {
 
         if(!this.content) {
             this.content = Texts.create("", TextType.HTML);
@@ -31,7 +31,7 @@ export class Note extends VersionedObject {
 
     }
 
-    validate() {
+    public validate() {
 
         if(!this.created) {
             throw new Error("The field `created` is required.");
@@ -39,4 +39,4 @@ export class Note extends VersionedObject {
 
     }
 
-};
+}

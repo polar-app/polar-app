@@ -37,7 +37,8 @@ export class Flashcard extends VersionedObject {
 
     }
 
-    validate(): void {
+    public validate(): void {
+
         super.validate();
 
         Preconditions.assertNotNull(this.id, "id");
@@ -58,7 +59,7 @@ export class Flashcard extends VersionedObject {
                               fields: {[key: string]: Text},
                               archetype: string): Readonly<Flashcard> {
 
-        let result = new Flashcard(<Flashcard> {
+        const result = new Flashcard(<Flashcard> {
             id, guid, created, lastUpdated, type, fields, archetype
         });
 
