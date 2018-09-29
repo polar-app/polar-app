@@ -7,7 +7,7 @@ export class Screenshots {
 
     public static create(src: string, opts: ImageOpts, id?: string) {
 
-        if(id === undefined) {
+        if (id === undefined) {
             id = Hashcodes.createRandomID();
         }
 
@@ -25,7 +25,7 @@ export class Screenshots {
 
     public static parseURI(value: string): ScreenshotURI | undefined {
 
-        if(! value.startsWith('screenshot:')) {
+        if (! value.startsWith('screenshot:')) {
             return undefined;
         }
 

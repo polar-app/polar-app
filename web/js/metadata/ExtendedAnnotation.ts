@@ -7,16 +7,22 @@ export class ExtendedAnnotation extends Annotation {
 
     /**
      * The note for this annotation.
+     *
+     * @Deprecated.  We're moving to attachments stored as pointers to keep
+     * these object immutable.
      */
     public notes: {[key: string]: Note} = {};
 
     /**
      * The note for this annotation.
+     * @Deprecated.  We're moving to attachments stored as pointers to keep
+     * these object immutable.
      */
     public questions: {[key: string]: Question} = {};
 
     /**
-     * The note for this annotation.
+     * @Deprecated.  We're moving to attachments stored as pointers to keep
+     * these object immutable.
      */
     public flashcards: {[key: string]: Flashcard} = {};
 
@@ -24,25 +30,21 @@ export class ExtendedAnnotation extends Annotation {
 
         super(val);
 
-        // FIXME: should have comments (plural)
-
-        // FIXME: should have tags (plural)
-
         this.init(val);
 
     }
 
-    setup() {
+    public setup() {
 
         super.setup();
 
-        if(!this.notes) {
-            this.notes = {}
+        if (!this.notes) {
+            this.notes = {};
         }
 
     }
 
-    validate() {
+    public validate() {
         super.validate();
     }
 

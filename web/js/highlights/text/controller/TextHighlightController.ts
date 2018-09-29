@@ -31,12 +31,6 @@ const log = Logger.create();
 
 export class TextHighlightController {
 
-    private readonly model: Model;
-
-    private readonly docFormat: DocFormat;
-
-    private textHighlighter: any;
-
     constructor(model: Model) {
         this.model = Preconditions.assertNotNull(model, "model");
         this.docFormat = DocFormatFactory.getInstance();
@@ -45,7 +39,7 @@ export class TextHighlightController {
         // tested outside of electron.
         ipcRenderer.on('context-menu-command', (event: Electron.EventEmitter, arg: any) => {
 
-            switch(arg.command) {
+            switch (arg.command) {
 
                 case "delete-text-highlight":
                     this.onTextHighlightDeleted(arg);
@@ -60,21 +54,27 @@ export class TextHighlightController {
 
     }
 
-    onDocumentLoaded() {
+    private readonly model: Model;
+
+    private readonly docFormat: DocFormat;
+
+    private textHighlighter: any;
+
+    public onDocumentLoaded() {
         log.debug("TextHighlightController.onDocumentLoaded: ", this.model.docMeta);
         this.textHighlighter = this.createTextHighlighter();
     }
 
-    start() {
+    public start() {
         document.addEventListener("keydown", this.keyBindingListener.bind(this));
         this.model.registerListenerForDocumentLoaded(this.onDocumentLoaded.bind(this));
     }
 
-    async keyBindingListener(event: any) {
+    public async keyBindingListener(event: any) {
 
         if (KeyEvents.isKeyMetaActive(event)) {
 
-            if(event.code) {
+            if (event.code) {
 
                 switch (event.code) {
 
@@ -96,9 +96,9 @@ export class TextHighlightController {
 
     }
 
-    async doHighlight() {
+    public async doHighlight() {
 
-        if(this.docFormat.name === "html") {
+        if (this.docFormat.name === "html") {
             await this.doHighlightModern();
         } else {
             this.doHighlightLegacy();
@@ -106,12 +106,12 @@ export class TextHighlightController {
 
     }
 
-    doHighlightLegacy() {
+    public doHighlightLegacy() {
         this.textHighlighter.doHighlight();
 
     }
 
-    async doHighlightModern() {
+    public async doHighlightModern() {
 
         console.log("Doing modern text highlight");
         await this.onTextHighlightCreatedModern();
@@ -121,20 +121,20 @@ export class TextHighlightController {
     /**
      * Set text highlighting in the current document with the highlighter.
      */
-    createTextHighlighter() {
+    public createTextHighlighter() {
 
         let sequence = 0;
 
-        let controller = this;
+        const controller = this;
 
-        let textHighlighterOptions = {
+        const textHighlighterOptions = {
 
             highlightedClass: "text-highlight-span",
             color: '', // this works and the color isn't changed.
             manual: true,
 
             onBeforeHighlight: (range: any) => {
-                //log.info("onBeforeHighlight range: ", range);
+                // log.info("onBeforeHighlight range: ", range);
                 return true;
             },
 
@@ -142,17 +142,17 @@ export class TextHighlightController {
                 // log.info("onAfterHighlight range: ", range);
                 // log.info("onAfterHighlight hlts: ", highlightElements);
 
-                let id = sequence++;
-                let highlightClazz = "text-highlight-" + id;
+                const id = sequence++;
+                const highlightClazz = "text-highlight-" + id;
 
-                highlightElements.forEach(function (highlightElement: any) {
-                    //highlightElement.style.color = 'blue';
+                highlightElements.forEach(function(highlightElement: any) {
+                    // highlightElement.style.color = 'blue';
                     highlightElement.className = highlightElement.className + " " + highlightClazz;
                 });
 
-                (async() =>  {
+                (async () =>  {
 
-                    await controller.onTextHighlightCreatedLegacy("." + highlightClazz)
+                    await controller.onTextHighlightCreatedLegacy("." + highlightClazz);
 
                     // the underlying <span> highlights need to be removed now.
 
@@ -160,48 +160,20 @@ export class TextHighlightController {
 
                     log.info("Highlight completed.");
 
-                })().catch(err => log.error("Unable to highlight: ", err))
+                })().catch(err => log.error("Unable to highlight: ", err));
 
             },
 
-            onRemoveHighlight: function (hlt: any) {
+            onRemoveHighlight(hlt: any) {
                 log.info("onRemoveHighlight hlt: ", hlt);
                 return true;
             }
 
         };
 
-        let targetDocument = this.docFormat.targetDocument();
+        const targetDocument = this.docFormat.targetDocument();
 
         return TextHighlighterFactory.newInstance(targetDocument!.body, textHighlighterOptions);
-
-    }
-
-    /**
-     * A text highlight was deleted so update the model now.
-     */
-    private onTextHighlightDeleted(triggerEvent: TriggerEvent) {
-
-        log.info("Deleting text highlight from model: ", triggerEvent);
-
-        const annotationPointers
-            = AnnotationPointers.toAnnotationPointers(".text-highlight", triggerEvent);
-
-        // should we just send this event to all the the windows?
-        Optional.first(...annotationPointers).map(annotationDescriptor => {
-
-            log.info("Deleting annotationDescriptor: ", JSON.stringify(annotationDescriptor, null, "  "));
-
-            const pageMeta = this.model.docMeta.getPageMeta(annotationDescriptor.pageNum);
-
-            // keep the current highlight.
-            const textHighlight = pageMeta.textHighlights[annotationDescriptor.id];
-
-            TextHighlights.deleteTextHighlight(pageMeta, textHighlight);
-
-        });
-
-        log.info("Deleting text highlight");
 
     }
 
@@ -210,7 +182,7 @@ export class TextHighlightController {
      * Called by the controller when we have a new highlight created so that
      * we can update the model.
      */
-    async onTextHighlightCreatedLegacy(selector: string) {
+    public async onTextHighlightCreatedLegacy(selector: string) {
 
         await this.createTextHighlight(async () => {
 
@@ -219,9 +191,9 @@ export class TextHighlightController {
 
             log.info("TextHighlightController.onTextHighlightCreatedLegacy");
 
-            let textHighlightRows: TextHighlightRow[] = TextHighlightRows.createFromSelector(selector);
+            const textHighlightRows: TextHighlightRow[] = TextHighlightRows.createFromSelector(selector);
 
-            let rects = textHighlightRows.map(current => current.rect);
+            const rects = textHighlightRows.map(current => current.rect);
 
             // TODO: don't do this from the selector because the textHighlightRows
             // would be a lot better since we have the raw elements to work with.
@@ -229,9 +201,9 @@ export class TextHighlightController {
             // FIXME: I can call selection.toString() to get the value as a string.
             // I don't need to use extractText on the selector any more.
 
-            let text = this.extractText(selector);
+            const text = this.extractText(selector);
 
-            let textSelections = TextExtracter.toTextSelections(textHighlightRows);
+            const textSelections = TextExtracter.toTextSelections(textHighlightRows);
 
             return TextHighlightRecords.create(rects, textSelections, {TEXT: text});
 
@@ -243,28 +215,28 @@ export class TextHighlightController {
      * Called by the controller when we have a new highlight created so that
      * we can update the model.
      */
-    async onTextHighlightCreatedModern() {
+    public async onTextHighlightCreatedModern() {
 
         // FIXME: get the new highlighter working FIRST without text and without
         // rows , or other advanced features.
 
         await this.createTextHighlight(async () => {
 
-            let win = notNull(this.docFormat.targetDocument()).defaultView;
+            const win = notNull(this.docFormat.targetDocument()).defaultView;
 
             log.info("TextHighlightController.onTextHighlightCreatedModern");
 
             // right now we're not implementing rows...
             // let textHighlightRows = TextHighlightRows.createFromSelector(selector);
 
-            let selectedContent = SelectedContents.compute(win);
+            const selectedContent = SelectedContents.compute(win);
 
-            let rectTexts: any[] = selectedContent.rectTexts;
-            let rects = rectTexts.map(current => current.boundingPageRect);
+            const rectTexts: any[] = selectedContent.rectTexts;
+            const rects = rectTexts.map(current => current.boundingPageRect);
 
-            let text = selectedContent.text;
+            const text = selectedContent.text;
 
-            let textSelections = TextSelections.compute(selectedContent);
+            const textSelections = TextSelections.compute(selectedContent);
 
             return TextHighlightRecords.create(rects, textSelections, {TEXT: text});
 
@@ -296,42 +268,43 @@ export class TextHighlightController {
 
     }
 
-    async createTextHighlight(factory: () => Promise<TextHighlightRecord>): Promise<TextHighlightRecord> {
+    public async createTextHighlight(factory: () => Promise<TextHighlightRecord>): Promise<TextHighlightRecord> {
 
         // TODO: this really needs to be reworked so I can test it properly with
         // some sort of screenshot provider
 
-        let doc = notNull(this.docFormat.targetDocument());
-        let win = doc.defaultView;
+        const doc = notNull(this.docFormat.targetDocument());
+        const win = doc.defaultView;
 
-        let screenshotID = Hashcodes.createRandomID();
+        const screenshotID = Hashcodes.createRandomID();
 
         // start the screenshot now but don't await it yet.  this way we're not
         // blocking the creation of the screenshot in the UI.
-        let selectionScreenshot = SelectionScreenshots.capture(doc, win);
+        const selectionScreenshot = SelectionScreenshots.capture(doc, win);
 
-        let textHighlightRecord = await factory();
+        const textHighlightRecord = await factory();
 
         // TODO this is actually difficult because this screenshot is SLOW and
         // if I could move it AFTER we updated the UI would be much better but
         // it takes like 50ms-150ms and TWO of them are a big problem.  It would
         // be better to do this AFTER I've taken the screenshots.
 
-        //let highlightScreenshot = await Screenshots.capture(selectionScreenshot.clientRect)
+        // let highlightScreenshot = await Screenshots.capture(selectionScreenshot.clientRect)
 
-        let screenshotDimensions = {
+        const screenshotDimensions = {
             width: Math.floor(selectionScreenshot.clientRect.width),
             height: Math.floor(selectionScreenshot.clientRect.height)
         };
-        let screenshotImageRef = this.toImage(screenshotID, 'screenshot', screenshotDimensions);
+
+        const screenshotImageRef = this.toImage(screenshotID, 'screenshot', screenshotDimensions);
 
         TextHighlights.attachImage(textHighlightRecord.value, screenshotImageRef);
 
         // this.attachScreenshot(textHighlightRecord.value, 'screenshot-with-highlight', highlightScreenshot);
 
-        let currentPageMeta = this.docFormat.getCurrentPageMeta();
+        const currentPageMeta = this.docFormat.getCurrentPageMeta();
 
-        let pageMeta = this.model.docMeta.getPageMeta(currentPageMeta.pageNum);
+        const pageMeta = this.model.docMeta.getPageMeta(currentPageMeta.pageNum);
 
         log.info("Added text highlight to model");
 
@@ -340,16 +313,61 @@ export class TextHighlightController {
 
         pageMeta.textHighlights[textHighlightRecord.id] = textHighlightRecord.value;
 
-        let capturedScreenshot = await selectionScreenshot.capturedScreenshotPromise;
+        const capturedScreenshot = await selectionScreenshot.capturedScreenshotPromise;
 
-        let screenshot = this.toScreenshot(screenshotID,
-                                           capturedScreenshot.dataURL,
-                                           'screenshot',
-                                           screenshotDimensions);
+        const screenshot = this.toScreenshot(screenshotID,
+                                             capturedScreenshot.dataURL,
+                                             'screenshot',
+                                             screenshotDimensions);
 
         pageMeta.screenshots[screenshot.id] = screenshot;
 
         return textHighlightRecord;
+
+    }
+
+    public extractText(selector: string) {
+
+        let result = "";
+
+        $(selector).each(function() {
+
+            // TODO: we should include the x/y and width + height of every text
+            // selection so that we have where it was placed in the document.
+
+            result += "\n" + $(this).text();
+
+        });
+
+        return result;
+
+    }
+
+    /**
+     * A text highlight was deleted so update the model now.
+     */
+    private onTextHighlightDeleted(triggerEvent: TriggerEvent) {
+
+        log.info("Deleting text highlight from model: ", triggerEvent);
+
+        const annotationPointers
+            = AnnotationPointers.toAnnotationPointers(".text-highlight", triggerEvent);
+
+        // should we just send this event to all the the windows?
+        Optional.first(...annotationPointers).map(annotationDescriptor => {
+
+            log.info("Deleting annotationDescriptor: ", JSON.stringify(annotationDescriptor, null, "  "));
+
+            const pageMeta = this.model.docMeta.getPageMeta(annotationDescriptor.pageNum);
+
+            // keep the current highlight.
+            const textHighlight = pageMeta.textHighlights[annotationDescriptor.id];
+
+            TextHighlights.deleteTextHighlight(pageMeta, textHighlight);
+
+        });
+
+        log.info("Deleting text highlight");
 
     }
 
@@ -373,23 +391,6 @@ export class TextHighlightController {
                              type: ImageType.PNG,
                              rel
                          }, id);
-
-    }
-
-    extractText(selector: string) {
-
-        let result = "";
-
-        $(selector).each(function () {
-
-            // TODO: we should include the x/y and width + height of every text
-            // selection so that we have where it was placed in the document.
-
-            result += "\n" + $(this).text();
-
-        });
-
-        return result;
 
     }
 

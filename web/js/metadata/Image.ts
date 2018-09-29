@@ -54,11 +54,11 @@ export class Image extends SerializedObject {
     }
 
 
-    validate() {
+    public validate(): void {
 
         super.validate();
 
-        //Preconditions.assertNotNull(this.type, "type");
+        // Preconditions.assertNotNull(this.type, "type");
         Preconditions.assertNotNull(this.src, "src");
 
     }

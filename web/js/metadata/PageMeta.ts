@@ -1,12 +1,14 @@
 import {SerializedObject} from './SerializedObject';
 import {PageInfo} from './PageInfo';
 import {Flashcard} from './Flashcard';
-import {Preconditions} from '../Preconditions';
+import {Comment} from './Comment';
+import {Note} from './Note';
 import {TextHighlight} from './TextHighlight';
 import {AreaHighlight} from './AreaHighlight';
-import {Image} from './Image';
 import {Screenshot} from './Screenshot';
 import {Thumbnail} from './Thumbnail';
+import {Pagemark} from './Pagemark';
+import {Question} from './Question';
 
 export class PageMeta extends SerializedObject {
 
@@ -21,18 +23,22 @@ export class PageMeta extends SerializedObject {
      * for keeping track of pagemarks.  The index is the pagemark column.
      *
      */
-    public readonly pagemarks: {[id: string]: any} = {};
+    public readonly pagemarks: {[id: string]: Pagemark} = {};
 
     /**
      * The note for this annotation.
-     *
      */
-    public readonly notes: {[id: string]: any} = {};
+    public readonly notes: {[id: string]: Note} = {};
+
+    /**
+     * The note for this annotation.
+     */
+    public readonly comments: {[id: string]: Comment} = {};
 
     /**
      *
      */
-    public readonly questions: {[id: string]: any} = {};
+    public readonly questions: {[id: string]: Question} = {};
 
     /**
      *

@@ -25,7 +25,7 @@ export class Note extends VersionedObject {
 
     public setup() {
 
-        if(!this.content) {
+        if (!this.content) {
             this.content = Texts.create("", TextType.HTML);
         }
 
