@@ -8,16 +8,20 @@ import $ from '../ui/JQuery';
  */
 export class Toaster {
 
+    public static info(message: string, title: string = "", options: ToasterOptions = {}) {
+        Toastr.info(message, title, this.augmentExtendedOptions(options));
+    }
+
     public static success(message: string, title: string = "", options: ToasterOptions = {}) {
-        Toastr.success(message, title, options);
+        Toastr.success(message, title, this.augmentExtendedOptions(options));
     }
 
     public static warning(message: string, title: string = "", options: ToasterOptions = {}) {
-        Toastr.warning(message, title, options);
+        Toastr.warning(message, title, this.augmentExtendedOptions(options));
     }
 
     public static error(message: string, title: string = "", options: ToasterOptions = {}) {
-        Toastr.error(message, title, options);
+        Toastr.error(message, title, this.augmentExtendedOptions(options));
     }
 
     /**
@@ -36,12 +40,33 @@ export class Toaster {
 
     }
 
+    private static augmentExtendedOptions(options: ToasterOptions): ToasterOptions {
+
+        const result = Object.assign({}, options);
+
+        if (options.requiresAcknowledgment) {
+            Object.assign(result, {
+                closeButton: true,
+                timeOut: 0,
+                extendedTimeOut: 0,
+            });
+        }
+
+        return result;
+
+    }
+
 }
 
 export interface ToasterOptions {
     timeOut?: number;
     extendedTimeOut?: number;
     preventDuplicates?: boolean;
+    closeButton?: boolean;
+    debug?: boolean;
+    newestOnTop?: boolean;
+    requiresAcknowledgment?: boolean;
+    positionClass?: 'toast-top-center' | 'toast-top-right' | 'toast-top-left' | 'toast-top-full-width';
 }
 
 export enum ToastrType {

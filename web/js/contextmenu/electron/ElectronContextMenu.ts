@@ -173,11 +173,11 @@ export class ElectronContextMenu {
                 // accelerator: 'CmdOrCtrl+A',
                 click: () => this.postContextMenuMessage("add-flashcard", triggerEvent)
             }),
-            new MenuItem({
-                label: 'Add Comment',
-                // accelerator: 'CmdOrCtrl+A',
-                click: () => this.postContextMenuMessage("add-comment", triggerEvent)
-            }),
+            // new MenuItem({
+            //     label: 'Add Comment',
+            //     // accelerator: 'CmdOrCtrl+A',
+            //     click: () => this.postContextMenuMessage("add-comment", triggerEvent)
+            // }),
             new MenuItem({
                 label: 'Delete',
                 // accelerator: 'CmdOrCtrl+A',
@@ -204,11 +204,11 @@ export class ElectronContextMenu {
                 label: 'Add Flashcard',
                 click: () => this.postContextMenuMessage("add-flashcard", triggerEvent)
             }),
-            new MenuItem({
-                label: 'Add Comment',
-                // accelerator: 'CmdOrCtrl+A',
-                click: () => this.postContextMenuMessage("add-comment", triggerEvent)
-            }),
+            // new MenuItem({
+            //     label: 'Add Comment',
+            //     // accelerator: 'CmdOrCtrl+A',
+            //     click: () => this.postContextMenuMessage("add-comment", triggerEvent)
+            // }),
             new MenuItem({
                 label: 'Delete',
                 // accelerator: 'CmdOrCtrl+A',

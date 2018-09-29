@@ -3,7 +3,7 @@ import firebase from 'firebase';
 export class Firebase {
 
     /**
-     * Perform init of Firestore with our auth credentials.
+     * Perform init of Firebase with our auth credentials.
      */
     public static init() {
 

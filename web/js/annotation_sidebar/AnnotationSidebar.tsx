@@ -235,11 +235,12 @@ export class AnnotationSidebar extends React.Component<AnnotationSidebarProps, A
                 // TODO: move this to a formatter function so this is a big cleaner.
                 result.push(
                     <div key={annotation.id}
-                                 data-annotation-id={annotation.id}
-                                 data-annotation-type={attrType}
-                                 className={attrType}>
+                         data-annotation-id={annotation.id}
+                         data-annotation-type={attrType}
+                         className={attrType}>
 
-                        <blockquote dangerouslySetInnerHTML={{__html: html}}>
+                        <blockquote dangerouslySetInnerHTML={{__html: html}}
+                                    className="border rounded">
 
                         </blockquote>
 

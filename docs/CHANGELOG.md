@@ -1,5 +1,11 @@
 
 # 1.0.0-beta190
+
+ - The user can now change browser profiles and change to two new profiles for
+   desktop browsers. 
+
+ - Fixed bug where some pages wouldn't load properly in capture due to module
+   resolution conflict. 
  
  - Fixed security issue. Please upgrade.  
  

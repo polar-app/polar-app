@@ -27,6 +27,13 @@ SpectronRenderer.run(async (state) => {
 
     });
 
+    Toaster.info(`A new version of Polar has been release.  Please upgrade. <a href="http://cnn.com">world</a>`,
+                 'world',
+                 {
+                     requiresAcknowledgment: true,
+                     positionClass: 'toast-top-full-width'
+                 });
+
     await state.testResultWriter.write(true);
 
 });
