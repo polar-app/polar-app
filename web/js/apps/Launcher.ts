@@ -49,7 +49,7 @@ export class Launcher {
         new PagemarkView(model).start();
         new AnnotationSidebarService(model).start();
         new PageSearchController(model).start();
-        new CommentsController().start();
+        new CommentsController(model).start();
 
         const viewer = ViewerFactory.create(model);
         viewer.start();

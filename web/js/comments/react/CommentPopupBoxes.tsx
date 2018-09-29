@@ -3,11 +3,11 @@ import * as React from 'react';
 import {CommentPopupBox} from './CommentPopupBox';
 import {Elements} from '../../util/Elements';
 import {IEventDispatcher} from '../../reactor/SimpleReactor';
-import {CommentEvent} from './CommentEvent';
+import {CommentInputEvent} from './CommentInputEvent';
 
 export class CommentPopupBoxes {
 
-    public static create(commentEventDispatcher: IEventDispatcher<CommentEvent>,
+    public static create(commentEventDispatcher: IEventDispatcher<CommentInputEvent>,
                          commentHandler: OnCommentHandler) {
 
         const popupElement = CommentPopupBoxes.createPopupElement();
@@ -25,7 +25,7 @@ export class CommentPopupBoxes {
     }
 
     private static render(target: HTMLElement,
-                          commentEventDispatcher: IEventDispatcher<CommentEvent>,
+                          commentEventDispatcher: IEventDispatcher<CommentInputEvent>,
                           commentHandler: OnCommentHandler) {
 
         ReactDOM.render(
@@ -41,4 +41,14 @@ export interface CommentPopup {
     popupElement: HTMLElement;
 }
 
-export type OnCommentHandler = (text: string, type: 'text' | 'html') => void;
+export interface CommentCreatedEvent {
+
+    readonly text: string;
+    readonly type: CommentType;
+    readonly pageNum: number;
+
+}
+
+export type OnCommentHandler = (commentCreatedEvent: CommentCreatedEvent) => void;
+
+export type CommentType = 'text' | 'html';

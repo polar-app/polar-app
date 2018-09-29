@@ -3,35 +3,42 @@ import Button from 'reactstrap/lib/Button';
 import Popover from 'reactstrap/lib/Popover';
 import PopoverBody from 'reactstrap/lib/PopoverBody';
 import PopoverHeader from 'reactstrap/lib/PopoverHeader';
-import {CommentEvent} from './CommentEvent';
+import {CommentInputEvent} from './CommentInputEvent';
 import {IEventDispatcher} from '../../reactor/SimpleReactor';
-import {Point} from '../../Point';
 import {OnCommentHandler} from './CommentPopupBoxes';
 
 export class CommentPopupBox extends React.Component<IProps, IState> {
+
+    private text: string = "";
 
     constructor(props: IProps, context: any) {
         super(props, context);
 
         this.toggle = this.toggle.bind(this);
         this.handleComment = this.handleComment.bind(this);
+        this.onTextAreaChange = this.onTextAreaChange.bind(this);
 
         this.state = {
             popoverOpen: false
         };
 
-        this.props.commentEventDispatcher.addEventListener(event => {
-            this.show(event.point);
+        this.props.commentEventDispatcher.addEventListener(commentEvent => {
+            this.onCommentEvent(commentEvent);
         });
 
     }
 
-    private show(point: Point) {
+    private onCommentEvent(commentInputEvent: CommentInputEvent) {
+
+        const point = commentInputEvent.point;
 
         document.getElementById('comment-anchor')!.style.cssText
             = `position: absolute; top: ${point.y}px; left: ${point.x}px;`;
 
-        this.toggle();
+        this.setState({
+            popoverOpen: true,
+            commentInputEvent
+        });
 
     }
 
@@ -44,12 +51,23 @@ export class CommentPopupBox extends React.Component<IProps, IState> {
 
     private handleComment() {
 
-        console.log("Got a comment");
+        console.log("Got a comment: ", this.text);
+
+        this.props.onComment({
+            text: this.text,
+            type: 'text',
+            pageNum: this.state.commentInputEvent!.pageNum
+        });
 
         this.setState({
             popoverOpen: false
         });
 
+    }
+
+    private onTextAreaChange(event: React.ChangeEvent) {
+        const textArea = event.currentTarget as HTMLTextAreaElement;
+        this.text = textArea.value;
     }
 
     public render() {
@@ -121,7 +139,7 @@ export class CommentPopupBox extends React.Component<IProps, IState> {
                         {/*</div>*/}
 
                         <div>
-                            <textarea></textarea>
+                            <textarea onChange={this.onTextAreaChange}></textarea>
                         </div>
 
                         <div>
@@ -150,13 +168,18 @@ export class CommentPopupBox extends React.Component<IProps, IState> {
         );
     }
 
+
 }
 
 interface IProps {
-    commentEventDispatcher: IEventDispatcher<CommentEvent>;
+    commentEventDispatcher: IEventDispatcher<CommentInputEvent>;
     onComment: OnCommentHandler;
 }
 
 interface IState {
+
     popoverOpen: boolean;
+
+    commentInputEvent?: CommentInputEvent;
+
 }

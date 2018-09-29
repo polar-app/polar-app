@@ -31,21 +31,37 @@ export class PageMetas {
                 }
             });
 
+            // TODO: too much boilerplate here.
+
             if (! isPresent(pageMeta.areaHighlights)) {
                 log.debug("No areaHighlights.  Assigning default.");
                 pageMeta.areaHighlights = {};
             }
 
-            if(!pageMeta.pagemarks) {
+            if (!pageMeta.pagemarks) {
                 log.debug("No pagemarks.  Assigning default (empty map)");
                 pageMeta.pagemarks = {};
             }
 
-            if(!pageMeta.screenshots) {
+            if (!pageMeta.screenshots) {
                 log.debug("No screenshots.  Assigning default (empty map)");
                 pageMeta.screenshots = {};
             }
 
+            if (!pageMeta.notes) {
+                log.debug("No notes.  Assigning default (empty map)");
+                pageMeta.notes = {};
+            }
+
+            if (!pageMeta.comments) {
+                log.debug("No comments.  Assigning default (empty map)");
+                pageMeta.comments = {};
+            }
+
+            if (!pageMeta.questions) {
+                log.debug("No questions.  Assigning default (empty map)");
+                pageMeta.questions = {};
+            }
 
             pageMeta.pagemarks = Pagemarks.upgrade(pageMeta.pagemarks);
 
