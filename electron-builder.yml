@@ -3,8 +3,10 @@ productName: Polar Bookshelf
 # using nightly versions when not set.  It should use package.json youwwou
 electronVersion: 3.0.0
 appId: io.inputneuron/polar
-compression: store
+compression: normal
 npmRebuild: false
+# TODO: enable this in the future once we sign all the linux builds.
+#forceCodeSigning: true
 directories:
   output: dist
   buildResources: build
@@ -23,6 +25,10 @@ linux:
   synopsis: Polar Bookshelf
   description: Polar Bookshelf
   category: Reference
+  target:
+    - target: deb
+    - target: tar.gz
+    - target: snap
 
   # WARNING: 'icon' is NOT supported well or at all on Linux. the only way to
   # get them to work is to define them under 'mac' and use the icon.icns file
@@ -53,8 +59,8 @@ snap:
   plugs:
     - "default"
     - "home"
-    - "X11"
-    - "wayland"
+    #- "X11"
+    #- "wayland"
 
 # https://www.electron.build/configuration/publish
 # https://help.github.com/articles/creating-a-personal-access-token-for-the-command-line/
