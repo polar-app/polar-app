@@ -43,12 +43,19 @@ export class ContextMenuController {
         log.info("Starting ContextMenuController");
 
         document.querySelectorAll(".page").forEach((targetElement) => {
-            this.registerContextMenuListener(<HTMLElement> targetElement);
+            this.registerPageContextMenuListener(<HTMLElement> targetElement);
         });
+
+        // TODO: this won't work because onContextMenuHandler is tightly bound
+        // to assuming it's working within a .page
+        //
+        // document.querySelectorAll("*").forEach((targetElement) => {
+        //     this.registerDefaultContextMenuListener(<HTMLElement> targetElement);
+        // });
 
     }
 
-    private registerContextMenuListener(targetElement: HTMLElement) {
+    private registerPageContextMenuListener(targetElement: HTMLElement) {
 
         targetElement.addEventListener('contextmenu', (event) => {
 
@@ -56,6 +63,16 @@ export class ContextMenuController {
                                                ".area-highlight",
                                                ".pagemark",
                                                ".page"] );
+
+        });
+
+    }
+
+    private registerDefaultContextMenuListener(targetElement: HTMLElement) {
+
+        targetElement.addEventListener('contextmenu', (event) => {
+
+            this.onContextMenuHandler(event, [ "*" ] );
 
         });
 

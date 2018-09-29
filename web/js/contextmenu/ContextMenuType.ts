@@ -43,7 +43,7 @@ export enum ContextMenuType {
 
 export class ContextMenuTypes {
 
-    static fromString(val: string) {
+    public static fromString(val: string) {
         return ContextMenuType[val as keyof typeof ContextMenuType];
     }
 

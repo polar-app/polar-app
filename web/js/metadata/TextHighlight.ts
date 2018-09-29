@@ -57,12 +57,13 @@ export class TextHighlight extends BaseHighlight {
          *
          * @type {String}
          */
+
         // https://github.com/punkave/sanitize-html for this with the default
         // options looks pretty decent.
         //
         // do this with the resulting document fragment.
         //
-        //this.html = null;
+        // this.html = null;
 
         this.init(val);
 

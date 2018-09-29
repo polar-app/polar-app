@@ -42,6 +42,14 @@ export class CommentPopupBox extends React.Component<IProps, IState> {
     }
 
     public render() {
+
+        // TODO:
+        //
+        // - the box is absolutely positioned so when we scroll the positioning
+        //   is lost.
+        //
+        // - we don't actually update the comment now.
+
         return (
 
             <div id="comment-popup-box">
