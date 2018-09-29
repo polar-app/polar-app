@@ -6,7 +6,7 @@ import PopoverHeader from 'reactstrap/lib/PopoverHeader';
 import {CommentEvent} from './CommentEvent';
 import {IEventDispatcher} from '../../reactor/SimpleReactor';
 import {Point} from '../../Point';
-import {ReactSummernote4} from '../../apps/card_creator/elements/schemaform/ReactSummernote4';
+import {OnCommentHandler} from './CommentPopupBoxes';
 
 export class CommentPopupBox extends React.Component<IProps, IState> {
 
@@ -14,6 +14,7 @@ export class CommentPopupBox extends React.Component<IProps, IState> {
         super(props, context);
 
         this.toggle = this.toggle.bind(this);
+        this.handleComment = this.handleComment.bind(this);
 
         this.state = {
             popoverOpen: false
@@ -25,7 +26,7 @@ export class CommentPopupBox extends React.Component<IProps, IState> {
 
     }
 
-    public show(point: Point) {
+    private show(point: Point) {
 
         document.getElementById('comment-anchor')!.style.cssText
             = `position: absolute; top: ${point.y}px; left: ${point.x}px;`;
@@ -34,11 +35,21 @@ export class CommentPopupBox extends React.Component<IProps, IState> {
 
     }
 
-    public toggle() {
+    private toggle() {
 
         this.setState({
             popoverOpen: !this.state.popoverOpen
         });
+    }
+
+    private handleComment() {
+
+        console.log("Got a comment");
+
+        this.setState({
+            popoverOpen: false
+        });
+
     }
 
     public render() {
@@ -114,7 +125,7 @@ export class CommentPopupBox extends React.Component<IProps, IState> {
                         </div>
 
                         <div>
-                            <Button size="sm" color="primary" className="mt-2">
+                            <Button size="sm" color="primary" className="mt-2" onClick={this.handleComment}>
                                 Comment
                             </Button>
                         </div>
@@ -143,6 +154,7 @@ export class CommentPopupBox extends React.Component<IProps, IState> {
 
 interface IProps {
     commentEventDispatcher: IEventDispatcher<CommentEvent>;
+    onComment: OnCommentHandler;
 }
 
 interface IState {

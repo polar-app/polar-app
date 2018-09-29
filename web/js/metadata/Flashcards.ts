@@ -15,7 +15,6 @@ export class Flashcards {
 
         Preconditions.assertNotNull(fields, "fields");
 
-        const now = new Date();
         const created = ISODateTimeStrings.create();
         const lastUpdated = created;
 

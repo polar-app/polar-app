@@ -14,14 +14,10 @@ SpectronRenderer.run(async () => {
 
     console.log("Running within SpectronRenderer now.");
 
-    this.popupElement = CommentPopupBoxes.createPopupElement();
-
-    document.body.appendChild(this.popupElement);
-
     const commentEventDispatcher = new SimpleReactor<CommentEvent>();
 
-    CommentPopupBoxes.render(this.popupElement, commentEventDispatcher);
-    //
+    CommentPopupBoxes.create(commentEventDispatcher, (text, type) => console.log("Got a comment"));
+
     // commentEventDispatcher.dispatchEvent({
     //     point: {
     //         x: 100,

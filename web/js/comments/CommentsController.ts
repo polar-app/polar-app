@@ -16,7 +16,7 @@ export class CommentsController {
 
         window.addEventListener("message", event => this.onMessageReceived(event), false);
 
-        CommentPopupBoxes.create(this.commentEventDispatcher);
+        CommentPopupBoxes.create(this.commentEventDispatcher, (text, type) => console.log("Got a comment"));
 
     }
 

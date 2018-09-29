@@ -94,6 +94,7 @@ describe('DocMetas', function() {
                                 }
                             },
                             "notes": {},
+                            "comments": {},
                             "questions": {},
                             "flashcards": {},
                             "textHighlights": {},
@@ -124,6 +125,7 @@ describe('DocMetas', function() {
                                 }
                             },
                             "notes": {},
+                            "comments": {},
                             "questions": {},
                             "flashcards": {},
                             "textHighlights": {},
@@ -238,7 +240,7 @@ describe('DocMetas', function() {
 
                 let docMeta = createUpgradeDoc();
 
-                docMeta.getPageMeta(1).pagemarks["12Vf1bAzeo"].id = null;
+                (<any> (docMeta.getPageMeta(1).pagemarks["12Vf1bAzeo"].id)) = null;
 
                 docMeta = DocMetas.upgrade(docMeta);
 
