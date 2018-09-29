@@ -43,77 +43,85 @@ export class ContextMenuController {
         log.info("Starting ContextMenuController");
 
         document.querySelectorAll(".page").forEach((targetElement) => {
+            this.registerContextMenuListener(<HTMLElement> targetElement);
+        });
 
-            targetElement.addEventListener("contextmenu", (event: any) => {
+    }
 
-                const annotationSelectors = [ ".text-highlight",
-                                              ".area-highlight",
-                                              ".pagemark",
-                                              ".page"];
+    private registerContextMenuListener(targetElement: HTMLElement) {
 
-                const matchingSelectors
-                    = ContextMenuController.elementsFromEventMatchingSelectors(event, annotationSelectors );
+        targetElement.addEventListener('contextmenu', (event) => {
 
-                const contextMenuTypes: ContextMenuType[] = [];
-
-                forDict(matchingSelectors, (selector: any, current: any) => {
-                    if (current.elements.length > 0) {
-                        contextMenuTypes.push(ContextMenuController.toContextMenuType(current.selector));
-                    }
-                });
-
-                const docDescriptor = new DocDescriptor({
-                    fingerprint: this.model.docMeta.docInfo.fingerprint
-                });
-
-                log.info("Creating context menu for contextMenuTypes: ", contextMenuTypes);
-
-                const pageElement = Elements.untilRoot(event.target, ".page");
-
-                const docFormat = DocFormatFactory.getInstance();
-
-                const pageNum = docFormat.getPageNumFromPageElement(pageElement);
-
-                const eventTargetOffset = Elements.getRelativeOffsetRect(event.target, pageElement);
-
-                // compute the offset of the event relative to the page we're
-                // viewing
-                const pageOffset = {
-
-                    x: eventTargetOffset.left + event.offsetX,
-                    y: eventTargetOffset.top + event.offsetY
-
-                };
-
-                ipcRenderer.send('context-menu-trigger', TriggerEvent.create({
-                    point: {
-                        x: event.pageX,
-                        y: event.pageY
-                    },
-                    points: {
-                        page: {
-                            x: event.pageX,
-                            y: event.pageY
-                        },
-                        client: {
-                            x: event.clientX,
-                            y: event.clientY
-                        },
-                        offset: {
-                            x: event.offsetX,
-                            y: event.offsetY
-                        },
-                        pageOffset
-                    },
-                    pageNum,
-                    contextMenuTypes,
-                    matchingSelectors,
-                    docDescriptor
-                }));
-
-            });
+            this.onContextMenuHandler(event, [ ".text-highlight",
+                                               ".area-highlight",
+                                               ".pagemark",
+                                               ".page"] );
 
         });
+
+    }
+
+    private onContextMenuHandler(event: PointerEvent, annotationSelectors: string[]) {
+
+        const matchingSelectors
+            = ContextMenuController.elementsFromEventMatchingSelectors(event, annotationSelectors );
+
+        const contextMenuTypes: ContextMenuType[] = [];
+
+        forDict(matchingSelectors, (selector: any, current: any) => {
+            if (current.elements.length > 0) {
+                contextMenuTypes.push(ContextMenuController.toContextMenuType(current.selector));
+            }
+        });
+
+        const docDescriptor = new DocDescriptor({
+            fingerprint: this.model.docMeta.docInfo.fingerprint
+        });
+
+        log.info("Creating context menu for contextMenuTypes: ", contextMenuTypes);
+
+        const pageElement = Elements.untilRoot(event.target, ".page");
+
+        const docFormat = DocFormatFactory.getInstance();
+
+        const pageNum = docFormat.getPageNumFromPageElement(pageElement);
+
+        const eventTargetOffset = Elements.getRelativeOffsetRect(<HTMLElement> event.target, pageElement);
+
+        // compute the offset of the event relative to the page we're
+        // viewing
+        const pageOffset = {
+
+            x: eventTargetOffset.left + event.offsetX,
+            y: eventTargetOffset.top + event.offsetY
+
+        };
+
+        ipcRenderer.send('context-menu-trigger', TriggerEvent.create({
+            point: {
+                x: event.pageX,
+                y: event.pageY
+            },
+            points: {
+                page: {
+                    x: event.pageX,
+                    y: event.pageY
+                },
+                client: {
+                    x: event.clientX,
+                    y: event.clientY
+                },
+                offset: {
+                    x: event.offsetX,
+                    y: event.offsetY
+                },
+                pageOffset
+            },
+            pageNum,
+            contextMenuTypes,
+            matchingSelectors,
+            docDescriptor
+        }));
 
     }
 

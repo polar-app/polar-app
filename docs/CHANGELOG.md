@@ -1,6 +1,11 @@
 
 # 1.0.0-beta190
 
+ - all future releases will automatically make it into snap and this is now a 
+   supported platform.
+
+ - DMG file size down from 300MB to 111MB.  
+
  - The user can now change browser profiles and change to two new profiles for
    desktop browsers. 
 

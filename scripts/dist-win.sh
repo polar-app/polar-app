@@ -9,7 +9,7 @@ fi
 
 export CSC_LINK=/root/windows-csc/spinn3r.p12
 
-WINDOWS_CSC_DIR=../polar-bookshelf-secrets/windows-csc
+WINDOWS_CSC_DIR=$(readlink -m ../polar-bookshelf-secrets/windows-csc)
 
 # Error: Cannot extract publisher name from code signing certificate, please
 # file issue. As workaround, set win.publisherName: Error: Exit code: 1. Command

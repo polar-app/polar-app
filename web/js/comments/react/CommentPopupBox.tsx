@@ -101,11 +101,15 @@ export class CommentPopupBox extends React.Component<IProps, IState> {
                         {/*/>*/}
                         {/*</div>*/}
 
-                        <textarea></textarea>
+                        <div>
+                            <textarea></textarea>
+                        </div>
 
-                         <Button size="sm" color="primary" className="mt-2">
-
-                         </Button>
+                        <div>
+                            <Button size="sm" color="primary" className="mt-2">
+                                Comment
+                            </Button>
+                        </div>
 
                     </PopoverBody>
 

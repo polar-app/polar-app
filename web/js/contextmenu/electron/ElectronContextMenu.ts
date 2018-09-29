@@ -61,7 +61,7 @@ export class ElectronContextMenu {
 
     }
 
-    async postContextMenuMessage(name: string, triggerEvent: TriggerEvent) {
+    private async postContextMenuMessage(name: string, triggerEvent: TriggerEvent) {
 
         log.info("postContextMenuMessage: " + name);
 
@@ -92,11 +92,11 @@ export class ElectronContextMenu {
      * @param triggerEvent
      * @param sender
      */
-    cmdNotify(command: string, triggerEvent: TriggerEvent, sender: WebContents) {
+    private cmdNotify(command: string, triggerEvent: TriggerEvent, sender: WebContents) {
 
         // we're sending back LESS data because I think all of the original data
         // is probably not needed.
-        let event = {
+        const event = {
             command,
             matchingSelectors: triggerEvent.matchingSelectors,
             docDescriptor: triggerEvent.docDescriptor
@@ -111,7 +111,7 @@ export class ElectronContextMenu {
      * @param triggerEvent {TriggerEvent}
      * @param sender
      */
-    createContextMenu(triggerEvent: TriggerEvent, sender: WebContents) {
+    private createContextMenu(triggerEvent: TriggerEvent, sender: WebContents) {
 
         Preconditions.assertNotNull(sender, "sender");
 

@@ -7,6 +7,7 @@
 @import url('./htmlviewer.css');
 @import url('./pdfviewer.css');
 @import url('./twitter-bootstrap.css');
+@import url('./add-comment.css');
 
 body {
     height: 100%;
@@ -136,12 +137,3 @@ body {
     display: none;
 }
 
-
-.popover {
-    max-width: 1024px;
-}
-
-.note-editing-area {
-    padding: 5px;
-    height: 250px;
-}
