@@ -23,6 +23,9 @@ import {Screenshots} from '../../../metadata/Screenshots';
 import {AnnotationPointers} from '../../../annotations/AnnotationPointers';
 import {Optional} from '../../../util/ts/Optional';
 import {PagemarkMode} from '../../../metadata/PagemarkMode';
+import {TypedMessage} from '../../../util/TypedMessage';
+import {HighlightCreatedEvent} from '../../../comments/react/HighlightCreatedEvent';
+import {HighlightColor} from '../../../metadata/BaseHighlight';
 
 const {TextHighlightRows} = require("./TextHighlightRows");
 
@@ -59,11 +62,8 @@ export class TextHighlightController {
 
     private readonly docFormat: DocFormat;
 
-    private textHighlighter: any;
-
     public onDocumentLoaded() {
         log.debug("TextHighlightController.onDocumentLoaded: ", this.model.docMeta);
-        this.textHighlighter = this.createTextHighlighter();
     }
 
     public start() {
@@ -123,7 +123,9 @@ export class TextHighlightController {
 
             case "create-text-highlight":
 
-                this.doHighlight()
+                const typedMessage: TypedMessage<HighlightCreatedEvent> = event.data;
+
+                this.doHighlight(typedMessage.value.highlightColor)
                     .catch(err => log.error("Unable to create text highlight", err));
 
                 break;
@@ -132,36 +134,40 @@ export class TextHighlightController {
 
     }
 
-    public async doHighlight() {
+    private async doHighlight(highlightColor: HighlightColor = 'yellow') {
 
         if (this.docFormat.name === "html") {
-            await this.doHighlightModern();
+            await this.doHighlightModern(highlightColor);
         } else {
-            this.doHighlightLegacy();
+            this.doHighlightLegacy(highlightColor);
         }
 
     }
 
-    public doHighlightLegacy() {
-        this.textHighlighter.doHighlight();
+    public doHighlightLegacy(highlightColor: HighlightColor) {
+
+        const textHighlighter = this.createLegacyTextHighlighter(highlightColor);
+        textHighlighter.doHighlight();
 
     }
 
-    public async doHighlightModern() {
+    public async doHighlightModern(highlightColor: HighlightColor) {
 
         console.log("Doing modern text highlight");
-        await this.onTextHighlightCreatedModern();
+        await this.onTextHighlightCreatedModern(highlightColor);
 
     }
 
     /**
      * Set text highlighting in the current document with the highlighter.
      */
-    public createTextHighlighter() {
+    public createLegacyTextHighlighter(highlightColor: HighlightColor) {
 
         let sequence = 0;
 
         const controller = this;
+
+        let textHighlighter: any | undefined;
 
         const textHighlighterOptions = {
 
@@ -188,11 +194,11 @@ export class TextHighlightController {
 
                 (async () =>  {
 
-                    await controller.onTextHighlightCreatedLegacy("." + highlightClazz);
+                    await controller.onTextHighlightCreatedLegacy("." + highlightClazz, highlightColor);
 
                     // the underlying <span> highlights need to be removed now.
 
-                    this.textHighlighter.removeHighlights();
+                    textHighlighter.removeHighlights();
 
                     log.info("Highlight completed.");
 
@@ -209,16 +215,17 @@ export class TextHighlightController {
 
         const targetDocument = this.docFormat.targetDocument();
 
-        return TextHighlighterFactory.newInstance(targetDocument!.body, textHighlighterOptions);
+        textHighlighter = TextHighlighterFactory.newInstance(targetDocument!.body, textHighlighterOptions);
+
+        return textHighlighter;
 
     }
-
 
     /**
      * Called by the controller when we have a new highlight created so that
      * we can update the model.
      */
-    public async onTextHighlightCreatedLegacy(selector: string) {
+    private async onTextHighlightCreatedLegacy(selector: string, highlightColor: HighlightColor) {
 
         await this.createTextHighlight(async () => {
 
@@ -241,7 +248,7 @@ export class TextHighlightController {
 
             const textSelections = TextExtracter.toTextSelections(textHighlightRows);
 
-            return TextHighlightRecords.create(rects, textSelections, {TEXT: text});
+            return TextHighlightRecords.create(rects, textSelections, {TEXT: text}, highlightColor);
 
         });
 
@@ -251,7 +258,7 @@ export class TextHighlightController {
      * Called by the controller when we have a new highlight created so that
      * we can update the model.
      */
-    public async onTextHighlightCreatedModern() {
+    private async onTextHighlightCreatedModern(highlightColor: HighlightColor) {
 
         // FIXME: get the new highlighter working FIRST without text and without
         // rows , or other advanced features.
@@ -274,7 +281,7 @@ export class TextHighlightController {
 
             const textSelections = TextSelections.compute(selectedContent);
 
-            return TextHighlightRecords.create(rects, textSelections, {TEXT: text});
+            return TextHighlightRecords.create(rects, textSelections, {TEXT: text}, highlightColor);
 
         });
 

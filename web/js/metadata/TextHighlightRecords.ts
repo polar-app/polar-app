@@ -5,6 +5,7 @@ import {Arrays} from '../util/Arrays';
 import {TextRect} from './TextRect';
 import {IRect} from '../util/rects/IRect';
 import {ISODateTimeStrings} from './ISODateTimeStrings';
+import {HighlightColor} from './BaseHighlight';
 
 export class TextHighlightRecords {
 
@@ -17,7 +18,7 @@ export class TextHighlightRecords {
      * @return an object with an "id" for a unique hash and a "value" of the
      * TextHighlight to use.
      */
-    public static create(rects: IRect[], textSelections: TextRect[], text: Text): TextHighlightRecord {
+    public static create(rects: IRect[], textSelections: TextRect[], text: Text, color: HighlightColor = 'yellow'): TextHighlightRecord {
 
         const id = Hashcodes.createID(rects);
 
@@ -35,7 +36,8 @@ export class TextHighlightRecords {
             notes: {},
             questions: {},
             flashcards: {},
-            guid: id
+            guid: id,
+            color
         });
 
         return {id, value: textHighlight};

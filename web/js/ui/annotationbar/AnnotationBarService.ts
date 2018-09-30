@@ -23,7 +23,6 @@ export class AnnotationBarService {
 
     public start(): void {
         this.model.registerListenerForDocumentLoaded(event => this.onDocumentLoaded(event));
-
     }
 
     private onDocumentLoaded(event: DocumentLoadedEvent) {
@@ -97,7 +96,6 @@ export class AnnotationBarService {
         };
 
         AnnotationBars.create(annotationBarControlledPopupProps, annotationBarCallbacks, 1);
-
 
     }
 

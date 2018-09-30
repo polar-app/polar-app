@@ -6,7 +6,7 @@ declare var global: any;
 
 export class TextHighlighterFactory {
 
-    static newInstance(element: HTMLElement, options: any): any {
+    public static newInstance(element: HTMLElement, options: any): any {
         Preconditions.assertNotNull(element, "element");
         return new global.TextHighlighter(element, options);
     }

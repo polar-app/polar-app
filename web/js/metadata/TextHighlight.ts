@@ -2,7 +2,7 @@ import {TextRect} from './TextRect';
 import {Text} from './Text';
 import {Texts} from './Texts';
 import {TextType} from './TextType';
-import {BaseHighlight} from './BaseHighlight';
+import {BaseHighlight, HighlightColor} from './BaseHighlight';
 import {Preconditions} from '../Preconditions';
 import {Rect} from '../Rect';
 import {Image} from './Image';
@@ -91,5 +91,5 @@ export interface ITextHighlight {
     readonly created: ISODateTimeString;
     readonly lastUpdated: ISODateTimeString;
     readonly author?: Author;
-
+    readonly color?: HighlightColor;
 }
