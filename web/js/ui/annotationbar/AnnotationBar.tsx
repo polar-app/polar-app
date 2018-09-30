@@ -1,10 +1,10 @@
 import * as React from 'react';
 import {Button} from 'reactstrap';
-import {ActiveSelection} from '../../js/ui/popup/ActiveSelections';
-import {IEventDispatcher} from '../../js/reactor/SimpleReactor';
-import {AnnotationDescriptor} from '../../js/metadata/AnnotationDescriptor';
-import {HighlightCreatedEvent} from '../../js/comments/react/HighlightCreatedEvent';
-import {HighlightColor} from '../../js/metadata/BaseHighlight';
+import {ActiveSelection} from '../popup/ActiveSelections';
+import {IEventDispatcher} from '../../reactor/SimpleReactor';
+import {AnnotationDescriptor} from '../../metadata/AnnotationDescriptor';
+import {HighlightCreatedEvent} from '../../comments/react/HighlightCreatedEvent';
+import {HighlightColor} from '../../metadata/BaseHighlight';
 
 export class AnnotationBar extends React.Component<AnnotationBarProps, IState> {
 

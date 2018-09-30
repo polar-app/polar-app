@@ -1,9 +1,9 @@
 import {AnnotationBar, AnnotationBarCallbacks, AnnotationBarTriggerEvent} from './AnnotationBar';
 import * as React from 'react';
-import {ControlledPopups} from '../../js/ui/popup/ControlledPopups';
-import {ActiveSelections} from '../../js/ui/popup/ActiveSelections';
-import {SimpleReactor} from '../../js/reactor/SimpleReactor';
-import {ControlledPopupProps} from '../../js/ui/popup/ControlledPopup';
+import {ControlledPopups} from '../popup/ControlledPopups';
+import {ActiveSelections} from '../popup/ActiveSelections';
+import {SimpleReactor} from '../../reactor/SimpleReactor';
+import {ControlledPopupProps} from '../popup/ControlledPopup';
 
 export class AnnotationBars {
 

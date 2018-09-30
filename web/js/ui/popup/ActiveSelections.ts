@@ -1,6 +1,5 @@
 import {Point} from '../../Point';
 import {MouseDirection} from './Popup';
-import {AnnotationDescriptor} from '../../metadata/AnnotationDescriptor';
 
 /**
  * Listens for when a new text selection has been created
