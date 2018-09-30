@@ -8,6 +8,7 @@
 @import url('./pdfviewer.css');
 @import url('./twitter-bootstrap.css');
 @import url('./add-comment.css');
+@import url('./annotationbar.css');
 
 body {
     height: 100%;

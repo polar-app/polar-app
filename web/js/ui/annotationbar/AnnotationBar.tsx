@@ -29,7 +29,7 @@ export class AnnotationBar extends React.Component<AnnotationBarProps, IState> {
 
                 <div className="rounded p-1 annotationbar text-center" style={{}}>
 
-                    <Button size="md"
+                    <Button size="lg"
                             type="button"
                             className="btn p-1 m-1 annotationbar-btn"
                             title=""
@@ -43,7 +43,7 @@ export class AnnotationBar extends React.Component<AnnotationBarProps, IState> {
 
                     </Button>
 
-                    <Button size="md"
+                    <Button size="lg"
                             type="button"
                             className="btn p-1 m-1 annotationbar-btn"
                             title=""
@@ -57,7 +57,7 @@ export class AnnotationBar extends React.Component<AnnotationBarProps, IState> {
 
                     </Button>
 
-                    <Button size="md"
+                    <Button size="lg"
                             type="button"
                             className="btn p-1 m-1 annotationbar-btn annotationbar-btn-highlighter"
                             title=""
@@ -71,7 +71,7 @@ export class AnnotationBar extends React.Component<AnnotationBarProps, IState> {
 
                     </Button>
 
-                    <Button size="md"
+                    <Button size="lg"
                             type="button"
                             className="btn p-1 m-1 annotationbar-btn annotationbar-btn-comment"
                             title=""
