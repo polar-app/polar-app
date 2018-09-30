@@ -78,8 +78,10 @@ export class ControlledPopup extends React.Component<ControlledPopupProps, IStat
         const top = point.y + offset.y;
         const left = point.x + offset.x;
 
-        document.getElementById(`${this.props.id}-anchor`)!.style.cssText
-            = `position: absolute; top: ${top}px; left: ${left}px;`;
+        const id = `${this.props.id}-anchor`;
+        const cssText = `position: absolute; top: ${top}px; left: ${left}px;`;
+
+        document.getElementById(id)!.style.cssText = cssText;
 
         this.setState({
             open: true,

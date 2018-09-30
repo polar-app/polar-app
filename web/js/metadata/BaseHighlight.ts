@@ -25,10 +25,14 @@ export class BaseHighlight extends ExtendedAnnotation {
      */
     public images: {[key: string]: Image} = {};
 
+    /**
+     * The color of this highlight. Defaults to yellow if undefined.
+     */
+    public color?: HighlightColor;
+
     constructor(val: any) {
 
         super(val);
-
 
     }
 
@@ -42,3 +46,11 @@ export class BaseHighlight extends ExtendedAnnotation {
     }
 
 }
+
+/**
+ * The set of highlight colors.  We also provide transparent for text you want
+ * to index but might not actually want visible in the document. We can use this
+ * for secondary / anonymous highlights like notes and comments which might
+ * not need to be visibly shown.
+ */
+export type HighlightColor = 'yellow' | 'red' | 'green' | 'blue' | 'transparent';
