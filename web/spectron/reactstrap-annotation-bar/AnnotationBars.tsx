@@ -25,6 +25,10 @@ export class AnnotationBars {
                 point: {
                     x: event.boundingClientRect.left + (event.boundingClientRect.width / 2),
                     y: event.boundingClientRect.top
+                },
+                offset: {
+                    x: 0,
+                    y: -10
                 }
             });
 

@@ -56,6 +56,10 @@ SpectronRenderer.run(async () => {
             point: {
                 x: activeSelection.boundingClientRect.left + (activeSelection.boundingClientRect.width / 2),
                 y: activeSelection.boundingClientRect.bottom
+            },
+            offset: {
+                x: 0,
+                y: 10
             }
         });
 
