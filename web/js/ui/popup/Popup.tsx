@@ -2,6 +2,14 @@ import Popper from 'popper.js';
 import {MouseEventReferenceObject} from './MouseEventReferenceObject';
 import {IPoint} from '../../Point';
 import {PointReferenceObject} from './PointReferenceObject';
+import {IEventDispatcher} from '../../reactor/SimpleReactor';
+import {CommentInputEvent} from '../../comments/react/CommentInputEvent';
+import * as ReactDOM from 'react-dom';
+import {CommentPopupBox} from '../../comments/react/CommentPopupBox';
+import * as React from 'react';
+import {OnCommentHandler} from '../../comments/react/CommentPopupBoxes';
+import {TriggerPopupEvent} from './TriggerPopupEvent';
+import {ControlledPopup} from './ControlledPopup';
 
 export class Popup {
 
@@ -47,6 +55,7 @@ export class Popup {
         });
 
     }
+
 
     private static showElement(element: HTMLElement) {
 

@@ -22,8 +22,8 @@ class App<P> extends React.Component<{}, IAppState> {
 
         if (! this.state.popoverOpen) {
             // this is a bit of a hack to position it exactly where we want it.
-            document.getElementById('Popover1')!.style.cssText
-                = 'position: absolute; top: 300px; left: 300px;';
+            document.getElementById('annotationbar-anchor')!.style.cssText
+                = 'position: relative; top: 300px; left: 300px;';
         }
 
         this.setState({
@@ -46,7 +46,7 @@ class App<P> extends React.Component<{}, IAppState> {
 
                         <span className="fas fa-highlighter"
                               aria-hidden="true"
-                              style={{color: 'rgba(255,255,0)'}}></span>
+                              style={{ color: 'rgba(255,255,0)' }}/>
 
                     </Button>
 
@@ -59,7 +59,7 @@ class App<P> extends React.Component<{}, IAppState> {
 
                         <span className="fas fa-highlighter annotatebar-btn-highlighter"
                               aria-hidden="true"
-                              style={{color: 'rgba(255,0,0)'}}></span>
+                              style={{color: 'rgba(255,0,0)'}}/>
 
                     </Button>
 
@@ -72,7 +72,7 @@ class App<P> extends React.Component<{}, IAppState> {
 
                         <span className="fas fa-highlighter"
                               aria-hidden="true"
-                              style={{color: 'rgba(0,255,0)'}}></span>
+                              style={{color: 'rgba(0,255,0)'}}/>
 
                     </Button>
 
@@ -85,133 +85,90 @@ class App<P> extends React.Component<{}, IAppState> {
 
                         <span className="fas fa-comment"
                               aria-hidden="true"
-                              style={{color: 'rgba(255,255,255)'}}></span>
+                              style={{color: 'rgba(255,255,255)'}}/>
 
                     </Button>
 
                 </div>
 
-                <Button id="Popover1" onClick={this.toggle}>
+
+                {/*<div id="annotationbar-anchor">*/}
+
+                {/*</div>*/}
+
+                <Button id="annotationbar-anchor" onClick={this.toggle}>
                     Launch Popover
                 </Button>
+
                 <Popover placement="bottom"
                          isOpen={this.state.popoverOpen}
-                         target="Popover1"
+                         className="annotationbar-popover"
+                         target="annotationbar-anchor"
                          toggle={this.toggle}>
+
+                    <div>
+                        thisis the asdasdf
+                    </div>
+
                     {/*<PopoverHeader>Popover Title</PopoverHeader>*/}
-                    <PopoverBody>
+                    {/*<PopoverBody>*/}
+                        {/*<div className="test rounded p-1 m-2 annotatebar text-center" style={{}}>*/}
 
-                        <Button size="sm"
-                                type="button"
-                                className="btn btn-outline-secondary p-1 m-1"
-                                title="Capture HTML page"
-                                aria-label=""
-                                style={{backgroundColor: 'rgba(255,255,0,0.5)'}} >
+                            {/*<Button size="md"*/}
+                                    {/*type="button"*/}
+                                    {/*className="btn p-1 m-1 annotatebar-btn"*/}
+                                    {/*title=""*/}
+                                    {/*aria-label=""*/}
+                                    {/*style={{ }}>*/}
 
-                            <span className="fa fa-tag" aria-hidden="true"></span>
+                                {/*<span className="fas fa-highlighter"*/}
+                                      {/*aria-hidden="true"*/}
+                                      {/*style={{color: 'rgba(255,255,0)'}}/>*/}
 
-                        </Button>
+                            {/*</Button>*/}
 
-                        <Button size="sm"
-                                type="button"
-                                className="btn btn-outline-secondary p-2 m-1 rounded-circle"
-                                title="Capture HTML page"
-                                aria-label=""
-                                style={{backgroundColor: 'rgba(255,0,0,0.5)'}} >
+                            {/*<Button size="md"*/}
+                                    {/*type="button"*/}
+                                    {/*className="btn p-1 m-1 annotatebar-btn"*/}
+                                    {/*title=""*/}
+                                    {/*aria-label=""*/}
+                                    {/*style={{ }}>*/}
 
-                        </Button>
+                                {/*<span className="fas fa-highlighter annotatebar-btn-highlighter"*/}
+                                      {/*aria-hidden="true"*/}
+                                      {/*style={{color: 'rgba(255,0,0)'}}/>*/}
 
-                        <Button size="sm"
-                                type="button"
-                                className="btn btn-outline-secondary p-2 m-1 rounded-circle"
-                                title="Capture HTML page"
-                                aria-label=""
-                                style={{backgroundColor: 'rgba(0,255,0,0.5)'}} >
+                            {/*</Button>*/}
 
-                        </Button>
+                            {/*<Button size="md"*/}
+                                    {/*type="button"*/}
+                                    {/*className="btn p-1 m-1 annotatebar-btn annotatebar-btn-highlighter"*/}
+                                    {/*title=""*/}
+                                    {/*aria-label=""*/}
+                                    {/*style={{ }}>*/}
 
+                                {/*<span className="fas fa-highlighter"*/}
+                                      {/*aria-hidden="true"*/}
+                                      {/*style={{color: 'rgba(0,255,0)'}}/>*/}
 
-                        <Button size="sm"
-                                type="button"
-                                className="btn btn-outline-secondary p-2 m-1 rounded-circle"
-                                title="Capture HTML page"
-                                aria-label=""
-                                style={{backgroundColor: 'rgba(0,0,255,0.5)'}} >
+                            {/*</Button>*/}
 
-                        </Button>
+                            {/*<Button size="md"*/}
+                                    {/*type="button"*/}
+                                    {/*className="btn p-1 m-1 annotatebar-btn"*/}
+                                    {/*title=""*/}
+                                    {/*aria-label=""*/}
+                                    {/*style={{ }}>*/}
 
-                        {/*<InputGroupButtonDropdown size="sm"*/}
-                                                  {/*addonType="append"*/}
-                                                  {/*isOpen={this.state.dropdownOpen}*/}
-                                                  {/*toggle={this.toggleDropDown}>*/}
-                            {/*<DropdownToggle caret>*/}
+                                {/*<span className="fas fa-comment"*/}
+                                      {/*aria-hidden="true"*/}
+                                      {/*style={{color: 'rgba(255,255,255)'}}/>*/}
 
-                            {/*</DropdownToggle>*/}
-                            {/*<DropdownMenu>*/}
-                                {/*<DropdownItem header>Header</DropdownItem>*/}
-                                {/*<DropdownItem disabled>Action</DropdownItem>*/}
-                                {/*<DropdownItem>Another Action</DropdownItem>*/}
-                                {/*<DropdownItem divider />*/}
-                                {/*<DropdownItem>Another Action</DropdownItem>*/}
-                            {/*</DropdownMenu>*/}
-                        {/*</InputGroupButtonDropdown>*/}
+                            {/*</Button>*/}
 
-                        {/*<div>*/}
-                            {/*<ReactSummernote*/}
-                                {/*value=""*/}
-                                {/*options={{*/}
-                                    {/*id: 'my-summernote',*/}
-                                    {/*lang: 'en-US',*/}
-                                    {/*height: 280,*/}
-                                    {/*placeholder: "Enter a comment",*/}
-                                    {/*dialogsInBody: false,*/}
-                                    {/*//airMode: true,*/}
-                                    {/*// toolbar: [*/}
-                                    {/*//     ['style', []],*/}
-                                    {/*//     ['font', []],*/}
-                                    {/*//     ['fontname', []],*/}
-                                    {/*//     ['para', []],*/}
-                                    {/*//     ['table', []],*/}
-                                    {/*//     ['insert', []],*/}
-                                    {/*//     ['view', []],*/}
-                                    {/*//     ['image', []]*/}
-                                    {/*// ]*/}
-
-                                    {/*// FIXME: add blockquote, code, and pre, and cite*/}
-
-                                    {/*// missing the highlight color pulldown...*/}
-
-                                    {/*toolbar: [*/}
-                                        {/*['style', ['style']],*/}
-                                        {/*['font', ['bold', 'italic', 'underline', 'clear', 'color', 'superscript', 'subscript']],*/}
-                                        {/*// ['fontname', ['fontname']],*/}
-                                        {/*['para', ['ul', 'ol', 'paragraph']],*/}
-                                        {/*['table', ['table']],*/}
-                                        {/*['insert', ['link', 'picture', 'video']],*/}
-                                        {/*['view', []]*/}
-                                    {/*]*/}
-
-                                {/*}}*/}
-                                {/*// onChange={this.onChange}*/}
-                                {/*// onBlur={this.onBlur}*/}
-                                {/*// onFocus={this.onFocus}*/}
-                                {/*// onSubmit={this.onSubmit}*/}
-                                {/*// onImageUpload={this.onImageUpload}*/}
-                            {/*/>*/}
                         {/*</div>*/}
 
-                        {/*<Button size="sm"*/}
-                                {/*type="button"*/}
-                                {/*className="btn btn-outline-secondary p-1 m-1 "*/}
-                                {/*title="Capture HTML page"*/}
-                                {/*aria-label=""*/}
-                                {/*style={{backgroundColor: 'yellow'}} >*/}
-
-                            {/*<span className="fa fa-tag" aria-hidden="true"></span>*/}
-
-                        {/*</Button>*/}
-
-                    </PopoverBody>
+                    {/*</PopoverBody>*/}
                 </Popover>
             </div>
         );
