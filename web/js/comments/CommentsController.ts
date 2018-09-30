@@ -1,11 +1,12 @@
 import {TriggerEvent} from '../contextmenu/TriggerEvent';
 import {Logger} from '../logger/Logger';
-import {CommentCreatedEvent, CommentPopupBoxes, CommentType} from './react/CommentPopupBoxes';
+import {CommentPopupBoxes} from './react/CommentPopupBoxes';
 import {SimpleReactor} from '../reactor/SimpleReactor';
 import {CommentInputEvent} from './react/CommentInputEvent';
 import {Comments} from '../metadata/Comments';
 import {Model} from '../model/Model';
 import {AnnotationDescriptor} from '../metadata/AnnotationDescriptor';
+import {CommentCreatedEvent} from './react/CommentCreatedEvent';
 
 const log = Logger.create();
 

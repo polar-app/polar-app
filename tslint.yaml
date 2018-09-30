@@ -70,6 +70,8 @@ rules:
 
   no-angle-bracket-type-assertion: false
 
+  no-empty-interface: false
+
 jsRules:
   max-line-length:
     options: [140]

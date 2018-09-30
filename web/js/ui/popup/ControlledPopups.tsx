@@ -15,7 +15,6 @@ export class ControlledPopups {
         ReactDOM.render(
             <ControlledPopup id={controlledPopupProps.id}
                              placement={controlledPopupProps.placement}
-                             title={controlledPopupProps.title}
                              triggerPopupEventDispatcher={controlledPopupProps.triggerPopupEventDispatcher}>
                 {child}
             </ControlledPopup>,

@@ -1,5 +1,6 @@
 import {Point} from '../../Point';
 import {MouseDirection} from './Popup';
+import {AnnotationDescriptor} from '../../metadata/AnnotationDescriptor';
 
 /**
  * Listens for when a new text selection has been created
@@ -32,8 +33,7 @@ export class ActiveSelections {
                 listener({
                     originPoint: originPoint!,
                     mouseDirection,
-                    range,
-                    boundingClientRect
+                    boundingClientRect,
                 });
 
             }
@@ -49,9 +49,15 @@ export interface ActiveSelectionListener {
     (event: ActiveSelectionEvent): void;
 }
 
-export interface ActiveSelectionEvent {
+
+export interface ActiveSelection {
+
     readonly originPoint: Point;
     readonly mouseDirection: MouseDirection;
-    readonly range: Range;
     readonly boundingClientRect: ClientRect | DOMRect;
+
+}
+
+export interface ActiveSelectionEvent extends ActiveSelection {
+
 }

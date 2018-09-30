@@ -6,11 +6,12 @@ import {ActiveSelectionEvent} from '../../js/ui/popup/ActiveSelections';
 import {AnnotationBars} from './AnnotationBars';
 import {TriggerPopupEvent} from '../../js/ui/popup/TriggerPopupEvent';
 import {SimpleReactor} from '../../js/reactor/SimpleReactor';
-import {AnnotationBarCallbacks} from './AnnotationBar';
+import {AnnotationBarCallbacks, CommentTriggerEvent, OnCommentCallback, OnHighlightedCallback} from './AnnotationBar';
 import {ControlledPopupProps} from '../../js/ui/popup/ControlledPopup';
 import {CommentPopupBars} from '../../js/comments/react/CommentPopupBars';
 import {CommentPopupBarCallbacks} from '../../js/comments/react/CommentPopupBar';
-import {CommentCreatedEvent} from '../../js/comments/react/CommentPopupBoxes';
+import {CommentCreatedEvent} from '../../js/comments/react/CommentCreatedEvent';
+import {HighlightCreatedEvent} from '../../js/comments/react/HighlightCreatedEvent';
 
 SpectronRenderer.run(async () => {
 
@@ -47,10 +48,13 @@ SpectronRenderer.run(async () => {
         triggerPopupEventDispatcher
     };
 
-    function onComment(activeSelection: ActiveSelectionEvent) {
+    const onComment: OnCommentCallback =
+        (commentTriggerEvent: CommentTriggerEvent) => {
 
         // create the new popup BELOW the region now...
         console.log("Got comment button clicked");
+
+        const activeSelection = commentTriggerEvent.activeSelection;
 
         commentBarControlledPopupProps.triggerPopupEventDispatcher.dispatchEvent({
             point: {
@@ -63,13 +67,20 @@ SpectronRenderer.run(async () => {
             }
         });
 
-    }
+    };
+
+    const onHighlighted: OnHighlightedCallback = (highlightCreatedEvent: HighlightCreatedEvent) => {
+
+        console.log("Got highlight!", highlightCreatedEvent);
+
+    };
 
     const annotationBarCallbacks: AnnotationBarCallbacks = {
+        onHighlighted,
         onComment
     };
 
-    AnnotationBars.create(annotationBarControlledPopupProps, annotationBarCallbacks);
+    AnnotationBars.create(annotationBarControlledPopupProps, annotationBarCallbacks, 1);
 
 });
 
