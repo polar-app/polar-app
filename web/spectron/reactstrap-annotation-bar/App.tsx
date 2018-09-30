@@ -35,11 +35,11 @@ class App<P> extends React.Component<{}, IAppState> {
         return (
             <div>
 
-                <div className="test rounded p-1 m-2 annotatebar text-center" style={{}}>
+                <div className="test rounded p-1 m-2 annotationbar text-center" style={{}}>
 
                     <Button size="md"
                             type="button"
-                            className="btn p-1 m-1 annotatebar-btn"
+                            className="btn p-1 m-1 annotationbar-btn"
                             title=""
                             aria-label=""
                             style={{ }}>
@@ -52,12 +52,12 @@ class App<P> extends React.Component<{}, IAppState> {
 
                     <Button size="md"
                             type="button"
-                            className="btn p-1 m-1 annotatebar-btn"
+                            className="btn p-1 m-1 annotationbar-btn"
                             title=""
                             aria-label=""
                             style={{ }}>
 
-                        <span className="fas fa-highlighter annotatebar-btn-highlighter"
+                        <span className="fas fa-highlighter annotationbar-btn-highlighter"
                               aria-hidden="true"
                               style={{color: 'rgba(255,0,0)'}}/>
 
@@ -65,7 +65,7 @@ class App<P> extends React.Component<{}, IAppState> {
 
                     <Button size="md"
                             type="button"
-                            className="btn p-1 m-1 annotatebar-btn annotatebar-btn-highlighter"
+                            className="btn p-1 m-1 annotationbar-btn annotationbar-btn-highlighter"
                             title=""
                             aria-label=""
                             style={{ }}>
@@ -78,7 +78,7 @@ class App<P> extends React.Component<{}, IAppState> {
 
                     <Button size="md"
                             type="button"
-                            className="btn p-1 m-1 annotatebar-btn"
+                            className="btn p-1 m-1 annotationbar-btn"
                             title=""
                             aria-label=""
                             style={{ }}>
@@ -112,11 +112,11 @@ class App<P> extends React.Component<{}, IAppState> {
 
                     {/*<PopoverHeader>Popover Title</PopoverHeader>*/}
                     {/*<PopoverBody>*/}
-                        {/*<div className="test rounded p-1 m-2 annotatebar text-center" style={{}}>*/}
+                        {/*<div className="test rounded p-1 m-2 annotationbar text-center" style={{}}>*/}
 
                             {/*<Button size="md"*/}
                                     {/*type="button"*/}
-                                    {/*className="btn p-1 m-1 annotatebar-btn"*/}
+                                    {/*className="btn p-1 m-1 annotationbar-btn"*/}
                                     {/*title=""*/}
                                     {/*aria-label=""*/}
                                     {/*style={{ }}>*/}
@@ -129,12 +129,12 @@ class App<P> extends React.Component<{}, IAppState> {
 
                             {/*<Button size="md"*/}
                                     {/*type="button"*/}
-                                    {/*className="btn p-1 m-1 annotatebar-btn"*/}
+                                    {/*className="btn p-1 m-1 annotationbar-btn"*/}
                                     {/*title=""*/}
                                     {/*aria-label=""*/}
                                     {/*style={{ }}>*/}
 
-                                {/*<span className="fas fa-highlighter annotatebar-btn-highlighter"*/}
+                                {/*<span className="fas fa-highlighter annotationbar-btn-highlighter"*/}
                                       {/*aria-hidden="true"*/}
                                       {/*style={{color: 'rgba(255,0,0)'}}/>*/}
 
@@ -142,7 +142,7 @@ class App<P> extends React.Component<{}, IAppState> {
 
                             {/*<Button size="md"*/}
                                     {/*type="button"*/}
-                                    {/*className="btn p-1 m-1 annotatebar-btn annotatebar-btn-highlighter"*/}
+                                    {/*className="btn p-1 m-1 annotationbar-btn annotationbar-btn-highlighter"*/}
                                     {/*title=""*/}
                                     {/*aria-label=""*/}
                                     {/*style={{ }}>*/}
@@ -155,7 +155,7 @@ class App<P> extends React.Component<{}, IAppState> {
 
                             {/*<Button size="md"*/}
                                     {/*type="button"*/}
-                                    {/*className="btn p-1 m-1 annotatebar-btn"*/}
+                                    {/*className="btn p-1 m-1 annotationbar-btn"*/}
                                     {/*title=""*/}
                                     {/*aria-label=""*/}
                                     {/*style={{ }}>*/}

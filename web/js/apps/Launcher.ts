@@ -10,6 +10,7 @@ import {TextHighlightView2} from '../highlights/text/view/TextHighlightView2';
 import {AnnotationSidebarService} from '../annotation_sidebar/AnnotationSidebarService';
 import {PageSearchController} from '../page_search/PageSearchController';
 import {CommentsController} from '../comments/CommentsController';
+import {AnnotationBarService} from '../ui/annotationbar/AnnotationBarService';
 
 const {AreaHighlightView} = require("../highlights/area/view/AreaHighlightView");
 
@@ -50,6 +51,7 @@ export class Launcher {
         new AnnotationSidebarService(model).start();
         new PageSearchController(model).start();
         new CommentsController(model).start();
+        new AnnotationBarService(model).start();
 
         const viewer = ViewerFactory.create(model);
         viewer.start();

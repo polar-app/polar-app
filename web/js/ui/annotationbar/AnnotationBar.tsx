@@ -27,11 +27,11 @@ export class AnnotationBar extends React.Component<AnnotationBarProps, IState> {
         return (
             <div>
 
-                <div className="rounded p-1 annotatebar text-center" style={{}}>
+                <div className="rounded p-1 annotationbar text-center" style={{}}>
 
                     <Button size="md"
                             type="button"
-                            className="btn p-1 m-1 annotatebar-btn"
+                            className="btn p-1 m-1 annotationbar-btn"
                             title=""
                             aria-label=""
                             onClick={() => this.dispatchOnHighlighted('yellow')}
@@ -45,13 +45,13 @@ export class AnnotationBar extends React.Component<AnnotationBarProps, IState> {
 
                     <Button size="md"
                             type="button"
-                            className="btn p-1 m-1 annotatebar-btn"
+                            className="btn p-1 m-1 annotationbar-btn"
                             title=""
                             aria-label=""
                             onClick={() => this.dispatchOnHighlighted('red')}
                             style={{ }}>
 
-                        <span className="fas fa-highlighter annotatebar-btn-highlighter"
+                        <span className="fas fa-highlighter annotationbar-btn-highlighter"
                               aria-hidden="true"
                               style={{color: 'rgba(255,0,0)'}}/>
 
@@ -59,7 +59,7 @@ export class AnnotationBar extends React.Component<AnnotationBarProps, IState> {
 
                     <Button size="md"
                             type="button"
-                            className="btn p-1 m-1 annotatebar-btn annotatebar-btn-highlighter"
+                            className="btn p-1 m-1 annotationbar-btn annotationbar-btn-highlighter"
                             title=""
                             aria-label=""
                             onClick={() => this.dispatchOnHighlighted('green')}
@@ -73,7 +73,7 @@ export class AnnotationBar extends React.Component<AnnotationBarProps, IState> {
 
                     <Button size="md"
                             type="button"
-                            className="btn p-1 m-1 annotatebar-btn annotatebar-btn-comment"
+                            className="btn p-1 m-1 annotationbar-btn annotationbar-btn-comment"
                             title=""
                             aria-label=""
                             onClick={() => this.dispatchOnCommented()}
