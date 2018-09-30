@@ -2,41 +2,26 @@ import * as React from 'react';
 import {IEventDispatcher} from '../../reactor/SimpleReactor';
 import {TriggerPopupEvent} from './TriggerPopupEvent';
 import Popover from 'reactstrap/lib/Popover';
-import PopoverHeader from 'reactstrap/lib/PopoverHeader';
-import PopoverBody from 'reactstrap/lib/PopoverBody';
+import {CommentInputEvent} from '../../comments/react/CommentInputEvent';
 
-export class ControlledPopup extends React.Component<IProps, any> {
+export class ControlledPopup extends React.Component<IProps, IState> {
 
     constructor(props: any) {
         super(props);
 
-        // this.toggle = this.toggle.bind(this);
-        this.onCommentEvent = this.onCommentEvent.bind(this);
-
+        this.toggle = this.toggle.bind(this);
+        this.onTriggerPopupEvent = this.onTriggerPopupEvent.bind(this);
 
         this.state = {
-            popoverOpen: false
+            open: false,
+            initial: false
         };
 
         this.props.triggerPopupEventDispatcher.addEventListener(event => {
-            this.onCommentEvent(event);
+            this.onTriggerPopupEvent(event);
         });
 
     }
-
-    // public toggle() {
-    //
-    //     if (! this.state.popoverOpen) {
-    //         // this is a bit of a hack to position it exactly where we want it.
-    //         document.getElementById('annotationbar-anchor')!.style.cssText
-    //             = 'position: relative; top: 300px; left: 300px;';
-    //     }
-    //
-    //     this.setState({
-    //         popoverOpen: !this.state.popoverOpen
-    //     });
-    //
-    // }
 
     public render() {
 
@@ -44,16 +29,13 @@ export class ControlledPopup extends React.Component<IProps, any> {
 
             <div id="comment-popup-box">
 
-                <div id={this.props.id + '-anchor'}></div>
+                <div id={this.props.id + '-anchor'}/>
 
-                {/*<Button id="comment-anchor" onClick={this.toggle}>*/}
-                {/*Launch Popover*/}
-                {/*</Button>*/}
-
-                <Popover placement="bottom"
+                <Popover placement={this.props.placement}
                          id={this.props.id + '-anchor'}
-                         isOpen={this.state.popoverOpen}
+                         isOpen={this.state.open}
                          target={this.props.id + '-anchor'}
+                         toggle={this.toggle}
                          style={{}}>
 
                     {this.props.children}
@@ -65,15 +47,39 @@ export class ControlledPopup extends React.Component<IProps, any> {
         );
     }
 
-    private onCommentEvent(event: TriggerPopupEvent) {
+    private toggle() {
+
+        if (this.state.initial) {
+           // keep the open state but set initial to false
+
+            this.setState({
+                open: this.state.open,
+                initial: false
+            });
+
+        } else {
+
+            this.setState({
+                open: ! this.state.open,
+                initial: false
+            });
+
+        }
+
+    }
+
+    private onTriggerPopupEvent(event: TriggerPopupEvent) {
 
         const point = event.point;
 
+        const top = point.y - 10;
+
         document.getElementById(`${this.props.id}-anchor`)!.style.cssText
-            = `position: absolute; top: ${point.y}px; left: ${point.x}px;`;
+            = `position: absolute; top: ${top}px; left: ${point.x}px;`;
 
         this.setState({
-            popoverOpen: true,
+            open: true,
+            initial: true
         });
 
     }
@@ -83,5 +89,15 @@ export class ControlledPopup extends React.Component<IProps, any> {
 interface IProps {
     id: string;
     title: string;
+    placement: ControlledPopupPlacement;
     triggerPopupEventDispatcher: IEventDispatcher<TriggerPopupEvent>;
 }
+
+interface IState {
+
+    open: boolean;
+    initial: boolean;
+}
+
+
+export type ControlledPopupPlacement = 'top' | 'bottom';

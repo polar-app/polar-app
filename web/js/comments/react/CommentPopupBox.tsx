@@ -47,6 +47,7 @@ export class CommentPopupBox extends React.Component<IProps, IState> {
         this.setState({
             popoverOpen: !this.state.popoverOpen
         });
+
     }
 
     private handleComment() {

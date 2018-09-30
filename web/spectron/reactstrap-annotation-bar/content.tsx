@@ -18,7 +18,7 @@ SpectronRenderer.run(async () => {
     const triggerPopupEventDispatcher = new SimpleReactor<TriggerPopupEvent>();
 
     const child = <AnnotationBar></AnnotationBar>;
-    ControlledPopups.create('my-controlled-popup', 'title', triggerPopupEventDispatcher, child);
+    ControlledPopups.create('my-controlled-popup', 'top', 'title', triggerPopupEventDispatcher, child);
 
     document.addEventListener('click', event => {
 

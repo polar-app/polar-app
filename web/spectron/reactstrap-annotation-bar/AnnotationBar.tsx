@@ -21,8 +21,8 @@ export class AnnotationBar extends React.Component<any, any> {
         }
 
         this.setState({
-                          popoverOpen: !this.state.popoverOpen
-                      });
+             popoverOpen: !this.state.popoverOpen
+        });
     }
 
     public render() {
