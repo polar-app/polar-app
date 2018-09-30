@@ -56,6 +56,7 @@ export class CommentPopupBox extends React.Component<IProps, IState> {
         this.props.onComment({
             text: this.text,
             type: 'text',
+            annotationDescriptor: this.state.commentInputEvent!.annotationDescriptor,
             pageNum: this.state.commentInputEvent!.pageNum
         });
 

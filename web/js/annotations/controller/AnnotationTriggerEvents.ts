@@ -6,9 +6,9 @@ import {AnnotationDescriptor} from '../../metadata/AnnotationDescriptor';
 
 export class AnnotationTriggerEvents {
 
-    static getAnnotationDescriptors(triggerEvent: TriggerEvent) {
+    public static getAnnotationDescriptors(triggerEvent: TriggerEvent) {
 
-        let annotationDescriptors: AnnotationDescriptor[] = [];
+        const annotationDescriptors: AnnotationDescriptor[] = [];
 
         annotationDescriptors.push(...triggerEvent.matchingSelectors['.text-highlight'].annotationDescriptors);
         annotationDescriptors.push(...triggerEvent.matchingSelectors['.area-highlight'].annotationDescriptors);

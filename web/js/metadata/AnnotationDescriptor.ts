@@ -27,7 +27,7 @@ export class AnnotationDescriptor {
                               docFingerprint: string,
                               pageNum: number): Readonly<AnnotationDescriptor> {
 
-        let result = new AnnotationDescriptor(<AnnotationDescriptor> {
+        const result = new AnnotationDescriptor(<AnnotationDescriptor> {
             type, id, docFingerprint, pageNum
         });
 

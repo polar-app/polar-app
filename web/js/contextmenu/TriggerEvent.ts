@@ -53,7 +53,7 @@ export class TriggerEvent {
 
     }
 
-    public static create(opts: any) {
+    public static create(opts: any): TriggerEvent {
         let result = Object.create(TriggerEvent.prototype);
         result = Object.assign(result, opts);
         return result;

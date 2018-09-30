@@ -71,16 +71,16 @@ export class AreaHighlightController {
 
         log.info("Creating area highlight: ", contextMenuLocation);
 
-        let annotationRect = AnnotationRects.createFromEvent(contextMenuLocation);
+        const annotationRect = AnnotationRects.createFromEvent(contextMenuLocation);
 
         log.info("annotationRect", annotationRect);
 
-        let areaHighlight = AreaHighlights.create({rect: annotationRect});
+        const areaHighlight = AreaHighlights.create({rect: annotationRect});
 
         log.info("areaHighlight", areaHighlight);
 
-        let docMeta = this.model.docMeta;
-        let pageMeta = docMeta.getPageMeta(contextMenuLocation.pageNum);
+        const docMeta = this.model.docMeta;
+        const pageMeta = docMeta.getPageMeta(contextMenuLocation.pageNum);
 
         pageMeta.areaHighlights[areaHighlight.id] = areaHighlight;
 

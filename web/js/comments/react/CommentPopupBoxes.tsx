@@ -4,6 +4,7 @@ import {CommentPopupBox} from './CommentPopupBox';
 import {Elements} from '../../util/Elements';
 import {IEventDispatcher} from '../../reactor/SimpleReactor';
 import {CommentInputEvent} from './CommentInputEvent';
+import {AnnotationDescriptor} from '../../metadata/AnnotationDescriptor';
 
 export class CommentPopupBoxes {
 
@@ -46,6 +47,7 @@ export interface CommentCreatedEvent {
     readonly text: string;
     readonly type: CommentType;
     readonly pageNum: number;
+    readonly annotationDescriptor: AnnotationDescriptor;
 
 }
 

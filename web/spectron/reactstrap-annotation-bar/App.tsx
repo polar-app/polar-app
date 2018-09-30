@@ -34,6 +34,63 @@ class App<P> extends React.Component<{}, IAppState> {
     public render() {
         return (
             <div>
+
+                <div className="test rounded p-1 m-2 annotatebar text-center" style={{}}>
+
+                    <Button size="md"
+                            type="button"
+                            className="btn p-1 m-1 annotatebar-btn"
+                            title=""
+                            aria-label=""
+                            style={{ }}>
+
+                        <span className="fas fa-highlighter"
+                              aria-hidden="true"
+                              style={{color: 'rgba(255,255,0)'}}></span>
+
+                    </Button>
+
+                    <Button size="md"
+                            type="button"
+                            className="btn p-1 m-1 annotatebar-btn"
+                            title=""
+                            aria-label=""
+                            style={{ }}>
+
+                        <span className="fas fa-highlighter annotatebar-btn-highlighter"
+                              aria-hidden="true"
+                              style={{color: 'rgba(255,0,0)'}}></span>
+
+                    </Button>
+
+                    <Button size="md"
+                            type="button"
+                            className="btn p-1 m-1 annotatebar-btn annotatebar-btn-highlighter"
+                            title=""
+                            aria-label=""
+                            style={{ }}>
+
+                        <span className="fas fa-highlighter"
+                              aria-hidden="true"
+                              style={{color: 'rgba(0,255,0)'}}></span>
+
+                    </Button>
+
+                    <Button size="md"
+                            type="button"
+                            className="btn p-1 m-1 annotatebar-btn"
+                            title=""
+                            aria-label=""
+                            style={{ }}>
+
+                        <span className="fas fa-comment"
+                              aria-hidden="true"
+                              style={{color: 'rgba(255,255,255)'}}></span>
+
+                    </Button>
+
+                </div>
+
                 <Button id="Popover1" onClick={this.toggle}>
                     Launch Popover
                 </Button>
@@ -44,13 +101,14 @@ class App<P> extends React.Component<{}, IAppState> {
                     {/*<PopoverHeader>Popover Title</PopoverHeader>*/}
                     <PopoverBody>
 
-
                         <Button size="sm"
                                 type="button"
-                                className="btn btn-outline-secondary p-2 m-1 rounded-circle"
+                                className="btn btn-outline-secondary p-1 m-1"
                                 title="Capture HTML page"
                                 aria-label=""
                                 style={{backgroundColor: 'rgba(255,255,0,0.5)'}} >
+
+                            <span className="fa fa-tag" aria-hidden="true"></span>
 
                         </Button>
 

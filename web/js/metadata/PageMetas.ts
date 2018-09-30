@@ -81,7 +81,7 @@ export class PageMetas {
 
         // TODO: it might be better to have this return an array of all
         // currently known values this way on startup I can send everything I
-        // know about without having to restort indexes or update maps multiple
+        // know about without having to resort indexes or update maps multiple
         // times.
 
         Preconditions.assertNotNull(docMeta, "docMeta");

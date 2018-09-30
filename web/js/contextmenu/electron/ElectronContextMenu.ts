@@ -163,7 +163,7 @@ export class ElectronContextMenu {
      * @param sender
      * @return {Electron.Menu}
      */
-    public createTextHighlightContextMenu(triggerEvent: TriggerEvent, sender: WebContents): Menu {
+    private createTextHighlightContextMenu(triggerEvent: TriggerEvent, sender: WebContents): Menu {
 
         const ctxMenu = new Menu();
 

@@ -5,6 +5,7 @@ import {SimpleReactor} from '../reactor/SimpleReactor';
 import {CommentInputEvent} from './react/CommentInputEvent';
 import {Comments} from '../metadata/Comments';
 import {Model} from '../model/Model';
+import {AnnotationDescriptor} from '../metadata/AnnotationDescriptor';
 
 const log = Logger.create();
 
@@ -41,8 +42,24 @@ export class CommentsController {
 
                 log.debug("Creating comment from trigger event: ", triggerEvent);
 
-                this.triggerCreateCommentPopup(triggerEvent)
-                    .catch(err => log.error("Could not create comment: ", err));
+                // TODO: this is not right but better than nothing for now.  We
+                // should have the context menu system pick the proper annotation
+                // to send.
+
+                const annotationDescriptors = Object.values(triggerEvent.matchingSelectors)
+                    .map(current => current.annotationDescriptors)
+                    .reduce((prev, curr) => [...curr, ...prev], []);
+
+                if (annotationDescriptors.length === 1) {
+
+                    const annotationDescriptor = annotationDescriptors[0];
+
+                    this.triggerCreateCommentPopup(triggerEvent, annotationDescriptor)
+                        .catch(err => log.error("Could not create comment: ", err));
+
+                } else {
+                    log.warn("Too many descriptors");
+                }
 
             }
 
@@ -52,6 +69,7 @@ export class CommentsController {
 
     private onCommentCreated(commentCreatedEvent: CommentCreatedEvent): void {
 
+        // FIXME: we have to assign a link to the comment so that we know to what it is attached.
         const comment = Comments.createTextComment(commentCreatedEvent.text);
 
         const docMeta = this.model.docMeta;
@@ -61,11 +79,13 @@ export class CommentsController {
 
     }
 
-    private async triggerCreateCommentPopup(triggerEvent: TriggerEvent) {
+    private async triggerCreateCommentPopup(triggerEvent: TriggerEvent,
+                                            annotationDescriptor: AnnotationDescriptor) {
 
         this.commentEventDispatcher.dispatchEvent({
             point: triggerEvent.points.client,
             pageNum: triggerEvent.pageNum,
+            annotationDescriptor,
             type: 'create'
         });
 
