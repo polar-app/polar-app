@@ -1,5 +1,5 @@
 import {Point} from '../../Point';
-import {MouseDirection} from '../popup/Popup';
+import {MouseDirection} from './Popup';
 
 /**
  * Listens for when a new text selection has been created
@@ -25,9 +25,15 @@ export class ActiveSelections {
 
                 const mouseDirection: MouseDirection = event.y - originPoint!.y < 0 ? 'up' : 'down';
 
+                const range = window.getSelection().getRangeAt(0);
+
+                const boundingClientRect = range.getBoundingClientRect();
+
                 listener({
                     originPoint: originPoint!,
-                    mouseDirection
+                    mouseDirection,
+                    range,
+                    boundingClientRect
                 });
 
             }
@@ -46,4 +52,6 @@ export interface ActiveSelectionListener {
 export interface ActiveSelectionEvent {
     readonly originPoint: Point;
     readonly mouseDirection: MouseDirection;
+    readonly range: Range;
+    readonly boundingClientRect: ClientRect | DOMRect;
 }

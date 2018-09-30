@@ -1,14 +1,12 @@
 import {SpectronRenderer} from '../../js/test/SpectronRenderer';
-import Popper from 'popper.js';
-import $ from '../../js/ui/JQuery';
 import * as ReactDOM from 'react-dom';
 import * as React from 'react';
 import App from './App';
 import {SimpleReactor} from '../../js/reactor/SimpleReactor';
-import {CommentInputEvent} from '../../js/comments/react/CommentInputEvent';
 import {ControlledPopups} from '../../js/ui/popup/ControlledPopups';
 import {TriggerPopupEvent} from '../../js/ui/popup/TriggerPopupEvent';
 import {AnnotationBar} from './AnnotationBar';
+import {ActiveSelections} from '../../js/ui/popup/ActiveSelections';
 
 SpectronRenderer.run(async () => {
 
@@ -24,10 +22,15 @@ SpectronRenderer.run(async () => {
 
     document.addEventListener('click', event => {
 
+
+    });
+
+    ActiveSelections.addEventListener(event => {
+
         triggerPopupEventDispatcher.dispatchEvent({
             point: {
-                x: event.x,
-                y: event.y
+                x: event.boundingClientRect.left + (event.boundingClientRect.width / 2),
+                y: event.boundingClientRect.top
             }
         });
 
