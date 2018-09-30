@@ -12,9 +12,10 @@ describe('TestHighlights', function() {
 
         TextHighlights.deleteTextHighlight(pageMeta, textHighlight);
 
-        let expected: any = {
+        const expected: any = {
             "pagemarks": {},
             "notes": {},
+            "comments": {},
             "questions": {},
             "flashcards": {},
             "textHighlights": {},

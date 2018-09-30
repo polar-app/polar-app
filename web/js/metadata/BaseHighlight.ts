@@ -15,8 +15,6 @@ export class BaseHighlight extends ExtendedAnnotation {
      * Optional image for this highlight taken when the highlight was
      * created.  This is usually a screenshot of the annotation and what
      * it looks like on screen.
-     *
-     * @type {null}
      */
     public image?: Image;
 
