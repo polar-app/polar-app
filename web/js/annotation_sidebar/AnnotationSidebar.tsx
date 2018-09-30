@@ -237,6 +237,7 @@ export class AnnotationSidebar extends React.Component<AnnotationSidebarProps, A
                     <div key={annotation.id}
                          data-annotation-id={annotation.id}
                          data-annotation-type={attrType}
+                         data-annotation-color={annotation.color}
                          className={attrType}>
 
                         <blockquote dangerouslySetInnerHTML={{__html: html}}

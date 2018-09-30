@@ -10,6 +10,7 @@ import {Component} from '../../../../components/Component';
 import {DocFormatFactory} from '../../../../docformat/DocFormatFactory';
 import {Rects} from '../../../../Rects';
 import {Logger} from '../../../../logger/Logger';
+import {HighlightColor} from '../../../../metadata/BaseHighlight';
 
 const log = Logger.create();
 
@@ -98,11 +99,15 @@ export class TextHighlightComponent extends Component {
             highlightElement.setAttribute("data-annotation-page-num", `${pageMeta.pageInfo.num}`);
             highlightElement.setAttribute("data-annotation-doc-fingerprint", docMeta.docInfo.fingerprint);
 
+            const color: HighlightColor = textHighlight.color || 'yellow';
+
+            highlightElement.setAttribute("data-annotation-color", color);
+
             highlightElement.className = `text-highlight annotation text-highlight-${textHighlight.id}`;
 
             highlightElement.style.position = "absolute";
-            highlightElement.style.backgroundColor = `yellow`;
-            highlightElement.style.opacity = `0.5`;
+            // highlightElement.style.backgroundColor = `yellow`;
+            // highlightElement.style.opacity = `0.5`;
 
             if (this.docFormat.name === "pdf") {
                 // this is only needed for PDF and we might be able to use a transform

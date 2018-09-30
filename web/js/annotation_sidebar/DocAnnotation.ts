@@ -1,6 +1,7 @@
 import {AnnotationType} from '../metadata/AnnotationType';
 import {Screenshot} from '../metadata/Screenshot';
 import {Point} from '../Point';
+import {HighlightColor} from '../metadata/BaseHighlight';
 
 export interface DocAnnotation {
     id: string;
@@ -9,7 +10,13 @@ export interface DocAnnotation {
     screenshot?: Screenshot;
     pageNum: number;
     position: Point;
-    //created: number;
+
+    /**
+     * The color for highlights.  When undefined there is no color (which would
+     * work for comments, etc)
+     */
+    color?: HighlightColor;
+
 }
 
 /**

@@ -9,6 +9,7 @@
 @import url('./twitter-bootstrap.css');
 @import url('./add-comment.css');
 @import url('./annotationbar.css');
+@import url('./text-highlights.css');
 
 body {
     height: 100%;

@@ -1,0 +1,20 @@
+.page .text-highlight {
+    opacity: 0.5;
+}
+
+.page .text-highlight,
+.page .text-highlight[data-annotation-color="yellow"] {
+    background-color: yellow;
+}
+
+.page .text-highlight[data-annotation-color="green"] {
+
+    background-color: green;
+
+}
+
+.page .text-highlight[data-annotation-color="red"] {
+
+    background-color: red;
+
+}

@@ -83,7 +83,8 @@ export class DocAnnotations {
             position: {
                 x: this.firstRect(textHighlight).map(current => current.left).getOrElse(0),
                 y: this.firstRect(textHighlight).map(current => current.top).getOrElse(0),
-            }
+            },
+            color: textHighlight.color
         };
 
     }
