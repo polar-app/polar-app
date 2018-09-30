@@ -1,16 +1,11 @@
-import {IEventDispatcher} from '../../reactor/SimpleReactor';
 import {Elements} from '../../util/Elements';
-import {TriggerPopupEvent} from './TriggerPopupEvent';
 import * as ReactDOM from 'react-dom';
-import {ControlledPopup, ControlledPopupPlacement} from './ControlledPopup';
+import {ControlledPopup, ControlledPopupProps} from './ControlledPopup';
 import * as React from 'react';
 
 export class ControlledPopups {
 
-    public static create(id: string,
-                         placement: ControlledPopupPlacement,
-                         title: string,
-                         triggerPopupEventDispatcher: IEventDispatcher<TriggerPopupEvent>,
+    public static create(controlledPopupProps: ControlledPopupProps,
                          child: any) {
 
         const target = Elements.createElementHTML(`<div class="controlled-popup"></div>`);
@@ -18,10 +13,10 @@ export class ControlledPopups {
         document.body.appendChild(target);
 
         ReactDOM.render(
-            <ControlledPopup id={id}
-                             placement={placement}
-                             title={title}
-                             triggerPopupEventDispatcher={triggerPopupEventDispatcher}>
+            <ControlledPopup id={controlledPopupProps.id}
+                             placement={controlledPopupProps.placement}
+                             title={controlledPopupProps.title}
+                             triggerPopupEventDispatcher={controlledPopupProps.triggerPopupEventDispatcher}>
                 {child}
             </ControlledPopup>,
             target

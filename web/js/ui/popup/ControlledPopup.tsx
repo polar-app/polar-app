@@ -4,7 +4,7 @@ import {TriggerPopupEvent} from './TriggerPopupEvent';
 import Popover from 'reactstrap/lib/Popover';
 import {CommentInputEvent} from '../../comments/react/CommentInputEvent';
 
-export class ControlledPopup extends React.Component<IProps, IState> {
+export class ControlledPopup extends React.Component<ControlledPopupProps, IState> {
 
     constructor(props: any) {
         super(props);
@@ -18,6 +18,8 @@ export class ControlledPopup extends React.Component<IProps, IState> {
         };
 
         this.props.triggerPopupEventDispatcher.addEventListener(event => {
+            console.log("FIXME2 triggered")
+
             this.onTriggerPopupEvent(event);
         });
 
@@ -86,11 +88,11 @@ export class ControlledPopup extends React.Component<IProps, IState> {
 
 }
 
-interface IProps {
-    id: string;
-    title: string;
-    placement: ControlledPopupPlacement;
-    triggerPopupEventDispatcher: IEventDispatcher<TriggerPopupEvent>;
+export interface ControlledPopupProps {
+    readonly id: string;
+    readonly title: string;
+    readonly placement: ControlledPopupPlacement;
+    readonly triggerPopupEventDispatcher: IEventDispatcher<TriggerPopupEvent>;
 }
 
 interface IState {

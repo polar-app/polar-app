@@ -2,11 +2,19 @@ import {SpectronRenderer} from '../../js/test/SpectronRenderer';
 import * as ReactDOM from 'react-dom';
 import * as React from 'react';
 import App from './App';
-import {SimpleReactor} from '../../js/reactor/SimpleReactor';
-import {ControlledPopups} from '../../js/ui/popup/ControlledPopups';
+import {ActiveSelectionEvent} from '../../js/ui/popup/ActiveSelections';
+import {AnnotationBars} from './AnnotationBars';
 import {TriggerPopupEvent} from '../../js/ui/popup/TriggerPopupEvent';
-import {AnnotationBar} from './AnnotationBar';
-import {ActiveSelections} from '../../js/ui/popup/ActiveSelections';
+import {SimpleReactor} from '../../js/reactor/SimpleReactor';
+import {AnnotationBarCallbacks} from './AnnotationBar';
+import {ControlledPopupProps} from '../../js/ui/popup/ControlledPopup';
+
+function onComment(activeSelection: ActiveSelectionEvent) {
+
+    // create the new popup BELOW the region now...
+    console.log("Got comment");
+
+}
 
 SpectronRenderer.run(async () => {
 
@@ -15,26 +23,24 @@ SpectronRenderer.run(async () => {
         document.getElementById('root') as HTMLElement
     );
 
+    // FIXME: just tie the visibility of the popup to the visiblity of the
+    // region.. when the region vanishes then just close the popup OR the text
+    // area is close obviously.
+
     const triggerPopupEventDispatcher = new SimpleReactor<TriggerPopupEvent>();
 
-    const child = <AnnotationBar></AnnotationBar>;
-    ControlledPopups.create('my-controlled-popup', 'top', 'title', triggerPopupEventDispatcher, child);
+    const controlledPopupProps: ControlledPopupProps = {
+        id: 'annotationbar',
+        title: 'Add Comment',
+        placement: 'top',
+        triggerPopupEventDispatcher
+    };
 
-    document.addEventListener('click', event => {
+    const annotationBarCallbacks: AnnotationBarCallbacks = {
+        onComment
+    };
 
-
-    });
-
-    ActiveSelections.addEventListener(event => {
-
-        triggerPopupEventDispatcher.dispatchEvent({
-            point: {
-                x: event.boundingClientRect.left + (event.boundingClientRect.width / 2),
-                y: event.boundingClientRect.top
-            }
-        });
-
-    });
+    AnnotationBars.create(controlledPopupProps, annotationBarCallbacks);
 
 });
 

@@ -96,14 +96,14 @@ class App<P> extends React.Component<{}, IAppState> {
 
                 {/*</div>*/}
 
-                <Button id="annotationbar-anchor" onClick={this.toggle}>
+                <Button id="testbar-anchor" onClick={this.toggle}>
                     Launch Popover
                 </Button>
 
                 <Popover placement="bottom"
                          isOpen={this.state.popoverOpen}
-                         className="annotationbar-popover"
-                         target="annotationbar-anchor"
+                         className="testbar-popover"
+                         target="testbar-anchor"
                          toggle={this.toggle}>
 
                     <div>

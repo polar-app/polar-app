@@ -1,28 +1,21 @@
 import * as React from 'react';
 import {Button} from 'reactstrap';
+import {ActiveSelectionEvent} from '../../js/ui/popup/ActiveSelections';
+import {IEventDispatcher} from '../../js/reactor/SimpleReactor';
+import {TriggerPopupEvent} from '../../js/ui/popup/TriggerPopupEvent';
 
-export class AnnotationBar extends React.Component<any, any> {
+export class AnnotationBar extends React.Component<AnnotationBarProps, IState> {
 
     constructor(props: any) {
         super(props);
 
-        this.toggle = this.toggle.bind(this);
-        this.state = {
-            popoverOpen: false
-        };
-    }
+        this.state = {};
 
-    public toggle() {
-
-        if (! this.state.popoverOpen) {
-            // this is a bit of a hack to position it exactly where we want it.
-            document.getElementById('annotationbar-anchor')!.style.cssText
-                = 'position: relative; top: 300px; left: 300px;';
-        }
-
-        this.setState({
-             popoverOpen: !this.state.popoverOpen
+        this.props.activeSelectionEventDispatcher.addEventListener(activeSelectionEvent => {
+            this.setState({activeSelectionEvent});
         });
+
+
     }
 
     public render() {
@@ -75,6 +68,7 @@ export class AnnotationBar extends React.Component<any, any> {
                             className="btn p-1 m-1 annotatebar-btn"
                             title=""
                             aria-label=""
+                            onClick={() => this.props.onComment(this.state.activeSelectionEvent!)}
                             style={{ }}>
 
                         <span className="fas fa-comment"
@@ -89,6 +83,17 @@ export class AnnotationBar extends React.Component<any, any> {
         );
     }
 
+}
 
+export interface IState {
+    activeSelectionEvent?: ActiveSelectionEvent;
+}
 
+export interface AnnotationBarCallbacks {
+    // called when the comment button is clicked.
+    onComment: (activeSelection: ActiveSelectionEvent) => void;
+}
+
+export interface AnnotationBarProps extends AnnotationBarCallbacks {
+    activeSelectionEventDispatcher: IEventDispatcher<ActiveSelectionEvent>;
 }
