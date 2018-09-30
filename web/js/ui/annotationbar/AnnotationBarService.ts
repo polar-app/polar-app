@@ -9,6 +9,7 @@ import {CommentPopupBars} from '../../comments/react/CommentPopupBars';
 import {AnnotationBarCallbacks, CommentTriggerEvent, OnCommentCallback, OnHighlightedCallback} from './AnnotationBar';
 import {HighlightCreatedEvent} from '../../comments/react/HighlightCreatedEvent';
 import {AnnotationBars} from './AnnotationBars';
+import {TypedMessage} from '../../util/TypedMessage';
 
 const log = Logger.create();
 
@@ -80,6 +81,13 @@ export class AnnotationBarService {
         const onHighlighted: OnHighlightedCallback = (highlightCreatedEvent: HighlightCreatedEvent) => {
 
             console.log("Got highlight!", highlightCreatedEvent);
+
+            const message: TypedMessage<HighlightCreatedEvent> = {
+                type: 'create-text-highlight',
+                value: highlightCreatedEvent
+            };
+
+            window.postMessage(message, '*');
 
         };
 

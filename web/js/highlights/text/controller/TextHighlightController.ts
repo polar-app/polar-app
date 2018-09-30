@@ -22,6 +22,7 @@ import {TextHighlights} from '../../../metadata/TextHighlights';
 import {Screenshots} from '../../../metadata/Screenshots';
 import {AnnotationPointers} from '../../../annotations/AnnotationPointers';
 import {Optional} from '../../../util/ts/Optional';
+import {PagemarkMode} from '../../../metadata/PagemarkMode';
 
 const {TextHighlightRows} = require("./TextHighlightRows");
 
@@ -66,11 +67,28 @@ export class TextHighlightController {
     }
 
     public start() {
-        document.addEventListener("keydown", this.keyBindingListener.bind(this));
-        this.model.registerListenerForDocumentLoaded(this.onDocumentLoaded.bind(this));
+
+        this.registerKeyDownListener();
+        this.registerDocumentLoadedListener();
+        this.registerWindowMessageListener();
+
     }
 
-    public async keyBindingListener(event: any) {
+    private registerKeyDownListener() {
+        document.addEventListener("keydown", event => this.onKeyDown(event));
+    }
+
+    private registerDocumentLoadedListener() {
+        this.model.registerListenerForDocumentLoaded(() => this.onDocumentLoaded());
+    }
+
+    private registerWindowMessageListener() {
+
+        window.addEventListener("message", event => this.onMessageReceived(event), false);
+
+    }
+
+    private async onKeyDown(event: KeyboardEvent) {
 
         if (KeyEvents.isKeyMetaActive(event)) {
 
@@ -91,6 +109,24 @@ export class TextHighlightController {
                 }
 
             }
+
+        }
+
+    }
+
+
+    private onMessageReceived(event: any) {
+
+        log.info("Received message: ", event);
+
+        switch (event.data.type) {
+
+            case "create-text-highlight":
+
+                this.doHighlight()
+                    .catch(err => log.error("Unable to create text highlight", err));
+
+                break;
 
         }
 
@@ -385,12 +421,14 @@ export class TextHighlightController {
 
     private toScreenshot(id: string, src: string, rel: string, dimensions: IDimensions) {
 
-        return Screenshots.create(src, {
-                             width: dimensions.width,
-                             height: dimensions.height,
-                             type: ImageType.PNG,
-                             rel
-                         }, id);
+        const imageOpts = {
+            width: dimensions.width,
+            height: dimensions.height,
+            type: ImageType.PNG,
+            rel
+        };
+
+        return Screenshots.create(src, imageOpts, id);
 
     }
 

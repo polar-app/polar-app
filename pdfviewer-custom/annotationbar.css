@@ -1,7 +1,7 @@
 
 .annotationbar {
     background-color: #333333;
-    width: 115px;
+    width: 125px;
 }
 
 .annotationbar-btn:hover,
@@ -30,4 +30,9 @@
 .bs-popover-auto[x-placement^=top] .arrow::after,
 .bs-popover-top .arrow::after {
     border-top-color: #333333;
+}
+
+
+.annotationbar .annotationbar-btn span {
+    font-size: 14px;
 }

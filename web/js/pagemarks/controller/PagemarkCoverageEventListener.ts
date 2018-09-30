@@ -25,7 +25,7 @@ export class PagemarkCoverageEventListener {
         this.docFormat = DocFormatFactory.getInstance();
     }
 
-    start() {
+    public start() {
 
         log.info("Starting...");
         this.model.registerListenerForDocumentLoaded(this.onDocumentLoaded.bind(this));
@@ -33,7 +33,7 @@ export class PagemarkCoverageEventListener {
 
     }
 
-    onDocumentLoaded() {
+    private onDocumentLoaded() {
 
         log.info("Document loaded... installing listeners...");
 
@@ -59,7 +59,7 @@ export class PagemarkCoverageEventListener {
     /**
      * Track that we've selected 'e' on the keyboard,
      */
-    keyListener(event: KeyboardEvent) {
+    private keyListener(event: KeyboardEvent) {
 
         if(!event) {
             throw new Error("no event");

@@ -1,4 +1,4 @@
-import {BrowserWindow}  from 'electron';
+import {BrowserWindow} from 'electron';
 import {PostMessageRequest} from './PostMessageRequest';
 import {Functions} from '../../util/Functions';
 import {isPresent} from '../../Preconditions';
