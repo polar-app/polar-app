@@ -1,9 +1,8 @@
-import {AnnotationBar, AnnotationBarCallbacks, AnnotationBarProps} from './AnnotationBar';
+import {AnnotationBar, AnnotationBarCallbacks} from './AnnotationBar';
 import * as React from 'react';
 import {ControlledPopups} from '../../js/ui/popup/ControlledPopups';
 import {ActiveSelectionEvent, ActiveSelections} from '../../js/ui/popup/ActiveSelections';
 import {SimpleReactor} from '../../js/reactor/SimpleReactor';
-import {TriggerPopupEvent} from '../../js/ui/popup/TriggerPopupEvent';
 import {ControlledPopupProps} from '../../js/ui/popup/ControlledPopup';
 
 export class AnnotationBars {
@@ -21,8 +20,6 @@ export class AnnotationBars {
         ControlledPopups.create(controlledPopupProps, child);
 
         ActiveSelections.addEventListener(event => {
-
-            console.log("FIXME1 got active selection")
 
             controlledPopupProps.triggerPopupEventDispatcher.dispatchEvent({
                 point: {

@@ -2,7 +2,6 @@ import * as React from 'react';
 import {IEventDispatcher} from '../../reactor/SimpleReactor';
 import {TriggerPopupEvent} from './TriggerPopupEvent';
 import Popover from 'reactstrap/lib/Popover';
-import {CommentInputEvent} from '../../comments/react/CommentInputEvent';
 
 export class ControlledPopup extends React.Component<ControlledPopupProps, IState> {
 
@@ -34,7 +33,7 @@ export class ControlledPopup extends React.Component<ControlledPopupProps, IStat
                 <div id={this.props.id + '-anchor'}/>
 
                 <Popover placement={this.props.placement}
-                         id={this.props.id + '-anchor'}
+                         id={this.props.id + '-popover'}
                          isOpen={this.state.open}
                          target={this.props.id + '-anchor'}
                          toggle={this.toggle}
@@ -90,7 +89,6 @@ export class ControlledPopup extends React.Component<ControlledPopupProps, IStat
 
 export interface ControlledPopupProps {
     readonly id: string;
-    readonly title: string;
     readonly placement: ControlledPopupPlacement;
     readonly triggerPopupEventDispatcher: IEventDispatcher<TriggerPopupEvent>;
 }

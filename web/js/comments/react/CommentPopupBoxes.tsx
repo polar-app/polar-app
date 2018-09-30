@@ -47,7 +47,7 @@ export interface CommentCreatedEvent {
     readonly text: string;
     readonly type: CommentType;
     readonly pageNum: number;
-    readonly annotationDescriptor: AnnotationDescriptor;
+    readonly annotationDescriptor?: AnnotationDescriptor;
 
 }
 

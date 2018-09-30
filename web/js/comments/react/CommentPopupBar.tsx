@@ -7,11 +7,11 @@ import {CommentInputEvent} from './CommentInputEvent';
 import {IEventDispatcher} from '../../reactor/SimpleReactor';
 import {OnCommentHandler} from './CommentPopupBoxes';
 
-export class CommentPopup extends React.Component<IProps, IState> {
+export class CommentPopupBar extends React.Component<CommentPopupBarProps, IState> {
 
     private text: string = "";
 
-    constructor(props: IProps, context: any) {
+    constructor(props: CommentPopupBarProps, context: any) {
         super(props, context);
 
         this.handleComment = this.handleComment.bind(this);
@@ -61,26 +61,35 @@ export class CommentPopup extends React.Component<IProps, IState> {
 
             <div id="comment-popup-box">
 
-                <div>
-                    <textarea onChange={this.onTextAreaChange}></textarea>
-                </div>
+                <PopoverHeader>Add Comment</PopoverHeader>
 
-                <div>
-                    <Button size="sm" color="primary" className="mt-2" onClick={this.handleComment}>
-                        Comment
-                    </Button>
-                </div>
+                <PopoverBody>
+
+                    <div>
+                        <textarea onChange={this.onTextAreaChange}></textarea>
+                    </div>
+
+                    <div>
+                        <Button size="sm" color="primary" className="mt-2" onClick={this.handleComment}>
+                            Comment
+                        </Button>
+                    </div>
+
+                </PopoverBody>
 
             </div>
         );
-    }
 
+    }
 
 }
 
-interface IProps {
-    commentEventDispatcher: IEventDispatcher<CommentInputEvent>;
+export interface CommentPopupBarCallbacks {
     onComment: OnCommentHandler;
+}
+
+export interface CommentPopupBarProps extends CommentPopupBarCallbacks {
+    commentEventDispatcher: IEventDispatcher<CommentInputEvent>;
 }
 
 interface IState {
