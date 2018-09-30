@@ -8,6 +8,7 @@ import {SimpleReactor} from '../../js/reactor/SimpleReactor';
 import {CommentInputEvent} from '../../js/comments/react/CommentInputEvent';
 import {ControlledPopups} from '../../js/ui/popup/ControlledPopups';
 import {TriggerPopupEvent} from '../../js/ui/popup/TriggerPopupEvent';
+import {AnnotationBar} from './AnnotationBar';
 
 SpectronRenderer.run(async () => {
 
@@ -18,7 +19,7 @@ SpectronRenderer.run(async () => {
 
     const triggerPopupEventDispatcher = new SimpleReactor<TriggerPopupEvent>();
 
-    const child = <div>hello world</div>;
+    const child = <AnnotationBar></AnnotationBar>;
     ControlledPopups.create('my-controlled-popup', 'title', triggerPopupEventDispatcher, child);
 
     document.addEventListener('click', event => {

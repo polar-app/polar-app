@@ -54,7 +54,7 @@ export class ControlledPopup extends React.Component<IProps, any> {
                          id={this.props.id + '-anchor'}
                          isOpen={this.state.popoverOpen}
                          target={this.props.id + '-anchor'}
-                         style={{width: '650px'}}>
+                         style={{}}>
 
                     {this.props.children}
 
