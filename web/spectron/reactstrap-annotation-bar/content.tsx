@@ -63,7 +63,9 @@ SpectronRenderer.run(async () => {
             offset: {
                 x: 0,
                 y: 10
-            }
+            },
+            pageNum: commentTriggerEvent.pageNum
+
         });
 
     };

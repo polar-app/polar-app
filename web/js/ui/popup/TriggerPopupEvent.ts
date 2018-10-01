@@ -7,4 +7,9 @@ export interface TriggerPopupEvent {
 
     readonly offset?: Offset;
 
+    /**
+     * The page number on which this popup should be placed.
+     */
+    readonly pageNum: number;
+
 }

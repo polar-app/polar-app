@@ -47,7 +47,9 @@ export class AnnotationBars {
                 offset: {
                     x: 0,
                     y: -10
-                }
+                },
+                pageNum
+
             });
 
             // this gives the information to our annotation bar.

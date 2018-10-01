@@ -17,8 +17,6 @@ export class ControlledPopup extends React.Component<ControlledPopupProps, IStat
         };
 
         this.props.triggerPopupEventDispatcher.addEventListener(event => {
-            console.log("FIXME2 triggered")
-
             this.onTriggerPopupEvent(event);
         });
 
@@ -71,6 +69,9 @@ export class ControlledPopup extends React.Component<ControlledPopupProps, IStat
 
     private onTriggerPopupEvent(event: TriggerPopupEvent) {
 
+        // we need to place the anchor element properly on the page and the
+        // popup id displayed relative to the anchor.
+
         const point = event.point;
 
         const offset = event.offset || {x: 0, y: 0};
@@ -81,7 +82,17 @@ export class ControlledPopup extends React.Component<ControlledPopupProps, IStat
         const id = `${this.props.id}-anchor`;
         const cssText = `position: absolute; top: ${top}px; left: ${left}px;`;
 
-        document.getElementById(id)!.style.cssText = cssText;
+        const anchorElement = document.getElementById(id)!;
+        anchorElement.style.cssText = cssText;
+
+        // now move the element to the proper page.
+
+        anchorElement.parentElement!.removeChild(anchorElement);
+
+        const pageElements = document.querySelectorAll(".page");
+        const pageElement = pageElements[event.pageNum - 1];
+
+        pageElement.insertBefore(anchorElement, pageElement.firstChild);
 
         this.setState({
             open: true,

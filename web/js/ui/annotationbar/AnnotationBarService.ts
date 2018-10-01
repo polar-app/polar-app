@@ -60,7 +60,7 @@ export class AnnotationBarService {
             (commentTriggerEvent: CommentTriggerEvent) => {
 
                 // create the new popup BELOW the region now...
-                console.log("Got comment button clicked");
+                console.log("FIXME: Got comment button clicked");
 
                 const activeSelection = commentTriggerEvent.activeSelection;
 
@@ -72,14 +72,16 @@ export class AnnotationBarService {
                     offset: {
                         x: 0,
                         y: 10
-                    }
+                    },
+                    pageNum: commentTriggerEvent.pageNum
+
                 });
 
             };
 
         const onHighlighted: OnHighlightedCallback = (highlightCreatedEvent: HighlightCreatedEvent) => {
 
-            console.log("Got highlight!", highlightCreatedEvent);
+            console.log("FIXME: Got highlight!", highlightCreatedEvent);
 
             const message: TypedMessage<HighlightCreatedEvent> = {
                 type: 'create-text-highlight',
