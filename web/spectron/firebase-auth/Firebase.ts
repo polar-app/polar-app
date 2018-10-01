@@ -1,9 +1,7 @@
-// import * as firebase from 'firebase';
-
-declare var firebase: any;
+import * as firebase from './lib/firebase';
+// import fb = firebase;
 
 export class Firebase {
-
     /**
      * Perform init of Firebase with our auth credentials.
      */
@@ -19,6 +17,7 @@ export class Firebase {
         };
 
         firebase.initializeApp(config);
+
     }
 
 }
