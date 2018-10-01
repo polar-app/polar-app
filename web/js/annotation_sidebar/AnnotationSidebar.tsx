@@ -110,9 +110,6 @@ export class AnnotationSidebar extends React.Component<AnnotationSidebarProps, A
     private scrollToAnnotation(id: string, pageNum: number) {
 
         const selector = `.page div[data-annotation-id='${id}']`;
-        console.log("trying to find selector: " + selector);
-
-        // TODO: scroll to the page first
 
         const pageElements: HTMLElement[] = Array.from(document.querySelectorAll(".page"));
         const pageElement = pageElements[pageNum - 1];
@@ -128,27 +125,6 @@ export class AnnotationSidebar extends React.Component<AnnotationSidebarProps, A
 
         this.scrollToElement(annotationElement);
 
-        //
-        // const annotationElement =
-        //     document.querySelector()! as HTMLElement;
-
-        // annotationElement.scrollIntoView({
-        //     behavior: 'smooth'
-        // });
-
-        // const scrollParent = this.getScrollParent(annotationElement);
-        // console.log("FIXME: ", scrollParent)
-        // scrollParent!.scrollBy(0, 50);
-
-
-        // scrollIntoView(annotationElement);
-
-        // annotationElement.scrollIntoView({behavior: "instant", block: "end", inline: "nearest"});
-
-        // annotationElement.scrollIntoView(false);
-
-        // this.scrollToElementMiddle(annotationElement);
-
     }
 
     private scrollToElement(element: HTMLElement) {
@@ -160,65 +136,6 @@ export class AnnotationSidebar extends React.Component<AnnotationSidebarProps, A
         });
 
     }
-
-    //
-    // private getScrollParent(node: HTMLElement | null | undefined): HTMLElement | undefined {
-    //
-    //     if (node === null || node === undefined) {
-    //         return undefined;
-    //     }
-    //
-    //     if (node.scrollHeight > node.clientHeight) {
-    //         return node;
-    //     } else {
-    //         return this.getScrollParent(node.parentElement);
-    //     }
-    // }
-
-    // private getScrollParent(element: HTMLElement, includeHidden: boolean = false) {
-    //
-    //     let style = getComputedStyle(element);
-    //     const excludeStaticParent = style.position === "absolute";
-    //     const overflowRegex = includeHidden ? /(auto|scroll|hidden)/ : /(auto|scroll)/;
-    //
-    //     if (style.position === "fixed") {
-    //         return document.body;
-    //     }
-    //
-    //     // noinspection TsLint
-    //     for (let parent: HTMLElement | null = element; (parent = parent.parentElement);) {
-    //
-    //         style = getComputedStyle(parent)!;
-    //
-    //         if (excludeStaticParent && style.position === "static") {
-    //             continue;
-    //         }
-    //
-    //         if (overflowRegex.test(style.overflow! + style.overflowY + style.overflowX)) {
-    //             return parent;
-    //         }
-    //
-    //     }
-    //
-    //     return document.body;
-    // }
-
-    private scrollToElementMiddle(element: HTMLElement) {
-        const elementRect = element.getBoundingClientRect();
-        const absoluteElementTop = elementRect.top;
-        // align type
-        const middleDiff = (elementRect.height / 2);
-        // 要素の中心のY座標
-        const scrollTopOfElement = absoluteElementTop + middleDiff;
-        // 画面半分を引くと、要素の中心が、画面の中央になる
-        const scrollY = Math.floor(scrollTopOfElement - (window.innerHeight / 2));
-
-        element.parentElement!.scrollTo(0, scrollY);
-        // window.scrollTo();
-        console.log("scrolled to : " + scrollY)
-
-    }
-
 
     private createHTML(annotations: DocAnnotation[]) {
 
@@ -264,23 +181,32 @@ export class AnnotationSidebar extends React.Component<AnnotationSidebarProps, A
 
                 // TODO: move this to a formatter function so this is a big cleaner.
                 result.push(
-                    <div key={annotation.id}
-                         data-annotation-id={annotation.id}
-                         data-annotation-type={attrType}
-                         data-annotation-color={annotation.color}
-                         className={attrType}>
+                    <div className="border border-secondary rounded m-1 mb-2">
+                        <div key={annotation.id}
+                             data-annotation-id={annotation.id}
+                             data-annotation-type={attrType}
+                             data-annotation-color={annotation.color}
+                             className={attrType}>
 
-                        <blockquote dangerouslySetInnerHTML={{__html: html}}
-                                    className="border rounded">
+                            <blockquote className="p-1 rounded">
 
-                        </blockquote>
+                                <span dangerouslySetInnerHTML={{__html: html}}>
 
-                        <div className="annotation-buttons">
-                            <a href="#" onClick={() => this.scrollToAnnotation(annotation.id, annotation.pageNum)}>context</a>
+                                </span>
+
+                            </blockquote>
+
+                            <div className="annotation-buttons text-right border-top">
+                                <a className="text-muted"
+                                   href="#" onClick={() => this.scrollToAnnotation(annotation.id, annotation.pageNum)}>
+                                    context
+                                </a>
+                            </div>
+
                         </div>
 
-
-                    </div>);
+                    </div>
+                );
 
             }
 

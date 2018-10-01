@@ -61,7 +61,7 @@ export class DocAnnotations {
                 const text = <Text> textHighlight.text;
 
                 if (text.TEXT) {
-                    html = `<p>${text.TEXT}</p>`;
+                    html = `${text.TEXT}`;
                 }
 
                 if (text.HTML) {

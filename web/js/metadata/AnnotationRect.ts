@@ -82,9 +82,9 @@ export class AnnotationRect {
      */
     private _validate() {
 
-        let interval = new Interval(0,100);
+        const interval = new Interval(0, 100);
 
-        let assertInterval = (value: number) => interval.containsPoint(value);
+        const assertInterval = (value: number) => interval.containsPoint(value);
 
         Preconditions.assert(this.top, assertInterval, "top");
         Preconditions.assert(this.left, assertInterval, "left");

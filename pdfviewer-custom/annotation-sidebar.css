@@ -1,15 +1,15 @@
 .annotation-sidebar {
     padding-top: 5px;
-    /*font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;*/
+    font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
     /*font-weight: 300;*/
-    font-size: 14px;
-    font-family: sans-serif;
+    font-size: 16px;
+    color: rgba(0, 0, 0, 0.84);
 }
 
 .annotation-sidebar .text-highlight {
     /*margin: 5px;*/
-    margin-bottom: 10px;
-    padding-bottom: 5px;
+    /*margin-bottom: 10px;*/
+    /*padding-bottom: 5px;*/
 }
 
 .annotation-sidebar .text-highlight p {
@@ -32,7 +32,7 @@
     /*border-left: #FFD700 solid 3px;*/
     /*margin: 0 0 0 0;*/
 
-    background-color: rgba(255, 255, 0, 0.5);
+    /*background-color: rgba(255, 255, 0, 0.5);*/
     /*opacity: 0.3;*/
 
     margin: 0;
@@ -60,16 +60,28 @@
     margin: 10px;
 }
 
+.annotation-sidebar .text-highlight blockquote {
+    margin-bottom: 5px !important;
+}
+
 .annotation-sidebar .text-highlight[data-annotation-color="yellow"] blockquote {
-    background-color: rgba(255,255,0,0.6);
+    border-left: 5px solid rgba(255,255,0,0.8);
 }
 
 .annotation-sidebar .text-highlight[data-annotation-color="green"] blockquote {
-
-    background-color: rgba(0,255,0,0.6);
-
+    border-left: 5px solid rgba(0,255,0,0.6);
 }
 
 .annotation-sidebar .text-highlight[data-annotation-color="red"] blockquote {
-    background-color: rgba(255,0,0,0.6);
+    /*background-color: rgba(255,0,0,0.6);*/
+    /*background-color: ;*/
+    border-left: 5px solid rgba(255,0,0,0.6);
+}
+
+.annotation-sidebar .text-highlight blockquote span {
+    line-height: 1.6;
+}
+
+.annotation-sidebar .annotation-buttons * {
+    font-size: 14px;
 }

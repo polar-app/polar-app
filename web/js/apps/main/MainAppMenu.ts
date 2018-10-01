@@ -44,8 +44,8 @@ export class MainAppMenu {
                 label: 'Window',
                 role: 'window',
                 submenu: [
-                    { label: 'Minimize', accelerator: 'CmdOrCtrl+M', role: 'minimize' },
-                    { label: 'Close', accelerator: 'CmdOrCtrl+W', role: 'close' },
+                    { label: 'Minimize', role: 'minimize' },
+                    { label: 'Close', role: 'close' },
                 ]
             },
             {
@@ -159,10 +159,7 @@ export class MainAppMenu {
                 },
                 {
                     label: 'Close',
-                    accelerator: 'Shift+CmdOrCtrl+Z',
-                    click: (item: Electron.MenuItem, focusedWindow: BrowserWindow) => {
-                        if (focusedWindow) focusedWindow.close();
-                    }
+                    role: 'close',
                 },
                 {
                     type: 'separator'
