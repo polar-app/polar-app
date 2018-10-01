@@ -22,13 +22,13 @@ export class EventBridge {
         this.iframe = iframe;
     }
 
-    async start() {
+    public async start() {
 
-        if(! this.iframe.parentElement) {
+        if (! this.iframe.parentElement) {
             throw new Error("No parent for iframe");
         }
 
-        if(! this.iframe.contentDocument) {
+        if (! this.iframe.contentDocument) {
             throw new Error("No contentDocument for iframe");
         }
 
@@ -41,9 +41,9 @@ export class EventBridge {
 
     }
 
-    addListeners(iframe: HTMLIFrameElement) {
+    private addListeners(iframe: HTMLIFrameElement) {
 
-        if(! iframe.contentDocument) {
+        if (! iframe.contentDocument) {
             return;
         }
 
@@ -56,7 +56,7 @@ export class EventBridge {
 
         iframe.contentDocument.body.addEventListener("click", event => {
 
-            let anchor = Events.getAnchor(event.target);
+            const anchor = Events.getAnchor(event.target);
 
             // TODO: this needs to be reworked. This isn't the appropriate way
             // to handle this.  I'm going to have to think about which "actions"
@@ -64,13 +64,13 @@ export class EventBridge {
             // by the PHZ.  All Polar actions should call preventDefault and
             // should preventDefault and not sent to the PHZ.
 
-            if(anchor) {
+            if (anchor) {
                 log.info("Link click prevented.");
                 event.preventDefault();
 
-                let href = anchor.href;
+                const href = anchor.href;
 
-                if(href && (href.startsWith("http:") || href.startsWith("https:"))) {
+                if (href && (href.startsWith("http:") || href.startsWith("https:"))) {
                     // this is a bit of a hack but basically we listen for URLs
                     // in the iframe and change the main page. This triggers our
                     // electron 'will-navigate' which which prevents it and then
@@ -86,9 +86,7 @@ export class EventBridge {
 
     }
 
-
-
-    mouseListener(event: any) {
+    private mouseListener(event: any) {
 
         let eventPoints = FrameEvents.calculatePoints(this.iframe, event);
 
@@ -114,9 +112,9 @@ export class EventBridge {
 
     }
 
-    keyListener(event: any) {
+    private keyListener(event: any) {
 
-        let newEvent = new event.constructor(event.type, event);
+        const newEvent = new event.constructor(event.type, event);
 
         this.targetElement.dispatchEvent(newEvent);
 

@@ -6,26 +6,30 @@ import {MouseDirection} from './Popup';
  */
 export class ActiveSelections {
 
-    public static addEventListener(listener: ActiveSelectionListener): void {
+    public static addEventListener(listener: ActiveSelectionListener,
+                                   target: HTMLElement = document.body): void {
 
         let originPoint: Point | undefined;
 
         document.addEventListener('mousedown', (event: MouseEvent) => {
 
-            originPoint = {
-                x: event.x,
-                y: event.y
-            };
+            originPoint = this.eventToPoint(event);
 
         });
 
         document.addEventListener('mouseup', (event: MouseEvent) => {
 
-            if (!window.getSelection().isCollapsed) {
+            // const win = target.ownerDocument.defaultView;
+            const win = event.view;
+            const selection = win.getSelection();
 
-                const mouseDirection: MouseDirection = event.y - originPoint!.y < 0 ? 'up' : 'down';
+            const point = this.eventToPoint(event);
 
-                const range = window.getSelection().getRangeAt(0);
+            if (!selection.isCollapsed) {
+
+                const mouseDirection: MouseDirection = point.y - originPoint!.y < 0 ? 'up' : 'down';
+
+                const range = selection.getRangeAt(0);
 
                 const boundingClientRect = range.getBoundingClientRect();
 
@@ -40,6 +44,16 @@ export class ActiveSelections {
         });
 
     }
+
+    private static eventToPoint(event: MouseEvent) {
+
+        return {
+            x: event.offsetX,
+            y: event.offsetY
+        };
+
+    }
+
 
 }
 

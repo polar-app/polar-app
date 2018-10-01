@@ -107,10 +107,30 @@ export class AnnotationSidebar extends React.Component<AnnotationSidebarProps, A
 
     }
 
-    private scrollToAnnotation(id: string) {
+    private scrollToAnnotation(id: string, pageNum: number) {
 
-        const annotationElement =
-            document.querySelector(`div[data-annotation-id='${id}']`)! as HTMLElement;
+        const selector = `.page div[data-annotation-id='${id}']`;
+        console.log("trying to find selector: " + selector);
+
+        // TODO: scroll to the page first
+
+        const pageElements: HTMLElement[] = Array.from(document.querySelectorAll(".page"));
+        const pageElement = pageElements[pageNum - 1];
+
+        if (!pageElement) {
+            log.error(`Could not find page ${pageNum} of N pages: ${pageElements.length}`);
+            return;
+        }
+
+        this.scrollToElement(pageElement);
+
+        const annotationElement = document.querySelector(selector)! as HTMLElement;
+
+        this.scrollToElement(annotationElement);
+
+        //
+        // const annotationElement =
+        //     document.querySelector()! as HTMLElement;
 
         // annotationElement.scrollIntoView({
         //     behavior: 'smooth'
@@ -128,6 +148,16 @@ export class AnnotationSidebar extends React.Component<AnnotationSidebarProps, A
         // annotationElement.scrollIntoView(false);
 
         // this.scrollToElementMiddle(annotationElement);
+
+    }
+
+    private scrollToElement(element: HTMLElement) {
+
+        element.scrollIntoView({
+            behavior: 'auto',
+            block: 'center',
+            inline: 'center'
+        });
 
     }
 
@@ -245,9 +275,9 @@ export class AnnotationSidebar extends React.Component<AnnotationSidebarProps, A
 
                         </blockquote>
 
-                        {/*<div className="annotation-buttons">*/}
-                            {/*<a href="#" onClick={() => this.scrollToAnnotation(annotation.id)}>context</a>*/}
-                        {/*</div>*/}
+                        <div className="annotation-buttons">
+                            <a href="#" onClick={() => this.scrollToAnnotation(annotation.id, annotation.pageNum)}>context</a>
+                        </div>
 
 
                     </div>);
