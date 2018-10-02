@@ -147,6 +147,7 @@
     "react": "^16.5.0",
     "react-dom": "^16.5.0",
     "react-jsonschema-form": "^1.0.4",
+    "react-moment": "^0.8.1",
     "react-select": "^2.0.0",
     "react-summernote": "^2.0.0",
     "react-table": "^6.8.6",

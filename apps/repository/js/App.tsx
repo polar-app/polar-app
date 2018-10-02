@@ -19,6 +19,7 @@ import {FilteredTags} from './FilteredTags';
 import {isPresent} from '../../../web/js/Preconditions';
 import {Sets} from '../../../web/js/util/Sets';
 import {Tags} from '../../../web/js/tags/Tags';
+import Moment from 'react-moment';
 
 const log = Logger.create();
 
@@ -148,14 +149,32 @@ export default class App extends React.Component<AppProps, AppState> {
                                 // style:
                             },
                             {
+                                Header: 'Last Updated',
+                                // accessor: (row: any) => row.added,
+                                accessor: 'lastUpdated',
+                                maxWidth: 125,
+                                defaultSortDesc: true,
+                                Cell: (row: any) => (
+
+                                    <div className="doc-col-last-updated">
+                                        <Moment withTitle={true} titleFormat="D MMM YYYY hh:MM A" fromNow>{row.value}</Moment>
+                                    </div>
+
+                                )
+                            },
+                            {
                                 Header: 'Added',
                                 // accessor: (row: any) => row.added,
                                 accessor: 'added',
-                                maxWidth: 200,
+                                maxWidth: 125,
                                 defaultSortDesc: true,
-                                // Cell: (data: any) => (
-                                //     <div>{Optional.of(data.value).getOrElse('')}</div>
-                                // )
+                                Cell: (row: any) => (
+
+                                    <div className="doc-col-added">
+                                        <Moment withTitle={true} titleFormat="D MMM YYYY hh:MM A" fromNow>{row.value}</Moment>
+                                    </div>
+
+                                )
                             },
                             //
                             // d => {
@@ -172,7 +191,7 @@ export default class App extends React.Component<AppProps, AppState> {
                             {
                                 Header: 'Progress',
                                 accessor: 'progress',
-                                maxWidth: 200,
+                                maxWidth: 150,
                                 defaultSortDesc: true,
                                 resizable: false,
                                 Cell: (row: any) => (

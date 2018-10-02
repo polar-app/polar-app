@@ -2,6 +2,7 @@ import {isPresent, Preconditions} from '../../../web/js/Preconditions';
 import {IDocInfo} from '../../../web/js/metadata/DocInfo';
 import {Optional} from '../../../web/js/util/ts/Optional';
 import {RepoDocInfo} from './RepoDocInfo';
+import {ISODateTimeString} from '../../../web/js/metadata/ISODateTimeStrings';
 
 export class RepoDocInfos {
 
@@ -33,27 +34,12 @@ export class RepoDocInfos {
                 .getOrUndefined(),
 
             added: Optional.of(docInfo.added)
-                .map(current => {
+                .map(current => this.toISODateTimeString(current))
+                .validateString()
+                .getOrUndefined(),
 
-                    // this is a pragmatic workaround for JSON
-                    // serialization issues with typescript.
-
-                    if ( typeof current === 'object') {
-
-                        // this is a bug fix/workaround for corrupt stores that
-                        // accidentally had and ISODateTime stored in them.
-
-                        const obj = <any> current;
-
-                        if (isPresent(obj.value) && typeof obj.value === 'string') {
-                            return obj.value;
-                        }
-
-                    }
-
-                    return current;
-
-                })
+            lastUpdated: Optional.of(docInfo.lastUpdated)
+                .map(current => this.toISODateTimeString(current))
                 .validateString()
                 .getOrUndefined(),
 
@@ -68,6 +54,29 @@ export class RepoDocInfos {
             docInfo
 
         };
+
+    }
+
+    private static toISODateTimeString(current: string) {
+
+
+        // this is a pragmatic workaround for JSON
+        // serialization issues with typescript.
+
+        if ( typeof current === 'object') {
+
+            // this is a bug fix/workaround for corrupt stores that
+            // accidentally had and ISODateTime stored in them.
+
+            const obj = <any> current;
+
+            if (isPresent(obj.value) && typeof obj.value === 'string') {
+                return obj.value;
+            }
+
+        }
+
+        return current;
 
     }
 

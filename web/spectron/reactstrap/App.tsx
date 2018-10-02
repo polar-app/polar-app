@@ -3,6 +3,7 @@ import {Button, DropdownItem, DropdownToggle, Input, InputGroup, InputGroupAddon
 import DropdownMenu from 'reactstrap/lib/DropdownMenu';
 import Navbar from 'reactstrap/lib/Navbar';
 import {BrowserConfigurationInputGroup} from './BrowserConfigurationInputGroup';
+import Moment from 'react-moment';
 
 class App<P> extends React.Component<{}, IAppState> {
 
@@ -279,7 +280,7 @@ class App<P> extends React.Component<{}, IAppState> {
 
 
                 </div>
-
+                <Moment fromNow>1976-04-19T12:59-0500</Moment>
             </div>
         );
     }

@@ -65,6 +65,8 @@ async function onAuth(user: firebase.User | null) {
     const settings = {timestampsInSnapshots: true};
     firestore.settings(settings);
 
+    await firestore.enablePersistence();
+
     await firestore
         .collection('shoutouts')
         .doc()
@@ -79,6 +81,7 @@ async function onAuth(user: firebase.User | null) {
         .onSnapshot(snapshot => onData(snapshot), err => console.log(err));
 
     console.log("wrote data!");
+
 }
 
 function onAuthError(err: firebase.auth.Error) {
