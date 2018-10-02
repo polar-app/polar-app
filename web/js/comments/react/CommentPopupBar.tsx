@@ -59,9 +59,9 @@ export class CommentPopupBar extends React.Component<CommentPopupBarProps, IStat
 
         return (
 
-            <div id="comment-popup-box">
+            <div id="comment-popup-box" className="shadow">
 
-                <PopoverHeader>Add Comment</PopoverHeader>
+                {/*<PopoverHeader>Add Comment</PopoverHeader>*/}
 
                 <PopoverBody>
 

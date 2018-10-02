@@ -26,11 +26,6 @@
     background-color: #333333;
 }
 
-.bs-popover-auto[x-placement^=bottom] .arrow::after,
-.bs-popover-bottom .arrow::after {
-    border-bottom-color: #333333;
-}
-
 .bs-popover-auto[x-placement^=top] .arrow::after,
 .bs-popover-top .arrow::after {
     border-top-color: #333333;

@@ -1,4 +1,9 @@
 
+#commentbar-popover * {
+    font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+    font-size: 14px;
+}
+
 .popover {
     max-width: 1024px;
 }
@@ -20,4 +25,13 @@
 
 #commentbar-popover {
     width: 500px;
+}
+
+#commentbar-popover + .arrow {
+    border-top-color: #ffffff;
+}
+
+.bs-popover-auto[x-placement^=bottom] .arrow::after,
+.bs-popover-bottom .arrow::after {
+    border-bottom-color: #ffffff;
 }
