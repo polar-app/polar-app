@@ -65,7 +65,7 @@ async function onAuth(user: firebase.User | null) {
     const settings = {timestampsInSnapshots: true};
     firestore.settings(settings);
 
-    await firestore.enablePersistence();
+    // await firestore.enablePersistence({experimentalTabSynchronization: true});
 
     await firestore
         .collection('shoutouts')
