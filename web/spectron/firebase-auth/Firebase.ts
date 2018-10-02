@@ -13,7 +13,8 @@ export class Firebase {
             databaseURL: "https://polar-32b0f.firebaseio.com",
             projectId: "polar-32b0f",
             storageBucket: "polar-32b0f.appspot.com",
-            messagingSenderId: "919499255851"
+            messagingSenderId: "919499255851",
+            timestampsInSnapshots: true
         };
 
         firebase.initializeApp(config);

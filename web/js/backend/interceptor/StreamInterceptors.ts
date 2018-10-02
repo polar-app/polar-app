@@ -3,6 +3,8 @@ import {Logger} from '../../logger/Logger';
 import {Duplex, PassThrough, Readable, Stream} from 'stream';
 import InterceptStreamProtocolRequest = Electron.InterceptStreamProtocolRequest;
 import StreamProtocolResponse = Electron.StreamProtocolResponse;
+import * as fs from 'fs';
+import {Files} from '../../util/Files';
 
 const log = Logger.create();
 
@@ -103,7 +105,28 @@ export class StreamInterceptors {
             log.debug(`Writing data to request with method ${request.method}`);
 
             request.uploadData.forEach(current => {
-                netRequest.write(this.assertChunk(current.bytes));
+
+                // TODO: we need to handle `blobUUID` and `file` which is valid
+                // input.
+
+                if (current.file) {
+
+                    Files.readFileAsync(current.file)
+                        .then(buffer => netRequest.write(buffer))
+                        .catch(err => log.error("Could not upload: ", err));
+
+                } else if (current.blobUUID) {
+
+                    // FIXME: I think we have to use the blob: URL handler to fetch
+                    // this data just like we would any normal URL then write the
+                    // data to the connection. which is ugly.
+
+                    throw new Error("Do not currently handle blobs");
+
+                } else {
+                    netRequest.write(this.assertChunk(current.bytes));
+                }
+
             });
 
             // throw new TypeError('First argument must be a string or Buffer.')
@@ -117,6 +140,7 @@ export class StreamInterceptors {
     private static assertChunk(chunk: Buffer): Buffer {
 
         if (chunk === undefined) {
+            // TODO: we are getting this in
             throw new TypeError('Must not be undefined.');
         }
 
