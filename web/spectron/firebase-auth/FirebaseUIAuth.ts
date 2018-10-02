@@ -7,9 +7,7 @@ import firebaseui from './lib/firebaseui';
 
 // noinspection TsLint: max-line-length
 const SIGN_IN_SUCCESS_URL = 'http://localhost:63342/polar-bookshelf/web/spectron/firebase-auth/content.html?_ijt=t1aqe160j9rhsv5u4d52e8o7to';
-
 const TOS_URL = 'https://getpolarized.io/terms-of-service.html';
-
 const PRIVACY_POLICY_URL = 'https://getpolarized.io/terms-of-service.html';
 
 export class FirebaseUIAuth {

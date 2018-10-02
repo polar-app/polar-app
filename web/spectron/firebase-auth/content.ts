@@ -2,8 +2,6 @@ import {SpectronRenderer} from '../../js/test/SpectronRenderer';
 import {Firebase} from './Firebase';
 import {FirebaseUIAuth} from './FirebaseUIAuth';
 import * as firebase from './lib/firebase';
-import { authState } from 'rxfire/auth';
-import {catchError, filter} from 'rxjs/operators';
 import {Elements} from '../../js/util/Elements';
 
 // require('firebase');

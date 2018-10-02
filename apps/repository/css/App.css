@@ -114,9 +114,15 @@
 
 .doc-col-last-updated,
 .doc-col-added {
-  text-align: right;
+  text-align: left;
+}
+
+.rt-td {
+  text-align: left;
 }
 
 .rt-th {
-  font-weight: bold;
+    font-weight: bold;
+    text-align: left;
+    border-bottom: 1px rgba(0, 0, 0, 0.3) solid;
 }
