@@ -37,6 +37,7 @@ export class ActiveSelections {
                     originPoint: originPoint!,
                     mouseDirection,
                     boundingClientRect,
+                    selection,
                 });
 
             }
@@ -68,6 +69,11 @@ export interface ActiveSelection {
     readonly originPoint: Point;
     readonly mouseDirection: MouseDirection;
     readonly boundingClientRect: ClientRect | DOMRect;
+
+    /**
+     * The actual selection object that we're working with.
+     */
+    readonly selection: Selection;
 
 }
 

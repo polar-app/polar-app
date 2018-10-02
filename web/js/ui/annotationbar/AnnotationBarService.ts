@@ -59,9 +59,6 @@ export class AnnotationBarService {
         const onComment: OnCommentCallback =
             (commentTriggerEvent: CommentTriggerEvent) => {
 
-                // create the new popup BELOW the region now...
-                console.log("FIXME: Got comment button clicked");
-
                 const activeSelection = commentTriggerEvent.activeSelection;
 
                 commentBarControlledPopupProps.triggerPopupEventDispatcher.dispatchEvent({
@@ -73,7 +70,8 @@ export class AnnotationBarService {
                         x: 0,
                         y: 10
                     },
-                    pageNum: commentTriggerEvent.pageNum
+                    pageNum: commentTriggerEvent.pageNum,
+                    selection: activeSelection.selection,
 
                 });
 
@@ -81,7 +79,8 @@ export class AnnotationBarService {
 
         const onHighlighted: OnHighlightedCallback = (highlightCreatedEvent: HighlightCreatedEvent) => {
 
-            console.log("FIXME: Got highlight!", highlightCreatedEvent);
+            // TODO: this is just a hack for now.  We should send a dedicated object.
+            delete (<any> highlightCreatedEvent).activeSelection;
 
             const message: TypedMessage<HighlightCreatedEvent> = {
                 type: 'create-text-highlight',

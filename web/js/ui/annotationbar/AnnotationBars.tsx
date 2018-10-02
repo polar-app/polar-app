@@ -19,15 +19,9 @@ export class AnnotationBars {
 
         ControlledPopups.create(controlledPopupProps, child);
 
-        const selectionTargets = this.getSelectionTargets();
-
+        // NOTE: we don't need to monitor iframes because our EventDispatcher
+        // gives us events from the iframes bubbled up.
         this.registerEventListener(controlledPopupProps, pageNum, annotationBarTriggerEventDispatcher, document.body);
-
-        //
-        // for (const target of selectionTargets) {
-        //     console.log("FIXME: registering for selection target: ", target)
-        //     this.registerEventListener(controlledPopupProps, pageNum, annotationBarTriggerEventDispatcher, target);
-        // }
 
     }
 
@@ -48,7 +42,8 @@ export class AnnotationBars {
                     x: 0,
                     y: -10
                 },
-                pageNum
+                pageNum,
+                selection: activeSelectionEvent.selection
 
             });
 
@@ -62,25 +57,6 @@ export class AnnotationBars {
             annotationBarTriggerEventDispatcher.dispatchEvent(annotationBarTriggerEvent);
 
         }, target);
-    }
-
-
-    private static getSelectionTargets(): HTMLElement[] {
-
-        const result: HTMLElement[] = [];
-
-        result.push(...Array.from(document.body.querySelectorAll(".page")) as HTMLElement[]);
-
-        // FIXME: find all iframes recursivelly...
-
-        const iframes: HTMLIFrameElement[]
-            = Array.from(document.body.querySelectorAll("iframe"));
-
-        for (const iframe of iframes) {
-            result.push(iframe.contentDocument!.body);
-        }
-
-        return result;
 
     }
 

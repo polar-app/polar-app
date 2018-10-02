@@ -12,4 +12,10 @@ export interface TriggerPopupEvent {
      */
     readonly pageNum: number;
 
+    /**
+     * When given a selection we only close when the selection is no longer
+     * active.
+     */
+    readonly selection?: Selection;
+
 }

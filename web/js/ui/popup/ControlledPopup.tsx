@@ -5,6 +5,8 @@ import Popover from 'reactstrap/lib/Popover';
 
 export class ControlledPopup extends React.Component<ControlledPopupProps, IState> {
 
+    private selection?: Selection;
+
     constructor(props: any) {
         super(props);
 
@@ -12,7 +14,7 @@ export class ControlledPopup extends React.Component<ControlledPopupProps, IStat
         this.onTriggerPopupEvent = this.onTriggerPopupEvent.bind(this);
 
         this.state = {
-            open: false,
+            active: false,
             initial: false
         };
 
@@ -32,7 +34,7 @@ export class ControlledPopup extends React.Component<ControlledPopupProps, IStat
 
                 <Popover placement={this.props.placement}
                          id={this.props.id + '-popover'}
-                         isOpen={this.state.open}
+                         isOpen={this.state.active}
                          target={this.props.id + '-anchor'}
                          toggle={this.toggle}
                          style={{}}>
@@ -48,22 +50,35 @@ export class ControlledPopup extends React.Component<ControlledPopupProps, IStat
 
     private toggle() {
 
-        if (this.state.initial) {
-           // keep the open state but set initial to false
+        // TODO: activate/deactivate only when there is no selection.
+
+        if (this.selection) {
 
             this.setState({
-                open: this.state.open,
-                initial: false
-            });
-
-        } else {
-
-            this.setState({
-                open: ! this.state.open,
+                active: ! this.selection.isCollapsed,
                 initial: false
             });
 
         }
+
+        //
+        //
+        // if (this.state.initial) {
+        //    // keep the active state but set initial to false
+        //
+        //     this.setState({
+        //         active: this.state.active,
+        //         initial: false
+        //     });
+        //
+        // } else {
+        //
+        //     this.setState({
+        //         active: ! this.state.active,
+        //         initial: false
+        //     });
+        //
+        // }
 
     }
 
@@ -71,6 +86,8 @@ export class ControlledPopup extends React.Component<ControlledPopupProps, IStat
 
         // we need to place the anchor element properly on the page and the
         // popup id displayed relative to the anchor.
+
+        this.selection = event.selection;
 
         const point = event.point;
 
@@ -95,7 +112,7 @@ export class ControlledPopup extends React.Component<ControlledPopupProps, IStat
         pageElement.insertBefore(anchorElement, pageElement.firstChild);
 
         this.setState({
-            open: true,
+            active: true,
             initial: true
         });
 
@@ -104,15 +121,18 @@ export class ControlledPopup extends React.Component<ControlledPopupProps, IStat
 }
 
 export interface ControlledPopupProps {
+
     readonly id: string;
     readonly placement: ControlledPopupPlacement;
     readonly triggerPopupEventDispatcher: IEventDispatcher<TriggerPopupEvent>;
+
 }
 
 interface IState {
 
-    open: boolean;
+    active: boolean;
     initial: boolean;
+
 }
 
 
