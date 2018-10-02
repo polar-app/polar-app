@@ -12,7 +12,13 @@ SpectronMain2.create().run(async state => {
 
     const fileRegistry = new FileRegistry(webserverConfig);
     const webserver = new Webserver(webserverConfig, fileRegistry);
-    webserver.start();
+
+
+    try {
+        webserver.start();
+    } catch (e) {
+        console.warn("Webserver already running.");
+    }
 
     state.window.loadURL(`http://localhost:8005/web/spectron/firebase-auth/content.html`);
 

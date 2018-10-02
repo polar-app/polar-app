@@ -155,6 +155,7 @@
     "requirejs": "^2.3.5",
     "rimraf": "^2.6.2",
     "rx-collection": "^0.1.0",
+    "rxfire": "^3.0.4",
     "rxjs": "^6.3.2",
     "sanitize-html": "^1.18.5",
     "serve-static": "^1.13.2",
