@@ -20,6 +20,7 @@ import {isPresent} from '../../../web/js/Preconditions';
 import {Sets} from '../../../web/js/util/Sets';
 import {Tags} from '../../../web/js/tags/Tags';
 import Moment from 'react-moment';
+import {DateTimeTableCell} from './DateTimeTableCell';
 
 const log = Logger.create();
 
@@ -155,12 +156,9 @@ export default class App extends React.Component<AppProps, AppState> {
                                 maxWidth: 125,
                                 defaultSortDesc: true,
                                 Cell: (row: any) => (
-
-                                    <div className="doc-col-last-updated">
-                                        <Moment withTitle={true} titleFormat="D MMM YYYY hh:MM A" fromNow>{row.value}</Moment>
-                                    </div>
-
+                                    <DateTimeTableCell className="doc-col-last-updated" datetime={row.value}/>
                                 )
+
                             },
                             {
                                 Header: 'Added',
@@ -169,11 +167,7 @@ export default class App extends React.Component<AppProps, AppState> {
                                 maxWidth: 125,
                                 defaultSortDesc: true,
                                 Cell: (row: any) => (
-
-                                    <div className="doc-col-added">
-                                        <Moment withTitle={true} titleFormat="D MMM YYYY hh:MM A" fromNow>{row.value}</Moment>
-                                    </div>
-
+                                    <DateTimeTableCell className="doc-col-added" datetime={row.value}/>
                                 )
                             },
                             //
