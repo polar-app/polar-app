@@ -13,7 +13,8 @@ export class ControlledPopups {
         document.body.appendChild(target);
 
         ReactDOM.render(
-            <ControlledPopup id={controlledPopupProps.id}
+            <ControlledPopup popupStateEventDispatcher={controlledPopupProps.popupStateEventDispatcher}
+                             id={controlledPopupProps.id}
                              placement={controlledPopupProps.placement}
                              triggerPopupEventDispatcher={controlledPopupProps.triggerPopupEventDispatcher}>
                 {child}

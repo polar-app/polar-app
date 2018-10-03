@@ -7,6 +7,7 @@ import {Point} from '../../Point';
 import {Points} from '../../Points';
 import {DocFormat} from '../../docformat/DocFormat';
 import {DocFormatFactory} from '../../docformat/DocFormatFactory';
+import {PopupStateEvent} from './PopupStateEvent';
 
 export class ControlledPopup extends React.Component<ControlledPopupProps, IState> {
 
@@ -24,8 +25,11 @@ export class ControlledPopup extends React.Component<ControlledPopupProps, IStat
 
         this.state = {
             active: false,
-            initial: false
         };
+
+        this.props.popupStateEventDispatcher.addEventListener(event => {
+            this.setState(event);
+        });
 
         this.props.triggerPopupEventDispatcher.addEventListener(event => {
             this.onTriggerPopupEvent(event);
@@ -65,7 +69,6 @@ export class ControlledPopup extends React.Component<ControlledPopupProps, IStat
 
             this.setState({
                 active: ! this.selection.isCollapsed,
-                initial: false
             });
 
         }
@@ -137,7 +140,6 @@ export class ControlledPopup extends React.Component<ControlledPopupProps, IStat
 
         this.setState({
             active: true,
-            initial: true
         });
 
     }
@@ -147,7 +149,11 @@ export class ControlledPopup extends React.Component<ControlledPopupProps, IStat
 export interface ControlledPopupProps {
 
     readonly id: string;
+
     readonly placement: ControlledPopupPlacement;
+
+    readonly popupStateEventDispatcher: IEventDispatcher<PopupStateEvent>;
+
     readonly triggerPopupEventDispatcher: IEventDispatcher<TriggerPopupEvent>;
 
 }
@@ -155,7 +161,6 @@ export interface ControlledPopupProps {
 interface IState {
 
     active: boolean;
-    initial: boolean;
 
 }
 

@@ -10,6 +10,7 @@ import {AnnotationBarCallbacks, CommentTriggerEvent, OnCommentCallback, OnHighli
 import {HighlightCreatedEvent} from '../../comments/react/HighlightCreatedEvent';
 import {AnnotationBars} from './AnnotationBars';
 import {TypedMessage} from '../../util/TypedMessage';
+import {PopupStateEvent} from '../popup/PopupStateEvent';
 
 const log = Logger.create();
 
@@ -56,6 +57,7 @@ export class AnnotationBarService {
         const commentBarControlledPopupProps: ControlledPopupProps = {
             id: 'commentbar',
             placement: 'bottom',
+            popupStateEventDispatcher: new SimpleReactor<PopupStateEvent>(),
             triggerPopupEventDispatcher: new SimpleReactor<TriggerPopupEvent>()
         };
 
@@ -73,11 +75,13 @@ export class AnnotationBarService {
         // region.. when the region vanishes then just close the popup OR the text
         // area is close obviously.
 
+        const popupStateEventDispatcher = new SimpleReactor<PopupStateEvent>();
         const triggerPopupEventDispatcher = new SimpleReactor<TriggerPopupEvent>();
 
         const annotationBarControlledPopupProps: ControlledPopupProps = {
             id: 'annotationbar',
             placement: 'top',
+            popupStateEventDispatcher,
             triggerPopupEventDispatcher
         };
 

@@ -13,7 +13,8 @@ export class AnnotationBars {
 
         const annotationBarTriggerEventDispatcher = new SimpleReactor<AnnotationBarTriggerEvent>();
 
-        const child = <AnnotationBar annotationBarTriggerEventDispatcher={annotationBarTriggerEventDispatcher}
+        const child = <AnnotationBar popupStateEventDispatcher={controlledPopupProps.popupStateEventDispatcher}
+                                     annotationBarTriggerEventDispatcher={annotationBarTriggerEventDispatcher}
                                      onHighlighted={annotationBarCallbacks.onHighlighted}
                                      onComment={annotationBarCallbacks.onComment}/>;
 

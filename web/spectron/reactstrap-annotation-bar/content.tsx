@@ -11,6 +11,7 @@ import {CommentPopupBars} from '../../js/comments/react/CommentPopupBars';
 import {CommentPopupBarCallbacks} from '../../js/comments/react/CommentPopupBar';
 import {CommentCreatedEvent} from '../../js/comments/react/CommentCreatedEvent';
 import {HighlightCreatedEvent} from '../../js/comments/react/HighlightCreatedEvent';
+import {PopupStateEvent} from '../../js/ui/popup/PopupStateEvent';
 
 SpectronRenderer.run(async () => {
 
@@ -22,6 +23,7 @@ SpectronRenderer.run(async () => {
     const commentBarControlledPopupProps: ControlledPopupProps = {
         id: 'commentbar',
         placement: 'bottom',
+        popupStateEventDispatcher: new SimpleReactor<PopupStateEvent>(),
         triggerPopupEventDispatcher: new SimpleReactor<TriggerPopupEvent>()
     };
 
@@ -39,11 +41,13 @@ SpectronRenderer.run(async () => {
     // region.. when the region vanishes then just close the popup OR the text
     // area is close obviously.
 
+    const popupStateEventDispatcher = new SimpleReactor<PopupStateEvent>();
     const triggerPopupEventDispatcher = new SimpleReactor<TriggerPopupEvent>();
 
     const annotationBarControlledPopupProps: ControlledPopupProps = {
         id: 'annotationbar',
         placement: 'top',
+        popupStateEventDispatcher,
         triggerPopupEventDispatcher
     };
 

@@ -5,6 +5,7 @@ import {IEventDispatcher} from '../../reactor/SimpleReactor';
 import {AnnotationDescriptor} from '../../metadata/AnnotationDescriptor';
 import {HighlightCreatedEvent} from '../../comments/react/HighlightCreatedEvent';
 import {HighlightColor} from '../../metadata/BaseHighlight';
+import {PopupStateEvent} from '../popup/PopupStateEvent';
 
 export class AnnotationBar extends React.Component<AnnotationBarProps, IState> {
 
@@ -104,6 +105,8 @@ export class AnnotationBar extends React.Component<AnnotationBarProps, IState> {
 
         this.props.onHighlighted(highlightCreatedEvent);
 
+        this.props.popupStateEventDispatcher.dispatchEvent({active: false});
+
     }
 
     private dispatchOnCommented() {
@@ -140,6 +143,7 @@ export type OnCommentCallback
     = (commentTriggerEvent: CommentTriggerEvent) => void;
 
 export interface AnnotationBarProps extends AnnotationBarCallbacks {
+    popupStateEventDispatcher: IEventDispatcher<PopupStateEvent>;
     annotationBarTriggerEventDispatcher: IEventDispatcher<AnnotationBarTriggerEvent>;
 }
 
