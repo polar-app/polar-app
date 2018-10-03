@@ -23,7 +23,32 @@ export class AnnotationBarService {
 
     public start(): void {
         this.model.registerListenerForDocumentLoaded(event => this.onDocumentLoaded(event));
+        document.body.addEventListener('click', event => {
+
+            if (event.target instanceof HTMLElement) {
+
+                const annotationType
+                    = event.target.getAttribute('data-annotation-type');
+
+                if (annotationType === 'text-highlight') {
+
+                    console.log("FIXME: 3");
+
+                    // trigger the popup here so we can change the types.
+
+                }
+
+            }
+
+        });
+
     }
+
+    private onClick() {
+
+    }
+
+
 
     private onDocumentLoaded(event: DocumentLoadedEvent) {
         log.debug("Creating annotation bar");

@@ -1,6 +1,11 @@
 .page .text-highlight {
     opacity: 0.5;
+    cursor: pointer;
 }
+
+/*.page .text-highlight:hover {*/
+    /*opacity: 0.2;*/
+/*}*/
 
 .page .text-highlight,
 .page .text-highlight[data-annotation-color="yellow"] {
