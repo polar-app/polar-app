@@ -8,6 +8,7 @@ import {Promises} from '../../util/Promises';
 import {InPageSearch} from './InPageSearch';
 import MenuItem = Electron.MenuItem;
 import {ManualUpdates} from '../../updates/ManualUpdates';
+import {Platform, Platforms} from '../../util/Platforms';
 
 const log = Logger.create();
 
@@ -80,11 +81,14 @@ export class MainAppMenu {
                             });
                         }
                     },
-                    // {
-                    //     id: 'check-for-updates',
-                    //     label: 'Check for updates',
-                    //     click: ManualUpdates.checkForUpdates
-                    // },
+                    {
+                        id: 'check-for-updates',
+                        label: 'Check for updates',
+                        // only show on Windows and MacOS as all other platforms have
+                        // their own dist system (for now).
+                        visible: Platforms.get() === Platform.MACOS || Platform.WINDOWS,
+                        click: ManualUpdates.checkForUpdates
+                    },
                     { label: 'Discord',
                       click: () => shell.openExternal('https://discord.gg/GT8MhA6') },
 
