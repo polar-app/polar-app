@@ -71,19 +71,19 @@ export class AnnotationBar extends React.Component<AnnotationBarProps, IState> {
 
                     </Button>
 
-                    <Button size="lg"
-                            type="button"
-                            className="btn p-1 m-1 annotationbar-btn annotationbar-btn-comment"
-                            title=""
-                            aria-label=""
-                            onClick={() => this.dispatchOnCommented()}
-                            style={{ }}>
+                    {/*<Button size="lg"*/}
+                            {/*type="button"*/}
+                            {/*className="btn p-1 m-1 annotationbar-btn annotationbar-btn-comment"*/}
+                            {/*title=""*/}
+                            {/*aria-label=""*/}
+                            {/*onClick={() => this.dispatchOnCommented()}*/}
+                            {/*style={{ }}>*/}
 
-                        <span className="fas fa-comment"
-                              aria-hidden="true"
-                              style={{color: 'rgba(255,255,255)'}}/>
+                        {/*<span className="fas fa-comment"*/}
+                              {/*aria-hidden="true"*/}
+                              {/*style={{color: 'rgba(255,255,255)'}}/>*/}
 
-                    </Button>
+                    {/*</Button>*/}
 
                 </div>
 

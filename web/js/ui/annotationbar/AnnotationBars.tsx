@@ -44,7 +44,6 @@ export class AnnotationBars {
                 },
                 pageNum,
                 selection: activeSelectionEvent.selection
-
             });
 
             // this gives the information to our annotation bar.
