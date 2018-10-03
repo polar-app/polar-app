@@ -153,12 +153,18 @@ export class AnnotationSidebar extends React.Component<AnnotationSidebarProps, A
                 return;
             }
 
+            if (annotation.id.trim() === '') {
+                log.warn("Empty annotation");
+                return;
+            }
+
             const html = Optional.of(annotation.html).getOrElse('');
 
             // FIXME: these still do not render properly as we dont' get the
             // data from the store properly.
 
             if (annotation.annotationType === AnnotationType.AREA_HIGHLIGHT) {
+                // TODO: make this a component.
 
                 if (annotation.screenshot) {
                     result.push(
@@ -176,6 +182,8 @@ export class AnnotationSidebar extends React.Component<AnnotationSidebarProps, A
                 //         </div>);
                 // }
                 //
+
+                // TODO: make this a component.
 
                 const attrType = AnnotationTypes.toDataAttribute(annotation.annotationType);
 

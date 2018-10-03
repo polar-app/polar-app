@@ -2,6 +2,10 @@ import * as React from 'react';
 import {IEventDispatcher} from '../../reactor/SimpleReactor';
 import {TriggerPopupEvent} from './TriggerPopupEvent';
 import Popover from 'reactstrap/lib/Popover';
+import {Optional} from '../../util/ts/Optional';
+import {Point} from '../../Point';
+import {Points} from '../../Points';
+import {Elements} from '../../util/Elements';
 
 export class ControlledPopup extends React.Component<ControlledPopupProps, IState> {
 
@@ -87,8 +91,40 @@ export class ControlledPopup extends React.Component<ControlledPopupProps, IStat
         // we need to place the anchor element properly on the page and the
         // popup id displayed relative to the anchor.
 
+        const pageElements = document.querySelectorAll(".page");
+        const pageElement = pageElements[event.pageNum - 1];
+
         this.selection = event.selection;
 
+        // FIXME: create a fake element and position it to see if my new algorithm works...
+
+        const origin: Point =
+            Optional.of(pageElement.getBoundingClientRect())
+                    .map(rect => {
+                        return {'x': rect.left, 'y': rect.top};
+                    })
+                    .get();
+
+
+        const offsetPoint: Point =
+            Points.relativeTo(origin, event.point);
+
+        console.log("FIXME origin: ", origin);
+        console.log("FIXME event.point: ", event.point);
+        console.log("FIXME offsetPoint: ", offsetPoint);
+
+        const testElement = Elements.createElementHTML(`<div style='position: absolute; left: ${offsetPoint.x}px; top: ${offsetPoint.y}px; background-color: red; padding: 10px; z-index: 1000;'>hello world</div>`)
+
+        pageElement.insertBefore(testElement, pageElement.firstChild);
+
+        // FIXME END ******************
+
+        // TODO: We have to compute this properly by placing our element with the
+        // pageElement parent and computing the position by comparing its
+        // boundingClientRect with the point on the screen.
+
+        // the point is relative to the viewport as it's based on
+        // boundingClientRect.
         const point = event.point;
 
         const offset = event.offset || {x: 0, y: 0};
@@ -97,7 +133,7 @@ export class ControlledPopup extends React.Component<ControlledPopupProps, IStat
         const left = point.x + offset.x;
 
         const id = `${this.props.id}-anchor`;
-        const cssText = `position: absolute; top: ${top}px; left: ${left}px;`;
+        const cssText = `position: fixed; top: ${top}px; left: ${left}px;`;
 
         const anchorElement = document.getElementById(id)!;
         anchorElement.style.cssText = cssText;
@@ -105,9 +141,6 @@ export class ControlledPopup extends React.Component<ControlledPopupProps, IStat
         // now move the element to the proper page.
 
         anchorElement.parentElement!.removeChild(anchorElement);
-
-        const pageElements = document.querySelectorAll(".page");
-        const pageElement = pageElements[event.pageNum - 1];
 
         pageElement.insertBefore(anchorElement, pageElement.firstChild);
 
