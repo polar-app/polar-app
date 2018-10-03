@@ -7,6 +7,7 @@ import {Logger} from '../../logger/Logger';
 import {Promises} from '../../util/Promises';
 import {InPageSearch} from './InPageSearch';
 import MenuItem = Electron.MenuItem;
+import {ManualUpdates} from '../../updates/ManualUpdates';
 
 const log = Logger.create();
 
@@ -63,21 +64,27 @@ export class MainAppMenu {
                 ]
             },
             {
+                id: 'help',
                 label: 'Help',
                 role: 'help',
                 submenu: [{
                     label: 'About',
                     click: (item: Electron.MenuItem, focusedWindow: BrowserWindow) => {
-                        dialog.showMessageBox(focusedWindow, {
-                            type: 'info',
-                            buttons: ['OK'],
-                            title: 'Polar Bookshelf',
-                            message: 'Version ' + Version.get(),
-                            detail: '',
-                            // icon: APP_ICON
-                        });
-                    }
-                },
+                            dialog.showMessageBox(focusedWindow, {
+                                type: 'info',
+                                buttons: ['OK'],
+                                title: 'Polar Bookshelf',
+                                message: 'Version ' + Version.get(),
+                                detail: '',
+                                // icon: APP_ICON
+                            });
+                        }
+                    },
+                    // {
+                    //     id: 'check-for-updates',
+                    //     label: 'Check for updates',
+                    //     click: ManualUpdates.checkForUpdates
+                    // },
                     { label: 'Discord',
                       click: () => shell.openExternal('https://discord.gg/GT8MhA6') },
 
@@ -177,6 +184,7 @@ export class MainAppMenu {
 
     private createEditMenuTemplate() {
         return {
+            id: 'edit',
             label: 'Edit',
             submenu: [
                 { role: 'undo' },
@@ -210,7 +218,8 @@ export class MainAppMenu {
         //
 
         return {
-            label: 'Annotate',
+            id: 'annotate',
+           label: 'Annotate',
             enabled: false,
             visible: false,
             submenu: [
