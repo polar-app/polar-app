@@ -1,4 +1,17 @@
 
+# 1.0.0-beta200
+
+ - multiple color highlights
+ 
+ - you can now jump from annotations in the sidebar to the part in the document
+   where that annotation lies
+   
+ - annotation bar which pops up when you select text.
+ 
+ - document repository now has last updated column
+ 
+ - document repository now prints a better date format by default.  
+
 # 1.0.0-beta190
 
  - all future releases will automatically make it into snap and this is now a 

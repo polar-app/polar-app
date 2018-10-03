@@ -47,7 +47,8 @@ describe('TextHighlightRecords', function() {
                     "images": {},
                     "notes": {},
                     "questions": {},
-                    "flashcards": {}
+                    "flashcards": {},
+                    "color": "yellow"
                 }
             };
 

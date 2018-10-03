@@ -305,6 +305,7 @@ describe('DocMetas', function() {
                         "notes": {},
                         "questions": {},
                         "flashcards": {},
+                        "color": "yellow",
                         "id": "1cAbqEAHny"
                     }
                 };
