@@ -96,8 +96,6 @@ export class ControlledPopup extends React.Component<ControlledPopupProps, IStat
 
         this.selection = event.selection;
 
-        // FIXME: create a fake element and position it to see if my new algorithm works...
-
         const origin: Point =
             Optional.of(pageElement.getBoundingClientRect())
                     .map(rect => {
@@ -105,35 +103,18 @@ export class ControlledPopup extends React.Component<ControlledPopupProps, IStat
                     })
                     .get();
 
-
-        const offsetPoint: Point =
-            Points.relativeTo(origin, event.point);
-
-        console.log("FIXME origin: ", origin);
-        console.log("FIXME event.point: ", event.point);
-        console.log("FIXME offsetPoint: ", offsetPoint);
-
-        const testElement = Elements.createElementHTML(`<div style='position: absolute; left: ${offsetPoint.x}px; top: ${offsetPoint.y}px; background-color: red; padding: 10px; z-index: 1000;'>hello world</div>`)
-
-        pageElement.insertBefore(testElement, pageElement.firstChild);
-
-        // FIXME END ******************
-
-        // TODO: We have to compute this properly by placing our element with the
-        // pageElement parent and computing the position by comparing its
-        // boundingClientRect with the point on the screen.
-
-        // the point is relative to the viewport as it's based on
-        // boundingClientRect.
         const point = event.point;
+
+        const relativePoint: Point =
+            Points.relativeTo(origin, point);
 
         const offset = event.offset || {x: 0, y: 0};
 
-        const top = point.y + offset.y;
-        const left = point.x + offset.x;
+        const top = relativePoint.y + offset.y;
+        const left = relativePoint.x + offset.x;
 
         const id = `${this.props.id}-anchor`;
-        const cssText = `position: fixed; top: ${top}px; left: ${left}px;`;
+        const cssText = `position: absolute; top: ${top}px; left: ${left}px;`;
 
         const anchorElement = document.getElementById(id)!;
         anchorElement.style.cssText = cssText;
