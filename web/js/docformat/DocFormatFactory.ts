@@ -11,11 +11,11 @@ export class DocFormatFactory {
     /**
      *
      */
-    static getInstance(): DocFormat {
+    public static getInstance(): DocFormat {
 
-        let polarDocFormat = DocFormatFactory.getPolarDocFormat();
+        const polarDocFormat = DocFormatFactory.getPolarDocFormat();
 
-        if(polarDocFormat === "html") {
+        if (polarDocFormat === "html") {
             return new HTMLFormat();
         } else if (polarDocFormat === "pdf") {
             return new PDFFormat();
@@ -27,15 +27,15 @@ export class DocFormatFactory {
 
     }
 
-    static getPolarDocFormat(): string {
+    private static getPolarDocFormat(): string {
 
-        let polarDocFormatElement = document.querySelector("meta[name='polar-doc-format']");
+        const polarDocFormatElement = document.querySelector("meta[name='polar-doc-format']");
 
-        if(polarDocFormatElement) {
+        if (polarDocFormatElement) {
 
-            let content = polarDocFormatElement.getAttribute("content");
+            const content = polarDocFormatElement.getAttribute("content");
 
-            if(content) {
+            if (content) {
                 return content;
             }
 

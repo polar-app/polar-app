@@ -63,6 +63,7 @@
     margin-bottom: 5px !important;
 }
 
+.annotation-sidebar .text-highlight,
 .annotation-sidebar .text-highlight[data-annotation-color="yellow"] blockquote {
     border-left: 5px solid rgba(255,255,0,0.8);
 }

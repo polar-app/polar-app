@@ -5,14 +5,19 @@ import Popover from 'reactstrap/lib/Popover';
 import {Optional} from '../../util/ts/Optional';
 import {Point} from '../../Point';
 import {Points} from '../../Points';
-import {Elements} from '../../util/Elements';
+import {DocFormat} from '../../docformat/DocFormat';
+import {DocFormatFactory} from '../../docformat/DocFormatFactory';
 
 export class ControlledPopup extends React.Component<ControlledPopupProps, IState> {
 
     private selection?: Selection;
 
+    private docFormat: DocFormat;
+
     constructor(props: any) {
         super(props);
+
+        this.docFormat = DocFormatFactory.getInstance();
 
         this.toggle = this.toggle.bind(this);
         this.onTriggerPopupEvent = this.onTriggerPopupEvent.bind(this);
@@ -96,12 +101,17 @@ export class ControlledPopup extends React.Component<ControlledPopupProps, IStat
 
         this.selection = event.selection;
 
-        const origin: Point =
+        let origin: Point =
             Optional.of(pageElement.getBoundingClientRect())
                     .map(rect => {
                         return {'x': rect.left, 'y': rect.top};
                     })
                     .get();
+
+        // one off for the html viewer... I hope we can unify these one day.
+        if (this.docFormat.name === 'html') {
+            origin = {x: 0, y: 0};
+        }
 
         const point = event.point;
 
@@ -148,6 +158,5 @@ interface IState {
     initial: boolean;
 
 }
-
 
 export type ControlledPopupPlacement = 'top' | 'bottom';
