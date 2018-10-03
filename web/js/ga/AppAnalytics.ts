@@ -47,6 +47,10 @@ export class AppAnalytics {
         this.analytics.screen(appName, appVer, appID, appInstallerID, screenName, clientID)
             .catch( err => log.error("Could not send tracking information: ", err));
 
+        // TODO: using pageview too as I don't think GA is using screens in our use case.
+        this.analytics.pageview("localapp.getpolarized.io", screenName, screenName, clientID)
+            .catch( err => log.error("Could not send tracking information: ", err));
+
         log.info(`Sent GA tracking info for screen ${screenName}`);
 
     }
