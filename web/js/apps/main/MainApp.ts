@@ -113,6 +113,8 @@ export class MainApp {
         const mainAppMenu = new MainAppMenu(mainAppController);
         mainAppMenu.setup();
 
+        this.sendAnalytics(userAgent);
+
         app.on('open-file', async (event, path) => {
 
             log.info("Open file called for: ", path);
@@ -158,7 +160,8 @@ export class MainApp {
 
     }
 
-    private async sendAnalytics(userAgent: string) {
+    private sendAnalytics(userAgent: string) {
+
         // send off analytics so we know who's using the platform.
 
         const appAnalytics = GA.getAppAnalytics(userAgent);
@@ -166,6 +169,8 @@ export class MainApp {
         Promise.all([
 
             appAnalytics.set('version', Version.get())
+
+            // TODO: get the number of documents in the doc repo..
 
         ]).catch((err: Error) => log.error("Unable to send analytics: ", err));
 
