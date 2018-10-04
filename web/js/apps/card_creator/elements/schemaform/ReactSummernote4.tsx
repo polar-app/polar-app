@@ -79,7 +79,7 @@ export class ReactSummernote4 extends Component {
         // const codeviewCommand = codeview ? 'codeview.activate' : 'codeview.deactivate';
         options.callbacks = this.callbacks;
 
-        let domNode = ReactDOM.findDOMNode(this) as HTMLElement;
+        const domNode = ReactDOM.findDOMNode(this) as HTMLElement;
 
         this.editor = $(domNode).find(`#${this.uid}`);
 
@@ -88,6 +88,15 @@ export class ReactSummernote4 extends Component {
         if (codeview) {
             this.editor.summernote('codeview.activate');
         }
+
+        if (options.airMode) {
+
+            domNode.parentElement!.addEventListener('click', () => {
+                this.editor.summernote('focus');
+            });
+
+        }
+
     }
 
     componentWillReceiveProps(nextProps: any) {
@@ -96,7 +105,6 @@ export class ReactSummernote4 extends Component {
 
         const codeview = nextProps.codeview;
         const codeviewCommand = codeview ? 'codeview.activate' : 'codeview.deactivate';
-
 
         if (typeof nextProps.value === 'string' && props.value !== nextProps.value) {
             this.replace(nextProps.value);

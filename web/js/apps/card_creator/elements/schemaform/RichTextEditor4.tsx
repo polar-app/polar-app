@@ -150,7 +150,9 @@ export class RichTextEditor4 extends React.Component<IProps, IState>  {
                 // onSubmit={this.onSubmit}
                 onImageUpload={this.onImageUpload}
             />
+
         );
+
     }
 
 }

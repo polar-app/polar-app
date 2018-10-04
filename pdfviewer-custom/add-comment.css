@@ -8,10 +8,10 @@
     max-width: 1024px;
 }
 
-.note-editing-area {
-    padding: 5px;
-    height: 250px;
-}
+/*.note-editing-area {*/
+    /*padding: 5px;*/
+    /*height: 250px;*/
+/*}*/
 
 #comment-popup-box-popover textarea {
     width: 100%;
