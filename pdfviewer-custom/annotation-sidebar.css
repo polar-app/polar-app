@@ -1,7 +1,7 @@
 .annotation-sidebar {
     padding-top: 5px;
     font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
-    font-size: 16px;
+    font-size: 14px;
     color: rgba(0, 0, 0, 0.84);
 }
 
@@ -66,16 +66,17 @@
 .annotation-sidebar .text-highlight blockquote,
 .annotation-sidebar .text-highlight[data-annotation-color="yellow"] blockquote {
     border-left: 5px solid rgba(255,255,0,0.8);
+    /*background-color: rgba(255,255,0,0.1);*/
 }
 
 .annotation-sidebar .text-highlight[data-annotation-color="green"] blockquote {
     border-left: 5px solid rgba(0,255,0,0.6);
+    /*background-color: rgba(0,255,0,0.1);*/
 }
 
 .annotation-sidebar .text-highlight[data-annotation-color="red"] blockquote {
-    /*background-color: rgba(255,0,0,0.6);*/
-    /*background-color: ;*/
     border-left: 5px solid rgba(255,0,0,0.6);
+    /*background-color: rgba(0,255,0,0.1);*/
 }
 
 .annotation-sidebar .text-highlight blockquote span {
@@ -83,5 +84,5 @@
 }
 
 .annotation-sidebar .annotation-buttons * {
-    font-size: 14px;
+    font-size: 12px;
 }
