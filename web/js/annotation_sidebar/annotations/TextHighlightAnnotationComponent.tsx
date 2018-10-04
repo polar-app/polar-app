@@ -3,6 +3,7 @@ import {AnnotationTypes} from '../../metadata/AnnotationTypes';
 import {DocAnnotation} from '../DocAnnotation';
 import {Optional} from '../../util/ts/Optional';
 import {AnnotationSidebars} from '../AnnotationSidebars';
+import {AnnotationControlBar} from '../AnnotationControlBar';
 
 /**
  * A generic wrapper that determines which sub-component to render.
@@ -28,6 +29,7 @@ export class TextHighlightAnnotationComponent extends React.Component<IProps, IS
         return (
 
             <div className="border border-secondary rounded m-1 mb-2">
+
                 <div key={key}
                      data-annotation-id={annotation.id}
                      data-annotation-type={attrType}
@@ -42,12 +44,7 @@ export class TextHighlightAnnotationComponent extends React.Component<IProps, IS
 
                     </blockquote>
 
-                    <div className="annotation-buttons text-right border-top">
-                        <a className="text-muted"
-                           href="#" onClick={() => AnnotationSidebars.scrollToAnnotation(annotation.id, annotation.pageNum)}>
-                            context
-                        </a>
-                    </div>
+                    <AnnotationControlBar annotation={annotation}/>
 
                 </div>
 

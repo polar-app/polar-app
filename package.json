@@ -75,7 +75,7 @@
   },
   "dependencies": {
     "@fortawesome/fontawesome-free": "^5.3.1",
-    "@sentry/electron": "^0.8.1",
+    "@sentry/electron": "^0.11.0",
     "@types/bootstrap": "^4.1.1",
     "@types/express": "^4.16.0",
     "@types/jsdom": "^11.0.6",

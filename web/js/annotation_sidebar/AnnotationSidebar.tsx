@@ -1,10 +1,7 @@
 import * as React from 'react';
 import {Logger} from '../logger/Logger';
 import {DocMeta} from '../metadata/DocMeta';
-import {AnnotationType} from '../metadata/AnnotationType';
-import {Optional} from '../util/ts/Optional';
 import {DocAnnotations} from './DocAnnotations';
-import {AnnotationTypes} from '../metadata/AnnotationTypes';
 import {DocAnnotation} from './DocAnnotation';
 import {DocAnnotationIndex} from './DocAnnotationIndex';
 import {DocAnnotationIndexes} from './DocAnnotationIndexes';
@@ -12,11 +9,7 @@ import {AreaHighlightModel} from '../highlights/area/model/AreaHighlightModel';
 import {MutationType} from '../proxies/MutationType';
 import {TextHighlightModel} from '../highlights/text/model/TextHighlightModel';
 import {isPresent} from '../Preconditions';
-import {ReactSummernote4} from '../apps/card_creator/elements/schemaform/ReactSummernote4';
 import {DocAnnotationComponent} from './annotations/DocAnnotationComponent';
-import {RichTextEditor4} from '../apps/card_creator/elements/schemaform/RichTextEditor4';
-import Button from 'reactstrap/lib/Button';
-import PopoverBody from 'reactstrap/lib/PopoverBody';
 
 const log = Logger.create();
 
@@ -168,20 +161,7 @@ export class AnnotationSidebar extends React.Component<AnnotationSidebarProps, A
 
             <div id="annotation-manager" className="annotation-sidebar">
 
-                {/*<div id="annotation-comment-box" className="border border-secondary rounded p-1 m-1">*/}
-
-                    {/*<div className="border rounded p-1" style={{'height': '200px'}}>*/}
-                        {/*<RichTextEditor4 id='foo'/>*/}
-                    {/*</div>*/}
-
-                    {/*<div className="text-right">*/}
-                        {/*/!*onClick={this.handleComment}*!/*/}
-                        {/*<Button size="sm" color="primary" className="mt-2">*/}
-                            {/*Comment*/}
-                        {/*</Button>*/}
-                    {/*</div>*/}
-
-                {/*</div>*/}
+                {/*<RichTextEditor4 id='asdf'/>*/}
 
                 <div className="annotations">
                     {this.createHTML(annotations)}

@@ -86,3 +86,11 @@
 .annotation-sidebar .annotation-buttons * {
     font-size: 12px;
 }
+
+.annotation-comment-wrapper {
+    min-height: 200px;
+}
+
+.annotation-sidebar * button {
+    font-size: 12px;
+}
