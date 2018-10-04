@@ -9,25 +9,25 @@ const log = Logger.create();
 
 export class CreateFlashcardApp {
 
-    async start() {
+    public async start() {
 
         return new Promise<void>( resolve => {
 
             // TODO: move this to DocumentReadyStates and not jquery.
-            $(document).ready(async function () {
+            $(document).ready(async function() {
 
                 log.info("Ready to create flash card!");
 
-                let schemaFormElement = <HTMLElement>document.getElementById('schema-form');
+                const schemaFormElement = <HTMLElement> document.getElementById('schema-form');
 
-                let createFlashcardForm = new CreateFlashcardForm(schemaFormElement);
+                const createFlashcardForm = new CreateFlashcardForm(schemaFormElement);
 
-                let createFlashcardService = new CreateFlashcardService(createFlashcardForm);
+                const createFlashcardService = new CreateFlashcardService(createFlashcardForm);
 
                 await createFlashcardService.start();
                 resolve();
 
-                log.info("UI created.")
+                log.info("UI created.");
 
             });
 
