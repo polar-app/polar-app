@@ -40,7 +40,7 @@ export class MainAppMenu {
         return [
             this.createFileMenuTemplate(),
             this.createEditMenuTemplate(),
-            this.createAnnotateMenuTemplate(),
+            // this.createAnnotateMenuTemplate(),
             this.createViewMenuTemplate(),
             {
                 label: 'Window',
