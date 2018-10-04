@@ -22,6 +22,9 @@ import {AppLauncher} from './AppLauncher';
 import {DocInfoBroadcasterService} from '../../datastore/advertiser/DocInfoBroadcasterService';
 import BrowserWindow = Electron.BrowserWindow;
 import {CachingStreamInterceptorService} from '../../backend/interceptor/CachingStreamInterceptorService';
+import {AppAnalytics} from "../../ga/AppAnalytics";
+import {GA} from "../../ga/GA";
+import {Version} from "../../util/Version";
 
 declare var global: any;
 
@@ -91,7 +94,9 @@ export class MainApp {
         await captureController.start();
         await dialogWindowService.start();
 
-        const fileLoader = new AnalyticsFileLoader(mainWindow.webContents.getUserAgent(), defaultFileLoader);
+        const userAgent = mainWindow.webContents.getUserAgent();
+
+        const fileLoader = new AnalyticsFileLoader(userAgent, defaultFileLoader);
 
         await new DocInfoBroadcasterService().start();
 
@@ -152,6 +157,20 @@ export class MainApp {
         return {mainWindow, mainAppController};
 
     }
+
+    private async sendAnalytics(userAgent: string) {
+        // send off analytics so we know who's using the platform.
+
+        const appAnalytics = GA.getAppAnalytics(userAgent);
+
+        Promise.all([
+
+            appAnalytics.set('version', Version.get())
+
+        ]).catch((err: Error) => log.error("Unable to send analytics: ", err));
+
+    }
+
 
 }
 

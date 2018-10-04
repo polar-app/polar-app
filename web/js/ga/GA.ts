@@ -30,11 +30,14 @@ export class GA {
 
 }
 
+/**
+ * Raw analytics interface.
+ */
 export interface IAnalytics {
 
     new(trackingID: string, opts?: IAnalyticsOpts): IAnalytics;
 
-    set(key: string, value: number): Promise<IResponse>;
+    set(key: string, value: number | string): Promise<IResponse>;
 
     screen(appName: string,
            appVer: string,

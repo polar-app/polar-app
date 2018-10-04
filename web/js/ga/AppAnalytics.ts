@@ -1,6 +1,6 @@
 import {Logger} from '../logger/Logger';
 import {Hashcodes} from '../Hashcodes';
-import {IAnalytics} from './GA';
+import {IAnalytics, IResponse} from './GA';
 import {Version} from '../util/Version';
 import os from 'os';
 
@@ -25,6 +25,10 @@ export class AppAnalytics {
         // this.analytics.set('version', VERSION)
         //     .catch( err => log.error("Could not send tracking information: ", err));
 
+    }
+
+    public set(key: string, value: number | string): Promise<IResponse> {
+        return this.analytics.set(key, value);
     }
 
     public screen(screenName: string) {

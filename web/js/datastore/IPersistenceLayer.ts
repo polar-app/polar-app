@@ -31,4 +31,8 @@ export interface IPersistenceLayer {
 
     getDocMetaFiles(): Promise<DocMetaRef[]>;
 
+    // TODO:
+    // get an overview of documents in teh repository
+    // overview(): Promise<DatastoreOverview>;
+
 }
