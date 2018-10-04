@@ -23,10 +23,12 @@ export class TextHighlightAnnotationComponent extends React.Component<IProps, IS
 
         const html = Optional.of(annotation.html).getOrElse('');
 
+        const key = 'text-highlight-' + annotation.id;
+
         return (
 
             <div className="border border-secondary rounded m-1 mb-2">
-                <div key={annotation.id}
+                <div key={key}
                      data-annotation-id={annotation.id}
                      data-annotation-type={attrType}
                      data-annotation-color={annotation.color}
@@ -61,3 +63,4 @@ interface IProps {
 interface IState {
 
 }
+

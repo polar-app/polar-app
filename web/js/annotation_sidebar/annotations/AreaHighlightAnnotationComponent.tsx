@@ -19,19 +19,22 @@ export class AreaHighlightAnnotationComponent extends React.Component<IProps, IS
     public render() {
         const { annotation } = this.props;
 
+        const key = 'area-highlight' + annotation.id;
+
         if (annotation.screenshot) {
             return (
-                <div key={annotation.id} className='area-highlight'>
+                <div key={key} className='area-highlight'>
                     <img src={annotation.screenshot.src}/>
                 </div>
             );
         } else {
             return (
-                <div key={annotation.id} className='area-highlight'>
+                <div key={key} className='area-highlight'>
 
                 </div>
             );
         }
+
     }
 
 }

@@ -13,6 +13,7 @@ import {MutationType} from '../proxies/MutationType';
 import {TextHighlightModel} from '../highlights/text/model/TextHighlightModel';
 import {isPresent} from '../Preconditions';
 import {ReactSummernote4} from '../apps/card_creator/elements/schemaform/ReactSummernote4';
+import {DocAnnotationComponent} from './annotations/DocAnnotationComponent';
 
 const log = Logger.create();
 
@@ -149,75 +150,7 @@ export class AnnotationSidebar extends React.Component<AnnotationSidebarProps, A
 
         annotations.map(annotation => {
 
-            if (! isPresent(annotation.id)) {
-                log.warn("No annotation id!", annotation);
-                return;
-            }
-
-            if (annotation.id.trim() === '') {
-                log.warn("Empty annotation");
-                return;
-            }
-
-            const html = Optional.of(annotation.html).getOrElse('');
-
-            // FIXME: these still do not render properly as we dont' get the
-            // data from the store properly.
-
-            if (annotation.annotationType === AnnotationType.AREA_HIGHLIGHT) {
-                // TODO: make this a component.
-
-                if (annotation.screenshot) {
-                    result.push(
-                        <div key={annotation.id} className='area-highlight'>
-                            <img src={annotation.screenshot.src}/>
-                        </div>);
-                }
-
-            } else {
-
-                // if (annotation.screenshot) {
-                //     result.push(
-                //         <div key={`screenshot:${annotation.id}`} className='area-highlight'>
-                //             <img src={annotation.screenshot.src}/>
-                //         </div>);
-                // }
-                //
-
-                // TODO: make this a component.
-
-                const attrType = AnnotationTypes.toDataAttribute(annotation.annotationType);
-
-                // TODO: move this to a formatter function so this is a big cleaner.
-                result.push(
-                    <div className="border border-secondary rounded m-1 mb-2">
-                        <div key={annotation.id}
-                             data-annotation-id={annotation.id}
-                             data-annotation-type={attrType}
-                             data-annotation-color={annotation.color}
-                             className={attrType}>
-
-                            <blockquote className="p-1 rounded">
-
-                                <span dangerouslySetInnerHTML={{__html: html}}>
-
-                                </span>
-
-                            </blockquote>
-
-                            <div className="annotation-buttons text-right border-top">
-                                <a className="text-muted"
-                                   href="#" onClick={() => this.scrollToAnnotation(annotation.id, annotation.pageNum)}>
-                                    context
-                                </a>
-                            </div>
-
-                        </div>
-
-                    </div>
-                );
-
-            }
+            result.push (<DocAnnotationComponent key={annotation.id} annotation={annotation}/>);
 
         });
 
