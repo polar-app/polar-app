@@ -12,6 +12,7 @@ import {AreaHighlightModel} from '../highlights/area/model/AreaHighlightModel';
 import {MutationType} from '../proxies/MutationType';
 import {TextHighlightModel} from '../highlights/text/model/TextHighlightModel';
 import {isPresent} from '../Preconditions';
+import {ReactSummernote4} from '../apps/card_creator/elements/schemaform/ReactSummernote4';
 
 const log = Logger.create();
 

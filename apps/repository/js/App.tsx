@@ -19,7 +19,6 @@ import {FilteredTags} from './FilteredTags';
 import {isPresent} from '../../../web/js/Preconditions';
 import {Sets} from '../../../web/js/util/Sets';
 import {Tags} from '../../../web/js/tags/Tags';
-import Moment from 'react-moment';
 import {DateTimeTableCell} from './DateTimeTableCell';
 
 const log = Logger.create();
@@ -146,8 +145,8 @@ export default class App extends React.Component<AppProps, AppState> {
                         [
                             {
                                 Header: 'Title',
-                                accessor: 'title'
-                                // style:
+                                accessor: 'title',
+
                             },
                             {
                                 Header: 'Last Updated',
