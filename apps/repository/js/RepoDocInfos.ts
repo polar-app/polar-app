@@ -3,6 +3,7 @@ import {IDocInfo} from '../../../web/js/metadata/DocInfo';
 import {Optional} from '../../../web/js/util/ts/Optional';
 import {RepoDocInfo} from './RepoDocInfo';
 import {ISODateTimeString} from '../../../web/js/metadata/ISODateTimeStrings';
+import {DocInfos} from '../../../web/js/metadata/DocInfos';
 
 export class RepoDocInfos {
 
@@ -20,10 +21,7 @@ export class RepoDocInfos {
 
             // TODO: we should map this to also filter out '' and ' '
             // from the list of strings.
-            title: Optional.first(docInfo.title,
-                                  docInfo.filename)
-                .validateString()
-                .getOrElse('Untitled'),
+            title: DocInfos.bestTitle(docInfo),
 
             progress: Optional.of(docInfo.progress)
                 .validateNumber()

@@ -5,6 +5,7 @@ import {Strings} from '../util/Strings';
 import {Toaster} from '../toaster/Toaster';
 import {DialogWindowClient} from '../ui/dialog_window/DialogWindowClient';
 import {DialogWindowOptions, Resource, ResourceType} from '../ui/dialog_window/DialogWindow';
+import {DocInfos} from '../metadata/DocInfos';
 
 const log = Logger.create();
 
@@ -44,14 +45,16 @@ export class SyncController {
 
         // TODO: verify that the document has a title.
 
-        if(Strings.empty(this.model.docMeta.docInfo.title)) {
+        const title = DocInfos.bestTitle(this.model.docMeta.docInfo);
+
+        if (Strings.empty(title)) {
             Toaster.error("Documents must have titles before we can synchronize.");
             return;
         }
 
-        let resource = new Resource(ResourceType.APP, "./apps/sync/index.html?fingerprint=" + this.model.docMeta.docInfo.fingerprint);
+        const resource = new Resource(ResourceType.APP, "./apps/sync/index.html?fingerprint=" + this.model.docMeta.docInfo.fingerprint);
 
-        let dialogWindowClient = await DialogWindowClient.create(new DialogWindowOptions(resource));
+        const dialogWindowClient = await DialogWindowClient.create(new DialogWindowOptions(resource));
         await dialogWindowClient.show();
 
     }
