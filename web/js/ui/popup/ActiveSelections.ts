@@ -11,13 +11,13 @@ export class ActiveSelections {
 
         let originPoint: Point | undefined;
 
-        document.addEventListener('mousedown', (event: MouseEvent) => {
+        target.addEventListener('mousedown', (event: MouseEvent) => {
 
             originPoint = this.eventToPoint(event);
 
         });
 
-        document.addEventListener('mouseup', (event: MouseEvent) => {
+        target.addEventListener('mouseup', (event: MouseEvent) => {
 
             // const win = target.ownerDocument.defaultView;
             const win = event.view;

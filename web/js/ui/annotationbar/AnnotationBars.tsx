@@ -20,9 +20,14 @@ export class AnnotationBars {
 
         ControlledPopups.create(controlledPopupProps, child);
 
+        const target = document.getElementById("viewerContainer")!;
+
         // NOTE: we don't need to monitor iframes because our EventDispatcher
         // gives us events from the iframes bubbled up.
-        this.registerEventListener(controlledPopupProps, pageNum, annotationBarTriggerEventDispatcher, document.body);
+        this.registerEventListener(controlledPopupProps,
+                                   pageNum,
+                                   annotationBarTriggerEventDispatcher,
+                                   target);
 
     }
 

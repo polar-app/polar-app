@@ -46,11 +46,12 @@ export class AnnotationSidebars {
 
     private static scrollToElement(element: HTMLElement) {
 
+        // NOTE: behavior: smooth won't actually work
         element.scrollIntoView({
-            behavior: 'auto',
+            behavior: 'instant',
             block: 'center',
             inline: 'center'
-        });
+       });
 
     }
 
