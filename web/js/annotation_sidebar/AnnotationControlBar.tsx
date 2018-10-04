@@ -24,7 +24,7 @@ export class AnnotationControlBar extends React.Component<IProps, IState> {
 
             <div className="annotation-control-bar">
 
-                <div className="annotation-buttons text-right border-top">
+                <div className="annotation-buttons text-right border-top pt-1 pb-2">
 
                     <a className="text-muted ml-1"
                        href="#" onClick={() => this.changeActiveInputComponent('comment')}>

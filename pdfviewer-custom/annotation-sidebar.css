@@ -85,6 +85,7 @@
 
 .annotation-sidebar .annotation-buttons * {
     font-size: 12px;
+    user-select: none;
 }
 
 .annotation-comment-wrapper {
@@ -93,4 +94,8 @@
 
 .annotation-sidebar * button {
     font-size: 12px;
+}
+
+.annotation-sidebar .note-status-output {
+    display: none;
 }

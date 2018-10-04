@@ -7,3 +7,5 @@ betabound.com
 preaps
 techcrunch
 
+
+https://www.reddit.com/r/productivity/

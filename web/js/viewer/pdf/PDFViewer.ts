@@ -12,6 +12,8 @@ export class PDFViewer extends Viewer {
 
         log.info("Starting PDFViewer");
 
+        this.disableSidebarKeyboardHandling();
+
     }
 
     public docDetail(): DocDetail | undefined {
@@ -25,6 +27,18 @@ export class PDFViewer extends Viewer {
 
     }
 
+    private disableSidebarKeyboardHandling() {
+
+        const sidebarElement = document.getElementById("polar-sidebar")!;
+        sidebarElement.addEventListener("keypress", event => {
+            event.stopPropagation();
+        });
+
+        sidebarElement.addEventListener("keydown", event => {
+            event.stopPropagation();
+        });
+
+    }
 
     /**
      * Get the current doc fingerprint or null if it hasn't been loaded yet.
