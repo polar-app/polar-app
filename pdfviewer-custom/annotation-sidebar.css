@@ -1,3 +1,7 @@
+.annotation-sidebar ::selection {
+    background-color: #3297FD;
+}
+
 .annotation-sidebar {
     padding-top: 5px;
     font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
