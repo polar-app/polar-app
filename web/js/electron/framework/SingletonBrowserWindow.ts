@@ -3,14 +3,16 @@
  * open the second time we try to open it.
  */
 import {BrowserWindow} from 'electron';
-import {BrowserWindowRegistry, BrowserWindowTag} from './BrowserWindowRegistry';
+import {BrowserWindowRegistry, BrowserWindowTag, TagMap} from './BrowserWindowRegistry';
 import {Logger} from '../../logger/Logger';
 
 const log = Logger.create();
 
 export class SingletonBrowserWindow {
 
-    public static async getInstance(tag: BrowserWindowTag, browserWindowFactory: BrowserWindowFactory) {
+    public static async getInstance(tag: BrowserWindowTag,
+                                    browserWindowFactory: BrowserWindowFactory,
+                                    extraTags: TagMap = {}) {
 
         const existing = BrowserWindowRegistry.tagged(tag);
 
@@ -28,7 +30,7 @@ export class SingletonBrowserWindow {
 
         const result = await browserWindowFactory();
 
-        const tags: {[name: string]: string} = {};
+        const tags: TagMap = Object.assign({}, extraTags);
         tags[tag.name] = tag.value;
 
         BrowserWindowRegistry.tag(result.id, tags);

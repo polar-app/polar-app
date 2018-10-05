@@ -1,5 +1,5 @@
 import {MainAppController} from './MainAppController';
-import {BrowserWindow, dialog, Menu, shell} from "electron";
+import {app, BrowserWindow, dialog, Menu, shell} from "electron";
 import {ElectronContextMenu} from '../../contextmenu/electron/ElectronContextMenu';
 import {Version} from '../../util/Version';
 import {AppLauncher} from './AppLauncher';
@@ -9,8 +9,15 @@ import {InPageSearch} from './InPageSearch';
 import MenuItem = Electron.MenuItem;
 import {ManualUpdates} from '../../updates/ManualUpdates';
 import {Platform, Platforms} from '../../util/Platforms';
+import {AnnotationSidebarClient} from '../../annotation_sidebar/AnnotationSidebarClient';
+import {BrowserWindowRegistry} from '../../electron/framework/BrowserWindowRegistry';
+import undefinedError = Mocha.utils.undefinedError;
+import {Menus} from './Menus';
+import {isPresent} from '../../Preconditions';
 
 const log = Logger.create();
+
+const WINDOW_TYPE = 'type';
 
 export class MainAppMenu {
 
@@ -31,8 +38,36 @@ export class MainAppMenu {
 
         Menu.setApplicationMenu(menu);
 
-        // start the context menu system.
+        // noinspection TsLint
         new ElectronContextMenu();
+
+        this.registerEventListeners();
+
+    }
+
+    /**
+     * Register event listeners so we can hide/disable/etc menus.
+     */
+    private registerEventListeners() {
+
+        app.on('browser-window-focus', (event: Electron.Event, browserWindow: BrowserWindow) => {
+
+             const meta = BrowserWindowRegistry.get(browserWindow.id);
+
+             const isViewer: boolean
+                 = isPresent(meta) &&
+                   meta!.tags &&
+                   meta!.tags[WINDOW_TYPE] === 'viewer';
+
+             const menu = Menu.getApplicationMenu()!;
+
+             const viewMenu = Menus.find(menu.items, 'view');
+             const viewMenuItems = Menus.submenu(viewMenu);
+             const toggleAnnotationSidebar = Menus.find(viewMenuItems, 'toggle-annotation-sidebar');
+
+             Menus.setVisible(toggleAnnotationSidebar!, isViewer);
+
+        });
 
     }
 
@@ -253,6 +288,7 @@ export class MainAppMenu {
 
     private createViewMenuTemplate() {
         return {
+            id: 'view',
             label: 'View',
             submenu: [
                 {
@@ -273,6 +309,15 @@ export class MainAppMenu {
                 //         }
                 //     }
                 // },
+
+                {
+                    id: 'toggle-annotation-sidebar',
+                    accelerator: 'F10',
+                    label: 'Toggle Annotation Sidebar',
+                    visible: false,
+                    click: () => AnnotationSidebarClient.toggleAnnotationSidebar()
+                },
+
                 {
                     label: 'Toggle Full Screen',
                     accelerator: (function() {

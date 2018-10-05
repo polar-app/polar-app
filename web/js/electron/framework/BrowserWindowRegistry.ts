@@ -8,7 +8,7 @@ export class BrowserWindowMeta {
     /**
      * Set of tags associated with this window.
      */
-    tags: {[name: string] : string} = {}
+    public tags: TagMap = {};
 
 }
 
@@ -23,7 +23,7 @@ export interface LiveWindowsProvider {
 
 export class DefaultLiveWindowsProvider implements LiveWindowsProvider {
 
-    getLiveWindowIDs(): ID[] {
+    public getLiveWindowIDs(): ID[] {
         return BrowserWindow.getAllWindows().map(current => current.id);
     }
 
@@ -58,7 +58,7 @@ export class BrowserWindowRegistry {
         return this.registry[`${id}`];
     }
 
-    public static tag(id: ID, tags: {[name: string] : string}) {
+    public static tag(id: ID, tags: TagMap) {
         this.gc();
 
         if(! (id in this.registry)) {
@@ -111,7 +111,14 @@ export class BrowserWindowRegistry {
 
 }
 
+// noinspection TsLint
+export type TagMap = {[name: string]: string};
+
 export interface BrowserWindowTag {
     name: string;
     value: string;
 }
+
+
+
+

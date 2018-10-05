@@ -126,7 +126,9 @@ export class MainAppController {
      */
     public async handleLoadDoc(path: string, newWindow: boolean = true): Promise<BrowserWindow> {
 
-        const browserWindowTag = {name: 'viewer:', value: Hashcodes.createID(path)};
+        const extraTags = {'type': 'viewer'};
+
+        const browserWindowTag = {name: 'viewer', value: Hashcodes.createID(path)};
 
         return await SingletonBrowserWindow.getInstance(browserWindowTag, async () => {
 
@@ -140,7 +142,7 @@ export class MainAppController {
 
             return await this.loadDoc(path, window);
 
-        });
+        }, extraTags);
 
     }
 
@@ -159,7 +161,7 @@ export class MainAppController {
 
         loadedFile.webResource.load(targetWindow);
 
-        targetWindow.webContents.once('did-finish-load', function() {
+        targetWindow.webContents.once('did-finish-load', () => {
 
             if (loadedFile.title) {
                 // TODO: this should be driven from the DocMeta and the DocMeta

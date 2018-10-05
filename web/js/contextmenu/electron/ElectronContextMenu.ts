@@ -7,6 +7,7 @@ import {Broadcaster} from '../../ipc/Broadcaster';
 import {Preconditions} from '../../Preconditions';
 import {ContextMenuType} from '../ContextMenuType';
 import {Messenger} from '../../electron/messenger/Messenger';
+import {AnnotationSidebarClient} from '../../annotation_sidebar/AnnotationSidebarClient';
 
 const log = Logger.create();
 
@@ -301,8 +302,7 @@ export class ElectronContextMenu {
         ctxMenu.append(new MenuItem({
             label: 'Toggle Annotation Sidebar',
             id: "toggle-annotation-sidebar",
-            click: () => this.postContextMenuMessage('toggle-annotation-sidebar', triggerEvent)
-
+            click: () => AnnotationSidebarClient.toggleAnnotationSidebar()
         }));
 
         ctxMenu.append(new MenuItem({

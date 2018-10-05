@@ -10,9 +10,9 @@ export class MainAppService {
         this.mainAppController = mainAppController;
     }
 
-    start(): void {
+    public start(): void {
 
-        let ipcEngine = IPCEngines.mainProcess();
+        const ipcEngine = IPCEngines.mainProcess();
 
         ipcEngine.registry.registerPath('/main/load-doc', new LoadDocHandler(this.mainAppController));
 
