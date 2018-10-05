@@ -5,6 +5,7 @@ import {Logger} from '../../logger/Logger';
 import {DocFormatFactory} from '../../docformat/DocFormatFactory';
 import {KeyEvents} from '../../KeyEvents';
 import {Elements} from '../../util/Elements';
+import {RendererAnalytics} from '../../ga/RendererAnalytics';
 
 const log = Logger.create();
 
@@ -40,8 +41,7 @@ export class PagemarkCoverageEventListener {
         document.addEventListener("keyup", this.keyListener.bind(this));
         document.addEventListener("keydown", this.keyListener.bind(this));
 
-
-        let pages = document.querySelectorAll(".page");
+        const pages = document.querySelectorAll(".page");
         pages.forEach(pageElement => {
             pageElement.addEventListener("click", this.mouseListener.bind(this));
         });
@@ -94,7 +94,7 @@ export class PagemarkCoverageEventListener {
 
         let pageHeight = pageElement.clientHeight;
 
-        let eventTargetOffset = Elements.getRelativeOffsetRect(<HTMLElement>event.target, pageElement);
+        let eventTargetOffset = Elements.getRelativeOffsetRect(<HTMLElement> event.target, pageElement);
 
         let mouseY = eventTargetOffset.top + event.offsetY;
 
@@ -103,6 +103,9 @@ export class PagemarkCoverageEventListener {
         log.info("percentage: ", percentage);
 
         let pageNum = this.docFormat.getPageNumFromPageElement(pageElement);
+
+        RendererAnalytics.event({category: 'user', action: 'created-pagemark-via-keyboard'});
+
         this.controller.erasePagemark(pageNum);
         await this.controller.createPagemark(pageNum, {percentage});
 

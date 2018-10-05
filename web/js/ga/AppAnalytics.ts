@@ -8,6 +8,10 @@ const log = Logger.create();
 
 const VERSION = Version.get();
 
+/**
+ * Idiomatic analytics interface without having to specify all fields per
+ * metric.
+ */
 export class AppAnalytics {
 
     private readonly analytics: IAnalytics;

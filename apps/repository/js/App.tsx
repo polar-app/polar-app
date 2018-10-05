@@ -20,6 +20,7 @@ import {isPresent} from '../../../web/js/Preconditions';
 import {Sets} from '../../../web/js/util/Sets';
 import {Tags} from '../../../web/js/tags/Tags';
 import {DateTimeTableCell} from './DateTimeTableCell';
+import {RendererAnalytics} from '../../../web/js/ga/RendererAnalytics';
 
 const log = Logger.create();
 
@@ -450,11 +451,15 @@ export default class App extends React.Component<AppProps, AppState> {
     private async handleToggleField(repoDocInfo: RepoDocInfo, field: string) {
 
         if (field === 'archived') {
+            RendererAnalytics.event({category: 'user', action: 'archived-doc'});
+
             repoDocInfo.archived = !repoDocInfo.archived;
             repoDocInfo.docInfo.archived = repoDocInfo.archived;
         }
 
         if (field === 'flagged') {
+            RendererAnalytics.event({category: 'user', action: 'flagged-doc'});
+
             repoDocInfo.flagged = !repoDocInfo.flagged;
             repoDocInfo.docInfo.flagged = repoDocInfo.flagged;
         }
@@ -488,6 +493,8 @@ export default class App extends React.Component<AppProps, AppState> {
         });
 
         const repoDocs = await this.repoDocInfoLoader!.load();
+
+        RendererAnalytics.set({'nrDocs': Object.keys(repoDocs).length});
 
         this.docRepository.updateDocInfo(...Object.values(repoDocs));
 

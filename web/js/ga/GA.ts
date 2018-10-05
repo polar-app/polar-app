@@ -13,7 +13,7 @@ export class GA {
 
     public static analytics?: IAnalytics;
 
-    public static getInstance(userAgent: string) {
+    public static getInstance(userAgent: string): IAnalytics {
 
         Preconditions.assertNotNull(userAgent, "userAgent");
 

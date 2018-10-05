@@ -9,6 +9,7 @@ import {PagemarkRects} from '../../metadata/PagemarkRects';
 import {PagemarkMode} from '../../metadata/PagemarkMode';
 import {Rects} from '../../Rects';
 import {Optional} from '../../util/ts/Optional';
+import {RendererAnalytics} from '../../ga/RendererAnalytics';
 
 const log = Logger.create();
 
@@ -63,6 +64,8 @@ export class PagemarkController {
     }
 
     onCreatePagemark(triggerEvent: TriggerEvent) {
+
+        RendererAnalytics.event({category: 'user', action: 'created-pagemark'});
 
         // convert the point on the page and then save it into the
         // model/docMeta... the view will do the rest.
@@ -127,6 +130,8 @@ export class PagemarkController {
     }
 
     private onDeletePagemark(triggerEvent: TriggerEvent) {
+
+        RendererAnalytics.event({category: 'user', action: 'deleted-pagemark'});
 
         log.info("Deleting pagemark: ", triggerEvent);
 
