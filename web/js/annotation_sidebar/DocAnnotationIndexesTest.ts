@@ -116,7 +116,8 @@ function createAnnotation(id: string,
         position: {
             x,
             y
-        }
+        },
+        created: '2009-06-15T13:45:30'
     };
 
 }

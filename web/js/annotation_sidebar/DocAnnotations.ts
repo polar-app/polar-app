@@ -40,7 +40,8 @@ export class DocAnnotations {
             position: {
                 x: this.firstRect(areaHighlight).map(current => current.left).getOrElse(0),
                 y: this.firstRect(areaHighlight).map(current => current.top).getOrElse(0),
-            }
+            },
+            created: areaHighlight.created
         };
 
     }
@@ -84,7 +85,8 @@ export class DocAnnotations {
                 x: this.firstRect(textHighlight).map(current => current.left).getOrElse(0),
                 y: this.firstRect(textHighlight).map(current => current.top).getOrElse(0),
             },
-            color: textHighlight.color
+            color: textHighlight.color,
+            created: textHighlight.created
         };
 
     }

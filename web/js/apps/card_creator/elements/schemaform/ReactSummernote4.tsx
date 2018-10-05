@@ -6,7 +6,6 @@ import 'summernote/dist/summernote-bs4';
 
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-
 const randomUid = () => Math.floor(Math.random() * 100000);
 
 /**
