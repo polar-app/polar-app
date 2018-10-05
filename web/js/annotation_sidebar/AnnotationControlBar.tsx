@@ -57,7 +57,8 @@ export class AnnotationControlBar extends React.Component<IProps, IState> {
 
                 <Collapse isOpen={this.state.activeInputComponent === 'comment'}>
 
-                    <AnnotationCommentBox annotation={annotation} onComment={(html) => this.onComment(html)}/>
+                    <AnnotationCommentBox annotation={annotation}
+                                          onComment={(html) => this.onComment(html)}/>
 
                 </Collapse>
 
@@ -81,6 +82,10 @@ export class AnnotationControlBar extends React.Component<IProps, IState> {
 
         const comment = Comments.createHTMLComment(html, ref);
         annotation.pageMeta.comments[comment.id] = comment;
+
+        this.setState({
+            activeInputComponent: 'none'
+        });
 
     }
 
