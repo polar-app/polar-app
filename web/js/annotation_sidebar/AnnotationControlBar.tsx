@@ -27,7 +27,7 @@ export class AnnotationControlBar extends React.Component<IProps, IState> {
                 <div className="annotation-buttons text-right border-top pt-1 pb-2">
 
                     <a className="text-muted ml-1"
-                       href="#" onClick={() => this.changeActiveInputComponent('comment')}>
+                       href="#" onClick={() => this.toggleActiveInputComponent('comment')}>
                         comment
                     </a>
 
@@ -49,9 +49,9 @@ export class AnnotationControlBar extends React.Component<IProps, IState> {
         );
     }
 
-    private changeActiveInputComponent(activeInputComponent: ActiveInputComponent) {
+    private toggleActiveInputComponent(activeInputComponent: ActiveInputComponent) {
         this.setState({
-            activeInputComponent
+            activeInputComponent: this.state.activeInputComponent === activeInputComponent ? 'none' : activeInputComponent
         });
     }
 

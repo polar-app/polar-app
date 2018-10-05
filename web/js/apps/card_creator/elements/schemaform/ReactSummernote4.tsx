@@ -113,9 +113,15 @@ export class ReactSummernote4 extends Component {
         if (typeof nextProps.disabled === 'boolean' && props.disabled !== nextProps.disabled) {
             this.toggleState(nextProps.disabled);
         }
+
         if (codeview !== props.codeview) {
             this.editor.summernote(codeviewCommand);
         }
+
+        if (this.props.autofocus) {
+            this.editor.summernote('focus');
+        }
+
     }
 
     shouldComponentUpdate() {

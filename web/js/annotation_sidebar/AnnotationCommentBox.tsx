@@ -27,7 +27,7 @@ export class AnnotationCommentBox extends React.Component<IProps, IState> {
             <div id="annotation-comment-box" className="">
 
                 <div className="border rounded p-1 annotation-comment-wrapper">
-                    <RichTextEditor4 id={id}/>
+                    <RichTextEditor4 id={id} autofocus={true}/>
                 </div>
 
                 <div className="text-right">

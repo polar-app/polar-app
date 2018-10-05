@@ -144,6 +144,7 @@ export class RichTextEditor4 extends React.Component<IProps, IState>  {
                     ]
 
                 }}
+                autofocus={this.props.autofocus}
                 onChange={this.onChange}
                 onBlur={this.onBlur}
                 onFocus={this.onFocus}
@@ -159,6 +160,7 @@ export class RichTextEditor4 extends React.Component<IProps, IState>  {
 
 interface IProps {
     id: string;
+    autofocus?: boolean;
     onChange?: (newValue: string) => void;
     onBlur?: (id: string, value: string) => void;
     onFocus?: (id: string, value: string) => void;
