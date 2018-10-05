@@ -30,6 +30,7 @@ export class PDFViewer extends Viewer {
     private disableSidebarKeyboardHandling() {
 
         const sidebarElement = document.getElementById("polar-sidebar")!;
+
         sidebarElement.addEventListener("keypress", event => {
             event.stopPropagation();
         });

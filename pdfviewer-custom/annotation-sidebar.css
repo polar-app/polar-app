@@ -90,6 +90,14 @@
 
 .annotation-comment-wrapper {
     min-height: 200px;
+    border-width: 3px !important;
+}
+
+.annotation-comment-wrapper:focus-within {
+  box-shadow: 0 0 5px rgba(81, 203, 238, 1);
+  padding: 3px 0px 3px 3px;
+  margin: 5px 1px 3px 0px;
+  border: 1px solid rgba(81, 203, 238, 1) !important;
 }
 
 .annotation-sidebar * button {
@@ -98,4 +106,18 @@
 
 .annotation-sidebar .note-status-output {
     display: none;
+}
+
+.annotation-comment-wrapper {
+    min-height: 200px;
+    border-width: 3px !important;
+}
+
+.annotation-comment-wrapper:focus-within {
+    box-shadow: 0 0 5px rgba(81, 203, 238, 1);
+    border: 3px solid rgba(81, 203, 238, 1) !important;
+}
+
+.note-air-popover * {
+    font-size: 13px !important;
 }
