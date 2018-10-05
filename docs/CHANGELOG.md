@@ -1,4 +1,10 @@
 
+# 1.0.0-beta210
+
+ - new 'toggle annotation sidebar' for the viewer mode.
+ 
+ -    
+
 # 1.0.0-beta200
 
  - multiple color highlights

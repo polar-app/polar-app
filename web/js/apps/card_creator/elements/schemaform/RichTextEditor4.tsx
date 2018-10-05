@@ -49,7 +49,7 @@ export class RichTextEditor4 extends React.Component<IProps, IState>  {
         // FIXME: summernote has isEmpty and some other methods I need to use
         // here.
 
-        console.log('onChange: newValue: ', newValue);
+        // console.log('onChange: newValue: ', newValue);
 
         log.debug('onChange', newValue);
 
@@ -102,7 +102,7 @@ export class RichTextEditor4 extends React.Component<IProps, IState>  {
             reader.readAsDataURL(images[i]);
         }
 
-    };
+    }
 
     render() {
 

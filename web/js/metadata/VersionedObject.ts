@@ -2,6 +2,7 @@ import {Author} from './Author';
 import {SerializedObject} from './SerializedObject';
 import {Preconditions} from '../Preconditions';
 import {ISODateTimeString} from './ISODateTimeStrings';
+import {Ref} from './Refs';
 
 export abstract class VersionedObject extends SerializedObject {
 
@@ -37,6 +38,8 @@ export abstract class VersionedObject extends SerializedObject {
      * The author who created this object.
      */
     public author?: Author;
+
+    public ref?: Ref;
 
     protected constructor(template: VersionedObject) {
 

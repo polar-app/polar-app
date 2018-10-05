@@ -2,8 +2,8 @@ import * as React from 'react';
 import {AnnotationTypes} from '../../metadata/AnnotationTypes';
 import {DocAnnotation} from '../DocAnnotation';
 import {Optional} from '../../util/ts/Optional';
-import {AnnotationSidebars} from '../AnnotationSidebars';
 import {AnnotationControlBar} from '../AnnotationControlBar';
+import {PageMeta} from '../../metadata/PageMeta';
 
 /**
  * A generic wrapper that determines which sub-component to render.

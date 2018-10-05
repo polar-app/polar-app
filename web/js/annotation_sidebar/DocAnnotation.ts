@@ -3,6 +3,8 @@ import {Screenshot} from '../metadata/Screenshot';
 import {Point} from '../Point';
 import {HighlightColor} from '../metadata/BaseHighlight';
 import {ISODateTimeString} from '../metadata/ISODateTimeStrings';
+import {DocMeta} from '../metadata/DocMeta';
+import {PageMeta} from '../metadata/PageMeta';
 
 export interface DocAnnotation {
     id: string;
@@ -19,6 +21,7 @@ export interface DocAnnotation {
      */
     color?: HighlightColor;
 
+    pageMeta: PageMeta;
 }
 
 /**

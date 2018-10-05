@@ -8,8 +8,12 @@ const log = Logger.create();
 
 export class AnnotationCommentBox extends React.Component<IProps, IState> {
 
+    private html: string = "";
+
     constructor(props: IProps, context: any) {
         super(props, context);
+
+        this.onClick = this.onClick.bind(this);
 
         this.state = {
 
@@ -18,6 +22,7 @@ export class AnnotationCommentBox extends React.Component<IProps, IState> {
     }
 
     public render() {
+
         const { annotation } = this.props;
 
         const id = 'rich-text-editor-' + annotation.id;
@@ -27,12 +32,12 @@ export class AnnotationCommentBox extends React.Component<IProps, IState> {
             <div id="annotation-comment-box" className="">
 
                 <div className="border rounded p-1 annotation-comment-wrapper">
-                    <RichTextEditor4 id={id} autofocus={true}/>
+                    <RichTextEditor4 id={id} autofocus={true} onChange={(html) => this.onChange(html)}/>
                 </div>
 
                 <div className="text-right">
                     {/*onClick={this.handleComment}*/}
-                    <Button color="primary" className="mt-2">
+                    <Button color="primary" className="mt-2" onClick={() => this.onClick()}>
                         Comment
                     </Button>
                 </div>
@@ -40,12 +45,26 @@ export class AnnotationCommentBox extends React.Component<IProps, IState> {
             </div>
 
         );
+
+    }
+
+    private onChange(html: string): void {
+        this.html = html;
+    }
+
+    private onClick(): void {
+
+        if (this.props.onComment) {
+            this.props.onComment(this.html);
+        }
+
     }
 
 }
 
 export interface IProps {
     annotation: DocAnnotation;
+    onComment?: (html: string) => void;
 }
 
 export interface IState {

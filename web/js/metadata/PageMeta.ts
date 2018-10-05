@@ -81,41 +81,41 @@ export class PageMeta extends SerializedObject {
 
     }
 
-    setup() {
+    public setup() {
 
         super.setup();
 
         if (!this.pagemarks) {
             // this could happen when serializing from old file formats
-            (<any>this).pagemarks = {};
+            (<any> this).pagemarks = {};
         }
 
         if (!this.textHighlights) {
             // this could happen when serializing from old file formats
-            (<any>this).textHighlights = {};
+            (<any> this).textHighlights = {};
         }
 
         if (!this.areaHighlights) {
             // this could happen when serializing from old file formats
-            (<any>this).areaHighlights = {};
+            (<any> this).areaHighlights = {};
         }
 
         if (!this.screenshots) {
             // this could happen when serializing from old file formats
-            (<any>this).screenshots = {};
+            (<any> this).screenshots = {};
         }
 
         if (!this.thumbnails) {
             // this could happen when serializing from old file formats
-            (<any>this).thumbnails = {};
+            (<any> this).thumbnails = {};
         }
 
     }
 
-    validate() {
+    public validate() {
 
         super.validate();
-        //Preconditions.assertInstanceOf(this.pageInfo, PageInfo, "pageInfo");
+        // Preconditions.assertInstanceOf(this.pageInfo, PageInfo, "pageInfo");
 
     }
 

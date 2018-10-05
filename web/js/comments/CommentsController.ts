@@ -70,13 +70,13 @@ export class CommentsController {
 
     private onCommentCreated(commentCreatedEvent: CommentCreatedEvent): void {
 
-        // FIXME: we have to assign a link to the comment so that we know to what it is attached.
-        const comment = Comments.createTextComment(commentCreatedEvent.text);
-
-        const docMeta = this.model.docMeta;
-        const pageMeta = docMeta.getPageMeta(commentCreatedEvent.pageNum);
-
-        pageMeta.comments[comment.id] = comment;
+        // // FIXME: we have to assign a link to the comment so that we know to what it is attached.
+        // const comment = Comments.createTextComment(commentCreatedEvent.text);
+        //
+        // const docMeta = this.model.docMeta;
+        // const pageMeta = docMeta.getPageMeta(commentCreatedEvent.pageNum);
+        //
+        // pageMeta.comments[comment.id] = comment;
 
     }
 

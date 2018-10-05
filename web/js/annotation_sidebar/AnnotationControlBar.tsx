@@ -4,6 +4,9 @@ import {AnnotationSidebars} from './AnnotationSidebars';
 import Collapse from 'reactstrap/lib/Collapse';
 import {AnnotationCommentBox} from './AnnotationCommentBox';
 import Moment from 'react-moment';
+import {Comments} from '../metadata/Comments';
+import {PageMeta} from '../metadata/PageMeta';
+import {Refs} from '../metadata/Refs';
 
 /**
  */
@@ -11,6 +14,8 @@ export class AnnotationControlBar extends React.Component<IProps, IState> {
 
     constructor(props: IProps, context: any) {
         super(props, context);
+
+        this.onComment.bind(this);
 
         this.state = {
             activeInputComponent: 'none'
@@ -52,7 +57,7 @@ export class AnnotationControlBar extends React.Component<IProps, IState> {
 
                 <Collapse isOpen={this.state.activeInputComponent === 'comment'}>
 
-                    <AnnotationCommentBox annotation={annotation}/>
+                    <AnnotationCommentBox annotation={annotation} onComment={(html) => this.onComment(html)}/>
 
                 </Collapse>
 
@@ -65,6 +70,18 @@ export class AnnotationControlBar extends React.Component<IProps, IState> {
         this.setState({
             activeInputComponent: this.state.activeInputComponent === activeInputComponent ? 'none' : activeInputComponent
         });
+    }
+
+    private onComment(html: string) {
+
+        const {annotation} = this.props;
+
+        const ref = Refs.createFromAnnotationType(annotation.id,
+                                                  annotation.annotationType);
+
+        const comment = Comments.createHTMLComment(html, ref);
+        annotation.pageMeta.comments[comment.id] = comment;
+
     }
 
 }
