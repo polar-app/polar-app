@@ -95,7 +95,6 @@
     "@types/twitter-text": "^2.0.0",
     "@types/uuid": "^3.4.4",
     "@types/ws": "^6.0.1",
-    "@yaireo/tagify": "^2.1.9",
     "adm-zip": "^0.4.11",
     "babel-preset-es2017": "^6.24.1",
     "base58check": "^2.0.0",
