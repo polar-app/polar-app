@@ -9,3 +9,5 @@ techcrunch
 
 
 https://www.reddit.com/r/productivity/
+
+https://www.publicbetas.com/?ref=producthunt

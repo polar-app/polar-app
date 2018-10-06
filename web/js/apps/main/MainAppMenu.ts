@@ -121,7 +121,7 @@ export class MainAppMenu {
                         label: 'Check for updates',
                         // only show on Windows and MacOS as all other platforms have
                         // their own dist system (for now).
-                        visible: Platforms.get() === Platform.MACOS || Platform.WINDOWS,
+                        visible: [Platform.MACOS, Platform.WINDOWS].includes(Platforms.get()),
                         click: ManualUpdates.checkForUpdates
                     },
                     { label: 'Discord',

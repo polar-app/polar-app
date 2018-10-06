@@ -12,7 +12,7 @@ export class Platforms {
      *
      * var isWin = process.platform === "win32";
      */
-    public static get(): Platform | undefined {
+    public static get(): Platform {
 
         switch (process.platform.toLowerCase()) {
 
@@ -27,7 +27,7 @@ export class Platforms {
 
         }
 
-        return undefined;
+        return Platform.UNKNOWN;
 
     }
 
@@ -36,5 +36,6 @@ export class Platforms {
 export enum Platform {
     MACOS,
     WINDOWS,
-    LINUX
+    LINUX,
+    UNKNOWN,
 }
