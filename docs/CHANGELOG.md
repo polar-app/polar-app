@@ -6,8 +6,6 @@
  - manual updates might be set
  
  - more GA changes so I can track and improve polar usage
- 
- -     
 
 # 1.0.0-beta200
 

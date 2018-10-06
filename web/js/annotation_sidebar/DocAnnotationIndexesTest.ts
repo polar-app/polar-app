@@ -28,7 +28,10 @@ describe('DocAnnotationIndexes', function() {
                 "position": {
                     "x": 0,
                     "y": 0
-                }
+                },
+                "created": "2009-06-15T13:45:30",
+                "pageMeta": null,
+                "comments": []
             },
             {
                 "id": "0002",
@@ -37,7 +40,10 @@ describe('DocAnnotationIndexes', function() {
                 "position": {
                     "x": 0,
                     "y": 0
-                }
+                },
+                "created": "2009-06-15T13:45:30",
+                "pageMeta": null,
+                "comments": []
             },
             {
                 "id": "0003",
@@ -46,7 +52,10 @@ describe('DocAnnotationIndexes', function() {
                 "position": {
                     "x": 0,
                     "y": 0
-                }
+                },
+                "created": "2009-06-15T13:45:30",
+                "pageMeta": null,
+                "comments": []
             }
         ];
 
@@ -75,7 +84,10 @@ describe('DocAnnotationIndexes', function() {
                 "position": {
                     "x": 25,
                     "y": 50
-                }
+                },
+                "created": "2009-06-15T13:45:30",
+                "pageMeta": null,
+                "comments": []
             },
             {
                 "id": "0002",
@@ -84,7 +96,10 @@ describe('DocAnnotationIndexes', function() {
                 "position": {
                     "x": 100,
                     "y": 0
-                }
+                },
+                "created": "2009-06-15T13:45:30",
+                "pageMeta": null,
+                "comments": []
             },
             {
                 "id": "0001",
@@ -93,7 +108,10 @@ describe('DocAnnotationIndexes', function() {
                 "position": {
                     "x": 0,
                     "y": 100
-                }
+                },
+                "created": "2009-06-15T13:45:30",
+                "pageMeta": null,
+                "comments": []
             }
         ];
 
