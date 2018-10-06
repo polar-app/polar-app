@@ -5,17 +5,21 @@ import {Point} from '../Point';
 import {HighlightColor} from '../metadata/BaseHighlight';
 import {ISODateTimeString} from '../metadata/ISODateTimeStrings';
 import {PageMeta} from '../metadata/PageMeta';
+import {HTMLString} from '../util/HTMLString';
 
 export interface DocAnnotation {
+
     id: string;
     annotationType: AnnotationType;
-    html?: string;
+    html?: HTMLString;
+    fields?: {[name: string]: HTMLString};
     screenshot?: Screenshot;
     pageNum: number;
     position: Point;
     created: ISODateTimeString;
 
     comments: Comment[];
+    children: DocAnnotation[];
 
     /**
      * The color for highlights.  When undefined there is no color (which would
@@ -24,6 +28,7 @@ export interface DocAnnotation {
     color?: HighlightColor;
 
     pageMeta: PageMeta;
+
 }
 
 /**

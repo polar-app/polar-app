@@ -1,6 +1,7 @@
 import {DocMeta} from '../metadata/DocMeta';
 import {PageMeta} from '../metadata/PageMeta';
 import {isPresent} from '../Preconditions';
+import {Comment} from '../metadata/Comment';
 import {AnnotationType} from '../metadata/AnnotationType';
 import {BaseHighlight} from '../metadata/BaseHighlight';
 import {Screenshot} from '../metadata/Screenshot';
@@ -35,6 +36,26 @@ export class DocAnnotations {
 
     }
 
+    public static createFromComment(comment: Comment, pageMeta: PageMeta): DocAnnotation {
+
+        return {
+            id: comment.id,
+            annotationType: AnnotationType.COMMENT,
+            html: comment.content.HTML!,
+            pageNum: pageMeta.pageInfo.num,
+            // irrelevant on comments
+            position: {
+                x: 0,
+                y: 0
+            },
+            created: comment.created,
+            pageMeta,
+            children: [],
+            comments: []
+        };
+
+    }
+
     public static createFromAreaHighlight(areaHighlight: AreaHighlight, pageMeta: PageMeta): DocAnnotation {
 
         const screenshot = this.getScreenshot(pageMeta, areaHighlight);
@@ -51,6 +72,7 @@ export class DocAnnotations {
             },
             created: areaHighlight.created,
             pageMeta,
+            children: [],
             comments: []
         };
 
@@ -98,6 +120,7 @@ export class DocAnnotations {
             color: textHighlight.color,
             created: textHighlight.created,
             pageMeta,
+            children: [],
             comments: []
         };
 

@@ -10,19 +10,19 @@ TestingTime.freeze();
 
 describe('Flashcards', function() {
 
-    let archetype = "9d146db1-7c31-4bcf-866b-7b485c4e50ea";
+    const archetype = "9d146db1-7c31-4bcf-866b-7b485c4e50ea";
 
     describe('create', function() {
 
-        it("basic", function () {
+        it("basic", function() {
 
-            let text = Texts.create("This is the text", TextType.MARKDOWN);
+            const text = Texts.create("This is the text", TextType.MARKDOWN);
 
-            let fields = { text };
+            const fields = { text };
 
-            let flashcard = Flashcards.create(FlashcardType.CLOZURE, fields, archetype);
+            const flashcard = Flashcards.create(FlashcardType.CLOZURE, fields, archetype, 'page:1');
 
-            let expected = {
+            const expected = {
                 "id": "1uWrt4yLYp",
                 "guid": "1uWrt4yLYp",
                 "created": "2012-03-02T11:38:49.321Z",
@@ -33,7 +33,8 @@ describe('Flashcards', function() {
                         "MARKDOWN": "This is the text"
                     }
                 },
-                "archetype": "9d146db1-7c31-4bcf-866b-7b485c4e50ea"
+                "archetype": "9d146db1-7c31-4bcf-866b-7b485c4e50ea",
+                "ref": "page:1"
             };
 
             assertJSON(flashcard, expected);
@@ -44,15 +45,15 @@ describe('Flashcards', function() {
 
     describe('JSON', function() {
 
-        it("serialize", function () {
+        it("serialize", function() {
 
-            let text = Texts.create("This is the text", TextType.MARKDOWN);
+            const text = Texts.create("This is the text", TextType.MARKDOWN);
 
-            let fields = { text };
+            const fields = { text };
 
-            let flashcard = Flashcards.create(FlashcardType.CLOZURE, fields, archetype);
+            const flashcard = Flashcards.create(FlashcardType.CLOZURE, fields, archetype, 'page:1');
 
-            let expected = {
+            const expected = {
                 "id": "1uWrt4yLYp",
                 "guid": "1uWrt4yLYp",
                 "created": "2012-03-02T11:38:49.321Z",
@@ -63,14 +64,15 @@ describe('Flashcards', function() {
                         "MARKDOWN": "This is the text"
                     }
                 },
-                "archetype": "9d146db1-7c31-4bcf-866b-7b485c4e50ea"
+                "archetype": "9d146db1-7c31-4bcf-866b-7b485c4e50ea",
+                "ref": "page:1"
             };
 
             assertJSON(flashcard, expected);
 
-            let parsed = JSON.parse(JSON.stringify(flashcard));
+            const parsed = JSON.parse(JSON.stringify(flashcard));
 
-            new Flashcard(<Flashcard>parsed);
+            new Flashcard(<Flashcard> parsed);
 
         });
 
@@ -78,11 +80,11 @@ describe('Flashcards', function() {
 
     describe('createFromSchemaFormData', function() {
 
-        it("basic", function () {
+        it("basic", function() {
 
-            let flashcard = Flashcards.createFromSchemaFormData(FORM_DATA, archetype);
+            const flashcard = Flashcards.createFromSchemaFormData(FORM_DATA, archetype, 'page:1');
 
-            let expected = {
+            const expected = {
                     "id": "1p2utfePaW",
                     "guid": "1p2utfePaW",
                     "created": "2012-03-02T11:38:49.321Z",
@@ -96,7 +98,8 @@ describe('Flashcards', function() {
                             "HTML": "This is the front"
                         }
                     },
-                    "archetype": "9d146db1-7c31-4bcf-866b-7b485c4e50ea"
+                    "archetype": "9d146db1-7c31-4bcf-866b-7b485c4e50ea",
+                    "ref": "page:1"
                 }
             ;
 
@@ -189,4 +192,4 @@ const CARD_CREATOR_JSON = {
         "back": {},
         "front": {}
     }
-}
+};
