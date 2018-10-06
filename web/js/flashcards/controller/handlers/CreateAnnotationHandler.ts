@@ -36,7 +36,7 @@ export class CreateAnnotationHandler extends IPCHandler<AnnotationContainer<Anno
 
         if(descriptor.type === AnnotationType.FLASHCARD) {
 
-            let flashcard = new Flashcard(<Flashcard>annotationContainer.value);
+            let flashcard = new Flashcard(<Flashcard> annotationContainer.value);
 
             if(descriptor.docFingerprint === this.model.docMeta.docInfo.fingerprint) {
 

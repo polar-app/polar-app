@@ -13,6 +13,9 @@ import {Completion} from '../../../util/Promises';
 
 const log = Logger.create();
 
+/**
+ * @Deprecated
+ */
 export class PostMessageFormHandler extends FormHandler {
 
     private readonly annotationDescriptor: AnnotationDescriptor;
@@ -43,17 +46,19 @@ export class PostMessageFormHandler extends FormHandler {
 
         log.info("onSubmit: ", schemaFormData);
 
-        let archetype = "9d146db1-7c31-4bcf-866b-7b485c4e50ea";
+        const archetype = "9d146db1-7c31-4bcf-866b-7b485c4e50ea";
 
-        let flashcard = SchemaFormFlashcardConverter.convert(schemaFormData, archetype);
+        const ref = 'none';
 
-        let annotationDescriptor
+        const flashcard = SchemaFormFlashcardConverter.convert(schemaFormData, archetype, ref);
+
+        const annotationDescriptor
             = AnnotationDescriptor.newInstance(AnnotationType.FLASHCARD,
                                                flashcard.id,
                                                this.annotationDescriptor.docFingerprint,
                                                this.annotationDescriptor.pageNum);
 
-        let annotationContainer = AnnotationContainer.newInstance(annotationDescriptor, flashcard);
+        const annotationContainer = AnnotationContainer.newInstance(annotationDescriptor, flashcard);
 
         (async () => {
 

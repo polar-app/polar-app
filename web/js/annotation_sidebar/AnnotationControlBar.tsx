@@ -7,6 +7,8 @@ import Moment from 'react-moment';
 import {Comments} from '../metadata/Comments';
 import {Refs} from '../metadata/Refs';
 import {AnnotationFlashcardBox} from './AnnotationFlashcardBox';
+import {HTMLString} from '../util/HTMLString';
+import {Flashcards} from '../metadata/Flashcards';
 
 /**
  */
@@ -70,7 +72,7 @@ export class AnnotationControlBar extends React.Component<IProps, IState> {
                 <Collapse isOpen={this.state.activeInputComponent === 'flashcard'}>
 
                     <AnnotationFlashcardBox annotation={annotation}
-                                            onFlashcardCreated={(html) => this.onFlashcardCreated(html)}/>
+                                            onFlashcardCreated={(front, back) => this.onFlashcardCreated(front, back)}/>
 
                 </Collapse>
 
@@ -115,26 +117,27 @@ export class AnnotationControlBar extends React.Component<IProps, IState> {
 
     }
 
-    private onFlashcardCreated(html: string) {
-
-        // sanitize the HTML first to prevent breaking the DOM and other
-        // problematic issues with HTML.  Right now we don't handle any type of
-        // XSS though
+    private onFlashcardCreated(front: HTMLString, back: HTMLString) {
 
         // TODO: right now it seems to strip important CSS styles and data URLs
         // which I need to fix in the HTML sanitizer.
         // html = HTMLSanitizer.sanitize(html);
 
-        // const {annotation} = this.props;
-        //
-        // const ref = Refs.createFromAnnotationType(annotation.id,
-        //                                           annotation.annotationType);
-        //
-        // const comment = Comments.createHTMLComment(html, ref);
-        // annotation.pageMeta.comments[comment.id] = comment;
+        const {annotation} = this.props;
+
+        const ref = Refs.createFromAnnotationType(annotation.id,
+                                                  annotation.annotationType);
+
+        let flashcard = Flashcards.createFrontBack(front, back, ref);
+
+        // an idiosyncracie of the flashcard system is that it mutates the object
+        // so if it's read only it won't work.
+        flashcard = Object.assign({}, flashcard);
+
+        annotation.pageMeta.flashcards[flashcard.id] = flashcard;
 
         this.setState({
-                          activeInputComponent: 'none'
+            activeInputComponent: 'none'
         });
 
     }

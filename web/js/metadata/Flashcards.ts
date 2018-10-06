@@ -8,10 +8,12 @@ import {Text} from './Text';
 import {TextType} from './TextType';
 import {DocMeta} from './DocMeta';
 import {ISODateTimeStrings} from './ISODateTimeStrings';
+import {HTMLString} from '../util/HTMLString';
+import {Ref} from './Refs';
 
 export class Flashcards {
 
-    public static create(type: FlashcardType, fields: {[key: string]: Text }, archetype: string) {
+    public static create(type: FlashcardType, fields: {[key: string]: Text}, archetype: string, ref: Ref) {
 
         Preconditions.assertNotNull(fields, "fields");
 
@@ -23,14 +25,30 @@ export class Flashcards {
         // and never conflict.  This way we support distributed behavior.
         const id = Hashcodes.createID({fields});
 
-        return Flashcard.newInstance(id, id, created, lastUpdated, type, fields, archetype);
+        return Flashcard.newInstance(id, id, created, lastUpdated, type, fields, archetype, ref);
 
     }
 
     /**
      * Create a flashcard from the raw, completed, schema form data.
      */
-    public static createFromSchemaFormData(formData: {[key: string]: string }, archetype: string) {
+    public static createFrontBack(front: HTMLString, back: HTMLString, ref: Ref) {
+
+        const archetype = "9d146db1-7c31-4bcf-866b-7b485c4e50ea";
+
+        const fields: {[key: string]: Text } = {};
+
+        fields.front = Texts.create(front, TextType.HTML);
+        fields.back = Texts.create(back, TextType.HTML);
+
+        return Flashcards.create(FlashcardType.BASIC_FRONT_BACK, fields, archetype, ref);
+
+    }
+
+    /**
+     * Create a flashcard from the raw, completed, schema form data.
+     */
+    public static createFromSchemaFormData(formData: {[key: string]: string }, archetype: string, ref: Ref) {
 
         // TODO: the markdown needs to be converted to HTML as well.  The text
         // we get from the markdown widget is markdown. Not HTML and I confirmed
@@ -43,7 +61,7 @@ export class Flashcards {
             fields[key] = Texts.create(value, TextType.HTML);
         });
 
-        return Flashcards.create(FlashcardType.BASIC_FRONT_BACK, fields, archetype);
+        return Flashcards.create(FlashcardType.BASIC_FRONT_BACK, fields, archetype, ref);
 
     }
 
@@ -71,7 +89,9 @@ export class MockFlashcards {
                 'Back': back,
             };
 
-            const flashcard = Flashcards.create(FlashcardType.CLOZURE, fields, archetype);
+            const ref = 'page:1';
+
+            const flashcard = Flashcards.create(FlashcardType.CLOZURE, fields, archetype, ref);
 
             pageMeta.flashcards[flashcard.id] = flashcard;
 

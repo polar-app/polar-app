@@ -3,6 +3,7 @@ import {VersionedObject} from './VersionedObject';
 import {Text} from './Text';
 import {Preconditions} from '../Preconditions';
 import {ISODateTimeString} from './ISODateTimeStrings';
+import {Ref} from './Refs';
 
 export class Flashcard extends VersionedObject {
 
@@ -57,10 +58,11 @@ export class Flashcard extends VersionedObject {
                               lastUpdated: ISODateTimeString,
                               type: FlashcardType,
                               fields: {[key: string]: Text},
-                              archetype: string): Readonly<Flashcard> {
+                              archetype: string,
+                              ref: Ref): Readonly<Flashcard> {
 
         const result = new Flashcard(<Flashcard> {
-            id, guid, created, lastUpdated, type, fields, archetype
+            id, guid, created, lastUpdated, type, fields, archetype, ref
         });
 
         return Object.freeze(result);
