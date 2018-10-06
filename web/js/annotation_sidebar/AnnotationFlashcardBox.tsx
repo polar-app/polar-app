@@ -3,12 +3,14 @@ import {Logger} from '../logger/Logger';
 import {DocAnnotation} from './DocAnnotation';
 import {RichTextEditor4} from '../apps/card_creator/elements/schemaform/RichTextEditor4';
 import Button from 'reactstrap/lib/Button';
+import {RichTextArea} from './RichTextArea';
 
 const log = Logger.create();
 
-export class AnnotationCommentBox extends React.Component<IProps, IState> {
+export class AnnotationFlashcardBox extends React.Component<IProps, IState> {
 
-    private html: string = "";
+    private front: htmlstring = "";
+    private back: htmlstring = "";
 
     constructor(props: IProps, context: any) {
         super(props, context);
@@ -25,25 +27,23 @@ export class AnnotationCommentBox extends React.Component<IProps, IState> {
 
         const { annotation } = this.props;
 
-        const id = 'rich-text-editor-' + annotation.id;
-
         return (
 
-            <div id="annotation-comment-box" className="">
+            <div id="annotation-flashcard-box" className="">
 
-                <div className="border rounded p-1 annotation-comment-wrapper">
-                    <RichTextEditor4 id={id}
-                                     value={this.html}
-                                     autofocus={true}
-                                     onChange={(html) => this.onChange(html)}/>
-                </div>
+                <RichTextArea label="front"
+                              id={`front-${annotation.id}`}
+                              autofocus={true}
+                              onChange={(html) => this.front = html}/>
+
+                <RichTextArea label="back"
+                              id={`back-${annotation.id}`}
+                              onChange={(html) => this.back = html}/>
 
                 <div className="text-right">
 
-                    {/*onClick={this.handleComment}*/}
-
                     <Button color="primary" className="mt-2" onClick={() => this.onClick()}>
-                        Comment
+                        Create
                     </Button>
 
                 </div>
@@ -54,14 +54,10 @@ export class AnnotationCommentBox extends React.Component<IProps, IState> {
 
     }
 
-    private onChange(html: string): void {
-        this.html = html;
-    }
-
     private onClick(): void {
 
-        if (this.props.onCommentCreated) {
-            this.props.onCommentCreated(this.html);
+        if (this.props.onFlashcardCreated) {
+            this.props.onFlashcardCreated(this.front, this.back);
         }
 
         this.setState({
@@ -74,10 +70,11 @@ export class AnnotationCommentBox extends React.Component<IProps, IState> {
 
 export interface IProps {
     annotation: DocAnnotation;
-    onCommentCreated?: (html: string) => void;
+    onFlashcardCreated?: (front: htmlstring, back: htmlstring) => void;
 }
 
 export interface IState {
     iter: number;
 }
 
+export type htmlstring = string;

@@ -101,15 +101,22 @@
     display: none;
 }
 
+.rich-text-area-input,
 .annotation-comment-wrapper {
     min-height: 125px;
     border-width: 3px !important;
     box-shadow: 0 0 5px transparent;
 }
 
+.rich-text-area-input:focus-within,
 .annotation-comment-wrapper:focus-within {
     box-shadow: 0 0 5px rgba(81, 203, 238, 1);
     border: 3px solid rgba(81, 203, 238, 1) !important;
+}
+
+.rich-text-area label {
+    font-weight: bold;
+    font-size: 12px;
 }
 
 .note-air-popover * {

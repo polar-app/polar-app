@@ -5,10 +5,8 @@ import Collapse from 'reactstrap/lib/Collapse';
 import {AnnotationCommentBox} from './AnnotationCommentBox';
 import Moment from 'react-moment';
 import {Comments} from '../metadata/Comments';
-import {PageMeta} from '../metadata/PageMeta';
 import {Refs} from '../metadata/Refs';
-import {HTMLSanitizer} from '../highlights/text/selection/HTMLSanitizer';
-import {Annotation} from '../metadata/Annotation';
+import {AnnotationFlashcardBox} from './AnnotationFlashcardBox';
 
 /**
  */
@@ -17,7 +15,7 @@ export class AnnotationControlBar extends React.Component<IProps, IState> {
     constructor(props: IProps, context: any) {
         super(props, context);
 
-        this.onComment.bind(this);
+        this.onCommentCreated.bind(this);
 
         this.state = {
             activeInputComponent: 'none'
@@ -44,6 +42,11 @@ export class AnnotationControlBar extends React.Component<IProps, IState> {
                     <div className="flexbar-right">
 
                         <a className="text-muted ml-2"
+                           href="#" onClick={() => this.toggleActiveInputComponent('flashcard')}>
+                            flashcard
+                        </a>
+
+                        <a className="text-muted ml-2"
                            href="#" onClick={() => this.toggleActiveInputComponent('comment')}>
                             comment
                         </a>
@@ -60,7 +63,14 @@ export class AnnotationControlBar extends React.Component<IProps, IState> {
                 <Collapse isOpen={this.state.activeInputComponent === 'comment'}>
 
                     <AnnotationCommentBox annotation={annotation}
-                                          onComment={(html) => this.onComment(html)}/>
+                                          onCommentCreated={(html) => this.onCommentCreated(html)}/>
+
+                </Collapse>
+
+                <Collapse isOpen={this.state.activeInputComponent === 'flashcard'}>
+
+                    <AnnotationFlashcardBox annotation={annotation}
+                                            onFlashcardCreated={(html) => this.onFlashcardCreated(html)}/>
 
                 </Collapse>
 
@@ -81,7 +91,7 @@ export class AnnotationControlBar extends React.Component<IProps, IState> {
         });
     }
 
-    private onComment(html: string) {
+    private onCommentCreated(html: string) {
 
         // sanitize the HTML first to prevent breaking the DOM and other
         // problematic issues with HTML.  Right now we don't handle any type of
@@ -105,6 +115,30 @@ export class AnnotationControlBar extends React.Component<IProps, IState> {
 
     }
 
+    private onFlashcardCreated(html: string) {
+
+        // sanitize the HTML first to prevent breaking the DOM and other
+        // problematic issues with HTML.  Right now we don't handle any type of
+        // XSS though
+
+        // TODO: right now it seems to strip important CSS styles and data URLs
+        // which I need to fix in the HTML sanitizer.
+        // html = HTMLSanitizer.sanitize(html);
+
+        // const {annotation} = this.props;
+        //
+        // const ref = Refs.createFromAnnotationType(annotation.id,
+        //                                           annotation.annotationType);
+        //
+        // const comment = Comments.createHTMLComment(html, ref);
+        // annotation.pageMeta.comments[comment.id] = comment;
+
+        this.setState({
+                          activeInputComponent: 'none'
+        });
+
+    }
+
 }
 interface IProps {
     annotation: DocAnnotation;
@@ -114,4 +148,4 @@ interface IState {
     activeInputComponent: ActiveInputComponent;
 }
 
-type ActiveInputComponent = 'none' | 'comment';
+type ActiveInputComponent = 'none' | 'comment' | 'flashcard';

@@ -36,7 +36,7 @@ export class TextHighlightAnnotationComponent extends React.Component<IProps, IS
                      data-annotation-color={annotation.color}
                      className={attrType}>
 
-                    <blockquote className="p-1 rounded">
+                    <blockquote className="p-1">
 
                         <span dangerouslySetInnerHTML={{__html: html}}>
 
