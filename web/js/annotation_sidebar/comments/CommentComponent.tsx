@@ -1,7 +1,6 @@
 import * as React from 'react';
 import {Comment} from '../../metadata/Comment';
 import Moment from 'react-moment';
-import {AnnotationSidebars} from '../AnnotationSidebars';
 
 /**
  * A generic wrapper that determines which sub-component to render.

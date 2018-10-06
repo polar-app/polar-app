@@ -2,7 +2,7 @@ import sanitizeHtml from 'sanitize-html';
 
 export class HTMLSanitizer {
 
-    static sanitize(html: string) {
+    public static sanitize(html: string) {
 
         return sanitizeHtml(html, {
 

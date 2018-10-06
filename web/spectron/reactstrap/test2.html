@@ -1,0 +1,33 @@
+<!DOCTYPE HTML><html><head><style>
+    #demo {
+        background-color: rgba(255,255,0,255);
+        width: 200px;
+        height: 200px;
+    }
+    #toggle:checked ~ #demo, /* this line is for demo purposes only */
+    .flash-background-color {
+        animation: flash-background-color-animation 1s linear 1;
+    }
+
+    @keyframes flash-background-color-animation {
+        0% { background-color: rgba(255,255,0,0) }
+        100% { background-color: rgba(255,255,0,255) }
+    }
+
+</style></head><body>
+
+<input id="toggle" type="checkbox"><label for="toggle">checkit</label>
+
+<script>
+
+    function test() {
+        console.log("testing");
+        document.getElementById('demo').classList.toggle('flash-background-color');
+    }
+
+</script>
+
+<button onclick="test();">test</button>
+
+<div id="demo">Test</div>
+</body></html>

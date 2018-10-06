@@ -16,7 +16,7 @@ export class AnnotationCommentBox extends React.Component<IProps, IState> {
         this.onClick = this.onClick.bind(this);
 
         this.state = {
-
+            iter: 0
         };
 
     }
@@ -32,14 +32,20 @@ export class AnnotationCommentBox extends React.Component<IProps, IState> {
             <div id="annotation-comment-box" className="">
 
                 <div className="border rounded p-1 annotation-comment-wrapper">
-                    <RichTextEditor4 id={id} autofocus={true} onChange={(html) => this.onChange(html)}/>
+                    <RichTextEditor4 id={id}
+                                     value={this.html}
+                                     autofocus={true}
+                                     onChange={(html) => this.onChange(html)}/>
                 </div>
 
                 <div className="text-right">
+
                     {/*onClick={this.handleComment}*/}
+
                     <Button color="primary" className="mt-2" onClick={() => this.onClick()}>
                         Comment
                     </Button>
+
                 </div>
 
             </div>
@@ -58,6 +64,10 @@ export class AnnotationCommentBox extends React.Component<IProps, IState> {
             this.props.onComment(this.html);
         }
 
+        this.setState({
+            iter: this.state.iter + 1
+        });
+
     }
 
 }
@@ -68,5 +78,6 @@ export interface IProps {
 }
 
 export interface IState {
+    iter: number;
 }
 

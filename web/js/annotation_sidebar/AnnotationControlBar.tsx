@@ -7,6 +7,8 @@ import Moment from 'react-moment';
 import {Comments} from '../metadata/Comments';
 import {PageMeta} from '../metadata/PageMeta';
 import {Refs} from '../metadata/Refs';
+import {HTMLSanitizer} from '../highlights/text/selection/HTMLSanitizer';
+import {Annotation} from '../metadata/Annotation';
 
 /**
  */
@@ -47,7 +49,7 @@ export class AnnotationControlBar extends React.Component<IProps, IState> {
                         </a>
 
                         <a className="text-muted ml-2"
-                           href="#" onClick={() => AnnotationSidebars.scrollToAnnotation(annotation.id, annotation.pageNum)}>
+                           href="#" onClick={() => this.onContext(annotation)}>
                             context
                         </a>
 
@@ -67,6 +69,12 @@ export class AnnotationControlBar extends React.Component<IProps, IState> {
         );
     }
 
+    private onContext(annotation: DocAnnotation) {
+
+        AnnotationSidebars.scrollToAnnotation(annotation.id, annotation.pageNum);
+
+    }
+
     private toggleActiveInputComponent(activeInputComponent: ActiveInputComponent) {
         this.setState({
             activeInputComponent: this.state.activeInputComponent === activeInputComponent ? 'none' : activeInputComponent
@@ -74,6 +82,14 @@ export class AnnotationControlBar extends React.Component<IProps, IState> {
     }
 
     private onComment(html: string) {
+
+        // sanitize the HTML first to prevent breaking the DOM and other
+        // problematic issues with HTML.  Right now we don't handle any type of
+        // XSS though
+
+        // TODO: right now it seems to strip important CSS styles and data URLs
+        // which I need to fix in the HTML sanitizer.
+        // html = HTMLSanitizer.sanitize(html);
 
         const {annotation} = this.props;
 

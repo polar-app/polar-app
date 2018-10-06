@@ -93,11 +93,6 @@
     user-select: none;
 }
 
-.annotation-comment-wrapper {
-    min-height: 200px;
-    border-width: 3px !important;
-}
-
 .annotation-sidebar * button {
     font-size: 12px;
 }
@@ -107,7 +102,7 @@
 }
 
 .annotation-comment-wrapper {
-    min-height: 200px;
+    min-height: 125px;
     border-width: 3px !important;
     box-shadow: 0 0 5px transparent;
 }
@@ -141,4 +136,13 @@
 
 .annotation-sidebar .comments {
     padding-left: 15px;
+}
+
+.flash-background-color {
+    animation: flash-background-color-animation 1s linear 1;
+}
+
+@keyframes flash-background-color-animation {
+    0% { background-color: rgba(255,255,0,0) }
+    100% { background-color: rgba(255,255,0,255) }
 }

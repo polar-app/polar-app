@@ -42,6 +42,17 @@ export class AnnotationSidebars {
 
         this.scrollToElement(annotationElement);
 
+        // TODO: disable this for now because with the pagemark the flash does
+        // not actually work. Migrate to using some type of pointer showing the
+        // place the annotation is marked.
+        //
+        // const flashClass = 'flash-background-color';
+        //
+        // document.querySelectorAll(selector).forEach(current => {
+        //     current.classList.add(flashClass);
+        //     setTimeout(() => current.classList.remove(flashClass), 1000);
+        // });
+
     }
 
     private static scrollToElement(element: HTMLElement) {
