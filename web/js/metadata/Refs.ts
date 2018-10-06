@@ -12,6 +12,16 @@ export class Refs {
 
     }
 
+    public static parse(value: string): IRef {
+        const split = value.split(":");
+
+        return {
+            type: <RefType> split[0],
+            value: split[1]
+        };
+
+    }
+
     private static toRefType(type: AnnotationType) {
 
         switch (type) {
@@ -31,6 +41,13 @@ export class Refs {
 
     }
 
+
+
+}
+
+export interface IRef {
+    readonly type: RefType;
+    readonly value: string;
 }
 
 export type RefType = 'page' | 'comment' | 'pagemark' | 'note' | 'question' | 'flashcard' | 'text-highlight' | 'area-highlight';

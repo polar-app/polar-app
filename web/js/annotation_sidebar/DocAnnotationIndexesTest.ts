@@ -118,7 +118,8 @@ function createAnnotation(id: string,
             y
         },
         created: '2009-06-15T13:45:30',
-        pageMeta: null!
+        pageMeta: null!,
+        comments: []
     };
 
 }

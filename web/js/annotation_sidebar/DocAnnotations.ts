@@ -23,6 +23,14 @@ export class DocAnnotations {
             result.push(...this.getAreaHighlights(pageMeta));
         });
 
+        const index: {[id: string]: DocAnnotation} = {};
+
+        for (const docAnnotation of result) {
+            index[docAnnotation.id] = docAnnotation;
+        }
+
+        // now update the index of all our comments...
+
         return result;
 
     }
@@ -42,7 +50,8 @@ export class DocAnnotations {
                 y: this.firstRect(areaHighlight).map(current => current.top).getOrElse(0),
             },
             created: areaHighlight.created,
-            pageMeta
+            pageMeta,
+            comments: []
         };
 
     }
@@ -88,7 +97,8 @@ export class DocAnnotations {
             },
             color: textHighlight.color,
             created: textHighlight.created,
-            pageMeta
+            pageMeta,
+            comments: []
         };
 
     }
@@ -104,8 +114,6 @@ export class DocAnnotations {
         return result;
 
     }
-
-
 
     private static getAreaHighlights(pageMeta: PageMeta): DocAnnotation[] {
 

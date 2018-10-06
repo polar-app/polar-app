@@ -3,7 +3,7 @@ import {AnnotationTypes} from '../../metadata/AnnotationTypes';
 import {DocAnnotation} from '../DocAnnotation';
 import {Optional} from '../../util/ts/Optional';
 import {AnnotationControlBar} from '../AnnotationControlBar';
-import {PageMeta} from '../../metadata/PageMeta';
+import {CommentSectionComponent} from '../comments/CommentSectionComponent';
 
 /**
  * A generic wrapper that determines which sub-component to render.
@@ -45,6 +45,10 @@ export class TextHighlightAnnotationComponent extends React.Component<IProps, IS
                     </blockquote>
 
                     <AnnotationControlBar annotation={annotation}/>
+
+                    <div className="comments">
+                        <CommentSectionComponent comments={annotation.comments}/>
+                    </div>
 
                 </div>
 

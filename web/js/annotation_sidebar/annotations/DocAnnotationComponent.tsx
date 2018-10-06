@@ -5,7 +5,6 @@ import {Logger} from '../../logger/Logger';
 import {AnnotationType} from '../../metadata/AnnotationType';
 import {AreaHighlightAnnotationComponent} from './AreaHighlightAnnotationComponent';
 import {TextHighlightAnnotationComponent} from './TextHighlightAnnotationComponent';
-import {PageMeta} from '../../metadata/PageMeta';
 
 const log = Logger.create();
 

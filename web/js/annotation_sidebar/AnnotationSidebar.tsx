@@ -1,5 +1,6 @@
 import * as React from 'react';
 import {Logger} from '../logger/Logger';
+import {Comment} from '../metadata/Comment';
 import {DocMeta} from '../metadata/DocMeta';
 import {DocAnnotations} from './DocAnnotations';
 import {DocAnnotation} from './DocAnnotation';
@@ -10,6 +11,8 @@ import {MutationType} from '../proxies/MutationType';
 import {TextHighlightModel} from '../highlights/text/model/TextHighlightModel';
 import {isPresent} from '../Preconditions';
 import {DocAnnotationComponent} from './annotations/DocAnnotationComponent';
+import {CommentModel} from './CommentModel';
+import {Refs} from '../metadata/Refs';
 
 const log = Logger.create();
 
@@ -51,6 +54,35 @@ export class AnnotationSidebar extends React.Component<AnnotationSidebarProps, A
                                        annotationEvent.traceEvent.mutationType,
                                        docAnnotation);
         });
+
+        new CommentModel().registerListener(this.props.docMeta, annotationEvent => {
+
+            const comment: Comment = annotationEvent.value;
+
+            const ref = Refs.parse(comment.ref!);
+
+            const annotation = this.docAnnotationIndex.docAnnotationMap[ref.value];
+
+            if (annotationEvent.mutationType !== MutationType.DELETE) {
+
+                // add a comment to the stack
+                annotation.comments.push(comment);
+
+                // sort descending
+                annotation.comments.sort((c0, c1) => -c0.created.localeCompare(c1.created));
+
+            } else {
+
+                annotation.comments =
+                    annotation.comments.filter(current => current.id !== annotationEvent.id);
+
+            }
+
+            this.reload();
+
+        });
+
+        // FIXME: need an annotation event handler here...
 
         this.state = {
             annotations: this.docAnnotationIndex.sortedDocAnnotation
@@ -145,9 +177,7 @@ export class AnnotationSidebar extends React.Component<AnnotationSidebarProps, A
         const result: any = [];
 
         annotations.map(annotation => {
-
             result.push (<DocAnnotationComponent key={annotation.id} annotation={annotation}/>);
-
         });
 
         return result;

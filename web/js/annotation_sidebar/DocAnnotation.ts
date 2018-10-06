@@ -1,9 +1,9 @@
 import {AnnotationType} from '../metadata/AnnotationType';
+import {Comment} from '../metadata/Comment';
 import {Screenshot} from '../metadata/Screenshot';
 import {Point} from '../Point';
 import {HighlightColor} from '../metadata/BaseHighlight';
 import {ISODateTimeString} from '../metadata/ISODateTimeStrings';
-import {DocMeta} from '../metadata/DocMeta';
 import {PageMeta} from '../metadata/PageMeta';
 
 export interface DocAnnotation {
@@ -14,6 +14,8 @@ export interface DocAnnotation {
     pageNum: number;
     position: Point;
     created: ISODateTimeString;
+
+    comments: Comment[];
 
     /**
      * The color for highlights.  When undefined there is no color (which would

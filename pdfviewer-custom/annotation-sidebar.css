@@ -20,7 +20,7 @@
 }
 
 .annotation-sidebar .text-highlight p {
-    padding: 5px;
+    /*padding: 5px;*/
 }
 
 
@@ -87,6 +87,7 @@
     line-height: 1.6;
 }
 
+.comment-bar,
 .annotation-sidebar .annotation-buttons * {
     font-size: 12px;
     user-select: none;
@@ -132,4 +133,12 @@
 
 .flexbar-right {
     margin-left: auto;
+}
+
+.annotation-sidebar .comment img {
+    max-width: 100%;
+}
+
+.annotation-sidebar .comments {
+    padding-left: 15px;
 }
