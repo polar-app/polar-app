@@ -1,6 +1,7 @@
 import * as React from 'react';
 import {Comment} from '../../metadata/Comment';
 import Moment from 'react-moment';
+import {DocAnnotation} from '../DocAnnotation';
 
 /**
  * A generic wrapper that determines which sub-component to render.
@@ -27,7 +28,7 @@ export class CommentComponent extends React.Component<IProps, IState> {
 
                     <div className="pb-1 pt-1">
 
-                        <span dangerouslySetInnerHTML={{__html: comment.content.HTML!}}>
+                        <span dangerouslySetInnerHTML={{__html: comment.html!}}>
 
                         </span>
 
@@ -58,7 +59,7 @@ export class CommentComponent extends React.Component<IProps, IState> {
 
 }
 interface IProps {
-    comment: Comment;
+    comment: DocAnnotation;
 }
 
 interface IState {

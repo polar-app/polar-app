@@ -1,11 +1,11 @@
 import * as React from 'react';
 import {CommentComponent} from './CommentComponent';
-import {Comment} from '../../metadata/Comment';
+import {DocAnnotation} from '../DocAnnotation';
 
 /**
  * A generic wrapper that determines which sub-component to render.
  */
-export class CommentSectionComponent extends React.Component<IProps, IState> {
+export class ChildAnnotationSection extends React.Component<IProps, IState> {
 
     constructor(props: IProps, context: any) {
         super(props, context);
@@ -16,12 +16,12 @@ export class CommentSectionComponent extends React.Component<IProps, IState> {
 
     public render() {
 
-        const { comments } = this.props;
+        const { children } = this.props;
 
         const result: any = [];
 
-        comments.map(comment => {
-            result.push (<CommentComponent key={comment.id} comment={comment}/>);
+        children.map(child => {
+            result.push (<CommentComponent key={child.id} comment={child}/>);
         });
 
         return result;
@@ -30,7 +30,7 @@ export class CommentSectionComponent extends React.Component<IProps, IState> {
 
 }
 interface IProps {
-    comments: Comment[];
+    children: DocAnnotation[];
 }
 
 interface IState {

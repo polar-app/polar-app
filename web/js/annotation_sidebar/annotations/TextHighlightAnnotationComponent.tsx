@@ -3,7 +3,7 @@ import {AnnotationTypes} from '../../metadata/AnnotationTypes';
 import {DocAnnotation} from '../DocAnnotation';
 import {Optional} from '../../util/ts/Optional';
 import {AnnotationControlBar} from '../AnnotationControlBar';
-import {CommentSectionComponent} from '../comments/CommentSectionComponent';
+import {ChildAnnotationSection} from '../comments/ChildAnnotationSection';
 
 /**
  * A generic wrapper that determines which sub-component to render.
@@ -47,7 +47,7 @@ export class TextHighlightAnnotationComponent extends React.Component<IProps, IS
                     <AnnotationControlBar annotation={annotation}/>
 
                     <div className="comments">
-                        <CommentSectionComponent comments={annotation.comments}/>
+                        <ChildAnnotationSection children={annotation.children}/>
                     </div>
 
                 </div>

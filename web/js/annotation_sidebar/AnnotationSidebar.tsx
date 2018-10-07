@@ -67,14 +67,19 @@ export class AnnotationSidebar extends React.Component<AnnotationSidebarProps, A
 
                 // add a comment to the stack
                 annotation.comments.push(comment);
+                annotation.children.push(DocAnnotations.createFromComment(comment, annotationEvent.pageMeta));
 
                 // sort descending
                 annotation.comments.sort((c0, c1) => -c0.created.localeCompare(c1.created));
+                annotation.children.sort((c0, c1) => -c0.created.localeCompare(c1.created));
 
             } else {
 
                 annotation.comments =
                     annotation.comments.filter(current => current.id !== annotationEvent.id);
+
+                annotation.children =
+                    annotation.children.filter(current => current.id !== annotationEvent.id);
 
             }
 
