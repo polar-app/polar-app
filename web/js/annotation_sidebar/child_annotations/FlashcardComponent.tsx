@@ -1,5 +1,4 @@
 import * as React from 'react';
-import {Comment} from '../../metadata/Comment';
 import Moment from 'react-moment';
 import {DocAnnotation} from '../DocAnnotation';
 
@@ -22,9 +21,9 @@ export class FlashcardComponent extends React.Component<IProps, IState> {
 
         return (
 
-            <div className="m-1 mb-2">
+            <div className="card">
 
-                <div key={key} className="comment">
+                <div key={key} className="card-body p-1">
 
                     <div className="pb-1 pt-1">
 
@@ -44,7 +43,7 @@ export class FlashcardComponent extends React.Component<IProps, IState> {
 
                     </div>
 
-                    <div className="flexbar comment-bar border-top pt-1 pb-2">
+                    <div className="flexbar comment-bar border-top pt-1">
 
                         <div className="text-muted">
                             {/*TODO: make this into its own component... */}

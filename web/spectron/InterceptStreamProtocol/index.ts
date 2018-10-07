@@ -2,12 +2,13 @@ import {SpectronMain2} from '../../js/test/SpectronMain2';
 import {WebContentsPromises} from '../../js/electron/framework/WebContentsPromises';
 import {Protocols} from '../../js/backend/interceptor/Protocols';
 import {StreamInterceptors} from '../../js/backend/interceptor/StreamInterceptors';
+import {protocol} from 'electron';
 
 SpectronMain2.create().run(async state => {
 
     for (const scheme of ['http', 'https']) {
 
-        await Protocols.interceptStreamProtocol(scheme, (request, callback) => {
+        await Protocols.interceptStreamProtocol(protocol, scheme, (request, callback) => {
 
             StreamInterceptors.withSetTimeout(() => {
                 StreamInterceptors.handleWithNetRequest(request, callback);
