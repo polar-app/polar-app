@@ -92,11 +92,11 @@ export class StreamInterceptors {
 
             });
 
-        Object.keys(request.headers).forEach(header => {
+        for (const header of Object.keys(request.headers)) {
             log.debug("Setting request header: ", header);
             const headerValue = (<any> request.headers)[header];
             netRequest.setHeader(header, headerValue );
-        });
+        };
 
         if (request.uploadData) {
 

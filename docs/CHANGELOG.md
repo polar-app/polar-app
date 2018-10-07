@@ -1,4 +1,11 @@
 
+# 1.0.0-beta211
+
+- using persistent sessions now so GA metrics should be more accurate
+
+-  
+
+
 # 1.0.0-beta210
 
  - new 'toggle annotation sidebar' for the viewer mode.

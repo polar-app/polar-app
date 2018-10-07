@@ -1,4 +1,4 @@
-import {app} from 'electron';
+import {protocol, app, session} from 'electron';
 import {WebserverConfig} from '../../backend/webserver/WebserverConfig';
 import {FileRegistry} from '../../backend/webserver/FileRegistry';
 import {ProxyServerConfig} from '../../backend/proxyserver/ProxyServerConfig';
@@ -9,7 +9,6 @@ import {DialogWindowService} from '../../ui/dialog_window/DialogWindowService';
 import {DefaultFileLoader} from './loaders/DefaultFileLoader';
 import {MainAppBrowserWindowFactory} from './MainAppBrowserWindowFactory';
 import {Webserver} from '../../backend/webserver/Webserver';
-import {CacheInterceptorService} from '../../backend/interceptor/CacheInterceptorService';
 import {AnalyticsFileLoader} from './loaders/AnalyticsFileLoader';
 import {MainAppController} from './MainAppController';
 import {MainAppMenu} from './MainAppMenu';
@@ -20,11 +19,10 @@ import {ScreenshotService} from '../../screenshots/ScreenshotService';
 import {MainAppService} from './ipc/MainAppService';
 import {AppLauncher} from './AppLauncher';
 import {DocInfoBroadcasterService} from '../../datastore/advertiser/DocInfoBroadcasterService';
-import BrowserWindow = Electron.BrowserWindow;
 import {CachingStreamInterceptorService} from '../../backend/interceptor/CachingStreamInterceptorService';
-import {AppAnalytics} from "../../ga/AppAnalytics";
 import {GA} from "../../ga/GA";
 import {Version} from "../../util/Version";
+import BrowserWindow = Electron.BrowserWindow;
 
 declare var global: any;
 
@@ -87,8 +85,15 @@ export class MainApp {
         const webserver = new Webserver(webserverConfig, fileRegistry);
         webserver.start();
 
-        // const cacheInterceptorService = new CacheInterceptorService(cacheRegistry);
-        const cacheInterceptorService = new CachingStreamInterceptorService(cacheRegistry);
+        // create a session and configure it for the polar which is persistent
+        // across restarts so that we do not lose cookies, etc.
+
+        const mainSession = session.fromPartition('persist:polar');
+
+        const cacheInterceptorService =
+            new CachingStreamInterceptorService(cacheRegistry,
+                                                mainSession.protocol);
+
         await cacheInterceptorService.start();
 
         await captureController.start();

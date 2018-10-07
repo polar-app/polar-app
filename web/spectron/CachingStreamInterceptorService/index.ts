@@ -5,15 +5,34 @@ import {SpectronMain2} from '../../js/test/SpectronMain2';
 import {WebContentsPromises} from '../../js/electron/framework/WebContentsPromises';
 import {FilePaths} from '../../js/util/FilePaths';
 import {CachingStreamInterceptorService} from '../../js/backend/interceptor/CachingStreamInterceptorService';
+import {BrowserWindow, session, protocol} from 'electron';
 import waitForExpect from 'wait-for-expect';
+import {SpectronBrowserWindowOptions} from '../../js/test/SpectronBrowserWindowOptions';
 
-SpectronMain2.create().run(async state => {
+async function defaultWindowFactory(): Promise<BrowserWindow> {
+    const options = SpectronBrowserWindowOptions.create();
+
+    options.webPreferences!.partition = "persist:test";
+
+    const mainWindow = new BrowserWindow(options);
+    mainWindow.loadURL('about:blank');
+    return mainWindow;
+
+}
+
+SpectronMain2.create({windowFactory: defaultWindowFactory}).run(async state => {
     //
     const proxyServerConfig = new ProxyServerConfig(1234);
 
     const cacheRegistry = new CacheRegistry(proxyServerConfig);
 
-    const service = new CachingStreamInterceptorService(cacheRegistry);
+    const sess = session.fromPartition('persist:test');
+
+    // const service = new CachingStreamInterceptorService(cacheRegistry, state.window.webContents.session.protocol);
+
+    // ok.. it looks like the protocol for the sessions is shared between them.
+
+    const service = new CachingStreamInterceptorService(cacheRegistry, sess.protocol);
 
     await service.start();
     //

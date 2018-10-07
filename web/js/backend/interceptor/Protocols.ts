@@ -1,4 +1,3 @@
-import {protocol} from "electron";
 import {StreamProtocolCallback} from './StreamInterceptors';
 import InterceptStreamProtocolRequest = Electron.InterceptStreamProtocolRequest;
 
@@ -7,7 +6,9 @@ export class Protocols {
     /**
      * Instead of callbacks uses a promise.
      */
-    public static async interceptBufferProtocol(scheme: string, handler: any) {
+    public static async interceptBufferProtocol(protocol: Electron.Protocol,
+                                                scheme: string,
+                                                handler: any) {
 
         return new Promise((resolve, reject) => {
 
@@ -28,7 +29,9 @@ export class Protocols {
     /**
      * Instead of callbacks uses a promise.
      */
-    public static async interceptStreamProtocol(scheme: string, handler: StreamProtocolHandler) {
+    public static async interceptStreamProtocol(protocol: Electron.Protocol,
+                                                scheme: string,
+                                                handler: StreamProtocolHandler) {
 
         return new Promise((resolve, reject) => {
 

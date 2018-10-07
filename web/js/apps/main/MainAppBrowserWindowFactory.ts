@@ -29,11 +29,9 @@ export const BROWSER_WINDOW_OPTIONS: Electron.BrowserWindowConstructorOptions = 
         // TODO:
         // https://github.com/electron/electron/pull/794
         //
-        // reconsider using nodeIntegration here as this might be a security
-        // issue
         nodeIntegration: true,
 
-        // NOTE: these must be disabled becuase they break pdf.js.  It must be
+        // NOTE: these must be disabled because they break pdf.js.  It must be
         // some change to require() from their workers.  So maybe I just can't
         // use workers for now.
         // nodeIntegrationInWorker: true,
@@ -53,14 +51,17 @@ export const BROWSER_WINDOW_OPTIONS: Electron.BrowserWindowConstructorOptions = 
          * Use a persistent cookie session between restarts.  This is used so
          * that we keep user cookies including Google Analytics cookies.
          */
-        //partition: "persist:polar"
+        //
+        partition: "persist:polar"
 
     }
+
 };
 
 export class MainAppBrowserWindowFactory {
 
-    public static createWindow(browserWindowOptions: Electron.BrowserWindowConstructorOptions = BROWSER_WINDOW_OPTIONS, url=DEFAULT_URL): Promise<BrowserWindow> {
+    public static createWindow(browserWindowOptions: Electron.BrowserWindowConstructorOptions = BROWSER_WINDOW_OPTIONS,
+                               url = DEFAULT_URL): Promise<BrowserWindow> {
 
         log.info("Creating window for URL: ", url);
 
@@ -68,9 +69,9 @@ export class MainAppBrowserWindowFactory {
 
         browserWindowOptions = Object.assign({}, browserWindowOptions);
 
-        let position = this.computeXY();
+        const position = this.computeXY();
 
-        if(position) {
+        if (position) {
             // add some offset to this window so that the previous window and the
             // current one don't line up perfectly or else it seems like nothing
             // happened or that the new window replaced the old one.
@@ -79,12 +80,12 @@ export class MainAppBrowserWindowFactory {
         }
 
         // Create the browser window.
-        let browserWindow = new BrowserWindow(browserWindowOptions);
+        const browserWindow = new BrowserWindow(browserWindowOptions);
 
         browserWindow.on('close', function(e) {
             e.preventDefault();
 
-            if(browserWindow.webContents) {
+            if (browserWindow.webContents) {
 
                 browserWindow.webContents.clearHistory();
                 browserWindow.webContents.session.clearCache(() => {
@@ -127,25 +128,25 @@ export class MainAppBrowserWindowFactory {
 
             });
 
-        })
+        });
 
     }
 
     private static computeXY(): Position | undefined {
 
-        let offset = 35;
+        const offset = 35;
 
-        let focusedWindow = BrowserWindow.getFocusedWindow();
+        const focusedWindow = BrowserWindow.getFocusedWindow();
 
-        if(focusedWindow) {
-            let position = focusedWindow.getPosition();
+        if (focusedWindow) {
+            const position = focusedWindow.getPosition();
             let x = position[0];
             let y = position[1];
 
             x += offset;
             y += offset;
 
-            return {x,y}
+            return {x, y};
 
         }
 
@@ -156,6 +157,6 @@ export class MainAppBrowserWindowFactory {
 }
 
 interface Position {
-    x: number,
+    x: number;
     y: number;
 }

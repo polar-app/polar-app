@@ -14,9 +14,11 @@ export class CachingStreamInterceptorService {
     private readonly cacheRegistry: CacheRegistry;
 
     private cachingStreamInterceptor: CachingStreamInterceptor;
+    private protocol: Electron.Protocol;
 
-    constructor(cacheRegistry: CacheRegistry) {
+    constructor(cacheRegistry: CacheRegistry, protocol: Electron.Protocol) {
         this.cacheRegistry = cacheRegistry;
+        this.protocol = protocol;
         this.cachingStreamInterceptor = new CachingStreamInterceptor(cacheRegistry, this.cacheStats);
     }
 
@@ -26,7 +28,7 @@ export class CachingStreamInterceptorService {
 
         for (const scheme of ['http', 'https']) {
 
-            await Protocols.interceptStreamProtocol(scheme, (request, callback) => {
+            await Protocols.interceptStreamProtocol(this.protocol, scheme, (request, callback) => {
 
                 StreamInterceptors.withSetTimeout(() => {
                     this.cachingStreamInterceptor.intercept(request, callback);
