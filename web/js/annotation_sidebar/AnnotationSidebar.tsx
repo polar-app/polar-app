@@ -12,7 +12,7 @@ import {TextHighlightModel} from '../highlights/text/model/TextHighlightModel';
 import {isPresent} from '../Preconditions';
 import {DocAnnotationComponent} from './annotations/DocAnnotationComponent';
 import {CommentModel} from './CommentModel';
-import {Refs} from '../metadata/Refs';
+import {Ref, Refs} from '../metadata/Refs';
 
 const log = Logger.create();
 
@@ -58,32 +58,11 @@ export class AnnotationSidebar extends React.Component<AnnotationSidebarProps, A
         new CommentModel().registerListener(this.props.docMeta, annotationEvent => {
 
             const comment: Comment = annotationEvent.value;
+            const childDocAnnotation = DocAnnotations.createFromComment(comment, annotationEvent.pageMeta);
 
-            const ref = Refs.parse(comment.ref!);
-
-            const annotation = this.docAnnotationIndex.docAnnotationMap[ref.value];
-
-            if (annotationEvent.mutationType !== MutationType.DELETE) {
-
-                // add a comment to the stack
-                annotation.comments.push(comment);
-                annotation.children.push(DocAnnotations.createFromComment(comment, annotationEvent.pageMeta));
-
-                // sort descending
-                annotation.comments.sort((c0, c1) => -c0.created.localeCompare(c1.created));
-                annotation.children.sort((c0, c1) => -c0.created.localeCompare(c1.created));
-
-            } else {
-
-                annotation.comments =
-                    annotation.comments.filter(current => current.id !== annotationEvent.id);
-
-                annotation.children =
-                    annotation.children.filter(current => current.id !== annotationEvent.id);
-
-            }
-
-            this.reload();
+            this.handleChildAnnotationEvent(annotationEvent.id,
+                                            annotationEvent.traceEvent.mutationType,
+                                            childDocAnnotation);
 
         });
 
@@ -102,6 +81,31 @@ export class AnnotationSidebar extends React.Component<AnnotationSidebarProps, A
         }
 
         return converter(value);
+
+    }
+
+    private handleChildAnnotationEvent(id: string,
+                                       mutationType: MutationType,
+                                       childDocAnnotation: DocAnnotation) {
+
+        const ref = Refs.parse(childDocAnnotation.ref!);
+
+        const annotation = this.docAnnotationIndex.docAnnotationMap[ref.value];
+
+        if (mutationType !== MutationType.DELETE) {
+
+            annotation.children.push(childDocAnnotation);
+            annotation.children.sort((c0, c1) => -c0.created.localeCompare(c1.created));
+
+        } else {
+
+            annotation.children =
+                annotation.children.filter(current => current.id !== id);
+
+        }
+
+        this.reload();
+
 
     }
 

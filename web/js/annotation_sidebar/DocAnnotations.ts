@@ -51,7 +51,9 @@ export class DocAnnotations {
             created: comment.created,
             pageMeta,
             children: [],
-            comments: []
+            comments: [],
+            ref: comment.ref,
+
         };
 
     }

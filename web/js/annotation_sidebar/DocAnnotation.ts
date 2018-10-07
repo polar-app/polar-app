@@ -6,6 +6,7 @@ import {HighlightColor} from '../metadata/BaseHighlight';
 import {ISODateTimeString} from '../metadata/ISODateTimeStrings';
 import {PageMeta} from '../metadata/PageMeta';
 import {HTMLString} from '../util/HTMLString';
+import {Ref} from '../metadata/Refs';
 
 export interface DocAnnotation {
 
@@ -17,6 +18,9 @@ export interface DocAnnotation {
     pageNum: number;
     position: Point;
     created: ISODateTimeString;
+
+    // the reference to a parent annotation if this is a child annotation.
+    ref?: Ref;
 
     comments: Comment[];
     children: DocAnnotation[];
