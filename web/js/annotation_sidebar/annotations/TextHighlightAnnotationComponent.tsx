@@ -3,7 +3,7 @@ import {AnnotationTypes} from '../../metadata/AnnotationTypes';
 import {DocAnnotation} from '../DocAnnotation';
 import {Optional} from '../../util/ts/Optional';
 import {AnnotationControlBar} from '../AnnotationControlBar';
-import {ChildAnnotationSection} from '../comments/ChildAnnotationSection';
+import {ChildAnnotationSection} from '../child_annotations/ChildAnnotationSection';
 
 /**
  * A generic wrapper that determines which sub-component to render.

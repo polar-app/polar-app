@@ -2,6 +2,7 @@ import * as React from 'react';
 import {CommentComponent} from './CommentComponent';
 import {DocAnnotation} from '../DocAnnotation';
 import {AnnotationType} from '../../metadata/AnnotationType';
+import {FlashcardComponent} from './FlashcardComponent';
 
 /**
  * A generic wrapper that determines which sub-component to render.
@@ -26,7 +27,7 @@ export class ChildAnnotationSection extends React.Component<IProps, IState> {
             if (child.annotationType === AnnotationType.COMMENT) {
                 result.push (<CommentComponent key={child.id} comment={child}/>);
             } else {
-                result.push (<div>its a flashcard</div>);
+                result.push (<FlashcardComponent key={child.id} flashcard={child}></FlashcardComponent>);
             }
 
 
@@ -44,4 +45,5 @@ interface IProps {
 interface IState {
 
 }
+
 

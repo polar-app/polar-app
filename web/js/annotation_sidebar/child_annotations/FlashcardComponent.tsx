@@ -6,7 +6,7 @@ import {DocAnnotation} from '../DocAnnotation';
 /**
  * A generic wrapper that determines which sub-component to render.
  */
-export class CommentComponent extends React.Component<IProps, IState> {
+export class FlashcardComponent extends React.Component<IProps, IState> {
 
     constructor(props: IProps, context: any) {
         super(props, context);
@@ -16,9 +16,9 @@ export class CommentComponent extends React.Component<IProps, IState> {
     }
 
     public render() {
-        const { comment } = this.props;
+        const { flashcard } = this.props;
 
-        const key = 'comment-' + comment.id;
+        const key = 'comment-' + flashcard.id;
 
         return (
 
@@ -28,7 +28,17 @@ export class CommentComponent extends React.Component<IProps, IState> {
 
                     <div className="pb-1 pt-1">
 
-                        <span dangerouslySetInnerHTML={{__html: comment.html!}}>
+                        <span dangerouslySetInnerHTML={{__html: flashcard.fields!.front}}>
+
+                        </span>
+
+                    </div>
+
+                    <hr/>
+
+                    <div className="pb-1 pt-1">
+
+                        <span dangerouslySetInnerHTML={{__html: flashcard.fields!.back}}>
 
                         </span>
 
@@ -39,7 +49,7 @@ export class CommentComponent extends React.Component<IProps, IState> {
                         <div className="text-muted">
                             {/*TODO: make this into its own component... */}
                             <Moment withTitle={true} titleFormat="D MMM YYYY hh:MM A" fromNow>
-                                {comment.created}
+                                {flashcard.created}
                             </Moment>
                         </div>
 
@@ -59,7 +69,7 @@ export class CommentComponent extends React.Component<IProps, IState> {
 
 }
 interface IProps {
-    comment: DocAnnotation;
+    flashcard: DocAnnotation;
 }
 
 interface IState {
