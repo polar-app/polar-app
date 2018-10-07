@@ -12,6 +12,8 @@ import {AreaHighlight} from '../metadata/AreaHighlight';
 import {TextHighlight} from '../metadata/TextHighlight';
 import {Optional} from '../util/ts/Optional';
 import {Rect} from '../Rect';
+import {Flashcard} from '../metadata/Flashcard';
+import {Flashcards} from '../metadata/Flashcards';
 
 export class DocAnnotations {
 
@@ -33,6 +35,29 @@ export class DocAnnotations {
         // now update the index of all our comments...
 
         return result;
+
+    }
+
+    public static createFromFlashcard(flashcard: Flashcard, pageMeta: PageMeta): DocAnnotation {
+
+        return {
+            id: flashcard.id,
+            annotationType: AnnotationType.FLASHCARD,
+            // html: comment.content.HTML!,
+            fields: Flashcards.convertFieldsToMap(flashcard.fields),
+            pageNum: pageMeta.pageInfo.num,
+            // irrelevant on comments
+            position: {
+                x: 0,
+                y: 0
+            },
+            created: flashcard.created,
+            pageMeta,
+            children: [],
+            comments: [],
+            ref: flashcard.ref,
+
+        };
 
     }
 

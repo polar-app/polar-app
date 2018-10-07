@@ -65,6 +65,18 @@ export class Flashcards {
 
     }
 
+    public static convertFieldsToMap(fields: {[key: string]: Text } = {}) {
+
+        const result: {[name: string]: HTMLString} = {};
+
+        for (const key of Object.keys(fields)) {
+            result[key] = fields[key].HTML!;
+        }
+
+        return result;
+
+    }
+
 }
 
 export class MockFlashcards {

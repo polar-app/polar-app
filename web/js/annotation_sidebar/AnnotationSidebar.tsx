@@ -13,6 +13,8 @@ import {isPresent} from '../Preconditions';
 import {DocAnnotationComponent} from './annotations/DocAnnotationComponent';
 import {CommentModel} from './CommentModel';
 import {Ref, Refs} from '../metadata/Refs';
+import {FlashcardModel} from './FlashcardModel';
+import {Flashcard} from '../metadata/Flashcard';
 
 const log = Logger.create();
 
@@ -65,6 +67,18 @@ export class AnnotationSidebar extends React.Component<AnnotationSidebarProps, A
                                             childDocAnnotation);
 
         });
+
+        new FlashcardModel().registerListener(this.props.docMeta, annotationEvent => {
+
+            const flashcard: Flashcard = annotationEvent.value;
+            const childDocAnnotation = DocAnnotations.createFromFlashcard(flashcard, annotationEvent.pageMeta);
+
+            this.handleChildAnnotationEvent(annotationEvent.id,
+                                            annotationEvent.traceEvent.mutationType,
+                                            childDocAnnotation);
+
+        });
+
 
         // FIXME: need an annotation event handler here...
 
