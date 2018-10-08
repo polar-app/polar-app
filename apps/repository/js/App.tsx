@@ -21,6 +21,7 @@ import {Sets} from '../../../web/js/util/Sets';
 import {Tags} from '../../../web/js/tags/Tags';
 import {DateTimeTableCell} from './DateTimeTableCell';
 import {RendererAnalytics} from '../../../web/js/ga/RendererAnalytics';
+import {MessageBanner} from './MessageBanner';
 
 const log = Logger.create();
 
@@ -138,6 +139,8 @@ export default class App extends React.Component<AppProps, AppState> {
 
 
                 </header>
+
+                <MessageBanner/>
 
                 <div id="doc-table">
                 <ReactTable

@@ -67,6 +67,10 @@ export class MainAppMenu {
 
              Menus.setVisible(toggleAnnotationSidebar!, isViewer);
 
+             const annotateMenu = Menus.find(menu.items, 'annotate');
+             console.log("FIXME: Setting annotate visible: ", isViewer)
+             Menus.setVisible(annotateMenu!, isViewer);
+
         });
 
     }
@@ -75,7 +79,7 @@ export class MainAppMenu {
         return [
             this.createFileMenuTemplate(),
             this.createEditMenuTemplate(),
-            // this.createAnnotateMenuTemplate(),
+            this.createAnnotateMenuTemplate(),
             this.createViewMenuTemplate(),
             {
                 label: 'Window',
@@ -257,12 +261,12 @@ export class MainAppMenu {
         //
 
         return {
-            id: 'annotate',
+           id: 'annotate',
            label: 'Annotate',
-            enabled: false,
-            visible: false,
-            submenu: [
-                { role: 'undo', enabled: false },
+           enabled: false,
+           visible: false,
+           submenu: [
+                { role: 'undo', enabled: false, visible: 'false'},
                 { role: 'redo' },
                 // { type: 'separator' },
                 // { label: 'Find', accelerator: 'CmdOrCtrl+f', click: () => InPageSearch.execute() },
