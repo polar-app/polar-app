@@ -24,15 +24,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="76c1ff8c-64e4-4576-b657-eba13e920218" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/screenshots/pdf-loaded-shadow.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/screenshots/pdf-loaded-understanding-cryptography-shadow.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/screenshots/pdf-loaded-understanding-cryptography.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/screenshots/pdf-loaded-understanding-cryptography.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/compress-image.sh" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/screenshots/area-highlight-no-border.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/screenshots/captured-content-window.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/screenshots/document-repository-filter.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/screenshots/document-repository.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/screenshots/pdf-loaded-understanding-cryptography-shadow2.jpg" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/screenshots/gen-dropshadow.sh" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/gen-dropshadow.sh" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/terms/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/terms/README.md" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -1580,6 +1577,7 @@
         <option value="$PROJECT_DIR$/../polar-bookshelf/web/js/capture/renderer/AdBlocker.js.map" />
         <option value="$PROJECT_DIR$/../polar-bookshelf/web/js/annotation_sidebar/annotations/AreaHighlightAnnotationComponent.js.map" />
         <option value="$PROJECT_DIR$/../polar-bookshelf/web/js/capture/renderer/ContentCapture.js.map" />
+        <option value="$PROJECT_DIR$/../polar-bookshelf/web/js/annotation_sidebar/annotations/DocAnnotationComponent.js" />
         <option value="$PROJECT_DIR$/../polar-bookshelf/web/spectron/create-flashcard/index.js" />
         <option value="$PROJECT_DIR$/../polar-bookshelf/web/spectron/create-flashcard/index.js.map" />
         <option value="$PROJECT_DIR$/../polar-bookshelf/web/spectron/content-capture/spec.js" />
@@ -1590,18 +1588,29 @@
         <option value="$PROJECT_DIR$/../polar-bookshelf/web/spectron/content-capture/index.js.map" />
         <option value="$PROJECT_DIR$/../polar-bookshelf/web/test/spectron/ipc-engine-from-main-to-renderer/index.js.map" />
         <option value="$PROJECT_DIR$/../polar-bookshelf/web/test/spectron/ipc-engine-from-main-to-renderer/app.js.map" />
+        <option value="$PROJECT_DIR$/../polar-bookshelf/web/js/annotation_sidebar/AnnotationControlBar.js.map" />
         <option value="$PROJECT_DIR$/../polar-bookshelf/web/test/spectron/ipc-engine-from-main-to-renderer/index.js" />
+        <option value="$PROJECT_DIR$/../polar-bookshelf/web/js/annotation_sidebar/AnnotationControlBar.js" />
         <option value="$PROJECT_DIR$/../polar-bookshelf/web/test/spectron/ipc-engine-from-main-to-renderer/app.js" />
+        <option value="$PROJECT_DIR$/../polar-bookshelf/apps/repository/js/DateTimeTableCell.js.map" />
         <option value="$PROJECT_DIR$/../polar-bookshelf/web/spectron/create-flashcard/spec.js" />
+        <option value="$PROJECT_DIR$/../polar-bookshelf/apps/repository/js/DateTimeTableCell.js" />
         <option value="$PROJECT_DIR$/../polar-bookshelf/web/spectron/create-flashcard/app.js" />
         <option value="$PROJECT_DIR$/../polar-bookshelf/web/spectron/create-flashcard/app.js.map" />
+        <option value="$PROJECT_DIR$/../polar-bookshelf/web/js/annotation_sidebar/CommentInputBox.js" />
         <option value="$PROJECT_DIR$/../polar-bookshelf/web/spectron/create-flashcard/spec.js.map" />
+        <option value="$PROJECT_DIR$/../polar-bookshelf/web/js/annotation_sidebar/CommentInputBox.js.map" />
         <option value="$PROJECT_DIR$/../polar-bookshelf/web/spectron/open-pdf-file-with-arg/spec.js.map" />
+        <option value="$PROJECT_DIR$/../polar-bookshelf/web/js/annotation_sidebar/annotations/DocAnnotationComponent.js.map" />
         <option value="$PROJECT_DIR$/../polar-bookshelf/web/spectron/open-pdf-file-with-arg/spec.js" />
+        <option value="$PROJECT_DIR$/../polar-bookshelf/web/js/annotation_sidebar/annotations/TextHighlightAnnotationComponent.js.map" />
         <option value="$PROJECT_DIR$/../polar-bookshelf/web/test/spectron/ipc-engine-from-renderer-to-renderer/service.js.map" />
+        <option value="$PROJECT_DIR$/../polar-bookshelf/web/js/annotation_sidebar/annotations/TextHighlightAnnotationComponent.js" />
         <option value="$PROJECT_DIR$/../polar-bookshelf/web/test/spectron/ipc-engine-from-renderer-to-renderer/service.js" />
         <option value="$PROJECT_DIR$/../polar-bookshelf/web/test/spectron/ipc-engine-from-renderer-to-renderer/client.js.map" />
+        <option value="$PROJECT_DIR$/../polar-bookshelf/web/js/apps/card_creator/elements/schemaform/RichTextEditor4.js.map" />
         <option value="$PROJECT_DIR$/../polar-bookshelf/web/test/spectron/ipc-engine-from-renderer-to-renderer/client.js" />
+        <option value="$PROJECT_DIR$/../polar-bookshelf/web/js/apps/card_creator/elements/schemaform/RichTextEditor4.js" />
         <option value="$PROJECT_DIR$/../polar-bookshelf/web/test/spectron/ipc-engine-from-renderer-to-renderer/index.js" />
         <option value="$PROJECT_DIR$/../polar-bookshelf/web/test/spectron/ipc-engine-from-renderer-to-renderer/index.js.map" />
         <option value="$PROJECT_DIR$/../polar-bookshelf/web/spectron/CacheInterceptorService/spec.js" />
@@ -1613,7 +1622,9 @@
         <option value="$PROJECT_DIR$/../polar-bookshelf/web/spectron/dialog-window-service/index.js" />
         <option value="$PROJECT_DIR$/../polar-bookshelf/web/spectron/dialog-window-service/index.js.map" />
         <option value="$PROJECT_DIR$/../polar-bookshelf/web/spectron/webview-test/index.js.map" />
+        <option value="$PROJECT_DIR$/../polar-bookshelf/web/js/annotation_sidebar/AnnotationCommentBox.js" />
         <option value="$PROJECT_DIR$/../polar-bookshelf/web/spectron/webview-test/spec.js.map" />
+        <option value="$PROJECT_DIR$/../polar-bookshelf/web/js/annotation_sidebar/AnnotationCommentBox.js.map" />
         <option value="$PROJECT_DIR$/../polar-bookshelf/web/spectron/webview-test/index.js" />
         <option value="$PROJECT_DIR$/../polar-bookshelf/web/spectron/webview-test/iframe.js.map" />
         <option value="$PROJECT_DIR$/../polar-bookshelf/web/spectron/webview-test/spec.js" />
@@ -1701,13 +1712,19 @@
         <option value="$PROJECT_DIR$/../polar-bookshelf/web/js/ipc/pipes/ElectronRendererPipe.js" />
         <option value="$PROJECT_DIR$/../polar-bookshelf/web/js/ipc/pipes/ElectronMainReadablePipe.js.map" />
         <option value="$PROJECT_DIR$/../polar-bookshelf/web/js/viewer/html/Descriptors.js" />
+        <option value="$PROJECT_DIR$/../polar-bookshelf/web/js/ga/RendererAnalytics.js" />
         <option value="$PROJECT_DIR$/../polar-bookshelf/web/js/viewer/html/IFrameWatcher.js.map" />
+        <option value="$PROJECT_DIR$/../polar-bookshelf/web/js/ga/RendererAnalytics.js.map" />
         <option value="$PROJECT_DIR$/../polar-bookshelf/web/js/viewer/html/BackgroundFrameResizer.js.map" />
         <option value="$PROJECT_DIR$/../polar-bookshelf/web/js/viewer/html/BackgroundFrameResizer.js" />
+        <option value="$PROJECT_DIR$/../polar-bookshelf/web/js/annotation_sidebar/AnnotationSidebarClient.js" />
         <option value="$PROJECT_DIR$/../polar-bookshelf/web/js/ipc/Broadcasters.js.map" />
+        <option value="$PROJECT_DIR$/../polar-bookshelf/web/js/annotation_sidebar/AnnotationSidebarClient.js.map" />
         <option value="$PROJECT_DIR$/../polar-bookshelf/web/js/ipc/Broadcaster.js" />
         <option value="$PROJECT_DIR$/../polar-bookshelf/web/js/ipc/Broadcaster.js.map" />
+        <option value="$PROJECT_DIR$/../polar-bookshelf/web/js/apps/main/Menus.js" />
         <option value="$PROJECT_DIR$/../polar-bookshelf/web/js/ipc/Broadcasters.js" />
+        <option value="$PROJECT_DIR$/../polar-bookshelf/web/js/apps/main/Menus.js.map" />
         <option value="$PROJECT_DIR$/../polar-bookshelf/web/js/viewer/html/FrameResizer.js.map" />
         <option value="$PROJECT_DIR$/../polar-bookshelf/web/js/viewer/html/LinkHandler.js" />
         <option value="$PROJECT_DIR$/../polar-bookshelf/web/js/viewer/html/IFrameWatcher.js" />
@@ -1725,10 +1742,14 @@
         <option value="$PROJECT_DIR$/../polar-bookshelf/web/js/viewer/html/LinkHandler.js.map" />
         <option value="$PROJECT_DIR$/../polar-bookshelf/web/js/viewer/html/EventBridge.js.map" />
         <option value="$PROJECT_DIR$/../polar-bookshelf/web/spectron/reactstrap/CaptureButton.js" />
+        <option value="$PROJECT_DIR$/../polar-bookshelf/web/js/metadata/Refs.js" />
         <option value="$PROJECT_DIR$/../polar-bookshelf/web/spectron/reactstrap/BrowserNavBar.js" />
+        <option value="$PROJECT_DIR$/../polar-bookshelf/web/js/metadata/Refs.js.map" />
         <option value="$PROJECT_DIR$/../polar-bookshelf/web/spectron/reactstrap/App.js" />
         <option value="$PROJECT_DIR$/../polar-bookshelf/web/spectron/reactstrap/index.js" />
+        <option value="$PROJECT_DIR$/../polar-bookshelf/web/js/annotation_sidebar/CommentModel.js" />
         <option value="$PROJECT_DIR$/../polar-bookshelf/web/spectron/reactstrap/spec.js.map" />
+        <option value="$PROJECT_DIR$/../polar-bookshelf/web/js/annotation_sidebar/CommentModel.js.map" />
         <option value="$PROJECT_DIR$/../polar-bookshelf/web/spectron/reactstrap/content.js.map" />
         <option value="$PROJECT_DIR$/../polar-bookshelf/web/js/viewer/ViewerFactory.js.map" />
         <option value="$PROJECT_DIR$/../polar-bookshelf/web/js/viewer/ViewerFactory.js" />
@@ -1781,6 +1802,7 @@
         <option value="$PROJECT_DIR$/../polar-bookshelf/web/js/util/ResolvablePromiseTest.js" />
         <option value="$PROJECT_DIR$/../polar-bookshelf/web/js/util/FilesTest.js.map" />
         <option value="$PROJECT_DIR$/../polar-bookshelf/web/js/util/Promises.js.map" />
+        <option value="$PROJECT_DIR$/../polar-bookshelf/web/js/util/HTMLString.js.map" />
         <option value="$PROJECT_DIR$/../polar-bookshelf/web/js/util/PathsTest.js" />
         <option value="$PROJECT_DIR$/../polar-bookshelf/web/js/util/ResolvablePromiseTest.js.map" />
         <option value="$PROJECT_DIR$/../polar-bookshelf/web/js/util/SetsTest.js" />
@@ -1790,12 +1812,17 @@
         <option value="$PROJECT_DIR$/../polar-bookshelf/web/js/util/Progress.js.map" />
         <option value="$PROJECT_DIR$/../polar-bookshelf/web/js/util/Percentages.js" />
         <option value="$PROJECT_DIR$/../polar-bookshelf/web/js/util/ResultsTest.js" />
+        <option value="$PROJECT_DIR$/../polar-bookshelf/web/js/annotation_sidebar/AnnotationFlashcardBox.js" />
         <option value="$PROJECT_DIR$/../polar-bookshelf/web/js/util/Buffers.js.map" />
+        <option value="$PROJECT_DIR$/../polar-bookshelf/web/js/annotation_sidebar/AnnotationFlashcardBox.js.map" />
         <option value="$PROJECT_DIR$/../polar-bookshelf/web/js/util/ProgressTest.js" />
         <option value="$PROJECT_DIR$/../polar-bookshelf/web/js/util/TextArrayTest.js.map" />
+        <option value="$PROJECT_DIR$/../polar-bookshelf/web/js/annotation_sidebar/RichTextArea.js.map" />
         <option value="$PROJECT_DIR$/../polar-bookshelf/web/js/util/Buffers.js" />
+        <option value="$PROJECT_DIR$/../polar-bookshelf/web/js/annotation_sidebar/RichTextArea.js" />
         <option value="$PROJECT_DIR$/../polar-bookshelf/web/js/util/ProgressTest.js.map" />
         <option value="$PROJECT_DIR$/../polar-bookshelf/web/js/util/ExecutionTimer.js.map" />
+        <option value="$PROJECT_DIR$/../polar-bookshelf/web/js/util/HTMLString.js" />
         <option value="$PROJECT_DIR$/../polar-bookshelf/web/js/util/Styles.js" />
         <option value="$PROJECT_DIR$/../polar-bookshelf/web/js/util/Dictionaries.js" />
         <option value="$PROJECT_DIR$/../polar-bookshelf/web/js/util/Objects.js.map" />
@@ -1846,7 +1873,9 @@
         <option value="$PROJECT_DIR$/../polar-bookshelf/web/js/util/PackageManifest.js" />
         <option value="$PROJECT_DIR$/../polar-bookshelf/web/js/util/Strings.js.map" />
         <option value="$PROJECT_DIR$/../polar-bookshelf/web/js/util/Dimensions.js.map" />
+        <option value="$PROJECT_DIR$/../polar-bookshelf/web/js/annotation_sidebar/FlashcardModel.js" />
         <option value="$PROJECT_DIR$/../polar-bookshelf/web/js/util/Streams.js.map" />
+        <option value="$PROJECT_DIR$/../polar-bookshelf/web/js/annotation_sidebar/FlashcardModel.js.map" />
         <option value="$PROJECT_DIR$/../polar-bookshelf/web/js/util/Filenames.js" />
         <option value="$PROJECT_DIR$/../polar-bookshelf/web/js/util/Version.js.map" />
         <option value="$PROJECT_DIR$/../polar-bookshelf/web/js/util/Line.js.map" />
@@ -2109,34 +2138,14 @@
         <option value="$PROJECT_DIR$/../polar-bookshelf/web/js/comments/react/HighlightCreatedEvent.js.map" />
         <option value="$PROJECT_DIR$/../polar-bookshelf/web/js/comments/react/HighlightCreatedEvent.js" />
         <option value="$PROJECT_DIR$/../polar-bookshelf/web/js/comments/react/CommentCreatedEvent.js" />
-        <option value="$PROJECT_DIR$/../polar-bookshelf/web/js/annotation_sidebar/annotations/DocAnnotationComponent.js" />
-        <option value="$PROJECT_DIR$/../polar-bookshelf/web/js/annotation_sidebar/annotations/DocAnnotationComponent.js.map" />
-        <option value="$PROJECT_DIR$/../polar-bookshelf/web/js/annotation_sidebar/annotations/TextHighlightAnnotationComponent.js.map" />
-        <option value="$PROJECT_DIR$/../polar-bookshelf/web/js/annotation_sidebar/annotations/TextHighlightAnnotationComponent.js" />
-        <option value="$PROJECT_DIR$/../polar-bookshelf/web/js/apps/card_creator/elements/schemaform/RichTextEditor4.js.map" />
-        <option value="$PROJECT_DIR$/../polar-bookshelf/web/js/apps/card_creator/elements/schemaform/RichTextEditor4.js" />
-        <option value="$PROJECT_DIR$/../polar-bookshelf/web/js/annotation_sidebar/AnnotationControlBar.js.map" />
-        <option value="$PROJECT_DIR$/../polar-bookshelf/web/js/annotation_sidebar/AnnotationControlBar.js" />
-        <option value="$PROJECT_DIR$/../polar-bookshelf/apps/repository/js/DateTimeTableCell.js.map" />
-        <option value="$PROJECT_DIR$/../polar-bookshelf/apps/repository/js/DateTimeTableCell.js" />
-        <option value="$PROJECT_DIR$/../polar-bookshelf/web/js/annotation_sidebar/CommentInputBox.js" />
-        <option value="$PROJECT_DIR$/../polar-bookshelf/web/js/annotation_sidebar/CommentInputBox.js.map" />
-        <option value="$PROJECT_DIR$/../polar-bookshelf/web/js/annotation_sidebar/AnnotationCommentBox.js" />
-        <option value="$PROJECT_DIR$/../polar-bookshelf/web/js/annotation_sidebar/AnnotationCommentBox.js.map" />
-        <option value="$PROJECT_DIR$/../polar-bookshelf/web/js/ga/RendererAnalytics.js" />
-        <option value="$PROJECT_DIR$/../polar-bookshelf/web/js/ga/RendererAnalytics.js.map" />
-        <option value="$PROJECT_DIR$/../polar-bookshelf/web/js/annotation_sidebar/AnnotationSidebarClient.js" />
-        <option value="$PROJECT_DIR$/../polar-bookshelf/web/js/annotation_sidebar/AnnotationSidebarClient.js.map" />
-        <option value="$PROJECT_DIR$/../polar-bookshelf/web/js/apps/main/Menus.js" />
-        <option value="$PROJECT_DIR$/../polar-bookshelf/web/js/apps/main/Menus.js.map" />
-        <option value="$PROJECT_DIR$/../polar-bookshelf/web/js/metadata/Refs.js" />
-        <option value="$PROJECT_DIR$/../polar-bookshelf/web/js/metadata/Refs.js.map" />
-        <option value="$PROJECT_DIR$/../polar-bookshelf/web/js/annotation_sidebar/CommentModel.js" />
-        <option value="$PROJECT_DIR$/../polar-bookshelf/web/js/annotation_sidebar/CommentModel.js.map" />
-        <option value="$PROJECT_DIR$/../polar-bookshelf/web/js/annotation_sidebar/comments/CommentSectionComponent.js.map" />
-        <option value="$PROJECT_DIR$/../polar-bookshelf/web/js/annotation_sidebar/comments/CommentSectionComponent.js" />
-        <option value="$PROJECT_DIR$/../polar-bookshelf/web/js/annotation_sidebar/comments/CommentComponent.js" />
-        <option value="$PROJECT_DIR$/../polar-bookshelf/web/js/annotation_sidebar/comments/CommentComponent.js.map" />
+        <option value="$PROJECT_DIR$/../polar-bookshelf/web/js/annotation_sidebar/child_annotations/CommentComponent.js" />
+        <option value="$PROJECT_DIR$/../polar-bookshelf/web/js/annotation_sidebar/child_annotations/CommentComponent.js.map" />
+        <option value="$PROJECT_DIR$/../polar-bookshelf/web/js/annotation_sidebar/child_annotations/ChildAnnotationSection.js" />
+        <option value="$PROJECT_DIR$/../polar-bookshelf/web/js/annotation_sidebar/child_annotations/ChildAnnotationSection.js.map" />
+        <option value="$PROJECT_DIR$/../polar-bookshelf/web/js/annotation_sidebar/child_annotations/FlashcardComponent.js" />
+        <option value="$PROJECT_DIR$/../polar-bookshelf/web/js/annotation_sidebar/child_annotations/FlashcardComponent.js.map" />
+        <option value="$PROJECT_DIR$/../polar-bookshelf/web/js/annotation_sidebar/child_annotations/ExampleCarousel.js" />
+        <option value="$PROJECT_DIR$/../polar-bookshelf/web/js/annotation_sidebar/child_annotations/ExampleCarousel.js.map" />
       </list>
     </option>
   </component>
