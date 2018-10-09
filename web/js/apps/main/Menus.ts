@@ -34,6 +34,11 @@ export class Menus {
 
     }
 
+    public static setEnabled(menuItem: MenuItem, enabled: boolean) {
+        (<any> menuItem).enabled = enabled;
+    }
+
+
     public static setVisible(menuItem: MenuItem, visible: boolean) {
         (<any> menuItem).visible = visible;
     }

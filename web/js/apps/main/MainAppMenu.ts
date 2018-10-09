@@ -68,8 +68,11 @@ export class MainAppMenu {
              Menus.setVisible(toggleAnnotationSidebar!, isViewer);
 
              const annotateMenu = Menus.find(menu.items, 'annotate');
-             console.log("FIXME: Setting annotate visible: ", isViewer)
-             Menus.setVisible(annotateMenu!, isViewer);
+             const annotateMenuItems = Menus.submenu(annotateMenu!)!;
+
+             annotateMenuItems.forEach(current => {
+                 Menus.setEnabled(current, isViewer);
+             });
 
         });
 

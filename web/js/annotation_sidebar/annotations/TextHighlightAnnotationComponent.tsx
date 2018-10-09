@@ -28,7 +28,7 @@ export class TextHighlightAnnotationComponent extends React.Component<IProps, IS
 
         return (
 
-            <div className="border border-secondary rounded m-1 mb-2">
+            <div className="m-0 mb-2">
 
                 <div key={key}
                      data-annotation-id={annotation.id}

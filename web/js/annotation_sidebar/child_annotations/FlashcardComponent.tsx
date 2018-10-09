@@ -21,7 +21,7 @@ export class FlashcardComponent extends React.Component<IProps, IState> {
 
         return (
 
-            <div className="card">
+            <div className="flashcard card shadow-sm mb-3">
 
                 <div key={key} className="card-body p-1">
 

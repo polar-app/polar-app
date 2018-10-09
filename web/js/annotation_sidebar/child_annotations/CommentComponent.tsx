@@ -1,5 +1,4 @@
 import * as React from 'react';
-import {Comment} from '../../metadata/Comment';
 import Moment from 'react-moment';
 import {DocAnnotation} from '../DocAnnotation';
 
