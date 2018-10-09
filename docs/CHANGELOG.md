@@ -3,8 +3,10 @@
 
 - using persistent sessions now so GA metrics should be more accurate
 
--  
+- message on the top of the doc repo so I can start using the polar user base 
+  more aggressively to help us out and contribute as a group.  
 
+- improved the look of the sidebar a bit...
 
 # 1.0.0-beta210
 
