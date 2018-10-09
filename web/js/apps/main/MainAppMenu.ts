@@ -11,7 +11,6 @@ import {ManualUpdates} from '../../updates/ManualUpdates';
 import {Platform, Platforms} from '../../util/Platforms';
 import {AnnotationSidebarClient} from '../../annotation_sidebar/AnnotationSidebarClient';
 import {BrowserWindowRegistry} from '../../electron/framework/BrowserWindowRegistry';
-import undefinedError = Mocha.utils.undefinedError;
 import {Menus} from './Menus';
 import {isPresent} from '../../Preconditions';
 
@@ -68,11 +67,16 @@ export class MainAppMenu {
              Menus.setVisible(toggleAnnotationSidebar!, isViewer);
 
              const annotateMenu = Menus.find(menu.items, 'annotate');
-             const annotateMenuItems = Menus.submenu(annotateMenu!)!;
 
-             annotateMenuItems.forEach(current => {
-                 Menus.setEnabled(current, isViewer);
-             });
+             if (annotateMenu) {
+
+                 const annotateMenuItems = Menus.submenu(annotateMenu!)!;
+
+                 annotateMenuItems.forEach(current => {
+                     Menus.setEnabled(current, isViewer);
+                 });
+
+             }
 
         });
 
@@ -82,7 +86,7 @@ export class MainAppMenu {
         return [
             this.createFileMenuTemplate(),
             this.createEditMenuTemplate(),
-            this.createAnnotateMenuTemplate(),
+            // this.createAnnotateMenuTemplate(),
             this.createViewMenuTemplate(),
             {
                 label: 'Window',

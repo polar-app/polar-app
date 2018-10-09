@@ -82,6 +82,9 @@ class ReactSummernote extends Component {
 
         this.editor.summernote(options);
 
+        // delete this.editor.summernote.options.keyMap.pc.TAB;
+        // delete this.editor.summernote.options.keyMap.mac.TAB;
+
         if (codeview) {
             this.editor.summernote('codeview.activate');
         }

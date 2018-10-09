@@ -61,7 +61,7 @@ export class PagemarkCoverageEventListener {
      */
     private keyListener(event: KeyboardEvent) {
 
-        if(!event) {
+        if (!event) {
             throw new Error("no event");
         }
 
@@ -71,11 +71,11 @@ export class PagemarkCoverageEventListener {
 
     async mouseListener(event: MouseEvent) {
 
-        if(!event) {
+        if (!event) {
             throw new Error("no event");
         }
 
-        if(!this.keyActivated) {
+        if (!this.keyActivated) {
             return;
         }
 

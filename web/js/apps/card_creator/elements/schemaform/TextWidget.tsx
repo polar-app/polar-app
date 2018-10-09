@@ -110,9 +110,9 @@ export class TextWidget extends React.Component  {
                     id: this.typedWidgetProps.id,
                     lang: 'en-US',
                     height: 280,
-                    //placeholder: "this is a placeholder",
+                    // placeholder: "this is a placeholder",
                     dialogsInBody: false,
-                    //airMode: true,
+                    // airMode: true,
                     // toolbar: [
                     //     ['style', []],
                     //     ['font', []],
@@ -131,7 +131,7 @@ export class TextWidget extends React.Component  {
                     toolbar: [
                         ['style', ['style']],
                         ['font', ['bold', 'italic', 'underline', 'clear', 'color', 'superscript', 'subscript']],
-                        //['fontname', ['fontname']],
+                        // ['fontname', ['fontname']],
                         ['para', ['ul', 'ol', 'paragraph']],
                         ['table', ['table']],
                         ['insert', ['link', 'picture', 'video']],
@@ -142,7 +142,7 @@ export class TextWidget extends React.Component  {
                 onChange={this.onChange}
                 onBlur={this.onBlur}
                 onFocus={this.onFocus}
-                //onSubmit={this.onSubmit}
+                // onSubmit={this.onSubmit}
                 onImageUpload={this.onImageUpload}
             />
         );
