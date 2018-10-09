@@ -1,4 +1,9 @@
 
+# 1.0.0-beta212
+
+- Zip target was not provided for MacOS so auto-update was not working. 
+  Hopefully it will in the next release. 
+
 # 1.0.0-beta211
 
 - using persistent sessions now so GA metrics should be more accurate

@@ -15,7 +15,9 @@ directories:
 mac:
   category: Reference
   icon: ./icons/icon.icns
-  target: dmg
+  target:
+    - target: dmg
+    - target: zip
   fileAssociations:
     - ext: "pdf"
       role: "Viewer"
