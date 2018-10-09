@@ -36,6 +36,8 @@ SpectronRenderer.run(async (state) => {
 
         assertJSON(Dictionaries.sorted(adv.docInfo), Dictionaries.sorted(expected));
 
+        console.log("It worked!");
+
         state.testResultWriter.write(true)
             .catch((err: Error) => {
                 log.error("Could not receive event.", err);
