@@ -1,6 +1,11 @@
 
 
-# 1.0.0-beta212
+# 1.0.0
+
+- calling this version 1.0.0.  We are mostly feature complete.  There are a few
+  things lacking but this way we can start getting more feedback as we're very 
+  stable and people shouldn't assume the app is beta just becuase we're lacking
+  a few features.
 
 - Zip target was not provided for MacOS so auto-update was not working. 
   Hopefully it will in the next release.
