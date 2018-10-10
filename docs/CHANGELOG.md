@@ -1,8 +1,11 @@
 
+
 # 1.0.0-beta212
 
 - Zip target was not provided for MacOS so auto-update was not working. 
-  Hopefully it will in the next release. 
+  Hopefully it will in the next release.
+  
+- started adding the infra to add file attachments to the store 
 
 # 1.0.0-beta211
 

@@ -34,7 +34,7 @@ export interface Datastore {
      * data types that need to be stored. This is primarily designed for video,
      * audio, and documents like PDF, ePub, etc.
      */
-    addFile(backend: Backend, name: string, data: Buffer | string): Promise<DatastoreFile>;
+    addFile(backend: Backend, name: string, data: Buffer | string, meta: FileMeta): Promise<DatastoreFile>;
 
     getFile(backend: Backend, name: string): Promise<Optional<DatastoreFile>>;
 
@@ -62,3 +62,6 @@ export interface Datastore {
     getDocMetaFiles(): Promise<DocMetaRef[]>;
 
 }
+
+// noinspection TsLint
+export type FileMeta = {[key: string]: string};

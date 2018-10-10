@@ -1,4 +1,4 @@
-import {Datastore} from './Datastore';
+import {Datastore, FileMeta} from './Datastore';
 import {Preconditions} from '../Preconditions';
 import {Logger} from '../logger/Logger';
 import {DocMetaFileRef, DocMetaRef} from './DocMetaRef';
@@ -121,7 +121,7 @@ export class DiskDatastore implements Datastore {
     }
 
 
-    public async addFile(backend: Backend, name: string, data: Buffer | string): Promise<DatastoreFile> {
+    public async addFile(backend: Backend, name: string, data: Buffer | string, meta: FileMeta = {}): Promise<DatastoreFile> {
 
         const fileReference = this.createFileReference(backend, name);
 
@@ -150,7 +150,8 @@ export class DiskDatastore implements Datastore {
 
         return {
             name,
-            url: url.href
+            url: url.href,
+            meta: {}
         };
 
     }

@@ -1,4 +1,4 @@
-import {Datastore} from './Datastore';
+import {Datastore, FileMeta} from './Datastore';
 import {Directories} from './Directories';
 import {DocMetaFileRef, DocMetaRef} from './DocMetaRef';
 import {DeleteResult} from './DiskDatastore';
@@ -40,8 +40,8 @@ export class DelegatedDatastore implements Datastore {
         return this.delegate.delete(docMetaFileRef);
     }
 
-    public addFile(backend: Backend, name: string, data: Buffer | string): Promise<DatastoreFile> {
-        return this.delegate.addFile(backend, name, data);
+    public addFile(backend: Backend, name: string, data: Buffer | string, meta: FileMeta = {}): Promise<DatastoreFile> {
+        return this.delegate.addFile(backend, name, data, meta);
     }
 
     public containsFile(backend: Backend, name: string): Promise<boolean> {

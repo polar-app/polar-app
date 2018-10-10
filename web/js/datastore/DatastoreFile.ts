@@ -1,3 +1,5 @@
+import {FileMeta} from './Datastore';
+
 export interface DatastoreFile {
 
     readonly name: string;
@@ -7,5 +9,7 @@ export interface DatastoreFile {
      * the resource.
      */
     readonly url: string;
+
+    readonly meta: FileMeta;
 
 }
