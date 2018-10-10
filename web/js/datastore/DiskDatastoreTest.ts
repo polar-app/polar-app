@@ -66,9 +66,10 @@ describe('DiskDatastore', function() {
                 "strategy": "manual"
             },
             "dataDir": FilePaths.join(tmpdir, "disk-datastore.test"),
-            "stashDir": FilePaths.join(tmpdir, "disk-datastore.test/stash"),
-            "logsDir": FilePaths.join(tmpdir, "disk-datastore.test/logs"),
-            "configDir": FilePaths.join(tmpdir, "disk-datastore.test/config"),
+            "stashDir": FilePaths.join(tmpdir, "disk-datastore.test", "stash"),
+            "filesDir": FilePaths.join(tmpdir, "disk-datastore.test", "files"),
+            "logsDir": FilePaths.join(tmpdir, "disk-datastore.test", "logs"),
+            "configDir": FilePaths.join(tmpdir, "disk-datastore.test", "config"),
 
             "initialization": {
 
@@ -78,6 +79,10 @@ describe('DiskDatastore', function() {
                 },
                 "stashDir": {
                     "dir": FilePaths.join(tmpdir, 'disk-datastore.test', 'stash'),
+                    "created": true,
+                },
+                "filesDir": {
+                    "dir": FilePaths.join(tmpdir, 'disk-datastore.test', 'files'),
                     "created": true,
                 },
                 "logsDir": {
@@ -92,8 +97,6 @@ describe('DiskDatastore', function() {
             },
         };
 
-
-
         // test double init...
         assertJSON(await diskDatastore.init(), expected );
 
@@ -103,9 +106,10 @@ describe('DiskDatastore', function() {
                 "strategy": "manual"
             },
             "dataDir": FilePaths.join(tmpdir, "disk-datastore.test"),
-            "stashDir": FilePaths.join(tmpdir, "disk-datastore.test/stash"),
-            "logsDir": FilePaths.join(tmpdir, "disk-datastore.test/logs"),
-            "configDir": FilePaths.join(tmpdir, "disk-datastore.test/config"),
+            "stashDir": FilePaths.join(tmpdir, "disk-datastore.test", "stash"),
+            "filesDir": FilePaths.join(tmpdir, "disk-datastore.test", "files"),
+            "logsDir": FilePaths.join(tmpdir, "disk-datastore.test", "logs"),
+            "configDir": FilePaths.join(tmpdir, "disk-datastore.test", "config"),
 
             "initialization": {
 
@@ -115,6 +119,10 @@ describe('DiskDatastore', function() {
                 },
                 "stashDir": {
                     "dir": FilePaths.join(tmpdir, 'disk-datastore.test', 'stash'),
+                    "exists": true,
+                },
+                "filesDir": {
+                    "dir": FilePaths.join(tmpdir, 'disk-datastore.test', 'files'),
                     "exists": true,
                 },
                 "logsDir": {

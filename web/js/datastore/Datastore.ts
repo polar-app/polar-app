@@ -2,12 +2,15 @@
 import {DocMetaFileRef, DocMetaRef} from './DocMetaRef';
 import {DeleteResult} from './DiskDatastore';
 import {Directories} from './Directories';
-import {BackingStore} from './BackingStore';
+import {Backend} from './Backend';
 import {DatastoreFile} from './DatastoreFile';
+import {Optional} from '../util/ts/Optional';
 
 export interface Datastore {
 
     readonly stashDir: string;
+
+    readonly filesDir: string;
 
     readonly logsDir: string;
 
@@ -31,9 +34,11 @@ export interface Datastore {
      * data types that need to be stored. This is primarily designed for video,
      * audio, and documents like PDF, ePub, etc.
      */
-    // addFile(store: BackingStore, name: string): Promise<DatastoreFile>
+    addFile(backend: Backend, name: string, data: Buffer | string): Promise<DatastoreFile>;
 
-    // containsFile(store: BackingStore, name: string): Promise<boolean>;
+    getFile(backend: Backend, name: string): Promise<Optional<DatastoreFile>>;
+
+    containsFile(backend: Backend, name: string): Promise<boolean>;
 
     /**
      * Get the data for the DocMeta object we currently in the datastore for

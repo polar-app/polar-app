@@ -10,6 +10,7 @@ export class Directories {
 
     public readonly dataDir: string;
     public readonly stashDir: string;
+    public readonly filesDir: string;
     public readonly logsDir: string;
     public readonly configDir: string;
 
@@ -31,6 +32,7 @@ export class Directories {
 
         // the path to the stash directory
         this.stashDir = FilePaths.create(this.dataDir, "stash");
+        this.filesDir = FilePaths.create(this.dataDir, "files");
         this.logsDir = FilePaths.create(this.dataDir, "logs");
         this.configDir = FilePaths.create(this.dataDir, "config");
 
@@ -41,6 +43,7 @@ export class Directories {
         this.initialization = {
             dataDir: await Files.createDirAsync(this.dataDir),
             stashDir: await Files.createDirAsync(this.stashDir),
+            filesDir: await Files.createDirAsync(this.filesDir),
             logsDir: await Files.createDirAsync(this.logsDir),
             configDir: await Files.createDirAsync(this.configDir)
         };
@@ -104,6 +107,7 @@ export class GlobalDataDir {
 export interface Initialization {
     readonly dataDir: CreateDirResult;
     readonly stashDir: CreateDirResult;
+    readonly filesDir: CreateDirResult;
     readonly logsDir: CreateDirResult;
     readonly configDir: CreateDirResult;
 }

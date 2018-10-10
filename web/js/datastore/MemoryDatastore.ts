@@ -9,12 +9,17 @@ import {Directories} from './Directories';
 import {Logger} from '../logger/Logger';
 import {DeleteResult} from './DiskDatastore';
 import {FileDeleted} from '../util/Files';
+import {Backend} from './Backend';
+import {DatastoreFile} from './DatastoreFile';
+import {Optional} from '../util/ts/Optional';
 
 const log = Logger.create();
 
 export class MemoryDatastore implements Datastore {
 
     public readonly stashDir: string;
+
+    public readonly filesDir: string;
 
     public readonly dataDir: string;
 
@@ -31,6 +36,8 @@ export class MemoryDatastore implements Datastore {
         // actually have values for them.
         this.dataDir = Directories.getDataDir().path;
         this.stashDir = FilePaths.create(this.dataDir, "stash");
+        this.filesDir = FilePaths.create(this.dataDir, "files");
+
         this.logsDir = FilePaths.create(this.dataDir, "logs");
 
         this.docMetas = {};
@@ -66,6 +73,18 @@ export class MemoryDatastore implements Datastore {
 
         return result;
 
+    }
+
+    public addFile(backend: Backend, name: string, data: Buffer | string): Promise<DatastoreFile> {
+        throw new Error("Not implemented");
+    }
+
+    public getFile(backend: Backend, name: string): Promise<Optional<DatastoreFile>> {
+        throw new Error("Not implemented");
+    }
+    
+    public containsFile(backend: Backend, name: string): Promise<boolean> {
+        throw new Error("Not implemented");
     }
 
     /**

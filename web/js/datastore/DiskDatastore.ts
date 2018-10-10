@@ -9,6 +9,10 @@ import {Directories} from './Directories';
 import fs from 'fs';
 import os from 'os';
 
+import {Backend} from './Backend';
+import {DatastoreFile} from './DatastoreFile';
+import {Optional} from '../util/ts/Optional';
+
 const log = Logger.create();
 
 export class DiskDatastore implements Datastore {
@@ -16,6 +20,8 @@ export class DiskDatastore implements Datastore {
     public readonly dataDir: string;
 
     public readonly stashDir: string;
+
+    public readonly filesDir: string;
 
     public readonly logsDir: string;
 
@@ -33,6 +39,7 @@ export class DiskDatastore implements Datastore {
         this.dataDir = this.directories.dataDir;
         this.dataDirConfig = this.directories.dataDirConfig;
         this.stashDir = this.directories.stashDir;
+        this.filesDir = this.directories.filesDir;
         this.logsDir = this.directories.logsDir;
 
     }
@@ -113,6 +120,46 @@ export class DiskDatastore implements Datastore {
 
     }
 
+
+    public async addFile(backend: Backend, name: string, data: Buffer | string): Promise<DatastoreFile> {
+
+        const fileReference = this.createFileReference(backend, name);
+
+        await Files.createDirAsync(fileReference.dir);
+        await Files.writeFileAsync(fileReference.path, data);
+
+        return this.createDatastoreFile(name, fileReference.path);
+
+    }
+
+    public async getFile(backend: Backend, name: string): Promise<Optional<DatastoreFile>> {
+
+        const fileReference = this.createFileReference(backend, name);
+
+        if (await Files.existsAsync(fileReference.path)) {
+            return Optional.of(this.createDatastoreFile(name, fileReference.path));
+        } else {
+            return Optional.empty();
+        }
+
+    }
+
+    private createDatastoreFile(name: string, path: string): DatastoreFile {
+
+        const url = new URL(`file:///${path}`);
+
+        return {
+            name,
+            url: url.href
+        };
+
+    }
+
+    public containsFile(backend: Backend, name: string): Promise<boolean> {
+        const path = FilePaths.join(this.filesDir, backend.toString().toLowerCase(), name);
+        return Files.existsAsync(path);
+    }
+
     /**
      * Write the datastore to disk.
      */
@@ -188,6 +235,16 @@ export class DiskDatastore implements Datastore {
         return result;
     }
 
+
+    private createFileReference(backend: Backend, name: string): FileReference {
+
+        const dir = FilePaths.join(this.filesDir, backend.toString().toLowerCase());
+        const path = FilePaths.join(dir, name);
+
+        return {dir, path};
+
+    }
+
     public static getUserHome() {
 
         let result = process.env[(process.platform === 'win32') ? 'USERPROFILE' : 'HOME'];
@@ -235,3 +292,9 @@ export interface DeleteResult {
 }
 
 type DirStrategy = 'env' | 'home' | 'manual';
+
+interface FileReference {
+    dir: string;
+    path: string;
+}
+
