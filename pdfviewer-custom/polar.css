@@ -52,6 +52,7 @@ body {
 .polar-htmlviewer #polar-sidebar {
     margin-top: 65px;
     height: calc(100% - 65px);
+    width: 100%;
 }
 
 /*.polar-htmlviewer #polar-progress {*/
