@@ -46,6 +46,11 @@ export const Footer = () =>
             </a>
         </div>
 
+        <div className="button">
+            <a href="https://github.com/burtonator/polar-bookshelf/releases">
+                <img src="https://img.shields.io/github/downloads/burtonator/polar-bookshelf/total.svg"/>
+            </a>
+        </div>
 
         <div className="button">
             <a href="https://github.com/burtonator/polar-bookshelf">
