@@ -23,7 +23,9 @@ export class Tags {
             label = '#' + label;
         }
 
-        if (twitter_txt.isValidHashtag(label)) {
+        const strippedLabel = this.stripTypedLabel(label);
+
+        if (twitter_txt.isValidHashtag(strippedLabel)) {
             return Optional.of(label);
         }
 
@@ -74,6 +76,17 @@ export class Tags {
 
     public static toIDs(tags: Tag[]) {
         return tags.map(current => current.id);
+    }
+
+    /**
+     * We support foo:bar values in tags so that we can have typed tags.
+     * For example: type:book or deck:fun or something along those lines.
+     *
+     */
+    public static stripTypedLabel(label: string) {
+
+        return label.replace(/^#([^:]+):([^:]+)$/g, '#$1$2');
+
     }
 
 }

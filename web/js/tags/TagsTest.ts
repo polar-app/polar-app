@@ -1,8 +1,11 @@
 import {Tags} from './Tags';
+import {assert} from 'chai';
 
 describe('RegExp', function() {
 
     it("test unicode literal", function() {
+
+        Tags.assertValid("#deck:microsoft");
 
         Tags.assertValid("#hashtag");
         Tags.assertValid("#Azərbaycanca");
@@ -33,6 +36,20 @@ describe('RegExp', function() {
         // TODO: the twitter-text JAva library says this is valid but not the
         // JS library.
         // Tags.assertValid("＃日本語ハッシュタグ");
+
+        assert.throws(() => Tags.assertValid("#deck::microsoft"));
+
+    });
+
+});
+
+describe('type tags', function() {
+
+    it("basic functionality", function() {
+
+        assert.equal(Tags.stripTypedLabel("#foo:bar"), "#foobar");
+        assert.equal(Tags.stripTypedLabel("#:bar"), "#:bar");
+        assert.equal(Tags.stripTypedLabel("#bar:"), "#bar:");
 
     });
 
