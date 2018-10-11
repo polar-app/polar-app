@@ -6,7 +6,7 @@
   <h1>Polar Bookshelf</h1>
 
 <a href="https://github.com/burtonator/polar-bookshelf/releases">
-    <img src="https://img.shields.io/github/downloads-pre/burtonator/polar-bookshelf/total.svg?maxAge=2592000"/>
+    <img src="https://img.shields.io/github/downloads/burtonator/polar-bookshelf/total.svg"/>
 </a>
 
 <a href="https://discord.gg/GT8MhA6">
