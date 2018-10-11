@@ -128,6 +128,7 @@ export class Arrays {
 
         const arr = Object.assign([], input);
 
+        // noinspection TsLint
         let j, x, i;
         for (i = arr.length - 1; i > 0; i--) {
             j = Math.floor(Math.random() * (i + 1));
