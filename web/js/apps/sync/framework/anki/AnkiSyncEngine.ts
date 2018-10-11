@@ -13,6 +13,7 @@ import {NoteDescriptor} from './NoteDescriptor';
 import {Optional} from '../../../../util/ts/Optional';
 import {PendingAnkiSyncJob} from './AnkiSyncJob';
 import {DocInfos} from '../../../../metadata/DocInfos';
+import {Tags} from '../../../../tags/Tags';
 
 /**
  * Sync engine for Anki.  Takes cards registered in a DocMeta and then transfers
@@ -24,8 +25,8 @@ export class AnkiSyncEngine implements SyncEngine {
 
     public sync(docMetaSet: DocMetaSet, progress: SyncProgressListener): PendingSyncJob {
 
-        let deckDescriptors = this.toDeckDescriptors(docMetaSet);
-        let noteDescriptors = this.toNoteDescriptors(docMetaSet);
+        const deckDescriptors = this.toDeckDescriptors(docMetaSet);
+        const noteDescriptors = this.toNoteDescriptors(docMetaSet);
 
         return new PendingAnkiSyncJob(docMetaSet, progress, deckDescriptors, noteDescriptors);
 
@@ -57,7 +58,25 @@ export class AnkiSyncEngine implements SyncEngine {
 
         return this.toFlashcardDescriptors(docMetaSet).map(flashcardDescriptor => {
 
-            const deckName = DocInfos.bestTitle(flashcardDescriptor.docMeta.docInfo);
+            const tags = flashcardDescriptor.docMeta.docInfo.tags;
+
+            let deckName;
+
+            if (tags) {
+
+                // TODO: test this..
+
+                deckName = Object.values(tags)
+                    .filter(tag => tag.label.startsWith("#deck:"))
+                    .map(tag => Tags.parseTypedTag(tag.label))
+                    .map(typedTag => typedTag.value)
+                    .pop();
+
+            }
+
+            if (! deckName) {
+                deckName = DocInfos.bestTitle(flashcardDescriptor.docMeta.docInfo);
+            }
 
             const fields: {[name: string]: string} = {};
 
@@ -81,14 +100,14 @@ export class AnkiSyncEngine implements SyncEngine {
 
     protected toFlashcardDescriptors(docMetaSet: DocMetaSet): FlashcardDescriptor[] {
 
-        let result: FlashcardDescriptor[] = [];
+        const result: FlashcardDescriptor[] = [];
 
         docMetaSet.docMetas.forEach(docMeta => {
             Object.values(docMeta.pageMetas).forEach(pageMeta => {
 
                 // collect all flashcards for the current page.
 
-                let flashcards: Flashcard[] = [];
+                const flashcards: Flashcard[] = [];
 
                 flashcards.push(... Dictionaries.values(pageMeta.flashcards));
 
@@ -102,7 +121,7 @@ export class AnkiSyncEngine implements SyncEngine {
                     .flatten()
                     .value());
 
-                let flashcardDescriptors =_.chain(flashcards)
+                const flashcardDescriptors =_.chain(flashcards)
                     .map(current => <FlashcardDescriptor> {
                         docMeta,
                         pageInfo: pageMeta.pageInfo,

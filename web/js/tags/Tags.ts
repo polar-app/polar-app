@@ -2,6 +2,7 @@ import twitter_txt from 'twitter-text';
 import {isPresent} from '../Preconditions';
 import {Optional} from '../util/ts/Optional';
 import {Tag} from './Tag';
+import {TypedTag} from './TypedTag';
 
 export class Tags {
 
@@ -89,4 +90,17 @@ export class Tags {
 
     }
 
+    public static parseTypedTag(value: string): TypedTag {
+
+        value = value.replace("#", "");
+        const split = value.split(":");
+
+        return {
+            name: split[0],
+            value: split[1]
+        };
+
+    }
+
 }
+

@@ -15,13 +15,15 @@ abstract class AnkiSyncJob {
     protected readonly noteDescriptors: NoteDescriptor[];
 
     public constructor(docMetaSet: DocMetaSet,
-                          syncProgressListener: SyncProgressListener,
-                          deckDescriptors: DeckDescriptor[],
-                          noteDescriptors: NoteDescriptor[]) {
+                       syncProgressListener: SyncProgressListener,
+                       deckDescriptors: DeckDescriptor[],
+                       noteDescriptors: NoteDescriptor[]) {
+
         this.docMetaSet = docMetaSet;
         this.syncProgressListener = syncProgressListener;
         this.deckDescriptors = deckDescriptors;
         this.noteDescriptors = noteDescriptors;
+
     }
 
 }
