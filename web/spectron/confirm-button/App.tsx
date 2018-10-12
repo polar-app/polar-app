@@ -1,18 +1,17 @@
 import * as React from 'react';
 import {ConfirmButton} from '../../js/ui/confirm/ConfirmButton';
 import {TextInputButton} from '../../js/ui/text_input_button/TextInputButton';
-import {Dropdown, DropdownItem, DropdownMenu, DropdownToggle} from 'reactstrap';
+import {Button, Dropdown, DropdownItem, DropdownMenu, DropdownToggle, Popover, PopoverBody} from 'reactstrap';
 
 class App<P> extends React.Component<{}, IAppState> {
 
     constructor(props: P, context: any) {
         super(props, context);
 
-        this.toggleDropDown = this.toggleDropDown.bind(this);
-        this.toggleSplit = this.toggleSplit.bind(this);
+        this.toggle = this.toggle.bind(this);
         this.state = {
             dropdownOpen: false,
-            splitButtonOpen: false
+            deletePopoverOpen: false,
         };
     }
 
@@ -23,8 +22,10 @@ class App<P> extends React.Component<{}, IAppState> {
 
                 <ConfirmButton id="confirm"
                                prompt="Are you sure?"
-                               onConfirm={() => console.log('confirml')}>
-                    <i className="fa fa-remove doc-button doc-button-active" />
+                               onConfirm={() => console.log('confirm')}>
+
+                    Delete
+
                 </ConfirmButton>
 
                 <TextInputButton id="set-title"
@@ -72,51 +73,67 @@ class App<P> extends React.Component<{}, IAppState> {
                 {/*</div>*/}
 
 
-                {/*<Dropdown isOpen={this.state.dropdownOpen} toggle={this.toggle}>*/}
-                    {/*<DropdownToggle caret>*/}
-                        {/*Dropdown*/}
-                    {/*</DropdownToggle>*/}
-                    {/*<DropdownMenu>*/}
-                        {/*<DropdownItem header>Header</DropdownItem>*/}
-                        {/*<DropdownItem disabled>Action</DropdownItem>*/}
-                        {/*<DropdownItem>Another Action</DropdownItem>*/}
-                        {/*<DropdownItem divider />*/}
-                        {/*<DropdownItem>Another Action</DropdownItem>*/}
-                    {/*</DropdownMenu>*/}
-                {/*</Dropdown>*/}
+                <Dropdown id="dropdown" isOpen={this.state.deletePopoverOpen} toggle={this.toggle}>
+                    <DropdownToggle>
+
+                    </DropdownToggle>
+                    <DropdownMenu>
+                        <DropdownItem header>Header</DropdownItem>
+                        <DropdownItem disabled>Action</DropdownItem>
+                        <DropdownItem>Another Action</DropdownItem>
+                        <DropdownItem divider />
+                        <DropdownItem>
+
+                        </DropdownItem>
+                    </DropdownMenu>
+                </Dropdown>
+
+                <Popover placement={'bottom'}
+                         isOpen={this.state.deletePopoverOpen}
+                         target="dropdown"
+                         toggle={this.toggle}>
+
+                    <PopoverBody>
+
+                        <div className="w-100 text-center lead p-1">
+                            this is the prmopt
+                        </div>
+
+                        <Button color="secondary"
+                                size="sm"
+                                className="m-1"
+                                >Cancel</Button>
+
+                        <Button color="primary"
+                                size="sm"
+                                className="m-1"
+                                >Confirm</Button>
+
+                    </PopoverBody>
+
+                </Popover>
 
             </div>
         );
 
     }
 
-
-    private toggleDropDown() {
+    private toggle() {
 
         this.setState({
-            splitButtonOpen: this.state.splitButtonOpen,
-            dropdownOpen: !this.state.dropdownOpen
+          deletePopoverOpen: !this.state.deletePopoverOpen
         });
 
     }
-
-    private toggleSplit() {
-
-        this.setState({
-            splitButtonOpen: !this.state.splitButtonOpen
-        });
-
-    }
-
-
 
 }
 
 export default App;
 
 interface IAppState {
+
     dropdownOpen: boolean;
-    splitButtonOpen: boolean;
+    deletePopoverOpen: boolean;
 
 }
 
