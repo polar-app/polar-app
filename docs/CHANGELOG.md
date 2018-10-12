@@ -1,3 +1,8 @@
+
+# 1.0.2
+
+- using Electron 3.0.4
+
 # 1.0.1
 
 - This build should make manual auto-updates work. 

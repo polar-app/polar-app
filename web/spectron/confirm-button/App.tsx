@@ -5,20 +5,30 @@ import {Button, Dropdown, DropdownItem, DropdownMenu, DropdownToggle, Popover, P
 
 class App<P> extends React.Component<{}, IAppState> {
 
+    private open: boolean = false;
+    private selected: SelectedOption = 'none';
+
     constructor(props: P, context: any) {
         super(props, context);
 
         this.toggle = this.toggle.bind(this);
+        this.select = this.select.bind(this);
+
         this.state = {
-            dropdownOpen: false,
-            deletePopoverOpen: false,
+            open: this.open,
+            selected: this.selected
         };
+
     }
 
+
     public render() {
+
+        console.log("this.state.selected: " , this.state);
+
         return (
 
-            <div>
+            <div className="text-right">
 
                 <ConfirmButton id="confirm"
                                prompt="Are you sure?"
@@ -73,41 +83,38 @@ class App<P> extends React.Component<{}, IAppState> {
                 {/*</div>*/}
 
 
-                <Dropdown id="dropdown" isOpen={this.state.deletePopoverOpen} toggle={this.toggle}>
-                    <DropdownToggle>
-
+                <Dropdown id="dropdown" isOpen={this.state.open} toggle={this.toggle}>
+                    <DropdownToggle id="dropdown-toggle">
+                         asdf
                     </DropdownToggle>
                     <DropdownMenu>
-                        <DropdownItem header>Header</DropdownItem>
-                        <DropdownItem disabled>Action</DropdownItem>
-                        <DropdownItem>Another Action</DropdownItem>
-                        <DropdownItem divider />
-                        <DropdownItem>
-
+                        <DropdownItem onClick={() => this.select('delete')}>
+                            Delete
                         </DropdownItem>
                     </DropdownMenu>
                 </Dropdown>
 
-                <Popover placement={'bottom'}
-                         isOpen={this.state.deletePopoverOpen}
-                         target="dropdown"
-                         toggle={this.toggle}>
+                <Popover placement="bottom"
+                         isOpen={this.state.selected === 'delete'}
+                         target="dropdown-toggle">
 
                     <PopoverBody>
 
                         <div className="w-100 text-center lead p-1">
-                            this is the prmopt
+                            Are you sure you want to delete?
                         </div>
 
                         <Button color="secondary"
                                 size="sm"
-                                className="m-1"
-                                >Cancel</Button>
+                                className="m-1">
+                            Cancel
+                        </Button>
 
                         <Button color="primary"
                                 size="sm"
-                                className="m-1"
-                                >Confirm</Button>
+                                className="m-1">
+                            Confirm
+                        </Button>
 
                     </PopoverBody>
 
@@ -118,10 +125,31 @@ class App<P> extends React.Component<{}, IAppState> {
 
     }
 
+
     private toggle() {
 
+        console.log("toggle()")
+
+        this.open = ! this.state.open;
+
         this.setState({
-          deletePopoverOpen: !this.state.deletePopoverOpen
+            open: this.open,
+            selected: this.selected
+        });
+
+    }
+
+    private select(selected: SelectedOption) {
+
+        console.log("select()")
+
+        console.log("Goign to set selected: " + selected)
+
+        this.selected = selected;
+
+        this.setState({
+            open: this.open,
+            selected: this.selected
         });
 
     }
@@ -132,9 +160,10 @@ export default App;
 
 interface IAppState {
 
-    dropdownOpen: boolean;
-    deletePopoverOpen: boolean;
+    open: boolean;
+    selected: SelectedOption;
 
 }
 
+type SelectedOption = 'set-title' | 'delete' | 'none';
 
