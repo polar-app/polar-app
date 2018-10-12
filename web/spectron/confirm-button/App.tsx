@@ -2,6 +2,7 @@ import * as React from 'react';
 import {ConfirmButton} from '../../js/ui/confirm/ConfirmButton';
 import {TextInputButton} from '../../js/ui/text_input_button/TextInputButton';
 import {Button, Dropdown, DropdownItem, DropdownMenu, DropdownToggle, Popover, PopoverBody} from 'reactstrap';
+import {CustomDropdown} from './CustomDropdown';
 
 class App<P> extends React.Component<{}, IAppState> {
 
@@ -83,42 +84,23 @@ class App<P> extends React.Component<{}, IAppState> {
                 {/*</div>*/}
 
 
-                <Dropdown id="dropdown" isOpen={this.state.open} toggle={this.toggle}>
-                    <DropdownToggle id="dropdown-toggle">
-                         asdf
-                    </DropdownToggle>
-                    <DropdownMenu>
-                        <DropdownItem onClick={() => this.select('delete')}>
-                            Delete
-                        </DropdownItem>
-                    </DropdownMenu>
-                </Dropdown>
+                <CustomDropdown id="first"/>
 
-                <Popover placement="bottom"
-                         isOpen={this.state.selected === 'delete'}
-                         target="dropdown-toggle">
 
-                    <PopoverBody>
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+                <br/>
 
-                        <div className="w-100 text-center lead p-1">
-                            Are you sure you want to delete?
-                        </div>
-
-                        <Button color="secondary"
-                                size="sm"
-                                className="m-1">
-                            Cancel
-                        </Button>
-
-                        <Button color="primary"
-                                size="sm"
-                                className="m-1">
-                            Confirm
-                        </Button>
-
-                    </PopoverBody>
-
-                </Popover>
+                <CustomDropdown  id="second-dropdown"/>
 
             </div>
         );
@@ -141,9 +123,9 @@ class App<P> extends React.Component<{}, IAppState> {
 
     private select(selected: SelectedOption) {
 
-        console.log("select()")
+        console.log("select()");
 
-        console.log("Goign to set selected: " + selected)
+        console.log("Goign to set selected: " + selected);
 
         this.selected = selected;
 
