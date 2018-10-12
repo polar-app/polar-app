@@ -102,9 +102,24 @@ export class AnnotationSidebar extends React.Component<AnnotationSidebarProps, A
                                        mutationType: MutationType,
                                        childDocAnnotation: DocAnnotation) {
 
+        if (! childDocAnnotation.ref) {
+            // this is an old annotation.  We can't show it in the sidebar yet.
+            log.warn("Annotation hidden from sidebar: ", childDocAnnotation);
+            return;
+        }
+
         const ref = Refs.parse(childDocAnnotation.ref!);
 
         const annotation = this.docAnnotationIndex.docAnnotationMap[ref.value];
+
+        if (! annotation) {
+            log.warn("No annotation for ref:", annotation);
+            return;
+        }
+
+        if (! annotation.children) {
+            annotation.children = [];
+        }
 
         if (mutationType !== MutationType.DELETE) {
 

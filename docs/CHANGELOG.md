@@ -1,4 +1,12 @@
+# 1.0.1
 
+- This build should make manual auto-updates work. 
+
+- Fixed a bug with some PDFs not opening properly
+
+- Fixed bug with split.js by upgrading and also fixed some issues with rendering
+  the page initially with split.js which caused it to re-snap and re-center
+  itself.
 
 # 1.0.0
 

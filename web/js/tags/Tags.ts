@@ -2,6 +2,7 @@ import twitter_txt from 'twitter-text';
 import {isPresent} from '../Preconditions';
 import {Optional} from '../util/ts/Optional';
 import {Tag} from './Tag';
+import {TypedTag} from './TypedTag';
 
 export class Tags {
 
@@ -23,7 +24,9 @@ export class Tags {
             label = '#' + label;
         }
 
-        if (twitter_txt.isValidHashtag(label)) {
+        const strippedLabel = this.stripTypedLabel(label);
+
+        if (twitter_txt.isValidHashtag(strippedLabel)) {
             return Optional.of(label);
         }
 
@@ -76,4 +79,28 @@ export class Tags {
         return tags.map(current => current.id);
     }
 
+    /**
+     * We support foo:bar values in tags so that we can have typed tags.
+     * For example: type:book or deck:fun or something along those lines.
+     *
+     */
+    public static stripTypedLabel(label: string) {
+
+        return label.replace(/^#([^:]+):([^:]+)$/g, '#$1$2');
+
+    }
+
+    public static parseTypedTag(value: string): TypedTag {
+
+        value = value.replace("#", "");
+        const split = value.split(":");
+
+        return {
+            name: split[0],
+            value: split[1]
+        };
+
+    }
+
 }
+
