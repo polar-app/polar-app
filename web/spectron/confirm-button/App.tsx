@@ -82,7 +82,7 @@ class App<P> extends React.Component<{}, IAppState> {
                 {/*</div>*/}
 
 
-                <DocDropdown id="first"/>
+                {/*<DocDropdown id="first"/>*/}
 
 
                 <br/>
@@ -98,7 +98,7 @@ class App<P> extends React.Component<{}, IAppState> {
                 <br/>
                 <br/>
 
-                <DocDropdown id="second-dropdown"/>
+                {/*<DocDropdown id="second-dropdown"/>*/}
 
             </div>
         );

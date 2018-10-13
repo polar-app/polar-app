@@ -48,8 +48,9 @@ export class TextInputPopover extends React.Component<IProps, IState> {
                             <Input type="text"
                                    name="text"
                                    id={this.props.target + '-input'}
-                                   value={this.props.value  || ''}
+                                   defaultValue={this.props.defaultValue  || ''}
                                    onChange={(event) => this.value = event.target.value}
+                                   autoFocus
                                    placeholder={this.props.placement || ''}/>
 
                         </FormGroup>
@@ -83,7 +84,7 @@ export class TextInputPopover extends React.Component<IProps, IState> {
 interface IProps {
     target: string;
     title: string;
-    value?: string;
+    defaultValue?: string;
     open: boolean;
     placement?: Popper.Placement;
     placeholder?: string;

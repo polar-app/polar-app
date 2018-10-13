@@ -327,26 +327,26 @@ export default class App extends React.Component<AppProps, AppState> {
                         };
                     }}
                     getTdProps={(state: any, rowInfo: any, column: any, instance: any) => {
-                        //
-                        // if (column.id === 'flagged' || column.id === 'archived') {
-                        //
-                        //     return {
-                        //
-                        //         onClick: ((e: any, handleOriginal?: () => void) => {
-                        //
-                        //             this.handleToggleField(rowInfo.original, column.id)
-                        //                 .catch(err => log.error("Could not handle toggle: ", err));
-                        //
-                        //             if (handleOriginal) {
-                        //                 // needed for react table to function properly.
-                        //                 handleOriginal();
-                        //             }
-                        //
-                        //         })
-                        //
-                        //     };
-                        //
-                        // }
+
+                        if (column.id === 'flagged' || column.id === 'archived') {
+
+                            return {
+
+                                onClick: ((e: any, handleOriginal?: () => void) => {
+
+                                    this.handleToggleField(rowInfo.original, column.id)
+                                        .catch(err => log.error("Could not handle toggle: ", err));
+
+                                    if (handleOriginal) {
+                                        // needed for react table to function properly.
+                                        handleOriginal();
+                                    }
+
+                                })
+
+                            };
+
+                        }
 
                         return {};
 
@@ -364,10 +364,22 @@ export default class App extends React.Component<AppProps, AppState> {
 
     private onDocDeleted(repoDocInfo: RepoDocInfo) {
         console.log("Deleted: ", repoDocInfo);
+
+        // FIXME: not implemented yet.
+
+        this.refresh();
+
     }
 
     private onDocSetTitle(repoDocInfo: RepoDocInfo, title: string) {
-        console.log("set title: ", repoDocInfo, title);
+
+        log.info("Setting doc title: " , title);
+
+        this.docRepository.syncDocInfoTitle(repoDocInfo, title)
+            .catch(err => log.error("Could not write doc title: ", err));
+
+        this.refresh();
+
     }
 
     private refreshState(repoDocs: RepoDocInfo[]) {
@@ -484,6 +496,8 @@ export default class App extends React.Component<AppProps, AppState> {
     }
 
     private async handleToggleField(repoDocInfo: RepoDocInfo, field: string) {
+
+        // TODO: move to syncDocInfoArchived in DocRepository
 
         if (field === 'archived') {
             RendererAnalytics.event({category: 'user', action: 'archived-doc'});

@@ -53,7 +53,7 @@ export class DocDropdown extends React.Component<IProps, IState> {
                 <TextInputPopover open={this.state.selected === 'set-title'}
                                   target={this.props.id + '-dropdown-toggle'}
                                   title="Enter title for document:"
-                                  value={this.props.repoDocInfo.title}
+                                  defaultValue={this.props.repoDocInfo.title}
                                   onCancel={() => this.select('none')}
                                   onComplete={this.onSetTitle}/>
 
@@ -70,12 +70,12 @@ export class DocDropdown extends React.Component<IProps, IState> {
     }
 
     private onSetTitle(title: string) {
-        this.select('none')
+        this.select('none');
         this.props.onSetTitle(this.props.repoDocInfo, title);
     }
 
     private onDelete() {
-        this.select('none')
+        this.select('none');
         this.props.onDelete(this.props.repoDocInfo);
     }
 

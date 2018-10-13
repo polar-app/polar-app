@@ -35,6 +35,9 @@ export class DocRepository {
      */
     public updateDocInfo(...repoDocInfos: RepoDocInfo[]) {
 
+        // FIXME: need to send an event so that the UI can refresh since new tags
+        // are present.
+
         for (const repoDocInfo of repoDocInfos) {
             this.repoDocs[repoDocInfo.fingerprint] = repoDocInfo;
         }
@@ -68,7 +71,26 @@ export class DocRepository {
     }
 
     /**
-     *
+     * Update the RepoDocInfo object with the given tags.
+     */
+    public async syncDocInfoTitle(repoDocInfo: RepoDocInfo, title: string) {
+
+        Preconditions.assertPresent(repoDocInfo);
+        Preconditions.assertPresent(repoDocInfo.docInfo);
+        Preconditions.assertPresent(title);
+
+        repoDocInfo = Object.assign({}, repoDocInfo);
+        repoDocInfo.title = title;
+        repoDocInfo.docInfo.title = title;
+
+        this.updateDocInfo(repoDocInfo);
+
+        return this.syncDocInfo(repoDocInfo.docInfo);
+
+    }
+
+    /**
+     * Update the RepoDocInfo object with the given tags.
      */
     public async syncDocInfoTags(repoDocInfo: RepoDocInfo, tags: Tag[]) {
 
@@ -79,8 +101,6 @@ export class DocRepository {
         repoDocInfo = Object.assign({}, repoDocInfo);
         repoDocInfo.docInfo.tags = Tags.toMap(tags);
 
-        // FIXME: need to send an event so that the UI can refresh since new tags
-        // are present.
         this.updateDocInfo(repoDocInfo);
 
         return this.syncDocInfo(repoDocInfo.docInfo);
