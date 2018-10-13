@@ -76,10 +76,15 @@ export class TextInputButton extends React.Component<IProps, IState> {
         );
     }
 
-    private onCancel() {
+    private hide() {
         this.setState({
             popoverOpen: false
         });
+
+    }
+
+    private onCancel() {
+        this.hide();
     }
 
     private toggle() {

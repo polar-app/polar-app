@@ -1,7 +1,8 @@
 import * as React from 'react';
 import {Dropdown, DropdownItem, DropdownMenu, DropdownToggle} from 'reactstrap';
-import {ConfirmPopover} from '../../js/ui/confirm/ConfirmPopover';
-import {TextInputPopover} from '../../js/ui/text_input/TextInputPopover';
+import {ConfirmPopover} from '../../../web/js/ui/confirm/ConfirmPopover';
+import {TextInputPopover} from '../../../web/js/ui/text_input/TextInputPopover';
+import {RepoDocInfo} from './RepoDocInfo';
 
 export class DocDropdown extends React.Component<IProps, IState> {
 
@@ -13,6 +14,8 @@ export class DocDropdown extends React.Component<IProps, IState> {
 
         this.toggle = this.toggle.bind(this);
         this.select = this.select.bind(this);
+        this.onDelete = this.onDelete.bind(this);
+        this.onSetTitle = this.onSetTitle.bind(this);
 
         this.state = {
             open: this.open,
@@ -50,19 +53,30 @@ export class DocDropdown extends React.Component<IProps, IState> {
                 <TextInputPopover open={this.state.selected === 'set-title'}
                                   target={this.props.id + '-dropdown-toggle'}
                                   title="Enter title for document:"
+                                  value={this.props.repoDocInfo.title}
                                   onCancel={() => this.select('none')}
-                                  onComplete={() => console.log('confirmed')}/>
+                                  onComplete={this.onSetTitle}/>
 
 
                 <ConfirmPopover open={this.state.selected === 'delete'}
                                 target={this.props.id + '-dropdown-toggle'}
                                 prompt="Are you sure you want to delete this document?"
                                 onCancel={() => this.select('none')}
-                                onConfirm={() => console.log('confirmed')}/>
+                                onConfirm={this.onDelete}/>
 
             </div>
         );
 
+    }
+
+    private onSetTitle(title: string) {
+        this.select('none')
+        this.props.onSetTitle(this.props.repoDocInfo, title);
+    }
+
+    private onDelete() {
+        this.select('none')
+        this.props.onDelete(this.props.repoDocInfo);
     }
 
 
@@ -96,6 +110,9 @@ export class DocDropdown extends React.Component<IProps, IState> {
 
 interface IProps {
     id: string;
+    repoDocInfo: RepoDocInfo;
+    onDelete: (repoDocInfo: RepoDocInfo) => void;
+    onSetTitle: (repoDocInfo: RepoDocInfo, title: string) => void;
 }
 
 interface IState {

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {ConfirmButton} from '../../js/ui/confirm/ConfirmButton';
-import {DocDropdown} from './DocDropdown';
+import {DocDropdown} from '../../../apps/repository/js/DocDropdown';
 
 class App<P> extends React.Component<{}, IAppState> {
 

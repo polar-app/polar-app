@@ -22,7 +22,7 @@ import {Tags} from '../../../web/js/tags/Tags';
 import {DateTimeTableCell} from './DateTimeTableCell';
 import {RendererAnalytics} from '../../../web/js/ga/RendererAnalytics';
 import {MessageBanner} from './MessageBanner';
-import {DocDropdown} from '../../../web/spectron/confirm-button/DocDropdown';
+import {DocDropdown} from './DocDropdown';
 
 const log = Logger.create();
 
@@ -42,6 +42,10 @@ export default class App extends React.Component<AppProps, AppState> {
         this.persistenceLayer = props.persistenceLayer;
         this.docRepository = new DocRepository(this.persistenceLayer);
         this.repoDocInfoLoader = new RepoDocInfoLoader(this.persistenceLayer);
+
+
+        this.onDocDeleted = this.onDocDeleted.bind(this);
+        this.onDocSetTitle = this.onDocSetTitle.bind(this);
 
         this.state = {
             data: []
@@ -275,8 +279,13 @@ export default class App extends React.Component<AppProps, AppState> {
                                 className: 'doc-dropdown',
                                 Cell: (row: any) => {
 
+                                    const repoDocInfo: RepoDocInfo = row.original;
+
                                     return (
-                                        <DocDropdown id={'doc-dropdown-' + row.index}/>
+                                        <DocDropdown id={'doc-dropdown-' + row.index}
+                                                     repoDocInfo={repoDocInfo}
+                                                     onDelete={this.onDocDeleted}
+                                                     onSetTitle={this.onDocSetTitle}/>
                                     );
 
                                 }
@@ -353,6 +362,13 @@ export default class App extends React.Component<AppProps, AppState> {
         );
     }
 
+    private onDocDeleted(repoDocInfo: RepoDocInfo) {
+        console.log("Deleted: ", repoDocInfo);
+    }
+
+    private onDocSetTitle(repoDocInfo: RepoDocInfo, title: string) {
+        console.log("set title: ", repoDocInfo, title);
+    }
 
     private refreshState(repoDocs: RepoDocInfo[]) {
 
