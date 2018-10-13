@@ -13,6 +13,7 @@ import {AnnotationSidebarClient} from '../../annotation_sidebar/AnnotationSideba
 import {BrowserWindowRegistry} from '../../electron/framework/BrowserWindowRegistry';
 import {Menus} from './Menus';
 import {isPresent} from '../../Preconditions';
+import {Directories} from '../../datastore/Directories';
 
 const log = Logger.create();
 
@@ -121,7 +122,7 @@ export class MainAppMenu {
                                 type: 'info',
                                 buttons: ['OK'],
                                 title: 'Polar Bookshelf',
-                                message: 'Version ' + Version.get(),
+                                message: this.createAboutMessage(),
                                 detail: '',
                                 // icon: APP_ICON
                             });
@@ -148,6 +149,17 @@ export class MainAppMenu {
             },
         ];
 
+    }
+
+    private createAboutMessage() {
+
+        const dataDir = Directories.getDataDir().path;
+        const version = Version.get();
+
+        return '' +
+            `version:  ${version}\n` +
+            `data dir: ${dataDir}\n`
+            ;
     }
 
     private createFileMenuTemplate() {

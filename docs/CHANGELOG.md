@@ -1,6 +1,11 @@
 
 # 1.0.2
 
+- show the data dir path when loading help | about so that people can easily
+  figure out where their data is being stored.
+
+- ability to set titles for documents in the doc repository
+
 - using Electron 3.0.4
 
 # 1.0.1
