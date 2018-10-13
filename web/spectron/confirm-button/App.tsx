@@ -1,8 +1,6 @@
 import * as React from 'react';
 import {ConfirmButton} from '../../js/ui/confirm/ConfirmButton';
-import {TextInputButton} from '../../js/ui/text_input_button/TextInputButton';
-import {Button, Dropdown, DropdownItem, DropdownMenu, DropdownToggle, Popover, PopoverBody} from 'reactstrap';
-import {CustomDropdown} from './CustomDropdown';
+import {DocDropdown} from './DocDropdown';
 
 class App<P> extends React.Component<{}, IAppState> {
 
@@ -39,13 +37,13 @@ class App<P> extends React.Component<{}, IAppState> {
 
                 </ConfirmButton>
 
-                <TextInputButton id="set-title"
-                                 title="Enter new title"
-                                 onComplete={(title) => console.log(title)}>
+                {/*<TextInputButton id="set-title"*/}
+                                 {/*title="Enter new title"*/}
+                                 {/*onComplete={(title) => console.log(title)}>*/}
 
-                    Change title
+                    {/*Change title*/}
 
-                </TextInputButton>
+                {/*</TextInputButton>*/}
 
 
                 {/*<div className="dropdown">*/}
@@ -84,7 +82,7 @@ class App<P> extends React.Component<{}, IAppState> {
                 {/*</div>*/}
 
 
-                <CustomDropdown id="first"/>
+                <DocDropdown id="first"/>
 
 
                 <br/>
@@ -100,7 +98,7 @@ class App<P> extends React.Component<{}, IAppState> {
                 <br/>
                 <br/>
 
-                <CustomDropdown  id="second-dropdown"/>
+                <DocDropdown id="second-dropdown"/>
 
             </div>
         );

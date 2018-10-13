@@ -38,9 +38,13 @@ export class AnnotationSidebars {
 
         this.scrollToElement(pageElement);
 
-        const annotationElement = document.querySelector(selector)! as HTMLElement;
+        const annotationElement = document.querySelector(selector);
 
-        this.scrollToElement(annotationElement);
+        if (annotationElement) {
+            this.scrollToElement(annotationElement as HTMLElement);
+        } else {
+            log.warn("Could not find annotation element: " + selector);
+        }
 
         // TODO: disable this for now because with the pagemark the flash does
         // not actually work. Migrate to using some type of pointer showing the

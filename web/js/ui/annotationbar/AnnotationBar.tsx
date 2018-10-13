@@ -21,7 +21,6 @@ export class AnnotationBar extends React.Component<AnnotationBarProps, IState> {
             this.setState({annotationBarTriggerEventDispatcher});
         });
 
-
     }
 
     public render() {

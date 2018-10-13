@@ -3,17 +3,10 @@ import React from 'react';
 import {Button, Popover, PopoverBody} from 'reactstrap';
 import Popper from 'popper.js';
 
-export class ConfirmButton extends React.Component<IProps, IState> {
+export class ConfirmPopover extends React.Component<IProps, IState> {
 
     constructor(props: IProps) {
         super(props);
-
-        this.onCancel = this.onCancel.bind(this);
-        this.toggle = this.toggle.bind(this);
-
-        this.state = {
-            popoverOpen: false
-        };
 
     }
 
@@ -21,20 +14,20 @@ export class ConfirmButton extends React.Component<IProps, IState> {
         return (
 
             <Popover placement={this.props.placement || 'bottom'}
-                     isOpen={this.state.popoverOpen}
+                     isOpen={this.props.open}
                      target={this.props.target}
-                     toggle={this.toggle}>
+                     className="confirm-popover">
 
-                <PopoverBody>
+                <PopoverBody className="text-center">
 
-                    <div className="w-100 text-center lead p-1">
+                    <div className="w-100 lead p-1">
                         {this.props.prompt}
                     </div>
 
                     <Button color="secondary"
                             size="sm"
                             className="m-1"
-                            onClick={() => this.onCancel()}>Cancel</Button>
+                            onClick={() => this.props.onCancel()}>Cancel</Button>
 
                     <Button color="primary"
                             size="sm"
@@ -47,28 +40,17 @@ export class ConfirmButton extends React.Component<IProps, IState> {
         );
     }
 
-    private onCancel() {
-        this.setState({
-            popoverOpen: false
-        });
-    }
-
-    private toggle() {
-        this.setState({
-            popoverOpen: !this.state.popoverOpen
-        });
-    }
-
 }
 
 interface IProps {
+    open: boolean;
     target: string;
     prompt: string;
     placement?: Popper.Placement;
-    // onCancel: () => void;
+    onCancel: () => void;
     onConfirm: () => void;
 }
 
 interface IState {
-    popoverOpen: boolean;
+    open: boolean;
 }

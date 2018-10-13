@@ -8,6 +8,9 @@ import {Points} from '../../Points';
 import {DocFormat} from '../../docformat/DocFormat';
 import {DocFormatFactory} from '../../docformat/DocFormatFactory';
 import {PopupStateEvent} from './PopupStateEvent';
+import {Logger} from '../../logger/Logger';
+
+const log = Logger.create();
 
 export class ControlledPopup extends React.Component<ControlledPopupProps, IState> {
 
@@ -129,18 +132,25 @@ export class ControlledPopup extends React.Component<ControlledPopupProps, IStat
         const id = `${this.props.id}-anchor`;
         const cssText = `position: absolute; top: ${top}px; left: ${left}px;`;
 
-        const anchorElement = document.getElementById(id)!;
-        anchorElement.style.cssText = cssText;
+        const anchorElement = document.getElementById(id);
 
-        // now move the element to the proper page.
+        if (anchorElement) {
 
-        anchorElement.parentElement!.removeChild(anchorElement);
+            anchorElement.style.cssText = cssText;
 
-        pageElement.insertBefore(anchorElement, pageElement.firstChild);
+            // now move the element to the proper page.
 
-        this.setState({
-            active: true,
-        });
+            anchorElement.parentElement!.removeChild(anchorElement);
+
+            pageElement.insertBefore(anchorElement, pageElement.firstChild);
+
+            this.setState({
+                active: true,
+            });
+
+        } else {
+            log.warn("Could not find anchor element for id: " + id);
+        }
 
     }
 

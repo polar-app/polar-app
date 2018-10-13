@@ -2,6 +2,16 @@ import {Elements} from '../../../web/js/util/Elements';
 
 export class Blackout {
 
+    public static toggle(value: boolean) {
+
+        if (value) {
+            this.enable();
+        } else {
+            this.disable();
+        }
+
+    }
+
     public static enable() {
 
         const style = 'height:100%; width:100%; position:absolute; top:0; left:0; background-color:#000000; opacity: 0.2;';

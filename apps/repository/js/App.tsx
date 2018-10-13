@@ -22,6 +22,7 @@ import {Tags} from '../../../web/js/tags/Tags';
 import {DateTimeTableCell} from './DateTimeTableCell';
 import {RendererAnalytics} from '../../../web/js/ga/RendererAnalytics';
 import {MessageBanner} from './MessageBanner';
+import {DocDropdown} from '../../../web/spectron/confirm-button/DocDropdown';
 
 const log = Logger.create();
 
@@ -254,18 +255,33 @@ export default class App extends React.Component<AppProps, AppState> {
 
                                     const title = 'Archive document';
 
-                                    if (row.original.archived) {
-                                        return (
-                                            <i className="fa fa-check doc-button doc-button-active" title={title}/>
-                                        );
-                                    } else {
-                                        return (
-                                            <i className="fa fa-check doc-button doc-button-inactive" title={title}/>
-                                        );
-                                    }
+                                    const uiClassName = row.original.archived ? 'doc-button-active' : 'doc-button-inactive';
+
+                                    const className = `fa fa-check doc-button ${uiClassName}`;
+
+                                    return (
+                                        <i className={className} title={title}/>
+                                    );
+
+                                }
+                            },
+                            {
+                                Header: '',
+                                accessor: '',
+                                maxWidth: 25,
+                                defaultSortDesc: true,
+                                resizable: false,
+                                sortable: false,
+                                className: 'doc-dropdown',
+                                Cell: (row: any) => {
+
+                                    return (
+                                        <DocDropdown id={'doc-dropdown-' + row.index}/>
+                                    );
 
                                 }
                             }
+
 
 
 
@@ -297,31 +313,31 @@ export default class App extends React.Component<AppProps, AppState> {
 
                             style: {
                                 background: rowInfo && rowInfo.index === this.state.selected ? '#00afec' : 'white',
-                                color: rowInfo && rowInfo.index === this.state.selected ? 'white' : 'black'
+                                color: rowInfo && rowInfo.index === this.state.selected ? 'white' : 'black',
                             }
                         };
                     }}
                     getTdProps={(state: any, rowInfo: any, column: any, instance: any) => {
-
-                        if (column.id === 'flagged' || column.id === 'archived') {
-
-                            return {
-
-                                onClick: ((e: any, handleOriginal?: () => void) => {
-
-                                    this.handleToggleField(rowInfo.original, column.id)
-                                        .catch(err => log.error("Could not handle toggle: ", err));
-
-                                    if (handleOriginal) {
-                                        // needed for react table to function properly.
-                                        handleOriginal();
-                                    }
-
-                                })
-
-                            };
-
-                        }
+                        //
+                        // if (column.id === 'flagged' || column.id === 'archived') {
+                        //
+                        //     return {
+                        //
+                        //         onClick: ((e: any, handleOriginal?: () => void) => {
+                        //
+                        //             this.handleToggleField(rowInfo.original, column.id)
+                        //                 .catch(err => log.error("Could not handle toggle: ", err));
+                        //
+                        //             if (handleOriginal) {
+                        //                 // needed for react table to function properly.
+                        //                 handleOriginal();
+                        //             }
+                        //
+                        //         })
+                        //
+                        //     };
+                        //
+                        // }
 
                         return {};
 
