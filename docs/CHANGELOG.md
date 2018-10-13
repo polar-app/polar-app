@@ -1,6 +1,8 @@
 
 # 1.0.2
 
+- upgrade to latest reactstrap 
+
 - show the data dir path when loading help | about so that people can easily
   figure out where their data is being stored.
 
