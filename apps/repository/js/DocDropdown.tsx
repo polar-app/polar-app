@@ -43,10 +43,12 @@ export class DocDropdown extends React.Component<IProps, IState> {
                             Set title
                         </DropdownItem>
 
-                        <DropdownItem onClick={() => this.select('delete')}>
-                            Delete
-                        </DropdownItem>
+                        {/*<DropdownItem onClick={() => this.select('delete')}>*/}
+                            {/*Delete*/}
+                        {/*</DropdownItem>*/}
+
                     </DropdownMenu>
+
 
                 </Dropdown>
 
@@ -56,7 +58,6 @@ export class DocDropdown extends React.Component<IProps, IState> {
                                   defaultValue={this.props.repoDocInfo.title}
                                   onCancel={() => this.select('none')}
                                   onComplete={this.onSetTitle}/>
-
 
                 <ConfirmPopover open={this.state.selected === 'delete'}
                                 target={this.props.id + '-dropdown-toggle'}
