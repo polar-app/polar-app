@@ -1,7 +1,6 @@
 import {BrowserWindow, nativeImage, shell} from "electron";
 import {Logger} from '../../logger/Logger';
 import {AppPaths} from '../../electron/webresource/AppPaths';
-import {of} from 'rxjs';
 
 const log = Logger.create();
 

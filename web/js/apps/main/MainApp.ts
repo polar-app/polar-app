@@ -157,6 +157,13 @@ export class MainApp {
             // On OS X it's common to re-create a window in the app when the
             // dock icon is clicked and there are no other windows open.
 
+            // TODO: I think this is actually better behavior.  If the
+            // repository is not running, launch it, otherwise just switch to the
+            // document repository app.
+            //
+            // AppLauncher.launchRepositoryApp()
+            //    .catch(err => log.error("Could not launch repository app: ", err));
+
             await MainAppBrowserWindowFactory.createWindow();
 
         });
