@@ -8,12 +8,13 @@ import {Preconditions} from '../../../web/js/Preconditions';
 import {RepoDocInfoIndex} from './RepoDocInfoIndex';
 import {TagsDB} from './TagsDB';
 import {Optional} from '../../../web/js/util/ts/Optional';
+import {DocMetaFileRefs} from '../../../web/js/datastore/DocMetaRef';
 
 const log = Logger.create();
 
 /**
- * The main interface to the DocRepository including updates, the existing loaded
- * document metadata, and tags database.
+ * The main interface to the DocRepository including updates, the existing
+ * loaded document metadata, and tags database.
  */
 export class DocRepository {
 
@@ -107,6 +108,17 @@ export class DocRepository {
 
     }
 
+    public async syncDeleteDocInfo(repoDocInfo: RepoDocInfo) {
+
+        // delete it from the in-memory index.
+        delete this.repoDocs[repoDocInfo.fingerprint];
+
+        // delete it from the repo now.
+        const docMetaFileRef = DocMetaFileRefs.createFromDocInfo(repoDocInfo.docInfo);
+
+        return this.persistenceLayer.delete(docMetaFileRef);
+
+    }
 
     private init() {
 

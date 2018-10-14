@@ -77,6 +77,8 @@ export class DiskDatastore implements Datastore {
 
         const docPath = FilePaths.join(this.directories.stashDir, docMetaFileRef.filename);
 
+        log.info(`Deleting statePath ${statePath} and docPath ${docPath}`);
+
         return {
             docMetaFile: await Files.deleteAsync(statePath),
             dataFile: await Files.deleteAsync(docPath)

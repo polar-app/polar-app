@@ -43,9 +43,9 @@ export class DocDropdown extends React.Component<IProps, IState> {
                             Set title
                         </DropdownItem>
 
-                        {/*<DropdownItem onClick={() => this.select('delete')}>*/}
-                            {/*Delete*/}
-                        {/*</DropdownItem>*/}
+                        <DropdownItem onClick={() => this.select('delete')}>
+                            Delete
+                        </DropdownItem>
 
                     </DropdownMenu>
 

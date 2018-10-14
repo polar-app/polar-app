@@ -363,9 +363,11 @@ export default class App extends React.Component<AppProps, AppState> {
     }
 
     private onDocDeleted(repoDocInfo: RepoDocInfo) {
-        console.log("Deleted: ", repoDocInfo);
 
-        // FIXME: not implemented yet.
+        log.info("Deleting document: ", repoDocInfo)
+
+        this.docRepository.syncDeleteDocInfo(repoDocInfo)
+            .catch(err => log.error("Could not delete doc: ", err));
 
         this.refresh();
 

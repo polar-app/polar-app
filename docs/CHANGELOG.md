@@ -1,6 +1,8 @@
 
 # 1.0.2
 
+- deleting documents from the repository seems to work now.
+
 - upgrade to latest reactstrap 
 
 - show the data dir path when loading help | about so that people can easily
