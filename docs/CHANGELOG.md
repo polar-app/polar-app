@@ -1,22 +1,29 @@
 
 # 1.0.2
 
+- The delete document prompt now has a subtitle to note that you will also lose
+  the annotations.
+
+- Border around the webview so you can see which part of the page is the doc.
+
 - On OS X it's common to re-create a window in the app when the
   dock icon is clicked and there are no other windows open. The way
   we handle this now is that if there are no windows open we re-create
   the document repository so they can select one. Otherwise we just
   re-focus the most recently used window.
 
-- deleting documents from the repository seems to work now.
+- Deleting documents in the UI app repository is implemented.
 
-- upgrade to latest reactstrap 
+- Deleting documents from the repository via API is implemented.
 
-- show the data dir path when loading help | about so that people can easily
+- Upgrade to latest reactstrap 
+
+- Show the data dir path when loading help | about so that people can easily
   figure out where their data is being stored.
 
-- ability to set titles for documents in the doc repository
+- Ability to set titles for documents in the doc repository
 
-- using Electron 3.0.4
+- Using Electron 3.0.4
 
 # 1.0.1
 
