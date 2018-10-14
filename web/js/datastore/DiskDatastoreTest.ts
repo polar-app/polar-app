@@ -1,7 +1,6 @@
-
 import {assert} from 'chai';
 import {assertJSON} from '../test/Assertions';
-import {DocMetas, MockDocMetas} from '../metadata/DocMetas';
+import {MockDocMetas} from '../metadata/DocMetas';
 import {DiskDatastore} from './DiskDatastore';
 import {DefaultPersistenceLayer} from './DefaultPersistenceLayer';
 import {DocMeta} from '../metadata/DocMeta';
@@ -15,6 +14,7 @@ import {Dictionaries} from '../util/Dictionaries';
 import {Directories, GlobalDataDir} from './Directories';
 import {MockPHZWriter} from '../phz/MockPHZWriter';
 import {DocMetaFileRef} from './DocMetaRef';
+import {Backend} from './Backend';
 
 const rimraf = require('rimraf');
 
@@ -227,6 +227,20 @@ describe('DiskDatastore', function() {
 
         });
 
+        it("adding binary files", async function() {
+
+            const data = 'fake image data';
+
+            assert.ok(! await diskDatastore.containsFile(Backend.IMAGE, 'test.jpg'));
+
+            await diskDatastore.addFile(Backend.IMAGE, 'test.jpg', data);
+
+            assert.ok(await diskDatastore.containsFile(Backend.IMAGE, 'test.jpg'));
+
+            const datastoreFile = await diskDatastore.getFile(Backend.IMAGE, 'test.jpg')
+            assert.ok(datastoreFile);
+
+        });
 
         it("getDocMetaFiles", async function() {
 

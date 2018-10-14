@@ -69,6 +69,8 @@ export class AnkiSyncEngine implements SyncEngine {
                 deckName = Object.values(tags)
                     .filter(tag => tag.label.startsWith("#deck:"))
                     .map(tag => Tags.parseTypedTag(tag.label))
+                    .filter(typedTag => typedTag.isPresent())
+                    .map(typedTag => typedTag.get())
                     .map(typedTag => typedTag.value)
                     .pop();
 
@@ -131,7 +133,8 @@ export class AnkiSyncEngine implements SyncEngine {
 
                 result.push(...flashcardDescriptors);
 
-            })
+            });
+
         });
 
         return result;

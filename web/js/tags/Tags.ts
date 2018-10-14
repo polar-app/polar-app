@@ -26,7 +26,11 @@ export class Tags {
 
         const strippedLabel = this.stripTypedLabel(label);
 
-        if (twitter_txt.isValidHashtag(strippedLabel)) {
+        if ( ! strippedLabel.isPresent()) {
+            return Optional.empty();
+        }
+
+        if (twitter_txt.isValidHashtag(strippedLabel.get())) {
             return Optional.of(label);
         }
 
@@ -84,21 +88,27 @@ export class Tags {
      * For example: type:book or deck:fun or something along those lines.
      *
      */
-    public static stripTypedLabel(label: string) {
+    public static stripTypedLabel(label: string): Optional<string> {
 
-        return label.replace(/^#([^:]+):([^:]+)$/g, '#$1$2');
+        const match = label.match(/:/g);
+
+        if (match && match.length > 1) {
+            Optional.empty();
+        }
+
+        return Optional.of(label.replace(/^#([^:]+):([^:]+)$/g, '#$1$2'));
 
     }
 
-    public static parseTypedTag(value: string): TypedTag {
+    public static parseTypedTag(value: string): Optional<TypedTag> {
 
         value = value.replace("#", "");
         const split = value.split(":");
 
-        return {
+        return Optional.of({
             name: split[0],
             value: split[1]
-        };
+        });
 
     }
 

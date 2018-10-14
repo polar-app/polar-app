@@ -39,6 +39,9 @@ describe('RegExp', function() {
 
         assert.throws(() => Tags.assertValid("#deck::microsoft"));
 
+        assert.throws(() => Tags.assertValid("#deck:foo:bar"));
+        assert.throws(() => Tags.assertValid("#deck::foo"));
+
     });
 
 });
@@ -47,9 +50,11 @@ describe('type tags', function() {
 
     it("basic functionality", function() {
 
-        assert.equal(Tags.stripTypedLabel("#foo:bar"), "#foobar");
-        assert.equal(Tags.stripTypedLabel("#:bar"), "#:bar");
-        assert.equal(Tags.stripTypedLabel("#bar:"), "#bar:");
+        assert.equal(Tags.stripTypedLabel("#foo:bar").get(), "#foobar");
+        assert.equal(Tags.stripTypedLabel("#:bar").get(), "#:bar");
+        assert.equal(Tags.stripTypedLabel("#bar:").get(), "#bar:");
+
+        assert.ok(! Tags.stripTypedLabel("#bar:cat:dog").isPresent());
 
     });
 

@@ -127,9 +127,16 @@ export class DiskDatastore implements Datastore {
 
     public async addFile(backend: Backend, name: string, data: Buffer | string, meta: FileMeta = {}): Promise<DatastoreFile> {
 
+        // FIXME: make sure the file is sane ... nothing that can't be encoded
+        // as a file and must have a three letter extension.  We should just
+        // have the files be alphanumeric for now and support a 3-4 char
+        // suffix.
+
         const fileReference = this.createFileReference(backend, name);
 
+        // this would create the parent dir for the file when it does not exist.
         await Files.createDirAsync(fileReference.dir);
+
         await Files.writeFileAsync(fileReference.path, data);
 
         return this.createDatastoreFile(name, fileReference.path);
