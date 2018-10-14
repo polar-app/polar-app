@@ -96,7 +96,7 @@ export class Tags {
             Optional.empty();
         }
 
-        return Optional.of(label.replace(/^#([^:]+):([^:]+)$/g, '#$1$2'));
+        return Optional.of(label.replace(/^#([^:/]+):([^:]+)$/g, '#$1$2'));
 
     }
 

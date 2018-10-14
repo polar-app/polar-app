@@ -22,6 +22,18 @@ const tmpdir = os.tmpdir();
 
 describe('DiskDatastore', function() {
 
+    it("valid file names for attachments", async function() {
+
+        assert.ok(DiskDatastore.validateFileName('test.jpg'));
+        assert.ok(DiskDatastore.validateFileName('test.html'));
+        assert.ok(DiskDatastore.validateFileName('abc124ABC.txt'));
+        assert.ok(DiskDatastore.validateFileName('abc124ABC'));
+
+        assert.ok(! DiskDatastore.validateFileName('test this.jpg'));
+        assert.ok(! DiskDatastore.validateFileName('testthis.jpggg'));
+
+    });
+
     it("init and test paths", async function() {
 
         const dataDir = FilePaths.join(tmpdir, 'test-paths');
@@ -233,12 +245,21 @@ describe('DiskDatastore', function() {
 
             assert.ok(! await diskDatastore.containsFile(Backend.IMAGE, 'test.jpg'));
 
-            await diskDatastore.addFile(Backend.IMAGE, 'test.jpg', data);
+            const meta = {
+                "foo": "bar"
+            };
+
+            await diskDatastore.addFile(Backend.IMAGE, 'test.jpg', data, meta);
 
             assert.ok(await diskDatastore.containsFile(Backend.IMAGE, 'test.jpg'));
 
             const datastoreFile = await diskDatastore.getFile(Backend.IMAGE, 'test.jpg')
             assert.ok(datastoreFile);
+            assert.ok(datastoreFile.isPresent());
+            assert.ok(datastoreFile.get());
+
+            assertJSON(datastoreFile.get().meta, meta);
+
 
         });
 

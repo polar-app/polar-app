@@ -12,6 +12,7 @@ import os from 'os';
 import {Backend} from './Backend';
 import {DatastoreFile} from './DatastoreFile';
 import {Optional} from '../util/ts/Optional';
+import {valid} from 'semver';
 
 const log = Logger.create();
 
@@ -127,10 +128,7 @@ export class DiskDatastore implements Datastore {
 
     public async addFile(backend: Backend, name: string, data: Buffer | string, meta: FileMeta = {}): Promise<DatastoreFile> {
 
-        // FIXME: make sure the file is sane ... nothing that can't be encoded
-        // as a file and must have a three letter extension.  We should just
-        // have the files be alphanumeric for now and support a 3-4 char
-        // suffix.
+        DiskDatastore.assertFileName(name);
 
         const fileReference = this.createFileReference(backend, name);
 
@@ -139,35 +137,31 @@ export class DiskDatastore implements Datastore {
 
         await Files.writeFileAsync(fileReference.path, data);
 
-        return this.createDatastoreFile(name, fileReference.path);
+        await Files.writeFileAsync(fileReference.metaPath, JSON.stringify(meta, null, '  '));
+
+        return this.createDatastoreFile(name, fileReference);
 
     }
 
     public async getFile(backend: Backend, name: string): Promise<Optional<DatastoreFile>> {
 
+        DiskDatastore.assertFileName(name);
+
         const fileReference = this.createFileReference(backend, name);
 
         if (await Files.existsAsync(fileReference.path)) {
-            return Optional.of(this.createDatastoreFile(name, fileReference.path));
+            const datastoreFile = await this.createDatastoreFile(name, fileReference);
+            return Optional.of(datastoreFile);
         } else {
             return Optional.empty();
         }
 
     }
 
-    private createDatastoreFile(name: string, path: string): DatastoreFile {
-
-        const url = new URL(`file:///${path}`);
-
-        return {
-            name,
-            url: url.href,
-            meta: {}
-        };
-
-    }
-
     public containsFile(backend: Backend, name: string): Promise<boolean> {
+
+        DiskDatastore.assertFileName(name);
+
         const path = FilePaths.join(this.filesDir, backend.toString().toLowerCase(), name);
         return Files.existsAsync(path);
     }
@@ -247,13 +241,46 @@ export class DiskDatastore implements Datastore {
         return result;
     }
 
+    public static assertFileName(name: string) {
+
+        if (! this.validateFileName(name)) {
+            throw new Error("Invalid file name: " + name);
+        }
+
+    }
+
+    /**
+     * Make sure the file name is sane ... nothing that can't be encoded
+     * as a file and must have a three letter extension.  We should just have
+     * the files be alphanumeric for now and support a 3-4 char suffix.
+     */
+    public static validateFileName(name: string): boolean {
+        return name.search(/^[a-zA-Z0-9]+(\.[a-zA-Z0-9]{3,4})?$/g) !== -1;
+
+    }
+
+    private async createDatastoreFile(name: string, fileReference: FileReference): Promise<DatastoreFile> {
+
+        const url = new URL(`file:///${fileReference.path}`);
+
+        const buff = await Files.readFileAsync(fileReference.metaPath);
+        const meta = JSON.parse(buff.toString("utf-8"));
+
+        return {
+            name,
+            url: url.href,
+            meta
+        };
+
+    }
 
     private createFileReference(backend: Backend, name: string): FileReference {
 
         const dir = FilePaths.join(this.filesDir, backend.toString().toLowerCase());
         const path = FilePaths.join(dir, name);
+        const metaPath = FilePaths.join(dir, name + '.meta');
 
-        return {dir, path};
+        return {dir, path, metaPath};
 
     }
 
@@ -306,7 +333,15 @@ export interface DeleteResult {
 type DirStrategy = 'env' | 'home' | 'manual';
 
 interface FileReference {
+
+    // the dir holding our files.
     dir: string;
+
+    // the path to the data file.
     path: string;
+
+    // the path to the metadata file.
+    metaPath: string;
+
 }
 
