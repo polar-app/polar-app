@@ -162,39 +162,44 @@ export class MainAppMenu {
             ;
     }
 
+    /**
+     * Created for MacOS so that we have a 'Polar' menu before 'File' with MacOS
+     * specific actions like 'hide'
+     *
+     */
+    private createAppMenuTemplate() {
+
+        return {
+            label: 'Polar',
+            id: 'polar',
+            platform: 'darwin',
+            submenu: [
+
+                {role: 'about'},
+                {type: 'separator'},
+                {role: 'hide'},
+                {role: 'hideothers'},
+                {role: 'unhide'},
+                {type: 'separator'},
+                {role: 'quit'}
+
+            ]
+
+        };
+
+    }
+
     private createFileMenuTemplate() {
 
         return {
             label: 'File',
             submenu: [
 
-                // {
-                //     label: 'New Window',
-                //     accelerator: 'CmdOrCtrl+N',
-                //     click: this.mainAppController.cmdNewWindow.bind(this.mainAppController)
-                // },
-                // {
-                //     type: 'separator'
-                // },
-
-                // {
-                //     label: 'Open',
-                //     accelerator: 'CmdOrCtrl+O',
-                //     click: this.mainAppController.cmdOpen.bind(this.mainAppController)
-                // },
                 {
                     label: 'Open',
                     accelerator: 'CmdOrCtrl+O',
                     click: this.mainAppController.cmdOpenInNewWindow.bind(this.mainAppController)
                 },
-                // {
-                //     label: 'Capture Web Page',
-                //     // accelerator: 'CmdOrCtrl+O',
-                //     click: () => {
-                //         this.mainAppController.cmdCaptureWebPage()
-                //             .catch((err: Error) => log.error("Could not capture page: ", err));
-                //     }
-                // },
                 {
                     label: 'Capture Web Page',
                     // accelerator: 'CmdOrCtrl+O',
@@ -205,16 +210,6 @@ export class MainAppMenu {
 
                 },
 
-
-                // {
-                //     label: 'Open Containing Folder',
-                //     accelerator: 'CmdOrCtrl+F',
-                //     click: function(item, focusedWindow) {
-                //         if (focusedWindow && filepath)
-                //             shell.showItemInFolder("file:///" + filepath);
-                //     }
-                // },
-
                 {
                     type: 'separator'
                 },
@@ -223,7 +218,9 @@ export class MainAppMenu {
                     label: 'Print',
                     accelerator: 'CmdOrCtrl+P',
                     click: (item: Electron.MenuItem, focusedWindow: BrowserWindow) => {
-                        if (focusedWindow) focusedWindow.webContents.print();
+                        if (focusedWindow) {
+                            focusedWindow.webContents.print();
+                        }
                     }
                 },
                 {
