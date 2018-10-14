@@ -8,9 +8,13 @@ export interface DocMetaRef {
 }
 
 /**
- * Includes more metadata including the filename.
+ * Includes more metadata including the filename of the PDF or PHZ file.  the
+ *
  */
 export interface DocMetaFileRef extends DocMetaRef {
+
     readonly filename: string;
+
     readonly docInfo: DocInfo;
+
 }

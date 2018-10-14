@@ -13,6 +13,8 @@ import {Files} from '../util/Files';
 import {FilePaths} from '../util/FilePaths';
 import {Dictionaries} from '../util/Dictionaries';
 import {Directories, GlobalDataDir} from './Directories';
+import {MockPHZWriter} from '../phz/MockPHZWriter';
+import {DocMetaFileRef} from './DocMetaRef';
 
 const rimraf = require('rimraf');
 
@@ -169,9 +171,13 @@ describe('DiskDatastore', function() {
 
             docMeta = MockDocMetas.createWithinInitialPagemarks(fingerprint, 14);
 
+            docMeta.docInfo.filename = `${fingerprint}.phz`;
+
             const contains = await persistenceLayer.contains(fingerprint);
 
             assert.equal(contains, false);
+
+            await MockPHZWriter.write(FilePaths.create(diskDatastore.stashDir, `${fingerprint}.phz`))
 
             await persistenceLayer.sync(fingerprint, docMeta);
 
@@ -192,6 +198,32 @@ describe('DiskDatastore', function() {
             assert.equal(isPresent(docMeta0), true);
 
             assertJSON(Dictionaries.sorted(docMeta), Dictionaries.sorted(docMeta0));
+
+        });
+
+
+        it("write and then delete DocMeta...", async function() {
+
+            const docMetaFileRef: DocMetaFileRef = {
+                fingerprint,
+                filename: `${fingerprint}.phz`,
+                docInfo: docMeta.docInfo
+            };
+
+            // make sure the files exist on disk...
+
+            const docPath = FilePaths.join(diskDatastore.stashDir, `${fingerprint}.phz`);
+            const statePath = FilePaths.join(diskDatastore.dataDir, fingerprint, 'state.json');
+
+            assert.ok(await Files.existsAsync(docPath));
+            assert.ok(await Files.existsAsync(statePath));
+
+            await persistenceLayer.delete(docMetaFileRef);
+
+            // make sure the files were deleted
+
+            assert.ok(! await Files.existsAsync(docPath));
+            assert.ok(! await Files.existsAsync(statePath));
 
         });
 
