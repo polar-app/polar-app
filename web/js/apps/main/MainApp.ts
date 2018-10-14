@@ -1,4 +1,4 @@
-import {protocol, app, session} from 'electron';
+import {protocol, app, session, BrowserWindow} from 'electron';
 import {WebserverConfig} from '../../backend/webserver/WebserverConfig';
 import {FileRegistry} from '../../backend/webserver/FileRegistry';
 import {ProxyServerConfig} from '../../backend/proxyserver/ProxyServerConfig';
@@ -22,7 +22,6 @@ import {DocInfoBroadcasterService} from '../../datastore/advertiser/DocInfoBroad
 import {CachingStreamInterceptorService} from '../../backend/interceptor/CachingStreamInterceptorService';
 import {GA} from "../../ga/GA";
 import {Version} from "../../util/Version";
-import BrowserWindow = Electron.BrowserWindow;
 
 declare var global: any;
 
@@ -155,16 +154,20 @@ export class MainApp {
         app.on('activate', async function() {
 
             // On OS X it's common to re-create a window in the app when the
-            // dock icon is clicked and there are no other windows open.
+            // dock icon is clicked and there are no other windows open. The way
+            // we handle this now is that if there are no windows open we re-create
+            // the document repository so they can select one. Otherwise we just
+            // re-focus the most recently used window.
 
-            // TODO: I think this is actually better behavior.  If the
-            // repository is not running, launch it, otherwise just switch to the
-            // document repository app.
-            //
-            // AppLauncher.launchRepositoryApp()
-            //    .catch(err => log.error("Could not launch repository app: ", err));
+            const visibleWindows = BrowserWindow.getAllWindows()
+                .filter(current => current.isVisible())
 
-            await MainAppBrowserWindowFactory.createWindow();
+            if (visibleWindows.length === 0) {
+
+                AppLauncher.launchRepositoryApp()
+                    .catch(err => log.error("Could not launch repository app: ", err));
+
+            }
 
         });
 

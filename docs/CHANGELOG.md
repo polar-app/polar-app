@@ -1,6 +1,12 @@
 
 # 1.0.2
 
+- On OS X it's common to re-create a window in the app when the
+  dock icon is clicked and there are no other windows open. The way
+  we handle this now is that if there are no windows open we re-create
+  the document repository so they can select one. Otherwise we just
+  re-focus the most recently used window.
+
 - deleting documents from the repository seems to work now.
 
 - upgrade to latest reactstrap 
