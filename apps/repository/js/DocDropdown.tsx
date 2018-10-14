@@ -61,7 +61,8 @@ export class DocDropdown extends React.Component<IProps, IState> {
 
                 <ConfirmPopover open={this.state.selected === 'delete'}
                                 target={this.props.id + '-dropdown-toggle'}
-                                prompt="Are you sure you want to delete this document?"
+                                title="Are you sure you want to delete this document? "
+                                subtitle="The document and all annotations will be lost."
                                 onCancel={() => this.select('none')}
                                 onConfirm={this.onDelete}/>
 

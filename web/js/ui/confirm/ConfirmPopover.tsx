@@ -2,6 +2,25 @@
 import React from 'react';
 import {Button, Popover, PopoverBody} from 'reactstrap';
 import Popper from 'popper.js';
+import {Blackout} from '../../../../apps/repository/js/Blackout';
+
+const Styles: any = {
+
+    title: {
+        "fontSize": "20px",
+        "fontWeight": "bold"
+    },
+
+    subtitle: {
+        fontSize: "14px"
+    },
+
+    popover: {
+        // minWidth: '350px',
+        // width: '350px'
+    }
+
+};
 
 export class ConfirmPopover extends React.Component<IProps, IState> {
 
@@ -10,18 +29,30 @@ export class ConfirmPopover extends React.Component<IProps, IState> {
 
     }
 
+    public componentWillReceiveProps(nextProps: Readonly<IProps>, nextContext: any): void {
+        if (this.props.open !== nextProps.open) {
+            Blackout.toggle(nextProps.open);
+        }
+    }
+
     public render() {
+
         return (
 
             <Popover placement={this.props.placement || 'bottom'}
                      isOpen={this.props.open}
                      target={this.props.target}
-                     className="confirm-popover">
+                     className="confirm-popover"
+                     style={Styles.popover}>
 
                 <PopoverBody className="text-center">
 
-                    <div className="w-100 lead p-1">
-                        {this.props.prompt}
+                    <div className="w-100 p-1" style={Styles.title}>
+                        {this.props.title}
+                    </div>
+
+                    <div className="w-100 p-1 muted" style={Styles.subtitle}>
+                        {this.props.subtitle || ""}
                     </div>
 
                     <Button color="secondary"
@@ -45,7 +76,8 @@ export class ConfirmPopover extends React.Component<IProps, IState> {
 interface IProps {
     open: boolean;
     target: string;
-    prompt: string;
+    title: string;
+    subtitle: string;
     placement?: Popper.Placement;
     onCancel: () => void;
     onConfirm: () => void;

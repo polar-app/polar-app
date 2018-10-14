@@ -1,6 +1,7 @@
 import * as React from 'react';
 import {ConfirmButton} from '../../js/ui/confirm/ConfirmButton';
 import {DocDropdown} from '../../../apps/repository/js/DocDropdown';
+import {ConfirmPopover} from '../../js/ui/confirm/ConfirmPopover';
 
 class App<P> extends React.Component<{}, IAppState> {
 
@@ -36,6 +37,14 @@ class App<P> extends React.Component<{}, IAppState> {
                     Delete
 
                 </ConfirmButton>
+
+
+                <ConfirmPopover open={true}
+                                target="mytarget"
+                                title="Are you sure?"
+                                subtitle="it might be bad "
+                                onCancel={() => console.log('cancel')}
+                                onConfirm={() => console.log('confirm')}/>
 
                 {/*<TextInputButton id="set-title"*/}
                                  {/*title="Enter new title"*/}
