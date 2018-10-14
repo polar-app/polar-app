@@ -6,6 +6,10 @@ import {Logger} from '../../logger/Logger';
 import {DocMetaFileRef, DocMetaRef} from '../DocMetaRef';
 import {DeleteResult} from '../DiskDatastore';
 import {IPersistenceLayer} from '../IPersistenceLayer';
+import {Backend} from '../Backend';
+import {FileMeta} from '../Datastore';
+import {DatastoreFile} from '../DatastoreFile';
+import {Optional} from '../../util/ts/Optional';
 
 const log = Logger.create();
 
@@ -72,6 +76,18 @@ export class PersistenceLayerDispatcher implements IPersistenceLayerDispatcher, 
 
         this.worker.postMessage(ipcMessage);
 
+    }
+
+    public addFile(backend: Backend, name: string, data: Buffer | string, meta: FileMeta): Promise<DatastoreFile> {
+        return this.persistenceLayer.addFile(backend, name, data, meta);
+    }
+
+    public containsFile(backend: Backend, name: string): Promise<boolean> {
+        return this.persistenceLayer.containsFile(backend, name);
+    }
+
+    public getFile(backend: Backend, name: string): Promise<Optional<DatastoreFile>> {
+        return this.persistenceLayer.getFile(backend, name);
     }
 
 }

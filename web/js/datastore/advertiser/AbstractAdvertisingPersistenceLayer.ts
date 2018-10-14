@@ -7,6 +7,10 @@ import {DocMeta} from '../../metadata/DocMeta';
 import {DocMetaFileRef, DocMetaRef} from '../DocMetaRef';
 import {DeleteResult} from '../DiskDatastore';
 import {PersistenceEventType} from '../PersistenceEventType';
+import {Backend} from '../Backend';
+import {DatastoreFile} from '../DatastoreFile';
+import {FileMeta} from '../Datastore';
+import {Optional} from '../../util/ts/Optional';
 
 export abstract class AbstractAdvertisingPersistenceLayer implements IListenablePersistenceLayer {
 
@@ -109,6 +113,18 @@ export abstract class AbstractAdvertisingPersistenceLayer implements IListenable
      */
     public dispatchEvent(event: PersistenceLayerEvent) {
         this.reactor.dispatchEvent(event);
+    }
+
+    public addFile(backend: Backend, name: string, data: Buffer | string, meta: FileMeta): Promise<DatastoreFile> {
+        return this.persistenceLayer.addFile(backend, name, data, meta);
+    }
+
+    public containsFile(backend: Backend, name: string): Promise<boolean> {
+        return this.persistenceLayer.containsFile(backend, name);
+    }
+
+    public getFile(backend: Backend, name: string): Promise<Optional<DatastoreFile>> {
+        return this.persistenceLayer.getFile(backend, name);
     }
 
 }

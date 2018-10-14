@@ -48,6 +48,8 @@ export interface Datastore {
      */
     getDocMeta(fingerprint: string): Promise<string | null>;
 
+    // delete(fingerprint: string): Promise<void>;
+
     /**
      * Write the datastore to disk.
      *

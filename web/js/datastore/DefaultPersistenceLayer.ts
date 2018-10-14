@@ -1,4 +1,4 @@
-import {Datastore} from './Datastore';
+import {Datastore, FileMeta} from './Datastore';
 import {DocMeta} from '../metadata/DocMeta';
 import {DocMetas} from '../metadata/DocMetas';
 import {isPresent, Preconditions} from '../Preconditions';
@@ -8,6 +8,9 @@ import {DocMetaFileRef, DocMetaRef} from './DocMetaRef';
 import {DeleteResult} from './DiskDatastore';
 import {IPersistenceLayer} from './IPersistenceLayer';
 import {ISODateTimeStrings} from '../metadata/ISODateTimeStrings';
+import {Backend} from './Backend';
+import {DatastoreFile} from './DatastoreFile';
+import {Optional} from '../util/ts/Optional';
 
 const log = Logger.create();
 
@@ -110,6 +113,19 @@ export class DefaultPersistenceLayer implements IPersistenceLayer {
     public getDocMetaFiles(): Promise<DocMetaRef[]> {
         return this.datastore.getDocMetaFiles();
     }
+
+    public addFile(backend: Backend, name: string, data: Buffer | string, meta: FileMeta): Promise<DatastoreFile> {
+        return this.datastore.addFile(backend, name, data, meta);
+    }
+
+    public containsFile(backend: Backend, name: string): Promise<boolean> {
+        return this.datastore.containsFile(backend, name);
+    }
+
+    public getFile(backend: Backend, name: string): Promise<Optional<DatastoreFile>> {
+        return this.datastore.getFile(backend, name);
+    }
+
 
 }
 

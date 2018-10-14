@@ -1,6 +1,10 @@
 import {DocMetaFileRef, DocMetaRef} from './DocMetaRef';
 import {DeleteResult} from './DiskDatastore';
 import {DocMeta} from '../metadata/DocMeta';
+import {Backend} from './Backend';
+import {DatastoreFile} from './DatastoreFile';
+import {Optional} from '../util/ts/Optional';
+import {FileMeta} from './Datastore';
 
 export interface IPersistenceLayer {
 
@@ -34,5 +38,11 @@ export interface IPersistenceLayer {
     // TODO:
     // get an overview of documents in teh repository
     // overview(): Promise<DatastoreOverview>;
+
+    addFile(backend: Backend, name: string, data: Buffer | string, meta: FileMeta): Promise<DatastoreFile>;
+
+    getFile(backend: Backend, name: string): Promise<Optional<DatastoreFile>>;
+
+    containsFile(backend: Backend, name: string): Promise<boolean>;
 
 }
