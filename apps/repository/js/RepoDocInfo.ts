@@ -10,12 +10,13 @@ export interface RepoDocInfo {
     fingerprint: string;
     title: string;
     progress: number;
-    filename: string | undefined;
-    added: ISODateTimeString | undefined;
-    lastUpdated: ISODateTimeString | undefined;
-    // lastUpdated: string | undefined;
+    filename?: string;
+    added?: ISODateTimeString;
+    lastUpdated?: ISODateTimeString;
+    // lastUpdated?: string;
     flagged: boolean;
     archived: boolean;
+    url?: string;
 
     /**
      * The original DocInfo used to construct this RepoDocInfo.

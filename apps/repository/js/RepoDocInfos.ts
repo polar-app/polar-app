@@ -49,6 +49,8 @@ export class RepoDocInfos {
                 .validateBoolean()
                 .getOrElse(false),
 
+            url: docInfo.url,
+
             docInfo
 
         };
