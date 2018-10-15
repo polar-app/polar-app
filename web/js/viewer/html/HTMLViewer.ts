@@ -16,6 +16,8 @@ import {FrameResizer} from './FrameResizer';
 
 const log = Logger.create();
 
+const ENABLE_VIDEO = false;
+
 export class HTMLViewer extends Viewer {
 
     private content: HTMLIFrameElement = document.createElement('iframe');
@@ -283,7 +285,16 @@ export class HTMLViewer extends Viewer {
             file = "example1.html";
         }
 
-        this.content.src = file;
+        if (ENABLE_VIDEO && file.indexOf("youtube.com")) {
+            // TODO: better regex for this in the future.
+
+            const embedHTML = HTMLViewer.createYoutubeEmbed(file);
+
+            this.content.contentDocument!.body.innerHTML = embedHTML;
+
+        } else {
+            this.content.src = file;
+        }
 
         const fingerprint = params.fingerprint;
         if (!fingerprint) {
@@ -292,6 +303,18 @@ export class HTMLViewer extends Viewer {
 
         this.htmlFormat.setCurrentDocFingerprint(fingerprint);
 
+    }
+
+    private static createYoutubeEmbed(url: string) {
+        const width = 560;
+        const height = 315;
+        // get the video ID from a URL like:
+        //
+        // https://www.youtube.com/watch?v=CP1BVpF-NjY
+        const u = new URL(url);
+        const video_id = u.searchParams.get('v')
+
+        return `<iframe width="${width}" height="${height}" src="https://www.youtube.com/embed/${video_id}" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>`;
     }
 
     public docDetail(): DocDetail {
