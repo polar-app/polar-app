@@ -5,6 +5,7 @@ import {Directories} from './Directories';
 import {Backend} from './Backend';
 import {DatastoreFile} from './DatastoreFile';
 import {Optional} from '../util/ts/Optional';
+import {IDocInfo} from '../metadata/DocInfo';
 
 export interface Datastore {
 
@@ -62,8 +63,9 @@ export interface Datastore {
      *
      * @param fingerprint The fingerprint of the data we should be working with.
      * @param data The RAW data to decode by the PersistenceLayer
+     * @param docInfo The DocInfo for this document that we're writing
      */
-    sync(fingerprint: string, data: any): Promise<void>;
+    sync(fingerprint: string, data: any, docInfo: IDocInfo): Promise<void>;
 
     /**
      * Return an array of DocMetaFiles currently in the repository.

@@ -12,6 +12,7 @@ import {FileDeleted} from '../util/Files';
 import {Backend} from './Backend';
 import {DatastoreFile} from './DatastoreFile';
 import {Optional} from '../util/ts/Optional';
+import {DocInfo} from '../metadata/DocInfo';
 
 const log = Logger.create();
 
@@ -82,7 +83,7 @@ export class MemoryDatastore implements Datastore {
     public getFile(backend: Backend, name: string): Promise<Optional<DatastoreFile>> {
         throw new Error("Not implemented");
     }
-    
+
     public containsFile(backend: Backend, name: string): Promise<boolean> {
         throw new Error("Not implemented");
     }
@@ -101,7 +102,7 @@ export class MemoryDatastore implements Datastore {
     /**
      * Write the datastore to disk.
      */
-    public async sync(fingerprint: string, data: string) {
+    public async sync(fingerprint: string, data: string, docInfo: DocInfo) {
 
         Preconditions.assertTypeOf(data, "string", "data");
 

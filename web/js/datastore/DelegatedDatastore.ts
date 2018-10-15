@@ -6,6 +6,7 @@ import {Preconditions} from '../Preconditions';
 import {Backend} from './Backend';
 import {DatastoreFile} from './DatastoreFile';
 import {Optional} from '../util/ts/Optional';
+import {IDocInfo} from '../metadata/DocInfo';
 
 /**
  * A datastore that just forwards events to the given delegate.
@@ -28,7 +29,7 @@ export class DelegatedDatastore implements Datastore {
         this.directories = new Directories();
         this.logsDir = delegate.logsDir;
         this.stashDir = delegate.stashDir;
-        this.filesDir = delegate.filesDir;
+        this.filesDir = this.directories.filesDir;
 
     }
 
@@ -64,8 +65,8 @@ export class DelegatedDatastore implements Datastore {
         return this.delegate.init();
     }
 
-    public sync(fingerprint: string, data: any): Promise<void> {
-        return this.delegate.sync(fingerprint, data);
+    public sync(fingerprint: string, data: any, docInfo: IDocInfo): Promise<void> {
+        return this.delegate.sync(fingerprint, data, docInfo);
     }
 
 }

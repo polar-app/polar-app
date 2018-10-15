@@ -106,7 +106,9 @@ export class DefaultPersistenceLayer implements IPersistenceLayer {
         // in practice.
         const data = DocMetas.serialize(docMeta, "  ");
 
-        await this.datastore.sync(fingerprint, data);
+        const docInfo = Object.assign({}, docMeta.docInfo);
+
+        await this.datastore.sync(fingerprint, data, docInfo);
 
     }
 

@@ -5,7 +5,7 @@ export class Firebase {
     /**
      * Perform init of Firebase with our auth credentials.
      */
-    public static init() {
+    public static init(): firebase.app.App {
 
         const config = {
             apiKey: "AIzaSyDokaZQO8TkmwtU4WKGnxKNyVumD79JYW0",
@@ -17,7 +17,7 @@ export class Firebase {
             timestampsInSnapshots: true
         };
 
-        firebase.initializeApp(config);
+        return firebase.initializeApp(config);
 
     }
 
