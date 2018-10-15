@@ -26,7 +26,7 @@ export const BROWSER_WINDOW_OPTIONS: Electron.BrowserWindowConstructorOptions = 
 
         defaultEncoding: 'UTF-8',
 
-        webaudio: false,
+        webaudio: true,
 
         nodeIntegration: false,
 

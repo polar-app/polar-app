@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {Button, DropdownItem, DropdownToggle, Input, InputGroup, InputGroupAddon, InputGroupButtonDropdown} from 'reactstrap';
+import {Button, DropdownItem, DropdownToggle, Input, InputGroup, InputGroupAddon, InputGroupButtonDropdown, ListGroup, ListGroupItem} from 'reactstrap';
 import DropdownMenu from 'reactstrap/lib/DropdownMenu';
 import Navbar from 'reactstrap/lib/Navbar';
 import {BrowserConfigurationInputGroup} from './BrowserConfigurationInputGroup';
@@ -99,7 +99,7 @@ class App<P> extends React.Component<{}, IAppState> {
                 <br/>
 
                 <div className="components">
-
+                    asdf : <Input type="checkbox" />
                     <InputGroup>
                         <InputGroupAddon addonType="prepend"><Button>I'm a button</Button></InputGroupAddon>
                         <Input />
@@ -117,7 +117,10 @@ class App<P> extends React.Component<{}, IAppState> {
                                 <DropdownItem header>Header</DropdownItem>
                                 <DropdownItem disabled>Action</DropdownItem>
                                 <DropdownItem>Another Action</DropdownItem>
+
+
                                 <DropdownItem divider />
+                                <DropdownItem><Input type="checkbox" /> asdf</DropdownItem>
                                 <DropdownItem>Another Action</DropdownItem>
                             </DropdownMenu>
                         </InputGroupButtonDropdown>
@@ -328,6 +331,32 @@ class App<P> extends React.Component<{}, IAppState> {
                         </form>
                     </div>
                 </nav>
+
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+
+                <div className="column-selector m-2">
+
+                    <ListGroup>
+                        <ListGroupItem>
+                            <Input type="checkbox" />
+                            Cras justo odio
+                        </ListGroupItem>
+                        <ListGroupItem>
+                            <div className="ml-2">
+                                <Input type="checkbox" />
+                                Dapibus ac facilisis in
+                            </div>
+                        </ListGroupItem>
+                        <ListGroupItem>Morbi leo risus</ListGroupItem>
+                        <ListGroupItem>Porta ac consectetur ac</ListGroupItem>
+                        <ListGroupItem>Vestibulum at eros</ListGroupItem>
+                    </ListGroup>
+
+                </div>
             </div>
         );
     }

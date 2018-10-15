@@ -14,6 +14,14 @@ import {Preconditions} from '../Preconditions';
 
 const log = Logger.create();
 
+// You can allow users to sign in to your app using multiple authentication
+// providers by linking auth provider credentials to an existing user account.
+// Users are identifiable by the same Firebase user ID regardless of the
+// authentication provider they used to sign in. For example, a user who signed
+// in with a password can link a Google account and sign in with either method
+// in the future. Or, an anonymous user can link a Facebook account and then,
+// later, sign in with Facebook to continue using your app.
+
 export class FirebaseDatastore implements Datastore {
 
     public readonly stashDir: string;
@@ -66,6 +74,8 @@ export class FirebaseDatastore implements Datastore {
         const auth = this.app!.auth();
 
         const user = auth.currentUser;
+
+        // FIXME just write the the user ID...
 
         Preconditions.assertPresent(auth, "Not authenticated");
 

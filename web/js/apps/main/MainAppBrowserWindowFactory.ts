@@ -44,7 +44,7 @@ export const BROWSER_WINDOW_OPTIONS: Electron.BrowserWindowConstructorOptions = 
         // again.
         webSecurity: false,
 
-        webaudio: false,
+        webaudio: true,
 
         /**
          * Use a persistent cookie session between restarts.  This is used so

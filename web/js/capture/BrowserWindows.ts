@@ -28,8 +28,8 @@ export class BrowserWindows {
             minHeight: browserProfile.deviceEmulation.screenSize.height,
             width: browserProfile.deviceEmulation.screenSize.width,
             height: browserProfile.deviceEmulation.screenSize.height,
-            //maxWidth: WIDTH,
-            //maxHeight: HEIGHT,
+            // maxWidth: WIDTH,
+            // maxHeight: HEIGHT,
             show: browserProfile.show,
 
             // Enable the window to be resized larger than screen. Default is false.

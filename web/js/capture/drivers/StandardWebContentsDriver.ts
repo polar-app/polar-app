@@ -151,7 +151,7 @@ export class StandardWebContentsDriver implements WebContentsDriver {
 
         // we need to mute by default especially if the window is hidden.
         log.info("Muting audio...");
-        webContents.setAudioMuted(true);
+        webContents.setAudioMuted(! this.browserProfile.webaudio);
 
         let deviceEmulation = this.browserProfile.deviceEmulation;
 
