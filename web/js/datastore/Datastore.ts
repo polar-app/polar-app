@@ -8,12 +8,21 @@ import {Optional} from '../util/ts/Optional';
 
 export interface Datastore {
 
+    /**
+     * @Deprecated
+     */
     readonly stashDir: string;
 
-    readonly filesDir: string;
+    // readonly filesDir: string;
 
+    /**
+     * @Deprecated
+     */
     readonly logsDir: string;
 
+    /**
+     * @Deprecated
+     */
     readonly directories: Directories;
 
     /**

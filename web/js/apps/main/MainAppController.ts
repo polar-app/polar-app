@@ -14,22 +14,27 @@ import BrowserRegistry from '../../capture/BrowserRegistry';
 import {BrowserProfiles} from '../../capture/BrowserProfiles';
 import {Capture} from '../../capture/Capture';
 import MenuItem = Electron.MenuItem;
+import {Directories} from '../../datastore/Directories';
 
 const log = Logger.create();
 
 export class MainAppController {
 
-    constructor(fileLoader: FileLoader, datastore: Datastore, webserver: Webserver) {
-        this.fileLoader = fileLoader;
-        this.datastore = datastore;
-        this.webserver = webserver;
-    }
 
     private readonly fileLoader: FileLoader;
 
     private readonly datastore: Datastore;
 
     private readonly webserver: Webserver;
+
+    private readonly directories: Directories;
+
+    constructor(fileLoader: FileLoader, datastore: Datastore, webserver: Webserver) {
+        this.fileLoader = fileLoader;
+        this.datastore = datastore;
+        this.webserver = webserver;
+        this.directories = new Directories();
+    }
 
     public async cmdCaptureWebPage() {
 
@@ -223,7 +228,7 @@ export class MainAppController {
 
             dialog.showOpenDialog({
                   title: "Open Document",
-                  defaultPath: this.datastore.stashDir,
+                  defaultPath: this.directories.stashDir,
                   filters: [
                       { name: 'Docs', extensions: ['pdf', "phz"] }
                   ],

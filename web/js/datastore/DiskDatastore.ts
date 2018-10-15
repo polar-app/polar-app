@@ -12,7 +12,6 @@ import os from 'os';
 import {Backend} from './Backend';
 import {DatastoreFile} from './DatastoreFile';
 import {Optional} from '../util/ts/Optional';
-import {valid} from 'semver';
 
 const log = Logger.create();
 
