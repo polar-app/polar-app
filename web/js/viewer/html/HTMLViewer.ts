@@ -16,7 +16,7 @@ import {FrameResizer} from './FrameResizer';
 
 const log = Logger.create();
 
-const ENABLE_VIDEO = false;
+const ENABLE_VIDEO = true;
 
 export class HTMLViewer extends Viewer {
 
@@ -63,7 +63,6 @@ export class HTMLViewer extends Viewer {
 
             this.frameResizer = new FrameResizer(this.contentParent, this.content);
 
-            // TODO migrate to IFrames.waitForContentDocument()
             new IFrameWatcher(this.content, () => {
 
                 log.info("Loading page now...");
@@ -285,12 +284,14 @@ export class HTMLViewer extends Viewer {
             file = "example1.html";
         }
 
-        if (ENABLE_VIDEO && file.indexOf("youtube.com")) {
+        if (file.indexOf("youtube.com")) {
             // TODO: better regex for this in the future.
 
-            const embedHTML = HTMLViewer.createYoutubeEmbed(file);
+            const embedHTML = HTMLViewer.createYoutubeEmbed(file, this.content);
 
             this.content.contentDocument!.body.innerHTML = embedHTML;
+
+            this.content.contentWindow!.history.pushState({"html":embedHTML, "pageTitle": 'Youtube Embed'}, "", file);
 
         } else {
             this.content.src = file;
@@ -305,12 +306,18 @@ export class HTMLViewer extends Viewer {
 
     }
 
-    private static createYoutubeEmbed(url: string) {
-        const width = 560;
-        const height = 315;
+    private static createYoutubeEmbed(url: string, content: HTMLIFrameElement) {
+
+        const DEFAULT_WIDTH = 560;
+        const DEFAULT_HEIGHT = 315;
+
+        const width = content.contentDocument!.body.offsetWidth;
+        const height = (DEFAULT_HEIGHT / DEFAULT_WIDTH) * width;
+
         // get the video ID from a URL like:
         //
         // https://www.youtube.com/watch?v=CP1BVpF-NjY
+
         const u = new URL(url);
         const video_id = u.searchParams.get('v')
 
