@@ -1,6 +1,12 @@
 
 # 1.0.3
 
+- upgraded to latest packages:
+    - firebase
+    - react
+    - split.js
+    - reactstrap
+
 - Anki now properly uses the deck: tag when writing to decks.
 
 - Initial support for Youtube video embeds.  We had NO support for youtube in 
