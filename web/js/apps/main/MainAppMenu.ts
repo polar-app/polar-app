@@ -193,6 +193,7 @@ export class MainAppMenu {
 
         return {
             label: 'File',
+            // accelerator: 'Ctrl+F',
             submenu: [
 
                 {
