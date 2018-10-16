@@ -62,7 +62,7 @@ export class DecksSync {
 
     private async findExistingDecks(deckDescriptors: DeckDescriptor[]): Promise<Optional<SyncTaskResult>> {
 
-        log.info("Fetching existing decks.");
+        log.info("Fetching existing decks for deckDescriptors: ", deckDescriptors);
 
         let deckNamesAndIds = await this.deckNamesAndIdsClient.execute();
 

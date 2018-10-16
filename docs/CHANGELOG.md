@@ -1,4 +1,12 @@
 
+# 1.0.3
+
+- Anki now properly uses the deck: tag when writing to decks.
+
+- Initial support for Youtube video embeds.  We had NO support for youtube in 
+  the past so even though this is minimal it's better than what we currently 
+  have.
+
 # 1.0.2
 
 - The delete document prompt now has a subtitle to note that you will also lose

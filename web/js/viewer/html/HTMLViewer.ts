@@ -284,7 +284,9 @@ export class HTMLViewer extends Viewer {
             file = "example1.html";
         }
 
-        if (file.indexOf("youtube.com")) {
+        // TODO: improve this so that we can detect if this is a Youtube video
+        // embed safely.
+        if (ENABLE_VIDEO && file.indexOf("youtube.com/") != -1) {
             // TODO: better regex for this in the future.
 
             const embedHTML = HTMLViewer.createYoutubeEmbed(file, this.content);

@@ -14,6 +14,7 @@ import {Optional} from '../../../../util/ts/Optional';
 import {PendingAnkiSyncJob} from './AnkiSyncJob';
 import {DocInfos} from '../../../../metadata/DocInfos';
 import {Tags} from '../../../../tags/Tags';
+import {DocInfo} from '../../../../metadata/DocInfo';
 
 /**
  * Sync engine for Anki.  Takes cards registered in a DocMeta and then transfers
@@ -38,7 +39,7 @@ export class AnkiSyncEngine implements SyncEngine {
 
         docMetaSet.docMetas.forEach(docMeta => {
 
-            const name = DocInfos.bestTitle(docMeta.docInfo);
+            const name = this.computeDeckName(docMeta.docInfo);
 
             if (! name) {
                 throw new Error("No name for docMeta: "  + docMeta.docInfo.fingerprint);
@@ -58,27 +59,7 @@ export class AnkiSyncEngine implements SyncEngine {
 
         return this.toFlashcardDescriptors(docMetaSet).map(flashcardDescriptor => {
 
-            const tags = flashcardDescriptor.docMeta.docInfo.tags;
-
-            let deckName;
-
-            if (tags) {
-
-                // TODO: test this..
-
-                deckName = Object.values(tags)
-                    .filter(tag => tag.label.startsWith("#deck:"))
-                    .map(tag => Tags.parseTypedTag(tag.label))
-                    .filter(typedTag => typedTag.isPresent())
-                    .map(typedTag => typedTag.get())
-                    .map(typedTag => typedTag.value)
-                    .pop();
-
-            }
-
-            if (! deckName) {
-                deckName = DocInfos.bestTitle(flashcardDescriptor.docMeta.docInfo);
-            }
+            const deckName = this.computeDeckName(flashcardDescriptor.docMeta.docInfo);
 
             const fields: {[name: string]: string} = {};
 
@@ -97,6 +78,34 @@ export class AnkiSyncEngine implements SyncEngine {
             };
 
         });
+
+    }
+
+    protected computeDeckName(docInfo: DocInfo): string {
+
+        let deckName;
+
+        const tags = docInfo.tags;
+
+        if (tags) {
+
+            // TODO: test this..
+
+            deckName = Object.values(tags)
+                .filter(tag => tag.label.startsWith("deck:"))
+                .map(tag => Tags.parseTypedTag(tag.label))
+                .filter(typedTag => typedTag.isPresent())
+                .map(typedTag => typedTag.get())
+                .map(typedTag => typedTag.value)
+                .pop();
+
+        }
+
+        if (! deckName) {
+            deckName = DocInfos.bestTitle(docInfo);
+        }
+
+        return deckName;
 
     }
 
