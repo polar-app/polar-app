@@ -1,7 +1,10 @@
 
 # 1.0.3
 
-- upgraded to latest packages:
+- Upgraded to the latest sentry. I think there snap bug is related to sentry 
+  but I'm not sure yet.   
+
+- Upgraded to latest packages:
     - firebase
     - react
     - split.js
