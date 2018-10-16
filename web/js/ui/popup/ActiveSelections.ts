@@ -1,5 +1,7 @@
 import {Point} from '../../Point';
 import {MouseDirection} from './Popup';
+import {Simulate} from 'react-dom/test-utils';
+import mouseMove = Simulate.mouseMove;
 
 /**
  * Listens for when a new text selection has been created
@@ -10,11 +12,11 @@ export class ActiveSelections {
                                    target: HTMLElement = document.body): void {
 
         let originPoint: Point | undefined;
+        let clickTimestamp = 0;
 
         target.addEventListener('mousedown', (event: MouseEvent) => {
-
             originPoint = this.eventToPoint(event);
-
+            clickTimestamp = Date.now()
         });
 
         target.addEventListener('mouseup', (event: MouseEvent) => {
@@ -25,7 +27,16 @@ export class ActiveSelections {
 
             const point = this.eventToPoint(event);
 
-            if (!selection.isCollapsed) {
+            // const movementDistance =
+            //     Math.max(Math.abs(point.x - originPoint!.x), Math.abs(point.y - originPoint!.y));
+            //
+            // const mouseMoved = movementDistance > 5;
+
+            const clickTimeDelta = Date.now() - clickTimestamp;
+
+            const mouseMoved = clickTimeDelta > 250;
+
+            if (mouseMoved && !selection.isCollapsed) {
 
                 const mouseDirection: MouseDirection = point.y - originPoint!.y < 0 ? 'up' : 'down';
 
