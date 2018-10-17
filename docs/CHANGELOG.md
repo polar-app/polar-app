@@ -1,6 +1,12 @@
 
 # 1.0.3
 
+- Super fast double click on text no longer brings up the annotation box.  Only
+  more explicit highlights where the suer drags their mouse.
+
+- Webaudio is enabled now. I had disabled it before as it's annoying when
+  capture is running but we need it for video support to work properly.  
+
 - PHZ files were not actually being compressed. Just stored.  Weird bug with 
   the API in jszip which made it easy to accidentally disable compression.  
   PHZ files will be 3x smaller in this release.    

@@ -15,6 +15,7 @@ import {Directories, GlobalDataDir} from './Directories';
 import {MockPHZWriter} from '../phz/MockPHZWriter';
 import {DocMetaFileRef} from './DocMetaRef';
 import {Backend} from './Backend';
+import {Platform} from '../util/Platforms';
 
 const rimraf = require('rimraf');
 
@@ -154,9 +155,30 @@ describe('DiskDatastore', function() {
 
     });
 
+    it("getDataDirsForPlatform MAC_OS", function() {
+
+        const userHome = '/Users/alice';
+        const platform = Platform.MACOS;
+
+        assertJSON(DiskDatastore.getDataDirsForPlatform({userHome, platform}), {
+            "paths": [
+                "/Users/alice/.polar",
+                "/Users/alice/Library/Application Support/Polar"
+            ],
+            "preferredPath": "/Users/alice/Library/Application Support/Polar"
+        });
+
+    });
+
+
     it("getDataDir", function() {
 
+        const user = process.env['USER'];
+
         assert.notEqual(Directories.getDataDir(), null);
+        // assertJSON(Directories.getDataDir(), {
+        //     path:
+        // });
 
     });
 

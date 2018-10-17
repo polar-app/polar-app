@@ -1,6 +1,6 @@
 {
   "name": "polar-bookshelf",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Polar Bookshelf",
   "main": "main.js",
   "scripts": {
@@ -45,7 +45,7 @@
       "category": "Books"
     }
   },
-  "license": "GPL",
+  "license": "GPL-3.0-only",
   "devDependencies": {
     "@types/chai": "^4.1.4",
     "@types/expect": "^1.20.3",

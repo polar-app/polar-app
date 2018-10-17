@@ -73,6 +73,7 @@ export class Directories {
             }
         ];
 
+        // remove any paths that are missing...
         dataDirs = dataDirs.filter(current => isPresent(current.path));
 
         const dataDir = dataDirs[0];

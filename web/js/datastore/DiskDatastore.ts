@@ -286,7 +286,30 @@ export class DiskDatastore implements Datastore {
     }
 
     public static getDataDirs() {
-        return this.getDataDirsForPlatform(Platforms.get());
+
+        const userHome = this.getUserHome();
+
+        const platform = Platforms.get();
+
+        return this.getDataDirsForPlatform({userHome, platform});
+
+    }
+
+    public static async determineProperDirectory(directorySet: DirectorySet): Promise<string> {
+
+        // see if any of the paths exist, by order and prefer the directories
+        // that already exist.
+        for (const path of directorySet.paths) {
+
+            if (await Files.existsAsync(path)) {
+                return path;
+            }
+
+        }
+
+        // if none of the paths exist, use the preferred path.
+        return directorySet.preferredPath;
+
     }
 
     /**
@@ -295,17 +318,16 @@ export class DiskDatastore implements Datastore {
      * we return all possible directories and we can test which ones exist
      * and use the preferred directory if none exist.
      *
-     * @param platform
      */
-    public static getDataDirsForPlatform(platform: Platform): DirectorySet {
+    public static getDataDirsForPlatform(dirRuntime: DirRuntime): DirectorySet {
 
-        const userHome = this.getUserHome();
+        const {userHome, platform} = dirRuntime;
 
         switch (platform) {
 
             case Platform.WINDOWS: {
 
-                // TODO: consider using AppData
+                // TODO: consider using AppData\Local
                 const preferredPath = FilePaths.join(userHome, "Polar");
 
                 return {
@@ -365,6 +387,15 @@ export class DiskDatastore implements Datastore {
 
         return result;
     }
+
+}
+
+/**
+ * Information about the directories used in the current runtime / OS.
+ */
+export interface DirRuntime {
+    readonly userHome: string;
+    readonly platform: Platform;
 
 }
 
