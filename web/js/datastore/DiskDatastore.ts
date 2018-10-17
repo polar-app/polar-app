@@ -13,6 +13,7 @@ import {Backend} from './Backend';
 import {DatastoreFile} from './DatastoreFile';
 import {Optional} from '../util/ts/Optional';
 import {DocInfo} from '../metadata/DocInfo';
+import {Platform, Platforms} from "../util/Platforms";
 
 const log = Logger.create();
 
@@ -284,9 +285,79 @@ export class DiskDatastore implements Datastore {
 
     }
 
+    public static getDataDirs() {
+        return this.getDataDirsForPlatform(Platforms.get());
+    }
+
+    /**
+     * Get all data dirs for a given platform.  There might be multiple
+     * locations per platform depending on earlier versions of Polar so
+     * we return all possible directories and we can test which ones exist
+     * and use the preferred directory if none exist.
+     *
+     * @param platform
+     */
+    public static getDataDirsForPlatform(platform: Platform): DirectorySet {
+
+        const userHome = this.getUserHome();
+
+        switch (platform) {
+
+            case Platform.WINDOWS: {
+
+                // TODO: consider using AppData
+                const preferredPath = FilePaths.join(userHome, "Polar");
+
+                return {
+                    paths: [
+                        FilePaths.join(userHome, ".polar"),
+                        preferredPath
+                    ],
+                    preferredPath
+                };
+
+            }
+
+            case Platform.LINUX: {
+
+                const preferredPath = FilePaths.join(userHome, ".polar");
+
+                return {
+                    paths: [
+                        preferredPath,
+                    ],
+                    preferredPath
+                };
+
+            }
+
+            case Platform.MACOS: {
+
+                const preferredPath = FilePaths.join(userHome, "Library", "Application Support", "Polar");
+
+                return {
+                    paths: [
+                        FilePaths.join(userHome, ".polar"),
+                        preferredPath,
+                    ],
+                    preferredPath
+                };
+
+            }
+
+            default:
+                throw new Error("Platform not supported: " + platform);
+
+        }
+
+    }
+
     public static getUserHome() {
 
-        let result = process.env[(process.platform === 'win32') ? 'USERPROFILE' : 'HOME'];
+        const ENV_NAME =
+            process.platform === 'win32' ? 'USERPROFILE' : 'HOME';
+
+        let result = process.env[ENV_NAME];
 
         if (!result) {
             result = os.homedir();
@@ -294,6 +365,23 @@ export class DiskDatastore implements Datastore {
 
         return result;
     }
+
+}
+
+/**
+ * A set of directories for a given platform.
+ */
+export interface DirectorySet {
+
+    /**
+     * All paths that might exist.
+     */
+    readonly paths: string[];
+
+    /**
+     * The preferred path to use is none currently exist.
+     */
+    readonly preferredPath: string;
 
 }
 

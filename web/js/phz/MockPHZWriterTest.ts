@@ -10,9 +10,10 @@ describe('MockPHZWriter', function() {
 
     it("Write basic file", async function () {
 
-        let path = FilePaths.tmpfile("test-mock-phz-writer.phz");
+        const path = FilePaths.createTempName("test-mock-phz-writer.phz");
         await MockPHZWriter.write(path);
         assert.equal(fs.existsSync(path), true);
+        console.log("Wrote file: " + path);
 
     });
 

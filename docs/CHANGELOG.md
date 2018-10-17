@@ -1,8 +1,13 @@
 
 # 1.0.3
 
+- PHZ files were not actually being compressed. Just stored.  Weird bug with 
+  the API in jszip which made it easy to accidentally disable compression.  
+  PHZ files will be 3x smaller in this release.    
+
 - Upgraded to the latest sentry. I think there snap bug is related to sentry 
-  but I'm not sure yet.   
+  but I'm not sure yet.  The snap packages weren't working but maybe they will
+  in this release. 
 
 - Upgraded to latest packages:
     - firebase

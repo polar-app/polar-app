@@ -91,7 +91,16 @@ export class PHZWriter {
 
         return new Promise((resolve, reject) => {
 
-            this.zip.generateNodeStream({type: 'nodebuffer', streamFiles: true})
+            const options: JSZip.JSZipGeneratorOptions<'nodebuffer'> = {
+                type: 'nodebuffer',
+                streamFiles: true,
+                compression: "DEFLATE",
+                compressionOptions: {
+                    level: 9
+                }
+            };
+
+            this.zip.generateNodeStream(options)
                 .pipe(fs.createWriteStream(this.path))
                 .on('error', function(err: Error) {
                     reject(err);

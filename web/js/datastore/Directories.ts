@@ -56,10 +56,14 @@ export class Directories {
 
         let dataDirs: DataDir[] = [
             {
+                // configured via static.  I think we should deprecate this in the
+                // future as the env var seems more flexible and works across
+                // processes when using spectron, renderers, and main.
                 path: GlobalDataDir.get(),
                 strategy: 'manual'
             },
             {
+                // manually configured from the environment
                 path: process.env.POLAR_DATA_DIR,
                 strategy: 'env'
             },

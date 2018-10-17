@@ -20,9 +20,9 @@ describe('PHZ functionality', function() {
 
     it("ResourceFactory", function () {
 
-        let resource = ResourceFactory.create("http://example.com", "text/html");
+        const resource = ResourceFactory.create("http://example.com", "text/html");
 
-        let expected = {
+        const expected = {
             "id": "1XKZEWhTwbtoPFSkR2TJ",
             "created": "2012-03-02T11:38:49.321Z",
             "meta": {},
@@ -41,11 +41,11 @@ describe('PHZ functionality', function() {
 
     it("Writing with no data", async function () {
 
-        let path = FilePaths.tmpfile("test.phz");
+        const path = FilePaths.createTempName("test.phz");
 
-        await Files.unlinkAsync(path);
+        await Files.removeAsync(path);
 
-        let phzWriter = new PHZWriter(path);
+        const phzWriter = new PHZWriter(path);
 
         await phzWriter.close();
 
@@ -55,13 +55,13 @@ describe('PHZ functionality', function() {
 
     it("Writing one resource", async function () {
 
-        let path = FilePaths.tmpfile("test.phz");
+        const path = FilePaths.createTempName("test.phz");
 
-        await Files.unlinkAsync(path);
+        await Files.removeAsync(path);
 
-        let phzWriter = new PHZWriter(path);
+        const phzWriter = new PHZWriter(path);
 
-        let resource = ResourceFactory.create("http://example.com", "text/html");
+        const resource = ResourceFactory.create("http://example.com", "text/html");
 
         await phzWriter.writeResource(resource, "<html></html>");
 
@@ -75,9 +75,9 @@ describe('PHZ functionality', function() {
 
 
 
-        let path = FilePaths.tmpfile("test.phz");
+        let path = FilePaths.createTempName("test.phz");
 
-        await Files.unlinkAsync(path);
+        await Files.removeAsync(path);
 
         let phzWriter = new PHZWriter(path);
         let resource = ResourceFactory.create("http://example.com", "text/html");
@@ -144,11 +144,11 @@ describe('PHZ functionality', function() {
 
     it("Reading with no metadata or resources", async function () {
 
-        let path = FilePaths.tmpfile("test.phz");
+        const path = FilePaths.createTempName("test.phz");
 
-        await Files.unlinkAsync(path);
+        await Files.removeAsync(path);
 
-        let phzWriter = new PHZWriter(path);
+        const phzWriter = new PHZWriter(path);
         await phzWriter.close();
 
         let phzReader = new PHZReader(path);
