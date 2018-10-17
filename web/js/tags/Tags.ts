@@ -93,7 +93,7 @@ export class Tags {
         const match = label.match(/:/g);
 
         if (match && match.length > 1) {
-            Optional.empty();
+            return Optional.empty();
         }
 
         return Optional.of(label.replace(/^#([^:/]+):([^:]+)$/g, '#$1$2'));

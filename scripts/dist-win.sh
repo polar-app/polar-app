@@ -31,6 +31,5 @@ build_for_arch() {
        electronuserland/builder:wine bash -c 'yarn && ./node_modules/.bin/electron-builder --config=electron-builder.yml --config.nsis.artifactName=\${name}-\${version}-'${arch}'.\${ext} --'${arch}' --win --publish always'
 }
 
-
 build_for_arch x64
 build_for_arch ia32

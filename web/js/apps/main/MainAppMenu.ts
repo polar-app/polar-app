@@ -115,6 +115,7 @@ export class MainAppMenu {
                 id: 'help',
                 label: 'Help',
                 role: 'help',
+
                 submenu: [{
                     label: 'About',
                     click: (item: Electron.MenuItem, focusedWindow: BrowserWindow) => {
@@ -133,22 +134,36 @@ export class MainAppMenu {
                         label: 'Check for updates',
                         // only show on Windows and MacOS as all other platforms have
                         // their own dist system (for now).
-                        visible: [Platform.MACOS, Platform.WINDOWS].includes(Platforms.get()),
+                        visible: this.platformSupportsUpdates(),
                         click: ManualUpdates.checkForUpdates
                     },
+                    {type: 'separator'},
                     { label: 'Discord',
-                      click: () => shell.openExternal('https://discord.gg/GT8MhA6') },
+                        click: () => shell.openExternal('https://discord.gg/GT8MhA6') },
 
                     { label: 'Reddit',
-                      click: () => shell.openExternal('https://www.reddit.com/r/PolarBookshelf/') },
+                        click: () => shell.openExternal('https://www.reddit.com/r/PolarBookshelf/') },
 
                     { label: 'Learn More',
-                      click: () => shell.openExternal('https://github.com/burtonator/polar-bookshelf') },
+                        click: () => shell.openExternal('https://github.com/burtonator/polar-bookshelf') },
+                    {type: 'separator'},
+                    { label: 'Cookie Policy',
+                        click: () => shell.openExternal('https://getpolarized.io/cookie-policy.html') },
+
+                    { label: 'Terms of Service',
+                        click: () => shell.openExternal('https://getpolarized.io/terms-of-service.html') },
+
+                    { label: 'Privacy Policy',
+                        click: () => shell.openExternal('https://getpolarized.io/privacy-policy.html') },
 
                 ]
             },
         ];
 
+    }
+
+    private platformSupportsUpdates() {
+        return [Platform.MACOS, Platform.WINDOWS].includes(Platforms.get());
     }
 
     private createAboutMessage() {

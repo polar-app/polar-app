@@ -44,6 +44,10 @@ describe('RegExp', function() {
 
     });
 
+    it("tags with two colons", function() {
+        assert.throws(() => Tags.assertValid("#bar:cat:dog"));
+    });
+
 });
 
 describe('type tags', function() {
