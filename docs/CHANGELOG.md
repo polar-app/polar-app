@@ -1,6 +1,9 @@
 
 # 1.0.3
 
+- Put ToS, cookie policy, and privacy policy in the about links so that people
+  can get access to these easily.
+
 - Super fast double click on text no longer brings up the annotation box.  Only
   more explicit highlights where the suer drags their mouse.
 
