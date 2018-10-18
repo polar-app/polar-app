@@ -1,6 +1,9 @@
 
 # 1.0.4
 
+- Ability to click on the pulldown in the document repository to the right and 
+  copy the URL for a document that was captured.
+
 - Fixed bug where capture wouldn't generate a completely unique URL for storage
   on the file system and if you captured two URLs with the same title the 
   later one would update the former one.  We now include the a hash prefix of

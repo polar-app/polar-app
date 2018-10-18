@@ -3,12 +3,13 @@ import React from 'react';
 import {Button, Popover, PopoverBody} from 'reactstrap';
 import Popper from 'popper.js';
 import {Blackout} from '../../../../apps/repository/js/Blackout';
+import {IStyleMap} from '../../react/IStyleMap';
 
-const Styles: any = {
+const Styles: IStyleMap = {
 
     title: {
-        "fontSize": "20px",
-        "fontWeight": "bold"
+        fontSize: "20px",
+        fontWeight: "bold"
     },
 
     subtitle: {
@@ -86,3 +87,4 @@ interface IProps {
 interface IState {
     open: boolean;
 }
+

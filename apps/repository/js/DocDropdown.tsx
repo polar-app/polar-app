@@ -1,8 +1,21 @@
 import * as React from 'react';
-import {Dropdown, DropdownItem, DropdownMenu, DropdownToggle} from 'reactstrap';
+import {Dropdown, DropdownItem, DropdownMenu, DropdownToggle, Tooltip} from 'reactstrap';
 import {ConfirmPopover} from '../../../web/js/ui/confirm/ConfirmPopover';
 import {TextInputPopover} from '../../../web/js/ui/text_input/TextInputPopover';
 import {RepoDocInfo} from './RepoDocInfo';
+import {Logger} from '../../../web/js/logger/Logger';
+import {IStyleMap} from '../../../web/js/react/IStyleMap';
+
+const log = Logger.create();
+
+const Styles: IStyleMap = {
+
+    DropdownMenu: {
+        zIndex: 999,
+        fontSize: '14px'
+    },
+
+};
 
 export class DocDropdown extends React.Component<IProps, IState> {
 
@@ -16,14 +29,14 @@ export class DocDropdown extends React.Component<IProps, IState> {
         this.select = this.select.bind(this);
         this.onDelete = this.onDelete.bind(this);
         this.onSetTitle = this.onSetTitle.bind(this);
+        this.onCopyURL = this.onCopyURL.bind(this);
 
         this.state = {
             open: this.open,
-            selected: this.selected
+            selected: this.selected,
         };
 
     }
-
 
     public render() {
 
@@ -31,16 +44,35 @@ export class DocDropdown extends React.Component<IProps, IState> {
 
             <div className="text-right">
 
+                {/*TODO: I experimented with bringing up a tooltip after the user*/}
+                {/*selects an item but there's no way to auto-hide after it was */}
+                {/*selected with a display.  I might be able to implement one*/}
+                {/*that auto-hides itself with componentWillReceiveProps and then */}
+                {/*give it a message and then show and then hide the tooltip after */}
+                {/*this event but this will take a while.*/}
+                {/*<Tooltip placement="left"*/}
+                         {/*isOpen={this.state.open && this.state.message !== undefined}*/}
+                         {/*autohide={true}*/}
+                         {/*hide={4000}*/}
+                         {/*target={this.props.id}>*/}
+                    {/*Hello world!*/}
+                {/*</Tooltip>*/}
+
                 <Dropdown id={this.props.id} isOpen={this.state.open} toggle={this.toggle}>
 
                     <DropdownToggle color="link" className="doc-dropdown-button btn text-muted" id={this.props.id + '-dropdown-toggle'}>
                         <i className="fas fa-ellipsis-h"></i>
                     </DropdownToggle>
 
-                    <DropdownMenu style={{'zIndex': 999}}>
+                    <DropdownMenu style={Styles.DropdownMenu}>
 
                         <DropdownItem onClick={() => this.select('set-title')}>
-                            Set title
+                            Set Title
+                        </DropdownItem>
+
+                        <DropdownItem disabled={! this.props.repoDocInfo.url}
+                                      onClick={() => this.onCopyURL(this.props.repoDocInfo.url!)}>
+                            Copy URL
                         </DropdownItem>
 
                         <DropdownItem onClick={() => this.select('delete')}>
@@ -68,6 +100,18 @@ export class DocDropdown extends React.Component<IProps, IState> {
 
             </div>
         );
+
+    }
+
+    private onCopyURL(url: string) {
+        const nav = window.navigator as any;
+        const clipboard = nav.clipboard;
+
+        if(clipboard) {
+            clipboard.writeText(url);
+        } else {
+            log.warn("No clipboard with which to copy");
+        }
 
     }
 
@@ -121,6 +165,7 @@ interface IState {
 
     open: boolean;
     selected: SelectedOption;
+    message?: string;
 
 }
 
