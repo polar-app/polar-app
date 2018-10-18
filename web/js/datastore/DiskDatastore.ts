@@ -318,6 +318,12 @@ export class DiskDatastore implements Datastore {
      * we return all possible directories and we can test which ones exist
      * and use the preferred directory if none exist.
      *
+     * The preferred data directories are always in Polar/Data.  The reason we
+     * always include /Data is that Electron likes to create a directory name
+     * for the app and store chrome data in that directory.  This way the
+     * Polar data is sandboxed into its own Data directory seperate from the
+     * chromium user profile data.
+     *
      */
     public static getDataDirsForPlatform(dirRuntime: DirRuntime): DirectorySet {
 
@@ -327,8 +333,19 @@ export class DiskDatastore implements Datastore {
 
             case Platform.WINDOWS: {
 
-                // TODO: consider using AppData\Local
-                const preferredPath = FilePaths.join(userHome, "Polar");
+                // TODO: consider using AppData/Local BUT the AppData is hidden
+                // on Windows so that might increase support costs.
+
+                // TODO: can't use Polar/Data as it might implement a bug with
+                // two level nested dirs.
+
+                // TODO: I don't like Polar-Data for the name
+
+                // TODO: I could just write to the app directory that Electron
+                // wants me to write to and into a Data directory there but
+                // I don't like combining them.
+
+                const preferredPath = FilePaths.join(userHome, "Polar", "Data");
 
                 return {
                     paths: [
@@ -342,11 +359,11 @@ export class DiskDatastore implements Datastore {
 
             case Platform.LINUX: {
 
-                const preferredPath = FilePaths.join(userHome, ".polar");
+                const preferredPath = FilePaths.join(userHome, ".config", "Polar", "Data");
 
                 return {
                     paths: [
-                        preferredPath,
+                        FilePaths.join(userHome, ".polar"),
                     ],
                     preferredPath
                 };
@@ -355,7 +372,7 @@ export class DiskDatastore implements Datastore {
 
             case Platform.MACOS: {
 
-                const preferredPath = FilePaths.join(userHome, "Library", "Application Support", "Polar");
+                const preferredPath = FilePaths.join(userHome, "Library", "Application Support", "Polar", "Data");
 
                 return {
                     paths: [

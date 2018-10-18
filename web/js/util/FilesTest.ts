@@ -139,6 +139,21 @@ describe('Files', function() {
 
     describe('mkdirAsync', function() {
 
+        xit("nested", async function () {
+
+            // this fails but at least we kwow it fails.
+
+            const baseDir = FilePaths.join(tmpdir, 'base-of-nested-dirs');
+
+            const nestedDirPath = FilePaths.join(tmpdir, 'base-of-nested-dirs', 'first', 'second', 'third');
+
+            await Files.removeDirectoryRecursively(baseDir);
+            await Files.rmdirAsync(baseDir);
+
+            // await Files.createDirAsync(nestedDirPath)
+
+        });
+
         it("basic", async function () {
 
             const path = FilePaths.join(tmpdir, 'test-mkdir.dir');
