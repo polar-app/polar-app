@@ -26,6 +26,11 @@ export class DocInfo extends SerializedObject implements IDocInfo {
     public filename?: string;
     public added?: ISODateTimeString;
     public tags?: {[id: string]: Tag} = {};
+    public nrComments?: number;
+    public nrNotes?: number;
+    public nrFlashcards?: number;
+    public nrTextHighlights?: number;
+    public nrAreaHighlights?: number;
 
     constructor(val: IDocInfo) {
 
@@ -146,5 +151,20 @@ export interface IDocInfo {
      * of a tag and value is the human/string representation.
      */
     tags?: {[id: string]: Tag};
+
+    /**
+     * The number of comments in the document.
+     */
+    nrComments?: number;
+    nrNotes?: number;
+
+    /**
+     * The number of flashcards in the document.
+     */
+    nrFlashcards?: number;
+
+    nrTextHighlights?: number;
+
+    nrAreaHighlights?: number;
 
 }

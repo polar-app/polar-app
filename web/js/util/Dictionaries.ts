@@ -1,4 +1,5 @@
 import {Preconditions} from '../Preconditions';
+import {Optional} from './ts/Optional';
 
 export class Dictionaries {
 
@@ -95,13 +96,21 @@ export class Dictionaries {
      */
     public static toDict<V>(values: V[], converter: (value: V) => string): {[key: string]: V} {
 
-        const result: {[key: string]: V} = {};
+        const result: { [key: string]: V } = {};
 
         values.forEach(value => {
             result[converter(value)] = value;
         });
 
         return result;
+
+    }
+
+    public static countOf<V>(dict: {[key: string]: V} | null | undefined) {
+
+        return Optional.of(dict)
+            .map(current => Object.keys(current).length)
+            .getOrElse(0);
 
     }
 

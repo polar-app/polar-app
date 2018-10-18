@@ -75,7 +75,11 @@ export class DocDropdown extends React.Component<IProps, IState> {
                             Copy URL
                         </DropdownItem>
 
+                        <DropdownItem divider />
+
                         <DropdownItem onClick={() => this.select('delete')}>
+                            {/*<i className="far fa-trash-alt"></i>*/}
+                            {/*&nbsp; */}
                             Delete
                         </DropdownItem>
 

@@ -17,6 +17,8 @@ export interface RepoDocInfo {
     flagged: boolean;
     archived: boolean;
     url?: string;
+    // nrComments: number;
+    // nrFlashcards: number;
 
     /**
      * The original DocInfo used to construct this RepoDocInfo.

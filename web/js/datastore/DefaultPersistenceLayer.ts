@@ -11,6 +11,7 @@ import {ISODateTimeStrings} from '../metadata/ISODateTimeStrings';
 import {Backend} from './Backend';
 import {DatastoreFile} from './DatastoreFile';
 import {Optional} from '../util/ts/Optional';
+import {Reducers} from '../util/Reducers';
 
 const log = Logger.create();
 
@@ -81,7 +82,8 @@ export class DefaultPersistenceLayer implements IPersistenceLayer {
         Preconditions.assertNotNull(docMeta, "docMeta");
 
         if (! (docMeta instanceof DocMeta)) {
-            // check to make sure nothing from JS-land can call this incorrectly.
+            // check to make sure nothing from JS-land can call this
+            // incorrectly.
             throw new Error("Can not sync anything other than DocMeta.");
         }
 
@@ -94,6 +96,30 @@ export class DefaultPersistenceLayer implements IPersistenceLayer {
 
         // now update the lastUpdated times before we commit to disk.
         docMeta.docInfo.lastUpdated = ISODateTimeStrings.create();
+
+        docMeta.docInfo.nrComments = Object.values(docMeta.pageMetas)
+            .map(current => Dictionaries.countOf(current.comments))
+            .reduce(Reducers.SUM, 0);
+
+        docMeta.docInfo.nrFlashcards = Object.values(docMeta.pageMetas)
+            .map(current => Dictionaries.countOf(current.flashcards))
+            .reduce(Reducers.SUM, 0);
+
+        docMeta.docInfo.nrNotes = Object.values(docMeta.pageMetas)
+            .map(current => Dictionaries.countOf(current.notes))
+            .reduce(Reducers.SUM, 0);
+
+        docMeta.docInfo.nrComments = Object.values(docMeta.pageMetas)
+            .map(current => Dictionaries.countOf(current.comments))
+            .reduce(Reducers.SUM, 0);
+
+        docMeta.docInfo.nrTextHighlights = Object.values(docMeta.pageMetas)
+            .map(current => Dictionaries.countOf(current.textHighlights))
+            .reduce(Reducers.SUM, 0);
+
+        docMeta.docInfo.nrAreaHighlights = Object.values(docMeta.pageMetas)
+            .map(current => Dictionaries.countOf(current.areaHighlights))
+            .reduce(Reducers.SUM, 0);
 
         if (docMeta.docInfo.added === undefined) {
             docMeta.docInfo.added = ISODateTimeStrings.create();

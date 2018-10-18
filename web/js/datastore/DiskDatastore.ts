@@ -345,7 +345,7 @@ export class DiskDatastore implements Datastore {
                 // wants me to write to and into a Data directory there but
                 // I don't like combining them.
 
-                const preferredPath = FilePaths.join(userHome, "Polar", "Data");
+                const preferredPath = FilePaths.join(userHome, "Polar");
 
                 return {
                     paths: [
@@ -359,7 +359,7 @@ export class DiskDatastore implements Datastore {
 
             case Platform.LINUX: {
 
-                const preferredPath = FilePaths.join(userHome, ".config", "Polar", "Data");
+                const preferredPath = FilePaths.join(userHome, ".config", "Polar");
 
                 return {
                     paths: [
@@ -372,7 +372,7 @@ export class DiskDatastore implements Datastore {
 
             case Platform.MACOS: {
 
-                const preferredPath = FilePaths.join(userHome, "Library", "Application Support", "Polar", "Data");
+                const preferredPath = FilePaths.join(userHome, "Library", "Application Support", "Polar");
 
                 return {
                     paths: [

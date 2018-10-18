@@ -228,6 +228,11 @@ describe('DiskDatastore', function() {
             assert.ok(docMeta0!.docInfo.lastUpdated !== undefined);
 
             delete docMeta0!.docInfo.lastUpdated;
+            delete docMeta0!.docInfo.nrComments;
+            delete docMeta0!.docInfo.nrFlashcards;
+            delete docMeta0!.docInfo.nrAreaHighlights;
+            delete docMeta0!.docInfo.nrTextHighlights;
+            delete docMeta0!.docInfo.nrNotes;
 
             assert.equal(isPresent(docMeta0), true);
 
