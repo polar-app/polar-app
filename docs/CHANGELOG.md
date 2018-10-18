@@ -1,4 +1,11 @@
 
+# 1.0.4
+
+- Fixed bug where capture wouldn't generate a completely unique URL for storage
+  on the file system and if you captured two URLs with the same title the 
+  later one would update the former one.  We now include the a hash prefix of
+  the SHA384 in the filename for uniqueness.
+
 # 1.0.3
 
 - Put ToS, cookie policy, and privacy policy in the about links so that people

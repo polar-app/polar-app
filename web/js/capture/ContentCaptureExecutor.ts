@@ -8,6 +8,7 @@ import {BrowserProfile} from './BrowserProfile';
 import WebContents = Electron.WebContents;
 import {Directories} from '../datastore/Directories';
 import {CaptureResult} from './CaptureResult';
+import {Hashcodes} from '../Hashcodes';
 
 const log = Logger.create();
 
@@ -45,8 +46,12 @@ export class ContentCaptureExecutor {
         // record the browser that was used to render this page.
         captured.browser = browserProfile;
 
+        const url = captured.url;
+
+        const hash = Hashcodes.createID(url);
+
         const stashDir = this.directories.stashDir;
-        const filename = Filenames.sanitize(captured.title);
+        const filename = hash + '-' + Filenames.sanitize(captured.title);
 
         const phzPath = FilePaths.join(stashDir, filename) + '.phz';
 
