@@ -4,6 +4,7 @@ import DropdownMenu from 'reactstrap/lib/DropdownMenu';
 import Navbar from 'reactstrap/lib/Navbar';
 import {BrowserConfigurationInputGroup} from './BrowserConfigurationInputGroup';
 import Moment from 'react-moment';
+import {ListSelector, ListOptionType} from './ListSelector';
 
 class App<P> extends React.Component<{}, IAppState> {
 
@@ -19,9 +20,29 @@ class App<P> extends React.Component<{}, IAppState> {
     }
 
     public render() {
+
+        const options: ListOptionType[] = [
+            {
+                id: "title",
+                label: "Title",
+                selected: true
+            },
+            {
+                id: "tags",
+                label: "Tags",
+                selected: false
+            }
+        ]
+
         return (
 
             <div>
+
+                <ListSelector options={options}
+                              id="list-options"
+                              onChange={(value) => console.log(value)}>
+
+                </ListSelector>
 
                     {/*<NavbarBrand href="/">reactstrap</NavbarBrand>*/}
                     {/*<NavbarToggler onClick={this.toggle} />*/}
