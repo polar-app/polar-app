@@ -363,15 +363,19 @@ export default class App extends React.Component<AppProps, AppState> {
                 <CookieBanner
                     message="We use cookies to track user behavior using Google Analytics and other 3rd party services. "
                     buttonMessage="I Accept"
-                    link={<a href='http://nocookielaw.com/'>More information</a>}
+                    link={<a href='https://github.com/burtonator/polar-bookshelf/blob/master/docs/Tracking-Policy.md'>More information</a>}
                     styles={{
                         banner: { backgroundColor: 'rgba(60, 60, 60, 0.8)', position: 'fixed', left: '0', bottom: '0' },
                         message: { fontWeight: 400 }
                     }}
-                    onAccept={() => {}}
-                    cookie="user-has-accepted-cookies" />
+                    dismissOnClick={true}
+                    onAccept={() => console.log('accepted')}
+                    cookie="user-has-accepted-cookies"
+                    //
+                />
 
             </div>
+
         );
     }
 

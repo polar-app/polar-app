@@ -37,6 +37,7 @@ export class RichTextArea extends React.Component<IProps, IState> {
                                          value={this.props.value || ''}
                                          autofocus={autofocus}
                                          onChange={(html) => this.props.onChange(html)}/>
+
                     </div>
 
                 </div>

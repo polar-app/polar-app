@@ -115,7 +115,7 @@ export class RichTextEditor4 extends React.Component<IProps, IState>  {
                     id: this.typedWidgetProps.id,
                     lang: 'en-US',
                     height: 280,
-                    // placeholder: "this is a placeholder",
+                    placeholder: this.props.placeholder || '',
                     dialogsInBody: false,
                     airMode: true,
                     // toolbar: [
@@ -165,7 +165,7 @@ interface IProps {
     onChange?: (newValue: string) => void;
     onBlur?: (id: string, value: string) => void;
     onFocus?: (id: string, value: string) => void;
-
+    placeholder?: string;
 }
 
 interface IState {

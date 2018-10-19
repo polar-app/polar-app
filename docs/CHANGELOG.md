@@ -1,5 +1,12 @@
 
+
+
 # 1.0.4
+
+- Fixed a bug where some pages weren't properly expanding when they were first
+  loaded. 
+
+- Fixed GA tracking of events.  
 
 - Ability to click on the pulldown in the document repository to the right and 
   copy the URL for a document that was captured.

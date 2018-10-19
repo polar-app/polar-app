@@ -1,12 +1,17 @@
 import ua from 'universal-analytics';
+import {Logger} from '../logger/Logger';
 
 const TRACKING_ID = 'UA-122721184-1';
 
 const visitor = ua(TRACKING_ID);
 
+const log = Logger.create();
+
 export class RendererAnalytics {
 
     public static event(args: IEventArgs): void {
+
+        log.debug("Sending analytics event: ", args);
 
         if(args.label && args.value) {
             visitor.event(args.category, args.action, args.label, args.value).send()
@@ -22,7 +27,8 @@ export class RendererAnalytics {
         visitor.pageview(path).send()
     }
 
-    // public static modalview(name: string, trackerNames?: TrackerNames): void {
+    // public static modalview(name: string, trackerNames?: TrackerNames): void
+    // {
         // ReactGA.modalview(name, trackerNames);
         // visitor.
     // }
@@ -37,16 +43,10 @@ export class RendererAnalytics {
     }
 
     //
-    // public static outboundLink(args: OutboundLinkArgs, hitCallback?: () => void, trackerNames?: TrackerNames): void {
-    //
-    //     if (!hitCallback) {
-    //         // noinspection TsLint
-    //         hitCallback = () => {};
-    //     }
-    //
-    //     ReactGA.outboundLink(args, hitCallback, trackerNames);
-    //
-    // }
+    // public static outboundLink(args: OutboundLinkArgs, hitCallback?: () =>
+    // void, trackerNames?: TrackerNames): void {  if (!hitCallback) { //
+    // noinspection TsLint hitCallback = () => {}; }
+    // ReactGA.outboundLink(args, hitCallback, trackerNames);  }
 
 }
 
