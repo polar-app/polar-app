@@ -316,10 +316,6 @@ export default class App extends React.Component<AppProps, AppState> {
                                 this.highlightRow(rowInfo.index as number);
                             },
 
-                            onDoubleClick: (e: any) => {
-                                this.onDocumentLoadRequested(rowInfo.original.fingerprint, rowInfo.original.filename);
-                            },
-
                             style: {
                                 background: rowInfo && rowInfo.index === this.state.selected ? '#00afec' : 'white',
                                 color: rowInfo && rowInfo.index === this.state.selected ? 'white' : 'black',
@@ -327,6 +323,13 @@ export default class App extends React.Component<AppProps, AppState> {
                         };
                     }}
                     getTdProps={(state: any, rowInfo: any, column: any, instance: any) => {
+                        if (column.id === 'title') {
+                            return {
+                                onDoubleClick: (e: any) => {
+                                    this.onDocumentLoadRequested(rowInfo.original.fingerprint, rowInfo.original.filename);
+                                }
+                            };
+                        }
 
                         if (column.id === 'flagged' || column.id === 'archived') {
 
