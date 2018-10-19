@@ -1,7 +1,5 @@
 import * as React from 'react';
-import {Input, ListGroup, ListGroupItem, Label} from 'reactstrap';
-import {DocAnnotation} from '../../js/annotation_sidebar/DocAnnotation';
-import {DocAnnotationComponent} from '../../js/annotation_sidebar/annotations/DocAnnotationComponent';
+import {Input, Label, ListGroup, ListGroupItem} from 'reactstrap';
 import {IStyleMap} from '../../js/react/IStyleMap';
 
 const Styles: IStyleMap = {
@@ -9,7 +7,8 @@ const Styles: IStyleMap = {
     Label: {
         userSelect: 'none',
         width: '100%',
-        cursor: 'pointer'
+        cursor: 'pointer',
+        marginBottom: '0'
 
     },
 
@@ -31,9 +30,9 @@ export class ListSelector<T extends ListOptionType> extends React.Component<IPro
     public render() {
 
         return (
-            <div className="column-selector m-2" id={this.props.id}>
+            <div className="column-selector m-0" id={this.props.id}>
 
-                <ListGroup>
+                <ListGroup flush>
 
                     {this.createListGroupItems(this.props.options)}
 
