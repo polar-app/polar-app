@@ -29,7 +29,9 @@ export class LightboxPopover extends React.Component<IProps, IState> {
 
             <Popover placement={this.props.placement || 'bottom'}
                      isOpen={this.props.open}
-                     target={this.props.target}>
+                     className={this.props.className}
+                     target={this.props.target}
+                     style={this.props.style}>
 
                 <PopoverBody>
 
@@ -49,6 +51,8 @@ interface IProps {
     target: string;
     open: boolean;
     placement?: Popper.Placement;
+    className?: string;
+    style?: React.CSSProperties;
 }
 
 interface IState {

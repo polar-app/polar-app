@@ -5,6 +5,7 @@ import {TextInputPopover} from '../../../web/js/ui/text_input/TextInputPopover';
 import {Logger} from '../../../web/js/logger/Logger';
 import {IStyleMap} from '../../../web/js/react/IStyleMap';
 import {ListOptionType, ListSelector} from "./ListSelector";
+import {LightboxPopover} from '../../js/ui/lightbox_popover/LightboxPopover';
 
 const log = Logger.create();
 
@@ -73,11 +74,11 @@ export class TableDropdown extends React.Component<IProps, IState> {
 
                 </Dropdown>
 
-                <Popover placement={'bottom'}
-                         isOpen={this.state.selected === 'change-columns'}
-                         target={this.props.id + '-dropdown-toggle'}
-                         className="p-0"
-                         style={{'fontSize': '14px'}}>
+                <LightboxPopover placement={'bottom'}
+                                 open={this.state.selected === 'change-columns'}
+                                 target={this.props.id + '-dropdown-toggle'}
+                                 className="p-0"
+                                 style={{'fontSize': '14px'}}>
 
                     <PopoverBody>
 
@@ -89,7 +90,7 @@ export class TableDropdown extends React.Component<IProps, IState> {
 
                     </PopoverBody>
 
-                </Popover>
+                </LightboxPopover>
 
             </div>
         );
