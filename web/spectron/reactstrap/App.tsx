@@ -1,10 +1,22 @@
 import * as React from 'react';
-import {Button, DropdownItem, DropdownToggle, Input, InputGroup, InputGroupAddon, InputGroupButtonDropdown, ListGroup, ListGroupItem} from 'reactstrap';
+import {
+    Button,
+    Dropdown,
+    DropdownItem,
+    DropdownToggle,
+    Input,
+    InputGroup,
+    InputGroupAddon,
+    InputGroupButtonDropdown,
+    ListGroup,
+    ListGroupItem
+} from 'reactstrap';
 import DropdownMenu from 'reactstrap/lib/DropdownMenu';
 import Navbar from 'reactstrap/lib/Navbar';
 import {BrowserConfigurationInputGroup} from './BrowserConfigurationInputGroup';
 import Moment from 'react-moment';
 import {ListSelector, ListOptionType} from './ListSelector';
+import {TableDropdown} from "./TableDropdown";
 
 class App<P> extends React.Component<{}, IAppState> {
 
@@ -32,11 +44,38 @@ class App<P> extends React.Component<{}, IAppState> {
                 label: "Tags",
                 selected: false
             }
-        ]
+        ];
 
         return (
 
             <div>
+
+                adfs
+                <TableDropdown id={'table-dropdown'}></TableDropdown>
+
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+
+
+                <Dropdown isOpen={true} >
+                    <DropdownToggle
+                        tag="span"
+                        data-toggle="dropdown"
+                        aria-expanded={true}>
+                        Custom Dropdown Content
+                    </DropdownToggle>
+                    <DropdownMenu>
+                        <div >Custom dropdown item</div>
+                    </DropdownMenu>
+                </Dropdown>
 
                 <ListSelector options={options}
                               id="list-options"
