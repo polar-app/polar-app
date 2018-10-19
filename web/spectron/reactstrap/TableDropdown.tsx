@@ -84,6 +84,7 @@ export class TableDropdown extends React.Component<IProps, IState> {
 
                         <ListSelector options={options}
                                       id="list-options"
+                                      title="Select columns to display in the table:"
                                       onChange={(value) => console.log(value)}>
 
                         </ListSelector>

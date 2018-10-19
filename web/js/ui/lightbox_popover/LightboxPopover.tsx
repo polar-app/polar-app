@@ -33,14 +33,9 @@ export class LightboxPopover extends React.Component<IProps, IState> {
                      target={this.props.target}
                      style={this.props.style}>
 
-                <PopoverBody>
-
-                    {this.props.children}
-
-                </PopoverBody>
+                {this.props.children}
 
             </Popover>
-
 
         );
     }

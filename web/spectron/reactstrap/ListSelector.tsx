@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {Input, Label, ListGroup, ListGroupItem} from 'reactstrap';
+import {Input, Label, ListGroup, ListGroupItem, Button} from 'reactstrap';
 import {IStyleMap} from '../../js/react/IStyleMap';
 
 const Styles: IStyleMap = {
@@ -32,13 +32,30 @@ export class ListSelector<T extends ListOptionType> extends React.Component<IPro
         return (
             <div className="column-selector m-0" id={this.props.id}>
 
+                <div className="text-muted pb-1">
+                    {this.props.title}
+                </div>
+
                 <ListGroup flush>
 
                     {this.createListGroupItems(this.props.options)}
 
                 </ListGroup>
 
+                <div className="pt-2 text-right">
+
+                    <Button className="btn ml-1"
+                            color="secondary"
+                            size="sm">Cancel</Button>
+
+                    <Button className="btn ml-1"
+                            color="primary"
+                            size="sm">Set Columns</Button>
+
+                </div>
+
             </div>
+
         );
 
     };
@@ -69,6 +86,7 @@ export class ListSelector<T extends ListOptionType> extends React.Component<IPro
                     </div>
 
                 </ListGroupItem>);
+
         });
 
         return result;
@@ -113,6 +131,8 @@ interface IProps<T> {
     id: string;
 
     options: T[];
+
+    title?: string;
 
     /**
      * Called when a value changes.
