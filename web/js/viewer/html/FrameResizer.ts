@@ -72,7 +72,8 @@ export class FrameResizer {
                                         .filter( current => current !== "")
                                         .getOrElse("0px"));
 
-        const newHeight = contentDocument.body.scrollHeight;
+        const newHeight = Math.max(contentDocument.documentElement.scrollHeight,
+                                   contentDocument.body.scrollHeight);
 
         const delta = Math.abs(newHeight - height);
 
