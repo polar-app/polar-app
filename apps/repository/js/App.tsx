@@ -23,6 +23,7 @@ import {DateTimeTableCell} from './DateTimeTableCell';
 import {RendererAnalytics} from '../../../web/js/ga/RendererAnalytics';
 import {MessageBanner} from './MessageBanner';
 import {DocDropdown} from './DocDropdown';
+import CookieBanner from 'react-cookie-banner';
 
 const log = Logger.create();
 
@@ -358,6 +359,18 @@ export default class App extends React.Component<AppProps, AppState> {
                 <Footer/>
 
                 </div>
+
+                <CookieBanner
+                    message="We use cookies to track user behavior using Google Analytics and other 3rd party services. "
+                    buttonMessage="I Accept"
+                    link={<a href='http://nocookielaw.com/'>More information</a>}
+                    styles={{
+                        banner: { backgroundColor: 'rgba(60, 60, 60, 0.8)', position: 'fixed', left: '0', bottom: '0' },
+                        message: { fontWeight: 400 }
+                    }}
+                    onAccept={() => {}}
+                    cookie="user-has-accepted-cookies" />
+
             </div>
         );
     }
