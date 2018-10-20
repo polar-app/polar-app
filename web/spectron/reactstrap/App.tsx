@@ -50,7 +50,30 @@ class App<P> extends React.Component<{}, IAppState> {
 
             <div>
 
-                adfs
+                <br/>
+                <span className="fa-stack fa-lg" aria-hidden="true">
+                  <i className="fa fa-comment fa-stack-2x"></i>
+                  <i className="fa fa-plus fa-stack-1x fa-inverse"></i>
+                </span>
+                <br/>
+
+                <span className="fa-stack fa-lg" aria-hidden="true">
+                  <i className="fa fa-comment-alt fa-stack-2x"></i>
+                  <i className="fa fa-plus fa-stack-1x fa-inverse"></i>
+                </span>
+                <br/>
+
+
+                <i className="fa fa-comment fa-stack-2x"></i>
+                <br/>
+
+                <i className="fa fa-comment fa-2x"></i>
+                <br/>
+
+                <i className="fa fa-comment fa-lg"></i>
+                <br/>
+                <i className="fas fa-comment-plus"></i>
+
                 <TableDropdown id={'table-dropdown'}></TableDropdown>
 
                 <br/>

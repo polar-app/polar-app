@@ -11,6 +11,7 @@ import {Firestore} from '../firestore/Firestore';
 import {Firebase} from '../firestore/Firebase';
 import {DocInfo, IDocInfo} from '../metadata/DocInfo';
 import {Preconditions} from '../Preconditions';
+import {Hashcodes} from '../Hashcodes';
 
 const log = Logger.create();
 
@@ -54,7 +55,12 @@ export class FirebaseDatastore implements Datastore {
      * fingerprint
      */
     public async contains(fingerprint: string): Promise<boolean> {
-        throw new Error("Not implemented");
+
+        // TODO: I don't think there's an efficient way to do this on Firebase
+        // since we're paying for the query. If we call this method and end up
+        // needing the doc it's just better to get the doc directly.
+        return await this.getDocMeta(fingerprint) !== null;
+
     }
 
     /**
@@ -62,7 +68,21 @@ export class FirebaseDatastore implements Datastore {
      *
      */
     public async delete(docMetaFileRef: DocMetaFileRef): Promise<Readonly<DeleteResult>> {
-        throw new Error("Not implemented");
+
+        const uid = this.getUserID();
+        const id = this.computeDocMetaID(uid, docMetaFileRef.fingerprint);
+
+        const documentSnapshot = await this.firestore!
+            .collection(DatastoreCollection.DOC_META)
+            .doc(id)
+            .delete();
+
+        // FIXME: this is VERY wrong but for now DeleteResult assumes the filesystem
+        // but instead we should return a generic DeleteResult and have a DiskDeleteResult
+        // and a FirebaseDeleteResult in the future.
+
+        return null!;
+
     }
 
     /**
@@ -71,38 +91,22 @@ export class FirebaseDatastore implements Datastore {
      */
     public async getDocMeta(fingerprint: string): Promise<string | null> {
 
-        const auth = this.app!.auth();
+        const uid = this.getUserID();
+        const id = this.computeDocMetaID(uid, fingerprint);
 
-        const user = auth.currentUser;
-
-        // FIXME just write the the user ID...
-
-        Preconditions.assertPresent(auth, "Not authenticated");
-
-        const querySnapshot = await this.firestore!
+        const documentSnapshot = await this.firestore!
             .collection(DatastoreCollection.DOC_META)
-            // FIXME:
-            .where('from', '==', user!.email!)
+            .doc(id)
             .get();
 
-        const docs = querySnapshot.docs;
-
-        if (docs.length === 0) {
+        if ( ! documentSnapshot.exists) {
             // nothing was found in firebase
             return null;
         }
 
-        if (docs.length === 1) {
+        const data: RecordHolder<DocMetaHolder> = <any> documentSnapshot.data();
 
-            const doc = docs[0];
-
-            const data: RecordHolder<DocMetaHolder> = <any> doc.data();
-
-            return data.value.value;
-
-        }
-
-        throw new Error("Too many results: " + docs.length);
+        return data.value.value;
 
     }
 
@@ -124,19 +128,8 @@ export class FirebaseDatastore implements Datastore {
      */
     public async sync(fingerprint: string, data: string, docInfo: DocInfo) {
 
-        // FIXME: compute a SHA1 based on the Firebase user ID + the hash of
-        // the fingerprint.  While anyone could compute this publicly and look
-        // at the source here, the firebase rules would prevent them from
-        // actually overwriting it.  We CAN use the firebase automatically
-        // generated ID for documents but since we
-
-        // FIXME: t his is wrong.. someone could generate ane write a document
-        // for that user a-priori which would be shit... maybe use some sort
-        // of private user ID?  Would this even be faster than using and index?
-        //
-        //
-
-        const id = fingerprint;
+        const uid = this.getUserID();
+        const id = this.computeDocMetaID(uid, fingerprint);
 
         const docMetaHolder: DocMetaHolder = {
             docInfo,
@@ -144,20 +137,39 @@ export class FirebaseDatastore implements Datastore {
         };
 
         const recordHolder: RecordHolder<DocMetaHolder> = {
+            uid,
             id,
-            visibility: Visibility.PRIVATE, // FIXME for now.
+            visibility: Visibility.PRIVATE,
             value: docMetaHolder
         };
 
         await this.firestore!
             .collection(DatastoreCollection.DOC_META)
-            .doc() // FIXME: right doc ID?
+            .doc(id)
             .set(recordHolder);
 
     }
 
     public async getDocMetaFiles(): Promise<DocMetaRef[]> {
+
         throw new Error("Not implemented");
+
+
+    }
+
+    private computeDocMetaID(uid: UserID, fingerprint: string) {
+        return Hashcodes.createID(uid + ':' + fingerprint, 32);
+    }
+
+    private getUserID(): UserID {
+
+        const auth = this.app!.auth();
+        Preconditions.assertPresent(auth, "Not authenticated");
+
+        const user = auth.currentUser;
+        Preconditions.assertPresent(user, "Not authenticated");
+
+        return user!.uid;
     }
 
 }
@@ -168,9 +180,17 @@ export class FirebaseDatastore implements Datastore {
  * points to a more specific object which hold the actual data we need.
  */
 export interface RecordHolder<T> {
+
+    // the owner of this record.
+    readonly uid: UserID;
+
+    // the visibilty of this record.
     readonly visibility: Visibility;
+
     readonly id: string;
+
     readonly value: T;
+
 }
 
 export interface DocMetaHolder {
@@ -208,3 +228,5 @@ enum DatastoreCollection {
     DOC_META = "doc_meta"
 
 }
+
+type UserID = string;
