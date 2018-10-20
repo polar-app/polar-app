@@ -192,6 +192,7 @@ export default class App extends React.Component<AppProps, AppState> {
                             //     accessor: (d: any) => d.lastName
                             // },
                             {
+                                id: 'progress',
                                 Header: 'Progress',
                                 accessor: 'progress',
                                 maxWidth: 150,
@@ -205,6 +206,7 @@ export default class App extends React.Component<AppProps, AppState> {
                                 )
                             },
                             {
+                                id: 'tag-input',
                                 Header: '',
                                 accessor: '',
                                 maxWidth: 25,
@@ -229,6 +231,7 @@ export default class App extends React.Component<AppProps, AppState> {
                                 }
                             },
                             {
+                                id: 'flagged',
                                 Header: '',
                                 accessor: 'flagged',
                                 maxWidth: 25,
@@ -251,6 +254,7 @@ export default class App extends React.Component<AppProps, AppState> {
                                 }
                             },
                             {
+                                id: 'archived',
                                 Header: '',
                                 accessor: 'archived',
                                 maxWidth: 25,
@@ -271,6 +275,7 @@ export default class App extends React.Component<AppProps, AppState> {
                                 }
                             },
                             {
+                                id: 'doc-dropdown',
                                 Header: '',
                                 accessor: '',
                                 maxWidth: 25,
@@ -324,7 +329,10 @@ export default class App extends React.Component<AppProps, AppState> {
                         };
                     }}
                     getTdProps={(state: any, rowInfo: any, column: any, instance: any) => {
-                        if (column.id === 'title') {
+
+                        const singleClickColumns = ['tag-input', 'flagged', 'archived', 'doc-dropdown'];
+
+                        if (! singleClickColumns.includes(column.id)) {
                             return {
                                 onDoubleClick: (e: any) => {
                                     this.onDocumentLoadRequested(rowInfo.original.fingerprint, rowInfo.original.filename);
@@ -332,7 +340,7 @@ export default class App extends React.Component<AppProps, AppState> {
                             };
                         }
 
-                        if (column.id === 'flagged' || column.id === 'archived') {
+                        if (singleClickColumns.includes(column.id)) {
 
                             return {
 
