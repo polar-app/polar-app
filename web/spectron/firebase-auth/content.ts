@@ -18,16 +18,27 @@ function onData(snapshot: firebase.firestore.QuerySnapshot) {
 
     // messagesElement.innerHTML = '';
 
-    for (const doc of snapshot.docs) {
-        const data = JSON.stringify(doc.data());
-        const id = ++docID;
-        messagesElement.appendChild(Elements.createElementHTML(`<div>${id}. ${data}</div>`));
+
+
+    for (const docChange of snapshot.docChanges()) {
+
+        if(docChange.type === 'added') {
+            const doc = docChange.doc;
+
+            const data = JSON.stringify(doc.data());
+            const id = ++docID;
+            messagesElement.appendChild(Elements.createElementHTML(`<div>${id}. ${data}</div>`));
+        }
+
     }
 }
 
 let firestore: firebase.firestore.Firestore;
+let currentUser: firebase.User | null = null;
 
 async function onAuth(user: firebase.User | null) {
+
+    currentUser = user!;
 
     if (user) {
         // User is signed in.
@@ -116,7 +127,7 @@ async function createRecord() {
         .collection('shoutouts')
         .doc()
         .set({
-             from: 'me@example.com',
+             from: currentUser!.email!,
              message: 'sup dawg from create record' + new Date().toISOString()
          }).catch(err => console.error(err));
 
