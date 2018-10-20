@@ -12,6 +12,9 @@ import {Firebase} from '../firestore/Firebase';
 import {DocInfo, IDocInfo} from '../metadata/DocInfo';
 import {Preconditions} from '../Preconditions';
 import {Hashcodes} from '../Hashcodes';
+import * as firebase from '../firestore/lib/firebase';
+import {Elements} from '../util/Elements';
+import {ResolveablePromise} from '../util/ResolveablePromise';
 
 const log = Logger.create();
 
@@ -35,13 +38,16 @@ export class FirebaseDatastore implements Datastore {
 
     private firestore?: firebase.firestore.Firestore;
 
-    constructor() {
+    private readonly local: Datastore;
 
-        this.directories = new Directories();
+    private readonly resolveablePromiseIndex = new ResolveablePromiseIndex<Mutation>();
 
-        // the path to the stash directory
-        this.stashDir = this.directories.stashDir;
-        this.logsDir = this.directories.logsDir;
+    constructor(local: Datastore) {
+        this.local = local;
+
+        this.directories = this.local.directories;
+        this.stashDir = this.local.stashDir;
+        this.logsDir = this.local.logsDir;
 
     }
 
@@ -55,12 +61,7 @@ export class FirebaseDatastore implements Datastore {
      * fingerprint
      */
     public async contains(fingerprint: string): Promise<boolean> {
-
-        // TODO: I don't think there's an efficient way to do this on Firebase
-        // since we're paying for the query. If we call this method and end up
-        // needing the doc it's just better to get the doc directly.
-        return await this.getDocMeta(fingerprint) !== null;
-
+        return this.local.contains(fingerprint);
     }
 
     /**
@@ -72,16 +73,21 @@ export class FirebaseDatastore implements Datastore {
         const uid = this.getUserID();
         const id = this.computeDocMetaID(uid, docMetaFileRef.fingerprint);
 
+        const resolveablePromise = new ResolveablePromise<Mutation>();
+
+        this.resolveablePromiseIndex.add(id, resolveablePromise);
+
         const documentSnapshot = await this.firestore!
             .collection(DatastoreCollection.DOC_META)
             .doc(id)
             .delete();
 
-        // FIXME: this is VERY wrong but for now DeleteResult assumes the filesystem
-        // but instead we should return a generic DeleteResult and have a DiskDeleteResult
-        // and a FirebaseDeleteResult in the future.
+        // wait for this promise to resolve and then perform the local delete of
+        // the local file.
 
-        return null!;
+        await resolveablePromise;
+
+        return this.local.delete(docMetaFileRef);
 
     }
 
@@ -90,36 +96,29 @@ export class FirebaseDatastore implements Datastore {
      * fingerprint or null if it does not exist.
      */
     public async getDocMeta(fingerprint: string): Promise<string | null> {
-
-        const uid = this.getUserID();
-        const id = this.computeDocMetaID(uid, fingerprint);
-
-        const documentSnapshot = await this.firestore!
-            .collection(DatastoreCollection.DOC_META)
-            .doc(id)
-            .get();
-
-        if ( ! documentSnapshot.exists) {
-            // nothing was found in firebase
-            return null;
-        }
-
-        const data: RecordHolder<DocMetaHolder> = <any> documentSnapshot.data();
-
-        return data.value.value;
-
+        return this.local.getDocMeta(fingerprint);
     }
 
 
     public async addFile(backend: Backend, name: string, data: Buffer | string, meta: FileMeta = {}): Promise<DatastoreFile> {
+
+        // FIXME: use google cloud storage for this but we aren't using this
+        // functionality yet.
+
         throw new Error("Not implemented");
     }
 
     public async getFile(backend: Backend, name: string): Promise<Optional<DatastoreFile>> {
+
+        // FIXME: use google cloud storage for this but we aren't using this
+        // functionality yet.
         throw new Error("Not implemented");
     }
 
     public containsFile(backend: Backend, name: string): Promise<boolean> {
+
+        // FIXME: use google cloud storage for this but we aren't using this
+        // functionality yet.
         throw new Error("Not implemented");
     }
 
@@ -130,6 +129,10 @@ export class FirebaseDatastore implements Datastore {
 
         const uid = this.getUserID();
         const id = this.computeDocMetaID(uid, fingerprint);
+
+        const resolveablePromise = new ResolveablePromise<Mutation>();
+
+        this.resolveablePromiseIndex.add(id, resolveablePromise);
 
         const docMetaHolder: DocMetaHolder = {
             docInfo,
@@ -148,13 +151,68 @@ export class FirebaseDatastore implements Datastore {
             .doc(id)
             .set(recordHolder);
 
+        await resolveablePromise;
+
+        return this.local.sync(fingerprint, data, docInfo);
+
     }
 
     public async getDocMetaFiles(): Promise<DocMetaRef[]> {
+        return this.local.getDocMetaFiles();
+    }
 
-        throw new Error("Not implemented");
+    /**
+     * Called when new data is available from Firebase so we can solve promises,
+     * add things to local stores, etc.
+     *
+     * ALL operations are done via snapshots which we create and subscribe to
+     * on init().
+     *
+     * This solves to problems:
+     *
+     * 1. The most important, is that when data is added remotely (the user is
+     *    on another machine and this machine-rejoins the network or detects
+     *    changes) then content if pulled locally and added to the local
+     *    datastore.
+     *
+     * 2. Local data is added via the same code path.  The code path is remote-
+     *    first but then then immediately resolved from the cache and added
+     *    locally.
+     */
+    private onSnapshot(snapshot: firebase.firestore.QuerySnapshot) {
 
+        const messagesElement = document.getElementById('messages')!;
 
+        for (const docChange of snapshot.docChanges()) {
+
+            const record = <RecordHolder<DocMetaHolder>> docChange.doc.data();
+
+            switch (docChange.type) {
+
+                case 'added':
+                    this.onSnapshotDocUpdated(record);
+                    break;
+
+                case 'modified':
+                    this.onSnapshotDocUpdated(record);
+                    break;
+
+                case 'removed':
+                    this.onSnapshotDocRemoved(record);
+                    break;
+
+            }
+
+        }
+
+    }
+
+    private onSnapshotDocUpdated(record: RecordHolder<DocMetaHolder>) {
+        this.resolveablePromiseIndex.resolve(record.id, {});
+    }
+
+    private onSnapshotDocRemoved(record: RecordHolder<DocMetaHolder>) {
+        this.resolveablePromiseIndex.resolve(record.id, {});
     }
 
     private computeDocMetaID(uid: UserID, fingerprint: string) {
@@ -175,9 +233,9 @@ export class FirebaseDatastore implements Datastore {
 }
 
 /**
- * Holds a data object literal by value. This contains the high level information
- * about a document including the ID and the visibility.  The value object
- * points to a more specific object which hold the actual data we need.
+ * Holds a data object literal by value. This contains the high level
+ * information about a document including the ID and the visibility.  The value
+ * object points to a more specific object which hold the actual data we need.
  */
 export interface RecordHolder<T> {
 
@@ -232,3 +290,47 @@ enum DatastoreCollection {
 }
 
 type UserID = string;
+
+/**
+ * The result of a FB database mutation.
+ */
+interface Mutation {
+
+}
+
+/**
+ * Allows us to externally resolve promises that are waiting to be resolved.
+ */
+class ResolveablePromiseIndex<T> {
+
+    private backing: {[id: string]: ResolveablePromise<T>[]} = {};
+
+    public add(id: string, promise: ResolveablePromise<T>): void {
+
+        if(id in this.backing) {
+            this.backing[id].push(promise);
+        } else {
+            this.backing[id] = [promise];
+        }
+
+    }
+
+    /**
+     * Resolve all the values of id with the given value.
+     */
+    public resolve(id: string, value: T) {
+
+        const promises = this.backing[id];
+
+        if(promises) {
+
+            for (const promise of promises) {
+                promise.resolve(value);
+            }
+
+            delete this.backing[id];
+        }
+
+    }
+
+}

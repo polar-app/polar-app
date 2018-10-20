@@ -50,6 +50,31 @@ class App<P> extends React.Component<{}, IAppState> {
 
             <div>
 
+                <div className="fa-4x">
+                    <span className="fa-layers fa-fw" style={{background: 'MistyRose'}}>
+                        <i className="fas fa-circle" style={{color: 'Tomato'}}></i>
+                        <i className="fa-inverse fas fa-times" data-fa-transform="shrink-6"></i>
+                    </span>
+
+                    {/*https://fontawesome.com/how-to-use/on-the-web/styling/power-transforms*/}
+
+                    <span className="fa-layers fa-fw">
+                        <i className="fa fa-comment-alt" style={{color: 'grey'}} data-fa-transform="shrink-2 down-1"></i>
+                        <i className="fa-inverse fas fa-plus" style={{color: 'white'}}  data-fa-transform="shrink-8 up-0"></i>
+                    </span>
+
+                    <span className="fa-layers fa-fw">
+                        <i className="fas fa-bolt" style={{color: 'grey'}} data-fa-transform="shrink-2 down-1"></i>
+                        <i className="fa-inverse fas fa-plus" style={{color: 'white'}}  data-fa-transform="shrink-8 up-0"></i>
+                    </span>
+
+                    <i className="fas fa-spider" data-fa-transform="shrink-8 up-6"></i>
+
+
+
+                </div>
+
+
                 <br/>
                 <span className="fa-stack fa-lg" aria-hidden="true">
                   <i className="fa fa-comment fa-stack-2x"></i>

@@ -1,6 +1,6 @@
 import {assert} from 'chai';
 import {Progress} from './Progress';
-import {ResolvablePromise} from './ResolvablePromise';
+import {ResolveablePromise} from './ResolveablePromise';
 import {Reducers} from './Reducers';
 
 describe('Reducers', function() {

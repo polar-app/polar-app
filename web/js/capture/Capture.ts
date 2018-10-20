@@ -13,7 +13,7 @@ import {Optional} from '../util/ts/Optional';
 import {Functions} from '../util/Functions';
 import {Promises} from '../util/Promises';
 import {ContentCaptureExecutor} from './ContentCaptureExecutor';
-import {ResolvablePromise} from '../util/ResolvablePromise';
+import {ResolveablePromise} from '../util/ResolveablePromise';
 
 const log = Logger.create();
 
@@ -39,7 +39,7 @@ export class Capture {
 
     public readonly webRequestReactors: WebRequestReactor[] = [];
 
-    private result = new ResolvablePromise<CaptureResult>();
+    private result = new ResolveablePromise<CaptureResult>();
 
     private webContents?: WebContents;
 

@@ -1,13 +1,13 @@
 import {assert} from 'chai';
 import {Progress} from './Progress';
-import {ResolvablePromise} from './ResolvablePromise';
+import {ResolveablePromise} from './ResolveablePromise';
 
 
-describe('ResolvablePromise', function() {
+describe('ResolveablePromise', function() {
 
     it("Without awaiting the promise", async function () {
 
-        const resolvablePromise = new ResolvablePromise<string>();
+        const resolvablePromise = new ResolveablePromise<string>();
 
         resolvablePromise.resolve('hello');
 

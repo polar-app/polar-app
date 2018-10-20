@@ -1,4 +1,4 @@
-export class ResolvablePromise<T> implements Promise<T> {
+export class ResolveablePromise<T> implements Promise<T> {
 
     private promise: Promise<T>;
 
