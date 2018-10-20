@@ -5,16 +5,16 @@ import {Cmdline} from './web/js/electron/Cmdline';
 import {Logging} from './web/js/logger/Logging';
 import {Datastores} from './web/js/datastore/Datastores';
 
-const log = Logger.create();
-
 const hasSingleInstanceLock = app.requestSingleInstanceLock();
 
 if( ! hasSingleInstanceLock) {
-    log.info("Quiting.  App is single instance.");
+    console.error("Quiting.  App is single instance.");
     app.quit();
 }
 
 async function launch() {
+
+    const log = Logger.create();
 
     const datastore = Datastores.create();
 
@@ -36,6 +36,6 @@ async function launch() {
 
 app.on('ready', async () => {
 
-    launch().catch(err => log.error("Unable to launch app: ", err));
+    launch().catch(err => console.error("Unable to launch app: ", err));
 
 });

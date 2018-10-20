@@ -59,8 +59,8 @@ snap:
   stagePackages:
     - "default"
   plugs:
-    - "default"
-    - "home"
+    - default
+    - home
     #- "X11"
     #- "wayland"
 
