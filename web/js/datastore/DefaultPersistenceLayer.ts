@@ -12,6 +12,7 @@ import {Backend} from './Backend';
 import {DatastoreFile} from './DatastoreFile';
 import {Optional} from '../util/ts/Optional';
 import {Reducers} from '../util/Reducers';
+import uuid from 'uuid';
 
 const log = Logger.create();
 
@@ -124,6 +125,9 @@ export class DefaultPersistenceLayer implements IPersistenceLayer {
         if (docMeta.docInfo.added === undefined) {
             docMeta.docInfo.added = ISODateTimeStrings.create();
         }
+
+        // update the sequence before we write it out to disk.
+        docMeta.docInfo.uuid = uuid.v1();
 
         log.info("Sync of docMeta with fingerprint: ", fingerprint);
 

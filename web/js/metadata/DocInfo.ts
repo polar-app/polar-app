@@ -31,6 +31,7 @@ export class DocInfo extends SerializedObject implements IDocInfo {
     public nrFlashcards?: number;
     public nrTextHighlights?: number;
     public nrAreaHighlights?: number;
+    public uuid?: string;
 
     constructor(val: IDocInfo) {
 
@@ -166,5 +167,13 @@ export interface IDocInfo {
     nrTextHighlights?: number;
 
     nrAreaHighlights?: number;
+
+    /**
+     * A unique sequence for this document representing the unique document
+     * number to detect changes between each commit to the datastore. Every
+     * write to the datastore generates a unique sequence id for the document
+     * being written.
+     */
+    sequence?: string;
 
 }

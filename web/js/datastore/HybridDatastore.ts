@@ -11,6 +11,7 @@ import {DocInfo} from '../metadata/DocInfo';
 import {Hashcodes} from '../Hashcodes';
 import {Preconditions} from '../Preconditions';
 import {DocMetaHolder, RecordHolder, Visibility} from './FirebaseDatastore';
+import * as firebase from '../firestore/lib/firebase';
 
 /**
  * A hybrid datastore allows us to have one datastore with a local and remote
@@ -19,8 +20,8 @@ import {DocMetaHolder, RecordHolder, Visibility} from './FirebaseDatastore';
  *
  * The remote datastore is the source of truth.  There isn't a way to have
  * transactions setup between remote and local so what we do is always yield
- * the remote.  If we do a delete to remote, and then crash, then on startup,
- * the sync will remote the local (for example).
+ * to the remote.  If we do a delete to remote, and then crash, then on startup,
+ * the sync will remove the local file (for example).
  *
  * The reverse is true too. If we startup and there is an excess file in the
  * remote, it's copied local.
@@ -52,6 +53,9 @@ export class HybridDatastore implements Datastore {
         // re-send it from the server...
 
         await Promise.all([this.remote.init(), this.local.init()])
+
+        const firestore = firebase.firestore();
+
     }
 
     public async contains(fingerprint: string): Promise<boolean> {
@@ -69,6 +73,9 @@ export class HybridDatastore implements Datastore {
 
 
     public async addFile(backend: Backend, name: string, data: Buffer | string, meta: FileMeta = {}): Promise<DatastoreFile> {
+
+        // for this to work we have to use fierbase snapshot QuerySnapshot and
+        // look at docChanges and wait for the document we requested...
 
         await this.remote.addFile(backend, name, data, meta);
 
