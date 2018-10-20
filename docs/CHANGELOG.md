@@ -3,10 +3,19 @@
 
 # 1.0.4
 
+- improve double click handling to make sure we have a set of isolated single 
+  click columns.
+
+- merged PR from xuebingli to handle double click on columns intended to be 
+  single click. 
+
+    https://github.com/burtonator/polar-bookshelf/pull/303
+
 - Fixed a bug where some pages weren't properly expanding when they were first
   loaded. 
 
-- Fixed GA tracking of events.  
+- Fixed GA tracking of events which weren't sending before. Need this to 
+  determine which features are being used.   
 
 - Ability to click on the pulldown in the document repository to the right and 
   copy the URL for a document that was captured.

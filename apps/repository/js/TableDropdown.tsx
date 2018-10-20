@@ -101,7 +101,7 @@ export class TableDropdown extends React.Component<IProps, IState> {
                 </Dropdown>
 
                 <LightboxPopover placement={'bottom'}
-                                 open={this.state.selected === 'change-columns'}
+                                 open={this.selected === 'change-columns'}
                                  target={this.props.id + '-dropdown-toggle'}
                                  className="p-0"
                                  style={{'fontSize': '14px'}}>
@@ -111,6 +111,7 @@ export class TableDropdown extends React.Component<IProps, IState> {
                         <ListSelector options={options}
                                       id={this.props.id + 'list-options'}
                                       title="Select columns to display in the table:"
+                                      onCancel={() => this.select('none')}
                                       onChange={(value) => console.log(value)}>
 
                         </ListSelector>

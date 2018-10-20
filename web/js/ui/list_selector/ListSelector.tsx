@@ -20,6 +20,7 @@ export class ListSelector<T extends ListOptionType> extends React.Component<IPro
         super(props, context);
 
         this.onChange = this.onChange.bind(this);
+        this.onCancel = this.onCancel.bind(this);
         this.state = {
             // dropdownOpen: false,
             // splitButtonOpen: false
@@ -46,6 +47,7 @@ export class ListSelector<T extends ListOptionType> extends React.Component<IPro
 
                     <Button className="btn ml-1"
                             color="secondary"
+                            onClick={() => this.onCancel()}
                             size="sm">Cancel</Button>
 
                     <Button className="btn ml-1"
@@ -59,6 +61,12 @@ export class ListSelector<T extends ListOptionType> extends React.Component<IPro
         );
 
     };
+
+    private onCancel() {
+        if (this.props.onCancel) {
+            this.props.onCancel();
+        }
+    }
 
     private createListGroupItems(options: T[]) {
 
@@ -135,9 +143,16 @@ interface IProps<T> {
     title?: string;
 
     /**
-     * Called when a value changes.
+     * Called when a single value changes.
      */
     onChange: (value: ListOptionType) => void;
+
+    /**
+     * Called when we are canceling the input.
+     */
+    onCancel?: () => void;
+
+    onSet?: (options: ListOptionType[]) => void;
 
 }
 
