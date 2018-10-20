@@ -16,11 +16,16 @@ const Styles: IStyleMap = {
 
 export class ListSelector<T extends ListOptionType> extends React.Component<IProps<T>, IState> {
 
+    private readonly options: T[];
+
     constructor(props: IProps<T>, context: any) {
         super(props, context);
 
         this.onChange = this.onChange.bind(this);
         this.onCancel = this.onCancel.bind(this);
+
+        this.options = Object.assign([], this.props.options);
+
         this.state = {
             // dropdownOpen: false,
             // splitButtonOpen: false
@@ -39,7 +44,7 @@ export class ListSelector<T extends ListOptionType> extends React.Component<IPro
 
                 <ListGroup flush>
 
-                    {this.createListGroupItems(this.props.options)}
+                    {this.createListGroupItems(this.options)}
 
                 </ListGroup>
 
@@ -52,6 +57,7 @@ export class ListSelector<T extends ListOptionType> extends React.Component<IPro
 
                     <Button className="btn ml-1"
                             color="primary"
+                            onClick={() => this.onSet()}
                             size="sm">Set Columns</Button>
 
                 </div>
@@ -61,12 +67,6 @@ export class ListSelector<T extends ListOptionType> extends React.Component<IPro
         );
 
     };
-
-    private onCancel() {
-        if (this.props.onCancel) {
-            this.props.onCancel();
-        }
-    }
 
     private createListGroupItems(options: T[]) {
 
@@ -103,14 +103,24 @@ export class ListSelector<T extends ListOptionType> extends React.Component<IPro
 
     private onChange(option: T, event: React.ChangeEvent<HTMLInputElement>) {
 
-        this.props.onChange({
-            id: option.id,
-            label: option.label,
-            selected: event.target.checked
-        });
+        const selected = event.target.checked;
 
-        // console.log("Changed", event.target.checked);
+        option.selected = event.target.checked;
 
+        this.props.onChange(option);
+
+    }
+
+    private onCancel() {
+        if (this.props.onCancel) {
+            this.props.onCancel();
+        }
+    }
+
+    private onSet() {
+        if (this.props.onSet) {
+            this.props.onSet(this.options);
+        }
     }
 
 }

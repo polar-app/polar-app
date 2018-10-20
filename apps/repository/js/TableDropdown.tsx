@@ -112,6 +112,7 @@ export class TableDropdown extends React.Component<IProps, IState> {
                                       id={this.props.id + 'list-options'}
                                       title="Select columns to display in the table:"
                                       onCancel={() => this.select('none')}
+                                      onSet={(options) => this.onSelectedColumns(options)}
                                       onChange={(value) => console.log(value)}>
 
                         </ListSelector>
@@ -151,10 +152,23 @@ export class TableDropdown extends React.Component<IProps, IState> {
 
     }
 
+    // this.onSetTitle = this.onSetTitle.bind(this);
+
+    private onSelectedColumns(options: ListOptionType[]) {
+
+        this.select('none');
+
+        if (this.props.onSelectedColumns) {
+            this.props.onSelectedColumns(options);
+        }
+
+    }
+
 }
 
 interface IProps {
     id: string;
+    onSelectedColumns?: (options: ListOptionType[]) => void;
 }
 
 interface IState {

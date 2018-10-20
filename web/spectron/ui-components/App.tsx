@@ -67,7 +67,9 @@ class App<P> extends React.Component<{}, IAppState> {
 
                 <h2>TableDropdown</h2>
 
-                <TableDropdown id="table-dropdown"/>
+                <TableDropdown id="table-dropdown"
+                               onSelectedColumns={(options) => console.log("onSelectedColumns: ", options)}
+                />
 
             </div>
 
