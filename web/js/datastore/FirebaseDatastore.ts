@@ -199,6 +199,8 @@ export interface DocMetaHolder {
     // URL, tags, etc.
     readonly docInfo: IDocInfo;
 
+    // FIXME: change this type to DocMeta and then disable indexing on it in
+    // firebase as most of the values here don't need to be indexed.
     readonly value: string;
 
 }

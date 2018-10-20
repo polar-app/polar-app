@@ -26,18 +26,17 @@ SpectronMain2.create(options).run(async state => {
     const fileRegistry = new FileRegistry(webserverConfig);
     const webserver = new Webserver(webserverConfig, fileRegistry);
 
-
     try {
         webserver.start();
     } catch (e) {
         console.warn("Webserver already running.");
     }
 
-    const url = `http://localhost:8005/web/spectron/firebase-auth/content.html`;
+    const url = `http://localhost:8005/web/spectron/firebase-auth/content.html?primary=true`;
     state.window.loadURL(url);
-
-    const secondWindow = await defaultWindowFactory();
-    secondWindow.loadURL(url);
+    //
+    // const secondWindow = await defaultWindowFactory();
+    // secondWindow.loadURL(url);
 
     await state.testResultWriter.write(true);
 

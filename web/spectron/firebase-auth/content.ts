@@ -9,18 +9,23 @@ import {Elements} from '../../js/util/Elements';
 // import {FirebaseUIAuth} from './FirebaseUIAuth';
 // import {FirebaseUIAuth} from './FirebaseUIAuth';
 
+let docID = 0;
+
 function onData(snapshot: firebase.firestore.QuerySnapshot) {
     console.log("got some data");
 
     const messagesElement = document.getElementById('messages')!;
 
-    messagesElement.innerHTML = '';
+    // messagesElement.innerHTML = '';
 
     for (const doc of snapshot.docs) {
         const data = JSON.stringify(doc.data());
-        messagesElement.appendChild(Elements.createElementHTML(`<div>${data}</div>`));
+        const id = ++docID;
+        messagesElement.appendChild(Elements.createElementHTML(`<div>${id}. ${data}</div>`));
     }
 }
+
+let firestore: firebase.firestore.Firestore;
 
 async function onAuth(user: firebase.User | null) {
 
@@ -58,20 +63,41 @@ async function onAuth(user: firebase.User | null) {
         document.getElementById('account-details')!.textContent = 'null';
     }
 
-    const firestore = firebase.firestore();
+    firestore = firebase.firestore();
 
     const settings = {timestampsInSnapshots: true};
     firestore.settings(settings);
 
-    // await firestore.enablePersistence({experimentalTabSynchronization: true});
+    await firestore.enablePersistence({experimentalTabSynchronization: true});
 
     await firestore
         .collection('shoutouts')
         .doc()
         .set({
             from: user!.email!,
-            message: 'sup dawg'
+            message: 'sup dawg from on Auth' + new Date().toISOString()
         });
+
+    const isPrimary = document.location.href.endsWith("?primary=true");
+
+    if(isPrimary) {
+
+        setTimeout(() => {
+
+            firestore
+                .collection('shoutouts')
+                .doc()
+                .set({
+                         from: user!.email!,
+                         message: 'sup dawg from on Auth with timeout' + new Date().toISOString()
+                     })
+                .then(() => console.log("wrote from timeout"))
+                .catch(err => console.error(err));
+
+        }, 1500)
+
+    }
+
 
     await firestore
         .collection('shoutouts')
@@ -80,6 +106,21 @@ async function onAuth(user: firebase.User | null) {
 
     console.log("wrote data!");
 
+}
+
+async function createRecord() {
+
+    console.log("Creating record...")
+
+    await firestore
+        .collection('shoutouts')
+        .doc()
+        .set({
+             from: 'me@example.com',
+             message: 'sup dawg from create record' + new Date().toISOString()
+         }).catch(err => console.error(err));
+
+    console.log("Creating record...done")
 }
 
 function onAuthError(err: firebase.auth.Error) {
@@ -107,11 +148,16 @@ SpectronRenderer.run(async () => {
             .onAuthStateChanged(async (user) => await onAuth(user),
                                 (err) => onAuthError(err));
 
+        document.getElementById('create-record')!
+            .addEventListener('click', () => createRecord().catch(err => console.error('failed: ', err)));
+
     };
 
     window.addEventListener('load', async () => {
+
         return initApp();
     });
+
 
 });
 
