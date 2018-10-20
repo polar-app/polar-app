@@ -56,7 +56,7 @@ export class Logging {
         const loggers: ILogger[] = [];
 
         // *** first logger is sentry...
-        loggers.push(new SentryLogger());
+        // loggers.push(new SentryLogger());
 
         // *** next up is the Toaster Logger to visually show errors.
         if (ElectronContextTypes.create() === ElectronContextType.RENDERER) {
