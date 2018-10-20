@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {Input, Label, ListGroup, ListGroupItem, Button} from 'reactstrap';
-import {IStyleMap} from '../../js/react/IStyleMap';
+import {IStyleMap} from '../../react/IStyleMap';
 
 const Styles: IStyleMap = {
 
@@ -144,3 +144,5 @@ interface IProps<T> {
 interface IState {
 
 }
+
+

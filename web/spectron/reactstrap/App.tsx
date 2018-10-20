@@ -15,8 +15,8 @@ import DropdownMenu from 'reactstrap/lib/DropdownMenu';
 import Navbar from 'reactstrap/lib/Navbar';
 import {BrowserConfigurationInputGroup} from './BrowserConfigurationInputGroup';
 import Moment from 'react-moment';
-import {ListSelector, ListOptionType} from './ListSelector';
-import {TableDropdown} from "./TableDropdown";
+import {ListSelector, ListOptionType} from '../../js/ui/list_selector/ListSelector';
+import {TableDropdown} from "../../../apps/repository/js/TableDropdown";
 
 class App<P> extends React.Component<{}, IAppState> {
 

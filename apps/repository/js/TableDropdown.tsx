@@ -4,8 +4,8 @@ import {ConfirmPopover} from '../../../web/js/ui/confirm/ConfirmPopover';
 import {TextInputPopover} from '../../../web/js/ui/text_input/TextInputPopover';
 import {Logger} from '../../../web/js/logger/Logger';
 import {IStyleMap} from '../../../web/js/react/IStyleMap';
-import {ListOptionType, ListSelector} from "./ListSelector";
-import {LightboxPopover} from '../../js/ui/lightbox_popover/LightboxPopover';
+import {ListOptionType, ListSelector} from "../../../web/js/ui/list_selector/ListSelector";
+import {LightboxPopover} from '../../../web/js/ui/lightbox_popover/LightboxPopover';
 
 const log = Logger.create();
 
@@ -48,11 +48,37 @@ export class TableDropdown extends React.Component<IProps, IState> {
                 selected: true
             },
             {
+                id: "lastUpdated",
+                label: "Last Updated",
+                selected: true
+            },
+            {
+                id: "added",
+                label: "Added",
+                selected: true
+            },
+            {
+                id: "progress",
+                label: "Progress",
+                selected: true
+            },
+            {
                 id: "tags",
                 label: "Tags",
                 selected: false
-            }
-        ]
+            },
+            {
+                id: "flagged",
+                label: "Flagged",
+                selected: false
+            },
+            {
+                id: "archived",
+                label: "Archived",
+                selected: false
+            },
+        ];
+
         return (
 
             <div className="text-right">
@@ -83,7 +109,7 @@ export class TableDropdown extends React.Component<IProps, IState> {
                     <PopoverBody>
 
                         <ListSelector options={options}
-                                      id="list-options"
+                                      id={this.props.id + 'list-options'}
                                       title="Select columns to display in the table:"
                                       onChange={(value) => console.log(value)}>
 
