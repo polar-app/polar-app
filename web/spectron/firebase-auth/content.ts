@@ -109,7 +109,6 @@ async function onAuth(user: firebase.User | null) {
 
     }
 
-
     await firestore
         .collection('shoutouts')
         .where('from', '==', user!.email!)

@@ -54,8 +54,8 @@ export class Dictionaries {
             return dict;
         }
 
-        if(! (typeof dict == 'object')) {
-            // if we're not a dictionary we're just return the default dictionary.
+        if(! (typeof dict === 'object')) {
+            // if we're not a dictionary we're done
             return dict;
         }
 
@@ -68,6 +68,42 @@ export class Dictionaries {
         return result;
 
     }
+
+    /**
+     *
+     * Recursively work through this object and remove any fields that are stored
+     * with unassigned values.
+     *
+     * @param dict
+     */
+    static onlyDefinedProperties(dict: any): any {
+
+        if(dict === undefined || dict === null) {
+            // nothing to do here.
+            return dict;
+        }
+
+        if(! (typeof dict === 'object')) {
+            // if we're not a dictionary we're done
+            return dict;
+        }
+
+        let result: any = {};
+
+        for (const key of Object.keys(dict).sort()) {
+            const value = dict[key];
+
+            if (value === undefined) {
+                continue;
+            }
+
+            result[key] = this.sorted(value);
+        }
+
+        return result;
+
+    }
+
 
     public static copyOf(dict: any): any {
 

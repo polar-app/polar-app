@@ -15,6 +15,7 @@ import {Hashcodes} from '../Hashcodes';
 import * as firebase from '../firestore/lib/firebase';
 import {Elements} from '../util/Elements';
 import {ResolveablePromise} from '../util/ResolveablePromise';
+import {Dictionaries} from '../util/Dictionaries';
 
 const log = Logger.create();
 
@@ -52,8 +53,20 @@ export class FirebaseDatastore implements Datastore {
     }
 
     public async init() {
-        this.app = Firebase.init();
+
+        // get the firebase app. Make sure we are initialized externally.
+        this.app = firebase.app();
         this.firestore = Firestore.getInstance();
+
+        // setup the initial snapshot so that we query for the users existing data...
+
+        const uid = this.getUserID();
+
+        await this.firestore!
+            .collection(DatastoreCollection.DOC_META)
+            .where('uid', '==', uid)
+            .onSnapshot(snapshot => this.onSnapshot(snapshot));
+
     }
 
     /**
@@ -133,6 +146,8 @@ export class FirebaseDatastore implements Datastore {
         const resolveablePromise = new ResolveablePromise<Mutation>();
 
         this.resolveablePromiseIndex.add(id, resolveablePromise);
+
+        docInfo = Object.assign({}, Dictionaries.onlyDefinedProperties(docInfo));
 
         const docMetaHolder: DocMetaHolder = {
             docInfo,
