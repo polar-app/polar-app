@@ -57,7 +57,9 @@ export class TableDropdown extends React.Component<IProps, IState> {
                           isOpen={this.state.open}
                           toggle={this.toggle}>
 
-                    <DropdownToggle color="link" className="table-dropdown-button btn text-muted" id={this.props.id + '-dropdown-toggle'}>
+                    <DropdownToggle color="light"
+                                    size="md"
+                                    className="table-dropdown-button btn text-muted p-1 m-0" id={this.props.id + '-dropdown-toggle'}>
                         <i className="fas fa-ellipsis-h"></i>
                     </DropdownToggle>
 

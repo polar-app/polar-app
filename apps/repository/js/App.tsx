@@ -224,6 +224,14 @@ export default class App extends React.Component<AppProps, AppState> {
                                 }
                             },
                             {
+                                id: 'nrAnnotations',
+                                Header: 'Annotations',
+                                accessor: 'nrAnnotations',
+                                show: this.state.columns.nrAnnotations.selected,
+                                defaultSortDesc: true,
+                                resizable: false,
+                            },
+                            {
                                 id: 'progress',
                                 Header: 'Progress',
                                 accessor: 'progress',

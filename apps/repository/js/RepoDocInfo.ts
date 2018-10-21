@@ -23,6 +23,8 @@ export interface RepoDocInfo {
 
     tags?: {[id: string]: Tag};
 
+    nrAnnotations: number;
+
     /**
      * The original DocInfo used to construct this RepoDocInfo.
      */

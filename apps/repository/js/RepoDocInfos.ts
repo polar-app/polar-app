@@ -54,6 +54,9 @@ export class RepoDocInfos {
 
             url: docInfo.url,
 
+            nrAnnotations: Optional.of(docInfo.nrAnnotations)
+                .getOrElse(0),
+
             docInfo
 
         };

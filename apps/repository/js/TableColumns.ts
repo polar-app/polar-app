@@ -36,8 +36,8 @@ export class TableColumns implements KeyValueMapping<TableColumns, ListOptionTyp
         selected: true
     };
 
-    public readonly annotations: ListOptionType =  {
-        id: "annotations",
+    public readonly nrAnnotations: ListOptionType =  {
+        id: "nrAnnotations",
         label: "Annotations",
         selected: false,
         title: "The number of annotations in the document (comments, highlights, etc)."
