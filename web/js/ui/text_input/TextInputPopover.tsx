@@ -28,6 +28,7 @@ export class TextInputPopover extends React.Component<IProps, IState> {
 
         return (
 
+            // TODO: set the min-width here via inline styles
             <Popover placement={this.props.placement || 'bottom'}
                      isOpen={this.props.open}
                      target={this.props.target}

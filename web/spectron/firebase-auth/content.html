@@ -26,6 +26,12 @@
 <div id="sign-in"></div>
 <div id="account-details"></div>
 
+<button id="signOut">Sign Out</button>
+<script>
+    document.getElementById('signOut').addEventListener('click', function(event) {
+        firebase.auth().signOut();
+    });
+</script>
 
 <h2>Messages:</h2>
 

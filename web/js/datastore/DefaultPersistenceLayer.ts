@@ -102,16 +102,12 @@ export class DefaultPersistenceLayer implements IPersistenceLayer {
             .map(current => Dictionaries.countOf(current.comments))
             .reduce(Reducers.SUM, 0);
 
-        docMeta.docInfo.nrFlashcards = Object.values(docMeta.pageMetas)
-            .map(current => Dictionaries.countOf(current.flashcards))
-            .reduce(Reducers.SUM, 0);
-
         docMeta.docInfo.nrNotes = Object.values(docMeta.pageMetas)
             .map(current => Dictionaries.countOf(current.notes))
             .reduce(Reducers.SUM, 0);
 
-        docMeta.docInfo.nrComments = Object.values(docMeta.pageMetas)
-            .map(current => Dictionaries.countOf(current.comments))
+        docMeta.docInfo.nrFlashcards = Object.values(docMeta.pageMetas)
+            .map(current => Dictionaries.countOf(current.flashcards))
             .reduce(Reducers.SUM, 0);
 
         docMeta.docInfo.nrTextHighlights = Object.values(docMeta.pageMetas)
@@ -121,6 +117,13 @@ export class DefaultPersistenceLayer implements IPersistenceLayer {
         docMeta.docInfo.nrAreaHighlights = Object.values(docMeta.pageMetas)
             .map(current => Dictionaries.countOf(current.areaHighlights))
             .reduce(Reducers.SUM, 0);
+
+        docMeta.docInfo.nrAnnotations =
+            docMeta.docInfo.nrComments +
+            docMeta.docInfo.nrNotes +
+            docMeta.docInfo.nrFlashcards +
+            docMeta.docInfo.nrTextHighlights +
+            docMeta.docInfo.nrAreaHighlights;
 
         if (docMeta.docInfo.added === undefined) {
             docMeta.docInfo.added = ISODateTimeStrings.create();

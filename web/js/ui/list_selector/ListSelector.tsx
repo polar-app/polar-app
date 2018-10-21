@@ -91,6 +91,10 @@ export class ListSelector<T extends ListOptionType> extends React.Component<IPro
 
                         <Label for={id} style={Styles.Label}>{option.label}</Label>
 
+                        {/*<div className="text-muted">*/}
+                            {/*{option.title || ''}*/}
+                        {/*</div>*/}
+
                     </div>
 
                 </ListGroupItem>);
@@ -142,7 +146,15 @@ export interface ListOptionType {
      */
     selected: boolean;
 
+    title?: string;
+
 }
+
+export interface ListOptionTypeMap {
+    [id: string]: ListOptionType;
+}
+
+export const createListOptionTypeMap = <M extends ListOptionTypeMap>(things: M) => things
 
 interface IProps<T> {
 

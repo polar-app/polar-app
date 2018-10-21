@@ -31,6 +31,7 @@ export class DocInfo extends SerializedObject implements IDocInfo {
     public nrFlashcards?: number;
     public nrTextHighlights?: number;
     public nrAreaHighlights?: number;
+    public nrAnnotations?: number;
     public uuid?: string;
 
     constructor(val: IDocInfo) {
@@ -157,6 +158,7 @@ export interface IDocInfo {
      * The number of comments in the document.
      */
     nrComments?: number;
+
     nrNotes?: number;
 
     /**
@@ -167,6 +169,11 @@ export interface IDocInfo {
     nrTextHighlights?: number;
 
     nrAreaHighlights?: number;
+
+    /**
+     * The total number of annotations (comments + notes + flashcards, + highlights, etc).
+     */
+    nrAnnotations?: number;
 
     /**
      * A unique sequence for this document representing the unique document

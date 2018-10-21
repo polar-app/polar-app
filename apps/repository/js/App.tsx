@@ -25,6 +25,7 @@ import {MessageBanner} from './MessageBanner';
 import {DocDropdown} from './DocDropdown';
 import CookieBanner from 'react-cookie-banner';
 import {TableDropdown} from './TableDropdown';
+import {TableColumns} from './TableColumns';
 
 const log = Logger.create();
 
@@ -51,7 +52,8 @@ export default class App extends React.Component<AppProps, AppState> {
         this.onDocSetTitle = this.onDocSetTitle.bind(this);
 
         this.state = {
-            data: []
+            data: [],
+            columns: new TableColumns()
         };
 
         (async () => {
@@ -141,10 +143,13 @@ export default class App extends React.Component<AppProps, AppState> {
                             </div>
 
                             <div>
-                                <TableDropdown id="table-dropdown"/>
+                                <TableDropdown id="table-dropdown"
+                                               options={Object.values(this.state.columns)}
+                                               onSelectedColumns={() => this.refresh()}/>
                             </div>
 
                         </div>
+
 
                     </div>
 
@@ -167,6 +172,7 @@ export default class App extends React.Component<AppProps, AppState> {
                                 Header: 'Last Updated',
                                 // accessor: (row: any) => row.added,
                                 accessor: 'lastUpdated',
+                                show: this.state.columns.lastUpdated.selected,
                                 maxWidth: 125,
                                 defaultSortDesc: true,
                                 Cell: (row: any) => (
@@ -178,6 +184,7 @@ export default class App extends React.Component<AppProps, AppState> {
                                 Header: 'Added',
                                 // accessor: (row: any) => row.added,
                                 accessor: 'added',
+                                show: this.state.columns.added.selected,
                                 maxWidth: 125,
                                 defaultSortDesc: true,
                                 Cell: (row: any) => (
@@ -200,6 +207,7 @@ export default class App extends React.Component<AppProps, AppState> {
                                 id: 'tags',
                                 Header: 'Tags',
                                 accessor: '',
+                                show: this.state.columns.tags.selected,
                                 Cell: (row: any) => {
 
                                     const tags: {[id: string]: Tag} = row.original.tags;
@@ -219,6 +227,7 @@ export default class App extends React.Component<AppProps, AppState> {
                                 id: 'progress',
                                 Header: 'Progress',
                                 accessor: 'progress',
+                                show: this.state.columns.progress.selected,
                                 maxWidth: 150,
                                 defaultSortDesc: true,
                                 resizable: false,
@@ -258,6 +267,7 @@ export default class App extends React.Component<AppProps, AppState> {
                                 id: 'flagged',
                                 Header: '',
                                 accessor: 'flagged',
+                                show: this.state.columns.flagged.selected,
                                 maxWidth: 25,
                                 defaultSortDesc: true,
                                 resizable: false,
@@ -281,6 +291,7 @@ export default class App extends React.Component<AppProps, AppState> {
                                 id: 'archived',
                                 Header: '',
                                 accessor: 'archived',
+                                show: this.state.columns.archived.selected,
                                 maxWidth: 25,
                                 defaultSortDesc: true,
                                 resizable: false,

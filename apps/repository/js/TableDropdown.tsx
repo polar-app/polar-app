@@ -6,6 +6,7 @@ import {Logger} from '../../../web/js/logger/Logger';
 import {IStyleMap} from '../../../web/js/react/IStyleMap';
 import {ListOptionType, ListSelector} from "../../../web/js/ui/list_selector/ListSelector";
 import {LightboxPopover} from '../../../web/js/ui/lightbox_popover/LightboxPopover';
+import {TableColumns} from './TableColumns';
 
 const log = Logger.create();
 
@@ -15,6 +16,11 @@ const Styles: IStyleMap = {
         zIndex: 999,
         fontSize: '14px'
     },
+
+    LightboxPopover: {
+        fontSize: '14px',
+        // minWidth: '500px'
+    }
 
 };
 
@@ -41,43 +47,7 @@ export class TableDropdown extends React.Component<IProps, IState> {
 
     public render() {
 
-        const columns: ListOptionType[] = [
-            {
-                id: "title",
-                label: "Title",
-                selected: true
-            },
-            {
-                id: "lastUpdated",
-                label: "Last Updated",
-                selected: true
-            },
-            {
-                id: "added",
-                label: "Added",
-                selected: true
-            },
-            {
-                id: "progress",
-                label: "Progress",
-                selected: true
-            },
-            {
-                id: "tags",
-                label: "Tags",
-                selected: false
-            },
-            {
-                id: "flagged",
-                label: "Flagged",
-                selected: false
-            },
-            {
-                id: "archived",
-                label: "Archived",
-                selected: false
-            },
-        ];
+        const columns = this.props.options || Object.values(new TableColumns());
 
         return (
 
@@ -106,7 +76,7 @@ export class TableDropdown extends React.Component<IProps, IState> {
                                  open={this.selected === 'change-columns'}
                                  target={this.props.id + '-dropdown-toggle'}
                                  className="p-0"
-                                 style={{'fontSize': '14px'}}>
+                                 style={Styles.LightboxPopover}>
 
                     <PopoverBody>
 
@@ -170,6 +140,7 @@ export class TableDropdown extends React.Component<IProps, IState> {
 
 interface IProps {
     id: string;
+    options?: ListOptionType[];
     onSelectedColumns?: (options: ListOptionType[]) => void;
 }
 
