@@ -41,7 +41,7 @@ export class TableDropdown extends React.Component<IProps, IState> {
 
     public render() {
 
-        const options: ListOptionType[] = [
+        const columns: ListOptionType[] = [
             {
                 id: "title",
                 label: "Title",
@@ -83,13 +83,15 @@ export class TableDropdown extends React.Component<IProps, IState> {
 
             <div className="text-right">
 
-                <Dropdown id={this.props.id} isOpen={this.state.open} toggle={this.toggle}>
+                <Dropdown id={this.props.id}
+                          isOpen={this.state.open}
+                          toggle={this.toggle}>
 
                     <DropdownToggle color="link" className="table-dropdown-button btn text-muted" id={this.props.id + '-dropdown-toggle'}>
                         <i className="fas fa-ellipsis-h"></i>
                     </DropdownToggle>
 
-                    <DropdownMenu style={Styles.DropdownMenu}>
+                    <DropdownMenu style={Styles.DropdownMenu} right>
 
                         <DropdownItem onClick={() => this.select('change-columns')}>
                             Change Columns
@@ -108,7 +110,7 @@ export class TableDropdown extends React.Component<IProps, IState> {
 
                     <PopoverBody>
 
-                        <ListSelector options={options}
+                        <ListSelector options={columns}
                                       id={this.props.id + 'list-options'}
                                       title="Select columns to display in the table:"
                                       onCancel={() => this.select('none')}

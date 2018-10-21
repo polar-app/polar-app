@@ -36,9 +36,6 @@ export class DocRepository {
      */
     public updateDocInfo(...repoDocInfos: RepoDocInfo[]) {
 
-        // FIXME: need to send an event so that the UI can refresh since new tags
-        // are present.
-
         for (const repoDocInfo of repoDocInfos) {
             this.repoDocs[repoDocInfo.fingerprint] = repoDocInfo;
         }
@@ -100,6 +97,7 @@ export class DocRepository {
         Preconditions.assertPresent(tags);
 
         repoDocInfo = Object.assign({}, repoDocInfo);
+        repoDocInfo.tags = Tags.toMap(tags);
         repoDocInfo.docInfo.tags = Tags.toMap(tags);
 
         this.updateDocInfo(repoDocInfo);

@@ -4,6 +4,7 @@
  */
 import {IDocInfo} from '../../../web/js/metadata/DocInfo';
 import {ISODateTimeString} from '../../../web/js/metadata/ISODateTimeStrings';
+import {Tag} from '../../../web/js/tags/Tag';
 
 export interface RepoDocInfo {
 
@@ -19,6 +20,8 @@ export interface RepoDocInfo {
     url?: string;
     // nrComments: number;
     // nrFlashcards: number;
+
+    tags?: {[id: string]: Tag};
 
     /**
      * The original DocInfo used to construct this RepoDocInfo.

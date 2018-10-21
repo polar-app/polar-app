@@ -24,6 +24,7 @@ import {RendererAnalytics} from '../../../web/js/ga/RendererAnalytics';
 import {MessageBanner} from './MessageBanner';
 import {DocDropdown} from './DocDropdown';
 import CookieBanner from 'react-cookie-banner';
+import {TableDropdown} from './TableDropdown';
 
 const log = Logger.create();
 
@@ -45,6 +46,7 @@ export default class App extends React.Component<AppProps, AppState> {
         this.repoDocInfoLoader = new RepoDocInfoLoader(this.persistenceLayer);
 
 
+        this.onDocTagged= this.onDocTagged.bind(this);
         this.onDocDeleted = this.onDocDeleted.bind(this);
         this.onDocSetTitle = this.onDocSetTitle.bind(this);
 
@@ -138,6 +140,9 @@ export default class App extends React.Component<AppProps, AppState> {
                                        onChange={() => this.refresh()}/>
                             </div>
 
+                            <div>
+                                <TableDropdown id="table-dropdown"/>
+                            </div>
 
                         </div>
 
@@ -192,6 +197,25 @@ export default class App extends React.Component<AppProps, AppState> {
                             //     accessor: (d: any) => d.lastName
                             // },
                             {
+                                id: 'tags',
+                                Header: 'Tags',
+                                accessor: '',
+                                Cell: (row: any) => {
+
+                                    const tags: {[id: string]: Tag} = row.original.tags;
+
+                                    const formatted = Object.values(tags)
+                                        .map(tag => tag.label)
+                                        .sort()
+                                        .join(", ");
+
+                                    return (
+                                        <div>{formatted}</div>
+                                    );
+
+                                }
+                            },
+                            {
                                 id: 'progress',
                                 Header: 'Progress',
                                 accessor: 'progress',
@@ -224,7 +248,7 @@ export default class App extends React.Component<AppProps, AppState> {
                                                   tagsDB={this.docRepository!.tagsDB}
                                                   existingTags={existingTags}
                                                   onChange={(_, tags) =>
-                                                      this.docRepository!.syncDocInfoTags(repoDocInfo, tags)
+                                                      this.onDocTagged(repoDocInfo, tags)
                                                           .catch(err => log.error("Unable to update tags: ", err))} />
                                     );
 
@@ -388,6 +412,13 @@ export default class App extends React.Component<AppProps, AppState> {
             </div>
 
         );
+    }
+
+    private async onDocTagged(repoDocInfo: RepoDocInfo, tags: Tag[]) {
+
+        await this.docRepository!.syncDocInfoTags(repoDocInfo, tags);
+        this.refresh();
+
     }
 
     private onDocDeleted(repoDocInfo: RepoDocInfo) {
