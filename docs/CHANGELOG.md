@@ -1,7 +1,15 @@
 
 
-
 # 1.0.4
+
+- we now have a basic but imperfect settings systems that allows us to persist
+  various changes locally .. Will need to be refactored a bit in the future to
+  make it more MVC and to work better with react.
+
+- nr of annotations column to show / highlight documents which are annotated
+  most.
+
+- tags column which isn't enabled by default.
 
 - improve double click handling to make sure we have a set of isolated single 
   click columns.

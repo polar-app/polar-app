@@ -33,7 +33,7 @@ export class TableColumns implements KeyValueMapping<TableColumns, ListOptionTyp
     public readonly tags: ListOptionType =  {
         id: "tags",
         label: "Tags",
-        selected: true
+        selected: false,
     };
 
     public readonly nrAnnotations: ListOptionType =  {

@@ -15,13 +15,19 @@ export class Optional<T> {
 
     private readonly value: T | null | undefined = undefined;
 
-    public map<V>(mapFunction: MapFunction<NonNullable<T>, V>): Optional<V> {
+    public map<V>(mapFunction: MapFunction<NonNullable<T>, V>): Optional<NonNullable<V>> {
 
         if (this.isPresent()) {
-            return new Optional(mapFunction(this.value!), this.name);
+
+            const mapped = mapFunction(this.value!);
+
+            if(Optional.present(mapped)) {
+                return new Optional<NonNullable<V>>(mapped!, this.name);
+            }
+
         }
 
-        return new Optional<V>(undefined, this.name);
+        return new Optional<NonNullable<V>>(undefined, this.name);
 
     }
 

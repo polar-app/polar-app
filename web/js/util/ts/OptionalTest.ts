@@ -85,4 +85,25 @@ describe('Optional', function() {
     });
 
 
+    describe('mapping non-nullable', function() {
+
+        it("basic", function() {
+
+            interface Address {
+                state: string | undefined;
+            }
+
+            const test: Address = {
+                state: 'CA'
+            }
+
+            const optional = Optional.of(test);
+
+            const mapped = optional.map(current => current.state);
+
+        });
+
+    });
+
+
 });

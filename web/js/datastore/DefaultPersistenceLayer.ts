@@ -13,6 +13,7 @@ import {DatastoreFile} from './DatastoreFile';
 import {Optional} from '../util/ts/Optional';
 import {Reducers} from '../util/Reducers';
 import uuid from 'uuid';
+import {DocInfo} from '../metadata/DocInfo';
 
 const log = Logger.create();
 
@@ -70,14 +71,14 @@ export class DefaultPersistenceLayer implements IPersistenceLayer {
     /**
      * Convenience method to not require the fingerprint.
      */
-    public async syncDocMeta(docMeta: DocMeta) {
+    public async syncDocMeta(docMeta: DocMeta): Promise<DocInfo> {
         return this.sync(docMeta.docInfo.fingerprint, docMeta);
     }
 
     /**
      * Write the datastore to disk.
      */
-    public async sync(fingerprint: string, docMeta: DocMeta) {
+    public async sync(fingerprint: string, docMeta: DocMeta): Promise<DocInfo> {
 
         Preconditions.assertNotNull(fingerprint, "fingerprint");
         Preconditions.assertNotNull(docMeta, "docMeta");
@@ -142,6 +143,8 @@ export class DefaultPersistenceLayer implements IPersistenceLayer {
         const docInfo = Object.assign({}, docMeta.docInfo);
 
         await this.datastore.sync(fingerprint, data, docInfo);
+
+        return docInfo;
 
     }
 

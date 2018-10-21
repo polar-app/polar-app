@@ -5,6 +5,7 @@ import {Backend} from './Backend';
 import {DatastoreFile} from './DatastoreFile';
 import {Optional} from '../util/ts/Optional';
 import {FileMeta} from './Datastore';
+import {DocInfo} from '../metadata/DocInfo';
 
 export interface IPersistenceLayer {
 
@@ -29,9 +30,14 @@ export interface IPersistenceLayer {
 
     getDocMeta(fingerprint: string): Promise<DocMeta | undefined>;
 
-    syncDocMeta(docMeta: DocMeta): Promise<void>;
+    syncDocMeta(docMeta: DocMeta): Promise<DocInfo>;
 
-    sync(fingerprint: string, docMeta: DocMeta): Promise<void>;
+    /**
+     * Return the DocInfo written. The DocInfo may be updated on commit including
+     * updating lastUpdated, etc.
+     *
+     */
+    sync(fingerprint: string, docMeta: DocMeta): Promise<DocInfo>;
 
     getDocMetaFiles(): Promise<DocMetaRef[]>;
 

@@ -26,6 +26,8 @@ import {DocDropdown} from './DocDropdown';
 import CookieBanner from 'react-cookie-banner';
 import {TableDropdown} from './TableDropdown';
 import {TableColumns} from './TableColumns';
+import {SettingsStore} from '../../../web/js/datastore/SettingsStore';
+import {cursorTo} from 'readline';
 
 const log = Logger.create();
 
@@ -50,6 +52,7 @@ export default class App extends React.Component<AppProps, AppState> {
         this.onDocTagged= this.onDocTagged.bind(this);
         this.onDocDeleted = this.onDocDeleted.bind(this);
         this.onDocSetTitle = this.onDocSetTitle.bind(this);
+        this.onSelectedColumns = this.onSelectedColumns.bind(this);
 
         this.state = {
             data: [],
@@ -145,7 +148,7 @@ export default class App extends React.Component<AppProps, AppState> {
                             <div>
                                 <TableDropdown id="table-dropdown"
                                                options={Object.values(this.state.columns)}
-                                               onSelectedColumns={() => this.refresh()}/>
+                                               onSelectedColumns={() => this.onSelectedColumns()}/>
                             </div>
 
                         </div>
@@ -227,6 +230,7 @@ export default class App extends React.Component<AppProps, AppState> {
                                 id: 'nrAnnotations',
                                 Header: 'Annotations',
                                 accessor: 'nrAnnotations',
+                                maxWidth: 110,
                                 show: this.state.columns.nrAnnotations.selected,
                                 defaultSortDesc: true,
                                 resizable: false,
@@ -393,7 +397,8 @@ export default class App extends React.Component<AppProps, AppState> {
                                         .catch(err => log.error("Could not handle toggle: ", err));
 
                                     if (handleOriginal) {
-                                        // needed for react table to function properly.
+                                        // needed for react table to function
+                                        // properly.
                                         handleOriginal();
                                     }
 
@@ -462,6 +467,23 @@ export default class App extends React.Component<AppProps, AppState> {
 
     }
 
+    private onSelectedColumns() {
+
+        // new columns have been selected. Note that the UI updates the values
+        // directly so we can just write what's in memory to disk. I think it
+        // would be better practice to keep them immutable.
+
+        SettingsStore.load().then((settings) => {
+
+            settings.documentRepository.columns = this.state.columns;
+
+            SettingsStore.write(settings);
+
+        });
+
+        this.refresh();
+    }
+
     private refreshState(repoDocs: RepoDocInfo[]) {
 
         const state: AppState = Object.assign({}, this.state);
@@ -470,8 +492,8 @@ export default class App extends React.Component<AppProps, AppState> {
 
         setTimeout(() => {
 
-            // The react table will not update when I change the state from within
-            // the event listener
+            // The react table will not update when I change the state from
+            // within the event listener
             this.setState(state);
 
         }, 0);
@@ -600,6 +622,20 @@ export default class App extends React.Component<AppProps, AppState> {
     }
 
     private async init(): Promise<void> {
+
+        const settings = await SettingsStore.load();
+
+        log.info("Settings loaded: ", settings);
+
+        Optional.of(settings.documentRepository)
+                .map(current => current.columns)
+                .when(columns => {
+
+                    log.info("Loaded columns from settings: ", columns);
+                    this.setState(Object.assign(this.state, {columns}));
+                    this.refresh();
+
+                });
 
         this.persistenceLayer.addEventListener((event) => {
 

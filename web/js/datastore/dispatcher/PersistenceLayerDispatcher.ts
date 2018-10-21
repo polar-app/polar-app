@@ -10,6 +10,7 @@ import {Backend} from '../Backend';
 import {FileMeta} from '../Datastore';
 import {DatastoreFile} from '../DatastoreFile';
 import {Optional} from '../../util/ts/Optional';
+import {DocInfo} from '../../metadata/DocInfo';
 
 const log = Logger.create();
 
@@ -53,18 +54,18 @@ export class PersistenceLayerDispatcher implements IPersistenceLayerDispatcher, 
         return this.persistenceLayer.init();
     }
 
-    public async syncDocMeta(docMeta: DocMeta): Promise<void> {
+    public async syncDocMeta(docMeta: DocMeta): Promise<DocInfo> {
         return await this.sync(docMeta.docInfo.fingerprint, docMeta);
     }
 
-    public async sync(fingerprint: string, docMeta: DocMeta) {
+    public async sync(fingerprint: string, docMeta: DocMeta): Promise<DocInfo> {
 
         log.info("Dispatching sync!");
 
         // these have to be deserialized and then re-serialized because they
-        // have methods. Consider moving to IDocMeta and us interfaced everywhere
-        // in our code so that we don't have to serialized and de-serialize
-        // like this.  It's just a waste of CPU otherwise.
+        // have methods. Consider moving to IDocMeta and us interfaced
+        // everywhere in our code so that we don't have to serialized and
+        // de-serialize like this.  It's just a waste of CPU otherwise.
 
         let safeDocMeta: DocMeta = Object.create(DocMeta.prototype);
 
@@ -75,6 +76,10 @@ export class PersistenceLayerDispatcher implements IPersistenceLayerDispatcher, 
         });
 
         this.worker.postMessage(ipcMessage);
+
+        // FIXME: this code isn't used any more and is no longer functional
+        // with the new interface updates.
+        return <any> null;
 
     }
 

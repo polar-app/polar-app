@@ -11,6 +11,7 @@ import {Backend} from '../Backend';
 import {DatastoreFile} from '../DatastoreFile';
 import {FileMeta} from '../Datastore';
 import {Optional} from '../../util/ts/Optional';
+import {DocInfo} from '../../metadata/DocInfo';
 
 export abstract class AbstractAdvertisingPersistenceLayer implements IListenablePersistenceLayer {
 
@@ -51,13 +52,11 @@ export abstract class AbstractAdvertisingPersistenceLayer implements IListenable
 
     }
 
-    public async syncDocMeta(docMeta: DocMeta): Promise<void> {
+    public async syncDocMeta(docMeta: DocMeta): Promise<DocInfo> {
         return await this.sync(docMeta.docInfo.fingerprint, docMeta);
     }
 
-    public async sync(fingerprint: string, docMeta: DocMeta) {
-
-        const result = this.persistenceLayer.sync(fingerprint, docMeta);
+    public async sync(fingerprint: string, docMeta: DocMeta): Promise<DocInfo> {
 
         let eventType: PersistenceEventType;
 
@@ -67,15 +66,17 @@ export abstract class AbstractAdvertisingPersistenceLayer implements IListenable
             eventType = 'created';
         }
 
+        const docInfo = await this.persistenceLayer.sync(fingerprint, docMeta);
+
         this.broadcastEvent({
-            docInfo: docMeta.docInfo,
+            docInfo,
             docMetaRef: {
                 fingerprint: docMeta.docInfo.fingerprint
             },
             eventType
         });
 
-        return result;
+        return docInfo;
 
     }
 

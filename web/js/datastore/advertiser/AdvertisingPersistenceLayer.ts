@@ -15,7 +15,6 @@ export class AdvertisingPersistenceLayer
     extends AbstractAdvertisingPersistenceLayer
     implements IListenablePersistenceLayer {
 
-
     private readonly docInfoAdvertisementListenerService = new DocInfoAdvertisementListenerService();
 
     constructor(persistenceLayer: IPersistenceLayer) {
