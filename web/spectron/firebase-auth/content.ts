@@ -67,54 +67,55 @@ async function onAuth(user: firebase.User | null) {
             providerData: providerData
         }, null, '  ');
 
+        firestore = firebase.firestore();
+
+        const settings = {timestampsInSnapshots: true};
+        firestore.settings(settings);
+
+        await firestore.enablePersistence({experimentalTabSynchronization: true});
+
+        await firestore
+            .collection('shoutouts')
+            .doc()
+            .set({
+                     from: user!.email!,
+                     message: 'sup dawg from on Auth' + new Date().toISOString()
+                 });
+
+        const isPrimary = document.location.href.endsWith("?primary=true");
+
+        if(isPrimary) {
+
+            setTimeout(() => {
+
+                firestore
+                    .collection('shoutouts')
+                    .doc()
+                    .set({
+                             from: user!.email!,
+                             message: 'sup dawg from on Auth with timeout' + new Date().toISOString()
+                         })
+                    .then(() => console.log("wrote from timeout"))
+                    .catch(err => console.error(err));
+
+            }, 1500)
+
+        }
+
+        await firestore
+            .collection('shoutouts')
+            .where('from', '==', user!.email!)
+            .onSnapshot(snapshot => onData(snapshot), err => console.log(err));
+
+        console.log("wrote data!");
+
+
     } else {
         // User is signed out or there is no user.
         document.getElementById('sign-in-status')!.textContent = 'Signed out';
         document.getElementById('sign-in')!.textContent = 'Sign out';
         document.getElementById('account-details')!.textContent = 'null';
     }
-
-    firestore = firebase.firestore();
-
-    const settings = {timestampsInSnapshots: true};
-    firestore.settings(settings);
-
-    await firestore.enablePersistence({experimentalTabSynchronization: true});
-
-    await firestore
-        .collection('shoutouts')
-        .doc()
-        .set({
-            from: user!.email!,
-            message: 'sup dawg from on Auth' + new Date().toISOString()
-        });
-
-    const isPrimary = document.location.href.endsWith("?primary=true");
-
-    if(isPrimary) {
-
-        setTimeout(() => {
-
-            firestore
-                .collection('shoutouts')
-                .doc()
-                .set({
-                         from: user!.email!,
-                         message: 'sup dawg from on Auth with timeout' + new Date().toISOString()
-                     })
-                .then(() => console.log("wrote from timeout"))
-                .catch(err => console.error(err));
-
-        }, 1500)
-
-    }
-
-    await firestore
-        .collection('shoutouts')
-        .where('from', '==', user!.email!)
-        .onSnapshot(snapshot => onData(snapshot), err => console.log(err));
-
-    console.log("wrote data!");
 
 }
 
