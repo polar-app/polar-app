@@ -233,6 +233,7 @@ describe('DiskDatastore', function() {
             delete docMeta0!.docInfo.nrAreaHighlights;
             delete docMeta0!.docInfo.nrTextHighlights;
             delete docMeta0!.docInfo.nrNotes;
+            delete docMeta0!.docInfo.nrAnnotations;
             delete docMeta0!.docInfo.uuid;
 
             assert.equal(isPresent(docMeta0), true);

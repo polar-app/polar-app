@@ -2,7 +2,10 @@
 
 # 1.0.4
 
-- we now have a basic but imperfect settings systems that allows us to persist
+- Tags are stored with anki notes now.  They weren't before but they're critical
+  to making our anki support work better. 
+
+- We now have a basic but imperfect settings systems that allows us to persist
   various changes locally .. Will need to be refactored a bit in the future to
   make it more MVC and to work better with react.
 

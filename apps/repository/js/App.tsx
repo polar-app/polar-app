@@ -145,7 +145,7 @@ export default class App extends React.Component<AppProps, AppState> {
                                        onChange={() => this.refresh()}/>
                             </div>
 
-                            <div>
+                            <div className="p-1">
                                 <TableDropdown id="table-dropdown"
                                                options={Object.values(this.state.columns)}
                                                onSelectedColumns={() => this.onSelectedColumns()}/>

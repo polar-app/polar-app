@@ -69,12 +69,18 @@ export class AnkiSyncEngine implements SyncEngine {
                 fields[key] = Optional.of(value.HTML || value.TEXT || value.MARKDOWN).get();
             });
 
+            const docInfoTags = Optional.of(flashcardDescriptor.docMeta.docInfo.tags)
+
+            const tags = docInfoTags.map(current => Object.values(current))
+                       .getOrElse([])
+                       .map(tag => tag.label);
+
             return {
                 guid: flashcardDescriptor.flashcard.guid,
                 deckName,
                 modelName: "Basic",
                 fields,
-                tags: []
+                tags
             };
 
         });
