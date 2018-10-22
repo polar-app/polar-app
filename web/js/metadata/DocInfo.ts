@@ -176,11 +176,11 @@ export interface IDocInfo {
     nrAnnotations?: number;
 
     /**
-     * A unique sequence for this document representing the unique document
+     * A unique uuid  for this document representing the unique document
      * number to detect changes between each commit to the datastore. Every
      * write to the datastore generates a unique sequence id for the document
      * being written.
      */
-    sequence?: string;
+    uuid?: string;
 
 }

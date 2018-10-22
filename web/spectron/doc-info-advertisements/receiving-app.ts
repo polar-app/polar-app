@@ -23,16 +23,27 @@ SpectronRenderer.run(async (state) => {
         console.log("Got the advertisement");
 
         const expected = {
-            "progress": 100,
+            "added": "2012-03-02T11:38:49.321Z",
+            "archived": false,
+            "fingerprint": "0x0001",
+            "flagged": false,
+            "lastUpdated": "2012-03-02T11:38:49.321Z",
+            "nrAnnotations": 0,
+            "nrAreaHighlights": 0,
+            "nrComments": 0,
+            "nrFlashcards": 0,
+            "nrNotes": 0,
+            "nrPages": 1,
+            "nrTextHighlights": 0,
             "pagemarkType": "SINGLE_COLUMN",
+            "progress": 100,
             "properties": {},
             "tags": {},
-            "archived": false,
-            "flagged": false,
-            "nrPages": 1,
-            "fingerprint": "0x0001",
-            "added": "2012-03-02T11:38:49.321Z"
+            "uuid": "4743a590-645c-11e1-809e-478d48422a2c"
         };
+
+        delete adv.docInfo.uuid;
+        delete expected.uuid;
 
         assertJSON(Dictionaries.sorted(adv.docInfo), Dictionaries.sorted(expected));
 
