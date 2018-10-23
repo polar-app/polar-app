@@ -157,7 +157,7 @@ export class MainAppMenu {
                     type: 'separator'
                 },
 
-                { role: 'hide' },
+                { role: 'hide', label: 'Hide Polar' },
                 { role: 'hideOthers' },
                 { role: 'unhide' },
                 { type: 'separator'},
@@ -208,16 +208,18 @@ export class MainAppMenu {
                         }
                     }
                 },
-                { role: 'hide', visible: isMacOS },
-                { role: 'hideOthers', visible: isMacOS },
-                { role: 'unhide', visible: isMacOS },
-                { type: 'separator', visible: isMacOS},
+                // { role: 'hide', visible: isMacOS },
+                // { role: 'hideOthers', visible: isMacOS },
+                // { role: 'unhide', visible: isMacOS },
+                // { type: 'separator', visible: isMacOS},
 
                 {
                     type: 'separator'
                 },
                 {
                     role: 'quit',
+                    label: 'Quit',
+                    visible: ! isMacOS,
                     click: this.mainAppController.cmdExit.bind(this.mainAppController)
                 },
             ]
