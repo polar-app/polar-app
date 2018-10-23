@@ -82,16 +82,6 @@ function createDocMeta(path) {
 
 }
 
-
-
-
-
-
-
-
-
-
-
 class DocMetaWriter {
 
 }
