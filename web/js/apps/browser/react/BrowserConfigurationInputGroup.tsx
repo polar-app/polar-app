@@ -1,6 +1,7 @@
 import React from 'react';
 import {DropdownItem, DropdownMenu, DropdownToggle, InputGroupButtonDropdown} from 'reactstrap';
 import {Optional} from '../../../util/ts/Optional';
+import {ToggleDropdownItem} from './ToggleDropdownItem';
 
 export class BrowserConfigurationInputGroup extends React.Component<Props, State> {
 
@@ -25,11 +26,11 @@ export class BrowserConfigurationInputGroup extends React.Component<Props, State
                 isOpen={this.state.open}
                 toggle={this.toggle}>
                 <DropdownToggle caret>
-                     <span className="fa fa-chrome fa-lg" aria-hidden="true"></span>
+                     <span className="fab fa-chrome fa-lg" aria-hidden="true"></span>
                 </DropdownToggle>
-                <DropdownMenu>
+                <DropdownMenu right>
                     <DropdownItem header>Browser:</DropdownItem>
-                    <DropdownItem divider />
+                    {/*<DropdownItem divider />*/}
 
                     <DropdownItem data-browser-name="MOBILE_GALAXY_S8"
                                   onClick={(event: React.MouseEvent<HTMLElement>) => this.onClick(event)}>
@@ -51,13 +52,16 @@ export class BrowserConfigurationInputGroup extends React.Component<Props, State
                         Chrome on Desktop (850x)
                     </DropdownItem>
 
-                    <DropdownItem data-browser-name="DESKTOP_1024"
-                                  onClick={(event: React.MouseEvent<HTMLElement>) => this.onClick(event)}>
-                        Chrome on Desktop (1024x768)
-                    </DropdownItem>
+                    {/*<DropdownItem divider />*/}
 
+                    {/*<DropdownItem header>Options:</DropdownItem>*/}
+
+                    {/*<ToggleDropdownItem enabled={true}>*/}
+                        {/*Accelerated Mobile Pages (AMP)*/}
+                    {/*</ToggleDropdownItem>*/}
 
                 </DropdownMenu>
+
             </InputGroupButtonDropdown>
         );
     }

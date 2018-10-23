@@ -22,7 +22,7 @@ export class CaptureButton extends React.Component<Props, any> {
                         // disabled
                         onClick={this.onTriggerCapture}>
 
-                    <span className="fa fa-cloud-download fa-lg" aria-hidden="true"></span>
+                    <span className="fas fa-cloud-download-alt fa-lg" aria-hidden="true"></span>
 
                 </Button>
 

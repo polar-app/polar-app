@@ -41,15 +41,15 @@ export class RefreshButton extends React.Component<Props, State> {
 
         switch (this.state.nav) {
             case 'none':
-                navButtonClassName = 'fa fa-refresh fa-lg';
+                navButtonClassName = 'fas fa-sync fa-lg';
                 disabled = true;
                 break;
             case 'loading':
-                navButtonClassName = 'fa fa-refresh fa-lg fa-spin';
+                navButtonClassName = 'fas fa-sync fa-lg fa-spin';
                 disabled = false;
                 break;
             case 'loaded':
-                navButtonClassName = 'fa fa-refresh fa-lg';
+                navButtonClassName = 'fas fa-sync fa-lg';
                 disabled = false;
                 break;
         }

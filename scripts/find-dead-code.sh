@@ -60,6 +60,10 @@ find_imported_typescript() {
 
 find_used_javascript() {
 
+    # TODO: I actually think we have to start from our entry points.. and
+    # resolve that way.  We have a lot of old apps that aren't being used but
+    # their code has connectivity in a local cluster.
+
     # FIXME: I have to look in apps directory too. too ...
 
     # NOTES:
@@ -83,7 +87,6 @@ find_all_javascript() {
 
     find web/js -regex '.*\.\(js\|ts\|tsx\)' -exec readlink -f "{}" ";" | sed 's/\.\(js\|ts\|tsx\)//g' > /tmp/all-javascript.txt
     find apps -regex '.*\.\(js\|ts\|tsx\)' -exec readlink -f "{}" ";" | sed 's/\.\(js\|ts\|tsx\)//g' >> /tmp/all-javascript.txt
-
 
 }
 
