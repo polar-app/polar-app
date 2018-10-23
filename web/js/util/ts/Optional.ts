@@ -1,6 +1,5 @@
 import {isPresent} from '../../Preconditions';
 
-
 export class Optional<T> {
 
     constructor(value: T | undefined | null, name?: string) {

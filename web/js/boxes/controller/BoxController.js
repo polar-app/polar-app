@@ -8,7 +8,7 @@ const {ResizeRectAdjacencyCalculator} = require("../../pagemarks/controller/inte
 const {BoxMoveEvent} = require("./BoxMoveEvent");
 const {RectEdges} = require("../../pagemarks/controller/interact/edges/RectEdges");
 const {Preconditions} = require("../../Preconditions");
-const {Optional} = require("../../Optional");
+const {Optional} = require("../../util/ts/Optional");
 const log = require("../../logger/Logger").Logger.create();
 
 /**
