@@ -224,11 +224,13 @@ export class MainAppController {
      */
     private async promptDoc(): Promise<string> {
 
+        const downloadsDir = app.getPath('downloads');
+
         return new Promise<string>((resolve) => {
 
             dialog.showOpenDialog({
-                  title: "Open Document",
-                  defaultPath: this.directories.stashDir,
+                  title: "Import Document",
+                  defaultPath: downloadsDir,
                   filters: [
                       { name: 'Docs', extensions: ['pdf', "phz"] }
                   ],

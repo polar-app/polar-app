@@ -58,6 +58,8 @@ find_used_javascript() {
 
     # FIXME: I have to look in apps directory too. too ...
 
+    # FIXME: ProxyHandler is not found in the used JS...
+
     # NOTES:
     # - it's important to NOT use Test*.ts|js files here because these are
     #   fake references.
