@@ -83,7 +83,7 @@ find_all_javascript() {
 find_used_javascript | sort | uniq > /tmp/used-javascript.txt
 find_all_javascript
 
-cat /tmp/used-javascript.txt /tmp/all-javascript.txt | sort | uniq -c | grep -E "      1" > /tmp/dead-javascript.txt
+cat /tmp/used-javascript.txt /tmp/all-javascript.txt | sort | uniq -c | grep -E "      1" | grep -v -E "Test$" > /tmp/dead-javascript.txt
 
 cat /tmp/dead-javascript.txt
 
