@@ -1,4 +1,8 @@
 
+# 1.0.5 
+
+- Text highlights no longer being saved to JSON.. migrating them to the file 
+  repo...
 
 # 1.0.4
 

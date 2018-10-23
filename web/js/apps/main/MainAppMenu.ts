@@ -5,8 +5,6 @@ import {Version} from '../../util/Version';
 import {AppLauncher} from './AppLauncher';
 import {Logger} from '../../logger/Logger';
 import {Promises} from '../../util/Promises';
-import {InPageSearch} from './InPageSearch';
-import MenuItem = Electron.MenuItem;
 import {ManualUpdates} from '../../updates/ManualUpdates';
 import {Platform, Platforms} from '../../util/Platforms';
 import {AnnotationSidebarClient} from '../../annotation_sidebar/AnnotationSidebarClient';
@@ -84,81 +82,22 @@ export class MainAppMenu {
     }
 
     private createMenuTemplate(): any {
-        return [
+
+        let menuTemplate: any[] = [
             this.createFileMenuTemplate(),
             this.createEditMenuTemplate(),
             // this.createAnnotateMenuTemplate(),
             this.createViewMenuTemplate(),
-            {
-                label: 'Window',
-                role: 'window',
-                submenu: [
-                    { label: 'Minimize', role: 'minimize' },
-                    { label: 'Close', role: 'close' },
-                ]
-            },
-            {
-                label: 'Tools',
-                submenu: [
-                    {
-                        label: 'Document Repository',
-                        click: () => Promises.executeLogged(AppLauncher.launchRepositoryApp)
-                    },
-                    {
-                        label: 'Toggle Developer Tools',
-                        click: this.mainAppController.cmdToggleDevTools
-                    },
-
-                ]
-            },
-            {
-                id: 'help',
-                label: 'Help',
-                role: 'help',
-
-                submenu: [{
-                    label: 'About',
-                    click: (item: Electron.MenuItem, focusedWindow: BrowserWindow) => {
-                            dialog.showMessageBox(focusedWindow, {
-                                type: 'info',
-                                buttons: ['OK'],
-                                title: 'Polar Bookshelf',
-                                message: this.createAboutMessage(),
-                                detail: '',
-                                // icon: APP_ICON
-                            });
-                        }
-                    },
-                    {
-                        id: 'check-for-updates',
-                        label: 'Check for updates',
-                        // only show on Windows and MacOS as all other platforms have
-                        // their own dist system (for now).
-                        visible: this.platformSupportsUpdates(),
-                        click: ManualUpdates.checkForUpdates
-                    },
-                    {type: 'separator'},
-                    { label: 'Discord',
-                        click: () => shell.openExternal('https://discord.gg/GT8MhA6') },
-
-                    { label: 'Reddit',
-                        click: () => shell.openExternal('https://www.reddit.com/r/PolarBookshelf/') },
-
-                    { label: 'Learn More',
-                        click: () => shell.openExternal('https://github.com/burtonator/polar-bookshelf') },
-                    {type: 'separator'},
-                    { label: 'Cookie Policy',
-                        click: () => shell.openExternal('https://getpolarized.io/cookie-policy.html') },
-
-                    { label: 'Terms of Service',
-                        click: () => shell.openExternal('https://getpolarized.io/terms-of-service.html') },
-
-                    { label: 'Privacy Policy',
-                        click: () => shell.openExternal('https://getpolarized.io/privacy-policy.html') },
-
-                ]
-            },
+            this.createWindowMenuTemplate(),
+            this.createToolsMenuTemplate(),
+            this.createHelpMenuTemplate()
         ];
+
+        if (Platforms.get() === Platform.MACOS) {
+            menuTemplate.unshift(this.createMacOSMenuTemplate())
+        }
+
+        return menuTemplate;
 
     }
 
@@ -200,6 +139,37 @@ export class MainAppMenu {
 
             ]
 
+        };
+
+    }
+
+    private createMacOSMenuTemplate() {
+
+        return {
+            label: 'Polar',
+            submenu: [
+
+                {
+                    label: 'About Polar',
+                    click: () => this.showHelpAboutDialog()
+                },
+                {
+                    type: 'separator'
+                },
+
+                { role: 'hide' },
+                { role: 'hideOthers' },
+                { role: 'unhide' },
+
+                {
+                    type: 'separator'
+                },
+                {
+                    label: 'Quit',
+                    accelerator: 'CmdOrCtrl+Q',
+                    click: this.mainAppController.cmdExit.bind(this.mainAppController)
+                },
+            ]
         };
 
     }
@@ -372,6 +342,90 @@ export class MainAppMenu {
             ]
         };
     }
+
+    private createWindowMenuTemplate() {
+        return {
+            label: 'Window',
+            role: 'window',
+            submenu: [
+                { label: 'Minimize', role: 'minimize' },
+                { label: 'Close', role: 'close' },
+            ]
+        }
+    }
+
+    private createToolsMenuTemplate() {
+        return {
+            label: 'Tools',
+            submenu: [
+                {
+                    label: 'Document Repository',
+                    click: () => Promises.executeLogged(AppLauncher.launchRepositoryApp)
+                },
+                {
+                    label: 'Toggle Developer Tools',
+                    click: this.mainAppController.cmdToggleDevTools
+                },
+            ]
+        };
+
+    }
+
+    private createHelpMenuTemplate() {
+        return {
+            id: 'help',
+            label: 'Help',
+            role: 'help',
+
+            submenu: [
+                {
+                    label: 'About',
+                    click: () => this.showHelpAboutDialog()
+                },
+                {
+                    id: 'check-for-updates',
+                    label: 'Check for updates',
+                    // only show on Windows and MacOS as all other platforms have
+                    // their own dist system (for now).
+                    visible: this.platformSupportsUpdates(),
+                    click: ManualUpdates.checkForUpdates
+                },
+                {type: 'separator'},
+                { label: 'Discord',
+                    click: () => shell.openExternal('https://discord.gg/GT8MhA6') },
+
+                { label: 'Reddit',
+                    click: () => shell.openExternal('https://www.reddit.com/r/PolarBookshelf/') },
+
+                { label: 'Learn More',
+                    click: () => shell.openExternal('https://github.com/burtonator/polar-bookshelf') },
+                {type: 'separator'},
+                { label: 'Cookie Policy',
+                    click: () => shell.openExternal('https://getpolarized.io/cookie-policy.html') },
+
+                { label: 'Terms of Service',
+                    click: () => shell.openExternal('https://getpolarized.io/terms-of-service.html') },
+
+                { label: 'Privacy Policy',
+                    click: () => shell.openExternal('https://getpolarized.io/privacy-policy.html') },
+
+            ]
+        };
+    }
+
+    private showHelpAboutDialog() {
+
+        dialog.showMessageBox(BrowserWindow.getFocusedWindow()!, {
+            type: 'info',
+            buttons: ['OK'],
+            title: 'Polar',
+            message: this.createAboutMessage(),
+            detail: '',
+            // icon: APP_ICON
+        });
+
+    }
+
 }
 
 
