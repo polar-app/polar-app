@@ -56,15 +56,20 @@ find_imported_typescript() {
 
 find_used_javascript() {
 
-    # FIXME: I have to look in apps too ...
+    # FIXME: I have to look in apps directory too. too ...
 
-    for file in `find web/js -regex '.*\.\(js\|ts\|tsx\)'`; do
+    # NOTES:
+    # - it's important to NOT use Test*.ts|js files here because these are
+    #   fake references.
+
+
+    for file in `find web/js -regex '.*\.\(js\|ts\|tsx\)' | grep -v -E 'Test.(js|ts|tsx)$'`; do
         find_required_javascript ${file}
     done
 
     ## now test the imports in our typescript.
 
-    for file in `find web/js -regex '.*\.\(ts\|tsx\)'`; do
+    for file in `find web/js -regex '.*\.\(ts\|tsx\)' | grep -v -E 'Test.(js|ts|tsx)$'`; do
         find_imported_typescript ${file}
     done
 
