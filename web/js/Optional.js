@@ -1,5 +1,7 @@
 // simple optional implementation so we don't need to resort to jquery
 
+// TODO: ORPHAN JS.. remove after TS conversion.
+
 class Optional {
 
     constructor(value) {
