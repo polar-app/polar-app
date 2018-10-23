@@ -1,23 +1,15 @@
-const {AreaHighlightRect} = require("./AreaHighlightRect")
-
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const AreaHighlightRect_1 = require("./AreaHighlightRect");
 class AreaHighlightRects {
-    /**
-     *
-     *
-     * @param rect {Rect}
-     * @return {AreaHighlightRect}
-     */
     static createFromRect(rect) {
-
-        return new AreaHighlightRect({
+        return new AreaHighlightRect_1.AreaHighlightRect({
             left: rect.left,
             top: rect.top,
             width: rect.width,
             height: rect.height
         });
-
     }
-
 }
-
-module.exports.AreaHighlightRects = AreaHighlightRects;
+exports.AreaHighlightRects = AreaHighlightRects;
+//# sourceMappingURL=AreaHighlightRects.js.map

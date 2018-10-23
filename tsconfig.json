@@ -6,7 +6,7 @@
         "strictNullChecks": true,
         "noImplicitThis": false,
         "alwaysStrict": true,
-        "listEmittedFiles": false,
+        "listEmittedFiles": true,
         "noImplicitReturns": true,
         "removeComments": true,
         "strictFunctionTypes": true,
