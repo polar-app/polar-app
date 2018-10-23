@@ -83,7 +83,9 @@ find_all_javascript() {
 find_used_javascript | sort | uniq > /tmp/used-javascript.txt
 find_all_javascript
 
-cat /tmp/used-javascript.txt /tmp/all-javascript.txt | sort | uniq -c | grep -E "      1"
+cat /tmp/used-javascript.txt /tmp/all-javascript.txt | sort | uniq -c | grep -E "      1" > /tmp/dead-javascript.txt
+
+cat /tmp/dead-javascript.txt
 
 # FIXME: now we can write a report by combinign both files, then doing a uniq -c
 # , and only returning files that were used once...
