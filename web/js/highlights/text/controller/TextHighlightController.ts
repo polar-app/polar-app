@@ -363,7 +363,10 @@ export class TextHighlightController {
                                              'screenshot',
                                              screenshotDimensions);
 
-        pageMeta.screenshots[screenshot.id] = screenshot;
+        // TODO: this has to be written as a binary file and then a reference to
+        // the screenshot added
+
+        // pageMeta.screenshots[screenshot.id] = screenshot;
 
         return textHighlightRecord;
 
