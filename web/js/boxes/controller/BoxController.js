@@ -1,17 +1,14 @@
 "use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 const BoxMoveEvent_1 = require("./BoxMoveEvent");
 const BoxOptions_1 = require("./BoxOptions");
 const Rects_1 = require("../../Rects");
-const interactjs_1 = __importDefault(require("interactjs"));
 const Objects_1 = require("../../util/Objects");
 const Logger_1 = require("../../logger/Logger");
 const Preconditions_1 = require("../../Preconditions");
 const RectEdges_1 = require("../../pagemarks/controller/interact/edges/RectEdges");
 const Optional_1 = require("../../util/ts/Optional");
+const interact = require('interactjs');
 const { DragRectAdjacencyCalculator } = require("../../pagemarks/controller/interact/drag/DragRectAdjacencyCalculator");
 const { ResizeRectAdjacencyCalculator } = require("../../pagemarks/controller/interact/resize/ResizeRectAdjacencyCalculator");
 const log = Logger_1.Logger.create();
@@ -23,7 +20,7 @@ class BoxController {
         let boxOptions = new BoxOptions_1.BoxOptions(opts);
         let restrictionElement = Optional_1.Optional.of(boxOptions.restrictionElement)
             .getOrElse(boxOptions.target.parentElement);
-        interactjs_1.default(boxOptions.target)
+        interact(boxOptions.target)
             .draggable({
             inertia: false,
             restrict: {

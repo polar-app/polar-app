@@ -19,8 +19,8 @@ mac:
     - target: dmg
     - target: zip
   fileAssociations:
-    - ext: "pdf"
-      role: "Viewer"
+    - ext: pdf
+      role: Viewer
 
 linux:
   artifactName: ${name}-${version}-${arch}.${ext}
@@ -37,7 +37,8 @@ linux:
   # to specify the icons.
 
   fileAssociations:
-    - ext: "pdf"
+    - ext: pdf
+      mineType: application/pdf
 
 nsis:
   artifactName: ${name}-${version}-${arch}.${ext}
@@ -49,7 +50,7 @@ win:
     #- target: portable
   icon: ./icons/icon-512x512.png
   fileAssociations:
-    - ext: "pdf"
+    - ext: pdf
   publisherName: Spinn3r
 
 snap:

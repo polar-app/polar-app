@@ -1,13 +1,21 @@
 import {BoxMoveEvent} from './BoxMoveEvent';
 import {BoxOptions} from './BoxOptions';
 import {Rects} from '../../Rects';
-import interact from 'interactjs';
 import {Rect} from '../../Rect';
 import {Objects} from '../../util/Objects';
 import {Logger} from '../../logger/Logger';
 import {Preconditions} from '../../Preconditions';
 import {RectEdges} from '../../pagemarks/controller/interact/edges/RectEdges';
 import {Optional} from '../../util/ts/Optional';
+
+// import interact from 'interactjs';
+
+// TODO: the interactjs typescript bindings in our version are incompatible with
+// our typescript config because we disallow implicity any.  Apparently interactjs
+// fixed this BUT the fix doesn't seem to be in the 1.3.x series.
+
+// import {} from 'interactjs';
+const interact = require('interactjs');
 
 const {DragRectAdjacencyCalculator} = require("../../pagemarks/controller/interact/drag/DragRectAdjacencyCalculator");
 const {ResizeRectAdjacencyCalculator} = require("../../pagemarks/controller/interact/resize/ResizeRectAdjacencyCalculator");
@@ -22,17 +30,11 @@ export class BoxController {
 
     private readonly callback: (event: BoxMoveEvent) => void;
 
-    /**
-     *
-     * @param [callback] {Function} Callback function which gives you a
-     *     {BoxMoveEvent}
-     */
     constructor(callback: (event: BoxMoveEvent) => void) {
         this.callback = callback;
     }
 
     /**
-     * @param opts {BoxOptions}
      */
     register(opts: BoxOptions) {
 
@@ -93,10 +95,10 @@ export class BoxController {
                 inertia: false,
 
             })
-            .on('dragstart',(interactionEvent: interact.InteractEvent) => {
+            .on('dragstart',(interactionEvent: any) => {
                 this._captureStartTargetRect(interactionEvent);
             })
-            .on('dragmove',(interactionEvent: interact.InteractEvent) => {
+            .on('dragmove',(interactionEvent: any) => {
 
                 // log.info("=====================")
                 // log.info("dragmove: event: ", event);
@@ -178,7 +180,7 @@ export class BoxController {
                     this._fireBoxMoveEvent("drag", restrictionRect, boxRect, target.id, target);
 
             })
-            .on('dragend',(interactionEvent: interact.InteractEvent) => {
+            .on('dragend',(interactionEvent: any) => {
                 this._fireCompletedBoxMoveEvent(interactionEvent);
             })
             .on('resizestart', (interactionEvent: any) => {
@@ -263,22 +265,12 @@ export class BoxController {
                     = this._fireBoxMoveEvent("resize", restrictionRect, boxRect, target.id, target);
 
             })
-            .on('resizeend',(interactionEvent: interact.InteractEvent) => {
+            .on('resizeend',(interactionEvent: any) => {
                 this._fireCompletedBoxMoveEvent(interactionEvent);
             });
 
     }
 
-    /**
-     *
-     * @param type "drag" or "resize"
-     * @param restrictionRect {Rect}
-     * @param boxRect {Rect}
-     * @param id {String}
-     * @param target {HTMLElement}
-     * @return {BoxMoveEvent}
-     * @private
-     */
     _fireBoxMoveEvent(type: 'drag' | 'resize',
                       restrictionRect: Rect,
                       boxRect: Rect,
@@ -302,7 +294,7 @@ export class BoxController {
     }
 
 
-    _fireCompletedBoxMoveEvent(interactionEvent: interact.InteractEvent) {
+    _fireCompletedBoxMoveEvent(interactionEvent: any) {
 
         if(interactionEvent.interaction.lastBoxMoveEvent) {
 
@@ -375,7 +367,7 @@ export class BoxController {
      * @param interactionEvent
      * @private
      */
-    _computeOriginXY(interactionEvent: interact.InteractEvent) {
+    _computeOriginXY(interactionEvent: any) {
 
         let delta = {
             x: interactionEvent.pageX - interactionEvent.interaction.startCoords.page.x,
@@ -395,13 +387,6 @@ export class BoxController {
     }
 
 
-    /**
-     *
-     * @param x {number}
-     * @param y {number}
-     * @param target
-     * @private
-     */
     _moveTargetElement(x: number, y: number, target: HTMLElement) {
 
         target.style.left = `${x}px`;
@@ -415,12 +400,6 @@ export class BoxController {
 
     }
 
-    /**
-     *
-     * @param rect {Rect}
-     * @param target {HTMLElement}
-     * @private
-     */
     _resizeTargetElement(rect: Rect, target: HTMLElement) {
 
         // first move it the same way as if it were dragged
@@ -432,7 +411,7 @@ export class BoxController {
 
     }
 
-    _captureStartTargetRect(interactionEvent: interact.InteractEvent) {
+    _captureStartTargetRect(interactionEvent: any) {
         // this modifies interactionEvent.interaction by side effect which I
         // don't like.
         interactionEvent.interaction.startTargetRect = Rects.fromElementStyle(interactionEvent.target);
