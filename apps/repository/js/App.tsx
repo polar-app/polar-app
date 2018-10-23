@@ -440,12 +440,16 @@ export default class App extends React.Component<AppProps, AppState> {
 
     private async onDocTagged(repoDocInfo: RepoDocInfo, tags: Tag[]) {
 
+        RendererAnalytics.event({category: 'user', action: 'doc-tagged'});
+
         await this.docRepository!.syncDocInfoTags(repoDocInfo, tags);
         this.refresh();
 
     }
 
     private onDocDeleted(repoDocInfo: RepoDocInfo) {
+
+        RendererAnalytics.event({category: 'user', action: 'doc-deleted'});
 
         log.info("Deleting document: ", repoDocInfo)
 
@@ -458,6 +462,8 @@ export default class App extends React.Component<AppProps, AppState> {
 
     private onDocSetTitle(repoDocInfo: RepoDocInfo, title: string) {
 
+        RendererAnalytics.event({category: 'user', action: 'set-doc-title'});
+
         log.info("Setting doc title: " , title);
 
         this.docRepository.syncDocInfoTitle(repoDocInfo, title)
@@ -468,6 +474,8 @@ export default class App extends React.Component<AppProps, AppState> {
     }
 
     private onSelectedColumns() {
+
+        RendererAnalytics.event({category: 'user', action: 'selected-columns'});
 
         // new columns have been selected. Note that the UI updates the values
         // directly so we can just write what's in memory to disk. I think it
@@ -562,6 +570,8 @@ export default class App extends React.Component<AppProps, AppState> {
     }
 
     private doFilterByTags(repoDocs: RepoDocInfo[]): RepoDocInfo[] {
+
+        RendererAnalytics.event({category: 'user', action: 'filter-by-tags'});
 
         const tags = Tags.toIDs(this.filteredTags.get());
 

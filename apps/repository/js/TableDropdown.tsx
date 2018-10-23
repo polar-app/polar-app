@@ -7,6 +7,7 @@ import {IStyleMap} from '../../../web/js/react/IStyleMap';
 import {ListOptionType, ListSelector} from "../../../web/js/ui/list_selector/ListSelector";
 import {LightboxPopover} from '../../../web/js/ui/lightbox_popover/LightboxPopover';
 import {TableColumns} from './TableColumns';
+import {RendererAnalytics} from '../../../web/js/ga/RendererAnalytics';
 
 const log = Logger.create();
 
