@@ -1,12 +1,10 @@
-/**
- * An intermediate row with a rect covering the whole row and the rectElements
- * it contains.
- */
-module.exports.IntermediateRow = class  {
-
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+class IntermediateRow {
     constructor(rect, rectElements) {
         this.rect = rect;
         this.rectElements = rectElements;
     }
-
 }
+exports.IntermediateRow = IntermediateRow;
+//# sourceMappingURL=IntermediateRow.js.map

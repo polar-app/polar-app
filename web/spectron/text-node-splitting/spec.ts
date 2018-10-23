@@ -1,229 +1,262 @@
-"use strict";
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-const chai_1 = require("chai");
-const Spectron_1 = require("../../js/test/Spectron");
-const Assertions_1 = require("../../js/test/Assertions");
-const TIMEOUT = 10000;
+import {assert} from 'chai';
+import {Spectron} from '../../js/test/Spectron';
+import {assertJSON} from '../../js/test/Assertions';
+
+const TIMEOUT = 10000
+
 describe('Text Node Splitting', function () {
+
     this.timeout(TIMEOUT);
-    Spectron_1.Spectron.setup(__dirname);
-    xit('splitNode', function () {
-        return __awaiter(this, void 0, void 0, function* () {
-            chai_1.assert.equal(yield this.app.client.getWindowCount(), 1);
-            let splitNodes = yield this.app.client.execute(() => {
-                const { TextNodeRows } = require("../../js/highlights/text/selection/TextNodeRows");
-                let p = document.querySelector("p");
-                return TextNodeRows.splitElement(p);
-            });
-            chai_1.assert.equal(splitNodes.value, 1435);
+
+    Spectron.setup(__dirname);
+
+    xit('splitNode', async function () {
+
+        assert.equal(await this.app.client.getWindowCount(), 1);
+
+        // first check that we can split the basic nodes properly.
+        let splitNodes = await this.app.client.execute(() => {
+
+            const {TextNodeRows} = require("../../js/highlights/text/selection/TextNodeRows");
+
+            let p = document.querySelector("p");
+
+            return TextNodeRows.splitElement(p);
+
         });
+
+        assert.equal(splitNodes.value, 1435);
+
     });
-    xit('computeTextRegions', function () {
-        return __awaiter(this, void 0, void 0, function* () {
-            chai_1.assert.equal(yield this.app.client.getWindowCount(), 1);
-            let textRegions = yield this.app.client.execute(() => {
-                const { TextNodeRows, NodeArray } = require("../../js/highlights/text/selection/TextNodeRows");
-                let p = document.querySelector("p");
-                TextNodeRows.splitElement(p);
-                let nodeArray = NodeArray.createFromElement(p);
-                if (nodeArray.constructor !== NodeArray) {
-                    throw new Error("Got back the wrong object!");
-                }
-                let textRegions = TextNodeRows.computeTextRegions(nodeArray);
-                return textRegions.map((current) => current.toJSON());
-            });
-            let expected = [
-                {
-                    "nrNodes": 284,
-                    "text": "\n    1.Lorem ipsum dolor sit amet, consectetur adipiscing elit.\n    2.Sed pretium, dolor sed euismod tempor, diam urna\n    3.scelerisque tortor, vel semper ligula urna vel enim. Aenean\n    4.nec facilisis libero. Sed efficitur ac ligula in varius.\n    5.Pellentesque iaculis, enim ac "
-                },
-                {
-                    "nrNodes": 12,
-                    "text": "6. dignissim"
-                },
-                {
-                    "nrNodes": 90,
-                    "text": " aliquet, turpis\n    7.purus mattis felis, eget consequat eros velit et erat. 8.Curabitur "
-                },
-                {
-                    "nrNodes": 10,
-                    "text": "9. feugiat"
-                },
-                {
-                    "nrNodes": 184,
-                    "text": " 10.suscipit leo, vel\n\n\n    ultrices tortor sodales ut. Maecenas a magna eget nunc commodo rutrum ac et\n    augue. Quisque augue sem, ultricies ac ornare non, porta a eros. Morbi\n\n    "
-                },
-                {
-                    "nrNodes": 5,
-                    "text": "hello"
-                },
-                {
-                    "nrNodes": 850,
-                    "text": "\n\n    posuere, tellus nec cursus rhoncus, nibh leo ultricies urna, eget mollis mi\n    nisl nec purus. Mauris malesuada justo vitae finibus elementum. Donec\n    vestibulum erat ac sem consectetur eleifend. Nullam at nibh sed neque\n    accumsan tincidunt nec a enim. Aliquam pharetra orci tortor, eget gravida\n    felis dictum ac. Maecenas convallis nunc ultrices massa bibendum, et\n    dignissim elit tempus. Ut in luctus dolor, et maximus nisi. Etiam non\n    euismod sem.\n\n    Vestibulum pulvinar bibendum turpis at sodales. Vestibulum consectetur nulla\n    elementum eros rhoncus, non interdum diam tristique. Praesent interdum quam\n    in lacus finibus semper. Phasellus id feugiat tortor. Integer sed molestie\n    urna, a sodales libero. Morbi egestas egestas tortor sed sagittis. Aenean et\n    tellus non quam pellentesque ultrices vel non odio.\n"
-                }
-            ];
-            Assertions_1.assertJSON(textRegions.value, expected);
+
+    xit('computeTextRegions', async function () {
+
+        assert.equal(await this.app.client.getWindowCount(), 1);
+
+        // first check that we can split the basic nodes properly.
+        let textRegions = await this.app.client.execute(() => {
+
+            const {TextNodeRows, NodeArray} = require("../../js/highlights/text/selection/TextNodeRows");
+
+            let p = document.querySelector("p");
+
+            TextNodeRows.splitElement(p);
+            let nodeArray = NodeArray.createFromElement(p);
+
+            if(nodeArray.constructor !== NodeArray) {
+                throw new Error("Got back the wrong object!");
+            }
+
+            let textRegions = TextNodeRows.computeTextRegions(nodeArray);
+
+            return textRegions.map((current: any) => current.toJSON());
+
         });
+
+        let expected = [
+            {
+                "nrNodes": 284,
+                "text": "\n    1.Lorem ipsum dolor sit amet, consectetur adipiscing elit.\n    2.Sed pretium, dolor sed euismod tempor, diam urna\n    3.scelerisque tortor, vel semper ligula urna vel enim. Aenean\n    4.nec facilisis libero. Sed efficitur ac ligula in varius.\n    5.Pellentesque iaculis, enim ac "
+            },
+            {
+                "nrNodes": 12,
+                "text": "6. dignissim"
+            },
+            {
+                "nrNodes": 90,
+                "text": " aliquet, turpis\n    7.purus mattis felis, eget consequat eros velit et erat. 8.Curabitur "
+            },
+            {
+                "nrNodes": 10,
+                "text": "9. feugiat"
+            },
+            {
+                "nrNodes": 184,
+                "text": " 10.suscipit leo, vel\n\n\n    ultrices tortor sodales ut. Maecenas a magna eget nunc commodo rutrum ac et\n    augue. Quisque augue sem, ultricies ac ornare non, porta a eros. Morbi\n\n    "
+            },
+            {
+                "nrNodes": 5,
+                "text": "hello"
+            },
+            {
+                "nrNodes": 850,
+                "text": "\n\n    posuere, tellus nec cursus rhoncus, nibh leo ultricies urna, eget mollis mi\n    nisl nec purus. Mauris malesuada justo vitae finibus elementum. Donec\n    vestibulum erat ac sem consectetur eleifend. Nullam at nibh sed neque\n    accumsan tincidunt nec a enim. Aliquam pharetra orci tortor, eget gravida\n    felis dictum ac. Maecenas convallis nunc ultrices massa bibendum, et\n    dignissim elit tempus. Ut in luctus dolor, et maximus nisi. Etiam non\n    euismod sem.\n\n    Vestibulum pulvinar bibendum turpis at sodales. Vestibulum consectetur nulla\n    elementum eros rhoncus, non interdum diam tristique. Praesent interdum quam\n    in lacus finibus semper. Phasellus id feugiat tortor. Integer sed molestie\n    urna, a sodales libero. Morbi egestas egestas tortor sed sagittis. Aenean et\n    tellus non quam pellentesque ultrices vel non odio.\n"
+            }
+        ];
+
+        assertJSON(textRegions.value, expected);
+
     });
-    xit('computeTextBlocks', function () {
-        return __awaiter(this, void 0, void 0, function* () {
-            chai_1.assert.equal(yield this.app.client.getWindowCount(), 1);
-            let textBlocks = yield this.app.client.execute(() => {
-                const { TextNodeRows, NodeArray } = require("../../js/highlights/text/selection/TextNodeRows");
-                let p = document.querySelector("p");
-                TextNodeRows.splitElement(p);
-                let nodeArray = NodeArray.createFromElement(p);
-                let textRegions = TextNodeRows.computeTextRegions(nodeArray);
-                let textBlocks = TextNodeRows.computeTextBlocks(textRegions);
-                return textBlocks.map((current) => current.toJSON());
-            });
-            let expected = [
-                {
-                    "nrNodes": 68,
-                    "text": "\n    1.Lorem ipsum dolor sit amet, consectetur adipiscing elit.\n    "
-                },
-                {
-                    "nrNodes": 55,
-                    "text": "2.Sed pretium, dolor sed euismod tempor, diam urna\n    "
-                },
-                {
-                    "nrNodes": 66,
-                    "text": "3.scelerisque tortor, vel semper ligula urna vel enim. Aenean\n    "
-                },
-                {
-                    "nrNodes": 63,
-                    "text": "4.nec facilisis libero. Sed efficitur ac ligula in varius.\n    "
-                },
-                {
-                    "nrNodes": 32,
-                    "text": "5.Pellentesque iaculis, enim ac "
-                },
-                {
-                    "nrNodes": 12,
-                    "text": "6. dignissim"
-                },
-                {
-                    "nrNodes": 21,
-                    "text": " aliquet, turpis\n    "
-                },
-                {
-                    "nrNodes": 57,
-                    "text": "7.purus mattis felis, eget consequat eros velit et erat. "
-                },
-                {
-                    "nrNodes": 12,
-                    "text": "8.Curabitur "
-                },
-                {
-                    "nrNodes": 10,
-                    "text": "9. feugiat"
-                },
-                {
-                    "nrNodes": 44,
-                    "text": " 10.suscipit leo, vel\n\n\n    ultrices tortor "
-                },
-                {
-                    "nrNodes": 54,
-                    "text": "sodales ut. Maecenas a magna eget nunc commodo rutrum "
-                },
-                {
-                    "nrNodes": 61,
-                    "text": "ac et\n    augue. Quisque augue sem, ultricies ac ornare non, "
-                },
-                {
-                    "nrNodes": 25,
-                    "text": "porta a eros. Morbi\n\n    "
-                },
-                {
-                    "nrNodes": 5,
-                    "text": "hello"
-                },
-                {
-                    "nrNodes": 33,
-                    "text": "\n\n    posuere, tellus nec cursus "
-                },
-                {
-                    "nrNodes": 62,
-                    "text": "rhoncus, nibh leo ultricies urna, eget mollis mi\n    nisl nec "
-                },
-                {
-                    "nrNodes": 55,
-                    "text": "purus. Mauris malesuada justo vitae finibus elementum. "
-                },
-                {
-                    "nrNodes": 62,
-                    "text": "Donec\n    vestibulum erat ac sem consectetur eleifend. Nullam "
-                },
-                {
-                    "nrNodes": 61,
-                    "text": "at nibh sed neque\n    accumsan tincidunt nec a enim. Aliquam "
-                },
-                {
-                    "nrNodes": 65,
-                    "text": "pharetra orci tortor, eget gravida\n    felis dictum ac. Maecenas "
-                },
-                {
-                    "nrNodes": 62,
-                    "text": "convallis nunc ultrices massa bibendum, et\n    dignissim elit "
-                },
-                {
-                    "nrNodes": 59,
-                    "text": "tempus. Ut in luctus dolor, et maximus nisi. Etiam non\n    "
-                },
-                {
-                    "nrNodes": 57,
-                    "text": "euismod sem.\n\n    Vestibulum pulvinar bibendum turpis at "
-                },
-                {
-                    "nrNodes": 57,
-                    "text": "sodales. Vestibulum consectetur nulla\n    elementum eros "
-                },
-                {
-                    "nrNodes": 56,
-                    "text": "rhoncus, non interdum diam tristique. Praesent interdum "
-                },
-                {
-                    "nrNodes": 63,
-                    "text": "quam\n    in lacus finibus semper. Phasellus id feugiat tortor. "
-                },
-                {
-                    "nrNodes": 63,
-                    "text": "Integer sed molestie\n    urna, a sodales libero. Morbi egestas "
-                },
-                {
-                    "nrNodes": 59,
-                    "text": "egestas tortor sed sagittis. Aenean et\n    tellus non quam "
-                },
-                {
-                    "nrNodes": 36,
-                    "text": "pellentesque ultrices vel non odio.\n"
-                }
-            ];
-            Assertions_1.assertJSON(textBlocks.value, expected);
+
+    xit('computeTextBlocks', async function () {
+
+        assert.equal(await this.app.client.getWindowCount(), 1);
+
+        // first check that we can split the basic nodes properly.
+        let textBlocks = await this.app.client.execute(() => {
+
+            const {TextNodeRows, NodeArray} = require("../../js/highlights/text/selection/TextNodeRows");
+
+            let p = document.querySelector("p");
+
+            TextNodeRows.splitElement(p);
+
+            let nodeArray = NodeArray.createFromElement(p);
+            let textRegions = TextNodeRows.computeTextRegions(nodeArray);
+            let textBlocks = TextNodeRows.computeTextBlocks(textRegions);
+
+            return textBlocks.map((current: any) => current.toJSON());
+
         });
+
+        let expected = [
+            {
+                "nrNodes": 68,
+                "text": "\n    1.Lorem ipsum dolor sit amet, consectetur adipiscing elit.\n    "
+            },
+            {
+                "nrNodes": 55,
+                "text": "2.Sed pretium, dolor sed euismod tempor, diam urna\n    "
+            },
+            {
+                "nrNodes": 66,
+                "text": "3.scelerisque tortor, vel semper ligula urna vel enim. Aenean\n    "
+            },
+            {
+                "nrNodes": 63,
+                "text": "4.nec facilisis libero. Sed efficitur ac ligula in varius.\n    "
+            },
+            {
+                "nrNodes": 32,
+                "text": "5.Pellentesque iaculis, enim ac "
+            },
+            {
+                "nrNodes": 12,
+                "text": "6. dignissim"
+            },
+            {
+                "nrNodes": 21,
+                "text": " aliquet, turpis\n    "
+            },
+            {
+                "nrNodes": 57,
+                "text": "7.purus mattis felis, eget consequat eros velit et erat. "
+            },
+            {
+                "nrNodes": 12,
+                "text": "8.Curabitur "
+            },
+            {
+                "nrNodes": 10,
+                "text": "9. feugiat"
+            },
+            {
+                "nrNodes": 44,
+                "text": " 10.suscipit leo, vel\n\n\n    ultrices tortor "
+            },
+            {
+                "nrNodes": 54,
+                "text": "sodales ut. Maecenas a magna eget nunc commodo rutrum "
+            },
+            {
+                "nrNodes": 61,
+                "text": "ac et\n    augue. Quisque augue sem, ultricies ac ornare non, "
+            },
+            {
+                "nrNodes": 25,
+                "text": "porta a eros. Morbi\n\n    "
+            },
+            {
+                "nrNodes": 5,
+                "text": "hello"
+            },
+            {
+                "nrNodes": 33,
+                "text": "\n\n    posuere, tellus nec cursus "
+            },
+            {
+                "nrNodes": 62,
+                "text": "rhoncus, nibh leo ultricies urna, eget mollis mi\n    nisl nec "
+            },
+            {
+                "nrNodes": 55,
+                "text": "purus. Mauris malesuada justo vitae finibus elementum. "
+            },
+            {
+                "nrNodes": 62,
+                "text": "Donec\n    vestibulum erat ac sem consectetur eleifend. Nullam "
+            },
+            {
+                "nrNodes": 61,
+                "text": "at nibh sed neque\n    accumsan tincidunt nec a enim. Aliquam "
+            },
+            {
+                "nrNodes": 65,
+                "text": "pharetra orci tortor, eget gravida\n    felis dictum ac. Maecenas "
+            },
+            {
+                "nrNodes": 62,
+                "text": "convallis nunc ultrices massa bibendum, et\n    dignissim elit "
+            },
+            {
+                "nrNodes": 59,
+                "text": "tempus. Ut in luctus dolor, et maximus nisi. Etiam non\n    "
+            },
+            {
+                "nrNodes": 57,
+                "text": "euismod sem.\n\n    Vestibulum pulvinar bibendum turpis at "
+            },
+            {
+                "nrNodes": 57,
+                "text": "sodales. Vestibulum consectetur nulla\n    elementum eros "
+            },
+            {
+                "nrNodes": 56,
+                "text": "rhoncus, non interdum diam tristique. Praesent interdum "
+            },
+            {
+                "nrNodes": 63,
+                "text": "quam\n    in lacus finibus semper. Phasellus id feugiat tortor. "
+            },
+            {
+                "nrNodes": 63,
+                "text": "Integer sed molestie\n    urna, a sodales libero. Morbi egestas "
+            },
+            {
+                "nrNodes": 59,
+                "text": "egestas tortor sed sagittis. Aenean et\n    tellus non quam "
+            },
+            {
+                "nrNodes": 36,
+                "text": "pellentesque ultrices vel non odio.\n"
+            }
+        ];
+
+        assertJSON(textBlocks.value, expected);
+
     });
-    xit('mergeTextBlocks', function () {
-        return __awaiter(this, void 0, void 0, function* () {
-            chai_1.assert.equal(yield this.app.client.getWindowCount(), 1);
-            let textBlocks = yield this.app.client.execute(() => {
-                const { TextNodeRows, NodeArray } = require("../../js/highlights/text/selection/TextNodeRows");
-                let p = document.querySelector("p");
-                TextNodeRows.splitElement(p);
-                let nodeArray = NodeArray.createFromElement(p);
-                let textRegions = TextNodeRows.computeTextRegions(nodeArray);
-                let textBlocks = TextNodeRows.computeTextBlocks(textRegions);
-                let mergedTextBlocks = TextNodeRows.mergeTextBlocks(textBlocks);
-                return mergedTextBlocks.map((current) => current.toExternal());
-            });
-            let expected = [
+
+    xit('mergeTextBlocks', async function () {
+
+        assert.equal(await this.app.client.getWindowCount(), 1);
+
+        // first check that we can split the basic nodes properly.
+        let textBlocks = await this.app.client.execute(() => {
+
+            const {TextNodeRows, NodeArray} = require("../../js/highlights/text/selection/TextNodeRows");
+
+            let p = document.querySelector("p");
+
+            TextNodeRows.splitElement(p);
+            let nodeArray = NodeArray.createFromElement(p);
+            let textRegions = TextNodeRows.computeTextRegions(nodeArray);
+            let textBlocks = TextNodeRows.computeTextBlocks(textRegions);
+            let mergedTextBlocks = TextNodeRows.mergeTextBlocks(textBlocks);
+            return mergedTextBlocks.map((current: any) => current.toExternal());
+
+        });
+
+        let expected = [
                 {
                     "rect": {
                         "bottom": 100,
@@ -644,9 +677,11 @@ describe('Text Node Splitting', function () {
                     },
                     "text": "pellentesque ultrices vel non odio.\n"
                 }
-            ];
-            Assertions_1.assertJSON(textBlocks.value, expected);
-        });
+            ]
+        ;
+
+        assertJSON(textBlocks.value, expected);
+
     });
+
 });
-//# sourceMappingURL=spec.js.map
