@@ -88,8 +88,8 @@ export class MainAppMenu {
             this.createEditMenuTemplate(),
             // this.createAnnotateMenuTemplate(),
             this.createViewMenuTemplate(),
-            this.createWindowMenuTemplate(),
             this.createToolsMenuTemplate(),
+            this.createWindowMenuTemplate(),
             this.createHelpMenuTemplate()
         ];
 
@@ -160,10 +160,7 @@ export class MainAppMenu {
                 { role: 'hide' },
                 { role: 'hideOthers' },
                 { role: 'unhide' },
-
-                {
-                    type: 'separator'
-                },
+                { type: 'separator'},
                 {
                     label: 'Quit',
                     accelerator: 'CmdOrCtrl+Q',
@@ -175,6 +172,8 @@ export class MainAppMenu {
     }
 
     private createFileMenuTemplate() {
+
+        const isMacOS = Platforms.get() === Platform.MACOS;
 
         return {
             label: 'File',
@@ -209,16 +208,16 @@ export class MainAppMenu {
                         }
                     }
                 },
-                {
-                    label: 'Close',
-                    role: 'close',
-                },
+                { role: 'hide', visible: isMacOS },
+                { role: 'hideOthers', visible: isMacOS },
+                { role: 'unhide', visible: isMacOS },
+                { type: 'separator', visible: isMacOS},
+
                 {
                     type: 'separator'
                 },
                 {
-                    label: 'Quit',
-                    accelerator: 'CmdOrCtrl+Q',
+                    role: 'quit',
                     click: this.mainAppController.cmdExit.bind(this.mainAppController)
                 },
             ]
@@ -348,8 +347,8 @@ export class MainAppMenu {
             label: 'Window',
             role: 'window',
             submenu: [
-                { label: 'Minimize', role: 'minimize' },
-                { label: 'Close', role: 'close' },
+                { role: 'minimize' },
+                { role: 'close' },
             ]
         }
     }
