@@ -1,31 +1,13 @@
-const {Preconditions} = require("../../../../Preconditions");
-
-/**
- * Like {RectEdges} but only for lines and only for start and end.
- */
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const Preconditions_1 = require("../../../../Preconditions");
 class LineEdges {
-
     constructor(obj) {
-
-        /**
-         * @type {boolean}
-         */
-        this.start = undefined;
-
-        /**
-         * @type {boolean}
-         */
-        this.end = undefined;
-
-        Object.assign(this, obj);
-
-        //  make sure we have all the values.
-
-        Preconditions.assertTypeOf(this.start, "boolean", "start");
-        Preconditions.assertTypeOf(this.end, "boolean", "end");
-
+        this.start = obj.start;
+        this.end = obj.end;
+        Preconditions_1.Preconditions.assertTypeOf(this.start, "boolean", "start");
+        Preconditions_1.Preconditions.assertTypeOf(this.end, "boolean", "end");
     }
-
 }
-
-module.exports.LineEdges = LineEdges;
+exports.LineEdges = LineEdges;
+//# sourceMappingURL=LineEdges.js.map
