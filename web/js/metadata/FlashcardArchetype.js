@@ -1,46 +1,17 @@
-const {Preconditions} = require("../Preconditions");
-const {Objects} = require("../util/Objects");
-
-
-/**
- * A defined archetype for creating a flashcard.  These provide a collection of
- * defined fields that can get mapped to your card system.
- *
- * @type {FlashcardArchetype}
- */
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const Objects_1 = require("../util/Objects");
+const Preconditions_1 = require("../Preconditions");
 class FlashcardArchetype {
-
     constructor(opts) {
-
-        opts = Objects.defaults(opts, {
+        opts = Objects_1.Objects.defaults(opts, {
             description: "",
         });
-
-        /**
-         * The unique ID of this archetype.
-         *
-         * @type {null}
-         */
-        this.id = Preconditions.assertNotNull(opts.id, "id");
-
-        /**
-         * The name of this archetype for displaying to a user.
-         *
-         * @type {null}
-         */
-        this.name = Preconditions.assertNotNull(opts.name, "name");
-
-        /**
-         * Brief description of this archetype.
-         *
-         * @type {null}
-         */
+        this.id = Preconditions_1.Preconditions.assertNotNull(opts.id, "id");
+        this.name = Preconditions_1.Preconditions.assertNotNull(opts.name, "name");
         this.description = opts.description;
-
         this.fields = opts.fields;
-
     }
-
 }
-
-module.exports.FlashcardArchetype = FlashcardArchetype;
+exports.FlashcardArchetype = FlashcardArchetype;
+//# sourceMappingURL=FlashcardArchetype.js.map

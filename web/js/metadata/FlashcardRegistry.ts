@@ -1,156 +1,177 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const FlashcardArchetype_1 = require("./FlashcardArchetype");
-const Preconditions_1 = require("../Preconditions");
-const FlashcardField_1 = require("./FlashcardField");
-const FlashcardFieldType_1 = require("./FlashcardFieldType");
-class FlashcardRegistry {
-    constructor() {
-        this.registry = {};
+import {FlashcardArchetype} from './FlashcardArchetype';
+import {Preconditions} from '../Preconditions';
+import {FlashcardField} from './FlashcardField';
+import {FlashcardFieldType} from './FlashcardFieldType';
+
+/**
+ * Creates a registry FlashcardArchetypes for use by the user.
+ *
+ * @type {FlashcardRegistry}
+ */
+export class FlashcardRegistry {
+
+    private readonly registry: {[id: string]: FlashcardArchetype} = {};
+
+    register(flashcardArchetype: FlashcardArchetype) {
+        Preconditions.assertNotNull(flashcardArchetype.id, "id");
+        this.registry[flashcardArchetype.id]=flashcardArchetype;
     }
-    register(flashcardArchetype) {
-        Preconditions_1.Preconditions.assertNotNull(flashcardArchetype.id, "id");
-        this.registry[flashcardArchetype.id] = flashcardArchetype;
+
+    get(id: string) {
+
     }
-    get(id) {
-    }
-    hasKey(id) {
+
+    hasKey(id: string) {
         return id in this.registry;
     }
+
     keys() {
         return Object.keys(this.registry);
     }
+
+    /**
+     * Return the values in the registry.
+     */
     values() {
         return Object.values(this.registry);
     }
+
+    /**
+     * Create the default flashcard registry.
+     */
     static createDefault() {
+
         let flashcardRegistry = new FlashcardRegistry();
-        flashcardRegistry.register(new FlashcardArchetype_1.FlashcardArchetype({
+
+        flashcardRegistry.register(new FlashcardArchetype({
             id: "9d146db1-7c31-4bcf-866b-7b485c4e50ea",
             name: "Front and Back",
             description: "Standard front and back flashcard.",
             fields: {
-                "front": new FlashcardField_1.FlashcardField({
+                "front": new FlashcardField({
                     name: "front",
-                    type: FlashcardFieldType_1.FlashcardFieldType.TEXT,
+                    type: FlashcardFieldType.TEXT,
                     description: "The front of this card",
                     required: true
                 }),
-                "back": new FlashcardField_1.FlashcardField({
+                "back": new FlashcardField({
                     name: "back",
-                    type: FlashcardFieldType_1.FlashcardFieldType.TEXT,
+                    type: FlashcardFieldType.TEXT,
                     description: "The back of this card",
                     required: true
                 }),
-                "extra": new FlashcardField_1.FlashcardField({
+                "extra": new FlashcardField({
                     name: "extra",
-                    type: FlashcardFieldType_1.FlashcardFieldType.TEXT,
+                    type: FlashcardFieldType.TEXT,
                     description: "Extra data shown after the card has been answered.",
                     required: false
                 }),
-                "source": new FlashcardField_1.FlashcardField({
+                "source": new FlashcardField({
                     name: "source",
-                    type: FlashcardFieldType_1.FlashcardFieldType.TEXT,
+                    type: FlashcardFieldType.TEXT,
                     description: "The source of this card. Name of the webpage, book, whitepaper, etc.",
                     required: false
                 }),
-                "link": new FlashcardField_1.FlashcardField({
+                "link": new FlashcardField({
                     name: "link",
-                    type: FlashcardFieldType_1.FlashcardFieldType.URL,
+                    type: FlashcardFieldType.URL,
                     description: "A link for more information regarding this flashcard. Usually the link to the source.",
                     required: false
                 }),
-                "image": new FlashcardField_1.FlashcardField({
+                "image": new FlashcardField({
                     name: "image",
-                    type: FlashcardFieldType_1.FlashcardFieldType.IMAGE_URL,
+                    type: FlashcardFieldType.IMAGE_URL,
                     description: "A link to an image for this flashcard.",
                     required: false
                 })
             }
         }));
-        flashcardRegistry.register(new FlashcardArchetype_1.FlashcardArchetype({
+
+        flashcardRegistry.register(new FlashcardArchetype({
             id: "e3d25ed4-cafd-4350-84e8-123a4258e576",
             name: "Front and Back and Reverse",
             description: "Standard front and back flashcard (plus reverse)",
             fields: {
-                "front": new FlashcardField_1.FlashcardField({
+                "front": new FlashcardField({
                     name: "front",
-                    type: FlashcardFieldType_1.FlashcardFieldType.TEXT,
+                    type: FlashcardFieldType.TEXT,
                     description: "The front of this card",
                     required: true
                 }),
-                "back": new FlashcardField_1.FlashcardField({
+                "back": new FlashcardField({
                     name: "back",
-                    type: FlashcardFieldType_1.FlashcardFieldType.TEXT,
+                    type: FlashcardFieldType.TEXT,
                     description: "The back of this card",
                     required: true
                 }),
-                "extra": new FlashcardField_1.FlashcardField({
+                "extra": new FlashcardField({
                     name: "extra",
-                    type: FlashcardFieldType_1.FlashcardFieldType.TEXT,
+                    type: FlashcardFieldType.TEXT,
                     description: "Extra data shown after the card has been answered.",
                     required: false
                 }),
-                "source": new FlashcardField_1.FlashcardField({
+                "source": new FlashcardField({
                     name: "source",
-                    type: FlashcardFieldType_1.FlashcardFieldType.TEXT,
+                    type: FlashcardFieldType.TEXT,
                     description: "The source of this card. Name of the webpage, book, whitepaper, etc.",
                     required: false
                 }),
-                "link": new FlashcardField_1.FlashcardField({
+                "link": new FlashcardField({
                     name: "link",
-                    type: FlashcardFieldType_1.FlashcardFieldType.URL,
+                    type: FlashcardFieldType.URL,
                     description: "A link for more information regarding this flashcard. Usually the link to the source.",
                     required: false
                 }),
-                "image": new FlashcardField_1.FlashcardField({
+                "image": new FlashcardField({
                     name: "image",
-                    type: FlashcardFieldType_1.FlashcardFieldType.IMAGE_URL,
+                    type: FlashcardFieldType.IMAGE_URL,
                     description: "A link to an image for this flashcard.",
                     required: false
                 })
             }
         }));
-        flashcardRegistry.register(new FlashcardArchetype_1.FlashcardArchetype({
+
+        flashcardRegistry.register(new FlashcardArchetype({
             id: "76152976-d7ae-4348-9571-d65e48050c3f",
             name: "clozure",
             description: "Clozure flashcard with cloze text.",
             fields: {
-                "text": new FlashcardField_1.FlashcardField({
+                "text": new FlashcardField({
                     name: "front",
-                    type: FlashcardFieldType_1.FlashcardFieldType.TEXT,
+                    type: FlashcardFieldType.TEXT,
                     description: "The text of this card.",
                     required: true
                 }),
-                "extra": new FlashcardField_1.FlashcardField({
+                "extra": new FlashcardField({
                     name: "extra",
-                    type: FlashcardFieldType_1.FlashcardFieldType.TEXT,
+                    type: FlashcardFieldType.TEXT,
                     description: "Extra data shown after the card has been answered.",
                     required: false
                 }),
-                "source": new FlashcardField_1.FlashcardField({
+                "source": new FlashcardField({
                     name: "source",
-                    type: FlashcardFieldType_1.FlashcardFieldType.TEXT,
+                    type: FlashcardFieldType.TEXT,
                     description: "The source of this card. Name of the webpage, book, whitepaper, etc.",
                     required: false
                 }),
-                "link": new FlashcardField_1.FlashcardField({
+                "link": new FlashcardField({
                     name: "link",
-                    type: FlashcardFieldType_1.FlashcardFieldType.URL,
+                    type: FlashcardFieldType.URL,
                     description: "A link for more information regarding this flashcard. Usually the link to the source.",
                     required: false
                 }),
-                "image": new FlashcardField_1.FlashcardField({
+                "image": new FlashcardField({
                     name: "image",
-                    type: FlashcardFieldType_1.FlashcardFieldType.IMAGE_URL,
+                    type: FlashcardFieldType.IMAGE_URL,
                     description: "A link to an image for this flashcard.",
                     required: false
                 })
             }
+
         }));
+
         return flashcardRegistry;
+
     }
-}
-exports.FlashcardRegistry = FlashcardRegistry;
-;
-//# sourceMappingURL=FlashcardRegistry.js.map
+
+};

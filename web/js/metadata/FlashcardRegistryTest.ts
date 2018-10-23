@@ -1,13 +1,18 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const FlashcardRegistry_1 = require("./FlashcardRegistry");
-const Assertions_1 = require("../test/Assertions");
-const TestingTime_1 = require("../test/TestingTime");
-TestingTime_1.TestingTime.freeze();
-describe('FlashcardRegistry', function () {
-    describe('createDefault', function () {
+import {assert} from 'chai';
+import {FlashcardRegistry} from './FlashcardRegistry';
+import {assertJSON} from '../test/Assertions';
+import {TestingTime} from '../test/TestingTime';
+
+TestingTime.freeze();
+
+describe('FlashcardRegistry', function() {
+
+    describe('createDefault', function() {
+
         it("basic", function () {
-            let flashcardRegistry = FlashcardRegistry_1.FlashcardRegistry.createDefault();
+
+            let flashcardRegistry = FlashcardRegistry.createDefault()
+
             let expected = [
                 {
                     "id": "9d146db1-7c31-4bcf-866b-7b485c4e50ea",
@@ -150,8 +155,11 @@ describe('FlashcardRegistry', function () {
                     }
                 }
             ];
-            Assertions_1.assertJSON(flashcardRegistry.values(), expected);
+
+            assertJSON(flashcardRegistry.values(), expected)
+
         });
+
     });
+
 });
-//# sourceMappingURL=FlashcardRegistryTest.js.map
