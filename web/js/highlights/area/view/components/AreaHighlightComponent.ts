@@ -1,47 +1,36 @@
-const {DocFormatFactory} = require("../../../../docformat/DocFormatFactory");
-const {Component} = require("../../../../components/Component");
-const {forDict} = require("../../../../util/Functions");
-const {Rects} = require("../../../../Rects");
-const {Dimensions} = require("../../../../util/Dimensions");
-const {AreaHighlight} = require("../../../../metadata/AreaHighlight");
-const {AreaHighlights} = require("../../../../metadata/AreaHighlights");
-const {AnnotationRect} = require("../../../../metadata/AnnotationRect");
-const {AnnotationRects} = require("../../../../metadata/AnnotationRects");
-const {AreaHighlightRect} = require("../../../../metadata/AreaHighlightRect");
-const {AreaHighlightRects} = require("../../../../metadata/AreaHighlightRects");
-const {BoxController} = require("../../../../boxes/controller/BoxController");
-const {BoxOptions} = require("../../../../boxes/controller/BoxOptions");
+import {Logger} from "../../../../logger/Logger";
 
-const log = require("../../../../logger/Logger").Logger.create();
+import {DocFormatFactory} from "../../../../docformat/DocFormatFactory";
+import {Component} from "../../../../components/Component";
+import {forDict} from "../../../../util/Functions";
+import {Rects} from "../../../../Rects";
+import {Dimensions} from "../../../../util/Dimensions";
+import {AreaHighlight} from "../../../../metadata/AreaHighlight";
+import {AreaHighlights} from "../../../../metadata/AreaHighlights";
+import {AnnotationRect} from "../../../../metadata/AnnotationRect";
+import {AnnotationRects} from "../../../../metadata/AnnotationRects";
+import {AreaHighlightRect} from "../../../../metadata/AreaHighlightRect";
+import {AreaHighlightRects} from "../../../../metadata/AreaHighlightRects";
+import {BoxController} from "../../../../boxes/controller/BoxController";
+import {BoxOptions} from "../../../../boxes/controller/BoxOptions";
+import {DocFormat} from "../../../../docformat/DocFormat";
+import {AnnotationEvent} from '../../../../annotations/components/AnnotationEvent';
+import {BoxMoveEvent} from '../../../../boxes/controller/BoxMoveEvent';
 
-class AreaHighlightComponent extends Component {
+const log = Logger.create()
+
+export class AreaHighlightComponent extends Component {
+
+    private readonly docFormat: DocFormat;
+
+    private annotationEvent?: AnnotationEvent;
+    private areaHighlight?: AreaHighlight;
+    private boxController?: BoxController;
 
     constructor() {
         super();
 
-        /**
-         *
-         * @type {DocFormat}
-         */
         this.docFormat = DocFormatFactory.getInstance();
-
-        /**
-         *
-         * @type {AnnotationEvent}
-         */
-        this.annotationEvent = undefined;
-
-        /**
-         *
-         * @type {AreaHighlight}
-         */
-        this.areaHighlight = undefined;
-
-        /**
-         *
-         * @type {BoxController}
-         */
-        this.boxController = undefined;
 
     }
 
@@ -49,10 +38,10 @@ class AreaHighlightComponent extends Component {
      * @Override
      * @param annotationEvent
      */
-    init(annotationEvent) {
+    init(annotationEvent: AnnotationEvent) {
 
-        // TODO: we should a specific event class for this data which is captured
-        // within a higher level annotationEvent.
+        // TODO: we should a specific event class for this data which is
+        // captured within a higher level annotationEvent.
         this.annotationEvent = annotationEvent;
         this.areaHighlight = annotationEvent.value;
 
@@ -62,13 +51,13 @@ class AreaHighlightComponent extends Component {
 
     /**
      *
-     * @param boxMoveEvent {BoxMoveEvent}
      */
-    onBoxMoved(boxMoveEvent) {
+    onBoxMoved(boxMoveEvent: BoxMoveEvent) {
 
         // TODO: actually I think this belongs in the controller... not the view
 
-        // TODO: refactor / this code is shared with the AbstractPagemarkComponent
+        // TODO: refactor / this code is shared with the
+        // AbstractPagemarkComponent
 
         console.log("Box moved to: ", boxMoveEvent);
 
@@ -82,15 +71,18 @@ class AreaHighlightComponent extends Component {
 
         if (boxMoveEvent.state === "completed") {
 
-            // TODO: this isn't handled properly because we create a NEW rect with the existing values...
+            const annotationEvent = this.annotationEvent!;
+
+            // TODO: this isn't handled properly because we create a NEW rect
+            // with the existing values...
 
             this.areaHighlight = new AreaHighlight(this.areaHighlight);
-            this.areaHighlight.rects["0"] = areaHighlightRect;
+            this.areaHighlight.rects["0"] = <any> areaHighlightRect;
 
             log.debug("New areaHighlight: ", JSON.stringify(this.areaHighlight, null, "  "));
 
-            delete this.annotationEvent.pageMeta.areaHighlights[this.areaHighlight.id];
-            this.annotationEvent.pageMeta.areaHighlights[this.areaHighlight.id] = this.areaHighlight;
+            delete annotationEvent.pageMeta.areaHighlights[this.areaHighlight.id];
+            annotationEvent.pageMeta.areaHighlights[this.areaHighlight.id] = this.areaHighlight;
 
         } else {
 
@@ -105,14 +97,18 @@ class AreaHighlightComponent extends Component {
 
         this.destroy();
 
+        const annotationEvent = this.annotationEvent!;
+        const areaHighlight = this.areaHighlight!;
+        const boxController = this.boxController!;
+
         log.debug("render()");
 
-        let docMeta = this.annotationEvent.docMeta;
-        let pageMeta = this.annotationEvent.pageMeta;
+        let docMeta = annotationEvent.docMeta;
+        let pageMeta = annotationEvent.pageMeta;
         let docInfo = docMeta.docInfo;
 
         let pageElement = this.docFormat.getPageElementFromPageNum(pageMeta.pageInfo.num);
-        let dimensionsElement = pageElement.querySelector(".canvasWrapper, .iframeWrapper");
+        let dimensionsElement = pageElement.querySelector(".canvasWrapper, .iframeWrapper")!;
 
         // the container must ALWAYS be the pageElement because if we use any
         // other container PDF.js breaks.
@@ -123,7 +119,7 @@ class AreaHighlightComponent extends Component {
             height: dimensionsElement.clientHeight
         });
 
-        forDict(this.areaHighlight.rects, (key, rect) => {
+        forDict(areaHighlight.rects, (key, rect) => {
 
             let areaHighlightRect = AreaHighlightRects.createFromRect(rect);
 
@@ -145,7 +141,7 @@ class AreaHighlightComponent extends Component {
 
                 log.debug("Creating box controller for highlightElement: ", highlightElement);
 
-                this.boxController.register(new BoxOptions({
+                boxController.register(new BoxOptions({
                     target: highlightElement,
                     restrictionElement: dimensionsElement,
                     intersectedElementsSelector: ".area-highlight"
@@ -157,28 +153,27 @@ class AreaHighlightComponent extends Component {
 
             highlightElement.setAttribute("data-type", "area-highlight");
             highlightElement.setAttribute("data-doc-fingerprint", docInfo.fingerprint);
-            highlightElement.setAttribute("data-area-highlight-id", this.areaHighlight.id);
-            highlightElement.setAttribute("data-annotation-id", this.areaHighlight.id);
+            highlightElement.setAttribute("data-area-highlight-id", areaHighlight.id);
+            highlightElement.setAttribute("data-annotation-id", areaHighlight.id);
             highlightElement.setAttribute("data-page-num", `${pageMeta.pageInfo.num}`);
 
             // annotation descriptor metadata.
             highlightElement.setAttribute("data-annotation-type", "area-highlight");
-            highlightElement.setAttribute("data-annotation-id", this.areaHighlight.id);
+            highlightElement.setAttribute("data-annotation-id", areaHighlight.id);
             highlightElement.setAttribute("data-annotation-page-num", `${pageMeta.pageInfo.num}`);
             highlightElement.setAttribute("data-annotation-doc-fingerprint", docInfo.fingerprint);
 
-            highlightElement.className = `area-highlight annotation area-highlight-${this.areaHighlight.id}`;
+            highlightElement.className = `area-highlight annotation area-highlight-${areaHighlight.id}`;
 
             highlightElement.style.position = "absolute";
             highlightElement.style.backgroundColor = `yellow`;
             highlightElement.style.opacity = `0.5`;
 
             // if(this.docFormat.name === "pdf") {
-            //     // this is only needed for PDF and we might be able to use a transform
-            //     // in the future which would be easier.
-            //     let currentScale = this.docFormat.currentScale();
-            //     overlayRect = Rects.scale(overlayRect, currentScale);
-            // }
+            //     // this is only needed for PDF and we might be able to use a
+            // transform // in the future which would be easier. let
+            // currentScale = this.docFormat.currentScale(); overlayRect =
+            // Rects.scale(overlayRect, currentScale); }
 
             highlightElement.style.left = `${overlayRect.left}px`;
             highlightElement.style.top = `${overlayRect.top}px`;
@@ -198,7 +193,7 @@ class AreaHighlightComponent extends Component {
      * Create a unique DOM ID for this pagemark.
      */
     createID() {
-        return `area-highlight-${this.areaHighlight.id}`;
+        return `area-highlight-${this.areaHighlight!.id}`;
     }
 
     /**
@@ -206,17 +201,15 @@ class AreaHighlightComponent extends Component {
      */
     destroy() {
 
-        let selector = `.area-highlight-${this.areaHighlight.id}`;
+        let selector = `.area-highlight-${this.areaHighlight!.id}`;
         let elements = document.querySelectorAll(selector);
 
         log.debug(`Found N elements for selector ${selector}: ` + elements.length);
 
         elements.forEach(highlightElement => {
-            highlightElement.parentElement.removeChild(highlightElement);
+            highlightElement.parentElement!.removeChild(highlightElement);
         });
 
     }
 
 }
-
-module.exports.AreaHighlightComponent = AreaHighlightComponent;

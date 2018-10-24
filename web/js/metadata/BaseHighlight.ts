@@ -9,7 +9,7 @@ export class BaseHighlight extends ExtendedAnnotation {
     /**
      * The rectangles where we need to place content for this highlights.
      */
-    public rects: {[key: number]: Rect} = {};
+    public rects: {[key: string]: Rect} = {};
 
     /**
      * Optional image for this highlight taken when the highlight was
