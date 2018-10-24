@@ -10,6 +10,9 @@ import {Rect} from '../../js/Rect';
 import {TextRect} from '../../js/metadata/TextRect';
 import {TextHighlightRecords} from '../../js/metadata/TextHighlightRecords';
 import {AnnotationType} from '../../js/metadata/AnnotationType';
+import {CommentComponent} from '../../js/annotation_sidebar/child_annotations/CommentComponent';
+import {CommentComponentExample} from './CommentComponentExample';
+import {FlashcardComponentExample} from './FlashcardComponentExample';
 
 class App<P> extends React.Component<{}, IAppState> {
 
@@ -47,17 +50,17 @@ class App<P> extends React.Component<{}, IAppState> {
 
         const textHighlight = TextHighlightRecords.create(rects, textSelections, {TEXT: text});
 
-        //const ref = Refs.createFromAnnotationType(textHighlight.id, AnnotationType.TEXT_HIGHLIGHT);
+        //const ref = Refs.createFromAnnotationType(textHighlight.id,
+        // AnnotationType.TEXT_HIGHLIGHT);
 
         docMeta.pageMetas[1].textHighlights[textHighlight.id] = textHighlight.value;
 
         // let flashcard = Flashcards.createFrontBack(front, back, ref);
         //
-        // // TODO: an idiosyncracie of the proxies system is that it mutates the
-        // // object so if it's read only it won't work.  This is a bug with
-        // // Proxies so I need to also fix that bug there in the future.
+        // // TODO: an idiosyncracie of the proxies system is that it mutates
+        // the // object so if it's read only it won't work.  This is a bug
+        // with // Proxies so I need to also fix that bug there in the future.
         // flashcard = Object.assign({}, flashcard);
-        //
         // annotation.pageMeta.flashcards[flashcard.id] = flashcard;
 
 
@@ -93,6 +96,10 @@ class App<P> extends React.Component<{}, IAppState> {
                 <h2>Annotation Sidebar</h2>
 
                 <AnnotationSidebar docMeta={docMeta}/>
+
+                <CommentComponentExample/>
+
+                <FlashcardComponentExample/>
 
             </div>
 

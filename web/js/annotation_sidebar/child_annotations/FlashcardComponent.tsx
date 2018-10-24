@@ -21,44 +21,44 @@ export class FlashcardComponent extends React.Component<IProps, IState> {
 
         return (
 
-            <div className="flashcard card shadow-sm mb-3">
+            <div key={key}>
 
-                <div key={key} className="card-body p-1">
+                <div className="flashcard card shadow-sm mb-3">
 
-                    <div className="pb-1 pt-1">
+                    <div className="card-body p-1">
 
-                        <span dangerouslySetInnerHTML={{__html: flashcard.fields!.front}}>
+                        <div className="pb-1 pt-1">
 
-                        </span>
+                            <span dangerouslySetInnerHTML={{__html: flashcard.fields!.front}}>
 
-                    </div>
+                            </span>
 
-                    <hr/>
-
-                    <div className="pb-1 pt-1">
-
-                        <span dangerouslySetInnerHTML={{__html: flashcard.fields!.back}}>
-
-                        </span>
-
-                    </div>
-
-                    <div className="flexbar comment-bar border-top pt-1">
-
-                        <div className="text-muted">
-                            {/*TODO: make this into its own component... */}
-                            <Moment withTitle={true} titleFormat="D MMM YYYY hh:MM A" fromNow>
-                                {flashcard.created}
-                            </Moment>
                         </div>
 
-                        <div className="flexbar-right">
+                        <div className="pb-1 pt-1 border-top">
 
+                            <span dangerouslySetInnerHTML={{__html: flashcard.fields!.back}}>
+
+                            </span>
 
                         </div>
 
                     </div>
 
+                </div>
+
+                <div className="flexbar comment-bar border-top pt-1">
+
+                    <div className="text-muted">
+                        {/*TODO: make this into its own component... */}
+                        <Moment withTitle={true} titleFormat="D MMM YYYY hh:MM A" fromNow>
+                            {flashcard.created}
+                        </Moment>
+                    </div>
+
+                    <div className="flexbar-right">
+
+                    </div>
 
                 </div>
 
