@@ -44,18 +44,21 @@ export class AnnotationControlBar extends React.Component<IProps, IState> {
                     <div className="flexbar-right">
 
                         <a className="text-muted ml-2"
-                           href="#" onClick={() => this.toggleActiveInputComponent('flashcard')}>
-                            flashcard
-                        </a>
-
-                        <a className="text-muted ml-2"
+                           title="Create comment"
                            href="#" onClick={() => this.toggleActiveInputComponent('comment')}>
-                            comment
+                            <i className="fas fa-comment-alt"></i>
                         </a>
 
                         <a className="text-muted ml-2"
+                           title="Create flashcard"
+                           href="#" onClick={() => this.toggleActiveInputComponent('flashcard')}>
+                            <i className="fas fa-bolt"></i>
+                        </a>
+
+                        <a className="text-muted ml-2"
+                           title="Jump to annotation contet"
                            href="#" onClick={() => this.onContext(annotation)}>
-                            context
+                            <i className="fas fa-bullseye"></i>
                         </a>
 
                     </div>

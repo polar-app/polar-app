@@ -93,8 +93,12 @@
     user-select: none;
 }
 
+.annotation-sidebar .annotation-buttons .fas {
+    font-size: 14px;
+}
+
 .annotation-sidebar * button {
-    font-size: 12px;
+    font-size: 14px;
 }
 
 .annotation-sidebar .note-status-output {
