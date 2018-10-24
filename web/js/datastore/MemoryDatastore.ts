@@ -88,6 +88,10 @@ export class MemoryDatastore implements Datastore {
         throw new Error("Not implemented");
     }
 
+    public deleteFile(backend: Backend, name: string): Promise<void> {
+        throw new Error("Not implemented");
+    }
+
     /**
      */
     public async getDocMeta(fingerprint: string): Promise<string | null> {

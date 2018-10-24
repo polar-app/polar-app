@@ -46,11 +46,15 @@ export class DelegatedDatastore implements Datastore {
     }
 
     public containsFile(backend: Backend, name: string): Promise<boolean> {
-        return this.containsFile(backend, name);
+        return this.delegate.containsFile(backend, name);
     }
 
     public getFile(backend: Backend, name: string): Promise<Optional<DatastoreFile>> {
-        return this.getFile(backend, name);
+        return this.delegate.getFile(backend, name);
+    }
+
+    public deleteFile(backend: Backend, name: string): Promise<void> {
+        return this.delegate.deleteFile(backend, name);
     }
 
     public getDocMeta(fingerprint: string): Promise<string | null> {

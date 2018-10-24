@@ -140,7 +140,7 @@ export class DiskDatastore implements Datastore {
 
         await Files.writeFileAsync(fileReference.metaPath, JSON.stringify(meta, null, '  '));
 
-        return this.createDatastoreFile(name, fileReference);
+        return this.createDatastoreFile(backend, name, fileReference);
 
     }
 
@@ -151,7 +151,7 @@ export class DiskDatastore implements Datastore {
         const fileReference = this.createFileReference(backend, name);
 
         if (await Files.existsAsync(fileReference.path)) {
-            const datastoreFile = await this.createDatastoreFile(name, fileReference);
+            const datastoreFile = await this.createDatastoreFile(backend, name, fileReference);
             return Optional.of(datastoreFile);
         } else {
             return Optional.empty();
@@ -266,7 +266,7 @@ export class DiskDatastore implements Datastore {
 
     }
 
-    private async createDatastoreFile(name: string, fileReference: FileReference): Promise<DatastoreFile> {
+    private async createDatastoreFile(backend: Backend, name: string, fileReference: FileReference): Promise<DatastoreFile> {
 
         const url = new URL(`file:///${fileReference.path}`);
 
@@ -274,6 +274,7 @@ export class DiskDatastore implements Datastore {
         const meta = JSON.parse(buff.toString("utf-8"));
 
         return {
+            backend,
             name,
             url: url.href,
             meta
