@@ -12,6 +12,7 @@ export class CommentComponent extends React.Component<IProps, IState> {
     constructor(props: IProps, context: any) {
         super(props, context);
 
+        this.onDelete = this.onDelete.bind(this);
         this.state = {};
 
     }
