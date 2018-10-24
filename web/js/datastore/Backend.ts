@@ -5,7 +5,7 @@
  */
 export enum Backend {
 
-    VIDEO,
-    IMAGE
+    VIDEO = 'video',
+    IMAGE = 'image'
 
 }

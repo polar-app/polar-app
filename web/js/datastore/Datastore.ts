@@ -50,6 +50,8 @@ export interface Datastore {
 
     containsFile(backend: Backend, name: string): Promise<boolean>;
 
+    deleteFile(backend: Backend, name: string): Promise<void>;
+
     /**
      * Get the data for the DocMeta object we currently in the datastore for
      * this given fingerprint or null if it does not exist.

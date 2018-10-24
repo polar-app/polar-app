@@ -167,6 +167,12 @@ export class DiskDatastore implements Datastore {
         return Files.existsAsync(path);
     }
 
+    public deleteFile(backend: Backend, name: string): Promise<void> {
+        DiskDatastore.assertFileName(name);
+        const path = FilePaths.join(this.filesDir, backend.toString().toLowerCase(), name);
+        return Files.removeAsync(path);
+    }
+
     /**
      * Write the datastore to disk.
      */

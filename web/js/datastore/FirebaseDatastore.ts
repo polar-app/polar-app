@@ -39,6 +39,8 @@ export class FirebaseDatastore implements Datastore {
 
     private firestore?: firebase.firestore.Firestore;
 
+    private storage?: firebase.storage.Storage;
+
     private readonly local: Datastore;
 
     private readonly resolveablePromiseIndex = new ResolveablePromiseIndex<Mutation>();
@@ -57,6 +59,7 @@ export class FirebaseDatastore implements Datastore {
         // get the firebase app. Make sure we are initialized externally.
         this.app = firebase.app();
         this.firestore = Firestore.getInstance();
+        this.storage = firebase.storage();
 
         // setup the initial snapshot so that we query for the users existing data...
 
@@ -82,6 +85,9 @@ export class FirebaseDatastore implements Datastore {
      *
      */
     public async delete(docMetaFileRef: DocMetaFileRef): Promise<Readonly<DeleteResult>> {
+
+        // TODO: these could get out of sync and we have to force them to
+        // execute together.  The remote delete followed by the local ...
 
         const uid = this.getUserID();
         const id = this.computeDocMetaID(uid, docMetaFileRef.fingerprint);
@@ -112,27 +118,49 @@ export class FirebaseDatastore implements Datastore {
         return this.local.getDocMeta(fingerprint);
     }
 
+    // TODO: the cloud storage operations are possibly unsafe and could
+    // leave local files in place or too many remote files but this is good
+    // for a first MVP pass.
 
     public async addFile(backend: Backend, name: string, data: Buffer | string, meta: FileMeta = {}): Promise<DatastoreFile> {
 
-        // FIXME: use google cloud storage for this but we aren't using this
-        // functionality yet.
+        const storage = this.storage!;
 
-        throw new Error("Not implemented");
+        const fileRef = storage.ref().child(`${backend}/${name}`);
+
+        let uploadTask: firebase.storage.UploadTask;
+
+        if (typeof data === 'string') {
+            uploadTask = fileRef.putString(data);
+        } else {
+            uploadTask = fileRef.put(Uint8Array.from(data));
+
+        }
+
+        await uploadTask;
+
+        return this.local.addFile(backend, name, data, meta);
+
+
     }
 
     public async getFile(backend: Backend, name: string): Promise<Optional<DatastoreFile>> {
-
-        // FIXME: use google cloud storage for this but we aren't using this
-        // functionality yet.
-        throw new Error("Not implemented");
+        return this.local.getFile(backend, name);
     }
 
     public containsFile(backend: Backend, name: string): Promise<boolean> {
+        return this.local.containsFile(backend, name);
+    }
 
-        // FIXME: use google cloud storage for this but we aren't using this
-        // functionality yet.
-        throw new Error("Not implemented");
+    public async deleteFile(backend: Backend, name: string): Promise<void> {
+
+        const storage = this.storage!;
+
+        const fileRef = storage.ref().child(`${backend}/${name}`);
+
+        await fileRef.delete();
+
+        return this.local.deleteFile(backend, name);
     }
 
     /**
