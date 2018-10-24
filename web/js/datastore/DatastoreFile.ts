@@ -1,6 +1,9 @@
 import {FileMeta} from './Datastore';
+import {Backend} from './Backend';
 
 export interface DatastoreFile {
+
+    readonly backend: Backend;
 
     readonly name: string;
 

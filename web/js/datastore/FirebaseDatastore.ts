@@ -122,6 +122,9 @@ export class FirebaseDatastore implements Datastore {
     // leave local files in place or too many remote files but this is good
     // for a first MVP pass.
 
+    // TODO: if the file is ONLY in firestore it won't be sync'd on a remote
+    // computer so we should try to pull it down just in time when requested.
+
     public async addFile(backend: Backend, name: string, data: Buffer | string, meta: FileMeta = {}): Promise<DatastoreFile> {
 
         const storage = this.storage!;
@@ -145,11 +148,37 @@ export class FirebaseDatastore implements Datastore {
     }
 
     public async getFile(backend: Backend, name: string): Promise<Optional<DatastoreFile>> {
-        return this.local.getFile(backend, name);
+
+        const localFile = await this.local.getFile(backend, name);
+
+        if (localFile.isPresent()) {
+            return localFile;
+        }
+
+        // TODO: it's probably in firestore, just not copied locally yet.
+        // shouldn't we pull it and write it locally then?
+
+        const storage = this.storage!;
+
+        const fileRef = storage.ref().child(`${backend}/${name}`);
+
+        const url: string = await fileRef.getDownloadURL()
+        const meta = await fileRef.getMetadata();
+
+        return Optional.of({backend, name, url, meta});
+
+
     }
 
-    public containsFile(backend: Backend, name: string): Promise<boolean> {
-        return this.local.containsFile(backend, name);
+    public async containsFile(backend: Backend, name: string): Promise<boolean> {
+        if ( await this.local.containsFile(backend, name)) {
+            return true;
+        }
+
+
+
+        throw new Error("Not implemented yet");
+
     }
 
     public async deleteFile(backend: Backend, name: string): Promise<void> {
