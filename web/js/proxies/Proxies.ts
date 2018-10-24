@@ -25,7 +25,7 @@ export class Proxies {
      * Deeply trace the given object and call back on the traceListener every time
      * we notice a mutation.  The trace listener receives the following arguments:
      */
-    public static create(target: any, traceListeners: any, opts: any) {
+    public static create<T>(target: T, traceListeners?: any, opts?: any): T {
 
         if(typeof target !== "object") {
             throw new Error("Only works on objects: " + typeof target);
@@ -43,7 +43,7 @@ export class Proxies {
 
         let objectPathEntries = ObjectPaths.recurse(target);
 
-        let root = null;
+        let root: any;
 
         objectPathEntries.forEach((objectPathEntry) => {
 

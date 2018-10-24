@@ -125,13 +125,13 @@ export class AnnotationControlBar extends React.Component<IProps, IState> {
 
         const {annotation} = this.props;
 
-        const ref = Refs.createFromAnnotationType(annotation.id,
-                                                  annotation.annotationType);
+        const ref = Refs.createFromAnnotationType(annotation.id, annotation.annotationType);
 
         let flashcard = Flashcards.createFrontBack(front, back, ref);
 
-        // an idiosyncracie of the flashcard system is that it mutates the object
-        // so if it's read only it won't work.
+        // TODO: an idiosyncracy of the proxies system is that it mutates the
+        // object so if it's read only it won't work.  This is a bug with
+        // Proxies so I need to also fix that bug there in the future.
         flashcard = Object.assign({}, flashcard);
 
         annotation.pageMeta.flashcards[flashcard.id] = flashcard;

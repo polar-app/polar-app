@@ -18,7 +18,10 @@ export class TextHighlightRecords {
      * @return an object with an "id" for a unique hash and a "value" of the
      * TextHighlight to use.
      */
-    public static create(rects: IRect[], textSelections: TextRect[], text: Text, color: HighlightColor = 'yellow'): TextHighlightRecord {
+    public static create(rects: IRect[],
+                         textSelections: TextRect[],
+                         text: Text,
+                         color: HighlightColor = 'yellow'): TextHighlightRecord {
 
         const id = Hashcodes.createID(rects);
 

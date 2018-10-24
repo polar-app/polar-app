@@ -19,7 +19,7 @@ class Proxies {
         }
         traceListeners = TraceListeners_1.TraceListeners.asArray(traceListeners);
         let objectPathEntries = ObjectPaths_1.ObjectPaths.recurse(target);
-        let root = null;
+        let root;
         objectPathEntries.forEach((objectPathEntry) => {
             let path = objectPathEntry.path;
             if (opts.pathPrefix && opts.pathPrefix !== "") {

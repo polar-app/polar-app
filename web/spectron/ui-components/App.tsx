@@ -1,23 +1,15 @@
 import * as React from 'react';
-import {
-    Button,
-    Dropdown,
-    DropdownItem,
-    DropdownToggle,
-    Input,
-    InputGroup,
-    InputGroupAddon,
-    InputGroupButtonDropdown,
-    ListGroup,
-    ListGroupItem
-} from 'reactstrap';
-import DropdownMenu from 'reactstrap/lib/DropdownMenu';
-import Navbar from 'reactstrap/lib/Navbar';
-import Moment from 'react-moment';
 import {ListOptionType, ListSelector} from '../../js/ui/list_selector/ListSelector';
 import {TableDropdown} from '../../../apps/repository/js/TableDropdown';
 import {AnnotationSidebar} from '../../js/annotation_sidebar/AnnotationSidebar';
 import {MockDocMetas} from '../../js/metadata/DocMetas';
+import {Proxies} from '../../js/proxies/Proxies';
+import {Refs} from '../../js/metadata/Refs';
+import {Flashcards} from '../../js/metadata/Flashcards';
+import {Rect} from '../../js/Rect';
+import {TextRect} from '../../js/metadata/TextRect';
+import {TextHighlightRecords} from '../../js/metadata/TextHighlightRecords';
+import {AnnotationType} from '../../js/metadata/AnnotationType';
 
 class App<P> extends React.Component<{}, IAppState> {
 
@@ -47,7 +39,30 @@ class App<P> extends React.Component<{}, IAppState> {
             }
         ];
 
-        const docMeta = MockDocMetas.createWithinInitialPagemarks('0x001', 4);
+        const docMeta = Proxies.create(MockDocMetas.createWithinInitialPagemarks('0x001', 4));
+
+        let rects: Rect[] = [ new Rect({top: 100, left: 100, right: 200, bottom: 200, width: 100, height: 100}) ];
+        let textSelections: TextRect[] = [new TextRect({text: "hello world"})];
+        let text = "hello world";
+
+        const textHighlight = TextHighlightRecords.create(rects, textSelections, {TEXT: text});
+
+        //const ref = Refs.createFromAnnotationType(textHighlight.id, AnnotationType.TEXT_HIGHLIGHT);
+
+        docMeta.pageMetas[1].textHighlights[textHighlight.id] = textHighlight.value;
+
+        // let flashcard = Flashcards.createFrontBack(front, back, ref);
+        //
+        // // TODO: an idiosyncracie of the proxies system is that it mutates the
+        // // object so if it's read only it won't work.  This is a bug with
+        // // Proxies so I need to also fix that bug there in the future.
+        // flashcard = Object.assign({}, flashcard);
+        //
+        // annotation.pageMeta.flashcards[flashcard.id] = flashcard;
+
+
+        // TODO: we have to create some flashcards and comments for this object
+        // so that the annotation sidear renders.
 
         return (
 
