@@ -9,6 +9,30 @@ import {Refs} from '../metadata/Refs';
 import {AnnotationFlashcardBox} from './AnnotationFlashcardBox';
 import {HTMLString} from '../util/HTMLString';
 import {Flashcards} from '../metadata/Flashcards';
+import {IStyleMap} from '../react/IStyleMap';
+import {AnnotationDropdown} from './AnnotationDropdown';
+import {Dropdown, DropdownItem, DropdownMenu, DropdownToggle} from 'reactstrap';
+
+
+const Styles: IStyleMap = {
+
+    button: {
+        paddingTop: '4px',
+        color: 'red !important',
+        fontSize: '15px'
+
+        // minWidth: '350px',
+        // width: '350px'
+    },
+
+    icon: {
+        fontSize: '16px',
+        color: '#a4a4a4'
+
+        // minWidth: '350px',
+        // width: '350px'
+    }
+};
 
 /**
  */
@@ -32,40 +56,59 @@ export class AnnotationControlBar extends React.Component<IProps, IState> {
 
             <div className="annotation-control-bar">
 
+
                 <div className="flexbar annotation-buttons border-top pt-1 pb-2">
 
-                    <div className="text-muted">
+                    <div className="text-muted annotation-context-link">
                         {/*TODO: make this into its own component... */}
-                        <Moment withTitle={true} titleFormat="D MMM YYYY hh:MM A" fromNow>
-                            {annotation.created}
-                        </Moment>
+                        <a href="#" onClick={() => this.onJumpToContext(annotation)}>
+                            <Moment withTitle={true} titleFormat="D MMM YYYY hh:MM A" fromNow>
+                                {annotation.created}
+                            </Moment>
+                        </a>
                     </div>
+
 
                     <div className="flexbar-right">
 
                         <a className="text-muted ml-2"
                            title="Create comment"
+                           style={Styles.button}
                            href="#" onClick={() => this.toggleActiveInputComponent('comment')}>
-                            <i className="fas fa-comment-alt"></i>
+                            <i style={Styles.icon}
+                               className="fas fa-comment-alt"></i>
                         </a>
 
                         <a className="text-muted ml-2"
                            title="Create flashcard"
+                           style={Styles.button}
                            href="#" onClick={() => this.toggleActiveInputComponent('flashcard')}>
-                            <i className="fas fa-bolt"></i>
+                            <i style={Styles.icon}
+                               className="fas fa-bolt"></i>
                         </a>
 
-                        <a className="text-muted ml-2"
-                           title="Jump to annotation contet"
-                           href="#" onClick={() => this.onContext(annotation)}>
-                            <i className="fas fa-bullseye"></i>
-                        </a>
+                        {/*<a className="text-muted ml-2"*/}
+                           {/*title="Jump to annotation contet"*/}
+                           {/*style={Styles.button}*/}
+                           {/*href="#" */}
+                           {/*onClick={() => this.onContext(annotation)}>*/}
+                            {/*<i style={Styles.icon}*/}
+                               {/*className="fas fa-bullseye"></i>*/}
+                        {/*</a>*/}
+
+                        <AnnotationDropdown id={'annotation-dropdown-' + annotation.id}
+                                            annotation={annotation}
+                                            onDelete={() => {}}
+                                            onCreateComment={(annotation) => this.onJumpToContext(annotation)}
+                                            onCreateFlashcard={() => {}}
+                                            onJumpToContext={() => {}}/>
+
 
                     </div>
 
                 </div>
 
-                <Collapse isOpen={this.state.activeInputComponent === 'comment'}>
+                <Collapse delay={{show: 0, hide: 0}} isOpen={this.state.activeInputComponent === 'comment'}>
 
                     <AnnotationCommentBox annotation={annotation}
                                           onCommentCreated={(html) => this.onCommentCreated(html)}/>
@@ -84,7 +127,7 @@ export class AnnotationControlBar extends React.Component<IProps, IState> {
         );
     }
 
-    private onContext(annotation: DocAnnotation) {
+    private onJumpToContext(annotation: DocAnnotation) {
 
         AnnotationSidebars.scrollToAnnotation(annotation.id, annotation.pageNum);
 

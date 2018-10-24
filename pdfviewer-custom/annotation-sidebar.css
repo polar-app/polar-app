@@ -132,8 +132,7 @@
     width: 100%;
 }
 
-.flexbar,
-.flexbar div {
+.flexbar, .flexbar > div {
     display: flex;
 }
 
