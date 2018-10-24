@@ -12,6 +12,7 @@ import {Flashcards} from '../metadata/Flashcards';
 import {IStyleMap} from '../react/IStyleMap';
 import {AnnotationDropdown} from './AnnotationDropdown';
 import {AnnotationType} from '../metadata/AnnotationType';
+import {UncontrolledCollapse} from 'reactstrap';
 
 
 const Styles: IStyleMap = {
@@ -108,14 +109,14 @@ export class AnnotationControlBar extends React.Component<IProps, IState> {
 
                 </div>
 
-                <Collapse delay={{show: 0, hide: 0}} isOpen={this.state.activeInputComponent === 'comment'}>
+                <Collapse timeout={0} isOpen={this.state.activeInputComponent === 'comment'}>
 
                     <AnnotationCommentBox annotation={annotation}
                                           onCommentCreated={(html) => this.onCommentCreated(html)}/>
 
                 </Collapse>
 
-                <Collapse isOpen={this.state.activeInputComponent === 'flashcard'}>
+                <Collapse timeout={0} isOpen={this.state.activeInputComponent === 'flashcard'}>
 
                     <AnnotationFlashcardBox annotation={annotation}
                                             onFlashcardCreated={(front, back) => this.onFlashcardCreated(front, back)}/>
