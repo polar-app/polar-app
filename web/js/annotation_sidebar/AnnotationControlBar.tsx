@@ -11,7 +11,7 @@ import {HTMLString} from '../util/HTMLString';
 import {Flashcards} from '../metadata/Flashcards';
 import {IStyleMap} from '../react/IStyleMap';
 import {AnnotationDropdown} from './AnnotationDropdown';
-import {Dropdown, DropdownItem, DropdownMenu, DropdownToggle} from 'reactstrap';
+import {AnnotationType} from '../metadata/AnnotationType';
 
 
 const Styles: IStyleMap = {
@@ -98,10 +98,10 @@ export class AnnotationControlBar extends React.Component<IProps, IState> {
 
                         <AnnotationDropdown id={'annotation-dropdown-' + annotation.id}
                                             annotation={annotation}
-                                            onDelete={() => {}}
-                                            onCreateComment={(annotation) => this.onJumpToContext(annotation)}
-                                            onCreateFlashcard={() => {}}
-                                            onJumpToContext={() => {}}/>
+                                            onDelete={() => this.onDelete(annotation)}
+                                            onCreateComment={(annotation) => this.toggleActiveInputComponent('comment')}
+                                            onCreateFlashcard={() => this.toggleActiveInputComponent('flashcard')}
+                                            onJumpToContext={() => this.onJumpToContext(annotation)}/>
 
 
                     </div>
@@ -127,10 +127,20 @@ export class AnnotationControlBar extends React.Component<IProps, IState> {
         );
     }
 
+    private onDelete(annotation: DocAnnotation) {
+
+        if (annotation.annotationType === AnnotationType.TEXT_HIGHLIGHT) {
+            delete annotation.pageMeta.textHighlights[annotation.id];
+        }
+
+        if (annotation.annotationType === AnnotationType.AREA_HIGHLIGHT) {
+            delete annotation.pageMeta.areaHighlights[annotation.id];
+        }
+
+    }
+
     private onJumpToContext(annotation: DocAnnotation) {
-
         AnnotationSidebars.scrollToAnnotation(annotation.id, annotation.pageNum);
-
     }
 
     private toggleActiveInputComponent(activeInputComponent: ActiveInputComponent) {
