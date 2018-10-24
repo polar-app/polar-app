@@ -1,6 +1,8 @@
 import * as React from 'react';
 import Moment from 'react-moment';
 import {DocAnnotation} from '../DocAnnotation';
+import {AnnotationDropdown} from '../AnnotationDropdown';
+import {CommentDropdown} from './CommentDropdown';
 
 /**
  * A generic wrapper that determines which sub-component to render.
@@ -44,6 +46,9 @@ export class CommentComponent extends React.Component<IProps, IState> {
 
                         <div className="flexbar-right">
 
+                            <CommentDropdown id={'comment-dropdown-' + comment.id}
+                                             comment={comment}
+                                             onDelete={(comment) => this.onDelete(comment)}/>
 
                         </div>
 
@@ -54,6 +59,11 @@ export class CommentComponent extends React.Component<IProps, IState> {
 
             </div>
         );
+
+    }
+
+    private onDelete(comment: DocAnnotation) {
+        delete comment.pageMeta.comments[comment.id];
     }
 
 }

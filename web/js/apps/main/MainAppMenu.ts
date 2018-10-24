@@ -187,7 +187,7 @@ export class MainAppMenu {
                 },
                 {
                     label: 'Capture Web Page',
-                    // accelerator: 'CmdOrCtrl+O',
+                    accelerator: 'CommandOrControl+Shift+W',
                     click: () => {
                         this.mainAppController.cmdCaptureWebPageWithBrowser()
                             .catch((err: Error) => log.error("Could not capture page: ", err));

@@ -1,6 +1,8 @@
 
 # 1.0.5 
 
+- Capture now has a key binding: CommandOrControl+Shift+W
+
 - Text highlights no longer being saved to JSON.. migrating them to the file 
   repo...
 

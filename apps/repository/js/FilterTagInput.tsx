@@ -54,7 +54,8 @@ export class FilterTagInput extends React.Component<FilterTagInputProps, FilterT
                          className="tag-input-popover">
 
                     <PopoverBody>
-
+                        {/*TODO: use onKeyDown here and if they hit enter twice */}
+                        {/*or control+enter go ahead and close the input.*/}
                         <Select
                             isMulti
                             isClearable

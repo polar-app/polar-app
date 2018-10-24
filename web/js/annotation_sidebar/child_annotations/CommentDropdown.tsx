@@ -1,10 +1,8 @@
 import * as React from 'react';
 import {Dropdown, DropdownItem, DropdownMenu, DropdownToggle, Tooltip} from 'reactstrap';
-import {ConfirmPopover} from '../../../web/js/ui/confirm/ConfirmPopover';
-import {TextInputPopover} from '../../../web/js/ui/text_input/TextInputPopover';
-import {Logger} from '../../../web/js/logger/Logger';
-import {IStyleMap} from '../../../web/js/react/IStyleMap';
-import {DocAnnotation} from './DocAnnotation';
+import {Logger} from '../../logger/Logger';
+import {IStyleMap} from '../../react/IStyleMap';
+import {DocAnnotation} from '../DocAnnotation';
 
 const log = Logger.create();
 
@@ -17,7 +15,7 @@ const Styles: IStyleMap = {
 
 };
 
-export class AnnotationDropdown extends React.Component<IProps, IState> {
+export class CommentDropdown extends React.Component<IProps, IState> {
 
     private open: boolean = false;
     private selected: SelectedOption = 'none';
@@ -28,10 +26,6 @@ export class AnnotationDropdown extends React.Component<IProps, IState> {
         this.toggle = this.toggle.bind(this);
         this.select = this.select.bind(this);
         this.onDelete = this.onDelete.bind(this);
-
-        this.onCreateComment = this.onCreateComment.bind(this);
-        this.onCreateFlashcard = this.onCreateComment.bind(this);
-        this.onJumpToContext = this.onJumpToContext.bind(this);
 
         this.state = {
             open: this.open,
@@ -57,19 +51,7 @@ export class AnnotationDropdown extends React.Component<IProps, IState> {
 
                     <DropdownMenu right>
 
-                        <DropdownItem onClick={() => this.onCreateComment()}>
-                            Create comment
-                        </DropdownItem>
-
-                        <DropdownItem onClick={() => this.onCreateFlashcard()}>
-                            Create flashcard
-                        </DropdownItem>
-
-                        <DropdownItem onClick={() => this.onJumpToContext()}>
-                            Jump to context
-                        </DropdownItem>
-
-                        <DropdownItem divider />
+                        {/*<DropdownItem divider />*/}
 
                         <DropdownItem onClick={() => this.onDelete()}>
                             Delete
@@ -86,24 +68,9 @@ export class AnnotationDropdown extends React.Component<IProps, IState> {
 
     }
 
-    private onCreateComment() {
-        this.select('none');
-        this.props.onCreateComment(this.props.annotation);
-    }
-
-    private onCreateFlashcard() {
-        this.select('none');
-        this.props.onCreateFlashcard(this.props.annotation);
-    }
-
-    private onJumpToContext() {
-        this.select('none');
-        this.props.onJumpToContext(this.props.annotation);
-    }
-
     private onDelete() {
         this.select('none');
-        this.props.onDelete(this.props.annotation);
+        this.props.onDelete(this.props.comment);
     }
 
 
@@ -127,9 +94,9 @@ export class AnnotationDropdown extends React.Component<IProps, IState> {
     private refresh() {
 
         this.setState({
-          open: this.open,
-          selected: this.selected
-      });
+            open: this.open,
+            selected: this.selected
+        });
 
     }
 
@@ -137,11 +104,8 @@ export class AnnotationDropdown extends React.Component<IProps, IState> {
 
 interface IProps {
     id: string;
-    annotation: DocAnnotation;
-    onDelete: (annotation: DocAnnotation) => void;
-    onJumpToContext: (annotation: DocAnnotation) => void;
-    onCreateComment: (annotation: DocAnnotation) => void;
-    onCreateFlashcard: (annotation: DocAnnotation) => void;
+    comment: DocAnnotation;
+    onDelete: (comment: DocAnnotation) => void;
 }
 
 interface IState {

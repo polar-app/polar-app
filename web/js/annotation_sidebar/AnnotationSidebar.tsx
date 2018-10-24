@@ -59,7 +59,7 @@ export class AnnotationSidebar extends React.Component<AnnotationSidebarProps, A
 
         new CommentModel().registerListener(this.props.docMeta, annotationEvent => {
 
-            const comment: Comment = annotationEvent.value;
+            const comment: Comment = annotationEvent.value || annotationEvent.previousValue;
             const childDocAnnotation = DocAnnotations.createFromComment(comment, annotationEvent.pageMeta);
 
             this.handleChildAnnotationEvent(annotationEvent.id,
@@ -70,7 +70,7 @@ export class AnnotationSidebar extends React.Component<AnnotationSidebarProps, A
 
         new FlashcardModel().registerListener(this.props.docMeta, annotationEvent => {
 
-            const flashcard: Flashcard = annotationEvent.value;
+            const flashcard: Flashcard = annotationEvent.value || annotationEvent.previousValue;
             const childDocAnnotation = DocAnnotations.createFromFlashcard(flashcard, annotationEvent.pageMeta);
 
             this.handleChildAnnotationEvent(annotationEvent.id,
