@@ -94,6 +94,10 @@ export class HybridDatastore implements Datastore {
         return this.local.containsFile(backend, name);
     }
 
+    public deleteFile(backend: Backend, name: string): Promise<void> {
+        return this.local.deleteFile(backend, name);
+    }
+
     public async sync(fingerprint: string, data: string, docInfo: DocInfo) {
 
         // FIXME:

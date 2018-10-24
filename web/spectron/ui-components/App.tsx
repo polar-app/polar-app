@@ -16,6 +16,8 @@ import Navbar from 'reactstrap/lib/Navbar';
 import Moment from 'react-moment';
 import {ListOptionType, ListSelector} from '../../js/ui/list_selector/ListSelector';
 import {TableDropdown} from '../../../apps/repository/js/TableDropdown';
+import {AnnotationSidebar} from '../../js/annotation_sidebar/AnnotationSidebar';
+import {MockDocMetas} from '../../js/metadata/DocMetas';
 
 class App<P> extends React.Component<{}, IAppState> {
 
@@ -45,6 +47,8 @@ class App<P> extends React.Component<{}, IAppState> {
             }
         ];
 
+        const docMeta = MockDocMetas.createWithinInitialPagemarks('0x001', 4);
+
         return (
 
             <div>
@@ -70,6 +74,10 @@ class App<P> extends React.Component<{}, IAppState> {
                 <TableDropdown id="table-dropdown"
                                onSelectedColumns={(options) => console.log("onSelectedColumns: ", options)}
                 />
+
+                <h2>Annotation Sidebar</h2>
+
+                <AnnotationSidebar docMeta={docMeta}/>
 
             </div>
 
