@@ -12,8 +12,7 @@ import {Styles} from '../../../util/Styles';
 import {Optional} from '../../../util/ts/Optional';
 import {Rects} from '../../../Rects';
 import {Rect} from '../../../Rect';
-
-const {BoxController} = require("../../../boxes/controller/BoxController");
+import {BoxController} from "../../../boxes/controller/BoxController";
 
 const log = Logger.create();
 

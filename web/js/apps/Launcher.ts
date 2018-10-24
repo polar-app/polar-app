@@ -11,8 +11,7 @@ import {AnnotationSidebarService} from '../annotation_sidebar/AnnotationSidebarS
 import {PageSearchController} from '../page_search/PageSearchController';
 import {CommentsController} from '../comments/CommentsController';
 import {AnnotationBarService} from '../ui/annotationbar/AnnotationBarService';
-
-const {AreaHighlightView} = require("../highlights/area/view/AreaHighlightView");
+import {AreaHighlightView} from "../highlights/area/view/AreaHighlightView";
 
 const log = Logger.create();
 
