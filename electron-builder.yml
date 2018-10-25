@@ -38,7 +38,7 @@ linux:
 
   fileAssociations:
     - ext: pdf
-      mineType: application/pdf
+      mimeType: application/pdf
 
 nsis:
   artifactName: ${name}-${version}-${arch}.${ext}

@@ -1,16 +1,14 @@
 import {ILogger} from './ILogger';
 
 import { init, captureException } from '@sentry/electron';
+import {isPresent} from '../Preconditions';
+import process from "process";
 
 // This configures the Electron CrashReporter for native app crashes and
 // captures any uncaught JavaScript exceptions using the JavaScript SDKs under
 // the hood. Be sure to call this function as early as possible in the main
 // process and all renderer processes to also catch errors during startup.
 
-init({
-     dsn: 'https://2e8b8ca6e6bf4bf58d735f2a405ecb20@sentry.io/1273707',
-     // more options...
- });
 
 export class SentryLogger implements ILogger {
 
@@ -50,4 +48,15 @@ export class SentryLogger implements ILogger {
         // noop
     }
 
+    public static isEnabled() {
+        return !isPresent(process.env['SNAP']);
+    }
+
+}
+
+if(SentryLogger.isEnabled()) {
+    init({
+        dsn: 'https://2e8b8ca6e6bf4bf58d735f2a405ecb20@sentry.io/1273707',
+        // more options...
+    });
 }

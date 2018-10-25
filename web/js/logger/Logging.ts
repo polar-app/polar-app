@@ -16,6 +16,9 @@ import {ElectronContextType} from '../electron/context/ElectronContextType';
 import {ElectronContextTypes} from '../electron/context/ElectronContextTypes';
 import {ToasterLogger} from './ToasterLogger';
 import {PersistentErrorLogger} from './PersistentErrorLogger';
+import {isPresent} from '../Preconditions';
+
+import process from 'process';
 
 /**
  * Maintains our general logging infrastructure.  Differentiated from Logger
@@ -55,8 +58,11 @@ export class Logging {
 
         const loggers: ILogger[] = [];
 
-        // *** first logger is sentry...
-        loggers.push(new SentryLogger());
+        if (SentryLogger.isEnabled()) {
+            // *** first logger is sentry but only if we are not running within
+            // a SNAP container.
+            loggers.push(new SentryLogger());
+        }
 
         // *** next up is the Toaster Logger to visually show errors.
         if (ElectronContextTypes.create() === ElectronContextType.RENDERER) {
