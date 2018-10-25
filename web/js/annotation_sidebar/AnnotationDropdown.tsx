@@ -30,7 +30,7 @@ export class AnnotationDropdown extends React.Component<IProps, IState> {
         this.onDelete = this.onDelete.bind(this);
 
         this.onCreateComment = this.onCreateComment.bind(this);
-        this.onCreateFlashcard = this.onCreateComment.bind(this);
+        this.onCreateFlashcard = this.onCreateFlashcard.bind(this);
         this.onJumpToContext = this.onJumpToContext.bind(this);
 
         this.state = {
