@@ -44,7 +44,7 @@ export class AnnotationCommentBox extends React.Component<IProps, IState> {
 
                     {/*onClick={this.handleComment}*/}
 
-                    <Button color="primary" className="mt-2" onClick={() => this.onClick()}>
+                    <Button color="primary" size="sm" className="mt-2" onClick={() => this.onClick()}>
                         Comment
                     </Button>
 

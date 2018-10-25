@@ -55,7 +55,6 @@ export class CommentComponent extends React.Component<IProps, IState> {
 
                     </div>
 
-
                 </div>
 
             </div>

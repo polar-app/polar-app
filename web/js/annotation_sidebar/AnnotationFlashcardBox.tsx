@@ -42,7 +42,7 @@ export class AnnotationFlashcardBox extends React.Component<IProps, IState> {
 
                 <div className="text-right">
 
-                    <Button color="primary" className="mt-2" onClick={() => this.onClick()}>
+                    <Button color="primary" size="sm" className="mt-2" onClick={() => this.onClick()}>
                         Create
                     </Button>
 
