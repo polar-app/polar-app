@@ -1,7 +1,10 @@
-import {notNull} from '../../Preconditions';
+import {isPresent, notNull} from '../../Preconditions';
 import {PHZMetadata} from '../../phz/PHZMetadata';
 import {Logger} from '../../logger/Logger';
 import {IDimensions} from '../../util/Dimensions';
+import {ScrollBox} from '../../capture/renderer/Captured';
+import {Optional} from '../../util/ts/Optional';
+import {Reducers} from '../../util/Reducers';
 
 const log = Logger.create();
 
@@ -26,15 +29,20 @@ export class Descriptors {
 
         }
 
-        if( "scroll" in descriptor &&
-            typeof descriptor.scroll.width === "number" &&
-            descriptor.scroll.width > width ) {
+        const scrollBox = this.computeScrollBox(descriptor);
+
+        if( scrollBox.isPresent() && scrollBox.get().width > width ) {
 
             // we have a document that isn't mobile aware and hard coded to a
             // specific width greater than our default width.  This is a new
             // setting so we have to make sure the key is in the descriptor.
 
-            width = descriptor.scroll.width;
+            if(! isPresent(scrollBox.get().widthOverflow) ||
+                scrollBox.get().widthOverflow === 'visible') {
+
+                width = scrollBox.get().width;
+
+            }
 
             log.info("Setting width from scroll settings: " + width);
 
@@ -47,6 +55,26 @@ export class Descriptors {
         return {width, minHeight};
 
     }
+
+    public static computeScrollBox(descriptor: PHZMetadata): Optional<ScrollBox> {
+        return this.computeScrollBoxFromBoxes(descriptor.scrollBox, descriptor.scroll);
+    }
+
+    public static computeScrollBoxFromBoxes(scrollBox?: ScrollBox, scroll?: ScrollBox): Optional<ScrollBox> {
+
+        return [Optional.of(scrollBox), Optional.of(scroll)]
+            .filter(current => current.isPresent())
+            .filter(current => current.map(scrollBox => this.isScrollBox(scrollBox)).getOrElse(false))
+            .reduce(Reducers.FIRST, Optional.empty());
+
+    }
+
+    public static isScrollBox(scrollBox: ScrollBox) {
+
+        return typeof scrollBox.width === 'number' && typeof scrollBox.height === 'number';
+
+    }
+
 
 }
 

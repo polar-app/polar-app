@@ -49,8 +49,24 @@ export class BrowserConfigurationInputGroup extends React.Component<Props, State
 
                     <DropdownItem data-browser-name="DESKTOP_850"
                                   onClick={(event: React.MouseEvent<HTMLElement>) => this.onClick(event)}>
-                        Chrome on Desktop (850x)
+                        Chrome on Desktop (850)
                     </DropdownItem>
+
+                    <DropdownItem data-browser-name="DESKTOP_1024"
+                                  onClick={(event: React.MouseEvent<HTMLElement>) => this.onClick(event)}>
+                        Chrome on Desktop (1024)
+                    </DropdownItem>
+
+                    <DropdownItem data-browser-name="DESKTOP_1280"
+                                  onClick={(event: React.MouseEvent<HTMLElement>) => this.onClick(event)}>
+                        Chrome on Desktop (1280)
+                    </DropdownItem>
+
+                    <DropdownItem data-browser-name="DESKTOP_1920"
+                                  onClick={(event: React.MouseEvent<HTMLElement>) => this.onClick(event)}>
+                        Chrome on Desktop (1920)
+                    </DropdownItem>
+
 
                     {/*<DropdownItem divider />*/}
 

@@ -62,8 +62,18 @@ export class AnnotationCommentBox extends React.Component<IProps, IState> {
 
     private onClick(): void {
 
-        if (this.props.onCommentCreated) {
-            this.props.onCommentCreated(this.html);
+        if(this.props.comment) {
+
+            if (this.props.onCommentChanged) {
+                this.props.onCommentChanged(this.html);
+            }
+
+        } else {
+
+            if (this.props.onCommentCreated) {
+                this.props.onCommentCreated(this.html);
+            }
+
         }
 
         this.setState({
@@ -76,7 +86,13 @@ export class AnnotationCommentBox extends React.Component<IProps, IState> {
 
 export interface IProps {
     annotation: DocAnnotation;
+
+    /**
+     * When given a comment we're editing an existing comment.
+     */
+    comment?: Comment;
     onCommentCreated?: (html: string) => void;
+    onCommentChanged?: (html: string) => void;
 }
 
 export interface IState {

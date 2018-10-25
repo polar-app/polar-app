@@ -3,7 +3,7 @@
  */
 import {Dict} from '../../util/Dict';
 import {Result} from '../../util/Result';
-import {CapturedDoc} from './CaptureResults';
+import {CapturedDoc, Captured, ScrollBox, Overflow} from './Captured';
 import {Results} from '../../util/Results';
 import {AdBlocker} from './AdBlocker';
 
@@ -32,7 +32,7 @@ export class ContentCapture {
      * @param [result] The result we are building.
      *
      */
-    public static captureHTML(contentDoc?: Document, url?: string, result?: any): any {
+    public static captureHTML(contentDoc?: Document, url?: string, result?: Captured): Captured {
 
         const ENABLE_IFRAMES = true;
 
@@ -46,6 +46,8 @@ export class ContentCapture {
         }
 
         if (!result) {
+
+            const scrollBox = this.computeScrollBox(contentDoc);
 
             result = {
 
@@ -69,10 +71,8 @@ export class ContentCapture {
                 // keep track of the scroll height and width of the document.
                 // when the document is able to be adjusted to the size of the
                 // window then we're able to display it within the HTML viewer.
-                scroll: {
-                    height: contentDoc.body.scrollHeight,
-                    width: contentDoc.body.scrollWidth
-                }
+                scroll: scrollBox,
+                scrollBox
 
             };
 
@@ -92,7 +92,8 @@ export class ContentCapture {
 
             console.log("Exporting iframes...");
 
-            // now recurse into all the iframes in this doc and capture their HTML too.
+            // now recurse into all the iframes in this doc and capture their
+            // HTML too.
             const iframes = contentDoc.querySelectorAll("iframe");
 
             console.log("Found N iframes: " + iframes.length);
@@ -169,6 +170,9 @@ export class ContentCapture {
 
         // TODO: store many of these fields in the HTML too because the iframes
         // need to have the same data
+
+        const scrollBox = this.computeScrollBox(cloneDoc);
+
         const result: CapturedDoc = {
 
             // TODO: capture HTML metadata including twitter card information
@@ -184,12 +188,9 @@ export class ContentCapture {
             // The scroll height of the document as it is currently rendered.
             // This is used as a hint for loading the static form of the
             // document.
-            scrollHeight: cloneDoc.documentElement.scrollHeight,
+            scrollHeight: scrollBox.height,
 
-            scrollBox: {
-                width: cloneDoc.documentElement.scrollWidth,
-                height: cloneDoc.documentElement.scrollHeight,
-            },
+            scrollBox,
 
             // The content as an HTML string
             content: "",
@@ -262,6 +263,19 @@ export class ContentCapture {
         console.log(`Captured ${url} which has a text length of: ${result.content.length}`);
 
         return result;
+
+    }
+
+    private static computeScrollBox(doc: Document): ScrollBox {
+
+        const computedStyle = getComputedStyle(doc.documentElement);
+
+        return {
+            width: doc.documentElement.scrollWidth,
+            widthOverflow: <Overflow> computedStyle.overflowX || 'visible' ,
+            height: doc.documentElement.scrollHeight,
+            heightOverflow: <Overflow> computedStyle.overflowY || 'visible' ,
+        }
 
     }
 
