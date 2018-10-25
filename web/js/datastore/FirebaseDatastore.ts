@@ -158,6 +158,9 @@ export class FirebaseDatastore implements Datastore {
         // TODO: it's probably in firestore, just not copied locally yet.
         // shouldn't we pull it and write it locally then?
 
+        // TODO: we need to copy it locally... then serve it form the local
+        // cache.
+
         const storage = this.storage!;
 
         const fileRef = storage.ref().child(`${backend}/${name}`);
@@ -167,26 +170,40 @@ export class FirebaseDatastore implements Datastore {
 
         return Optional.of({backend, name, url, meta});
 
-
     }
 
     public async containsFile(backend: Backend, name: string): Promise<boolean> {
+
         if ( await this.local.containsFile(backend, name)) {
             return true;
         }
 
+        // TODO: we should have some cache here to avoid checking the server too
+        // often but I don't think this is goign to be used often.
 
+        const storage = this.storage!;
+        const fileRef = storage.ref().child(`${backend}/${name}`);
 
-        throw new Error("Not implemented yet");
+        try {
+            await fileRef.getMetadata();
+            return true;
+        } catch (e) {
+
+            if (e.code === "storage/object-not-found") {
+                return false;
+            }
+
+            // some other type of exception ias occurred
+            throw e;
+
+        }
 
     }
 
     public async deleteFile(backend: Backend, name: string): Promise<void> {
 
         const storage = this.storage!;
-
         const fileRef = storage.ref().child(`${backend}/${name}`);
-
         await fileRef.delete();
 
         return this.local.deleteFile(backend, name);

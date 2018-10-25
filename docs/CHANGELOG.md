@@ -1,6 +1,11 @@
 
 # 1.0.5 
 
+- Annotation sidebar now supports:
+    - delete flashcard + comment
+    - delete text annotation
+    - menu for text-annotation to create flashcard + comment
+
 - Capture now has a key binding: CommandOrControl+Shift+W
 
 - Text highlights no longer being saved to JSON.. migrating them to the file 
