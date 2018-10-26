@@ -4,6 +4,7 @@ import path from 'path';
 import fs from 'fs';
 import {isPresent} from '../../Preconditions';
 
+const USE_FILE_URL = true;
 
 /**
  * Given a relative path, return a full path to a local app resource.
@@ -81,9 +82,17 @@ export class AppPaths {
             queryData = relativeURI.substring(relativeURI.indexOf("?"));
         }
 
-        const path = AppPaths.relative(relativePath);
+        if(USE_FILE_URL) {
 
-        return 'file://' + path + queryData;
+            const path = AppPaths.relative(relativePath);
+
+            return 'file://' + path + queryData;
+
+        } else {
+            // return 'http://localapp.getpolarized.io:8500' + relativePath + queryData;
+            // return 'http://example.com'
+            return "http://localapp.getpolarized.io:8500/apps/repository/index.html";
+        }
 
     }
 

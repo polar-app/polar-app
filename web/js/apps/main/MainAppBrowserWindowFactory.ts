@@ -108,7 +108,7 @@ export class MainAppBrowserWindowFactory {
             shell.openExternal(url);
         });
 
-        log.info("Loading URL: ", url);
+        log.info("Loading URL: " + url);
         browserWindow.loadURL(url);
 
         return new Promise<BrowserWindow>(resolve => {

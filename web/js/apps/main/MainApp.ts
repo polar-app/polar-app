@@ -61,6 +61,15 @@ export class MainApp {
         const screenshotService = new ScreenshotService();
         screenshotService.start();
 
+        await directories.init();
+
+        log.info("Electron app path is: " + app.getAppPath());
+
+        // *** start the webserver
+
+        const webserver = new Webserver(webserverConfig, fileRegistry);
+        webserver.start();
+
         log.info("App loaded from: ", app.getAppPath());
         log.info("Stash dir: ", this.datastore.stashDir);
         log.info("Logs dir: ", this.datastore.logsDir);
@@ -71,18 +80,6 @@ export class MainApp {
         // appIcon.setContextMenu(contextMenu);
 
         const mainWindow = await AppLauncher.launchRepositoryApp();
-
-        await directories.init();
-
-        // TODO don't use directory logging now as it is broken.
-        // await Logger.init(directories.logsDir);
-
-        log.info("Electron app path is: " + app.getAppPath());
-
-        // *** start the webserver
-
-        const webserver = new Webserver(webserverConfig, fileRegistry);
-        webserver.start();
 
         // create a session and configure it for the polar which is persistent
         // across restarts so that we do not lose cookies, etc.
