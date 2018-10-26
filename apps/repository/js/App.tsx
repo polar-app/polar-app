@@ -669,7 +669,10 @@ export default class App extends React.Component<AppProps, AppState> {
 
         const repoDocs = await this.repoDocInfoLoader!.load();
 
-        RendererAnalytics.set({'nrDocs': Object.keys(repoDocs).length});
+        const nrDocs = Object.keys(repoDocs).length;
+        RendererAnalytics.set({'nrDocs': nrDocs});
+
+        RendererAnalytics.event({category: 'document-repository', action: 'docs-loaded', value: nrDocs});
 
         this.docRepository.updateDocInfo(...Object.values(repoDocs));
 

@@ -1,6 +1,12 @@
 
 # 1.0.5 
 
+- link to discord in the menu box.
+
+- emit an event for the number of documents loaded in the document repository
+
+- Snaps should be supported now.  No more segfaults.
+
 - Annotation sidebar now supports:
     - delete flashcard + comment
     - delete text annotation

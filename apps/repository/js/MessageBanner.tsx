@@ -91,7 +91,12 @@ const MESSAGES: Message[] = [
     },
     {
         id: 'ui-ux-help',
-        element: <div>Are you a UI/UX developer? We'd love your help on some UI issues! <a href="https://github.com/burtonator/polar-bookshelf/labels/uiux">voting for us on alternativeTo?</a></div>
+        element: <div>Are you a UI/UX developer? <a href="https://github.com/burtonator/polar-bookshelf/labels/uiux">We'd love your help on some UI issues! </a></div>
+    },
+
+    {
+        id: 'join-discord',
+        element: <div>Want to chat about Polar? <a href="https://discord.gg/GT8MhA6">Join our live Discord chat group!</a></div>
     }
 
 ];
