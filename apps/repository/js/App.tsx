@@ -29,6 +29,7 @@ import {TableColumns} from './TableColumns';
 import {SettingsStore} from '../../../web/js/datastore/SettingsStore';
 import {cursorTo} from 'readline';
 import {Version} from '../../../web/js/util/Version';
+import {RepoDocInfoIndex} from './RepoDocInfoIndex';
 
 const log = Logger.create();
 
@@ -670,12 +671,21 @@ export default class App extends React.Component<AppProps, AppState> {
 
         const repoDocs = await this.repoDocInfoLoader!.load();
 
-        const nrDocs = Object.keys(repoDocs).length;
-        RendererAnalytics.set({'nrDocs': nrDocs});
-
-        RendererAnalytics.event({category: 'document-repository', action: 'docs-loaded', value: nrDocs});
-
         this.docRepository.updateDocInfo(...Object.values(repoDocs));
+
+        this.emitInitAnalytics(repoDocs);
+
+    }
+
+    private emitInitAnalytics(repoDocs: RepoDocInfoIndex) {
+
+        RendererAnalytics.pageview("/");
+
+        const nrDocs = Object.keys(repoDocs).length;
+
+        RendererAnalytics.set({'nrDocs': nrDocs});
+        RendererAnalytics.event({category: 'document-repository', action: 'docs-loaded', value: nrDocs});
+        RendererAnalytics.event({category: 'app', action: 'version-' + Version.get()});
 
     }
 

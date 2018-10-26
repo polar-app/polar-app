@@ -1,4 +1,9 @@
 
+# 1.0.6
+
+- changes to analytics and a rapid release for fixing Windows. 
+
+
 # 1.0.5 
 
 - more browsers for larger documents (desktop).

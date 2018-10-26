@@ -81,6 +81,8 @@ interface Message {
 // noinspection TsLint
 const MESSAGES: Message[] = [
 
+    // TODO: put links to help and other technical docs.
+
     {
         id: 'github-star',
         element: <div><b>Do you like POLAR?</b> Would you mind <a href="https://github.com/burtonator/polar-bookshelf">giving us a star on Github?</a></div>,
