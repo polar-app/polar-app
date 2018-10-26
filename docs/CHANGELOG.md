@@ -1,6 +1,8 @@
 
 # 1.0.5 
 
+- more browsers for larger documents (desktop).
+
 - link to discord in the menu box.
 
 - emit an event for the number of documents loaded in the document repository

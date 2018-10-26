@@ -28,6 +28,7 @@ import {TableDropdown} from './TableDropdown';
 import {TableColumns} from './TableColumns';
 import {SettingsStore} from '../../../web/js/datastore/SettingsStore';
 import {cursorTo} from 'readline';
+import {Version} from '../../../web/js/util/Version';
 
 const log = Logger.create();
 
