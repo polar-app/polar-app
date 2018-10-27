@@ -36,6 +36,8 @@ Electron or another API on which we're blocked.
 
 # Medium Term
   
+- beautiful UI and UX and bring in a designer to put some fit and finihs on polar
+  
 - Advanced video support including a video player with the ability to keep 
   annotations on the video and jump to the offsets.  
   
