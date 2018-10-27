@@ -16,6 +16,7 @@ import * as firebase from '../firestore/lib/firebase';
 import {Elements} from '../util/Elements';
 import {ResolveablePromise} from '../util/ResolveablePromise';
 import {Dictionaries} from '../util/Dictionaries';
+import {DatastoreFiles} from './DatastoreFiles';
 
 const log = Logger.create();
 
@@ -126,6 +127,7 @@ export class FirebaseDatastore implements Datastore {
     // computer so we should try to pull it down just in time when requested.
 
     public async addFile(backend: Backend, name: string, data: Buffer | string, meta: FileMeta = {}): Promise<DatastoreFile> {
+        DatastoreFiles.assertValidFileName(name);
 
         const storage = this.storage!;
 
@@ -148,6 +150,7 @@ export class FirebaseDatastore implements Datastore {
     }
 
     public async getFile(backend: Backend, name: string): Promise<Optional<DatastoreFile>> {
+        DatastoreFiles.assertValidFileName(name);
 
         const localFile = await this.local.getFile(backend, name);
 
@@ -173,6 +176,7 @@ export class FirebaseDatastore implements Datastore {
     }
 
     public async containsFile(backend: Backend, name: string): Promise<boolean> {
+        DatastoreFiles.assertValidFileName(name);
 
         if ( await this.local.containsFile(backend, name)) {
             return true;
@@ -201,6 +205,7 @@ export class FirebaseDatastore implements Datastore {
     }
 
     public async deleteFile(backend: Backend, name: string): Promise<void> {
+        DatastoreFiles.assertValidFileName(name);
 
         const storage = this.storage!;
         const fileRef = storage.ref().child(`${backend}/${name}`);

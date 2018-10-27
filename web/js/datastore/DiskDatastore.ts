@@ -14,6 +14,7 @@ import {DatastoreFile} from './DatastoreFile';
 import {Optional} from '../util/ts/Optional';
 import {DocInfo} from '../metadata/DocInfo';
 import {Platform, Platforms} from "../util/Platforms";
+import {DatastoreFiles} from './DatastoreFiles';
 
 const log = Logger.create();
 
@@ -129,7 +130,7 @@ export class DiskDatastore implements Datastore {
 
     public async addFile(backend: Backend, name: string, data: Buffer | string, meta: FileMeta = {}): Promise<DatastoreFile> {
 
-        DiskDatastore.assertFileName(name);
+        DatastoreFiles.assertValidFileName(name);
 
         const fileReference = this.createFileReference(backend, name);
 
@@ -146,7 +147,7 @@ export class DiskDatastore implements Datastore {
 
     public async getFile(backend: Backend, name: string): Promise<Optional<DatastoreFile>> {
 
-        DiskDatastore.assertFileName(name);
+        DatastoreFiles.assertValidFileName(name);
 
         const fileReference = this.createFileReference(backend, name);
 
@@ -160,15 +161,13 @@ export class DiskDatastore implements Datastore {
     }
 
     public containsFile(backend: Backend, name: string): Promise<boolean> {
-
-        DiskDatastore.assertFileName(name);
-
+        DatastoreFiles.assertValidFileName(name);
         const path = FilePaths.join(this.filesDir, backend.toString().toLowerCase(), name);
         return Files.existsAsync(path);
     }
 
     public deleteFile(backend: Backend, name: string): Promise<void> {
-        DiskDatastore.assertFileName(name);
+        DatastoreFiles.assertValidFileName(name);
         const path = FilePaths.join(this.filesDir, backend.toString().toLowerCase(), name);
         return Files.removeAsync(path);
     }
@@ -246,24 +245,6 @@ export class DiskDatastore implements Datastore {
         }
 
         return result;
-    }
-
-    public static assertFileName(name: string) {
-
-        if (! this.validateFileName(name)) {
-            throw new Error("Invalid file name: " + name);
-        }
-
-    }
-
-    /**
-     * Make sure the file name is sane ... nothing that can't be encoded
-     * as a file and must have a three letter extension.  We should just have
-     * the files be alphanumeric for now and support a 3-4 char suffix.
-     */
-    public static validateFileName(name: string): boolean {
-        return name.search(/^[a-zA-Z0-9]+(\.[a-zA-Z0-9]{3,4})?$/g) !== -1;
-
     }
 
     private async createDatastoreFile(backend: Backend, name: string, fileReference: FileReference): Promise<DatastoreFile> {
