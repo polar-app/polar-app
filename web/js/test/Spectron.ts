@@ -3,12 +3,17 @@ import electronPath from 'electron';
 import {SpectronOutputMonitorService} from './SpectronOutputMonitorService';
 import {TestResultReader} from './results/TestResultReader';
 import {Logger} from '../logger/Logger';
+import process from 'process';
 
 const {Application} = require('spectron');
 
 const log = Logger.create();
 
 const TIMEOUT = 10000;
+
+const ELECTRON_PATH: any = process.env['POLAR_ELECTRON_PATH'] || electronPath;
+
+log.info("Using ELECTRON_PATH: ", ELECTRON_PATH);
 
 /**
  * Basic spectron startup and teardown for our usage.  We also start an
@@ -41,7 +46,7 @@ export class Spectron {
                 // Your electron path can be any binary
                 // i.e for OSX an example path could be '/Applications/MyApp.app/Contents/MacOS/MyApp'
                 // But for the sake of the example we fetch it from our node_modules.
-                path: electronPath,
+                path: ELECTRON_PATH,
 
                 // Assuming you have the following directory structure
 
