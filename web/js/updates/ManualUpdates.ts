@@ -1,5 +1,6 @@
 import {dialog} from 'electron';
-import { autoUpdater } from 'electron-updater';
+import {autoUpdater} from 'electron-updater';
+import {ProgressInfo} from "builder-util-runtime"
 import {Logger} from '../logger/Logger';
 
 import process from 'process';
@@ -86,3 +87,22 @@ autoUpdater.on('update-downloaded', () => {
 
 });
 
+autoUpdater.on('download-progress', (progress: ProgressInfo) => {
+
+    // ProgressBar
+
+    // https://github.com/electron-userland/electron-builder/blob/docs/auto-update.md#event-download-progress
+    //
+    // bytesPerSecond
+    // percent
+    // total
+    // transferred
+
+    log.info(`Auto update download progress: ${progress.percent}. `, progress);
+
+    // TODO: we're running in the main process here. We could use the IPC
+    // broadcaster to send message to every renderer and have a controller
+    // running there, listening for the messages on download progress updates
+    // and then display the appropriate UI.
+
+});

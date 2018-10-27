@@ -1,5 +1,10 @@
 const ID = 'polar-progress-bar';
 
+/**
+ * Simple progress bar that we can display at any time on a page without
+ * complicated rendering issues or requiring React to be used.  This allows
+ * us to easily show a GUI for a download at any point in time.
+ */
 export class ProgressBar {
 
     private readonly element: HTMLProgressElement;
