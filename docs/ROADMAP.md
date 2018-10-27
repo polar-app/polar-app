@@ -36,6 +36,9 @@ Electron or another API on which we're blocked.
 
 # Medium Term
   
+- Advanced video support including a video player with the ability to keep 
+  annotations on the video and jump to the offsets.  
+  
 - Fix font / zoom issues at 1.5x.  In order to do this I need to get access
   to the webview behind the iframe but if I change the zoom level there it
   changes the zoom level for the entire page.  

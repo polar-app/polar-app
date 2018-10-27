@@ -1,7 +1,11 @@
 
 # 1.0.8
 
-- when capture is running we now set a title
+- the capture preview now expands the content once it's loaded.  One issue here 
+  is that some documents appear too long.  I think it is an issue with computing
+  the scroll height reliably and I'm still figuring this part out. 
+
+- when capture preview is running we now set a title
 
 # 1.0.7
 
