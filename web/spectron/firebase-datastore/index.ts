@@ -40,8 +40,6 @@ SpectronMain2.create(options).run(async state => {
     const url = `http://localhost:8005/web/spectron/firebase-datastore/content.html`;
     state.window.loadURL(url);
 
-    await state.testResultWriter.write(true);
-
 });
 
 

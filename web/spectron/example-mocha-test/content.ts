@@ -15,7 +15,7 @@ SpectronRenderer.run(async (state) => {
     console.log("Running within SpectronRenderer now.");
 
     mocha.run((nrFailures: number) => {
-        state.testResultWriter.write(true)
+        state.testResultWriter.write(nrFailures === 0)
             .catch(err => console.error("Unable to write results: ", err));
     });
 
