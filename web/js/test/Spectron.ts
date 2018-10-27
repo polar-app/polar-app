@@ -11,6 +11,16 @@ const log = Logger.create();
 
 const TIMEOUT = 10000;
 
+// path: '/Applications/MyApp.app/Contents/MacOS/MyApp'
+
+// String path to the Electron application executable to launch. Note: If you
+// want to invoke electron directly with your app's main script then you should
+// specify path as electron via electron-prebuilt and specify your app's main
+// script path as the first argument in the args array.
+
+// TODO: this is working but it doesn't seem to find my main.js file that I want
+// to use to test that it installed properly.
+
 const ELECTRON_PATH: any = process.env['POLAR_ELECTRON_PATH'] || electronPath;
 
 log.info("Using ELECTRON_PATH: ", ELECTRON_PATH);
