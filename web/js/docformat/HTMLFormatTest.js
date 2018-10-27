@@ -1,44 +1,40 @@
-const assert = require('assert');
-const {JSDOM} = require("jsdom");
-const {HTMLFormat} = require("./HTMLFormat");
-
-describe('HTMLFormat', function() {
-
-    describe('currentDocFingerprint', function() {
-
-        it("get", function () {
-
-            let dom = new JSDOM(HTML);
-
-            global.document = dom.window.document;
-
-            let htmlFormat = new HTMLFormat();
-
-            assert.equal(htmlFormat.currentDocFingerprint(), "0x0001");
-
-        });
-
-        it("set", async function () {
-            let dom = new JSDOM(HTML);
-
-            global.document = dom.window.document;
-
-            let htmlFormat = new HTMLFormat();
-
-            htmlFormat.setCurrentDocFingerprint("0x9999")
-
-            assert.equal(htmlFormat.currentDocFingerprint(), "0x9999");
-
-        });
-
+"use strict";
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
-
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const chai_1 = require("chai");
+const jsdom_1 = require("jsdom");
+const HTMLFormat_1 = require("./HTMLFormat");
+describe('HTMLFormat', function () {
+    describe('currentDocFingerprint', function () {
+        it("get", function () {
+            let dom = new jsdom_1.JSDOM(HTML);
+            global.document = dom.window.document;
+            let htmlFormat = new HTMLFormat_1.HTMLFormat();
+            chai_1.assert.equal(htmlFormat.currentDocFingerprint(), "0x0001");
+        });
+        it("set", function () {
+            return __awaiter(this, void 0, void 0, function* () {
+                let dom = new jsdom_1.JSDOM(HTML);
+                global.document = dom.window.document;
+                let htmlFormat = new HTMLFormat_1.HTMLFormat();
+                htmlFormat.setCurrentDocFingerprint("0x9999");
+                chai_1.assert.equal(htmlFormat.currentDocFingerprint(), "0x9999");
+            });
+        });
+    });
 });
-
 const HTML = `
 <html>
     <head>
         <meta name="polar-fingerprint" content="0x0001">                
     </head>
 </html>
-`
+`;
+//# sourceMappingURL=HTMLFormatTest.js.map

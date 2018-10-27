@@ -22,6 +22,9 @@ const options: ISpectronMainOptions = {
 
 SpectronMain2.create(options).run(async state => {
 
+    // the webserver must be running as firebase won't load without being on an
+    // HTTP URL
+
     const appDir = process.cwd();
     const webserverConfig = new WebserverConfig(appDir, 8005);
 

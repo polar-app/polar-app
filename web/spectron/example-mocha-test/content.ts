@@ -1,6 +1,8 @@
 import {SpectronRenderer} from '../../js/test/SpectronRenderer';
 import {assert} from 'chai';
 
+mocha.setup('bdd');
+
 describe('Basic Test', function() {
 
     it("basic", async function () {

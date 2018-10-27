@@ -8,11 +8,6 @@ import {FirebaseDatastore} from '../../js/datastore/FirebaseDatastore';
 import {DefaultPersistenceLayer} from '../../js/datastore/DefaultPersistenceLayer';
 import {MockDocMetas} from '../../js/metadata/DocMetas';
 
-// require('firebase');
-// import {Firebase} from './Firebase';
-// import {FirebaseUIAuth} from './FirebaseUIAuth';
-// import {FirebaseUIAuth} from './FirebaseUIAuth';
-
 let docID = 0;
 
 // let firestore: firebase.firestore.Firestore;
@@ -23,6 +18,7 @@ async function onAuth(user: firebase.User | null) {
     currentUser = user!;
 
     if (user) {
+
         // User is signed in.
         const displayName = user.displayName;
         const email = user.email;
@@ -33,6 +29,8 @@ async function onAuth(user: firebase.User | null) {
         const providerData = user.providerData;
 
         const accessToken = await user.getIdToken();
+
+        console.log("user: ", user);
 
         document.getElementById('sign-in-status')!.textContent = 'Signed in';
         document.getElementById('sign-in')!.textContent = 'Sign in';
@@ -88,33 +86,34 @@ function onAuthError(err: firebase.auth.Error) {
     console.log(err);
 }
 
-SpectronRenderer.run(async () => {
+async function initApp() {
+
+    await firebase.auth()
+        .onAuthStateChanged(onAuth, onAuthError);
+
+}
+
+SpectronRenderer.run(async (state) => {
 
     console.log("Running within SpectronRenderer now.");
 
     Firebase.init();
 
     if (firebase.auth().currentUser === null) {
+
+        // bring up the UI so that we can login.
         FirebaseUIAuth.login();
+
+        // in automated testing we have to fail here because no cookies are
+        // present to run this test and someone needs to run the test manually
+        // to login to store data
+        state.testResultWriter.write(false);
+
     }
 
-    // TODO: I don't like that the second arg here is the error handling.
-    const initApp = async () => {
-
-        // authState(firebase.auth())
-        //     .pipe(filter(user => user !== null))
-        //     .subscribe(user => console.log('the logged in user', user))
-
-        await firebase.auth()
-            .onAuthStateChanged(async (user) => await onAuth(user), (err) => onAuthError(err));
-
-    };
-
     window.addEventListener('load', async () => {
-
         return initApp();
     });
-
 
 });
 
