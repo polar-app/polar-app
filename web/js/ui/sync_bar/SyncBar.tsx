@@ -3,6 +3,7 @@ import React from 'react';
 import {IStyleMap} from '../../react/IStyleMap';
 import {Progress} from 'reactstrap';
 import {Reactor} from '../../reactor/Reactor';
+import Collapse from 'reactstrap/lib/Collapse';
 
 
 const Styles: IStyleMap = {
@@ -27,30 +28,32 @@ export class SyncBar extends React.Component<IProps, IState> {
 
     private value: string = '';
 
-
     constructor(props: IProps) {
         super(props);
 
         this.state = {
-            progress: 25
+            progress: 75
         };
 
     }
 
     public render() {
 
+        const progress = Math.floor(this.state.progress);
+
         return (
 
             <div style={Styles.root} className="">
 
-                {/*<Progress className="rounded-0 border border-secondary" value={this.state.progress}>You're almost there!</Progress>*/}
+                <Collapse timeout={0} isOpen={progress !== 0 && progress !== 100}>
 
-                {/*the title string doesn't render properly and looks horrible*/}
-                <Progress className="rounded-0 border-top border-left border-secondary progress-bar-striped progress-bar-animated text-left" value={this.state.progress}>
-                    {Math.floor(this.state.progress)}%
-                </Progress>
+                    {/*the title string doesn't render properly and looks horrible*/}
+                    <Progress className="rounded-0 border-top border-left border-secondary progress-bar-striped progress-bar-animated text-left"
+                              value={progress}>
+                        {Math.floor(progress)}%
+                    </Progress>
 
-                {/*<progress></progress>*/}
+                </Collapse>
 
             </div>
 

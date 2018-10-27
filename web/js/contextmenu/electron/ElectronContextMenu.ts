@@ -272,7 +272,7 @@ export class ElectronContextMenu {
         }));
 
         ctxMenu.append(new MenuItem({
-            label: 'Sync',
+            label: 'Sync Flashcards to Anki',
             click: () => this.postContextMenuMessage("start-sync", triggerEvent)
         }));
 
