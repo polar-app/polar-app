@@ -25,153 +25,6 @@ export class DatastoreTester {
 
     public static test(name: string) {
 
-        it("init and test paths", async function() {
-
-            const dataDir = FilePaths.join(tmpdir, 'test-paths');
-            removeDirectory(dataDir);
-
-            GlobalDataDir.set(dataDir);
-            const diskDatastore = new DiskDatastore();
-
-            await diskDatastore.init();
-
-            assert.equal(diskDatastore.dataDir, FilePaths.join(tmpdir, 'test-paths'));
-
-            assert.equal(diskDatastore.stashDir, FilePaths.join(tmpdir, 'test-paths', 'stash'));
-
-            // now create it and
-
-        });
-
-
-        it("test async exists function", async function() {
-
-            const dataDir = FilePaths.join(tmpdir, 'this-file-does-not-exist');
-            removeDirectory(dataDir);
-
-            assert.equal(fs.existsSync(dataDir), false);
-            assert.equal(await Files.existsAsync(dataDir), false);
-
-        });
-
-        it("init dataDir directory on init()", async function() {
-
-            const dataDir = FilePaths.join(tmpdir, 'disk-datastore.test');
-            removeDirectory(dataDir);
-
-            GlobalDataDir.set(dataDir);
-            const diskDatastore = new DiskDatastore();
-
-            assert.equal(await Files.existsAsync(dataDir), false);
-
-            let expected: any = {
-
-                "dataDirConfig": {
-                    "path": FilePaths.join(tmpdir, "disk-datastore.test"),
-                    "strategy": "manual"
-                },
-                "dataDir": FilePaths.join(tmpdir, "disk-datastore.test"),
-                "stashDir": FilePaths.join(tmpdir, "disk-datastore.test", "stash"),
-                "filesDir": FilePaths.join(tmpdir, "disk-datastore.test", "files"),
-                "logsDir": FilePaths.join(tmpdir, "disk-datastore.test", "logs"),
-                "configDir": FilePaths.join(tmpdir, "disk-datastore.test", "config"),
-
-                "initialization": {
-
-                    "dataDir": {
-                        "dir": FilePaths.join(tmpdir, 'disk-datastore.test'),
-                        "created": true,
-                    },
-                    "stashDir": {
-                        "dir": FilePaths.join(tmpdir, 'disk-datastore.test', 'stash'),
-                        "created": true,
-                    },
-                    "filesDir": {
-                        "dir": FilePaths.join(tmpdir, 'disk-datastore.test', 'files'),
-                        "created": true,
-                    },
-                    "logsDir": {
-                        "dir": FilePaths.join(tmpdir, 'disk-datastore.test', 'logs'),
-                        "created": true,
-                    },
-                    "configDir": {
-                        "dir": FilePaths.join(tmpdir, 'disk-datastore.test', 'config'),
-                        "created": true,
-                    }
-
-                },
-            };
-
-            // test double init...
-            assertJSON(await diskDatastore.init(), expected );
-
-            expected = {
-                "dataDirConfig": {
-                    "path": FilePaths.join(tmpdir, "disk-datastore.test"),
-                    "strategy": "manual"
-                },
-                "dataDir": FilePaths.join(tmpdir, "disk-datastore.test"),
-                "stashDir": FilePaths.join(tmpdir, "disk-datastore.test", "stash"),
-                "filesDir": FilePaths.join(tmpdir, "disk-datastore.test", "files"),
-                "logsDir": FilePaths.join(tmpdir, "disk-datastore.test", "logs"),
-                "configDir": FilePaths.join(tmpdir, "disk-datastore.test", "config"),
-
-                "initialization": {
-
-                    "dataDir": {
-                        "dir": FilePaths.join(tmpdir, 'disk-datastore.test'),
-                        "exists": true,
-                    },
-                    "stashDir": {
-                        "dir": FilePaths.join(tmpdir, 'disk-datastore.test', 'stash'),
-                        "exists": true,
-                    },
-                    "filesDir": {
-                        "dir": FilePaths.join(tmpdir, 'disk-datastore.test', 'files'),
-                        "exists": true,
-                    },
-                    "logsDir": {
-                        "dir": FilePaths.join(tmpdir, 'disk-datastore.test', 'logs'),
-                        "exists": true,
-                    },
-                    "configDir": {
-                        "dir": FilePaths.join(tmpdir, 'disk-datastore.test', 'config'),
-                        "exists": true,
-                    }
-                }
-            };
-
-            assertJSON(await diskDatastore.init(), expected );
-
-        });
-
-        it("getDataDirsForPlatform MAC_OS", function() {
-
-            const userHome = '/Users/alice';
-            const platform = Platform.MACOS;
-
-            assertJSON(DiskDatastore.getDataDirsForPlatform({userHome, platform}), {
-                "paths": [
-                    "/Users/alice/.polar",
-                    "/Users/alice/Library/Application Support/Polar"
-                ],
-                "preferredPath": "/Users/alice/Library/Application Support/Polar"
-            });
-
-        });
-
-
-        it("getDataDir", function() {
-
-            const user = process.env['USER'];
-
-            assert.notEqual(Directories.getDataDir(), null);
-            // assertJSON(Directories.getDataDir(), {
-            //     path:
-            // });
-
-        });
-
         describe('Write and discover documents', function() {
 
             const fingerprint = "0x001";
@@ -185,7 +38,7 @@ export class DatastoreTester {
 
             beforeEach(async function() {
 
-                removeDirectory(dataDir);
+                Files.removeDirectoryRecursively(dataDir);
 
                 GlobalDataDir.set(dataDir);
                 diskDatastore = new DiskDatastore();
@@ -296,9 +149,4 @@ export class DatastoreTester {
 
     }
 
-}
-
-
-function removeDirectory(path: string) {
-    rimraf.sync(path);
 }
