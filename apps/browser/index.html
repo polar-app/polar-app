@@ -30,7 +30,7 @@
         }
 
         webview {
-            height: 35000px;
+            min-height: 35000px;
             width: 750px;
             margin: 0 auto;
             /*border: 1px solid black;*/
@@ -103,6 +103,8 @@
 
     </style>
 
+    <title>Capture Web Content</title>
+
 </head>
 
 <body>
@@ -120,7 +122,9 @@
         <!-- NOTE do not set nodeintegration="false" as the presents of the
              attribute is all that's used, not the actual value -->
 
-        <webview autosize="true"
+        <webview autosize
+                 minheight="35000"
+                 maxheight="1000000"
                  name="content"
                  id="content"
                  src="./splash.html"

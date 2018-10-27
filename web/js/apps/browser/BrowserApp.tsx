@@ -29,7 +29,7 @@ export class BrowserApp {
             document.getElementById('browser-navbar-parent') as HTMLElement
         );
 
-        const content = document.querySelector("#content")! as Electron.WebviewTag;
+        const content = this.getContentHost();
 
         content.addEventListener('dom-ready', async () => {
 
@@ -41,11 +41,16 @@ export class BrowserApp {
 
             let progressBar: ProgressBar | undefined;
 
+            ['did-start-loading', 'did-stop-loading', 'did-fail-load', 'dom-ready' ]
+                .map(eventListenerName => content.addEventListener(eventListenerName, () => this.refreshTitle()));
+
             // Corresponds to the points in time when the spinner of the tab starts spinning.
             content.addEventListener('did-start-loading', () => {
                 progressBar = ProgressBar.create(true);
                 document.body.scrollTo(0, 0);
+
                 navigationReactor.dispatchEvent('did-start-loading');
+
             });
 
             // Corresponds to the points in time when the spinner of the tab stops spinning.
@@ -59,7 +64,6 @@ export class BrowserApp {
             });
 
             content.addEventListener('did-fail-load', () => {
-                // console.log();
             });
 
             content.addEventListener('console-message', (consoleMessageEvent: Electron.ConsoleMessageEvent) => {
@@ -133,11 +137,21 @@ export class BrowserApp {
 
     private onReload() {
 
-        const content = document.querySelector("#content")! as Electron.WebviewTag;
+        const content = this.getContentHost();
 
         this.onLoadURL(content.getURL());
 
     }
+
+    private refreshTitle() {
+        const content = this.getContentHost();
+        document.title = content.getTitle();
+    }
+
+    private getContentHost() {
+        return document.querySelector("#content")! as Electron.WebviewTag;
+    }
+
 }
 
 export type NavigationEventType = 'did-start-loading' | 'did-stop-loading';

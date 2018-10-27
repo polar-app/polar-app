@@ -52,8 +52,7 @@ class App<P> extends React.Component<{}, IAppState> {
         return (
 
             <div>
-                asdf
-                <SyncBar/>
+                {/*<SyncBar/>*/}
 
                 {/*<div className="fa-4x">*/}
                     {/*<span className="fa-layers fa-fw" style={{background: 'MistyRose'}}>*/}
