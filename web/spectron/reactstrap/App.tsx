@@ -17,6 +17,7 @@ import {BrowserConfigurationInputGroup} from './BrowserConfigurationInputGroup';
 import Moment from 'react-moment';
 import {ListSelector, ListOptionType} from '../../js/ui/list_selector/ListSelector';
 import {TableDropdown} from "../../../apps/repository/js/TableDropdown";
+import {SyncBar} from '../../js/ui/sync_bar/SyncBar';
 
 class App<P> extends React.Component<{}, IAppState> {
 
@@ -32,439 +33,444 @@ class App<P> extends React.Component<{}, IAppState> {
     }
 
     public render() {
+        //
+        // const options: ListOptionType[] = [
+        //     {
+        //         id: "title",
+        //         label: "Title",
+        //         selected: true
+        //     },
+        //     {
+        //         id: "tags",
+        //         label: "Tags",
+        //         selected: false
+        //     }
+        // ];
 
-        const options: ListOptionType[] = [
-            {
-                id: "title",
-                label: "Title",
-                selected: true
-            },
-            {
-                id: "tags",
-                label: "Tags",
-                selected: false
-            }
-        ];
+        console.log("asdf");
 
         return (
 
             <div>
+                asdf
+                <SyncBar/>
+
+                {/*<div className="fa-4x">*/}
+                    {/*<span className="fa-layers fa-fw" style={{background: 'MistyRose'}}>*/}
+                        {/*<i className="fas fa-circle" style={{color: 'Tomato'}}></i>*/}
+                        {/*<i className="fa-inverse fas fa-times" data-fa-transform="shrink-6"></i>*/}
+                    {/*</span>*/}
+
+                    {/*/!*https://fontawesome.com/how-to-use/on-the-web/styling/power-transforms*!/*/}
+
+                    {/*<span className="fa-layers fa-fw">*/}
+                        {/*<i className="fa fa-comment-alt" style={{color: 'grey'}} data-fa-transform="shrink-2 down-1"></i>*/}
+                        {/*<i className="fa-inverse fas fa-plus" style={{color: 'white'}}  data-fa-transform="shrink-8 up-0"></i>*/}
+                    {/*</span>*/}
+
+                    {/*<span className="fa-layers fa-fw">*/}
+                        {/*<i className="fas fa-bolt" style={{color: 'grey'}} data-fa-transform="shrink-2 down-1"></i>*/}
+                        {/*<i className="fa-inverse fas fa-plus" style={{color: 'white'}}  data-fa-transform="shrink-8 up-0"></i>*/}
+                    {/*</span>*/}
+
+                    {/*<i className="fas fa-spider" data-fa-transform="shrink-8 up-6"></i>*/}
+
+
+
+                {/*</div>*/}
+
+
+                {/*<br/>*/}
+                {/*<span className="fa-stack fa-lg" aria-hidden="true">*/}
+                  {/*<i className="fa fa-comment fa-stack-2x"></i>*/}
+                  {/*<i className="fa fa-plus fa-stack-1x fa-inverse"></i>*/}
+                {/*</span>*/}
+                {/*<br/>*/}
+
+                {/*<span className="fa-stack fa-lg" aria-hidden="true">*/}
+                  {/*<i className="fa fa-comment-alt fa-stack-2x"></i>*/}
+                  {/*<i className="fa fa-plus fa-stack-1x fa-inverse"></i>*/}
+                {/*</span>*/}
+                {/*<br/>*/}
+
+
+                {/*<i className="fa fa-comment fa-stack-2x"></i>*/}
+                {/*<br/>*/}
+
+                {/*<i className="fa fa-comment fa-2x"></i>*/}
+                {/*<br/>*/}
+
+                {/*<i className="fa fa-comment fa-lg"></i>*/}
+                {/*<br/>*/}
+                {/*<i className="fas fa-comment-plus"></i>*/}
+
+                {/*<TableDropdown id={'table-dropdown'}></TableDropdown>*/}
+
+                {/*<br/>*/}
+                {/*<br/>*/}
+                {/*<br/>*/}
+                {/*<br/>*/}
+                {/*<br/>*/}
+                {/*<br/>*/}
+                {/*<br/>*/}
+                {/*<br/>*/}
+                {/*<br/>*/}
+                {/*<br/>*/}
+
+
+                {/*<Dropdown isOpen={true} >*/}
+                    {/*<DropdownToggle*/}
+                        {/*tag="span"*/}
+                        {/*data-toggle="dropdown"*/}
+                        {/*aria-expanded={true}>*/}
+                        {/*Custom Dropdown Content*/}
+                    {/*</DropdownToggle>*/}
+                    {/*<DropdownMenu>*/}
+                        {/*<div >Custom dropdown item</div>*/}
+                    {/*</DropdownMenu>*/}
+                {/*</Dropdown>*/}
+
+                {/*<ListSelector options={options}*/}
+                              {/*id="list-options"*/}
+                              {/*onChange={(value) => console.log(value)}>*/}
+
+                {/*</ListSelector>*/}
+
+                    {/*/!*<NavbarBrand href="/">reactstrap</NavbarBrand>*!/*/}
+                    {/*/!*<NavbarToggler onClick={this.toggle} />*!/*/}
+                    {/*/!*<Collapse isOpen={this.state.isOpen} navbar>*!/*/}
+                        {/*/!*<Nav className="ml-auto" navbar>*!/*/}
+                            {/*/!*<NavItem>*!/*/}
+                                {/*/!*<NavLink href="/components/">Components</NavLink>*!/*/}
+                            {/*/!*</NavItem>*!/*/}
+                            {/*/!*<NavItem>*!/*/}
+                                {/*/!*<NavLink href="https://github.com/reactstrap/reactstrap">GitHub</NavLink>*!/*/}
+                            {/*/!*</NavItem>*!/*/}
+                            {/*/!*<UncontrolledDropdown nav inNavbar>*!/*/}
+                                {/*/!*<DropdownToggle nav caret>*!/*/}
+                                    {/*/!*Options*!/*/}
+                                {/*/!*</DropdownToggle>*!/*/}
+                                {/*/!*<DropdownMenu right>*!/*/}
+                                    {/*/!*<DropdownItem>*!/*/}
+                                        {/*/!*Option 1*!/*/}
+                                    {/*/!*</DropdownItem>*!/*/}
+                                    {/*/!*<DropdownItem>*!/*/}
+                                        {/*/!*Option 2*!/*/}
+                                    {/*/!*</DropdownItem>*!/*/}
+                                    {/*/!*<DropdownItem divider />*!/*/}
+                                    {/*/!*<DropdownItem>*!/*/}
+                                        {/*/!*Reset*!/*/}
+                                    {/*/!*</DropdownItem>*!/*/}
+                                {/*/!*</DropdownMenu>*!/*/}
+                            {/*/!*</UncontrolledDropdown>*!/*/}
+                        {/*/!*</Nav>*!/*/}
+                    {/*/!*</Collapse>*!/*/}
+
+                {/*<Navbar light expand="md" className="p-2 border-bottom link-navbar">*/}
+
+                    {/*<InputGroup size="sm" className="">*/}
+
+                        {/*<InputGroupAddon addonType="prepend"*/}
+                                         {/*title="Refresh the current page">*/}
+                            {/*/!*<i className="fa fa-close"></i>*!/*/}
+
+                            {/*<Button type="button"*/}
+                                    {/*className="btn btn-outline-secondary"*/}
+                                    {/*aria-label="">*/}
+
+                                {/*<span className="fa fa-refresh fa-lg" aria-hidden="true"></span>*/}
+
+                            {/*</Button>*/}
+
+                        {/*</InputGroupAddon>*/}
+                        {/*<Input className="px-2 mx-1" />*/}
+                        {/*<InputGroupAddon addonType="append">*/}
+                            {/*/!*<i className="fa fa-close"></i>*!/*/}
+
+                            {/*<Button type="button"*/}
+                                    {/*className="btn btn-outline-secondary"*/}
+                                    {/*title="Capture the HTML page and save locally"*/}
+                                    {/*aria-label=""*/}
+                                    {/*disabled>*/}
+
+                                {/*<span className="fa fa-cloud-download fa-lg" aria-hidden="true"></span>*/}
+
+                            {/*</Button>*/}
+
+                        {/*</InputGroupAddon>*/}
+
+                        {/*<BrowserConfigurationInputGroup/>*/}
+
+                    {/*</InputGroup>*/}
+                {/*</Navbar>*/}
+
+                {/*<br/>*/}
+                {/*<br/>*/}
+                {/*<br/>*/}
+                {/*<br/>*/}
+                {/*<br/>*/}
+                {/*<br/>*/}
+
+                {/*<div className="components">*/}
+                    {/*asdf : <Input type="checkbox" />*/}
+                    {/*<InputGroup>*/}
+                        {/*<InputGroupAddon addonType="prepend"><Button>I'm a button</Button></InputGroupAddon>*/}
+                        {/*<Input />*/}
+                    {/*</InputGroup>*/}
+                    {/*<br />*/}
+                    {/*<InputGroup>*/}
+                        {/*<Input />*/}
+                        {/*<InputGroupButtonDropdown addonType="append"*/}
+                                                  {/*isOpen={this.state.dropdownOpen}*/}
+                                                  {/*toggle={this.toggleDropDown}>*/}
+                            {/*<DropdownToggle caret>*/}
+                                {/*Button Dropdown*/}
+                            {/*</DropdownToggle>*/}
+                            {/*<DropdownMenu>*/}
+                                {/*<DropdownItem header>Header</DropdownItem>*/}
+                                {/*<DropdownItem disabled>Action</DropdownItem>*/}
+                                {/*<DropdownItem>Another Action</DropdownItem>*/}
+
+
+                                {/*<DropdownItem divider />*/}
+                                {/*<DropdownItem><Input type="checkbox" /> asdf</DropdownItem>*/}
+                                {/*<DropdownItem>Another Action</DropdownItem>*/}
+                            {/*</DropdownMenu>*/}
+                        {/*</InputGroupButtonDropdown>*/}
+                    {/*</InputGroup>*/}
+                    {/*<br />*/}
+                    {/*<InputGroup>*/}
+                        {/*<InputGroupButtonDropdown addonType="prepend"*/}
+                                                  {/*isOpen={this.state.splitButtonOpen}*/}
+                                                  {/*toggle={this.toggleSplit}>*/}
+                            {/*<Button outline>Split Button</Button>*/}
+                            {/*<DropdownToggle split outline />*/}
+                            {/*<DropdownMenu>*/}
+                                {/*<DropdownItem header>Header</DropdownItem>*/}
+                                {/*<DropdownItem disabled>Action</DropdownItem>*/}
+                                {/*<DropdownItem>Another Action</DropdownItem>*/}
+                                {/*<DropdownItem divider />*/}
+                                {/*<DropdownItem>Another Action</DropdownItem>*/}
+                            {/*</DropdownMenu>*/}
+                        {/*</InputGroupButtonDropdown>*/}
+                        {/*<Input placeholder="and..." />*/}
+                        {/*<InputGroupAddon addonType="append">*/}
+                            {/*<Button color="secondary">I'm a button</Button>*/}
+                        {/*</InputGroupAddon>*/}
+                    {/*</InputGroup>*/}
+
+
+                    {/*<br />*/}
+                    {/*<br />*/}
+                    {/*<br />*/}
+                    {/*<br />*/}
+                    {/*<br />*/}
+
+                    {/*<div id="hoverbar" style={{width: '250px'}} className="shadow-lg p-1 m-1 bg-white rounded" >*/}
+
+                        {/*<Button size="sm"*/}
+                                {/*type="button"*/}
+                                {/*className="btn btn-outline-secondary p-2 m-1 rounded-circle"*/}
+                                {/*title="Capture HTML page"*/}
+                                {/*aria-label=""*/}
+                                {/*style={{backgroundColor: 'rgba(255,255,0,0.5)'}} >*/}
+
+                        {/*</Button>*/}
+
+                        {/*<Button size="sm"*/}
+                                {/*type="button"*/}
+                                {/*className="btn btn-outline-secondary p-2 m-1 rounded-circle"*/}
+                                {/*title="Capture HTML page"*/}
+                                {/*aria-label=""*/}
+                                {/*style={{backgroundColor: 'rgba(255,0,0,0.5)'}} >*/}
+
+                        {/*</Button>*/}
+
+                        {/*<Button size="sm"*/}
+                                {/*type="button"*/}
+                                {/*className="btn btn-outline-secondary p-2 m-1 rounded-circle"*/}
+                                {/*title="Capture HTML page"*/}
+                                {/*aria-label=""*/}
+                                {/*style={{backgroundColor: 'rgba(0,255,0,0.5)'}} >*/}
+
+                        {/*</Button>*/}
+
+
+                        {/*<Button size="sm"*/}
+                                {/*type="button"*/}
+                                {/*className="btn btn-outline-secondary p-2 m-1 rounded-circle"*/}
+                                {/*title="Capture HTML page"*/}
+                                {/*aria-label=""*/}
+                                {/*style={{backgroundColor: 'rgba(0,0,255,0.5)'}} >*/}
+
+                        {/*</Button>*/}
+
+                        {/*<Button size="sm"*/}
+                                {/*type="button"*/}
+                                {/*className="btn btn-outline-secondary p-1 m-1 "*/}
+                                {/*title="Capture HTML page"*/}
+                                {/*aria-label=""*/}
+                                {/*style={{backgroundColor: 'yellow'}} >*/}
+
+                            {/*<span className="fa fa-tag" aria-hidden="true"></span>*/}
+
+                        {/*</Button>*/}
+
+
+
+                        {/*<Button size="sm"*/}
+                                {/*type="button"*/}
+                                {/*className="btn btn-outline-secondary p-1 m-1"*/}
+                                {/*title="Capture HTML page"*/}
+                                {/*aria-label=""*/}
+                                {/*style={{backgroundColor: 'yellow'}} >*/}
+
+                            {/*<span className="fa fa-tag" aria-hidden="true"></span>*/}
+
+                        {/*</Button>*/}
+
+
+                        {/*<InputGroup size="sm" style={{width: '100%'}} >*/}
+
+                            {/*<InputGroupAddon addonType="prepend">*/}
+                                {/*/!*<i className="fa fa-close"></i>*!/*/}
+
+                                {/*<Button type="button"*/}
+                                        {/*className="btn btn-outline-secondary"*/}
+                                        {/*title="Capture HTML page"*/}
+                                        {/*aria-label=""*/}
+                                        {/*style={{backgroundColor: 'yellow'}} >*/}
+
+                                    {/*<span className="fa fa-tag fa-lg" aria-hidden="true"></span>*/}
+
+                                {/*</Button>*/}
+
+                                {/*<Button type="button"*/}
+                                        {/*className="btn btn-outline-secondary"*/}
+                                        {/*title="Capture HTML page"*/}
+                                        {/*aria-label=""*/}
+                                        {/*style={{backgroundColor: 'red'}} >*/}
+
+                                    {/*<span className="fa fa-tag fa-lg" aria-hidden="true"></span>*/}
+
+                                {/*</Button>*/}
+
+
+                                {/*<Button type="button"*/}
+                                        {/*className="btn btn-outline-secondary"*/}
+                                        {/*title="Capture HTML page"*/}
+                                        {/*aria-label="" >*/}
+
+                                    {/*<span className="fa fa-comment-o fa-lg" aria-hidden="true"></span>*/}
+
+                                {/*</Button>*/}
+
+                            {/*</InputGroupAddon>*/}
+                            {/*<InputGroupAddon addonType="append">*/}
+                                {/*<Button color="secondary">I'm a button</Button>*/}
+                            {/*</InputGroupAddon>*/}
+                        {/*</InputGroup>*/}
+                    {/*</div>*/}
+
+
+                    {/*<div style={{backgroundColor: 'rgba(0,0,255,0.5)'}}>*/}
+                        {/*this is the first*/}
+                    {/*</div>*/}
+
+
+                    {/*<InputGroupButtonDropdown addonType="append"*/}
+                                              {/*size="sm"*/}
+                                              {/*isOpen={this.state.dropdownOpen}*/}
+                                              {/*toggle={this.toggleDropDown}>*/}
+                        {/*<DropdownToggle caret>*/}
+                            {/*Button Dropdown*/}
+                        {/*</DropdownToggle>*/}
+                        {/*<DropdownMenu>*/}
+                            {/*<DropdownItem header>Header</DropdownItem>*/}
+                            {/*<DropdownItem disabled>Action</DropdownItem>*/}
+                            {/*<DropdownItem>Another Action</DropdownItem>*/}
+                            {/*<DropdownItem divider />*/}
+                            {/*<DropdownItem>Another Action</DropdownItem>*/}
+                        {/*</DropdownMenu>*/}
+                    {/*</InputGroupButtonDropdown>*/}
+
+
+                {/*</div>*/}
+                {/*<Moment fromNow>1976-04-19T12:59-0500</Moment>*/}
+
+                {/*<div>*/}
+                    {/*<div className="text-right">asdf</div>*/}
+                    {/*<div>asdf</div>*/}
+                {/*</div>*/}
+
+                {/*<nav className="navbar navbar-expand-lg navbar-light">*/}
+                    {/*<a className="navbar-brand" href="#">Navbar</a>*/}
+
+                    {/*<div className=""*/}
+                         {/*id="navbarSupportedContent">*/}
+                        {/*<ul className="navbar-nav mr-auto">*/}
+                            {/*<li className="nav-item active">*/}
+                                {/*<a className="nav-link" href="#">Home <span*/}
+                                    {/*className="sr-only">(current)</span></a>*/}
+                            {/*</li>*/}
+                            {/*<li className="nav-item">*/}
+                                {/*<a className="nav-link" href="#">Link</a>*/}
+                            {/*</li>*/}
+                            {/*<li className="nav-item dropdown">*/}
+                                {/*<a className="nav-link dropdown-toggle" href="#"*/}
+                                   {/*id="navbarDropdown" role="button"*/}
+                                   {/*data-toggle="dropdown" aria-haspopup="true"*/}
+                                   {/*aria-expanded="false">*/}
+                                    {/*Dropdown*/}
+                                {/*</a>*/}
+                                {/*<div className="dropdown-menu"*/}
+                                     {/*aria-labelledby="navbarDropdown">*/}
+                                    {/*<a className="dropdown-item"*/}
+                                       {/*href="#">Action</a>*/}
+                                    {/*<a className="dropdown-item" href="#">Another*/}
+                                        {/*action</a>*/}
+                                    {/*<div className="dropdown-divider"></div>*/}
+                                    {/*<a className="dropdown-item" href="#">Something*/}
+                                        {/*else here</a>*/}
+                                {/*</div>*/}
+                            {/*</li>*/}
+                            {/*<li className="nav-item">*/}
+                                {/*<a className="nav-link disabled"*/}
+                                   {/*href="#">Disabled</a>*/}
+                            {/*</li>*/}
+                        {/*</ul>*/}
+                        {/*<form className="form-inline my-2 my-lg-0">*/}
+                            {/*right*/}
+                        {/*</form>*/}
+                    {/*</div>*/}
+                {/*</nav>*/}
+
+                {/*<br/>*/}
+                {/*<br/>*/}
+                {/*<br/>*/}
+                {/*<br/>*/}
+                {/*<br/>*/}
+
+                {/*<div className="column-selector m-2">*/}
+
+                    {/*<ListGroup>*/}
+                        {/*<ListGroupItem>*/}
+                            {/*<Input type="checkbox" />*/}
+                            {/*Cras justo odio*/}
+                        {/*</ListGroupItem>*/}
+                        {/*<ListGroupItem>*/}
+                            {/*<div className="ml-2">*/}
+                                {/*<Input type="checkbox" />*/}
+                                {/*Dapibus ac facilisis in*/}
+                            {/*</div>*/}
+                        {/*</ListGroupItem>*/}
+                        {/*<ListGroupItem>Morbi leo risus</ListGroupItem>*/}
+                        {/*<ListGroupItem>Porta ac consectetur ac</ListGroupItem>*/}
+                        {/*<ListGroupItem>Vestibulum at eros</ListGroupItem>*/}
+                    {/*</ListGroup>*/}
+
+                {/*</div>*/}
 
-                <div className="fa-4x">
-                    <span className="fa-layers fa-fw" style={{background: 'MistyRose'}}>
-                        <i className="fas fa-circle" style={{color: 'Tomato'}}></i>
-                        <i className="fa-inverse fas fa-times" data-fa-transform="shrink-6"></i>
-                    </span>
-
-                    {/*https://fontawesome.com/how-to-use/on-the-web/styling/power-transforms*/}
-
-                    <span className="fa-layers fa-fw">
-                        <i className="fa fa-comment-alt" style={{color: 'grey'}} data-fa-transform="shrink-2 down-1"></i>
-                        <i className="fa-inverse fas fa-plus" style={{color: 'white'}}  data-fa-transform="shrink-8 up-0"></i>
-                    </span>
-
-                    <span className="fa-layers fa-fw">
-                        <i className="fas fa-bolt" style={{color: 'grey'}} data-fa-transform="shrink-2 down-1"></i>
-                        <i className="fa-inverse fas fa-plus" style={{color: 'white'}}  data-fa-transform="shrink-8 up-0"></i>
-                    </span>
-
-                    <i className="fas fa-spider" data-fa-transform="shrink-8 up-6"></i>
-
-
-
-                </div>
-
-
-                <br/>
-                <span className="fa-stack fa-lg" aria-hidden="true">
-                  <i className="fa fa-comment fa-stack-2x"></i>
-                  <i className="fa fa-plus fa-stack-1x fa-inverse"></i>
-                </span>
-                <br/>
-
-                <span className="fa-stack fa-lg" aria-hidden="true">
-                  <i className="fa fa-comment-alt fa-stack-2x"></i>
-                  <i className="fa fa-plus fa-stack-1x fa-inverse"></i>
-                </span>
-                <br/>
-
-
-                <i className="fa fa-comment fa-stack-2x"></i>
-                <br/>
-
-                <i className="fa fa-comment fa-2x"></i>
-                <br/>
-
-                <i className="fa fa-comment fa-lg"></i>
-                <br/>
-                <i className="fas fa-comment-plus"></i>
-
-                <TableDropdown id={'table-dropdown'}></TableDropdown>
-
-                <br/>
-                <br/>
-                <br/>
-                <br/>
-                <br/>
-                <br/>
-                <br/>
-                <br/>
-                <br/>
-                <br/>
-
-
-                <Dropdown isOpen={true} >
-                    <DropdownToggle
-                        tag="span"
-                        data-toggle="dropdown"
-                        aria-expanded={true}>
-                        Custom Dropdown Content
-                    </DropdownToggle>
-                    <DropdownMenu>
-                        <div >Custom dropdown item</div>
-                    </DropdownMenu>
-                </Dropdown>
-
-                <ListSelector options={options}
-                              id="list-options"
-                              onChange={(value) => console.log(value)}>
-
-                </ListSelector>
-
-                    {/*<NavbarBrand href="/">reactstrap</NavbarBrand>*/}
-                    {/*<NavbarToggler onClick={this.toggle} />*/}
-                    {/*<Collapse isOpen={this.state.isOpen} navbar>*/}
-                        {/*<Nav className="ml-auto" navbar>*/}
-                            {/*<NavItem>*/}
-                                {/*<NavLink href="/components/">Components</NavLink>*/}
-                            {/*</NavItem>*/}
-                            {/*<NavItem>*/}
-                                {/*<NavLink href="https://github.com/reactstrap/reactstrap">GitHub</NavLink>*/}
-                            {/*</NavItem>*/}
-                            {/*<UncontrolledDropdown nav inNavbar>*/}
-                                {/*<DropdownToggle nav caret>*/}
-                                    {/*Options*/}
-                                {/*</DropdownToggle>*/}
-                                {/*<DropdownMenu right>*/}
-                                    {/*<DropdownItem>*/}
-                                        {/*Option 1*/}
-                                    {/*</DropdownItem>*/}
-                                    {/*<DropdownItem>*/}
-                                        {/*Option 2*/}
-                                    {/*</DropdownItem>*/}
-                                    {/*<DropdownItem divider />*/}
-                                    {/*<DropdownItem>*/}
-                                        {/*Reset*/}
-                                    {/*</DropdownItem>*/}
-                                {/*</DropdownMenu>*/}
-                            {/*</UncontrolledDropdown>*/}
-                        {/*</Nav>*/}
-                    {/*</Collapse>*/}
-
-                <Navbar light expand="md" className="p-2 border-bottom link-navbar">
-
-                    <InputGroup size="sm" className="">
-
-                        <InputGroupAddon addonType="prepend"
-                                         title="Refresh the current page">
-                            {/*<i className="fa fa-close"></i>*/}
-
-                            <Button type="button"
-                                    className="btn btn-outline-secondary"
-                                    aria-label="">
-
-                                <span className="fa fa-refresh fa-lg" aria-hidden="true"></span>
-
-                            </Button>
-
-                        </InputGroupAddon>
-                        <Input className="px-2 mx-1" />
-                        <InputGroupAddon addonType="append">
-                            {/*<i className="fa fa-close"></i>*/}
-
-                            <Button type="button"
-                                    className="btn btn-outline-secondary"
-                                    title="Capture the HTML page and save locally"
-                                    aria-label=""
-                                    disabled>
-
-                                <span className="fa fa-cloud-download fa-lg" aria-hidden="true"></span>
-
-                            </Button>
-
-                        </InputGroupAddon>
-
-                        <BrowserConfigurationInputGroup/>
-
-                    </InputGroup>
-                </Navbar>
-
-                <br/>
-                <br/>
-                <br/>
-                <br/>
-                <br/>
-                <br/>
-
-                <div className="components">
-                    asdf : <Input type="checkbox" />
-                    <InputGroup>
-                        <InputGroupAddon addonType="prepend"><Button>I'm a button</Button></InputGroupAddon>
-                        <Input />
-                    </InputGroup>
-                    <br />
-                    <InputGroup>
-                        <Input />
-                        <InputGroupButtonDropdown addonType="append"
-                                                  isOpen={this.state.dropdownOpen}
-                                                  toggle={this.toggleDropDown}>
-                            <DropdownToggle caret>
-                                Button Dropdown
-                            </DropdownToggle>
-                            <DropdownMenu>
-                                <DropdownItem header>Header</DropdownItem>
-                                <DropdownItem disabled>Action</DropdownItem>
-                                <DropdownItem>Another Action</DropdownItem>
-
-
-                                <DropdownItem divider />
-                                <DropdownItem><Input type="checkbox" /> asdf</DropdownItem>
-                                <DropdownItem>Another Action</DropdownItem>
-                            </DropdownMenu>
-                        </InputGroupButtonDropdown>
-                    </InputGroup>
-                    <br />
-                    <InputGroup>
-                        <InputGroupButtonDropdown addonType="prepend"
-                                                  isOpen={this.state.splitButtonOpen}
-                                                  toggle={this.toggleSplit}>
-                            <Button outline>Split Button</Button>
-                            <DropdownToggle split outline />
-                            <DropdownMenu>
-                                <DropdownItem header>Header</DropdownItem>
-                                <DropdownItem disabled>Action</DropdownItem>
-                                <DropdownItem>Another Action</DropdownItem>
-                                <DropdownItem divider />
-                                <DropdownItem>Another Action</DropdownItem>
-                            </DropdownMenu>
-                        </InputGroupButtonDropdown>
-                        <Input placeholder="and..." />
-                        <InputGroupAddon addonType="append">
-                            <Button color="secondary">I'm a button</Button>
-                        </InputGroupAddon>
-                    </InputGroup>
-
-
-                    <br />
-                    <br />
-                    <br />
-                    <br />
-                    <br />
-
-                    <div id="hoverbar" style={{width: '250px'}} className="shadow-lg p-1 m-1 bg-white rounded" >
-
-                        <Button size="sm"
-                                type="button"
-                                className="btn btn-outline-secondary p-2 m-1 rounded-circle"
-                                title="Capture HTML page"
-                                aria-label=""
-                                style={{backgroundColor: 'rgba(255,255,0,0.5)'}} >
-
-                        </Button>
-
-                        <Button size="sm"
-                                type="button"
-                                className="btn btn-outline-secondary p-2 m-1 rounded-circle"
-                                title="Capture HTML page"
-                                aria-label=""
-                                style={{backgroundColor: 'rgba(255,0,0,0.5)'}} >
-
-                        </Button>
-
-                        <Button size="sm"
-                                type="button"
-                                className="btn btn-outline-secondary p-2 m-1 rounded-circle"
-                                title="Capture HTML page"
-                                aria-label=""
-                                style={{backgroundColor: 'rgba(0,255,0,0.5)'}} >
-
-                        </Button>
-
-
-                        <Button size="sm"
-                                type="button"
-                                className="btn btn-outline-secondary p-2 m-1 rounded-circle"
-                                title="Capture HTML page"
-                                aria-label=""
-                                style={{backgroundColor: 'rgba(0,0,255,0.5)'}} >
-
-                        </Button>
-
-                        <Button size="sm"
-                                type="button"
-                                className="btn btn-outline-secondary p-1 m-1 "
-                                title="Capture HTML page"
-                                aria-label=""
-                                style={{backgroundColor: 'yellow'}} >
-
-                            <span className="fa fa-tag" aria-hidden="true"></span>
-
-                        </Button>
-
-
-
-                        <Button size="sm"
-                                type="button"
-                                className="btn btn-outline-secondary p-1 m-1"
-                                title="Capture HTML page"
-                                aria-label=""
-                                style={{backgroundColor: 'yellow'}} >
-
-                            <span className="fa fa-tag" aria-hidden="true"></span>
-
-                        </Button>
-
-
-                        <InputGroup size="sm" style={{width: '100%'}} >
-
-                            <InputGroupAddon addonType="prepend">
-                                {/*<i className="fa fa-close"></i>*/}
-
-                                <Button type="button"
-                                        className="btn btn-outline-secondary"
-                                        title="Capture HTML page"
-                                        aria-label=""
-                                        style={{backgroundColor: 'yellow'}} >
-
-                                    <span className="fa fa-tag fa-lg" aria-hidden="true"></span>
-
-                                </Button>
-
-                                <Button type="button"
-                                        className="btn btn-outline-secondary"
-                                        title="Capture HTML page"
-                                        aria-label=""
-                                        style={{backgroundColor: 'red'}} >
-
-                                    <span className="fa fa-tag fa-lg" aria-hidden="true"></span>
-
-                                </Button>
-
-
-                                <Button type="button"
-                                        className="btn btn-outline-secondary"
-                                        title="Capture HTML page"
-                                        aria-label="" >
-
-                                    <span className="fa fa-comment-o fa-lg" aria-hidden="true"></span>
-
-                                </Button>
-
-                            </InputGroupAddon>
-                            <InputGroupAddon addonType="append">
-                                <Button color="secondary">I'm a button</Button>
-                            </InputGroupAddon>
-                        </InputGroup>
-                    </div>
-
-
-                    <div style={{backgroundColor: 'rgba(0,0,255,0.5)'}}>
-                        this is the first
-                    </div>
-
-
-                    <InputGroupButtonDropdown addonType="append"
-                                              size="sm"
-                                              isOpen={this.state.dropdownOpen}
-                                              toggle={this.toggleDropDown}>
-                        <DropdownToggle caret>
-                            Button Dropdown
-                        </DropdownToggle>
-                        <DropdownMenu>
-                            <DropdownItem header>Header</DropdownItem>
-                            <DropdownItem disabled>Action</DropdownItem>
-                            <DropdownItem>Another Action</DropdownItem>
-                            <DropdownItem divider />
-                            <DropdownItem>Another Action</DropdownItem>
-                        </DropdownMenu>
-                    </InputGroupButtonDropdown>
-
-
-                </div>
-                <Moment fromNow>1976-04-19T12:59-0500</Moment>
-
-                <div>
-                    <div className="text-right">asdf</div>
-                    <div>asdf</div>
-                </div>
-
-                <nav className="navbar navbar-expand-lg navbar-light">
-                    <a className="navbar-brand" href="#">Navbar</a>
-
-                    <div className=""
-                         id="navbarSupportedContent">
-                        <ul className="navbar-nav mr-auto">
-                            <li className="nav-item active">
-                                <a className="nav-link" href="#">Home <span
-                                    className="sr-only">(current)</span></a>
-                            </li>
-                            <li className="nav-item">
-                                <a className="nav-link" href="#">Link</a>
-                            </li>
-                            <li className="nav-item dropdown">
-                                <a className="nav-link dropdown-toggle" href="#"
-                                   id="navbarDropdown" role="button"
-                                   data-toggle="dropdown" aria-haspopup="true"
-                                   aria-expanded="false">
-                                    Dropdown
-                                </a>
-                                <div className="dropdown-menu"
-                                     aria-labelledby="navbarDropdown">
-                                    <a className="dropdown-item"
-                                       href="#">Action</a>
-                                    <a className="dropdown-item" href="#">Another
-                                        action</a>
-                                    <div className="dropdown-divider"></div>
-                                    <a className="dropdown-item" href="#">Something
-                                        else here</a>
-                                </div>
-                            </li>
-                            <li className="nav-item">
-                                <a className="nav-link disabled"
-                                   href="#">Disabled</a>
-                            </li>
-                        </ul>
-                        <form className="form-inline my-2 my-lg-0">
-                            right
-                        </form>
-                    </div>
-                </nav>
-
-                <br/>
-                <br/>
-                <br/>
-                <br/>
-                <br/>
-
-                <div className="column-selector m-2">
-
-                    <ListGroup>
-                        <ListGroupItem>
-                            <Input type="checkbox" />
-                            Cras justo odio
-                        </ListGroupItem>
-                        <ListGroupItem>
-                            <div className="ml-2">
-                                <Input type="checkbox" />
-                                Dapibus ac facilisis in
-                            </div>
-                        </ListGroupItem>
-                        <ListGroupItem>Morbi leo risus</ListGroupItem>
-                        <ListGroupItem>Porta ac consectetur ac</ListGroupItem>
-                        <ListGroupItem>Vestibulum at eros</ListGroupItem>
-                    </ListGroup>
-
-                </div>
             </div>
         );
     }

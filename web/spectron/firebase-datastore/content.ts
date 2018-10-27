@@ -75,11 +75,6 @@ export class Tester {
             // await firestore.enablePersistence({experimentalTabSynchronization:
             // true});
 
-
-
-            //
-
-
             const diskDatastore = new DiskDatastore();
             const firebaseDatastore = new FirebaseDatastore(diskDatastore);
 
@@ -91,6 +86,8 @@ export class Tester {
 
             // FIXME: delete the data and test that this works too.
 
+
+            // FIXME: create a generic datastore tester...
 
             describe('Basic Test', async function() {
 
