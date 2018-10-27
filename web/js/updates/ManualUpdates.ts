@@ -2,6 +2,8 @@ import {dialog} from 'electron';
 import { autoUpdater } from 'electron-updater';
 import {Logger} from '../logger/Logger';
 
+import process from 'process';
+
 // borrowed from here and ported to typescript:
 //
 // https://github.com/electron-userland/electron-builder/blob/docs/encapsulated%20manual%20update%20via%20menu.js
@@ -9,6 +11,11 @@ import {Logger} from '../logger/Logger';
 const log = Logger.create();
 
 autoUpdater.autoDownload = false;
+
+// this is so that we can
+autoUpdater.allowPrerelease = process.env['POLAR_AUTO_UPDATER_ALLOW_PRERELEASE'] === 'true';
+
+log.info("Allowing pre-releases for auto-updates: " + autoUpdater.allowPrerelease);
 
 export class ManualUpdates {
 
