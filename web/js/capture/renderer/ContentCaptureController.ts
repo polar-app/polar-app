@@ -1,8 +1,6 @@
 import {ContentCapture} from './ContentCapture';
 import {Logger} from '../../logger/Logger';
-
-const electron = require("electron");
-const ipcRenderer = electron.ipcRenderer;
+import electron, {ipcRenderer} from 'electron';
 
 const log = Logger.create();
 

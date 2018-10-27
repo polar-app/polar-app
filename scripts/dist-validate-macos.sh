@@ -72,7 +72,6 @@ require_var() {
     name=${1}
     msg=${2}
 
-
 }
 
 get_release() {
@@ -99,5 +98,7 @@ fi
 
 echo "Found prerelease: ${prerelease_url}"
 echo "Found stable: ${stable_url}"
+
+# https://apple.stackexchange.com/questions/73926/is-there-a-command-to-install-a-dmg
 
 terminate_running_app

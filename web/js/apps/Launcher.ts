@@ -12,6 +12,7 @@ import {PageSearchController} from '../page_search/PageSearchController';
 import {CommentsController} from '../comments/CommentsController';
 import {AnnotationBarService} from '../ui/annotationbar/AnnotationBarService';
 import {AreaHighlightView} from "../highlights/area/view/AreaHighlightView";
+import {AutoUpdatesController} from '../auto_updates/AutoUpdatesController';
 
 const log = Logger.create();
 
@@ -51,6 +52,7 @@ export class Launcher {
         new PageSearchController(model).start();
         new CommentsController(model).start();
         new AnnotationBarService(model).start();
+        new AutoUpdatesController().start();
 
         const viewer = ViewerFactory.create(model);
         viewer.start();

@@ -4,6 +4,7 @@ import {ProgressInfo} from "builder-util-runtime"
 import {Logger} from '../logger/Logger';
 
 import process from 'process';
+import {Broadcasters} from '../ipc/Broadcasters';
 
 // borrowed from here and ported to typescript:
 //
@@ -104,5 +105,7 @@ autoUpdater.on('download-progress', (progress: ProgressInfo) => {
     // broadcaster to send message to every renderer and have a controller
     // running there, listening for the messages on download progress updates
     // and then display the appropriate UI.
+
+    Broadcasters.send("download-progress", progress);
 
 });
