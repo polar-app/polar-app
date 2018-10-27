@@ -52,7 +52,7 @@ export class Tags {
      * Return true if all the tags are valid.  If no tags are given we return
      * true as the input set had no valid tags.
      */
-    public static validateTags(...tags: Tag[]): boolean {
+    public static tagsAreValid(...tags: Tag[]): boolean {
 
         return tags.map(tag => this.validateTag(tag).isPresent())
                    .reduce((acc, curr) => ! acc ? false : curr, true);
@@ -63,8 +63,12 @@ export class Tags {
      * Return tags that are invalid.
      * @param tags
      */
-    public static invalidTags(...tags: Tag[]): Tag[] {
+    public static findInvalidTags(...tags: Tag[]): Tag[] {
         return tags.filter(tag => ! this.validateTag(tag).isPresent());
+    }
+
+    public static findValidTags(...tags: Tag[]): Tag[] {
+        return tags.filter(tag => this.validateTag(tag).isPresent());
     }
 
     public static toMap(tags: Tag[]) {

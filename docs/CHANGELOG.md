@@ -1,4 +1,8 @@
 
+# 1.0.9
+
+- If any of the input tags were invalid, they were ALL ignored.  Which is bad.
+
 # 1.0.8
 
 - ability to enable fetching the auto-update from a pre-release

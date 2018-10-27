@@ -10,8 +10,12 @@ import {Optional} from '../../../web/js/util/ts/Optional';
 import {TagSelectOption} from './TagSelectOption';
 import {TagSelectOptions} from './TagSelectOptions';
 import {Tags} from '../../../web/js/tags/Tags';
+import {Logger} from '../../../web/js/logger/Logger';
+import {Toaster} from '../../../web/js/toaster/Toaster';
 
 let SEQUENCE = 0;
+
+const log = Logger.create();
 
 // noinspection TsLint
 export class TagInput extends React.Component<TagInputProps, TagInputState> {
@@ -116,13 +120,18 @@ export class TagInput extends React.Component<TagInputProps, TagInputState> {
     private handleChange(selectedOptions: any) {
 
         if (this.props.onChange) {
+
             const tags = TagSelectOptions.toTags(selectedOptions);
 
-            if (Tags.validateTags(...tags)) {
-                this.props.onChange(this.props.repoDocInfo, tags);
-            } else {
-                const invalidTags = Tags.invalidTags(...tags);
-                console.log("Tags are invalid", invalidTags);
+            const validTags = Tags.findValidTags(...tags);
+            const invalidTags = Tags.findInvalidTags(...tags);
+
+            if (validTags.length > 0) {
+                this.props.onChange(this.props.repoDocInfo, validTags);
+            }
+
+            if (invalidTags.length > 0) {
+                log.warn("Some tags were invalid", invalidTags);
             }
 
         }
