@@ -25,7 +25,7 @@ export class FrameResizer {
     //
     // https://stackoverflow.com/questions/1835219/is-there-an-event-that-fires-on-changes-to-scrollheight-or-scrollwidth-in-jquery
 
-    constructor(parent: HTMLElement, iframe: HTMLIFrameElement) {
+    constructor(parent: HTMLElement, iframe: HTMLIFrameElement | Electron.WebviewTag) {
 
         this.parent = Preconditions.assertPresent(parent);
         this.host = Preconditions.assertPresent(iframe);

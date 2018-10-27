@@ -18,7 +18,7 @@ const MAX_RESIZES = 25;
 export class BackgroundFrameResizer {
 
     private readonly parent: HTMLElement;
-    private readonly iframe: HTMLIFrameElement;
+    private readonly host: HTMLIFrameElement | Electron.WebviewTag;
 
     // how long between polling should we wait to expand the size.
     private readonly timeoutInterval = 250;
@@ -27,12 +27,12 @@ export class BackgroundFrameResizer {
 
     private frameResizer: FrameResizer;
 
-    constructor(parent: HTMLElement, iframe: HTMLIFrameElement) {
+    constructor(parent: HTMLElement, host: HTMLIFrameElement | Electron.WebviewTag) {
 
         this.parent = Preconditions.assertPresent(parent);
-        this.iframe = Preconditions.assertPresent(iframe);
+        this.host = Preconditions.assertPresent(host);
 
-        this.frameResizer = new FrameResizer(parent, iframe);
+        this.frameResizer = new FrameResizer(parent, host);
 
     }
 

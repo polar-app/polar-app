@@ -9,6 +9,7 @@ import {isPresent} from '../../Preconditions';
 import BrowserRegistry from '../../capture/BrowserRegistry';
 import {SimpleReactor} from '../../reactor/SimpleReactor';
 import {ProgressBar} from '../../ui/progress_bar/ProgressBar';
+import {BackgroundFrameResizer} from '../../viewer/html/BackgroundFrameResizer';
 
 const log = Logger.create();
 
@@ -44,16 +45,20 @@ export class BrowserApp {
             ['did-start-loading', 'did-stop-loading', 'did-fail-load', 'dom-ready' ]
                 .map(eventListenerName => content.addEventListener(eventListenerName, () => this.refreshTitle()));
 
-            // Corresponds to the points in time when the spinner of the tab starts spinning.
+            // Corresponds to the points in time when the spinner of the tab
+            // starts spinning.
             content.addEventListener('did-start-loading', () => {
                 progressBar = ProgressBar.create(true);
                 document.body.scrollTo(0, 0);
+
+                this.startResizingWebview();
 
                 navigationReactor.dispatchEvent('did-start-loading');
 
             });
 
-            // Corresponds to the points in time when the spinner of the tab stops spinning.
+            // Corresponds to the points in time when the spinner of the tab
+            // stops spinning.
             content.addEventListener('did-stop-loading', () => {
 
                 if (progressBar) {
@@ -120,7 +125,8 @@ export class BrowserApp {
 
         const browser = BrowserRegistry[browserName];
 
-        // TODO: make methods for each events type adn call BrowserAppEvents.configureWindow
+        // TODO: make methods for each events type adn call
+        // BrowserAppEvents.configureWindow
         WebContentsNotifiers.dispatchEvent(BrowserAppEvent.CONFIGURE_WINDOW, browser);
 
 
@@ -143,9 +149,19 @@ export class BrowserApp {
 
     }
 
+    private startResizingWebview() {
+
+        const contentHost = this.getContentHost();
+        const backgroundFrameResizer
+            = new BackgroundFrameResizer(contentHost.parentElement!, contentHost);
+
+        backgroundFrameResizer.start();
+
+    }
+
     private refreshTitle() {
-        const content = this.getContentHost();
-        document.title = content.getTitle();
+        const contentHost = this.getContentHost();
+        document.title = contentHost.getTitle();
     }
 
     private getContentHost() {
