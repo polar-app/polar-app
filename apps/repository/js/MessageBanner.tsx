@@ -99,7 +99,12 @@ const MESSAGES: Message[] = [
     {
         id: 'join-discord',
         element: <div>Want to chat about Polar? <a href="https://discord.gg/GT8MhA6">Join our live Discord chat group!</a></div>
+    },
+    {
+        id: 'roadmap',
+        element: <div>Interested in the future of Polar? <a href="https://github.com/burtonator/polar-bookshelf/blob/master/docs/ROADMAP.md">Check out our roadmap!</a></div>
     }
+
 
 ];
 
