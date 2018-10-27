@@ -22,8 +22,9 @@ const rimraf = require('rimraf');
 
 const tmpdir = os.tmpdir();
 
-describe("DiskDatastore", function() {
-    DatastoreTester.test("ASdf");
+describe("DiskDatastore", async function() {
+
+    DatastoreTester.test(() => new DiskDatastore());
 
     it("getDataDir", function() {
         assert.notEqual(Directories.getDataDir(), null);

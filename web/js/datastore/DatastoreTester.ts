@@ -16,6 +16,7 @@ import {MockPHZWriter} from '../phz/MockPHZWriter';
 import {DocMetaFileRef} from './DocMetaRef';
 import {Backend} from './Backend';
 import {Platform} from '../util/Platforms';
+import {Datastore} from './Datastore';
 
 const rimraf = require('rimraf');
 
@@ -23,7 +24,7 @@ const tmpdir = os.tmpdir();
 
 export class DatastoreTester {
 
-    public static test(name: string) {
+    public static test(datastoreFactory: () => Datastore) {
 
         describe('Write and discover documents', function() {
 
@@ -31,18 +32,22 @@ export class DatastoreTester {
 
             const dataDir = FilePaths.join(tmpdir, 'test-data-dir');
 
-            let diskDatastore: DiskDatastore;
+            let datastore: Datastore;
             let persistenceLayer: DefaultPersistenceLayer;
 
             let docMeta: DocMeta;
+
+            let directories: Directories;
 
             beforeEach(async function() {
 
                 Files.removeDirectoryRecursively(dataDir);
 
                 GlobalDataDir.set(dataDir);
-                diskDatastore = new DiskDatastore();
-                persistenceLayer = new DefaultPersistenceLayer(diskDatastore);
+                datastore = datastoreFactory();
+                directories = new Directories();
+
+                persistenceLayer = new DefaultPersistenceLayer(datastore);
 
                 await persistenceLayer.init();
 
@@ -54,14 +59,14 @@ export class DatastoreTester {
 
                 assert.equal(contains, false);
 
-                await MockPHZWriter.write(FilePaths.create(diskDatastore.stashDir, `${fingerprint}.phz`))
+                await MockPHZWriter.write(FilePaths.create(datastore.stashDir, `${fingerprint}.phz`))
 
                 await persistenceLayer.sync(fingerprint, docMeta);
 
             });
 
             it("write and read data to disk", async function() {
-                //
+
                 // let contains = await persistenceLayer.contains(fingerprint);
                 //
                 // assert.ok(! contains);
@@ -96,8 +101,8 @@ export class DatastoreTester {
 
                 // make sure the files exist on disk...
 
-                const docPath = FilePaths.join(diskDatastore.stashDir, `${fingerprint}.phz`);
-                const statePath = FilePaths.join(diskDatastore.dataDir, fingerprint, 'state.json');
+                const docPath = FilePaths.join(directories.stashDir, `${fingerprint}.phz`);
+                const statePath = FilePaths.join(directories.dataDir, fingerprint, 'state.json');
 
                 assert.ok(await Files.existsAsync(docPath));
                 assert.ok(await Files.existsAsync(statePath));
@@ -115,17 +120,17 @@ export class DatastoreTester {
 
                 const data = 'fake image data';
 
-                assert.ok(! await diskDatastore.containsFile(Backend.IMAGE, 'test.jpg'));
+                assert.ok(! await datastore.containsFile(Backend.IMAGE, 'test.jpg'));
 
                 const meta = {
                     "foo": "bar"
                 };
 
-                await diskDatastore.addFile(Backend.IMAGE, 'test.jpg', data, meta);
+                await datastore.addFile(Backend.IMAGE, 'test.jpg', data, meta);
 
-                assert.ok(await diskDatastore.containsFile(Backend.IMAGE, 'test.jpg'));
+                assert.ok(await datastore.containsFile(Backend.IMAGE, 'test.jpg'));
 
-                const datastoreFile = await diskDatastore.getFile(Backend.IMAGE, 'test.jpg')
+                const datastoreFile = await datastore.getFile(Backend.IMAGE, 'test.jpg')
                 assert.ok(datastoreFile);
                 assert.ok(datastoreFile.isPresent());
                 assert.ok(datastoreFile.get());
@@ -137,7 +142,7 @@ export class DatastoreTester {
 
             it("getDocMetaFiles", async function() {
 
-                const docMetaFiles = await diskDatastore.getDocMetaFiles();
+                const docMetaFiles = await datastore.getDocMetaFiles();
 
                 assert.equal(docMetaFiles.length > 0, true);
 
