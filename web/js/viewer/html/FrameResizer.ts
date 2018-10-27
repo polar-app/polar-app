@@ -2,6 +2,7 @@ import {Optional} from '../../util/ts/Optional';
 import {Styles} from '../../util/Styles';
 import {Logger} from '../../logger/Logger';
 import {Preconditions} from '../../Preconditions';
+import {Functions} from '../../util/Functions';
 
 const log = Logger.create();
 
@@ -14,7 +15,7 @@ const log = Logger.create();
 export class FrameResizer {
 
     private readonly parent: HTMLElement;
-    private readonly iframe: HTMLIFrameElement;
+    private readonly host: HTMLIFrameElement | Electron.WebviewTag;
 
     private height: number | undefined;
 
@@ -27,7 +28,7 @@ export class FrameResizer {
     constructor(parent: HTMLElement, iframe: HTMLIFrameElement) {
 
         this.parent = Preconditions.assertPresent(parent);
-        this.iframe = Preconditions.assertPresent(iframe);
+        this.host = Preconditions.assertPresent(iframe);
 
         // the current height
         this.height = undefined;
@@ -41,7 +42,7 @@ export class FrameResizer {
      * sort of caching or throttling of resize, we can just force it one last
      * time.
      */
-    public resize(force: boolean = false) {
+    public async resize(force: boolean = false) {
 
         // TODO: accidental horizontal overflow...
         //
@@ -51,29 +52,23 @@ export class FrameResizer {
         // - I could see if the CSS is loaded, and that no more images or other
         //   resources have changed and then fix the page to that dimension.
         //
-        // - I could back off significantly in duration if only a small percentage
-        //   of the page height has changed.  For example, if we're less than 1%
-        //   I can just wait until the final rendering.  We are often only off
-        //   by a few px.
-        //
+        // - I could back off significantly in duration if only a small
+        // percentage of the page height has changed.  For example, if we're
+        // less than 1% I can just wait until the final rendering.  We are
+        // often only off by a few px.
 
-        const contentDocument = this.iframe.contentDocument;
+        const newHeightAsOptional = await this.getDocumentHeight();
 
-        if (! contentDocument) {
+        if(! newHeightAsOptional.isPresent()) {
             return;
         }
 
-        if (! contentDocument.body) {
-            return;
-        }
+        const newHeight = newHeightAsOptional.get();
 
-        const height = Styles.parsePX(Optional.of(this.iframe.style.height)
+        const height = Styles.parsePX(Optional.of(this.host.style.height)
                                         .filter( (current: any) => current !== null)
                                         .filter( current => current !== "")
                                         .getOrElse("0px"));
-
-        const newHeight = Math.max(contentDocument.documentElement.scrollHeight,
-                                   contentDocument.body.scrollHeight);
 
         const delta = Math.abs(newHeight - height);
 
@@ -86,10 +81,63 @@ export class FrameResizer {
 
         // we basically keep polling.
         if (height !== newHeight) {
-            // log.info(`Setting new height to: ${newHeight} vs previous ${this.iframe.style.height}`);
-            this.iframe.style.height = `${newHeight}px`;
+            // log.info(`Setting new height to: ${newHeight} vs previous
+            // ${this.iframe.style.height}`);
+            this.host.style.height = `${newHeight}px`;
             this.height = newHeight;
         }
+
+    }
+
+    /**
+     * Get the internal height of the given document OR return undefined if
+     * we don't have it yet. We might not have it if the document is still
+     * loading.
+     */
+    private async getDocumentHeight(): Promise<Optional<number>> {
+
+        if(this.host instanceof HTMLIFrameElement) {
+            return this.getDocumentHeightForIFrame(this.host);
+        } else {
+            return this.getDocumentHeightForWebview(this.host);
+        }
+
+    }
+
+    private async getDocumentHeightForIFrame(iframe: HTMLIFrameElement): Promise<Optional<number>> {
+
+        const contentDocument = iframe.contentDocument;
+
+        if (! contentDocument) {
+            return Optional.empty();
+        }
+
+        if (! contentDocument.body) {
+            return Optional.empty();
+        }
+
+        return Optional.of(Math.max(contentDocument.documentElement.scrollHeight,
+                                    contentDocument.body.scrollHeight));
+
+
+    }
+
+    private async getDocumentHeightForWebview(webview: Electron.WebviewTag): Promise<Optional<number>> {
+
+        /** @RendererContext */
+        function rendererGetDocumentHeight() {
+
+            return Math.max(document.documentElement.scrollHeight,
+                            document.body.scrollHeight);
+
+        }
+
+        const webContents = webview.getWebContents();
+
+        const script = Functions.functionToScript(rendererGetDocumentHeight);
+        const height: number = await webContents.executeJavaScript(script)
+
+        return Optional.of(height);
 
     }
 

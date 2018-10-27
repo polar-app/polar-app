@@ -37,17 +37,19 @@ export class BackgroundFrameResizer {
     }
 
     public start() {
-        this.resizeParentInBackground();
+
+        this.resizeParentInBackground()
+            .catch(err => log.error("Could not resize in background: ", err));
     }
 
-    private resizeParentInBackground() {
+    private async resizeParentInBackground() {
 
         if (this.resizes > MAX_RESIZES) {
             log.info("Hit MAX_RESIZES: " + MAX_RESIZES);
-            this.doBackgroundResize(true);
+            await this.doBackgroundResize(true);
             return;
         } else {
-            this.doBackgroundResize(false);
+            await this.doBackgroundResize(false);
         }
 
         setTimeout(() => this.resizeParentInBackground(), this.timeoutInterval);
@@ -61,11 +63,11 @@ export class BackgroundFrameResizer {
      * way, if we're doing any sort of caching or throttling of resize, we can
      * just force it one last time.
      */
-    private doBackgroundResize(force: boolean) {
+    private async doBackgroundResize(force: boolean) {
 
         ++this.resizes;
 
-        this.frameResizer.resize(force);
+        return this.frameResizer.resize(force);
 
     }
 

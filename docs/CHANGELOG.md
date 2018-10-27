@@ -1,4 +1,12 @@
 
+# 1.0.8
+
+- when capture is running we now set a title
+
+# 1.0.7
+
+- another release to fix Windows by upgrading sentinel
+
 # 1.0.6
 
 - changes to analytics and a rapid release for fixing Windows. 
