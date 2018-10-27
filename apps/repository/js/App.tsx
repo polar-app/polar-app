@@ -30,6 +30,7 @@ import {SettingsStore} from '../../../web/js/datastore/SettingsStore';
 import {cursorTo} from 'readline';
 import {Version} from '../../../web/js/util/Version';
 import {RepoDocInfoIndex} from './RepoDocInfoIndex';
+import {AutoUpdatesController} from '../../../web/js/auto_updates/AutoUpdatesController';
 
 const log = Logger.create();
 
@@ -634,6 +635,8 @@ export default class App extends React.Component<AppProps, AppState> {
     }
 
     private async init(): Promise<void> {
+
+        new AutoUpdatesController().start();
 
         const settings = await SettingsStore.load();
 

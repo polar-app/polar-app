@@ -52,7 +52,6 @@ export class Launcher {
         new PageSearchController(model).start();
         new CommentsController(model).start();
         new AnnotationBarService(model).start();
-        new AutoUpdatesController().start();
 
         const viewer = ViewerFactory.create(model);
         viewer.start();

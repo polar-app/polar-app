@@ -30,7 +30,7 @@ export class AutoUpdatesController {
 
         this.progressBar.update(percent);
 
-        if(percent === 100) {
+        if (percent === 100) {
             this.progressBar.destroy();
             this.progressBar = undefined;
         }
