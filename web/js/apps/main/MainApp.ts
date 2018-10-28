@@ -86,6 +86,14 @@ export class MainApp {
 
         const mainSession = session.fromPartition('persist:polar');
 
+        // mainSession.cookies.get({}, (err, cookies) => {
+        //
+        //     cookies.filter(cookie => {
+        //         log.debug("cookie: " , cookie)
+        //     })
+        //
+        // })
+
         const cacheInterceptorService =
             new CachingStreamInterceptorService(cacheRegistry,
                                                 mainSession.protocol);

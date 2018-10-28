@@ -106,9 +106,9 @@ export class PagemarkController {
                 height: pageElement.offsetHeight
             });
 
-            let pagemarkRect = PagemarkRects.createFromPositionedRect(boxRect, containerRect);
+            const pagemarkRect = PagemarkRects.createFromPositionedRect(boxRect, containerRect);
 
-            let pagemark = Pagemarks.create({rect: pagemarkRect});
+            const pagemark = Pagemarks.create({rect: pagemarkRect});
 
             Pagemarks.updatePagemark(this.model.docMeta, pageNum, pagemark);
 

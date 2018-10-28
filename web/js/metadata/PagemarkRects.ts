@@ -87,8 +87,8 @@ export class PagemarkRects {
 
         Preconditions.assertInstanceOf(boxRect, Rect, "boxRect");
 
-        let xAxis = boxRect.toLine("x").multiply(100 / containerRect.width);
-        let yAxis = boxRect.toLine("y").multiply(100 / containerRect.height);
+        let xAxis = boxRect.toLine("x").multiply(Math.floor(100 / containerRect.width));
+        let yAxis = boxRect.toLine("y").multiply(Math.floor(100 / containerRect.height));
 
         return this.createFromLines(xAxis, yAxis);
 
