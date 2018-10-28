@@ -15,6 +15,11 @@ const log = Logger.create();
 
 export class BrowserApp {
 
+    /**
+     * Truen when the user has loaded an external URL.
+     */
+    private loadedURL: boolean = false;
+
     public async start() {
 
         await DocumentReadyStates.waitFor(document, 'complete');
@@ -22,7 +27,7 @@ export class BrowserApp {
         const navigationReactor = new SimpleReactor<NavigationEventType>();
 
         ReactDOM.render(
-            <BrowserNavBar onLoadURL={this.onLoadURL}
+            <BrowserNavBar onLoadURL={(url) => this.onLoadURL(url)}
                            onBrowserChanged={(browserName: string) => this.onBrowserChanged(browserName)}
                            onTriggerCapture={() => this.onTriggerCapture()}
                            onReload={() => this.onReload()}
@@ -48,6 +53,10 @@ export class BrowserApp {
             // Corresponds to the points in time when the spinner of the tab
             // starts spinning.
             content.addEventListener('did-start-loading', () => {
+
+                if(! this.loadedURL)
+                    return;
+
                 progressBar = ProgressBar.create(true);
                 document.body.scrollTo(0, 0);
 
@@ -61,11 +70,15 @@ export class BrowserApp {
             // stops spinning.
             content.addEventListener('did-stop-loading', () => {
 
+                if(! this.loadedURL)
+                    return;
+
                 if (progressBar) {
                     progressBar.destroy();
                 }
 
                 navigationReactor.dispatchEvent('did-stop-loading');
+
             });
 
             content.addEventListener('did-fail-load', () => {
@@ -111,6 +124,7 @@ export class BrowserApp {
 
         log.debug("Loading URL: " + value);
 
+        this.loadedURL = true;
         WebContentsNotifiers.dispatchEvent(BrowserAppEvent.PROVIDE_URL, value);
 
     }

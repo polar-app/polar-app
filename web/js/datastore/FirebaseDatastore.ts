@@ -28,6 +28,10 @@ const log = Logger.create();
 // in the future. Or, an anonymous user can link a Facebook account and then,
 // later, sign in with Facebook to continue using your app.
 
+//
+// TODO: all files need to also have associated metadata in firestore and
+// the binary data is stored in firebase storage.
+
 export class FirebaseDatastore implements Datastore {
 
     public readonly stashDir: string;

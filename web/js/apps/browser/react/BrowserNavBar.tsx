@@ -8,10 +8,15 @@ import {ISimpleReactor} from '../../../reactor/SimpleReactor';
 import {NavigationEventType} from '../BrowserApp';
 import {RefreshButton} from './RefreshButton';
 
-export class BrowserNavBar extends React.Component<Props, State> {
+export class BrowserNavBar extends React.Component<IProps, IState> {
 
-    constructor(props: Props, context: State) {
+    constructor(props: IProps, context: IState) {
         super(props, context);
+
+        this.state = {
+            loadedURL: false
+        }
+
     }
 
     public render() {
@@ -23,11 +28,13 @@ export class BrowserNavBar extends React.Component<Props, State> {
 
                     <InputGroup size="sm" className="">
 
-                        <RefreshButton navigationReactor={this.props.navigationReactor} onReload={this.props.onReload}/>
+                        <RefreshButton navigationReactor={this.props.navigationReactor}
+                                       onReload={this.props.onReload}/>
 
-                        <URLBar onLoadURL={this.props.onLoadURL}/>
+                        <URLBar onLoadURL={url => this.onLoadURL(url)}/>
 
-                        <CaptureButton onTriggerCapture={this.props.onTriggerCapture}/>
+                        <CaptureButton disabled={! this.state.loadedURL}
+                                       onTriggerCapture={this.props.onTriggerCapture}/>
 
                         <BrowserConfigurationInputGroup onBrowserChanged={this.props.onBrowserChanged} />
 
@@ -39,13 +46,25 @@ export class BrowserNavBar extends React.Component<Props, State> {
         );
     }
 
+    private onLoadURL(url: string): void {
+
+        this.setState({
+            loadedURL: true
+        });
+
+        if(this.props.onLoadURL) {
+            this.props.onLoadURL(url);
+        }
+
+    }
+
 }
 
-interface State {
-
+interface IState {
+    loadedURL: boolean;
 }
 
-interface Props {
+interface IProps {
 
     /**
      * Called when need to load a URL that the navbar selected.

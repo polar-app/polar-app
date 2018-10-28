@@ -52,7 +52,7 @@ export class RefreshButton extends React.Component<Props, State> {
                 navButtonClassName = 'fas fa-sync fa-lg';
                 disabled = false;
                 break;
-        }
+        };
 
         return (
 
@@ -80,6 +80,7 @@ export class RefreshButton extends React.Component<Props, State> {
 interface Props {
     navigationReactor: ISimpleReactor<NavigationEventType>;
     onReload: () => void;
+    disabled?: boolean;
 
 }
 

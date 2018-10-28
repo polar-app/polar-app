@@ -133,7 +133,7 @@ export class Tester {
             console.log("FIXME: id0: " + id0);
             console.log("FIXME: id1: " + id1);
 
-            for (const id of [id0]) {
+            for (const id of [id0, id1]) {
 
                 for (let idx = 0; idx < 2; idx++) {
 
@@ -186,7 +186,7 @@ export class Tester {
 
                     });
 
-                    //await ref.set(doc);
+                    await ref.set(doc);
 
                 }
 
