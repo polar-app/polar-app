@@ -2,14 +2,22 @@ import * as firebase from './lib/firebase';
 
 export class Firestore {
 
-    public static getInstance(): firebase.firestore.Firestore {
+    private static firestore?: firebase.firestore.Firestore;
 
-        const firestore = firebase.firestore();
+    public static async getInstance(): Promise<firebase.firestore.Firestore> {
+
+        if(this.firestore) {
+            return this.firestore;
+        }
+
+        this.firestore = firebase.firestore();
 
         const settings = {timestampsInSnapshots: true};
-        firestore.settings(settings);
+        this.firestore.settings(settings);
 
-        return firestore;
+        await this.firestore.enablePersistence({experimentalTabSynchronization: true});
+
+        return this.firestore;
 
     }
 

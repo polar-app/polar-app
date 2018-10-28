@@ -33,40 +33,13 @@ export class Tester {
                                 (err) => this.onAuthError(err));
 
     }
-
     public async onAuth(user: firebase.User | null) {
 
         currentUser = user!;
 
         if (user) {
 
-            // User is signed in.
-            const displayName = user.displayName;
-            const email = user.email;
-            const emailVerified = user.emailVerified;
-            const photoURL = user.photoURL;
-            const uid = user.uid;
-            const phoneNumber = user.phoneNumber;
-            const providerData = user.providerData;
-
-            const accessToken = await user.getIdToken();
-
-            console.log("user: ", user);
-
-            document.getElementById('sign-in-status')!.textContent = 'Signed in';
-            document.getElementById('sign-in')!.textContent = 'Sign in';
-
-            // noinspection TsLint
-            document.getElementById('account-details')!.textContent = JSON.stringify({
-                 displayName: displayName,
-                 email: email,
-                 emailVerified: emailVerified,
-                 phoneNumber: phoneNumber,
-                 photoURL: photoURL,
-                 uid: uid,
-                 accessToken: accessToken,
-                 providerData: providerData
-             }, null, '  ');
+            await this.showUser(user!)
 
             // firestore = firebase.firestore();
             //
@@ -87,10 +60,22 @@ export class Tester {
 
             // FIXME: delete the data and test that this works too.
 
-
             // FIXME: create a generic datastore tester...
 
-            describe('Basic Test', async function() {
+            describe('test basic offline write functionality', async function() {
+
+                it("test offline", async function () {
+
+                    // await this.firestore!
+                    //     .collection(DatastoreCollection.DOC_META)
+                    //     .where('uid', '==', uid)
+                    //     .onSnapshot(snapshot => this.onSnapshot(snapshot));
+
+                });
+
+            });
+
+            describe('Firebase Datastore Tests', async function() {
 
                 it("write basic document", async function () {
                     const docMeta = MockDocMetas.createWithinInitialPagemarks(fingerprint, 14);
@@ -103,12 +88,12 @@ export class Tester {
                     //await persistenceLayer.delete({})
                 });
 
-            });
+                DatastoreTester.test(() => {
+                    const diskDatastore = new DiskDatastore();
+                    const firebaseDatastore = new FirebaseDatastore(diskDatastore);
+                    return firebaseDatastore;
+                });
 
-            DatastoreTester.test(() => {
-                const diskDatastore = new DiskDatastore();
-                const firebaseDatastore = new FirebaseDatastore(diskDatastore);
-                return firebaseDatastore;
             });
 
             mocha.run((nrFailures: number) => {
@@ -120,10 +105,7 @@ export class Tester {
 
         } else {
 
-            // User is signed out or there is no user.
-            document.getElementById('sign-in-status')!.textContent = 'Signed out';
-            document.getElementById('sign-in')!.textContent = 'Sign out';
-            document.getElementById('account-details')!.textContent = 'null';
+            this.showNoUser();
 
             // in automated testing we have to fail here because no cookies are
             // present to run this test and someone needs to run the test manually
@@ -138,6 +120,47 @@ export class Tester {
     public onAuthError(err: firebase.auth.Error) {
         console.log(err);
         this.state.testResultWriter.write(false);
+    }
+
+    private async showUser(user: firebase.User) {
+
+        // User is signed in.
+        const displayName = user.displayName;
+        const email = user.email;
+        const emailVerified = user.emailVerified;
+        const photoURL = user.photoURL;
+        const uid = user.uid;
+        const phoneNumber = user.phoneNumber;
+        const providerData = user.providerData;
+
+        const accessToken = await user.getIdToken();
+
+        console.log("user: ", user);
+
+        document.getElementById('sign-in-status')!.textContent = 'Signed in';
+        document.getElementById('sign-in')!.textContent = 'Sign in';
+
+        // noinspection TsLint
+        document.getElementById('account-details')!.textContent = JSON.stringify({
+             displayName: displayName,
+             email: email,
+             emailVerified: emailVerified,
+             phoneNumber: phoneNumber,
+             photoURL: photoURL,
+             uid: uid,
+             accessToken: accessToken,
+             providerData: providerData
+         }, null, '  ');
+
+    }
+
+    private async showNoUser() {
+
+        // User is signed out or there is no user.
+        document.getElementById('sign-in-status')!.textContent = 'Signed out';
+        document.getElementById('sign-in')!.textContent = 'Sign out';
+        document.getElementById('account-details')!.textContent = 'null';
+
     }
 
 }

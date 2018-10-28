@@ -14,19 +14,13 @@ import {DocMetaHolder, RecordHolder, Visibility} from './FirebaseDatastore';
 import * as firebase from '../firestore/lib/firebase';
 
 /**
- * A hybrid datastore allows us to have one datastore with a local and remote
- * datastore backing them.  Reads are resolved via the local data store and
- * writes are resolved to both the remote and local concurrently.
- *
- * The remote datastore is the source of truth.  There isn't a way to have
- * transactions setup between remote and local so what we do is always yield
- * to the remote.  If we do a delete to remote, and then crash, then on startup,
- * the sync will remove the local file (for example).
- *
+ * A CloudAwareDatastore allows us to have one datastore with a local copy and
+ * remote datastore backing them.  Reads are resolved via the local data store
+ * and writes are resolved to both the remote and local concurrently.
  * The reverse is true too. If we startup and there is an excess file in the
  * remote, it's copied local.
  */
-export class HybridDatastore implements Datastore {
+export class CloudAwareDatastore implements Datastore {
 
     private readonly local: Datastore;
 
@@ -48,13 +42,7 @@ export class HybridDatastore implements Datastore {
 
     public async init() {
 
-        // FIXME: if we write a record, but we have a listener open, without
-        // caching, where does that data come from?  I would prefer not to
-        // re-send it from the server...
-
         await Promise.all([this.remote.init(), this.local.init()])
-
-        const firestore = firebase.firestore();
 
     }
 
@@ -63,6 +51,7 @@ export class HybridDatastore implements Datastore {
     }
 
     public async delete(docMetaFileRef: DocMetaFileRef): Promise<Readonly<DeleteResult>> {
+        // FIXME: don't need to wait until the remote one is complete.
         await this.remote.delete(docMetaFileRef);
         return this.local.delete(docMetaFileRef);
     }
@@ -70,7 +59,6 @@ export class HybridDatastore implements Datastore {
     public async getDocMeta(fingerprint: string): Promise<string | null> {
         return this.local.getDocMeta(fingerprint);
     }
-
 
     public async addFile(backend: Backend, name: string, data: Buffer | string, meta: FileMeta = {}): Promise<DatastoreFile> {
 

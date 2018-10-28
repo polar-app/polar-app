@@ -61,7 +61,7 @@ export class FirebaseDatastore implements Datastore {
 
         // get the firebase app. Make sure we are initialized externally.
         this.app = firebase.app();
-        this.firestore = Firestore.getInstance();
+        this.firestore = await Firestore.getInstance();
         this.storage = firebase.storage();
 
         // setup the initial snapshot so that we query for the users existing data...
@@ -277,11 +277,15 @@ export class FirebaseDatastore implements Datastore {
      */
     private onSnapshot(snapshot: firebase.firestore.QuerySnapshot) {
 
+        console.log("FIXME: fromCache", snapshot.metadata.fromCache, snapshot.metadata, snapshot);
+
         const messagesElement = document.getElementById('messages')!;
 
         for (const docChange of snapshot.docChanges()) {
 
             const record = <RecordHolder<DocMetaHolder>> docChange.doc.data();
+
+            console.log("FIXME: data: " ,docChange.doc.data(),snapshot.metadata  )
 
             switch (docChange.type) {
 
