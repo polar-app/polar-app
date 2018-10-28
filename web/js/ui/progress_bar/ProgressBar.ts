@@ -44,6 +44,8 @@ export class ProgressBar {
         element.style.top = '0';
         element.style.left = '0';
         element.style.zIndex = '99999999999';
+        element.style.webkitAppearance = 'none';
+        element.style.borderRadius = '0';
 
         document.body.appendChild(element);
 
