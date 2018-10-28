@@ -8,6 +8,7 @@ import {FirebaseDatastore} from '../../js/datastore/FirebaseDatastore';
 import {DefaultPersistenceLayer} from '../../js/datastore/DefaultPersistenceLayer';
 import {MockDocMetas} from '../../js/metadata/DocMetas';
 import {assert} from "chai";
+import {DatastoreTester} from '../../js/datastore/DatastoreTester';
 
 mocha.setup('bdd');
 
@@ -102,6 +103,12 @@ export class Tester {
                     //await persistenceLayer.delete({})
                 });
 
+            });
+
+            DatastoreTester.test(() => {
+                const diskDatastore = new DiskDatastore();
+                const firebaseDatastore = new FirebaseDatastore(diskDatastore);
+                return firebaseDatastore;
             });
 
             mocha.run((nrFailures: number) => {

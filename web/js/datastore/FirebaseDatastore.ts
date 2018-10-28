@@ -57,6 +57,8 @@ export class FirebaseDatastore implements Datastore {
 
     public async init() {
 
+        await this.local.init();
+
         // get the firebase app. Make sure we are initialized externally.
         this.app = firebase.app();
         this.firestore = Firestore.getInstance();
