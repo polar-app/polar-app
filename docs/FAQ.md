@@ -1,16 +1,35 @@
 
-# How do I build and run from source:
+# How do I build and run from source?
 
-- Install NodeJS 10.9.x which should install the latest npm. Should be >= 6.4.1.
+Polar is VERY easy to compile from source.  Polar is based on Typescript, Electron, 
+and other important dependencies so these must be fetched first.  
 
-- Clone a copy of the polar git repo locally.
+## Install NodeJS + npm
 
-- Run the following:
+First, install the lasted version of NodeJS and npm for your platform.  At the
+time of this writing we're using the 10.x series to build Polar.
+
+## Build from Source
+
+First, fetch the latest version of Polar from git then run:
 
 ```bash
-npm install 
-npm start
-``` 
+npm install
+```
+
+Make sure to run this periodically when pulling a fresh version from git as 
+dependencies may have changed.
+
+Then run:
+
+```bash
+npm compile && npm start
+```
+
+At this point you should have a version of Polar running on your machine.
+
+```npm install``` only needs to be run occassionally.  Usually when you pull 
+from git and the ```package.json``` file changes with new dependencies.  
 
 # How do I enable advanced logging?
 
@@ -22,12 +41,20 @@ Set the ```POLAR_LOG_LEVEL``` environment variable.
 
 Linux/Mac run ```export POLAR_LOG_LEVEL=DEBUG```
 
+NOTE: Make sure it's exported. If you just set it child processes can't see the value.
+
 Windows run ```set POLAR_LOG_LEVEL=DEBUG``` 
 
 then run Polar either via ```npm start``` for source builds or run the binary
 directly.
 
 ## Update your config (permanent)
+
+NOTE: This is no longer the recommended way to change your log level. We 
+recommend setting POLAR_LOG_LEVEL.  When permanently setting the log level to
+DEBUG there can be sever performance degredations - especially when moving 
+pagemarks which can lock up Polar and make it feel that the app has crashed when
+in reality it's just being amazingly slow logging thousands of messages.
 
 Create a file in your ```.polar/config``` directory named ```logging.json``` 
 with the following content:
@@ -59,6 +86,22 @@ There IS an on-disk version enabled but it usually ends up locking up Electron
 essentially defeating the point.  
 
 We plan on implementing a logger implemented on Websockets in the future.
+
+# Commons Errors
+
+## Quiting.  App is single instance.
+
+This happens because another version of Polar is running in the background.
+
+Either quit this version or run:
+
+```bash
+killall electron
+killall polar-bookshelf
+``` 
+
+... on MacOS and Windows you probably want to kill either the ```Electron``` or 
+```Polar Bookshelf``` processes if they're running in the background.
 
 # Aren't Electron Apps Bloated?
 
