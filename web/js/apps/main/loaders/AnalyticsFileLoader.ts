@@ -3,13 +3,14 @@ import {FileTypes} from './FileTypes';
 import {GA} from '../../../ga/GA';
 import {LoadedFile} from './LoadedFile';
 
-export class AnalyticsFileLoader implements FileLoader {
+export class AnalyticsFileLoader extends FileLoader {
 
     private readonly userAgent: string;
 
     private readonly delegate: FileLoader;
 
     constructor(userAgent: string, delegate: FileLoader) {
+        super();
         this.userAgent = userAgent;
         this.delegate = delegate;
     }

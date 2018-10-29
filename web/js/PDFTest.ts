@@ -19,12 +19,16 @@ describe('PDF', function() {
         const uint8 = toArray(buffer)
 
         //const url = "file:///home/burton/Downloads/1010.3003v1.pdf";
-        const url = "file:///home/burton/incremental-reading/A%20Crypto%20Incubator%20or%20Accelerator%20Can%20Make%20A%20Safe%20ICO%20_%20Crypto%20Briefing.pdf";
+        //const url = "file:///home/burton/incremental-reading/A%20Crypto%20Incubator%20or%20Accelerator%20Can%20Make%20A%20Safe%20ICO%20_%20Crypto%20Briefing.pdf";
+
+        const url = "file:///home/burton/incremental-reading/bitcoin/Mastering%20Bitcoin.pdf";
 
         //const doc = await pdfjs.getDocument(uint8!)
         const doc = await pdfjs.getDocument(url);
 
         const metadata = await doc.getMetadata()
+
+        // metadata.metadata.parse();
 
         console.log("metadata: ", metadata);
 

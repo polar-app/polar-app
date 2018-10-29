@@ -5,7 +5,7 @@ import {FileRegistry} from '../../../backend/webserver/FileRegistry';
 import {PDFLoader} from './PDFLoader';
 import {LoadedFile} from './LoadedFile';
 
-export class DefaultFileLoader implements FileLoader {
+export class DefaultFileLoader extends FileLoader {
 
     private readonly fileRegistry: FileRegistry;
 
@@ -16,6 +16,7 @@ export class DefaultFileLoader implements FileLoader {
     private readonly phzLoader: PHZLoader;
 
     constructor(fileRegistry: FileRegistry, cacheRegistry: CacheRegistry) {
+        super();
         this.fileRegistry = fileRegistry;
         this.cacheRegistry = cacheRegistry;
         this.pdfLoader = new PDFLoader(fileRegistry);
