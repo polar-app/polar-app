@@ -54,7 +54,7 @@ export function _loadFromHref(href: string, loadPath: string, os_type: string) {
 export function _toPath(href: string, loadPath: string, os_type: string): string {
 
     if(href.startsWith('file:')) {
-        return _toPathFromFile(href, os_type);
+        return _toPathFromFileURL(href, os_type);
     }
 
     if(href.startsWith('http:') || href.startsWith('https:')) {
@@ -69,7 +69,7 @@ export function _toPathFromApp(href: string, loadPath: string, os_type: string):
     return app.getAppPath() + loadPath;
 }
 
-export function _toPathFromFile(href: string, os_type: string): string {
+export function _toPathFromFileURL(href: string, os_type: string): string {
 
     let result = href;
 

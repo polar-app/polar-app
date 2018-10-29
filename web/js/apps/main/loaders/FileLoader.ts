@@ -26,10 +26,10 @@ export abstract class FileLoader {
     public abstract registerForLoad(path: string): Promise<LoadedFile>;
 
     /**
-     * Import a file to the store if it's not already in the store so that
+     * Import a file to the stash if it's not already in the stash so that
      * it opens for the next time.
      */
-    public async importToStore(path: string) {
+    public static async importToStash(path: string) {
 
         const currentDirname = await Files.realpathAsync(FilePaths.dirname(path));
 

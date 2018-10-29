@@ -19,7 +19,7 @@ export class PDFLoader extends FileLoader {
 
     public async registerForLoad(path: string): Promise<LoadedFile> {
 
-        path = await this.importToStore(path);
+        path = await FileLoader.importToStash(path);
 
         const filename = FilePaths.basename(path);
 

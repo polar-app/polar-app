@@ -20,7 +20,6 @@ const log = Logger.create();
 
 export class MainAppController {
 
-
     private readonly fileLoader: FileLoader;
 
     private readonly datastore: Datastore;

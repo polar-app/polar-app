@@ -7,6 +7,8 @@ import {RectArt} from './util/RectArt';
 import {MOCK_RECTS} from './MockRects';
 import {Files} from './util/Files';
 
+import url from 'url';
+
 import * as PDFJSDIST from 'pdfjs-dist';
 import {PDFJSStatic} from 'pdfjs-dist';
 const pdfjs: PDFJSStatic = <any> PDFJSDIST;
@@ -21,12 +23,31 @@ describe('PDF', function() {
         //const url = "file:///home/burton/Downloads/1010.3003v1.pdf";
         //const url = "file:///home/burton/incremental-reading/A%20Crypto%20Incubator%20or%20Accelerator%20Can%20Make%20A%20Safe%20ICO%20_%20Crypto%20Briefing.pdf";
 
-        const url = "file:///home/burton/incremental-reading/bitcoin/Mastering%20Bitcoin.pdf";
+        const filePath = "/home/burton/incremental-reading/.stash/The Toyota Way _ 14 Management Principles from the World's Greatest Manufac.pdf";
+
+        if (! await Files.existsAsync(filePath)) {
+            throw new Error("File does not exist at path: " + filePath);
+        }
+
+        const fileURL = url.format({
+            protocol: 'file',
+            slashes: true,
+            pathname: filePath,
+        });
+
+        //const fileURL = "file:///home/burton/incremental-reading/bitcoin/Mastering%20Bitcoin.pdf";
 
         //const doc = await pdfjs.getDocument(uint8!)
-        const doc = await pdfjs.getDocument(url);
+        const doc = await pdfjs.getDocument(fileURL);
 
         const metadata = await doc.getMetadata()
+
+        if(metadata.metadata && metadata.metadata.get('dc:title')) {
+
+            // FIXME: we have dc:language , dc:date, dc:publisher dc:creator dc:description
+
+            console.log("FIXME !!!");
+        }
 
         // metadata.metadata.parse();
 

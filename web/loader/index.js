@@ -19,7 +19,7 @@ function _loadFromHref(href, loadPath, os_type) {
 exports._loadFromHref = _loadFromHref;
 function _toPath(href, loadPath, os_type) {
     if (href.startsWith('file:')) {
-        return _toPathFromFile(href, os_type);
+        return _toPathFromFileURL(href, os_type);
     }
     if (href.startsWith('http:') || href.startsWith('https:')) {
         return _toPathFromApp(href, loadPath, os_type);
@@ -31,7 +31,7 @@ function _toPathFromApp(href, loadPath, os_type) {
     return electron_1.app.getAppPath() + loadPath;
 }
 exports._toPathFromApp = _toPathFromApp;
-function _toPathFromFile(href, os_type) {
+function _toPathFromFileURL(href, os_type) {
     let result = href;
     result = result.replace('file://', '');
     if (os_type === 'Windows_NT') {
@@ -43,7 +43,7 @@ function _toPathFromFile(href, os_type) {
     result = decodeURI(result);
     return result;
 }
-exports._toPathFromFile = _toPathFromFile;
+exports._toPathFromFileURL = _toPathFromFileURL;
 function _resolveURL(from, to) {
     return url_1.default.resolve(from, to);
 }
