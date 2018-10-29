@@ -24,7 +24,7 @@ export class SimpleReactor<V> implements ISimpleReactor<V> {
     }
 
     public addEventListener(listener: Listener<V>) {
-        this.delegate.addEventListener(EVENT_NAME, listener);
+        return this.delegate.addEventListener(EVENT_NAME, listener);
     }
 
     public once(): Promise<V> {
@@ -46,7 +46,12 @@ export class SimpleReactor<V> implements ISimpleReactor<V> {
 
 export interface ISimpleReactor<V> {
     once(): Promise<V>;
-    addEventListener(listener: Listener<V>): void;
+
+    /**
+     * Add the listener and return the listener that was added.  This allows you
+     * to later remove the listener if necessary.
+     */
+    addEventListener(listener: Listener<V>): Listener<V>;
     removeEventListener(listener: Listener<V>): boolean;
     dispatchEvent(value: V): void;
 }

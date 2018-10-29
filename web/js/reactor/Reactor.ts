@@ -90,7 +90,7 @@ export class Reactor<V> implements IReactor<V> {
         }
 
         this.events[eventName].registerListener(listener);
-        return this;
+        return listener;
 
     }
 
@@ -137,7 +137,7 @@ export class Reactor<V> implements IReactor<V> {
 
 export interface IReactor<V> {
     once(eventName: string): Promise<V>;
-    addEventListener(eventName: string, listener: Listener<V>): void;
+    addEventListener(eventName: string, listener: Listener<V>): Listener<V>;
     dispatchEvent(eventName: string, value: V): void;
     hasRegisteredEvent(eventName: string): boolean;
     hasEventListeners(eventName: string): boolean;

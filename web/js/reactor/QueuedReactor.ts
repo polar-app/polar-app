@@ -17,7 +17,7 @@ export class QueuedReactor<V> implements IReactor<V>, IMutableReactor<V> {
         this.delegate = delegate;
     }
 
-    public addEventListener(eventName: string, listener: Listener<V>): void {
+    public addEventListener(eventName: string, listener: Listener<V>): Listener<V> {
 
         this.delegate.addEventListener(eventName, listener);
 
@@ -30,6 +30,8 @@ export class QueuedReactor<V> implements IReactor<V>, IMutableReactor<V> {
             }
 
         }
+
+        return listener;
 
     }
 

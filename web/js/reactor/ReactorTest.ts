@@ -75,6 +75,24 @@ describe('Reactor', function() {
     });
 
 
+    it("removeEventListener from addEventListener", function() {
+
+        const reactor = new Reactor<string>();
+
+        const eventName = "messages";
+        reactor.registerEvent(eventName)
+
+        const listener = reactor.addEventListener(eventName, message => {});
+
+        assert.equal(reactor.getEventListeners(eventName).length, 1);
+
+        assert.equal(reactor.removeEventListener(eventName, listener), true);
+
+        assert.equal(reactor.getEventListeners(eventName).length, 0);
+
+    });
+
+
     it("once", async function() {
 
         const reactor = new Reactor<string>();

@@ -41,7 +41,7 @@ export class PDFLoader implements FileLoader {
      * Import a PDF file to the store if it's not already in the store so that
      * it opens for the next time.
      */
-    private async importToStore(path: string) {
+    public async importToStore(path: string) {
 
         const currentDirname = await Files.realpathAsync(FilePaths.dirname(path));
 

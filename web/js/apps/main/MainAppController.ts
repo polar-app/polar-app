@@ -64,19 +64,6 @@ export class MainAppController {
 
     }
 
-    /**
-     * Load a PDF file when given a full URL.  May be file, http, or https URL.
-     */
-    public async cmdOpen(item: MenuItem, focusedWindow: BrowserWindow) {
-
-        const targetWindow = focusedWindow;
-
-        const path = await this.promptDoc();
-
-        await this.loadDoc(path, targetWindow);
-
-    }
-
     public async cmdNewWindow() {
         await MainAppBrowserWindowFactory.createWindow();
     }
@@ -85,7 +72,8 @@ export class MainAppController {
 
         const path = await this.promptDoc();
 
-        const targetWindow = await MainAppBrowserWindowFactory.createWindow(BROWSER_WINDOW_OPTIONS, "about:blank");
+        const targetWindow
+            = await MainAppBrowserWindowFactory.createWindow(BROWSER_WINDOW_OPTIONS, "about:blank");
 
         await this.loadDoc(path, targetWindow);
 
@@ -234,6 +222,7 @@ export class MainAppController {
                   filters: [
                       { name: 'Docs', extensions: ['pdf', "phz"] }
                   ],
+                  //properties: ['openFile', 'multiSelections']
                   properties: ['openFile']
               }, (path) => {
 

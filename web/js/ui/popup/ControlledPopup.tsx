@@ -9,6 +9,7 @@ import {DocFormat} from '../../docformat/DocFormat';
 import {DocFormatFactory} from '../../docformat/DocFormatFactory';
 import {PopupStateEvent} from './PopupStateEvent';
 import {Logger} from '../../logger/Logger';
+import {getSourceFile} from 'tslint';
 
 const log = Logger.create();
 
@@ -30,6 +31,10 @@ export class ControlledPopup extends React.Component<ControlledPopupProps, IStat
             active: false,
         };
 
+    }
+
+    public componentWillMount(): void {
+
         this.props.popupStateEventDispatcher.addEventListener(event => {
             this.setState(event);
         });
@@ -38,6 +43,10 @@ export class ControlledPopup extends React.Component<ControlledPopupProps, IStat
             this.onTriggerPopupEvent(event);
         });
 
+    }
+
+
+    public componentWillUnmount(): void {
     }
 
     public render() {

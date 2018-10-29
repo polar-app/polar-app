@@ -6,8 +6,11 @@ import {AnnotationDescriptor} from '../../metadata/AnnotationDescriptor';
 import {HighlightCreatedEvent} from '../../comments/react/HighlightCreatedEvent';
 import {HighlightColor} from '../../metadata/BaseHighlight';
 import {PopupStateEvent} from '../popup/PopupStateEvent';
+import {Listener} from '../../reactor/Listener';
 
 export class AnnotationBar extends React.Component<AnnotationBarProps, IState> {
+
+    private listener?: Listener<AnnotationBarTriggerEvent>;
 
     constructor(props: any) {
         super(props);
@@ -17,10 +20,20 @@ export class AnnotationBar extends React.Component<AnnotationBarProps, IState> {
 
         this.state = {};
 
-        this.props.annotationBarTriggerEventDispatcher.addEventListener(annotationBarTriggerEventDispatcher => {
-            this.setState({annotationBarTriggerEventDispatcher});
+    }
+
+    public componentWillMount(): void {
+
+        this.listener = this.props.annotationBarTriggerEventDispatcher.addEventListener(event => {
+            this.setState({event});
         });
 
+    }
+
+    public componentWillUnmount(): void {
+        if(this.listener) {
+            this.props.annotationBarTriggerEventDispatcher.removeEventListener(this.listener);
+        }
     }
 
     public render() {
@@ -95,10 +108,10 @@ export class AnnotationBar extends React.Component<AnnotationBarProps, IState> {
     private dispatchOnHighlighted(highlightColor: HighlightColor) {
 
         const highlightCreatedEvent: HighlightCreatedEvent = {
-            activeSelection: this.state.annotationBarTriggerEventDispatcher!.activeSelection,
+            activeSelection: this.state.event!.activeSelection,
             highlightColor,
-            pageNum: this.state.annotationBarTriggerEventDispatcher!.pageNum,
-            annotationDescriptor: this.state.annotationBarTriggerEventDispatcher!.annotationDescriptor
+            pageNum: this.state.event!.pageNum,
+            annotationDescriptor: this.state.event!.annotationDescriptor
 
         };
 
@@ -111,7 +124,7 @@ export class AnnotationBar extends React.Component<AnnotationBarProps, IState> {
     private dispatchOnCommented() {
 
         const commentTriggerEvent: CommentTriggerEvent = {
-            ...this.state.annotationBarTriggerEventDispatcher!,
+            ...this.state.event!,
         };
 
         this.props.onComment(commentTriggerEvent);
@@ -121,7 +134,7 @@ export class AnnotationBar extends React.Component<AnnotationBarProps, IState> {
 }
 
 export interface IState {
-    annotationBarTriggerEventDispatcher?: AnnotationBarTriggerEvent;
+    event?: AnnotationBarTriggerEvent;
 }
 
 export interface AnnotationBarCallbacks {
