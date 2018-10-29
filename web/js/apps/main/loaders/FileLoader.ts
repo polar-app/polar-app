@@ -1,4 +1,10 @@
 import {LoadedFile} from './LoadedFile';
+import {Files} from '../../../util/Files';
+import {FilePaths} from '../../../util/FilePaths';
+import {Directories} from '../../../datastore/Directories';
+import {Logger} from '../../../logger/Logger';
+
+const log = Logger.create();
 
 /**
  * A File Loader handles loading a file in the cache registry and returning a
@@ -8,7 +14,7 @@ import {LoadedFile} from './LoadedFile';
  * @abstract
  */
 
-export interface FileLoader {
+export abstract class FileLoader {
 
     /**
      * Compute a URL to load a file in the UI a PHZ file and registers it
@@ -17,6 +23,36 @@ export interface FileLoader {
      * @param path {string}
      * @return {string}
      */
-    registerForLoad(path: string): Promise<LoadedFile>;
+    public abstract registerForLoad(path: string): Promise<LoadedFile>;
+
+    /**
+     * Import a file to the store if it's not already in the store so that
+     * it opens for the next time.
+     */
+    public async importToStore(path: string) {
+
+        const currentDirname = await Files.realpathAsync(FilePaths.dirname(path));
+
+        const directories = new Directories();
+
+        const stashDir = await Files.realpathAsync(directories.stashDir);
+
+        if (currentDirname !== stashDir) {
+
+            const fileName = FilePaths.basename(path);
+            const newPath = FilePaths.join(stashDir, fileName);
+
+            path = await Files.realpathAsync(path);
+
+            log.info(`Importing file from ${path} to ${newPath}`);
+
+            await Files.copyFileAsync(path, newPath);
+            return newPath;
+
+        }
+
+        return path;
+
+    }
 
 }

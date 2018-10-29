@@ -14,11 +14,12 @@ const log = Logger.create();
 /**
  *
  */
-export class PHZLoader implements FileLoader {
+export class PHZLoader extends FileLoader {
 
     private readonly cacheRegistry: CacheRegistry;
 
     constructor(opts: IPHZLoaderOptions) {
+        super();
         this.cacheRegistry = Preconditions.assertNotNull(opts.cacheRegistry);
     }
 

@@ -3,18 +3,17 @@ import {WebResource} from '../../../electron/webresource/WebResource';
 import {FileRegistry} from '../../../backend/webserver/FileRegistry';
 import {AppPaths} from '../../../electron/webresource/AppPaths';
 import {LoadedFile} from './LoadedFile';
-import {Directories} from '../../../datastore/Directories';
-import {Files} from '../../../util/Files';
 import {Logger} from '../../../logger/Logger';
 import {FilePaths} from '../../../util/FilePaths';
 
 const log = Logger.create();
 
-export class PDFLoader implements FileLoader {
+export class PDFLoader extends FileLoader {
 
     private readonly fileRegistry: FileRegistry;
 
     constructor(fileRegistry: FileRegistry) {
+        super();
         this.fileRegistry = fileRegistry;
     }
 
@@ -34,36 +33,6 @@ export class PDFLoader implements FileLoader {
         return {
             webResource: WebResource.createURL(appURL)
         };
-
-    }
-
-    /**
-     * Import a PDF file to the store if it's not already in the store so that
-     * it opens for the next time.
-     */
-    public async importToStore(path: string) {
-
-        const currentDirname = await Files.realpathAsync(FilePaths.dirname(path));
-
-        const directories = new Directories();
-
-        const stashDir = await Files.realpathAsync(directories.stashDir);
-
-        if (currentDirname !== stashDir) {
-
-            const fileName = FilePaths.basename(path);
-            const newPath = FilePaths.join(stashDir, fileName);
-
-            path = await Files.realpathAsync(path);
-
-            log.info(`Importing PDF file from ${path} to ${newPath}`);
-
-            await Files.copyFileAsync(path, newPath);
-            return newPath;
-
-        }
-
-        return path;
 
     }
 
