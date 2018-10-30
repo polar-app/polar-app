@@ -77,11 +77,11 @@ interface Message {
 
 }
 
-
 // noinspection TsLint
 const MESSAGES: Message[] = [
 
     // TODO: put links to help and other technical docs.
+    // TODO: Make some of these poll options I think.
 
     {
         id: 'github-star',
@@ -104,7 +104,6 @@ const MESSAGES: Message[] = [
         id: 'roadmap',
         element: <div>Interested in the future of Polar? <a href="https://github.com/burtonator/polar-bookshelf/blob/master/docs/ROADMAP.md">Check out our roadmap!</a></div>
     }
-
 
 ];
 

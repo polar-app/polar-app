@@ -32,21 +32,24 @@ export class PDFImporter {
 
     public async importFile(filePath: string) {
 
-        // FIXME: don't overwrite existing files or docMeta if it already
-        // exists...
+        // FIXME: I need a way to import JUST directly into the stash...
 
         const pdfMeta = await this.getMetadata(filePath);
 
-        const docMeta = DocMetas.create(pdfMeta.fingerprint,
-                                        pdfMeta.nrPages,
-                                        pdfMeta.filename);
-
-        docMeta.docInfo.title = pdfMeta.title;
-        docMeta.docInfo.description = pdfMeta.description;
-
         FileLoader.importToStash(filePath);
 
-        await this.persistenceLayer.sync(pdfMeta.fingerprint, docMeta);
+        if(! this.persistenceLayer.contains(pdfMeta.fingerprint)) {
+
+            const docMeta = DocMetas.create(pdfMeta.fingerprint,
+                                            pdfMeta.nrPages,
+                                            pdfMeta.filename);
+
+            docMeta.docInfo.title = pdfMeta.title;
+            docMeta.docInfo.description = pdfMeta.description;
+
+            await this.persistenceLayer.sync(pdfMeta.fingerprint, docMeta);
+
+        }
 
     }
 
