@@ -76,7 +76,6 @@ export class PDFImporter {
 
         return true;
 
-
     }
 
     private static async isWithinStashdir(path: string): Promise<boolean> {

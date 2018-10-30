@@ -24,11 +24,15 @@ export class DocRepository {
 
     private readonly persistenceLayer: IListenablePersistenceLayer;
 
+    // TODO: a great deal of this code could be cleaned up if I made it MVC and
+    // had this data be the model and updated the view via events emitted from
+    // an AdvertisingPersistenceLayer - which we kind of need anyway for
+    // Firestore....
+
     constructor(persistenceLayer: IListenablePersistenceLayer) {
         this.persistenceLayer = persistenceLayer;
         this.init();
     }
-
 
     /**
      * Update the in-memory representation of this doc.
