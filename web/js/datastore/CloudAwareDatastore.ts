@@ -22,15 +22,15 @@ import * as firebase from '../firestore/lib/firebase';
  */
 export class CloudAwareDatastore implements Datastore {
 
-    private readonly local: Datastore;
-
-    private readonly remote: Datastore;
-
     public readonly stashDir: string;
 
     public readonly logsDir: string;
 
     public readonly directories: Directories;
+
+    private readonly local: Datastore;
+
+    private readonly remote: Datastore;
 
     constructor(local: Datastore, remote: Datastore) {
         this.local = local;
@@ -42,7 +42,7 @@ export class CloudAwareDatastore implements Datastore {
 
     public async init() {
 
-        await Promise.all([this.remote.init(), this.local.init()])
+        await Promise.all([this.remote.init(), this.local.init()]);
 
     }
 

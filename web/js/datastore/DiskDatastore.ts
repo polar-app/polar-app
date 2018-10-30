@@ -127,7 +127,10 @@ export class DiskDatastore implements Datastore {
 
     }
 
-    public async addFile(backend: Backend, name: string, data: Buffer | string, meta: FileMeta = {}): Promise<DatastoreFile> {
+    public async addFile(backend: Backend,
+                         name: string,
+                         data: NodeJS.ReadableStream | Buffer | string,
+                         meta: FileMeta = {}): Promise<DatastoreFile> {
 
         DatastoreFiles.assertValidFileName(name);
 

@@ -83,7 +83,7 @@ export class PersistenceLayerDispatcher implements IPersistenceLayerDispatcher, 
 
     }
 
-    public addFile(backend: Backend, name: string, data: Buffer | string, meta: FileMeta): Promise<DatastoreFile> {
+    public addFile(backend: Backend, name: string, data: Buffer | string, meta: FileMeta = {}): Promise<DatastoreFile> {
         return this.persistenceLayer.addFile(backend, name, data, meta);
     }
 

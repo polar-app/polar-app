@@ -1,22 +1,16 @@
-import url from 'url';
-
-import * as PDFJSDIST from 'pdfjs-dist';
-import {PDFJSStatic} from 'pdfjs-dist';
 import {IPersistenceLayer} from '../../../datastore/IPersistenceLayer';
-import {Files} from '../../../util/Files';
 import {FilePaths} from '../../../util/FilePaths';
-import {Optional} from '../../../util/ts/Optional';
 import {DocMetas} from '../../../metadata/DocMetas';
-import {DefaultPersistenceLayer} from '../../../datastore/DefaultPersistenceLayer';
-import {Datastore} from '../../../datastore/Datastore';
 import {FileLoader} from '../../main/loaders/FileLoader';
+import {Logger} from '../../../logger/Logger';
+import {PDFMetadata} from './PDFMetadata';
+import {Optional} from '../../../util/ts/Optional';
+import {Files} from '../../../util/Files';
+import {Hashcodes} from '../../../Hashcodes';
+import {Backend} from '../../../datastore/Backend';
+import {Directories} from '../../../datastore/Directories';
 
-const pdfjs: PDFJSStatic = <any> PDFJSDIST;
-
-(<any>pdfjs).GlobalWorkerOptions.workerSrc =
-    '../../node_modules/pdfjs-dist/build/pdf.worker.js';
-//
-// pdfjs.disableWorker = true;
+const log = Logger.create();
 
 /**
  * Handles taking a given file, parsing the metadata, and then writing a new
@@ -24,87 +18,78 @@ const pdfjs: PDFJSStatic = <any> PDFJSDIST;
  */
 export class PDFImporter {
 
-    readonly persistenceLayer: IPersistenceLayer;
+    private readonly persistenceLayer: IPersistenceLayer;
 
     constructor(persistenceLayer: IPersistenceLayer) {
         this.persistenceLayer = persistenceLayer;
     }
 
-    public async importFile(filePath: string) {
+    public async importFile(filePath: string): Promise<boolean> {
 
-        // FIXME: I need a way to import JUST directly into the stash... use
-        // addFile with backend STASH for this functionality as that is the most
-        // clean way to implement this feature.
+        if (await PDFImporter.isWithinStashdir(filePath)) {
+            // prevent the user from re-importing/opening a file that is ALREADY
+            // in the stash dir.
 
-        const pdfMeta = await this.getMetadata(filePath);
-
-        // FIXME: DO NOT use the name of the file any more.. if it's called
-        // 'example.pdf' or something it could overwrite existing data.  Instead
-        // we should create a hashcode of it to prevent collision and we need
-        // to do so via
-
-        FileLoader.importToStash(filePath);
-
-        if(! this.persistenceLayer.contains(pdfMeta.fingerprint)) {
-
-            const docMeta = DocMetas.create(pdfMeta.fingerprint,
-                                            pdfMeta.nrPages,
-                                            pdfMeta.filename);
-
-            docMeta.docInfo.title = pdfMeta.title;
-            docMeta.docInfo.description = pdfMeta.description;
-
-            await this.persistenceLayer.sync(pdfMeta.fingerprint, docMeta);
-
+            log.warn("Skipping import of file that's already in the stashdir.");
+            return false;
         }
+
+        const pdfMeta = await PDFMetadata.getMetadata(filePath);
+
+        if (this.persistenceLayer.contains(pdfMeta.fingerprint)) {
+            log.warn(`This file is already present in the datastore with fingerprint ${pdfMeta.fingerprint}: ${filePath}`);
+            return false;
+        }
+
+        // create a default title from the path which is used as sometimes the
+        // filename is actually a decent first attempt at a document title.
+        const basename = FilePaths.basename(filePath);
+        const defaultTitle = basename;
+
+        // TODO: this is not particularly efficient to create the hashcode
+        // first, then copy the bytes to the target location.  It would be better,
+        // locally, copy and compute the hash on copy but we would have to rename
+        // it and that's not an operation I want to support in the datastore.
+        // This could be optimized but wait until people complain about it as
+        // it's probably premature at this point.
+
+        const hashprefix = await Hashcodes.createFromStream(Files.createReadStream(filePath));
+
+        // FIXME: this could still be a VERY broken file name and we still need
+        // to sanitize it.
+        const filename = `${hashprefix}-` + basename;
+
+        // always read from a stream here as some of the PDFs we might want to
+        // import could be rather large.  Also this needs to be a COPY of the
+        // data, not a symlink since that's not really portable and it would
+        // also be danging if the user deleted the file.  Wasting space here is
+        // a good thing.  Space is cheap.
+        this.persistenceLayer.addFile(Backend.STASH, filename, Files.createReadStream(filePath));
+
+        const docMeta = DocMetas.create(pdfMeta.fingerprint, pdfMeta.nrPages, filename);
+
+        docMeta.docInfo.title = Optional.of(pdfMeta.title)
+                                        .getOrElse(defaultTitle);
+
+        docMeta.docInfo.description = pdfMeta.description;
+
+        await this.persistenceLayer.sync(pdfMeta.fingerprint, docMeta);
+
+        return true;
 
 
     }
 
-    public async getMetadata(filePath: string): Promise<PDFMeta> {
+    private static async isWithinStashdir(path: string): Promise<boolean> {
 
-        // TODO: move this to its own file so that the PDF logic is isolated...
+        const directories = new Directories();
 
-        if (! await Files.existsAsync(filePath)) {
-            throw new Error("File does not exist at path: " + filePath);
-        }
+        const currentDirname = await Files.realpathAsync(FilePaths.dirname(path));
 
-        const fileURL = url.format({
-            protocol: 'file',
-            slashes: true,
-            pathname: filePath,
-        });
+        const stashDir = await Files.realpathAsync(directories.stashDir);
 
-        const doc = await pdfjs.getDocument(fileURL);
-
-        const metaHolder = await doc.getMetadata()
-
-        const filename = FilePaths.basename(filePath);
-        let title = filename;
-        let description: string | undefined = undefined;
-
-        if(metaHolder.metadata) {
-            const metadata = metaHolder.metadata;
-            title = Optional.of(metadata.get('dc:title')).getOrElse(title);
-            description = Optional.of(metadata.get('dc:description')).getOrUndefined()
-        }
-
-        return {
-            filename,
-            fingerprint: doc.fingerprint,
-            nrPages: doc.numPages,
-            title,
-            description
-        }
+        return currentDirname === stashDir;
 
     }
 
-}
-
-export interface PDFMeta {
-    readonly filename: string;
-    readonly fingerprint: string;
-    readonly nrPages: number;
-    readonly title?: string;
-    readonly description?: string;
 }

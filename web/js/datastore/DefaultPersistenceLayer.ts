@@ -152,7 +152,7 @@ export class DefaultPersistenceLayer implements IPersistenceLayer {
         return this.datastore.getDocMetaFiles();
     }
 
-    public addFile(backend: Backend, name: string, data: Buffer | string, meta: FileMeta): Promise<DatastoreFile> {
+    public addFile(backend: Backend, name: string, data: Buffer | string, meta: FileMeta = {}): Promise<DatastoreFile> {
         return this.datastore.addFile(backend, name, data, meta);
     }
 

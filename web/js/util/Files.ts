@@ -172,14 +172,17 @@ export class Files {
      * If `flag` is not supplied, the default of `'w'` is used.
      */
     public static async writeFileAsync(path: string,
-                                       data: Buffer | string,
+                                       data: NodeJS.ReadableStream | Buffer | string,
                                        options?: WriteFileAsyncOptions | string | undefined | null) {
 
-        return this.withProperException(() => this.Promised.writeFileAsync(path, data, options));
+
+        if (data instanceof Buffer || typeof data === 'string') {
+            return this.withProperException(() => this.Promised.writeFileAsync(path, data, options));
+        } else {
+            data.pipe(fs.createWriteStream(path));
+        }
 
     }
-
-
 
     public static async statAsync(path: string): Promise<Stats> {
         return this.withProperException(() => this.Promised.statAsync(path));

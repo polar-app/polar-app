@@ -45,7 +45,7 @@ export interface IPersistenceLayer {
     // get an overview of documents in teh repository
     // overview(): Promise<DatastoreOverview>;
 
-    addFile(backend: Backend, name: string, data: Buffer | string, meta: FileMeta): Promise<DatastoreFile>;
+    addFile(backend: Backend, name: string, data: NodeJS.ReadableStream | Buffer | string, meta?: FileMeta): Promise<DatastoreFile>;
 
     getFile(backend: Backend, name: string): Promise<Optional<DatastoreFile>>;
 
