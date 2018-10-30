@@ -20,8 +20,8 @@ export abstract class FileLoader {
      * Compute a URL to load a file in the UI a PHZ file and registers it
      * with the CacheRegistry so it can be loaded properly.
      *
-     * @param path {string}
-     * @return {string}
+     * @param path
+     * @return
      */
     public abstract registerForLoad(path: string): Promise<LoadedFile>;
 
@@ -30,6 +30,10 @@ export abstract class FileLoader {
      * it opens for the next time.
      */
     public static async importToStash(path: string) {
+
+        // FIXME: this should be deprecated now and we should ALWAYs import
+        // the file before hand so that it properly uses the datastore, and file
+        // name encodings.
 
         // FIXME: this is wrong.. don't write to the stash directly.. we have to
         // go through the Datastore or it won't be replicated.

@@ -1,4 +1,35 @@
 
+# Where is my data kept?
+
+Your data is kept in a ```.polar``` directory in your home dir.  
+
+This changed between platform depending if you're on Windows, MacOS or Linux.
+
+You can find out the exact directory by going to ```Help | About```.
+
+# Why can't I open files directly?  
+
+Polar has somewhat strict data requirements for the files it's managing.  The 
+goal of Polar is to keep your data for as long as it's valuable to you so we 
+need to make sure it's always consistent.
+
+By using a dedicated data directory we can avoid accidental deletions of files, 
+mutations of files, etc.
+
+Additionally, since all your data is now in one place, we can support features
+like cloud sync, filesystem consistency checks, sharing, etc. 
+
+Some of these features aren't implemented yet but are on the roadmap.
+
+# Can I export data from Polar?
+
+Yes.  The PDF and PHZ (web capture) files are in your ```stash``` directory in 
+your local datastore.  You can just copy them out if you wish to export.
+
+The annotations are another issue.  We don't currently have any exporters defined
+to export the annotations but the file is in JSON format which means anyone could
+easily write an exporter.   
+
 # How do I build and run from source?
 
 Polar is VERY easy to compile from source.  Polar is based on Typescript, Electron, 

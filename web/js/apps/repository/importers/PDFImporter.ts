@@ -38,6 +38,11 @@ export class PDFImporter {
 
         const pdfMeta = await this.getMetadata(filePath);
 
+        // FIXME: DO NOT use the name of the file any more.. if it's called
+        // 'example.pdf' or something it could overwrite existing data.  Instead
+        // we should create a hashcode of it to prevent collision and we need
+        // to do so via
+
         FileLoader.importToStash(filePath);
 
         if(! this.persistenceLayer.contains(pdfMeta.fingerprint)) {
@@ -52,6 +57,7 @@ export class PDFImporter {
             await this.persistenceLayer.sync(pdfMeta.fingerprint, docMeta);
 
         }
+
 
     }
 
