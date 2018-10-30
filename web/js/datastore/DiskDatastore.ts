@@ -132,7 +132,7 @@ export class DiskDatastore implements Datastore {
                          data: NodeJS.ReadableStream | Buffer | string,
                          meta: FileMeta = {}): Promise<DatastoreFile> {
 
-        DatastoreFiles.assertValidFileName(name);
+        DatastoreFiles.assertSanitizedFileName(name);
 
         const fileReference = this.createFileReference(backend, name);
 
@@ -149,7 +149,7 @@ export class DiskDatastore implements Datastore {
 
     public async getFile(backend: Backend, name: string): Promise<Optional<DatastoreFile>> {
 
-        DatastoreFiles.assertValidFileName(name);
+        DatastoreFiles.assertSanitizedFileName(name);
 
         const fileReference = this.createFileReference(backend, name);
 
@@ -163,14 +163,14 @@ export class DiskDatastore implements Datastore {
     }
 
     public containsFile(backend: Backend, name: string): Promise<boolean> {
-        DatastoreFiles.assertValidFileName(name);
+        DatastoreFiles.assertSanitizedFileName(name);
         const fileReference = this.createFileReference(backend, name);
         return Files.existsAsync(fileReference.path);
     }
 
     public deleteFile(backend: Backend, name: string): Promise<void> {
 
-        DatastoreFiles.assertValidFileName(name);
+        DatastoreFiles.assertSanitizedFileName(name);
 
         const fileReference = this.createFileReference(backend, name);
 

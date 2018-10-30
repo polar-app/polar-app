@@ -4,7 +4,7 @@ import {DatastoreFiles} from "./DatastoreFiles";
 
 describe('DastastoreFiles', function() {
 
-    it("valid file names for attachments", async function() {
+    it("isValidFileName", async function() {
 
         assert.ok(DatastoreFiles.isValidFileName('test.jpg'));
         assert.ok(DatastoreFiles.isValidFileName('test.html'));
@@ -13,6 +13,16 @@ describe('DastastoreFiles', function() {
 
         assert.ok(! DatastoreFiles.isValidFileName('test this.jpg'));
         assert.ok(! DatastoreFiles.isValidFileName('testthis.jpggg'));
+
+    });
+
+
+
+    it("sanitizeFilename", async function() {
+        assert.equal(DatastoreFiles.sanitizeFileName('asdf/ \\ : * ? " < > |asdf'), 'asdf_ _ _ _ _ _ _ _ _asdf');
+
+        assert.equal(DatastoreFiles.isSanitizedFileName('asdf/ \\ : * ? " < > |asdf'), false);
+        assert.equal(DatastoreFiles.isSanitizedFileName('asdf_ _ _ _ _ _ _ _ _asdf'), true);
 
     });
 

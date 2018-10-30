@@ -9,6 +9,7 @@ import {Files} from '../../../util/Files';
 import {Hashcodes} from '../../../Hashcodes';
 import {Backend} from '../../../datastore/Backend';
 import {Directories} from '../../../datastore/Directories';
+import {DatastoreFiles} from '../../../datastore/DatastoreFiles';
 
 const log = Logger.create();
 
@@ -47,17 +48,15 @@ export class PDFImporter {
         const defaultTitle = basename;
 
         // TODO: this is not particularly efficient to create the hashcode
-        // first, then copy the bytes to the target location.  It would be better,
-        // locally, copy and compute the hash on copy but we would have to rename
-        // it and that's not an operation I want to support in the datastore.
-        // This could be optimized but wait until people complain about it as
-        // it's probably premature at this point.
+        // first, then copy the bytes to the target location.  It would be
+        // better, locally, copy and compute the hash on copy but we would have
+        // to rename it and that's not an operation I want to support in the
+        // datastore. This could be optimized but wait until people complain
+        // about it as it's probably premature at this point.
 
         const hashprefix = await Hashcodes.createFromStream(Files.createReadStream(filePath));
 
-        // FIXME: this could still be a VERY broken file name and we still need
-        // to sanitize it.
-        const filename = `${hashprefix}-` + basename;
+        const filename = `${hashprefix}-` + DatastoreFiles.sanitizeFileName(basename);
 
         // always read from a stream here as some of the PDFs we might want to
         // import could be rather large.  Also this needs to be a COPY of the

@@ -6,28 +6,35 @@ export class DatastoreFiles {
      * the files be alphanumeric for now and support a 3-4 char suffix.
      */
     public static isValidFileName(name: string): boolean {
-
-        // FIXME: unicode characters too...
-
-        // FIXME: there are two strategies here..
-        // - blacklist
-        //
-        // - whitelist
-        //
-        //   - harder to accept unicode alphanumeric now
-
-
-        // / \ : * ? " < > |
-
         return name.search(/^[a-zA-Z0-9_(),{} -]+(\.[a-zA-Z0-9]{3,4})?$/g) !== -1;
-
     }
+
     public static assertValidFileName(name: string) {
 
         if (! this.isValidFileName(name)) {
             throw new Error("Invalid file name: " + name);
         }
 
+    }
+
+    /**
+     * Blacklist model to accept a string for a filename and strip characters
+     * that are invalid and not accepted on most filesystems.
+     *
+     * @param name
+     */
+    public static sanitizeFileName(name: string) {
+        return name.replace(/[/\\:*?\"<>|]/g, '_');
+    }
+
+    public static isSanitizedFileName(name: string) {
+        return name.search(/[/\\:*?\"<>|]/) === -1;
+    }
+
+    public static assertSanitizedFileName(name: string) {
+        if (! this.isSanitizedFileName(name)) {
+            throw new Error("Invalid file name: " + name);
+        }
     }
 
 }
