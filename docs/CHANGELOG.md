@@ -1,7 +1,23 @@
 
-# 1.0.9
+# 1.0.10
+
+- STASH files can be added directly as a backend file just like images and video
+  which means that they could work with the future firebase store.  
+
+- refactored the way we're handling popups for the annotation bar.  I think this
+  will resolve most of the issues we're having but there are still a few more 
+  glitches to be fixed.  
 
 - If any of the input tags were invalid, they were ALL ignored.  Which is bad.
+
+- Fixed ugly bug where percentags can be > 100% but only slightly.
+
+- reworked the preview browser so that buttons are only enabled after you first
+  load a URL so that it's not confusing for the user.
+
+# 1.0.9
+
+- release to fix MacOS release breakage.
 
 # 1.0.8
 

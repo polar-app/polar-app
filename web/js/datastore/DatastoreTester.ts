@@ -91,7 +91,7 @@ export class DatastoreTester {
             });
 
 
-            it("write and then delete DocMeta...", async function() {
+            it("Delete DocMeta and the associated stash file...", async function() {
 
                 const docMetaFileRef: DocMetaFileRef = {
                     fingerprint,

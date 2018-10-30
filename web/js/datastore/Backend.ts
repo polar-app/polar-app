@@ -6,6 +6,7 @@
 export enum Backend {
 
     VIDEO = 'video',
-    IMAGE = 'image'
+    IMAGE = 'image',
+    STASH = 'stash'
 
 }

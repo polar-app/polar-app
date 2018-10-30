@@ -127,7 +127,6 @@ export class DiskDatastore implements Datastore {
 
     }
 
-
     public async addFile(backend: Backend, name: string, data: Buffer | string, meta: FileMeta = {}): Promise<DatastoreFile> {
 
         DatastoreFiles.assertValidFileName(name);
@@ -162,14 +161,17 @@ export class DiskDatastore implements Datastore {
 
     public containsFile(backend: Backend, name: string): Promise<boolean> {
         DatastoreFiles.assertValidFileName(name);
-        const path = FilePaths.join(this.filesDir, backend.toString().toLowerCase(), name);
-        return Files.existsAsync(path);
+        const fileReference = this.createFileReference(backend, name);
+        return Files.existsAsync(fileReference.path);
     }
 
     public deleteFile(backend: Backend, name: string): Promise<void> {
+
         DatastoreFiles.assertValidFileName(name);
-        const path = FilePaths.join(this.filesDir, backend.toString().toLowerCase(), name);
-        return Files.removeAsync(path);
+
+        const fileReference = this.createFileReference(backend, name);
+
+        return Files.removeAsync(fileReference.path);
     }
 
     /**
@@ -265,7 +267,14 @@ export class DiskDatastore implements Datastore {
 
     private createFileReference(backend: Backend, name: string): FileReference {
 
-        const dir = FilePaths.join(this.filesDir, backend.toString().toLowerCase());
+        let dir;
+
+        if (backend === Backend.STASH) {
+            dir = FilePaths.join(this.dataDir, backend.toString().toLowerCase());
+        } else {
+            dir = FilePaths.join(this.filesDir, backend.toString().toLowerCase());
+        }
+
         const path = FilePaths.join(dir, name);
         const metaPath = FilePaths.join(dir, name + '.meta');
 
@@ -461,10 +470,10 @@ interface FileReference {
     // the dir holding our files.
     dir: string;
 
-    // the path to the data file.
+    // the full path to the actual data file.
     path: string;
 
-    // the path to the metadata file.
+    // the full path to the metadata file (file.meta)
     metaPath: string;
 
 }

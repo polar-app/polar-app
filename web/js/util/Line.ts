@@ -94,10 +94,15 @@ export class Line {
      * start origin.
      *
      */
-    multiply(scalar: number) {
-
+    multiply(scalar: number): Line {
         return new Line(this.start * scalar, this.end * scalar, this.axis);
+    }
 
+    /**
+     * Call Math.floor on the points in this line.
+     */
+    floor(): Line {
+        return new Line(Math.floor(this.start), Math.floor(this.end), this.axis);
     }
 
     toJSON() {

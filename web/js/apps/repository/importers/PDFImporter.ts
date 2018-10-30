@@ -32,7 +32,9 @@ export class PDFImporter {
 
     public async importFile(filePath: string) {
 
-        // FIXME: I need a way to import JUST directly into the stash...
+        // FIXME: I need a way to import JUST directly into the stash... use
+        // addFile with backend STASH for this functionality as that is the most
+        // clean way to implement this feature.
 
         const pdfMeta = await this.getMetadata(filePath);
 

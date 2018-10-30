@@ -6,7 +6,7 @@ export class DatastoreFiles {
      * the files be alphanumeric for now and support a 3-4 char suffix.
      */
     public static isValidFileName(name: string): boolean {
-        return name.search(/^[a-zA-Z0-9]+(\.[a-zA-Z0-9]{3,4})?$/g) !== -1;
+        return name.search(/^[a-zA-Z0-9_-]+(\.[a-zA-Z0-9]{3,4})?$/g) !== -1;
 
     }
     public static assertValidFileName(name: string) {

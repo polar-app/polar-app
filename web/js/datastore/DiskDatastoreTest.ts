@@ -9,6 +9,7 @@ import {FilePaths} from '../util/FilePaths';
 import {Directories, GlobalDataDir} from './Directories';
 import {Platform} from '../util/Platforms';
 import {DatastoreTester} from './DatastoreTester';
+import {Backend} from './Backend';
 
 const tmpdir = os.tmpdir();
 
@@ -154,6 +155,33 @@ describe("DiskDatastore", async function() {
 
         assert.equal(fs.existsSync(dataDir), false);
         assert.equal(await Files.existsAsync(dataDir), false);
+
+    });
+
+    it("Add file and remove file from the stash and see if it exists.", async function() {
+
+        const path = FilePaths.join("..", "..", "docs", "example.pdf");
+
+        assert.ok(await Files.existsAsync(path), "No file found from: " + process.cwd());
+
+        const dataDir = FilePaths.join(tmpdir, 'datastore-stash-backend');
+        Files.removeDirectoryRecursively(dataDir);
+
+        GlobalDataDir.set(dataDir);
+        const diskDatastore = new DiskDatastore();
+        await diskDatastore.init();
+
+        await diskDatastore.addFile(Backend.STASH, 'example.pdf', await Files.readFileAsync(path));
+
+        const pdfPath = FilePaths.join(dataDir, "stash", "example.pdf");
+
+        assert.ok(await Files.existsAsync(pdfPath), "Could not find file: " + pdfPath);
+
+        assert.ok(await diskDatastore.containsFile(Backend.STASH, 'example.pdf'));
+
+        await diskDatastore.deleteFile(Backend.STASH, 'example.pdf');
+
+        assert.isFalse(await Files.existsAsync(pdfPath));
 
     });
 
