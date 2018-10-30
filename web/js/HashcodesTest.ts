@@ -1,6 +1,8 @@
 import {assert} from 'chai';
 
 import {Hashcodes} from './Hashcodes';
+import {FilePaths} from './util/FilePaths';
+import {Files} from './util/Files';
 
 describe('Hashcodes', function() {
 
@@ -15,5 +17,24 @@ describe('Hashcodes', function() {
         });
 
     });
+
+    describe('createFromStream', function() {
+
+        it("basic", async function () {
+
+            const data = "this is a test";
+
+            let path = FilePaths.createTempName('hash-test-data.txt');
+
+            await Files.writeFileAsync(path, data);
+
+            const hashcode = await Hashcodes.createFromStream(Files.createReadStream(path));
+
+            assert.equal(hashcode, "12DPFtaSkqZ1BDBXxY47ThYmzinkWJ6jCMmuJvVZfCdaNViiRwu");
+
+        });
+
+    });
+
 
 });

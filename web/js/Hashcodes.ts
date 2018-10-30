@@ -1,6 +1,7 @@
 import {Preconditions} from './Preconditions';
 import {keccak256} from 'js-sha3';
 import uuid from 'uuid';
+import stream from 'stream'
 
 const base58check = require("base58check");
 
@@ -11,10 +12,38 @@ const base58check = require("base58check");
  */
 export class Hashcodes {
 
-    static create(data: string) {
+    static create(data: string): string {
         Preconditions.assertNotNull(data, "data");
         //return base58check.encode(createKeccakHash('keccak256').update(data).digest());
         return base58check.encode(keccak256(data));
+    }
+
+    /**
+     * Create a Base58Check encoded KECCAK256 hashcode by using the stream API
+     * on a given stream.
+     *
+     * @param readableStream
+     */
+    static async createFromStream(readableStream: NodeJS.ReadableStream): Promise<string> {
+
+        const hasher = keccak256.create();
+
+        return new Promise<string>((resolve, reject) => {
+
+            readableStream.on('data', chunk => {
+                hasher.update(chunk);
+            });
+
+            readableStream.on('end', chunk => {
+                resolve(base58check.encode(hasher.hex()));
+            });
+
+            readableStream.on('error', err => {
+                reject(err);
+            })
+
+        });
+
     }
 
     /**

@@ -147,6 +147,10 @@ export class Files {
         return this.withProperException(() => this.Promised.readFileAsync(path));
     }
 
+    public static createReadStream(path: PathLike, options?: CreateReadStreamOptions): fs.ReadStream {
+        return fs.createReadStream(path, options);
+    }
+
     // https://nodejs.org/api/fs.html#fs_fs_writefile_file_data_options_callback
 
     /**
@@ -324,3 +328,14 @@ export interface FileDeleted {
     deleted: boolean;
 
 }
+
+export type CreateReadStreamOptions = string | {
+    flags?: string;
+    encoding?: string;
+    fd?: number;
+    mode?: number;
+    autoClose?: boolean;
+    start?: number;
+    end?: number;
+    highWaterMark?: number;
+};
