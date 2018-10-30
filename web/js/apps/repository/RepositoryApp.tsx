@@ -2,6 +2,7 @@ import * as ReactDOM from 'react-dom';
 import App from '../../../../apps/repository/js/App';
 import * as React from 'react';
 import {RemotePersistenceLayerFactory} from '../../datastore/factories/RemotePersistenceLayerFactory';
+import {FileImportController} from './FileImportController';
 
 export class RepositoryApp {
 
@@ -14,6 +15,7 @@ export class RepositoryApp {
             document.getElementById('root') as HTMLElement
         );
 
+        await new FileImportController(persistenceLayer).start();
     }
 
 }

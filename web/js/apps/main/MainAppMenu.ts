@@ -181,9 +181,9 @@ export class MainAppMenu {
             submenu: [
 
                 {
-                    label: 'Open',
-                    accelerator: 'CmdOrCtrl+O',
-                    click: this.mainAppController.cmdOpenInNewWindow.bind(this.mainAppController)
+                    label: 'Import',
+                    accelerator: 'CmdOrCtrl+I',
+                    click: this.mainAppController.cmdImport.bind(this.mainAppController)
                 },
                 {
                     label: 'Capture Web Page',

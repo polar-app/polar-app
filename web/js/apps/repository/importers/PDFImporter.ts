@@ -1,17 +1,22 @@
-
 import url from 'url';
 
 import * as PDFJSDIST from 'pdfjs-dist';
 import {PDFJSStatic} from 'pdfjs-dist';
-import {PersistenceLayerWorkers} from '../../../datastore/dispatcher/PersistenceLayerWorkers';
 import {IPersistenceLayer} from '../../../datastore/IPersistenceLayer';
 import {Files} from '../../../util/Files';
 import {FilePaths} from '../../../util/FilePaths';
 import {Optional} from '../../../util/ts/Optional';
 import {DocMetas} from '../../../metadata/DocMetas';
-import {FileLoader} from '../loaders/FileLoader';
+import {DefaultPersistenceLayer} from '../../../datastore/DefaultPersistenceLayer';
+import {Datastore} from '../../../datastore/Datastore';
+import {FileLoader} from '../../main/loaders/FileLoader';
 
 const pdfjs: PDFJSStatic = <any> PDFJSDIST;
+
+(<any>pdfjs).GlobalWorkerOptions.workerSrc =
+    '../../node_modules/pdfjs-dist/build/pdf.worker.js';
+//
+// pdfjs.disableWorker = true;
 
 /**
  * Handles taking a given file, parsing the metadata, and then writing a new
@@ -25,7 +30,10 @@ export class PDFImporter {
         this.persistenceLayer = persistenceLayer;
     }
 
-    public async import(filePath: string) {
+    public async importFile(filePath: string) {
+
+        // FIXME: don't overwrite existing files or docMeta if it already
+        // exists...
 
         const pdfMeta = await this.getMetadata(filePath);
 
@@ -43,6 +51,8 @@ export class PDFImporter {
     }
 
     public async getMetadata(filePath: string): Promise<PDFMeta> {
+
+        // TODO: move this to its own file so that the PDF logic is isolated...
 
         if (! await Files.existsAsync(filePath)) {
             throw new Error("File does not exist at path: " + filePath);

@@ -31,6 +31,9 @@ export abstract class FileLoader {
      */
     public static async importToStash(path: string) {
 
+        // FIXME: this is wrong.. don't write to the stash directly.. we have to
+        // go through the Datastore or it won't be replicated.
+
         const currentDirname = await Files.realpathAsync(FilePaths.dirname(path));
 
         const directories = new Directories();

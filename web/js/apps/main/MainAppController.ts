@@ -15,6 +15,7 @@ import {BrowserProfiles} from '../../capture/BrowserProfiles';
 import {Capture} from '../../capture/Capture';
 import MenuItem = Electron.MenuItem;
 import {Directories} from '../../datastore/Directories';
+import {FileImportClient} from '../repository/FileImportClient';
 
 const log = Logger.create();
 
@@ -28,7 +29,9 @@ export class MainAppController {
 
     private readonly directories: Directories;
 
-    constructor(fileLoader: FileLoader, datastore: Datastore, webserver: Webserver) {
+    constructor(fileLoader: FileLoader,
+                datastore: Datastore,
+                webserver: Webserver) {
         this.fileLoader = fileLoader;
         this.datastore = datastore;
         this.webserver = webserver;
@@ -67,14 +70,29 @@ export class MainAppController {
         await MainAppBrowserWindowFactory.createWindow();
     }
 
-    public async cmdOpenInNewWindow() {
+    public async cmdImport() {
 
-        const path = await this.promptDoc();
+        const files = await this.promptImportDocs();
 
-        const targetWindow
-            = await MainAppBrowserWindowFactory.createWindow(BROWSER_WINDOW_OPTIONS, "about:blank");
+        if(files.length === 1) {
 
-        await this.loadDoc(path, targetWindow);
+            // if we're only given one file, just go ahead and open a window
+            // for it as it's a PDF and the DocMeta will be already created
+            // for us.  Additionally the file will be copied into the stash
+            // from the loader and the path updated properly.
+
+            const targetWindow
+                = await MainAppBrowserWindowFactory.createWindow(BROWSER_WINDOW_OPTIONS, "about:blank");
+
+            await this.loadDoc(files[0], targetWindow);
+
+        } else {
+
+            // send the messages to the renderer context now so that we can bulk
+            // import them into the repo.
+            FileImportClient.send({files});
+
+        }
 
     }
 
@@ -209,11 +227,11 @@ export class MainAppController {
     /**
      * Open a dialog box for a PDF file.
      */
-    private async promptDoc(): Promise<string> {
+    private async promptImportDocs(): Promise<string[]> {
 
         const downloadsDir = app.getPath('downloads');
 
-        return new Promise<string>((resolve) => {
+        return new Promise<string[]>((resolve) => {
 
             dialog.showOpenDialog({
                   title: "Import Document",
@@ -221,18 +239,25 @@ export class MainAppController {
                   filters: [
                       { name: 'Docs', extensions: ['pdf', "phz"] }
                   ],
-                  //properties: ['openFile', 'multiSelections']
-                  properties: ['openFile']
-              }, (path) => {
+                  properties: ['openFile', 'multiSelections']
+                  //properties: ['openFile']
+              }, (paths) => {
 
-                if (path) {
-                    resolve(path[0]);
-                }
+                resolve(paths);
 
             });
 
         });
 
     }
+
+}
+
+export interface FileImportRequest {
+
+    /**
+     * The array of files to import.
+     */
+    readonly files: string[];
 
 }

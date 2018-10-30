@@ -10,6 +10,8 @@ import {AbstractAdvertisingPersistenceLayer} from './AbstractAdvertisingPersiste
 /**
  * A PersistenceLayer that allows the user to receive advertisements regarding
  * updates to the internal data.
+ *
+ * @ElectronRendererContext
  */
 export class AdvertisingPersistenceLayer
     extends AbstractAdvertisingPersistenceLayer
