@@ -164,7 +164,7 @@ describe("DiskDatastore", async function() {
 
     it("Add file and remove file from the stash and see if it exists.", async function() {
 
-        const path = FilePaths.join("..", "..", "docs", "example.pdf");
+        const path = await Files.realpathAsync(FilePaths.join(__dirname, "..", "..", "..", "docs", "example.pdf"));
 
         assert.ok(await Files.existsAsync(path), "No file found from: " + process.cwd());
 

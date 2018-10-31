@@ -7,7 +7,7 @@ const path = require('path');
 describe('Open specific PDF file from command line', function () {
     this.timeout(10000);
 
-    let examplePDF = path.join(__dirname, "../../../docs/example.pdf");
+    const examplePDF = path.join(__dirname, "../../../docs/example.pdf");
 
     Spectron.setup(path.join(__dirname, '../../..'), examplePDF);
 
@@ -17,11 +17,11 @@ describe('Open specific PDF file from command line', function () {
 
         assert.ok(await Files.existsAsync(examplePDF));
 
-        //assert.equal(await this.app.client.getWindowCount(), 2);
+        // assert.equal(await this.app.client.getWindowCount(), 2);
 
-        let client: TBrowser = this.app.client;
+        const client: TBrowser = this.app.client;
 
-        //console.log("FIXME: " + client.getTitle());
+        // console.log("FIXME: " + client.getTitle());
 
         console.log("OK.. both windows are up.");
 

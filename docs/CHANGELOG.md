@@ -1,7 +1,6 @@
 
 # 1.0.10
 
-
 - STASH files can be added directly as a backend file just like images and video
   which means that they could work with the future firebase store.  
 
