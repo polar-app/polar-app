@@ -10,6 +10,7 @@ import {IEventDispatcher} from '../../reactor/SimpleReactor';
 import {IDocInfo} from '../../metadata/DocInfo';
 import {Optional} from "../../util/ts/Optional";
 import {DocLoader} from '../main/ipc/DocLoader';
+import {FilePaths} from "../../util/FilePaths";
 
 const log = Logger.create();
 
@@ -66,7 +67,7 @@ export class FileImportController {
 
                 DocLoader.load({
                        fingerprint,
-                       filename: path,
+                       filename: FilePaths.basename(path),
                        newWindow: true
                    }).catch(err => log.error("Unable to load doc: ", err));
 
