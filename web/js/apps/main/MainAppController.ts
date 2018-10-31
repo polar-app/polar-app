@@ -71,10 +71,6 @@ export class MainAppController {
 
     public async cmdImport() {
 
-        // - FIXME: I need to have spectron tests for imoporting one file and
-        // for importing multiople files and to make sure that the app data is
-        // properly imported...
-
         const files = await this.promptImportDocs();
 
         // send the messages to the renderer context now so that we can bulk
