@@ -3,13 +3,15 @@
 
 If you have a large number of PDF files that you would like to import you can 
 select ```File | Import``` and select multiple files and they will all be 
-imported into your repository. 
+imported into your repository.  
+
+This process is fairly quick taking about 1 minute per 100-200MB.   
 
 # Where is my data kept?
 
 Your data is kept in a ```.polar``` directory in your home dir.  
 
-This changed between platform depending if you're on Windows, MacOS or Linux.
+This changes between platforms depending if you're on Windows, MacOS or Linux.
 
 You can find out the exact directory by going to ```Help | About```.
 

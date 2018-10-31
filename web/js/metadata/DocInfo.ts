@@ -7,6 +7,7 @@ import {PagemarkType} from './PagemarkType';
 import {Preconditions} from '../Preconditions';
 import {ISODateTimeString} from './ISODateTimeStrings';
 import {Tag} from '../tags/Tag';
+import {Hashcode} from './Hashcode';
 
 export class DocInfo extends SerializedObject implements IDocInfo {
 
@@ -33,6 +34,7 @@ export class DocInfo extends SerializedObject implements IDocInfo {
     public nrAreaHighlights?: number;
     public nrAnnotations?: number;
     public uuid?: string;
+    public hashcode?: Hashcode;
 
     constructor(val: IDocInfo) {
 
@@ -171,7 +173,8 @@ export interface IDocInfo {
     nrAreaHighlights?: number;
 
     /**
-     * The total number of annotations (comments + notes + flashcards, + highlights, etc).
+     * The total number of annotations (comments + notes + flashcards, +
+     * highlights, etc).
      */
     nrAnnotations?: number;
 
@@ -182,5 +185,11 @@ export interface IDocInfo {
      * being written.
      */
     uuid?: string;
+
+    /**
+     * The hashcode of the PDF or PHZ file to detect potential data corruption
+     * of the original imported data.
+     */
+    hashcode?: Hashcode;
 
 }

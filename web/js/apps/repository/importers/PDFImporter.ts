@@ -11,6 +11,7 @@ import {Backend} from '../../../datastore/Backend';
 import {Directories} from '../../../datastore/Directories';
 import {DatastoreFiles} from '../../../datastore/DatastoreFiles';
 import {DocInfo} from '../../../metadata/DocInfo';
+import {HashAlgorithm, HashEncoding} from '../../../metadata/Hashcode';
 
 const log = Logger.create();
 
@@ -57,9 +58,9 @@ export class PDFImporter {
         // datastore. This could be optimized but wait until people complain
         // about it as it's probably premature at this point.
 
-        const hashprefix = await PDFImporter.computeHashPrefix(filePath);
+        const fileHashMeta = await PDFImporter.computeHashPrefix(filePath);
 
-        const filename = `${hashprefix}-` + DatastoreFiles.sanitizeFileName(basename);
+        const filename = `${fileHashMeta.hashPrefix}-` + DatastoreFiles.sanitizeFileName(basename);
 
         const stashFilePath = FilePaths.join(this.persistenceLayer.stashDir, filename);
 
@@ -79,6 +80,12 @@ export class PDFImporter {
 
         docMeta.docInfo.description = pdfMeta.description;
 
+        docMeta.docInfo.hashcode = {
+            enc: HashEncoding.BASE58CHECK,
+            alg: HashAlgorithm.KECCAK256,
+            data: fileHashMeta.hashcode
+        };
+
         await this.persistenceLayer.sync(pdfMeta.fingerprint, docMeta);
 
         return Optional.of({
@@ -88,9 +95,13 @@ export class PDFImporter {
 
     }
 
-    private static async computeHashPrefix(path: string) {
+    private static async computeHashPrefix(path: string): Promise<FileHashMeta> {
+
         const hashcode = await Hashcodes.createFromStream(Files.createReadStream(path));
-        return hashcode.substring(0, 10);
+        const hashPrefix = hashcode.substring(0, 10);
+
+        return { hashcode, hashPrefix };
+
     }
 
     private static async isWithinStashdir(path: string): Promise<boolean> {
@@ -119,4 +130,9 @@ export interface ImportedFile {
      */
     stashFilePath: string;
 
+}
+
+interface FileHashMeta {
+    hashPrefix: string;
+    hashcode: string;
 }
