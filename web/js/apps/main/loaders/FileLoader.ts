@@ -25,41 +25,4 @@ export abstract class FileLoader {
      */
     public abstract registerForLoad(path: string): Promise<LoadedFile>;
 
-    /**
-     * Import a file to the stash if it's not already in the stash so that
-     * it opens for the next time.
-     */
-    public static async importToStash(path: string) {
-
-        // FIXME: this should be deprecated now and we should ALWAYs import
-        // the file before hand so that it properly uses the datastore, and file
-        // name encodings.
-
-        // FIXME: this is wrong.. don't write to the stash directly.. we have to
-        // go through the Datastore or it won't be replicated.
-
-        const directories = new Directories();
-
-        const currentDirname = await Files.realpathAsync(FilePaths.dirname(path));
-
-        const stashDir = await Files.realpathAsync(directories.stashDir);
-
-        if (currentDirname !== stashDir) {
-
-            const fileName = FilePaths.basename(path);
-            const newPath = FilePaths.join(stashDir, fileName);
-
-            path = await Files.realpathAsync(path);
-
-            log.info(`Importing file from ${path} to ${newPath}`);
-
-            await Files.copyFileAsync(path, newPath);
-            return newPath;
-
-        }
-
-        return path;
-
-    }
-
 }

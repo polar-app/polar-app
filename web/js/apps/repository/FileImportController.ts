@@ -61,11 +61,10 @@ export class FileImportController {
 
                     log.info("Importing file: " + file);
 
-                    // TODO: it might be that we can't properly pass
-                    const importedFile = await this.pdfImporter.importFile(file);
+                    const importedFileResult = await this.pdfImporter.importFile(file);
 
-                    importedFile.map(docInfo => {
-                        this.updatedDocInfoEventDispatcher.dispatchEvent(docInfo);
+                    importedFileResult.map(importedFile => {
+                        this.updatedDocInfoEventDispatcher.dispatchEvent(importedFile.docInfo);
                     });
 
                 } catch (e) {

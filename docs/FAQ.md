@@ -1,4 +1,10 @@
 
+# How do I import my existing data?
+
+If you have a large number of PDF files that you would like to import you can 
+select ```File | Import``` and select multiple files and they will all be 
+imported into your repository. 
+
 # Where is my data kept?
 
 Your data is kept in a ```.polar``` directory in your home dir.  

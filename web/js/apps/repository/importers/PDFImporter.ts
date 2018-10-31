@@ -26,14 +26,16 @@ export class PDFImporter {
         this.persistenceLayer = persistenceLayer;
     }
 
-    public async importFile(filePath: string): Promise<Optional<DocInfo>> {
+    public async importFile(filePath: string): Promise<Optional<ImportedFile>> {
 
         if (await PDFImporter.isWithinStashdir(filePath)) {
+
             // prevent the user from re-importing/opening a file that is ALREADY
             // in the stash dir.
 
             log.warn("Skipping import of file that's already in the stashdir.");
             return Optional.empty();
+
         }
 
         const pdfMeta = await PDFMetadata.getMetadata(filePath);
@@ -59,6 +61,8 @@ export class PDFImporter {
 
         const filename = `${hashprefix}-` + DatastoreFiles.sanitizeFileName(basename);
 
+        const stashFilePath = FilePaths.join(this.persistenceLayer.stashDir, filename);
+
         // always read from a stream here as some of the PDFs we might want to
         // import could be rather large.  Also this needs to be a COPY of the
         // data, not a symlink since that's not really portable and it would
@@ -77,7 +81,10 @@ export class PDFImporter {
 
         await this.persistenceLayer.sync(pdfMeta.fingerprint, docMeta);
 
-        return Optional.of(docMeta.docInfo);
+        return Optional.of({
+            stashFilePath,
+            docInfo: docMeta.docInfo
+        });
 
     }
 
@@ -100,3 +107,16 @@ export class PDFImporter {
 
 }
 
+export interface ImportedFile {
+
+    /**
+     * The DocInfo for the file we just imported.
+     */
+    docInfo: DocInfo;
+
+    /**
+     * The full path of the file that we imported and where it is in the stash.
+     */
+    stashFilePath: string;
+
+}

@@ -20,7 +20,7 @@ export class Optional<T> {
 
             const mapped = mapFunction(this.value!);
 
-            if(Optional.present(mapped)) {
+            if (Optional.present(mapped)) {
                 return new Optional<NonNullable<V>>(mapped!, this.name);
             }
 

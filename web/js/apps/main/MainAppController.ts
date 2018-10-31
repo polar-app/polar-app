@@ -16,6 +16,8 @@ import {Capture} from '../../capture/Capture';
 import MenuItem = Electron.MenuItem;
 import {Directories} from '../../datastore/Directories';
 import {FileImportClient} from '../repository/FileImportClient';
+import {PDFImporter} from '../repository/importers/PDFImporter';
+import {IPersistenceLayer} from '../../datastore/IPersistenceLayer';
 
 const log = Logger.create();
 
@@ -23,17 +25,17 @@ export class MainAppController {
 
     private readonly fileLoader: FileLoader;
 
-    private readonly datastore: Datastore;
+    private readonly persistenceLayer: IPersistenceLayer;
 
     private readonly webserver: Webserver;
 
     private readonly directories: Directories;
 
     constructor(fileLoader: FileLoader,
-                datastore: Datastore,
+                persistenceLayer: IPersistenceLayer,
                 webserver: Webserver) {
         this.fileLoader = fileLoader;
-        this.datastore = datastore;
+        this.persistenceLayer = persistenceLayer;
         this.webserver = webserver;
         this.directories = new Directories();
     }
@@ -74,17 +76,27 @@ export class MainAppController {
 
         const files = await this.promptImportDocs();
 
-        if(files.length === 1) {
+        if (files.length === 1) {
 
             // if we're only given one file, just go ahead and open a window
             // for it as it's a PDF and the DocMeta will be already created
             // for us.  Additionally the file will be copied into the stash
             // from the loader and the path updated properly.
 
+            const pdfImporter = new PDFImporter(this.persistenceLayer);
+
+            const importFileResult = await pdfImporter.importFile(files[0]);
+
+            if (! importFileResult.isPresent()) {
+                return;
+            }
+
+            const importedFile = importFileResult.get();
+
             const targetWindow
                 = await MainAppBrowserWindowFactory.createWindow(BROWSER_WINDOW_OPTIONS, "about:blank");
 
-            await this.loadDoc(files[0], targetWindow);
+            await this.loadDoc(importedFile.stashFilePath, targetWindow);
 
         } else {
 
@@ -240,7 +252,7 @@ export class MainAppController {
                       { name: 'Docs', extensions: ['pdf', "phz"] }
                   ],
                   properties: ['openFile', 'multiSelections']
-                  //properties: ['openFile']
+                  // properties: ['openFile']
               }, (paths) => {
 
                 resolve(paths);

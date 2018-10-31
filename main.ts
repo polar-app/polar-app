@@ -7,7 +7,7 @@ import {Datastores} from './web/js/datastore/Datastores';
 
 const hasSingleInstanceLock = app.requestSingleInstanceLock();
 
-if( ! hasSingleInstanceLock) {
+if (!hasSingleInstanceLock) {
     console.error("Quiting.  App is single instance.");
     app.quit();
 }

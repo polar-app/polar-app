@@ -22,6 +22,8 @@ import {DocInfoBroadcasterService} from '../../datastore/advertiser/DocInfoBroad
 import {CachingStreamInterceptorService} from '../../backend/interceptor/CachingStreamInterceptorService';
 import {GA} from "../../ga/GA";
 import {Version} from "../../util/Version";
+import {DefaultPersistenceLayer} from '../../datastore/DefaultPersistenceLayer';
+import {AdvertisingPersistenceLayer} from '../../datastore/advertiser/AdvertisingPersistenceLayer';
 
 declare var global: any;
 
@@ -111,7 +113,13 @@ export class MainApp {
 
         log.info("Running with process.args: ", JSON.stringify(process.argv));
 
-        const mainAppController = new MainAppController(fileLoader, this.datastore, webserver);
+        const persistenceLayer
+            = new AdvertisingPersistenceLayer(new DefaultPersistenceLayer(this.datastore));
+
+        // note that we need to always pre-init before we return.
+        await persistenceLayer.init();
+
+        const mainAppController = new MainAppController(fileLoader, persistenceLayer, webserver);
 
         const mainAppService = new MainAppService(mainAppController);
         mainAppService.start();

@@ -187,10 +187,6 @@ describe("DiskDatastore", async function() {
 
         assert.isFalse(await Files.existsAsync(pdfPath));
 
-        await diskDatastore.addFile(Backend.STASH, 'example.pdf', await Files.createReadStream(path));
-
-        assert.ok(await Files.existsAsync(pdfPath), "Could not find file: " + pdfPath);
-
     });
 
     it("Delete file and make sure state.json and dir are no longer present", async function() {
