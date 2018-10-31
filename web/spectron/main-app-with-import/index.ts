@@ -21,7 +21,7 @@ import {AppInstances} from '../../js/electron/framework/AppInstances';
 
 const log = Logger.create();
 
-PolarDataDir.useFreshDirectory('.polar-persistent-error-logger');
+PolarDataDir.useFreshDirectory('.polar-main-app-with-import');
 
 async function createWindow(): Promise<BrowserWindow> {
 
@@ -54,11 +54,6 @@ SpectronMain2.create({windowFactory: createWindow}).run(async state => {
 
     log.info("Waiting for repository app...done");
 
-
-    // FIXME: this isn't long enough to wait for the first window... need a way
-    // for the renderer to say it's done.. a stage...
-
-
     const rawPath = FilePaths.join(__dirname, "..", "..", "..", "docs", "example.pdf");
     const importFilePath = await Files.realpathAsync(rawPath);
     assert.ok(await Files.existsAsync(importFilePath));
@@ -71,6 +66,20 @@ SpectronMain2.create({windowFactory: createWindow}).run(async state => {
 
     log.info("Sending file import client request...");
     FileImportClient.send({files});
+
+    log.info("Trying to find viewer...");
+
+    await waitForExpect(() => {
+        const windows = BrowserWindowRegistry.tagged({name: 'type', value: 'viewer'});
+        assert.ok(windows.length > 0);
+    });
+
+    log.info("Trying to find viewer...done");
+
+    const pdfStashPath = FilePaths.join(PolarDataDir.get()!, "stash", "12i77BKrNy-example.pdf");
+
+    log.info("Testing for file: " + pdfStashPath);
+    assert.ok(await Files.existsAsync(pdfStashPath), "File does not exist: " + pdfStashPath);
 
     await state.testResultWriter.write(true);
 

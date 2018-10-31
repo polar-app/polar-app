@@ -92,6 +92,13 @@ export class BrowserWindowRegistry {
 
     }
 
+    /**
+     * Get a copy of the current registry.
+     */
+    public static dump(): Readonly<{[id: string]: BrowserWindowMeta}> {
+        return Object.freeze(Object.assign({}, this.registry));
+    }
+
     public static gc() {
 
         const registryKeys = Object.keys(this.registry);
