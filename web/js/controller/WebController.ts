@@ -246,7 +246,7 @@ export class WebController extends Controller {
 
         new FlashcardsController(this.model).start();
 
-        await new AnnotationsController().start();
+        // await new AnnotationsController().start();
 
         new AreaHighlightController(this.model).start();
 

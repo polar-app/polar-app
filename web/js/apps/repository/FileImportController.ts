@@ -11,6 +11,7 @@ import {IDocInfo} from '../../metadata/DocInfo';
 import {Optional} from "../../util/ts/Optional";
 import {DocLoader} from '../main/ipc/DocLoader';
 import {FilePaths} from "../../util/FilePaths";
+import {BrowserWindowRegistry} from '../../electron/framework/BrowserWindowRegistry';
 
 const log = Logger.create();
 

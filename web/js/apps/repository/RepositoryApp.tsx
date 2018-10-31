@@ -5,6 +5,7 @@ import {RemotePersistenceLayerFactory} from '../../datastore/factories/RemotePer
 import {FileImportController} from './FileImportController';
 import {IEventDispatcher, SimpleReactor} from '../../reactor/SimpleReactor';
 import {IDocInfo} from '../../metadata/DocInfo';
+import {AppInstance} from '../../electron/framework/AppInstance';
 
 export class RepositoryApp {
 
@@ -14,6 +15,8 @@ export class RepositoryApp {
 
         const updatedDocInfoEventDispatcher: IEventDispatcher<IDocInfo> = new SimpleReactor();
 
+        await new FileImportController(persistenceLayer, updatedDocInfoEventDispatcher).start();
+
         ReactDOM.render(
             <App persistenceLayer={persistenceLayer}
                  updatedDocInfoEventDispatcher={updatedDocInfoEventDispatcher}/>,
@@ -22,7 +25,8 @@ export class RepositoryApp {
 
         );
 
-        await new FileImportController(persistenceLayer, updatedDocInfoEventDispatcher).start();
+        AppInstance.notifyStarted('RepositoryApp');
+
     }
 
 }

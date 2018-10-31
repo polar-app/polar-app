@@ -48,6 +48,8 @@ rules:
 
   no-namespace: false
 
+  radix: false
+
   member-ordering:
     options:
       order:

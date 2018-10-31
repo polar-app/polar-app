@@ -46,7 +46,7 @@ export class IPCEngine<E extends IPCEvent> {
 
                         // TODO: if the result is a promise, await the promise...
 
-                    } catch(err) {
+                    } catch (err) {
 
                         log.error("Encountered error with handler: ", err);
 

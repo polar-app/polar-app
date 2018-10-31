@@ -18,11 +18,11 @@ describe('BrowserWindowRegistry', function() {
 
     it("make sure GC works", async function () {
 
-        let mockLiveWindowsProvider = new MockLiveWindowsProvider();
+        const mockLiveWindowsProvider = new MockLiveWindowsProvider();
 
         mockLiveWindowsProvider.result = [1];
 
-        (<any>BrowserWindowRegistry).liveWindowsProvider = mockLiveWindowsProvider;
+        (<any> BrowserWindowRegistry).liveWindowsProvider = mockLiveWindowsProvider;
 
         assert.deepStrictEqual(BrowserWindowRegistry.gc(), []);
 
@@ -39,15 +39,15 @@ describe('BrowserWindowRegistry', function() {
 
     it("basic tagging", async function () {
 
-        let mockLiveWindowsProvider = new MockLiveWindowsProvider();
+        const mockLiveWindowsProvider = new MockLiveWindowsProvider();
 
         mockLiveWindowsProvider.result = [1];
 
-        (<any>BrowserWindowRegistry).liveWindowsProvider = mockLiveWindowsProvider;
+        (<any> BrowserWindowRegistry).liveWindowsProvider = mockLiveWindowsProvider;
 
         BrowserWindowRegistry.tag(1, {name: 'test'});
 
-        let expected = {
+        const expected = {
             "tags": {
                 "name": "test"
             }
