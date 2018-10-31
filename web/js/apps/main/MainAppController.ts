@@ -25,17 +25,14 @@ export class MainAppController {
 
     private readonly fileLoader: FileLoader;
 
-    private readonly persistenceLayer: IPersistenceLayer;
 
     private readonly webserver: Webserver;
 
     private readonly directories: Directories;
 
     constructor(fileLoader: FileLoader,
-                persistenceLayer: IPersistenceLayer,
                 webserver: Webserver) {
         this.fileLoader = fileLoader;
-        this.persistenceLayer = persistenceLayer;
         this.webserver = webserver;
         this.directories = new Directories();
     }
@@ -80,35 +77,9 @@ export class MainAppController {
 
         const files = await this.promptImportDocs();
 
-        if (files.length === 1) {
-
-            // if we're only given one file, just go ahead and open a window
-            // for it as it's a PDF and the DocMeta will be already created
-            // for us.  Additionally the file will be copied into the stash
-            // from the loader and the path updated properly.
-
-            const pdfImporter = new PDFImporter(this.persistenceLayer);
-
-            const importFileResult = await pdfImporter.importFile(files[0]);
-
-            if (! importFileResult.isPresent()) {
-                return;
-            }
-
-            const importedFile = importFileResult.get();
-
-            const targetWindow
-                = await MainAppBrowserWindowFactory.createWindow(BROWSER_WINDOW_OPTIONS, "about:blank");
-
-            await this.loadDoc(importedFile.stashFilePath, targetWindow);
-
-        } else {
-
-            // send the messages to the renderer context now so that we can bulk
-            // import them into the repo.
-            FileImportClient.send({files});
-
-        }
+        // send the messages to the renderer context now so that we can bulk
+        // import them into the repo.
+        FileImportClient.send({files});
 
     }
 

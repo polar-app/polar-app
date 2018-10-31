@@ -1,4 +1,4 @@
-import {protocol, app, session, BrowserWindow} from 'electron';
+import {app, BrowserWindow, session} from 'electron';
 import {WebserverConfig} from '../../backend/webserver/WebserverConfig';
 import {FileRegistry} from '../../backend/webserver/FileRegistry';
 import {ProxyServerConfig} from '../../backend/proxyserver/ProxyServerConfig';
@@ -7,7 +7,6 @@ import {Directories} from '../../datastore/Directories';
 import {CaptureController} from '../../capture/controller/CaptureController';
 import {DialogWindowService} from '../../ui/dialog_window/DialogWindowService';
 import {DefaultFileLoader} from './loaders/DefaultFileLoader';
-import {MainAppBrowserWindowFactory} from './MainAppBrowserWindowFactory';
 import {Webserver} from '../../backend/webserver/Webserver';
 import {AnalyticsFileLoader} from './loaders/AnalyticsFileLoader';
 import {MainAppController} from './MainAppController';
@@ -22,8 +21,6 @@ import {DocInfoBroadcasterService} from '../../datastore/advertiser/DocInfoBroad
 import {CachingStreamInterceptorService} from '../../backend/interceptor/CachingStreamInterceptorService';
 import {GA} from "../../ga/GA";
 import {Version} from "../../util/Version";
-import {DefaultPersistenceLayer} from '../../datastore/DefaultPersistenceLayer';
-import {AdvertisingPersistenceLayer} from '../../datastore/advertiser/AdvertisingPersistenceLayer';
 
 declare var global: any;
 
@@ -113,13 +110,7 @@ export class MainApp {
 
         log.info("Running with process.args: ", JSON.stringify(process.argv));
 
-        const persistenceLayer
-            = new AdvertisingPersistenceLayer(new DefaultPersistenceLayer(this.datastore));
-
-        // note that we need to always pre-init before we return.
-        await persistenceLayer.init();
-
-        const mainAppController = new MainAppController(fileLoader, persistenceLayer, webserver);
+        const mainAppController = new MainAppController(fileLoader, webserver);
 
         const mainAppService = new MainAppService(mainAppController);
         mainAppService.start();
@@ -173,7 +164,7 @@ export class MainApp {
             // re-focus the most recently used window.
 
             const visibleWindows = BrowserWindow.getAllWindows()
-                .filter(current => current.isVisible())
+                .filter(current => current.isVisible());
 
             if (visibleWindows.length === 0) {
 
