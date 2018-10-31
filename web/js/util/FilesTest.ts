@@ -1,5 +1,5 @@
 import {assert} from 'chai';
-import {Files} from './Files';
+import {Files, FileRef} from './Files';
 import {FilePaths} from './FilePaths';
 import os from "os";
 import fs from 'fs';
@@ -12,9 +12,41 @@ describe('Files', function() {
 
     describe('writeFileAsync', function() {
 
-        it("basic", async function () {
+        it("basic", async function() {
 
             await Files.writeFileAsync(FilePaths.join(tmpdir, "write-file-async.txt"), "hello world");
+
+        });
+
+        it("from stream", async function() {
+
+            const dataInputPath = FilePaths.join(tmpdir, "data-input.txt");
+            await Files.writeFileAsync(dataInputPath, "hello world");
+
+            const dataOutputPath = FilePaths.join(tmpdir, "data-output.txt");
+
+            await Files.writeFileAsync(dataOutputPath, Files.createReadStream(dataInputPath));
+
+            const output = await Files.readFileAsync(dataOutputPath);
+
+            assert.ok(output, "hello world");
+
+        });
+
+        it("from FileRef", async function() {
+
+            const dataInputPath = FilePaths.join(tmpdir, "data-input.txt");
+            await Files.writeFileAsync(dataInputPath, "hello world");
+
+            const dataOutputPath = FilePaths.join(tmpdir, "data-output.txt");
+
+            const fileRef: FileRef = {path: dataInputPath};
+
+            await Files.writeFileAsync(dataOutputPath, fileRef);
+
+            const output = await Files.readFileAsync(dataOutputPath);
+
+            assert.ok(output, "hello world");
 
         });
 
@@ -24,11 +56,11 @@ describe('Files', function() {
 
         it("basic", async function() {
 
-            let path = FilePaths.join(tmpdir, "write-file-async.txt");
+            const path = FilePaths.join(tmpdir, "write-file-async.txt");
 
             await Files.writeFileAsync(path, "hello world");
 
-            let data = await Files.readFileAsync(path);
+            const data = await Files.readFileAsync(path);
 
             assert.equal(data.toString('utf8'), "hello world");
 
@@ -59,14 +91,14 @@ describe('Files', function() {
 
     describe('readdirAsync', function() {
 
-        it("basic", async function () {
+        it("basic", async function() {
 
-            let filename = "write-file-async.txt";
-            let path = FilePaths.join(tmpdir, filename);
+            const filename = "write-file-async.txt";
+            const path = FilePaths.join(tmpdir, filename);
 
             await Files.writeFileAsync(path, "hello world");
 
-            let files = await Files.readdirAsync(tmpdir);
+            const files = await Files.readdirAsync(tmpdir);
 
             assert.equal(files.includes(filename), true);
 
@@ -76,12 +108,12 @@ describe('Files', function() {
 
     describe('statAsync', function() {
 
-        it("basic", async function () {
+        it("basic", async function() {
 
-            let filename = "write-file-async.txt";
-            let path = FilePaths.join(tmpdir, filename);
+            const filename = "write-file-async.txt";
+            const path = FilePaths.join(tmpdir, filename);
 
-            let stat = await Files.statAsync(path);
+            const stat = await Files.statAsync(path);
 
             assert.equal(stat !== null, true);
             assert.equal(stat.isFile(), true);
@@ -89,14 +121,14 @@ describe('Files', function() {
 
         });
 
-        it("isDirectory", async function () {
+        it("isDirectory", async function() {
 
-            let stat = await Files.statAsync(tmpdir);
+            const stat = await Files.statAsync(tmpdir);
             assert.equal(stat.isDirectory(), true);
 
         });
 
-        xit("missing file", async function () {
+        xit("missing file", async function() {
 
             assert.throw(async function() {
                 await Files.statAsync(FilePaths.createTempName('invalid-file-name'));
@@ -139,7 +171,7 @@ describe('Files', function() {
 
     describe('mkdirAsync', function() {
 
-        xit("nested", async function () {
+        xit("nested", async function() {
 
             // this fails but at least we kwow it fails.
 
@@ -154,7 +186,7 @@ describe('Files', function() {
 
         });
 
-        it("basic", async function () {
+        it("basic", async function() {
 
             const path = FilePaths.join(tmpdir, 'test-mkdir.dir');
 

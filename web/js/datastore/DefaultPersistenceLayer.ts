@@ -164,6 +164,5 @@ export class DefaultPersistenceLayer implements IPersistenceLayer {
         return this.datastore.getFile(backend, name);
     }
 
-
 }
 

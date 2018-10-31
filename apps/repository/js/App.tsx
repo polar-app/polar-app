@@ -23,14 +23,13 @@ import {DateTimeTableCell} from './DateTimeTableCell';
 import {RendererAnalytics} from '../../../web/js/ga/RendererAnalytics';
 import {MessageBanner} from './MessageBanner';
 import {DocDropdown} from './DocDropdown';
-import CookieBanner from 'react-cookie-banner';
 import {TableDropdown} from './TableDropdown';
 import {TableColumns} from './TableColumns';
 import {SettingsStore} from '../../../web/js/datastore/SettingsStore';
-import {cursorTo} from 'readline';
 import {Version} from '../../../web/js/util/Version';
 import {RepoDocInfoIndex} from './RepoDocInfoIndex';
 import {AutoUpdatesController} from '../../../web/js/auto_updates/AutoUpdatesController';
+import {IDocInfo} from '../../../web/js/metadata/DocInfo';
 
 const log = Logger.create();
 
@@ -51,8 +50,7 @@ export default class App extends React.Component<AppProps, AppState> {
         this.docRepository = new DocRepository(this.persistenceLayer);
         this.repoDocInfoLoader = new RepoDocInfoLoader(this.persistenceLayer);
 
-
-        this.onDocTagged= this.onDocTagged.bind(this);
+        this.onDocTagged = this.onDocTagged.bind(this);
         this.onDocDeleted = this.onDocDeleted.bind(this);
         this.onDocSetTitle = this.onDocSetTitle.bind(this);
         this.onSelectedColumns = this.onSelectedColumns.bind(this);
@@ -69,6 +67,8 @@ export default class App extends React.Component<AppProps, AppState> {
             this.refresh();
 
         })().catch(err => log.error("Could not load disk store: ", err));
+
+        this.props.updatedDocInfoEventDispatcher.addEventListener(docInfo => this.onUpdatedDocInfo(docInfo));
 
     }
 
@@ -454,7 +454,7 @@ export default class App extends React.Component<AppProps, AppState> {
 
         RendererAnalytics.event({category: 'user', action: 'doc-deleted'});
 
-        log.info("Deleting document: ", repoDocInfo)
+        log.info("Deleting document: ", repoDocInfo);
 
         this.docRepository.syncDeleteDocInfo(repoDocInfo)
             .catch(err => log.error("Could not delete doc: ", err));
@@ -634,6 +634,26 @@ export default class App extends React.Component<AppProps, AppState> {
 
     }
 
+    private onUpdatedDocInfo(docInfo: IDocInfo): void {
+
+        log.info("Received DocInfo update");
+
+        const repoDocInfo = RepoDocInfos.convertFromDocInfo(docInfo);
+
+        if (RepoDocInfos.isValid(repoDocInfo)) {
+
+            this.docRepository!.updateDocInfo(repoDocInfo);
+            this.refresh();
+
+        } else {
+
+            log.warn("We were given an invalid DocInfo which yielded a broken RepoDocInfo: ",
+                     docInfo, repoDocInfo);
+
+        }
+
+    }
+
     private async init(): Promise<void> {
 
         new AutoUpdatesController().start();
@@ -653,23 +673,7 @@ export default class App extends React.Component<AppProps, AppState> {
                 });
 
         this.persistenceLayer.addEventListener((event) => {
-
-            log.info("Received DocInfo update");
-
-            const repoDocInfo = RepoDocInfos.convertFromDocInfo(event.docInfo);
-
-            if (RepoDocInfos.isValid(repoDocInfo)) {
-
-                this.docRepository!.updateDocInfo(repoDocInfo);
-                this.refresh();
-
-            } else {
-
-                log.warn("We were given an invalid DocInfo which yielded a broken RepoDocInfo: ",
-                         event.docInfo, repoDocInfo);
-
-            }
-
+            this.onUpdatedDocInfo(event.docInfo);
         });
 
         const repoDocs = await this.repoDocInfoLoader!.load();

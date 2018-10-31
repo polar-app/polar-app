@@ -2,6 +2,7 @@ import fs, {PathLike, Stats} from "fs";
 import {promisify} from 'util';
 import {Logger} from '../logger/Logger';
 import ErrnoException = NodeJS.ErrnoException;
+import {isPresent} from "../Preconditions";
 
 const log = Logger.create();
 
@@ -70,11 +71,12 @@ export class Files {
                 })
                 .catch((err: ErrnoException) => {
                     if (err.code === 'ENOENT') {
-                        // log.debug("Path does not exist due to ENOENT: " + path, err);
+                        // log.debug("Path does not exist due to ENOENT: " +
+                        // path, err);
                         resolve(false);
                     } else {
-                        // log.debug("Received err within existsAsync: "+ path, err);
-                        // some other error
+                        // log.debug("Received err within existsAsync: "+ path,
+                        // err); some other error
                         reject(err);
                     }
                 });
@@ -172,14 +174,23 @@ export class Files {
      * If `flag` is not supplied, the default of `'w'` is used.
      */
     public static async writeFileAsync(path: string,
-                                       data: NodeJS.ReadableStream | Buffer | string,
+                                       data: FileRef | NodeJS.ReadableStream | Buffer | string,
                                        options?: WriteFileAsyncOptions | string | undefined | null) {
 
 
         if (data instanceof Buffer || typeof data === 'string') {
+
             return this.withProperException(() => this.Promised.writeFileAsync(path, data, options));
+
+        } else if ( this.isFileRef(data) ) {
+
+            const fileRef = <FileRef> data;
+            Files.createReadStream(fileRef.path).pipe(fs.createWriteStream(path));
+
         } else {
-            data.pipe(fs.createWriteStream(path));
+
+            const readableStream = <NodeJS.ReadableStream> data;
+            readableStream.pipe(fs.createWriteStream(path));
         }
 
     }
@@ -251,6 +262,10 @@ export class Files {
         return this.withProperException(() => this.Promised.fsyncAsync(fd));
     }
 
+    public static isFileRef(obj: any): boolean {
+        return typeof obj === 'object' && isPresent(obj.path);
+    }
+
     private static async withProperException<T>(func: () => Promise<T>): Promise<T> {
 
         // the only way to get this to work with node is to create an 'anchor'
@@ -269,7 +284,8 @@ export class Files {
 
     private static createProperException(err: Error, source: ErrnoException ) {
 
-        // strip the first line of the stack err, and add the message from source.
+        // strip the first line of the stack err, and add the message from
+        // source.
 
         if (err.stack) {
             const stackArr = err.stack.split('\n');
@@ -303,8 +319,6 @@ export class Files {
     };
 
 }
-
-
 
 export interface CreateDirResult {
     dir: string;
@@ -342,3 +356,14 @@ export type CreateReadStreamOptions = string | {
     end?: number;
     highWaterMark?: number;
 };
+
+/**
+ * Reference to a local file.
+ */
+export interface FileRef {
+    path: string;
+}
+
+// export interface File {
+//
+// }

@@ -6,6 +6,7 @@ import {DatastoreFile} from './DatastoreFile';
 import {Optional} from '../util/ts/Optional';
 import {FileMeta} from './Datastore';
 import {DocInfo} from '../metadata/DocInfo';
+import {FileRef} from '../util/Files';
 
 export interface IPersistenceLayer {
 
@@ -45,7 +46,10 @@ export interface IPersistenceLayer {
     // get an overview of documents in teh repository
     // overview(): Promise<DatastoreOverview>;
 
-    addFile(backend: Backend, name: string, data: NodeJS.ReadableStream | Buffer | string, meta?: FileMeta): Promise<DatastoreFile>;
+    addFile(backend: Backend,
+            name: string,
+            data: FileRef | NodeJS.ReadableStream | Buffer | string,
+            meta?: FileMeta): Promise<DatastoreFile>;
 
     getFile(backend: Backend, name: string): Promise<Optional<DatastoreFile>>;
 

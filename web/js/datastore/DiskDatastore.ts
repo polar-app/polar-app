@@ -2,7 +2,7 @@ import {Datastore, FileMeta} from './Datastore';
 import {Preconditions} from '../Preconditions';
 import {Logger} from '../logger/Logger';
 import {DocMetaFileRef, DocMetaRef} from './DocMetaRef';
-import {FileDeleted, Files} from '../util/Files';
+import {FileDeleted, Files, FileRef} from '../util/Files';
 import {FilePaths} from '../util/FilePaths';
 import {Directories} from './Directories';
 
@@ -53,7 +53,7 @@ export class DiskDatastore implements Datastore {
 
     /**
      * Return true if the DiskDatastore contains a document for the given
-     * fingerprint
+     * fingerprint.
      */
     public async contains(fingerprint: string): Promise<boolean> {
 
@@ -81,6 +81,9 @@ export class DiskDatastore implements Datastore {
         const docPath = FilePaths.join(this.directories.stashDir, docMetaFileRef.filename);
 
         log.info(`Deleting statePath ${statePath} and docPath ${docPath}`);
+
+        // TODO: don't delete JUST the state file but also the parent dir if it
+        // is empty.
 
         return {
             docMetaFile: await Files.deleteAsync(statePath),
@@ -129,7 +132,7 @@ export class DiskDatastore implements Datastore {
 
     public async addFile(backend: Backend,
                          name: string,
-                         data: NodeJS.ReadableStream | Buffer | string,
+                         data: FileRef | NodeJS.ReadableStream | Buffer | string,
                          meta: FileMeta = {}): Promise<DatastoreFile> {
 
         DatastoreFiles.assertSanitizedFileName(name);

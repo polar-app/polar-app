@@ -6,6 +6,7 @@ import {Backend} from './Backend';
 import {DatastoreFile} from './DatastoreFile';
 import {Optional} from '../util/ts/Optional';
 import {IDocInfo} from '../metadata/DocInfo';
+import {FileRef} from '../util/Files';
 
 export interface Datastore {
 
@@ -44,7 +45,10 @@ export interface Datastore {
      * data types that need to be stored. This is primarily designed for video,
      * audio, and documents like PDF, ePub, etc.
      */
-    addFile(backend: Backend, name: string, data: NodeJS.ReadableStream | Buffer | string, meta?: FileMeta): Promise<DatastoreFile>;
+    addFile(backend: Backend,
+            name: string,
+            data: FileRef | NodeJS.ReadableStream | Buffer | string,
+            meta?: FileMeta): Promise<DatastoreFile>;
 
     getFile(backend: Backend, name: string): Promise<Optional<DatastoreFile>>;
 

@@ -10,6 +10,10 @@ import {Directories, GlobalDataDir} from './Directories';
 import {Platform} from '../util/Platforms';
 import {DatastoreTester} from './DatastoreTester';
 import {Backend} from './Backend';
+import {DefaultPersistenceLayer} from './DefaultPersistenceLayer';
+import {MockDocMetas} from '../metadata/DocMetas';
+import {DocMetaFileRef} from './DocMetaRef';
+import {MockPHZWriter} from '../phz/MockPHZWriter';
 
 const tmpdir = os.tmpdir();
 
@@ -183,6 +187,46 @@ describe("DiskDatastore", async function() {
 
         assert.isFalse(await Files.existsAsync(pdfPath));
 
+        await diskDatastore.addFile(Backend.STASH, 'example.pdf', await Files.createReadStream(path));
+
+        assert.ok(await Files.existsAsync(pdfPath), "Could not find file: " + pdfPath);
+
     });
+
+    it("Delete file and make sure state.json and dir are no longer present", async function() {
+
+        const dataDir = FilePaths.join(tmpdir, 'datastore-delete-test');
+
+        GlobalDataDir.set(dataDir);
+        const diskDatastore = new DiskDatastore();
+        await diskDatastore.init();
+
+        const persistenceLayer = new DefaultPersistenceLayer(diskDatastore);
+
+        await persistenceLayer.init();
+
+        const fingerprint = '0x00datadelete';
+        const docMeta = MockDocMetas.createWithinInitialPagemarks(fingerprint, 14);
+
+        await persistenceLayer.sync(fingerprint, docMeta);
+
+        const stateFile = FilePaths.join(dataDir, fingerprint, 'state.json');
+
+        assert.ok(await Files.existsAsync(stateFile));
+
+        const docMetaFileRef: DocMetaFileRef = {
+            fingerprint,
+            filename: `${fingerprint}.phz`,
+            docInfo: docMeta.docInfo
+        };
+
+        await MockPHZWriter.write(FilePaths.create(diskDatastore.stashDir, `${fingerprint}.phz`));
+
+        await persistenceLayer.delete(docMetaFileRef);
+
+        assert.isFalse(await persistenceLayer.contains(stateFile));
+
+    });
+
 
 });

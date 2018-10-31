@@ -5,11 +5,12 @@ import {FileLoader} from '../../main/loaders/FileLoader';
 import {Logger} from '../../../logger/Logger';
 import {PDFMetadata} from './PDFMetadata';
 import {Optional} from '../../../util/ts/Optional';
-import {Files} from '../../../util/Files';
+import {FileRef, Files} from '../../../util/Files';
 import {Hashcodes} from '../../../Hashcodes';
 import {Backend} from '../../../datastore/Backend';
 import {Directories} from '../../../datastore/Directories';
 import {DatastoreFiles} from '../../../datastore/DatastoreFiles';
+import {DocInfo} from '../../../metadata/DocInfo';
 
 const log = Logger.create();
 
@@ -25,21 +26,21 @@ export class PDFImporter {
         this.persistenceLayer = persistenceLayer;
     }
 
-    public async importFile(filePath: string): Promise<boolean> {
+    public async importFile(filePath: string): Promise<Optional<DocInfo>> {
 
         if (await PDFImporter.isWithinStashdir(filePath)) {
             // prevent the user from re-importing/opening a file that is ALREADY
             // in the stash dir.
 
             log.warn("Skipping import of file that's already in the stashdir.");
-            return false;
+            return Optional.empty();
         }
 
         const pdfMeta = await PDFMetadata.getMetadata(filePath);
 
-        if (this.persistenceLayer.contains(pdfMeta.fingerprint)) {
+        if (await this.persistenceLayer.contains(pdfMeta.fingerprint)) {
             log.warn(`This file is already present in the datastore with fingerprint ${pdfMeta.fingerprint}: ${filePath}`);
-            return false;
+            return Optional.empty();
         }
 
         // create a default title from the path which is used as sometimes the
@@ -54,7 +55,7 @@ export class PDFImporter {
         // datastore. This could be optimized but wait until people complain
         // about it as it's probably premature at this point.
 
-        const hashprefix = await Hashcodes.createFromStream(Files.createReadStream(filePath));
+        const hashprefix = await PDFImporter.computeHashPrefix(filePath);
 
         const filename = `${hashprefix}-` + DatastoreFiles.sanitizeFileName(basename);
 
@@ -63,7 +64,9 @@ export class PDFImporter {
         // data, not a symlink since that's not really portable and it would
         // also be danging if the user deleted the file.  Wasting space here is
         // a good thing.  Space is cheap.
-        this.persistenceLayer.addFile(Backend.STASH, filename, Files.createReadStream(filePath));
+        const inputFileRef: FileRef = {path: filePath};
+
+        await this.persistenceLayer.addFile(Backend.STASH, filename, inputFileRef);
 
         const docMeta = DocMetas.create(pdfMeta.fingerprint, pdfMeta.nrPages, filename);
 
@@ -74,8 +77,13 @@ export class PDFImporter {
 
         await this.persistenceLayer.sync(pdfMeta.fingerprint, docMeta);
 
-        return true;
+        return Optional.of(docMeta.docInfo);
 
+    }
+
+    private static async computeHashPrefix(path: string) {
+        const hashcode = await Hashcodes.createFromStream(Files.createReadStream(path));
+        return hashcode.substring(0, 10);
     }
 
     private static async isWithinStashdir(path: string): Promise<boolean> {
@@ -91,3 +99,4 @@ export class PDFImporter {
     }
 
 }
+
