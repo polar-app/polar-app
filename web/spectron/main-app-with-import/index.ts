@@ -34,9 +34,7 @@ async function createWindow(): Promise<BrowserWindow> {
     const mainApp = new MainApp(datastore);
 
     const mainAppState = await mainApp.start();
-
-    // FIXME: this works but there is a race for startup...
-
+    
     return mainAppState.mainWindow;
 
 }
