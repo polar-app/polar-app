@@ -132,7 +132,7 @@ export class DiskDatastore implements Datastore {
 
     public async addFile(backend: Backend,
                          name: string,
-                         data: FileRef | NodeJS.ReadableStream | Buffer | string,
+                         data: FileRef | Buffer | string,
                          meta: FileMeta = {}): Promise<DatastoreFile> {
 
         DatastoreFiles.assertSanitizedFileName(name);
