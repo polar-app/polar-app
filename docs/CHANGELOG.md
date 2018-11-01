@@ -1,6 +1,8 @@
 
 # 1.0.10
 
+- banner message about opencollective donations
+
 - Change capture key binding to CommandOrControl+N (new).  The other key binding 
   conflicted with window management in Chrome and we might want to use those
   key bindings in the future.

@@ -10,6 +10,7 @@
 @import url('./add-comment.css');
 @import url('./annotationbar.css');
 @import url('./text-highlights.css');
+@import url('./flexbar.css');
 
 body {
     height: 100%;
