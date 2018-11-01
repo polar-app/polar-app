@@ -64,7 +64,7 @@
     "jsdom": "^11.12.0",
     "mocha": "^5.2.0",
     "mocha-isolation": "^0.1.5",
-    "mocha-parallel-tests": "^2.0.4",
+    "mocha-parallel-tests": "^2.0.6-0",
     "recursive-readdir": "^2.2.2",
     "spectron": "github:dsabanin/spectron",
     "summernote-typescript": "^0.8.9",

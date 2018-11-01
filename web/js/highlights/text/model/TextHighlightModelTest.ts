@@ -17,7 +17,7 @@ describe('TextHighlightModel', function() {
 
     describe('Listen for new highlights', function() {
 
-        it("Initial values", function () {
+        it("Initial values", function() {
 
             let docMeta = createDocMeta();
 
@@ -59,7 +59,8 @@ describe('TextHighlightModel', function() {
                         "images": {},
                         "notes": {},
                         "questions": {},
-                        "flashcards": {}
+                        "flashcards": {},
+                        "color": "yellow"
                     },
                     "mutationType": "INITIAL"
                 }
@@ -118,6 +119,7 @@ describe('TextHighlightModel', function() {
                         "notes": {},
                         "questions": {},
                         "flashcards": {},
+                        "color": "yellow"
                     },
                     "mutationType": "SET"
                 }
