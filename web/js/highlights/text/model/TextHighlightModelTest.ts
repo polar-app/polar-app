@@ -19,17 +19,17 @@ describe('TextHighlightModel', function() {
 
         it("Initial values", function() {
 
-            let docMeta = createDocMeta();
+            const docMeta = createDocMeta();
 
-            let textHighlightModel = new TextHighlightModel();
+            const textHighlightModel = new TextHighlightModel();
 
-            let mutations: any[] = [];
+            const mutations: any[] = [];
 
             textHighlightModel.registerListener(docMeta, (textHighlightEvent) => {
                 mutations.push(summarize(textHighlightEvent));
             } );
 
-            let expected = [
+            const expected = [
                 {
                     "pageNum": 1,
                     "textHighlight": {
@@ -70,25 +70,25 @@ describe('TextHighlightModel', function() {
 
         });
 
-        it("New text highlights on new pages", function () {
+        it("New text highlights on new pages", function() {
 
-            let docMeta = createDocMeta();
+            const docMeta = createDocMeta();
 
-            let textHighlightModel = new TextHighlightModel();
+            const textHighlightModel = new TextHighlightModel();
 
             let mutations: any[] = [];
 
-            textHighlightModel.registerListener(docMeta, function (textHighlightEvent) {
+            textHighlightModel.registerListener(docMeta, function(textHighlightEvent) {
                 mutations.push(summarize(textHighlightEvent));
             } );
 
             mutations = [];
 
-            let textHighlightRecord = createTextHighlightRecord();
+            const textHighlightRecord = createTextHighlightRecord();
 
             docMeta.getPageMeta(3).textHighlights[textHighlightRecord.id] = textHighlightRecord.value;
 
-            let expected = [
+            const expected = [
                 {
                     "pageNum": 3,
                     "textHighlight": {
@@ -162,9 +162,9 @@ function createDocMeta() {
 
 function createTextHighlightRecord() {
 
-    let rects: Rect[] = [ new Rect({top: 100, left: 100, right: 200, bottom: 200, width: 100, height: 100}) ];
-    let textSelections: TextRect[] = [new TextRect({text: "hello world"})];
-    let text = "hello world";
+    const rects: Rect[] = [ new Rect({top: 100, left: 100, right: 200, bottom: 200, width: 100, height: 100}) ];
+    const textSelections: TextRect[] = [new TextRect({text: "hello world"})];
+    const text = "hello world";
 
     return TextHighlightRecords.create(rects, textSelections, {TEXT: text});
 
