@@ -24,6 +24,8 @@ import {TableDropdown} from "../../../apps/repository/js/TableDropdown";
 import {SyncBar} from '../../js/ui/sync_bar/SyncBar';
 import {IStyleMap} from '../../js/react/IStyleMap';
 const CreditCardInput = require('react-credit-card-input');
+import Cards from 'react-credit-cards';
+import ReactCreditCard from 'react-credit-cards';
 
 
 const Styles: IStyleMap = {
@@ -101,72 +103,136 @@ class App<P> extends React.Component<{}, IAppState> {
 
         console.log("asdf");
 
+        const form = {
+            number: '',
+            name: '',
+            expiry: '',
+            cvc: '',
+        };
+
         return (
+
 
             <div>
 
-                    <Modal isOpen={true}>
-                        {/*<ModalHeader>Polar Cloud Sync</ModalHeader>*/}
-                        <ModalBody>
+                    {/*<Modal isOpen={true}>*/}
+                        {/*/!*<ModalHeader>Polar Cloud Sync</ModalHeader>*!/*/}
+                        {/*<ModalBody>*/}
 
-                            <div className="text-center">
+                            {/*<div className="text-center">*/}
 
-                                <i className="fas fa-cloud-upload-alt" style={Styles.icon}></i>
+                                {/*<i className="fas fa-cloud-upload-alt" style={Styles.icon}></i>*/}
 
-                                <h1>Polar Cloud Sync</h1>
+                                {/*<h1>Polar Cloud Sync</h1>*/}
 
-                            </div>
+                            {/*</div>*/}
 
-                            <p className="intro" style={Styles.overview}>
-                                Polar Cloud Sync enables synchronization of your
-                                documents and annotations between mulitple
-                                devices transparently with the cloud.
-                            </p>
+                            {/*<p className="intro" style={Styles.overview}>*/}
+                                {/*Polar Cloud Sync enables synchronization of your*/}
+                                {/*documents and annotations between mulitple*/}
+                                {/*devices transparently with the cloud.*/}
+                            {/*</p>*/}
 
-                            <ul style={Styles.features}>
+                            {/*<ul style={Styles.features}>*/}
 
-                                <li>Full sync of your data into the cloud in
-                                realtime.  Your files are immediately
-                                distributed to your other devices.</li>
+                                {/*<li>Full sync of your data into the cloud in*/}
+                                {/*realtime.  Your files are immediately*/}
+                                {/*distributed to your other devices.</li>*/}
 
-                                <li>10 GB of storage for all you documents and
-                                annotations.</li>
+                                {/*<li>10 GB of storage for all you documents and*/}
+                                {/*annotations.</li>*/}
 
-                                <li>Private access control. Your data is private
-                                and only accessible to your account.</li>
+                                {/*<li>Private access control. Your data is private*/}
+                                {/*and only accessible to your account.</li>*/}
 
-                                <li>Full offline access with cloud sync upon
-                                    reconnect.</li>
+                                {/*<li>Full offline access with cloud sync upon*/}
+                                    {/*reconnect.</li>*/}
 
-                            </ul>
+                            {/*</ul>*/}
 
-                            <p style={Styles.price}>
+                            {/*<p style={Styles.price}>*/}
 
-                                <div style={Styles.price_value}>
-                                    $7.99
-                                </div>
+                                {/*<div style={Styles.price_value}>*/}
+                                    {/*$7.99*/}
+                                {/*</div>*/}
 
-                                <div className="text-muted" style={Styles.price_overview}>
-                                    per month
-                                </div>
+                                {/*<div className="text-muted" style={Styles.price_overview}>*/}
+                                    {/*per month*/}
+                                {/*</div>*/}
 
-                            </p>
+                            {/*</p>*/}
 
-                        </ModalBody>
-                        <ModalFooter>
-                            <Button color="primary">Sign Up</Button>{' '}
-                            <Button color="secondary">Cancel</Button>
-                        </ModalFooter>
-                    </Modal>
+                        {/*</ModalBody>*/}
+                        {/*<ModalFooter>*/}
+                            {/*<Button color="primary">Sign Up</Button>{' '}*/}
+                            {/*<Button color="secondary">Cancel</Button>*/}
+                        {/*</ModalFooter>*/}
+                    {/*</Modal>*/}
 
-                <CreditCardInput
-                    // cardNumberInputProps={{ value: cardNumber, onChange: this.handleCardNumberChange }}
-                    // cardExpiryInputProps={{ value: expiry, onChange: this.handleCardExpiryChange }}
-                    // cardCVCInputProps={{ value: cvc, onChange: this.handleCardCVCChange }}
-                    fieldClassName="input"
+
+
+                {/*<Cards*/}
+                    {/*number={form.number}*/}
+                    {/*name={form.name}*/}
+                    {/*expiry={form.expiry}*/}
+                    {/*cvc={form.cvc}*/}
+                    {/*focused={'name'}*/}
+                {/*/>*/}
+
+                <ReactCreditCard
+                    number={form.number}
+                    name={form.name}
+                    expiry={form.expiry}
+                    cvc={form.cvc}
+                    // focused={focused}
+                    // callback={this.handleCallback}
                 />
+                <form>
+                    <div>
+                        <input
+                            type="tel"
+                            name="number"
+                            placeholder="Card Number"
+                            // onKeyUp={this.handleInputChange}
+                            // onFocus={this.handleInputFocus}
+                        />
+                        <div>E.g.: 49..., 51..., 36..., 37...</div>
+                    </div>
+                    <div>
+                        <input
+                            type="text"
+                            name="name"
+                            placeholder="Name"
+                            // onKeyUp={this.handleInputChange}
+                            // onFocus={this.handleInputFocus}
+                        />
+                    </div>
+                    <div>
+                        <input
+                            type="tel"
+                            name="expiry"
+                            placeholder="Valid Thru"
+                            // onKeyUp={this.handleInputChange}
+                            // onFocus={this.handleInputFocus}
+                        />
+                        <input
+                            type="tel"
+                            name="cvc"
+                            placeholder="CVC"
+                            // onKeyUp={this.handleInputChange}
+                            // onFocus={this.handleInputFocus}
+                        />
+                    </div>
+                </form>
 
-                    {/*<div className="col-md-8 order-md-1">*/}
+                {/*<CreditCardInput*/}
+                    {/*// cardNumberInputProps={{ value: cardNumber, onChange: this.handleCardNumberChange }}*/}
+                    {/*// cardExpiryInputProps={{ value: expiry, onChange: this.handleCardExpiryChange }}*/}
+                    {/*// cardCVCInputProps={{ value: cvc, onChange: this.handleCardCVCChange }}*/}
+                    {/*fieldClassName="input"*/}
+                {/*/>*/}
+
+                    {/*/!*<div className="col-md-8 order-md-1">*!/*/}
                         {/*<h4 className="mb-3">Billing address</h4>*/}
                         {/*<form className="needs-validation" noValidate=""*/}
                               {/*_lpchecked="1">*/}
