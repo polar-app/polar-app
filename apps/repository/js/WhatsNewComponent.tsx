@@ -1,10 +1,10 @@
 import * as React from 'react';
 import {Button, Modal, ModalBody, ModalFooter, ModalHeader} from 'reactstrap';
-import {Version} from '../../js/util/Version';
+import {Version} from '../../../web/js/util/Version';
 import {app} from 'electron';
-import {FilePaths} from '../../js/util/FilePaths';
-import {Files} from '../../js/util/Files';
-import {Logger} from '../../js/logger/Logger';
+import {FilePaths} from '../../../web/js/util/FilePaths';
+import {Files} from '../../../web/js/util/Files';
+import {Logger} from '../../../web/js/logger/Logger';
 
 const log = Logger.create();
 
@@ -13,9 +13,16 @@ export class WhatsNewComponent extends React.Component<IProps, IState> {
     constructor(props: IProps, context: any) {
         super(props, context);
 
+        this.hide = this.hide.bind(this);
+
+        this.handleVersionState = this.handleVersionState.bind(this);
+        this.isNewVersion = this.isNewVersion.bind(this);
+        this.writeVersion = this.writeVersion.bind(this);
+
         this.state = {
             open: false
         };
+
     }
 
     public componentDidMount(): void {
@@ -99,12 +106,16 @@ export class WhatsNewComponent extends React.Component<IProps, IState> {
 
                     </ModalBody>
                     <ModalFooter>
-                        <Button color="primary">Ok</Button>{' '}
+                        <Button color="primary" onClick={() => this.hide()}>Ok</Button>
                     </ModalFooter>
 
                 </Modal>
             </div>
         );
+    }
+
+    private hide(): void {
+        this.setState({open: false});
     }
 
     private async handleVersionState() {
@@ -121,7 +132,7 @@ export class WhatsNewComponent extends React.Component<IProps, IState> {
 
     private async isNewVersion(): Promise<boolean> {
 
-        const path = this.getDataPath();
+        const path = WhatsNewComponent.getDataPath();
 
         if (await Files.existsAsync(path)) {
 
@@ -141,7 +152,7 @@ export class WhatsNewComponent extends React.Component<IProps, IState> {
 
     private async writeVersion() {
 
-        const path = this.getDataPath();
+        const path = WhatsNewComponent.getDataPath();
 
         const versionData: VersionData = {version: Version.get()};
 
@@ -151,7 +162,7 @@ export class WhatsNewComponent extends React.Component<IProps, IState> {
 
     }
 
-    private getDataPath() {
+    private static getDataPath() {
 
         // TODO: this is a major major hack but the renderer has no reliable
         // way to get the userData from the renderer. In the future I need

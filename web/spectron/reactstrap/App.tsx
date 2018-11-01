@@ -22,7 +22,7 @@ import Moment from 'react-moment';
 import {ListSelector, ListOptionType} from '../../js/ui/list_selector/ListSelector';
 import {TableDropdown} from "../../../apps/repository/js/TableDropdown";
 import {SyncBar} from '../../js/ui/sync_bar/SyncBar';
-import {WhatsNewComponent} from './WhatsNewComponent';
+import {WhatsNewComponent} from '../../../apps/repository/js/WhatsNewComponent';
 
 class App<P> extends React.Component<{}, IAppState> {
 

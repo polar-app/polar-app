@@ -30,6 +30,7 @@ import {Version} from '../../../web/js/util/Version';
 import {RepoDocInfoIndex} from './RepoDocInfoIndex';
 import {AutoUpdatesController} from '../../../web/js/auto_updates/AutoUpdatesController';
 import {IDocInfo} from '../../../web/js/metadata/DocInfo';
+import {WhatsNewComponent} from './WhatsNewComponent';
 
 const log = Logger.create();
 
@@ -91,6 +92,7 @@ export default class App extends React.Component<AppProps, AppState> {
 
             <div id="doc-repository">
 
+                <WhatsNewComponent/>
 
                 <header>
 
