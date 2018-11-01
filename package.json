@@ -157,6 +157,7 @@
     "react-jsonschema-form": "^1.0.4",
     "react-moment": "^0.8.1",
     "react-select": "^2.0.0",
+    "react-stripe-elements": "^2.0.1",
     "react-summernote": "^2.0.0",
     "react-table": "^6.8.6",
     "reactstrap": "^6.5.0",

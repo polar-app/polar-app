@@ -23,6 +23,7 @@ import {ListSelector, ListOptionType} from '../../js/ui/list_selector/ListSelect
 import {TableDropdown} from "../../../apps/repository/js/TableDropdown";
 import {SyncBar} from '../../js/ui/sync_bar/SyncBar';
 import {IStyleMap} from '../../js/react/IStyleMap';
+const CreditCardInput = require('react-credit-card-input');
 
 
 const Styles: IStyleMap = {
@@ -157,6 +158,13 @@ class App<P> extends React.Component<{}, IAppState> {
                             <Button color="secondary">Cancel</Button>
                         </ModalFooter>
                     </Modal>
+
+                <CreditCardInput
+                    // cardNumberInputProps={{ value: cardNumber, onChange: this.handleCardNumberChange }}
+                    // cardExpiryInputProps={{ value: expiry, onChange: this.handleCardExpiryChange }}
+                    // cardCVCInputProps={{ value: cvc, onChange: this.handleCardCVCChange }}
+                    fieldClassName="input"
+                />
 
                     {/*<div className="col-md-8 order-md-1">*/}
                         {/*<h4 className="mb-3">Billing address</h4>*/}
