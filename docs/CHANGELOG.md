@@ -1,6 +1,10 @@
 
 # 1.0.10
 
+- Change capture key binding to CommandOrControl+N (new).  The other key binding 
+  conflicted with window management in Chrome and we might want to use those
+  key bindings in the future.
+
 - STASH files can be added directly as a backend file just like images and video
   which means that they could work with the future firebase store.  
 

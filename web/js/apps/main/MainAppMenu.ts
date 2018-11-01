@@ -83,7 +83,7 @@ export class MainAppMenu {
 
     private createMenuTemplate(): any {
 
-        let menuTemplate: any[] = [
+        const menuTemplate: any[] = [
             this.createFileMenuTemplate(),
             this.createEditMenuTemplate(),
             // this.createAnnotateMenuTemplate(),
@@ -94,7 +94,7 @@ export class MainAppMenu {
         ];
 
         if (Platforms.get() === Platform.MACOS) {
-            menuTemplate.unshift(this.createMacOSMenuTemplate())
+            menuTemplate.unshift(this.createMacOSMenuTemplate());
         }
 
         return menuTemplate;
@@ -187,7 +187,7 @@ export class MainAppMenu {
                 },
                 {
                     label: 'Capture Web Page',
-                    accelerator: 'CommandOrControl+Shift+W',
+                    accelerator: 'CommandOrControl+N',
                     click: () => {
                         this.mainAppController.cmdCaptureWebPageWithBrowser()
                             .catch((err: Error) => log.error("Could not capture page: ", err));
@@ -353,7 +353,7 @@ export class MainAppMenu {
                 { role: 'minimize' },
                 { role: 'close' },
             ]
-        }
+        };
     }
 
     private createToolsMenuTemplate() {
