@@ -9,7 +9,11 @@ import {
     InputGroupAddon,
     InputGroupButtonDropdown,
     ListGroup,
-    ListGroupItem
+    ListGroupItem,
+    Modal,
+    ModalHeader,
+    ModalBody,
+    ModalFooter
 } from 'reactstrap';
 import DropdownMenu from 'reactstrap/lib/DropdownMenu';
 import Navbar from 'reactstrap/lib/Navbar';
@@ -18,6 +22,7 @@ import Moment from 'react-moment';
 import {ListSelector, ListOptionType} from '../../js/ui/list_selector/ListSelector';
 import {TableDropdown} from "../../../apps/repository/js/TableDropdown";
 import {SyncBar} from '../../js/ui/sync_bar/SyncBar';
+import {WhatsNewComponent} from './WhatsNewComponent';
 
 class App<P> extends React.Component<{}, IAppState> {
 
@@ -52,6 +57,9 @@ class App<P> extends React.Component<{}, IAppState> {
         return (
 
             <div>
+
+                <WhatsNewComponent/>
+
                 {/*<SyncBar/>*/}
 
                 {/*<div className="fa-4x">*/}
