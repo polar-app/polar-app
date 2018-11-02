@@ -19,6 +19,8 @@ describe('TextHighlightModel', function() {
 
         it("Initial values", function() {
 
+            TestingTime.freeze();
+
             const docMeta = createDocMeta();
 
             const textHighlightModel = new TextHighlightModel();
@@ -71,6 +73,8 @@ describe('TextHighlightModel', function() {
         });
 
         it("New text highlights on new pages", function() {
+
+            TestingTime.freeze();
 
             const docMeta = createDocMeta();
 

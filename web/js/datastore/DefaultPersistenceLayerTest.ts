@@ -11,6 +11,8 @@ describe('DefaultPersistenceLayer', function() {
 
     it("verify that lastUpdated was written", async function() {
 
+        TestingTime.freeze();
+
         const memoryDatastore = new MemoryDatastore();
         const persistenceLayer = new DefaultPersistenceLayer(memoryDatastore);
 

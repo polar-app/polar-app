@@ -13,6 +13,8 @@ describe('CacheRegistryTest', function() {
 
         it("registerFile", async function () {
 
+            TestingTime.freeze();
+
             let captured = MockCapturedContent.create();
 
             let path = FilePaths.tmpfile("cached-entries-factory.phz");
