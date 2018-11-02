@@ -9,7 +9,6 @@ export class TestingTime {
      * Freeze time for testing at '2012-03-02T11:38:49.321Z'
      */
     public static freeze() {
-
         timekeeper.freeze(time);
     }
 
