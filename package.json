@@ -18,7 +18,8 @@
     "dist-win": "npm run-script compile && npm run-script publish-win",
     "compile": "tsc",
     "compile-watch": "tsc --watch",
-    "test": "npx mocha --exit --log-timer-events --recursive 'web/js/**/*Test.js'",
+    "test-mocha": "npx mocha --exit --log-timer-events --recursive 'web/js/**/*Test.js'",
+    "test": "find web/js -name '*Test.js' | xargs mocha-parallel-tests --timeout 10000 --max-parallel=1 --exit",
     "e2e-mocha": "npx mocha --exit --log-timer-events --recursive 'web/spectron/**/spec.js'",
     "e2e": "mocha-parallel-tests --timeout 10000 --max-parallel=1 --exit --recursive  'web/spectron/**/spec.js'",
     "start-with-console": "./node_modules/.bin/electron --enable-remote-debugging --interactive --enable-console-logging ."
