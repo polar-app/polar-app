@@ -1,16 +1,10 @@
-import {assert} from 'chai';
-import {Rects} from './Rects';
-import {assertJSON} from './test/Assertions';
-import {Rect} from './Rect';
-import {IRect} from './util/rects/IRect';
-import {RectArt} from './util/RectArt';
-import {MOCK_RECTS} from './MockRects';
 import {Files} from './util/Files';
 
 import url from 'url';
 
 import * as PDFJSDIST from 'pdfjs-dist';
 import {PDFJSStatic} from 'pdfjs-dist';
+
 const pdfjs: PDFJSStatic = <any> PDFJSDIST;
 
 xdescribe('PDF', function() {

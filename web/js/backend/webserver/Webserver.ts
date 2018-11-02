@@ -6,9 +6,10 @@ import {Logger} from '../../logger/Logger';
 import {Preconditions} from '../../Preconditions';
 import {Paths} from '../../util/Paths';
 
-import express from 'express';
+import express, {Express} from 'express';
 import serveStatic from 'serve-static';
 import {ResourceRegistry} from './ResourceRegistry';
+import * as http from "http";
 
 const log = Logger.create();
 
@@ -18,8 +19,8 @@ export class Webserver {
     private readonly fileRegistry: FileRegistry;
     private readonly resourceRegistry: ResourceRegistry;
 
-    private app: any;
-    private server: any;
+    private app?: Express;
+    private server?: http.Server;
 
     constructor(webserverConfig: WebserverConfig,
                 fileRegistry: FileRegistry,
@@ -47,10 +48,13 @@ export class Webserver {
 
     }
 
+    public stop() {
+        this.server!.close();
+    }
 
     private registerFilesHandler() {
 
-        this.app.get(/files\/.*/, (req: express.Request, res: express.Response) => {
+        this.app!.get(/files\/.*/, (req: express.Request, res: express.Response) => {
 
             try {
 
@@ -86,9 +90,10 @@ export class Webserver {
     }
 
 
+
     private registerResourcesHandler() {
 
-        this.app.get(/.*/, (req: express.Request, res: express.Response) => {
+        this.app!.get(/.*/, (req: express.Request, res: express.Response) => {
 
             try {
 
@@ -111,10 +116,6 @@ export class Webserver {
 
         });
 
-    }
-
-    public stop() {
-        this.server.close();
     }
 
 }

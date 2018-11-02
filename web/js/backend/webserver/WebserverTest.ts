@@ -14,22 +14,22 @@ describe('Webserver', function() {
 
     describe('create', function() {
 
-        it("basic", function () {
+        it("basic", function() {
 
-            let webserverConfig = new WebserverConfig("..", 8085);
-            let fileRegistry = new FileRegistry(webserverConfig);
+            const webserverConfig = new WebserverConfig("..", 8085);
+            const fileRegistry = new FileRegistry(webserverConfig);
 
-            let webserver = new Webserver(webserverConfig, fileRegistry);
+            const webserver = new Webserver(webserverConfig, fileRegistry);
             webserver.start();
             webserver.stop();
 
         });
 
-        it("serving files", async function () {
+        it("serving files", async function() {
 
-            let webserverConfig = new WebserverConfig("..", 8095);
-            let fileRegistry = new FileRegistry(webserverConfig);
-            let webserver = new Webserver(webserverConfig, fileRegistry);
+            const webserverConfig = new WebserverConfig("..", 8095);
+            const fileRegistry = new FileRegistry(webserverConfig);
+            const webserver = new Webserver(webserverConfig, fileRegistry);
 
             webserver.start();
 
