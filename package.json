@@ -183,7 +183,7 @@
     "typed-web-workers": "^2.1.1",
     "typemoq": "^2.1.0",
     "underscore": "^1.9.1",
-    "universal-analytics": "^0.4.17",
+    "universal-analytics": "^0.4.20",
     "uuid": "^3.3.2",
     "ws": "^6.0.0"
   }
