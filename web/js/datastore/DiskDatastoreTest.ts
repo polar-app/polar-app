@@ -7,7 +7,7 @@ import fs from 'fs';
 import {Files} from '../util/Files';
 import {FilePaths} from '../util/FilePaths';
 import {Directories, GlobalDataDir} from './Directories';
-import {Platform} from '../util/Platforms';
+import {Platform, Platforms} from '../util/Platforms';
 import {DatastoreTester} from './DatastoreTester';
 import {Backend} from './Backend';
 import {DefaultPersistenceLayer} from './DefaultPersistenceLayer';
@@ -27,6 +27,10 @@ describe("DiskDatastore", async function() {
 
 
     it("getDataDirsForPlatform MAC_OS", function() {
+
+        if (Platforms.get() !== Platform.MACOS) {
+            return;
+        }
 
         const userHome = '/Users/alice';
         const platform = Platform.MACOS;
