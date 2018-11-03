@@ -8,21 +8,23 @@ import {assertJSON} from '../../test/Assertions';
 import {Http} from '../../util/Http';
 import {assert} from 'chai';
 import {ResourceRegistry} from './ResourceRegistry';
+import {WebserverCerts} from './WebserverCerts';
 
 describe('Webserver', function() {
 
     describe('create', function() {
 
-        xit("basic SSL", async function() {
+        it("basic SSL", async function() {
 
             const webserverConfig = WebserverConfig.create(
                 {
                     dir: "..",
                     port: 8085,
+                    host: "127.0.0.1",
                     useSSL: true,
                     ssl: {
-                        cert: await Files.readFileAsync("/home/burton/projects/polar-bookshelf/tmp/polar-ssl.crt"),
-                        key: await Files.readFileAsync("/home/burton/projects/polar-bookshelf/tmp/polar-ssl.key"),
+                        cert: WebserverCerts.CERT,
+                        key: WebserverCerts.KEY,
                     }
                 });
             const fileRegistry = new FileRegistry(webserverConfig);

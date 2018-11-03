@@ -38,9 +38,11 @@ export class Webserver {
         express.static.mime.define({'text/html': ['chtml']});
 
         this.app = express();
+
         this.app.use(serveStatic(this.webserverConfig.dir));
 
-        // this.server = this.app.listen(this.webserverConfig.port, "127.0.0.1");
+        this.registerFilesHandler();
+        this.registerResourcesHandler();
 
         if (this.webserverConfig.useSSL) {
 
@@ -51,20 +53,17 @@ export class Webserver {
 
             this.server =
                 https.createServer(sslConfig, this.app)
-                    .listen(this.webserverConfig.port, "127.0.0.1");
+                    .listen(this.webserverConfig.port, this.webserverConfig.host);
 
         } else {
 
             this.server =
                 http.createServer(this.app)
-                    .listen(this.webserverConfig.port, "127.0.0.1");
+                    .listen(this.webserverConfig.port, this.webserverConfig.host);
 
         }
 
-        this.registerFilesHandler();
-        this.registerResourcesHandler();
-
-        log.info(`Webserver up and running on port ${this.webserverConfig.port}`);
+        // log.info(`Webserver up and running on port ${this.webserverConfig.port} with config: `, this.webserverConfig);
 
     }
 

@@ -21,6 +21,8 @@ import {DocInfoBroadcasterService} from '../../datastore/advertiser/DocInfoBroad
 import {CachingStreamInterceptorService} from '../../backend/interceptor/CachingStreamInterceptorService';
 import {GA} from "../../ga/GA";
 import {Version} from "../../util/Version";
+import {Files} from '../../util/Files';
+import {WebserverCerts} from '../../backend/webserver/WebserverCerts';
 
 declare var global: any;
 
@@ -43,7 +45,17 @@ export class MainApp {
 
         global.datastore = this.datastore;
 
-        const webserverConfig = new WebserverConfig(app.getAppPath(), WEBSERVER_PORT);
+        const webserverConfig = WebserverConfig.create({
+            dir: app.getAppPath(),
+            port: WEBSERVER_PORT,
+            host: 'localapp.getpolarized.io',
+            useSSL: false,
+            // ssl: {
+            //     cert: WebserverCerts.CERT,
+            //     key: WebserverCerts.KEY
+            // }
+        });
+
         const fileRegistry = new FileRegistry(webserverConfig);
 
         const proxyServerConfig = new ProxyServerConfig(PROXYSERVER_PORT);
