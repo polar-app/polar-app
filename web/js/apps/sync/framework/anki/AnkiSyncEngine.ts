@@ -22,14 +22,18 @@ import {DocInfo} from '../../../../metadata/DocInfo';
  */
 export class AnkiSyncEngine implements SyncEngine {
 
-    readonly descriptor: SyncEngineDescriptor = new AnkiSyncEngineDescriptor();
+    public readonly descriptor: SyncEngineDescriptor = new AnkiSyncEngineDescriptor();
 
     public sync(docMetaSet: DocMetaSet, progress: SyncProgressListener): PendingSyncJob {
+
+        // TODO: do this with docMetaSuppliers and ONE pass per docMeta so that
+        // we only have to evaluate it once and IDEALLY not if it's already been
+        // synchronized to the local Anki
 
         const deckDescriptors = this.toDeckDescriptors(docMetaSet);
         const noteDescriptors = this.toNoteDescriptors(docMetaSet);
 
-        return new PendingAnkiSyncJob(docMetaSet, progress, deckDescriptors, noteDescriptors);
+        return new PendingAnkiSyncJob(progress, deckDescriptors, noteDescriptors);
 
     }
 

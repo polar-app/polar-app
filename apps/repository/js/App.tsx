@@ -31,6 +31,8 @@ import {RepoDocInfoIndex} from './RepoDocInfoIndex';
 import {AutoUpdatesController} from '../../../web/js/auto_updates/AutoUpdatesController';
 import {IDocInfo} from '../../../web/js/metadata/DocInfo';
 import {WhatsNewComponent} from './WhatsNewComponent';
+import {SyncBar, SyncBarProgress} from '../../../web/js/ui/sync_bar/SyncBar';
+import {IEventDispatcher, SimpleReactor} from '../../../web/js/reactor/SimpleReactor';
 
 const log = Logger.create();
 
@@ -43,6 +45,8 @@ export default class App extends React.Component<AppProps, AppState> {
     private readonly repoDocInfoLoader: RepoDocInfoLoader;
 
     private readonly filteredTags = new FilteredTags();
+
+    private readonly syncBarProgress: IEventDispatcher<SyncBarProgress> = new SimpleReactor();
 
     constructor(props: AppProps, context: any) {
         super(props, context);
@@ -94,6 +98,8 @@ export default class App extends React.Component<AppProps, AppState> {
             <div id="doc-repository">
 
                 <WhatsNewComponent/>
+
+                <SyncBar progress={this.syncBarProgress}/>
 
                 <header>
 

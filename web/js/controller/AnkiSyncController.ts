@@ -9,6 +9,9 @@ import {DocInfos} from '../metadata/DocInfos';
 
 const log = Logger.create();
 
+/**
+ * @Deprecated migrating to DocRepoAnkiSyncController
+ */
 export class AnkiSyncController {
 
     private readonly model: Model;
@@ -29,7 +32,7 @@ export class AnkiSyncController {
 
         const triggerEvent = event.data;
 
-        switch(event.data.type) {
+        switch (event.data.type) {
 
             case "start-sync":
                 this.onStartSync(triggerEvent);
