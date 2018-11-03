@@ -6,8 +6,7 @@ import {TextHighlightRecords} from '../../../metadata/TextHighlightRecords';
 import {Rect} from '../../../Rect';
 import {TextRect} from '../../../metadata/TextRect';
 import {TestingTime} from '../../../test/TestingTime';
-
-const {Proxies} = require("../../../proxies/Proxies");
+import {Proxies} from '../../../proxies/Proxies';
 
 TestingTime.freeze();
 

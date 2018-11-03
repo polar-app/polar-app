@@ -10,6 +10,7 @@ import express, {Express} from 'express';
 import serveStatic from 'serve-static';
 import {ResourceRegistry} from './ResourceRegistry';
 import * as http from "http";
+import * as https from "https";
 
 const log = Logger.create();
 
@@ -20,7 +21,7 @@ export class Webserver {
     private readonly resourceRegistry: ResourceRegistry;
 
     private app?: Express;
-    private server?: http.Server;
+    private server?: http.Server | https.Server;
 
     constructor(webserverConfig: WebserverConfig,
                 fileRegistry: FileRegistry,
@@ -37,9 +38,15 @@ export class Webserver {
         express.static.mime.define({'text/html': ['chtml']});
 
         this.app = express();
-
         this.app.use(serveStatic(this.webserverConfig.dir));
-        this.server = this.app.listen(this.webserverConfig.port, "127.0.0.1");
+
+        // this.server = this.app.listen(this.webserverConfig.port, "127.0.0.1");
+
+        this.server =
+            http.createServer(this.app)
+            .listen(this.webserverConfig.port, "127.0.0.1");
+
+        // https.createServer({}, this.app);
 
         this.registerFilesHandler();
         this.registerResourcesHandler();

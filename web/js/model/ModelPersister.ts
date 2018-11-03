@@ -4,8 +4,7 @@ import {Batcher} from '../datastore/batcher/Batcher';
 import {TraceEvent} from '../proxies/TraceEvent';
 import {Logger} from '../logger/Logger';
 import {DocInfo} from '../metadata/DocInfo';
-
-const {Proxies} = require("../proxies/Proxies");
+import {Proxies} from '../proxies/Proxies';
 
 const log = Logger.create();
 

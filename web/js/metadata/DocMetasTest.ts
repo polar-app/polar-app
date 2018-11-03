@@ -6,8 +6,7 @@ import {assertJSON} from '../test/Assertions';
 import {PagemarkType} from './PagemarkType';
 import {TestingTime} from '../test/TestingTime';
 import {TextHighlights} from './TextHighlights';
-
-const {Proxies} = require("../proxies/Proxies");
+import {Proxies} from '../proxies/Proxies';
 
 TestingTime.freeze();
 
