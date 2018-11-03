@@ -55,6 +55,7 @@ export default class App extends React.Component<AppProps, AppState> {
         this.onDocDeleted = this.onDocDeleted.bind(this);
         this.onDocSetTitle = this.onDocSetTitle.bind(this);
         this.onSelectedColumns = this.onSelectedColumns.bind(this);
+        this.onFilterByTitle = this.onFilterByTitle.bind(this);
 
         this.state = {
             data: [],
@@ -147,7 +148,7 @@ export default class App extends React.Component<AppProps, AppState> {
                                 <input id="filter_title"
                                        type="text"
                                        placeholder="Filter by title"
-                                       onChange={() => this.refresh()}/>
+                                       onChange={() => this.onFilterByTitle()}/>
                             </div>
 
                             <div className="p-1">
@@ -495,6 +496,15 @@ export default class App extends React.Component<AppProps, AppState> {
         });
 
         this.refresh();
+    }
+
+
+    private onFilterByTitle() {
+
+        RendererAnalytics.event({category: 'user', action: 'filter-by-title'});
+
+        this.refresh();
+
     }
 
     private refreshState(repoDocs: RepoDocInfo[]) {

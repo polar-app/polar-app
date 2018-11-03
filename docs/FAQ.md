@@ -38,6 +38,10 @@ The annotations are another issue.  We don't currently have any exporters define
 to export the annotations but the file is in JSON format which means anyone could
 easily write an exporter.   
 
+# Do you have any plans to support ePub format?
+
+Yes.  But not in the short term.  Check out our notes on [ePub](EPUB_SUPPORT.md).
+
 # How do I build and run from source?
 
 Polar is VERY easy to compile from source.  Polar is based on Typescript, Electron, 
