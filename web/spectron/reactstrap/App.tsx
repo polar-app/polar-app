@@ -58,9 +58,9 @@ class App<P> extends React.Component<{}, IAppState> {
 
             <div>
 
-                <WhatsNewComponent/>
+                {/*<WhatsNewComponent/>*/}
 
-                {/*<SyncBar/>*/}
+                <SyncBar/>
 
                 {/*<div className="fa-4x">*/}
                     {/*<span className="fa-layers fa-fw" style={{background: 'MistyRose'}}>*/}

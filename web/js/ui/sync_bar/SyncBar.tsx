@@ -9,13 +9,29 @@ import Collapse from 'reactstrap/lib/Collapse';
 const Styles: IStyleMap = {
 
     root: {
-        position: 'fixed',
-        right: '0',
-        bottom: '0',
-        minWidth: '250px'
+
     },
 
-    icon: {
+    textBox: {
+        position: 'fixed',
+        left: '0',
+        bottom: '5px',
+        padding: '2px',
+        fontSize: '12px',
+        backgroundColor: '#F0F0EF',
+        borderColor: '#D4D4D4',
+        borderRadius: '0px 5px 0px 0px'
+    },
+
+    progress: {
+
+        position: 'fixed',
+        left: '0',
+        bottom: '0',
+        minWidth: '100%',
+        zIndex: 99999999999,
+        height: '5px',
+
     }
 
 };
@@ -41,16 +57,23 @@ export class SyncBar extends React.Component<IProps, IState> {
 
         const progress = Math.floor(this.state.progress);
 
+        const isOpen = progress !== 0 && progress !== 100;
+
         return (
 
             <div style={Styles.root} className="">
 
-                <Collapse timeout={0} isOpen={progress !== 0 && progress !== 100}>
+                <Collapse timeout={0} isOpen={isOpen}>
+
+                    <div style={Styles.textBox} className="border-top border-right">
+                        Synchronizing anki: 15/20 cards copied...
+                    </div>
 
                     {/*the title string doesn't render properly and looks horrible*/}
-                    <Progress className="rounded-0 border-top border-left border-secondary progress-bar-striped progress-bar-animated text-left"
+                    <Progress style={Styles.progress}
+                              className="rounded-0 border-top border-left border-secondary progress-bar-striped"
                               value={progress}>
-                        {Math.floor(progress)}%
+                        {/*{Math.floor(progress)}%*/}
                     </Progress>
 
                 </Collapse>
@@ -65,7 +88,7 @@ export class SyncBar extends React.Component<IProps, IState> {
 
 interface IProps {
 
-    progress: Reactor<SyncBarProgress>
+    progress?: Reactor<SyncBarProgress>;
 
 }
 

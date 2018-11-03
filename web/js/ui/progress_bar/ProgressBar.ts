@@ -47,8 +47,8 @@ export class ProgressBar {
         element.style.borderTop = '0';
         element.style.borderLeft = '0';
         element.style.borderRight = '0';
-        //element.style.webkitAppearance = 'none';
-        //element.style.borderRadius = '0';
+        // element.style.webkitAppearance = 'none';
+        // element.style.borderRadius = '0';
 
         document.body.appendChild(element);
 
