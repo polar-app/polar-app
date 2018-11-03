@@ -21,8 +21,9 @@ import {BrowserConfigurationInputGroup} from './BrowserConfigurationInputGroup';
 import Moment from 'react-moment';
 import {ListSelector, ListOptionType} from '../../js/ui/list_selector/ListSelector';
 import {TableDropdown} from "../../../apps/repository/js/TableDropdown";
-import {SyncBar} from '../../js/ui/sync_bar/SyncBar';
+import {SyncBar, SyncBarProgress} from '../../js/ui/sync_bar/SyncBar';
 import {WhatsNewComponent} from '../../../apps/repository/js/WhatsNewComponent';
+import {IEventDispatcher, SimpleReactor} from '../../js/reactor/SimpleReactor';
 
 class App<P> extends React.Component<{}, IAppState> {
 
@@ -54,13 +55,50 @@ class App<P> extends React.Component<{}, IAppState> {
 
         console.log("asdf");
 
+        const progress: IEventDispatcher<SyncBarProgress> = new SimpleReactor();
+
+        // create a fake progress bar here...
+
+        const stages = [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100];
+
+        const remaining = Object.assign([], stages);
+
+        console.log("FIXME: ", remaining);
+
+        function handleRemaining() {
+
+            if (remaining.length === 0) {
+                return;
+            }
+
+            setTimeout(() => {
+
+                console.log("FIXME1");
+
+                const percentage = remaining.shift()!;
+
+                console.log("FIXME: ", percentage);
+                progress.dispatchEvent({
+                    title: `Anki sync: ${percentage} of 100 tasks remaining...`,
+                    percentage,
+                    task: 'anki-sync'
+                });
+
+                handleRemaining();
+
+            }, 250);
+
+        }
+
+        handleRemaining();
+
         return (
 
             <div>
 
                 {/*<WhatsNewComponent/>*/}
 
-                <SyncBar/>
+                <SyncBar progress={progress}/>
 
                 {/*<div className="fa-4x">*/}
                     {/*<span className="fa-layers fa-fw" style={{background: 'MistyRose'}}>*/}
