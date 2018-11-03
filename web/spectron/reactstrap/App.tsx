@@ -53,8 +53,6 @@ class App<P> extends React.Component<{}, IAppState> {
         //     }
         // ];
 
-        console.log("asdf");
-
         const progress: IEventDispatcher<SyncBarProgress> = new SimpleReactor();
 
         // create a fake progress bar here...
@@ -62,8 +60,6 @@ class App<P> extends React.Component<{}, IAppState> {
         const stages = [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100];
 
         const remaining = Object.assign([], stages);
-
-        console.log("FIXME: ", remaining);
 
         function handleRemaining() {
 

@@ -7,7 +7,7 @@ import {Logger} from '../logger/Logger';
 import {Viewer} from '../viewer/Viewer';
 import {DocTitleController} from './DocTitleController';
 import {PagemarkController} from '../pagemarks/controller/PagemarkController';
-import {SyncController} from './SyncController';
+import {AnkiSyncController} from './AnkiSyncController';
 import {Controller} from './Controller';
 import {TextHighlightController} from '../highlights/text/controller/TextHighlightController';
 import {FlashcardsController} from '../flashcards/controller/FlashcardsController';
@@ -44,7 +44,7 @@ export class WebController extends Controller {
 
         new PagemarkController(model).start();
         new DocTitleController(this.model).start();
-        new SyncController(this.model).start();
+        new AnkiSyncController(this.model).start();
 
     }
 
