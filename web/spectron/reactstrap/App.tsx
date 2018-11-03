@@ -73,11 +73,8 @@ class App<P> extends React.Component<{}, IAppState> {
 
             setTimeout(() => {
 
-                console.log("FIXME1");
-
                 const percentage = remaining.shift()!;
 
-                console.log("FIXME: ", percentage);
                 progress.dispatchEvent({
                     title: `Anki sync: ${percentage} of 100 tasks remaining...`,
                     percentage,
