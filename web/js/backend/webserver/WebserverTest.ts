@@ -13,6 +13,27 @@ describe('Webserver', function() {
 
     describe('create', function() {
 
+        xit("basic SSL", async function() {
+
+            const webserverConfig = WebserverConfig.create(
+                {
+                    dir: "..",
+                    port: 8085,
+                    useSSL: true,
+                    ssl: {
+                        cert: await Files.readFileAsync("/home/burton/projects/polar-bookshelf/tmp/polar-ssl.crt"),
+                        key: await Files.readFileAsync("/home/burton/projects/polar-bookshelf/tmp/polar-ssl.key"),
+                    }
+                });
+            const fileRegistry = new FileRegistry(webserverConfig);
+
+            const webserver = new Webserver(webserverConfig, fileRegistry);
+            webserver.start();
+            webserver.stop();
+
+        });
+
+
         it("basic", function() {
 
             const webserverConfig = new WebserverConfig("..", 8085);
@@ -85,6 +106,9 @@ describe('Webserver', function() {
         });
 
     });
+
+
+
 
 });
 

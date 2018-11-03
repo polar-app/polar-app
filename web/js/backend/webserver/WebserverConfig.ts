@@ -18,9 +18,28 @@ export class WebserverConfig {
         this.port = Preconditions.assertNotNull(port, "port");
     }
 
+    public static create(config: IWebserverConfig): WebserverConfig {
+        return Object.assign({}, config);
+    }
+
 }
 
 export interface SSLConfig {
     key: string | Buffer;
     cert: string | Buffer;
+}
+
+export interface IWebserverConfig {
+
+    readonly dir: string;
+
+    readonly port: number;
+
+    /**
+     * When true, use SSL. Otherwise just use HTTP.
+     */
+    readonly useSSL?: boolean;
+
+    readonly ssl?: SSLConfig;
+
 }

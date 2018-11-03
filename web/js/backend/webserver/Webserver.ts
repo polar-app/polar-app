@@ -42,11 +42,24 @@ export class Webserver {
 
         // this.server = this.app.listen(this.webserverConfig.port, "127.0.0.1");
 
-        this.server =
-            http.createServer(this.app)
-            .listen(this.webserverConfig.port, "127.0.0.1");
+        if (this.webserverConfig.useSSL) {
 
-        // https.createServer({}, this.app);
+            const sslConfig = {
+                key: this.webserverConfig.ssl!.key,
+                cert: this.webserverConfig.ssl!.cert
+            };
+
+            this.server =
+                https.createServer(sslConfig, this.app)
+                    .listen(this.webserverConfig.port, "127.0.0.1");
+
+        } else {
+
+            this.server =
+                http.createServer(this.app)
+                    .listen(this.webserverConfig.port, "127.0.0.1");
+
+        }
 
         this.registerFilesHandler();
         this.registerResourcesHandler();
