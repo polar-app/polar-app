@@ -188,8 +188,7 @@
     "underscore": "^1.9.1",
     "universal-analytics": "^0.4.20",
     "uuid": "^3.3.2",
-    "ws": "^6.0.0",
-    "opencollective": "^1.0.3"
+    "ws": "^6.0.0"
   },
   "collective": {
     "type": "opencollective",
