@@ -17,6 +17,8 @@ import {Tags} from '../../../../tags/Tags';
 import {DocInfo} from '../../../../metadata/DocInfo';
 import {DocMetaSupplierCollection} from '../../../../metadata/DocMetaSupplierCollection';
 import {Sets} from '../../../../util/Sets';
+import {FlashcardDescriptor} from './FlashcardDescriptor';
+import {FlashcardDescriptors} from './FlashcardDescriptors';
 
 /**
  * Sync engine for Anki.  Takes cards registered in a DocMeta and then transfers
@@ -43,7 +45,7 @@ export class AnkiSyncEngine implements SyncEngine {
 
     protected async toNoteDescriptors(docMetaSupplierCollection: DocMetaSupplierCollection): Promise<NoteDescriptor[]> {
 
-        const  flashcardDescriptors = await this.toFlashcardDescriptors(docMetaSupplierCollection);
+        const  flashcardDescriptors = await FlashcardDescriptors.toFlashcardDescriptors(docMetaSupplierCollection);
 
         return flashcardDescriptors.map(flashcardDescriptor => {
 
@@ -103,61 +105,7 @@ export class AnkiSyncEngine implements SyncEngine {
 
     }
 
-    protected async toFlashcardDescriptors(docMetaSupplierCollection: DocMetaSupplierCollection): Promise<FlashcardDescriptor[]> {
-
-        const result: FlashcardDescriptor[] = [];
-
-        for (const docMetaSupplier of docMetaSupplierCollection) {
-
-            const docMeta = await docMetaSupplier();
-
-            Object.values(docMeta.pageMetas).forEach(pageMeta => {
-
-                // collect all flashcards for the current page.
-
-                const flashcards: Flashcard[] = [];
-
-                flashcards.push(... Dictionaries.values(pageMeta.flashcards));
-
-                flashcards.push(... _.chain(pageMeta.textHighlights)
-                    .map(current => Dictionaries.values(current.flashcards))
-                    .flatten()
-                    .value());
-
-                flashcards.push(... _.chain(pageMeta.areaHighlights)
-                    .map(current => Dictionaries.values(current.flashcards))
-                    .flatten()
-                    .value());
-
-                const flashcardDescriptors = _.chain(flashcards)
-                    .map(current => <FlashcardDescriptor> {
-                        docMeta,
-                        pageInfo: pageMeta.pageInfo,
-                        flashcard: current
-                    })
-                    .value();
-
-                result.push(...flashcardDescriptors);
-
-            });
-
-        }
-
-        return result;
-
-    }
-
 }
-
-export interface FlashcardDescriptor {
-
-    readonly docMeta: DocMeta;
-
-    readonly pageInfo: PageInfo;
-
-    readonly flashcard: Flashcard;
-}
-
 
 
 class AnkiSyncEngineDescriptor implements SyncEngineDescriptor {

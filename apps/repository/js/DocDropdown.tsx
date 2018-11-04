@@ -72,8 +72,10 @@ export class DocDropdown extends React.Component<IProps, IState> {
 
                         <DropdownItem disabled={! this.props.repoDocInfo.url}
                                       onClick={() => this.onCopyURL(this.props.repoDocInfo.url!)}>
-                            Copy URL
+                            Copy Original URL
                         </DropdownItem>
+
+                        {/*TODO: maybe load original URL too?*/}
 
                         <DropdownItem divider />
 

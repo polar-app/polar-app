@@ -366,10 +366,6 @@ export class MainAppMenu {
                     click: () => Promises.executeLogged(AppLauncher.launchRepositoryApp)
                 },
                 {
-                    label: 'Toggle Developer Tools',
-                    click: this.mainAppController.cmdToggleDevTools
-                },
-                {
                     label: 'Sync Flashcards to Anki',
                     click: () => {
                         Messenger.postMessage( {
@@ -378,6 +374,11 @@ export class MainAppMenu {
                            }
                         }).catch(err => log.error("Could not post message", err));
                     }
+                },
+                {type: 'separator'},
+                {
+                    label: 'Toggle Developer Tools',
+                    click: this.mainAppController.cmdToggleDevTools
                 },
             ]
         };

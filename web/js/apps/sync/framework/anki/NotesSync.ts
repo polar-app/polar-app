@@ -87,9 +87,6 @@ export class NotesSync {
                 normalizedNote.noteDescriptor.tags.push(polarGUID.format());
             }
 
-            // FIXME: now we have to call CanAddNotesClient to see if this CAN
-            // be added and if it would yield a new note.
-
             this.syncQueue.add(async () => await this.canAddNote(normalizedNote));
 
             return Optional.of({ message: `Note note found.  Checking if we can add.`});
