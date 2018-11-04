@@ -7,6 +7,7 @@ export class CommentModel extends DocMetaModel {
 
     public registerListener(docMeta: DocMeta, annotationEventListener: AnnotationEventListener) {
         PageMetas.createModel(docMeta, "comments", annotationEventListener);
+        return annotationEventListener;
     }
 
 }

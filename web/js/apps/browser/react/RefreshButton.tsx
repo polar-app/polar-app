@@ -8,6 +8,14 @@ export class RefreshButton extends React.Component<Props, State> {
     constructor(props: Props, context: State) {
         super(props, context);
 
+        this.state = {
+            nav: 'none'
+        };
+
+    }
+
+    public componentDidMount(): void {
+
         this.props.navigationReactor.addEventListener(event => {
 
             if (event === 'did-start-loading') {
@@ -27,10 +35,6 @@ export class RefreshButton extends React.Component<Props, State> {
             }
 
         });
-
-        this.state = {
-            nav: 'none'
-        };
 
     }
 

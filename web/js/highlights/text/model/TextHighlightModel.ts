@@ -7,6 +7,7 @@ export class TextHighlightModel extends DocMetaModel {
 
     public registerListener(docMeta: DocMeta, annotationEventListener: AnnotationEventListener) {
         PageMetas.createModel(docMeta, "textHighlights", annotationEventListener);
+        return annotationEventListener;
     }
 
 }

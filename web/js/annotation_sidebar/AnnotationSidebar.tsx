@@ -32,6 +32,16 @@ export class AnnotationSidebar extends React.Component<AnnotationSidebarProps, A
         this.docAnnotationIndex
             = DocAnnotationIndexes.rebuild(this.docAnnotationIndex, ...annotations);
 
+        this.state = {
+            annotations: this.docAnnotationIndex.sortedDocAnnotation
+        };
+
+    }
+
+    public componentDidMount(): void {
+
+        // TODO: remove all these listeners when the component unmounts...
+
         new AreaHighlightModel().registerListener(this.props.docMeta, annotationEvent => {
 
             const docAnnotation =
@@ -78,13 +88,6 @@ export class AnnotationSidebar extends React.Component<AnnotationSidebarProps, A
                                             childDocAnnotation);
 
         });
-
-
-        // FIXME: need an annotation event handler here...
-
-        this.state = {
-            annotations: this.docAnnotationIndex.sortedDocAnnotation
-        };
 
     }
 
