@@ -267,11 +267,10 @@ export class ElectronContextMenu {
             click: () => this.postContextMenuMessage("create-area-highlight", triggerEvent)
         }));
 
-        ctxMenu.append(new MenuItem({
-            label: 'Sync Flashcards to Anki',
-            click: () => this.postContextMenuMessage("start-sync", triggerEvent)
-        }));
-
+        // ctxMenu.append(new MenuItem({
+        //     label: 'Sync Flashcards to Anki',
+        //     click: () => this.postContextMenuMessage("start-sync", triggerEvent)
+        // }));
 
         // ctxMenu.append(new MenuItem({
         //     label: 'Create Annotation',

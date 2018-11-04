@@ -370,7 +370,7 @@ export class MainAppMenu {
                     click: this.mainAppController.cmdToggleDevTools
                 },
                 {
-                    label: 'Sync to Anki',
+                    label: 'Sync Flashcards to Anki',
                     click: () => {
                         Messenger.postMessage( {
                            message: {
