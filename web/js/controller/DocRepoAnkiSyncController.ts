@@ -80,6 +80,12 @@ export class DocRepoAnkiSyncController {
 
         const pendingSyncJob = await ankiSyncEngine.sync(docMetaSuppliers, syncProgressListener);
 
+        this.syncBarProgress.dispatchEvent({
+            task: 'anki-sync',
+            title: "Starting anki sync...",
+            percentage: 0
+        });
+
         await pendingSyncJob.start();
 
         this.syncBarProgress.dispatchEvent({

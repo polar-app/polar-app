@@ -12,4 +12,9 @@ export interface SyncTaskResult {
 
     readonly message?: string;
 
+    /**
+     * True if this task has failed to sync.
+     */
+    readonly failed?: boolean;
+
 }

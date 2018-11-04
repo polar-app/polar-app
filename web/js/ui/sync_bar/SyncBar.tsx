@@ -6,7 +6,9 @@ import {Reactor} from '../../reactor/Reactor';
 import Collapse from 'reactstrap/lib/Collapse';
 import {IEventDispatcher} from '../../reactor/SimpleReactor';
 import {Listener} from '../../reactor/Listener';
+import {Logger} from '../../logger/Logger';
 
+const log = Logger.create();
 
 const Styles: IStyleMap = {
 
@@ -63,7 +65,12 @@ export class SyncBar extends React.Component<IProps, IState> {
     public componentDidMount(): void {
 
         if (this.props.progress) {
-            this.props.progress.addEventListener(progress => this.onProgress(progress));
+            this.props.progress.addEventListener(progress => {
+
+                log.info(`${progress.percentage}: ${progress.title}`);
+
+                this.onProgress(progress);
+            });
         }
 
     }
@@ -123,11 +130,13 @@ interface IProps {
 }
 
 interface IState {
+
     // initially there is no progress to display
     progress?: number;
 
     // the message to dispaly in the box.  If any.
     message?: string;
+
 }
 
 export interface SyncBarProgress {

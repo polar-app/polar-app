@@ -10,6 +10,7 @@ import {AnkiFields} from './AnkiFields';
 import {CanAddNotesClient, ICanAddNotesClient} from './clients/CanAddNotesClient';
 import {SyncTaskResult} from '../SyncTask';
 import {Optional} from '../../../../util/ts/Optional';
+import * as util from "util";
 
 const log = Logger.create();
 
@@ -131,14 +132,18 @@ export class NotesSync {
 
             this.results.created.push(normalizedNote.noteDescriptor);
 
-        } catch (e) {
-            message = `Failed to create note: ${normalizedNote.noteDescriptor}`;
-            log.error(message);
-            throw e;
+        } catch (err) {
+            message = "Failed to create note: " + this.pp(normalizedNote.noteDescriptor);
+            log.warn(message, err);
+            return Optional.of({message, failed: true});
         }
 
         return Optional.of({message});
 
+    }
+
+    private pp(noteDescriptor: NoteDescriptor) {
+        return util.inspect(noteDescriptor, false, undefined, false);
     }
 
     private normalize(noteDescriptor: NoteDescriptor): NormalizedNote {
