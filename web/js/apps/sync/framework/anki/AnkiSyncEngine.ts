@@ -65,6 +65,8 @@ export class AnkiSyncEngine implements SyncEngine {
                        .getOrElse([])
                        .map(tag => tag.label);
 
+            // TODO: implement more model types... not just basic.
+
             return {
                 guid: flashcardDescriptor.flashcard.guid,
                 deckName,

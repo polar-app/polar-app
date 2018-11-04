@@ -49,9 +49,18 @@ export class DocRepoAnkiSyncController {
 
     private async onStartSync() {
 
+        let nrTasks = 0;
+        let nrFailedTasks = 0;
+
         const syncProgressListener: SyncProgressListener = syncProgress => {
 
             log.info("Sync progress: ", syncProgress);
+
+            syncProgress.taskResult.map(taskResult => ++nrTasks);
+
+            syncProgress.taskResult
+                .filter(taskResult => taskResult.failed === true)
+                .map(taskResult => ++nrFailedTasks);
 
             let message: string | undefined;
 
@@ -90,7 +99,7 @@ export class DocRepoAnkiSyncController {
 
         this.syncBarProgress.dispatchEvent({
             task: 'anki-sync',
-            title: "Anki sync complete.",
+            title: `Anki sync complete. Completed ${nrTasks} with ${nrFailedTasks} failures.`,
             percentage: 100
         });
 

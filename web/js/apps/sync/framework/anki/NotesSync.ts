@@ -89,10 +89,19 @@ export class NotesSync {
 
             this.syncQueue.add(async () => await this.canAddNote(normalizedNote));
 
-            return Optional.of({ message: `Note note found.  Checking if we can add.`});
+            const message = `Note not found.  Checking if we can add.`;
+
+            log.debug(message, normalizedNote);
+
+            return Optional.of({message});
 
         } else {
-            return Optional.of({message: 'Note already found. Skipping.'});
+
+            const message = 'Note already found. Skipping.';
+
+            log.debug(message, normalizedNote);
+
+            return Optional.of({message});
         }
 
     }
@@ -101,12 +110,18 @@ export class NotesSync {
 
         const canAddNotes = await this.canAddNotesClient.execute([normalizedNote.noteDescriptor]);
 
+        let message: string;
+
+        this.syncQueue.add(async () => await this.addNote(normalizedNote));
+
         if (canAddNotes.length > 0 && canAddNotes[0]) {
-            this.syncQueue.add(async () => await this.addNote(normalizedNote));
-            return Optional.of({message: 'Note can be added'});
+            message = 'Note can be added';
         } else {
-            return Optional.of({message: 'Note already exists'});
+            message = 'Note already exists';
         }
+
+        log.debug(message, normalizedNote);
+        return Optional.of({message});
 
     }
 
