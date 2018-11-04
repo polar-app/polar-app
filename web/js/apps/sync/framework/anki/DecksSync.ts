@@ -46,7 +46,7 @@ export class DecksSync {
      * @param deckDescriptors The decks we need created.
      *
      */
-    enqueue(deckDescriptors: DeckDescriptor[]) {
+    public enqueue(deckDescriptors: DeckDescriptor[]) {
 
         this.syncQueue.add(async () => {
             return await this.findExistingDecks(deckDescriptors);
@@ -64,20 +64,20 @@ export class DecksSync {
 
         log.info("Fetching existing decks for deckDescriptors: ", deckDescriptors);
 
-        let deckNamesAndIds = await this.deckNamesAndIdsClient.execute();
+        const deckNamesAndIds = await this.deckNamesAndIdsClient.execute();
 
         // now I just need to compute the set difference deckDescriptors / deckNamesAndIds
         // for all decks that are not in deckNamesAndIds
 
-        let currentDecks: string[] = Object.keys(deckNamesAndIds);
-        let expectedDecks = deckDescriptors.map(current => current.name);
+        const currentDecks: string[] = Object.keys(deckNamesAndIds);
+        const expectedDecks = deckDescriptors.map(current => current.name);
 
         this.missingDecks.push(... Sets.difference(expectedDecks, currentDecks));
 
-        let message = `Found ${this.missingDecks.length} missing decks from a total of ${currentDecks.length}`;
+        const message = `Found ${this.missingDecks.length} missing decks from a total of ${currentDecks.length}`;
         log.info(message);
 
-        this.missingDeckDescriptors.push(... this.missingDecks.map(name => <DeckDescriptor>{ name }));
+        this.missingDeckDescriptors.push(... this.missingDecks.map(name => <DeckDescriptor> { name }));
 
         return Optional.of({message});
 
@@ -91,14 +91,14 @@ export class DecksSync {
             });
         });
 
-        let message = `Creating ${this.missingDecks.length} decks.`;
+        const message = `Creating ${this.missingDecks.length} decks.`;
 
         return Optional.of({message});
 
     }
 
     private async createMissingDeck(missingDeck: string): Promise<Optional<SyncTaskResult>> {
-        let message = `Creating missing deck: ${missingDeck}`;
+        const message = `Creating missing deck: ${missingDeck}`;
         log.info(message);
         await this.createDeckClient.execute(missingDeck);
         return Optional.of({message});

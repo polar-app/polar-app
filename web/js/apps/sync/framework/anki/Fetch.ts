@@ -17,11 +17,11 @@ let response: Response | undefined;
  */
 export default function fetch(url: string | Request, init: RequestInit): Promise<Response> {
 
-    if(MockFetch.response) {
+    if (MockFetch.response) {
         return Promise.resolve(MockFetch.response);
     }
 
-    if(typeof window !== 'undefined' && window.fetch) {
+    if (typeof window !== 'undefined' && window.fetch) {
         return window.fetch(url, init);
     }
 
@@ -31,7 +31,7 @@ export default function fetch(url: string | Request, init: RequestInit): Promise
 
 export class MockFetch {
 
-    public static response?: Response
+    public static response?: Response;
 
 }
 
