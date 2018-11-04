@@ -33,6 +33,7 @@ import {IDocInfo} from '../../../web/js/metadata/DocInfo';
 import {WhatsNewComponent} from './WhatsNewComponent';
 import {SyncBar, SyncBarProgress} from '../../../web/js/ui/sync_bar/SyncBar';
 import {IEventDispatcher, SimpleReactor} from '../../../web/js/reactor/SimpleReactor';
+import {DocRepoAnkiSyncController} from '../../../web/js/controller/DocRepoAnkiSyncController';
 
 const log = Logger.create();
 
@@ -65,6 +66,9 @@ export default class App extends React.Component<AppProps, AppState> {
             data: [],
             columns: new TableColumns()
         };
+
+        new DocRepoAnkiSyncController(this.persistenceLayer, this.syncBarProgress)
+            .start();
 
         (async () => {
 

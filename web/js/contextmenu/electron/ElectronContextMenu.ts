@@ -20,11 +20,7 @@ const log = Logger.create();
  */
 export class ElectronContextMenu {
 
-    private readonly messenger: Messenger;
-
     constructor() {
-
-        this.messenger = new Messenger();
 
         // TODO: move this to a start method.
         ipcMain.on('context-menu-trigger', (event: Electron.Event, message: any) => {
@@ -72,7 +68,7 @@ export class ElectronContextMenu {
         // TODO: just send the full TriggerEvent but rename it to
         // ContextMenuSelectedEvent or something along those lines.
 
-        await this.messenger.postMessage({
+        await Messenger.postMessage({
             message: {
                 type: name,
                 point: triggerEvent.point,
@@ -146,7 +142,7 @@ export class ElectronContextMenu {
                 ctxMenu.append(menuItem);
             });
 
-            if(contextMenuCursor.curr.items.length > 0 && contextMenuCursor.next) {
+            if (contextMenuCursor.curr.items.length > 0 && contextMenuCursor.next) {
                 ctxMenu.append(new MenuItem({
                     type: 'separator'
                 }));

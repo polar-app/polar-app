@@ -5,11 +5,9 @@ const log = Logger.create();
 
 export class AnnotationSidebarClient {
 
-    private static readonly messenger = new Messenger();
-
     public static toggleAnnotationSidebar() {
 
-        this.messenger.postMessage({
+        Messenger.postMessage({
             message: {
                 type: 'toggle-annotation-sidebar',
             }

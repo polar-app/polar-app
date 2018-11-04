@@ -17,7 +17,7 @@ import {DocMeta} from '../metadata/DocMeta';
 
 const log = Logger.create();
 
-export class AnkiSyncController {
+export class DocRepoAnkiSyncController {
 
     private readonly persistenceLayer: IPersistenceLayer;
     private readonly syncBarProgress: IEventDispatcher<SyncBarProgress>;
@@ -84,7 +84,7 @@ export class AnkiSyncController {
 
         this.syncBarProgress.dispatchEvent({
             task: 'anki-sync',
-            title: "Anki sync complete",
+            title: "Anki sync complete.",
             percentage: 100
         });
 

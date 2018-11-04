@@ -12,7 +12,7 @@ import {isPresent} from '../../Preconditions';
  */
 export class Messenger {
 
-    public async postMessage(postMessageRequest: PostMessageRequest) {
+    public static async postMessage(postMessageRequest: PostMessageRequest) {
 
         postMessageRequest = new PostMessageRequest(postMessageRequest);
 
@@ -24,7 +24,7 @@ export class Messenger {
 
         let targetBrowserWindow = postMessageRequest.window;
 
-        if(! isPresent(targetBrowserWindow)) {
+        if (! isPresent(targetBrowserWindow)) {
             targetBrowserWindow = BrowserWindow.getFocusedWindow();
         }
 

@@ -12,6 +12,7 @@ import {BrowserWindowRegistry} from '../../electron/framework/BrowserWindowRegis
 import {Menus} from './Menus';
 import {isPresent} from '../../Preconditions';
 import {Directories} from '../../datastore/Directories';
+import {Messenger} from '../../electron/messenger/Messenger';
 
 const log = Logger.create();
 
@@ -367,6 +368,16 @@ export class MainAppMenu {
                 {
                     label: 'Toggle Developer Tools',
                     click: this.mainAppController.cmdToggleDevTools
+                },
+                {
+                    label: 'Sync to Anki',
+                    click: () => {
+                        Messenger.postMessage( {
+                           message: {
+                               type: "start-anki-sync"
+                           }
+                        }).catch(err => log.error("Could not post message", err));
+                    }
                 },
             ]
         };
