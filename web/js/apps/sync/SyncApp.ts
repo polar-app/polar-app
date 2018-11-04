@@ -59,11 +59,11 @@ export class SyncApp {
 
         };
 
-        const pendingSyncJob = ankiSyncEngine.sync(docMetaSet, syncProgressListener);
-
-        await pendingSyncJob.start();
-
-        this.progressLog.update({ percentage: 100, message: 'Sync complete' });
+        // const pendingSyncJob = ankiSyncEngine.sync(docMetaSet, syncProgressListener);
+        //
+        // await pendingSyncJob.start();
+        //
+        // this.progressLog.update({ percentage: 100, message: 'Sync complete' });
 
     }
 

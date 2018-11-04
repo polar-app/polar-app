@@ -34,4 +34,14 @@ export class Sets {
 
     }
 
+    public static toSet<T>(arr: T[]): Set<T> {
+
+        const set = new Set<T>();
+
+        arr.forEach(current => set.add(current));
+
+        return set;
+
+    }
+
 }

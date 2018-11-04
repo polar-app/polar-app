@@ -15,6 +15,8 @@ import {PendingAnkiSyncJob} from './AnkiSyncJob';
 import {DocInfos} from '../../../../metadata/DocInfos';
 import {Tags} from '../../../../tags/Tags';
 import {DocInfo} from '../../../../metadata/DocInfo';
+import {DocMetaSupplierCollection} from '../../../../metadata/DocMetaSupplierCollection';
+import {Sets} from '../../../../util/Sets';
 
 /**
  * Sync engine for Anki.  Takes cards registered in a DocMeta and then transfers
@@ -24,44 +26,26 @@ export class AnkiSyncEngine implements SyncEngine {
 
     public readonly descriptor: SyncEngineDescriptor = new AnkiSyncEngineDescriptor();
 
-    public sync(docMetaSet: DocMetaSet, progress: SyncProgressListener): PendingSyncJob {
+    public async sync(docMetaSupplierCollection: DocMetaSupplierCollection, progress: SyncProgressListener): Promise<PendingSyncJob> {
 
-        // TODO: do this with docMetaSuppliers and ONE pass per docMeta so that
-        // we only have to evaluate it once and IDEALLY not if it's already been
-        // synchronized to the local Anki
+        const noteDescriptors = await this.toNoteDescriptors(docMetaSupplierCollection);
 
-        const deckDescriptors = this.toDeckDescriptors(docMetaSet);
-        const noteDescriptors = this.toNoteDescriptors(docMetaSet);
+        const deckNames = Sets.toSet(noteDescriptors.map(noteDescriptor => noteDescriptor.deckName));
+
+        const deckDescriptors: DeckDescriptor[] = Array.from(deckNames)
+            .map(deckName => {
+                return {name: deckName};
+            });
 
         return new PendingAnkiSyncJob(progress, deckDescriptors, noteDescriptors);
 
     }
 
-    protected toDeckDescriptors(docMetaSet: DocMetaSet) {
+    protected async toNoteDescriptors(docMetaSupplierCollection: DocMetaSupplierCollection): Promise<NoteDescriptor[]> {
 
-        const result: DeckDescriptor[] = [];
+        const  flashcardDescriptors = await this.toFlashcardDescriptors(docMetaSupplierCollection);
 
-        docMetaSet.docMetas.forEach(docMeta => {
-
-            const name = this.computeDeckName(docMeta.docInfo);
-
-            if (! name) {
-                throw new Error("No name for docMeta: "  + docMeta.docInfo.fingerprint);
-            }
-
-            result.push({
-                name
-            });
-
-        });
-
-        return result;
-
-    }
-
-    protected toNoteDescriptors(docMetaSet: DocMetaSet): NoteDescriptor[] {
-
-        return this.toFlashcardDescriptors(docMetaSet).map(flashcardDescriptor => {
+        return flashcardDescriptors.map(flashcardDescriptor => {
 
             const deckName = this.computeDeckName(flashcardDescriptor.docMeta.docInfo);
 
@@ -73,7 +57,7 @@ export class AnkiSyncEngine implements SyncEngine {
                 fields[key] = Optional.of(value.HTML || value.TEXT || value.MARKDOWN).get();
             });
 
-            const docInfoTags = Optional.of(flashcardDescriptor.docMeta.docInfo.tags)
+            const docInfoTags = Optional.of(flashcardDescriptor.docMeta.docInfo.tags);
 
             const tags = docInfoTags.map(current => Object.values(current))
                        .getOrElse([])
@@ -119,11 +103,14 @@ export class AnkiSyncEngine implements SyncEngine {
 
     }
 
-    protected toFlashcardDescriptors(docMetaSet: DocMetaSet): FlashcardDescriptor[] {
+    protected async toFlashcardDescriptors(docMetaSupplierCollection: DocMetaSupplierCollection): Promise<FlashcardDescriptor[]> {
 
         const result: FlashcardDescriptor[] = [];
 
-        docMetaSet.docMetas.forEach(docMeta => {
+        for (const docMetaSupplier of docMetaSupplierCollection) {
+
+            const docMeta = await docMetaSupplier();
+
             Object.values(docMeta.pageMetas).forEach(pageMeta => {
 
                 // collect all flashcards for the current page.
@@ -142,7 +129,7 @@ export class AnkiSyncEngine implements SyncEngine {
                     .flatten()
                     .value());
 
-                const flashcardDescriptors =_.chain(flashcards)
+                const flashcardDescriptors = _.chain(flashcards)
                     .map(current => <FlashcardDescriptor> {
                         docMeta,
                         pageInfo: pageMeta.pageInfo,
@@ -154,7 +141,7 @@ export class AnkiSyncEngine implements SyncEngine {
 
             });
 
-        });
+        }
 
         return result;
 
@@ -175,10 +162,10 @@ export interface FlashcardDescriptor {
 
 class AnkiSyncEngineDescriptor implements SyncEngineDescriptor {
 
-    readonly id: string = "a0138889-ff14-41e8-9466-42d960fe80d9";
+    public readonly id: string = "a0138889-ff14-41e8-9466-42d960fe80d9";
 
-    readonly name: string = "anki";
+    public readonly name: string = "anki";
 
-    readonly description: string = "Sync Engine for Anki";
+    public readonly description: string = "Sync Engine for Anki";
 
 }

@@ -12,6 +12,8 @@ import {IPersistenceLayer} from '../datastore/IPersistenceLayer';
 import {IEventDispatcher} from '../reactor/SimpleReactor';
 import {SyncBarProgress} from '../ui/sync_bar/SyncBar';
 import {AnkiSyncEngine} from '../apps/sync/framework/anki/AnkiSyncEngine';
+import {DocMetaSupplierCollection} from '../metadata/DocMetaSupplierCollection';
+import {DocMeta} from '../metadata/DocMeta';
 
 const log = Logger.create();
 
@@ -26,9 +28,7 @@ export class AnkiSyncController {
     }
 
     public start() {
-
         window.addEventListener("message", event => this.onMessageReceived(event), false);
-
     }
 
     private onMessageReceived(event: any) {
@@ -40,48 +40,53 @@ export class AnkiSyncController {
         switch (event.data.type) {
 
             case "start-anki-sync":
-                this.onStartSync(triggerEvent);
+                this.onStartSync();
                 break;
 
         }
 
     }
 
-    private async onStartSync(triggerEvent: TriggerEvent) {
+    private async onStartSync() {
 
-        // await this.persistenceLayer.getDocMetaFiles();
-        //
-        // const docMetaSet = new DocMetaSet(docMeta);
-        //
-        // const syncProgressListener: SyncProgressListener = syncProgress => {
-        //
-        //     log.info("Sync progress: ", syncProgress);
-        //
-        //     let message: string | undefined;
-        //
-        //     syncProgress.taskResult.when(taskResult => {
-        //         message = taskResult.message;
-        //     });
-        //
-        //     this.syncBarProgress.dispatchEvent({
-        //         task: 'anki-sync',
-        //         title: message,
-        //         percentage: syncProgress.percentage
-        //     });
-        //
-        // };
-        //
-        // const ankiSyncEngine = new AnkiSyncEngine();
-        //
-        // const pendingSyncJob = ankiSyncEngine.sync(docMetaSet, syncProgressListener);
-        //
-        // await pendingSyncJob.start();
-        //
-        // this.syncBarProgress.dispatchEvent({
-        //     task: 'anki-sync',
-        //     title: "Anki sync complete",
-        //     percentage: 100
-        // });
+        const syncProgressListener: SyncProgressListener = syncProgress => {
+
+            log.info("Sync progress: ", syncProgress);
+
+            let message: string | undefined;
+
+            syncProgress.taskResult.when(taskResult => {
+                message = taskResult.message;
+            });
+
+            this.syncBarProgress.dispatchEvent({
+                task: 'anki-sync',
+                title: message,
+                percentage: syncProgress.percentage
+            });
+
+        };
+
+        const ankiSyncEngine = new AnkiSyncEngine();
+
+        const docMetaFiles = await this.persistenceLayer.getDocMetaFiles();
+
+        const docMetaSuppliers: DocMetaSupplierCollection
+            = docMetaFiles.map(docMetaFile => {
+                return async () => {
+                    log.info("Reading docMeta for anki sync: " + docMetaFile.fingerprint);
+                    return (await this.persistenceLayer.getDocMeta(docMetaFile.fingerprint))!;
+                }});
+
+        const pendingSyncJob = await ankiSyncEngine.sync(docMetaSuppliers, syncProgressListener);
+
+        await pendingSyncJob.start();
+
+        this.syncBarProgress.dispatchEvent({
+            task: 'anki-sync',
+            title: "Anki sync complete",
+            percentage: 100
+        });
 
     }
 
