@@ -16,6 +16,7 @@ export class AnnotationFlashcardBox extends React.Component<IProps, IState> {
         super(props, context);
 
         this.onClick = this.onClick.bind(this);
+        this.onCancel = this.onCancel.bind(this);
 
         this.state = {
             iter: 0
@@ -46,6 +47,10 @@ export class AnnotationFlashcardBox extends React.Component<IProps, IState> {
                         Create
                     </Button>
 
+                    <Button color="secondary" size="sm" className="mt-2 ml-1" onClick={() => this.onCancel()}>
+                        Cancel
+                    </Button>
+
                 </div>
 
             </div>
@@ -66,11 +71,18 @@ export class AnnotationFlashcardBox extends React.Component<IProps, IState> {
 
     }
 
+    private onCancel(): void {
+        if (this.props.onCancel) {
+            this.props.onCancel();
+        }
+    }
+
 }
 
 export interface IProps {
     annotation: DocAnnotation;
     onFlashcardCreated?: (front: htmlstring, back: htmlstring) => void;
+    onCancel?: () => void;
 }
 
 export interface IState {

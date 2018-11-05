@@ -100,7 +100,7 @@ export class AnnotationControlBar extends React.Component<IProps, IState> {
                         <AnnotationDropdown id={'annotation-dropdown-' + annotation.id}
                                             annotation={annotation}
                                             onDelete={() => this.onDelete(annotation)}
-                                            onCreateComment={(annotation) => this.toggleActiveInputComponent('comment')}
+                                            onCreateComment={() => this.toggleActiveInputComponent('comment')}
                                             onCreateFlashcard={() => this.toggleActiveInputComponent('flashcard')}
                                             onJumpToContext={() => this.onJumpToContext(annotation)}/>
 
@@ -112,6 +112,7 @@ export class AnnotationControlBar extends React.Component<IProps, IState> {
                 <Collapse timeout={0} isOpen={this.state.activeInputComponent === 'comment'}>
 
                     <AnnotationCommentBox annotation={annotation}
+                                          onCancel={() => this.toggleActiveInputComponent('none')}
                                           onCommentCreated={(html) => this.onCommentCreated(html)}/>
 
                 </Collapse>
@@ -119,6 +120,7 @@ export class AnnotationControlBar extends React.Component<IProps, IState> {
                 <Collapse timeout={0} isOpen={this.state.activeInputComponent === 'flashcard'}>
 
                     <AnnotationFlashcardBox annotation={annotation}
+                                            onCancel={() => this.toggleActiveInputComponent('none')}
                                             onFlashcardCreated={(front, back) => this.onFlashcardCreated(front, back)}/>
 
                 </Collapse>

@@ -1,4 +1,16 @@
 
+# 1.0.12
+
+- Implemented Cancel when creating flashcards and comments.
+
+- reworked anki sync to run from teh doc repository.
+
+- renamed "Copy URL" to "Copy Original URL"
+
+# 1.0.11
+
+- release to fix MacOS certificate bugs
+
 # 1.0.10
 
 - banner message about opencollective donations
