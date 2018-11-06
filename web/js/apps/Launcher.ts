@@ -78,3 +78,14 @@ export class Launcher {
 }
 
 export type PersistenceLayerFactory = () => Promise<IListenablePersistenceLayer>;
+
+window.addEventListener('error', event => {
+    console.log("FIXME");
+    event.preventDefault();
+
+});
+
+window.addEventListener('unhandledrejection', event => {
+    console.log("FIXME");
+    event.preventDefault();
+});

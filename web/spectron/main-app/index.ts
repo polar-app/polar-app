@@ -1,3 +1,14 @@
+import process from "process";
+
+
+process.on('uncaughtException', err => {
+    // log.error("Uncaught exception: ", err);
+});
+
+process.on('unhandledRejection', err => {
+    // log.error("Unhandled rejection: ", err);
+});
+
 import {SpectronMain2} from '../../js/test/SpectronMain2';
 import {Datastore} from '../../js/datastore/Datastore';
 import {MemoryDatastore} from '../../js/datastore/MemoryDatastore';
@@ -9,13 +20,12 @@ import {wait} from 'dom-testing-library';
 import {assert} from 'chai';
 import waitForExpect from 'wait-for-expect';
 import {Logger} from '../../js/logger/Logger';
-import process from "process";
 import {FilePaths} from '../../js/util/FilePaths';
 import {Files} from '../../js/util/Files';
 import {MainAppController} from '../../js/apps/main/MainAppController';
 import {PolarDataDir} from '../../js/test/PolarDataDir';
 
-const log = Logger.create();
+// const log = Logger.create();
 
 PolarDataDir.useFreshDirectory('.polar-main-app');
 
@@ -42,8 +52,8 @@ async function createWindow(): Promise<BrowserWindow> {
 }
 
 SpectronMain2.create({windowFactory: createWindow}).run(async state => {
-
-    log.info("Waiting for repository to show...");
+    // const log = Logger.create();
+    // log.info("Waiting for repository to show...");
 
     await waitForExpect(() => {
         const windows = BrowserWindowRegistry.tagged({name: 'app', value: 'repository'});
@@ -68,17 +78,17 @@ SpectronMain2.create({windowFactory: createWindow}).run(async state => {
 });
 
 async function setupNewDataDir(): Promise<PolarDir> {
-
+    // const log = Logger.create();
     const dataDir = PolarDataDir.get()!;
 
-    log.info("Using new dataDir: " + dataDir);
+    // log.info("Using new dataDir: " + dataDir);
 
     await Files.removeDirectoryRecursivelyAsync(dataDir);
     await Files.mkdirAsync(dataDir);
 
     const stashDir = FilePaths.create(dataDir, 'stash');
 
-    log.info("Creating new dataDir: " + stashDir);
+    // log.info("Creating new dataDir: " + stashDir);
 
     await Files.mkdirAsync(stashDir);
 

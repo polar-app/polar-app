@@ -9,18 +9,23 @@ import process from "process";
 // the hood. Be sure to call this function as early as possible in the main
 // process and all renderer processes to also catch errors during startup.
 
+let initialized: boolean = false;
 
 export class SentryLogger implements ILogger {
 
     public readonly name: string = 'sentry-logger';
 
     public notice(msg: string, ...args: any[]) {
+        // noop
     }
 
     public warn(msg: string, ...args: any[]) {
+        // noop
     }
 
     public error(msg: string, ...args: any[]) {
+
+        SentryLogger.initWhenNecessary();
 
         args.forEach(arg => {
 
@@ -36,12 +41,15 @@ export class SentryLogger implements ILogger {
     }
 
     public info(msg: string, ...args: any[]) {
+        // noop
     }
 
     public verbose(msg: string, ...args: any[]) {
+        // noop
     }
 
     public debug(msg: string, ...args: any[]) {
+        // noop
     }
 
     public async sync(): Promise<void> {
@@ -49,14 +57,25 @@ export class SentryLogger implements ILogger {
     }
 
     public static isEnabled() {
-        return !isPresent(process.env['SNAP']);
+        return !isPresent(process.env.SNAP);
+    }
+
+    private static initWhenNecessary() {
+
+        if (initialized) {
+            return;
+        }
+
+        if (SentryLogger.isEnabled()) {
+            init({
+                dsn: 'https://2e8b8ca6e6bf4bf58d735f2a405ecb20@sentry.io/1273707',
+                // more options...
+            });
+        }
+
+        initialized = true;
+
     }
 
 }
 
-if(SentryLogger.isEnabled()) {
-    init({
-        dsn: 'https://2e8b8ca6e6bf4bf58d735f2a405ecb20@sentry.io/1273707',
-        // more options...
-    });
-}

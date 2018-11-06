@@ -1,9 +1,26 @@
+
+import process from 'process';
+
+process.on('uncaughtException', err => {
+    console.log("FIXME");
+});
+
+process.on('unhandledRejection', err => {
+    console.log("FIXME2");
+});
+
 import {app} from 'electron';
 import {Logger} from './web/js/logger/Logger';
 import {MainApp} from './web/js/apps/main/MainApp';
 import {Cmdline} from './web/js/electron/Cmdline';
 import {Logging} from './web/js/logger/Logging';
 import {Datastores} from './web/js/datastore/Datastores';
+
+
+
+
+
+console.log("FIXME: ", process.listeners);
 
 const hasSingleInstanceLock = app.requestSingleInstanceLock();
 
