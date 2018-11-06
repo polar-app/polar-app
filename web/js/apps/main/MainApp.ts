@@ -23,6 +23,7 @@ import {GA} from "../../ga/GA";
 import {Version} from "../../util/Version";
 import {Files} from '../../util/Files';
 import {WebserverCerts} from '../../backend/webserver/WebserverCerts';
+import process from "process";
 
 declare var global: any;
 
@@ -185,6 +186,14 @@ export class MainApp {
 
             }
 
+        });
+
+        process.on('uncaughtException', err => {
+            log.error("Uncaught exception: ", err);
+        });
+
+        process.on('unhandledRejection', err => {
+            log.error("Unhandled rejection: ", err);
         });
 
         return {mainWindow, mainAppController};

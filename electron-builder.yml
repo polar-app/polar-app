@@ -1,7 +1,7 @@
 productName: Polar Bookshelf
 # TODO: unfortunately this needs to be set.  Not sure why but it reverted to
 # using nightly versions when not set.  It should use package.json youwwou
-electronVersion: 3.0.4
+electronVersion: 3.0.8
 appId: io.inputneuron/polar
 compression: normal
 npmRebuild: false
