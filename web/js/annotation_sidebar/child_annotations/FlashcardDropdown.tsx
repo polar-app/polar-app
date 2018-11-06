@@ -4,6 +4,7 @@ import {Logger} from '../../logger/Logger';
 import {IStyleMap} from '../../react/IStyleMap';
 import {DocAnnotation} from '../DocAnnotation';
 import {ConfirmPopover} from '../../ui/confirm/ConfirmPopover';
+import {ConfirmDropdownItem} from '../../ui/confirm/ConfirmDropdownItem';
 
 const log = Logger.create();
 
@@ -57,7 +58,7 @@ export class FlashcardDropdown extends React.Component<IProps, IState> {
 
                         {/*<DropdownItem divider />*/}
 
-                        <DropdownItem onClick={() => this.onDeleteSelected()}>
+                        <DropdownItem className="text-danger" onClick={() => this.onDeleteSelected()}>
                             Delete
                         </DropdownItem>
 

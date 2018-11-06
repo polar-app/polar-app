@@ -79,7 +79,7 @@ export class DocDropdown extends React.Component<IProps, IState> {
 
                         <DropdownItem divider />
 
-                        <DropdownItem onClick={() => this.select('delete')}>
+                        <DropdownItem className="text-danger" onClick={() => this.select('delete')}>
                             Delete
                         </DropdownItem>
 

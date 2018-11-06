@@ -53,7 +53,7 @@ export class CommentDropdown extends React.Component<IProps, IState> {
 
                         {/*<DropdownItem divider />*/}
 
-                        <DropdownItem onClick={() => this.onDelete()}>
+                        <DropdownItem className="text-danger" onClick={() => this.onDelete()}>
                             Delete
                         </DropdownItem>
 

@@ -6,6 +6,11 @@ import {ConfirmPopover} from '../../ui/confirm/ConfirmPopover';
 
 const log = Logger.create();
 
+/**
+ * This component doesn't work. It would be more elegant to do this but I think it
+ * stops working because the parent item is no longer open and reactstap doesn't
+ * display the component.
+ */
 export class ConfirmDropdownItem extends React.Component<IProps, IState> {
 
     constructor(props: IProps, context: any) {
