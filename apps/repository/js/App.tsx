@@ -34,6 +34,7 @@ import {WhatsNewComponent} from './WhatsNewComponent';
 import {SyncBar, SyncBarProgress} from '../../../web/js/ui/sync_bar/SyncBar';
 import {IEventDispatcher, SimpleReactor} from '../../../web/js/reactor/SimpleReactor';
 import {DocRepoAnkiSyncController} from '../../../web/js/controller/DocRepoAnkiSyncController';
+import {Tooltip, UncontrolledTooltip} from 'reactstrap';
 
 const log = Logger.create();
 
@@ -185,6 +186,24 @@ export default class App extends React.Component<AppProps, AppState> {
                             {
                                 Header: 'Title',
                                 accessor: 'title',
+                                Cell: (row: any) => {
+                                    const id = 'doc-repo-row-title' + row.index;
+                                    return (
+                                        <div id={id}>
+
+                                            <div>{row.value}</div>
+
+                                            <UncontrolledTooltip style={{maxWidth: '1000px'}}
+                                                                 placement="bottom"
+                                                                 delay={{show: 750, hide: 0}}
+                                                                 target={id}>
+                                                {row.value}
+                                            </UncontrolledTooltip>
+
+                                        </div>
+
+                                    );
+                                }
 
                             },
                             {

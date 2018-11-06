@@ -1,18 +1,20 @@
 
 # 1.0.12
 
+- Feature: tooltip on hover of the doc repo table title.
+
 - Fixed analytics around number of documents in the repository
 
-- The "Delete" text is now danger red.  
+- Feature: The "Delete" text is now danger red.  
 
-- Implemented a confirm prompt when deleteing flashcards, comments, and 
+- Feature: Implemented a confirm prompt when deleteing flashcards, comments, and
   annotations.
+ 
+- Feature: Implemented Cancel when creating flashcards and comments 
 
-- Implemented Cancel when creating flashcards and comments 
+- Feature: Reworked anki sync to run from the doc repository.  
 
-- reworked anki sync to run from teh doc repository.
-
-- renamed "Copy URL" to "Copy Original URL"
+- Feature: Renamed "Copy URL" to "Copy Original URL"
 
 # 1.0.11
 
