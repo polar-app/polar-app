@@ -65,7 +65,7 @@ export class FlashcardComponent extends React.Component<IProps, IState> {
                     <div className="flexbar-right">
                         <FlashcardDropdown id={'flashcard-dropdown-' + flashcard.id}
                                            flashcard={flashcard}
-                                           onDelete={(flashcard) => this.onDelete(flashcard)}/>
+                                           onDelete={() => this.onDelete(flashcard)}/>
                     </div>
 
                 </div>

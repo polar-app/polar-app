@@ -35,14 +35,14 @@ export class FlashcardComponentExample extends React.Component<IProps, IState> {
             annotationType: AnnotationType.COMMENT,
             html: 'This is <b>the</b> comment.',
             pageNum: 1,
-            position: {x: 0, y:0 },
+            position: {x: 0, y: 0},
             created: "2018-10-23T21:06:22+00:00",
             comments: [],
             // the reference to a parent annotation if this is a child annotation.
             children: [],
             pageMeta: docMeta.pageMetas[1],
             fields
-        }
+        };
 
         return (
 
