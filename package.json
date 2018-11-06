@@ -22,7 +22,8 @@
     "e2e": "find web/spectron -name 'spec.js' | xargs mocha-parallel-tests --timeout 10000 --max-parallel=1 --exit",
     "e2e-mocha": "npx mocha --exit --log-timer-events --recursive 'web/spectron/**/spec.js'",
     "test-mocha": "npx mocha --exit --log-timer-events --recursive 'web/js/**/*Test.js'",
-    "start-with-console": "./node_modules/.bin/electron --enable-remote-debugging --interactive --enable-console-logging ."
+    "start-with-console": "./node_modules/.bin/electron --enable-remote-debugging --interactive --enable-console-logging .",
+    "postinstall": "opencollective-postinstall"
   },
   "repository": "https://github.com/burtonator/polar-bookshelf",
   "keywords": [
@@ -148,6 +149,7 @@
     "namor": "^1.0.1",
     "node-fetch": "^2.2.0",
     "npm": "^6.4.1",
+    "opencollective-postinstall": "^2.0.1",
     "pdfjs-dist": "^2.0.489",
     "popper.js": "^1.14.4",
     "prettify": "^0.1.7",
@@ -187,5 +189,9 @@
     "universal-analytics": "^0.4.20",
     "uuid": "^3.3.2",
     "ws": "^6.0.0"
+  },
+  "collective": {
+    "type": "opencollective",
+    "url": "https://opencollective.com/polar-bookshelf"
   }
 }
