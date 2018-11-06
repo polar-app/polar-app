@@ -6,7 +6,7 @@
   <h1>Polar Bookshelf</h1>
 
 <a href="https://github.com/burtonator/polar-bookshelf/releases">
-    <img src="https://img.shields.io/github/downloads/burtonator/polar-bookshelf/total.svg"/>
+     <img src="https://img.shields.io/github/downloads/burtonator/polar-bookshelf/total.svg"/>
 </a>
 
 <a href="https://discord.gg/GT8MhA6">
@@ -19,6 +19,13 @@
 
 <a href="https://twitter.com/getpolarized?ref_src=twsrc%5Etfw">
     <img src="https://img.shields.io/twitter/follow/getpolarized.svg?style=social&label=Follow"/>
+</a>
+
+<a href="#backers" alt="sponsors on Open Collective">
+<img src="https://opencollective.com/polar-bookshelf/backers/badge.svg" />
+</a> 
+<a href="#sponsors" alt="Sponsors on Open Collective">
+<img src="https://opencollective.com/polar-bookshelf/sponsors/badge.svg" />
 </a>
 
 
@@ -319,6 +326,35 @@ $ npm install && npm start
 If you'd like to donate we accept Bitcoin at <a href="bitcoin:bc1q059asaaqjt5cultx993gfytjssj4g6fw3q8n7g">bc1q059asaaqjt5cultx993gfytjssj4g6fw3q8n7g</a>
 
 All donations go to supporting Polar which include website hosting costs, web designer costs, continual integration services, etc. 
+
+## Contributors
+
+This project exists thanks to all the people who contribute. <img src="https://opencollective.com/polar-bookshelf/contributors.svg?width=890&button=false" />
+
+
+## Backers
+
+Thank you to all our backers! 🙏 [[Become a backer](https://opencollective.com/polar-bookshelf#backer)]
+
+<a href="https://opencollective.com/polar-bookshelf#backers" target="_blank"><img src="https://opencollective.com/polar-bookshelf/backers.svg?width=890"></a>
+
+
+## Sponsors
+
+Support this project by becoming a sponsor. Your logo will show up here with a link to your website. [[Become a sponsor](https://opencollective.com/polar-bookshelf#sponsor)]
+
+<a href="https://opencollective.com/polar-bookshelf/sponsor/0/website" target="_blank"><img src="https://opencollective.com/polar-bookshelf/sponsor/0/avatar.svg"></a>
+<a href="https://opencollective.com/polar-bookshelf/sponsor/1/website" target="_blank"><img src="https://opencollective.com/polar-bookshelf/sponsor/1/avatar.svg"></a>
+<a href="https://opencollective.com/polar-bookshelf/sponsor/2/website" target="_blank"><img src="https://opencollective.com/polar-bookshelf/sponsor/2/avatar.svg"></a>
+<a href="https://opencollective.com/polar-bookshelf/sponsor/3/website" target="_blank"><img src="https://opencollective.com/polar-bookshelf/sponsor/3/avatar.svg"></a>
+<a href="https://opencollective.com/polar-bookshelf/sponsor/4/website" target="_blank"><img src="https://opencollective.com/polar-bookshelf/sponsor/4/avatar.svg"></a>
+<a href="https://opencollective.com/polar-bookshelf/sponsor/5/website" target="_blank"><img src="https://opencollective.com/polar-bookshelf/sponsor/5/avatar.svg"></a>
+<a href="https://opencollective.com/polar-bookshelf/sponsor/6/website" target="_blank"><img src="https://opencollective.com/polar-bookshelf/sponsor/6/avatar.svg"></a>
+<a href="https://opencollective.com/polar-bookshelf/sponsor/7/website" target="_blank"><img src="https://opencollective.com/polar-bookshelf/sponsor/7/avatar.svg"></a>
+<a href="https://opencollective.com/polar-bookshelf/sponsor/8/website" target="_blank"><img src="https://opencollective.com/polar-bookshelf/sponsor/8/avatar.svg"></a>
+<a href="https://opencollective.com/polar-bookshelf/sponsor/9/website" target="_blank"><img src="https://opencollective.com/polar-bookshelf/sponsor/9/avatar.svg"></a>
+
+
 
 # License
 
