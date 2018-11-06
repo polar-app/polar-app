@@ -1,14 +1,3 @@
-import process from "process";
-
-
-process.on('uncaughtException', err => {
-    // log.error("Uncaught exception: ", err);
-});
-
-process.on('unhandledRejection', err => {
-    // log.error("Unhandled rejection: ", err);
-});
-
 import {SpectronMain2} from '../../js/test/SpectronMain2';
 import {Datastore} from '../../js/datastore/Datastore';
 import {MemoryDatastore} from '../../js/datastore/MemoryDatastore';
