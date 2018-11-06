@@ -13,12 +13,12 @@ export class RendererAnalytics {
 
         log.debug("Sending analytics event: ", args);
 
-        if(args.label && args.value) {
-            visitor.event(args.category, args.action, args.label, args.value).send()
+        if (args.label && args.value) {
+            visitor.event(args.category, args.action, args.label, args.value).send();
         } else if (args.label) {
-            visitor.event(args.category, args.action, args.label).send()
+            visitor.event(args.category, args.action, args.label).send();
         } else {
-            visitor.event(args.category, args.action).send()
+            visitor.event(args.category, args.action).send();
         }
 
     }

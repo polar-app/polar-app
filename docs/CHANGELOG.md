@@ -1,6 +1,8 @@
 
 # 1.0.12
 
+- Fixed analytics around number of documents in the repository
+
 - The "Delete" text is now danger red.  
 
 - Implemented a confirm prompt when deleteing flashcards, comments, and 

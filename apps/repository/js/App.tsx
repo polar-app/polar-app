@@ -713,7 +713,10 @@ export default class App extends React.Component<AppProps, AppState> {
         const nrDocs = Object.keys(repoDocs).length;
 
         RendererAnalytics.set({'nrDocs': nrDocs});
-        RendererAnalytics.event({category: 'document-repository', action: 'docs-loaded', value: nrDocs});
+
+        RendererAnalytics.event({category: 'document-repository', action: 'docs-loaded', label: 'docs', value: nrDocs});
+        RendererAnalytics.event({category: 'document-repository', action: 'docs-loaded-' + nrDocs});
+
         RendererAnalytics.event({category: 'app', action: 'version-' + Version.get()});
 
     }

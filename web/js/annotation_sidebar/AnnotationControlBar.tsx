@@ -13,6 +13,7 @@ import {IStyleMap} from '../react/IStyleMap';
 import {AnnotationDropdown} from './AnnotationDropdown';
 import {AnnotationType} from '../metadata/AnnotationType';
 import {UncontrolledCollapse} from 'reactstrap';
+import {RendererAnalytics} from '../ga/RendererAnalytics';
 
 
 const Styles: IStyleMap = {
@@ -154,6 +155,8 @@ export class AnnotationControlBar extends React.Component<IProps, IState> {
 
     private onCommentCreated(html: string) {
 
+        RendererAnalytics.event({category: 'annotations', action: 'comment-created'});
+
         // sanitize the HTML first to prevent breaking the DOM and other
         // problematic issues with HTML.  Right now we don't handle any type of
         // XSS though
@@ -177,6 +180,8 @@ export class AnnotationControlBar extends React.Component<IProps, IState> {
     }
 
     private onFlashcardCreated(front: HTMLString, back: HTMLString) {
+
+        RendererAnalytics.event({category: 'annotations', action: 'flashcard-created'});
 
         // TODO: right now it seems to strip important CSS styles and data URLs
         // which I need to fix in the HTML sanitizer.
