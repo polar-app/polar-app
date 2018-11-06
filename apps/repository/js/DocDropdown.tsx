@@ -111,7 +111,7 @@ export class DocDropdown extends React.Component<IProps, IState> {
         const nav = window.navigator as any;
         const clipboard = nav.clipboard;
 
-        if(clipboard) {
+        if (clipboard) {
             clipboard.writeText(url);
         } else {
             log.warn("No clipboard with which to copy");

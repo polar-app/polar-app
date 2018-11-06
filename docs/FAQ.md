@@ -38,6 +38,26 @@ The annotations are another issue.  We don't currently have any exporters define
 to export the annotations but the file is in JSON format which means anyone could
 easily write an exporter.   
 
+# What characters are supported in tags?
+
+Polar documents can be tagged for classification and management.  This allows you
+to filter the document repository for specific tags.
+
+Right now we use the ```twitter-text``` library to determine if a tag is valid.
+
+This is somewhat constrained as characters like '#' and '-' are not supported.
+
+International characters and any character that can be supported as part of 
+Twitter hashtags are supported within Polar.
+
+We DID extend the framework to support ':' so that we could have typed tags.
+
+The idea was to be compatible with external systems so that data exported from
+Polar was compatible.
+
+We might revisit supporting extended tags in the future with additional characters
+but just issue warnings that these tags aren't supported on all platforms.
+
 # Do you have any plans to support ePub format?
 
 Yes.  But not in the short term.  Check out our notes on [ePub](EPUB_SUPPORT.md).

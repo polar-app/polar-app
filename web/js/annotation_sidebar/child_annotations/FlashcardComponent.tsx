@@ -3,6 +3,9 @@ import Moment from 'react-moment';
 import {DocAnnotation} from '../DocAnnotation';
 import {CommentDropdown} from './CommentDropdown';
 import {FlashcardDropdown} from './FlashcardDropdown';
+import {Logger} from '../../logger/Logger';
+
+const log = Logger.create();
 
 /**
  * A generic wrapper that determines which sub-component to render.
@@ -60,7 +63,7 @@ export class FlashcardComponent extends React.Component<IProps, IState> {
                     </div>
 
                     <div className="flexbar-right">
-                        <FlashcardDropdown id={'comment-dropdown-' + flashcard.id}
+                        <FlashcardDropdown id={'flashcard-dropdown-' + flashcard.id}
                                            flashcard={flashcard}
                                            onDelete={(flashcard) => this.onDelete(flashcard)}/>
                     </div>
@@ -72,6 +75,7 @@ export class FlashcardComponent extends React.Component<IProps, IState> {
     }
 
     private onDelete(flashcard: DocAnnotation) {
+        log.info("Flashcard deleted: ", flashcard);
         delete flashcard.pageMeta.flashcards[flashcard.id];
     }
 

@@ -27,7 +27,7 @@ export class FlashcardComponentExample extends React.Component<IProps, IState> {
         const fields = {
             'front': 'this is the front',
             'back': 'this is the back'
-        }
+        };
 
         const flashcard: DocAnnotation = {
 
@@ -50,7 +50,7 @@ export class FlashcardComponentExample extends React.Component<IProps, IState> {
 
                 <h2>FlashcardComponent</h2>
 
-                <FlashcardComponent flashcard={flashcard}/>
+                <FlashcardComponent flashcard={flashcard} />
 
             </div>
 
