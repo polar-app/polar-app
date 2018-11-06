@@ -61,7 +61,7 @@ export class Logging {
         if (SentryLogger.isEnabled()) {
             // *** first logger is sentry but only if we are not running within
             // a SNAP container.
-            // loggers.push(new SentryLogger());
+            loggers.push(new SentryLogger());
         }
 
         // *** next up is the Toaster Logger to visually show errors.
