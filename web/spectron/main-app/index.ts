@@ -14,7 +14,7 @@ import {Files} from '../../js/util/Files';
 import {MainAppController} from '../../js/apps/main/MainAppController';
 import {PolarDataDir} from '../../js/test/PolarDataDir';
 
-// const log = Logger.create();
+const log = Logger.create();
 
 PolarDataDir.useFreshDirectory('.polar-main-app');
 
@@ -41,8 +41,8 @@ async function createWindow(): Promise<BrowserWindow> {
 }
 
 SpectronMain2.create({windowFactory: createWindow}).run(async state => {
-    // const log = Logger.create();
-    // log.info("Waiting for repository to show...");
+
+    log.info("Waiting for repository to show...");
 
     await waitForExpect(() => {
         const windows = BrowserWindowRegistry.tagged({name: 'app', value: 'repository'});
@@ -67,17 +67,17 @@ SpectronMain2.create({windowFactory: createWindow}).run(async state => {
 });
 
 async function setupNewDataDir(): Promise<PolarDir> {
-    // const log = Logger.create();
+
     const dataDir = PolarDataDir.get()!;
 
-    // log.info("Using new dataDir: " + dataDir);
+    log.info("Using new dataDir: " + dataDir);
 
     await Files.removeDirectoryRecursivelyAsync(dataDir);
     await Files.mkdirAsync(dataDir);
 
     const stashDir = FilePaths.create(dataDir, 'stash');
 
-    // log.info("Creating new dataDir: " + stashDir);
+    log.info("Creating new dataDir: " + stashDir);
 
     await Files.mkdirAsync(stashDir);
 
