@@ -27,6 +27,7 @@ export class CommentDropdown extends React.Component<IProps, IState> {
         this.toggle = this.toggle.bind(this);
         this.select = this.select.bind(this);
         this.onDelete = this.onDelete.bind(this);
+        this.onDeleteSelected = this.onDeleteSelected.bind(this);
 
         this.state = {
             open: this.open,
@@ -70,6 +71,7 @@ export class CommentDropdown extends React.Component<IProps, IState> {
                                 title="Are you sure you want to delete this comment? "
                                 onCancel={() => this.select('none')}
                                 onConfirm={() => this.onDelete()}/>
+
             </div>
 
         );

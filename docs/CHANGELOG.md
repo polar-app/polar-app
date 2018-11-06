@@ -1,7 +1,12 @@
 
 # 1.0.12
 
-- Implemented Cancel when creating flashcards and comments.
+- The "Delete" text is now danger red.  
+
+- Implemented a confirm prompt when deleteing flashcards, comments, and 
+  annotations.
+
+- Implemented Cancel when creating flashcards and comments 
 
 - reworked anki sync to run from teh doc repository.
 
