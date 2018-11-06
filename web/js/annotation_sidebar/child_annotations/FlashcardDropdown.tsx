@@ -38,6 +38,8 @@ export class FlashcardDropdown extends React.Component<IProps, IState> {
 
     public render() {
 
+        const toggleID = this.props.id + '-dropdown-toggle';
+
         return (
 
             <div className="text-right">
@@ -45,7 +47,7 @@ export class FlashcardDropdown extends React.Component<IProps, IState> {
                 <Dropdown id={this.props.id} isOpen={this.state.open} toggle={this.toggle}>
 
                     <DropdownToggle color="link" className="doc-dropdown-button btn text-muted pl-1 pr-1"
-                                    id={this.props.id + '-dropdown-toggle'}>
+                                    id={toggleID}>
 
                         <i className="fas fa-ellipsis-h"></i>
 
@@ -65,7 +67,7 @@ export class FlashcardDropdown extends React.Component<IProps, IState> {
                 </Dropdown>
 
                 <ConfirmPopover open={this.state.selected === 'delete'}
-                                target={this.props.id + '-dropdown-toggle'}
+                                target={toggleID}
                                 title="Are you sure you want to delete this flashcard? "
                                 onCancel={() => this.select('none')}
                                 onConfirm={() => this.onDelete()}/>
