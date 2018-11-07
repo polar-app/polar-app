@@ -30,6 +30,11 @@ import {Version} from '../../../web/js/util/Version';
 import {RepoDocInfoIndex} from './RepoDocInfoIndex';
 import {AutoUpdatesController} from '../../../web/js/auto_updates/AutoUpdatesController';
 import {IDocInfo} from '../../../web/js/metadata/DocInfo';
+import {WhatsNewComponent} from './WhatsNewComponent';
+import {SyncBar, SyncBarProgress} from '../../../web/js/ui/sync_bar/SyncBar';
+import {IEventDispatcher, SimpleReactor} from '../../../web/js/reactor/SimpleReactor';
+import {DocRepoAnkiSyncController} from '../../../web/js/controller/DocRepoAnkiSyncController';
+import {Tooltip, UncontrolledTooltip} from 'reactstrap';
 
 const log = Logger.create();
 
@@ -43,6 +48,8 @@ export default class App extends React.Component<AppProps, AppState> {
 
     private readonly filteredTags = new FilteredTags();
 
+    private readonly syncBarProgress: IEventDispatcher<SyncBarProgress> = new SimpleReactor();
+
     constructor(props: AppProps, context: any) {
         super(props, context);
 
@@ -54,11 +61,15 @@ export default class App extends React.Component<AppProps, AppState> {
         this.onDocDeleted = this.onDocDeleted.bind(this);
         this.onDocSetTitle = this.onDocSetTitle.bind(this);
         this.onSelectedColumns = this.onSelectedColumns.bind(this);
+        this.onFilterByTitle = this.onFilterByTitle.bind(this);
 
         this.state = {
             data: [],
             columns: new TableColumns()
         };
+
+        new DocRepoAnkiSyncController(this.persistenceLayer, this.syncBarProgress)
+            .start();
 
         (async () => {
 
@@ -91,6 +102,9 @@ export default class App extends React.Component<AppProps, AppState> {
 
             <div id="doc-repository">
 
+                <WhatsNewComponent/>
+
+                <SyncBar progress={this.syncBarProgress}/>
 
                 <header>
 
@@ -145,7 +159,7 @@ export default class App extends React.Component<AppProps, AppState> {
                                 <input id="filter_title"
                                        type="text"
                                        placeholder="Filter by title"
-                                       onChange={() => this.refresh()}/>
+                                       onChange={() => this.onFilterByTitle()}/>
                             </div>
 
                             <div className="p-1">
@@ -172,6 +186,24 @@ export default class App extends React.Component<AppProps, AppState> {
                             {
                                 Header: 'Title',
                                 accessor: 'title',
+                                Cell: (row: any) => {
+                                    const id = 'doc-repo-row-title' + row.index;
+                                    return (
+                                        <div id={id}>
+
+                                            <div>{row.value}</div>
+
+                                            <UncontrolledTooltip style={{maxWidth: '1000px'}}
+                                                                 placement="bottom"
+                                                                 delay={{show: 750, hide: 0}}
+                                                                 target={id}>
+                                                {row.value}
+                                            </UncontrolledTooltip>
+
+                                        </div>
+
+                                    );
+                                }
 
                             },
                             {
@@ -495,6 +527,15 @@ export default class App extends React.Component<AppProps, AppState> {
         this.refresh();
     }
 
+
+    private onFilterByTitle() {
+
+        RendererAnalytics.event({category: 'user', action: 'filter-by-title'});
+
+        this.refresh();
+
+    }
+
     private refreshState(repoDocs: RepoDocInfo[]) {
 
         const state: AppState = Object.assign({}, this.state);
@@ -691,7 +732,10 @@ export default class App extends React.Component<AppProps, AppState> {
         const nrDocs = Object.keys(repoDocs).length;
 
         RendererAnalytics.set({'nrDocs': nrDocs});
-        RendererAnalytics.event({category: 'document-repository', action: 'docs-loaded', value: nrDocs});
+
+        RendererAnalytics.event({category: 'document-repository', action: 'docs-loaded', label: 'docs', value: nrDocs});
+        RendererAnalytics.event({category: 'document-repository', action: 'docs-loaded-' + nrDocs});
+
         RendererAnalytics.event({category: 'app', action: 'version-' + Version.get()});
 
     }

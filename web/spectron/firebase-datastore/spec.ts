@@ -6,12 +6,12 @@ import {PolarDataDir} from '../../js/test/PolarDataDir';
 // we can change the polar data dir with the following
 // PolarDataDir.useFreshDirectory('.polar-persistent-error-logger');
 
-describe('Firebase Datastore', function() {
+xdescribe('Firebase Datastore', function() {
 
     Spectron.setup(__dirname);
     this.timeout(10000);
 
-    it('basic tests', async function() {
+    xit('basic tests', async function() {
 
         await SpectronSpec.create(this.app).waitFor(true);
 

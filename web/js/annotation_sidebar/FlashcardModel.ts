@@ -7,6 +7,7 @@ export class FlashcardModel extends DocMetaModel {
 
     public registerListener(docMeta: DocMeta, annotationEventListener: AnnotationEventListener) {
         PageMetas.createModel(docMeta, "flashcards", annotationEventListener);
+        return annotationEventListener;
     }
 
 }

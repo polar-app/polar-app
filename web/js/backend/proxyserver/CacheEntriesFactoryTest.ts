@@ -9,19 +9,19 @@ import {CapturedPHZWriter} from '../../capture/CapturedPHZWriter';
 import {Dictionaries} from '../../util/Dictionaries';
 import {FilePaths} from '../../util/FilePaths';
 
-TestingTime.freeze();
-
 const tmpdir = os.tmpdir();
 
 describe('CacheEntriesFactory', function() {
 
     describe('Load CHTML', function() {
 
-        let path = FilePaths.tmpfile("test-load.chtml");
+        const path = FilePaths.tmpfile("test-load.chtml");
 
         beforeEach(function(done) {
 
-            let data = {
+            TestingTime.freeze();
+
+            const data = {
                 "href": "https://jakearchibald.com/2016/streams-ftw/",
                 "mutations": {
                     "baseAdded": true,

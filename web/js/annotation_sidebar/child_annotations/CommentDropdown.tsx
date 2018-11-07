@@ -3,6 +3,7 @@ import {Dropdown, DropdownItem, DropdownMenu, DropdownToggle, Tooltip} from 'rea
 import {Logger} from '../../logger/Logger';
 import {IStyleMap} from '../../react/IStyleMap';
 import {DocAnnotation} from '../DocAnnotation';
+import {ConfirmPopover} from '../../ui/confirm/ConfirmPopover';
 
 const log = Logger.create();
 
@@ -26,6 +27,7 @@ export class CommentDropdown extends React.Component<IProps, IState> {
         this.toggle = this.toggle.bind(this);
         this.select = this.select.bind(this);
         this.onDelete = this.onDelete.bind(this);
+        this.onDeleteSelected = this.onDeleteSelected.bind(this);
 
         this.state = {
             open: this.open,
@@ -36,6 +38,8 @@ export class CommentDropdown extends React.Component<IProps, IState> {
 
     public render() {
 
+        const toggleID = this.props.id + '-dropdown-toggle';
+
         return (
 
             <div className="text-right">
@@ -43,7 +47,7 @@ export class CommentDropdown extends React.Component<IProps, IState> {
                 <Dropdown id={this.props.id} isOpen={this.state.open} toggle={this.toggle}>
 
                     <DropdownToggle color="link" className="doc-dropdown-button btn text-muted pl-1 pr-1"
-                                    id={this.props.id + '-dropdown-toggle'}>
+                                    id={toggleID}>
 
                         <i className="fas fa-ellipsis-h"></i>
 
@@ -53,7 +57,7 @@ export class CommentDropdown extends React.Component<IProps, IState> {
 
                         {/*<DropdownItem divider />*/}
 
-                        <DropdownItem onClick={() => this.onDelete()}>
+                        <DropdownItem className="text-danger" onClick={() => this.onDeleteSelected()}>
                             Delete
                         </DropdownItem>
 
@@ -62,25 +66,30 @@ export class CommentDropdown extends React.Component<IProps, IState> {
 
                 </Dropdown>
 
+                <ConfirmPopover open={this.state.selected === 'delete'}
+                                target={toggleID}
+                                title="Are you sure you want to delete this comment? "
+                                onCancel={() => this.select('none')}
+                                onConfirm={() => this.onDelete()}/>
+
             </div>
 
         );
 
     }
 
-    private onDelete() {
-        this.select('none');
-        this.props.onDelete(this.props.comment);
+    private onDeleteSelected() {
+        this.select('delete');
     }
 
+    private onDelete() {
+        this.props.onDelete(this.props.comment);
+        this.select('none');
+    }
 
     private toggle() {
 
-        if (this.selected !== 'none') {
-            this.open = false;
-        } else {
-            this.open = ! this.state.open;
-        }
+        this.open = ! this.state.open;
 
         this.refresh();
 

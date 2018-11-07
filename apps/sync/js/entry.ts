@@ -8,8 +8,8 @@ async function start() {
 
     await Logging.init();
 
-    let app = new SyncApp();
-    await app.start()
+    const app = new SyncApp();
+    await app.start();
 
 }
 

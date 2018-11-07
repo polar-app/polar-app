@@ -12,6 +12,7 @@ import {BrowserWindowRegistry} from '../../electron/framework/BrowserWindowRegis
 import {Menus} from './Menus';
 import {isPresent} from '../../Preconditions';
 import {Directories} from '../../datastore/Directories';
+import {Messenger} from '../../electron/messenger/Messenger';
 
 const log = Logger.create();
 
@@ -83,7 +84,7 @@ export class MainAppMenu {
 
     private createMenuTemplate(): any {
 
-        let menuTemplate: any[] = [
+        const menuTemplate: any[] = [
             this.createFileMenuTemplate(),
             this.createEditMenuTemplate(),
             // this.createAnnotateMenuTemplate(),
@@ -94,7 +95,7 @@ export class MainAppMenu {
         ];
 
         if (Platforms.get() === Platform.MACOS) {
-            menuTemplate.unshift(this.createMacOSMenuTemplate())
+            menuTemplate.unshift(this.createMacOSMenuTemplate());
         }
 
         return menuTemplate;
@@ -187,7 +188,7 @@ export class MainAppMenu {
                 },
                 {
                     label: 'Capture Web Page',
-                    accelerator: 'CommandOrControl+Shift+W',
+                    accelerator: 'CommandOrControl+N',
                     click: () => {
                         this.mainAppController.cmdCaptureWebPageWithBrowser()
                             .catch((err: Error) => log.error("Could not capture page: ", err));
@@ -353,7 +354,7 @@ export class MainAppMenu {
                 { role: 'minimize' },
                 { role: 'close' },
             ]
-        }
+        };
     }
 
     private createToolsMenuTemplate() {
@@ -364,6 +365,17 @@ export class MainAppMenu {
                     label: 'Document Repository',
                     click: () => Promises.executeLogged(AppLauncher.launchRepositoryApp)
                 },
+                {
+                    label: 'Sync Flashcards to Anki',
+                    click: () => {
+                        Messenger.postMessage( {
+                           message: {
+                               type: "start-anki-sync"
+                           }
+                        }).catch(err => log.error("Could not post message", err));
+                    }
+                },
+                {type: 'separator'},
                 {
                     label: 'Toggle Developer Tools',
                     click: this.mainAppController.cmdToggleDevTools

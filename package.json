@@ -1,6 +1,6 @@
 {
   "name": "polar-bookshelf",
-  "version": "1.0.9",
+  "version": "1.0.11",
   "description": "Polar Bookshelf",
   "main": "main.js",
   "scripts": {
@@ -18,9 +18,12 @@
     "dist-win": "npm run-script compile && npm run-script publish-win",
     "compile": "tsc",
     "compile-watch": "tsc --watch",
-    "test": "mocha-parallel-tests --timeout 10000 --max-parallel=1 --exit --recursive web/js/**/*Test.js",
-    "e2e": "mocha-parallel-tests --timeout 10000 --max-parallel=1 --exit --recursive  web/spectron/**/spec.js",
-    "start-with-console": "./node_modules/.bin/electron --enable-remote-debugging --interactive --enable-console-logging ."
+    "test": "find web/js -name '*Test.js' | xargs mocha-parallel-tests --timeout 10000 --max-parallel=1 --exit",
+    "e2e": "find web/spectron -name 'spec.js' | xargs mocha-parallel-tests --timeout 10000 --max-parallel=1 --exit",
+    "e2e-mocha": "npx mocha --exit --log-timer-events --recursive 'web/spectron/**/spec.js'",
+    "test-mocha": "npx mocha --exit --log-timer-events --recursive 'web/js/**/*Test.js'",
+    "start-with-console": "./node_modules/.bin/electron --enable-remote-debugging --interactive --enable-console-logging .",
+    "postinstall": "opencollective-postinstall"
   },
   "repository": "https://github.com/burtonator/polar-bookshelf",
   "keywords": [
@@ -58,13 +61,13 @@
     "chai": "^4.1.2",
     "chai-diff": "^1.0.1",
     "dtsmake": "0.0.10",
-    "electron": "^3.0.4",
-    "electron-builder": "^20.28.4",
+    "electron": "^3.0.8",
+    "electron-builder": "^20.31.2",
     "electron-mocha": "^6.0.4",
     "jsdom": "^11.12.0",
     "mocha": "^5.2.0",
     "mocha-isolation": "^0.1.5",
-    "mocha-parallel-tests": "^2.0.4",
+    "mocha-parallel-tests": "^2.0.6-0",
     "recursive-readdir": "^2.2.2",
     "spectron": "github:dsabanin/spectron",
     "summernote-typescript": "^0.8.9",
@@ -79,6 +82,7 @@
     "@sentry/electron": "^0.12.1",
     "@types/bootstrap": "^4.1.1",
     "@types/express": "^4.16.0",
+    "@types/js-cookie": "^2.2.0",
     "@types/jsdom": "^11.0.6",
     "@types/lodash": "^4.14.116",
     "@types/node-fetch": "^2.1.2",
@@ -135,6 +139,7 @@
     "jquery-ui": "^1.12.1",
     "jquery-ui-bundle": "^1.12.1-migrate",
     "jquery.flowchart": "^1.1.0",
+    "js-cookie": "^2.2.0",
     "js-sha3": "^0.8.0",
     "jszip": "^3.1.5",
     "loader": "file:./web/loader",
@@ -144,6 +149,7 @@
     "namor": "^1.0.1",
     "node-fetch": "^2.2.0",
     "npm": "^6.4.1",
+    "opencollective-postinstall": "^2.0.1",
     "pdfjs-dist": "^2.0.489",
     "popper.js": "^1.14.4",
     "prettify": "^0.1.7",
@@ -180,8 +186,12 @@
     "typed-web-workers": "^2.1.1",
     "typemoq": "^2.1.0",
     "underscore": "^1.9.1",
-    "universal-analytics": "^0.4.17",
+    "universal-analytics": "^0.4.20",
     "uuid": "^3.3.2",
     "ws": "^6.0.0"
+  },
+  "collective": {
+    "type": "opencollective",
+    "url": "https://opencollective.com/polar-bookshelf"
   }
 }

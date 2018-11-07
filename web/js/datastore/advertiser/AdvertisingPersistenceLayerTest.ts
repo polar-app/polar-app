@@ -7,11 +7,11 @@ import {assertJSON} from '../../test/Assertions';
 import {MockAdvertisingPersistenceLayer} from './MockAdvertisingPersistenceLayer';
 import {TestingTime} from '../../test/TestingTime';
 
-TestingTime.freeze();
-
 describe('AdvertisingPersistenceLayer', function() {
 
     it("addEventListenerForDoc", async function() {
+
+        TestingTime.freeze();
 
         const defaultPersistenceLayer
             = new DefaultPersistenceLayer(new MemoryDatastore());
@@ -33,6 +33,8 @@ describe('AdvertisingPersistenceLayer', function() {
         await advertisingPersistenceLayer.syncDocMeta(docMeta0);
         await advertisingPersistenceLayer.syncDocMeta(docMeta1);
 
+        advertised[0].uuid = '...';
+
         const expected: IDocInfo[] = [
             <IDocInfo> {
                 "progress": 100,
@@ -43,7 +45,15 @@ describe('AdvertisingPersistenceLayer', function() {
                 "tags": {},
                 "nrPages": 1,
                 "fingerprint": "0x001",
-                "added": "2012-03-02T11:38:49.321Z"
+                "added": "2012-03-02T11:38:49.321Z",
+                "lastUpdated": "2012-03-02T11:38:49.321Z",
+                "nrComments": 0,
+                "nrNotes": 0,
+                "nrFlashcards": 0,
+                "nrTextHighlights": 0,
+                "nrAreaHighlights": 0,
+                "nrAnnotations": 0,
+                "uuid": "..."
             }
         ];
 

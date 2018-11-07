@@ -42,6 +42,8 @@ export class AnnotationDropdown extends React.Component<IProps, IState> {
 
     public render() {
 
+        const toggleID = this.props.id + '-dropdown-toggle';
+
         return (
 
             <div className="text-right">
@@ -49,7 +51,7 @@ export class AnnotationDropdown extends React.Component<IProps, IState> {
                 <Dropdown id={this.props.id} isOpen={this.state.open} toggle={this.toggle}>
 
                     <DropdownToggle color="link" className="doc-dropdown-button btn text-muted pl-1 pr-1"
-                                    id={this.props.id + '-dropdown-toggle'}>
+                                    id={toggleID}>
 
                         <i className="fas fa-ellipsis-h"></i>
 
@@ -71,7 +73,7 @@ export class AnnotationDropdown extends React.Component<IProps, IState> {
 
                         <DropdownItem divider />
 
-                        <DropdownItem onClick={() => this.onDelete()}>
+                        <DropdownItem className="text-danger" onClick={() => this.onDeleteSelected()}>
                             Delete
                         </DropdownItem>
 
@@ -80,10 +82,21 @@ export class AnnotationDropdown extends React.Component<IProps, IState> {
 
                 </Dropdown>
 
+                <ConfirmPopover open={this.state.selected === 'delete'}
+                                target={toggleID}
+                                title="Are you sure you want to delete this annotation? "
+                                subtitle="This will also delete all associated comments and flashcards."
+                                onCancel={() => this.select('none')}
+                                onConfirm={() => this.onDelete()}/>
+
             </div>
 
         );
 
+    }
+
+    private onDeleteSelected() {
+        this.select('delete');
     }
 
     private onCreateComment() {
@@ -106,14 +119,9 @@ export class AnnotationDropdown extends React.Component<IProps, IState> {
         this.props.onDelete(this.props.annotation);
     }
 
-
     private toggle() {
 
-        if (this.selected !== 'none') {
-            this.open = false;
-        } else {
-            this.open = ! this.state.open;
-        }
+        this.open = ! this.state.open;
 
         this.refresh();
 

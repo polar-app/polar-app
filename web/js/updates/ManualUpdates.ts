@@ -1,6 +1,6 @@
 import {dialog} from 'electron';
 import {autoUpdater} from 'electron-updater';
-import {ProgressInfo} from "builder-util-runtime"
+import {ProgressInfo} from "builder-util-runtime";
 import {Logger} from '../logger/Logger';
 
 import process from 'process';
@@ -15,7 +15,7 @@ const log = Logger.create();
 autoUpdater.autoDownload = false;
 
 // this is so that we can
-autoUpdater.allowPrerelease = process.env['POLAR_AUTO_UPDATER_ALLOW_PRERELEASE'] === 'true';
+autoUpdater.allowPrerelease = process.env.POLAR_AUTO_UPDATER_ALLOW_PRERELEASE === 'true';
 
 log.info("Allowing pre-releases for auto-updates: " + autoUpdater.allowPrerelease);
 
@@ -26,7 +26,7 @@ export class ManualUpdates {
         updater = menuItem;
         updater.enabled = false;
         autoUpdater.checkForUpdates()
-            .catch(err => log.error("Error handling updates: " + err ))
+            .catch(err => log.error("Error handling updates: " + err ));
     }
 
 }

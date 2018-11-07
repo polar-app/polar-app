@@ -1,5 +1,37 @@
 
+# 1.0.12
+
+- Upgrade to Electron 3.0.8
+
+- Fixed bug with Electron generating an error window on exit due to a conversion 
+  of the wrong type to an integer.  This was/is an Electron bug.
+
+- Feature: tooltip on hover of the doc repo table title.
+
+- Fixed analytics around number of documents in the repository
+
+- Feature: The "Delete" text is now danger red.  
+
+- Feature: Implemented a confirm prompt when deleteing flashcards, comments, and
+  annotations.
+ 
+- Feature: Implemented Cancel when creating flashcards and comments 
+
+- Feature: Reworked anki sync to run from the doc repository.  
+
+- Feature: Renamed "Copy URL" to "Copy Original URL"
+
+# 1.0.11
+
+- release to fix MacOS certificate bugs
+
 # 1.0.10
+
+- banner message about opencollective donations
+
+- Change capture key binding to CommandOrControl+N (new).  The other key binding 
+  conflicted with window management in Chrome and we might want to use those
+  key bindings in the future.
 
 - STASH files can be added directly as a backend file just like images and video
   which means that they could work with the future firebase store.  

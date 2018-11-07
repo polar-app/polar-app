@@ -9,7 +9,10 @@ import {DocInfos} from '../metadata/DocInfos';
 
 const log = Logger.create();
 
-export class SyncController {
+/**
+ * @Deprecated migrating to DocRepoAnkiSyncController
+ */
+export class AnkiSyncController {
 
     private readonly model: Model;
 
@@ -17,19 +20,19 @@ export class SyncController {
         this.model = model;
     }
 
-    start() {
+    public start() {
 
         window.addEventListener("message", event => this.onMessageReceived(event), false);
 
     }
 
-    onMessageReceived(event: any) {
+    private onMessageReceived(event: any) {
 
         log.info("Received message: ", event);
 
-        let triggerEvent = event.data;
+        const triggerEvent = event.data;
 
-        switch(event.data.type) {
+        switch (event.data.type) {
 
             case "start-sync":
                 this.onStartSync(triggerEvent);
@@ -39,7 +42,7 @@ export class SyncController {
 
     }
 
-    async onStartSync(triggerEvent: TriggerEvent) {
+    private async onStartSync(triggerEvent: TriggerEvent) {
 
         log.info("Starting sync...");
 

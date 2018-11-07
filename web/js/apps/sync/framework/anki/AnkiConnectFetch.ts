@@ -11,7 +11,7 @@ export class AnkiConnectFetch {
 
     // TODO: since the response is wrapped in a closure, we can handle errors
     // properly here.
-    static async fetch<T>(init: RequestInit): Promise<any> {
+    public static async fetch<T>(init: RequestInit): Promise<any> {
 
         try {
 
@@ -22,8 +22,8 @@ export class AnkiConnectFetch {
                 'Content-Type': 'application/json'
             };
 
-            let response = await fetch('http://127.0.0.1:8765', init);
-            let result: AnkiConnectResponse = await response.json();
+            const response = await fetch('http://127.0.0.1:8765', init);
+            const result: AnkiConnectResponse = await response.json();
 
             if (result.error) {
                 throw new Error(result.error);
@@ -31,7 +31,7 @@ export class AnkiConnectFetch {
 
             return result.result;
         } catch (e) {
-            log.error(e);
+            log.warn("Anki connect fetch failed: ", e);
             throw e;
         }
 

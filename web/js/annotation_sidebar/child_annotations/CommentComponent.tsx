@@ -3,6 +3,9 @@ import Moment from 'react-moment';
 import {DocAnnotation} from '../DocAnnotation';
 import {AnnotationDropdown} from '../AnnotationDropdown';
 import {CommentDropdown} from './CommentDropdown';
+import {Logger} from '../../logger/Logger';
+
+const log = Logger.create();
 
 /**
  * A generic wrapper that determines which sub-component to render.
@@ -49,7 +52,7 @@ export class CommentComponent extends React.Component<IProps, IState> {
 
                             <CommentDropdown id={'comment-dropdown-' + comment.id}
                                              comment={comment}
-                                             onDelete={(comment) => this.onDelete(comment)}/>
+                                             onDelete={() => this.onDelete(comment)}/>
 
                         </div>
 
@@ -63,6 +66,7 @@ export class CommentComponent extends React.Component<IProps, IState> {
     }
 
     private onDelete(comment: DocAnnotation) {
+        log.info("Comment deleted: ", comment);
         delete comment.pageMeta.comments[comment.id];
     }
 

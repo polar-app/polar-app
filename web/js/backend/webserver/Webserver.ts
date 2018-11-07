@@ -6,9 +6,11 @@ import {Logger} from '../../logger/Logger';
 import {Preconditions} from '../../Preconditions';
 import {Paths} from '../../util/Paths';
 
-import express from 'express';
+import express, {Express} from 'express';
 import serveStatic from 'serve-static';
 import {ResourceRegistry} from './ResourceRegistry';
+import * as http from "http";
+import * as https from "https";
 
 const log = Logger.create();
 
@@ -18,8 +20,8 @@ export class Webserver {
     private readonly fileRegistry: FileRegistry;
     private readonly resourceRegistry: ResourceRegistry;
 
-    private app: any;
-    private server: any;
+    private app?: Express;
+    private server?: http.Server | https.Server;
 
     constructor(webserverConfig: WebserverConfig,
                 fileRegistry: FileRegistry,
@@ -38,19 +40,40 @@ export class Webserver {
         this.app = express();
 
         this.app.use(serveStatic(this.webserverConfig.dir));
-        this.server = this.app.listen(this.webserverConfig.port, "127.0.0.1");
 
         this.registerFilesHandler();
         this.registerResourcesHandler();
 
-        log.info(`Webserver up and running on port ${this.webserverConfig.port}`);
+        if (this.webserverConfig.useSSL) {
+
+            const sslConfig = {
+                key: this.webserverConfig.ssl!.key,
+                cert: this.webserverConfig.ssl!.cert
+            };
+
+            this.server =
+                https.createServer(sslConfig, this.app)
+                    .listen(this.webserverConfig.port, this.webserverConfig.host);
+
+        } else {
+
+            this.server =
+                http.createServer(this.app)
+                    .listen(this.webserverConfig.port, this.webserverConfig.host);
+
+        }
+
+        // log.info(`Webserver up and running on port ${this.webserverConfig.port} with config: `, this.webserverConfig);
 
     }
 
+    public stop() {
+        this.server!.close();
+    }
 
     private registerFilesHandler() {
 
-        this.app.get(/files\/.*/, (req: express.Request, res: express.Response) => {
+        this.app!.get(/files\/.*/, (req: express.Request, res: express.Response) => {
 
             try {
 
@@ -86,9 +109,10 @@ export class Webserver {
     }
 
 
+
     private registerResourcesHandler() {
 
-        this.app.get(/.*/, (req: express.Request, res: express.Response) => {
+        this.app!.get(/.*/, (req: express.Request, res: express.Response) => {
 
             try {
 
@@ -111,10 +135,6 @@ export class Webserver {
 
         });
 
-    }
-
-    public stop() {
-        this.server.close();
     }
 
 }

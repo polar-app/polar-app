@@ -11,19 +11,21 @@ const log = Logger.create();
 
 const TIMEOUT = 10000;
 
-// path: '/Applications/MyApp.app/Contents/MacOS/MyApp'
-
 // String path to the Electron application executable to launch. Note: If you
 // want to invoke electron directly with your app's main script then you should
 // specify path as electron via electron-prebuilt and specify your app's main
 // script path as the first argument in the args array.
 
-// TODO: this is working but it doesn't seem to find my main.js file that I want
-// to use to test that it installed properly.
+// TODO: right now this is a really bad idea to enable.  For starters it doesn't
+// actually work the way I would expect and we're going to need a better way
+// to do testing of pre-installed apps.  Additionally, the log message is hidden
+// so there's no way to know what is actually going on under the surface.
+//
+// const ELECTRON_PATH: any =
+//     Optional.of(<any> process.env.POLAR_ELECTRON_PATH)
+//     .getOrElse(electronPath);
 
-const ELECTRON_PATH: any = process.env['POLAR_ELECTRON_PATH'] || electronPath;
-
-log.info("Using ELECTRON_PATH: ", ELECTRON_PATH);
+const ELECTRON_PATH: any = electronPath;
 
 /**
  * Basic spectron startup and teardown for our usage.  We also start an
@@ -36,7 +38,7 @@ export class Spectron {
     /**
      * The directory to run the specs from. Usually __dirname in your spec.
      */
-    static setup(dir: string, ...args: any[]) {
+    public static setup(dir: string, ...args: any[]) {
 
         log.info("Configuring spectron...");
 
@@ -70,7 +72,7 @@ export class Spectron {
             });
 
             log.info("Starting app...");
-            let app = await this.app.start();
+            const app = await this.app.start();
             log.info("Starting app...done");
 
             spectronOutputMonitorService = new SpectronOutputMonitorService(app);
@@ -80,7 +82,7 @@ export class Spectron {
 
         });
 
-        afterEach(function () {
+        afterEach(function() {
             //
             log.info("Going to shutdown now... ");
 

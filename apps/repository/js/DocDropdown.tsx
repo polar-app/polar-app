@@ -72,12 +72,14 @@ export class DocDropdown extends React.Component<IProps, IState> {
 
                         <DropdownItem disabled={! this.props.repoDocInfo.url}
                                       onClick={() => this.onCopyURL(this.props.repoDocInfo.url!)}>
-                            Copy URL
+                            Copy Original URL
                         </DropdownItem>
+
+                        {/*TODO: maybe load original URL too?*/}
 
                         <DropdownItem divider />
 
-                        <DropdownItem onClick={() => this.select('delete')}>
+                        <DropdownItem className="text-danger" onClick={() => this.select('delete')}>
                             Delete
                         </DropdownItem>
 
@@ -109,7 +111,7 @@ export class DocDropdown extends React.Component<IProps, IState> {
         const nav = window.navigator as any;
         const clipboard = nav.clipboard;
 
-        if(clipboard) {
+        if (clipboard) {
             clipboard.writeText(url);
         } else {
             log.warn("No clipboard with which to copy");

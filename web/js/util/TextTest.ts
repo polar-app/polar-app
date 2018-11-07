@@ -1,5 +1,4 @@
 import {assert} from 'chai';
-const fs = require('fs');
 import {Text} from "./Text";
 
 describe('Text', function() {

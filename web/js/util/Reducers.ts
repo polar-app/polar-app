@@ -1,7 +1,7 @@
 export class Reducers {
 
     public static SUM =
-       (accumulator: number, currentValue: number) => accumulator + currentValue;
+       (accumulator: number, currentValue: number) => accumulator + currentValue
 
     /**
      * Return the first entry in the reducer.  A default value to reduce can be
@@ -11,7 +11,7 @@ export class Reducers {
     public static FIRST =
         <T> (previousValue: T, currentValue: T, currentIndex: number, array: T[]) => {
 
-            if(currentIndex == 0) {
+            if (currentIndex === 0) {
                 return currentValue;
             } else {
                 return previousValue;
@@ -20,6 +20,6 @@ export class Reducers {
         }
 
     public static LAST =
-        <T> (previousValue: T, currentValue: T) => currentValue;
+        <T> (previousValue: T, currentValue: T) => currentValue
 
 }

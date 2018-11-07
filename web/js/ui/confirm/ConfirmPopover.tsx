@@ -78,7 +78,7 @@ interface IProps {
     open: boolean;
     target: string;
     title: string;
-    subtitle: string;
+    subtitle?: string;
     placement?: Popper.Placement;
     onCancel: () => void;
     onConfirm: () => void;

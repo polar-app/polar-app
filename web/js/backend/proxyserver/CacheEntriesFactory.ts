@@ -51,7 +51,7 @@ export class CacheEntriesFactory {
      * @param path
      * @return Promise<CacheEntriesHolder>
      */
-    static async createFromPHZ(path: string) {
+    public static async createFromPHZ(path: string) {
 
         // load the .json data so we have the URL.
 

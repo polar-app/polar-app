@@ -11,6 +11,7 @@ import {HighlightCreatedEvent} from '../../comments/react/HighlightCreatedEvent'
 import {AnnotationBars} from './AnnotationBars';
 import {TypedMessage} from '../../util/TypedMessage';
 import {PopupStateEvent} from '../popup/PopupStateEvent';
+import {RendererAnalytics} from '../../ga/RendererAnalytics';
 
 const log = Logger.create();
 
@@ -107,6 +108,8 @@ export class AnnotationBarService {
             };
 
         const onHighlighted: OnHighlightedCallback = (highlightCreatedEvent: HighlightCreatedEvent) => {
+
+            RendererAnalytics.event({category: 'annotations', action: 'text-highlight-created-via-annotation-bar'});
 
             // TODO: this is just a hack for now.  We should send a dedicated object.
             delete (<any> highlightCreatedEvent).activeSelection;

@@ -72,8 +72,8 @@ export interface IProps {
 
 interface Message {
 
-    id: string,
-    element: JSX.Element
+    id: string;
+    element: JSX.Element;
 
 }
 
@@ -103,7 +103,47 @@ const MESSAGES: Message[] = [
     {
         id: 'roadmap',
         element: <div>Interested in the future of Polar? <a href="https://github.com/burtonator/polar-bookshelf/blob/master/docs/ROADMAP.md">Check out our roadmap!</a></div>
+    },
+
+    {
+        id: 'roadmap',
+        element: <div>Interested in the future of Polar? <a href="https://github.com/burtonator/polar-bookshelf/blob/master/docs/ROADMAP.md">Check out our roadmap!</a></div>
+    },
+    {
+        id: 'opencollective-donate',
+        element: <div>Polar needs your help to continue future development! <a href="https://opencollective.com/polar-bookshelf/donate">Donate to Support Polar</a></div>
     }
+    // {
+    //     id: 'opencollective-donate-button',
+    //     element: <div>
+    //
+    //         <div>
+    //             <div style={{width: '100%', paddingRight: '40px'}}>
+    //
+    //                 <div className="flexbar ">
+    //
+    //                     <div style={{alignSelf: 'center'}}>
+    //                         Polar needs your help to continue future development!
+    //                     </div>
+    //
+    //                     <div className="flexbar-right">
+    //
+    //                         <a href="https://opencollective.com/polar-bookshelf/donate" target="_blank">
+    //                             <img src="https://opencollective.com/polar-bookshelf/donate/button@2x.png?color=blue" width="250" />
+    //                         </a>
+    //
+    //                     </div>
+    //
+    //
+    //                 </div>
+    //
+    //
+    //             </div>
+    //
+    //         </div>
+    //
+    //     </div>
+    // }
 
 ];
 

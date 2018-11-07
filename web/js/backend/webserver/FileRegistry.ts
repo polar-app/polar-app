@@ -47,7 +47,15 @@ export class FileRegistry {
 
         log.info(`Registered new file at: ${reqPath} to ${filename}`);
 
-        return { key, filename, url: `http://127.0.0.1:${this.webserverConfig.port}${reqPath}` };
+        const scheme = this.webserverConfig.useSSL ? 'https' : 'http';
+
+        const url = `${scheme}://${this.webserverConfig.host}:${this.webserverConfig.port}${reqPath}`;
+
+        const result = {key, filename, url};
+
+        log.debug("Using file registry entry: ", result);
+
+        return result;
 
     }
 

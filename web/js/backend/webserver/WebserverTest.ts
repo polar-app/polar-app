@@ -8,43 +8,65 @@ import {assertJSON} from '../../test/Assertions';
 import {Http} from '../../util/Http';
 import {assert} from 'chai';
 import {ResourceRegistry} from './ResourceRegistry';
-
+import {WebserverCerts} from './WebserverCerts';
 
 describe('Webserver', function() {
 
     describe('create', function() {
 
-        it("basic", function () {
+        it("basic SSL", async function() {
 
-            let webserverConfig = new WebserverConfig("..", 8085);
-            let fileRegistry = new FileRegistry(webserverConfig);
+            const webserverConfig = WebserverConfig.create(
+                {
+                    dir: "..",
+                    port: 8085,
+                    host: "127.0.0.1",
+                    useSSL: true,
+                    ssl: {
+                        cert: WebserverCerts.CERT,
+                        key: WebserverCerts.KEY,
+                    }
+                });
+            const fileRegistry = new FileRegistry(webserverConfig);
 
-            let webserver = new Webserver(webserverConfig, fileRegistry);
+            const webserver = new Webserver(webserverConfig, fileRegistry);
             webserver.start();
             webserver.stop();
 
         });
 
-        it("serving files", async function () {
 
-            let webserverConfig = new WebserverConfig("..", 8095);
-            let fileRegistry = new FileRegistry(webserverConfig);
-            let webserver = new Webserver(webserverConfig, fileRegistry);
+        it("basic", function() {
+
+            const webserverConfig = new WebserverConfig("..", 8085);
+            const fileRegistry = new FileRegistry(webserverConfig);
+
+            const webserver = new Webserver(webserverConfig, fileRegistry);
+            webserver.start();
+            webserver.stop();
+
+        });
+
+        it("serving files", async function() {
+
+            const webserverConfig = new WebserverConfig("..", 8095);
+            const fileRegistry = new FileRegistry(webserverConfig);
+            const webserver = new Webserver(webserverConfig, fileRegistry);
 
             webserver.start();
 
-            let path = FilePaths.tmpfile('file-registry.html');
+            const path = FilePaths.tmpfile('file-registry.html');
             await Files.writeFileAsync(path, 'hello world');
 
-            let fileMeta = fileRegistry.register("0x000", path);
+            const fileMeta = fileRegistry.register("0x000", path);
 
             assert.ok(fileMeta.url !== undefined);
 
-            let buffer = await Files.readFileAsync(path);
+            const buffer = await Files.readFileAsync(path);
 
-            let hashcode = Hashcodes.create(buffer.toString('utf-8'));
+            const hashcode = Hashcodes.create(buffer.toString('utf-8'));
 
-            let expected = {
+            const expected = {
                 "key": "0x000",
                 "filename": path,
                 "url": "http://127.0.0.1:8095/files/0x000"
@@ -52,7 +74,7 @@ describe('Webserver', function() {
 
             assertJSON(fileMeta, expected);
 
-            let response = await Http.execute(fileMeta.url);
+            const response = await Http.execute(fileMeta.url);
 
             assertJSON(hashcode, Hashcodes.create(response.data.toString('utf8')));
 
@@ -60,12 +82,12 @@ describe('Webserver', function() {
 
         });
 
-        it("serving resources", async function () {
+        it("serving resources", async function() {
 
-            let webserverConfig = new WebserverConfig("..", 8095);
-            let fileRegistry = new FileRegistry(webserverConfig);
-            let resourceRegistry = new ResourceRegistry();
-            let webserver = new Webserver(webserverConfig, fileRegistry, resourceRegistry);
+            const webserverConfig = new WebserverConfig("..", 8095);
+            const fileRegistry = new FileRegistry(webserverConfig);
+            const resourceRegistry = new ResourceRegistry();
+            const webserver = new Webserver(webserverConfig, fileRegistry, resourceRegistry);
 
             webserver.start();
 
@@ -86,6 +108,9 @@ describe('Webserver', function() {
         });
 
     });
+
+
+
 
 });
 

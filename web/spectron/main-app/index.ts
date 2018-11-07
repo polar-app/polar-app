@@ -9,7 +9,6 @@ import {wait} from 'dom-testing-library';
 import {assert} from 'chai';
 import waitForExpect from 'wait-for-expect';
 import {Logger} from '../../js/logger/Logger';
-import process from "process";
 import {FilePaths} from '../../js/util/FilePaths';
 import {Files} from '../../js/util/Files';
 import {MainAppController} from '../../js/apps/main/MainAppController';

@@ -30,10 +30,10 @@ export class SpectronBrowserWindowOptions {
 
             show,
 
-
             webPreferences: {
                 webSecurity: false,
-                nodeIntegration: true
+                nodeIntegration: true,
+                partition: "persist:spectron"
             }
 
         };
