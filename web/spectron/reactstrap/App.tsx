@@ -25,52 +25,6 @@ import {SyncBar} from '../../js/ui/sync_bar/SyncBar';
 import {IStyleMap} from '../../js/react/IStyleMap';
 import {CloudSignup} from './CloudSignup';
 
-
-const Styles: IStyleMap = {
-
-    button: {
-        paddingTop: '4px',
-        color: 'red !important',
-        fontSize: '15px'
-
-        // minWidth: '350px',
-        // width: '350px'
-    },
-
-    icon: {
-        fontSize: '120px',
-        margin: '20px',
-        color: '007bff'
-        // minWidth: '350px',
-        // width: '350px'
-    },
-
-    overview: {
-        fontSize: '18px',
-        textAlign: 'justify',
-        margin: '25px'
-    },
-
-    features: {
-        marginLeft: '25px'
-    },
-
-    price: {
-        textAlign: 'center',
-    },
-
-    price_value: {
-        fontSize: '40px',
-        fontWeight: 'bold',
-        lineHeight: '1em',
-    },
-
-    price_overview: {
-        fontSize: '14px',
-    }
-
-};
-
 class App<P> extends React.Component<{}, IAppState> {
 
     constructor(props: P, context: any) {
