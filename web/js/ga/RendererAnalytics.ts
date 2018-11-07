@@ -11,6 +11,10 @@ export class RendererAnalytics {
 
     public static event(args: IEventArgs): void {
 
+        // TODO: refactor this to and overloaded method I think as if I miss
+        // one of the arguments like action and label but give category and
+        // value then we don't handle the method call properly.
+
         log.debug("Sending analytics event: ", args);
 
         if (args.label && args.value) {
@@ -24,7 +28,7 @@ export class RendererAnalytics {
     }
 
     public static pageview(path: string): void {
-        visitor.pageview(path).send()
+        visitor.pageview(path).send();
     }
 
     // public static modalview(name: string, trackerNames?: TrackerNames): void
@@ -35,7 +39,7 @@ export class RendererAnalytics {
 
     public static set(fieldsObject: IFieldsObject): void {
 
-        for (const key in Object.keys(fieldsObject)) {
+        for (const key of Object.keys(fieldsObject)) {
             const value = fieldsObject[key];
             visitor.set(key, value);
         }
