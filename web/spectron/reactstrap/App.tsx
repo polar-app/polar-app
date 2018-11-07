@@ -9,7 +9,7 @@ import {
     InputGroupAddon,
     InputGroupButtonDropdown,
     ListGroup,
-    ListGroupItem
+    ListGroupItem,
     Modal,
     ModalHeader,
     ModalBody,

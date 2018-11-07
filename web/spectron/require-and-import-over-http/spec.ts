@@ -6,15 +6,13 @@ import {PolarDataDir} from '../../js/test/PolarDataDir';
 // we can change the polar data dir with the following
 // PolarDataDir.useFreshDirectory('.polar-persistent-error-logger');
 
-xdescribe('TODO change this describe', function() {
+describe('Test loading from a HTTP URL for the entire app', function() {
 
     Spectron.setup(__dirname);
     this.timeout(10000);
 
-    xit('TODO change this test description', async function() {
-
+    it('Test HTTP webapps', async function() {
         await SpectronSpec.create(this.app).waitFor(true);
-
     });
 
 });

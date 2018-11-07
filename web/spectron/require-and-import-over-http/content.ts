@@ -1,5 +1,13 @@
-import {Foo} from './Foo';
+import {SpectronRenderer} from "../../js/test/SpectronRenderer";
 
-const foo = new Foo();
-console.log("Foo created");
+SpectronRenderer.run(async (state) => {
+
+    console.log("Running within SpectronRenderer now.");
+
+    history.pushState({}, "Home", "http://localapp.getpolarized.io/");
+
+    state.testResultWriter.write(document.location.href === "http://localapp.getpolarized.io/");
+
+});
+
 
