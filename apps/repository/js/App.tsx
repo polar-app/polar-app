@@ -34,7 +34,7 @@ import {WhatsNewComponent} from './WhatsNewComponent';
 import {SyncBar, SyncBarProgress} from '../../../web/js/ui/sync_bar/SyncBar';
 import {IEventDispatcher, SimpleReactor} from '../../../web/js/reactor/SimpleReactor';
 import {DocRepoAnkiSyncController} from '../../../web/js/controller/DocRepoAnkiSyncController';
-import {Tooltip, UncontrolledTooltip} from 'reactstrap';
+import {Tooltip, UncontrolledTooltip, Collapse} from 'reactstrap';
 
 const log = Logger.create();
 
@@ -193,12 +193,19 @@ export default class App extends React.Component<AppProps, AppState> {
 
                                             <div>{row.value}</div>
 
-                                            <UncontrolledTooltip style={{maxWidth: '1000px'}}
-                                                                 placement="bottom"
-                                                                 delay={{show: 750, hide: 0}}
-                                                                 target={id}>
-                                                {row.value}
-                                            </UncontrolledTooltip>
+                                            {/*TODO: this doesn't reliably work as*/}
+                                            {/*moving the mouse horizontally within*/}
+                                            {/*the target doesn't close the tooltip.*/}
+
+                                                {/*<UncontrolledTooltip style={{maxWidth: '1000px'}}*/}
+                                                                     {/*placement="bottom"*/}
+                                                                     {/*delay={{show: 750, hide: 0}}*/}
+                                                                     {/*target={id}>*/}
+                                                    {/*<Collapse timeout={{ enter: 0, exit: 0 }} >*/}
+                                                        {/*{row.value}*/}
+                                                    {/*</Collapse>*/}
+
+                                                {/*</UncontrolledTooltip>*/}
 
                                         </div>
 
