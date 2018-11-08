@@ -31,8 +31,12 @@ export class AppAnalytics {
 
     }
 
-    public set(key: string, value: number | string): Promise<IResponse> {
-        return this.analytics.set(key, value);
+    public set(key: string, value: number | string) {
+
+        // TODO: for soem reason this doesn't actually return a promise.
+        this.analytics.set(key, value);
+            // .catch( err => log.warn("Could not send tracking information: ", err));
+
     }
 
     public screen(screenName: string) {
@@ -53,11 +57,11 @@ export class AppAnalytics {
         const clientID = Hashcodes.createID(os.hostname());
 
         this.analytics.screen(appName, appVer, appID, appInstallerID, screenName, clientID)
-            .catch( err => log.error("Could not send tracking information: ", err));
+            .catch( err => log.warn("Could not send tracking information: ", err));
 
         // TODO: using pageview too as I don't think GA is using screens in our use case.
         this.analytics.pageview("localapp.getpolarized.io", screenName, screenName, clientID)
-            .catch( err => log.error("Could not send tracking information: ", err));
+            .catch( err => log.warn("Could not send tracking information: ", err));
 
         log.info(`Sent GA tracking info for screen ${screenName}`);
 

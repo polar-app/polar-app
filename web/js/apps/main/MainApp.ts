@@ -206,16 +206,9 @@ export class MainApp {
 
         const appAnalytics = GA.getAppAnalytics(userAgent);
 
-        Promise.all([
-
-            appAnalytics.set('version', Version.get())
-
-            // TODO: get the number of documents in the doc repo..
-
-        ]).catch((err: Error) => log.error("Unable to send analytics: ", err));
+        appAnalytics.set('version', Version.get());
 
     }
-
 
 }
 

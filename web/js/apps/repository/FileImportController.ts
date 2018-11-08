@@ -12,6 +12,7 @@ import {Optional} from "../../util/ts/Optional";
 import {DocLoader} from '../main/ipc/DocLoader';
 import {FilePaths} from "../../util/FilePaths";
 import {BrowserWindowRegistry} from '../../electron/framework/BrowserWindowRegistry';
+import {isPresent} from "../../Preconditions";
 
 const log = Logger.create();
 
@@ -48,7 +49,7 @@ export class FileImportController {
 
     private async onFileImportRequest(fileImportRequest: FileImportRequest) {
 
-        if (fileImportRequest.files.length === 0) {
+        if (! isPresent(fileImportRequest.files) || fileImportRequest.files.length === 0) {
             // do not attempt an import if no files are given.  This way the
             // progress bar doesn't flash \and then vanish again.
             return;

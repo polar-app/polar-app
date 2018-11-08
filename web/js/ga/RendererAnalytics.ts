@@ -17,12 +17,18 @@ export class RendererAnalytics {
 
         log.debug("Sending analytics event: ", args);
 
+        const callback = (err: Error) => {
+            // The send method take sa callback regarding errors and this allows
+            // us to log failure.
+            log.warn("Unable to track analytics: ", err);
+        };
+
         if (args.label && args.value) {
-            visitor.event(args.category, args.action, args.label, args.value).send();
+            visitor.event(args.category, args.action, args.label, args.value).send(callback);
         } else if (args.label) {
-            visitor.event(args.category, args.action, args.label).send();
+            visitor.event(args.category, args.action, args.label).send(callback);
         } else {
-            visitor.event(args.category, args.action).send();
+            visitor.event(args.category, args.action).send(callback);
         }
 
     }

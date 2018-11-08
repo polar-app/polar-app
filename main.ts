@@ -4,6 +4,7 @@ import {MainApp} from './web/js/apps/main/MainApp';
 import {Cmdline} from './web/js/electron/Cmdline';
 import {Logging} from './web/js/logger/Logging';
 import {Datastores} from './web/js/datastore/Datastores';
+import process from 'process';
 
 const hasSingleInstanceLock = app.requestSingleInstanceLock();
 
@@ -13,6 +14,9 @@ if (!hasSingleInstanceLock) {
 }
 
 async function launch() {
+
+    console.log("Running with app path: " + app.getAppPath());
+    console.log("Running with CWD: " + process.cwd());
 
     const log = Logger.create();
 

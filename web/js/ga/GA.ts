@@ -17,7 +17,7 @@ export class GA {
 
         Preconditions.assertNotNull(userAgent, "userAgent");
 
-        if(this.analytics === undefined) {
+        if (this.analytics === undefined) {
             this.analytics = new Analytics(TRACKING_ID, {userAgent});
         }
 
