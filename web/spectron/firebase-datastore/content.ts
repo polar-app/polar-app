@@ -110,7 +110,7 @@ export class Tester {
                         fromCache: snapshot.metadata.fromCache,
                         hasPendingWrites: snapshot.metadata.hasPendingWrites,
                         doc: docChange.doc.data()
-                    }
+                    };
 
                     console.log("FIXME onSnapshot/docChange docChange: ", docChange)
                     console.log("FIXME onSnapshot/docChange metadataTrace: ", metadataTrace);
@@ -119,7 +119,7 @@ export class Tester {
 
                 }
 
-            }
+            };
 
             await firestore
                 .collection(collectionName)
@@ -143,7 +143,7 @@ export class Tester {
                         foo: "bar",
                         version: idx,
                         iter
-                    }
+                    };
 
                     const ref = firestore.collection(collectionName).doc(id);
 
@@ -178,7 +178,7 @@ export class Tester {
                             hasPendingWrites: snapshot.metadata.hasPendingWrites,
                             doc: snapshot.data(),
                             snapshotVersion: snapshotVersion++
-                        }
+                        };
 
                         // console.log("FIXME33333333333333########33333333:  " + metadataTrace.snapshotVersion)
 
