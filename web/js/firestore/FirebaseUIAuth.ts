@@ -6,7 +6,7 @@ import * as firebase from './lib/firebase';
 import firebaseui from './lib/firebaseui';
 
 // noinspection TsLint: max-line-length
-const SIGN_IN_SUCCESS_URL = 'http://localhost:63342/polar-bookshelf/web/spectron/firebase-auth/content.html?_ijt=t1aqe160j9rhsv5u4d52e8o7to';
+const SIGN_IN_SUCCESS_URL = 'http://localhost:8005/web/spectron/firebase-datastore/content.html';
 const TOS_URL = 'https://getpolarized.io/terms-of-service.html';
 const PRIVACY_POLICY_URL = 'https://getpolarized.io/terms-of-service.html';
 
@@ -17,11 +17,17 @@ export class FirebaseUIAuth {
      *
      * @param containerSelector
      */
-    public static login(containerSelector = '#firebaseui-auth-container'): any {
+    public static login(containerSelector = '#firebaseui-auth-container',
+                        signInSuccessUrl: string = SIGN_IN_SUCCESS_URL): firebaseui.auth.AuthUI {
 
         // FirebaseUI config.
         const uiConfig = {
-            signInSuccessUrl: SIGN_IN_SUCCESS_URL,
+
+
+            // popupMode: true,
+            // signInFlow: 'popup',
+
+            signInSuccessUrl,
             signInOptions: [
                 // Leave the lines as is for the providers you want to offer your users.
                 firebase.auth.GoogleAuthProvider.PROVIDER_ID,

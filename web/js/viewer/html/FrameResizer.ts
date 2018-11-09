@@ -3,6 +3,7 @@ import {Styles} from '../../util/Styles';
 import {Logger} from '../../logger/Logger';
 import {Preconditions} from '../../Preconditions';
 import {Functions} from '../../util/Functions';
+import {Documents} from './Documents';
 
 const log = Logger.create();
 
@@ -59,7 +60,7 @@ export class FrameResizer {
 
         const newHeightAsOptional = await this.getDocumentHeight();
 
-        if(! newHeightAsOptional.isPresent()) {
+        if (! newHeightAsOptional.isPresent()) {
             return;
         }
 
@@ -96,7 +97,7 @@ export class FrameResizer {
      */
     private async getDocumentHeight(): Promise<Optional<number>> {
 
-        if(this.host instanceof HTMLIFrameElement) {
+        if (this.host instanceof HTMLIFrameElement) {
             return this.getDocumentHeightForIFrame(this.host);
         } else {
             return this.getDocumentHeightForWebview(this.host);
@@ -105,37 +106,16 @@ export class FrameResizer {
     }
 
     private async getDocumentHeightForIFrame(iframe: HTMLIFrameElement): Promise<Optional<number>> {
-
-        const contentDocument = iframe.contentDocument;
-
-        if (! contentDocument) {
-            return Optional.empty();
-        }
-
-        if (! contentDocument.body) {
-            return Optional.empty();
-        }
-
-        return Optional.of(Math.max(contentDocument.documentElement.scrollHeight,
-                                    contentDocument.body.scrollHeight));
-
+        return Optional.of(Documents.height(iframe.contentDocument));
 
     }
 
     private async getDocumentHeightForWebview(webview: Electron.WebviewTag): Promise<Optional<number>> {
 
-        /** @RendererContext */
-        function rendererGetDocumentHeight() {
-
-            return Math.max(document.documentElement.scrollHeight,
-                            document.body.scrollHeight);
-
-        }
-
         const webContents = webview.getWebContents();
 
-        const script = Functions.functionToScript(rendererGetDocumentHeight);
-        const height: number = await webContents.executeJavaScript(script)
+        const script = Functions.functionToScript(Documents.height);
+        const height: number | undefined = await webContents.executeJavaScript(script);
 
         return Optional.of(height);
 

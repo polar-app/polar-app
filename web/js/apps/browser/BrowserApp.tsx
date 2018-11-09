@@ -54,8 +54,9 @@ export class BrowserApp {
             // starts spinning.
             content.addEventListener('did-start-loading', () => {
 
-                if(! this.loadedURL)
+                if (! this.loadedURL) {
                     return;
+                }
 
                 progressBar = ProgressBar.create(true);
                 document.body.scrollTo(0, 0);
@@ -70,8 +71,9 @@ export class BrowserApp {
             // stops spinning.
             content.addEventListener('did-stop-loading', () => {
 
-                if(! this.loadedURL)
+                if (! this.loadedURL) {
                     return;
+                }
 
                 if (progressBar) {
                     progressBar.destroy();
@@ -82,6 +84,7 @@ export class BrowserApp {
             });
 
             content.addEventListener('did-fail-load', () => {
+                log.warn("Load of URL failed.");
             });
 
             content.addEventListener('console-message', (consoleMessageEvent: Electron.ConsoleMessageEvent) => {
