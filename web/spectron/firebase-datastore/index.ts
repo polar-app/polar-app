@@ -20,6 +20,12 @@ const options: ISpectronMainOptions = {
     windowFactory: defaultWindowFactory
 };
 
+// TODO: the main problems with the home dir are now:
+// FIXME: we have to use remote to get the directory to require() our files from
+//
+
+
+
 SpectronMain2.create(options).run(async state => {
 
     // the webserver must be running as firebase won't load without being on an

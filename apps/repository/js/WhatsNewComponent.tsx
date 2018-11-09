@@ -44,6 +44,40 @@ export class WhatsNewComponent extends React.Component<IProps, IState> {
                     <ModalHeader >What's New in Polar</ModalHeader>
                     <ModalBody style={{overflowY: 'auto', maxHeight: 'calc(100vh - 200px)'}}>
 
+                        <h2>1.0.12 - Nov 9, 2018</h2>
+
+                        <ul>
+
+                            <li> Feature: tooltip on hover of the doc repo table
+                            title. </li>
+
+                            <li> Fixed analytics around number of documents in
+                            the repository </li>
+
+                            <li> Feature: The "Delete" text is now danger red.
+                            </li>
+
+                            <li> Feature: Implemented a confirm prompt when
+                            deleteing flashcards, comments, and annotations.
+                            </li>
+
+                            <li> Feature: Implemented Cancel when creating
+                            flashcards and comments </li>
+
+                            <li> Feature: Reworked anki sync to run from the doc
+                            repository. </li>
+
+                            <li> Feature: Renamed "Copy URL" to "Copy Original
+                            URL" </li>
+
+                            <li> Upgrade to Electron 3.0.8 </li>
+
+                            <li> Fixed bug with Electron generating an error
+                            window on exit due to a conversion of the wrong type
+                            to an integer.  This was/is an Electron bug. </li>
+
+                        </ul>
+
                         <h2>1.0.10 - Nov 1, 2018</h2>
 
                         <p>
@@ -184,3 +218,4 @@ interface IState {
 interface VersionData {
     version?: string;
 }
+

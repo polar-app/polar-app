@@ -79,7 +79,7 @@
   },
   "dependencies": {
     "@fortawesome/fontawesome-free": "^5.3.1",
-    "@sentry/electron": "^0.12.1",
+    "@sentry/electron": "^0.13.0",
     "@types/bootstrap": "^4.1.1",
     "@types/express": "^4.16.0",
     "@types/js-cookie": "^2.2.0",
