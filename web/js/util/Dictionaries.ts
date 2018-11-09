@@ -27,9 +27,9 @@ export class Dictionaries {
         Preconditions.assertNotNull(dict, "dict");
         Preconditions.assertNotNull(callback, "callback");
 
-        for(const key in dict) {
+        for (const key in dict) {
 
-            if(dict.hasOwnProperty(key)) {
+            if (dict.hasOwnProperty(key)) {
                 const value = dict[key];
                 callback(key, value);
             }

@@ -9,6 +9,7 @@ import WebContents = Electron.WebContents;
 import {Directories} from '../datastore/Directories';
 import {CaptureResult} from './CaptureResult';
 import {Hashcodes} from '../Hashcodes';
+import {Captured} from './renderer/Captured';
 
 const log = Logger.create();
 
@@ -30,8 +31,8 @@ export class ContentCaptureExecutor {
         // this more aggressively.
         try {
 
-            const result: IResult<any> = await webContents.executeJavaScript("ContentCapture.execute()");
-            captured = Results.create<any>(result).get();
+            const result: IResult<Captured> = await webContents.executeJavaScript("ContentCapture.execute()");
+            captured = Results.create<Captured>(result).get();
 
         } catch (e) {
 

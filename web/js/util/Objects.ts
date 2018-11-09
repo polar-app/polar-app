@@ -3,7 +3,7 @@ export class Objects {
     /**
      * Take the current object, and use given object as a set of defaults.
      */
-    static defaults(current: any, defaults: any) {
+    public static defaults(current: any, defaults: any) {
 
         let result = current;
 
@@ -11,8 +11,9 @@ export class Objects {
             result = {};
         }
 
-        for(let key in defaults) {
-            if(defaults.hasOwnProperty(key) && ! result.hasOwnProperty(key)) {
+        for (const key in defaults) {
+
+            if (defaults.hasOwnProperty(key) && ! result.hasOwnProperty(key)) {
                 result[key] = defaults[key];
             }
         }

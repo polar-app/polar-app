@@ -10,6 +10,9 @@ const convertStream = require("convert-stream");
 
 const log = Logger.create();
 
+/**
+ * @Deprecated in favor of CachingStreamInterceptorService
+ */
 export class CacheInterceptorService {
 
     public readonly cacheStats = new CacheStats();

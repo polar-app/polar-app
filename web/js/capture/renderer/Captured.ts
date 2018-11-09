@@ -8,7 +8,7 @@ export interface Captured {
      * The type of this captured content.  Right now we only support PHZ but
      * there might be other formats in the future.
      */
-    type: 'phz',
+    type: 'phz';
 
     version: string;
 
@@ -52,6 +52,13 @@ export interface CapturedDoc {
 
     mutations: Mutations;
 
+    docTypeFormat?: DocTypeFormat;
+
+    /**
+     * The HTML content type from document.contentType
+     */
+    contentType?: string;
+
 }
 
 export interface ScrollBox {
@@ -77,3 +84,5 @@ export interface Mutations {
 }
 
 export type Overflow = 'visible' | 'hidden';
+
+export type DocTypeFormat = 'html' | 'xml';

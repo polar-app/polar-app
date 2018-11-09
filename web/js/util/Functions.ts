@@ -63,19 +63,19 @@ export class Functions {
      * @param dict
      * @param callback
      */
-    static forDict(dict: {[key: string]: any}, callback: KeyValueCallback) {
+    public static forDict(dict: {[key: string]: any}, callback: KeyValueCallback) {
 
         Preconditions.assertNotNull(dict, "dict");
         Preconditions.assertNotNull(callback, "callback");
 
         // get the keys first, that way we can mutate the dictionary while iterating
         // through it if necessary.
-        let keys = Object.keys(dict);
+        const keys = Object.keys(dict);
 
         keys.forEach( (key: string) => {
-            let value = dict[key];
-            callback(key,value);
-        })
+            const value = dict[key];
+            callback(key, value);
+        });
 
     };
 
@@ -86,28 +86,28 @@ export class Functions {
      * @param dict
      * @param callback
      */
-    static async forOwnKeys(dict: {[key: string]: any}, callback: KeyValueCallback) {
+    public static async forOwnKeys(dict: {[key: string]: any}, callback: KeyValueCallback) {
 
         Preconditions.assertNotNull(dict, "dict");
         Preconditions.assertNotNull(callback, "callback");
 
-        for(let key in dict) {
+        for (const key in dict) {
 
-            if(dict.hasOwnProperty(key)) {
-                let value = dict[key];
-                await callback(key,value);
+            if (dict.hasOwnProperty(key)) {
+                const value = dict[key];
+                await callback(key, value);
             }
 
         }
 
-    };
+    }
 
     /**
      * Calls the given callback as a promise which we can await.
      */
-    static async withTimeout(timeout: number, callback: () => any) {
+    public static async withTimeout(timeout: number, callback: () => any) {
 
-        return new Promise((resolve,reject) => {
+        return new Promise((resolve, reject) => {
 
             setTimeout(() => {
                 callback().then((result: any) => resolve(result))

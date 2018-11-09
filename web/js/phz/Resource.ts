@@ -1,3 +1,5 @@
+import {DocTypeFormat} from '../capture/renderer/Captured';
+
 export class Resource {
 
     /**
@@ -37,7 +39,6 @@ export class Resource {
      */
     public meta: {} = {};
 
-
     /**
      *
      * The content type of this content.  Default is text/html.  We use
@@ -62,10 +63,14 @@ export class Resource {
      */
     public statusCode = 200;
 
+    public statusMessage?: string;
+
     /**
      *
      */
     public headers: {[key: string]: string | string[]} = {};
+
+    public docTypeFormat?: DocTypeFormat;
 
     constructor(opts: any) {
 
@@ -75,9 +80,12 @@ export class Resource {
         this.contentLength = opts.contentLength;
         this.title = opts.title;
         this.description = opts.description;
+        this.docTypeFormat = opts.docTypeFormat;
 
         Object.assign(this, opts);
 
     }
 
 }
+
+export type DocTypeFormat = 'html' | 'xml';

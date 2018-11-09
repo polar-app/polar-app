@@ -292,6 +292,8 @@ SpectronRenderer.run(async (state) => {
 
     console.log("Running within SpectronRenderer now.");
 
+    // history.pushState({}, "Home", "http://localapp.getpolarized.io/");
+
     Firebase.init();
 
     if (firebase.auth().currentUser === null) {

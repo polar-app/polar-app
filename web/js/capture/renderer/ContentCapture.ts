@@ -3,12 +3,10 @@
  */
 import {Dict} from '../../util/Dict';
 import {Result} from '../../util/Result';
-import {CapturedDoc, Captured, ScrollBox, Overflow} from './Captured';
+import {Captured, CapturedDoc, DocTypeFormat, Overflow, ScrollBox} from './Captured';
 import {Results} from '../../util/Results';
-import {AdBlocker} from './AdBlocker';
 
 export class ContentCapture {
-
 
     public static execute(): Result<any> {
         return Results.execute(() => ContentCapture.captureHTML());
@@ -173,6 +171,8 @@ export class ContentCapture {
 
         const scrollBox = this.computeScrollBox(cloneDoc);
 
+        const docTypeFormat = this.docTypeFormat(cloneDoc);
+
         const result: CapturedDoc = {
 
             // TODO: capture HTML metadata including twitter card information
@@ -201,6 +201,10 @@ export class ContentCapture {
              */
             contentTextLength: 0,
 
+            docTypeFormat,
+
+            contentType: (<any> cloneDoc).contentType,
+
             mutations: {
                 eventAttributesRemoved: 0,
                 existingBaseRemoved: false,
@@ -215,54 +219,78 @@ export class ContentCapture {
 
         };
 
-        // TODO: make the mutations a list of functions that need to be run
-        // and the mutation names just the list of the functions. The functions
-        // can then just return a mutation and the data structures are updated.
+        console.log("Doc type format is: " + docTypeFormat);
 
-        result.mutations.cleanupRemoveScripts = ContentCapture.cleanupRemoveScripts(cloneDoc, url);
-        result.mutations.cleanupHead = ContentCapture.cleanupHead(cloneDoc, url);
-        result.mutations.cleanupBase = ContentCapture.cleanupBase(cloneDoc, url);
-        // result.mutations.adsBlocked = AdBlocker.cleanse(cloneDoc, url);
+        if (docTypeFormat === 'html') {
 
-        // ***  add metadata into the HTML for polar
+            // TODO: make the mutations a list of functions that need to be run
+            // and the mutation names just the list of the functions. The functions
+            // can then just return a mutation and the data structures are updated.
 
-        document.head.appendChild(ContentCapture.createMeta("polar-url", result.url));
+            result.mutations.cleanupRemoveScripts = ContentCapture.cleanupRemoveScripts(cloneDoc, url);
+            result.mutations.cleanupHead = ContentCapture.cleanupHead(cloneDoc, url);
+            result.mutations.cleanupBase = ContentCapture.cleanupBase(cloneDoc, url);
+            // result.mutations.adsBlocked = AdBlocker.cleanse(cloneDoc, url);
 
-        // *** remove javascript html onX elements.
+            // ***  add metadata into the HTML for polar
 
-        const EVENT_ATTRIBUTES = ContentCapture.createEventAttributes();
+            document.head.appendChild(ContentCapture.createMeta("polar-url", result.url));
 
-        cloneDoc.querySelectorAll("*").forEach((element) => {
+            // *** remove javascript html onX elements.
 
-            Array.from(element.attributes).forEach((attr) => {
-                if (EVENT_ATTRIBUTES[attr.name]) {
-                    element.removeAttribute(attr.name);
-                    ++result.mutations.eventAttributesRemoved;
-                }
+            const EVENT_ATTRIBUTES = ContentCapture.createEventAttributes();
+
+            cloneDoc.querySelectorAll("*").forEach((element) => {
+
+                Array.from(element.attributes).forEach((attr) => {
+                    if (EVENT_ATTRIBUTES[attr.name]) {
+                        element.removeAttribute(attr.name);
+                        ++result.mutations.eventAttributesRemoved;
+                    }
+                });
+
             });
 
-        });
+            // *** remove javascript: anchors.
 
-        // *** remove javascript: anchors.
+            cloneDoc.querySelectorAll("a").forEach((element) => {
 
-        cloneDoc.querySelectorAll("a").forEach((element) => {
+                const href = element.getAttribute("href");
+                if (href && href.indexOf("javascript:") === 0) {
+                    element.removeAttribute("href");
+                    ++result.mutations.javascriptAnchorsRemoved;
+                }
 
-            const href = element.getAttribute("href");
-            if (href && href.indexOf("javascript:") === 0) {
-                element.removeAttribute("href");
-                ++result.mutations.javascriptAnchorsRemoved;
-            }
+            });
 
-        });
+            result.mutations.showAriaHidden = ContentCapture.cleanupShowAriaHidden(cloneDoc);
 
-        result.mutations.showAriaHidden = ContentCapture.cleanupShowAriaHidden(cloneDoc);
+        }
 
-        result.content = ContentCapture.toOuterHTML(cloneDoc);
+        result.content = ContentCapture.toOuterHTML(cloneDoc, docTypeFormat);
         result.contentTextLength = result.content.length;
 
         console.log(`Captured ${url} which has a text length of: ${result.content.length}`);
 
         return result;
+
+    }
+
+    /**
+     * Return the document format of the underlying document by determining if
+     * it's XML or HTML
+     */
+    private static docTypeFormat(doc: Document): DocTypeFormat {
+
+        if (doc.doctype === null || doc.doctype === undefined) {
+            return 'html';
+        }
+
+        if (doc.doctype.name === null || doc.doctype.name === undefined) {
+            return 'html';
+        }
+
+        return doc.doctype.name.toLowerCase() === 'html' ? 'html' : 'xml';
 
     }
 
@@ -275,7 +303,7 @@ export class ContentCapture {
             widthOverflow: <Overflow> computedStyle.overflowX || 'visible' ,
             height: doc.documentElement.scrollHeight,
             heightOverflow: <Overflow> computedStyle.overflowY || 'visible' ,
-        }
+        };
 
     }
 
@@ -312,16 +340,16 @@ export class ContentCapture {
 
     }
 
-    static cleanupHead(cloneDoc: Document, url: string): Object {
+    private static cleanupHead(cloneDoc: Document, url: string): any {
 
         // make sure the document has a head.
 
-        let result = {
+        const result = {
             headAdded: false
         };
 
         if (! cloneDoc.head) {
-            cloneDoc.insertBefore(cloneDoc.createElement("head"), cloneDoc.firstChild);
+            cloneDoc.insertBefore(cloneDoc.createElement("head"), cloneDoc.firstElementChild);
             result.headAdded = true;
         }
 
@@ -329,17 +357,17 @@ export class ContentCapture {
 
     }
 
-    static cleanupRemoveScripts(cloneDoc: Document, url: string): Object {
+    private static cleanupRemoveScripts(cloneDoc: Document, url: string): any {
 
-        let result = {
+        const result = {
             scriptsRemoved: 0
         };
 
         // remove the script elements as these are active and we do not want
         // them loaded in the future.
-        cloneDoc.querySelectorAll("script").forEach(function (scriptElement) {
+        cloneDoc.querySelectorAll("script").forEach((scriptElement) => {
 
-            if(scriptElement.parentElement) {
+            if (scriptElement.parentElement) {
                 scriptElement.parentElement.removeChild(scriptElement);
                 ++result.scriptsRemoved;
             }
@@ -347,7 +375,7 @@ export class ContentCapture {
         });
 
         // make sure the script removal worked
-        if(cloneDoc.querySelectorAll("script").length !== 0) {
+        if (cloneDoc.querySelectorAll("script").length !== 0) {
             throw new Error("Unable to remove scripts");
         }
 
@@ -355,29 +383,12 @@ export class ContentCapture {
 
     }
 
-    static cleanupShowAriaHidden(cloneDoc: Document): number {
-
-        let mutations : number = 0;
-
-        cloneDoc.querySelectorAll("*").forEach(function (element) {
-            if(element.getAttribute("aria-hidden") === "true") {
-                element.setAttribute("aria-hidden", "false");
-                ++mutations;
-            }
-        });
-
-        return mutations;
-
-    }
-
-    static cleanupFullStylesheetURLs(cloneDoc: Document): number {
+    private static cleanupShowAriaHidden(cloneDoc: Document): number {
 
         let mutations: number = 0;
 
-        cloneDoc.querySelectorAll("a").forEach(function (element) {
-
-            let href = element.getAttribute("href");
-            if(href) {
+        cloneDoc.querySelectorAll("*").forEach((element) => {
+            if (element.getAttribute("aria-hidden") === "true") {
                 element.setAttribute("aria-hidden", "false");
                 ++mutations;
             }
@@ -387,7 +398,24 @@ export class ContentCapture {
 
     }
 
-    static doctypeToOuterHTML(doctype: DocumentType) {
+    private static cleanupFullStylesheetURLs(cloneDoc: Document): number {
+
+        let mutations: number = 0;
+
+        cloneDoc.querySelectorAll("a").forEach((element) => {
+
+            const href = element.getAttribute("href");
+            if (href) {
+                element.setAttribute("aria-hidden", "false");
+                ++mutations;
+            }
+        });
+
+        return mutations;
+
+    }
+
+    private static doctypeToOuterHTML(doctype: DocumentType) {
 
         return "<!DOCTYPE "
                + doctype.name
@@ -398,8 +426,12 @@ export class ContentCapture {
 
     }
 
-    static createMeta(name: string, content: string) {
-        let meta = document.createElement("meta");
+    private static processingInstructionToOuterHTML(processingInstruction: ProcessingInstruction) {
+        return `<?${processingInstruction.target} ${processingInstruction.data} ?>`;
+    }
+
+    private static createMeta(name: string, content: string) {
+        const meta = document.createElement("meta");
         meta.setAttribute("name", name);
         meta.setAttribute("content", content);
         return meta;
@@ -417,26 +449,58 @@ export class ContentCapture {
      *
      * @param doc
      */
-    static toOuterHTML(doc: Document) {
+    private static toOuterHTML(doc: Document, docTypeFormat: DocTypeFormat) {
 
         // https://stackoverflow.com/questions/817218/how-to-get-the-entire-document-html-as-a-string
 
         // https://stackoverflow.com/questions/6088972/get-doctype-of-an-html-as-string-with-javascript
 
-        if(doc.doctype) {
+        if (docTypeFormat === 'xml') {
 
-            return ContentCapture.doctypeToOuterHTML(doc.doctype) +
-                   "\n" +
-                   doc.documentElement.outerHTML;
+            let result = '';
+
+            for (const node of Array.from(doc.childNodes)) {
+
+                switch (node.nodeType) {
+
+                    case Node.DOCUMENT_TYPE_NODE:
+                        result += this.doctypeToOuterHTML(<DocumentType> node);
+                        result += '\n';
+                        break;
+
+                    case Node.PROCESSING_INSTRUCTION_NODE:
+                        result += this.processingInstructionToOuterHTML(<ProcessingInstruction> node);
+                        result += '\n';
+                        break;
+
+                    case Node.ELEMENT_NODE:
+                        result += (<Element> node).outerHTML;
+                        result += '\n';
+                        break;
+
+                }
+
+            }
+
+            return result;
 
         } else {
-            return doc.documentElement.outerHTML;
-        }
 
+            if (doc.doctype) {
+
+                return ContentCapture.doctypeToOuterHTML(doc.doctype) +
+                    "\n" +
+                    doc.documentElement.outerHTML;
+
+            } else {
+                return doc.documentElement.outerHTML;
+            }
+
+        }
 
     }
 
-    static createEventAttributes(): Dict<number> {
+    private static createEventAttributes(): Dict<number> {
 
         return Object.freeze({
             "onafterprint": 1,
