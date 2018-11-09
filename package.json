@@ -143,6 +143,7 @@
     "js-sha3": "^0.8.0",
     "jszip": "^3.1.5",
     "loader": "file:./web/loader",
+    "injector": "file:./web/injector",
     "lodash": "^4.17.10",
     "markdown-plus": "^2.5.2",
     "micromodal": "^0.3.2",
