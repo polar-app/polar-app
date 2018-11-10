@@ -13,28 +13,27 @@ import {WebserverCerts} from './WebserverCerts';
 describe('Webserver', function() {
 
     describe('create', function() {
-
-        it("basic SSL", async function() {
-
-            const webserverConfig = WebserverConfig.create(
-                {
-                    dir: "..",
-                    port: 8085,
-                    host: "127.0.0.1",
-                    useSSL: true,
-                    ssl: {
-                        cert: WebserverCerts.CERT,
-                        key: WebserverCerts.KEY,
-                    }
-                });
-            const fileRegistry = new FileRegistry(webserverConfig);
-
-            const webserver = new Webserver(webserverConfig, fileRegistry);
-            webserver.start();
-            webserver.stop();
-
-        });
-
+        //
+        // it("basic SSL", async function() {
+        //
+        //     const webserverConfig = WebserverConfig.create(
+        //         {
+        //             dir: "..",
+        //             port: 8085,
+        //             host: "127.0.0.1",
+        //             useSSL: true,
+        //             ssl: {
+        //                 cert: WebserverCerts.CERT,
+        //                 key: WebserverCerts.KEY,
+        //             }
+        //         });
+        //     const fileRegistry = new FileRegistry(webserverConfig);
+        //
+        //     const webserver = new Webserver(webserverConfig, fileRegistry);
+        //     webserver.start();
+        //     webserver.stop();
+        //
+        // });
 
         it("basic", function() {
 
