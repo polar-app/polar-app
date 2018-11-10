@@ -1,6 +1,10 @@
 
 # 1.0.12
 
+- Fixed bug with Electron generating an error window on exit due to a conversion 
+  of the wrong type to an integer.  This was/is an Electron bug.  This may not
+  be fixed in all situations but it's much better than it was before.
+
 - Feature: drag and drop for bulk PDF import works. 
 
 - Upgrade to Electron 3.0.8

@@ -74,8 +74,6 @@ export class SentryLogger implements ILogger {
 
         try {
 
-            console.log("FIXME: initiializng here: ", new Error());
-
             if (SentryLogger.isEnabled()) {
                 init({
                     dsn: 'https://2e8b8ca6e6bf4bf58d735f2a405ecb20@sentry.io/1273707',
