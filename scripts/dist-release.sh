@@ -9,6 +9,6 @@ if [ "${target}" == "" ]; then
     exit 1
 fi
 
-git clean -f && git reset --hard HEAD && git pull && npm install && npm dist-${target}
+git clean -f && git reset --hard HEAD && git pull && npm install && npm run-script dist-${target}
 
 # TODO install the and test the platform builds now...
