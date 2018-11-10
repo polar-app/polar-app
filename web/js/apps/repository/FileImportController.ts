@@ -13,6 +13,7 @@ import {DocLoader} from '../main/ipc/DocLoader';
 import {FilePaths} from "../../util/FilePaths";
 import {BrowserWindowRegistry} from '../../electron/framework/BrowserWindowRegistry';
 import {isPresent} from "../../Preconditions";
+import {Toaster} from "../../toaster/Toaster";
 
 const log = Logger.create();
 
@@ -45,6 +46,26 @@ export class FileImportController {
 
         });
 
+        document.body.addEventListener('dragenter', (event) => this.onDragEnterOrOver(event));
+        document.body.addEventListener('dragover', (event) => this.onDragEnterOrOver(event));
+        document.body.addEventListener('drop', event => this.onDrop(event));
+
+    }
+
+    private onDragEnterOrOver(event: DragEvent) {
+        // needed to tell the browser that onDrop is supported here...
+        event.preventDefault();
+    }
+
+    private onDrop(event: DragEvent) {
+
+        const files = Array.from(event.dataTransfer.files)
+            .filter(file => file.path.endsWith(".pdf"))
+            .map(file => file.path);
+
+        this.onImportFiles(files)
+            .catch(err => log.error("Unable to import files: ", files));
+
     }
 
     private async onFileImportRequest(fileImportRequest: FileImportRequest) {
@@ -55,7 +76,13 @@ export class FileImportController {
             return;
         }
 
-        const importedFiles = await this.doImportFiles(fileImportRequest.files);
+        await this.onImportFiles(fileImportRequest.files);
+
+    }
+
+    private async onImportFiles(files: string[]) {
+
+        const importedFiles = await this.doImportFiles(files);
 
         if (importedFiles.length === 1) {
 
@@ -68,13 +95,15 @@ export class FileImportController {
                 const path = file.stashFilePath;
 
                 DocLoader.load({
-                       fingerprint,
-                       filename: FilePaths.basename(path),
-                       newWindow: true
-                   }).catch(err => log.error("Unable to load doc: ", err));
+                    fingerprint,
+                    filename: FilePaths.basename(path),
+                    newWindow: true
+                }).catch(err => log.error("Unable to load doc: ", err));
 
             }
 
+        } else {
+            Toaster.success(`Imported ${files.length} files successfully.`);
         }
 
     }
