@@ -59,12 +59,16 @@ export class FileImportController {
 
     private onDrop(event: DragEvent) {
 
-        const files = Array.from(event.dataTransfer.files)
-            .filter(file => file.path.endsWith(".pdf"))
-            .map(file => file.path);
+        if (event.dataTransfer) {
 
-        this.onImportFiles(files)
-            .catch(err => log.error("Unable to import files: ", files));
+            const files = Array.from(event.dataTransfer.files)
+                .filter(file => file.path.endsWith(".pdf"))
+                .map(file => file.path);
+
+            this.onImportFiles(files)
+                .catch(err => log.error("Unable to import files: ", files));
+
+        }
 
     }
 

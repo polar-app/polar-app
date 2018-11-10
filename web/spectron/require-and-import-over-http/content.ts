@@ -6,7 +6,7 @@ SpectronRenderer.run(async (state) => {
 
     history.pushState({}, "Home", "http://localapp.getpolarized.io/");
 
-    state.testResultWriter.write(document.location.href === "http://localapp.getpolarized.io/");
+    state.testResultWriter.write(document.location!.href === "http://localapp.getpolarized.io/");
 
 });
 

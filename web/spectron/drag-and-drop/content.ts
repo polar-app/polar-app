@@ -9,28 +9,28 @@ function onDrop(event: DragEvent) {
 
     console.log("drop: ", event);
 
-    console.log("drop: NR files", event.dataTransfer.files.length);
-    console.log("drop: NR items", event.dataTransfer.items.length);
+    console.log("drop: NR files", event.dataTransfer!.files.length);
+    console.log("drop: NR items", event.dataTransfer!.items.length);
 
-    for (const file of Array.from(event.dataTransfer.files)) {
+    for (const file of Array.from(event.dataTransfer!.files)) {
         console.log("FIXME: ", file);
         console.log("FIXME: " + file.path);
     }
 
-    for (const item of Array.from(event.dataTransfer.items)) {
+    for (const item of Array.from(event.dataTransfer!.items)) {
         console.log("FIXME: ", item);
         // item.get
     }
 
-    if (event.dataTransfer.effectAllowed === 'copyLink') {
+    if (event.dataTransfer!.effectAllowed === 'copyLink') {
 
-        const link = event.dataTransfer.getData('text/plain');
+        const link = event.dataTransfer!.getData('text/plain');
 
         console.log("FIXME: link ", link);
 
-        console.log("FIXME0: ", event.dataTransfer.getData('text/plain'));
-        console.log("FIXME1: ", event.dataTransfer.getData('text/html'));
-        console.log("FIXME2: ", event.dataTransfer.getData('URL'));
+        console.log("FIXME0: ", event.dataTransfer!.getData('text/plain'));
+        console.log("FIXME1: ", event.dataTransfer!.getData('text/html'));
+        console.log("FIXME2: ", event.dataTransfer!.getData('URL'));
 
     }
 

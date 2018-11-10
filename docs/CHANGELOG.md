@@ -4,6 +4,9 @@
  - point release to fix auto-updates in release process and upgrade 
    electron-builder and electron-updater
 
+ - migration from typescript 3.0.3 to 3.1.6 due to incompatibility to with new 
+   electron-builder
+
 # 1.0.12
 
 - Reduced the minimum mouse click duration required for bringing up the annotation 

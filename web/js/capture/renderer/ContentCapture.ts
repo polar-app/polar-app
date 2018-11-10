@@ -42,7 +42,7 @@ export class ContentCapture {
         }
 
         if (!url) {
-            url = contentDoc.location.href;
+            url = contentDoc.location!.href;
         }
 
         if (!result) {
@@ -66,7 +66,7 @@ export class ContentCapture {
 
                 title: contentDoc.title,
 
-                url: contentDoc.location.href,
+                url: contentDoc.location!.href,
 
                 // keep track of the scroll height and width of the document.
                 // when the document is able to be adjusted to the size of the
@@ -86,7 +86,7 @@ export class ContentCapture {
         const cloneDoc: Document = <Document> contentDoc.cloneNode(true);
 
         result.capturedDocuments[url]
-            = ContentCapture.captureDoc(cloneDoc, contentDoc.location.href);
+            = ContentCapture.captureDoc(cloneDoc, contentDoc.location!.href);
 
         if (ENABLE_IFRAMES) {
 
@@ -107,7 +107,7 @@ export class ContentCapture {
 
                 if (frameValidity.valid && iframe.contentDocument) {
 
-                    const iframeHref = iframe.contentDocument.location.href;
+                    const iframeHref = iframe.contentDocument.location!.href;
 
                     console.log("Going to capture iframe: " + iframeHref);
                     console.log(iframe.outerHTML);
@@ -226,7 +226,7 @@ export class ContentCapture {
 
         // ***  add metadata into the HTML for polar
 
-        document.head.appendChild(ContentCapture.createMeta("polar-url", result.url));
+        document.head!.appendChild(ContentCapture.createMeta("polar-url", result.url));
 
         // *** remove javascript html onX elements.
 
@@ -268,14 +268,14 @@ export class ContentCapture {
 
     private static computeScrollBox(doc: Document): ScrollBox {
 
-        const computedStyle = getComputedStyle(doc.documentElement);
+        const computedStyle = getComputedStyle(doc.documentElement!);
 
         return {
-            width: doc.documentElement.scrollWidth,
+            width: doc.documentElement!.scrollWidth,
             widthOverflow: <Overflow> computedStyle.overflowX || 'visible' ,
-            height: doc.documentElement.scrollHeight,
+            height: doc.documentElement!.scrollHeight,
             heightOverflow: <Overflow> computedStyle.overflowY || 'visible' ,
-        }
+        };
 
     }
 
@@ -299,11 +299,11 @@ export class ContentCapture {
         base = cloneDoc.createElement("base");
         base.setAttribute("href", url);
 
-        if (cloneDoc.head.firstChild != null) {
+        if (cloneDoc.head!.firstChild != null) {
             // base must be the first element
-            cloneDoc.head.insertBefore(base, cloneDoc.head.firstChild);
+            cloneDoc.head!.insertBefore(base, cloneDoc.head!.firstChild);
         } else {
-            cloneDoc.head.appendChild(base);
+            cloneDoc.head!.appendChild(base);
         }
 
         result.baseAdded = true;
@@ -312,11 +312,11 @@ export class ContentCapture {
 
     }
 
-    static cleanupHead(cloneDoc: Document, url: string): Object {
+    static cleanupHead(cloneDoc: Document, url: string): any {
 
         // make sure the document has a head.
 
-        let result = {
+        const result = {
             headAdded: false
         };
 
@@ -417,7 +417,7 @@ export class ContentCapture {
      *
      * @param doc
      */
-    static toOuterHTML(doc: Document) {
+    private static toOuterHTML(doc: Document) {
 
         // https://stackoverflow.com/questions/817218/how-to-get-the-entire-document-html-as-a-string
 
@@ -427,10 +427,10 @@ export class ContentCapture {
 
             return ContentCapture.doctypeToOuterHTML(doc.doctype) +
                    "\n" +
-                   doc.documentElement.outerHTML;
+                   doc.documentElement!.outerHTML;
 
         } else {
-            return doc.documentElement.outerHTML;
+            return doc.documentElement!.outerHTML;
         }
 
 

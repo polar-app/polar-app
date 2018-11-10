@@ -265,7 +265,7 @@ export class TextHighlightController {
 
         await this.createTextHighlight(async () => {
 
-            const win = notNull(this.docFormat.targetDocument()).defaultView;
+            const win = notNull(this.docFormat.targetDocument()).defaultView!;
 
             log.info("TextHighlightController.onTextHighlightCreatedModern");
 
@@ -317,7 +317,7 @@ export class TextHighlightController {
         // some sort of screenshot provider
 
         const doc = notNull(this.docFormat.targetDocument());
-        const win = doc.defaultView;
+        const win = doc.defaultView!;
 
         const screenshotID = Hashcodes.createRandomID();
 

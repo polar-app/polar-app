@@ -37,7 +37,7 @@ export class EventBridge {
 
         this.addListeners(this.iframe);
 
-        log.info("Event bridge started on: ", this.iframe.contentDocument.location.href);
+        log.info("Event bridge started on: ", this.iframe.contentDocument!.location!.href);
 
     }
 
@@ -75,7 +75,7 @@ export class EventBridge {
                     // in the iframe and change the main page. This triggers our
                     // electron 'will-navigate' which which prevents it and then
                     // opens the URL in the native browser.
-                    document.location.href = href;
+                    document.location!.href = href;
                 }
 
             } else {

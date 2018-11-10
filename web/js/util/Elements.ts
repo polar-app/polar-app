@@ -22,7 +22,7 @@ export class Elements {
         Preconditions.assertNotNull(element, "element");
 
         if (! parentElement) {
-            parentElement = element.ownerDocument.documentElement;
+            parentElement = element.ownerDocument!.documentElement!;
         }
 
         const offsetRect = {left: 0, top: 0, width: 0, height: 0};

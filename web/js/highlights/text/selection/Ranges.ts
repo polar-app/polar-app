@@ -83,7 +83,7 @@ export class Ranges {
         Preconditions.assertNotNull(startNode, "startNode");
         Preconditions.assertNotNull(endNode, "endNode");
 
-        let doc = range.startContainer.ownerDocument;
+        let doc = range.startContainer.ownerDocument!;
 
         // use TreeWalker to walk the commonAncestorContainer and we see which
         // ranges contain which text nodes.

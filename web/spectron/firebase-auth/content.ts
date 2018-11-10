@@ -82,9 +82,9 @@ async function onAuth(user: firebase.User | null) {
                      message: 'sup dawg from on Auth' + new Date().toISOString()
                  });
 
-        const isPrimary = document.location.href.endsWith("?primary=true");
+        const isPrimary = document.location!.href.endsWith("?primary=true");
 
-        if(isPrimary) {
+        if (isPrimary) {
 
             setTimeout(() => {
 
