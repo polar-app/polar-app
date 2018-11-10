@@ -1,4 +1,9 @@
 
+# 1.0.13
+
+ - point release to fix auto-updates in release process and upgrade 
+   electron-builder and electron-updater
+
 # 1.0.12
 
 - Reduced the minimum mouse click duration required for bringing up the annotation 
