@@ -1,6 +1,9 @@
 
 # 1.0.12
 
+- Reduced the minimum mouse click duration required for bringing up the annotation 
+  bar. 
+
 - Fixed bug with Electron generating an error window on exit due to a conversion 
   of the wrong type to an integer.  This was/is an Electron bug.  This may not
   be fixed in all situations but it's much better than it was before.

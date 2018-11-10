@@ -3,6 +3,8 @@ import {MouseDirection} from './Popup';
 import {Simulate} from 'react-dom/test-utils';
 import mouseMove = Simulate.mouseMove;
 
+const MIN_MOUSE_DURATION = 150;
+
 /**
  * Listens for when a new text selection has been created
  */
@@ -16,7 +18,7 @@ export class ActiveSelections {
 
         target.addEventListener('mousedown', (event: MouseEvent) => {
             originPoint = this.eventToPoint(event);
-            clickTimestamp = Date.now()
+            clickTimestamp = Date.now();
         });
 
         target.addEventListener('mouseup', (event: MouseEvent) => {
@@ -34,7 +36,7 @@ export class ActiveSelections {
 
             const clickTimeDelta = Date.now() - clickTimestamp;
 
-            const mouseMoved = clickTimeDelta > 250;
+            const mouseMoved = clickTimeDelta > MIN_MOUSE_DURATION;
 
             if (mouseMoved && !selection.isCollapsed) {
 
