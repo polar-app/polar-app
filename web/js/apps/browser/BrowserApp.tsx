@@ -115,7 +115,6 @@ export class BrowserApp {
 
         });
 
-
     }
 
     private onLoadURL(value: string) {
@@ -189,3 +188,13 @@ export class BrowserApp {
 
 export type NavigationEventType = 'did-start-loading' | 'did-stop-loading';
 
+export namespace TriggerBrowserLoad {
+
+    export const MESSAGE_TYPE = 'trigger-browser-load-url';
+
+    export interface Message {
+        type: string;
+        url: string;
+    }
+
+}

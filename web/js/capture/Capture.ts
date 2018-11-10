@@ -100,7 +100,7 @@ export class Capture {
 
         // wait a minimum amount of time for the page to load so that we can
         // make sure that all static content has executed.
-        //const minDelayPromise = Promises.waitFor(EXECUTE_CAPTURE_DELAY);
+        // const minDelayPromise = Promises.waitFor(EXECUTE_CAPTURE_DELAY);
 
         await Promise.all([ loadURLPromise ]);
 

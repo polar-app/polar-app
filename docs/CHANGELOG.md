@@ -1,12 +1,9 @@
 
 # 1.0.12
 
+- Feature: drag and drop for bulk PDF import works. 
+
 - Upgrade to Electron 3.0.8
-
-- Fixed bug with Electron generating an error window on exit due to a conversion 
-  of the wrong type to an integer.  This was/is an Electron bug.
-
-- Feature: tooltip on hover of the doc repo table title.
 
 - Fixed analytics around number of documents in the repository
 

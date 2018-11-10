@@ -42,6 +42,14 @@ export class MainApp {
 
     public async start(): Promise<MainAppStarted> {
 
+        process.on('uncaughtException', err => {
+            log.error("Uncaught exception: ", err);
+        });
+
+        process.on('unhandledRejection', err => {
+            log.error("Unhandled rejection: ", err);
+        });
+
         // share the disk datastore with the remote.
 
         global.datastore = this.datastore;
@@ -188,14 +196,6 @@ export class MainApp {
 
         });
 
-        process.on('uncaughtException', err => {
-            log.error("Uncaught exception: ", err);
-        });
-
-        process.on('unhandledRejection', err => {
-            log.error("Unhandled rejection: ", err);
-        });
-
         return {mainWindow, mainAppController};
 
     }
@@ -216,3 +216,4 @@ export interface MainAppStarted {
     mainWindow: BrowserWindow;
     mainAppController: MainAppController;
 }
+

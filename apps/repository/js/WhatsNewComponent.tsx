@@ -48,11 +48,9 @@ export class WhatsNewComponent extends React.Component<IProps, IState> {
 
                         <ul>
 
-                            <li> Feature: tooltip on hover of the doc repo table
-                            title. </li>
-
-                            <li> Fixed analytics around number of documents in
-                            the repository </li>
+                            <li>
+                                Feature: drag and drop for bulk PDF import works.
+                            </li>
 
                             <li> Feature: The "Delete" text is now danger red.
                             </li>
@@ -69,6 +67,9 @@ export class WhatsNewComponent extends React.Component<IProps, IState> {
 
                             <li> Feature: Renamed "Copy URL" to "Copy Original
                             URL" </li>
+
+                            <li> Fixed analytics around number of documents in
+                                the repository </li>
 
                             <li> Upgrade to Electron 3.0.8 </li>
 
