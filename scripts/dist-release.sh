@@ -4,7 +4,7 @@
 
 target=${1}
 
-if [ "${target}" == "" ]; then
+if [ "${target}" = "" ]; then
     echo "Must specifiy target" > /dev/stderr
     exit 1
 fi
