@@ -2,7 +2,7 @@
 import {TestResultReader} from '../TestResultReader';
 import {Results} from '../../../util/Results';
 import {TApplication} from '../../Spectron';
-import {ResolveablePromise} from '../../../util/ResolveablePromise';
+import {ResolvablePromise} from '../../../util/ResolvablePromise';
 
 declare var window: any;
 
@@ -17,7 +17,7 @@ export class WebDriverTestResultReaderLocal implements TestResultReader {
 
     public async read<T>(): Promise<T> {
 
-        const promise = new ResolveablePromise<T>();
+        const promise = new ResolvablePromise<T>();
 
         const poll = async () => {
 

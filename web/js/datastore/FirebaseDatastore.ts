@@ -14,7 +14,7 @@ import {Preconditions} from '../Preconditions';
 import {Hashcodes} from '../Hashcodes';
 import * as firebase from '../firestore/lib/firebase';
 import {Elements} from '../util/Elements';
-import {ResolveablePromise} from '../util/ResolveablePromise';
+import {ResolvablePromise} from '../util/ResolvablePromise';
 import {Dictionaries} from '../util/Dictionaries';
 import {DatastoreFiles} from './DatastoreFiles';
 
@@ -99,7 +99,7 @@ export class FirebaseDatastore implements Datastore {
         const uid = this.getUserID();
         const id = this.computeDocMetaID(uid, docMetaFileRef.fingerprint);
 
-        const resolveablePromise = new ResolveablePromise<Mutation>();
+        const resolveablePromise = new ResolvablePromise<Mutation>();
 
         this.resolveablePromiseIndex.add(id, resolveablePromise);
 
@@ -228,7 +228,7 @@ export class FirebaseDatastore implements Datastore {
         const uid = this.getUserID();
         const id = this.computeDocMetaID(uid, fingerprint);
 
-        const resolveablePromise = new ResolveablePromise<Mutation>();
+        const resolveablePromise = new ResolvablePromise<Mutation>();
 
         this.resolveablePromiseIndex.add(id, resolveablePromise);
 
@@ -407,9 +407,9 @@ interface Mutation {
  */
 class ResolveablePromiseIndex<T> {
 
-    private backing: {[id: string]: ResolveablePromise<T>[]} = {};
+    private backing: {[id: string]: ResolvablePromise<T>[]} = {};
 
-    public add(id: string, promise: ResolveablePromise<T>): void {
+    public add(id: string, promise: ResolvablePromise<T>): void {
 
         if(id in this.backing) {
             this.backing[id].push(promise);
