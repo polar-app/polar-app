@@ -27,7 +27,7 @@ export class Messenger {
             throw new Error("No target browser window found");
         }
 
-        await this.postMessageToWindow(postMessageRequest, targetBrowserWindow!);
+        await this.postMessageToWindow(postMessageRequest.message, targetBrowserWindow!);
 
     }
 
