@@ -16,7 +16,8 @@ import {MockPHZWriter} from '../phz/MockPHZWriter';
 import {DocMetaFileRef} from './DocMetaRef';
 import {Backend} from './Backend';
 import {Platform} from '../util/Platforms';
-import {Datastore} from './Datastore';
+import {Datastore, DefaultDatastoreMutation} from './Datastore';
+import {DocInfo} from '../metadata/DocInfo';
 
 const rimraf = require('rimraf');
 
@@ -59,9 +60,14 @@ export class DatastoreTester {
 
                 assert.equal(contains, false);
 
-                await MockPHZWriter.write(FilePaths.create(datastore.stashDir, `${fingerprint}.phz`))
+                await MockPHZWriter.write(FilePaths.create(datastore.stashDir, `${fingerprint}.phz`));
 
-                await persistenceLayer.sync(fingerprint, docMeta);
+                const datastoreMutation = new DefaultDatastoreMutation<DocInfo>();
+
+                await persistenceLayer.sync(fingerprint, docMeta, datastoreMutation);
+
+                await datastoreMutation.written.get();
+                await datastoreMutation.committed.get();
 
             });
 
