@@ -101,3 +101,39 @@ interface WritableBinaryDatastore {
 
 // noinspection TsLint
 export type FileMeta = {[key: string]: string};
+
+/**
+ *
+ * A datastore that provides events about changes being made to the datastore.
+ *
+ * This includes the granularity we need for replicating the data to a local
+ * datastore by fetching the data and writing it back out on the mutation.
+ */
+interface RealtimeDatastore {
+
+    addBinaryMutationEventListener(listener: (binaryMutation: BinaryMutation) => void): void;
+
+    addDocMutationEventListener(listener: (docMutation: DocMutation) => void): void;
+
+}
+
+export interface BinaryMutation {
+
+    backend: Backend;
+
+    name: string;
+
+    mutationType: MutationType;
+
+}
+
+export interface DocMutation {
+
+    docInfo: IDocInfo;
+
+    mutationType: MutationType;
+
+}
+
+type MutationType = 'added' | 'modified' |'removed';
+
