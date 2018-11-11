@@ -7,6 +7,9 @@ import {DatastoreFile} from './DatastoreFile';
 import {Optional} from '../util/ts/Optional';
 import {IDocInfo} from '../metadata/DocInfo';
 import {FileRef} from '../util/Files';
+import {Latch} from '../util/Latch';
+import {Simulate} from 'react-dom/test-utils';
+import input = Simulate.input;
 
 export interface Datastore {
 
@@ -71,7 +74,7 @@ export interface Datastore {
      * @param data The RAW data to decode by the PersistenceLayer
      * @param docInfo The DocInfo for this document that we're writing
      */
-    sync(fingerprint: string, data: any, docInfo: IDocInfo): Promise<void>;
+    sync(fingerprint: string, data: any, docInfo: IDocInfo): Promise<DatastoreMutation<boolean>>;
 
     /**
      * Return an array of DocMetaFiles currently in the repository.
@@ -82,3 +85,81 @@ export interface Datastore {
 
 // noinspection TsLint
 export type FileMeta = {[key: string]: string};
+
+/**
+ * The result of a Datastore mutation including latches for whether the result
+ * was full written or not.
+ */
+export interface DatastoreMutation<T> {
+
+    /**
+     * The mutation was written but still pending.  This happens when we're
+     * writing to a WAL or a local vs cloud environment where the write may need
+     * to be written to a cloud provider.
+     */
+    readonly written: Latch<T>;
+
+    /**
+     * The mutation was fully commmited and can not be lost.
+     */
+    readonly committed: Latch<T>;
+
+    /**
+     * Pipe the resolve and reject status of the latches to the target.
+     */
+    pipe<V>(converter: (input: T) => V, target: DatastoreMutation<V>): void;
+
+}
+
+abstract class AbstractDatastoreMutation<T> implements DatastoreMutation<T> {
+
+    public abstract readonly written: Latch<T>;
+    public abstract readonly committed: Latch<T>;
+
+    /**
+     * Pipe the resolve and reject status of the latches to the target.
+     */
+    public pipe<V>(converter: (input: T) => V, target: DatastoreMutation<V>): void {
+
+        this.pipeLatch(this.written, target.written, converter);
+        this.pipeLatch(this.committed, target.committed, converter);
+
+    }
+
+    private pipeLatch<V>(source: Latch<T>,
+                         target: Latch<V>,
+                         converter: (input: T) => V): void {
+
+        source.get()
+            .then((value: T) => target.resolve(converter(value)))
+            .catch(err => target.reject(err));
+
+    }
+
+}
+
+/**
+ * Fully commited ahead of time and with a given value. This is used for the
+ * disk datastore
+ */
+export class DefaultDatastoreMutation<T> extends AbstractDatastoreMutation<T> {
+
+    public readonly written = new Latch<T>();
+
+    public readonly committed = new Latch<T>();
+
+}
+
+export class CommittedDatastoreMutation<T> extends AbstractDatastoreMutation<T> {
+
+    public readonly written = new Latch<T>();
+
+    public readonly committed = new Latch<T>();
+
+    constructor(value: T) {
+        super();
+        this.written.resolve(value);
+        this.committed.resolve(value);
+    }
+
+}

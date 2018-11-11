@@ -9,7 +9,7 @@ import {DeleteResult} from '../DiskDatastore';
 import {PersistenceEventType} from '../PersistenceEventType';
 import {Backend} from '../Backend';
 import {DatastoreFile} from '../DatastoreFile';
-import {FileMeta} from '../Datastore';
+import {DatastoreMutation, FileMeta} from '../Datastore';
 import {Optional} from '../../util/ts/Optional';
 import {DocInfo} from '../../metadata/DocInfo';
 
@@ -52,11 +52,11 @@ export abstract class AbstractAdvertisingPersistenceLayer implements IListenable
 
     }
 
-    public async syncDocMeta(docMeta: DocMeta): Promise<DocInfo> {
+    public async syncDocMeta(docMeta: DocMeta): Promise<DatastoreMutation<DocInfo>> {
         return await this.sync(docMeta.docInfo.fingerprint, docMeta);
     }
 
-    public async sync(fingerprint: string, docMeta: DocMeta): Promise<DocInfo> {
+    public async sync(fingerprint: string, docMeta: DocMeta): Promise<DatastoreMutation<DocInfo>> {
 
         let eventType: PersistenceEventType;
 
@@ -66,17 +66,22 @@ export abstract class AbstractAdvertisingPersistenceLayer implements IListenable
             eventType = 'created';
         }
 
-        const docInfo = await this.persistenceLayer.sync(fingerprint, docMeta);
+        const datastoreMutation = await this.persistenceLayer.sync(fingerprint, docMeta);
 
-        this.broadcastEvent({
-            docInfo,
-            docMetaRef: {
-                fingerprint: docMeta.docInfo.fingerprint
-            },
-            eventType
+        datastoreMutation.written
+            .get().then((docInfo) => {
+
+            this.broadcastEvent({
+                docInfo,
+                docMetaRef: {
+                    fingerprint: docMeta.docInfo.fingerprint
+                },
+                eventType
+            });
+
         });
 
-        return docInfo;
+        return datastoreMutation;
 
     }
 

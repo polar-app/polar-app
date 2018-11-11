@@ -1,4 +1,4 @@
-import {Datastore, FileMeta} from './Datastore';
+import {Datastore, DefaultDatastoreMutation, FileMeta, DatastoreMutation} from './Datastore';
 import {Directories} from './Directories';
 import {DocMetaFileRef, DocMetaRef} from './DocMetaRef';
 import {DeleteResult} from './DiskDatastore';
@@ -69,7 +69,7 @@ export class DelegatedDatastore implements Datastore {
         return this.delegate.init();
     }
 
-    public sync(fingerprint: string, data: any, docInfo: IDocInfo): Promise<void> {
+    public sync(fingerprint: string, data: any, docInfo: IDocInfo): Promise<DatastoreMutation<boolean>> {
         return this.delegate.sync(fingerprint, data, docInfo);
     }
 

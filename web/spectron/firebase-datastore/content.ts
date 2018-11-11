@@ -42,7 +42,7 @@ export class Tester {
 
         if (user) {
 
-            await this.showUser(user!)
+            await this.showUser(user!);
 
             // firestore = firebase.firestore();
             //
@@ -92,18 +92,48 @@ export class Tester {
             // snapshot.metadata.fromCache, snapshot.metadata,
             // snapshot);
 
+
+            // https://firebase.google.com/docs/reference/js/firebase.firestore.SnapshotMetadata
+            //
+            // fromCache
+            // boolean
+            //
+            // True if the snapshot was created from cached data rather than
+            // guaranteed up-to-date server data. If your listener has opted
+            // into metadata updates (via SnapshotListenOptions) you will
+            // receive another snapshot with fromCache set to false once the
+            // client has received up-to-date data from the backend.
+            //
+            // hasPendingWrites
+            // boolean
+            //
+            // True if the snapshot includes local writes (set() or update()
+            // calls) that haven't been committed to the backend yet.
+            //
+            // If your listener has opted into metadata updates via
+            // SnapshotListenOptions, you receive another snapshot with
+            // hasPendingWrites set to false once the writes have been committed
+            // to the backend.
+
             const onSnapshot = (snapshot: firebase.firestore.QuerySnapshot) => {
 
-                console.log("FIXME onSnapshot snapshot: ", snapshot)
+                console.log("FIXME onSnapshot: ===============================");
+
+                console.log("FIXME onSnapshot snapshot: ", snapshot);
+
+                console.log("FIXME: onSnapshot: We have N docs: " + snapshot.docs.length);
+                console.log("FIXME: onSnapshot: We have N docChanges: " + snapshot.docChanges().length);
+
+                console.log("FIXME: onSnapshot: docs: ", snapshot.docs);
 
 
-                console.log("FIXME: onSnapshot: We have N docs: " + snapshot.docs.length)
-                console.log("FIXME: onSnapshot: We have N docChanges: " + snapshot.docChanges().length)
+                console.log("FIXME: onSnapshot: NR docChanges: ", snapshot.docChanges().length);
 
-                console.log("FIXME: onSnapshot: docs: ", snapshot.docs)
-                console.log("FIXME: onSnapshot: docChanges: ", snapshot.docChanges())
+                console.log("FIXME: onSnapshot: docChanges: ", snapshot.docChanges());
 
                 for (const docChange of snapshot.docChanges()) {
+
+                    console.log("FIXME id: ", docChange.doc.id);
 
                     const metadataTrace: MetadataTrace = {
                         id: docChange.doc.id,
@@ -112,7 +142,7 @@ export class Tester {
                         doc: docChange.doc.data()
                     };
 
-                    console.log("FIXME onSnapshot/docChange docChange: ", docChange)
+                    console.log("FIXME onSnapshot/docChange docChange: ", docChange);
                     console.log("FIXME onSnapshot/docChange metadataTrace: ", metadataTrace);
 
                     metadataTraces.push(metadataTrace);
@@ -133,9 +163,11 @@ export class Tester {
             console.log("FIXME: id0: " + id0);
             console.log("FIXME: id1: " + id1);
 
-            for (const id of [id0, id1]) {
+            const nrWrites = 1;
 
-                for (let idx = 0; idx < 2; idx++) {
+            for (const id of [id0]) {
+
+                for (let idx = 0; idx < nrWrites; idx++) {
 
                     console.log("FIXME: writing with id: " + id);
 
@@ -200,7 +232,7 @@ export class Tester {
 
             describe('test basic offline write functionality', async function() {
 
-                it("snapshot offline first behavior", async function () {
+                it("snapshot offline first behavior", async function() {
 
                 });
 
@@ -221,7 +253,7 @@ export class Tester {
 
             mocha.run((nrFailures: number) => {
 
-                this.state.testResultWriter.write(nrFailures == 0)
+                this.state.testResultWriter.write(nrFailures === 0)
                     .catch(err => console.error("Unable to write results: ", err));
 
             });

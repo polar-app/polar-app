@@ -1,4 +1,4 @@
-import {Datastore, FileMeta} from './Datastore';
+import {Datastore, DefaultDatastoreMutation, FileMeta} from './Datastore';
 import {Directories} from './Directories';
 import {Firebase} from '../firestore/Firebase';
 import {Firestore} from '../firestore/Firestore';
@@ -86,9 +86,9 @@ export class CloudAwareDatastore implements Datastore {
         return this.local.deleteFile(backend, name);
     }
 
-    public async sync(fingerprint: string, data: string, docInfo: DocInfo) {
+    public async sync(fingerprint: string, data: string, docInfo: DocInfo): Promise<DefaultDatastoreMutation<boolean>> {
 
-        // FIXME:
+        throw new Error("Not implemented");
 
     }
 

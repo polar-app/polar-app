@@ -1,4 +1,4 @@
-import {Datastore, FileMeta} from './Datastore';
+import {Datastore, DefaultDatastoreMutation, FileMeta} from './Datastore';
 import {Preconditions} from '../Preconditions';
 import {Logger} from '../logger/Logger';
 import {DocMetaFileRef, DocMetaRef} from './DocMetaRef';
@@ -219,7 +219,15 @@ export class DiskDatastore implements Datastore {
 
         log.info(`Writing data to state file: ${statePath}`);
 
-        return await Files.writeFileAsync(statePath, data, {encoding: 'utf8'});
+        const result = new DefaultDatastoreMutation<boolean>();
+
+        Files.writeFileAsync(statePath, data, {encoding: 'utf8'})
+            .then(() => {
+                result.written.resolve(true);
+                result.committed.resolve(true);
+            });
+
+        return result;
 
     }
 

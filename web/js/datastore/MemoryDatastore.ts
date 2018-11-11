@@ -1,7 +1,7 @@
 /**
  * Datastore just in memory with no on disk persistence.
  */
-import {Datastore} from './Datastore';
+import {Datastore, DefaultDatastoreMutation, CommittedDatastoreMutation} from './Datastore';
 import {Preconditions} from '../Preconditions';
 import {DocMetaFileRef, DocMetaRef} from './DocMetaRef';
 import {FilePaths} from '../util/FilePaths';
@@ -106,11 +106,13 @@ export class MemoryDatastore implements Datastore {
     /**
      * Write the datastore to disk.
      */
-    public async sync(fingerprint: string, data: string, docInfo: DocInfo) {
+    public async sync(fingerprint: string, data: string, docInfo: DocInfo): Promise<DefaultDatastoreMutation<boolean>> {
 
         Preconditions.assertTypeOf(data, "string", "data");
 
         this.docMetas[fingerprint] = data;
+
+        return new CommittedDatastoreMutation<boolean>(true);
     }
 
     public async getDocMetaFiles(): Promise<DocMetaRef[]> {

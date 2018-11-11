@@ -156,6 +156,7 @@ export class FirebaseDatastore implements Datastore {
     }
 
     public async getFile(backend: Backend, name: string): Promise<Optional<DatastoreFile>> {
+
         DatastoreFiles.assertValidFileName(name);
 
         const localFile = await this.local.getFile(backend, name);
@@ -174,7 +175,7 @@ export class FirebaseDatastore implements Datastore {
 
         const fileRef = storage.ref().child(`${backend}/${name}`);
 
-        const url: string = await fileRef.getDownloadURL()
+        const url: string = await fileRef.getDownloadURL();
         const meta = await fileRef.getMetadata();
 
         return Optional.of({backend, name, url, meta});
@@ -289,7 +290,7 @@ export class FirebaseDatastore implements Datastore {
 
             const record = <RecordHolder<DocMetaHolder>> docChange.doc.data();
 
-            console.log("FIXME: data: " ,docChange.doc.data(),snapshot.metadata  )
+            console.log("FIXME: data: " , docChange.doc.data(), snapshot.metadata);
 
             switch (docChange.type) {
 
@@ -407,11 +408,11 @@ interface Mutation {
  */
 class ResolveablePromiseIndex<T> {
 
-    private backing: {[id: string]: ResolvablePromise<T>[]} = {};
+    private backing: {[id: string]: Array<ResolvablePromise<T>>} = {};
 
     public add(id: string, promise: ResolvablePromise<T>): void {
 
-        if(id in this.backing) {
+        if (id in this.backing) {
             this.backing[id].push(promise);
         } else {
             this.backing[id] = [promise];
@@ -426,7 +427,7 @@ class ResolveablePromiseIndex<T> {
 
         const promises = this.backing[id];
 
-        if(promises) {
+        if (promises) {
 
             for (const promise of promises) {
                 promise.resolve(value);

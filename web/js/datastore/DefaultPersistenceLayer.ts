@@ -1,4 +1,4 @@
-import {Datastore, FileMeta} from './Datastore';
+import {Datastore, FileMeta, DatastoreMutation, DefaultDatastoreMutation} from './Datastore';
 import {DocMeta} from '../metadata/DocMeta';
 import {DocMetas} from '../metadata/DocMetas';
 import {isPresent, Preconditions} from '../Preconditions';
@@ -71,14 +71,14 @@ export class DefaultPersistenceLayer implements IPersistenceLayer {
     /**
      * Convenience method to not require the fingerprint.
      */
-    public async syncDocMeta(docMeta: DocMeta): Promise<DocInfo> {
+    public async syncDocMeta(docMeta: DocMeta): Promise<DatastoreMutation<DocInfo>> {
         return this.sync(docMeta.docInfo.fingerprint, docMeta);
     }
 
     /**
      * Write the datastore to disk.
      */
-    public async sync(fingerprint: string, docMeta: DocMeta): Promise<DocInfo> {
+    public async sync(fingerprint: string, docMeta: DocMeta): Promise<DatastoreMutation<DocInfo>> {
 
         Preconditions.assertNotNull(fingerprint, "fingerprint");
         Preconditions.assertNotNull(docMeta, "docMeta");
@@ -142,9 +142,13 @@ export class DefaultPersistenceLayer implements IPersistenceLayer {
 
         const docInfo = Object.assign({}, docMeta.docInfo);
 
-        await this.datastore.sync(fingerprint, data, docInfo);
+        const result = new DefaultDatastoreMutation<DocInfo>();
 
-        return docInfo;
+        const datastoreResult = await this.datastore.sync(fingerprint, data, docInfo);
+
+        datastoreResult.pipe(() => docInfo, result);
+
+        return result;
 
     }
 

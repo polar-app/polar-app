@@ -82,3 +82,10 @@
 
 
 
+# TODO:
+
+    - if there is a race on startup with the existing snapshots docs and whether
+      we have ot check fi they've been fetched locally.. it's possible that a
+      remote doc is pulled down, we get a notice that it's
+ 
+
