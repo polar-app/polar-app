@@ -1,4 +1,4 @@
-import {Datastore, DefaultDatastoreMutation, FileMeta} from './Datastore';
+import {Datastore, DatastoreMutation, DefaultDatastoreMutation, FileMeta, BatchDatastoreMutation, DatastoreMutations} from './Datastore';
 import {Directories} from './Directories';
 import {Firebase} from '../firestore/Firebase';
 import {Firestore} from '../firestore/Firestore';
@@ -67,9 +67,9 @@ export class CloudAwareDatastore implements Datastore {
 
         await this.remote.addFile(backend, name, data, meta);
 
-        // TODO: can't we just wait until the event is fired when it's pulled down
-        // as part of the normal snapshot mechanism.?  That might be best as we
-        // would be adding it twice.
+        // TODO: can't we just wait until the event is fired when it's pulled
+        // down as part of the normal snapshot mechanism.?  That might be best
+        // as we would be adding it twice.
         return this.local.addFile(backend, name, data, meta);
 
     }
@@ -86,10 +86,26 @@ export class CloudAwareDatastore implements Datastore {
         return this.local.deleteFile(backend, name);
     }
 
-    public async sync(fingerprint: string, data: string, docInfo: DocInfo): Promise<void> {
+    public async sync(fingerprint: string,
+                      data: string,
+                      docInfo: DocInfo,
+                      datastoreMutation: DatastoreMutation<boolean> = new DefaultDatastoreMutation()): Promise<void> {
 
-        throw new Error("Not implemented");
+        const remoteCoordinator = new DefaultDatastoreMutation<boolean>();
+        const localCoordinator = new DefaultDatastoreMutation<boolean>();
 
+        const syncPromise = this.remote.sync(fingerprint, data, docInfo, remoteCoordinator);
+
+        remoteCoordinator.written.get()
+            .then(() => {
+                // once we've written to the local firestore cache, we can write
+                // to the local disk store.
+                this.local.sync(fingerprint, data, docInfo, localCoordinator);
+             });
+
+        DatastoreMutations.batched(remoteCoordinator, localCoordinator, datastoreMutation);
+
+        return syncPromise;
     }
 
     public async getDocMetaFiles(): Promise<DocMetaRef[]> {

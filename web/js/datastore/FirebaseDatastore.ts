@@ -1,4 +1,4 @@
-import {Datastore, FileMeta} from './Datastore';
+import {Datastore, DatastoreMutation, DefaultDatastoreMutation, FileMeta} from './Datastore';
 import {Logger} from '../logger/Logger';
 import {DocMetaFileRef, DocMetaRef} from './DocMetaRef';
 import {Directories} from './Directories';
@@ -218,7 +218,10 @@ export class FirebaseDatastore implements Datastore {
     /**
      * Write the datastore to disk.
      */
-    public async sync(fingerprint: string, data: string, docInfo: DocInfo) {
+    public async sync(fingerprint: string,
+                      data: string,
+                      docInfo: DocInfo,
+                      datastoreMutation: DatastoreMutation<boolean> = new DefaultDatastoreMutation()) {
 
         const uid = this.getUserID();
         const id = this.computeDocMetaID(uid, fingerprint);
@@ -241,10 +244,22 @@ export class FirebaseDatastore implements Datastore {
             value: docMetaHolder
         };
 
-        await this.firestore!
-            .collection(DatastoreCollection.DOC_META)
-            .doc(id)
-            .set(recordHolder);
+        const ref = this.firestore!.collection(DatastoreCollection.DOC_META).doc(id);
+
+        ref.onSnapshot({includeMetadataChanges: true}, snapshot => {
+
+            if (snapshot.metadata.fromCache && snapshot.metadata.hasPendingWrites) {
+                datastoreMutation.written.resolve(true);
+            }
+
+            if (!snapshot.metadata.fromCache && !snapshot.metadata.hasPendingWrites) {
+                // it's been committed remotely
+                datastoreMutation.committed.resolve(true);
+            }
+
+        });
+
+        await ref.set(recordHolder);
 
         await latch.get();
 
