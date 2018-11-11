@@ -87,14 +87,11 @@ export class CloudAwareDatastore implements Datastore {
                       docInfo: DocInfo,
                       datastoreMutation: DatastoreMutation<boolean> = new DefaultDatastoreMutation()): Promise<void> {
 
-        const remoteCoordinator = new DefaultDatastoreMutation<boolean>();
-        const localCoordinator = new DefaultDatastoreMutation<boolean>();
-
-        DatastoreMutations.executeBatchedWrite(remoteCoordinator,
-                                               localCoordinator,
-                                               datastoreMutation,
-                                               () => this.remote.sync(fingerprint, data, docInfo, remoteCoordinator),
-                                               () => this.local.sync(fingerprint, data, docInfo, localCoordinator));
+        return DatastoreMutations.executeBatchedWrite(datastoreMutation,
+                                                      (remoteCoordinator) =>
+                                                          this.remote.sync(fingerprint, data, docInfo, remoteCoordinator),
+                                                      (localCoordinator) =>
+                                                          this.local.sync(fingerprint, data, docInfo, localCoordinator));
 
     }
 

@@ -1,5 +1,5 @@
 import {Latch} from '../util/Latch';
-import {DatastoreMutation} from './DatastoreMutation';
+import {DatastoreMutation, DefaultDatastoreMutation} from './DatastoreMutation';
 
 export class DatastoreMutations {
 
@@ -46,17 +46,17 @@ export class DatastoreMutations {
      * @param remoteSync
      * @param localSync
      */
-    public static async executeBatchedWrite<T>(remoteCoordinator: DatastoreMutation<T>,
-                                               localCoordinator: DatastoreMutation<T>,
-                                               datastoreMutation: DatastoreMutation<T>,
-                                               remoteSync: () => Promise<void>,
-                                               localSync: () => Promise<void>) {
+    public static async executeBatchedWrite<T>(datastoreMutation: DatastoreMutation<T>,
+                                               remoteSync: (remoteCoordinator: DatastoreMutation<T>) => Promise<void>,
+                                               localSync: (localCoordinator: DatastoreMutation<T>) => Promise<void>,
+                                               remoteCoordinator: DatastoreMutation<T> = new DefaultDatastoreMutation(),
+                                               localCoordinator: DatastoreMutation<T> = new DefaultDatastoreMutation()) {
 
-        remoteSync();
+        remoteSync(remoteCoordinator);
 
         remoteCoordinator.written.get()
             .then(() => {
-                localSync();
+                localSync(localCoordinator);
             });
 
         DatastoreMutations.batched(remoteCoordinator, localCoordinator, datastoreMutation);
