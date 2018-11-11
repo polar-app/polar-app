@@ -107,14 +107,10 @@ export class FirebaseDatastore implements Datastore {
         const uid = this.getUserID();
         const id = this.computeDocMetaID(uid, docMetaFileRef.fingerprint);
 
-        console.log("FIXME999 waiting for delete to finish... ");
-
         const documentSnapshot = await this.firestore!
             .collection(DatastoreCollection.DOC_META)
             .doc(id)
             .delete();
-
-        console.log("FIXME999 waiting for delete to finish... done");
 
         // TODO: this is a major hack but we are only deleting remote data here
         // and not deleting any local data.
@@ -408,8 +404,6 @@ export interface DocMetaHolder {
     // URL, tags, etc.
     readonly docInfo: IDocInfo;
 
-    // FIXME: change this type to DocMeta and then disable indexing on it in
-    // firebase as most of the values here don't need to be indexed.
     readonly value: string;
 
 }
