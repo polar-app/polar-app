@@ -144,8 +144,6 @@ export class DefaultPersistenceLayer implements IPersistenceLayer {
 
         const docInfo = Object.assign({}, docMeta.docInfo);
 
-        const result = new DefaultDatastoreMutation<DocInfo>();
-
         const syncMutation = new DefaultDatastoreMutation<boolean>();
         syncMutation.pipe(() => docInfo, datastoreMutation);
 
