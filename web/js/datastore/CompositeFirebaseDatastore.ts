@@ -32,7 +32,7 @@ const log = Logger.create();
 // TODO: all files need to also have associated metadata in firestore and
 // the binary data is stored in firebase storage.
 
-export class FirebaseDatastore implements Datastore {
+export class CompositeFirebaseDatastore implements Datastore {
 
     public readonly stashDir: string;
 

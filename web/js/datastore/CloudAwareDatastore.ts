@@ -10,7 +10,7 @@ import {Optional} from '../util/ts/Optional';
 import {DocInfo} from '../metadata/DocInfo';
 import {Hashcodes} from '../Hashcodes';
 import {Preconditions} from '../Preconditions';
-import {DocMetaHolder, RecordHolder, Visibility} from './FirebaseDatastore';
+import {DocMetaHolder, RecordHolder, Visibility} from './CompositeFirebaseDatastore';
 import * as firebase from '../firestore/lib/firebase';
 
 /**
