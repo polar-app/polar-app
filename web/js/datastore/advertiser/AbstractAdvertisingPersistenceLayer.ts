@@ -61,13 +61,8 @@ export abstract class AbstractAdvertisingPersistenceLayer implements IListenable
                       docMeta: DocMeta,
                       datastoreMutation: DatastoreMutation<DocInfo> = new DefaultDatastoreMutation()): Promise<DocInfo> {
 
-        let eventType: PersistenceEventType;
-
-        if (this.contains(fingerprint)) {
-            eventType = 'updated';
-        } else {
-            eventType = 'created';
-        }
+        const eventType: PersistenceEventType
+            = this.contains(fingerprint) ? 'updated' : 'created';
 
         const docInfo = await this.persistenceLayer.sync(fingerprint, docMeta, datastoreMutation);
 
