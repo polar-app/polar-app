@@ -79,7 +79,15 @@ export class DiskDatastore implements Datastore {
         const docDir = FilePaths.join(this.dataDir, docMetaFileRef.fingerprint);
         const statePath = FilePaths.join(docDir, 'state.json');
 
-        const docPath = FilePaths.join(this.directories.stashDir, docMetaFileRef.filename);
+        let docPath: string | undefined;
+
+        if (docMetaFileRef.filename) {
+
+            // FIXME: remove this via deleteFile NOT delete since I'm storing it as
+            // a binary file now.
+            docPath = FilePaths.join(this.directories.stashDir, docMetaFileRef.filename);
+
+        }
 
         log.info(`Deleting statePath ${statePath} and docPath ${docPath}`);
 
@@ -88,7 +96,7 @@ export class DiskDatastore implements Datastore {
 
         return {
             docMetaFile: await Files.deleteAsync(statePath),
-            dataFile: await Files.deleteAsync(docPath)
+            dataFile: docPath !== undefined ? await Files.deleteAsync(docPath) : undefined
         };
 
     }
@@ -473,7 +481,7 @@ export interface DeleteResult {
 
     docMetaFile: Readonly<FileDeleted>;
 
-    dataFile: Readonly<FileDeleted>;
+    dataFile?: Readonly<FileDeleted>;
 
 }
 

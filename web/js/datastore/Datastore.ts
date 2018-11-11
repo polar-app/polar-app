@@ -13,7 +13,7 @@ import input = Simulate.input;
 import {isPresent} from '../Preconditions';
 import {DatastoreMutation} from './DatastoreMutation';
 
-export interface Datastore {
+export interface Datastore extends BinaryDatastore {
 
     /**
      * @Deprecated
@@ -46,22 +46,6 @@ export interface Datastore {
     delete(docMetaFileRef: DocMetaFileRef): Promise<Readonly<DeleteResult>>;
 
     /**
-     * Add file data to the datastore.  This is used for binary data or other
-     * data types that need to be stored. This is primarily designed for video,
-     * audio, and documents like PDF, ePub, etc.
-     */
-    addFile(backend: Backend,
-            name: string,
-            data: FileRef | Buffer | string,
-            meta?: FileMeta): Promise<DatastoreFile>;
-
-    getFile(backend: Backend, name: string): Promise<Optional<DatastoreFile>>;
-
-    containsFile(backend: Backend, name: string): Promise<boolean>;
-
-    deleteFile(backend: Backend, name: string): Promise<void>;
-
-    /**
      * Get the data for the DocMeta object we currently in the datastore for
      * this given fingerprint or null if it does not exist.
      * @return {string} A JSON string representing the DocMeta which is decoded
@@ -82,6 +66,36 @@ export interface Datastore {
      * Return an array of DocMetaFiles currently in the repository.
      */
     getDocMetaFiles(): Promise<DocMetaRef[]>;
+
+}
+
+/**
+ * A datastore that support storage of binary data (images, videos, PDFs, etc).
+ */
+interface BinaryDatastore extends ReadableBinaryDatastore, WritableBinaryDatastore {
+
+}
+
+interface ReadableBinaryDatastore {
+
+    containsFile(backend: Backend, name: string): Promise<boolean>;
+    getFile(backend: Backend, name: string): Promise<Optional<DatastoreFile>>;
+
+}
+
+interface WritableBinaryDatastore {
+
+    /**
+     * Add file data to the datastore.  This is used for binary data or other
+     * data types that need to be stored. This is primarily designed for video,
+     * audio, and documents like PDF, ePub, etc.
+     */
+    addFile(backend: Backend,
+            name: string,
+            data: FileRef | Buffer | string,
+            meta?: FileMeta): Promise<DatastoreFile>;
+
+    deleteFile(backend: Backend, name: string): Promise<void>;
 
 }
 

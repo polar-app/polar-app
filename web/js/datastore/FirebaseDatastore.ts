@@ -82,7 +82,14 @@ export class FirebaseDatastore implements Datastore {
      * fingerprint
      */
     public async contains(fingerprint: string): Promise<boolean> {
-        throw new Error("Not implemented");
+
+        // TODO: this isn't particularly efficient now but I don't think we're
+        // actually using contains() for anything and we might want to remove
+        // it since it's not very efficient if we just call getDocMeta anyway.
+        const docMeta = await this.getDocMeta(fingerprint);
+
+        return docMeta !== null;
+
     }
 
     /**
@@ -100,19 +107,14 @@ export class FirebaseDatastore implements Datastore {
         const uid = this.getUserID();
         const id = this.computeDocMetaID(uid, docMetaFileRef.fingerprint);
 
-        const latch = new Latch<Mutation>();
-
-        this.latchIndex.add(id, latch);
+        console.log("FIXME999 waiting for delete to finish... ");
 
         const documentSnapshot = await this.firestore!
             .collection(DatastoreCollection.DOC_META)
             .doc(id)
             .delete();
 
-        // wait for this promise to resolve and then perform the local delete of
-        // the local file.
-
-        await latch.get();
+        console.log("FIXME999 waiting for delete to finish... done");
 
         // TODO: this is a major hack but we are only deleting remote data here
         // and not deleting any local data.
@@ -127,7 +129,22 @@ export class FirebaseDatastore implements Datastore {
      * fingerprint or null if it does not exist.
      */
     public async getDocMeta(fingerprint: string): Promise<string | null> {
-        throw new Error("not implemented");
+
+        const uid = this.getUserID();
+        const id = this.computeDocMetaID(uid, fingerprint);
+
+        const ref = this.firestore!.collection(DatastoreCollection.DOC_META).doc(id);
+
+        const snapshot = await ref.get();
+
+        const recordHolder = <RecordHolder<DocMetaHolder> | undefined> snapshot.data();
+
+        if (! recordHolder) {
+            return null;
+        }
+
+        return recordHolder.value.value;
+
     }
 
     // TODO: the cloud storage operations are possibly unsafe and could
@@ -184,6 +201,7 @@ export class FirebaseDatastore implements Datastore {
     }
 
     public async containsFile(backend: Backend, name: string): Promise<boolean> {
+
         DatastoreFiles.assertValidFileName(name);
 
         // TODO: we should have some cache here to avoid checking the server too
@@ -447,3 +465,5 @@ class LatchIndex<T> {
     }
 
 }
+
+

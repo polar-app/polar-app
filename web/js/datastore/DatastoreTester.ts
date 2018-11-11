@@ -23,7 +23,7 @@ const tmpdir = os.tmpdir();
 
 export class DatastoreTester {
 
-    public static test(datastoreFactory: () => Datastore) {
+    public static test(datastoreFactory: () => Datastore, hasLocalFiles: boolean = true) {
 
         describe('Write and discover documents', function() {
 
@@ -54,6 +54,8 @@ export class DatastoreTester {
 
                 docMeta.docInfo.filename = `${fingerprint}.phz`;
 
+                await persistenceLayer.delete({fingerprint, docInfo: docMeta.docInfo});
+
                 const contains = await persistenceLayer.contains(fingerprint);
 
                 assert.equal(contains, false);
@@ -63,9 +65,6 @@ export class DatastoreTester {
                 const datastoreMutation = new DefaultDatastoreMutation<DocInfo>();
 
                 await persistenceLayer.sync(fingerprint, docMeta, datastoreMutation);
-
-                await datastoreMutation.written.get();
-                await datastoreMutation.committed.get();
 
             });
 
@@ -88,7 +87,7 @@ export class DatastoreTester {
                 delete docMeta0!.docInfo.nrAnnotations;
                 delete docMeta0!.docInfo.uuid;
 
-                assert.equal(isPresent(docMeta0), true);
+                assert.equal(isPresent(docMeta0), true, "docMeta0 is not present");
 
                 assertJSON(Dictionaries.sorted(docMeta), Dictionaries.sorted(docMeta0));
 
@@ -108,15 +107,24 @@ export class DatastoreTester {
                 const docPath = FilePaths.join(directories.stashDir, `${fingerprint}.phz`);
                 const statePath = FilePaths.join(directories.dataDir, fingerprint, 'state.json');
 
-                assert.ok(await Files.existsAsync(docPath));
-                assert.ok(await Files.existsAsync(statePath));
+                if (hasLocalFiles) {
+                    assert.ok(await Files.existsAsync(docPath));
+                    assert.ok(await Files.existsAsync(statePath));
 
+                }
+
+                console.log("FIXME88 before...");
                 await persistenceLayer.delete(docMetaFileRef);
+                console.log("FIXME88 before...done");
 
-                // make sure the files were deleted
+                if (hasLocalFiles) {
 
-                assert.ok(! await Files.existsAsync(docPath));
-                assert.ok(! await Files.existsAsync(statePath));
+                    // make sure the files were deleted
+
+                    assert.ok(! await Files.existsAsync(docPath));
+                    assert.ok(! await Files.existsAsync(statePath));
+
+                }
 
             });
 

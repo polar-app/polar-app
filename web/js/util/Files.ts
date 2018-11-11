@@ -11,6 +11,11 @@ const rimraf = require('rimraf');
 export class Files {
 
     public static removeDirectoryRecursively(path: string) {
+
+        if (! fs.existsSync(path)) {
+            return;
+        }
+
         rimraf.sync(path);
     }
 

@@ -15,7 +15,7 @@ export interface DocMetaRef {
  */
 export interface DocMetaFileRef extends DocMetaRef {
 
-    readonly filename: string;
+    readonly filename?: string;
 
     readonly docInfo: IDocInfo;
 
