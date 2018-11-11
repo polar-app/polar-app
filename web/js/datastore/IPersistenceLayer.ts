@@ -31,14 +31,14 @@ export interface IPersistenceLayer {
 
     getDocMeta(fingerprint: string): Promise<DocMeta | undefined>;
 
-    syncDocMeta(docMeta: DocMeta): Promise<DatastoreMutation<DocInfo>>;
+    syncDocMeta(docMeta: DocMeta, datastoreMutation?: DatastoreMutation<DocInfo>): Promise<DocInfo>;
 
     /**
      * Return the DocInfo written. The DocInfo may be updated on commit
      * including updating lastUpdated, etc.
      *
      */
-    sync(fingerprint: string, docMeta: DocMeta): Promise<DatastoreMutation<DocInfo>>;
+    sync(fingerprint: string, docMeta: DocMeta, datastoreMutation?: DatastoreMutation<DocInfo>): Promise<DocInfo>;
 
     getDocMetaFiles(): Promise<DocMetaRef[]>;
 

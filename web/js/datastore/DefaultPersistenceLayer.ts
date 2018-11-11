@@ -71,14 +71,16 @@ export class DefaultPersistenceLayer implements IPersistenceLayer {
     /**
      * Convenience method to not require the fingerprint.
      */
-    public async syncDocMeta(docMeta: DocMeta): Promise<DatastoreMutation<DocInfo>> {
-        return this.sync(docMeta.docInfo.fingerprint, docMeta);
+    public async syncDocMeta(docMeta: DocMeta, datastoreMutation?: DatastoreMutation<DocInfo>): Promise<DocInfo> {
+        return this.sync(docMeta.docInfo.fingerprint, docMeta, datastoreMutation);
     }
 
     /**
      * Write the datastore to disk.
      */
-    public async sync(fingerprint: string, docMeta: DocMeta): Promise<DatastoreMutation<DocInfo>> {
+    public async sync(fingerprint: string,
+                      docMeta: DocMeta,
+                      datastoreMutation: DatastoreMutation<DocInfo> = new DefaultDatastoreMutation()): Promise<DocInfo> {
 
         Preconditions.assertNotNull(fingerprint, "fingerprint");
         Preconditions.assertNotNull(docMeta, "docMeta");
@@ -144,11 +146,12 @@ export class DefaultPersistenceLayer implements IPersistenceLayer {
 
         const result = new DefaultDatastoreMutation<DocInfo>();
 
-        const datastoreResult = await this.datastore.sync(fingerprint, data, docInfo);
+        const syncMutation = new DefaultDatastoreMutation<boolean>();
+        syncMutation.pipe(() => docInfo, datastoreMutation);
 
-        datastoreResult.pipe(() => docInfo, result);
+        await this.datastore.sync(fingerprint, data, docInfo, syncMutation);
 
-        return result;
+        return docInfo;
 
     }
 

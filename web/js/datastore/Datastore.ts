@@ -10,6 +10,7 @@ import {FileRef} from '../util/Files';
 import {Latch} from '../util/Latch';
 import {Simulate} from 'react-dom/test-utils';
 import input = Simulate.input;
+import {isPresent} from '../Preconditions';
 
 export interface Datastore {
 
@@ -74,7 +75,7 @@ export interface Datastore {
      * @param data The RAW data to decode by the PersistenceLayer
      * @param docInfo The DocInfo for this document that we're writing
      */
-    sync(fingerprint: string, data: any, docInfo: IDocInfo): Promise<DatastoreMutation<boolean>>;
+    sync(fingerprint: string, data: any, docInfo: IDocInfo, datastoreMutation?: DatastoreMutation<boolean>): Promise<void>;
 
     /**
      * Return an array of DocMetaFiles currently in the repository.
@@ -109,6 +110,11 @@ export interface DatastoreMutation<T> {
      */
     pipe<V>(converter: (input: T) => V, target: DatastoreMutation<V>): void;
 
+    /**
+     * Handle input from a promise that resolves both latches.
+     */
+    handle<V>(promise: Promise<V>, converter: (input: V) => T): void;
+
 }
 
 abstract class AbstractDatastoreMutation<T> implements DatastoreMutation<T> {
@@ -123,6 +129,18 @@ abstract class AbstractDatastoreMutation<T> implements DatastoreMutation<T> {
 
         this.pipeLatch(this.written, target.written, converter);
         this.pipeLatch(this.committed, target.committed, converter);
+
+    }
+
+    public handle<V>(promise: Promise<V>, converter: (input: V) => T): void {
+
+        promise.then((result) => {
+            this.written.resolve(converter(result));
+            this.committed.resolve(converter(result));
+        }).catch(err => {
+            this.written.reject(err);
+            this.committed.reject(err);
+        });
 
     }
 
@@ -150,6 +168,9 @@ export class DefaultDatastoreMutation<T> extends AbstractDatastoreMutation<T> {
 
 }
 
+/**
+ *
+ */
 export class CommittedDatastoreMutation<T> extends AbstractDatastoreMutation<T> {
 
     public readonly written = new Latch<T>();

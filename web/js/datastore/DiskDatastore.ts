@@ -1,4 +1,4 @@
-import {Datastore, DefaultDatastoreMutation, FileMeta} from './Datastore';
+import {Datastore, DatastoreMutation, DefaultDatastoreMutation, FileMeta} from './Datastore';
 import {Preconditions} from '../Preconditions';
 import {Logger} from '../logger/Logger';
 import {DocMetaFileRef, DocMetaRef} from './DocMetaRef';
@@ -183,7 +183,10 @@ export class DiskDatastore implements Datastore {
     /**
      * Write the datastore to disk.
      */
-    public async sync(fingerprint: string, data: string, docInfo: DocInfo) {
+    public async sync(fingerprint: string,
+                      data: string,
+                      docInfo: DocInfo,
+                      datastoreMutation: DatastoreMutation<boolean> = new DefaultDatastoreMutation()) {
 
         Preconditions.assertTypeOf(data, "string", "data");
 
@@ -219,13 +222,9 @@ export class DiskDatastore implements Datastore {
 
         log.info(`Writing data to state file: ${statePath}`);
 
-        const result = new DefaultDatastoreMutation<boolean>();
+        const result = Files.writeFileAsync(statePath, data, {encoding: 'utf8'});
 
-        Files.writeFileAsync(statePath, data, {encoding: 'utf8'})
-            .then(() => {
-                result.written.resolve(true);
-                result.committed.resolve(true);
-            });
+        datastoreMutation.handle(result, () => true);
 
         return result;
 

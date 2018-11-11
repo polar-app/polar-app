@@ -9,7 +9,7 @@ import {DeleteResult} from '../DiskDatastore';
 import {PersistenceEventType} from '../PersistenceEventType';
 import {Backend} from '../Backend';
 import {DatastoreFile} from '../DatastoreFile';
-import {DatastoreMutation, FileMeta} from '../Datastore';
+import {DatastoreMutation, DefaultDatastoreMutation, FileMeta} from '../Datastore';
 import {Optional} from '../../util/ts/Optional';
 import {DocInfo} from '../../metadata/DocInfo';
 
@@ -52,11 +52,13 @@ export abstract class AbstractAdvertisingPersistenceLayer implements IListenable
 
     }
 
-    public async syncDocMeta(docMeta: DocMeta): Promise<DatastoreMutation<DocInfo>> {
-        return await this.sync(docMeta.docInfo.fingerprint, docMeta);
+    public async syncDocMeta(docMeta: DocMeta, datastoreMutation?: DatastoreMutation<DocInfo>): Promise<DocInfo> {
+        return await this.sync(docMeta.docInfo.fingerprint, docMeta, datastoreMutation);
     }
 
-    public async sync(fingerprint: string, docMeta: DocMeta): Promise<DatastoreMutation<DocInfo>> {
+    public async sync(fingerprint: string,
+                      docMeta: DocMeta,
+                      datastoreMutation: DatastoreMutation<DocInfo> = new DefaultDatastoreMutation()): Promise<DocInfo> {
 
         let eventType: PersistenceEventType;
 
@@ -66,22 +68,17 @@ export abstract class AbstractAdvertisingPersistenceLayer implements IListenable
             eventType = 'created';
         }
 
-        const datastoreMutation = await this.persistenceLayer.sync(fingerprint, docMeta);
+        const docInfo = await this.persistenceLayer.sync(fingerprint, docMeta, datastoreMutation);
 
-        datastoreMutation.written
-            .get().then((docInfo) => {
-
-            this.broadcastEvent({
-                docInfo,
-                docMetaRef: {
-                    fingerprint: docMeta.docInfo.fingerprint
-                },
-                eventType
-            });
-
+        this.broadcastEvent({
+            docInfo,
+            docMetaRef: {
+                fingerprint: docMeta.docInfo.fingerprint
+            },
+            eventType
         });
 
-        return datastoreMutation;
+        return docInfo;
 
     }
 
