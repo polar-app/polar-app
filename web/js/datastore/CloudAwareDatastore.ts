@@ -86,7 +86,7 @@ export class CloudAwareDatastore implements Datastore {
         return this.local.deleteFile(backend, name);
     }
 
-    public async sync(fingerprint: string, data: string, docInfo: DocInfo): Promise<DefaultDatastoreMutation<boolean>> {
+    public async sync(fingerprint: string, data: string, docInfo: DocInfo): Promise<void> {
 
         throw new Error("Not implemented");
 

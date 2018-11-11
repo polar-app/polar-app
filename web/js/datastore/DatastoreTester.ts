@@ -61,8 +61,7 @@ export class DatastoreTester {
 
                 await MockPHZWriter.write(FilePaths.create(datastore.stashDir, `${fingerprint}.phz`))
 
-                const datastoreMutation = await persistenceLayer.sync(fingerprint, docMeta);
-                await datastoreMutation.committed.get();
+                await persistenceLayer.sync(fingerprint, docMeta);
 
             });
 
