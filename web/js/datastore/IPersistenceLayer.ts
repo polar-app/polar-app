@@ -4,9 +4,10 @@ import {DocMeta} from '../metadata/DocMeta';
 import {Backend} from './Backend';
 import {DatastoreFile} from './DatastoreFile';
 import {Optional} from '../util/ts/Optional';
-import {DefaultDatastoreMutation, FileMeta, DatastoreMutation} from './Datastore';
+import {FileMeta} from './Datastore';
 import {DocInfo} from '../metadata/DocInfo';
 import {FileRef} from '../util/Files';
+import {DatastoreMutation} from './DatastoreMutation';
 
 export interface IPersistenceLayer {
 

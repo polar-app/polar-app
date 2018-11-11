@@ -1,17 +1,13 @@
-import {Datastore, DatastoreMutation, DefaultDatastoreMutation, FileMeta, BatchDatastoreMutation, DatastoreMutations} from './Datastore';
+import {Datastore, FileMeta} from './Datastore';
 import {Directories} from './Directories';
-import {Firebase} from '../firestore/Firebase';
-import {Firestore} from '../firestore/Firestore';
 import {DocMetaFileRef, DocMetaRef} from './DocMetaRef';
 import {DeleteResult} from './DiskDatastore';
 import {Backend} from './Backend';
 import {DatastoreFile} from './DatastoreFile';
 import {Optional} from '../util/ts/Optional';
 import {DocInfo} from '../metadata/DocInfo';
-import {Hashcodes} from '../Hashcodes';
-import {Preconditions} from '../Preconditions';
-import {DocMetaHolder, RecordHolder, Visibility} from './CompositeFirebaseDatastore';
-import * as firebase from '../firestore/lib/firebase';
+import {DefaultDatastoreMutation, DatastoreMutation} from './DatastoreMutation';
+import {DatastoreMutations} from './DatastoreMutations';
 
 /**
  * A CloudAwareDatastore allows us to have one datastore with a local copy and

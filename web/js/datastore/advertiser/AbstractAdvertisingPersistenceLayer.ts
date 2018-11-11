@@ -9,9 +9,10 @@ import {DeleteResult} from '../DiskDatastore';
 import {PersistenceEventType} from '../PersistenceEventType';
 import {Backend} from '../Backend';
 import {DatastoreFile} from '../DatastoreFile';
-import {DatastoreMutation, DefaultDatastoreMutation, FileMeta} from '../Datastore';
+import {FileMeta} from '../Datastore';
 import {Optional} from '../../util/ts/Optional';
 import {DocInfo} from '../../metadata/DocInfo';
+import {DatastoreMutation, DefaultDatastoreMutation} from '../DatastoreMutation';
 
 export abstract class AbstractAdvertisingPersistenceLayer implements IListenablePersistenceLayer {
 

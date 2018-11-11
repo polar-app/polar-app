@@ -1,4 +1,4 @@
-import {Datastore, DefaultDatastoreMutation, FileMeta, DatastoreMutation} from './Datastore';
+import {Datastore, FileMeta} from './Datastore';
 import {Directories} from './Directories';
 import {DocMetaFileRef, DocMetaRef} from './DocMetaRef';
 import {DeleteResult} from './DiskDatastore';
@@ -7,6 +7,7 @@ import {Backend} from './Backend';
 import {DatastoreFile} from './DatastoreFile';
 import {Optional} from '../util/ts/Optional';
 import {IDocInfo} from '../metadata/DocInfo';
+import {DatastoreMutation} from './DatastoreMutation';
 
 /**
  * A datastore that just forwards events to the given delegate.

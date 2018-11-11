@@ -1,4 +1,4 @@
-import {Datastore, DatastoreMutation, DefaultDatastoreMutation, FileMeta} from './Datastore';
+import {Datastore, FileMeta} from './Datastore';
 import {Logger} from '../logger/Logger';
 import {DocMetaFileRef, DocMetaRef} from './DocMetaRef';
 import {Directories} from './Directories';
@@ -18,6 +18,7 @@ import {ResolvablePromise} from '../util/ResolvablePromise';
 import {Dictionaries} from '../util/Dictionaries';
 import {DatastoreFiles} from './DatastoreFiles';
 import {Latch} from '../util/Latch';
+import {DatastoreMutation, DefaultDatastoreMutation} from './DatastoreMutation';
 
 const log = Logger.create();
 

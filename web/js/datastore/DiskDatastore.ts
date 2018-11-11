@@ -1,4 +1,4 @@
-import {Datastore, DatastoreMutation, DefaultDatastoreMutation, FileMeta} from './Datastore';
+import {Datastore, FileMeta} from './Datastore';
 import {Preconditions} from '../Preconditions';
 import {Logger} from '../logger/Logger';
 import {DocMetaFileRef, DocMetaRef} from './DocMetaRef';
@@ -15,6 +15,7 @@ import {Optional} from '../util/ts/Optional';
 import {DocInfo} from '../metadata/DocInfo';
 import {Platform, Platforms} from "../util/Platforms";
 import {DatastoreFiles} from './DatastoreFiles';
+import {DatastoreMutation, DefaultDatastoreMutation} from './DatastoreMutation';
 
 const log = Logger.create();
 
