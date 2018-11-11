@@ -285,7 +285,26 @@ export class FirebaseDatastore implements Datastore {
     }
 
     public async getDocMetaFiles(): Promise<DocMetaRef[]> {
-        throw new Error("Not implemented");
+
+        const uid = this.getUserID();
+
+        const snapshot = await this.firestore!
+            .collection(DatastoreCollection.DOC_META)
+            .where('uid', '==', uid)
+            .get();
+
+        const result: DocMetaRef[] = [];
+
+        for (const doc of snapshot.docs) {
+
+            const recordHolder = <RecordHolder<DocMetaHolder>> doc.data();
+
+            result.push({fingerprint: recordHolder.value.docInfo.fingerprint});
+
+        }
+
+        return result;
+
     }
 
     /**
