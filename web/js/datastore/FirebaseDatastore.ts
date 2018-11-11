@@ -151,9 +151,6 @@ export class FirebaseDatastore implements Datastore {
     // leave local files in place or too many remote files but this is good
     // for a first MVP pass.
 
-    // TODO: if the file is ONLY in firestore it won't be sync'd on a remote
-    // computer so we should try to pull it down just in time when requested.
-
     public async addFile(backend: Backend,
                          name: string,
                          data: Buffer | string,
@@ -168,18 +165,21 @@ export class FirebaseDatastore implements Datastore {
         let uploadTask: firebase.storage.UploadTask;
 
         if (typeof data === 'string') {
-            uploadTask = fileRef.putString(data);
+            uploadTask = fileRef.putString(data, 'raw', {customMetadata: meta});
         } else {
-            uploadTask = fileRef.put(Uint8Array.from(data));
-
+            uploadTask = fileRef.put(Uint8Array.from(data), {customMetadata: meta});
         }
 
-        await uploadTask;
+        // TODO: we can get progress from the uploadTask here.
+
+        const uploadTaskSnapshot = await uploadTask;
+
+        const downloadURL = uploadTaskSnapshot.downloadURL;
 
         return {
             backend,
             name,
-            url: "FIXME",
+            url: downloadURL!,
             meta
         };
 
@@ -194,7 +194,8 @@ export class FirebaseDatastore implements Datastore {
         const fileRef = storage.ref().child(`${backend}/${name}`);
 
         const url: string = await fileRef.getDownloadURL();
-        const meta = await fileRef.getMetadata();
+        const metadata = await fileRef.getMetadata();
+        const meta = metadata.customMetadata;
 
         return Optional.of({backend, name, url, meta});
 

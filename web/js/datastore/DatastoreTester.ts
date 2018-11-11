@@ -132,7 +132,9 @@ export class DatastoreTester {
 
                 const data = 'fake image data';
 
-                assert.ok(! await datastore.containsFile(Backend.IMAGE, 'test.jpg'));
+                await datastore.deleteFile(Backend.IMAGE, 'test.jpg');
+
+                assert.ok(! await datastore.containsFile(Backend.IMAGE, 'test.jpg'), "Datastore already contains file!");
 
                 const meta = {
                     "foo": "bar"
