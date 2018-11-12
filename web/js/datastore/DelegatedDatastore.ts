@@ -1,7 +1,7 @@
 import {Datastore, FileMeta} from './Datastore';
 import {Directories} from './Directories';
 import {DocMetaFileRef, DocMetaRef} from './DocMetaRef';
-import {DeleteResult} from './DiskDatastore';
+import {DeleteResult} from './Datastore';
 import {Preconditions} from '../Preconditions';
 import {Backend} from './Backend';
 import {DatastoreFile} from './DatastoreFile';

@@ -1,5 +1,5 @@
 import {DocMetaFileRef, DocMetaRef} from './DocMetaRef';
-import {DeleteResult} from './DiskDatastore';
+import {DeleteResult} from './Datastore';
 import {DocMeta} from '../metadata/DocMeta';
 import {Backend} from './Backend';
 import {DatastoreFile} from './DatastoreFile';
@@ -28,7 +28,7 @@ export interface IPersistenceLayer {
      *
      * @param docMetaFileRef The file to delete.
      */
-    delete(docMetaFileRef: DocMetaFileRef): Promise<DeleteResult>;
+    delete(docMetaFileRef: DocMetaFileRef, datastoreMutation?: DatastoreMutation<boolean>): Promise<DeleteResult>;
 
     getDocMeta(fingerprint: string): Promise<DocMeta | undefined>;
 

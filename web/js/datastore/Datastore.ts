@@ -1,12 +1,12 @@
 // A datastore that supports ledgers and checkpoints.
 import {DocMetaFileRef, DocMetaRef} from './DocMetaRef';
-import {DeleteResult} from './DiskDatastore';
+import {DeleteResult} from './Datastore';
 import {Directories} from './Directories';
 import {Backend} from './Backend';
 import {DatastoreFile} from './DatastoreFile';
 import {Optional} from '../util/ts/Optional';
 import {IDocInfo} from '../metadata/DocInfo';
-import {FileRef} from '../util/Files';
+import {FileDeleted, FileRef} from '../util/Files';
 import {Latch} from '../util/Latch';
 import {Simulate} from 'react-dom/test-utils';
 import input = Simulate.input;
@@ -146,3 +146,8 @@ export interface DocMutation {
 
 type MutationType = 'added' | 'modified' |'removed';
 
+
+export interface DeleteResult {
+
+
+}

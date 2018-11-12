@@ -5,7 +5,7 @@ import {PersistenceLayerListener} from '../PersistenceLayerListener';
 import {IPersistenceLayer} from '../IPersistenceLayer';
 import {DocMeta} from '../../metadata/DocMeta';
 import {DocMetaFileRef, DocMetaRef} from '../DocMetaRef';
-import {DeleteResult} from '../DiskDatastore';
+import {DeleteResult} from '../Datastore';
 import {PersistenceEventType} from '../PersistenceEventType';
 import {Backend} from '../Backend';
 import {DatastoreFile} from '../DatastoreFile';

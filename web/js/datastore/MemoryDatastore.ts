@@ -7,7 +7,7 @@ import {DocMetaFileRef, DocMetaRef} from './DocMetaRef';
 import {FilePaths} from '../util/FilePaths';
 import {Directories} from './Directories';
 import {Logger} from '../logger/Logger';
-import {DeleteResult} from './DiskDatastore';
+import {DeleteResult} from './Datastore';
 import {FileDeleted} from '../util/Files';
 import {Backend} from './Backend';
 import {DatastoreFile} from './DatastoreFile';

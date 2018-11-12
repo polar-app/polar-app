@@ -5,7 +5,7 @@ import {isPresent, Preconditions} from '../Preconditions';
 import {Logger} from '../logger/Logger';
 import {Dictionaries} from '../util/Dictionaries';
 import {DocMetaFileRef, DocMetaRef} from './DocMetaRef';
-import {DeleteResult} from './DiskDatastore';
+import {DeleteResult} from './Datastore';
 import {IPersistenceLayer} from './IPersistenceLayer';
 import {ISODateTimeStrings} from '../metadata/ISODateTimeStrings';
 import {Backend} from './Backend';
@@ -46,8 +46,11 @@ export class DefaultPersistenceLayer implements IPersistenceLayer {
         return this.datastore.contains(fingerprint);
     }
 
-    public delete(docMetaFileRef: DocMetaFileRef): Promise<DeleteResult> {
-        return this.datastore.delete(docMetaFileRef);
+    public delete(docMetaFileRef: DocMetaFileRef,
+                  datastoreMutation: DatastoreMutation<boolean> = new DefaultDatastoreMutation()): Promise<DeleteResult> {
+
+        return this.datastore.delete(docMetaFileRef, datastoreMutation);
+
     }
 
     /**

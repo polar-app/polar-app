@@ -1,8 +1,8 @@
-import {Datastore, FileMeta} from './Datastore';
+import {Datastore, DeleteResult, FileMeta} from './Datastore';
 import {Preconditions} from '../Preconditions';
 import {Logger} from '../logger/Logger';
 import {DocMetaFileRef, DocMetaRef} from './DocMetaRef';
-import {FileDeleted, Files, FileRef} from '../util/Files';
+import {FileDeleted, FileRef, Files} from '../util/Files';
 import {FilePaths} from '../util/FilePaths';
 import {Directories} from './Directories';
 
@@ -75,7 +75,8 @@ export class DiskDatastore implements Datastore {
      *
      */
     public async delete(docMetaFileRef: DocMetaFileRef,
-                        datastoreMutation: DatastoreMutation<boolean> = new DefaultDatastoreMutation()): Promise<Readonly<DeleteResult>> {
+                        datastoreMutation: DatastoreMutation<boolean> = new DefaultDatastoreMutation()):
+        Promise<Readonly<DiskDeleteResult>> {
 
         const docDir = FilePaths.join(this.dataDir, docMetaFileRef.fingerprint);
         const statePath = FilePaths.join(docDir, 'state.json');
@@ -84,8 +85,8 @@ export class DiskDatastore implements Datastore {
 
         if (docMetaFileRef.filename) {
 
-            // FIXME: remove this via deleteFile NOT delete since I'm storing it as
-            // a binary file now.
+            // FIXME: remove this via deleteFile NOT delete since I'm storing
+            // it as a binary file now.
             docPath = FilePaths.join(this.directories.stashDir, docMetaFileRef.filename);
 
         }
@@ -485,7 +486,7 @@ export interface DataDirConfig {
 
 }
 
-export interface DeleteResult {
+export interface DiskDeleteResult extends DeleteResult {
 
     docMetaFile: Readonly<FileDeleted>;
 
@@ -507,4 +508,3 @@ interface FileReference {
     metaPath: string;
 
 }
-

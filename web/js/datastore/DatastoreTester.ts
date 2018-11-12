@@ -63,10 +63,16 @@ export class DatastoreTester {
                 await MockPHZWriter.write(FilePaths.create(datastore.stashDir, `${fingerprint}.phz`));
 
                 const datastoreMutation = new DefaultDatastoreMutation<DocInfo>();
-
                 await persistenceLayer.sync(fingerprint, docMeta, datastoreMutation);
 
+                // make sure we're always using the datastore mutations
+                await datastoreMutation.written.get();
+                await datastoreMutation.committed.get();
+
             });
+
+
+            // FIXME: test and write a new / basic document to make sure we get the commits working...
 
             it("write and read data to disk", async function() {
 

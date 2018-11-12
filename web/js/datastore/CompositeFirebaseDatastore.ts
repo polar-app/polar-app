@@ -6,7 +6,7 @@ import {Directories} from './Directories';
 import {Backend} from './Backend';
 import {DatastoreFile} from './DatastoreFile';
 import {Optional} from '../util/ts/Optional';
-import {DeleteResult} from './DiskDatastore';
+import {DeleteResult} from './Datastore';
 import {Firestore} from '../firestore/Firestore';
 import {Firebase} from '../firestore/Firebase';
 import {DocInfo, IDocInfo} from '../metadata/DocInfo';

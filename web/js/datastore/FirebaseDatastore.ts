@@ -1,4 +1,4 @@
-import {Datastore, FileMeta} from './Datastore';
+import {Datastore, DeleteResult, FileMeta} from './Datastore';
 import {Logger} from '../logger/Logger';
 import {DocMetaFileRef, DocMetaRef} from './DocMetaRef';
 import {Directories} from './Directories';
@@ -6,15 +6,11 @@ import {Directories} from './Directories';
 import {Backend} from './Backend';
 import {DatastoreFile} from './DatastoreFile';
 import {Optional} from '../util/ts/Optional';
-import {DeleteResult} from './DiskDatastore';
 import {Firestore} from '../firestore/Firestore';
-import {Firebase} from '../firestore/Firebase';
 import {DocInfo, IDocInfo} from '../metadata/DocInfo';
 import {Preconditions} from '../Preconditions';
 import {Hashcodes} from '../Hashcodes';
 import * as firebase from '../firestore/lib/firebase';
-import {Elements} from '../util/Elements';
-import {ResolvablePromise} from '../util/ResolvablePromise';
 import {Dictionaries} from '../util/Dictionaries';
 import {DatastoreFiles} from './DatastoreFiles';
 import {Latch} from '../util/Latch';
@@ -96,7 +92,8 @@ export class FirebaseDatastore implements Datastore {
      * Delete the DocMeta file and the underlying doc from the stash.
      *
      */
-    public async delete(docMetaFileRef: DocMetaFileRef): Promise<Readonly<DeleteResult>> {
+    public async delete(docMetaFileRef: DocMetaFileRef,
+                        datastoreMutation: DatastoreMutation<boolean> = new DefaultDatastoreMutation()): Promise<Readonly<DeleteResult>> {
 
         // FIXME: the PDF data file should be added as a stash file via addFile
         // so it also needs to be removed.
@@ -107,13 +104,20 @@ export class FirebaseDatastore implements Datastore {
         const uid = this.getUserID();
         const id = this.computeDocMetaID(uid, docMetaFileRef.fingerprint);
 
-        const documentSnapshot = await this.firestore!
+        const ref = this.firestore!
             .collection(DatastoreCollection.DOC_META)
-            .doc(id)
-            .delete();
+            .doc(id);
+
+        this.handleDatastoreMutations(ref, datastoreMutation);
+
+        const documentSnapshot = await ref.delete();
 
         // TODO: this is a major hack but we are only deleting remote data here
-        // and not deleting any local data.
+        // and not deleting any local data so we don't have any path to work
+        // with..  Maybe we need to make the DeleteResult an Optional so that
+        // it only works on local stores where files are involved or return a
+        // specific structure for the DiskDatastore like a DiskDeleteResult
+        // which implements DeleteResult but adds additional fields.
         const result: DeleteResult = <DeleteResult> { };
 
         return result;
@@ -262,18 +266,7 @@ export class FirebaseDatastore implements Datastore {
 
         const ref = this.firestore!.collection(DatastoreCollection.DOC_META).doc(id);
 
-        ref.onSnapshot({includeMetadataChanges: true}, snapshot => {
-
-            if (snapshot.metadata.fromCache && snapshot.metadata.hasPendingWrites) {
-                datastoreMutation.written.resolve(true);
-            }
-
-            if (!snapshot.metadata.fromCache && !snapshot.metadata.hasPendingWrites) {
-                // it's been committed remotely
-                datastoreMutation.committed.resolve(true);
-            }
-
-        });
+        this.handleDatastoreMutations(ref, datastoreMutation);
 
         await ref.set(recordHolder);
 
@@ -301,6 +294,24 @@ export class FirebaseDatastore implements Datastore {
         }
 
         return result;
+
+    }
+
+    private handleDatastoreMutations(ref: firebase.firestore.DocumentReference,
+                                     datastoreMutation: DatastoreMutation<any>) {
+
+        ref.onSnapshot({includeMetadataChanges: true}, snapshot => {
+
+            if (snapshot.metadata.fromCache && snapshot.metadata.hasPendingWrites) {
+                datastoreMutation.written.resolve(true);
+            }
+
+            if (!snapshot.metadata.fromCache && !snapshot.metadata.hasPendingWrites) {
+                // it's been committed remotely
+                datastoreMutation.committed.resolve(true);
+            }
+
+        });
 
     }
 

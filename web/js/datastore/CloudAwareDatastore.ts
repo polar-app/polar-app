@@ -1,12 +1,12 @@
 import {Datastore, FileMeta} from './Datastore';
 import {Directories} from './Directories';
 import {DocMetaFileRef, DocMetaRef} from './DocMetaRef';
-import {DeleteResult} from './DiskDatastore';
+import {DeleteResult} from './Datastore';
 import {Backend} from './Backend';
 import {DatastoreFile} from './DatastoreFile';
 import {Optional} from '../util/ts/Optional';
 import {DocInfo} from '../metadata/DocInfo';
-import {DefaultDatastoreMutation, DatastoreMutation} from './DatastoreMutation';
+import {DatastoreMutation, DefaultDatastoreMutation} from './DatastoreMutation';
 import {DatastoreMutations} from './DatastoreMutations';
 
 /**
@@ -46,12 +46,6 @@ export class CloudAwareDatastore implements Datastore {
         return this.local.contains(fingerprint);
     }
 
-    public async delete(docMetaFileRef: DocMetaFileRef): Promise<Readonly<DeleteResult>> {
-        // FIXME: don't need to wait until the remote one is complete.
-        await this.remote.delete(docMetaFileRef);
-        return this.local.delete(docMetaFileRef);
-    }
-
     public async getDocMeta(fingerprint: string): Promise<string | null> {
         return this.local.getDocMeta(fingerprint);
     }
@@ -82,6 +76,25 @@ export class CloudAwareDatastore implements Datastore {
         return this.local.deleteFile(backend, name);
     }
 
+
+    public async delete(docMetaFileRef: DocMetaFileRef,
+                        datastoreMutation: DatastoreMutation<boolean> = new DefaultDatastoreMutation())
+        : Promise<Readonly<CloudAwareDeleteResult>> {
+
+        DatastoreMutations.executeBatchedWrite(datastoreMutation,
+                                                      async (remoteCoordinator) => {
+                                                          this.remote.delete(docMetaFileRef, remoteCoordinator);
+                                                      },
+                                                      async (localCoordinator) => {
+                                                          this.local.delete(docMetaFileRef, localCoordinator);
+                                                      });
+
+        return {};
+
+    }
+
+
+
     public async sync(fingerprint: string,
                       data: string,
                       docInfo: DocInfo,
@@ -104,6 +117,8 @@ export class CloudAwareDatastore implements Datastore {
 
     }
 
+}
 
+export interface CloudAwareDeleteResult extends DeleteResult {
 
 }
