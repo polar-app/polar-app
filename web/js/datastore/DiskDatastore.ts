@@ -74,7 +74,8 @@ export class DiskDatastore implements Datastore {
      * Delete the DocMeta file and the underlying doc from the stash.
      *
      */
-    public async delete(docMetaFileRef: DocMetaFileRef): Promise<Readonly<DeleteResult>> {
+    public async delete(docMetaFileRef: DocMetaFileRef,
+                        datastoreMutation: DatastoreMutation<boolean> = new DefaultDatastoreMutation()): Promise<Readonly<DeleteResult>> {
 
         const docDir = FilePaths.join(this.dataDir, docMetaFileRef.fingerprint);
         const statePath = FilePaths.join(docDir, 'state.json');
@@ -94,9 +95,16 @@ export class DiskDatastore implements Datastore {
         // TODO: don't delete JUST the state file but also the parent dir if it
         // is empty.
 
+        const deleteStatePathPromise = Files.deleteAsync(statePath);
+        const deleteDocPathPromise = docPath !== undefined ? Files.deleteAsync(docPath) : Promise.resolve(undefined);
+
+        // now handle all the promises with the datastore mutation so that we
+        // can verify that we were written and committed.
+        datastoreMutation.handle(Promise.all([ deleteStatePathPromise, deleteDocPathPromise]), () => true);
+
         return {
-            docMetaFile: await Files.deleteAsync(statePath),
-            dataFile: docPath !== undefined ? await Files.deleteAsync(docPath) : undefined
+            docMetaFile: await deleteStatePathPromise,
+            dataFile: await deleteDocPathPromise
         };
 
     }

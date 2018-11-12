@@ -13,7 +13,7 @@ import input = Simulate.input;
 import {isPresent} from '../Preconditions';
 import {DatastoreMutation} from './DatastoreMutation';
 
-export interface Datastore extends BinaryDatastore {
+export interface Datastore extends BinaryDatastore, WritableDatastore {
 
     /**
      * @Deprecated
@@ -43,7 +43,6 @@ export interface Datastore extends BinaryDatastore {
      */
     contains(fingerprint: string): Promise<boolean>;
 
-    delete(docMetaFileRef: DocMetaFileRef): Promise<Readonly<DeleteResult>>;
 
     /**
      * Get the data for the DocMeta object we currently in the datastore for
@@ -54,18 +53,28 @@ export interface Datastore extends BinaryDatastore {
     getDocMeta(fingerprint: string): Promise<string | null>;
 
     /**
-     * Write the datastore to disk.
+     * Return an array of DocMetaFiles currently in the repository.
+     */
+    getDocMetaFiles(): Promise<DocMetaRef[]>;
+
+}
+
+interface WritableDatastore {
+
+    /**
+     * Delete a document from the datastore.  Deletes should be idempotent.
+     *
+     */
+    delete(docMetaFileRef: DocMetaFileRef, datastoreMutation?: DatastoreMutation<boolean>): Promise<Readonly<DeleteResult>>;
+
+    /**
+     * Write the datastore to disk.  Writes should be idempotent.
      *
      * @param fingerprint The fingerprint of the data we should be working with.
      * @param data The RAW data to decode by the PersistenceLayer
      * @param docInfo The DocInfo for this document that we're writing
      */
     sync(fingerprint: string, data: any, docInfo: IDocInfo, datastoreMutation?: DatastoreMutation<boolean>): Promise<void>;
-
-    /**
-     * Return an array of DocMetaFiles currently in the repository.
-     */
-    getDocMetaFiles(): Promise<DocMetaRef[]>;
 
 }
 

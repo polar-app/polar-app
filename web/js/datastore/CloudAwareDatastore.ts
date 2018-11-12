@@ -87,6 +87,9 @@ export class CloudAwareDatastore implements Datastore {
                       docInfo: DocInfo,
                       datastoreMutation: DatastoreMutation<boolean> = new DefaultDatastoreMutation()): Promise<void> {
 
+        // TODO: what happens if the local transactions fail here but the
+        // remotes work just fine.
+
         return DatastoreMutations.executeBatchedWrite(datastoreMutation,
                                                       (remoteCoordinator) =>
                                                           this.remote.sync(fingerprint, data, docInfo, remoteCoordinator),

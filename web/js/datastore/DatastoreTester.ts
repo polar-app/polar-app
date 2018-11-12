@@ -124,6 +124,11 @@ export class DatastoreTester {
 
                 }
 
+                // perform the delete multiple times now to make sure we're idempotent for deletes
+                await persistenceLayer.delete(docMetaFileRef);
+                await persistenceLayer.delete(docMetaFileRef);
+                await persistenceLayer.delete(docMetaFileRef);
+
             });
 
             it("adding binary files", async function() {
