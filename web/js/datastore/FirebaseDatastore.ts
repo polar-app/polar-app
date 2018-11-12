@@ -95,7 +95,7 @@ export class FirebaseDatastore implements Datastore {
     public async delete(docMetaFileRef: DocMetaFileRef,
                         datastoreMutation: DatastoreMutation<boolean> = new DefaultDatastoreMutation()): Promise<Readonly<DeleteResult>> {
 
-        // FIXME: the PDF data file should be added as a stash file via addFile
+        // FIXME: the PDF data file should be added as a stash file via writeFile
         // so it also needs to be removed.
 
         // TODO: these could get out of sync and we have to force them to
@@ -151,10 +151,10 @@ export class FirebaseDatastore implements Datastore {
     // leave local files in place or too many remote files but this is good
     // for a first MVP pass.
 
-    public async addFile(backend: Backend,
-                         name: string,
-                         data: Buffer | string,
-                         meta: FileMeta = {}): Promise<DatastoreFile> {
+    public async writeFile(backend: Backend,
+                           name: string,
+                           data: Buffer | string,
+                           meta: FileMeta = {}): Promise<DatastoreFile> {
 
         DatastoreFiles.assertValidFileName(name);
 

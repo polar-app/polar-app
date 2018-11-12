@@ -148,10 +148,10 @@ export class DiskDatastore implements Datastore {
 
     }
 
-    public async addFile(backend: Backend,
-                         name: string,
-                         data: FileRef | Buffer | string,
-                         meta: FileMeta = {}): Promise<DatastoreFile> {
+    public async writeFile(backend: Backend,
+                           name: string,
+                           data: FileRef | Buffer | string,
+                           meta: FileMeta = {}): Promise<DatastoreFile> {
 
         DatastoreFiles.assertSanitizedFileName(name);
 

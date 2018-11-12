@@ -42,8 +42,8 @@ export class DelegatedDatastore implements Datastore {
         return this.delegate.delete(docMetaFileRef);
     }
 
-    public addFile(backend: Backend, name: string, data: Buffer | string, meta: FileMeta = {}): Promise<DatastoreFile> {
-        return this.delegate.addFile(backend, name, data, meta);
+    public writeFile(backend: Backend, name: string, data: Buffer | string, meta: FileMeta = {}): Promise<DatastoreFile> {
+        return this.delegate.writeFile(backend, name, data, meta);
     }
 
     public containsFile(backend: Backend, name: string): Promise<boolean> {

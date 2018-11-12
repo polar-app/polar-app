@@ -99,10 +99,10 @@ interface WritableBinaryDatastore {
      * data types that need to be stored. This is primarily designed for video,
      * audio, and documents like PDF, ePub, etc.
      */
-    addFile(backend: Backend,
-            name: string,
-            data: FileRef | Buffer | string,
-            meta?: FileMeta): Promise<DatastoreFile>;
+    writeFile(backend: Backend,
+              name: string,
+              data: FileRef | Buffer | string,
+              meta?: FileMeta): Promise<DatastoreFile>;
 
     deleteFile(backend: Backend, name: string): Promise<void>;
 

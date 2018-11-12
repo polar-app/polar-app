@@ -77,7 +77,7 @@ export class MemoryDatastore implements Datastore {
 
     }
 
-    public addFile(backend: Backend, name: string, data: Buffer | string): Promise<DatastoreFile> {
+    public writeFile(backend: Backend, name: string, data: Buffer | string): Promise<DatastoreFile> {
         throw new Error("Not implemented");
     }
 

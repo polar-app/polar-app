@@ -50,17 +50,19 @@ export class CloudAwareDatastore implements Datastore {
         return this.local.getDocMeta(fingerprint);
     }
 
-    public async addFile(backend: Backend, name: string, data: Buffer | string, meta: FileMeta = {}): Promise<DatastoreFile> {
+    public async writeFile(backend: Backend,
+                           name: string,
+                           data: Buffer | string, meta: FileMeta = {}): Promise<DatastoreFile> {
 
         // for this to work we have to use fierbase snapshot QuerySnapshot and
         // look at docChanges and wait for the document we requested...
 
-        await this.remote.addFile(backend, name, data, meta);
+        await this.remote.writeFile(backend, name, data, meta);
 
         // TODO: can't we just wait until the event is fired when it's pulled
         // down as part of the normal snapshot mechanism.?  That might be best
         // as we would be adding it twice.
-        return this.local.addFile(backend, name, data, meta);
+        return this.local.writeFile(backend, name, data, meta);
 
     }
 
@@ -78,8 +80,8 @@ export class CloudAwareDatastore implements Datastore {
 
 
     public async delete(docMetaFileRef: DocMetaFileRef,
-                        datastoreMutation: DatastoreMutation<boolean> = new DefaultDatastoreMutation())
-        : Promise<Readonly<CloudAwareDeleteResult>> {
+                        datastoreMutation: DatastoreMutation<boolean> = new DefaultDatastoreMutation()):
+        Promise<Readonly<CloudAwareDeleteResult>> {
 
         DatastoreMutations.executeBatchedWrite(datastoreMutation,
                                                       async (remoteCoordinator) => {
@@ -100,9 +102,6 @@ export class CloudAwareDatastore implements Datastore {
                       docInfo: DocInfo,
                       datastoreMutation: DatastoreMutation<boolean> = new DefaultDatastoreMutation()): Promise<void> {
 
-        // TODO: what happens if the local transactions fail here but the
-        // remotes work just fine.
-
         return DatastoreMutations.executeBatchedWrite(datastoreMutation,
                                                       (remoteCoordinator) =>
                                                           this.remote.sync(fingerprint, data, docInfo, remoteCoordinator),
@@ -112,6 +111,9 @@ export class CloudAwareDatastore implements Datastore {
     }
 
     public async getDocMetaFiles(): Promise<DocMetaRef[]> {
+
+        // TODO: where do we get this from? local or remote?
+        // TODO: implement a method to ensure the datastore is up to date...
 
         throw new Error("Not implemented");
 
