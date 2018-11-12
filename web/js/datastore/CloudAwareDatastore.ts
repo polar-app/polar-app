@@ -84,13 +84,14 @@ export class CloudAwareDatastore implements Datastore {
         Promise<Readonly<CloudAwareDeleteResult>> {
 
         DatastoreMutations.executeBatchedWrite(datastoreMutation,
-                                                      async (remoteCoordinator) => {
-                                                          this.remote.delete(docMetaFileRef, remoteCoordinator);
-                                                      },
-                                                      async (localCoordinator) => {
-                                                          this.local.delete(docMetaFileRef, localCoordinator);
-                                                      });
+                                               async (remoteCoordinator) => {
+                                                   this.remote.delete(docMetaFileRef, remoteCoordinator);
+                                               },
+                                               async (localCoordinator) => {
+                                                   this.local.delete(docMetaFileRef, localCoordinator);
+                                               });
 
+        // TODO: return the result of the local and remote operations.
         return {};
 
     }
@@ -101,6 +102,9 @@ export class CloudAwareDatastore implements Datastore {
                       data: string,
                       docInfo: DocInfo,
                       datastoreMutation: DatastoreMutation<boolean> = new DefaultDatastoreMutation()): Promise<void> {
+
+        // TODO: return the result of the local and remote operations instead of
+        // just void.
 
         return DatastoreMutations.executeBatchedWrite(datastoreMutation,
                                                       (remoteCoordinator) =>
