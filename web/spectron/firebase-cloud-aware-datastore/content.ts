@@ -27,25 +27,26 @@ import {DocInfo} from '../../js/metadata/DocInfo';
 
 mocha.setup('bdd');
 
+function createDatastore() {
+
+    const diskDatastore = new DiskDatastore();
+
+    const firebaseDatastore = new FirebaseDatastore();
+
+    return new CloudAwareDatastore(diskDatastore, firebaseDatastore);
+}
+
 SpectronRenderer.run(async (state) => {
 
     new FirebaseTester(state).run(async () => {
 
-        const diskDatastore = new DiskDatastore();
-
-        const firebaseDatastore = new FirebaseDatastore();
-
-        const datastore = new CloudAwareDatastore(diskDatastore, firebaseDatastore);
-
-        await datastore.init();
+        const fingerprint = "0x001";
 
         describe('Cloud datastore tests', function() {
 
             it("Write a basic doc", async function() {
 
-                const fingerprint = "0x001";
-
-                const persistenceLayer = new DefaultPersistenceLayer(datastore);
+                const persistenceLayer = new DefaultPersistenceLayer(createDatastore());
 
                 await persistenceLayer.init();
 
@@ -66,6 +67,18 @@ SpectronRenderer.run(async (state) => {
                 console.log(`writtenDuration: ${writtenDuration}, committedDuration: ${committedDuration}`);
 
             });
+
+            it("Test event listeners on startup... ", async function() {
+
+                const persistenceLayer = new DefaultPersistenceLayer(createDatastore());
+                await persistenceLayer.init();
+                const docMeta = MockDocMetas.createWithinInitialPagemarks(fingerprint, 14);
+                await persistenceLayer.sync(fingerprint, docMeta);
+
+
+
+            });
+
 
             // DatastoreTester.test(() => firebaseDatastore, false);
 

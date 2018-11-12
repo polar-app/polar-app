@@ -51,6 +51,10 @@ export class MemoryDatastore implements Datastore {
         await this.directories.init();
     }
 
+    public async stop() {
+        // noop
+    }
+
     public async contains(fingerprint: string): Promise<boolean> {
         return fingerprint in this.docMetas;
     }

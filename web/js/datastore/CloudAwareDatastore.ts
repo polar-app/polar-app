@@ -42,6 +42,10 @@ export class CloudAwareDatastore implements Datastore {
 
     }
 
+    public async stop() {
+        await Promise.all([this.remote.stop(), this.local.stop()]);
+    }
+
     public async contains(fingerprint: string): Promise<boolean> {
         return this.local.contains(fingerprint);
     }

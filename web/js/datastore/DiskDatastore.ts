@@ -49,7 +49,11 @@ export class DiskDatastore implements Datastore {
     }
 
     public async init() {
-        return await this.directories.init();
+        await this.directories.init();
+    }
+
+    public async stop() {
+        // noop
     }
 
     /**

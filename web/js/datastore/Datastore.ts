@@ -35,7 +35,9 @@ export interface Datastore extends BinaryDatastore, WritableDatastore {
     /**
      * Init the datastore, potentially reading files of disk, the network, etc.
      */
-    init(): Promise<any>;
+    init(): Promise<void>;
+
+    stop(): Promise<void>
 
     /**
      * Return true if the DiskDatastore contains a document for the given
@@ -118,7 +120,7 @@ export type FileMeta = {[key: string]: string};
  * This includes the granularity we need for replicating the data to a local
  * datastore by fetching the data and writing it back out on the mutation.
  */
-interface RealtimeDatastore {
+export interface SynchronizingDatastore {
 
     addBinaryMutationEventListener(listener: (binaryMutation: BinaryMutation) => void): void;
 
@@ -147,6 +149,9 @@ export interface DocMutation {
 type MutationType = 'added' | 'modified' |'removed';
 
 
+/**
+ * The result of a delete() operation.
+ */
 export interface DeleteResult {
 
 

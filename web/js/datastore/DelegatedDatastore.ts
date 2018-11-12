@@ -66,8 +66,12 @@ export class DelegatedDatastore implements Datastore {
         return this.delegate.getDocMetaFiles();
     }
 
-    public init(): Promise<any> {
+    public init(): Promise<void> {
         return this.delegate.init();
+    }
+
+    public stop(): Promise<void> {
+        return this.delegate.stop();
     }
 
     public sync(fingerprint: string, data: any, docInfo: IDocInfo, datastoreMutation?: DatastoreMutation<boolean>): Promise<void> {

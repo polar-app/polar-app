@@ -1,4 +1,4 @@
-import {Datastore, DeleteResult, FileMeta} from './Datastore';
+import {BinaryMutation, Datastore, DeleteResult, DocMutation, FileMeta, SynchronizingDatastore} from './Datastore';
 import {Logger} from '../logger/Logger';
 import {DocMetaFileRef, DocMetaRef} from './DocMetaRef';
 import {Directories} from './Directories';
@@ -13,8 +13,9 @@ import {Hashcodes} from '../Hashcodes';
 import * as firebase from '../firestore/lib/firebase';
 import {Dictionaries} from '../util/Dictionaries';
 import {DatastoreFiles} from './DatastoreFiles';
-import {Latch} from '../util/Latch';
 import {DatastoreMutation, DefaultDatastoreMutation} from './DatastoreMutation';
+import {IEventDispatcher, SimpleReactor} from '../reactor/SimpleReactor';
+import {NULL_FUNCTION} from '../util/Functions';
 
 const log = Logger.create();
 
@@ -30,7 +31,7 @@ const log = Logger.create();
 // TODO: all files need to also have associated metadata in firestore and
 // the binary data is stored in firebase storage.
 
-export class FirebaseDatastore implements Datastore {
+export class FirebaseDatastore implements Datastore, SynchronizingDatastore {
 
     public readonly stashDir: string;
 
@@ -44,7 +45,11 @@ export class FirebaseDatastore implements Datastore {
 
     private storage?: firebase.storage.Storage;
 
-    private readonly latchIndex = new LatchIndex<Mutation>();
+    private readonly binaryMutationReactor: IEventDispatcher<BinaryMutation> = new SimpleReactor();
+
+    private readonly docMutationReactor: IEventDispatcher<DocMutation> = new SimpleReactor();
+
+    private readonly unsubscribeSnapshots: () => void = NULL_FUNCTION;
 
     constructor() {
 
@@ -66,11 +71,18 @@ export class FirebaseDatastore implements Datastore {
 
         const uid = this.getUserID();
 
-        await this.firestore!
+        // start synchronizing the datastore.  You MUST register your listeners
+        // BEFORE calling init if you wish to listen to the full stream of
+        // events.
+        const unsubscribeSnapshots = await this.firestore!
             .collection(DatastoreCollection.DOC_META)
             .where('uid', '==', uid)
             .onSnapshot(snapshot => this.onSnapshot(snapshot));
 
+    }
+
+    public async stop() {
+        this.unsubscribeSnapshots();
     }
 
     /**
@@ -95,8 +107,8 @@ export class FirebaseDatastore implements Datastore {
     public async delete(docMetaFileRef: DocMetaFileRef,
                         datastoreMutation: DatastoreMutation<boolean> = new DefaultDatastoreMutation()): Promise<Readonly<DeleteResult>> {
 
-        // FIXME: the PDF data file should be added as a stash file via writeFile
-        // so it also needs to be removed.
+        // FIXME: the PDF data file should be added as a stash file via
+        // writeFile so it also needs to be removed.
 
         // TODO: these could get out of sync and we have to force them to
         // execute together.  The remote delete followed by the local ...
@@ -110,7 +122,11 @@ export class FirebaseDatastore implements Datastore {
 
         this.handleDatastoreMutations(ref, datastoreMutation);
 
+        const commitPromise = this.waitForCommit(ref);
+
         const documentSnapshot = await ref.delete();
+
+        await commitPromise;
 
         // TODO: this is a major hack but we are only deleting remote data here
         // and not deleting any local data so we don't have any path to work
@@ -246,10 +262,6 @@ export class FirebaseDatastore implements Datastore {
         const uid = this.getUserID();
         const id = this.computeDocMetaID(uid, fingerprint);
 
-        const latch = new Latch<Mutation>();
-
-        this.latchIndex.add(id, latch);
-
         docInfo = Object.assign({}, Dictionaries.onlyDefinedProperties(docInfo));
 
         const docMetaHolder: DocMetaHolder = {
@@ -268,9 +280,13 @@ export class FirebaseDatastore implements Datastore {
 
         this.handleDatastoreMutations(ref, datastoreMutation);
 
+        const commitPromise = this.waitForCommit(ref);
+
         await ref.set(recordHolder);
 
-        await latch.get();
+        // we need to make sure that we only return when it's committed
+        // remotely...
+        await commitPromise;
 
     }
 
@@ -294,6 +310,34 @@ export class FirebaseDatastore implements Datastore {
         }
 
         return result;
+
+    }
+
+    public addBinaryMutationEventListener(listener: (binaryMutation: BinaryMutation) => void): void {
+        this.binaryMutationReactor.addEventListener(listener);
+    }
+
+    public addDocMutationEventListener(listener: (docMutation: DocMutation) => void): void {
+        this.docMutationReactor.addEventListener(listener);
+    }
+
+    /**
+     * Wait for the record to be fully committed to the remote datastore - not
+     * just written to the local cache.
+     */
+    private waitForCommit(ref: firebase.firestore.DocumentReference): Promise<void> {
+
+        return new Promise(resolve => {
+
+            ref.onSnapshot({includeMetadataChanges: true}, snapshot => {
+
+                if (!snapshot.metadata.fromCache && !snapshot.metadata.hasPendingWrites) {
+                    resolve();
+                }
+
+            });
+
+        });
 
     }
 
@@ -335,42 +379,21 @@ export class FirebaseDatastore implements Datastore {
      */
     private onSnapshot(snapshot: firebase.firestore.QuerySnapshot) {
 
-        console.log("FIXME: fromCache", snapshot.metadata.fromCache, snapshot.metadata, snapshot);
-
         const messagesElement = document.getElementById('messages')!;
 
         for (const docChange of snapshot.docChanges()) {
 
             const record = <RecordHolder<DocMetaHolder>> docChange.doc.data();
 
-            console.log("FIXME: data: " , docChange.doc.data(), snapshot.metadata);
+            const docMutation: DocMutation = {
+                docInfo: record.value.docInfo,
+                mutationType: docChange.type
+            };
 
-            switch (docChange.type) {
-
-                case 'added':
-                    this.onSnapshotDocUpdated(record);
-                    break;
-
-                case 'modified':
-                    this.onSnapshotDocUpdated(record);
-                    break;
-
-                case 'removed':
-                    this.onSnapshotDocRemoved(record);
-                    break;
-
-            }
+            this.docMutationReactor.dispatchEvent(docMutation);
 
         }
 
-    }
-
-    private onSnapshotDocUpdated(record: RecordHolder<DocMetaHolder>) {
-        this.latchIndex.resolve(record.id, {});
-    }
-
-    private onSnapshotDocRemoved(record: RecordHolder<DocMetaHolder>) {
-        this.latchIndex.resolve(record.id, {});
     }
 
     private computeDocMetaID(uid: UserID, fingerprint: string) {
@@ -453,42 +476,3 @@ type UserID = string;
 interface Mutation {
 
 }
-
-/**
- * Allows us to externally resolve promises that are waiting to be resolved.
- */
-class LatchIndex<T> {
-
-    private backing: {[id: string]: Array<Latch<T>>} = {};
-
-    public add(id: string, latch: Latch<T>): void {
-
-        if (id in this.backing) {
-            this.backing[id].push(latch);
-        } else {
-            this.backing[id] = [latch];
-        }
-
-    }
-
-    /**
-     * Resolve all the values of id with the given value.
-     */
-    public resolve(id: string, value: T) {
-
-        const latches = this.backing[id];
-
-        if (latches) {
-
-            for (const latch of latches) {
-                latch.resolve(value);
-            }
-
-            delete this.backing[id];
-        }
-
-    }
-
-}
-
-

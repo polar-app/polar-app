@@ -79,6 +79,10 @@ export class CompositeFirebaseDatastore implements Datastore {
 
     }
 
+    public async stop() {
+        // FIXME: noop for now
+    }
+
     /**
      * Return true if the DiskDatastore contains a document for the given
      * fingerprint
