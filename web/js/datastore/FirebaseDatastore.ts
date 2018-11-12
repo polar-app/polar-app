@@ -51,6 +51,8 @@ export class FirebaseDatastore implements Datastore, SynchronizingDatastore {
 
     private readonly unsubscribeSnapshots: () => void = NULL_FUNCTION;
 
+    private initialized: boolean = false;
+
     constructor() {
 
         this.directories = new Directories();
@@ -60,6 +62,10 @@ export class FirebaseDatastore implements Datastore, SynchronizingDatastore {
     }
 
     public async init() {
+
+        if (this.initialized) {
+            return;
+        }
 
         // get the firebase app. Make sure we are initialized externally.
         this.app = firebase.app();
@@ -78,6 +84,8 @@ export class FirebaseDatastore implements Datastore, SynchronizingDatastore {
             .collection(DatastoreCollection.DOC_META)
             .where('uid', '==', uid)
             .onSnapshot(snapshot => this.onSnapshot(snapshot));
+
+        this.initialized = true;
 
     }
 
@@ -351,7 +359,13 @@ export class FirebaseDatastore implements Datastore, SynchronizingDatastore {
             }
 
             if (!snapshot.metadata.fromCache && !snapshot.metadata.hasPendingWrites) {
-                // it's been committed remotely
+
+                // it's been committed remotely which also implies it was
+                // written so resolve that as well. We might not always get the
+                // locally written callback and I think this happens when the
+                // cache entry can't be updated due to it already being pending.
+
+                datastoreMutation.written.resolve(true);
                 datastoreMutation.committed.resolve(true);
             }
 

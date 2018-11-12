@@ -17,6 +17,8 @@ export interface IPersistenceLayer {
 
     init(): Promise<void>;
 
+    stop(): Promise<void>;
+
     /**
      * Return true if the DiskDatastore contains a document for the given
      * fingerprint.

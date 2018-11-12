@@ -15,8 +15,12 @@ import {Promises} from '../../js/util/Promises';
 import {FirebaseDatastore} from '../../js/datastore/FirebaseDatastore';
 import {DocLoader} from '../../js/apps/main/ipc/DocLoader';
 import {FirebaseTester} from '../../js/firestore/FirebaseTester';
+import {DefaultDatastoreMutation} from '../../js/datastore/DatastoreMutation';
+import {DocInfo} from '../../js/metadata/DocInfo';
 
 mocha.setup('bdd');
+
+const fingerprint = "0x001";
 
 SpectronRenderer.run(async (state) => {
 
@@ -25,6 +29,29 @@ SpectronRenderer.run(async (state) => {
         const firebaseDatastore = new FirebaseDatastore();
 
         await firebaseDatastore.init();
+        //
+        // describe('Cloud datastore tests', function() {
+        //
+        //     it("Make sure we get events from the datastore", async function() {
+        //
+        //         const datastore = new FirebaseDatastore();
+        //
+        //         const persistenceLayer = new DefaultPersistenceLayer(datastore);
+        //
+        //         await persistenceLayer.init();
+        //
+        //         const docMeta = MockDocMetas.createWithinInitialPagemarks(fingerprint, 14);
+        //
+        //         const datastoreMutation = new DefaultDatastoreMutation<DocInfo>();
+        //
+        //         await persistenceLayer.sync(fingerprint, docMeta, datastoreMutation);
+        //
+        //     });
+        //
+        //     // FIXME: add this back in...
+        //     // DatastoreTester.test(() => firebaseDatastore, false);
+        //
+        // });
 
         DatastoreTester.test(() => firebaseDatastore, false);
 

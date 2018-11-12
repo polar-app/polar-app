@@ -68,18 +68,7 @@ SpectronRenderer.run(async (state) => {
 
             });
 
-            it("Test event listeners on startup... ", async function() {
-
-                const persistenceLayer = new DefaultPersistenceLayer(createDatastore());
-                await persistenceLayer.init();
-                const docMeta = MockDocMetas.createWithinInitialPagemarks(fingerprint, 14);
-                await persistenceLayer.sync(fingerprint, docMeta);
-
-
-
-            });
-
-
+            // FIXME: add this back in...
             // DatastoreTester.test(() => firebaseDatastore, false);
 
         });

@@ -42,6 +42,10 @@ export class DefaultPersistenceLayer implements IPersistenceLayer {
         await this.datastore.init();
     }
 
+    public async stop() {
+        await this.datastore.stop();
+    }
+
     public contains(fingerprint: string): Promise<boolean> {
         return this.datastore.contains(fingerprint);
     }
