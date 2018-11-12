@@ -113,9 +113,7 @@ export class DatastoreTester {
 
                 }
 
-                console.log("FIXME88 before...");
                 await persistenceLayer.delete(docMetaFileRef);
-                console.log("FIXME88 before...done");
 
                 if (hasLocalFiles) {
 
