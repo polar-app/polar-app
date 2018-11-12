@@ -9,12 +9,12 @@ export class Functions {
      * headless, etc.
      *
      */
-    static functionToScript(func: (...args: any[]) => void, ...args: any[]): string {
+    public static functionToScript(func: (...args: any[]) => void, ...args: any[]): string {
         return this.toScript(func, ...args);
 
     }
 
-    static toScript(func: (...args: any[]) => void, ...args: any[]): string {
+    public static toScript(func: (...args: any[]) => void, ...args: any[]): string {
 
         // TODO: this doesn't yet support lambda functions.
 
@@ -219,3 +219,6 @@ export function createSiblings(arrayLikeObject: any) {
 }
 
 
+export const NULL_FUNCTION = () => { /* no op */ };
+
+export const ASYNC_NULL_FUNCTION = async () => { /* no op */ };

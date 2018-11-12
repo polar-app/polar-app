@@ -286,14 +286,14 @@ export class HTMLViewer extends Viewer {
 
         // TODO: improve this so that we can detect if this is a Youtube video
         // embed safely.
-        if (ENABLE_VIDEO && file.indexOf("youtube.com/") != -1) {
+        if (ENABLE_VIDEO && file.indexOf("youtube.com/") !== -1) {
             // TODO: better regex for this in the future.
 
             const embedHTML = HTMLViewer.createYoutubeEmbed(file, this.content);
 
             this.content.contentDocument!.body.innerHTML = embedHTML;
 
-            this.content.contentWindow!.history.pushState({"html":embedHTML, "pageTitle": 'Youtube Embed'}, "", file);
+            this.content.contentWindow!.history.pushState({"html": embedHTML, "pageTitle": 'Youtube Embed'}, "", file);
 
         } else {
             this.content.src = file;
@@ -321,7 +321,7 @@ export class HTMLViewer extends Viewer {
         // https://www.youtube.com/watch?v=CP1BVpF-NjY
 
         const u = new URL(url);
-        const video_id = u.searchParams.get('v')
+        const video_id = u.searchParams.get('v');
 
         return `<iframe width="${width}" height="${height}" src="https://www.youtube.com/embed/${video_id}" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>`;
     }
