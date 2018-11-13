@@ -10,18 +10,45 @@ export class DatastoreMutations {
 
     }
 
-    private static batchPromises<T>(promise0: Promise<T>, promise1: Promise<T>, latch: Latch<T>): void {
+    public static handle<V, T>(promise: Promise<V>, target: DatastoreMutation<T>, converter: (input: V) => T): void {
 
-        const batch = Promise.all([promise0, promise1]);
+        promise.then((result) => {
 
-        batch.then((result) => {
-            latch.resolve(result[0]);
+            try {
+
+                target.written.resolve(converter(result));
+                target.committed.resolve(converter(result));
+
+            } catch (err) {
+                console.error("Unable to resolve: ", err);
+            }
+
         }).catch(err => {
-            latch.reject(err);
+
+            try {
+
+                target.written.reject(err);
+                target.committed.reject(err);
+
+            } catch (err) {
+                console.error("Unable to reject: ", err);
+            }
+
         });
 
     }
 
+    /**
+     * Pipe the resolve and reject status of the latches to the target.
+     */
+    public static pipe<T, V>(source: DatastoreMutation<T>,
+                             target: DatastoreMutation<V>,
+                             converter: (input: T) => V): void {
+
+        this.pipeLatch(source.written, target.written, converter);
+        this.pipeLatch(source.committed, target.committed, converter);
+
+    }
 
     /**
      * Perform a write while coordinating the remote and local writes.
@@ -67,5 +94,30 @@ export class DatastoreMutations {
         await datastoreMutation.committed.get();
 
     }
+
+
+    private static pipeLatch<T, V>(source: Latch<T>,
+                                   target: Latch<V>,
+                                   converter: (input: T) => V): void {
+
+        source.get()
+            .then((value: T) => target.resolve(converter(value)))
+            .catch(err => target.reject(err));
+
+    }
+
+    private static batchPromises<T>(promise0: Promise<T>, promise1: Promise<T>, latch: Latch<T>): void {
+
+        const batch = Promise.all([promise0, promise1]);
+
+        batch.then((result) => {
+            latch.resolve(result[0]);
+        }).catch(err => {
+            latch.reject(err);
+        });
+
+    }
+
+
 
 }

@@ -334,8 +334,16 @@ export class BoxController {
         // here.  If the parentElement is missing I probably need to ignore the
         // intersected boxes?
 
+        if (! element.parentElement) {
+            const msg = "Element not within DOM: ";
+            log.error(msg, element);
+            throw new Error(msg);
+        }
+
+        const intersectedElements = element.parentElement!.querySelectorAll(intersectedElementsSelector);
+
         const boxes: HTMLElement[]
-            = Array.from(element.parentElement!.querySelectorAll(intersectedElementsSelector))
+            = Array.from(intersectedElements)
                              .filter(current => current !== element)
                              .map(current => current as HTMLElement);
 
@@ -343,13 +351,13 @@ export class BoxController {
         // remove this when we go to production
         boxes.forEach(current => current.getAttribute("id") !== element.getAttribute("id"));
 
-        let intersectedRects: Rect[] = [];
+        const intersectedRects: Rect[] = [];
 
         boxes.forEach(box => {
 
-            let boxRect = Rects.fromElementStyle(box);
+            const boxRect = Rects.fromElementStyle(box);
 
-            if(Rects.intersect(boxRect, resizeRect)) {
+            if (Rects.intersect(boxRect, resizeRect)) {
                 intersectedRects.push(boxRect);
             }
 

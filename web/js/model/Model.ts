@@ -52,7 +52,7 @@ export class Model {
                                 currentPageNumber: number,
                                 docDetail: DocDetail | undefined) {
 
-        log.notice("Document loaded with fingerprint: " + fingerprint)
+        log.notice("Document loaded with fingerprint: " + fingerprint);
 
         let docMeta: DocMeta | undefined;
 
@@ -126,7 +126,7 @@ export class Model {
 
         this.assertPageNum(pageNum);
 
-        let pagemark = Pagemarks.create({
+        const pagemark = Pagemarks.create({
 
             // just set docMeta pageMarkType = PagemarkType.SINGLE_COLUMN by
             // default for now until we add multiple column types and handle
@@ -138,7 +138,7 @@ export class Model {
 
         });
 
-        let docMeta = await this.docMetaPromise;
+        const docMeta = await this.docMetaPromise;
 
         Pagemarks.updatePagemark(docMeta, pageNum, pagemark);
 
@@ -159,9 +159,9 @@ export class Model {
 
         this.assertPageNum(pageNum);
 
-        if(this.docMeta) {
+        if (this.docMeta) {
 
-            let pageMeta = this.docMeta.getPageMeta(pageNum);
+            const pageMeta = this.docMeta.getPageMeta(pageNum);
 
             // FIXME: this is actually wrong because I need to delete the RIGHT
             // pagemark. NOT just delete all of them.
@@ -176,10 +176,10 @@ export class Model {
 
     assertPageNum(pageNum: number) {
 
-        if(pageNum == null)
+        if (pageNum == null)
             throw new Error("Must specify page pageNum");
 
-        if(pageNum <= 0) {
+        if (pageNum <= 0) {
             throw new Error("Page numbers begin at 1");
         }
 
@@ -191,7 +191,7 @@ export interface DocumentLoadedEvent {
     readonly fingerprint: string;
     readonly nrPages: number;
     readonly currentPageNumber: number;
-    readonly docMeta: DocMeta
+    readonly docMeta: DocMeta;
 }
 
 

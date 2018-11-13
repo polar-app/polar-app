@@ -22,18 +22,22 @@ export class Latch<T> {
 
     }
 
+    // NOTE: typescript to javascript will properly serialize methods into
+    // the IPC renderer when assigning methods to properties as they are then
+    // enumerable.
+
     // noinspection TsLint
-    public resolve(value: T) {
+    public resolve = (value: T) => {
         this._resolve(value);
     }
 
     // noinspection TsLint
-    public reject(reason: any) {
+    public reject = (reason: any) => {
         this._reject(reason);
     }
 
     // noinspection TsLint
-    public async get(): Promise<T> {
+    public get = (): Promise<T> => {
         return this.promise;
     }
 

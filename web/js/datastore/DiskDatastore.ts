@@ -16,6 +16,7 @@ import {DocInfo} from '../metadata/DocInfo';
 import {Platform, Platforms} from "../util/Platforms";
 import {DatastoreFiles} from './DatastoreFiles';
 import {DatastoreMutation, DefaultDatastoreMutation} from './DatastoreMutation';
+import {DatastoreMutations} from './DatastoreMutations';
 
 const log = Logger.create();
 
@@ -105,7 +106,9 @@ export class DiskDatastore implements Datastore {
 
         // now handle all the promises with the datastore mutation so that we
         // can verify that we were written and committed.
-        datastoreMutation.handle(Promise.all([ deleteStatePathPromise, deleteDocPathPromise]), () => true);
+        DatastoreMutations.handle(Promise.all([ deleteStatePathPromise, deleteDocPathPromise]),
+                                  datastoreMutation,
+                                  () => true);
 
         return {
             docMetaFile: await deleteStatePathPromise,
@@ -246,7 +249,7 @@ export class DiskDatastore implements Datastore {
 
         const result = Files.writeFileAsync(statePath, data, {encoding: 'utf8'});
 
-        datastoreMutation.handle(result, () => true);
+        DatastoreMutations.handle(result, datastoreMutation, () => true);
 
         return result;
 

@@ -18,16 +18,6 @@ export interface DatastoreMutation<T> {
      */
     readonly committed: Latch<T>;
 
-    /**
-     * Pipe the resolve and reject status of the latches to the target.
-     */
-    pipe<V>(converter: (input: T) => V, target: DatastoreMutation<V>): void;
-
-    /**
-     * Handle input from a promise that resolves both latches.
-     */
-    handle<V>(promise: Promise<V>, converter: (input: V) => T): void;
-
 }
 
 abstract class AbstractDatastoreMutation<T> implements DatastoreMutation<T> {
@@ -35,37 +25,6 @@ abstract class AbstractDatastoreMutation<T> implements DatastoreMutation<T> {
     public abstract readonly written: Latch<T>;
     public abstract readonly committed: Latch<T>;
 
-    /**
-     * Pipe the resolve and reject status of the latches to the target.
-     */
-    public pipe<V>(converter: (input: T) => V, target: DatastoreMutation<V>): void {
-
-        this.pipeLatch(this.written, target.written, converter);
-        this.pipeLatch(this.committed, target.committed, converter);
-
-    }
-
-    public handle<V>(promise: Promise<V>, converter: (input: V) => T): void {
-
-        promise.then((result) => {
-            this.written.resolve(converter(result));
-            this.committed.resolve(converter(result));
-        }).catch(err => {
-            this.written.reject(err);
-            this.committed.reject(err);
-        });
-
-    }
-
-    private pipeLatch<V>(source: Latch<T>,
-                         target: Latch<V>,
-                         converter: (input: T) => V): void {
-
-        source.get()
-            .then((value: T) => target.resolve(converter(value)))
-            .catch(err => target.reject(err));
-
-    }
 
 }
 

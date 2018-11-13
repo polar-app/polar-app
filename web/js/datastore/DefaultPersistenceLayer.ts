@@ -15,6 +15,7 @@ import {Reducers} from '../util/Reducers';
 import uuid from 'uuid';
 import {DocInfo} from '../metadata/DocInfo';
 import {DatastoreMutation, DefaultDatastoreMutation} from './DatastoreMutation';
+import {DatastoreMutations} from './DatastoreMutations';
 
 const log = Logger.create();
 
@@ -153,7 +154,7 @@ export class DefaultPersistenceLayer implements IPersistenceLayer {
         const docInfo = Object.assign({}, docMeta.docInfo);
 
         const syncMutation = new DefaultDatastoreMutation<boolean>();
-        syncMutation.pipe(() => docInfo, datastoreMutation);
+        DatastoreMutations.pipe(syncMutation, datastoreMutation, () => docInfo);
 
         await this.datastore.sync(fingerprint, data, docInfo, syncMutation);
 
