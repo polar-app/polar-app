@@ -11,6 +11,7 @@ import {FilePaths} from '../../util/FilePaths';
 import {Files} from '../../util/Files';
 
 const tmpdir = os.tmpdir();
+TestingTime.freeze();
 
 describe('CacheEntriesFactory', function() {
 
@@ -39,17 +40,17 @@ describe('CacheEntriesFactory', function() {
 
             fs.writeFileSync(FilePaths.join(tmpdir, "test-load.json"), JSON.stringify(data, null, "  "));
 
-            fs.writeFileSync(FilePaths.join(tmpdir, "test-load.chtml"), "<html></html>")
+            fs.writeFileSync(FilePaths.join(tmpdir, "test-load.chtml"), "<html></html>");
 
             done();
 
         });
 
-        it("createFromCHTML", async function () {
+        it("createFromCHTML", async function() {
 
-            let cacheEntriesHolder = await CacheEntriesFactory.createFromCHTML(path);
+            const cacheEntriesHolder = await CacheEntriesFactory.createFromCHTML(path);
 
-            let expected = {
+            const expected = {
                 "cacheEntries": {
                     "url": {
                         "method": "GET",
@@ -77,11 +78,11 @@ describe('CacheEntriesFactory', function() {
         });
 
 
-        it("createEntriesFromFile", async function () {
+        it("createEntriesFromFile", async function() {
 
-            let cacheEntriesHolder = await CacheEntriesFactory.createEntriesFromFile(path);
+            const cacheEntriesHolder = await CacheEntriesFactory.createEntriesFromFile(path);
 
-            let expected = {
+            const expected = {
                 "cacheEntries": {
                     "url": {
                         "method": "GET",
@@ -116,7 +117,7 @@ describe('CacheEntriesFactory', function() {
 
             const path = FilePaths.tmpfile("cached-entries-factory.phz");
             const capturedPHZWriter = new CapturedPHZWriter(path);
-            capturedPHZWriter.convert(captured);
+            await capturedPHZWriter.convert(captured);
 
             assert.ok(await Files.existsAsync(path));
 
@@ -124,10 +125,13 @@ describe('CacheEntriesFactory', function() {
 
             assertJSON(cacheEntriesHolder.metadata, {
                 "title": "Unit testing node applications with TypeScript — using mocha and chai",
-                "type": "chtml",
+                "type": "phz",
                 "url": "https://journal.artfuldev.com/unit-testing-node-applications-with-typescript-using-mocha-and-chai-384ef05f32b2",
                 "version": "3.0.0",
                 "browser": {
+                    "inactive": false,
+                    "type": "phone",
+                    "title": "MOBILE_GALAXY_S8_WITH_CHROME_61_WIDTH_750",
                     "name": "MOBILE_GALAXY_S8_WITH_CHROME_61_WIDTH_750",
                     "description": "Galaxy S8 mobile device running Chrome 61 but with width at 750",
                     "userAgent": "Mozilla/5.0 (Linux; Android 8.0.0; SM-G955U Build/R16NW) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.100 Mobile Safari/537.36",
@@ -170,6 +174,7 @@ describe('CacheEntriesFactory', function() {
                 "url": "https://journal.artfuldev.com/unit-testing-node-applications-with-typescript-using-mocha-and-chai-384ef05f32b2",
                 "headers": {},
                 "statusCode": 200,
+                "statusMessage": "OK",
                 "contentType": "text/html",
                 "mimeType": "UTF-8",
                 "encoding": "UTF-8",
@@ -200,6 +205,7 @@ describe('CacheEntriesFactory', function() {
                 "url": "https://journal.artfuldev.com/media/46f0f788c01c4b194cefde2d9ec41eaf?postId=384ef05f32b2",
                 "headers": {},
                 "statusCode": 200,
+                "statusMessage": "OK",
                 "contentType": "text/html",
                 "mimeType": "UTF-8",
                 "encoding": "UTF-8",

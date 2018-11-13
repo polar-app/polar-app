@@ -11,7 +11,7 @@ import {Optional} from '../util/ts/Optional';
 export class CapturedPHZWriter {
 
     public path: string;
-
+    CacheEntriesFactory
     constructor(path: string) {
         this.path = path;
     }
