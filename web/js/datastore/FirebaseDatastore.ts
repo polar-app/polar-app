@@ -136,23 +136,31 @@ export class FirebaseDatastore implements Datastore, SynchronizingDatastore {
             .collection(DatastoreCollection.DOC_META)
             .doc(id);
 
-        this.handleDatastoreMutations(ref, datastoreMutation);
+        this.pendingMutationIndex[id] = {type: 'delete', id};
 
-        const commitPromise = this.waitForCommit(ref);
+        try {
 
-        const documentSnapshot = await ref.delete();
+            this.handleDatastoreMutations(ref, datastoreMutation);
 
-        await commitPromise;
+            const commitPromise = this.waitForCommit(ref);
 
-        // TODO: this is a major hack but we are only deleting remote data here
-        // and not deleting any local data so we don't have any path to work
-        // with..  Maybe we need to make the DeleteResult an Optional so that
-        // it only works on local stores where files are involved or return a
-        // specific structure for the DiskDatastore like a DiskDeleteResult
-        // which implements DeleteResult but adds additional fields.
-        const result: DeleteResult = <DeleteResult> { };
+            const documentSnapshot = await ref.delete();
 
-        return result;
+            await commitPromise;
+
+            // TODO: this is a major hack but we are only deleting remote data here
+            // and not deleting any local data so we don't have any path to work
+            // with..  Maybe we need to make the DeleteResult an Optional so that
+            // it only works on local stores where files are involved or return a
+            // specific structure for the DiskDatastore like a DiskDeleteResult
+            // which implements DeleteResult but adds additional fields.
+            const result: DeleteResult = <DeleteResult> { };
+
+            return result;
+
+        } finally {
+            delete this.pendingMutationIndex[id];
+        }
 
     }
 

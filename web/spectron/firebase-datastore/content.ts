@@ -119,6 +119,8 @@ SpectronRenderer.run(async (state) => {
 
                         await this.persistenceLayer!.write(fingerprint, docMeta);
 
+                        await this.persistenceLayer!.delete({fingerprint, docInfo: docMeta.docInfo});
+
                         return this;
 
                     }
