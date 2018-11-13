@@ -17,11 +17,14 @@ export class TextInputPopover extends React.Component<IProps, IState> {
 
     }
 
-
     public componentWillReceiveProps(nextProps: Readonly<IProps>, nextContext: any): void {
         if (this.props.open !== nextProps.open) {
             Blackout.toggle(nextProps.open);
         }
+    }
+
+    public componentWillUnmount(): void {
+        Blackout.disable();
     }
 
     public render() {
