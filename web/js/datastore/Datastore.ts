@@ -122,13 +122,18 @@ export type FileMeta = {[key: string]: string};
  */
 export interface SynchronizingDatastore {
 
-    addBinaryMutationEventListener(listener: (binaryMutation: BinaryMutation) => void): void;
+    addBinaryMutationEventListener(listener: (binaryMutationEvent: BinaryMutationEvent) => void): void;
 
-    addDocMutationEventListener(listener: (docMutation: DocMutation) => void): void;
+    addDocMutationEventListener(listener: (docMutationEvent: DocMutationEvent) => void): void;
+
+    addDocReplicationEventListener(listener: (docReplicationEvent: DocReplicationEvent) => void): void;
 
 }
 
-export interface BinaryMutation {
+/**
+ * Mutations on binary files.
+ */
+export interface BinaryMutationEvent {
 
     backend: Backend;
 
@@ -138,7 +143,24 @@ export interface BinaryMutation {
 
 }
 
-export interface DocMutation {
+/**
+ * A DocMutation is any mutation that happens in the remote datastore including
+ * local mutations.
+ */
+export interface DocMutationEvent {
+
+    docInfo: IDocInfo;
+
+    mutationType: MutationType;
+
+}
+
+/**
+ * ReplicationEvents are distinct changes to the remote Firestore entry that
+ * aren't from events happening locally. These are triggered after init().  Local
+ * mutations to the datastore do not trigger ReplicationEvents
+ */
+export interface DocReplicationEvent {
 
     docInfo: IDocInfo;
 
@@ -163,3 +185,4 @@ export interface DeleteResult {
 
 
 }
+

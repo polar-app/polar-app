@@ -1,4 +1,6 @@
-import {BinaryMutation, Datastore, DeleteResult, DocMutation, FileMeta, InitResult, SynchronizingDatastore} from './Datastore';
+import {BinaryMutationEvent, Datastore, DeleteResult,
+        DocMutationEvent, FileMeta, InitResult,
+        DocReplicationEvent, SynchronizingDatastore} from './Datastore';
 import {Logger} from '../logger/Logger';
 import {DocMetaFileRef, DocMetaRef} from './DocMetaRef';
 import {Directories} from './Directories';
@@ -45,13 +47,17 @@ export class FirebaseDatastore implements Datastore, SynchronizingDatastore {
 
     private storage?: firebase.storage.Storage;
 
-    private readonly binaryMutationReactor: IEventDispatcher<BinaryMutation> = new SimpleReactor();
+    private readonly binaryMutationReactor: IEventDispatcher<BinaryMutationEvent> = new SimpleReactor();
 
-    private readonly docMutationReactor: IEventDispatcher<DocMutation> = new SimpleReactor();
+    private readonly docMutationReactor: IEventDispatcher<DocMutationEvent> = new SimpleReactor();
+
+    private readonly replicationReactor: IEventDispatcher<DocReplicationEvent> = new SimpleReactor();
 
     private unsubscribeSnapshots: () => void = NULL_FUNCTION;
 
     private initialized: boolean = false;
+
+    private readonly pendingMutationIndex: PendingMutationIndex = {};
 
     constructor() {
 
@@ -83,7 +89,7 @@ export class FirebaseDatastore implements Datastore, SynchronizingDatastore {
         this.unsubscribeSnapshots = await this.firestore!
             .collection(DatastoreCollection.DOC_META)
             .where('uid', '==', uid)
-            .onSnapshot(snapshot => this.onSnapshot(snapshot));
+            .onSnapshot(snapshot => this.onDocMetaSnapshot(snapshot));
 
         this.initialized = true;
 
@@ -288,15 +294,27 @@ export class FirebaseDatastore implements Datastore, SynchronizingDatastore {
 
         const ref = this.firestore!.collection(DatastoreCollection.DOC_META).doc(id);
 
-        this.handleDatastoreMutations(ref, datastoreMutation);
+        this.pendingMutationIndex[id] = {type: 'write', id};
 
-        const commitPromise = this.waitForCommit(ref);
+        try {
 
-        await ref.set(recordHolder);
+            this.handleDatastoreMutations(ref, datastoreMutation);
 
-        // we need to make sure that we only return when it's committed
-        // remotely...
-        await commitPromise;
+            const commitPromise = this.waitForCommit(ref);
+
+            log.debug("Setting...");
+            await ref.set(recordHolder);
+            log.debug("Setting...done");
+
+            // we need to make sure that we only return when it's committed
+            // remotely...
+            log.debug("Waiting for promise...");
+            await commitPromise;
+            log.debug("Waiting for promise...done");
+
+        } finally {
+            delete this.pendingMutationIndex[id];
+        }
 
     }
 
@@ -323,12 +341,16 @@ export class FirebaseDatastore implements Datastore, SynchronizingDatastore {
 
     }
 
-    public addBinaryMutationEventListener(listener: (binaryMutation: BinaryMutation) => void): void {
+    public addBinaryMutationEventListener(listener: (binaryMutation: BinaryMutationEvent) => void): void {
         this.binaryMutationReactor.addEventListener(listener);
     }
 
-    public addDocMutationEventListener(listener: (docMutation: DocMutation) => void): void {
+    public addDocMutationEventListener(listener: (docMutation: DocMutationEvent) => void): void {
         this.docMutationReactor.addEventListener(listener);
+    }
+
+    public addDocReplicationEventListener(listener: (replicationEvent: DocReplicationEvent) => void): void {
+        this.replicationReactor.addEventListener(listener);
     }
 
     /**
@@ -358,6 +380,8 @@ export class FirebaseDatastore implements Datastore, SynchronizingDatastore {
 
             if (snapshot.metadata.fromCache && snapshot.metadata.hasPendingWrites) {
                 datastoreMutation.written.resolve(true);
+                log.debug("Got written...");
+
             }
 
             if (!snapshot.metadata.fromCache && !snapshot.metadata.hasPendingWrites) {
@@ -370,6 +394,8 @@ export class FirebaseDatastore implements Datastore, SynchronizingDatastore {
 
                 datastoreMutation.written.resolve(true);
                 datastoreMutation.committed.resolve(true);
+                log.debug("Got committed...");
+
             }
 
         });
@@ -394,22 +420,33 @@ export class FirebaseDatastore implements Datastore, SynchronizingDatastore {
      *    first but then then immediately resolved from the cache and added
      *    locally.
      */
-    private onSnapshot(snapshot: firebase.firestore.QuerySnapshot) {
+    private onDocMetaSnapshot(snapshot: firebase.firestore.QuerySnapshot) {
+
+        log.debug("onSnapshot... ");
 
         const messagesElement = document.getElementById('messages')!;
 
         for (const docChange of snapshot.docChanges()) {
 
             const record = <RecordHolder<DocMetaHolder>> docChange.doc.data();
+            const id = record.id;
 
-            const docMutation: DocMutation = {
+            const docMutationEvent: DocMutationEvent = {
                 docInfo: record.value.docInfo,
                 mutationType: docChange.type
             };
 
-            this.docMutationReactor.dispatchEvent(docMutation);
+            const docReplicationEvent: DocReplicationEvent = docMutationEvent;
+
+            this.docMutationReactor.dispatchEvent(docMutationEvent);
+
+            if (!this.pendingMutationIndex[id]) {
+                this.replicationReactor.dispatchEvent(docReplicationEvent);
+            }
 
         }
+
+        log.debug("onSnapshot... done");
 
     }
 
@@ -491,5 +528,14 @@ type UserID = string;
  * The result of a FB database mutation.
  */
 interface Mutation {
+
+}
+
+interface PendingMutationIndex {[id: string]: PendingMutation};
+
+interface PendingMutation {
+
+    id: string;
+    type: 'delete' | 'write';
 
 }
