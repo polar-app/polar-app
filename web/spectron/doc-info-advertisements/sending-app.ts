@@ -40,6 +40,6 @@ SpectronRenderer.run(async () => {
 
     assertJSON(Dictionaries.sorted(docMeta.docInfo), Dictionaries.sorted(expected));
 
-    await advertisingPersistenceLayer.syncDocMeta(docMeta);
+    await advertisingPersistenceLayer.writeDocMeta(docMeta);
 
 });

@@ -34,14 +34,14 @@ export interface IPersistenceLayer {
 
     getDocMeta(fingerprint: string): Promise<DocMeta | undefined>;
 
-    syncDocMeta(docMeta: DocMeta, datastoreMutation?: DatastoreMutation<DocInfo>): Promise<DocInfo>;
+    writeDocMeta(docMeta: DocMeta, datastoreMutation?: DatastoreMutation<DocInfo>): Promise<DocInfo>;
 
     /**
      * Return the DocInfo written. The DocInfo may be updated on commit
      * including updating lastUpdated, etc.
      *
      */
-    sync(fingerprint: string, docMeta: DocMeta, datastoreMutation?: DatastoreMutation<DocInfo>): Promise<DocInfo>;
+    write(fingerprint: string, docMeta: DocMeta, datastoreMutation?: DatastoreMutation<DocInfo>): Promise<DocInfo>;
 
     getDocMetaFiles(): Promise<DocMetaRef[]>;
 
@@ -49,10 +49,10 @@ export interface IPersistenceLayer {
     // get an overview of documents in teh repository
     // overview(): Promise<DatastoreOverview>;
 
-    addFile(backend: Backend,
-            name: string,
-            data: FileRef | Buffer | string,
-            meta?: FileMeta): Promise<DatastoreFile>;
+    writeFile(backend: Backend,
+              name: string,
+              data: FileRef | Buffer | string,
+              meta?: FileMeta): Promise<DatastoreFile>;
 
     getFile(backend: Backend, name: string): Promise<Optional<DatastoreFile>>;
 

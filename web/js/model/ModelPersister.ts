@@ -23,7 +23,7 @@ export class ModelPersister {
             // right now we just sync the datastore on mutation.  We do not
             // attempt to use a journal yet.
 
-            await this.persistenceLayer.sync(this.docMeta.docInfo.fingerprint, this.docMeta);
+            await this.persistenceLayer.write(this.docMeta.docInfo.fingerprint, this.docMeta);
 
         });
 

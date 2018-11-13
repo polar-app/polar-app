@@ -55,18 +55,18 @@ export abstract class AbstractAdvertisingPersistenceLayer implements IListenable
 
     }
 
-    public async syncDocMeta(docMeta: DocMeta, datastoreMutation?: DatastoreMutation<DocInfo>): Promise<DocInfo> {
-        return await this.sync(docMeta.docInfo.fingerprint, docMeta, datastoreMutation);
+    public async writeDocMeta(docMeta: DocMeta, datastoreMutation?: DatastoreMutation<DocInfo>): Promise<DocInfo> {
+        return await this.write(docMeta.docInfo.fingerprint, docMeta, datastoreMutation);
     }
 
-    public async sync(fingerprint: string,
-                      docMeta: DocMeta,
-                      datastoreMutation: DatastoreMutation<DocInfo> = new DefaultDatastoreMutation()): Promise<DocInfo> {
+    public async write(fingerprint: string,
+                       docMeta: DocMeta,
+                       datastoreMutation: DatastoreMutation<DocInfo> = new DefaultDatastoreMutation()): Promise<DocInfo> {
 
         const eventType: PersistenceEventType
             = this.contains(fingerprint) ? 'updated' : 'created';
 
-        const docInfo = await this.persistenceLayer.sync(fingerprint, docMeta, datastoreMutation);
+        const docInfo = await this.persistenceLayer.write(fingerprint, docMeta, datastoreMutation);
 
         this.broadcastEvent({
             docInfo,
@@ -116,8 +116,8 @@ export abstract class AbstractAdvertisingPersistenceLayer implements IListenable
         this.reactor.dispatchEvent(event);
     }
 
-    public addFile(backend: Backend, name: string, data: Buffer | string, meta: FileMeta): Promise<DatastoreFile> {
-        return this.persistenceLayer.addFile(backend, name, data, meta);
+    public writeFile(backend: Backend, name: string, data: Buffer | string, meta: FileMeta): Promise<DatastoreFile> {
+        return this.persistenceLayer.writeFile(backend, name, data, meta);
     }
 
     public containsFile(backend: Backend, name: string): Promise<boolean> {

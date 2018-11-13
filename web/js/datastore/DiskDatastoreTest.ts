@@ -208,7 +208,7 @@ describe("DiskDatastore", async function() {
         const fingerprint = '0x00datadelete';
         const docMeta = MockDocMetas.createWithinInitialPagemarks(fingerprint, 14);
 
-        await persistenceLayer.sync(fingerprint, docMeta);
+        await persistenceLayer.write(fingerprint, docMeta);
 
         const stateFile = FilePaths.join(dataDir, fingerprint, 'state.json');
 

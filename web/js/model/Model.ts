@@ -67,7 +67,7 @@ export class Model {
                                       Optional.of(docDetail).map(current => current.filename)
                                           .getOrUndefined());
 
-            await this.persistenceLayer.sync(fingerprint, docMeta);
+            await this.persistenceLayer.write(fingerprint, docMeta);
 
             // I'm not sure this is the best way to resolve this as swapping in
             // the docMetaPromise without any synchronization seems like we're

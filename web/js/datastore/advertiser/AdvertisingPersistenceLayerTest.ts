@@ -30,8 +30,8 @@ describe('AdvertisingPersistenceLayer', function() {
             advertised.push(event.docInfo);
         });
 
-        await advertisingPersistenceLayer.syncDocMeta(docMeta0);
-        await advertisingPersistenceLayer.syncDocMeta(docMeta1);
+        await advertisingPersistenceLayer.writeDocMeta(docMeta0);
+        await advertisingPersistenceLayer.writeDocMeta(docMeta1);
 
         advertised[0].uuid = '...';
 

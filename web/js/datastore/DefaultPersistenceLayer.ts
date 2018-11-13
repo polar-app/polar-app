@@ -80,16 +80,16 @@ export class DefaultPersistenceLayer implements IPersistenceLayer {
     /**
      * Convenience method to not require the fingerprint.
      */
-    public async syncDocMeta(docMeta: DocMeta, datastoreMutation?: DatastoreMutation<DocInfo>): Promise<DocInfo> {
-        return this.sync(docMeta.docInfo.fingerprint, docMeta, datastoreMutation);
+    public async writeDocMeta(docMeta: DocMeta, datastoreMutation?: DatastoreMutation<DocInfo>): Promise<DocInfo> {
+        return this.write(docMeta.docInfo.fingerprint, docMeta, datastoreMutation);
     }
 
     /**
      * Write the datastore to disk.
      */
-    public async sync(fingerprint: string,
-                      docMeta: DocMeta,
-                      datastoreMutation: DatastoreMutation<DocInfo> = new DefaultDatastoreMutation()): Promise<DocInfo> {
+    public async write(fingerprint: string,
+                       docMeta: DocMeta,
+                       datastoreMutation: DatastoreMutation<DocInfo> = new DefaultDatastoreMutation()): Promise<DocInfo> {
 
         Preconditions.assertNotNull(fingerprint, "fingerprint");
         Preconditions.assertNotNull(docMeta, "docMeta");
@@ -166,7 +166,7 @@ export class DefaultPersistenceLayer implements IPersistenceLayer {
         return this.datastore.getDocMetaFiles();
     }
 
-    public addFile(backend: Backend, name: string, data: Buffer | string, meta: FileMeta = {}): Promise<DatastoreFile> {
+    public writeFile(backend: Backend, name: string, data: Buffer | string, meta: FileMeta = {}): Promise<DatastoreFile> {
         return this.datastore.writeFile(backend, name, data, meta);
     }
 

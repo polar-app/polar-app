@@ -20,7 +20,7 @@ describe('DefaultPersistenceLayer', function() {
 
         assert.ok(docMeta.docInfo.lastUpdated === undefined);
 
-        await persistenceLayer.syncDocMeta(docMeta);
+        await persistenceLayer.writeDocMeta(docMeta);
 
         // verify that the original object was not mutated
         assert.ok(docMeta.docInfo.lastUpdated === undefined);
@@ -33,7 +33,7 @@ describe('DefaultPersistenceLayer', function() {
 
         TestingTime.forward(1000);
 
-        await persistenceLayer.syncDocMeta(docMeta);
+        await persistenceLayer.writeDocMeta(docMeta);
 
         const writtenDocMeta2 = await persistenceLayer.getDocMeta(fingerprint);
 
@@ -54,7 +54,7 @@ describe('DefaultPersistenceLayer', function() {
 
         const docMeta = MockDocMetas.createWithinInitialPagemarks(fingerprint, 1);
 
-        await persistenceLayer.syncDocMeta(docMeta);
+        await persistenceLayer.writeDocMeta(docMeta);
 
         const writtenDocMeta1 = await persistenceLayer.getDocMeta(fingerprint);
 
@@ -64,7 +64,7 @@ describe('DefaultPersistenceLayer', function() {
 
         TestingTime.forward(1000);
 
-        await persistenceLayer.syncDocMeta(docMeta);
+        await persistenceLayer.writeDocMeta(docMeta);
 
         const writtenDocMeta2 = await persistenceLayer.getDocMeta(fingerprint);
 

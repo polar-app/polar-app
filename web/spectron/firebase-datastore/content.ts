@@ -45,7 +45,7 @@ SpectronRenderer.run(async (state) => {
 
                 const datastoreMutation = new DefaultDatastoreMutation<DocInfo>();
 
-                await persistenceLayer.sync(fingerprint, docMeta, datastoreMutation);
+                await persistenceLayer.write(fingerprint, docMeta, datastoreMutation);
 
                 await persistenceLayer.stop();
 
