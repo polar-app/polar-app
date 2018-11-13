@@ -1,4 +1,4 @@
-import {Datastore, DeleteResult, FileMeta} from './Datastore';
+import {Datastore, DeleteResult, FileMeta, InitResult} from './Datastore';
 import {Preconditions} from '../Preconditions';
 import {Logger} from '../logger/Logger';
 import {DocMetaFileRef, DocMetaRef} from './DocMetaRef';
@@ -49,8 +49,8 @@ export class DiskDatastore implements Datastore {
 
     }
 
-    public async init() {
-        await this.directories.init();
+    public async init(): Promise<DiskInitResult> {
+        return await this.directories.init();
     }
 
     public async stop() {
@@ -513,5 +513,9 @@ interface FileReference {
 
     // the full path to the metadata file (file.meta)
     metaPath: string;
+
+}
+
+export interface DiskInitResult extends InitResult {
 
 }

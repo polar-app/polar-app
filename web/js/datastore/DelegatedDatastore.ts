@@ -1,4 +1,4 @@
-import {Datastore, FileMeta} from './Datastore';
+import {Datastore, FileMeta, InitResult} from './Datastore';
 import {Directories} from './Directories';
 import {DocMetaFileRef, DocMetaRef} from './DocMetaRef';
 import {DeleteResult} from './Datastore';
@@ -66,7 +66,7 @@ export class DelegatedDatastore implements Datastore {
         return this.delegate.getDocMetaFiles();
     }
 
-    public init(): Promise<void> {
+    public init(): Promise<InitResult> {
         return this.delegate.init();
     }
 

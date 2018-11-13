@@ -1,4 +1,4 @@
-import {BinaryMutation, Datastore, DeleteResult, DocMutation, FileMeta, SynchronizingDatastore} from './Datastore';
+import {BinaryMutation, Datastore, DeleteResult, DocMutation, FileMeta, InitResult, SynchronizingDatastore} from './Datastore';
 import {Logger} from '../logger/Logger';
 import {DocMetaFileRef, DocMetaRef} from './DocMetaRef';
 import {Directories} from './Directories';
@@ -61,10 +61,10 @@ export class FirebaseDatastore implements Datastore, SynchronizingDatastore {
 
     }
 
-    public async init() {
+    public async init(): Promise<InitResult> {
 
         if (this.initialized) {
-            return;
+            return {};
         }
 
         // get the firebase app. Make sure we are initialized externally.
@@ -86,6 +86,8 @@ export class FirebaseDatastore implements Datastore, SynchronizingDatastore {
             .onSnapshot(snapshot => this.onSnapshot(snapshot));
 
         this.initialized = true;
+
+        return {};
 
     }
 

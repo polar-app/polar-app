@@ -38,7 +38,7 @@ export class CloudAwareDatastore implements Datastore {
 
     public async init() {
 
-        await Promise.all([this.remote.init(), this.local.init()]);
+        return await Promise.all([this.remote.init(), this.local.init()]);
 
     }
 

@@ -3,6 +3,7 @@
  */
 import {MemoryDatastore} from './MemoryDatastore';
 import {MockDocMetas} from '../metadata/DocMetas';
+import {InitResult} from './Datastore';
 
 export class MockDatastore extends MemoryDatastore {
 
@@ -10,14 +11,16 @@ export class MockDatastore extends MemoryDatastore {
         super();
     }
 
-    async init() {
+    public async init(): Promise<InitResult> {
 
-        await super.init();
+        const result = await super.init();
 
-        let mockDockMetas = [
+        const mockDockMetas = [
             MockDocMetas.createWithinInitialPagemarks('0x001', 1),
             MockDocMetas.createWithinInitialPagemarks('0x002', 2)
         ];
+
+        return result;
 
     }
 

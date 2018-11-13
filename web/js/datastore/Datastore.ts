@@ -35,9 +35,9 @@ export interface Datastore extends BinaryDatastore, WritableDatastore {
     /**
      * Init the datastore, potentially reading files of disk, the network, etc.
      */
-    init(): Promise<void>;
+    init(): Promise<InitResult>;
 
-    stop(): Promise<void>
+    stop(): Promise<void>;
 
     /**
      * Return true if the DiskDatastore contains a document for the given
@@ -147,6 +147,13 @@ export interface DocMutation {
 }
 
 type MutationType = 'added' | 'modified' |'removed';
+
+/**
+ * The result of an init operation which could be different form each datastore.
+ */
+export interface InitResult {
+
+}
 
 
 /**

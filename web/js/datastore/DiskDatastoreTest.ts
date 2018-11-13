@@ -95,7 +95,7 @@ describe("DiskDatastore", async function() {
         };
 
         // test double init...
-        assertJSON(await diskDatastore.init(), expected );
+        assertJSON(await diskDatastore.init(), expected);
 
         expected = {
             "dataDirConfig": {

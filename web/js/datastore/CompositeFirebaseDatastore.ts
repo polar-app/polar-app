@@ -77,6 +77,8 @@ export class CompositeFirebaseDatastore implements Datastore {
             .where('uid', '==', uid)
             .onSnapshot(snapshot => this.onSnapshot(snapshot));
 
+        return {};
+
     }
 
     public async stop() {

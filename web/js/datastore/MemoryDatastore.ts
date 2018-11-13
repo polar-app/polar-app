@@ -1,7 +1,7 @@
 /**
  * Datastore just in memory with no on disk persistence.
  */
-import {Datastore} from './Datastore';
+import {Datastore, InitResult} from './Datastore';
 import {Preconditions} from '../Preconditions';
 import {DocMetaFileRef, DocMetaRef} from './DocMetaRef';
 import {FilePaths} from '../util/FilePaths';
@@ -47,8 +47,8 @@ export class MemoryDatastore implements Datastore {
     }
 
     // noinspection TsLint
-    public async init() {
-        await this.directories.init();
+    public async init(): Promise<InitResult> {
+        return await this.directories.init();
     }
 
     public async stop() {

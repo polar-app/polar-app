@@ -8,6 +8,7 @@ import {MockCapturedContent} from '../../capture/MockCapturedContent';
 import {CapturedPHZWriter} from '../../capture/CapturedPHZWriter';
 import {Dictionaries} from '../../util/Dictionaries';
 import {FilePaths} from '../../util/FilePaths';
+import {Files} from '../../util/Files';
 
 const tmpdir = os.tmpdir();
 
@@ -116,6 +117,8 @@ describe('CacheEntriesFactory', function() {
             const path = FilePaths.tmpfile("cached-entries-factory.phz");
             const capturedPHZWriter = new CapturedPHZWriter(path);
             capturedPHZWriter.convert(captured);
+
+            assert.ok(await Files.existsAsync(path));
 
             const cacheEntriesHolder = await CacheEntriesFactory.createFromPHZ(path);
 
