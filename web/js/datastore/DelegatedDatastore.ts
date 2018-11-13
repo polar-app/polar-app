@@ -74,8 +74,8 @@ export class DelegatedDatastore implements Datastore {
         return this.delegate.stop();
     }
 
-    public sync(fingerprint: string, data: any, docInfo: IDocInfo, datastoreMutation?: DatastoreMutation<boolean>): Promise<void> {
-        return this.delegate.sync(fingerprint, data, docInfo, datastoreMutation);
+    public write(fingerprint: string, data: any, docInfo: IDocInfo, datastoreMutation?: DatastoreMutation<boolean>): Promise<void> {
+        return this.delegate.write(fingerprint, data, docInfo, datastoreMutation);
     }
 
 }

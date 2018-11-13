@@ -228,7 +228,7 @@ export class CompositeFirebaseDatastore implements Datastore {
     /**
      * Write the datastore to disk.
      */
-    public async sync(fingerprint: string, data: string, docInfo: DocInfo) {
+    public async write(fingerprint: string, data: string, docInfo: DocInfo) {
 
         const uid = this.getUserID();
         const id = this.computeDocMetaID(uid, fingerprint);
@@ -258,7 +258,7 @@ export class CompositeFirebaseDatastore implements Datastore {
 
         await resolveablePromise;
 
-        return this.local.sync(fingerprint, data, docInfo);
+        return this.local.write(fingerprint, data, docInfo);
 
     }
 

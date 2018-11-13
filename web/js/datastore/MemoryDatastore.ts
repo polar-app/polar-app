@@ -111,10 +111,10 @@ export class MemoryDatastore implements Datastore {
     /**
      * Write the datastore to disk.
      */
-    public async sync(fingerprint: string,
-                      data: string,
-                      docInfo: DocInfo,
-                      datastoreMutation: DatastoreMutation<boolean> = new DefaultDatastoreMutation()): Promise<void> {
+    public async write(fingerprint: string,
+                       data: string,
+                       docInfo: DocInfo,
+                       datastoreMutation: DatastoreMutation<boolean> = new DefaultDatastoreMutation()): Promise<void> {
 
         Preconditions.assertTypeOf(data, "string", "data");
 

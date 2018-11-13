@@ -262,10 +262,10 @@ export class FirebaseDatastore implements Datastore, SynchronizingDatastore {
     /**
      * Write the datastore to disk.
      */
-    public async sync(fingerprint: string,
-                      data: string,
-                      docInfo: DocInfo,
-                      datastoreMutation: DatastoreMutation<boolean> = new DefaultDatastoreMutation()) {
+    public async write(fingerprint: string,
+                       data: string,
+                       docInfo: DocInfo,
+                       datastoreMutation: DatastoreMutation<boolean> = new DefaultDatastoreMutation()) {
 
         const uid = this.getUserID();
         const id = this.computeDocMetaID(uid, fingerprint);

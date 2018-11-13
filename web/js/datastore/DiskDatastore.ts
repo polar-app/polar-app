@@ -208,10 +208,10 @@ export class DiskDatastore implements Datastore {
     /**
      * Write the datastore to disk.
      */
-    public async sync(fingerprint: string,
-                      data: string,
-                      docInfo: DocInfo,
-                      datastoreMutation: DatastoreMutation<boolean> = new DefaultDatastoreMutation()) {
+    public async write(fingerprint: string,
+                       data: string,
+                       docInfo: DocInfo,
+                       datastoreMutation: DatastoreMutation<boolean> = new DefaultDatastoreMutation()) {
 
         Preconditions.assertTypeOf(data, "string", "data");
 

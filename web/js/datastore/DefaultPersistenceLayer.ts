@@ -156,7 +156,7 @@ export class DefaultPersistenceLayer implements IPersistenceLayer {
         const syncMutation = new DefaultDatastoreMutation<boolean>();
         DatastoreMutations.pipe(syncMutation, datastoreMutation, () => docInfo);
 
-        await this.datastore.sync(fingerprint, data, docInfo, syncMutation);
+        await this.datastore.write(fingerprint, data, docInfo, syncMutation);
 
         return docInfo;
 
