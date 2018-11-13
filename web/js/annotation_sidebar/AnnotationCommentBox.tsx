@@ -41,17 +41,30 @@ export class AnnotationCommentBox extends React.Component<IProps, IState> {
 
                 </div>
 
-                <div className="text-right">
+                <div className="flexbar w-100">
 
-                    {/*onClick={this.handleComment}*/}
+                    <div className="text-muted m-1 p-1">
 
-                    <Button color="primary" size="sm" className="mt-2" onClick={() => this.onClick()}>
-                        Comment
-                    </Button>
+                        <i className="fab fa-html5" style={{fontSize: '20px'}}></i>
+                        &nbsp;
+                        HTML styling supported
 
-                    <Button color="secondary" size="sm" className="mt-2 ml-1" onClick={() => this.onCancel()}>
-                        Cancel
-                    </Button>
+                    </div>
+
+                    <div className="flexbar-right">
+
+                        {/*onClick={this.handleComment}*/}
+
+                        <Button color="primary" size="sm" className="mt-2" onClick={() => this.onClick()}>
+                            Comment
+                        </Button>
+
+                        <Button color="secondary" size="sm" className="mt-2 ml-1" onClick={() => this.onCancel()}>
+                            Cancel
+                        </Button>
+
+                    </div>
+
 
                 </div>
 

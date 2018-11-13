@@ -28,8 +28,6 @@ export class SpectronMain2 {
 
         return new Promise(resolve => {
 
-            log.info("Electron app started. Waiting for it to be ready.");
-
             app.on('ready', async () => {
 
                 log.info("Ready!  Creating main window!!");

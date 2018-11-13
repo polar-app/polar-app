@@ -66,7 +66,7 @@ export class DocRepository {
 
             log.info("Writing out updated DocMeta");
 
-            await this.persistenceLayer.syncDocMeta(docMeta);
+            await this.persistenceLayer.writeDocMeta(docMeta);
 
         }
 

@@ -1,13 +1,11 @@
 import {assert} from 'chai';
 import {assertJSON} from '../test/Assertions';
 import {MockDocMetas} from '../metadata/DocMetas';
-import {DiskDatastore} from './DiskDatastore';
 import {DefaultPersistenceLayer} from './DefaultPersistenceLayer';
 import {DocMeta} from '../metadata/DocMeta';
 import {isPresent} from '../Preconditions';
 
 import os from 'os';
-import fs from 'fs';
 import {Files} from '../util/Files';
 import {FilePaths} from '../util/FilePaths';
 import {Dictionaries} from '../util/Dictionaries';
@@ -15,8 +13,9 @@ import {Directories, GlobalDataDir} from './Directories';
 import {MockPHZWriter} from '../phz/MockPHZWriter';
 import {DocMetaFileRef} from './DocMetaRef';
 import {Backend} from './Backend';
-import {Platform} from '../util/Platforms';
 import {Datastore} from './Datastore';
+import {DocInfo} from '../metadata/DocInfo';
+import {DefaultDatastoreMutation} from './DatastoreMutation';
 
 const rimraf = require('rimraf');
 
@@ -24,7 +23,7 @@ const tmpdir = os.tmpdir();
 
 export class DatastoreTester {
 
-    public static test(datastoreFactory: () => Datastore) {
+    public static test(datastoreFactory: () => Datastore, hasLocalFiles: boolean = true) {
 
         describe('Write and discover documents', function() {
 
@@ -55,15 +54,25 @@ export class DatastoreTester {
 
                 docMeta.docInfo.filename = `${fingerprint}.phz`;
 
+                await persistenceLayer.delete({fingerprint, docInfo: docMeta.docInfo});
+
                 const contains = await persistenceLayer.contains(fingerprint);
 
                 assert.equal(contains, false);
 
-                await MockPHZWriter.write(FilePaths.create(datastore.stashDir, `${fingerprint}.phz`))
+                await MockPHZWriter.write(FilePaths.create(datastore.stashDir, `${fingerprint}.phz`));
 
-                await persistenceLayer.sync(fingerprint, docMeta);
+                const datastoreMutation = new DefaultDatastoreMutation<DocInfo>();
+                await persistenceLayer.write(fingerprint, docMeta, datastoreMutation);
+
+                // make sure we're always using the datastore mutations
+                await datastoreMutation.written.get();
+                await datastoreMutation.committed.get();
 
             });
+
+
+            // FIXME: test and write a new / basic document to make sure we get the commits working...
 
             it("write and read data to disk", async function() {
 
@@ -84,7 +93,7 @@ export class DatastoreTester {
                 delete docMeta0!.docInfo.nrAnnotations;
                 delete docMeta0!.docInfo.uuid;
 
-                assert.equal(isPresent(docMeta0), true);
+                assert.equal(isPresent(docMeta0), true, "docMeta0 is not present");
 
                 assertJSON(Dictionaries.sorted(docMeta), Dictionaries.sorted(docMeta0));
 
@@ -104,15 +113,27 @@ export class DatastoreTester {
                 const docPath = FilePaths.join(directories.stashDir, `${fingerprint}.phz`);
                 const statePath = FilePaths.join(directories.dataDir, fingerprint, 'state.json');
 
-                assert.ok(await Files.existsAsync(docPath));
-                assert.ok(await Files.existsAsync(statePath));
+                if (hasLocalFiles) {
+                    assert.ok(await Files.existsAsync(docPath));
+                    assert.ok(await Files.existsAsync(statePath));
+
+                }
 
                 await persistenceLayer.delete(docMetaFileRef);
 
-                // make sure the files were deleted
+                if (hasLocalFiles) {
 
-                assert.ok(! await Files.existsAsync(docPath));
-                assert.ok(! await Files.existsAsync(statePath));
+                    // make sure the files were deleted
+
+                    assert.ok(! await Files.existsAsync(docPath));
+                    assert.ok(! await Files.existsAsync(statePath));
+
+                }
+
+                // perform the delete multiple times now to make sure we're idempotent for deletes
+                await persistenceLayer.delete(docMetaFileRef);
+                await persistenceLayer.delete(docMetaFileRef);
+                await persistenceLayer.delete(docMetaFileRef);
 
             });
 
@@ -120,17 +141,19 @@ export class DatastoreTester {
 
                 const data = 'fake image data';
 
-                assert.ok(! await datastore.containsFile(Backend.IMAGE, 'test.jpg'));
+                await datastore.deleteFile(Backend.IMAGE, 'test.jpg');
+
+                assert.ok(! await datastore.containsFile(Backend.IMAGE, 'test.jpg'), "Datastore already contains file!");
 
                 const meta = {
                     "foo": "bar"
                 };
 
-                await datastore.addFile(Backend.IMAGE, 'test.jpg', data, meta);
+                await datastore.writeFile(Backend.IMAGE, 'test.jpg', data, meta);
 
                 assert.ok(await datastore.containsFile(Backend.IMAGE, 'test.jpg'));
 
-                const datastoreFile = await datastore.getFile(Backend.IMAGE, 'test.jpg')
+                const datastoreFile = await datastore.getFile(Backend.IMAGE, 'test.jpg');
                 assert.ok(datastoreFile);
                 assert.ok(datastoreFile.isPresent());
                 assert.ok(datastoreFile.get());

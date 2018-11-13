@@ -3,7 +3,7 @@
  */
 import {Dict} from '../../util/Dict';
 import {Result} from '../../util/Result';
-import {Captured, CapturedDoc, DocTypeFormat, Overflow, ScrollBox} from './Captured';
+import {CapturedDoc, Captured, DocTypeFormat, ScrollBox, Overflow} from './Captured';
 import {Results} from '../../util/Results';
 
 export class ContentCapture {
@@ -40,7 +40,7 @@ export class ContentCapture {
         }
 
         if (!url) {
-            url = contentDoc.location.href;
+            url = contentDoc.location!.href;
         }
 
         if (!result) {
@@ -64,7 +64,7 @@ export class ContentCapture {
 
                 title: contentDoc.title,
 
-                url: contentDoc.location.href,
+                url: contentDoc.location!.href,
 
                 // keep track of the scroll height and width of the document.
                 // when the document is able to be adjusted to the size of the
@@ -84,7 +84,7 @@ export class ContentCapture {
         const cloneDoc: Document = <Document> contentDoc.cloneNode(true);
 
         result.capturedDocuments[url]
-            = ContentCapture.captureDoc(cloneDoc, contentDoc.location.href);
+            = ContentCapture.captureDoc(cloneDoc, contentDoc.location!.href);
 
         if (ENABLE_IFRAMES) {
 
@@ -105,7 +105,7 @@ export class ContentCapture {
 
                 if (frameValidity.valid && iframe.contentDocument) {
 
-                    const iframeHref = iframe.contentDocument.location.href;
+                    const iframeHref = iframe.contentDocument.location!.href;
 
                     console.log("Going to capture iframe: " + iframeHref);
                     console.log(iframe.outerHTML);
@@ -296,14 +296,14 @@ export class ContentCapture {
 
     private static computeScrollBox(doc: Document): ScrollBox {
 
-        const computedStyle = getComputedStyle(doc.documentElement);
+        const computedStyle = getComputedStyle(doc.documentElement!);
 
         return {
-            width: doc.documentElement.scrollWidth,
+            width: doc.documentElement!.scrollWidth,
             widthOverflow: <Overflow> computedStyle.overflowX || 'visible' ,
-            height: doc.documentElement.scrollHeight,
+            height: doc.documentElement!.scrollHeight,
             heightOverflow: <Overflow> computedStyle.overflowY || 'visible' ,
-        };
+        }
 
     }
 
@@ -327,11 +327,11 @@ export class ContentCapture {
         base = cloneDoc.createElement("base");
         base.setAttribute("href", url);
 
-        if (cloneDoc.head.firstChild != null) {
+        if (cloneDoc.head!.firstChild != null) {
             // base must be the first element
-            cloneDoc.head.insertBefore(base, cloneDoc.head.firstChild);
+            cloneDoc.head!.insertBefore(base, cloneDoc.head!.firstChild);
         } else {
-            cloneDoc.head.appendChild(base);
+            cloneDoc.head!.appendChild(base);
         }
 
         result.baseAdded = true;

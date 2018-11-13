@@ -179,7 +179,7 @@ describe("DiskDatastore", async function() {
         const diskDatastore = new DiskDatastore();
         await diskDatastore.init();
 
-        await diskDatastore.addFile(Backend.STASH, 'example.pdf', await Files.readFileAsync(path));
+        await diskDatastore.writeFile(Backend.STASH, 'example.pdf', await Files.readFileAsync(path));
 
         const pdfPath = FilePaths.join(dataDir, "stash", "example.pdf");
 
@@ -208,7 +208,7 @@ describe("DiskDatastore", async function() {
         const fingerprint = '0x00datadelete';
         const docMeta = MockDocMetas.createWithinInitialPagemarks(fingerprint, 14);
 
-        await persistenceLayer.sync(fingerprint, docMeta);
+        await persistenceLayer.write(fingerprint, docMeta);
 
         const stateFile = FilePaths.join(dataDir, fingerprint, 'state.json');
 

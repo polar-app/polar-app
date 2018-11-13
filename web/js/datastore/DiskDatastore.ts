@@ -1,8 +1,8 @@
-import {Datastore, FileMeta} from './Datastore';
+import {Datastore, DeleteResult, FileMeta} from './Datastore';
 import {Preconditions} from '../Preconditions';
 import {Logger} from '../logger/Logger';
 import {DocMetaFileRef, DocMetaRef} from './DocMetaRef';
-import {FileDeleted, Files, FileRef} from '../util/Files';
+import {FileDeleted, FileRef, Files} from '../util/Files';
 import {FilePaths} from '../util/FilePaths';
 import {Directories} from './Directories';
 
@@ -15,6 +15,8 @@ import {Optional} from '../util/ts/Optional';
 import {DocInfo} from '../metadata/DocInfo';
 import {Platform, Platforms} from "../util/Platforms";
 import {DatastoreFiles} from './DatastoreFiles';
+import {DatastoreMutation, DefaultDatastoreMutation} from './DatastoreMutation';
+import {DatastoreMutations} from './DatastoreMutations';
 
 const log = Logger.create();
 
@@ -48,7 +50,11 @@ export class DiskDatastore implements Datastore {
     }
 
     public async init() {
-        return await this.directories.init();
+        await this.directories.init();
+    }
+
+    public async stop() {
+        // noop
     }
 
     /**
@@ -73,21 +79,40 @@ export class DiskDatastore implements Datastore {
      * Delete the DocMeta file and the underlying doc from the stash.
      *
      */
-    public async delete(docMetaFileRef: DocMetaFileRef): Promise<Readonly<DeleteResult>> {
+    public async delete(docMetaFileRef: DocMetaFileRef,
+                        datastoreMutation: DatastoreMutation<boolean> = new DefaultDatastoreMutation()):
+        Promise<Readonly<DiskDeleteResult>> {
 
         const docDir = FilePaths.join(this.dataDir, docMetaFileRef.fingerprint);
         const statePath = FilePaths.join(docDir, 'state.json');
 
-        const docPath = FilePaths.join(this.directories.stashDir, docMetaFileRef.filename);
+        let docPath: string | undefined;
+
+        if (docMetaFileRef.filename) {
+
+            // FIXME: remove this via deleteFile NOT delete since I'm storing
+            // it as a binary file now.
+            docPath = FilePaths.join(this.directories.stashDir, docMetaFileRef.filename);
+
+        }
 
         log.info(`Deleting statePath ${statePath} and docPath ${docPath}`);
 
         // TODO: don't delete JUST the state file but also the parent dir if it
         // is empty.
 
+        const deleteStatePathPromise = Files.deleteAsync(statePath);
+        const deleteDocPathPromise = docPath !== undefined ? Files.deleteAsync(docPath) : Promise.resolve(undefined);
+
+        // now handle all the promises with the datastore mutation so that we
+        // can verify that we were written and committed.
+        DatastoreMutations.handle(Promise.all([ deleteStatePathPromise, deleteDocPathPromise]),
+                                  datastoreMutation,
+                                  () => true);
+
         return {
-            docMetaFile: await Files.deleteAsync(statePath),
-            dataFile: await Files.deleteAsync(docPath)
+            docMetaFile: await deleteStatePathPromise,
+            dataFile: await deleteDocPathPromise
         };
 
     }
@@ -130,10 +155,10 @@ export class DiskDatastore implements Datastore {
 
     }
 
-    public async addFile(backend: Backend,
-                         name: string,
-                         data: FileRef | Buffer | string,
-                         meta: FileMeta = {}): Promise<DatastoreFile> {
+    public async writeFile(backend: Backend,
+                           name: string,
+                           data: FileRef | Buffer | string,
+                           meta: FileMeta = {}): Promise<DatastoreFile> {
 
         DatastoreFiles.assertSanitizedFileName(name);
 
@@ -183,7 +208,10 @@ export class DiskDatastore implements Datastore {
     /**
      * Write the datastore to disk.
      */
-    public async sync(fingerprint: string, data: string, docInfo: DocInfo) {
+    public async write(fingerprint: string,
+                       data: string,
+                       docInfo: DocInfo,
+                       datastoreMutation: DatastoreMutation<boolean> = new DefaultDatastoreMutation()) {
 
         Preconditions.assertTypeOf(data, "string", "data");
 
@@ -219,7 +247,11 @@ export class DiskDatastore implements Datastore {
 
         log.info(`Writing data to state file: ${statePath}`);
 
-        return await Files.writeFileAsync(statePath, data, {encoding: 'utf8'});
+        const result = Files.writeFileAsync(statePath, data, {encoding: 'utf8'});
+
+        DatastoreMutations.handle(result, datastoreMutation, () => true);
+
+        return result;
 
     }
 
@@ -461,11 +493,11 @@ export interface DataDirConfig {
 
 }
 
-export interface DeleteResult {
+export interface DiskDeleteResult extends DeleteResult {
 
     docMetaFile: Readonly<FileDeleted>;
 
-    dataFile: Readonly<FileDeleted>;
+    dataFile?: Readonly<FileDeleted>;
 
 }
 
@@ -483,4 +515,3 @@ interface FileReference {
     metaPath: string;
 
 }
-

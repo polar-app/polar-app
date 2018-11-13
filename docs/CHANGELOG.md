@@ -1,12 +1,24 @@
 
+# 1.0.13
+
+ - point release to fix auto-updates in release process and upgrade 
+   electron-builder and electron-updater
+
+ - migration from typescript 3.0.3 to 3.1.6 due to incompatibility to with new 
+   electron-builder
+
 # 1.0.12
 
-- Upgrade to Electron 3.0.8
+- Reduced the minimum mouse click duration required for bringing up the annotation 
+  bar. 
 
 - Fixed bug with Electron generating an error window on exit due to a conversion 
-  of the wrong type to an integer.  This was/is an Electron bug.
+  of the wrong type to an integer.  This was/is an Electron bug.  This may not
+  be fixed in all situations but it's much better than it was before.
 
-- Feature: tooltip on hover of the doc repo table title.
+- Feature: drag and drop for bulk PDF import works. 
+
+- Upgrade to Electron 3.0.8
 
 - Fixed analytics around number of documents in the repository
 

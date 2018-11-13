@@ -7,12 +7,13 @@ import {DocMetaFileRef, DocMetaRef} from './DocMetaRef';
 import {FilePaths} from '../util/FilePaths';
 import {Directories} from './Directories';
 import {Logger} from '../logger/Logger';
-import {DeleteResult} from './DiskDatastore';
+import {DeleteResult} from './Datastore';
 import {FileDeleted} from '../util/Files';
 import {Backend} from './Backend';
 import {DatastoreFile} from './DatastoreFile';
 import {Optional} from '../util/ts/Optional';
 import {DocInfo} from '../metadata/DocInfo';
+import {DatastoreMutation, DefaultDatastoreMutation} from './DatastoreMutation';
 
 const log = Logger.create();
 
@@ -50,6 +51,10 @@ export class MemoryDatastore implements Datastore {
         await this.directories.init();
     }
 
+    public async stop() {
+        // noop
+    }
+
     public async contains(fingerprint: string): Promise<boolean> {
         return fingerprint in this.docMetas;
     }
@@ -76,7 +81,7 @@ export class MemoryDatastore implements Datastore {
 
     }
 
-    public addFile(backend: Backend, name: string, data: Buffer | string): Promise<DatastoreFile> {
+    public writeFile(backend: Backend, name: string, data: Buffer | string): Promise<DatastoreFile> {
         throw new Error("Not implemented");
     }
 
@@ -106,11 +111,18 @@ export class MemoryDatastore implements Datastore {
     /**
      * Write the datastore to disk.
      */
-    public async sync(fingerprint: string, data: string, docInfo: DocInfo) {
+    public async write(fingerprint: string,
+                       data: string,
+                       docInfo: DocInfo,
+                       datastoreMutation: DatastoreMutation<boolean> = new DefaultDatastoreMutation()): Promise<void> {
 
         Preconditions.assertTypeOf(data, "string", "data");
 
         this.docMetas[fingerprint] = data;
+
+        datastoreMutation.written.resolve(true);
+        datastoreMutation.committed.resolve(true);
+
     }
 
     public async getDocMetaFiles(): Promise<DocMetaRef[]> {

@@ -18,13 +18,14 @@ import {Directories} from '../../datastore/Directories';
 import {FileImportClient} from '../repository/FileImportClient';
 import {PDFImporter} from '../repository/importers/PDFImporter';
 import {IPersistenceLayer} from '../../datastore/IPersistenceLayer';
+import {Messenger} from '../../electron/messenger/Messenger';
+import {TriggerBrowserLoad} from '../browser/BrowserApp';
 
 const log = Logger.create();
 
 export class MainAppController {
 
     private readonly fileLoader: FileLoader;
-
 
     private readonly webserver: Webserver;
 

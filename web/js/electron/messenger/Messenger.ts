@@ -2,6 +2,7 @@ import {BrowserWindow} from 'electron';
 import {PostMessageRequest} from './PostMessageRequest';
 import {Functions} from '../../util/Functions';
 import {isPresent} from '../../Preconditions';
+import {Browser} from '../../capture/Browser';
 
 
 /**
@@ -16,23 +17,29 @@ export class Messenger {
 
         postMessageRequest = new PostMessageRequest(postMessageRequest);
 
-        function postMessageFunction(message: any) {
-            window.postMessage(message, "*");
-        }
-
-        const script = Functions.functionToScript(postMessageFunction, postMessageRequest.message);
-
         let targetBrowserWindow = postMessageRequest.window;
 
         if (! isPresent(targetBrowserWindow)) {
             targetBrowserWindow = BrowserWindow.getFocusedWindow();
         }
 
-        if(! isPresent(targetBrowserWindow)) {
+        if (! isPresent(targetBrowserWindow)) {
             throw new Error("No target browser window found");
         }
 
-        await targetBrowserWindow!.webContents.executeJavaScript(script);
+        await this.postMessageToWindow(postMessageRequest.message, targetBrowserWindow!);
+
+    }
+
+    public static async postMessageToWindow(message: any, browserWindow: BrowserWindow) {
+
+        function postMessageFunction(msg: any) {
+            window.postMessage(msg, "*");
+        }
+
+        const script = Functions.functionToScript(postMessageFunction, message);
+
+        await browserWindow.webContents.executeJavaScript(script);
 
     }
 

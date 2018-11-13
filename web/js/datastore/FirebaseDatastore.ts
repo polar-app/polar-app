@@ -1,4 +1,4 @@
-import {Datastore, FileMeta} from './Datastore';
+import {BinaryMutation, Datastore, DeleteResult, DocMutation, FileMeta, SynchronizingDatastore} from './Datastore';
 import {Logger} from '../logger/Logger';
 import {DocMetaFileRef, DocMetaRef} from './DocMetaRef';
 import {Directories} from './Directories';
@@ -6,17 +6,16 @@ import {Directories} from './Directories';
 import {Backend} from './Backend';
 import {DatastoreFile} from './DatastoreFile';
 import {Optional} from '../util/ts/Optional';
-import {DeleteResult} from './DiskDatastore';
 import {Firestore} from '../firestore/Firestore';
-import {Firebase} from '../firestore/Firebase';
 import {DocInfo, IDocInfo} from '../metadata/DocInfo';
 import {Preconditions} from '../Preconditions';
 import {Hashcodes} from '../Hashcodes';
 import * as firebase from '../firestore/lib/firebase';
-import {Elements} from '../util/Elements';
-import {ResolveablePromise} from '../util/ResolveablePromise';
 import {Dictionaries} from '../util/Dictionaries';
 import {DatastoreFiles} from './DatastoreFiles';
+import {DatastoreMutation, DefaultDatastoreMutation} from './DatastoreMutation';
+import {IEventDispatcher, SimpleReactor} from '../reactor/SimpleReactor';
+import {NULL_FUNCTION} from '../util/Functions';
 
 const log = Logger.create();
 
@@ -32,7 +31,7 @@ const log = Logger.create();
 // TODO: all files need to also have associated metadata in firestore and
 // the binary data is stored in firebase storage.
 
-export class FirebaseDatastore implements Datastore {
+export class FirebaseDatastore implements Datastore, SynchronizingDatastore {
 
     public readonly stashDir: string;
 
@@ -46,37 +45,52 @@ export class FirebaseDatastore implements Datastore {
 
     private storage?: firebase.storage.Storage;
 
-    private readonly local: Datastore;
+    private readonly binaryMutationReactor: IEventDispatcher<BinaryMutation> = new SimpleReactor();
 
-    private readonly resolveablePromiseIndex = new ResolveablePromiseIndex<Mutation>();
+    private readonly docMutationReactor: IEventDispatcher<DocMutation> = new SimpleReactor();
 
-    constructor(local: Datastore) {
-        this.local = local;
+    private unsubscribeSnapshots: () => void = NULL_FUNCTION;
 
-        this.directories = this.local.directories;
-        this.stashDir = this.local.stashDir;
-        this.logsDir = this.local.logsDir;
+    private initialized: boolean = false;
+
+    constructor() {
+
+        this.directories = new Directories();
+        this.stashDir = this.directories.stashDir;
+        this.logsDir = this.directories.logsDir;
 
     }
 
     public async init() {
 
-        await this.local.init();
+        if (this.initialized) {
+            return;
+        }
 
         // get the firebase app. Make sure we are initialized externally.
         this.app = firebase.app();
         this.firestore = await Firestore.getInstance();
         this.storage = firebase.storage();
 
-        // setup the initial snapshot so that we query for the users existing data...
+        // setup the initial snapshot so that we query for the users existing
+        // data...
 
         const uid = this.getUserID();
 
-        await this.firestore!
+        // start synchronizing the datastore.  You MUST register your listeners
+        // BEFORE calling init if you wish to listen to the full stream of
+        // events.
+        this.unsubscribeSnapshots = await this.firestore!
             .collection(DatastoreCollection.DOC_META)
             .where('uid', '==', uid)
             .onSnapshot(snapshot => this.onSnapshot(snapshot));
 
+        this.initialized = true;
+
+    }
+
+    public async stop() {
+        this.unsubscribeSnapshots();
     }
 
     /**
@@ -84,14 +98,25 @@ export class FirebaseDatastore implements Datastore {
      * fingerprint
      */
     public async contains(fingerprint: string): Promise<boolean> {
-        return this.local.contains(fingerprint);
+
+        // TODO: this isn't particularly efficient now but I don't think we're
+        // actually using contains() for anything and we might want to remove
+        // it since it's not very efficient if we just call getDocMeta anyway.
+        const docMeta = await this.getDocMeta(fingerprint);
+
+        return docMeta !== null;
+
     }
 
     /**
      * Delete the DocMeta file and the underlying doc from the stash.
      *
      */
-    public async delete(docMetaFileRef: DocMetaFileRef): Promise<Readonly<DeleteResult>> {
+    public async delete(docMetaFileRef: DocMetaFileRef,
+                        datastoreMutation: DatastoreMutation<boolean> = new DefaultDatastoreMutation()): Promise<Readonly<DeleteResult>> {
+
+        // FIXME: the PDF data file should be added as a stash file via
+        // writeFile so it also needs to be removed.
 
         // TODO: these could get out of sync and we have to force them to
         // execute together.  The remote delete followed by the local ...
@@ -99,21 +124,27 @@ export class FirebaseDatastore implements Datastore {
         const uid = this.getUserID();
         const id = this.computeDocMetaID(uid, docMetaFileRef.fingerprint);
 
-        const resolveablePromise = new ResolveablePromise<Mutation>();
-
-        this.resolveablePromiseIndex.add(id, resolveablePromise);
-
-        const documentSnapshot = await this.firestore!
+        const ref = this.firestore!
             .collection(DatastoreCollection.DOC_META)
-            .doc(id)
-            .delete();
+            .doc(id);
 
-        // wait for this promise to resolve and then perform the local delete of
-        // the local file.
+        this.handleDatastoreMutations(ref, datastoreMutation);
 
-        await resolveablePromise;
+        const commitPromise = this.waitForCommit(ref);
 
-        return this.local.delete(docMetaFileRef);
+        const documentSnapshot = await ref.delete();
+
+        await commitPromise;
+
+        // TODO: this is a major hack but we are only deleting remote data here
+        // and not deleting any local data so we don't have any path to work
+        // with..  Maybe we need to make the DeleteResult an Optional so that
+        // it only works on local stores where files are involved or return a
+        // specific structure for the DiskDatastore like a DiskDeleteResult
+        // which implements DeleteResult but adds additional fields.
+        const result: DeleteResult = <DeleteResult> { };
+
+        return result;
 
     }
 
@@ -122,17 +153,33 @@ export class FirebaseDatastore implements Datastore {
      * fingerprint or null if it does not exist.
      */
     public async getDocMeta(fingerprint: string): Promise<string | null> {
-        return this.local.getDocMeta(fingerprint);
+
+        const uid = this.getUserID();
+        const id = this.computeDocMetaID(uid, fingerprint);
+
+        const ref = this.firestore!.collection(DatastoreCollection.DOC_META).doc(id);
+
+        const snapshot = await ref.get();
+
+        const recordHolder = <RecordHolder<DocMetaHolder> | undefined> snapshot.data();
+
+        if (! recordHolder) {
+            return null;
+        }
+
+        return recordHolder.value.value;
+
     }
 
     // TODO: the cloud storage operations are possibly unsafe and could
     // leave local files in place or too many remote files but this is good
     // for a first MVP pass.
 
-    // TODO: if the file is ONLY in firestore it won't be sync'd on a remote
-    // computer so we should try to pull it down just in time when requested.
+    public async writeFile(backend: Backend,
+                           name: string,
+                           data: Buffer | string,
+                           meta: FileMeta = {}): Promise<DatastoreFile> {
 
-    public async addFile(backend: Backend, name: string, data: Buffer | string, meta: FileMeta = {}): Promise<DatastoreFile> {
         DatastoreFiles.assertValidFileName(name);
 
         const storage = this.storage!;
@@ -142,51 +189,45 @@ export class FirebaseDatastore implements Datastore {
         let uploadTask: firebase.storage.UploadTask;
 
         if (typeof data === 'string') {
-            uploadTask = fileRef.putString(data);
+            uploadTask = fileRef.putString(data, 'raw', {customMetadata: meta});
         } else {
-            uploadTask = fileRef.put(Uint8Array.from(data));
-
+            uploadTask = fileRef.put(Uint8Array.from(data), {customMetadata: meta});
         }
 
-        await uploadTask;
+        // TODO: we can get progress from the uploadTask here.
 
-        return this.local.addFile(backend, name, data, meta);
+        const uploadTaskSnapshot = await uploadTask;
 
+        const downloadURL = uploadTaskSnapshot.downloadURL;
+
+        return {
+            backend,
+            name,
+            url: downloadURL!,
+            meta
+        };
 
     }
 
     public async getFile(backend: Backend, name: string): Promise<Optional<DatastoreFile>> {
+
         DatastoreFiles.assertValidFileName(name);
-
-        const localFile = await this.local.getFile(backend, name);
-
-        if (localFile.isPresent()) {
-            return localFile;
-        }
-
-        // TODO: it's probably in firestore, just not copied locally yet.
-        // shouldn't we pull it and write it locally then?
-
-        // TODO: we need to copy it locally... then serve it form the local
-        // cache.
 
         const storage = this.storage!;
 
         const fileRef = storage.ref().child(`${backend}/${name}`);
 
-        const url: string = await fileRef.getDownloadURL()
-        const meta = await fileRef.getMetadata();
+        const url: string = await fileRef.getDownloadURL();
+        const metadata = await fileRef.getMetadata();
+        const meta = metadata.customMetadata;
 
         return Optional.of({backend, name, url, meta});
 
     }
 
     public async containsFile(backend: Backend, name: string): Promise<boolean> {
-        DatastoreFiles.assertValidFileName(name);
 
-        if ( await this.local.containsFile(backend, name)) {
-            return true;
-        }
+        DatastoreFiles.assertValidFileName(name);
 
         // TODO: we should have some cache here to avoid checking the server too
         // often but I don't think this is goign to be used often.
@@ -216,21 +257,18 @@ export class FirebaseDatastore implements Datastore {
         const storage = this.storage!;
         const fileRef = storage.ref().child(`${backend}/${name}`);
         await fileRef.delete();
-
-        return this.local.deleteFile(backend, name);
     }
 
     /**
      * Write the datastore to disk.
      */
-    public async sync(fingerprint: string, data: string, docInfo: DocInfo) {
+    public async write(fingerprint: string,
+                       data: string,
+                       docInfo: DocInfo,
+                       datastoreMutation: DatastoreMutation<boolean> = new DefaultDatastoreMutation()) {
 
         const uid = this.getUserID();
         const id = this.computeDocMetaID(uid, fingerprint);
-
-        const resolveablePromise = new ResolveablePromise<Mutation>();
-
-        this.resolveablePromiseIndex.add(id, resolveablePromise);
 
         docInfo = Object.assign({}, Dictionaries.onlyDefinedProperties(docInfo));
 
@@ -246,19 +284,94 @@ export class FirebaseDatastore implements Datastore {
             value: docMetaHolder
         };
 
-        await this.firestore!
-            .collection(DatastoreCollection.DOC_META)
-            .doc(id)
-            .set(recordHolder);
+        const ref = this.firestore!.collection(DatastoreCollection.DOC_META).doc(id);
 
-        await resolveablePromise;
+        this.handleDatastoreMutations(ref, datastoreMutation);
 
-        return this.local.sync(fingerprint, data, docInfo);
+        const commitPromise = this.waitForCommit(ref);
+
+        await ref.set(recordHolder);
+
+        // we need to make sure that we only return when it's committed
+        // remotely...
+        await commitPromise;
 
     }
 
     public async getDocMetaFiles(): Promise<DocMetaRef[]> {
-        return this.local.getDocMetaFiles();
+
+        const uid = this.getUserID();
+
+        const snapshot = await this.firestore!
+            .collection(DatastoreCollection.DOC_META)
+            .where('uid', '==', uid)
+            .get();
+
+        const result: DocMetaRef[] = [];
+
+        for (const doc of snapshot.docs) {
+
+            const recordHolder = <RecordHolder<DocMetaHolder>> doc.data();
+
+            result.push({fingerprint: recordHolder.value.docInfo.fingerprint});
+
+        }
+
+        return result;
+
+    }
+
+    public addBinaryMutationEventListener(listener: (binaryMutation: BinaryMutation) => void): void {
+        this.binaryMutationReactor.addEventListener(listener);
+    }
+
+    public addDocMutationEventListener(listener: (docMutation: DocMutation) => void): void {
+        this.docMutationReactor.addEventListener(listener);
+    }
+
+    /**
+     * Wait for the record to be fully committed to the remote datastore - not
+     * just written to the local cache.
+     */
+    private waitForCommit(ref: firebase.firestore.DocumentReference): Promise<void> {
+
+        return new Promise(resolve => {
+
+            ref.onSnapshot({includeMetadataChanges: true}, snapshot => {
+
+                if (!snapshot.metadata.fromCache && !snapshot.metadata.hasPendingWrites) {
+                    resolve();
+                }
+
+            });
+
+        });
+
+    }
+
+    private handleDatastoreMutations(ref: firebase.firestore.DocumentReference,
+                                     datastoreMutation: DatastoreMutation<any>) {
+
+        ref.onSnapshot({includeMetadataChanges: true}, snapshot => {
+
+            if (snapshot.metadata.fromCache && snapshot.metadata.hasPendingWrites) {
+                datastoreMutation.written.resolve(true);
+            }
+
+            if (!snapshot.metadata.fromCache && !snapshot.metadata.hasPendingWrites) {
+
+                // it's been committed remotely which also implies it was
+                // written locally so resolve that as well. We might not always
+                // get the locally written callback and I think this happens
+                // when the cache entry can't be updated due to it already being
+                // pending.
+
+                datastoreMutation.written.resolve(true);
+                datastoreMutation.committed.resolve(true);
+            }
+
+        });
+
     }
 
     /**
@@ -281,42 +394,21 @@ export class FirebaseDatastore implements Datastore {
      */
     private onSnapshot(snapshot: firebase.firestore.QuerySnapshot) {
 
-        console.log("FIXME: fromCache", snapshot.metadata.fromCache, snapshot.metadata, snapshot);
-
         const messagesElement = document.getElementById('messages')!;
 
         for (const docChange of snapshot.docChanges()) {
 
             const record = <RecordHolder<DocMetaHolder>> docChange.doc.data();
 
-            console.log("FIXME: data: " ,docChange.doc.data(),snapshot.metadata  )
+            const docMutation: DocMutation = {
+                docInfo: record.value.docInfo,
+                mutationType: docChange.type
+            };
 
-            switch (docChange.type) {
-
-                case 'added':
-                    this.onSnapshotDocUpdated(record);
-                    break;
-
-                case 'modified':
-                    this.onSnapshotDocUpdated(record);
-                    break;
-
-                case 'removed':
-                    this.onSnapshotDocRemoved(record);
-                    break;
-
-            }
+            this.docMutationReactor.dispatchEvent(docMutation);
 
         }
 
-    }
-
-    private onSnapshotDocUpdated(record: RecordHolder<DocMetaHolder>) {
-        this.resolveablePromiseIndex.resolve(record.id, {});
-    }
-
-    private onSnapshotDocRemoved(record: RecordHolder<DocMetaHolder>) {
-        this.resolveablePromiseIndex.resolve(record.id, {});
     }
 
     private computeDocMetaID(uid: UserID, fingerprint: string) {
@@ -361,8 +453,6 @@ export interface DocMetaHolder {
     // URL, tags, etc.
     readonly docInfo: IDocInfo;
 
-    // FIXME: change this type to DocMeta and then disable indexing on it in
-    // firebase as most of the values here don't need to be indexed.
     readonly value: string;
 
 }
@@ -399,42 +489,5 @@ type UserID = string;
  * The result of a FB database mutation.
  */
 interface Mutation {
-
-}
-
-/**
- * Allows us to externally resolve promises that are waiting to be resolved.
- */
-class ResolveablePromiseIndex<T> {
-
-    private backing: {[id: string]: ResolveablePromise<T>[]} = {};
-
-    public add(id: string, promise: ResolveablePromise<T>): void {
-
-        if(id in this.backing) {
-            this.backing[id].push(promise);
-        } else {
-            this.backing[id] = [promise];
-        }
-
-    }
-
-    /**
-     * Resolve all the values of id with the given value.
-     */
-    public resolve(id: string, value: T) {
-
-        const promises = this.backing[id];
-
-        if(promises) {
-
-            for (const promise of promises) {
-                promise.resolve(value);
-            }
-
-            delete this.backing[id];
-        }
-
-    }
 
 }

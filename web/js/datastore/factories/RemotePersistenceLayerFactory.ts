@@ -22,7 +22,6 @@ export class RemotePersistenceLayerFactory {
 
         return advertisingPersistenceLayer;
 
-
     }
 
 }

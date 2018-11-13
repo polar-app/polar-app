@@ -9,7 +9,7 @@ export class IFrames {
 
             function timer() {
 
-                if(iframe.contentDocument && iframe.contentDocument.location.href !== options.currentURL) {
+                if(iframe.contentDocument && iframe.contentDocument!.location!.href !== options.currentURL) {
                     resolve(iframe.contentDocument);
                     return;
                 }

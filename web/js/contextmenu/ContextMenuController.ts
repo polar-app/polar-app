@@ -78,7 +78,7 @@ export class ContextMenuController {
 
     }
 
-    private onContextMenuHandler(event: PointerEvent, annotationSelectors: string[]) {
+    private onContextMenuHandler(event: MouseEvent, annotationSelectors: string[]) {
 
         const matchingSelectors
             = ContextMenuController.elementsFromEventMatchingSelectors(event, annotationSelectors );

@@ -71,7 +71,7 @@ export class PDFImporter {
         // a good thing.  Space is cheap.
         const inputFileRef: FileRef = {path: filePath};
 
-        await this.persistenceLayer.addFile(Backend.STASH, filename, inputFileRef);
+        await this.persistenceLayer.writeFile(Backend.STASH, filename, inputFileRef);
 
         const docMeta = DocMetas.create(pdfMeta.fingerprint, pdfMeta.nrPages, filename);
 
@@ -86,7 +86,7 @@ export class PDFImporter {
             data: fileHashMeta.hashcode
         };
 
-        await this.persistenceLayer.sync(pdfMeta.fingerprint, docMeta);
+        await this.persistenceLayer.write(pdfMeta.fingerprint, docMeta);
 
         return Optional.of({
             stashFilePath,

@@ -24,7 +24,7 @@ export class Link {
 
     present(): void {
 
-        if(this.doc.head.querySelector("#" + this.id)) {
+        if (this.doc.head!.querySelector("#" + this.id)) {
             // it's already present.
             return;
         }
@@ -35,13 +35,13 @@ export class Link {
         link.href = this.href;
         link.id = this.id;
 
-        this.doc.head.appendChild(link);
+        this.doc.head!.appendChild(link);
 
     }
 
     absent(): void {
 
-        let link = this.doc.head.querySelector("#" + this.id);
+        let link = this.doc.head!.querySelector("#" + this.id);
 
         if(! link) {
             // it's already present.

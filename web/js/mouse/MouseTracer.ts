@@ -70,7 +70,7 @@ export class MouseTracer {
 
         doc.addEventListener("click", mouseEvent => {
 
-            console.log(`Got mouseEvent at ${doc.location.href}: `, mouseEvent);
+            console.log(`Got mouseEvent at ${doc.location!.href}: `, mouseEvent);
 
         });
 

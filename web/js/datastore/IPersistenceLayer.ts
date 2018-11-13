@@ -1,5 +1,5 @@
 import {DocMetaFileRef, DocMetaRef} from './DocMetaRef';
-import {DeleteResult} from './DiskDatastore';
+import {DeleteResult} from './Datastore';
 import {DocMeta} from '../metadata/DocMeta';
 import {Backend} from './Backend';
 import {DatastoreFile} from './DatastoreFile';
@@ -7,6 +7,7 @@ import {Optional} from '../util/ts/Optional';
 import {FileMeta} from './Datastore';
 import {DocInfo} from '../metadata/DocInfo';
 import {FileRef} from '../util/Files';
+import {DatastoreMutation} from './DatastoreMutation';
 
 export interface IPersistenceLayer {
 
@@ -15,6 +16,8 @@ export interface IPersistenceLayer {
     readonly logsDir: string;
 
     init(): Promise<void>;
+
+    stop(): Promise<void>;
 
     /**
      * Return true if the DiskDatastore contains a document for the given
@@ -27,18 +30,18 @@ export interface IPersistenceLayer {
      *
      * @param docMetaFileRef The file to delete.
      */
-    delete(docMetaFileRef: DocMetaFileRef): Promise<DeleteResult>;
+    delete(docMetaFileRef: DocMetaFileRef, datastoreMutation?: DatastoreMutation<boolean>): Promise<DeleteResult>;
 
     getDocMeta(fingerprint: string): Promise<DocMeta | undefined>;
 
-    syncDocMeta(docMeta: DocMeta): Promise<DocInfo>;
+    writeDocMeta(docMeta: DocMeta, datastoreMutation?: DatastoreMutation<DocInfo>): Promise<DocInfo>;
 
     /**
-     * Return the DocInfo written. The DocInfo may be updated on commit including
-     * updating lastUpdated, etc.
+     * Return the DocInfo written. The DocInfo may be updated on commit
+     * including updating lastUpdated, etc.
      *
      */
-    sync(fingerprint: string, docMeta: DocMeta): Promise<DocInfo>;
+    write(fingerprint: string, docMeta: DocMeta, datastoreMutation?: DatastoreMutation<DocInfo>): Promise<DocInfo>;
 
     getDocMetaFiles(): Promise<DocMetaRef[]>;
 
@@ -46,10 +49,10 @@ export interface IPersistenceLayer {
     // get an overview of documents in teh repository
     // overview(): Promise<DatastoreOverview>;
 
-    addFile(backend: Backend,
-            name: string,
-            data: FileRef | Buffer | string,
-            meta?: FileMeta): Promise<DatastoreFile>;
+    writeFile(backend: Backend,
+              name: string,
+              data: FileRef | Buffer | string,
+              meta?: FileMeta): Promise<DatastoreFile>;
 
     getFile(backend: Backend, name: string): Promise<Optional<DatastoreFile>>;
 

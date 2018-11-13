@@ -1,12 +1,13 @@
 import {Datastore, FileMeta} from './Datastore';
 import {Directories} from './Directories';
 import {DocMetaFileRef, DocMetaRef} from './DocMetaRef';
-import {DeleteResult} from './DiskDatastore';
+import {DeleteResult} from './Datastore';
 import {Preconditions} from '../Preconditions';
 import {Backend} from './Backend';
 import {DatastoreFile} from './DatastoreFile';
 import {Optional} from '../util/ts/Optional';
 import {IDocInfo} from '../metadata/DocInfo';
+import {DatastoreMutation} from './DatastoreMutation';
 
 /**
  * A datastore that just forwards events to the given delegate.
@@ -41,8 +42,8 @@ export class DelegatedDatastore implements Datastore {
         return this.delegate.delete(docMetaFileRef);
     }
 
-    public addFile(backend: Backend, name: string, data: Buffer | string, meta: FileMeta = {}): Promise<DatastoreFile> {
-        return this.delegate.addFile(backend, name, data, meta);
+    public writeFile(backend: Backend, name: string, data: Buffer | string, meta: FileMeta = {}): Promise<DatastoreFile> {
+        return this.delegate.writeFile(backend, name, data, meta);
     }
 
     public containsFile(backend: Backend, name: string): Promise<boolean> {
@@ -65,12 +66,16 @@ export class DelegatedDatastore implements Datastore {
         return this.delegate.getDocMetaFiles();
     }
 
-    public init(): Promise<any> {
+    public init(): Promise<void> {
         return this.delegate.init();
     }
 
-    public sync(fingerprint: string, data: any, docInfo: IDocInfo): Promise<void> {
-        return this.delegate.sync(fingerprint, data, docInfo);
+    public stop(): Promise<void> {
+        return this.delegate.stop();
+    }
+
+    public write(fingerprint: string, data: any, docInfo: IDocInfo, datastoreMutation?: DatastoreMutation<boolean>): Promise<void> {
+        return this.delegate.write(fingerprint, data, docInfo, datastoreMutation);
     }
 
 }

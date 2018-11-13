@@ -33,6 +33,10 @@ export class AdvertisingPersistenceLayer
 
     }
 
+    public async stop(): Promise<void> {
+        return this.persistenceLayer.stop();
+    }
+
     public broadcastEvent(event: PersistenceLayerEvent): void {
 
         DocInfoAdvertiser.send({

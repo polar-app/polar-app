@@ -182,7 +182,8 @@ export interface IDocInfo {
      * A unique uuid  for this document representing the unique document
      * number to detect changes between each commit to the datastore. Every
      * write to the datastore generates a unique sequence id for the document
-     * being written.
+     * being written to allow us to de-duplicate documents and skip writes that
+     * have already been applied.
      */
     uuid?: string;
 

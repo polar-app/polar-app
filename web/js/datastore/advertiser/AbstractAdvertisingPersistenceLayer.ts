@@ -5,13 +5,14 @@ import {PersistenceLayerListener} from '../PersistenceLayerListener';
 import {IPersistenceLayer} from '../IPersistenceLayer';
 import {DocMeta} from '../../metadata/DocMeta';
 import {DocMetaFileRef, DocMetaRef} from '../DocMetaRef';
-import {DeleteResult} from '../DiskDatastore';
+import {DeleteResult} from '../Datastore';
 import {PersistenceEventType} from '../PersistenceEventType';
 import {Backend} from '../Backend';
 import {DatastoreFile} from '../DatastoreFile';
 import {FileMeta} from '../Datastore';
 import {Optional} from '../../util/ts/Optional';
 import {DocInfo} from '../../metadata/DocInfo';
+import {DatastoreMutation, DefaultDatastoreMutation} from '../DatastoreMutation';
 
 export abstract class AbstractAdvertisingPersistenceLayer implements IListenablePersistenceLayer {
 
@@ -34,6 +35,8 @@ export abstract class AbstractAdvertisingPersistenceLayer implements IListenable
 
     public abstract init(): Promise<void>;
 
+    public abstract stop(): Promise<void>;
+
     public abstract broadcastEvent(event: PersistenceLayerEvent): void;
 
     public addEventListener(listener: PersistenceLayerListener): void {
@@ -52,21 +55,18 @@ export abstract class AbstractAdvertisingPersistenceLayer implements IListenable
 
     }
 
-    public async syncDocMeta(docMeta: DocMeta): Promise<DocInfo> {
-        return await this.sync(docMeta.docInfo.fingerprint, docMeta);
+    public async writeDocMeta(docMeta: DocMeta, datastoreMutation?: DatastoreMutation<DocInfo>): Promise<DocInfo> {
+        return await this.write(docMeta.docInfo.fingerprint, docMeta, datastoreMutation);
     }
 
-    public async sync(fingerprint: string, docMeta: DocMeta): Promise<DocInfo> {
+    public async write(fingerprint: string,
+                       docMeta: DocMeta,
+                       datastoreMutation: DatastoreMutation<DocInfo> = new DefaultDatastoreMutation()): Promise<DocInfo> {
 
-        let eventType: PersistenceEventType;
+        const eventType: PersistenceEventType
+            = this.contains(fingerprint) ? 'updated' : 'created';
 
-        if (this.contains(fingerprint)) {
-            eventType = 'updated';
-        } else {
-            eventType = 'created';
-        }
-
-        const docInfo = await this.persistenceLayer.sync(fingerprint, docMeta);
+        const docInfo = await this.persistenceLayer.write(fingerprint, docMeta, datastoreMutation);
 
         this.broadcastEvent({
             docInfo,
@@ -116,8 +116,8 @@ export abstract class AbstractAdvertisingPersistenceLayer implements IListenable
         this.reactor.dispatchEvent(event);
     }
 
-    public addFile(backend: Backend, name: string, data: Buffer | string, meta: FileMeta): Promise<DatastoreFile> {
-        return this.persistenceLayer.addFile(backend, name, data, meta);
+    public writeFile(backend: Backend, name: string, data: Buffer | string, meta: FileMeta): Promise<DatastoreFile> {
+        return this.persistenceLayer.writeFile(backend, name, data, meta);
     }
 
     public containsFile(backend: Backend, name: string): Promise<boolean> {

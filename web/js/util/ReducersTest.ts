@@ -1,6 +1,6 @@
 import {assert} from 'chai';
 import {Progress} from './Progress';
-import {ResolveablePromise} from './ResolveablePromise';
+import {ResolvablePromise} from './ResolvablePromise';
 import {Reducers} from './Reducers';
 import {getCurrentHub} from '@sentry/electron';
 
@@ -20,15 +20,15 @@ describe('Reducers', function() {
 
     describe('LAST', function() {
 
-        it("two values", async function () {
+        it("two values", async function() {
             assert.equal([0, 1].reduce(Reducers.LAST), 1);
         });
 
-        it("one value", async function () {
+        it("one value", async function() {
             assert.equal([0].reduce(Reducers.LAST), 0);
         });
 
-        it("none", async function () {
+        it("none", async function() {
             assert.equal([undefined, null].reduce(Reducers.LAST), undefined);
         });
 

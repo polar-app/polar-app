@@ -5,7 +5,7 @@ import {isPresent, Preconditions} from '../Preconditions';
 import {Logger} from '../logger/Logger';
 import {Dictionaries} from '../util/Dictionaries';
 import {DocMetaFileRef, DocMetaRef} from './DocMetaRef';
-import {DeleteResult} from './DiskDatastore';
+import {DeleteResult} from './Datastore';
 import {IPersistenceLayer} from './IPersistenceLayer';
 import {ISODateTimeStrings} from '../metadata/ISODateTimeStrings';
 import {Backend} from './Backend';
@@ -14,6 +14,8 @@ import {Optional} from '../util/ts/Optional';
 import {Reducers} from '../util/Reducers';
 import uuid from 'uuid';
 import {DocInfo} from '../metadata/DocInfo';
+import {DatastoreMutation, DefaultDatastoreMutation} from './DatastoreMutation';
+import {DatastoreMutations} from './DatastoreMutations';
 
 const log = Logger.create();
 
@@ -41,12 +43,19 @@ export class DefaultPersistenceLayer implements IPersistenceLayer {
         await this.datastore.init();
     }
 
+    public async stop() {
+        await this.datastore.stop();
+    }
+
     public contains(fingerprint: string): Promise<boolean> {
         return this.datastore.contains(fingerprint);
     }
 
-    public delete(docMetaFileRef: DocMetaFileRef): Promise<DeleteResult> {
-        return this.datastore.delete(docMetaFileRef);
+    public delete(docMetaFileRef: DocMetaFileRef,
+                  datastoreMutation: DatastoreMutation<boolean> = new DefaultDatastoreMutation()): Promise<DeleteResult> {
+
+        return this.datastore.delete(docMetaFileRef, datastoreMutation);
+
     }
 
     /**
@@ -71,14 +80,16 @@ export class DefaultPersistenceLayer implements IPersistenceLayer {
     /**
      * Convenience method to not require the fingerprint.
      */
-    public async syncDocMeta(docMeta: DocMeta): Promise<DocInfo> {
-        return this.sync(docMeta.docInfo.fingerprint, docMeta);
+    public async writeDocMeta(docMeta: DocMeta, datastoreMutation?: DatastoreMutation<DocInfo>): Promise<DocInfo> {
+        return this.write(docMeta.docInfo.fingerprint, docMeta, datastoreMutation);
     }
 
     /**
      * Write the datastore to disk.
      */
-    public async sync(fingerprint: string, docMeta: DocMeta): Promise<DocInfo> {
+    public async write(fingerprint: string,
+                       docMeta: DocMeta,
+                       datastoreMutation: DatastoreMutation<DocInfo> = new DefaultDatastoreMutation()): Promise<DocInfo> {
 
         Preconditions.assertNotNull(fingerprint, "fingerprint");
         Preconditions.assertNotNull(docMeta, "docMeta");
@@ -142,7 +153,10 @@ export class DefaultPersistenceLayer implements IPersistenceLayer {
 
         const docInfo = Object.assign({}, docMeta.docInfo);
 
-        await this.datastore.sync(fingerprint, data, docInfo);
+        const syncMutation = new DefaultDatastoreMutation<boolean>();
+        DatastoreMutations.pipe(syncMutation, datastoreMutation, () => docInfo);
+
+        await this.datastore.write(fingerprint, data, docInfo, syncMutation);
 
         return docInfo;
 
@@ -152,8 +166,8 @@ export class DefaultPersistenceLayer implements IPersistenceLayer {
         return this.datastore.getDocMetaFiles();
     }
 
-    public addFile(backend: Backend, name: string, data: Buffer | string, meta: FileMeta = {}): Promise<DatastoreFile> {
-        return this.datastore.addFile(backend, name, data, meta);
+    public writeFile(backend: Backend, name: string, data: Buffer | string, meta: FileMeta = {}): Promise<DatastoreFile> {
+        return this.datastore.writeFile(backend, name, data, meta);
     }
 
     public containsFile(backend: Backend, name: string): Promise<boolean> {

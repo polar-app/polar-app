@@ -16,8 +16,11 @@ export class MockAdvertisingPersistenceLayer
     }
 
     public async init(): Promise<void> {
+        // noop
+    }
 
-
+    public async stop(): Promise<void> {
+        // noop
     }
 
     public broadcastEvent(event: PersistenceLayerEvent): void {
