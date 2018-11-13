@@ -80,7 +80,7 @@ export interface Mutations {
     cleanupHead: any;
     cleanupBase: any;
     showAriaHidden: number;
-    adsBlocked: any;
+    adsBlocked?: any;
 }
 
 export type Overflow = 'visible' | 'hidden';

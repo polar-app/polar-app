@@ -234,7 +234,7 @@ export class ContentCapture {
 
             // ***  add metadata into the HTML for polar
 
-            document.head.appendChild(ContentCapture.createMeta("polar-url", result.url));
+            document.head!.appendChild(ContentCapture.createMeta("polar-url", result.url));
 
             // *** remove javascript html onX elements.
 
@@ -303,7 +303,7 @@ export class ContentCapture {
             widthOverflow: <Overflow> computedStyle.overflowX || 'visible' ,
             height: doc.documentElement!.scrollHeight,
             heightOverflow: <Overflow> computedStyle.overflowY || 'visible' ,
-        }
+        };
 
     }
 
@@ -490,10 +490,10 @@ export class ContentCapture {
 
                 return ContentCapture.doctypeToOuterHTML(doc.doctype) +
                     "\n" +
-                    doc.documentElement.outerHTML;
+                    doc.documentElement!.outerHTML;
 
             } else {
-                return doc.documentElement.outerHTML;
+                return doc.documentElement!.outerHTML;
             }
 
         }

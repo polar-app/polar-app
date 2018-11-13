@@ -11,19 +11,19 @@ describe('CacheRegistryTest', function() {
 
     describe('Load PHZ', function() {
 
-        it("registerFile", async function () {
+        it("registerFile", async function() {
 
             TestingTime.freeze();
 
-            let captured = MockCapturedContent.create();
+            const captured = MockCapturedContent.create();
 
-            let path = FilePaths.tmpfile("cached-entries-factory.phz");
-            let capturedPHZWriter = new CapturedPHZWriter(path);
+            const path = FilePaths.tmpfile("cached-entries-factory.phz");
+            const capturedPHZWriter = new CapturedPHZWriter(path);
             await capturedPHZWriter.convert(captured);
 
-            let proxyServerConfig = new ProxyServerConfig(12345);
+            const proxyServerConfig = new ProxyServerConfig(12345);
 
-            let cacheRegistry = new CacheRegistry(proxyServerConfig);
+            const cacheRegistry = new CacheRegistry(proxyServerConfig);
 
             await cacheRegistry.registerFile(path);
 

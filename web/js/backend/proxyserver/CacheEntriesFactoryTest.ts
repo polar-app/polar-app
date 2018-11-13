@@ -109,15 +109,15 @@ describe('CacheEntriesFactory', function() {
 
     describe('Load PHZ', function() {
 
-        it("createFromPHZ", async function () {
+        it("createFromPHZ", async function() {
 
-            let captured = MockCapturedContent.create();
+            const captured = MockCapturedContent.create();
 
-            let path = FilePaths.tmpfile("cached-entries-factory.phz");
-            let capturedPHZWriter = new CapturedPHZWriter(path);
-            await capturedPHZWriter.convert(captured);
+            const path = FilePaths.tmpfile("cached-entries-factory.phz");
+            const capturedPHZWriter = new CapturedPHZWriter(path);
+            capturedPHZWriter.convert(captured);
 
-            let cacheEntriesHolder = await CacheEntriesFactory.createFromPHZ(path);
+            const cacheEntriesHolder = await CacheEntriesFactory.createFromPHZ(path);
 
             assertJSON(cacheEntriesHolder.metadata, {
                 "title": "Unit testing node applications with TypeScript — using mocha and chai",
