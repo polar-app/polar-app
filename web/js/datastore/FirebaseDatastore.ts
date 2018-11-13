@@ -49,7 +49,7 @@ export class FirebaseDatastore implements Datastore, SynchronizingDatastore {
 
     private readonly docMutationReactor: IEventDispatcher<DocMutation> = new SimpleReactor();
 
-    private readonly unsubscribeSnapshots: () => void = NULL_FUNCTION;
+    private unsubscribeSnapshots: () => void = NULL_FUNCTION;
 
     private initialized: boolean = false;
 
@@ -80,7 +80,7 @@ export class FirebaseDatastore implements Datastore, SynchronizingDatastore {
         // start synchronizing the datastore.  You MUST register your listeners
         // BEFORE calling init if you wish to listen to the full stream of
         // events.
-        const unsubscribeSnapshots = await this.firestore!
+        this.unsubscribeSnapshots = await this.firestore!
             .collection(DatastoreCollection.DOC_META)
             .where('uid', '==', uid)
             .onSnapshot(snapshot => this.onSnapshot(snapshot));
@@ -361,9 +361,10 @@ export class FirebaseDatastore implements Datastore, SynchronizingDatastore {
             if (!snapshot.metadata.fromCache && !snapshot.metadata.hasPendingWrites) {
 
                 // it's been committed remotely which also implies it was
-                // written so resolve that as well. We might not always get the
-                // locally written callback and I think this happens when the
-                // cache entry can't be updated due to it already being pending.
+                // written locally so resolve that as well. We might not always
+                // get the locally written callback and I think this happens
+                // when the cache entry can't be updated due to it already being
+                // pending.
 
                 datastoreMutation.written.resolve(true);
                 datastoreMutation.committed.resolve(true);
