@@ -1,4 +1,15 @@
 
+# 1.0.14
+
+- upgrade to latest semver and firebase-tools 
+
+- Fixed bug where the lightbox was kept enabled after we deleted an annotation
+
+- Fixed bug where we couldn't capture XML documents which used XSL stylesheets.
+
+- Fajor refactor of the disk datastore for the pending cloud sync functionality
+  we're working on. 
+
 # 1.0.13
 
  - point release to fix auto-updates in release process and upgrade 
