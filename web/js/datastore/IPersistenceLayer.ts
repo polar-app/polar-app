@@ -25,29 +25,22 @@ export interface IPersistenceLayer {
      */
     contains(fingerprint: string): Promise<boolean>;
 
+    getDocMeta(fingerprint: string): Promise<DocMeta | undefined>;
+
+    getDocMetaFiles(): Promise<DocMetaRef[]>;
+
     /**
      * Delete a file from PersistenceLayer.
-     *
-     * @param docMetaFileRef The file to delete.
      */
     delete(docMetaFileRef: DocMetaFileRef, datastoreMutation?: DatastoreMutation<boolean>): Promise<DeleteResult>;
-
-    getDocMeta(fingerprint: string): Promise<DocMeta | undefined>;
 
     writeDocMeta(docMeta: DocMeta, datastoreMutation?: DatastoreMutation<DocInfo>): Promise<DocInfo>;
 
     /**
      * Return the DocInfo written. The DocInfo may be updated on commit
      * including updating lastUpdated, etc.
-     *
      */
     write(fingerprint: string, docMeta: DocMeta, datastoreMutation?: DatastoreMutation<DocInfo>): Promise<DocInfo>;
-
-    getDocMetaFiles(): Promise<DocMetaRef[]>;
-
-    // TODO:
-    // get an overview of documents in teh repository
-    // overview(): Promise<DatastoreOverview>;
 
     writeFile(backend: Backend,
               name: string,

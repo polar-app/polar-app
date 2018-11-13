@@ -110,7 +110,6 @@ export abstract class AbstractAdvertisingPersistenceLayer implements IListenable
     /**
      * Dispatch an event to all listeners. This is different from notify in that
      * this just dispatches to the local reactor.
-     * @param event
      */
     public dispatchEvent(event: PersistenceLayerEvent) {
         this.reactor.dispatchEvent(event);
