@@ -192,5 +192,5 @@ export interface IDocInfo {
      * of the original imported data.
      */
     hashcode?: Hashcode;
-
+    
 }

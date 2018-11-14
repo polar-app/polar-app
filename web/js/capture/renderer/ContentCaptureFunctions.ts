@@ -9,7 +9,7 @@ export function configureBrowserWindowSize(windowDimensions: IDimensions) {
     // because I can't redefine a property.  I don't think there is a way
     // to find out if it's already defined though.
 
-    let definitions = [
+    const definitions = [
         {key: "width",       value: windowDimensions.width},
         {key: "availWidth",  value: windowDimensions.width},
         {key: "height",      value: windowDimensions.height},
@@ -22,11 +22,11 @@ export function configureBrowserWindowSize(windowDimensions: IDimensions) {
 
         try {
             Object.defineProperty(window.screen, definition.key, {
-                get: function () {
-                    return definition.value
+                get: function() {
+                    return definition.value;
                 }
             });
-        } catch(e) {
+        } catch (e) {
             console.warn(`Unable to define ${definition.key}`, e);
         }
 

@@ -12,6 +12,7 @@ import {Simulate} from 'react-dom/test-utils';
 import input = Simulate.input;
 import {isPresent} from '../Preconditions';
 import {DatastoreMutation} from './DatastoreMutation';
+import {DocMeta} from '../metadata/DocMeta';
 
 export interface Datastore extends BinaryDatastore, WritableDatastore {
 
@@ -44,7 +45,6 @@ export interface Datastore extends BinaryDatastore, WritableDatastore {
      * fingerprint.
      */
     contains(fingerprint: string): Promise<boolean>;
-
 
     /**
      * Get the data for the DocMeta object we currently in the datastore for
@@ -157,8 +157,8 @@ export interface DocMutationEvent {
 
 /**
  * ReplicationEvents are distinct changes to the remote Firestore entry that
- * aren't from events happening locally. These are triggered after init().  Local
- * mutations to the datastore do not trigger ReplicationEvents
+ * aren't from events happening locally. These are triggered after init().
+ * Local mutations to the datastore do not trigger ReplicationEvents
  */
 export interface DocReplicationEvent {
 
@@ -184,5 +184,16 @@ export interface InitResult {
 export interface DeleteResult {
 
 
+}
+
+/**
+ * Listens to documents in the local repository on load.  We receive one event
+ * per document it enters the repository. Once on startup if it's already present
+ * and then again if it's replicated from the cloud.
+ */
+export type InitDocMetaEventListener = (initDocMetaEvent: InitDocMetaEvent) => void;
+
+export interface InitDocMetaEvent {
+    docMeta: DocMeta;
 }
 

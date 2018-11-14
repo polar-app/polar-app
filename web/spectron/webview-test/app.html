@@ -1,10 +1,14 @@
 <html>
 <body>
 
-<h1>This is the host content</h1>
+<!--src="https://firstround.com/review/how-superhuman-built-an-engine-to-find-product-market-fit/"-->
+<!--src="./test.html"-->
 
-<webview name="foo" id="foo" src="./webview.html" style=""></webview>
-<iframe name="foo2" id="foo2" src="./iframe.html" style=""></iframe>
+<webview name="content"
+         id="content"
+         src="https://firstround.com/review/how-superhuman-built-an-engine-to-find-product-market-fit/"
+         preload="./preload.js"
+         style="height: 35000px;"></webview>
 
 <script>require("./app");</script>
 

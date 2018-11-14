@@ -1,31 +1,44 @@
 import {webContents, webFrame} from 'electron';
 import {SpectronRenderer} from '../../js/test/SpectronRenderer';
 import {Promises} from '../../js/util/Promises';
+import {Logger} from '../../js/logger/Logger';
 
-function traceWebFrames(wf: Electron.WebFrame) {
+const log = Logger.create();
 
-    if(wf == null) {
-        return;
-    }
-
+function getContentHost() {
+    return document.querySelector("#content")! as Electron.WebviewTag;
 }
 
 SpectronRenderer.run(async () => {
-    console.log("Running within SpectronRenderer now.");
 
-    console.log("FIXME: webContents: " , webContents);
-    console.log("FIXME: webFrame: " , webFrame);
+    const content = getContentHost();
 
-    //console.log("FIXME: webFrame findFrameByName('foo'): " , webFrame.findFrameByName('foo'));
-    //console.log("FIXME: webFrame findFrameByName('foo2'): " , webFrame.findFrameByName('foo2'));
+    content.addEventListener('console-message', (consoleMessageEvent: Electron.ConsoleMessageEvent) => {
 
-    // FIXME this works!!!! but it doesn't seem like I can communicat ewith it.
-    let iframeWebFrame = webFrame.getFrameForSelector('iframe');
+        const prefix = 'From webview: ';
 
-    console.log("FIXME: iframeWebFrame", iframeWebFrame)
-    console.log("FIXME iframeWebFrame location: ", await iframeWebFrame.executeJavaScript('document.location.href;'));
+        switch (consoleMessageEvent.level) {
 
-    // setZoomLevel on teh iframe seems to change the root webFrame
+            case -1:
+                log.debug(prefix + consoleMessageEvent.message);
+                break;
+
+            case 0:
+                log.info(prefix + consoleMessageEvent.message);
+                break;
+
+            case 1:
+                log.warn(prefix + consoleMessageEvent.message);
+                break;
+
+            case 2:
+                log.error(prefix + consoleMessageEvent.message);
+                break;
+
+        }
+
+    });
+
 
 });
 

@@ -40,11 +40,11 @@ export class DocMeta extends SerializedObject implements  IDocMeta {
         this.pageMetas = pageMetas;
     }
 
-    getPageMeta(num: number) {
+    public getPageMeta(num: number) {
 
         num = Preconditions.assertNotNull(num, "num");
 
-        let pageMeta = this.pageMetas[num];
+        const pageMeta = this.pageMetas[num];
 
         if (!pageMeta) {
             throw new Error("No pageMeta for page: " + num);
@@ -54,7 +54,7 @@ export class DocMeta extends SerializedObject implements  IDocMeta {
 
     }
 
-    validate() {
+    public validate() {
         Preconditions.assertInstanceOf(this.docInfo, DocInfo, "docInfo");
         Preconditions.assertNotNull(this.pageMetas, "pageMetas");
         Preconditions.assertNumber(this.version, "version");
