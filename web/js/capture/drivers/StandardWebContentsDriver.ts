@@ -110,9 +110,6 @@ export class StandardWebContentsDriver implements WebContentsDriver {
                                     webContents: WebContents,
                                     browserWindowOptions: BrowserWindowConstructorOptions) {
 
-        console.log("FIXME98: " + browserWindow.webContents.getUserAgent());
-        console.log("FIXME99: " + webContents.getUserAgent());
-
         this.browserWindow = browserWindow;
         this.webContents = webContents;
 
@@ -130,10 +127,6 @@ export class StandardWebContentsDriver implements WebContentsDriver {
 
         webContents.on('dom-ready', (e) => {
             log.info("dom-ready: ", e);
-
-            console.log("FIXME0: got DOM ready on window: ", webContents.getURL());
-
-            console.log("FIXME0123: got DOM ready on window with ua: ", webContents.getUserAgent());
 
             StandardWebContentsDriver.configureWebContents(webContents, browserProfile)
                 .catch((err: Error) => log.error("Could not configure web contents: ", err));
@@ -159,10 +152,6 @@ export class StandardWebContentsDriver implements WebContentsDriver {
 
         const url = webContents.getURL();
 
-        console.log(`FIXME: Configuring window at ${url} with UA: `, webContents.getUserAgent());
-
-        console.log(`FIXME: Configuring window at ${url} with browser: `, browserProfile);
-
         // we need to mute by default especially if the window is hidden.
         log.info("Muting audio...");
         webContents.setAudioMuted(! browserProfile.webaudio);
@@ -183,11 +172,7 @@ export class StandardWebContentsDriver implements WebContentsDriver {
 
         log.info("Using window dimensions: ", windowDimensions);
 
-        console.log("FIXME1");
-
         const configureBrowserScript = Functions.functionToScript(configureBrowser, windowDimensions);
-
-        console.log("FIXME1: ", configureBrowserScript);
 
         await webContents.executeJavaScript(configureBrowserScript);
 

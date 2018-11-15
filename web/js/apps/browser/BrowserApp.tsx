@@ -37,8 +37,6 @@ export class BrowserApp {
 
         const content = this.getContentHost();
 
-        // this.forwardConsoleMessages(content);
-
         content.addEventListener('dom-ready', async () => {
 
             content.insertCSS('html, body { overflow: hidden !important; }');

@@ -37,8 +37,8 @@ export abstract class AbstractWebviewWebContentsDriver extends StandardWebConten
 
         await this.doInit();
 
-        // FIXME: we're double initializing here...
-
+        // TODO: this might actually NOT be needed now or we could refactor
+        // this to load as part of the GuestBrowserView setup..
         await this.doInitWebview();
 
     }
@@ -47,7 +47,6 @@ export abstract class AbstractWebviewWebContentsDriver extends StandardWebConten
 
         return new Promise<WebContents>(resolve => {
             this.browserWindow!.webContents.once('did-attach-webview', (event, newWebContents: WebContents) => {
-                console.log("FIXME: webview attached: ", newWebContents.getUserAgent());
                 resolve(newWebContents);
             });
         });
@@ -123,10 +122,6 @@ export abstract class AbstractWebviewWebContentsDriver extends StandardWebConten
 
         });
 
-        // FIXME: configure the GUEST not the host ... right now we're
-        // configuring the HOST
-
-
         this.initReactor();
 
     }
@@ -152,11 +147,6 @@ export abstract class AbstractWebviewWebContentsDriver extends StandardWebConten
         window.loadURL(resourceURL);
 
         this.webContents = await this.waitForWebview();
-
-        console.log("FIXME: got new webview!: ", this.webContents.getUserAgent());
-
-
-        // FIXME: I need to call initWebContents which calls  configureWebContents
 
         await this.initWebContents(this.browserWindow!, this.webContents, this.browserWindowOptions!);
 
@@ -311,17 +301,6 @@ class GuestBrowserView implements BrowserView {
 
     }
 
-    private async waitForWebview() {
-
-        return new Promise<WebContents>(resolve => {
-            this.window!.webContents.once('did-attach-webview', (event, newWebContents: WebContents) => {
-                console.log("FIXME: webview attached: ", newWebContents.getUserAgent());
-                resolve(newWebContents);
-            });
-        });
-
-    }
-
     public async configure(browserProfile: BrowserProfile) {
 
         this.browserProfile = browserProfile;
@@ -332,6 +311,16 @@ class GuestBrowserView implements BrowserView {
         // this configures the guest web contents which loads the website we're
         // capturing and tells it about browser emulation, width, etc.
         await StandardWebContentsDriver.configureWebContents(webContents, browserProfile);
+
+    }
+
+    private async waitForWebview() {
+
+        return new Promise<WebContents>(resolve => {
+            this.window!.webContents.once('did-attach-webview', (event, newWebContents: WebContents) => {
+                resolve(newWebContents);
+            });
+        });
 
     }
 
