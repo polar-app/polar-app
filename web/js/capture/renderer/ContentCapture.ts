@@ -579,7 +579,7 @@ export class ContentCapture {
 
 }
 
-console.log("Content capture script loaded!");
+console.log("Content capture script loaded within: " + window.location.href);
 
 declare var global: any;
 

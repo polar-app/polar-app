@@ -37,6 +37,8 @@ export class BrowserApp {
 
         const content = this.getContentHost();
 
+        // this.forwardConsoleMessages(content);
+
         content.addEventListener('dom-ready', async () => {
 
             content.insertCSS('html, body { overflow: hidden !important; }');
@@ -87,31 +89,37 @@ export class BrowserApp {
                 log.warn("Load of URL failed.");
             });
 
-            content.addEventListener('console-message', (consoleMessageEvent: Electron.ConsoleMessageEvent) => {
+            this.forwardConsoleMessages(content);
 
-                const prefix = 'From webview: ';
+        });
 
-                switch (consoleMessageEvent.level) {
+    }
 
-                    case -1:
-                        log.debug(prefix + consoleMessageEvent.message);
-                        break;
+    private forwardConsoleMessages(content: Electron.WebviewTag) {
 
-                    case 0:
-                        log.info(prefix + consoleMessageEvent.message);
-                        break;
+        content.addEventListener('console-message', (consoleMessageEvent: Electron.ConsoleMessageEvent) => {
 
-                    case 1:
-                        log.warn(prefix + consoleMessageEvent.message);
-                        break;
+            const prefix = 'From webview: ';
 
-                    case 2:
-                        log.error(prefix + consoleMessageEvent.message);
-                        break;
+            switch (consoleMessageEvent.level) {
 
-                }
+                case -1:
+                    console.debug(prefix + consoleMessageEvent.message);
+                    break;
 
-            });
+                case 0:
+                    console.info(prefix + consoleMessageEvent.message);
+                    break;
+
+                case 1:
+                    console.warn(prefix + consoleMessageEvent.message);
+                    break;
+
+                case 2:
+                    console.error(prefix + consoleMessageEvent.message);
+                    break;
+
+            }
 
         });
 

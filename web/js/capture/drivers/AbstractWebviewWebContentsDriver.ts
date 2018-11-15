@@ -24,8 +24,6 @@ export abstract class AbstractWebviewWebContentsDriver extends StandardWebConten
 
     private readonly appPath: string;
 
-    private browserWindow?: BrowserWindow;
-
     private browserWindowOptions?: Electron.BrowserWindowConstructorOptions;
 
     private browserView?: BrowserView;
@@ -39,16 +37,21 @@ export abstract class AbstractWebviewWebContentsDriver extends StandardWebConten
 
         await this.doInit();
 
+        // FIXME: we're double initializing here...
+
         await this.doInitWebview();
 
     }
 
     protected async waitForWebview(): Promise<WebContents> {
+
         return new Promise<WebContents>(resolve => {
-            this.window!.webContents.once('did-attach-webview', (event, webContents: WebContents) => {
-                resolve(webContents);
+            this.browserWindow!.webContents.once('did-attach-webview', (event, newWebContents: WebContents) => {
+                console.log("FIXME: webview attached: ", newWebContents.getUserAgent());
+                resolve(newWebContents);
             });
         });
+
     }
 
 
@@ -70,6 +73,7 @@ export abstract class AbstractWebviewWebContentsDriver extends StandardWebConten
         log.info("Using hostBrowserWindowOptions: ", hostBrowserWindowOptions);
 
         this.browserWindow = new BrowserWindow(hostBrowserWindowOptions);
+        this.webContents = this.browserWindow.webContents;
 
         const hostBrowserView = new HostBrowserView(this, this.browserWindow);
         const guestBrowserView = new GuestBrowserView(this, this.browserWindow);
@@ -119,9 +123,9 @@ export abstract class AbstractWebviewWebContentsDriver extends StandardWebConten
 
         });
 
-        await this.initWebContents(this.browserWindow,
-                                   this.browserWindow.webContents,
-                                   this.browserWindowOptions);
+        // FIXME: configure the GUEST not the host ... right now we're
+        // configuring the HOST
+
 
         this.initReactor();
 
@@ -131,14 +135,14 @@ export abstract class AbstractWebviewWebContentsDriver extends StandardWebConten
 
         log.info("Changing browser profile to: ", this.browserProfile);
 
-        await this.configureWebContents(this.webContents!);
+        await StandardWebContentsDriver.configureWebContents(this.webContents!, this.browserProfile);
         await this.doInitGuestWebviewDimensions();
 
     }
 
     protected async doInitWebview() {
 
-        const window = notNull(this.window);
+        const window = notNull(this.browserWindow);
 
         // ok... now the page isn't setup properly and we need to load the app
         // and then adjust the webview properly.
@@ -149,7 +153,14 @@ export abstract class AbstractWebviewWebContentsDriver extends StandardWebConten
 
         this.webContents = await this.waitForWebview();
 
-        await this.configureWebContents(this.webContents);
+        console.log("FIXME: got new webview!: ", this.webContents.getUserAgent());
+
+
+        // FIXME: I need to call initWebContents which calls  configureWebContents
+
+        await this.initWebContents(this.browserWindow!, this.webContents, this.browserWindowOptions!);
+
+        // await this.configureWebContents(this.webContents);
 
         await this.doInitGuestWebviewDimensions();
 
@@ -182,7 +193,7 @@ export abstract class AbstractWebviewWebContentsDriver extends StandardWebConten
 
     private async doInitGuestWebviewDimensions() {
 
-        const window = notNull(this.window);
+        const window = notNull(this.browserWindow);
 
         // @ElectronRendererContext
         // noinspection TsLint: no-shadowed-variable
@@ -294,17 +305,33 @@ class GuestBrowserView implements BrowserView {
 
     constructor(driver: AbstractWebviewWebContentsDriver,
                 window: Electron.BrowserWindow) {
+
         this.driver = driver;
         this.window = window;
+
+    }
+
+    private async waitForWebview() {
+
+        return new Promise<WebContents>(resolve => {
+            this.window!.webContents.once('did-attach-webview', (event, newWebContents: WebContents) => {
+                console.log("FIXME: webview attached: ", newWebContents.getUserAgent());
+                resolve(newWebContents);
+            });
+        });
+
     }
 
     public async configure(browserProfile: BrowserProfile) {
+
         this.browserProfile = browserProfile;
         this.browserWindowOptions = BrowserWindows.toBrowserWindowOptions(this.browserProfile!);
 
+        const webContents = await this.waitForWebview();
+
         // this configures the guest web contents which loads the website we're
         // capturing and tells it about browser emulation, width, etc.
-        await this.driver.configureWebContents(this.driver.webContents!);
+        await StandardWebContentsDriver.configureWebContents(webContents, browserProfile);
 
     }
 

@@ -15,13 +15,14 @@ const log = Logger.create();
 
 export class BrowserWindows {
 
-    static toBrowserWindowOptions(browserProfile: BrowserProfile): BrowserWindowConstructorOptions {
+    public static toBrowserWindowOptions(browserProfile: BrowserProfile): BrowserWindowConstructorOptions {
 
-        let partition = "part-" + Date.now();
+        const partition = "part-" + Date.now();
 
-        let preload = AppPaths.relative("./web/js/capture/renderer/ContentCapture.js");
+        // FIXME: this is not working in the right BrowserWindow...
+        // const preload = AppPaths.relative("./web/js/capture/renderer/ContentCapture.js");
 
-        log.info("Loading with preload: ", preload);
+        // log.info("Loading with preload: ", preload);
 
         return {
             minWidth: browserProfile.deviceEmulation.screenSize.width,
@@ -39,7 +40,7 @@ export class BrowserWindows {
 
                 // the path to our content capture bundle needs to be absolute
                 // for some strange reason and this is required by Electron.
-                preload,
+                // preload,
 
                 nodeIntegration: browserProfile.nodeIntegration,
 
@@ -64,15 +65,15 @@ export class BrowserWindows {
                  * Use a session per capture so that webRequests between capture
                  * instances aren't shared.
                  */
-                partition: partition
+                partition
 
             }
 
-        }
+        };
 
     }
 
-    static async onceReadyToShow(window: BrowserWindow): Promise<BrowserWindow> {
+    public static async onceReadyToShow(window: BrowserWindow): Promise<BrowserWindow> {
 
         return new Promise<BrowserWindow>(resolve => {
 

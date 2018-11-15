@@ -4,13 +4,14 @@ import {BrowserWindows} from '../BrowserWindows';
 import {Logger} from '../../logger/Logger';
 import {Optional} from '../../util/ts/Optional';
 import {IDimensions} from '../../util/Dimensions';
-import {configureBrowserWindowSize} from '../renderer/ContentCaptureFunctions';
+import {configureBrowser} from '../renderer/ContentCaptureFunctions';
 import {Functions} from '../../util/Functions';
 import {BrowserProfile} from '../BrowserProfile';
 import BrowserWindowConstructorOptions = Electron.BrowserWindowConstructorOptions;
 import {Reactor} from '../../reactor/Reactor';
 import {PendingWebRequestsEvent} from '../../webrequests/PendingWebRequestsListener';
 import {WebContentsPromises} from '../../electron/framework/WebContentsPromises';
+import {Browser} from '../Browser';
 
 const log = Logger.create();
 
@@ -23,7 +24,7 @@ export class StandardWebContentsDriver implements WebContentsDriver {
 
     public browserProfile: BrowserProfile;
 
-    protected window?: BrowserWindow;
+    protected browserWindow?: BrowserWindow;
 
     protected reactor = new Reactor<WebContentsEvent>();
 
@@ -46,7 +47,7 @@ export class StandardWebContentsDriver implements WebContentsDriver {
 
     public async destroy() {
         log.info("Destroying window...");
-        Optional.of(this.window).when(window => window.close());
+        Optional.of(this.browserWindow).when(window => window.close());
         log.info("Destroying window...done");
     }
 
@@ -105,64 +106,75 @@ export class StandardWebContentsDriver implements WebContentsDriver {
 
     }
 
-    protected async initWebContents(window: BrowserWindow,
+    protected async initWebContents(browserWindow: BrowserWindow,
                                     webContents: WebContents,
                                     browserWindowOptions: BrowserWindowConstructorOptions) {
 
-        this.window = window;
+        console.log("FIXME98: " + browserWindow.webContents.getUserAgent());
+        console.log("FIXME99: " + webContents.getUserAgent());
+
+        this.browserWindow = browserWindow;
         this.webContents = webContents;
 
-        webContents.on('dom-ready', function(e) {
+        StandardWebContentsDriver.initWebContentsEvents(webContents, this.browserProfile);
+
+        if ( ! browserWindowOptions.show) {
+            await BrowserWindows.onceReadyToShow(browserWindow);
+        }
+
+        await StandardWebContentsDriver.configureWebContents(webContents, this.browserProfile);
+
+    }
+
+    private static async initWebContentsEvents(webContents: WebContents, browserProfile: BrowserProfile) {
+
+        webContents.on('dom-ready', (e) => {
             log.info("dom-ready: ", e);
-        });
 
-        window.on('close', () => {
-            log.info("Window close");
-        });
+            console.log("FIXME0: got DOM ready on window: ", webContents.getURL());
 
-        window.on('closed', () => {
-            log.info("Window closed");
-        });
+            console.log("FIXME0123: got DOM ready on window with ua: ", webContents.getUserAgent());
 
-        webContents.on('new-window', (e, url) => {
+            StandardWebContentsDriver.configureWebContents(webContents, browserProfile)
+                .catch((err: Error) => log.error("Could not configure web contents: ", err));
+
         });
 
         webContents.on('will-navigate', (e, url) => {
-            e.preventDefault();
+            // log.info("Canceling navigation...");
+            // e.preventDefault();
         });
 
         webContents.on('did-fail-load', (event, errorCode, errorDescription, validateURL, isMainFrame) => {
             log.info("did-fail-load: " , {event, errorCode, errorDescription, validateURL, isMainFrame}, event);
         });
 
-        // if a URL is NEVER loaded we never get ready-to-show show load
-        // about:blank by default.
-        webContents.loadURL('about:blank');
-
-        if ( ! browserWindowOptions.show) {
-            await BrowserWindows.onceReadyToShow(window);
-        }
-
-        await this.configureWebContents(window.webContents);
-
     }
 
-    public async configureWebContents(webContents: WebContents) {
+    public static async configureWebContents(webContents: WebContents, browserProfile: BrowserProfile) {
 
-        log.info("Configuring window with browser: ", this.browserProfile);
+        // FIXME: the problem is now I'm not sure which browser we are cnofiguring...
+        // I don't think we are configuring teh proper webContents and additionally
+        // we're not reconfiguring it when it's changing navigation...
+
+        const url = webContents.getURL();
+
+        console.log(`FIXME: Configuring window at ${url} with UA: `, webContents.getUserAgent());
+
+        console.log(`FIXME: Configuring window at ${url} with browser: `, browserProfile);
 
         // we need to mute by default especially if the window is hidden.
         log.info("Muting audio...");
-        webContents.setAudioMuted(! this.browserProfile.webaudio);
+        webContents.setAudioMuted(! browserProfile.webaudio);
 
-        let deviceEmulation = this.browserProfile.deviceEmulation;
+        let deviceEmulation = browserProfile.deviceEmulation;
 
         deviceEmulation = Object.assign({}, deviceEmulation);
 
         log.info("Emulating device...");
         webContents.enableDeviceEmulation(deviceEmulation);
 
-        webContents.setUserAgent(this.browserProfile.userAgent);
+        webContents.setUserAgent(browserProfile.userAgent);
 
         const windowDimensions: IDimensions = {
             width: deviceEmulation.screenSize.width,
@@ -171,9 +183,13 @@ export class StandardWebContentsDriver implements WebContentsDriver {
 
         log.info("Using window dimensions: ", windowDimensions);
 
-        const screenDimensionScript = Functions.functionToScript(configureBrowserWindowSize, windowDimensions);
+        console.log("FIXME1");
 
-        await webContents.executeJavaScript(screenDimensionScript);
+        const configureBrowserScript = Functions.functionToScript(configureBrowser, windowDimensions);
+
+        console.log("FIXME1: ", configureBrowserScript);
+
+        await webContents.executeJavaScript(configureBrowserScript);
 
     }
 
@@ -183,7 +199,7 @@ export class StandardWebContentsDriver implements WebContentsDriver {
 
         this.reactor.registerEvent('close');
 
-        this.window!.on('close', () => {
+        this.browserWindow!.on('close', () => {
             log.info("Firing event listener 'close'");
             this.reactor.dispatchEvent('close', {});
         });
