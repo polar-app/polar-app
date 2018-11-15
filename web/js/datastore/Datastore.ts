@@ -140,7 +140,7 @@ export interface BinaryMutationEvent {
 
     name: string;
 
-    mutationType: MutationType;
+    mutationType: DocMutationType;
 
 }
 
@@ -152,7 +152,7 @@ export interface DocMutationEvent {
 
     docInfo: IDocInfo;
 
-    mutationType: MutationType;
+    mutationType: DocMutationType;
 
 }
 
@@ -165,11 +165,11 @@ export interface DocReplicationEvent {
 
     docInfo: IDocInfo;
 
-    mutationType: MutationType;
+    mutationType: DocMutationType;
 
 }
 
-type MutationType = 'added' | 'modified' |'removed';
+export type DocMutationType = 'added' | 'modified' |'removed';
 
 /**
  * The result of an init operation which could be different form each datastore.

@@ -1,4 +1,4 @@
-import {Datastore, FileMeta, InitResult, SynchronizingDatastore} from './Datastore';
+import {Datastore, FileMeta, InitResult, SynchronizingDatastore, DocMutationType} from './Datastore';
 import {Directories} from './Directories';
 import {DocMetaFileRef, DocMetaRef} from './DocMetaRef';
 import {DeleteResult} from './Datastore';
@@ -13,6 +13,7 @@ import {Datastores} from './Datastores';
 import {DocMeta} from '../metadata/DocMeta';
 import {UUIDs} from '../metadata/UUIDs';
 import {DocMetas} from '../metadata/DocMetas';
+import {MutationType} from '../proxies/MutationType';
 
 /**
  * A CloudAwareDatastore allows us to have one datastore with a local copy and
@@ -49,6 +50,8 @@ export class CloudAwareDatastore implements Datastore {
         // might get two docs so we need to validate before we load...
 
         this.remote.addDocReplicationEventListener(docReplicationEvent => {
+
+            // this.onRemoteDocUpdate()
 
             // FIXME: we have all the data ANYWAY..
             //
@@ -181,26 +184,42 @@ export class CloudAwareDatastore implements Datastore {
 
         const docComparison = this.docComparisonIndex.get(docMeta.docInfo.fingerprint);
 
-        if (! docComparison || UUIDs.compare(docComparison.uuid, docMeta.docInfo.uuid) > 0) {
-            this.onRemoteDocUpdate(docMeta);
+        if (! docComparison) {
+            this.onRemoteDocUpdate(docMeta, 'added');
+        }
+
+        if (docComparison && UUIDs.compare(docComparison.uuid, docMeta.docInfo.uuid) > 0) {
+            this.onRemoteDocUpdate(docMeta, 'modified');
         }
 
     }
 
     // a document has been updated on the remote and we need to update it
     // locally.
-    private async onRemoteDocUpdate(docMeta: DocMeta) {
+    private async onRemoteDocUpdate(docMeta: DocMeta, mutationType: DocMutationType) {
 
-        try {
+        if (mutationType === 'added' || mutationType === 'modified') {
 
-            const data = DocMetas.serialize(docMeta);
-            await this.local.write(docMeta.docInfo.fingerprint, data, docMeta.docInfo);
+            try {
 
-            // FIXME: we have to fire event listeners so the doc repo discovers
-            // this
+                const data = DocMetas.serialize(docMeta);
+                await this.local.write(docMeta.docInfo.fingerprint, data, docMeta.docInfo);
 
-        } finally {
-            this.docComparisonIndex.putDocMeta(docMeta);
+                // FIXME: we have to fire event listeners so the doc repo discovers
+                // this
+
+            } finally {
+                this.docComparisonIndex.putDocMeta(docMeta);
+            }
+
+        } else {
+
+            await this.local.delete({
+                fingerprint: docMeta.docInfo.fingerprint,
+                filename: docMeta.docInfo.filename,
+                docInfo: docMeta.docInfo
+            });
+
         }
 
     }
@@ -222,6 +241,10 @@ export class DocComparisonIndex {
 
     public get(fingerprint: string): DocUUID | undefined {
         return this.backing[fingerprint];
+    }
+
+    public remove(fingerprint: string) {
+        delete this.backing[fingerprint];
     }
 
     public putDocMeta(docMeta: DocMeta) {
