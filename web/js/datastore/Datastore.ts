@@ -121,7 +121,7 @@ export type FileMeta = {[key: string]: string};
  * This includes the granularity we need for replicating the data to a local
  * datastore by fetching the data and writing it back out on the mutation.
  */
-export interface SynchronizingDatastore {
+export interface SynchronizingDatastore extends Datastore {
 
     addBinaryMutationEventListener(listener: (binaryMutationEvent: BinaryMutationEvent) => void): void;
 

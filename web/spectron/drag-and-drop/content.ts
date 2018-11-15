@@ -18,7 +18,7 @@ function onDrop(event: DragEvent) {
     }
 
     for (const item of Array.from(event.dataTransfer!.items)) {
-        console.log("FIXME: ", item);
+        console.log("FIXME: dataTransferItem: ", item);
         // item.get
     }
 
@@ -33,6 +33,14 @@ function onDrop(event: DragEvent) {
         console.log("FIXME2: ", event.dataTransfer!.getData('URL'));
 
     }
+
+    // FIXME: dragged HTML has type of text/html and 'kind' of 'string
+    //
+    // We could parse that HTML , then extract the links with titles, and write
+    // docs for them that are pre-rendered... but right now we don't ahve a way
+    // to start capture OTHER than the menu.  In order to do this we need to have a
+    // ContentCaptureService and a ContentCaptureClient to trigger one from the
+    // renderer...
 
 }
 

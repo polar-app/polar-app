@@ -1,6 +1,7 @@
 import {DocInfo, IDocInfo} from './DocInfo';
 import {ISODateTimeStrings} from './ISODateTimeStrings';
 import {Optional} from '../util/ts/Optional';
+import {UUIDs} from './UUIDs';
 
 export class DocInfos {
 
@@ -12,6 +13,7 @@ export class DocInfos {
         tmp.nrPages = nrPages;
         tmp.added = ISODateTimeStrings.create();
         tmp.filename = filename;
+        tmp.uuid = UUIDs.create();
 
         return new DocInfo(tmp);
 

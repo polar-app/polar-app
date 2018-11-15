@@ -98,7 +98,7 @@ export class DocMetas {
 
     }
 
-    public static serialize(docMeta: DocMeta, spacing: string = "") {
+    public static serialize(docMeta: DocMeta, spacing: string = "  ") {
         return MetadataSerializer.serialize(docMeta, spacing);
     }
 
