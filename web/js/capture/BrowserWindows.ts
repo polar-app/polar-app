@@ -19,11 +19,6 @@ export class BrowserWindows {
 
         const partition = "part-" + Date.now();
 
-        // FIXME: this is not working in the right BrowserWindow...
-        // const preload = AppPaths.relative("./web/js/capture/renderer/ContentCapture.js");
-
-        // log.info("Loading with preload: ", preload);
-
         return {
             minWidth: browserProfile.deviceEmulation.screenSize.width,
             minHeight: browserProfile.deviceEmulation.screenSize.height,

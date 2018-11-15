@@ -11,7 +11,7 @@ export function configureBrowser(windowDimensions: IDimensions) {
 
         try {
             Object.defineProperty(target, key, {
-                get: function() {
+                get: () => {
                     return value;
                 }
             });
@@ -58,6 +58,10 @@ export function configureBrowser(windowDimensions: IDimensions) {
 
     function defineMaxHeightStylesheet(rule: string) {
 
+        // TODO: I need to consider if it's not just better to measure the
+        // viewport height and replace it myself.  It is probably a bad idea
+        // so set this too small and will break in a lot of use cases.
+
         const cssText = `
         ${rule} {
             max-height: 400px;        
@@ -89,8 +93,6 @@ export function configureBrowser(windowDimensions: IDimensions) {
 
     }
 
-    console.log("FIXME1");
-
     try {
 
         configureBrowserWindowSize(windowDimensions);
@@ -99,8 +101,6 @@ export function configureBrowser(windowDimensions: IDimensions) {
     } catch (e) {
         console.error("Failed to execute script: ", e);
     }
-
-    console.log("FIXME2");
 
 }
 
