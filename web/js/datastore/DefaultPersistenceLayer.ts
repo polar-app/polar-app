@@ -12,10 +12,10 @@ import {Backend} from './Backend';
 import {DatastoreFile} from './DatastoreFile';
 import {Optional} from '../util/ts/Optional';
 import {Reducers} from '../util/Reducers';
-import uuid from 'uuid';
 import {DocInfo} from '../metadata/DocInfo';
 import {DatastoreMutation, DefaultDatastoreMutation} from './DatastoreMutation';
 import {DatastoreMutations} from './DatastoreMutations';
+import {UUIDs} from '../metadata/UUIDs';
 
 const log = Logger.create();
 
@@ -75,6 +75,7 @@ export class DefaultPersistenceLayer implements IPersistenceLayer {
         }
 
         return DocMetas.deserialize(data);
+
     }
 
     /**
@@ -142,7 +143,7 @@ export class DefaultPersistenceLayer implements IPersistenceLayer {
         }
 
         // update the sequence before we write it out to disk.
-        docMeta.docInfo.uuid = uuid.v1();
+        docMeta.docInfo.uuid = UUIDs.create();
 
         log.info("Sync of docMeta with fingerprint: ", fingerprint);
 

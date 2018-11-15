@@ -8,6 +8,7 @@ import {Optional} from '../util/ts/Optional';
 import {DocInfo} from '../metadata/DocInfo';
 import {DatastoreMutation, DefaultDatastoreMutation} from './DatastoreMutation';
 import {DatastoreMutations} from './DatastoreMutations';
+import {UUID} from '../metadata/UUID';
 
 /**
  * A CloudAwareDatastore allows us to have one datastore with a local copy and
@@ -27,6 +28,8 @@ export class CloudAwareDatastore implements Datastore {
     private readonly local: Datastore;
 
     private readonly remote: Datastore;
+
+    private readonly docComparisonIndex: DocComparisonIndex = {};
 
     constructor(local: Datastore, remote: Datastore) {
         this.local = local;
@@ -132,3 +135,13 @@ export class CloudAwareDatastore implements Datastore {
 export interface CloudAwareDeleteResult extends DeleteResult {
 
 }
+
+/**
+ * The DocComparisonIndex allows us to detect which documents are local already
+ * so that when we receive document from the cloud datastore we can decide
+ * that we do not need to replicate it locally.
+ */
+// noinspection TsLint: semicolon
+export interface DocComparisonIndex {[fingerprint: string]: UUID};
+
+

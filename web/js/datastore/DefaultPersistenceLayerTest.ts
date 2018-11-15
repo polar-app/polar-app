@@ -3,11 +3,19 @@ import {MockDocMetas} from '../metadata/DocMetas';
 import {MemoryDatastore} from './MemoryDatastore';
 import {DefaultPersistenceLayer} from './DefaultPersistenceLayer';
 import {TestingTime} from '../test/TestingTime';
+import uuid from 'uuid';
 
 
 describe('DefaultPersistenceLayer', function() {
 
     const fingerprint = '0x0001';
+
+    it('test UUID', function() {
+
+        console.log(uuid.v1());
+        console.log(uuid.v1());
+
+    });
 
     it("verify that lastUpdated was written", async function() {
 

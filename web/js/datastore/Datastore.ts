@@ -55,8 +55,9 @@ export interface Datastore extends BinaryDatastore, WritableDatastore {
     getDocMeta(fingerprint: string): Promise<string | null>;
 
     /**
-     * Return an array of DocMetaFiles currently in the repository.
+     * Return an array of {DocMetaRef}s currently in the repository.
      */
+    // TODO: refactor to getDocMetaRefs
     getDocMetaFiles(): Promise<DocMetaRef[]>;
 
 }

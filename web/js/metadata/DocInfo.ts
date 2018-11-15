@@ -8,6 +8,7 @@ import {Preconditions} from '../Preconditions';
 import {ISODateTimeString} from './ISODateTimeStrings';
 import {Tag} from '../tags/Tag';
 import {Hashcode} from './Hashcode';
+import {UUID} from './UUID';
 
 export class DocInfo extends SerializedObject implements IDocInfo {
 
@@ -185,12 +186,13 @@ export interface IDocInfo {
      * being written to allow us to de-duplicate documents and skip writes that
      * have already been applied.
      */
-    uuid?: string;
+    uuid?: UUID;
 
     /**
      * The hashcode of the PDF or PHZ file to detect potential data corruption
      * of the original imported data.
      */
     hashcode?: Hashcode;
-    
+
 }
+

@@ -12,6 +12,10 @@ export class TestingTime {
         timekeeper.freeze(time);
     }
 
+    public static unfreeze() {
+        timekeeper.reset();
+    }
+
     public static forward(durationMS: number) {
         timekeeper.freeze(new Date(Date.now() + durationMS));
     }
