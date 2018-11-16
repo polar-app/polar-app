@@ -25,7 +25,7 @@ export class DatastoreTester {
 
     public static test(datastoreFactory: () => Datastore, hasLocalFiles: boolean = true) {
 
-        describe('Write and discover documents', function() {
+        describe('Generic datastore tests (DatastoreTester)', function() {
 
             const fingerprint = "0x001";
 
@@ -145,6 +145,7 @@ export class DatastoreTester {
                 const data = 'fake image data';
 
                 await datastore.deleteFile(Backend.IMAGE, 'test.jpg');
+                await datastore.deleteFile(Backend.IMAGE, 'test.jpg');
 
                 assert.ok(! await datastore.containsFile(Backend.IMAGE, 'test.jpg'), "Datastore already contains file!");
 
@@ -152,6 +153,7 @@ export class DatastoreTester {
                     "foo": "bar"
                 };
 
+                await datastore.writeFile(Backend.IMAGE, 'test.jpg', data, meta);
                 await datastore.writeFile(Backend.IMAGE, 'test.jpg', data, meta);
 
                 assert.ok(await datastore.containsFile(Backend.IMAGE, 'test.jpg'));
@@ -163,6 +165,8 @@ export class DatastoreTester {
 
                 assertJSON(datastoreFile.get().meta, meta);
 
+                await datastore.deleteFile(Backend.IMAGE, 'test.jpg');
+                await datastore.deleteFile(Backend.IMAGE, 'test.jpg');
 
             });
 

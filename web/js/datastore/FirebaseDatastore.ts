@@ -1,6 +1,6 @@
 import {BinaryMutationEvent, Datastore, DeleteResult,
-        DocMutationEvent, FileMeta, InitResult,
-        DocReplicationEvent, SynchronizingDatastore} from './Datastore';
+        DocMutationEvent, DocReplicationEvent, FileMeta,
+        InitResult, SynchronizingDatastore} from './Datastore';
 import {Logger} from '../logger/Logger';
 import {DocMetaFileRef, DocMetaRef} from './DocMetaRef';
 import {Directories} from './Directories';
@@ -139,11 +139,12 @@ export class FirebaseDatastore implements Datastore, SynchronizingDatastore {
     public async delete(docMetaFileRef: DocMetaFileRef,
                         datastoreMutation: DatastoreMutation<boolean> = new DefaultDatastoreMutation()): Promise<Readonly<DeleteResult>> {
 
-        // FIXME: the PDF data file should be added as a stash file via
-        // writeFile so it also needs to be removed.
 
-        // TODO: these could get out of sync and we have to force them to
-        // execute together.  The remote delete followed by the local ...
+        if (docMetaFileRef.filename) {
+            // the PDF/PHZ data file should be added as a stash file via
+            // writeFile so it also needs to be removed.
+            await this.deleteFile(Backend.STASH, docMetaFileRef.filename);
+        }
 
         const uid = this.getUserID();
         const id = this.computeDocMetaID(uid, docMetaFileRef.fingerprint);
@@ -164,15 +165,7 @@ export class FirebaseDatastore implements Datastore, SynchronizingDatastore {
 
             await commitPromise;
 
-            // TODO: this is a major hack but we are only deleting remote data here
-            // and not deleting any local data so we don't have any path to work
-            // with..  Maybe we need to make the DeleteResult an Optional so that
-            // it only works on local stores where files are involved or return a
-            // specific structure for the DiskDatastore like a DiskDeleteResult
-            // which implements DeleteResult but adds additional fields.
-            const result: DeleteResult = <DeleteResult> { };
-
-            return result;
+            return { };
 
         } finally {
             delete this.pendingMutationIndex[id];
@@ -284,11 +277,26 @@ export class FirebaseDatastore implements Datastore, SynchronizingDatastore {
     }
 
     public async deleteFile(backend: Backend, name: string): Promise<void> {
+
         DatastoreFiles.assertValidFileName(name);
 
-        const storage = this.storage!;
-        const fileRef = storage.ref().child(`${backend}/${name}`);
-        await fileRef.delete();
+        try {
+
+            const storage = this.storage!;
+            const fileRef = storage.ref().child(`${backend}/${name}`);
+            await fileRef.delete();
+
+        } catch (e) {
+
+            if (e.code === "storage/object-not-found") {
+                return;
+            }
+
+            // some other type of exception ias occurred
+            throw e;
+
+        }
+
     }
 
     /**

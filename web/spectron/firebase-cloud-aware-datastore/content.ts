@@ -24,8 +24,10 @@ import {Files} from '../../js/util/Files';
 import {MockPHZWriter} from '../../js/phz/MockPHZWriter';
 import {DefaultDatastoreMutation} from '../../js/datastore/DatastoreMutation';
 import {DocInfo} from '../../js/metadata/DocInfo';
+import {PolarDataDir} from '../../js/test/PolarDataDir';
 
 mocha.setup('bdd');
+PolarDataDir.useFreshDirectory('.test-firebase-cloud-aware-datastore');
 
 function createDatastore() {
 
@@ -68,8 +70,11 @@ SpectronRenderer.run(async (state) => {
 
             });
 
-            // FIXME: add this back in...
-            // DatastoreTester.test(() => firebaseDatastore, false);
+            it("Test a remote write and a local replication", function() {
+
+            });
+
+            DatastoreTester.test(createDatastore, false);
 
         });
 

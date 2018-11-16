@@ -21,6 +21,8 @@ import {Latch} from '../../js/util/Latch';
 import {PersistenceLayerWorkers} from '../../js/datastore/dispatcher/PersistenceLayerWorkers';
 import {IPersistenceLayer} from '../../js/datastore/IPersistenceLayer';
 import {Datastores} from '../../js/datastore/Datastores';
+import waitForExpect from 'wait-for-expect';
+import {BrowserWindowRegistry} from '../../js/electron/framework/BrowserWindowRegistry';
 
 mocha.setup('bdd');
 
@@ -34,7 +36,7 @@ SpectronRenderer.run(async (state) => {
 
         await firebaseDatastore.init();
 
-        describe('Cloud datastore tests', function() {
+        describe('FirebaseDatastore tests', function() {
 
             it("Make sure we get events from the datastore", async function() {
 
@@ -44,11 +46,15 @@ SpectronRenderer.run(async (state) => {
 
                 await persistenceLayer.init();
 
+                // FIXME: I think this has a race.. I think this is purging the
+                // remote store but then getDocMetaFiles returns from cache
+                // first...
                 await Datastores.purge(datastore);
 
-                let docMetaFiles = await persistenceLayer.getDocMetaFiles();
-
-                assert.equal(docMetaFiles.length, 0);
+                await waitForExpect(async () => {
+                    const docMetaFiles = await persistenceLayer.getDocMetaFiles();
+                    assert.equal(docMetaFiles.length, 0);
+                });
 
                 const docMeta = MockDocMetas.createWithinInitialPagemarks(fingerprint, 14);
 
@@ -64,9 +70,10 @@ SpectronRenderer.run(async (state) => {
 
                 assert.isFalse(docReplicationEventListenerCalled);
 
-                docMetaFiles = await persistenceLayer.getDocMetaFiles();
-
-                assert.equal(docMetaFiles.length, 1);
+                await waitForExpect(async () => {
+                    const docMetaFiles = await persistenceLayer.getDocMetaFiles();
+                    assert.equal(docMetaFiles.length, 1);
+                });
 
                 await persistenceLayer.stop();
 
@@ -110,7 +117,6 @@ SpectronRenderer.run(async (state) => {
                 await datastore.stop();
 
             });
-
 
             it("Make sure we get replication events from a second datastore to the first", async function() {
 

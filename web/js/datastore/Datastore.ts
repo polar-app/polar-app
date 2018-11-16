@@ -65,7 +65,8 @@ export interface Datastore extends BinaryDatastore, WritableDatastore {
 interface WritableDatastore {
 
     /**
-     * Delete a document from the datastore.  Deletes should be idempotent.
+     * Delete the DocMeta file and the underlying doc from the stash.  Deletes
+     * MUST be idempotent.
      *
      */
     delete(docMetaFileRef: DocMetaFileRef, datastoreMutation?: DatastoreMutation<boolean>): Promise<Readonly<DeleteResult>>;
