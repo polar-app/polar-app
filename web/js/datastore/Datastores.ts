@@ -46,6 +46,29 @@ export class Datastores {
 
     }
 
+    /**
+     * Remove all the docs in a datastore.  Only do this for testing and for
+     * very important use cases.
+     */
+    public static async purge(datastore: Datastore) {
+
+        const docMetaFiles = await datastore.getDocMetaFiles();
+
+        for (const docMetaFile of docMetaFiles) {
+
+            const data = await datastore.getDocMeta(docMetaFile.fingerprint);
+            const docMeta = DocMetas.deserialize(data!);
+
+            datastore.delete({
+                fingerprint: docMeta.docInfo.fingerprint,
+                docInfo: docMeta.docInfo,
+                filename: docMeta.docInfo.filename
+            });
+
+        }
+
+    }
+
 }
 
 export type DocMetaListener = (docMeta: DocMeta) => void;

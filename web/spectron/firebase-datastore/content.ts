@@ -20,6 +20,7 @@ import {DocInfo} from '../../js/metadata/DocInfo';
 import {Latch} from '../../js/util/Latch';
 import {PersistenceLayerWorkers} from '../../js/datastore/dispatcher/PersistenceLayerWorkers';
 import {IPersistenceLayer} from '../../js/datastore/IPersistenceLayer';
+import {Datastores} from '../../js/datastore/Datastores';
 
 mocha.setup('bdd');
 
@@ -42,6 +43,8 @@ SpectronRenderer.run(async (state) => {
                 const persistenceLayer = new DefaultPersistenceLayer(datastore);
 
                 await persistenceLayer.init();
+
+                await Datastores.purge(datastore);
 
                 let docMetaFiles = await persistenceLayer.getDocMetaFiles();
 

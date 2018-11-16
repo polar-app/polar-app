@@ -87,10 +87,25 @@ export class FirebaseDatastore implements Datastore, SynchronizingDatastore {
         // start synchronizing the datastore.  You MUST register your listeners
         // BEFORE calling init if you wish to listen to the full stream of
         // events.
-        this.unsubscribeSnapshots = await this.firestore!
+
+        // There's no way to control where the snapshot comes from and on
+        // startup so we do a get() from the cache which we can control with
+        // GetOptions.  This gets us data quickly and then we start listening to
+        // snapshots after this which can come from the network async
+
+        const query = this.firestore!
             .collection(DatastoreCollection.DOC_META)
-            .where('uid', '==', uid)
-            .onSnapshot(snapshot => this.onDocMetaSnapshot(snapshot));
+            .where('uid', '==', uid);
+
+        // fetch from the local cache so that we have at least some data after
+        // init instead of relying on the network.  This will get us data into
+        // the document repository faster.
+        const cachedQuerySnapshot = await query.get({source: 'cache'});
+
+        this.onDocMetaSnapshot(cachedQuerySnapshot);
+
+        // the rest of the data can come in lazily from the network.
+        query.onSnapshot(snapshot => this.onDocMetaSnapshot(snapshot));
 
         this.initialized = true;
 

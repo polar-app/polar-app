@@ -48,9 +48,12 @@ export class CloudAwareDatastore implements Datastore {
 
     public async init(): Promise<InitResult> {
 
-        // add the event listeners to the remote BEFORE we init... we might get
+        // add the event listeners to the remote BEFORE we init... We might get
         // two docs so we need to validate with the docComparisonIndex while
         // loading to avoid double writes.
+        //
+        // Initially we just get from the local cache but then we will start
+        // getting documents from the datastore once it comes online.
 
         this.remote.addDocReplicationEventListener(docReplicationEvent => {
 
@@ -62,25 +65,6 @@ export class CloudAwareDatastore implements Datastore {
         });
 
         await Promise.all([this.remote.init(), this.local.init()]);
-
-        // Now sync the local with the remote pulling in any documents we need.
-
-        // FIXME: I need to consider using a snapshot listener for this as it
-        // would be faster as QUERIES go to the DB first but snapshots can come
-        // out of cache first...
-        //
-        // FIXME: I think we're going to get a replication event on startup
-        // which is *kind* of what we want even though it's a pre-existing
-        // document.  We might need to have the concept of pre-and post init
-        // replication docs....
-
-        Datastores.getDocMetas(this.remote, (docMeta: DocMeta) =>  {
-            this.onRemoteDocInit(docMeta);
-        });
-
-
-        // TODO:  the rest will catch up from replication as they are changes on
-        // the remote end...
 
         return {};
 

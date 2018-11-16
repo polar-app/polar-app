@@ -1,3 +1,2 @@
-Example of a spectrum test.
-
-Make all test use a version of this for reliability reasons.
+Just tests the semantics of Firebase writes and has nothing to do with the 
+datastore.
