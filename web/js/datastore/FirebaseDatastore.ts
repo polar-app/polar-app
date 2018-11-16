@@ -18,6 +18,7 @@ import {DatastoreFiles} from './DatastoreFiles';
 import {DatastoreMutation, DefaultDatastoreMutation} from './DatastoreMutation';
 import {IEventDispatcher, SimpleReactor} from '../reactor/SimpleReactor';
 import {NULL_FUNCTION} from '../util/Functions';
+import {DocMetas} from "../metadata/DocMetas";
 
 const log = Logger.create();
 
@@ -51,7 +52,7 @@ export class FirebaseDatastore implements Datastore, SynchronizingDatastore {
 
     private readonly docMutationReactor: IEventDispatcher<DocMutationEvent> = new SimpleReactor();
 
-    private readonly replicationReactor: IEventDispatcher<DocReplicationEvent> = new SimpleReactor();
+    private readonly docReplicationReactor: IEventDispatcher<DocReplicationEvent> = new SimpleReactor();
 
     private unsubscribeSnapshots: () => void = NULL_FUNCTION;
 
@@ -357,8 +358,8 @@ export class FirebaseDatastore implements Datastore, SynchronizingDatastore {
         this.docMutationReactor.addEventListener(listener);
     }
 
-    public addDocReplicationEventListener(listener: (replicationEvent: DocReplicationEvent) => void): void {
-        this.replicationReactor.addEventListener(listener);
+    public addDocReplicationEventListener(listener: (docReplicationEvent: DocReplicationEvent) => void): void {
+        this.docReplicationReactor.addEventListener(listener);
     }
 
     /**
@@ -432,24 +433,27 @@ export class FirebaseDatastore implements Datastore, SynchronizingDatastore {
 
         log.debug("onSnapshot... ");
 
-        const messagesElement = document.getElementById('messages')!;
-
         for (const docChange of snapshot.docChanges()) {
 
             const record = <RecordHolder<DocMetaHolder>> docChange.doc.data();
             const id = record.id;
+
+            const docMeta = DocMetas.deserialize(record.value.value);
 
             const docMutationEvent: DocMutationEvent = {
                 docInfo: record.value.docInfo,
                 mutationType: docChange.type
             };
 
-            const docReplicationEvent: DocReplicationEvent = docMutationEvent;
+            const docReplicationEvent: DocReplicationEvent = {
+                docMeta,
+                mutationType: docChange.type
+            };
 
             this.docMutationReactor.dispatchEvent(docMutationEvent);
 
             if (!this.pendingMutationIndex[id]) {
-                this.replicationReactor.dispatchEvent(docReplicationEvent);
+                this.docReplicationReactor.dispatchEvent(docReplicationEvent);
             }
 
         }

@@ -163,7 +163,7 @@ export interface DocMutationEvent {
  */
 export interface DocReplicationEvent {
 
-    docInfo: IDocInfo;
+    docMeta: DocMeta;
 
     mutationType: DocMutationType;
 

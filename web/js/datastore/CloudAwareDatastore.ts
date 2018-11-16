@@ -13,7 +13,9 @@ import {Datastores} from './Datastores';
 import {DocMeta} from '../metadata/DocMeta';
 import {UUIDs} from '../metadata/UUIDs';
 import {DocMetas} from '../metadata/DocMetas';
-import {MutationType} from '../proxies/MutationType';
+import {Logger} from "../logger/Logger";
+
+const log = Logger.create();
 
 /**
  * A CloudAwareDatastore allows us to have one datastore with a local copy and
@@ -51,15 +53,9 @@ export class CloudAwareDatastore implements Datastore {
 
         this.remote.addDocReplicationEventListener(docReplicationEvent => {
 
-            // this.onRemoteDocUpdate()
-
-            // FIXME: we have all the data ANYWAY..
-            //
-            // FIXME: we have to handle deleted...
-
-            // if (docReplicationEvent.mutationType === 'added') {
-            //     this.onRemoteDocDiscovered(docReplicationEvent);
-            // }
+            // TODO once this fails we need to make sure to tell the user...
+            this.onRemoteDocMutation(docReplicationEvent.docMeta, docReplicationEvent.mutationType)
+                .catch( err => log.error("Unable to handle doc replication event: ", err));
 
         });
 
@@ -185,18 +181,18 @@ export class CloudAwareDatastore implements Datastore {
         const docComparison = this.docComparisonIndex.get(docMeta.docInfo.fingerprint);
 
         if (! docComparison) {
-            this.onRemoteDocUpdate(docMeta, 'added');
+            this.onRemoteDocMutation(docMeta, 'added');
         }
 
         if (docComparison && UUIDs.compare(docComparison.uuid, docMeta.docInfo.uuid) > 0) {
-            this.onRemoteDocUpdate(docMeta, 'modified');
+            this.onRemoteDocMutation(docMeta, 'modified');
         }
 
     }
 
     // a document has been updated on the remote and we need to update it
     // locally.
-    private async onRemoteDocUpdate(docMeta: DocMeta, mutationType: DocMutationType) {
+    private async onRemoteDocMutation(docMeta: DocMeta, mutationType: DocMutationType) {
 
         if (mutationType === 'added' || mutationType === 'modified') {
 
