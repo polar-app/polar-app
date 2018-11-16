@@ -6,6 +6,7 @@ import {IDocInfo} from '../../metadata/DocInfo';
 import {assertJSON} from '../../test/Assertions';
 import {MockAdvertisingPersistenceLayer} from './MockAdvertisingPersistenceLayer';
 import {TestingTime} from '../../test/TestingTime';
+import {Dictionaries} from '../../util/Dictionaries';
 
 describe('AdvertisingPersistenceLayer', function() {
 
@@ -52,12 +53,12 @@ describe('AdvertisingPersistenceLayer', function() {
                 "nrFlashcards": 0,
                 "nrTextHighlights": 0,
                 "nrAreaHighlights": 0,
-                "nrAnnotations": 0,
-                "uuid": "..."
+                "uuid": "...",
+                "nrAnnotations": 0
             }
         ];
 
-        assertJSON(advertised, expected);
+        assertJSON(Dictionaries.sorted(advertised), Dictionaries.sorted(expected));
 
     });
 

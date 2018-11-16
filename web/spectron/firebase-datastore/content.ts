@@ -43,6 +43,10 @@ SpectronRenderer.run(async (state) => {
 
                 await persistenceLayer.init();
 
+                let docMetaFiles = await persistenceLayer.getDocMetaFiles();
+
+                assert.equal(docMetaFiles.length, 0);
+
                 const docMeta = MockDocMetas.createWithinInitialPagemarks(fingerprint, 14);
 
                 const datastoreMutation = new DefaultDatastoreMutation<DocInfo>();
@@ -57,6 +61,10 @@ SpectronRenderer.run(async (state) => {
 
                 assert.isFalse(docReplicationEventListenerCalled);
 
+                docMetaFiles = await persistenceLayer.getDocMetaFiles();
+
+                assert.equal(docMetaFiles.length, 1);
+
                 await persistenceLayer.stop();
 
                 // now create a new datastore to make sure we get the events we
@@ -64,22 +72,37 @@ SpectronRenderer.run(async (state) => {
 
                 datastore = new FirebaseDatastore();
 
-                const latch = new Latch<boolean>();
+                const docMutationLatch = new Latch<boolean>();
+                const docReplicationLatch = new Latch<boolean>();
 
-                datastore.addDocMutationEventListener((docMutation) => {
+                datastore.addDocMutationEventListener((docMutationEvent) => {
 
-                    if (docMutation.docInfo.fingerprint === fingerprint &&
-                        docMutation.mutationType === 'added') {
+                    if (docMutationEvent.docInfo.fingerprint === fingerprint &&
+                        docMutationEvent.mutationType === 'added') {
 
-                        latch.resolve(true);
+                        docMutationLatch.resolve(true);
 
                     }
 
                 });
 
+                datastore.addDocReplicationEventListener((docReplicationEvent) => {
+
+                    if (docReplicationEvent.docMeta.docInfo.fingerprint === fingerprint &&
+                        docReplicationEvent.mutationType === 'added') {
+
+                        docReplicationLatch.resolve(true);
+
+                    }
+
+                });
+
+
                 await datastore.init();
 
-                await latch.get();
+                // if this latch is resolved we've found our value.
+                await docMutationLatch.get();
+                await docReplicationLatch.get();
 
                 await datastore.stop();
 
@@ -150,7 +173,7 @@ SpectronRenderer.run(async (state) => {
 
         });
 
-        // DatastoreTester.test(() => firebaseDatastore, false);
+        DatastoreTester.test(() => firebaseDatastore, false);
 
     });
 

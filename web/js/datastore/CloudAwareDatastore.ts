@@ -48,12 +48,14 @@ export class CloudAwareDatastore implements Datastore {
 
     public async init(): Promise<InitResult> {
 
-        // FIXME: add the event listeners to the remote BEFORE we init... we
-        // might get two docs so we need to validate before we load...
+        // add the event listeners to the remote BEFORE we init... we might get
+        // two docs so we need to validate with the docComparisonIndex while
+        // loading to avoid double writes.
 
         this.remote.addDocReplicationEventListener(docReplicationEvent => {
 
-            // TODO once this fails we need to make sure to tell the user...
+            // TODO once this fails we need to make sure to tell the user and
+            // right now we don't really have an event stream for this.
             this.onRemoteDocMutation(docReplicationEvent.docMeta, docReplicationEvent.mutationType)
                 .catch( err => log.error("Unable to handle doc replication event: ", err));
 
@@ -61,17 +63,21 @@ export class CloudAwareDatastore implements Datastore {
 
         await Promise.all([this.remote.init(), this.local.init()]);
 
-        // FIXME: we need an onDocLoaded event or onDocAvailable ... this will
-        // come from either the replication event or on load when the new
-        // document is first loaded...
+        // Now sync the local with the remote pulling in any documents we need.
+
+        // FIXME: I need to consider using a snapshot listener for this as it
+        // would be faster as QUERIES go to the DB first but snapshots can come
+        // out of cache first...
+        //
+        // FIXME: I think we're going to get a replication event on startup
+        // which is *kind* of what we want even though it's a pre-existing
+        // document.  We might need to have the concept of pre-and post init
+        // replication docs....
 
         Datastores.getDocMetas(this.remote, (docMeta: DocMeta) =>  {
-
-            this.docComparisonIndex.putDocMeta(docMeta);
-
+            this.onRemoteDocInit(docMeta);
         });
 
-        // now sync the local with the remote...
 
         // TODO:  the rest will catch up from replication as they are changes on
         // the remote end...
@@ -174,9 +180,10 @@ export class CloudAwareDatastore implements Datastore {
     }
 
     /**
-     *
+     * Called on init() for every doc in the remote repo.  We then see if we have
+     * loaded it locally and update it if it's stale.
      */
-    private onRemoteDocDiscovered(docMeta: DocMeta) {
+    private onRemoteDocInit(docMeta: DocMeta) {
 
         const docComparison = this.docComparisonIndex.get(docMeta.docInfo.fingerprint);
 
@@ -202,7 +209,7 @@ export class CloudAwareDatastore implements Datastore {
                 await this.local.write(docMeta.docInfo.fingerprint, data, docMeta.docInfo);
 
                 // FIXME: we have to fire event listeners so the doc repo discovers
-                // this
+                // this new document...
 
             } finally {
                 this.docComparisonIndex.putDocMeta(docMeta);

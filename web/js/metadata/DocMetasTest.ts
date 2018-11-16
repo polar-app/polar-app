@@ -55,6 +55,8 @@ describe('DocMetas', function() {
             const nrPages = 2;
             let docMeta = DocMetas.createWithinInitialPagemarks(fingerprint, nrPages);
 
+            docMeta.docInfo.uuid = "__canonicalized__";
+
             const json = DocMetas.serialize(docMeta, "  ");
 
             const expected = {
@@ -70,7 +72,8 @@ describe('DocMetas', function() {
                         "tags": {},
                         "nrPages": 2,
                         "fingerprint": "0x001",
-                        "added": "2012-03-02T11:38:49.321Z"
+                        "added": "2012-03-02T11:38:49.321Z",
+                        "uuid": "__canonicalized__"
                     },
                     "pageMetas": {
                         "1": {

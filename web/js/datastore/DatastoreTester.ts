@@ -93,6 +93,9 @@ export class DatastoreTester {
                 delete docMeta0!.docInfo.nrAnnotations;
                 delete docMeta0!.docInfo.uuid;
 
+                docMeta!.docInfo.uuid = '__canonicalized__';
+                docMeta0!.docInfo.uuid = '__canonicalized__';
+
                 assert.equal(isPresent(docMeta0), true, "docMeta0 is not present");
 
                 assertJSON(Dictionaries.sorted(docMeta), Dictionaries.sorted(docMeta0));

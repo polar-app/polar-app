@@ -3,11 +3,11 @@ import {Optional} from './ts/Optional';
 
 export class Dictionaries {
 
-    static values<T>(dict: {[key: string]: T} | undefined | null): T[] {
+    public static values<T>(dict: {[key: string]: T} | undefined | null): T[] {
 
-        let result: T[] = [];
+        const result: T[] = [];
 
-        if(! dict) {
+        if (!dict) {
             // TODO: this can go away once we migrate to typescript everywhere
             return result;
         }
@@ -47,19 +47,19 @@ export class Dictionaries {
      * This is primarily used for testing.
      *
      */
-    static sorted(dict: any): any {
+    public static sorted(dict: any): any {
 
-        if(dict === undefined || dict === null) {
+        if (dict === undefined || dict === null) {
             // nothing to do here.
             return dict;
         }
 
-        if(! (typeof dict === 'object')) {
+        if (! (typeof dict === 'object')) {
             // if we're not a dictionary we're done
             return dict;
         }
 
-        let result: any = {};
+        const result: any = {};
 
         Object.keys(dict).sort().forEach(key => {
             result[key] = this.sorted(dict[key]);
