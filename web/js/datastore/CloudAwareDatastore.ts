@@ -122,7 +122,10 @@ export class CloudAwareDatastore implements Datastore {
         return this.local.containsFile(backend, name);
     }
 
-    public deleteFile(backend: Backend, name: string): Promise<void> {
+    public async deleteFile(backend: Backend, name: string): Promise<void> {
+
+        await this.remote.deleteFile(backend, name);
+
         return this.local.deleteFile(backend, name);
     }
 
@@ -131,13 +134,18 @@ export class CloudAwareDatastore implements Datastore {
                         datastoreMutation: DatastoreMutation<boolean> = new DefaultDatastoreMutation()):
         Promise<Readonly<CloudAwareDeleteResult>> {
 
-        DatastoreMutations.executeBatchedWrite(datastoreMutation,
-                                               async (remoteCoordinator) => {
-                                                   this.remote.delete(docMetaFileRef, remoteCoordinator);
-                                               },
-                                               async (localCoordinator) => {
-                                                   this.local.delete(docMetaFileRef, localCoordinator);
-                                               });
+        try {
+
+            DatastoreMutations.executeBatchedWrite(datastoreMutation,
+                                                   async (remoteCoordinator) => {
+                                                       this.remote.delete(docMetaFileRef, remoteCoordinator);
+                                                   },
+                                                   async (localCoordinator) => {
+                                                       this.local.delete(docMetaFileRef, localCoordinator);
+                                                   });
+        } finally {
+            this.docComparisonIndex.remove(docMetaFileRef.fingerprint);
+        }
 
         // TODO: return the result of the local and remote operations.
         return {};
@@ -171,12 +179,7 @@ export class CloudAwareDatastore implements Datastore {
     }
 
     public async getDocMetaFiles(): Promise<DocMetaRef[]> {
-
-        // TODO: where do we get this from? local or remote?
-        // TODO: implement a method to ensure the datastore is up to date...
-
-        throw new Error("Not implemented");
-
+        return this.local.getDocMetaFiles();
     }
 
     /**

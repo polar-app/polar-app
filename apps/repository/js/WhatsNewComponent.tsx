@@ -167,6 +167,10 @@ export class WhatsNewComponent extends React.Component<IProps, IState> {
 
     private async isNewVersion(): Promise<boolean> {
 
+        // TODO: migrate this to use a LocalSettings component
+        //
+        //
+
         const path = WhatsNewComponent.getDataPath();
 
         if (await Files.existsAsync(path)) {
