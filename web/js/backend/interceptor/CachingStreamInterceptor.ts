@@ -44,8 +44,6 @@ export class CachingStreamInterceptor {
 
         const cacheEntry = this.cacheRegistry.get(request.url);
 
-        console.log("FIXME: interceptWithCache cacheEntry", cacheEntry);
-
         const stream = await cacheEntry.toStream();
 
         log.debug("Returning intercepted cache stream: ", {headers: cacheEntry.headers, statusCode: cacheEntry.statusCode});

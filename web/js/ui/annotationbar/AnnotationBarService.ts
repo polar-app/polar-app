@@ -34,8 +34,6 @@ export class AnnotationBarService {
 
                 if (annotationType === 'text-highlight') {
 
-                    console.log("FIXME: 3");
-
                     // trigger the popup here so we can change the types.
 
                 }
@@ -65,7 +63,6 @@ export class AnnotationBarService {
         const commentPopupBarCallbacks: CommentPopupBarCallbacks = {
 
             onComment: (commentCreatedEvent: CommentCreatedEvent) => {
-                console.log("FIXME: comment created", commentCreatedEvent);
             }
 
         };
