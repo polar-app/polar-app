@@ -2,7 +2,7 @@ import {Spectron} from '../../js/test/Spectron';
 import {SpectronSpec} from '../../js/test/SpectronSpec';
 import {PolarDataDir} from '../../js/test/PolarDataDir';
 
-PolarDataDir.useFreshDirectory('.polar-main-app-with-empty-repo');
+PolarDataDir.useFreshDirectory('.polar-main-app-with-import');
 
 describe('main-app-with-import', function() {
 
