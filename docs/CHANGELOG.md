@@ -1,13 +1,16 @@
 
 # 1.0.14
 
-- upgrade to latest semver and firebase-tools 
+- Upgrade to latest semver and firebase-tools 
 
 - Fixed bug where the lightbox was kept enabled after we deleted an annotation
 
-- Fixed bug where we couldn't capture XML documents which used XSL stylesheets.
+- We can now capture a new class of documents that use a vertical height on 
+  their CSS selectors. 
 
-- Fajor refactor of the disk datastore for the pending cloud sync functionality
+- We can now apture XML documents which used XSL stylesheets.
+
+- Major refactor of the disk datastore for the pending cloud sync functionality
   we're working on. 
 
 # 1.0.13

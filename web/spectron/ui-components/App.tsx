@@ -13,6 +13,8 @@ import {AnnotationType} from '../../js/metadata/AnnotationType';
 import {CommentComponent} from '../../js/annotation_sidebar/child_annotations/CommentComponent';
 import {CommentComponentExample} from './CommentComponentExample';
 import {FlashcardComponentExample} from './FlashcardComponentExample';
+import {WhatsNewContent} from '../../../apps/repository/js/WhatsNewContent';
+import {ModalBody} from 'reactstrap';
 
 class App<P> extends React.Component<{}, IAppState> {
 
@@ -100,6 +102,8 @@ class App<P> extends React.Component<{}, IAppState> {
                 <CommentComponentExample/>
 
                 <FlashcardComponentExample/>
+
+                <WhatsNewContent/>
 
             </div>
 

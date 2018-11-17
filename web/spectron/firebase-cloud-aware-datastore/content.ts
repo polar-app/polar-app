@@ -25,6 +25,7 @@ import {MockPHZWriter} from '../../js/phz/MockPHZWriter';
 import {DefaultDatastoreMutation} from '../../js/datastore/DatastoreMutation';
 import {DocInfo} from '../../js/metadata/DocInfo';
 import {PolarDataDir} from '../../js/test/PolarDataDir';
+import waitForExpect from 'wait-for-expect';
 
 mocha.setup('bdd');
 PolarDataDir.useFreshDirectory('.test-firebase-cloud-aware-datastore');
@@ -70,7 +71,23 @@ SpectronRenderer.run(async (state) => {
 
             });
 
-            it("Test a remote write and a local replication", function() {
+            it("Test a remote write and a local replication to disk", async function() {
+
+                const sourcePersistenceLayer = new DefaultPersistenceLayer(new FirebaseDatastore());
+                await sourcePersistenceLayer.init();
+
+                const targetPersistenceLayer = new DefaultPersistenceLayer(createDatastore());
+                await targetPersistenceLayer.init();
+
+                const docMeta = MockDocMetas.createWithinInitialPagemarks(fingerprint, 14);
+                await sourcePersistenceLayer.write(fingerprint, docMeta);
+
+                await waitForExpect(async () => {
+                    const dataDir = PolarDataDir.get();
+                    const path = FilePaths.join(dataDir!, '0x001', 'state.json');
+                    console.log("Checkign for path: " + path);
+                    assert.ok(await Files.existsAsync(path));
+                });
 
             });
 
