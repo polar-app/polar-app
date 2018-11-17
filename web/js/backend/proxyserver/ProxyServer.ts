@@ -5,7 +5,6 @@ import {CacheRegistry} from './CacheRegistry';
 import {Logger} from '../../logger/Logger';
 import {Preconditions} from '../../Preconditions';
 
-const debug = require('debug');
 const net = require('net');
 const http = require('http');
 const express = require('express');
@@ -63,13 +62,13 @@ export class ProxyServer {
      */
     async requestHandler(req: any, res: any) {
 
-        debug("Handling HTTP request: " + req.url);
+        // debug("Handling HTTP request: " + req.url);
 
         if(this.cacheRegistry.hasEntry(req.url)) {
 
             // serve from the cache if registered
 
-            debug("Handling cached request: " + req.url);
+            // debug("Handling cached request: " + req.url);
 
             // TODO: the downside of this strategy is that we don't benefit
             // from any advanced HTTP caching semantics or features like
@@ -105,7 +104,7 @@ export class ProxyServer {
 
         }
 
-        debug("Handling proxied request: " + req.url);
+        // debug("Handling proxied request: " + req.url);
 
         // then forward to the remote proxy
 
@@ -130,22 +129,22 @@ export class ProxyServer {
      */
     secureRequestHandler(request: any, socketRequest: any, bodyhead: any) {
 
-        debug("Handling SSL proxied request: " + request.url);
+        // debug("Handling SSL proxied request: " + request.url);
 
         let url = request['url'];
         let httpVersion = request['httpVersion'];
 
         let hostport = getHostPortFromString(url, 443);
 
-        debug( '  = will connect to %s:%s', hostport[0], hostport[1] );
+        // debug( '  = will connect to %s:%s', hostport[0], hostport[1] );
 
         // set up TCP connection
         let proxySocket = new net.Socket();
         proxySocket.connect(
             parseInt( hostport[1] ), hostport[0],
             function () {
-                debug( '  < connected to %s/%s', hostport[0], hostport[1] );
-                debug( '  > writing head of length %d', bodyhead.length );
+                // debug( '  < connected to %s/%s', hostport[0], hostport[1] );
+                // debug( '  > writing head of length %d', bodyhead.length );
 
                 proxySocket.write( bodyhead );
 
@@ -157,26 +156,26 @@ export class ProxyServer {
         );
 
         proxySocket.on('data', function ( chunk: any ) {
-                debug( '  < data length = %d', chunk.length );
+                // debug( '  < data length = %d', chunk.length );
                 socketRequest.write( chunk );
             }
         );
 
         proxySocket.on('end', function () {
-                debug( '  < end' );
+                // debug( '  < end' );
                 socketRequest.end();
             }
         );
 
         socketRequest.on('data', function ( chunk: any ) {
-                debug( '  > data length = %d', chunk.length );
+                // debug( '  > data length = %d', chunk.length );
 
                 proxySocket.write( chunk );
             }
         );
 
         socketRequest.on('end', function () {
-                debug( '  > end' );
+                // debug( '  > end' );
 
                 proxySocket.end();
             }
@@ -184,13 +183,13 @@ export class ProxyServer {
 
         proxySocket.on('error', function ( err: any ) {
                 socketRequest.write( "HTTP/" + httpVersion + " 500 Connection error\r\n\r\n" );
-                debug( '  < ERR: %s', err );
+                // debug( '  < ERR: %s', err );
                 socketRequest.end();
             }
         );
 
         socketRequest.on('error', function ( err: any ) {
-                debug( '  > ERR: %s', err );
+                // debug( '  > ERR: %s', err );
                 proxySocket.end();
             }
         );
