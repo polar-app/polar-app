@@ -8,7 +8,7 @@
 - We can now capture a new class of documents that use a vertical height on 
   their CSS selectors. 
 
-- We can now apture XML documents which used XSL stylesheets.
+- We can now capture XML documents which used XSL stylesheets.
 
 - Major refactor of the disk datastore for the pending cloud sync functionality
   we're working on. 
