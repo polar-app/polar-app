@@ -40,6 +40,8 @@ export class WhatsNewComponent extends React.Component<IProps, IState> {
 
             <div>
 
+                {/*TODO: make this a consistent width in the next version */}
+
                 <Modal isOpen={this.state.open}
                        size="lg"
                        style={{overflowY: 'initial'}}>

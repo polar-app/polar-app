@@ -7,6 +7,7 @@ import {DefaultPersistenceLayer} from '../../js/datastore/DefaultPersistenceLaye
 import {assertJSON} from '../../js/test/Assertions';
 import {TestingTime} from '../../js/test/TestingTime';
 import {Dictionaries} from '../../js/util/Dictionaries';
+import {canonicalize} from './testing';
 
 const log = Logger.create();
 
@@ -38,7 +39,7 @@ SpectronRenderer.run(async () => {
         "added": "2012-03-02T11:38:49.321Z"
     };
 
-    assertJSON(Dictionaries.sorted(docMeta.docInfo), Dictionaries.sorted(expected));
+    assertJSON(canonicalize(docMeta.docInfo), canonicalize(expected));
 
     await advertisingPersistenceLayer.writeDocMeta(docMeta);
 

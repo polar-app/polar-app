@@ -5,6 +5,7 @@ import {DefaultPersistenceLayer} from '../../js/datastore/DefaultPersistenceLaye
 import {AdvertisingPersistenceLayer} from '../../js/datastore/advertiser/AdvertisingPersistenceLayer';
 import {assertJSON} from '../../js/test/Assertions';
 import {Dictionaries} from '../../js/util/Dictionaries';
+import {canonicalize} from './testing';
 
 const log = Logger.create();
 
@@ -20,7 +21,7 @@ SpectronRenderer.run(async (state) => {
 
     advertisingPersistenceLayer.addEventListener(adv => {
 
-        console.log("Got the advertisement");
+        console.log("Got the advertisement: ", adv);
 
         const expected = {
             "added": "2012-03-02T11:38:49.321Z",
@@ -42,10 +43,7 @@ SpectronRenderer.run(async (state) => {
             "uuid": "4743a590-645c-11e1-809e-478d48422a2c"
         };
 
-        delete adv.docInfo.uuid;
-        delete expected.uuid;
-
-        assertJSON(Dictionaries.sorted(adv.docInfo), Dictionaries.sorted(expected));
+        assertJSON(canonicalize(adv.docInfo), canonicalize(expected));
 
         console.log("It worked!");
 
