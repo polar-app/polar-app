@@ -16,20 +16,41 @@ WINDOWS_CSC_DIR=$(readlink -m ../polar-bookshelf-secrets/windows-csc)
 # failed: openssl pkcs12 -nokeys -nodes -passin pass: -nomacver -clcerts -in
 # /root/windows-csc/00C8406FA14CAD991724834F1B0D25C4D3.crt
 
-build_for_arch() {
-    arch=${1}
+shell() {
+
+       #-v ${PWD##*/}-node-modules:/project/node_modules \
 
     docker run --rm -ti \
        --env-file <(env | grep -iE 'DEBUG|NODE_|ELECTRON_|YARN_|NPM_|CI|CIRCLE|TRAVIS_TAG|TRAVIS|TRAVIS_REPO_|TRAVIS_BUILD_|TRAVIS_BRANCH|TRAVIS_PULL_REQUEST_|APPVEYOR_|CSC_|GH_|GITHUB_|BT_|AWS_|STRIP|BUILD_') \
        --env ELECTRON_CACHE="/root/.cache/electron" \
        --env ELECTRON_BUILDER_CACHE="/root/.cache/electron-builder" \
        -v ${PWD}:/project \
-       -v ${PWD##*/}-node-modules:/project/node_modules \
        -v ~/.cache/electron:/root/.cache/electron \
        -v ~/.cache/electron-builder:/root/.cache/electron-builder \
        -v ${WINDOWS_CSC_DIR}:/root/windows-csc \
-       electronuserland/builder:wine bash -c 'yarn && ./node_modules/.bin/electron-builder --config=electron-builder.yml --config.nsis.artifactName=\${name}-\${version}-'${arch}'.\${ext} --'${arch}' --win --publish always'
+       electronuserland/builder:wine bash
+
+    # ./node_modules/.bin/electron-builder --config=electron-builder.yml --config.nsis.artifactName=\${name}-\${version}-x64.\${ext} --x64 --win --publish always
+
+}
+
+build_for_arch() {
+    arch=${1}
+
+   # -v ${PWD##*/}-node-modules:/project/node_modules \
+
+    docker run --rm -ti \
+       --env-file <(env | grep -iE 'DEBUG|NODE_|ELECTRON_|YARN_|NPM_|CI|CIRCLE|TRAVIS_TAG|TRAVIS|TRAVIS_REPO_|TRAVIS_BUILD_|TRAVIS_BRANCH|TRAVIS_PULL_REQUEST_|APPVEYOR_|CSC_|GH_|GITHUB_|BT_|AWS_|STRIP|BUILD_') \
+       --env ELECTRON_CACHE="/root/.cache/electron" \
+       --env ELECTRON_BUILDER_CACHE="/root/.cache/electron-builder" \
+       -v ${PWD}:/project \
+       -v ~/.cache/electron:/root/.cache/electron \
+       -v ~/.cache/electron-builder:/root/.cache/electron-builder \
+       -v ${WINDOWS_CSC_DIR}:/root/windows-csc \
+       electronuserland/builder:wine bash -c 'npm install && ./node_modules/.bin/electron-builder --config=electron-builder.yml --config.nsis.artifactName=\${name}-\${version}-'${arch}'.\${ext} --'${arch}' --win --publish always'
 }
 
 build_for_arch x64
 build_for_arch ia32
+
+
