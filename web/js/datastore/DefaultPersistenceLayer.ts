@@ -82,7 +82,13 @@ export class DefaultPersistenceLayer implements IPersistenceLayer {
      * Convenience method to not require the fingerprint.
      */
     public async writeDocMeta(docMeta: DocMeta, datastoreMutation?: DatastoreMutation<DocInfo>): Promise<DocInfo> {
+
+        Preconditions.assertPresent(docMeta, "No docMeta");
+        Preconditions.assertPresent(docMeta.docInfo, "No docInfo on docMeta");
+        Preconditions.assertPresent(docMeta.docInfo.fingerprint, "No fingerprint on docInfo");
+
         return this.write(docMeta.docInfo.fingerprint, docMeta, datastoreMutation);
+
     }
 
     /**

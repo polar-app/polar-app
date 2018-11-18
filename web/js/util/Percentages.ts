@@ -1,13 +1,13 @@
 export class Percentages {
 
-    static calculate(value: number, total: number) {
+    public static calculate(value: number, total: number) {
         return Percentages.round( 100 * (value / total));
     }
 
     /**
      *
      */
-    static round(perc: number) {
+    public static round(perc: number) {
         return Math.round(perc * 100) / 100;
     }
 

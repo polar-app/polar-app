@@ -68,8 +68,8 @@ export class Functions {
         Preconditions.assertNotNull(dict, "dict");
         Preconditions.assertNotNull(callback, "callback");
 
-        // get the keys first, that way we can mutate the dictionary while iterating
-        // through it if necessary.
+        // get the keys first, that way we can mutate the dictionary while
+        // iterating through it if necessary.
         const keys = Object.keys(dict);
 
         keys.forEach( (key: string) => {
@@ -183,10 +183,10 @@ export class Functions {
 }
 
 /**
- * Represents a 'position' object for createSiblings() that has a curr (current),
- * prev (previous), and next references for working with lists of objects.  The
- * position allow sus to know where we currently are but also the previous and
- * future states.
+ * Represents a 'position' object for createSiblings() that has a curr
+ * (current), prev (previous), and next references for working with lists of
+ * objects.  The position allow sus to know where we currently are but also the
+ * previous and future states.
  */
 export interface IArrayPosition<T> {
 
