@@ -1,4 +1,22 @@
 
+- Fixed a bug where we could select text and not properly work with elements.
+
+- renderer analytics didn't understand that a callback without an error wasn't 
+  a failure.
+  
+- upgraded a number of important react packages:
+
+    react react-dom react-moment react-select @types/react-table 
+    @types/react-select @types/react @types/prop-types @types/node-fetch
+
+- removed inversify package (were not using it)
+
+- latest fontawesome
+
+- latest node-fetch
+
+- fixed issue with electron-builder where it was forcing us to upgrade to the 
+  latest version for each release. 
 
 
 # 1.0.14

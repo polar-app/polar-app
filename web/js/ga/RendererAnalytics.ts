@@ -18,9 +18,14 @@ export class RendererAnalytics {
         log.debug("Sending analytics event: ", args);
 
         const callback = (err: Error) => {
+
             // The send method take sa callback regarding errors and this allows
             // us to log failure.
-            log.warn("Unable to track analytics: ", err);
+
+            if (err) {
+                log.warn("Unable to track analytics: ", err);
+            }
+
         };
 
         if (args.label && args.value) {
