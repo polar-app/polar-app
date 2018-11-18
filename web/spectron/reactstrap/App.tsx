@@ -27,6 +27,17 @@ import {SyncBar, SyncBarProgress} from '../../js/ui/sync_bar/SyncBar';
 import {WhatsNewComponent} from '../../../apps/repository/js/WhatsNewComponent';
 import {IEventDispatcher, SimpleReactor} from '../../js/reactor/SimpleReactor';
 import {WhatsNewModal} from '../../../apps/repository/js/WhatsNewModal';
+import ReactTable from 'react-table';
+import {DateTimeTableCell} from '../../../apps/repository/js/DateTimeTableCell';
+import {Tag} from '../../js/tags/Tag';
+import {RepoDocInfo} from '../../../apps/repository/js/RepoDocInfo';
+import {Optional} from '../../js/util/ts/Optional';
+import {TagInput} from '../../../apps/repository/js/TagInput';
+import {DocDropdown} from '../../../apps/repository/js/DocDropdown';
+import {Logger} from '../../js/logger/Logger';
+import {LogEventViewer} from './LogEventViewer';
+
+const log = Logger.create();
 
 class App<P> extends React.Component<{}, IAppState> {
 
@@ -55,6 +66,14 @@ class App<P> extends React.Component<{}, IAppState> {
         //         selected: false
         //     }
         // ];
+
+        const data: any[] = [
+            {message: 'hello world'},
+            {message: 'hello world 2'},
+            {message: 'hello world 3'},
+            {message: 'hello world 4'},
+            {message: 'hello world 5'},
+        ];
 
         const progress: IEventDispatcher<SyncBarProgress> = new SimpleReactor();
 
@@ -88,15 +107,99 @@ class App<P> extends React.Component<{}, IAppState> {
 
         handleRemaining();
 
+        progress.addEventListener((syncBarProgress) => {
+            data.push({message: syncBarProgress.title});
+        });
+
         return (
 
             <div>
 
+                <LogEventViewer progress={progress}/>
+
                 {/*<WhatsNewComponent/>*/}
 
-                <WhatsNewModal open={true} accept={() => { }}/>
+                {/*<WhatsNewModal open={true} accept={() => { }}/>*/}
 
-                {/*<SyncBar progress={progress}/>*/}
+
+                {/*<ReactTable*/}
+                    {/*data={data}*/}
+                    {/*columns={*/}
+                        {/*[*/}
+                            {/*{*/}
+                                {/*Header: 'Message',*/}
+                                {/*accessor: 'message',*/}
+
+                            {/*},*/}
+                        {/*]}*/}
+
+                    {/*defaultPageSize={25}*/}
+                    {/*noDataText=""*/}
+                    {/*className="-striped -highlight"*/}
+                    {/*// defaultSorted={[*/}
+                    {/*//     {*/}
+                    {/*//         id: "progress",*/}
+                    {/*//         desc: true*/}
+                    {/*//     }*/}
+                    {/*// ]}*/}
+                    {/*// sorted={[{*/}
+                    {/*//     id: 'added',*/}
+                    {/*//     desc: true*/}
+                    {/*// }]}*/}
+                    {/*// getTrProps={(state: any, rowInfo: any) => {*/}
+                    {/*//     return {*/}
+                    {/*//*/}
+                    {/*//         onClick: (e: any) => {*/}
+                    {/*//             this.highlightRow(rowInfo.index as number);*/}
+                    {/*//         },*/}
+                    {/*//*/}
+                    {/*//         style: {*/}
+                    {/*//             background: rowInfo && rowInfo.index === this.state.selected ? '#00afec' : 'white',*/}
+                    {/*//             color: rowInfo && rowInfo.index === this.state.selected ? 'white' : 'black',*/}
+                    {/*//         }*/}
+                    {/*//     };*/}
+                    {/*// }}*/}
+                    {/*// getTdProps={(state: any, rowInfo: any, column: any, instance: any) => {*/}
+                    {/*//*/}
+                    {/*//     const singleClickColumns = ['tag-input', 'flagged', 'archived', 'doc-dropdown'];*/}
+                    {/*//*/}
+                    {/*//     if (! singleClickColumns.includes(column.id)) {*/}
+                    {/*//         return {*/}
+                    {/*//             onDoubleClick: (e: any) => {*/}
+                    {/*//                 this.onDocumentLoadRequested(rowInfo.original.fingerprint, rowInfo.original.filename);*/}
+                    {/*//             }*/}
+                    {/*//         };*/}
+                    {/*//     }*/}
+                    {/*//*/}
+                    {/*//     if (singleClickColumns.includes(column.id)) {*/}
+                    {/*//*/}
+                    {/*//         return {*/}
+                    {/*//*/}
+                    {/*//             onClick: ((e: any, handleOriginal?: () => void) => {*/}
+                    {/*//*/}
+                    {/*//                 this.handleToggleField(rowInfo.original, column.id)*/}
+                    {/*//                     .catch(err => log.error("Could not handle toggle: ", err));*/}
+                    {/*//*/}
+                    {/*//                 if (handleOriginal) {*/}
+                    {/*//                     // needed for react table to function*/}
+                    {/*//                     // properly.*/}
+                    {/*//                     handleOriginal();*/}
+                    {/*//                 }*/}
+                    {/*//*/}
+                    {/*//             })*/}
+                    {/*//*/}
+                    {/*//         };*/}
+                    {/*//*/}
+                    {/*//     }*/}
+                    {/*//*/}
+                    {/*//     return {};*/}
+                    {/*//*/}
+                    {/*// }}*/}
+
+                {/*/>*/}
+
+
+                <SyncBar progress={progress}/>
 
                 {/*<div className="fa-4x">*/}
                     {/*<span className="fa-layers fa-fw" style={{background: 'MistyRose'}}>*/}

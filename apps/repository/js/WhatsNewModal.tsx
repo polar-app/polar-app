@@ -21,11 +21,6 @@ export class WhatsNewModal extends React.Component<IProps, IState> {
 
             <div>
 
-                {/*@media (min-width: 992px)*/}
-                {/*.modal-lg {*/}
-                {/*max-width: 80%;*/}
-                {/*}*/}
-
                 <Modal isOpen={this.props.open}
                        size="lg"
                        style={{overflowY: 'initial', minWidth: '80%'}}>
