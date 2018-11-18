@@ -18,7 +18,6 @@
 - fixed issue with electron-builder where it was forcing us to upgrade to the 
   latest version for each release. 
 
-
 # 1.0.14
 
 - Upgrade to latest semver and firebase-tools 

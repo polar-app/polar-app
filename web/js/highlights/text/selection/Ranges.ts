@@ -19,7 +19,9 @@ export class Ranges {
      * Split a text node and get the new / starting node.
      *
      */
-    public static splitTextNode(container: Node, offset: number, useStartBoundary: boolean) {
+    public static splitTextNode(container: Node,
+                                offset: number,
+                                useStartBoundary: boolean) {
 
         if (container.nodeType !== Node.TEXT_NODE &&
             container.nodeType !== Node.COMMENT_NODE &&

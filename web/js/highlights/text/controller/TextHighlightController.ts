@@ -153,7 +153,7 @@ export class TextHighlightController {
 
     public async doHighlightModern(highlightColor: HighlightColor) {
 
-        console.log("Doing modern text highlight");
+        log.info("Doing modern text highlight");
         await this.onTextHighlightCreatedModern(highlightColor);
 
     }
