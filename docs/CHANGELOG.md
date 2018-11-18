@@ -1,10 +1,14 @@
 
+- Made the VH 100 fix for capture more picky 
+
+- Added small FAQ entry to enable Anki sync.
+
 - Fixed a bug where we could select text and not properly work with elements.
 
-- renderer analytics didn't understand that a callback without an error wasn't 
+- Renderer analytics didn't understand that a callback without an error wasn't 
   a failure.
   
-- upgraded a number of important react packages:
+- Upgraded a number of important react packages:
 
     react react-dom react-moment react-select @types/react-table 
     @types/react-select @types/react @types/prop-types @types/node-fetch

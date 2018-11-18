@@ -29,6 +29,15 @@ like cloud sync, filesystem consistency checks, sharing, etc.
 
 Some of these features aren't implemented yet but are on the roadmap.
 
+# How do I sync to Anki
+
+- Install the Anki Connect plugin in your version of Anki and make sure it's 
+  running.
+  
+- Create text highlights on a document and attach a flashcard to them.  
+  
+- In the document repository select ```Tools | Sync Flashcards to Anki```  
+
 # Can I export data from Polar?
 
 Yes.  The PDF and PHZ (web capture) files are in your ```stash``` directory in 

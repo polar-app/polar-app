@@ -2,8 +2,16 @@ import {IDimensions} from '../../util/Dimensions';
 
 // declare var window: any;
 
+// TODO: pass in more arguments here including the capture options that are
+// currently set by the user.  This way we could disable features like the
+// vertical height detection and we could also enable features like ad blocking
+// but right now the ad blocking works as part of the CAPTURE stage, not the
+// preview stage.
+
 /** @ElectronRendererContext */
 export function configureBrowser(windowDimensions: IDimensions) {
+
+    const ENABLE_VH_TRUNCATION = true;
 
     function defineProperty(target: any, key: string, value: any) {
 
@@ -74,6 +82,11 @@ export function configureBrowser(windowDimensions: IDimensions) {
 
     function configureMaxVerticalHeight() {
 
+        if (! ENABLE_VH_TRUNCATION) {
+            console.log("VH truncation disabled");
+            return;
+        }
+
         console.log("Configuring max vertical height...");
 
         for (const stylesheet of Array.from(document.styleSheets)) {
@@ -83,8 +96,26 @@ export function configureBrowser(windowDimensions: IDimensions) {
             for (const rule of rules) {
 
                 if (rule.style && rule.style.height === '100vh') {
-                    console.log("Found 100vh rule to override: ", rule.selectorText);
-                    defineMaxHeightStylesheet(rule.selectorText);
+                    console.log(`Found 100vh rule to override (follows): ${rule.selectorText}`);
+
+                    // now verify that the elements we would block quality.
+
+                    const matchingElements = document.querySelectorAll(rule.selectorText);
+
+                    let elementsQualify = true;
+
+                    for (const matchingElement of Array.from(matchingElements)) {
+                        if (matchingElement.childNodes.length > 0) {
+                            console.log("Selector does not quality for as it has child nodes");
+                            elementsQualify = false;
+                            break;
+                        }
+                    }
+
+                    if (elementsQualify) {
+                        defineMaxHeightStylesheet(rule.selectorText);
+                    }
+
                 }
 
             }
