@@ -1,10 +1,9 @@
 import {BinaryMutationEvent, Datastore, DeleteResult,
         DocMutationEvent, DocReplicationEvent, FileMeta,
-        InitResult, SynchronizingDatastore} from './Datastore';
+        InitResult, SynchronizingDatastore, DocMutationType} from './Datastore';
 import {Logger} from '../logger/Logger';
 import {DocMetaFileRef, DocMetaRef} from './DocMetaRef';
 import {Directories} from './Directories';
-
 import {Backend} from './Backend';
 import {DatastoreFile} from './DatastoreFile';
 import {Optional} from '../util/ts/Optional';
@@ -105,7 +104,7 @@ export class FirebaseDatastore implements Datastore, SynchronizingDatastore {
         this.onDocMetaSnapshot(cachedQuerySnapshot);
 
         // the rest of the data can come in lazily from the network.
-        query.onSnapshot(snapshot => this.onDocMetaSnapshot(snapshot));
+        this.unsubscribeSnapshots = query.onSnapshot(snapshot => this.onDocMetaSnapshot(snapshot));
 
         this.initialized = true;
 
@@ -465,12 +464,12 @@ export class FirebaseDatastore implements Datastore, SynchronizingDatastore {
 
             const docMutationEvent: DocMutationEvent = {
                 docInfo: record.value.docInfo,
-                mutationType: docChange.type
+                mutationType: toMutationType(docChange.type)
             };
 
             const docReplicationEvent: DocReplicationEvent = {
                 docMeta,
-                mutationType: docChange.type
+                mutationType: toMutationType(docChange.type)
             };
 
             this.docMutationReactor.dispatchEvent(docMutationEvent);
@@ -572,5 +571,27 @@ interface PendingMutation {
 
     id: string;
     type: 'delete' | 'write';
+
+}
+
+/**
+ * Convert a Firestore DocumentChangeType to a DocMutationType.  We prefer the
+ * CRUD (create update delete) naming.
+ * @param docChangeType
+ */
+function toMutationType(docChangeType: firebase.firestore.DocumentChangeType): DocMutationType {
+
+    switch (docChangeType) {
+
+        case 'added':
+            return 'created';
+
+        case 'modified':
+            return 'updated';
+
+        case 'removed':
+            return 'deleted';
+
+    }
 
 }

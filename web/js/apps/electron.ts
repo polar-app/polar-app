@@ -12,7 +12,9 @@ async function persistenceLayerFactory(): Promise<IListenablePersistenceLayer> {
     // let electronPersistenceLayer = ElectronPersistenceLayerFactory.create();
     // return new PersistenceLayerDispatcher(PersistenceLayerWorkers.create(), electronPersistenceLayer);
 
-    return await RemotePersistenceLayerFactory.create();
+    const persistenceLayer = RemotePersistenceLayerFactory.create();
+    await persistenceLayer.init();
+    return persistenceLayer;
 
 }
 

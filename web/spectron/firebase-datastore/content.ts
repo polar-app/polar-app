@@ -88,7 +88,7 @@ SpectronRenderer.run(async (state) => {
                 datastore.addDocMutationEventListener((docMutationEvent) => {
 
                     if (docMutationEvent.docInfo.fingerprint === fingerprint &&
-                        docMutationEvent.mutationType === 'added') {
+                        docMutationEvent.mutationType === 'created') {
 
                         docMutationLatch.resolve(true);
 
@@ -99,7 +99,7 @@ SpectronRenderer.run(async (state) => {
                 datastore.addDocReplicationEventListener((docReplicationEvent) => {
 
                     if (docReplicationEvent.docMeta.docInfo.fingerprint === fingerprint &&
-                        docReplicationEvent.mutationType === 'added') {
+                        docReplicationEvent.mutationType === 'created') {
 
                         docReplicationLatch.resolve(true);
 

@@ -8,7 +8,7 @@ const log = Logger.create();
 
 export class RemotePersistenceLayerFactory {
 
-    public static async create(): Promise<IListenablePersistenceLayer> {
+    public static create(): IListenablePersistenceLayer {
 
         log.info("Using remote persistence layer and disk store");
 
@@ -16,9 +16,6 @@ export class RemotePersistenceLayerFactory {
 
         const defaultPersistenceLayer = new DefaultPersistenceLayer(datastore);
         const advertisingPersistenceLayer = new AdvertisingPersistenceLayer(defaultPersistenceLayer);
-
-        // note that we need to always pre-init before we return.
-        await advertisingPersistenceLayer.init();
 
         return advertisingPersistenceLayer;
 

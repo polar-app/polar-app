@@ -10,6 +10,19 @@ const rimraf = require('rimraf');
 
 describe('Files', function() {
 
+    describe('integrated', function() {
+
+        it("Test delete with missing parent dirs", async function() {
+
+            const path = FilePaths.join(tmpdir, 'missing', 'parent', 'example.txt');
+
+            await Files.existsAsync(path);
+            await Files.deleteAsync(path);
+
+        });
+
+    });
+
     describe('writeFileAsync', function() {
 
         it("basic", async function() {
@@ -235,6 +248,7 @@ describe('Files', function() {
             }
 
         });
+
 
     });
 

@@ -69,6 +69,8 @@ SpectronRenderer.run(async (state) => {
 
                 console.log(`writtenDuration: ${writtenDuration}, committedDuration: ${committedDuration}`);
 
+                await persistenceLayer.stop();
+
             });
 
             it("Test a remote write and a local replication to disk", async function() {
@@ -89,11 +91,14 @@ SpectronRenderer.run(async (state) => {
                     assert.ok(await Files.existsAsync(path));
                 });
 
+                await sourcePersistenceLayer.stop();
+                await targetPersistenceLayer.stop();
+
             });
 
-            DatastoreTester.test(createDatastore, false);
-
         });
+
+        DatastoreTester.test(createDatastore, false);
 
     });
 

@@ -11,14 +11,16 @@ export class RepositoryApp {
 
     public async start() {
 
-        const persistenceLayer = await RemotePersistenceLayerFactory.create();
+        const persistenceLayer = RemotePersistenceLayerFactory.create();
+
+        await persistenceLayer.init();
 
         const updatedDocInfoEventDispatcher: IEventDispatcher<IDocInfo> = new SimpleReactor();
 
         await new FileImportController(persistenceLayer, updatedDocInfoEventDispatcher).start();
 
         ReactDOM.render(
-            <App persistenceLayer={persistenceLayer}
+            <App persistenceLayerFactory={() => persistenceLayer}
                  updatedDocInfoEventDispatcher={updatedDocInfoEventDispatcher}/>,
 
             document.getElementById('root') as HTMLElement

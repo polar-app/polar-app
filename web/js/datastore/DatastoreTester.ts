@@ -16,6 +16,7 @@ import {Backend} from './Backend';
 import {Datastore} from './Datastore';
 import {DocInfo} from '../metadata/DocInfo';
 import {DefaultDatastoreMutation} from './DatastoreMutation';
+import {func} from 'prop-types';
 
 const rimraf = require('rimraf');
 
@@ -25,7 +26,7 @@ export class DatastoreTester {
 
     public static test(datastoreFactory: () => Datastore, hasLocalFiles: boolean = true) {
 
-        describe('Generic datastore tests (DatastoreTester)', function() {
+        describe('DatastoreTester tests', function() {
 
             const fingerprint = "0x001";
 
@@ -39,6 +40,8 @@ export class DatastoreTester {
             let directories: Directories;
 
             beforeEach(async function() {
+
+                console.log("===== before test ====");
 
                 Files.removeDirectoryRecursively(dataDir);
 
@@ -58,7 +61,7 @@ export class DatastoreTester {
 
                 const contains = await persistenceLayer.contains(fingerprint);
 
-                assert.equal(contains, false);
+                assert.equal(contains, false, "Document already exists in persistence layer: " + fingerprint);
 
                 await MockPHZWriter.write(FilePaths.create(datastore.stashDir, `${fingerprint}.phz`));
 
@@ -71,6 +74,10 @@ export class DatastoreTester {
 
             });
 
+            afterEach(async function() {
+                console.log("===== after test ====");
+                await persistenceLayer.stop();
+            });
 
             // FIXME: test and write a new / basic document to make sure we get the commits working...
 

@@ -7,6 +7,15 @@ import {IPersistenceLayer} from './IPersistenceLayer';
  * which files have been updated and their DocInfo.
  */
 export interface IListenablePersistenceLayer extends IPersistenceLayer {
+
     addEventListener(listener: PersistenceLayerListener): void;
+
+    /**
+     * Add an event listener but for a specific document in the repository.
+     *
+     * @param fingerprint
+     * @param listener
+     */
     addEventListenerForDoc(fingerprint: string, listener: PersistenceLayerListener): void;
+
 }

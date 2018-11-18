@@ -37,7 +37,7 @@ export class AdvertisingPersistenceLayer
         return this.persistenceLayer.stop();
     }
 
-    public broadcastEvent(event: PersistenceLayerEvent): void {
+    protected broadcastEvent(event: PersistenceLayerEvent): void {
 
         DocInfoAdvertiser.send({
             docInfo: event.docInfo,

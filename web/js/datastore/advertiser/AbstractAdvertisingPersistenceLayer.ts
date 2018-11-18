@@ -37,8 +37,6 @@ export abstract class AbstractAdvertisingPersistenceLayer implements IListenable
 
     public abstract stop(): Promise<void>;
 
-    public abstract broadcastEvent(event: PersistenceLayerEvent): void;
-
     public addEventListener(listener: PersistenceLayerListener): void {
         this.reactor.addEventListener(listener);
     }
@@ -126,6 +124,8 @@ export abstract class AbstractAdvertisingPersistenceLayer implements IListenable
     public getFile(backend: Backend, name: string): Promise<Optional<DatastoreFile>> {
         return this.persistenceLayer.getFile(backend, name);
     }
+
+    protected abstract broadcastEvent(event: PersistenceLayerEvent): void;
 
 }
 

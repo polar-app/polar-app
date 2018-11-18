@@ -53,7 +53,7 @@ export default class App extends React.Component<AppProps, AppState> {
     constructor(props: AppProps, context: any) {
         super(props, context);
 
-        this.persistenceLayer = props.persistenceLayer;
+        this.persistenceLayer = props.persistenceLayerFactory();
         this.docRepository = new DocRepository(this.persistenceLayer);
         this.repoDocInfoLoader = new RepoDocInfoLoader(this.persistenceLayer);
 

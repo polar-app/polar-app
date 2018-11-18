@@ -120,13 +120,13 @@ export class CloudAwareDatastore implements Datastore {
 
         try {
 
-            DatastoreMutations.executeBatchedWrite(datastoreMutation,
-                                                   async (remoteCoordinator) => {
-                                                       this.remote.delete(docMetaFileRef, remoteCoordinator);
-                                                   },
-                                                   async (localCoordinator) => {
-                                                       this.local.delete(docMetaFileRef, localCoordinator);
-                                                   });
+            await DatastoreMutations.executeBatchedWrite(datastoreMutation,
+                                                         async (remoteCoordinator) => {
+                                                             this.remote.delete(docMetaFileRef, remoteCoordinator);
+                                                         },
+                                                         async (localCoordinator) => {
+                                                             this.local.delete(docMetaFileRef, localCoordinator);
+                                                         });
         } finally {
             this.docComparisonIndex.remove(docMetaFileRef.fingerprint);
         }
@@ -175,11 +175,11 @@ export class CloudAwareDatastore implements Datastore {
         const docComparison = this.docComparisonIndex.get(docMeta.docInfo.fingerprint);
 
         if (! docComparison) {
-            this.onRemoteDocMutation(docMeta, 'added');
+            this.onRemoteDocMutation(docMeta, 'created');
         }
 
         if (docComparison && UUIDs.compare(docComparison.uuid, docMeta.docInfo.uuid) > 0) {
-            this.onRemoteDocMutation(docMeta, 'modified');
+            this.onRemoteDocMutation(docMeta, 'updated');
         }
 
     }
@@ -188,7 +188,7 @@ export class CloudAwareDatastore implements Datastore {
     // locally.
     private async onRemoteDocMutation(docMeta: DocMeta, mutationType: DocMutationType) {
 
-        if (mutationType === 'added' || mutationType === 'modified') {
+        if (mutationType === 'created' || mutationType === 'updated') {
 
             try {
 

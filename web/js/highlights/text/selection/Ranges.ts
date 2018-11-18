@@ -43,6 +43,7 @@ export class Ranges {
 
         }
 
+        // TODO: this is not necessarily a text node but we're casting it...
         const newNode = (<Text> container).splitText(offset);
 
         if (useStartBoundary) {

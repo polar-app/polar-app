@@ -170,7 +170,7 @@ export interface DocReplicationEvent {
 
 }
 
-export type DocMutationType = 'added' | 'modified' |'removed';
+export type DocMutationType = 'created' | 'updated' |'deleted';
 
 /**
  * The result of an init operation which could be different form each datastore.
