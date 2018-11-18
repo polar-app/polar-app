@@ -6,6 +6,7 @@ import {FilePaths} from '../../../web/js/util/FilePaths';
 import {Files} from '../../../web/js/util/Files';
 import {Logger} from '../../../web/js/logger/Logger';
 import {WhatsNewContent} from './WhatsNewContent';
+import {WhatsNewModal} from './WhatsNewModal';
 
 const log = Logger.create();
 
@@ -37,26 +38,7 @@ export class WhatsNewComponent extends React.Component<IProps, IState> {
 
         // noinspection TsLint
         return (
-
-            <div>
-
-                {/*TODO: make this a consistent width in the next version */}
-
-                <Modal isOpen={this.state.open}
-                       size="lg"
-                       style={{overflowY: 'initial'}}>
-                    <ModalHeader >What's New in Polar</ModalHeader>
-                    <ModalBody style={{overflowY: 'auto', maxHeight: 'calc(100vh - 200px)'}}>
-
-                        <WhatsNewContent/>
-
-                    </ModalBody>
-                    <ModalFooter>
-                        <Button color="primary" onClick={() => this.hide()}>Ok</Button>
-                    </ModalFooter>
-
-                </Modal>
-            </div>
+            <WhatsNewModal open={this.state.open} accept={() => this.hide()}/>
         );
     }
 

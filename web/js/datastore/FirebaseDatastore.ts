@@ -1,5 +1,5 @@
 import {BinaryMutationEvent, Datastore, DeleteResult,
-        DocMutationEvent, DocReplicationEvent, FileMeta,
+        DocMutationEvent, DocSynchronizationEvent, FileMeta,
         InitResult, SynchronizingDatastore, DocMutationType} from './Datastore';
 import {Logger} from '../logger/Logger';
 import {DocMetaFileRef, DocMetaRef} from './DocMetaRef';
@@ -51,7 +51,7 @@ export class FirebaseDatastore implements Datastore, SynchronizingDatastore {
 
     private readonly docMutationReactor: IEventDispatcher<DocMutationEvent> = new SimpleReactor();
 
-    private readonly docReplicationReactor: IEventDispatcher<DocReplicationEvent> = new SimpleReactor();
+    private readonly docSynchronizationReactor: IEventDispatcher<DocSynchronizationEvent> = new SimpleReactor();
 
     private unsubscribeSnapshots: () => void = NULL_FUNCTION;
 
@@ -380,8 +380,8 @@ export class FirebaseDatastore implements Datastore, SynchronizingDatastore {
         this.docMutationReactor.addEventListener(listener);
     }
 
-    public addDocReplicationEventListener(listener: (docReplicationEvent: DocReplicationEvent) => void): void {
-        this.docReplicationReactor.addEventListener(listener);
+    public addDocSynchronizationEventListener(listener: (docReplicationEvent: DocSynchronizationEvent) => void): void {
+        this.docSynchronizationReactor.addEventListener(listener);
     }
 
     /**
@@ -467,7 +467,7 @@ export class FirebaseDatastore implements Datastore, SynchronizingDatastore {
                 mutationType: toMutationType(docChange.type)
             };
 
-            const docReplicationEvent: DocReplicationEvent = {
+            const docReplicationEvent: DocSynchronizationEvent = {
                 docMeta,
                 mutationType: toMutationType(docChange.type)
             };
@@ -475,7 +475,7 @@ export class FirebaseDatastore implements Datastore, SynchronizingDatastore {
             this.docMutationReactor.dispatchEvent(docMutationEvent);
 
             if (!this.pendingMutationIndex[id]) {
-                this.docReplicationReactor.dispatchEvent(docReplicationEvent);
+                this.docSynchronizationReactor.dispatchEvent(docReplicationEvent);
             }
 
         }

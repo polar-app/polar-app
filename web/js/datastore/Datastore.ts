@@ -124,11 +124,23 @@ export type FileMeta = {[key: string]: string};
  */
 export interface SynchronizingDatastore extends Datastore {
 
+    /**
+     * Listens for mutations to binaries.
+     */
     addBinaryMutationEventListener(listener: (binaryMutationEvent: BinaryMutationEvent) => void): void;
 
+    /**
+     * Listens to mutations of the underlying documents whether they are local
+     * or synchronized from a remote store.
+     */
     addDocMutationEventListener(listener: (docMutationEvent: DocMutationEvent) => void): void;
 
-    addDocReplicationEventListener(listener: (docReplicationEvent: DocReplicationEvent) => void): void;
+    /**
+     * Listens only for new synchronized documents.
+     *
+     * @param listener
+     */
+    addDocSynchronizationEventListener(listener: (docSynchronizationEvent: DocSynchronizationEvent) => void): void;
 
 }
 
@@ -162,7 +174,7 @@ export interface DocMutationEvent {
  * aren't from events happening locally. These are triggered after init().
  * Local mutations to the datastore do not trigger ReplicationEvents
  */
-export interface DocReplicationEvent {
+export interface DocSynchronizationEvent {
 
     docMeta: DocMeta;
 

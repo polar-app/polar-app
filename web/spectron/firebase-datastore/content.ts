@@ -62,7 +62,7 @@ SpectronRenderer.run(async (state) => {
 
                 let docReplicationEventListenerCalled: boolean = false;
 
-                datastore.addDocReplicationEventListener((docMutation) => {
+                datastore.addDocSynchronizationEventListener((docMutation) => {
                     docReplicationEventListenerCalled = true;
                 });
 
@@ -96,7 +96,7 @@ SpectronRenderer.run(async (state) => {
 
                 });
 
-                datastore.addDocReplicationEventListener((docReplicationEvent) => {
+                datastore.addDocSynchronizationEventListener((docReplicationEvent) => {
 
                     if (docReplicationEvent.docMeta.docInfo.fingerprint === fingerprint &&
                         docReplicationEvent.mutationType === 'created') {
@@ -137,7 +137,7 @@ SpectronRenderer.run(async (state) => {
 
                     public async setup() {
 
-                        this.datastore!.addDocReplicationEventListener((docReplicationEvent) => {
+                        this.datastore!.addDocSynchronizationEventListener((docReplicationEvent) => {
                             this.hasDocReplicationEvent = true;
                         });
 

@@ -55,7 +55,7 @@ export class CloudAwareDatastore implements Datastore {
         // Initially we just get from the local cache but then we will start
         // getting documents from the datastore once it comes online.
 
-        this.remote.addDocReplicationEventListener(docReplicationEvent => {
+        this.remote.addDocSynchronizationEventListener(docReplicationEvent => {
 
             // TODO once this fails we need to make sure to tell the user and
             // right now we don't really have an event stream for this.

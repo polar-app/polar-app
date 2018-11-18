@@ -26,6 +26,7 @@ import {CloudSignup} from './CloudSignup';
 import {SyncBar, SyncBarProgress} from '../../js/ui/sync_bar/SyncBar';
 import {WhatsNewComponent} from '../../../apps/repository/js/WhatsNewComponent';
 import {IEventDispatcher, SimpleReactor} from '../../js/reactor/SimpleReactor';
+import {WhatsNewModal} from '../../../apps/repository/js/WhatsNewModal';
 
 class App<P> extends React.Component<{}, IAppState> {
 
@@ -93,7 +94,9 @@ class App<P> extends React.Component<{}, IAppState> {
 
                 {/*<WhatsNewComponent/>*/}
 
-                <SyncBar progress={progress}/>
+                <WhatsNewModal open={true} accept={() => { }}/>
+
+                {/*<SyncBar progress={progress}/>*/}
 
                 {/*<div className="fa-4x">*/}
                     {/*<span className="fa-layers fa-fw" style={{background: 'MistyRose'}}>*/}

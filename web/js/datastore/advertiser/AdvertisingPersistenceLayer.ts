@@ -29,6 +29,7 @@ export class AdvertisingPersistenceLayer
             .addEventListener((adv) => this.onDocInfoAdvertisement(adv));
 
         this.docInfoAdvertisementListenerService.start();
+
         return this.persistenceLayer.init();
 
     }
