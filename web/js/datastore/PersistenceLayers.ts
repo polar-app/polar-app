@@ -2,6 +2,7 @@ import {IPersistenceLayer} from "./IPersistenceLayer";
 import {Functions, NULL_FUNCTION} from "../util/Functions";
 import {Percentages} from '../util/Percentages';
 import {Latch} from "../util/Latch";
+import {ParallelWorkQueue} from '../util/ParallelWorkQueue';
 
 export class PersistenceLayers {
 
@@ -15,9 +16,7 @@ export class PersistenceLayers {
         const total = docMetaFiles.length;
         let completed = 0;
 
-        for (const docMetaFile of docMetaFiles) {
-
-            // FIXME: binary files too...
+        await new ParallelWorkQueue(docMetaFiles, async (docMetaFile) => {
 
             console.log("Working with fingerprint: " + docMetaFile.fingerprint);
 
@@ -32,7 +31,7 @@ export class PersistenceLayers {
 
             listener({completed, total, progress, duration});
 
-        }
+        }).execute();
 
     }
 
