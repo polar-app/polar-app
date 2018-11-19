@@ -4,7 +4,7 @@ import {Blobs} from './Blobs';
 
 const {JSDOM} = require("jsdom");
 
-describe('Blobs', function() {
+xdescribe('Blobs', function() {
 
     // must be disabled for now as JSDOM uses 100% cpu during tests.
     it("basic", async function() {
