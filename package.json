@@ -4,7 +4,7 @@
   "description": "Polar Bookshelf",
   "main": "main.js",
   "scripts": {
-    "start": "electron .",
+    "start": "tsc && electron .",
     "testit": "echo ./dist/polar-bookshelf_${npm_package_version}_amd64.snap",
     "publish-linux-snapcraft": "snapcraft push --release stable ./dist/polar-bookshelf-${npm_package_version}-amd64.snap",
     "publish-linux": "electron-builder --config=electron-builder.yml --linux snap appimage deb tar.gz --publish always",

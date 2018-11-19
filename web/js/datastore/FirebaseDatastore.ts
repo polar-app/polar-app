@@ -18,6 +18,7 @@ import {DatastoreMutation, DefaultDatastoreMutation} from './DatastoreMutation';
 import {IEventDispatcher, SimpleReactor} from '../reactor/SimpleReactor';
 import {NULL_FUNCTION} from '../util/Functions';
 import {DocMetas} from "../metadata/DocMetas";
+import {Percentages} from '../util/Percentages';
 
 const log = Logger.create();
 
@@ -219,6 +220,29 @@ export class FirebaseDatastore implements Datastore, SynchronizingDatastore {
         }
 
         // TODO: we can get progress from the uploadTask here.
+
+        // uploadTask.on('state_changed', (snapshotData: any) => {
+        //     // Observe state change events such as progress, pause, and resume
+        //     // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
+        //
+        //     const snapshot: firebase.storage.UploadTaskSnapshot = snapshotData;
+        //
+        //     // const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+        //
+        //     const progress = Percentages.calculate(snapshot.bytesTransferred, snapshot.totalBytes);
+        //
+        //     console.log('Upload is ' + progress + '% done');
+        //
+        //     switch (snapshot.state) {
+        //         case firebase.storage.TaskState.PAUSED: // or 'paused'
+        //             console.log('Upload is paused');
+        //             break;
+        //         case firebase.storage.TaskState.RUNNING: // or 'running'
+        //             console.log('Upload is running');
+        //             break;
+        //     }
+        //
+        // });
 
         const uploadTaskSnapshot = await uploadTask;
 
