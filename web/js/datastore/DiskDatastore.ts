@@ -1,4 +1,4 @@
-import {Datastore, DeleteResult, FileMeta, InitResult} from './Datastore';
+import {Datastore, DeleteResult, FileMeta, FileRef, InitResult} from './Datastore';
 import {Preconditions} from '../Preconditions';
 import {Logger} from '../logger/Logger';
 import {DocMetaFileRef, DocMetaRef} from './DocMetaRef';
@@ -88,11 +88,11 @@ export class DiskDatastore implements Datastore {
 
         let docPath: string | undefined;
 
-        if (docMetaFileRef.filename) {
+        if (docMetaFileRef.docFile && docMetaFileRef.docFile.name) {
 
             // FIXME: remove this via deleteFile NOT delete since I'm storing
             // it as a binary file now.
-            docPath = FilePaths.join(this.directories.stashDir, docMetaFileRef.filename);
+            docPath = FilePaths.join(this.directories.stashDir, docMetaFileRef.docFile.name);
 
         }
 
@@ -156,13 +156,13 @@ export class DiskDatastore implements Datastore {
     }
 
     public async writeFile(backend: Backend,
-                           name: string,
+                           ref: FileRef,
                            data: FileHandle | Buffer | string,
                            meta: FileMeta = {}): Promise<DatastoreFile> {
 
-        DatastoreFiles.assertSanitizedFileName(name);
+        DatastoreFiles.assertSanitizedFileName(ref);
 
-        const fileReference = this.createFileReference(backend, name);
+        const fileReference = this.createFileReference(backend, ref);
 
         // this would create the parent dir for the file when it does not exist.
         await Files.createDirAsync(fileReference.dir);
@@ -171,18 +171,18 @@ export class DiskDatastore implements Datastore {
 
         await Files.writeFileAsync(fileReference.metaPath, JSON.stringify(meta, null, '  '));
 
-        return this.createDatastoreFile(backend, name, fileReference);
+        return this.createDatastoreFile(backend, ref, fileReference);
 
     }
 
-    public async getFile(backend: Backend, name: string): Promise<Optional<DatastoreFile>> {
+    public async getFile(backend: Backend, ref: FileRef): Promise<Optional<DatastoreFile>> {
 
-        DatastoreFiles.assertSanitizedFileName(name);
+        DatastoreFiles.assertSanitizedFileName(ref);
 
-        const fileReference = this.createFileReference(backend, name);
+        const fileReference = this.createFileReference(backend, ref);
 
         if (await Files.existsAsync(fileReference.path)) {
-            const datastoreFile = await this.createDatastoreFile(backend, name, fileReference);
+            const datastoreFile = await this.createDatastoreFile(backend, ref, fileReference);
             return Optional.of(datastoreFile);
         } else {
             return Optional.empty();
@@ -190,17 +190,17 @@ export class DiskDatastore implements Datastore {
 
     }
 
-    public containsFile(backend: Backend, name: string): Promise<boolean> {
-        DatastoreFiles.assertSanitizedFileName(name);
-        const fileReference = this.createFileReference(backend, name);
+    public containsFile(backend: Backend, ref: FileRef): Promise<boolean> {
+        DatastoreFiles.assertSanitizedFileName(ref);
+        const fileReference = this.createFileReference(backend, ref);
         return Files.existsAsync(fileReference.path);
     }
 
-    public deleteFile(backend: Backend, name: string): Promise<void> {
+    public deleteFile(backend: Backend, ref: FileRef): Promise<void> {
 
-        DatastoreFiles.assertSanitizedFileName(name);
+        DatastoreFiles.assertSanitizedFileName(ref);
 
-        const fileReference = this.createFileReference(backend, name);
+        const fileReference = this.createFileReference(backend, ref);
 
         return Files.removeAsync(fileReference.path);
     }
@@ -287,7 +287,9 @@ export class DiskDatastore implements Datastore {
         return result;
     }
 
-    private async createDatastoreFile(backend: Backend, name: string, fileReference: FileReference): Promise<DatastoreFile> {
+    private async createDatastoreFile(backend: Backend,
+                                      ref: FileRef,
+                                      fileReference: DiskFileReference): Promise<DatastoreFile> {
 
         // TODO: test that this works on Windows - I do not think it will.
         const url = new URL(`file:///${fileReference.path}`);
@@ -297,14 +299,14 @@ export class DiskDatastore implements Datastore {
 
         return {
             backend,
-            name,
+            ref,
             url: url.href,
             meta
         };
 
     }
 
-    private createFileReference(backend: Backend, name: string): FileReference {
+    private createFileReference(backend: Backend, ref: FileRef): DiskFileReference {
 
         let dir;
 
@@ -314,8 +316,8 @@ export class DiskDatastore implements Datastore {
             dir = FilePaths.join(this.filesDir, backend.toString().toLowerCase());
         }
 
-        const path = FilePaths.join(dir, name);
-        const metaPath = FilePaths.join(dir, name + '.meta');
+        const path = FilePaths.join(dir, ref.name);
+        const metaPath = FilePaths.join(dir, ref.name + '.meta');
 
         return {dir, path, metaPath};
 
@@ -504,7 +506,7 @@ export interface DiskDeleteResult extends DeleteResult {
 
 type DirStrategy = 'env' | 'home' | 'manual';
 
-interface FileReference {
+interface DiskFileReference {
 
     // the dir holding our files.
     dir: string;

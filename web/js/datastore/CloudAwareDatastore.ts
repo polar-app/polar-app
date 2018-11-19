@@ -1,4 +1,4 @@
-import {Datastore, FileMeta, InitResult, SynchronizingDatastore, DocMutationType} from './Datastore';
+import {Datastore, FileMeta, InitResult, SynchronizingDatastore, DocMutationType, FileRef} from './Datastore';
 import {Directories} from './Directories';
 import {DocMetaFileRef, DocMetaRef} from './DocMetaRef';
 import {DeleteResult} from './Datastore';
@@ -83,36 +83,36 @@ export class CloudAwareDatastore implements Datastore {
     }
 
     public async writeFile(backend: Backend,
-                           name: string,
+                           ref: FileRef,
                            data: Buffer | string, meta: FileMeta = {}): Promise<DatastoreFile> {
 
         // for this to work we have to use fierbase snapshot QuerySnapshot and
         // look at docChanges and wait for the document we requested...
 
-        await this.remote.writeFile(backend, name, data, meta);
+        await this.remote.writeFile(backend, ref, data, meta);
 
         // TODO: can't we just wait until the event is fired when it's pulled
         // down as part of the normal snapshot mechanism.?  That might be best
         // as we would be adding it twice.
-        return this.local.writeFile(backend, name, data, meta);
+        return this.local.writeFile(backend, ref, data, meta);
 
     }
 
-    public async getFile(backend: Backend, name: string): Promise<Optional<DatastoreFile>> {
-        return this.local.getFile(backend, name);
+    public async getFile(backend: Backend, ref: FileRef): Promise<Optional<DatastoreFile>> {
+        return this.local.getFile(backend, ref);
     }
 
-    public containsFile(backend: Backend, name: string): Promise<boolean> {
-        return this.local.containsFile(backend, name);
+    public containsFile(backend: Backend, ref: FileRef): Promise<boolean> {
+        return this.local.containsFile(backend, ref);
     }
 
-    public async deleteFile(backend: Backend, name: string): Promise<void> {
+    public async deleteFile(backend: Backend, ref: FileRef): Promise<void> {
 
-        await this.remote.deleteFile(backend, name);
+        await this.remote.deleteFile(backend, ref);
 
-        return this.local.deleteFile(backend, name);
+        return this.local.deleteFile(backend, ref);
+
     }
-
 
     public async delete(docMetaFileRef: DocMetaFileRef,
                         datastoreMutation: DatastoreMutation<boolean> = new DefaultDatastoreMutation()):
@@ -206,7 +206,10 @@ export class CloudAwareDatastore implements Datastore {
 
             await this.local.delete({
                 fingerprint: docMeta.docInfo.fingerprint,
-                filename: docMeta.docInfo.filename,
+                docFile: {
+                    name: docMeta.docInfo.filename!,
+                    hashcode: docMeta.docInfo.hashcode
+                },
                 docInfo: docMeta.docInfo
             });
 

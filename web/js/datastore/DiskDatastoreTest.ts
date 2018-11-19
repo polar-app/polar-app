@@ -179,15 +179,15 @@ describe("DiskDatastore", async function() {
         const diskDatastore = new DiskDatastore();
         await diskDatastore.init();
 
-        await diskDatastore.writeFile(Backend.STASH, 'example.pdf', await Files.readFileAsync(path));
+        await diskDatastore.writeFile(Backend.STASH, {name: 'example.pdf'}, await Files.readFileAsync(path));
 
         const pdfPath = FilePaths.join(dataDir, "stash", "example.pdf");
 
         assert.ok(await Files.existsAsync(pdfPath), "Could not find file: " + pdfPath);
 
-        assert.ok(await diskDatastore.containsFile(Backend.STASH, 'example.pdf'));
+        assert.ok(await diskDatastore.containsFile(Backend.STASH, {name: 'example.pdf'}));
 
-        await diskDatastore.deleteFile(Backend.STASH, 'example.pdf');
+        await diskDatastore.deleteFile(Backend.STASH, {name: 'example.pdf'});
 
         assert.isFalse(await Files.existsAsync(pdfPath));
 
@@ -216,7 +216,9 @@ describe("DiskDatastore", async function() {
 
         const docMetaFileRef: DocMetaFileRef = {
             fingerprint,
-            filename: `${fingerprint}.phz`,
+            docFile: {
+                name: `${fingerprint}.phz`
+            },
             docInfo: docMeta.docInfo
         };
 

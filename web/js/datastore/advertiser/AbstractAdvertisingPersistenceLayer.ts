@@ -5,7 +5,7 @@ import {PersistenceLayerListener} from '../PersistenceLayerListener';
 import {IPersistenceLayer} from '../IPersistenceLayer';
 import {DocMeta} from '../../metadata/DocMeta';
 import {DocMetaFileRef, DocMetaRef} from '../DocMetaRef';
-import {DeleteResult} from '../Datastore';
+import {DeleteResult, FileRef} from '../Datastore';
 import {PersistenceEventType} from '../PersistenceEventType';
 import {Backend} from '../Backend';
 import {DatastoreFile} from '../DatastoreFile';
@@ -113,16 +113,16 @@ export abstract class AbstractAdvertisingPersistenceLayer implements IListenable
         this.reactor.dispatchEvent(event);
     }
 
-    public writeFile(backend: Backend, name: string, data: Buffer | string, meta: FileMeta): Promise<DatastoreFile> {
-        return this.persistenceLayer.writeFile(backend, name, data, meta);
+    public writeFile(backend: Backend, ref: FileRef, data: Buffer | string, meta: FileMeta): Promise<DatastoreFile> {
+        return this.persistenceLayer.writeFile(backend, ref, data, meta);
     }
 
-    public containsFile(backend: Backend, name: string): Promise<boolean> {
-        return this.persistenceLayer.containsFile(backend, name);
+    public containsFile(backend: Backend, ref: FileRef): Promise<boolean> {
+        return this.persistenceLayer.containsFile(backend, ref);
     }
 
-    public getFile(backend: Backend, name: string): Promise<Optional<DatastoreFile>> {
-        return this.persistenceLayer.getFile(backend, name);
+    public getFile(backend: Backend, ref: FileRef): Promise<Optional<DatastoreFile>> {
+        return this.persistenceLayer.getFile(backend, ref);
     }
 
     protected abstract broadcastEvent(event: PersistenceLayerEvent): void;

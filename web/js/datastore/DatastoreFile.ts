@@ -1,11 +1,11 @@
-import {FileMeta} from './Datastore';
+import {FileMeta, FileRef} from './Datastore';
 import {Backend} from './Backend';
 
 export interface DatastoreFile {
 
     readonly backend: Backend;
 
-    readonly name: string;
+    readonly ref: FileRef;
 
     /**
      * URL to the file that can be used within the browser to load or download

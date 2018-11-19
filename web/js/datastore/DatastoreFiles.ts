@@ -1,3 +1,5 @@
+import {FileRef} from './Datastore';
+
 export class DatastoreFiles {
 
     /**
@@ -9,10 +11,10 @@ export class DatastoreFiles {
         return name.search(/^[a-zA-Z0-9_(),{} -]+(\.[a-zA-Z0-9]{3,4})?$/g) !== -1;
     }
 
-    public static assertValidFileName(name: string) {
+    public static assertValidFileName(ref: FileRef) {
 
-        if (! this.isValidFileName(name)) {
-            throw new Error("Invalid file name: " + name);
+        if (! this.isValidFileName(ref.name)) {
+            throw new Error("Invalid file name: " + ref.name);
         }
 
     }
@@ -31,9 +33,9 @@ export class DatastoreFiles {
         return name.search(/[/\\:*?\"<>|]/) === -1;
     }
 
-    public static assertSanitizedFileName(name: string) {
-        if (! this.isSanitizedFileName(name)) {
-            throw new Error("Invalid file name: " + name);
+    public static assertSanitizedFileName(ref: FileRef) {
+        if (! this.isSanitizedFileName(ref.name)) {
+            throw new Error("Invalid file name: " + ref.name);
         }
     }
 

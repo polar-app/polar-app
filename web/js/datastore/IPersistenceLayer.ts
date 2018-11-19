@@ -1,5 +1,5 @@
 import {DocMetaFileRef, DocMetaRef} from './DocMetaRef';
-import {DeleteResult} from './Datastore';
+import {DeleteResult, FileRef} from './Datastore';
 import {DocMeta} from '../metadata/DocMeta';
 import {Backend} from './Backend';
 import {DatastoreFile} from './DatastoreFile';
@@ -43,12 +43,12 @@ export interface IPersistenceLayer {
     write(fingerprint: string, docMeta: DocMeta, datastoreMutation?: DatastoreMutation<DocInfo>): Promise<DocInfo>;
 
     writeFile(backend: Backend,
-              name: string,
+              ref: FileRef,
               data: FileHandle | Buffer | string,
               meta?: FileMeta): Promise<DatastoreFile>;
 
-    getFile(backend: Backend, name: string): Promise<Optional<DatastoreFile>>;
+    getFile(backend: Backend, ref: FileRef): Promise<Optional<DatastoreFile>>;
 
-    containsFile(backend: Backend, name: string): Promise<boolean>;
+    containsFile(backend: Backend, ref: FileRef): Promise<boolean>;
 
 }

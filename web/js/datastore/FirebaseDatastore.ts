@@ -1,6 +1,8 @@
-import {BinaryMutationEvent, Datastore, DeleteResult,
-        DocMutationEvent, DocSynchronizationEvent, FileMeta,
-        InitResult, SynchronizingDatastore, DocMutationType} from './Datastore';
+import {
+    BinaryMutationEvent, Datastore, DeleteResult,
+    DocMutationEvent, DocSynchronizationEvent, FileMeta,
+    InitResult, SynchronizingDatastore, DocMutationType, FileRef
+} from './Datastore';
 import {Logger} from '../logger/Logger';
 import {DocMetaFileRef, DocMetaRef} from './DocMetaRef';
 import {Directories} from './Directories';
@@ -140,10 +142,12 @@ export class FirebaseDatastore implements Datastore, SynchronizingDatastore {
                         datastoreMutation: DatastoreMutation<boolean> = new DefaultDatastoreMutation()): Promise<Readonly<DeleteResult>> {
 
 
-        if (docMetaFileRef.filename) {
+        if (docMetaFileRef.docFile && docMetaFileRef.docFile.name) {
+
             // the PDF/PHZ data file should be added as a stash file via
             // writeFile so it also needs to be removed.
-            await this.deleteFile(Backend.STASH, docMetaFileRef.filename);
+            await this.deleteFile(Backend.STASH, docMetaFileRef.docFile);
+
         }
 
         const uid = this.getUserID();
@@ -201,15 +205,15 @@ export class FirebaseDatastore implements Datastore, SynchronizingDatastore {
     // for a first MVP pass.
 
     public async writeFile(backend: Backend,
-                           name: string,
+                           ref: FileRef,
                            data: Buffer | string,
                            meta: FileMeta = {}): Promise<DatastoreFile> {
 
-        DatastoreFiles.assertValidFileName(name);
+        DatastoreFiles.assertValidFileName(ref);
 
         const storage = this.storage!;
 
-        const fileRef = storage.ref().child(`${backend}/${name}`);
+        const fileRef = storage.ref().child(`${backend}/${ref}`);
 
         let uploadTask: firebase.storage.UploadTask;
 
@@ -250,38 +254,38 @@ export class FirebaseDatastore implements Datastore, SynchronizingDatastore {
 
         return {
             backend,
-            name,
+            ref,
             url: downloadURL!,
             meta
         };
 
     }
 
-    public async getFile(backend: Backend, name: string): Promise<Optional<DatastoreFile>> {
+    public async getFile(backend: Backend, ref: FileRef): Promise<Optional<DatastoreFile>> {
 
-        DatastoreFiles.assertValidFileName(name);
+        DatastoreFiles.assertValidFileName(ref);
 
         const storage = this.storage!;
 
-        const fileRef = storage.ref().child(`${backend}/${name}`);
+        const fileRef = storage.ref().child(`${backend}/${ref}`);
 
         const url: string = await fileRef.getDownloadURL();
         const metadata = await fileRef.getMetadata();
         const meta = metadata.customMetadata;
 
-        return Optional.of({backend, name, url, meta});
+        return Optional.of({backend, ref, url, meta});
 
     }
 
-    public async containsFile(backend: Backend, name: string): Promise<boolean> {
+    public async containsFile(backend: Backend, ref: FileRef): Promise<boolean> {
 
-        DatastoreFiles.assertValidFileName(name);
+        DatastoreFiles.assertValidFileName(ref);
 
         // TODO: we should have some cache here to avoid checking the server too
         // often but I don't think this is goign to be used often.
 
         const storage = this.storage!;
-        const fileRef = storage.ref().child(`${backend}/${name}`);
+        const fileRef = storage.ref().child(`${backend}/${ref}`);
 
         try {
             await fileRef.getMetadata();
@@ -299,14 +303,14 @@ export class FirebaseDatastore implements Datastore, SynchronizingDatastore {
 
     }
 
-    public async deleteFile(backend: Backend, name: string): Promise<void> {
+    public async deleteFile(backend: Backend, ref: FileRef): Promise<void> {
 
-        DatastoreFiles.assertValidFileName(name);
+        DatastoreFiles.assertValidFileName(ref);
 
         try {
 
             const storage = this.storage!;
-            const fileRef = storage.ref().child(`${backend}/${name}`);
+            const fileRef = storage.ref().child(`${backend}/${ref}`);
             await fileRef.delete();
 
         } catch (e) {

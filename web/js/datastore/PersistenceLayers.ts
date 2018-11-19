@@ -6,6 +6,7 @@ import {Blobs} from "../util/Blobs";
 import {ArrayBuffers} from "../util/ArrayBuffers";
 import {AsyncFunction, AsyncWorkQueue} from '../util/AsyncWorkQueue';
 import {DocMetaRef} from "./DocMetaRef";
+import {FileRef} from './Datastore';
 
 export class PersistenceLayers {
 
@@ -21,11 +22,11 @@ export class PersistenceLayers {
 
         const asyncWorkQueue = new AsyncWorkQueue([]);
 
-        async function handleStashFile(filename: string) {
+        async function handleStashFile(fileRef: FileRef) {
 
-            if (! target.containsFile(Backend.STASH, filename)) {
+            if (! target.containsFile(Backend.STASH, fileRef)) {
 
-                const optionalFile = await source.getFile(Backend.STASH, filename);
+                const optionalFile = await source.getFile(Backend.STASH, fileRef);
 
                 if (optionalFile.isPresent()) {
                     const file = optionalFile.get();
@@ -34,7 +35,7 @@ export class PersistenceLayers {
                     const arrayBuffer = await Blobs.toArrayBuffer(blob);
                     const buffer = ArrayBuffers.toBuffer(arrayBuffer);
 
-                    target.writeFile(file.backend, file.name, buffer, file.meta);
+                    target.writeFile(file.backend, fileRef, buffer, file.meta);
                 }
 
             }
@@ -47,15 +48,18 @@ export class PersistenceLayers {
 
             const docMeta = await source.getDocMeta(docMetaFile.fingerprint);
 
-            const filename = docMeta!.docInfo.filename;
+            const docFile: FileRef = {
+                name: docMeta!.docInfo.filename!,
+                hashcode: docMeta!.docInfo.hashcode
+            };
 
             // TODO: we're going to need some type of method to get all the
             // files backing a DocMeta file when we start to use attachments
             // like screenshots.
             // https://firebase.google.com/docs/storage/web/download-files
 
-            if (filename) {
-                await asyncWorkQueue.enqueue(async () => handleStashFile(filename));
+            if (docFile.name) {
+                await asyncWorkQueue.enqueue(async () => handleStashFile(docFile));
             }
 
             await target.writeDocMeta(docMeta!);

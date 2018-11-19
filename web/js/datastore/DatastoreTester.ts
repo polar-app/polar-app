@@ -114,7 +114,9 @@ export class DatastoreTester {
 
                 const docMetaFileRef: DocMetaFileRef = {
                     fingerprint,
-                    filename: `${fingerprint}.phz`,
+                    docFile: {
+                        name: `${fingerprint}.phz`
+                    },
                     docInfo: docMeta.docInfo
                 };
 
@@ -150,30 +152,31 @@ export class DatastoreTester {
             it("adding binary files", async function() {
 
                 const data = 'fake image data';
+                const fileRef = {name: 'test.jpg'};
 
-                await datastore.deleteFile(Backend.IMAGE, 'test.jpg');
-                await datastore.deleteFile(Backend.IMAGE, 'test.jpg');
+                await datastore.deleteFile(Backend.IMAGE, fileRef);
+                await datastore.deleteFile(Backend.IMAGE, fileRef);
 
-                assert.ok(! await datastore.containsFile(Backend.IMAGE, 'test.jpg'), "Datastore already contains file!");
+                assert.ok(! await datastore.containsFile(Backend.IMAGE, fileRef), "Datastore already contains file!");
 
                 const meta = {
                     "foo": "bar"
                 };
 
-                await datastore.writeFile(Backend.IMAGE, 'test.jpg', data, meta);
-                await datastore.writeFile(Backend.IMAGE, 'test.jpg', data, meta);
+                await datastore.writeFile(Backend.IMAGE, fileRef, data, meta);
+                await datastore.writeFile(Backend.IMAGE, fileRef, data, meta);
 
-                assert.ok(await datastore.containsFile(Backend.IMAGE, 'test.jpg'));
+                assert.ok(await datastore.containsFile(Backend.IMAGE, fileRef));
 
-                const datastoreFile = await datastore.getFile(Backend.IMAGE, 'test.jpg');
+                const datastoreFile = await datastore.getFile(Backend.IMAGE, fileRef);
                 assert.ok(datastoreFile);
                 assert.ok(datastoreFile.isPresent());
                 assert.ok(datastoreFile.get());
 
                 assertJSON(datastoreFile.get().meta, meta);
 
-                await datastore.deleteFile(Backend.IMAGE, 'test.jpg');
-                await datastore.deleteFile(Backend.IMAGE, 'test.jpg');
+                await datastore.deleteFile(Backend.IMAGE, fileRef);
+                await datastore.deleteFile(Backend.IMAGE, fileRef);
 
             });
 

@@ -13,6 +13,7 @@ import input = Simulate.input;
 import {isPresent} from '../Preconditions';
 import {DatastoreMutation} from './DatastoreMutation';
 import {DocMeta} from '../metadata/DocMeta';
+import {Hashcode} from '../metadata/Hashcode';
 
 export interface Datastore extends BinaryDatastore, WritableDatastore {
 
@@ -91,8 +92,8 @@ interface BinaryDatastore extends ReadableBinaryDatastore, WritableBinaryDatasto
 
 interface ReadableBinaryDatastore {
 
-    containsFile(backend: Backend, name: string): Promise<boolean>;
-    getFile(backend: Backend, name: string): Promise<Optional<DatastoreFile>>;
+    containsFile(backend: Backend, ref: FileRef): Promise<boolean>;
+    getFile(backend: Backend, ref: FileRef): Promise<Optional<DatastoreFile>>;
 
 }
 
@@ -104,11 +105,23 @@ interface WritableBinaryDatastore {
      * audio, and documents like PDF, ePub, etc.
      */
     writeFile(backend: Backend,
-              name: string,
+              ref: FileRef,
               data: FileHandle | Buffer | string,
               meta?: FileMeta): Promise<DatastoreFile>;
 
-    deleteFile(backend: Backend, name: string): Promise<void>;
+    deleteFile(backend: Backend, ref: FileRef): Promise<void>;
+
+}
+
+export interface FileRef {
+
+    readonly name: string;
+
+    /**
+     * The hashcode for the content.  For now the hashcode is STRONGLY preferred
+     * but not required.
+     */
+    readonly hashcode?: Hashcode;
 
 }
 

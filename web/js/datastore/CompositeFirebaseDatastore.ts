@@ -1,4 +1,4 @@
-import {Datastore, FileMeta} from './Datastore';
+import {Datastore, FileMeta, FileRef} from './Datastore';
 import {Logger} from '../logger/Logger';
 import {DocMetaFileRef, DocMetaRef} from './DocMetaRef';
 import {Directories} from './Directories';
@@ -138,12 +138,12 @@ export class CompositeFirebaseDatastore implements Datastore {
     // TODO: if the file is ONLY in firestore it won't be sync'd on a remote
     // computer so we should try to pull it down just in time when requested.
 
-    public async writeFile(backend: Backend, name: string, data: Buffer | string, meta: FileMeta = {}): Promise<DatastoreFile> {
-        DatastoreFiles.assertValidFileName(name);
+    public async writeFile(backend: Backend, ref: FileRef, data: Buffer | string, meta: FileMeta = {}): Promise<DatastoreFile> {
+        DatastoreFiles.assertValidFileName(ref);
 
         const storage = this.storage!;
 
-        const fileRef = storage.ref().child(`${backend}/${name}`);
+        const fileRef = storage.ref().child(`${backend}/${ref}`);
 
         let uploadTask: firebase.storage.UploadTask;
 
@@ -156,16 +156,16 @@ export class CompositeFirebaseDatastore implements Datastore {
 
         await uploadTask;
 
-        return this.local.writeFile(backend, name, data, meta);
+        return this.local.writeFile(backend, ref, data, meta);
 
 
     }
 
-    public async getFile(backend: Backend, name: string): Promise<Optional<DatastoreFile>> {
+    public async getFile(backend: Backend, ref: FileRef): Promise<Optional<DatastoreFile>> {
 
-        DatastoreFiles.assertValidFileName(name);
+        DatastoreFiles.assertValidFileName(ref);
 
-        const localFile = await this.local.getFile(backend, name);
+        const localFile = await this.local.getFile(backend, ref);
 
         if (localFile.isPresent()) {
             return localFile;
@@ -179,19 +179,19 @@ export class CompositeFirebaseDatastore implements Datastore {
 
         const storage = this.storage!;
 
-        const fileRef = storage.ref().child(`${backend}/${name}`);
+        const fileRef = storage.ref().child(`${backend}/${ref}`);
 
         const url: string = await fileRef.getDownloadURL();
         const meta = await fileRef.getMetadata();
 
-        return Optional.of({backend, name, url, meta});
+        return Optional.of({backend, ref, url, meta});
 
     }
 
-    public async containsFile(backend: Backend, name: string): Promise<boolean> {
-        DatastoreFiles.assertValidFileName(name);
+    public async containsFile(backend: Backend, ref: FileRef): Promise<boolean> {
+        DatastoreFiles.assertValidFileName(ref);
 
-        if ( await this.local.containsFile(backend, name)) {
+        if ( await this.local.containsFile(backend, ref)) {
             return true;
         }
 
@@ -199,7 +199,7 @@ export class CompositeFirebaseDatastore implements Datastore {
         // often but I don't think this is goign to be used often.
 
         const storage = this.storage!;
-        const fileRef = storage.ref().child(`${backend}/${name}`);
+        const fileRef = storage.ref().child(`${backend}/${ref.name}`);
 
         try {
             await fileRef.getMetadata();
@@ -217,14 +217,14 @@ export class CompositeFirebaseDatastore implements Datastore {
 
     }
 
-    public async deleteFile(backend: Backend, name: string): Promise<void> {
-        DatastoreFiles.assertValidFileName(name);
+    public async deleteFile(backend: Backend, ref: FileRef): Promise<void> {
+        DatastoreFiles.assertValidFileName(ref);
 
         const storage = this.storage!;
-        const fileRef = storage.ref().child(`${backend}/${name}`);
+        const fileRef = storage.ref().child(`${backend}/${ref.name}`);
         await fileRef.delete();
 
-        return this.local.deleteFile(backend, name);
+        return this.local.deleteFile(backend, ref);
     }
 
     /**

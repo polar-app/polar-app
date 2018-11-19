@@ -1,4 +1,4 @@
-import {Datastore} from './Datastore';
+import {Datastore, FileRef} from './Datastore';
 import {MemoryDatastore} from './MemoryDatastore';
 import {DiskDatastore} from './DiskDatastore';
 import {Logger} from '../logger/Logger';
@@ -59,10 +59,15 @@ export class Datastores {
             const data = await datastore.getDocMeta(docMetaFile.fingerprint);
             const docMeta = DocMetas.deserialize(data!);
 
+            const docFile: FileRef = {
+                name: docMeta.docInfo.filename!,
+                hashcode: docMeta.docInfo.hashcode
+            };
+
             datastore.delete({
                 fingerprint: docMeta.docInfo.fingerprint,
                 docInfo: docMeta.docInfo,
-                filename: docMeta.docInfo.filename
+                docFile
             });
 
         }

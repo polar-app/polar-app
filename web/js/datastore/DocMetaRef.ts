@@ -4,6 +4,7 @@
 import {IDocInfo} from '../metadata/DocInfo';
 import {DocMeta} from '../metadata/DocMeta';
 import {Preconditions} from '../Preconditions';
+import {FileRef} from './Datastore';
 
 export interface DocMetaRef {
     readonly fingerprint: string;
@@ -15,7 +16,10 @@ export interface DocMetaRef {
  */
 export interface DocMetaFileRef extends DocMetaRef {
 
-    readonly filename?: string;
+    /**
+     * The file (PDF, PHZ) which this DocInfo annotates.
+     */
+    readonly docFile?: FileRef;
 
     readonly docInfo: IDocInfo;
 
@@ -35,7 +39,10 @@ export class DocMetaFileRefs {
 
         return {
             fingerprint: docInfo.fingerprint,
-            filename: docInfo.filename!,
+            docFile: {
+                name: docInfo.filename!,
+                hashcode: docInfo.hashcode
+            },
             docInfo
         };
 

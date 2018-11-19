@@ -71,8 +71,6 @@ export class PDFImporter {
         // a good thing.  Space is cheap.
         const inputFileRef: FileHandle = {path: filePath};
 
-        await this.persistenceLayer.writeFile(Backend.STASH, filename, inputFileRef);
-
         const docMeta = DocMetas.create(pdfMeta.fingerprint, pdfMeta.nrPages, filename);
 
         docMeta.docInfo.title = Optional.of(pdfMeta.title)
@@ -85,6 +83,13 @@ export class PDFImporter {
             alg: HashAlgorithm.KECCAK256,
             data: fileHashMeta.hashcode
         };
+
+        const fileRef = {
+            name: filename,
+            hashcode: docMeta.docInfo.hashcode
+        };
+
+        await this.persistenceLayer.writeFile(Backend.STASH, fileRef, inputFileRef);
 
         await this.persistenceLayer.write(pdfMeta.fingerprint, docMeta);
 

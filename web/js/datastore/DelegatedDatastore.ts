@@ -1,4 +1,4 @@
-import {Datastore, FileMeta, InitResult} from './Datastore';
+import {Datastore, FileMeta, FileRef, InitResult} from './Datastore';
 import {Directories} from './Directories';
 import {DocMetaFileRef, DocMetaRef} from './DocMetaRef';
 import {DeleteResult} from './Datastore';
@@ -42,20 +42,20 @@ export class DelegatedDatastore implements Datastore {
         return this.delegate.delete(docMetaFileRef);
     }
 
-    public writeFile(backend: Backend, name: string, data: Buffer | string, meta: FileMeta = {}): Promise<DatastoreFile> {
-        return this.delegate.writeFile(backend, name, data, meta);
+    public writeFile(backend: Backend, ref: FileRef, data: Buffer | string, meta: FileMeta = {}): Promise<DatastoreFile> {
+        return this.delegate.writeFile(backend, ref, data, meta);
     }
 
-    public containsFile(backend: Backend, name: string): Promise<boolean> {
-        return this.delegate.containsFile(backend, name);
+    public containsFile(backend: Backend, ref: FileRef): Promise<boolean> {
+        return this.delegate.containsFile(backend, ref);
     }
 
-    public getFile(backend: Backend, name: string): Promise<Optional<DatastoreFile>> {
-        return this.delegate.getFile(backend, name);
+    public getFile(backend: Backend, ref: FileRef): Promise<Optional<DatastoreFile>> {
+        return this.delegate.getFile(backend, ref);
     }
 
-    public deleteFile(backend: Backend, name: string): Promise<void> {
-        return this.delegate.deleteFile(backend, name);
+    public deleteFile(backend: Backend, ref: FileRef): Promise<void> {
+        return this.delegate.deleteFile(backend, ref);
     }
 
     public getDocMeta(fingerprint: string): Promise<string | null> {

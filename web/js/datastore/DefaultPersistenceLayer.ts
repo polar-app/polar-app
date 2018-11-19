@@ -1,4 +1,4 @@
-import {Datastore, FileMeta} from './Datastore';
+import {Datastore, FileMeta, FileRef} from './Datastore';
 import {DocMeta} from '../metadata/DocMeta';
 import {DocMetas} from '../metadata/DocMetas';
 import {isPresent, Preconditions} from '../Preconditions';
@@ -173,16 +173,16 @@ export class DefaultPersistenceLayer implements IPersistenceLayer {
         return this.datastore.getDocMetaFiles();
     }
 
-    public writeFile(backend: Backend, name: string, data: Buffer | string, meta: FileMeta = {}): Promise<DatastoreFile> {
-        return this.datastore.writeFile(backend, name, data, meta);
+    public writeFile(backend: Backend, ref: FileRef, data: Buffer | string, meta: FileMeta = {}): Promise<DatastoreFile> {
+        return this.datastore.writeFile(backend, ref, data, meta);
     }
 
-    public containsFile(backend: Backend, name: string): Promise<boolean> {
-        return this.datastore.containsFile(backend, name);
+    public containsFile(backend: Backend, ref: FileRef): Promise<boolean> {
+        return this.datastore.containsFile(backend, ref);
     }
 
-    public getFile(backend: Backend, name: string): Promise<Optional<DatastoreFile>> {
-        return this.datastore.getFile(backend, name);
+    public getFile(backend: Backend, ref: FileRef): Promise<Optional<DatastoreFile>> {
+        return this.datastore.getFile(backend, ref);
     }
 
 }

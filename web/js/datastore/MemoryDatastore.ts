@@ -1,7 +1,7 @@
 /**
  * Datastore just in memory with no on disk persistence.
  */
-import {Datastore, InitResult} from './Datastore';
+import {Datastore, InitResult, FileRef} from './Datastore';
 import {Preconditions} from '../Preconditions';
 import {DocMetaFileRef, DocMetaRef} from './DocMetaRef';
 import {FilePaths} from '../util/FilePaths';
@@ -67,7 +67,9 @@ export class MemoryDatastore implements Datastore {
                 deleted: false
             },
             dataFile: {
-                path: `/${docMetaFileRef.filename}`,
+                path: '/' + Optional.of(docMetaFileRef.docFile)
+                                .map(current => current.name)
+                                .getOrUndefined(),
                 deleted: false
             }
         };
@@ -81,19 +83,19 @@ export class MemoryDatastore implements Datastore {
 
     }
 
-    public writeFile(backend: Backend, name: string, data: Buffer | string): Promise<DatastoreFile> {
+    public writeFile(backend: Backend, ref: FileRef, data: Buffer | string): Promise<DatastoreFile> {
         throw new Error("Not implemented");
     }
 
-    public getFile(backend: Backend, name: string): Promise<Optional<DatastoreFile>> {
+    public getFile(backend: Backend, ref: FileRef): Promise<Optional<DatastoreFile>> {
         throw new Error("Not implemented");
     }
 
-    public containsFile(backend: Backend, name: string): Promise<boolean> {
+    public containsFile(backend: Backend, ref: FileRef): Promise<boolean> {
         throw new Error("Not implemented");
     }
 
-    public deleteFile(backend: Backend, name: string): Promise<void> {
+    public deleteFile(backend: Backend, ref: FileRef): Promise<void> {
         throw new Error("Not implemented");
     }
 
