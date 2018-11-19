@@ -1,7 +1,6 @@
 import {assert} from 'chai';
 import {Progress} from './Progress';
 import {ResolvablePromise} from './ResolvablePromise';
-import {ParallelWorkQueue} from './ParallelWorkQueue';
 import {assertJSON} from '../test/Assertions';
 import {Latch} from './Latch';
 import waitForExpect from 'wait-for-expect';
