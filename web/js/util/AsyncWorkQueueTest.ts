@@ -55,6 +55,135 @@ describe('AsyncWorkQueue', function() {
     });
 
 
+    it("Expand with additional work", async function() {
+
+        // test that we can add more work once we've started...
+
+        const work: AsyncFunction[] = [];
+
+        async function addMoreWork() {
+            work.push(mockAsyncFunction);
+        }
+
+        work.push(mockAsyncFunction);
+        work.push(addMoreWork);
+
+        const asyncWorkQueue = new AsyncWorkQueue(work);
+        await asyncWorkQueue.execute();
+        assertJSON(work.sort(), []);
+
+        assert.equal(asyncWorkQueue.getCompleted(), 3);
+
+    });
+
+    it("Verify that 'executing' lowers", async function() {
+
+        const latches: Array<Latch<boolean>> = [];
+
+        latches.push(new Latch());
+        latches.push(new Latch());
+
+        let concurrency = 0;
+
+        async function verifyConcurrency() {
+            const latch = latches[concurrency++];
+            await latch.get();
+            return true;
+        }
+
+        const work = [verifyConcurrency, verifyConcurrency];
+
+        const asyncWorkQueue = new AsyncWorkQueue(work, 2);
+        const executionPromise = asyncWorkQueue.execute();
+
+        await waitForExpect(async () => {
+            assert.equal(asyncWorkQueue.getExecuting(), 2);
+        });
+
+        // resolve the first latch...
+
+        latches[0].resolve(true);
+
+        await waitForExpect(async () => {
+            assert.equal(asyncWorkQueue.getExecuting(), 1);
+        });
+
+        latches[1].resolve(true);
+
+        await waitForExpect(async () => {
+            assert.equal(asyncWorkQueue.getExecuting(), 0);
+        });
+
+        await executionPromise;
+
+    });
+
+
+    it("Verify that 'executing' increases when the work expands", async function() {
+
+        const latches: Array<Latch<boolean>> = [];
+
+        latches.push(new Latch());
+        latches.push(new Latch());
+        latches.push(new Latch());
+        latches.push(new Latch());
+        latches.push(new Latch());
+
+        let completedTasks = 0;
+
+        async function verifyConcurrency() {
+            const latch = latches[completedTasks++];
+            await latch.get();
+            return true;
+        }
+
+        async function addMoreWork() {
+            const latch = latches[completedTasks++];
+            await latch.get();
+            work.push(verifyConcurrency);
+            work.push(verifyConcurrency);
+        }
+
+        const work = [verifyConcurrency, verifyConcurrency, addMoreWork];
+
+        const asyncWorkQueue = new AsyncWorkQueue(work, 2);
+        const executionPromise = asyncWorkQueue.execute();
+
+        await waitForExpect(async () => {
+            assert.equal(asyncWorkQueue.getExecuting(), 2);
+        });
+
+        // resolve the first two latches ...
+
+        latches[0].resolve(true);
+        latches[1].resolve(true);
+
+        await waitForExpect(async () => {
+            assert.equal(asyncWorkQueue.getCompleted(), 2);
+            assert.equal(asyncWorkQueue.getExecuting(), 1);
+        });
+
+
+        latches[2].resolve(true);
+
+        await waitForExpect(async () => {
+            assert.equal(asyncWorkQueue.getCompleted(), 3);
+            assert.equal(asyncWorkQueue.getExecuting(), 2);
+        });
+
+        latches[3].resolve(true);
+        latches[4].resolve(true);
+
+        await waitForExpect(async () => {
+            assert.equal(asyncWorkQueue.getCompleted(), 5);
+            assert.equal(asyncWorkQueue.getExecuting(), 0);
+        });
+
+        await executionPromise;
+
+    });
+
+
     it("With verified concurrency", async function() {
 
         const latches: Array<Latch<boolean>> = [];
@@ -82,7 +211,7 @@ describe('AsyncWorkQueue', function() {
                       verifyConcurrency, verifyConcurrency, verifyConcurrency, verifyConcurrency, verifyConcurrency];
 
         const asyncWorkQueue = new AsyncWorkQueue(work, 10);
-        await asyncWorkQueue.execute();
+        const executionPromise = asyncWorkQueue.execute();
 
         await waitForExpect(async () => {
             assert.equal(concurrency, 10);
@@ -92,6 +221,8 @@ describe('AsyncWorkQueue', function() {
         for (const latch of latches) {
             latch.resolve(true);
         }
+
+        await executionPromise;
 
     });
 

@@ -15,13 +15,13 @@ export class ParallelWorkQueue<T, V> {
         this.handler = handler;
     }
 
-    public execute(concurrency: number = 25) {
+    public execute(concurrency: number = 25): Promise<boolean> {
 
         for (let i = 0; i < concurrency; i++) {
             this.handleWork();
         }
 
-        return this.completion;
+        return this.completion.get();
 
     }
 

@@ -38,11 +38,11 @@ export class AsyncWorkQueue {
         this.work = work;
     }
 
-    public execute() {
+    public execute(): Promise<boolean> {
 
         this.handleTaskCreation();
 
-        return this.completion;
+        return this.completion.get();
 
     }
 
@@ -51,6 +51,10 @@ export class AsyncWorkQueue {
      */
     public getExecuting() {
         return this.executing;
+    }
+
+    public getCompleted() {
+        return this.completed;
     }
 
     private handleTaskCreation() {
@@ -64,7 +68,7 @@ export class AsyncWorkQueue {
             // possible for the last task to re-enque N jobs which will all
             // need to be processed at once.
 
-            const task = this.work.pop();
+            const task = this.work.shift();
 
             if (! task) {
                 break;
