@@ -29,6 +29,29 @@ describe('AsyncWorkQueue', function() {
         inputs = [];
     });
 
+
+    it("Chained work", async function() {
+
+        const work: AsyncFunction[] = [];
+
+        async function firstJob() {
+            return 1;
+        }
+
+        async function secondJob() {
+            return 2;
+        }
+
+        work.push(mockAsyncFunction);
+
+        const asyncWorkQueue = new AsyncWorkQueue(work);
+        await asyncWorkQueue.execute();
+
+        assertJSON(inputs.sort(), []);
+
+    });
+
+
     it("With no work", async function() {
 
         const work: AsyncFunction[] = [];

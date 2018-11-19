@@ -1,10 +1,11 @@
 import {IPersistenceLayer} from "./IPersistenceLayer";
 import {NULL_FUNCTION} from "../util/Functions";
 import {Percentages} from '../util/Percentages';
-import {ParallelWorkQueue} from '../util/ParallelWorkQueue';
 import {Backend} from './Backend';
 import {Blobs} from "../util/Blobs";
 import {ArrayBuffers} from "../util/ArrayBuffers";
+import {AsyncFunction, AsyncWorkQueue} from '../util/AsyncWorkQueue';
+import {DocMetaRef} from "./DocMetaRef";
 
 export class PersistenceLayers {
 
@@ -18,10 +19,29 @@ export class PersistenceLayers {
         const total = docMetaFiles.length;
         let completed = 0;
 
-        // TODO: we should do the nested queue design like we did with anki and
-        // just keep pushing / appending documents to the queue as we discovery
-        // them.
-        await new ParallelWorkQueue(docMetaFiles, async (docMetaFile) => {
+        const asyncWorkQueue = new AsyncWorkQueue([]);
+
+        async function handleStashFile(filename: string) {
+
+            if (! target.containsFile(Backend.STASH, filename)) {
+
+                const optionalFile = await source.getFile(Backend.STASH, filename);
+
+                if (optionalFile.isPresent()) {
+                    const file = optionalFile.get();
+                    const response = await fetch(file.url);
+                    const blob = await response.blob();
+                    const arrayBuffer = await Blobs.toArrayBuffer(blob);
+                    const buffer = ArrayBuffers.toBuffer(arrayBuffer);
+
+                    target.writeFile(file.backend, file.name, buffer, file.meta);
+                }
+
+            }
+
+        }
+
+        async function handleDocMetaFile(docMetaFile: DocMetaRef) {
 
             console.log("Working with fingerprint: " + docMetaFile.fingerprint);
 
@@ -35,23 +55,7 @@ export class PersistenceLayers {
             // https://firebase.google.com/docs/storage/web/download-files
 
             if (filename) {
-
-                if (! target.containsFile(Backend.STASH, filename)) {
-
-                    const optionalFile = await source.getFile(Backend.STASH, filename);
-
-                    if (optionalFile.isPresent()) {
-                        const file = optionalFile.get();
-                        const response = await fetch(file.url);
-                        const blob = await response.blob();
-                        const arrayBuffer = await Blobs.toArrayBuffer(blob);
-                        const buffer = ArrayBuffers.toBuffer(arrayBuffer);
-
-                        target.writeFile(file.backend, file.name, buffer, file.meta);
-                    }
-
-                }
-
+                await asyncWorkQueue.enqueue(async () => handleStashFile(filename));
             }
 
             await target.writeDocMeta(docMeta!);
@@ -64,7 +68,13 @@ export class PersistenceLayers {
 
             listener({completed, total, progress, duration});
 
-        }).execute();
+        }
+
+        // build a work queue of async functions out of the docMetaFiles.
+        docMetaFiles.forEach(docMetaFile =>
+                                 asyncWorkQueue.enqueue( async () => handleDocMetaFile(docMetaFile)));
+
+        asyncWorkQueue.execute();
 
     }
 

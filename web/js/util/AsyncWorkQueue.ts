@@ -47,6 +47,29 @@ export class AsyncWorkQueue {
     }
 
     /**
+     * Allows us to enqueue more work in this AsyncWorkQueue but we can depend
+     * on the result without starting the task.
+     *
+     * @param asyncTask
+     */
+    public enqueue<T>(asyncTask: TypedAsyncFunction<T> ): Promise<T> {
+
+        const latch: Latch<T> = new Latch();
+
+        const wrapperTask = async () => {
+
+            const result = await asyncTask();
+            latch.resolve(result);
+
+        };
+
+        this.work.push(wrapperTask);
+
+        return latch.get();
+
+    }
+
+    /**
      * Return the total number of executing tasks.
      */
     public getExecuting() {
@@ -112,3 +135,5 @@ export class AsyncWorkQueue {
 }
 
 export type AsyncFunction = () => Promise<any>;
+
+export type TypedAsyncFunction<T> = () => Promise<T>;
