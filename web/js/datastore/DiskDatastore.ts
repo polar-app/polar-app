@@ -289,6 +289,7 @@ export class DiskDatastore implements Datastore {
 
     private async createDatastoreFile(backend: Backend, name: string, fileReference: FileReference): Promise<DatastoreFile> {
 
+        // TODO: test that this works on Windows - I do not think it will.
         const url = new URL(`file:///${fileReference.path}`);
 
         const buff = await Files.readFileAsync(fileReference.metaPath);
