@@ -179,7 +179,7 @@ export class Files {
      * If `flag` is not supplied, the default of `'w'` is used.
      */
     public static async writeFileAsync(path: string,
-                                       data: FileRef | NodeJS.ReadableStream | Buffer | string,
+                                       data: FileHandle | NodeJS.ReadableStream | Buffer | string,
                                        options?: WriteFileAsyncOptions | string | undefined | null) {
 
 
@@ -189,7 +189,7 @@ export class Files {
 
         } else if ( this.isFileRef(data) ) {
 
-            const fileRef = <FileRef> data;
+            const fileRef = <FileHandle> data;
             Files.createReadStream(fileRef.path).pipe(fs.createWriteStream(path));
 
         } else {
@@ -365,7 +365,7 @@ export type CreateReadStreamOptions = string | {
 /**
  * Reference to a local file.
  */
-export interface FileRef {
+export interface FileHandle {
     path: string;
 }
 

@@ -1,5 +1,5 @@
 import {assert} from 'chai';
-import {Files, FileRef} from './Files';
+import {Files, FileHandle} from './Files';
 import {FilePaths} from './FilePaths';
 import os from "os";
 import fs from 'fs';
@@ -53,7 +53,7 @@ describe('Files', function() {
 
             const dataOutputPath = FilePaths.join(tmpdir, "data-output.txt");
 
-            const fileRef: FileRef = {path: dataInputPath};
+            const fileRef: FileHandle = {path: dataInputPath};
 
             await Files.writeFileAsync(dataOutputPath, fileRef);
 

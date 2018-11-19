@@ -2,7 +2,7 @@ import {Datastore, DeleteResult, FileMeta, InitResult} from './Datastore';
 import {Preconditions} from '../Preconditions';
 import {Logger} from '../logger/Logger';
 import {DocMetaFileRef, DocMetaRef} from './DocMetaRef';
-import {FileDeleted, FileRef, Files} from '../util/Files';
+import {FileDeleted, FileHandle, Files} from '../util/Files';
 import {FilePaths} from '../util/FilePaths';
 import {Directories} from './Directories';
 
@@ -157,7 +157,7 @@ export class DiskDatastore implements Datastore {
 
     public async writeFile(backend: Backend,
                            name: string,
-                           data: FileRef | Buffer | string,
+                           data: FileHandle | Buffer | string,
                            meta: FileMeta = {}): Promise<DatastoreFile> {
 
         DatastoreFiles.assertSanitizedFileName(name);

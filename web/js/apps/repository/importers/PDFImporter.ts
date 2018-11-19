@@ -5,7 +5,7 @@ import {FileLoader} from '../../main/loaders/FileLoader';
 import {Logger} from '../../../logger/Logger';
 import {PDFMetadata} from './PDFMetadata';
 import {Optional} from '../../../util/ts/Optional';
-import {FileRef, Files} from '../../../util/Files';
+import {FileHandle, Files} from '../../../util/Files';
 import {Hashcodes} from '../../../Hashcodes';
 import {Backend} from '../../../datastore/Backend';
 import {Directories} from '../../../datastore/Directories';
@@ -69,7 +69,7 @@ export class PDFImporter {
         // data, not a symlink since that's not really portable and it would
         // also be danging if the user deleted the file.  Wasting space here is
         // a good thing.  Space is cheap.
-        const inputFileRef: FileRef = {path: filePath};
+        const inputFileRef: FileHandle = {path: filePath};
 
         await this.persistenceLayer.writeFile(Backend.STASH, filename, inputFileRef);
 

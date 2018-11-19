@@ -6,7 +6,7 @@ import {Backend} from './Backend';
 import {DatastoreFile} from './DatastoreFile';
 import {Optional} from '../util/ts/Optional';
 import {IDocInfo} from '../metadata/DocInfo';
-import {FileDeleted, FileRef} from '../util/Files';
+import {FileDeleted, FileHandle} from '../util/Files';
 import {Latch} from '../util/Latch';
 import {Simulate} from 'react-dom/test-utils';
 import input = Simulate.input;
@@ -105,7 +105,7 @@ interface WritableBinaryDatastore {
      */
     writeFile(backend: Backend,
               name: string,
-              data: FileRef | Buffer | string,
+              data: FileHandle | Buffer | string,
               meta?: FileMeta): Promise<DatastoreFile>;
 
     deleteFile(backend: Backend, name: string): Promise<void>;

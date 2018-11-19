@@ -6,7 +6,7 @@ import {DatastoreFile} from './DatastoreFile';
 import {Optional} from '../util/ts/Optional';
 import {FileMeta} from './Datastore';
 import {DocInfo} from '../metadata/DocInfo';
-import {FileRef} from '../util/Files';
+import {FileHandle} from '../util/Files';
 import {DatastoreMutation} from './DatastoreMutation';
 
 export interface IPersistenceLayer {
@@ -44,7 +44,7 @@ export interface IPersistenceLayer {
 
     writeFile(backend: Backend,
               name: string,
-              data: FileRef | Buffer | string,
+              data: FileHandle | Buffer | string,
               meta?: FileMeta): Promise<DatastoreFile>;
 
     getFile(backend: Backend, name: string): Promise<Optional<DatastoreFile>>;
