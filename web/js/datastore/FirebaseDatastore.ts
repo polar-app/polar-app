@@ -209,11 +209,11 @@ export class FirebaseDatastore implements Datastore, SynchronizingDatastore {
                            data: Buffer | string,
                            meta: FileMeta = {}): Promise<DatastoreFile> {
 
-        DatastoreFiles.assertValidFileName(ref);
-
         const storage = this.storage!;
 
-        const fileRef = storage.ref().child(`${backend}/${ref.name}`);
+        const storagePath = this.computeStoragePath(backend, ref);
+
+        const fileRef = storage.ref().child(storagePath);
 
         let uploadTask: firebase.storage.UploadTask;
 
@@ -263,11 +263,11 @@ export class FirebaseDatastore implements Datastore, SynchronizingDatastore {
 
     public async getFile(backend: Backend, ref: FileRef): Promise<Optional<DatastoreFile>> {
 
-        DatastoreFiles.assertValidFileName(ref);
-
         const storage = this.storage!;
 
-        const fileRef = storage.ref().child(`${backend}/${ref.name}`);
+        const storagePath = this.computeStoragePath(backend, ref);
+
+        const fileRef = storage.ref().child(storagePath);
 
         const url: string = await fileRef.getDownloadURL();
         const metadata = await fileRef.getMetadata();
@@ -279,13 +279,13 @@ export class FirebaseDatastore implements Datastore, SynchronizingDatastore {
 
     public async containsFile(backend: Backend, ref: FileRef): Promise<boolean> {
 
-        DatastoreFiles.assertValidFileName(ref);
-
         // TODO: we should have some cache here to avoid checking the server too
         // often but I don't think this is goign to be used often.
 
+        const storagePath = this.computeStoragePath(backend, ref);
+
         const storage = this.storage!;
-        const fileRef = storage.ref().child(`${backend}/${ref.name}`);
+        const fileRef = storage.ref().child(storagePath);
 
         try {
             await fileRef.getMetadata();
@@ -305,12 +305,13 @@ export class FirebaseDatastore implements Datastore, SynchronizingDatastore {
 
     public async deleteFile(backend: Backend, ref: FileRef): Promise<void> {
 
-        DatastoreFiles.assertValidFileName(ref);
-
         try {
 
             const storage = this.storage!;
-            const fileRef = storage.ref().child(`${backend}/${ref.name}`);
+
+            const storagePath = this.computeStoragePath(backend, ref);
+
+            const fileRef = storage.ref().child(storagePath);
             await fileRef.delete();
 
         } catch (e) {
@@ -410,6 +411,30 @@ export class FirebaseDatastore implements Datastore, SynchronizingDatastore {
 
     public addDocSynchronizationEventListener(listener: (docReplicationEvent: DocSynchronizationEvent) => void): void {
         this.docSynchronizationReactor.addEventListener(listener);
+    }
+
+    private computeStoragePath(backend: Backend, fileRef: FileRef): string {
+
+        if (fileRef.hashcode) {
+
+            // we're going to build this from the hashcode of the file
+            return `${backend}/${fileRef.hashcode.alg}+${fileRef.hashcode.enc}:${fileRef.hashcode.data}`;
+
+        } else {
+
+            // build a unique name from the filename and the UUID of the user.
+
+            const key = {
+                uid: this.getUserID(),
+                filename: fileRef.name
+            };
+
+            const id = Hashcodes.createID(key, 20);
+
+            return `${backend}/${id}`;
+
+        }
+
     }
 
     /**

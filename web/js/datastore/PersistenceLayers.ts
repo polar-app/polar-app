@@ -14,14 +14,6 @@ export class PersistenceLayers {
                                  target: IPersistenceLayer,
                                  listener: (transferEvent: TransferEvent) => void = NULL_FUNCTION) {
 
-        const docMetaFiles = await source.getDocMetaFiles();
-
-        const before = Date.now();
-        const total = docMetaFiles.length;
-        let completed = 0;
-
-        const asyncWorkQueue = new AsyncWorkQueue([]);
-
         async function handleStashFile(fileRef: FileRef) {
 
             if (! target.containsFile(Backend.STASH, fileRef)) {
@@ -59,7 +51,9 @@ export class PersistenceLayers {
             // https://firebase.google.com/docs/storage/web/download-files
 
             if (docFile.name) {
-                await asyncWorkQueue.enqueue(async () => handleStashFile(docFile));
+                // TODO: if we use the second queue it still locks up.
+                // await docFileAsyncWorkQueue.enqueue(async () => handleStashFile(docFile));
+                await handleStashFile(docFile);
             }
 
             await target.writeDocMeta(docMeta!);
@@ -74,11 +68,23 @@ export class PersistenceLayers {
 
         }
 
+        const docMetaFiles = await source.getDocMetaFiles();
+
+        const before = Date.now();
+        const total = docMetaFiles.length;
+        let completed = 0;
+
+        const docFileAsyncWorkQueue = new AsyncWorkQueue([]);
+        const docMetaAsyncWorkQueue = new AsyncWorkQueue([]);
+
         // build a work queue of async functions out of the docMetaFiles.
         docMetaFiles.forEach(docMetaFile =>
-                                 asyncWorkQueue.enqueue( async () => handleDocMetaFile(docMetaFile)));
+                                 docMetaAsyncWorkQueue.enqueue( async () => handleDocMetaFile(docMetaFile)));
 
-        asyncWorkQueue.execute();
+        const docFileExecutionPromise = docFileAsyncWorkQueue.execute();
+        const docMetaExecutionPromise = docMetaAsyncWorkQueue.execute();
+
+        await Promise.all([docFileExecutionPromise, docMetaExecutionPromise]);
 
     }
 
