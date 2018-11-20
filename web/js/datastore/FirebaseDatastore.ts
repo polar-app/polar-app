@@ -213,7 +213,7 @@ export class FirebaseDatastore implements Datastore, SynchronizingDatastore {
 
         const storage = this.storage!;
 
-        const fileRef = storage.ref().child(`${backend}/${ref}`);
+        const fileRef = storage.ref().child(`${backend}/${ref.name}`);
 
         let uploadTask: firebase.storage.UploadTask;
 
@@ -267,7 +267,7 @@ export class FirebaseDatastore implements Datastore, SynchronizingDatastore {
 
         const storage = this.storage!;
 
-        const fileRef = storage.ref().child(`${backend}/${ref}`);
+        const fileRef = storage.ref().child(`${backend}/${ref.name}`);
 
         const url: string = await fileRef.getDownloadURL();
         const metadata = await fileRef.getMetadata();
@@ -285,7 +285,7 @@ export class FirebaseDatastore implements Datastore, SynchronizingDatastore {
         // often but I don't think this is goign to be used often.
 
         const storage = this.storage!;
-        const fileRef = storage.ref().child(`${backend}/${ref}`);
+        const fileRef = storage.ref().child(`${backend}/${ref.name}`);
 
         try {
             await fileRef.getMetadata();
@@ -310,7 +310,7 @@ export class FirebaseDatastore implements Datastore, SynchronizingDatastore {
         try {
 
             const storage = this.storage!;
-            const fileRef = storage.ref().child(`${backend}/${ref}`);
+            const fileRef = storage.ref().child(`${backend}/${ref.name}`);
             await fileRef.delete();
 
         } catch (e) {

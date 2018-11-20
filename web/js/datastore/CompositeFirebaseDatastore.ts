@@ -138,12 +138,15 @@ export class CompositeFirebaseDatastore implements Datastore {
     // TODO: if the file is ONLY in firestore it won't be sync'd on a remote
     // computer so we should try to pull it down just in time when requested.
 
-    public async writeFile(backend: Backend, ref: FileRef, data: Buffer | string, meta: FileMeta = {}): Promise<DatastoreFile> {
+    public async writeFile(backend: Backend,
+                           ref: FileRef,
+                           data: Buffer | string, meta: FileMeta = {}): Promise<DatastoreFile> {
+
         DatastoreFiles.assertValidFileName(ref);
 
         const storage = this.storage!;
 
-        const fileRef = storage.ref().child(`${backend}/${ref}`);
+        const fileRef = storage.ref().child(`${backend}/${ref.name}`);
 
         let uploadTask: firebase.storage.UploadTask;
 
@@ -179,7 +182,7 @@ export class CompositeFirebaseDatastore implements Datastore {
 
         const storage = this.storage!;
 
-        const fileRef = storage.ref().child(`${backend}/${ref}`);
+        const fileRef = storage.ref().child(`${backend}/${ref.name}`);
 
         const url: string = await fileRef.getDownloadURL();
         const meta = await fileRef.getMetadata();
