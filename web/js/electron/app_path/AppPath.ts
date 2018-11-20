@@ -25,7 +25,7 @@ export class AppPath {
 
     }
 
-    public static set(path: string) {
+    public static set(appPath?: string) {
 
         const electronContext =  ElectronContextTypes.create();
 
@@ -33,7 +33,11 @@ export class AppPath {
             throw new Error("Call set from main context.");
         }
 
-        global.appPath = path;
+        if (! appPath) {
+            appPath = app.getAppPath();
+        }
+
+        global.appPath = appPath;
 
     }
 

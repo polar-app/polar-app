@@ -24,6 +24,7 @@ import {Version} from "../../util/Version";
 import {Files} from '../../util/Files';
 import {WebserverCerts} from '../../backend/webserver/WebserverCerts';
 import process from "process";
+import {AppPath} from '../../electron/app_path/AppPath';
 
 declare var global: any;
 
@@ -53,6 +54,8 @@ export class MainApp {
         // share the disk datastore with the remote.
 
         global.datastore = this.datastore;
+
+        AppPath.set();
 
         const webserverConfig = WebserverConfig.create({
             dir: app.getAppPath(),
@@ -88,7 +91,7 @@ export class MainApp {
         // *** start the webserver
 
         const webserver = new Webserver(webserverConfig, fileRegistry);
-        webserver.start();
+        await webserver.start();
 
         log.info("App loaded from: ", app.getAppPath());
         log.info("Stash dir: ", this.datastore.stashDir);

@@ -38,7 +38,7 @@ SpectronMain2.create(options).run(async state => {
     const webserver = new Webserver(webserverConfig, fileRegistry);
 
     try {
-        webserver.start();
+        await webserver.start();
     } catch (e) {
         console.warn("Webserver already running.");
     }

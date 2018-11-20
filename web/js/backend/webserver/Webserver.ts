@@ -33,7 +33,7 @@ export class Webserver {
 
     }
 
-    public start() {
+    public async start(): Promise<void> {
 
         express.static.mime.define({'text/html': ['chtml']});
 
@@ -62,6 +62,12 @@ export class Webserver {
                     .listen(this.webserverConfig.port, this.webserverConfig.host);
 
         }
+
+        // await for listening...
+
+        return new Promise<void>(resolve => {
+            this.server!.on('listening', () => resolve());
+        });
 
         // log.info(`Webserver up and running on port ${this.webserverConfig.port} with config: `, this.webserverConfig);
 

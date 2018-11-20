@@ -17,7 +17,7 @@ SpectronMain2.create().run(async state => {
     const resourceRegistry = new ResourceRegistry();
 
     const webserver = new Webserver(webserverConfig, fileRegistry, resourceRegistry);
-    webserver.start();
+    await webserver.start();
 
     state.window.loadFile(FilePaths.join(__dirname, "content.html"));
 
