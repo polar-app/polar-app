@@ -1,16 +1,25 @@
 "use strict";
+console.log("here at least");
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+const path_1 = __importDefault(require("path"));
 const fs_1 = __importDefault(require("fs"));
 const os_1 = __importDefault(require("os"));
 const url_1 = __importDefault(require("url"));
+const electron_1 = require("electron");
 function load(loadPath) {
     const os_type = os_1.default.type();
     return _loadFromHref(document.location.href, loadPath, os_type);
 }
 exports.load = load;
+function loadFromAppPath(relativePath) {
+    const appPath = electron_1.remote.getGlobal("appPath");
+    const entryPoint = path_1.default.join(appPath, relativePath);
+    require(entryPoint);
+}
+exports.loadFromAppPath = loadFromAppPath;
 function _loadFromHref(href, loadPath, os_type) {
     const resolvedPath = _resolveFromHref(href, loadPath, os_type);
     require(resolvedPath);

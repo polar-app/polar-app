@@ -1,4 +1,9 @@
 
+- Basic initial version of AppPath which can be used to load apps via HTTP now.
+
+- The data transfer from the disk store to the firebase store works which means
+  we're very close to having a full cloud implementation of sync.
+
 - Made the VH 100 fix for capture more picky 
 
 - Added small FAQ entry to enable Anki sync.

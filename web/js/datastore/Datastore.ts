@@ -210,7 +210,6 @@ export interface InitResult {
  */
 export interface DeleteResult {
 
-
 }
 
 /**

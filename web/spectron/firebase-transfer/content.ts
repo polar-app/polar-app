@@ -29,14 +29,22 @@ SpectronRenderer.run(async (state) => {
 
     new FirebaseTester(state).run(async () => {
 
+        const firebaseDatastore = new FirebaseDatastore();
+
         const source = new DefaultPersistenceLayer(new DiskDatastore());
-        const target = new DefaultPersistenceLayer(new FirebaseDatastore());
+        const target = new DefaultPersistenceLayer(firebaseDatastore);
 
         await Promise.all([source.init(), target.init()]);
 
-        PersistenceLayers.transfer(source, target, (transferEvent) => {
+        await Datastores.purge(firebaseDatastore, purgeEvent => {
+            console.log("Purge event: ", purgeEvent);
+        });
+
+        await PersistenceLayers.transfer(source, target, (transferEvent) => {
             console.log("Transfer event: ", transferEvent);
         });
+
+        await Promise.all([source.stop(), target.stop()]);
 
     });
 

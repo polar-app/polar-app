@@ -7,6 +7,7 @@ import path from 'path';
 import fs from 'fs';
 import os from 'os';
 import url from 'url';
+import {remote} from 'electron';
 
 declare var document: HTMLDocument;
 
@@ -27,6 +28,12 @@ export function load(loadPath: string) {
     const os_type = os.type();
 
     return _loadFromHref(document.location!.href, loadPath, os_type);
+}
+
+export function loadFromAppPath(relativePath: string) {
+    const appPath = remote.getGlobal("appPath");
+    const entryPoint = path.join(appPath, relativePath);
+    require(entryPoint);
 }
 
 /**

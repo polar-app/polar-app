@@ -317,6 +317,7 @@ export class FirebaseDatastore implements Datastore, SynchronizingDatastore {
         } catch (e) {
 
             if (e.code === "storage/object-not-found") {
+                // this is acceptable for now as we want deletes to be idempotent
                 return;
             }
 
