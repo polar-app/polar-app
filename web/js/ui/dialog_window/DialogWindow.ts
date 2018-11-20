@@ -89,7 +89,7 @@ export class DialogWindow {
 
             case ResourceType.APP:
 
-                let appURL = AppPaths.resource(options.resource.value);
+                let appURL = AppPaths.resourceURLFromRelativeURL(options.resource.value);
                 log.info("Loading app URL:" , appURL);
                 window.loadURL(appURL, {});
                 break

@@ -11,7 +11,7 @@ export class AppLauncher {
 
         return await SingletonBrowserWindow.getInstance(browserWindowTag, async () => {
 
-            const url = AppPaths.resource('./apps/repository/index.html');
+            const url = AppPaths.resourceURLFromRelativeURL('./apps/repository/index.html');
 
             return await MainAppBrowserWindowFactory.createWindow(BROWSER_WINDOW_OPTIONS, url);
 

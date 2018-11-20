@@ -52,7 +52,7 @@ export class PHZLoader extends FileLoader {
         // metadata / descriptors
         const fingerprint = Fingerprints.create(basename);
 
-        const appPath = AppPaths.relative('./htmlviewer/index.html');
+        const appPath = AppPaths.absoluteFromRelativePath('./htmlviewer/index.html');
 
         const filenameParam = encodeURIComponent(filename);
 

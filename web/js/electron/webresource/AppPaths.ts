@@ -15,15 +15,17 @@ const USE_FILE_URL = true;
  */
 export class AppPaths {
 
-    public static relative(relativePath: string) {
+    /**
+     * Create a full absolute path from a relative path.
+     */
+    public static absoluteFromRelativePath(relativePath: string) {
 
         // TODO: sometimes appPath is an ASAR file and that really confuses
         // us and we're going to need a strategy to handle that situation.
 
         const baseDirs = AppPaths.getBaseDirs();
 
-        for (let i = 0; i < baseDirs.length; i++) {
-            const baseDir = baseDirs[i];
+        for (const baseDir of baseDirs) {
 
             const absolutePath = path.resolve(baseDir, relativePath);
 
@@ -49,13 +51,40 @@ export class AppPaths {
     }
 
     /**
+     * Build a full resource URL from a given relative URL path.
+     *
+     * @param relativeURL
+     */
+    public static resourceURLFromRelativeURL(relativeURL: string,
+                                             useFileURL: boolean = USE_FILE_URL): string {
+
+        let relativePath = relativeURL;
+        let queryData = "";
+
+        if (relativeURL.indexOf("?") !== -1) {
+            relativePath = relativeURL.substring(0, relativeURL.indexOf("?"));
+            queryData = relativeURL.substring(relativeURL.indexOf("?"));
+        }
+
+        if (useFileURL) {
+
+            const absolutePath = AppPaths.absoluteFromRelativePath(relativePath);
+            return 'file://' + absolutePath + queryData;
+
+        } else {
+            return "http://localapp.getpolarized.io:8500/apps/repository/index.html";
+        }
+
+    }
+
+    /**
      * Get the basedir of the current webapp.
      */
     protected static getBaseDirs(): string[] {
 
-        let baseDirs: string[] = [];
+        const baseDirs: string[] = [];
 
-        if(! isPresent(app)) {
+        if (! isPresent(app)) {
             baseDirs.push(remote.app.getAppPath());
         } else {
             baseDirs.push(app.getAppPath());
@@ -64,35 +93,6 @@ export class AppPaths {
         baseDirs.push(process.cwd());
 
         return baseDirs;
-
-    }
-
-    /**
-     * Build a full resource URL from a given relative URL.
-     *
-     * @param relativeURI
-     */
-    static resource(relativeURI: string): string {
-
-        let relativePath = relativeURI;
-        let queryData = "";
-
-        if (relativeURI.indexOf("?") !== -1) {
-            relativePath = relativeURI.substring(0, relativeURI.indexOf("?"));
-            queryData = relativeURI.substring(relativeURI.indexOf("?"));
-        }
-
-        if(USE_FILE_URL) {
-
-            const path = AppPaths.relative(relativePath);
-
-            return 'file://' + path + queryData;
-
-        } else {
-            // return 'http://localapp.getpolarized.io:8500' + relativePath + queryData;
-            // return 'http://example.com'
-            return "http://localapp.getpolarized.io:8500/apps/repository/index.html";
-        }
 
     }
 

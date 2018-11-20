@@ -43,6 +43,7 @@ export class DatastoreTester {
 
                 console.log("===== before test ====");
 
+                // TODO: might want to run
                 Files.removeDirectoryRecursively(dataDir);
 
                 GlobalDataDir.set(dataDir);

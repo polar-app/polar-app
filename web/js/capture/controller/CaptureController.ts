@@ -80,7 +80,7 @@ export class CaptureController {
 
             log.debug("Starting capture for URL: " + url);
 
-            const appPath = AppPaths.relative('./apps/capture/progress/index.html');
+            const appPath = AppPaths.absoluteFromRelativePath('./apps/capture/progress/index.html');
             const appURL = 'file://' + appPath;
 
             webContents.once("did-finish-load", () => {

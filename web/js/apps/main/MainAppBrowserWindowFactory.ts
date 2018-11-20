@@ -7,11 +7,11 @@ const log = Logger.create();
 const WIDTH = 800 * 1.2;
 const HEIGHT = 1100 * 1.2;
 
-const DEFAULT_URL = AppPaths.resource('./apps/home/default.html');
+const DEFAULT_URL = AppPaths.resourceURLFromRelativeURL('./apps/home/default.html');
 
 // TODO: files in the root are always kept in the package we can just load
 // this as a native_image directly.
-export const APP_ICON = AppPaths.resource('./icon.png');
+export const APP_ICON = AppPaths.resourceURLFromRelativeURL('./icon.png');
 
 export const BROWSER_WINDOW_OPTIONS: Electron.BrowserWindowConstructorOptions = {
     backgroundColor: '#FFF',

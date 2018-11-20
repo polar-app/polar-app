@@ -23,6 +23,9 @@ import {IPersistenceLayer} from '../../js/datastore/IPersistenceLayer';
 import {Datastores} from '../../js/datastore/Datastores';
 import waitForExpect from 'wait-for-expect';
 import {BrowserWindowRegistry} from '../../js/electron/framework/BrowserWindowRegistry';
+import {Logger} from '../../js/logger/Logger';
+
+const log = Logger.create();
 
 mocha.setup('bdd');
 
@@ -49,7 +52,9 @@ SpectronRenderer.run(async (state) => {
                 // FIXME: I think this has a race.. I think this is purging the
                 // remote store but then getDocMetaFiles returns from cache
                 // first...
-                await Datastores.purge(datastore);
+                await Datastores.purge(datastore, purgeEvent => {
+                    log.info("purgeEvent: ", purgeEvent);
+                });
 
                 await waitForExpect(async () => {
                     const docMetaFiles = await persistenceLayer.getDocMetaFiles();
@@ -106,7 +111,6 @@ SpectronRenderer.run(async (state) => {
                     }
 
                 });
-
 
                 await datastore.init();
 

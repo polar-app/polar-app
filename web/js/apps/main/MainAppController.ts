@@ -46,7 +46,7 @@ export class MainAppController {
         browserWindowOptions.height = browserWindowOptions.height! * .9;
         browserWindowOptions.center = true;
 
-        const url = AppPaths.resource('./apps/capture/start-capture/index.html');
+        const url = AppPaths.resourceURLFromRelativeURL('./apps/capture/start-capture/index.html');
 
         await MainAppBrowserWindowFactory.createWindow(browserWindowOptions, url);
 

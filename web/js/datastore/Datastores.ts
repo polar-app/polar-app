@@ -5,6 +5,7 @@ import {Logger} from '../logger/Logger';
 import {DocMetaRef} from './DocMetaRef';
 import {DocMeta} from '../metadata/DocMeta';
 import {DocMetas} from '../metadata/DocMetas';
+import {NULL_FUNCTION} from '../util/Functions';
 
 const log = Logger.create();
 
@@ -50,7 +51,8 @@ export class Datastores {
      * Remove all the docs in a datastore.  Only do this for testing and for
      * very important use cases.
      */
-    public static async purge(datastore: Datastore) {
+    public static async purge(datastore: Datastore,
+                              purgeListener: PurgeListener = NULL_FUNCTION) {
 
         const docMetaFiles = await datastore.getDocMetaFiles();
 
@@ -77,3 +79,11 @@ export class Datastores {
 }
 
 export type DocMetaListener = (docMeta: DocMeta) => void;
+
+export interface PurgeEvent {
+    readonly completed: number;
+    readonly total: number;
+    readonly progress: number;
+}
+
+export type PurgeListener = (purgeEvent: PurgeEvent) => void;

@@ -142,7 +142,7 @@ export abstract class AbstractWebviewWebContentsDriver extends StandardWebConten
         // ok... now the page isn't setup properly and we need to load the app
         // and then adjust the webview properly.
 
-        const resourceURL = AppPaths.resource(this.appPath);
+        const resourceURL = AppPaths.resourceURLFromRelativeURL(this.appPath);
 
         window.loadURL(resourceURL);
 
