@@ -86,6 +86,10 @@ export class Datastores {
 
         }
 
+        if (total === 0) {
+            purgeListener({completed, total, progress: 100});
+        }
+
     }
 
 }
