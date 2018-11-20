@@ -4,7 +4,7 @@ import {BrowserWindowPromises} from '../../electron/framework/BrowserWindowPromi
 import {WebContentsPromises} from '../../electron/framework/WebContentsPromises';
 import {DialogWindowReference} from './DialogWindowReference';
 import {DialogWindowMenu} from './DialogWindowMenu';
-import {AppPaths} from '../../electron/webresource/AppPaths';
+import {ResourcePaths} from '../../electron/webresource/ResourcePaths';
 import {Preconditions} from '../../Preconditions';
 
 const log = Logger.create();
@@ -89,7 +89,7 @@ export class DialogWindow {
 
             case ResourceType.APP:
 
-                let appURL = AppPaths.resourceURLFromRelativeURL(options.resource.value);
+                let appURL = ResourcePaths.resourceURLFromRelativeURL(options.resource.value);
                 log.info("Loading app URL:" , appURL);
                 window.loadURL(appURL, {});
                 break

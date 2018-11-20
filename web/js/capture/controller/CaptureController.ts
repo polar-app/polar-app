@@ -1,4 +1,4 @@
-import {AppPaths} from "../../electron/webresource/AppPaths";
+import {ResourcePaths} from "../../electron/webresource/ResourcePaths";
 import {PHZLoader} from '../../apps/main/loaders/PHZLoader';
 import {ipcMain} from 'electron';
 import {Preconditions} from '../../Preconditions';
@@ -80,7 +80,7 @@ export class CaptureController {
 
             log.debug("Starting capture for URL: " + url);
 
-            const appPath = AppPaths.absoluteFromRelativePath('./apps/capture/progress/index.html');
+            const appPath = ResourcePaths.absoluteFromRelativePath('./apps/capture/progress/index.html');
             const appURL = 'file://' + appPath;
 
             webContents.once("did-finish-load", () => {

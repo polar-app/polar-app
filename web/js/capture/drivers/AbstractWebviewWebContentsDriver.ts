@@ -1,6 +1,6 @@
 import {Logger} from '../../logger/Logger';
 import {StandardWebContentsDriver} from './StandardWebContentsDriver';
-import {AppPaths} from '../../electron/webresource/AppPaths';
+import {ResourcePaths} from '../../electron/webresource/ResourcePaths';
 import {notNull} from '../../Preconditions';
 import {BrowserWindows} from '../BrowserWindows';
 import {BrowserWindow} from "electron";
@@ -142,7 +142,7 @@ export abstract class AbstractWebviewWebContentsDriver extends StandardWebConten
         // ok... now the page isn't setup properly and we need to load the app
         // and then adjust the webview properly.
 
-        const resourceURL = AppPaths.resourceURLFromRelativeURL(this.appPath);
+        const resourceURL = ResourcePaths.resourceURLFromRelativeURL(this.appPath);
 
         window.loadURL(resourceURL);
 

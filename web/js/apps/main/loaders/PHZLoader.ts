@@ -4,7 +4,7 @@ import {Logger} from '../../../logger/Logger';
 import {FileLoader} from './FileLoader';
 import {CacheRegistry} from '../../../backend/proxyserver/CacheRegistry';
 import {WebResource} from '../../../electron/webresource/WebResource';
-import {AppPaths} from '../../../electron/webresource/AppPaths';
+import {ResourcePaths} from '../../../electron/webresource/ResourcePaths';
 import {LoadedFile} from './LoadedFile';
 import {Descriptors} from '../../../viewer/html/Descriptors';
 import {FilePaths} from '../../../util/FilePaths';
@@ -52,7 +52,7 @@ export class PHZLoader extends FileLoader {
         // metadata / descriptors
         const fingerprint = Fingerprints.create(basename);
 
-        const appPath = AppPaths.absoluteFromRelativePath('./htmlviewer/index.html');
+        const appPath = ResourcePaths.absoluteFromRelativePath('./htmlviewer/index.html');
 
         const filenameParam = encodeURIComponent(filename);
 

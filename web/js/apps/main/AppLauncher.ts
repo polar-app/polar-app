@@ -1,6 +1,6 @@
 import {BrowserWindow} from "electron";
 import {BROWSER_WINDOW_OPTIONS, MainAppBrowserWindowFactory} from './MainAppBrowserWindowFactory';
-import {AppPaths} from '../../electron/webresource/AppPaths';
+import {ResourcePaths} from '../../electron/webresource/ResourcePaths';
 import {SingletonBrowserWindow} from '../../electron/framework/SingletonBrowserWindow';
 
 export class AppLauncher {
@@ -11,7 +11,7 @@ export class AppLauncher {
 
         return await SingletonBrowserWindow.getInstance(browserWindowTag, async () => {
 
-            const url = AppPaths.resourceURLFromRelativeURL('./apps/repository/index.html');
+            const url = ResourcePaths.resourceURLFromRelativeURL('./apps/repository/index.html');
 
             return await MainAppBrowserWindowFactory.createWindow(BROWSER_WINDOW_OPTIONS, url);
 

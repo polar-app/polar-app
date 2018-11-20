@@ -5,7 +5,7 @@
 // page's size, which means the actual window's size will include window frame's
 // size and be slightly larger. Default is false.
 
-import {AppPaths} from '../electron/webresource/AppPaths';
+import {ResourcePaths} from '../electron/webresource/ResourcePaths';
 import {Logger} from '../logger/Logger';
 import {BrowserProfile} from './BrowserProfile';
 import BrowserWindowConstructorOptions = Electron.BrowserWindowConstructorOptions;

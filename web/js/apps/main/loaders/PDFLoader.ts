@@ -1,7 +1,7 @@
 import {FileLoader} from './FileLoader';
 import {WebResource} from '../../../electron/webresource/WebResource';
 import {FileRegistry} from '../../../backend/webserver/FileRegistry';
-import {AppPaths} from '../../../electron/webresource/AppPaths';
+import {ResourcePaths} from '../../../electron/webresource/ResourcePaths';
 import {LoadedFile} from './LoadedFile';
 import {Logger} from '../../../logger/Logger';
 import {FilePaths} from '../../../util/FilePaths';
@@ -26,7 +26,7 @@ export class PDFLoader extends FileLoader {
         const fileParam = encodeURIComponent(fileMeta.url);
         const filenameParam = encodeURIComponent(filename);
 
-        const appURL = AppPaths.resourceURLFromRelativeURL(`./pdfviewer/web/viewer.html?file=${fileParam}&filename=${filenameParam}`);
+        const appURL = ResourcePaths.resourceURLFromRelativeURL(`./pdfviewer/web/viewer.html?file=${fileParam}&filename=${filenameParam}`);
 
         return {
             webResource: WebResource.createURL(appURL)

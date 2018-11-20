@@ -1,5 +1,5 @@
 import {app, BrowserWindow, dialog} from 'electron';
-import {AppPaths} from '../../electron/webresource/AppPaths';
+import {ResourcePaths} from '../../electron/webresource/ResourcePaths';
 import {Logger} from '../../logger/Logger';
 import {Services} from '../../util/services/Services';
 import {FileLoader} from './loaders/FileLoader';
@@ -46,7 +46,7 @@ export class MainAppController {
         browserWindowOptions.height = browserWindowOptions.height! * .9;
         browserWindowOptions.center = true;
 
-        const url = AppPaths.resourceURLFromRelativeURL('./apps/capture/start-capture/index.html');
+        const url = ResourcePaths.resourceURLFromRelativeURL('./apps/capture/start-capture/index.html');
 
         await MainAppBrowserWindowFactory.createWindow(browserWindowOptions, url);
 

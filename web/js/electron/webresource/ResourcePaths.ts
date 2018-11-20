@@ -13,7 +13,7 @@ const USE_FILE_URL = true;
  * find an path to a file as if we were in the root of the webapp.
  *
  */
-export class AppPaths {
+export class ResourcePaths {
 
     /**
      * Create a full absolute path from a relative path.
@@ -23,7 +23,7 @@ export class AppPaths {
         // TODO: sometimes appPath is an ASAR file and that really confuses
         // us and we're going to need a strategy to handle that situation.
 
-        const baseDirs = AppPaths.getBaseDirs();
+        const baseDirs = ResourcePaths.getBaseDirs();
 
         for (const baseDir of baseDirs) {
 
@@ -68,7 +68,7 @@ export class AppPaths {
 
         if (useFileURL) {
 
-            const absolutePath = AppPaths.absoluteFromRelativePath(relativePath);
+            const absolutePath = ResourcePaths.absoluteFromRelativePath(relativePath);
             return 'file://' + absolutePath + queryData;
 
         } else {
