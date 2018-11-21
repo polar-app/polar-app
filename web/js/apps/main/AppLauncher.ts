@@ -15,7 +15,14 @@ export class AppLauncher {
         return await SingletonBrowserWindow.getInstance(browserWindowTag, async () => {
             const url = ResourcePaths.resourceURLFromRelativeURL('/apps/repository/index.html', false);
             log.info("Loading app from URL: " + url);
-            return await MainAppBrowserWindowFactory.createWindow(BROWSER_WINDOW_OPTIONS, url);
+
+            const browserWindowOptions = Object.assign({}, BROWSER_WINDOW_OPTIONS);
+
+            // use a 'polar-app' session so we don't use the default session which
+            // is intercepted.
+            browserWindowOptions.webPreferences!.partition = 'persist:polar-app';
+
+            return await MainAppBrowserWindowFactory.createWindow(browserWindowOptions, url);
         });
 
     }

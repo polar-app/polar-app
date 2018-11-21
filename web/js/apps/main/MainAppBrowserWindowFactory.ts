@@ -62,10 +62,6 @@ export class MainAppBrowserWindowFactory {
     public static createWindow(browserWindowOptions: Electron.BrowserWindowConstructorOptions = BROWSER_WINDOW_OPTIONS,
                                url = DEFAULT_URL): Promise<BrowserWindow> {
 
-        log.info("Creating window for URL: ", url);
-
-        // TODO: offset the window vs the currently focused window
-
         browserWindowOptions = Object.assign({}, browserWindowOptions);
 
         const position = this.computeXY();
@@ -77,6 +73,8 @@ export class MainAppBrowserWindowFactory {
             browserWindowOptions.x = position.x;
             browserWindowOptions.y = position.y;
         }
+
+        log.info(`Creating window for URL: ${url} in partition ${browserWindowOptions.webPreferences!.partition}`);
 
         // Create the browser window.
         const browserWindow = new BrowserWindow(browserWindowOptions);
@@ -164,3 +162,4 @@ interface Position {
     x: number;
     y: number;
 }
+
