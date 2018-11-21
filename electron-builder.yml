@@ -45,6 +45,8 @@ nsis:
 
 appx:
   artifactName: ${name}-${version}-${arch}.${ext}
+  applicationId: polar
+  identityName: polar
 
 win:
   artifactName: ${name}-${version}-${arch}.${ext}
