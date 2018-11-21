@@ -5,19 +5,16 @@ import {LoadedFile} from './LoadedFile';
 
 export class AnalyticsFileLoader extends FileLoader {
 
-    private readonly userAgent: string;
-
     private readonly delegate: FileLoader;
 
-    constructor(userAgent: string, delegate: FileLoader) {
+    constructor(delegate: FileLoader) {
         super();
-        this.userAgent = userAgent;
         this.delegate = delegate;
     }
 
     public registerForLoad(path: string): Promise<LoadedFile> {
 
-        const appAnalytics = GA.getAppAnalytics(this.userAgent);
+        const appAnalytics = GA.getAppAnalytics();
 
         const fileType = FileTypes.create(path);
 
