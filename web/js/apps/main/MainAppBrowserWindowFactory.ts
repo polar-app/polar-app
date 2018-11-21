@@ -101,11 +101,16 @@ export class MainAppBrowserWindowFactory {
         });
 
         browserWindow.webContents.on('will-navigate', (e, url) => {
-            log.info("Attempt to navigate to new URL: ", url);
-            // required to force the URLs clicked to open in a new browser.  The
-            // user probably / certainly wants to use their main browser.
-            e.preventDefault();
-            shell.openExternal(url);
+
+            // FIXME: this is breaking firebase auth as it's blocking our main
+            // app from loading...
+
+            // log.info("Attempt to navigate to new URL: ", url);
+            // // required to force the URLs clicked to open in a new browser.  The
+            // // user probably / certainly wants to use their main browser.
+            // e.preventDefault();
+            // shell.openExternal(url);
+
         });
 
         log.info("Loading URL: " + url);

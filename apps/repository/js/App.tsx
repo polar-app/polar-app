@@ -35,6 +35,8 @@ import {SyncBar, SyncBarProgress} from '../../../web/js/ui/sync_bar/SyncBar';
 import {IEventDispatcher, SimpleReactor} from '../../../web/js/reactor/SimpleReactor';
 import {DocRepoAnkiSyncController} from '../../../web/js/controller/DocRepoAnkiSyncController';
 import {Tooltip, UncontrolledTooltip, Collapse} from 'reactstrap';
+import {CloudAuthButton} from '../../../web/js/ui/cloud_auth/CloudAuthButton';
+import {CloudAuthModal} from '../../../web/js/ui/cloud_auth/CloudAuthModal';
 
 const log = Logger.create();
 
@@ -162,7 +164,12 @@ export default class App extends React.Component<AppProps, AppState> {
                                        onChange={() => this.onFilterByTitle()}/>
                             </div>
 
+                            <div className="header-filter-box">
+                                <CloudAuthButton/>
+                            </div>
+
                             <div className="p-1">
+
                                 <TableDropdown id="table-dropdown"
                                                options={Object.values(this.state.columns)}
                                                onSelectedColumns={() => this.onSelectedColumns()}/>
@@ -177,6 +184,8 @@ export default class App extends React.Component<AppProps, AppState> {
                 </header>
 
                 <MessageBanner/>
+
+                <CloudAuthModal/>
 
                 <div id="doc-table">
                 <ReactTable

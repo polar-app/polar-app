@@ -2,10 +2,17 @@ import * as firebase from './lib/firebase';
 // import fb = firebase;
 
 export class Firebase {
+
+    private static app?: firebase.app.App;
+
     /**
      * Perform init of Firebase with our auth credentials.
      */
     public static init(): firebase.app.App {
+
+        if (this.app) {
+            return this.app;
+        }
 
         const config = {
             apiKey: "AIzaSyDokaZQO8TkmwtU4WKGnxKNyVumD79JYW0",
@@ -17,7 +24,7 @@ export class Firebase {
             timestampsInSnapshots: true
         };
 
-        return firebase.initializeApp(config);
+        return this.app = firebase.initializeApp(config);
 
     }
 

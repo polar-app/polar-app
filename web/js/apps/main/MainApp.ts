@@ -117,11 +117,14 @@ export class MainApp {
         //
         // })
 
-        const cacheInterceptorService =
-            new CachingStreamInterceptorService(cacheRegistry,
-                                                mainSession.protocol);
+        // FIXME: this is breaking google auth as it's messing with our HTTP
+        // headers..
 
-        await cacheInterceptorService.start();
+        // const cacheInterceptorService =
+        //     new CachingStreamInterceptorService(cacheRegistry,
+        //                                         mainSession.protocol);
+        //
+        // await cacheInterceptorService.start();
 
         await captureController.start();
         await dialogWindowService.start();
