@@ -43,10 +43,14 @@ linux:
 nsis:
   artifactName: ${name}-${version}-${arch}.${ext}
 
+appx:
+  artifactName: ${name}-${version}-${arch}.${ext}
+
 win:
   artifactName: ${name}-${version}-${arch}.${ext}
   target:
     - target: nsis
+    - target: appx
     #- target: portable
   icon: ./icons/icon-512x512.png
   fileAssociations:
