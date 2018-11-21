@@ -66,7 +66,7 @@ export class Webserver {
         // await for listening...
 
         return new Promise<void>(resolve => {
-            this.server!.on('listening', () => resolve());
+            this.server!.once('listening', () => resolve());
         });
 
         // log.info(`Webserver up and running on port ${this.webserverConfig.port} with config: `, this.webserverConfig);
