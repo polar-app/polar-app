@@ -13,13 +13,9 @@ export class AppLauncher {
         const browserWindowTag = {name: 'app', value: 'repository'};
 
         return await SingletonBrowserWindow.getInstance(browserWindowTag, async () => {
-
-            // FIXME: once we switch to loading this via a real HTTP URL it fails and I'm not sure why...
-
             const url = ResourcePaths.resourceURLFromRelativeURL('/apps/repository/index.html', false);
             log.info("Loading app from URL: " + url);
             return await MainAppBrowserWindowFactory.createWindow(BROWSER_WINDOW_OPTIONS, url);
-
         });
 
     }
