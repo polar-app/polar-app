@@ -28,7 +28,7 @@ export class Objects {
      *
      * @param obj
      */
-    static clear(obj: any) {
+    public static clear(obj: any) {
 
         if(obj instanceof Array) {
 
@@ -54,11 +54,11 @@ export class Objects {
 
     }
 
-    static duplicate(obj: any) {
+    public static duplicate(obj: any) {
         return JSON.parse(JSON.stringify(obj));
     }
 
-    static create<T>(proto: any): T {
+    public static create<T>(proto: any): T {
         return Object.create(proto);
     }
 

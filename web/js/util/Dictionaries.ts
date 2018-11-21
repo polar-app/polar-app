@@ -105,6 +105,11 @@ export class Dictionaries {
     }
 
 
+    /**
+     * Create a deep copy of the given dictionary.
+     *
+     * @param dict
+     */
     public static copyOf(dict: any): any {
 
         if (dict === undefined || dict === null) {

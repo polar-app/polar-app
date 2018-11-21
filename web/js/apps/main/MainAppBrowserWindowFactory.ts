@@ -13,7 +13,7 @@ const DEFAULT_URL = ResourcePaths.resourceURLFromRelativeURL('./apps/home/defaul
 // this as a native_image directly.
 export const APP_ICON = ResourcePaths.resourceURLFromRelativeURL('./icon.png');
 
-export const BROWSER_WINDOW_OPTIONS: Electron.BrowserWindowConstructorOptions = {
+export const BROWSER_WINDOW_OPTIONS: Electron.BrowserWindowConstructorOptions = Object.freeze({
     backgroundColor: '#FFF',
     minWidth: WIDTH * 0.4,
     minHeight: HEIGHT * 0.4,
@@ -55,7 +55,7 @@ export const BROWSER_WINDOW_OPTIONS: Electron.BrowserWindowConstructorOptions = 
 
     }
 
-};
+});
 
 export class MainAppBrowserWindowFactory {
 
@@ -99,6 +99,7 @@ export class MainAppBrowserWindowFactory {
         });
 
         browserWindow.webContents.on('will-navigate', (e, url) => {
+            console.log("FIXME: loading URL: " + url);
 
             // FIXME: this is breaking firebase auth as it's blocking our main
             // app from loading...

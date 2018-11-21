@@ -164,9 +164,9 @@ export default class App extends React.Component<AppProps, AppState> {
                                        onChange={() => this.onFilterByTitle()}/>
                             </div>
 
-                            <div className="header-filter-box">
-                                <CloudAuthButton/>
-                            </div>
+                            {/*<div className="header-filter-box">*/}
+                                {/*<CloudAuthButton/>*/}
+                            {/*</div>*/}
 
                             <div className="p-1">
 
@@ -185,7 +185,7 @@ export default class App extends React.Component<AppProps, AppState> {
 
                 <MessageBanner/>
 
-                <CloudAuthModal/>
+                {/*<CloudAuthModal/>*/}
 
                 <div id="doc-table">
                 <ReactTable

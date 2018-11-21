@@ -3,6 +3,7 @@ import {BROWSER_WINDOW_OPTIONS, MainAppBrowserWindowFactory} from './MainAppBrow
 import {ResourcePaths} from '../../electron/webresource/ResourcePaths';
 import {SingletonBrowserWindow} from '../../electron/framework/SingletonBrowserWindow';
 import {Logger} from "../../logger/Logger";
+import {Dictionaries} from "../../util/Dictionaries";
 
 const log =  Logger.create();
 
@@ -16,10 +17,10 @@ export class AppLauncher {
             const url = ResourcePaths.resourceURLFromRelativeURL('/apps/repository/index.html', false);
             log.info("Loading app from URL: " + url);
 
-            const browserWindowOptions = Object.assign({}, BROWSER_WINDOW_OPTIONS);
+            const browserWindowOptions = Dictionaries.copyOf(BROWSER_WINDOW_OPTIONS);
 
-            // use a 'polar-app' session so we don't use the default session which
-            // is intercepted.
+            // use a 'polar-app' session so we don't use the default session
+            // which is intercepted.
             browserWindowOptions.webPreferences!.partition = 'persist:polar-app';
 
             return await MainAppBrowserWindowFactory.createWindow(browserWindowOptions, url);

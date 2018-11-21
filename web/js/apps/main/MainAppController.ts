@@ -149,8 +149,6 @@ export class MainAppController {
             throw new Error("No target window given");
         }
 
-        // targetWindow.webContents.session;
-
         const loadedFile = await this.fileLoader.registerForLoad(path);
 
         log.info("Loading webapp at: " + loadedFile.webResource);
