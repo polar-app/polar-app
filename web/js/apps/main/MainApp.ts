@@ -131,7 +131,9 @@ export class MainApp {
 
         const userAgent = mainWindow.webContents.getUserAgent();
 
-        const fileLoader = new AnalyticsFileLoader(userAgent, defaultFileLoader);
+        GA.setUserAgent(userAgent);
+
+        const fileLoader = new AnalyticsFileLoader(defaultFileLoader);
 
         await new DocInfoBroadcasterService().start();
 
@@ -148,7 +150,7 @@ export class MainApp {
         const mainAppMenu = new MainAppMenu(mainAppController);
         mainAppMenu.setup();
 
-        this.sendAnalytics(userAgent);
+        this.sendAnalytics();
 
         app.on('open-file', async (event, path) => {
 
@@ -206,11 +208,11 @@ export class MainApp {
 
     }
 
-    private sendAnalytics(userAgent: string) {
+    private sendAnalytics() {
 
         // send off analytics so we know who's using the platform.
 
-        const appAnalytics = GA.getAppAnalytics(userAgent);
+        const appAnalytics = GA.getAppAnalytics();
 
         appAnalytics.set('version', Version.get());
 

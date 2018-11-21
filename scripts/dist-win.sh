@@ -11,6 +11,8 @@ export CSC_LINK=/root/windows-csc/spinn3r.p12
 
 WINDOWS_CSC_DIR=$(readlink -m ../polar-bookshelf-secrets/windows-csc)
 
+source ${WINDOWS_CSC_DIR}/windows.sh
+
 # Error: Cannot extract publisher name from code signing certificate, please
 # file issue. As workaround, set win.publisherName: Error: Exit code: 1. Command
 # failed: openssl pkcs12 -nokeys -nodes -passin pass: -nomacver -clcerts -in

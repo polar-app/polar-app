@@ -141,7 +141,6 @@ export class FirebaseDatastore implements Datastore, SynchronizingDatastore {
     public async delete(docMetaFileRef: DocMetaFileRef,
                         datastoreMutation: DatastoreMutation<boolean> = new DefaultDatastoreMutation()): Promise<Readonly<DeleteResult>> {
 
-
         if (docMetaFileRef.docFile && docMetaFileRef.docFile.name) {
 
             // the PDF/PHZ data file should be added as a stash file via

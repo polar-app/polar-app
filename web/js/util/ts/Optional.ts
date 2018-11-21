@@ -153,12 +153,22 @@ export class Optional<T> {
      * we could use lodash or a stream-like API but it's a bit easier to just
      * do it this way.
      */
-    public static first<T>(...values: Array<T | null | undefined>): Optional<T> {
+    public static first<T>(...values: Array<T | null | undefined | Optional<T>>): Optional<T> {
 
         for (const value of values) {
-            if (isPresent(value)) {
-                return Optional.of(value);
+
+            let val: T | null | undefined;
+
+            if (value instanceof Optional) {
+                val = value.getOrUndefined();
+            } else {
+                val = value;
             }
+
+            if (isPresent(val)) {
+                return Optional.of(val);
+            }
+
         }
 
         return Optional.empty();

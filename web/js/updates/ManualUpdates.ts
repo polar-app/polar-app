@@ -5,6 +5,9 @@ import {Logger} from '../logger/Logger';
 
 import process from 'process';
 import {Broadcasters} from '../ipc/Broadcasters';
+import {AppAnalytics} from '../ga/AppAnalytics';
+import {GA} from '../ga/GA';
+import {Version} from '../util/Version';
 
 // borrowed from here and ported to typescript:
 //
@@ -34,7 +37,7 @@ export class ManualUpdates {
 let updater: Electron.MenuItem | null;
 
 autoUpdater.on('error', (error) => {
-    dialog.showErrorBox('Error: ', error == null ? "unknown" : (error.stack || error).toString())
+    dialog.showErrorBox('Error: ', error == null ? "unknown" : (error.stack || error).toString());
 });
 
 autoUpdater.on('update-available', () => {
@@ -51,6 +54,18 @@ autoUpdater.on('update-available', () => {
         if (buttonIndex === 0) {
 
             autoUpdater.downloadUpdate()
+                .then(async () => {
+
+                    try {
+
+                        await GA.getInstance().event('updates', 'manual-update');
+                        await GA.getInstance().event('updates', 'manual-update-' + Version.get());
+
+                    } catch (e) {
+                        log.error("Unable to send event data: ", e);
+                    }
+
+                })
                 .catch(err => log.error("Error handling updates: " + err ));
 
         } else {
@@ -93,11 +108,7 @@ autoUpdater.on('download-progress', (progress: ProgressInfo) => {
     // ProgressBar
 
     // https://github.com/electron-userland/electron-builder/blob/docs/auto-update.md#event-download-progress
-    //
-    // bytesPerSecond
-    // percent
-    // total
-    // transferred
+    // bytesPerSecond percent total transferred
 
     log.info(`Auto update download progress: ${progress.percent}. `, progress);
 

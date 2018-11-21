@@ -72,9 +72,9 @@ export class Objects {
         return result;
     }
 
-    public static typedKeys<T>(o: T): (keyof T)[] {
+    public static typedKeys<T>(obj: T): Array<(keyof T)> {
         // type cast should be safe because that's what really Object.keys() does
-        return Object.keys(o) as (keyof T)[];
+        return Object.keys(obj) as Array<(keyof T)>;
     }
 
 
