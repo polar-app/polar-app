@@ -10,11 +10,16 @@ const log = Logger.create();
 class AggregateParser implements ContentMetaParser {
 
     private readonly delegates: ContentMetaParser[] = [
-        new TwitterCardParser()
+        new TwitterCardParser(),
+        new OGCardParser()
+
+        // TODO support hatom, microdata
+
     ];
 
     public parse(doc: Document): Readonly<ContentMeta> {
 
+        // parse the doc using every parser
         const results =
             this.delegates.map(current => {
 
@@ -28,6 +33,7 @@ class AggregateParser implements ContentMetaParser {
 
             });
 
+        // now take the results and merge them.
         const result = createNullContentMeta();
 
         for (const key of Objects.typedKeys(result)) {
@@ -50,6 +56,7 @@ class AggregateParser implements ContentMetaParser {
     }
 
 }
+
 export class ContentMetas {
 
     private static readonly parser = new AggregateParser();
@@ -79,6 +86,20 @@ class TwitterCardParser implements ContentMetaParser {
     }
 
 }
+
+class OGCardParser implements ContentMetaParser {
+
+    public parse(doc: Document): ContentMeta {
+        const result = createNullContentMeta();
+
+        result.title = metaValue(doc, 'article:title').getOrUndefined();
+        result.description = metaValue(doc, 'article:description').getOrUndefined();
+
+        return result;
+    }
+
+}
+
 
 function createNullContentMeta(): ContentMeta {
 
