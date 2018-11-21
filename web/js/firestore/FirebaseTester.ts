@@ -50,6 +50,7 @@ export class FirebaseTester {
                                 (err) => this.onAuthError(err));
 
     }
+
     public async onAuth(user: firebase.User | null) {
 
         this.currentUser = user!;

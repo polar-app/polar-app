@@ -98,17 +98,25 @@ export class MainAppBrowserWindowFactory {
             shell.openExternal(url);
         });
 
-        browserWindow.webContents.on('will-navigate', (e, url) => {
-            console.log("FIXME: loading URL: " + url);
+        browserWindow.webContents.on('will-navigate', (e, navURL) => {
 
-            // FIXME: this is breaking firebase auth as it's blocking our main
-            // app from loading...
+            // TODO: this is a bit of a hack and these URLs shouldn't be hard
+            // coded here.  We can refactor this in the future though.
+            if (navURL.startsWith("https://accounts.google.com") ||
+                navURL.startsWith("https://polar-32b0f.firebaseapp.com") ||
+                navURL.startsWith("http://localapp.getpolarized.io")) {
 
-            // log.info("Attempt to navigate to new URL: ", url);
-            // // required to force the URLs clicked to open in a new browser.  The
-            // // user probably / certainly wants to use their main browser.
-            // e.preventDefault();
-            // shell.openExternal(url);
+                log.info("Allowing URL for authentication: " + navURL);
+
+                return;
+
+            }
+
+            log.info("Attempt to navigate to new URL: ", navURL);
+            // required to force the URLs clicked to open in a new browser.  The
+            // user probably / certainly wants to use their main browser.
+            e.preventDefault();
+            shell.openExternal(navURL);
 
         });
 

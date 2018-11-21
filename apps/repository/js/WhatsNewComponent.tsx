@@ -96,9 +96,9 @@ export class WhatsNewComponent extends React.Component<IProps, IState> {
 
     private static getDataPath() {
 
-        // TODO: this is a major major hack but the renderer has no reliable
-        // way to get the userData from the renderer. In the future I need
-        // to migrate to cookies for this.
+        // TODO: this is a major major hack but the renderer has no reliable way
+        // to get the userData path from the renderer. In the future I need to
+        // migrate to cookies for this...
         const userData = require('electron').remote.app.getPath('userData');
 
         return FilePaths.join(userData, 'whats-new.json');

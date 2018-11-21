@@ -19,14 +19,19 @@ export class CloudAuthModal extends React.Component<IProps, IState> {
     }
 
     public componentDidMount(): void {
-        Firebase.init();
-        FirebaseUIAuth.login({signInSuccessUrl: document.location!.href});
+    }
+
+    public componentDidUpdate(prevProps: Readonly<IProps>, prevState: Readonly<IState>, snapshot?: any): void {
+        if (this.props.isOpen) {
+            Firebase.init();
+            FirebaseUIAuth.login({signInSuccessUrl: document.location!.href});
+        }
     }
 
     public render() {
         return (
 
-            <LargeModal isOpen={true}>
+            <LargeModal isOpen={this.props.isOpen}>
 
                 <ModalHeader>Login to Polar</ModalHeader>
                 <LargeModalBody>
@@ -47,6 +52,7 @@ export class CloudAuthModal extends React.Component<IProps, IState> {
 }
 
 interface IProps {
+    isOpen: boolean;
 }
 
 interface IState {
