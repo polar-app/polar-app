@@ -61,6 +61,9 @@ export class ContentMetas {
 
     private static readonly parser = new AggregateParser();
 
+    /**
+     * Parse metadata from the given document.
+     */
     public static parse(doc: Document): Readonly<ContentMeta> {
         return this.parser.parse(doc);
     }
