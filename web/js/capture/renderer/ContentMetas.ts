@@ -2,6 +2,8 @@ import {ContentMeta} from "./ContentMeta";
 import {isPresent} from '../../Preconditions';
 import {Optional} from "../../util/ts/Optional";
 import {Logger} from "../../logger/Logger";
+import {Strings} from "../../util/Strings";
+import {Objects} from "../../util/Objects";
 
 const log = Logger.create();
 
@@ -28,10 +30,22 @@ class AggregateParser implements ContentMetaParser {
 
         const result = createNullContentMeta();
 
-        result.title = Optional.first(...results.map(current => current.title)).getOrUndefined();
-        result.title = Optional.first(...results.map(current => current.description)).getOrUndefined();
+        for (const key of Objects.typedKeys(result)) {
+            result[key] = this.first(current => current[key], ...results);
+        }
 
         return result;
+
+    }
+
+    private first(converter: (contentMeta: ContentMeta) => string | undefined,
+                  ...contentMeta: ContentMeta[]): string | undefined {
+
+        const results =
+            contentMeta.map(current => converter(current))
+                       .map(current => Strings.filterEmpty(current));
+
+        return Optional.first(...results).getOrUndefined();
 
     }
 
