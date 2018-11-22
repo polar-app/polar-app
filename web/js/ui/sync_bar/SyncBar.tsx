@@ -68,7 +68,7 @@ export class SyncBar extends React.Component<IProps, IState> {
         if (this.props.progress) {
             this.props.progress.addEventListener(progress => {
 
-                log.info(`${progress.percentage}: ${progress.title}`);
+                log.info(`${progress.percentage}: ${progress.message}`);
 
                 this.onProgress(progress);
             });
@@ -118,7 +118,7 @@ export class SyncBar extends React.Component<IProps, IState> {
     private onProgress(progress: SyncBarProgress) {
         this.setState({
             progress: progress.percentage,
-            message: progress.title
+            message: progress.message
         });
     }
 
@@ -143,7 +143,7 @@ interface IState {
 export interface SyncBarProgress {
 
     readonly task: string;
-    readonly title?: string;
+    readonly message?: string;
     readonly percentage: number;
 
 }

@@ -94,7 +94,7 @@ class App<P> extends React.Component<{}, IAppState> {
                 const percentage = remaining.shift()!;
 
                 progress.dispatchEvent({
-                    title: `Anki sync: ${percentage} of 100 tasks remaining...`,
+                    message: `Anki sync: ${percentage} of 100 tasks remaining...`,
                     percentage,
                     task: 'anki-sync'
                 });
@@ -108,7 +108,7 @@ class App<P> extends React.Component<{}, IAppState> {
         handleRemaining();
 
         progress.addEventListener((syncBarProgress) => {
-            data.push({message: syncBarProgress.title});
+            data.push({message: syncBarProgress.message});
         });
 
         return (

@@ -24,7 +24,7 @@ export class LogEventViewer extends React.Component<IProps, IState> {
 
         this.props.progress.addEventListener(syncBarProgress => {
 
-            const logEvent: LogEvent = {message: syncBarProgress.title!};
+            const logEvent: LogEvent = {message: syncBarProgress.message!};
 
             this.state.rendered.push(<LogEventComponent key={this.sequence++} logEvent={logEvent}/>);
 

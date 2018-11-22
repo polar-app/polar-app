@@ -70,7 +70,7 @@ export class DocRepoAnkiSyncController {
 
             this.syncBarProgress.dispatchEvent({
                 task: 'anki-sync',
-                title: message,
+                message: message,
                 percentage: syncProgress.percentage
             });
 
@@ -91,7 +91,7 @@ export class DocRepoAnkiSyncController {
 
         this.syncBarProgress.dispatchEvent({
             task: 'anki-sync',
-            title: "Starting anki sync...",
+            message: "Starting anki sync...",
             percentage: 0
         });
 
@@ -99,7 +99,7 @@ export class DocRepoAnkiSyncController {
 
         this.syncBarProgress.dispatchEvent({
             task: 'anki-sync',
-            title: `Anki sync complete. Completed ${nrTasks} with ${nrFailedTasks} failures.`,
+            message: `Anki sync complete. Completed ${nrTasks} with ${nrFailedTasks} failures.`,
             percentage: 100
         });
 
