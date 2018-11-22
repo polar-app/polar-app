@@ -40,9 +40,9 @@ SpectronRenderer.run(async (state) => {
             console.log("Purge event: ", purgeEvent);
         });
 
-        // await PersistenceLayers.transfer(source, target, (transferEvent) => {
-        //     console.log("Transfer event: ", transferEvent);
-        // });
+        await PersistenceLayers.transfer(source, target, (transferEvent) => {
+            console.log("Transfer event: ", transferEvent);
+        });
 
         await Promise.all([source.stop(), target.stop()]);
 

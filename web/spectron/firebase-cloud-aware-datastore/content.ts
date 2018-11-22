@@ -96,6 +96,29 @@ SpectronRenderer.run(async (state) => {
 
             });
 
+            it("Test an existing firebase store with existing data replicating to a new CloudDatastore.", async function() {
+
+                Files.removeDirectoryRecursively(PolarDataDir.get()!);
+
+                const sourcePersistenceLayer = new DefaultPersistenceLayer(new FirebaseDatastore());
+                await sourcePersistenceLayer.init();
+                const docMeta = MockDocMetas.createWithinInitialPagemarks(fingerprint, 14);
+                await sourcePersistenceLayer.write(fingerprint, docMeta);
+                await sourcePersistenceLayer.stop();
+
+                const targetPersistenceLayer = new DefaultPersistenceLayer(createDatastore());
+                await targetPersistenceLayer.init();
+
+                await waitForExpect(async () => {
+                    const dataDir = PolarDataDir.get();
+                    const path = FilePaths.join(dataDir!, '0x001', 'state.json');
+                    assert.ok(await Files.existsAsync(path));
+                });
+
+                await targetPersistenceLayer.stop();
+
+            });
+
         });
 
         DatastoreTester.test(createDatastore, false);

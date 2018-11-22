@@ -49,9 +49,6 @@ SpectronRenderer.run(async (state) => {
 
                 await persistenceLayer.init();
 
-                // FIXME: I think this has a race.. I think this is purging the
-                // remote store but then getDocMetaFiles returns from cache
-                // first...
                 await Datastores.purge(datastore, purgeEvent => {
                     log.info("purgeEvent: ", purgeEvent);
                 });

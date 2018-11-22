@@ -1,14 +1,14 @@
 /**
  * Datastore just in memory with no on disk persistence.
  */
-import {Datastore, InitResult, FileRef} from './Datastore';
-import {Preconditions} from '../Preconditions';
+import {Datastore, InitResult, FileRef, FileMeta} from './Datastore';
+import {Preconditions, isPresent} from '../Preconditions';
 import {DocMetaFileRef, DocMetaRef} from './DocMetaRef';
 import {FilePaths} from '../util/FilePaths';
 import {Directories} from './Directories';
 import {Logger} from '../logger/Logger';
 import {DeleteResult} from './Datastore';
-import {FileDeleted} from '../util/Files';
+import {FileDeleted, FileHandle, Files} from '../util/Files';
 import {Backend} from './Backend';
 import {DatastoreFile} from './DatastoreFile';
 import {Optional} from '../util/ts/Optional';
@@ -30,6 +30,8 @@ export class MemoryDatastore implements Datastore {
     public readonly directories: Directories;
 
     protected readonly docMetas: {[fingerprint: string]: string} = {};
+
+    protected readonly files: {[key: string]: FileData} = {};
 
     constructor() {
         this.directories = new Directories();
@@ -83,20 +85,51 @@ export class MemoryDatastore implements Datastore {
 
     }
 
-    public writeFile(backend: Backend, ref: FileRef, data: Buffer | string): Promise<DatastoreFile> {
-        throw new Error("Not implemented");
+    public async writeFile(backend: Backend,
+                           ref: FileRef,
+                           data: FileHandle | Buffer | string,
+                           meta: FileMeta = {}): Promise<DatastoreFile> {
+
+        const key = this.toFileRefKey(backend, ref);
+
+        let buff: Buffer | undefined;
+
+        if (typeof data === 'string') {
+            buff = Buffer.from(data);
+        } else if (data instanceof Buffer) {
+            buff = data;
+        } else {
+            buff = await Files.readFileAsync(data.path);
+        }
+
+        this.files[key] = {buffer: buff!, meta};
+
+        return {backend, ref, url: 'FIXME:none', meta};
+
     }
 
-    public getFile(backend: Backend, ref: FileRef): Promise<Optional<DatastoreFile>> {
-        throw new Error("Not implemented");
+    public async getFile(backend: Backend, ref: FileRef): Promise<Optional<DatastoreFile>> {
+
+        const key = this.toFileRefKey(backend, ref);
+
+        if (!key) {
+            return Optional.empty();
+        }
+
+        const fileData = this.files[key];
+
+        return Optional.of({backend, ref, url: 'FIXME:none', meta: fileData.meta});
+
     }
 
-    public containsFile(backend: Backend, ref: FileRef): Promise<boolean> {
-        throw new Error("Not implemented");
+    public async containsFile(backend: Backend, ref: FileRef): Promise<boolean> {
+        const key = this.toFileRefKey(backend, ref);
+        return isPresent(this.files[key]);
     }
 
-    public deleteFile(backend: Backend, ref: FileRef): Promise<void> {
-        throw new Error("Not implemented");
+    public async deleteFile(backend: Backend, ref: FileRef): Promise<void> {
+        const key = this.toFileRefKey(backend, ref);
+        delete this.files[key];
     }
 
     /**
@@ -134,4 +167,13 @@ export class MemoryDatastore implements Datastore {
 
     }
 
+    private toFileRefKey(backend: Backend, fileRef: FileRef) {
+        return `${backend}:${fileRef.name}`;
+    }
+
+}
+
+interface FileData {
+    buffer: Buffer;
+    meta: FileMeta;
 }

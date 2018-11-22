@@ -6,12 +6,9 @@ import {FileRegistry} from '../../js/backend/webserver/FileRegistry';
 import {SpectronBrowserWindowOptions} from '../../js/test/SpectronBrowserWindowOptions';
 import {PolarDataDir} from '../../js/test/PolarDataDir';
 import {FilePaths} from '../../js/util/FilePaths';
+import {AppPath} from '../../js/electron/app_path/AppPath';
 
 PolarDataDir.useFreshDirectory('.polar-firebase-datastore');
-
-declare var global: any;
-
-global.appPath = __dirname;
 
 async function defaultWindowFactory(): Promise<BrowserWindow> {
     const mainWindow = new BrowserWindow(SpectronBrowserWindowOptions.create());
@@ -28,6 +25,7 @@ const options: ISpectronMainOptions = {
 // FIXME: we have to use remote to get the directory to require() our files from
 //
 
+AppPath.set(__dirname);
 
 SpectronMain2.create(options).run(async state => {
 

@@ -7,12 +7,25 @@ import {ArrayBuffers} from "../util/ArrayBuffers";
 import {AsyncFunction, AsyncWorkQueue} from '../util/AsyncWorkQueue';
 import {DocMetaRef} from "./DocMetaRef";
 import {FileRef} from './Datastore';
+import {UUIDs} from '../metadata/UUIDs';
 
 export class PersistenceLayers {
 
     public static async transfer(source: IPersistenceLayer,
                                  target: IPersistenceLayer,
-                                 listener: (transferEvent: TransferEvent) => void = NULL_FUNCTION) {
+                                 listener: (transferEvent: TransferEvent) => void = NULL_FUNCTION): Promise<TransferResult> {
+
+
+        const result: TransferResult = {
+            mutations: {
+                fingerprints: [],
+                files: []
+            },
+            conflicts: {
+                fingerprints: [],
+                files: []
+            }
+        };
 
         async function handleStashFile(fileRef: FileRef) {
 
@@ -28,6 +41,8 @@ export class PersistenceLayers {
                     const buffer = ArrayBuffers.toBuffer(arrayBuffer);
 
                     target.writeFile(file.backend, fileRef, buffer, file.meta);
+
+                    result.mutations.files.push(fileRef);
                 }
 
             }
@@ -40,15 +55,18 @@ export class PersistenceLayers {
 
             const docMeta = await source.getDocMeta(docMetaFile.fingerprint);
 
+            if (! docMeta) {
+                return;
+            }
+
             const docFile: FileRef = {
-                name: docMeta!.docInfo.filename!,
-                hashcode: docMeta!.docInfo.hashcode
+                name: docMeta.docInfo.filename!,
+                hashcode: docMeta.docInfo.hashcode
             };
 
             // TODO: we're going to need some type of method to get all the
             // files backing a DocMeta file when we start to use attachments
             // like screenshots.
-            // https://firebase.google.com/docs/storage/web/download-files
 
             if (docFile.name) {
                 // TODO: if we use the second queue it still locks up.
@@ -56,7 +74,31 @@ export class PersistenceLayers {
                 await handleStashFile(docFile);
             }
 
-            await target.writeDocMeta(docMeta!);
+            const targetContainsDocMeta: boolean = await target.contains(docMetaFile.fingerprint);
+
+            let doWriteDocMeta: boolean = ! targetContainsDocMeta;
+
+            if (targetContainsDocMeta) {
+
+                const targetDocMeta = await target.getDocMeta(docMetaFile.fingerprint);
+
+                if (targetDocMeta) {
+
+                    const cmp = UUIDs.compare(targetDocMeta.docInfo.uuid, docMeta.docInfo.uuid);
+
+                    // FIXME: if the comparison is zero then technically we have a
+                    // conflict which we need to surface to the user.
+
+                    doWriteDocMeta = cmp < 0;
+
+                }
+
+            }
+
+            if (doWriteDocMeta) {
+                result.mutations.fingerprints.push(docMetaFile.fingerprint);
+                await target.writeDocMeta(docMeta);
+            }
 
             ++completed;
 
@@ -86,7 +128,25 @@ export class PersistenceLayers {
 
         await Promise.all([docFileExecutionPromise, docMetaExecutionPromise]);
 
+        return result;
+
     }
+
+}
+
+export interface TransferResult {
+
+    readonly mutations: TransferRefs;
+
+    readonly conflicts: TransferRefs;
+
+}
+
+export interface TransferRefs {
+
+    readonly fingerprints: string[];
+
+    readonly files: FileRef[];
 
 }
 

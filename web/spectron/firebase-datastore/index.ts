@@ -7,6 +7,7 @@ import {SpectronBrowserWindowOptions} from '../../js/test/SpectronBrowserWindowO
 import {PolarDataDir} from '../../js/test/PolarDataDir';
 import {FilePaths} from '../../js/util/FilePaths';
 import process from "process";
+import {AppPath} from '../../js/electron/app_path/AppPath';
 
 PolarDataDir.useFreshDirectory('.polar-firebase-datastore');
 
@@ -22,11 +23,7 @@ const options: ISpectronMainOptions = {
     windowFactory: defaultWindowFactory
 };
 
-declare var global: any;
-
-const appPath = __dirname;
-global.appPath = appPath;
-
+AppPath.set(__dirname);
 
 SpectronMain2.create(options).run(async state => {
 
@@ -34,9 +31,8 @@ SpectronMain2.create(options).run(async state => {
     // HTTP URL
 
     console.log("Running with app path: " + app.getAppPath());
-    console.log("Running with appDir: " + appPath);
 
-    const webserverConfig = new WebserverConfig(appPath, 8005);
+    const webserverConfig = new WebserverConfig(AppPath.get(), 8005);
 
     const fileRegistry = new FileRegistry(webserverConfig);
     const webserver = new Webserver(webserverConfig, fileRegistry);
