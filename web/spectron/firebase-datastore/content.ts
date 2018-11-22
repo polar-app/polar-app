@@ -4,7 +4,6 @@ import {FirebaseUIAuth} from '../../js/firestore/FirebaseUIAuth';
 import * as firebase from '../../js/firestore/lib/firebase';
 import {Elements} from '../../js/util/Elements';
 import {DiskDatastore} from '../../js/datastore/DiskDatastore';
-import {CompositeFirebaseDatastore} from '../../js/datastore/CompositeFirebaseDatastore';
 import {DefaultPersistenceLayer} from '../../js/datastore/DefaultPersistenceLayer';
 import {MockDocMetas} from '../../js/metadata/DocMetas';
 import {assert} from "chai";
@@ -87,25 +86,32 @@ SpectronRenderer.run(async (state) => {
                 const docMutationLatch = new Latch<boolean>();
                 const docReplicationLatch = new Latch<boolean>();
 
-                datastore.addDocMetaSnapshotEventListener((docMutationEvent) => {
+                datastore.addDocMetaSnapshotEventListener((docMetaSnapshotEvent) => {
 
-                    if (docMutationEvent.docInfo.fingerprint === fingerprint &&
-                        docMutationEvent.mutationType === 'created') {
+                    for (const docMetaMutation of docMetaSnapshotEvent.docMetaMutations) {
 
-                        docMutationLatch.resolve(true);
+                        const {docInfo, mutationType} = docMetaMutation;
+
+                        if (docInfo.fingerprint === fingerprint && mutationType === 'created') {
+                            docMutationLatch.resolve(true);
+                        }
 
                     }
 
                 });
 
-                datastore.addDocMetaSynchronizationEventListener((docReplicationEvent) => {
+                datastore.addDocMetaSynchronizationEventListener((docMetaSnapshotEvent) => {
 
-                    if (docReplicationEvent.docMeta.docInfo.fingerprint === fingerprint &&
-                        docReplicationEvent.mutationType === 'created') {
+                    for (const docMetaMutation of docMetaSnapshotEvent.docMetaMutations) {
 
-                        docReplicationLatch.resolve(true);
+                        const { docInfo, mutationType } = docMetaMutation;
+
+                        if (docInfo.fingerprint === fingerprint &&  mutationType === 'created') {
+                            docReplicationLatch.resolve(true);
+                        }
 
                     }
+
 
                 });
 

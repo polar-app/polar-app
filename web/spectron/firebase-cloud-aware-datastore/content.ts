@@ -4,7 +4,6 @@ import {FirebaseUIAuth} from '../../js/firestore/FirebaseUIAuth';
 import * as firebase from '../../js/firestore/lib/firebase';
 import {Elements} from '../../js/util/Elements';
 import {DiskDatastore} from '../../js/datastore/DiskDatastore';
-import {CompositeFirebaseDatastore} from '../../js/datastore/CompositeFirebaseDatastore';
 import {DefaultPersistenceLayer} from '../../js/datastore/DefaultPersistenceLayer';
 import {MockDocMetas} from '../../js/metadata/DocMetas';
 import {assert} from "chai";

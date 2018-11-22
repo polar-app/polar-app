@@ -1,5 +1,5 @@
-import {Datastore, DeleteResult, FileMeta, FileRef, InitResult} from './Datastore';
-import {Preconditions} from '../Preconditions';
+import {Datastore, DeleteResult, FileMeta, FileRef, InitResult, DocMetaSnapshotEvent, DocMetaMutation} from './Datastore';
+import {isPresent, Preconditions} from '../Preconditions';
 import {Logger} from '../logger/Logger';
 import {DocMetaFileRef, DocMetaRef} from './DocMetaRef';
 import {FileDeleted, FileHandle, Files} from '../util/Files';
@@ -17,6 +17,8 @@ import {Platform, Platforms} from "../util/Platforms";
 import {DatastoreFiles} from './DatastoreFiles';
 import {DatastoreMutation, DefaultDatastoreMutation} from './DatastoreMutation';
 import {DatastoreMutations} from './DatastoreMutations';
+import {DocMetas} from '../metadata/DocMetas';
+import {Datastores} from './Datastores';
 
 const log = Logger.create();
 
@@ -285,6 +287,10 @@ export class DiskDatastore implements Datastore {
         }
 
         return result;
+    }
+
+    public async snapshot(listener: (docMetaSnapshotEvent: DocMetaSnapshotEvent) => void): Promise<void> {
+        Datastores.snapshot(this, listener);
     }
 
     private async createDatastoreFile(backend: Backend,

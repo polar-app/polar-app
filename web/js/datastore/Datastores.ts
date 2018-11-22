@@ -1,4 +1,4 @@
-import {Datastore, FileRef} from './Datastore';
+import {Datastore, DocMetaMutation, DocMetaSnapshotEvent, FileRef} from './Datastore';
 import {MemoryDatastore} from './MemoryDatastore';
 import {DiskDatastore} from './DiskDatastore';
 import {Logger} from '../logger/Logger';
@@ -44,6 +44,33 @@ export class Datastores {
 
             const docMeta = DocMetas.deserialize(docMetaData);
             listener(docMeta);
+        }
+
+    }
+
+    /**
+     * Create a snapshot from an existing datastore so that legacy ones seem
+     * to support snapshots though they might not support updates.
+     *
+     * @param datastore
+     */
+    public static async snapshot(datastore: Datastore,
+                                 listener: (docMetaSnapshotEvent: DocMetaSnapshotEvent) => void) {
+
+        const docMetaFiles = await datastore.getDocMetaFiles();
+
+        for (const docMetaFile of docMetaFiles) {
+            const data = await datastore.getDocMeta(docMetaFile.fingerprint);
+            const docMeta = DocMetas.deserialize(data!);
+
+            const docMetaMutation: DocMetaMutation = {
+                docMeta,
+                docInfo: docMeta.docInfo,
+                mutationType: 'created'
+            };
+
+            listener({docMetaMutations: [docMetaMutation]});
+
         }
 
     }

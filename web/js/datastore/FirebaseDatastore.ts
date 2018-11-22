@@ -1,7 +1,7 @@
 import {
     BinaryMutationEvent, Datastore, DeleteResult,
     DocMetaSnapshotEvent, FileMeta,
-    InitResult, SynchronizingDatastore, MutationType, FileRef
+    InitResult, SynchronizingDatastore, MutationType, FileRef, DocMetaMutation
 } from './Datastore';
 import {Logger} from '../logger/Logger';
 import {DocMetaFileRef, DocMetaRef} from './DocMetaRef';
@@ -115,6 +115,30 @@ export class FirebaseDatastore implements Datastore, SynchronizingDatastore {
 
     }
 
+    public async snapshot(listener: (docMetaSnapshotEvent: DocMetaSnapshotEvent) => void): Promise<void> {
+
+        const uid = this.getUserID();
+
+        // start synchronizing the datastore.  You MUST register your listeners
+        // BEFORE calling init if you wish to listen to the full stream of
+        // events.
+
+        // There's no way to control where the snapshot comes from and on
+        // startup so we do a get() from the cache which we can control with
+        // GetOptions.  This gets us data quickly and then we start listening to
+        // snapshots after this which can come from the network async
+
+        const query = this.firestore!
+            .collection(DatastoreCollection.DOC_META)
+            .where('uid', '==', uid);
+
+        // fetch from the local cache so that we have at least some data after
+        // init instead of relying on the network.  This will get us data into
+        // the document repository faster.
+        const cachedQuerySnapshot = await query.get({source: 'cache'});
+
+    }
+
     public async stop() {
         this.unsubscribeSnapshots();
     }
@@ -225,27 +249,17 @@ export class FirebaseDatastore implements Datastore, SynchronizingDatastore {
         // TODO: we can get progress from the uploadTask here.
 
         // uploadTask.on('state_changed', (snapshotData: any) => {
-        //     // Observe state change events such as progress, pause, and resume
-        //     // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
-        //
-        //     const snapshot: firebase.storage.UploadTaskSnapshot = snapshotData;
-        //
-        //     // const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-        //
-        //     const progress = Percentages.calculate(snapshot.bytesTransferred, snapshot.totalBytes);
-        //
-        //     console.log('Upload is ' + progress + '% done');
-        //
-        //     switch (snapshot.state) {
-        //         case firebase.storage.TaskState.PAUSED: // or 'paused'
-        //             console.log('Upload is paused');
-        //             break;
-        //         case firebase.storage.TaskState.RUNNING: // or 'running'
-        //             console.log('Upload is running');
-        //             break;
-        //     }
-        //
-        // });
+        //     // Observe state change events such as progress, pause, and
+        // resume // Get task progress, including the number of bytes uploaded
+        // and the total number of bytes to be uploaded  const snapshot:
+        // firebase.storage.UploadTaskSnapshot = snapshotData;  // const
+        // progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+        // const progress = Percentages.calculate(snapshot.bytesTransferred,
+        // snapshot.totalBytes);  console.log('Upload is ' + progress + '%
+        // done');  switch (snapshot.state) { case
+        // firebase.storage.TaskState.PAUSED: // or 'paused'
+        // console.log('Upload is paused'); break; case
+        // firebase.storage.TaskState.RUNNING: // or 'running' console.log('Upload is running'); break; }  });
 
         const uploadTaskSnapshot = await uploadTask;
 
@@ -316,7 +330,8 @@ export class FirebaseDatastore implements Datastore, SynchronizingDatastore {
         } catch (e) {
 
             if (e.code === "storage/object-not-found") {
-                // this is acceptable for now as we want deletes to be idempotent
+                // this is acceptable for now as we want deletes to be
+                // idempotent
                 return;
             }
 
@@ -508,39 +523,42 @@ export class FirebaseDatastore implements Datastore, SynchronizingDatastore {
 
         log.debug("onSnapshot... ");
 
+        const docMetaMutations = [];
+
         for (const docChange of snapshot.docChanges()) {
 
-            const docMetaSnapshotEvent
-                = FirebaseDatastore.onDocMetaSnapshotDocChange(docChange, this.docMetaSnapshotReactor);
+            const docMetaMutation
+                = FirebaseDatastore.toDocMetaMutation(docChange);
 
-            if (!this.pendingMutationIndex[docMetaSnapshotEvent.id]) {
-                this.docMetaSynchronizationReactor.dispatchEvent(docMetaSnapshotEvent);
+            if (!this.pendingMutationIndex[docMetaMutation.id]) {
+                docMetaMutations.unshift(docMetaMutation);
             }
 
+        }
+
+        if (docMetaMutations.length > 0) {
+            this.docMetaSynchronizationReactor.dispatchEvent({docMetaMutations});
         }
 
         log.debug("onSnapshot... done");
 
     }
 
-    private static onDocMetaSnapshotDocChange(docChange: firebase.firestore.DocumentChange,
-                                              docMetaSnapshotReactor: IEventDispatcher<DocMetaSnapshotEvent>) {
+    private static toDocMetaMutation(docChange: firebase.firestore.DocumentChange) {
 
         const record = <RecordHolder<DocMetaHolder>> docChange.doc.data();
         const id = record.id;
 
         const docMeta = DocMetas.deserialize(record.value.value);
 
-        const docMetaSnapshotEvent: FirebaseDocMetaSnapshotEvent = {
+        const docMetaMutation: FirebaseDocMetaMutation = {
             id,
             docMeta,
             docInfo: record.value.docInfo,
             mutationType: toMutationType(docChange.type)
         };
 
-        docMetaSnapshotReactor.dispatchEvent(docMetaSnapshotEvent);
-
-        return docMetaSnapshotEvent;
+        return docMetaMutation;
 
     }
 
@@ -637,7 +655,7 @@ interface PendingMutation {
 
 }
 
-interface FirebaseDocMetaSnapshotEvent extends DocMetaSnapshotEvent {
+interface FirebaseDocMetaMutation extends DocMetaMutation {
     readonly id: string;
 }
 

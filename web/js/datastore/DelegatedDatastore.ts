@@ -1,4 +1,4 @@
-import {Datastore, FileMeta, FileRef, InitResult} from './Datastore';
+import {Datastore, DocMetaSnapshotEvent, FileMeta, FileRef, InitResult} from './Datastore';
 import {Directories} from './Directories';
 import {DocMetaFileRef, DocMetaRef} from './DocMetaRef';
 import {DeleteResult} from './Datastore';
@@ -8,6 +8,7 @@ import {DatastoreFile} from './DatastoreFile';
 import {Optional} from '../util/ts/Optional';
 import {IDocInfo} from '../metadata/DocInfo';
 import {DatastoreMutation} from './DatastoreMutation';
+import {Datastores} from './Datastores';
 
 /**
  * A datastore that just forwards events to the given delegate.
@@ -64,6 +65,10 @@ export class DelegatedDatastore implements Datastore {
 
     public getDocMetaFiles(): Promise<DocMetaRef[]> {
         return this.delegate.getDocMetaFiles();
+    }
+
+    public async snapshot(listener: (docMetaSnapshotEvent: DocMetaSnapshotEvent) => void): Promise<void> {
+        return this.delegate.snapshot(listener);
     }
 
     public init(): Promise<InitResult> {

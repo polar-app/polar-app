@@ -1,4 +1,4 @@
-import {Datastore, FileMeta, InitResult, SynchronizingDatastore, MutationType, FileRef} from './Datastore';
+import {Datastore, FileMeta, InitResult, SynchronizingDatastore, MutationType, FileRef, DocMetaMutation, DocMetaSnapshotEvent} from './Datastore';
 import {Directories} from './Directories';
 import {DocMetaFileRef, DocMetaRef} from './DocMetaRef';
 import {DeleteResult} from './Datastore';
@@ -55,11 +55,11 @@ export class CloudAwareDatastore implements Datastore {
         // Initially we just get from the local cache but then we will start
         // getting documents from the datastore once it comes online.
 
-        this.remote.addDocMetaSynchronizationEventListener(docReplicationEvent => {
+        this.remote.addDocMetaSynchronizationEventListener(docMetaSnapshotEvent => {
 
             // TODO once this fails we need to make sure to tell the user and
             // right now we don't really have an event stream for this.
-            this.onRemoteDocMutation(docReplicationEvent.docMeta, docReplicationEvent.mutationType)
+            this.onRemoteDocMutations(docMetaSnapshotEvent.docMetaMutations)
                 .catch( err => log.error("Unable to handle doc replication event: ", err));
 
         });
@@ -166,27 +166,41 @@ export class CloudAwareDatastore implements Datastore {
         return this.local.getDocMetaFiles();
     }
 
+    public async snapshot(listener: (docMetaSnapshotEvent: DocMetaSnapshotEvent) => void): Promise<void> {
+        return this.remote.snapshot(listener);
+    }
+
     /**
      * Called on init() for every doc in the remote repo.  We then see if we have
      * loaded it locally and update it if it's stale.
      */
-    private onRemoteDocInit(docMeta: DocMeta) {
+    // private onRemoteDocInit(docMeta: DocMeta) {
+    //
+    //     const docComparison = this.docComparisonIndex.get(docMeta.docInfo.fingerprint);
+    //
+    //     if (! docComparison) {
+    //         this.onRemoteDocMutation(docMeta, 'created');
+    //     }
+    //
+    //     if (docComparison && UUIDs.compare(docComparison.uuid, docMeta.docInfo.uuid) > 0) {
+    //         this.onRemoteDocMutation(docMeta, 'updated');
+    //     }
+    //
+    // }
 
-        const docComparison = this.docComparisonIndex.get(docMeta.docInfo.fingerprint);
+    private async onRemoteDocMutations(docMetaMutations: DocMetaMutation[]) {
 
-        if (! docComparison) {
-            this.onRemoteDocMutation(docMeta, 'created');
-        }
-
-        if (docComparison && UUIDs.compare(docComparison.uuid, docMeta.docInfo.uuid) > 0) {
-            this.onRemoteDocMutation(docMeta, 'updated');
+        for (const docMetaMutation of docMetaMutations) {
+            await this.onRemoteDocMutation(docMetaMutation);
         }
 
     }
 
     // a document has been updated on the remote and we need to update it
     // locally.
-    private async onRemoteDocMutation(docMeta: DocMeta, mutationType: MutationType) {
+    private async onRemoteDocMutation(docMetaMutation: DocMetaMutation) {
+
+        const {docMeta, mutationType} = docMetaMutation;
 
         if (mutationType === 'created' || mutationType === 'updated') {
 

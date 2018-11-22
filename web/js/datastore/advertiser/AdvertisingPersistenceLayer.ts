@@ -9,7 +9,7 @@ import {AbstractAdvertisingPersistenceLayer} from './AbstractAdvertisingPersiste
 
 /**
  * A PersistenceLayer that allows the user to receive advertisements regarding
- * updates to the internal data.
+ * updates to the PersistenceLayer from any window in the system.
  *
  * @ElectronRendererContext
  */

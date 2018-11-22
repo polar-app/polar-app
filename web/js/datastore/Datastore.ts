@@ -61,6 +61,14 @@ export interface Datastore extends BinaryDatastore, WritableDatastore {
     // TODO: refactor to getDocMetaRefs
     getDocMetaFiles(): Promise<DocMetaRef[]>;
 
+    /**
+     * Get a current snapshot of the internal state of the Datastore by receiving
+     * DocMetaSnapshotEvent on the initial state.
+     *
+     * @param listener
+     */
+    snapshot(listener: (docMetaSnapshotEvent: DocMetaSnapshotEvent) => void): Promise<void>;
+
     // TODO: we need a new method with the following semantics:
 
     // - we can add it AFTER the init()
@@ -177,25 +185,37 @@ export interface SynchronizingDatastore extends Datastore {
  */
 export interface BinaryMutationEvent {
 
-    backend: Backend;
+    readonly backend: Backend;
 
-    name: string;
+    readonly name: string;
 
-    mutationType: MutationType;
+    readonly mutationType: MutationType;
 
 }
 
 /**
- * A DocMetaSnapshotEvent is any snapshot of the Datastore based on the current
- * state as well as future snapshots as the remote store changes.
+ * A DocMetaSnapshotEvent is a snapshot of the Datastore based on the current
+ * state as well as future snapshots as the remote store changes.  This includes
+ * DocMeta mutations which also include a MutationType for whether the document
+ * was created, updated, or deleted.
  */
 export interface DocMetaSnapshotEvent {
 
-    docMeta: DocMeta;
+    /**
+     * An array of mutations that have been applied.  We return as an array to
+     * enable performance updates via batching.
+     */
+    readonly docMetaMutations: DocMetaMutation[];
 
-    docInfo: IDocInfo;
+}
 
-    mutationType: MutationType;
+export interface DocMetaMutation {
+
+    readonly docMeta: DocMeta;
+
+    readonly docInfo: IDocInfo;
+
+    readonly mutationType: MutationType;
 
 }
 

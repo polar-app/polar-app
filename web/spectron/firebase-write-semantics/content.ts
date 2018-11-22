@@ -4,7 +4,6 @@ import {FirebaseUIAuth} from '../../js/firestore/FirebaseUIAuth';
 import * as firebase from '../../js/firestore/lib/firebase';
 import {Elements} from '../../js/util/Elements';
 import {DiskDatastore} from '../../js/datastore/DiskDatastore';
-import {CompositeFirebaseDatastore} from '../../js/datastore/CompositeFirebaseDatastore';
 import {DefaultPersistenceLayer} from '../../js/datastore/DefaultPersistenceLayer';
 import {MockDocMetas} from '../../js/metadata/DocMetas';
 import {assert} from "chai";
@@ -12,6 +11,7 @@ import {DatastoreTester} from '../../js/datastore/DatastoreTester';
 import {Firestore} from '../../js/firestore/Firestore';
 import {Hashcodes} from '../../js/Hashcodes';
 import {Promises} from '../../js/util/Promises';
+import {FirebaseDatastore} from '../../js/datastore/FirebaseDatastore';
 
 mocha.setup('bdd');
 
@@ -54,7 +54,7 @@ export class Tester {
             // true});
 
             const diskDatastore = new DiskDatastore();
-            const firebaseDatastore = new CompositeFirebaseDatastore(diskDatastore);
+            const firebaseDatastore = new FirebaseDatastore();
 
             await firebaseDatastore.init();
             console.log("Firebase datastore initialized");
@@ -94,26 +94,16 @@ export class Tester {
 
 
             // https://firebase.google.com/docs/reference/js/firebase.firestore.SnapshotMetadata
-            //
-            // fromCache
-            // boolean
-            //
-            // True if the snapshot was created from cached data rather than
-            // guaranteed up-to-date server data. If your listener has opted
-            // into metadata updates (via SnapshotListenOptions) you will
-            // receive another snapshot with fromCache set to false once the
-            // client has received up-to-date data from the backend.
-            //
-            // hasPendingWrites
-            // boolean
-            //
-            // True if the snapshot includes local writes (set() or update()
-            // calls) that haven't been committed to the backend yet.
-            //
-            // If your listener has opted into metadata updates via
-            // SnapshotListenOptions, you receive another snapshot with
-            // hasPendingWrites set to false once the writes have been committed
-            // to the backend.
+            //  fromCache boolean  True if the snapshot was created from cached
+            // data rather than guaranteed up-to-date server data. If your
+            // listener has opted into metadata updates (via
+            // SnapshotListenOptions) you will receive another snapshot with
+            // fromCache set to false once the client has received up-to-date
+            // data from the backend.  hasPendingWrites boolean  True if the
+            // snapshot includes local writes (set() or update() calls) that
+            // haven't been committed to the backend yet.  If your listener has
+            // opted into metadata updates via SnapshotListenOptions, you
+            // receive another snapshot with hasPendingWrites set to false once the writes have been committed to the backend.
 
             const onSnapshot = (snapshot: firebase.firestore.QuerySnapshot) => {
 
@@ -189,8 +179,8 @@ export class Tester {
 
                     let snapshotVersion = 0;
 
-                    // FIXME: I enver receive a snapshot of the initial version saying that
-                    // it does not exist...
+                    // FIXME: I enver receive a snapshot of the initial version
+                    // saying that it does not exist...
 
                     // FIXME: why do I get an EXTRA callback?
 
@@ -212,7 +202,8 @@ export class Tester {
                             snapshotVersion: snapshotVersion++
                         };
 
-                        // console.log("FIXME33333333333333########33333333:  " + metadataTrace.snapshotVersion)
+                        // console.log("FIXME33333333333333########33333333:  "
+                        // + metadataTrace.snapshotVersion)
 
                         perDocMetadataTraces.push(metadataTrace);
 
