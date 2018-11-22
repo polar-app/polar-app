@@ -1,4 +1,6 @@
 
+- date/times no longer include ' ago' to be a bit more concise.
+
 - Basic initial version of AppPath which can be used to load apps via HTTP now.
 
 - The data transfer from the disk store to the firebase store works which means

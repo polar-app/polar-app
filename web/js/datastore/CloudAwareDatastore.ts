@@ -1,4 +1,4 @@
-import {Datastore, FileMeta, InitResult, SynchronizingDatastore, DocMutationType, FileRef} from './Datastore';
+import {Datastore, FileMeta, InitResult, SynchronizingDatastore, MutationType, FileRef} from './Datastore';
 import {Directories} from './Directories';
 import {DocMetaFileRef, DocMetaRef} from './DocMetaRef';
 import {DeleteResult} from './Datastore';
@@ -55,7 +55,7 @@ export class CloudAwareDatastore implements Datastore {
         // Initially we just get from the local cache but then we will start
         // getting documents from the datastore once it comes online.
 
-        this.remote.addDocSynchronizationEventListener(docReplicationEvent => {
+        this.remote.addDocMetaSynchronizationEventListener(docReplicationEvent => {
 
             // TODO once this fails we need to make sure to tell the user and
             // right now we don't really have an event stream for this.
@@ -186,7 +186,7 @@ export class CloudAwareDatastore implements Datastore {
 
     // a document has been updated on the remote and we need to update it
     // locally.
-    private async onRemoteDocMutation(docMeta: DocMeta, mutationType: DocMutationType) {
+    private async onRemoteDocMutation(docMeta: DocMeta, mutationType: MutationType) {
 
         if (mutationType === 'created' || mutationType === 'updated') {
 

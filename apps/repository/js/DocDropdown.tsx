@@ -5,6 +5,7 @@ import {TextInputPopover} from '../../../web/js/ui/text_input/TextInputPopover';
 import {RepoDocInfo} from './RepoDocInfo';
 import {Logger} from '../../../web/js/logger/Logger';
 import {IStyleMap} from '../../../web/js/react/IStyleMap';
+import {clipboard} from 'electron';
 
 const log = Logger.create();
 
@@ -108,13 +109,11 @@ export class DocDropdown extends React.Component<IProps, IState> {
     }
 
     private onCopyURL(url: string) {
-        const nav = window.navigator as any;
-        const clipboard = nav.clipboard;
 
         if (clipboard) {
             clipboard.writeText(url);
         } else {
-            log.warn("No clipboard with which to copy");
+            log.warn("No clipboard with which to copy url: ", url);
         }
 
     }

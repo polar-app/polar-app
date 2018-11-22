@@ -221,11 +221,11 @@ export default class App extends React.Component<AppProps, AppState> {
 
                             },
                             {
-                                Header: 'Last Updated',
+                                Header: 'Updated',
                                 // accessor: (row: any) => row.added,
                                 accessor: 'lastUpdated',
                                 show: this.state.columns.lastUpdated.selected,
-                                maxWidth: 125,
+                                maxWidth: 100,
                                 defaultSortDesc: true,
                                 Cell: (row: any) => (
                                     <DateTimeTableCell className="doc-col-last-updated" datetime={row.value}/>
@@ -237,7 +237,7 @@ export default class App extends React.Component<AppProps, AppState> {
                                 // accessor: (row: any) => row.added,
                                 accessor: 'added',
                                 show: this.state.columns.added.selected,
-                                maxWidth: 125,
+                                maxWidth: 100,
                                 defaultSortDesc: true,
                                 Cell: (row: any) => (
                                     <DateTimeTableCell className="doc-col-added" datetime={row.value}/>

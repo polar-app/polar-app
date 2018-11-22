@@ -61,6 +61,19 @@ export interface Datastore extends BinaryDatastore, WritableDatastore {
     // TODO: refactor to getDocMetaRefs
     getDocMetaFiles(): Promise<DocMetaRef[]>;
 
+    // TODO: we need a new method with the following semantics:
+
+    // - we can add it AFTER the init()
+    //
+    // - it starts working immediately and in offline mode and then continues
+    //   to work when we get online snapshots
+    //
+    // - it give us FULL visibility into the lifestyle of a document including
+    //   create, update, and delete.
+    //
+    // - this is VERY similar (but somewhat different) than the firebase snapshot
+    //   support
+
 }
 
 interface WritableDatastore {
@@ -146,14 +159,16 @@ export interface SynchronizingDatastore extends Datastore {
      * Listens to mutations of the underlying documents whether they are local
      * or synchronized from a remote store.
      */
-    addDocMutationEventListener(listener: (docMutationEvent: DocMutationEvent) => void): void;
+    addDocMetaSnapshotEventListener(listener: (docMetaSnapshotEvent: DocMetaSnapshotEvent) => void): void;
 
     /**
-     * Listens only for new synchronized documents.
+     * Listens only for new synchronized documents and ignores existing
+     * documents.  This allows us to find replicated documents as they
+     * change.
      *
      * @param listener
      */
-    addDocSynchronizationEventListener(listener: (docSynchronizationEvent: DocSynchronizationEvent) => void): void;
+    addDocMetaSynchronizationEventListener(listener: (docMetaSnapshotEvent: DocMetaSnapshotEvent) => void): void;
 
 }
 
@@ -166,36 +181,25 @@ export interface BinaryMutationEvent {
 
     name: string;
 
-    mutationType: DocMutationType;
+    mutationType: MutationType;
 
 }
 
 /**
- * A DocMutation is any mutation that happens in the remote datastore including
- * local mutations.
+ * A DocMetaSnapshotEvent is any snapshot of the Datastore based on the current
+ * state as well as future snapshots as the remote store changes.
  */
-export interface DocMutationEvent {
-
-    docInfo: IDocInfo;
-
-    mutationType: DocMutationType;
-
-}
-
-/**
- * ReplicationEvents are distinct changes to the remote Firestore entry that
- * aren't from events happening locally. These are triggered after init().
- * Local mutations to the datastore do not trigger ReplicationEvents
- */
-export interface DocSynchronizationEvent {
+export interface DocMetaSnapshotEvent {
 
     docMeta: DocMeta;
 
-    mutationType: DocMutationType;
+    docInfo: IDocInfo;
+
+    mutationType: MutationType;
 
 }
 
-export type DocMutationType = 'created' | 'updated' |'deleted';
+export type MutationType = 'created' | 'updated' |'deleted';
 
 /**
  * The result of an init operation which could be different form each datastore.
@@ -223,3 +227,12 @@ export interface InitDocMetaEvent {
     docMeta: DocMeta;
 }
 
+/**
+ * If the `init` method is given an InitLoadListener the init function gives the
+ * caller a copy of every DocMeta in the datastore on init.  This can be help
+ * full in general to load a UI or data into memory but since internally the
+ * datastore might ALSO be loading the docMeta for internal operations
+ * (consistency, snapshots, etc) then we can surface this data to the user
+ * without doing a double init.
+ */
+export type InitLoadListener = (docMeta: DocMeta) => void;

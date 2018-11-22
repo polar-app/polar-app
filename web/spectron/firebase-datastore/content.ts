@@ -64,7 +64,7 @@ SpectronRenderer.run(async (state) => {
 
                 let docReplicationEventListenerCalled: boolean = false;
 
-                datastore.addDocSynchronizationEventListener((docMutation) => {
+                datastore.addDocMetaSynchronizationEventListener((docMutation) => {
                     docReplicationEventListenerCalled = true;
                 });
 
@@ -87,7 +87,7 @@ SpectronRenderer.run(async (state) => {
                 const docMutationLatch = new Latch<boolean>();
                 const docReplicationLatch = new Latch<boolean>();
 
-                datastore.addDocMutationEventListener((docMutationEvent) => {
+                datastore.addDocMetaSnapshotEventListener((docMutationEvent) => {
 
                     if (docMutationEvent.docInfo.fingerprint === fingerprint &&
                         docMutationEvent.mutationType === 'created') {
@@ -98,7 +98,7 @@ SpectronRenderer.run(async (state) => {
 
                 });
 
-                datastore.addDocSynchronizationEventListener((docReplicationEvent) => {
+                datastore.addDocMetaSynchronizationEventListener((docReplicationEvent) => {
 
                     if (docReplicationEvent.docMeta.docInfo.fingerprint === fingerprint &&
                         docReplicationEvent.mutationType === 'created') {
@@ -138,7 +138,7 @@ SpectronRenderer.run(async (state) => {
 
                     public async setup() {
 
-                        this.datastore!.addDocSynchronizationEventListener((docReplicationEvent) => {
+                        this.datastore!.addDocMetaSynchronizationEventListener((docReplicationEvent) => {
                             this.hasDocReplicationEvent = true;
                         });
 

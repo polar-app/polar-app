@@ -41,6 +41,7 @@ export const BROWSER_WINDOW_OPTIONS: Electron.BrowserWindowConstructorOptions = 
         // partition: "persist:polar"
 
     }
+
 };
 
 /**

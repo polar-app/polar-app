@@ -104,7 +104,7 @@ export class RichTextEditor4 extends React.Component<IProps, IState>  {
 
     }
 
-    render() {
+    public render() {
 
         // https://github.com/summernote/react-summernote/issues/38
 
@@ -182,3 +182,4 @@ interface OnChangeCallback {
 interface OnSelectionCallback {
     (id: string, value: string): void;
 }
+

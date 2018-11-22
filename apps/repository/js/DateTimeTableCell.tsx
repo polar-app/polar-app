@@ -37,7 +37,10 @@ export class DateTimeTableCell extends React.Component<IProps, any> {
             return (
 
                 <div className={this.props.className}>
-                    <Moment withTitle={true} titleFormat="D MMM YYYY hh:MM A" fromNow>
+                    <Moment withTitle={true}
+                            titleFormat="D MMM YYYY hh:MM A"
+                            filter={(value) => value.replace(/^a /g, '1 ')}
+                            fromNow ago>
                         {this.props.datetime!}
                     </Moment>
                 </div>

@@ -80,6 +80,19 @@ export function configureBrowser(windowDimensions: IDimensions) {
 
     }
 
+    function configureWhiteBackground() {
+        const cssText = `
+        html, body {
+            background-color: #FFF;        
+        }
+        `;
+
+        writeStyles('polar-white-background', cssText);
+
+        console.log("Configured white background");
+
+    }
+
     function configureMaxVerticalHeight() {
 
         if (! ENABLE_VH_TRUNCATION) {
@@ -126,6 +139,7 @@ export function configureBrowser(windowDimensions: IDimensions) {
 
     try {
 
+        // configureWhiteBackground();
         configureBrowserWindowSize(windowDimensions);
         configureMaxVerticalHeight();
 

@@ -1,7 +1,7 @@
 import {
     BinaryMutationEvent, Datastore, DeleteResult,
-    DocMutationEvent, DocSynchronizationEvent, FileMeta,
-    InitResult, SynchronizingDatastore, DocMutationType, FileRef
+    DocMetaSnapshotEvent, FileMeta,
+    InitResult, SynchronizingDatastore, MutationType, FileRef
 } from './Datastore';
 import {Logger} from '../logger/Logger';
 import {DocMetaFileRef, DocMetaRef} from './DocMetaRef';
@@ -52,9 +52,9 @@ export class FirebaseDatastore implements Datastore, SynchronizingDatastore {
 
     private readonly binaryMutationReactor: IEventDispatcher<BinaryMutationEvent> = new SimpleReactor();
 
-    private readonly docMutationReactor: IEventDispatcher<DocMutationEvent> = new SimpleReactor();
+    private readonly docMetaSnapshotReactor: IEventDispatcher<DocMetaSnapshotEvent> = new SimpleReactor();
 
-    private readonly docSynchronizationReactor: IEventDispatcher<DocSynchronizationEvent> = new SimpleReactor();
+    private readonly docMetaSynchronizationReactor: IEventDispatcher<DocMetaSnapshotEvent> = new SimpleReactor();
 
     private unsubscribeSnapshots: () => void = NULL_FUNCTION;
 
@@ -405,12 +405,12 @@ export class FirebaseDatastore implements Datastore, SynchronizingDatastore {
         this.binaryMutationReactor.addEventListener(listener);
     }
 
-    public addDocMutationEventListener(listener: (docMutation: DocMutationEvent) => void): void {
-        this.docMutationReactor.addEventListener(listener);
+    public addDocMetaSnapshotEventListener(listener: (docMetaSnapshotEvent: DocMetaSnapshotEvent) => void): void {
+        this.docMetaSnapshotReactor.addEventListener(listener);
     }
 
-    public addDocSynchronizationEventListener(listener: (docReplicationEvent: DocSynchronizationEvent) => void): void {
-        this.docSynchronizationReactor.addEventListener(listener);
+    public addDocMetaSynchronizationEventListener(listener: (docMetaSnapshotEvent: DocMetaSnapshotEvent) => void): void {
+        this.docMetaSynchronizationReactor.addEventListener(listener);
     }
 
     private computeStoragePath(backend: Backend, fileRef: FileRef): string {
@@ -510,30 +510,37 @@ export class FirebaseDatastore implements Datastore, SynchronizingDatastore {
 
         for (const docChange of snapshot.docChanges()) {
 
-            const record = <RecordHolder<DocMetaHolder>> docChange.doc.data();
-            const id = record.id;
+            const docMetaSnapshotEvent
+                = FirebaseDatastore.onDocMetaSnapshotDocChange(docChange, this.docMetaSnapshotReactor);
 
-            const docMeta = DocMetas.deserialize(record.value.value);
-
-            const docMutationEvent: DocMutationEvent = {
-                docInfo: record.value.docInfo,
-                mutationType: toMutationType(docChange.type)
-            };
-
-            const docReplicationEvent: DocSynchronizationEvent = {
-                docMeta,
-                mutationType: toMutationType(docChange.type)
-            };
-
-            this.docMutationReactor.dispatchEvent(docMutationEvent);
-
-            if (!this.pendingMutationIndex[id]) {
-                this.docSynchronizationReactor.dispatchEvent(docReplicationEvent);
+            if (!this.pendingMutationIndex[docMetaSnapshotEvent.id]) {
+                this.docMetaSynchronizationReactor.dispatchEvent(docMetaSnapshotEvent);
             }
 
         }
 
         log.debug("onSnapshot... done");
+
+    }
+
+    private static onDocMetaSnapshotDocChange(docChange: firebase.firestore.DocumentChange,
+                                              docMetaSnapshotReactor: IEventDispatcher<DocMetaSnapshotEvent>) {
+
+        const record = <RecordHolder<DocMetaHolder>> docChange.doc.data();
+        const id = record.id;
+
+        const docMeta = DocMetas.deserialize(record.value.value);
+
+        const docMetaSnapshotEvent: FirebaseDocMetaSnapshotEvent = {
+            id,
+            docMeta,
+            docInfo: record.value.docInfo,
+            mutationType: toMutationType(docChange.type)
+        };
+
+        docMetaSnapshotReactor.dispatchEvent(docMetaSnapshotEvent);
+
+        return docMetaSnapshotEvent;
 
     }
 
@@ -550,6 +557,7 @@ export class FirebaseDatastore implements Datastore, SynchronizingDatastore {
         Preconditions.assertPresent(user, "Not authenticated");
 
         return user!.uid;
+
     }
 
 }
@@ -618,7 +626,9 @@ interface Mutation {
 
 }
 
-interface PendingMutationIndex {[id: string]: PendingMutation};
+interface PendingMutationIndex {
+    [id: string]: PendingMutation;
+}
 
 interface PendingMutation {
 
@@ -627,12 +637,16 @@ interface PendingMutation {
 
 }
 
+interface FirebaseDocMetaSnapshotEvent extends DocMetaSnapshotEvent {
+    readonly id: string;
+}
+
 /**
  * Convert a Firestore DocumentChangeType to a DocMutationType.  We prefer the
  * CRUD (create update delete) naming.
  * @param docChangeType
  */
-function toMutationType(docChangeType: firebase.firestore.DocumentChangeType): DocMutationType {
+function toMutationType(docChangeType: firebase.firestore.DocumentChangeType): MutationType {
 
     switch (docChangeType) {
 
