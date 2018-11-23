@@ -64,8 +64,6 @@ export interface Datastore extends BinaryDatastore, WritableDatastore {
     /**
      * Get a current snapshot of the internal state of the Datastore by receiving
      * DocMetaSnapshotEvent on the initial state.
-     *
-     * @param listener
      */
     snapshot(listener: (docMetaSnapshotEvent: DocMetaSnapshotEvent) => void): Promise<void>;
 

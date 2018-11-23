@@ -1,5 +1,5 @@
 import {DocMetaFileRef, DocMetaRef} from './DocMetaRef';
-import {DeleteResult, FileRef} from './Datastore';
+import {DeleteResult, DocMetaSnapshotEvent, FileRef} from './Datastore';
 import {DocMeta} from '../metadata/DocMeta';
 import {Backend} from './Backend';
 import {DatastoreFile} from './DatastoreFile';
@@ -28,6 +28,12 @@ export interface IPersistenceLayer {
     getDocMeta(fingerprint: string): Promise<DocMeta | undefined>;
 
     getDocMetaFiles(): Promise<DocMetaRef[]>;
+
+    /**
+     * Get a current snapshot of the internal state of the Datastore by receiving
+     * DocMetaSnapshotEvent on the initial state.
+     */
+    snapshot(listener: (docMetaSnapshotEvent: DocMetaSnapshotEvent) => void): Promise<void>;
 
     /**
      * Delete a file from PersistenceLayer.

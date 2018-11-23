@@ -30,12 +30,12 @@ export class AdvertisingPersistenceLayer
 
         this.docInfoAdvertisementListenerService.start();
 
-        return this.persistenceLayer.init();
+        return this.delegate.init();
 
     }
 
     public async stop(): Promise<void> {
-        return this.persistenceLayer.stop();
+        return this.delegate.stop();
     }
 
     protected broadcastEvent(event: PersistenceLayerEvent): void {

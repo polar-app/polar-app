@@ -1,4 +1,4 @@
-import {Datastore, FileMeta, FileRef} from './Datastore';
+import {Datastore, DocMetaSnapshotEvent, FileMeta, FileRef} from './Datastore';
 import {DocMeta} from '../metadata/DocMeta';
 import {DocMetas} from '../metadata/DocMetas';
 import {isPresent, Preconditions} from '../Preconditions';
@@ -171,6 +171,14 @@ export class DefaultPersistenceLayer implements IPersistenceLayer {
 
     public getDocMetaFiles(): Promise<DocMetaRef[]> {
         return this.datastore.getDocMetaFiles();
+    }
+
+    /**
+     * Get a current snapshot of the internal state of the Datastore by receiving
+     * DocMetaSnapshotEvent on the initial state.
+     */
+    public snapshot(listener: (docMetaSnapshotEvent: DocMetaSnapshotEvent) => void): Promise<void> {
+        return this.datastore.snapshot(listener);
     }
 
     public writeFile(backend: Backend, ref: FileRef, data: Buffer | string, meta: FileMeta = {}): Promise<DatastoreFile> {

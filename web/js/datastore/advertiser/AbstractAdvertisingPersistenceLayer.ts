@@ -5,7 +5,7 @@ import {PersistenceLayerListener} from '../PersistenceLayerListener';
 import {IPersistenceLayer} from '../IPersistenceLayer';
 import {DocMeta} from '../../metadata/DocMeta';
 import {DocMetaFileRef, DocMetaRef} from '../DocMetaRef';
-import {DeleteResult, FileRef} from '../Datastore';
+import {DeleteResult, DocMetaSnapshotEvent, FileRef} from '../Datastore';
 import {PersistenceEventType} from '../PersistenceEventType';
 import {Backend} from '../Backend';
 import {DatastoreFile} from '../DatastoreFile';
@@ -25,12 +25,12 @@ export abstract class AbstractAdvertisingPersistenceLayer implements IListenable
     /**
      * A PersistenceLayer for the non-dispatched methods (for now).
      */
-    protected readonly persistenceLayer: IPersistenceLayer;
+    protected readonly delegate: IPersistenceLayer;
 
-    protected constructor(persistenceLayer: IPersistenceLayer) {
-        this.persistenceLayer = persistenceLayer;
-        this.stashDir = this.persistenceLayer.stashDir;
-        this.logsDir = this.persistenceLayer.logsDir;
+    protected constructor(delegate: IPersistenceLayer) {
+        this.delegate = delegate;
+        this.stashDir = this.delegate.stashDir;
+        this.logsDir = this.delegate.logsDir;
     }
 
     public abstract init(): Promise<void>;
@@ -64,7 +64,7 @@ export abstract class AbstractAdvertisingPersistenceLayer implements IListenable
         const eventType: PersistenceEventType
             = this.contains(fingerprint) ? 'updated' : 'created';
 
-        const docInfo = await this.persistenceLayer.write(fingerprint, docMeta, datastoreMutation);
+        const docInfo = await this.delegate.write(fingerprint, docMeta, datastoreMutation);
 
         this.broadcastEvent({
             docInfo,
@@ -79,16 +79,20 @@ export abstract class AbstractAdvertisingPersistenceLayer implements IListenable
     }
 
     public async contains(fingerprint: string): Promise<boolean> {
-        return this.persistenceLayer.contains(fingerprint);
+        return this.delegate.contains(fingerprint);
     }
 
     public getDocMetaFiles(): Promise<DocMetaRef[]> {
-        return this.persistenceLayer.getDocMetaFiles();
+        return this.delegate.getDocMetaFiles();
+    }
+
+    public snapshot(listener: (docMetaSnapshotEvent: DocMetaSnapshotEvent) => void): Promise<void> {
+        return this.delegate.snapshot(listener);
     }
 
     public delete(docMetaFileRef: DocMetaFileRef): Promise<DeleteResult> {
 
-        const result = this.persistenceLayer.delete(docMetaFileRef);
+        const result = this.delegate.delete(docMetaFileRef);
 
         this.broadcastEvent({
             docInfo: docMetaFileRef.docInfo,
@@ -102,7 +106,7 @@ export abstract class AbstractAdvertisingPersistenceLayer implements IListenable
     }
 
     public async getDocMeta(fingerprint: string): Promise<DocMeta | undefined> {
-        return await this.persistenceLayer.getDocMeta(fingerprint);
+        return await this.delegate.getDocMeta(fingerprint);
     }
 
     /**
@@ -114,15 +118,15 @@ export abstract class AbstractAdvertisingPersistenceLayer implements IListenable
     }
 
     public writeFile(backend: Backend, ref: FileRef, data: Buffer | string, meta: FileMeta): Promise<DatastoreFile> {
-        return this.persistenceLayer.writeFile(backend, ref, data, meta);
+        return this.delegate.writeFile(backend, ref, data, meta);
     }
 
     public containsFile(backend: Backend, ref: FileRef): Promise<boolean> {
-        return this.persistenceLayer.containsFile(backend, ref);
+        return this.delegate.containsFile(backend, ref);
     }
 
     public getFile(backend: Backend, ref: FileRef): Promise<Optional<DatastoreFile>> {
-        return this.persistenceLayer.getFile(backend, ref);
+        return this.delegate.getFile(backend, ref);
     }
 
     protected abstract broadcastEvent(event: PersistenceLayerEvent): void;
