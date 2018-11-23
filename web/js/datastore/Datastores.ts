@@ -77,12 +77,18 @@ export class Datastores {
         // the UI every 1% OR the maxBatchSize...
 
         for (const docMetaFile of docMetaFiles) {
+
             const data = await datastore.getDocMeta(docMetaFile.fingerprint);
-            const docMeta = DocMetas.deserialize(data!);
+
+            // TODO: in the cloud store implementation it will probably be much
+            // faster to use a file JUST for the DocInfo to speed up loading.
+
+            const docMetaProvider = Providers.memoize(() => DocMetas.deserialize(data!));
+            const docInfoProvider = Providers.memoize(() => docMetaProvider().docInfo);
 
             const docMetaMutation: DocMetaMutation = {
-                docMetaProvider: Providers.of(docMeta),
-                docInfoProvider: Providers.of(docMeta.docInfo),
+                docMetaProvider,
+                docInfoProvider,
                 mutationType: 'created'
             };
 
