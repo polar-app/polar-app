@@ -1,9 +1,13 @@
 /**
- * Represents the progress of a state of tasks.
+ * Represents the progress of a state of tasks and allows us to just incr()
+ * the progress in a loop rather than having the math exposed in the loop.
  */
 export class Progress {
 
+    // noinspection TsLint
     private _value: number = 0;
+
+    // noinspection TsLint
     private readonly _total: number;
 
     /**

@@ -167,6 +167,13 @@ export class CloudAwareDatastore implements Datastore {
     }
 
     public async snapshot(listener: (docMetaSnapshotEvent: DocMetaSnapshotEvent) => void): Promise<void> {
+
+        // FIXME: on the first snapshot() we need to make sure the source and
+        // target are synchronized and we need to have some sort of way to get
+        // events about what's happening to update the UI as remote + local
+        // events will be in flight.
+
+
         return this.remote.snapshot(listener);
     }
 
@@ -188,7 +195,7 @@ export class CloudAwareDatastore implements Datastore {
     //
     // }
 
-    private async onRemoteDocMutations(docMetaMutations: DocMetaMutation[]) {
+    private async onRemoteDocMutations(docMetaMutations: ReadonlyArray<DocMetaMutation>) {
 
         for (const docMetaMutation of docMetaMutations) {
             await this.onRemoteDocMutation(docMetaMutation);

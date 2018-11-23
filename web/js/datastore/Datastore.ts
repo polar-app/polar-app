@@ -14,6 +14,7 @@ import {isPresent} from '../Preconditions';
 import {DatastoreMutation} from './DatastoreMutation';
 import {DocMeta} from '../metadata/DocMeta';
 import {Hashcode} from '../metadata/Hashcode';
+import {ProgressState} from '../util/ProgressTracker';
 
 export interface Datastore extends BinaryDatastore, WritableDatastore {
 
@@ -62,8 +63,8 @@ export interface Datastore extends BinaryDatastore, WritableDatastore {
     getDocMetaFiles(): Promise<DocMetaRef[]>;
 
     /**
-     * Get a current snapshot of the internal state of the Datastore by receiving
-     * DocMetaSnapshotEvent on the initial state.
+     * Get a current snapshot of the internal state of the Datastore by
+     * receiving DocMetaSnapshotEvent on the initial state.
      */
     snapshot(listener: (docMetaSnapshotEvent: DocMetaSnapshotEvent) => void): Promise<void>;
 
@@ -77,8 +78,8 @@ export interface Datastore extends BinaryDatastore, WritableDatastore {
     // - it give us FULL visibility into the lifestyle of a document including
     //   create, update, and delete.
     //
-    // - this is VERY similar (but somewhat different) than the firebase snapshot
-    //   support
+    // - this is VERY similar (but somewhat different) than the firebase
+    // snapshot support
 
 }
 
@@ -196,14 +197,23 @@ export interface BinaryMutationEvent {
  * state as well as future snapshots as the remote store changes.  This includes
  * DocMeta mutations which also include a MutationType for whether the document
  * was created, updated, or deleted.
+ *
+ * Note that a snapshot event can have zero or more docMetaMutations.  We will
+ * generate zero DocMetaMutations when we're updating progress.
  */
 export interface DocMetaSnapshotEvent {
+
+    readonly progress: SnapshotProgress;
 
     /**
      * An array of mutations that have been applied.  We return as an array to
      * enable performance updates via batching.
      */
-    readonly docMetaMutations: DocMetaMutation[];
+    readonly docMetaMutations: ReadonlyArray<DocMetaMutation>;
+
+}
+
+export interface SnapshotProgress extends Readonly<ProgressState> {
 
 }
 
@@ -236,8 +246,8 @@ export interface DeleteResult {
 
 /**
  * Listens to documents in the local repository on load.  We receive one event
- * per document it enters the repository. Once on startup if it's already present
- * and then again if it's replicated from the cloud.
+ * per document it enters the repository. Once on startup if it's already
+ * present and then again if it's replicated from the cloud.
  */
 export type InitDocMetaEventListener = (initDocMetaEvent: InitDocMetaEvent) => void;
 

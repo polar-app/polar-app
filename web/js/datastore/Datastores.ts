@@ -7,6 +7,7 @@ import {DocMeta} from '../metadata/DocMeta';
 import {DocMetas} from '../metadata/DocMetas';
 import {NULL_FUNCTION} from '../util/Functions';
 import {Percentages} from '../util/Percentages';
+import {ProgressTracker} from '../util/ProgressTracker';
 
 const log = Logger.create();
 
@@ -59,6 +60,23 @@ export class Datastores {
 
         const docMetaFiles = await datastore.getDocMetaFiles();
 
+        const progressTracker = new ProgressTracker(docMetaFiles.length);
+
+        // TODO: we call the listener too many times here but we might want to
+        // batch it in the future so that the listener doesn't get called too
+        // often as it would update the UI too frequently.  We need to compute
+        // the ideal batch size so we should probably compute it as:
+
+        // const percMax = 100;
+        // const minBatchSize = 1;
+        // const maxBatchSize = 20;
+        //
+        // Math.max(minBatchSize, Math.min(maxBatchSize, docMetaFiles.length / percMax))
+        //
+        //
+        // This will give us an ideal batch size so that we update the UI every
+        // 1% OR the maxBatchSize...
+
         for (const docMetaFile of docMetaFiles) {
             const data = await datastore.getDocMeta(docMetaFile.fingerprint);
             const docMeta = DocMetas.deserialize(data!);
@@ -69,7 +87,10 @@ export class Datastores {
                 mutationType: 'created'
             };
 
-            listener({docMetaMutations: [docMetaMutation]});
+            listener({
+                progress: progressTracker.incr(),
+                docMetaMutations: [docMetaMutation]
+            });
 
         }
 

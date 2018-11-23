@@ -34,7 +34,7 @@ describe('PersistenceLayers', function() {
 
         await source.write(fingerprint, docMeta);
 
-        const transferResult = await PersistenceLayers.transfer(source, target, (transferEvent) => {
+        const transferResult = await PersistenceLayers.synchronize(source, target, (transferEvent) => {
             console.log("Transfer event: ", transferEvent);
         });
 
@@ -53,7 +53,7 @@ describe('PersistenceLayers', function() {
 
         await source.write(fingerprint, docMeta);
 
-        const transferResult = await PersistenceLayers.transfer(source, target, (transferEvent) => {
+        const transferResult = await PersistenceLayers.synchronize(source, target, (transferEvent) => {
             console.log("Transfer event: ", transferEvent);
         });
 

@@ -11,9 +11,13 @@ import {UUIDs} from '../metadata/UUIDs';
 
 export class PersistenceLayers {
 
-    public static async transfer(source: IPersistenceLayer,
-                                 target: IPersistenceLayer,
-                                 listener: (transferEvent: TransferEvent) => void = NULL_FUNCTION): Promise<TransferResult> {
+    /**
+     * Synchronize the source with the target so that we know they are both in
+     * sync.
+     */
+    public static async synchronize(source: IPersistenceLayer,
+                                    target: IPersistenceLayer,
+                                    listener: (transferEvent: TransferEvent) => void = NULL_FUNCTION): Promise<TransferResult> {
 
 
         const result: TransferResult = {

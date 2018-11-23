@@ -21,6 +21,7 @@ import {IEventDispatcher, SimpleReactor} from '../reactor/SimpleReactor';
 import {NULL_FUNCTION} from '../util/Functions';
 import {DocMetas} from "../metadata/DocMetas";
 import {Percentages} from '../util/Percentages';
+import {ProgressTracker} from '../util/ProgressTracker';
 
 const log = Logger.create();
 
@@ -524,8 +525,11 @@ export class FirebaseDatastore implements Datastore, SynchronizingDatastore {
         log.debug("onSnapshot... ");
 
         const docMetaMutations = [];
+        const documentChanges = snapshot.docChanges();
 
-        for (const docChange of snapshot.docChanges()) {
+        const progressTracker = new ProgressTracker(documentChanges.length);
+
+        for (const docChange of documentChanges) {
 
             const docMetaMutation
                 = FirebaseDatastore.toDocMetaMutation(docChange);
@@ -534,11 +538,19 @@ export class FirebaseDatastore implements Datastore, SynchronizingDatastore {
                 docMetaMutations.unshift(docMetaMutation);
             }
 
+            // dispatch a progress event so we can detect how far we've been
+            // loading
+            this.docMetaSynchronizationReactor.dispatchEvent({
+                progress: progressTracker.incr(),
+                docMetaMutations: []
+            });
+
         }
 
-        if (docMetaMutations.length > 0) {
-            this.docMetaSynchronizationReactor.dispatchEvent({docMetaMutations});
-        }
+        this.docMetaSynchronizationReactor.dispatchEvent({
+            progress: progressTracker.peek(),
+            docMetaMutations
+        });
 
         log.debug("onSnapshot... done");
 

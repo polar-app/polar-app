@@ -38,6 +38,9 @@ export class AdvertisingPersistenceLayer
         return this.delegate.stop();
     }
 
+    // FIXME: new version of snapshot() here that uses advertisements when
+    // possible....
+
     protected broadcastEvent(event: PersistenceLayerEvent): void {
 
         DocInfoAdvertiser.send({

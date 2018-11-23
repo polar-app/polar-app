@@ -39,7 +39,7 @@ SpectronRenderer.run(async (state) => {
             console.log("Purge event: ", purgeEvent);
         });
 
-        await PersistenceLayers.transfer(source, target, (transferEvent) => {
+        await PersistenceLayers.synchronize(source, target, (transferEvent) => {
             console.log("Transfer event: ", transferEvent);
         });
 
