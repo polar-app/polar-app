@@ -38,7 +38,11 @@ export class RepoDocInfoLoader {
 
         const progressBar = ProgressBar.create(false);
 
-        const onSnapshotCallback = async (docMetaSnapshotEvent: DocMetaSnapshotEvent) => {
+        // TODO: there's latency here as we shouldn't have to load the ENTIRE
+        // doc repo to update the UI...  We should update it as it's parsed via
+        // events.
+
+        await this.persistenceLayer.snapshot(async (docMetaSnapshotEvent: DocMetaSnapshotEvent) => {
 
             // docMetaSnapshotEvent = Dictionaries.copyOf(docMetaSnapshotEvent);
 
@@ -58,15 +62,7 @@ export class RepoDocInfoLoader {
 
             }
 
-        };
-
-        // TODO: there's latency here as we shouldn't have to load the ENTIRE
-        // doc repo to update the UI...
-
-        // FIXME: do not use onSnapshotCalllback here but instead use it as a
-        // lamba as an argument.  Much cleaner.
-
-        await this.persistenceLayer.snapshot(onSnapshotCallback);
+        });
 
         progressBar.destroy();
 
