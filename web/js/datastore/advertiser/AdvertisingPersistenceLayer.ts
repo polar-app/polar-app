@@ -3,7 +3,7 @@ import {DocInfoAdvertisement} from './DocInfoAdvertisement';
 import {DocInfoAdvertiser} from './DocInfoAdvertiser';
 import {DocInfoAdvertisementListenerService} from './DocInfoAdvertisementListenerService';
 import {PersistenceLayerEvent} from '../PersistenceLayerEvent';
-import {IPersistenceLayer} from '../IPersistenceLayer';
+import {PersistenceLayer} from '../PersistenceLayer';
 import {IListenablePersistenceLayer} from '../IListenablePersistenceLayer';
 import {AbstractAdvertisingPersistenceLayer} from './AbstractAdvertisingPersistenceLayer';
 
@@ -19,7 +19,7 @@ export class AdvertisingPersistenceLayer
 
     private readonly docInfoAdvertisementListenerService = new DocInfoAdvertisementListenerService();
 
-    constructor(persistenceLayer: IPersistenceLayer) {
+    constructor(persistenceLayer: PersistenceLayer) {
         super(persistenceLayer);
     }
 

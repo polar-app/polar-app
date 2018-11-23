@@ -1,4 +1,4 @@
-import {IPersistenceLayer} from "./IPersistenceLayer";
+import {PersistenceLayer} from "./PersistenceLayer";
 import {NULL_FUNCTION} from "../util/Functions";
 import {Percentages} from '../util/Percentages';
 import {Backend} from './Backend';
@@ -6,8 +6,10 @@ import {Blobs} from "../util/Blobs";
 import {ArrayBuffers} from "../util/ArrayBuffers";
 import {AsyncFunction, AsyncWorkQueue} from '../util/AsyncWorkQueue';
 import {DocMetaRef} from "./DocMetaRef";
-import {FileRef} from './Datastore';
+import {Datastore, DocMetaMutation, DocMetaSnapshotEvent, FileRef} from './Datastore';
 import {UUIDs} from '../metadata/UUIDs';
+import {ProgressTracker} from '../util/ProgressTracker';
+import {DocMetas} from '../metadata/DocMetas';
 
 export class PersistenceLayers {
 
@@ -15,8 +17,8 @@ export class PersistenceLayers {
      * Synchronize the source with the target so that we know they are both in
      * sync.
      */
-    public static async synchronize(source: IPersistenceLayer,
-                                    target: IPersistenceLayer,
+    public static async synchronize(source: PersistenceLayer,
+                                    target: PersistenceLayer,
                                     listener: (transferEvent: TransferEvent) => void = NULL_FUNCTION): Promise<TransferResult> {
 
 

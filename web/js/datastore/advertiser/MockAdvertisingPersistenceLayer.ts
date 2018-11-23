@@ -1,4 +1,4 @@
-import {IPersistenceLayer} from '../IPersistenceLayer';
+import {PersistenceLayer} from '../PersistenceLayer';
 import {IListenablePersistenceLayer} from '../IListenablePersistenceLayer';
 import {AbstractAdvertisingPersistenceLayer} from './AbstractAdvertisingPersistenceLayer';
 import {PersistenceLayerEvent} from '../PersistenceLayerEvent';
@@ -11,7 +11,7 @@ export class MockAdvertisingPersistenceLayer
     extends AbstractAdvertisingPersistenceLayer
     implements IListenablePersistenceLayer {
 
-    constructor(persistenceLayer: IPersistenceLayer) {
+    constructor(persistenceLayer: PersistenceLayer) {
         super(persistenceLayer);
     }
 

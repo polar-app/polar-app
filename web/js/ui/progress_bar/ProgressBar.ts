@@ -14,7 +14,7 @@ export class ProgressBar {
     }
 
     public update(val: number) {
-        this.element.value = val;
+       this.element.value = val;
     }
 
     public destroy() {

@@ -6,7 +6,7 @@ import {Datastores} from './Datastores';
 import {PersistenceLayers} from './PersistenceLayers';
 import {MemoryDatastore} from './MemoryDatastore';
 import {MockDocMetas} from '../metadata/DocMetas';
-import {IPersistenceLayer} from './IPersistenceLayer';
+import {PersistenceLayer} from './PersistenceLayer';
 import {UUIDs} from "../metadata/UUIDs";
 import {TestingTime} from "../test/TestingTime";
 
@@ -15,8 +15,8 @@ describe('PersistenceLayers', function() {
     const fingerprint = "0x001";
     const docMeta = MockDocMetas.createWithinInitialPagemarks(fingerprint, 14);
 
-    let source: IPersistenceLayer;
-    let target: IPersistenceLayer;
+    let source: PersistenceLayer;
+    let target: PersistenceLayer;
 
     beforeEach(async function() {
         TestingTime.freeze();

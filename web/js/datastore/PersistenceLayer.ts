@@ -1,5 +1,5 @@
 import {DocMetaFileRef, DocMetaRef} from './DocMetaRef';
-import {DeleteResult, DocMetaSnapshotEvent, FileRef} from './Datastore';
+import {DeleteResult, DocMetaSnapshotEvent, FileRef, DocMetaSnapshotEventListener} from './Datastore';
 import {DocMeta} from '../metadata/DocMeta';
 import {Backend} from './Backend';
 import {DatastoreFile} from './DatastoreFile';
@@ -9,7 +9,7 @@ import {DocInfo} from '../metadata/DocInfo';
 import {FileHandle} from '../util/Files';
 import {DatastoreMutation} from './DatastoreMutation';
 
-export interface IPersistenceLayer {
+export interface PersistenceLayer {
 
     readonly stashDir: string;
 
@@ -30,10 +30,10 @@ export interface IPersistenceLayer {
     getDocMetaFiles(): Promise<DocMetaRef[]>;
 
     /**
-     * Get a current snapshot of the internal state of the Datastore by receiving
-     * DocMetaSnapshotEvent on the initial state.
+     * Get a current snapshot of the internal state of the Datastore by
+     * receiving DocMetaSnapshotEvent on the initial state.
      */
-    snapshot(listener: (docMetaSnapshotEvent: DocMetaSnapshotEvent) => void): Promise<void>;
+    snapshot(listener: DocMetaSnapshotEventListener): Promise<void>;
 
     /**
      * Delete a file from PersistenceLayer.
@@ -58,3 +58,5 @@ export interface IPersistenceLayer {
     containsFile(backend: Backend, ref: FileRef): Promise<boolean>;
 
 }
+
+

@@ -1,4 +1,4 @@
-import {IPersistenceLayer} from "../../datastore/IPersistenceLayer";
+import {PersistenceLayer} from "../../datastore/PersistenceLayer";
 import {ipcRenderer} from "electron";
 import {Logger} from '../../logger/Logger';
 import {FileImportRequest} from "../main/MainAppController";
@@ -23,13 +23,13 @@ const log = Logger.create();
  */
 export class FileImportController {
 
-    private readonly persistenceLayer: IPersistenceLayer;
+    private readonly persistenceLayer: PersistenceLayer;
 
     private readonly updatedDocInfoEventDispatcher: IEventDispatcher<IDocInfo>;
 
     private readonly pdfImporter: PDFImporter;
 
-    constructor(persistenceLayer: IPersistenceLayer, updatedDocInfoEventDispatcher: IEventDispatcher<IDocInfo>) {
+    constructor(persistenceLayer: PersistenceLayer, updatedDocInfoEventDispatcher: IEventDispatcher<IDocInfo>) {
         this.persistenceLayer = persistenceLayer;
         this.updatedDocInfoEventDispatcher = updatedDocInfoEventDispatcher;
         this.pdfImporter = new PDFImporter(persistenceLayer);

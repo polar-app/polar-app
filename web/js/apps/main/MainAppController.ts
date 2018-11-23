@@ -17,7 +17,7 @@ import MenuItem = Electron.MenuItem;
 import {Directories} from '../../datastore/Directories';
 import {FileImportClient} from '../repository/FileImportClient';
 import {PDFImporter} from '../repository/importers/PDFImporter';
-import {IPersistenceLayer} from '../../datastore/IPersistenceLayer';
+import {PersistenceLayer} from '../../datastore/PersistenceLayer';
 import {Messenger} from '../../electron/messenger/Messenger';
 import {TriggerBrowserLoad} from '../browser/BrowserApp';
 

@@ -9,19 +9,29 @@ import {Tag} from '../../../web/js/tags/Tag';
 export interface RepoDocInfo {
 
     fingerprint: string;
+
     title: string;
+
     progress: number;
+
     filename?: string;
+
     added?: ISODateTimeString;
+
     lastUpdated?: ISODateTimeString;
+
     // lastUpdated?: string;
+
     flagged: boolean;
+
     archived: boolean;
+
     url?: string;
+
     // nrComments: number;
     // nrFlashcards: number;
 
-    tags?: {[id: string]: Tag};
+    tags?: Readonly<{[id: string]: Tag}>;
 
     nrAnnotations: number;
 

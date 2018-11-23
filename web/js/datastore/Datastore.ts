@@ -66,7 +66,7 @@ export interface Datastore extends BinaryDatastore, WritableDatastore {
      * Get a current snapshot of the internal state of the Datastore by
      * receiving DocMetaSnapshotEvent on the initial state.
      */
-    snapshot(listener: (docMetaSnapshotEvent: DocMetaSnapshotEvent) => void): Promise<void>;
+    snapshot(listener: DocMetaSnapshotEventListener): Promise<void>;
 
     // TODO: we need a new method with the following semantics:
 
@@ -191,6 +191,8 @@ export interface BinaryMutationEvent {
     readonly mutationType: MutationType;
 
 }
+
+export type DocMetaSnapshotEventListener = (docMetaSnapshotEvent: DocMetaSnapshotEvent) => void;
 
 /**
  * A DocMetaSnapshotEvent is a snapshot of the Datastore based on the current

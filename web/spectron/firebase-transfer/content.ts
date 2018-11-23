@@ -18,7 +18,7 @@ import {DefaultDatastoreMutation} from '../../js/datastore/DatastoreMutation';
 import {DocInfo} from '../../js/metadata/DocInfo';
 import {Latch} from '../../js/util/Latch';
 import {PersistenceLayerWorkers} from '../../js/datastore/dispatcher/PersistenceLayerWorkers';
-import {IPersistenceLayer} from '../../js/datastore/IPersistenceLayer';
+import {PersistenceLayer} from '../../js/datastore/PersistenceLayer';
 import {Datastores} from '../../js/datastore/Datastores';
 import waitForExpect from 'wait-for-expect';
 import {BrowserWindowRegistry} from '../../js/electron/framework/BrowserWindowRegistry';

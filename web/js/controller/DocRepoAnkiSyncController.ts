@@ -8,7 +8,7 @@ import {DialogWindowOptions, Resource, ResourceType} from '../ui/dialog_window/D
 import {DocInfos} from '../metadata/DocInfos';
 import {DocMetaSet} from '../metadata/DocMetaSet';
 import {SyncProgressListener} from '../apps/sync/framework/SyncProgressListener';
-import {IPersistenceLayer} from '../datastore/IPersistenceLayer';
+import {PersistenceLayer} from '../datastore/PersistenceLayer';
 import {IEventDispatcher} from '../reactor/SimpleReactor';
 import {SyncBarProgress} from '../ui/sync_bar/SyncBar';
 import {AnkiSyncEngine} from '../apps/sync/framework/anki/AnkiSyncEngine';
@@ -19,10 +19,10 @@ const log = Logger.create();
 
 export class DocRepoAnkiSyncController {
 
-    private readonly persistenceLayer: IPersistenceLayer;
+    private readonly persistenceLayer: PersistenceLayer;
     private readonly syncBarProgress: IEventDispatcher<SyncBarProgress>;
 
-    constructor(persistenceLayer: IPersistenceLayer, syncBarProgress: IEventDispatcher<SyncBarProgress>) {
+    constructor(persistenceLayer: PersistenceLayer, syncBarProgress: IEventDispatcher<SyncBarProgress>) {
         this.persistenceLayer = persistenceLayer;
         this.syncBarProgress = syncBarProgress;
     }

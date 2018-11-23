@@ -2,10 +2,10 @@ import {IListenablePersistenceLayer} from '../IListenablePersistenceLayer';
 import {SimpleReactor} from '../../reactor/SimpleReactor';
 import {PersistenceLayerEvent} from '../PersistenceLayerEvent';
 import {PersistenceLayerListener} from '../PersistenceLayerListener';
-import {IPersistenceLayer} from '../IPersistenceLayer';
+import {PersistenceLayer} from '../PersistenceLayer';
 import {DocMeta} from '../../metadata/DocMeta';
 import {DocMetaFileRef, DocMetaRef} from '../DocMetaRef';
-import {DeleteResult, DocMetaSnapshotEvent, FileRef} from '../Datastore';
+import {DeleteResult, DocMetaSnapshotEvent, FileRef, DocMetaSnapshotEventListener} from '../Datastore';
 import {PersistenceEventType} from '../PersistenceEventType';
 import {Backend} from '../Backend';
 import {DatastoreFile} from '../DatastoreFile';
@@ -25,9 +25,9 @@ export abstract class AbstractAdvertisingPersistenceLayer implements IListenable
     /**
      * A PersistenceLayer for the non-dispatched methods (for now).
      */
-    protected readonly delegate: IPersistenceLayer;
+    protected readonly delegate: PersistenceLayer;
 
-    protected constructor(delegate: IPersistenceLayer) {
+    protected constructor(delegate: PersistenceLayer) {
         this.delegate = delegate;
         this.stashDir = this.delegate.stashDir;
         this.logsDir = this.delegate.logsDir;
@@ -86,7 +86,7 @@ export abstract class AbstractAdvertisingPersistenceLayer implements IListenable
         return this.delegate.getDocMetaFiles();
     }
 
-    public snapshot(listener: (docMetaSnapshotEvent: DocMetaSnapshotEvent) => void): Promise<void> {
+    public snapshot(listener: DocMetaSnapshotEventListener): Promise<void> {
         return this.delegate.snapshot(listener);
     }
 

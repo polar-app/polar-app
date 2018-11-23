@@ -1,7 +1,7 @@
 import {
     BinaryMutationEvent, Datastore, DeleteResult,
     DocMetaSnapshotEvent, FileMeta,
-    InitResult, SynchronizingDatastore, MutationType, FileRef, DocMetaMutation
+    InitResult, SynchronizingDatastore, MutationType, FileRef, DocMetaMutation, DocMetaSnapshotEventListener
 } from './Datastore';
 import {Logger} from '../logger/Logger';
 import {DocMetaFileRef, DocMetaRef} from './DocMetaRef';
@@ -116,7 +116,7 @@ export class FirebaseDatastore implements Datastore, SynchronizingDatastore {
 
     }
 
-    public async snapshot(listener: (docMetaSnapshotEvent: DocMetaSnapshotEvent) => void): Promise<void> {
+    public async snapshot(listener: DocMetaSnapshotEventListener): Promise<void> {
 
         const uid = this.getUserID();
 
@@ -137,6 +137,8 @@ export class FirebaseDatastore implements Datastore, SynchronizingDatastore {
         // init instead of relying on the network.  This will get us data into
         // the document repository faster.
         const cachedQuerySnapshot = await query.get({source: 'cache'});
+
+        // FIXME: this isn't actually implemented!!! this will fail!
 
     }
 
@@ -260,7 +262,8 @@ export class FirebaseDatastore implements Datastore, SynchronizingDatastore {
         // done');  switch (snapshot.state) { case
         // firebase.storage.TaskState.PAUSED: // or 'paused'
         // console.log('Upload is paused'); break; case
-        // firebase.storage.TaskState.RUNNING: // or 'running' console.log('Upload is running'); break; }  });
+        // firebase.storage.TaskState.RUNNING: // or 'running'
+        // console.log('Upload is running'); break; }  });
 
         const uploadTaskSnapshot = await uploadTask;
 

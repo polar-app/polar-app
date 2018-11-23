@@ -1,4 +1,6 @@
-import {Datastore, FileMeta, InitResult, SynchronizingDatastore, MutationType, FileRef, DocMetaMutation, DocMetaSnapshotEvent} from './Datastore';
+import {Datastore, FileMeta, InitResult, SynchronizingDatastore,
+        MutationType, FileRef, DocMetaMutation, DocMetaSnapshotEvent,
+        DocMetaSnapshotEventListener} from './Datastore';
 import {Directories} from './Directories';
 import {DocMetaFileRef, DocMetaRef} from './DocMetaRef';
 import {DeleteResult} from './Datastore';
@@ -34,13 +36,13 @@ export class CloudAwareDatastore implements Datastore {
 
     private readonly local: Datastore;
 
-    private readonly remote: SynchronizingDatastore;
+    private readonly cloud: SynchronizingDatastore;
 
     private readonly docComparisonIndex = new DocComparisonIndex();
 
-    constructor(local: Datastore, remote: SynchronizingDatastore) {
+    constructor(local: Datastore, cloud: SynchronizingDatastore) {
         this.local = local;
-        this.remote = remote;
+        this.cloud = cloud;
         this.stashDir = local.stashDir;
         this.logsDir = local.logsDir;
         this.directories = local.directories;
@@ -55,7 +57,7 @@ export class CloudAwareDatastore implements Datastore {
         // Initially we just get from the local cache but then we will start
         // getting documents from the datastore once it comes online.
 
-        this.remote.addDocMetaSynchronizationEventListener(docMetaSnapshotEvent => {
+        this.cloud.addDocMetaSynchronizationEventListener(docMetaSnapshotEvent => {
 
             // TODO once this fails we need to make sure to tell the user and
             // right now we don't really have an event stream for this.
@@ -64,14 +66,14 @@ export class CloudAwareDatastore implements Datastore {
 
         });
 
-        await Promise.all([this.remote.init(), this.local.init()]);
+        await Promise.all([this.cloud.init(), this.local.init()]);
 
         return {};
 
     }
 
     public async stop() {
-        await Promise.all([this.remote.stop(), this.local.stop()]);
+        await Promise.all([this.cloud.stop(), this.local.stop()]);
     }
 
     public async contains(fingerprint: string): Promise<boolean> {
@@ -89,7 +91,7 @@ export class CloudAwareDatastore implements Datastore {
         // for this to work we have to use fierbase snapshot QuerySnapshot and
         // look at docChanges and wait for the document we requested...
 
-        await this.remote.writeFile(backend, ref, data, meta);
+        await this.cloud.writeFile(backend, ref, data, meta);
 
         // TODO: can't we just wait until the event is fired when it's pulled
         // down as part of the normal snapshot mechanism.?  That might be best
@@ -108,7 +110,7 @@ export class CloudAwareDatastore implements Datastore {
 
     public async deleteFile(backend: Backend, ref: FileRef): Promise<void> {
 
-        await this.remote.deleteFile(backend, ref);
+        await this.cloud.deleteFile(backend, ref);
 
         return this.local.deleteFile(backend, ref);
 
@@ -122,7 +124,7 @@ export class CloudAwareDatastore implements Datastore {
 
             await DatastoreMutations.executeBatchedWrite(datastoreMutation,
                                                          async (remoteCoordinator) => {
-                                                             this.remote.delete(docMetaFileRef, remoteCoordinator);
+                                                             this.cloud.delete(docMetaFileRef, remoteCoordinator);
                                                          },
                                                          async (localCoordinator) => {
                                                              this.local.delete(docMetaFileRef, localCoordinator);
@@ -150,7 +152,7 @@ export class CloudAwareDatastore implements Datastore {
 
             return DatastoreMutations.executeBatchedWrite(datastoreMutation,
                                                           (remoteCoordinator) =>
-                                                              this.remote.write(fingerprint, data, docInfo, remoteCoordinator),
+                                                              this.cloud.write(fingerprint, data, docInfo, remoteCoordinator),
                                                           (localCoordinator) =>
                                                               this.local.write(fingerprint, data, docInfo, localCoordinator));
 
@@ -166,34 +168,28 @@ export class CloudAwareDatastore implements Datastore {
         return this.local.getDocMetaFiles();
     }
 
-    public async snapshot(listener: (docMetaSnapshotEvent: DocMetaSnapshotEvent) => void): Promise<void> {
+    public async snapshot(listener: DocMetaSnapshotEventListener): Promise<void> {
 
         // FIXME: on the first snapshot() we need to make sure the source and
         // target are synchronized and we need to have some sort of way to get
         // events about what's happening to update the UI as remote + local
         // events will be in flight.
 
-
-        return this.remote.snapshot(listener);
+        return this.cloud.snapshot(listener);
     }
 
     /**
-     * Called on init() for every doc in the remote repo.  We then see if we have
-     * loaded it locally and update it if it's stale.
+     * Called on init() for every doc in the remote repo.  We then see if we
+     * have loaded it locally and update it if it's stale.
      */
     // private onRemoteDocInit(docMeta: DocMeta) {
     //
-    //     const docComparison = this.docComparisonIndex.get(docMeta.docInfo.fingerprint);
-    //
-    //     if (! docComparison) {
-    //         this.onRemoteDocMutation(docMeta, 'created');
-    //     }
-    //
-    //     if (docComparison && UUIDs.compare(docComparison.uuid, docMeta.docInfo.uuid) > 0) {
-    //         this.onRemoteDocMutation(docMeta, 'updated');
-    //     }
-    //
-    // }
+    //     const docComparison =
+    // this.docComparisonIndex.get(docMeta.docInfo.fingerprint);  if (!
+    // docComparison) { this.onRemoteDocMutation(docMeta, 'created'); }  if
+    // (docComparison && UUIDs.compare(docComparison.uuid,
+    // docMeta.docInfo.uuid) > 0) { this.onRemoteDocMutation(docMeta,
+    // 'updated'); }  }
 
     private async onRemoteDocMutations(docMetaMutations: ReadonlyArray<DocMetaMutation>) {
 
@@ -216,8 +212,8 @@ export class CloudAwareDatastore implements Datastore {
                 const data = DocMetas.serialize(docMeta);
                 await this.local.write(docMeta.docInfo.fingerprint, data, docMeta.docInfo);
 
-                // FIXME: we have to fire event listeners so the doc repo discovers
-                // this new document...
+                // FIXME: we have to fire event listeners so the doc repo
+                // discovers this new document...
 
             } finally {
                 this.docComparisonIndex.putDocMeta(docMeta);

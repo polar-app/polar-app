@@ -1,4 +1,4 @@
-import {IPersistenceLayer} from '../../../datastore/IPersistenceLayer';
+import {PersistenceLayer} from '../../../datastore/PersistenceLayer';
 import {FilePaths} from '../../../util/FilePaths';
 import {DocMetas} from '../../../metadata/DocMetas';
 import {FileLoader} from '../../main/loaders/FileLoader';
@@ -21,9 +21,9 @@ const log = Logger.create();
  */
 export class PDFImporter {
 
-    private readonly persistenceLayer: IPersistenceLayer;
+    private readonly persistenceLayer: PersistenceLayer;
 
-    constructor(persistenceLayer: IPersistenceLayer) {
+    constructor(persistenceLayer: PersistenceLayer) {
         this.persistenceLayer = persistenceLayer;
     }
 

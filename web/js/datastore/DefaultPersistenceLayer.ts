@@ -1,4 +1,4 @@
-import {Datastore, DocMetaSnapshotEvent, FileMeta, FileRef} from './Datastore';
+import {Datastore, DocMetaSnapshotEvent, FileMeta, FileRef, DocMetaSnapshotEventListener} from './Datastore';
 import {DocMeta} from '../metadata/DocMeta';
 import {DocMetas} from '../metadata/DocMetas';
 import {isPresent, Preconditions} from '../Preconditions';
@@ -6,7 +6,7 @@ import {Logger} from '../logger/Logger';
 import {Dictionaries} from '../util/Dictionaries';
 import {DocMetaFileRef, DocMetaRef} from './DocMetaRef';
 import {DeleteResult} from './Datastore';
-import {IPersistenceLayer} from './IPersistenceLayer';
+import {PersistenceLayer} from './PersistenceLayer';
 import {ISODateTimeStrings} from '../metadata/ISODateTimeStrings';
 import {Backend} from './Backend';
 import {DatastoreFile} from './DatastoreFile';
@@ -16,6 +16,8 @@ import {DocInfo} from '../metadata/DocInfo';
 import {DatastoreMutation, DefaultDatastoreMutation} from './DatastoreMutation';
 import {DatastoreMutations} from './DatastoreMutations';
 import {UUIDs} from '../metadata/UUIDs';
+import {Datastores} from './Datastores';
+import {PersistenceLayers} from './PersistenceLayers';
 
 const log = Logger.create();
 
@@ -25,7 +27,7 @@ const log = Logger.create();
  * with node+chrome behaving differently so now we just make node work with raw
  * strings.
  */
-export class DefaultPersistenceLayer implements IPersistenceLayer {
+export class DefaultPersistenceLayer implements PersistenceLayer {
 
     public readonly stashDir: string;
 

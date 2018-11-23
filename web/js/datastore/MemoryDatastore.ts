@@ -169,7 +169,7 @@ export class MemoryDatastore implements Datastore {
     }
 
     public async snapshot(listener: (docMetaSnapshotEvent: DocMetaSnapshotEvent) => void): Promise<void> {
-        Datastores.snapshot(this, listener);
+        return Datastores.snapshot(this, listener);
     }
 
     private toFileRefKey(backend: Backend, fileRef: FileRef) {
