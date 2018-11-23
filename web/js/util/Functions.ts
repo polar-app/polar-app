@@ -21,20 +21,20 @@ export class Functions {
         // TODO: the functions should not be bound with names.  They should be
         // anon to avoid conflicts with existing functions.
 
-        if(!isPresent(func.name)) {
+        if (!isPresent(func.name)) {
             throw new Error("Don't currently work with unnamed functions");
         }
 
         let result = "(";
 
-        let functionBody = this._anonymizeFunction(func.toString());;
+        let functionBody = this._anonymizeFunction(func.toString());
 
         functionBody = functionBody.replace(/\) {/, ') => {');
 
         result += functionBody;
         result += "\n";
 
-        if(args) {
+        if (args) {
 
             let funcArgs = JSON.stringify(args);
 
@@ -126,7 +126,7 @@ export class Functions {
      * @param timeout {number}
      * @return {Promise<void>}
      */
-    static async waitFor(timeout: number) {
+    public static async waitFor(timeout: number) {
 
         return new Promise(resolve => {
 
@@ -143,7 +143,7 @@ export class Functions {
      * @Deprecated use createSiblings as createSiblingTuples implies that this
      * is a tuple and it's actually a triple.
      */
-    static createSiblingTuples(arrayLikeObject: any) {
+    public static createSiblingTuples(arrayLikeObject: any) {
         return Functions.createSiblings(arrayLikeObject);
     }
 
@@ -158,26 +158,25 @@ export class Functions {
      * @param arrayLikeObject {Array<any>}
      * @return {Array<ArrayPosition>}
      */
-    static createSiblings(arrayLikeObject: any) {
+    public static createSiblings(arrayLikeObject: any) {
 
         Preconditions.assertNotNull(arrayLikeObject, "arrayLikeObject");
 
-        let result: IArrayPosition<any>[] = [];
+        const result: IArrayPosition<any>[] = [];
 
-        for(let idx = 0; idx < arrayLikeObject.length; ++idx) {
+        for (let idx = 0; idx < arrayLikeObject.length; ++idx) {
 
             result.push({
                 curr: arrayLikeObject[idx],
-                prev: Optional.of(arrayLikeObject[idx-1]).getOrElse(null),
-                next: Optional.of(arrayLikeObject[idx+1]).getOrElse(null)
+                prev: Optional.of(arrayLikeObject[idx - 1]).getOrElse(null),
+                next: Optional.of(arrayLikeObject[idx + 1]).getOrElse(null)
             });
 
         }
 
         return result;
 
-    };
-
+    }
 
 
 }
@@ -190,7 +189,7 @@ export class Functions {
  */
 export interface IArrayPosition<T> {
 
-    readonly prev?: T
+    readonly prev?: T;
 
     readonly curr: T;
 
@@ -218,7 +217,7 @@ export function createSiblings(arrayLikeObject: any) {
     return Functions.createSiblings(arrayLikeObject);
 }
 
-
 export const NULL_FUNCTION = () => { /* no op */ };
 
 export const ASYNC_NULL_FUNCTION = async () => { /* no op */ };
+

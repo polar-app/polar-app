@@ -22,6 +22,7 @@ import {NULL_FUNCTION} from '../util/Functions';
 import {DocMetas} from "../metadata/DocMetas";
 import {Percentages} from '../util/Percentages';
 import {ProgressTracker} from '../util/ProgressTracker';
+import {Providers} from '../util/Providers';
 
 const log = Logger.create();
 
@@ -564,12 +565,13 @@ export class FirebaseDatastore implements Datastore, SynchronizingDatastore {
         const record = <RecordHolder<DocMetaHolder>> docChange.doc.data();
         const id = record.id;
 
-        const docMeta = DocMetas.deserialize(record.value.value);
+        const docMetaProvider
+            = Providers.memoize(() => DocMetas.deserialize(record.value.value));
 
         const docMetaMutation: FirebaseDocMetaMutation = {
             id,
-            docMeta,
-            docInfo: record.value.docInfo,
+            docMetaProvider,
+            docInfoProvider: Providers.of(record.value.docInfo),
             mutationType: toMutationType(docChange.type)
         };
 

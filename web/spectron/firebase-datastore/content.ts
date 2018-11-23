@@ -92,7 +92,9 @@ SpectronRenderer.run(async (state) => {
 
                     for (const docMetaMutation of docMetaSnapshotEvent.docMetaMutations) {
 
-                        const {docInfo, mutationType} = docMetaMutation;
+                        const {mutationType} = docMetaMutation;
+
+                        const docInfo = docMetaMutation.docInfoProvider();
 
                         if (docInfo.fingerprint === fingerprint && mutationType === 'created') {
                             console.log("FIXME: got first");
@@ -109,7 +111,9 @@ SpectronRenderer.run(async (state) => {
 
                     for (const docMetaMutation of docMetaSnapshotEvent.docMetaMutations) {
 
-                        const { docInfo, mutationType } = docMetaMutation;
+                        const {mutationType } = docMetaMutation;
+
+                        const docInfo = docMetaMutation.docInfoProvider();
 
                         if (docInfo.fingerprint === fingerprint &&  mutationType === 'created') {
                             console.log("FIXME: got seconde");

@@ -10,8 +10,13 @@ import {Datastore, DocMetaMutation, DocMetaSnapshotEvent, FileRef} from './Datas
 import {UUIDs} from '../metadata/UUIDs';
 import {ProgressTracker} from '../util/ProgressTracker';
 import {DocMetas} from '../metadata/DocMetas';
+import {DefaultPersistenceLayer} from './DefaultPersistenceLayer';
 
 export class PersistenceLayers {
+
+    public static toPersistenceLayer(input: Datastore ): PersistenceLayer {
+        return new DefaultPersistenceLayer(input);
+    }
 
     /**
      * Synchronize the source with the target so that we know they are both in
@@ -19,8 +24,7 @@ export class PersistenceLayers {
      */
     public static async synchronize(source: PersistenceLayer,
                                     target: PersistenceLayer,
-                                    listener: (transferEvent: TransferEvent) => void = NULL_FUNCTION): Promise<TransferResult> {
-
+                                    listener: SynchronizeEventListener = NULL_FUNCTION): Promise<TransferResult> {
 
         const result: TransferResult = {
             mutations: {
@@ -57,7 +61,7 @@ export class PersistenceLayers {
 
         async function handleDocMetaFile(docMetaFile: DocMetaRef) {
 
-            console.log("Working with fingerprint: " + docMetaFile.fingerprint);
+            // console.log("Working with fingerprint: " + docMetaFile.fingerprint);
 
             const docMeta = await source.getDocMeta(docMetaFile.fingerprint);
 
@@ -156,7 +160,7 @@ export interface TransferRefs {
 
 }
 
-export interface TransferEvent {
+export interface SynchronizeEvent {
 
     readonly completed: number;
 
@@ -173,3 +177,5 @@ export interface TransferEvent {
     readonly duration: number;
 
 }
+
+export type SynchronizeEventListener = (synchronizeEvent: SynchronizeEvent) => void;

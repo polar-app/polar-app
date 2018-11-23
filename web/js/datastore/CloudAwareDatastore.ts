@@ -203,7 +203,8 @@ export class CloudAwareDatastore implements Datastore {
     // locally.
     private async onRemoteDocMutation(docMetaMutation: DocMetaMutation) {
 
-        const {docMeta, mutationType} = docMetaMutation;
+        const {docMetaProvider, mutationType} = docMetaMutation;
+        const docMeta = docMetaProvider();
 
         if (mutationType === 'created' || mutationType === 'updated') {
 

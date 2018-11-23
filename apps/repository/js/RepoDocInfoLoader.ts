@@ -50,7 +50,8 @@ export class RepoDocInfoLoader {
 
             for (const docMetaMutation of docMetaMutations) {
 
-                const {docMeta, docInfo} = docMetaMutation;
+                const docMeta = docMetaMutation.docMetaProvider();
+                const docInfo = docMeta.docInfo;
 
                 const repoDocInfo = await this.loadDocMeta(docInfo.fingerprint, docMeta);
 

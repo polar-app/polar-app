@@ -8,6 +8,7 @@ import {DocMetas} from '../metadata/DocMetas';
 import {NULL_FUNCTION} from '../util/Functions';
 import {Percentages} from '../util/Percentages';
 import {ProgressTracker} from '../util/ProgressTracker';
+import {Providers} from '../util/Providers';
 
 const log = Logger.create();
 
@@ -71,19 +72,17 @@ export class Datastores {
         // const minBatchSize = 1;
         // const maxBatchSize = 20;
         //
-        // Math.max(minBatchSize, Math.min(maxBatchSize, docMetaFiles.length / percMax))
-        //
-        //
-        // This will give us an ideal batch size so that we update the UI every
-        // 1% OR the maxBatchSize...
+        // Math.max(minBatchSize, Math.min(maxBatchSize, docMetaFiles.length /
+        // percMax))   This will give us an ideal batch size so that we update
+        // the UI every 1% OR the maxBatchSize...
 
         for (const docMetaFile of docMetaFiles) {
             const data = await datastore.getDocMeta(docMetaFile.fingerprint);
             const docMeta = DocMetas.deserialize(data!);
 
             const docMetaMutation: DocMetaMutation = {
-                docMeta,
-                docInfo: docMeta.docInfo,
+                docMetaProvider: Providers.of(docMeta),
+                docInfoProvider: Providers.of(docMeta.docInfo),
                 mutationType: 'created'
             };
 

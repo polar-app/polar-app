@@ -5,7 +5,7 @@ import {Directories} from './Directories';
 import {Backend} from './Backend';
 import {DatastoreFile} from './DatastoreFile';
 import {Optional} from '../util/ts/Optional';
-import {IDocInfo} from '../metadata/DocInfo';
+import {IDocInfo, DocInfo} from '../metadata/DocInfo';
 import {FileDeleted, FileHandle} from '../util/Files';
 import {Latch} from '../util/Latch';
 import {Simulate} from 'react-dom/test-utils';
@@ -15,6 +15,7 @@ import {DatastoreMutation} from './DatastoreMutation';
 import {DocMeta} from '../metadata/DocMeta';
 import {Hashcode} from '../metadata/Hashcode';
 import {ProgressState} from '../util/ProgressTracker';
+import {Provider} from '../util/Providers';
 
 export interface Datastore extends BinaryDatastore, WritableDatastore {
 
@@ -221,9 +222,8 @@ export interface SnapshotProgress extends Readonly<ProgressState> {
 
 export interface DocMetaMutation {
 
-    readonly docMeta: DocMeta;
-
-    readonly docInfo: IDocInfo;
+    readonly docMetaProvider: Provider<DocMeta>;
+    readonly docInfoProvider: Provider<IDocInfo>;
 
     readonly mutationType: MutationType;
 
