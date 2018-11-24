@@ -8,6 +8,8 @@ export class ProgressTracker {
 
     private state: ProgressState;
 
+    private readonly epoch: number;
+
     /**
      *
      * @param total The total number of tasks to complete.
@@ -15,9 +17,12 @@ export class ProgressTracker {
      */
     constructor(total: number) {
 
+        this.epoch = Date.now();
+
         this.state = {
             completed: 0,
             total,
+            duration: 0,
             progress: 0
         };
 
@@ -31,6 +36,7 @@ export class ProgressTracker {
     public incr(): Readonly<ProgressState> {
         ++this.state.completed;
         this.state.progress = this.calculate();
+        this.state.duration = Date.now() - this.epoch;
 
         return this.peek();
 
@@ -59,6 +65,7 @@ export class ProgressTracker {
 export interface ProgressState {
     completed: number;
     total: number;
+    duration: number;
     progress: Percentage;
 }
 

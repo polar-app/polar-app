@@ -11,7 +11,11 @@ import {IDimensions} from '../../util/Dimensions';
 /** @ElectronRendererContext */
 export function configureBrowser(windowDimensions: IDimensions) {
 
-    const ENABLE_VH_TRUNCATION = true;
+    const ENABLE_VH_HANDLING = true;
+
+    const VH_HANDLING_REQUIRE_CHILDREN: boolean = false;
+
+    const VH_HANDLING_STRATEGY: 'auto' | 'max-height' = 'auto';
 
     function defineProperty(target: any, key: string, value: any) {
 
@@ -80,6 +84,22 @@ export function configureBrowser(windowDimensions: IDimensions) {
 
     }
 
+    function defineAutoHeightStylesheet(rule: string) {
+
+        // TODO: I need to consider if it's not just better to measure the
+        // viewport height and replace it myself.  It is probably a bad idea
+        // so set this too small and will break in a lot of use cases.
+
+        const cssText = `
+        ${rule} {
+            height: auto !important;        
+        }
+        `;
+
+        writeStyles('polar-vh-auto-height', cssText);
+
+    }
+
     function configureWhiteBackground() {
         const cssText = `
         html, body {
@@ -95,7 +115,7 @@ export function configureBrowser(windowDimensions: IDimensions) {
 
     function configureMaxVerticalHeight() {
 
-        if (! ENABLE_VH_TRUNCATION) {
+        if (! ENABLE_VH_HANDLING) {
             console.log("VH truncation disabled");
             return;
         }
@@ -109,6 +129,7 @@ export function configureBrowser(windowDimensions: IDimensions) {
             for (const rule of rules) {
 
                 if (rule.style && rule.style.height === '100vh') {
+
                     console.log(`Found 100vh rule to override (follows): ${rule.selectorText}`);
 
                     // now verify that the elements we would block quality.
@@ -117,16 +138,25 @@ export function configureBrowser(windowDimensions: IDimensions) {
 
                     let elementsQualify = true;
 
-                    for (const matchingElement of Array.from(matchingElements)) {
-                        if (matchingElement.childNodes.length > 0) {
-                            console.log("Selector does not quality for as it has child nodes");
-                            elementsQualify = false;
-                            break;
+                    if (VH_HANDLING_REQUIRE_CHILDREN) {
+
+                        for (const matchingElement of Array.from(matchingElements)) {
+                            if (matchingElement.childNodes.length > 0) {
+                                console.log("Selector does not quality for as it has child nodes");
+                                elementsQualify = false;
+                                break;
+                            }
                         }
+
                     }
 
                     if (elementsQualify) {
-                        defineMaxHeightStylesheet(rule.selectorText);
+
+                        if (VH_HANDLING_STRATEGY === 'max-height') {
+                            defineMaxHeightStylesheet(rule.selectorText);
+                        } else {
+                            defineAutoHeightStylesheet(rule.selectorText);
+                        }
                     }
 
                 }
