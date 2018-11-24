@@ -1,6 +1,7 @@
 import {DocMeta} from '../metadata/DocMeta';
 import {DocInfo, IDocInfo} from '../metadata/DocInfo';
 import {DocUUID} from './CloudAwareDatastore';
+import {isPresent} from '../Preconditions';
 
 /**
  * The DocComparisonIndex allows us to detect which documents are local already
@@ -10,6 +11,10 @@ import {DocUUID} from './CloudAwareDatastore';
 export class DocMetaComparisonIndex {
 
     private readonly backing: {[fingerprint: string]: DocUUID} = {};
+
+    public contains(fingerprint: string) {
+        return isPresent(this.backing[fingerprint]);
+    }
 
     public get(fingerprint: string): DocUUID | undefined {
         return this.backing[fingerprint];

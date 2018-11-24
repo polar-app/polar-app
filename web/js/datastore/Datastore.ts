@@ -206,7 +206,7 @@ export type DocMetaSnapshotEventListener = (docMetaSnapshotEvent: DocMetaSnapsho
  */
 export interface DocMetaSnapshotEvent {
 
-    readonly progress: SnapshotProgress;
+    readonly progress: Readonly<SnapshotProgress>;
 
     readonly consistency: DatastoreConsistency;
 
