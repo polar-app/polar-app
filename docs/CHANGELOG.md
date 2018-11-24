@@ -1,5 +1,9 @@
 
-- date/times no longer include ' ago' to be a bit more concise.
+- Implemented a new strategy with the vertical height algorithm in the capture 
+  system to revert it back to auto instead of a fixed max-height.  Works a lot
+  better now.  
+
+- Date/times no longer include ' ago' to be a bit more concise.
 
 - Basic initial version of AppPath which can be used to load apps via HTTP now.
 
