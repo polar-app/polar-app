@@ -1,4 +1,4 @@
-import {Datastore, DocMetaMutation, DocMetaSnapshotEvent, FileRef} from './Datastore';
+import {Datastore, DocMetaMutation, DocMetaSnapshotEvent, DocMetaSnapshotEventListener, FileRef} from './Datastore';
 import {MemoryDatastore} from './MemoryDatastore';
 import {DiskDatastore} from './DiskDatastore';
 import {Logger} from '../logger/Logger';
@@ -51,13 +51,12 @@ export class Datastores {
     }
 
     /**
-     * Create a snapshot from an existing datastore so that legacy ones seem
-     * to support snapshots though they might not support updates.
-     *
-     * @param datastore
+     * Create a committed snapshot from an existing datastore so that legacy
+     * ones seem to support snapshots though they might not support updates of
+     * the listeners.
      */
-    public static async snapshot(datastore: Datastore,
-                                 listener: (docMetaSnapshotEvent: DocMetaSnapshotEvent) => void) {
+    public static async createCommittedSnapshot(datastore: Datastore,
+                                                listener: DocMetaSnapshotEventListener) {
 
         const docMetaFiles = await datastore.getDocMetaFiles();
 
@@ -94,6 +93,7 @@ export class Datastores {
 
             listener({
                 progress: progressTracker.incr(),
+                consistency: 'committed',
                 docMetaMutations: [docMetaMutation]
             });
 

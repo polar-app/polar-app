@@ -290,7 +290,7 @@ export class DiskDatastore implements Datastore {
     }
 
     public async snapshot(listener: DocMetaSnapshotEventListener): Promise<void> {
-        return Datastores.snapshot(this, listener);
+        return Datastores.createCommittedSnapshot(this, listener);
     }
 
     private async createDatastoreFile(backend: Backend,

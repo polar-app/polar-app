@@ -22,7 +22,7 @@ export class RemoteDatastore extends DelegatedDatastore {
     }
 
     public async snapshot(listener: DocMetaSnapshotEventListener): Promise<void> {
-        return Datastores.snapshot(this, listener);
+        return Datastores.createCommittedSnapshot(this, listener);
     }
 
 }

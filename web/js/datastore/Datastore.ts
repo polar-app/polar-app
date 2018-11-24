@@ -208,6 +208,8 @@ export interface DocMetaSnapshotEvent {
 
     readonly progress: SnapshotProgress;
 
+    readonly consistency: DatastoreConsistency;
+
     /**
      * An array of mutations that have been applied.  We return as an array to
      * enable performance updates via batching.
@@ -215,6 +217,19 @@ export interface DocMetaSnapshotEvent {
     readonly docMetaMutations: ReadonlyArray<DocMetaMutation>;
 
 }
+
+/**
+ * The consistency of the underlying data, whether it's written or committed.
+ *
+ * 'written' means that it was written to a WAL or a local cache but may not
+ * be fully committed to a cloud store, to all replicas of a database, etc.
+ *
+ * 'committed' means that it's fully commited and consistent with the current
+ * state of a database system.  A read that is 'committed' means it is fully
+ * up to date.
+ *
+ */
+export type DatastoreConsistency = 'written' | 'committed';
 
 export interface SnapshotProgress extends Readonly<ProgressState> {
 
