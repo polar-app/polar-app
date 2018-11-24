@@ -19,6 +19,8 @@ import {UUIDs} from '../metadata/UUIDs';
 import {DocMetas} from '../metadata/DocMetas';
 import {Logger} from "../logger/Logger";
 import {DocMetaComparisonIndex} from './DocMetaComparisonIndex';
+import {PersistenceLayers} from './PersistenceLayers';
+import {DocMetaSnapshotEventListeners} from './DocMetaSnapshotEventListeners';
 
 const log = Logger.create();
 
@@ -173,12 +175,55 @@ export class CloudAwareDatastore implements Datastore {
 
     public async snapshot(listener: DocMetaSnapshotEventListener): Promise<SnapshotResult> {
 
+        // TODO consider only making the FIRST snapshot a synchronizing
+        // snapshot.
+
+        const localPersistenceLayer = PersistenceLayers.toPersistenceLayer(this.local);
+        const cloudPersistenceLayer = PersistenceLayers.toPersistenceLayer(this.cloud);
+
+        const deduplicatedListener = DocMetaSnapshotEventListeners.createDeduplicatedListener(docMetaSnapshotEvent => {
+            listener(docMetaSnapshotEvent);
+        });
+
+        // FIXME: I think the way this algorithm would work is to load the local
+        // store first and on the first snapshot we keep an index of the
+        // fingerprint to UUID... then we wait until we can get the similar index
+        // from the 'committed' version of the cloud datastore, then we perform
+        // a synchronize based on this metadata... at which point we can build
+        // an new progress event listener,
+
+        // When created we have to synchronized the local with the remote.
+        // this will take a few minutes but we need to load the app repository
+        // anyway so the user usually won't tell the difference.
+
+        // FIXME: do we need to wait for the cloud datastore to come online
+        // first before we start writing to it?  I think so... I think we do
+        // otherwise the could be a race where we overwrite the remote end
+        // on older data rather than first replicating it locally which would
+        // detect a conflictt.
+
+        // FIXME: there are really two three types of updates I need here?
+        //
+        // one time updates vs viture updates
+        // 'committed' vs 'written'
+
+        // FIXME: is the snapshot from firebase all in one object?  What if it
+        // is too much memory?
+        //
+        // FIXME: how does the onSnapshot event split up date?  Does it? If it
+        // does how do we know we've receive all of it for a specific moment
+        // in time.
+
+        await PersistenceLayers.synchronize(localPersistenceLayer,
+                                            cloudPersistenceLayer,
+                                            deduplicatedListener);
+
         // FIXME: on the first snapshot() we need to make sure the source and
         // target are synchronized and we need to have some sort of way to get
         // events about what's happening to update the UI as remote + local
         // events will be in flight.
 
-        return this.cloud.snapshot(listener);
+        return this.cloud.snapshot(deduplicatedListener);
     }
 
     /**

@@ -50,6 +50,9 @@ export class FirebaseDatastore implements Datastore, SynchronizingDatastore {
 
     private readonly binaryMutationReactor: IEventDispatcher<BinaryMutationEvent> = new SimpleReactor();
 
+    // FIXME: I think this code can be removed now and that we should be using
+    // snapshots except for the binaryMutations.. we don't have support for that
+    // just yet...
     private readonly docMetaSnapshotReactor: IEventDispatcher<DocMetaSnapshotEvent> = new SimpleReactor();
 
     private readonly docMetaSynchronizationReactor: IEventDispatcher<DocMetaSnapshotEvent> = new SimpleReactor();
@@ -112,12 +115,33 @@ export class FirebaseDatastore implements Datastore, SynchronizingDatastore {
             .collection(DatastoreCollection.DOC_META)
             .where('uid', '==', uid);
 
-        // fetch from the local cache so that we have at least some data after
+        // FIXME: if we use cursor requests I need the callback to know when
+        // we've received all the request in a given batch so I need some type of
+        // batch ID system...
+
+        // Fetch from the local cache so that we have at least some data after
         // init instead of relying on the network.  This will get us data into
         // the document repository faster.
         const cachedQuerySnapshot = await query.get({source: 'cache'});
 
+        // FIXME: https://firebase.google.com/docs/firestore/query-data/query-cursors
+        //
+        // FIXME: must NOT read all the data in at one time... must use cursors
+        // here but not sure if these even use the local cache. Fuck this is
+        // harder than I thought...
+
+        // TODO: I don't think it's necessary to first fetch from from the
+        // cache though as I think the first snapshot comes from cache anyway.
+
         this.onDocMetaSnapshot(cachedQuerySnapshot, listener);
+
+        // FIXME: is it possible to tell it only future data and NOT local data?
+        //  that would be easier... no.. I don't think so.. I think we're stuck
+        // with the default behavior which also means I need to implement
+        // pagination here too but I THINK they don't send all the documents by
+        // default here ANYWAY... I think we get like units of 100... so that
+        // will work.  we just need to support the concept of
+        // full and partial batches and batch IDs.
 
         const unsubscribe =
             query.onSnapshot(snapshot => this.onDocMetaSnapshot(snapshot, listener));
