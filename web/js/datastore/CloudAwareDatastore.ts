@@ -1,6 +1,8 @@
-import {Datastore, FileMeta, InitResult, SynchronizingDatastore,
-        MutationType, FileRef, DocMetaMutation, DocMetaSnapshotEvent,
-        DocMetaSnapshotEventListener} from './Datastore';
+import {
+    Datastore, FileMeta, InitResult, SynchronizingDatastore,
+    MutationType, FileRef, DocMetaMutation, DocMetaSnapshotEvent,
+    DocMetaSnapshotEventListener, SnapshotResult
+} from './Datastore';
 import {Directories} from './Directories';
 import {DocMetaFileRef, DocMetaRef} from './DocMetaRef';
 import {DeleteResult} from './Datastore';
@@ -169,7 +171,7 @@ export class CloudAwareDatastore implements Datastore {
         return this.local.getDocMetaFiles();
     }
 
-    public async snapshot(listener: DocMetaSnapshotEventListener): Promise<void> {
+    public async snapshot(listener: DocMetaSnapshotEventListener): Promise<SnapshotResult> {
 
         // FIXME: on the first snapshot() we need to make sure the source and
         // target are synchronized and we need to have some sort of way to get

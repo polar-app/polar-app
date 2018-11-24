@@ -1,7 +1,7 @@
 import {
     BinaryMutationEvent, Datastore, DeleteResult,
     DocMetaSnapshotEvent, FileMeta,
-    InitResult, SynchronizingDatastore, MutationType, FileRef, DocMetaMutation, DocMetaSnapshotEventListener
+    InitResult, SynchronizingDatastore, MutationType, FileRef, DocMetaMutation, DocMetaSnapshotEventListener, SnapshotResult
 } from './Datastore';
 import {Logger} from '../logger/Logger';
 import {DocMetaFileRef, DocMetaRef} from './DocMetaRef';
@@ -83,6 +83,21 @@ export class FirebaseDatastore implements Datastore, SynchronizingDatastore {
         this.firestore = await Firestore.getInstance();
         this.storage = firebase.storage();
 
+        const listener = (docMetaSnapshotEvent: DocMetaSnapshotEvent) => {
+            this.docMetaSynchronizationReactor.dispatchEvent(docMetaSnapshotEvent);
+        };
+
+        const snapshotResult = await this.snapshot(listener);
+        this.unsubscribeSnapshots = snapshotResult.unsubscribe!;
+
+        this.initialized = true;
+
+        return {};
+
+    }
+
+    public async snapshot(listener: DocMetaSnapshotEventListener): Promise<SnapshotResult> {
+
         // setup the initial snapshot so that we query for the users existing
         // data...
 
@@ -106,49 +121,16 @@ export class FirebaseDatastore implements Datastore, SynchronizingDatastore {
         // the document repository faster.
         const cachedQuerySnapshot = await query.get({source: 'cache'});
 
-        this.onDocMetaSnapshot(cachedQuerySnapshot);
+        this.onDocMetaSnapshot(cachedQuerySnapshot, listener);
 
-        // the rest of the data can come in lazily from the network.
-        this.unsubscribeSnapshots = query.onSnapshot(snapshot => this.onDocMetaSnapshot(snapshot));
+        const unsubscribe =
+            query.onSnapshot(snapshot => this.onDocMetaSnapshot(snapshot, listener));
 
-        this.initialized = true;
-
-        return {};
-
-    }
-
-    public async snapshot(listener: DocMetaSnapshotEventListener): Promise<void> {
-
-        const uid = this.getUserID();
-
-        // start synchronizing the datastore.  You MUST register your listeners
-        // BEFORE calling init if you wish to listen to the full stream of
-        // events.
-
-        // There's no way to control where the snapshot comes from and on
-        // startup so we do a get() from the cache which we can control with
-        // GetOptions.  This gets us data quickly and then we start listening to
-        // snapshots after this which can come from the network async
-
-        const query = this.firestore!
-            .collection(DatastoreCollection.DOC_META)
-            .where('uid', '==', uid);
-
-        // fetch from the local cache so that we have at least some data after
-        // init instead of relying on the network.  This will get us data into
-        // the document repository faster.
-        const cachedQuerySnapshot = await query.get({source: 'cache'});
-
-        // DocumentListenOptions or QueryListenOptions...
-
-        // FIXME: this isn't actually implemented!!! this will fail!
-
-        // ref.onSnapshot({includeMetadataChanges: true}, snapshot => {
-
+        return {
+            unsubscribe
+        };
 
     }
-
-
 
     public async stop() {
         this.unsubscribeSnapshots();
@@ -531,7 +513,8 @@ export class FirebaseDatastore implements Datastore, SynchronizingDatastore {
      *    first but then then immediately resolved from the cache and added
      *    locally.
      */
-    private onDocMetaSnapshot(snapshot: firebase.firestore.QuerySnapshot) {
+    private onDocMetaSnapshot(snapshot: firebase.firestore.QuerySnapshot,
+                              docMetaSnapshotEventListener: DocMetaSnapshotEventListener) {
 
         log.debug("onSnapshot... ");
 

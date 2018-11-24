@@ -42,6 +42,7 @@ export class DocMetaSnapshotEventListeners {
             }
 
             output({
+                consistency: docMetaSnapshotEvent.consistency,
                 progress: docMetaSnapshotEvent.progress,
                 docMetaMutations: filteredDocMetaMutations
            });

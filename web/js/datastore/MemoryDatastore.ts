@@ -1,7 +1,7 @@
 /**
  * Datastore just in memory with no on disk persistence.
  */
-import {Datastore, InitResult, FileRef, FileMeta, DocMetaSnapshotEvent} from './Datastore';
+import {Datastore, InitResult, FileRef, FileMeta, DocMetaSnapshotEvent, SnapshotResult, DocMetaSnapshotEventListener} from './Datastore';
 import {Preconditions, isPresent} from '../Preconditions';
 import {DocMetaFileRef, DocMetaRef} from './DocMetaRef';
 import {FilePaths} from '../util/FilePaths';
@@ -15,6 +15,7 @@ import {Optional} from '../util/ts/Optional';
 import {DocInfo} from '../metadata/DocInfo';
 import {DatastoreMutation, DefaultDatastoreMutation} from './DatastoreMutation';
 import {Datastores} from './Datastores';
+import {DocMetaSnapshotEventListeners} from './DocMetaSnapshotEventListeners';
 
 const log = Logger.create();
 
@@ -168,7 +169,7 @@ export class MemoryDatastore implements Datastore {
 
     }
 
-    public async snapshot(listener: (docMetaSnapshotEvent: DocMetaSnapshotEvent) => void): Promise<void> {
+    public async snapshot(listener: DocMetaSnapshotEventListener): Promise<SnapshotResult> {
         return Datastores.createCommittedSnapshot(this, listener);
     }
 

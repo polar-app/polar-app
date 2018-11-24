@@ -5,7 +5,7 @@ import {PersistenceLayerListener} from '../PersistenceLayerListener';
 import {PersistenceLayer} from '../PersistenceLayer';
 import {DocMeta} from '../../metadata/DocMeta';
 import {DocMetaFileRef, DocMetaRef} from '../DocMetaRef';
-import {DeleteResult, DocMetaSnapshotEvent, FileRef, DocMetaSnapshotEventListener} from '../Datastore';
+import {DeleteResult, DocMetaSnapshotEvent, FileRef, DocMetaSnapshotEventListener, SnapshotResult} from '../Datastore';
 import {PersistenceEventType} from '../PersistenceEventType';
 import {Backend} from '../Backend';
 import {DatastoreFile} from '../DatastoreFile';
@@ -86,7 +86,7 @@ export abstract class AbstractAdvertisingPersistenceLayer implements IListenable
         return this.delegate.getDocMetaFiles();
     }
 
-    public snapshot(listener: DocMetaSnapshotEventListener): Promise<void> {
+    public snapshot(listener: DocMetaSnapshotEventListener): Promise<SnapshotResult> {
         return this.delegate.snapshot(listener);
     }
 

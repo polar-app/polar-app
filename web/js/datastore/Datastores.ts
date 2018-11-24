@@ -1,4 +1,4 @@
-import {Datastore, DocMetaMutation, DocMetaSnapshotEvent, DocMetaSnapshotEventListener, FileRef} from './Datastore';
+import {Datastore, DocMetaMutation, DocMetaSnapshotEvent, DocMetaSnapshotEventListener, FileRef, SnapshotResult} from './Datastore';
 import {MemoryDatastore} from './MemoryDatastore';
 import {DiskDatastore} from './DiskDatastore';
 import {Logger} from '../logger/Logger';
@@ -56,7 +56,7 @@ export class Datastores {
      * the listeners.
      */
     public static async createCommittedSnapshot(datastore: Datastore,
-                                                listener: DocMetaSnapshotEventListener) {
+                                                listener: DocMetaSnapshotEventListener): Promise<SnapshotResult> {
 
         const docMetaFiles = await datastore.getDocMetaFiles();
 
@@ -98,6 +98,8 @@ export class Datastores {
             });
 
         }
+
+        return { };
 
     }
 

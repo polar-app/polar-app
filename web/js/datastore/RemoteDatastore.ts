@@ -1,4 +1,4 @@
-import {Datastore, DocMetaSnapshotEvent, FileMeta, FileRef, InitResult, DocMetaSnapshotEventListener} from './Datastore';
+import {Datastore, DocMetaSnapshotEvent, FileMeta, FileRef, InitResult, DocMetaSnapshotEventListener, SnapshotResult} from './Datastore';
 import {Directories} from './Directories';
 import {DocMetaFileRef, DocMetaRef} from './DocMetaRef';
 import {DeleteResult} from './Datastore';
@@ -21,7 +21,7 @@ export class RemoteDatastore extends DelegatedDatastore {
         super(delegate);
     }
 
-    public async snapshot(listener: DocMetaSnapshotEventListener): Promise<void> {
+    public async snapshot(listener: DocMetaSnapshotEventListener): Promise<SnapshotResult> {
         return Datastores.createCommittedSnapshot(this, listener);
     }
 

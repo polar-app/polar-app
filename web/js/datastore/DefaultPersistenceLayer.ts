@@ -1,4 +1,4 @@
-import {Datastore, DocMetaSnapshotEvent, FileMeta, FileRef, DocMetaSnapshotEventListener} from './Datastore';
+import {Datastore, DocMetaSnapshotEvent, FileMeta, FileRef, DocMetaSnapshotEventListener, SnapshotResult} from './Datastore';
 import {DocMeta} from '../metadata/DocMeta';
 import {DocMetas} from '../metadata/DocMetas';
 import {isPresent, Preconditions} from '../Preconditions';
@@ -179,7 +179,7 @@ export class DefaultPersistenceLayer implements PersistenceLayer {
      * Get a current snapshot of the internal state of the Datastore by receiving
      * DocMetaSnapshotEvent on the initial state.
      */
-    public snapshot(listener: (docMetaSnapshotEvent: DocMetaSnapshotEvent) => void): Promise<void> {
+    public snapshot(listener: DocMetaSnapshotEventListener): Promise<SnapshotResult> {
         return this.datastore.snapshot(listener);
     }
 

@@ -119,6 +119,12 @@ export class PersistenceLayers {
 
             const docMetaSnapshotEvent: DocMetaSnapshotEvent = {
                 progress,
+
+                // this should be committed as we're starting with the source
+                // which we think should be at the commmitted level to start
+                // with
+
+                consistency: 'committed',
                 docMetaMutations: [
                     {
                         docMetaProvider: () => docMeta,

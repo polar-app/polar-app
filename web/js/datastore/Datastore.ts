@@ -67,7 +67,7 @@ export interface Datastore extends BinaryDatastore, WritableDatastore {
      * Get a current snapshot of the internal state of the Datastore by
      * receiving DocMetaSnapshotEvent on the initial state.
      */
-    snapshot(listener: DocMetaSnapshotEventListener): Promise<void>;
+    snapshot(listener: DocMetaSnapshotEventListener): Promise<SnapshotResult>;
 
     // TODO: we need a new method with the following semantics:
 
@@ -281,3 +281,20 @@ export interface InitDocMetaEvent {
  * without doing a double init.
  */
 export type InitLoadListener = (docMeta: DocMeta) => void;
+
+/**
+ * The result of a snapshot call with an optional unsubscribe callback.
+ */
+export interface SnapshotResult {
+
+    /**
+     * An optional unsubscribe
+     */
+    unsubscribe?: SnapshotUnsubscriber;
+
+}
+
+/**
+ * A function for unsubscribing to future snapshot events.
+ */
+export type SnapshotUnsubscriber = () => void;
