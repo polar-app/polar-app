@@ -16,6 +16,7 @@ import {DocMeta} from '../metadata/DocMeta';
 import {UUIDs} from '../metadata/UUIDs';
 import {DocMetas} from '../metadata/DocMetas';
 import {Logger} from "../logger/Logger";
+import {DocMetaComparisonIndex} from './DocMetaComparisonIndex';
 
 const log = Logger.create();
 
@@ -38,7 +39,7 @@ export class CloudAwareDatastore implements Datastore {
 
     private readonly cloud: SynchronizingDatastore;
 
-    private readonly docComparisonIndex = new DocComparisonIndex();
+    private readonly docMetaComparisonIndex = new DocMetaComparisonIndex();
 
     constructor(local: Datastore, cloud: SynchronizingDatastore) {
         this.local = local;
@@ -130,7 +131,7 @@ export class CloudAwareDatastore implements Datastore {
                                                              this.local.delete(docMetaFileRef, localCoordinator);
                                                          });
         } finally {
-            this.docComparisonIndex.remove(docMetaFileRef.fingerprint);
+            this.docMetaComparisonIndex.remove(docMetaFileRef.fingerprint);
         }
 
         // TODO: return the result of the local and remote operations.
@@ -158,7 +159,7 @@ export class CloudAwareDatastore implements Datastore {
 
         } finally {
 
-            this.docComparisonIndex.putDocInfo(docInfo);
+            this.docMetaComparisonIndex.putDocInfo(docInfo);
 
         }
 
@@ -217,7 +218,7 @@ export class CloudAwareDatastore implements Datastore {
                 // discovers this new document...
 
             } finally {
-                this.docComparisonIndex.putDocMeta(docMeta);
+                this.docMetaComparisonIndex.putDocMeta(docMeta);
             }
 
         } else {
@@ -231,6 +232,8 @@ export class CloudAwareDatastore implements Datastore {
                 docInfo: docMeta.docInfo
             });
 
+            this.docMetaComparisonIndex.remove(docMeta.docInfo.fingerprint);
+
         }
 
     }
@@ -241,42 +244,6 @@ export interface CloudAwareDeleteResult extends DeleteResult {
 
 }
 
-/**
- * The DocComparisonIndex allows us to detect which documents are local already
- * so that when we receive document from the cloud datastore we can decide
- * that we do not need to replicate it locally.
- */
-export class DocComparisonIndex {
-
-    private readonly backing: {[fingerprint: string]: DocUUID} = {};
-
-    public get(fingerprint: string): DocUUID | undefined {
-        return this.backing[fingerprint];
-    }
-
-    public remove(fingerprint: string) {
-        delete this.backing[fingerprint];
-    }
-
-    public putDocMeta(docMeta: DocMeta) {
-
-        this.backing[docMeta.docInfo.fingerprint] = {
-            fingerprint: docMeta.docInfo.fingerprint,
-            uuid: docMeta.docInfo.uuid
-        };
-
-    }
-
-    public putDocInfo(docInfo: DocInfo) {
-
-        this.backing[docInfo.fingerprint] = {
-            fingerprint: docInfo.fingerprint,
-            uuid: docInfo.uuid
-        };
-
-    }
-
-}
 
 /**
  * Represents a doc and its UUID.  The UUID is optional though as older docs

@@ -139,9 +139,16 @@ export class FirebaseDatastore implements Datastore, SynchronizingDatastore {
         // the document repository faster.
         const cachedQuerySnapshot = await query.get({source: 'cache'});
 
+        // DocumentListenOptions or QueryListenOptions...
+
         // FIXME: this isn't actually implemented!!! this will fail!
 
+        // ref.onSnapshot({includeMetadataChanges: true}, snapshot => {
+
+
     }
+
+
 
     public async stop() {
         this.unsubscribeSnapshots();

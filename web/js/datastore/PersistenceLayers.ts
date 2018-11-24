@@ -6,11 +6,14 @@ import {Blobs} from "../util/Blobs";
 import {ArrayBuffers} from "../util/ArrayBuffers";
 import {AsyncFunction, AsyncWorkQueue} from '../util/AsyncWorkQueue';
 import {DocMetaRef} from "./DocMetaRef";
-import {Datastore, DocMetaMutation, DocMetaSnapshotEvent, FileRef} from './Datastore';
+import {Datastore, DocMetaMutation, DocMetaSnapshotEvent, DocMetaSnapshotEventListener, FileRef, MutationType} from './Datastore';
 import {UUIDs} from '../metadata/UUIDs';
-import {ProgressTracker} from '../util/ProgressTracker';
+import {ProgressTracker, ProgressState} from '../util/ProgressTracker';
 import {DocMetas} from '../metadata/DocMetas';
 import {DefaultPersistenceLayer} from './DefaultPersistenceLayer';
+import {Provider} from '../util/Providers';
+import {DocMeta} from '../metadata/DocMeta';
+import {IDocInfo} from '../metadata/DocInfo';
 
 export class PersistenceLayers {
 
@@ -24,7 +27,7 @@ export class PersistenceLayers {
      */
     public static async synchronize(source: PersistenceLayer,
                                     target: PersistenceLayer,
-                                    listener: SynchronizeEventListener = NULL_FUNCTION): Promise<TransferResult> {
+                                    listener: DocMetaSnapshotEventListener = NULL_FUNCTION): Promise<TransferResult> {
 
         const result: TransferResult = {
             mutations: {
@@ -61,7 +64,8 @@ export class PersistenceLayers {
 
         async function handleDocMetaFile(docMetaFile: DocMetaRef) {
 
-            // console.log("Working with fingerprint: " + docMetaFile.fingerprint);
+            // console.log("Working with fingerprint: " +
+            // docMetaFile.fingerprint);
 
             const docMeta = await source.getDocMeta(docMetaFile.fingerprint);
 
@@ -80,7 +84,8 @@ export class PersistenceLayers {
 
             if (docFile.name) {
                 // TODO: if we use the second queue it still locks up.
-                // await docFileAsyncWorkQueue.enqueue(async () => handleStashFile(docFile));
+                // await docFileAsyncWorkQueue.enqueue(async () =>
+                // handleStashFile(docFile));
                 await handleStashFile(docFile);
             }
 
@@ -96,8 +101,8 @@ export class PersistenceLayers {
 
                     const cmp = UUIDs.compare(targetDocMeta.docInfo.uuid, docMeta.docInfo.uuid);
 
-                    // FIXME: if the comparison is zero then technically we have a
-                    // conflict which we need to surface to the user.
+                    // FIXME: if the comparison is zero then technically we
+                    // have a conflict which we need to surface to the user.
 
                     doWriteDocMeta = cmp < 0;
 
@@ -110,21 +115,26 @@ export class PersistenceLayers {
                 await target.writeDocMeta(docMeta);
             }
 
-            ++completed;
+            const progress = progressTracker.incr();
 
-            const progress = Percentages.calculate(completed, total);
+            const docMetaSnapshotEvent: DocMetaSnapshotEvent = {
+                progress,
+                docMetaMutations: [
+                    {
+                        docMetaProvider: () => docMeta,
+                        docInfoProvider: () => docMeta.docInfo,
+                        mutationType: 'created'
+                    }
+                ]
+            };
 
-            const duration = Date.now() - before;
-
-            listener({completed, total, progress, duration});
+            listener(docMetaSnapshotEvent);
 
         }
 
         const docMetaFiles = await source.getDocMetaFiles();
 
-        const before = Date.now();
-        const total = docMetaFiles.length;
-        let completed = 0;
+        const progressTracker = new ProgressTracker(docMetaFiles.length);
 
         const docFileAsyncWorkQueue = new AsyncWorkQueue([]);
         const docMetaAsyncWorkQueue = new AsyncWorkQueue([]);
@@ -159,23 +169,3 @@ export interface TransferRefs {
     readonly files: FileRef[];
 
 }
-
-export interface SynchronizeEvent {
-
-    readonly completed: number;
-
-    /**
-     * The total number of tasks.
-     */
-    readonly total: number;
-
-    /**
-     * The progress as a percentage (0 to 100)
-     */
-    readonly progress: number;
-
-    readonly duration: number;
-
-}
-
-export type SynchronizeEventListener = (synchronizeEvent: SynchronizeEvent) => void;
