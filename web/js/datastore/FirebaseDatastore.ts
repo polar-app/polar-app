@@ -540,6 +540,8 @@ export class FirebaseDatastore implements Datastore, SynchronizingDatastore {
 
         const progressTracker = new ProgressTracker(documentChanges.length);
 
+        const consistency = snapshot.metadata.fromCache ? 'written' : 'committed';
+
         for (const docChange of documentChanges) {
 
             const docMetaMutation
@@ -552,6 +554,7 @@ export class FirebaseDatastore implements Datastore, SynchronizingDatastore {
             // dispatch a progress event so we can detect how far we've been
             // loading
             this.docMetaSynchronizationReactor.dispatchEvent({
+                consistency,
                 progress: progressTracker.incr(),
                 docMetaMutations: []
             });
@@ -559,6 +562,7 @@ export class FirebaseDatastore implements Datastore, SynchronizingDatastore {
         }
 
         this.docMetaSynchronizationReactor.dispatchEvent({
+            consistency,
             progress: progressTracker.peek(),
             docMetaMutations
         });
