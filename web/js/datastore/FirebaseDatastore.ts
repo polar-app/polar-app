@@ -1,7 +1,9 @@
 import {
     BinaryMutationEvent, Datastore, DeleteResult,
     DocMetaSnapshotEvent, FileMeta,
-    InitResult, SynchronizingDatastore, MutationType, FileRef, DocMetaMutation, DocMetaSnapshotEventListener, SnapshotResult
+    InitResult, SynchronizingDatastore, MutationType, FileRef,
+    DocMetaMutation, DocMetaSnapshotEventListener, SnapshotResult,
+    DocMetaSnapshotBatch
 } from './Datastore';
 import {Logger} from '../logger/Logger';
 import {DocMetaFileRef, DocMetaRef} from './DocMetaRef';
@@ -119,11 +121,6 @@ export class FirebaseDatastore implements Datastore, SynchronizingDatastore {
         // we've received all the request in a given batch so I need some type
         // of batch ID system...
 
-        // Fetch from the local cache so that we have at least some data after
-        // init instead of relying on the network.  This will get us data into
-        // the document repository faster.
-        const cachedQuerySnapshot = await query.get({source: 'cache'});
-
         // FIXME:
         // https://firebase.google.com/docs/firestore/query-data/query-cursors
         // FIXME: must NOT read all the data in at one time... must use cursors
@@ -133,7 +130,10 @@ export class FirebaseDatastore implements Datastore, SynchronizingDatastore {
         // TODO: I don't think it's necessary to first fetch from from the
         // cache though as I think the first snapshot comes from cache anyway.
 
-        this.onDocInfoSnapshot(cachedQuerySnapshot, listener);
+        const batch = {
+            id: 0,
+            terminated: true
+        };
 
         // FIXME: is it possible to tell it only future data and NOT local data?
         //  that would be easier... no.. I don't think so.. I think we're stuck
@@ -154,7 +154,11 @@ export class FirebaseDatastore implements Datastore, SynchronizingDatastore {
         // second will be the server...
 
         const unsubscribe =
-            query.onSnapshot(snapshot => this.onDocInfoSnapshot(snapshot, listener));
+
+            query.onSnapshot(snapshot => {
+                this.onDocInfoSnapshot(snapshot, listener, batch);
+                ++batch.id;
+            });
 
         return {
             unsubscribe
@@ -595,7 +599,8 @@ export class FirebaseDatastore implements Datastore, SynchronizingDatastore {
      *    locally.
      */
     private onDocInfoSnapshot(snapshot: firebase.firestore.QuerySnapshot,
-                              docMetaSnapshotEventListener: DocMetaSnapshotEventListener) {
+                              docMetaSnapshotEventListener: DocMetaSnapshotEventListener,
+                              batch: DocMetaSnapshotBatch) {
 
         log.debug("onSnapshot... ");
 
@@ -619,7 +624,11 @@ export class FirebaseDatastore implements Datastore, SynchronizingDatastore {
             this.docMetaSynchronizationReactor.dispatchEvent({
                 consistency,
                 progress: progressTracker.incr(),
-                docMetaMutations: []
+                docMetaMutations: [],
+                batch: {
+                    id: batch.id,
+                    terminated: false,
+                }
             });
 
         }
@@ -627,7 +636,11 @@ export class FirebaseDatastore implements Datastore, SynchronizingDatastore {
         this.docMetaSynchronizationReactor.dispatchEvent({
             consistency,
             progress: progressTracker.peek(),
-            docMetaMutations
+            docMetaMutations,
+            batch: {
+                id: batch.id,
+                terminated: true,
+            }
         });
 
         log.debug("onSnapshot... done");

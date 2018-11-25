@@ -1,4 +1,4 @@
-import {Datastore, DocMetaMutation, DocMetaSnapshotEvent, DocMetaSnapshotEventListener, FileRef, SnapshotResult} from './Datastore';
+import {Datastore, DocMetaMutation, DocMetaSnapshotBatch, DocMetaSnapshotEvent, DocMetaSnapshotEventListener, FileRef, SnapshotResult} from './Datastore';
 import {MemoryDatastore} from './MemoryDatastore';
 import {DiskDatastore} from './DiskDatastore';
 import {Logger} from '../logger/Logger';
@@ -56,7 +56,20 @@ export class Datastores {
      * the listeners.
      */
     public static async createCommittedSnapshot(datastore: Datastore,
-                                                listener: DocMetaSnapshotEventListener): Promise<SnapshotResult> {
+                                                listener: DocMetaSnapshotEventListener,
+                                                batch?: DocMetaSnapshotBatch): Promise<SnapshotResult> {
+
+        if (! batch) {
+
+            // for most of our usages we just receive the first batch and we're
+            // done at that point.
+
+            batch = {
+                id: 0,
+                terminated: false
+            };
+
+        }
 
         const docMetaFiles = await datastore.getDocMetaFiles();
 
@@ -94,10 +107,21 @@ export class Datastores {
             listener({
                 progress: progressTracker.incr(),
                 consistency: 'committed',
-                docMetaMutations: [docMetaMutation]
+                docMetaMutations: [docMetaMutation],
+                batch
             });
 
         }
+
+        listener({
+            progress: progressTracker.peek(),
+            consistency: 'committed',
+            docMetaMutations: [],
+            batch: {
+                id: batch.id,
+                terminated: true,
+            }
+        });
 
         return { };
 

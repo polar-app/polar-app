@@ -1,4 +1,4 @@
-import {Datastore, DeleteResult, FileMeta, FileRef, InitResult, DocMetaSnapshotEvent, DocMetaMutation, DocMetaSnapshotEventListener, SnapshotResult} from './Datastore';
+import {Datastore, DeleteResult, FileMeta, FileRef, InitResult, DocMetaSnapshotEvent, DocMetaMutation, DocMetaSnapshotEventListener, SnapshotResult, DocMetaSnapshotBatch} from './Datastore';
 import {isPresent, Preconditions} from '../Preconditions';
 import {Logger} from '../logger/Logger';
 import {DocMetaFileRef, DocMetaRef} from './DocMetaRef';
@@ -290,7 +290,9 @@ export class DiskDatastore implements Datastore {
     }
 
     public async snapshot(listener: DocMetaSnapshotEventListener): Promise<SnapshotResult> {
+
         return Datastores.createCommittedSnapshot(this, listener);
+
     }
 
     private async createDatastoreFile(backend: Backend,

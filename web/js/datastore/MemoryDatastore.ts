@@ -1,7 +1,7 @@
 /**
  * Datastore just in memory with no on disk persistence.
  */
-import {Datastore, InitResult, FileRef, FileMeta, DocMetaSnapshotEvent, SnapshotResult, DocMetaSnapshotEventListener} from './Datastore';
+import {Datastore, InitResult, FileRef, FileMeta, DocMetaSnapshotEvent, SnapshotResult, DocMetaSnapshotEventListener, DocMetaSnapshotBatch} from './Datastore';
 import {Preconditions, isPresent} from '../Preconditions';
 import {DocMetaFileRef, DocMetaRef} from './DocMetaRef';
 import {FilePaths} from '../util/FilePaths';
@@ -170,7 +170,9 @@ export class MemoryDatastore implements Datastore {
     }
 
     public async snapshot(listener: DocMetaSnapshotEventListener): Promise<SnapshotResult> {
+
         return Datastores.createCommittedSnapshot(this, listener);
+
     }
 
     private toFileRefKey(backend: Backend, fileRef: FileRef) {

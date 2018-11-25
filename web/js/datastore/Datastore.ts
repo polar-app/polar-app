@@ -5,17 +5,15 @@ import {Directories} from './Directories';
 import {Backend} from './Backend';
 import {DatastoreFile} from './DatastoreFile';
 import {Optional} from '../util/ts/Optional';
-import {IDocInfo, DocInfo} from '../metadata/DocInfo';
-import {FileDeleted, FileHandle} from '../util/Files';
-import {Latch} from '../util/Latch';
+import {IDocInfo} from '../metadata/DocInfo';
+import {FileHandle} from '../util/Files';
 import {Simulate} from 'react-dom/test-utils';
-import input = Simulate.input;
-import {isPresent} from '../Preconditions';
 import {DatastoreMutation} from './DatastoreMutation';
 import {DocMeta} from '../metadata/DocMeta';
 import {Hashcode} from '../metadata/Hashcode';
 import {ProgressState} from '../util/ProgressTracker';
-import {Provider, AsyncProvider} from '../util/Providers';
+import {AsyncProvider} from '../util/Providers';
+import {UUID} from '../metadata/UUID';
 
 export interface Datastore extends BinaryDatastore, WritableDatastore {
 
@@ -114,6 +112,7 @@ interface BinaryDatastore extends ReadableBinaryDatastore, WritableBinaryDatasto
 interface ReadableBinaryDatastore {
 
     containsFile(backend: Backend, ref: FileRef): Promise<boolean>;
+
     getFile(backend: Backend, ref: FileRef): Promise<Optional<DatastoreFile>>;
 
 }
@@ -216,6 +215,35 @@ export interface DocMetaSnapshotEvent {
      */
     readonly docMetaMutations: ReadonlyArray<DocMetaMutation>;
 
+    readonly batch?: DocMetaSnapshotBatch;
+
+}
+
+/**
+ * Represents data around a specific batch of DocMetaMutations so that we know
+ * when we have a first consistent snapshot.  This way we can get streaming events
+ * but know when part of the stream has terminated.
+ *
+ * The batch is only present (usually) on first level datastores not aggregate
+ * datastores which might be merging streams.
+ */
+export interface DocMetaSnapshotBatch {
+
+    /**
+     * The ID of this batch. The first batch at a given consistency level is a
+     * complete snapshot of the underlying datastore and all docs.  You MAY not
+     * receive a batch with consistency 'written' and only receive one for
+     * 'committed' so you should focus on committed. Batches after the first are
+     * differential and only represent updates.
+     */
+    readonly id: number;
+
+    /**
+     * True if we've received all the events in this batch and this is the last
+     * event you will see with the same batch ID.
+     */
+    readonly terminated: boolean;
+
 }
 
 /**
@@ -269,7 +297,7 @@ export interface DeleteResult {
 export type InitDocMetaEventListener = (initDocMetaEvent: InitDocMetaEvent) => void;
 
 export interface InitDocMetaEvent {
-    docMeta: DocMeta;
+    readonly docMeta: DocMeta;
 }
 
 /**
@@ -290,7 +318,7 @@ export interface SnapshotResult {
     /**
      * An optional unsubscribe
      */
-    unsubscribe?: SnapshotUnsubscriber;
+    readonly unsubscribe?: SnapshotUnsubscriber;
 
 }
 
@@ -298,3 +326,68 @@ export interface SnapshotResult {
  * A function for unsubscribing to future snapshot events.
  */
 export type SnapshotUnsubscriber = () => void;
+
+export interface SyncDocMap {
+    readonly [fingerprint: string]: SyncDoc;
+}
+
+/**
+ * A lightweight doc reference to sync between two datasources.
+ */
+export interface SyncDoc {
+
+    readonly fingerprint: string;
+
+    /**
+     * While the UUID is optional in practice it's required and all docs should
+     * have a UUID.
+     */
+    readonly uuid?: UUID;
+
+    /**
+     * The binary files reference by this doc.
+     */
+    readonly files: ReadonlyArray<SyncFile>;
+
+}
+
+/**
+ * A lightweight reference to a binary file attached to a SyncDoc.
+ */
+export interface SyncFile {
+
+    readonly backend: Backend;
+
+    readonly ref: FileRef;
+
+}
+
+export class SyncDocs {
+
+    public static fromDocInfo(docInfo: IDocInfo): SyncDoc {
+
+        const files: SyncFile[] = [];
+
+        if (docInfo.filename) {
+
+            const stashFile: SyncFile = {
+                backend: Backend.STASH,
+                ref: {
+                    name: docInfo.filename!,
+                    hashcode: docInfo.hashcode
+                }
+            };
+
+            files.push(stashFile);
+
+        }
+
+        return {
+            fingerprint: docInfo.fingerprint,
+            uuid: docInfo.uuid,
+            files
+        };
+
+    }
+
+}

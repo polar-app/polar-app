@@ -155,7 +155,12 @@ export class Dictionaries {
 
     }
 
+    public static size<V>(dict: {[key: string]: V}) {
+        return Object.keys(dict).length;
+    }
 }
+
+
 
 interface ForDictCallbackFunction<T> {
     (key: string, value: T): void;

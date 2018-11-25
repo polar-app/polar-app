@@ -190,7 +190,7 @@ export class CloudAwareDatastore implements Datastore {
         // fingerprint to UUID... then we wait until we can get the similar index
         // from the 'committed' version of the cloud datastore, then we perform
         // a synchronize based on this metadata... at which point we can build
-        // an new progress event listener,
+        // use new updates from the doc_info table.
 
         // When created we have to synchronized the local with the remote.
         // this will take a few minutes but we need to load the app repository
