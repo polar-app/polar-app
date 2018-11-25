@@ -214,6 +214,11 @@ export class CloudAwareDatastore implements Datastore {
         // does how do we know we've receive all of it for a specific moment
         // in time.
 
+        // FIXME: VERIFY that I am in fact getting PAGED snapshots with
+        // onSnapshot...  if that's the case that's good for the most recent
+        // version of data from the server BUT there is know way to know when
+        // I'm fully consistent at a point in time.
+
         await PersistenceLayers.synchronize(localPersistenceLayer,
                                             cloudPersistenceLayer,
                                             deduplicatedListener);
@@ -252,7 +257,7 @@ export class CloudAwareDatastore implements Datastore {
     private async onRemoteDocMutation(docMetaMutation: DocMetaMutation) {
 
         const {docMetaProvider, mutationType} = docMetaMutation;
-        const docMeta = docMetaProvider();
+        const docMeta = await docMetaProvider();
 
         if (mutationType === 'created' || mutationType === 'updated') {
 

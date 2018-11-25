@@ -11,7 +11,7 @@ import {UUIDs} from '../metadata/UUIDs';
 import {ProgressTracker, ProgressState} from '../util/ProgressTracker';
 import {DocMetas} from '../metadata/DocMetas';
 import {DefaultPersistenceLayer} from './DefaultPersistenceLayer';
-import {Provider} from '../util/Providers';
+import {Provider, AsyncProviders} from '../util/Providers';
 import {DocMeta} from '../metadata/DocMeta';
 import {IDocInfo} from '../metadata/DocInfo';
 
@@ -127,8 +127,8 @@ export class PersistenceLayers {
                 consistency: 'committed',
                 docMetaMutations: [
                     {
-                        docMetaProvider: () => docMeta,
-                        docInfoProvider: () => docMeta.docInfo,
+                        docMetaProvider: AsyncProviders.of(docMeta),
+                        docInfoProvider: AsyncProviders.of(docMeta.docInfo),
                         mutationType: 'created'
                     }
                 ]

@@ -8,6 +8,7 @@ import {assertJSON} from '../test/Assertions';
 import {assert} from 'chai';
 import {UUIDs} from '../metadata/UUIDs';
 import {NULL_FUNCTION} from '../util/Functions';
+import {AsyncProviders} from '../util/Providers';
 
 describe('DocMetaSnapshotEventListener', function() {
 
@@ -41,8 +42,8 @@ describe('DocMetaSnapshotEventListener', function() {
     function createDocMetaSnapshotEvent(mutationType: MutationType = 'created') {
 
         const docMetaMutation: DocMetaMutation = {
-            docMetaProvider: () => docMeta,
-            docInfoProvider: () => docMeta.docInfo,
+            docMetaProvider: AsyncProviders.of(docMeta),
+            docInfoProvider: AsyncProviders.of(docMeta.docInfo),
             mutationType
         };
 

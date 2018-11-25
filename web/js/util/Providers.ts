@@ -55,3 +55,51 @@ export class Providers {
 
 }
 
+export type AsyncProvider<T> = () => Promise<T>;
+
+export class AsyncProviders {
+
+    public static of<T>(value: T): AsyncProvider<T> {
+        return () => Promise.resolve(value);
+    }
+
+    /**
+     */
+    public static memoize<T>(provider: AsyncProvider<T>): AsyncProvider<T> {
+
+        let memoized: boolean = false;
+
+        // an error that the provider threw
+        let err: Error | undefined;
+
+        // the value that the provider returned.
+        let memo: T | undefined;
+
+        return async () => {
+
+            if (memoized) {
+
+                if (err) {
+                    throw err;
+                }
+
+                return memo!;
+
+            }
+
+            try {
+
+                memo = await provider();
+                return memo!;
+
+            } catch (e) {
+                err = e;
+                throw e;
+            } finally {
+                memoized = true;
+            }
+
+        };
+
+    }
+}

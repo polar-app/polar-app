@@ -8,7 +8,7 @@ import {DocMetas} from '../metadata/DocMetas';
 import {NULL_FUNCTION} from '../util/Functions';
 import {Percentages} from '../util/Percentages';
 import {ProgressTracker} from '../util/ProgressTracker';
-import {Providers} from '../util/Providers';
+import {Providers, AsyncProviders} from '../util/Providers';
 
 const log = Logger.create();
 
@@ -82,8 +82,8 @@ export class Datastores {
             // TODO: in the cloud store implementation it will probably be much
             // faster to use a file JUST for the DocInfo to speed up loading.
 
-            const docMetaProvider = Providers.memoize(() => DocMetas.deserialize(data!));
-            const docInfoProvider = Providers.memoize(() => docMetaProvider().docInfo);
+            const docMetaProvider = AsyncProviders.memoize(async () => DocMetas.deserialize(data!));
+            const docInfoProvider = AsyncProviders.memoize(async () => (await docMetaProvider()).docInfo);
 
             const docMetaMutation: DocMetaMutation = {
                 docMetaProvider,

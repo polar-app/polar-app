@@ -15,7 +15,7 @@ import {DatastoreMutation} from './DatastoreMutation';
 import {DocMeta} from '../metadata/DocMeta';
 import {Hashcode} from '../metadata/Hashcode';
 import {ProgressState} from '../util/ProgressTracker';
-import {Provider} from '../util/Providers';
+import {Provider, AsyncProvider} from '../util/Providers';
 
 export interface Datastore extends BinaryDatastore, WritableDatastore {
 
@@ -237,8 +237,8 @@ export interface SnapshotProgress extends Readonly<ProgressState> {
 
 export interface DocMetaMutation {
 
-    readonly docMetaProvider: Provider<DocMeta>;
-    readonly docInfoProvider: Provider<IDocInfo>;
+    readonly docMetaProvider: AsyncProvider<DocMeta>;
+    readonly docInfoProvider: AsyncProvider<IDocInfo>;
 
     readonly mutationType: MutationType;
 

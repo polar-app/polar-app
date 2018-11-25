@@ -22,7 +22,7 @@ import {NULL_FUNCTION} from '../util/Functions';
 import {DocMetas} from "../metadata/DocMetas";
 import {Percentages} from '../util/Percentages';
 import {ProgressTracker} from '../util/ProgressTracker';
-import {Providers} from '../util/Providers';
+import {Providers, AsyncProviders} from '../util/Providers';
 
 const log = Logger.create();
 
@@ -112,20 +112,20 @@ export class FirebaseDatastore implements Datastore, SynchronizingDatastore {
         // snapshots after this which can come from the network async
 
         const query = this.firestore!
-            .collection(DatastoreCollection.DOC_META)
+            .collection(DatastoreCollection.DOC_INFO)
             .where('uid', '==', uid);
 
         // FIXME: if we use cursor requests I need the callback to know when
-        // we've received all the request in a given batch so I need some type of
-        // batch ID system...
+        // we've received all the request in a given batch so I need some type
+        // of batch ID system...
 
         // Fetch from the local cache so that we have at least some data after
         // init instead of relying on the network.  This will get us data into
         // the document repository faster.
         const cachedQuerySnapshot = await query.get({source: 'cache'});
 
-        // FIXME: https://firebase.google.com/docs/firestore/query-data/query-cursors
-        //
+        // FIXME:
+        // https://firebase.google.com/docs/firestore/query-data/query-cursors
         // FIXME: must NOT read all the data in at one time... must use cursors
         // here but not sure if these even use the local cache. Fuck this is
         // harder than I thought...
@@ -133,7 +133,7 @@ export class FirebaseDatastore implements Datastore, SynchronizingDatastore {
         // TODO: I don't think it's necessary to first fetch from from the
         // cache though as I think the first snapshot comes from cache anyway.
 
-        this.onDocMetaSnapshot(cachedQuerySnapshot, listener);
+        this.onDocInfoSnapshot(cachedQuerySnapshot, listener);
 
         // FIXME: is it possible to tell it only future data and NOT local data?
         //  that would be easier... no.. I don't think so.. I think we're stuck
@@ -143,8 +143,18 @@ export class FirebaseDatastore implements Datastore, SynchronizingDatastore {
         // will work.  we just need to support the concept of
         // full and partial batches and batch IDs.
 
+        // FIXME: the initial call is all docChanges ... but maybe I CAN keep
+        // track of the first call if I"m getting them all back at once.. maybe
+        // I can try to put 1k records in the DB and then get a query Snapshot
+        // over them and lookk at the actual data that was written... then I
+        // can look and listen for the events and see if they're paged. If they
+        // ARE properly handled and we get back ONE call with all the documetns
+        // AND the are paged then I think I can just use one snapshto for both
+        // the cached and server version... the first will be the cached, the
+        // second will be the server...
+
         const unsubscribe =
-            query.onSnapshot(snapshot => this.onDocMetaSnapshot(snapshot, listener));
+            query.onSnapshot(snapshot => this.onDocInfoSnapshot(snapshot, listener));
 
         return {
             unsubscribe
@@ -364,35 +374,42 @@ export class FirebaseDatastore implements Datastore, SynchronizingDatastore {
                        docInfo: DocInfo,
                        datastoreMutation: DatastoreMutation<boolean> = new DefaultDatastoreMutation()) {
 
+        docInfo = Object.assign({}, Dictionaries.onlyDefinedProperties(docInfo));
+
         const uid = this.getUserID();
         const id = this.computeDocMetaID(uid, fingerprint);
 
-        docInfo = Object.assign({}, Dictionaries.onlyDefinedProperties(docInfo));
+        // FIXME use a DOC_INFO table here ... that should scale fine, then I
+        // can get a snapshot for that..
 
-        const docMetaHolder: DocMetaHolder = {
-            docInfo,
-            value: data
-        };
-
-        const recordHolder: RecordHolder<DocMetaHolder> = {
-            uid,
-            id,
-            visibility: Visibility.PRIVATE,
-            value: docMetaHolder
-        };
-
-        const ref = this.firestore!.collection(DatastoreCollection.DOC_META).doc(id);
+        // FIXME: the only thinkg we can reasonbly do is wrote a DOC_INFO table
+        // and subscirbe/work with that table preferentially.
 
         this.pendingMutationIndex[id] = {type: 'write', id};
 
         try {
 
-            this.handleDatastoreMutations(ref, datastoreMutation);
+            const docMetaRef = this.firestore!
+                .collection(DatastoreCollection.DOC_META)
+                .doc(id);
 
-            const commitPromise = this.waitForCommit(ref);
+            const docInfoRef = this.firestore!
+                .collection(DatastoreCollection.DOC_INFO)
+                .doc(id);
+
+            this.handleDatastoreMutations(docMetaRef, datastoreMutation);
+
+            const commitPromise = this.waitForCommit(docMetaRef);
 
             log.debug("Setting...");
-            await ref.set(recordHolder);
+
+            const batch = this.firestore!.batch();
+
+            batch.set(docMetaRef, this.createDocForDocMeta(docInfo, data));
+            batch.set(docInfoRef, this.createDocForDocInfo(docInfo));
+
+            await batch.commit();
+
             log.debug("Setting...done");
 
             // we need to make sure that we only return when it's committed
@@ -404,6 +421,46 @@ export class FirebaseDatastore implements Datastore, SynchronizingDatastore {
         } finally {
             delete this.pendingMutationIndex[id];
         }
+
+    }
+
+    /**
+     * Create the document that we will store in for the DocMeta
+     */
+    private createDocForDocMeta(docInfo: DocInfo, docMeta: string) {
+
+        const uid = this.getUserID();
+        const id = this.computeDocMetaID(uid, docInfo.fingerprint);
+
+        const docMetaHolder: DocMetaHolder = {
+            docInfo,
+            value: docMeta
+        };
+
+        const recordHolder: RecordHolder<DocMetaHolder> = {
+            uid,
+            id,
+            visibility: Visibility.PRIVATE,
+            value: docMetaHolder
+        };
+
+        return recordHolder;
+
+    }
+
+    private createDocForDocInfo(docInfo: DocInfo) {
+
+        const uid = this.getUserID();
+        const id = this.computeDocMetaID(uid, docInfo.fingerprint);
+
+        const recordHolder: RecordHolder<DocInfo> = {
+            uid,
+            id,
+            visibility: Visibility.PRIVATE,
+            value: docInfo
+        };
+
+        return recordHolder;
 
     }
 
@@ -474,9 +531,10 @@ export class FirebaseDatastore implements Datastore, SynchronizingDatastore {
 
         return new Promise(resolve => {
 
-            ref.onSnapshot({includeMetadataChanges: true}, snapshot => {
+            const unsubscribeToSnapshot = ref.onSnapshot({includeMetadataChanges: true}, snapshot => {
 
                 if (!snapshot.metadata.fromCache && !snapshot.metadata.hasPendingWrites) {
+                    unsubscribeToSnapshot();
                     resolve();
                 }
 
@@ -487,9 +545,9 @@ export class FirebaseDatastore implements Datastore, SynchronizingDatastore {
     }
 
     private handleDatastoreMutations(ref: firebase.firestore.DocumentReference,
-                                     datastoreMutation: DatastoreMutation<any>) {
+                                     datastoreMutation: DatastoreMutation<boolean>) {
 
-        ref.onSnapshot({includeMetadataChanges: true}, snapshot => {
+        const unsubscribeToSnapshot = ref.onSnapshot({includeMetadataChanges: true}, snapshot => {
 
             if (snapshot.metadata.fromCache && snapshot.metadata.hasPendingWrites) {
                 datastoreMutation.written.resolve(true);
@@ -508,6 +566,9 @@ export class FirebaseDatastore implements Datastore, SynchronizingDatastore {
                 datastoreMutation.written.resolve(true);
                 datastoreMutation.committed.resolve(true);
                 log.debug("Got committed...");
+
+                // not interested in snapshots from this document any more.
+                unsubscribeToSnapshot();
 
             }
 
@@ -533,7 +594,7 @@ export class FirebaseDatastore implements Datastore, SynchronizingDatastore {
      *    first but then then immediately resolved from the cache and added
      *    locally.
      */
-    private onDocMetaSnapshot(snapshot: firebase.firestore.QuerySnapshot,
+    private onDocInfoSnapshot(snapshot: firebase.firestore.QuerySnapshot,
                               docMetaSnapshotEventListener: DocMetaSnapshotEventListener) {
 
         log.debug("onSnapshot... ");
@@ -547,8 +608,7 @@ export class FirebaseDatastore implements Datastore, SynchronizingDatastore {
 
         for (const docChange of documentChanges) {
 
-            const docMetaMutation
-                = FirebaseDatastore.toDocMetaMutation(docChange);
+            const docMetaMutation = this.toDocMetaMutationFromDocInfo(docChange);
 
             if (!this.pendingMutationIndex[docMetaMutation.id]) {
                 docMetaMutations.unshift(docMetaMutation);
@@ -574,18 +634,22 @@ export class FirebaseDatastore implements Datastore, SynchronizingDatastore {
 
     }
 
-    private static toDocMetaMutation(docChange: firebase.firestore.DocumentChange) {
+    private toDocMetaMutationFromDocInfo(docChange: firebase.firestore.DocumentChange) {
 
-        const record = <RecordHolder<DocMetaHolder>> docChange.doc.data();
+        const record = <RecordHolder<DocInfo>> docChange.doc.data();
         const id = record.id;
 
-        const docMetaProvider
-            = Providers.memoize(() => DocMetas.deserialize(record.value.value));
+        const docInfo = record.value;
+
+        const docMetaProvider = AsyncProviders.memoize(async () => {
+            const data = await this.getDocMeta(docInfo.fingerprint);
+            return DocMetas.deserialize(data!);
+        });
 
         const docMetaMutation: FirebaseDocMetaMutation = {
             id,
             docMetaProvider,
-            docInfoProvider: Providers.of(record.value.docInfo),
+            docInfoProvider: AsyncProviders.of(docInfo),
             mutationType: toMutationType(docChange.type)
         };
 
@@ -661,6 +725,8 @@ export enum Visibility {
 }
 
 enum DatastoreCollection {
+
+    DOC_INFO = "doc_info",
 
     DOC_META = "doc_meta"
 

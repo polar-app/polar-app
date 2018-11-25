@@ -27,13 +27,13 @@ export class DocMetaSnapshotEventListeners {
         // We could have custom filters for the level... so we could support
         // BOTH, committed, or written levels...
 
-        return (docMetaSnapshotEvent: DocMetaSnapshotEvent) => {
+        return async (docMetaSnapshotEvent: DocMetaSnapshotEvent) => {
 
             const acceptedDocMetaMutations: DocMetaMutation[] = [];
 
             for (const docMetaMutation of docMetaSnapshotEvent.docMetaMutations) {
 
-                const docInfo = docMetaMutation.docInfoProvider();
+                const docInfo = await docMetaMutation.docInfoProvider();
                 const mutationType = docMetaMutation.mutationType;
 
                 let doUpdated = false;

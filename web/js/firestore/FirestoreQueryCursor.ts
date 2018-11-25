@@ -8,17 +8,20 @@ import {Objects} from '../util/Objects';
  */
 export class FirestoreQueryCursor {
 
-    private readonly query: firebase.firestore.Query;
+    private readonly collection: string;
+    private readonly whereClause: WhereClause;
     private readonly options: FirestoreQueryCursorOptions;
 
     private querySnapshot: firebase.firestore.QuerySnapshot | undefined;
 
-    private startAt: string | undefined;
+    private startAfter: string | undefined;
 
-    constructor(query: firebase.firestore.Query,
-                options: FirestoreQueryCursorOptions = new DefaultFirestoreQueryCursorOptions()) {
+    constructor(collection: string,
+                whereClause: WhereClause,
+                options: Partial<FirestoreQueryCursorOptions> = new DefaultFirestoreQueryCursorOptions()) {
 
-        this.query = query;
+        this.collection = collection;
+        this.whereClause = whereClause;
         this.options = Objects.defaults(options, new DefaultFirestoreQueryCursorOptions());
 
     }
@@ -29,23 +32,38 @@ export class FirestoreQueryCursor {
 
     public async next(): Promise<firebase.firestore.QuerySnapshot> {
 
+        console.log("=========================");
+
         const firestore = await Firestore.getInstance();
 
-        this.query.orderBy(this.options.orderBy)
-                  .limit(this.options.limit);
+        let query: firebase.firestore.Query;
 
-        if (this.querySnapshot !== undefined) {
-            // update the query startAt position for the next page.
-            this.query.startAt(this.startAt);
+        if (this.querySnapshot === undefined) {
+
+            query = firestore
+                .collection(this.collection)
+                .where(this.whereClause.fieldPath, this.whereClause.opStr, this.whereClause.value)
+                .orderBy(this.options.orderBy)
+                .limit(this.options.limit);
+
+        } else {
+
+            query = firestore
+                .collection(this.collection)
+                .where(this.whereClause.fieldPath, this.whereClause.opStr, this.whereClause.value)
+                .orderBy(this.options.orderBy)
+                .startAfter(this.startAfter)
+                .limit(this.options.limit);
+
         }
 
-        this.querySnapshot = await this.query.get(this.options.getOptions);
+        this.querySnapshot = await query.get(this.options.getOptions);
 
         const len = this.querySnapshot.docs.length;
 
         if (len > 0) {
-            const lastDoc = this.querySnapshot.docs[len];
-            this.startAt = lastDoc.id;
+            const lastDoc = this.querySnapshot.docs[len - 1];
+            this.startAfter = lastDoc.id;
         }
 
         return this.querySnapshot;
@@ -63,4 +81,10 @@ export interface FirestoreQueryCursorOptions {
 export class DefaultFirestoreQueryCursorOptions implements FirestoreQueryCursorOptions {
     public readonly limit: number = 100;
     public readonly orderBy: string = "id";
+}
+
+export interface WhereClause {
+    readonly fieldPath: string | firebase.firestore.FieldPath;
+    readonly opStr: firebase.firestore.WhereFilterOp;
+    readonly value: any;
 }
