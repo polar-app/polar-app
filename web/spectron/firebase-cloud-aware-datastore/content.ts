@@ -27,6 +27,7 @@ import {PolarDataDir} from '../../js/test/PolarDataDir';
 import waitForExpect from 'wait-for-expect';
 
 mocha.setup('bdd');
+mocha.timeout(10000);
 PolarDataDir.useFreshDirectory('.test-firebase-cloud-aware-datastore');
 
 function createDatastore() {

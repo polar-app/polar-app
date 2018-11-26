@@ -17,6 +17,7 @@ import {Datastore} from './Datastore';
 import {DocInfo} from '../metadata/DocInfo';
 import {DefaultDatastoreMutation} from './DatastoreMutation';
 import {func} from 'prop-types';
+import {Latch} from '../util/Latch';
 
 const rimraf = require('rimraf');
 
@@ -110,7 +111,6 @@ export class DatastoreTester {
 
             });
 
-
             it("Delete DocMeta and the associated stash file...", async function() {
 
                 const docMetaFileRef: DocMetaFileRef = {
@@ -190,6 +190,36 @@ export class DatastoreTester {
                 assert.equal(docMetaFiles.map((current) => current.fingerprint).includes(fingerprint), true);
 
             });
+
+            it("snapshot and make sure we receive a terminated batch at committed consistency.", async function() {
+
+                const writtenSnapshotReceived = new Latch<boolean>();
+                const committedSnapshotReceived = new Latch<boolean>();
+
+                await datastore.snapshot(docMetaSnapshotEvent => {
+
+                    if (docMetaSnapshotEvent.batch) {
+
+                        if (docMetaSnapshotEvent.batch.terminated) {
+
+                            if ( docMetaSnapshotEvent.consistency === 'committed') {
+                                committedSnapshotReceived.resolve(true);
+                            }
+
+                            if ( docMetaSnapshotEvent.consistency === 'written') {
+                                writtenSnapshotReceived.resolve(true);
+                            }
+
+                        }
+                    }
+
+                });
+
+                await writtenSnapshotReceived.get();
+                await committedSnapshotReceived.get();
+
+            });
+
 
         });
 

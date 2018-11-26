@@ -50,20 +50,22 @@ export class FirebaseDatastore implements Datastore, SynchronizingDatastore {
 
     private storage?: firebase.storage.Storage;
 
+    // FIXME: remove this.
     private readonly binaryMutationReactor: IEventDispatcher<BinaryMutationEvent> = new SimpleReactor();
 
     // FIXME: I think this code can be removed now and that we should be using
     // snapshots except for the binaryMutations.. we don't have support for that
     // just yet...
+    // FIXME: remove this.
     private readonly docMetaSnapshotReactor: IEventDispatcher<DocMetaSnapshotEvent> = new SimpleReactor();
 
+    // FIXME: remove this.
     private readonly docMetaSynchronizationReactor: IEventDispatcher<DocMetaSnapshotEvent> = new SimpleReactor();
 
+    // FIXME: remove this.
     private unsubscribeSnapshots: () => void = NULL_FUNCTION;
 
     private initialized: boolean = false;
-
-    private readonly pendingMutationIndex: PendingMutationIndex = {};
 
     constructor() {
 
@@ -84,12 +86,12 @@ export class FirebaseDatastore implements Datastore, SynchronizingDatastore {
         this.firestore = await Firestore.getInstance();
         this.storage = firebase.storage();
 
-        const listener = (docMetaSnapshotEvent: DocMetaSnapshotEvent) => {
-            this.docMetaSynchronizationReactor.dispatchEvent(docMetaSnapshotEvent);
-        };
-
-        const snapshotResult = await this.snapshot(listener);
-        this.unsubscribeSnapshots = snapshotResult.unsubscribe!;
+        // const listener = (docMetaSnapshotEvent: DocMetaSnapshotEvent) => {
+        //     this.docMetaSynchronizationReactor.dispatchEvent(docMetaSnapshotEvent);
+        // };
+        //
+        // const snapshotResult = await this.snapshot(listener);
+        // this.unsubscribeSnapshots = snapshotResult.unsubscribe!;
 
         this.initialized = true;
 
@@ -97,7 +99,7 @@ export class FirebaseDatastore implements Datastore, SynchronizingDatastore {
 
     }
 
-    public async snapshot(listener: DocMetaSnapshotEventListener): Promise<SnapshotResult> {
+    public async snapshot(docMetaSnapshotEventListener: DocMetaSnapshotEventListener): Promise<SnapshotResult> {
 
         // setup the initial snapshot so that we query for the users existing
         // data...
@@ -116,10 +118,6 @@ export class FirebaseDatastore implements Datastore, SynchronizingDatastore {
         const query = this.firestore!
             .collection(DatastoreCollection.DOC_INFO)
             .where('uid', '==', uid);
-
-        // FIXME: if we use cursor requests I need the callback to know when
-        // we've received all the request in a given batch so I need some type
-        // of batch ID system...
 
         // FIXME:
         // https://firebase.google.com/docs/firestore/query-data/query-cursors
@@ -153,12 +151,21 @@ export class FirebaseDatastore implements Datastore, SynchronizingDatastore {
         // the cached and server version... the first will be the cached, the
         // second will be the server...
 
-        const unsubscribe =
-
-            query.onSnapshot(snapshot => {
-                this.onDocInfoSnapshot(snapshot, listener, batch);
+        const onNextForSnapshot = (snapshot: firebase.firestore.QuerySnapshot) => {
+            try {
+                this.handleDocInfoSnapshot(snapshot, docMetaSnapshotEventListener, batch);
                 ++batch.id;
-            });
+            } catch (e) {
+                log.error("Could not handle snapshot: ", e);
+            }
+        };
+
+        const onErrorForSnapshot = (err: Error) => {
+            log.error("Could not handle snapshot: ", err);
+        };
+
+        const unsubscribe =
+            query.onSnapshot({includeMetadataChanges: true}, onNextForSnapshot, onErrorForSnapshot);
 
         return {
             unsubscribe
@@ -167,7 +174,10 @@ export class FirebaseDatastore implements Datastore, SynchronizingDatastore {
     }
 
     public async stop() {
-        this.unsubscribeSnapshots();
+        if (this.unsubscribeSnapshots) {
+            this.unsubscribeSnapshots();
+        }
+
     }
 
     /**
@@ -207,8 +217,6 @@ export class FirebaseDatastore implements Datastore, SynchronizingDatastore {
             .collection(DatastoreCollection.DOC_META)
             .doc(id);
 
-        this.pendingMutationIndex[id] = {type: 'delete', id};
-
         try {
 
             this.handleDatastoreMutations(ref, datastoreMutation);
@@ -222,7 +230,7 @@ export class FirebaseDatastore implements Datastore, SynchronizingDatastore {
             return { };
 
         } finally {
-            delete this.pendingMutationIndex[id];
+            // noop for now
         }
 
     }
@@ -383,14 +391,6 @@ export class FirebaseDatastore implements Datastore, SynchronizingDatastore {
         const uid = this.getUserID();
         const id = this.computeDocMetaID(uid, fingerprint);
 
-        // FIXME use a DOC_INFO table here ... that should scale fine, then I
-        // can get a snapshot for that..
-
-        // FIXME: the only thinkg we can reasonbly do is wrote a DOC_INFO table
-        // and subscirbe/work with that table preferentially.
-
-        this.pendingMutationIndex[id] = {type: 'write', id};
-
         try {
 
             const docMetaRef = this.firestore!
@@ -423,7 +423,7 @@ export class FirebaseDatastore implements Datastore, SynchronizingDatastore {
             log.debug("Waiting for promise...done");
 
         } finally {
-            delete this.pendingMutationIndex[id];
+            // noop for now
         }
 
     }
@@ -598,45 +598,93 @@ export class FirebaseDatastore implements Datastore, SynchronizingDatastore {
      *    first but then then immediately resolved from the cache and added
      *    locally.
      */
-    private onDocInfoSnapshot(snapshot: firebase.firestore.QuerySnapshot,
-                              docMetaSnapshotEventListener: DocMetaSnapshotEventListener,
-                              batch: DocMetaSnapshotBatch) {
+    private handleDocInfoSnapshot(snapshot: firebase.firestore.QuerySnapshot,
+                                  docMetaSnapshotEventListener: DocMetaSnapshotEventListener,
+                                  batch: DocMetaSnapshotBatch) {
 
         log.debug("onSnapshot... ");
 
-        const docMetaMutations = [];
-        const documentChanges = snapshot.docChanges();
+        const docMetaMutationFromRecord = (record: RecordHolder<DocInfo>,
+                                           mutationType: MutationType = 'created') => {
 
-        const progressTracker = new ProgressTracker(documentChanges.length);
+            const id = record.id;
 
-        const consistency = snapshot.metadata.fromCache ? 'written' : 'committed';
+            const docInfo = record.value;
 
-        for (const docChange of documentChanges) {
+            const docMetaProvider = AsyncProviders.memoize(async () => {
+                const data = await this.getDocMeta(docInfo.fingerprint);
+                return DocMetas.deserialize(data!);
+            });
 
-            const docMetaMutation = this.toDocMetaMutationFromDocInfo(docChange);
+            const docMetaMutation: FirebaseDocMetaMutation = {
+                id,
+                docMetaProvider,
+                docInfoProvider: AsyncProviders.of(docInfo),
+                mutationType
+            };
 
-            if (!this.pendingMutationIndex[docMetaMutation.id]) {
-                docMetaMutations.unshift(docMetaMutation);
-            }
+            return docMetaMutation;
+
+        };
+
+        const docMetaMutationFromDocChange = (docChange: firebase.firestore.DocumentChange) => {
+            const record = <RecordHolder<DocInfo>> docChange.doc.data();
+            return docMetaMutationFromRecord(record, toMutationType(docChange.type));
+
+        };
+
+        const docMetaMutationFromDoc = (doc: firebase.firestore.DocumentData) => {
+            const record = <RecordHolder<DocInfo>> doc;
+            return docMetaMutationFromRecord(record, 'created');
+
+        };
+
+        const handleDocMetaMutation = (docMetaMutation: DocMetaMutation) => {
 
             // dispatch a progress event so we can detect how far we've been
             // loading
-            this.docMetaSynchronizationReactor.dispatchEvent({
+            docMetaSnapshotEventListener({
                 consistency,
                 progress: progressTracker.incr(),
-                docMetaMutations: [],
+                docMetaMutations: [docMetaMutation],
                 batch: {
                     id: batch.id,
                     terminated: false,
                 }
             });
 
+        };
+
+        const handleDocChange = (docChange: firebase.firestore.DocumentChange) => {
+            const docMetaMutation = docMetaMutationFromDocChange(docChange);
+            handleDocMetaMutation(docMetaMutation);
+        };
+
+
+        const handleDoc = (doc: firebase.firestore.QueryDocumentSnapshot) => {
+            const docMetaMutation = docMetaMutationFromDoc(doc.data());
+            handleDocMetaMutation(docMetaMutation);
+        };
+
+        const progressTracker = new ProgressTracker(snapshot.size);
+
+        const consistency = snapshot.metadata.fromCache ? 'written' : 'committed';
+
+        for (const docChange of snapshot.docChanges()) {
+            handleDocChange(docChange);
         }
 
-        this.docMetaSynchronizationReactor.dispatchEvent({
+        for (const doc of snapshot.docs) {
+            handleDoc(doc);
+        }
+
+        // TODO: I'm not really sure of the difference of docs vs docChanges
+        // in our situation.
+
+        docMetaSnapshotEventListener({
             consistency,
             progress: progressTracker.peek(),
-            docMetaMutations,
+            docMetaMutations: [],
             batch: {
                 id: batch.id,
                 terminated: true,
@@ -644,29 +692,6 @@ export class FirebaseDatastore implements Datastore, SynchronizingDatastore {
         });
 
         log.debug("onSnapshot... done");
-
-    }
-
-    private toDocMetaMutationFromDocInfo(docChange: firebase.firestore.DocumentChange) {
-
-        const record = <RecordHolder<DocInfo>> docChange.doc.data();
-        const id = record.id;
-
-        const docInfo = record.value;
-
-        const docMetaProvider = AsyncProviders.memoize(async () => {
-            const data = await this.getDocMeta(docInfo.fingerprint);
-            return DocMetas.deserialize(data!);
-        });
-
-        const docMetaMutation: FirebaseDocMetaMutation = {
-            id,
-            docMetaProvider,
-            docInfoProvider: AsyncProviders.of(docInfo),
-            mutationType: toMutationType(docChange.type)
-        };
-
-        return docMetaMutation;
 
     }
 
