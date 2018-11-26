@@ -3,7 +3,7 @@ import {
     DocMetaSnapshotEvent, FileMeta,
     InitResult, SynchronizingDatastore, MutationType, FileRef,
     DocMetaMutation, DocMetaSnapshotEventListener, SnapshotResult,
-    DocMetaSnapshotBatch
+    DocMetaSnapshotBatch, ErrorListener
 } from './Datastore';
 import {Logger} from '../logger/Logger';
 import {DocMetaFileRef, DocMetaRef} from './DocMetaRef';
@@ -99,7 +99,8 @@ export class FirebaseDatastore implements Datastore, SynchronizingDatastore {
 
     }
 
-    public async snapshot(docMetaSnapshotEventListener: DocMetaSnapshotEventListener): Promise<SnapshotResult> {
+    public async snapshot(docMetaSnapshotEventListener: DocMetaSnapshotEventListener,
+                          errorListener: ErrorListener = NULL_FUNCTION): Promise<SnapshotResult> {
 
         // setup the initial snapshot so that we query for the users existing
         // data...
@@ -162,6 +163,7 @@ export class FirebaseDatastore implements Datastore, SynchronizingDatastore {
 
         const onErrorForSnapshot = (err: Error) => {
             log.error("Could not handle snapshot: ", err);
+            errorListener(err);
         };
 
         const unsubscribe =

@@ -1,7 +1,7 @@
 import {
     Datastore, FileMeta, InitResult, SynchronizingDatastore,
     MutationType, FileRef, DocMetaMutation, DocMetaSnapshotEvent,
-    DocMetaSnapshotEventListener, SnapshotResult, SyncDocs, SyncDocMap
+    DocMetaSnapshotEventListener, SnapshotResult, SyncDocs, SyncDocMap, ErrorListener
 } from './Datastore';
 import {Directories} from './Directories';
 import {DocMetaFileRef, DocMetaRef} from './DocMetaRef';
@@ -22,6 +22,7 @@ import {DocMetaComparisonIndex} from './DocMetaComparisonIndex';
 import {PersistenceLayers, SyncOrigin} from './PersistenceLayers';
 import {DocMetaSnapshotEventListeners} from './DocMetaSnapshotEventListeners';
 import {Latch} from '../util/Latch';
+import {NULL_FUNCTION} from '../util/Functions';
 
 const log = Logger.create();
 
@@ -179,7 +180,8 @@ export class CloudAwareDatastore implements Datastore {
         return this.local.getDocMetaFiles();
     }
 
-    public async snapshot(docMetaSnapshotEventListener: DocMetaSnapshotEventListener): Promise<SnapshotResult> {
+    public async snapshot(docMetaSnapshotEventListener: DocMetaSnapshotEventListener,
+                          errorListener: ErrorListener = NULL_FUNCTION): Promise<SnapshotResult> {
 
         const localPersistenceLayer = PersistenceLayers.toPersistenceLayer(this.local);
         const cloudPersistenceLayer = PersistenceLayers.toPersistenceLayer(this.cloud);
@@ -213,11 +215,19 @@ export class CloudAwareDatastore implements Datastore {
             public onSnapshot(docMetaSnapshotEvent: DocMetaSnapshotEvent) {
 
                 this.handle(docMetaSnapshotEvent)
-                    .catch(err => log.error("Unable to handle event: ", err));
+                    .catch(err => {
+                        log.error("Unable to handle event: ", err)
+                        errorListener(err);
+                    });
 
             }
 
         }
+
+        // FIXME: I think this might enable a race where the user could move
+        // forward and start mutating docs before sync is finished.
+
+        let initialSyncCompleted: boolean = false;
 
         // The way this algorithm works is that we load the local store first
         // and on the first snapshot we keep an index of the fingerprint to
@@ -231,8 +241,32 @@ export class CloudAwareDatastore implements Datastore {
 
         // TODO: pass the DataStore in the constructor and call snapshot on a
         // start() method.
-        this.local.snapshot(docMetaSnapshotEvent => localInitialSnapshotLatch.onSnapshot(docMetaSnapshotEvent));
-        this.cloud.snapshot(docMetaSnapshotEvent => cloudInitialSnapshotLatch.onSnapshot(docMetaSnapshotEvent));
+        this.local.snapshot(docMetaSnapshotEvent => localInitialSnapshotLatch.onSnapshot(docMetaSnapshotEvent), errorListener);
+
+        // FIXME: we need an onError handler for the snapshots too...
+
+        this.cloud.snapshot(docMetaSnapshotEvent => {
+
+            if (initialSyncCompleted) {
+
+                // FIXME: we need a copy of what's currently in the local store
+                // including any updates as they are written OR we have to
+                // re-load them again.
+
+                // for (const docMetaMutation of docMetaSnapshotEvent.docMetaMutations) {
+                //     const syncDoc = SyncDocs.fromDocInfo(await docMetaMutation.docInfoProvider());
+                //     this.syncDocMap[syncDoc.fingerprint] = syncDoc;
+                // }
+                //
+                //
+                // PersistenceLayers.synchronizeFromSyncDocs(localSyncOrigin, cloudSyncOrigin, deduplicatedListener)
+                //     .catch(err => log.error("Could not perform local sync: ", err));
+
+            } else {
+                cloudInitialSnapshotLatch.onSnapshot(docMetaSnapshotEvent);
+            }
+
+        }, errorListener);
 
         // FIXME: now we need to keep listening to the cloud snapshot even after
         // the initial sync because if we don't then we won't be replicating data
@@ -256,6 +290,8 @@ export class CloudAwareDatastore implements Datastore {
         await PersistenceLayers.synchronizeFromSyncDocs(localSyncOrigin, cloudSyncOrigin, deduplicatedListener);
 
         await PersistenceLayers.synchronizeFromSyncDocs(cloudSyncOrigin, localSyncOrigin, deduplicatedListener);
+
+        initialSyncCompleted = false;
 
         // FIXME: on the first snapshot() we need to make sure the source and
         // target are synchronized and we need to have some sort of way to get
