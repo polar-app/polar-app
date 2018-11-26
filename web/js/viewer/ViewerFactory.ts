@@ -5,10 +5,11 @@ import {PDFViewer} from './pdf/PDFViewer';
 
 export class ViewerFactory {
 
-    static create(model: Model) {
+    public static create(model: Model) {
 
-        let format = DocFormats.getFormat();
-        switch(format) {
+        const format = DocFormats.getFormat();
+
+        switch (format) {
             case "html":
                 return new HTMLViewer(model);
 

@@ -328,7 +328,7 @@ export interface SnapshotResult {
 export type SnapshotUnsubscriber = () => void;
 
 export interface SyncDocMap {
-    readonly [fingerprint: string]: SyncDoc;
+    [fingerprint: string]: SyncDoc;
 }
 
 /**

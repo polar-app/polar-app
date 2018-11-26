@@ -165,10 +165,8 @@ export class PersistenceLayers {
      * Synchronize the source with the target so that we know they are both in
      * sync.
      */
-    public static async synchronizeFromSyncDocs(source: PersistenceLayer,
-                                                target: PersistenceLayer,
-                                                sourceSyncDocMap: SyncDocMap,
-                                                targetSyncDocMap: SyncDocMap,
+    public static async synchronizeFromSyncDocs(source: SyncOrigin,
+                                                target: SyncOrigin,
                                                 listener: DocMetaSnapshotEventListener = NULL_FUNCTION): Promise<TransferResult> {
 
         const result: TransferResult = {
@@ -184,9 +182,9 @@ export class PersistenceLayers {
 
         async function handleSyncFile(fileRef: FileRef) {
 
-            if (! target.containsFile(Backend.STASH, fileRef)) {
+            if (! target.persistenceLayer.containsFile(Backend.STASH, fileRef)) {
 
-                const optionalFile = await source.getFile(Backend.STASH, fileRef);
+                const optionalFile = await source.persistenceLayer.getFile(Backend.STASH, fileRef);
 
                 if (optionalFile.isPresent()) {
                     const file = optionalFile.get();
@@ -195,7 +193,7 @@ export class PersistenceLayers {
                     const arrayBuffer = await Blobs.toArrayBuffer(blob);
                     const buffer = ArrayBuffers.toBuffer(arrayBuffer);
 
-                    target.writeFile(file.backend, fileRef, buffer, file.meta);
+                    target.persistenceLayer.writeFile(file.backend, fileRef, buffer, file.meta);
 
                     result.mutations.files.push(fileRef);
                 }
@@ -247,8 +245,8 @@ export class PersistenceLayers {
 
                 result.mutations.fingerprints.push(sourceSyncDoc.fingerprint);
 
-                const docMeta = await source.getDocMeta(sourceSyncDoc.fingerprint);
-                await target.writeDocMeta(docMeta!);
+                const docMeta = await source.persistenceLayer.getDocMeta(sourceSyncDoc.fingerprint);
+                await target.persistenceLayer.writeDocMeta(docMeta!);
 
             }
 
@@ -276,14 +274,14 @@ export class PersistenceLayers {
 
         }
 
-        const progressTracker = new ProgressTracker(Dictionaries.size(sourceSyncDocMap));
+        const progressTracker = new ProgressTracker(Dictionaries.size(source.syncDocMap));
 
         const docFileAsyncWorkQueue = new AsyncWorkQueue([]);
         const docMetaAsyncWorkQueue = new AsyncWorkQueue([]);
 
-        for (const sourceSyncDoc of Object.values(sourceSyncDocMap)) {
+        for (const sourceSyncDoc of Object.values(source.syncDocMap)) {
 
-            const targetSyncDoc = targetSyncDocMap[sourceSyncDoc.fingerprint];
+            const targetSyncDoc = target.syncDocMap[sourceSyncDoc.fingerprint];
 
             const handler = async () => handleSyncDoc(sourceSyncDoc, targetSyncDoc);
 
@@ -317,5 +315,12 @@ export interface TransferRefs {
     readonly fingerprints: string[];
 
     readonly files: FileRef[];
+
+}
+
+export interface SyncOrigin {
+
+    readonly persistenceLayer: PersistenceLayer;
+    readonly syncDocMap: SyncDocMap;
 
 }

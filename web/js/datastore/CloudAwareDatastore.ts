@@ -1,7 +1,7 @@
 import {
     Datastore, FileMeta, InitResult, SynchronizingDatastore,
     MutationType, FileRef, DocMetaMutation, DocMetaSnapshotEvent,
-    DocMetaSnapshotEventListener, SnapshotResult
+    DocMetaSnapshotEventListener, SnapshotResult, SyncDocs, SyncDocMap
 } from './Datastore';
 import {Directories} from './Directories';
 import {DocMetaFileRef, DocMetaRef} from './DocMetaRef';
@@ -19,8 +19,9 @@ import {UUIDs} from '../metadata/UUIDs';
 import {DocMetas} from '../metadata/DocMetas';
 import {Logger} from "../logger/Logger";
 import {DocMetaComparisonIndex} from './DocMetaComparisonIndex';
-import {PersistenceLayers} from './PersistenceLayers';
+import {PersistenceLayers, SyncOrigin} from './PersistenceLayers';
 import {DocMetaSnapshotEventListeners} from './DocMetaSnapshotEventListeners';
+import {Latch} from '../util/Latch';
 
 const log = Logger.create();
 
@@ -54,6 +55,10 @@ export class CloudAwareDatastore implements Datastore {
     }
 
     public async init(): Promise<InitResult> {
+
+        // FIXME: now I don't know what to fucking do about init and the
+        // snapshot listener because we should REALLY be replicating during
+        // init...
 
         // add the event listeners to the remote BEFORE we init... We might get
         // two docs so we need to validate with the docComparisonIndex while
@@ -91,7 +96,8 @@ export class CloudAwareDatastore implements Datastore {
 
     public async writeFile(backend: Backend,
                            ref: FileRef,
-                           data: Buffer | string, meta: FileMeta = {}): Promise<DatastoreFile> {
+                           data: Buffer | string,
+                           meta: FileMeta = {}): Promise<DatastoreFile> {
 
         // for this to work we have to use fierbase snapshot QuerySnapshot and
         // look at docChanges and wait for the document we requested...
@@ -173,55 +179,83 @@ export class CloudAwareDatastore implements Datastore {
         return this.local.getDocMetaFiles();
     }
 
-    public async snapshot(listener: DocMetaSnapshotEventListener): Promise<SnapshotResult> {
-
-        // TODO consider only making the FIRST snapshot a synchronizing
-        // snapshot.
+    public async snapshot(docMetaSnapshotEventListener: DocMetaSnapshotEventListener): Promise<SnapshotResult> {
 
         const localPersistenceLayer = PersistenceLayers.toPersistenceLayer(this.local);
         const cloudPersistenceLayer = PersistenceLayers.toPersistenceLayer(this.cloud);
 
         const deduplicatedListener = DocMetaSnapshotEventListeners.createDeduplicatedListener(docMetaSnapshotEvent => {
-            listener(docMetaSnapshotEvent);
+            docMetaSnapshotEventListener(docMetaSnapshotEvent);
         });
 
-        // FIXME: I think the way this algorithm would work is to load the local
-        // store first and on the first snapshot we keep an index of the
-        // fingerprint to UUID... then we wait until we can get the similar index
-        // from the 'committed' version of the cloud datastore, then we perform
-        // a synchronize based on this metadata... at which point we can build
-        // use new updates from the doc_info table.
 
-        // When created we have to synchronized the local with the remote.
-        // this will take a few minutes but we need to load the app repository
-        // anyway so the user usually won't tell the difference.
+        class InitialSnapshotLatch {
 
-        // FIXME: do we need to wait for the cloud datastore to come online
-        // first before we start writing to it?  I think so... I think we do
-        // otherwise the could be a race where we overwrite the remote end
-        // on older data rather than first replicating it locally which would
-        // detect a conflictt.
+            public readonly syncDocMap: SyncDocMap = {};
+            public readonly latch = new Latch<boolean>();
 
-        // FIXME: there are really two three types of updates I need here?
-        //
-        // one time updates vs viture updates
-        // 'committed' vs 'written'
+            public async handle(docMetaSnapshotEvent: DocMetaSnapshotEvent) {
 
-        // FIXME: is the snapshot from firebase all in one object?  What if it
-        // is too much memory?
-        //
-        // FIXME: how does the onSnapshot event split up date?  Does it? If it
-        // does how do we know we've receive all of it for a specific moment
-        // in time.
+                for (const docMetaMutation of docMetaSnapshotEvent.docMetaMutations) {
+                    const syncDoc = SyncDocs.fromDocInfo(await docMetaMutation.docInfoProvider());
+                    this.syncDocMap[syncDoc.fingerprint] = syncDoc;
+                }
 
-        // FIXME: VERIFY that I am in fact getting PAGED snapshots with
-        // onSnapshot...  if that's the case that's good for the most recent
-        // version of data from the server BUT there is know way to know when
-        // I'm fully consistent at a point in time.
+                if ( docMetaSnapshotEvent.consistency === 'committed' &&
+                    docMetaSnapshotEvent.batch!.terminated) {
 
-        await PersistenceLayers.synchronize(localPersistenceLayer,
-                                            cloudPersistenceLayer,
-                                            deduplicatedListener);
+                    this.latch.resolve(true);
+
+                }
+
+            }
+
+            public onSnapshot(docMetaSnapshotEvent: DocMetaSnapshotEvent) {
+
+                this.handle(docMetaSnapshotEvent)
+                    .catch(err => log.error("Unable to handle event: ", err));
+
+            }
+
+        }
+
+        // The way this algorithm works is that we load the local store first
+        // and on the first snapshot we keep an index of the fingerprint to
+        // UUID... then we wait until we can get the similar index from the
+        // 'committed' version of the cloud datastore, then we perform a
+        // synchronize based on this metadata... at which point we synchronize
+        // both datasources.
+
+        const localInitialSnapshotLatch = new InitialSnapshotLatch();
+        const cloudInitialSnapshotLatch = new InitialSnapshotLatch();
+
+        // TODO: pass the DataStore in the constructor and call snapshot on a
+        // start() method.
+        this.local.snapshot(docMetaSnapshotEvent => localInitialSnapshotLatch.onSnapshot(docMetaSnapshotEvent));
+        this.cloud.snapshot(docMetaSnapshotEvent => cloudInitialSnapshotLatch.onSnapshot(docMetaSnapshotEvent));
+
+        // FIXME: now we need to keep listening to the cloud snapshot even after
+        // the initial sync because if we don't then we won't be replicating data
+
+        // FIXME: re-enable the event listeners so that I can piggyback after
+        // the initial init to see what's being transferred to firebase...
+
+        await localInitialSnapshotLatch.latch.get();
+        await cloudInitialSnapshotLatch.latch.get();
+
+        const localSyncOrigin: SyncOrigin = {
+            persistenceLayer: localPersistenceLayer,
+            syncDocMap: localInitialSnapshotLatch.syncDocMap
+        };
+
+        const cloudSyncOrigin: SyncOrigin = {
+            persistenceLayer: cloudPersistenceLayer,
+            syncDocMap: cloudInitialSnapshotLatch.syncDocMap
+        };
+
+        await PersistenceLayers.synchronizeFromSyncDocs(localSyncOrigin, cloudSyncOrigin, deduplicatedListener);
+
+        await PersistenceLayers.synchronizeFromSyncDocs(cloudSyncOrigin, localSyncOrigin, deduplicatedListener);
 
         // FIXME: on the first snapshot() we need to make sure the source and
         // target are synchronized and we need to have some sort of way to get
@@ -229,6 +263,7 @@ export class CloudAwareDatastore implements Datastore {
         // events will be in flight.
 
         return this.cloud.snapshot(deduplicatedListener);
+
     }
 
     /**
