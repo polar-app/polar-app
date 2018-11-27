@@ -66,10 +66,6 @@ export class CloudAwareDatastore implements Datastore {
 
     public async init(errorListener: ErrorListener = NULL_FUNCTION): Promise<InitResult> {
 
-        // FIXME: now I don't know what to fucking do about init and the
-        // snapshot listener because we should REALLY be replicating during
-        // init...
-
         // add the event listeners to the remote BEFORE we init... We might get
         // two docs so we need to validate with the docComparisonIndex while
         // loading to avoid double writes.
@@ -258,10 +254,6 @@ export class CloudAwareDatastore implements Datastore {
         // event from the remote instance?  I think we might have to have a
         // 'written' event go through first from the write() method and sent
         // to all outstanding listeners first.
-
-        // FIXME: we need to have the init() method create the first snapshot
-        // and it performs replication, the other shnapshots DO NOT nor do they
-        // perform the initial sync...
 
         // FIXME: if the DiskDatastore and other datastores emit events in
         // THEIR snapshots directly then I think we do not need to do anything
