@@ -212,9 +212,8 @@ export class MockDocMetas {
 
     }
 
-    public static createMockDocMeta() {
+    public static createMockDocMeta(fingerprint: string = "0x001") {
 
-        const fingerprint = "0x001";
         const nrPages = 4;
         const docMeta = DocMetas.createWithinInitialPagemarks(fingerprint, nrPages);
 

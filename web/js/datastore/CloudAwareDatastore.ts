@@ -1,7 +1,7 @@
 import {
     Datastore, FileMeta, InitResult, SynchronizingDatastore,
     MutationType, FileRef, DocMetaMutation, DocMetaSnapshotEvent,
-    DocMetaSnapshotEventListener, SnapshotResult, SyncDocs, SyncDocMap, ErrorListener
+    DocMetaSnapshotEventListener, SnapshotResult, SyncDocs, SyncDocMap, ErrorListener, DocMetaSnapshotEvents, SyncDocMaps
 } from './Datastore';
 import {Directories} from './Directories';
 import {DocMetaFileRef, DocMetaRef} from './DocMetaRef';
@@ -45,6 +45,8 @@ export class CloudAwareDatastore implements Datastore {
 
     private readonly cloud: SynchronizingDatastore;
 
+    // FIXME: isn't this like a fancy SyncDocMap ? Should I just be using this
+    // or the SyncDocMap???
     private readonly docMetaComparisonIndex = new DocMetaComparisonIndex();
 
     constructor(local: Datastore, cloud: SynchronizingDatastore) {
@@ -190,7 +192,6 @@ export class CloudAwareDatastore implements Datastore {
             docMetaSnapshotEventListener(docMetaSnapshotEvent);
         });
 
-
         class InitialSnapshotLatch {
 
             public readonly syncDocMap: SyncDocMap = {};
@@ -198,12 +199,10 @@ export class CloudAwareDatastore implements Datastore {
 
             public async handle(docMetaSnapshotEvent: DocMetaSnapshotEvent) {
 
-                for (const docMetaMutation of docMetaSnapshotEvent.docMetaMutations) {
-                    const syncDoc = SyncDocs.fromDocInfo(await docMetaMutation.docInfoProvider());
-                    this.syncDocMap[syncDoc.fingerprint] = syncDoc;
-                }
+                const syncDocs = await DocMetaSnapshotEvents.toSyncDocs(docMetaSnapshotEvent);
+                SyncDocMaps.putAll(this.syncDocMap, syncDocs);
 
-                if ( docMetaSnapshotEvent.consistency === 'committed' &&
+                if (docMetaSnapshotEvent.consistency === 'committed' &&
                     docMetaSnapshotEvent.batch!.terminated) {
 
                     this.latch.resolve(true);
@@ -216,7 +215,7 @@ export class CloudAwareDatastore implements Datastore {
 
                 this.handle(docMetaSnapshotEvent)
                     .catch(err => {
-                        log.error("Unable to handle event: ", err)
+                        log.error("Unable to handle event: ", err);
                         errorListener(err);
                     });
 
@@ -249,18 +248,51 @@ export class CloudAwareDatastore implements Datastore {
 
             if (initialSyncCompleted) {
 
+                const handleDeltaSnapshot = async () => {
+
+                    const syncDocMap: SyncDocMap = {};
+
+                    // FIXME: for right nwo just manually do the check against
+                    // these and don't use the sync system..
+
+                    const syncDocs = await DocMetaSnapshotEvents.toSyncDocs(docMetaSnapshotEvent);
+                    SyncDocMaps.putAll(syncDocMap, syncDocs);
+
+                    console.log("FIXME: got the following syncDocs: " , syncDocs);
+
+                    // FIXME: how do we get the current SyncDocs in the local ??
+                    // we need to know what's currently there and to keep it
+                    // updated as time goes by.
+
+                    // await PersistenceLayers.synchronizeFromSyncDocs(localSyncOrigin, cloudSyncOrigin, deduplicatedListener);
+
+                };
+
+                // TODO: move this to an async function I can call and then
+                // just have a .catch() on it...
+
                 // FIXME: we need a copy of what's currently in the local store
                 // including any updates as they are written OR we have to
                 // re-load them again.
 
-                // for (const docMetaMutation of docMetaSnapshotEvent.docMetaMutations) {
-                //     const syncDoc = SyncDocs.fromDocInfo(await docMetaMutation.docInfoProvider());
-                //     this.syncDocMap[syncDoc.fingerprint] = syncDoc;
-                // }
-                //
-                //
-                // PersistenceLayers.synchronizeFromSyncDocs(localSyncOrigin, cloudSyncOrigin, deduplicatedListener)
-                //     .catch(err => log.error("Could not perform local sync: ", err));
+                // for (const docMetaMutation of
+                // docMetaSnapshotEvent.docMetaMutations) { const syncDoc =
+                // SyncDocs.fromDocInfo(await
+                // docMetaMutation.docInfoProvider());
+                // this.syncDocMap[syncDoc.fingerprint] = syncDoc; }
+
+                docMetaSnapshotEvent.docMetaMutations
+                    .map(current => current.docInfoProvider());
+
+
+                // for (const docMetaMutation of
+                // docMetaSnapshotEvent.docMetaMutations) { const syncDoc =
+                // SyncDocs.fromDocInfo(await
+                // docMetaMutation.docInfoProvider());
+                // this.syncDocMap[syncDoc.fingerprint] = syncDoc; }
+                // PersistenceLayers.synchronizeFromSyncDocs(localSyncOrigin,
+                // cloudSyncOrigin, deduplicatedListener) .catch(err =>
+                // log.error("Could not perform local sync: ", err));
 
             } else {
                 cloudInitialSnapshotLatch.onSnapshot(docMetaSnapshotEvent);
@@ -268,8 +300,10 @@ export class CloudAwareDatastore implements Datastore {
 
         }, errorListener);
 
-        // FIXME: now we need to keep listening to the cloud snapshot even after
-        // the initial sync because if we don't then we won't be replicating data
+        // FIXME: now we need to keep listening to the cloud snapshot even
+        // after
+        // the initial sync because if we don't then we won't be replicating
+        // data
 
         // FIXME: re-enable the event listeners so that I can piggyback after
         // the initial init to see what's being transferred to firebase...

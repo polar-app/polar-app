@@ -25,6 +25,8 @@ import {DefaultDatastoreMutation} from '../../js/datastore/DatastoreMutation';
 import {DocInfo} from '../../js/metadata/DocInfo';
 import {PolarDataDir} from '../../js/test/PolarDataDir';
 import waitForExpect from 'wait-for-expect';
+import {Datastores} from '../../js/datastore/Datastores';
+import {Latch} from '../../js/util/Latch';
 
 mocha.setup('bdd');
 mocha.timeout(10000);
@@ -49,20 +51,70 @@ SpectronRenderer.run(async (state) => {
 
             it("Write a basic doc", async function() {
 
-                // FIXME: wrote a test with a messy sync with multiple local files
-                // and multiople remote files that gets merged.  Make sure we get
-                // the events when the local store is loading too so that we can
-                // determine progress.
+                // first purge the firebase datastore
+
+                const firebaseDatastore = new FirebaseDatastore();
+
+                await firebaseDatastore.init();
+
+                await Datastores.purge(firebaseDatastore);
+
+                // then write an initial doc to it...
+
+                const firestorePersistenceLayer = new DefaultPersistenceLayer(firebaseDatastore);
+
+                await firestorePersistenceLayer.writeDocMeta(MockDocMetas.createMockDocMeta('0x001'));
+
+                // now startup a new cloud persistence layer and make sure we
+                // get the doc in firebase written locally.
+
+                // FIXME: wrote a test with a messy sync with multiple local
+                // files and multiople remote files that gets merged.  Make
+                // sure we get the events when the local store is loading too
+                // so that we can determine progress.
 
                 const persistenceLayer = new DefaultPersistenceLayer(createDatastore());
 
                 await persistenceLayer.init();
 
+                const initialDocLatch = new Latch<boolean>();
+                const externallyWrittenDocLatch = new Latch<boolean>();
+
                 await persistenceLayer.snapshot(docMetaSnapshotEvent => {
-                    console.log("Got snapshot: ", docMetaSnapshotEvent);
+
+                    (async () => {
+
+                        console.log("Got snapshot: ", docMetaSnapshotEvent);
+
+                        for (const docMutation of docMetaSnapshotEvent.docMetaMutations) {
+                            const docInfo = await docMutation.docInfoProvider();
+
+                            if (docInfo.fingerprint === '0x001') {
+                                initialDocLatch.resolve(true);
+                            }
+
+                            if (docInfo.fingerprint === '0x002') {
+                                externallyWrittenDocLatch.resolve(true);
+                            }
+
+                        }
+
+
+                    })().catch(err => console.error("unable to handle: ", err));
                 });
 
+                await initialDocLatch.get();
+
+                // now see what happens when we write a NEW doc externally.
+
+                await firestorePersistenceLayer.writeDocMeta(MockDocMetas.createMockDocMeta('0x002'));
+
+                await externallyWrittenDocLatch.get();
+
+                console.log("WORKED");
+
                 await persistenceLayer.stop();
+                await firestorePersistenceLayer.stop();
 
             });
 

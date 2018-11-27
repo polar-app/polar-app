@@ -5,7 +5,7 @@ import {Directories} from './Directories';
 import {Backend} from './Backend';
 import {DatastoreFile} from './DatastoreFile';
 import {Optional} from '../util/ts/Optional';
-import {IDocInfo} from '../metadata/DocInfo';
+import {DocInfo, IDocInfo} from '../metadata/DocInfo';
 import {FileHandle} from '../util/Files';
 import {Simulate} from 'react-dom/test-utils';
 import {DatastoreMutation} from './DatastoreMutation';
@@ -14,6 +14,7 @@ import {Hashcode} from '../metadata/Hashcode';
 import {ProgressState} from '../util/ProgressTracker';
 import {AsyncProvider} from '../util/Providers';
 import {UUID} from '../metadata/UUID';
+import {AsyncWorkQueues} from '../util/AsyncWorkQueues';
 
 export interface Datastore extends BinaryDatastore, WritableDatastore {
 
@@ -222,10 +223,30 @@ export interface DocMetaSnapshotEvent {
 
 }
 
+export class DocMetaSnapshotEvents {
+
+    public static async toDocInfos(docMetaSnapshotEvent: DocMetaSnapshotEvent):
+        Promise<ReadonlyArray<IDocInfo>> {
+
+        return AsyncWorkQueues
+            .awaitPromises(docMetaSnapshotEvent.docMetaMutations.map(current => current.docInfoProvider()));
+
+    }
+
+    public static async toSyncDocs(docMetaSnapshotEvent: DocMetaSnapshotEvent):
+        Promise<ReadonlyArray<SyncDoc>> {
+
+        const docInfos = await this.toDocInfos(docMetaSnapshotEvent);
+        return docInfos.map(current => SyncDocs.fromDocInfo(current));
+
+    }
+
+}
+
 /**
  * Represents data around a specific batch of DocMetaMutations so that we know
- * when we have a first consistent snapshot.  This way we can get streaming events
- * but know when part of the stream has terminated.
+ * when we have a first consistent snapshot.  This way we can get streaming
+ * events but know when part of the stream has terminated.
  *
  * The batch is only present (usually) on first level datastores not aggregate
  * datastores which might be merging streams.
@@ -332,6 +353,19 @@ export type SnapshotUnsubscriber = () => void;
 
 export interface SyncDocMap {
     [fingerprint: string]: SyncDoc;
+
+}
+
+export class SyncDocMaps {
+
+    public static putAll(syncDocMap: SyncDocMap, syncDocs: ReadonlyArray<SyncDoc>): void {
+
+        for (const syncDoc of syncDocs) {
+            syncDocMap[syncDoc.fingerprint] = syncDoc;
+        }
+
+    }
+
 }
 
 /**
