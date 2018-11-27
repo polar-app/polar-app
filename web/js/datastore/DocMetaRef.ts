@@ -35,8 +35,6 @@ export class DocMetaFileRefs {
 
     public static createFromDocInfo(docInfo: IDocInfo): DocMetaFileRef {
 
-        Preconditions.assertPresent(docInfo.filename);
-
         return {
             fingerprint: docInfo.fingerprint,
             docFile: {

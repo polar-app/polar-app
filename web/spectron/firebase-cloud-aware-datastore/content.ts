@@ -32,11 +32,12 @@ mocha.setup('bdd');
 mocha.timeout(10000);
 PolarDataDir.useFreshDirectory('.test-firebase-cloud-aware-datastore');
 
-function createDatastore() {
+async function createDatastore() {
 
     const diskDatastore = new DiskDatastore();
-
     const firebaseDatastore = new FirebaseDatastore();
+
+    await Promise.all([diskDatastore.init(), firebaseDatastore.init()]);
 
     return new CloudAwareDatastore(diskDatastore, firebaseDatastore);
 }
@@ -73,7 +74,7 @@ SpectronRenderer.run(async (state) => {
                 // sure we get the events when the local store is loading too
                 // so that we can determine progress.
 
-                const persistenceLayer = new DefaultPersistenceLayer(createDatastore());
+                const persistenceLayer = new DefaultPersistenceLayer(await createDatastore());
 
                 await persistenceLayer.init();
 
@@ -109,12 +110,11 @@ SpectronRenderer.run(async (state) => {
 
                 await initialDocLatch.get();
 
-                // now see what happens when we write a NEW doc externally.
-                await firestorePersistenceLayer.writeDocMeta(MockDocMetas.createMockDocMeta('0x003'));
-
                 await firestorePersistenceLayer.writeDocMeta(MockDocMetas.createMockDocMeta('0x002'));
 
                 await externallyWrittenDocLatch.get();
+
+                assert.ok(await persistenceLayer.contains('0x002'));
 
                 console.log("WORKED");
 
@@ -128,7 +128,7 @@ SpectronRenderer.run(async (state) => {
 
             xit("Write a basic doc", async function() {
 
-                const persistenceLayer = new DefaultPersistenceLayer(createDatastore());
+                const persistenceLayer = new DefaultPersistenceLayer(await createDatastore());
 
                 await persistenceLayer.init();
 
@@ -157,7 +157,7 @@ SpectronRenderer.run(async (state) => {
                 const sourcePersistenceLayer = new DefaultPersistenceLayer(new FirebaseDatastore());
                 await sourcePersistenceLayer.init();
 
-                const targetPersistenceLayer = new DefaultPersistenceLayer(createDatastore());
+                const targetPersistenceLayer = new DefaultPersistenceLayer(await createDatastore());
                 await targetPersistenceLayer.init();
 
                 const docMeta = MockDocMetas.createWithinInitialPagemarks(fingerprint, 14);
@@ -185,7 +185,7 @@ SpectronRenderer.run(async (state) => {
                 await sourcePersistenceLayer.write(fingerprint, docMeta);
                 await sourcePersistenceLayer.stop();
 
-                const targetPersistenceLayer = new DefaultPersistenceLayer(createDatastore());
+                const targetPersistenceLayer = new DefaultPersistenceLayer(await createDatastore());
                 await targetPersistenceLayer.init();
 
                 await waitForExpect(async () => {

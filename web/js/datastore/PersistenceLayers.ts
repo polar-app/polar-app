@@ -101,12 +101,9 @@ export class PersistenceLayers {
 
                 if (targetDocMeta) {
 
-                    const cmp = UUIDs.compare(targetDocMeta.docInfo.uuid, docMeta.docInfo.uuid);
-
                     // FIXME: if the comparison is zero then technically we
                     // have a conflict which we need to surface to the user.
-
-                    doWriteDocMeta = cmp < 0;
+                    doWriteDocMeta = UUIDs.isUpdated(targetDocMeta.docInfo.uuid, docMeta.docInfo.uuid);
 
                 }
 

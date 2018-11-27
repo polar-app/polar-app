@@ -129,7 +129,7 @@ export class DiskDatastore implements Datastore {
         const docDir = FilePaths.join(this.dataDir, fingerprint);
         const statePath = FilePaths.join(docDir, 'state.json');
 
-        if (! this.contains(fingerprint)) {
+        if (! await this.contains(fingerprint)) {
             log.error("Datastore does not contain document: ", fingerprint);
             return null;
         }

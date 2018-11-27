@@ -111,6 +111,15 @@ export class DatastoreTester {
 
             });
 
+
+            it("read non-existant fingerprint", async function() {
+
+                const nonExistantDocMeta = await persistenceLayer.getDocMeta('0x666');
+
+                assert.ok(nonExistantDocMeta === undefined);
+
+            });
+
             it("Delete DocMeta and the associated stash file...", async function() {
 
                 const docMetaFileRef: DocMetaFileRef = {
@@ -196,7 +205,7 @@ export class DatastoreTester {
                 const writtenSnapshotReceived = new Latch<boolean>();
                 const committedSnapshotReceived = new Latch<boolean>();
 
-                await datastore.snapshot(docMetaSnapshotEvent => {
+                const snapshotResult = await datastore.snapshot(docMetaSnapshotEvent => {
 
                     if (docMetaSnapshotEvent.batch) {
 
@@ -204,6 +213,9 @@ export class DatastoreTester {
 
                             if ( docMetaSnapshotEvent.consistency === 'committed') {
                                 committedSnapshotReceived.resolve(true);
+                                // if we have received the committed we also
+                                // received the written.
+                                writtenSnapshotReceived.resolve(true);
                             }
 
                             if ( docMetaSnapshotEvent.consistency === 'written') {
@@ -217,6 +229,11 @@ export class DatastoreTester {
 
                 await writtenSnapshotReceived.get();
                 await committedSnapshotReceived.get();
+
+                if (snapshotResult.unsubscribe) {
+                    // unsubscribe to the snapshot if necessary
+                    snapshotResult.unsubscribe();
+                }
 
             });
 

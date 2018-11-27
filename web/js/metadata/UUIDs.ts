@@ -26,4 +26,12 @@ export class UUIDs {
         return u0!.localeCompare(u1!, "en-us");
     }
 
+    /**
+     * Return true if the 'comparison' UUID is updated later than the existing
+     * UUID.
+     */
+    public static isUpdated(existing?: UUID, comparison?: UUID): boolean {
+        return this.compare(existing, comparison) < 0;
+   }
+
 }

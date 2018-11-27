@@ -375,7 +375,8 @@ export class SyncDocMaps {
 }
 
 /**
- * A lightweight doc reference to sync between two datasources.
+ * A lightweight doc reference to sync between two datasources.  A SyncDoc is a
+ * flighweight and should be kept minimally compact to save space.
  */
 export interface SyncDoc {
 

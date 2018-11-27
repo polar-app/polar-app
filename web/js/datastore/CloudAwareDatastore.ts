@@ -23,6 +23,7 @@ import {PersistenceLayers, SyncOrigin} from './PersistenceLayers';
 import {DocMetaSnapshotEventListeners} from './DocMetaSnapshotEventListeners';
 import {Latch} from '../util/Latch';
 import {NULL_FUNCTION} from '../util/Functions';
+import {isUpperCase} from 'tslint/lib/utils';
 
 const log = Logger.create();
 
@@ -246,16 +247,27 @@ export class CloudAwareDatastore implements Datastore {
 
         this.cloud.snapshot(docMetaSnapshotEvent => {
 
+            // FIXME: we can just use the deduplicated listener here as this
+            // gives us the functionality we want already... it only emits
+            // updates.
+
             if (initialSyncCompleted) {
 
                 const handleDeltaSnapshot = async () => {
 
-                    // FIXME: for right nwo just manually do the check against
-                    // these and don't use the sync system..
+                    // FIXME: for right now just manually do the check against
+                    // these and don't really use SyncDocs.
 
-                    const syncDocs = await DocMetaSnapshotEvents.toSyncDocs(docMetaSnapshotEvent);
+                    for (const docMetaMutation of docMetaSnapshotEvent.docMetaMutations) {
 
-                    for (const syncDoc of syncDocs) {
+                        console.log("FIXME: working on syncing doc....");
+
+                        // TODO: this type of update code is duplicated in a lot
+                        // of places using different strategies.  We can find
+                        // them by looking for UUIDs usage.
+
+                        const docInfo = await docMetaMutation.docInfoProvider();
+                        const syncDoc = SyncDocs.fromDocInfo(docInfo, docMetaMutation.mutationType);
 
                         // FIXME: only perform the updates here for the FIRST
                         // created snapshot by the engine CloudAwareDatastore...
@@ -267,12 +279,22 @@ export class CloudAwareDatastore implements Datastore {
                             // currently have so that it's updated as we perform write
                             // locally.
 
-                            let doWrite: boolean = false;
+                            console.log("FIXME: BEFORE1");
+                            const existingDocMeta = await localPersistenceLayer.getDocMeta(syncDoc.fingerprint);
+                            console.log("FIXME: AFTER1");
 
-                            if (doWrite) {
-                                // // FIXME: I need the docMeta promise here.. fuck.
-                                // await localPersistenceLayer.writeDocMeta(syncDoc.);
-                            }
+                            const doWriteDocMeta: boolean
+                                = UUIDs.isUpdated(existingDocMeta!.docInfo.uuid, syncDoc.uuid);
+
+                            console.log("FIXME: doWriteDocMeta...: " + doWriteDocMeta);
+
+                            // if (doWriteDocMeta) {
+                            //     console.log("FIXME99: READING.... ");
+                            //     const docMeta = await docMetaMutation.docMetaProvider();
+                            //     console.log("FIXME99 : WRITING .... ");
+                            //     await localPersistenceLayer.writeDocMeta(docMeta);
+                            //     console.log("FIXME99 : AFTER .... ");
+                            // }
 
                         }
 
@@ -281,14 +303,6 @@ export class CloudAwareDatastore implements Datastore {
                         }
 
                     }
-
-                    console.log("FIXME: got the following syncDocs: " , syncDocs);
-
-                    // FIXME: how do we get the current SyncDocs in the local ??
-                    // we need to know what's currently there and to keep it
-                    // updated as time goes by.
-
-                    // await PersistenceLayers.synchronizeFromSyncDocs(localSyncOrigin, cloudSyncOrigin, deduplicatedListener);
 
                 };
 
@@ -305,9 +319,11 @@ export class CloudAwareDatastore implements Datastore {
                 // docMetaMutation.docInfoProvider());
                 // this.syncDocMap[syncDoc.fingerprint] = syncDoc; }
 
-                docMetaSnapshotEvent.docMetaMutations
-                    .map(current => current.docInfoProvider());
-
+                handleDeltaSnapshot()
+                    .catch(err => {
+                        log.error("Unable to handle delta snapshot: ", err);
+                        errorListener(err);
+                    });
 
                 // for (const docMetaMutation of
                 // docMetaSnapshotEvent.docMetaMutations) { const syncDoc =
@@ -349,7 +365,7 @@ export class CloudAwareDatastore implements Datastore {
 
         await PersistenceLayers.synchronizeFromSyncDocs(cloudSyncOrigin, localSyncOrigin, deduplicatedListener);
 
-        initialSyncCompleted = false;
+        initialSyncCompleted = true;
 
         // FIXME: on the first snapshot() we need to make sure the source and
         // target are synchronized and we need to have some sort of way to get
