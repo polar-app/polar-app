@@ -181,14 +181,16 @@ SpectronRenderer.run(async (state) => {
                 const targetPersistenceLayer = new DefaultPersistenceLayer(await createDatastore());
                 await targetPersistenceLayer.init();
 
-                // FIXME: right now we ahve to manually create the snapshot to trigger replication...
-                // it's not done in init
+                // FIXME: include an errorListener in the init...
 
-                let err: Error | undefined;
-
-                const snapshotResult = await targetPersistenceLayer.snapshot(NULL_FUNCTION, _err => {
-                    err = _err;
-                });
+                // // FIXME: right now we ahve to manually create the snapshot to trigger replication...
+                // // it's not done in init
+                //
+                // let err: Error | undefined;
+                //
+                // const snapshotResult = await targetPersistenceLayer.snapshot(NULL_FUNCTION, _err => {
+                //     err = _err;
+                // });
 
                 await waitForExpect(async () => {
                     const dataDir = PolarDataDir.get();
@@ -196,12 +198,12 @@ SpectronRenderer.run(async (state) => {
                     assert.ok(await Files.existsAsync(path));
                 });
 
-                snapshotResult.unsubscribe!();
+                // snapshotResult.unsubscribe!();
 
                 await targetPersistenceLayer.stop();
 
                 // verify that we have received no errors.
-                assert.ok(err === undefined);
+                // FIXME: add back in assert.ok(err === undefined);
 
             });
 

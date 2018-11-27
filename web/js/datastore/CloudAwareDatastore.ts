@@ -54,7 +54,7 @@ export class CloudAwareDatastore implements Datastore {
     // or the SyncDocMap???
     private readonly docMetaComparisonIndex = new DocMetaComparisonIndex();
 
-    private readonly primarySnapshot?: SnapshotResult;
+    private primarySnapshot?: SnapshotResult;
 
     constructor(local: Datastore, cloud: SynchronizingDatastore) {
         this.local = local;
@@ -88,11 +88,20 @@ export class CloudAwareDatastore implements Datastore {
 
         await Promise.all([this.cloud.init(), this.local.init()]);
 
+        // FIXME: we need an errorListener here because otherwise we won't know
+        // if our replication functions are failing during the snapshots.
+        this.primarySnapshot = await this.snapshot(NULL_FUNCTION);
+
         return {};
 
     }
 
     public async stop() {
+
+        if (this.primarySnapshot && this.primarySnapshot.unsubscribe) {
+            this.primarySnapshot.unsubscribe();
+        }
+
         await Promise.all([this.cloud.stop(), this.local.stop()]);
     }
 
