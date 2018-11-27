@@ -36,6 +36,10 @@ const log = Logger.create();
  */
 export class CloudAwareDatastore implements Datastore {
 
+    // allows us to keep track of the snapshot id so that when we report errors
+    // we can know which snapshot failed.
+    private static SNAPSHOT_ID = 0;
+
     public readonly stashDir: string;
 
     public readonly logsDir: string;
@@ -186,6 +190,8 @@ export class CloudAwareDatastore implements Datastore {
     public async snapshot(docMetaSnapshotEventListener: DocMetaSnapshotEventListener,
                           errorListener: ErrorListener = NULL_FUNCTION): Promise<SnapshotResult> {
 
+        const snapshotID = CloudAwareDatastore.SNAPSHOT_ID++;
+
         const localPersistenceLayer = PersistenceLayers.toPersistenceLayer(this.local);
         const cloudPersistenceLayer = PersistenceLayers.toPersistenceLayer(this.cloud);
 
@@ -216,7 +222,7 @@ export class CloudAwareDatastore implements Datastore {
 
                 this.handle(docMetaSnapshotEvent)
                     .catch(err => {
-                        log.error("Unable to handle event: ", err);
+                        log.error(`Unable to handle event for snapshot: ${snapshotID}`, err);
                         errorListener(err);
                     });
 
@@ -242,12 +248,12 @@ export class CloudAwareDatastore implements Datastore {
         const replicatingListener
             = DocMetaSnapshotEventListeners.createDeduplicatedListener(docMetaSnapshotEvent => {
 
-            if (! initialSyncCompleted) {
-                // we haven't completed the initial sync yet...
-                return;
-            }
-
             const handleDeltaSnapshot = async () => {
+
+                if (docMetaSnapshotEvent.consistency !== 'committed') {
+                    return;
+                }
+
                 for (const docMetaMutation of docMetaSnapshotEvent.docMetaMutations) {
 
                     if (docMetaMutation.mutationType === 'created' || docMetaMutation.mutationType === 'updated') {
@@ -266,16 +272,29 @@ export class CloudAwareDatastore implements Datastore {
 
             };
 
-            handleDeltaSnapshot()
+            const handleEvent = async () => {
+
+                try {
+
+                    if (initialSyncCompleted) {
+                        await handleDeltaSnapshot();
+                    }
+
+                } finally {
+                    // need to pass on these events after the replication.
+                    docMetaSnapshotEventListener(docMetaSnapshotEvent);
+                }
+
+            };
+
+            handleEvent()
                 .catch(err => {
-                    log.error("Unable to handle delta snapshot: ", err);
+                    log.error(`Unable to handle delta snapshot for snapshot: ${snapshotID}`, err);
                     errorListener(err);
                 });
 
         });
 
-        // TODO: pass the DataStore in the constructor and call snapshot on a
-        // start() method.
         this.local.snapshot(docMetaSnapshotEvent => {
 
             replicatingListener(docMetaSnapshotEvent);
@@ -286,7 +305,7 @@ export class CloudAwareDatastore implements Datastore {
 
         }, errorListener);
 
-        this.cloud.snapshot(docMetaSnapshotEvent => {
+        const cloudSnapshotResultPromise = this.cloud.snapshot(docMetaSnapshotEvent => {
 
             replicatingListener(docMetaSnapshotEvent);
 
@@ -318,12 +337,11 @@ export class CloudAwareDatastore implements Datastore {
 
         initialSyncCompleted = true;
 
-        // FIXME: on the first snapshot() we need to make sure the source and
-        // target are synchronized and we need to have some sort of way to get
-        // events about what's happening to update the UI as remote + local
-        // events will be in flight.
+        const cloudSnapshotResult = await cloudSnapshotResultPromise;
 
-        return this.cloud.snapshot(deduplicatedListener);
+        return {
+            unsubscribe: cloudSnapshotResult.unsubscribe
+        };
 
     }
 

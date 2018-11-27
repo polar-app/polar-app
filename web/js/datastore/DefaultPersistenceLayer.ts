@@ -1,4 +1,4 @@
-import {Datastore, DocMetaSnapshotEvent, FileMeta, FileRef, DocMetaSnapshotEventListener, SnapshotResult} from './Datastore';
+import {Datastore, DocMetaSnapshotEvent, FileMeta, FileRef, DocMetaSnapshotEventListener, SnapshotResult, ErrorListener} from './Datastore';
 import {DocMeta} from '../metadata/DocMeta';
 import {DocMetas} from '../metadata/DocMetas';
 import {isPresent, Preconditions} from '../Preconditions';
@@ -18,6 +18,8 @@ import {DatastoreMutations} from './DatastoreMutations';
 import {UUIDs} from '../metadata/UUIDs';
 import {Datastores} from './Datastores';
 import {PersistenceLayers} from './PersistenceLayers';
+import {ErrorHandleFunction} from 'connect';
+import {NULL_FUNCTION} from '../util/Functions';
 
 const log = Logger.create();
 
@@ -179,8 +181,9 @@ export class DefaultPersistenceLayer implements PersistenceLayer {
      * Get a current snapshot of the internal state of the Datastore by receiving
      * DocMetaSnapshotEvent on the initial state.
      */
-    public snapshot(listener: DocMetaSnapshotEventListener): Promise<SnapshotResult> {
-        return this.datastore.snapshot(listener);
+    public snapshot(listener: DocMetaSnapshotEventListener,
+                    errorListener: ErrorListener = NULL_FUNCTION): Promise<SnapshotResult> {
+        return this.datastore.snapshot(listener, errorListener);
     }
 
     public writeFile(backend: Backend, ref: FileRef, data: Buffer | string, meta: FileMeta = {}): Promise<DatastoreFile> {

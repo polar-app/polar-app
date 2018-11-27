@@ -5,7 +5,9 @@ import {PersistenceLayerListener} from '../PersistenceLayerListener';
 import {PersistenceLayer} from '../PersistenceLayer';
 import {DocMeta} from '../../metadata/DocMeta';
 import {DocMetaFileRef, DocMetaRef} from '../DocMetaRef';
-import {DeleteResult, DocMetaSnapshotEvent, FileRef, DocMetaSnapshotEventListener, SnapshotResult} from '../Datastore';
+import {DeleteResult, DocMetaSnapshotEvent, FileRef,
+        DocMetaSnapshotEventListener, SnapshotResult,
+        ErrorListener} from '../Datastore';
 import {PersistenceEventType} from '../PersistenceEventType';
 import {Backend} from '../Backend';
 import {DatastoreFile} from '../DatastoreFile';
@@ -13,6 +15,7 @@ import {FileMeta} from '../Datastore';
 import {Optional} from '../../util/ts/Optional';
 import {DocInfo} from '../../metadata/DocInfo';
 import {DatastoreMutation, DefaultDatastoreMutation} from '../DatastoreMutation';
+import {NULL_FUNCTION} from '../../util/Functions';
 
 export abstract class AbstractAdvertisingPersistenceLayer implements IListenablePersistenceLayer {
 
@@ -86,8 +89,11 @@ export abstract class AbstractAdvertisingPersistenceLayer implements IListenable
         return this.delegate.getDocMetaFiles();
     }
 
-    public snapshot(listener: DocMetaSnapshotEventListener): Promise<SnapshotResult> {
-        return this.delegate.snapshot(listener);
+    public snapshot(listener: DocMetaSnapshotEventListener,
+                    errorListener: ErrorListener = NULL_FUNCTION): Promise<SnapshotResult> {
+
+        return this.delegate.snapshot(listener, errorListener);
+
     }
 
     public delete(docMetaFileRef: DocMetaFileRef): Promise<DeleteResult> {

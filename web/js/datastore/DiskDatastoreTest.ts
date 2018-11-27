@@ -19,7 +19,7 @@ const tmpdir = os.tmpdir();
 
 describe("DiskDatastore", async function() {
 
-    DatastoreTester.test(() => new DiskDatastore());
+    DatastoreTester.test(async () => new DiskDatastore());
 
     it("getDataDir", function() {
         assert.notEqual(Directories.getDataDir(), null);

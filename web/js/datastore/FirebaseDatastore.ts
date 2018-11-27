@@ -153,12 +153,15 @@ export class FirebaseDatastore implements Datastore, SynchronizingDatastore {
         // second will be the server...
 
         const onNextForSnapshot = (snapshot: firebase.firestore.QuerySnapshot) => {
+
             try {
                 this.handleDocInfoSnapshot(snapshot, docMetaSnapshotEventListener, batch);
                 ++batch.id;
             } catch (e) {
                 log.error("Could not handle snapshot: ", e);
+                errorListener(e);
             }
+
         };
 
         const onErrorForSnapshot = (err: Error) => {

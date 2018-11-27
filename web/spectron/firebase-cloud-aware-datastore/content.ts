@@ -27,6 +27,8 @@ import {PolarDataDir} from '../../js/test/PolarDataDir';
 import waitForExpect from 'wait-for-expect';
 import {Datastores} from '../../js/datastore/Datastores';
 import {Latch} from '../../js/util/Latch';
+import {NULL_FUNCTION} from '../../js/util/Functions';
+import {PersistenceLayers} from '../../js/datastore/PersistenceLayers';
 
 mocha.setup('bdd');
 mocha.timeout(10000);
@@ -50,7 +52,19 @@ SpectronRenderer.run(async (state) => {
 
         describe('Cloud datastore tests', function() {
 
-            it("Write a basic doc", async function() {
+
+            beforeEach(async function() {
+
+                Files.removeDirectoryRecursively(PolarDataDir.get()!);
+
+                const firebaseDatastore = new FirebaseDatastore();
+                await firebaseDatastore.init();
+                await Datastores.purge(firebaseDatastore);
+                await firebaseDatastore.stop();
+
+            });
+
+            it("Basic replication tests", async function() {
 
                 // first purge the firebase datastore
 
@@ -81,7 +95,7 @@ SpectronRenderer.run(async (state) => {
                 const initialDocLatch = new Latch<boolean>();
                 const externallyWrittenDocLatch = new Latch<boolean>();
 
-                await persistenceLayer.snapshot(docMetaSnapshotEvent => {
+                const snapshotResult = await persistenceLayer.snapshot(docMetaSnapshotEvent => {
 
                     (async () => {
 
@@ -114,19 +128,21 @@ SpectronRenderer.run(async (state) => {
 
                 await externallyWrittenDocLatch.get();
 
-                assert.ok(await persistenceLayer.contains('0x002'));
+                assert.ok(await persistenceLayer.contains('0x002'), "Does not contain second doc");
 
                 console.log("WORKED");
 
                 await persistenceLayer.stop();
                 await firestorePersistenceLayer.stop();
 
+                snapshotResult.unsubscribe!();
+
             });
 
 
             // FIXME make these production tests again.
 
-            xit("Write a basic doc", async function() {
+            it("Write a basic doc", async function() {
 
                 const persistenceLayer = new DefaultPersistenceLayer(await createDatastore());
 
@@ -152,6 +168,91 @@ SpectronRenderer.run(async (state) => {
 
             });
 
+            it("Test an existing firebase store with existing data replicating to a new CloudDatastore.", async function() {
+
+                Files.removeDirectoryRecursively(PolarDataDir.get()!);
+
+                const sourcePersistenceLayer = new DefaultPersistenceLayer(new FirebaseDatastore());
+                await sourcePersistenceLayer.init();
+                const docMeta = MockDocMetas.createWithinInitialPagemarks(fingerprint, 14);
+                await sourcePersistenceLayer.write(fingerprint, docMeta);
+                await sourcePersistenceLayer.stop();
+
+                const targetPersistenceLayer = new DefaultPersistenceLayer(await createDatastore());
+                await targetPersistenceLayer.init();
+
+                // FIXME: right now we ahve to manually create the snapshot to trigger replication...
+                // it's not done in init
+
+                let err: Error | undefined;
+
+                const snapshotResult = await targetPersistenceLayer.snapshot(NULL_FUNCTION, _err => {
+                    err = _err;
+                });
+
+                await waitForExpect(async () => {
+                    const dataDir = PolarDataDir.get();
+                    const path = FilePaths.join(dataDir!, '0x001', 'state.json');
+                    assert.ok(await Files.existsAsync(path));
+                });
+
+                // FIXME: ok.. the snapshot is never actually being unsubscribed...
+                // this is a problem..
+
+                console.log("FIXME: the unsubscribe function is: ", snapshotResult.unsubscribe);
+
+                snapshotResult.unsubscribe!();
+
+                await targetPersistenceLayer.stop();
+
+                // verify that we have received no errors.
+                assert.ok(err === undefined);
+
+            });
+
+            it("Verify unsubscribe works.", async function() {
+
+                Files.removeDirectoryRecursively(PolarDataDir.get()!);
+
+                const targetPersistenceLayer = new DefaultPersistenceLayer(await createDatastore());
+                await targetPersistenceLayer.init();
+
+                await Datastores.purge(targetPersistenceLayer.datastore);
+
+                const docMetaFiles = await targetPersistenceLayer.getDocMetaFiles();
+                assert.equal(docMetaFiles.length, 0);
+
+                // FIXME: right now we ahve to manually create the snapshot to trigger replication...
+                // it's not done in init
+
+                let gotEvent = false;
+
+                const snapshotResult = await targetPersistenceLayer.snapshot(event => {
+                    console.log("GOT AN EVENT with consistency: " + event.consistency, event);
+
+                    if (event.consistency !== 'committed') {
+                        return;
+                    }
+
+                    gotEvent = true;
+
+                });
+
+                snapshotResult.unsubscribe!();
+
+                const sidePersistenceLayer = new DefaultPersistenceLayer(new FirebaseDatastore());
+                await sidePersistenceLayer.init();
+                await sidePersistenceLayer.writeDocMeta(MockDocMetas.createMockDocMeta());
+                await sidePersistenceLayer.stop();
+
+                await Promises.waitFor(5000);
+
+                assert.ok(gotEvent === false, "Nope.. we still got the event");
+
+            });
+
+
+            // FIXME: this wont' work yet due to the snapshot issue.
             xit("Test a remote write and a local replication to disk", async function() {
 
                 const sourcePersistenceLayer = new DefaultPersistenceLayer(new FirebaseDatastore());
@@ -167,40 +268,17 @@ SpectronRenderer.run(async (state) => {
                     const dataDir = PolarDataDir.get();
                     const path = FilePaths.join(dataDir!, '0x001', 'state.json');
                     console.log("Checkign for path: " + path);
-                    assert.ok(await Files.existsAsync(path));
+                    assert.ok(await Files.existsAsync(path), 'Path for fingerprint never appeared');
                 });
 
                 await sourcePersistenceLayer.stop();
-                await targetPersistenceLayer.stop();
-
-            });
-
-            xit("Test an existing firebase store with existing data replicating to a new CloudDatastore.", async function() {
-
-                Files.removeDirectoryRecursively(PolarDataDir.get()!);
-
-                const sourcePersistenceLayer = new DefaultPersistenceLayer(new FirebaseDatastore());
-                await sourcePersistenceLayer.init();
-                const docMeta = MockDocMetas.createWithinInitialPagemarks(fingerprint, 14);
-                await sourcePersistenceLayer.write(fingerprint, docMeta);
-                await sourcePersistenceLayer.stop();
-
-                const targetPersistenceLayer = new DefaultPersistenceLayer(await createDatastore());
-                await targetPersistenceLayer.init();
-
-                await waitForExpect(async () => {
-                    const dataDir = PolarDataDir.get();
-                    const path = FilePaths.join(dataDir!, '0x001', 'state.json');
-                    assert.ok(await Files.existsAsync(path));
-                });
-
                 await targetPersistenceLayer.stop();
 
             });
 
         });
 
-        // DatastoreTester.test(createDatastore, false);
+        DatastoreTester.test(createDatastore, false);
 
     });
 

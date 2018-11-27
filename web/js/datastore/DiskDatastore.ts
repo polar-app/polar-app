@@ -1,4 +1,6 @@
-import {Datastore, DeleteResult, FileMeta, FileRef, InitResult, DocMetaSnapshotEvent, DocMetaMutation, DocMetaSnapshotEventListener, SnapshotResult, DocMetaSnapshotBatch, ErrorListener} from './Datastore';
+import {Datastore, DeleteResult, FileMeta, FileRef, InitResult,
+        DocMetaSnapshotEvent, DocMetaMutation, DocMetaSnapshotEventListener,
+        SnapshotResult, DocMetaSnapshotBatch, ErrorListener} from './Datastore';
 import {isPresent, Preconditions} from '../Preconditions';
 import {Logger} from '../logger/Logger';
 import {DocMetaFileRef, DocMetaRef} from './DocMetaRef';
@@ -230,14 +232,7 @@ export class DiskDatastore implements Datastore {
 
         const docDir = FilePaths.join(this.dataDir, fingerprint);
 
-        const docDirExists = await Files.existsAsync(docDir);
-
-        log.debug(`Doc dir ${docDir} exists: ${docDirExists}`);
-
-        if ( ! docDirExists) {
-            log.debug(`Doc dir does not exist. Creating ${docDir}`);
-            await Files.mkdirAsync(docDir);
-        }
+        await Files.createDirAsync(docDir);
 
         log.debug("Calling stat on docDir: " + docDir);
         const stat = await Files.statAsync(docDir);

@@ -200,7 +200,7 @@ SpectronRenderer.run(async (state) => {
 
         });
 
-        DatastoreTester.test(() => firebaseDatastore, false);
+        DatastoreTester.test(async () => firebaseDatastore, false);
 
     });
 
