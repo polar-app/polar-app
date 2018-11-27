@@ -9,6 +9,7 @@ import {assert} from 'chai';
 import {UUIDs} from '../metadata/UUIDs';
 import {NULL_FUNCTION} from '../util/Functions';
 import {AsyncProviders} from '../util/Providers';
+import waitForExpect from 'wait-for-expect';
 
 describe('DocMetaSnapshotEventListener', function() {
 
@@ -71,7 +72,9 @@ describe('DocMetaSnapshotEventListener', function() {
         deduplicatedListener(docMetaSnapshotEvent);
         deduplicatedListener(docMetaSnapshotEvent);
 
-        assert.equal(emitted.length, 1);
+        waitForExpect(() => {
+            assert.equal(emitted.length, 1);
+        });
 
     });
 
@@ -86,7 +89,9 @@ describe('DocMetaSnapshotEventListener', function() {
 
         deduplicatedListener(docMetaSnapshotEvent);
 
-        assert.equal(emitted.length, 1);
+        waitForExpect(() => {
+            assert.equal(emitted.length, 1);
+        });
 
     });
 
@@ -98,7 +103,9 @@ describe('DocMetaSnapshotEventListener', function() {
 
         deduplicatedListener(createDocMetaSnapshotEvent('updated'));
 
-        assert.equal(emitted.length, 2);
+        waitForExpect(() => {
+            assert.equal(emitted.length, 2);
+        });
 
     });
 
@@ -110,7 +117,9 @@ describe('DocMetaSnapshotEventListener', function() {
 
         deduplicatedListener(createDocMetaSnapshotEvent('updated'));
 
-        assert.equal(emitted.length, 2);
+        waitForExpect(() => {
+            assert.equal(emitted.length, 2);
+        });
 
     });
 
@@ -126,7 +135,9 @@ describe('DocMetaSnapshotEventListener', function() {
 
         deduplicatedListener(createDocMetaSnapshotEvent('created'));
 
-        assert.equal(emitted.length, 3);
+        waitForExpect(() => {
+            assert.equal(emitted.length, 3);
+        });
 
     });
 

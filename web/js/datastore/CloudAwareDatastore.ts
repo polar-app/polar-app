@@ -239,111 +239,62 @@ export class CloudAwareDatastore implements Datastore {
         const localInitialSnapshotLatch = new InitialSnapshotLatch();
         const cloudInitialSnapshotLatch = new InitialSnapshotLatch();
 
-        // TODO: pass the DataStore in the constructor and call snapshot on a
-        // start() method.
-        this.local.snapshot(docMetaSnapshotEvent => localInitialSnapshotLatch.onSnapshot(docMetaSnapshotEvent), errorListener);
+        const replicatingListener
+            = DocMetaSnapshotEventListeners.createDeduplicatedListener(docMetaSnapshotEvent => {
 
-        // FIXME: we need an onError handler for the snapshots too...
+            if (! initialSyncCompleted) {
+                // we haven't completed the initial sync yet...
+                return;
+            }
 
-        this.cloud.snapshot(docMetaSnapshotEvent => {
+            const handleDeltaSnapshot = async () => {
+                for (const docMetaMutation of docMetaSnapshotEvent.docMetaMutations) {
 
-            // FIXME: we can just use the deduplicated listener here as this
-            // gives us the functionality we want already... it only emits
-            // updates.
-
-            if (initialSyncCompleted) {
-
-                const handleDeltaSnapshot = async () => {
-
-                    // FIXME: for right now just manually do the check against
-                    // these and don't really use SyncDocs.
-
-                    for (const docMetaMutation of docMetaSnapshotEvent.docMetaMutations) {
-
-                        console.log("FIXME: working on syncing doc....");
-
-                        // TODO: this type of update code is duplicated in a lot
-                        // of places using different strategies.  We can find
-                        // them by looking for UUIDs usage.
-
-                        const docInfo = await docMetaMutation.docInfoProvider();
-                        const syncDoc = SyncDocs.fromDocInfo(docInfo, docMetaMutation.mutationType);
-
-                        // FIXME: only perform the updates here for the FIRST
-                        // created snapshot by the engine CloudAwareDatastore...
-
-                        if (syncDoc.mutationType === 'created' || syncDoc.mutationType === 'updated') {
-
-                            // TODO: this code could be made significantly more efficiently
-                            // by caching the DocInfo or SyncDoc for the snapshot data we
-                            // currently have so that it's updated as we perform write
-                            // locally.
-
-                            console.log("FIXME: BEFORE1");
-                            const existingDocMeta = await localPersistenceLayer.getDocMeta(syncDoc.fingerprint);
-                            console.log("FIXME: AFTER1");
-
-                            const doWriteDocMeta: boolean
-                                = UUIDs.isUpdated(existingDocMeta!.docInfo.uuid, syncDoc.uuid);
-
-                            console.log("FIXME: doWriteDocMeta...: " + doWriteDocMeta);
-
-                            // if (doWriteDocMeta) {
-                            //     console.log("FIXME99: READING.... ");
-                            //     const docMeta = await docMetaMutation.docMetaProvider();
-                            //     console.log("FIXME99 : WRITING .... ");
-                            //     await localPersistenceLayer.writeDocMeta(docMeta);
-                            //     console.log("FIXME99 : AFTER .... ");
-                            // }
-
-                        }
-
-                        if (syncDoc.mutationType === 'deleted' && await this.local.contains(syncDoc.fingerprint)) {
-                            await localPersistenceLayer.delete(syncDoc.docMetaFileRef);
-                        }
-
+                    if (docMetaMutation.mutationType === 'created' || docMetaMutation.mutationType === 'updated') {
+                        const docMeta = await docMetaMutation.docMetaProvider();
+                        await localPersistenceLayer.writeDocMeta(docMeta);
                     }
 
-                };
+                    if (docMetaMutation.mutationType === 'deleted') {
+                        const docInfo = await docMetaMutation.docInfoProvider();
+                        const docMetaFileRef = DocMetaFileRefs.createFromDocInfo(docInfo);
+                        await localPersistenceLayer.delete(docMetaFileRef);
+                    }
 
-                // TODO: move this to an async function I can call and then
-                // just have a .catch() on it...
+                }
 
-                // FIXME: we need a copy of what's currently in the local store
-                // including any updates as they are written OR we have to
-                // re-load them again.
 
-                // for (const docMetaMutation of
-                // docMetaSnapshotEvent.docMetaMutations) { const syncDoc =
-                // SyncDocs.fromDocInfo(await
-                // docMetaMutation.docInfoProvider());
-                // this.syncDocMap[syncDoc.fingerprint] = syncDoc; }
+            };
 
-                handleDeltaSnapshot()
-                    .catch(err => {
-                        log.error("Unable to handle delta snapshot: ", err);
-                        errorListener(err);
-                    });
+            handleDeltaSnapshot()
+                .catch(err => {
+                    log.error("Unable to handle delta snapshot: ", err);
+                    errorListener(err);
+                });
 
-                // for (const docMetaMutation of
-                // docMetaSnapshotEvent.docMetaMutations) { const syncDoc =
-                // SyncDocs.fromDocInfo(await
-                // docMetaMutation.docInfoProvider());
-                // this.syncDocMap[syncDoc.fingerprint] = syncDoc; }
-                // PersistenceLayers.synchronizeFromSyncDocs(localSyncOrigin,
-                // cloudSyncOrigin, deduplicatedListener) .catch(err =>
-                // log.error("Could not perform local sync: ", err));
+        });
 
-            } else {
-                cloudInitialSnapshotLatch.onSnapshot(docMetaSnapshotEvent);
+        // TODO: pass the DataStore in the constructor and call snapshot on a
+        // start() method.
+        this.local.snapshot(docMetaSnapshotEvent => {
+
+            replicatingListener(docMetaSnapshotEvent);
+
+            if (! initialSyncCompleted) {
+                localInitialSnapshotLatch.onSnapshot(docMetaSnapshotEvent);
             }
 
         }, errorListener);
 
-        // FIXME: now we need to keep listening to the cloud snapshot even
-        // after
-        // the initial sync because if we don't then we won't be replicating
-        // data
+        this.cloud.snapshot(docMetaSnapshotEvent => {
+
+            replicatingListener(docMetaSnapshotEvent);
+
+            if (! initialSyncCompleted) {
+                cloudInitialSnapshotLatch.onSnapshot(docMetaSnapshotEvent);
+            }
+
+        }, errorListener);
 
         // FIXME: re-enable the event listeners so that I can piggyback after
         // the initial init to see what's being transferred to firebase...
