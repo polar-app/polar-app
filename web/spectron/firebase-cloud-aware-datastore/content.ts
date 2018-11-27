@@ -196,11 +196,6 @@ SpectronRenderer.run(async (state) => {
                     assert.ok(await Files.existsAsync(path));
                 });
 
-                // FIXME: ok.. the snapshot is never actually being unsubscribed...
-                // this is a problem..
-
-                console.log("FIXME: the unsubscribe function is: ", snapshotResult.unsubscribe);
-
                 snapshotResult.unsubscribe!();
 
                 await targetPersistenceLayer.stop();
