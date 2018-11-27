@@ -150,6 +150,7 @@ export interface FileRef {
 // noinspection TsLint
 export type FileMeta = {[key: string]: string};
 
+
 /**
  *
  * A datastore that provides events about changes being made to the datastore.
@@ -162,13 +163,7 @@ export interface SynchronizingDatastore extends Datastore {
     /**
      * Listens for mutations to binaries.
      */
-    addBinaryMutationEventListener(listener: (binaryMutationEvent: BinaryMutationEvent) => void): void;
-
-    /**
-     * Listens to mutations of the underlying documents whether they are local
-     * or synchronized from a remote store.
-     */
-    addDocMetaSnapshotEventListener(listener: (docMetaSnapshotEvent: DocMetaSnapshotEvent) => void): void;
+    addFileSynchronizationEventListener(listener: (binaryMutationEvent: BinaryMutationEvent) => void): void;
 
     /**
      * Listens only for new synchronized documents and ignores existing

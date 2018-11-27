@@ -36,7 +36,7 @@ const log = Logger.create();
 // in the future. Or, an anonymous user can link a Facebook account and then,
 // later, sign in with Facebook to continue using your app.
 
-export class FirebaseDatastore implements Datastore, SynchronizingDatastore {
+export class FirebaseDatastore implements Datastore {
 
     public readonly stashDir: string;
 

@@ -48,7 +48,7 @@ export class CloudAwareDatastore implements Datastore {
 
     private readonly local: Datastore;
 
-    private readonly cloud: SynchronizingDatastore;
+    private readonly cloud: Datastore;
 
     // FIXME: isn't this like a fancy SyncDocMap ? Should I just be using this
     // or the SyncDocMap???
@@ -56,7 +56,7 @@ export class CloudAwareDatastore implements Datastore {
 
     private primarySnapshot?: SnapshotResult;
 
-    constructor(local: Datastore, cloud: SynchronizingDatastore) {
+    constructor(local: Datastore, cloud: Datastore) {
         this.local = local;
         this.cloud = cloud;
         this.stashDir = local.stashDir;
@@ -65,22 +65,6 @@ export class CloudAwareDatastore implements Datastore {
     }
 
     public async init(errorListener: ErrorListener = NULL_FUNCTION): Promise<InitResult> {
-
-        // add the event listeners to the remote BEFORE we init... We might get
-        // two docs so we need to validate with the docComparisonIndex while
-        // loading to avoid double writes.
-        //
-        // Initially we just get from the local cache but then we will start
-        // getting documents from the datastore once it comes online.
-
-        this.cloud.addDocMetaSynchronizationEventListener(docMetaSnapshotEvent => {
-
-            // TODO once this fails we need to make sure to tell the user and
-            // right now we don't really have an event stream for this.
-            this.onRemoteDocMutations(docMetaSnapshotEvent.docMetaMutations)
-                .catch( err => log.error("Unable to handle doc replication event: ", err));
-
-        });
 
         await Promise.all([this.cloud.init(errorListener), this.local.init(errorListener)]);
 
@@ -354,56 +338,6 @@ export class CloudAwareDatastore implements Datastore {
         return {
             unsubscribe: cloudSnapshotResult.unsubscribe
         };
-
-    }
-
-    /**
-     * Called on init() for every doc in the remote repo.  We then see if we
-     * have loaded it locally and update it if it's stale.
-     */
-    private async onRemoteDocMutations(docMetaMutations: ReadonlyArray<DocMetaMutation>) {
-
-        for (const docMetaMutation of docMetaMutations) {
-            await this.onRemoteDocMutation(docMetaMutation);
-        }
-
-    }
-
-    // a document has been updated on the remote and we need to update it
-    // locally.
-    private async onRemoteDocMutation(docMetaMutation: DocMetaMutation) {
-
-        const {docMetaProvider, mutationType} = docMetaMutation;
-        const docMeta = await docMetaProvider();
-
-        if (mutationType === 'created' || mutationType === 'updated') {
-
-            try {
-
-                const data = DocMetas.serialize(docMeta);
-                await this.local.write(docMeta.docInfo.fingerprint, data, docMeta.docInfo);
-
-                // FIXME: we have to fire event listeners so the doc repo
-                // discovers this new document...
-
-            } finally {
-                this.docMetaComparisonIndex.putDocMeta(docMeta);
-            }
-
-        } else {
-
-            await this.local.delete({
-                fingerprint: docMeta.docInfo.fingerprint,
-                docFile: {
-                    name: docMeta.docInfo.filename!,
-                    hashcode: docMeta.docInfo.hashcode
-                },
-                docInfo: docMeta.docInfo
-            });
-
-            this.docMetaComparisonIndex.remove(docMeta.docInfo.fingerprint);
-
-        }
 
     }
 
