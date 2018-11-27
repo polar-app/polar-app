@@ -64,7 +64,7 @@ export class CloudAwareDatastore implements Datastore {
         this.directories = local.directories;
     }
 
-    public async init(): Promise<InitResult> {
+    public async init(errorListener: ErrorListener = NULL_FUNCTION): Promise<InitResult> {
 
         // FIXME: now I don't know what to fucking do about init and the
         // snapshot listener because we should REALLY be replicating during
@@ -86,10 +86,8 @@ export class CloudAwareDatastore implements Datastore {
 
         });
 
-        await Promise.all([this.cloud.init(), this.local.init()]);
+        await Promise.all([this.cloud.init(errorListener), this.local.init(errorListener)]);
 
-        // FIXME: we need an errorListener here because otherwise we won't know
-        // if our replication functions are failing during the snapshots.
         this.primarySnapshot = await this.snapshot(NULL_FUNCTION);
 
         return {};

@@ -38,7 +38,7 @@ export interface Datastore extends BinaryDatastore, WritableDatastore {
     /**
      * Init the datastore, potentially reading files of disk, the network, etc.
      */
-    init(): Promise<InitResult>;
+    init(errorListener?: ErrorListener): Promise<InitResult>;
 
     stop(): Promise<void>;
 

@@ -54,7 +54,7 @@ export class DiskDatastore implements Datastore {
 
     }
 
-    public async init(): Promise<DiskInitResult> {
+    public async init(errorListener: ErrorListener = NULL_FUNCTION): Promise<DiskInitResult> {
         return await this.directories.init();
     }
 

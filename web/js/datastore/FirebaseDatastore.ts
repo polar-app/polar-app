@@ -75,7 +75,7 @@ export class FirebaseDatastore implements Datastore, SynchronizingDatastore {
 
     }
 
-    public async init(): Promise<InitResult> {
+    public async init(errorListener: ErrorListener = NULL_FUNCTION): Promise<InitResult> {
 
         if (this.initialized) {
             return {};

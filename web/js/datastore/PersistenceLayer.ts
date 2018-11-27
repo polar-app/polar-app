@@ -8,6 +8,7 @@ import {FileMeta} from './Datastore';
 import {DocInfo} from '../metadata/DocInfo';
 import {FileHandle} from '../util/Files';
 import {DatastoreMutation} from './DatastoreMutation';
+import {NULL_FUNCTION} from '../util/Functions';
 
 export interface PersistenceLayer {
 
@@ -15,7 +16,7 @@ export interface PersistenceLayer {
 
     readonly logsDir: string;
 
-    init(): Promise<void>;
+    init(errorListener?: ErrorListener): Promise<void>;
 
     stop(): Promise<void>;
 

@@ -43,8 +43,8 @@ export class DefaultPersistenceLayer implements PersistenceLayer {
         this.logsDir = this.datastore.logsDir;
     }
 
-    public async init() {
-        await this.datastore.init();
+    public async init(errorListener: ErrorListener = NULL_FUNCTION) {
+        await this.datastore.init(errorListener);
     }
 
     public async stop() {
