@@ -71,15 +71,17 @@ export class DocMetaSnapshotEventListeners {
 
             }
 
-            if (acceptedDocMetaMutations.length > 0) {
+            // always emit the listener even if we've accepted no mutations
+            // because other metadata here including the batch and progress is
+            // necessary to handle within the listener for downstream event
+            // handlers
 
-                outputListener({
-                    consistency: docMetaSnapshotEvent.consistency,
-                    progress: docMetaSnapshotEvent.progress,
-                    docMetaMutations: acceptedDocMetaMutations,
-                });
-
-            }
+            outputListener({
+                consistency: docMetaSnapshotEvent.consistency,
+                progress: docMetaSnapshotEvent.progress,
+                docMetaMutations: acceptedDocMetaMutations,
+                batch: docMetaSnapshotEvent.batch
+            });
 
         };
 

@@ -200,13 +200,10 @@ export class DatastoreTester {
 
             });
 
-            xit("snapshot and make sure we receive a terminated batch at committed consistency.", async function() {
+            it("snapshot and make sure we receive a terminated batch at committed consistency.", async function() {
 
                 const writtenSnapshotReceived = new Latch<boolean>();
                 const committedSnapshotReceived = new Latch<boolean>();
-
-                // FIXME: do we get a 'committed' if there are no documents in
-                // the store?  We might not... If so that's a big problem...
 
                 const snapshotResult = await datastore.snapshot(docMetaSnapshotEvent => {
 

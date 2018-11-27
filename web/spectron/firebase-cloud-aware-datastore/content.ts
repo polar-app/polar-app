@@ -114,8 +114,6 @@ SpectronRenderer.run(async (state) => {
                                 continue;
                             }
 
-                            console.log("FIXME: found unknown doc: ", docInfo);
-
                         }
 
 
@@ -128,7 +126,9 @@ SpectronRenderer.run(async (state) => {
 
                 await externallyWrittenDocLatch.get();
 
-                assert.ok(await persistenceLayer.contains('0x002'), "Does not contain second doc");
+                waitForExpect(async () => {
+                    assert.ok(await persistenceLayer.contains('0x002'), "Does not contain second doc");
+                });
 
                 console.log("WORKED");
 
@@ -225,7 +225,8 @@ SpectronRenderer.run(async (state) => {
                 // FIXME: right now we ahve to manually create the snapshot to trigger replication...
                 // it's not done in init
 
-                let gotEvent = false;
+                let gotEventAfterUnsubscribe = false;
+                let unsubscribed = false;
 
                 const snapshotResult = await targetPersistenceLayer.snapshot(event => {
                     console.log("GOT AN EVENT with consistency: " + event.consistency, event);
@@ -234,11 +235,16 @@ SpectronRenderer.run(async (state) => {
                         return;
                     }
 
-                    gotEvent = true;
+                    if (! unsubscribed) {
+                        return;
+                    }
+
+                    gotEventAfterUnsubscribe = true;
 
                 });
 
                 snapshotResult.unsubscribe!();
+                unsubscribed = true;
 
                 const sidePersistenceLayer = new DefaultPersistenceLayer(new FirebaseDatastore());
                 await sidePersistenceLayer.init();
@@ -247,7 +253,7 @@ SpectronRenderer.run(async (state) => {
 
                 await Promises.waitFor(5000);
 
-                assert.ok(gotEvent === false, "Nope.. we still got the event");
+                assert.ok(gotEventAfterUnsubscribe === false, "Nope.. we still got the event");
 
             });
 
