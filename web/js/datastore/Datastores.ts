@@ -2,7 +2,7 @@ import {Datastore, DocMetaMutation, DocMetaSnapshotBatch, DocMetaSnapshotEvent, 
 import {MemoryDatastore} from './MemoryDatastore';
 import {DiskDatastore} from './DiskDatastore';
 import {Logger} from '../logger/Logger';
-import {DocMetaRef} from './DocMetaRef';
+import {DocMetaFileRefs, DocMetaRef} from './DocMetaRef';
 import {DocMeta} from '../metadata/DocMeta';
 import {DocMetas} from '../metadata/DocMetas';
 import {NULL_FUNCTION} from '../util/Functions';
@@ -146,16 +146,9 @@ export class Datastores {
             const data = await datastore.getDocMeta(docMetaFile.fingerprint);
             const docMeta = DocMetas.deserialize(data!);
 
-            const docFile: FileRef = {
-                name: docMeta.docInfo.filename!,
-                hashcode: docMeta.docInfo.hashcode
-            };
+            const docMetaFileRef = DocMetaFileRefs.createFromDocInfo(docMeta.docInfo);
 
-            datastore.delete({
-                fingerprint: docMeta.docInfo.fingerprint,
-                docInfo: docMeta.docInfo,
-                docFile
-            });
+            datastore.delete(docMetaFileRef);
 
             ++completed;
 

@@ -91,11 +91,15 @@ SpectronRenderer.run(async (state) => {
 
                             if (docInfo.fingerprint === '0x001') {
                                 initialDocLatch.resolve(true);
+                                continue;
                             }
 
                             if (docInfo.fingerprint === '0x002') {
                                 externallyWrittenDocLatch.resolve(true);
+                                continue;
                             }
+
+                            console.log("FIXME: found unknown doc: ", docInfo);
 
                         }
 
@@ -106,6 +110,7 @@ SpectronRenderer.run(async (state) => {
                 await initialDocLatch.get();
 
                 // now see what happens when we write a NEW doc externally.
+                await firestorePersistenceLayer.writeDocMeta(MockDocMetas.createMockDocMeta('0x003'));
 
                 await firestorePersistenceLayer.writeDocMeta(MockDocMetas.createMockDocMeta('0x002'));
 

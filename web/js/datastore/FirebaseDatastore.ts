@@ -485,6 +485,7 @@ export class FirebaseDatastore implements Datastore, SynchronizingDatastore {
 
             const recordHolder = <RecordHolder<DocMetaHolder>> doc.data();
 
+            // FIXME: this is wrong I think..
             result.push({fingerprint: recordHolder.value.docInfo.fingerprint});
 
         }

@@ -1,5 +1,5 @@
 // A datastore that supports ledgers and checkpoints.
-import {DocMetaFileRef, DocMetaRef} from './DocMetaRef';
+import {DocMetaFileRef, DocMetaFileRefs, DocMetaRef} from './DocMetaRef';
 import {DeleteResult} from './Datastore';
 import {Directories} from './Directories';
 import {Backend} from './Backend';
@@ -236,8 +236,14 @@ export class DocMetaSnapshotEvents {
     public static async toSyncDocs(docMetaSnapshotEvent: DocMetaSnapshotEvent):
         Promise<ReadonlyArray<SyncDoc>> {
 
-        const docInfos = await this.toDocInfos(docMetaSnapshotEvent);
-        return docInfos.map(current => SyncDocs.fromDocInfo(current));
+        const promises = docMetaSnapshotEvent.docMetaMutations.map(docMetaMutation => {
+            return async () => {
+                const docInfo = await docMetaMutation.docInfoProvider();
+                return SyncDocs.fromDocInfo(docInfo, docMetaMutation.mutationType);
+            };
+        }).map(current => current());
+
+        return await AsyncWorkQueues.awaitPromises(promises);
 
     }
 
@@ -375,6 +381,8 @@ export interface SyncDoc {
 
     readonly fingerprint: string;
 
+    readonly mutationType: MutationType;
+
     /**
      * While the UUID is optional in practice it's required and all docs should
      * have a UUID.
@@ -386,6 +394,7 @@ export interface SyncDoc {
      */
     readonly files: ReadonlyArray<SyncFile>;
 
+    readonly docMetaFileRef: DocMetaFileRef;
 }
 
 /**
@@ -401,7 +410,7 @@ export interface SyncFile {
 
 export class SyncDocs {
 
-    public static fromDocInfo(docInfo: IDocInfo): SyncDoc {
+    public static fromDocInfo(docInfo: IDocInfo, mutationType: MutationType): SyncDoc {
 
         const files: SyncFile[] = [];
 
@@ -421,6 +430,8 @@ export class SyncDocs {
 
         return {
             fingerprint: docInfo.fingerprint,
+            docMetaFileRef: DocMetaFileRefs.createFromDocInfo(docInfo),
+            mutationType,
             uuid: docInfo.uuid,
             files
         };

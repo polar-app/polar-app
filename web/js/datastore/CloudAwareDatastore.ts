@@ -4,7 +4,7 @@ import {
     DocMetaSnapshotEventListener, SnapshotResult, SyncDocs, SyncDocMap, ErrorListener, DocMetaSnapshotEvents, SyncDocMaps
 } from './Datastore';
 import {Directories} from './Directories';
-import {DocMetaFileRef, DocMetaRef} from './DocMetaRef';
+import {DocMetaFileRef, DocMetaFileRefs, DocMetaRef} from './DocMetaRef';
 import {DeleteResult} from './Datastore';
 import {Backend} from './Backend';
 import {DatastoreFile} from './DatastoreFile';
@@ -250,13 +250,37 @@ export class CloudAwareDatastore implements Datastore {
 
                 const handleDeltaSnapshot = async () => {
 
-                    const syncDocMap: SyncDocMap = {};
-
                     // FIXME: for right nwo just manually do the check against
                     // these and don't use the sync system..
 
                     const syncDocs = await DocMetaSnapshotEvents.toSyncDocs(docMetaSnapshotEvent);
-                    SyncDocMaps.putAll(syncDocMap, syncDocs);
+
+                    for (const syncDoc of syncDocs) {
+
+                        // FIXME: only perform the updates here for the FIRST
+                        // created snapshot by the engine CloudAwareDatastore...
+
+                        if (syncDoc.mutationType === 'created' || syncDoc.mutationType === 'updated') {
+
+                            // TODO: this code could be made significantly more efficiently
+                            // by caching the DocInfo or SyncDoc for the snapshot data we
+                            // currently have so that it's updated as we perform write
+                            // locally.
+
+                            let doWrite: boolean = false;
+
+                            if (doWrite) {
+                                // // FIXME: I need the docMeta promise here.. fuck.
+                                // await localPersistenceLayer.writeDocMeta(syncDoc.);
+                            }
+
+                        }
+
+                        if (syncDoc.mutationType === 'deleted' && await this.local.contains(syncDoc.fingerprint)) {
+                            await localPersistenceLayer.delete(syncDoc.docMetaFileRef);
+                        }
+
+                    }
 
                     console.log("FIXME: got the following syncDocs: " , syncDocs);
 

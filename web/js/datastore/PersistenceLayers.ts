@@ -160,7 +160,6 @@ export class PersistenceLayers {
 
     }
 
-
     /**
      * Synchronize the source with the target so that we know they are both in
      * sync.
