@@ -1,5 +1,5 @@
 import {
-    BinaryMutationEvent, Datastore, DeleteResult,
+    FileSynchronizationEvent, Datastore, DeleteResult,
     DocMetaSnapshotEvent, FileMeta,
     InitResult, SynchronizingDatastore, MutationType, FileRef,
     DocMetaMutation, DocMetaSnapshotEventListener, SnapshotResult,
@@ -50,21 +50,6 @@ export class FirebaseDatastore implements Datastore {
 
     private storage?: firebase.storage.Storage;
 
-    // FIXME: remove this.
-    private readonly binaryMutationReactor: IEventDispatcher<BinaryMutationEvent> = new SimpleReactor();
-
-    // FIXME: I think this code can be removed now and that we should be using
-    // snapshots except for the binaryMutations.. we don't have support for that
-    // just yet...
-    // FIXME: remove this.
-    private readonly docMetaSnapshotReactor: IEventDispatcher<DocMetaSnapshotEvent> = new SimpleReactor();
-
-    // FIXME: remove this.
-    private readonly docMetaSynchronizationReactor: IEventDispatcher<DocMetaSnapshotEvent> = new SimpleReactor();
-
-    // FIXME: remove this.
-    private unsubscribeSnapshots: () => void = NULL_FUNCTION;
-
     private initialized: boolean = false;
 
     constructor() {
@@ -85,13 +70,6 @@ export class FirebaseDatastore implements Datastore {
         this.app = firebase.app();
         this.firestore = await Firestore.getInstance();
         this.storage = firebase.storage();
-
-        // const listener = (docMetaSnapshotEvent: DocMetaSnapshotEvent) => {
-        //     this.docMetaSynchronizationReactor.dispatchEvent(docMetaSnapshotEvent);
-        // };
-        //
-        // const snapshotResult = await this.snapshot(listener);
-        // this.unsubscribeSnapshots = snapshotResult.unsubscribe!;
 
         this.initialized = true;
 
@@ -179,9 +157,8 @@ export class FirebaseDatastore implements Datastore {
     }
 
     public async stop() {
-        if (this.unsubscribeSnapshots) {
-            this.unsubscribeSnapshots();
-        }
+
+        // TODO: all snapshots that have been handed out should be stopped...
 
     }
 
@@ -495,18 +472,6 @@ export class FirebaseDatastore implements Datastore {
 
         return result;
 
-    }
-
-    public addBinaryMutationEventListener(listener: (binaryMutation: BinaryMutationEvent) => void): void {
-        this.binaryMutationReactor.addEventListener(listener);
-    }
-
-    public addDocMetaSnapshotEventListener(listener: (docMetaSnapshotEvent: DocMetaSnapshotEvent) => void): void {
-        this.docMetaSnapshotReactor.addEventListener(listener);
-    }
-
-    public addDocMetaSynchronizationEventListener(listener: (docMetaSnapshotEvent: DocMetaSnapshotEvent) => void): void {
-        this.docMetaSynchronizationReactor.addEventListener(listener);
     }
 
     private computeStoragePath(backend: Backend, fileRef: FileRef): string {

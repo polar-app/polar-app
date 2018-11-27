@@ -1,8 +1,10 @@
 import {
     Datastore, FileMeta, InitResult, SynchronizingDatastore,
     MutationType, FileRef, DocMetaMutation, DocMetaSnapshotEvent,
-    DocMetaSnapshotEventListener, SnapshotResult, SyncDocs, SyncDocMap, ErrorListener, DocMetaSnapshotEvents, SyncDocMaps
-} from './Datastore';
+    DocMetaSnapshotEventListener, SnapshotResult, SyncDocs, SyncDocMap,
+    ErrorListener, DocMetaSnapshotEvents, SyncDocMaps, SynchronizationEvent,
+    FileSynchronizationEvent, FileSynchronizationEventListener,
+    SynchronizationEventListener} from './Datastore';
 import {Directories} from './Directories';
 import {DocMetaFileRef, DocMetaFileRefs, DocMetaRef} from './DocMetaRef';
 import {DeleteResult} from './Datastore';
@@ -24,6 +26,7 @@ import {DocMetaSnapshotEventListeners} from './DocMetaSnapshotEventListeners';
 import {Latch} from '../util/Latch';
 import {NULL_FUNCTION} from '../util/Functions';
 import {isUpperCase} from 'tslint/lib/utils';
+import {IEventDispatcher, SimpleReactor} from '../reactor/SimpleReactor';
 
 const log = Logger.create();
 
@@ -34,7 +37,7 @@ const log = Logger.create();
  * The reverse is true too. If we startup and there is an excess file in the
  * remote, it's copied local.
  */
-export class CloudAwareDatastore implements Datastore {
+export class CloudAwareDatastore implements Datastore, SynchronizingDatastore {
 
     // allows us to keep track of the snapshot id so that when we report errors
     // we can know which snapshot failed.
@@ -49,6 +52,10 @@ export class CloudAwareDatastore implements Datastore {
     private readonly local: Datastore;
 
     private readonly cloud: Datastore;
+
+    private readonly fileSynchronizationEventDispatcher: IEventDispatcher<FileSynchronizationEvent> = new SimpleReactor();
+
+    private readonly synchronizationEventDispatcher: IEventDispatcher<SynchronizationEvent> = new SimpleReactor();
 
     // FIXME: isn't this like a fancy SyncDocMap ? Should I just be using this
     // or the SyncDocMap???
@@ -75,6 +82,8 @@ export class CloudAwareDatastore implements Datastore {
     }
 
     public async stop() {
+
+        // TODO: all snapshots that have been handed out should be stopped...
 
         if (this.primarySnapshot && this.primarySnapshot.unsubscribe) {
             this.primarySnapshot.unsubscribe();
@@ -339,6 +348,14 @@ export class CloudAwareDatastore implements Datastore {
             unsubscribe: cloudSnapshotResult.unsubscribe
         };
 
+    }
+
+    public addFileSynchronizationEventListener(eventListener: FileSynchronizationEventListener): void {
+        this.fileSynchronizationEventDispatcher.addEventListener(eventListener);
+    }
+
+    public addSynchronizationEventListener(eventListener: SynchronizationEventListener): void {
+        this.synchronizationEventDispatcher.addEventListener(eventListener);
     }
 
 }

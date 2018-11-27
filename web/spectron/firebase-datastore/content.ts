@@ -62,11 +62,11 @@ SpectronRenderer.run(async (state) => {
 
                 const datastoreMutation = new DefaultDatastoreMutation<DocInfo>();
 
-                let docReplicationEventListenerCalled: boolean = false;
+                const docReplicationEventListenerCalled: boolean = false;
 
-                datastore.addDocMetaSynchronizationEventListener((docMutation) => {
-                    docReplicationEventListenerCalled = true;
-                });
+                // datastore.addDocMetaSynchronizationEventListener((docMutation) => {
+                //     docReplicationEventListenerCalled = true;
+                // });
 
                 await persistenceLayer.write(fingerprint, docMeta, datastoreMutation);
 
@@ -155,9 +155,9 @@ SpectronRenderer.run(async (state) => {
 
                     public async setup() {
 
-                        this.datastore!.addDocMetaSynchronizationEventListener((docReplicationEvent) => {
-                            this.hasDocReplicationEvent = true;
-                        });
+                        // this.datastore!.addDocMetaSynchronizationEventListener((docReplicationEvent) => {
+                        //     this.hasDocReplicationEvent = true;
+                        // });
 
                         return this;
 

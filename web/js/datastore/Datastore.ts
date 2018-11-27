@@ -163,23 +163,27 @@ export interface SynchronizingDatastore extends Datastore {
     /**
      * Listens for mutations to binaries.
      */
-    addFileSynchronizationEventListener(listener: (binaryMutationEvent: BinaryMutationEvent) => void): void;
+    addFileSynchronizationEventListener(fileSynchronizationEventListener: FileSynchronizationEventListener): void;
 
     /**
      * Listens only for new synchronized documents and ignores existing
      * documents.  This allows us to find replicated documents as they
      * change.
-     *
-     * @param listener
      */
-    addDocMetaSynchronizationEventListener(listener: (docMetaSnapshotEvent: DocMetaSnapshotEvent) => void): void;
+    addSynchronizationEventListener(synchronizationEventListener: SynchronizationEventListener): void;
 
 }
+
+export interface SynchronizationEvent extends DocMetaSnapshotEvent {
+
+}
+
+export type SynchronizationEventListener = (docMetaSnapshotEvent: DocMetaSnapshotEvent) => void;
 
 /**
  * Mutations on binary files.
  */
-export interface BinaryMutationEvent {
+export interface FileSynchronizationEvent {
 
     readonly backend: Backend;
 
@@ -188,6 +192,8 @@ export interface BinaryMutationEvent {
     readonly mutationType: MutationType;
 
 }
+
+export type FileSynchronizationEventListener = (fileSynchronizationEvent: FileSynchronizationEvent) => void;
 
 export type DocMetaSnapshotEventListener = (docMetaSnapshotEvent: DocMetaSnapshotEvent) => void;
 
