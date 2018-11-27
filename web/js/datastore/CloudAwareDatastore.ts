@@ -54,6 +54,8 @@ export class CloudAwareDatastore implements Datastore {
     // or the SyncDocMap???
     private readonly docMetaComparisonIndex = new DocMetaComparisonIndex();
 
+    private readonly primarySnapshot?: SnapshotResult;
+
     constructor(local: Datastore, cloud: SynchronizingDatastore) {
         this.local = local;
         this.cloud = cloud;
@@ -190,6 +192,8 @@ export class CloudAwareDatastore implements Datastore {
     public async snapshot(docMetaSnapshotEventListener: DocMetaSnapshotEventListener,
                           errorListener: ErrorListener = NULL_FUNCTION): Promise<SnapshotResult> {
 
+        const isPrimarySnapshot: boolean = this.primarySnapshot === undefined;
+
         const snapshotID = CloudAwareDatastore.SNAPSHOT_ID++;
 
         const localPersistenceLayer = PersistenceLayers.toPersistenceLayer(this.local);
@@ -230,9 +234,6 @@ export class CloudAwareDatastore implements Datastore {
 
         }
 
-        // FIXME: I think this might enable a race where the user could move
-        // forward and start mutating docs before sync is finished.
-
         let initialSyncCompleted: boolean = false;
 
         // The way this algorithm works is that we load the local store first
@@ -245,10 +246,24 @@ export class CloudAwareDatastore implements Datastore {
         const localInitialSnapshotLatch = new InitialSnapshotLatch();
         const cloudInitialSnapshotLatch = new InitialSnapshotLatch();
 
+        // FIXME: is it possible to get a double write if I call writeDocMeta
+        // to the main store and is it writtne a second time when we get the
+        // event from the remote instance?  I think we might have to have a
+        // 'written' event go through first from the write() method and sent
+        // to all outstanding listeners first.
+
+        // FIXME: we need to have the init() method create the first snapshot
+        // and it performs replication, the other shnapshots DO NOT nor do they
+        // perform the initial sync...
+
+        // FIXME: if the DiskDatastore and other datastores emit events in
+        // THEIR snapshots directly then I think we do not need to do anything
+        // special.
+
         const replicatingListener
             = DocMetaSnapshotEventListeners.createDeduplicatedListener(docMetaSnapshotEvent => {
 
-            const handleDeltaSnapshot = async () => {
+            const handleSnapshotSync = async () => {
 
                 if (docMetaSnapshotEvent.consistency !== 'committed') {
                     return;
@@ -276,8 +291,8 @@ export class CloudAwareDatastore implements Datastore {
 
                 try {
 
-                    if (initialSyncCompleted) {
-                        await handleDeltaSnapshot();
+                    if (initialSyncCompleted && isPrimarySnapshot) {
+                        await handleSnapshotSync();
                     }
 
                 } finally {
@@ -315,9 +330,6 @@ export class CloudAwareDatastore implements Datastore {
 
         }, errorListener);
 
-        // FIXME: re-enable the event listeners so that I can piggyback after
-        // the initial init to see what's being transferred to firebase...
-
         await localInitialSnapshotLatch.latch.get();
         await cloudInitialSnapshotLatch.latch.get();
 
@@ -331,9 +343,10 @@ export class CloudAwareDatastore implements Datastore {
             syncDocMap: cloudInitialSnapshotLatch.syncDocMap
         };
 
-        await PersistenceLayers.synchronizeFromSyncDocs(localSyncOrigin, cloudSyncOrigin, deduplicatedListener);
-
-        await PersistenceLayers.synchronizeFromSyncDocs(cloudSyncOrigin, localSyncOrigin, deduplicatedListener);
+        if (isPrimarySnapshot) {
+            await PersistenceLayers.synchronizeFromSyncDocs(localSyncOrigin, cloudSyncOrigin, deduplicatedListener);
+            await PersistenceLayers.synchronizeFromSyncDocs(cloudSyncOrigin, localSyncOrigin, deduplicatedListener);
+        }
 
         initialSyncCompleted = true;
 
@@ -349,15 +362,6 @@ export class CloudAwareDatastore implements Datastore {
      * Called on init() for every doc in the remote repo.  We then see if we
      * have loaded it locally and update it if it's stale.
      */
-    // private onRemoteDocInit(docMeta: DocMeta) {
-    //
-    //     const docComparison =
-    // this.docComparisonIndex.get(docMeta.docInfo.fingerprint);  if (!
-    // docComparison) { this.onRemoteDocMutation(docMeta, 'created'); }  if
-    // (docComparison && UUIDs.compare(docComparison.uuid,
-    // docMeta.docInfo.uuid) > 0) { this.onRemoteDocMutation(docMeta,
-    // 'updated'); }  }
-
     private async onRemoteDocMutations(docMetaMutations: ReadonlyArray<DocMetaMutation>) {
 
         for (const docMetaMutation of docMetaMutations) {
