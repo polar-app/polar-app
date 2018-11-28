@@ -210,12 +210,13 @@ export class HTMLViewer extends Viewer {
         const contentParent = notNull(document.querySelector("#content-parent"));
         (contentParent as HTMLElement).style.transform = `scale(${scale})`;
 
+        const height = parseInt(this.content.getAttribute('data-height')!);
+        const newHeight = height * scale;
+
         const host = contentParent.parentElement!;
-        const scrollHeight = host.parentElement!.scrollHeight;
 
-        host.style.height = `${scrollHeight}px`;
-
-        // iframeParentElement.appendChild(iframe);
+        host.style.height = `${newHeight}px`;
+        this.content.style.height = `${newHeight}px`;
 
     }
 

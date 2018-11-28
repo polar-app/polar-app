@@ -1,4 +1,5 @@
 import {Browser} from '../Browser';
+import {AdBlockResult} from './AdBlocker';
 
 export interface Captured {
 
@@ -80,7 +81,7 @@ export interface Mutations {
     cleanupHead: any;
     cleanupBase: any;
     showAriaHidden: number;
-    adsBlocked?: any;
+    adsBlocked?: AdBlockResult;
 }
 
 export type Overflow = 'visible' | 'hidden';

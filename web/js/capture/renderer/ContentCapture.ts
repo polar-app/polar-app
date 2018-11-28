@@ -5,6 +5,7 @@ import {Dict} from '../../util/Dict';
 import {Result} from '../../util/Result';
 import {CapturedDoc, Captured, DocTypeFormat, ScrollBox, Overflow} from './Captured';
 import {Results} from '../../util/Results';
+import {AdBlocker} from './AdBlocker';
 
 export class ContentCapture {
 
@@ -214,7 +215,6 @@ export class ContentCapture {
                 cleanupHead: null,
                 cleanupBase: null,
                 showAriaHidden: 0,
-                adsBlocked: null
             }
 
         };
@@ -224,13 +224,14 @@ export class ContentCapture {
         if (docTypeFormat === 'html') {
 
             // TODO: make the mutations a list of functions that need to be run
-            // and the mutation names just the list of the functions. The functions
-            // can then just return a mutation and the data structures are updated.
+            // and the mutation names just the list of the functions. The
+            // functions can then just return a mutation and the data
+            // structures are updated.
 
             result.mutations.cleanupRemoveScripts = ContentCapture.cleanupRemoveScripts(cloneDoc, url);
             result.mutations.cleanupHead = ContentCapture.cleanupHead(cloneDoc, url);
             result.mutations.cleanupBase = ContentCapture.cleanupBase(cloneDoc, url);
-            // result.mutations.adsBlocked = AdBlocker.cleanse(cloneDoc, url);
+            result.mutations.adsBlocked = AdBlocker.cleanse(cloneDoc, url);
 
             // ***  add metadata into the HTML for polar
 

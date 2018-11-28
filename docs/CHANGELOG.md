@@ -1,3 +1,11 @@
+- Fixed bug in HTML zoom where the page would be truncated improperly.
+
+- Blocked amp ads during the capture but they aren't blocked during the preview 
+  at the moment.
+
+- "Fixed" nasty anti-aliasing bug in electron by blocking amp ads. They were 
+  annoying anyway but for some reason they were breaking chrome rendering - 
+  probably due to some web component nonsense.   
 
 - Implemented a new strategy with the vertical height algorithm in the capture 
   system to revert it back to auto instead of a fixed max-height.  Works a lot

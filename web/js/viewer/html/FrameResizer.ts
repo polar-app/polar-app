@@ -85,6 +85,9 @@ export class FrameResizer {
             // log.info(`Setting new height to: ${newHeight} vs previous
             // ${this.iframe.style.height}`);
             this.host.style.height = `${newHeight}px`;
+
+            this.host.setAttribute('data-height', `${newHeight}`);
+
             this.height = newHeight;
         }
 

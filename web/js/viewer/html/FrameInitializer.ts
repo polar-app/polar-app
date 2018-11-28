@@ -27,7 +27,7 @@ export class FrameInitializer {
 
     }
 
-    start() {
+    public start() {
 
         notNull(this.iframe.contentDocument)
             .addEventListener("readystatechange", this.onReadyStateChange.bind(this));
@@ -46,9 +46,9 @@ export class FrameInitializer {
 
     }
 
-    onReadyStateChange() {
+    public onReadyStateChange() {
 
-        if(notNull(this.iframe.contentDocument).readyState === "complete") {
+        if (notNull(this.iframe.contentDocument).readyState === "complete") {
             this._checkLoaded();
         }
 
