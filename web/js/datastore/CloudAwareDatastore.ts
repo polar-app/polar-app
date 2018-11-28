@@ -277,6 +277,9 @@ export class CloudAwareDatastore implements Datastore, SynchronizingDatastore {
                     return;
                 }
 
+                // FIXME: ignore if this comes from anything other than the
+                // cloud store...
+
                 for (const docMetaMutation of docMetaSnapshotEvent.docMetaMutations) {
 
                     // FIXME: no files are being transferred here... Just DocMeta...

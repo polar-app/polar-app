@@ -1,18 +1,19 @@
 import {Datastore, DatastoreConsistency, DatastoreID, DocMetaMutation, DocMetaSnapshotBatch, DocMetaSnapshotEvent, DocMetaSnapshotEventListener, ErrorListener, SnapshotProgress, SnapshotResult, SynchronizationEvent} from "./Datastore";
 import {Directories} from './Directories';
-import {DocMetaFileRef} from './DocMetaRef';
+import {DocMetaFileRef, DocMetaFileRefs} from './DocMetaRef';
 import {DatastoreMutation, DefaultDatastoreMutation} from './DatastoreMutation';
 import {DiskDeleteResult} from './DiskDatastore';
 import {NULL_FUNCTION} from '../util/Functions';
 import {Datastores} from './Datastores';
 import {IEventDispatcher, SimpleReactor} from '../reactor/SimpleReactor';
 import {ProgressTrackers} from "../util/ProgressTrackers";
+import {IDocInfo} from '../metadata/DocInfo';
 
 /**
  */
 export class SnapshotManager {
 
-    private readonly synchronizationEventDispatcher: IEventDispatcher<SynchronizationEvent> = new SimpleReactor();
+    private readonly docMetaSnapshotEventDispatcher: IEventDispatcher<DocMetaSnapshotEvent> = new SimpleReactor();
 
     private readonly datastore: Datastore;
 
@@ -23,7 +24,6 @@ export class SnapshotManager {
     public onDelete(docMetaFileRef: DocMetaFileRef): void {
 
         const docMetaSnapshotEvent: DocMetaSnapshotEvent = {
-
             datastore: this.datastore.id,
             progress: ProgressTrackers.completed(),
             consistency: 'committed',
@@ -37,14 +37,38 @@ export class SnapshotManager {
                     mutationType: 'deleted'
                 }
 
-            ],
-
+            ]
         };
+
+        this.docMetaSnapshotEventDispatcher.dispatchEvent(docMetaSnapshotEvent);
 
     }
 
-    public onSnapshot(docMetaSnapshotEventListener: DocMetaSnapshotEventListener) {
-        this.synchronizationEventDispatcher.addEventListener(docMetaSnapshotEventListener);
+    public onWrite(fingerprint: string, docInfo: IDocInfo): void {
+
+        const docMetaSnapshotEvent: DocMetaSnapshotEvent = {
+            datastore: this.datastore.id,
+            progress: ProgressTrackers.completed(),
+            consistency: 'committed',
+            docMetaMutations: [
+                {
+                    fingerprint,
+                    docMetaProvider: async () => null!,
+                    docInfoProvider: async () => docInfo,
+                    docMetaFileRefProvider: async () => DocMetaFileRefs.createFromDocInfo(docInfo),
+                    // TODO: we don't know right now if it's created or updated
+                    // but for our uses I don't think it matters.
+                    mutationType: 'updated'
+                }
+            ],
+        };
+
+        this.docMetaSnapshotEventDispatcher.dispatchEvent(docMetaSnapshotEvent);
+
+    }
+
+    public addDocMetaSnapshotEventListener(docMetaSnapshotEventListener: DocMetaSnapshotEventListener) {
+        this.docMetaSnapshotEventDispatcher.addEventListener(docMetaSnapshotEventListener);
     }
 
 }
