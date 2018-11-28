@@ -81,7 +81,8 @@ export class FrameResizer {
         }
 
         // we basically keep polling.
-        if (height !== newHeight) {
+        if (force || height !== newHeight) {
+
             // log.info(`Setting new height to: ${newHeight} vs previous
             // ${this.iframe.style.height}`);
             this.host.style.height = `${newHeight}px`;

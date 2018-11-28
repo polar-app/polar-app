@@ -77,6 +77,11 @@ export class HTMLViewer extends Viewer {
 
             }).start();
 
+            window.addEventListener("resize", () => {
+                this.doZoom();
+                this.frameResizer!.resize(true);
+            });
+
             await Services.start(new LinkHandler(this.content));
 
         });
@@ -121,21 +126,9 @@ export class HTMLViewer extends Viewer {
 
     private startHandlingZoom() {
 
-        const htmlViewer = this;
-
         $(".polar-zoom-select")
-            .change(function() {
-                $( "select option:selected" ).each(function() {
-                    const zoom = $( this ).val();
-
-                    htmlViewer.changeScale(parseFloat(zoom));
-
-                });
-
-                // make sure the select doesn't have focus so that we can scroll.
-                log.info("Blurring the select to allow keyboard/mouse nav.");
-                $(this).blur();
-
+            .change(() => {
+                this.doZoom();
             });
     }
 
@@ -161,6 +154,25 @@ export class HTMLViewer extends Viewer {
         document.querySelectorAll(".page, iframe").forEach((element) => {
             (element as HTMLElement).style.minHeight = `${docDimensions.minHeight}px`;
         });
+
+    }
+
+    public doZoom() {
+
+        const selectElement: HTMLSelectElement | null
+            = document.querySelector(".polar-zoom-select");
+
+        if (selectElement === null) {
+            console.log("No select");
+            return;
+        }
+
+        const zoom = selectElement.options[selectElement.selectedIndex].value;
+
+        this.changeScale(parseFloat(zoom));
+
+        // make sure the select doesn't have focus so that we can scroll.
+        selectElement.blur();
 
     }
 
