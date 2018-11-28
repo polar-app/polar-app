@@ -77,10 +77,8 @@ export class DocMetaSnapshotEventListeners {
             // handlers
 
             outputListener({
-                consistency: docMetaSnapshotEvent.consistency,
-                progress: docMetaSnapshotEvent.progress,
+                ...docMetaSnapshotEvent,
                 docMetaMutations: acceptedDocMetaMutations,
-                batch: docMetaSnapshotEvent.batch
             });
 
         };

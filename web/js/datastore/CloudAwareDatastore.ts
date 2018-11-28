@@ -43,6 +43,8 @@ export class CloudAwareDatastore implements Datastore, SynchronizingDatastore {
     // we can know which snapshot failed.
     private static SNAPSHOT_ID = 0;
 
+    public readonly id = 'cloud-aware';
+
     public readonly stashDir: string;
 
     public readonly logsDir: string;
@@ -228,6 +230,20 @@ export class CloudAwareDatastore implements Datastore, SynchronizingDatastore {
 
             }
 
+            public createSnapshot(datastore: Datastore) {
+
+                return datastore.snapshot(docMetaSnapshotEvent => {
+
+                    replicatingListener(docMetaSnapshotEvent);
+
+                    if (! initialSyncCompleted) {
+                        this.onSnapshot(docMetaSnapshotEvent);
+                    }
+
+                }, errorListener);
+
+            }
+
         }
 
         let initialSyncCompleted: boolean = false;
@@ -263,6 +279,8 @@ export class CloudAwareDatastore implements Datastore, SynchronizingDatastore {
 
                 for (const docMetaMutation of docMetaSnapshotEvent.docMetaMutations) {
 
+                    // FIXME: no files are being transferred here... Just DocMeta...
+
                     if (docMetaMutation.mutationType === 'created' || docMetaMutation.mutationType === 'updated') {
                         const docMeta = await docMetaMutation.docMetaProvider();
                         await localPersistenceLayer.writeDocMeta(docMeta);
@@ -276,6 +294,10 @@ export class CloudAwareDatastore implements Datastore, SynchronizingDatastore {
 
                 }
 
+                this.synchronizationEventDispatcher.dispatchEvent({
+                    ...docMetaSnapshotEvent,
+                    dest: 'local'
+                });
 
             };
 
@@ -302,25 +324,9 @@ export class CloudAwareDatastore implements Datastore, SynchronizingDatastore {
 
         });
 
-        this.local.snapshot(docMetaSnapshotEvent => {
+        localInitialSnapshotLatch.createSnapshot(this.local);
 
-            replicatingListener(docMetaSnapshotEvent);
-
-            if (! initialSyncCompleted) {
-                localInitialSnapshotLatch.onSnapshot(docMetaSnapshotEvent);
-            }
-
-        }, errorListener);
-
-        const cloudSnapshotResultPromise = this.cloud.snapshot(docMetaSnapshotEvent => {
-
-            replicatingListener(docMetaSnapshotEvent);
-
-            if (! initialSyncCompleted) {
-                cloudInitialSnapshotLatch.onSnapshot(docMetaSnapshotEvent);
-            }
-
-        }, errorListener);
+        const cloudSnapshotResultPromise = cloudInitialSnapshotLatch.createSnapshot(this.cloud);
 
         await localInitialSnapshotLatch.latch.get();
         await cloudInitialSnapshotLatch.latch.get();

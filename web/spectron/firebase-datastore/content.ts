@@ -86,7 +86,7 @@ SpectronRenderer.run(async (state) => {
 
                 const docMutationLatch = new Latch<boolean>();
                 const docReplicationLatch = new Latch<boolean>();
-                //
+
                 // datastore.addDocMetaSnapshotEventListener((docMetaSnapshotEvent) => {
                 //
                 //     console.log("FIXME: here at least: ", docMetaSnapshotEvent);

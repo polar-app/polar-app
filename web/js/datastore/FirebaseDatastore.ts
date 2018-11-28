@@ -38,6 +38,8 @@ const log = Logger.create();
 
 export class FirebaseDatastore implements Datastore {
 
+    public readonly id = 'firebase';
+
     public readonly stashDir: string;
 
     public readonly logsDir: string;
@@ -615,6 +617,7 @@ export class FirebaseDatastore implements Datastore {
             // dispatch a progress event so we can detect how far we've been
             // loading
             docMetaSnapshotEventListener({
+                datastore: this.id,
                 consistency,
                 progress: progressTracker.incr(),
                 docMetaMutations: [docMetaMutation],
@@ -653,6 +656,7 @@ export class FirebaseDatastore implements Datastore {
         // in our situation.
 
         docMetaSnapshotEventListener({
+            datastore: this.id,
             consistency,
             progress: progressTracker.peek(),
             docMetaMutations: [],

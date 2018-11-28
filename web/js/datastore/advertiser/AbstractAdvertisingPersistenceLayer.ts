@@ -7,7 +7,8 @@ import {DocMeta} from '../../metadata/DocMeta';
 import {DocMetaFileRef, DocMetaRef} from '../DocMetaRef';
 import {DeleteResult, DocMetaSnapshotEvent, FileRef,
         DocMetaSnapshotEventListener, SnapshotResult,
-        ErrorListener} from '../Datastore';
+        ErrorListener,
+    Datastore} from '../Datastore';
 import {PersistenceEventType} from '../PersistenceEventType';
 import {Backend} from '../Backend';
 import {DatastoreFile} from '../DatastoreFile';
@@ -18,6 +19,8 @@ import {DatastoreMutation, DefaultDatastoreMutation} from '../DatastoreMutation'
 import {NULL_FUNCTION} from '../../util/Functions';
 
 export abstract class AbstractAdvertisingPersistenceLayer implements IListenablePersistenceLayer {
+
+    public readonly datastore: Datastore;
 
     public readonly stashDir: string;
 
@@ -31,6 +34,7 @@ export abstract class AbstractAdvertisingPersistenceLayer implements IListenable
     protected readonly delegate: PersistenceLayer;
 
     protected constructor(delegate: PersistenceLayer) {
+        this.datastore = delegate.datastore;
         this.delegate = delegate;
         this.stashDir = this.delegate.stashDir;
         this.logsDir = this.delegate.logsDir;

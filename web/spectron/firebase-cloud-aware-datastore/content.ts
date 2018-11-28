@@ -64,7 +64,7 @@ SpectronRenderer.run(async (state) => {
 
             });
 
-            it("Basic replication tests", async function() {
+            xit("Basic replication tests", async function() {
 
                 // first purge the firebase datastore
 
@@ -116,8 +116,8 @@ SpectronRenderer.run(async (state) => {
 
                         }
 
-
                     })().catch(err => console.error("unable to handle: ", err));
+
                 });
 
                 await initialDocLatch.get();
@@ -139,16 +139,33 @@ SpectronRenderer.run(async (state) => {
 
             });
 
-
             // FIXME make these production tests again.
 
-            it("Write a basic doc", async function() {
+            it("Write a basic doc with synchronization listener", async function() {
+
+                const cloudAwareDatastore = await createDatastore();
+                const persistenceLayer = new DefaultPersistenceLayer(cloudAwareDatastore);
+
+                cloudAwareDatastore.addSynchronizationEventListener(event => {
+                    console.log("FIXME99:  ", event);
+                });
+
+                await persistenceLayer.init();
+
+                const docMeta = MockDocMetas.createMockDocMeta();
+                await persistenceLayer.writeDocMeta(docMeta);
+
+                await persistenceLayer.stop();
+
+            });
+
+            xit("Write a basic doc", async function() {
 
                 const persistenceLayer = new DefaultPersistenceLayer(await createDatastore());
 
                 await persistenceLayer.init();
 
-                const docMeta = MockDocMetas.createWithinInitialPagemarks(fingerprint, 14);
+                const docMeta = MockDocMetas.createMockDocMeta();
 
                 const datastoreMutation = new DefaultDatastoreMutation<DocInfo>();
 
@@ -168,7 +185,7 @@ SpectronRenderer.run(async (state) => {
 
             });
 
-            it("Test an existing firebase store with existing data replicating to a new CloudDatastore.", async function() {
+            xit("Test an existing firebase store with existing data replicating to a new CloudDatastore.", async function() {
 
                 Files.removeDirectoryRecursively(PolarDataDir.get()!);
 
@@ -198,7 +215,7 @@ SpectronRenderer.run(async (state) => {
 
             });
 
-            it("Verify unsubscribe works.", async function() {
+            xit("Verify unsubscribe works.", async function() {
 
                 Files.removeDirectoryRecursively(PolarDataDir.get()!);
 
@@ -272,7 +289,7 @@ SpectronRenderer.run(async (state) => {
 
         });
 
-        DatastoreTester.test(createDatastore, false);
+        // DatastoreTester.test(createDatastore, false);
 
     });
 

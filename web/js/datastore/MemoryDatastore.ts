@@ -21,6 +21,8 @@ const log = Logger.create();
 
 export class MemoryDatastore implements Datastore {
 
+    public readonly id = 'memory';
+
     public readonly stashDir: string;
 
     public readonly filesDir: string;

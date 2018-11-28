@@ -31,6 +31,8 @@ export class PersistenceLayers {
                                     target: PersistenceLayer,
                                     listener: DocMetaSnapshotEventListener = NULL_FUNCTION): Promise<TransferResult> {
 
+        // FIXME: this should be a synchronization event listener...
+
         const result: TransferResult = {
             mutations: {
                 fingerprints: [],
@@ -55,7 +57,7 @@ export class PersistenceLayers {
                     const arrayBuffer = await Blobs.toArrayBuffer(blob);
                     const buffer = ArrayBuffers.toBuffer(arrayBuffer);
 
-                    target.writeFile(file.backend, fileRef, buffer, file.meta);
+                    await target.writeFile(file.backend, fileRef, buffer, file.meta);
 
                     result.mutations.files.push(fileRef);
                 }
@@ -117,6 +119,7 @@ export class PersistenceLayers {
             const progress = progressTracker.incr();
 
             const docMetaSnapshotEvent: DocMetaSnapshotEvent = {
+                datastore: source.datastore.id,
                 progress,
 
                 // this should be committed as we're starting with the source
@@ -189,7 +192,7 @@ export class PersistenceLayers {
                     const arrayBuffer = await Blobs.toArrayBuffer(blob);
                     const buffer = ArrayBuffers.toBuffer(arrayBuffer);
 
-                    target.persistenceLayer.writeFile(file.backend, fileRef, buffer, file.meta);
+                    await target.persistenceLayer.writeFile(file.backend, fileRef, buffer, file.meta);
 
                     result.mutations.files.push(fileRef);
                 }
@@ -249,6 +252,7 @@ export class PersistenceLayers {
             const progress = progressTracker.incr();
 
             const docMetaSnapshotEvent: DocMetaSnapshotEvent = {
+                datastore: source.persistenceLayer.datastore.id,
                 progress,
 
                 // this should be committed as we're starting with the source

@@ -1,4 +1,4 @@
-import {Datastore, DocMetaSnapshotEvent, FileMeta, FileRef, InitResult, DocMetaSnapshotEventListener, SnapshotResult} from './Datastore';
+import {Datastore, DocMetaSnapshotEvent, FileMeta, FileRef, InitResult, DocMetaSnapshotEventListener, SnapshotResult, DatastoreID} from './Datastore';
 import {Directories} from './Directories';
 import {DocMetaFileRef, DocMetaRef} from './DocMetaRef';
 import {DeleteResult} from './Datastore';
@@ -15,6 +15,8 @@ import {Datastores} from './Datastores';
  */
 export class DelegatedDatastore implements Datastore {
 
+    public readonly id: DatastoreID;
+
     public readonly directories: Directories;
 
     public readonly logsDir: string;
@@ -27,6 +29,7 @@ export class DelegatedDatastore implements Datastore {
 
     constructor(delegate: Datastore) {
         Preconditions.assertPresent(delegate, 'delegate');
+        this.id = 'delegated:' + delegate.id;
         this.delegate = delegate;
         this.directories = new Directories();
         this.logsDir = delegate.logsDir;

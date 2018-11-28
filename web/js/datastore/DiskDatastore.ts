@@ -27,6 +27,8 @@ const log = Logger.create();
 
 export class DiskDatastore implements Datastore {
 
+    public readonly id = 'disk';
+
     public readonly dataDir: string;
 
     public readonly stashDir: string;

@@ -105,6 +105,7 @@ export class Datastores {
             };
 
             listener({
+                datastore: datastore.id,
                 progress: progressTracker.incr(),
                 consistency: 'committed',
                 docMetaMutations: [docMetaMutation],
@@ -114,6 +115,7 @@ export class Datastores {
         }
 
         listener({
+            datastore: datastore.id,
             progress: progressTracker.peek(),
             consistency: 'committed',
             docMetaMutations: [],

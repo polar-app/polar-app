@@ -19,6 +19,11 @@ import {AsyncWorkQueues} from '../util/AsyncWorkQueues';
 export interface Datastore extends BinaryDatastore, WritableDatastore {
 
     /**
+     * The id of this datastore.
+     */
+    readonly id: DatastoreID;
+
+    /**
      * @Deprecated
      */
     readonly stashDir: string;
@@ -150,7 +155,6 @@ export interface FileRef {
 // noinspection TsLint
 export type FileMeta = {[key: string]: string};
 
-
 /**
  *
  * A datastore that provides events about changes being made to the datastore.
@@ -176,9 +180,16 @@ export interface SynchronizingDatastore extends Datastore {
 
 export interface SynchronizationEvent extends DocMetaSnapshotEvent {
 
+    /**
+     * The destination of the data in this synchronization event.  When the
+     * dest is 'local' we're copying from the cloud to local and when it's
+     * 'cloud' then we're copying from the local to the cloud.
+     */
+    readonly dest: DatastoreID;
+
 }
 
-export type SynchronizationEventListener = (docMetaSnapshotEvent: DocMetaSnapshotEvent) => void;
+export type SynchronizationEventListener = (synchronizationEvent: SynchronizationEvent) => void;
 
 /**
  * Mutations on binary files.
@@ -209,6 +220,8 @@ export type ErrorListener = (err: Error) => void;
  * generate zero DocMetaMutations when we're updating progress.
  */
 export interface DocMetaSnapshotEvent {
+
+    readonly datastore: DatastoreID;
 
     readonly progress: Readonly<SnapshotProgress>;
 
@@ -441,3 +454,5 @@ export class SyncDocs {
     }
 
 }
+
+export type DatastoreID = string;

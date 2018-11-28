@@ -40,7 +40,7 @@ describe('DocMetaSnapshotEventListener', function() {
         TestingTime.unfreeze();
     });
 
-    function createDocMetaSnapshotEvent(mutationType: MutationType = 'created') {
+    function createDocMetaSnapshotEvent(mutationType: MutationType = 'created'): DocMetaSnapshotEvent {
 
         const docMetaMutation: DocMetaMutation = {
             docMetaProvider: AsyncProviders.of(docMeta),
@@ -49,6 +49,7 @@ describe('DocMetaSnapshotEventListener', function() {
         };
 
         const docMetaSnapshotEvent = {
+            datastore: 'memory',
             progress,
             consistency,
             docMetaMutations: [
