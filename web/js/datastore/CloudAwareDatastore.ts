@@ -287,8 +287,7 @@ export class CloudAwareDatastore implements Datastore, SynchronizingDatastore {
                     }
 
                     if (docMetaMutation.mutationType === 'deleted') {
-                        const docInfo = await docMetaMutation.docInfoProvider();
-                        const docMetaFileRef = DocMetaFileRefs.createFromDocInfo(docInfo);
+                        const docMetaFileRef = await docMetaMutation.docMetaFileRefProvider();
                         await localPersistenceLayer.delete(docMetaFileRef);
                     }
 

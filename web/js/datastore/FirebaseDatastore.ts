@@ -6,7 +6,7 @@ import {
     DocMetaSnapshotBatch, ErrorListener
 } from './Datastore';
 import {Logger} from '../logger/Logger';
-import {DocMetaFileRef, DocMetaRef} from './DocMetaRef';
+import {DocMetaFileRef, DocMetaFileRefs, DocMetaRef} from './DocMetaRef';
 import {Directories} from './Directories';
 import {Backend} from './Backend';
 import {DatastoreFile} from './DatastoreFile';
@@ -591,8 +591,10 @@ export class FirebaseDatastore implements Datastore {
 
             const docMetaMutation: FirebaseDocMetaMutation = {
                 id,
+                fingerprint: docInfo.fingerprint,
                 docMetaProvider,
                 docInfoProvider: AsyncProviders.of(docInfo),
+                docMetaFileRefProvider: AsyncProviders.of(DocMetaFileRefs.createFromDocInfo(docInfo)),
                 mutationType
             };
 

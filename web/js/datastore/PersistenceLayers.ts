@@ -5,7 +5,7 @@ import {Backend} from './Backend';
 import {Blobs} from "../util/Blobs";
 import {ArrayBuffers} from "../util/ArrayBuffers";
 import {AsyncFunction, AsyncWorkQueue} from '../util/AsyncWorkQueue';
-import {DocMetaRef} from "./DocMetaRef";
+import {DocMetaFileRefs, DocMetaRef} from "./DocMetaRef";
 import {Datastore, DocMetaMutation, DocMetaSnapshotEvent, DocMetaSnapshotEventListener, FileRef, MutationType, SyncDoc, SyncDocMap} from './Datastore';
 import {UUIDs} from '../metadata/UUIDs';
 import {ProgressTracker, ProgressState} from '../util/ProgressTracker';
@@ -129,8 +129,10 @@ export class PersistenceLayers {
                 consistency: 'committed',
                 docMetaMutations: [
                     {
+                        fingerprint: docMeta.docInfo.fingerprint,
                         docMetaProvider: AsyncProviders.of(docMeta),
                         docInfoProvider: AsyncProviders.of(docMeta.docInfo),
+                        docMetaFileRefProvider: AsyncProviders.of(DocMetaFileRefs.createFromDocInfo(docMeta.docInfo)),
                         mutationType: 'created'
                     }
                 ]

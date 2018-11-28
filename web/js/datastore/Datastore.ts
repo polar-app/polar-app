@@ -309,10 +309,15 @@ export interface SnapshotProgress extends Readonly<ProgressState> {
 
 export interface DocMetaMutation {
 
-    readonly docMetaProvider: AsyncProvider<DocMeta>;
-    readonly docInfoProvider: AsyncProvider<IDocInfo>;
+    readonly fingerprint: string;
 
     readonly mutationType: MutationType;
+
+    readonly docMetaFileRefProvider: AsyncProvider<DocMetaFileRef>;
+
+    readonly docMetaProvider: AsyncProvider<DocMeta>;
+
+    readonly docInfoProvider: AsyncProvider<IDocInfo>;
 
 }
 

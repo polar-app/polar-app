@@ -10,6 +10,7 @@ import {UUIDs} from '../metadata/UUIDs';
 import {NULL_FUNCTION} from '../util/Functions';
 import {AsyncProviders} from '../util/Providers';
 import waitForExpect from 'wait-for-expect';
+import {DocMetaFileRefs} from './DocMetaRef';
 
 describe('DocMetaSnapshotEventListener', function() {
 
@@ -43,8 +44,10 @@ describe('DocMetaSnapshotEventListener', function() {
     function createDocMetaSnapshotEvent(mutationType: MutationType = 'created'): DocMetaSnapshotEvent {
 
         const docMetaMutation: DocMetaMutation = {
+            fingerprint: docMeta.docInfo.fingerprint,
             docMetaProvider: AsyncProviders.of(docMeta),
             docInfoProvider: AsyncProviders.of(docMeta.docInfo),
+            docMetaFileRefProvider: AsyncProviders.of(DocMetaFileRefs.createFromDocInfo(docMeta.docInfo)),
             mutationType
         };
 
