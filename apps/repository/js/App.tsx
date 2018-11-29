@@ -36,7 +36,6 @@ import {IEventDispatcher, SimpleReactor} from '../../../web/js/reactor/SimpleRea
 import {DocRepoAnkiSyncController} from '../../../web/js/controller/DocRepoAnkiSyncController';
 import {Tooltip, UncontrolledTooltip, Collapse} from 'reactstrap';
 import {CloudAuthButton} from '../../../web/js/ui/cloud_auth/CloudAuthButton';
-import {CloudAuthModal} from '../../../web/js/ui/cloud_auth/CloudAuthModal';
 
 const log = Logger.create();
 
@@ -164,9 +163,9 @@ export default class App extends React.Component<AppProps, AppState> {
                                        onChange={() => this.onFilterByTitle()}/>
                             </div>
 
-                            <div className="header-filter-box">
-                                <CloudAuthButton/>
-                            </div>
+                            {/*<div className="header-filter-box">*/}
+                                {/*/!*<CloudAuthButton/>*!/*/}
+                            {/*</div>*/}
 
                             <div className="p-1">
 
