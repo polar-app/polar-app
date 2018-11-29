@@ -1,3 +1,7 @@
+- Fixed bugs with the browser size not changing during capture browser changing
+  and also fixed some issues with it not properly accepting the browser change 
+  in some situations.  
+
 - Fixed bug in HTML zoom where the page would be truncated improperly.
 
 - Blocked amp ads during the capture but they aren't blocked during the preview 
