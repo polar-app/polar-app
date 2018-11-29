@@ -37,7 +37,7 @@ export class Controller {
         await this.model.createPagemark(pageNum, options);
     }
 
-    erasePagemarks(pageNum: number) {
+    public erasePagemarks(pageNum: number) {
         log.info("Controller sees pagemarks erased: " + pageNum);
         this.model.erasePagemark(pageNum);
     }
@@ -45,12 +45,12 @@ export class Controller {
     /**
      * Mark the given page number as read.
      */
-    erasePagemark(num: number) {
+    public erasePagemark(num: number) {
         log.info("Controller sees pagemark erased: " + num);
         this.model.erasePagemark(num);
     }
 
-    getCurrentPageElement() {
+    public getCurrentPageElement() {
 
     }
 

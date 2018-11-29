@@ -6,6 +6,7 @@ import {DocFormatFactory} from '../../docformat/DocFormatFactory';
 import {KeyEvents} from '../../KeyEvents';
 import {Elements} from '../../util/Elements';
 import {RendererAnalytics} from '../../ga/RendererAnalytics';
+import {Percentages} from '../../util/Percentages';
 
 const log = Logger.create();
 
@@ -69,7 +70,7 @@ export class PagemarkCoverageEventListener {
 
     }
 
-    async mouseListener(event: MouseEvent) {
+    private async mouseListener(event: MouseEvent) {
 
         if (!event) {
             throw new Error("no event");
@@ -84,25 +85,22 @@ export class PagemarkCoverageEventListener {
     }
 
     // https://stackoverflow.com/questions/3234256/find-mouse-position-relative-to-element
-    async onActivated(event: MouseEvent) {
-
-        // FIXME: move this to a static function that's also covered by the
-        // context menu
+    private async onActivated(event: MouseEvent) {
 
         // this should always be .page since we're using currentTarget
-        let pageElement = Elements.untilRoot(event.currentTarget, ".page");
+        const pageElement = Elements.untilRoot(event.currentTarget, ".page");
 
-        let pageHeight = pageElement.clientHeight;
+        const pageHeight = pageElement.clientHeight;
 
-        let eventTargetOffset = Elements.getRelativeOffsetRect(<HTMLElement> event.target, pageElement);
+        const eventTargetOffset = Elements.getRelativeOffsetRect(<HTMLElement> event.target, pageElement);
 
-        let mouseY = eventTargetOffset.top + event.offsetY;
+        const mouseY = eventTargetOffset.top + event.offsetY;
 
-        let percentage = (mouseY / pageHeight) * 100;
+        const percentage = Percentages.calculate(mouseY, pageHeight);
 
         log.info("percentage: ", percentage);
 
-        let pageNum = this.docFormat.getPageNumFromPageElement(pageElement);
+        const pageNum = this.docFormat.getPageNumFromPageElement(pageElement);
 
         RendererAnalytics.event({category: 'user', action: 'created-pagemark-via-keyboard'});
 

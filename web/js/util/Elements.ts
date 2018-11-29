@@ -1,5 +1,6 @@
 import {Preconditions} from '../Preconditions';
 import {Rects} from '../Rects';
+import {Rect} from '../Rect';
 
 const $ = require('jquery');
 
@@ -16,8 +17,9 @@ export class Elements {
      * @return {Rect}
      */
 
-    // FIXME: this should be getPageOffsetRect and have a relativeToParentElement which is optional.
-    public static getRelativeOffsetRect(element: HTMLElement, parentElement?: HTMLElement): any {
+    // FIXME: this should be getPageOffsetRect and have a
+    // relativeToParentElement which is optional.
+    public static getRelativeOffsetRect(element: HTMLElement, parentElement?: HTMLElement): Rect {
 
         Preconditions.assertNotNull(element, "element");
 
@@ -125,8 +127,8 @@ export class Elements {
     }
 
     /**
-     * Keep searching parent notes until we find an element matching the selector,
-     * or return null when one was not found.
+     * Keep searching parent notes until we find an element matching the
+     * selector, or return null when one was not found.
      *
      */
     public static untilRoot(element: any, selector: string): any {

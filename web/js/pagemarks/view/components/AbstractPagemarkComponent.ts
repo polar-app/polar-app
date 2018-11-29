@@ -52,7 +52,7 @@ export class AbstractPagemarkComponent extends Component {
     /**
      * @Override
      */
-    init(annotationEvent: AnnotationEvent) {
+    public init(annotationEvent: AnnotationEvent) {
 
         this.annotationEvent = annotationEvent;
         this.pagemark = annotationEvent.value;
@@ -65,7 +65,7 @@ export class AbstractPagemarkComponent extends Component {
      *
      * @param boxMoveEvent {BoxMoveEvent}
      */
-    onBoxMoved(boxMoveEvent: any) {
+    public onBoxMoved(boxMoveEvent: any) {
 
         // TODO: actually I think this belongs in the controller... not the view
         //
@@ -77,33 +77,33 @@ export class AbstractPagemarkComponent extends Component {
 
         // boxRect, containerRect, pageRect...
 
-        let annotationRect = AnnotationRects.createFromPositionedRect(boxMoveEvent.boxRect,
-                                                                      boxMoveEvent.restrictionRect);
+        const annotationRect = AnnotationRects.createFromPositionedRect(boxMoveEvent.boxRect,
+                                                                        boxMoveEvent.restrictionRect);
 
-        let rect = new PagemarkRect(annotationRect);
+        const rect = new PagemarkRect(annotationRect);
 
         // FIXME: the lastUpdated here isn't being updated. I'm going to
         // have to change the setters I think..
 
         if (boxMoveEvent.state === "completed") {
 
-            log.info("Box move completed.  Updating to trigger persistence.")
+            log.info("Box move completed.  Updating to trigger persistence.");
 
-            let pagemark = Object.assign({}, this.pagemark);
+            const pagemark = Object.assign({}, this.pagemark);
             pagemark.percentage = rect.toPercentage();
             pagemark.rect = rect;
 
-            let annotationEvent = this.annotationEvent!;
+            const annotationEvent = this.annotationEvent!;
 
-            let pageNum = annotationEvent.pageMeta.pageInfo.num;
+            const pageNum = annotationEvent.pageMeta.pageInfo.num;
 
             log.info("New pagemark: ", JSON.stringify(this.pagemark, null, "  "));
             Pagemarks.updatePagemark(annotationEvent.docMeta, pageNum, pagemark);
 
         } else {
 
-            //this.pagemark.percentage = rect.toPercentage();
-            //this.pagemark.rect = rect;
+            // this.pagemark.percentage = rect.toPercentage();
+            // this.pagemark.rect = rect;
 
             log.info("New pagemark: ", JSON.stringify(this.pagemark, null, "  "));
 
@@ -117,7 +117,7 @@ export class AbstractPagemarkComponent extends Component {
      * @Override
      *
      */
-    render() {
+    public render() {
 
         // TODO: placemenElement should be called containerElement
 
@@ -135,27 +135,27 @@ export class AbstractPagemarkComponent extends Component {
         //   way to just CREATE the element so that we can test the settings
         //   properly.
 
-        let container = this.annotationEvent!.container;
+        const container = this.annotationEvent!.container;
         Preconditions.assertNotNull(container, "container");
 
-        if(! this.pagemark) {
+        if (!this.pagemark) {
             throw new Error("Pagemark is required");
         }
 
-        if(! this.pagemark.percentage) {
+        if (!this.pagemark.percentage) {
             throw new Error("Pagemark has no percentage");
         }
 
         let templateElement = this.options.templateElement;
         let placementElement = this.options.placementElement;
 
-        if(! templateElement) {
+        if (!templateElement) {
             templateElement = container.element;
         }
 
         if (! placementElement) {
             // TODO: move this to the proper component
-            placementElement = <HTMLElement>container.element.querySelector(".canvasWrapper, .iframeWrapper");
+            placementElement = <HTMLElement> container.element.querySelector(".canvasWrapper, .iframeWrapper");
             // TODO: we need to code this directly into the caller
             log.warn("Using a default placementElement from selector: ", placementElement);
         }
@@ -167,18 +167,18 @@ export class AbstractPagemarkComponent extends Component {
         log.info("Using placementElement: ", placementElement);
 
         // a unique ID in the DOM for this element.
-        let id = this.createID();
+        const id = this.createID();
 
         let pagemarkElement = document.getElementById(id);
 
-        if(pagemarkElement === null ) {
+        if (pagemarkElement === null ) {
             // only create the pagemark if it's missing.
             pagemarkElement = document.createElement("div");
             pagemarkElement.setAttribute("id", id);
 
             placementElement.parentElement!.insertBefore(pagemarkElement, placementElement);
 
-            if(ENABLE_BOX_CONTROLLER) {
+            if (ENABLE_BOX_CONTROLLER) {
                 log.info("Creating box controller for pagemarkElement: ", pagemarkElement);
                 this.pagemarkBoxController.register({
                     target: pagemarkElement,
@@ -189,7 +189,7 @@ export class AbstractPagemarkComponent extends Component {
 
         }
 
-        let annotationEvent = this.annotationEvent!;
+        const annotationEvent = this.annotationEvent!;
 
         // set a pagemark-id in the DOM so that we can work with it when we use
         // the context menu, etc.
@@ -208,18 +208,26 @@ export class AbstractPagemarkComponent extends Component {
 
 
         // make sure we have a reliable CSS classname to work with.
-        pagemarkElement.className="pagemark annotation";
+        pagemarkElement.className = "pagemark annotation";
 
-        //pagemark.style.backgroundColor="rgb(198, 198, 198)";
-        pagemarkElement.style.backgroundColor="#00CCFF";
-        pagemarkElement.style.opacity="0.3";
+        // pagemark.style.backgroundColor="rgb(198, 198, 198)";
+        pagemarkElement.style.backgroundColor = "#00CCFF";
+        pagemarkElement.style.opacity = "0.3";
 
-        pagemarkElement.style.position="absolute";
+        pagemarkElement.style.position = "absolute";
 
         // TODO: we don't actually need the placement rect.. just the dimensions
         // of the container.
-        let placementRect = this.createPlacementRect(placementElement);
-        let pagemarkRect = this.toOverlayRect(placementRect, this.pagemark);
+        const placementRect = this.createPlacementRect(placementElement);
+        const pagemarkRect = this.toOverlayRect(placementRect, this.pagemark);
+
+        if (this.type === 'primary') {
+            console.log("FIXME: placementRect: " , placementRect);
+            console.log("FIXME: pagemarkRect (overlay rect): " , pagemarkRect);
+
+        }
+
+
 
         // TODO: what I need is a generic way to cover an element and place
         // something on top of it no matter what positioning strategy it uses.
@@ -236,13 +244,13 @@ export class AbstractPagemarkComponent extends Component {
      * @Override
      * @returns {*}
      */
-    destroy() {
+    public destroy() {
 
-        let pagemarkElement = document.getElementById(this.createID());
+        const pagemarkElement = document.getElementById(this.createID());
 
-        if(pagemarkElement) {
+        if (pagemarkElement) {
 
-            if(pagemarkElement.parentElement) {
+            if (pagemarkElement.parentElement) {
                 pagemarkElement.parentElement.removeChild(pagemarkElement);
             }
 
@@ -250,14 +258,18 @@ export class AbstractPagemarkComponent extends Component {
 
     }
 
-    createPlacementRect(placementElement: HTMLElement) {
+    private createPlacementRect(placementElement: HTMLElement) {
 
-        let positioning = Styles.positioning(placementElement);
-        let positioningPX = Styles.positioningToPX(positioning);
+        const positioning = Styles.positioning(placementElement);
+        const positioningPX = Styles.positioningToPX(positioning);
 
         // TODO: this could be cleaned up a bit...
 
-        let result = {
+        // FIXME: the offsetWidth does not properly have the width applied to
+        // it for some reason when scale is being used.  getBoundingClientRect
+        // works though.
+
+        const result = {
             left: Optional.of(positioningPX.left).getOrElse(placementElement.offsetLeft),
             top: Optional.of(positioningPX.top).getOrElse(placementElement.offsetTop),
             width: Optional.of(positioningPX.width).getOrElse(placementElement.offsetWidth),
@@ -271,17 +283,18 @@ export class AbstractPagemarkComponent extends Component {
     /**
      * Create a unique DOM ID for this pagemark.
      */
-    createID() {
+    private createID() {
         return `${this.type}-pagemark-${this.pagemark!.id}`;
     }
 
-    // FIXME: I have to improve this grammar... placement, positioned, etc..
+    // TODO: I have to improve this grammar... placement, positioned, etc..
     // which one is which.
 
-    toOverlayRect(placementRect: Rect, pagemark: Pagemark) {
-        let pagemarkRect = new PagemarkRect(pagemark.rect);
+    private toOverlayRect(placementRect: Rect, pagemark: Pagemark) {
 
-        let overlayRect = pagemarkRect.toDimensions(placementRect.dimensions);
+        const pagemarkRect = new PagemarkRect(pagemark.rect);
+
+        const overlayRect = pagemarkRect.toDimensions(placementRect.dimensions);
 
         // we have to apply the original placementRect top and left so it's
         // placed as a proper overlay
@@ -297,9 +310,8 @@ export class AbstractPagemarkComponent extends Component {
 }
 
 export interface ElementOptions {
-    templateElement?: HTMLElement,
-    placementElement?: HTMLElement
-};
-
+    templateElement?: HTMLElement;
+    placementElement?: HTMLElement;
+}
 
 type PagemarkComponentType = 'primary' | 'thumbnail';

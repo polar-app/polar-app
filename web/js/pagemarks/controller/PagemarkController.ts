@@ -63,7 +63,7 @@ export class PagemarkController {
 
     }
 
-    onCreatePagemark(triggerEvent: TriggerEvent) {
+    private onCreatePagemark(triggerEvent: TriggerEvent) {
 
         RendererAnalytics.event({category: 'user', action: 'created-pagemark'});
 
@@ -83,12 +83,12 @@ export class PagemarkController {
 
             log.info("Creating box on pageElement: ", pageElement);
 
-            let pageNum = this.docFormat.getPageNumFromPageElement(pageElement);
+            const pageNum = this.docFormat.getPageNumFromPageElement(pageElement);
 
             // get the point within the element itself..
-            let pageElementPoint = triggerEvent.points.pageOffset;
+            const pageElementPoint = triggerEvent.points.pageOffset;
 
-            let boxRect = Rects.createFromBasicRect({
+            const boxRect = Rects.createFromBasicRect({
                 left: pageElementPoint.x,
                 top: pageElementPoint.y,
                 width: 300,
@@ -99,7 +99,7 @@ export class PagemarkController {
 
             // get a rect for the element... we really only need the dimensions
             // though.. not the width and height.
-            let containerRect = Rects.createFromBasicRect({
+            const containerRect = Rects.createFromBasicRect({
                 left: 0,
                 top: 0,
                 width: pageElement.offsetWidth,
