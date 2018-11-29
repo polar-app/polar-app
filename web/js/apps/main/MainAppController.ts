@@ -54,13 +54,7 @@ export class MainAppController {
 
     public async cmdCaptureWebPageWithBrowser() {
 
-        const browser = BrowserRegistry.DEFAULT;
-
-        const browserProfile = BrowserProfiles.toBrowserProfile(browser, 'DEFAULT');
-
-        const capture = new Capture(browserProfile);
-
-        const captureResult = await capture.start();
+        const captureResult = await Capture.trigger();
 
         await this.handleLoadDoc(captureResult.path);
 

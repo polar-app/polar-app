@@ -1,4 +1,4 @@
-import {CaptureOpts} from './CaptureOpts';
+import {CaptureOpts, DefaultCaptureOpts} from './CaptureOpts';
 import {WebContents, WebRequest} from 'electron';
 import {CaptureResult} from './CaptureResult';
 import {Logger} from '../logger/Logger';
@@ -14,6 +14,9 @@ import {Functions} from '../util/Functions';
 import {Promises} from '../util/Promises';
 import {ContentCaptureExecutor} from './ContentCaptureExecutor';
 import {ResolvablePromise} from '../util/ResolvablePromise';
+import BrowserRegistry from './BrowserRegistry';
+import {BrowserProfiles} from './BrowserProfiles';
+import {Objects} from '../util/Objects';
 
 const log = Logger.create();
 
@@ -45,11 +48,10 @@ export class Capture {
 
     private driver?: WebContentsDriver;
 
-    constructor(browserProfile: BrowserProfile,
-                captureOpts: CaptureOpts = {amp: true}) {
+    constructor(browserProfile: BrowserProfile, captureOpts: Partial<CaptureOpts> = {}) {
 
         this.browserProfile = Preconditions.assertNotNull(browserProfile, "browser");
-        this.captureOpts = captureOpts;
+        this.captureOpts = Objects.defaults(captureOpts, new DefaultCaptureOpts());
 
         this.pendingWebRequestsListener = new PendingWebRequestsListener();
         this.debugWebRequestsListener = new DebugWebRequestsListener();
@@ -88,6 +90,13 @@ export class Capture {
                 .catch(err => log.error("Could not load URL: " + event.link, err));
 
         });
+
+        if (this.captureOpts.link) {
+
+            this.browserProfile.navigation.navigated.dispatchEvent({
+                link: this.captureOpts.link
+            });
+        }
 
         return this.result;
 
@@ -215,6 +224,15 @@ export class Capture {
             this.pendingWebRequestsListener.register(webRequestReactor);
 
         }
+
+    }
+
+    public static async trigger(captureOpts: Partial<CaptureOpts> = {}): Promise<CaptureResult> {
+
+        const browser = BrowserRegistry.DEFAULT;
+        const browserProfile = BrowserProfiles.toBrowserProfile(browser, 'DEFAULT');
+        const capture = new Capture(browserProfile, captureOpts);
+        return capture.start();
 
     }
 

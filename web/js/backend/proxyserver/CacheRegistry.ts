@@ -31,7 +31,7 @@ export class CacheRegistry {
      * @param path
      * @return {Promise<CachedRequestsHolder>}
      */
-    async registerFile(path: string) {
+    public async registerFile(path: string) {
 
         const cacheEntriesHolder = await CacheEntriesFactory.createEntriesFromFile(path);
 
@@ -44,7 +44,7 @@ export class CacheRegistry {
         }
 
         forDict(cacheEntriesHolder.cacheEntries, (key, cacheEntry) => {
-            let cacheMeta = this.register(cacheEntry);
+            const cacheMeta = this.register(cacheEntry);
             cachedRequestsHolder.cachedRequests[cacheMeta.url] = cacheMeta;
         });
 
@@ -59,13 +59,13 @@ export class CacheRegistry {
      * registered.
      *
      */
-    register(cacheEntry: CacheEntry) {
+    public register(cacheEntry: CacheEntry) {
 
         Preconditions.assertNotNull(cacheEntry, "cacheEntry");
         Preconditions.assertNotNull(cacheEntry.statusCode, "cacheEntry.statusCode");
         Preconditions.assertNotNull(cacheEntry.headers, "cacheEntry.headers");
 
-        let url = cacheEntry.url;
+        const url = cacheEntry.url;
 
         Preconditions.assertNotNull(url, "url");
 
@@ -74,9 +74,7 @@ export class CacheRegistry {
         this.registry[url] = cacheEntry;
 
         return new CachedRequest({
-            url,
-            proxyRules: `http=localhost:${this.proxyServerConfig.port}`,
-            proxyBypassRules: "<local>"
+            url
         });
 
     }

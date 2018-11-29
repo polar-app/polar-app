@@ -11,6 +11,8 @@ import serveStatic from 'serve-static';
 import {ResourceRegistry} from './ResourceRegistry';
 import * as http from "http";
 import * as https from "https";
+import {Capture} from '../../capture/Capture';
+import {CaptureOpts} from '../../capture/CaptureOpts';
 
 const log = Logger.create();
 
@@ -35,14 +37,17 @@ export class Webserver {
 
     public async start(): Promise<void> {
 
-        express.static.mime.define({'text/html': ['chtml']});
+        express.static.mime.define({ 'text/html': ['chtml'] });
 
         this.app = express();
 
         this.app.use(serveStatic(this.webserverConfig.dir));
+        this.app.use(express.json());       // to support JSON-encoded bodies
+        this.app.use(express.urlencoded()); // to support URL-encoded bodies
 
         this.registerFilesHandler();
         this.registerResourcesHandler();
+        this.registerCaptureHandler();
 
         if (this.webserverConfig.useSSL) {
 
@@ -69,7 +74,8 @@ export class Webserver {
             this.server!.once('listening', () => resolve());
         });
 
-        // log.info(`Webserver up and running on port ${this.webserverConfig.port} with config: `, this.webserverConfig);
+        // log.info(`Webserver up and running on port
+        // ${this.webserverConfig.port} with config: `, this.webserverConfig);
 
     }
 
@@ -114,8 +120,6 @@ export class Webserver {
 
     }
 
-
-
     private registerResourcesHandler() {
 
         this.app!.get(/.*/, (req: express.Request, res: express.Response) => {
@@ -138,6 +142,38 @@ export class Webserver {
             } catch (e) {
                 log.error(`Could not handle serving file. (req.path=${req.path})`, e);
             }
+
+        });
+
+    }
+
+    private registerCaptureHandler() {
+
+        const path = "/rest/v1/capture/trigger";
+
+        this.app!.options(path, (req: express.Request, res: express.Response) => {
+
+            log.info("handling OPTIONS: ", req.headers);
+
+            // TODO: this chrome extension URL will change in the future.
+
+            res.header('Access-Control-Allow-Origin', 'chrome-extension://nplbojledjdlbankapinifindadkdpnj');
+            res.header('Access-Control-Allow-Headers', 'Content-Type');
+            res.header('Access-Control-Allow-Methods', 'POST, OPTIONS');
+
+            res.status(200).send({});
+
+        });
+
+        this.app!.post(path, (req: express.Request, res: express.Response) => {
+
+            const captureOpts = <Partial<CaptureOpts>> req.body;
+
+            log.info("Handling request for capture trigger: ", captureOpts);
+
+            Capture.trigger(captureOpts);
+
+            res.status(200).send({});
 
         });
 
