@@ -149,7 +149,7 @@ export class BrowserApp {
 
     private onTriggerCapture() {
 
-        WebContentsNotifiers.dispatchEvent(BrowserAppEvent.TRIGGER_CAPTURE, {});
+       WebContentsNotifiers.dispatchEvent(BrowserAppEvent.TRIGGER_CAPTURE, {});
 
     }
 
@@ -157,10 +157,7 @@ export class BrowserApp {
 
         const browser = BrowserRegistry[browserName];
 
-        // TODO: make methods for each events type adn call
-        // BrowserAppEvents.configureWindow
         WebContentsNotifiers.dispatchEvent(BrowserAppEvent.CONFIGURE_WINDOW, browser);
-
 
     }
 
@@ -178,6 +175,10 @@ export class BrowserApp {
      * @param url
      */
     private onWebviewNavigated(url: string) {
+
+        if (! isPresent(url) || url.startsWith("file:")) {
+            return;
+        }
 
         this.changeURL(url);
         this.createProgressBar();

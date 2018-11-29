@@ -25,6 +25,7 @@ import {Files} from '../../util/Files';
 import {WebserverCerts} from '../../backend/webserver/WebserverCerts';
 import process from "process";
 import {AppPath} from '../../electron/app_path/AppPath';
+import {MainAPI} from './MainAPI';
 
 declare var global: any;
 
@@ -140,6 +141,9 @@ export class MainApp {
         log.info("Running with process.args: ", JSON.stringify(process.argv));
 
         const mainAppController = new MainAppController(fileLoader, webserver);
+
+        const mainAppAPI = new MainAPI(mainAppController, webserver);
+        mainAppAPI.start();
 
         const mainAppService = new MainAppService(mainAppController);
         mainAppService.start();

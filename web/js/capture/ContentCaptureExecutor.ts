@@ -71,6 +71,7 @@ export class ContentCaptureExecutor {
         return {
             path: phzPath
         };
+
     }
 
 }

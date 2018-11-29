@@ -20,6 +20,7 @@ import {PDFImporter} from '../repository/importers/PDFImporter';
 import {PersistenceLayer} from '../../datastore/PersistenceLayer';
 import {Messenger} from '../../electron/messenger/Messenger';
 import {TriggerBrowserLoad} from '../browser/BrowserApp';
+import {CaptureOpts} from '../../capture/CaptureOpts';
 
 const log = Logger.create();
 
@@ -52,10 +53,9 @@ export class MainAppController {
 
     }
 
-    public async cmdCaptureWebPageWithBrowser() {
+    public async cmdCaptureWebPageWithBrowser(captureOpts: Partial<CaptureOpts> = {}) {
 
-        const captureResult = await Capture.trigger();
-
+        const captureResult = await Capture.trigger(captureOpts);
         await this.handleLoadDoc(captureResult.path);
 
     }

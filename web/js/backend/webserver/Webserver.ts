@@ -6,17 +6,18 @@ import {Logger} from '../../logger/Logger';
 import {Preconditions} from '../../Preconditions';
 import {Paths} from '../../util/Paths';
 
-import express, {Express} from 'express';
+import express, {Express, RequestHandler} from 'express';
 import serveStatic from 'serve-static';
 import {ResourceRegistry} from './ResourceRegistry';
 import * as http from "http";
 import * as https from "https";
 import {Capture} from '../../capture/Capture';
 import {CaptureOpts} from '../../capture/CaptureOpts';
+import {PathParams} from 'express-serve-static-core';
 
 const log = Logger.create();
 
-export class Webserver {
+export class Webserver implements WebRequestHandler {
 
     private readonly webserverConfig: WebserverConfig;
     private readonly fileRegistry: FileRegistry;
@@ -47,7 +48,6 @@ export class Webserver {
 
         this.registerFilesHandler();
         this.registerResourcesHandler();
-        this.registerCaptureHandler();
 
         if (this.webserverConfig.useSSL) {
 
@@ -81,6 +81,22 @@ export class Webserver {
 
     public stop() {
         this.server!.close();
+    }
+
+    public get(type: PathParams, ...handlers: RequestHandler[]): void {
+        this.app!.get(type, ...handlers);
+    }
+
+    public options(type: PathParams, ...handlers: RequestHandler[]): void {
+        this.app!.options(type, ...handlers);
+    }
+
+    public post(type: PathParams, ...handlers: RequestHandler[]): void {
+        this.app!.post(type, ...handlers);
+    }
+
+    public put(type: PathParams, ...handlers: RequestHandler[]): void {
+        this.app!.put(type, ...handlers);
     }
 
     private registerFilesHandler() {
@@ -147,36 +163,13 @@ export class Webserver {
 
     }
 
-    private registerCaptureHandler() {
+}
 
-        const path = "/rest/v1/capture/trigger";
+export interface WebRequestHandler {
 
-        this.app!.options(path, (req: express.Request, res: express.Response) => {
-
-            log.info("Handling OPTIONS: ", req.headers);
-
-            // TODO: this chrome extension URL will change in the future.
-
-            res.header('Access-Control-Allow-Origin', 'chrome-extension://nplbojledjdlbankapinifindadkdpnj');
-            res.header('Access-Control-Allow-Headers', 'Content-Type');
-            res.header('Access-Control-Allow-Methods', 'POST, OPTIONS');
-
-            res.status(200).send({});
-
-        });
-
-        this.app!.post(path, (req: express.Request, res: express.Response) => {
-
-            const captureOpts = <Partial<CaptureOpts>> req.body;
-
-            log.info("Handling request for capture trigger: ", captureOpts);
-
-            Capture.trigger(captureOpts);
-
-            res.status(200).send({});
-
-        });
-
-    }
+    get(type: PathParams, ...handlers: RequestHandler[]): void;
+    options(type: PathParams, ...handlers: RequestHandler[]): void;
+    post(type: PathParams, ...handlers: RequestHandler[]): void;
+    put(type: PathParams, ...handlers: RequestHandler[]): void;
 
 }

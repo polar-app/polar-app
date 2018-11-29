@@ -17,6 +17,7 @@ import {ResolvablePromise} from '../util/ResolvablePromise';
 import BrowserRegistry from './BrowserRegistry';
 import {BrowserProfiles} from './BrowserProfiles';
 import {Objects} from '../util/Objects';
+import {Latch} from '../util/Latch';
 
 const log = Logger.create();
 
@@ -42,7 +43,7 @@ export class Capture {
 
     public readonly webRequestReactors: WebRequestReactor[] = [];
 
-    private result = new ResolvablePromise<CaptureResult>();
+    private result = new Latch<CaptureResult>();
 
     private webContents?: WebContents;
 
@@ -98,7 +99,7 @@ export class Capture {
             });
         }
 
-        return this.result;
+        return this.result.get();
 
     }
 
@@ -196,13 +197,14 @@ export class Capture {
 
     public async executeContentCapture() {
 
-        const result = await ContentCaptureExecutor.execute(this.webContents!, this.driver!.browserProfile);
+        const captureResult
+            = await ContentCaptureExecutor.execute(this.webContents!, this.driver!.browserProfile);
 
         if (this.browserProfile.destroy) {
             Optional.of(this.driver).when(driver => driver.destroy());
         }
 
-        this.result.resolve(result);
+        this.result.resolve(captureResult);
 
     }
 
