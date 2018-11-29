@@ -70,7 +70,7 @@ export class DocRepoAnkiSyncController {
 
             this.syncBarProgress.dispatchEvent({
                 task: 'anki-sync',
-                message: message,
+                message,
                 percentage: syncProgress.percentage
             });
 

@@ -43,8 +43,8 @@ export class Webserver implements WebRequestHandler {
         this.app = express();
 
         this.app.use(serveStatic(this.webserverConfig.dir));
-        this.app.use(express.json());       // to support JSON-encoded bodies
-        this.app.use(express.urlencoded()); // to support URL-encoded bodies
+        this.app.use(express.json());
+        this.app.use(express.urlencoded());
 
         this.registerFilesHandler();
         this.registerResourcesHandler();
