@@ -113,7 +113,7 @@ export class StandardWebContentsDriver implements WebContentsDriver {
         this.browserWindow = browserWindow;
         this.webContents = webContents;
 
-        StandardWebContentsDriver.initWebContentsEvents(webContents, this.browserProfile);
+        this.initWebContentsEvents(webContents);
 
         if ( ! browserWindowOptions.show) {
             await BrowserWindows.onceReadyToShow(browserWindow);
@@ -123,12 +123,13 @@ export class StandardWebContentsDriver implements WebContentsDriver {
 
     }
 
-    private static async initWebContentsEvents(webContents: WebContents, browserProfile: BrowserProfile) {
+    private async initWebContentsEvents(webContents: WebContents) {
 
         webContents.on('dom-ready', (e) => {
+
             log.info("dom-ready: ", e);
 
-            StandardWebContentsDriver.configureWebContents(webContents, browserProfile)
+            StandardWebContentsDriver.configureWebContents(webContents, this.browserProfile)
                 .catch((err: Error) => log.error("Could not configure web contents: ", err));
 
         });
@@ -151,6 +152,8 @@ export class StandardWebContentsDriver implements WebContentsDriver {
         // we're not reconfiguring it when it's changing navigation...
 
         const url = webContents.getURL();
+
+        console.log("Configuring webContents with URL: " + url);
 
         // we need to mute by default especially if the window is hidden.
         log.info("Muting audio...");
