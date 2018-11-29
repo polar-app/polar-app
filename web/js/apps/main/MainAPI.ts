@@ -30,9 +30,10 @@ export class MainAPI {
 
         this.webRequestHandler.options(path, (req: express.Request, res: express.Response) => {
 
-            log.info("Handling OPTIONS: ", req.headers);
+            log.info("Handling OPTIONS request: ", req.headers);
 
-            // TODO: this chrome extension URL will change in the future.
+            // TODO: this chrome extension URL will change in the future when we
+            // push it to the app store I think.
 
             res.header('Access-Control-Allow-Origin', ALLOWED_ORIGIN);
             res.header('Access-Control-Allow-Headers', 'Content-Type');
@@ -44,14 +45,13 @@ export class MainAPI {
 
         this.webRequestHandler.post(path, (req: express.Request, res: express.Response) => {
 
-            const captureOpts = <Partial<CaptureOpts>> req.body;
+            log.info("Handling POST request for capture trigger: ", req.body);
 
-            log.info("Handling request for capture trigger: ", captureOpts);
+            const captureOpts = <Partial<CaptureOpts>> req.body;
 
             res.status(200).send({});
 
             this.mainAppController.cmdCaptureWebPageWithBrowser(captureOpts);
-
 
         });
 
