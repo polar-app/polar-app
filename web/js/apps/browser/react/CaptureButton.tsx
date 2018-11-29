@@ -1,10 +1,12 @@
 import * as React from 'react';
 import {Button, InputGroupAddon} from 'reactstrap';
 import {Optional} from '../../../util/ts/Optional';
+import {ISimpleReactor} from '../../../reactor/SimpleReactor';
+import {NavigationEvent} from '../BrowserApp';
 
-export class CaptureButton extends React.Component<Props, any> {
+export class CaptureButton extends React.Component<IProps, any> {
 
-    constructor(props: Props, context: any) {
+    constructor(props: IProps, context: any) {
         super(props, context);
         this.onTriggerCapture = this.onTriggerCapture.bind(this);
     }
@@ -36,10 +38,9 @@ export class CaptureButton extends React.Component<Props, any> {
         Optional.of(this.props.onTriggerCapture).map(callback => callback());
     }
 
-
 }
 
-interface Props {
+interface IProps {
 
     disabled?: boolean;
     onTriggerCapture?: () => void;

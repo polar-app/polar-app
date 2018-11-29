@@ -305,6 +305,9 @@ class GuestBrowserView implements BrowserView {
 
     private webContents?: WebContents;
 
+    // the nuimber of times this page has been configured.
+    private nrConfigured = 0;
+
     constructor(driver: AbstractWebviewWebContentsDriver,
                 window: Electron.BrowserWindow) {
 
@@ -329,6 +332,12 @@ class GuestBrowserView implements BrowserView {
         // capturing and tells it about browser emulation, width, etc.
         await StandardWebContentsDriver.configureWebContents(this.webContents!, browserProfile);
 
+        if (this.nrConfigured > 0) {
+            log.info("Reloading page after configure");
+            this.webContents!.reload();
+        }
+
+        ++this.nrConfigured;
     }
 
     private async waitForWebContents() {

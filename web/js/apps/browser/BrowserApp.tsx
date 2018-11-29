@@ -20,11 +20,13 @@ export class BrowserApp {
      */
     private loadedURL: boolean = false;
 
+    private progressBar: ProgressBar | undefined;
+
     public async start() {
 
         await DocumentReadyStates.waitFor(document, 'complete');
 
-        const navigationReactor = new SimpleReactor<NavigationEventType>();
+        const navigationReactor = new SimpleReactor<NavigationEvent>();
 
         ReactDOM.render(
             <BrowserNavBar onLoadURL={(url) => this.onLoadURL(url)}
@@ -42,44 +44,52 @@ export class BrowserApp {
             content.insertCSS('html, body { overflow: hidden !important; }');
 
             content.addEventListener('will-navigate', (event: Electron.WillNavigateEvent) => {
-                this.webviewNavigated(event.url);
+                this.onWebviewNavigated(event.url);
             });
 
-            let progressBar: ProgressBar | undefined;
-
             ['did-start-loading', 'did-stop-loading', 'did-fail-load', 'dom-ready' ]
-                .map(eventListenerName => content.addEventListener(eventListenerName, () => this.refreshTitle()));
+                .map(eventListenerName => content.addEventListener(eventListenerName, () => this.refreshTitle(eventListenerName)));
 
-            // Corresponds to the points in time when the spinner of the tab
-            // starts spinning.
-            content.addEventListener('did-start-loading', () => {
+            ['did-start-loading', 'did-frame-navigate' ]
+                .map(eventListenerName => content.addEventListener(eventListenerName, (event) => {
 
-                if (! this.loadedURL) {
+                // TODO: refactor this so it only works on the top level
+                // navigation changes but we weren't able to do this because
+                // the event we're receiving is generic.
+
+                const currentURL = content.getURL();
+
+                this.onWebviewNavigated(currentURL);
+
+                if (this.loadedURL) {
                     return;
                 }
 
-                progressBar = ProgressBar.create(true);
-                document.body.scrollTo(0, 0);
+                if (currentURL && currentURL !== '' && ! currentURL.startsWith("file:")) {
+                    this.loadedURL = true;
+                } else {
+                    return;
+                }
 
-                this.startResizingWebview();
+                navigationReactor.dispatchEvent({url: currentURL, type: 'did-start-loading'});
 
-                navigationReactor.dispatchEvent('did-start-loading');
-
-            });
+            }));
 
             // Corresponds to the points in time when the spinner of the tab
             // stops spinning.
-            content.addEventListener('did-stop-loading', () => {
+            content.addEventListener('did-stop-loading', (event) => {
 
                 if (! this.loadedURL) {
                     return;
                 }
 
-                if (progressBar) {
-                    progressBar.destroy();
+                if (this.progressBar) {
+                    this.progressBar.destroy();
                 }
 
-                navigationReactor.dispatchEvent('did-stop-loading');
+                const currentURL = content.getURL();
+
+                navigationReactor.dispatchEvent({url: currentURL, type: 'did-stop-loading'});
 
             });
 
@@ -154,21 +164,45 @@ export class BrowserApp {
 
     }
 
-    private webviewNavigated(url: string) {
-
-        // FIXME: use a method to get this data..
-
-        const element = document.querySelector("#url-bar")! as HTMLInputElement;
-        element.value = url;
-
-    }
-
     private onReload() {
 
         const content = this.getContentHost();
 
         this.onLoadURL(content.getURL());
 
+    }
+
+    /**
+     * Should be called every time we change the high level URL being viewed.
+     *
+     * @param url
+     */
+    private onWebviewNavigated(url: string) {
+
+        this.changeURL(url);
+        this.createProgressBar();
+        this.scrollPageToTop();
+        this.startResizingWebview();
+
+    }
+
+    private scrollPageToTop() {
+        // scroll to the top of the page...
+        document.body.scrollTo(0, 0);
+    }
+
+    private createProgressBar() {
+        // create a progress bar so we know that the page is loading
+
+        if (! this.progressBar) {
+            this.progressBar = ProgressBar.create(true);
+        }
+
+    }
+
+    private changeURL(url: string) {
+        const element = document.querySelector("#url-bar")! as HTMLInputElement;
+        element.value = url;
     }
 
     private startResizingWebview() {
@@ -181,7 +215,7 @@ export class BrowserApp {
 
     }
 
-    private refreshTitle() {
+    private refreshTitle(eventName: string) {
         const contentHost = this.getContentHost();
         document.title = contentHost.getTitle();
     }
@@ -189,6 +223,20 @@ export class BrowserApp {
     private getContentHost() {
         return document.querySelector("#content")! as Electron.WebviewTag;
     }
+
+}
+
+export interface NavigationEvent {
+
+    /**
+     * The URL at the time of navigation.
+     */
+    readonly url: string;
+
+    /**
+     * The type of navigation (start or stop loading).
+     */
+    readonly type: NavigationEventType;
 
 }
 

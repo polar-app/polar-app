@@ -5,7 +5,7 @@ import {BrowserConfigurationInputGroup} from './BrowserConfigurationInputGroup';
 import {CaptureButton} from './CaptureButton';
 import {URLBar} from './URLBar';
 import {ISimpleReactor} from '../../../reactor/SimpleReactor';
-import {NavigationEventType} from '../BrowserApp';
+import {NavigationEventType, NavigationEvent} from '../BrowserApp';
 import {RefreshButton} from './RefreshButton';
 
 export class BrowserNavBar extends React.Component<IProps, IState> {
@@ -15,7 +15,22 @@ export class BrowserNavBar extends React.Component<IProps, IState> {
 
         this.state = {
             loadedURL: false
-        }
+        };
+
+    }
+
+
+    public componentDidMount(): void {
+
+        this.props.navigationReactor.addEventListener(event => {
+
+            if (event.type === 'did-start-loading') {
+                this.setState({
+                    loadedURL: true
+                });
+            }
+
+        });
 
     }
 
@@ -52,7 +67,7 @@ export class BrowserNavBar extends React.Component<IProps, IState> {
             loadedURL: true
         });
 
-        if(this.props.onLoadURL) {
+        if (this.props.onLoadURL) {
             this.props.onLoadURL(url);
         }
 
@@ -72,7 +87,7 @@ interface IProps {
     onLoadURL?: (url: string) => void;
     onTriggerCapture?: () => void;
     onBrowserChanged?: (browserName: string) => void;
-    navigationReactor: ISimpleReactor<NavigationEventType>;
+    navigationReactor: ISimpleReactor<NavigationEvent>;
 
     /**
      * Called when the reload button was clicked.

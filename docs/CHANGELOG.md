@@ -1,3 +1,7 @@
+- Disabling amp for now until we have a better solution on how to show the user
+  that an AMP page is displayed and how to disable / enable it.  Otherwise its
+  confusing and often the amp page is WORSE not better.
+
 - Fixed bugs with the browser size not changing during capture browser changing
   and also fixed some issues with it not properly accepting the browser change 
   in some situations.  

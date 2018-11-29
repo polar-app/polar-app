@@ -22,5 +22,5 @@ export interface CaptureOpts {
 }
 
 export class DefaultCaptureOpts implements CaptureOpts {
-    public readonly amp: boolean = true;
+    public readonly amp: boolean = false;
 }

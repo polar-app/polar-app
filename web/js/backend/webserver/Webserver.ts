@@ -153,7 +153,7 @@ export class Webserver {
 
         this.app!.options(path, (req: express.Request, res: express.Response) => {
 
-            log.info("handling OPTIONS: ", req.headers);
+            log.info("Handling OPTIONS: ", req.headers);
 
             // TODO: this chrome extension URL will change in the future.
 

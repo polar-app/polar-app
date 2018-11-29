@@ -153,7 +153,7 @@ export class StandardWebContentsDriver implements WebContentsDriver {
 
         const url = webContents.getURL();
 
-        console.log("Configuring webContents with URL: " + url);
+        log.info("Configuring webContents with URL: " + url);
 
         // we need to mute by default especially if the window is hidden.
         log.info("Muting audio...");
