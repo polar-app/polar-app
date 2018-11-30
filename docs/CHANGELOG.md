@@ -1,3 +1,7 @@
+# 1.1.0
+
+- Support for our new chrome extension.
+
 - Disabling amp for now until we have a better solution on how to show the user
   that an AMP page is displayed and how to disable / enable it.  Otherwise its
   confusing and often the amp page is WORSE not better.
