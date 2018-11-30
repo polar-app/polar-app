@@ -110,10 +110,10 @@ export class MainApp {
         // mainSession.cookies.get({}, (err, cookies) => {
         //
         //     cookies.filter(cookie => {
-        //         log.debug("cookie: " , cookie)
-        //     })
+        //         console.log("Found cookie: " , cookie);
+        //     });
         //
-        // })
+        // });
 
         const cacheInterceptorService =
             new CachingStreamInterceptorService(cacheRegistry,

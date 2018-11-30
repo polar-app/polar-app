@@ -7,10 +7,16 @@ import {Files} from '../../../web/js/util/Files';
 import {Logger} from '../../../web/js/logger/Logger';
 import {WhatsNewContent} from './WhatsNewContent';
 import {WhatsNewModal} from './WhatsNewModal';
+import Cookies from 'js-cookie';
+import {ConditionalSetting} from '../../../web/js/ui/util/ConditionalSetting';
+import {Renderer} from 'react-dom';
+import {RendererAnalytics} from '../../../web/js/ga/RendererAnalytics';
 
 const log = Logger.create();
 
 export class WhatsNewComponent extends React.Component<IProps, IState> {
+
+    private readonly conditionalSetting = new ConditionalSetting('polar-whats-new-version');
 
     constructor(props: IProps, context: any) {
         super(props, context);
@@ -19,7 +25,6 @@ export class WhatsNewComponent extends React.Component<IProps, IState> {
 
         this.handleVersionState = this.handleVersionState.bind(this);
         this.isNewVersion = this.isNewVersion.bind(this);
-        this.writeVersion = this.writeVersion.bind(this);
 
         this.state = {
             open: false
@@ -50,58 +55,25 @@ export class WhatsNewComponent extends React.Component<IProps, IState> {
 
         const isNewVersion = await this.isNewVersion();
 
+        RendererAnalytics.event({category: 'app', action: 'whats-new-displayed'});
+
         this.setState({
             open: isNewVersion
         });
-
-        await this.writeVersion();
 
     }
 
     private async isNewVersion(): Promise<boolean> {
 
-        // TODO: migrate this to use a LocalSettings component
-        //
-        //
+        const version = Version.get();
 
-        const path = WhatsNewComponent.getDataPath();
+        const result =
+            this.conditionalSetting.accept(value => value.getOrElse('') !== version);
 
-        if (await Files.existsAsync(path)) {
+        this.conditionalSetting.set(version);
 
-            const data = await Files.readFileAsync(path);
-            const versionData: VersionData = JSON.parse(data.toString("utf-8"));
+        return result;
 
-            log.info("Got version data: ", versionData);
-
-            return Version.get() !== versionData.version;
-
-        } else {
-            // file doesn't exist.. obviously new data.
-            return true;
-        }
-
-    }
-
-    private async writeVersion() {
-
-        const path = WhatsNewComponent.getDataPath();
-
-        const versionData: VersionData = {version: Version.get()};
-
-        log.info("Writing version data to: " + path);
-
-        await Files.writeFileAsync(path, JSON.stringify(versionData));
-
-    }
-
-    private static getDataPath() {
-
-        // TODO: this is a major major hack but the renderer has no reliable way
-        // to get the userData path from the renderer. In the future I need to
-        // migrate to cookies for this...
-        const userData = require('electron').remote.app.getPath('userData');
-
-        return FilePaths.join(userData, 'whats-new.json');
     }
 
 }
