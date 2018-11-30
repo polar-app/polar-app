@@ -61,7 +61,6 @@ export class DiskDatastore implements Datastore {
     }
 
     public async stop() {
-        // noop
     }
 
     /**

@@ -22,11 +22,12 @@ import {DocMetas} from '../metadata/DocMetas';
 import {Logger} from "../logger/Logger";
 import {DocMetaComparisonIndex} from './DocMetaComparisonIndex';
 import {PersistenceLayers, SyncOrigin} from './PersistenceLayers';
-import {DocMetaSnapshotEventListeners} from './DocMetaSnapshotEventListeners';
+import {DocMetaSnapshotEventListeners, EventDeduplicator} from './DocMetaSnapshotEventListeners';
 import {Latch} from '../util/Latch';
 import {NULL_FUNCTION} from '../util/Functions';
 import {isUpperCase} from 'tslint/lib/utils';
 import {IEventDispatcher, SimpleReactor} from '../reactor/SimpleReactor';
+import {Preconditions} from '../Preconditions';
 
 const log = Logger.create();
 
@@ -268,7 +269,7 @@ export class CloudAwareDatastore implements Datastore, SynchronizingDatastore {
         // THEIR snapshots directly then I think we do not need to do anything
         // special.
 
-        const replicatingListener
+        const eventDeduplicator: EventDeduplicator
             = DocMetaSnapshotEventListeners.createDeduplicatedListener(docMetaSnapshotEvent => {
 
             const handleSnapshotSync = async () => {
@@ -282,10 +283,13 @@ export class CloudAwareDatastore implements Datastore, SynchronizingDatastore {
 
                 for (const docMetaMutation of docMetaSnapshotEvent.docMetaMutations) {
 
-                    // FIXME: no files are being transferred here... Just DocMeta...
+                    // FIXME: no files are being transferred here... Just
+                    // DocMeta...
 
                     if (docMetaMutation.mutationType === 'created' || docMetaMutation.mutationType === 'updated') {
+                        console.log("FIXME888: writing docMetaMutation: ", docMetaMutation);
                         const docMeta = await docMetaMutation.docMetaProvider();
+                        Preconditions.assertPresent(docMeta, "No docMeta in replication listener: ");
                         await localPersistenceLayer.writeDocMeta(docMeta);
                     }
 
@@ -326,6 +330,8 @@ export class CloudAwareDatastore implements Datastore, SynchronizingDatastore {
 
         });
 
+        const replicatingListener = eventDeduplicator.listener;
+
         localInitialSnapshotLatch.createSnapshot(this.local);
 
         const cloudSnapshotResultPromise = cloudInitialSnapshotLatch.createSnapshot(this.cloud);
@@ -344,8 +350,8 @@ export class CloudAwareDatastore implements Datastore, SynchronizingDatastore {
         };
 
         if (isPrimarySnapshot) {
-            await PersistenceLayers.synchronizeFromSyncDocs(localSyncOrigin, cloudSyncOrigin, deduplicatedListener);
-            await PersistenceLayers.synchronizeFromSyncDocs(cloudSyncOrigin, localSyncOrigin, deduplicatedListener);
+            await PersistenceLayers.synchronizeFromSyncDocs(localSyncOrigin, cloudSyncOrigin, deduplicatedListener.listener);
+            await PersistenceLayers.synchronizeFromSyncDocs(cloudSyncOrigin, localSyncOrigin, deduplicatedListener.listener);
         }
 
         initialSyncCompleted = true;

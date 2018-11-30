@@ -8,6 +8,7 @@ import {Datastores} from './Datastores';
 import {IEventDispatcher, SimpleReactor} from '../reactor/SimpleReactor';
 import {ProgressTrackers} from "../util/ProgressTrackers";
 import {IDocInfo} from '../metadata/DocInfo';
+import {DocMetas} from '../metadata/DocMetas';
 
 /**
  */
@@ -31,8 +32,8 @@ export class SnapshotManager {
                 {
                     fingerprint: docMetaFileRef.fingerprint,
                     // for deletes do not reference the DocInfo or the DocMeta
-                    docMetaProvider: async () => null!,
-                    docInfoProvider: async () => null!,
+                    docMetaProvider: async () => Promise.reject("No reads during delete allowed"),
+                    docInfoProvider: async () => Promise.reject("No reads during delete allowed"),
                     docMetaFileRefProvider: async () => docMetaFileRef,
                     mutationType: 'deleted'
                 }
@@ -44,7 +45,7 @@ export class SnapshotManager {
 
     }
 
-    public onWrite(fingerprint: string, docInfo: IDocInfo): void {
+    public onWrite(fingerprint: string, data: string, docInfo: IDocInfo): void {
 
         const docMetaSnapshotEvent: DocMetaSnapshotEvent = {
             datastore: this.datastore.id,
@@ -53,7 +54,7 @@ export class SnapshotManager {
             docMetaMutations: [
                 {
                     fingerprint,
-                    docMetaProvider: async () => null!,
+                    docMetaProvider: async () => DocMetas.deserialize(data),
                     docInfoProvider: async () => docInfo,
                     docMetaFileRefProvider: async () => DocMetaFileRefs.createFromDocInfo(docInfo),
                     // TODO: we don't know right now if it's created or updated
@@ -69,6 +70,10 @@ export class SnapshotManager {
 
     public addDocMetaSnapshotEventListener(docMetaSnapshotEventListener: DocMetaSnapshotEventListener) {
         this.docMetaSnapshotEventDispatcher.addEventListener(docMetaSnapshotEventListener);
+    }
+
+    public stop() {
+        this.docMetaSnapshotEventDispatcher.clear();
     }
 
 }

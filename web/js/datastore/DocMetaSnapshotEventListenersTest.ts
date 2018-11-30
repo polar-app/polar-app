@@ -31,9 +31,11 @@ describe('DocMetaSnapshotEventListener', function() {
 
         emitted = [];
 
-        deduplicatedListener = DocMetaSnapshotEventListeners.createDeduplicatedListener(emittedEvent => {
+        const eventDeduplicator = DocMetaSnapshotEventListeners.createDeduplicatedListener(emittedEvent => {
             emitted.push(emittedEvent);
         });
+
+        deduplicatedListener = eventDeduplicator.listener;
 
     });
 

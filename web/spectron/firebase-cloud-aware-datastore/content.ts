@@ -31,7 +31,7 @@ import {NULL_FUNCTION} from '../../js/util/Functions';
 import {PersistenceLayers} from '../../js/datastore/PersistenceLayers';
 
 mocha.setup('bdd');
-mocha.timeout(10000);
+mocha.timeout(20000);
 PolarDataDir.useFreshDirectory('.test-firebase-cloud-aware-datastore');
 
 async function createDatastore() {
@@ -99,7 +99,8 @@ SpectronRenderer.run(async (state) => {
 
                     (async () => {
 
-                        console.log("Got snapshot: ", docMetaSnapshotEvent);
+                        console.log("FIXME: 999 Got snapshot from: " + docMetaSnapshotEvent.batch,
+                                    docMetaSnapshotEvent);
 
                         for (const docMutation of docMetaSnapshotEvent.docMetaMutations) {
                             const docInfo = await docMutation.docInfoProvider();
@@ -146,16 +147,25 @@ SpectronRenderer.run(async (state) => {
                 const cloudAwareDatastore = await createDatastore();
                 const persistenceLayer = new DefaultPersistenceLayer(cloudAwareDatastore);
 
-                cloudAwareDatastore.addSynchronizationEventListener(event => {
-                    console.log("FIXME99:  ", event);
+                cloudAwareDatastore.addSynchronizationEventListener(docMetaSnapshotEvent => {
+                    console.log("FIXME: 9999 Got snapshot from: " + docMetaSnapshotEvent.datastore,
+                                docMetaSnapshotEvent);
+
                 });
 
                 await persistenceLayer.init();
 
-                const docMeta = MockDocMetas.createMockDocMeta();
+                const docMeta = MockDocMetas.createMockDocMeta('0x002');
                 await persistenceLayer.writeDocMeta(docMeta);
 
+                const firebasePersistenceLayer = new DefaultPersistenceLayer(new FirebaseDatastore());
+                await firebasePersistenceLayer.init();
+                await firebasePersistenceLayer.writeDocMeta(MockDocMetas.createMockDocMeta('0x003'));
+
+                await Promises.waitFor(5000);
+
                 await persistenceLayer.stop();
+                await firebasePersistenceLayer.stop();
 
             });
 

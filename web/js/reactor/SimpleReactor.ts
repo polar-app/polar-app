@@ -54,6 +54,11 @@ export interface ISimpleReactor<V> {
     addEventListener(listener: Listener<V>): Listener<V>;
     removeEventListener(listener: Listener<V>): boolean;
     dispatchEvent(value: V): void;
+
+    /**
+     * Remove all event listeners.
+     */
+    clear(): void;
 }
 
 export interface IEventDispatcher<V> extends ISimpleReactor<V> {
