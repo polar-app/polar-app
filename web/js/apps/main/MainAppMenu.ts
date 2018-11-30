@@ -404,6 +404,12 @@ export class MainAppMenu {
                     visible: this.platformSupportsUpdates(),
                     click: ManualUpdates.checkForUpdates
                 },
+
+                {type: 'separator'},
+
+                { label: 'Donate',
+                    click: () => shell.openExternal('https://opencollective.com/polar-bookshelf/donate') },
+
                 {type: 'separator'},
                 { label: 'Discord',
                     click: () => shell.openExternal('https://discord.gg/GT8MhA6') },

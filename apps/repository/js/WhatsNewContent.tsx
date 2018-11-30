@@ -20,6 +20,117 @@ export class WhatsNewContent extends React.Component<IProps, IState> {
         return (
 
             <div>
+                <h2>1.1.0 - Nov 29, 2018</h2>
+
+                <p className="text-center">
+
+                    <img style={{maxHeight: '200px'}} className="img-fluid" src={EmbeddedImages.POLAR_LOGO}></img>
+
+                    <span style={{fontSize: '85px', margin: '15px'}}>+</span>
+
+                    <img style={{maxHeight: '200px'}} className="img-fluid" src={EmbeddedImages.CHROME_LOGO}></img>
+
+                </p>
+
+                <h3>Polar 1.1 - Chrome Extension Support!</h3>
+
+                <p>
+                Polar 1.1 is fresh out the door and a lot of amazing features and
+                bug fixes are enabled in this release.
+                </p>
+
+                <p>
+                The biggest feature by far is our support for a chrome extension
+                that allows you to send the URL of your active tab to Polar
+                for content capture.
+                </p>
+
+                <p>
+                    This makes it a lot easier to work with Polar as you can
+                    just click a button in Chrome and have it sent to Polar.
+                </p>
+
+                <p>
+                    We plan on adding support for Safari, and Firefox in the
+                    future but we're taking things one step at a time.
+                </p>
+
+                <h3>Other features in 1.1 include:</h3>
+
+                <li>
+                Disabling amp for now until we have a better solution on how to show the user
+                that an AMP page is displayed and how to disable / enable it.  Otherwise its
+                confusing and often the amp page is WORSE not better.
+                </li>
+
+                <li>
+                Fixed bugs with the browser size not changing during capture browser changing
+                and also fixed some issues with it not properly accepting the browser change
+                in some situations.
+                </li>
+
+                <li>
+                Fixed bug in HTML zoom where the page would be truncated improperly.
+                </li>
+
+                <li>
+                Blocked amp ads during the capture but they aren't blocked during the preview
+                at the moment.
+                </li>
+
+                <li>
+                "Fixed" nasty anti-aliasing bug in electron by blocking amp ads. They were
+                annoying anyway but for some reason they were breaking chrome rendering -
+                probably due to some web component nonsense.
+                </li>
+
+                <li>
+                Implemented a new strategy with the vertical height algorithm in the capture
+                system to revert it back to auto instead of a fixed max-height.  Works a lot
+                better now.
+                </li>
+
+                <li>
+                Date/times no longer include ' ago' to be a bit more concise.
+                </li>
+
+                <li>
+                Added small FAQ entry to enable Anki sync.
+                </li>
+
+                <li>
+                Fixed a bug where we could select text and not properly work with elements.
+                </li>
+
+                <li>
+                Renderer analytics didn't understand that a callback without an error wasn't
+                  a failure.
+                </li>
+
+                <li>
+                Upgraded a number of important react packages:
+                  react react-dom react-moment react-select @types/react-table
+                  @types/react-select @types/react @types/prop-types @types/node-fetch
+                </li>
+
+                <li>
+                removed inversify package (were not using it)
+                </li>
+
+                <li>
+                latest fontawesome
+                </li>
+
+                <li>
+                latest node-fetch
+                </li>
+
+                <li>
+                fixed issue with electron-builder where it was forcing us to upgrade to the
+                latest version for each release.
+                </li>
+
+
                 <h2>1.0.14 - Nov 17, 2018</h2>
 
                 <p className="text-center">
