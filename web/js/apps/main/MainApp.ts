@@ -56,20 +56,14 @@ export class MainApp {
         });
 
         // share the disk datastore with the remote.
-
+        // TODO: move this so that we don't expose 'global' here.
         global.datastore = this.datastore;
 
-        AppPath.set();
-
         const webserverConfig = WebserverConfig.create({
-            dir: app.getAppPath(),
+            dir: AppPath.get(),
             port: WEBSERVER_PORT,
             host: 'localapp.getpolarized.io',
             useSSL: false,
-            // ssl: {
-            //     cert: WebserverCerts.CERT,
-            //     key: WebserverCerts.KEY
-            // }
         });
 
         const fileRegistry = new FileRegistry(webserverConfig);

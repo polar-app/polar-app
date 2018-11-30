@@ -33,10 +33,6 @@ export class AppPath {
             throw new Error("Call set from main context.");
         }
 
-        if (! appPath) {
-            appPath = app.getAppPath();
-        }
-
         global.appPath = appPath;
 
     }

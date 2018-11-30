@@ -7,7 +7,9 @@ import {MainAppController} from './MainAppController';
 
 const log = Logger.create();
 
-const ALLOWED_ORIGIN = 'chrome-extension://nplbojledjdlbankapinifindadkdpnj';
+const ALLOWED_ORIGIN = ['chrome-extension://nplbojledjdlbankapinifindadkdpnj',
+                        'chrome-extension://jkfdkjomocoaljglgddnmhcbolldcafd' ]
+                       .join(', ');
 
 export class MainAPI {
 

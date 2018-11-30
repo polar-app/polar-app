@@ -13,6 +13,8 @@ import {FilePaths} from '../../js/util/FilePaths';
 import {Files} from '../../js/util/Files';
 import {MainAppController} from '../../js/apps/main/MainAppController';
 import {PolarDataDir} from '../../js/test/PolarDataDir';
+import {AppPath} from '../../js/electron/app_path/AppPath';
+import fs from 'fs';
 
 const log = Logger.create();
 
@@ -20,6 +22,8 @@ PolarDataDir.useFreshDirectory('.polar-main-app');
 
 let polarDir: PolarDir | undefined;
 let mainAppController: MainAppController | undefined;
+
+AppPath.set(FilePaths.resolve(__dirname, "..", "..", ".."));
 
 async function createWindow(): Promise<BrowserWindow> {
 

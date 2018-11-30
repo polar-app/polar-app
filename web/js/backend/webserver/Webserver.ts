@@ -38,6 +38,8 @@ export class Webserver implements WebRequestHandler {
 
     public async start(): Promise<void> {
 
+        log.info("Running with config: ", this.webserverConfig);
+
         express.static.mime.define({ 'text/html': ['chtml'] });
 
         this.app = express();
