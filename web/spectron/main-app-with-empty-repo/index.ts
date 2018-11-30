@@ -9,10 +9,14 @@ import waitForExpect from 'wait-for-expect';
 import {Logger} from '../../js/logger/Logger';
 import {MainAppController} from '../../js/apps/main/MainAppController';
 import BrowserWindow = Electron.BrowserWindow;
+import {AppPath} from '../../js/electron/app_path/AppPath';
+import {FilePaths} from '../../js/util/FilePaths';
 
 const log = Logger.create();
 
 let mainAppController: MainAppController | undefined;
+
+AppPath.set(FilePaths.resolve(__dirname, "..", "..", ".."));
 
 async function createWindow(): Promise<BrowserWindow> {
 

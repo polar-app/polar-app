@@ -18,10 +18,12 @@ import {Promises} from '../../js/util/Promises';
 import {wait} from 'dom-testing-library';
 import {AppInstance} from '../../js/electron/framework/AppInstance';
 import {AppInstances} from '../../js/electron/framework/AppInstances';
+import {AppPath} from '../../js/electron/app_path/AppPath';
 
 const log = Logger.create();
 
 PolarDataDir.useFreshDirectory('.polar-main-app-with-import');
+AppPath.set(FilePaths.resolve(__dirname, "..", "..", ".."));
 
 async function createWindow(): Promise<BrowserWindow> {
 
@@ -34,7 +36,7 @@ async function createWindow(): Promise<BrowserWindow> {
     const mainApp = new MainApp(datastore);
 
     const mainAppState = await mainApp.start();
-    
+
     return mainAppState.mainWindow;
 
 }
