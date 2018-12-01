@@ -586,6 +586,7 @@ export class FirebaseDatastore implements Datastore {
 
             const docMetaProvider = AsyncProviders.memoize(async () => {
                 const data = await this.getDocMeta(docInfo.fingerprint);
+                Preconditions.assertPresent(data, "No data for docMeta with fingerprint: " + docInfo.fingerprint);
                 return DocMetas.deserialize(data!);
             });
 

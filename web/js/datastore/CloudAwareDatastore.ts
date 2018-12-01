@@ -282,17 +282,17 @@ export class CloudAwareDatastore implements Datastore, SynchronizingDatastore {
                     // FIXME: no files are being transferred here... Just
                     // DocMeta...
 
-                    // if (docMetaMutation.mutationType === 'created' || docMetaMutation.mutationType === 'updated') {
-                    //     console.log("FIXME888: writing docMetaMutation: ", docMetaMutation);
-                    //     const docMeta = await docMetaMutation.docMetaProvider();
-                    //     Preconditions.assertPresent(docMeta, "No docMeta in replication listener: ");
-                    //     await localPersistenceLayer.writeDocMeta(docMeta);
-                    // }
-                    //
-                    // if (docMetaMutation.mutationType === 'deleted') {
-                    //     const docMetaFileRef = await docMetaMutation.docMetaFileRefProvider();
-                    //     await localPersistenceLayer.delete(docMetaFileRef);
-                    // }
+                    if (docMetaMutation.mutationType === 'created' || docMetaMutation.mutationType === 'updated') {
+                        console.log("FIXME888: writing docMetaMutation: ", docMetaMutation, docMetaSnapshotEvent);
+                        const docMeta = await docMetaMutation.docMetaProvider();
+                        Preconditions.assertPresent(docMeta, "No docMeta in replication listener: ");
+                        await localPersistenceLayer.writeDocMeta(docMeta);
+                    }
+
+                    if (docMetaMutation.mutationType === 'deleted') {
+                        const docMetaFileRef = await docMetaMutation.docMetaFileRefProvider();
+                        await localPersistenceLayer.delete(docMetaFileRef);
+                    }
 
                 }
 

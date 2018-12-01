@@ -51,32 +51,54 @@ export class MainAppMenu {
 
         app.on('browser-window-focus', (event: Electron.Event, browserWindow: BrowserWindow) => {
 
-             const meta = BrowserWindowRegistry.get(browserWindow.id);
+            const meta = BrowserWindowRegistry.get(browserWindow.id);
 
-             const isViewer: boolean
-                 = isPresent(meta) &&
-                   meta!.tags &&
-                   meta!.tags[WINDOW_TYPE] === 'viewer';
+            const isViewer: boolean
+                = isPresent(meta) &&
+                meta!.tags &&
+                meta!.tags[WINDOW_TYPE] === 'viewer';
 
-             const menu = Menu.getApplicationMenu()!;
+            const menu = Menu.getApplicationMenu()!;
 
-             const viewMenu = Menus.find(menu.items, 'view');
-             const viewMenuItems = Menus.submenu(viewMenu);
-             const toggleAnnotationSidebar = Menus.find(viewMenuItems, 'toggle-annotation-sidebar');
+            // **** handle toggle-annotation-sidebar
 
-             Menus.setVisible(toggleAnnotationSidebar!, isViewer);
+            function handleToggleAnnotationSidebar() {
+                const viewMenu = Menus.find(menu.items, 'view');
+                const viewMenuItems = Menus.submenu(viewMenu);
+                const toggleAnnotationSidebar = Menus.find(viewMenuItems, 'toggle-annotation-sidebar');
 
-             const annotateMenu = Menus.find(menu.items, 'annotate');
+                Menus.setVisible(toggleAnnotationSidebar!, isViewer);
+            }
 
-             if (annotateMenu) {
+            handleToggleAnnotationSidebar();
 
-                 const annotateMenuItems = Menus.submenu(annotateMenu!)!;
+            // **** handle sync-flashcards-to-anki
 
-                 annotateMenuItems.forEach(current => {
-                     Menus.setEnabled(current, isViewer);
-                 });
+            function handleSyncFlashcardsToAnki() {
 
-             }
+                const toolsMenu = Menus.find(menu.items, 'tools');
+                const toolsMenuItems = Menus.submenu(toolsMenu);
+                const syncFlashcardsToAnkiMenuItem = Menus.find(toolsMenuItems, 'sync-flashcards-to-anki');
+
+                Menus.setVisible(syncFlashcardsToAnkiMenuItem!, ! isViewer);
+
+            }
+
+            handleSyncFlashcardsToAnki();
+
+            // **** handle annotate menu
+
+            const annotateMenu = Menus.find(menu.items, 'annotate');
+
+            if (annotateMenu) {
+
+                const annotateMenuItems = Menus.submenu(annotateMenu!)!;
+
+                annotateMenuItems.forEach(current => {
+                    Menus.setEnabled(current, isViewer);
+                });
+
+            }
 
         });
 
@@ -359,6 +381,7 @@ export class MainAppMenu {
 
     private createToolsMenuTemplate() {
         return {
+            id: 'tools',
             label: 'Tools',
             submenu: [
                 {
@@ -366,6 +389,7 @@ export class MainAppMenu {
                     click: () => Promises.executeLogged(AppLauncher.launchRepositoryApp)
                 },
                 {
+                    id: 'sync-flashcards-to-anki',
                     label: 'Sync Flashcards to Anki',
                     click: () => {
                         Messenger.postMessage( {

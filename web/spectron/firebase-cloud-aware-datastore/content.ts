@@ -50,7 +50,7 @@ SpectronRenderer.run(async (state) => {
 
         const fingerprint = "0x001";
 
-        xdescribe('Cloud datastore tests', function() {
+        describe('Cloud datastore tests', function() {
 
 
             beforeEach(async function() {
@@ -61,7 +61,7 @@ SpectronRenderer.run(async (state) => {
                 await firebaseDatastore.init();
 
                 console.log("Purging...");
-                await Datastores.purge(firebaseDatastore);
+                await Datastores.purge(firebaseDatastore, purgeEvent => console.log("Purged: ", purgeEvent));
                 console.log("Purging...done");
                 await firebaseDatastore.stop();
 
@@ -172,7 +172,7 @@ SpectronRenderer.run(async (state) => {
 
             });
 
-            xit("Write a basic doc", async function() {
+            it("Write a basic doc", async function() {
 
                 const persistenceLayer = new DefaultPersistenceLayer(await createDatastore());
 
@@ -302,7 +302,7 @@ SpectronRenderer.run(async (state) => {
 
         });
 
-        DatastoreTester.test(createDatastore, false);
+        // DatastoreTester.test(createDatastore, false);
 
     });
 
