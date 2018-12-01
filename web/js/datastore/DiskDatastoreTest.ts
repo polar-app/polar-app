@@ -49,7 +49,7 @@ describe("DiskDatastore", async function() {
     it("init dataDir directory on init()", async function() {
 
         const dataDir = FilePaths.join(tmpdir, 'disk-datastore.test');
-        Files.removeDirectoryRecursively(dataDir);
+        await Files.removeDirectoryRecursivelyAsync(dataDir);
 
         GlobalDataDir.set(dataDir);
         const diskDatastore = new DiskDatastore();
@@ -141,7 +141,7 @@ describe("DiskDatastore", async function() {
     it("init and test paths", async function() {
 
         const dataDir = FilePaths.join(tmpdir, 'test-paths');
-        Files.removeDirectoryRecursively(dataDir);
+        await Files.removeDirectoryRecursivelyAsync(dataDir);
 
         GlobalDataDir.set(dataDir);
         const diskDatastore = new DiskDatastore();
@@ -159,7 +159,7 @@ describe("DiskDatastore", async function() {
     it("test async exists function", async function() {
 
         const dataDir = FilePaths.join(tmpdir, 'this-file-does-not-exist');
-        Files.removeDirectoryRecursively(dataDir);
+        await Files.removeDirectoryRecursivelyAsync(dataDir);
 
         assert.equal(fs.existsSync(dataDir), false);
         assert.equal(await Files.existsAsync(dataDir), false);
@@ -173,7 +173,7 @@ describe("DiskDatastore", async function() {
         assert.ok(await Files.existsAsync(path), "No file found from: " + process.cwd());
 
         const dataDir = FilePaths.join(tmpdir, 'datastore-stash-backend');
-        Files.removeDirectoryRecursively(dataDir);
+        await Files.removeDirectoryRecursivelyAsync(dataDir);
 
         GlobalDataDir.set(dataDir);
         const diskDatastore = new DiskDatastore();

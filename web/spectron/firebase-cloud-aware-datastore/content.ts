@@ -254,7 +254,7 @@ SpectronRenderer.run(async (state) => {
 
             it("Test6: Verify unsubscribe works.", async function() {
 
-                Files.removeDirectoryRecursively(PolarDataDir.get()!);
+                await Files.removeDirectoryRecursivelyAsync(PolarDataDir.get()!);
 
                 const targetPersistenceLayer = new DefaultPersistenceLayer(await createDatastore());
                 await targetPersistenceLayer.init();

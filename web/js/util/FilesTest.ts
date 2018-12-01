@@ -268,7 +268,7 @@ describe('Files', function() {
 
             const nestedDirPath = FilePaths.join(tmpdir, 'base-of-nested-dirs', 'first', 'second', 'third');
 
-            await Files.removeDirectoryRecursively(baseDir);
+            await Files.removeDirectoryRecursivelyAsync(baseDir);
             await Files.rmdirAsync(baseDir);
 
             // await Files.createDirAsync(nestedDirPath)
