@@ -156,7 +156,7 @@ export class Datastores {
 
             const docMetaFileRef = DocMetaFileRefs.createFromDocInfo(docMeta.docInfo);
 
-            datastore.delete(docMetaFileRef);
+            await datastore.delete(docMetaFileRef);
 
             ++completed;
 

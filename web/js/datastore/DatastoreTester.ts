@@ -18,6 +18,7 @@ import {DocInfo} from '../metadata/DocInfo';
 import {DefaultDatastoreMutation} from './DatastoreMutation';
 import {func} from 'prop-types';
 import {Latch} from '../util/Latch';
+import {Datastores} from './Datastores';
 
 const rimraf = require('rimraf');
 
@@ -78,6 +79,10 @@ export class DatastoreTester {
 
             afterEach(async function() {
                 console.log("===== after test ====");
+
+                await Datastores.purge(persistenceLayer.datastore,
+                                       purgeEvent => console.log("Purged: ", purgeEvent));
+
                 await persistenceLayer.stop();
             });
 

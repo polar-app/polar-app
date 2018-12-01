@@ -68,7 +68,7 @@ SpectronRenderer.run(async (state) => {
 
             });
 
-            it("null test to make sure we have no documents on startup", async function() {
+            it("Test1: null test to make sure we have no documents on startup", async function() {
 
                 const persistenceLayer = new DefaultPersistenceLayer(await createDatastore());
 
@@ -81,7 +81,7 @@ SpectronRenderer.run(async (state) => {
 
             });
 
-            xit("Basic replication tests", async function() {
+            xit("Test2: Basic replication tests", async function() {
 
                 // first purge the firebase datastore
 
@@ -159,14 +159,28 @@ SpectronRenderer.run(async (state) => {
 
             // FIXME make these production tests again.
 
-            xit("Write a basic doc with synchronization listener", async function() {
+            it("Test3: Write a basic doc with synchronization listener", async function() {
 
                 const cloudAwareDatastore = await createDatastore();
                 const persistenceLayer = new DefaultPersistenceLayer(cloudAwareDatastore);
 
+                const latch0 = new Latch<boolean>();
+                const latch1 = new Latch<boolean>();
+
                 cloudAwareDatastore.addSynchronizationEventListener(docMetaSnapshotEvent => {
-                    console.log("FIXME: 9999 Got snapshot from: " + docMetaSnapshotEvent.datastore,
-                                docMetaSnapshotEvent);
+
+                    if (docMetaSnapshotEvent.consistency !== 'committed' ) {
+                        return;
+                    }
+
+                    for (const docMetaMutation of docMetaSnapshotEvent.docMetaMutations) {
+                        if (docMetaMutation.fingerprint === '0x002') {
+                            latch0.resolve(true);
+                        }
+                        if (docMetaMutation.fingerprint === '0x003') {
+                            latch1.resolve(true);
+                        }
+                    }
 
                 });
 
@@ -179,14 +193,15 @@ SpectronRenderer.run(async (state) => {
                 await firebasePersistenceLayer.init();
                 await firebasePersistenceLayer.writeDocMeta(MockDocMetas.createMockDocMeta('0x003'));
 
-                await Promises.waitFor(5000);
+                await latch0.get();
+                await latch1.get();
 
                 await persistenceLayer.stop();
                 await firebasePersistenceLayer.stop();
 
             });
 
-            xit("Write a basic doc", async function() {
+            it("Test4: Write a basic doc", async function() {
 
                 const persistenceLayer = new DefaultPersistenceLayer(await createDatastore());
 
@@ -212,27 +227,27 @@ SpectronRenderer.run(async (state) => {
 
             });
 
-            // FIXME: this is the main one I need to focus on now.
-            xit("Test an existing firebase store with existing data replicating to a new CloudDatastore.", async function() {
+            it("Test5: Test an existing firebase store with existing data replicating to a new CloudDatastore.", async function() {
 
-                Files.removeDirectoryRecursively(PolarDataDir.get()!);
+                let err: Error | undefined;
+
+                const errorListener = (error: Error) => {
+                    console.error("Got error:  ", err);
+                    err = error;
+                };
 
                 const sourcePersistenceLayer = new DefaultPersistenceLayer(new FirebaseDatastore());
-                await sourcePersistenceLayer.init();
-                const docMeta = MockDocMetas.createWithinInitialPagemarks(fingerprint, 14);
-                await sourcePersistenceLayer.write(fingerprint, docMeta);
+                await sourcePersistenceLayer.init(errorListener);
+                await sourcePersistenceLayer.writeDocMeta(MockDocMetas.createMockDocMeta(fingerprint));
                 await sourcePersistenceLayer.stop();
 
                 const targetPersistenceLayer = new DefaultPersistenceLayer(await createDatastore());
 
-                let err: Error | undefined;
-                await targetPersistenceLayer.init(error => {
-                    err = error;
-                });
+                await targetPersistenceLayer.init(errorListener);
 
                 await waitForExpect(async () => {
                     const dataDir = PolarDataDir.get();
-                    const path = FilePaths.join(dataDir!, '0x001', 'state.json');
+                    const path = FilePaths.join(dataDir!, fingerprint, 'state.json');
                     assert.ok(await Files.existsAsync(path), "Path does not exist: " + path);
                 });
 
@@ -243,7 +258,7 @@ SpectronRenderer.run(async (state) => {
 
             });
 
-            xit("Verify unsubscribe works.", async function() {
+            it("Test6: Verify unsubscribe works.", async function() {
 
                 Files.removeDirectoryRecursively(PolarDataDir.get()!);
 
@@ -254,9 +269,6 @@ SpectronRenderer.run(async (state) => {
 
                 const docMetaFiles = await targetPersistenceLayer.getDocMetaFiles();
                 assert.equal(docMetaFiles.length, 0);
-
-                // FIXME: right now we ahve to manually create the snapshot to trigger replication...
-                // it's not done in init
 
                 let gotEventAfterUnsubscribe = false;
                 let unsubscribed = false;
@@ -284,6 +296,8 @@ SpectronRenderer.run(async (state) => {
                 await sidePersistenceLayer.writeDocMeta(MockDocMetas.createMockDocMeta());
                 await sidePersistenceLayer.stop();
 
+                // TODO: unfortunately, we HAVE to sleep here because we're
+                // waiting for any lagging events
                 await Promises.waitFor(5000);
 
                 assert.ok(gotEventAfterUnsubscribe === false, "Nope.. we still got the event");
@@ -292,7 +306,7 @@ SpectronRenderer.run(async (state) => {
 
 
             // FIXME: this wont' work yet due to the snapshot issue.
-            xit("Test a remote write and a local replication to disk", async function() {
+            xit("Test7: Test a remote write and a local replication to disk", async function() {
 
                 const sourcePersistenceLayer = new DefaultPersistenceLayer(new FirebaseDatastore());
                 await sourcePersistenceLayer.init();
@@ -317,7 +331,7 @@ SpectronRenderer.run(async (state) => {
 
         });
 
-        // DatastoreTester.test(createDatastore, false);
+        DatastoreTester.test(createDatastore, false);
 
     });
 

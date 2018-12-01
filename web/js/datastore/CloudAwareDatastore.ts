@@ -76,7 +76,7 @@ export class CloudAwareDatastore implements Datastore, SynchronizingDatastore {
 
         await Promise.all([this.cloud.init(errorListener), this.local.init(errorListener)]);
 
-        this.primarySnapshot = await this.snapshot(NULL_FUNCTION);
+        this.primarySnapshot = await this.snapshot(NULL_FUNCTION, errorListener);
 
         return {};
 
@@ -91,6 +91,7 @@ export class CloudAwareDatastore implements Datastore, SynchronizingDatastore {
         }
 
         await Promise.all([this.cloud.stop(), this.local.stop()]);
+
     }
 
     public async contains(fingerprint: string): Promise<boolean> {
@@ -144,7 +145,6 @@ export class CloudAwareDatastore implements Datastore, SynchronizingDatastore {
             this.docMetaComparisonIndex.remove(docMetaFileRef.fingerprint);
 
         });
-
 
         await DatastoreMutations.executeBatchedWrite(datastoreMutation,
                                                      async (remoteCoordinator) => {
@@ -205,6 +205,8 @@ export class CloudAwareDatastore implements Datastore, SynchronizingDatastore {
 
             public async handle(docMetaSnapshotEvent: DocMetaSnapshotEvent) {
 
+                console.log("FIXME handling in InitialSnapshotLatch: ", docMetaSnapshotEvent);
+
                 const syncDocs = await DocMetaSnapshotEvents.toSyncDocs(docMetaSnapshotEvent);
                 SyncDocMaps.putAll(this.syncDocMap, syncDocs);
 
@@ -231,7 +233,7 @@ export class CloudAwareDatastore implements Datastore, SynchronizingDatastore {
 
                 return datastore.snapshot(docMetaSnapshotEvent => {
 
-                    replicatingListener(docMetaSnapshotEvent);
+                    synchronizingListener(docMetaSnapshotEvent);
 
                     if (! initialSyncCompleted) {
                         this.onSnapshot(docMetaSnapshotEvent);
@@ -265,7 +267,7 @@ export class CloudAwareDatastore implements Datastore, SynchronizingDatastore {
         // THEIR snapshots directly then I think we do not need to do anything
         // special.
 
-        const replicatingEventDeduplicator: EventDeduplicator
+        const synchronizingEventDeduplicator: EventDeduplicator
             = DocMetaSnapshotEventListeners.createDeduplicatedListener(docMetaSnapshotEvent => {
 
             const handleSnapshotSync = async () => {
@@ -320,13 +322,13 @@ export class CloudAwareDatastore implements Datastore, SynchronizingDatastore {
 
             handleEvent()
                 .catch(err => {
-                    log.error(`Unable to handle delta snapshot for snapshot: ${snapshotID}`, err);
+                    log.error(`Unable to handle synchronizing snapshot ${snapshotID}`, err);
                     errorListener(err);
                 });
 
         }, this.docMetaComparisonIndex);
 
-        const replicatingListener = replicatingEventDeduplicator.listener;
+        const synchronizingListener = synchronizingEventDeduplicator.listener;
 
         localInitialSnapshotLatch.createSnapshot(this.local);
 
@@ -346,8 +348,10 @@ export class CloudAwareDatastore implements Datastore, SynchronizingDatastore {
         };
 
         if (isPrimarySnapshot) {
+            console.log("FIXME999: doign sync");
             await PersistenceLayers.synchronizeFromSyncDocs(localSyncOrigin, cloudSyncOrigin, deduplicatedListener.listener);
             await PersistenceLayers.synchronizeFromSyncDocs(cloudSyncOrigin, localSyncOrigin, deduplicatedListener.listener);
+            console.log("FIXME999: doign syncdone");
         }
 
         initialSyncCompleted = true;

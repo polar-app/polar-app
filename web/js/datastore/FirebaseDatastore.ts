@@ -534,7 +534,7 @@ export class FirebaseDatastore implements Datastore {
 
             if (snapshot.metadata.fromCache && snapshot.metadata.hasPendingWrites) {
                 datastoreMutation.written.resolve(true);
-                log.debug("Got written...");
+                log.debug("Got written for: ", ref);
 
             }
 
@@ -548,7 +548,7 @@ export class FirebaseDatastore implements Datastore {
 
                 datastoreMutation.written.resolve(true);
                 datastoreMutation.committed.resolve(true);
-                log.debug("Got committed...");
+                log.debug("Got committed for: ", ref);
 
                 // not interested in snapshots from this document any more.
                 unsubscribeToSnapshot();
