@@ -2,7 +2,8 @@ import fs, {PathLike, Stats} from "fs";
 import {promisify} from 'util';
 import {Logger} from '../logger/Logger';
 import ErrnoException = NodeJS.ErrnoException;
-import {isPresent} from "../Preconditions";
+import {isPresent, Preconditions} from "../Preconditions";
+import {FilePaths} from "./FilePaths";
 
 const log = Logger.create();
 
@@ -19,21 +20,72 @@ export class Files {
         rimraf.sync(path);
     }
 
-    public static async removeDirectoryRecursivelyAsync(path: string) {
+    public static async removeDirectoryRecursivelyAsync(path: string): Promise<RemovedFiles> {
 
-        return new Promise((resolve, reject) => {
+        const files: string[] = [];
+        const dirs: RemovedFiles[] = [];
 
-            rimraf(path, (err: Error) => {
+        if (! await this.existsAsync(path)) {
+            // this isn't a failure as the file is already absent
+            return Object.freeze({path, files, dirs});
+        }
 
-                if (err) {
-                    reject(err);
-                } else {
-                    resolve();
-                }
+        // make sure we're given a directory and not a symlink, character
+        // device, etc.  We have to check immediately because we don't want to
+        // start removing files only to find out that it's part of a symlink'd
+        // directory.
+        Preconditions.assertEqual('directory',
+                                  await Files.fileType(path),
+                                  'Path had invalid type: ' + path);
 
-            });
+        const dirEntries = await this.readdirAsync(path);
 
-        });
+        for (const dirEntry of dirEntries) {
+
+            const dirEntryPath = FilePaths.join(path, dirEntry);
+            const dirEntryType = await this.fileType(dirEntryPath);
+
+            if (dirEntryType === 'directory') {
+                const dirResult = await this.removeDirectoryRecursivelyAsync(dirEntryPath);
+                dirs.push(dirResult);
+            } else if (dirEntryType === 'file') {
+                // handle a normal file removal.
+                await this.removeAsync(dirEntryPath);
+                files.push(dirEntry);
+            } else {
+                throw new Error(`Unable to handle dir entry: ${dirEntryPath} of type ${dirEntryType}`);
+            }
+
+        }
+
+        // now remove the directory we've been given.
+        await this.rmdirAsync(path);
+
+        return Object.freeze({path, files, dirs});
+
+    }
+
+    public static async fileType(path: string): Promise<FileType> {
+
+        const stat = await this.statAsync(path);
+
+        if (stat.isBlockDevice()) {
+            return 'block-device';
+        } else if (stat.isCharacterDevice()) {
+            return 'character-device';
+        } else if (stat.isFIFO()) {
+            return 'fifo';
+        } else if (stat.isSocket()) {
+            return 'socket';
+        } else if (stat.isSymbolicLink()) {
+            return 'symbolic-link';
+        } else if (stat.isFile()) {
+            return 'file';
+        } else if (stat.isDirectory()) {
+            return 'directory';
+        }
+
+        throw new Error("Unable to determine file type for: " + path);
 
     }
 
@@ -372,3 +424,14 @@ export interface FileHandle {
 // export interface File {
 //
 // }
+
+export interface RemovedFiles {
+    readonly path: string;
+    readonly files: ReadonlyArray<string>;
+    readonly dirs: ReadonlyArray<RemovedFiles>;
+}
+
+export type FileType = 'file' | 'directory' | 'block-device' |
+                       'character-device' | 'fifo' | 'socket' |
+                       'symbolic-link';
+

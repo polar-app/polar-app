@@ -64,12 +64,7 @@ SpectronRenderer.run(async (state) => {
 
                 console.log("==== BEGIN beforeEach");
 
-                // FIXME: this doesn't work reliably... find a better alternative
-                try {
-                    await Files.removeDirectoryRecursivelyAsync(PolarDataDir.get()!);
-                } catch (e) {
-                    console.error("Got stupid dir removal exception: ", e);
-                }
+                await Files.removeDirectoryRecursivelyAsync(PolarDataDir.get()!);
 
                 const firebaseDatastore = new FirebaseDatastore();
                 await firebaseDatastore.init();

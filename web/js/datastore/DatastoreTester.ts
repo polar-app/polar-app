@@ -46,7 +46,7 @@ export class DatastoreTester {
                 console.log("===== before test ====");
 
                 // TODO: might want to run
-                Files.removeDirectoryRecursively(dataDir);
+                await Files.removeDirectoryRecursivelyAsync(dataDir);
 
                 GlobalDataDir.set(dataDir);
                 datastore = await datastoreFactory();
