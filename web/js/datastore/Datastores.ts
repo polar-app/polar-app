@@ -1,4 +1,5 @@
-import {Datastore, DocMetaMutation, DocMetaSnapshotBatch, DocMetaSnapshotEvent, DocMetaSnapshotEventListener, FileRef, SnapshotResult} from './Datastore';
+import {Datastore, DocMetaMutation, DocMetaSnapshotBatch, DocMetaSnapshotEvent,
+        DocMetaSnapshotEventListener, FileRef, SnapshotResult} from './Datastore';
 import {MemoryDatastore} from './MemoryDatastore';
 import {DiskDatastore} from './DiskDatastore';
 import {Logger} from '../logger/Logger';
@@ -9,6 +10,9 @@ import {NULL_FUNCTION} from '../util/Functions';
 import {Percentages} from '../util/Percentages';
 import {ProgressTracker} from '../util/ProgressTracker';
 import {Providers, AsyncProviders} from '../util/Providers';
+import {DefaultPersistenceLayer} from './DefaultPersistenceLayer';
+import {DocInfo} from '../metadata/DocInfo';
+import deepEqual from 'deep-equal';
 
 const log = Logger.create();
 
@@ -172,6 +176,45 @@ export class Datastores {
 
     }
 
+    /**
+     * Compare two filesystems and make sure they're consistent.
+     *
+     */
+    public static async checkConsistency(datastore0: Datastore,
+                                         datastore1: Datastore): Promise<DatastoreConsistency> {
+
+        // get the docMetas in both, then compare them...
+
+        const result: any = {
+            consistent: true,
+        };
+
+        const manifest0 = this.toDocInfoManifest(datastore0);
+        const manifest1 = this.toDocInfoManifest(datastore1);
+
+        result.consistent = deepEqual(manifest0, manifest1);
+
+        return result;
+
+    }
+
+    public static async toDocInfoManifest(datastore: Datastore): Promise<ReadonlyArray<DocInfo>> {
+
+        const persistenceLayer = new DefaultPersistenceLayer(datastore);
+
+        const docMetaFiles = await datastore.getDocMetaFiles();
+
+        const result: DocInfo[] = [];
+
+        for (const docMetaFile of docMetaFiles) {
+            const docMeta = await persistenceLayer.getDocMeta(docMetaFile.fingerprint);
+            result.push(docMeta!.docInfo);
+        }
+
+        return result;
+
+    }
+
 }
 
 export type DocMetaListener = (docMeta: DocMeta) => void;
@@ -183,3 +226,7 @@ export interface PurgeEvent {
 }
 
 export type PurgeListener = (purgeEvent: PurgeEvent) => void;
+
+export interface DatastoreConsistency {
+    readonly consistent: boolean;
+}

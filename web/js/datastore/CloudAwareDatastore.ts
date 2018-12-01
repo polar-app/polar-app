@@ -24,10 +24,11 @@ import {DocMetaComparisonIndex} from './DocMetaComparisonIndex';
 import {PersistenceLayers, SyncOrigin} from './PersistenceLayers';
 import {DocMetaSnapshotEventListeners, EventDeduplicator} from './DocMetaSnapshotEventListeners';
 import {Latch} from '../util/Latch';
-import {NULL_FUNCTION} from '../util/Functions';
+import {ASYNC_NULL_FUNCTION, NULL_FUNCTION} from '../util/Functions';
 import {isUpperCase} from 'tslint/lib/utils';
 import {IEventDispatcher, SimpleReactor} from '../reactor/SimpleReactor';
 import {Preconditions} from '../Preconditions';
+import {AsyncFunction} from '../util/AsyncWorkQueue';
 
 const log = Logger.create();
 
@@ -64,6 +65,8 @@ export class CloudAwareDatastore implements Datastore, SynchronizingDatastore {
 
     private primarySnapshot?: SnapshotResult;
 
+    public shutdownHook: AsyncFunction = ASYNC_NULL_FUNCTION;
+
     constructor(local: Datastore, cloud: Datastore) {
         this.local = local;
         this.cloud = cloud;
@@ -91,6 +94,8 @@ export class CloudAwareDatastore implements Datastore, SynchronizingDatastore {
         }
 
         await Promise.all([this.cloud.stop(), this.local.stop()]);
+
+        await this.shutdownHook();
 
     }
 

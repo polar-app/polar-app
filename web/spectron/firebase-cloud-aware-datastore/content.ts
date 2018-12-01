@@ -41,7 +41,15 @@ async function createDatastore() {
 
     await Promise.all([diskDatastore.init(), firebaseDatastore.init()]);
 
-    return new CloudAwareDatastore(diskDatastore, firebaseDatastore);
+    const cloudAwareDatastore = new CloudAwareDatastore(diskDatastore, firebaseDatastore);
+
+    cloudAwareDatastore.shutdownHook = async () => {
+        const consistency = await Datastores.checkConsistency(diskDatastore, firebaseDatastore);
+        assert.ok(consistency.consistent, "Datastores are not consistent");
+        console.log("Filesystems are consistent.");
+    };
+
+    return cloudAwareDatastore;
 }
 
 SpectronRenderer.run(async (state) => {
@@ -54,9 +62,10 @@ SpectronRenderer.run(async (state) => {
 
             beforeEach(async function() {
 
-                console.log("FIXME goign to try to purge");
+                console.log("==== BEGIN beforeEach");
 
-                Files.removeDirectoryRecursively(PolarDataDir.get()!);
+                // FIXME: this doesn't work reliably... find a better alternative
+                await Files.removeDirectoryRecursivelyAsync(PolarDataDir.get()!);
 
                 const firebaseDatastore = new FirebaseDatastore();
                 await firebaseDatastore.init();
@@ -66,9 +75,11 @@ SpectronRenderer.run(async (state) => {
 
                 await firebaseDatastore.stop();
 
+                console.log("==== END beforeEach");
+
             });
 
-            it("Test1: null test to make sure we have no documents on startup", async function() {
+            xit("Test1: null test to make sure we have no documents on startup", async function() {
 
                 const persistenceLayer = new DefaultPersistenceLayer(await createDatastore());
 
@@ -81,81 +92,6 @@ SpectronRenderer.run(async (state) => {
 
             });
 
-            xit("Test2: Basic replication tests", async function() {
-
-                // first purge the firebase datastore
-
-                const firebaseDatastore = new FirebaseDatastore();
-
-                await firebaseDatastore.init();
-
-                await Datastores.purge(firebaseDatastore);
-
-                // then write an initial doc to it...
-
-                const firestorePersistenceLayer = new DefaultPersistenceLayer(firebaseDatastore);
-
-                await firestorePersistenceLayer.writeDocMeta(MockDocMetas.createMockDocMeta('0x001'));
-
-                // now startup a new cloud persistence layer and make sure we
-                // get the doc in firebase written locally.
-
-                // FIXME: wrote a test with a messy sync with multiple local
-                // files and multiople remote files that gets merged.  Make
-                // sure we get the events when the local store is loading too
-                // so that we can determine progress.
-
-                const persistenceLayer = new DefaultPersistenceLayer(await createDatastore());
-
-                await persistenceLayer.init();
-
-                const initialDocLatch = new Latch<boolean>();
-                const externallyWrittenDocLatch = new Latch<boolean>();
-
-                const snapshotResult = await persistenceLayer.snapshot(docMetaSnapshotEvent => {
-
-                    (async () => {
-
-                        console.log("FIXME: 999 Got snapshot from: " + docMetaSnapshotEvent.batch,
-                                    docMetaSnapshotEvent);
-
-                        for (const docMutation of docMetaSnapshotEvent.docMetaMutations) {
-                            const docInfo = await docMutation.docInfoProvider();
-
-                            if (docInfo.fingerprint === '0x001') {
-                                initialDocLatch.resolve(true);
-                                continue;
-                            }
-
-                            if (docInfo.fingerprint === '0x002') {
-                                externallyWrittenDocLatch.resolve(true);
-                                continue;
-                            }
-
-                        }
-
-                    })().catch(err => console.error("unable to handle: ", err));
-
-                });
-
-                await initialDocLatch.get();
-
-                await firestorePersistenceLayer.writeDocMeta(MockDocMetas.createMockDocMeta('0x002'));
-
-                await externallyWrittenDocLatch.get();
-
-                waitForExpect(async () => {
-                    assert.ok(await persistenceLayer.contains('0x002'), "Does not contain second doc");
-                });
-
-                console.log("WORKED");
-
-                await persistenceLayer.stop();
-                await firestorePersistenceLayer.stop();
-
-                snapshotResult.unsubscribe!();
-
-            });
 
             // FIXME make these production tests again.
 
