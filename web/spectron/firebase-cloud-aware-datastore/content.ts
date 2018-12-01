@@ -32,7 +32,6 @@ import {PersistenceLayers} from '../../js/datastore/PersistenceLayers';
 
 mocha.setup('bdd');
 mocha.timeout(20000);
-PolarDataDir.useFreshDirectory('.test-firebase-cloud-aware-datastore');
 
 async function createDatastore() {
 
@@ -55,6 +54,8 @@ async function createDatastore() {
 SpectronRenderer.run(async (state) => {
 
     new FirebaseTester(state).run(async () => {
+
+        await PolarDataDir.useFreshDirectory('.test-firebase-cloud-aware-datastore');
 
         const fingerprint = "0x001";
 

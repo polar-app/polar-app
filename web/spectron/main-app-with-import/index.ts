@@ -22,10 +22,11 @@ import {AppPath} from '../../js/electron/app_path/AppPath';
 
 const log = Logger.create();
 
-PolarDataDir.useFreshDirectory('.polar-main-app-with-import');
 AppPath.set(FilePaths.resolve(__dirname, "..", "..", ".."));
 
 async function createWindow(): Promise<BrowserWindow> {
+
+    await PolarDataDir.useFreshDirectory('.polar-main-app-with-import');
 
     const datastore: Datastore = new DiskDatastore();
 
