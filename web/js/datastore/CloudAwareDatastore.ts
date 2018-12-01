@@ -231,9 +231,9 @@ export class CloudAwareDatastore implements Datastore, SynchronizingDatastore {
 
                 return datastore.snapshot(docMetaSnapshotEvent => {
 
-                    if (initialSyncCompleted) {
-                        replicatingListener(docMetaSnapshotEvent);
-                    } else {
+                    replicatingListener(docMetaSnapshotEvent);
+
+                    if (! initialSyncCompleted) {
                         this.onSnapshot(docMetaSnapshotEvent);
                     }
 

@@ -53,10 +53,9 @@ export class AnkiSyncEngine implements SyncEngine {
 
             const fields: {[name: string]: string} = {};
 
-            // need to create the fields 'front' and 'Back'
-
+            // need to create the fields 'front' and 'back'
             Dictionaries.forDict(flashcardDescriptor.flashcard.fields, (key, value) => {
-                fields[key] = Optional.of(value.HTML || value.TEXT || value.MARKDOWN).get();
+                fields[key] = Optional.of(value.HTML || value.TEXT || value.MARKDOWN).getOrElse('');
             });
 
             const docInfoTags = Optional.of(flashcardDescriptor.docMeta.docInfo.tags);

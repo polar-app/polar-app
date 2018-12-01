@@ -179,10 +179,6 @@ export class FirebaseDatastore implements Datastore {
 
     }
 
-    /**
-     * Delete the DocMeta file and the underlying doc from the stash.
-     *
-     */
     public async delete(docMetaFileRef: DocMetaFileRef,
                         datastoreMutation: DatastoreMutation<boolean> = new DefaultDatastoreMutation()): Promise<Readonly<DeleteResult>> {
 
@@ -197,17 +193,27 @@ export class FirebaseDatastore implements Datastore {
         const uid = this.getUserID();
         const id = this.computeDocMetaID(uid, docMetaFileRef.fingerprint);
 
-        const ref = this.firestore!
+        const docMetaRef = this.firestore!
             .collection(DatastoreCollection.DOC_META)
+            .doc(id);
+
+        const docInfoRef = this.firestore!
+            .collection(DatastoreCollection.DOC_INFO)
             .doc(id);
 
         try {
 
-            this.handleDatastoreMutations(ref, datastoreMutation);
+            this.handleDatastoreMutations(docMetaRef, datastoreMutation);
 
-            const commitPromise = this.waitForCommit(ref);
+            const commitPromise = this.waitForCommit(docMetaRef);
+            await docMetaRef.delete();
 
-            const documentSnapshot = await ref.delete();
+            const batch = this.firestore!.batch();
+
+            batch.delete(docMetaRef);
+            batch.delete(docInfoRef);
+
+            await batch.commit();
 
             await commitPromise;
 
@@ -387,7 +393,7 @@ export class FirebaseDatastore implements Datastore {
 
             this.handleDatastoreMutations(docMetaRef, datastoreMutation);
 
-            const commitPromise = this.waitForCommit(docMetaRef);
+            const docMetaCommitPromise = this.waitForCommit(docMetaRef);
 
             log.debug("Setting...");
 
@@ -403,7 +409,7 @@ export class FirebaseDatastore implements Datastore {
             // we need to make sure that we only return when it's committed
             // remotely...
             log.debug("Waiting for promise...");
-            await commitPromise;
+            await docMetaCommitPromise;
             log.debug("Waiting for promise...done");
 
         } finally {

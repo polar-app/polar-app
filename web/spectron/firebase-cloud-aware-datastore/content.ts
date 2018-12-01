@@ -52,18 +52,32 @@ SpectronRenderer.run(async (state) => {
 
         describe('Cloud datastore tests', function() {
 
-
             beforeEach(async function() {
+
+                console.log("FIXME goign to try to purge");
 
                 Files.removeDirectoryRecursively(PolarDataDir.get()!);
 
                 const firebaseDatastore = new FirebaseDatastore();
                 await firebaseDatastore.init();
 
-                console.log("Purging...");
-                await Datastores.purge(firebaseDatastore, purgeEvent => console.log("Purged: ", purgeEvent));
-                console.log("Purging...done");
+                await Datastores.purge(firebaseDatastore,
+                                       purgeEvent => console.log("Purged: ", purgeEvent));
+
                 await firebaseDatastore.stop();
+
+            });
+
+            it("null test to make sure we have no documents on startup", async function() {
+
+                const persistenceLayer = new DefaultPersistenceLayer(await createDatastore());
+
+                await persistenceLayer.init();
+
+                const docMetaFiles = await persistenceLayer.getDocMetaFiles();
+                assert.equal(docMetaFiles.length, 0);
+
+                persistenceLayer.stop();
 
             });
 
@@ -172,7 +186,7 @@ SpectronRenderer.run(async (state) => {
 
             });
 
-            it("Write a basic doc", async function() {
+            xit("Write a basic doc", async function() {
 
                 const persistenceLayer = new DefaultPersistenceLayer(await createDatastore());
 
@@ -198,6 +212,7 @@ SpectronRenderer.run(async (state) => {
 
             });
 
+            // FIXME: this is the main one I need to focus on now.
             xit("Test an existing firebase store with existing data replicating to a new CloudDatastore.", async function() {
 
                 Files.removeDirectoryRecursively(PolarDataDir.get()!);
@@ -218,17 +233,17 @@ SpectronRenderer.run(async (state) => {
                 await waitForExpect(async () => {
                     const dataDir = PolarDataDir.get();
                     const path = FilePaths.join(dataDir!, '0x001', 'state.json');
-                    assert.ok(await Files.existsAsync(path));
+                    assert.ok(await Files.existsAsync(path), "Path does not exist: " + path);
                 });
 
                 await targetPersistenceLayer.stop();
 
                 // verify that we have received no errors.
-                assert.ok(err === undefined);
+                assert.ok(err === undefined, "Received an error: " + err);
 
             });
 
-            it("Verify unsubscribe works.", async function() {
+            xit("Verify unsubscribe works.", async function() {
 
                 Files.removeDirectoryRecursively(PolarDataDir.get()!);
 
