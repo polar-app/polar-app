@@ -156,6 +156,8 @@ export class Datastores {
 
         for (const docMetaFile of docMetaFiles) {
 
+            // FIXME: we're not purging the files associated with the docs...
+
             const data = await datastore.getDocMeta(docMetaFile.fingerprint);
             const docMeta = DocMetas.deserialize(data!);
 

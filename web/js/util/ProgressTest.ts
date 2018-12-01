@@ -6,7 +6,7 @@ describe('ProgressTest', function() {
 
     it("Basic Progress", async function () {
 
-        let progress = new Progress(4);
+        const progress = new Progress(4);
 
         assert.equal(progress.percentage(), 0);
 

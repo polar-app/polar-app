@@ -649,13 +649,18 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore {
             handleDocMetaMutation(docMetaMutation);
         };
 
-        const progressTracker = new ProgressTracker(snapshot.size);
 
         const consistency = snapshot.metadata.fromCache ? 'written' : 'committed';
 
-        for (const docChange of snapshot.docChanges()) {
+        const docChanges = snapshot.docChanges();
+
+        let progressTracker = new ProgressTracker(docChanges.length);
+
+        for (const docChange of docChanges) {
             handleDocChange(docChange);
         }
+
+        progressTracker = new ProgressTracker(snapshot.docs.length);
 
         for (const doc of snapshot.docs) {
             handleDoc(doc);

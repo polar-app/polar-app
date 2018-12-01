@@ -219,8 +219,6 @@ export class CloudAwareDatastore extends AbstractDatastore implements Datastore,
 
             public async handle(docMetaSnapshotEvent: DocMetaSnapshotEvent) {
 
-                console.log("FIXME handling in InitialSnapshotLatch: ", docMetaSnapshotEvent);
-
                 const syncDocs = await DocMetaSnapshotEvents.toSyncDocs(docMetaSnapshotEvent);
                 SyncDocMaps.putAll(this.syncDocMap, syncDocs);
 
@@ -295,11 +293,14 @@ export class CloudAwareDatastore extends AbstractDatastore implements Datastore,
 
                 for (const docMetaMutation of docMetaSnapshotEvent.docMetaMutations) {
 
-                    // FIXME: no files are being transferred here... Just
+                    // FIXME: no binary files are being transferred here... Just
                     // DocMeta...
 
                     if (docMetaMutation.mutationType === 'created' || docMetaMutation.mutationType === 'updated') {
-                        console.log("FIXME888: writing docMetaMutation: ", docMetaMutation, docMetaSnapshotEvent);
+                        // TODO: I think we could improve the performance here
+                        // by having a dataProvider() with just the string data
+                        // which would mean we can write directly to the local
+                        // store without serializing.
                         const docMeta = await docMetaMutation.docMetaProvider();
                         Preconditions.assertPresent(docMeta, "No docMeta in replication listener: ");
 
@@ -316,9 +317,9 @@ export class CloudAwareDatastore extends AbstractDatastore implements Datastore,
                 }
 
                 this.synchronizationEventDispatcher.dispatchEvent({
-                                                                      ...docMetaSnapshotEvent,
-                                                                      dest: 'local'
-                                                                  });
+                    ...docMetaSnapshotEvent,
+                    dest: 'local'
+                });
 
             };
 
@@ -365,10 +366,8 @@ export class CloudAwareDatastore extends AbstractDatastore implements Datastore,
         };
 
         if (isPrimarySnapshot) {
-            console.log("FIXME999: doign sync");
             await PersistenceLayers.synchronizeFromSyncDocs(localSyncOrigin, cloudSyncOrigin, deduplicatedListener.listener);
             await PersistenceLayers.synchronizeFromSyncDocs(cloudSyncOrigin, localSyncOrigin, deduplicatedListener.listener);
-            console.log("FIXME999: doign syncdone");
         }
 
         initialSyncCompleted = true;

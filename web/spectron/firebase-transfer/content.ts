@@ -22,11 +22,26 @@ import {PersistenceLayer} from '../../js/datastore/PersistenceLayer';
 import {Datastores} from '../../js/datastore/Datastores';
 import waitForExpect from 'wait-for-expect';
 import {BrowserWindowRegistry} from '../../js/electron/framework/BrowserWindowRegistry';
-import {PersistenceLayers} from '../../js/datastore/PersistenceLayers';
+import {PersistenceLayers, SyncOrigin} from '../../js/datastore/PersistenceLayers';
+import {CloudAwareDatastore} from '../../js/datastore/CloudAwareDatastore';
+import {ProgressTracker} from '../../js/util/ProgressTracker';
+import {ProgressBar} from '../../js/ui/progress_bar/ProgressBar';
 
 SpectronRenderer.run(async (state) => {
 
     new FirebaseTester(state).run(async () => {
+
+        // const diskDatastore = new DiskDatastore();
+        // const firebaseDatastore = new FirebaseDatastore();
+        //
+        // const cloudAwareDatastore = new CloudAwareDatastore(diskDatastore,
+        // firebaseDatastore);  const progressBar = ProgressBar.create(false);
+        // cloudAwareDatastore.addDocMetaSnapshotEventListener(docMetaSnapshotEvent
+        // => {  console.log("Got event: ", docMetaSnapshotEvent);
+        // console.log("Progress percentage: " +
+        // docMetaSnapshotEvent.progress.progress);
+        // progressBar.update(docMetaSnapshotEvent.progress.progress);  });
+        // await cloudAwareDatastore.init();
 
         const firebaseDatastore = new FirebaseDatastore();
 
@@ -35,13 +50,21 @@ SpectronRenderer.run(async (state) => {
 
         await Promise.all([source.init(), target.init()]);
 
-        await Datastores.purge(firebaseDatastore, purgeEvent => {
-            console.log("Purge event: ", purgeEvent);
+        const progressBar = ProgressBar.create(false);
+
+        async function toSyncOrigin(persistenceLayer: PersistenceLayer): Promise<SyncOrigin> {
+            return {
+                datastore: persistenceLayer.datastore,
+                syncDocMap: await PersistenceLayers.toSyncDocsMap(persistenceLayer)
+            };
+        }
+
+        await PersistenceLayers.synchronizeFromSyncDocs(await toSyncOrigin(source), await toSyncOrigin(target), (transferEvent) => {
+            console.log("Transfer event: ", transferEvent);
+            progressBar.update(transferEvent.progress.progress);
         });
 
-        await PersistenceLayers.synchronize(source, target, (transferEvent) => {
-            console.log("Transfer event: ", transferEvent);
-        });
+        console.log("Transfer finished.");
 
         await Promise.all([source.stop(), target.stop()]);
 
