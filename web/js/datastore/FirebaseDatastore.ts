@@ -3,7 +3,7 @@ import {
     DocMetaSnapshotEvent, FileMeta,
     InitResult, SynchronizingDatastore, MutationType, FileRef,
     DocMetaMutation, DocMetaSnapshotEventListener, SnapshotResult,
-    DocMetaSnapshotBatch, ErrorListener
+    DocMetaSnapshotBatch, ErrorListener, AbstractDatastore
 } from './Datastore';
 import {Logger} from '../logger/Logger';
 import {DocMetaFileRef, DocMetaFileRefs, DocMetaRef} from './DocMetaRef';
@@ -36,7 +36,7 @@ const log = Logger.create();
 // in the future. Or, an anonymous user can link a Facebook account and then,
 // later, sign in with Facebook to continue using your app.
 
-export class FirebaseDatastore implements Datastore {
+export class FirebaseDatastore extends AbstractDatastore implements Datastore {
 
     public readonly id = 'firebase';
 
@@ -55,7 +55,7 @@ export class FirebaseDatastore implements Datastore {
     private initialized: boolean = false;
 
     constructor() {
-
+        super();
         this.directories = new Directories();
         this.stashDir = this.directories.stashDir;
         this.logsDir = this.directories.logsDir;

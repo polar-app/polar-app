@@ -106,23 +106,37 @@ export class Preconditions {
     }
 
 
-    static assertPresent<T>(value: T | null, name?: string): NonNullable<T> {
+    public static assertPresent<T>(value: T | null, name?: string): NonNullable<T> {
 
         let msgPrefix = "Precondition argument failed: ";
 
-        if(name) {
+        if (name) {
             msgPrefix = `Precondition (argument) for '${name}' failed`;
         }
 
         if (value === null) {
-            throw new Error(`${msgPrefix}: null`)
+            throw new Error(`${msgPrefix}: null`);
         }
 
         if (value === undefined) {
-            throw new Error(`${msgPrefix}: undefined`)
+            throw new Error(`${msgPrefix}: undefined`);
         }
 
         return value!;
+
+    }
+
+    public static assertAbsent<T>(value: T) {
+
+        if (! isPresent(value)) {
+            return;
+        }
+
+        if (value instanceof Error) {
+            throw value;
+        }
+
+        throw new Error("Not absent: " + value);
 
     }
 
@@ -173,7 +187,7 @@ export class Preconditions {
 }
 
 interface AssertionFunction<T> {
-    (val: T): boolean
+    (val: T): boolean;
 }
 
 

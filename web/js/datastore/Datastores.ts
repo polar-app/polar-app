@@ -13,6 +13,7 @@ import {Providers, AsyncProviders} from '../util/Providers';
 import {DefaultPersistenceLayer} from './DefaultPersistenceLayer';
 import {DocInfo} from '../metadata/DocInfo';
 import deepEqual from 'deep-equal';
+import {Preconditions} from '../Preconditions';
 
 const log = Logger.create();
 
@@ -185,16 +186,12 @@ export class Datastores {
 
         // get the docMetas in both, then compare them...
 
-        const result: any = {
-            consistent: true,
-        };
+        const manifest0 = await this.toDocInfoManifest(datastore0);
+        const manifest1 = await this.toDocInfoManifest(datastore1);
 
-        const manifest0 = this.toDocInfoManifest(datastore0);
-        const manifest1 = this.toDocInfoManifest(datastore1);
+        const consistent = deepEqual(manifest0, manifest1);
 
-        result.consistent = deepEqual(manifest0, manifest1);
-
-        return result;
+        return {consistent, manifest0, manifest1};
 
     }
 
@@ -202,12 +199,15 @@ export class Datastores {
 
         const persistenceLayer = new DefaultPersistenceLayer(datastore);
 
-        const docMetaFiles = await datastore.getDocMetaFiles();
+        const docMetaFiles =
+            (await datastore.getDocMetaFiles())
+                .sort((d0, d1) => d0.fingerprint.localeCompare(d1.fingerprint));
 
         const result: DocInfo[] = [];
 
         for (const docMetaFile of docMetaFiles) {
             const docMeta = await persistenceLayer.getDocMeta(docMetaFile.fingerprint);
+            Preconditions.assertPresent(docMeta, "toDocInfoManifest could not find docMeta for " + docMetaFile.fingerprint);
             result.push(docMeta!.docInfo);
         }
 
@@ -229,4 +229,6 @@ export type PurgeListener = (purgeEvent: PurgeEvent) => void;
 
 export interface DatastoreConsistency {
     readonly consistent: boolean;
+    readonly manifest0: ReadonlyArray<DocInfo>;
+    readonly manifest1: ReadonlyArray<DocInfo>;
 }

@@ -1,6 +1,6 @@
 import {Datastore, DeleteResult, FileMeta, FileRef, InitResult,
         DocMetaSnapshotEvent, DocMetaMutation, DocMetaSnapshotEventListener,
-        SnapshotResult, DocMetaSnapshotBatch, ErrorListener} from './Datastore';
+        SnapshotResult, DocMetaSnapshotBatch, ErrorListener, AbstractDatastore} from './Datastore';
 import {isPresent, Preconditions} from '../Preconditions';
 import {Logger} from '../logger/Logger';
 import {DocMetaFileRef, DocMetaRef} from './DocMetaRef';
@@ -25,7 +25,7 @@ import {NULL_FUNCTION} from '../util/Functions';
 
 const log = Logger.create();
 
-export class DiskDatastore implements Datastore {
+export class DiskDatastore extends AbstractDatastore implements Datastore {
 
     public readonly id = 'disk';
 
@@ -42,6 +42,8 @@ export class DiskDatastore implements Datastore {
     public readonly directories: Directories;
 
     constructor() {
+
+        super();
 
         // TODO: migrate this to use Directories
 
@@ -61,6 +63,7 @@ export class DiskDatastore implements Datastore {
     }
 
     public async stop() {
+        // noop
     }
 
     /**

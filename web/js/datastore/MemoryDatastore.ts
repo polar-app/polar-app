@@ -1,7 +1,7 @@
 /**
  * Datastore just in memory with no on disk persistence.
  */
-import {Datastore, InitResult, FileRef, FileMeta, DocMetaSnapshotEvent, SnapshotResult, DocMetaSnapshotEventListener, DocMetaSnapshotBatch} from './Datastore';
+import {Datastore, InitResult, FileRef, FileMeta, DocMetaSnapshotEvent, SnapshotResult, DocMetaSnapshotEventListener, DocMetaSnapshotBatch, AbstractDatastore} from './Datastore';
 import {Preconditions, isPresent} from '../Preconditions';
 import {DocMetaFileRef, DocMetaRef} from './DocMetaRef';
 import {FilePaths} from '../util/FilePaths';
@@ -19,7 +19,7 @@ import {DocMetaSnapshotEventListeners} from './DocMetaSnapshotEventListeners';
 
 const log = Logger.create();
 
-export class MemoryDatastore implements Datastore {
+export class MemoryDatastore extends AbstractDatastore implements Datastore {
 
     public readonly id = 'memory';
 
@@ -38,6 +38,8 @@ export class MemoryDatastore implements Datastore {
     protected readonly files: {[key: string]: FileData} = {};
 
     constructor() {
+        super();
+
         this.directories = new Directories();
 
         // these dir values are used in the UI and other places so we need to

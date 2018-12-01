@@ -29,6 +29,7 @@ import {Datastores} from '../../js/datastore/Datastores';
 import {Latch} from '../../js/util/Latch';
 import {NULL_FUNCTION} from '../../js/util/Functions';
 import {PersistenceLayers} from '../../js/datastore/PersistenceLayers';
+import {Preconditions} from '../../js/Preconditions';
 
 mocha.setup('bdd');
 mocha.timeout(20000);
@@ -44,8 +45,12 @@ async function createDatastore() {
 
     cloudAwareDatastore.shutdownHook = async () => {
         const consistency = await Datastores.checkConsistency(diskDatastore, firebaseDatastore);
+
+        if (! consistency.consistent) {
+            console.log("Filesystems are NOT consistent: ", consistency.manifest0, consistency.manifest1);
+        }
+
         assert.ok(consistency.consistent, "Datastores are not consistent");
-        console.log("Filesystems are consistent.");
     };
 
     return cloudAwareDatastore;
@@ -59,27 +64,39 @@ SpectronRenderer.run(async (state) => {
 
         const fingerprint = "0x001";
 
+        // mocha seems to have a bug where beforeEach can fail and the test
+        // doesn't fail which is horrible.
+        let err: Error | undefined;
+
         describe('Cloud datastore tests', function() {
 
             beforeEach(async function() {
 
-                console.log("==== BEGIN beforeEach");
+                try {
 
-                await Files.removeDirectoryRecursivelyAsync(PolarDataDir.get()!);
+                    console.log("==== BEGIN beforeEach");
 
-                const firebaseDatastore = new FirebaseDatastore();
-                await firebaseDatastore.init();
+                    await Files.removeDirectoryRecursivelyAsync(PolarDataDir.get()!);
 
-                await Datastores.purge(firebaseDatastore,
-                                       purgeEvent => console.log("Purged: ", purgeEvent));
+                    const firebaseDatastore = new FirebaseDatastore();
+                    await firebaseDatastore.init();
 
-                await firebaseDatastore.stop();
+                    await Datastores.purge(firebaseDatastore,
+                                           purgeEvent => console.log("Purged: ", purgeEvent));
 
-                console.log("==== END beforeEach");
+                    await firebaseDatastore.stop();
+
+                } catch (e) {
+                    err = e;
+                } finally {
+                    console.log("==== END beforeEach");
+                }
 
             });
 
             it("Test1: null test to make sure we have no documents on startup", async function() {
+
+                Preconditions.assertAbsent(err);
 
                 const persistenceLayer = new DefaultPersistenceLayer(await createDatastore());
 
@@ -92,7 +109,9 @@ SpectronRenderer.run(async (state) => {
 
             });
 
-            it("Test2: Basic replication tests", async function() {
+            it("Test2: Basic synchronization tests", async function() {
+
+                Preconditions.assertAbsent(err);
 
                 // first purge the firebase datastore
 
@@ -114,7 +133,10 @@ SpectronRenderer.run(async (state) => {
                 const cloudAwareDatastore = await createDatastore();
                 const persistenceLayer = new DefaultPersistenceLayer(cloudAwareDatastore);
 
-                cloudAwareDatastore.addSynchronizationEventListener(docMetaSnapshotEvent => {
+                const initialDocLatch = new Latch<boolean>();
+                const externallyWrittenDocLatch = new Latch<boolean>();
+
+                cloudAwareDatastore.addDocMetaSnapshotEventListener(docMetaSnapshotEvent => {
 
                     for (const docMutation of docMetaSnapshotEvent.docMetaMutations) {
 
@@ -134,9 +156,6 @@ SpectronRenderer.run(async (state) => {
 
                 await persistenceLayer.init();
 
-                const initialDocLatch = new Latch<boolean>();
-                const externallyWrittenDocLatch = new Latch<boolean>();
-
                 await initialDocLatch.get();
 
                 await firestorePersistenceLayer.writeDocMeta(MockDocMetas.createMockDocMeta('0x002'));
@@ -155,6 +174,8 @@ SpectronRenderer.run(async (state) => {
             });
 
             it("Test3: Write a basic doc with synchronization listener", async function() {
+
+                Preconditions.assertAbsent(err);
 
                 const cloudAwareDatastore = await createDatastore();
                 const persistenceLayer = new DefaultPersistenceLayer(cloudAwareDatastore);
@@ -197,6 +218,7 @@ SpectronRenderer.run(async (state) => {
             });
 
             it("Test4: Write a basic doc", async function() {
+                Preconditions.assertAbsent(err);
 
                 const persistenceLayer = new DefaultPersistenceLayer(await createDatastore());
 
@@ -224,7 +246,7 @@ SpectronRenderer.run(async (state) => {
 
             it("Test5: Test an existing firebase store with existing data replicating to a new CloudDatastore.", async function() {
 
-                let err: Error | undefined;
+                Preconditions.assertAbsent(err);
 
                 const errorListener = (error: Error) => {
                     console.error("Got error:  ", err);
@@ -254,6 +276,8 @@ SpectronRenderer.run(async (state) => {
             });
 
             it("Test6: Verify unsubscribe works.", async function() {
+
+                Preconditions.assertAbsent(err);
 
                 await Files.removeDirectoryRecursivelyAsync(PolarDataDir.get()!);
 
@@ -302,6 +326,8 @@ SpectronRenderer.run(async (state) => {
 
             // FIXME: this wont' work yet due to the snapshot issue.
             xit("Test7: Test a remote write and a local replication to disk", async function() {
+
+                Preconditions.assertAbsent(err);
 
                 const sourcePersistenceLayer = new DefaultPersistenceLayer(new FirebaseDatastore());
                 await sourcePersistenceLayer.init();

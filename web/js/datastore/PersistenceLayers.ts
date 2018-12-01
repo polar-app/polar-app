@@ -46,7 +46,7 @@ export class PersistenceLayers {
 
         async function handleStashFile(fileRef: FileRef) {
 
-            if (! target.containsFile(Backend.STASH, fileRef)) {
+            if (! await target.containsFile(Backend.STASH, fileRef)) {
 
                 const optionalFile = await source.getFile(Backend.STASH, fileRef);
 
@@ -183,9 +183,9 @@ export class PersistenceLayers {
 
         async function handleSyncFile(fileRef: FileRef) {
 
-            if (! target.persistenceLayer.containsFile(Backend.STASH, fileRef)) {
+            if (! await target.datastore.containsFile(Backend.STASH, fileRef)) {
 
-                const optionalFile = await source.persistenceLayer.getFile(Backend.STASH, fileRef);
+                const optionalFile = await source.datastore.getFile(Backend.STASH, fileRef);
 
                 if (optionalFile.isPresent()) {
                     const file = optionalFile.get();
@@ -194,7 +194,7 @@ export class PersistenceLayers {
                     const arrayBuffer = await Blobs.toArrayBuffer(blob);
                     const buffer = ArrayBuffers.toBuffer(arrayBuffer);
 
-                    await target.persistenceLayer.writeFile(file.backend, fileRef, buffer, file.meta);
+                    await target.datastore.writeFile(file.backend, fileRef, buffer, file.meta);
 
                     result.mutations.files.push(fileRef);
                 }
@@ -246,15 +246,15 @@ export class PersistenceLayers {
 
                 result.mutations.fingerprints.push(sourceSyncDoc.fingerprint);
 
-                const docMeta = await source.persistenceLayer.getDocMeta(sourceSyncDoc.fingerprint);
-                await target.persistenceLayer.writeDocMeta(docMeta!);
+                const data = await source.datastore.getDocMeta(sourceSyncDoc.fingerprint);
+                await target.datastore.write(sourceSyncDoc.fingerprint, data, sourceSyncDoc.docMetaFileRef.docInfo);
 
             }
 
             const progress = progressTracker.incr();
 
             const docMetaSnapshotEvent: DocMetaSnapshotEvent = {
-                datastore: source.persistenceLayer.datastore.id,
+                datastore: source.datastore.id,
                 progress,
 
                 // this should be committed as we're starting with the source
@@ -322,7 +322,7 @@ export interface TransferRefs {
 
 export interface SyncOrigin {
 
-    readonly persistenceLayer: PersistenceLayer;
+    readonly datastore: Datastore;
     readonly syncDocMap: SyncDocMap;
 
 }

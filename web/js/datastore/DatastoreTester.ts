@@ -19,6 +19,7 @@ import {DefaultDatastoreMutation} from './DatastoreMutation';
 import {func} from 'prop-types';
 import {Latch} from '../util/Latch';
 import {Datastores} from './Datastores';
+import {PersistenceLayers} from './PersistenceLayers';
 
 const rimraf = require('rimraf');
 
@@ -55,6 +56,7 @@ export class DatastoreTester {
                 persistenceLayer = new DefaultPersistenceLayer(datastore);
 
                 await persistenceLayer.init();
+                await Datastores.purge(datastore);
 
                 docMeta = MockDocMetas.createWithinInitialPagemarks(fingerprint, 14);
 
