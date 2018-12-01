@@ -50,7 +50,7 @@ SpectronRenderer.run(async (state) => {
 
         const fingerprint = "0x001";
 
-        describe('Cloud datastore tests', function() {
+        xdescribe('Cloud datastore tests', function() {
 
 
             beforeEach(async function() {
@@ -59,7 +59,10 @@ SpectronRenderer.run(async (state) => {
 
                 const firebaseDatastore = new FirebaseDatastore();
                 await firebaseDatastore.init();
+
+                console.log("Purging...");
                 await Datastores.purge(firebaseDatastore);
+                console.log("Purging...done");
                 await firebaseDatastore.stop();
 
             });
@@ -142,7 +145,7 @@ SpectronRenderer.run(async (state) => {
 
             // FIXME make these production tests again.
 
-            it("Write a basic doc with synchronization listener", async function() {
+            xit("Write a basic doc with synchronization listener", async function() {
 
                 const cloudAwareDatastore = await createDatastore();
                 const persistenceLayer = new DefaultPersistenceLayer(cloudAwareDatastore);
@@ -225,7 +228,7 @@ SpectronRenderer.run(async (state) => {
 
             });
 
-            xit("Verify unsubscribe works.", async function() {
+            it("Verify unsubscribe works.", async function() {
 
                 Files.removeDirectoryRecursively(PolarDataDir.get()!);
 
@@ -299,7 +302,7 @@ SpectronRenderer.run(async (state) => {
 
         });
 
-        // DatastoreTester.test(createDatastore, false);
+        DatastoreTester.test(createDatastore, false);
 
     });
 

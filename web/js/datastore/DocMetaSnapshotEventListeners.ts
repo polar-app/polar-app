@@ -16,9 +16,12 @@ export class DocMetaSnapshotEventListeners {
      * and we will just get the earliest one.
      *
      */
-    public static createDeduplicatedListener(outputListener: DocMetaSnapshotEventListener): EventDeduplicator {
+    public static createDeduplicatedListener(outputListener: DocMetaSnapshotEventListener,
+                                             docMetaComparisonIndex = new DocMetaComparisonIndex()): EventDeduplicator {
 
-        const docMetaComparisonIndex = new DocMetaComparisonIndex();
+        if (!docMetaComparisonIndex) {
+            docMetaComparisonIndex = new DocMetaComparisonIndex();
+        }
 
         // TODO: Should we filter on the consistency level?  We need a way to
         // trigger the first sync when we get the committed writes from the
