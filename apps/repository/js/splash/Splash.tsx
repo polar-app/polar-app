@@ -88,6 +88,13 @@ export class Splash extends React.Component<IProps, IState> {
 
     private onLater() {
 
+        const conditionalSetting
+            = new ConditionalSetting(this.props.settingKey);
+
+        const after = Date.now() + (24 * 60 * 60 * 1000);
+
+        conditionalSetting.set(`${after}`);
+
         this.setState({open: false});
 
     }
@@ -96,8 +103,12 @@ export class Splash extends React.Component<IProps, IState> {
     private onClose() {
 
         if (this.doNotShowAgain) {
-            const conditionalSetting = new ConditionalSetting(this.props.settingKey);
+
+            const conditionalSetting
+                = new ConditionalSetting(this.props.settingKey);
+
             conditionalSetting.set('do-not-show-again');
+
         }
 
         this.setState({open: false});

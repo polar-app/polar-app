@@ -20,6 +20,24 @@ export abstract class ConditionalPrioritizedComponentRef implements PrioritizedC
             return undefined;
         }
 
+        if (conditionalSetting.get().getOrElse('') !== '') {
+
+            // see if it's an integer
+
+            const val = conditionalSetting.get().getOrElse('');
+
+            if (val.match(/[0-9]+/)) {
+
+                if (Date.now() > parseInt(val)) {
+                    return this.defaultPriority;
+                } else {
+                    return undefined;
+                }
+
+            }
+
+        }
+
         return this.defaultPriority;
 
     }

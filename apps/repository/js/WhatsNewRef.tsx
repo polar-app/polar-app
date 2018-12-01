@@ -21,8 +21,6 @@ export class WhatsNewRef implements PrioritizedComponentRef {
 
         const isNewVersion = conditionalSetting.get().getOrElse('') !== version;
 
-        console.log("FIXME: isNewVersion: ", isNewVersion);
-
         if (isNewVersion) {
             RendererAnalytics.event({category: 'app', action: 'whats-new-displayed'});
         }
