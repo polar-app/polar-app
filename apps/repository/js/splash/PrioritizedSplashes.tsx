@@ -10,6 +10,7 @@ import {PrioritizedComponent} from '../../../../web/js/ui/prioritized/Prioritize
 import {GithubStars} from './splashes/github_stars/GithubStars';
 import {GithubStarsRef} from './splashes/github_stars/GithubStarsRef';
 import {WhatsNewRef} from '../WhatsNewRef';
+import {SurveyRef} from './splashes/survey/SurveyRef';
 // import {JoinDiscordRef} from './splashes/discord/JoinDiscordRef';
 
 const log = Logger.create();
@@ -17,7 +18,8 @@ const log = Logger.create();
 const prioritizedComponentRefs: PrioritizedComponentRef[] = [
     // new JoinDiscordRef(),
     new WhatsNewRef(),
-    new GithubStarsRef()
+    new GithubStarsRef(),
+    new SurveyRef()
 ];
 
 export class PrioritizedSplashes extends React.Component<IProps, IState> {

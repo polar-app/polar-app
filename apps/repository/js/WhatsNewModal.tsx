@@ -34,7 +34,7 @@ export class WhatsNewModal extends React.Component<IProps, IState> {
 
                     </ModalBody>
                     <ModalFooter>
-                        <Button color="primary" onClick={() => this.setState({open: false})}>Ok</Button>
+                        <Button color="primary" onClick={() => this.setState({open: false})}>Close</Button>
                     </ModalFooter>
 
                 </Modal>

@@ -34,7 +34,7 @@ export class Splash extends React.Component<IProps, IState> {
             open: true
         };
 
-        this.onOK = this.onOK.bind(this);
+        this.onClose = this.onClose.bind(this);
         this.onLater = this.onLater.bind(this);
         this.onDoNotShowAgain = this.onDoNotShowAgain.bind(this);
 
@@ -72,7 +72,7 @@ export class Splash extends React.Component<IProps, IState> {
 
                     <Button color="primary"
                             size="sm"
-                            onClick={() => this.onOK()}>Ok</Button>
+                            onClick={() => this.onClose()}>Close</Button>
 
                 </ModalFooter>
 
@@ -93,7 +93,7 @@ export class Splash extends React.Component<IProps, IState> {
     }
 
 
-    private onOK() {
+    private onClose() {
 
         if (this.doNotShowAgain) {
             const conditionalSetting = new ConditionalSetting(this.props.settingKey);
