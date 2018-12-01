@@ -1,10 +1,10 @@
 import * as React from 'react';
 import {Button, Modal, ModalBody, ModalFooter, ModalHeader} from 'reactstrap';
-import {Version} from '../../../web/js/util/Version';
+import {Version} from '../../../../../../web/js/util/Version';
 import {app} from 'electron';
-import {FilePaths} from '../../../web/js/util/FilePaths';
-import {Files} from '../../../web/js/util/Files';
-import {Logger} from '../../../web/js/logger/Logger';
+import {FilePaths} from '../../../../../../web/js/util/FilePaths';
+import {Files} from '../../../../../../web/js/util/Files';
+import {Logger} from '../../../../../../web/js/logger/Logger';
 import {WhatsNewContent} from './WhatsNewContent';
 
 export class WhatsNewModal extends React.Component<IProps, IState> {

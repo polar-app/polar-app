@@ -9,29 +9,29 @@ export abstract class DocFormat {
 
     public abstract readonly name: string;
 
-    currentScale(): number {
+    public currentScale(): number {
         return 1.0;
     }
 
-    getPageNumFromPageElement(pageElement: HTMLElement): number {
+    public getPageNumFromPageElement(pageElement: HTMLElement): number {
         Preconditions.assertNotNull(pageElement, "pageElement");
-        let dataPageNum = notNull(pageElement.getAttribute("data-page-number"));
+        const dataPageNum = notNull(pageElement.getAttribute("data-page-number"));
         return parseInt(dataPageNum);
     }
 
-    getPageElementFromPageNum(pageNum: number) {
+    public getPageElementFromPageNum(pageNum: number) {
 
-        if(!pageNum) {
+        if (!pageNum) {
             throw new Error("Page number not specified");
         }
 
-        let pageElements = document.querySelectorAll(".page");
+        const pageElements = document.querySelectorAll(".page");
 
         // note that elements are 0 based indexes but our pages are 1 based
         // indexes.
-        let pageElement = pageElements[pageNum - 1];
+        const pageElement = pageElements[pageNum - 1];
 
-        if(! pageElement) {
+        if (! pageElement) {
             throw new Error("Unable to find page element for page num: " + pageNum);
         }
 
@@ -43,11 +43,11 @@ export abstract class DocFormat {
      * Get the current page number based on which page is occupying the largest
      * percentage of the viewport.
      */
-    getCurrentPageElement(): HTMLElement | null {
+    public getCurrentPageElement(): HTMLElement | null {
 
-        let pageElements = document.querySelectorAll(".page");
+        const pageElements = document.querySelectorAll(".page");
 
-        if(pageElements.length === 1) {
+        if (pageElements.length === 1) {
 
             // if we only have one page, just go with that as there are no other
             // options.  This was added to avoid a bug in calculate visibility
@@ -56,16 +56,16 @@ export abstract class DocFormat {
 
         }
 
-        let result = <CurrentPageElement> {
+        const result = <CurrentPageElement> {
             element: null,
             visibility: 0
         };
 
         pageElements.forEach(pageElement => {
 
-            let element = <HTMLElement>pageElement;
+            const element = <HTMLElement> pageElement;
 
-            let visibility = Elements.calculateVisibilityForDiv(element);
+            const visibility = Elements.calculateVisibilityForDiv(element);
 
             if ( visibility > result.visibility) {
                 result.element = element;
@@ -82,7 +82,7 @@ export abstract class DocFormat {
     /**
      * Get all the metadata about the current page.
      */
-    getCurrentPageMeta() {
+    public getCurrentPageMeta() {
 
         let pageElement = notNull(this.getCurrentPageElement());
         let pageNum = this.getPageNumFromPageElement(pageElement);

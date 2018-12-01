@@ -15,7 +15,7 @@ export class PDFFormat extends DocFormat {
     /**
      * Get the current doc fingerprint or null if it hasn't been loaded yet.
      */
-    currentDocFingerprint() {
+    public currentDocFingerprint() {
 
         if (window.PDFViewerApplication &&
             window.PDFViewerApplication.pdfDocument &&
@@ -31,7 +31,7 @@ export class PDFFormat extends DocFormat {
     /**
      * Get the current state of the doc.
      */
-    currentState(event: any): CurrentState {
+    public currentState(event: any): CurrentState {
 
         Preconditions.assertNotNull(event, "event");
 
@@ -39,19 +39,19 @@ export class PDFFormat extends DocFormat {
             nrPages: window.PDFViewerApplication.pagesCount,
             currentPageNumber: window.PDFViewerApplication.pdfViewer.currentPageNumber,
             pageElement: event.target.parentElement
-        }
+        };
 
     }
 
-    supportThumbnails() {
+    public supportThumbnails() {
         return true;
     }
 
-    targetDocument(): HTMLDocument | null {
+    public targetDocument(): HTMLDocument | null {
         return document;
     }
 
-    currentScale() {
+    public currentScale() {
         return window.PDFViewerApplication.pdfViewer._currentScale;
     }
 

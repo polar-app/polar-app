@@ -9,7 +9,7 @@ import {PrioritizedComponentManager, PrioritizedComponentRef} from '../../../../
 import {PrioritizedComponent} from '../../../../web/js/ui/prioritized/PrioritizedComponentManager';
 import {GithubStars} from './splashes/github_stars/GithubStars';
 import {GithubStarsRef} from './splashes/github_stars/GithubStarsRef';
-import {WhatsNewRef} from '../WhatsNewRef';
+import {WhatsNewRef} from './splashes/whats_new/WhatsNewRef';
 import {SurveyRef} from './splashes/survey/SurveyRef';
 // import {JoinDiscordRef} from './splashes/discord/JoinDiscordRef';
 

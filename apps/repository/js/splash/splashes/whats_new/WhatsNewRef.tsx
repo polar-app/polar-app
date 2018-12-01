@@ -1,11 +1,11 @@
-import {GithubStars} from './splash/splashes/github_stars/GithubStars';
+import {GithubStars} from '../github_stars/GithubStars';
 import * as React from 'react';
 import {WhatsNewModal} from './WhatsNewModal';
-import {PrioritizedComponentRef} from '../../../web/js/ui/prioritized/PrioritizedComponentManager';
-import {Version} from '../../../web/js/util/Version';
-import {RendererAnalytics} from '../../../web/js/ga/RendererAnalytics';
-import {ConditionalSetting} from '../../../web/js/ui/util/ConditionalSetting';
-import {Providers} from '../../../web/js/util/Providers';
+import {PrioritizedComponentRef} from '../../../../../../web/js/ui/prioritized/PrioritizedComponentManager';
+import {Version} from '../../../../../../web/js/util/Version';
+import {RendererAnalytics} from '../../../../../../web/js/ga/RendererAnalytics';
+import {ConditionalSetting} from '../../../../../../web/js/ui/util/ConditionalSetting';
+import {Providers} from '../../../../../../web/js/util/Providers';
 
 export class WhatsNewRef implements PrioritizedComponentRef {
 
@@ -41,3 +41,4 @@ export class WhatsNewRef implements PrioritizedComponentRef {
     }
 
 }
+
