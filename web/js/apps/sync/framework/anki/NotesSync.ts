@@ -82,6 +82,10 @@ export class NotesSync {
 
         if (existingIDs.length === 0) {
 
+            // add a special tag so that users can back out polar flashcards
+            // and delete them if necessary.
+            normalizedNote.noteDescriptor.tags.push("_polar-flashcard");
+
             if (! normalizedNote.noteDescriptor.tags.includes(polarGUID.format())) {
                 //  make sure the noteDescriptor has the proper tag.
                 normalizedNote.noteDescriptor.tags.push(polarGUID.format());

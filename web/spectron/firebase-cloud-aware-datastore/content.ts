@@ -65,7 +65,11 @@ SpectronRenderer.run(async (state) => {
                 console.log("==== BEGIN beforeEach");
 
                 // FIXME: this doesn't work reliably... find a better alternative
-                await Files.removeDirectoryRecursivelyAsync(PolarDataDir.get()!);
+                try {
+                    await Files.removeDirectoryRecursivelyAsync(PolarDataDir.get()!);
+                } catch (e) {
+                    console.error("Got stupid dir removal exception: ", e);
+                }
 
                 const firebaseDatastore = new FirebaseDatastore();
                 await firebaseDatastore.init();
@@ -79,7 +83,7 @@ SpectronRenderer.run(async (state) => {
 
             });
 
-            xit("Test1: null test to make sure we have no documents on startup", async function() {
+            it("Test1: null test to make sure we have no documents on startup", async function() {
 
                 const persistenceLayer = new DefaultPersistenceLayer(await createDatastore());
 
@@ -92,8 +96,67 @@ SpectronRenderer.run(async (state) => {
 
             });
 
+            it("Test2: Basic replication tests", async function() {
 
-            // FIXME make these production tests again.
+                // first purge the firebase datastore
+
+                const firebaseDatastore = new FirebaseDatastore();
+
+                await firebaseDatastore.init();
+
+                await Datastores.purge(firebaseDatastore);
+
+                // then write an initial doc to it...
+
+                const firestorePersistenceLayer = new DefaultPersistenceLayer(firebaseDatastore);
+
+                await firestorePersistenceLayer.writeDocMeta(MockDocMetas.createMockDocMeta('0x001'));
+
+                // now startup a new cloud persistence layer and make sure we
+                // get the doc in firebase written locally.
+
+                const cloudAwareDatastore = await createDatastore();
+                const persistenceLayer = new DefaultPersistenceLayer(cloudAwareDatastore);
+
+                cloudAwareDatastore.addSynchronizationEventListener(docMetaSnapshotEvent => {
+
+                    for (const docMutation of docMetaSnapshotEvent.docMetaMutations) {
+
+                        if (docMutation.fingerprint === '0x001') {
+                            initialDocLatch.resolve(true);
+                            continue;
+                        }
+
+                        if (docMutation.fingerprint === '0x002') {
+                            externallyWrittenDocLatch.resolve(true);
+                            continue;
+                        }
+
+                    }
+
+                });
+
+                await persistenceLayer.init();
+
+                const initialDocLatch = new Latch<boolean>();
+                const externallyWrittenDocLatch = new Latch<boolean>();
+
+                await initialDocLatch.get();
+
+                await firestorePersistenceLayer.writeDocMeta(MockDocMetas.createMockDocMeta('0x002'));
+
+                await externallyWrittenDocLatch.get();
+
+                waitForExpect(async () => {
+                    assert.ok(await persistenceLayer.contains('0x002'), "Does not contain second doc");
+                });
+
+                console.log("WORKED");
+
+                await persistenceLayer.stop();
+                await firestorePersistenceLayer.stop();
+
+            });
 
             it("Test3: Write a basic doc with synchronization listener", async function() {
 
