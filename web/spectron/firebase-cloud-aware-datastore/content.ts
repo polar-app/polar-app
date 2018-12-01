@@ -64,10 +64,6 @@ SpectronRenderer.run(async (state) => {
 
         const fingerprint = "0x001";
 
-        // mocha seems to have a bug where beforeEach can fail and the test
-        // doesn't fail which is horrible.
-        let err: Error | undefined;
-
         describe('Cloud datastore tests', function() {
 
             beforeEach(async function() {
@@ -87,7 +83,8 @@ SpectronRenderer.run(async (state) => {
                     await firebaseDatastore.stop();
 
                 } catch (e) {
-                    err = e;
+                    console.error("Caught exception in beforeEach: ", e);
+                    throw e;
                 } finally {
                     console.log("==== END beforeEach");
                 }
@@ -95,8 +92,6 @@ SpectronRenderer.run(async (state) => {
             });
 
             it("Test1: null test to make sure we have no documents on startup", async function() {
-
-                Preconditions.assertAbsent(err);
 
                 const persistenceLayer = new DefaultPersistenceLayer(await createDatastore());
 
@@ -110,8 +105,6 @@ SpectronRenderer.run(async (state) => {
             });
 
             it("Test2: Basic synchronization tests", async function() {
-
-                Preconditions.assertAbsent(err);
 
                 // first purge the firebase datastore
 
@@ -175,8 +168,6 @@ SpectronRenderer.run(async (state) => {
 
             it("Test3: Write a basic doc with synchronization listener", async function() {
 
-                Preconditions.assertAbsent(err);
-
                 const cloudAwareDatastore = await createDatastore();
                 const persistenceLayer = new DefaultPersistenceLayer(cloudAwareDatastore);
 
@@ -218,7 +209,6 @@ SpectronRenderer.run(async (state) => {
             });
 
             it("Test4: Write a basic doc", async function() {
-                Preconditions.assertAbsent(err);
 
                 const persistenceLayer = new DefaultPersistenceLayer(await createDatastore());
 
@@ -246,7 +236,7 @@ SpectronRenderer.run(async (state) => {
 
             it("Test5: Test an existing firebase store with existing data replicating to a new CloudDatastore.", async function() {
 
-                Preconditions.assertAbsent(err);
+                let err: Error | undefined;
 
                 const errorListener = (error: Error) => {
                     console.error("Got error:  ", err);
@@ -276,8 +266,6 @@ SpectronRenderer.run(async (state) => {
             });
 
             it("Test6: Verify unsubscribe works.", async function() {
-
-                Preconditions.assertAbsent(err);
 
                 await Files.removeDirectoryRecursivelyAsync(PolarDataDir.get()!);
 
@@ -326,8 +314,6 @@ SpectronRenderer.run(async (state) => {
 
             // FIXME: this wont' work yet due to the snapshot issue.
             xit("Test7: Test a remote write and a local replication to disk", async function() {
-
-                Preconditions.assertAbsent(err);
 
                 const sourcePersistenceLayer = new DefaultPersistenceLayer(new FirebaseDatastore());
                 await sourcePersistenceLayer.init();
