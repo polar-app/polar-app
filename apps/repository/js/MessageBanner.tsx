@@ -92,22 +92,8 @@ const MESSAGES: Message[] = [
         element: <div>Can you help other people discover POLAR by <a href="https://alternativeto.net/software/polar-1/">voting for us on alternativeTo?</a></div>
     },
     {
-        id: 'ui-ux-help',
-        element: <div>Are you a UI/UX developer? <a href="https://github.com/burtonator/polar-bookshelf/labels/uiux">We'd love your help on some UI issues! </a></div>
-    },
-
-    {
         id: 'join-discord',
-        element: <div>Want to chat about Polar? <a href="https://discord.gg/GT8MhA6">Join our live Discord chat group!</a></div>
-    },
-    {
-        id: 'roadmap',
-        element: <div>Interested in the future of Polar? <a href="https://github.com/burtonator/polar-bookshelf/blob/master/docs/ROADMAP.md">Check out our roadmap!</a></div>
-    },
-
-    {
-        id: 'roadmap',
-        element: <div>Interested in the future of Polar? <a href="https://github.com/burtonator/polar-bookshelf/blob/master/docs/ROADMAP.md">Check out our roadmap!</a></div>
+        element: <div>Want to discuss Polar with other users? <a href="https://discord.gg/GT8MhA6">Join our live Discord chat group!</a></div>
     },
     {
         id: 'opencollective-donate',

@@ -9,7 +9,7 @@ import {PopupStateEvent} from '../popup/PopupStateEvent';
 import {Listener} from '../../reactor/Listener';
 import {Numbers} from '../../util/Numbers';
 
-export class PrioritizedComponent extends React.Component<IProps, IState> {
+export class PrioritizedComponentManager extends React.Component<IProps, IState> {
 
     constructor(props: IProps) {
         super(props);
@@ -19,7 +19,7 @@ export class PrioritizedComponent extends React.Component<IProps, IState> {
     public render() {
 
         const sorted =
-            [...this.props.prioritizedComponents]
+            [...this.props.prioritizedComponentRefs]
                 .filter(current => current.priority() !== undefined)
                 .sort((o1, o2) => Numbers.compare(o1.priority(), o2.priority()) * -1);
 
@@ -28,7 +28,7 @@ export class PrioritizedComponent extends React.Component<IProps, IState> {
         }
 
         // return the top ranking element.
-        return sorted[0].toElement();
+        return sorted[0].create();
 
     }
 
@@ -37,7 +37,20 @@ export class PrioritizedComponent extends React.Component<IProps, IState> {
 /**
  * Allows us to give a set or components to the
  */
-export interface PrioritizeComponentHolder {
+export interface PrioritizedComponent {
+
+    /**
+     * Allows the component to determine its priority.  This could be used
+     * to see if it needs to popup now or just some sort of static priority.
+     *
+     * Return undefined if the component should not be displayed.  This can be
+     * used if the user has already performed a given action.
+     */
+    priority(): number | undefined;
+
+}
+
+export interface PrioritizedComponentRef {
 
     /**
      * Allows the component to determine its priority.  This could be used
@@ -49,15 +62,15 @@ export interface PrioritizeComponentHolder {
     priority(): number | undefined;
 
     /**
-     * Convert to a JSX element to render in the UI.
+     * Create the component when we're ready for it.
      */
-    toElement(): JSX.Element;
+    create(): JSX.Element;
 
 }
 
 export interface IProps {
 
-    prioritizedComponents: ReadonlyArray<PrioritizeComponentHolder>;
+    prioritizedComponentRefs: ReadonlyArray<PrioritizedComponentRef>;
 
 }
 

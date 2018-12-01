@@ -36,6 +36,7 @@ import {IEventDispatcher, SimpleReactor} from '../../../web/js/reactor/SimpleRea
 import {DocRepoAnkiSyncController} from '../../../web/js/controller/DocRepoAnkiSyncController';
 import {Tooltip, UncontrolledTooltip, Collapse} from 'reactstrap';
 import {CloudAuthButton} from '../../../web/js/ui/cloud_auth/CloudAuthButton';
+import {PrioritizedSplashes} from './splash/PrioritizedSplashes';
 
 const log = Logger.create();
 
@@ -103,7 +104,7 @@ export default class App extends React.Component<AppProps, AppState> {
 
             <div id="doc-repository">
 
-                <WhatsNewComponent/>
+                <PrioritizedSplashes/>
 
                 <SyncBar progress={this.syncBarProgress}/>
 

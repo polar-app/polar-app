@@ -11,6 +11,7 @@ import Cookies from 'js-cookie';
 import {ConditionalSetting} from '../../../web/js/ui/util/ConditionalSetting';
 import {Renderer} from 'react-dom';
 import {RendererAnalytics} from '../../../web/js/ga/RendererAnalytics';
+import {PrioritizedComponentManager, PrioritizedComponent} from '../../../web/js/ui/prioritized/PrioritizedComponentManager';
 
 const log = Logger.create();
 
@@ -43,7 +44,7 @@ export class WhatsNewComponent extends React.Component<IProps, IState> {
 
         // noinspection TsLint
         return (
-            <WhatsNewModal open={this.state.open} accept={() => this.hide()}/>
+            <WhatsNewModal accept={() => this.hide()}/>
         );
     }
 
@@ -55,7 +56,9 @@ export class WhatsNewComponent extends React.Component<IProps, IState> {
 
         const isNewVersion = await this.isNewVersion();
 
-        RendererAnalytics.event({category: 'app', action: 'whats-new-displayed'});
+        if (isNewVersion) {
+            RendererAnalytics.event({category: 'app', action: 'whats-new-displayed'});
+        }
 
         this.setState({
             open: isNewVersion

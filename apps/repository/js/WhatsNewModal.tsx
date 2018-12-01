@@ -12,16 +12,19 @@ export class WhatsNewModal extends React.Component<IProps, IState> {
     constructor(props: IProps, context: any) {
         super(props, context);
 
+        this.state = {
+            open: true
+        };
+
     }
 
     public render() {
 
-        // noinspection TsLint
         return (
 
             <div>
 
-                <Modal isOpen={this.props.open}
+                <Modal isOpen={this.state.open}
                        size="lg"
                        style={{overflowY: 'initial', minWidth: '80%'}}>
                     <ModalHeader>What's New in Polar</ModalHeader>
@@ -31,11 +34,12 @@ export class WhatsNewModal extends React.Component<IProps, IState> {
 
                     </ModalBody>
                     <ModalFooter>
-                        <Button color="primary" onClick={() => this.props.accept()}>Ok</Button>
+                        <Button color="primary" onClick={() => this.setState({open: false})}>Ok</Button>
                     </ModalFooter>
 
                 </Modal>
             </div>
+
         );
     }
 
@@ -43,15 +47,13 @@ export class WhatsNewModal extends React.Component<IProps, IState> {
 
 interface IProps {
 
-    open: boolean;
-
     /**
      * Called when we click the ok button.
      */
-    accept: () => void;
+    accept?: () => void;
 
 }
 
 interface IState {
-
+    open: boolean;
 }
