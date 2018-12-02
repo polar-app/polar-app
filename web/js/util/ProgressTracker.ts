@@ -52,6 +52,7 @@ export class ProgressTracker {
      */
     public terminate(): Readonly<ProgressState> {
         this.state.completed = this.state.total;
+        this.state.progress = this.calculate();
         this.state.duration = Date.now() - this.epoch;
         return this.peek();
     }

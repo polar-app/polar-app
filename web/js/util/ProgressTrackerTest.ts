@@ -16,6 +16,18 @@ describe('ProgressTracker', function() {
 
     });
 
+    it("Basic with irrational numbers", async function() {
+
+        // irrational number can cause problems with progress bars so we need
+        // to make sure the floating point component is finite.
+
+        const progressTracker = new ProgressTracker(3);
+        assert.equal(progressTracker.incr().progress, 33.33);
+        assert.equal(progressTracker.incr().progress, 66.67);
+        assert.equal(progressTracker.incr().progress, 100);
+
+    });
+
     it("Make sure the last is 100%", async function() {
 
         const progressTracker = new ProgressTracker(3);
