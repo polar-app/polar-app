@@ -26,10 +26,13 @@ import {PersistenceLayers, SyncOrigin} from '../../js/datastore/PersistenceLayer
 import {CloudAwareDatastore} from '../../js/datastore/CloudAwareDatastore';
 import {ProgressTracker} from '../../js/util/ProgressTracker';
 import {ProgressBar} from '../../js/ui/progress_bar/ProgressBar';
+import {Logging} from '../../js/logger/Logging';
 
 SpectronRenderer.run(async (state) => {
 
     new FirebaseTester(state).run(async () => {
+
+        await Logging.init();
 
         // const diskDatastore = new DiskDatastore();
         // const firebaseDatastore = new FirebaseDatastore();
@@ -52,11 +55,31 @@ SpectronRenderer.run(async (state) => {
 
         const progressBar = ProgressBar.create(false);
 
+
+
+        async function toSyncDocMap(persistenceLayer: PersistenceLayer) {
+
+            const timeLabel = 'toSyncOrigin:' + persistenceLayer.datastore.id;
+
+            try {
+                console.time(timeLabel);
+                return await PersistenceLayers.toSyncDocMap(persistenceLayer);
+
+            } finally {
+                console.timeEnd(timeLabel);
+            }
+
+        }
+
         async function toSyncOrigin(persistenceLayer: PersistenceLayer): Promise<SyncOrigin> {
+
+            const syncDocMap = await toSyncDocMap(persistenceLayer);
+
             return {
                 datastore: persistenceLayer.datastore,
-                syncDocMap: await PersistenceLayers.toSyncDocsMap(persistenceLayer)
+                syncDocMap
             };
+
         }
 
         await PersistenceLayers.synchronize(await toSyncOrigin(source), await toSyncOrigin(target), (transferEvent) => {

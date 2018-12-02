@@ -57,7 +57,7 @@ export class ProgressTracker {
 
         const result = Percentages.calculate(this.state.completed, this.state.total);
 
-        if (result > 100) {
+        if (result < 0 || result > 100) {
             const msg = `Invalid percentage: ${result}: completed: ${this.state.completed} vs total: ${this.state.total}`;
             throw new Error(msg);
         }

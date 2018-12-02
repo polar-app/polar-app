@@ -34,10 +34,6 @@ class DelegatedLogger implements ILogger {
 
     public readonly name: string = 'delegated';
 
-    /**
-     *
-     * @param caller {string}
-     */
     public constructor(caller: string) {
         this.caller = caller;
     }

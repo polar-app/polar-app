@@ -30,6 +30,7 @@ import {Latch} from '../../js/util/Latch';
 import {NULL_FUNCTION} from '../../js/util/Functions';
 import {PersistenceLayers} from '../../js/datastore/PersistenceLayers';
 import {Preconditions} from '../../js/Preconditions';
+import {Logging} from '../../js/logger/Logging';
 
 mocha.setup('bdd');
 mocha.timeout(20000);
@@ -59,6 +60,8 @@ async function createDatastore() {
 SpectronRenderer.run(async (state) => {
 
     new FirebaseTester(state).run(async () => {
+
+        await Logging.init();
 
         await PolarDataDir.useFreshDirectory('.test-firebase-cloud-aware-datastore');
 

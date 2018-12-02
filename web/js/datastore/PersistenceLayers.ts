@@ -23,16 +23,25 @@ export class PersistenceLayers {
         return new DefaultPersistenceLayer(input);
     }
 
-    public static async toSyncDocsMap(persistenceLayer: PersistenceLayer) {
+    public static async toSyncDocMap(persistenceLayer: PersistenceLayer) {
 
         const docMetaFiles = await persistenceLayer.getDocMetaFiles();
 
         const syncDocsMap: SyncDocMap = {};
 
+        const work: AsyncFunction[] = [];
+        const asyncWorkQueue = new AsyncWorkQueue(work);
+
         for (const docMetaFile of docMetaFiles) {
-            const docMeta = await persistenceLayer.getDocMeta(docMetaFile.fingerprint);
-            syncDocsMap[docMetaFile.fingerprint] = SyncDocs.fromDocInfo(docMeta!.docInfo, 'created');
+
+            work.push(async () => {
+                const docMeta = await persistenceLayer.getDocMeta(docMetaFile.fingerprint);
+                syncDocsMap[docMetaFile.fingerprint] = SyncDocs.fromDocInfo(docMeta!.docInfo, 'created');
+            });
+
         }
+
+        await asyncWorkQueue.execute();
 
         return syncDocsMap;
 
