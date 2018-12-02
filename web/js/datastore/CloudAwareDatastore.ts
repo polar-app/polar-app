@@ -58,9 +58,9 @@ export class CloudAwareDatastore extends AbstractDatastore implements Datastore,
 
     public readonly directories: Directories;
 
-    private readonly local: Datastore;
+    public readonly local: Datastore;
 
-    private readonly cloud: Datastore;
+    public readonly cloud: Datastore;
 
     private readonly fileSynchronizationEventDispatcher: IEventDispatcher<FileSynchronizationEvent> = new SimpleReactor();
 

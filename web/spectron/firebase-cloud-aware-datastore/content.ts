@@ -27,10 +27,11 @@ import {PolarDataDir} from '../../js/test/PolarDataDir';
 import waitForExpect from 'wait-for-expect';
 import {Datastores} from '../../js/datastore/Datastores';
 import {Latch} from '../../js/util/Latch';
-import {NULL_FUNCTION} from '../../js/util/Functions';
+import {ASYNC_NULL_FUNCTION, NULL_FUNCTION} from '../../js/util/Functions';
 import {PersistenceLayers} from '../../js/datastore/PersistenceLayers';
 import {Preconditions} from '../../js/Preconditions';
 import {Logging} from '../../js/logger/Logging';
+import {PersistenceLayer} from '../../js/datastore/PersistenceLayer';
 
 mocha.setup('bdd');
 mocha.timeout(20000);
@@ -61,7 +62,7 @@ SpectronRenderer.run(async (state) => {
 
     new FirebaseTester(state).run(async () => {
 
-        await Logging.init();
+        await Logging.initForTesting();
 
         await PolarDataDir.useFreshDirectory('.test-firebase-cloud-aware-datastore');
 
@@ -91,6 +92,81 @@ SpectronRenderer.run(async (state) => {
                 } finally {
                     console.log("==== END beforeEach");
                 }
+
+            });
+
+            type ConsistencyTestFunction = (persistenceLayer: PersistenceLayer,
+                                            cloudAwareDatastore: CloudAwareDatastore) => Promise<void>;
+
+            /**
+             * This will init the cloud datastore, then wait for them to become
+             * consistent, then we run the test function to verify that the
+             * datastore is valid.
+             */
+            async function testForConsistency(testFunction: ConsistencyTestFunction = ASYNC_NULL_FUNCTION) {
+
+                const cloudAwareDatastore = await createDatastore();
+                const persistenceLayer = new DefaultPersistenceLayer(cloudAwareDatastore);
+
+                try {
+
+                    await persistenceLayer.init();
+
+                    await waitForExpect(async () => {
+
+                        const consistency
+                            = await Datastores.checkConsistency(cloudAwareDatastore.local,
+                                                                cloudAwareDatastore.cloud);
+
+                        assert.ok(consistency.consistent);
+
+                    });
+
+                    await testFunction(persistenceLayer, cloudAwareDatastore);
+
+                } finally {
+                    await persistenceLayer.stop();
+                }
+
+            }
+
+            it("Test8: Sync with extra files in the local store", async function() {
+
+                const datastore = new DiskDatastore();
+                await datastore.init();
+
+                await datastore.writeDocMeta(MockDocMetas.createMockDocMeta('0x0004'));
+                await datastore.writeDocMeta(MockDocMetas.createMockDocMeta('0x0005'));
+                await datastore.stop();
+
+                await testForConsistency(async (persistenceLayer, cloudAwareDatastore) => {
+
+                    for (const currentFingerprint of ['0x0004', '0x0005']) {
+                        assert.ok(await cloudAwareDatastore.local.contains(currentFingerprint));
+                        assert.ok(await cloudAwareDatastore.cloud.contains(currentFingerprint));
+                    }
+
+                });
+
+            });
+
+            it("Test9: Sync with extra files in the firebase store", async function() {
+
+                const datastore = new FirebaseDatastore();
+                await datastore.init();
+
+                await datastore.writeDocMeta(MockDocMetas.createMockDocMeta('0x0004'));
+                await datastore.writeDocMeta(MockDocMetas.createMockDocMeta('0x0005'));
+                await datastore.stop();
+
+                await testForConsistency(async (persistenceLayer, cloudAwareDatastore) => {
+
+                    for (const currentFingerprint of ['0x0004', '0x0005']) {
+                        assert.ok(await cloudAwareDatastore.local.contains(currentFingerprint));
+                        assert.ok(await cloudAwareDatastore.cloud.contains(currentFingerprint));
+                    }
+
+                });
 
             });
 

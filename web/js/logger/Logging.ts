@@ -37,6 +37,13 @@ export class Logging {
 
     }
 
+    /**
+     * Initialize a logger suitable for testing.
+     */
+    public static async initForTesting() {
+        await this.initWithTarget(new ConsoleLogger());
+    }
+
     public static async initWithTarget(target: ILogger) {
 
         const lc = await this.loggingConfig();
@@ -91,9 +98,6 @@ export class Logging {
 
         if (loggingConfig.target === LoggerTarget.CONSOLE) {
             return new ConsoleLogger();
-        // } else if(loggerTarget === LoggerTarget.DISK) {
-        //     let directories = new Directories();
-        //     return await ElectronLoggers.create(directories.logsDir);
         } else {
             throw new Error("Invalid target: " + loggingConfig.target);
         }
