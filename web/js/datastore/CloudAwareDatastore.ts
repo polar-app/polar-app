@@ -156,19 +156,19 @@ export class CloudAwareDatastore extends AbstractDatastore implements Datastore,
                         datastoreMutation: DatastoreMutation<boolean> = new DefaultDatastoreMutation()):
         Promise<Readonly<CloudAwareDeleteResult>> {
 
-        datastoreMutation
-            .written.get().then(() => {
+        datastoreMutation.written.get()
+            .then(() => {
 
-            this.docMetaComparisonIndex.remove(docMetaFileRef.fingerprint);
+                this.docMetaComparisonIndex.remove(docMetaFileRef.fingerprint);
 
-        });
+            });
 
         await DatastoreMutations.executeBatchedWrite(datastoreMutation,
                                                      async (remoteCoordinator) => {
-                                                         this.cloud.delete(docMetaFileRef, remoteCoordinator);
+                                                         await this.cloud.delete(docMetaFileRef, remoteCoordinator);
                                                      },
                                                      async (localCoordinator) => {
-                                                         this.local.delete(docMetaFileRef, localCoordinator);
+                                                         await this.local.delete(docMetaFileRef, localCoordinator);
                                                      });
 
         return {};
@@ -190,10 +190,10 @@ export class CloudAwareDatastore extends AbstractDatastore implements Datastore,
         });
 
         return DatastoreMutations.executeBatchedWrite(datastoreMutation,
-                                                      (remoteCoordinator) =>
-                                                          this.cloud.write(fingerprint, data, docInfo, remoteCoordinator),
-                                                      (localCoordinator) =>
-                                                          this.local.write(fingerprint, data, docInfo, localCoordinator));
+                                                      async (remoteCoordinator) =>
+                                                          await this.cloud.write(fingerprint, data, docInfo, remoteCoordinator),
+                                                      async (localCoordinator) =>
+                                                          await this.local.write(fingerprint, data, docInfo, localCoordinator));
 
     }
 
@@ -348,7 +348,7 @@ export class CloudAwareDatastore extends AbstractDatastore implements Datastore,
 
         const synchronizingListener = synchronizingEventDeduplicator.listener;
 
-        localInitialSnapshotLatch.createSnapshot(this.local);
+        const localSnapshotResultPromise = localInitialSnapshotLatch.createSnapshot(this.local);
 
         const cloudSnapshotResultPromise = cloudInitialSnapshotLatch.createSnapshot(this.cloud);
 
@@ -366,12 +366,13 @@ export class CloudAwareDatastore extends AbstractDatastore implements Datastore,
         };
 
         if (isPrimarySnapshot) {
-            await PersistenceLayers.synchronizeFromSyncDocs(localSyncOrigin, cloudSyncOrigin, deduplicatedListener.listener);
-            await PersistenceLayers.synchronizeFromSyncDocs(cloudSyncOrigin, localSyncOrigin, deduplicatedListener.listener);
+            await PersistenceLayers.synchronize(localSyncOrigin, cloudSyncOrigin, deduplicatedListener.listener);
+            await PersistenceLayers.synchronize(cloudSyncOrigin, localSyncOrigin, deduplicatedListener.listener);
         }
 
         initialSyncCompleted = true;
 
+        await localSnapshotResultPromise;
         const cloudSnapshotResult = await cloudSnapshotResultPromise;
 
         return {

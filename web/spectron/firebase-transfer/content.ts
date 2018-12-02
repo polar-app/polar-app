@@ -59,7 +59,7 @@ SpectronRenderer.run(async (state) => {
             };
         }
 
-        await PersistenceLayers.synchronizeFromSyncDocs(await toSyncOrigin(source), await toSyncOrigin(target), (transferEvent) => {
+        await PersistenceLayers.synchronize(await toSyncOrigin(source), await toSyncOrigin(target), (transferEvent) => {
             console.log("Transfer event: ", transferEvent);
             progressBar.update(transferEvent.progress.progress);
         });

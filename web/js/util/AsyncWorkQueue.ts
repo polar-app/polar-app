@@ -1,11 +1,15 @@
 import {Latch} from './Latch';
 import {executeTasks} from 'electron-updater/out/differentialDownloader/multipleRangeDownloader';
+import {Logger} from '../logger/Logger';
+
+const log = Logger.create();
 
 /**
- * A work queue that contains a list of async functions which are just executed.
+ * A work queue that contains a list of async functions which are just
+ * executed.
  *
- * The queue can be appended too and is continually executed until it's exhausted
- * and the last task is finished.
+ * The queue can be appended too and is continually executed until it's
+ * exhausted and the last task is finished.
  *
  * This isn't designed to scale CPU as the tasks are all executing in a single
  * thread but is more focused on executing code in parallel that is using some
@@ -49,10 +53,8 @@ export class AsyncWorkQueue {
     /**
      * Allows us to enqueue more work in this AsyncWorkQueue but we can depend
      * on the result without starting the task.
-     *
-     * @param asyncTask
      */
-    public enqueue<T>(asyncTask: TypedAsyncFunction<T> ): Promise<T> {
+    public enqueue<T>(asyncTask: TypedAsyncFunction<T> ): Latch<T> {
 
         const latch: Latch<T> = new Latch();
 
@@ -65,7 +67,7 @@ export class AsyncWorkQueue {
 
         this.work.push(wrapperTask);
 
-        return latch.get();
+        return latch;
 
     }
 
@@ -104,6 +106,7 @@ export class AsyncWorkQueue {
                     this.handleNextTask();
                 })
                 .catch(err => {
+                    log.error("Unable to handle task: ", err);
                     // your code should do its own error handling....
                     this.handleNextTask();
                 });

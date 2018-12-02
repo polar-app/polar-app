@@ -54,7 +54,7 @@ export class DatastoreMutations {
      * Perform a write while coordinating the remote and local writes.
      *
      * The remote operation executes and completes written once it's written
-     * locally but potentially still unsafe as it's not committed.  Once it's
+     * locally but potentially still unsafe as it's not 'committed'.  Once it's
      * committed locally (and safe) then we can perform the local operation
      * which is also atomic (and safe).
      *
@@ -77,21 +77,35 @@ export class DatastoreMutations {
                                                remoteSync: (remoteCoordinator: DatastoreMutation<T>) => Promise<void>,
                                                localSync: (localCoordinator: DatastoreMutation<T>) => Promise<void>,
                                                remoteCoordinator: DatastoreMutation<T> = new DefaultDatastoreMutation(),
-                                               localCoordinator: DatastoreMutation<T> = new DefaultDatastoreMutation()) {
+                                               localCoordinator: DatastoreMutation<T> = new DefaultDatastoreMutation()): Promise<void> {
 
-        remoteSync(remoteCoordinator);
+        // FIXME: both of these are broken as we're not actually catching
+        // exceptions here and when we do how do we reject them?
 
-        remoteCoordinator.written.get()
-            .then(() => {
-                localSync(localCoordinator);
-            });
+        return new Promise<void>((resolve, reject) => {
 
-        DatastoreMutations.batched(remoteCoordinator, localCoordinator, datastoreMutation);
+            remoteSync(remoteCoordinator)
+                .catch((err) => reject(err));
 
-        // only return once the remote and local promises / operations have
-        // been completed...
+            remoteCoordinator.written.get()
+                .then(() => {
 
-        await datastoreMutation.committed.get();
+                    localSync(localCoordinator)
+                        .catch(err => reject(err));
+
+                })
+                .catch((err) => reject(err));
+
+            DatastoreMutations.batched(remoteCoordinator, localCoordinator, datastoreMutation);
+
+            // only return once the remote and local promises / operations have
+            // been completed...
+
+            datastoreMutation.committed.get()
+                .then(() => resolve())
+                .catch((err) => reject(err));
+
+        });
 
     }
 
@@ -117,7 +131,5 @@ export class DatastoreMutations {
         });
 
     }
-
-
 
 }

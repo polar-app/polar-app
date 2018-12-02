@@ -42,9 +42,9 @@ export class PersistenceLayers {
      * Synchronize the source with the target so that we know they are both in
      * sync.
      */
-    public static async synchronizeFromSyncDocs(source: SyncOrigin,
-                                                target: SyncOrigin,
-                                                listener: DocMetaSnapshotEventListener = NULL_FUNCTION): Promise<TransferResult> {
+    public static async synchronize(source: SyncOrigin,
+                                    target: SyncOrigin,
+                                    listener: DocMetaSnapshotEventListener = NULL_FUNCTION): Promise<TransferResult> {
 
         const result: TransferResult = {
             mutations: {
@@ -152,18 +152,21 @@ export class PersistenceLayers {
 
         }
 
-        const progressTracker = new ProgressTracker(Dictionaries.size(source.syncDocMap));
-
         const docFileAsyncWorkQueue = new AsyncWorkQueue([]);
         const docMetaAsyncWorkQueue = new AsyncWorkQueue([]);
 
-        for (const sourceSyncDoc of Object.values(source.syncDocMap)) {
+        const sourceSyncDocs = Object.values(source.syncDocMap);
+
+        const progressTracker = new ProgressTracker(sourceSyncDocs.length);
+
+        for (const sourceSyncDoc of sourceSyncDocs) {
 
             const targetSyncDoc = target.syncDocMap[sourceSyncDoc.fingerprint];
 
-            const handler = async () => handleSyncDoc(sourceSyncDoc, targetSyncDoc);
+            const handler = async () => await handleSyncDoc(sourceSyncDoc, targetSyncDoc);
 
             docMetaAsyncWorkQueue.enqueue(handler);
+
 
         }
 

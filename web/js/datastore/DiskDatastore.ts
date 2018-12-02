@@ -303,8 +303,12 @@ export class DiskDatastore extends AbstractDatastore implements Datastore {
         // TODO: test that this works on Windows - I do not think it will.
         const url = new URL(`file:///${fileReference.path}`);
 
-        const buff = await Files.readFileAsync(fileReference.metaPath);
-        const meta = JSON.parse(buff.toString("utf-8"));
+        let meta = {};
+
+        if (await Files.existsAsync(fileReference.metaPath)) {
+            const buff = await Files.readFileAsync(fileReference.metaPath);
+            meta = JSON.parse(buff.toString("utf-8"));
+        }
 
         return {
             backend,

@@ -40,7 +40,9 @@ export class DocRepoAnkiSyncController {
         switch (event.data.type) {
 
             case "start-anki-sync":
-                this.onStartSync();
+                this.onStartSync()
+                    .catch(err => log.error("Failed to start sync: ", err));
+
                 break;
 
         }

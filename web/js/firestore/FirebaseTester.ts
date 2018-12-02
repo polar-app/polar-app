@@ -38,14 +38,16 @@ export class FirebaseTester {
 
             }
 
-            this.init();
+            this.init()
+                .catch(err => log.error("Caught error on init", err));
+
         });
 
     }
 
     public async init() {
 
-        await firebase.auth()
+        firebase.auth()
             .onAuthStateChanged((user) => this.onAuth(user),
                                 (err) => this.onAuthError(err));
 

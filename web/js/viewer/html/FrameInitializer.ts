@@ -18,7 +18,7 @@ export class FrameInitializer {
 
     constructor(iframe: HTMLIFrameElement, textLayer: HTMLElement) {
 
-        if(!iframe) {
+        if (!iframe) {
             throw new Error("No iframe");
         }
 
@@ -84,8 +84,9 @@ export class FrameInitializer {
     startEventBridge() {
 
         document.querySelectorAll(".page").forEach(pageElement => {
-            let eventBridge = new EventBridge(<HTMLElement>pageElement, this.iframe);
-            eventBridge.start();
+            const eventBridge = new EventBridge(<HTMLElement> pageElement, this.iframe);
+            eventBridge.start()
+                .catch(err => log.error("Could not run eventBridge: ", err));
         });
     }
 

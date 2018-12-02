@@ -79,7 +79,9 @@ export class HTMLViewer extends Viewer {
 
             window.addEventListener("resize", () => {
                 this.doZoom();
-                this.frameResizer!.resize(true);
+                this.frameResizer!.resize(true)
+                    .catch(err => log.error("Unable to resize: ", err));
+
             });
 
             await Services.start(new LinkHandler(this.content));

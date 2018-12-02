@@ -113,7 +113,7 @@ export class StandardWebContentsDriver implements WebContentsDriver {
         this.browserWindow = browserWindow;
         this.webContents = webContents;
 
-        this.initWebContentsEvents(webContents);
+        await this.initWebContentsEvents(webContents);
 
         if ( ! browserWindowOptions.show) {
             await BrowserWindows.onceReadyToShow(browserWindow);

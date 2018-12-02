@@ -4,7 +4,7 @@ import {ProgressTrackers} from './ProgressTrackers';
 import {ProgressTracker} from './ProgressTracker';
 
 
-describe('ProgressTrackerTest', function() {
+describe('ProgressTracker', function() {
 
     it("Basic", async function() {
 
