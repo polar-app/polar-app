@@ -392,8 +392,6 @@ export class CloudAwareDatastore extends AbstractDatastore implements Datastore,
         this.docMetaSnapshotEventDispatcher.addEventListener(docMetaSnapshotEventListener);
     }
 
-
-
 }
 
 

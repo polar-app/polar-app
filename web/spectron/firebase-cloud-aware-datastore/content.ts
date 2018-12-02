@@ -68,18 +68,6 @@ SpectronRenderer.run(async (state) => {
 
         const fingerprint = "0x001";
 
-        // FIXME: I think I HAVE to have some sort of tombstone for deletes
-        // otherwise how would we know that an absent file is deleted and not
-        // just something that needs to be sync'd yet. There's no way to know
-        // that the cloud store is necessarily more recent than the disk store.
-        //
-        // the disk store could have a tombstone as well as a firebase store
-        // but I need a way to....
-
-        // FIXME: !!! OH!!! the reason is that once we're in the cloud store,
-        // the CLOUD store is the source of truth it's just that the local cache
-        // caches some of the operations.
-
         // FIXME: there's anotbher issue here and that involves the FIRST sync.
         //
         // we have to detect that there are files ON DISK and not in the cloud,
