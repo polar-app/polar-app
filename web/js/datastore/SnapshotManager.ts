@@ -9,6 +9,7 @@ import {IEventDispatcher, SimpleReactor} from '../reactor/SimpleReactor';
 import {ProgressTrackers} from "../util/ProgressTrackers";
 import {IDocInfo} from '../metadata/DocInfo';
 import {DocMetas} from '../metadata/DocMetas';
+import {AsyncProviders} from '../util/Providers';
 
 /**
  */
@@ -24,6 +25,8 @@ export class SnapshotManager {
 
     public onDelete(docMetaFileRef: DocMetaFileRef): void {
 
+        const failureProvider = async () => Promise.reject("No reads during delete allowed");
+
         const docMetaSnapshotEvent: DocMetaSnapshotEvent = {
             datastore: this.datastore.id,
             progress: ProgressTrackers.completed(),
@@ -32,8 +35,9 @@ export class SnapshotManager {
                 {
                     fingerprint: docMetaFileRef.fingerprint,
                     // for deletes do not reference the DocInfo or the DocMeta
-                    docMetaProvider: async () => Promise.reject("No reads during delete allowed"),
-                    docInfoProvider: async () => Promise.reject("No reads during delete allowed"),
+                    dataProvider: failureProvider,
+                    docMetaProvider: failureProvider,
+                    docInfoProvider: failureProvider,
                     docMetaFileRefProvider: async () => docMetaFileRef,
                     mutationType: 'deleted'
                 }
@@ -54,6 +58,7 @@ export class SnapshotManager {
             docMetaMutations: [
                 {
                     fingerprint,
+                    dataProvider: AsyncProviders.of(data),
                     docMetaProvider: async () => DocMetas.deserialize(data),
                     docInfoProvider: async () => docInfo,
                     docMetaFileRefProvider: async () => DocMetaFileRefs.createFromDocInfo(docInfo),

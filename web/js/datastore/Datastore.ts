@@ -342,6 +342,10 @@ export interface SnapshotProgress extends Readonly<ProgressState> {
 
 }
 
+/**
+ * Only use one provider, either dataProvider, docMetaProvider, or
+ * docInfoProvider, whichever is the most efficient and only read once ideally.
+ */
 export interface DocMetaMutation {
 
     readonly fingerprint: string;
@@ -349,6 +353,12 @@ export interface DocMetaMutation {
     readonly mutationType: MutationType;
 
     readonly docMetaFileRefProvider: AsyncProvider<DocMetaFileRef>;
+
+    /**
+     * Get access to the underlying data of the DocMeta to enable us to
+     * read/write directly to the Datastore without mutating anything.
+     */
+    readonly dataProvider: AsyncProvider<string | null>;
 
     readonly docMetaProvider: AsyncProvider<DocMeta>;
 

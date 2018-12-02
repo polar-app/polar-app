@@ -301,12 +301,11 @@ export class CloudAwareDatastore extends AbstractDatastore implements Datastore,
                         // by having a dataProvider() with just the string data
                         // which would mean we can write directly to the local
                         // store without serializing.
-                        const docMeta = await docMetaMutation.docMetaProvider();
-                        Preconditions.assertPresent(docMeta, "No docMeta in replication listener: ");
+                        const data = await docMetaMutation.dataProvider();
+                        const docInfo = await docMetaMutation.docInfoProvider();
+                        Preconditions.assertPresent(data, "No data in replication listener: ");
 
-                        const data = DocMetas.serialize(docMeta);
-
-                        await this.local.write(docMetaMutation.fingerprint, data, docMeta.docInfo);
+                        await this.local.write(docMetaMutation.fingerprint, data, docInfo);
                     }
 
                     if (docMetaMutation.mutationType === 'deleted') {

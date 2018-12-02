@@ -590,8 +590,10 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore {
 
             const docInfo = record.value;
 
+            const dataProvider = async () => await this.getDocMeta(docInfo.fingerprint);
+
             const docMetaProvider = AsyncProviders.memoize(async () => {
-                const data = await this.getDocMeta(docInfo.fingerprint);
+                const data = await dataProvider();
                 Preconditions.assertPresent(data, "No data for docMeta with fingerprint: " + docInfo.fingerprint);
                 return DocMetas.deserialize(data!);
             });
@@ -599,6 +601,7 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore {
             const docMetaMutation: FirebaseDocMetaMutation = {
                 id,
                 fingerprint: docInfo.fingerprint,
+                dataProvider,
                 docMetaProvider,
                 docInfoProvider: AsyncProviders.of(docInfo),
                 docMetaFileRefProvider: AsyncProviders.of(DocMetaFileRefs.createFromDocInfo(docInfo)),

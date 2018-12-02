@@ -34,62 +34,75 @@ SpectronRenderer.run(async (state) => {
 
         await Logging.init();
 
-        // const diskDatastore = new DiskDatastore();
-        // const firebaseDatastore = new FirebaseDatastore();
-        //
-        // const cloudAwareDatastore = new CloudAwareDatastore(diskDatastore,
-        // firebaseDatastore);  const progressBar = ProgressBar.create(false);
-        // cloudAwareDatastore.addDocMetaSnapshotEventListener(docMetaSnapshotEvent
-        // => {  console.log("Got event: ", docMetaSnapshotEvent);
-        // console.log("Progress percentage: " +
-        // docMetaSnapshotEvent.progress.progress);
-        // progressBar.update(docMetaSnapshotEvent.progress.progress);  });
-        // await cloudAwareDatastore.init();
+        async function syncWithFirebase() {
 
-        const firebaseDatastore = new FirebaseDatastore();
+            const diskDatastore = new DiskDatastore();
+            const firebaseDatastore = new FirebaseDatastore();
 
-        const source = new DefaultPersistenceLayer(new DiskDatastore());
-        const target = new DefaultPersistenceLayer(firebaseDatastore);
+            const cloudAwareDatastore = new CloudAwareDatastore(diskDatastore, firebaseDatastore);
+            const progressBar = ProgressBar.create(false);
 
-        await Promise.all([source.init(), target.init()]);
+            cloudAwareDatastore.addDocMetaSnapshotEventListener(docMetaSnapshotEvent => {
+                console.log("Got event: ", docMetaSnapshotEvent);
+                console.log("Progress percentage: " + docMetaSnapshotEvent.progress.progress);
+                progressBar.update(docMetaSnapshotEvent.progress.progress);
+            });
 
-        const progressBar = ProgressBar.create(false);
+            await cloudAwareDatastore.init();
 
+        }
+
+        async function copyToFirebase() {
 
 
-        async function toSyncDocMap(persistenceLayer: PersistenceLayer) {
+            const firebaseDatastore = new FirebaseDatastore();
 
-            const timeLabel = 'toSyncOrigin:' + persistenceLayer.datastore.id;
+            const source = new DefaultPersistenceLayer(new DiskDatastore());
+            const target = new DefaultPersistenceLayer(firebaseDatastore);
 
-            try {
-                console.time(timeLabel);
-                return await PersistenceLayers.toSyncDocMap(persistenceLayer);
+            await Promise.all([source.init(), target.init()]);
 
-            } finally {
-                console.timeEnd(timeLabel);
+            const progressBar = ProgressBar.create(false);
+
+            async function toSyncDocMap(persistenceLayer: PersistenceLayer) {
+
+                const timeLabel = 'toSyncOrigin:' + persistenceLayer.datastore.id;
+
+                try {
+                    console.time(timeLabel);
+                    return await PersistenceLayers.toSyncDocMap(persistenceLayer);
+
+                } finally {
+                    console.timeEnd(timeLabel);
+                }
+
             }
 
+            async function toSyncOrigin(persistenceLayer: PersistenceLayer): Promise<SyncOrigin> {
+
+                const syncDocMap = await toSyncDocMap(persistenceLayer);
+
+                return {
+                    datastore: persistenceLayer.datastore,
+                    syncDocMap
+                };
+
+            }
+
+            await PersistenceLayers.synchronize(await toSyncOrigin(source), await toSyncOrigin(target), (transferEvent) => {
+                console.log("Transfer event: ", transferEvent);
+                progressBar.update(transferEvent.progress.progress);
+            });
+
+            console.log("Transfer finished.");
+
+            await Promise.all([source.stop(), target.stop()]);
+
         }
 
-        async function toSyncOrigin(persistenceLayer: PersistenceLayer): Promise<SyncOrigin> {
+        // await copyToFirebase();
+        await syncWithFirebase();
 
-            const syncDocMap = await toSyncDocMap(persistenceLayer);
-
-            return {
-                datastore: persistenceLayer.datastore,
-                syncDocMap
-            };
-
-        }
-
-        await PersistenceLayers.synchronize(await toSyncOrigin(source), await toSyncOrigin(target), (transferEvent) => {
-            console.log("Transfer event: ", transferEvent);
-            progressBar.update(transferEvent.progress.progress);
-        });
-
-        console.log("Transfer finished.");
-
-        await Promise.all([source.stop(), target.stop()]);
 
     });
 
