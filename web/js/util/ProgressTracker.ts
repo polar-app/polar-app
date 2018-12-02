@@ -33,6 +33,10 @@ export class ProgressTracker {
 
     }
 
+    /**
+     * Increment the progress of the job by one, compute the updated state,
+     * and return.
+     */
     public incr(): Readonly<ProgressState> {
         ++this.state.completed;
         this.state.progress = this.calculate();
@@ -40,6 +44,16 @@ export class ProgressTracker {
 
         return this.peek();
 
+    }
+
+    /**
+     * Used so that we can jump to the end the job as it's terminated.
+     *
+     */
+    public terminate(): Readonly<ProgressState> {
+        this.state.completed = this.state.total;
+        this.state.duration = Date.now() - this.epoch;
+        return this.peek();
     }
 
     /**

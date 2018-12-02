@@ -675,7 +675,7 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore {
         docMetaSnapshotEventListener({
             datastore: this.id,
             consistency,
-            progress: progressTracker.peek(),
+            progress: progressTracker.terminate(),
             docMetaMutations: [],
             batch: {
                 id: batch.id,

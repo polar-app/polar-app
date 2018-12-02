@@ -127,7 +127,7 @@ export class Datastores {
 
         listener({
             datastore: datastore.id,
-            progress: progressTracker.peek(),
+            progress: progressTracker.terminate(),
             consistency: 'committed',
             docMetaMutations: [],
             batch: {

@@ -68,6 +68,24 @@ SpectronRenderer.run(async (state) => {
 
         const fingerprint = "0x001";
 
+        // FIXME: I think I HAVE to have some sort of tombstone for deletes
+        // otherwise how would we know that an absent file is deleted and not
+        // just something that needs to be sync'd yet. There's no way to know
+        // that the cloud store is necessarily more recent than the disk store.
+        //
+        // the disk store could have a tombstone as well as a firebase store
+        // but I need a way to....
+
+        // FIXME: !!! OH!!! the reason is that once we're in the cloud store,
+        // the CLOUD store is the source of truth it's just that the local cache
+        // caches some of the operations.
+
+        // FIXME: there's anotbher issue here and that involves the FIRST sync.
+        //
+        // we have to detect that there are files ON DISK and not in the cloud,
+        // then transfer them to the cloud.  At that oint the user is sync'd
+        // with the cloud.
+
         describe('Cloud datastore tests', function() {
 
             beforeEach(async function() {
@@ -406,7 +424,6 @@ SpectronRenderer.run(async (state) => {
                 await waitForExpect(async () => {
                     const dataDir = PolarDataDir.get();
                     const path = FilePaths.join(dataDir!, '0x001', 'state.json');
-                    console.log("Checkign for path: " + path);
                     assert.ok(await Files.existsAsync(path), 'Path for fingerprint never appeared');
                 });
 

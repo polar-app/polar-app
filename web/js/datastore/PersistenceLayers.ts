@@ -186,6 +186,13 @@ export class PersistenceLayers {
 
         await Promise.all([docFileExecutionPromise, docMetaExecutionPromise]);
 
+        listener({
+            datastore: source.datastore.id,
+            progress: progressTracker.terminate(),
+            consistency: 'committed',
+            docMetaMutations: []
+        });
+
         return result;
 
     }

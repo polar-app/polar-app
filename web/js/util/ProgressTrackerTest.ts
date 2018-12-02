@@ -16,4 +16,35 @@ describe('ProgressTracker', function() {
 
     });
 
+    it("Make sure the last is 100%", async function() {
+
+        const progressTracker = new ProgressTracker(3);
+        progressTracker.incr();
+        progressTracker.incr();
+
+        assert.equal(progressTracker.incr().progress, 100);
+        assert.equal(progressTracker.peek().progress, 100);
+
+    });
+
+    it("Terminate with no entries", async function() {
+
+        const progressTracker = new ProgressTracker(0);
+        const progress = progressTracker.terminate();
+        assert.equal(progress.completed, 0);
+        assert.equal(progress.total, 0);
+        assert.equal(progress.progress, 100);
+
+    });
+
+    it("Terminate with 1 entry", async function() {
+
+        const progressTracker = new ProgressTracker(1);
+        const progress = progressTracker.terminate();
+        assert.equal(progress.completed, 1);
+        assert.equal(progress.total, 1);
+        assert.equal(progress.progress, 100);
+
+    });
+
 });

@@ -54,11 +54,8 @@ SpectronRenderer.run(async (state) => {
 
         async function copyToFirebase() {
 
-
-            const firebaseDatastore = new FirebaseDatastore();
-
             const source = new DefaultPersistenceLayer(new DiskDatastore());
-            const target = new DefaultPersistenceLayer(firebaseDatastore);
+            const target = new DefaultPersistenceLayer(new FirebaseDatastore());
 
             await Promise.all([source.init(), target.init()]);
 
@@ -100,8 +97,9 @@ SpectronRenderer.run(async (state) => {
 
         }
 
-        // await copyToFirebase();
         await syncWithFirebase();
+
+        // await copyToFirebase();
 
 
     });
