@@ -10,11 +10,6 @@ export class ProgressTracker {
 
     private readonly epoch: number;
 
-    /**
-     *
-     * @param total The total number of tasks to complete.
-     * @param initial The initial value of the progress counter.
-     */
     constructor(total: number) {
 
         this.epoch = Date.now();
@@ -43,7 +38,6 @@ export class ProgressTracker {
         this.state.duration = Date.now() - this.epoch;
 
         return this.peek();
-
     }
 
     /**
@@ -82,6 +76,8 @@ export class ProgressTracker {
     }
 
 }
+
+export type ProgressStateListener = (progressState: ProgressState) => void;
 
 export interface ProgressState {
     completed: number;

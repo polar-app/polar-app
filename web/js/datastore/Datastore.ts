@@ -211,6 +211,13 @@ export interface SynchronizingDatastore extends Datastore {
      */
     addDocMetaSnapshotEventListener(docMetaSnapshotEventListener: DocMetaSnapshotEventListener): void;
 
+    // /**
+    //  * Mark that we've properly transferred the disk datastore into the cloud
+    //  * datastore and now the cloud datastore is the primary source.
+    //  *
+    //  */
+    // markMerged(transferred: boolean): Promise<void>;
+
 }
 
 export interface SynchronizationEvent extends DocMetaSnapshotEvent {

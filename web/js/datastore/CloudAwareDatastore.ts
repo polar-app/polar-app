@@ -365,8 +365,8 @@ export class CloudAwareDatastore extends AbstractDatastore implements Datastore,
         };
 
         if (isPrimarySnapshot) {
-            await PersistenceLayers.synchronize(localSyncOrigin, cloudSyncOrigin, deduplicatedListener.listener);
-            await PersistenceLayers.synchronize(cloudSyncOrigin, localSyncOrigin, deduplicatedListener.listener);
+            await PersistenceLayers.transfer(localSyncOrigin, cloudSyncOrigin, deduplicatedListener.listener);
+            await PersistenceLayers.transfer(cloudSyncOrigin, localSyncOrigin, deduplicatedListener.listener);
         }
 
         initialSyncCompleted = true;

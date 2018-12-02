@@ -33,6 +33,8 @@ import {Preconditions} from '../../js/Preconditions';
 import {Logging} from '../../js/logger/Logging';
 import {PersistenceLayer} from '../../js/datastore/PersistenceLayer';
 
+Logging.initForTesting();
+
 mocha.setup('bdd');
 mocha.timeout(20000);
 
@@ -62,8 +64,6 @@ SpectronRenderer.run(async (state) => {
 
     new FirebaseTester(state).run(async () => {
 
-        await Logging.initForTesting();
-
         await PolarDataDir.useFreshDirectory('.test-firebase-cloud-aware-datastore');
 
         const fingerprint = "0x001";
@@ -85,6 +85,11 @@ SpectronRenderer.run(async (state) => {
         // we have to detect that there are files ON DISK and not in the cloud,
         // then transfer them to the cloud.  At that oint the user is sync'd
         // with the cloud.
+
+        // FIXME: states that need to be handled in UI....
+        //
+        // - MERGE shoudl be the ideal situation NOT transfer... this is easier
+        //   to implement.
 
         describe('Cloud datastore tests', function() {
 

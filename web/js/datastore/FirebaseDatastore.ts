@@ -25,6 +25,7 @@ import {DocMetas} from "../metadata/DocMetas";
 import {Percentages} from '../util/Percentages';
 import {ProgressTracker} from '../util/ProgressTracker';
 import {Providers, AsyncProviders} from '../util/Providers';
+import {FilePaths} from '../util/FilePaths';
 
 const log = Logger.create();
 
@@ -261,14 +262,30 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore {
 
         const storagePath = this.computeStoragePath(backend, ref);
 
-        const fileRef = storage.ref().child(storagePath);
+        const fileRef = storage.ref().child(storagePath.path);
 
         let uploadTask: firebase.storage.UploadTask;
 
+        // TODO: we need to compute visibility for this for the future.
+
+        // stick the uid into the metadata which we use for authorization of the
+        // blob when not public.
+        meta = Object.assign(meta, {
+            uid: this.getUserID(),
+            visibility: Visibility.PRIVATE
+        });
+
+        const metadata: firebase.storage.UploadMetadata = {customMetadata: meta};
+
+        if (storagePath.settings) {
+            metadata.contentType = storagePath.settings.contentType;
+            metadata.cacheControl = storagePath.settings.cacheControl;
+        }
+
         if (typeof data === 'string') {
-            uploadTask = fileRef.putString(data, 'raw', {customMetadata: meta});
+            uploadTask = fileRef.putString(data, 'raw', metadata);
         } else {
-            uploadTask = fileRef.put(Uint8Array.from(data), {customMetadata: meta});
+            uploadTask = fileRef.put(Uint8Array.from(data), metadata);
         }
 
         // TODO: we can get progress from the uploadTask here.
@@ -306,7 +323,7 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore {
 
         const storagePath = this.computeStoragePath(backend, ref);
 
-        const fileRef = storage.ref().child(storagePath);
+        const fileRef = storage.ref().child(storagePath.path);
 
         const url: string = await fileRef.getDownloadURL();
         const metadata = await fileRef.getMetadata();
@@ -324,7 +341,7 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore {
         const storagePath = this.computeStoragePath(backend, ref);
 
         const storage = this.storage!;
-        const fileRef = storage.ref().child(storagePath);
+        const fileRef = storage.ref().child(storagePath.path);
 
         try {
             await fileRef.getMetadata();
@@ -350,7 +367,7 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore {
 
             const storagePath = this.computeStoragePath(backend, ref);
 
-            const fileRef = storage.ref().child(storagePath);
+            const fileRef = storage.ref().child(storagePath.path);
             await fileRef.delete();
 
         } catch (e) {
@@ -482,12 +499,20 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore {
 
     }
 
-    private computeStoragePath(backend: Backend, fileRef: FileRef): string {
+    private computeStoragePath(backend: Backend, fileRef: FileRef): StoragePath {
+
+        const ext = FilePaths.toExtension(fileRef.name);
+        const suffix = ext.map(value => '.' + value)
+                          .getOrElse('');
+
+        const settings = this.computeStorageSettings(ext).getOrUndefined();
 
         if (fileRef.hashcode) {
 
             // we're going to build this from the hashcode of the file
-            return `${backend}/${fileRef.hashcode.alg}+${fileRef.hashcode.enc}:${fileRef.hashcode.data}`;
+            const path = `${backend}/${fileRef.hashcode.alg}+${fileRef.hashcode.enc}:${fileRef.hashcode.data}${suffix}`;
+
+            return {path, settings};
 
         } else {
 
@@ -500,9 +525,63 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore {
 
             const id = Hashcodes.createID(key, 20);
 
-            return `${backend}/${id}`;
+            const path = `${backend}/${id}${suffix}`;
+
+            return {path, settings};
 
         }
+
+    }
+
+    private computeStorageSettings(optionalExt: Optional<string>): Optional<StorageSettings> {
+
+        const PUBLIC_MAX_AGE_1WEEK = 'public,max-age=604800';
+
+        const ext = optionalExt.getOrElse('');
+
+        if (ext === 'jpg' || ext === 'jpeg') {
+
+            return Optional.of({
+                cacheControl: PUBLIC_MAX_AGE_1WEEK,
+                contentType: 'image/jpeg'
+            });
+
+        }
+
+        if (ext === 'pdf') {
+
+            return Optional.of({
+                cacheControl: PUBLIC_MAX_AGE_1WEEK,
+                contentType: 'application/pdf'
+            });
+
+        }
+
+        if (ext === 'png') {
+
+            return Optional.of({
+                cacheControl: PUBLIC_MAX_AGE_1WEEK,
+                contentType: 'image/png'
+            });
+
+        }
+
+        if (ext === 'svg') {
+
+            return Optional.of({
+                cacheControl: PUBLIC_MAX_AGE_1WEEK,
+                contentType: 'image/svg'
+            });
+
+        }
+
+        // the fall through of cached data should work for PHZ files and other
+        // types of binary data.
+
+        return Optional.of({
+            cacheControl: PUBLIC_MAX_AGE_1WEEK,
+            contentType: 'application/octet-stream'
+        });
 
     }
 
@@ -806,4 +885,14 @@ function toMutationType(docChangeType: firebase.firestore.DocumentChangeType): M
 
     }
 
+}
+
+interface StoragePath {
+    readonly path: string;
+    readonly settings?: StorageSettings;
+}
+
+interface StorageSettings {
+    readonly cacheControl: string;
+    readonly contentType: string;
 }

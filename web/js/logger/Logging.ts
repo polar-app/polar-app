@@ -40,8 +40,22 @@ export class Logging {
     /**
      * Initialize a logger suitable for testing.
      */
-    public static async initForTesting() {
-        await this.initWithTarget(new ConsoleLogger());
+    public static initForTesting() {
+
+        const level =
+            Optional.of(process.env.POLAR_LOG_LEVEL)
+                .map(current => LogLevels.fromName(current))
+                .getOrElse(LogLevel.WARN);
+
+        const target = new ConsoleLogger();
+
+        const delegate =
+            new FilteredLogger(
+                new VersionAnnotatingLogger(
+                    new LevelAnnotatingLogger(target)), level);
+
+        LoggerDelegate.set(delegate);
+
     }
 
     public static async initWithTarget(target: ILogger) {

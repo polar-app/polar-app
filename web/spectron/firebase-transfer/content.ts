@@ -28,11 +28,11 @@ import {ProgressTracker} from '../../js/util/ProgressTracker';
 import {ProgressBar} from '../../js/ui/progress_bar/ProgressBar';
 import {Logging} from '../../js/logger/Logging';
 
+Logging.initForTesting();
+
 SpectronRenderer.run(async (state) => {
 
     new FirebaseTester(state).run(async () => {
-
-        await Logging.init();
 
         async function syncWithFirebase() {
 
@@ -52,14 +52,14 @@ SpectronRenderer.run(async (state) => {
 
         }
 
-        async function copyToFirebase() {
+        async function initialMergeWithFirebase() {
+
+            const progressBar = ProgressBar.create(false);
 
             const source = new DefaultPersistenceLayer(new DiskDatastore());
             const target = new DefaultPersistenceLayer(new FirebaseDatastore());
 
             await Promise.all([source.init(), target.init()]);
-
-            const progressBar = ProgressBar.create(false);
 
             async function toSyncDocMap(persistenceLayer: PersistenceLayer) {
 
@@ -67,7 +67,9 @@ SpectronRenderer.run(async (state) => {
 
                 try {
                     console.time(timeLabel);
-                    return await PersistenceLayers.toSyncDocMap(persistenceLayer);
+                    return await PersistenceLayers.toSyncDocMap(persistenceLayer, progressState => {
+                        progressBar.update(progressState.progress);
+                    });
 
                 } finally {
                     console.timeEnd(timeLabel);
@@ -86,7 +88,7 @@ SpectronRenderer.run(async (state) => {
 
             }
 
-            await PersistenceLayers.synchronize(await toSyncOrigin(source), await toSyncOrigin(target), (transferEvent) => {
+            await PersistenceLayers.merge(await toSyncOrigin(source), await toSyncOrigin(target), (transferEvent) => {
                 console.log("Transfer event: ", transferEvent);
                 progressBar.update(transferEvent.progress.progress);
             });
@@ -97,10 +99,9 @@ SpectronRenderer.run(async (state) => {
 
         }
 
-        await syncWithFirebase();
+        // await syncWithFirebase();
 
-        // await copyToFirebase();
-
+        await initialMergeWithFirebase();
 
     });
 

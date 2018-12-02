@@ -8,7 +8,7 @@ import {AsyncFunction, AsyncWorkQueue} from '../util/AsyncWorkQueue';
 import {DocMetaFileRefs, DocMetaRef} from "./DocMetaRef";
 import {Datastore, DocMetaMutation, DocMetaSnapshotEvent, DocMetaSnapshotEventListener, FileRef, MutationType, SyncDoc, SyncDocMap, SyncDocs} from './Datastore';
 import {UUIDs} from '../metadata/UUIDs';
-import {ProgressTracker, ProgressState} from '../util/ProgressTracker';
+import {ProgressTracker, ProgressState, ProgressStateListener} from '../util/ProgressTracker';
 import {DocMetas} from '../metadata/DocMetas';
 import {DefaultPersistenceLayer} from './DefaultPersistenceLayer';
 import {Provider, AsyncProviders} from '../util/Providers';
@@ -23,7 +23,8 @@ export class PersistenceLayers {
         return new DefaultPersistenceLayer(input);
     }
 
-    public static async toSyncDocMap(persistenceLayer: PersistenceLayer) {
+    public static async toSyncDocMap(persistenceLayer: PersistenceLayer,
+                                     progressStateListener: ProgressStateListener = NULL_FUNCTION) {
 
         const docMetaFiles = await persistenceLayer.getDocMetaFiles();
 
@@ -32,18 +33,42 @@ export class PersistenceLayers {
         const work: AsyncFunction[] = [];
         const asyncWorkQueue = new AsyncWorkQueue(work);
 
+        const progressTracker = new ProgressTracker(docMetaFiles.length);
+
         for (const docMetaFile of docMetaFiles) {
 
             work.push(async () => {
                 const docMeta = await persistenceLayer.getDocMeta(docMetaFile.fingerprint);
                 syncDocsMap[docMetaFile.fingerprint] = SyncDocs.fromDocInfo(docMeta!.docInfo, 'created');
+
+                progressStateListener(progressTracker.peek());
+
             });
 
         }
 
         await asyncWorkQueue.execute();
 
+        progressStateListener(progressTracker.terminate());
+
         return syncDocsMap;
+
+    }
+
+    /**
+     * Merge both origins so that they contains the same documents. Older
+     * documents are upgraded to the latest version and missing documents are
+     * copied.  At the end both origins will have the union of both sets.
+     */
+    public static async merge(syncOrigin0: SyncOrigin,
+                              syncOrigin1: SyncOrigin,
+                              listener: DocMetaSnapshotEventListener = NULL_FUNCTION) {
+
+        await this.transfer(syncOrigin0, syncOrigin1, listener);
+
+        // now transfer the other way...
+
+        await this.transfer(syncOrigin1, syncOrigin0, listener);
 
     }
 
@@ -51,9 +76,9 @@ export class PersistenceLayers {
      * Synchronize the source with the target so that we know they are both in
      * sync.
      */
-    public static async synchronize(source: SyncOrigin,
-                                    target: SyncOrigin,
-                                    listener: DocMetaSnapshotEventListener = NULL_FUNCTION): Promise<TransferResult> {
+    public static async transfer(source: SyncOrigin,
+                                 target: SyncOrigin,
+                                 listener: DocMetaSnapshotEventListener = NULL_FUNCTION): Promise<TransferResult> {
 
         const result: TransferResult = {
             mutations: {
@@ -73,6 +98,20 @@ export class PersistenceLayers {
                 const optionalFile = await source.datastore.getFile(Backend.STASH, fileRef);
 
                 if (optionalFile.isPresent()) {
+
+                    // TODO: it would be better if we could make these streams
+                    // in the future to avoid reading these files into memory.
+                    // Some people might have PDF files that are >100MB.
+
+                    // TODO: I think part of this is that we can't transfer a
+                    // stream to the 'remote' worker that's performing the actual
+                    // writes to the DiskStore.
+
+                    // TODO: additionally, we're going to need a way to report
+                    // progress of this operation between the process boundaries.
+                    // We need to have callbacks work so that we can determine
+                    // the throughput of some of the larger attachments.
+
                     const file = optionalFile.get();
                     const response = await fetch(file.url);
                     const blob = await response.blob();
@@ -82,6 +121,7 @@ export class PersistenceLayers {
                     await target.datastore.writeFile(file.backend, fileRef, buffer, file.meta);
 
                     result.mutations.files.push(fileRef);
+
                 }
 
             }
