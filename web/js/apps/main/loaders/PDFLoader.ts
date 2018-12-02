@@ -26,7 +26,7 @@ export class PDFLoader extends FileLoader {
         const fileParam = encodeURIComponent(fileMeta.url);
         const filenameParam = encodeURIComponent(filename);
 
-        const appURL = ResourcePaths.resourceURLFromRelativeURL(`./pdfviewer/web/viewer.html?file=${fileParam}&filename=${filenameParam}#zoom=page-fit`);
+        const appURL = ResourcePaths.resourceURLFromRelativeURL(`./pdfviewer/web/viewer.html?file=${fileParam}&filename=${filenameParam}#zoom=page-fit`, false);
 
         return {
             webResource: WebResource.createURL(appURL)
