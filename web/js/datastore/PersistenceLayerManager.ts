@@ -29,7 +29,8 @@ export type PersistenceLayerType = 'local' | 'cloud';
  *
  * The proceeding go in the following order and can not go back:
  *
- * - creating        - about to be created
+ * - creating        - about to be created.  Fired on startup and when the
+ *                     persistence layer is changed.
  * - created         - as been created
  * - initializing    - about to have init() called
  * - initialized     - init has been called.
