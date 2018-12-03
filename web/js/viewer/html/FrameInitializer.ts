@@ -38,7 +38,7 @@ export class FrameInitializer {
 
     _checkLoaded() {
 
-        if(!this.loaded) {
+        if (!this.loaded) {
             this.loaded = true;
             this.onLoad();
             log.info("FrameInitializer: Document has finished loading");
@@ -67,14 +67,14 @@ export class FrameInitializer {
     }
 
     updateDocTitle() {
-        let title = notNull(this.iframe.contentDocument).title;
+        const title = notNull(this.iframe.contentDocument).title;
         log.info("Setting title: " + title);
         document.title = title;
     }
 
     dispatchPagesInit() {
 
-        let event = new Event('pagesinit', {bubbles: true});
+        const event = new Event('pagesinit', {bubbles: true});
 
         // Dispatch the event.
         notNull(document.querySelector(".page")).dispatchEvent(event);

@@ -36,7 +36,7 @@ class FileWebResource extends WebResource {
     constructor(file: string) {
         super();
 
-        if(! fs.existsSync(file)) {
+        if (!fs.existsSync(file)) {
             throw new Error("File does not exist: " + file);
         }
 
@@ -50,7 +50,7 @@ class FileWebResource extends WebResource {
 
     public loadWebContents(webContents: WebContents): void {
         log.info("Loading file: ", this.file);
-        //webContents.loadFile(this.file);
+        // webContents.loadFile(this.file);
         webContents.loadURL('file://' + this.file);
     }
 
