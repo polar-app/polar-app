@@ -1,5 +1,12 @@
 # 1.1.0
 
+- New Splash system to keep customers engaged with Polar growth and marketing.
+  We only display a few messages and only on startup. I don't want these to be 
+  annoying. 
+
+- Tested to verify the published chrome URL works with the version of Chrome we
+  are about to ship.
+
 - Support for our new chrome extension.
 
 - Disabling amp for now until we have a better solution on how to show the user

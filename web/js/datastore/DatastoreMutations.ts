@@ -79,9 +79,6 @@ export class DatastoreMutations {
                                                remoteCoordinator: DatastoreMutation<T> = new DefaultDatastoreMutation(),
                                                localCoordinator: DatastoreMutation<T> = new DefaultDatastoreMutation()): Promise<void> {
 
-        // FIXME: both of these are broken as we're not actually catching
-        // exceptions here and when we do how do we reject them?
-
         return new Promise<void>((resolve, reject) => {
 
             remoteSync(remoteCoordinator)

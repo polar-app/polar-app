@@ -160,6 +160,9 @@ export class Datastores {
         for (const docMetaFile of docMetaFiles) {
 
             // FIXME: we're not purging the files associated with the docs...
+            // the stash file is purged as part of the delete right now and
+            // I could put the other files there as well so that way we always
+            // make sure there are no dependencies tangling
 
             const data = await datastore.getDocMeta(docMetaFile.fingerprint);
             const docMeta = DocMetas.deserialize(data!);
