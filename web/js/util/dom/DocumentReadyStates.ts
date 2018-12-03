@@ -19,20 +19,23 @@ export class DocumentReadyStates {
      * but we're already complete it will return immediately.
      *
      */
-    static async waitForChanger(doc: Document,
-                                requiredReadyState: DocumentReadyState,
-                                readyStateChanger: ReadyStateChanger): Promise<ReadyStateResolution> {
+    public static async waitForChanger(doc: Document,
+                                       requiredReadyState: DocumentReadyState,
+                                       readyStateChanger: ReadyStateChanger): Promise<ReadyStateResolution> {
 
-        return new Promise<ReadyStateResolution>(resolve => {
+
+        return new Promise<ReadyStateResolution>((resolve, reject) => {
 
             // always perform two checks.  First using the awaitState and then
             // using the current state. Promises can only be resolved once so even
-            // if we call resolve() twice it son't be an issue.
-            readyStateChanger.awaitState(requiredReadyState).then(() => {
-                resolve(ReadyStateResolution.EVENT);
-            });
+            // if we call resolve() twice it won't be an issue.
+            readyStateChanger.awaitState(requiredReadyState)
+                .then(() => {
+                    resolve(ReadyStateResolution.EVENT);
+                })
+                .catch(err => reject(err));
 
-            if(this.meetsRequiredState(requiredReadyState, readyStateChanger.readyState)) {
+            if (this.meetsRequiredState(requiredReadyState, readyStateChanger.readyState)) {
                 resolve(ReadyStateResolution.DIRECT);
             }
 
@@ -42,8 +45,8 @@ export class DocumentReadyStates {
 
     public static meetsRequiredState(requiredReadyState: DocumentReadyState, currentReadyState: DocumentReadyState) {
 
-        let requiredReadyStateCode = this.toReadyStateCode(requiredReadyState);
-        let currentReadyStateCode = this.toReadyStateCode(currentReadyState);
+        const requiredReadyStateCode = this.toReadyStateCode(requiredReadyState);
+        const currentReadyStateCode = this.toReadyStateCode(currentReadyState);
 
         return currentReadyStateCode >= requiredReadyStateCode;
 

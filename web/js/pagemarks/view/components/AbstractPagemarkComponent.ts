@@ -222,12 +222,9 @@ export class AbstractPagemarkComponent extends Component {
         const pagemarkRect = this.toOverlayRect(placementRect, this.pagemark);
 
         if (this.type === 'primary') {
-            console.log("FIXME: placementRect: " , placementRect);
-            console.log("FIXME: pagemarkRect (overlay rect): " , pagemarkRect);
-
+            // console.log("FIXME: placementRect: " , placementRect);
+            // console.log("FIXME: pagemarkRect (overlay rect): " , pagemarkRect);
         }
-
-
 
         // TODO: what I need is a generic way to cover an element and place
         // something on top of it no matter what positioning strategy it uses.

@@ -7,8 +7,6 @@ import {SpectronBrowserWindowOptions} from '../../js/test/SpectronBrowserWindowO
 import {PolarDataDir} from '../../js/test/PolarDataDir';
 import {FilePaths} from '../../js/util/FilePaths';
 
-PolarDataDir.useFreshDirectory('.polar-firebase-datastore');
-
 declare var global: any;
 
 global.appPath = __dirname;
@@ -30,6 +28,8 @@ const options: ISpectronMainOptions = {
 
 
 SpectronMain2.create(options).run(async state => {
+
+    await PolarDataDir.useFreshDirectory('.polar-firebase-datastore');
 
     // the webserver must be running as firebase won't load without being on an
     // HTTP URL

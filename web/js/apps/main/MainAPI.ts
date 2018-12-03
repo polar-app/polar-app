@@ -53,7 +53,8 @@ export class MainAPI {
 
             res.status(200).send({});
 
-            this.mainAppController.cmdCaptureWebPageWithBrowser(captureOpts);
+            this.mainAppController.cmdCaptureWebPageWithBrowser(captureOpts)
+                .catch(err => log.error("Unable to capture page: ", err));
 
         });
 

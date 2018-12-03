@@ -2,6 +2,7 @@ import {DocMetaMutation, DocMetaSnapshotEvent, DocMetaSnapshotEventListener} fro
 import {DocMetaComparisonIndex} from './DocMetaComparisonIndex';
 import {UUIDs} from '../metadata/UUIDs';
 import {filter} from 'rxjs/operators';
+import {IDocInfo} from '../metadata/DocInfo';
 
 export class DocMetaSnapshotEventListeners {
 
@@ -15,9 +16,12 @@ export class DocMetaSnapshotEventListeners {
      * and we will just get the earliest one.
      *
      */
-    public static createDeduplicatedListener(outputListener: DocMetaSnapshotEventListener) {
+    public static createDeduplicatedListener(outputListener: DocMetaSnapshotEventListener,
+                                             docMetaComparisonIndex = new DocMetaComparisonIndex()): EventDeduplicator {
 
-        const docMetaComparisonIndex = new DocMetaComparisonIndex();
+        if (!docMetaComparisonIndex) {
+            docMetaComparisonIndex = new DocMetaComparisonIndex();
+        }
 
         // TODO: Should we filter on the consistency level?  We need a way to
         // trigger the first sync when we get the committed writes from the
@@ -27,45 +31,15 @@ export class DocMetaSnapshotEventListeners {
         // We could have custom filters for the level... so we could support
         // BOTH, committed, or written levels...
 
-        return async (docMetaSnapshotEvent: DocMetaSnapshotEvent) => {
+        const listener = async (docMetaSnapshotEvent: DocMetaSnapshotEvent) => {
 
             const acceptedDocMetaMutations: DocMetaMutation[] = [];
 
             for (const docMetaMutation of docMetaSnapshotEvent.docMetaMutations) {
 
                 const docInfo = await docMetaMutation.docInfoProvider();
-                const mutationType = docMetaMutation.mutationType;
 
-                let doUpdated = false;
-
-                if (mutationType === 'created' && ! docMetaComparisonIndex.contains(docInfo.fingerprint)) {
-                    doUpdated = true;
-                }
-
-                if (mutationType === 'updated') {
-
-                    const docComparison = docMetaComparisonIndex.get(docInfo.fingerprint);
-
-                    if (!docComparison) {
-                        doUpdated = true;
-                    }
-
-                    if (docComparison && UUIDs.compare(docComparison.uuid, docInfo.uuid) < 0) {
-                        doUpdated = true;
-                    }
-
-                }
-
-                if (doUpdated) {
-                    // when the doc is created and it's not in the index.
-                    docMetaComparisonIndex.putDocInfo(docInfo);
-                    acceptedDocMetaMutations.push(docMetaMutation);
-                }
-
-                if (mutationType === 'deleted' && docMetaComparisonIndex.get(docInfo.fingerprint)) {
-                    // if we're deleting the document and we've seen it before
-                    // and it's in the index.
-                    docMetaComparisonIndex.remove(docInfo.fingerprint);
+                if (docMetaComparisonIndex.handleDocMetaMutation(docMetaMutation, docInfo)) {
                     acceptedDocMetaMutations.push(docMetaMutation);
                 }
 
@@ -83,6 +57,19 @@ export class DocMetaSnapshotEventListeners {
 
         };
 
+        return {
+            handleDocMetaMutation: docMetaComparisonIndex.handleDocMetaMutation.bind(docMetaComparisonIndex),
+            listener,
+        };
+
     }
+
+}
+
+export interface EventDeduplicator {
+
+    handleDocMetaMutation(docMetaMutation: DocMetaMutation, docInfo: IDocInfo): boolean;
+
+    listener: DocMetaSnapshotEventListener;
 
 }

@@ -1,5 +1,7 @@
 import * as libpath from 'path';
 import * as os from 'os';
+import {Optional} from './ts/Optional';
+import {isPresent} from '../Preconditions';
 
 /**
  * Work with file paths cross platform and work with the file separator using
@@ -123,6 +125,26 @@ export class FilePaths {
         return text.replace(/(\/[a-zA-Z0-9_-]+)+(\/[a-zA-Z0-9_-]+\.[a-z]{2,3})/g, (substr: string) => {
             return this.toWindowsPath(substr);
         });
+
+    }
+
+    /**
+     * If the file ends with .txt, .pdf, .html then return the extension.
+     * @param path
+     */
+    public static toExtension(path: string): Optional<string> {
+
+        if (! isPresent(path)) {
+            return Optional.empty();
+        }
+
+        const matches = path.match(/\.([a-z0-9]{3,4})$/);
+
+        if (matches && matches.length === 2) {
+            return Optional.of(matches[1]);
+        }
+
+        return Optional.empty();
 
     }
 

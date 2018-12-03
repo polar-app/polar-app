@@ -30,12 +30,13 @@ import {Version} from '../../../web/js/util/Version';
 import {RepoDocInfoIndex} from './RepoDocInfoIndex';
 import {AutoUpdatesController} from '../../../web/js/auto_updates/AutoUpdatesController';
 import {IDocInfo} from '../../../web/js/metadata/DocInfo';
-import {WhatsNewComponent} from './WhatsNewComponent';
+import {WhatsNewComponent} from './splash/splashes/whats_new/WhatsNewComponent';
 import {SyncBar, SyncBarProgress} from '../../../web/js/ui/sync_bar/SyncBar';
 import {IEventDispatcher, SimpleReactor} from '../../../web/js/reactor/SimpleReactor';
 import {DocRepoAnkiSyncController} from '../../../web/js/controller/DocRepoAnkiSyncController';
 import {Tooltip, UncontrolledTooltip, Collapse} from 'reactstrap';
 import {CloudAuthButton} from '../../../web/js/ui/cloud_auth/CloudAuthButton';
+import {PrioritizedSplashes} from './splash/PrioritizedSplashes';
 
 const log = Logger.create();
 
@@ -103,7 +104,7 @@ export default class App extends React.Component<AppProps, AppState> {
 
             <div id="doc-repository">
 
-                <WhatsNewComponent/>
+                <PrioritizedSplashes/>
 
                 <SyncBar progress={this.syncBarProgress}/>
 

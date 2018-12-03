@@ -1,4 +1,6 @@
-import {Datastore, DocMetaSnapshotEvent, FileMeta, FileRef, InitResult, DocMetaSnapshotEventListener, SnapshotResult, DatastoreID} from './Datastore';
+import {Datastore, DocMetaSnapshotEvent, FileMeta, FileRef, InitResult,
+        DocMetaSnapshotEventListener, SnapshotResult, DatastoreID,
+        AbstractDatastore} from './Datastore';
 import {Directories} from './Directories';
 import {DocMetaFileRef, DocMetaRef} from './DocMetaRef';
 import {DeleteResult} from './Datastore';
@@ -13,7 +15,7 @@ import {Datastores} from './Datastores';
 /**
  * A datastore that just forwards events to the given delegate.
  */
-export class DelegatedDatastore implements Datastore {
+export class DelegatedDatastore extends AbstractDatastore implements Datastore {
 
     public readonly id: DatastoreID;
 
@@ -28,6 +30,7 @@ export class DelegatedDatastore implements Datastore {
     private readonly delegate: Datastore;
 
     constructor(delegate: Datastore) {
+        super();
         Preconditions.assertPresent(delegate, 'delegate');
         this.id = 'delegated:' + delegate.id;
         this.delegate = delegate;

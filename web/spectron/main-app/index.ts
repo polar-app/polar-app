@@ -15,10 +15,9 @@ import {MainAppController} from '../../js/apps/main/MainAppController';
 import {PolarDataDir} from '../../js/test/PolarDataDir';
 import {AppPath} from '../../js/electron/app_path/AppPath';
 import fs from 'fs';
+import {Preconditions} from '../../js/Preconditions';
 
 const log = Logger.create();
-
-PolarDataDir.useFreshDirectory('.polar-main-app');
 
 let polarDir: PolarDir | undefined;
 let mainAppController: MainAppController | undefined;
@@ -26,6 +25,8 @@ let mainAppController: MainAppController | undefined;
 AppPath.set(FilePaths.resolve(__dirname, "..", "..", ".."));
 
 async function createWindow(): Promise<BrowserWindow> {
+
+    await PolarDataDir.useFreshDirectory('.polar-main-app');
 
     polarDir = await setupNewDataDir();
 
@@ -74,6 +75,7 @@ async function setupNewDataDir(): Promise<PolarDir> {
 
     const dataDir = PolarDataDir.get()!;
 
+    Preconditions.assertPresent(dataDir, "dataDir");
     log.info("Using new dataDir: " + dataDir);
 
     await Files.removeDirectoryRecursivelyAsync(dataDir);

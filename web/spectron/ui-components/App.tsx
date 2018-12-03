@@ -13,7 +13,7 @@ import {AnnotationType} from '../../js/metadata/AnnotationType';
 import {CommentComponent} from '../../js/annotation_sidebar/child_annotations/CommentComponent';
 import {CommentComponentExample} from './CommentComponentExample';
 import {FlashcardComponentExample} from './FlashcardComponentExample';
-import {WhatsNewContent} from '../../../apps/repository/js/WhatsNewContent';
+import {WhatsNewContent} from '../../../apps/repository/js/splash/splashes/whats_new/WhatsNewContent';
 import {ModalBody} from 'reactstrap';
 
 class App<P> extends React.Component<{}, IAppState> {

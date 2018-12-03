@@ -9,11 +9,11 @@ const log = Logger.create();
  */
 export class RendererTestResultWriter implements TestResultWriter {
 
-    async write(result: any) {
+    public async write(result: any) {
 
         log.info("Got result from renderer: ", result);
 
-        if(! isPresent(result)) {
+        if (!isPresent(result)) {
             throw new Error("No result given!");
         }
 

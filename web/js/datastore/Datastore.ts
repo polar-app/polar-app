@@ -8,13 +8,15 @@ import {Optional} from '../util/ts/Optional';
 import {DocInfo, IDocInfo} from '../metadata/DocInfo';
 import {FileHandle} from '../util/Files';
 import {Simulate} from 'react-dom/test-utils';
-import {DatastoreMutation} from './DatastoreMutation';
+import {DatastoreMutation, DefaultDatastoreMutation} from './DatastoreMutation';
 import {DocMeta} from '../metadata/DocMeta';
 import {Hashcode} from '../metadata/Hashcode';
 import {ProgressState} from '../util/ProgressTracker';
 import {AsyncProvider} from '../util/Providers';
 import {UUID} from '../metadata/UUID';
 import {AsyncWorkQueues} from '../util/AsyncWorkQueues';
+import {DocMetas} from '../metadata/DocMetas';
+import {DatastoreMutations} from './DatastoreMutations';
 
 export interface Datastore extends BinaryDatastore, WritableDatastore {
 
@@ -89,6 +91,30 @@ export interface Datastore extends BinaryDatastore, WritableDatastore {
 
 }
 
+export abstract class AbstractDatastore {
+
+    public async writeDocMeta(docMeta: DocMeta,
+                              datastoreMutation: DatastoreMutation<DocInfo> = new DefaultDatastoreMutation()): Promise<DocInfo> {
+
+        const data = DocMetas.serialize(docMeta);
+        const docInfo = docMeta.docInfo;
+
+        const syncMutation = new DefaultDatastoreMutation<boolean>();
+        DatastoreMutations.pipe(syncMutation, datastoreMutation, () => docInfo);
+
+        await this.write(docMeta.docInfo.fingerprint, data, docInfo, syncMutation);
+        return docInfo;
+
+    }
+
+    public abstract write(fingerprint: string,
+                          data: any,
+                          docInfo: IDocInfo,
+                          datastoreMutation?: DatastoreMutation<boolean>): Promise<void>;
+
+
+}
+
 interface WritableDatastore {
 
     /**
@@ -97,6 +123,8 @@ interface WritableDatastore {
      *
      */
     delete(docMetaFileRef: DocMetaFileRef, datastoreMutation?: DatastoreMutation<boolean>): Promise<Readonly<DeleteResult>>;
+
+    writeDocMeta(docMeta: DocMeta, datastoreMutation?: DatastoreMutation<DocInfo>): Promise<DocInfo>;
 
     /**
      * Write the datastore to disk.  Writes should be idempotent.
@@ -175,6 +203,20 @@ export interface SynchronizingDatastore extends Datastore {
      * change.
      */
     addSynchronizationEventListener(synchronizationEventListener: SynchronizationEventListener): void;
+
+    /**
+     * An event listener to listen to the datastore while operating on both
+     * the underlying datastores to discovery when documents are discovered
+     * without having to re-read the datastore after it's been initialized.
+     */
+    addDocMetaSnapshotEventListener(docMetaSnapshotEventListener: DocMetaSnapshotEventListener): void;
+
+    // /**
+    //  * Mark that we've properly transferred the disk datastore into the cloud
+    //  * datastore and now the cloud datastore is the primary source.
+    //  *
+    //  */
+    // markMerged(transferred: boolean): Promise<void>;
 
 }
 
@@ -307,6 +349,10 @@ export interface SnapshotProgress extends Readonly<ProgressState> {
 
 }
 
+/**
+ * Only use one provider, either dataProvider, docMetaProvider, or
+ * docInfoProvider, whichever is the most efficient and only read once ideally.
+ */
 export interface DocMetaMutation {
 
     readonly fingerprint: string;
@@ -314,6 +360,12 @@ export interface DocMetaMutation {
     readonly mutationType: MutationType;
 
     readonly docMetaFileRefProvider: AsyncProvider<DocMetaFileRef>;
+
+    /**
+     * Get access to the underlying data of the DocMeta to enable us to
+     * read/write directly to the Datastore without mutating anything.
+     */
+    readonly dataProvider: AsyncProvider<string | null>;
 
     readonly docMetaProvider: AsyncProvider<DocMeta>;
 

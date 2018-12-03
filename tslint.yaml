@@ -76,6 +76,12 @@ rules:
 
   member-ordering: false
 
+  no-unused-expression: true
+
+  no-floating-promises: true
+
+  await-promise: true
+
 jsRules:
   max-line-length:
     options: [140]

@@ -27,12 +27,16 @@ import {PolarDataDir} from '../../js/test/PolarDataDir';
 import waitForExpect from 'wait-for-expect';
 import {Datastores} from '../../js/datastore/Datastores';
 import {Latch} from '../../js/util/Latch';
-import {NULL_FUNCTION} from '../../js/util/Functions';
+import {ASYNC_NULL_FUNCTION, NULL_FUNCTION} from '../../js/util/Functions';
 import {PersistenceLayers} from '../../js/datastore/PersistenceLayers';
+import {Preconditions} from '../../js/Preconditions';
+import {Logging} from '../../js/logger/Logging';
+import {PersistenceLayer} from '../../js/datastore/PersistenceLayer';
+
+Logging.initForTesting();
 
 mocha.setup('bdd');
-mocha.timeout(10000);
-PolarDataDir.useFreshDirectory('.test-firebase-cloud-aware-datastore');
+mocha.timeout(20000);
 
 async function createDatastore() {
 
@@ -41,30 +45,159 @@ async function createDatastore() {
 
     await Promise.all([diskDatastore.init(), firebaseDatastore.init()]);
 
-    return new CloudAwareDatastore(diskDatastore, firebaseDatastore);
+    const cloudAwareDatastore = new CloudAwareDatastore(diskDatastore, firebaseDatastore);
+
+    cloudAwareDatastore.shutdownHook = async () => {
+        const consistency = await Datastores.checkConsistency(diskDatastore, firebaseDatastore);
+
+        if (! consistency.consistent) {
+            console.log("Filesystems are NOT consistent: ", consistency.manifest0, consistency.manifest1);
+        }
+
+        assert.ok(consistency.consistent, "Datastores are not consistent");
+    };
+
+    return cloudAwareDatastore;
 }
 
 SpectronRenderer.run(async (state) => {
 
     new FirebaseTester(state).run(async () => {
 
+        await PolarDataDir.useFreshDirectory('.test-firebase-cloud-aware-datastore');
+
         const fingerprint = "0x001";
+
+        // FIXME: there's anotbher issue here and that involves the FIRST sync.
+        //
+        // we have to detect that there are files ON DISK and not in the cloud,
+        // then transfer them to the cloud.  At that oint the user is sync'd
+        // with the cloud.
+
+        // FIXME: states that need to be handled in UI....
+        //
+        // - MERGE shoudl be the ideal situation NOT transfer... this is easier
+        //   to implement.
+
+
+        //
 
         describe('Cloud datastore tests', function() {
 
-
             beforeEach(async function() {
 
-                Files.removeDirectoryRecursively(PolarDataDir.get()!);
+                try {
 
-                const firebaseDatastore = new FirebaseDatastore();
-                await firebaseDatastore.init();
-                await Datastores.purge(firebaseDatastore);
-                await firebaseDatastore.stop();
+                    console.log("==== BEGIN beforeEach");
+
+                    await Files.removeDirectoryRecursivelyAsync(PolarDataDir.get()!);
+
+                    const firebaseDatastore = new FirebaseDatastore();
+                    await firebaseDatastore.init();
+
+                    await Datastores.purge(firebaseDatastore,
+                                           purgeEvent => console.log("Purged: ", purgeEvent));
+
+                    await firebaseDatastore.stop();
+
+                } catch (e) {
+                    console.error("Caught exception in beforeEach: ", e);
+                    throw e;
+                } finally {
+                    console.log("==== END beforeEach");
+                }
 
             });
 
-            xit("Basic replication tests", async function() {
+            type ConsistencyTestFunction = (persistenceLayer: PersistenceLayer,
+                                            cloudAwareDatastore: CloudAwareDatastore) => Promise<void>;
+
+            /**
+             * This will init the cloud datastore, then wait for them to become
+             * consistent, then we run the test function to verify that the
+             * datastore is valid.
+             */
+            async function testForConsistency(testFunction: ConsistencyTestFunction = ASYNC_NULL_FUNCTION) {
+
+                const cloudAwareDatastore = await createDatastore();
+                const persistenceLayer = new DefaultPersistenceLayer(cloudAwareDatastore);
+
+                try {
+
+                    await persistenceLayer.init();
+
+                    await waitForExpect(async () => {
+
+                        const consistency
+                            = await Datastores.checkConsistency(cloudAwareDatastore.local,
+                                                                cloudAwareDatastore.cloud);
+
+                        assert.ok(consistency.consistent);
+
+                    });
+
+                    await testFunction(persistenceLayer, cloudAwareDatastore);
+
+                } finally {
+                    await persistenceLayer.stop();
+                }
+
+            }
+
+            it("Test8: Sync with extra files in the local store", async function() {
+
+                const datastore = new DiskDatastore();
+                await datastore.init();
+
+                await datastore.writeDocMeta(MockDocMetas.createMockDocMeta('0x0004'));
+                await datastore.writeDocMeta(MockDocMetas.createMockDocMeta('0x0005'));
+                await datastore.stop();
+
+                await testForConsistency(async (persistenceLayer, cloudAwareDatastore) => {
+
+                    for (const currentFingerprint of ['0x0004', '0x0005']) {
+                        assert.ok(await cloudAwareDatastore.local.contains(currentFingerprint));
+                        assert.ok(await cloudAwareDatastore.cloud.contains(currentFingerprint));
+                    }
+
+                });
+
+            });
+
+            it("Test9: Sync with extra files in the firebase store", async function() {
+
+                const datastore = new FirebaseDatastore();
+                await datastore.init();
+
+                await datastore.writeDocMeta(MockDocMetas.createMockDocMeta('0x0004'));
+                await datastore.writeDocMeta(MockDocMetas.createMockDocMeta('0x0005'));
+                await datastore.stop();
+
+                await testForConsistency(async (persistenceLayer, cloudAwareDatastore) => {
+
+                    for (const currentFingerprint of ['0x0004', '0x0005']) {
+                        assert.ok(await cloudAwareDatastore.local.contains(currentFingerprint));
+                        assert.ok(await cloudAwareDatastore.cloud.contains(currentFingerprint));
+                    }
+
+                });
+
+            });
+
+            it("Test1: null test to make sure we have no documents on startup", async function() {
+
+                const persistenceLayer = new DefaultPersistenceLayer(await createDatastore());
+
+                await persistenceLayer.init();
+
+                const docMetaFiles = await persistenceLayer.getDocMetaFiles();
+                assert.equal(docMetaFiles.length, 0);
+
+                persistenceLayer.stop();
+
+            });
+
+            it("Test2: Basic synchronization tests", async function() {
 
                 // first purge the firebase datastore
 
@@ -83,42 +216,31 @@ SpectronRenderer.run(async (state) => {
                 // now startup a new cloud persistence layer and make sure we
                 // get the doc in firebase written locally.
 
-                // FIXME: wrote a test with a messy sync with multiple local
-                // files and multiople remote files that gets merged.  Make
-                // sure we get the events when the local store is loading too
-                // so that we can determine progress.
-
-                const persistenceLayer = new DefaultPersistenceLayer(await createDatastore());
-
-                await persistenceLayer.init();
+                const cloudAwareDatastore = await createDatastore();
+                const persistenceLayer = new DefaultPersistenceLayer(cloudAwareDatastore);
 
                 const initialDocLatch = new Latch<boolean>();
                 const externallyWrittenDocLatch = new Latch<boolean>();
 
-                const snapshotResult = await persistenceLayer.snapshot(docMetaSnapshotEvent => {
+                cloudAwareDatastore.addDocMetaSnapshotEventListener(docMetaSnapshotEvent => {
 
-                    (async () => {
+                    for (const docMutation of docMetaSnapshotEvent.docMetaMutations) {
 
-                        console.log("Got snapshot: ", docMetaSnapshotEvent);
-
-                        for (const docMutation of docMetaSnapshotEvent.docMetaMutations) {
-                            const docInfo = await docMutation.docInfoProvider();
-
-                            if (docInfo.fingerprint === '0x001') {
-                                initialDocLatch.resolve(true);
-                                continue;
-                            }
-
-                            if (docInfo.fingerprint === '0x002') {
-                                externallyWrittenDocLatch.resolve(true);
-                                continue;
-                            }
-
+                        if (docMutation.fingerprint === '0x001') {
+                            initialDocLatch.resolve(true);
+                            continue;
                         }
 
-                    })().catch(err => console.error("unable to handle: ", err));
+                        if (docMutation.fingerprint === '0x002') {
+                            externallyWrittenDocLatch.resolve(true);
+                            continue;
+                        }
+
+                    }
 
                 });
+
+                await persistenceLayer.init();
 
                 await initialDocLatch.get();
 
@@ -135,31 +257,51 @@ SpectronRenderer.run(async (state) => {
                 await persistenceLayer.stop();
                 await firestorePersistenceLayer.stop();
 
-                snapshotResult.unsubscribe!();
-
             });
 
-            // FIXME make these production tests again.
-
-            it("Write a basic doc with synchronization listener", async function() {
+            it("Test3: Write a basic doc with synchronization listener", async function() {
 
                 const cloudAwareDatastore = await createDatastore();
                 const persistenceLayer = new DefaultPersistenceLayer(cloudAwareDatastore);
 
-                cloudAwareDatastore.addSynchronizationEventListener(event => {
-                    console.log("FIXME99:  ", event);
+                const latch0 = new Latch<boolean>();
+                const latch1 = new Latch<boolean>();
+
+                cloudAwareDatastore.addSynchronizationEventListener(docMetaSnapshotEvent => {
+
+                    if (docMetaSnapshotEvent.consistency !== 'committed' ) {
+                        return;
+                    }
+
+                    for (const docMetaMutation of docMetaSnapshotEvent.docMetaMutations) {
+                        if (docMetaMutation.fingerprint === '0x002') {
+                            latch0.resolve(true);
+                        }
+                        if (docMetaMutation.fingerprint === '0x003') {
+                            latch1.resolve(true);
+                        }
+                    }
+
                 });
 
                 await persistenceLayer.init();
 
-                const docMeta = MockDocMetas.createMockDocMeta();
+                const docMeta = MockDocMetas.createMockDocMeta('0x002');
                 await persistenceLayer.writeDocMeta(docMeta);
 
+                const firebasePersistenceLayer = new DefaultPersistenceLayer(new FirebaseDatastore());
+                await firebasePersistenceLayer.init();
+                await firebasePersistenceLayer.writeDocMeta(MockDocMetas.createMockDocMeta('0x003'));
+
+                await latch0.get();
+                await latch1.get();
+
                 await persistenceLayer.stop();
+                await firebasePersistenceLayer.stop();
 
             });
 
-            xit("Write a basic doc", async function() {
+            it("Test4: Write a basic doc", async function() {
 
                 const persistenceLayer = new DefaultPersistenceLayer(await createDatastore());
 
@@ -185,39 +327,40 @@ SpectronRenderer.run(async (state) => {
 
             });
 
-            xit("Test an existing firebase store with existing data replicating to a new CloudDatastore.", async function() {
+            it("Test5: Test an existing firebase store with existing data replicating to a new CloudDatastore.", async function() {
 
-                Files.removeDirectoryRecursively(PolarDataDir.get()!);
+                let err: Error | undefined;
+
+                const errorListener = (error: Error) => {
+                    console.error("Got error:  ", err);
+                    err = error;
+                };
 
                 const sourcePersistenceLayer = new DefaultPersistenceLayer(new FirebaseDatastore());
-                await sourcePersistenceLayer.init();
-                const docMeta = MockDocMetas.createWithinInitialPagemarks(fingerprint, 14);
-                await sourcePersistenceLayer.write(fingerprint, docMeta);
+                await sourcePersistenceLayer.init(errorListener);
+                await sourcePersistenceLayer.writeDocMeta(MockDocMetas.createMockDocMeta(fingerprint));
                 await sourcePersistenceLayer.stop();
 
                 const targetPersistenceLayer = new DefaultPersistenceLayer(await createDatastore());
 
-                let err: Error | undefined;
-                await targetPersistenceLayer.init(error => {
-                    err = error;
-                });
+                await targetPersistenceLayer.init(errorListener);
 
                 await waitForExpect(async () => {
                     const dataDir = PolarDataDir.get();
-                    const path = FilePaths.join(dataDir!, '0x001', 'state.json');
-                    assert.ok(await Files.existsAsync(path));
+                    const path = FilePaths.join(dataDir!, fingerprint, 'state.json');
+                    assert.ok(await Files.existsAsync(path), "Path does not exist: " + path);
                 });
 
                 await targetPersistenceLayer.stop();
 
                 // verify that we have received no errors.
-                assert.ok(err === undefined);
+                assert.ok(err === undefined, "Received an error: " + err);
 
             });
 
-            xit("Verify unsubscribe works.", async function() {
+            it("Test6: Verify unsubscribe works.", async function() {
 
-                Files.removeDirectoryRecursively(PolarDataDir.get()!);
+                await Files.removeDirectoryRecursivelyAsync(PolarDataDir.get()!);
 
                 const targetPersistenceLayer = new DefaultPersistenceLayer(await createDatastore());
                 await targetPersistenceLayer.init();
@@ -226,9 +369,6 @@ SpectronRenderer.run(async (state) => {
 
                 const docMetaFiles = await targetPersistenceLayer.getDocMetaFiles();
                 assert.equal(docMetaFiles.length, 0);
-
-                // FIXME: right now we ahve to manually create the snapshot to trigger replication...
-                // it's not done in init
 
                 let gotEventAfterUnsubscribe = false;
                 let unsubscribed = false;
@@ -256,6 +396,8 @@ SpectronRenderer.run(async (state) => {
                 await sidePersistenceLayer.writeDocMeta(MockDocMetas.createMockDocMeta());
                 await sidePersistenceLayer.stop();
 
+                // TODO: unfortunately, we HAVE to sleep here because we're
+                // waiting for any lagging events
                 await Promises.waitFor(5000);
 
                 assert.ok(gotEventAfterUnsubscribe === false, "Nope.. we still got the event");
@@ -264,7 +406,7 @@ SpectronRenderer.run(async (state) => {
 
 
             // FIXME: this wont' work yet due to the snapshot issue.
-            xit("Test a remote write and a local replication to disk", async function() {
+            xit("Test7: Test a remote write and a local replication to disk", async function() {
 
                 const sourcePersistenceLayer = new DefaultPersistenceLayer(new FirebaseDatastore());
                 await sourcePersistenceLayer.init();
@@ -278,7 +420,6 @@ SpectronRenderer.run(async (state) => {
                 await waitForExpect(async () => {
                     const dataDir = PolarDataDir.get();
                     const path = FilePaths.join(dataDir!, '0x001', 'state.json');
-                    console.log("Checkign for path: " + path);
                     assert.ok(await Files.existsAsync(path), 'Path for fingerprint never appeared');
                 });
 
@@ -289,7 +430,7 @@ SpectronRenderer.run(async (state) => {
 
         });
 
-        // DatastoreTester.test(createDatastore, false);
+        DatastoreTester.test(createDatastore, false);
 
     });
 

@@ -18,7 +18,7 @@ export class FrameInitializer {
 
     constructor(iframe: HTMLIFrameElement, textLayer: HTMLElement) {
 
-        if(!iframe) {
+        if (!iframe) {
             throw new Error("No iframe");
         }
 
@@ -38,7 +38,7 @@ export class FrameInitializer {
 
     _checkLoaded() {
 
-        if(!this.loaded) {
+        if (!this.loaded) {
             this.loaded = true;
             this.onLoad();
             log.info("FrameInitializer: Document has finished loading");
@@ -67,14 +67,14 @@ export class FrameInitializer {
     }
 
     updateDocTitle() {
-        let title = notNull(this.iframe.contentDocument).title;
+        const title = notNull(this.iframe.contentDocument).title;
         log.info("Setting title: " + title);
         document.title = title;
     }
 
     dispatchPagesInit() {
 
-        let event = new Event('pagesinit', {bubbles: true});
+        const event = new Event('pagesinit', {bubbles: true});
 
         // Dispatch the event.
         notNull(document.querySelector(".page")).dispatchEvent(event);
@@ -84,8 +84,9 @@ export class FrameInitializer {
     startEventBridge() {
 
         document.querySelectorAll(".page").forEach(pageElement => {
-            let eventBridge = new EventBridge(<HTMLElement>pageElement, this.iframe);
-            eventBridge.start();
+            const eventBridge = new EventBridge(<HTMLElement> pageElement, this.iframe);
+            eventBridge.start()
+                .catch(err => log.error("Could not run eventBridge: ", err));
         });
     }
 

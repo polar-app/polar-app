@@ -9,7 +9,8 @@ const log = Logger.create();
 /**
  * When we receive a message, we broadcast it to all the renderers.  Anyone not
  * listening just drops the message.  This makes it easy to implement various
- * forms of message communication.
+ * forms of message communication but one of them is shared state across the
+ * web browsers.
  */
 export class Broadcaster {
 

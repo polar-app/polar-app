@@ -37,6 +37,27 @@ export class Logging {
 
     }
 
+    /**
+     * Initialize a logger suitable for testing.
+     */
+    public static initForTesting() {
+
+        const level =
+            Optional.of(process.env.POLAR_LOG_LEVEL)
+                .map(current => LogLevels.fromName(current))
+                .getOrElse(LogLevel.WARN);
+
+        const target = new ConsoleLogger();
+
+        const delegate =
+            new FilteredLogger(
+                new VersionAnnotatingLogger(
+                    new LevelAnnotatingLogger(target)), level);
+
+        LoggerDelegate.set(delegate);
+
+    }
+
     public static async initWithTarget(target: ILogger) {
 
         const lc = await this.loggingConfig();
@@ -91,9 +112,6 @@ export class Logging {
 
         if (loggingConfig.target === LoggerTarget.CONSOLE) {
             return new ConsoleLogger();
-        // } else if(loggerTarget === LoggerTarget.DISK) {
-        //     let directories = new Directories();
-        //     return await ElectronLoggers.create(directories.logsDir);
         } else {
             throw new Error("Invalid target: " + loggingConfig.target);
         }

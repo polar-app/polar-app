@@ -54,7 +54,7 @@ export class DatastoreMutations {
      * Perform a write while coordinating the remote and local writes.
      *
      * The remote operation executes and completes written once it's written
-     * locally but potentially still unsafe as it's not committed.  Once it's
+     * locally but potentially still unsafe as it's not 'committed'.  Once it's
      * committed locally (and safe) then we can perform the local operation
      * which is also atomic (and safe).
      *
@@ -77,21 +77,32 @@ export class DatastoreMutations {
                                                remoteSync: (remoteCoordinator: DatastoreMutation<T>) => Promise<void>,
                                                localSync: (localCoordinator: DatastoreMutation<T>) => Promise<void>,
                                                remoteCoordinator: DatastoreMutation<T> = new DefaultDatastoreMutation(),
-                                               localCoordinator: DatastoreMutation<T> = new DefaultDatastoreMutation()) {
+                                               localCoordinator: DatastoreMutation<T> = new DefaultDatastoreMutation()): Promise<void> {
 
-        remoteSync(remoteCoordinator);
+        return new Promise<void>((resolve, reject) => {
 
-        remoteCoordinator.written.get()
-            .then(() => {
-                localSync(localCoordinator);
-            });
+            remoteSync(remoteCoordinator)
+                .catch((err) => reject(err));
 
-        DatastoreMutations.batched(remoteCoordinator, localCoordinator, datastoreMutation);
+            remoteCoordinator.written.get()
+                .then(() => {
 
-        // only return once the remote and local promises / operations have
-        // been completed...
+                    localSync(localCoordinator)
+                        .catch(err => reject(err));
 
-        await datastoreMutation.committed.get();
+                })
+                .catch((err) => reject(err));
+
+            DatastoreMutations.batched(remoteCoordinator, localCoordinator, datastoreMutation);
+
+            // only return once the remote and local promises / operations have
+            // been completed...
+
+            datastoreMutation.committed.get()
+                .then(() => resolve())
+                .catch((err) => reject(err));
+
+        });
 
     }
 
@@ -117,7 +128,5 @@ export class DatastoreMutations {
         });
 
     }
-
-
 
 }

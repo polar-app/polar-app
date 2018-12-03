@@ -6,9 +6,9 @@ import {Blobs} from "../util/Blobs";
 import {ArrayBuffers} from "../util/ArrayBuffers";
 import {AsyncFunction, AsyncWorkQueue} from '../util/AsyncWorkQueue';
 import {DocMetaFileRefs, DocMetaRef} from "./DocMetaRef";
-import {Datastore, DocMetaMutation, DocMetaSnapshotEvent, DocMetaSnapshotEventListener, FileRef, MutationType, SyncDoc, SyncDocMap} from './Datastore';
+import {Datastore, DocMetaMutation, DocMetaSnapshotEvent, DocMetaSnapshotEventListener, FileRef, MutationType, SyncDoc, SyncDocMap, SyncDocs} from './Datastore';
 import {UUIDs} from '../metadata/UUIDs';
-import {ProgressTracker, ProgressState} from '../util/ProgressTracker';
+import {ProgressTracker, ProgressState, ProgressStateListener} from '../util/ProgressTracker';
 import {DocMetas} from '../metadata/DocMetas';
 import {DefaultPersistenceLayer} from './DefaultPersistenceLayer';
 import {Provider, AsyncProviders} from '../util/Providers';
@@ -23,142 +23,52 @@ export class PersistenceLayers {
         return new DefaultPersistenceLayer(input);
     }
 
-    /**
-     * Synchronize the source with the target so that we know they are both in
-     * sync.
-     */
-    public static async synchronize(source: PersistenceLayer,
-                                    target: PersistenceLayer,
-                                    listener: DocMetaSnapshotEventListener = NULL_FUNCTION): Promise<TransferResult> {
+    public static async toSyncDocMap(persistenceLayer: PersistenceLayer,
+                                     progressStateListener: ProgressStateListener = NULL_FUNCTION) {
 
-        // FIXME: this should be a synchronization event listener...
+        const docMetaFiles = await persistenceLayer.getDocMetaFiles();
 
-        const result: TransferResult = {
-            mutations: {
-                fingerprints: [],
-                files: []
-            },
-            conflicts: {
-                fingerprints: [],
-                files: []
-            }
-        };
+        const syncDocsMap: SyncDocMap = {};
 
-        async function handleStashFile(fileRef: FileRef) {
-
-            if (! target.containsFile(Backend.STASH, fileRef)) {
-
-                const optionalFile = await source.getFile(Backend.STASH, fileRef);
-
-                if (optionalFile.isPresent()) {
-                    const file = optionalFile.get();
-                    const response = await fetch(file.url);
-                    const blob = await response.blob();
-                    const arrayBuffer = await Blobs.toArrayBuffer(blob);
-                    const buffer = ArrayBuffers.toBuffer(arrayBuffer);
-
-                    await target.writeFile(file.backend, fileRef, buffer, file.meta);
-
-                    result.mutations.files.push(fileRef);
-                }
-
-            }
-
-        }
-
-        async function handleDocMetaFile(docMetaFile: DocMetaRef) {
-
-            // console.log("Working with fingerprint: " +
-            // docMetaFile.fingerprint);
-
-            const docMeta = await source.getDocMeta(docMetaFile.fingerprint);
-
-            if (! docMeta) {
-                return;
-            }
-
-            const docFile: FileRef = {
-                name: docMeta.docInfo.filename!,
-                hashcode: docMeta.docInfo.hashcode
-            };
-
-            // TODO: we're going to need some type of method to get all the
-            // files backing a DocMeta file when we start to use attachments
-            // like screenshots.
-
-            if (docFile.name) {
-                // TODO: if we use the second queue it still locks up.
-                // await docFileAsyncWorkQueue.enqueue(async () =>
-                // handleStashFile(docFile));
-                await handleStashFile(docFile);
-            }
-
-            const targetContainsDocMeta: boolean = await target.contains(docMetaFile.fingerprint);
-
-            let doWriteDocMeta: boolean = ! targetContainsDocMeta;
-
-            if (targetContainsDocMeta) {
-
-                const targetDocMeta = await target.getDocMeta(docMetaFile.fingerprint);
-
-                if (targetDocMeta) {
-
-                    // FIXME: if the comparison is zero then technically we
-                    // have a conflict which we need to surface to the user.
-                    doWriteDocMeta = UUIDs.isUpdated(targetDocMeta.docInfo.uuid, docMeta.docInfo.uuid);
-
-                }
-
-            }
-
-            if (doWriteDocMeta) {
-                result.mutations.fingerprints.push(docMetaFile.fingerprint);
-                await target.writeDocMeta(docMeta);
-            }
-
-            const progress = progressTracker.incr();
-
-            const docMetaSnapshotEvent: DocMetaSnapshotEvent = {
-                datastore: source.datastore.id,
-                progress,
-
-                // this should be committed as we're starting with the source
-                // which we think should be at the commmitted level to start
-                // with
-
-                consistency: 'committed',
-                docMetaMutations: [
-                    {
-                        fingerprint: docMeta.docInfo.fingerprint,
-                        docMetaProvider: AsyncProviders.of(docMeta),
-                        docInfoProvider: AsyncProviders.of(docMeta.docInfo),
-                        docMetaFileRefProvider: AsyncProviders.of(DocMetaFileRefs.createFromDocInfo(docMeta.docInfo)),
-                        mutationType: 'created'
-                    }
-                ]
-            };
-
-            listener(docMetaSnapshotEvent);
-
-        }
-
-        const docMetaFiles = await source.getDocMetaFiles();
+        const work: AsyncFunction[] = [];
+        const asyncWorkQueue = new AsyncWorkQueue(work);
 
         const progressTracker = new ProgressTracker(docMetaFiles.length);
 
-        const docFileAsyncWorkQueue = new AsyncWorkQueue([]);
-        const docMetaAsyncWorkQueue = new AsyncWorkQueue([]);
+        for (const docMetaFile of docMetaFiles) {
 
-        // build a work queue of async functions out of the docMetaFiles.
-        docMetaFiles.forEach(docMetaFile =>
-                                 docMetaAsyncWorkQueue.enqueue( async () => handleDocMetaFile(docMetaFile)));
+            work.push(async () => {
+                const docMeta = await persistenceLayer.getDocMeta(docMetaFile.fingerprint);
+                syncDocsMap[docMetaFile.fingerprint] = SyncDocs.fromDocInfo(docMeta!.docInfo, 'created');
 
-        const docFileExecutionPromise = docFileAsyncWorkQueue.execute();
-        const docMetaExecutionPromise = docMetaAsyncWorkQueue.execute();
+                progressStateListener(progressTracker.peek());
 
-        await Promise.all([docFileExecutionPromise, docMetaExecutionPromise]);
+            });
 
-        return result;
+        }
+
+        await asyncWorkQueue.execute();
+
+        progressStateListener(progressTracker.terminate());
+
+        return syncDocsMap;
+
+    }
+
+    /**
+     * Merge both origins so that they contains the same documents. Older
+     * documents are upgraded to the latest version and missing documents are
+     * copied.  At the end both origins will have the union of both sets.
+     */
+    public static async merge(syncOrigin0: SyncOrigin,
+                              syncOrigin1: SyncOrigin,
+                              listener: DocMetaSnapshotEventListener = NULL_FUNCTION) {
+
+        await this.transfer(syncOrigin0, syncOrigin1, listener);
+
+        // now transfer the other way...
+
+        await this.transfer(syncOrigin1, syncOrigin0, listener);
 
     }
 
@@ -166,9 +76,9 @@ export class PersistenceLayers {
      * Synchronize the source with the target so that we know they are both in
      * sync.
      */
-    public static async synchronizeFromSyncDocs(source: SyncOrigin,
-                                                target: SyncOrigin,
-                                                listener: DocMetaSnapshotEventListener = NULL_FUNCTION): Promise<TransferResult> {
+    public static async transfer(source: SyncOrigin,
+                                 target: SyncOrigin,
+                                 listener: DocMetaSnapshotEventListener = NULL_FUNCTION): Promise<TransferResult> {
 
         const result: TransferResult = {
             mutations: {
@@ -183,20 +93,35 @@ export class PersistenceLayers {
 
         async function handleSyncFile(fileRef: FileRef) {
 
-            if (! target.persistenceLayer.containsFile(Backend.STASH, fileRef)) {
+            if (! await target.datastore.containsFile(Backend.STASH, fileRef)) {
 
-                const optionalFile = await source.persistenceLayer.getFile(Backend.STASH, fileRef);
+                const optionalFile = await source.datastore.getFile(Backend.STASH, fileRef);
 
                 if (optionalFile.isPresent()) {
+
+                    // TODO: it would be better if we could make these streams
+                    // in the future to avoid reading these files into memory.
+                    // Some people might have PDF files that are >100MB.
+
+                    // TODO: I think part of this is that we can't transfer a
+                    // stream to the 'remote' worker that's performing the actual
+                    // writes to the DiskStore.
+
+                    // TODO: additionally, we're going to need a way to report
+                    // progress of this operation between the process boundaries.
+                    // We need to have callbacks work so that we can determine
+                    // the throughput of some of the larger attachments.
+
                     const file = optionalFile.get();
                     const response = await fetch(file.url);
                     const blob = await response.blob();
                     const arrayBuffer = await Blobs.toArrayBuffer(blob);
                     const buffer = ArrayBuffers.toBuffer(arrayBuffer);
 
-                    await target.persistenceLayer.writeFile(file.backend, fileRef, buffer, file.meta);
+                    await target.datastore.writeFile(file.backend, fileRef, buffer, file.meta);
 
                     result.mutations.files.push(fileRef);
+
                 }
 
             }
@@ -246,15 +171,15 @@ export class PersistenceLayers {
 
                 result.mutations.fingerprints.push(sourceSyncDoc.fingerprint);
 
-                const docMeta = await source.persistenceLayer.getDocMeta(sourceSyncDoc.fingerprint);
-                await target.persistenceLayer.writeDocMeta(docMeta!);
+                const data = await source.datastore.getDocMeta(sourceSyncDoc.fingerprint);
+                await target.datastore.write(sourceSyncDoc.fingerprint, data, sourceSyncDoc.docMetaFileRef.docInfo);
 
             }
 
             const progress = progressTracker.incr();
 
             const docMetaSnapshotEvent: DocMetaSnapshotEvent = {
-                datastore: source.persistenceLayer.datastore.id,
+                datastore: source.datastore.id,
                 progress,
 
                 // this should be committed as we're starting with the source
@@ -276,18 +201,21 @@ export class PersistenceLayers {
 
         }
 
-        const progressTracker = new ProgressTracker(Dictionaries.size(source.syncDocMap));
-
         const docFileAsyncWorkQueue = new AsyncWorkQueue([]);
         const docMetaAsyncWorkQueue = new AsyncWorkQueue([]);
 
-        for (const sourceSyncDoc of Object.values(source.syncDocMap)) {
+        const sourceSyncDocs = Object.values(source.syncDocMap);
+
+        const progressTracker = new ProgressTracker(sourceSyncDocs.length);
+
+        for (const sourceSyncDoc of sourceSyncDocs) {
 
             const targetSyncDoc = target.syncDocMap[sourceSyncDoc.fingerprint];
 
-            const handler = async () => handleSyncDoc(sourceSyncDoc, targetSyncDoc);
+            const handler = async () => await handleSyncDoc(sourceSyncDoc, targetSyncDoc);
 
             docMetaAsyncWorkQueue.enqueue(handler);
+
 
         }
 
@@ -297,6 +225,13 @@ export class PersistenceLayers {
         const docMetaExecutionPromise = docMetaAsyncWorkQueue.execute();
 
         await Promise.all([docFileExecutionPromise, docMetaExecutionPromise]);
+
+        listener({
+            datastore: source.datastore.id,
+            progress: progressTracker.terminate(),
+            consistency: 'committed',
+            docMetaMutations: []
+        });
 
         return result;
 
@@ -322,7 +257,7 @@ export interface TransferRefs {
 
 export interface SyncOrigin {
 
-    readonly persistenceLayer: PersistenceLayer;
+    readonly datastore: Datastore;
     readonly syncDocMap: SyncDocMap;
 
 }

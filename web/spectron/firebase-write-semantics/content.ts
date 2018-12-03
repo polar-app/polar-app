@@ -23,11 +23,12 @@ import {Preconditions} from '../../js/Preconditions';
 
 mocha.setup('bdd');
 mocha.timeout(10000);
-PolarDataDir.useFreshDirectory('.test-firebase-write-semantics');
 
 SpectronRenderer.run(async (state) => {
 
     new FirebaseTester(state).run(async () => {
+
+        await PolarDataDir.useFreshDirectory('.test-firebase-write-semantics');
 
         describe('Firebase Write Semantics', function() {
 

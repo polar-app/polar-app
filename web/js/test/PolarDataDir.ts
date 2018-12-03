@@ -7,11 +7,11 @@ const log = Logger.create();
 
 export class PolarDataDir {
 
-    public static useFreshDirectory(name: string): string {
+    public static async useFreshDirectory(name: string): Promise<string> {
 
         const dataDir = FilePaths.createTempName(name);
         process.env.POLAR_DATA_DIR = dataDir;
-        Files.removeDirectoryRecursively(dataDir);
+        await Files.removeDirectoryRecursivelyAsync(dataDir);
 
         const directories = new Directories();
 

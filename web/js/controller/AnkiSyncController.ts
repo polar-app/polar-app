@@ -35,7 +35,9 @@ export class AnkiSyncController {
         switch (event.data.type) {
 
             case "start-sync":
-                this.onStartSync(triggerEvent);
+                this.onStartSync(triggerEvent)
+                    .catch(err => log.error("Failed to start sync: ", err));
+
                 break;
 
         }

@@ -32,6 +32,31 @@ describe('FilePaths', function() {
 
     });
 
+    describe('toExtension', function() {
+
+        it('null and undefined', function() {
+            assert.equal(FilePaths.toExtension(null!).isPresent(), false);
+            assert.equal(FilePaths.toExtension(undefined!).isPresent(), false);
+        });
+
+        it('empty string', function() {
+            assert.equal(FilePaths.toExtension("").isPresent(), false);
+        });
+
+        it('None', function() {
+            assert.equal(FilePaths.toExtension("hello").isPresent(), false);
+        });
+
+        it('Basic', function() {
+            assert.equal(FilePaths.toExtension("hello.txt").get(), "txt");
+        });
+
+        it('Four chars', function() {
+            assert.equal(FilePaths.toExtension("hello.html").get(), "html");
+        });
+
+    });
+
 
 });
 

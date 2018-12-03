@@ -22,28 +22,86 @@ import {PersistenceLayer} from '../../js/datastore/PersistenceLayer';
 import {Datastores} from '../../js/datastore/Datastores';
 import waitForExpect from 'wait-for-expect';
 import {BrowserWindowRegistry} from '../../js/electron/framework/BrowserWindowRegistry';
-import {PersistenceLayers} from '../../js/datastore/PersistenceLayers';
+import {PersistenceLayers, SyncOrigin} from '../../js/datastore/PersistenceLayers';
+import {CloudAwareDatastore} from '../../js/datastore/CloudAwareDatastore';
+import {ProgressTracker} from '../../js/util/ProgressTracker';
+import {ProgressBar} from '../../js/ui/progress_bar/ProgressBar';
+import {Logging} from '../../js/logger/Logging';
+
+Logging.initForTesting();
 
 SpectronRenderer.run(async (state) => {
 
     new FirebaseTester(state).run(async () => {
 
-        const firebaseDatastore = new FirebaseDatastore();
+        async function syncWithFirebase() {
 
-        const source = new DefaultPersistenceLayer(new DiskDatastore());
-        const target = new DefaultPersistenceLayer(firebaseDatastore);
+            const diskDatastore = new DiskDatastore();
+            const firebaseDatastore = new FirebaseDatastore();
 
-        await Promise.all([source.init(), target.init()]);
+            const cloudAwareDatastore = new CloudAwareDatastore(diskDatastore, firebaseDatastore);
+            const progressBar = ProgressBar.create(false);
 
-        await Datastores.purge(firebaseDatastore, purgeEvent => {
-            console.log("Purge event: ", purgeEvent);
-        });
+            cloudAwareDatastore.addDocMetaSnapshotEventListener(docMetaSnapshotEvent => {
+                console.log("Got event: ", docMetaSnapshotEvent);
+                console.log("Progress percentage: " + docMetaSnapshotEvent.progress.progress);
+                progressBar.update(docMetaSnapshotEvent.progress.progress);
+            });
 
-        await PersistenceLayers.synchronize(source, target, (transferEvent) => {
-            console.log("Transfer event: ", transferEvent);
-        });
+            await cloudAwareDatastore.init();
 
-        await Promise.all([source.stop(), target.stop()]);
+        }
+
+        async function initialMergeWithFirebase() {
+
+            const progressBar = ProgressBar.create(false);
+
+            const source = new DefaultPersistenceLayer(new DiskDatastore());
+            const target = new DefaultPersistenceLayer(new FirebaseDatastore());
+
+            await Promise.all([source.init(), target.init()]);
+
+            async function toSyncDocMap(persistenceLayer: PersistenceLayer) {
+
+                const timeLabel = 'toSyncOrigin:' + persistenceLayer.datastore.id;
+
+                try {
+                    console.time(timeLabel);
+                    return await PersistenceLayers.toSyncDocMap(persistenceLayer, progressState => {
+                        progressBar.update(progressState.progress);
+                    });
+
+                } finally {
+                    console.timeEnd(timeLabel);
+                }
+
+            }
+
+            async function toSyncOrigin(persistenceLayer: PersistenceLayer): Promise<SyncOrigin> {
+
+                const syncDocMap = await toSyncDocMap(persistenceLayer);
+
+                return {
+                    datastore: persistenceLayer.datastore,
+                    syncDocMap
+                };
+
+            }
+
+            await PersistenceLayers.merge(await toSyncOrigin(source), await toSyncOrigin(target), (transferEvent) => {
+                console.log("Transfer event: ", transferEvent);
+                progressBar.update(transferEvent.progress.progress);
+            });
+
+            console.log("Transfer finished.");
+
+            await Promise.all([source.stop(), target.stop()]);
+
+        }
+
+        // await syncWithFirebase();
+
+        await initialMergeWithFirebase();
 
     });
 

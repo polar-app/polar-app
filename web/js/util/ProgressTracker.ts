@@ -10,11 +10,6 @@ export class ProgressTracker {
 
     private readonly epoch: number;
 
-    /**
-     *
-     * @param total The total number of tasks to complete.
-     * @param initial The initial value of the progress counter.
-     */
     constructor(total: number) {
 
         this.epoch = Date.now();
@@ -33,13 +28,27 @@ export class ProgressTracker {
 
     }
 
+    /**
+     * Increment the progress of the job by one, compute the updated state,
+     * and return.
+     */
     public incr(): Readonly<ProgressState> {
         ++this.state.completed;
         this.state.progress = this.calculate();
         this.state.duration = Date.now() - this.epoch;
 
         return this.peek();
+    }
 
+    /**
+     * Used so that we can jump to the end the job as it's terminated.
+     *
+     */
+    public terminate(): Readonly<ProgressState> {
+        this.state.completed = this.state.total;
+        this.state.progress = this.calculate();
+        this.state.duration = Date.now() - this.epoch;
+        return this.peek();
     }
 
     /**
@@ -55,12 +64,20 @@ export class ProgressTracker {
             return 100;
         }
 
-        return <Percentage> Percentages.calculate(this.state.completed,
-                                                  this.state.total);
+        const result = Percentages.calculate(this.state.completed, this.state.total);
+
+        if (result < 0 || result > 100) {
+            const msg = `Invalid percentage: ${result}: completed: ${this.state.completed} vs total: ${this.state.total}`;
+            throw new Error(msg);
+        }
+
+        return <Percentage> result;
 
     }
 
 }
+
+export type ProgressStateListener = (progressState: ProgressState) => void;
 
 export interface ProgressState {
     completed: number;

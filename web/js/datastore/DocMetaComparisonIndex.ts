@@ -2,6 +2,8 @@ import {DocMeta} from '../metadata/DocMeta';
 import {DocInfo, IDocInfo} from '../metadata/DocInfo';
 import {DocUUID} from './CloudAwareDatastore';
 import {isPresent} from '../Preconditions';
+import {DocMetaMutation} from './Datastore';
+import {UUIDs} from '../metadata/UUIDs';
 
 /**
  * The DocComparisonIndex allows us to detect which documents are local already
@@ -39,6 +41,62 @@ export class DocMetaComparisonIndex {
             fingerprint: docInfo.fingerprint,
             uuid: docInfo.uuid
         };
+
+    }
+
+    /**
+     * Handle a given mutation and return true if the mutation was accepted.
+     *
+     * A mutation is accepted if it is recent and mutates the data in the
+     * database which is already present.
+     *
+     * @param docMetaMutation
+     * @param docInfo
+     */
+    public handleDocMetaMutation(docMetaMutation: DocMetaMutation, docInfo: IDocInfo): boolean {
+
+        const mutationType = docMetaMutation.mutationType;
+
+        let doUpdated = false;
+
+        if (mutationType === 'created' && ! this.contains(docInfo.fingerprint)) {
+            doUpdated = true;
+        }
+
+        if (mutationType === 'updated') {
+
+            const docComparison = this.get(docInfo.fingerprint);
+
+            if (!docComparison) {
+                doUpdated = true;
+            }
+
+            if (docComparison && UUIDs.compare(docComparison.uuid, docInfo.uuid) < 0) {
+                doUpdated = true;
+            }
+
+        }
+
+        if (doUpdated) {
+            // when the doc is created and it's not in the index.
+            this.putDocInfo(docInfo);
+            return true;
+        }
+
+        if (mutationType === 'deleted' && this.get(docInfo.fingerprint)) {
+
+            // TODO: a delete might need to have a UUID too so that we do not
+            // get out of order DELETEs.  For this to work we probably need
+            // the concept of tombstones.
+
+            // if we're deleting the document and we've seen it before
+            // and it's in the index.
+            this.remove(docInfo.fingerprint);
+            return true;
+
+        }
+
+        return false;
 
     }
 

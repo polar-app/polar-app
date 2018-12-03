@@ -9,8 +9,6 @@ import {FilePaths} from '../../js/util/FilePaths';
 import process from "process";
 import {AppPath} from '../../js/electron/app_path/AppPath';
 
-PolarDataDir.useFreshDirectory('.polar-firebase-datastore');
-
 async function defaultWindowFactory(): Promise<BrowserWindow> {
     const mainWindow = new BrowserWindow(SpectronBrowserWindowOptions.create());
     mainWindow.loadURL('about:blank');
@@ -25,6 +23,8 @@ const options: ISpectronMainOptions = {
 AppPath.set(__dirname);
 
 SpectronMain2.create(options).run(async state => {
+
+    await PolarDataDir.useFreshDirectory('.polar-firebase-datastore');
 
     // the webserver must be running as firebase won't load without being on an
     // HTTP URL

@@ -1,11 +1,12 @@
 import * as React from 'react';
 import {Button, Modal, ModalBody, ModalFooter, ModalHeader} from 'reactstrap';
-import {Version} from '../../../web/js/util/Version';
+import {Version} from '../../../../../../web/js/util/Version';
 import {app} from 'electron';
-import {FilePaths} from '../../../web/js/util/FilePaths';
-import {Files} from '../../../web/js/util/Files';
-import {Logger} from '../../../web/js/logger/Logger';
+import {FilePaths} from '../../../../../../web/js/util/FilePaths';
+import {Files} from '../../../../../../web/js/util/Files';
+import {Logger} from '../../../../../../web/js/logger/Logger';
 import {EmbeddedImages} from './EmbeddedImages';
+import {Splash} from '../../Splash';
 
 const log = Logger.create();
 
@@ -40,9 +41,10 @@ export class WhatsNewContent extends React.Component<IProps, IState> {
                 </p>
 
                 <p>
-                The biggest feature by far is our support for a chrome extension
-                that allows you to send the URL of your active tab to Polar
-                for content capture.
+                    The biggest feature by far is our support for
+                    the <a href="https://chrome.google.com/webstore/detail/save-to-polar/jkfdkjomocoaljglgddnmhcbolldcafd">'Save to Polar' chrome extension</a>
+                    that allows you to send the URL of your active tab to Polar
+                    for content capture.
                 </p>
 
                 <p>
@@ -53,6 +55,12 @@ export class WhatsNewContent extends React.Component<IProps, IState> {
                 <p>
                     We plan on adding support for Safari, and Firefox in the
                     future but we're taking things one step at a time.
+                </p>
+
+                <p className="text-center">
+                    <a className="btn btn-success btn-lg"
+                       href="https://chrome.google.com/webstore/detail/save-to-polar/jkfdkjomocoaljglgddnmhcbolldcafd"
+                       role="button">Get the 'Save to Polar' Chrome Extension</a>
                 </p>
 
                 <h3>Other features in 1.1 include:</h3>

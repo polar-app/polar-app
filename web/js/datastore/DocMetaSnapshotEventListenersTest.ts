@@ -11,6 +11,7 @@ import {NULL_FUNCTION} from '../util/Functions';
 import {AsyncProviders} from '../util/Providers';
 import waitForExpect from 'wait-for-expect';
 import {DocMetaFileRefs} from './DocMetaRef';
+import {MetadataSerializer} from '../metadata/MetadataSerializer';
 
 describe('DocMetaSnapshotEventListener', function() {
 
@@ -31,9 +32,11 @@ describe('DocMetaSnapshotEventListener', function() {
 
         emitted = [];
 
-        deduplicatedListener = DocMetaSnapshotEventListeners.createDeduplicatedListener(emittedEvent => {
+        const eventDeduplicator = DocMetaSnapshotEventListeners.createDeduplicatedListener(emittedEvent => {
             emitted.push(emittedEvent);
         });
+
+        deduplicatedListener = eventDeduplicator.listener;
 
     });
 
@@ -45,6 +48,7 @@ describe('DocMetaSnapshotEventListener', function() {
 
         const docMetaMutation: DocMetaMutation = {
             fingerprint: docMeta.docInfo.fingerprint,
+            dataProvider: AsyncProviders.of(MetadataSerializer.serialize(docMeta)),
             docMetaProvider: AsyncProviders.of(docMeta),
             docInfoProvider: AsyncProviders.of(docMeta.docInfo),
             docMetaFileRefProvider: AsyncProviders.of(DocMetaFileRefs.createFromDocInfo(docMeta.docInfo)),

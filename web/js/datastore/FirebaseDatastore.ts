@@ -3,7 +3,7 @@ import {
     DocMetaSnapshotEvent, FileMeta,
     InitResult, SynchronizingDatastore, MutationType, FileRef,
     DocMetaMutation, DocMetaSnapshotEventListener, SnapshotResult,
-    DocMetaSnapshotBatch, ErrorListener
+    DocMetaSnapshotBatch, ErrorListener, AbstractDatastore
 } from './Datastore';
 import {Logger} from '../logger/Logger';
 import {DocMetaFileRef, DocMetaFileRefs, DocMetaRef} from './DocMetaRef';
@@ -25,6 +25,7 @@ import {DocMetas} from "../metadata/DocMetas";
 import {Percentages} from '../util/Percentages';
 import {ProgressTracker} from '../util/ProgressTracker';
 import {Providers, AsyncProviders} from '../util/Providers';
+import {FilePaths} from '../util/FilePaths';
 
 const log = Logger.create();
 
@@ -36,7 +37,7 @@ const log = Logger.create();
 // in the future. Or, an anonymous user can link a Facebook account and then,
 // later, sign in with Facebook to continue using your app.
 
-export class FirebaseDatastore implements Datastore {
+export class FirebaseDatastore extends AbstractDatastore implements Datastore {
 
     public readonly id = 'firebase';
 
@@ -55,7 +56,7 @@ export class FirebaseDatastore implements Datastore {
     private initialized: boolean = false;
 
     constructor() {
-
+        super();
         this.directories = new Directories();
         this.stashDir = this.directories.stashDir;
         this.logsDir = this.directories.logsDir;
@@ -179,10 +180,6 @@ export class FirebaseDatastore implements Datastore {
 
     }
 
-    /**
-     * Delete the DocMeta file and the underlying doc from the stash.
-     *
-     */
     public async delete(docMetaFileRef: DocMetaFileRef,
                         datastoreMutation: DatastoreMutation<boolean> = new DefaultDatastoreMutation()): Promise<Readonly<DeleteResult>> {
 
@@ -197,17 +194,27 @@ export class FirebaseDatastore implements Datastore {
         const uid = this.getUserID();
         const id = this.computeDocMetaID(uid, docMetaFileRef.fingerprint);
 
-        const ref = this.firestore!
+        const docMetaRef = this.firestore!
             .collection(DatastoreCollection.DOC_META)
+            .doc(id);
+
+        const docInfoRef = this.firestore!
+            .collection(DatastoreCollection.DOC_INFO)
             .doc(id);
 
         try {
 
-            this.handleDatastoreMutations(ref, datastoreMutation);
+            this.handleDatastoreMutations(docMetaRef, datastoreMutation);
 
-            const commitPromise = this.waitForCommit(ref);
+            const commitPromise = this.waitForCommit(docMetaRef);
+            await docMetaRef.delete();
 
-            const documentSnapshot = await ref.delete();
+            const batch = this.firestore!.batch();
+
+            batch.delete(docMetaRef);
+            batch.delete(docInfoRef);
+
+            await batch.commit();
 
             await commitPromise;
 
@@ -255,14 +262,30 @@ export class FirebaseDatastore implements Datastore {
 
         const storagePath = this.computeStoragePath(backend, ref);
 
-        const fileRef = storage.ref().child(storagePath);
+        const fileRef = storage.ref().child(storagePath.path);
 
         let uploadTask: firebase.storage.UploadTask;
 
+        // TODO: we need to compute visibility for this for the future.
+
+        // stick the uid into the metadata which we use for authorization of the
+        // blob when not public.
+        meta = Object.assign(meta, {
+            uid: this.getUserID(),
+            visibility: Visibility.PRIVATE
+        });
+
+        const metadata: firebase.storage.UploadMetadata = {customMetadata: meta};
+
+        if (storagePath.settings) {
+            metadata.contentType = storagePath.settings.contentType;
+            metadata.cacheControl = storagePath.settings.cacheControl;
+        }
+
         if (typeof data === 'string') {
-            uploadTask = fileRef.putString(data, 'raw', {customMetadata: meta});
+            uploadTask = fileRef.putString(data, 'raw', metadata);
         } else {
-            uploadTask = fileRef.put(Uint8Array.from(data), {customMetadata: meta});
+            uploadTask = fileRef.put(Uint8Array.from(data), metadata);
         }
 
         // TODO: we can get progress from the uploadTask here.
@@ -300,7 +323,7 @@ export class FirebaseDatastore implements Datastore {
 
         const storagePath = this.computeStoragePath(backend, ref);
 
-        const fileRef = storage.ref().child(storagePath);
+        const fileRef = storage.ref().child(storagePath.path);
 
         const url: string = await fileRef.getDownloadURL();
         const metadata = await fileRef.getMetadata();
@@ -318,7 +341,7 @@ export class FirebaseDatastore implements Datastore {
         const storagePath = this.computeStoragePath(backend, ref);
 
         const storage = this.storage!;
-        const fileRef = storage.ref().child(storagePath);
+        const fileRef = storage.ref().child(storagePath.path);
 
         try {
             await fileRef.getMetadata();
@@ -344,7 +367,7 @@ export class FirebaseDatastore implements Datastore {
 
             const storagePath = this.computeStoragePath(backend, ref);
 
-            const fileRef = storage.ref().child(storagePath);
+            const fileRef = storage.ref().child(storagePath.path);
             await fileRef.delete();
 
         } catch (e) {
@@ -387,7 +410,7 @@ export class FirebaseDatastore implements Datastore {
 
             this.handleDatastoreMutations(docMetaRef, datastoreMutation);
 
-            const commitPromise = this.waitForCommit(docMetaRef);
+            const docMetaCommitPromise = this.waitForCommit(docMetaRef);
 
             log.debug("Setting...");
 
@@ -403,7 +426,7 @@ export class FirebaseDatastore implements Datastore {
             // we need to make sure that we only return when it's committed
             // remotely...
             log.debug("Waiting for promise...");
-            await commitPromise;
+            await docMetaCommitPromise;
             log.debug("Waiting for promise...done");
 
         } finally {
@@ -476,12 +499,20 @@ export class FirebaseDatastore implements Datastore {
 
     }
 
-    private computeStoragePath(backend: Backend, fileRef: FileRef): string {
+    private computeStoragePath(backend: Backend, fileRef: FileRef): StoragePath {
+
+        const ext = FilePaths.toExtension(fileRef.name);
+        const suffix = ext.map(value => '.' + value)
+                          .getOrElse('');
+
+        const settings = this.computeStorageSettings(ext).getOrUndefined();
 
         if (fileRef.hashcode) {
 
             // we're going to build this from the hashcode of the file
-            return `${backend}/${fileRef.hashcode.alg}+${fileRef.hashcode.enc}:${fileRef.hashcode.data}`;
+            const path = `${backend}/${fileRef.hashcode.alg}+${fileRef.hashcode.enc}:${fileRef.hashcode.data}${suffix}`;
+
+            return {path, settings};
 
         } else {
 
@@ -494,9 +525,63 @@ export class FirebaseDatastore implements Datastore {
 
             const id = Hashcodes.createID(key, 20);
 
-            return `${backend}/${id}`;
+            const path = `${backend}/${id}${suffix}`;
+
+            return {path, settings};
 
         }
+
+    }
+
+    private computeStorageSettings(optionalExt: Optional<string>): Optional<StorageSettings> {
+
+        const PUBLIC_MAX_AGE_1WEEK = 'public,max-age=604800';
+
+        const ext = optionalExt.getOrElse('');
+
+        if (ext === 'jpg' || ext === 'jpeg') {
+
+            return Optional.of({
+                cacheControl: PUBLIC_MAX_AGE_1WEEK,
+                contentType: 'image/jpeg'
+            });
+
+        }
+
+        if (ext === 'pdf') {
+
+            return Optional.of({
+                cacheControl: PUBLIC_MAX_AGE_1WEEK,
+                contentType: 'application/pdf'
+            });
+
+        }
+
+        if (ext === 'png') {
+
+            return Optional.of({
+                cacheControl: PUBLIC_MAX_AGE_1WEEK,
+                contentType: 'image/png'
+            });
+
+        }
+
+        if (ext === 'svg') {
+
+            return Optional.of({
+                cacheControl: PUBLIC_MAX_AGE_1WEEK,
+                contentType: 'image/svg'
+            });
+
+        }
+
+        // the fall through of cached data should work for PHZ files and other
+        // types of binary data.
+
+        return Optional.of({
+            cacheControl: PUBLIC_MAX_AGE_1WEEK,
+            contentType: 'application/octet-stream'
+        });
 
     }
 
@@ -528,7 +613,7 @@ export class FirebaseDatastore implements Datastore {
 
             if (snapshot.metadata.fromCache && snapshot.metadata.hasPendingWrites) {
                 datastoreMutation.written.resolve(true);
-                log.debug("Got written...");
+                log.debug("Got written for: ", ref);
 
             }
 
@@ -542,7 +627,7 @@ export class FirebaseDatastore implements Datastore {
 
                 datastoreMutation.written.resolve(true);
                 datastoreMutation.committed.resolve(true);
-                log.debug("Got committed...");
+                log.debug("Got committed for: ", ref);
 
                 // not interested in snapshots from this document any more.
                 unsubscribeToSnapshot();
@@ -584,14 +669,18 @@ export class FirebaseDatastore implements Datastore {
 
             const docInfo = record.value;
 
+            const dataProvider = async () => await this.getDocMeta(docInfo.fingerprint);
+
             const docMetaProvider = AsyncProviders.memoize(async () => {
-                const data = await this.getDocMeta(docInfo.fingerprint);
+                const data = await dataProvider();
+                Preconditions.assertPresent(data, "No data for docMeta with fingerprint: " + docInfo.fingerprint);
                 return DocMetas.deserialize(data!);
             });
 
             const docMetaMutation: FirebaseDocMetaMutation = {
                 id,
                 fingerprint: docInfo.fingerprint,
+                dataProvider,
                 docMetaProvider,
                 docInfoProvider: AsyncProviders.of(docInfo),
                 docMetaFileRefProvider: AsyncProviders.of(DocMetaFileRefs.createFromDocInfo(docInfo)),
@@ -642,13 +731,18 @@ export class FirebaseDatastore implements Datastore {
             handleDocMetaMutation(docMetaMutation);
         };
 
-        const progressTracker = new ProgressTracker(snapshot.size);
 
         const consistency = snapshot.metadata.fromCache ? 'written' : 'committed';
 
-        for (const docChange of snapshot.docChanges()) {
+        const docChanges = snapshot.docChanges();
+
+        let progressTracker = new ProgressTracker(docChanges.length);
+
+        for (const docChange of docChanges) {
             handleDocChange(docChange);
         }
+
+        progressTracker = new ProgressTracker(snapshot.docs.length);
 
         for (const doc of snapshot.docs) {
             handleDoc(doc);
@@ -660,7 +754,7 @@ export class FirebaseDatastore implements Datastore {
         docMetaSnapshotEventListener({
             datastore: this.id,
             consistency,
-            progress: progressTracker.peek(),
+            progress: progressTracker.terminate(),
             docMetaMutations: [],
             batch: {
                 id: batch.id,
@@ -791,4 +885,14 @@ function toMutationType(docChangeType: firebase.firestore.DocumentChangeType): M
 
     }
 
+}
+
+interface StoragePath {
+    readonly path: string;
+    readonly settings?: StorageSettings;
+}
+
+interface StorageSettings {
+    readonly cacheControl: string;
+    readonly contentType: string;
 }

@@ -1,4 +1,5 @@
-import {Datastore, DocMetaMutation, DocMetaSnapshotBatch, DocMetaSnapshotEvent, DocMetaSnapshotEventListener, FileRef, SnapshotResult} from './Datastore';
+import {Datastore, DocMetaMutation, DocMetaSnapshotBatch, DocMetaSnapshotEvent,
+        DocMetaSnapshotEventListener, FileRef, SnapshotResult} from './Datastore';
 import {MemoryDatastore} from './MemoryDatastore';
 import {DiskDatastore} from './DiskDatastore';
 import {Logger} from '../logger/Logger';
@@ -9,6 +10,10 @@ import {NULL_FUNCTION} from '../util/Functions';
 import {Percentages} from '../util/Percentages';
 import {ProgressTracker} from '../util/ProgressTracker';
 import {Providers, AsyncProviders} from '../util/Providers';
+import {DefaultPersistenceLayer} from './DefaultPersistenceLayer';
+import {DocInfo} from '../metadata/DocInfo';
+import deepEqual from 'deep-equal';
+import {Preconditions} from '../Preconditions';
 
 const log = Logger.create();
 
@@ -90,21 +95,24 @@ export class Datastores {
 
         for (const docMetaFile of docMetaFiles) {
 
+            // // TODO: in the cloud store implementation it will probably be much
+            // // faster to use a file JUST for the DocInfo to speed up loading.
+            //
+            // // TODO: we could do even BETTER here in terms lazy performance and
+            // // don't even read the data until it's requested.
+            //
+            // const dataProvider = async () => await datastore.getDocMeta(docMetaFile.fingerprint);
+
             const data = await datastore.getDocMeta(docMetaFile.fingerprint);
-
-            // TODO: in the cloud store implementation it will probably be much
-            // faster to use a file JUST for the DocInfo to speed up loading.
-
-            // TODO: we could do even BETTER here in terms lazy performance and
-            // don't even read the data until it's requested.
-
-            const docMetaProvider = AsyncProviders.memoize(async () => DocMetas.deserialize(data!));
+            const dataProvider = AsyncProviders.of(data);
+            const docMetaProvider = AsyncProviders.memoize(async () => DocMetas.deserialize((await dataProvider())!));
             const docInfoProvider = AsyncProviders.memoize(async () => (await docMetaProvider()).docInfo);
             const docMetaFileRefProvider = AsyncProviders.memoize(async () => DocMetaFileRefs.createFromDocInfo(await docInfoProvider()));
 
             const docMetaMutation: DocMetaMutation = {
                 fingerprint: docMetaFile.fingerprint,
                 docMetaFileRefProvider,
+                dataProvider,
                 docMetaProvider,
                 docInfoProvider,
                 mutationType: 'created'
@@ -122,7 +130,7 @@ export class Datastores {
 
         listener({
             datastore: datastore.id,
-            progress: progressTracker.peek(),
+            progress: progressTracker.terminate(),
             consistency: 'committed',
             docMetaMutations: [],
             batch: {
@@ -151,12 +159,17 @@ export class Datastores {
 
         for (const docMetaFile of docMetaFiles) {
 
+            // FIXME: we're not purging the files associated with the docs...
+            // the stash file is purged as part of the delete right now and
+            // I could put the other files there as well so that way we always
+            // make sure there are no dependencies tangling
+
             const data = await datastore.getDocMeta(docMetaFile.fingerprint);
             const docMeta = DocMetas.deserialize(data!);
 
             const docMetaFileRef = DocMetaFileRefs.createFromDocInfo(docMeta.docInfo);
 
-            datastore.delete(docMetaFileRef);
+            await datastore.delete(docMetaFileRef);
 
             ++completed;
 
@@ -172,6 +185,44 @@ export class Datastores {
 
     }
 
+    /**
+     * Compare two filesystems and make sure they're consistent.
+     *
+     */
+    public static async checkConsistency(datastore0: Datastore,
+                                         datastore1: Datastore): Promise<DatastoreConsistency> {
+
+        // get the docMetas in both, then compare them...
+
+        const manifest0 = await this.toDocInfoManifest(datastore0);
+        const manifest1 = await this.toDocInfoManifest(datastore1);
+
+        const consistent = deepEqual(manifest0, manifest1);
+
+        return {consistent, manifest0, manifest1};
+
+    }
+
+    public static async toDocInfoManifest(datastore: Datastore): Promise<ReadonlyArray<DocInfo>> {
+
+        const persistenceLayer = new DefaultPersistenceLayer(datastore);
+
+        const docMetaFiles =
+            (await datastore.getDocMetaFiles())
+                .sort((d0, d1) => d0.fingerprint.localeCompare(d1.fingerprint));
+
+        const result: DocInfo[] = [];
+
+        for (const docMetaFile of docMetaFiles) {
+            const docMeta = await persistenceLayer.getDocMeta(docMetaFile.fingerprint);
+            Preconditions.assertPresent(docMeta, "toDocInfoManifest could not find docMeta for " + docMetaFile.fingerprint);
+            result.push(docMeta!.docInfo);
+        }
+
+        return result;
+
+    }
+
 }
 
 export type DocMetaListener = (docMeta: DocMeta) => void;
@@ -183,3 +234,9 @@ export interface PurgeEvent {
 }
 
 export type PurgeListener = (purgeEvent: PurgeEvent) => void;
+
+export interface DatastoreConsistency {
+    readonly consistent: boolean;
+    readonly manifest0: ReadonlyArray<DocInfo>;
+    readonly manifest1: ReadonlyArray<DocInfo>;
+}
