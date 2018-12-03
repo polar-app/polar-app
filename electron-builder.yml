@@ -47,6 +47,7 @@ appx:
   artifactName: ${name}-${version}-${arch}.${ext}
   applicationId: polar
   identityName: polar
+  publisherDisplayName: Kevin Burton
 
 win:
   artifactName: ${name}-${version}-${arch}.${ext}
