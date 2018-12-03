@@ -5,7 +5,7 @@ import {ModalHeader, ModalFooter, Button} from 'reactstrap';
 import {LargeModalBody} from '../../../../../../web/js/ui/large_modal/LargeModalBody';
 import {PrioritizedComponent} from '../../../../../../web/js/ui/prioritized/PrioritizedComponentManager';
 import {Splash} from '../../Splash';
-import {EmbeddedImages} from '../../../EmbeddedImages';
+import {EmbeddedImages} from '../whats_new/EmbeddedImages';
 
 export class Survey extends React.Component<IProps, IState> {
 
