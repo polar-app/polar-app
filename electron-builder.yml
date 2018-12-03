@@ -46,7 +46,8 @@ nsis:
 appx:
   artifactName: ${name}-${version}-${arch}.${ext}
   applicationId: polar
-  identityName: polar
+  identityName: 25130KevinBurton.PolarBookshelf
+  publisher: CN=D3591277-F57D-4C75-B342-D158E6C4AAF5
   publisherDisplayName: Kevin Burton
 
 win:
