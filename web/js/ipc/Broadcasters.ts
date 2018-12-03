@@ -1,6 +1,9 @@
 import {BrowserWindow} from "electron";
 import {BrowserWindowReference} from '../ui/dialog_window/BrowserWindowReference';
 
+/**
+ * @ElectronMainContext
+ */
 export class Broadcasters {
 
     /**
