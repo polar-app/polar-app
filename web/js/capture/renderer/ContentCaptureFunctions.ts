@@ -84,19 +84,33 @@ export function configureBrowser(windowDimensions: IDimensions) {
 
     }
 
-    function defineAutoHeightStylesheet(rule: string) {
+    function defineAutoStylesheetFor100VH(rule: CSSStyleRule) {
 
         // TODO: I need to consider if it's not just better to measure the
         // viewport height and replace it myself.  It is probably a bad idea
         // so set this too small and will break in a lot of use cases.
 
-        const cssText = `
-        ${rule} {
-            height: auto !important;        
-        }
-        `;
+        function defineStyle(cssPropertyValue: string | null,
+                             cssPropertyName: string) {
 
-        writeStyles('polar-vh-auto-height', cssText);
+            if (cssPropertyValue === '100vh') {
+
+                console.log(`Defining CSS auto style for: ${cssPropertyName}`);
+
+                const cssText = `
+                ${rule.selectorText} {
+                    ${cssPropertyName}: auto !important;        
+                }
+                `;
+
+                writeStyles(`polar-vh-auto-${cssPropertyName}`, cssText);
+
+            }
+
+        }
+
+        defineStyle(rule.style.minHeight, 'min-height');
+        defineStyle(rule.style.height, 'height');
 
     }
 
@@ -122,13 +136,17 @@ export function configureBrowser(windowDimensions: IDimensions) {
 
         console.log("Configuring max vertical height...");
 
+        function is100VH(rule: CSSStyleRule) {
+            return rule.style.height === '100vh' || rule.style.minHeight === '100vh';
+        }
+
         for (const stylesheet of Array.from(document.styleSheets)) {
 
             const rules: CSSStyleRule[] = (<any> stylesheet).rules;
 
             for (const rule of rules) {
 
-                if (rule.style && rule.style.height === '100vh') {
+                if (rule.style && is100VH(rule)) {
 
                     console.log(`Found 100vh rule to override (follows): ${rule.selectorText}`);
 
@@ -152,10 +170,12 @@ export function configureBrowser(windowDimensions: IDimensions) {
 
                     if (elementsQualify) {
 
+                        console.log("Handling 100vh with strategy: " + VH_HANDLING_STRATEGY);
+
                         if (VH_HANDLING_STRATEGY === 'max-height') {
                             defineMaxHeightStylesheet(rule.selectorText);
                         } else {
-                            defineAutoHeightStylesheet(rule.selectorText);
+                            defineAutoStylesheetFor100VH(rule);
                         }
                     }
 
