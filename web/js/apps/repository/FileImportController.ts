@@ -14,6 +14,7 @@ import {FilePaths} from "../../util/FilePaths";
 import {BrowserWindowRegistry} from '../../electron/framework/BrowserWindowRegistry';
 import {isPresent} from "../../Preconditions";
 import {Toaster} from "../../toaster/Toaster";
+import {IProvider} from "../../util/Providers";
 
 const log = Logger.create();
 
@@ -23,16 +24,19 @@ const log = Logger.create();
  */
 export class FileImportController {
 
-    private readonly persistenceLayer: PersistenceLayer;
+    private readonly persistenceLayerProvider: IProvider<PersistenceLayer>;
 
     private readonly updatedDocInfoEventDispatcher: IEventDispatcher<IDocInfo>;
 
     private readonly pdfImporter: PDFImporter;
 
-    constructor(persistenceLayer: PersistenceLayer, updatedDocInfoEventDispatcher: IEventDispatcher<IDocInfo>) {
-        this.persistenceLayer = persistenceLayer;
+    constructor(persistenceLayerProvider: IProvider<PersistenceLayer>,
+                updatedDocInfoEventDispatcher: IEventDispatcher<IDocInfo>) {
+
+        this.persistenceLayerProvider = persistenceLayerProvider;
         this.updatedDocInfoEventDispatcher = updatedDocInfoEventDispatcher;
-        this.pdfImporter = new PDFImporter(persistenceLayer);
+        this.pdfImporter = new PDFImporter(persistenceLayerProvider);
+
     }
 
     public start(): void {

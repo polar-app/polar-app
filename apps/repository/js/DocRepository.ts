@@ -9,6 +9,8 @@ import {RepoDocInfoIndex} from './RepoDocInfoIndex';
 import {TagsDB} from './TagsDB';
 import {Optional} from '../../../web/js/util/ts/Optional';
 import {DocMetaFileRefs} from '../../../web/js/datastore/DocMetaRef';
+import {PersistenceLayer} from '../../../web/js/datastore/PersistenceLayer';
+import {IProvider} from '../../../web/js/util/Providers';
 
 const log = Logger.create();
 
@@ -22,15 +24,15 @@ export class DocRepository {
 
     public readonly tagsDB: TagsDB = new TagsDB();
 
-    private readonly persistenceLayer: IListenablePersistenceLayer;
+    private readonly persistenceLayerProvider: IProvider<PersistenceLayer>;
 
     // TODO: a great deal of this code could be cleaned up if I made it MVC and
     // had this data be the model and updated the view via events emitted from
     // an AdvertisingPersistenceLayer - which we kind of need anyway for
     // Firestore....
 
-    constructor(persistenceLayer: IListenablePersistenceLayer) {
-        this.persistenceLayer = persistenceLayer;
+    constructor(persistenceLayerProvider: IProvider<PersistenceLayer>) {
+        this.persistenceLayerProvider = persistenceLayerProvider;
         this.init();
     }
 
@@ -53,9 +55,11 @@ export class DocRepository {
      */
     public async syncDocInfo(docInfo: IDocInfo) {
 
-        if (await this.persistenceLayer.contains(docInfo.fingerprint)) {
+        const persistenceLayer = this.persistenceLayerProvider.get();
 
-            const docMeta = await this.persistenceLayer.getDocMeta(docInfo.fingerprint);
+        if (await persistenceLayer.contains(docInfo.fingerprint)) {
+
+            const docMeta = await persistenceLayer.getDocMeta(docInfo.fingerprint);
 
             if (docMeta === undefined) {
                 log.warn("Unable to find DocMeta for: ", docInfo.fingerprint);
@@ -66,7 +70,7 @@ export class DocRepository {
 
             log.info("Writing out updated DocMeta");
 
-            await this.persistenceLayer.writeDocMeta(docMeta);
+            await persistenceLayer.writeDocMeta(docMeta);
 
         }
 
@@ -112,13 +116,15 @@ export class DocRepository {
 
     public async syncDeleteDocInfo(repoDocInfo: RepoDocInfo) {
 
+        const persistenceLayer = this.persistenceLayerProvider.get();
+
         // delete it from the in-memory index.
         delete this.repoDocs[repoDocInfo.fingerprint];
 
         // delete it from the repo now.
         const docMetaFileRef = DocMetaFileRefs.createFromDocInfo(repoDocInfo.docInfo);
 
-        return this.persistenceLayer.delete(docMetaFileRef);
+        return persistenceLayer.delete(docMetaFileRef);
 
     }
 

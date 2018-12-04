@@ -37,12 +37,14 @@ import {DocRepoAnkiSyncController} from '../../../web/js/controller/DocRepoAnkiS
 import {Tooltip, UncontrolledTooltip, Collapse} from 'reactstrap';
 import {CloudAuthButton} from '../../../web/js/ui/cloud_auth/CloudAuthButton';
 import {PrioritizedSplashes} from './splash/PrioritizedSplashes';
+import {PersistenceLayerManager} from '../../../web/js/datastore/PersistenceLayerManager';
+import {PersistenceLayerEvent} from '../../../web/js/datastore/PersistenceLayerEvent';
 
 const log = Logger.create();
 
 export default class App extends React.Component<AppProps, AppState> {
 
-    private readonly persistenceLayer: IListenablePersistenceLayer;
+    private readonly persistenceLayerManager: PersistenceLayerManager;
 
     private readonly docRepository: DocRepository;
 
@@ -55,9 +57,12 @@ export default class App extends React.Component<AppProps, AppState> {
     constructor(props: AppProps, context: any) {
         super(props, context);
 
-        this.persistenceLayer = props.persistenceLayerFactory();
-        this.docRepository = new DocRepository(this.persistenceLayer);
-        this.repoDocInfoLoader = new RepoDocInfoLoader(this.persistenceLayer);
+        this.persistenceLayerManager = this.props.persistenceLayerManager;
+        this.docRepository = new DocRepository(this.persistenceLayerManager);
+        this.repoDocInfoLoader = new RepoDocInfoLoader(this.persistenceLayerManager);
+
+        new DocRepoAnkiSyncController(this.persistenceLayerManager, this.syncBarProgress)
+            .start();
 
         this.onDocTagged = this.onDocTagged.bind(this);
         this.onDocDeleted = this.onDocDeleted.bind(this);
@@ -70,8 +75,7 @@ export default class App extends React.Component<AppProps, AppState> {
             columns: new TableColumns()
         };
 
-        new DocRepoAnkiSyncController(this.persistenceLayer, this.syncBarProgress)
-            .start();
+        this.props.updatedDocInfoEventDispatcher.addEventListener(docInfo => this.onUpdatedDocInfo(docInfo));
 
         (async () => {
 
@@ -81,7 +85,9 @@ export default class App extends React.Component<AppProps, AppState> {
 
         })().catch(err => log.error("Could not load disk store: ", err));
 
-        this.props.updatedDocInfoEventDispatcher.addEventListener(docInfo => this.onUpdatedDocInfo(docInfo));
+        // FIXME: this is the problme.. there's a race on when we add the event
+        // order... we have to make sure all our events are registered properly
+        setTimeout(() => this.persistenceLayerManager.start(), 5000);
 
     }
 
@@ -727,15 +733,25 @@ export default class App extends React.Component<AppProps, AppState> {
 
                 });
 
-        this.persistenceLayer.addEventListener((event) => {
-            this.onUpdatedDocInfo(event.docInfo);
+        this.persistenceLayerManager.addEventListener(event => {
+
+            if (event.state === 'changed') {
+                event.persistenceLayer.addEventListener((persistenceLayerEvent: PersistenceLayerEvent) => {
+                    this.onUpdatedDocInfo(persistenceLayerEvent.docInfo);
+                });
+            }
+
         });
 
-        const repoDocs = await this.repoDocInfoLoader!.load();
+        this.repoDocInfoLoader.addEventListener(repoDocInfoIndex => {
 
-        this.docRepository.updateDocInfo(...Object.values(repoDocs));
+            this.docRepository.updateDocInfo(...Object.values(repoDocInfoIndex));
 
-        this.emitInitAnalytics(repoDocs);
+            this.emitInitAnalytics(repoDocInfoIndex);
+
+        });
+
+        this.repoDocInfoLoader.start();
 
     }
 

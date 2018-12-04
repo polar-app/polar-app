@@ -4,12 +4,17 @@ import {SynchronizationEvent} from './Datastore';
 import {RemotePersistenceLayerFactory} from './factories/RemotePersistenceLayerFactory';
 import {CloudAwareDatastore} from './CloudAwareDatastore';
 import {CloudPersistenceLayerFactory} from "./factories/CloudPersistenceLayerFactory";
+import {IProvider} from "../util/Providers";
+import {IListenablePersistenceLayer} from './IListenablePersistenceLayer';
+import {Logger} from "../logger/Logger";
 
-export class PersistenceLayerManager {
+const log = Logger.create();
+
+export class PersistenceLayerManager implements IProvider<IListenablePersistenceLayer> {
 
     private readonly persistenceLayerManagerEventDispatcher: IEventDispatcher<PersistenceLayerManagerEvent> = new SimpleReactor();
 
-    private persistenceLayer?: PersistenceLayer;
+    private persistenceLayer?: IListenablePersistenceLayer;
 
     public start(): void {
 
@@ -19,29 +24,41 @@ export class PersistenceLayerManager {
 
     }
 
+    public get(): IListenablePersistenceLayer {
+        return this.persistenceLayer!;
+    }
+
     public async change(type: PersistenceLayerType) {
 
         if (this.persistenceLayer) {
+
+            log.info("Stopping persistence layer...");
 
             this.dispatchEvent({type, persistenceLayer: this.persistenceLayer, state: 'stopping'});
 
             await this.persistenceLayer.stop();
 
+            log.info("Stopped persistence layer...");
+
             this.dispatchEvent({type, persistenceLayer: this.persistenceLayer, state: 'stopped'});
 
         }
 
-        this.persistenceLayer = await this.createPersistenceLayer(type);
+        this.persistenceLayer = this.createPersistenceLayer(type);
 
         this.dispatchEvent({type, persistenceLayer: this.persistenceLayer, state: 'changed'});
+
+        log.info("Changed to persistence layer: " + type);
 
         await this.persistenceLayer.init();
 
         this.dispatchEvent({type, persistenceLayer: this.persistenceLayer, state: 'initialized'});
 
+        log.info("Initialized persistence layer: " + type);
+
     }
 
-    private async createPersistenceLayer(type: PersistenceLayerType) {
+    private createPersistenceLayer(type: PersistenceLayerType): IListenablePersistenceLayer {
 
         if (type === 'local') {
             return RemotePersistenceLayerFactory.create();
@@ -53,10 +70,10 @@ export class PersistenceLayerManager {
 
         throw new Error("Unknown type: " + type);
 
-
     }
 
     public addEventListener(listener: PersistenceLayerManagerEventListener) {
+        console.log("FIXME: added at least");
         return this.persistenceLayerManagerEventDispatcher.addEventListener(listener);
     }
 
@@ -86,7 +103,7 @@ export interface PersistenceLayerManagerEvent {
 
     readonly type: PersistenceLayerType;
     readonly state: PersistenceLayerState;
-    readonly persistenceLayer: PersistenceLayer;
+    readonly persistenceLayer: IListenablePersistenceLayer;
 
 }
 

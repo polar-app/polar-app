@@ -9,13 +9,23 @@ export class DocInfoAdvertisementListenerService {
 
     private readonly reactor: SimpleReactor<DocInfoAdvertisement> = new SimpleReactor();
 
+    private listener: () => void;
+
+    constructor() {
+        this.listener = this.onDocInfoAdvertisement.bind(this);
+    }
+
     public start(): void {
+        ipcRenderer.on('doc-info-advertisement', this.listener);
+    }
 
-        ipcRenderer.on('doc-info-advertisement', (event: any, docInfoAdvertisement: DocInfoAdvertisement) => {
-            log.debug("Received new DocInfo advertisement: ", docInfoAdvertisement);
-            this.reactor.dispatchEvent(docInfoAdvertisement);
-        });
+    public stop(): void {
+        ipcRenderer.removeListener('doc-info-advertisement', this.listener);
+    }
 
+    private onDocInfoAdvertisement(event: any, docInfoAdvertisement: DocInfoAdvertisement) {
+        log.debug("Received new DocInfo advertisement: ", docInfoAdvertisement);
+        this.reactor.dispatchEvent(docInfoAdvertisement);
     }
 
     public addEventListener(docInfoAdvertisementListener: DocInfoAdvertisementListener): void {

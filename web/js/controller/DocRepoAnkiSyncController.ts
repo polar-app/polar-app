@@ -14,16 +14,17 @@ import {SyncBarProgress} from '../ui/sync_bar/SyncBar';
 import {AnkiSyncEngine} from '../apps/sync/framework/anki/AnkiSyncEngine';
 import {DocMetaSupplierCollection} from '../metadata/DocMetaSupplierCollection';
 import {DocMeta} from '../metadata/DocMeta';
+import {IProvider} from '../util/Providers';
 
 const log = Logger.create();
 
 export class DocRepoAnkiSyncController {
 
-    private readonly persistenceLayer: PersistenceLayer;
+    private readonly persistenceLayerProvider: IProvider<PersistenceLayer>;
     private readonly syncBarProgress: IEventDispatcher<SyncBarProgress>;
 
-    constructor(persistenceLayer: PersistenceLayer, syncBarProgress: IEventDispatcher<SyncBarProgress>) {
-        this.persistenceLayer = persistenceLayer;
+    constructor(persistenceLayerProvider: IProvider<PersistenceLayer>, syncBarProgress: IEventDispatcher<SyncBarProgress>) {
+        this.persistenceLayerProvider = persistenceLayerProvider;
         this.syncBarProgress = syncBarProgress;
     }
 
@@ -80,13 +81,15 @@ export class DocRepoAnkiSyncController {
 
         const ankiSyncEngine = new AnkiSyncEngine();
 
-        const docMetaFiles = await this.persistenceLayer.getDocMetaFiles();
+        const persistenceLayer = this.persistenceLayerProvider.get();
+
+        const docMetaFiles = await persistenceLayer.getDocMetaFiles();
 
         const docMetaSuppliers: DocMetaSupplierCollection
             = docMetaFiles.map(docMetaFile => {
                 return async () => {
                     log.info("Reading docMeta for anki sync: " + docMetaFile.fingerprint);
-                    return (await this.persistenceLayer.getDocMeta(docMetaFile.fingerprint))!;
+                    return (await persistenceLayer.getDocMeta(docMetaFile.fingerprint))!;
                 }});
 
         const pendingSyncJob = await ankiSyncEngine.sync(docMetaSuppliers, syncProgressListener);

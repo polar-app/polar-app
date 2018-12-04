@@ -3,7 +3,21 @@
  */
 export type Provider<T> = () => T;
 
+/**
+ * A provider that can be used as an interface.
+ */
+export interface IProvider<T> {
+    get(): T;
+}
+
 export class Providers {
+
+    /**
+     * Convert a provider interface to a function.
+     */
+    public static toFunction<T>(provider: IProvider<T>) {
+        return () => provider.get();
+    }
 
     /**
      * Return a provider using the given value.

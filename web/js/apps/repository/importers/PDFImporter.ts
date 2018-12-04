@@ -12,6 +12,7 @@ import {Directories} from '../../../datastore/Directories';
 import {DatastoreFiles} from '../../../datastore/DatastoreFiles';
 import {DocInfo} from '../../../metadata/DocInfo';
 import {HashAlgorithm, HashEncoding} from '../../../metadata/Hashcode';
+import {IProvider} from '../../../util/Providers';
 
 const log = Logger.create();
 
@@ -21,10 +22,10 @@ const log = Logger.create();
  */
 export class PDFImporter {
 
-    private readonly persistenceLayer: PersistenceLayer;
+    private readonly persistenceLayerProvider: IProvider<PersistenceLayer>;
 
-    constructor(persistenceLayer: PersistenceLayer) {
-        this.persistenceLayer = persistenceLayer;
+    constructor(persistenceLayerProvider: IProvider<PersistenceLayer>) {
+        this.persistenceLayerProvider = persistenceLayerProvider;
     }
 
     public async importFile(filePath: string): Promise<Optional<ImportedFile>> {
@@ -41,7 +42,9 @@ export class PDFImporter {
 
         const pdfMeta = await PDFMetadata.getMetadata(filePath);
 
-        if (await this.persistenceLayer.contains(pdfMeta.fingerprint)) {
+        const persistenceLayer = this.persistenceLayerProvider.get();
+
+        if (await persistenceLayer.contains(pdfMeta.fingerprint)) {
             log.warn(`This file is already present in the datastore with fingerprint ${pdfMeta.fingerprint}: ${filePath}`);
             return Optional.empty();
         }
@@ -62,7 +65,7 @@ export class PDFImporter {
 
         const filename = `${fileHashMeta.hashPrefix}-` + DatastoreFiles.sanitizeFileName(basename);
 
-        const stashFilePath = FilePaths.join(this.persistenceLayer.stashDir, filename);
+        const stashFilePath = FilePaths.join(persistenceLayer.stashDir, filename);
 
         // always read from a stream here as some of the PDFs we might want to
         // import could be rather large.  Also this needs to be a COPY of the
@@ -89,9 +92,9 @@ export class PDFImporter {
             hashcode: docMeta.docInfo.hashcode
         };
 
-        await this.persistenceLayer.writeFile(Backend.STASH, fileRef, inputFileRef);
+        await persistenceLayer.writeFile(Backend.STASH, fileRef, inputFileRef);
 
-        await this.persistenceLayer.write(pdfMeta.fingerprint, docMeta);
+        await persistenceLayer.write(pdfMeta.fingerprint, docMeta);
 
         return Optional.of({
             stashFilePath,

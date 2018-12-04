@@ -35,6 +35,7 @@ export class AdvertisingPersistenceLayer
     }
 
     public async stop(): Promise<void> {
+        this.docInfoAdvertisementListenerService.stop();
         return this.delegate.stop();
     }
 

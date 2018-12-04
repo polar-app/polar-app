@@ -6,21 +6,21 @@ import {FileImportController} from './FileImportController';
 import {IEventDispatcher, SimpleReactor} from '../../reactor/SimpleReactor';
 import {IDocInfo} from '../../metadata/DocInfo';
 import {AppInstance} from '../../electron/framework/AppInstance';
+import {PersistenceLayers} from '../../datastore/PersistenceLayers';
+import {PersistenceLayerManager} from '../../datastore/PersistenceLayerManager';
 
 export class RepositoryApp {
 
     public async start() {
 
-        const persistenceLayer = RemotePersistenceLayerFactory.create();
-
-        await persistenceLayer.init();
+        const persistenceLayerManager = new PersistenceLayerManager();
 
         const updatedDocInfoEventDispatcher: IEventDispatcher<IDocInfo> = new SimpleReactor();
 
-        await new FileImportController(persistenceLayer, updatedDocInfoEventDispatcher).start();
+        await new FileImportController(persistenceLayerManager, updatedDocInfoEventDispatcher).start();
 
         ReactDOM.render(
-            <App persistenceLayerFactory={() => persistenceLayer}
+            <App persistenceLayerManager={persistenceLayerManager}
                  updatedDocInfoEventDispatcher={updatedDocInfoEventDispatcher}/>,
 
             document.getElementById('root') as HTMLElement

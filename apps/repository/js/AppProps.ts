@@ -1,10 +1,13 @@
 import {IListenablePersistenceLayer} from '../../../web/js/datastore/IListenablePersistenceLayer';
 import {IEventDispatcher} from '../../../web/js/reactor/SimpleReactor';
 import {IDocInfo} from '../../../web/js/metadata/DocInfo';
+import {IProvider} from '../../../web/js/util/Providers';
+import {PersistenceLayer} from '../../../web/js/datastore/PersistenceLayer';
+import {PersistenceLayerManager} from '../../../web/js/datastore/PersistenceLayerManager';
 
 export interface AppProps {
 
-    readonly persistenceLayerFactory: PersistenceLayerFactory;
+    readonly persistenceLayerManager: PersistenceLayerManager;
 
     readonly updatedDocInfoEventDispatcher: IEventDispatcher<IDocInfo>;
 
