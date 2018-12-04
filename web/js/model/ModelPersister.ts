@@ -14,6 +14,9 @@ export class ModelPersister {
 
     private readonly persistenceLayer: IListenablePersistenceLayer;
 
+    // TODO: push this into the main process and also use the duplicate event
+    // merger to verify that we don't do duplicate writes by the same UUID.
+
     constructor(persistenceLayer: IListenablePersistenceLayer, docMeta: DocMeta) {
         this.persistenceLayer = persistenceLayer;
         this.docMeta = docMeta;
