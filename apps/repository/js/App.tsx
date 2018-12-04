@@ -77,17 +77,8 @@ export default class App extends React.Component<AppProps, AppState> {
 
         this.props.updatedDocInfoEventDispatcher.addEventListener(docInfo => this.onUpdatedDocInfo(docInfo));
 
-        (async () => {
-
-            await this.init();
-
-            this.refresh();
-
-        })().catch(err => log.error("Could not load disk store: ", err));
-
-        // FIXME: this is the problme.. there's a race on when we add the event
-        // order... we have to make sure all our events are registered properly
-        setTimeout(() => this.persistenceLayerManager.start(), 5000);
+        this.init()
+            .catch(err => log.error("Could not init: ", err));
 
     }
 
@@ -745,22 +736,20 @@ export default class App extends React.Component<AppProps, AppState> {
 
         this.repoDocInfoLoader.addEventListener(event => {
 
-            console.log("FIXME: got more docs to load now!");
-
             this.docRepository.updateDocInfo(...Object.values(event.repoDocInfoIndex));
-
-            // FIXME this is wrong now...
-            // this.emitInitAnalytics(repoDocInfoIndex);
-            // this.refresh();
 
             if (event.progress.progress === 100) {
                 this.refresh();
+                this.emitInitAnalytics(this.docRepository.repoDocs);
             }
-
 
         });
 
         this.repoDocInfoLoader.start();
+
+        this.refresh();
+
+        this.persistenceLayerManager.start();
 
     }
 
