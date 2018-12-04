@@ -743,11 +743,20 @@ export default class App extends React.Component<AppProps, AppState> {
 
         });
 
-        this.repoDocInfoLoader.addEventListener(repoDocInfoIndex => {
+        this.repoDocInfoLoader.addEventListener(event => {
 
-            this.docRepository.updateDocInfo(...Object.values(repoDocInfoIndex));
+            console.log("FIXME: got more docs to load now!");
 
-            this.emitInitAnalytics(repoDocInfoIndex);
+            this.docRepository.updateDocInfo(...Object.values(event.repoDocInfoIndex));
+
+            // FIXME this is wrong now...
+            // this.emitInitAnalytics(repoDocInfoIndex);
+            // this.refresh();
+
+            if (event.progress.progress === 100) {
+                this.refresh();
+            }
+
 
         });
 

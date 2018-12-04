@@ -9,7 +9,7 @@ import {RepoDocInfos} from './RepoDocInfos';
 import {Dictionaries} from '../../../web/js/util/Dictionaries';
 import {RepoDocInfo} from './RepoDocInfo';
 import {DocMeta} from '../../../web/js/metadata/DocMeta';
-import {DocMetaSnapshotEvent, SnapshotUnsubscriber} from '../../../web/js/datastore/Datastore';
+import {DocMetaSnapshotEvent, SnapshotProgress, SnapshotUnsubscriber} from '../../../web/js/datastore/Datastore';
 import {ElectronContextTypes} from '../../../web/js/electron/context/ElectronContextTypes';
 import {Promises} from '../../../web/js/util/Promises';
 import {PersistenceLayerManager} from '../../../web/js/datastore/PersistenceLayerManager';
@@ -26,13 +26,13 @@ export class RepoDocInfoLoader {
 
     private snapshotUnsubscriber: SnapshotUnsubscriber = NULL_FUNCTION;
 
-    private readonly eventDispatcher: IEventDispatcher<RepoDocInfoIndex> = new SimpleReactor();
+    private readonly eventDispatcher: IEventDispatcher<RepoLoadEvent> = new SimpleReactor();
 
     constructor(persistenceLayerManager: PersistenceLayerManager) {
         this.persistenceLayerManager = persistenceLayerManager;
     }
 
-    public addEventListener(listener: (repoDocInfoIndex: RepoDocInfoIndex) => void): void {
+    public addEventListener(listener: (event: RepoLoadEvent) => void): void {
         this.eventDispatcher.addEventListener(listener);
     }
 
@@ -47,7 +47,7 @@ export class RepoDocInfoLoader {
 
         this.persistenceLayerManager.addEventListener(event => {
 
-            console.log("FIXME: got event: " + event);
+            console.log("FIXME: got persistenceLayerManager event: " + event);
 
             if (event.state === 'stopped') {
                 log.info("Unsubscribing previous snapshot listener.");
@@ -71,11 +71,13 @@ export class RepoDocInfoLoader {
 
         this.snapshotUnsubscriber();
 
+        console.log("FIXME: adding snapshot listener,...");
+
+        const progressBar = ProgressBar.create(false);
+
         persistenceLayer.snapshot(async (docMetaSnapshotEvent: DocMetaSnapshotEvent) => {
 
             const repoDocInfoIndex: RepoDocInfoIndex = {};
-
-            const progressBar = ProgressBar.create(false);
 
             const {progress, docMetaMutations} = docMetaSnapshotEvent;
 
@@ -94,9 +96,12 @@ export class RepoDocInfoLoader {
 
             }
 
-            this.eventDispatcher.dispatchEvent(repoDocInfoIndex);
+            this.eventDispatcher.dispatchEvent({repoDocInfoIndex, progress});
 
-            progressBar.destroy();
+            if (progress.progress === 100) {
+                // we're done the initial load
+                progressBar.destroy();
+            }
 
         }).then(snapshotResult => {
 
@@ -167,4 +172,9 @@ export class RepoDocInfoLoader {
 
     }
 
+}
+
+export interface RepoLoadEvent {
+    readonly repoDocInfoIndex: RepoDocInfoIndex;
+    readonly progress: SnapshotProgress;
 }
