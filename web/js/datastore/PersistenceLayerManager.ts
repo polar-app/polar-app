@@ -73,7 +73,6 @@ export class PersistenceLayerManager implements IProvider<IListenablePersistence
     }
 
     public addEventListener(listener: PersistenceLayerManagerEventListener) {
-        console.log("FIXME: added at least");
         return this.persistenceLayerManagerEventDispatcher.addEventListener(listener);
     }
 

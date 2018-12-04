@@ -39,15 +39,7 @@ export class RepoDocInfoLoader {
 
     public async start() {
 
-        // TODO: there's latency here as we shouldn't have to load the ENTIRE
-        // doc repo to update the UI...  We should update it as it's parsed via
-        // events.
-
-        // FIXME: add this when the persistence layer changes...
-
         this.persistenceLayerManager.addEventListener(event => {
-
-            console.log("FIXME: got persistenceLayerManager event: " + event);
 
             if (event.state === 'stopped') {
                 log.info("Unsubscribing previous snapshot listener.");
@@ -70,8 +62,6 @@ export class RepoDocInfoLoader {
         // snapshotOnInit method to always require this behavior...
 
         this.snapshotUnsubscriber();
-
-        console.log("FIXME: adding snapshot listener,...");
 
         const progressBar = ProgressBar.create(false);
 
