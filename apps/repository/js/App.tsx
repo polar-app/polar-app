@@ -39,6 +39,7 @@ import {CloudAuthButton} from '../../../web/js/ui/cloud_auth/CloudAuthButton';
 import {PrioritizedSplashes} from './splash/PrioritizedSplashes';
 import {PersistenceLayerManager} from '../../../web/js/datastore/PersistenceLayerManager';
 import {PersistenceLayerEvent} from '../../../web/js/datastore/PersistenceLayerEvent';
+import {CloudService} from './cloud/ClouldService';
 
 const log = Logger.create();
 
@@ -161,9 +162,9 @@ export default class App extends React.Component<AppProps, AppState> {
                                        onChange={() => this.onFilterByTitle()}/>
                             </div>
 
-                            {/*<div className="header-filter-box">*/}
-                                {/*/!*<CloudAuthButton/>*!/*/}
-                            {/*</div>*/}
+                            <div className="header-filter-box">
+                                <CloudAuthButton/>
+                            </div>
 
                             <div className="p-1">
 
@@ -748,6 +749,8 @@ export default class App extends React.Component<AppProps, AppState> {
         this.repoDocInfoLoader.start();
 
         this.refresh();
+
+        new CloudService(this.persistenceLayerManager).start();
 
         this.persistenceLayerManager.start();
 

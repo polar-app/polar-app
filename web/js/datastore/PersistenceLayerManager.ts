@@ -30,6 +30,8 @@ export class PersistenceLayerManager implements IProvider<IListenablePersistence
 
     public async change(type: PersistenceLayerType) {
 
+        PersistenceLayerTypes.set(type);
+
         if (this.persistenceLayer) {
 
             log.info("Stopping persistence layer...");
