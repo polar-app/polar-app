@@ -348,10 +348,9 @@ export class CloudAwareDatastore extends AbstractDatastore implements Datastore,
         const synchronizingListener = synchronizingEventDeduplicator.listener;
 
         const localSnapshotResultPromise = localInitialSnapshotLatch.createSnapshot(this.local);
+        await localInitialSnapshotLatch.latch.get();
 
         const cloudSnapshotResultPromise = cloudInitialSnapshotLatch.createSnapshot(this.cloud);
-
-        await localInitialSnapshotLatch.latch.get();
         await cloudInitialSnapshotLatch.latch.get();
 
         const localSyncOrigin: SyncOrigin = {

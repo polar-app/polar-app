@@ -54,11 +54,24 @@ export class RepoDocInfoLoader {
         // cloud datastore DOES do it by default... maybe we have a
         // snapshotOnInit method to always require this behavior...
 
-        const progressBar = ProgressBar.create(false);
+        let progressBar: ProgressBar | undefined;
 
         persistenceLayer.addDocMetaSnapshotEventListener(docMetaSnapshotEvent => {
 
+            // console.log("FIXME: docMetaSnapshotEvent: ", docMetaSnapshotEvent);
+
+            if (docMetaSnapshotEvent.batch) {
+                console.log(`progress: ${docMetaSnapshotEvent.datastore} (consistency: ${docMetaSnapshotEvent.consistency}, batch.id: ${docMetaSnapshotEvent.batch!.id}, batch.terminated: ${docMetaSnapshotEvent.batch!.terminated}): ${docMetaSnapshotEvent.progress.progress}` );
+            } else {
+                console.log(`progress: ${docMetaSnapshotEvent.datastore} (consistency: ${docMetaSnapshotEvent.consistency}, NO BATCH): ${docMetaSnapshotEvent.progress.progress}` );
+            }
+
+
             const eventHandler = async () => {
+
+                if (!progressBar) {
+                    progressBar = ProgressBar.create(false);
+                }
 
                 const repoDocInfoIndex: RepoDocInfoIndex = {};
 
@@ -75,15 +88,15 @@ export class RepoDocInfoLoader {
                         repoDocInfoIndex[repoDocInfo.fingerprint] = repoDocInfo;
                     }
 
-                    progressBar.update(progress.progress);
-
                 }
+
+                progressBar.update(progress.progress);
 
                 this.eventDispatcher.dispatchEvent({repoDocInfoIndex, progress});
 
                 if (progress.progress === 100) {
-                    // we're done the initial load
                     progressBar.destroy();
+                    progressBar = undefined;
                 }
 
             };
