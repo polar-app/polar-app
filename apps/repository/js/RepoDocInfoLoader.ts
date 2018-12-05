@@ -66,16 +66,22 @@ export class RepoDocInfoLoader {
                 console.log(`progress: ${docMetaSnapshotEvent.datastore} (consistency: ${docMetaSnapshotEvent.consistency}, NO BATCH): ${docMetaSnapshotEvent.progress.progress}` );
             }
 
-
             const eventHandler = async () => {
+
+                const {progress, docMetaMutations} = docMetaSnapshotEvent;
 
                 if (!progressBar) {
                     progressBar = ProgressBar.create(false);
                 }
 
-                const repoDocInfoIndex: RepoDocInfoIndex = {};
+                progressBar.update(progress.progress);
 
-                const {progress, docMetaMutations} = docMetaSnapshotEvent;
+                if (progress.progress === 100) {
+                    progressBar.destroy();
+                    progressBar = undefined;
+                }
+
+                const repoDocInfoIndex: RepoDocInfoIndex = {};
 
                 for (const docMetaMutation of docMetaMutations) {
 
@@ -90,14 +96,7 @@ export class RepoDocInfoLoader {
 
                 }
 
-                progressBar.update(progress.progress);
-
                 this.eventDispatcher.dispatchEvent({repoDocInfoIndex, progress});
-
-                if (progress.progress === 100) {
-                    progressBar.destroy();
-                    progressBar = undefined;
-                }
 
             };
 

@@ -92,8 +92,6 @@ export class CloudAuthButton extends React.Component<IProps, IState> {
 
     private onAuth(user: firebase.User | null) {
 
-        console.log("FIXME: auth: ", user);
-
         let mode: AuthMode = 'needs-auth';
 
         if (user) {

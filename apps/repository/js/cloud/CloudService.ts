@@ -28,9 +28,11 @@ export class CloudService {
 
         console.log("onAuth: ", user);
 
-        if (user != null) {
+        if (user) {
             log.info("Switching to cloud persistence layer");
             this.persistenceLayerManager.change('cloud');
+        } else {
+            this.persistenceLayerManager.change('local');
         }
 
     }

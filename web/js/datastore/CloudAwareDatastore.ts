@@ -175,8 +175,6 @@ export class CloudAwareDatastore extends AbstractDatastore implements Datastore,
 
     }
 
-
-
     public async write(fingerprint: string,
                        data: string,
                        docInfo: DocInfo,
