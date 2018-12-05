@@ -139,6 +139,10 @@ export abstract class AbstractAdvertisingPersistenceLayer implements IListenable
         return this.delegate.getFile(backend, ref);
     }
 
+    public addDocMetaSnapshotEventListener(docMetaSnapshotEventListener: DocMetaSnapshotEventListener): void {
+        this.datastore.addDocMetaSnapshotEventListener(docMetaSnapshotEventListener);
+    }
+
     protected abstract broadcastEvent(event: PersistenceLayerEvent): void;
 
 }

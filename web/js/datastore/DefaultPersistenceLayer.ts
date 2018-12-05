@@ -200,5 +200,9 @@ export class DefaultPersistenceLayer implements PersistenceLayer {
         return this.datastore.getFile(backend, ref);
     }
 
+    public addDocMetaSnapshotEventListener(docMetaSnapshotEventListener: DocMetaSnapshotEventListener): void {
+        this.datastore.addDocMetaSnapshotEventListener(docMetaSnapshotEventListener);
+    }
+
 }
 
