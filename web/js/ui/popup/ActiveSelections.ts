@@ -24,8 +24,8 @@ export class ActiveSelections {
         target.addEventListener('mouseup', (event: MouseEvent) => {
 
             // const win = target.ownerDocument.defaultView;
-            const win = event.view;
-            const selection = win.getSelection();
+            const view = event.view;
+            const selection = view.getSelection();
 
             const point = this.eventToPoint(event);
 
@@ -51,6 +51,7 @@ export class ActiveSelections {
                     mouseDirection,
                     boundingClientRect,
                     selection,
+                    view,
                 });
 
             }
@@ -87,6 +88,8 @@ export interface ActiveSelection {
      * The actual selection object that we're working with.
      */
     readonly selection: Selection;
+
+    readonly view: Window;
 
 }
 

@@ -75,13 +75,22 @@ export class ControlledPopup extends React.Component<ControlledPopupProps, IStat
 
     private toggle() {
 
-        // TODO: activate/deactivate only when there is no selection.
+        // TODO: we keep the dialog open too long as we aren't really told when
+        // the active selection goes away so we should update ActiveSelections
+        // to send an updated event when selection is destroyed, not just
+        // created.
 
         if (this.selection) {
 
+            const active = ! this.selection.isCollapsed;
+
             this.setState({
-                active: ! this.selection.isCollapsed,
+                active,
             });
+
+            if (! active) {
+                this.moveElementToBody();
+            }
 
         }
 
@@ -103,6 +112,17 @@ export class ControlledPopup extends React.Component<ControlledPopupProps, IStat
         //     });
         //
         // }
+
+    }
+
+    private moveElementToBody() {
+
+        const id = `${this.props.id}-anchor`;
+        const anchorElement = document.getElementById(id);
+
+        const doc = anchorElement!.ownerDocument;
+        anchorElement!.parentElement!.removeChild(anchorElement!);
+        doc!.body.appendChild(anchorElement!);
 
     }
 
