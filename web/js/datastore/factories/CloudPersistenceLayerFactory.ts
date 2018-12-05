@@ -16,6 +16,7 @@ export class CloudPersistenceLayerFactory {
 
         const local = RemoteDatastores.create();
         const cloud = new FirebaseDatastore();
+
         const datastore = new CloudAwareDatastore(local, cloud);
 
         const defaultPersistenceLayer = new DefaultPersistenceLayer(datastore);

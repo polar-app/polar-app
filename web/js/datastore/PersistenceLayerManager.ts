@@ -16,6 +16,11 @@ export class PersistenceLayerManager implements IProvider<IListenablePersistence
 
     private persistenceLayer?: IListenablePersistenceLayer;
 
+    /**
+     * The current persistence type in place.
+     */
+    private current?: PersistenceLayerType;
+
     public start(): void {
 
         const type = PersistenceLayerTypes.get();
@@ -28,7 +33,16 @@ export class PersistenceLayerManager implements IProvider<IListenablePersistence
         return this.persistenceLayer!;
     }
 
+    /**
+     * Change the persistence layer when needed. Return true when changed or
+     * false if we're already using this type.
+     * @param type
+     */
     public async change(type: PersistenceLayerType) {
+
+        if (this.current === type) {
+            return false;
+        }
 
         PersistenceLayerTypes.set(type);
 
@@ -46,6 +60,8 @@ export class PersistenceLayerManager implements IProvider<IListenablePersistence
 
         }
 
+        this.current = type;
+
         this.persistenceLayer = this.createPersistenceLayer(type);
 
         this.dispatchEvent({type, persistenceLayer: this.persistenceLayer, state: 'changed'});
@@ -57,6 +73,8 @@ export class PersistenceLayerManager implements IProvider<IListenablePersistence
         this.dispatchEvent({type, persistenceLayer: this.persistenceLayer, state: 'initialized'});
 
         log.info("Initialized persistence layer: " + type);
+
+        return true;
 
     }
 
