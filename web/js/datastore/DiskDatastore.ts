@@ -1,8 +1,6 @@
-import {Datastore, DeleteResult, FileMeta, FileRef, InitResult,
-        DocMetaSnapshotEvent, DocMetaMutation, DocMetaSnapshotEventListener,
-        SnapshotResult, DocMetaSnapshotBatch, ErrorListener, AbstractDatastore,
-        GenericDatastore} from './Datastore';
-import {isPresent, Preconditions} from '../Preconditions';
+import {AbstractDatastore, Datastore, DeleteResult, DocMetaSnapshotEventListener,
+        ErrorListener, FileMeta, FileRef, InitResult, SnapshotResult} from './Datastore';
+import {Preconditions} from '../Preconditions';
 import {Logger} from '../logger/Logger';
 import {DocMetaFileRef, DocMetaRef} from './DocMetaRef';
 import {FileDeleted, FileHandle, Files} from '../util/Files';
@@ -20,13 +18,12 @@ import {Platform, Platforms} from "../util/Platforms";
 import {DatastoreFiles} from './DatastoreFiles';
 import {DatastoreMutation, DefaultDatastoreMutation} from './DatastoreMutation';
 import {DatastoreMutations} from './DatastoreMutations';
-import {DocMetas} from '../metadata/DocMetas';
 import {Datastores} from './Datastores';
 import {NULL_FUNCTION} from '../util/Functions';
 
 const log = Logger.create();
 
-export class DiskDatastore extends GenericDatastore implements Datastore {
+export class DiskDatastore extends AbstractDatastore implements Datastore {
 
     public readonly id = 'disk';
 
@@ -295,6 +292,10 @@ export class DiskDatastore extends GenericDatastore implements Datastore {
 
         return Datastores.createCommittedSnapshot(this, docMetaSnapshotEventListener);
 
+    }
+
+    public addDocMetaSnapshotEventListener(docMetaSnapshotEventListener: DocMetaSnapshotEventListener): void {
+        // noop now
     }
 
     private async createDatastoreFile(backend: Backend,

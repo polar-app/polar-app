@@ -24,8 +24,6 @@ export class RepoDocInfoLoader {
 
     private readonly persistenceLayerManager: PersistenceLayerManager;
 
-    private snapshotUnsubscriber: SnapshotUnsubscriber = NULL_FUNCTION;
-
     private readonly eventDispatcher: IEventDispatcher<RepoLoadEvent> = new SimpleReactor();
 
     constructor(persistenceLayerManager: PersistenceLayerManager) {
@@ -41,63 +39,59 @@ export class RepoDocInfoLoader {
 
         this.persistenceLayerManager.addEventListener(event => {
 
-            if (event.state === 'stopped') {
-                log.info("Unsubscribing previous snapshot listener.");
-                this.snapshotUnsubscriber();
-            }
-
-            if (event.state === 'initialized') {
-                this.onPersistenceLayerInitialized(event.persistenceLayer);
+            if (event.state === 'changed') {
+                this.onPersistenceLayerChanged(event.persistenceLayer);
             }
 
         });
 
     }
 
-    private onPersistenceLayerInitialized(persistenceLayer: PersistenceLayer) {
+    private onPersistenceLayerChanged(persistenceLayer: PersistenceLayer) {
 
         // FIXME: the disk datastore doesn't do its own snapshot by
         // default so we wouldn't get events by default... and the
         // cloud datastore DOES do it by default... maybe we have a
         // snapshotOnInit method to always require this behavior...
 
-        this.snapshotUnsubscriber();
-
         const progressBar = ProgressBar.create(false);
 
-        persistenceLayer.snapshot(async (docMetaSnapshotEvent: DocMetaSnapshotEvent) => {
+        persistenceLayer.addDocMetaSnapshotEventListener(docMetaSnapshotEvent => {
 
-            const repoDocInfoIndex: RepoDocInfoIndex = {};
+            const eventHandler = async () => {
 
-            const {progress, docMetaMutations} = docMetaSnapshotEvent;
+                const repoDocInfoIndex: RepoDocInfoIndex = {};
 
-            for (const docMetaMutation of docMetaMutations) {
+                const {progress, docMetaMutations} = docMetaSnapshotEvent;
 
-                const docMeta = await docMetaMutation.docMetaProvider();
-                const docInfo = docMeta.docInfo;
+                for (const docMetaMutation of docMetaMutations) {
 
-                const repoDocInfo = await this.loadDocMeta(docInfo.fingerprint, docMeta);
+                    const docMeta = await docMetaMutation.docMetaProvider();
+                    const docInfo = docMeta.docInfo;
 
-                if (repoDocInfo && RepoDocInfos.isValid(repoDocInfo)) {
-                    repoDocInfoIndex[repoDocInfo.fingerprint] = repoDocInfo;
+                    const repoDocInfo = await this.loadDocMeta(docInfo.fingerprint, docMeta);
+
+                    if (repoDocInfo && RepoDocInfos.isValid(repoDocInfo)) {
+                        repoDocInfoIndex[repoDocInfo.fingerprint] = repoDocInfo;
+                    }
+
+                    progressBar.update(progress.progress);
+
                 }
 
-                progressBar.update(progress.progress);
+                this.eventDispatcher.dispatchEvent({repoDocInfoIndex, progress});
 
-            }
+                if (progress.progress === 100) {
+                    // we're done the initial load
+                    progressBar.destroy();
+                }
 
-            this.eventDispatcher.dispatchEvent({repoDocInfoIndex, progress});
+            };
 
-            if (progress.progress === 100) {
-                // we're done the initial load
-                progressBar.destroy();
-            }
+            eventHandler()
+                .catch(err => log.error("Could not handle snapshot: ", err));
 
-        }).then(snapshotResult => {
-
-            this.snapshotUnsubscriber = snapshotResult.unsubscribe || NULL_FUNCTION;
-
-        }).catch(err => log.error("Could not handle snapshot: ", err));
+        });
 
     }
 

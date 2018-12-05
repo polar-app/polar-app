@@ -1,9 +1,10 @@
 /**
  * Datastore just in memory with no on disk persistence.
  */
-import {Datastore, InitResult, FileRef, FileMeta, DocMetaSnapshotEvent,
-        SnapshotResult, DocMetaSnapshotEventListener, DocMetaSnapshotBatch,
-        AbstractDatastore, GenericDatastore} from './Datastore';
+import {
+    Datastore, InitResult, FileRef, FileMeta, DocMetaSnapshotEvent,
+    SnapshotResult, DocMetaSnapshotEventListener, DocMetaSnapshotBatch,
+    AbstractDatastore, ErrorListener } from './Datastore';
 import {Preconditions, isPresent} from '../Preconditions';
 import {DocMetaFileRef, DocMetaRef} from './DocMetaRef';
 import {FilePaths} from '../util/FilePaths';
@@ -18,10 +19,12 @@ import {DocInfo} from '../metadata/DocInfo';
 import {DatastoreMutation, DefaultDatastoreMutation} from './DatastoreMutation';
 import {Datastores} from './Datastores';
 import {DocMetaSnapshotEventListeners} from './DocMetaSnapshotEventListeners';
+import {NULL_FUNCTION} from '../util/Functions';
+import {DiskInitResult} from './DiskDatastore';
 
 const log = Logger.create();
 
-export class MemoryDatastore extends GenericDatastore implements Datastore {
+export class MemoryDatastore extends AbstractDatastore implements Datastore {
 
     public readonly id = 'memory';
 
@@ -57,7 +60,7 @@ export class MemoryDatastore extends GenericDatastore implements Datastore {
     }
 
     // noinspection TsLint
-    public async init(): Promise<InitResult> {
+    public async init(errorListener: ErrorListener = NULL_FUNCTION): Promise<DiskInitResult> {
         return await this.directories.init();
     }
 
@@ -179,6 +182,10 @@ export class MemoryDatastore extends GenericDatastore implements Datastore {
 
         return Datastores.createCommittedSnapshot(this, listener);
 
+    }
+
+    public addDocMetaSnapshotEventListener(docMetaSnapshotEventListener: DocMetaSnapshotEventListener): void {
+        // noop now
     }
 
     private toFileRefKey(backend: Backend, fileRef: FileRef) {

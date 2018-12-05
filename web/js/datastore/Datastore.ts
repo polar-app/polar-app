@@ -123,41 +123,6 @@ export abstract class AbstractDatastore {
 
 }
 
-export abstract class GenericDatastore extends AbstractDatastore {
-
-    private readonly docMetaSnapshotEventDispatcher: IEventDispatcher<DocMetaSnapshotEvent> = new SimpleReactor();
-
-    /**
-     * Get a current snapshot of the internal state of the Datastore by
-     * receiving DocMetaSnapshotEvent on the initial state.
-     */
-    public abstract snapshot(docMetaSnapshotEventListener: DocMetaSnapshotEventListener,
-                             errorListener?: ErrorListener): Promise<SnapshotResult>;
-
-    /**
-     * Init the datastore, potentially reading files of disk, the network, etc.
-     */
-    public async init(errorListener?: ErrorListener): Promise<InitResult> {
-
-        if (this.docMetaSnapshotEventDispatcher.size() > 0) {
-            // perform a snapshot if a listener was attached...
-            this.snapshot(event => this.docMetaSnapshotEventDispatcher.dispatchEvent(event));
-        }
-
-        return {};
-    }
-
-    /**
-     * An event listener to listen to the datastore while operating on both
-     * the underlying datastores to discover when documents are discovered
-     * without having to re-read the datastore after it's been initialized.
-     */
-    public addDocMetaSnapshotEventListener(docMetaSnapshotEventListener: DocMetaSnapshotEventListener): void {
-        this.docMetaSnapshotEventDispatcher.addEventListener(docMetaSnapshotEventListener);
-    }
-
-}
-
 interface WritableDatastore {
 
     /**
