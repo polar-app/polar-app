@@ -1,3 +1,7 @@
+# 1.1.1 
+
+- Fixed bug with not loading all documents properly on startup.
+
 # 1.1.0
 
 - New Splash system to keep customers engaged with Polar growth and marketing.
