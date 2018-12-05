@@ -183,6 +183,8 @@ export interface FileRef {
 // noinspection TsLint
 export type FileMeta = {[key: string]: string};
 
+
+
 /**
  *
  * A datastore that provides events about changes being made to the datastore.
@@ -206,7 +208,7 @@ export interface SynchronizingDatastore extends Datastore {
 
     /**
      * An event listener to listen to the datastore while operating on both
-     * the underlying datastores to discovery when documents are discovered
+     * the underlying datastores to discover when documents are discovered
      * without having to re-read the datastore after it's been initialized.
      */
     addDocMetaSnapshotEventListener(docMetaSnapshotEventListener: DocMetaSnapshotEventListener): void;

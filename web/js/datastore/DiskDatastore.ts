@@ -535,3 +535,12 @@ interface DiskFileReference {
 export interface DiskInitResult extends InitResult {
 
 }
+
+export interface InitOptions {
+
+    /**
+     * Perform a snapshot on init if
+     */
+    readonly initialSnapshotRequired: boolean;
+
+}
