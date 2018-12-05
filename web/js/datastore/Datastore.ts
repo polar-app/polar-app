@@ -191,8 +191,6 @@ export interface FileRef {
 // noinspection TsLint
 export type FileMeta = {[key: string]: string};
 
-
-
 /**
  *
  * A datastore that provides events about changes being made to the datastore.

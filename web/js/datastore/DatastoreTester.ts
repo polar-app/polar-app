@@ -186,11 +186,14 @@ export class DatastoreTester {
                 assert.ok(await datastore.containsFile(Backend.IMAGE, fileRef));
 
                 const datastoreFile = await datastore.getFile(Backend.IMAGE, fileRef);
-                assert.ok(datastoreFile);
-                assert.ok(datastoreFile.isPresent());
-                assert.ok(datastoreFile.get());
+                assert.ok(datastoreFile, "no result");
+                assert.ok(datastoreFile.isPresent(), "not present");
+                assert.ok(datastoreFile.get(), "no value");
 
-                assertJSON(datastoreFile.get().meta, meta);
+                // noinspection TsLint
+                assert.equal(datastoreFile.get().meta['foo'], 'bar');
+
+                // assertJSON(datastoreFile.get().meta, meta, "meta values differ");
 
                 await datastore.deleteFile(Backend.IMAGE, fileRef);
                 await datastore.deleteFile(Backend.IMAGE, fileRef);

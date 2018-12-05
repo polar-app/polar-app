@@ -7,7 +7,7 @@ const expect = chai.expect;
 chai.config.truncateThreshold = 0;
 chai.use(chaiDiff);
 
-export function assertJSON(actual: any, expected: any) {
+export function assertJSON(actual: any, expected: any, message?: string) {
 
     // first convert both to JSON if necessary.
     actual = toJSON(actual);
@@ -20,7 +20,7 @@ export function assertJSON(actual: any, expected: any) {
     }
 
     try {
-        expect(actual).not.differentFrom(expected);
+        expect(actual).not.differentFrom(expected, message);
     } catch (e) {
         console.error(e.message);
         throw e;
