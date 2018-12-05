@@ -16,7 +16,7 @@ fi
 
 branch=$(git rev-parse --abbrev-ref HEAD)
 
-if [ "" != "master" ]; then
+if [ "${branch}" != "master" ]; then
     die "Must be on master branch"
 fi
 

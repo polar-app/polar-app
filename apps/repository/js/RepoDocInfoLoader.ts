@@ -60,11 +60,11 @@ export class RepoDocInfoLoader {
 
             // console.log("FIXME: docMetaSnapshotEvent: ", docMetaSnapshotEvent);
 
-            if (docMetaSnapshotEvent.batch) {
-                console.log(`progress: ${docMetaSnapshotEvent.datastore} (consistency: ${docMetaSnapshotEvent.consistency}, batch.id: ${docMetaSnapshotEvent.batch!.id}, batch.terminated: ${docMetaSnapshotEvent.batch!.terminated}): ${docMetaSnapshotEvent.progress.progress}` );
-            } else {
-                console.log(`progress: ${docMetaSnapshotEvent.datastore} (consistency: ${docMetaSnapshotEvent.consistency}, NO BATCH): ${docMetaSnapshotEvent.progress.progress}` );
-            }
+            // if (docMetaSnapshotEvent.batch) {
+            //     console.log(`progress: ${docMetaSnapshotEvent.datastore} (consistency: ${docMetaSnapshotEvent.consistency}, batch.id: ${docMetaSnapshotEvent.batch!.id}, batch.terminated: ${docMetaSnapshotEvent.batch!.terminated}): ${docMetaSnapshotEvent.progress.progress}` );
+            // } else {
+            //     console.log(`progress: ${docMetaSnapshotEvent.datastore} (consistency: ${docMetaSnapshotEvent.consistency}, NO BATCH): ${docMetaSnapshotEvent.progress.progress}` );
+            // }
 
             const eventHandler = async () => {
 
@@ -77,6 +77,9 @@ export class RepoDocInfoLoader {
                 progressBar.update(progress.progress);
 
                 if (progress.progress === 100) {
+                    // console.log("FIXME: progress now at 100... destroying");
+                    // TODO: wouldn't it be better to let it sit at 100 for a
+                    // moment, then remove it after a timeout?
                     progressBar.destroy();
                     progressBar = undefined;
                 }

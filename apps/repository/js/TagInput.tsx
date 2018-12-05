@@ -90,7 +90,7 @@ export class TagInput extends React.Component<TagInputProps, TagInputState> {
 
                             className="basic-multi-select"
                             classNamePrefix="select"
-                            onChange={this.handleChange}
+                            onChange={selectedOptions => this.handleChange(selectedOptions)}
                             defaultValue={defaultValue}
                             placeholder="Create or select tags ..."
 
@@ -126,9 +126,9 @@ export class TagInput extends React.Component<TagInputProps, TagInputState> {
             const validTags = Tags.findValidTags(...tags);
             const invalidTags = Tags.findInvalidTags(...tags);
 
-            if (validTags.length > 0) {
-                this.props.onChange(this.props.repoDocInfo, validTags);
-            }
+            // important to always call onChange even if we have no valid tags
+            // as this is acceptable and we want to save these to disk.
+            this.props.onChange(this.props.repoDocInfo, validTags);
 
             if (invalidTags.length > 0) {
                 log.warn("Some tags were invalid", invalidTags);

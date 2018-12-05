@@ -667,23 +667,26 @@ export default class App extends React.Component<AppProps, AppState> {
 
         // TODO: move to syncDocInfoArchived in DocRepository
 
+        let mutated: boolean = false;
+
         if (field === 'archived') {
             RendererAnalytics.event({category: 'user', action: 'archived-doc'});
-
             repoDocInfo.archived = !repoDocInfo.archived;
             repoDocInfo.docInfo.archived = repoDocInfo.archived;
+            mutated = true;
         }
 
         if (field === 'flagged') {
             RendererAnalytics.event({category: 'user', action: 'flagged-doc'});
-
             repoDocInfo.flagged = !repoDocInfo.flagged;
             repoDocInfo.docInfo.flagged = repoDocInfo.flagged;
+            mutated = true;
         }
 
-        await this.docRepository!.syncDocInfo(repoDocInfo.docInfo);
-
-        this.refresh();
+        if (mutated) {
+            await this.docRepository!.syncDocInfo(repoDocInfo.docInfo);
+            this.refresh();
+        }
 
     }
 

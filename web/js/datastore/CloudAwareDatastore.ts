@@ -188,10 +188,12 @@ export class CloudAwareDatastore extends AbstractDatastore implements Datastore,
         });
 
         return DatastoreMutations.executeBatchedWrite(datastoreMutation,
-                                                      async (remoteCoordinator) =>
-                                                          await this.cloud.write(fingerprint, data, docInfo, remoteCoordinator),
-                                                      async (localCoordinator) =>
-                                                          await this.local.write(fingerprint, data, docInfo, localCoordinator));
+                                                      async (remoteCoordinator) => {
+                                                          await this.cloud.write(fingerprint, data, docInfo, remoteCoordinator);
+                                                      },
+                                                      async (localCoordinator) => {
+                                                          await this.local.write(fingerprint, data, docInfo, localCoordinator);
+                                                      });
 
     }
 
@@ -362,8 +364,15 @@ export class CloudAwareDatastore extends AbstractDatastore implements Datastore,
         };
 
         if (isPrimarySnapshot) {
+
+            log.info("Transferring from local -> cloud...");
             await PersistenceLayers.transfer(localSyncOrigin, cloudSyncOrigin, deduplicatedListener.listener);
+            log.info("Transferring from local -> cloud...done");
+
+            log.info("Transferring from cloud -> local...");
             await PersistenceLayers.transfer(cloudSyncOrigin, localSyncOrigin, deduplicatedListener.listener);
+            log.info("Transferring from cloud -> local...done");
+
         }
 
         initialSyncCompleted = true;

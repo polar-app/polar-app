@@ -16,6 +16,8 @@ import {DocMeta} from '../metadata/DocMeta';
 import {IDocInfo} from '../metadata/DocInfo';
 import {Dictionaries} from '../util/Dictionaries';
 import {isPresent} from "../Preconditions";
+import {Optional} from "../util/ts/Optional";
+import {DatastoreFile} from "./DatastoreFile";
 
 export class PersistenceLayers {
 
@@ -80,6 +82,9 @@ export class PersistenceLayers {
                                  target: SyncOrigin,
                                  listener: DocMetaSnapshotEventListener = NULL_FUNCTION): Promise<TransferResult> {
 
+        // FIXME: no errors are actually raised on the copy operations that are
+        // operating in the async queue.  These need to be bubbled up.
+
         const result: TransferResult = {
             mutations: {
                 fingerprints: [],
@@ -91,11 +96,18 @@ export class PersistenceLayers {
             }
         };
 
-        async function handleSyncFile(fileRef: FileRef) {
+        async function handleSyncFile(syncDoc: SyncDoc, fileRef: FileRef) {
 
             if (! await target.datastore.containsFile(Backend.STASH, fileRef)) {
 
-                const optionalFile = await source.datastore.getFile(Backend.STASH, fileRef);
+                let optionalFile: Optional<DatastoreFile>;
+
+                try {
+                    optionalFile = await source.datastore.getFile(Backend.STASH, fileRef);
+                } catch (e) {
+                    console.error(`Could not get file ${fileRef.name} for doc with fingerprint: ${syncDoc.fingerprint}`, fileRef);
+                    throw e;
+                }
 
                 if (optionalFile.isPresent()) {
 
@@ -104,13 +116,14 @@ export class PersistenceLayers {
                     // Some people might have PDF files that are >100MB.
 
                     // TODO: I think part of this is that we can't transfer a
-                    // stream to the 'remote' worker that's performing the actual
-                    // writes to the DiskStore.
+                    // stream to the 'remote' worker that's performing the
+                    // actual writes to the DiskStore.
 
                     // TODO: additionally, we're going to need a way to report
-                    // progress of this operation between the process boundaries.
-                    // We need to have callbacks work so that we can determine
-                    // the throughput of some of the larger attachments.
+                    // progress of this operation between the process
+                    // boundaries. We need to have callbacks work so that we
+                    // can determine the throughput of some of the larger
+                    // attachments.
 
                     const file = optionalFile.get();
                     const response = await fetch(file.url);
@@ -148,7 +161,7 @@ export class PersistenceLayers {
                     // TODO: if we use the second queue it still locks up.
                     // await docFileAsyncWorkQueue.enqueue(async () =>
                     // handleStashFile(docFile));
-                    await handleSyncFile(sourceSyncFile.ref);
+                    await handleSyncFile(sourceSyncDoc, sourceSyncFile.ref);
                 }
 
             }
