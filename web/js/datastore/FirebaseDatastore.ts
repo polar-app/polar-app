@@ -782,6 +782,10 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore {
 
     }
 
+    public addDocMetaSnapshotEventListener(docMetaSnapshotEventListener: DocMetaSnapshotEventListener): void {
+        throw new Error("Not implemented");
+    }
+
 }
 
 /**

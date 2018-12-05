@@ -38,4 +38,8 @@ export class Event<V> {
 
     }
 
+    public size() {
+        return this.listeners.length;
+    }
+
 }

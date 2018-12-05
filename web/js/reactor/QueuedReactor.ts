@@ -92,6 +92,10 @@ export class QueuedReactor<V> implements IReactor<V>, IMutableReactor<V> {
         return this.delegate.removeEventListener(eventName, listener);
     }
 
+    public size(eventName: string): number {
+        return this.delegate.size(eventName);
+    }
+
     private enqueue(eventName: string, value: V): this {
 
         if (! isPresent(this.queue[eventName])) {

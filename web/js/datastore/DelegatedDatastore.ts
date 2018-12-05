@@ -89,4 +89,8 @@ export class DelegatedDatastore extends AbstractDatastore implements Datastore {
         return this.delegate.write(fingerprint, data, docInfo, datastoreMutation);
     }
 
+    public addDocMetaSnapshotEventListener(docMetaSnapshotEventListener: DocMetaSnapshotEventListener): void {
+        this.delegate.addDocMetaSnapshotEventListener(docMetaSnapshotEventListener);
+    }
+
 }

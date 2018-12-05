@@ -42,6 +42,15 @@ export class Reactor<V> implements IReactor<V> {
         return this;
     }
 
+    public size(eventName: string) {
+
+        if (this.events[eventName]) {
+            return this.events[eventName].size();
+        }
+
+        return 0;
+    }
+
     /**
      *
      * @param eventName The name of the event to dispatch.
@@ -142,12 +151,14 @@ export interface IReactor<V> {
     hasRegisteredEvent(eventName: string): boolean;
     hasEventListeners(eventName: string): boolean;
     registerEvent(eventName: string): IReactor<V>;
+    size(eventName: string): number;
 }
 
 export interface IMutableReactor<V> extends IReactor<V> {
     clearEvent(eventName: string): void;
     removeEventListener(eventName: string, listener: Listener<V>): boolean;
     getEventListeners(eventName: string): Array<Listener<V>>;
+    size(eventName: string): number;
 }
 
 export interface INamedEventDispatcher<V> extends IReactor<V> {

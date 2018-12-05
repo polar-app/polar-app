@@ -66,6 +66,8 @@ export interface PersistenceLayer {
 
     containsFile(backend: Backend, ref: FileRef): Promise<boolean>;
 
+    // addDocMetaSnapshotEventListener(docMetaSnapshotEventListener: DocMetaSnapshotEventListener): void;
+
 }
 
 

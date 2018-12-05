@@ -1,7 +1,9 @@
 /**
  * Datastore just in memory with no on disk persistence.
  */
-import {Datastore, InitResult, FileRef, FileMeta, DocMetaSnapshotEvent, SnapshotResult, DocMetaSnapshotEventListener, DocMetaSnapshotBatch, AbstractDatastore} from './Datastore';
+import {Datastore, InitResult, FileRef, FileMeta, DocMetaSnapshotEvent,
+        SnapshotResult, DocMetaSnapshotEventListener, DocMetaSnapshotBatch,
+        AbstractDatastore, GenericDatastore} from './Datastore';
 import {Preconditions, isPresent} from '../Preconditions';
 import {DocMetaFileRef, DocMetaRef} from './DocMetaRef';
 import {FilePaths} from '../util/FilePaths';
@@ -19,7 +21,7 @@ import {DocMetaSnapshotEventListeners} from './DocMetaSnapshotEventListeners';
 
 const log = Logger.create();
 
-export class MemoryDatastore extends AbstractDatastore implements Datastore {
+export class MemoryDatastore extends GenericDatastore implements Datastore {
 
     public readonly id = 'memory';
 

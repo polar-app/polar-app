@@ -1,6 +1,7 @@
 import {Datastore, DeleteResult, FileMeta, FileRef, InitResult,
         DocMetaSnapshotEvent, DocMetaMutation, DocMetaSnapshotEventListener,
-        SnapshotResult, DocMetaSnapshotBatch, ErrorListener, AbstractDatastore} from './Datastore';
+        SnapshotResult, DocMetaSnapshotBatch, ErrorListener, AbstractDatastore,
+        GenericDatastore} from './Datastore';
 import {isPresent, Preconditions} from '../Preconditions';
 import {Logger} from '../logger/Logger';
 import {DocMetaFileRef, DocMetaRef} from './DocMetaRef';
@@ -25,7 +26,7 @@ import {NULL_FUNCTION} from '../util/Functions';
 
 const log = Logger.create();
 
-export class DiskDatastore extends AbstractDatastore implements Datastore {
+export class DiskDatastore extends GenericDatastore implements Datastore {
 
     public readonly id = 'disk';
 
