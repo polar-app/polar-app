@@ -4,9 +4,20 @@
 
 target=${1}
 
-if [ "${target}" = "" ]; then
-    echo "Must specifiy target" > /dev/stderr
+die() {
+    msg="${1}"
+    echo "${msg}" > /dev/stderr
     exit 1
+}
+
+if [ "${target}" = "" ]; then
+    die "Must specifiy target"
+fi
+
+branch=$(git rev-parse --abbrev-ref HEAD)
+
+if [ "" != "master" ]; then
+    die "Must be on master branch"
 fi
 
 git clean -f && git reset --hard HEAD && git pull && npm install && npm run-script dist-${target}
