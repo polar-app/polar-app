@@ -78,7 +78,7 @@ export class ControlledPopup extends React.Component<ControlledPopupProps, IStat
         // TODO: we keep the dialog open too long as we aren't really told when
         // the active selection goes away so we should update ActiveSelections
         // to send an updated event when selection is destroyed, not just
-        // created.
+        // created.  We should have an event type of 'created' and 'destroyed'
 
         if (this.selection) {
 
