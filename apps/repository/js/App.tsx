@@ -39,7 +39,7 @@ import {CloudAuthButton} from '../../../web/js/ui/cloud_auth/CloudAuthButton';
 import {PrioritizedSplashes} from './splash/PrioritizedSplashes';
 import {PersistenceLayerManager} from '../../../web/js/datastore/PersistenceLayerManager';
 import {PersistenceLayerEvent} from '../../../web/js/datastore/PersistenceLayerEvent';
-import {CloudService} from './cloud/ClouldService';
+import {CloudService} from './cloud/CloudService';
 
 const log = Logger.create();
 
