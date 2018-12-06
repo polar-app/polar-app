@@ -120,7 +120,7 @@
     "express": "^4.16.3",
     "featherlight": "^1.7.13",
     "file-exists-promise": "^1.0.2",
-    "firebase": "^5.5.4",
+    "firebase": "^5.6.0",
     "firebase-tools": "^6.1.0",
     "firebaseui": "^3.4.1",
     "flowchart": "^1.2.0",
