@@ -7,6 +7,7 @@ import {Firebase} from '../../firestore/Firebase';
 import * as firebase from '../../firestore/lib/firebase';
 import {FirebaseUIAuth} from '../../firestore/FirebaseUIAuth';
 import {Logger} from '../../logger/Logger';
+import {PersistenceLayerManager} from '../../datastore/PersistenceLayerManager';
 
 const log = Logger.create();
 
@@ -77,9 +78,9 @@ export class CloudAuthButton extends React.Component<IProps, IState> {
 
     private logout() {
 
-        // noop for now
-        firebase.auth().signOut()
-            .catch(err => log.error("Unable to logout: ", err));
+        this.props.persistenceLayerManager.reset();
+
+        window.location.reload();
 
     }
 
@@ -113,11 +114,12 @@ export class CloudAuthButton extends React.Component<IProps, IState> {
 }
 
 interface IProps {
+    readonly persistenceLayerManager: PersistenceLayerManager;
 }
 
 interface IState {
-    mode: AuthMode,
-    doAuth: boolean;
+    readonly mode: AuthMode;
+    readonly doAuth: boolean;
 }
 
 type AuthMode = 'none' | 'needs-auth' | 'authenticated';

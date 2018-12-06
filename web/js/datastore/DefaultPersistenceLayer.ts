@@ -204,5 +204,9 @@ export class DefaultPersistenceLayer implements PersistenceLayer {
         this.datastore.addDocMetaSnapshotEventListener(docMetaSnapshotEventListener);
     }
 
+    public async deactivate() {
+        await this.datastore.deactivate();
+    }
+
 }
 

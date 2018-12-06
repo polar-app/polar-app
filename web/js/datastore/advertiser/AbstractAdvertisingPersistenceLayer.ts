@@ -145,5 +145,9 @@ export abstract class AbstractAdvertisingPersistenceLayer implements IListenable
 
     protected abstract broadcastEvent(event: PersistenceLayerEvent): void;
 
+    public async deactivate() {
+        await this.datastore.deactivate();
+    }
+
 }
 

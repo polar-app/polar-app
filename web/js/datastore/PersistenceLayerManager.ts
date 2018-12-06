@@ -10,6 +10,8 @@ import {Logger} from "../logger/Logger";
 
 const log = Logger.create();
 
+const RESET_KEY = 'polar-persistence-layer-reset';
+
 export class PersistenceLayerManager implements IProvider<IListenablePersistenceLayer> {
 
     private readonly persistenceLayerManagerEventDispatcher: IEventDispatcher<PersistenceLayerManagerEvent> = new SimpleReactor();
@@ -21,9 +23,25 @@ export class PersistenceLayerManager implements IProvider<IListenablePersistence
      */
     private current?: PersistenceLayerType;
 
-    public start(): void {
+    public async start(): Promise<void> {
 
-        const type = PersistenceLayerTypes.get();
+        let type = PersistenceLayerTypes.get();
+
+        if (this.requiresReset()) {
+
+            log.info("Going go reset and deactivate current datastore: " + type);
+
+            const deactivatePersistenceLayer = this.createPersistenceLayer(type);
+
+            await deactivatePersistenceLayer.deactivate();
+
+            this.clearReset();
+
+            // now go with local
+            type = 'local';
+            PersistenceLayerTypes.set(type);
+
+        }
 
         this.change(type);
 
@@ -76,6 +94,18 @@ export class PersistenceLayerManager implements IProvider<IListenablePersistence
 
         return true;
 
+    }
+
+    public reset() {
+        window.localStorage.setItem(RESET_KEY, 'true');
+    }
+
+    public requiresReset() {
+        return window.localStorage.getItem(RESET_KEY) === 'true';
+    }
+
+    public clearReset() {
+        return window.localStorage.removeItem(RESET_KEY);
     }
 
     private createPersistenceLayer(type: PersistenceLayerType): IListenablePersistenceLayer {
@@ -153,3 +183,4 @@ export class PersistenceLayerTypes {
     }
 
 }
+

@@ -30,6 +30,7 @@ import {isUpperCase} from 'tslint/lib/utils';
 import {IEventDispatcher, SimpleReactor} from '../reactor/SimpleReactor';
 import {Preconditions} from '../Preconditions';
 import {AsyncFunction} from '../util/AsyncWorkQueue';
+import * as firebase from '../firestore/lib/firebase';
 
 const log = Logger.create();
 
@@ -396,6 +397,10 @@ export class CloudAwareDatastore extends AbstractDatastore implements Datastore,
 
     public addDocMetaSnapshotEventListener(docMetaSnapshotEventListener: DocMetaSnapshotEventListener): void {
         this.docMetaSnapshotEventDispatcher.addEventListener(docMetaSnapshotEventListener);
+    }
+
+    public async deactivate() {
+        await firebase.auth().signOut();
     }
 
 }

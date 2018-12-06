@@ -68,6 +68,8 @@ export interface PersistenceLayer {
 
     addDocMetaSnapshotEventListener(docMetaSnapshotEventListener: DocMetaSnapshotEventListener): void;
 
+    deactivate(): Promise<void>;
+
 }
 
 

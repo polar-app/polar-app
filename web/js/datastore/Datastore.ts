@@ -84,6 +84,12 @@ export interface Datastore extends BinaryDatastore, WritableDatastore {
      */
     addDocMetaSnapshotEventListener(docMetaSnapshotEventListener: DocMetaSnapshotEventListener): void;
 
+    /**
+     * Deactivate using this datasource. For most datasources this is not used
+     * but for cloud sources this would logout and perform other tasks.
+     */
+    deactivate(): Promise<void>;
+
     // TODO: we need a new method with the following semantics:
 
     // - we can add it AFTER the init()
@@ -120,6 +126,9 @@ export abstract class AbstractDatastore {
                           docInfo: IDocInfo,
                           datastoreMutation?: DatastoreMutation<boolean>): Promise<void>;
 
+    public async deactivate() {
+        // noop
+    }
 
 }
 

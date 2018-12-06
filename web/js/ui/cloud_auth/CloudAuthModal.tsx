@@ -22,10 +22,12 @@ export class CloudAuthModal extends React.Component<IProps, IState> {
     }
 
     public componentDidUpdate(prevProps: Readonly<IProps>, prevState: Readonly<IState>, snapshot?: any): void {
+
         if (this.props.isOpen) {
             Firebase.init();
             FirebaseUIAuth.login({signInSuccessUrl: document.location!.href});
         }
+
     }
 
     public render() {

@@ -163,7 +163,7 @@ export default class App extends React.Component<AppProps, AppState> {
                             </div>
 
                             <div className="header-filter-box">
-                                <CloudAuthButton/>
+                                <CloudAuthButton persistenceLayerManager={this.persistenceLayerManager} />
                             </div>
 
                             <div className="p-1">
@@ -755,7 +755,7 @@ export default class App extends React.Component<AppProps, AppState> {
 
         new CloudService(this.persistenceLayerManager).start();
 
-        this.persistenceLayerManager.start();
+        await this.persistenceLayerManager.start();
 
     }
 
