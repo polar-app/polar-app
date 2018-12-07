@@ -97,6 +97,7 @@ export class PersistenceLayerManager implements IProvider<IListenablePersistence
     }
 
     public reset() {
+        log.info("Datastore reset");
         window.localStorage.setItem(RESET_KEY, 'true');
     }
 

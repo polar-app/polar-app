@@ -28,6 +28,12 @@ export class CloudService {
 
         console.log("onAuth: ", user);
 
+        if (this.persistenceLayerManager.requiresReset()) {
+            // when we're resetting don't attempt to change the persistence
+            // layer
+            return;
+        }
+
         if (user) {
             log.info("Switching to cloud persistence layer");
             this.persistenceLayerManager.change('cloud');
