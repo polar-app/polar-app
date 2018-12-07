@@ -44,6 +44,10 @@ const Styles: IStyleMap = {
 
     price_overview: {
         fontSize: '14px',
+    },
+
+    content: {
+        maxWidth: '800px'
     }
 
 };
@@ -58,7 +62,7 @@ export class CloudSyncOverviewContent extends React.Component<IProps, IState> {
     public render() {
 
         return (
-            <div>
+            <div style={Styles.content}>
 
                 <div className="text-center">
 

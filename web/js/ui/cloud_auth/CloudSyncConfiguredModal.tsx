@@ -26,8 +26,9 @@ import {IStyleMap} from '../../react/IStyleMap';
 import {LargeModal} from '../large_modal/LargeModal';
 import {LargeModalBody} from '../large_modal/LargeModalBody';
 import {CloudSyncOverviewContent} from './CloudSyncOverviewContent';
+import {CloudSyncConfiguredContent} from './CloudSyncConfiguredContent';
 
-export class CloudSyncOverviewModal extends React.Component<IProps, IState> {
+export class CloudSyncConfiguredModal extends React.Component<IProps, IState> {
 
     constructor(props: IProps, context: any) {
         super(props, context);
@@ -42,20 +43,15 @@ export class CloudSyncOverviewModal extends React.Component<IProps, IState> {
                 {/*<ModalHeader>Polar Cloud Sync</ModalHeader>*/}
                 <ModalBody>
 
-                    <CloudSyncOverviewContent/>
+                    <CloudSyncConfiguredContent/>
 
                 </ModalBody>
                 <ModalFooter>
 
                     <Button color="secondary"
                             onClick={() => this.props.onCancel()}>
-                        Cancel
+                        OK
                     </Button>
-
-                    <Button color="primary"
-                            onClick={() => this.props.onSignup()}>
-                        Sign Up
-                    </Button>{' '}
 
                 </ModalFooter>
             </Modal>
@@ -68,7 +64,6 @@ export class CloudSyncOverviewModal extends React.Component<IProps, IState> {
 interface IProps {
     readonly isOpen: boolean;
     readonly onCancel: () => void;
-    readonly onSignup: () => void;
 }
 
 interface IState {

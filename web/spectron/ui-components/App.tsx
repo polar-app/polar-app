@@ -16,6 +16,9 @@ import {FlashcardComponentExample} from './FlashcardComponentExample';
 import {WhatsNewContent} from '../../../apps/repository/js/splash/splashes/whats_new/WhatsNewContent';
 import {ModalBody} from 'reactstrap';
 import {CloudSyncOverviewContent} from '../../js/ui/cloud_auth/CloudSyncOverviewContent';
+import {CloudSyncConfiguredContent} from '../../js/ui/cloud_auth/CloudSyncConfiguredContent';
+import {CloudSyncConfiguredModal} from '../../js/ui/cloud_auth/CloudSyncConfiguredModal';
+import {CloudSyncOverviewModal} from '../../js/ui/cloud_auth/CloudSyncOverviewModal';
 
 class App<P> extends React.Component<{}, IAppState> {
 
@@ -107,6 +110,15 @@ class App<P> extends React.Component<{}, IAppState> {
                 <WhatsNewContent/>
 
                 <CloudSyncOverviewContent/>
+
+                <CloudSyncConfiguredContent/>
+
+                <CloudSyncConfiguredModal isOpen={true} onCancel={() => console.log('cancel')}/>
+
+
+                {/*<CloudSyncOverviewModal isOpen={true}*/}
+                                        {/*onCancel={() => console.log('cancel')}*/}
+                                        {/*onSignup={() => console.log('signup')}/>*/}
 
             </div>
 

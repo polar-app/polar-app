@@ -23,7 +23,11 @@ export class PrioritizedComponentManager extends React.Component<IProps, IState>
                 .filter(current => current.priority() !== undefined)
                 .sort((o1, o2) => Numbers.compare(o1.priority(), o2.priority()) * -1);
 
-        if (sorted.length === 0) {
+        if (sorted.length === 0 || document.location!.hash !== '') {
+            // return an empty div if we have no splashes OR if we have a
+            // specific hash URL to load.  The splashes should only go on the
+            // home page on load.
+
             return (<div></div>);
         }
 
