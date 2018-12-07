@@ -88,14 +88,24 @@ export class RepoDocInfoLoader {
 
                 for (const docMetaMutation of docMetaMutations) {
 
-                    const docMeta = await docMetaMutation.docMetaProvider();
-                    const docInfo = docMeta.docInfo;
+                    if (docMetaMutation.mutationType === 'created' ||
+                        docMetaMutation.mutationType === 'updated') {
 
-                    const repoDocInfo = await this.loadDocMeta(docInfo.fingerprint, docMeta);
+                        const docMeta = await docMetaMutation.docMetaProvider();
+                        const docInfo = docMeta.docInfo;
 
-                    if (repoDocInfo && RepoDocInfos.isValid(repoDocInfo)) {
-                        repoDocInfoIndex[repoDocInfo.fingerprint] = repoDocInfo;
+                        const repoDocInfo = await this.loadDocMeta(docInfo.fingerprint, docMeta);
+
+                        if (repoDocInfo && RepoDocInfos.isValid(repoDocInfo)) {
+                            repoDocInfoIndex[repoDocInfo.fingerprint] = repoDocInfo;
+                        }
+
                     }
+
+                    if (docMetaMutation.mutationType === 'deleted') {
+                        delete repoDocInfoIndex[docMetaMutation.fingerprint];
+                    }
+
 
                 }
 

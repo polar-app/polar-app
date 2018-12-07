@@ -53,7 +53,7 @@ export class DocRepository {
      * Sync the docInfo to disk.
      *
      */
-    public async syncDocInfo(docInfo: IDocInfo) {
+    public async writeDocInfo(docInfo: IDocInfo) {
 
         const persistenceLayer = this.persistenceLayerProvider.get();
 
@@ -79,7 +79,7 @@ export class DocRepository {
     /**
      * Update the RepoDocInfo object with the given tags.
      */
-    public async syncDocInfoTitle(repoDocInfo: RepoDocInfo, title: string) {
+    public async writeDocInfoTitle(repoDocInfo: RepoDocInfo, title: string) {
 
         Preconditions.assertPresent(repoDocInfo);
         Preconditions.assertPresent(repoDocInfo.docInfo);
@@ -91,14 +91,14 @@ export class DocRepository {
 
         this.updateDocInfo(repoDocInfo);
 
-        return this.syncDocInfo(repoDocInfo.docInfo);
+        return this.writeDocInfo(repoDocInfo.docInfo);
 
     }
 
     /**
      * Update the RepoDocInfo object with the given tags.
      */
-    public async syncDocInfoTags(repoDocInfo: RepoDocInfo, tags: Tag[]) {
+    public async writeDocInfoTags(repoDocInfo: RepoDocInfo, tags: Tag[]) {
 
         Preconditions.assertPresent(repoDocInfo);
         Preconditions.assertPresent(repoDocInfo.docInfo);
@@ -110,11 +110,11 @@ export class DocRepository {
 
         this.updateDocInfo(repoDocInfo);
 
-        return this.syncDocInfo(repoDocInfo.docInfo);
+        return this.writeDocInfo(repoDocInfo.docInfo);
 
     }
 
-    public async syncDeleteDocInfo(repoDocInfo: RepoDocInfo) {
+    public async deleteDocInfo(repoDocInfo: RepoDocInfo) {
 
         const persistenceLayer = this.persistenceLayerProvider.get();
 

@@ -120,7 +120,8 @@ export default class App extends React.Component<AppProps, AppState> {
 
                         <div className="header-filter-boxes">
 
-                            <div className="header-filter-box">
+                            <div className="header-filter-box"
+                                 style={{whiteSpace: 'nowrap'}}>
                                 <div className="checkbox-group">
                                     <input id="filter_flagged"
                                            type="checkbox"
@@ -131,7 +132,8 @@ export default class App extends React.Component<AppProps, AppState> {
                                 </div>
                             </div>
 
-                            <div className="header-filter-box">
+                            <div className="header-filter-box"
+                                 style={{whiteSpace: 'nowrap'}}>
                                 <div className="checkbox-group">
 
                                     <input id="filter_archived"
@@ -147,7 +149,8 @@ export default class App extends React.Component<AppProps, AppState> {
 
                             </div>
 
-                            <div className="header-filter-box header-filter-tags">
+                            <div className="header-filter-box header-filter-tags"
+                                 style={{whiteSpace: 'nowrap'}}>
 
                                 <FilterTagInput tagsDBProvider={() => this.docRepository!.tagsDB}
                                                 refresher={() => this.refresh()}
@@ -489,7 +492,7 @@ export default class App extends React.Component<AppProps, AppState> {
 
         RendererAnalytics.event({category: 'user', action: 'doc-tagged'});
 
-        await this.docRepository!.syncDocInfoTags(repoDocInfo, tags);
+        await this.docRepository!.writeDocInfoTags(repoDocInfo, tags);
         this.refresh();
 
     }
@@ -500,7 +503,7 @@ export default class App extends React.Component<AppProps, AppState> {
 
         log.info("Deleting document: ", repoDocInfo);
 
-        this.docRepository.syncDeleteDocInfo(repoDocInfo)
+        this.docRepository.deleteDocInfo(repoDocInfo)
             .catch(err => log.error("Could not delete doc: ", err));
 
         this.refresh();
@@ -513,7 +516,7 @@ export default class App extends React.Component<AppProps, AppState> {
 
         log.info("Setting doc title: " , title);
 
-        this.docRepository.syncDocInfoTitle(repoDocInfo, title)
+        this.docRepository.writeDocInfoTitle(repoDocInfo, title)
             .catch(err => log.error("Could not write doc title: ", err));
 
         this.refresh();
@@ -684,7 +687,7 @@ export default class App extends React.Component<AppProps, AppState> {
         }
 
         if (mutated) {
-            await this.docRepository!.syncDocInfo(repoDocInfo.docInfo);
+            await this.docRepository!.writeDocInfo(repoDocInfo.docInfo);
             this.refresh();
         }
 
@@ -700,6 +703,8 @@ export default class App extends React.Component<AppProps, AppState> {
 
             this.docRepository!.updateDocInfo(repoDocInfo);
             this.refresh();
+
+            // this.docRepository!.writeDocInfo(repoDocInfo);
 
         } else {
 
