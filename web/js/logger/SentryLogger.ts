@@ -63,7 +63,12 @@ export class SentryLogger implements ILogger {
     }
 
     public static isEnabled() {
-        return !isPresent(process.env.SNAP);
+
+        if (isPresent(process.env.POLAR_SENTRY_ENABLED)) {
+            return process.env.POLAR_SENTRY_ENABLED === 'true';
+        }
+
+        return ! isPresent(process.env.SNAP);
     }
 
     private static initWhenNecessary() {

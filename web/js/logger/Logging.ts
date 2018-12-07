@@ -79,6 +79,7 @@ export class Logging {
 
         const loggers: ILogger[] = [];
 
+        // TODO: SentryLogger enabled for INFO will lock us up.
         if (SentryLogger.isEnabled()) {
             // *** first logger is sentry but only if we are not running within
             // a SNAP container.
@@ -95,6 +96,7 @@ export class Logging {
         // *** now include the persistent error log so that we can get error
         // reports from users.
 
+        // TODO: PersistentErrorLogger enabled for INFO will lock us up.
         loggers.push(await PersistentErrorLogger.create());
 
         // *** last is the primary log. Either disk or the console.
