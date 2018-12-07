@@ -25,6 +25,7 @@ import {SyncBar} from '../sync_bar/SyncBar';
 import {IStyleMap} from '../../react/IStyleMap';
 import {LargeModal} from '../large_modal/LargeModal';
 import {LargeModalBody} from '../large_modal/LargeModalBody';
+import {CloudSignupContent} from './CloudSignupContent';
 
 
 const Styles: IStyleMap = {
@@ -87,55 +88,7 @@ export class CloudSignup extends React.Component<IProps, IState> {
                 {/*<ModalHeader>Polar Cloud Sync</ModalHeader>*/}
                 <LargeModalBody>
 
-                    <div className="text-center">
-
-                        <i className="fas fa-cloud-upload-alt" style={Styles.icon}></i>
-
-                        <h1>Polar Cloud Sync</h1>
-
-                    </div>
-
-                    <p className="intro" style={Styles.overview}>
-                        Polar Cloud Sync enables synchronization of your
-                        documents and annotations between multiple
-                        devices transparently with the cloud.
-                    </p>
-
-                    <ul style={Styles.features}>
-
-                        <li>
-                            Full sync of your data into the cloud in realtime.
-                            Your files are immediately distributed to your other
-                            devices (MacOS, Windows, and Linux)
-                        </li>
-
-                        <li>
-                            10 GB of storage for all you documents and
-                            annotations.
-                        </li>
-
-                        <li>
-                            Private access control. Your data is private
-                            and only accessible to your account.
-                        </li>
-
-                        <li>
-                            Full offline access with cloud sync upon reconnect.
-                        </li>
-
-                    </ul>
-
-                    <p style={Styles.price}>
-
-                        <div style={Styles.price_value}>
-                            $7.99
-                        </div>
-
-                        <div className="text-muted" style={Styles.price_overview}>
-                            per month
-                        </div>
-
-                    </p>
+                    <CloudSignupContent/>
 
                 </LargeModalBody>
                 <ModalFooter>

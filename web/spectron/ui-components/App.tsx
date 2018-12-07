@@ -15,6 +15,7 @@ import {CommentComponentExample} from './CommentComponentExample';
 import {FlashcardComponentExample} from './FlashcardComponentExample';
 import {WhatsNewContent} from '../../../apps/repository/js/splash/splashes/whats_new/WhatsNewContent';
 import {ModalBody} from 'reactstrap';
+import {CloudSignupContent} from '../../js/ui/cloud_auth/CloudSignupContent';
 
 class App<P> extends React.Component<{}, IAppState> {
 
@@ -104,6 +105,8 @@ class App<P> extends React.Component<{}, IAppState> {
                 <FlashcardComponentExample/>
 
                 <WhatsNewContent/>
+
+                <CloudSignupContent/>
 
             </div>
 
