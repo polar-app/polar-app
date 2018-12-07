@@ -8,6 +8,7 @@ import * as firebase from '../../firestore/lib/firebase';
 import {FirebaseUIAuth} from '../../firestore/FirebaseUIAuth';
 import {Logger} from '../../logger/Logger';
 import {PersistenceLayerManager} from '../../datastore/PersistenceLayerManager';
+import {CloudSignup} from './CloudSignup';
 
 const log = Logger.create();
 
@@ -20,7 +21,6 @@ export class CloudAuthButton extends React.Component<IProps, IState> {
 
         this.state = {
             mode: 'none',
-            doAuth: false
         };
 
         Firebase.init();
@@ -41,11 +41,17 @@ export class CloudAuthButton extends React.Component<IProps, IState> {
                             size="sm"
                             onClick={() => this.enableCloudSync()}>
 
-                        Enable Cloud Sync
+                        <i className="fas fa-cloud-upload-alt" style={{marginRight: '5px'}}></i>
+
+                        Cloud Sync
 
                     </Button>
 
-                    <CloudAuthModal isOpen={this.state.doAuth}/>
+                    <CloudAuthModal isOpen={this.state.stage === 'login'}/>
+
+                    <CloudSignup isOpen={this.state.stage === 'overview'}
+                                 onCancel={() => this.changeAuthStage()}
+                                 onSignup={() => this.changeAuthStage('login')}/>
 
                 </div>
 
@@ -63,8 +69,6 @@ export class CloudAuthButton extends React.Component<IProps, IState> {
                         Logout
 
                     </Button>
-
-                    <CloudAuthModal isOpen={this.state.doAuth}/>
 
                 </div>
 
@@ -85,10 +89,16 @@ export class CloudAuthButton extends React.Component<IProps, IState> {
     }
 
     private enableCloudSync() {
+        this.changeAuthStage('overview');
+    }
+
+    private changeAuthStage(stage?: AuthStage) {
+
         this.setState({
             mode: this.state.mode,
-            doAuth: true
+            stage
         });
+
     }
 
     private onAuth(user: firebase.User | null) {
@@ -101,9 +111,7 @@ export class CloudAuthButton extends React.Component<IProps, IState> {
 
         this.setState({
               mode,
-              doAuth: this.state.doAuth
           });
-
 
     }
 
@@ -119,8 +127,9 @@ interface IProps {
 
 interface IState {
     readonly mode: AuthMode;
-    readonly doAuth: boolean;
+    readonly stage?: AuthStage;
 }
 
 type AuthMode = 'none' | 'needs-auth' | 'authenticated';
 
+type AuthStage = 'overview' | 'login';
