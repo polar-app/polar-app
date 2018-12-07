@@ -32,7 +32,7 @@ SpectronMain2.create(options).run(async state => {
     // the webserver must be running as firebase won't load without being on an
     // HTTP URL
 
-    const appDir = process.cwd();
+    const appDir = __dirname;
     const webserverConfig = new WebserverConfig(appDir, 8005);
 
     const fileRegistry = new FileRegistry(webserverConfig);
@@ -44,7 +44,7 @@ SpectronMain2.create(options).run(async state => {
         console.warn("Webserver already running.");
     }
 
-    const url = `http://localhost:8005/web/spectron/firebase-datastore/content.html`;
+    const url = `http://localhost:8005/content.html`;
     state.window.loadURL(url);
 
 });
