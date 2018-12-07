@@ -16,7 +16,7 @@ const Styles: IStyleMap = {
     icon: {
         fontSize: '120px',
         margin: '20px',
-        color: '007bff'
+        // color: '007bff'
         // minWidth: '350px',
         // width: '350px'
     },
@@ -67,7 +67,7 @@ export class CloudSyncConfiguredContent extends React.Component<IProps, IState> 
 
                 <div className="text-center">
 
-                    <i className="fas fa-check-circle" style={Styles.icon}></i>
+                    <i className="fas fa-check-circle text-success" style={Styles.icon}></i>
 
                     <h1>Cloud Sync Configured</h1>
 

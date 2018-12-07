@@ -9,6 +9,7 @@ import {FirebaseUIAuth} from '../../firestore/FirebaseUIAuth';
 import {Logger} from '../../logger/Logger';
 import {PersistenceLayerManager} from '../../datastore/PersistenceLayerManager';
 import {CloudSyncOverviewModal} from './CloudSyncOverviewModal';
+import {CloudSyncConfiguredModal} from './CloudSyncConfiguredModal';
 
 const log = Logger.create();
 
@@ -23,6 +24,10 @@ export class CloudAuthButton extends React.Component<IProps, IState> {
 
         if (document.location!.href.endsWith("#login")) {
             stage = 'login';
+        }
+
+        if (document.location!.href.endsWith("#configured")) {
+            stage = 'configured';
         }
 
         this.state = {
@@ -57,6 +62,7 @@ export class CloudAuthButton extends React.Component<IProps, IState> {
                     <CloudLoginModal isOpen={this.state.stage === 'login'}
                                      onCancel={() => this.changeAuthStage()}/>
 
+
                     <CloudSyncOverviewModal isOpen={this.state.stage === 'overview'}
                                             onCancel={() => this.changeAuthStage()}
                                             onSignup={() => this.changeAuthStage('login')}/>
@@ -69,6 +75,8 @@ export class CloudAuthButton extends React.Component<IProps, IState> {
 
             return (
                 <div>
+                    <CloudSyncConfiguredModal isOpen={this.state.stage === 'configured'}
+                                              onCancel={() => this.changeAuthStage()}/>
 
                     <Button color="primary"
                             size="sm"
@@ -104,6 +112,8 @@ export class CloudAuthButton extends React.Component<IProps, IState> {
 
         if (stage) {
             document.location!.hash = stage;
+        } else {
+            document.location!.hash = '';
         }
 
         this.setState({
@@ -144,4 +154,4 @@ interface IState {
 
 type AuthMode = 'none' | 'needs-auth' | 'authenticated';
 
-type AuthStage = 'overview' | 'login';
+type AuthStage = 'overview' | 'login' | 'configured';

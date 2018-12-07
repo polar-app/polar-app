@@ -30,7 +30,7 @@ export class CloudLoginModal extends React.Component<IProps, IState> {
 
         if (this.props.isOpen) {
             Firebase.init();
-            FirebaseUIAuth.login({signInSuccessUrl: document.location!.href + '#authenticated'});
+            FirebaseUIAuth.login({signInSuccessUrl: document.location!.href + '#configured'});
         }
 
     }
