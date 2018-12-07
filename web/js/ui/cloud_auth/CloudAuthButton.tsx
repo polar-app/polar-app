@@ -2,13 +2,13 @@
 import React from 'react';
 import {Button, Popover, PopoverBody} from 'reactstrap';
 import Popper from 'popper.js';
-import {CloudAuthModal} from './CloudAuthModal';
+import {CloudLoginModal} from './CloudLoginModal';
 import {Firebase} from '../../firestore/Firebase';
 import * as firebase from '../../firestore/lib/firebase';
 import {FirebaseUIAuth} from '../../firestore/FirebaseUIAuth';
 import {Logger} from '../../logger/Logger';
 import {PersistenceLayerManager} from '../../datastore/PersistenceLayerManager';
-import {CloudSignup} from './CloudSignup';
+import {CloudSyncOverviewModal} from './CloudSyncOverviewModal';
 
 const log = Logger.create();
 
@@ -19,8 +19,15 @@ export class CloudAuthButton extends React.Component<IProps, IState> {
 
         this.enableCloudSync = this.enableCloudSync.bind(this);
 
+        let stage: AuthStage | undefined;
+
+        if (document.location!.href.endsWith("#login")) {
+            stage = 'login';
+        }
+
         this.state = {
             mode: 'none',
+            stage
         };
 
         Firebase.init();
@@ -47,11 +54,12 @@ export class CloudAuthButton extends React.Component<IProps, IState> {
 
                     </Button>
 
-                    <CloudAuthModal isOpen={this.state.stage === 'login'}/>
+                    <CloudLoginModal isOpen={this.state.stage === 'login'}
+                                     onCancel={() => this.changeAuthStage()}/>
 
-                    <CloudSignup isOpen={this.state.stage === 'overview'}
-                                 onCancel={() => this.changeAuthStage()}
-                                 onSignup={() => this.changeAuthStage('login')}/>
+                    <CloudSyncOverviewModal isOpen={this.state.stage === 'overview'}
+                                            onCancel={() => this.changeAuthStage()}
+                                            onSignup={() => this.changeAuthStage('login')}/>
 
                 </div>
 
@@ -93,6 +101,10 @@ export class CloudAuthButton extends React.Component<IProps, IState> {
     }
 
     private changeAuthStage(stage?: AuthStage) {
+
+        if (stage) {
+            document.location!.hash = stage;
+        }
 
         this.setState({
             mode: this.state.mode,

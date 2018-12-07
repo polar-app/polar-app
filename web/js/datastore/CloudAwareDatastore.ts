@@ -289,19 +289,13 @@ export class CloudAwareDatastore extends AbstractDatastore implements Datastore,
                     return;
                 }
 
-                // FIXME: ignore if this comes from anything other than the
-                // cloud store...
-
                 for (const docMetaMutation of docMetaSnapshotEvent.docMetaMutations) {
 
-                    // FIXME: no binary files are being transferred here... Just
-                    // DocMeta...
+                    // FIXME FIXME FIXME: no binary files are being transferred
+                    // here... Just DocMeta...  Maybe use the same code that
+                    // synchronize is using...
 
                     if (docMetaMutation.mutationType === 'created' || docMetaMutation.mutationType === 'updated') {
-                        // TODO: I think we could improve the performance here
-                        // by having a dataProvider() with just the string data
-                        // which would mean we can write directly to the local
-                        // store without serializing.
                         const data = await docMetaMutation.dataProvider();
                         const docInfo = await docMetaMutation.docInfoProvider();
                         Preconditions.assertPresent(data, "No data in replication listener: ");

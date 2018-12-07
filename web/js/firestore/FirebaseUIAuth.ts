@@ -43,6 +43,7 @@ export class FirebaseUIAuth {
                 },
 
             },
+            queryParameterForWidgetMode: 'mode',
 
             signInSuccessUrl: opts.signInSuccessUrl,
             signInOptions: [

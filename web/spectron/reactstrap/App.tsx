@@ -22,7 +22,7 @@ import Moment from 'react-moment';
 import {ListSelector, ListOptionType} from '../../js/ui/list_selector/ListSelector';
 import {TableDropdown} from "../../../apps/repository/js/TableDropdown";
 import {IStyleMap} from '../../js/react/IStyleMap';
-import {CloudSignup} from '../../js/ui/cloud_auth/CloudSignup';
+import {CloudSyncOverviewModal} from '../../js/ui/cloud_auth/CloudSyncOverviewModal';
 import {SyncBar, SyncBarProgress} from '../../js/ui/sync_bar/SyncBar';
 import {WhatsNewComponent} from '../../../apps/repository/js/splash/splashes/whats_new/WhatsNewComponent';
 import {IEventDispatcher, SimpleReactor} from '../../js/reactor/SimpleReactor';

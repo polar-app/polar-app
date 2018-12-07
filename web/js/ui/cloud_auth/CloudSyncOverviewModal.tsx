@@ -25,7 +25,7 @@ import {SyncBar} from '../sync_bar/SyncBar';
 import {IStyleMap} from '../../react/IStyleMap';
 import {LargeModal} from '../large_modal/LargeModal';
 import {LargeModalBody} from '../large_modal/LargeModalBody';
-import {CloudSignupContent} from './CloudSignupContent';
+import {CloudSyncOverviewContent} from './CloudSyncOverviewContent';
 
 
 const Styles: IStyleMap = {
@@ -73,7 +73,7 @@ const Styles: IStyleMap = {
 
 };
 
-export class CloudSignup extends React.Component<IProps, IState> {
+export class CloudSyncOverviewModal extends React.Component<IProps, IState> {
 
     constructor(props: IProps, context: any) {
         super(props, context);
@@ -88,7 +88,7 @@ export class CloudSignup extends React.Component<IProps, IState> {
                 {/*<ModalHeader>Polar Cloud Sync</ModalHeader>*/}
                 <LargeModalBody>
 
-                    <CloudSignupContent/>
+                    <CloudSyncOverviewContent/>
 
                 </LargeModalBody>
                 <ModalFooter>
@@ -120,5 +120,3 @@ interface IProps {
 interface IState {
 
 }
-
-

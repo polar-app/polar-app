@@ -48,7 +48,7 @@ const Styles: IStyleMap = {
 
 };
 
-export class CloudSignupContent extends React.Component<IProps, IState> {
+export class CloudSyncOverviewContent extends React.Component<IProps, IState> {
 
     constructor(props: IProps, context: any) {
         super(props, context);

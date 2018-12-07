@@ -10,6 +10,7 @@ export class Firebase {
      */
     public static init(): firebase.app.App {
 
+
         if (this.app) {
             return this.app;
         }

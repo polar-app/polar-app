@@ -8,7 +8,7 @@ import {LargeModalBody} from '../large_modal/LargeModalBody';
 import {Firebase} from '../../firestore/Firebase';
 import {FirebaseUIAuth} from '../../firestore/FirebaseUIAuth';
 
-export class CloudAuthModal extends React.Component<IProps, IState> {
+export class CloudLoginModal extends React.Component<IProps, IState> {
 
     constructor(props: IProps) {
         super(props);
@@ -19,13 +19,18 @@ export class CloudAuthModal extends React.Component<IProps, IState> {
     }
 
     public componentDidMount(): void {
+        this.doAuthContainer();
     }
 
     public componentDidUpdate(prevProps: Readonly<IProps>, prevState: Readonly<IState>, snapshot?: any): void {
+        this.doAuthContainer();
+    }
+
+    private doAuthContainer() {
 
         if (this.props.isOpen) {
             Firebase.init();
-            FirebaseUIAuth.login({signInSuccessUrl: document.location!.href});
+            FirebaseUIAuth.login({signInSuccessUrl: document.location!.href + '#authenticated'});
         }
 
     }
@@ -42,6 +47,10 @@ export class CloudAuthModal extends React.Component<IProps, IState> {
 
                 </LargeModalBody>
                 <ModalFooter>
+                    <Button color="secondary"
+                            onClick={() => this.props.onCancel()}>
+                        Cancel
+                    </Button>
 
                 </ModalFooter>
 
@@ -54,7 +63,8 @@ export class CloudAuthModal extends React.Component<IProps, IState> {
 }
 
 interface IProps {
-    isOpen: boolean;
+    readonly isOpen: boolean;
+    readonly onCancel: () => void;
 }
 
 interface IState {
