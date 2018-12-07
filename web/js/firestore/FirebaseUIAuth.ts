@@ -7,7 +7,7 @@ import firebaseui from './lib/firebaseui';
 import {Objects} from '../util/Objects';
 
 // noinspection TsLint: max-line-length
-const SIGN_IN_SUCCESS_URL = 'http://localapp.getpolarized.io:8500/apps/repository/index.html#?authenticated=true';
+const SIGN_IN_SUCCESS_URL = 'http://localapp.getpolarized.io:8005/content.html';
 const TOS_URL = 'https://getpolarized.io/terms-of-service.html';
 const PRIVACY_POLICY_URL = 'https://getpolarized.io/terms-of-service.html';
 
@@ -35,8 +35,6 @@ export class FirebaseUIAuth {
 
                 signInSuccessWithAuthResult: (authResult: any,
                                               redirectUrl: string) => {
-
-                    console.log("FIXME: signInSuccessWithAuthResult");
 
                     return true;
 

@@ -101,7 +101,7 @@ SpectronRenderer.run(async (state) => {
 
         // await syncWithFirebase();
 
-        await initialMergeWithFirebase();
+        // await initialMergeWithFirebase();
 
     });
 

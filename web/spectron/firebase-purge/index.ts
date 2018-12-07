@@ -31,7 +31,3 @@ SpectronMain2.create(options).run(async state => {
     state.window.loadURL(url);
 
 });
-
-
-
-
