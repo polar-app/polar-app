@@ -230,7 +230,7 @@ export class CloudAwareDatastore extends AbstractDatastore implements Datastore,
 
             private async handle(docMetaSnapshotEvent: DocMetaSnapshotEvent) {
 
-                console.log("FIXME: handling InitialSnapshotLatch event for: " + this.id, docMetaSnapshotEvent);
+                // console.log("FIXME: handling InitialSnapshotLatch event for: " + this.id, docMetaSnapshotEvent);
 
                 try {
 
@@ -252,8 +252,8 @@ export class CloudAwareDatastore extends AbstractDatastore implements Datastore,
 
                         const nrDocs = Dictionaries.size(this.syncDocMap);
 
-                        console.log(`FIXME: InitialSnapshotLatch ${this.id} has nrDocs ${nrDocs} and resolved with: ` +
-                                        DocMetaSnapshotEvents.format(docMetaSnapshotEvent));
+                        // console.log(`FIXME: InitialSnapshotLatch ${this.id} has nrDocs ${nrDocs} and resolved with: ` +
+                        //                 DocMetaSnapshotEvents.format(docMetaSnapshotEvent));
 
                         this.hasInitialTerminatedBatch = true;
 
@@ -273,8 +273,6 @@ export class CloudAwareDatastore extends AbstractDatastore implements Datastore,
 
             private onSnapshot(docMetaSnapshotEvent: DocMetaSnapshotEvent) {
 
-                console.log("FIXME: within onSnapshot for: " + this.id);
-
                 this.handle(docMetaSnapshotEvent)
                     .catch(err => {
                         log.error(`Unable to handle event for snapshot: ${snapshotID}`, err);
@@ -292,8 +290,6 @@ export class CloudAwareDatastore extends AbstractDatastore implements Datastore,
                 // consumed yet as they are being awaited...
 
                 return datastore.snapshot(docMetaSnapshotEvent => {
-
-                    console.log("FIXME: within raw handler for: " + this.id);
 
                     // always forward to the synchronizing listener
                     synchronizingListener(docMetaSnapshotEvent);

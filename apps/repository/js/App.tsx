@@ -705,8 +705,6 @@ export default class App extends React.Component<AppProps, AppState> {
 
         log.info("Received DocInfo update");
 
-        console.log("FIXME220: onUpdatedDocInfo ... begin");
-
         const repoDocInfo = RepoDocInfos.convertFromDocInfo(docInfo);
 
         if (RepoDocInfos.isValid(repoDocInfo)) {
@@ -733,8 +731,6 @@ export default class App extends React.Component<AppProps, AppState> {
 
         }
 
-        console.log("FIXME220: onUpdatedDocInfo ... end");
-
     }
 
     private async init(): Promise<void> {
@@ -760,8 +756,6 @@ export default class App extends React.Component<AppProps, AppState> {
             if (event.state === 'changed') {
                 event.persistenceLayer.addEventListener((persistenceLayerEvent: PersistenceLayerEvent) => {
 
-                    console.log("FIXME221: Got advertised event persistence layer event listener: ", event);
-
                     this.onUpdatedDocInfo(persistenceLayerEvent.docInfo);
 
                 });
@@ -784,15 +778,12 @@ export default class App extends React.Component<AppProps, AppState> {
         // the server is sending data.
 
         const refreshThrottler = new Throttler(() => {
-            console.log("FIXME: Refreshing UI");
             this.refresh();
-        }, {maxRequests: 50, maxTimeout: 150});
+        }, {maxRequests: 100, maxTimeout: 300});
 
         let hasSentInitAnalyitics = false;
 
         this.repoDocInfoLoader.addEventListener(event => {
-
-            console.log("FIXME222: Got DocInfo from repoDocInfoLoader event listener: ", event.repoDocInfoIndex);
 
             this.docRepository.updateDocInfo(...Object.values(event.repoDocInfoIndex));
 
