@@ -1,4 +1,4 @@
-import {IListenablePersistenceLayer} from '../../../web/js/datastore/IListenablePersistenceLayer';
+import {ListenablePersistenceLayer} from '../../../web/js/datastore/ListenablePersistenceLayer';
 import {IEventDispatcher} from '../../../web/js/reactor/SimpleReactor';
 import {IDocInfo} from '../../../web/js/metadata/DocInfo';
 import {IProvider} from '../../../web/js/util/Providers';
@@ -17,4 +17,4 @@ export interface AppProps {
  * Create a new PeristenceLayer. Note that this must NOT be initialized becuase
  * we may want to add event listeners.
  */
-export type PersistenceLayerFactory = () => IListenablePersistenceLayer;
+export type PersistenceLayerFactory = () => ListenablePersistenceLayer;

@@ -4,7 +4,7 @@ import {DocInfoAdvertiser} from './DocInfoAdvertiser';
 import {DocInfoAdvertisementListenerService} from './DocInfoAdvertisementListenerService';
 import {PersistenceLayerEvent} from '../PersistenceLayerEvent';
 import {PersistenceLayer} from '../PersistenceLayer';
-import {IListenablePersistenceLayer} from '../IListenablePersistenceLayer';
+import {ListenablePersistenceLayer} from '../ListenablePersistenceLayer';
 import {AbstractAdvertisingPersistenceLayer} from './AbstractAdvertisingPersistenceLayer';
 
 /**
@@ -15,7 +15,7 @@ import {AbstractAdvertisingPersistenceLayer} from './AbstractAdvertisingPersiste
  */
 export class AdvertisingPersistenceLayer
     extends AbstractAdvertisingPersistenceLayer
-    implements IListenablePersistenceLayer {
+    implements ListenablePersistenceLayer {
 
     private readonly docInfoAdvertisementListenerService = new DocInfoAdvertisementListenerService();
 

@@ -155,7 +155,9 @@ export class DefaultPersistenceLayer implements PersistenceLayer {
         // update the sequence before we write it out to disk.
         docMeta.docInfo.uuid = UUIDs.create();
 
-        log.info("Sync of docMeta with fingerprint: ", fingerprint);
+        log.info(`Sync of docMeta with fingerprint: ${fingerprint} and UUID: ` + docMeta.docInfo.uuid);
+
+        console.log(`FIXME: Sync of docMeta with fingerprint: ${fingerprint} and UUID: ` + docMeta.docInfo.uuid);
 
         // TODO/FIXME: migrate to datastore.writeDocMeta
 

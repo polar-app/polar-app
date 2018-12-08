@@ -1,5 +1,5 @@
 import {PersistenceLayer} from '../PersistenceLayer';
-import {IListenablePersistenceLayer} from '../IListenablePersistenceLayer';
+import {ListenablePersistenceLayer} from '../ListenablePersistenceLayer';
 import {AbstractAdvertisingPersistenceLayer} from './AbstractAdvertisingPersistenceLayer';
 import {PersistenceLayerEvent} from '../PersistenceLayerEvent';
 
@@ -9,7 +9,7 @@ import {PersistenceLayerEvent} from '../PersistenceLayerEvent';
  */
 export class MockAdvertisingPersistenceLayer
     extends AbstractAdvertisingPersistenceLayer
-    implements IListenablePersistenceLayer {
+    implements ListenablePersistenceLayer {
 
     constructor(persistenceLayer: PersistenceLayer) {
         super(persistenceLayer);

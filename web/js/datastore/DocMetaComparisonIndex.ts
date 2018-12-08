@@ -26,7 +26,7 @@ export class DocMetaComparisonIndex {
         delete this.backing[fingerprint];
     }
 
-    public putDocMeta(docMeta: DocMeta) {
+    public updateUsingDocMeta(docMeta: DocMeta) {
 
         this.backing[docMeta.docInfo.fingerprint] = {
             fingerprint: docMeta.docInfo.fingerprint,
@@ -35,7 +35,7 @@ export class DocMetaComparisonIndex {
 
     }
 
-    public putDocInfo(docInfo: IDocInfo) {
+    public updateUsingDocInfo(docInfo: IDocInfo) {
 
         this.backing[docInfo.fingerprint] = {
             fingerprint: docInfo.fingerprint,
@@ -79,7 +79,7 @@ export class DocMetaComparisonIndex {
 
         if (doUpdated) {
             // when the doc is created and it's not in the index.
-            this.putDocInfo(docInfo);
+            this.updateUsingDocInfo(docInfo);
             return true;
         }
 

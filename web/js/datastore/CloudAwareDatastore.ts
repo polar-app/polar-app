@@ -184,7 +184,7 @@ export class CloudAwareDatastore extends AbstractDatastore implements Datastore,
         datastoreMutation
             .written.get().then(() => {
 
-            this.docMetaComparisonIndex.putDocInfo(docInfo);
+            this.docMetaComparisonIndex.updateUsingDocInfo(docInfo);
 
         });
 

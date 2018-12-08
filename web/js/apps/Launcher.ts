@@ -5,7 +5,7 @@ import {Logger} from '../logger/Logger';
 import {Logging} from '../logger/Logging';
 import {WebView} from '../view/WebView';
 import {PagemarkView} from '../pagemarks/view/PagemarkView';
-import {IListenablePersistenceLayer} from '../datastore/IListenablePersistenceLayer';
+import {ListenablePersistenceLayer} from '../datastore/ListenablePersistenceLayer';
 import {TextHighlightView2} from '../highlights/text/view/TextHighlightView2';
 import {AnnotationSidebarService} from '../annotation_sidebar/AnnotationSidebarService';
 import {PageSearchController} from '../page_search/PageSearchController';
@@ -77,4 +77,4 @@ export class Launcher {
 
 }
 
-export type PersistenceLayerFactory = () => Promise<IListenablePersistenceLayer>;
+export type PersistenceLayerFactory = () => Promise<ListenablePersistenceLayer>;

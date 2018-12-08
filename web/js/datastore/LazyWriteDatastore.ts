@@ -23,6 +23,11 @@ export class LazyWriteDatastore extends DelegatedDatastore {
         this.id = 'lazy-write:' + delegate.id;
     }
 
+
+    // TODO: when we do a read, it might be better to update the index then
+    // which would remove the first write in some situations but we need the
+    // DocInfo and the UUID to handle this.
+
     public async write(fingerprint: string,
                        data: any,
                        docInfo: IDocInfo,
@@ -46,7 +51,7 @@ export class LazyWriteDatastore extends DelegatedDatastore {
 
         if (doUpdated) {
             // when the doc is created and it's not in the index.
-            this.index.putDocInfo(docInfo);
+            this.index.updateUsingDocInfo(docInfo);
             ++this.nrWrites;
             return super.write(fingerprint, data, docInfo, datastoreMutation);
         }

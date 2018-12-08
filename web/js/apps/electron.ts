@@ -1,13 +1,13 @@
 import {Launcher} from './Launcher';
 import {Logger} from '../logger/Logger';
 
-import {IListenablePersistenceLayer} from '../datastore/IListenablePersistenceLayer';
+import {ListenablePersistenceLayer} from '../datastore/ListenablePersistenceLayer';
 import {DefaultPersistenceLayerFactory} from '../datastore/factories/DefaultPersistenceLayerFactory';
 import {RemotePersistenceLayerFactory} from '../datastore/factories/RemotePersistenceLayerFactory';
 
 const log = Logger.create();
 
-async function persistenceLayerFactory(): Promise<IListenablePersistenceLayer> {
+async function persistenceLayerFactory(): Promise<ListenablePersistenceLayer> {
 
     // let electronPersistenceLayer = ElectronPersistenceLayerFactory.create();
     // return new PersistenceLayerDispatcher(PersistenceLayerWorkers.create(), electronPersistenceLayer);

@@ -1,5 +1,5 @@
 import {DocMeta} from '../metadata/DocMeta';
-import {IListenablePersistenceLayer} from '../datastore/IListenablePersistenceLayer';
+import {ListenablePersistenceLayer} from '../datastore/ListenablePersistenceLayer';
 import {Batcher} from '../datastore/batcher/Batcher';
 import {TraceEvent} from '../proxies/TraceEvent';
 import {Logger} from '../logger/Logger';
@@ -12,12 +12,12 @@ export class ModelPersister {
 
     public readonly docMeta: DocMeta;
 
-    private readonly persistenceLayer: IListenablePersistenceLayer;
+    private readonly persistenceLayer: ListenablePersistenceLayer;
 
     // TODO: push this into the main process and also use the duplicate event
     // merger to verify that we don't do duplicate writes by the same UUID.
 
-    constructor(persistenceLayer: IListenablePersistenceLayer, docMeta: DocMeta) {
+    constructor(persistenceLayer: ListenablePersistenceLayer, docMeta: DocMeta) {
         this.persistenceLayer = persistenceLayer;
         this.docMeta = docMeta;
 

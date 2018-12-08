@@ -6,7 +6,7 @@ import {PersistenceLayer} from './PersistenceLayer';
  * including deletes, updates, and creates of DocMeta and provides details about
  * which files have been updated and their DocInfo.
  */
-export interface IListenablePersistenceLayer extends PersistenceLayer {
+export interface ListenablePersistenceLayer extends PersistenceLayer {
 
     addEventListener(listener: PersistenceLayerListener): void;
 

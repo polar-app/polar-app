@@ -4,7 +4,7 @@ import {Footer, Tips} from './Utils';
 import {Logger} from '../../../web/js/logger/Logger';
 import {DocLoader} from '../../../web/js/apps/main/ipc/DocLoader';
 import {Strings} from '../../../web/js/util/Strings';
-import {IListenablePersistenceLayer} from '../../../web/js/datastore/IListenablePersistenceLayer';
+import {ListenablePersistenceLayer} from '../../../web/js/datastore/ListenablePersistenceLayer';
 import {RepoDocInfoLoader} from './RepoDocInfoLoader';
 import {AppState} from './AppState';
 import {RepoDocInfo} from './RepoDocInfo';
@@ -704,6 +704,8 @@ export default class App extends React.Component<AppProps, AppState> {
 
             this.docRepository!.updateDocInfo(repoDocInfo);
             this.refresh();
+
+            console.log("FIXME: going to writeDocInfo with UUID: " + docInfo.uuid, docInfo);
 
             this.docRepository!.writeDocInfo(docInfo)
                 .catch(err => log.error("Unable to write doc info: ", err));

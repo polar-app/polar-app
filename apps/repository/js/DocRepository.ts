@@ -1,4 +1,4 @@
-import {IListenablePersistenceLayer} from '../../../web/js/datastore/IListenablePersistenceLayer';
+import {ListenablePersistenceLayer} from '../../../web/js/datastore/ListenablePersistenceLayer';
 import {Logger} from '../../../web/js/logger/Logger';
 import {DocInfo, IDocInfo} from '../../../web/js/metadata/DocInfo';
 import {RepoDocInfo} from './RepoDocInfo';

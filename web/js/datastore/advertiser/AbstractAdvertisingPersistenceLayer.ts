@@ -1,4 +1,4 @@
-import {IListenablePersistenceLayer} from '../IListenablePersistenceLayer';
+import {ListenablePersistenceLayer} from '../ListenablePersistenceLayer';
 import {SimpleReactor} from '../../reactor/SimpleReactor';
 import {PersistenceLayerEvent} from '../PersistenceLayerEvent';
 import {PersistenceLayerListener} from '../PersistenceLayerListener';
@@ -18,7 +18,7 @@ import {DocInfo} from '../../metadata/DocInfo';
 import {DatastoreMutation, DefaultDatastoreMutation} from '../DatastoreMutation';
 import {NULL_FUNCTION} from '../../util/Functions';
 
-export abstract class AbstractAdvertisingPersistenceLayer implements IListenablePersistenceLayer {
+export abstract class AbstractAdvertisingPersistenceLayer implements ListenablePersistenceLayer {
 
     public readonly datastore: Datastore;
 

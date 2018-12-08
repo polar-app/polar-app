@@ -7,7 +7,7 @@ import {Pagemarks} from '../metadata/Pagemarks';
 import {Objects} from '../util/Objects';
 import {DocMetaDescriber} from '../metadata/DocMetaDescriber';
 import {Logger} from '../logger/Logger';
-import {IListenablePersistenceLayer} from '../datastore/IListenablePersistenceLayer';
+import {ListenablePersistenceLayer} from '../datastore/ListenablePersistenceLayer';
 import {ModelPersisterFactory} from './ModelPersisterFactory';
 import {DocDetail} from '../metadata/DocDetail';
 import {Optional} from '../util/ts/Optional';
@@ -24,7 +24,7 @@ export class Model {
     // TODO: we create a fake document which is eventually replaced.
     public docMeta: DocMeta = NULL_DOC_META;
 
-    private readonly persistenceLayer: IListenablePersistenceLayer;
+    private readonly persistenceLayer: ListenablePersistenceLayer;
 
     private readonly modelPersisterFactory: ModelPersisterFactory;
 
@@ -32,7 +32,7 @@ export class Model {
 
     private docMetaPromise: Promise<DocMeta> = Promise.resolve(NULL_DOC_META);
 
-    constructor(persistenceLayer: IListenablePersistenceLayer) {
+    constructor(persistenceLayer: ListenablePersistenceLayer) {
 
         this.persistenceLayer = persistenceLayer;
         this.modelPersisterFactory = new ModelPersisterFactory(persistenceLayer);

@@ -34,7 +34,7 @@ class App<P> extends React.Component<{}, IAppState> {
 
             await this.init();
 
-            //this.setState(this.state);
+            // this.setState(this.state);
 
             let fingerprint = '110dd61fd57444010b1ab5ff38782f0f';
 

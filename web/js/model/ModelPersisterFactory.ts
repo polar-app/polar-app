@@ -1,12 +1,12 @@
 import {DocMeta} from '../metadata/DocMeta';
-import {IListenablePersistenceLayer} from '../datastore/IListenablePersistenceLayer';
+import {ListenablePersistenceLayer} from '../datastore/ListenablePersistenceLayer';
 import {ModelPersister} from './ModelPersister';
 
 export class ModelPersisterFactory {
 
-    private readonly persistenceLayer: IListenablePersistenceLayer;
+    private readonly persistenceLayer: ListenablePersistenceLayer;
 
-    constructor(persistenceLayer: IListenablePersistenceLayer) {
+    constructor(persistenceLayer: ListenablePersistenceLayer) {
         this.persistenceLayer = persistenceLayer;
     }
 

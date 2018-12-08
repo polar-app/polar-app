@@ -5,18 +5,18 @@ import {RemotePersistenceLayerFactory} from './factories/RemotePersistenceLayerF
 import {CloudAwareDatastore} from './CloudAwareDatastore';
 import {CloudPersistenceLayerFactory} from "./factories/CloudPersistenceLayerFactory";
 import {IProvider} from "../util/Providers";
-import {IListenablePersistenceLayer} from './IListenablePersistenceLayer';
+import {ListenablePersistenceLayer} from './ListenablePersistenceLayer';
 import {Logger} from "../logger/Logger";
 
 const log = Logger.create();
 
 const RESET_KEY = 'polar-persistence-layer-reset';
 
-export class PersistenceLayerManager implements IProvider<IListenablePersistenceLayer> {
+export class PersistenceLayerManager implements IProvider<ListenablePersistenceLayer> {
 
     private readonly persistenceLayerManagerEventDispatcher: IEventDispatcher<PersistenceLayerManagerEvent> = new SimpleReactor();
 
-    private persistenceLayer?: IListenablePersistenceLayer;
+    private persistenceLayer?: ListenablePersistenceLayer;
 
     /**
      * The current persistence type in place.
@@ -47,7 +47,7 @@ export class PersistenceLayerManager implements IProvider<IListenablePersistence
 
     }
 
-    public get(): IListenablePersistenceLayer {
+    public get(): ListenablePersistenceLayer {
         return this.persistenceLayer!;
     }
 
@@ -109,7 +109,7 @@ export class PersistenceLayerManager implements IProvider<IListenablePersistence
         return window.localStorage.removeItem(RESET_KEY);
     }
 
-    private createPersistenceLayer(type: PersistenceLayerType): IListenablePersistenceLayer {
+    private createPersistenceLayer(type: PersistenceLayerType): ListenablePersistenceLayer {
 
         if (type === 'local') {
             return RemotePersistenceLayerFactory.create();
@@ -153,7 +153,7 @@ export interface PersistenceLayerManagerEvent {
 
     readonly type: PersistenceLayerType;
     readonly state: PersistenceLayerState;
-    readonly persistenceLayer: IListenablePersistenceLayer;
+    readonly persistenceLayer: ListenablePersistenceLayer;
 
 }
 

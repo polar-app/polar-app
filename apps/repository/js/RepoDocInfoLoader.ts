@@ -1,6 +1,6 @@
 import {DocMetaRef} from '../../../web/js/datastore/DocMetaRef';
 import {Optional} from '../../../web/js/util/ts/Optional';
-import {IListenablePersistenceLayer} from '../../../web/js/datastore/IListenablePersistenceLayer';
+import {ListenablePersistenceLayer} from '../../../web/js/datastore/ListenablePersistenceLayer';
 import {Logger} from '../../../web/js/logger/Logger';
 import {Progress} from '../../../web/js/util/Progress';
 import {ProgressBar} from '../../../web/js/ui/progress_bar/ProgressBar';

@@ -4,7 +4,7 @@ import {Footer, Tips} from './Utils';
 import {Logger} from '../../../web/js/logger/Logger';
 import {DocLoader} from '../../../web/js/apps/main/ipc/DocLoader';
 import {Strings} from '../../../web/js/util/Strings';
-import {IListenablePersistenceLayer} from '../../../web/js/datastore/IListenablePersistenceLayer';
+import {ListenablePersistenceLayer} from '../../../web/js/datastore/ListenablePersistenceLayer';
 import {RepoDocInfoLoader} from './RepoDocInfoLoader';
 import {AppState} from './AppState';
 import {RepoDocInfo} from './RepoDocInfo';
