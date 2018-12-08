@@ -43,6 +43,8 @@ export class DocRepository {
     public updateDocInfo(...repoDocInfos: RepoDocInfo[]) {
 
         for (const repoDocInfo of repoDocInfos) {
+            console.log("FIXME: the repoDocInfo is being set: " + repoDocInfo.fingerprint);
+
             this.repoDocs[repoDocInfo.fingerprint] = repoDocInfo;
         }
 

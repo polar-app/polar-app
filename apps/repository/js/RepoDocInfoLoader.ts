@@ -90,6 +90,7 @@ export class RepoDocInfoLoader {
                         const repoDocInfo = await this.loadDocMeta(docInfo.fingerprint, docMeta);
 
                         if (repoDocInfo && RepoDocInfos.isValid(repoDocInfo)) {
+                            console.log("FIXME: updating: repoDocInfoIndex");
                             repoDocInfoIndex[repoDocInfo.fingerprint] = repoDocInfo;
                         }
 

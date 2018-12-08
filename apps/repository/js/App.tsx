@@ -759,12 +759,16 @@ export default class App extends React.Component<AppProps, AppState> {
         // even THEN that would add latency because we're not sure how often
         // the server is sending data.
 
-        const refreshThrottler = new Throttler(() => this.refresh(),
-                                               {maxRequests: 50, maxTimeout: 150});
+        const refreshThrottler = new Throttler(() => {
+            console.log("FIXME: Refreshing UI");
+            this.refresh();
+        }, {maxRequests: 50, maxTimeout: 150});
 
         let hasSentInitAnalyitics = false;
 
         this.repoDocInfoLoader.addEventListener(event => {
+
+            console.log("FIXME: Got DocInfo within App");
 
             this.docRepository.updateDocInfo(...Object.values(event.repoDocInfoIndex));
 
