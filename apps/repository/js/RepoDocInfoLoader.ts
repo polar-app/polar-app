@@ -90,21 +90,25 @@ export class RepoDocInfoLoader {
                         const repoDocInfo = await this.loadDocMeta(docInfo.fingerprint, docMeta);
 
                         if (repoDocInfo && RepoDocInfos.isValid(repoDocInfo)) {
-                            console.log("FIXME: updating: repoDocInfoIndex");
                             repoDocInfoIndex[repoDocInfo.fingerprint] = repoDocInfo;
                         }
 
                     }
 
                     if (docMetaMutation.mutationType === 'deleted') {
+                        // FIXME: this won't actually work as we're ADDING
+                        // files as part of this and then we're merging them
+                        // at the end.  The UI just won't see this and we're
+                        // going to end up with a document that's not properly
+                        // removed frmo the UI...
                         delete repoDocInfoIndex[docMetaMutation.fingerprint];
                     }
 
                 }
 
-                // FIXME: the UI isn't updating here...this is the main problem now...
-
-                this.eventDispatcher.dispatchEvent({repoDocInfoIndex, progress});
+                if (docMetaMutations.length > 0) {
+                    this.eventDispatcher.dispatchEvent({repoDocInfoIndex, progress});
+                }
 
             };
 

@@ -443,7 +443,7 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore {
             await docMetaCommitPromise;
             log.debug("Waiting for promise...done");
 
-            console.log(`FIXME: wrote doc with fingerprint: ${fingerprint}: ${docInfo.title}`);
+            console.warn(`FirebaseDatastore: FIXME: wrote doc with fingerprint: ${fingerprint}: ${docInfo.title}`, new Error());
 
         } finally {
             // noop for now
@@ -756,6 +756,10 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore {
         const nrDocs = snapshot.docs.length;
 
         console.log(`GOT SNAPSHOT with consistency ${consistency}, nrDocs: ${nrDocs}, nrDocChanges: ${nrDocChanges}`);
+
+        if (docChanges.length === 0) {
+            console.log("SKIPPING SNAPSHOT (no docChanges)");
+        }
 
         const progressTracker = new ProgressTracker(docChanges.length);
 
