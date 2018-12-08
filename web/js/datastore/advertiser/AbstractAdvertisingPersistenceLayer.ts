@@ -140,13 +140,13 @@ export abstract class AbstractAdvertisingPersistenceLayer implements ListenableP
     }
 
     public addDocMetaSnapshotEventListener(docMetaSnapshotEventListener: DocMetaSnapshotEventListener): void {
-        this.datastore.addDocMetaSnapshotEventListener(docMetaSnapshotEventListener);
+        this.delegate.addDocMetaSnapshotEventListener(docMetaSnapshotEventListener);
     }
 
     protected abstract broadcastEvent(event: PersistenceLayerEvent): void;
 
     public async deactivate() {
-        await this.datastore.deactivate();
+        await this.delegate.deactivate();
     }
 
 }

@@ -24,9 +24,7 @@ export class CloudPersistenceLayerFactory {
 
         const advertisingPersistenceLayer = new AdvertisingPersistenceLayer(defaultPersistenceLayer);
 
-        const lazyWritePersistenceLayer = new LazyWriteListenablePersistenceLayer(advertisingPersistenceLayer);
-
-        return lazyWritePersistenceLayer;
+        return advertisingPersistenceLayer;
 
     }
 
