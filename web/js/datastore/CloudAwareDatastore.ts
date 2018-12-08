@@ -31,6 +31,7 @@ import {IEventDispatcher, SimpleReactor} from '../reactor/SimpleReactor';
 import {Preconditions} from '../Preconditions';
 import {AsyncFunction} from '../util/AsyncWorkQueue';
 import * as firebase from '../firestore/lib/firebase';
+import {Dictionaries} from '../util/Dictionaries';
 
 const log = Logger.create();
 
@@ -217,22 +218,62 @@ export class CloudAwareDatastore extends AbstractDatastore implements Datastore,
 
             public readonly syncDocMap: SyncDocMap = {};
             public readonly latch = new Latch<boolean>();
+            public readonly id: string;
 
-            public async handle(docMetaSnapshotEvent: DocMetaSnapshotEvent) {
+            private hasInitialTerminatedBatch: boolean = false;
 
-                const syncDocs = await DocMetaSnapshotEvents.toSyncDocs(docMetaSnapshotEvent);
-                SyncDocMaps.putAll(this.syncDocMap, syncDocs);
+            private pending: number = 0;
 
-                if (docMetaSnapshotEvent.consistency === 'committed' &&
-                    docMetaSnapshotEvent.batch!.terminated) {
+            constructor(id: string) {
+                this.id = id;
+            }
 
-                    this.latch.resolve(true);
+            private async handle(docMetaSnapshotEvent: DocMetaSnapshotEvent) {
+
+                console.log("FIXME: handling InitialSnapshotLatch event for: " + this.id, docMetaSnapshotEvent);
+
+                try {
+
+                    if (this.hasInitialTerminatedBatch) {
+                        return;
+                    }
+
+                    if (! docMetaSnapshotEvent.batch || docMetaSnapshotEvent.batch.id !== 0) {
+                        return;
+                    }
+
+                    ++this.pending;
+
+                    const syncDocs = await DocMetaSnapshotEvents.toSyncDocs(docMetaSnapshotEvent);
+                    SyncDocMaps.putAll(this.syncDocMap, syncDocs);
+
+                    if (docMetaSnapshotEvent.consistency === 'committed' &&
+                        docMetaSnapshotEvent.batch!.terminated) {
+
+                        const nrDocs = Dictionaries.size(this.syncDocMap);
+
+                        console.log(`FIXME: InitialSnapshotLatch ${this.id} has nrDocs ${nrDocs} and resolved with: ` +
+                                        DocMetaSnapshotEvents.format(docMetaSnapshotEvent));
+
+                        this.hasInitialTerminatedBatch = true;
+
+                    }
+
+                } finally {
+
+                    --this.pending;
+
+                    if (this.pending === 0) {
+                        this.latch.resolve(true);
+                    }
 
                 }
 
             }
 
-            public onSnapshot(docMetaSnapshotEvent: DocMetaSnapshotEvent) {
+            private onSnapshot(docMetaSnapshotEvent: DocMetaSnapshotEvent) {
+
+                console.log("FIXME: within onSnapshot for: " + this.id);
 
                 this.handle(docMetaSnapshotEvent)
                     .catch(err => {
@@ -244,8 +285,17 @@ export class CloudAwareDatastore extends AbstractDatastore implements Datastore,
 
             public createSnapshot(datastore: Datastore) {
 
+                // FIXME: this is the bug... the LAST snapshot event is given to
+                // us as a single event which does not await the previous
+                // events... so what happens is that we get the last event
+                // immediately except none of the other events have been
+                // consumed yet as they are being awaited...
+
                 return datastore.snapshot(docMetaSnapshotEvent => {
 
+                    console.log("FIXME: within raw handler for: " + this.id);
+
+                    // always forward to the synchronizing listener
                     synchronizingListener(docMetaSnapshotEvent);
 
                     if (! initialSyncCompleted) {
@@ -267,8 +317,8 @@ export class CloudAwareDatastore extends AbstractDatastore implements Datastore,
         // synchronize based on this metadata... at which point we synchronize
         // both datasources.
 
-        const localInitialSnapshotLatch = new InitialSnapshotLatch();
-        const cloudInitialSnapshotLatch = new InitialSnapshotLatch();
+        const localInitialSnapshotLatch = new InitialSnapshotLatch('local');
+        const cloudInitialSnapshotLatch = new InitialSnapshotLatch('cloud');
 
         // FIXME: is it possible to get a double write if I call writeDocMeta
         // to the main store and is it writtne a second time when we get the
@@ -362,8 +412,8 @@ export class CloudAwareDatastore extends AbstractDatastore implements Datastore,
             syncDocMap: cloudInitialSnapshotLatch.syncDocMap
         };
 
-        // FIXME: sometimes we statup and we have a broken SyncDocMap in the cloud
-        // origin for some reason.
+        // FIXME: sometimes we statup and we have a broken SyncDocMap in the
+        // cloud origin for some reason.
 
         if (isPrimarySnapshot) {
 

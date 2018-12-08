@@ -61,27 +61,37 @@ export abstract class AbstractAdvertisingPersistenceLayer implements ListenableP
     }
 
     public async writeDocMeta(docMeta: DocMeta, datastoreMutation?: DatastoreMutation<DocInfo>): Promise<DocInfo> {
-        return await this.write(docMeta.docInfo.fingerprint, docMeta, datastoreMutation);
+
+        return this.handleWrite(docMeta, async () => await this.delegate.writeDocMeta(docMeta, datastoreMutation));
+
     }
 
     public async write(fingerprint: string,
                        docMeta: DocMeta,
                        datastoreMutation: DatastoreMutation<DocInfo> = new DefaultDatastoreMutation()): Promise<DocInfo> {
 
-        const eventType: PersistenceEventType
-            = this.contains(fingerprint) ? 'updated' : 'created';
+        return this.handleWrite(docMeta, async () => await this.delegate.write(fingerprint, docMeta, datastoreMutation));
 
-        const docInfo = await this.delegate.write(fingerprint, docMeta, datastoreMutation);
+    }
+
+    private async handleWrite(docMeta: DocMeta, handler: () => Promise<any>) {
+
+        await handler();
+
+        console.log("FIXME: dispatching write event");
+
+        const eventType: PersistenceEventType
+            = this.contains(docMeta.docInfo.fingerprint) ? 'updated' : 'created';
 
         this.broadcastEvent({
-            docInfo,
+            docInfo: docMeta.docInfo,
             docMetaRef: {
                 fingerprint: docMeta.docInfo.fingerprint
             },
             eventType
         });
 
-        return docInfo;
+        return docMeta.docInfo;
 
     }
 

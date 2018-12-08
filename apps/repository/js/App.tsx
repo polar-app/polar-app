@@ -571,7 +571,7 @@ export default class App extends React.Component<AppProps, AppState> {
             // within the event listener
             this.setState(state);
 
-        }, 0);
+        }, 1);
 
     }
 
@@ -716,10 +716,15 @@ export default class App extends React.Component<AppProps, AppState> {
 
             // console.log("FIXME: going to writeDocInfo with UUID: " + docInfo.uuid, docInfo);
 
-            // FIXME: with this enabled I get TWO writes, completed, then
-            // Electron locks up...
-            // this.docRepository!.writeDocInfo(docInfo)
-            //     .catch(err => log.error("Unable to write doc info: ", err));
+
+            // setTimeout(() => {
+            //
+            //     // FIXME: with this enabled I get TWO writes, completed, then
+            //     // Electron locks up.....
+            //     this.docRepository!.writeDocInfo(docInfo)
+            //         .catch(err => log.error("Unable to write doc info: ", err));
+            //
+            // }, 1);
 
         } else {
 
