@@ -69,6 +69,7 @@ export class DocRepository {
             docMeta.docInfo = new DocInfo(docInfo);
 
             log.info("Writing out updated DocMeta");
+            log.notice("FIXME: Writing out updated DocMeta");
 
             await persistenceLayer.writeDocMeta(docMeta);
 

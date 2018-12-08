@@ -9,7 +9,7 @@ import {RepoDocInfos} from './RepoDocInfos';
 import {Dictionaries} from '../../../web/js/util/Dictionaries';
 import {RepoDocInfo} from './RepoDocInfo';
 import {DocMeta} from '../../../web/js/metadata/DocMeta';
-import {DocMetaSnapshotEvent, SnapshotProgress, SnapshotUnsubscriber} from '../../../web/js/datastore/Datastore';
+import {DocMetaSnapshotEvent, SnapshotProgress, SnapshotUnsubscriber, DocMetaSnapshotEvents} from '../../../web/js/datastore/Datastore';
 import {ElectronContextTypes} from '../../../web/js/electron/context/ElectronContextTypes';
 import {Promises} from '../../../web/js/util/Promises';
 import {PersistenceLayerManager} from '../../../web/js/datastore/PersistenceLayerManager';
@@ -58,13 +58,7 @@ export class RepoDocInfoLoader {
 
         persistenceLayer.addDocMetaSnapshotEventListener(docMetaSnapshotEvent => {
 
-            // console.log("FIXME: docMetaSnapshotEvent: ", docMetaSnapshotEvent);
-
-            // if (docMetaSnapshotEvent.batch) {
-            //     console.log(`progress: ${docMetaSnapshotEvent.datastore} (consistency: ${docMetaSnapshotEvent.consistency}, batch.id: ${docMetaSnapshotEvent.batch!.id}, batch.terminated: ${docMetaSnapshotEvent.batch!.terminated}): ${docMetaSnapshotEvent.progress.progress}` );
-            // } else {
-            //     console.log(`progress: ${docMetaSnapshotEvent.datastore} (consistency: ${docMetaSnapshotEvent.consistency}, NO BATCH): ${docMetaSnapshotEvent.progress.progress}` );
-            // }
+            console.log(DocMetaSnapshotEvents.format(docMetaSnapshotEvent), docMetaSnapshotEvent);
 
             const eventHandler = async () => {
 

@@ -291,6 +291,21 @@ export interface DocMetaSnapshotEvent {
 
 export class DocMetaSnapshotEvents {
 
+    public static format(ev: DocMetaSnapshotEvent) {
+
+        let batch = "NO BATCH";
+
+        if (ev.batch) {
+            batch = `(id: ${ev.batch!.id}, terminated: ${ev.batch!.terminated})`;
+        }
+
+        const progress = ev.progress.progress;
+        const nrMutations = ev.docMetaMutations.length;
+
+        return `${ev.datastore} ${progress}% (consistency: ${ev.consistency}, nr mutations: ${nrMutations}, batch: ${batch})`;
+
+    }
+
     public static async toDocInfos(docMetaSnapshotEvent: DocMetaSnapshotEvent):
         Promise<ReadonlyArray<IDocInfo>> {
 

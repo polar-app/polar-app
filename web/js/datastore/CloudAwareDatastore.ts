@@ -289,6 +289,9 @@ export class CloudAwareDatastore extends AbstractDatastore implements Datastore,
                     return;
                 }
 
+                // FIXME: I think ONE update is sending over ALL the updates and
+                // we should only care about the docChanges... ...
+
                 for (const docMetaMutation of docMetaSnapshotEvent.docMetaMutations) {
 
                     // FIXME FIXME FIXME: no binary files are being transferred

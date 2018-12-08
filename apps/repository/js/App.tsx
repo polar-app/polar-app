@@ -704,7 +704,8 @@ export default class App extends React.Component<AppProps, AppState> {
             this.docRepository!.updateDocInfo(repoDocInfo);
             this.refresh();
 
-            this.docRepository!.writeDocInfo(docInfo);
+            this.docRepository!.writeDocInfo(docInfo)
+                .catch(err => log.error("Unable to write doc info: ", err));
 
         } else {
 
