@@ -14,6 +14,7 @@ import {DefaultPersistenceLayer} from './DefaultPersistenceLayer';
 import {DocInfo} from '../metadata/DocInfo';
 import deepEqual from 'deep-equal';
 import {Preconditions} from '../Preconditions';
+import {AsyncFunction, AsyncWorkQueue} from '../util/AsyncWorkQueue';
 
 const log = Logger.create();
 
@@ -157,6 +158,10 @@ export class Datastores {
 
         // TODO: would be more ideal for this to use an AsyncWorkQueue
 
+        const work: AsyncFunction[] = [];
+
+        const asyncWorkQueue = new AsyncWorkQueue(work);
+
         for (const docMetaFile of docMetaFiles) {
 
             // FIXME: we're not purging the files associated with the docs...
@@ -164,20 +169,26 @@ export class Datastores {
             // I could put the other files there as well so that way we always
             // make sure there are no dependencies tangling
 
-            const data = await datastore.getDocMeta(docMetaFile.fingerprint);
-            const docMeta = DocMetas.deserialize(data!);
+            work.push(async () => {
 
-            const docMetaFileRef = DocMetaFileRefs.createFromDocInfo(docMeta.docInfo);
+                const data = await datastore.getDocMeta(docMetaFile.fingerprint);
+                const docMeta = DocMetas.deserialize(data!);
 
-            await datastore.delete(docMetaFileRef);
+                const docMetaFileRef = DocMetaFileRefs.createFromDocInfo(docMeta.docInfo);
 
-            ++completed;
+                await datastore.delete(docMetaFileRef);
 
-            const progress = Percentages.calculate(completed, total);
+                ++completed;
 
-            purgeListener({completed, total, progress});
+                const progress = Percentages.calculate(completed, total);
+
+                purgeListener({completed, total, progress});
+
+            });
 
         }
+
+        await asyncWorkQueue.execute();
 
         if (total === 0) {
             purgeListener({completed, total, progress: 100});
