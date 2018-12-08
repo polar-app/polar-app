@@ -292,12 +292,17 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore {
 
         // TODO: we can get progress from the uploadTask here.
 
+        const started = Date.now();
+
         uploadTask.on('state_changed', (snapshotData: any) => {
+
+            const now = Date.now();
+            const duration = now - started;
 
             const snapshot: firebase.storage.UploadTaskSnapshot = snapshotData;
 
             const progress = Percentages.calculate(snapshot.bytesTransferred, snapshot.totalBytes);
-            // console.log('Upload is ' + progress + '%// done');
+            console.log('Upload is ' + progress + '%// done');
 
             switch (snapshot.state) {
                 case firebase.storage.TaskState.PAUSED:

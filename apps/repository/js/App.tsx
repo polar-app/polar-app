@@ -113,7 +113,7 @@ export default class App extends React.Component<AppProps, AppState> {
                     </div>
 
                     <div id="header-title">
-                        <h1>Document Repository</h1>
+                        <h1>POLAR</h1>
                     </div>
 
                     <div id="header-filter">

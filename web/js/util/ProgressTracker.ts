@@ -86,6 +86,18 @@ export interface ProgressState {
     progress: Percentage;
 }
 
+export class ProgressStates {
+
+    public static calculate(completed: number, total: number, duration: number): Readonly<ProgressState> {
+
+        const progress = <Percentage> Percentages.calculate(completed, total);
+
+        return {completed, total, duration, progress};
+
+    }
+
+}
+
 /**
  * An actual percentage value between zero and 100 [0,100]
  */
