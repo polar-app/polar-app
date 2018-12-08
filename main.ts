@@ -5,6 +5,7 @@ import {Cmdline} from './web/js/electron/Cmdline';
 import {Logging} from './web/js/logger/Logging';
 import {Datastores} from './web/js/datastore/Datastores';
 import process from 'process';
+import {LazyWriteDatastore} from './web/js/datastore/LazyWriteDatastore';
 
 const hasSingleInstanceLock = app.requestSingleInstanceLock();
 
@@ -20,7 +21,7 @@ async function launch() {
 
     const log = Logger.create();
 
-    const datastore = Datastores.create();
+    const datastore = new LazyWriteDatastore(Datastores.create());
 
     await datastore.init();
 
