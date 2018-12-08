@@ -58,7 +58,7 @@ export class RepoDocInfoLoader {
 
         persistenceLayer.addDocMetaSnapshotEventListener(docMetaSnapshotEvent => {
 
-            console.log(DocMetaSnapshotEvents.format(docMetaSnapshotEvent), docMetaSnapshotEvent);
+            // console.log(DocMetaSnapshotEvents.format(docMetaSnapshotEvent), docMetaSnapshotEvent);
 
             const eventHandler = async () => {
 
