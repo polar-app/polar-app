@@ -40,6 +40,7 @@ import {PrioritizedSplashes} from './splash/PrioritizedSplashes';
 import {PersistenceLayerManager} from '../../../web/js/datastore/PersistenceLayerManager';
 import {PersistenceLayerEvent} from '../../../web/js/datastore/PersistenceLayerEvent';
 import {CloudService} from './cloud/CloudService';
+import {Throttler} from '../../../web/js/datastore/Throttler';
 
 const log = Logger.create();
 
@@ -744,26 +745,24 @@ export default class App extends React.Component<AppProps, AppState> {
 
         });
 
-        // true when we've done a full initial read of the doc repo data.
-        let hasFullDocRepo = false;
+        // don't refresh too often if we get lots of documents as this really
+        // locks up the UI but we also need a reasonable timeout.
+
+        const refreshThrottler = new Throttler(() => this.refresh(),
+                                               {maxRequests: 50, maxTimeout: 300});
+
+        let hasSentInitAnalyitics = false;
 
         this.repoDocInfoLoader.addEventListener(event => {
 
             this.docRepository.updateDocInfo(...Object.values(event.repoDocInfoIndex));
 
-            if (hasFullDocRepo || event.progress.progress === 100) {
-                this.refresh();
-            }
+            refreshThrottler.exec();
 
-            if (event.progress.progress === 100) {
+            if (! hasSentInitAnalyitics && event.progress.progress === 100) {
                 this.emitInitAnalytics(this.docRepository.repoDocs);
-                hasFullDocRepo = true;
+                hasSentInitAnalyitics = true;
             }
-
-            // FIXME: this is a bug because we HAVE to refresh after the
-            // initial load... and refresh at least once every interval...
-            // maybe we should just write some code to perform an action every N
-            // items.
 
         });
 

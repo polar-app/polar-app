@@ -25,7 +25,7 @@ export class Batcher {
      */
     public enqueue(): Batch {
 
-        let ticket = new Ticket(this.runnable());
+        const ticket = new Ticket(this.runnable());
 
         this.tickets.push(ticket);
 
@@ -50,9 +50,9 @@ export class Batcher {
             // would run out of memory so this is probably an acceptable
             // strategy.
 
-            let pending = this.tickets.length;
+            const pending = this.tickets.length;
 
-            return new PassiveBatch(pending, ticket)
+            return new PassiveBatch(pending, ticket);
 
         }
 

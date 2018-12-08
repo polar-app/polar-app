@@ -443,6 +443,8 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore {
             await docMetaCommitPromise;
             log.debug("Waiting for promise...done");
 
+            console.log(`FIXME: wrote doc with fingerprint: ${fingerprint}: ${docInfo.title}`);
+
         } finally {
             // noop for now
         }
