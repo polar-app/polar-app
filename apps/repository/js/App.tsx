@@ -744,14 +744,26 @@ export default class App extends React.Component<AppProps, AppState> {
 
         });
 
+        // true when we've done a full initial read of the doc repo data.
+        let hasFullDocRepo = false;
+
         this.repoDocInfoLoader.addEventListener(event => {
 
             this.docRepository.updateDocInfo(...Object.values(event.repoDocInfoIndex));
 
-            if (event.progress.progress === 100) {
+            if (hasFullDocRepo || event.progress.progress === 100) {
                 this.refresh();
-                this.emitInitAnalytics(this.docRepository.repoDocs);
             }
+
+            if (event.progress.progress === 100) {
+                this.emitInitAnalytics(this.docRepository.repoDocs);
+                hasFullDocRepo = true;
+            }
+
+            // FIXME: this is a bug because we HAVE to refresh after the
+            // initial load... and refresh at least once every interval...
+            // maybe we should just write some code to perform an action every N
+            // items.
 
         });
 

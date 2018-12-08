@@ -34,7 +34,6 @@ export class RepoDocInfoLoader {
         this.eventDispatcher.addEventListener(listener);
     }
 
-
     public async start() {
 
         this.persistenceLayerManager.addEventListener(event => {
@@ -100,8 +99,9 @@ export class RepoDocInfoLoader {
                         delete repoDocInfoIndex[docMetaMutation.fingerprint];
                     }
 
-
                 }
+
+                // FIXME: the UI isn't updating here...this is the main problem now...
 
                 this.eventDispatcher.dispatchEvent({repoDocInfoIndex, progress});
 

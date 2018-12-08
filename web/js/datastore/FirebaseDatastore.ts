@@ -755,17 +755,17 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore {
 
         console.log(`GOT SNAPSHOT with consistency ${consistency}, nrDocs: ${nrDocs}, nrDocChanges: ${nrDocChanges}`);
 
-        let progressTracker = new ProgressTracker(docChanges.length);
+        const progressTracker = new ProgressTracker(docChanges.length);
 
         for (const docChange of docChanges) {
             handleDocChange(docChange);
         }
 
-        progressTracker = new ProgressTracker(snapshot.docs.length);
-
-        for (const doc of snapshot.docs) {
-            handleDoc(doc);
-        }
+        // progressTracker = new ProgressTracker(snapshot.docs.length);
+        //
+        // for (const doc of snapshot.docs) {
+        //     handleDoc(doc);
+        // }
 
         // TODO: I'm not really sure of the difference of docs vs docChanges
         // in our situation.
