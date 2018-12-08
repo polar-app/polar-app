@@ -747,9 +747,20 @@ export default class App extends React.Component<AppProps, AppState> {
 
         // don't refresh too often if we get lots of documents as this really
         // locks up the UI but we also need a reasonable timeout.
+        //
+        // TODO: this is a tough decision as it trades throughput for latency
+        // and I don't want latency in the UI.  It might be better to batch into
+        // 50 items each when SENDING the events and not throttling the events
+        // but throttling the actual snapshot rate.  For example, if we receive
+        // a snapshot with 500 items we can just break that into say 50 items
+        // each and then immediately update the UI with no trailing latency at
+        // the end.  But we can throttle the actual number of snapshots so that
+        // if we receive tons of snapshots with 1 item them we batch these but
+        // even THEN that would add latency because we're not sure how often
+        // the server is sending data.
 
         const refreshThrottler = new Throttler(() => this.refresh(),
-                                               {maxRequests: 50, maxTimeout: 300});
+                                               {maxRequests: 50, maxTimeout: 150});
 
         let hasSentInitAnalyitics = false;
 
