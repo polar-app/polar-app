@@ -4,6 +4,7 @@ import {Logger} from '../logger/Logger';
 import {Firebase} from './Firebase';
 import {FirebaseUIAuth} from './FirebaseUIAuth';
 import {ASYNC_NULL_FUNCTION} from '../util/Functions';
+import {isPresent} from '../Preconditions';
 
 const log = Logger.create();
 
@@ -60,6 +61,12 @@ export class FirebaseTester {
         if (user) {
 
             log.notice("Working with user: ", user);
+
+            const accountDetailsElement = document.getElementById("account-details");
+
+            if (isPresent(accountDetailsElement)) {
+                accountDetailsElement!.innerText = JSON.stringify(firebase.auth().currentUser, null, "  ");
+            }
 
             await this.testingFunction();
 

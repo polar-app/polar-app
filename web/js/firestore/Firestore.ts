@@ -4,22 +4,34 @@ export class Firestore {
 
     private static firestore?: firebase.firestore.Firestore;
 
-    public static async getInstance(): Promise<firebase.firestore.Firestore> {
+    public static async getInstance(opts: FirestoreOptions = {}): Promise<firebase.firestore.Firestore> {
 
-        if(this.firestore) {
+        if (this.firestore) {
             return this.firestore;
         }
 
-        this.firestore = firebase.firestore();
-
-        const settings = {timestampsInSnapshots: true};
-        this.firestore.settings(settings);
-
-        await this.firestore.enablePersistence({experimentalTabSynchronization: true});
-
-        return this.firestore;
+        return this.firestore = await this.createInstance(opts);
 
     }
 
+    public static async createInstance(opts: FirestoreOptions = {}): Promise<firebase.firestore.Firestore> {
+
+        const result = firebase.firestore();
+
+        const settings = {timestampsInSnapshots: true};
+        result.settings(settings);
+
+        if (opts.enablePersistence) {
+            await result.enablePersistence({experimentalTabSynchronization: true});
+        }
+
+        return result;
+
+    }
+
+}
+
+export interface FirestoreOptions {
+    readonly enablePersistence?: boolean;
 }
 

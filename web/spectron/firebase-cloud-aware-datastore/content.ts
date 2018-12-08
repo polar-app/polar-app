@@ -167,6 +167,7 @@ SpectronRenderer.run(async (state) => {
             it("Test9: Sync with extra files in the firebase store", async function() {
 
                 const datastore = new FirebaseDatastore();
+                datastore.enablePersistence = false;
                 await datastore.init();
 
                 await datastore.writeDocMeta(MockDocMetas.createMockDocMeta('0x0004'));

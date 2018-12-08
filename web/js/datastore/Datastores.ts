@@ -169,6 +169,8 @@ export class Datastores {
             // I could put the other files there as well so that way we always
             // make sure there are no dependencies tangling
 
+            // FIXME: use a ProgressTracker here...
+
             work.push(async () => {
 
                 const data = await datastore.getDocMeta(docMetaFile.fingerprint);
