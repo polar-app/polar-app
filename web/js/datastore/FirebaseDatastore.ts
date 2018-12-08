@@ -234,6 +234,8 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore {
      */
     public async getDocMeta(fingerprint: string): Promise<string | null> {
 
+        // FIXME: cache this query???
+
         const uid = this.getUserID();
         const id = this.computeDocMetaID(uid, fingerprint);
 

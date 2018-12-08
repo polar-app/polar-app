@@ -705,6 +705,8 @@ export default class App extends React.Component<AppProps, AppState> {
 
         log.info("Received DocInfo update");
 
+        console.log("FIXME220: onUpdatedDocInfo ... begin");
+
         const repoDocInfo = RepoDocInfos.convertFromDocInfo(docInfo);
 
         if (RepoDocInfos.isValid(repoDocInfo)) {
@@ -712,10 +714,12 @@ export default class App extends React.Component<AppProps, AppState> {
             this.docRepository!.updateDocInfo(repoDocInfo);
             this.refresh();
 
-            console.log("FIXME: going to writeDocInfo with UUID: " + docInfo.uuid, docInfo);
+            // console.log("FIXME: going to writeDocInfo with UUID: " + docInfo.uuid, docInfo);
 
-            this.docRepository!.writeDocInfo(docInfo)
-                .catch(err => log.error("Unable to write doc info: ", err));
+            // FIXME: with this enabled I get TWO writes, completed, then
+            // Electron locks up...
+            // this.docRepository!.writeDocInfo(docInfo)
+            //     .catch(err => log.error("Unable to write doc info: ", err));
 
         } else {
 
@@ -723,6 +727,8 @@ export default class App extends React.Component<AppProps, AppState> {
                      docInfo, repoDocInfo);
 
         }
+
+        console.log("FIXME220: onUpdatedDocInfo ... end");
 
     }
 

@@ -303,6 +303,7 @@ export class CloudAwareDatastore extends AbstractDatastore implements Datastore,
                         const docInfo = await docMetaMutation.docInfoProvider();
                         Preconditions.assertPresent(data, "No data in replication listener: ");
 
+                        console.log("FIXME666: doing write now!!!");
                         await this.local.write(docMetaMutation.fingerprint, data, docInfo);
                     }
 
@@ -361,14 +362,17 @@ export class CloudAwareDatastore extends AbstractDatastore implements Datastore,
             syncDocMap: cloudInitialSnapshotLatch.syncDocMap
         };
 
+        // FIXME: sometimes we statup and we have a broken SyncDocMap in the cloud
+        // origin for some reason.
+
         if (isPrimarySnapshot) {
 
             log.info("Transferring from local -> cloud...");
-            await PersistenceLayers.transfer(localSyncOrigin, cloudSyncOrigin, deduplicatedListener.listener);
+            await PersistenceLayers.transfer(localSyncOrigin, cloudSyncOrigin, deduplicatedListener.listener, 'local-to-cloud');
             log.info("Transferring from local -> cloud...done");
 
             log.info("Transferring from cloud -> local...");
-            await PersistenceLayers.transfer(cloudSyncOrigin, localSyncOrigin, deduplicatedListener.listener);
+            await PersistenceLayers.transfer(cloudSyncOrigin, localSyncOrigin, deduplicatedListener.listener, 'cloud-to-local');
             log.info("Transferring from cloud -> local...done");
 
         }

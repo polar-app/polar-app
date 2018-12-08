@@ -80,20 +80,15 @@ export class PersistenceLayers {
      */
     public static async transfer(source: SyncOrigin,
                                  target: SyncOrigin,
-                                 listener: DocMetaSnapshotEventListener = NULL_FUNCTION): Promise<TransferResult> {
+                                 listener: DocMetaSnapshotEventListener = NULL_FUNCTION,
+                                 id: string = 'none'): Promise<TransferResult> {
 
         // FIXME: no errors are actually raised on the copy operations that are
         // operating in the async queue.  These need to be bubbled up.
 
-        const result: TransferResult = {
-            mutations: {
-                fingerprints: [],
-                files: []
-            },
-            conflicts: {
-                fingerprints: [],
-                files: []
-            }
+        const result = {
+            docMetaWrites: 0,
+            fileWrites: 0
         };
 
         async function handleSyncFile(syncDoc: SyncDoc, fileRef: FileRef) {
@@ -133,7 +128,7 @@ export class PersistenceLayers {
 
                     await target.datastore.writeFile(file.backend, fileRef, buffer, file.meta);
 
-                    result.mutations.files.push(fileRef);
+                    ++result.fileWrites;
 
                 }
 
@@ -182,10 +177,10 @@ export class PersistenceLayers {
 
             if (doWriteDocMeta) {
 
-                result.mutations.fingerprints.push(sourceSyncDoc.fingerprint);
-
                 const data = await source.datastore.getDocMeta(sourceSyncDoc.fingerprint);
                 await target.datastore.write(sourceSyncDoc.fingerprint, data, sourceSyncDoc.docMetaFileRef.docInfo);
+
+                ++result.docMetaWrites;
 
             }
 
@@ -246,6 +241,8 @@ export class PersistenceLayers {
             docMetaMutations: []
         });
 
+        console.log(`FIXME: transfer ${id} completed: `, result);
+
         return result;
 
     }
@@ -254,19 +251,13 @@ export class PersistenceLayers {
 
 export interface TransferResult {
 
-    readonly mutations: TransferRefs;
+    readonly docMetaWrites: number;
 
-    readonly conflicts: TransferRefs;
+    readonly fileWrites: number;
 
-}
-
-export interface TransferRefs {
-
-    readonly fingerprints: string[];
-
-    readonly files: FileRef[];
 
 }
+
 
 export interface SyncOrigin {
 
