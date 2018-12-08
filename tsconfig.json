@@ -11,6 +11,7 @@
         "removeComments": true,
         "strictFunctionTypes": true,
         "sourceMap": true,
+        "inlineSourceMap": true,
         "target": "ES2015",
         "module": "commonjs",
         "moduleResolution": "node",
