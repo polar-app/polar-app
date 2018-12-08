@@ -407,12 +407,12 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore {
                        docInfo: DocInfo,
                        datastoreMutation: DatastoreMutation<boolean> = new DefaultDatastoreMutation()) {
 
-        docInfo = Object.assign({}, Dictionaries.onlyDefinedProperties(docInfo));
-
-        const uid = this.getUserID();
-        const id = this.computeDocMetaID(uid, fingerprint);
-
         try {
+
+            docInfo = Object.assign({}, Dictionaries.onlyDefinedProperties(docInfo));
+
+            const uid = this.getUserID();
+            const id = this.computeDocMetaID(uid, fingerprint);
 
             const docMetaRef = this.firestore!
                 .collection(DatastoreCollection.DOC_META)
@@ -749,6 +749,11 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore {
         const consistency = snapshot.metadata.fromCache ? 'written' : 'committed';
 
         const docChanges = snapshot.docChanges();
+
+        const nrDocChanges = docChanges.length;
+        const nrDocs = snapshot.docs.length;
+
+        console.log(`GOT SNAPSHOT with consistency ${consistency}, nrDocs: ${nrDocs}, nrDocChanges: ${nrDocChanges}`);
 
         let progressTracker = new ProgressTracker(docChanges.length);
 

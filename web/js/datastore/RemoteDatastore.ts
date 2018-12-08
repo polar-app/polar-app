@@ -1,4 +1,4 @@
-import {Datastore, DocMetaSnapshotEvent, FileMeta, FileRef, InitResult, DocMetaSnapshotEventListener, SnapshotResult, ErrorListener} from './Datastore';
+import {Datastore, DocMetaSnapshotEvent, FileMeta, FileRef, InitResult, DocMetaSnapshotEventListener, SnapshotResult, ErrorListener, DatastoreID} from './Datastore';
 import {Directories} from './Directories';
 import {DocMetaFileRef, DocMetaRef} from './DocMetaRef';
 import {DeleteResult} from './Datastore';
@@ -20,8 +20,11 @@ export class RemoteDatastore extends DelegatedDatastore {
 
     private readonly docMetaSnapshotEventDispatcher: IEventDispatcher<DocMetaSnapshotEvent> = new SimpleReactor();
 
+    public readonly id: DatastoreID;
+
     constructor(delegate: Datastore) {
         super(delegate);
+        this.id = 'remote:' + delegate.id;
     }
 
     public async snapshot(listener: DocMetaSnapshotEventListener): Promise<SnapshotResult> {

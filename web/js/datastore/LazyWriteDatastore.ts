@@ -1,4 +1,4 @@
-import {AbstractDatastore, Datastore, DeleteResult} from './Datastore';
+import {AbstractDatastore, Datastore, DatastoreID, DeleteResult} from './Datastore';
 import {DelegatedDatastore} from './DelegatedDatastore';
 import {IDocInfo} from '../metadata/DocInfo';
 import {DatastoreMutation} from './DatastoreMutation';
@@ -14,10 +14,13 @@ export class LazyWriteDatastore extends DelegatedDatastore {
 
     private readonly index = new DocMetaComparisonIndex();
 
+    public readonly id: DatastoreID;
+
     public nrWrites: number = 0;
 
     constructor(delegate: Datastore) {
         super(delegate);
+        this.id = 'lazy-write:' + delegate.id;
     }
 
     public async write(fingerprint: string,
