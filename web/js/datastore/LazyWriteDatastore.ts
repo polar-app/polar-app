@@ -1,10 +1,11 @@
 import {AbstractDatastore, Datastore, DatastoreID, DeleteResult} from './Datastore';
 import {DelegatedDatastore} from './DelegatedDatastore';
-import {IDocInfo} from '../metadata/DocInfo';
-import {DatastoreMutation} from './DatastoreMutation';
+import {IDocInfo, DocInfo} from '../metadata/DocInfo';
+import {DatastoreMutation, DefaultDatastoreMutation} from './DatastoreMutation';
 import {DocMetaFileRef} from './DocMetaRef';
 import {DocMetaComparisonIndex} from './DocMetaComparisonIndex';
 import {UUIDs} from '../metadata/UUIDs';
+import {DocMeta} from '../metadata/DocMeta';
 
 /**
  * The LazyWriteDatastore keeps a lightweight in-memory index of what's written
@@ -23,6 +24,14 @@ export class LazyWriteDatastore extends DelegatedDatastore {
         this.id = 'lazy-write:' + delegate.id;
     }
 
+    public async writeDocMeta(docMeta: DocMeta,
+                              datastoreMutation: DatastoreMutation<DocInfo> = new DefaultDatastoreMutation()): Promise<DocInfo> {
+
+        await this.handleWrite(docMeta.docInfo, async () => await super.writeDocMeta(docMeta, datastoreMutation));
+
+        return docMeta.docInfo;
+
+    }
 
     // TODO: when we do a read, it might be better to update the index then
     // which would remove the first write in some situations but we need the
@@ -32,6 +41,12 @@ export class LazyWriteDatastore extends DelegatedDatastore {
                        data: any,
                        docInfo: IDocInfo,
                        datastoreMutation?: DatastoreMutation<boolean>): Promise<void> {
+
+        return this.handleWrite(docInfo, async () => await super.write(fingerprint, data, docInfo, datastoreMutation));
+
+    }
+
+    private async handleWrite(docInfo: IDocInfo, writeFunction: () => Promise<any>): Promise<void> {
 
         let doUpdated = false;
 
@@ -53,7 +68,10 @@ export class LazyWriteDatastore extends DelegatedDatastore {
             // when the doc is created and it's not in the index.
             this.index.updateUsingDocInfo(docInfo);
             ++this.nrWrites;
-            return super.write(fingerprint, data, docInfo, datastoreMutation);
+
+            await writeFunction();
+            return;
+
         }
 
     }
