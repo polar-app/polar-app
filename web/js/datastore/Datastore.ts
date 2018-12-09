@@ -527,6 +527,11 @@ export class SyncDocs {
 
         const files: SyncFile[] = [];
 
+        // TODO: dedicated function to take IDocInfo and then extract the file
+        // references for them.  Then write() and delete() should make sure the
+        // file references are valid and setup properly before we write
+        // (I think).
+
         if (docInfo.filename) {
 
             const stashFile: SyncFile = {

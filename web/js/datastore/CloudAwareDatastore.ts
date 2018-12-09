@@ -207,6 +207,35 @@ export class CloudAwareDatastore extends AbstractDatastore implements Datastore,
         return this.local.getDocMetaFiles();
     }
 
+    public async synchronizeDocs(...fingerprints: string[]) {
+
+        const toSyncOrigin = async (datastore: Datastore): Promise<SyncOrigin> => {
+
+            const docaMetaFiles: DocMetaRef[] =
+                fingerprints.map(current => {
+                    return {fingerprint: current};
+                });
+
+            const syncDocMap = await PersistenceLayers.toSyncDocMapFromDocs(datastore, docaMetaFiles);
+
+            return {
+                datastore,
+                syncDocMap
+            };
+
+        };
+
+        const cloudSyncOrigin = await toSyncOrigin(this.cloud);
+        const localSyncOrigin = await toSyncOrigin(this.local);
+
+        // FIXME: there are no events with this and the UI won't be updated
+
+        log.info("Transferring from local -> cloud...");
+        await PersistenceLayers.transfer(localSyncOrigin, cloudSyncOrigin, ASYNC_NULL_FUNCTION, 'cloud-to-local');
+        log.info("Transferring from local -> cloud...");
+
+    }
+
     public async snapshot(docMetaSnapshotEventListener: DocMetaSnapshotEventListener,
                           errorListener: ErrorListener = NULL_FUNCTION): Promise<SnapshotResult> {
 
@@ -415,11 +444,6 @@ export class CloudAwareDatastore extends AbstractDatastore implements Datastore,
         for (const docMetaMutation of docMetaSnapshotEvent.docMetaMutations) {
 
             if (docMetaMutation.mutationType === 'created' || docMetaMutation.mutationType === 'updated') {
-
-                const data = await docMetaMutation.dataProvider();
-                const docInfo = await docMetaMutation.docInfoProvider();
-                Preconditions.assertPresent(data, "No data in replication listener: ");
-                await this.local.write(docMetaMutation.fingerprint, data, docInfo);
 
                 const cloudSyncOrigin = await toCloudSyncOrigin();
                 const localSyncOrigin = await toLocalSyncOrigin();

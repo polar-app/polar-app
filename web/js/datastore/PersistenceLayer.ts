@@ -52,6 +52,12 @@ export interface PersistenceLayer {
     writeDocMeta(docMeta: DocMeta, datastoreMutation?: DatastoreMutation<DocInfo>): Promise<DocInfo>;
 
     /**
+     * Make sure the docs with the given fingerprints are synchronized with
+     * this datastore. Only implemented in cloud datastores.
+     */
+    synchronizeDocs(...fingerprints: string[]): Promise<void>;
+
+    /**
      * Return the DocInfo written. The DocInfo may be updated on commit
      * including updating lastUpdated, etc.
      */

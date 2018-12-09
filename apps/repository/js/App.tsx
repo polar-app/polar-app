@@ -37,7 +37,7 @@ import {DocRepoAnkiSyncController} from '../../../web/js/controller/DocRepoAnkiS
 import {Tooltip, UncontrolledTooltip, Collapse} from 'reactstrap';
 import {CloudAuthButton} from '../../../web/js/ui/cloud_auth/CloudAuthButton';
 import {PrioritizedSplashes} from './splash/PrioritizedSplashes';
-import {PersistenceLayerManager} from '../../../web/js/datastore/PersistenceLayerManager';
+import {PersistenceLayerManager, PersistenceLayerTypes} from '../../../web/js/datastore/PersistenceLayerManager';
 import {PersistenceLayerEvent} from '../../../web/js/datastore/PersistenceLayerEvent';
 import {CloudService} from './cloud/CloudService';
 import {Throttler} from '../../../web/js/datastore/Throttler';
@@ -712,15 +712,16 @@ export default class App extends React.Component<AppProps, AppState> {
 
             const handleWriteDocMeta = async () => {
 
-                // this is kind of cheating to be writing right to the datastore
-                // directly.
+                // This is kind of cheating to be writing right to the datastore
+                // directly.... This needs 'transfer' from local to cloud...
 
-                const persistenceLayer: PersistenceLayer = this.persistenceLayerManager.get();
-                const datastore = persistenceLayer.datastore;
+                if (PersistenceLayerTypes.get() === 'cloud') {
 
-                const data = await datastore.getDocMeta(docInfo.fingerprint);
+                    const persistenceLayer: PersistenceLayer = this.persistenceLayerManager.get();
 
-                await datastore.write(docInfo.fingerprint, data, docInfo);
+                    await persistenceLayer.synchronizeDocs(docInfo.fingerprint);
+
+                }
 
             };
 
