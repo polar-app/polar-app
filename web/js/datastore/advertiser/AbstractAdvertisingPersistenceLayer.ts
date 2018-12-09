@@ -31,7 +31,7 @@ export abstract class AbstractAdvertisingPersistenceLayer implements ListenableP
     /**
      * A PersistenceLayer for the non-dispatched methods (for now).
      */
-    protected readonly delegate: PersistenceLayer;
+    public readonly delegate: PersistenceLayer;
 
     protected constructor(delegate: PersistenceLayer) {
         this.datastore = delegate.datastore;

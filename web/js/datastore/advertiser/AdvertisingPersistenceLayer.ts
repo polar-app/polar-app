@@ -19,8 +19,8 @@ export class AdvertisingPersistenceLayer
 
     private readonly docInfoAdvertisementListenerService = new DocInfoAdvertisementListenerService();
 
-    constructor(persistenceLayer: PersistenceLayer) {
-        super(persistenceLayer);
+    constructor(delegate: PersistenceLayer) {
+        super(delegate);
     }
 
     public async init(): Promise<void> {

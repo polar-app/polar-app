@@ -41,6 +41,10 @@ import {PersistenceLayerManager} from '../../../web/js/datastore/PersistenceLaye
 import {PersistenceLayerEvent} from '../../../web/js/datastore/PersistenceLayerEvent';
 import {CloudService} from './cloud/CloudService';
 import {Throttler} from '../../../web/js/datastore/Throttler';
+import {AdvertisingPersistenceLayer} from '../../../web/js/datastore/advertiser/AdvertisingPersistenceLayer';
+import {PersistenceLayer} from '../../../web/js/datastore/PersistenceLayer';
+import {DefaultPersistenceLayer} from '../../../web/js/datastore/DefaultPersistenceLayer';
+import {DocMetas} from '../../../web/js/metadata/DocMetas';
 
 const log = Logger.create();
 
@@ -712,17 +716,23 @@ export default class App extends React.Component<AppProps, AppState> {
             this.docRepository!.updateDocInfo(repoDocInfo);
             this.refresh();
 
-            // console.log("FIXME: going to writeDocInfo with UUID: " + docInfo.uuid, docInfo);
+            const handleWriteDocMeta = async () => {
 
+                // this is kind of cheating to be writing right to the datastore
+                // directly.
 
-            // setTimeout(() => {
-            //
-            //     // FIXME: with this enabled I get TWO writes, completed, then
-            //     // Electron locks up.....
-            //     this.docRepository!.writeDocInfo(docInfo)
-            //         .catch(err => log.error("Unable to write doc info: ", err));
-            //
-            // }, 1);
+                const persistenceLayer: PersistenceLayer = this.persistenceLayerManager.get();
+
+                const docMeta = await persistenceLayer.getDocMeta(docInfo.fingerprint);
+
+                const datastore = persistenceLayer.datastore;
+
+                await datastore.writeDocMeta(docMeta!);
+
+            };
+
+            handleWriteDocMeta()
+                .catch(err => log.error("Unable to write docMeta to datastore: ", err));
 
         } else {
 
