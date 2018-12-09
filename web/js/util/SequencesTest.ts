@@ -16,9 +16,8 @@ describe('Sequences', function() {
         Sequences.NONCE = 999999999999;
 
         const seq = Sequences.create();
-        console.log("seq: " + seq);
 
-        assert.equal(seq, "2012-02-02-11-38-321-000000-999999999999");
+        assert.equal(seq, "2012-03-02T11:38:49.321Z+000000-999999999999");
 
     });
 
@@ -31,14 +30,10 @@ describe('Sequences', function() {
         Sequences.NONCE = 0;
 
         const seq = Sequences.create();
-        console.log("seq: " + seq);
 
-        assert.equal(seq, "2012-02-02-11-38-321-000000-000000000000");
-
-        console.log("FIXME::" + ISODateTimeStrings.create());
+        assert.equal(seq, "2012-03-02T11:38:49.321Z+000000-000000000000");
 
     });
-
 
 });
 

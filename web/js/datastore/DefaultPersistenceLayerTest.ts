@@ -10,13 +10,6 @@ describe('DefaultPersistenceLayer', function() {
 
     const fingerprint = '0x0001';
 
-    it('test UUID', function() {
-
-        console.log(uuid.v1());
-        console.log(uuid.v1());
-
-    });
-
     it("verify that lastUpdated was written", async function() {
 
         TestingTime.freeze();

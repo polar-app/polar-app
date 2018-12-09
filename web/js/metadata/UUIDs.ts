@@ -1,10 +1,10 @@
-import uuid from 'uuid';
 import {UUID} from './UUID';
+import {Sequences} from '../util/Sequences';
 
 export class UUIDs {
 
     public static create(): UUID {
-        return uuid.v1();
+        return Sequences.create();
     }
 
     public static compare(u0?: UUID, u1?: UUID) {
