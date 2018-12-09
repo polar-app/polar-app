@@ -416,6 +416,8 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore {
             await docMetaCommitPromise;
             log.debug("Waiting for promise...done");
 
+            console.log("FIXME: FirebaeDatastore wrote");
+
         } finally {
             // noop for now
         }

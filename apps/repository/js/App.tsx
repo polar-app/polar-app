@@ -717,9 +717,14 @@ export default class App extends React.Component<AppProps, AppState> {
 
                 if (PersistenceLayerTypes.get() === 'cloud') {
 
+
                     const persistenceLayer: PersistenceLayer = this.persistenceLayerManager.get();
 
+                    console.log("FIXME: synchronizeDocs with: ", persistenceLayer);
+
                     await persistenceLayer.synchronizeDocs(docInfo.fingerprint);
+
+                    console.log("FIXME: synchronizeDocs....done");
 
                 }
 

@@ -209,6 +209,8 @@ export class CloudAwareDatastore extends AbstractDatastore implements Datastore,
 
     public async synchronizeDocs(...fingerprints: string[]) {
 
+        console.log("CloudAwareDatastore: synchronizeDocs: ", fingerprints);
+
         const toSyncOrigin = async (datastore: Datastore): Promise<SyncOrigin> => {
 
             const docaMetaFiles: DocMetaRef[] =
@@ -231,9 +233,10 @@ export class CloudAwareDatastore extends AbstractDatastore implements Datastore,
         // FIXME: there are no events with this and the UI won't be updated
 
         log.info("Transferring from local -> cloud...");
-        await PersistenceLayers.transfer(localSyncOrigin, cloudSyncOrigin, ASYNC_NULL_FUNCTION, 'cloud-to-local');
-        log.info("Transferring from local -> cloud...");
+        const synchronizeResult = await PersistenceLayers.transfer(localSyncOrigin, cloudSyncOrigin, ASYNC_NULL_FUNCTION, 'cloud-to-local');
+        log.info("Transferring from local -> cloud...", synchronizeResult);
 
+        console.log("FIXME: Transferring from local -> cloud...", synchronizeResult);
     }
 
     public async snapshot(docMetaSnapshotEventListener: DocMetaSnapshotEventListener,

@@ -126,6 +126,10 @@ export abstract class AbstractDatastore {
                           docInfo: IDocInfo,
                           datastoreMutation?: DatastoreMutation<boolean>): Promise<void>;
 
+    public async synchronizeDocs(...fingerprints: string[]): Promise<void> {
+        // noop
+    }
+
     public async deactivate() {
         // noop
     }
@@ -151,6 +155,12 @@ interface WritableDatastore {
      * @param docInfo The DocInfo for this document that we're writing
      */
     write(fingerprint: string, data: any, docInfo: IDocInfo, datastoreMutation?: DatastoreMutation<boolean>): Promise<void>;
+
+    /**
+     * Make sure the docs with the given fingerprints are synchronized with
+     * this datastore. Only implemented in cloud datastores.
+     */
+    synchronizeDocs(...fingerprints: string[]): Promise<void>;
 
 }
 
