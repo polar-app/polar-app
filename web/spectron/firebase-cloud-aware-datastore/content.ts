@@ -223,7 +223,7 @@ SpectronRenderer.run(async (state) => {
                 const initialDocLatch = new Latch<boolean>();
                 const externallyWrittenDocLatch = new Latch<boolean>();
 
-                cloudAwareDatastore.addDocMetaSnapshotEventListener(docMetaSnapshotEvent => {
+                cloudAwareDatastore.addDocMetaSnapshotEventListener(async docMetaSnapshotEvent => {
 
                     for (const docMutation of docMetaSnapshotEvent.docMetaMutations) {
 
@@ -374,7 +374,7 @@ SpectronRenderer.run(async (state) => {
                 let gotEventAfterUnsubscribe = false;
                 let unsubscribed = false;
 
-                const snapshotResult = await targetPersistenceLayer.snapshot(event => {
+                const snapshotResult = await targetPersistenceLayer.snapshot(async event => {
                     console.log("GOT AN EVENT with consistency: " + event.consistency, event);
 
                     if (event.consistency !== 'committed') {

@@ -721,11 +721,11 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore {
 
         };
 
-        const handleDocMetaMutation = (docMetaMutation: DocMetaMutation) => {
+        const handleDocMetaMutation = async (docMetaMutation: DocMetaMutation) => {
 
             // dispatch a progress event so we can detect how far we've been
             // loading
-            docMetaSnapshotEventListener({
+            await docMetaSnapshotEventListener({
                 datastore: this.id,
                 consistency,
                 progress: progressTracker.incr(),
@@ -775,8 +775,7 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore {
         //     handleDoc(doc);
         // }
 
-        // TODO: I'm not really sure of the difference of docs vs docChanges
-        // in our situation.
+        // TODO: move this entire event to async...
 
         docMetaSnapshotEventListener({
             datastore: this.id,
@@ -787,7 +786,7 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore {
                 id: batch.id,
                 terminated: true,
             }
-        });
+        }).catch(err => log.error("Unable to dispatch event listener"));
 
         log.debug("onSnapshot... done");
 

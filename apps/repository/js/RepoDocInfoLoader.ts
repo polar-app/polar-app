@@ -55,11 +55,13 @@ export class RepoDocInfoLoader {
 
         let progressBar: ProgressBar | undefined;
 
-        persistenceLayer.addDocMetaSnapshotEventListener(docMetaSnapshotEvent => {
+        persistenceLayer.addDocMetaSnapshotEventListener(async docMetaSnapshotEvent => {
 
-            console.log("FIXME: onPersistenceLayerChanged: " + DocMetaSnapshotEvents.format(docMetaSnapshotEvent), docMetaSnapshotEvent);
+            // console.log("FIXME: onPersistenceLayerChanged: " + DocMetaSnapshotEvents.format(docMetaSnapshotEvent), docMetaSnapshotEvent);
 
             const eventHandler = async () => {
+
+                // console.log("FIXME: within addDocMetaSnapshotEventListener");
 
                 const {progress, docMetaMutations} = docMetaSnapshotEvent;
 

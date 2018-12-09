@@ -543,13 +543,12 @@ export default class App extends React.Component<AppProps, AppState> {
         // directly so we can just write what's in memory to disk. I think it
         // would be better practice to keep them immutable.
 
-        SettingsStore.load().then((settings) => {
-
-            settings.documentRepository.columns = this.state.columns;
-
-            SettingsStore.write(settings);
-
-        });
+        SettingsStore.load()
+            .then((settings) => {
+                settings.documentRepository.columns = this.state.columns;
+                SettingsStore.write(settings);
+            })
+            .catch(err => log.error("Could not load settings: ", err));
 
         this.refresh();
     }
@@ -794,7 +793,7 @@ export default class App extends React.Component<AppProps, AppState> {
 
         this.repoDocInfoLoader.addEventListener(event => {
 
-            console.log("FIXME: got updated event from the repo doc loader", event);
+            // console.log("FIXME here at least");
 
             this.docRepository.updateDocInfo(...Object.values(event.repoDocInfoIndex));
 
@@ -807,7 +806,7 @@ export default class App extends React.Component<AppProps, AppState> {
 
         });
 
-        this.repoDocInfoLoader.start();
+        await this.repoDocInfoLoader.start();
 
         this.refresh();
 

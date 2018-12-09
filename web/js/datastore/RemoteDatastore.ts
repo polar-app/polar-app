@@ -38,7 +38,7 @@ export class RemoteDatastore extends DelegatedDatastore {
 
         if (this.docMetaSnapshotEventDispatcher.size() > 0) {
             // perform a snapshot if a listener was attached...
-            this.snapshot(event => this.docMetaSnapshotEventDispatcher.dispatchEvent(event));
+            this.snapshot(async event => this.docMetaSnapshotEventDispatcher.dispatchEvent(event));
         }
 
         return {};

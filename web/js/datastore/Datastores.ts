@@ -102,10 +102,7 @@ export class Datastores {
             // // TODO: we could do even BETTER here in terms lazy performance and
             // // don't even read the data until it's requested.
             //
-            // const dataProvider = async () => await datastore.getDocMeta(docMetaFile.fingerprint);
-
-            const data = await datastore.getDocMeta(docMetaFile.fingerprint);
-            const dataProvider = AsyncProviders.of(data);
+            const dataProvider = AsyncProviders.memoize(async () => await datastore.getDocMeta(docMetaFile.fingerprint));
             const docMetaProvider = AsyncProviders.memoize(async () => DocMetas.deserialize((await dataProvider())!));
             const docInfoProvider = AsyncProviders.memoize(async () => (await docMetaProvider()).docInfo);
             const docMetaFileRefProvider = AsyncProviders.memoize(async () => DocMetaFileRefs.createFromDocInfo(await docInfoProvider()));
@@ -119,7 +116,7 @@ export class Datastores {
                 mutationType: 'created'
             };
 
-            listener({
+            await listener({
                 datastore: datastore.id,
                 progress: progressTracker.incr(),
                 consistency: 'committed',
@@ -129,7 +126,7 @@ export class Datastores {
 
         }
 
-        listener({
+        await listener({
             datastore: datastore.id,
             progress: progressTracker.terminate(),
             consistency: 'committed',

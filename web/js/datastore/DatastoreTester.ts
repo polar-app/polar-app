@@ -215,7 +215,7 @@ export class DatastoreTester {
                 const writtenSnapshotReceived = new Latch<boolean>();
                 const committedSnapshotReceived = new Latch<boolean>();
 
-                const snapshotResult = await datastore.snapshot(docMetaSnapshotEvent => {
+                const snapshotResult = await datastore.snapshot(async docMetaSnapshotEvent => {
 
                     if (docMetaSnapshotEvent.batch) {
 

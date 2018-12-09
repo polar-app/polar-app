@@ -17,7 +17,7 @@ export class RepositoryApp {
 
         const updatedDocInfoEventDispatcher: IEventDispatcher<IDocInfo> = new SimpleReactor();
 
-        await new FileImportController(persistenceLayerManager, updatedDocInfoEventDispatcher).start();
+        new FileImportController(persistenceLayerManager, updatedDocInfoEventDispatcher).start();
 
         ReactDOM.render(
             <App persistenceLayerManager={persistenceLayerManager}

@@ -84,14 +84,18 @@ export class FirebaseTester {
             // in automated testing we have to fail here because no cookies are
             // present to run this test and someone needs to run the test
             // manually to login to store data
-            this.state.testResultWriter.write(false);
+            await this.state.testResultWriter.write(false);
 
         }
 
     }
 
-    public onAuthError(err: firebase.auth.Error) {
-        this.state.testResultWriter.write(false);
+    public onAuthError(firebaseError: firebase.auth.Error) {
+
+        log.error("Firebase error: ", firebaseError);
+
+        this.state.testResultWriter.write(false)
+            .catch(err => log.error("Could not send result: ", err));
     }
 
 }

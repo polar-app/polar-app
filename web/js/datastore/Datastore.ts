@@ -258,7 +258,11 @@ export interface FileSynchronizationEvent {
 
 export type FileSynchronizationEventListener = (fileSynchronizationEvent: FileSynchronizationEvent) => void;
 
-export type DocMetaSnapshotEventListener = (docMetaSnapshotEvent: DocMetaSnapshotEvent) => void;
+/**
+ * Call the listener for every DocMetaSnapshotEvent and await its results.  It's
+ * VERY important to await the results here!
+ */
+export type DocMetaSnapshotEventListener = (docMetaSnapshotEvent: DocMetaSnapshotEvent) => Promise<void>;
 
 export type ErrorListener = (err: Error) => void;
 

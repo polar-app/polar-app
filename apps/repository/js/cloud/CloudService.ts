@@ -26,6 +26,13 @@ export class CloudService {
 
     private onAuth(user: firebase.User | null) {
 
+        this.handleAuth(user)
+            .catch(err => log.error("Failed to change persistence layer: ", err));
+
+    }
+
+    private async handleAuth(user: firebase.User | null) {
+
         console.log("onAuth: ", user);
 
         if (this.persistenceLayerManager.requiresReset()) {
@@ -36,9 +43,9 @@ export class CloudService {
 
         if (user) {
             log.info("Switching to cloud persistence layer");
-            this.persistenceLayerManager.change('cloud');
+            await this.persistenceLayerManager.change('cloud');
         } else {
-            this.persistenceLayerManager.change('local');
+            await this.persistenceLayerManager.change('local');
         }
 
     }

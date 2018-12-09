@@ -24,7 +24,8 @@
     "e2e-mocha": "npx mocha --exit --log-timer-events --recursive 'web/spectron/**/spec.js'",
     "test-mocha": "npx mocha --exit --log-timer-events --recursive 'web/js/**/*Test.js'",
     "start-with-console": "./node_modules/.bin/electron --enable-remote-debugging --interactive --enable-console-logging .",
-    "postinstall": "opencollective-postinstall"
+    "postinstall": "opencollective-postinstall",
+    "tslint": "tslint --project tsconfig.json --config tslint.yaml"
   },
   "repository": "https://github.com/burtonator/polar-bookshelf",
   "keywords": [

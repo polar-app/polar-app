@@ -43,7 +43,7 @@ export class PersistenceLayerManager implements IProvider<ListenablePersistenceL
 
         }
 
-        this.change(type);
+        await this.change(type);
 
     }
 

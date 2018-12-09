@@ -1,5 +1,5 @@
 import {PersistenceLayer} from "./PersistenceLayer";
-import {NULL_FUNCTION} from "../util/Functions";
+import {NULL_FUNCTION, ASYNC_NULL_FUNCTION} from "../util/Functions";
 import {Percentages} from '../util/Percentages';
 import {Backend} from './Backend';
 import {Blobs} from "../util/Blobs";
@@ -64,7 +64,7 @@ export class PersistenceLayers {
      */
     public static async merge(syncOrigin0: SyncOrigin,
                               syncOrigin1: SyncOrigin,
-                              listener: DocMetaSnapshotEventListener = NULL_FUNCTION) {
+                              listener: DocMetaSnapshotEventListener = ASYNC_NULL_FUNCTION) {
 
         await this.transfer(syncOrigin0, syncOrigin1, listener);
 
@@ -80,7 +80,7 @@ export class PersistenceLayers {
      */
     public static async transfer(source: SyncOrigin,
                                  target: SyncOrigin,
-                                 listener: DocMetaSnapshotEventListener = NULL_FUNCTION,
+                                 listener: DocMetaSnapshotEventListener = ASYNC_NULL_FUNCTION,
                                  id: string = 'none'): Promise<TransferResult> {
 
         // FIXME: no errors are actually raised on the copy operations that are
@@ -215,7 +215,7 @@ export class PersistenceLayers {
 
             };
 
-            listener(docMetaSnapshotEvent);
+            await listener(docMetaSnapshotEvent);
 
         }
 
@@ -244,7 +244,7 @@ export class PersistenceLayers {
 
         await Promise.all([docFileExecutionPromise, docMetaExecutionPromise]);
 
-        listener({
+        await listener({
             datastore: source.datastore.id,
             progress: progressTracker.terminate(),
             consistency: 'committed',

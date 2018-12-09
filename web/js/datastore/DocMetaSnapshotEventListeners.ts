@@ -33,15 +33,11 @@ export class DocMetaSnapshotEventListeners {
 
         const listener = async (docMetaSnapshotEvent: DocMetaSnapshotEvent) => {
 
-            console.log("FIXME: got raw event: ", docMetaSnapshotEvent);
-
             const acceptedDocMetaMutations: DocMetaMutation[] = [];
 
             for (const docMetaMutation of docMetaSnapshotEvent.docMetaMutations) {
 
                 const docInfo = await docMetaMutation.docInfoProvider();
-
-                console.log("FIXME: deduplistener has docinfo: " + docInfo.uuid);
 
                 if (docMetaComparisonIndex.handleDocMetaMutation(docMetaMutation, docInfo)) {
                     acceptedDocMetaMutations.push(docMetaMutation);
@@ -54,7 +50,7 @@ export class DocMetaSnapshotEventListeners {
             // necessary to handle within the listener for downstream event
             // handlers
 
-            outputListener({
+            await outputListener({
                 ...docMetaSnapshotEvent,
                 docMetaMutations: acceptedDocMetaMutations,
             });

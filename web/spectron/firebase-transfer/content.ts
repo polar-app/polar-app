@@ -42,7 +42,7 @@ SpectronRenderer.run(async (state) => {
             const cloudAwareDatastore = new CloudAwareDatastore(diskDatastore, firebaseDatastore);
             const progressBar = ProgressBar.create(false);
 
-            cloudAwareDatastore.addDocMetaSnapshotEventListener(docMetaSnapshotEvent => {
+            cloudAwareDatastore.addDocMetaSnapshotEventListener(async docMetaSnapshotEvent => {
                 console.log("Got event: ", docMetaSnapshotEvent);
                 console.log("Progress percentage: " + docMetaSnapshotEvent.progress.progress);
                 progressBar.update(docMetaSnapshotEvent.progress.progress);
@@ -88,7 +88,7 @@ SpectronRenderer.run(async (state) => {
 
             }
 
-            await PersistenceLayers.merge(await toSyncOrigin(source), await toSyncOrigin(target), (transferEvent) => {
+            await PersistenceLayers.merge(await toSyncOrigin(source), await toSyncOrigin(target), async (transferEvent) => {
                 console.log("Transfer event: ", transferEvent);
                 progressBar.update(transferEvent.progress.progress);
             });

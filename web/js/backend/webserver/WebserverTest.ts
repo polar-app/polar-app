@@ -35,13 +35,13 @@ describe('Webserver', function() {
         //
         // });
 
-        it("basic", function() {
+        it("basic", async function() {
 
             const webserverConfig = new WebserverConfig("..", 8085);
             const fileRegistry = new FileRegistry(webserverConfig);
 
             const webserver = new Webserver(webserverConfig, fileRegistry);
-            webserver.start();
+            await webserver.start();
             webserver.stop();
 
         });
@@ -52,7 +52,7 @@ describe('Webserver', function() {
             const fileRegistry = new FileRegistry(webserverConfig);
             const webserver = new Webserver(webserverConfig, fileRegistry);
 
-            webserver.start();
+            await webserver.start();
 
             const path = FilePaths.tmpfile('file-registry.html');
             await Files.writeFileAsync(path, 'hello world');
@@ -88,7 +88,7 @@ describe('Webserver', function() {
             const resourceRegistry = new ResourceRegistry();
             const webserver = new Webserver(webserverConfig, fileRegistry, resourceRegistry);
 
-            webserver.start();
+            await webserver.start();
 
             const path = FilePaths.tmpfile('helloworld.html');
             await Files.writeFileAsync(path, 'hello world');

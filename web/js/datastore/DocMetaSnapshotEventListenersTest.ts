@@ -7,7 +7,7 @@ import {ProgressTracker} from '../util/ProgressTracker';
 import {assertJSON} from '../test/Assertions';
 import {assert} from 'chai';
 import {UUIDs} from '../metadata/UUIDs';
-import {NULL_FUNCTION} from '../util/Functions';
+import {ASYNC_NULL_FUNCTION, NULL_FUNCTION} from '../util/Functions';
 import {AsyncProviders} from '../util/Providers';
 import waitForExpect from 'wait-for-expect';
 import {DocMetaFileRefs} from './DocMetaRef';
@@ -19,7 +19,7 @@ describe('DocMetaSnapshotEventListener', function() {
 
     let emitted: DocMetaSnapshotEvent[] = [];
 
-    let deduplicatedListener: DocMetaSnapshotEventListener = NULL_FUNCTION;
+    let deduplicatedListener: DocMetaSnapshotEventListener = ASYNC_NULL_FUNCTION;
 
     const progressTracker = new ProgressTracker(1);
     progressTracker.incr();
@@ -32,7 +32,7 @@ describe('DocMetaSnapshotEventListener', function() {
 
         emitted = [];
 
-        const eventDeduplicator = DocMetaSnapshotEventListeners.createDeduplicatedListener(emittedEvent => {
+        const eventDeduplicator = DocMetaSnapshotEventListeners.createDeduplicatedListener(async emittedEvent => {
             emitted.push(emittedEvent);
         });
 
@@ -77,8 +77,8 @@ describe('DocMetaSnapshotEventListener', function() {
 
         const docMetaSnapshotEvent = createDocMetaSnapshotEvent();
 
-        deduplicatedListener(docMetaSnapshotEvent);
-        deduplicatedListener(docMetaSnapshotEvent);
+        await deduplicatedListener(docMetaSnapshotEvent);
+        await deduplicatedListener(docMetaSnapshotEvent);
 
         waitForExpect(() => {
             assert.equal(emitted.length, 1);
@@ -91,11 +91,11 @@ describe('DocMetaSnapshotEventListener', function() {
 
         const docMetaSnapshotEvent = createDocMetaSnapshotEvent();
 
-        deduplicatedListener(docMetaSnapshotEvent);
+        await deduplicatedListener(docMetaSnapshotEvent);
 
         docMeta.docInfo.uuid = createFutureUUID();
 
-        deduplicatedListener(docMetaSnapshotEvent);
+        await deduplicatedListener(docMetaSnapshotEvent);
 
         waitForExpect(() => {
             assert.equal(emitted.length, 1);
@@ -105,11 +105,11 @@ describe('DocMetaSnapshotEventListener', function() {
 
     it("One created, then one updated.", async function() {
 
-        deduplicatedListener(createDocMetaSnapshotEvent('created'));
+        await deduplicatedListener(createDocMetaSnapshotEvent('created'));
 
         docMeta.docInfo.uuid = createFutureUUID();
 
-        deduplicatedListener(createDocMetaSnapshotEvent('updated'));
+        await deduplicatedListener(createDocMetaSnapshotEvent('updated'));
 
         waitForExpect(() => {
             assert.equal(emitted.length, 2);
@@ -119,11 +119,11 @@ describe('DocMetaSnapshotEventListener', function() {
 
     it("Two updated.", async function() {
 
-        deduplicatedListener(createDocMetaSnapshotEvent('updated'));
+        await deduplicatedListener(createDocMetaSnapshotEvent('updated'));
 
         docMeta.docInfo.uuid = createFutureUUID();
 
-        deduplicatedListener(createDocMetaSnapshotEvent('updated'));
+        await deduplicatedListener(createDocMetaSnapshotEvent('updated'));
 
         waitForExpect(() => {
             assert.equal(emitted.length, 2);
@@ -133,15 +133,15 @@ describe('DocMetaSnapshotEventListener', function() {
 
     it("Created, then deleted, then created", async function() {
 
-        deduplicatedListener(createDocMetaSnapshotEvent('created'));
+        await deduplicatedListener(createDocMetaSnapshotEvent('created'));
 
         docMeta.docInfo.uuid = createFutureUUID();
 
-        deduplicatedListener(createDocMetaSnapshotEvent('deleted'));
+        await deduplicatedListener(createDocMetaSnapshotEvent('deleted'));
 
         docMeta.docInfo.uuid = createFutureUUID();
 
-        deduplicatedListener(createDocMetaSnapshotEvent('created'));
+        await deduplicatedListener(createDocMetaSnapshotEvent('created'));
 
         waitForExpect(() => {
             assert.equal(emitted.length, 3);

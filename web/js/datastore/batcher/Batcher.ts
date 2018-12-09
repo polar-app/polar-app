@@ -89,7 +89,7 @@ export class PassiveBatch implements Batch {
 
     }
 
-    run(): Promise<void> {
+    public run(): Promise<void> {
         return Promise.resolve();
     }
 
@@ -127,7 +127,7 @@ export class ActiveBatch implements Batch  {
         this.ticket = ticket;
     }
 
-    async run(): Promise<void> {
+    public async run(): Promise<void> {
 
         while (this.tickets.length > 0) {
             // keep writing while we have tickets. The other tickets are when
@@ -142,14 +142,14 @@ export class ActiveBatch implements Batch  {
     /**
      * Apply once batch iteration.
      */
-    async iter() {
+    public async iter() {
 
-        let nrTicketsToExecute = this.tickets.length;
+        const nrTicketsToExecute = this.tickets.length;
         log.debug("Executing request for N tickets: ", nrTicketsToExecute);
 
         await this.tickets[0].promise;
 
-        let tickets = this.tickets.splice(0, nrTicketsToExecute);
+        const tickets = this.tickets.splice(0, nrTicketsToExecute);
 
         tickets.forEach(ticket => ticket.executed = true);
 

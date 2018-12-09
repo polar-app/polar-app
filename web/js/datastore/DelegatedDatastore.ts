@@ -73,7 +73,7 @@ export class DelegatedDatastore extends AbstractDatastore implements Datastore {
         return this.delegate.getDocMetaFiles();
     }
 
-    public async snapshot(listener: (docMetaSnapshotEvent: DocMetaSnapshotEvent) => void): Promise<SnapshotResult> {
+    public async snapshot(listener: DocMetaSnapshotEventListener): Promise<SnapshotResult> {
         return this.delegate.snapshot(listener);
     }
 
