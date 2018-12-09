@@ -222,19 +222,23 @@ export class CloudAwareDatastore extends AbstractDatastore implements Datastore,
 
             public readonly syncDocMap: SyncDocMap = {};
             public readonly latch = new Latch<boolean>();
-            public readonly id: string;
+            public readonly id: CloudDatastoreID;
 
             private hasInitialTerminatedBatch: boolean = false;
 
             private pending: number = 0;
 
-            constructor(id: string) {
+            constructor(id: CloudDatastoreID) {
                 this.id = id;
             }
 
             private async handleSnapshot(docMetaSnapshotEvent: DocMetaSnapshotEvent) {
 
                 try {
+
+                    if (this.id === 'cloud') {
+                        console.log("FIXME: got cloud event: " + DocMetaSnapshotEvents.format(docMetaSnapshotEvent));
+                    }
 
                     if (this.hasInitialTerminatedBatch) {
                         return;
@@ -263,6 +267,9 @@ export class CloudAwareDatastore extends AbstractDatastore implements Datastore,
                     --this.pending;
 
                     if (this.hasInitialTerminatedBatch && this.pending === 0) {
+                        if (this.id === 'cloud') {
+                            console.log("FIXME: resolving cloud");
+                        }
                         this.latch.resolve(true);
                     }
 
@@ -465,3 +472,6 @@ export interface DocUUID {
     fingerprint: string;
     uuid?: UUID;
 }
+
+export type CloudDatastoreID = 'local' | 'cloud';
+
