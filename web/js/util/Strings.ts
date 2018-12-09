@@ -34,7 +34,11 @@ export class Strings {
 
     }
 
-    public static lpad = function(str: string, padd: string, length: number) {
+    public static lpad = function(str: string | number, padd: string, length: number) {
+
+        if (typeof str === 'number') {
+            str = `${str}`;
+        }
 
         while (str.length < length) {
             str = padd + str;
