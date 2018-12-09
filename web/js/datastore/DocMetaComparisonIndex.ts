@@ -75,6 +75,17 @@ export class DocMetaComparisonIndex {
                 doUpdated = true;
             }
 
+            if (docComparison) {
+
+                if (UUIDs.compare(docComparison.uuid, docInfo.uuid) < 0) {
+                    doUpdated = true;
+                } else {
+                    console.log(`FIXME: failed doc comparison: ${docComparison.uuid} vs ${docInfo.uuid}`);
+                }
+
+            }
+
+
         }
 
         if (doUpdated) {
