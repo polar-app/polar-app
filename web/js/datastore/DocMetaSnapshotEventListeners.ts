@@ -33,6 +33,8 @@ export class DocMetaSnapshotEventListeners {
 
         const listener = async (docMetaSnapshotEvent: DocMetaSnapshotEvent) => {
 
+            console.log("FIXME: got raw event: ", docMetaSnapshotEvent);
+
             const acceptedDocMetaMutations: DocMetaMutation[] = [];
 
             for (const docMetaMutation of docMetaSnapshotEvent.docMetaMutations) {
