@@ -57,7 +57,7 @@ export class RepoDocInfoLoader {
 
         persistenceLayer.addDocMetaSnapshotEventListener(docMetaSnapshotEvent => {
 
-            // console.log(DocMetaSnapshotEvents.format(docMetaSnapshotEvent), docMetaSnapshotEvent);
+            console.log("FIXME: onPersistenceLayerChanged: " + DocMetaSnapshotEvents.format(docMetaSnapshotEvent), docMetaSnapshotEvent);
 
             const eventHandler = async () => {
 
