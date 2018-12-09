@@ -74,24 +74,22 @@ export abstract class AbstractAdvertisingPersistenceLayer implements ListenableP
 
     }
 
-    private async handleWrite(docMeta: DocMeta, handler: () => Promise<any>) {
+    private async handleWrite(docMeta: DocMeta, handler: () => Promise<DocInfo>) {
 
-        await handler();
-
-        console.log("FIXME: dispatching write event");
+        const docInfo = await handler();
 
         const eventType: PersistenceEventType
             = this.contains(docMeta.docInfo.fingerprint) ? 'updated' : 'created';
 
         this.broadcastEvent({
-            docInfo: docMeta.docInfo,
+            docInfo,
             docMetaRef: {
                 fingerprint: docMeta.docInfo.fingerprint
             },
             eventType
         });
 
-        return docMeta.docInfo;
+        return docInfo;
 
     }
 

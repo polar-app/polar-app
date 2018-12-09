@@ -87,11 +87,19 @@ export class PersistenceLayers {
         // operating in the async queue.  These need to be bubbled up.
 
         const result = {
-            docMetaWrites: 0,
-            fileWrites: 0
+            docMeta: {
+                total: 0,
+                writes: 0
+            },
+            files: {
+                total: 0,
+                writes: 0
+            }
         };
 
         async function handleSyncFile(syncDoc: SyncDoc, fileRef: FileRef) {
+
+            ++result.files.total;
 
             if (! await target.datastore.containsFile(Backend.STASH, fileRef)) {
 
@@ -128,7 +136,7 @@ export class PersistenceLayers {
 
                     await target.datastore.writeFile(file.backend, fileRef, buffer, file.meta);
 
-                    ++result.fileWrites;
+                    ++result.files.writes;
 
                 }
 
@@ -145,6 +153,8 @@ export class PersistenceLayers {
          *                        target datastore.
          */
         async function handleSyncDoc(sourceSyncDoc: SyncDoc, targetSyncDoc?: SyncDoc) {
+
+            ++result.docMeta.total;
 
             for (const sourceSyncFile of sourceSyncDoc.files) {
 
@@ -180,7 +190,7 @@ export class PersistenceLayers {
                 const data = await source.datastore.getDocMeta(sourceSyncDoc.fingerprint);
                 await target.datastore.write(sourceSyncDoc.fingerprint, data, sourceSyncDoc.docMetaFileRef.docInfo);
 
-                ++result.docMetaWrites;
+                ++result.docMeta.writes;
 
             }
 
@@ -251,11 +261,15 @@ export class PersistenceLayers {
 
 export interface TransferResult {
 
-    readonly docMetaWrites: number;
+    docMeta: TransferMetrics;
 
-    readonly fileWrites: number;
+    files: TransferMetrics;
 
+}
 
+export interface TransferMetrics {
+    total: number;
+    writes: number;
 }
 
 

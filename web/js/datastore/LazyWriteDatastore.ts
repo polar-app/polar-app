@@ -64,15 +64,20 @@ export class LazyWriteDatastore extends DelegatedDatastore {
             doUpdated = true;
         }
 
+        const writeDesc = `fingerprint: ${docInfo.fingerprint}, uuid: ${docInfo.uuid}: ` + docInfo.title;
+
         if (doUpdated) {
             // when the doc is created and it's not in the index.
             this.index.updateUsingDocInfo(docInfo);
             ++this.nrWrites;
 
+            console.log("FIXME: performing write: " + writeDesc);
             await writeFunction();
             return;
 
         }
+
+        console.log("FIXME: Skipping write: " + writeDesc);
 
     }
 

@@ -445,7 +445,7 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore {
             await docMetaCommitPromise;
             log.debug("Waiting for promise...done");
 
-            console.warn(`FirebaseDatastore: FIXME: wrote doc with fingerprint: ${fingerprint}: ${docInfo.title}`, new Error());
+            console.warn(`FirebaseDatastore: FIXME: wrote doc with fingerprint: ${fingerprint} and uuid: ${docInfo.uuid}: ${docInfo.title}`, new Error());
 
         } finally {
             // noop for now

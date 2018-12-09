@@ -722,12 +722,11 @@ export default class App extends React.Component<AppProps, AppState> {
                 // directly.
 
                 const persistenceLayer: PersistenceLayer = this.persistenceLayerManager.get();
-
-                const docMeta = await persistenceLayer.getDocMeta(docInfo.fingerprint);
-
                 const datastore = persistenceLayer.datastore;
 
-                await datastore.writeDocMeta(docMeta!);
+                const data = await datastore.getDocMeta(docInfo.fingerprint);
+
+                await datastore.write(docInfo.fingerprint, data, docInfo);
 
             };
 
