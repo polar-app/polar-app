@@ -14,7 +14,7 @@ export class Sequences {
 
     public static NONCE: number = 0;
 
-    public static create(): string {
+    public static create(): Sequence {
 
         if (this.NONCE > 999999) {
             this.NONCE = 0;
@@ -24,16 +24,15 @@ export class Sequences {
 
         const now = new Date();
 
-        const nonce = Strings.lpad(this.NONCE, '0', 6); // how do I deal with nonce rollover?  I just need to handle
+        const nonce = Strings.lpad(this.NONCE++, '0', 6); // how do I deal with nonce rollover?  I just need to handle
         const machine = Strings.lpad(this.MACHINE, '0', 12);
 
+        // use a z prefix so it sorts last in string comparison.
         return 'z' + ISODateTimeStrings.create() + `+${nonce}-${machine}`;
-
-        ++this.NONCE;
 
     }
 
 
 }
 
-export type Sequuence = string;
+export type Sequence = string;

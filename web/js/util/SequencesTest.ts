@@ -17,7 +17,20 @@ describe('Sequences', function() {
 
         const seq = Sequences.create();
 
-        assert.equal(seq, "2012-03-02T11:38:49.321Z+000000-999999999999");
+        assert.equal(seq, "z2012-03-02T11:38:49.321Z+000000-999999999999");
+
+    });
+
+
+    it("Two issued", async function() {
+
+        TestingTime.freeze();
+
+        Sequences.MACHINE = 123;
+        Sequences.NONCE = 0;
+
+        assert.equal(Sequences.create(), "z2012-03-02T11:38:49.321Z+000000-000000000123");
+        assert.equal(Sequences.create(), "z2012-03-02T11:38:49.321Z+000001-000000000123");
 
     });
 
@@ -31,7 +44,7 @@ describe('Sequences', function() {
 
         const seq = Sequences.create();
 
-        assert.equal(seq, "2012-03-02T11:38:49.321Z+000000-000000000000");
+        assert.equal(seq, "z2012-03-02T11:38:49.321Z+000000-000000000000");
 
     });
 
