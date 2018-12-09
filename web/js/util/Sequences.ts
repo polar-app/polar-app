@@ -27,7 +27,7 @@ export class Sequences {
         const nonce = Strings.lpad(this.NONCE, '0', 6); // how do I deal with nonce rollover?  I just need to handle
         const machine = Strings.lpad(this.MACHINE, '0', 12);
 
-        return ISODateTimeStrings.create() + `+${nonce}-${machine}`;
+        return 'z' + ISODateTimeStrings.create() + `+${nonce}-${machine}`;
 
         ++this.NONCE;
 

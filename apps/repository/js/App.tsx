@@ -794,7 +794,7 @@ export default class App extends React.Component<AppProps, AppState> {
 
         this.repoDocInfoLoader.addEventListener(event => {
 
-            console.log("FIXME: got updated event from the repo doc loader");
+            console.log("FIXME: got updated event from the repo doc loader", event);
 
             this.docRepository.updateDocInfo(...Object.values(event.repoDocInfoIndex));
 
