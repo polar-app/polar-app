@@ -34,8 +34,7 @@ export class AppAnalytics {
     public set(key: string, value: number | string) {
 
         // TODO: for soem reason this doesn't actually return a promise.
-        this.analytics.set(key, value)
-            .catch(err => true /* noop */ );
+        this.analytics.set(key, value);
 
     }
 

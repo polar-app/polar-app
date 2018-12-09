@@ -43,7 +43,7 @@ export interface IAnalytics {
 
     new(trackingID: string, opts?: IAnalyticsOpts): IAnalytics;
 
-    set(key: string, value: number | string): Promise<IResponse>;
+    set(key: string, value: number | string): void;
 
     screen(appName: string,
            appVer: string,

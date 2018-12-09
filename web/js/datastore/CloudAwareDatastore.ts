@@ -234,8 +234,6 @@ export class CloudAwareDatastore extends AbstractDatastore implements Datastore,
 
             private async handleSnapshot(docMetaSnapshotEvent: DocMetaSnapshotEvent) {
 
-                // console.log("FIXME: handling InitialSnapshotLatch event for: " + this.id, docMetaSnapshotEvent);
-
                 try {
 
                     if (this.hasInitialTerminatedBatch) {
@@ -256,9 +254,6 @@ export class CloudAwareDatastore extends AbstractDatastore implements Datastore,
 
                         const nrDocs = Dictionaries.size(this.syncDocMap);
 
-                        // console.log(`FIXME: InitialSnapshotLatch ${this.id} has nrDocs ${nrDocs} and resolved with: ` +
-                        //                 DocMetaSnapshotEvents.format(docMetaSnapshotEvent));
-
                         this.hasInitialTerminatedBatch = true;
 
                     }
@@ -277,17 +272,7 @@ export class CloudAwareDatastore extends AbstractDatastore implements Datastore,
 
             public createSnapshot(datastore: Datastore) {
 
-                // FIXME: this is the bug... the LAST snapshot event is given to
-                // us as a single event which does not await the previous
-                // events... so what happens is that we get the last event
-                // immediately except none of the other events have been
-                // consumed yet as they are being awaited...
-
                 return datastore.snapshot(async docMetaSnapshotEvent => {
-
-                    if (this.id === 'local') {
-                        // console.log("FIXME: FORWARDING to synchronizing Listener: " + docMetaSnapshotEvent.progress.progress);
-                    }
 
                     if (! initialSyncCompleted) {
                         await this.handleSnapshot(docMetaSnapshotEvent);
@@ -314,16 +299,6 @@ export class CloudAwareDatastore extends AbstractDatastore implements Datastore,
         const localInitialSnapshotLatch = new InitialSnapshotLatch('local');
         const cloudInitialSnapshotLatch = new InitialSnapshotLatch('cloud');
 
-        // FIXME: is it possible to get a double write if I call writeDocMeta
-        // to the main store and is it writtne a second time when we get the
-        // event from the remote instance?  I think we might have to have a
-        // 'written' event go through first from the write() method and sent
-        // to all outstanding listeners first.
-
-        // FIXME: if the DiskDatastore and other datastores emit events in
-        // THEIR snapshots directly then I think we do not need to do anything
-        // special.
-
         const synchronizingEventDeduplicator: EventDeduplicator
             = DocMetaSnapshotEventListeners.createDeduplicatedListener(async docMetaSnapshotEvent => {
 
@@ -333,21 +308,17 @@ export class CloudAwareDatastore extends AbstractDatastore implements Datastore,
                     return;
                 }
 
-                // FIXME: I think ONE update is sending over ALL the updates and
-                // we should only care about the docChanges... ...
-
                 for (const docMetaMutation of docMetaSnapshotEvent.docMetaMutations) {
 
                     // FIXME FIXME FIXME: no binary files are being transferred
                     // here... Just DocMeta...  Maybe use the same code that
-                    // synchronize is using...
+                    // synchronize is using and use the SyncOrigin and SyncDocs
+                    // code.
 
                     if (docMetaMutation.mutationType === 'created' || docMetaMutation.mutationType === 'updated') {
                         const data = await docMetaMutation.dataProvider();
                         const docInfo = await docMetaMutation.docInfoProvider();
                         Preconditions.assertPresent(data, "No data in replication listener: ");
-
-                        console.log("FIXME666: doing write now!!!");
                         await this.local.write(docMetaMutation.fingerprint, data, docInfo);
                     }
 
@@ -390,15 +361,15 @@ export class CloudAwareDatastore extends AbstractDatastore implements Datastore,
 
         const synchronizingListener = synchronizingEventDeduplicator.listener;
 
-        console.log("FIXME: local snapshot...");
+        log.info("Local snapshot...");
         const localSnapshotResultPromise = localInitialSnapshotLatch.createSnapshot(this.local);
         await localInitialSnapshotLatch.latch.get();
-        console.log("FIXME: local snapshot...done");
+        log.info("Local snapshot...done");
 
-        console.log("FIXME: cloud snapshot...");
+        log.info("Cloud snapshot...");
         const cloudSnapshotResultPromise = cloudInitialSnapshotLatch.createSnapshot(this.cloud);
         await cloudInitialSnapshotLatch.latch.get();
-        console.log("FIXME: cloud snapshot...done");
+        log.info("Cloud snapshot...done");
 
         const localSyncOrigin: SyncOrigin = {
             datastore: this.local,
@@ -409,9 +380,6 @@ export class CloudAwareDatastore extends AbstractDatastore implements Datastore,
             datastore: this.cloud,
             syncDocMap: cloudInitialSnapshotLatch.syncDocMap
         };
-
-        // FIXME: sometimes we statup and we have a broken SyncDocMap in the
-        // cloud origin for some reason.
 
         if (isPrimarySnapshot) {
 

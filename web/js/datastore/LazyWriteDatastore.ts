@@ -6,6 +6,9 @@ import {DocMetaFileRef} from './DocMetaRef';
 import {DocMetaComparisonIndex} from './DocMetaComparisonIndex';
 import {UUIDs} from '../metadata/UUIDs';
 import {DocMeta} from '../metadata/DocMeta';
+import {Logger} from '../logger/Logger';
+
+const log = Logger.create();
 
 /**
  * The LazyWriteDatastore keeps a lightweight in-memory index of what's written
@@ -71,13 +74,13 @@ export class LazyWriteDatastore extends DelegatedDatastore {
             this.index.updateUsingDocInfo(docInfo);
             ++this.nrWrites;
 
-            console.log("FIXME: performing write: " + writeDesc);
+            log.info("Performing write: " + writeDesc);
             await writeFunction();
             return;
 
         }
 
-        console.log("FIXME: Skipping write: " + writeDesc);
+        log.info("Skipping write: " + writeDesc);
 
     }
 

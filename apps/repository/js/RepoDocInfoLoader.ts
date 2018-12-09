@@ -48,20 +48,11 @@ export class RepoDocInfoLoader {
 
     private onPersistenceLayerChanged(persistenceLayer: PersistenceLayer) {
 
-        // FIXME: the disk datastore doesn't do its own snapshot by
-        // default so we wouldn't get events by default... and the
-        // cloud datastore DOES do it by default... maybe we have a
-        // snapshotOnInit method to always require this behavior...
-
         let progressBar: ProgressBar | undefined;
 
         persistenceLayer.addDocMetaSnapshotEventListener(async docMetaSnapshotEvent => {
 
-            // console.log("FIXME: onPersistenceLayerChanged: " + DocMetaSnapshotEvents.format(docMetaSnapshotEvent), docMetaSnapshotEvent);
-
             const eventHandler = async () => {
-
-                // console.log("FIXME: within addDocMetaSnapshotEventListener");
 
                 const {progress, docMetaMutations} = docMetaSnapshotEvent;
 

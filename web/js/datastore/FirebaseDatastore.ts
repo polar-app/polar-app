@@ -103,37 +103,10 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore {
             .collection(DatastoreCollection.DOC_INFO)
             .where('uid', '==', uid);
 
-        // FIXME:
-        // https://firebase.google.com/docs/firestore/query-data/query-cursors
-        // FIXME: must NOT read all the data in at one time... must use cursors
-        // here but not sure if these even use the local cache. Fuck this is
-        // harder than I thought...
-
-        // TODO: I don't think it's necessary to first fetch from from the
-        // cache though as I think the first snapshot comes from cache anyway.
-
         const batch = {
             id: 0,
             terminated: true
         };
-
-        // FIXME: is it possible to tell it only future data and NOT local data?
-        //  that would be easier... no.. I don't think so.. I think we're stuck
-        // with the default behavior which also means I need to implement
-        // pagination here too but I THINK they don't send all the documents by
-        // default here ANYWAY... I think we get like units of 100... so that
-        // will work.  we just need to support the concept of
-        // full and partial batches and batch IDs.
-
-        // FIXME: the initial call is all docChanges ... but maybe I CAN keep
-        // track of the first call if I"m getting them all back at once.. maybe
-        // I can try to put 1k records in the DB and then get a query Snapshot
-        // over them and lookk at the actual data that was written... then I
-        // can look and listen for the events and see if they're paged. If they
-        // ARE properly handled and we get back ONE call with all the documetns
-        // AND the are paged then I think I can just use one snapshto for both
-        // the cached and server version... the first will be the cached, the
-        // second will be the server...
 
         const onNextForSnapshot = (snapshot: firebase.firestore.QuerySnapshot) => {
 
@@ -233,8 +206,6 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore {
      * fingerprint or null if it does not exist.
      */
     public async getDocMeta(fingerprint: string): Promise<string | null> {
-
-        // FIXME: cache this query???
 
         const uid = this.getUserID();
         const id = this.computeDocMetaID(uid, fingerprint);
@@ -445,8 +416,6 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore {
             await docMetaCommitPromise;
             log.debug("Waiting for promise...done");
 
-            console.warn(`FirebaseDatastore: FIXME: wrote doc with fingerprint: ${fingerprint} and uuid: ${docInfo.uuid}: ${docInfo.title}`, new Error());
-
         } finally {
             // noop for now
         }
@@ -508,7 +477,6 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore {
 
             const recordHolder = <RecordHolder<DocMetaHolder>> doc.data();
 
-            // FIXME: this is wrong I think..
             result.push({fingerprint: recordHolder.value.docInfo.fingerprint});
 
         }

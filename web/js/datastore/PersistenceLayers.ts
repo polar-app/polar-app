@@ -83,8 +83,10 @@ export class PersistenceLayers {
                                  listener: DocMetaSnapshotEventListener = ASYNC_NULL_FUNCTION,
                                  id: string = 'none'): Promise<TransferResult> {
 
-        // FIXME: no errors are actually raised on the copy operations that are
-        // operating in the async queue.  These need to be bubbled up.
+        // TODO: no errors are actually raised on the copy operations that are
+        // operating in the async queue.  These need to be bubbled up.  This
+        // function could just take an error listener and call back that way
+        // or we could reject the promise result.
 
         const result = {
             docMeta: {
@@ -250,8 +252,6 @@ export class PersistenceLayers {
             consistency: 'committed',
             docMetaMutations: []
         });
-
-        console.log(`FIXME: transfer ${id} completed: `, result);
 
         return result;
 

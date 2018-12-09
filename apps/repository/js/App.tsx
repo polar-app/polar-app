@@ -82,12 +82,7 @@ export default class App extends React.Component<AppProps, AppState> {
         };
 
         this.props.updatedDocInfoEventDispatcher.addEventListener(docInfo => {
-            console.log("FIXME: got imported file from event");
-            // FIXME: thsi has to go back in or else PDF imports probably won't
-            // work... but test it as it would be nice to get rid of another
-            // import type.  IF the IO is done in the main process then this is
-            // a problem.
-            // this.onUpdatedDocInfo(docInfo);
+            this.onUpdatedDocInfo(docInfo);
         });
 
         this.init()
@@ -792,8 +787,6 @@ export default class App extends React.Component<AppProps, AppState> {
         let hasSentInitAnalyitics = false;
 
         this.repoDocInfoLoader.addEventListener(event => {
-
-            // console.log("FIXME here at least");
 
             this.docRepository.updateDocInfo(...Object.values(event.repoDocInfoIndex));
 

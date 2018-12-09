@@ -157,10 +157,6 @@ export class DefaultPersistenceLayer implements PersistenceLayer {
 
         log.info(`Sync of docMeta with fingerprint: ${fingerprint} and UUID: ` + docMeta.docInfo.uuid);
 
-        console.log(`FIXME: Sync of docMeta with fingerprint: ${fingerprint} and UUID: ` + docMeta.docInfo.uuid);
-
-        // TODO/FIXME: migrate to datastore.writeDocMeta
-
         // NOTE that we always write the state with JSON pretty printing.
         // Otherwise tools like git diff , etc will be impossible to deal with
         // in practice.
