@@ -472,6 +472,18 @@ export class SyncDocMaps {
 
     }
 
+    public static fromArray(syncDocs: ReadonlyArray<SyncDoc>): SyncDocMap {
+
+        const result: SyncDocMap = {};
+
+        for (const syncDoc of syncDocs) {
+            result[syncDoc.fingerprint] = syncDoc;
+        }
+
+        return result;
+
+    }
+
 }
 
 /**

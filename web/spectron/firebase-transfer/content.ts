@@ -67,7 +67,7 @@ SpectronRenderer.run(async (state) => {
 
                 try {
                     console.time(timeLabel);
-                    return await PersistenceLayers.toSyncDocMap(persistenceLayer, progressState => {
+                    return await PersistenceLayers.toSyncDocMap(persistenceLayer.datastore, progressState => {
                         progressBar.update(progressState.progress);
                     });
 

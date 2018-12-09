@@ -302,46 +302,12 @@ export class CloudAwareDatastore extends AbstractDatastore implements Datastore,
         const synchronizingEventDeduplicator: EventDeduplicator
             = DocMetaSnapshotEventListeners.createDeduplicatedListener(async docMetaSnapshotEvent => {
 
-            const handleSnapshotSync = async () => {
-
-                if (docMetaSnapshotEvent.consistency !== 'committed') {
-                    return;
-                }
-
-                for (const docMetaMutation of docMetaSnapshotEvent.docMetaMutations) {
-
-                    // FIXME FIXME FIXME: no binary files are being transferred
-                    // here... Just DocMeta...  Maybe use the same code that
-                    // synchronize is using and use the SyncOrigin and SyncDocs
-                    // code.
-
-                    if (docMetaMutation.mutationType === 'created' || docMetaMutation.mutationType === 'updated') {
-                        const data = await docMetaMutation.dataProvider();
-                        const docInfo = await docMetaMutation.docInfoProvider();
-                        Preconditions.assertPresent(data, "No data in replication listener: ");
-                        await this.local.write(docMetaMutation.fingerprint, data, docInfo);
-                    }
-
-                    if (docMetaMutation.mutationType === 'deleted') {
-                        const docMetaFileRef = await docMetaMutation.docMetaFileRefProvider();
-                        await this.local.delete(docMetaFileRef);
-                    }
-
-                }
-
-                this.synchronizationEventDispatcher.dispatchEvent({
-                    ...docMetaSnapshotEvent,
-                    dest: 'local'
-                });
-
-            };
-
             const handleEvent = async () => {
 
                 try {
 
                     if (initialSyncCompleted && isPrimarySnapshot) {
-                        await handleSnapshotSync();
+                        await this.handleSnapshotSynchronization(docMetaSnapshotEvent);
                     }
 
                 } finally {
@@ -401,6 +367,64 @@ export class CloudAwareDatastore extends AbstractDatastore implements Datastore,
         return {
             unsubscribe: cloudSnapshotResult.unsubscribe
         };
+
+    }
+
+    private async handleSnapshotSynchronization(docMetaSnapshotEvent: DocMetaSnapshotEvent) {
+        //
+        // const toLocalSyncOrigin = async () => {
+        //
+        //     const docMet
+        //
+        //     const syncDocs = await PersistenceLayers.toSyncDocMapFromDocs(this.)
+        //
+        //     const syncDocMap: SyncDocMap = {};
+        //
+        //
+        // };
+        //
+        // const toCloudSyncOrigin = async () => {
+        //
+        //     const syncDocs = await DocMetaSnapshotEvents.toSyncDocs(docMetaSnapshotEvent);
+        //
+        //     const cloudSyncOrigin: SyncOrigin = {
+        //         datastore: this.cloud,
+        //         syncDocMap: SyncDocMaps.fromArray(syncDocs)
+        //     };
+        //
+        // }
+
+        if (docMetaSnapshotEvent.consistency !== 'committed') {
+            return;
+        }
+
+        for (const docMetaMutation of docMetaSnapshotEvent.docMetaMutations) {
+
+            // FIXME FIXME FIXME: no binary files are being transferred
+            // here... Just DocMeta...  Maybe use the same code that
+            // synchronize is using and use the SyncOrigin and SyncDocs
+            // code.
+
+
+
+            if (docMetaMutation.mutationType === 'created' || docMetaMutation.mutationType === 'updated') {
+                const data = await docMetaMutation.dataProvider();
+                const docInfo = await docMetaMutation.docInfoProvider();
+                Preconditions.assertPresent(data, "No data in replication listener: ");
+                await this.local.write(docMetaMutation.fingerprint, data, docInfo);
+            }
+
+            if (docMetaMutation.mutationType === 'deleted') {
+                const docMetaFileRef = await docMetaMutation.docMetaFileRefProvider();
+                await this.local.delete(docMetaFileRef);
+            }
+
+        }
+
+        this.synchronizationEventDispatcher.dispatchEvent({
+            ...docMetaSnapshotEvent,
+            dest: 'local'
+        });
 
     }
 

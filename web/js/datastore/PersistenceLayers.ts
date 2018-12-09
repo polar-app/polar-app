@@ -25,10 +25,18 @@ export class PersistenceLayers {
         return new DefaultPersistenceLayer(input);
     }
 
-    public static async toSyncDocMap(persistenceLayer: PersistenceLayer,
+    public static async toSyncDocMap(datastore: Datastore,
                                      progressStateListener: ProgressStateListener = NULL_FUNCTION) {
 
-        const docMetaFiles = await persistenceLayer.getDocMetaFiles();
+        const docMetaFiles = await datastore.getDocMetaFiles();
+
+        return this.toSyncDocMapFromDocs(datastore, docMetaFiles, progressStateListener);
+
+    }
+
+    public static async toSyncDocMapFromDocs(datastore: Datastore,
+                                             docMetaFiles: DocMetaRef[],
+                                             progressStateListener: ProgressStateListener = NULL_FUNCTION) {
 
         const syncDocsMap: SyncDocMap = {};
 
@@ -40,10 +48,20 @@ export class PersistenceLayers {
         for (const docMetaFile of docMetaFiles) {
 
             work.push(async () => {
-                const docMeta = await persistenceLayer.getDocMeta(docMetaFile.fingerprint);
-                syncDocsMap[docMetaFile.fingerprint] = SyncDocs.fromDocInfo(docMeta!.docInfo, 'created');
 
-                progressStateListener(progressTracker.peek());
+                const data = await datastore.getDocMeta(docMetaFile.fingerprint);
+
+                if (isPresent(data)) {
+
+                    const docMeta = DocMetas.deserialize(data!);
+
+                    syncDocsMap[docMetaFile.fingerprint] = SyncDocs.fromDocInfo(docMeta!.docInfo, 'created');
+
+                    progressStateListener(progressTracker.peek());
+
+                } else {
+                    // there is no doc for this fingerprint.
+                }
 
             });
 
