@@ -307,7 +307,7 @@ export class CloudAwareDatastore extends AbstractDatastore implements Datastore,
                 try {
 
                     if (initialSyncCompleted && isPrimarySnapshot) {
-                        await this.handleSnapshotSynchronization(docMetaSnapshotEvent);
+                        await this.handleSnapshotSynchronization(docMetaSnapshotEvent, deduplicatedListener.listener);
                     }
 
                 } finally {
@@ -370,29 +370,36 @@ export class CloudAwareDatastore extends AbstractDatastore implements Datastore,
 
     }
 
-    private async handleSnapshotSynchronization(docMetaSnapshotEvent: DocMetaSnapshotEvent) {
-        //
-        // const toLocalSyncOrigin = async () => {
-        //
-        //     const docMet
-        //
-        //     const syncDocs = await PersistenceLayers.toSyncDocMapFromDocs(this.)
-        //
-        //     const syncDocMap: SyncDocMap = {};
-        //
-        //
-        // };
-        //
-        // const toCloudSyncOrigin = async () => {
-        //
-        //     const syncDocs = await DocMetaSnapshotEvents.toSyncDocs(docMetaSnapshotEvent);
-        //
-        //     const cloudSyncOrigin: SyncOrigin = {
-        //         datastore: this.cloud,
-        //         syncDocMap: SyncDocMaps.fromArray(syncDocs)
-        //     };
-        //
-        // }
+    private async handleSnapshotSynchronization(docMetaSnapshotEvent: DocMetaSnapshotEvent, listener: DocMetaSnapshotEventListener) {
+
+        const toLocalSyncOrigin = async (): Promise<SyncOrigin> => {
+
+            // TODO: we should have progress on this...
+
+            const docaMetaFiles: DocMetaRef[] =
+                docMetaSnapshotEvent.docMetaMutations.map(current => {
+                    return {fingerprint: current.fingerprint};
+                });
+
+            const syncDocMap = await PersistenceLayers.toSyncDocMapFromDocs(this.local, docaMetaFiles);
+
+            return {
+                datastore: this.local,
+                syncDocMap
+            };
+
+        };
+
+        const toCloudSyncOrigin = async (): Promise<SyncOrigin> => {
+
+            const syncDocs = await DocMetaSnapshotEvents.toSyncDocs(docMetaSnapshotEvent);
+
+            return {
+                datastore: this.cloud,
+                syncDocMap: SyncDocMaps.fromArray(syncDocs)
+            };
+
+        };
 
         if (docMetaSnapshotEvent.consistency !== 'committed') {
             return;
@@ -400,21 +407,24 @@ export class CloudAwareDatastore extends AbstractDatastore implements Datastore,
 
         for (const docMetaMutation of docMetaSnapshotEvent.docMetaMutations) {
 
-            // FIXME FIXME FIXME: no binary files are being transferred
-            // here... Just DocMeta...  Maybe use the same code that
-            // synchronize is using and use the SyncOrigin and SyncDocs
-            // code.
-
-
-
             if (docMetaMutation.mutationType === 'created' || docMetaMutation.mutationType === 'updated') {
+
                 const data = await docMetaMutation.dataProvider();
                 const docInfo = await docMetaMutation.docInfoProvider();
                 Preconditions.assertPresent(data, "No data in replication listener: ");
                 await this.local.write(docMetaMutation.fingerprint, data, docInfo);
+
+                const cloudSyncOrigin = await toCloudSyncOrigin();
+                const localSyncOrigin = await toLocalSyncOrigin();
+
+                log.info("Transferring from cloud -> local...");
+                await PersistenceLayers.transfer(cloudSyncOrigin, localSyncOrigin, listener, 'cloud-to-local');
+                log.info("Transferring from cloud -> local...done");
+
             }
 
             if (docMetaMutation.mutationType === 'deleted') {
+                // TODO: how do we handle this via transfer?
                 const docMetaFileRef = await docMetaMutation.docMetaFileRefProvider();
                 await this.local.delete(docMetaFileRef);
             }
