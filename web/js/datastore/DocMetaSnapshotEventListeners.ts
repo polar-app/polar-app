@@ -41,6 +41,8 @@ export class DocMetaSnapshotEventListeners {
 
                 const docInfo = await docMetaMutation.docInfoProvider();
 
+                console.log("FIXME: deduplistener has docinfo: " + docInfo.uuid);
+
                 if (docMetaComparisonIndex.handleDocMetaMutation(docMetaMutation, docInfo)) {
                     acceptedDocMetaMutations.push(docMetaMutation);
                 }
