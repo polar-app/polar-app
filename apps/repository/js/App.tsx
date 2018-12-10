@@ -710,28 +710,21 @@ export default class App extends React.Component<AppProps, AppState> {
             this.docRepository!.updateDocInfo(repoDocInfo);
             this.refresh();
 
-            const handleWriteDocMeta = async () => {
+            // TODO: technically I don't think we need to test if we're using
+            // the cloud layer anymore as synchronizeDocs is a noop in all other
+            // datastores.
+            const persistenceLayer: PersistenceLayer = this.persistenceLayerManager.get();
 
-                // This is kind of cheating to be writing right to the datastore
-                // directly.... This needs 'transfer' from local to cloud...
+            if (PersistenceLayerTypes.get() === 'cloud') {
 
-                if (PersistenceLayerTypes.get() === 'cloud') {
-
-
-                    const persistenceLayer: PersistenceLayer = this.persistenceLayerManager.get();
-
-                    console.log("FIXME: synchronizeDocs with: ", persistenceLayer);
-
+                const handleWriteDocMeta = async () => {
                     await persistenceLayer.synchronizeDocs(docInfo.fingerprint);
+                };
 
-                    console.log("FIXME: synchronizeDocs....done");
+                handleWriteDocMeta()
+                    .catch(err => log.error("Unable to write docMeta to datastore: ", err));
 
-                }
-
-            };
-
-            handleWriteDocMeta()
-                .catch(err => log.error("Unable to write docMeta to datastore: ", err));
+            }
 
         } else {
 

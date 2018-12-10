@@ -17,6 +17,9 @@ import {Optional} from '../../util/ts/Optional';
 import {DocInfo} from '../../metadata/DocInfo';
 import {DatastoreMutation, DefaultDatastoreMutation} from '../DatastoreMutation';
 import {NULL_FUNCTION} from '../../util/Functions';
+import {Logger} from '../../logger/Logger';
+
+const log = Logger.create();
 
 export abstract class AbstractAdvertisingPersistenceLayer implements ListenablePersistenceLayer {
 
