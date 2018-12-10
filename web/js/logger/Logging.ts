@@ -31,7 +31,9 @@ export class Logging {
      */
     public static async init() {
 
-        const target: ILogger = await this.createTarget();
+        const level = this.configuredLevel();
+
+        const target: ILogger = await this.createTarget(level);
 
         await this.initWithTarget(target);
 
@@ -42,10 +44,7 @@ export class Logging {
      */
     public static initForTesting() {
 
-        const level =
-            Optional.of(process.env.POLAR_LOG_LEVEL)
-                .map(current => LogLevels.fromName(current))
-                .getOrElse(LogLevel.WARN);
+        const level = this.configuredLevel();
 
         const target = new ConsoleLogger();
 
@@ -75,12 +74,12 @@ export class Logging {
 
     }
 
-    public static async createTarget(): Promise<ILogger> {
+    public static async createTarget(level: LogLevel): Promise<ILogger> {
 
         const loggers: ILogger[] = [];
 
-        // TODO: SentryLogger enabled for INFO will lock us up.
-        if (SentryLogger.isEnabled()) {
+        if (level === LogLevel.WARN && SentryLogger.isEnabled()) {
+            // SentryLogger enabled for INFO will lock us up.
             // *** first logger is sentry but only if we are not running within
             // a SNAP container.
             loggers.push(new SentryLogger());
@@ -96,8 +95,10 @@ export class Logging {
         // *** now include the persistent error log so that we can get error
         // reports from users.
 
-        // TODO: PersistentErrorLogger enabled for INFO will lock us up.
-        loggers.push(await PersistentErrorLogger.create());
+        if (level === LogLevel.WARN) {
+            // PersistentErrorLogger enabled for INFO will lock us up.
+            loggers.push(await PersistentErrorLogger.create());
+        }
 
         // *** last is the primary log. Either disk or the console.
 
@@ -148,14 +149,16 @@ export class Logging {
         }
 
         return {
-
             target: LoggerTarget.CONSOLE,
-
-            level: Optional.of(process.env.POLAR_LOG_LEVEL)
-                    .map(level => LogLevels.fromName(level))
-                    .getOrElse(LogLevel.WARN)
+            level: this.configuredLevel()
         };
 
+    }
+
+    private static configuredLevel(): LogLevel {
+        return Optional.of(process.env.POLAR_LOG_LEVEL)
+            .map(level => LogLevels.fromName(level))
+            .getOrElse(LogLevel.WARN);
     }
 
 }

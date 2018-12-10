@@ -174,7 +174,7 @@ export class Pagemarks {
      * @param pageNum
      *
      * @param pagemark An optional pagemark to update.  If the pagemark isn't
-     * specified it's deleted and update the document progress.
+     * specified all the pagemarks on the page are deleted and progress updated.
      */
     public static updatePagemark(docMeta: DocMeta, pageNum: number, pagemark?: Pagemark) {
 
@@ -186,7 +186,7 @@ export class Pagemarks {
             // set the pagemark that we just created into the map.
             pageMeta.pagemarks[pagemark.id] = pagemark;
         } else {
-            // delete the pagemark
+            // delete the pagemarks on the page.
             Objects.clear(pageMeta.pagemarks);
         }
 

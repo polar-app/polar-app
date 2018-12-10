@@ -849,17 +849,17 @@ export enum Visibility {
     /**
      * Only visible for the user.
      */
-    PRIVATE,
+    PRIVATE = 'private', /* or 0 */
 
     /**
      * Only to users that
      */
-    FOLLOWING,
+    FOLLOWING = 'following', /* or 1 */
 
     /**
      * To anyone on the service.
      */
-    PUBLIC
+    PUBLIC = 'public' /* or 2 */
 
 }
 
