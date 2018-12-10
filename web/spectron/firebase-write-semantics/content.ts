@@ -12,7 +12,7 @@ import {Firestore} from '../../js/firestore/Firestore';
 import {Hashcodes} from '../../js/Hashcodes';
 import {Promises} from '../../js/util/Promises';
 import {FirebaseDatastore} from '../../js/datastore/FirebaseDatastore';
-import {FirebaseTester} from '../../js/firestore/FirebaseTester';
+import {FirebaseRunner} from '../../js/firestore/FirebaseRunner';
 import {Datastores} from '../../js/datastore/Datastores';
 import {PersistenceLayers} from '../../js/datastore/PersistenceLayers';
 import {PolarDataDir} from '../../js/test/PolarDataDir';
@@ -26,7 +26,7 @@ mocha.timeout(10000);
 
 SpectronRenderer.run(async (state) => {
 
-    new FirebaseTester(state).run(async () => {
+    new FirebaseRunner(state).run(async () => {
 
         await PolarDataDir.useFreshDirectory('.test-firebase-write-semantics');
 

@@ -161,6 +161,7 @@
     "react-cookie-banner": "^4.0.0",
     "react-dom": "^16.6.3",
     "react-ga": "^2.5.3",
+    "react-json-view": "^1.19.1",
     "react-jsonschema-form": "^1.0.4",
     "react-moment": "^0.8.3",
     "react-select": "^2.1.1",

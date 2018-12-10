@@ -11,7 +11,7 @@ const log = Logger.create();
 /**
  * @ElectronRendererContext
  */
-export class FirebaseTester {
+export class FirebaseRunner {
 
     private readonly state: SpectronRendererState;
 

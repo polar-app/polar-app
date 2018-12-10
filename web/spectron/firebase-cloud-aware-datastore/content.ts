@@ -13,7 +13,7 @@ import {Hashcodes} from '../../js/Hashcodes';
 import {Promises} from '../../js/util/Promises';
 import {FirebaseDatastore} from '../../js/datastore/FirebaseDatastore';
 import {DocLoader} from '../../js/apps/main/ipc/DocLoader';
-import {FirebaseTester} from '../../js/firestore/FirebaseTester';
+import {FirebaseRunner} from '../../js/firestore/FirebaseRunner';
 import {CloudAwareDatastore} from '../../js/datastore/CloudAwareDatastore';
 import {FilePaths} from '../../js/util/FilePaths';
 import {Datastore} from '../../js/datastore/Datastore';
@@ -62,7 +62,7 @@ async function createDatastore() {
 
 SpectronRenderer.run(async (state) => {
 
-    new FirebaseTester(state).run(async () => {
+    new FirebaseRunner(state).run(async () => {
 
         await PolarDataDir.useFreshDirectory('.test-firebase-cloud-aware-datastore');
 

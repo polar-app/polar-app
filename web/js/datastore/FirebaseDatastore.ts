@@ -120,13 +120,13 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore {
 
         };
 
-        const onErrorForSnapshot = (err: Error) => {
+        const onSnapshotError = (err: Error) => {
             log.error("Could not handle snapshot: ", err);
             errorListener(err);
         };
 
         const unsubscribe =
-            query.onSnapshot({includeMetadataChanges: true}, onNextForSnapshot, onErrorForSnapshot);
+            query.onSnapshot({includeMetadataChanges: true}, onNextForSnapshot, onSnapshotError);
 
         return {
             unsubscribe
@@ -833,7 +833,7 @@ export enum Visibility {
 
 }
 
-enum DatastoreCollection {
+export enum DatastoreCollection {
 
     DOC_INFO = "doc_info",
 
