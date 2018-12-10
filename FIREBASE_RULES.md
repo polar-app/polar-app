@@ -9,7 +9,7 @@ We use the uid field right now to determine if a record can be written.
 service cloud.firestore {
   match /databases/{database}/documents {
     match /{document=**} {
-      allow read, write: if request.auth.uid == resource.data.uid;
+      allow read, write: if request.auth != null && (resource == null || request.auth.uid == resource.data.uid);
     }
   }
 }
@@ -57,7 +57,15 @@ compares them.
 service firebase.storage {
   match /b/{bucket}/o {
     match /{allPaths=**} {
-      allow read, write: if request.auth.uid == resource.metadata.uid;
+
+      // Allow read and write when the resource is missing OR the user is the 
+      // owner of the resource. Note that it's important to allow both reads
+      // and writes if the document is missing. If it's missing then want the 
+      // user to create it and then own it.  If it is present then we want 
+      // validate against the existing uid.  
+        
+      allow read, write: if request.auth != null && (resource == null || request.auth.uid == resource.metadata.uid);
+      
     }
   }
 }
@@ -77,3 +85,23 @@ service firebase.storage {
   }
 }
 ```
+
+## 
+
+https://firebase.google.com/docs/storage/security/start?authuser=0
+https://firebase.google.com/docs/storage/security/secure-files?authuser=0#resource_evaluation
+
+## Setup automated testing of our rules:
+
+https://firebase.google.com/docs/firestore/security/test-rules-emulator
+
+
+What to test
+
+4x: GET, UPDATE, DELETE, CREATE
+
+3x: with authenticated(owner), authenticated(not-owner) | unauthenticated
+
+2x: with absent|present
+
+This means we have 4x3x2 = 24 potential permissions states
