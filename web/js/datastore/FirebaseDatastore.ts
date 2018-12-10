@@ -3,7 +3,7 @@ import {
     DocMetaSnapshotEvent, FileMeta,
     InitResult, SynchronizingDatastore, MutationType, FileRef,
     DocMetaMutation, DocMetaSnapshotEventListener, SnapshotResult,
-    DocMetaSnapshotBatch, ErrorListener, AbstractDatastore
+    DocMetaSnapshotBatch, ErrorListener, AbstractDatastore, DatastoreConsistency
 } from './Datastore';
 import {Logger} from '../logger/Logger';
 import {DocMetaFileRef, DocMetaFileRefs, DocMetaRef} from './DocMetaRef';
@@ -103,16 +103,27 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore {
             .collection(DatastoreCollection.DOC_INFO)
             .where('uid', '==', uid);
 
-        const batch = {
-            id: 0,
-            terminated: true
+
+        type BatchIDMap = {
+            [P in DatastoreConsistency]: number;
+        };
+
+        const batchIDs: BatchIDMap = {
+            written: 0,
+            committed: 0
         };
 
         const onNextForSnapshot = (snapshot: firebase.firestore.QuerySnapshot) => {
 
             try {
-                this.handleDocInfoSnapshot(snapshot, docMetaSnapshotEventListener, batch);
-                ++batch.id;
+
+                const consistency = this.toConsistency(snapshot);
+                const batchID = batchIDs[consistency];
+
+                this.handleDocInfoSnapshot(snapshot, docMetaSnapshotEventListener, batchID);
+
+                batchIDs[consistency]++;
+
             } catch (e) {
                 log.error("Could not handle snapshot: ", e);
                 errorListener(e);
@@ -646,7 +657,7 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore {
      */
     private handleDocInfoSnapshot(snapshot: firebase.firestore.QuerySnapshot,
                                   docMetaSnapshotEventListener: DocMetaSnapshotEventListener,
-                                  batch: DocMetaSnapshotBatch) {
+                                  batchID: number) {
 
         log.debug("onSnapshot... ");
 
@@ -701,7 +712,7 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore {
                 progress: progressTracker.incr(),
                 docMetaMutations: [docMetaMutation],
                 batch: {
-                    id: batch.id,
+                    id: batchID,
                     terminated: false,
                 }
             });
@@ -753,13 +764,17 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore {
             progress: progressTracker.terminate(),
             docMetaMutations: [],
             batch: {
-                id: batch.id,
+                id: batchID,
                 terminated: true,
             }
         }).catch(err => log.error("Unable to dispatch event listener"));
 
         log.debug("onSnapshot... done");
 
+    }
+
+    private toConsistency(snapshot: firebase.firestore.QuerySnapshot): DatastoreConsistency {
+        return snapshot.metadata.fromCache ? 'written' : 'committed';
     }
 
     private computeDocMetaID(uid: UserID, fingerprint: string) {

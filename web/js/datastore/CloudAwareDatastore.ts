@@ -266,11 +266,9 @@ export class CloudAwareDatastore extends AbstractDatastore implements Datastore,
 
             private async handleSnapshot(docMetaSnapshotEvent: DocMetaSnapshotEvent) {
 
-                try {
+                // const snapDesc = DocMetaSnapshotEvents.format(docMetaSnapshotEvent);
 
-                    if (this.id === 'cloud') {
-                        console.log("FIXME: got cloud event: " + DocMetaSnapshotEvents.format(docMetaSnapshotEvent));
-                    }
+                try {
 
                     if (this.hasInitialTerminatedBatch) {
                         return;
@@ -298,10 +296,8 @@ export class CloudAwareDatastore extends AbstractDatastore implements Datastore,
 
                     --this.pending;
 
+
                     if (this.hasInitialTerminatedBatch && this.pending === 0) {
-                        if (this.id === 'cloud') {
-                            console.log("FIXME: resolving cloud");
-                        }
                         this.latch.resolve(true);
                     }
 
@@ -388,13 +384,13 @@ export class CloudAwareDatastore extends AbstractDatastore implements Datastore,
 
         if (isPrimarySnapshot) {
 
-            log.info("Transferring from local -> cloud...");
+            log.notice("Transferring from local -> cloud...");
             await PersistenceLayers.transfer(localSyncOrigin, cloudSyncOrigin, deduplicatedListener.listener, 'local-to-cloud');
-            log.info("Transferring from local -> cloud...done");
+            log.notice("Transferring from local -> cloud...done");
 
-            log.info("Transferring from cloud -> local...");
+            log.notice("Transferring from cloud -> local...");
             await PersistenceLayers.transfer(cloudSyncOrigin, localSyncOrigin, deduplicatedListener.listener, 'cloud-to-local');
-            log.info("Transferring from cloud -> local...done");
+            log.notice("Transferring from cloud -> local...done");
 
         }
 
@@ -402,6 +398,8 @@ export class CloudAwareDatastore extends AbstractDatastore implements Datastore,
 
         await localSnapshotResultPromise;
         const cloudSnapshotResult = await cloudSnapshotResultPromise;
+
+        log.notice("INITIAL SNAPSHOT COMPLETE");
 
         return {
             unsubscribe: cloudSnapshotResult.unsubscribe
