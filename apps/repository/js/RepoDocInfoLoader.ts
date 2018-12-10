@@ -80,7 +80,7 @@ export class RepoDocInfoLoader {
                         const docMeta = await docMetaMutation.docMetaProvider();
                         const docInfo = docMeta.docInfo;
 
-                        const repoDocInfo = await this.loadDocMeta(docInfo.fingerprint, docMeta);
+                        const repoDocInfo = this.toRepoDocInfo(docInfo.fingerprint, docMeta);
 
                         if (repoDocInfo && RepoDocInfos.isValid(repoDocInfo)) {
                             repoDocInfoIndex[repoDocInfo.fingerprint] = repoDocInfo;
@@ -112,31 +112,7 @@ export class RepoDocInfoLoader {
 
     }
 
-    private async loadDocMetaFile(docMetaRef: DocMetaRef): Promise<RepoDocInfo | undefined> {
-
-        if (! this.persistenceLayerManager) {
-            throw new Error("No persistence layer");
-        }
-
-        let docMeta: DocMeta | undefined;
-
-        try {
-
-            const persistenceLayer = this.persistenceLayerManager.get();
-
-            docMeta = await persistenceLayer.getDocMeta(docMetaRef.fingerprint);
-
-            return this.loadDocMeta(docMetaRef.fingerprint, docMeta);
-
-        } catch (e) {
-            log.error("Unable to load DocMeta for " + docMetaRef.fingerprint, e);
-
-            return undefined;
-        }
-
-    }
-
-    private async loadDocMeta(fingerprint: string, docMeta?: DocMeta): Promise<RepoDocInfo | undefined> {
+    private toRepoDocInfo(fingerprint: string, docMeta?: DocMeta): RepoDocInfo | undefined {
 
         if (docMeta !== undefined) {
 
@@ -153,23 +129,6 @@ export class RepoDocInfoLoader {
         }
 
         return undefined;
-
-    }
-
-
-
-    /**
-     * Some of our documents might be broken and we should filter them to not
-     * break the UI.
-     *
-     * @param repoDocInfoIndex
-     */
-    private async filterInvalid(repoDocInfoIndex: RepoDocInfoIndex) {
-
-        const filtered = Object.values(repoDocInfoIndex)
-            .filter(current => RepoDocInfos.isValid(current));
-
-        return Dictionaries.toDict(filtered, (value) => value.fingerprint);
 
     }
 
