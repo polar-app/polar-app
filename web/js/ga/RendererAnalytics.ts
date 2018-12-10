@@ -57,7 +57,6 @@ export class RendererAnalytics {
 
     }
 
-    //
     // public static outboundLink(args: OutboundLinkArgs, hitCallback?: () =>
     // void, trackerNames?: TrackerNames): void {  if (!hitCallback) { //
     // noinspection TsLint hitCallback = () => {}; }

@@ -10,6 +10,7 @@ import {Logger} from '../../logger/Logger';
 import {PersistenceLayerManager} from '../../datastore/PersistenceLayerManager';
 import {CloudSyncOverviewModal} from './CloudSyncOverviewModal';
 import {CloudSyncConfiguredModal} from './CloudSyncConfiguredModal';
+import {RendererAnalytics} from '../../ga/RendererAnalytics';
 
 const log = Logger.create();
 
@@ -111,7 +112,11 @@ export class CloudAuthButton extends React.Component<IProps, IState> {
     private changeAuthStage(stage?: AuthStage) {
 
         if (stage) {
+
+            RendererAnalytics.event({category: 'cloud', action: stage});
+
             document.location!.hash = stage;
+
         } else {
             document.location!.hash = '';
         }
