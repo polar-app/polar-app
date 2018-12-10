@@ -203,13 +203,14 @@ export class DiskDatastore extends AbstractDatastore implements Datastore {
         return Files.existsAsync(fileReference.path);
     }
 
-    public deleteFile(backend: Backend, ref: FileRef): Promise<void> {
+    public async deleteFile(backend: Backend, ref: FileRef): Promise<void> {
 
         DatastoreFiles.assertSanitizedFileName(ref);
 
         const fileReference = this.createFileReference(backend, ref);
 
-        return Files.removeAsync(fileReference.path);
+        await Files.removeAsync(fileReference.path);
+        await Files.removeAsync(fileReference.metaPath);
     }
 
     /**

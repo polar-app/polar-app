@@ -188,12 +188,14 @@ interface WritableBinaryDatastore {
      */
     writeFile(backend: Backend,
               ref: FileRef,
-              data: FileHandle | Buffer | string,
+              data: BinaryFileData,
               meta?: FileMeta): Promise<DatastoreFile>;
 
     deleteFile(backend: Backend, ref: FileRef): Promise<void>;
 
 }
+
+export type BinaryFileData = FileHandle | Buffer | string;
 
 export interface FileRef {
 
