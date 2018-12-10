@@ -128,7 +128,8 @@ export class FileImportController {
             for (const file of files) {
 
                 try {
-                    result.push(await this.doImportFile(file));
+                    const importedFile = await this.doImportFile(file);
+                    result.push(importedFile);
                 } catch (e) {
                     log.error("Failed to import file: " + file, e);
                 } finally {

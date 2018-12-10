@@ -26,6 +26,7 @@ import {Percentages} from '../util/Percentages';
 import {ProgressTracker} from '../util/ProgressTracker';
 import {Providers, AsyncProviders} from '../util/Providers';
 import {FilePaths} from '../util/FilePaths';
+import {FileHandle, FileHandles, Files} from '../util/Files';
 
 const log = Logger.create();
 
@@ -241,7 +242,7 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore {
 
     public async writeFile(backend: Backend,
                            ref: FileRef,
-                           data: Buffer | string,
+                           data: FileHandle | Buffer | string ,
                            meta: FileMeta = {}): Promise<DatastoreFile> {
 
         const storage = this.storage!;
@@ -271,7 +272,20 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore {
         if (typeof data === 'string') {
             uploadTask = fileRef.putString(data, 'raw', metadata);
         } else {
-            uploadTask = fileRef.put(Uint8Array.from(data), metadata);
+
+            if (FileHandles.isFileHandle(data)) {
+
+                // MEMORY_ALLOCATION_ISSUE migrate this to a streaming API to
+                // help with huge PDFs.
+
+                // it's not a buffer but convert it to one...
+                const fileHandle = <FileHandle> data;
+                data = await Files.readFileAsync(fileHandle.path);
+
+            }
+
+            uploadTask = fileRef.put(Uint8Array.from(<Buffer> data), metadata);
+
         }
 
         // TODO: we can get progress from the uploadTask here.
@@ -286,7 +300,7 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore {
             const snapshot: firebase.storage.UploadTaskSnapshot = snapshotData;
 
             const progress = Percentages.calculate(snapshot.bytesTransferred, snapshot.totalBytes);
-            console.log('Upload is ' + progress + '%// done');
+            log.notice('Upload is ' + progress + '%// done');
 
             switch (snapshot.state) {
                 case firebase.storage.TaskState.PAUSED:
@@ -305,6 +319,7 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore {
         const uploadTaskSnapshot = await uploadTask;
 
         const downloadURL = uploadTaskSnapshot.downloadURL;
+        console.log("FIXME: downloadURL: " + downloadURL);
 
         return {
             backend,

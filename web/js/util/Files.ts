@@ -228,7 +228,7 @@ export class Files {
 
             return this.withProperException(() => this.Promised.writeFileAsync(path, data, options));
 
-        } else if ( this.isFileRef(data) ) {
+        } else if ( FileHandles.isFileHandle(data) ) {
 
             const fileRef = <FileHandle> data;
             Files.createReadStream(fileRef.path).pipe(fs.createWriteStream(path));
@@ -306,10 +306,6 @@ export class Files {
 
     public static async fsyncAsync(fd: number): Promise<void> {
         return this.withProperException(() => this.Promised.fsyncAsync(fd));
-    }
-
-    public static isFileRef(obj: any): boolean {
-        return typeof obj === 'object' && isPresent(obj.path);
     }
 
     private static async withProperException<T>(func: () => Promise<T>): Promise<T> {
@@ -409,6 +405,15 @@ export type CreateReadStreamOptions = string | {
 export interface FileHandle {
     path: string;
 }
+
+export class FileHandles {
+
+    public static isFileHandle(obj: any): boolean {
+        return typeof obj === 'object' && isPresent(obj.path);
+    }
+
+}
+
 
 // export interface File {
 //
