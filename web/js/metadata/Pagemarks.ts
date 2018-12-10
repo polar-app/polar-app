@@ -174,18 +174,20 @@ export class Pagemarks {
      * @param pageNum
      *
      * @param pagemark An optional pagemark to update.  If the pagemark isn't
-     *     specified then we just assume it's deleted and update the document
-     *     progress.
+     * specified it's deleted and update the document progress.
      */
-    static updatePagemark(docMeta: DocMeta, pageNum: number, pagemark?: Pagemark) {
+    public static updatePagemark(docMeta: DocMeta, pageNum: number, pagemark?: Pagemark) {
 
         Preconditions.assertPresent(pageNum, "pageNum");
 
-        let pageMeta = docMeta.getPageMeta(pageNum);
+        const pageMeta = docMeta.getPageMeta(pageNum);
 
-        if(pagemark) {
+        if (pagemark) {
             // set the pagemark that we just created into the map.
             pageMeta.pagemarks[pagemark.id] = pagemark;
+        } else {
+            // delete the pagemark
+            Objects.clear(pageMeta.pagemarks);
         }
 
         // TODO: this actually requires TWO disk syncs and we're going to

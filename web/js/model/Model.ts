@@ -151,7 +151,7 @@ export class Model {
      * @refactor This code should be in its own dedicated helper class
      * @param pageNum
      */
-    erasePagemark(pageNum: number) {
+    public erasePagemark(pageNum: number) {
 
         Preconditions.assertNumber(pageNum, "pageNum");
 
@@ -161,13 +161,8 @@ export class Model {
 
         if (this.docMeta) {
 
-            const pageMeta = this.docMeta.getPageMeta(pageNum);
+            Pagemarks.updatePagemark(this.docMeta, pageNum);
 
-            // FIXME: this is actually wrong because I need to delete the RIGHT
-            // pagemark. NOT just delete all of them.
-            Objects.clear(pageMeta.pagemarks);
-
-            // FIXME: this can be done with a mutation listener now.
             this.reactor.dispatchEvent('erasePagemark', {pageNum});
 
         }

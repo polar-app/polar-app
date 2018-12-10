@@ -32,6 +32,7 @@ import * as ReactDOM from 'react-dom';
 import App from '../../../apps/repository/js/App';
 import * as React from 'react';
 import ReactJson from 'react-json-view';
+import {ISODateTimeStrings} from '../../js/metadata/ISODateTimeStrings';
 
 Logging.initForTesting();
 
@@ -47,11 +48,19 @@ function renderJSON(name: string, object: any) {
         document.body.appendChild(parent);
     }
 
-    const holder = document.createElement('div');
+    const objectElementHolder = document.createElement('div');
 
-    ReactDOM.render( <ReactJson src={object} name={name} shouldCollapse={() => true}/>, holder);
+    ReactDOM.render( <ReactJson src={object} name={name} shouldCollapse={() => true}/>, objectElementHolder);
 
-    parent.appendChild(holder);
+    const timestampElement = document.createElement("pre");
+    timestampElement.setAttribute("style", 'white-space: pre; font-weight: bold;');
+    timestampElement.innerText = ISODateTimeStrings.create();
+
+    const rowElement = document.createElement('div');
+    rowElement.appendChild(timestampElement);
+    rowElement.appendChild(objectElementHolder);
+
+    parent.appendChild(rowElement);
 
     window.scrollTo(0, document!.body.scrollHeight);
 
