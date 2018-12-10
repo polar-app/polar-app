@@ -707,7 +707,7 @@ export default class App extends React.Component<AppProps, AppState> {
 
         if (RepoDocInfos.isValid(repoDocInfo)) {
 
-            this.docRepository!.updateDocInfo(repoDocInfo);
+            this.docRepository!.updateDocInfo(repoDocInfo.fingerprint, repoDocInfo);
             this.refresh();
 
             // TODO: technically I don't think we need to test if we're using
@@ -787,7 +787,15 @@ export default class App extends React.Component<AppProps, AppState> {
 
         this.repoDocInfoLoader.addEventListener(event => {
 
-            this.docRepository.updateDocInfo(...Object.values(event.repoDocInfoIndex));
+            for (const mutation of event.mutations) {
+
+                if (mutation.mutationType === 'created' || mutation.mutationType === 'updated') {
+                    this.docRepository.updateDocInfo(mutation.fingerprint, mutation.repoDocInfo!);
+                } else {
+                    this.docRepository.updateDocInfo(mutation.fingerprint);
+                }
+
+            }
 
             refreshThrottler.exec();
 

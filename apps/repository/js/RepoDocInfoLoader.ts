@@ -9,7 +9,7 @@ import {RepoDocInfos} from './RepoDocInfos';
 import {Dictionaries} from '../../../web/js/util/Dictionaries';
 import {RepoDocInfo} from './RepoDocInfo';
 import {DocMeta} from '../../../web/js/metadata/DocMeta';
-import {DocMetaSnapshotEvent, SnapshotProgress, SnapshotUnsubscriber, DocMetaSnapshotEvents} from '../../../web/js/datastore/Datastore';
+import {DocMetaSnapshotEvent, SnapshotProgress, SnapshotUnsubscriber, DocMetaSnapshotEvents, MutationType} from '../../../web/js/datastore/Datastore';
 import {ElectronContextTypes} from '../../../web/js/electron/context/ElectronContextTypes';
 import {Promises} from '../../../web/js/util/Promises';
 import {PersistenceLayerManager} from '../../../web/js/datastore/PersistenceLayerManager';
@@ -24,13 +24,13 @@ export class RepoDocInfoLoader {
 
     private readonly persistenceLayerManager: PersistenceLayerManager;
 
-    private readonly eventDispatcher: IEventDispatcher<RepoLoadEvent> = new SimpleReactor();
+    private readonly eventDispatcher: IEventDispatcher<RepoDocInfoEvent> = new SimpleReactor();
 
     constructor(persistenceLayerManager: PersistenceLayerManager) {
         this.persistenceLayerManager = persistenceLayerManager;
     }
 
-    public addEventListener(listener: (event: RepoLoadEvent) => void): void {
+    public addEventListener(listener: (event: RepoDocInfoEvent) => void): void {
         this.eventDispatcher.addEventListener(listener);
     }
 
@@ -72,6 +72,8 @@ export class RepoDocInfoLoader {
 
                 const repoDocInfoIndex: RepoDocInfoIndex = {};
 
+                const mutations: RepoDocInfoMutation[] = [];
+
                 for (const docMetaMutation of docMetaMutations) {
 
                     if (docMetaMutation.mutationType === 'created' ||
@@ -83,7 +85,15 @@ export class RepoDocInfoLoader {
                         const repoDocInfo = this.toRepoDocInfo(docInfo.fingerprint, docMeta);
 
                         if (repoDocInfo && RepoDocInfos.isValid(repoDocInfo)) {
-                            repoDocInfoIndex[repoDocInfo.fingerprint] = repoDocInfo;
+
+                            mutations.push({
+                                mutationType: docMetaMutation.mutationType,
+                                fingerprint: docMetaMutation.fingerprint,
+                                repoDocInfo
+                            });
+
+                            // repoDocInfoIndex[repoDocInfo.fingerprint] = repoDocInfo;
+
                         }
 
                     }
@@ -94,13 +104,20 @@ export class RepoDocInfoLoader {
                         // at the end.  The UI just won't see this and we're
                         // going to end up with a document that's not properly
                         // removed frmo the UI...
-                        delete repoDocInfoIndex[docMetaMutation.fingerprint];
+
+                        mutations.push({
+                            mutationType: docMetaMutation.mutationType,
+                            fingerprint: docMetaMutation.fingerprint,
+                        });
+
+                        // delete repoDocInfoIndex[docMetaMutation.fingerprint];
+
                     }
 
                 }
 
                 if (docMetaMutations.length > 0) {
-                    this.eventDispatcher.dispatchEvent({repoDocInfoIndex, progress});
+                    this.eventDispatcher.dispatchEvent({mutations, progress});
                 }
 
             };
@@ -134,7 +151,15 @@ export class RepoDocInfoLoader {
 
 }
 
-export interface RepoLoadEvent {
-    readonly repoDocInfoIndex: RepoDocInfoIndex;
+export interface RepoDocInfoEvent {
+    readonly mutations: ReadonlyArray<RepoDocInfoMutation>;
     readonly progress: SnapshotProgress;
+}
+
+export interface RepoDocInfoMutation {
+    readonly mutationType: MutationType;
+    readonly fingerprint: string;
+
+    // only present on created / updated
+    readonly repoDocInfo?: RepoDocInfo;
 }

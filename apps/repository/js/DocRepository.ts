@@ -40,13 +40,15 @@ export class DocRepository {
      * Update the in-memory representation of this doc.
      *
      */
-    public updateDocInfo(...repoDocInfos: RepoDocInfo[]) {
+    public updateDocInfo(fingerprint: string, repoDocInfo?: RepoDocInfo) {
 
-        for (const repoDocInfo of repoDocInfos) {
-            this.repoDocs[repoDocInfo.fingerprint] = repoDocInfo;
+        if (repoDocInfo) {
+            this.repoDocs[fingerprint] = repoDocInfo;
+            this.updateTagsDB(repoDocInfo);
+        } else {
+            delete this.repoDocs[fingerprint];
         }
 
-        this.updateTagsDB(...repoDocInfos);
     }
 
     /**
@@ -89,7 +91,7 @@ export class DocRepository {
         repoDocInfo.title = title;
         repoDocInfo.docInfo.title = title;
 
-        this.updateDocInfo(repoDocInfo);
+        this.updateDocInfo(repoDocInfo.fingerprint, repoDocInfo);
 
         return this.writeDocInfo(repoDocInfo.docInfo);
 
@@ -108,7 +110,7 @@ export class DocRepository {
         repoDocInfo.tags = Tags.toMap(tags);
         repoDocInfo.docInfo.tags = Tags.toMap(tags);
 
-        this.updateDocInfo(repoDocInfo);
+        this.updateDocInfo(repoDocInfo.fingerprint, repoDocInfo);
 
         return this.writeDocInfo(repoDocInfo.docInfo);
 
@@ -116,10 +118,9 @@ export class DocRepository {
 
     public async deleteDocInfo(repoDocInfo: RepoDocInfo) {
 
-        const persistenceLayer = this.persistenceLayerProvider.get();
+        this.updateDocInfo(repoDocInfo.fingerprint);
 
-        // delete it from the in-memory index.
-        delete this.repoDocs[repoDocInfo.fingerprint];
+        const persistenceLayer = this.persistenceLayerProvider.get();
 
         // delete it from the repo now.
         const docMetaFileRef = DocMetaFileRefs.createFromDocInfo(repoDocInfo.docInfo);
