@@ -73,21 +73,20 @@ export class CloudSyncOverviewContent extends React.Component<IProps, IState> {
                 </div>
 
                 <p className="intro" style={Styles.overview}>
-                    Polar Cloud Sync enables synchronization of your
-                    documents and annotations between multiple
-                    devices transparently with the cloud.
+                    <b>Polar Cloud Sync</b> enables synchronization between
+                    multiple devices transparently with the cloud.
                 </p>
 
                 <ul style={Styles.features}>
 
                     <li>
-                        Full sync of your data into the cloud in realtime.
-                        Your files are immediately distributed to your other
-                        devices (MacOS, Windows, and Linux)
+                        Full sync of your data in <b>realtime</b>. Your files are
+                        immediately distributed to your other devices (MacOS,
+                        Windows, and Linux).
                     </li>
 
                     <li>
-                        Up to 10 GB of storage for all your documents and
+                        Up to <b>10 GB</b> of storage for all your documents and
                         annotations.
                     </li>
 
@@ -97,7 +96,7 @@ export class CloudSyncOverviewContent extends React.Component<IProps, IState> {
                     </li>
 
                     <li>
-                        Full offline access with sync upon reconnect.
+                        <b>Full offline access</b> with sync upon reconnect.
                     </li>
 
                     <li>
@@ -108,11 +107,11 @@ export class CloudSyncOverviewContent extends React.Component<IProps, IState> {
                 </ul>
 
                 <p>
-                    <b>PREVIEW:</b> Cloud sync is currently available in preview.
-                    We anticipate making it generally available in January
-                    2019 and will support up to 100 documents for free with
-                    $7.99 for up to 10GB of storage.  For now we're letting
-                    users use cloud sync in preview mode with full access.
+                    <b>PREVIEW:</b> Cloud sync is currently available in
+                    preview. We anticipate making soon and will support up to
+                    100 documents for free and <b>$7.99</b> for up to 10GB of
+                    storage.  For now we're letting users use cloud sync in
+                    preview mode with full access.
                 </p>
 
                 {/*<p style={Styles.price}>*/}

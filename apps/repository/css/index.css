@@ -177,3 +177,7 @@ footer .buttons .button {
 .tag-input-popover label {
     font-weight: bold;
 }
+
+b, strong {
+    font-weight: bold;
+}
