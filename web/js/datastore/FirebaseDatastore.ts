@@ -319,7 +319,6 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore {
         const uploadTaskSnapshot = await uploadTask;
 
         const downloadURL = uploadTaskSnapshot.downloadURL;
-        console.log("FIXME: downloadURL: " + downloadURL);
 
         return {
             backend,
@@ -441,8 +440,6 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore {
             log.debug("Waiting for promise...");
             await docMetaCommitPromise;
             log.debug("Waiting for promise...done");
-
-            console.log("FIXME: FirebaeDatastore wrote");
 
         } finally {
             // noop for now
@@ -753,11 +750,11 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore {
         const nrDocChanges = docChanges.length;
         const nrDocs = snapshot.docs.length;
 
-        console.log(`GOT SNAPSHOT with consistency ${consistency}, nrDocs: ${nrDocs}, nrDocChanges: ${nrDocChanges}`);
+        // log.notice(`GOT SNAPSHOT with consistency ${consistency}, nrDocs: ${nrDocs}, nrDocChanges: ${nrDocChanges}`);
 
-        if (docChanges.length === 0) {
-            console.log("SKIPPING SNAPSHOT (no docChanges)");
-        }
+        // if (docChanges.length === 0) {
+        //     log.notice("SKIPPING SNAPSHOT (no docChanges)");
+        // }
 
         const progressTracker = new ProgressTracker(docChanges.length);
 

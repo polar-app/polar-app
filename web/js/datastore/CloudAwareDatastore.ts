@@ -230,7 +230,12 @@ export class CloudAwareDatastore extends AbstractDatastore implements Datastore,
         const cloudSyncOrigin = await toSyncOrigin(this.cloud);
         const localSyncOrigin = await toSyncOrigin(this.local);
 
-        // FIXME: there are no events with this and the UI won't be updated
+        // TODO: there are no events with this and the UI won't be updated.
+        // the problme is that I don't think we can re-send the event data
+        // because we only want the progress updated.
+        //
+        // TODO: we could resolve this by removing the mutations and just
+        // sending the progress data.
 
         log.notice("Transferring from local -> cloud...");
         const synchronizeResult = await PersistenceLayers.transfer(localSyncOrigin, cloudSyncOrigin, ASYNC_NULL_FUNCTION, 'cloud-to-local');

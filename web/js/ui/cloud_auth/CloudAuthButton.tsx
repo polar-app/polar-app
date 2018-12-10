@@ -101,7 +101,9 @@ export class CloudAuthButton extends React.Component<IProps, IState> {
 
         this.props.persistenceLayerManager.reset();
 
-        window.location.reload();
+        const url = new URL(window.location.href);
+        url.hash = 'logout';
+        window.location.href = url.toString();
 
     }
 
@@ -113,7 +115,7 @@ export class CloudAuthButton extends React.Component<IProps, IState> {
 
         if (stage) {
 
-            RendererAnalytics.event({category: 'cloud', action: stage});
+            RendererAnalytics.event({category: 'cloud', action: 'stage-' + stage});
 
             document.location!.hash = stage;
 
