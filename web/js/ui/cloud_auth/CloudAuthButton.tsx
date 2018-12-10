@@ -11,6 +11,7 @@ import {PersistenceLayerManager} from '../../datastore/PersistenceLayerManager';
 import {CloudSyncOverviewModal} from './CloudSyncOverviewModal';
 import {CloudSyncConfiguredModal} from './CloudSyncConfiguredModal';
 import {RendererAnalytics} from '../../ga/RendererAnalytics';
+import {Nav} from '../util/Nav';
 
 const log = Logger.create();
 
@@ -23,11 +24,11 @@ export class CloudAuthButton extends React.Component<IProps, IState> {
 
         let stage: AuthStage | undefined;
 
-        if (document.location!.href.endsWith("#login")) {
+        if (document.location!.hash === '#login') {
             stage = 'login';
         }
 
-        if (document.location!.href.endsWith("#configured")) {
+        if (document.location!.hash === "#configured") {
             stage = 'configured';
         }
 
@@ -35,6 +36,8 @@ export class CloudAuthButton extends React.Component<IProps, IState> {
             mode: 'none',
             stage
         };
+
+        console.log("state: ", this.state);
 
         Firebase.init();
 
@@ -101,9 +104,8 @@ export class CloudAuthButton extends React.Component<IProps, IState> {
 
         this.props.persistenceLayerManager.reset();
 
-        const url = new URL(window.location.href);
-        url.hash = 'logout';
-        window.location.href = url.toString();
+        window.location.href = Nav.createHashURL('logout');
+        window.location.reload();
 
     }
 
@@ -112,6 +114,11 @@ export class CloudAuthButton extends React.Component<IProps, IState> {
     }
 
     private changeAuthStage(stage?: AuthStage) {
+
+        if (stage === 'login') {
+            window.location.href = 'http://localapp.getpolarized.io:8500/apps/repository/login.html';
+            return;
+        }
 
         if (stage) {
 

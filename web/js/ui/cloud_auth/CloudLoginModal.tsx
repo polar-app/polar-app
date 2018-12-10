@@ -7,6 +7,7 @@ import {WhatsNewContent} from '../../../../apps/repository/js/splash/splashes/wh
 import {LargeModalBody} from '../large_modal/LargeModalBody';
 import {Firebase} from '../../firestore/Firebase';
 import {FirebaseUIAuth} from '../../firestore/FirebaseUIAuth';
+import {Nav} from '../util/Nav';
 
 export class CloudLoginModal extends React.Component<IProps, IState> {
 
@@ -30,7 +31,10 @@ export class CloudLoginModal extends React.Component<IProps, IState> {
 
         if (this.props.isOpen) {
             Firebase.init();
-            FirebaseUIAuth.login({signInSuccessUrl: document.location!.href + '#configured'});
+
+            const signInSuccessUrl = Nav.createHashURL('configured');
+            FirebaseUIAuth.login({signInSuccessUrl});
+
         }
 
     }
