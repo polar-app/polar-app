@@ -63,14 +63,9 @@ export class RepoDocInfoLoader {
                 progressBar.update(progress.progress);
 
                 if (progress.progress === 100) {
-                    // console.log("FIXME: progress now at 100... destroying");
-                    // TODO: wouldn't it be better to let it sit at 100 for a
-                    // moment, then remove it after a timeout?
                     progressBar.destroy();
                     progressBar = undefined;
                 }
-
-                const repoDocInfoIndex: RepoDocInfoIndex = {};
 
                 const mutations: RepoDocInfoMutation[] = [];
 
@@ -92,25 +87,16 @@ export class RepoDocInfoLoader {
                                 repoDocInfo
                             });
 
-                            // repoDocInfoIndex[repoDocInfo.fingerprint] = repoDocInfo;
-
                         }
 
                     }
 
                     if (docMetaMutation.mutationType === 'deleted') {
-                        // FIXME: this won't actually work as we're ADDING
-                        // files as part of this and then we're merging them
-                        // at the end.  The UI just won't see this and we're
-                        // going to end up with a document that's not properly
-                        // removed frmo the UI...
 
                         mutations.push({
                             mutationType: docMetaMutation.mutationType,
                             fingerprint: docMetaMutation.fingerprint,
                         });
-
-                        // delete repoDocInfoIndex[docMetaMutation.fingerprint];
 
                     }
 
