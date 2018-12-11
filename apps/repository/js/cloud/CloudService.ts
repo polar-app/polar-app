@@ -42,6 +42,9 @@ export class CloudService {
         }
 
         if (user) {
+
+            log.notice(`Authenticated as: ${user.displayName} (${user.email})`);
+
             log.info("Switching to cloud persistence layer");
             await this.persistenceLayerManager.change('cloud');
         } else {
