@@ -71,7 +71,11 @@ describe('FilePaths', function() {
 
             const url = FilePaths.toFileURL(path);
 
-            const buffer = await URLs.toStream(url);
+            console.log("URL: " + url);
+
+            const response = await fetch(url);
+
+            const buffer = await response.buffer();
 
             assert.equal(data, buffer.toString('utf8'));
 
