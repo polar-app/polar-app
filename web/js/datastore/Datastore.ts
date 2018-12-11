@@ -134,6 +134,12 @@ export abstract class AbstractDatastore {
         // noop
     }
 
+    public async createBackup(): Promise<void> {
+        // only supported with the disk datastore.
+        throw new Error("Not supported with this datatore");
+
+    }
+
 }
 
 interface WritableDatastore {
@@ -161,6 +167,8 @@ interface WritableDatastore {
      * this datastore. Only implemented in cloud datastores.
      */
     synchronizeDocs(...fingerprints: string[]): Promise<void>;
+
+    createBackup(): Promise<void>;
 
 }
 

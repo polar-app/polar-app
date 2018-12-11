@@ -11,13 +11,15 @@ export class Files {
 
     /**
      * Create a recursive directory snapshot of files using hard links.
-     *
-     * @param path
      */
-    public static async createDirectorySnapshot(path: string, targetPath: string): Promise<SnapshotFiles> {
+    public static async createDirectorySnapshot(path: string,
+                                                targetPath: string,
+                                                filter: DirectorySnapshotPredicate = ACCEPT_ALL): Promise<SnapshotFiles> {
 
         const files: string[] = [];
         const dirs: SnapshotFiles[] = [];
+
+        const result = Object.freeze({path, files, dirs});
 
         if (! await this.existsAsync(path)) {
             throw new Error("Path does not exist: " + path);
@@ -25,6 +27,10 @@ export class Files {
 
         if (! await this.existsAsync(targetPath)) {
             await Files.createDirAsync(targetPath);
+        }
+
+        if (! filter(path, targetPath)) {
+            return result;
         }
 
         // make sure we're given a directory and not a symlink, character
@@ -44,7 +50,7 @@ export class Files {
 
             if (dirEntryType === 'directory') {
 
-                const dirResult = await this.createDirectorySnapshot(dirEntryPath, targetFilePath);
+                const dirResult = await this.createDirectorySnapshot(dirEntryPath, targetFilePath, filter);
                 dirs.push(dirResult);
 
             } else if (dirEntryType === 'file') {
@@ -58,7 +64,7 @@ export class Files {
 
         }
 
-        return Object.freeze({path, files, dirs});
+        return result;
 
     }
 
@@ -489,4 +495,8 @@ export interface SnapshotFiles {
 export type FileType = 'file' | 'directory' | 'block-device' |
                        'character-device' | 'fifo' | 'socket' |
                        'symbolic-link';
+
+export type DirectorySnapshotPredicate = (path: string, targetPath: string) => boolean;
+
+export const ACCEPT_ALL: DirectorySnapshotPredicate = () => true;
 

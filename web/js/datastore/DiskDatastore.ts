@@ -20,6 +20,7 @@ import {DatastoreMutation, DefaultDatastoreMutation} from './DatastoreMutation';
 import {DatastoreMutations} from './DatastoreMutations';
 import {Datastores} from './Datastores';
 import {NULL_FUNCTION} from '../util/Functions';
+import {Strings} from '../util/Strings';
 
 const log = Logger.create();
 
@@ -292,6 +293,26 @@ export class DiskDatastore extends AbstractDatastore implements Datastore {
                           errorListener: ErrorListener = NULL_FUNCTION): Promise<SnapshotResult> {
 
         return Datastores.createCommittedSnapshot(this, docMetaSnapshotEventListener);
+
+    }
+
+
+    public async createBackup(): Promise<void> {
+
+        const dataDir = this.directories.dataDir;
+
+        const now = new Date();
+        const year = Strings.lpad(now.getUTCFullYear(), '0', 4);
+        const month = Strings.lpad(now.getUTCMonth(), '0', 2);
+        const day = Strings.lpad(now.getUTCDate(), '0', 2);
+
+        const backupDir = FilePaths.join(dataDir, `.backup-${year}-${month}-${day}`);
+
+        const acceptPredicate = (path: string, targetPath: string) => {
+            return ! path.indexOf(".backup-");
+        };
+
+        await Files.createDirectorySnapshot(dataDir, backupDir);
 
     }
 
