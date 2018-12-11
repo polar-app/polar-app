@@ -27,7 +27,7 @@ export class CloudService {
     private onAuth(user: firebase.User | null) {
 
         this.handleAuth(user)
-            .catch(err => log.error("Failed to change persistence layer: ", err));
+            .catch(err => log.error("Failed to handle auth: ", err));
 
     }
 

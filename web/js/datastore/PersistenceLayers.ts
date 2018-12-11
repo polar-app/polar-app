@@ -148,6 +148,10 @@ export class PersistenceLayers {
                     // can determine the throughput of some of the larger
                     // attachments.
 
+                    // FIXME: make this a dedicated function to transfer between
+                    // do datastores... or at least a dedicated function to
+                    // read it in as a buffer
+
                     const file = optionalFile.get();
                     const response = await fetch(file.url);
                     const blob = await response.blob();
