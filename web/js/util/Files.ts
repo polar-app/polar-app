@@ -23,6 +23,10 @@ export class Files {
             throw new Error("Path does not exist: " + path);
         }
 
+        if (! await this.existsAsync(targetPath)) {
+            await Files.createDirAsync(targetPath);
+        }
+
         // make sure we're given a directory and not a symlink, character
         // device, etc.
         Preconditions.assertEqual('directory',
