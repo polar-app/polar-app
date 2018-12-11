@@ -513,34 +513,61 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore {
     private computeStoragePath(backend: Backend, fileRef: FileRef): StoragePath {
 
         const ext = FilePaths.toExtension(fileRef.name);
-        const suffix = ext.map(value => '.' + value)
-                          .getOrElse('');
+
+        const suffix = ext.map(value => {
+
+                if ( ! value.startsWith('.') ) {
+                    // if the suffix doesn't begin with a '.' then add it.
+                    value = '.' + value;
+                }
+
+                return value;
+
+            })
+            .getOrElse('');
 
         const settings = this.computeStorageSettings(ext).getOrUndefined();
 
+        let key: any;
+
+        const uid = this.getUserID();
+
         if (fileRef.hashcode) {
 
-            // we're going to build this from the hashcode of the file
-            const path = `${backend}/${fileRef.hashcode.alg}+${fileRef.hashcode.enc}:${fileRef.hashcode.data}${suffix}`;
 
-            return {path, settings};
+            key = {
+
+                // We include the uid of the user to avoid the issue of user
+                // conflicting on files and the ability to share them per file.
+                // The cloud storage costs for raw binary files are
+                // inconsequential so have one file per user.
+
+                uid,
+                backend,
+                alg: fileRef.hashcode.alg,
+                enc: fileRef.hashcode.enc,
+                data: fileRef.hashcode.data,
+                suffix
+
+            };
 
         } else {
 
             // build a unique name from the filename and the UUID of the user.
-
-            const key = {
-                uid: this.getUserID(),
+            // this shouldn't actually be used except in the cases of VERY old
+            // datastores.
+            key = {
+                uid,
                 filename: fileRef.name
             };
 
-            const id = Hashcodes.createID(key, 20);
-
-            const path = `${backend}/${id}${suffix}`;
-
-            return {path, settings};
-
         }
+
+        const id = Hashcodes.createID(key, 40);
+
+        const path = `${backend}/${id}${suffix}`;
+
+        return {path, settings};
 
     }
 

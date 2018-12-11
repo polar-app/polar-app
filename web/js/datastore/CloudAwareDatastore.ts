@@ -460,8 +460,11 @@ export class CloudAwareDatastore extends AbstractDatastore implements Datastore,
             }
 
             if (docMetaMutation.mutationType === 'deleted') {
-                // TODO: how do we handle this via transfer?
+                // TODO: how do we handle this via transfer the function...
+                // we're also not receiving events for this in the UI so no
+                // progress updates.
                 const docMetaFileRef = await docMetaMutation.docMetaFileRefProvider();
+                log.warn("File deleted: " , docMetaFileRef);
                 await this.local.delete(docMetaFileRef);
             }
 
