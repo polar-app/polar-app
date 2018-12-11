@@ -318,6 +318,8 @@ export class DiskDatastore extends AbstractDatastore implements Datastore {
             return result;
         };
 
+        log.notice("Creating backup to: " + backupDir);
+
         await Files.createDirectorySnapshot(dataDir, backupDir, acceptPredicate);
 
     }

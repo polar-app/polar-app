@@ -44,6 +44,8 @@ export interface PersistenceLayer {
      */
     snapshot(listener: DocMetaSnapshotEventListener, errorListener?: ErrorListener): Promise<SnapshotResult>;
 
+    createBackup(): Promise<void>;
+
     /**
      * Delete a file from PersistenceLayer.
      */

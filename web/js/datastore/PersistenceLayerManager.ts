@@ -70,6 +70,11 @@ export class PersistenceLayerManager implements IProvider<ListenablePersistenceL
 
             this.dispatchEvent({type, persistenceLayer: this.persistenceLayer, state: 'stopping'});
 
+            // Create a backup first.  This only applies to the DiskDatastore
+            // but this way we have a backup before we go online to the cloud
+            // datastore so if it screws up files we're ok.
+            await this.persistenceLayer.createBackup();
+
             await this.persistenceLayer.stop();
 
             log.info("Stopped persistence layer...");

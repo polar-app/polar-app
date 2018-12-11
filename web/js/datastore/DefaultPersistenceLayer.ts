@@ -190,6 +190,10 @@ export class DefaultPersistenceLayer implements PersistenceLayer {
         return this.datastore.snapshot(listener, errorListener);
     }
 
+    public async createBackup(): Promise<void> {
+        return this.datastore.createBackup();
+    }
+
     public writeFile(backend: Backend, ref: FileRef, data: Buffer | string, meta: FileMeta = {}): Promise<DatastoreFile> {
         return this.datastore.writeFile(backend, ref, data, meta);
     }

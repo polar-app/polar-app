@@ -77,6 +77,10 @@ export class DelegatedPersistenceLayer implements PersistenceLayer {
         return this.delegate.snapshot(listener, errorListener);
     }
 
+    public async createBackup(): Promise<void> {
+        return this.delegate.createBackup();
+    }
+
     public async stop(): Promise<void> {
         return this.delegate.stop();
     }

@@ -77,6 +77,10 @@ export class DelegatedDatastore extends AbstractDatastore implements Datastore {
         return this.delegate.snapshot(listener);
     }
 
+    public async createBackup(): Promise<void> {
+        return this.delegate.createBackup();
+    }
+
     public init(): Promise<InitResult> {
         return this.delegate.init();
     }

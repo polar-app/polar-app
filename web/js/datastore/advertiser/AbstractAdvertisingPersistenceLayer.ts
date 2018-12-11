@@ -115,6 +115,10 @@ export abstract class AbstractAdvertisingPersistenceLayer implements ListenableP
 
     }
 
+    public async createBackup(): Promise<void> {
+        return this.delegate.createBackup();
+    }
+
     public delete(docMetaFileRef: DocMetaFileRef): Promise<DeleteResult> {
 
         const result = this.delegate.delete(docMetaFileRef);
