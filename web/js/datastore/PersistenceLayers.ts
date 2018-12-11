@@ -18,6 +18,7 @@ import {Dictionaries} from '../util/Dictionaries';
 import {isPresent} from "../Preconditions";
 import {Optional} from "../util/ts/Optional";
 import {DatastoreFile} from "./DatastoreFile";
+import {URLs} from "../util/URLs";
 
 export class PersistenceLayers {
 
@@ -153,10 +154,7 @@ export class PersistenceLayers {
                     // read it in as a buffer
 
                     const file = optionalFile.get();
-                    const response = await fetch(file.url);
-                    const blob = await response.blob();
-                    const arrayBuffer = await Blobs.toArrayBuffer(blob);
-                    const buffer = ArrayBuffers.toBuffer(arrayBuffer);
+                    const buffer = await URLs.toStream(file.url);
 
                     await target.datastore.writeFile(file.backend, fileRef, buffer, file.meta);
 

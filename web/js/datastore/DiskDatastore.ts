@@ -303,8 +303,8 @@ export class DiskDatastore extends AbstractDatastore implements Datastore {
                                       ref: FileRef,
                                       fileReference: DiskFileReference): Promise<DatastoreFile> {
 
-        // TODO: test that this works on Windows - I do not think it will.
-        const url = new URL(`file:///${fileReference.path}`);
+        const fileURL = FilePaths.toFileURL(fileReference.path);
+        const url = new URL(fileURL);
 
         let meta = {};
 

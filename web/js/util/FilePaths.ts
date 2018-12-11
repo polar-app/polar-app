@@ -1,7 +1,8 @@
 import * as libpath from 'path';
 import * as os from 'os';
 import {Optional} from './ts/Optional';
-import {isPresent} from '../Preconditions';
+import {isPresent, Preconditions} from '../Preconditions';
+import url from 'url';
 
 /**
  * Work with file paths cross platform and work with the file separator using
@@ -15,7 +16,7 @@ export class FilePaths {
     /**
      * The OS specific file separator.
      */
-    public static readonly sep = libpath.sep;
+    public static readonly SEP = libpath.sep;
 
     // FIXME: THIS is the bug.. Windows just needs to die!  We're not properly
     // building URI paths due to this issue now...
@@ -125,6 +126,33 @@ export class FilePaths {
         return text.replace(/(\/[a-zA-Z0-9_-]+)+(\/[a-zA-Z0-9_-]+\.[a-z]{2,3})/g, (substr: string) => {
             return this.toWindowsPath(substr);
         });
+
+    }
+
+    public static toFileURL(path: string) {
+
+        // https://stackoverflow.com/questions/20619488/how-to-convert-local-file-path-to-a-file-url-safely-in-node-js
+
+        // TODO: The new pathToFileURL function added in NodeJS 10.12 and
+        // Electron 3.0.89 is on 10.2 at the time so we can't use this function
+        // even though it's better.
+
+        Preconditions.assertTypeOf(path, 'string', 'path');
+
+        path = FilePaths.resolve(path);
+
+        if (this.SEP === '\\') {
+
+            path = path.replace(/\\/g, '/');
+
+            // Windows drive letter must be prefixed with a slash
+            if (path[0] !== '/') {
+                path = '/' + path;
+            }
+
+        }
+
+        return encodeURI('file://' + path);
 
     }
 

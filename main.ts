@@ -18,6 +18,7 @@ async function launch() {
 
     console.log("Running with app path: " + app.getAppPath());
     console.log("Running with CWD: " + process.cwd());
+    console.log("Running with node version: " + process.version);
 
     const log = Logger.create();
 

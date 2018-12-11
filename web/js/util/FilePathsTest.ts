@@ -1,5 +1,7 @@
 import {assert} from 'chai';
 import {FilePaths} from './FilePaths';
+import {Files} from './Files';
+import {URLs} from './URLs';
 
 describe('FilePaths', function() {
 
@@ -57,6 +59,19 @@ describe('FilePaths', function() {
 
     });
 
+    xdescribe('File URLs', async function() {
+
+        const path = FilePaths.createTempName('file-url-data.txt');
+
+        const data = 'hello world';
+        await Files.writeFileAsync(path, data);
+
+        const url = FilePaths.toFileURL(path);
+
+        const buffer = await URLs.toStream(url);
+
+        assert.equal(data, buffer.toString('utf8'));
+
+    });
 
 });
-
