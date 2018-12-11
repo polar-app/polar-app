@@ -237,9 +237,7 @@ export class CloudAwareDatastore extends AbstractDatastore implements Datastore,
         // TODO: we could resolve this by removing the mutations and just
         // sending the progress data.
 
-        log.notice("Transferring from local -> cloud...");
-        const synchronizeResult = await PersistenceLayers.transfer(localSyncOrigin, cloudSyncOrigin, ASYNC_NULL_FUNCTION, 'cloud-to-local');
-        log.notice("Transferring from local -> cloud...", synchronizeResult);
+        await PersistenceLayers.synchronizeOrigins(localSyncOrigin, cloudSyncOrigin, ASYNC_NULL_FUNCTION);
 
     }
 
@@ -388,13 +386,7 @@ export class CloudAwareDatastore extends AbstractDatastore implements Datastore,
 
         if (isPrimarySnapshot) {
 
-            log.notice("Transferring from local -> cloud...");
-            await PersistenceLayers.transfer(localSyncOrigin, cloudSyncOrigin, deduplicatedListener.listener, 'local-to-cloud');
-            log.notice("Transferring from local -> cloud...done");
-
-            log.notice("Transferring from cloud -> local...");
-            await PersistenceLayers.transfer(cloudSyncOrigin, localSyncOrigin, deduplicatedListener.listener, 'cloud-to-local');
-            log.notice("Transferring from cloud -> local...done");
+            await PersistenceLayers.synchronizeOrigins(localSyncOrigin, cloudSyncOrigin, deduplicatedListener.listener);
 
         }
 

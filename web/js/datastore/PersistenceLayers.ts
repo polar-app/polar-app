@@ -19,6 +19,9 @@ import {isPresent} from "../Preconditions";
 import {Optional} from "../util/ts/Optional";
 import {DatastoreFile} from "./DatastoreFile";
 import {URLs} from "../util/URLs";
+import {Logger} from "../logger/Logger";
+
+const log = Logger.create();
 
 export class PersistenceLayers {
 
@@ -90,6 +93,23 @@ export class PersistenceLayers {
         // now transfer the other way...
 
         await this.transfer(syncOrigin1, syncOrigin0, listener);
+
+    }
+
+    /**
+     * Make sure the latest version of the files are in both origins.
+     */
+    public static async synchronizeOrigins(localSyncOrigin: SyncOrigin,
+                                           cloudSyncOrigin: SyncOrigin,
+                                           listener: DocMetaSnapshotEventListener = ASYNC_NULL_FUNCTION): Promise<void> {
+
+        log.notice("Transferring from local -> cloud...");
+        const localToCloud = await PersistenceLayers.transfer(localSyncOrigin, cloudSyncOrigin, listener, 'local-to-cloud');
+        log.notice("Transferring from local -> cloud...done", localToCloud);
+
+        log.notice("Transferring from cloud -> local...");
+        const cloudToLocal = await PersistenceLayers.transfer(cloudSyncOrigin, localSyncOrigin, listener, 'cloud-to-local');
+        log.notice("Transferring from cloud -> local...done", cloudToLocal);
 
     }
 
@@ -299,3 +319,4 @@ export interface SyncOrigin {
     readonly syncDocMap: SyncDocMap;
 
 }
+
