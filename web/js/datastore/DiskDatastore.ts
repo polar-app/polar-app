@@ -302,17 +302,23 @@ export class DiskDatastore extends AbstractDatastore implements Datastore {
         const dataDir = this.directories.dataDir;
 
         const now = new Date();
-        const year = Strings.lpad(now.getUTCFullYear(), '0', 4);
-        const month = Strings.lpad(now.getUTCMonth(), '0', 2);
-        const day = Strings.lpad(now.getUTCDate(), '0', 2);
+
+        const ordYear = now.getUTCFullYear();
+        const ordMonth = now.getUTCMonth() + 1;
+        const ordDay = now.getUTCDate();
+
+        const year = Strings.lpad(ordYear, '0', 4);
+        const month = Strings.lpad(ordMonth, '0', 2);
+        const day = Strings.lpad(ordDay, '0', 2);
 
         const backupDir = FilePaths.join(dataDir, `.backup-${year}-${month}-${day}`);
 
         const acceptPredicate = (path: string, targetPath: string) => {
-            return ! path.indexOf(".backup-");
+            const result = path.indexOf(".backup-") === -1;
+            return result;
         };
 
-        await Files.createDirectorySnapshot(dataDir, backupDir);
+        await Files.createDirectorySnapshot(dataDir, backupDir, acceptPredicate);
 
     }
 

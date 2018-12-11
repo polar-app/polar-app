@@ -20,6 +20,8 @@ import {func} from 'prop-types';
 import {Latch} from '../util/Latch';
 import {Datastores} from './Datastores';
 import {PersistenceLayers} from './PersistenceLayers';
+import {DiskDatastore} from './DiskDatastore';
+import {TestingTime} from '../test/TestingTime';
 
 const rimraf = require('rimraf');
 
@@ -87,8 +89,6 @@ export class DatastoreTester {
 
                 await persistenceLayer.stop();
             });
-
-            // FIXME: test and write a new / basic document to make sure we get the commits working...
 
             it("write and read data to disk", async function() {
 
@@ -159,7 +159,8 @@ export class DatastoreTester {
 
                 }
 
-                // perform the delete multiple times now to make sure we're idempotent for deletes
+                // perform the delete multiple times now to make sure we're
+                // idempotent for deletes
                 await persistenceLayer.delete(docMetaFileRef);
                 await persistenceLayer.delete(docMetaFileRef);
                 await persistenceLayer.delete(docMetaFileRef);
@@ -193,7 +194,8 @@ export class DatastoreTester {
                 // noinspection TsLint
                 assert.equal(datastoreFile.get().meta['foo'], 'bar');
 
-                // assertJSON(datastoreFile.get().meta, meta, "meta values differ");
+                // assertJSON(datastoreFile.get().meta, meta, "meta values
+                // differ");
 
                 await datastore.deleteFile(Backend.IMAGE, fileRef);
                 await datastore.deleteFile(Backend.IMAGE, fileRef);
@@ -247,6 +249,44 @@ export class DatastoreTester {
 
             });
 
+
+            it("createBackup", async function() {
+
+                if (! (datastore instanceof DiskDatastore)) {
+                    console.log("Skipping (not DiskDatastore)");
+                    return;
+                }
+
+                try {
+
+                    TestingTime.freeze();
+
+                    const now = new Date();
+
+                    // Fri, 02 Mar 2012 11:38:49 GMT
+                    console.log("Creating backup at: " + now.toUTCString());
+
+                    const backupDir = FilePaths.join(dataDir, ".backup-2012-03-02");
+
+                    await datastore.createBackup();
+
+                    console.log("Testing for backup dir: " + backupDir);
+
+                    assert.ok(await Files.existsAsync(backupDir));
+
+                    assert.ok(! await Files.existsAsync(FilePaths.join(backupDir, ".backup-2012-03-02")));
+
+                    const statePath = FilePaths.join(backupDir, '0x001', 'state.json');
+                    assert.ok(await Files.existsAsync(statePath));
+
+                } finally {
+
+                    TestingTime.unfreeze();
+
+                }
+
+
+            });
 
         });
 

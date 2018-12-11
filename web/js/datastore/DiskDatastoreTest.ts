@@ -21,6 +21,7 @@ describe("DiskDatastore", async function() {
 
     DatastoreTester.test(async () => new DiskDatastore());
 
+
     it("getDataDir", function() {
         assert.notEqual(Directories.getDataDir(), null);
     });

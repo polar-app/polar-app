@@ -11,6 +11,9 @@ export class Files {
 
     /**
      * Create a recursive directory snapshot of files using hard links.
+     *
+     * @param filter Accept any files that pass the filter predicate (return true).
+     *
      */
     public static async createDirectorySnapshot(path: string,
                                                 targetPath: string,
@@ -25,12 +28,12 @@ export class Files {
             throw new Error("Path does not exist: " + path);
         }
 
-        if (! await this.existsAsync(targetPath)) {
-            await Files.createDirAsync(targetPath);
-        }
-
         if (! filter(path, targetPath)) {
             return result;
+        }
+
+        if (! await this.existsAsync(targetPath)) {
+            await Files.createDirAsync(targetPath);
         }
 
         // make sure we're given a directory and not a symlink, character
