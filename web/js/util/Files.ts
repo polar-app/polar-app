@@ -9,6 +9,56 @@ const log = Logger.create();
 
 export class Files {
 
+    /**
+     * Create a recursive directory snapshot of files using hard links.
+     *
+     * @param path
+     */
+    public static async createDirectorySnapshot(path: string, targetPath: string): Promise<SnapshotFiles> {
+
+        const files: string[] = [];
+        const dirs: SnapshotFiles[] = [];
+
+        if (! await this.existsAsync(path)) {
+            throw new Error("Path does not exist: " + path);
+        }
+
+        // make sure we're given a directory and not a symlink, character
+        // device, etc.
+        Preconditions.assertEqual('directory',
+                                  await Files.fileType(path),
+                                  'Path had invalid type: ' + path);
+
+        const dirEntries = await this.readdirAsync(path);
+
+        for (const dirEntry of dirEntries) {
+
+            const dirEntryPath = FilePaths.join(path, dirEntry);
+            const dirEntryType = await this.fileType(dirEntryPath);
+
+            const targetFilePath = FilePaths.join(targetPath, dirEntry);
+
+            if (dirEntryType === 'directory') {
+
+                const dirResult = await this.createDirectorySnapshot(dirEntryPath, targetFilePath);
+                dirs.push(dirResult);
+
+            } else if (dirEntryType === 'file') {
+                // handle a normal file removal.
+                await this.linkAsync(dirEntryPath, targetFilePath);
+                files.push(dirEntry);
+
+            } else {
+                throw new Error(`Unable to handle dir entry: ${dirEntryPath} of type ${dirEntryType}`);
+            }
+
+        }
+
+        return Object.freeze({path, files, dirs});
+
+    }
+
+
     public static async removeDirectoryRecursivelyAsync(path: string): Promise<RemovedFiles> {
 
         const files: string[] = [];
@@ -261,6 +311,10 @@ export class Files {
         return this.withProperException(() => this.Promised.rmdirAsync(path));
     }
 
+    public static async linkAsync(existingPath: PathLike, newPath: PathLike): Promise<void> {
+        return this.withProperException(() => this.Promised.linkAsync(existingPath, newPath));
+    }
+
     public static async readdirAsync(path: string): Promise<string[]> {
         return this.withProperException(() => this.Promised.readdirAsync(path));
     }
@@ -357,6 +411,7 @@ export class Files {
         closeAsync: promisify(fs.close),
         fdatasyncAsync: promisify(fs.fdatasync),
         fsyncAsync: promisify(fs.fsync),
+        linkAsync: promisify(fs.link),
 
     };
 
@@ -414,16 +469,18 @@ export class FileHandles {
 
 }
 
-
-// export interface File {
-//
-// }
-
 export interface RemovedFiles {
     readonly path: string;
     readonly files: ReadonlyArray<string>;
     readonly dirs: ReadonlyArray<RemovedFiles>;
 }
+
+export interface SnapshotFiles {
+    readonly path: string;
+    readonly files: ReadonlyArray<string>;
+    readonly dirs: ReadonlyArray<SnapshotFiles>;
+}
+
 
 export type FileType = 'file' | 'directory' | 'block-device' |
                        'character-device' | 'fifo' | 'socket' |
