@@ -2,6 +2,7 @@ import {assert} from 'chai';
 import {FilePaths} from './FilePaths';
 import {Files} from './Files';
 import {URLs} from './URLs';
+import fetch from './Fetch';
 
 describe('FilePaths', function() {
 
@@ -25,8 +26,8 @@ describe('FilePaths', function() {
 
         it("real world", async function () {
 
-            let text = '     at Function.getCaller (/home/burton/projects/polar-bookshelf/web/js/test/MyTest.jsx:5:17)';
-            let expected = '     at Function.getCaller (C:\\home\\burton\\projects\\polar-bookshelf\\web\\js\\test\\MyTest.jsx:5:17)';
+            const text = '     at Function.getCaller (/home/burton/projects/polar-bookshelf/web/js/test/MyTest.jsx:5:17)';
+            const expected = '     at Function.getCaller (C:\\home\\burton\\projects\\polar-bookshelf\\web\\js\\test\\MyTest.jsx:5:17)';
 
             assert.equal(FilePaths.textToWindowsPath(text), expected);
 
@@ -61,16 +62,20 @@ describe('FilePaths', function() {
 
     xdescribe('File URLs', async function() {
 
-        const path = FilePaths.createTempName('file-url-data.txt');
+        it('Test file URL', async function() {
 
-        const data = 'hello world';
-        await Files.writeFileAsync(path, data);
+            const path = FilePaths.createTempName('file-url-data.txt');
 
-        const url = FilePaths.toFileURL(path);
+            const data = 'hello world';
+            await Files.writeFileAsync(path, data);
 
-        const buffer = await URLs.toStream(url);
+            const url = FilePaths.toFileURL(path);
 
-        assert.equal(data, buffer.toString('utf8'));
+            const buffer = await URLs.toStream(url);
+
+            assert.equal(data, buffer.toString('utf8'));
+
+        });
 
     });
 

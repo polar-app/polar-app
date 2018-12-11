@@ -1,5 +1,6 @@
 import {Blobs} from './Blobs';
 import {ArrayBuffers} from './ArrayBuffers';
+// import fetch from './Fetch';
 
 export class URLs {
 

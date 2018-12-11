@@ -15,7 +15,7 @@ let response: Response | undefined;
  * implementation directly without needing a backend server to implement the
  * methods.
  */
-export default function fetch(url: string | Request, init: RequestInit): Promise<Response> {
+export default function fetch(url: string | Request, init?: RequestInit): Promise<Response> {
 
     if (MockFetch.response) {
         return Promise.resolve(MockFetch.response);
