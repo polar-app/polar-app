@@ -768,8 +768,6 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore {
         //     handleDoc(doc);
         // }
 
-        // TODO: move this entire event to async...
-
         docMetaSnapshotEventListener({
             datastore: this.id,
             consistency,

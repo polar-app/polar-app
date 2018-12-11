@@ -33,7 +33,7 @@ export class CloudService {
 
     private async handleAuth(user: firebase.User | null) {
 
-        console.log("onAuth: ", user);
+        // console.log("onAuth: ", user);
 
         if (this.persistenceLayerManager.requiresReset()) {
             // when we're resetting don't attempt to change the persistence

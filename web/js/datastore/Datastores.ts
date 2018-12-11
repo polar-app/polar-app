@@ -98,10 +98,6 @@ export class Datastores {
 
             // // TODO: in the cloud store implementation it will probably be much
             // // faster to use a file JUST for the DocInfo to speed up loading.
-            //
-            // // TODO: we could do even BETTER here in terms lazy performance and
-            // // don't even read the data until it's requested.
-            //
             const dataProvider = AsyncProviders.memoize(async () => await datastore.getDocMeta(docMetaFile.fingerprint));
             const docMetaProvider = AsyncProviders.memoize(async () => DocMetas.deserialize((await dataProvider())!));
             const docInfoProvider = AsyncProviders.memoize(async () => (await docMetaProvider()).docInfo);
@@ -152,8 +148,6 @@ export class Datastores {
 
         let completed: number = 0;
         const total: number = docMetaFiles.length;
-
-        // TODO: would be more ideal for this to use an AsyncWorkQueue
 
         const work: AsyncFunction[] = [];
 
