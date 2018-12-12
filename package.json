@@ -19,7 +19,7 @@
     "dist-prepare": "",
     "compile": "tsc",
     "compile-watch": "tsc --watch",
-    "test": "find web/js -name '*Test.js' | xargs mocha-parallel-tests --timeout 20000 --max-parallel=1 --exit",
+    "test": "./scripts/test-runner.sh",
     "e2e": "find web/spectron -name 'spec.js' | xargs mocha-parallel-tests --timeout 20000 --max-parallel=1 --exit",
     "e2e-mocha": "npx mocha --exit --log-timer-events --recursive 'web/spectron/**/spec.js'",
     "test-mocha": "npx mocha --exit --log-timer-events --recursive 'web/js/**/*Test.js'",
