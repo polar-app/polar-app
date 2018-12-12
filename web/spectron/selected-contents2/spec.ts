@@ -8,7 +8,7 @@ const assert = require('assert');
 describe('selected-contents2', function() {
 
     Spectron.setup(__dirname);
-    this.timeout(10000);
+    this.timeout(30000);
 
     xit('basic test', async function() {
 

@@ -5,7 +5,7 @@ import {Spectron} from '../../js/test/Spectron';
 describe('dialog-window', function() {
 
     Spectron.setup(__dirname);
-    this.timeout(10000);
+    this.timeout(30000);
 
     it('create dialog window', async function() {
 

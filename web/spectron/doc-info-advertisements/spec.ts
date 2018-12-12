@@ -4,7 +4,7 @@ import {SpectronSpec} from '../../js/test/SpectronSpec';
 describe('doc-info-advertisements', function() {
 
     Spectron.setup(__dirname);
-    this.timeout(10000);
+    this.timeout(30000);
 
     it('Make sure the receiving app gets messages from the sending app', async function() {
 

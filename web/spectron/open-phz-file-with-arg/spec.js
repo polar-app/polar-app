@@ -3,7 +3,7 @@ const {Spectron} = require("../../js/test/Spectron");
 
 describe('Open specific PHZ file from command line', function () {
 
-    this.timeout(10000);
+    this.timeout(30000);
 
     let examplePHZ = path.join(__dirname, "../../../docs/example.phz");
 

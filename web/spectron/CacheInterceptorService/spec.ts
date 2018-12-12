@@ -6,7 +6,7 @@ import {FilePaths} from '../../js/util/FilePaths';
 
 describe("CacheInterceptorService", function () {
 
-    this.timeout(10000);
+    this.timeout(30000);
 
     Spectron.setup(__dirname);
 

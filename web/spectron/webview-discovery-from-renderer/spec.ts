@@ -5,7 +5,7 @@ import {Spectron} from '../../js/test/Spectron';
 describe('webview-discovery', function() {
 
     Spectron.setup(__dirname);
-    this.timeout(10000);
+    this.timeout(30000);
 
     it('Verify that we can discovery webviews', async function() {
 

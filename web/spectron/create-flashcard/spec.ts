@@ -5,7 +5,7 @@ import {Spectron} from '../../js/test/Spectron';
 describe('create-flashcard', function() {
 
     Spectron.setup(__dirname);
-    this.timeout(10000);
+    this.timeout(30000);
 
     it('Create flashcard window and make sure they render properly', async function() {
 

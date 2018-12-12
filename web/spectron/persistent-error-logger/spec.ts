@@ -11,7 +11,7 @@ describe('persistent-error-logger', async function() {
     await PolarDataDir.useFreshDirectory('.polar-persistent-error-logger');
 
     Spectron.setup(__dirname);
-    this.timeout(10000);
+    this.timeout(30000);
 
     it('test writing errors', async function() {
 

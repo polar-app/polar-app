@@ -5,7 +5,7 @@ import {Spectron} from '../../js/test/Spectron';
 xdescribe('webview-test', function() {
 
     Spectron.setup(__dirname);
-    this.timeout(10000);
+    this.timeout(30000);
 
     xit('shows an basic initial window', async function() {
 

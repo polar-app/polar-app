@@ -8,7 +8,7 @@ import {PolarDataDir} from '../../js/test/PolarDataDir';
 describe('Browser Capture', function() {
 
     Spectron.setup(__dirname);
-    this.timeout(10000);
+    this.timeout(30000);
 
     before(async function() {
         await PolarDataDir.useFreshDirectory('.polar-browser-capture');

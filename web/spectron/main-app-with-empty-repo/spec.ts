@@ -6,7 +6,7 @@ import {PolarDataDir} from '../../js/test/PolarDataDir';
 describe('main-app-with-empty-repo', async function() {
 
     Spectron.setup(__dirname);
-    this.timeout(10000);
+    this.timeout(30000);
 
     before(async function() {
         await PolarDataDir.useFreshDirectory('.polar-main-app-with-empty-repo');

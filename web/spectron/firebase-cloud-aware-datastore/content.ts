@@ -36,7 +36,7 @@ import {PersistenceLayer} from '../../js/datastore/PersistenceLayer';
 Logging.initForTesting();
 
 mocha.setup('bdd');
-mocha.timeout(20000);
+mocha.timeout(30000);
 
 async function createDatastore() {
 

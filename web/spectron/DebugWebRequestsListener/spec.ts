@@ -7,7 +7,7 @@ const assert = require('assert');
 
 describe('DebugWebRequestsListener', function() {
 
-    this.timeout(10000);
+    this.timeout(30000);
 
     before(async function() {
         const logsDir = FilePaths.tmpfile("DebugWebRequestsListener");

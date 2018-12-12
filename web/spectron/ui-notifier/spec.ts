@@ -7,7 +7,7 @@ import {SpectronSpec} from '../../js/test/SpectronSpec';
 describe('ui-notifier', function() {
 
     Spectron.setup(__dirname);
-    this.timeout(10000);
+    this.timeout(30000);
 
     it('Verify that messages are sent and received properly', async function() {
 

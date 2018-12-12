@@ -9,7 +9,7 @@ import {PolarDataDir} from '../../js/test/PolarDataDir';
 describe('Test loading from a HTTP URL for the entire app', function() {
 
     Spectron.setup(__dirname);
-    this.timeout(10000);
+    this.timeout(30000);
 
     it('Test HTTP webapps', async function() {
         await SpectronSpec.create(this.app).waitFor(true);

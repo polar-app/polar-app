@@ -4,7 +4,7 @@ import {SpectronSpec} from '../../js/test/SpectronSpec';
 describe('sentry', function() {
 
     Spectron.setup(__dirname);
-    this.timeout(10000);
+    this.timeout(30000);
 
     xit('test sentry support', async function() {
 

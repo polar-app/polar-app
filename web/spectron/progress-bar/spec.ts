@@ -9,7 +9,7 @@ import {PolarDataDir} from '../../js/test/PolarDataDir';
 xdescribe('TODO change this describe', function() {
 
     Spectron.setup(__dirname);
-    this.timeout(10000);
+    this.timeout(30000);
 
     xit('TODO change this test description', async function() {
 

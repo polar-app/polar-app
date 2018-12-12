@@ -5,7 +5,7 @@ import {Spectron, TBrowser} from '../../js/test/Spectron';
 const path = require('path');
 
 describe('Open specific PDF file from command line', function () {
-    this.timeout(10000);
+    this.timeout(30000);
 
     const examplePDF = path.join(__dirname, "../../../docs/example.pdf");
 

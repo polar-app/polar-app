@@ -4,7 +4,7 @@ import {SpectronSpec} from '../../js/test/SpectronSpec';
 xdescribe('web-worker', function() {
 
     Spectron.setup(__dirname);
-    this.timeout(10000);
+    this.timeout(30000);
 
     xit('shows an basic initial window', async function() {
 
