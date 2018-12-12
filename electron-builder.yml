@@ -54,7 +54,7 @@ win:
   artifactName: ${name}-${version}-${arch}.${ext}
   target:
     - target: nsis
-    - target: appx
+    #- target: appx
     #- target: portable
   icon: ./icons/icon-512x512.png
   fileAssociations:
