@@ -20,7 +20,7 @@ for file in `find web/js -name '*Test.js' | sort -f`; do
     echo "=========="
     echo "${file}"
 
-    mocha-parallel-tests --timeout 20000 --max-parallel=1 --exit ${file}
+    npx mocha-parallel-tests --timeout 20000 --max-parallel=1 --exit ${file}
     exit_code=$?
 
     total=$(expr ${total} + 1)
