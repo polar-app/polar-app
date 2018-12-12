@@ -11,14 +11,15 @@ export class PolarDataDir {
 
         const dataDir = FilePaths.createTempName(name);
         process.env.POLAR_DATA_DIR = dataDir;
+        console.log("Using new dataDir: " + dataDir);
         await Files.removeDirectoryRecursivelyAsync(dataDir);
 
         const directories = new Directories();
 
-        Files.createDirSync(directories.dataDir),
-        Files.createDirSync(directories.stashDir),
-        Files.createDirSync(directories.logsDir),
-        Files.createDirSync(directories.configDir),
+        await Files.createDirAsync(directories.dataDir),
+        await Files.createDirAsync(directories.stashDir),
+        await Files.createDirAsync(directories.logsDir),
+        await Files.createDirAsync(directories.configDir),
 
         log.info("Using polar data dir: " + dataDir);
 

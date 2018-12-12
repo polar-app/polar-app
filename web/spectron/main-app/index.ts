@@ -26,8 +26,6 @@ AppPath.set(FilePaths.resolve(__dirname, "..", "..", ".."));
 
 async function createWindow(): Promise<BrowserWindow> {
 
-    await PolarDataDir.useFreshDirectory('.polar-main-app');
-
     polarDir = await setupNewDataDir();
 
     const datastore: Datastore = new MemoryDatastore();
@@ -73,19 +71,11 @@ SpectronMain2.create({windowFactory: createWindow}).run(async state => {
 
 async function setupNewDataDir(): Promise<PolarDir> {
 
-    const dataDir = PolarDataDir.get()!;
+    const dataDir = await PolarDataDir.useFreshDirectory('.polar-main-app');
 
-    Preconditions.assertPresent(dataDir, "dataDir");
     log.info("Using new dataDir: " + dataDir);
 
-    await Files.removeDirectoryRecursivelyAsync(dataDir);
-    await Files.mkdirAsync(dataDir);
-
     const stashDir = FilePaths.create(dataDir, 'stash');
-
-    log.info("Creating new dataDir: " + stashDir);
-
-    await Files.mkdirAsync(stashDir);
 
     const filenames = ['example.pdf', 'example.phz'];
 

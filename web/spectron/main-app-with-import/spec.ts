@@ -4,10 +4,12 @@ import {PolarDataDir} from '../../js/test/PolarDataDir';
 
 describe('main-app-with-import', async function() {
 
-    await PolarDataDir.useFreshDirectory('.polar-main-app-with-import');
-
     Spectron.setup(__dirname);
     this.timeout(10000);
+
+    before(async function() {
+        await PolarDataDir.useFreshDirectory('.polar-main-app-with-import');
+    });
 
     it('create the repository view', async function() {
 

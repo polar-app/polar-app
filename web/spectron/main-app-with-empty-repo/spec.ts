@@ -5,10 +5,12 @@ import {PolarDataDir} from '../../js/test/PolarDataDir';
 
 describe('main-app-with-empty-repo', async function() {
 
-    await PolarDataDir.useFreshDirectory('.polar-main-app-with-empty-repo');
-
     Spectron.setup(__dirname);
     this.timeout(10000);
+
+    before(async function() {
+        await PolarDataDir.useFreshDirectory('.polar-main-app-with-empty-repo');
+    });
 
     it('create the repository view', async function() {
 

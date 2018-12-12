@@ -47,7 +47,7 @@ export class Spectron {
         // work with it directly.  We should do this within setup() and require
         // a URL to load so that testing always functions properly.
 
-        let spectronOutputMonitorService : SpectronOutputMonitorService;
+        let spectronOutputMonitorService: SpectronOutputMonitorService;
 
         beforeEach(async function() {
 
@@ -82,18 +82,18 @@ export class Spectron {
 
         });
 
-        afterEach(function() {
-            //
+        afterEach(async function() {
+
             log.info("Going to shutdown now... ");
 
-            if(spectronOutputMonitorService) {
+            if (spectronOutputMonitorService) {
                 spectronOutputMonitorService.stop();
                 spectronOutputMonitorService._doLogForwarding();
             }
 
             if (this.app && this.app.isRunning()) {
                 log.info("Telling app to stop");
-                return this.app.stop()
+                return this.app.stop();
             } else {
                 log.info("App already stopped.");
             }
@@ -102,7 +102,7 @@ export class Spectron {
 
     }
 
-    static run(callback: RunCallback) {
+    public static run(callback: RunCallback) {
 
 
     }
