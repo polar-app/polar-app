@@ -57,6 +57,8 @@ export class RepoDocInfos {
             nrAnnotations: Optional.of(docInfo.nrAnnotations)
                 .getOrElse(0),
 
+            hashcode: docInfo.hashcode,
+
             docInfo
 
         };

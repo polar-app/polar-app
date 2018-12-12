@@ -45,6 +45,9 @@ import {AdvertisingPersistenceLayer} from '../../../web/js/datastore/advertiser/
 import {PersistenceLayer} from '../../../web/js/datastore/PersistenceLayer';
 import {DefaultPersistenceLayer} from '../../../web/js/datastore/DefaultPersistenceLayer';
 import {DocMetas} from '../../../web/js/metadata/DocMetas';
+import {Backend} from '../../../web/js/datastore/Backend';
+import {Hashcode} from '../../../web/js/metadata/Hashcode';
+import {FileRef} from '../../../web/js/datastore/Datastore';
 
 const log = Logger.create();
 
@@ -439,7 +442,9 @@ export default class App extends React.Component<AppProps, AppState> {
                         if (! singleClickColumns.includes(column.id)) {
                             return {
                                 onDoubleClick: (e: any) => {
-                                    this.onDocumentLoadRequested(rowInfo.original.fingerprint, rowInfo.original.filename);
+                                    this.onDocumentLoadRequested(rowInfo.original.fingerprint,
+                                                                 rowInfo.original.filename,
+                                                                 rowInfo.original.hashcode);
                                 }
                             };
                         }
@@ -479,7 +484,8 @@ export default class App extends React.Component<AppProps, AppState> {
                 {/*<CookieBanner*/}
                     {/*message="We use cookies to track user behavior using Google Analytics and other 3rd party services. "*/}
                     {/*buttonMessage="I Accept"*/}
-                    {/*link={<a href='https://github.com/burtonator/polar-bookshelf/blob/master/docs/Tracking-Policy.md'>More information</a>}*/}
+                    {/*link={<a href='https://github.com/burtonator/polar-bookshelf/blob/master/docs/Tracking-Policy.md'>
+                                More information</a>}*/}
                     {/*styles={{*/}
                         {/*banner: { backgroundColor: 'rgba(60, 60, 60, 0.8)', position: 'fixed', left: '0', bottom: '0' },*/}
                         {/*message: { fontWeight: 400 }*/}
@@ -663,13 +669,28 @@ export default class App extends React.Component<AppProps, AppState> {
     }
 
     private onDocumentLoadRequested(fingerprint: string,
-                                    filename: string ) {
+                                    filename: string,
+                                    hashcode?: Hashcode) {
 
         const handler = async () => {
 
             const persistenceLayer = this.persistenceLayerManager.get();
 
-            await persistenceLayer.synchronizeDocs(fingerprint);
+            const ref: FileRef = {
+                name: filename,
+                hashcode
+            };
+
+            // NOTE: these operations execute locally first, so it's a quick
+            // way to verify that the file needs to be synchronized.
+            const requiresSynchronize =
+                ! await persistenceLayer.contains(fingerprint) ||
+                ! await persistenceLayer.containsFile(Backend.STASH, ref);
+
+            if (requiresSynchronize) {
+                await persistenceLayer.synchronizeDocs(fingerprint);
+                log.notice("Forcing synchronization (doc not local): " + fingerprint);
+            }
 
             await DocLoader.load({
                 fingerprint,

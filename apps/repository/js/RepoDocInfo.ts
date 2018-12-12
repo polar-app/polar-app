@@ -5,6 +5,7 @@
 import {IDocInfo} from '../../../web/js/metadata/DocInfo';
 import {ISODateTimeString} from '../../../web/js/metadata/ISODateTimeStrings';
 import {Tag} from '../../../web/js/tags/Tag';
+import {Hashcode} from '../../../web/js/metadata/Hashcode';
 
 export interface RepoDocInfo {
 
@@ -34,6 +35,8 @@ export interface RepoDocInfo {
     tags?: Readonly<{[id: string]: Tag}>;
 
     nrAnnotations: number;
+
+    hashcode?: Hashcode;
 
     /**
      * The original DocInfo used to construct this RepoDocInfo.
