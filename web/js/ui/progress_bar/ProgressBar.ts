@@ -30,12 +30,15 @@ export class ProgressBar {
         const element = document.createElement('progress');
 
         if (! indeterminate) {
+            // set the defaults
             element.value = 0;
             element.max = 100;
         }
 
         element.id = ID;
-        element.style.height = `5px`;
+
+        element.style.height = indeterminate ? '5px' : '4px';
+
         element.style.width = `100%`;
 
         /// progress.style.backgroundColor='#89ADFD';
@@ -47,6 +50,7 @@ export class ProgressBar {
         element.style.borderTop = '0';
         element.style.borderLeft = '0';
         element.style.borderRight = '0';
+        element.style.borderBottom = '0';
         // element.style.webkitAppearance = 'none';
         // element.style.borderRadius = '0';
 
