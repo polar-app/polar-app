@@ -50,7 +50,6 @@ export class ContentCaptureExecutor {
         const url = captured.url;
 
         const hash = Hashcodes.createID(url);
-
         const stashDir = this.directories.stashDir;
         const filename = hash + '-' + Filenames.sanitize(captured.title);
 

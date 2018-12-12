@@ -26,6 +26,7 @@ export class WhatsNewModal extends React.Component<IProps, IState> {
 
                 <Modal isOpen={this.state.open}
                        size="lg"
+                       fade={false}
                        style={{overflowY: 'initial', minWidth: '80%'}}>
                     <ModalHeader>What's New in Polar</ModalHeader>
                     <ModalBody style={{overflowY: 'auto', maxHeight: 'calc(100vh - 200px)'}}>

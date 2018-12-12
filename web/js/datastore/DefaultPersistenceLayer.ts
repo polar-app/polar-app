@@ -78,7 +78,13 @@ export class DefaultPersistenceLayer implements PersistenceLayer {
             throw new Error("Expected string and received: " + typeof data);
         }
 
-        return DocMetas.deserialize(data);
+        const docMeta = DocMetas.deserialize(data);
+
+        if (! docMeta.docInfo.filename) {
+            log.warn("Doc has no filename: " + docMeta.docInfo.fingerprint);
+        }
+
+        return docMeta;
 
     }
 

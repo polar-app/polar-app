@@ -103,7 +103,6 @@ export class DocMetas {
     }
 
     /**
-     * @return {DocMeta}
      */
     public static deserialize(data: string): DocMeta {
 
@@ -121,11 +120,6 @@ export class DocMetas {
 
     }
 
-    /**
-     *
-     * @param docMeta {DocMeta}
-     * @return {DocMeta}
-     */
     public static upgrade(docMeta: DocMeta) {
 
         // validate the JSON data and set defaults. In the future we should migrate

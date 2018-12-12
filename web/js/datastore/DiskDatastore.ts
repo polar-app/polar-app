@@ -264,22 +264,22 @@ export class DiskDatastore extends AbstractDatastore implements Datastore {
             return [];
         }
 
-        const fileNames = await Files.readdirAsync(this.dataDir);
+        const entries = await Files.readdirAsync(this.dataDir);
 
         const result: DocMetaRef[] = [];
 
-        for ( const fileName of fileNames) {
+        for ( const entry of entries) {
 
-            const docMetaDir = FilePaths.join(this.dataDir, fileName);
+            const docMetaDir = FilePaths.join(this.dataDir, entry);
             const docMetaDirStat = await Files.statAsync(docMetaDir);
 
             if (docMetaDirStat.isDirectory()) {
 
-                const stateFile = FilePaths.join(this.dataDir, fileName, 'state.json');
+                const stateFile = FilePaths.join(this.dataDir, entry, 'state.json');
 
                 const exists = await Files.existsAsync(stateFile);
                 if (exists) {
-                    result.push({fingerprint: fileName});
+                    result.push({fingerprint: entry});
                 }
 
             }

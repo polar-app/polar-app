@@ -18,6 +18,7 @@ export class LargeModal extends React.Component<IProps, IState> {
         return (
             <Modal isOpen={this.props.isOpen}
                    size="lg"
+                   fade={false}
                    style={{overflowY: 'initial', minWidth: '90%'}}>
 
                 {this.props.children}
