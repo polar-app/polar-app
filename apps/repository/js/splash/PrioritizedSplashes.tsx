@@ -30,10 +30,37 @@ export class PrioritizedSplashes extends React.Component<IProps, IState> {
 
     public render() {
 
-        return (
-            <PrioritizedComponentManager prioritizedComponentRefs={prioritizedComponentRefs}/>
-        );
+        if (SplashLifecycle.canShow()) {
 
+            // FIXME: I need to break apart app for now..
+            // SplashLifecycle.markShown();
+
+            return (
+                <PrioritizedComponentManager prioritizedComponentRefs={prioritizedComponentRefs}/>
+            );
+
+        } else {
+
+            return (
+                <div/>
+            );
+
+        }
+
+    }
+
+}
+
+export class SplashLifecycle {
+
+    private static KEY = 'splash-shown';
+
+    public static canShow(): boolean {
+        return window.sessionStorage.getItem(this.KEY) !== 'true';
+    }
+
+    public static markShown() {
+        window.sessionStorage.setItem(this.KEY, 'true');
     }
 
 }
