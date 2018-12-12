@@ -7,7 +7,7 @@ import {isPresent} from '../Preconditions';
 
 describe('FilePaths', function() {
 
-    describe('toWindowsPath', () => {
+    xdescribe('toWindowsPath', () => {
 
         it("basic", async function() {
 
