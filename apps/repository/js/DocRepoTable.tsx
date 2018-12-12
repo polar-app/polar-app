@@ -414,6 +414,7 @@ export default class DocRepoTable extends React.Component<IProps, IState> {
                         return {
 
                             onClick: (e: any) => {
+                                // console.log(`doc fingerprint: ${rowInfo.original.fingerprint} and filename ${rowInfo.original.filename}`);
                                 this.highlightRow(rowInfo.index as number);
                             },
 

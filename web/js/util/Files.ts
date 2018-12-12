@@ -19,6 +19,9 @@ export class Files {
                                                 targetPath: string,
                                                 filter: DirectorySnapshotPredicate = ACCEPT_ALL): Promise<SnapshotFiles> {
 
+        // TODO: provide a listener too so that we can monitor progress in the
+        // UI as well..
+
         const files: string[] = [];
         const dirs: SnapshotFiles[] = [];
 
