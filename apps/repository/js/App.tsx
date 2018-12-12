@@ -662,13 +662,25 @@ export default class App extends React.Component<AppProps, AppState> {
 
     }
 
-    private onDocumentLoadRequested(fingerprint: string, filename: string ) {
+    private onDocumentLoadRequested(fingerprint: string,
+                                    filename: string ) {
 
-        DocLoader.load({
-            fingerprint,
-            filename,
-            newWindow: true
-        }).catch(err => log.error("Unable to load doc: ", err));
+        const handler = async () => {
+
+            const persistenceLayer = this.persistenceLayerManager.get();
+
+            await persistenceLayer.synchronizeDocs(fingerprint);
+
+            await DocLoader.load({
+                fingerprint,
+                filename,
+                newWindow: true
+            });
+
+        };
+
+        handler()
+            .catch(err => log.error("Unable to load doc: ", err));
 
     }
 
