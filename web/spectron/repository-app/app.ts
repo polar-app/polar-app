@@ -14,6 +14,8 @@ SpectronRenderer.run(async (state) => {
     console.log("Running within SpectronRenderer now.");
 
     await wait(() => {
+        console.log("Looking for elements...");
+
         // now wait for the page to be rendered with documents
         assert.ok(document.getElementById('doc-table'));
         return document.querySelectorAll("#doc-table .rt-tr-group").length >= 0;
