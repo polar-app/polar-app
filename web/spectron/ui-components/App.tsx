@@ -113,7 +113,7 @@ class App<P> extends React.Component<{}, IAppState> {
 
                 <CloudSyncConfiguredContent/>
 
-                <CloudSyncConfiguredModal isOpen={true} onCancel={() => console.log('cancel')}/>
+                {/*<CloudSyncConfiguredModal isOpen={true} onCancel={() => console.log('cancel')}/>*/}
 
 
                 {/*<CloudSyncOverviewModal isOpen={true}*/}

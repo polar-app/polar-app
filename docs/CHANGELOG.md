@@ -1,3 +1,13 @@
+# 1.5.0
+
+- Cloud sync implemented based on Firebase.
+
+- Fixed progress bars on MacOS which looked rather ugly.
+
+- Fixed issue with highlighter popup becoming disabled with PDF.
+
+- Dozens of other smaller features and fixes integrated.  This is a big release.
+
 # 1.1.1 
 
 - Fixed bug with not loading all documents properly on startup.
