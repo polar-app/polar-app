@@ -116,7 +116,7 @@ export class DocMetas {
 
         docMeta = MetadataSerializer.deserialize(docMeta, data);
 
-        if (! docMeta.docInfo.filename) {
+        if (docMeta.docInfo && ! docMeta.docInfo.filename) {
             log.warn("DocMeta has no filename: " + docMeta.docInfo.fingerprint);
         }
 
