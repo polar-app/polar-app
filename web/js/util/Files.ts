@@ -57,9 +57,13 @@ export class Files {
                 dirs.push(dirResult);
 
             } else if (dirEntryType === 'file') {
-                // handle a normal file removal.
-                await this.linkAsync(dirEntryPath, targetFilePath);
+
+                if (! await this.existsAsync(targetFilePath)) {
+                    await this.linkAsync(dirEntryPath, targetFilePath);
+                }
+
                 files.push(dirEntry);
+
 
             } else {
                 throw new Error(`Unable to handle dir entry: ${dirEntryPath} of type ${dirEntryType}`);

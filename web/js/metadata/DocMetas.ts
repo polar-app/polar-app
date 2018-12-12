@@ -116,6 +116,10 @@ export class DocMetas {
 
         docMeta = MetadataSerializer.deserialize(docMeta, data);
 
+        if (! docMeta.docInfo.filename) {
+            log.warn("DocMeta has no filename: " + docMeta.docInfo.fingerprint);
+        }
+
         return DocMetas.upgrade(docMeta);
 
     }

@@ -80,10 +80,6 @@ export class DefaultPersistenceLayer implements PersistenceLayer {
 
         const docMeta = DocMetas.deserialize(data);
 
-        if (! docMeta.docInfo.filename) {
-            log.warn("Doc has no filename: " + docMeta.docInfo.fingerprint);
-        }
-
         return docMeta;
 
     }

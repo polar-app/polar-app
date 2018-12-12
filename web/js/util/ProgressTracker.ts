@@ -1,5 +1,7 @@
 import {Percentages} from "./Percentages";
 
+let NONCE = 0;
+
 /**
  * Represents the progress of a state of tasks and allows us to just incr()
  * the progress in a loop rather than having the math exposed in the loop.
@@ -10,11 +12,13 @@ export class ProgressTracker {
 
     private readonly epoch: number;
 
-    constructor(total: number) {
+    constructor(total: number, id: string) {
 
         this.epoch = Date.now();
 
         this.state = {
+            task: NONCE++,
+            id,
             completed: 0,
             total,
             duration: 0,
@@ -80,23 +84,30 @@ export class ProgressTracker {
 export type ProgressStateListener = (progressState: ProgressState) => void;
 
 export interface ProgressState {
+    task: TaskID;
     completed: number;
     total: number;
     duration: number;
     progress: Percentage;
+    id: string;
 }
 
 export class ProgressStates {
 
-    public static calculate(completed: number, total: number, duration: number): Readonly<ProgressState> {
-
-        const progress = <Percentage> Percentages.calculate(completed, total);
-
-        return {completed, total, duration, progress};
-
-    }
+    // public static calculate(completed: number, total: number, duration: number, id: string): Readonly<ProgressState> {
+    //
+    //     const progress = <Percentage> Percentages.calculate(completed, total);
+    //
+    //     return {task: 0, completed, total, duration, progress, id};
+    //
+    // }
 
 }
+
+/**
+ * A unique task ID for the job using the ProgressTracker.
+ */
+export type TaskID = number;
 
 /**
  * An actual percentage value between zero and 100 [0,100]
@@ -112,3 +123,4 @@ export type Percentage = 0  |  1 |  2 |  3 |  4 |  5 |  6 |  7 |  8 |  9 |
                          80 | 81 | 82 | 83 | 84 | 85 | 86 | 87 | 88 | 89 |
                          90 | 91 | 92 | 93 | 94 | 95 | 96 | 97 | 98 | 99 |
                          100;
+

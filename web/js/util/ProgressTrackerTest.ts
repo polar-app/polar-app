@@ -8,7 +8,7 @@ describe('ProgressTracker', function() {
 
     it("Basic", async function() {
 
-        const progressTracker = new ProgressTracker(1);
+        const progressTracker = new ProgressTracker(1, 'test');
         progressTracker.incr();
         const progress = progressTracker.peek();
 
@@ -21,7 +21,7 @@ describe('ProgressTracker', function() {
         // irrational number can cause problems with progress bars so we need
         // to make sure the floating point component is finite.
 
-        const progressTracker = new ProgressTracker(3);
+        const progressTracker = new ProgressTracker(3, 'test');
         assert.equal(progressTracker.incr().progress, 33.33);
         assert.equal(progressTracker.incr().progress, 66.67);
         assert.equal(progressTracker.incr().progress, 100);
@@ -30,7 +30,7 @@ describe('ProgressTracker', function() {
 
     it("Make sure the last is 100%", async function() {
 
-        const progressTracker = new ProgressTracker(3);
+        const progressTracker = new ProgressTracker(3, 'test');
         progressTracker.incr();
         progressTracker.incr();
 
@@ -41,7 +41,7 @@ describe('ProgressTracker', function() {
 
     it("Terminate with no entries", async function() {
 
-        const progressTracker = new ProgressTracker(0);
+        const progressTracker = new ProgressTracker(0, 'test');
         const progress = progressTracker.terminate();
         assert.equal(progress.completed, 0);
         assert.equal(progress.total, 0);
@@ -51,7 +51,7 @@ describe('ProgressTracker', function() {
 
     it("Terminate with 1 entry", async function() {
 
-        const progressTracker = new ProgressTracker(1);
+        const progressTracker = new ProgressTracker(1, 'test');
         const progress = progressTracker.terminate();
         assert.equal(progress.completed, 1);
         assert.equal(progress.total, 1);

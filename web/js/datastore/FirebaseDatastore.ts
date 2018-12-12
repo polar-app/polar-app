@@ -783,7 +783,7 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore {
         //     log.notice("SKIPPING SNAPSHOT (no docChanges)");
         // }
 
-        const progressTracker = new ProgressTracker(docChanges.length);
+        const progressTracker = new ProgressTracker(docChanges.length, 'firebase-snapshot');
 
         for (const docChange of docChanges) {
             handleDocChange(docChange);

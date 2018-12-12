@@ -17,6 +17,8 @@ import {PersistenceLayerManagerEvent} from '../../../web/js/datastore/Persistenc
 import {NULL_FUNCTION} from '../../../web/js/util/Functions';
 import {PersistenceLayer} from '../../../web/js/datastore/PersistenceLayer';
 import {IEventDispatcher, SimpleReactor} from '../../../web/js/reactor/SimpleReactor';
+import {isPresent} from '../../../web/js/Preconditions';
+import {ProgressTrackerIndex} from '../../../web/js/util/ProgressTrackerIndex';
 
 const log = Logger.create();
 
@@ -50,6 +52,8 @@ export class RepoDocInfoLoader {
 
         let progressBar: ProgressBar | undefined;
 
+        const progressTrackerIndex = new ProgressTrackerIndex();
+
         persistenceLayer.addDocMetaSnapshotEventListener(async docMetaSnapshotEvent => {
 
             const eventHandler = async () => {
@@ -60,9 +64,13 @@ export class RepoDocInfoLoader {
                     progressBar = ProgressBar.create(false);
                 }
 
-                progressBar.update(progress.progress);
+                progressTrackerIndex.update(progress);
 
-                if (progress.progress === 100) {
+                const minProgress = progressTrackerIndex.min();
+
+                progressBar.update(minProgress);
+
+                if (minProgress === 100) {
                     progressBar.destroy();
                     progressBar = undefined;
                 }

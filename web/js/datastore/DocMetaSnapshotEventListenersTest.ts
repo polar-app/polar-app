@@ -21,7 +21,7 @@ describe('DocMetaSnapshotEventListener', function() {
 
     let deduplicatedListener: DocMetaSnapshotEventListener = ASYNC_NULL_FUNCTION;
 
-    const progressTracker = new ProgressTracker(1);
+    const progressTracker = new ProgressTracker(1, 'test');
     progressTracker.incr();
 
     const progress = progressTracker.peek();

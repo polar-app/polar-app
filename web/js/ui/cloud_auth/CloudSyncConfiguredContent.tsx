@@ -73,21 +73,21 @@ export class CloudSyncConfiguredContent extends React.Component<IProps, IState> 
 
                 </div>
 
-                <p className="intro" style={Styles.overview}>
+                <h2 className="intro" style={Styles.overview}>
                     Polar Cloud Sync is setup.  Your documents will now be
                     copied to the cloud in the background.
-                </p>
+                </h2>
 
-                <p>
+                <h4>
                     Any new documents you add (or annotate) will also be updated
                     and synchronized in the background.
-                </p>
+                </h4>
 
-                <p>
+                <h4>
                     Please remember that Polar Sync is not a replacement for a
                     good backup strategy!  If you delete your files in Polar Sync
                     they're gone forever - just as though you deleted them locally.
-                </p>
+                </h4>
 
             </div>
 
