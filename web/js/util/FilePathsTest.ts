@@ -3,12 +3,13 @@ import {FilePaths} from './FilePaths';
 import {Files} from './Files';
 import {URLs} from './URLs';
 import fetch from './Fetch';
+import {isPresent} from '../Preconditions';
 
 describe('FilePaths', function() {
 
     describe('toWindowsPath', () => {
 
-        it("basic", async function () {
+        it("basic", async function() {
 
             assert.equal(FilePaths.toWindowsPath('/tmp/test/hello.txt'), 'C:\\tmp\\test\\hello.txt');
 
@@ -18,13 +19,13 @@ describe('FilePaths', function() {
 
     describe('textToWindowsPath', () => {
 
-        it("basic", async function () {
+        it("basic", async function() {
 
             assert.equal(FilePaths.textToWindowsPath('some text /tmp/test/hello.txt then this'), 'some text C:\\tmp\\test\\hello.txt then this');
 
         });
 
-        it("real world", async function () {
+        it("real world", async function() {
 
             const text = '     at Function.getCaller (/home/burton/projects/polar-bookshelf/web/js/test/MyTest.jsx:5:17)';
             const expected = '     at Function.getCaller (C:\\home\\burton\\projects\\polar-bookshelf\\web\\js\\test\\MyTest.jsx:5:17)';
@@ -62,7 +63,7 @@ describe('FilePaths', function() {
 
     xdescribe('File URLs', async function() {
 
-        it('Test file URL', async function() {
+        xit('Test file URL', async function() {
 
             const path = FilePaths.createTempName('file-url-data.txt');
 
@@ -77,6 +78,7 @@ describe('FilePaths', function() {
 
             const buffer = await response.buffer();
 
+            assert.ok(isPresent(buffer), "no buffer");
             assert.equal(data, buffer.toString('utf8'));
 
         });
