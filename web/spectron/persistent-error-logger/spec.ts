@@ -6,9 +6,9 @@ import {Files} from '../../js/util/Files';
 import {PolarDataDir} from '../../js/test/PolarDataDir';
 import {Directories} from '../../js/datastore/Directories';
 
-PolarDataDir.useFreshDirectory('.polar-persistent-error-logger');
-
 describe('persistent-error-logger', async function() {
+
+    await PolarDataDir.useFreshDirectory('.polar-persistent-error-logger');
 
     Spectron.setup(__dirname);
     this.timeout(10000);

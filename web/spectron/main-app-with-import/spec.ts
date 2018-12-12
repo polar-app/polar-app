@@ -2,9 +2,9 @@ import {Spectron} from '../../js/test/Spectron';
 import {SpectronSpec} from '../../js/test/SpectronSpec';
 import {PolarDataDir} from '../../js/test/PolarDataDir';
 
-PolarDataDir.useFreshDirectory('.polar-main-app-with-import');
+describe('main-app-with-import', async function() {
 
-describe('main-app-with-import', function() {
+    await PolarDataDir.useFreshDirectory('.polar-main-app-with-import');
 
     Spectron.setup(__dirname);
     this.timeout(10000);
