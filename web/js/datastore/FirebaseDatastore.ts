@@ -11,11 +11,11 @@ import {Directories} from './Directories';
 import {Backend} from './Backend';
 import {DatastoreFile} from './DatastoreFile';
 import {Optional} from '../util/ts/Optional';
-import {Firestore} from '../firestore/Firestore';
+import {Firestore} from '../firebase/Firestore';
 import {DocInfo, IDocInfo} from '../metadata/DocInfo';
 import {Preconditions} from '../Preconditions';
 import {Hashcodes} from '../Hashcodes';
-import * as firebase from '../firestore/lib/firebase';
+import * as firebase from '../firebase/lib/firebase';
 import {Dictionaries} from '../util/Dictionaries';
 import {DatastoreFiles} from './DatastoreFiles';
 import {DatastoreMutation, DefaultDatastoreMutation} from './DatastoreMutation';
@@ -27,6 +27,7 @@ import {ProgressTracker} from '../util/ProgressTracker';
 import {Providers, AsyncProviders} from '../util/Providers';
 import {FilePaths} from '../util/FilePaths';
 import {FileHandle, FileHandles, Files} from '../util/Files';
+import {UserID} from '../firebase/Firebase';
 
 const log = Logger.create();
 
@@ -777,7 +778,8 @@ export class FirebaseDatastore extends AbstractDatastore implements Datastore {
         const nrDocChanges = docChanges.length;
         const nrDocs = snapshot.docs.length;
 
-        // log.notice(`GOT SNAPSHOT with consistency ${consistency}, nrDocs: ${nrDocs}, nrDocChanges: ${nrDocChanges}`);
+        // log.notice(`GOT SNAPSHOT with consistency ${consistency}, nrDocs:
+        // ${nrDocs}, nrDocChanges: ${nrDocChanges}`);
 
         // if (docChanges.length === 0) {
         //     log.notice("SKIPPING SNAPSHOT (no docChanges)");
@@ -893,7 +895,6 @@ export enum DatastoreCollection {
 
 }
 
-type UserID = string;
 
 /**
  * The result of a FB database mutation.

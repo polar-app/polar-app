@@ -1,0 +1,120 @@
+import {Dictionaries} from '../util/Dictionaries';
+import {DatastoreCollection, DocMetaHolder, RecordHolder, Visibility} from './FirebaseDatastore';
+import {Firestore} from '../firebase/Firestore';
+import {Hashcodes} from '../Hashcodes';
+import {DocInfo} from '../metadata/DocInfo';
+import {ISODateTimeString, ISODateTimeStrings} from '../metadata/ISODateTimeStrings';
+import {Preconditions} from '../Preconditions';
+import * as firebase from '../firebase/lib/firebase';
+import {UserID} from '../firebase/Firebase';
+import {Optional} from '../util/ts/Optional';
+
+export class Invitations {
+
+    /**
+     * Send emails to a bunch of people...
+     *
+     * @param email
+     */
+    public async sendInvites(...emailAddresses: string[]) {
+
+
+        try {
+
+            const firestore = await Firestore.getInstance();
+
+            for (const emailAddress of emailAddresses) {
+
+                const record = this.createRecord(emailAddress);
+
+                await firestore
+                    .collection('invitation')
+                    .doc(record.id)
+                    .set(record);
+
+            }
+
+        } finally {
+            // noop for now
+        }
+
+    }
+
+    /**
+     * Create the document that we will store in for the DocMeta
+     */
+    private createRecord(to: EmailAddress) {
+
+        const auth = firebase.app().auth();
+        Preconditions.assertPresent(auth, "Not authenticated");
+
+        const user = auth.currentUser;
+        Preconditions.assertPresent(user, "Not authenticated");
+
+        const uid = user!.uid;
+
+        const id = Hashcodes.createRandomID();
+
+        let image: Image | undefined;
+
+        if (user!.photoURL) {
+
+            image = {
+                href: user!.photoURL!
+            };
+
+        }
+
+        const profile: Profile = {
+            email: user!.email!,
+            name: Optional.of(user!.displayName).getOrUndefined(),
+            image
+        };
+
+        const invitation: Invitation = {
+            timestamp: ISODateTimeStrings.create(),
+            from: profile,
+            to
+        };
+
+        const recordHolder: RecordHolder<Invitation> = {
+            uid,
+            id,
+            visibility: Visibility.PRIVATE,
+            value: invitation
+        };
+
+        return recordHolder;
+
+    }
+
+}
+
+export interface Invitation {
+
+    readonly timestamp: ISODateTimeString;
+
+    /**
+     * The profile information of the person who send the invite.
+     */
+    readonly from: Profile;
+
+    readonly to: EmailAddress;
+
+}
+
+export interface Profile {
+    readonly email: EmailAddress;
+    readonly name?: string;
+    readonly image?: Image;
+
+}
+
+export interface Image {
+    readonly href: string;
+    readonly width?: number;
+    readonly height?: number;
+}
+
+export type EmailAddress = string;
+

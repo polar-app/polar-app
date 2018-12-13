@@ -30,7 +30,7 @@ import {isUpperCase} from 'tslint/lib/utils';
 import {IEventDispatcher, SimpleReactor} from '../reactor/SimpleReactor';
 import {Preconditions} from '../Preconditions';
 import {AsyncFunction} from '../util/AsyncWorkQueue';
-import * as firebase from '../firestore/lib/firebase';
+import * as firebase from '../firebase/lib/firebase';
 import {Dictionaries} from '../util/Dictionaries';
 
 const log = Logger.create();

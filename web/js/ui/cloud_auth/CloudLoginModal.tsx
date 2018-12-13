@@ -5,8 +5,8 @@ import Popper from 'popper.js';
 import {LargeModal} from '../large_modal/LargeModal';
 import {WhatsNewContent} from '../../../../apps/repository/js/splash/splashes/whats_new/WhatsNewContent';
 import {LargeModalBody} from '../large_modal/LargeModalBody';
-import {Firebase} from '../../firestore/Firebase';
-import {FirebaseUIAuth} from '../../firestore/FirebaseUIAuth';
+import {Firebase} from '../../firebase/Firebase';
+import {FirebaseUIAuth} from '../../firebase/FirebaseUIAuth';
 import {Nav} from '../util/Nav';
 
 export class CloudLoginModal extends React.Component<IProps, IState> {

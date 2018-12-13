@@ -1,7 +1,7 @@
 import {SpectronRenderer} from '../../js/test/SpectronRenderer';
-import {Firebase} from '../../js/firestore/Firebase';
-import {FirebaseUIAuth} from '../../js/firestore/FirebaseUIAuth';
-import * as firebase from '../../js/firestore/lib/firebase';
+import {Firebase} from '../../js/firebase/Firebase';
+import {FirebaseUIAuth} from '../../js/firebase/FirebaseUIAuth';
+import * as firebase from '../../js/firebase/lib/firebase';
 import {Elements} from '../../js/util/Elements';
 
 // require('firebase');

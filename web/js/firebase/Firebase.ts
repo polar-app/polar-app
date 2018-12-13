@@ -30,3 +30,5 @@ export class Firebase {
     }
 
 }
+
+export type UserID = string;

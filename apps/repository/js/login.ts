@@ -1,7 +1,7 @@
-import {Firebase} from '../../../web/js/firestore/Firebase';
+import {Firebase} from '../../../web/js/firebase/Firebase';
 import {Nav} from '../../../web/js/ui/util/Nav';
-import {FirebaseUIAuth} from '../../../web/js/firestore/FirebaseUIAuth';
-import * as firebase from '../../../web/js/firestore/lib/firebase';
+import {FirebaseUIAuth} from '../../../web/js/firebase/FirebaseUIAuth';
+import * as firebase from '../../../web/js/firebase/lib/firebase';
 
 window.addEventListener('load', async () => {
 
