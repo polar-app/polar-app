@@ -26,146 +26,160 @@ export class WhatsNewContent extends React.Component<IProps, IState> {
 
                 {/*<p className="text-muted">Dec 12, 2018</p>*/}
 
-                <p>
-                    Polar now supports cloud sync powered by Firebase.
-                </p>
+                <div className="intro">
 
-                <p>
-                    Cloud sync is real-time - as soon as you make changes to a
-                    local document it's immediately synchronized with the cloud.
-                </p>
+                    <p className="text-center">
+                        <i className="fas fa-cloud-upload-alt"
+                           style={{ fontSize: '120px', margin: '20px', color: '#007bff'}}></i>
 
-                <p>
-                    Remember that cloud sync is not a solution for backups.
-                    If you delete a file in Polar cloud sync it's immediately
-                    deleted both locally and in the cloud!
-                </p>
+                        <h1 className="title">Polar Cloud Sync</h1>
 
-                <p>
-                    To prevent data loss we've taken an extra step of creating
-                    a lightweight snapshot of your polar data directory once
-                    cloud sync is setup.  We're planning on implementing daily
-                    snapshots of data in the future to protect your data but for
-                    now we just create the initial backup in case there's an
-                    issue cloud sync.
-                </p>
+                        <p className="subtitle">
+                            Polar now supports cloud sync powered by Firebase.
+                        </p>
+
+                    </p>
+
+                    <p>
+                        Cloud sync is real-time - as soon as you make a change to a
+                        local document it is immediately synchronized to the
+                        cloud and then to the other computers you have which run
+                        Polar.
+                    </p>
+
+                    <p>Cloud sync is free for smaller instances and <b>$7.99</b> for
+                        users with more than 100 documents.
+                    </p>
+
+                    <p>
+                        To ensure data safety we now support local lightweight
+                        backups of your data. We take backups at critical points
+                        including just before you synchronize for the first
+                        time.
+                    </p>
+
+                </div>
 
                 <h2>1.1.0 - Nov 29, 2018</h2>
 
-                <p className="text-center">
+                <div className="intro">
 
-                    <img style={{maxHeight: '200px'}} className="img-fluid" src={EmbeddedImages.POLAR_LOGO}></img>
+                    <p className="text-center">
 
-                    <span style={{fontSize: '85px', margin: '15px'}}>+</span>
+                        <img style={{maxHeight: '200px'}} className="img-fluid" src={EmbeddedImages.POLAR_LOGO}></img>
 
-                    <img style={{maxHeight: '200px'}} className="img-fluid" src={EmbeddedImages.CHROME_LOGO}></img>
+                        <span style={{fontSize: '85px', margin: '15px'}}>+</span>
 
-                </p>
+                        <img style={{maxHeight: '200px'}} className="img-fluid" src={EmbeddedImages.CHROME_LOGO}></img>
 
-                <h3>Polar 1.1 - Chrome Extension Support!</h3>
+                        <h1 className="title">Polar 1.1 - Chrome Extension Support!</h1>
 
-                <p>
-                Polar 1.1 is fresh out the door and a lot of amazing features and
-                bug fixes are enabled in this release.
-                </p>
+                    </p>
 
-                <p>
-                    The biggest feature by far is our support for
-                    the <a href="https://chrome.google.com/webstore/detail/save-to-polar/jkfdkjomocoaljglgddnmhcbolldcafd">'Save to Polar' chrome extension</a>
-                    that allows you to send the URL of your active tab to Polar
-                    for content capture.
-                </p>
+                    <p>
+                        Polar 1.1 is fresh out the door and a lot of amazing features and
+                        bug fixes are enabled in this release.
+                    </p>
 
-                <p>
-                    This makes it a lot easier to work with Polar as you can
-                    just click a button in Chrome and have it sent to Polar.
-                </p>
+                    <p>
+                        The biggest feature by far is our support for
+                        the <a href="https://chrome.google.com/webstore/detail/save-to-polar/jkfdkjomocoaljglgddnmhcbolldcafd">'Save to Polar' chrome extension</a> that
+                        allows you to send the URL of your active tab to Polar
+                        for content capture.
+                    </p>
 
-                <p>
-                    We plan on adding support for Safari, and Firefox in the
-                    future but we're taking things one step at a time.
-                </p>
+                    <p>
+                        This makes it a lot easier to work with Polar as you can
+                        just click a button in Chrome and have it sent to Polar.
+                    </p>
 
-                <p className="text-center">
-                    <a className="btn btn-success btn-lg"
-                       href="https://chrome.google.com/webstore/detail/save-to-polar/jkfdkjomocoaljglgddnmhcbolldcafd"
-                       role="button">Get the 'Save to Polar' Chrome Extension</a>
-                </p>
+                    <p>
+                        We plan on adding support for Safari, and Firefox in the
+                        future but we're taking things one step at a time.
+                    </p>
 
-                <h3>Other features in 1.1 include:</h3>
+                    <p className="text-center">
+                        <a className="btn btn-success btn-lg"
+                           href="https://chrome.google.com/webstore/detail/save-to-polar/jkfdkjomocoaljglgddnmhcbolldcafd"
+                           role="button">Get the 'Save to Polar' Chrome Extension</a>
+                    </p>
 
-                <li>
-                Disabling amp for now until we have a better solution on how to show the user
-                that an AMP page is displayed and how to disable / enable it.  Otherwise its
-                confusing and often the amp page is WORSE not better.
-                </li>
+                    <h3>Other features in 1.1 include:</h3>
 
-                <li>
-                Fixed bugs with the browser size not changing during capture browser changing
-                and also fixed some issues with it not properly accepting the browser change
-                in some situations.
-                </li>
+                    <li>
+                        Disabling amp for now until we have a better solution on how to show the user
+                        that an AMP page is displayed and how to disable / enable it.  Otherwise its
+                        confusing and often the amp page is WORSE not better.
+                    </li>
 
-                <li>
-                Fixed bug in HTML zoom where the page would be truncated improperly.
-                </li>
+                    <li>
+                        Fixed bugs with the browser size not changing during capture browser changing
+                        and also fixed some issues with it not properly accepting the browser change
+                        in some situations.
+                    </li>
 
-                <li>
-                Blocked amp ads during the capture but they aren't blocked during the preview
-                at the moment.
-                </li>
+                    <li>
+                        Fixed bug in HTML zoom where the page would be truncated improperly.
+                    </li>
 
-                <li>
-                "Fixed" nasty anti-aliasing bug in electron by blocking amp ads. They were
-                annoying anyway but for some reason they were breaking chrome rendering -
-                probably due to some web component nonsense.
-                </li>
+                    <li>
+                        Blocked amp ads during the capture but they aren't blocked during the preview
+                        at the moment.
+                    </li>
 
-                <li>
-                Implemented a new strategy with the vertical height algorithm in the capture
-                system to revert it back to auto instead of a fixed max-height.  Works a lot
-                better now.
-                </li>
+                    <li>
+                        "Fixed" nasty anti-aliasing bug in electron by blocking amp ads. They were
+                        annoying anyway but for some reason they were breaking chrome rendering -
+                        probably due to some web component nonsense.
+                    </li>
 
-                <li>
-                Date/times no longer include ' ago' to be a bit more concise.
-                </li>
+                    <li>
+                        Implemented a new strategy with the vertical height algorithm in the capture
+                        system to revert it back to auto instead of a fixed max-height.  Works a lot
+                        better now.
+                    </li>
 
-                <li>
-                Added small FAQ entry to enable Anki sync.
-                </li>
+                    <li>
+                        Date/times no longer include ' ago' to be a bit more concise.
+                    </li>
 
-                <li>
-                Fixed a bug where we could select text and not properly work with elements.
-                </li>
+                    <li>
+                        Added small FAQ entry to enable Anki sync.
+                    </li>
 
-                <li>
-                Renderer analytics didn't understand that a callback without an error wasn't
-                  a failure.
-                </li>
+                    <li>
+                        Fixed a bug where we could select text and not properly work with elements.
+                    </li>
 
-                <li>
-                Upgraded a number of important react packages:
-                  react react-dom react-moment react-select @types/react-table
-                  @types/react-select @types/react @types/prop-types @types/node-fetch
-                </li>
+                    <li>
+                        Renderer analytics didn't understand that a callback without an error wasn't
+                        a failure.
+                    </li>
 
-                <li>
-                removed inversify package (were not using it)
-                </li>
+                    <li>
+                        Upgraded a number of important react packages:
+                        react react-dom react-moment react-select @types/react-table
+                        @types/react-select @types/react @types/prop-types @types/node-fetch
+                    </li>
 
-                <li>
-                latest fontawesome
-                </li>
+                    <li>
+                        removed inversify package (were not using it)
+                    </li>
 
-                <li>
-                latest node-fetch
-                </li>
+                    <li>
+                        latest fontawesome
+                    </li>
 
-                <li>
-                fixed issue with electron-builder where it was forcing us to upgrade to the
-                latest version for each release.
-                </li>
+                    <li>
+                        latest node-fetch
+                    </li>
+
+                    <li>
+                        fixed issue with electron-builder where it was forcing us to upgrade to the
+                        latest version for each release.
+                    </li>
+
+                </div>
 
 
                 {/*<h2>1.0.14 - Nov 17, 2018</h2>*/}

@@ -12,6 +12,7 @@
 @import url('./text-highlights.css');
 @import url('./flexbar.css');
 @import url('./progress.css');
+@import url('./typography.css');
 
 body {
     height: 100%;

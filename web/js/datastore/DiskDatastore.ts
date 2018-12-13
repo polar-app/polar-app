@@ -249,6 +249,10 @@ export class DiskDatastore extends AbstractDatastore implements Datastore {
 
         log.info(`Writing data to state file: ${statePath}`);
 
+        // TODO: don't write directly to state.json... instead write to
+        // state.json.new, then delete state.json, then move state.json.new to
+        // state.json..  This way we can create backups using hard links easily.
+
         const result = Files.writeFileAsync(statePath, data, {encoding: 'utf8'});
 
         DatastoreMutations.handle(result, datastoreMutation, () => true);

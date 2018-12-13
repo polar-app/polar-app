@@ -80,6 +80,30 @@ class App<P> extends React.Component<{}, IAppState> {
                 {/*<TableDropdown id={'table-dropdown'}></TableDropdown>*/}
 
                 <h1>UI Components</h1>
+                <hr/>
+
+                <h1>headings</h1>
+
+                <h1>h1</h1>
+                <h2>h2</h2>
+                <h3>h3</h3>
+                <h4>h4</h4>
+                <h5>h5</h5>
+
+                <h1>Intro</h1>
+                <hr/>
+
+                <div className="intro">
+
+                    <h1 className="title">This is the title</h1>
+
+                    <h2 className="subtitle">This is the subtitle</h2>
+
+                    <p>
+                        This is just regular text.
+                    </p>
+
+                </div>
 
                 <p>
                     List of important UI components in Polar.
