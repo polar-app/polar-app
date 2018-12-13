@@ -19,6 +19,7 @@ import {CloudSyncOverviewContent} from '../../js/ui/cloud_auth/CloudSyncOverview
 import {CloudSyncConfiguredContent} from '../../js/ui/cloud_auth/CloudSyncConfiguredContent';
 import {CloudSyncConfiguredModal} from '../../js/ui/cloud_auth/CloudSyncConfiguredModal';
 import {CloudSyncOverviewModal} from '../../js/ui/cloud_auth/CloudSyncOverviewModal';
+import {InviteUsersContent} from '../../js/ui/cloud_auth/InviteUsersContent';
 
 class App<P> extends React.Component<{}, IAppState> {
 
@@ -76,6 +77,8 @@ class App<P> extends React.Component<{}, IAppState> {
         return (
 
             <div>
+
+                <InviteUsersContent/>
 
                 {/*<TableDropdown id={'table-dropdown'}></TableDropdown>*/}
 
