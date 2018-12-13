@@ -83,10 +83,10 @@ const MESSAGES: Message[] = [
     // TODO: put links to help and other technical docs.
     // TODO: Make some of these poll options I think.
 
-    {
-        id: 'github-star',
-        element: <div><b>Do you like POLAR?</b> Would you mind <a href="https://github.com/burtonator/polar-bookshelf">giving us a star on Github?</a></div>,
-    },
+    // {
+    //     id: 'github-star',
+    //     element: <div><b>Do you like POLAR?</b> Would you mind <a href="https://github.com/burtonator/polar-bookshelf">giving us a star on Github?</a></div>,
+    // },
     {
         id: 'alternativeto-vote',
         element: <div>Can you help other people discover POLAR by <a href="https://alternativeto.net/software/polar-1/">voting for us on alternativeTo?</a></div>

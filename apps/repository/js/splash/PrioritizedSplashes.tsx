@@ -18,7 +18,7 @@ const log = Logger.create();
 const prioritizedComponentRefs: PrioritizedComponentRef[] = [
     // new JoinDiscordRef(),
     new WhatsNewRef(),
-    new GithubStarsRef(),
+    // new GithubStarsRef(),
     new SurveyRef()
 ];
 
