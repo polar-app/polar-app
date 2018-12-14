@@ -31,7 +31,7 @@ export class AnnotationBar extends React.Component<AnnotationBarProps, IState> {
     }
 
     public componentWillUnmount(): void {
-        if(this.listener) {
+        if (this.listener) {
             this.props.annotationBarTriggerEventDispatcher.removeEventListener(this.listener);
         }
     }

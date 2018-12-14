@@ -14,7 +14,7 @@ import {CommentComponent} from '../../js/annotation_sidebar/child_annotations/Co
 import {CommentComponentExample} from './CommentComponentExample';
 import {FlashcardComponentExample} from './FlashcardComponentExample';
 import {WhatsNewContent} from '../../../apps/repository/js/splash/splashes/whats_new/WhatsNewContent';
-import {ModalBody} from 'reactstrap';
+import {ModalBody, InputGroup, InputGroupAddon, Input} from 'reactstrap';
 import {CloudSyncOverviewContent} from '../../js/ui/cloud_auth/CloudSyncOverviewContent';
 import {CloudSyncConfiguredContent} from '../../js/ui/cloud_auth/CloudSyncConfiguredContent';
 import {CloudSyncConfiguredModal} from '../../js/ui/cloud_auth/CloudSyncConfiguredModal';
@@ -22,6 +22,7 @@ import {CloudSyncOverviewModal} from '../../js/ui/cloud_auth/CloudSyncOverviewMo
 import {InviteUsersContent} from '../../js/ui/cloud_auth/InviteUsersContent';
 import {NULL_FUNCTION} from '../../js/util/Functions';
 import {InviteUsersModal} from '../../js/ui/cloud_auth/InviteUsersModal';
+import Button from 'reactstrap/lib/Button';
 
 class App<P> extends React.Component<{}, IAppState> {
 
@@ -79,6 +80,29 @@ class App<P> extends React.Component<{}, IAppState> {
         return (
 
             <div>
+
+                <div className="p-2">
+
+                    <InputGroup>
+                        <InputGroupAddon addonType="prepend">
+                            <Button>To the Left!</Button>
+                        </InputGroupAddon>
+                        <Input />
+                    </InputGroup>
+
+                </div>
+
+                <div className="p-2">
+
+                    <InputGroup>
+                        <InputGroupAddon addonType="prepend">
+                            <Button>To the Left!</Button>
+                        </InputGroupAddon>
+                        <Input type="checkbox" />
+                    </InputGroup>
+
+                </div>
+
 
                 <InviteUsersContent onInvitedUserText={NULL_FUNCTION}/>
 

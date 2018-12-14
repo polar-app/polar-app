@@ -47,6 +47,7 @@ export class ControlledPopup extends React.Component<ControlledPopupProps, IStat
 
 
     public componentWillUnmount(): void {
+        this.moveElementToBody();
     }
 
     public render() {
@@ -119,6 +120,11 @@ export class ControlledPopup extends React.Component<ControlledPopupProps, IStat
 
         const id = `${this.props.id}-anchor`;
         const anchorElement = document.getElementById(id);
+
+        if (! anchorElement) {
+            // already missing and not on the page.
+            return;
+        }
 
         const doc = anchorElement!.ownerDocument;
         anchorElement!.parentElement!.removeChild(anchorElement!);
