@@ -846,8 +846,9 @@ export default class DocRepoTable extends React.Component<IProps, IState> {
 
         RendererAnalytics.set({'nrDocs': nrDocs});
 
-        RendererAnalytics.event({category: 'document-repository', action: 'docs-loaded', label: 'docs', value: nrDocs});
-        RendererAnalytics.event({category: 'document-repository', action: 'docs-loaded-' + nrDocs});
+        const persistenceLayerType = this.persistenceLayerManager.currentType();
+
+        RendererAnalytics.event({category: 'document-repository', action: `docs-loaded-${persistenceLayerType}-${nrDocs}`});
 
         RendererAnalytics.event({category: 'app', action: 'version-' + Version.get()});
 

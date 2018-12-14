@@ -7,6 +7,7 @@ import {CloudPersistenceLayerFactory} from "./factories/CloudPersistenceLayerFac
 import {IProvider} from "../util/Providers";
 import {ListenablePersistenceLayer} from './ListenablePersistenceLayer';
 import {Logger} from "../logger/Logger";
+import {RendererAnalytics} from '../ga/RendererAnalytics';
 
 const log = Logger.create();
 
@@ -49,6 +50,10 @@ export class PersistenceLayerManager implements IProvider<ListenablePersistenceL
 
     public get(): ListenablePersistenceLayer {
         return this.persistenceLayer!;
+    }
+
+    public currentType(): PersistenceLayerType | undefined {
+        return this.current;
     }
 
     /**
@@ -96,6 +101,8 @@ export class PersistenceLayerManager implements IProvider<ListenablePersistenceL
         this.dispatchEvent({type, persistenceLayer: this.persistenceLayer, state: 'initialized'});
 
         log.info("Initialized persistence layer: " + type);
+
+        RendererAnalytics.event({category: 'persistence-layer', action: 'changed-to-' + type});
 
         return true;
 

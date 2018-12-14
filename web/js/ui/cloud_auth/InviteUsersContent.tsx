@@ -59,7 +59,8 @@ export class InviteUsersContent extends React.Component<IProps, IState> {
 
                 <label className="text-muted">Enter email addresses below:</label>
 
-                <textarea style={{width: '100%', height: '100px'}}>
+                <textarea onChange={(element) => this.props.onInvitedUserText(element.currentTarget.value)}
+                          style={{width: '100%', height: '100px'}}>
 
                 </textarea>
 
@@ -71,6 +72,9 @@ export class InviteUsersContent extends React.Component<IProps, IState> {
 }
 
 interface IProps {
+
+    onInvitedUserText: (text: string) => void;
+
 }
 
 interface IState {
