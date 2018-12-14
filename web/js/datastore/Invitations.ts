@@ -16,7 +16,7 @@ export class Invitations {
      *
      * @param email
      */
-    public async sendInvites(...emailAddresses: string[]) {
+    public static async sendInvites(...emailAddresses: string[]) {
 
 
         try {
@@ -43,7 +43,7 @@ export class Invitations {
     /**
      * Create the document that we will store in for the DocMeta
      */
-    private createRecord(to: EmailAddress) {
+    private static createRecord(to: EmailAddress) {
 
         const auth = firebase.app().auth();
         Preconditions.assertPresent(auth, "Not authenticated");

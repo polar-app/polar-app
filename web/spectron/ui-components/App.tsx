@@ -59,7 +59,7 @@ class App<P> extends React.Component<{}, IAppState> {
 
         const textHighlight = TextHighlightRecords.create(rects, textSelections, {TEXT: text});
 
-        //const ref = Refs.createFromAnnotationType(textHighlight.id,
+        // const ref = Refs.createFromAnnotationType(textHighlight.id,
         // AnnotationType.TEXT_HIGHLIGHT);
 
         docMeta.pageMetas[1].textHighlights[textHighlight.id] = textHighlight.value;

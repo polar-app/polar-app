@@ -1,6 +1,6 @@
 /* eslint react/no-multi-comp: 0, react/prop-types: 0 */
 import React from 'react';
-import {Button, Popover, PopoverBody} from 'reactstrap';
+import {Button, Popover, PopoverBody, UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem} from 'reactstrap';
 import Popper from 'popper.js';
 import {CloudLoginModal} from './CloudLoginModal';
 import {Firebase} from '../../firebase/Firebase';
@@ -12,6 +12,8 @@ import {CloudSyncOverviewModal} from './CloudSyncOverviewModal';
 import {CloudSyncConfiguredModal} from './CloudSyncConfiguredModal';
 import {RendererAnalytics} from '../../ga/RendererAnalytics';
 import {Nav} from '../util/Nav';
+import {InviteUsersModal} from './InviteUsersModal';
+import {Invitations} from '../../datastore/Invitations';
 
 const log = Logger.create();
 
@@ -79,16 +81,28 @@ export class CloudAuthButton extends React.Component<IProps, IState> {
 
             return (
                 <div>
+
                     <CloudSyncConfiguredModal isOpen={this.state.stage === 'configured'}
                                               onCancel={() => this.changeAuthStage()}/>
 
-                    <Button color="primary"
-                            size="sm"
-                            onClick={() => this.logout()}>
+                    <InviteUsersModal isOpen={this.state.stage === 'invite'}
+                                      onCancel={() => this.changeAuthStage()}
+                                      onInvite={(emailAddresses) => this.onInvitedUsers(emailAddresses)}/>
 
-                        Logout
+                    <UncontrolledDropdown direction="down"
+                                          size="sm">
 
-                    </Button>
+                        <DropdownToggle color="primary" caret>
+                            <i className="fas fa-cloud-upload-alt" style={{marginRight: '5px'}}></i>
+
+                            Cloud Sync
+                        </DropdownToggle>
+                        <DropdownMenu>
+                            <DropdownItem size="sm" onClick={() => this.changeAuthStage('invite')}>Invite Users</DropdownItem>
+                            <DropdownItem divider />
+                            <DropdownItem size="sm" onClick={() => this.logout()} className="text-danger">Logout</DropdownItem>
+                        </DropdownMenu>
+                    </UncontrolledDropdown>
 
                 </div>
 
@@ -106,6 +120,20 @@ export class CloudAuthButton extends React.Component<IProps, IState> {
 
         window.location.href = Nav.createHashURL('logout');
         window.location.reload();
+
+    }
+
+    private onInvitedUsers(emailAddresses: ReadonlyArray<string>) {
+
+        const handleInvitedUsers = async () => {
+
+            await Invitations.sendInvites(...emailAddresses);
+            this.changeAuthStage();
+
+        };
+
+        handleInvitedUsers()
+            .catch(err => log.error("Unable to invite users: ", err));
 
     }
 
@@ -168,4 +196,4 @@ interface IState {
 
 type AuthMode = 'none' | 'needs-auth' | 'authenticated';
 
-type AuthStage = 'overview' | 'login' | 'configured';
+type AuthStage = 'overview' | 'login' | 'configured' | 'invite';

@@ -30,7 +30,7 @@ export class InviteUsersContent extends React.Component<IProps, IState> {
 
                     <i className="fas fa-envelope-open" style={Styles.icon}></i>
 
-                    <h1 className="title">Invite to Polar</h1>
+                    <h1 className="title">Invite Your Colleagues to Polar</h1>
 
                 </div>
 
@@ -40,12 +40,11 @@ export class InviteUsersContent extends React.Component<IProps, IState> {
                 </p>
 
                 <p>
-                    We're willing to give you a <b>free</b> month of Polar cloud
-                    storage for every user you invite. Once they purchase Polar
-                    cloud sync for sixty days we'll credit your account.  No
-                    limits either!
+                    Get a <b>free</b> month of Polar cloud storage for every
+                    user you invite. Once they purchase Polar cloud sync for
+                    sixty days we'll credit your account.  Invite as many users
+                    as you would like!
                 </p>
-
 
                 <p>
                     Just enter their emails below and we'll send them an
