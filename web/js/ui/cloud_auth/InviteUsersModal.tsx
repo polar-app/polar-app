@@ -19,7 +19,9 @@ export class InviteUsersModal extends React.Component<IProps, IState> {
 
         return (
 
-            <Modal isOpen={this.props.isOpen} size="lg">
+            <Modal isOpen={this.props.isOpen}
+                   size="lg"
+                   style={{overflowY: 'initial', minWidth: '700px'}}>
                 <ModalBody>
 
                     <InviteUsersContent onInvitedUserText={(invitedUsersText) => this.onInvitedUserText(invitedUsersText)}/>
