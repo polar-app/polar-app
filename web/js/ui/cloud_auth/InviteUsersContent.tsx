@@ -59,7 +59,8 @@ export class InviteUsersContent extends React.Component<IProps, IState> {
 
                 <label className="text-muted">Enter email addresses below:</label>
 
-                <textarea onChange={(element) => this.props.onInvitedUserText(element.currentTarget.value)}
+                <textarea autoFocus={true}
+                          onChange={(element) => this.props.onInvitedUserText(element.currentTarget.value)}
                           style={{width: '100%', height: '100px'}}>
 
                 </textarea>

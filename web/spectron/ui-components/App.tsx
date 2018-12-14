@@ -21,6 +21,7 @@ import {CloudSyncConfiguredModal} from '../../js/ui/cloud_auth/CloudSyncConfigur
 import {CloudSyncOverviewModal} from '../../js/ui/cloud_auth/CloudSyncOverviewModal';
 import {InviteUsersContent} from '../../js/ui/cloud_auth/InviteUsersContent';
 import {NULL_FUNCTION} from '../../js/util/Functions';
+import {InviteUsersModal} from '../../js/ui/cloud_auth/InviteUsersModal';
 
 class App<P> extends React.Component<{}, IAppState> {
 
@@ -80,6 +81,8 @@ class App<P> extends React.Component<{}, IAppState> {
             <div>
 
                 <InviteUsersContent onInvitedUserText={NULL_FUNCTION}/>
+
+                {/*<InviteUsersModal isOpen={true} onCancel={NULL_FUNCTION} onInvite={(emailAddresses) => console.log(emailAddresses)}/>*/}
 
                 {/*<TableDropdown id={'table-dropdown'}></TableDropdown>*/}
 
