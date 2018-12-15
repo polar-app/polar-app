@@ -87,13 +87,18 @@ const MESSAGES: Message[] = [
     //     id: 'github-star',
     //     element: <div><b>Do you like POLAR?</b> Would you mind <a href="https://github.com/burtonator/polar-bookshelf">giving us a star on Github?</a></div>,
     // },
+    // {
+    //     id: 'alternativeto-vote',
+    //     element: <div>Can you help other people discover POLAR by <a href="https://alternativeto.net/software/polar-1/">voting for us on alternativeTo?</a></div>
+    // },
     {
-        id: 'alternativeto-vote',
-        element: <div>Can you help other people discover POLAR by <a href="https://alternativeto.net/software/polar-1/">voting for us on alternativeTo?</a></div>
+        id: 'free-polar-cloud-storage',
+        element: <div>You can get a <b>free month of POLAR Cloud Storage</b> by inviting your colleagues. Go to <b><i>"Cloud Sync | Invite Users"</i></b></div>
     },
+
     {
         id: 'join-discord',
-        element: <div>Want to discuss Polar with other users? <a href="https://discord.gg/GT8MhA6">Join our live Discord chat group!</a></div>
+        element: <div><b>Want to discuss POLAR with other users? </b><a href="https://discord.gg/GT8MhA6">Join our live Discord chat group!</a></div>
     },
     // {
     //     id: 'opencollective-donate',
