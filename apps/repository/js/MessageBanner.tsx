@@ -95,10 +95,10 @@ const MESSAGES: Message[] = [
         id: 'join-discord',
         element: <div>Want to discuss Polar with other users? <a href="https://discord.gg/GT8MhA6">Join our live Discord chat group!</a></div>
     },
-    {
-        id: 'opencollective-donate',
-        element: <div>Polar needs your help to continue future development! <a href="https://opencollective.com/polar-bookshelf/donate">Donate to Support Polar</a></div>
-    },
+    // {
+    //     id: 'opencollective-donate',
+    //     element: <div>Polar needs your help to continue future development! <a href="https://opencollective.com/polar-bookshelf/donate">Donate to Support Polar</a></div>
+    // },
     {
         id: 'polar-feedback-2018-11',
         element: <div>Could you take 1 minute and <a href="https://kevinburton1.typeform.com/to/SsuiyB">complete a survey</a> about your usage of Polar?</div>
