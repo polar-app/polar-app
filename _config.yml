@@ -30,7 +30,7 @@ theme: minima
 plugins:
   - jekyll-feed
 
-logo: https://getpolarized.io/assets/logo/icon.svg
+logo: https://getpolarized.io/assets/logo/icon.png
 
 social:
   name: getpolarized

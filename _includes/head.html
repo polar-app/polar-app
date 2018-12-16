@@ -4,7 +4,34 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   {%- seo -%}
 
+
+  {% if page.large_image or page.image %}
+
+  {% if page.large_image%}
+  <meta name="twitter:image" content="{{ page.large_image }}">
+  <meta name="twitter:card"  content="summary_large_image">
+  {% else %}
+  <meta name="twitter:image" content="{{ page.image }}">
+  <meta name="twitter:card"  content="summary">
+  {% endif %}
+
+  {% else %}
+  <meta name="twitter:card"  content="summary">
+  <meta name="twitter:image" content="{{ site.logo }}">
+  {% endif %}
+
+  {% if page.description %}
+  <meta name="twitter:description" content="{{ page.description }}">
+  {% else %}
+  <meta name="twitter:description" content="{{ site.description }}">
+  {% endif %}
+
+  <meta name="twitter:site" content="@getpolarized">
+
   {% comment %}
+
+
+
   <meta name="twitter:card" content="summary">
   <meta name="twitter:site" content="@getpolarized">
   <meta name="twitter:title" content="Polar is a Personal Knowledge Repository for Windows, Mac, and Linux.">
@@ -18,7 +45,9 @@
   <meta property="og:url"content="https://getpolarized.io">
   {% endcomment %}
 
+  {% comment %}
   {%- feed_meta -%}
+  {% endcomment %}
 
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/froala-design-blocks/1.0.2/css/froala_blocks.min.css">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css">
