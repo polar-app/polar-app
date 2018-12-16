@@ -19,8 +19,8 @@ description: >-
   content, books, and notes and supports tagging, annotation, highlighting and
   keeps track of your reading progress.
 baseurl: "" # the subpath of your site, e.g. /blog
-url: "https://getpolarized.io/"
-site.github.url: "https://getpolarized.io/"
+url: "https://getpolarized.io"
+site.github.url: "https://getpolarized.io"
 twitter_username: getpolarized
 github_username:  burtonator
 
