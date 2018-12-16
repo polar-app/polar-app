@@ -10,6 +10,7 @@ import {DocFormatFactory} from '../../docformat/DocFormatFactory';
 import {PopupStateEvent} from './PopupStateEvent';
 import {Logger} from '../../logger/Logger';
 import {getSourceFile} from 'tslint';
+import {ISODateTimeString, ISODateTimeStrings} from '../../metadata/ISODateTimeStrings';
 
 const log = Logger.create();
 
@@ -87,6 +88,7 @@ export class ControlledPopup extends React.Component<ControlledPopupProps, IStat
 
             this.setState({
                 active,
+                activated: ISODateTimeStrings.create()
             });
 
             if (! active) {
@@ -206,6 +208,9 @@ export interface ControlledPopupProps {
 interface IState {
 
     active: boolean;
+
+    // timestamp so that we can force reactivation
+    activated?: ISODateTimeString;
 
 }
 

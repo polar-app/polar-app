@@ -105,8 +105,8 @@ const MESSAGES: Message[] = [
     //     element: <div>Polar needs your help to continue future development! <a href="https://opencollective.com/polar-bookshelf/donate">Donate to Support Polar</a></div>
     // },
     {
-        id: 'polar-feedback-2018-11',
-        element: <div>Could you take 1 minute and <a href="https://kevinburton1.typeform.com/to/SsuiyB">complete a survey</a> about your usage of Polar?</div>
+        id: 'polar-feedback-2018-12',
+        element: <div>Could you take 1 minute and <a href="https://kevinburton1.typeform.com/to/u1zNWG">complete a survey</a> about your usage of Polar?</div>
     },
 
     // {
