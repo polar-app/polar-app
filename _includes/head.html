@@ -26,6 +26,12 @@
   <meta name="twitter:description" content="{{ site.description }}">
   {% endif %}
 
+  {% if page.title %}
+  <meta name="twitter:title" content="{{ page.title }}">
+  {% else %}
+  <meta name="twitter:title" content="{{ site.title }}">
+  {% endif %}
+
   <meta name="twitter:site" content="@getpolarized">
 
   {% comment %}
