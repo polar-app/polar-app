@@ -12,6 +12,7 @@ import {TagSelectOptions} from './TagSelectOptions';
 import {Tags} from '../../../web/js/tags/Tags';
 import {Logger} from '../../../web/js/logger/Logger';
 import {Toaster} from '../../../web/js/toaster/Toaster';
+import Select from 'react-select';
 
 let SEQUENCE = 0;
 
@@ -87,7 +88,7 @@ export class TagInput extends React.Component<TagInputProps, TagInputState> {
                             isMulti
                             isClearable
                             autoFocus
-
+                            onKeyDown={event => this.onKeyDown(event)}
                             className="basic-multi-select"
                             classNamePrefix="select"
                             onChange={selectedOptions => this.handleChange(selectedOptions)}
@@ -110,6 +111,18 @@ export class TagInput extends React.Component<TagInputProps, TagInputState> {
             </div>
 
         );
+
+    }
+
+    private onKeyDown(event: React.KeyboardEvent<HTMLElement>) {
+
+        if (event.key === "Escape") {
+            this.toggle();
+        }
+
+        if (event.getModifierState("Control") && event.key === "Enter") {
+            this.toggle();
+        }
 
     }
 

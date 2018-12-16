@@ -7,6 +7,7 @@ import {Blackout} from './Blackout';
 import {TagSelectOptions} from './TagSelectOptions';
 import {TagSelectOption} from './TagSelectOption';
 import {FilteredTags} from './FilteredTags';
+// import {SyntheticKeyboardEvent} from 'react-dom';
 
 // noinspection TsLint
 export class FilterTagInput extends React.Component<FilterTagInputProps, FilterTagInputState> {
@@ -60,6 +61,7 @@ export class FilterTagInput extends React.Component<FilterTagInputProps, FilterT
                             isMulti
                             isClearable
                             autoFocus
+                            onKeyDown={event => this.onKeyDown(event)}
                             className="filter-tag-input"
                             classNamePrefix="select"
                             onChange={this.handleChange}
@@ -74,6 +76,18 @@ export class FilterTagInput extends React.Component<FilterTagInputProps, FilterT
             </div>
 
         );
+
+    }
+
+    private onKeyDown(event: React.KeyboardEvent<HTMLElement>) {
+
+        if (event.key === "Escape") {
+            this.toggle();
+        }
+
+        if (event.getModifierState("Control") && event.key === "Enter") {
+            this.toggle();
+        }
 
     }
 
