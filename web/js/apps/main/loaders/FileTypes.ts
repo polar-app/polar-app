@@ -4,7 +4,7 @@ export class FileTypes {
 
     public static create(path: string): FileType {
 
-        if(path.endsWith(".pdf")) {
+        if (path.endsWith(".pdf")) {
             return FileType.PDF;
         } else if (path.endsWith(".phz")) {
             return FileType.PHZ;

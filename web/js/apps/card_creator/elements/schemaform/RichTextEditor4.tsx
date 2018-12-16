@@ -118,6 +118,8 @@ export class RichTextEditor4 extends React.Component<IProps, IState>  {
                     placeholder: this.props.placeholder || '',
                     dialogsInBody: false,
                     airMode: true,
+                    // used to fix issues with tab navigation
+                    tabSize: 0,
                     // toolbar: [
                     //     ['style', []],
                     //     ['font', []],

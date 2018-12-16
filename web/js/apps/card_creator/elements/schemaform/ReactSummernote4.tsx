@@ -84,14 +84,6 @@ export class ReactSummernote4 extends Component {
 
         this.editor.summernote(options);
 
-        // TODO: apparently this can be used to unbind TAB but I couldn't get
-        // it to work once we were on typescript
-        //
-        // https://github.com/summernote/summernote/issues/615
-
-        // delete ($ as any).summernote.options.keyMap.pc.TAB;
-        // delete ($ as any).summernote.options.keyMap.mac.TAB;
-
         if (codeview) {
             this.editor.summernote('codeview.activate');
         }

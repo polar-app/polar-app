@@ -146,11 +146,7 @@ export class StandardWebContentsDriver implements WebContentsDriver {
     }
 
     public static async configureWebContents(webContents: WebContents, browserProfile: BrowserProfile) {
-
-        // FIXME: the problem is now I'm not sure which browser we are cnofiguring...
-        // I don't think we are configuring teh proper webContents and additionally
-        // we're not reconfiguring it when it's changing navigation...
-
+        
         const url = webContents.getURL();
 
         log.info("Configuring webContents with URL: " + url);
