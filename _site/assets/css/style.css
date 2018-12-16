@@ -7,7 +7,7 @@ html, body {
 main {
     min-height: calc(100% - 100px);
     /*height: calc(100% - 100px);*/
-    margin: 0 auto -100px; /* the bottom margin is the negative value of the footer's height */
+    margin: 0 auto -100px;
     padding-bottom: 130px;
 }
 /*.footer, .push {*/
