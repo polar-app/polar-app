@@ -1,4 +1,24 @@
 
+
+html, body {
+    height: 100%;
+}
+
+main {
+    min-height: calc(100% - 100px);
+    /*height: calc(100% - 100px);*/
+    margin: 0 auto -100px; /* the bottom margin is the negative value of the footer's height */
+    padding-bottom: 30px;
+}
+/*.footer, .push {*/
+    /*height: 155px; !* .push must be the same height as .footer *!*/
+/*}*/
+
+footer {
+    padding-top: 30px;
+    height: 100px;
+}
+
 h1, h2, h3, h4, h5 {
     color: rgb(33, 37, 41);
 }
@@ -32,10 +52,6 @@ h3 {
 
 h4 {
     font-size: 15px;
-}
-
-footer {
-    margin-top: 30px;
 }
 
 .nav-item a {
@@ -133,4 +149,8 @@ figcaption {
     font-size: 18px;
     padding-top: 20px;
     text-justify: auto;
+}
+
+#doc {
+    max-width: 800px;
 }
