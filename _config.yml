@@ -20,6 +20,7 @@ description: >-
   keeps track of your reading progress.
 baseurl: "" # the subpath of your site, e.g. /blog
 url: "https://getpolarized.io/"
+site.github.url: "https://getpolarized.io/"
 twitter_username: getpolarized
 github_username:  burtonator
 
@@ -28,6 +29,17 @@ markdown: kramdown
 theme: minima
 plugins:
   - jekyll-feed
+
+logo: https://getpolarized.io/assets/logo/icon.svg
+
+social:
+  name: getpolarized
+  links:
+    - https://github.com/burtonator/polar-bookshelf
+    - https://twitter.com/getpolarized
+
+webmaster_verifications:
+  google: j5BBM8XbyOumZOvUQGaej0asCNz6NERVdssDydibUl0
 
 # Exclude from processing.
 # The following items will not be processed, by default. Create a custom list
