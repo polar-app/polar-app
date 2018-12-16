@@ -3,9 +3,45 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   {%- seo -%}
-  <link rel="stylesheet" href="{{ "/assets/main.css" | relative_url }}">
+
+  {% comment %}
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:site" content="@getpolarized">
+  <meta name="twitter:title" content="Polar is a Personal Knowledge Repository for Windows, Mac, and Linux.">
+  <meta name="twitter:description" content="A personal knowledge repository for PDF and web content supporting offline-first caching, annotations, and flashcards.">
+  <meta name="twitter:image" content="https://getpolarized.io/assets/logo/icon.png">
+
+  <!--<meta property="fb:app_id" content="">-->
+  <meta property="og:title" content="Polar is a Personal Knowledge Repository for Windows, Mac, and Linux.">
+  <meta property="og:description" content="A personal knowledge repository for PDF and web content supporting offline-first caching, annotations, and flashcards.">
+  <meta property="og:image" content="https://getpolarized.io/assets/logo/icon.png">
+  <meta property="og:url"content="https://getpolarized.io">
+  {% endcomment %}
+
   {%- feed_meta -%}
-  {%- if jekyll.environment == 'production' and site.google_analytics -%}
-    {%- include google-analytics.html -%}
-  {%- endif -%}
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/froala-design-blocks/1.0.2/css/froala_blocks.min.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+
+  <link rel="stylesheet" href="./css/style.css">
+
+  <link href="./assets/logo/favicon.png" rel="icon" type="image/png">
+
+  <link href="//fonts.googleapis.com/css?family=Open Sans&subset=latin" rel="stylesheet" type="text/css">
+
+  <style>
+    * {
+      font-family: 'Open Sans', sans-serif;
+    }
+  </style>
+
+  <meta name="google-site-verification" content="j5BBM8XbyOumZOvUQGaej0asCNz6NERVdssDydibUl0" />
+
+  {% comment %}
+  <title>Polar Bookshelf - Personal Knowledge Repository</title>
+  {% endcomment %}
+
 </head>
+
