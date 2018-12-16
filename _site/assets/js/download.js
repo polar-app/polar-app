@@ -20,4 +20,8 @@ function configureDownloads() {
 
 }
 
-configureDownloads();
+window.addEventListener('load', () => {
+    configureDownloads();
+});
+
+
