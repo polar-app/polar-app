@@ -13,12 +13,12 @@ export class CaptureButton extends React.Component<IProps, any> {
 
     public render() {
 
-        // FIXME: keep it disabled until we have actually started the capture.
         return (
 
             <InputGroupAddon addonType="append">
                 <Button type="button"
-                        className="btn btn-outline-secondary"
+                        className="btn"
+                        color="primary"
                         title="Capture the HTML page and save locally"
                         aria-label=""
                         disabled={this.props.disabled}

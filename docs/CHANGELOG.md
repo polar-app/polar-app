@@ -1,5 +1,8 @@
 # 1.5.1
 
+- change the button color of the capture button so that it's obvious what to 
+  click for new users
+
 - hopefully/finally fixed issue with the annotation popup bar in PDFs. 
 
 - tab keyboard nav works for flashcards
