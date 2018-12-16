@@ -181,27 +181,6 @@ a PDF or PHZ file your pagemarks and other annotations are restored.
 Since storage is local you're not reliant on one specific cloud provider. You can 
 also use tools like git or Dropbox to synchronize across machines.
 
-# Pagemarks
-
-Pagemarks provide a way for you to keep track of your reading by marking portions
-of your document as 'read'.  You can have multiple pagemarks per document. 
-
-Additionally there is a progress bar that tracks the progress of the document
-based on the number of pagemarks you've created.
-
-Right now usage is only via keyboard bindings:
-
-## Linux / Windows key bindings
-
- - Control Alt N - create a new pagemark on the current page
- - Control Alt click - create a pagemark on the page up until the current mouse click
- - Control Alt E - erase the current pagemark
-
-## MacOS Key bindings
-
- - Meta-Command N - create a new pagemark on the current page
- - Meta-Command click - create a pagemark on the page up until the current mouse click
- - Meta-Command E - erase the current pagemark
 
 # Text Highlights
 
