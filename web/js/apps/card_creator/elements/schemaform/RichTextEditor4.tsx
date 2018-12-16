@@ -6,6 +6,7 @@ import React from 'react';
 import {TypedWidgetProps} from './TypedWidgetProps';
 import {Logger} from '../../../../logger/Logger';
 import {ReactSummernote4} from './ReactSummernote4';
+import {NULL_FUNCTION} from '../../../../util/Functions';
 const log = Logger.create();
 
 /**
@@ -85,7 +86,7 @@ export class RichTextEditor4 extends React.Component<IProps, IState>  {
      *
      * https://github.com/summernote/react-summernote/issues/38
      */
-    onImageUpload(images: any[], insertImage: Function) {
+    public onImageUpload(images: any[], insertImage: Function) {
 
         log.debug('onImageUpload', images);
         /* FileList does not support ordinary array methods */
@@ -107,6 +108,9 @@ export class RichTextEditor4 extends React.Component<IProps, IState>  {
     public render() {
 
         // https://github.com/summernote/react-summernote/issues/38
+
+        const onKeyDown: (event: KeyboardEvent) => void =
+            this.props.onKeyDown ? this.props.onKeyDown : NULL_FUNCTION;
 
         return (
             <ReactSummernote4
@@ -148,6 +152,7 @@ export class RichTextEditor4 extends React.Component<IProps, IState>  {
                 }}
                 autofocus={this.props.autofocus}
                 onChange={this.onChange}
+                onKeyDown={(event: any) => onKeyDown(event.originalEvent)}
                 onBlur={this.onBlur}
                 onFocus={this.onFocus}
                 // onSubmit={this.onSubmit}
@@ -164,6 +169,7 @@ interface IProps {
     id: string;
     autofocus?: boolean;
     value?: string;
+    onKeyDown?: (event: KeyboardEvent) => void;
     onChange?: (newValue: string) => void;
     onBlur?: (id: string, value: string) => void;
     onFocus?: (id: string, value: string) => void;

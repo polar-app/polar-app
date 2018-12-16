@@ -36,6 +36,7 @@ export class RichTextArea extends React.Component<IProps, IState> {
                         <RichTextEditor4 id={`rich-text-area-${this.props.id}`}
                                          value={this.props.value || ''}
                                          autofocus={autofocus}
+                                         onKeyDown={this.props.onKeyDown}
                                          onChange={(html) => this.props.onChange(html)}/>
 
                     </div>
@@ -56,6 +57,7 @@ export interface IProps {
     label?: string;
     autofocus?: boolean;
     onChange: (html: htmlstring) => void;
+    onKeyDown?: (event: KeyboardEvent) => void;
 }
 
 export interface IState {
