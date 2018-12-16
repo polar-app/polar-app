@@ -1,35 +1,64 @@
-<footer class="site-footer h-card">
-  <data class="u-url" href="{{ "/" | relative_url }}"></data>
+<footer class="fdb-block footer-small bg-dark" data-block-type="footers" data-id="9">
+  <div class="container">
 
-  <div class="wrapper">
+    <div class="row align-items-center">
+      <div class="col-12 col-md-8">
+        <ul class="nav justify-content-center justify-content-md-start">
+          <li class="nav-item">
+            <a class="nav-link active" href="/">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/download.html">Download</a>
+          </li>
+          <!--<li class="nav-item">-->
+          <!--<a class="nav-link" href="https://www.froala.com">Terms</a>-->
+          <!--</li>-->
+          <!--<li class="nav-item">-->
+          <!--<a class="nav-link" href="https://www.froala.com">About</a>-->
+          <!--</li>-->
 
-    <h2 class="footer-heading">{{ site.title | escape }}</h2>
 
-    <div class="footer-col-wrapper">
-      <div class="footer-col footer-col-1">
-        <ul class="contact-list">
-          <li class="p-name">
-            {%- if site.author -%}
-              {{ site.author | escape }}
-            {%- else -%}
-              {{ site.title | escape }}
-            {%- endif -%}
-            </li>
-            {%- if site.email -%}
-            <li><a class="u-email" href="mailto:{{ site.email }}">{{ site.email }}</a></li>
-            {%- endif -%}
         </ul>
       </div>
 
-      <div class="footer-col footer-col-2">
-        {%- include social.html -%}
-      </div>
-
-      <div class="footer-col footer-col-3">
-        <p>{{- site.description | escape -}}</p>
+      <div class="col-12 col-md-4 mt-4 mt-md-0 text-center text-md-right">
+        © 2018 Kevin Burton
       </div>
     </div>
-
   </div>
+
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js"></script>
+
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-122721184-3"></script>
+  <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-122721184-3');
+  </script>
+
+  <!--<script src="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.js"></script>-->
+  <!--<script>-->
+  <!--window.cookieconsent.initialise({-->
+  <!--container: document.querySelector("body"),-->
+  <!--palette:{-->
+  <!--popup: {background: "#fff"},-->
+  <!--button: {background: "#aa0000"},-->
+  <!--},-->
+  <!--revokable:true,-->
+  <!--onStatusChange: function(status) {-->
+  <!--console.log(this.hasConsented() ?-->
+  <!--'enable cookies' : 'disable cookies');-->
+  <!--},-->
+  <!--law: {-->
+  <!--regionalLaw: false,-->
+  <!--},-->
+  <!--location: true,-->
+  <!--});-->
+  <!--</script>-->
 
 </footer>
