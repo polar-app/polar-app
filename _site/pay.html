@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="utf-8"/>
+
+    <script src="https://checkout.stripe.com/checkout.js"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.1/css/solid.css" integrity="sha384-aj0h5DVQ8jfwc8DA7JiM+Dysv7z+qYrFYZR+Qd/TwnmpDI6UaB3GJRRTdY8jYGS4" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.1/css/fontawesome.css" integrity="sha384-WK8BzK0mpgOdhCxq86nInFqSWLzR5UAsNg0MGX9aDaIIrFWQ38dGdhwnNCAoXFxL" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <title>Purchase Polar Subscription</title>
+
+    <style>
+        .loading {
+            font-size: 125px;
+        }
+    </style>
+
+</head>
+
+<body>
+
+<div id="alert" class="alert alert-danger m-2" role="alert" style="display: none;">
+
+</div>
+
+<!-- This has to be hidden by default and we trigger it manually. There
+     is no way to get this checkout launched directly otherwise. -->
+<button id="checkoutButton" style="display: none;">Purchase</button>
+
+<!--<div class="loading text-center text-primary align-middle m-auto">-->
+<!--<i class="fas fa-spinner fa-spin loading"></i>-->
+<!--</div>-->
+
+<script>
+
+    function displayError(text) {
+
+        const alert = document.getElementById("alert");
+
+        alert.innerText = text;
+        alert.style.display = 'block';
+
+    }
+
+    const CHARGE_URL = "https://localhost:8181/charge";
+    const STRIPE_PUBLIC_KEY = "pk_test_OoNGZN9R7s080NpqfH7yT769";
+
+    try {
+        const params = (new URL(document.location.href)).searchParams;
+
+        // must pass the polar uid so that we can credit the account directly...
+
+        const name = params.get("name");
+        const firebase_uid = params.get("firebase_uid");
+        const email = params.get("email");
+
+        if (!firebase_uid) {
+            throw new Error("No firebase_uid param");
+        }
+
+        if (!email) {
+            throw new Error("No email param");
+        }
+
+        const handler = StripeCheckout.configure({
+            key: STRIPE_PUBLIC_KEY,
+            image: 'https://getpolarized.io/assets/logo/icon.png',
+            locale: 'auto',
+            token: (token) => {
+                // You can access the token ID with `token.id`.
+                // Get the token ID to your server-side code for use.
+
+                console.log("Sending payment token to server...");
+
+                const data = {
+                    name,
+                    token: token.id,
+                    firebase_uid,
+                    email
+                };
+
+                fetch(CHARGE_URL, {
+                    method: "POST",
+                    cache: "no-store",
+                    // mode: 'no-cors',
+                    headers: {
+                        "Content-Type": "application/json; charset=utf-8",
+                    },
+                    body: JSON.stringify(data),
+                }).then(() => {
+
+                    // or redirect to /thanks!
+
+                    document.location.href = 'https://getpolarized.io/thanks.html'
+
+                }).catch(err => {
+                    console.error("Could not send payment: ", err);
+                    displayError(err.message);
+                });
+
+
+            }
+        });
+
+        document.getElementById('checkoutButton').addEventListener('click', function (e) {
+
+            // open checkout with further options:
+            handler.open({
+                name: 'POLAR',
+                email,
+                description: 'Polar Subscription',
+                panelLabel: "Subscribe for {{amount}}",
+                amount: 799
+            });
+
+            e.preventDefault();
+
+        });
+
+        // Close Checkout on page navigation:
+        window.addEventListener('popstate', function () {
+            handler.close();
+        });
+
+        window.addEventListener("load", () => {
+            $('#checkoutButton').trigger('click');
+        });
+
+    } catch (err) {
+        console.error("Could not handle payment: ", err);
+        displayError(err.message);
+    }
+
+</script>
+
+</body>
+</html>
