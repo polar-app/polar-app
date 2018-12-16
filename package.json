@@ -1,0 +1,23 @@
+{
+  "name": "polar-site",
+  "version": "1.0.0",
+  "description": "Polar Website",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/burtonator/polar-site.git"
+  },
+  "author": "",
+  "license": "GPL",
+  "bugs": {
+    "url": "https://github.com/burtonator/polar-site/issues"
+  },
+  "homepage": "https://github.com/burtonator/polar-site#readme",
+  "dependencies": {
+  },
+  "devDependencies": {
+  }
+}
