@@ -1,3 +1,15 @@
+# 1.5.1
+
+- hopefully/finally fixed issue with the annotation popup bar in PDFs. 
+
+- tab keyboard nav works for flashcards
+
+- control+enter works to create flashcards
+
+- escape hides the tag input
+
+- control+enter works for tag input
+
 # 1.5.0
 
 - Cloud sync implemented based on Firebase.

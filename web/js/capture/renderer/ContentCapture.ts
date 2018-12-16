@@ -585,6 +585,10 @@ console.log("Content capture script loaded within: " + window.location.href);
 declare var global: any;
 
 process.once('loaded', () => {
+
+    // TODO: importing and then defining configureBrowser did not work here.
+    // It might be nice to work with postMessage here.
+
     // This is a workaround to make this available to the new process while
     // nodeIntegration is false.  We're going to need some way to handle this
     // in the future
