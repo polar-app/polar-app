@@ -1,0 +1,171 @@
+---
+
+title: Download POLAR to manage your documents including PDF, web content, and notes.
+layout: nofooter
+---
+
+<section class="fdb-block" data-block-type="contents" data-id="1" draggable="false">
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col text-center">
+                <h1 class="intro">Download POLAR <b>BETA</b></h1>
+
+                <div class="subtitle" style="font-size: 20px; max-width: 700px;">
+
+                    <p>POLAR is released for Windows, MacOS, and Linux.  For Linux we
+                        provide deb and snap packages as well as static and tar.gz bundles.
+                        The full list of downloads is available in our
+                        <a href="https://github.com/burtonator/polar-bookshelf/releases">github releases page</a>.</p>
+
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+
+</section>
+
+<section class="fdb-block download-section" data-block-type="contents" data-id="1" draggable="true">
+    <div class="container">
+
+        <div class="row pt-4 text-center" id="download-options">
+            <div class="col-4 col-md-4 m-auto">
+                <button class="btn btn-light" data-toggle="collapse" data-parent="#download-options" href="#collapse-windows" role="button" aria-expanded="false" aria-controls="collapse-windows">
+                    <img alt="image" class="img-fluid" src="./assets/logos/microsoft-windows.svg">
+                    <figcaption>Windows</figcaption>
+                </button>
+            </div>
+            <div class="col-4 col-md-4 m-auto">
+                <button class="btn btn-light" data-toggle="collapse" data-parent="#download-options" href="#collapse-macos" role="button" aria-expanded="false" aria-controls="collapse-macos">
+                    <img alt="image" class="img-fluid" src="./assets/logos/macosx.svg">
+                    <figcaption>Mac OS</figcaption>
+                </button>
+            </div>
+            <div class="col-4 col-md-4 m-auto">
+
+                <button class="btn btn-light" data-toggle="collapse" data-parent="#download-options" href="#collapse-linux" role="button" aria-expanded="false" aria-controls="collapse-linux">
+                    <img alt="image" class="img-fluid" src="./assets/logos/ubuntu.svg">
+                    <figcaption>Linux<br>(Ubuntu, Debian, etc) </figcaption>
+                </button>
+
+
+            </div>
+            <!--<div class="col-6 col-md-3 mt-4 mt-md-0">-->
+            <!--<img alt="image" class="img-fluid" src="https://editor-latest.s3.amazonaws.com/design-blocks/block_images/colors_wide_2.jpg">-->
+            <!--</div>-->
+        </div>
+    </div>
+</section>
+
+<section class="fdb-block" data-block-type="contents" data-id="1">
+    <div class="container">
+
+        <div class="row">
+            <div class="col m-auto">
+
+                <div class="collapse" id="collapse-windows">
+
+                    <div class="p-4 section-text">
+
+                        <div class="download-links m-2 text-center">
+
+                            <a id="download-win-64" class="btn btn-success btn-lg m-2" href="#">
+                                <i class="fas fa-cloud-download-alt"></i> Download 64bit
+                            </a>
+
+                            <a id="download-win-32" class="btn btn-success btn-lg m-2" href="#">
+                                <i class="fas fa-cloud-download-alt"></i> Download 32bit
+                            </a>
+
+                        </div>
+
+                        <!--<p>-->
+                        <!--Windows builds require the user to select 'run anyway' after-->
+                        <!--clicking on 'more info' in the security warning images shown below.-->
+                        <!--</p>-->
+
+                        <!--<p>-->
+                        <!--We're waiting for Microsoft to approve our digital code signing-->
+                        <!--certificate as part of their Windows Defender program and will-->
+                        <!--hopefully not require this in the future.-->
+                        <!--</p>-->
+
+                        <!--<div class="text-center m-auto">-->
+
+                        <!--<img class="img-fluid img-shadow m-2" style="max-width: 100%; zoom: 80%;" src="assets/screenshots/windows-do-not-run-annotated.png">-->
+
+                        <!--<img class="img-fluid  img-shadow m-2" style="max-width: 100%;  zoom: 80%;" src="assets/screenshots/windows-run-anyway.png">-->
+
+                        <!--</div>-->
+
+                    </div>
+                </div>
+
+                <div class="collapse" id="collapse-macos">
+
+                    <div class="p-4 section-text">
+
+                        <div class="download-links m-2 text-center">
+
+                            <a id="download-macos-dmg" class="btn btn-success btn-lg m-2" href="#">
+                                <i class="fas fa-cloud-download-alt"></i> Download DMG
+                            </a>
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="collapse" id="collapse-linux">
+
+                    <div class="p-4 section-text">
+
+                        <div class="download-links m-2 text-center">
+
+                            <a id="download-linux-deb" class="btn btn-success btn-lg m-2" href="#">
+                                <i class="fas fa-cloud-download-alt"></i> Download .deb (Ubuntu and Debian)
+                            </a>
+
+                            <a id="download-linux-targz" class="btn btn-success btn-lg m-2" href="#">
+                                <i class="fas fa-cloud-download-alt"></i> Download tar.gz
+                            </a>
+
+                            <a id="download-linux-appimage" class="btn btn-success btn-lg m-2" href="#">
+                                <i class="fas fa-cloud-download-alt"></i> Download AppImage
+                            </a>
+
+                            <p>
+                                We provide .deb (Ubuntu and Debian) packages. AppImage for easy
+                                cross-platform images as well as tar.gz static builds.  We're
+                                still working on snap packages (they segfault on startup due to
+                                an issue with Sentry and Electron).
+                            </p>
+
+                            <p>
+                                The snap distribution of Polar is probably the easiest to install
+                                and can be done from the command line.
+                            </p>
+
+                            <p>
+                                <code>snap install --channel=stable polar-bookshelf</code>
+                            </p>
+
+                            <p>
+                                To update just run:
+                            </p>
+
+                            <p>
+                                <code>snap refresh --channel=stable polar-bookshelf</code>
+                            </p>
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
+
