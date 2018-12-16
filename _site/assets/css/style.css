@@ -1,0 +1,136 @@
+
+h1, h2, h3, h4, h5 {
+    color: rgb(33, 37, 41);
+}
+
+.subtitle {
+    max-width: 850px;
+    text-align: center;
+    margin: auto;
+}
+
+.navbar-brand {
+    margin-right: 10px;
+}
+
+.subtitle h2 {
+    font-size: 25px !important;
+}
+
+.fdb-block {
+    padding-top: 15px !important;
+    padding-bottom: 0 !important;
+}
+
+h3, h4 {
+    font-weight: 400;
+}
+
+h3 {
+    font-size: 20px;
+}
+
+h4 {
+    font-size: 15px;
+}
+
+footer {
+    margin-top: 30px;
+}
+
+.nav-item a {
+    font-weight: bold;
+    font-size: 18px;
+
+}
+
+.logo {
+    font-size: 30px;
+    font-weight: bold;
+}
+
+.logo a {
+    text-decoration: none;
+    color: rgb(33, 37, 41);
+}
+
+.nav-item .fa,
+.nav-item .fab {
+    font-size: 25px;
+}
+
+
+.download-section figcaption {
+    margin: 10px;
+    font-weight: bold;
+    font-size: 18px;
+}
+
+
+.img-shadow {
+
+    -webkit-box-shadow:
+            2px 4px 20px 0px rgba(0, 0, 0, 0.2),
+            4px 6px 50px 8px rgba(0, 0, 0, 0.2);
+    box-shadow:
+            2px 4px 20px 0px rgba(0, 0, 0, 0.2),
+            4px 6px 50px 8px rgba(0, 0, 0, 0.2);
+
+}
+
+.tilt-right {
+    -webkit-transform: perspective(20px) rotateZ(.2deg) rotateY(-.2deg);
+    transform: perspective(20px) rotateZ(.2deg) rotateY(-.2deg);
+    -webkit-box-shadow:
+            2px 4px 20px 0px rgba(0, 0, 0, 0.2),
+            4px 6px 50px 8px rgba(0, 0, 0, 0.2);
+    box-shadow:
+            2px 4px 20px 0px rgba(0, 0, 0, 0.2),
+            4px 6px 50px 8px rgba(0, 0, 0, 0.2);
+}
+
+.tilt-left {
+    -webkit-transform: perspective(20px) rotateZ(-.2deg) rotateY(.2deg);
+    transform: perspective(20px) rotateZ(-.2deg) rotateY(.2deg);
+    -webkit-box-shadow:
+            -2px 4px 20px 0px rgba(0, 0, 0, 0.2),
+            -4px 6px 50px 8px rgba(0, 0, 0, 0.2);
+    box-shadow:
+            -2px 4px 20px 0px rgba(0, 0, 0, 0.2),
+            -4px 6px 50px 8px rgba(0, 0, 0, 0.2);
+}
+
+.overview {
+    font-size: 20px;
+}
+
+figcaption {
+    font-size: 13px;
+    font-weight: bold;
+}
+
+.section-text {
+    font-size: 22px;
+}
+
+.navbar-links {
+    margin-left: 20px;
+}
+
+.navbar-links a:visited,
+.navbar-links a:hover,
+.navbar-links a {
+    /*color: #000000;*/
+    font-size: 16px;
+}
+
+.intro {
+    /*max-width: 900px;*/
+    margin: auto;
+}
+
+.subtitle {
+    font-size: 18px;
+    padding-top: 20px;
+    text-justify: auto;
+}
