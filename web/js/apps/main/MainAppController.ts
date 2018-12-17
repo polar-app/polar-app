@@ -93,14 +93,18 @@ export class MainAppController {
         });
         log.info("Shutting down services...done");
 
+        log.info("Getting all browser windows...");
+        const browserWindows = BrowserWindow.getAllWindows();
+        log.info("Getting all browser windows...done");
+
         log.info("Closing all windows...");
 
-        BrowserWindow.getAllWindows().forEach(window => {
-            const id = window.id;
-            const url = window.webContents.getURL();
+        for (const browserWindow of browserWindows) {
+            const id = browserWindow.id;
+            const url = browserWindow.webContents.getURL();
             log.info(`Closing window id=${id}, url=${url}`);
             window.close();
-        });
+        }
 
         log.info("Closing all windows...done");
 
