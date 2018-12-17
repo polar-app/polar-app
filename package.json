@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "bundle exec jekyll build",
-    "deploy": "bundle exec jekyll build && firebase deploy"
+    "deploy": "bundle exec jekyll build && firebase deploy",
+    "serve": "bundle exec jekyll serve"
   },
   "repository": {
     "type": "git",
