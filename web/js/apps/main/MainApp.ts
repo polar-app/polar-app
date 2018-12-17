@@ -178,7 +178,35 @@ export class MainApp {
             // determine if we need to quit:
             log.info("No windows left. Quitting app.");
 
-            mainAppController.exitApp();
+            const forcedExit = () => {
+
+                try {
+
+                    log.info("Forcing app quit...");
+                    app.quit();
+                    log.info("Forcing process exit...");
+                    process.exit();
+
+                } catch (e) {
+                    log.error("Unable to force exit: ", e);
+                }
+
+            };
+
+            const gracefulExit = () => {
+
+                try {
+                    mainAppController.exitApp();
+                } catch (e) {
+                    log.error("Failed graceful exit: ", e);
+                    forcedExit();
+
+                }
+
+            };
+
+            gracefulExit();
+
 
         });
 
