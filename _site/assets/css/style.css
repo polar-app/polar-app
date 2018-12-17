@@ -152,5 +152,9 @@ figcaption {
 }
 
 #doc {
-    max-width: 800px;
+    max-width: 900px;
+}
+
+header .container {
+    max-width: 950px;
 }

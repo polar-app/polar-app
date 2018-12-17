@@ -1,9 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="https://getpolarized.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://getpolarized.io/" rel="alternate" type="text/html" /><updated>2018-12-17T11:12:21-08:00</updated><id>https://getpolarized.io/feed.xml</id><title type="html">POLAR - Easily manage your PDFs, web content, and notes.</title><subtitle>A powerful document manager for Mac, Windows, and Linux for managing web content, books, and notes and supports tagging, annotation, highlighting and keeps track of your reading progress.</subtitle><entry><title type="html">Polar 1.5 with Cloud Sync</title><link href="https://getpolarized.io/2018/12/16/polar-1.5-with-cloud-sync.html" rel="alternate" type="text/html" title="Polar 1.5 with Cloud Sync" /><published>2018-12-16T07:22:47-08:00</published><updated>2018-12-16T07:22:47-08:00</updated><id>https://getpolarized.io/2018/12/16/polar-1.5-with-cloud-sync</id><content type="html" xml:base="https://getpolarized.io/2018/12/16/polar-1.5-with-cloud-sync.html">&lt;h1 id=&quot;fixme&quot;&gt;FIXME:&lt;/h1&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;more screenshots&lt;/li&gt;
-  &lt;li&gt;talk about the invitation process&lt;/li&gt;
-&lt;/ul&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="https://getpolarized.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://getpolarized.io/" rel="alternate" type="text/html" /><updated>2018-12-17T12:27:20-08:00</updated><id>https://getpolarized.io/feed.xml</id><title type="html">POLAR - Easily manage your PDFs, web content, and notes.</title><subtitle>A powerful document manager for Mac, Windows, and Linux for managing web content, books, and notes and supports tagging, annotation, highlighting and keeps track of your reading progress.</subtitle><entry><title type="html">Polar 1.5 with Cloud Sync</title><link href="https://getpolarized.io/2018/12/16/polar-1.5-with-cloud-sync.html" rel="alternate" type="text/html" title="Polar 1.5 with Cloud Sync" /><published>2018-12-16T07:22:47-08:00</published><updated>2018-12-16T07:22:47-08:00</updated><id>https://getpolarized.io/2018/12/16/polar-1.5-with-cloud-sync</id><content type="html" xml:base="https://getpolarized.io/2018/12/16/polar-1.5-with-cloud-sync.html">&lt;p&gt;&lt;img class=&quot;img-fluid&quot; src=&quot;/assets/images/banners/desktop-thin.jpg&quot; /&gt;&lt;/p&gt;
 
 &lt;h1 id=&quot;polar-15-with-cloud-sync&quot;&gt;Polar 1.5 with Cloud Sync&lt;/h1&gt;
 
@@ -21,12 +16,14 @@ up to date immediately.&lt;/p&gt;
 &lt;p&gt;We’ve also recently released our new &lt;a href=&quot;https://chrome.google.com/webstore/detail/save-to-polar/jkfdkjomocoaljglgddnmhcbolldcafd&quot;&gt;Chrome Extension&lt;/a&gt;
 which allows you to capture web content directly from within Chrome and share it to Polar.&lt;/p&gt;
 
+&lt;p&gt;&lt;img class=&quot;img-fluid img-shadow&quot; src=&quot;/assets/screenshots/cloud-sync-narrow.png&quot; /&gt;&lt;/p&gt;
+
 &lt;h1 id=&quot;cloud-sync-pricing&quot;&gt;Cloud Sync Pricing&lt;/h1&gt;
 
 &lt;p&gt;The goal is to make cloud sync freemium and to only charge for a small percentage of users.  We’re trying to target 5%
-of the users how use the most data.&lt;/p&gt;
+of the users who use the most data.&lt;/p&gt;
 
-&lt;p&gt;Initially we’re going to play with the threshold on the amount of data we’re going to allow before charging for data 
+&lt;p&gt;Initially, we’re going to play with the threshold on the amount of data we’re going to allow before charging for data 
 usage.&lt;/p&gt;
 
 &lt;p&gt;Per month charges will be $7.99 for up to 10GB of storage and smaller repositories will be free.&lt;/p&gt;
@@ -65,4 +62,4 @@ thanks to the WebExtensions API.&lt;/p&gt;
   &lt;li&gt;
     &lt;p&gt;Improving our Anki-sync support with other metadata fields and cloze deletions.&lt;/p&gt;
   &lt;/li&gt;
-&lt;/ul&gt;</content><author><name></name></author><summary type="html">FIXME:</summary></entry></feed>
+&lt;/ul&gt;</content><author><name></name></author><summary type="html"></summary></entry></feed>
