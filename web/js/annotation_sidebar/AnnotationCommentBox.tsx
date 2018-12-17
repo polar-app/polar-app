@@ -3,6 +3,7 @@ import {Logger} from '../logger/Logger';
 import {DocAnnotation} from './DocAnnotation';
 import {RichTextEditor4} from '../apps/card_creator/elements/schemaform/RichTextEditor4';
 import Button from 'reactstrap/lib/Button';
+import {RichTextArea} from "./RichTextArea";
 
 const log = Logger.create();
 
@@ -13,7 +14,7 @@ export class AnnotationCommentBox extends React.Component<IProps, IState> {
     constructor(props: IProps, context: any) {
         super(props, context);
 
-        this.onClick = this.onClick.bind(this);
+        this.onComment = this.onComment.bind(this);
         this.onCancel = this.onCancel.bind(this);
 
         this.state = {
@@ -32,12 +33,13 @@ export class AnnotationCommentBox extends React.Component<IProps, IState> {
 
             <div id="annotation-comment-box" className="">
 
-                <div className="border rounded p-1 annotation-comment-wrapper">
+                <div className="">
 
-                    <RichTextEditor4 id={id}
-                                     value={this.html}
-                                     autofocus={true}
-                                     onChange={(html) => this.onChange(html)}/>
+                    <RichTextArea id={id}
+                                  value={this.html}
+                                  autofocus={true}
+                                  onKeyDown={event => this.onKeyDown(event)}
+                                  onChange={(html) => this.onChange(html)}/>
 
                 </div>
 
@@ -55,12 +57,13 @@ export class AnnotationCommentBox extends React.Component<IProps, IState> {
 
                         {/*onClick={this.handleComment}*/}
 
-                        <Button color="primary" size="sm" className="mt-2" onClick={() => this.onClick()}>
-                            Comment
-                        </Button>
 
                         <Button color="secondary" size="sm" className="mt-2 ml-1" onClick={() => this.onCancel()}>
                             Cancel
+                        </Button>
+
+                        <Button color="primary" size="sm" className="mt-2" onClick={() => this.onComment()}>
+                            Comment
                         </Button>
 
                     </div>
@@ -74,11 +77,23 @@ export class AnnotationCommentBox extends React.Component<IProps, IState> {
 
     }
 
+    private onKeyDown(event: KeyboardEvent) {
+
+        // if (event.key === "Escape") {
+        //     this.toggle();
+        // }
+
+        if (event.getModifierState("Control") && event.key === "Enter") {
+            this.onComment();
+        }
+
+    }
+
     private onChange(html: string): void {
         this.html = html;
     }
 
-    private onClick(): void {
+    private onComment(): void {
 
         if (this.props.comment) {
 

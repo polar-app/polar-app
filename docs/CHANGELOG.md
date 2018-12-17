@@ -1,5 +1,7 @@
 # 1.5.2
 
+- implemented Control+Enter for creating comments.  
+
 - Making tags + updated + added columns visible by default for new users.   
   I think some people did not discover it by default.
 

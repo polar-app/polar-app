@@ -288,7 +288,7 @@ export default class DocRepoTable extends React.Component<IProps, IState> {
                                 Header: 'Progress',
                                 accessor: 'progress',
                                 show: this.state.columns.progress.selected,
-                                maxWidth: 150,
+                                maxWidth: 100,
                                 defaultSortDesc: true,
                                 resizable: false,
                                 Cell: (row: any) => (
