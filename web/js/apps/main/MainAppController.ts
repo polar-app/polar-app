@@ -103,7 +103,13 @@ export class MainAppController {
             const id = browserWindow.id;
             const url = browserWindow.webContents.getURL();
             log.info(`Closing window id=${id}, url=${url}`);
-            window.close();
+
+            if (browserWindow.isClosable()) {
+                log.info(`Closing window id=${id}, url=${url}`);
+                browserWindow.close();
+            } else {
+                log.info(`Skipping close window (not closeable) id=${id}, url=${url}`);
+            }
         }
 
         log.info("Closing all windows...done");
