@@ -82,7 +82,10 @@ export class Webserver implements WebRequestHandler {
     }
 
     public stop() {
+
+        log.info("Stopping...");
         this.server!.close();
+        log.info("Stopping...done");
     }
 
     public get(type: PathParams, ...handlers: RequestHandler[]): void {

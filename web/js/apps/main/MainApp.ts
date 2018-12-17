@@ -172,7 +172,7 @@ export class MainApp {
 
         });
 
-        // Quit when all windows are closed.
+        // quit when all windows are closed.
         app.on('window-all-closed', function() {
 
             // determine if we need to quit:

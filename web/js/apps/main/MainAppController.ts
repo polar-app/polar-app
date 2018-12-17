@@ -87,14 +87,18 @@ export class MainAppController {
 
         log.info("Exiting app...");
 
+        log.info("Shutting down services...");
         Services.stop({
             webserver: this.webserver,
         });
+        log.info("Shutting down services...done");
 
         log.info("Closing all windows...");
 
         BrowserWindow.getAllWindows().forEach(window => {
-            log.info("Closing window: " + window.id);
+            const id = window.id;
+            const url = window.webContents.getURL();
+            log.info(`Closing window id=${id}, url=${url}`);
             window.close();
         });
 
