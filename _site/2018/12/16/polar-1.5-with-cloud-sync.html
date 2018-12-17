@@ -197,22 +197,61 @@ package we’ll give you a free month of service.</p>
 <p>We’re also not limiting the number of users you invite.  If you invite 1k users and they all sign up and become users 
 we’re more than willing to give you 1000 months of storage!</p>
 
+<h1 id="privacy">Privacy</h1>
+
+<p>Data stored in Polar cloud sync is secured from other uses using Firebase
+security rules.</p>
+
+<p>Right now our security rules are configured to only allow the user ID who wrote
+the data access to the data.</p>
+
+<p>This means that even if someone were to discovery the URL to one of your
+documents they still could not access it because they don’t have permission.</p>
+
+<p>When we add sharing to Polar we plan on changing these rules to include a 
+‘visibility’ options for the data to allow read for public documents.  This will
+allow you to share your documents with other Polar users but only if you’ve 
+configured them for public access</p>
+
+<p>We intend on supporting both public and private by default and allow you to 
+configure the visibility of documents per tag.</p>
+
+<p>For example anything with a ‘work’ tag could be private but by default your 
+documents are public.  Or you could have a set of tags that are public 
+(bitcoin, linux, etc) but anything else is private.</p>
+
+<p>We also intend on supporting explicitly setting visibility per document by having
+visibility:public and visibility:private tags which always take priority.</p>
+
+<p>We’d also like to support end-to-end encryption as an option in the future for 
+your private document.  Right now the infrastructure for that is in place but 
+key management is the main concern.  We’re going to investigate how others have
+resolved this problem and implement something reasonable within Polar.</p>
+
+<p>Given the concerns about your data privacy we’re very much open to constructive
+criticism.  If you have any thoughts here we’d love to hear them.</p>
+
 <h1 id="stability-and-bug-fixes">Stability and Bug Fixes</h1>
 
-<p>One of the things that’s been great about our initial MVP release is that the Polar community has really stepped up and 
-contributed a ton of positive feedback on how to improve the platform.</p>
+<p>One of the things that’s been great about our initial MVP release is that the
+Polar community has really stepped up and contributed a ton of positive feedback
+on how to improve the platform.</p>
 
 <p>We’ve implemented a ton of features and bug fixes in this release.</p>
 
-<p>Some of these include smaller but critical issues like key bindings but also have a critical bug fix annotations in PDF 
-documents sometimes requiring reload.</p>
+<p>Some of these include smaller but critical issues like key bindings but also
+have a critical bug fix where annotations fail to work in PDF documents</p>
+<ul>
+  <li>sometimes requiring reload.</li>
+</ul>
 
 <h1 id="whats-next">What’s Next</h1>
 
 <ul>
   <li>
-    <p>For all you Firefox fans we do have plans to port it over to Firefox.  Luckily it’s should already work on Firefox
-thanks to the WebExtensions API.</p>
+    <p>For all you Firefox fans we do have plans to port our Chrome extension over to
+Firefox.  Luckily it’s should already work on Firefox thanks to the
+WebExtensions API.</p>
   </li>
   <li>
     <p>Support for real-time document sharing with other Polar uses.</p>
