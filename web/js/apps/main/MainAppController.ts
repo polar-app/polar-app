@@ -3,24 +3,18 @@ import {ResourcePaths} from '../../electron/webresource/ResourcePaths';
 import {Logger} from '../../logger/Logger';
 import {Services} from '../../util/services/Services';
 import {FileLoader} from './loaders/FileLoader';
-import {Datastore} from '../../datastore/Datastore';
 import {Webserver} from '../../backend/webserver/Webserver';
 import {BROWSER_WINDOW_OPTIONS, MainAppBrowserWindowFactory} from './MainAppBrowserWindowFactory';
 import {AppLauncher} from './AppLauncher';
 import {Hashcodes} from '../../Hashcodes';
 import {SingletonBrowserWindow} from '../../electron/framework/SingletonBrowserWindow';
 import process from 'process';
-import BrowserRegistry from '../../capture/BrowserRegistry';
-import {BrowserProfiles} from '../../capture/BrowserProfiles';
 import {Capture} from '../../capture/Capture';
-import MenuItem = Electron.MenuItem;
 import {Directories} from '../../datastore/Directories';
 import {FileImportClient} from '../repository/FileImportClient';
-import {PDFImporter} from '../repository/importers/PDFImporter';
-import {PersistenceLayer} from '../../datastore/PersistenceLayer';
-import {Messenger} from '../../electron/messenger/Messenger';
-import {TriggerBrowserLoad} from '../browser/BrowserApp';
 import {CaptureOpts} from '../../capture/CaptureOpts';
+import {Platform, Platforms} from '../../util/Platforms';
+import MenuItem = Electron.MenuItem;
 
 const log = Logger.create();
 
@@ -99,23 +93,30 @@ export class MainAppController {
 
         log.info("Closing all windows...");
 
-        for (const browserWindow of browserWindows) {
-            const id = browserWindow.id;
+        if (Platforms.get() !== Platform.WINDOWS) {
 
-            let url: string | undefined;
+            // this causes Windows to segfault so avoid it.  It might also not
+            // strictly be necessary.
 
-            if (browserWindow.webContents) {
-                url = browserWindow.webContents.getURL();
-            }
+            for (const browserWindow of browserWindows) {
+                const id = browserWindow.id;
 
-            log.info(`Closing window id=${id}, url=${url}`);
+                let url: string | undefined;
 
-            if (browserWindow.isClosable() && ! browserWindow.isDestroyed()) {
+                if (browserWindow.webContents) {
+                    url = browserWindow.webContents.getURL();
+                }
+
                 log.info(`Closing window id=${id}, url=${url}`);
-                browserWindow.close();
-            } else {
-                log.info(`Skipping close window (not closeable) id=${id}, url=${url}`);
+
+                if (browserWindow.isClosable() && ! browserWindow.isDestroyed()) {
+                    log.info(`Closing window id=${id}, url=${url}`);
+                    browserWindow.close();
+                } else {
+                    log.info(`Skipping close window (not closeable) id=${id}, url=${url}`);
+                }
             }
+
         }
 
         log.info("Closing all windows...done");
