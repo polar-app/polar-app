@@ -101,10 +101,16 @@ export class MainAppController {
 
         for (const browserWindow of browserWindows) {
             const id = browserWindow.id;
-            const url = browserWindow.webContents.getURL();
+
+            let url: string | undefined;
+
+            if (browserWindow.webContents) {
+                url = browserWindow.webContents.getURL();
+            }
+
             log.info(`Closing window id=${id}, url=${url}`);
 
-            if (browserWindow.isClosable()) {
+            if (browserWindow.isClosable() && ! browserWindow.isDestroyed()) {
                 log.info(`Closing window id=${id}, url=${url}`);
                 browserWindow.close();
             } else {
