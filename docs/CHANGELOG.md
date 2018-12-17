@@ -1,3 +1,8 @@
+# 1.5.2
+
+- Making tags + updated + added columns visible by default for new users.   
+  I think some people did not discover it by default.
+
 # 1.5.1
 
 - change the button color of the capture button so that it's obvious what to 

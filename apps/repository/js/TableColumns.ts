@@ -12,7 +12,7 @@ export class TableColumns implements KeyValueMapping<TableColumns, ListOptionTyp
 
     public readonly lastUpdated: ListOptionType =  {
         id: "lastUpdated",
-        label: "Last Updated",
+        label: "Updated",
         selected: true,
         title: "The last time the documented was updated (tagged, annotated, etc)."
 
@@ -33,7 +33,7 @@ export class TableColumns implements KeyValueMapping<TableColumns, ListOptionTyp
     public readonly tags: ListOptionType =  {
         id: "tags",
         label: "Tags",
-        selected: false,
+        selected: true,
     };
 
     public readonly nrAnnotations: ListOptionType =  {
