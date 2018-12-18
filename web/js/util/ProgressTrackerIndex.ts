@@ -1,12 +1,12 @@
-import {ProgressState, ProgressTracker, Percentage} from "./ProgressTracker";
+import {Progress, ProgressTracker, Percentage} from "./ProgressTracker";
 import {Reducers} from './Reducers';
 import {isPresent} from '../Preconditions';
 
 export class ProgressTrackerIndex {
 
-    private index: { [key: number]: ProgressState } = {};
+    private index: { [key: number]: Progress } = {};
 
-    public update(progress: ProgressState) {
+    public update(progress: Progress) {
 
         if (! isPresent(progress.progress)) {
             return;

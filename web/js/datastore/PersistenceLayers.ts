@@ -8,7 +8,7 @@ import {AsyncFunction, AsyncWorkQueue} from '../util/AsyncWorkQueue';
 import {DocMetaFileRefs, DocMetaRef} from "./DocMetaRef";
 import {Datastore, DocMetaMutation, DocMetaSnapshotEvent, DocMetaSnapshotEventListener, FileRef, MutationType, SyncDoc, SyncDocMap, SyncDocs} from './Datastore';
 import {UUIDs} from '../metadata/UUIDs';
-import {ProgressTracker, ProgressState, ProgressStateListener} from '../util/ProgressTracker';
+import {ProgressTracker, Progress, ProgressListener} from '../util/ProgressTracker';
 import {DocMetas} from '../metadata/DocMetas';
 import {DefaultPersistenceLayer} from './DefaultPersistenceLayer';
 import {Provider, AsyncProviders} from '../util/Providers';
@@ -30,7 +30,7 @@ export class PersistenceLayers {
     }
 
     public static async toSyncDocMap(datastore: Datastore,
-                                     progressStateListener: ProgressStateListener = NULL_FUNCTION) {
+                                     progressStateListener: ProgressListener = NULL_FUNCTION) {
 
         const docMetaFiles = await datastore.getDocMetaFiles();
 
@@ -40,7 +40,7 @@ export class PersistenceLayers {
 
     public static async toSyncDocMapFromDocs(datastore: Datastore,
                                              docMetaFiles: DocMetaRef[],
-                                             progressStateListener: ProgressStateListener = NULL_FUNCTION) {
+                                             progressStateListener: ProgressListener = NULL_FUNCTION) {
 
         const syncDocsMap: SyncDocMap = {};
 

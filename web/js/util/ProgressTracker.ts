@@ -8,7 +8,7 @@ let NONCE = 0;
  */
 export class ProgressTracker {
 
-    private state: ProgressState;
+    private state: Progress;
 
     private readonly epoch: number;
 
@@ -36,7 +36,7 @@ export class ProgressTracker {
      * Increment the progress of the job by one, compute the updated state,
      * and return.
      */
-    public incr(): Readonly<ProgressState> {
+    public incr(): Readonly<Progress> {
         ++this.state.completed;
         this.state.progress = this.calculate();
         this.state.duration = Date.now() - this.epoch;
@@ -48,7 +48,7 @@ export class ProgressTracker {
      * Used so that we can jump to the end the job as it's terminated.
      *
      */
-    public terminate(): Readonly<ProgressState> {
+    public terminate(): Readonly<Progress> {
         this.state.completed = this.state.total;
         this.state.progress = this.calculate();
         this.state.duration = Date.now() - this.epoch;
@@ -58,7 +58,7 @@ export class ProgressTracker {
     /**
      * Get a current view of the progress state.
      */
-    public peek(): Readonly<ProgressState> {
+    public peek(): Readonly<Progress> {
         return Object.freeze(Object.assign({}, this.state));
     }
 
@@ -81,9 +81,9 @@ export class ProgressTracker {
 
 }
 
-export type ProgressStateListener = (progressState: ProgressState) => void;
+export type ProgressListener = (progressState: Progress) => void;
 
-export interface ProgressState {
+export interface Progress {
     task: TaskID;
     completed: number;
     total: number;

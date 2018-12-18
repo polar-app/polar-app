@@ -1,4 +1,4 @@
-import {Percentage, ProgressState} from './ProgressTracker';
+import {Percentage, Progress} from './ProgressTracker';
 
 export class ProgressTrackers {
 

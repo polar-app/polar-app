@@ -11,7 +11,7 @@ import {Simulate} from 'react-dom/test-utils';
 import {DatastoreMutation, DefaultDatastoreMutation} from './DatastoreMutation';
 import {DocMeta} from '../metadata/DocMeta';
 import {Hashcode} from '../metadata/Hashcode';
-import {ProgressState} from '../util/ProgressTracker';
+import {Progress} from '../util/ProgressTracker';
 import {AsyncProvider} from '../util/Providers';
 import {UUID} from '../metadata/UUID';
 import {AsyncWorkQueues} from '../util/AsyncWorkQueues';
@@ -394,7 +394,7 @@ export interface DocMetaSnapshotBatch {
  */
 export type DatastoreConsistency = 'written' | 'committed';
 
-export interface SnapshotProgress extends Readonly<ProgressState> {
+export interface SnapshotProgress extends Readonly<Progress> {
 
 }
 
