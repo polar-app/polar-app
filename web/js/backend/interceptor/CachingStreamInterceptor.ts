@@ -69,6 +69,32 @@ export class CachingStreamInterceptor {
 
         }
 
+        // add the charset if none is in the content type and we're sending text/html
+
+        const hdr = (header: string): string | undefined => {
+
+            if (headers[header] !== null) {
+
+                const val = headers[header];
+                if (typeof val === 'string') {
+                    return val;
+                } else {
+                    return val[0];
+                }
+
+            }
+
+            return undefined;
+
+        };
+
+        const charset = 'utf-8';
+        const contentType = hdr(HEADER_CONTENT_TYPE);
+
+        if (contentType && ['text/html', 'text/xml'].includes(contentType)) {
+            headers[HEADER_CONTENT_TYPE] = `${contentType}; charset=${charset}`;
+        }
+
         const streamProtocolResponse: CorrectStreamProtocolResponse = {
             headers,
             data: stream,
@@ -79,4 +105,8 @@ export class CachingStreamInterceptor {
 
     }
 
+}
+
+export interface HeaderMap {
+    [key: string]: string | string[];
 }

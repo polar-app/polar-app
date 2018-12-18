@@ -5,8 +5,8 @@ rulesDirectory:
 #- path/to/custom/rules/directory/
 #- another/path/
 rules:
-  max-line-length:
-    options: [140]
+  # disabling as intellij won't let me disable this option
+  max-line-length: false
   new-parens: true
   no-arg: true
   no-bitwise: true

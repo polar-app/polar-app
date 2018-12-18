@@ -68,9 +68,10 @@ export class StreamInterceptors {
 
                 const headers = Object.assign({}, response.headers);
 
-                // we have to delete the content-encoding HTTP header becaue
-                // the net.request API already performs the gzip/deflate encoding
-                // FOR us and Chrome attempts to double decode it and then breaks.
+                // We have to delete the content-encoding HTTP header because
+                // the net.request API already performs the gzip/deflate
+                // encoding FOR us and Chrome attempts to double decode it and
+                // then breaks.
                 delete headers['content-encoding'];
 
                 const streamProtocolResponse: CorrectStreamProtocolResponse = {

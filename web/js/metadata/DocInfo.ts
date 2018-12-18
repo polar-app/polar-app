@@ -36,6 +36,9 @@ export class DocInfo extends SerializedObject implements IDocInfo {
     public nrAnnotations?: number;
     public uuid?: string;
     public hashcode?: Hashcode;
+    public referrer?: string;
+    public shareStrategy?: ShareStrategy;
+    public storedResources?: Set<StoredResource>;
 
     constructor(val: IDocInfo) {
 
@@ -194,5 +197,44 @@ export interface IDocInfo {
      */
     hashcode?: Hashcode;
 
+    /**
+     * If this document was found and shared from the web we can include the
+     * 'referer' that this page was found from.  Usually this is going to be
+     * google news, hacker news, reddit, etc.
+     */
+    referrer?: string;
+
+    shareStrategy?: ShareStrategy;
+
+    storedResources?: Set<StoredResource>;
+
 }
 
+/**
+ * How this document was shared
+ *
+ * saved: The user explicitly saved this document to his repository.
+ *
+ * navigated: The user navigated to this URL and the Polar extension
+ * automatically saved it to Polar as it found it to be valuable depending
+ * on the rules configured by the user + extension.
+ */
+export type ShareStrategy = 'saved' | 'navigated';
+
+/**
+ * How this document is stored including its dependent resources.  If the
+ * document has no StoredResource it's probably.
+ *
+ * link: This is only a link to a document that has not yet been captured.
+ *
+ * doc: The content of this document only.
+ *
+ * styles: The CSS styles have been saved as part of catpure.  Not applicable to
+ *         PDF content.
+ *
+ * images: The external images have also been saved with this document.
+ *
+ * fonts:  The dependent web fonds have been saved.
+ *
+ */
+export type StoredResource = 'link' | 'doc' | 'styles' | 'images' | 'fonts';
