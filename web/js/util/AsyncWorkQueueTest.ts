@@ -1,5 +1,5 @@
 import {assert} from 'chai';
-import {Progress} from './Progress';
+import {ProgressCalculator} from './ProgressCalculator';
 import {ResolvablePromise} from './ResolvablePromise';
 import {assertJSON} from '../test/Assertions';
 import {Latch} from './Latch';

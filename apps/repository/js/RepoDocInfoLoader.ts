@@ -2,7 +2,7 @@ import {DocMetaRef} from '../../../web/js/datastore/DocMetaRef';
 import {Optional} from '../../../web/js/util/ts/Optional';
 import {ListenablePersistenceLayer} from '../../../web/js/datastore/ListenablePersistenceLayer';
 import {Logger} from '../../../web/js/logger/Logger';
-import {Progress} from '../../../web/js/util/Progress';
+import {ProgressCalculator} from '../../../web/js/util/ProgressCalculator';
 import {ProgressBar} from '../../../web/js/ui/progress_bar/ProgressBar';
 import {RepoDocInfoIndex} from './RepoDocInfoIndex';
 import {RepoDocInfos} from './RepoDocInfos';

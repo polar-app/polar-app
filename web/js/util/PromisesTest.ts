@@ -1,7 +1,7 @@
 
 
 import {assert} from 'chai';
-import {Progress} from './Progress';
+import {ProgressCalculator} from './ProgressCalculator';
 import {ProgressTrackers} from './ProgressTrackers';
 import {ProgressTracker} from './ProgressTracker';
 

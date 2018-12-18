@@ -5,7 +5,7 @@ import {FileImportRequest} from "../main/MainAppController";
 import {PDFImporter, ImportedFile} from './importers/PDFImporter';
 import {ProgressBar} from '../../ui/progress_bar/ProgressBar';
 import {Percentages} from '../../util/Percentages';
-import {Progress} from "../../util/Progress";
+import {ProgressCalculator} from "../../util/ProgressCalculator";
 import {IEventDispatcher} from '../../reactor/SimpleReactor';
 import {IDocInfo} from '../../metadata/DocInfo';
 import {Optional} from "../../util/ts/Optional";
@@ -119,7 +119,7 @@ export class FileImportController {
     private async doImportFiles(files: string[]): Promise<Array<Optional<ImportedFile>>> {
 
         const progressBar = ProgressBar.create(false);
-        const progress = new Progress(files.length);
+        const progress = new ProgressCalculator(files.length);
 
         const result: Array<Optional<ImportedFile>> = [];
 
