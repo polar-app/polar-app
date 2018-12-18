@@ -12,6 +12,7 @@ import {ConditionalSetting} from '../../../../../../web/js/ui/util/ConditionalSe
 import {Renderer} from 'react-dom';
 import {RendererAnalytics} from '../../../../../../web/js/ga/RendererAnalytics';
 import {PrioritizedComponentManager, PrioritizedComponent} from '../../../../../../web/js/ui/prioritized/PrioritizedComponentManager';
+import * as semver from 'semver';
 
 const log = Logger.create();
 
@@ -71,12 +72,12 @@ export class WhatsNewComponent extends React.Component<IProps, IState> {
 
     private async isNewVersion(): Promise<boolean> {
 
-        const version = Version.get();
+        const currentVersion = Version.get();
 
         const result =
-            this.conditionalSetting.accept(value => value.getOrElse('') !== version);
+            this.conditionalSetting.accept(value => semver.gt(currentVersion, value.getOrElse('')) );
 
-        this.conditionalSetting.set(version);
+        this.conditionalSetting.set(currentVersion);
 
         return result;
 

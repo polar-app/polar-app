@@ -1,6 +1,11 @@
 # 1.5.2
 
-- implemented Control+Enter for creating comments.  
+- Hopefully fixed high CPU bug on Windows caused by shutdown and attempting to 
+  double-close windows. 
+ 
+- Sending analytics for number of invitations sent
+
+- Implemented Control+Enter for creating comments.  
 
 - Making tags + updated + added columns visible by default for new users.   
   I think some people did not discover it by default.

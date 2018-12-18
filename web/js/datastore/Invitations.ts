@@ -8,6 +8,7 @@ import {Preconditions} from '../Preconditions';
 import * as firebase from '../firebase/lib/firebase';
 import {UserID} from '../firebase/Firebase';
 import {Optional} from '../util/ts/Optional';
+import {RendererAnalytics} from '../ga/RendererAnalytics';
 
 export class Invitations {
 
@@ -33,6 +34,8 @@ export class Invitations {
                     .set(record);
 
             }
+
+            RendererAnalytics.event({category: 'invitations', action: 'invited-' + emailAddresses.length});
 
         } finally {
             // noop for now
