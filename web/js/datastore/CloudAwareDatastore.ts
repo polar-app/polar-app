@@ -126,7 +126,10 @@ export class CloudAwareDatastore extends AbstractDatastore implements Datastore,
                            data: Buffer | string,
                            meta: FileMeta = {}): Promise<DatastoreFile> {
 
-        // for this to work we have to use fierbase snapshot QuerySnapshot and
+
+        const result = this.local.writeFile(backend, ref, data, meta);
+
+        // For this to work we have to use fierbase snapshot QuerySnapshot and
         // look at docChanges and wait for the document we requested...
 
         await this.cloud.writeFile(backend, ref, data, meta);
@@ -134,7 +137,7 @@ export class CloudAwareDatastore extends AbstractDatastore implements Datastore,
         // TODO: can't we just wait until the event is fired when it's pulled
         // down as part of the normal snapshot mechanism.?  That might be best
         // as we would be adding it twice.
-        return this.local.writeFile(backend, ref, data, meta);
+        return result;
 
     }
 
