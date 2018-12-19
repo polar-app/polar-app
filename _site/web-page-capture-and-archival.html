@@ -9,12 +9,12 @@
 <meta property="og:locale" content="en_US" />
 <meta name="description" content="A powerful document manager for Mac, Windows, and Linux for managing web content, books, and notes and supports tagging, annotation, highlighting and keeps track of your reading progress." />
 <meta property="og:description" content="A powerful document manager for Mac, Windows, and Linux for managing web content, books, and notes and supports tagging, annotation, highlighting and keeps track of your reading progress." />
-<link rel="canonical" href="https://getpolarized.io/web-page-capture-and-archival.html" />
-<meta property="og:url" content="https://getpolarized.io/web-page-capture-and-archival.html" />
+<link rel="canonical" href="http://localhost:4000/web-page-capture-and-archival.html" />
+<meta property="og:url" content="http://localhost:4000/web-page-capture-and-archival.html" />
 <meta property="og:site_name" content="POLAR - Easily manage your PDFs, web content, and notes." />
 <meta name="google-site-verification" content="j5BBM8XbyOumZOvUQGaej0asCNz6NERVdssDydibUl0" />
 <script type="application/ld+json">
-{"description":"A powerful document manager for Mac, Windows, and Linux for managing web content, books, and notes and supports tagging, annotation, highlighting and keeps track of your reading progress.","@type":"WebPage","url":"https://getpolarized.io/web-page-capture-and-archival.html","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"https://getpolarized.io/assets/logo/icon.png"}},"headline":"Web Page Capture and Archival","@context":"http://schema.org"}</script>
+{"description":"A powerful document manager for Mac, Windows, and Linux for managing web content, books, and notes and supports tagging, annotation, highlighting and keeps track of your reading progress.","@type":"WebPage","url":"http://localhost:4000/web-page-capture-and-archival.html","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"https://getpolarized.io/assets/logo/icon.png"}},"headline":"Web Page Capture and Archival","@context":"http://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 
   <meta name="twitter:card"  content="summary">
@@ -159,16 +159,23 @@
 downloads the content locally and stores it in Polar as if it were any other
 type of document (like PDF).</p>
 
+<p>This allows you to manage web pages with tags and to manage them using
+annotations including text and area highlights, comments, and flashcards.</p>
+
 <p>One issue with annotating documents on the web is that the author might change
 the document (or even delete it) thereby invalidating your annotations.</p>
 
 <p>Polar prevents that by capturing the content on disk (and in the cloud) for your
 own long term usage.</p>
 
-<p>We additionally capture the document in a way to make them more usable and more 
+<p>During this process we fetch the full HTML, including iframes, and store them in
+a portable PHZ file that can be used for long term archival of web content.</p>
+
+<p>Additionally, we capture the document in a way to make them more usable and more 
 readable.</p>
 
-<p><img class="img-fluid img-shadow" src="./assets/screenshots/captured-content-window.png" /></p>
+<!-- <img class="img-fluid img-shadow" src="./assets/screenshots/captured-content-window.png"> -->
+<p><img class="img-fluid img-shadow" src="/assets/screenshots/capture-preview-narrow.png" /></p>
 
 <h1 id="link-rot">Link Rot</h1>
 
@@ -182,11 +189,6 @@ pages.</p>
 
 <p>With Polar you never have to worry about this being an issue as you have a 
 permanent long term copy of important content.</p>
-
-<h1 id="capture">Capture</h1>
-
-<p>With capture in Polar the user either gives us a URL via the Polar chrome 
-extension or by triggering a capture directly inside Polar.</p>
 
 
             </div>

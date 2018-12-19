@@ -1,5 +1,4 @@
 ---
-
 title: Web Page Capture and Archival
 layout: doc
 ---
@@ -10,16 +9,23 @@ Polar supports long term web page archival via a process called "capture" which
 downloads the content locally and stores it in Polar as if it were any other
 type of document (like PDF).
 
+This allows you to manage web pages with tags and to manage them using
+annotations including text and area highlights, comments, and flashcards.
+
 One issue with annotating documents on the web is that the author might change
 the document (or even delete it) thereby invalidating your annotations.
 
 Polar prevents that by capturing the content on disk (and in the cloud) for your
 own long term usage.
 
-We additionally capture the document in a way to make them more usable and more 
+During this process we fetch the full HTML, including iframes, and store them in
+a portable PHZ file that can be used for long term archival of web content.
+
+Additionally, we capture the document in a way to make them more usable and more 
 readable.
 
-<img class="img-fluid img-shadow" src="./assets/screenshots/captured-content-window.png">
+<!-- <img class="img-fluid img-shadow" src="./assets/screenshots/captured-content-window.png"> -->
+<img class="img-fluid img-shadow" src="/assets/screenshots/capture-preview-narrow.png">
 
 # Link Rot
 
@@ -34,8 +40,3 @@ pages.
 
 With Polar you never have to worry about this being an issue as you have a 
 permanent long term copy of important content.
-
-# Capture
-
-With capture in Polar the user either gives us a URL via the Polar chrome 
-extension or by triggering a capture directly inside Polar.
