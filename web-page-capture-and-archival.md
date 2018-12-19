@@ -1,6 +1,9 @@
 ---
 title: Web Page Capture and Archival
-layout: doc
+layout: post
+date: 2018-12-16 07:22:47 -0800
+categories: docs
+large_image: https://getpolarized.io/assets/screenshots/capture-preview-narrow.png 
 ---
 
 # Web Page Capture
