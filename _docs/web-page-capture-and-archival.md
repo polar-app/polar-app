@@ -1,8 +1,8 @@
 ---
-title: Web Page Capture and Archival
-layout: post
+title: Web Page Capture and Archival of HTML Content
+layout: doc
 date: 2018-12-16 07:22:47 -0800
-categories: docs
+permalink: /docs/web-page-capture-and-archival-of-html-content.html
 large_image: https://getpolarized.io/assets/screenshots/capture-preview-narrow.png 
 ---
 
