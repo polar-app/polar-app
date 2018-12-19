@@ -12,8 +12,8 @@ Polar supports long term web page archival via a process called "capture" which
 downloads the content locally and stores it in Polar as if it were any other
 type of document (like PDF).
 
-This allows you to manage web pages with tags and to manage them using
-annotations including text and area highlights, comments, and flashcards.
+This allows you to manage web pages with tags and annotations including text and
+area highlights, comments, and flashcards.
 
 One issue with annotating documents on the web is that the author might change
 the document (or even delete it) thereby invalidating your annotations.
@@ -28,7 +28,26 @@ Additionally, we capture the document in a way to make them more usable and more
 readable.
 
 <!-- <img class="img-fluid img-shadow" src="./assets/screenshots/captured-content-window.png"> -->
-<img class="img-fluid img-shadow" src="/assets/screenshots/capture-preview-narrow.png">
+<p class="text-center"><img class="img-fluid img-shadow" src="/assets/screenshots/capture-preview-narrow.png"></p>
+
+# Readability
+
+Polar supports capturing the document in a more readable form by emulating 
+tablet and mobile devices during capture.
+
+Websites usually try to cooperate with tablets and mobile devices by making
+them more readable on smaller screens.
+
+With Polar we emulate these devices during capture to preserve web pages in a
+more readable form - often with sidebar and navigational content removed.
+
+<p class="text-center"><img class="img-fluid img-shadow" src="/assets/screenshots/readability-example-bad-narrow.png"></p>
+
+<p class="text-center"><b>Document Captured with Sidebar</b></p>
+
+<p class="text-center"><img class="img-fluid img-shadow" src="/assets/screenshots/readability-example-good-narrow.png"></p>
+
+<p class="text-center"><b>Captured as Tablet with Sidebar Removed</b></p>
 
 # Link Rot
 

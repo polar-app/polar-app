@@ -158,3 +158,11 @@ figcaption {
 header .container {
     max-width: 950px;
 }
+
+#doc img {
+    margin: 15px;
+}
+
+#doc h1 {
+    margin-bottom: 15px;
+}
