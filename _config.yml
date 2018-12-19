@@ -28,7 +28,7 @@ github_username:  burtonator
 markdown: kramdown
 theme: minima
 plugins:
-  - jekyll-feed
+# - jekyll-feed
 
 logo: https://getpolarized.io/assets/logo/icon.png
 
@@ -40,6 +40,8 @@ social:
 
 webmaster_verifications:
   google: j5BBM8XbyOumZOvUQGaej0asCNz6NERVdssDydibUl0
+
+# permalink: /:categories/:title/
 
 # Exclude from processing.
 # The following items will not be processed, by default. Create a custom list
