@@ -1,5 +1,7 @@
 # 1.5.2
 
+- Fixed quote mangling due to improper UTF-8 handling.  
+
 - Hopefully fixed high CPU bug on Windows caused by shutdown and attempting to 
   double-close windows. 
  
