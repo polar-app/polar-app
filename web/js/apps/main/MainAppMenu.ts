@@ -126,6 +126,7 @@ export class MainAppMenu {
 
     private platformSupportsUpdates() {
         return [Platform.MACOS, Platform.WINDOWS].includes(Platforms.get());
+        // return true;
     }
 
     private createAboutMessage() {

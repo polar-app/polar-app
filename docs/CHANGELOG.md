@@ -1,5 +1,7 @@
 # 1.5.2
 
+- Print the version numbers for updates.
+
 - Fixed quote mangling due to improper UTF-8 handling.  
 
 - Hopefully fixed high CPU bug on Windows caused by shutdown and attempting to 

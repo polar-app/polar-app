@@ -1,5 +1,5 @@
 import {dialog} from 'electron';
-import {autoUpdater} from 'electron-updater';
+import {autoUpdater, UpdateInfo} from 'electron-updater';
 import {ProgressInfo} from "builder-util-runtime";
 import {Logger} from '../logger/Logger';
 
@@ -40,12 +40,22 @@ autoUpdater.on('error', (error) => {
     dialog.showErrorBox('Error: ', error == null ? "unknown" : (error.stack || error).toString());
 });
 
-autoUpdater.on('update-available', () => {
+autoUpdater.on('update-available', (info: UpdateInfo) => {
+
+    log.info("Found new update: ", info);
+
+    let message = 'Found updates, do you want update now?';
+
+    if (info && info.version) {
+        const fromVersion = Version.get();
+        const toVersion = info.version;
+        message = `Found updates, do you want update from ${fromVersion} to ${toVersion} now?`;
+    }
 
     const options = {
         type: 'info',
         title: 'Found Updates',
-        message: 'Found updates, do you want update now?',
+        message,
         buttons: ['Yes', 'No']
     };
 
