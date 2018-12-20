@@ -1,5 +1,7 @@
 # 1.5.2
 
+- Improved indeterminate progress bar on MacOS and just better in general 
+
 - Print the version numbers for updates.
 
 - Fixed quote mangling due to improper UTF-8 handling.  

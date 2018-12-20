@@ -7,29 +7,49 @@ const ID = 'polar-progress-bar';
  */
 export class ProgressBar {
 
-    private readonly element: HTMLProgressElement;
+    private readonly element: HTMLElement;
 
-    constructor(element: HTMLProgressElement) {
+    constructor(element: HTMLElement) {
         this.element = element;
     }
 
     public update(val: number) {
-       this.element.value = val;
+
+        if (this.element instanceof HTMLProgressElement) {
+            this.element.value = val;
+        }
+
     }
 
     public destroy() {
-
-        if (this.element.parentElement !== null) {
-            this.element.parentElement.removeChild(this.element);
-        }
+        //
+        // if (this.element.parentElement !== null) {
+        //     this.element.parentElement.removeChild(this.element);
+        // }
 
     }
 
     public static create(indeterminate: boolean = true): ProgressBar {
 
-        const element = document.createElement('progress');
+        let element: HTMLElement;
 
-        if (! indeterminate) {
+        if (indeterminate) {
+
+            element = document.createElement('div');
+
+            element.setAttribute('class', 'progress-indeterminate-slider');
+
+            element.innerHTML = `
+                <div class="progress-indeterminate-line"></div>
+                <div class="progress-indeterminate-subline progress-indeterminate-inc"></div>
+                <div class="progress-indeterminate-subline progress-indeterminate-dec"></div>
+            `;
+
+        } else {
+            element = document.createElement('progress');
+        }
+
+        if (! indeterminate && element instanceof HTMLProgressElement) {
             // set the defaults
             element.value = 0;
             element.max = 100;
@@ -37,7 +57,7 @@ export class ProgressBar {
 
         element.id = ID;
 
-        element.style.height = indeterminate ? '5px' : '4px';
+        element.style.height = '4px';
 
         element.style.width = `100%`;
 

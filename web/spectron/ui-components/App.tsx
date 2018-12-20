@@ -23,6 +23,7 @@ import {InviteUsersContent} from '../../js/ui/cloud_auth/InviteUsersContent';
 import {NULL_FUNCTION} from '../../js/util/Functions';
 import {InviteUsersModal} from '../../js/ui/cloud_auth/InviteUsersModal';
 import Button from 'reactstrap/lib/Button';
+import {ProgressBar} from '../../js/ui/progress_bar/ProgressBar';
 
 class App<P> extends React.Component<{}, IAppState> {
 
@@ -38,6 +39,8 @@ class App<P> extends React.Component<{}, IAppState> {
     }
 
     public render() {
+
+        ProgressBar.create();
 
         const options: ListOptionType[] = [
             {
