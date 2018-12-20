@@ -22,10 +22,10 @@ export class ProgressBar {
     }
 
     public destroy() {
-        //
-        // if (this.element.parentElement !== null) {
-        //     this.element.parentElement.removeChild(this.element);
-        // }
+
+        if (this.element.parentElement !== null) {
+            this.element.parentElement.removeChild(this.element);
+        }
 
     }
 
