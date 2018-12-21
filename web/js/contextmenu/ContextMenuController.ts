@@ -97,7 +97,7 @@ export class ContextMenuController {
 
         log.info("Creating context menu for contextMenuTypes: ", contextMenuTypes);
 
-        const pageElement = Elements.untilRoot(event.target, ".page");
+        const pageElement = Elements.untilRoot(<HTMLElement> event.target, ".page");
 
         const docFormat = DocFormatFactory.getInstance();
 

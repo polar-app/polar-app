@@ -140,6 +140,7 @@ export class ControlledPopup extends React.Component<ControlledPopupProps, IStat
         // popup id displayed relative to the anchor.
 
         const pageElements = document.querySelectorAll(".page");
+
         const pageElement = pageElements[event.pageNum - 1];
 
         this.selection = event.selection;

@@ -12,6 +12,7 @@ import {AnnotationBars} from './AnnotationBars';
 import {TypedMessage} from '../../util/TypedMessage';
 import {PopupStateEvent} from '../popup/PopupStateEvent';
 import {RendererAnalytics} from '../../ga/RendererAnalytics';
+import {ControlledAnnotationBars} from './ControlledAnnotationBars';
 
 const log = Logger.create();
 
@@ -48,8 +49,6 @@ export class AnnotationBarService {
 
     }
 
-
-
     private onDocumentLoaded(event: DocumentLoadedEvent) {
         log.debug("Creating annotation bar");
 
@@ -70,8 +69,8 @@ export class AnnotationBarService {
         CommentPopupBars.create(commentBarControlledPopupProps, commentPopupBarCallbacks);
 
         // FIXME: just tie the visibility of the popup to the visiblity of the
-        // region.. when the region vanishes then just close the popup OR the text
-        // area is close obviously.
+        // region.. when the region vanishes then just close the popup OR the
+        // text area is close obviously.
 
         const popupStateEventDispatcher = new SimpleReactor<PopupStateEvent>();
         const triggerPopupEventDispatcher = new SimpleReactor<TriggerPopupEvent>();
@@ -108,7 +107,8 @@ export class AnnotationBarService {
 
             RendererAnalytics.event({category: 'annotations', action: 'text-highlight-created-via-annotation-bar'});
 
-            // TODO: this is just a hack for now.  We should send a dedicated object.
+            // TODO: this is just a hack for now.  We should send a dedicated
+            // object.
             delete (<any> highlightCreatedEvent).activeSelection;
 
             const message: TypedMessage<HighlightCreatedEvent> = {
@@ -125,7 +125,7 @@ export class AnnotationBarService {
             onComment
         };
 
-        AnnotationBars.create(annotationBarControlledPopupProps, annotationBarCallbacks, 1);
+        ControlledAnnotationBars.create(annotationBarControlledPopupProps, annotationBarCallbacks);
 
     }
 

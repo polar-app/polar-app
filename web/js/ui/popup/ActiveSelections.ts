@@ -2,8 +2,15 @@ import {Point} from '../../Point';
 import {MouseDirection} from './Popup';
 import {Simulate} from 'react-dom/test-utils';
 import mouseMove = Simulate.mouseMove;
+import {Logger} from '../../logger/Logger';
+import {isPresent} from '../../Preconditions';
+import {Selections} from '../../highlights/text/selection/Selections';
+import {Ranges} from '../../highlights/text/selection/Ranges';
 
-const MIN_MOUSE_DURATION = 150;
+const log = Logger.create();
+
+const MIN_MOUSE_DURATION = 50;
+
 
 /**
  * Listens for when a new text selection has been created
@@ -16,12 +23,56 @@ export class ActiveSelections {
         let originPoint: Point | undefined;
         let clickTimestamp = 0;
 
+        let activeSelection: ActiveSelection | undefined;
+
+        type EventState = 'none' | 'selecting' | 'selected' | 'deselecting';
+
+        let state: EventState = 'none';
+
+        const changeState = (newState: EventState) => {
+            state = newState;
+        };
+
         target.addEventListener('mousedown', (event: MouseEvent) => {
-            originPoint = this.eventToPoint(event);
-            clickTimestamp = Date.now();
+
+            //
+            // const clearSelection = () => {
+            //
+            //     const sel = event.view.getSelection();
+            //
+            //     if (sel.rangeCount > 1) {
+            //         for (let idx = 1; idx < sel.rangeCount; idx++) {
+            //             sel.removeRange(sel.getRangeAt(idx));
+            //         }
+            //     }
+            //
+            // };
+            //
+            // clearSelection();
+            //
+
+            if (!activeSelection) {
+                originPoint = this.eventToPoint(event);
+                clickTimestamp = Date.now();
+                changeState('selecting');
+
+            } else {
+
+                activeSelection = { ...activeSelection, type: 'destroyed' };
+                listener(activeSelection);
+                activeSelection = undefined;
+
+                changeState('deselecting');
+            }
+
         });
 
         target.addEventListener('mouseup', (event: MouseEvent) => {
+
+            if (state === 'deselecting') {
+                changeState('none');
+                return;
+            }
 
             // const win = target.ownerDocument.defaultView;
             const view = event.view;
@@ -29,16 +80,37 @@ export class ActiveSelections {
 
             const point = this.eventToPoint(event);
 
-            // const movementDistance =
-            //     Math.max(Math.abs(point.x - originPoint!.x), Math.abs(point.y - originPoint!.y));
-            //
-            // const mouseMoved = movementDistance > 5;
+            let element: HTMLElement;
+
+            if (event.target instanceof Node) {
+
+                if (event.target instanceof HTMLElement) {
+                    element = event.target;
+                } else {
+                    element = event.target.parentElement!;
+                }
+
+            } else {
+                log.warn("Event target is not node: ", event.target);
+                return;
+            }
 
             const clickTimeDelta = Date.now() - clickTimestamp;
 
             const mouseMoved = clickTimeDelta > MIN_MOUSE_DURATION;
 
-            if (mouseMoved && !selection.isCollapsed) {
+            const ranges = Selections.toRanges(selection);
+
+            let hasText: boolean = false;
+
+            for (const range of ranges) {
+                if (Ranges.hasText(range)) {
+                    hasText = true;
+                    break;
+                }
+            }
+
+            if (hasText && mouseMoved && !selection.isCollapsed) {
 
                 const mouseDirection: MouseDirection = point.y - originPoint!.y < 0 ? 'up' : 'down';
 
@@ -46,14 +118,22 @@ export class ActiveSelections {
 
                 const boundingClientRect = range.getBoundingClientRect();
 
-                listener({
+                activeSelection = {
+                    element,
                     originPoint: originPoint!,
                     mouseDirection,
                     boundingClientRect,
                     selection,
                     view,
-                });
+                    type: 'created'
+                };
 
+                listener(activeSelection);
+
+                changeState('selected');
+
+            } else {
+                changeState('none');
             }
 
         });
@@ -80,6 +160,7 @@ export interface ActiveSelectionListener {
 
 export interface ActiveSelection {
 
+    readonly element: HTMLElement;
     readonly originPoint: Point;
     readonly mouseDirection: MouseDirection;
     readonly boundingClientRect: ClientRect | DOMRect;
@@ -91,7 +172,11 @@ export interface ActiveSelection {
 
     readonly view: Window;
 
+    readonly type: ActiveSelectionType;
+
 }
+
+export type ActiveSelectionType = 'created' | 'destroyed';
 
 export interface ActiveSelectionEvent extends ActiveSelection {
 

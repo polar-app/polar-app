@@ -131,7 +131,7 @@ export class Elements {
      * selector, or return null when one was not found.
      *
      */
-    public static untilRoot(element: any, selector: string): any {
+    public static untilRoot(element: HTMLElement, selector: string): any {
 
         // TODO: refactor this for typescript
 
@@ -162,13 +162,13 @@ export class Elements {
             throw Error("Not given a div");
         }
 
-        const windowHeight = $(window).height(),
-            docScroll = $(document).scrollTop(),
-            divPosition = $(div).offset().top,
-            divHeight = $(div).height();
+        const windowHeight = $(window).height();
+        const docScroll = $(document).scrollTop();
+        const divPosition = $(div).offset().top;
+        const divHeight = $(div).height();
 
-        const hiddenBefore = docScroll - divPosition,
-            hiddenAfter = (divPosition + divHeight) - (docScroll + windowHeight);
+        const hiddenBefore = docScroll - divPosition;
+        const hiddenAfter = (divPosition + divHeight) - (docScroll + windowHeight);
 
         if ((docScroll > divPosition + divHeight) || (divPosition > docScroll + windowHeight)) {
             return 0;

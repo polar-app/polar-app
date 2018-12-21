@@ -44,7 +44,8 @@ export class Webserver implements WebRequestHandler {
 
         this.app = express();
 
-        this.app.use(serveStatic(this.webserverConfig.dir));
+        // FIXME: add infinite caching if the files are woff2 web fonts...
+        this.app.use(serveStatic(this.webserverConfig.dir, {immutable: true}));
         this.app.use(express.json());
         this.app.use(express.urlencoded());
 

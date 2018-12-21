@@ -88,7 +88,7 @@ export class PagemarkCoverageEventListener {
     private async onActivated(event: MouseEvent) {
 
         // this should always be .page since we're using currentTarget
-        const pageElement = Elements.untilRoot(event.currentTarget, ".page");
+        const pageElement = Elements.untilRoot(<HTMLElement> event.currentTarget, ".page");
 
         const pageHeight = pageElement.clientHeight;
 

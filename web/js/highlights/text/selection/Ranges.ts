@@ -140,6 +140,76 @@ export class Ranges {
 
     }
 
+    /**
+     * Similar to getTextNodes but we return true if the nodes have text in them.
+     *
+     *
+     * @param range
+     */
+    public static hasText(range: Range) {
+
+        // TODO massive amount of duplication with getTextNodes and might be
+        // valuable to rework this to a visitor pattern which accepts a function
+        // which returns true if we should keep moving forward.
+
+        Preconditions.assertNotNull(range, "range");
+
+        // We start walking the tree until we find the start node, then we
+        // enable set inSelection = true... then when we exit the selection by
+        // hitting the end node we just return out of the while loop and we're
+        // done
+
+        const startNode = Ranges.splitTextNode(range.startContainer, range.startOffset, true);
+        const endNode = Ranges.splitTextNode(range.endContainer, range.endOffset, false);
+
+        Preconditions.assertNotNull(startNode, "startNode");
+        Preconditions.assertNotNull(endNode, "endNode");
+
+        const doc = range.startContainer.ownerDocument!;
+
+        // use TreeWalker to walk the commonAncestorContainer and we see which
+        // ranges contain which text nodes.
+        const treeWalker = doc.createTreeWalker(range.commonAncestorContainer);
+
+        const result = [];
+
+        let node;
+
+        let inSelection = false;
+
+        // ** traverse until we find the start
+        while (node = treeWalker.nextNode()) {
+            if (startNode === node) {
+                inSelection = true;
+                break;
+            }
+
+        }
+
+        // ** now keep consuming until we hit the last node.
+
+        while (node) {
+
+            if (node.nodeType === Node.TEXT_NODE) {
+
+                if (node.textContent && node.textContent.trim() !== '') {
+                    return true;
+                }
+
+            }
+
+            if (endNode === node) {
+                break;
+            }
+
+            node = treeWalker.nextNode();
+
+        }
+
+        return false;
+
+    }
+
     public static describeNode(node: Node) {
         return (<HTMLElement> node.cloneNode(false)).outerHTML;
     }
