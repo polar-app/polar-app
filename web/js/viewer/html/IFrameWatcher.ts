@@ -21,7 +21,7 @@ export class IFrameWatcher {
 
     }
 
-    start() {
+    public start() {
 
         this.execute()
             .catch(err => log.error("Failed watching for iframe: ", err ))
@@ -32,10 +32,10 @@ export class IFrameWatcher {
 
         log.debug("Waiting for iframe to load...");
 
-        log.debug("Waiting for content document...")
+        log.debug("Waiting for content document...");
         await IFrames.waitForContentDocument(this.iframe);
 
-        log.debug("Waiting for 'complete'")
+        log.debug("Waiting for 'complete'");
 
         await DocumentReadyStates.waitFor(this.iframe.contentDocument!, 'complete');
 

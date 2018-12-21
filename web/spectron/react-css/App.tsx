@@ -1,7 +1,5 @@
 import * as React from 'react';
 
-import * as styles from './App.css';
-
 class App<P> extends React.Component<{}, IAppState> {
 
     constructor(props: P, context: any) {

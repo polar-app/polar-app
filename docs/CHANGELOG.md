@@ -1,5 +1,7 @@
 # 1.5.2
 
+- Fixed some fonts + css with the sidebar.
+
 - Improved indeterminate progress bar on MacOS and just better in general 
 
 - Print the version numbers for updates.
