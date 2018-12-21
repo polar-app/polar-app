@@ -708,9 +708,11 @@ export default class DocRepoTable extends React.Component<IProps, IState> {
         }
 
         if (field === 'flagged') {
+
             RendererAnalytics.event({category: 'user', action: 'flagged-doc'});
             repoDocInfo.flagged = !repoDocInfo.flagged;
             repoDocInfo.docInfo.flagged = repoDocInfo.flagged;
+
             mutated = true;
         }
 

@@ -1,12 +1,13 @@
 # 1.6.0
 
+- Fixed possible regression due to using SVG icons as these broke the app repo
+  and possibly a few other issue.
+
 - Re-add uncaught exception handlers on app exit.  Hope to fix the issues we were
   having with exceptions on app exit.
 
 - Completely new annotation bar for highlighting which should fix a major bug 
   with the PDF mode.
-
-- Migrate to using the SVG version of font awesome.
 
 - Fixed some fonts + css with the sidebar.
 
