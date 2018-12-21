@@ -66,10 +66,12 @@ export class AnkiSyncEngine implements SyncEngine {
 
             // TODO: implement more model types... not just basic.
 
+            const modelName = FlashcardDescriptors.toModelName(flashcardDescriptor);
+
             return {
                 guid: flashcardDescriptor.flashcard.guid,
                 deckName,
-                modelName: "Basic",
+                modelName,
                 fields,
                 tags
             };

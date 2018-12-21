@@ -3,7 +3,7 @@
  */
 export enum FlashcardType {
 
-    CLOZURE = "CLOZURE",
+    CLOZE = "CLOZE",
 
     BASIC_FRONT_BACK = "BASIC_FRONT_BACK",
 

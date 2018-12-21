@@ -20,7 +20,7 @@ describe('Flashcards', function() {
 
             const fields = { text };
 
-            const flashcard = Flashcards.create(FlashcardType.CLOZURE, fields, archetype, 'page:1');
+            const flashcard = Flashcards.create(FlashcardType.CLOZE, fields, archetype, 'page:1');
 
             const expected = {
                 "id": "1uWrt4yLYp",
@@ -51,7 +51,7 @@ describe('Flashcards', function() {
 
             const fields = { text };
 
-            const flashcard = Flashcards.create(FlashcardType.CLOZURE, fields, archetype, 'page:1');
+            const flashcard = Flashcards.create(FlashcardType.CLOZE, fields, archetype, 'page:1');
 
             const expected = {
                 "id": "1uWrt4yLYp",
