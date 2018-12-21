@@ -1,5 +1,7 @@
 # 1.5.2
 
+- migrate to using the SVG version of font awesome.
+
 - Fixed some fonts + css with the sidebar.
 
 - Improved indeterminate progress bar on MacOS and just better in general 

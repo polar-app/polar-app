@@ -17,6 +17,8 @@ import {PathParams} from 'express-serve-static-core';
 
 const log = Logger.create();
 
+const STATIC_CACHE_MAX_AGE = 365 * 24 * 60 * 60;
+
 export class Webserver implements WebRequestHandler {
 
     private readonly webserverConfig: WebserverConfig;
@@ -44,8 +46,19 @@ export class Webserver implements WebRequestHandler {
 
         this.app = express();
 
+        this.app.use((req, res, next) => {
+
+            next();
+
+            if (req.path && req.path.endsWith('woff2')) {
+                res.set({ 'Cache-Control': `public, max-age=${STATIC_CACHE_MAX_AGE}, immutable` });
+            }
+
+        });
+
         // FIXME: add infinite caching if the files are woff2 web fonts...
         this.app.use(serveStatic(this.webserverConfig.dir, {immutable: true}));
+
         this.app.use(express.json());
         this.app.use(express.urlencoded());
 
