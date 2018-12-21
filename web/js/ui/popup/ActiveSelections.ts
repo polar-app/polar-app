@@ -22,6 +22,15 @@ export class ActiveSelections {
         let activeSelection: ActiveSelection | undefined;
 
 
+        // TODO: this code has the following known issues:
+        //
+        // - when leaving and reentering the target and releasing the mouse
+        //   we don't detect this and don't bring up the selection when the mouse
+        //   enters again.  I think this could be mitigated
+        //
+        // - if we click outside of the main iframe then we don't get the follow
+        //   on events.
+
         target.addEventListener('mousedown', (event: MouseEvent) => {
 
             if (!activeSelection) {
@@ -41,7 +50,7 @@ export class ActiveSelections {
 
                 try {
 
-                    const view = event.view;
+                    const view: Window = event.view;
                     const selection = view.getSelection();
 
                     hasActiveTextSelection = this.hasActiveTextSelection(selection);
