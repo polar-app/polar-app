@@ -26,6 +26,7 @@ import {WebserverCerts} from '../../backend/webserver/WebserverCerts';
 import process from "process";
 import {AppPath} from '../../electron/app_path/AppPath';
 import {MainAPI} from './MainAPI';
+import {MainAppExceptionHandlers} from './MainAppExceptionHandlers';
 
 declare var global: any;
 
@@ -47,13 +48,7 @@ export class MainApp {
 
     public async start(): Promise<MainAppStarted> {
 
-        process.on('uncaughtException', err => {
-            log.error("Uncaught exception: ", err);
-        });
-
-        process.on('unhandledRejection', err => {
-            log.error("Unhandled rejection: ", err);
-        });
+        MainAppExceptionHandlers.register();
 
         // share the disk datastore with the remote.
         // TODO: move this so that we don't expose 'global' here.

@@ -15,6 +15,7 @@ import {FileImportClient} from '../repository/FileImportClient';
 import {CaptureOpts} from '../../capture/CaptureOpts';
 import {Platform, Platforms} from '../../util/Platforms';
 import MenuItem = Electron.MenuItem;
+import {MainAppExceptionHandlers} from './MainAppExceptionHandlers';
 
 const log = Logger.create();
 
@@ -78,6 +79,10 @@ export class MainAppController {
     }
 
     public exitApp() {
+
+        // the exception handlers need to be re-registered as I think they're
+        // being removed on exit (possibly by sentry?)
+        MainAppExceptionHandlers.register();
 
         log.info("Exiting app...");
 

@@ -1,6 +1,11 @@
-# 1.5.2
+# 1.6.0
 
-- migrate to using the SVG version of font awesome.
+- re-add uncaught exception handlers on app exit.
+
+- Completely new annotation bar for highlighting which should fix a major bug 
+  with the PDF mode.
+
+- Migrate to using the SVG version of font awesome.
 
 - Fixed some fonts + css with the sidebar.
 
