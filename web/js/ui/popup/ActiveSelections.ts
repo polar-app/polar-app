@@ -9,9 +9,6 @@ import {Ranges} from '../../highlights/text/selection/Ranges';
 
 const log = Logger.create();
 
-const MIN_MOUSE_DURATION = 50;
-
-
 /**
  * Listens for when a new text selection has been created
  */
@@ -21,122 +18,123 @@ export class ActiveSelections {
                                    target: HTMLElement = document.body): void {
 
         let originPoint: Point | undefined;
-        let clickTimestamp = 0;
 
         let activeSelection: ActiveSelection | undefined;
 
-        type EventState = 'none' | 'selecting' | 'selected' | 'deselecting';
-
-        let state: EventState = 'none';
-
-        const changeState = (newState: EventState) => {
-            state = newState;
-        };
 
         target.addEventListener('mousedown', (event: MouseEvent) => {
 
-            //
-            // const clearSelection = () => {
-            //
-            //     const sel = event.view.getSelection();
-            //
-            //     if (sel.rangeCount > 1) {
-            //         for (let idx = 1; idx < sel.rangeCount; idx++) {
-            //             sel.removeRange(sel.getRangeAt(idx));
-            //         }
-            //     }
-            //
-            // };
-            //
-            // clearSelection();
-            //
-
             if (!activeSelection) {
                 originPoint = this.eventToPoint(event);
-                clickTimestamp = Date.now();
-                changeState('selecting');
-
-            } else {
-
-                activeSelection = { ...activeSelection, type: 'destroyed' };
-                listener(activeSelection);
-                activeSelection = undefined;
-
-                changeState('deselecting');
             }
 
         });
 
         target.addEventListener('mouseup', (event: MouseEvent) => {
 
-            if (state === 'deselecting') {
-                changeState('none');
-                return;
-            }
+            const handleMouseEvent = () => {
 
-            // const win = target.ownerDocument.defaultView;
-            const view = event.view;
-            const selection = view.getSelection();
+                type EventFired = 'none' | 'created' | 'destroyed';
 
-            const point = this.eventToPoint(event);
+                let hasActiveTextSelection: boolean = false;
+                let eventFired: EventFired = 'none';
 
-            let element: HTMLElement;
+                try {
 
-            if (event.target instanceof Node) {
+                    const view = event.view;
+                    const selection = view.getSelection();
 
-                if (event.target instanceof HTMLElement) {
-                    element = event.target;
-                } else {
-                    element = event.target.parentElement!;
+                    hasActiveTextSelection = this.hasActiveTextSelection(selection);
+
+                    const point = this.eventToPoint(event);
+                    const element = this.targetElementForEvent(event);
+
+                    if (! element) {
+                        log.warn("Event target is not node: ", event.target);
+                        return;
+                    }
+
+                    if (activeSelection) {
+
+                        activeSelection = { ...activeSelection, type: 'destroyed' };
+                        listener(activeSelection);
+                        activeSelection = undefined;
+
+                        eventFired = 'destroyed';
+
+                    }
+
+                    if (hasActiveTextSelection) {
+
+                        const mouseDirection: MouseDirection = point.y - originPoint!.y < 0 ? 'up' : 'down';
+
+                        const range = selection.getRangeAt(0);
+
+                        const boundingClientRect = range.getBoundingClientRect();
+
+                        activeSelection = {
+                            element,
+                            originPoint: originPoint!,
+                            mouseDirection,
+                            boundingClientRect,
+                            selection,
+                            view,
+                            type: 'created'
+                        };
+
+                        listener(activeSelection);
+
+                        eventFired = 'created';
+
+                    }
+
+                } finally {
+                    // console.log(`mouseup: hasActiveTextSelection: ${hasActiveTextSelection}, eventFired: ${eventFired}`);
                 }
 
-            } else {
-                log.warn("Event target is not node: ", event.target);
-                return;
-            }
+            };
 
-            const clickTimeDelta = Date.now() - clickTimestamp;
-
-            const mouseMoved = clickTimeDelta > MIN_MOUSE_DURATION;
-
-            const ranges = Selections.toRanges(selection);
-
-            let hasText: boolean = false;
-
-            for (const range of ranges) {
-                if (Ranges.hasText(range)) {
-                    hasText = true;
-                    break;
-                }
-            }
-
-            if (hasText && mouseMoved && !selection.isCollapsed) {
-
-                const mouseDirection: MouseDirection = point.y - originPoint!.y < 0 ? 'up' : 'down';
-
-                const range = selection.getRangeAt(0);
-
-                const boundingClientRect = range.getBoundingClientRect();
-
-                activeSelection = {
-                    element,
-                    originPoint: originPoint!,
-                    mouseDirection,
-                    boundingClientRect,
-                    selection,
-                    view,
-                    type: 'created'
-                };
-
-                listener(activeSelection);
-
-                changeState('selected');
-
-            } else {
-                changeState('none');
-            }
+            // needs to be called via setTimeout becuase if we click 'on' the
+            // selection there's a bug where the selection is still present and
+            // isn't removed.  Allowing the event to complete by taking this
+            // event handler and pushing it on the event queue allows the
+            // selection to be removed by the default handler once it bubbles
+            // up.
+            setTimeout(() => handleMouseEvent(), 1);
 
         });
+
+    }
+
+    private static targetElementForEvent(event: MouseEvent): HTMLElement | undefined {
+
+        if (event.target instanceof Node) {
+
+            if (event.target instanceof HTMLElement) {
+                return event.target;
+            } else {
+                return event.target.parentElement!;
+            }
+
+        } else {
+            log.warn("Event target is not node: ", event.target);
+        }
+
+        return undefined;
+
+    }
+
+    private static hasActiveTextSelection(selection: Selection) {
+
+        const ranges = Selections.toRanges(selection);
+
+        for (const range of ranges) {
+            if (Ranges.hasText(range)) {
+                return true;
+            }
+        }
+
+        return false;
 
     }
 

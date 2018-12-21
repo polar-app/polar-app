@@ -1,7 +1,6 @@
 - remaining work:
 
+    - double click of the entire region should work and we should to see if
+      we can work by just looking at the region on mouse up...
+
     - the onHighlight event is slow.. is it slower than our current highlights?
-        
-    - smoe of the web fonts from the local webserver aren't being cached and are 
-      slwoing down page load.. serve static files from express with caching 
-      headers.
