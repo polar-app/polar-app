@@ -70,8 +70,120 @@ export default class DocRepoTable extends React.Component<IProps, IState> {
             columns: new TableColumns()
         };
 
-        this.init()
+        this.init();
+
+        this.initAsync()
             .catch(err => log.error("Could not init: ", err));
+
+    }
+
+    private init() {
+
+        const persistenceLayerListener = (persistenceLayerEvent: PersistenceLayerEvent) => {
+            this.onUpdatedDocInfo(persistenceLayerEvent.docInfo);
+        };
+
+        // TODO/FIXME: most of this code needs to be removed before react-router
+        // is in use so it's not screen dependent.
+
+        if (this.persistenceLayerManager.get()) {
+            this.persistenceLayerManager.get().addEventListener(persistenceLayerListener);
+        }
+
+        // TODO: I'm not sure if this is still needed in the new UI.
+        this.persistenceLayerManager.addEventListener(event => {
+
+            if (event.state === 'changed') {
+                event.persistenceLayer.addEventListener(persistenceLayerListener);
+            }
+
+        });
+
+        // TODO/FIXME: most of this code needs to be removed before react-router
+        // is in use so it's not screen dependent.
+
+        // don't refresh too often if we get lots of documents as this really
+        // locks up the UI but we also need a reasonable timeout.
+        //
+        // TODO: this is a tough decision as it trades throughput for latency
+        // and I don't want latency in the UI.  It might be better to batch into
+        // 50 items each when SENDING the events and not throttling the events
+        // but throttling the actual snapshot rate.  For example, if we receive
+        // a snapshot with 500 items we can just break that into say 50 items
+        // each and then immediately update the UI with no trailing latency at
+        // the end.  But we can throttle the actual number of snapshots so that
+        // if we receive tons of snapshots with 1 item them we batch these but
+        // even THEN that would add latency because we're not sure how often
+        // the server is sending data.
+
+        const refreshThrottler = new Throttler(() => {
+            this.refresh();
+        }, {maxRequests: 100, maxTimeout: 300});
+
+        let hasSentInitAnalyitics = false;
+
+        this.repoDocInfoLoader.addEventListener(event => {
+
+            for (const mutation of event.mutations) {
+
+                if (mutation.mutationType === 'created' || mutation.mutationType === 'updated') {
+                    this.props.repoDocInfoManager.updateDocInfo(mutation.fingerprint, mutation.repoDocInfo!);
+                } else {
+                    this.props.repoDocInfoManager.updateDocInfo(mutation.fingerprint);
+                }
+
+            }
+
+            refreshThrottler.exec();
+
+            if (! hasSentInitAnalyitics && event.progress.progress === 100) {
+                this.emitInitAnalytics(this.props.repoDocInfoManager.repoDocs);
+                hasSentInitAnalyitics = true;
+            }
+
+        });
+
+    }
+
+    private async initAsync(): Promise<void> {
+
+        const settings = await SettingsStore.load();
+
+        log.info("Settings loaded: ", settings);
+
+        Optional.of(settings.documentRepository)
+            .map(current => current.columns)
+            .when(columns => {
+
+                log.info("Loaded columns from settings: ", columns);
+                this.setState(Object.assign(this.state, {columns}));
+                this.refresh();
+
+            });
+
+        await this.repoDocInfoLoader.start();
+
+        this.refresh();
+
+        // TODO: this doesn't yet work as I think the async events are delayed
+
+        await this.persistenceLayerManager.start();
+
+    }
+
+    private emitInitAnalytics(repoDocs: RepoDocInfoIndex) {
+
+        RendererAnalytics.pageview("/");
+
+        const nrDocs = Object.keys(repoDocs).length;
+
+        RendererAnalytics.set({'nrDocs': nrDocs});
+
+        const persistenceLayerType = this.persistenceLayerManager.currentType();
+
+        RendererAnalytics.event({category: 'document-repository', action: `docs-loaded-${persistenceLayerType}-${nrDocs}`});
+
+        RendererAnalytics.event({category: 'app', action: 'version-' + Version.get()});
 
     }
 
@@ -716,112 +828,6 @@ export default class DocRepoTable extends React.Component<IProps, IState> {
     private onUpdatedDocInfo(docInfo: IDocInfo): void {
         log.info("Received DocInfo update (refreshing UI)");
         this.refresh();
-    }
-
-    private async init(): Promise<void> {
-
-        const settings = await SettingsStore.load();
-
-        log.info("Settings loaded: ", settings);
-
-        Optional.of(settings.documentRepository)
-                .map(current => current.columns)
-                .when(columns => {
-
-                    log.info("Loaded columns from settings: ", columns);
-                    this.setState(Object.assign(this.state, {columns}));
-                    this.refresh();
-
-                });
-
-        const persistenceLayerListener = (persistenceLayerEvent: PersistenceLayerEvent) => {
-            this.onUpdatedDocInfo(persistenceLayerEvent.docInfo);
-        };
-
-        // TODO/FIXME: most of this code needs to be removed before react-router
-        // is in use so it's not screen dependent.
-
-        if (this.persistenceLayerManager.get()) {
-            this.persistenceLayerManager.get().addEventListener(persistenceLayerListener);
-        }
-
-        // TODO: I'm not sure if this is still needed in the new UI.
-        this.persistenceLayerManager.addEventListener(event => {
-
-            if (event.state === 'changed') {
-                event.persistenceLayer.addEventListener(persistenceLayerListener);
-            }
-
-        });
-
-        // TODO/FIXME: most of this code needs to be removed before react-router
-        // is in use so it's not screen dependent.
-
-        // don't refresh too often if we get lots of documents as this really
-        // locks up the UI but we also need a reasonable timeout.
-        //
-        // TODO: this is a tough decision as it trades throughput for latency
-        // and I don't want latency in the UI.  It might be better to batch into
-        // 50 items each when SENDING the events and not throttling the events
-        // but throttling the actual snapshot rate.  For example, if we receive
-        // a snapshot with 500 items we can just break that into say 50 items
-        // each and then immediately update the UI with no trailing latency at
-        // the end.  But we can throttle the actual number of snapshots so that
-        // if we receive tons of snapshots with 1 item them we batch these but
-        // even THEN that would add latency because we're not sure how often
-        // the server is sending data.
-
-        const refreshThrottler = new Throttler(() => {
-            this.refresh();
-        }, {maxRequests: 100, maxTimeout: 300});
-
-        let hasSentInitAnalyitics = false;
-
-        this.repoDocInfoLoader.addEventListener(event => {
-
-            for (const mutation of event.mutations) {
-
-                if (mutation.mutationType === 'created' || mutation.mutationType === 'updated') {
-                    this.props.repoDocInfoManager.updateDocInfo(mutation.fingerprint, mutation.repoDocInfo!);
-                } else {
-                    this.props.repoDocInfoManager.updateDocInfo(mutation.fingerprint);
-                }
-
-            }
-
-            refreshThrottler.exec();
-
-            if (! hasSentInitAnalyitics && event.progress.progress === 100) {
-                this.emitInitAnalytics(this.props.repoDocInfoManager.repoDocs);
-                hasSentInitAnalyitics = true;
-            }
-
-        });
-
-        await this.repoDocInfoLoader.start();
-
-        this.refresh();
-
-        // TODO: this doesn't yet work as I think the async events are delayed
-
-        await this.persistenceLayerManager.start();
-
-    }
-
-    private emitInitAnalytics(repoDocs: RepoDocInfoIndex) {
-
-        RendererAnalytics.pageview("/");
-
-        const nrDocs = Object.keys(repoDocs).length;
-
-        RendererAnalytics.set({'nrDocs': nrDocs});
-
-        const persistenceLayerType = this.persistenceLayerManager.currentType();
-
-        RendererAnalytics.event({category: 'document-repository', action: `docs-loaded-${persistenceLayerType}-${nrDocs}`});
-
-        RendererAnalytics.event({category: 'app', action: 'version-' + Version.get()});
-
     }
 
 }
