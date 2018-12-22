@@ -1,3 +1,4 @@
+
 # 1.6.0
 
 - Fixed possible regression due to using SVG icons as these broke the app repo

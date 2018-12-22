@@ -8,7 +8,12 @@
     font-size: 27px;
 }
 
-.intro * {
+
+.intro strong,
+.intro b,
+.intro i,
+.intro p,
+.intro li {
     font-size: 18px;
 }
 

@@ -43,4 +43,6 @@ SpectronRenderer.run(async () => {
 
     await advertisingPersistenceLayer.writeDocMeta(docMeta);
 
+    console.log("Sender SUCCESSFUL");
+
 });
