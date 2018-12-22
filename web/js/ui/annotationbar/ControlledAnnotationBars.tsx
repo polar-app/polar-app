@@ -8,7 +8,7 @@ import {ControlledAnnotationBar} from './ControlledAnnotationBar';
 import {Elements} from '../../util/Elements';
 import {Logger} from '../../logger/Logger';
 import * as ReactDOM from 'react-dom';
-import App from '../../../../apps/repository/js/App';
+import DocRepoApp from '../../../../apps/repository/js/doc_repo/DocRepoApp';
 import {Point} from '../../Point';
 import {Optional} from '../../util/ts/Optional';
 import {Points} from '../../Points';

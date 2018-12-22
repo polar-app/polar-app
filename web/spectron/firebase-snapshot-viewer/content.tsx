@@ -29,7 +29,7 @@ import {ProgressBar} from '../../js/ui/progress_bar/ProgressBar';
 import {Logging} from '../../js/logger/Logging';
 import {Preconditions} from '../../js/Preconditions';
 import * as ReactDOM from 'react-dom';
-import App from '../../../apps/repository/js/App';
+import DocRepoApp from '../../../apps/repository/js/doc_repo/DocRepoApp';
 import * as React from 'react';
 import ReactJson from 'react-json-view';
 import {ISODateTimeStrings} from '../../js/metadata/ISODateTimeStrings';

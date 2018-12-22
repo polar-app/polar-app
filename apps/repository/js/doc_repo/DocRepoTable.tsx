@@ -1,45 +1,45 @@
 import * as React from 'react';
 import ReactTable from "react-table";
-import {Footer, Tips} from './Utils';
-import {Logger} from '../../../web/js/logger/Logger';
-import {DocLoader} from '../../../web/js/apps/main/ipc/DocLoader';
-import {Strings} from '../../../web/js/util/Strings';
-import {RepoDocInfoLoader} from './RepoDocInfoLoader';
-import {AppState} from './AppState';
-import {RepoDocInfo} from './RepoDocInfo';
-import {RepoDocInfos} from './RepoDocInfos';
-import {DocRepository} from './DocRepository';
-import {TagInput} from './TagInput';
-import {Optional} from '../../../web/js/util/ts/Optional';
-import {Tag} from '../../../web/js/tags/Tag';
-import {FilterTagInput} from './FilterTagInput';
-import {FilteredTags} from './FilteredTags';
-import {isPresent} from '../../../web/js/Preconditions';
-import {Sets} from '../../../web/js/util/Sets';
-import {Tags} from '../../../web/js/tags/Tags';
-import {DateTimeTableCell} from './DateTimeTableCell';
-import {RendererAnalytics} from '../../../web/js/ga/RendererAnalytics';
-import {MessageBanner} from './MessageBanner';
-import {DocDropdown} from './DocDropdown';
-import {TableDropdown} from './TableDropdown';
-import {TableColumns} from './TableColumns';
-import {SettingsStore} from '../../../web/js/datastore/SettingsStore';
-import {Version} from '../../../web/js/util/Version';
-import {RepoDocInfoIndex} from './RepoDocInfoIndex';
-import {AutoUpdatesController} from '../../../web/js/auto_updates/AutoUpdatesController';
-import {IDocInfo} from '../../../web/js/metadata/DocInfo';
-import {SyncBarProgress} from '../../../web/js/ui/sync_bar/SyncBar';
-import {IEventDispatcher, SimpleReactor} from '../../../web/js/reactor/SimpleReactor';
-import {DocRepoAnkiSyncController} from '../../../web/js/controller/DocRepoAnkiSyncController';
-import {CloudAuthButton} from '../../../web/js/ui/cloud_auth/CloudAuthButton';
-import {PersistenceLayerManager, PersistenceLayerTypes} from '../../../web/js/datastore/PersistenceLayerManager';
-import {PersistenceLayerEvent} from '../../../web/js/datastore/PersistenceLayerEvent';
-import {CloudService} from './cloud/CloudService';
-import {Throttler} from '../../../web/js/datastore/Throttler';
-import {PersistenceLayer} from '../../../web/js/datastore/PersistenceLayer';
-import {Backend} from '../../../web/js/datastore/Backend';
-import {Hashcode} from '../../../web/js/metadata/Hashcode';
-import {FileRef} from '../../../web/js/datastore/Datastore';
+import {Footer, Tips} from '../Utils';
+import {Logger} from '../../../../web/js/logger/Logger';
+import {DocLoader} from '../../../../web/js/apps/main/ipc/DocLoader';
+import {Strings} from '../../../../web/js/util/Strings';
+import {RepoDocInfoLoader} from '../RepoDocInfoLoader';
+import {AppState} from '../AppState';
+import {RepoDocInfo} from '../RepoDocInfo';
+import {RepoDocInfos} from '../RepoDocInfos';
+import {RepoDocInfoManager} from '../RepoDocInfoManager';
+import {TagInput} from '../TagInput';
+import {Optional} from '../../../../web/js/util/ts/Optional';
+import {Tag} from '../../../../web/js/tags/Tag';
+import {FilterTagInput} from '../FilterTagInput';
+import {FilteredTags} from '../FilteredTags';
+import {isPresent} from '../../../../web/js/Preconditions';
+import {Sets} from '../../../../web/js/util/Sets';
+import {Tags} from '../../../../web/js/tags/Tags';
+import {DateTimeTableCell} from '../DateTimeTableCell';
+import {RendererAnalytics} from '../../../../web/js/ga/RendererAnalytics';
+import {MessageBanner} from '../MessageBanner';
+import {DocDropdown} from '../DocDropdown';
+import {TableDropdown} from '../TableDropdown';
+import {TableColumns} from '../TableColumns';
+import {SettingsStore} from '../../../../web/js/datastore/SettingsStore';
+import {Version} from '../../../../web/js/util/Version';
+import {RepoDocInfoIndex} from '../RepoDocInfoIndex';
+import {AutoUpdatesController} from '../../../../web/js/auto_updates/AutoUpdatesController';
+import {IDocInfo} from '../../../../web/js/metadata/DocInfo';
+import {SyncBarProgress} from '../../../../web/js/ui/sync_bar/SyncBar';
+import {IEventDispatcher, SimpleReactor} from '../../../../web/js/reactor/SimpleReactor';
+import {DocRepoAnkiSyncController} from '../../../../web/js/controller/DocRepoAnkiSyncController';
+import {CloudAuthButton} from '../../../../web/js/ui/cloud_auth/CloudAuthButton';
+import {PersistenceLayerManager, PersistenceLayerTypes} from '../../../../web/js/datastore/PersistenceLayerManager';
+import {PersistenceLayerEvent} from '../../../../web/js/datastore/PersistenceLayerEvent';
+import {CloudService} from '../cloud/CloudService';
+import {Throttler} from '../../../../web/js/datastore/Throttler';
+import {PersistenceLayer} from '../../../../web/js/datastore/PersistenceLayer';
+import {Backend} from '../../../../web/js/datastore/Backend';
+import {Hashcode} from '../../../../web/js/metadata/Hashcode';
+import {FileRef} from '../../../../web/js/datastore/Datastore';
 
 const log = Logger.create();
 
@@ -47,7 +47,7 @@ export default class DocRepoTable extends React.Component<IProps, IState> {
 
     private readonly persistenceLayerManager: PersistenceLayerManager;
 
-    private readonly docRepository: DocRepository;
+    private readonly docRepository: RepoDocInfoManager;
 
     private readonly repoDocInfoLoader: RepoDocInfoLoader;
 
@@ -59,11 +59,8 @@ export default class DocRepoTable extends React.Component<IProps, IState> {
         super(props, context);
 
         this.persistenceLayerManager = this.props.persistenceLayerManager;
-        this.docRepository = new DocRepository(this.persistenceLayerManager);
+        this.docRepository = new RepoDocInfoManager(this.persistenceLayerManager);
         this.repoDocInfoLoader = new RepoDocInfoLoader(this.persistenceLayerManager);
-
-        new DocRepoAnkiSyncController(this.persistenceLayerManager, this.syncBarProgress)
-            .start();
 
         this.onDocTagged = this.onDocTagged.bind(this);
         this.onDocDeleted = this.onDocDeleted.bind(this);

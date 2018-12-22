@@ -18,7 +18,7 @@ const log = Logger.create();
  * The main interface to the DocRepository including updates, the existing
  * loaded document metadata, and tags database.
  */
-export class DocRepository {
+export class RepoDocInfoManager {
 
     public readonly repoDocs: RepoDocInfoIndex = {};
 
