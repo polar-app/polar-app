@@ -804,8 +804,6 @@ export default class DocRepoTable extends React.Component<IProps, IState> {
 
         // TODO: this doesn't yet work as I think the async events are delayed
 
-        new CloudService(this.persistenceLayerManager).start();
-
         await this.persistenceLayerManager.start();
 
     }
