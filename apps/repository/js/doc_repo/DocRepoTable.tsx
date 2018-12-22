@@ -73,10 +73,6 @@ export default class DocRepoTable extends React.Component<IProps, IState> {
             columns: new TableColumns()
         };
 
-        this.props.updatedDocInfoEventDispatcher.addEventListener(docInfo => {
-            this.onUpdatedDocInfo(docInfo);
-        });
-
         this.init()
             .catch(err => log.error("Could not init: ", err));
 
@@ -721,44 +717,11 @@ export default class DocRepoTable extends React.Component<IProps, IState> {
     }
 
     private onUpdatedDocInfo(docInfo: IDocInfo): void {
-
-        log.info("Received DocInfo update");
-
-        const repoDocInfo = RepoDocInfos.convertFromDocInfo(docInfo);
-
-        if (RepoDocInfos.isValid(repoDocInfo)) {
-
-            this.docRepository!.updateDocInfo(repoDocInfo.fingerprint, repoDocInfo);
-            this.refresh();
-
-            // TODO: technically I don't think we need to test if we're using
-            // the cloud layer anymore as synchronizeDocs is a noop in all other
-            // datastores.
-            const persistenceLayer: PersistenceLayer = this.persistenceLayerManager.get();
-
-            if (PersistenceLayerTypes.get() === 'cloud') {
-
-                const handleWriteDocMeta = async () => {
-                    await persistenceLayer.synchronizeDocs(docInfo.fingerprint);
-                };
-
-                handleWriteDocMeta()
-                    .catch(err => log.error("Unable to write docMeta to datastore: ", err));
-
-            }
-
-        } else {
-
-            log.warn("We were given an invalid DocInfo which yielded a broken RepoDocInfo: ",
-                     docInfo, repoDocInfo);
-
-        }
-
+        log.info("Received DocInfo update (refreshing UI)");
+        this.refresh();
     }
 
     private async init(): Promise<void> {
-
-        new AutoUpdatesController().start();
 
         const settings = await SettingsStore.load();
 
@@ -774,17 +737,18 @@ export default class DocRepoTable extends React.Component<IProps, IState> {
 
                 });
 
-        this.persistenceLayerManager.addEventListener(event => {
-
-            if (event.state === 'changed') {
-                event.persistenceLayer.addEventListener((persistenceLayerEvent: PersistenceLayerEvent) => {
-
-                    this.onUpdatedDocInfo(persistenceLayerEvent.docInfo);
-
-                });
-            }
-
-        });
+        // TODO: I'm not sure if this is still needed in the new UI.
+        // this.persistenceLayerManager.addEventListener(event => {
+        //
+        //     if (event.state === 'changed') {
+        //         event.persistenceLayer.addEventListener((persistenceLayerEvent: PersistenceLayerEvent) => {
+        //
+        //             this.onUpdatedDocInfo(persistenceLayerEvent.docInfo);
+        //
+        //         });
+        //     }
+        //
+        // });
 
         // don't refresh too often if we get lots of documents as this really
         // locks up the UI but we also need a reasonable timeout.
