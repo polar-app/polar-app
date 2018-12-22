@@ -2,16 +2,16 @@
 
 # TODO- if I can pass a custom artifact name on the command line I could get this to work.
 
+WINDOWS_CSC_DIR=$(readlink -m ../polar-bookshelf-secrets/windows-csc)
+
+source ${WINDOWS_CSC_DIR}/windows.sh
+
 if [ "${CSC_KEY_PASSWORD}" == "" ]; then
     echo "CSC_KEY_PASSWORD not set" > /dev/stderr
     exit 1
 fi
 
 export CSC_LINK=/root/windows-csc/spinn3r.p12
-
-WINDOWS_CSC_DIR=$(readlink -m ../polar-bookshelf-secrets/windows-csc)
-
-source ${WINDOWS_CSC_DIR}/windows.sh
 
 # Error: Cannot extract publisher name from code signing certificate, please
 # file issue. As workaround, set win.publisherName: Error: Exit code: 1. Command
@@ -49,7 +49,7 @@ build_for_arch() {
        -v ~/.cache/electron:/root/.cache/electron \
        -v ~/.cache/electron-builder:/root/.cache/electron-builder \
        -v ${WINDOWS_CSC_DIR}:/root/windows-csc \
-       electronuserland/builder:wine bash -c 'npm install && ./node_modules/.bin/electron-builder --config=electron-builder.yml --config.nsis.artifactName=\${name}-\${version}-'${arch}'.\${ext} --'${arch}' --win --publish always'
+       electronuserland/builder:wine bash -c 'npm install && ./node_modules/.bin/electron-builder --config=electron-builder.yml --config.publish.channel=latest-win-'${arch}' --config.nsis.artifactName=\${name}-\${version}-'${arch}'.\${ext} --'${arch}' --win --publish always'
 }
 
 build_for_arch x64
