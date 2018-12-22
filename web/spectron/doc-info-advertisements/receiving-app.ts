@@ -45,7 +45,7 @@ SpectronRenderer.run(async (state) => {
 
         assertJSON(canonicalize(adv.docInfo), canonicalize(expected));
 
-        console.log("It worked!");
+        console.log("Receiver SUCCESSFUL");
 
         state.testResultWriter.write(true)
             .catch((err: Error) => {
