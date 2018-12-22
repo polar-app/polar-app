@@ -16,12 +16,13 @@ const BROWSER_OPTIONS = {
 
 SpectronMain2.create().run(async state => {
 
+    const mainWindow = new BrowserWindow(BROWSER_OPTIONS);
+
+    mainWindow.loadURL(`file://${__dirname}/receiving-app.html`);
+
     await new DocInfoBroadcasterService().start();
 
     state.window.loadURL(`file://${__dirname}/sending-app.html`);
 
-    const mainWindow = new BrowserWindow(BROWSER_OPTIONS);
-
-    mainWindow.loadURL(`file://${__dirname}/receiving-app.html`);
 
 });

@@ -22,6 +22,115 @@ export class WhatsNewContent extends React.Component<IProps, IState> {
 
             <div>
 
+
+                <h3>Polar 1.6 - Polar Needs Your Help!</h3>
+
+                <div className="intro">
+
+                    <p>
+                        This release focuses on stability but adds a few new
+                        features.
+                    </p>
+
+                    <p>
+                        The biggest changes in this release include
+                        a <b>major</b> performance improvement on Windows as well
+                        as a <i>new annotation bar</i> that should be both
+                        faster and much more reliable (especially with PDFs).
+                    </p>
+
+                    <h4>
+                        Polar Needs Your Help!
+                    </h4>
+
+                    <p>
+                        I'd like you to <i>please do me a favor</i> and just take
+                        two minutes and see if you can help out Polar.
+                    </p>
+
+                    <p>
+                        <i className="fas fa-envelope-open text-success"></i>&nbsp;
+
+                        <b>Email 5 colleagues about Polar! </b> Can you take 1 minute
+                        and send an email to 5 of your colleagues about Polar and
+                        explain (in your own words) why you like it?
+
+                    </p>
+
+                    <p>
+
+                        <i className="fas fa-link text-success"></i>&nbsp;
+
+                        <b>Blog and Link to Polar! </b> If you have a blog
+                        or a website could you take 5 minutes and write up a
+                        blog post about Polar?  Post to your favorite forum?
+
+                        We have to get the word out and your help is really
+                        vital here.
+
+                        Even just a link at the bottom of your website would be
+                        a massive help!
+
+                    </p>
+
+                    <p>
+                        <i className="fas fa-donate text-success"></i>&nbsp;
+
+                        <b>Can you make a donation to Polar? </b>
+                        We have an <a
+                        href="https://opencollective.com/polar-bookshelf/donate">Open
+                        Collective</a> setup to accept donations.  If you use
+                        Polar at work ask your employeer if they can make a donation.
+                        Many larger employers will both match donations and support
+                        projects that help their employees.
+                    </p>
+
+                    <p className="text-center">
+                        <a href="https://opencollective.com/polar-bookshelf/donate" target="_blank">
+                            <img src="https://opencollective.com/polar-bookshelf/donate/button@2x.png?color=blue" width="300" />
+                        </a>
+                    </p>
+
+                    <p>
+                        <i className="fas fa-cloud text-success"></i>&nbsp;
+
+                        <b>Please use cloud sync!</b> If you haven't setup cloud
+                        sync yet we'd appreciate your feedback.  Cloud sync is
+                        going to be used for Polar document collaboration and we
+                        need more people to test it and provide feedback.
+
+                    </p>
+
+                    <h4>Changelog:</h4>
+
+                    <ul>
+
+                        <li>Fixed possible regression due to using SVG icons as these broke the app repo and possibly a few other issue.</li>
+
+                        <li>Re-add uncaught exception handlers on app exit.  Hope to fix the issues we were having with exceptions on app exit.</li>
+
+                        <li>Completely new annotation bar for highlighting which should fix a major bug with the PDF mode.</li>
+
+                        <li>Fixed some fonts + css with the sidebar.</li>
+
+                        <li>Improved indeterminate progress bar on MacOS and just better in general</li>
+
+                        <li>Print the version numbers for updates.</li>
+
+                        <li>Fixed quote mangling due to improper UTF-8 handling.</li>
+
+                        <li>Hopefully fixed high CPU bug on Windows caused by shutdown and attempting to double-close windows.</li>
+
+                        <li>Implemented Control+Enter for creating comments.</li>
+
+                        <li>Making tags + updated + added columns visible by default for new users. I think some people did not discover it by default.</li>
+
+                    </ul>
+
+
+                </div>
+
+
                 <h3>Polar 1.5 - Cloud Sync</h3>
 
                 {/*<p className="text-muted">Dec 12, 2018</p>*/}
