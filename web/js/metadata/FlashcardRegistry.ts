@@ -12,36 +12,36 @@ export class FlashcardRegistry {
 
     private readonly registry: {[id: string]: FlashcardArchetype} = {};
 
-    register(flashcardArchetype: FlashcardArchetype) {
+    public register(flashcardArchetype: FlashcardArchetype) {
         Preconditions.assertNotNull(flashcardArchetype.id, "id");
-        this.registry[flashcardArchetype.id]=flashcardArchetype;
+        this.registry[flashcardArchetype.id] = flashcardArchetype;
     }
 
-    get(id: string) {
+    public get(id: string) {
 
     }
 
-    hasKey(id: string) {
+    public hasKey(id: string) {
         return id in this.registry;
     }
 
-    keys() {
+    public keys() {
         return Object.keys(this.registry);
     }
 
     /**
      * Return the values in the registry.
      */
-    values() {
+    public values() {
         return Object.values(this.registry);
     }
 
     /**
      * Create the default flashcard registry.
      */
-    static createDefault() {
+    public static createDefault() {
 
-        let flashcardRegistry = new FlashcardRegistry();
+        const flashcardRegistry = new FlashcardRegistry();
 
         flashcardRegistry.register(new FlashcardArchetype({
             id: "9d146db1-7c31-4bcf-866b-7b485c4e50ea",
@@ -133,11 +133,11 @@ export class FlashcardRegistry {
 
         flashcardRegistry.register(new FlashcardArchetype({
             id: "76152976-d7ae-4348-9571-d65e48050c3f",
-            name: "clozure",
-            description: "Clozure flashcard with cloze text.",
+            name: "cloze",
+            description: "Cloze flashcard with cloze text.",
             fields: {
                 "text": new FlashcardField({
-                    name: "front",
+                    name: "text",
                     type: FlashcardFieldType.TEXT,
                     description: "The text of this card.",
                     required: true

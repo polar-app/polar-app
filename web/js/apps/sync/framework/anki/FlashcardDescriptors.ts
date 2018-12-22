@@ -3,6 +3,7 @@ import {FlashcardDescriptor} from './FlashcardDescriptor';
 import {Flashcard} from '../../../../metadata/Flashcard';
 import {Dictionaries} from '../../../../util/Dictionaries';
 import * as _ from 'lodash';
+import {FlashcardType} from '../../../../metadata/FlashcardType';
 
 export class FlashcardDescriptors {
 
@@ -49,4 +50,15 @@ export class FlashcardDescriptors {
         return result;
 
     }
+
+    public static toModelName(flashcardDescriptor: FlashcardDescriptor) {
+
+        if (flashcardDescriptor.flashcard.type === FlashcardType.CLOZE) {
+            return "Cloze";
+        }
+
+        return "Basic";
+
+    }
+
 }

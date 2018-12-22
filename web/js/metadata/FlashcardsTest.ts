@@ -20,14 +20,14 @@ describe('Flashcards', function() {
 
             const fields = { text };
 
-            const flashcard = Flashcards.create(FlashcardType.CLOZURE, fields, archetype, 'page:1');
+            const flashcard = Flashcards.create(FlashcardType.CLOZE, fields, archetype, 'page:1');
 
             const expected = {
                 "id": "1uWrt4yLYp",
                 "guid": "1uWrt4yLYp",
                 "created": "2012-03-02T11:38:49.321Z",
                 "lastUpdated": "2012-03-02T11:38:49.321Z",
-                "type": "CLOZURE",
+                "type": "CLOZE",
                 "fields": {
                     "text": {
                         "MARKDOWN": "This is the text"
@@ -51,14 +51,14 @@ describe('Flashcards', function() {
 
             const fields = { text };
 
-            const flashcard = Flashcards.create(FlashcardType.CLOZURE, fields, archetype, 'page:1');
+            const flashcard = Flashcards.create(FlashcardType.CLOZE, fields, archetype, 'page:1');
 
             const expected = {
                 "id": "1uWrt4yLYp",
                 "guid": "1uWrt4yLYp",
                 "created": "2012-03-02T11:38:49.321Z",
                 "lastUpdated": "2012-03-02T11:38:49.321Z",
-                "type": "CLOZURE",
+                "type": "CLOZE",
                 "fields": {
                     "text": {
                         "MARKDOWN": "This is the text"

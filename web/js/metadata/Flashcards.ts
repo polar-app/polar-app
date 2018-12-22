@@ -103,7 +103,7 @@ export class MockFlashcards {
 
             const ref = 'page:1';
 
-            const flashcard = Flashcards.create(FlashcardType.CLOZURE, fields, archetype, ref);
+            const flashcard = Flashcards.create(FlashcardType.CLOZE, fields, archetype, ref);
 
             pageMeta.flashcards[flashcard.id] = flashcard;
 
