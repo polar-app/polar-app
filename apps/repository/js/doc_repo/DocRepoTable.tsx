@@ -47,8 +47,6 @@ export default class DocRepoTable extends React.Component<IProps, IState> {
 
     private readonly persistenceLayerManager: PersistenceLayerManager;
 
-    private readonly docRepository: RepoDocInfoManager;
-
     private readonly repoDocInfoLoader: RepoDocInfoLoader;
 
     private readonly filteredTags = new FilteredTags();
@@ -59,7 +57,6 @@ export default class DocRepoTable extends React.Component<IProps, IState> {
         super(props, context);
 
         this.persistenceLayerManager = this.props.persistenceLayerManager;
-        this.docRepository = new RepoDocInfoManager(this.persistenceLayerManager);
         this.repoDocInfoLoader = new RepoDocInfoLoader(this.persistenceLayerManager);
 
         this.onDocTagged = this.onDocTagged.bind(this);
@@ -79,7 +76,7 @@ export default class DocRepoTable extends React.Component<IProps, IState> {
     }
 
     public refresh() {
-        this.refreshState(this.filterRepoDocInfos(Object.values(this.docRepository!.repoDocs)));
+        this.refreshState(this.filterRepoDocInfos(Object.values(this.props.repoDocInfoManager!.repoDocs)));
     }
 
     public highlightRow(selected: number) {
@@ -143,7 +140,7 @@ export default class DocRepoTable extends React.Component<IProps, IState> {
                             <div className="header-filter-box header-filter-tags"
                                  style={{whiteSpace: 'nowrap'}}>
 
-                                <FilterTagInput tagsDBProvider={() => this.docRepository!.tagsDB}
+                                <FilterTagInput tagsDBProvider={() => this.props.repoDocInfoManager!.tagsDB}
                                                 refresher={() => this.refresh()}
                                                 filteredTags={this.filteredTags} />
 
@@ -307,7 +304,7 @@ export default class DocRepoTable extends React.Component<IProps, IState> {
 
                                     return (
                                         <TagInput repoDocInfo={repoDocInfo}
-                                                  tagsDB={this.docRepository!.tagsDB}
+                                                  tagsDB={this.props.repoDocInfoManager!.tagsDB}
                                                   existingTags={existingTags}
                                                   onChange={(_, tags) =>
                                                       this.onDocTagged(repoDocInfo, tags)
@@ -487,7 +484,7 @@ export default class DocRepoTable extends React.Component<IProps, IState> {
 
         RendererAnalytics.event({category: 'user', action: 'doc-tagged'});
 
-        await this.docRepository!.writeDocInfoTags(repoDocInfo, tags);
+        await this.props.repoDocInfoManager!.writeDocInfoTags(repoDocInfo, tags);
         this.refresh();
 
     }
@@ -498,7 +495,7 @@ export default class DocRepoTable extends React.Component<IProps, IState> {
 
         log.info("Deleting document: ", repoDocInfo);
 
-        this.docRepository.deleteDocInfo(repoDocInfo)
+        this.props.repoDocInfoManager.deleteDocInfo(repoDocInfo)
             .catch(err => log.error("Could not delete doc: ", err));
 
         this.refresh();
@@ -511,7 +508,7 @@ export default class DocRepoTable extends React.Component<IProps, IState> {
 
         log.info("Setting doc title: " , title);
 
-        this.docRepository.writeDocInfoTitle(repoDocInfo, title)
+        this.props.repoDocInfoManager.writeDocInfoTitle(repoDocInfo, title)
             .catch(err => log.error("Could not write doc title: ", err));
 
         this.refresh();
@@ -710,7 +707,7 @@ export default class DocRepoTable extends React.Component<IProps, IState> {
         }
 
         if (mutated) {
-            await this.docRepository!.writeDocInfo(repoDocInfo.docInfo);
+            await this.props.repoDocInfoManager!.writeDocInfo(repoDocInfo.docInfo);
             this.refresh();
         }
 
@@ -737,18 +734,25 @@ export default class DocRepoTable extends React.Component<IProps, IState> {
 
                 });
 
+        const persistenceLayerListener = (persistenceLayerEvent: PersistenceLayerEvent) => {
+            this.onUpdatedDocInfo(persistenceLayerEvent.docInfo);
+        };
+
+        if (this.persistenceLayerManager.get()) {
+            console.log("FIXME: using an existing PL");
+            this.persistenceLayerManager.get().addEventListener(persistenceLayerListener);
+        }
+
         // TODO: I'm not sure if this is still needed in the new UI.
-        // this.persistenceLayerManager.addEventListener(event => {
-        //
-        //     if (event.state === 'changed') {
-        //         event.persistenceLayer.addEventListener((persistenceLayerEvent: PersistenceLayerEvent) => {
-        //
-        //             this.onUpdatedDocInfo(persistenceLayerEvent.docInfo);
-        //
-        //         });
-        //     }
-        //
-        // });
+        this.persistenceLayerManager.addEventListener(event => {
+
+            console.log("FIXME: got lifecycle event for PLM: ");
+
+            if (event.state === 'changed') {
+                event.persistenceLayer.addEventListener(persistenceLayerListener);
+            }
+
+        });
 
         // don't refresh too often if we get lots of documents as this really
         // locks up the UI but we also need a reasonable timeout.
@@ -775,9 +779,9 @@ export default class DocRepoTable extends React.Component<IProps, IState> {
             for (const mutation of event.mutations) {
 
                 if (mutation.mutationType === 'created' || mutation.mutationType === 'updated') {
-                    this.docRepository.updateDocInfo(mutation.fingerprint, mutation.repoDocInfo!);
+                    this.props.repoDocInfoManager.updateDocInfo(mutation.fingerprint, mutation.repoDocInfo!);
                 } else {
-                    this.docRepository.updateDocInfo(mutation.fingerprint);
+                    this.props.repoDocInfoManager.updateDocInfo(mutation.fingerprint);
                 }
 
             }
@@ -785,7 +789,7 @@ export default class DocRepoTable extends React.Component<IProps, IState> {
             refreshThrottler.exec();
 
             if (! hasSentInitAnalyitics && event.progress.progress === 100) {
-                this.emitInitAnalytics(this.docRepository.repoDocs);
+                this.emitInitAnalytics(this.props.repoDocInfoManager.repoDocs);
                 hasSentInitAnalyitics = true;
             }
 
@@ -794,10 +798,6 @@ export default class DocRepoTable extends React.Component<IProps, IState> {
         await this.repoDocInfoLoader.start();
 
         this.refresh();
-
-        new CloudService(this.persistenceLayerManager).start();
-
-        await this.persistenceLayerManager.start();
 
     }
 
@@ -824,6 +824,8 @@ interface IProps {
     readonly persistenceLayerManager: PersistenceLayerManager;
 
     readonly updatedDocInfoEventDispatcher: IEventDispatcher<IDocInfo>;
+
+    readonly repoDocInfoManager: RepoDocInfoManager;
 
 }
 

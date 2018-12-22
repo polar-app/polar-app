@@ -18,7 +18,7 @@ export default class DocRepoApp extends React.Component<IProps, IState> {
 
     private readonly persistenceLayerManager: PersistenceLayerManager;
 
-    private readonly docRepository: RepoDocInfoManager;
+    private readonly repoDocInfoManager: RepoDocInfoManager;
 
     private readonly repoDocInfoLoader: RepoDocInfoLoader;
 
@@ -28,7 +28,7 @@ export default class DocRepoApp extends React.Component<IProps, IState> {
         super(props, context);
 
         this.persistenceLayerManager = this.props.persistenceLayerManager;
-        this.docRepository = new RepoDocInfoManager(this.persistenceLayerManager);
+        this.repoDocInfoManager = new RepoDocInfoManager(this.persistenceLayerManager);
         this.repoDocInfoLoader = new RepoDocInfoLoader(this.persistenceLayerManager);
 
         this.state = {
@@ -45,6 +45,7 @@ export default class DocRepoApp extends React.Component<IProps, IState> {
             <div id="doc-repository">
 
                 <DocRepoTable persistenceLayerManager={this.props.persistenceLayerManager}
+                              repoDocInfoManager={this.props.repoDocInfoManager}
                               updatedDocInfoEventDispatcher={this.props.updatedDocInfoEventDispatcher}/>
 
             </div>
@@ -61,6 +62,8 @@ export interface IProps {
     readonly updatedDocInfoEventDispatcher: IEventDispatcher<IDocInfo>;
 
     readonly syncBarProgress: IEventDispatcher<SyncBarProgress>;
+
+    readonly repoDocInfoManager: RepoDocInfoManager;
 }
 
 export interface IState {

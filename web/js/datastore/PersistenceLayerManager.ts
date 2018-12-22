@@ -135,7 +135,13 @@ export class PersistenceLayerManager implements IProvider<ListenablePersistenceL
 
     }
 
-    public addEventListener(listener: PersistenceLayerManagerEventListener) {
+    public addEventListener(listener: PersistenceLayerManagerEventListener,
+                            fireWithExisting?: 'changed' | 'initialized') {
+
+        if (fireWithExisting && this.get()) {
+            listener({type: this.current!, persistenceLayer: this.get(), state: fireWithExisting});
+        }
+
         return this.persistenceLayerManagerEventDispatcher.addEventListener(listener);
     }
 

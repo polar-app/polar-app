@@ -19,6 +19,7 @@ import {Logger} from '../../logger/Logger';
 import {AutoUpdatesController} from '../../auto_updates/AutoUpdatesController';
 import {PersistenceLayerEvent} from '../../datastore/PersistenceLayerEvent';
 import {RepoDocInfoManager} from '../../../../apps/repository/js/RepoDocInfoManager';
+import {CloudService} from '../../../../apps/repository/js/cloud/CloudService';
 
 const log = Logger.create();
 
@@ -33,8 +34,6 @@ export class RepositoryApp {
 
     public async start() {
 
-
-
         const updatedDocInfoEventDispatcher: IEventDispatcher<IDocInfo> = new SimpleReactor();
 
         const syncBarProgress: IEventDispatcher<SyncBarProgress> = new SimpleReactor();
@@ -46,6 +45,11 @@ export class RepositoryApp {
             .start();
 
         new AutoUpdatesController().start();
+
+        new CloudService(this.persistenceLayerManager)
+            .start();
+
+        await this.persistenceLayerManager.start();
 
         updatedDocInfoEventDispatcher.addEventListener(docInfo => {
             this.onUpdatedDocInfo(docInfo);
@@ -66,6 +70,7 @@ export class RepositoryApp {
         const renderDocRepoApp = () => {
             return ( <DocRepoApp persistenceLayerManager={this.persistenceLayerManager}
                                  updatedDocInfoEventDispatcher={updatedDocInfoEventDispatcher}
+                                 repoDocInfoManager={this.repoDocInfoManager}
                                  syncBarProgress={syncBarProgress}/> );
         };
 
