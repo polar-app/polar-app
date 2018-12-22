@@ -738,21 +738,24 @@ export default class DocRepoTable extends React.Component<IProps, IState> {
             this.onUpdatedDocInfo(persistenceLayerEvent.docInfo);
         };
 
+        // TODO/FIXME: most of this code needs to be removed before react-router
+        // is in use so it's not screen dependent.
+
         if (this.persistenceLayerManager.get()) {
-            console.log("FIXME: using an existing PL");
             this.persistenceLayerManager.get().addEventListener(persistenceLayerListener);
         }
 
         // TODO: I'm not sure if this is still needed in the new UI.
         this.persistenceLayerManager.addEventListener(event => {
 
-            console.log("FIXME: got lifecycle event for PLM: ");
-
             if (event.state === 'changed') {
                 event.persistenceLayer.addEventListener(persistenceLayerListener);
             }
 
         });
+
+        // TODO/FIXME: most of this code needs to be removed before react-router
+        // is in use so it's not screen dependent.
 
         // don't refresh too often if we get lots of documents as this really
         // locks up the UI but we also need a reasonable timeout.
@@ -798,6 +801,12 @@ export default class DocRepoTable extends React.Component<IProps, IState> {
         await this.repoDocInfoLoader.start();
 
         this.refresh();
+
+        // TODO: this doesn't yet work as I think the async events are delayed
+
+        new CloudService(this.persistenceLayerManager).start();
+
+        await this.persistenceLayerManager.start();
 
     }
 

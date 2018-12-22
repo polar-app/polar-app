@@ -46,10 +46,12 @@ export class RepositoryApp {
 
         new AutoUpdatesController().start();
 
-        new CloudService(this.persistenceLayerManager)
-            .start();
+        // TODO: this doesn't yet work as I think the async events are delayed
 
-        await this.persistenceLayerManager.start();
+        // new CloudService(this.persistenceLayerManager)
+        //     .start();
+        //
+        // await this.persistenceLayerManager.start();
 
         updatedDocInfoEventDispatcher.addEventListener(docInfo => {
             this.onUpdatedDocInfo(docInfo);
@@ -96,7 +98,7 @@ export class RepositoryApp {
 
                     <Switch>
                         <Route exact path='/' render={renderDocRepoApp}/>
-                        <Route exact path='/asdf' render={renderAnnotationRepoApp}/>
+                        <Route exact path='/annotations' render={renderAnnotationRepoApp}/>
                     </Switch>
 
                 </HashRouter>
