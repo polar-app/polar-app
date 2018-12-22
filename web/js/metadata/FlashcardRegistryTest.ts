@@ -11,9 +11,9 @@ describe('FlashcardRegistry', function() {
 
         it("basic", function () {
 
-            let flashcardRegistry = FlashcardRegistry.createDefault()
+            const flashcardRegistry = FlashcardRegistry.createDefault();
 
-            let expected = [
+            const expected = [
                 {
                     "id": "9d146db1-7c31-4bcf-866b-7b485c4e50ea",
                     "name": "Front and Back",
@@ -114,11 +114,11 @@ describe('FlashcardRegistry', function() {
                 },
                 {
                     "id": "76152976-d7ae-4348-9571-d65e48050c3f",
-                    "name": "clozure",
-                    "description": "Clozure flashcard with cloze text.",
+                    "name": "cloze",
+                    "description": "Cloze flashcard with cloze text.",
                     "fields": {
                         "text": {
-                            "name": "front",
+                            "name": "text",
                             "type": "TEXT",
                             "description": "The text of this card.",
                             "rememberLastInput": false,

@@ -27,7 +27,7 @@ describe('Flashcards', function() {
                 "guid": "1uWrt4yLYp",
                 "created": "2012-03-02T11:38:49.321Z",
                 "lastUpdated": "2012-03-02T11:38:49.321Z",
-                "type": "CLOZURE",
+                "type": "CLOZE",
                 "fields": {
                     "text": {
                         "MARKDOWN": "This is the text"
@@ -58,7 +58,7 @@ describe('Flashcards', function() {
                 "guid": "1uWrt4yLYp",
                 "created": "2012-03-02T11:38:49.321Z",
                 "lastUpdated": "2012-03-02T11:38:49.321Z",
-                "type": "CLOZURE",
+                "type": "CLOZE",
                 "fields": {
                     "text": {
                         "MARKDOWN": "This is the text"
