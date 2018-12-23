@@ -40,6 +40,7 @@ import {PersistenceLayer} from '../../../../web/js/datastore/PersistenceLayer';
 import {Backend} from '../../../../web/js/datastore/Backend';
 import {Hashcode} from '../../../../web/js/metadata/Hashcode';
 import {FileRef} from '../../../../web/js/datastore/Datastore';
+import {ListenablePersistenceLayer} from '../../../../web/js/datastore/ListenablePersistenceLayer';
 
 const log = Logger.create();
 
@@ -80,18 +81,20 @@ export default class DocRepoTable extends React.Component<IProps, IState> {
             this.onUpdatedDocInfo(persistenceLayerEvent.docInfo);
         };
 
-        // TODO/FIXME: most of this code needs to be removed before react-router
-        // is in use so it's not screen dependent.
+        const onPersistenceLayer = (persistenceLayer?: ListenablePersistenceLayer) => {
 
-        if (this.persistenceLayerManager.get()) {
-            this.persistenceLayerManager.get().addEventListener(persistenceLayerListener);
-        }
+            if (persistenceLayer) {
+                persistenceLayer.addEventListener(persistenceLayerListener);
+            }
 
-        // TODO: I'm not sure if this is still needed in the new UI.
+        };
+
+        onPersistenceLayer(this.persistenceLayerManager.get());
+
         this.persistenceLayerManager.addEventListener(event => {
 
             if (event.state === 'changed') {
-                event.persistenceLayer.addEventListener(persistenceLayerListener);
+                onPersistenceLayer(event.persistenceLayer);
             }
 
         });
@@ -121,16 +124,6 @@ export default class DocRepoTable extends React.Component<IProps, IState> {
 
         this.props.repoDocInfoLoader.addEventListener(event => {
 
-            for (const mutation of event.mutations) {
-
-                if (mutation.mutationType === 'created' || mutation.mutationType === 'updated') {
-                    this.props.repoDocInfoManager.updateDocInfo(mutation.fingerprint, mutation.repoDocInfo!);
-                } else {
-                    this.props.repoDocInfoManager.updateDocInfo(mutation.fingerprint);
-                }
-
-            }
-
             refreshThrottler.exec();
 
             if (! hasSentInitAnalyitics && event.progress.progress === 100) {
@@ -157,10 +150,6 @@ export default class DocRepoTable extends React.Component<IProps, IState> {
                 this.refresh();
 
             });
-
-        // TODO: this doesn't yet work as I think the async events are delayed
-
-        await this.persistenceLayerManager.start();
 
         this.refresh();
 

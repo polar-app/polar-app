@@ -40,8 +40,6 @@ export class RepoDocInfoLoader {
 
         this.persistenceLayerManager.addEventListener(event => {
 
-            console.log("FIXME: got event");
-
             if (event.state === 'changed') {
                 this.onPersistenceLayerChanged(event.persistenceLayer);
             }

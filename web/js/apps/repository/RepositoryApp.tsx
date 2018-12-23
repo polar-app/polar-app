@@ -21,6 +21,7 @@ import {PersistenceLayerEvent} from '../../datastore/PersistenceLayerEvent';
 import {RepoDocInfoManager} from '../../../../apps/repository/js/RepoDocInfoManager';
 import {CloudService} from '../../../../apps/repository/js/cloud/CloudService';
 import {RepoDocInfoLoader} from '../../../../apps/repository/js/RepoDocInfoLoader';
+import {Throttler} from '../../datastore/Throttler';
 
 const log = Logger.create();
 
@@ -114,12 +115,39 @@ export class RepositoryApp {
 
         );
 
+        this.handleRepoDocInfoEvents();
+
         await this.repoDocInfoLoader.start();
+
+        await this.persistenceLayerManager.start();
 
         AppInstance.notifyStarted('RepositoryApp');
 
     }
 
+    private handleRepoDocInfoEvents() {
+
+        this.repoDocInfoLoader.addEventListener(event => {
+
+            for (const mutation of event.mutations) {
+
+                if (mutation.mutationType === 'created' || mutation.mutationType === 'updated') {
+                    this.repoDocInfoManager.updateDocInfo(mutation.fingerprint, mutation.repoDocInfo!);
+                } else {
+                    this.repoDocInfoManager.updateDocInfo(mutation.fingerprint);
+                }
+
+            }
+
+        });
+
+    }
+
+    /**
+     * Handle DocInfo updates sent from viewers.
+     *
+     * @param docInfo
+     */
     private onUpdatedDocInfo(docInfo: IDocInfo): void {
 
         log.info("Received DocInfo update");
