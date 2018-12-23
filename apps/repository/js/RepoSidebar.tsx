@@ -28,9 +28,10 @@ const Styles: IStyleMap = {
         // display: 'none',
         backgroundColor: '#fff',
         zIndex: 999,
-        paddingTop: '0px',
         height: 'calc(100%)',
         width: '200px',
+        paddingLeft: '1px',
+        paddingTop: '1px'
     },
 
     subheader: {
