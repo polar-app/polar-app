@@ -47,8 +47,6 @@ export default class DocRepoTable extends React.Component<IProps, IState> {
 
     private readonly persistenceLayerManager: PersistenceLayerManager;
 
-    private readonly repoDocInfoLoader: RepoDocInfoLoader;
-
     private readonly filteredTags = new FilteredTags();
 
     private readonly syncBarProgress: IEventDispatcher<SyncBarProgress> = new SimpleReactor();
@@ -57,7 +55,6 @@ export default class DocRepoTable extends React.Component<IProps, IState> {
         super(props, context);
 
         this.persistenceLayerManager = this.props.persistenceLayerManager;
-        this.repoDocInfoLoader = new RepoDocInfoLoader(this.persistenceLayerManager);
 
         this.onDocTagged = this.onDocTagged.bind(this);
         this.onDocDeleted = this.onDocDeleted.bind(this);
@@ -122,7 +119,7 @@ export default class DocRepoTable extends React.Component<IProps, IState> {
 
         let hasSentInitAnalyitics = false;
 
-        this.repoDocInfoLoader.addEventListener(event => {
+        this.props.repoDocInfoLoader.addEventListener(event => {
 
             for (const mutation of event.mutations) {
 
@@ -161,7 +158,7 @@ export default class DocRepoTable extends React.Component<IProps, IState> {
 
             });
 
-        await this.repoDocInfoLoader.start();
+        await this.props.repoDocInfoLoader.start();
 
         // TODO: this doesn't yet work as I think the async events are delayed
 
@@ -840,6 +837,7 @@ interface IProps {
 
     readonly repoDocInfoManager: RepoDocInfoManager;
 
+    readonly repoDocInfoLoader: RepoDocInfoLoader
 }
 
 interface IState {

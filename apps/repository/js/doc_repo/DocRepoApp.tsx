@@ -46,6 +46,7 @@ export default class DocRepoApp extends React.Component<IProps, IState> {
 
                 <DocRepoTable persistenceLayerManager={this.props.persistenceLayerManager}
                               repoDocInfoManager={this.props.repoDocInfoManager}
+                              repoDocInfoLoader={this.props.repoDocInfoLoader}
                               updatedDocInfoEventDispatcher={this.props.updatedDocInfoEventDispatcher}/>
 
             </div>
@@ -64,6 +65,9 @@ export interface IProps {
     readonly syncBarProgress: IEventDispatcher<SyncBarProgress>;
 
     readonly repoDocInfoManager: RepoDocInfoManager;
+
+    readonly repoDocInfoLoader: RepoDocInfoLoader;
+
 }
 
 export interface IState {

@@ -20,6 +20,7 @@ import {AutoUpdatesController} from '../../auto_updates/AutoUpdatesController';
 import {PersistenceLayerEvent} from '../../datastore/PersistenceLayerEvent';
 import {RepoDocInfoManager} from '../../../../apps/repository/js/RepoDocInfoManager';
 import {CloudService} from '../../../../apps/repository/js/cloud/CloudService';
+import {RepoDocInfoLoader} from '../../../../apps/repository/js/RepoDocInfoLoader';
 
 const log = Logger.create();
 
@@ -27,9 +28,12 @@ export class RepositoryApp {
 
     private readonly persistenceLayerManager = new PersistenceLayerManager();
     private readonly repoDocInfoManager: RepoDocInfoManager;
+    private readonly repoDocInfoLoader: RepoDocInfoLoader;
 
     constructor() {
         this.repoDocInfoManager = new RepoDocInfoManager(this.persistenceLayerManager);
+        this.repoDocInfoLoader = new RepoDocInfoLoader(this.persistenceLayerManager);
+
     }
 
     public async start() {
@@ -73,6 +77,7 @@ export class RepositoryApp {
             return ( <DocRepoApp persistenceLayerManager={this.persistenceLayerManager}
                                  updatedDocInfoEventDispatcher={updatedDocInfoEventDispatcher}
                                  repoDocInfoManager={this.repoDocInfoManager}
+                                 repoDocInfoLoader={this.repoDocInfoLoader}
                                  syncBarProgress={syncBarProgress}/> );
         };
 
