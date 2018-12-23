@@ -14,6 +14,7 @@ import {CloudAuthButton} from '../../../web/js/ui/cloud_auth/CloudAuthButton';
 import {TableDropdown} from './TableDropdown';
 import {PersistenceLayerManager} from '../../../web/js/datastore/PersistenceLayerManager';
 import {RepoSidebar} from './RepoSidebar';
+import {NavLogo} from './nav/NavLog';
 
 const log = Logger.create();
 
@@ -40,18 +41,6 @@ export class RepoHeader extends React.Component<IProps, IState> {
             <header>
 
                 <RepoSidebar/>
-
-                <div style={{width: '50px'}}>
-                    <Button color='primary'><i className="fas fa-bars"></i></Button>
-                </div>
-
-                <div id="header-logo">
-                    <img src="./img/icon.svg" height="25"/>
-                </div>
-
-                <div id="header-title">
-                    <h1>POLAR</h1>
-                </div>
 
                 {this.props.children}
 

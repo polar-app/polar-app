@@ -14,6 +14,7 @@ import {CloudAuthButton} from '../../../web/js/ui/cloud_auth/CloudAuthButton';
 import {TableDropdown} from './TableDropdown';
 import {PersistenceLayerManager} from '../../../web/js/datastore/PersistenceLayerManager';
 import {Blackout} from './Blackout';
+import {NavLogo} from './nav/NavLog';
 
 const log = Logger.create();
 
@@ -26,7 +27,7 @@ const Styles: IStyleMap = {
         // display: 'none',
         backgroundColor: '#fff',
         zIndex: 999,
-        paddingTop: '10px',
+        paddingTop: '0px',
         height: 'calc(100%)',
         width: '200px',
     },
@@ -36,7 +37,7 @@ const Styles: IStyleMap = {
     },
 
     subheaderItem: {
-        display: 'table-cell',
+        display: 'inline-block',
         paddingRight: '5px',
     }
 
@@ -81,60 +82,69 @@ export class RepoSidebar extends React.Component<IProps, IState> {
 
         return (
 
-            <section className="sidebar text-muted"
-                     style={sidebarStyle}
-                     onKeyUp={event => this.onKeyUp(event)}>
+            <div className="repo-sidebar">
 
-                <div className="subheader p-1" style={Styles.subheader}>
+                <div>
 
                     <div style={Styles.subheaderItem}>
-                        <Button onClick={() => this.toggle()}
-                                color='primary'>
-
+                        <Button color='primary' onClick={() => this.toggle()}>
                             <i className="fas fa-bars"></i>
-
                         </Button>
                     </div>
 
-                    <div style={Styles.subheaderItem}>
-                        <img src="./img/icon.svg" height="25"/>
-                    </div>
-
-                    <div style={Styles.subheaderItem}>
-                        <h1>POLAR</h1>
-                    </div>
+                    <NavLogo/>
 
                 </div>
 
-                <ListGroup flush>
+                <section className="sidebar"
+                         style={sidebarStyle}
+                         onKeyUp={event => this.onKeyUp(event)}>
 
-                    <ListGroupItem active={false}
-                                   tag="a"
-                                   href="#"
-                                   onClick={() => this.toggle()}
-                                   action>
+                    <div className="subheader p-1" style={Styles.subheader}>
 
-                        <i className="fas fa-archive"></i>
-                        &nbsp; Documents
+                        <div style={Styles.subheaderItem}>
+                            <Button onClick={() => this.toggle()}
+                                    color='primary'>
 
-                    </ListGroupItem>
+                                <i className="fas fa-bars"></i>
 
-                    <ListGroupItem active={true}
-                                   tag="a"
-                                   href="#annotations"
-                                   onClick={() => this.toggle()}
-                                   action>
-                        <i className="fas fa-sticky-note"></i>
-                        &nbsp; Annotations
-                    </ListGroupItem>
+                            </Button>
+                        </div>
 
-                    {/*<ListGroupItem tag="a" href="#" action>*/}
+                        <NavLogo/>
+
+                    </div>
+
+                    <ListGroup flush>
+
+                        <ListGroupItem active={false}
+                                       tag="a"
+                                       href="#"
+                                       onClick={() => this.toggle()}
+                                       action>
+
+                            <i className="fas fa-archive"></i>
+                            &nbsp; Documents
+
+                        </ListGroupItem>
+
+                        <ListGroupItem active={true}
+                                       tag="a"
+                                       href="#annotations"
+                                       onClick={() => this.toggle()}
+                                       action>
+                            <i className="fas fa-sticky-note"></i>
+                            &nbsp; Annotations
+                        </ListGroupItem>
+
+                        {/*<ListGroupItem tag="a" href="#" action>*/}
                         {/*<i className="fas fa-sticky-note"></i>*/}
                         {/*&nbsp; Settings*/}
-                    {/*</ListGroupItem>*/}
-                </ListGroup>
+                        {/*</ListGroupItem>*/}
+                    </ListGroup>
 
-            </section>
+                </section>
+            </div>
 
         );
 
