@@ -1,6 +1,6 @@
 import {isPresent, Preconditions} from '../Preconditions';
 import {Event} from './Event';
-import {Listener} from './Listener';
+import {EventListener} from './EventListener';
 import {Logger} from '../logger/Logger';
 import {ISimpleReactor} from './SimpleReactor';
 
@@ -86,7 +86,7 @@ export class Reactor<V> implements IReactor<V> {
     /**
      *
      */
-    public addEventListener(eventName: string, listener: Listener<V>) {
+    public addEventListener(eventName: string, listener: EventListener<V>) {
 
         Preconditions.assertNotNull(eventName, "eventName");
 
@@ -103,7 +103,7 @@ export class Reactor<V> implements IReactor<V> {
 
     }
 
-    public removeEventListener(eventName: string, listener: Listener<V>): boolean {
+    public removeEventListener(eventName: string, listener: EventListener<V>): boolean {
 
         if (this.events[eventName]) {
             return this.events[eventName].removeListener(listener);
@@ -146,7 +146,7 @@ export class Reactor<V> implements IReactor<V> {
 
 export interface IReactor<V> {
     once(eventName: string): Promise<V>;
-    addEventListener(eventName: string, listener: Listener<V>): Listener<V>;
+    addEventListener(eventName: string, listener: EventListener<V>): EventListener<V>;
     dispatchEvent(eventName: string, value: V): void;
     hasRegisteredEvent(eventName: string): boolean;
     hasEventListeners(eventName: string): boolean;
@@ -156,8 +156,8 @@ export interface IReactor<V> {
 
 export interface IMutableReactor<V> extends IReactor<V> {
     clearEvent(eventName: string): void;
-    removeEventListener(eventName: string, listener: Listener<V>): boolean;
-    getEventListeners(eventName: string): Array<Listener<V>>;
+    removeEventListener(eventName: string, listener: EventListener<V>): boolean;
+    getEventListeners(eventName: string): Array<EventListener<V>>;
     size(eventName: string): number;
 }
 

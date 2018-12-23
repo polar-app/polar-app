@@ -75,6 +75,7 @@ export default class DocRepoTable extends React.Component<IProps, IState> {
 
     }
 
+
     private init() {
 
         const persistenceLayerListener = (persistenceLayerEvent: PersistenceLayerEvent) => {

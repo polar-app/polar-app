@@ -2,7 +2,7 @@
  * A Reactor that only sends one type of event.
  */
 import {IMutableReactor, IReactor, Reactor} from './Reactor';
-import {Listener} from './Listener';
+import {EventListener} from './EventListener';
 
 const EVENT_NAME = 'event';
 
@@ -23,7 +23,7 @@ export class SimpleReactor<V> implements ISimpleReactor<V> {
         this.delegate.clearEvent(EVENT_NAME);
     }
 
-    public addEventListener(listener: Listener<V>) {
+    public addEventListener(listener: EventListener<V>) {
         return this.delegate.addEventListener(EVENT_NAME, listener);
     }
 
@@ -31,7 +31,7 @@ export class SimpleReactor<V> implements ISimpleReactor<V> {
         return this.delegate.once(EVENT_NAME);
     }
 
-    public removeEventListener(listener: Listener<V>): boolean {
+    public removeEventListener(listener: EventListener<V>): boolean {
         return this.delegate.removeEventListener(EVENT_NAME, listener);
     }
 
@@ -56,9 +56,9 @@ export interface ISimpleReactor<V> {
      * Add the listener and return the listener that was added.  This allows you
      * to later remove the listener if necessary.
      */
-    addEventListener(listener: Listener<V>): Listener<V>;
+    addEventListener(listener: EventListener<V>): EventListener<V>;
 
-    removeEventListener(listener: Listener<V>): boolean;
+    removeEventListener(listener: EventListener<V>): boolean;
 
     dispatchEvent(value: V): void;
 

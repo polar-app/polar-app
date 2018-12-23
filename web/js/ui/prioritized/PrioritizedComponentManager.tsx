@@ -6,7 +6,7 @@ import {AnnotationDescriptor} from '../../metadata/AnnotationDescriptor';
 import {HighlightCreatedEvent} from '../../comments/react/HighlightCreatedEvent';
 import {HighlightColor} from '../../metadata/BaseHighlight';
 import {PopupStateEvent} from '../popup/PopupStateEvent';
-import {Listener} from '../../reactor/Listener';
+import {EventListener} from '../../reactor/EventListener';
 import {Numbers} from '../../util/Numbers';
 
 export class PrioritizedComponentManager extends React.Component<IProps, IState> {

@@ -6,11 +6,11 @@ import {AnnotationDescriptor} from '../../metadata/AnnotationDescriptor';
 import {HighlightCreatedEvent} from '../../comments/react/HighlightCreatedEvent';
 import {HighlightColor} from '../../metadata/BaseHighlight';
 import {PopupStateEvent} from '../popup/PopupStateEvent';
-import {Listener} from '../../reactor/Listener';
+import {EventListener} from '../../reactor/EventListener';
 
 export class AnnotationBar extends React.Component<AnnotationBarProps, IState> {
 
-    private listener?: Listener<AnnotationBarTriggerEvent>;
+    private listener?: EventListener<AnnotationBarTriggerEvent>;
 
     constructor(props: any) {
         super(props);

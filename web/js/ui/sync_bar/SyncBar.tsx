@@ -5,7 +5,7 @@ import {Progress} from 'reactstrap';
 import {Reactor} from '../../reactor/Reactor';
 import Collapse from 'reactstrap/lib/Collapse';
 import {IEventDispatcher} from '../../reactor/SimpleReactor';
-import {Listener} from '../../reactor/Listener';
+import {EventListener} from '../../reactor/EventListener';
 import {Logger} from '../../logger/Logger';
 
 const log = Logger.create();
@@ -50,7 +50,7 @@ export class SyncBar extends React.Component<IProps, IState> {
 
     private value: string = '';
 
-    private listener?: Listener<SyncBarProgress>;
+    private listener?: EventListener<SyncBarProgress>;
 
     constructor(props: IProps) {
         super(props);

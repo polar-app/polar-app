@@ -19,6 +19,7 @@ import {PersistenceLayer} from '../../../web/js/datastore/PersistenceLayer';
 import {IEventDispatcher, SimpleReactor} from '../../../web/js/reactor/SimpleReactor';
 import {isPresent} from '../../../web/js/Preconditions';
 import {ProgressTrackerIndex} from '../../../web/js/util/ProgressTrackerIndex';
+import {EventListener} from '../../../web/js/reactor/EventListener';
 
 const log = Logger.create();
 
@@ -32,9 +33,11 @@ export class RepoDocInfoLoader {
         this.persistenceLayerManager = persistenceLayerManager;
     }
 
-    public addEventListener(listener: (event: RepoDocInfoEvent) => void): void {
-        this.eventDispatcher.addEventListener(listener);
+    public addEventListener(listener: EventListener<RepoDocInfoEvent>) {
+        return this.eventDispatcher.addEventListener(listener);
     }
+
+    // public removeEventListener(listener: )
 
     public async start() {
 
