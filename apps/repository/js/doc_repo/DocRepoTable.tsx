@@ -136,7 +136,7 @@ export default class DocRepoTable extends React.Component<IProps, IState> {
             refreshThrottler.exec();
 
             if (! hasSentInitAnalyitics && event.progress.progress === 100) {
-                this.emitInitAnalytics(this.props.repoDocInfoManager.repoDocs);
+                this.emitInitAnalytics(this.props.repoDocInfoManager.repoDocInfoIndex);
                 hasSentInitAnalyitics = true;
             }
 
@@ -181,7 +181,7 @@ export default class DocRepoTable extends React.Component<IProps, IState> {
     }
 
     public refresh() {
-        this.refreshState(this.filterRepoDocInfos(Object.values(this.props.repoDocInfoManager!.repoDocs)));
+        this.refreshState(this.filterRepoDocInfos(Object.values(this.props.repoDocInfoManager!.repoDocInfoIndex)));
     }
 
     public highlightRow(selected: number) {
@@ -643,11 +643,11 @@ export default class DocRepoTable extends React.Component<IProps, IState> {
 
     }
 
-    private refreshState(repoDocs: RepoDocInfo[]) {
+    private refreshState(repoDocInfos: RepoDocInfo[]) {
 
         const state: AppState = Object.assign({}, this.state);
 
-        state.data = repoDocs;
+        state.data = repoDocInfos;
 
         setTimeout(() => {
 
@@ -659,17 +659,17 @@ export default class DocRepoTable extends React.Component<IProps, IState> {
 
     }
 
-    private filterRepoDocInfos(repoDocs: RepoDocInfo[]): RepoDocInfo[] {
+    private filterRepoDocInfos(repoDocInfos: RepoDocInfo[]): RepoDocInfo[] {
 
         // always filter valid to make sure nothing corrupts the state.  Some
         // other bug might inject a problem otherwise.
-        repoDocs = this.doFilterValid(repoDocs);
-        repoDocs = this.doFilterByTitle(repoDocs);
-        repoDocs = this.doFilterFlaggedOnly(repoDocs);
-        repoDocs = this.doFilterHideArchived(repoDocs);
-        repoDocs = this.doFilterByTags(repoDocs);
+        repoDocInfos = this.doFilterValid(repoDocInfos);
+        repoDocInfos = this.doFilterByTitle(repoDocInfos);
+        repoDocInfos = this.doFilterFlaggedOnly(repoDocInfos);
+        repoDocInfos = this.doFilterHideArchived(repoDocInfos);
+        repoDocInfos = this.doFilterByTags(repoDocInfos);
 
-        return repoDocs;
+        return repoDocInfos;
 
     }
 

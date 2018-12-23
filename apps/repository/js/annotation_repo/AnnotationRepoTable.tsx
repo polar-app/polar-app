@@ -2,44 +2,17 @@ import * as React from 'react';
 import ReactTable from "react-table";
 import {Footer, Tips} from '../Utils';
 import {Logger} from '../../../../web/js/logger/Logger';
-import {DocLoader} from '../../../../web/js/apps/main/ipc/DocLoader';
-import {Strings} from '../../../../web/js/util/Strings';
-import {RepoDocInfoLoader} from '../RepoDocInfoLoader';
 import {AppState} from '../AppState';
 import {RepoDocInfo} from '../RepoDocInfo';
-import {RepoDocInfos} from '../RepoDocInfos';
-import {RepoDocInfoManager} from '../RepoDocInfoManager';
-import {TagInput} from '../TagInput';
-import {Optional} from '../../../../web/js/util/ts/Optional';
 import {Tag} from '../../../../web/js/tags/Tag';
-import {FilterTagInput} from '../FilterTagInput';
-import {FilteredTags} from '../FilteredTags';
-import {isPresent} from '../../../../web/js/Preconditions';
-import {Sets} from '../../../../web/js/util/Sets';
 import {Tags} from '../../../../web/js/tags/Tags';
 import {DateTimeTableCell} from '../DateTimeTableCell';
-import {RendererAnalytics} from '../../../../web/js/ga/RendererAnalytics';
 import {MessageBanner} from '../MessageBanner';
-import {DocDropdown} from '../DocDropdown';
-import {TableDropdown} from '../TableDropdown';
 import {TableColumns} from '../TableColumns';
-import {SettingsStore} from '../../../../web/js/datastore/SettingsStore';
-import {Version} from '../../../../web/js/util/Version';
-import {RepoDocInfoIndex} from '../RepoDocInfoIndex';
-import {AutoUpdatesController} from '../../../../web/js/auto_updates/AutoUpdatesController';
 import {IDocInfo} from '../../../../web/js/metadata/DocInfo';
 import {SyncBarProgress} from '../../../../web/js/ui/sync_bar/SyncBar';
 import {IEventDispatcher, SimpleReactor} from '../../../../web/js/reactor/SimpleReactor';
-import {DocRepoAnkiSyncController} from '../../../../web/js/controller/DocRepoAnkiSyncController';
-import {CloudAuthButton} from '../../../../web/js/ui/cloud_auth/CloudAuthButton';
-import {PersistenceLayerManager, PersistenceLayerTypes} from '../../../../web/js/datastore/PersistenceLayerManager';
-import {PersistenceLayerEvent} from '../../../../web/js/datastore/PersistenceLayerEvent';
-import {CloudService} from '../cloud/CloudService';
-import {Throttler} from '../../../../web/js/datastore/Throttler';
-import {PersistenceLayer} from '../../../../web/js/datastore/PersistenceLayer';
-import {Backend} from '../../../../web/js/datastore/Backend';
-import {Hashcode} from '../../../../web/js/metadata/Hashcode';
-import {FileRef} from '../../../../web/js/datastore/Datastore';
+import {PersistenceLayerManager} from '../../../../web/js/datastore/PersistenceLayerManager';
 import {RepoHeader} from '../RepoHeader';
 
 const log = Logger.create();
@@ -59,9 +32,6 @@ export default class AnnotationRepoTable extends React.Component<IProps, IState>
             data: [],
             columns: new TableColumns()
         };
-
-        this.init()
-            .catch(err => log.error("Could not init: ", err));
 
     }
 
@@ -177,9 +147,9 @@ export default class AnnotationRepoTable extends React.Component<IProps, IState>
                         if (! singleClickColumns.includes(column.id)) {
                             return {
                                 onDoubleClick: (e: any) => {
-                                    this.onDocumentLoadRequested(rowInfo.original.fingerprint,
-                                                                 rowInfo.original.filename,
-                                                                 rowInfo.original.hashcode);
+                                    // this.onDocumentLoadRequested(rowInfo.original.fingerprint,
+                                    //                              rowInfo.original.filename,
+                                    //                              rowInfo.original.hashcode);
                                 }
                             };
                         }
@@ -234,53 +204,6 @@ export default class AnnotationRepoTable extends React.Component<IProps, IState>
             this.setState(state);
 
         }, 1);
-
-    }
-
-    private onDocumentLoadRequested(fingerprint: string,
-                                    filename: string,
-                                    hashcode?: Hashcode) {
-
-        const handler = async () => {
-
-            const persistenceLayer = this.persistenceLayerManager.get();
-
-            const ref: FileRef = {
-                name: filename,
-                hashcode
-            };
-
-            // NOTE: these operations execute locally first, so it's a quick
-            // way to verify that the file needs to be synchronized.
-            const requiresSynchronize =
-                ! await persistenceLayer.contains(fingerprint) ||
-                ! await persistenceLayer.containsFile(Backend.STASH, ref);
-
-            if (requiresSynchronize) {
-                await persistenceLayer.synchronizeDocs(fingerprint);
-                log.notice("Forcing synchronization (doc not local): " + fingerprint);
-            }
-
-            await DocLoader.load({
-                fingerprint,
-                filename,
-                newWindow: true
-            });
-
-        };
-
-        handler()
-            .catch(err => log.error("Unable to load doc: ", err));
-
-    }
-
-    private async init(): Promise<void> {
-
-        // noop
-
-    }
-
-    private emitInitAnalytics(repoDocs: RepoDocInfoIndex) {
 
     }
 

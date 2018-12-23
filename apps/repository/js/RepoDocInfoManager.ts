@@ -20,7 +20,7 @@ const log = Logger.create();
  */
 export class RepoDocInfoManager {
 
-    public readonly repoDocs: RepoDocInfoIndex = {};
+    public readonly repoDocInfoIndex: RepoDocInfoIndex = {};
 
     public readonly tagsDB: TagsDB = new TagsDB();
 
@@ -43,10 +43,10 @@ export class RepoDocInfoManager {
     public updateDocInfo(fingerprint: string, repoDocInfo?: RepoDocInfo) {
 
         if (repoDocInfo) {
-            this.repoDocs[fingerprint] = repoDocInfo;
+            this.repoDocInfoIndex[fingerprint] = repoDocInfo;
             this.updateTagsDB(repoDocInfo);
         } else {
-            delete this.repoDocs[fingerprint];
+            delete this.repoDocInfoIndex[fingerprint];
         }
 
     }
@@ -131,7 +131,7 @@ export class RepoDocInfoManager {
 
     private init() {
 
-        for (const repoDoc of Object.values(this.repoDocs)) {
+        for (const repoDoc of Object.values(this.repoDocInfoIndex)) {
             this.updateTagsDB(repoDoc);
         }
 
