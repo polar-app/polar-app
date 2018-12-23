@@ -15,6 +15,7 @@ import {TableDropdown} from './TableDropdown';
 import {PersistenceLayerManager} from '../../../web/js/datastore/PersistenceLayerManager';
 import {Blackout} from './Blackout';
 import {NavLogo} from './nav/NavLog';
+import {RepoSidebarItem} from './sidebar/RepoSidebarItem';
 
 const log = Logger.create();
 
@@ -64,21 +65,6 @@ export class RepoSidebar extends React.Component<IProps, IState> {
         const sidebarStyle = Object.assign({}, Styles.sidebar, {display});
 
         Blackout.toggle(this.state.expanded);
-        //
-        // const createListGroupItem = (href: string, icon: string, title: string) => {
-        //     return (
-        //         <ListGroupItem active={document.location!.hash === href}
-        //                        tag="a"
-        //                        href={href}
-        //                        onClick={() => this.toggle()}
-        //                        action>
-        //
-        //             <i className={icon}></i>
-        //             &nbsp; {title}
-        //
-        //         </ListGroupItem>
-        //     );
-        // };
 
         return (
 
@@ -117,30 +103,17 @@ export class RepoSidebar extends React.Component<IProps, IState> {
 
                     <ListGroup flush>
 
-                        <ListGroupItem active={false}
-                                       tag="a"
-                                       href="#"
-                                       onClick={() => this.toggle()}
-                                       action>
+                        <RepoSidebarItem href="#"
+                                         onClick={() => this.toggle()}
+                                         iconClassName="fas fa-archive"
+                                         text="Documents"/>
 
-                            <i className="fas fa-archive"></i>
-                            &nbsp; Documents
 
-                        </ListGroupItem>
+                        <RepoSidebarItem href="#annotations"
+                                         onClick={() => this.toggle()}
+                                         iconClassName="fas fa-sticky-note"
+                                         text="Annotations"/>
 
-                        <ListGroupItem active={true}
-                                       tag="a"
-                                       href="#annotations"
-                                       onClick={() => this.toggle()}
-                                       action>
-                            <i className="fas fa-sticky-note"></i>
-                            &nbsp; Annotations
-                        </ListGroupItem>
-
-                        {/*<ListGroupItem tag="a" href="#" action>*/}
-                        {/*<i className="fas fa-sticky-note"></i>*/}
-                        {/*&nbsp; Settings*/}
-                        {/*</ListGroupItem>*/}
                     </ListGroup>
 
                 </section>
