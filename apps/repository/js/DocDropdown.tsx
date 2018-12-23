@@ -61,7 +61,9 @@ export class DocDropdown extends React.Component<IProps, IState> {
 
                 <Dropdown id={this.props.id} isOpen={this.state.open} toggle={this.toggle}>
 
-                    <DropdownToggle color="link" className="doc-dropdown-button btn text-muted pl-1 pr-1" id={this.props.id + '-dropdown-toggle'}>
+                    <DropdownToggle color="link"
+                                    className="doc-dropdown-button btn text-muted pl-1 pr-1"
+                                    id={this.props.id + '-dropdown-toggle'}>
                         <i className="fas fa-ellipsis-h"></i>
                     </DropdownToggle>
 

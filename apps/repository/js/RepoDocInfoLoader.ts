@@ -37,7 +37,9 @@ export class RepoDocInfoLoader {
         return this.eventDispatcher.addEventListener(listener);
     }
 
-    // public removeEventListener(listener: )
+    public removeEventListener(listener: EventListener<RepoDocInfoEvent>) {
+        return this.eventDispatcher.removeEventListener(listener);
+    }
 
     public async start() {
 

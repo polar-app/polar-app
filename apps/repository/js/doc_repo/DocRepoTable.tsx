@@ -78,6 +78,9 @@ export default class DocRepoTable extends React.Component<IProps, IState> {
 
     private init() {
 
+        // FIXME: all these event listeners need to be removed when the
+        // component is unmounted...
+
         const persistenceLayerListener = (persistenceLayerEvent: PersistenceLayerEvent) => {
             this.onUpdatedDocInfo(persistenceLayerEvent.docInfo);
         };
@@ -199,6 +202,8 @@ export default class DocRepoTable extends React.Component<IProps, IState> {
 
                     <div id="header-title">
                         <h1>POLAR</h1>
+
+                        <a href="#">first</a> &nbsp; <a href="#annotations">second</a>
                     </div>
 
                     <div id="header-filter">

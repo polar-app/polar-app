@@ -14,7 +14,7 @@ import {CommentComponent} from '../../js/annotation_sidebar/child_annotations/Co
 import {CommentComponentExample} from './CommentComponentExample';
 import {FlashcardComponentExample} from './FlashcardComponentExample';
 import {WhatsNewContent} from '../../../apps/repository/js/splash/splashes/whats_new/WhatsNewContent';
-import {ModalBody, InputGroup, InputGroupAddon, Input} from 'reactstrap';
+import {ModalBody, InputGroup, InputGroupAddon, Input, ListGroup, ListGroupItem} from 'reactstrap';
 import {CloudSyncOverviewContent} from '../../js/ui/cloud_auth/CloudSyncOverviewContent';
 import {CloudSyncConfiguredContent} from '../../js/ui/cloud_auth/CloudSyncConfiguredContent';
 import {CloudSyncConfiguredModal} from '../../js/ui/cloud_auth/CloudSyncConfiguredModal';
@@ -40,7 +40,7 @@ class App<P> extends React.Component<{}, IAppState> {
 
     public render() {
 
-        ProgressBar.create();
+        // ProgressBar.create();
 
         const options: ListOptionType[] = [
             {
@@ -83,6 +83,31 @@ class App<P> extends React.Component<{}, IAppState> {
         return (
 
             <div>
+
+
+
+                <section className="sidebar text-muted p-1">
+
+                    <ListGroup flush>
+                        <ListGroupItem active={true} tag="a" href="#" action>
+                            <i className="fas fa-archive"></i>
+                            &nbsp; Documents
+                        </ListGroupItem>
+
+                        <ListGroupItem tag="a" href="#" action>
+                            <i className="fas fa-sticky-note"></i>
+                            &nbsp; Annotations
+                        </ListGroupItem>
+
+                        <ListGroupItem tag="a" href="#" action>
+                            <i className="fas fa-sticky-note"></i>
+                            &nbsp; Settings
+                        </ListGroupItem>
+
+                    </ListGroup>
+
+                </section>
+
 
                 <div className="p-2">
 

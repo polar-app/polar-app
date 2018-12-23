@@ -43,7 +43,7 @@ export default class AnnotationRepoApp extends React.Component<IProps, IState> {
 
         return (
 
-            <div id="annotation-repository">
+            <div id="doc-repository">
 
                 <AnnotationRepoTable persistenceLayerManager={this.props.persistenceLayerManager}
                                      updatedDocInfoEventDispatcher={this.props.updatedDocInfoEventDispatcher}/>

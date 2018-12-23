@@ -40,6 +40,7 @@ import {PersistenceLayer} from '../../../../web/js/datastore/PersistenceLayer';
 import {Backend} from '../../../../web/js/datastore/Backend';
 import {Hashcode} from '../../../../web/js/metadata/Hashcode';
 import {FileRef} from '../../../../web/js/datastore/Datastore';
+import {RepoHeader} from '../RepoHeader';
 
 const log = Logger.create();
 
@@ -83,23 +84,7 @@ export default class AnnotationRepoTable extends React.Component<IProps, IState>
 
             <div id="doc-repo-table">
 
-                <header>
-
-                    <div id="header-logo">
-                        <img src="./img/icon.svg" height="25"/>
-                    </div>
-
-                    <div id="header-title">
-                        <h1>POLAR</h1>
-                    </div>
-
-                    <div id="header-filter">
-
-
-                    </div>
-
-
-                </header>
+                <RepoHeader persistenceLayerManager={this.props.persistenceLayerManager}/>
 
                 <MessageBanner/>
 
