@@ -42,6 +42,7 @@ import {Hashcode} from '../../../../web/js/metadata/Hashcode';
 import {FileRef} from '../../../../web/js/datastore/Datastore';
 import {ListenablePersistenceLayer} from '../../../../web/js/datastore/ListenablePersistenceLayer';
 import {RepoSidebar} from '../RepoSidebar';
+import {MultiReleaser} from '../../../../web/js/reactor/EventListener';
 
 const log = Logger.create();
 
@@ -53,6 +54,8 @@ export default class DocRepoTable extends React.Component<IProps, IState> {
 
     private readonly syncBarProgress: IEventDispatcher<SyncBarProgress> = new SimpleReactor();
 
+    private readonly releaser = new MultiReleaser();
+
     constructor(props: IProps, context: any) {
         super(props, context);
 
@@ -63,6 +66,7 @@ export default class DocRepoTable extends React.Component<IProps, IState> {
         this.onDocSetTitle = this.onDocSetTitle.bind(this);
         this.onSelectedColumns = this.onSelectedColumns.bind(this);
         this.onFilterByTitle = this.onFilterByTitle.bind(this);
+        this.componentWillUnmount = this.componentWillUnmount.bind(this);
 
         this.state = {
             data: [],
@@ -76,11 +80,11 @@ export default class DocRepoTable extends React.Component<IProps, IState> {
 
     }
 
-
     private init() {
 
-        // FIXME: all these event listeners need to be removed when the
-        // component is unmounted...
+        // TODO: when we get a NEW persistence layer we probably need to release
+        // the old event listener as the component is still mounted but the old
+        // persistence layer has now gone away.
 
         const persistenceLayerListener = (persistenceLayerEvent: PersistenceLayerEvent) => {
             this.onUpdatedDocInfo(persistenceLayerEvent.docInfo);
@@ -89,25 +93,24 @@ export default class DocRepoTable extends React.Component<IProps, IState> {
         const onPersistenceLayer = (persistenceLayer?: ListenablePersistenceLayer) => {
 
             if (persistenceLayer) {
-                persistenceLayer.addEventListener(persistenceLayerListener);
+                this.releaser.register(
+                    persistenceLayer.addEventListener(persistenceLayerListener));
             }
 
         };
 
         onPersistenceLayer(this.persistenceLayerManager.get());
 
-        this.persistenceLayerManager.addEventListener(event => {
+        this.releaser.register(
+            this.persistenceLayerManager.addEventListener(event => {
 
             if (event.state === 'changed') {
                 onPersistenceLayer(event.persistenceLayer);
             }
 
-        });
+        }));
 
-        // TODO/FIXME: most of this code needs to be removed before react-router
-        // is in use so it's not screen dependent.
-
-        // don't refresh too often if we get lots of documents as this really
+        // DO NOT refresh too often if we get lots of documents as this really
         // locks up the UI but we also need a reasonable timeout.
         //
         // TODO: this is a tough decision as it trades throughput for latency
@@ -127,7 +130,8 @@ export default class DocRepoTable extends React.Component<IProps, IState> {
 
         let hasSentInitAnalyitics = false;
 
-        this.props.repoDocInfoLoader.addEventListener(event => {
+        this.releaser.register(
+            this.props.repoDocInfoLoader.addEventListener(event => {
 
             refreshThrottler.exec();
 
@@ -136,7 +140,7 @@ export default class DocRepoTable extends React.Component<IProps, IState> {
                 hasSentInitAnalyitics = true;
             }
 
-        });
+        }));
 
     }
 
@@ -499,7 +503,9 @@ export default class DocRepoTable extends React.Component<IProps, IState> {
                         return {
 
                             onClick: (e: any) => {
-                                // console.log(`doc fingerprint: ${rowInfo.original.fingerprint} and filename ${rowInfo.original.filename}`);
+                                // console.log(`doc fingerprint:
+                                // ${rowInfo.original.fingerprint} and filename
+                                // ${rowInfo.original.filename}`);
                                 this.highlightRow(rowInfo.index as number);
                             },
 
@@ -811,6 +817,11 @@ export default class DocRepoTable extends React.Component<IProps, IState> {
     private onUpdatedDocInfo(docInfo: IDocInfo): void {
         log.info("Received DocInfo update (refreshing UI)");
         this.refresh();
+    }
+
+    public componentWillUnmount(): void {
+        log.info("Releasing event listeners...");
+        this.releaser.release();
     }
 
 }

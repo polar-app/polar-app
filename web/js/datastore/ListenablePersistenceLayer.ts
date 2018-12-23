@@ -1,5 +1,6 @@
 import {PersistenceLayerListener} from './PersistenceLayerListener';
 import {PersistenceLayer} from './PersistenceLayer';
+import {Releaseable} from '../reactor/EventListener';
 
 /**
  * Persistence layer that allows us to listen to changes in the backing store
@@ -8,7 +9,7 @@ import {PersistenceLayer} from './PersistenceLayer';
  */
 export interface ListenablePersistenceLayer extends PersistenceLayer {
 
-    addEventListener(listener: PersistenceLayerListener): void;
+    addEventListener(listener: PersistenceLayerListener): Releaseable;
 
     /**
      * Add an event listener but for a specific document in the repository.

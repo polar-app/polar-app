@@ -15,18 +15,20 @@ export interface Releaseable {
     release(): void;
 }
 
+/**
+ * Register and release multiple Releaseables.
+ */
+export class MultiReleaser implements Releaseable {
 
-export class EventListenerReleaser implements Releaseable {
+    private releaseables: Releaseable[] = [];
 
-    private eventListeners: Array<RegisteredEventListener<any>> = [];
-
-    public register(eventListener: RegisteredEventListener<any>) {
-        this.eventListeners.push(eventListener);
+    public register(releaseable: Releaseable) {
+        this.releaseables.push(releaseable);
     }
 
     public release() {
-        for (const eventListener of this.eventListeners) {
-            eventListener.release();
+        for (const releaseable of this.releaseables) {
+            releaseable.release();
         }
     }
 

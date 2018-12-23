@@ -18,6 +18,7 @@ import {DocInfo} from '../../metadata/DocInfo';
 import {DatastoreMutation, DefaultDatastoreMutation} from '../DatastoreMutation';
 import {NULL_FUNCTION} from '../../util/Functions';
 import {Logger} from '../../logger/Logger';
+import {Releaseable} from '../../reactor/EventListener';
 
 const log = Logger.create();
 
@@ -47,8 +48,8 @@ export abstract class AbstractAdvertisingPersistenceLayer implements ListenableP
 
     public abstract stop(): Promise<void>;
 
-    public addEventListener(listener: PersistenceLayerListener): void {
-        this.reactor.addEventListener(listener);
+    public addEventListener(listener: PersistenceLayerListener): Releaseable {
+        return this.reactor.addEventListener(listener);
     }
 
     public addEventListenerForDoc(fingerprint: string, listener: PersistenceLayerListener): void {

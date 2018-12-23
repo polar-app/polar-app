@@ -33,8 +33,8 @@ export class DelegatedListenablePersistenceLayer extends DelegatedPersistenceLay
         this.listenablePersistenceLayer = listenablePersistenceLayer;
     }
 
-    public addEventListener(listener: PersistenceLayerListener): void {
-        this.listenablePersistenceLayer.addEventListener(listener);
+    public addEventListener(listener: PersistenceLayerListener) {
+        return this.listenablePersistenceLayer.addEventListener(listener);
     }
 
     public addEventListenerForDoc(fingerprint: string, listener: PersistenceLayerListener): void {
