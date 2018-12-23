@@ -823,7 +823,7 @@ interface IProps {
 
     readonly repoDocInfoManager: RepoDocInfoManager;
 
-    readonly repoDocInfoLoader: RepoDocInfoLoader
+    readonly repoDocInfoLoader: RepoDocInfoLoader;
 }
 
 interface IState {
