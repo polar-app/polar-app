@@ -1,3 +1,5 @@
+# 1.7.0
+
 - backend changes to support cloze deletions in anki.
 
 # 1.6.0
