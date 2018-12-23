@@ -2,7 +2,7 @@
  * A Reactor that only sends one type of event.
  */
 import {IMutableReactor, IReactor, Reactor} from './Reactor';
-import {EventListener} from './EventListener';
+import {EventListener, RegisteredEventListener} from './EventListener';
 
 const EVENT_NAME = 'event';
 
@@ -56,7 +56,7 @@ export interface ISimpleReactor<V> {
      * Add the listener and return the listener that was added.  This allows you
      * to later remove the listener if necessary.
      */
-    addEventListener(listener: EventListener<V>): EventListener<V>;
+    addEventListener(listener: EventListener<V>): RegisteredEventListener<V>;
 
     removeEventListener(listener: EventListener<V>): boolean;
 

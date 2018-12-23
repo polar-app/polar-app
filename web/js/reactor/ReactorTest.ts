@@ -26,7 +26,7 @@ describe('Reactor', function() {
             {
                 "message": "hello world"
             }
-        ])
+        ]);
 
     });
 
@@ -80,13 +80,13 @@ describe('Reactor', function() {
         const reactor = new Reactor<string>();
 
         const eventName = "messages";
-        reactor.registerEvent(eventName)
+        reactor.registerEvent(eventName);
 
-        const listener = reactor.addEventListener(eventName, message => {});
+        const registeredEventListener = reactor.addEventListener(eventName, message => {});
 
         assert.equal(reactor.getEventListeners(eventName).length, 1);
 
-        assert.equal(reactor.removeEventListener(eventName, listener), true);
+        assert.equal(reactor.removeEventListener(eventName, registeredEventListener.eventListener), true);
 
         assert.equal(reactor.getEventListeners(eventName).length, 0);
 
@@ -102,7 +102,7 @@ describe('Reactor', function() {
 
         assert.equal(reactor.getEventListeners(eventName).length, 0);
 
-        const messagePromise = reactor.once(eventName)
+        const messagePromise = reactor.once(eventName);
         assert.equal(reactor.getEventListeners(eventName).length, 1);
 
         reactor.dispatchEvent(eventName, 'hello');

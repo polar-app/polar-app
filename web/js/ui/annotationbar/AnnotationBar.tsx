@@ -6,11 +6,11 @@ import {AnnotationDescriptor} from '../../metadata/AnnotationDescriptor';
 import {HighlightCreatedEvent} from '../../comments/react/HighlightCreatedEvent';
 import {HighlightColor} from '../../metadata/BaseHighlight';
 import {PopupStateEvent} from '../popup/PopupStateEvent';
-import {EventListener} from '../../reactor/EventListener';
+import {EventListener, Releaseable} from '../../reactor/EventListener';
 
 export class AnnotationBar extends React.Component<AnnotationBarProps, IState> {
 
-    private listener?: EventListener<AnnotationBarTriggerEvent>;
+    private releaser?: Releaseable;
 
     constructor(props: any) {
         super(props);
@@ -24,15 +24,15 @@ export class AnnotationBar extends React.Component<AnnotationBarProps, IState> {
 
     public componentWillMount(): void {
 
-        this.listener = this.props.annotationBarTriggerEventDispatcher.addEventListener(event => {
+        this.releaser = this.props.annotationBarTriggerEventDispatcher.addEventListener(event => {
             this.setState({event});
         });
 
     }
 
     public componentWillUnmount(): void {
-        if (this.listener) {
-            this.props.annotationBarTriggerEventDispatcher.removeEventListener(this.listener);
+        if (this.releaser) {
+            this.releaser.release();
         }
     }
 

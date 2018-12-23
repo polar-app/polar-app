@@ -1,5 +1,5 @@
 import {IMutableReactor, IReactor, Reactor} from './Reactor';
-import {EventListener} from './EventListener';
+import {EventListener, RegisteredEventListener} from './EventListener';
 import {isPresent} from '../Preconditions';
 
 /**
@@ -17,9 +17,9 @@ export class QueuedReactor<V> implements IReactor<V>, IMutableReactor<V> {
         this.delegate = delegate;
     }
 
-    public addEventListener(eventName: string, listener: EventListener<V>): EventListener<V> {
+    public addEventListener(eventName: string, eventListener: EventListener<V>): RegisteredEventListener<V> {
 
-        this.delegate.addEventListener(eventName, listener);
+        this.delegate.addEventListener(eventName, eventListener);
 
         // now call all the events on the delegate directly.
 
@@ -31,7 +31,11 @@ export class QueuedReactor<V> implements IReactor<V>, IMutableReactor<V> {
 
         }
 
-        return listener;
+        const release = () => {
+            this.removeEventListener(eventName, eventListener);
+        };
+
+        return {eventListener, release};
 
     }
 

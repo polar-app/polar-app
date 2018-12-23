@@ -1,6 +1,6 @@
 import {isPresent, Preconditions} from '../Preconditions';
 import {Event} from './Event';
-import {EventListener} from './EventListener';
+import {EventListener, RegisteredEventListener} from './EventListener';
 import {Logger} from '../logger/Logger';
 import {ISimpleReactor} from './SimpleReactor';
 
@@ -83,23 +83,25 @@ export class Reactor<V> implements IReactor<V> {
 
     }
 
-    /**
-     *
-     */
-    public addEventListener(eventName: string, listener: EventListener<V>) {
+    public addEventListener(eventName: string, eventListener: EventListener<V>): RegisteredEventListener<V> {
 
         Preconditions.assertNotNull(eventName, "eventName");
 
-        if (typeof listener !== "function") {
-            throw new Error("listener is not a function: " + typeof listener);
+        if (typeof eventListener !== "function") {
+            throw new Error("listener is not a function: " + typeof eventListener);
         }
 
         if (this.events[eventName] === undefined) {
             throw new Error("No registered event for event name: " + eventName);
         }
 
-        this.events[eventName].registerListener(listener);
-        return listener;
+        this.events[eventName].registerListener(eventListener);
+
+        const release = () => {
+            this.removeEventListener(eventName, eventListener);
+        };
+
+        return {eventListener, release};
 
     }
 
@@ -146,7 +148,7 @@ export class Reactor<V> implements IReactor<V> {
 
 export interface IReactor<V> {
     once(eventName: string): Promise<V>;
-    addEventListener(eventName: string, listener: EventListener<V>): EventListener<V>;
+    addEventListener(eventName: string, listener: EventListener<V>): RegisteredEventListener<V>;
     dispatchEvent(eventName: string, value: V): void;
     hasRegisteredEvent(eventName: string): boolean;
     hasEventListeners(eventName: string): boolean;
