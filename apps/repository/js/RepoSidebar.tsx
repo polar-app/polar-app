@@ -74,7 +74,8 @@ export class RepoSidebar extends React.Component<IProps, IState> {
                 <div>
 
                     <div style={Styles.subheaderItem}>
-                        <Button color='primary' onClick={() => this.toggle()}>
+                        <Button color='light'
+                                onClick={() => this.toggle()}>
                             <i className="fas fa-bars"></i>
                         </Button>
                     </div>
@@ -91,7 +92,7 @@ export class RepoSidebar extends React.Component<IProps, IState> {
 
                         <div style={Styles.subheaderItem}>
                             <Button onClick={() => this.toggle()}
-                                    color='primary'>
+                                    color='light'>
 
                                 <i className="fas fa-bars"></i>
 

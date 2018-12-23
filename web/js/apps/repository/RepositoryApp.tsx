@@ -34,7 +34,6 @@ export class RepositoryApp {
     constructor() {
         this.repoDocInfoManager = new RepoDocInfoManager(this.persistenceLayerManager);
         this.repoDocInfoLoader = new RepoDocInfoLoader(this.persistenceLayerManager);
-
     }
 
     public async start() {
@@ -51,12 +50,8 @@ export class RepositoryApp {
 
         new AutoUpdatesController().start();
 
-        // TODO: this doesn't yet work as I think the async events are delayed
-
         new CloudService(this.persistenceLayerManager)
             .start();
-        //
-        // await this.persistenceLayerManager.start();
 
         updatedDocInfoEventDispatcher.addEventListener(docInfo => {
             this.onUpdatedDocInfo(docInfo);
@@ -97,10 +92,6 @@ export class RepositoryApp {
                 <SyncBar progress={syncBarProgress}/>
 
                 <HashRouter hashType="noslash">
-
-                    {/*FIXME: there is still more state management and  sync*/}
-                    {/*management code in the DocRepoApp init and some other*/}
-                    {/*places.*/}
 
                     <Switch>
                         <Route exact path='/' render={renderDocRepoApp}/>
@@ -145,8 +136,6 @@ export class RepositoryApp {
 
     /**
      * Handle DocInfo updates sent from viewers.
-     *
-     * @param docInfo
      */
     private onUpdatedDocInfo(docInfo: IDocInfo): void {
 
