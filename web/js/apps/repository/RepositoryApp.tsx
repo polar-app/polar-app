@@ -114,6 +114,8 @@ export class RepositoryApp {
 
         );
 
+        await this.repoDocInfoLoader.start();
+
         AppInstance.notifyStarted('RepositoryApp');
 
     }

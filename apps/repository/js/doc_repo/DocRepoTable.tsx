@@ -158,8 +158,6 @@ export default class DocRepoTable extends React.Component<IProps, IState> {
 
             });
 
-        await this.props.repoDocInfoLoader.start();
-
         // TODO: this doesn't yet work as I think the async events are delayed
 
         await this.persistenceLayerManager.start();
