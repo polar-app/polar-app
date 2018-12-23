@@ -134,7 +134,7 @@ export class RepoDocInfoLoader {
 
             if (docMeta.docInfo) {
 
-                return RepoDocInfos.convertFromDocInfo(docMeta.docInfo);
+                return RepoDocInfos.convert(docMeta.docInfo);
 
             } else {
                 log.warn("No docInfo for file: ", fingerprint);

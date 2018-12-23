@@ -26,11 +26,6 @@ export class RepoDocInfoManager {
 
     private readonly persistenceLayerProvider: IProvider<PersistenceLayer>;
 
-    // TODO: a great deal of this code could be cleaned up if I made it MVC and
-    // had this data be the model and updated the view via events emitted from
-    // an AdvertisingPersistenceLayer - which we kind of need anyway for
-    // Firestore....
-
     constructor(persistenceLayerProvider: IProvider<PersistenceLayer>) {
         this.persistenceLayerProvider = persistenceLayerProvider;
         this.init();
@@ -47,6 +42,20 @@ export class RepoDocInfoManager {
             this.updateTagsDB(repoDocInfo);
         } else {
             delete this.repoDocInfoIndex[fingerprint];
+        }
+
+    }
+
+    private updateTagsDB(...repoDocInfos: RepoDocInfo[]) {
+
+        for (const repoDocInfo of repoDocInfos) {
+
+            // update the tags data.
+            Optional.of(repoDocInfo.docInfo.tags)
+                .map(tags => {
+                    this.tagsDB.register(...Object.values(tags));
+                });
+
         }
 
     }
@@ -131,24 +140,11 @@ export class RepoDocInfoManager {
 
     private init() {
 
-        for (const repoDoc of Object.values(this.repoDocInfoIndex)) {
-            this.updateTagsDB(repoDoc);
+        for (const repoDocInfo of Object.values(this.repoDocInfoIndex)) {
+            this.updateTagsDB(repoDocInfo);
         }
 
     }
 
-    private updateTagsDB(...repoDocInfos: RepoDocInfo[]) {
-
-        for (const repoDocInfo of repoDocInfos) {
-
-            // update the tags data.
-            Optional.of(repoDocInfo.docInfo.tags)
-                .map(tags => {
-                    this.tagsDB.register(...Object.values(tags));
-                });
-
-        }
-
-    }
 
 }

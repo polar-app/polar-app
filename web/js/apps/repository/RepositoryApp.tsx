@@ -152,7 +152,7 @@ export class RepositoryApp {
 
         log.info("Received DocInfo update");
 
-        const repoDocInfo = RepoDocInfos.convertFromDocInfo(docInfo);
+        const repoDocInfo = RepoDocInfos.convert(docInfo);
 
         if (RepoDocInfos.isValid(repoDocInfo)) {
 

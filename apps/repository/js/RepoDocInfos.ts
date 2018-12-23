@@ -11,7 +11,7 @@ export class RepoDocInfos {
         return isPresent(repoDocInfo.filename);
     }
 
-    public static convertFromDocInfo(docInfo: IDocInfo): RepoDocInfo {
+    public static convert(docInfo: IDocInfo): RepoDocInfo {
 
         Preconditions.assertPresent(docInfo, "docInfo");
 
