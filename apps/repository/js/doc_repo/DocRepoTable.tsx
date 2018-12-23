@@ -41,6 +41,7 @@ import {Backend} from '../../../../web/js/datastore/Backend';
 import {Hashcode} from '../../../../web/js/metadata/Hashcode';
 import {FileRef} from '../../../../web/js/datastore/Datastore';
 import {ListenablePersistenceLayer} from '../../../../web/js/datastore/ListenablePersistenceLayer';
+import {RepoSidebar} from '../RepoSidebar';
 
 const log = Logger.create();
 
@@ -196,15 +197,7 @@ export default class DocRepoTable extends React.Component<IProps, IState> {
 
                 <header>
 
-                    <div id="header-logo">
-                        <img src="./img/icon.svg" height="25"/>
-                    </div>
-
-                    <div id="header-title">
-                        <h1>POLAR</h1>
-
-                        <a href="#">first</a> &nbsp; <a href="#annotations">second</a>
-                    </div>
+                    <RepoSidebar/>
 
                     <div id="header-filter">
 

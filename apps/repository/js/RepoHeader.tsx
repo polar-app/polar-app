@@ -56,8 +56,6 @@ export class RepoHeader extends React.Component<IProps, IState> {
 
                 </div>
 
-
-
             </header>
 
         );

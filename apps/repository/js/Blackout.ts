@@ -14,7 +14,11 @@ export class Blackout {
 
     public static enable() {
 
-        const style = 'height:100%; width:100%; position:absolute; top:0; left:0; background-color:#000000; opacity: 0.2;';
+        // always make sure the blackout element is removed so we don't double
+        // enable it...
+        this.disable();
+
+        const style = 'height:100%; width:100%; position:absolute; top:0; left:0; background-color:#000000; opacity: 0.3;';
 
         const blackoutElement =
             Elements.createWrapperElementHTML(`<div id="blackout" style="${style}">`)

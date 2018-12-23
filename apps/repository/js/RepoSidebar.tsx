@@ -52,7 +52,7 @@ export class RepoSidebar extends React.Component<IProps, IState> {
         super(props, context);
 
         this.state = {
-            expanded: true
+            expanded: false
         };
 
     }
