@@ -44,14 +44,17 @@ export class BrowserApp {
             content.insertCSS('html, body { overflow: hidden !important; }');
 
             content.addEventListener('will-navigate', (event: Electron.WillNavigateEvent) => {
-                this.onWebviewNavigated(event.url);
+                this.onWebviewNavigated(event.url, 'will-navigate');
             });
 
             ['did-start-loading', 'did-stop-loading', 'did-fail-load', 'dom-ready' ]
                 .map(eventListenerName => content.addEventListener(eventListenerName, () => this.refreshTitle(eventListenerName)));
 
-            ['did-start-loading', 'did-frame-navigate' ]
-                .map(eventListenerName => content.addEventListener(eventListenerName, (event) => {
+            const mainWebviewNavigatedCallback = (eventName: string) => {
+
+                if (this.loadedURL) {
+                    return;
+                }
 
                 // TODO: refactor this so it only works on the top level
                 // navigation changes but we weren't able to do this because
@@ -59,21 +62,20 @@ export class BrowserApp {
 
                 const currentURL = content.getURL();
 
-                this.onWebviewNavigated(currentURL);
-
-                if (this.loadedURL) {
-                    return;
-                }
-
                 if (currentURL && currentURL !== '' && ! currentURL.startsWith("file:")) {
+
+                    this.onWebviewNavigated(currentURL, eventName);
+
+                    navigationReactor.dispatchEvent({url: currentURL, type: 'did-start-loading'});
+
                     this.loadedURL = true;
-                } else {
-                    return;
+
                 }
 
-                navigationReactor.dispatchEvent({url: currentURL, type: 'did-start-loading'});
+            };
 
-            }));
+            content.addEventListener('did-start-loading', () => mainWebviewNavigatedCallback('did-start-loading'));
+            content.addEventListener('did-frame-navigate', () => mainWebviewNavigatedCallback('did-frame-navigate'));
 
             // Corresponds to the points in time when the spinner of the tab
             // stops spinning.
@@ -174,7 +176,9 @@ export class BrowserApp {
      *
      * @param url
      */
-    private onWebviewNavigated(url: string) {
+    private onWebviewNavigated(url: string, eventName: string) {
+
+        console.log(`onWebviewNavigated: (${eventName}: ${url}`);
 
         if (! isPresent(url) || url.startsWith("file:")) {
             return;
