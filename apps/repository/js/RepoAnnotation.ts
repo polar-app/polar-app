@@ -11,7 +11,12 @@ import {HighlightColor} from '../../../web/js/metadata/BaseHighlight';
 
 export interface RepoAnnotation {
 
+    /**
+     * The document fingerprint this annotation belongs to.
+     */
     fingerprint: string;
+
+    id: string,
 
     text: string;
 

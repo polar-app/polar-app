@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {Logger} from '../../../../web/js/logger/Logger';
-import {RepoDocInfoLoader} from '../RepoDocInfoLoader';
-import {RepoDocInfoManager} from '../RepoDocInfoManager';
+import {RepoDocMetaLoader} from '../RepoDocMetaLoader';
+import {RepoDocMetaManager} from '../RepoDocMetaManager';
 import {FilteredTags} from '../FilteredTags';
 import {TableColumns} from '../TableColumns';
 import {IDocInfo} from '../../../../web/js/metadata/DocInfo';
@@ -18,9 +18,9 @@ export default class DocRepoApp extends React.Component<IProps, IState> {
 
     private readonly persistenceLayerManager: PersistenceLayerManager;
 
-    private readonly repoDocInfoManager: RepoDocInfoManager;
+    private readonly repoDocInfoManager: RepoDocMetaManager;
 
-    private readonly repoDocInfoLoader: RepoDocInfoLoader;
+    private readonly repoDocInfoLoader: RepoDocMetaLoader;
 
     private readonly filteredTags = new FilteredTags();
 
@@ -28,8 +28,8 @@ export default class DocRepoApp extends React.Component<IProps, IState> {
         super(props, context);
 
         this.persistenceLayerManager = this.props.persistenceLayerManager;
-        this.repoDocInfoManager = new RepoDocInfoManager(this.persistenceLayerManager);
-        this.repoDocInfoLoader = new RepoDocInfoLoader(this.persistenceLayerManager);
+        this.repoDocInfoManager = new RepoDocMetaManager(this.persistenceLayerManager);
+        this.repoDocInfoLoader = new RepoDocMetaLoader(this.persistenceLayerManager);
 
         this.state = {
             data: [],
@@ -64,9 +64,9 @@ export interface IProps {
 
     readonly syncBarProgress: IEventDispatcher<SyncBarProgress>;
 
-    readonly repoDocInfoManager: RepoDocInfoManager;
+    readonly repoDocInfoManager: RepoDocMetaManager;
 
-    readonly repoDocInfoLoader: RepoDocInfoLoader;
+    readonly repoDocInfoLoader: RepoDocMetaLoader;
 
 }
 

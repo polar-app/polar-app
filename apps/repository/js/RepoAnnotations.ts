@@ -36,6 +36,7 @@ export class RepoAnnotations {
                                    docInfo: DocInfo): RepoAnnotation {
 
         return {
+            id: from.id,
             fingerprint: docInfo.fingerprint,
             text: "This is an example",
             type,

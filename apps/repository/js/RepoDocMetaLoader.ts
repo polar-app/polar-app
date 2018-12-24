@@ -20,24 +20,26 @@ import {IEventDispatcher, SimpleReactor} from '../../../web/js/reactor/SimpleRea
 import {isPresent} from '../../../web/js/Preconditions';
 import {ProgressTrackerIndex} from '../../../web/js/util/ProgressTrackerIndex';
 import {EventListener} from '../../../web/js/reactor/EventListener';
+import {RepoDocMeta} from './RepoDocMeta';
+import {RepoDocMetas} from './RepoDocMetas';
 
 const log = Logger.create();
 
-export class RepoDocInfoLoader {
+export class RepoDocMetaLoader {
 
     private readonly persistenceLayerManager: PersistenceLayerManager;
 
-    private readonly eventDispatcher: IEventDispatcher<RepoDocInfoEvent> = new SimpleReactor();
+    private readonly eventDispatcher: IEventDispatcher<RepoDocMetaEvent> = new SimpleReactor();
 
     constructor(persistenceLayerManager: PersistenceLayerManager) {
         this.persistenceLayerManager = persistenceLayerManager;
     }
 
-    public addEventListener(listener: EventListener<RepoDocInfoEvent>) {
+    public addEventListener(listener: EventListener<RepoDocMetaEvent>) {
         return this.eventDispatcher.addEventListener(listener);
     }
 
-    public removeEventListener(listener: EventListener<RepoDocInfoEvent>) {
+    public removeEventListener(listener: EventListener<RepoDocMetaEvent>) {
         return this.eventDispatcher.removeEventListener(listener);
     }
 
@@ -80,7 +82,7 @@ export class RepoDocInfoLoader {
                     progressBar = undefined;
                 }
 
-                const mutations: RepoDocInfoMutation[] = [];
+                const mutations: RepoDocMetaMutation[] = [];
 
                 for (const docMetaMutation of docMetaMutations) {
 
@@ -90,14 +92,14 @@ export class RepoDocInfoLoader {
                         const docMeta = await docMetaMutation.docMetaProvider();
                         const docInfo = docMeta.docInfo;
 
-                        const repoDocInfo = this.toRepoDocInfo(docInfo.fingerprint, docMeta);
+                        const repoDocMeta = this.toRepoDocMeta(docInfo.fingerprint, docMeta);
 
-                        if (repoDocInfo && RepoDocInfos.isValid(repoDocInfo)) {
+                        if (repoDocMeta && RepoDocInfos.isValid(repoDocMeta.repoDocInfo)) {
 
                             mutations.push({
                                 mutationType: docMetaMutation.mutationType,
                                 fingerprint: docMetaMutation.fingerprint,
-                                repoDocInfo
+                                repoDocMeta
                             });
 
                         }
@@ -128,17 +130,11 @@ export class RepoDocInfoLoader {
 
     }
 
-    private toRepoDocInfo(fingerprint: string, docMeta?: DocMeta): RepoDocInfo | undefined {
+    private toRepoDocMeta(fingerprint: string, docMeta?: DocMeta): RepoDocMeta | undefined {
 
-        if (docMeta !== undefined) {
+        if (docMeta) {
 
-            if (docMeta.docInfo) {
-
-                return RepoDocInfos.convert(docMeta.docInfo);
-
-            } else {
-                log.warn("No docInfo for file: ", fingerprint);
-            }
+            return RepoDocMetas.convert(fingerprint, docMeta);
 
         } else {
             log.warn("No DocMeta for fingerprint: " + fingerprint);
@@ -150,15 +146,15 @@ export class RepoDocInfoLoader {
 
 }
 
-export interface RepoDocInfoEvent {
-    readonly mutations: ReadonlyArray<RepoDocInfoMutation>;
+export interface RepoDocMetaEvent {
+    readonly mutations: ReadonlyArray<RepoDocMetaMutation>;
     readonly progress: SnapshotProgress;
 }
 
-export interface RepoDocInfoMutation {
+export interface RepoDocMetaMutation {
     readonly mutationType: MutationType;
     readonly fingerprint: string;
 
     // only present on created / updated
-    readonly repoDocInfo?: RepoDocInfo;
+    readonly repoDocMeta?: RepoDocMeta;
 }

@@ -18,9 +18,9 @@ import {PersistenceLayer} from '../../datastore/PersistenceLayer';
 import {Logger} from '../../logger/Logger';
 import {AutoUpdatesController} from '../../auto_updates/AutoUpdatesController';
 import {PersistenceLayerEvent} from '../../datastore/PersistenceLayerEvent';
-import {RepoDocInfoManager} from '../../../../apps/repository/js/RepoDocInfoManager';
+import {RepoDocMetaManager} from '../../../../apps/repository/js/RepoDocMetaManager';
 import {CloudService} from '../../../../apps/repository/js/cloud/CloudService';
-import {RepoDocInfoLoader} from '../../../../apps/repository/js/RepoDocInfoLoader';
+import {RepoDocMetaLoader} from '../../../../apps/repository/js/RepoDocMetaLoader';
 import {Throttler} from '../../datastore/Throttler';
 
 const log = Logger.create();
@@ -28,12 +28,12 @@ const log = Logger.create();
 export class RepositoryApp {
 
     private readonly persistenceLayerManager = new PersistenceLayerManager();
-    private readonly repoDocInfoManager: RepoDocInfoManager;
-    private readonly repoDocInfoLoader: RepoDocInfoLoader;
+    private readonly repoDocInfoManager: RepoDocMetaManager;
+    private readonly repoDocInfoLoader: RepoDocMetaLoader;
 
     constructor() {
-        this.repoDocInfoManager = new RepoDocInfoManager(this.persistenceLayerManager);
-        this.repoDocInfoLoader = new RepoDocInfoLoader(this.persistenceLayerManager);
+        this.repoDocInfoManager = new RepoDocMetaManager(this.persistenceLayerManager);
+        this.repoDocInfoLoader = new RepoDocMetaLoader(this.persistenceLayerManager);
     }
 
     public async start() {
@@ -123,9 +123,9 @@ export class RepositoryApp {
             for (const mutation of event.mutations) {
 
                 if (mutation.mutationType === 'created' || mutation.mutationType === 'updated') {
-                    this.repoDocInfoManager.updateFromRepoDocInfo(mutation.fingerprint, mutation.repoDocInfo!);
+                    this.repoDocInfoManager.updateFromRepoDocMeta(mutation.fingerprint, mutation.repoDocMeta!);
                 } else {
-                    this.repoDocInfoManager.updateFromRepoDocInfo(mutation.fingerprint);
+                    this.repoDocInfoManager.updateFromRepoDocMeta(mutation.fingerprint);
                 }
 
             }

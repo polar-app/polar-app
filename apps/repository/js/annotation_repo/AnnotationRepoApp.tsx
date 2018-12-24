@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {Logger} from '../../../../web/js/logger/Logger';
-import {RepoDocInfoLoader} from '../RepoDocInfoLoader';
-import {RepoDocInfoManager} from '../RepoDocInfoManager';
+import {RepoDocMetaLoader} from '../RepoDocMetaLoader';
+import {RepoDocMetaManager} from '../RepoDocMetaManager';
 import {FilteredTags} from '../FilteredTags';
 import {TableColumns} from '../TableColumns';
 import {IDocInfo} from '../../../../web/js/metadata/DocInfo';
@@ -19,9 +19,9 @@ export default class AnnotationRepoApp extends React.Component<IProps, IState> {
 
     private readonly persistenceLayerManager: PersistenceLayerManager;
 
-    private readonly docRepository: RepoDocInfoManager;
+    private readonly docRepository: RepoDocMetaManager;
 
-    private readonly repoDocInfoLoader: RepoDocInfoLoader;
+    private readonly repoDocInfoLoader: RepoDocMetaLoader;
 
     private readonly filteredTags = new FilteredTags();
 
@@ -29,8 +29,8 @@ export default class AnnotationRepoApp extends React.Component<IProps, IState> {
         super(props, context);
 
         this.persistenceLayerManager = this.props.persistenceLayerManager;
-        this.docRepository = new RepoDocInfoManager(this.persistenceLayerManager);
-        this.repoDocInfoLoader = new RepoDocInfoLoader(this.persistenceLayerManager);
+        this.docRepository = new RepoDocMetaManager(this.persistenceLayerManager);
+        this.repoDocInfoLoader = new RepoDocMetaLoader(this.persistenceLayerManager);
 
         this.state = {
             data: [],

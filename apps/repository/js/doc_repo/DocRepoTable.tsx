@@ -4,11 +4,11 @@ import {Footer, Tips} from '../Utils';
 import {Logger} from '../../../../web/js/logger/Logger';
 import {DocLoader} from '../../../../web/js/apps/main/ipc/DocLoader';
 import {Strings} from '../../../../web/js/util/Strings';
-import {RepoDocInfoLoader} from '../RepoDocInfoLoader';
+import {RepoDocMetaLoader} from '../RepoDocMetaLoader';
 import {AppState} from '../AppState';
 import {RepoDocInfo} from '../RepoDocInfo';
 import {RepoDocInfos} from '../RepoDocInfos';
-import {RepoDocInfoManager} from '../RepoDocInfoManager';
+import {RepoDocMetaManager} from '../RepoDocMetaManager';
 import {TagInput} from '../TagInput';
 import {Optional} from '../../../../web/js/util/ts/Optional';
 import {Tag} from '../../../../web/js/tags/Tag';
@@ -832,9 +832,9 @@ interface IProps {
 
     readonly updatedDocInfoEventDispatcher: IEventDispatcher<IDocInfo>;
 
-    readonly repoDocInfoManager: RepoDocInfoManager;
+    readonly repoDocInfoManager: RepoDocMetaManager;
 
-    readonly repoDocInfoLoader: RepoDocInfoLoader;
+    readonly repoDocInfoLoader: RepoDocMetaLoader;
 }
 
 interface IState {

@@ -25,7 +25,7 @@ export interface RepoAnnotationIndex {
  * The main interface to the DocRepository including updates, the existing
  * loaded document metadata, and tags database.
  */
-export class RepoDocInfoManager {
+export class RepoDocMetaManager {
 
     public readonly repoDocInfoIndex: RepoDocInfoIndex = {};
 
@@ -43,8 +43,14 @@ export class RepoDocInfoManager {
     public updateFromRepoDocMeta(fingerprint: string, repoDocMeta?: RepoDocMeta) {
 
         if (repoDocMeta) {
+
             this.repoDocInfoIndex[fingerprint] = repoDocMeta.repoDocInfo;
             this.updateTagsDB(repoDocMeta.repoDocInfo);
+
+            for (const repoAnnotation of repoDocMeta.repoAnnotations) {
+                this.repoAnnotationIndex[repoAnnotation.id] = repoAnnotation;
+            }
+
         } else {
             delete this.repoDocInfoIndex[fingerprint];
         }
