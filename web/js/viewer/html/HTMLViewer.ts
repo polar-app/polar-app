@@ -154,7 +154,12 @@ export class HTMLViewer extends Viewer {
         });
 
         document.querySelectorAll(".page, iframe").forEach((element) => {
-            (element as HTMLElement).style.minHeight = `${docDimensions.minHeight}px`;
+
+            const htmlElement = element as HTMLElement;
+            const minHeightElement = htmlElement.parentElement!;
+
+            minHeightElement.style.minHeight = `${docDimensions.minHeight}px`;
+
         });
 
     }

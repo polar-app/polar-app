@@ -83,13 +83,16 @@ export class FrameResizer {
         // we basically keep polling.
         if (force || height !== newHeight) {
 
+            const heightElement = this.host.parentElement!;
+
             // log.info(`Setting new height to: ${newHeight} vs previous
             // ${this.iframe.style.height}`);
-            this.host.style.height = `${newHeight}px`;
-
-            this.host.setAttribute('data-height', `${newHeight}`);
+            this.host.style.minHeight = `${newHeight}px`;
+            heightElement.style.minHeight = `${newHeight}px`;
+            heightElement.setAttribute('data-height', `${newHeight}`);
 
             this.height = newHeight;
+
         }
 
     }

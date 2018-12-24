@@ -9,9 +9,13 @@ export class Documents {
             return undefined;
         }
 
+        const potentialScrollHeights = [
+            doc.documentElement ? doc.documentElement.scrollHeight : undefined,
+            doc.body ? doc.body.scrollHeight : undefined
+        ];
+
         const scrollHeights =
-            [ doc.documentElement ? doc.documentElement.scrollHeight : undefined,
-              doc.body ? doc.body.scrollHeight : undefined ]
+            potentialScrollHeights
             .filter( current => current !== undefined)
             .map(current => current!);
 
