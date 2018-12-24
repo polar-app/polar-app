@@ -66,6 +66,7 @@ export class BrowserApp {
 
                     this.onWebviewNavigated(currentURL, eventName);
 
+                    log.info("Dispatching navigation reactor event for did-start-loading: " + currentURL);
                     navigationReactor.dispatchEvent({url: currentURL, type: 'did-start-loading'});
 
                     this.loadedURL = true;
@@ -151,7 +152,9 @@ export class BrowserApp {
 
     private onTriggerCapture() {
 
-       WebContentsNotifiers.dispatchEvent(BrowserAppEvent.TRIGGER_CAPTURE, {});
+        ProgressBar.create(true);
+
+        WebContentsNotifiers.dispatchEvent(BrowserAppEvent.TRIGGER_CAPTURE, {});
 
     }
 
@@ -181,6 +184,7 @@ export class BrowserApp {
         console.log(`onWebviewNavigated: (${eventName}: ${url}`);
 
         if (! isPresent(url) || url.startsWith("file:")) {
+
             return;
         }
 
