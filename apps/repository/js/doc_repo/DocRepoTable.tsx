@@ -131,12 +131,12 @@ export default class DocRepoTable extends React.Component<IProps, IState> {
         let hasSentInitAnalyitics = false;
 
         this.releaser.register(
-            this.props.repoDocInfoLoader.addEventListener(event => {
+            this.props.repoDocMetaLoader.addEventListener(event => {
 
             refreshThrottler.exec();
 
             if (! hasSentInitAnalyitics && event.progress.progress === 100) {
-                this.emitInitAnalytics(this.props.repoDocInfoManager.repoDocInfoIndex);
+                this.emitInitAnalytics(this.props.repoDocMetaManager.repoDocInfoIndex);
                 hasSentInitAnalyitics = true;
             }
 
@@ -181,7 +181,7 @@ export default class DocRepoTable extends React.Component<IProps, IState> {
     }
 
     public refresh() {
-        this.refreshState(this.filterRepoDocInfos(Object.values(this.props.repoDocInfoManager!.repoDocInfoIndex)));
+        this.refreshState(this.filterRepoDocInfos(Object.values(this.props.repoDocMetaManager!.repoDocInfoIndex)));
     }
 
     public highlightRow(selected: number) {
@@ -239,7 +239,7 @@ export default class DocRepoTable extends React.Component<IProps, IState> {
                             <div className="header-filter-box header-filter-tags"
                                  style={{whiteSpace: 'nowrap'}}>
 
-                                <FilterTagInput tagsDBProvider={() => this.props.repoDocInfoManager!.tagsDB}
+                                <FilterTagInput tagsDBProvider={() => this.props.repoDocMetaManager!.tagsDB}
                                                 refresher={() => this.refresh()}
                                                 filteredTags={this.filteredTags} />
 
@@ -403,7 +403,7 @@ export default class DocRepoTable extends React.Component<IProps, IState> {
 
                                     return (
                                         <TagInput repoDocInfo={repoDocInfo}
-                                                  tagsDB={this.props.repoDocInfoManager!.tagsDB}
+                                                  tagsDB={this.props.repoDocMetaManager!.tagsDB}
                                                   existingTags={existingTags}
                                                   onChange={(_, tags) =>
                                                       this.onDocTagged(repoDocInfo, tags)
@@ -585,7 +585,7 @@ export default class DocRepoTable extends React.Component<IProps, IState> {
 
         RendererAnalytics.event({category: 'user', action: 'doc-tagged'});
 
-        await this.props.repoDocInfoManager!.writeDocInfoTags(repoDocInfo, tags);
+        await this.props.repoDocMetaManager!.writeDocInfoTags(repoDocInfo, tags);
         this.refresh();
 
     }
@@ -596,7 +596,7 @@ export default class DocRepoTable extends React.Component<IProps, IState> {
 
         log.info("Deleting document: ", repoDocInfo);
 
-        this.props.repoDocInfoManager.deleteDocInfo(repoDocInfo)
+        this.props.repoDocMetaManager.deleteDocInfo(repoDocInfo)
             .catch(err => log.error("Could not delete doc: ", err));
 
         this.refresh();
@@ -609,7 +609,7 @@ export default class DocRepoTable extends React.Component<IProps, IState> {
 
         log.info("Setting doc title: " , title);
 
-        this.props.repoDocInfoManager.writeDocInfoTitle(repoDocInfo, title)
+        this.props.repoDocMetaManager.writeDocInfoTitle(repoDocInfo, title)
             .catch(err => log.error("Could not write doc title: ", err));
 
         this.refresh();
@@ -808,7 +808,7 @@ export default class DocRepoTable extends React.Component<IProps, IState> {
         }
 
         if (mutated) {
-            await this.props.repoDocInfoManager!.writeDocInfo(repoDocInfo.docInfo);
+            await this.props.repoDocMetaManager!.writeDocInfo(repoDocInfo.docInfo);
             this.refresh();
         }
 
@@ -832,9 +832,9 @@ interface IProps {
 
     readonly updatedDocInfoEventDispatcher: IEventDispatcher<IDocInfo>;
 
-    readonly repoDocInfoManager: RepoDocMetaManager;
+    readonly repoDocMetaManager: RepoDocMetaManager;
 
-    readonly repoDocInfoLoader: RepoDocMetaLoader;
+    readonly repoDocMetaLoader: RepoDocMetaLoader;
 }
 
 interface IState {

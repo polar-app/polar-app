@@ -72,14 +72,16 @@ export class RepositoryApp {
         const renderDocRepoApp = () => {
             return ( <DocRepoApp persistenceLayerManager={this.persistenceLayerManager}
                                  updatedDocInfoEventDispatcher={updatedDocInfoEventDispatcher}
-                                 repoDocInfoManager={this.repoDocInfoManager}
-                                 repoDocInfoLoader={this.repoDocInfoLoader}
+                                 repoDocMetaManager={this.repoDocInfoManager}
+                                 repoDocMetaLoader={this.repoDocInfoLoader}
                                  syncBarProgress={syncBarProgress}/> );
         };
 
         const renderAnnotationRepoApp = () => {
             return ( <AnnotationRepoApp persistenceLayerManager={this.persistenceLayerManager}
                                         updatedDocInfoEventDispatcher={updatedDocInfoEventDispatcher}
+                                        repoDocMetaManager={this.repoDocInfoManager}
+                                        repoDocMetaLoader={this.repoDocInfoLoader}
                                         syncBarProgress={syncBarProgress}/> );
         };
 

@@ -45,9 +45,9 @@ export default class DocRepoApp extends React.Component<IProps, IState> {
             <div id="doc-repository">
 
                 <DocRepoTable persistenceLayerManager={this.props.persistenceLayerManager}
-                              repoDocInfoManager={this.props.repoDocInfoManager}
-                              repoDocInfoLoader={this.props.repoDocInfoLoader}
-                              updatedDocInfoEventDispatcher={this.props.updatedDocInfoEventDispatcher}/>
+                              updatedDocInfoEventDispatcher={this.props.updatedDocInfoEventDispatcher}
+                              repoDocMetaManager={this.props.repoDocMetaManager}
+                              repoDocMetaLoader={this.props.repoDocMetaLoader}/>
 
             </div>
 
@@ -64,9 +64,9 @@ export interface IProps {
 
     readonly syncBarProgress: IEventDispatcher<SyncBarProgress>;
 
-    readonly repoDocInfoManager: RepoDocMetaManager;
+    readonly repoDocMetaManager: RepoDocMetaManager;
 
-    readonly repoDocInfoLoader: RepoDocMetaLoader;
+    readonly repoDocMetaLoader: RepoDocMetaLoader;
 
 }
 

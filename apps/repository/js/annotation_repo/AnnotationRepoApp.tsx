@@ -46,7 +46,9 @@ export default class AnnotationRepoApp extends React.Component<IProps, IState> {
             <div id="doc-repository">
 
                 <AnnotationRepoTable persistenceLayerManager={this.props.persistenceLayerManager}
-                                     updatedDocInfoEventDispatcher={this.props.updatedDocInfoEventDispatcher}/>
+                                     updatedDocInfoEventDispatcher={this.props.updatedDocInfoEventDispatcher}
+                                     repoDocMetaManager={this.props.repoDocMetaManager}
+                                     repoDocMetaLoader={this.props.repoDocMetaLoader}/>
 
             </div>
 
@@ -62,6 +64,10 @@ export interface IProps {
     readonly updatedDocInfoEventDispatcher: IEventDispatcher<IDocInfo>;
 
     readonly syncBarProgress: IEventDispatcher<SyncBarProgress>;
+
+    readonly repoDocMetaManager: RepoDocMetaManager;
+
+    readonly repoDocMetaLoader: RepoDocMetaLoader;
 }
 
 export interface IState {

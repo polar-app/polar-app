@@ -31,16 +31,42 @@ export class RepoAnnotations {
 
     }
 
-    public static toRepoAnnotation(from: TextHighlight | AreaHighlight,
+    public static toRepoAnnotation(sourceAnnotation: TextHighlight | AreaHighlight,
                                    type: AnnotationType,
                                    docInfo: DocInfo): RepoAnnotation {
 
+        // code shared with DocAnnotations and we should refactor to
+        // standardize.
+
+        let text: string | undefined;
+
+        if ((<any> sourceAnnotation).text) {
+
+            console.log("FIXME1: ");
+
+            const sourceText: any = (<any> sourceAnnotation).text;
+
+            if (sourceText.TEXT) {
+                console.log("FIXME2: ");
+                text = sourceText.TEXT;
+            }
+
+            if (sourceText.HTML) {
+                console.log("FIXME3: ");
+                text = sourceText.HTML;
+            }
+
+        } else {
+            console.log("FIXME4: ");
+
+        }
+
         return {
-            id: from.id,
+            id: sourceAnnotation.id,
             fingerprint: docInfo.fingerprint,
-            text: "This is an example",
+            text,
             type,
-            created: from.created,
+            created: sourceAnnotation.created,
             tags: docInfo.tags || {},
             docInfo
         };

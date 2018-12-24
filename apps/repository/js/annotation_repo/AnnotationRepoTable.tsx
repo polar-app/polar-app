@@ -8,12 +8,14 @@ import {Tag} from '../../../../web/js/tags/Tag';
 import {Tags} from '../../../../web/js/tags/Tags';
 import {DateTimeTableCell} from '../DateTimeTableCell';
 import {MessageBanner} from '../MessageBanner';
-import {TableColumns} from '../TableColumns';
 import {IDocInfo} from '../../../../web/js/metadata/DocInfo';
 import {SyncBarProgress} from '../../../../web/js/ui/sync_bar/SyncBar';
 import {IEventDispatcher, SimpleReactor} from '../../../../web/js/reactor/SimpleReactor';
 import {PersistenceLayerManager} from '../../../../web/js/datastore/PersistenceLayerManager';
 import {RepoHeader} from '../RepoHeader';
+import {RepoAnnotation} from '../RepoAnnotation';
+import {RepoDocMetaManager} from '../RepoDocMetaManager';
+import {RepoDocMetaLoader} from '../RepoDocMetaLoader';
 
 const log = Logger.create();
 
@@ -30,21 +32,19 @@ export default class AnnotationRepoTable extends React.Component<IProps, IState>
 
         this.state = {
             data: [],
-            columns: new TableColumns()
         };
+
+        this.refresh();
 
     }
 
     public refresh() {
-        // noop
+        this.refreshState(Object.values(this.props.repoDocMetaManager!.repoAnnotationIndex));
     }
 
     public highlightRow(selected: number) {
 
-        const state: AppState = Object.assign({}, this.state);
-        state.selected = selected;
-
-        this.setState(state);
+        this.setState({...this.state, selected});
 
     }
 
@@ -71,7 +71,7 @@ export default class AnnotationRepoTable extends React.Component<IProps, IState>
                                     return (
                                         <div id={id}>
 
-                                            <div>{row.text}</div>
+                                            <div>{row.original.text || 'no text'}</div>
 
                                         </div>
 
@@ -87,7 +87,7 @@ export default class AnnotationRepoTable extends React.Component<IProps, IState>
                                 maxWidth: 100,
                                 defaultSortDesc: true,
                                 Cell: (row: any) => (
-                                    <DateTimeTableCell className="doc-col-last-updated" datetime={row.created}/>
+                                    <DateTimeTableCell className="doc-col-last-updated" datetime={row.original.created}/>
                                 )
 
                             },
@@ -119,7 +119,7 @@ export default class AnnotationRepoTable extends React.Component<IProps, IState>
                     className="-striped -highlight"
                     defaultSorted={[
                         {
-                            id: "progress",
+                            id: "created",
                             desc: true
                         }
                     ]}
@@ -131,6 +131,7 @@ export default class AnnotationRepoTable extends React.Component<IProps, IState>
                         return {
 
                             onClick: (e: any) => {
+                                console.log(`FIXME: rowInfo: `, rowInfo.original);
                                 this.highlightRow(rowInfo.index as number);
                             },
 
@@ -191,11 +192,9 @@ export default class AnnotationRepoTable extends React.Component<IProps, IState>
         );
     }
 
-    private refreshState(repoDocs: RepoDocInfo[]) {
+    private refreshState(repoAnnotations: RepoAnnotation[]) {
 
-        const state: AppState = Object.assign({}, this.state);
-
-        state.data = repoDocs;
+        const state: IState = {...this.state, data: repoAnnotations};
 
         setTimeout(() => {
 
@@ -215,14 +214,15 @@ interface IProps {
 
     readonly updatedDocInfoEventDispatcher: IEventDispatcher<IDocInfo>;
 
+    readonly repoDocMetaManager: RepoDocMetaManager;
+
+    readonly repoDocMetaLoader: RepoDocMetaLoader;
 }
 
 interface IState {
 
-    // docs: DocDetail[];
-
-    data: RepoDocInfo[];
-    columns: TableColumns;
+    data: RepoAnnotation[];
     selected?: number;
+
 }
 

@@ -9,6 +9,8 @@ import {Hashcode} from '../../../web/js/metadata/Hashcode';
 import {AnnotationType} from '../../../web/js/metadata/AnnotationType';
 import {HighlightColor} from '../../../web/js/metadata/BaseHighlight';
 
+// FIXME: a lot of duplication here between DocAnnotations DocAnnotation
+
 export interface RepoAnnotation {
 
     /**
@@ -16,9 +18,9 @@ export interface RepoAnnotation {
      */
     fingerprint: string;
 
-    id: string,
+    id: string;
 
-    text: string;
+    text?: string;
 
     type: AnnotationType;
 
