@@ -123,9 +123,9 @@ export class RepositoryApp {
             for (const mutation of event.mutations) {
 
                 if (mutation.mutationType === 'created' || mutation.mutationType === 'updated') {
-                    this.repoDocInfoManager.updateDocInfo(mutation.fingerprint, mutation.repoDocInfo!);
+                    this.repoDocInfoManager.updateFromRepoDocInfo(mutation.fingerprint, mutation.repoDocInfo!);
                 } else {
-                    this.repoDocInfoManager.updateDocInfo(mutation.fingerprint);
+                    this.repoDocInfoManager.updateFromRepoDocInfo(mutation.fingerprint);
                 }
 
             }
@@ -145,7 +145,7 @@ export class RepositoryApp {
 
         if (RepoDocInfos.isValid(repoDocInfo)) {
 
-            this.repoDocInfoManager.updateDocInfo(repoDocInfo.fingerprint, repoDocInfo);
+            this.repoDocInfoManager.updateFromRepoDocInfo(repoDocInfo.fingerprint, repoDocInfo);
 
             // TODO: technically I don't think we need to test if we're using
             // the cloud layer anymore as synchronizeDocs is a noop in all other

@@ -9,7 +9,7 @@ import {Hashcode} from '../../../web/js/metadata/Hashcode';
 import {AnnotationType} from '../../../web/js/metadata/AnnotationType';
 import {HighlightColor} from '../../../web/js/metadata/BaseHighlight';
 
-export interface RepoAnnotationInfo {
+export interface RepoAnnotation {
 
     fingerprint: string;
 

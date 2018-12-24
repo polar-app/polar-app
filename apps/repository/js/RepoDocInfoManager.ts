@@ -11,8 +11,15 @@ import {Optional} from '../../../web/js/util/ts/Optional';
 import {DocMetaFileRefs} from '../../../web/js/datastore/DocMetaRef';
 import {PersistenceLayer} from '../../../web/js/datastore/PersistenceLayer';
 import {IProvider} from '../../../web/js/util/Providers';
+import {DocMeta} from '../../../web/js/metadata/DocMeta';
+import {RepoAnnotation} from './RepoAnnotation';
+import {RepoDocMeta} from './RepoDocMeta';
 
 const log = Logger.create();
+
+export interface RepoAnnotationIndex {
+    [id: string]: RepoAnnotation;
+}
 
 /**
  * The main interface to the DocRepository including updates, the existing
@@ -21,6 +28,8 @@ const log = Logger.create();
 export class RepoDocInfoManager {
 
     public readonly repoDocInfoIndex: RepoDocInfoIndex = {};
+
+    public readonly repoAnnotationIndex: RepoAnnotationIndex = {};
 
     public readonly tagsDB: TagsDB = new TagsDB();
 
@@ -31,11 +40,22 @@ export class RepoDocInfoManager {
         this.init();
     }
 
+    public updateFromRepoDocMeta(fingerprint: string, repoDocMeta?: RepoDocMeta) {
+
+        if (repoDocMeta) {
+            this.repoDocInfoIndex[fingerprint] = repoDocMeta.repoDocInfo;
+            this.updateTagsDB(repoDocMeta.repoDocInfo);
+        } else {
+            delete this.repoDocInfoIndex[fingerprint];
+        }
+
+    }
+
     /**
      * Update the in-memory representation of this doc.
      *
      */
-    public updateDocInfo(fingerprint: string, repoDocInfo?: RepoDocInfo) {
+    public updateFromRepoDocInfo(fingerprint: string, repoDocInfo?: RepoDocInfo) {
 
         if (repoDocInfo) {
             this.repoDocInfoIndex[fingerprint] = repoDocInfo;
@@ -100,7 +120,7 @@ export class RepoDocInfoManager {
         repoDocInfo.title = title;
         repoDocInfo.docInfo.title = title;
 
-        this.updateDocInfo(repoDocInfo.fingerprint, repoDocInfo);
+        this.updateFromRepoDocInfo(repoDocInfo.fingerprint, repoDocInfo);
 
         return this.writeDocInfo(repoDocInfo.docInfo);
 
@@ -119,7 +139,7 @@ export class RepoDocInfoManager {
         repoDocInfo.tags = Tags.toMap(tags);
         repoDocInfo.docInfo.tags = Tags.toMap(tags);
 
-        this.updateDocInfo(repoDocInfo.fingerprint, repoDocInfo);
+        this.updateFromRepoDocInfo(repoDocInfo.fingerprint, repoDocInfo);
 
         return this.writeDocInfo(repoDocInfo.docInfo);
 
@@ -127,7 +147,7 @@ export class RepoDocInfoManager {
 
     public async deleteDocInfo(repoDocInfo: RepoDocInfo) {
 
-        this.updateDocInfo(repoDocInfo.fingerprint);
+        this.updateFromRepoDocInfo(repoDocInfo.fingerprint);
 
         const persistenceLayer = this.persistenceLayerProvider.get();
 
@@ -139,6 +159,7 @@ export class RepoDocInfoManager {
     }
 
     private init() {
+        // FIXME: is this even needed anymore?
 
         for (const repoDocInfo of Object.values(this.repoDocInfoIndex)) {
             this.updateTagsDB(repoDocInfo);
