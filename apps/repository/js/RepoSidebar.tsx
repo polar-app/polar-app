@@ -116,6 +116,11 @@ export class RepoSidebar extends React.Component<IProps, IState> {
                                          iconClassName="fas fa-sticky-note"
                                          text="Annotations"/>
 
+                        <RepoSidebarItem href="#whats-new"
+                                         onClick={() => this.toggle()}
+                                         iconClassName="fas fa-sticky-note"
+                                         text="Whats New"/>
+
                     </ListGroup>
 
                 </section>

@@ -42,22 +42,15 @@ export class RepoAnnotations {
 
         if ((<any> sourceAnnotation).text) {
 
-            console.log("FIXME1: ");
-
             const sourceText: any = (<any> sourceAnnotation).text;
 
             if (sourceText.TEXT) {
-                console.log("FIXME2: ");
                 text = sourceText.TEXT;
             }
 
             if (sourceText.HTML) {
-                console.log("FIXME3: ");
                 text = sourceText.HTML;
             }
-
-        } else {
-            console.log("FIXME4: ");
 
         }
 

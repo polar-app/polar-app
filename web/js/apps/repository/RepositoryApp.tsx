@@ -22,6 +22,8 @@ import {RepoDocMetaManager} from '../../../../apps/repository/js/RepoDocMetaMana
 import {CloudService} from '../../../../apps/repository/js/cloud/CloudService';
 import {RepoDocMetaLoader} from '../../../../apps/repository/js/RepoDocMetaLoader';
 import {Throttler} from '../../datastore/Throttler';
+import {WhatsNewContent} from '../../../../apps/repository/js/splash/splashes/whats_new/WhatsNewContent';
+import WhatsNewApp from '../../../../apps/repository/js/history/WhatsNewApp';
 
 const log = Logger.create();
 
@@ -85,6 +87,10 @@ export class RepositoryApp {
                                         syncBarProgress={syncBarProgress}/> );
         };
 
+        const renderWhatsNew = () => {
+            return (  <WhatsNewApp/> );
+        };
+
         ReactDOM.render(
 
             <div>
@@ -98,6 +104,7 @@ export class RepositoryApp {
                     <Switch>
                         <Route exact path='/' render={renderDocRepoApp}/>
                         <Route exact path='/annotations' render={renderAnnotationRepoApp}/>
+                        <Route exact path='/whats-new' render={renderWhatsNew}/>
                     </Switch>
 
                 </HashRouter>
