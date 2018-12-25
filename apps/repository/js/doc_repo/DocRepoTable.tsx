@@ -44,6 +44,7 @@ import {ListenablePersistenceLayer} from '../../../../web/js/datastore/Listenabl
 import {RepoSidebar} from '../RepoSidebar';
 import {MultiReleaser} from '../../../../web/js/reactor/EventListener';
 import {RepoDocMetaLoaders} from '../RepoDocMetaLoaders';
+import {PersistenceLayerManagers} from '../../../../web/js/datastore/PersistenceLayerManagers';
 
 const log = Logger.create();
 
@@ -89,29 +90,14 @@ export default class DocRepoTable extends React.Component<IProps, IState> {
         // the old event listener as the component is still mounted but the old
         // persistence layer has now gone away.
 
-        const persistenceLayerListener = (persistenceLayerEvent: PersistenceLayerEvent) => {
-            this.onUpdatedDocInfo(persistenceLayerEvent.docInfo);
-        };
+        PersistenceLayerManagers.onPersistenceManager(this.props.persistenceLayerManager, (persistenceLayer) => {
 
-        const onPersistenceLayer = (persistenceLayer?: ListenablePersistenceLayer) => {
+            this.releaser.register(
+                persistenceLayer.addEventListener(persistenceLayerEvent => {
+                    this.onUpdatedDocInfo(persistenceLayerEvent.docInfo);
+                }));
 
-            if (persistenceLayer) {
-                this.releaser.register(
-                    persistenceLayer.addEventListener(persistenceLayerListener));
-            }
-
-        };
-
-        onPersistenceLayer(this.persistenceLayerManager.get());
-
-        this.releaser.register(
-            this.persistenceLayerManager.addEventListener(event => {
-
-                if (event.state === 'changed') {
-                    onPersistenceLayer(event.persistenceLayer);
-                }
-
-            }));
+        });
 
         this.releaser.register(
             RepoDocMetaLoaders.addThrottlingEventListener(this.props.repoDocMetaLoader,

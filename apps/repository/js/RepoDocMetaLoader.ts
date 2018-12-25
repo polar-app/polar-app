@@ -45,6 +45,8 @@ export class RepoDocMetaLoader {
 
     public async start() {
 
+        // TODO: handle events properly..
+
         this.persistenceLayerManager.addEventListener(event => {
 
             if (event.state === 'changed') {

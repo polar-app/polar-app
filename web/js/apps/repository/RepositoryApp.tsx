@@ -102,7 +102,7 @@ export class RepositoryApp {
                 <HashRouter hashType="noslash">
 
                     <Switch>
-                        <Route exact path='/' render={renderDocRepoApp}/>
+                        <Route exact path='/(logout|overview|login|configured|invite)?' render={renderDocRepoApp}/>
                         <Route exact path='/annotations' render={renderAnnotationRepoApp}/>
                         <Route exact path='/whats-new' render={renderWhatsNew}/>
                     </Switch>
