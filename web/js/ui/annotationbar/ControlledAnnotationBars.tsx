@@ -38,6 +38,7 @@ export class ControlledAnnotationBars {
 
             if (! pageElement) {
                 log.warn("Not found within .page element");
+                return;
             }
 
             const pageNum = parseInt(pageElement.getAttribute("data-page-number"), 10);

@@ -59,7 +59,7 @@ export class ActiveSelections {
                     const element = this.targetElementForEvent(event);
 
                     if (! element) {
-                        log.warn("Event target is not node: ", event.target);
+                        log.warn("No target element: ", event.target);
                         return;
                     }
 
