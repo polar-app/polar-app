@@ -12,3 +12,9 @@ https://breakermag.com/exclusive-consensys-letter-to-staff-details-major-strateg
 
 In the First Round example I can just ONLY enable this when there are no child 
 elements ... 
+
+# Scrolling issues after capture:
+
+https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4018597/#
+
+https://growthhackers.com/amas/live-oct-6-ama-with-gina-gotthilf-vp-of-growth-and-marketing-at-duolingo

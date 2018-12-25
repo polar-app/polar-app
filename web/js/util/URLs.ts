@@ -14,4 +14,14 @@ export class URLs {
 
     }
 
+    /**
+     * Return true if the URL is a web scheme (http or https)
+     * @param url
+     */
+    public static isWebScheme(url: string) {
+
+        return url.startsWith('http:') || url.startsWith('https:');
+
+    }
+
 }

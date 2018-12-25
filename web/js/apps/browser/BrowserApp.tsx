@@ -10,6 +10,8 @@ import BrowserRegistry from '../../capture/BrowserRegistry';
 import {SimpleReactor} from '../../reactor/SimpleReactor';
 import {ProgressBar} from '../../ui/progress_bar/ProgressBar';
 import {BackgroundFrameResizer} from '../../viewer/html/BackgroundFrameResizer';
+import {Strings} from '../../util/Strings';
+import {URLs} from '../../util/URLs';
 
 const log = Logger.create();
 
@@ -19,6 +21,8 @@ export class BrowserApp {
      * Truen when the user has loaded an external URL.
      */
     private loadedURL: boolean = false;
+
+    private webviewNavigated: boolean = false;
 
     private progressBar: ProgressBar | undefined;
 
@@ -43,16 +47,24 @@ export class BrowserApp {
 
             content.insertCSS('html, body { overflow: hidden !important; }');
 
-            content.addEventListener('will-navigate', (event: Electron.WillNavigateEvent) => {
-                this.onWebviewNavigated(event.url, 'will-navigate');
-            });
 
             ['did-start-loading', 'did-stop-loading', 'did-fail-load', 'dom-ready' ]
                 .map(eventListenerName => content.addEventListener(eventListenerName, () => this.refreshTitle(eventListenerName)));
 
-            const mainWebviewNavigatedCallback = (eventName: string) => {
+            content.getWebContents().addListener('will-navigate', (event, url) => {
+                log.debug("WebContents event: will-navigate: " + url);
+                this.onWebviewNavigated(url, 'will-navigate');
 
-                if (this.loadedURL) {
+            });
+
+            const onDidStartNavigation = (eventName: string, url: string, isMainPage: boolean) => {
+
+                const context = {eventName, url, isMainPage};
+
+                log.debug(`${eventName}`, context);
+
+                if (this.webviewNavigated) {
+                    log.debug(`${eventName}: already called for eventName `, context);
                     return;
                 }
 
@@ -62,39 +74,71 @@ export class BrowserApp {
 
                 const currentURL = content.getURL();
 
-                if (currentURL && currentURL !== '' && ! currentURL.startsWith("file:")) {
-
-                    this.onWebviewNavigated(currentURL, eventName);
-
-                    log.info("Dispatching navigation reactor event for did-start-loading: " + currentURL);
-                    navigationReactor.dispatchEvent({url: currentURL, type: 'did-start-loading'});
-
-                    this.loadedURL = true;
-
-                }
-
-            };
-
-            content.addEventListener('did-start-loading', () => mainWebviewNavigatedCallback('did-start-loading'));
-            content.addEventListener('did-frame-navigate', () => mainWebviewNavigatedCallback('did-frame-navigate'));
-
-            // Corresponds to the points in time when the spinner of the tab
-            // stops spinning.
-            content.addEventListener('did-stop-loading', (event) => {
-
-                if (! this.loadedURL) {
+                if (Strings.empty(currentURL)) {
+                    log.debug(`${eventName}: empty URL: `, context);
                     return;
                 }
 
-                if (this.progressBar) {
-                    this.progressBar.destroy();
+                if (! URLs.isWebScheme(currentURL)) {
+                    log.debug(`${eventName}: not a web URL: `, context);
+                    return;
                 }
 
-                const currentURL = content.getURL();
+                if (!isMainPage) {
+                    log.debug(`${eventName}: not the main page: `, context);
+                    return;
+                }
 
-                navigationReactor.dispatchEvent({url: currentURL, type: 'did-stop-loading'});
+                this.onWebviewNavigated(currentURL, eventName);
+
+                log.info("Dispatching navigation reactor event for did-start-loading: " + currentURL);
+                navigationReactor.dispatchEvent({url: currentURL, type: 'did-start-loading'});
+
+                this.webviewNavigated = true;
+
+            };
+
+            content.getWebContents().addListener('did-start-navigation', (url, isInPlace, isMainFrame) => {
+
+                onDidStartNavigation('did-start-navigation', url, isMainFrame);
 
             });
+
+            content.getWebContents()
+                .addListener('did-frame-finish-load', (event: Electron.Event,
+                                                       isMainFrame: boolean,
+                                                       frameProcessId: number,
+                                                       frameRoutingId: number) => {
+
+                    const eventName = 'did-frame-finish-load';
+
+                    log.debug(`${eventName}: isMainFrame: ${isMainFrame}: ` + content.getURL());
+
+                    if (!isMainFrame) {
+                        log.debug(`${eventName}: skipping (not main frame)`);
+                        return;
+                    }
+
+                    if (! this.loadedURL) {
+                        log.debug(`${eventName}: skipping (URL not loaded)`);
+                        return;
+                    }
+
+                    if (! this.webviewNavigated) {
+                        log.debug(`${eventName}: skipping (webview not navigated)`);
+                        return;
+                    }
+
+                    if (this.progressBar) {
+                        log.debug(`${eventName}: destroying progeress bar`);
+                        this.progressBar.destroy();
+                    }
+
+                    const currentURL = content.getURL();
+
+                    navigationReactor.dispatchEvent({url: currentURL, type: 'did-stop-loading'});
+
+                });
 
             content.addEventListener('did-fail-load', () => {
                 log.warn("Load of URL failed.");
@@ -152,8 +196,7 @@ export class BrowserApp {
 
     private onTriggerCapture() {
 
-        ProgressBar.create(true);
-
+        this.createProgressBar();
         WebContentsNotifiers.dispatchEvent(BrowserAppEvent.TRIGGER_CAPTURE, {});
 
     }
@@ -181,12 +224,14 @@ export class BrowserApp {
      */
     private onWebviewNavigated(url: string, eventName: string) {
 
-        console.log(`onWebviewNavigated: (${eventName}: ${url}`);
+        log.debug("within onWebviewNavigated");
 
-        if (! isPresent(url) || url.startsWith("file:")) {
-
+        if (! isPresent(url) || isSplashPage(url)) {
+            log.debug(`SKIPPING onWebviewNavigated: (${eventName}: ${url}`);
             return;
         }
+
+        log.debug(`HANDLING onWebviewNavigated: (${eventName}: ${url}`);
 
         this.changeURL(url);
         this.createProgressBar();
@@ -233,6 +278,10 @@ export class BrowserApp {
         return document.querySelector("#content")! as Electron.WebviewTag;
     }
 
+}
+
+function isSplashPage(url: string) {
+    return url.endsWith('/apps/browser/splash.html');
 }
 
 export interface NavigationEvent {
