@@ -16,10 +16,14 @@ import {RepoHeader} from '../RepoHeader';
 import {RepoAnnotation} from '../RepoAnnotation';
 import {RepoDocMetaManager} from '../RepoDocMetaManager';
 import {RepoDocMetaLoader} from '../RepoDocMetaLoader';
+import {PersistenceLayerManagers} from '../../../../web/js/datastore/PersistenceLayerManagers';
+import {RepoDocMetaLoaders} from '../RepoDocMetaLoaders';
+import {MultiReleaser} from '../../../../web/js/reactor/EventListener';
+import ReleasingReactComponent from '../framework/ReleasingReactComponent';
 
 const log = Logger.create();
 
-export default class AnnotationRepoTable extends React.Component<IProps, IState> {
+export default class AnnotationRepoTable extends ReleasingReactComponent<IProps, IState> {
 
     private readonly persistenceLayerManager: PersistenceLayerManager;
 
@@ -34,7 +38,22 @@ export default class AnnotationRepoTable extends React.Component<IProps, IState>
             data: [],
         };
 
+        this.init();
         this.refresh();
+
+    }
+
+    public init() {
+
+        PersistenceLayerManagers.onPersistenceManager(this.props.persistenceLayerManager, (persistenceLayer) => {
+
+            this.releaser.register(
+                persistenceLayer.addEventListener(() => this.refresh()));
+
+        });
+
+        this.releaser.register(
+            RepoDocMetaLoaders.addThrottlingEventListener(this.props.repoDocMetaLoader, () => this.refresh()));
 
     }
 

@@ -45,10 +45,11 @@ import {RepoSidebar} from '../RepoSidebar';
 import {MultiReleaser} from '../../../../web/js/reactor/EventListener';
 import {RepoDocMetaLoaders} from '../RepoDocMetaLoaders';
 import {PersistenceLayerManagers} from '../../../../web/js/datastore/PersistenceLayerManagers';
+import ReleasingReactComponent from '../framework/ReleasingReactComponent';
 
 const log = Logger.create();
 
-export default class DocRepoTable extends React.Component<IProps, IState> {
+export default class DocRepoTable extends ReleasingReactComponent<IProps, IState> {
 
     private static hasSentInitAnalyitics = false;
 
@@ -57,8 +58,6 @@ export default class DocRepoTable extends React.Component<IProps, IState> {
     private readonly filteredTags = new FilteredTags();
 
     private readonly syncBarProgress: IEventDispatcher<SyncBarProgress> = new SimpleReactor();
-
-    private readonly releaser = new MultiReleaser();
 
     constructor(props: IProps, context: any) {
         super(props, context);
@@ -70,7 +69,6 @@ export default class DocRepoTable extends React.Component<IProps, IState> {
         this.onDocSetTitle = this.onDocSetTitle.bind(this);
         this.onSelectedColumns = this.onSelectedColumns.bind(this);
         this.onFilterByTitle = this.onFilterByTitle.bind(this);
-        this.componentWillUnmount = this.componentWillUnmount.bind(this);
 
         this.state = {
             data: [],
@@ -93,16 +91,12 @@ export default class DocRepoTable extends React.Component<IProps, IState> {
         PersistenceLayerManagers.onPersistenceManager(this.props.persistenceLayerManager, (persistenceLayer) => {
 
             this.releaser.register(
-                persistenceLayer.addEventListener(persistenceLayerEvent => {
-                    this.onUpdatedDocInfo(persistenceLayerEvent.docInfo);
-                }));
+                persistenceLayer.addEventListener(() => this.refresh()));
 
         });
 
         this.releaser.register(
-            RepoDocMetaLoaders.addThrottlingEventListener(this.props.repoDocMetaLoader,
-                                                          () => this.refresh()));
-
+            RepoDocMetaLoaders.addThrottlingEventListener(this.props.repoDocMetaLoader, () => this.refresh()));
 
         this.releaser.register(
             this.props.repoDocMetaLoader.addEventListener(event => {
@@ -785,16 +779,6 @@ export default class DocRepoTable extends React.Component<IProps, IState> {
             this.refresh();
         }
 
-    }
-
-    private onUpdatedDocInfo(docInfo: IDocInfo): void {
-        log.info("Received DocInfo update (refreshing UI)");
-        this.refresh();
-    }
-
-    public componentWillUnmount(): void {
-        log.info("Releasing event listeners...");
-        this.releaser.release();
     }
 
 }
