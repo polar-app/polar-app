@@ -22,7 +22,6 @@ export class WhatsNewContent extends React.Component<IProps, IState> {
 
             <div>
 
-
                 <h3>Polar 1.6 - Polar Needs Your Help!</h3>
 
                 <div className="intro">

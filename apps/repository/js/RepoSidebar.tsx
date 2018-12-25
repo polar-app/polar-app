@@ -84,6 +84,9 @@ export class RepoSidebar extends React.Component<IProps, IState> {
 
                 </div>
 
+                {/*Rework this so that I can accept the ESC key binding here.*/}
+                {/*https://stackoverflow.com/questions/37440408/how-to-detect-esc-key-press-in-react-and-how-to-handle-it/46123962*/}
+
                 <section className="sidebar"
                          style={sidebarStyle}
                          onKeyUp={event => this.onKeyUp(event)}>
