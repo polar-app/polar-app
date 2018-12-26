@@ -98,7 +98,7 @@ export class BrowserApp {
 
             };
 
-            content.getWebContents().addListener('did-start-navigation', (url, isInPlace, isMainFrame) => {
+            content.getWebContents().addListener('did-start-navigation', (event, url, isInPlace, isMainFrame) => {
 
                 onDidStartNavigation('did-start-navigation', url, isMainFrame);
 
