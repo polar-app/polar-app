@@ -8,6 +8,8 @@ import CardSubtitle from 'reactstrap/lib/CardSubtitle';
 import DonationsCard from './DonationsCard';
 import GithubStarsCard from './GithubStarsCard';
 import MailingListCard from "./MailingListCard";
+import {Survey} from '../splash/splashes/survey/Survey';
+import SurveyCard from './SurveyCard';
 
 const log = Logger.create();
 
@@ -29,7 +31,7 @@ export default class CommunityContent extends React.Component<IProps, IState> {
 
                 <div className="container-fluid">
 
-                    <div className="row">
+                    <div className="row mt-2">
 
                         <div className="col-lg-6">
                             <DonationsCard/>
@@ -41,16 +43,17 @@ export default class CommunityContent extends React.Component<IProps, IState> {
 
                     </div>
 
-                </div>
 
-                <div className="container-fluid">
-
-                    <div className="row">
+                    <div className="row mt-2">
 
                         <div className="col-lg-6">
                             <MailingListCard/>
                         </div>
 
+
+                        <div className="col-lg-6">
+                            <SurveyCard/>
+                        </div>
 
 
                     </div>

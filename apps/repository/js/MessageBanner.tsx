@@ -108,6 +108,12 @@ const MESSAGES: Message[] = [
         id: 'polar-feedback-2018-12',
         element: <div>Could you take 1 minute and <a href="https://kevinburton1.typeform.com/to/u1zNWG">complete a survey</a> about your usage of Polar?</div>
     },
+    {
+        id: 'chrome-extension',
+        element: <div>Make sure you have our <a href="https://chrome.google.com/webstore/detail/save-to-polar/jkfdkjomocoaljglgddnmhcbolldcafd/">Chrome Extension</a> to <b>capture web pages directly from your browser!</b></div>
+    },
+
+
 
     // {
     //     id: 'opencollective-donate-button',

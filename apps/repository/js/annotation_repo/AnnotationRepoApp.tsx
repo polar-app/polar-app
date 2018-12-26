@@ -15,6 +15,7 @@ import AnnotationRepoTable from './AnnotationRepoTable';
 import {Footer, Tips} from '../Utils';
 import {RepoHeader} from '../RepoHeader';
 import {MessageBanner} from '../MessageBanner';
+import SplitterLayout from 'react-splitter-layout';
 
 const log = Logger.create();
 
@@ -52,10 +53,23 @@ export default class AnnotationRepoApp extends React.Component<IProps, IState> {
 
                 <MessageBanner/>
 
-                <AnnotationRepoTable persistenceLayerManager={this.props.persistenceLayerManager}
-                                     updatedDocInfoEventDispatcher={this.props.updatedDocInfoEventDispatcher}
-                                     repoDocMetaManager={this.props.repoDocMetaManager}
-                                     repoDocMetaLoader={this.props.repoDocMetaLoader}/>
+                <div style={{display: 'flex'}}>
+
+                    <div style={{width: 'calc(100% - 350px)'}}>
+
+                        <AnnotationRepoTable persistenceLayerManager={this.props.persistenceLayerManager}
+                                             updatedDocInfoEventDispatcher={this.props.updatedDocInfoEventDispatcher}
+                                             repoDocMetaManager={this.props.repoDocMetaManager}
+                                             repoDocMetaLoader={this.props.repoDocMetaLoader}/>
+
+                    </div>
+
+                    <div style={{width: '350px'}}>
+                        this is the metadata ....
+                    </div>
+
+
+                </div>
 
                 <br />
                 <Tips />
