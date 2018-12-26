@@ -83,6 +83,9 @@ export default class DocRepoTable extends ReleasingReactComponent<IProps, IState
 
         window.addEventListener('keyup', event => {
 
+            // TODO: only do this if the current react component has focus but
+            // I'm not sure if I can figure this out...
+
             if (this.state.selected === undefined) {
                 return;
             }
