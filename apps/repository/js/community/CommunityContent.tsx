@@ -7,6 +7,7 @@ import {Card, CardBody, CardTitle, CardText, CardHeader} from 'reactstrap';
 import CardSubtitle from 'reactstrap/lib/CardSubtitle';
 import DonationsCard from './DonationsCard';
 import GithubStarsCard from './GithubStarsCard';
+import MailingListCard from "./MailingListCard";
 
 const log = Logger.create();
 
@@ -42,6 +43,19 @@ export default class CommunityContent extends React.Component<IProps, IState> {
 
                 </div>
 
+                <div className="container-fluid">
+
+                    <div className="row">
+
+                        <div className="col-lg-6">
+                            <MailingListCard/>
+                        </div>
+
+
+
+                    </div>
+
+                </div>
 
 
                 {/*<div className="buttons">*/}

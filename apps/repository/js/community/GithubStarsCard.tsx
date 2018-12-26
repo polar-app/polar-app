@@ -1,10 +1,6 @@
 import * as React from 'react';
 import {Logger} from '../../../../web/js/logger/Logger';
-import {RepoSidebar} from '../RepoSidebar';
-import {MessageBanner} from '../MessageBanner';
-import {WhatsNewContent} from '../splash/splashes/whats_new/WhatsNewContent';
-import {Card, CardBody, CardTitle, CardText, CardHeader} from 'reactstrap';
-import CardSubtitle from 'reactstrap/lib/CardSubtitle';
+import {Card, CardBody, CardHeader, CardText} from 'reactstrap';
 
 const log = Logger.create();
 

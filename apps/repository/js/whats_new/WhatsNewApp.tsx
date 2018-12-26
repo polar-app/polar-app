@@ -1,7 +1,6 @@
 import * as React from 'react';
 import {Logger} from '../../../../web/js/logger/Logger';
 import {RepoSidebar} from '../RepoSidebar';
-import {MessageBanner} from '../MessageBanner';
 import {WhatsNewContent} from '../splash/splashes/whats_new/WhatsNewContent';
 
 const log = Logger.create();
@@ -28,10 +27,14 @@ export default class WhatsNewApp extends React.Component<IProps, IState> {
 
                 </header>
 
-                <MessageBanner/>
+                <div className="container">
 
-                <div className="m-2">
-                    <WhatsNewContent/>
+                    <div className="row">
+
+                        <div className="col-lg-12">
+                            <WhatsNewContent/>
+                        </div>
+                    </div>
                 </div>
 
             </div>
