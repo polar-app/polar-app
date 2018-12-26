@@ -25,8 +25,21 @@ export class RepoSidebarItem extends React.Component<IProps, IState> {
                            onClick={() => this.props.onClick()}
                            action>
 
-                <i className={this.props.iconClassName}></i>
-                &nbsp; {this.props.text}
+                {/*<div style={{position: 'absolute', top: '0px', left: '55px'}>*/}
+                {/*<i className={this.props.iconClassName}></i>*/}
+                {/*</div>*/}
+
+                <div style={{display: 'flex'}}>
+
+                    <div style={{width: '1em', textAlign: 'right'}}>
+                        <i className={this.props.iconClassName}></i>
+                    </div>
+
+                    <div style={{paddingLeft: '10px', fontWeight: 'normal'}}>
+                        {this.props.text}
+                    </div>
+
+                </div>
 
             </ListGroupItem>
 

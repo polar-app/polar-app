@@ -23,7 +23,8 @@ import {CloudService} from '../../../../apps/repository/js/cloud/CloudService';
 import {RepoDocMetaLoader} from '../../../../apps/repository/js/RepoDocMetaLoader';
 import {Throttler} from '../../datastore/Throttler';
 import {WhatsNewContent} from '../../../../apps/repository/js/splash/splashes/whats_new/WhatsNewContent';
-import WhatsNewApp from '../../../../apps/repository/js/history/WhatsNewApp';
+import WhatsNewApp from '../../../../apps/repository/js/whats_new/WhatsNewApp';
+import CommunityApp from '../../../../apps/repository/js/community/CommunityApp';
 
 const log = Logger.create();
 
@@ -91,6 +92,10 @@ export class RepositoryApp {
             return (  <WhatsNewApp/> );
         };
 
+        const renderCommunity = () => {
+            return (  <CommunityApp/> );
+        };
+
         ReactDOM.render(
 
             <div>
@@ -105,6 +110,7 @@ export class RepositoryApp {
                         <Route exact path='/(logout|overview|login|configured|invite)?' render={renderDocRepoApp}/>
                         <Route exact path='/annotations' render={renderAnnotationRepoApp}/>
                         <Route exact path='/whats-new' render={renderWhatsNew}/>
+                        <Route exact path='/community' render={renderCommunity}/>
                     </Switch>
 
                 </HashRouter>
