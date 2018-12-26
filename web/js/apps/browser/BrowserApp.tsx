@@ -154,7 +154,7 @@ export class BrowserApp {
 
         content.addEventListener('console-message', (consoleMessageEvent: Electron.ConsoleMessageEvent) => {
 
-            const prefix = 'From webview: ';
+            const prefix = 'WEBVIEW: ';
 
             switch (consoleMessageEvent.level) {
 

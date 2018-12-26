@@ -32,24 +32,19 @@ export class TagInput extends React.Component<TagInputProps, TagInputState> {
         this.toggle = this.toggle.bind(this);
         this.handleChange = this.handleChange.bind(this);
         this.state = {
-            popoverOpen: false
+            open: false
         };
 
     }
 
     public toggle() {
 
-        const open = !this.state.popoverOpen;
+        const open = !this.state.open;
 
-        if (open) {
-            Blackout.enable();
-        } else {
-            Blackout.disable();
-
-        }
+        Blackout.toggle(open);
 
         this.setState({
-            popoverOpen: open
+            open
         });
 
     }
@@ -72,7 +67,7 @@ export class TagInput extends React.Component<TagInputProps, TagInputState> {
                 <i id={this.id} onClick={this.toggle} className="fa fa-tag doc-button doc-button-inactive"/>
 
                 <Popover placement="auto"
-                         isOpen={this.state.popoverOpen}
+                         isOpen={this.state.open}
                          target={this.id}
                          toggle={this.toggle}
 
@@ -154,7 +149,7 @@ export class TagInput extends React.Component<TagInputProps, TagInputState> {
 }
 
 interface TagInputState {
-    popoverOpen: boolean;
+    readonly open: boolean;
 }
 
 export interface TagInputProps {

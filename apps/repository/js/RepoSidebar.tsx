@@ -59,13 +59,19 @@ export class RepoSidebar extends React.Component<IProps, IState> {
 
     }
 
+    public componentDidUpdate(prevProps: Readonly<IProps>, prevState: Readonly<IState>, snapshot?: any): void {
+
+        if (prevState.expanded !== this.state.expanded) {
+            Blackout.toggle(this.state.expanded);
+        }
+
+    }
+
     public render() {
 
         const display = this.state.expanded ? 'block' : 'none';
 
         const sidebarStyle = Object.assign({}, Styles.sidebar, {display});
-
-        Blackout.toggle(this.state.expanded);
 
         return (
 
