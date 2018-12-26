@@ -12,6 +12,9 @@ import {PrioritizedSplashes} from '../splash/PrioritizedSplashes';
 import {PersistenceLayerManager} from '../../../../web/js/datastore/PersistenceLayerManager';
 import DocRepoTable from '../doc_repo/DocRepoTable';
 import AnnotationRepoTable from './AnnotationRepoTable';
+import {Footer, Tips} from '../Utils';
+import {RepoHeader} from '../RepoHeader';
+import {MessageBanner} from '../MessageBanner';
 
 const log = Logger.create();
 
@@ -45,10 +48,18 @@ export default class AnnotationRepoApp extends React.Component<IProps, IState> {
 
             <div id="doc-repository">
 
+                <RepoHeader persistenceLayerManager={this.props.persistenceLayerManager}/>
+
+                <MessageBanner/>
+
                 <AnnotationRepoTable persistenceLayerManager={this.props.persistenceLayerManager}
                                      updatedDocInfoEventDispatcher={this.props.updatedDocInfoEventDispatcher}
                                      repoDocMetaManager={this.props.repoDocMetaManager}
                                      repoDocMetaLoader={this.props.repoDocMetaLoader}/>
+
+                <br />
+                <Tips />
+                <Footer/>
 
             </div>
 

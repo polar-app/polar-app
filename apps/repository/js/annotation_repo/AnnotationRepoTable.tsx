@@ -73,10 +73,6 @@ export default class AnnotationRepoTable extends ReleasingReactComponent<IProps,
 
             <div id="doc-repo-table">
 
-                <RepoHeader persistenceLayerManager={this.props.persistenceLayerManager}/>
-
-                <MessageBanner/>
-
                 <div id="doc-table">
                 <ReactTable
                     data={data}
@@ -200,9 +196,6 @@ export default class AnnotationRepoTable extends ReleasingReactComponent<IProps,
                     }}
 
                 />
-                <br />
-                <Tips />
-                <Footer/>
 
                 </div>
 
