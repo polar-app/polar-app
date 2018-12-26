@@ -187,11 +187,25 @@ export function configureBrowser(windowDimensions: IDimensions) {
 
     }
 
+    function configureSelectionCSS() {
+
+        const cssText = `
+            ::selection {
+                background-color: rgb(180, 216, 252) !important;
+                color: #111111 !important;
+            }
+        `;
+
+        writeStyles(`polar-css-selection`, cssText);
+
+    }
+
     try {
 
         // configureWhiteBackground();
         configureBrowserWindowSize(windowDimensions);
         configureMaxVerticalHeight();
+        configureSelectionCSS();
 
     } catch (e) {
         console.error("Failed to execute script: ", e);

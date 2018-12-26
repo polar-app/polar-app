@@ -1,6 +1,15 @@
 # 1.7.0
 
-- backend changes to support cloze deletions in anki.
+- Adding forced CSS for ::selection so that sites that have broken CSS for 
+  highlighting don't actually break polar and we also have consistent highlight
+  support.
+
+- Fixed some navigational issues in the web capture system. 
+
+- Fixed bug the annotation bar in PDF where resize will kill it.  Hopefully the 
+  last bug there.
+
+- Backend changes to support cloze deletions in anki.
 
 # 1.6.0
 
